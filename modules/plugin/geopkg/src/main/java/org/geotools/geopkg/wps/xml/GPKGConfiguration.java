@@ -51,12 +51,9 @@ public class GPKGConfiguration extends Configuration {
         container.registerComponentImplementation(GPKG.gridsettype, GridsettypeBinding.class);
         container.registerComponentImplementation(GPKG.gridtype, GridtypeBinding.class);
         container.registerComponentImplementation(GPKG.layertype, LayertypeBinding.class);
-        container.registerComponentImplementation(
-                GPKG.geopkgtype_features, Geopkgtype_featuresBinding.class);
-        container.registerComponentImplementation(
-                GPKG.geopkgtype_tiles, Geopkgtype_tilesBinding.class);
-        container.registerComponentImplementation(
-                GPKG.gridsettype_grids, Gridsettype_gridsBinding.class);
+        container.registerComponentImplementation(GPKG.geopkgtype_features, Geopkgtype_featuresBinding.class);
+        container.registerComponentImplementation(GPKG.geopkgtype_tiles, Geopkgtype_tilesBinding.class);
+        container.registerComponentImplementation(GPKG.gridsettype_grids, Gridsettype_gridsBinding.class);
         container.registerComponentImplementation(GPKG.bboxtype, BboxtypeBinding.class);
         container.registerComponentImplementation(GPKG.overview, OverviewBinding.class);
         container.registerComponentImplementation(GPKG.parametertype, ParameterBinding.class);

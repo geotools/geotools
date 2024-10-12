@@ -263,8 +263,7 @@ public class ContentState {
      * @param feature The updated feature
      * @param before the bounds of the feature before the change
      */
-    public void fireFeatureUpdated(
-            FeatureSource<?, ?> source, Feature feature, ReferencedEnvelope before) {
+    public void fireFeatureUpdated(FeatureSource<?, ?> source, Feature feature, ReferencedEnvelope before) {
         if (feature == null) {
             return; // nothing changed
         }
@@ -338,8 +337,7 @@ public class ContentState {
             try {
                 listener.changed(event);
             } catch (Throwable t) {
-                this.entry.dataStore.LOGGER.log(
-                        Level.WARNING, "Problem issuing batch feature event " + event, t);
+                this.entry.dataStore.LOGGER.log(Level.WARNING, "Problem issuing batch feature event " + event, t);
             }
         }
     }
@@ -366,9 +364,7 @@ public class ContentState {
                     listener.changed(batchFeatureEvent);
                 } catch (Throwable t) {
                     this.entry.dataStore.LOGGER.log(
-                            Level.WARNING,
-                            "Problem issuing batch feature event " + batchFeatureEvent,
-                            t);
+                            Level.WARNING, "Problem issuing batch feature event " + batchFeatureEvent, t);
                 }
             }
         }

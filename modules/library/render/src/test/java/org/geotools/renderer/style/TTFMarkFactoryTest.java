@@ -91,8 +91,9 @@ public class TTFMarkFactoryTest {
     /** Checks valid paths */
     @Test
     public void testLocalFont() throws Exception {
-        String fontPath =
-                TestData.getResource(StreamingRenderer.class, "recreate.ttf").toURI().toString();
+        String fontPath = TestData.getResource(StreamingRenderer.class, "recreate.ttf")
+                .toURI()
+                .toString();
         Shape shape = ttf.getShape(null, ff.literal("ttf://" + fontPath + "#U+0021"), null);
         Assert.assertNotNull(shape);
         Assert.assertTrue(shape.getBounds2D().getWidth() <= 1);

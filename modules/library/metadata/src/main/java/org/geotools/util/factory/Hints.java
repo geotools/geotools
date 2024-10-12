@@ -111,24 +111,21 @@ public class Hints extends RenderingHints {
      *
      * @see org.geotools.referencing.FactoryFinder#getCRSFactory
      */
-    public static final ClassKey CRS_FACTORY =
-            new ClassKey("org.geotools.api.referencing.crs.CRSFactory");
+    public static final ClassKey CRS_FACTORY = new ClassKey("org.geotools.api.referencing.crs.CRSFactory");
 
     /**
      * The {@link org.geotools.api.referencing.cs.CSFactory} instance to use.
      *
      * @see org.geotools.referencing.FactoryFinder#getCSFactory
      */
-    public static final ClassKey CS_FACTORY =
-            new ClassKey("org.geotools.api.referencing.cs.CSFactory");
+    public static final ClassKey CS_FACTORY = new ClassKey("org.geotools.api.referencing.cs.CSFactory");
 
     /**
      * The {@link org.geotools.api.referencing.datum.DatumFactory} instance to use.
      *
      * @see org.geotools.referencing.FactoryFinder#getDatumFactory
      */
-    public static final ClassKey DATUM_FACTORY =
-            new ClassKey("org.geotools.api.referencing.datum.DatumFactory");
+    public static final ClassKey DATUM_FACTORY = new ClassKey("org.geotools.api.referencing.datum.DatumFactory");
 
     /**
      * The {@link org.geotools.api.referencing.operation.CoordinateOperationFactory} instance to
@@ -146,8 +143,7 @@ public class Hints extends RenderingHints {
      * @see org.geotools.referencing.FactoryFinder#getCoordinateOperationAuthorityFactory
      */
     public static final ClassKey COORDINATE_OPERATION_AUTHORITY_FACTORY =
-            new ClassKey(
-                    "org.geotools.api.referencing.operation.CoordinateOperationAuthorityFactory");
+            new ClassKey("org.geotools.api.referencing.operation.CoordinateOperationAuthorityFactory");
 
     /**
      * The {@link org.geotools.api.referencing.operation.MathTransformFactory} instance to use.
@@ -445,8 +441,7 @@ public class Hints extends RenderingHints {
      * @see #JTS_SRID
      * @since 2.5
      */
-    public static final Key CRS =
-            new Key("org.geotools.api.referencing.crs.CoordinateReferenceSystem");
+    public static final Key CRS = new Key("org.geotools.api.referencing.crs.CoordinateReferenceSystem");
 
     /**
      * The default linearization tolerance for curved geometries
@@ -461,8 +456,7 @@ public class Hints extends RenderingHints {
      *
      * @since 2.5
      */
-    public static final Key PRIMITIVE_FACTORY =
-            new Key("org.geotools.api.geometry.primitive.PrimitiveFactory");
+    public static final Key PRIMITIVE_FACTORY = new Key("org.geotools.api.geometry.primitive.PrimitiveFactory");
 
     /**
      * If {@code true}, geometry will be validated on creation. A value of {@code false} may speedup
@@ -484,8 +478,7 @@ public class Hints extends RenderingHints {
      * @see #GEOMETRY_FACTORY
      * @see org.geotools.geometry.jts.FactoryFinder#getGeometryFactory
      */
-    public static final ClassKey JTS_GEOMETRY_FACTORY =
-            new ClassKey("org.locationtech.jts.geom.GeometryFactory");
+    public static final ClassKey JTS_GEOMETRY_FACTORY = new ClassKey("org.locationtech.jts.geom.GeometryFactory");
 
     /**
      * The {@link org.locationtech.jts.geom.CoordinateSequenceFactory} instance to use.
@@ -501,8 +494,7 @@ public class Hints extends RenderingHints {
      * @see org.geotools.geometry.jts.FactoryFinder#getPrecisionModel
      * @see #PRECISION
      */
-    public static final Key JTS_PRECISION_MODEL =
-            new Key("org.locationtech.jts.geom.PrecisionModel");
+    public static final Key JTS_PRECISION_MODEL = new Key("org.locationtech.jts.geom.PrecisionModel");
 
     /**
      * The spatial reference ID for {@link org.locationtech.jts.geom.GeometryFactory}.
@@ -524,8 +516,7 @@ public class Hints extends RenderingHints {
      * @see CommonFactoryFinder.getFeatureFactory()
      * @since 2.5
      */
-    public static ClassKey FEATURE_FACTORY =
-            new ClassKey("org.geotools.api.feature.FeatureFactory");
+    public static ClassKey FEATURE_FACTORY = new ClassKey("org.geotools.api.feature.FeatureFactory");
 
     /**
      * The {@link org.geotools.api.feature.type.FeatureTypeFactory} instance to use.
@@ -533,8 +524,7 @@ public class Hints extends RenderingHints {
      * @see CommonFactoryFinder.getFeatureTypeFactory()
      * @since 2.4
      */
-    public static ClassKey FEATURE_TYPE_FACTORY =
-            new ClassKey("org.geotools.api.feature.type.FeatureTypeFactory");
+    public static ClassKey FEATURE_TYPE_FACTORY = new ClassKey("org.geotools.api.feature.type.FeatureTypeFactory");
 
     /**
      * The {@link org.geotools.feature.FeatureCollections} instance to use.
@@ -542,8 +532,7 @@ public class Hints extends RenderingHints {
      * @see CommonFactoryFinder#getFeatureCollections
      * @since 2.4
      */
-    public static final ClassKey FEATURE_COLLECTIONS =
-            new ClassKey("org.geotools.feature.FeatureCollections");
+    public static final ClassKey FEATURE_COLLECTIONS = new ClassKey("org.geotools.feature.FeatureCollections");
 
     /**
      * Indicates the features returned by the feature collections should be considered detached from
@@ -609,8 +598,7 @@ public class Hints extends RenderingHints {
      *
      * @since 2.4
      */
-    public static final ClassKey STYLE_FACTORY =
-            new ClassKey("org.geotools.api.style.StyleFactory");
+    public static final ClassKey STYLE_FACTORY = new ClassKey("org.geotools.api.style.StyleFactory");
 
     /**
      * The color definition to use when converting from String to Color. "CSS" corresponds to the
@@ -626,16 +614,14 @@ public class Hints extends RenderingHints {
      *
      * @since 2.4
      */
-    public static final ClassKey ATTRIBUTE_TYPE_FACTORY =
-            new ClassKey("org.geotools.feature.AttributeTypeFactory");
+    public static final ClassKey ATTRIBUTE_TYPE_FACTORY = new ClassKey("org.geotools.feature.AttributeTypeFactory");
 
     /**
      * The {@link org.geotools.api.filter.FilterFactory} instance to use.
      *
      * @since 2.4
      */
-    public static final ClassKey FILTER_FACTORY =
-            new ClassKey("org.geotools.api.filter.FilterFactory");
+    public static final ClassKey FILTER_FACTORY = new ClassKey("org.geotools.api.filter.FilterFactory");
 
     /**
      * Provides the parameter values to a JDBC parametrized SQL view. The value of the hint must be
@@ -690,8 +676,7 @@ public class Hints extends RenderingHints {
      *
      * @since 2.5
      */
-    public static final Key OVERVIEW_POLICY =
-            new Key("org.geotools.coverage.grid.io.OverviewPolicy");
+    public static final Key OVERVIEW_POLICY = new Key("org.geotools.coverage.grid.io.OverviewPolicy");
 
     /**
      * Decimation choosing policy. The value must be one of {link
@@ -699,8 +684,7 @@ public class Hints extends RenderingHints {
      *
      * @since 2.7
      */
-    public static final Key DECIMATION_POLICY =
-            new Key("org.geotools.coverage.grid.io.DecimationPolicy");
+    public static final Key DECIMATION_POLICY = new Key("org.geotools.coverage.grid.io.DecimationPolicy");
 
     /**
      * The {@linkplain javax.media.jai.tilecodec.TileEncoder tile encoder} name (as a {@link String}
@@ -720,24 +704,21 @@ public class Hints extends RenderingHints {
     public static final Key JAI_INSTANCE = new Key("javax.media.jai.JAI");
 
     /** The {@link org.geotools.api.coverage.SampleDimensionType} to use. */
-    public static final Key SAMPLE_DIMENSION_TYPE =
-            new Key("org.geotools.api.coverage.SampleDimensionType");
+    public static final Key SAMPLE_DIMENSION_TYPE = new Key("org.geotools.api.coverage.SampleDimensionType");
 
     /**
      * The GridCoverageFactory to be used.
      *
      * @since 2.7
      */
-    public static final ClassKey GRID_COVERAGE_FACTORY =
-            new ClassKey("org.geotools.coverage.grid.GridCoverageFactory");
+    public static final ClassKey GRID_COVERAGE_FACTORY = new ClassKey("org.geotools.coverage.grid.GridCoverageFactory");
 
     /**
      * The {@link ExecutorService} to use.
      *
      * @since 2.7
      */
-    public static final ClassKey EXECUTOR_SERVICE =
-            new ClassKey("java.util.concurrent.ExecutorService");
+    public static final ClassKey EXECUTOR_SERVICE = new ClassKey("java.util.concurrent.ExecutorService");
 
     /**
      * Default resample tolerance value, if not specified via the {@link #RESAMPLE_TOLERANCE} hint
@@ -774,8 +755,7 @@ public class Hints extends RenderingHints {
      *
      * @since 2.5
      */
-    public static final Key GRANULE_REMOVAL_POLICY =
-            new Key("org.geotools.coverage.grid.io.GranuleRemovalPolicy");
+    public static final Key GRANULE_REMOVAL_POLICY = new Key("org.geotools.coverage.grid.io.GranuleRemovalPolicy");
 
     /**
      * Indicates whether to skip external overview files when loading a Coverage (on by default in
@@ -816,8 +796,7 @@ public class Hints extends RenderingHints {
      *
      * <p>This maps directly to a {@code xlinkPropertyName} in a WFS query.
      */
-    public static final Hints.Key ASSOCIATION_PROPERTY =
-            new Key("org.geotools.api.filter.expression.PropertyName");
+    public static final Hints.Key ASSOCIATION_PROPERTY = new Key("org.geotools.api.filter.expression.PropertyName");
 
     ////////////////////////////////////////////////////////////////////////
     ////////                                                        ////////
@@ -843,8 +822,7 @@ public class Hints extends RenderingHints {
      *
      * @since 2.5
      */
-    public static final OptionKey CACHE_POLICY =
-            new OptionKey("weak", "all", "fixed", "none", "default", "soft");
+    public static final OptionKey CACHE_POLICY = new OptionKey("weak", "all", "fixed", "none", "default", "soft");
 
     /**
      * The recommended maximum number of referencing objects to hold in a {@linkplain
@@ -971,8 +949,7 @@ public class Hints extends RenderingHints {
     public static final Key ENCODE_EWKT = new Key(Boolean.class);
 
     /** Which Http client factory should be used */
-    public static final ClassKey HTTP_CLIENT_FACTORY =
-            new ClassKey("org.geotools.http.HTTPClientFactory");
+    public static final ClassKey HTTP_CLIENT_FACTORY = new ClassKey("org.geotools.http.HTTPClientFactory");
 
     /** Which Http client should be created. */
     public static final ClassKey HTTP_CLIENT = new ClassKey("org.geotools.http.HTTPClient");
@@ -1027,10 +1004,7 @@ public class Hints extends RenderingHints {
      * @since 2.4
      */
     public Hints(
-            final RenderingHints.Key key1,
-            final Object value1,
-            final RenderingHints.Key key2,
-            final Object value2) {
+            final RenderingHints.Key key1, final Object value1, final RenderingHints.Key key2, final Object value2) {
         this(key1, value1);
         super.put(key2, value2);
     }
@@ -1063,8 +1037,7 @@ public class Hints extends RenderingHints {
      */
     private void fromPairs(final Object... pairs) throws IllegalArgumentException {
         if ((pairs.length & 1) != 0) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.ODD_ARRAY_LENGTH_$1, pairs.length));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.ODD_ARRAY_LENGTH_$1, pairs.length));
         }
         for (int i = 0; i < pairs.length; i += 2) {
             super.put(pairs[i], pairs[i + 1]);
@@ -1312,24 +1285,21 @@ public class Hints extends RenderingHints {
         while (true) {
             final Class<?> type;
             switch (t++) {
-                case 0:
-                    {
-                        type = RenderingHints.class;
+                case 0: {
+                    type = RenderingHints.class;
+                    break;
+                }
+                case 1: {
+                    try {
+                        type = Class.forName("javax.media.jai.JAI");
                         break;
-                    }
-                case 1:
-                    {
-                        try {
-                            type = Class.forName("javax.media.jai.JAI");
-                            break;
-                        } catch (ClassNotFoundException | NoClassDefFoundError e) {
-                            continue;
-                        } // May occurs because of indirect JAI dependencies.
-                    }
-                default:
-                    {
-                        return key.toString();
-                    }
+                    } catch (ClassNotFoundException | NoClassDefFoundError e) {
+                        continue;
+                    } // May occurs because of indirect JAI dependencies.
+                }
+                default: {
+                    return key.toString();
+                }
             }
             final String name = nameOf(type, key);
             if (name != null) {
@@ -1811,9 +1781,7 @@ public class Hints extends RenderingHints {
         /** Returns {@code true} if the specified object is a data source or data source name. */
         @Override
         public boolean isCompatibleValue(final Object value) {
-            return (value instanceof DataSource)
-                    || (value instanceof String)
-                    || (value instanceof Name);
+            return (value instanceof DataSource) || (value instanceof String) || (value instanceof Name);
         }
     }
 

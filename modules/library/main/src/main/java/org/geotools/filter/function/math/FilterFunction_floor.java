@@ -29,8 +29,7 @@ import org.geotools.util.factory.Hints;
 public class FilterFunction_floor extends FunctionExpressionImpl {
 
     public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "floor", parameter("floor", Double.class), parameter("double", Double.class));
+            new FunctionNameImpl("floor", parameter("floor", Double.class), parameter("double", Double.class));
 
     public FilterFunction_floor() {
         super("floor");

@@ -51,18 +51,17 @@ public class ExponentialFunction extends FunctionImpl {
     static {
         Parameter<Object> result = new Parameter<>("result", Object.class, 1, 1);
         Parameter<Object> input = new Parameter<>("input", Object.class, 1, 1);
-        Parameter<Double> base =
-                new Parameter<>(
-                        "base",
-                        Double.class,
-                        Text.text("Base"),
-                        Text.text(
-                                "Exponential base of the interpolation curve controlling rate at which function output increases."),
-                        true,
-                        0,
-                        1,
-                        1.0,
-                        null);
+        Parameter<Double> base = new Parameter<>(
+                "base",
+                Double.class,
+                Text.text("Base"),
+                Text.text(
+                        "Exponential base of the interpolation curve controlling rate at which function output increases."),
+                true,
+                0,
+                1,
+                1.0,
+                null);
         Parameter<Object> stops = new Parameter<>("stops", Object.class, 4, -1);
         NAME = new FunctionNameImpl("Exponential", result, input, base, stops);
     }
@@ -141,11 +140,10 @@ public class ExponentialFunction extends FunctionImpl {
     public List<Stop> getStops(List<Expression> parameters) {
         List<Stop> stops = new ArrayList<>();
         if (parameters.size() % 2 != 0) {
-            throw new IllegalArgumentException(
-                    this.getClass().getSimpleName()
-                            + " requires an even number of stop values, but "
-                            + (parameters.size() - 2)
-                            + " were provided.");
+            throw new IllegalArgumentException(this.getClass().getSimpleName()
+                    + " requires an even number of stop values, but "
+                    + (parameters.size() - 2)
+                    + " were provided.");
         }
 
         for (int i = 2; (i + 1) < parameters.size(); i = i + 2) {
@@ -156,12 +154,7 @@ public class ExponentialFunction extends FunctionImpl {
     }
 
     private <T> Object exponential(
-            Object object,
-            double inputValue,
-            double base,
-            Stop lower,
-            Stop upper,
-            Class<T> context) {
+            Object object, double inputValue, double base, Stop lower, Stop upper, Class<T> context) {
         if (Color.class.isAssignableFrom(context)) {
             return colorExponential(object, inputValue, base, lower, upper);
         } else {
@@ -169,8 +162,7 @@ public class ExponentialFunction extends FunctionImpl {
         }
     }
 
-    private double numericExponential(
-            Object object, double inputValue, double base, Stop lower, Stop upper) {
+    private double numericExponential(Object object, double inputValue, double base, Stop lower, Stop upper) {
         double stop1 = lower.stop.evaluate(object, Double.class);
         double value1 = lower.value.evaluate(object, Double.class);
         double stop2 = upper.stop.evaluate(object, Double.class);
@@ -225,8 +217,7 @@ public class ExponentialFunction extends FunctionImpl {
     /**
      * Perform exponential interpolation on each of the channels of the color values at each stop.
      */
-    private Object colorExponential(
-            Object object, double inputValue, double base, Stop lower, Stop upper) {
+    private Object colorExponential(Object object, double inputValue, double base, Stop lower, Stop upper) {
         Color lowerValue = lower.value.evaluate(object, Color.class);
         Color upperValue = upper.value.evaluate(object, Color.class);
 
@@ -247,8 +238,7 @@ public class ExponentialFunction extends FunctionImpl {
         double b = numericExponential(object, inputValue, base, blueLowerStop, blueUpperStop);
         double a = numericExponential(object, inputValue, base, alphaLowerStop, alphaUpperStop);
 
-        return new Color(
-                (int) Math.round(r), (int) Math.round(g), (int) Math.round(b), (int) Math.round(a));
+        return new Color((int) Math.round(r), (int) Math.round(g), (int) Math.round(b), (int) Math.round(a));
     }
 
     /**

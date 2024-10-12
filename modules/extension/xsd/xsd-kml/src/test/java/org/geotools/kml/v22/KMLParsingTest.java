@@ -43,11 +43,7 @@ public class KMLParsingTest extends KMLTestSupport {
         SimpleFeature placemark = (SimpleFeature) ((List) folder.getAttribute("Feature")).get(0);
 
         assertEquals("Simple placemark", placemark.getAttribute("name"));
-        assertTrue(
-                placemark
-                        .getAttribute("description")
-                        .toString()
-                        .startsWith("Attached to the ground"));
+        assertTrue(placemark.getAttribute("description").toString().startsWith("Attached to the ground"));
         Point p = (Point) placemark.getDefaultGeometry();
         assertEquals(-122.08220, p.getX(), 0.0001);
         assertEquals(37.42229, p.getY(), 0.0001);
@@ -58,11 +54,8 @@ public class KMLParsingTest extends KMLTestSupport {
 
     @Test
     public void testStreamParse() throws Exception {
-        StreamingParser p =
-                new StreamingParser(
-                        createConfiguration(),
-                        getClass().getResourceAsStream("KML_Samples.kml"),
-                        KML.Placemark);
+        StreamingParser p = new StreamingParser(
+                createConfiguration(), getClass().getResourceAsStream("KML_Samples.kml"), KML.Placemark);
         int count = 0;
         while (p.parse() != null) {
             count++;
@@ -73,10 +66,7 @@ public class KMLParsingTest extends KMLTestSupport {
     @Test
     public void testPullParse() throws Exception {
         PullParser p =
-                new PullParser(
-                        createConfiguration(),
-                        getClass().getResourceAsStream("KML_Samples.kml"),
-                        KML.Placemark);
+                new PullParser(createConfiguration(), getClass().getResourceAsStream("KML_Samples.kml"), KML.Placemark);
 
         int count = 0;
         while (p.parse() != null) {
@@ -87,13 +77,12 @@ public class KMLParsingTest extends KMLTestSupport {
 
     @Test
     public void testPullParseOrHandler() throws Exception {
-        PullParser p =
-                new PullParser(
-                        createConfiguration(),
-                        getClass().getResourceAsStream("KML_Samples.kml"),
-                        KML.Placemark,
-                        KML.GroundOverlay,
-                        KML.ScreenOverlay);
+        PullParser p = new PullParser(
+                createConfiguration(),
+                getClass().getResourceAsStream("KML_Samples.kml"),
+                KML.Placemark,
+                KML.GroundOverlay,
+                KML.ScreenOverlay);
         int count = 0;
         while (p.parse() != null) {
             count++;
@@ -103,24 +92,23 @@ public class KMLParsingTest extends KMLTestSupport {
 
     @Test
     public void testParseExtendedData() throws Exception {
-        String xml =
-                " <Placemark> "
-                        + "    <name>Club house</name> "
-                        + "    <ExtendedData> "
-                        + "      <Data name='holeNumber'> "
-                        + "        <value>1</value> "
-                        + "      </Data> "
-                        + "      <Data name='holeYardage'> "
-                        + "        <value>234</value> "
-                        + "      </Data> "
-                        + "      <Data name='holePar'> "
-                        + "        <value>4</value> "
-                        + "      </Data> "
-                        + "    </ExtendedData> "
-                        + "    <Point> "
-                        + "      <coordinates>-111.956,33.5043</coordinates> "
-                        + "    </Point> "
-                        + "  </Placemark> ";
+        String xml = " <Placemark> "
+                + "    <name>Club house</name> "
+                + "    <ExtendedData> "
+                + "      <Data name='holeNumber'> "
+                + "        <value>1</value> "
+                + "      </Data> "
+                + "      <Data name='holeYardage'> "
+                + "        <value>234</value> "
+                + "      </Data> "
+                + "      <Data name='holePar'> "
+                + "        <value>4</value> "
+                + "      </Data> "
+                + "    </ExtendedData> "
+                + "    <Point> "
+                + "      <coordinates>-111.956,33.5043</coordinates> "
+                + "    </Point> "
+                + "  </Placemark> ";
         buildDocument(xml);
 
         SimpleFeature f = (SimpleFeature) parse();
@@ -136,63 +124,62 @@ public class KMLParsingTest extends KMLTestSupport {
 
     @Test
     public void testExtendedDataTyped() throws Exception {
-        String xml =
-                "<kml xmlns='http://www.opengis.net/kml/2.2'> "
-                        + "<Document>   "
-                        + "  <name>ExtendedData+SchemaData</name>   "
-                        + "  <open>1</open>"
-                        + ""
-                        + "  <!-- Declare the type 'TrailHeadType' with 3 fields -->"
-                        + "  <Schema name='TrailHeadType' id='TrailHeadTypeId'>     "
-                        + "    <SimpleField type='string' name='TrailHeadName'>       "
-                        + "      <displayName><![CDATA[<b>Trail Head Name</b>]]></displayName>     "
-                        + "    </SimpleField>     "
-                        + "    <SimpleField type='double' name='TrailLength'>       "
-                        + "      <displayName><![CDATA[<i>Length in miles</i>]]></displayName>     "
-                        + "    </SimpleField>     "
-                        + "    <SimpleField type='int' name='ElevationGain'>       "
-                        + "      <displayName><![CDATA[<i>Change in altitude</i>]]></displayName>     "
-                        + "    </SimpleField>   "
-                        + "  </Schema> "
-                        + ""
-                        + "<!-- This is analogous to adding three fields to a new element of type TrailHead:"
-                        + ""
-                        + "  <TrailHeadType>        "
-                        + "    <TrailHeadName>...</TrailHeadName>        "
-                        + "    <TrailLength>...</TrailLength>        "
-                        + "    <ElevationGain>...</ElevationGain>    "
-                        + " </TrailHeadType>"
-                        + "-->      "
-                        + ""
-                        + "  <!-- Instantiate some Placemarks extended with TrailHeadType fields -->    "
-                        + "  <Placemark>     "
-                        + "    <name>Easy trail</name>"
-                        + "    <ExtendedData>       "
-                        + "      <SchemaData schemaUrl='#TrailHeadTypeId'>         "
-                        + "        <SimpleData name='TrailHeadName'>Pi in the sky</SimpleData>         "
-                        + "        <SimpleData name='TrailLength'>3.14159</SimpleData>         "
-                        + "        <SimpleData name='ElevationGain'>10</SimpleData>       "
-                        + "      </SchemaData>     "
-                        + "    </ExtendedData>     "
-                        + "    <Point>       "
-                        + "      <coordinates>-122.000,37.002</coordinates>     "
-                        + "    </Point>   "
-                        + "  </Placemark>    "
-                        + "  <Placemark>     "
-                        + "    <name>Difficult trail</name>"
-                        + "    <ExtendedData>"
-                        + "      <SchemaData schemaUrl='#TrailHeadTypeId'>         "
-                        + "        <SimpleData name='TrailHeadName'>Mount Everest</SimpleData>        "
-                        + "        <SimpleData name='TrailLength'>347.45</SimpleData>         "
-                        + "        <SimpleData name='ElevationGain'>10000</SimpleData>       "
-                        + "      </SchemaData>     "
-                        + "    </ExtendedData>    "
-                        + "    <Point>       "
-                        + "      <coordinates>-121.998,37.0078</coordinates>     "
-                        + "    </Point>   "
-                        + "  </Placemark>   "
-                        + "</Document> "
-                        + "</kml>";
+        String xml = "<kml xmlns='http://www.opengis.net/kml/2.2'> "
+                + "<Document>   "
+                + "  <name>ExtendedData+SchemaData</name>   "
+                + "  <open>1</open>"
+                + ""
+                + "  <!-- Declare the type 'TrailHeadType' with 3 fields -->"
+                + "  <Schema name='TrailHeadType' id='TrailHeadTypeId'>     "
+                + "    <SimpleField type='string' name='TrailHeadName'>       "
+                + "      <displayName><![CDATA[<b>Trail Head Name</b>]]></displayName>     "
+                + "    </SimpleField>     "
+                + "    <SimpleField type='double' name='TrailLength'>       "
+                + "      <displayName><![CDATA[<i>Length in miles</i>]]></displayName>     "
+                + "    </SimpleField>     "
+                + "    <SimpleField type='int' name='ElevationGain'>       "
+                + "      <displayName><![CDATA[<i>Change in altitude</i>]]></displayName>     "
+                + "    </SimpleField>   "
+                + "  </Schema> "
+                + ""
+                + "<!-- This is analogous to adding three fields to a new element of type TrailHead:"
+                + ""
+                + "  <TrailHeadType>        "
+                + "    <TrailHeadName>...</TrailHeadName>        "
+                + "    <TrailLength>...</TrailLength>        "
+                + "    <ElevationGain>...</ElevationGain>    "
+                + " </TrailHeadType>"
+                + "-->      "
+                + ""
+                + "  <!-- Instantiate some Placemarks extended with TrailHeadType fields -->    "
+                + "  <Placemark>     "
+                + "    <name>Easy trail</name>"
+                + "    <ExtendedData>       "
+                + "      <SchemaData schemaUrl='#TrailHeadTypeId'>         "
+                + "        <SimpleData name='TrailHeadName'>Pi in the sky</SimpleData>         "
+                + "        <SimpleData name='TrailLength'>3.14159</SimpleData>         "
+                + "        <SimpleData name='ElevationGain'>10</SimpleData>       "
+                + "      </SchemaData>     "
+                + "    </ExtendedData>     "
+                + "    <Point>       "
+                + "      <coordinates>-122.000,37.002</coordinates>     "
+                + "    </Point>   "
+                + "  </Placemark>    "
+                + "  <Placemark>     "
+                + "    <name>Difficult trail</name>"
+                + "    <ExtendedData>"
+                + "      <SchemaData schemaUrl='#TrailHeadTypeId'>         "
+                + "        <SimpleData name='TrailHeadName'>Mount Everest</SimpleData>        "
+                + "        <SimpleData name='TrailLength'>347.45</SimpleData>         "
+                + "        <SimpleData name='ElevationGain'>10000</SimpleData>       "
+                + "      </SchemaData>     "
+                + "    </ExtendedData>    "
+                + "    <Point>       "
+                + "      <coordinates>-121.998,37.0078</coordinates>     "
+                + "    </Point>   "
+                + "  </Placemark>   "
+                + "</Document> "
+                + "</kml>";
         buildDocument(xml);
 
         SimpleFeature doc = (SimpleFeature) parse();

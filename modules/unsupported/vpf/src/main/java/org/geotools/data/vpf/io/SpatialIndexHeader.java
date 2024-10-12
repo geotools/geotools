@@ -57,8 +57,7 @@ public class SpatialIndexHeader implements VPFHeader {
      * @param ymax a <code>float</code> value
      * @param numNodes an <code>int</code> value
      */
-    public SpatialIndexHeader(
-            int numPrims, float xmin, float ymin, float xmax, float ymax, int numNodes) {
+    public SpatialIndexHeader(int numPrims, float xmin, float ymin, float xmax, float ymax, int numNodes) {
         this.numPrims = numPrims;
         this.xmin = xmin;
         this.ymin = ymin;

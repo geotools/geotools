@@ -94,8 +94,7 @@ public class SubstitutionGroupLeakPreventer implements Adapter {
                 // set the removed elements sub affiliation to a clone of the actual element
                 for (XSDElementDeclaration se : removed) {
                     if (se != null && e.equals(se.getSubstitutionGroupAffiliation())) {
-                        XSDElementDeclaration clone =
-                                (XSDElementDeclaration) e.cloneConcreteComponent(false, false);
+                        XSDElementDeclaration clone = (XSDElementDeclaration) e.cloneConcreteComponent(false, false);
                         clone.setTargetNamespace(GML.NAMESPACE);
 
                         se.setSubstitutionGroupAffiliation(clone);

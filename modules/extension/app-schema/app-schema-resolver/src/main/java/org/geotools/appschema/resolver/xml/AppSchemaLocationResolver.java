@@ -52,8 +52,7 @@ public class AppSchemaLocationResolver extends SchemaLocationResolver {
      *     java.lang.String, java.lang.String)
      */
     @Override
-    public String resolveSchemaLocation(
-            final XSDSchema schema, final String uri, final String location) {
+    public String resolveSchemaLocation(final XSDSchema schema, final String uri, final String location) {
         return resolver.resolve(location, schema.getSchemaLocation());
     }
 

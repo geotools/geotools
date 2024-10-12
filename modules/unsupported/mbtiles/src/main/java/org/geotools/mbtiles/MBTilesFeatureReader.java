@@ -55,8 +55,7 @@ class MBTilesFeatureReader implements SimpleFeatureReader {
     }
 
     @Override
-    public SimpleFeature next()
-            throws IOException, IllegalArgumentException, NoSuchElementException {
+    public SimpleFeature next() throws IOException, IllegalArgumentException, NoSuchElementException {
         if (!hasNext()) {
             throw new NoSuchElementException();
         }

@@ -30,8 +30,7 @@ public class FilterFunction_cos extends FunctionExpressionImpl {
 
     // public static FunctionName NAME = new FunctionNameImpl("cos","radians");
     public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "cos", parameter("cosine", Double.class), parameter("radians", Double.class));
+            new FunctionNameImpl("cos", parameter("cosine", Double.class), parameter("radians", Double.class));
 
     public FilterFunction_cos() {
         super("cos");

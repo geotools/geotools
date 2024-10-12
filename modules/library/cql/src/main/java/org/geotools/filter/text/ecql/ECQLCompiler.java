@@ -82,8 +82,7 @@ public class ECQLCompiler extends ECQLParser implements org.geotools.filter.text
             throw e;
 
         } catch (ParseException e) {
-            throw new CQLException(
-                    e.getMessage(), getTokenInPosition(0), e.getCause(), this.source);
+            throw new CQLException(e.getMessage(), getTokenInPosition(0), e.getCause(), this.source);
         }
     }
 
@@ -97,8 +96,7 @@ public class ECQLCompiler extends ECQLParser implements org.geotools.filter.text
         } catch (CQLException e) {
             throw e;
         } catch (ParseException e) {
-            throw new CQLException(
-                    e.getMessage(), getTokenInPosition(0), e.getCause(), this.source);
+            throw new CQLException(e.getMessage(), getTokenInPosition(0), e.getCause(), this.source);
         }
     }
 
@@ -112,8 +110,7 @@ public class ECQLCompiler extends ECQLParser implements org.geotools.filter.text
         } catch (CQLException e) {
             throw e;
         } catch (ParseException e) {
-            throw new CQLException(
-                    e.getMessage(), getTokenInPosition(0), e.getCause(), this.source);
+            throw new CQLException(e.getMessage(), getTokenInPosition(0), e.getCause(), this.source);
         }
     }
 
@@ -224,8 +221,7 @@ public class ECQLCompiler extends ECQLParser implements org.geotools.filter.text
                 return this.builder.buildSimpleAttribute();
 
             case JJTCOMPOUND_ATTRIBUTE_NODE:
-                return this.builder.buildCompoundAttribute(
-                        JJTSIMPLE_ATTRIBUTE_NODE, ATTRIBUTE_PATH_SEPARATOR);
+                return this.builder.buildCompoundAttribute(JJTSIMPLE_ATTRIBUTE_NODE, ATTRIBUTE_PATH_SEPARATOR);
 
                 // ----------------------------------------
                 // function
@@ -523,15 +519,12 @@ public class ECQLCompiler extends ECQLParser implements org.geotools.filter.text
 
                 default:
                     throw new CQLException(
-                            "Expression not supported. And, Or, Not is required",
-                            getTokenInPosition(0),
-                            this.source);
+                            "Expression not supported. And, Or, Not is required", getTokenInPosition(0), this.source);
             }
 
             return logicFilter;
         } catch (IllegalFilterException ife) {
-            throw new CQLException(
-                    "Exception building LogicFilter", getTokenInPosition(0), ife, this.source);
+            throw new CQLException("Exception building LogicFilter", getTokenInPosition(0), ife, this.source);
         }
     }
 
@@ -540,8 +533,7 @@ public class ECQLCompiler extends ECQLParser implements org.geotools.filter.text
      *
      * @return BinarySpatialOperator
      */
-    private BinarySpatialOperator buildBinarySpatialOperator(final int nodeType)
-            throws CQLException {
+    private BinarySpatialOperator buildBinarySpatialOperator(final int nodeType) throws CQLException {
 
         BinarySpatialOperator filter = null;
 
@@ -592,8 +584,7 @@ public class ECQLCompiler extends ECQLParser implements org.geotools.filter.text
      *
      * @return DistanceBufferOperator dwithin and beyond filters
      */
-    private DistanceBufferOperator buildDistanceBufferOperator(final int nodeType)
-            throws CQLException {
+    private DistanceBufferOperator buildDistanceBufferOperator(final int nodeType) throws CQLException {
 
         DistanceBufferOperator filter = null;
 
@@ -627,9 +618,7 @@ public class ECQLCompiler extends ECQLParser implements org.geotools.filter.text
 
             default:
                 throw new CQLException(
-                        "unexpeted date time expression in temporal predicate.",
-                        node.getToken(),
-                        this.source);
+                        "unexpeted date time expression in temporal predicate.", node.getToken(), this.source);
         }
 
         return filter;
@@ -650,9 +639,7 @@ public class ECQLCompiler extends ECQLParser implements org.geotools.filter.text
 
             default:
                 throw new CQLException(
-                        "unexpeted date time expression in temporal predicate.",
-                        node.getToken(),
-                        this.source);
+                        "unexpeted date time expression in temporal predicate.", node.getToken(), this.source);
         }
 
         return filter;
@@ -682,9 +669,7 @@ public class ECQLCompiler extends ECQLParser implements org.geotools.filter.text
 
             default:
                 throw new CQLException(
-                        "unexpeted date time expression in temporal predicate.",
-                        node.getToken(),
-                        this.source);
+                        "unexpeted date time expression in temporal predicate.", node.getToken(), this.source);
         }
 
         return filter;
@@ -710,9 +695,7 @@ public class ECQLCompiler extends ECQLParser implements org.geotools.filter.text
 
             default:
                 throw new CQLException(
-                        "unexpeted period expression in temporal predicate.",
-                        node.getToken(),
-                        this.source);
+                        "unexpeted period expression in temporal predicate.", node.getToken(), this.source);
         }
 
         return filter;
@@ -742,9 +725,7 @@ public class ECQLCompiler extends ECQLParser implements org.geotools.filter.text
 
             default:
                 throw new CQLException(
-                        "unexpeted date time expression in temporal predicate.",
-                        node.getToken(),
-                        this.source);
+                        "unexpeted date time expression in temporal predicate.", node.getToken(), this.source);
         }
 
         return filter;
@@ -755,8 +736,7 @@ public class ECQLCompiler extends ECQLParser implements org.geotools.filter.text
      *
      * @return BinaryComparisonOperator
      */
-    private BinaryComparisonOperator buildBinaryComparasionOperator(int filterType)
-            throws CQLException {
+    private BinaryComparisonOperator buildBinaryComparasionOperator(int filterType) throws CQLException {
 
         switch (filterType) {
             case JJTCOMPARISONPREDICATE_EQ_NODE:

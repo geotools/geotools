@@ -42,14 +42,13 @@ public class SampleDataAccessFactory implements DataAccessFactory {
     /** The "dbtype" connection string required to use this factory. */
     public static final String DBTYPE_STRING = "sample-data-access";
 
-    public static final DataAccessFactory.Param DBTYPE =
-            new DataAccessFactory.Param(
-                    "dbtype",
-                    String.class,
-                    "Fixed value '" + DBTYPE_STRING + "'",
-                    true,
-                    DBTYPE_STRING,
-                    Collections.singletonMap(Parameter.LEVEL, "program"));
+    public static final DataAccessFactory.Param DBTYPE = new DataAccessFactory.Param(
+            "dbtype",
+            String.class,
+            "Fixed value '" + DBTYPE_STRING + "'",
+            true,
+            DBTYPE_STRING,
+            Collections.singletonMap(Parameter.LEVEL, "program"));
 
     /** The connection parameters required to use this factory. */
     @SuppressWarnings("serial")
@@ -72,8 +71,8 @@ public class SampleDataAccessFactory implements DataAccessFactory {
      * @see DataAccessFactory#createDataStore(java.util.Map)
      */
     @Override
-    public DataAccess<? extends FeatureType, ? extends Feature> createDataStore(
-            Map<String, ?> params) throws IOException {
+    public DataAccess<? extends FeatureType, ? extends Feature> createDataStore(Map<String, ?> params)
+            throws IOException {
         return new SampleDataAccess();
     }
 

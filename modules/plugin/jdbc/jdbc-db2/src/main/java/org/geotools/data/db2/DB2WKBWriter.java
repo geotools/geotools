@@ -158,13 +158,11 @@ public class DB2WKBWriter {
         else if (geom instanceof MultiPoint)
             writeGeometryCollection(DB2WKBConstants.wkbMultiPoint2D, (MultiPoint) geom, os);
         else if (geom instanceof MultiLineString)
-            writeGeometryCollection(
-                    DB2WKBConstants.wkbMultiLineString2D, (MultiLineString) geom, os);
+            writeGeometryCollection(DB2WKBConstants.wkbMultiLineString2D, (MultiLineString) geom, os);
         else if (geom instanceof MultiPolygon)
             writeGeometryCollection(DB2WKBConstants.wkbMultiPolygon2D, (MultiPolygon) geom, os);
         else if (geom instanceof GeometryCollection)
-            writeGeometryCollection(
-                    DB2WKBConstants.wkbGeomCollection2D, (GeometryCollection) geom, os);
+            writeGeometryCollection(DB2WKBConstants.wkbGeomCollection2D, (GeometryCollection) geom, os);
         else {
             Assert.shouldNeverReachHere("Unknown Geometry type");
         }
@@ -194,8 +192,7 @@ public class DB2WKBWriter {
         }
     }
 
-    private void writeGeometryCollection(int geometryType, GeometryCollection gc, OutStream os)
-            throws IOException {
+    private void writeGeometryCollection(int geometryType, GeometryCollection gc, OutStream os) throws IOException {
         writeByteOrder(os);
         writeGeometryType(geometryType, os);
         writeInt(gc.getNumGeometries(), os);
@@ -214,34 +211,23 @@ public class DB2WKBWriter {
         int typeInt = geometryType;
         if (outputDimension == 3) { // DB2 specific for z support
             if (hasOGCWkbZTyps) {
-                if (geometryType == DB2WKBConstants.wkbPoint2D)
-                    typeInt = DB2WKBConstants.wkbOGCPointZ;
-                if (geometryType == DB2WKBConstants.wkbLineString2D)
-                    typeInt = DB2WKBConstants.wkbOGCLineStringZ;
-                if (geometryType == DB2WKBConstants.wkbPolygon2D)
-                    typeInt = DB2WKBConstants.wkbOGCPolygonZ;
-                if (geometryType == DB2WKBConstants.wkbMultiPoint2D)
-                    typeInt = DB2WKBConstants.wkbOGCMultiPointZ;
+                if (geometryType == DB2WKBConstants.wkbPoint2D) typeInt = DB2WKBConstants.wkbOGCPointZ;
+                if (geometryType == DB2WKBConstants.wkbLineString2D) typeInt = DB2WKBConstants.wkbOGCLineStringZ;
+                if (geometryType == DB2WKBConstants.wkbPolygon2D) typeInt = DB2WKBConstants.wkbOGCPolygonZ;
+                if (geometryType == DB2WKBConstants.wkbMultiPoint2D) typeInt = DB2WKBConstants.wkbOGCMultiPointZ;
                 if (geometryType == DB2WKBConstants.wkbMultiLineString2D)
                     typeInt = DB2WKBConstants.wkbOGCMultiLineStringZ;
-                if (geometryType == DB2WKBConstants.wkbMultiPolygon2D)
-                    typeInt = DB2WKBConstants.wkbOGCMultiPolygonZ;
+                if (geometryType == DB2WKBConstants.wkbMultiPolygon2D) typeInt = DB2WKBConstants.wkbOGCMultiPolygonZ;
                 if (geometryType == DB2WKBConstants.wkbGeomCollection2D)
                     typeInt = DB2WKBConstants.wkbOGCGeomCollectionZ;
             } else {
                 if (geometryType == DB2WKBConstants.wkbPoint2D) typeInt = DB2WKBConstants.wkbPointZ;
-                if (geometryType == DB2WKBConstants.wkbLineString2D)
-                    typeInt = DB2WKBConstants.wkbLineStringZ;
-                if (geometryType == DB2WKBConstants.wkbPolygon2D)
-                    typeInt = DB2WKBConstants.wkbPolygonZ;
-                if (geometryType == DB2WKBConstants.wkbMultiPoint2D)
-                    typeInt = DB2WKBConstants.wkbMultiPointZ;
-                if (geometryType == DB2WKBConstants.wkbMultiLineString2D)
-                    typeInt = DB2WKBConstants.wkbMultiLineStringZ;
-                if (geometryType == DB2WKBConstants.wkbMultiPolygon2D)
-                    typeInt = DB2WKBConstants.wkbMultiPolygonZ;
-                if (geometryType == DB2WKBConstants.wkbGeomCollection2D)
-                    typeInt = DB2WKBConstants.wkbGeomCollectionZ;
+                if (geometryType == DB2WKBConstants.wkbLineString2D) typeInt = DB2WKBConstants.wkbLineStringZ;
+                if (geometryType == DB2WKBConstants.wkbPolygon2D) typeInt = DB2WKBConstants.wkbPolygonZ;
+                if (geometryType == DB2WKBConstants.wkbMultiPoint2D) typeInt = DB2WKBConstants.wkbMultiPointZ;
+                if (geometryType == DB2WKBConstants.wkbMultiLineString2D) typeInt = DB2WKBConstants.wkbMultiLineStringZ;
+                if (geometryType == DB2WKBConstants.wkbMultiPolygon2D) typeInt = DB2WKBConstants.wkbMultiPolygonZ;
+                if (geometryType == DB2WKBConstants.wkbGeomCollection2D) typeInt = DB2WKBConstants.wkbGeomCollectionZ;
             }
         }
         writeInt(typeInt, os);
@@ -252,8 +238,7 @@ public class DB2WKBWriter {
         os.write(buf, 4);
     }
 
-    private void writeCoordinateSequence(CoordinateSequence seq, boolean writeSize, OutStream os)
-            throws IOException {
+    private void writeCoordinateSequence(CoordinateSequence seq, boolean writeSize, OutStream os) throws IOException {
         if (writeSize) writeInt(seq.size(), os);
 
         for (int i = 0; i < seq.size(); i++) {
@@ -261,8 +246,7 @@ public class DB2WKBWriter {
         }
     }
 
-    private void writeCoordinate(CoordinateSequence seq, int index, OutStream os)
-            throws IOException {
+    private void writeCoordinate(CoordinateSequence seq, int index, OutStream os) throws IOException {
         ByteOrderValues.putDouble(seq.getX(index), buf, byteOrder);
         os.write(buf, 8);
         ByteOrderValues.putDouble(seq.getY(index), buf, byteOrder);

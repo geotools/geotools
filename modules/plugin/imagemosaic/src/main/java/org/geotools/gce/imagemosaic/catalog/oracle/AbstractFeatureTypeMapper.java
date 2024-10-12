@@ -65,8 +65,7 @@ public abstract class AbstractFeatureTypeMapper implements FeatureTypeMapper {
 
     protected int maxLength;
 
-    protected AbstractFeatureTypeMapper(SimpleFeatureType featureType, int maxLength)
-            throws CQLException {
+    protected AbstractFeatureTypeMapper(SimpleFeatureType featureType, int maxLength) throws CQLException {
         wrappedFeatureType = featureType;
         this.maxLength = maxLength;
         originalName = featureType.getName();
@@ -83,8 +82,7 @@ public abstract class AbstractFeatureTypeMapper implements FeatureTypeMapper {
             String attributeName = remap(originalAttribute);
 
             // Create the definition to map the original attribute to the Oracle specific one
-            final Definition definition =
-                    new Definition(originalAttribute, ECQL.toExpression(attributeName), binding);
+            final Definition definition = new Definition(originalAttribute, ECQL.toExpression(attributeName), binding);
             definitions.add(definition);
             definitionsMapping.put(attribute.getName(), definition);
         }
@@ -132,8 +130,7 @@ public abstract class AbstractFeatureTypeMapper implements FeatureTypeMapper {
 
     protected String remap(String name, int maxLength) {
         String mappedName = name;
-        mappedName =
-                mappedName.length() >= maxLength ? mappedName.substring(0, maxLength) : mappedName;
+        mappedName = mappedName.length() >= maxLength ? mappedName.substring(0, maxLength) : mappedName;
         return mappedName;
     }
 
@@ -172,13 +169,7 @@ public abstract class AbstractFeatureTypeMapper implements FeatureTypeMapper {
      * specific featureType
      */
     protected void remapGeometryAttribute(
-            SimpleFeatureTypeBuilder tb,
-            Definition definition,
-            AttributeDescriptor descriptor,
-            AttributeType type) {
-        tb.add(
-                definition.getExpression().toString(),
-                definition.getBinding(),
-                coordinateReferenceSystem);
+            SimpleFeatureTypeBuilder tb, Definition definition, AttributeDescriptor descriptor, AttributeType type) {
+        tb.add(definition.getExpression().toString(), definition.getBinding(), coordinateReferenceSystem);
     }
 }

@@ -50,8 +50,7 @@ public final class CoverageFactoryFinder extends FactoryFinder {
     private static FactoryRegistry getServiceRegistry() {
         assert Thread.holdsLock(CoverageFactoryFinder.class);
         if (registry == null) {
-            registry =
-                    new FactoryCreator(Arrays.asList(new Class<?>[] {GridCoverageFactory.class}));
+            registry = new FactoryCreator(Arrays.asList(new Class<?>[] {GridCoverageFactory.class}));
         }
         return registry;
     }
@@ -68,11 +67,9 @@ public final class CoverageFactoryFinder extends FactoryFinder {
      * @see Hints#DEFAULT_COORDINATE_REFERENCE_SYSTEM
      * @see Hints#TILE_ENCODING
      */
-    public static GridCoverageFactory getGridCoverageFactory(Hints hints)
-            throws FactoryRegistryException {
+    public static GridCoverageFactory getGridCoverageFactory(Hints hints) throws FactoryRegistryException {
         if (hints != null && hints.containsKey(Hints.GRID_COVERAGE_FACTORY)) {
-            GridCoverageFactory coverageFactory =
-                    (GridCoverageFactory) hints.get(Hints.GRID_COVERAGE_FACTORY);
+            GridCoverageFactory coverageFactory = (GridCoverageFactory) hints.get(Hints.GRID_COVERAGE_FACTORY);
             if (coverageFactory != null) {
                 return coverageFactory;
             }
@@ -92,8 +89,7 @@ public final class CoverageFactoryFinder extends FactoryFinder {
      */
     public static synchronized Set<GridCoverageFactory> getGridCoverageFactories(Hints hints) {
         hints = mergeSystemHints(hints);
-        return new LazySet<>(
-                getServiceRegistry().getFactories(GridCoverageFactory.class, null, hints));
+        return new LazySet<>(getServiceRegistry().getFactories(GridCoverageFactory.class, null, hints));
     }
 
     /**

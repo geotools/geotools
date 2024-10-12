@@ -60,8 +60,7 @@ public class TimeRangeVisitorTest {
 
     static final Filter DATETIME_GREATER_FLIP = FF.greater(FF.literal(JULY_22_2022), DATETIME_P);
 
-    static final Filter DATETIME_GREATER_EQ =
-            FF.greaterOrEqual(DATETIME_P, FF.literal(JULY_22_2022));
+    static final Filter DATETIME_GREATER_EQ = FF.greaterOrEqual(DATETIME_P, FF.literal(JULY_22_2022));
 
     static final Filter DATETIME_BEFORE = FF.before(DATETIME_P, FF.literal(JULY_22_2022));
     static final Filter DATETIME_AFTER = FF.after(DATETIME_P, FF.literal(JULY_22_2022));
@@ -192,10 +191,8 @@ public class TimeRangeVisitorTest {
 
     @Test
     public void orRangeOverlap() {
-        Filter between1 =
-                FF.between(DATETIME_P, FF.literal(JULY_22_2022), FF.literal(JULY_24_2022));
-        Filter between2 =
-                FF.between(DATETIME_P, FF.literal(JULY_23_2022), FF.literal(JULY_25_2022));
+        Filter between1 = FF.between(DATETIME_P, FF.literal(JULY_22_2022), FF.literal(JULY_24_2022));
+        Filter between2 = FF.between(DATETIME_P, FF.literal(JULY_23_2022), FF.literal(JULY_25_2022));
         Filter or = FF.or(between1, between2);
         DateRange range = (DateRange) or.accept(visitor, null);
         assertTrue(visitor.isExact());
@@ -207,10 +204,8 @@ public class TimeRangeVisitorTest {
 
     @Test
     public void orRangeDetached() {
-        Filter between1 =
-                FF.between(DATETIME_P, FF.literal(JULY_22_2022), FF.literal(JULY_23_2022));
-        Filter between2 =
-                FF.between(DATETIME_P, FF.literal(JULY_24_2022), FF.literal(JULY_25_2022));
+        Filter between1 = FF.between(DATETIME_P, FF.literal(JULY_22_2022), FF.literal(JULY_23_2022));
+        Filter between2 = FF.between(DATETIME_P, FF.literal(JULY_24_2022), FF.literal(JULY_25_2022));
         Filter or = FF.or(between1, between2);
         DateRange range = (DateRange) or.accept(visitor, null);
         assertFalse(visitor.isExact()); // the union range is not an exact match any longer

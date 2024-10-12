@@ -85,14 +85,10 @@ public abstract class DateUtil {
     private static final long TIME_BASE = (1969 * MSPERYEAR) + (((1969 / 4) - 19 + 4) * LMSPERDAY);
 
     /** Day number for start of month in non-leap year. */
-    private static final int[] MONTHS_NONLEAP = {
-        0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365
-    };
+    private static final int[] MONTHS_NONLEAP = {0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365};
 
     /** Day number for start of month in leap year. */
-    private static final int[] MONTHS_LEAP = {
-        0, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335, 366
-    };
+    private static final int[] MONTHS_LEAP = {0, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335, 366};
 
     /** Millisecond count prior to start of month in March 1-biased year. */
     private static final long[] BIAS_MONTHMS = {
@@ -140,8 +136,7 @@ public abstract class DateUtil {
      * @return converted positive integer value
      * @throws IllegalArgumentException on parse error
      */
-    private static int parseDigits(String text, int offset, int length)
-            throws IllegalArgumentException {
+    private static int parseDigits(String text, int offset, int length) throws IllegalArgumentException {
         // check if overflow a potential problem
         int value = 0;
 
@@ -649,11 +644,10 @@ public abstract class DateUtil {
             year--;
         }
 
-        long day =
-                ((((long) year) * 365) + (year / 4))
-                        - (year / 100)
-                        + (year / 400)
-                        + (leap ? MONTHS_LEAP : MONTHS_NONLEAP)[month];
+        long day = ((((long) year) * 365) + (year / 4))
+                - (year / 100)
+                + (year / 400)
+                + (leap ? MONTHS_LEAP : MONTHS_NONLEAP)[month];
 
         return (day * MSPERDAY) - TIME_BASE;
     }
@@ -771,14 +765,10 @@ public abstract class DateUtil {
      * @return converted time as millisecond value
      * @throws IllegalArgumentException on parse error
      */
-    public static long parseTime(String text, int start, int length)
-            throws IllegalArgumentException {
+    public static long parseTime(String text, int start, int length) throws IllegalArgumentException {
         // validate time value following date
         long milli = 0;
-        boolean valid =
-                (length > (start + 7))
-                        && (text.charAt(start + 2) == ':')
-                        && (text.charAt(start + 5) == ':');
+        boolean valid = (length > (start + 7)) && (text.charAt(start + 2) == ':') && (text.charAt(start + 5) == ':');
 
         if (valid) {
             int hour = parseDigits(text, start, 2);
@@ -1270,8 +1260,7 @@ public abstract class DateUtil {
      * @return converted dateTime text
      * @throws IllegalArgumentException on conversion error
      */
-    public static String serializeDateTime(long time, boolean zone)
-            throws IllegalArgumentException {
+    public static String serializeDateTime(long time, boolean zone) throws IllegalArgumentException {
         // start with the year, month, and day
         StringBuffer buff = new StringBuffer(25);
         int extra = formatYearMonthDay(time + TIME_BASE, buff);
@@ -1408,8 +1397,7 @@ public abstract class DateUtil {
      * @return enumeration value for target text
      * @throws IllegalArgumentException if target text not found in enumeration
      */
-    public static int enumValue(String target, String[] enums, int[] vals)
-            throws IllegalArgumentException {
+    public static int enumValue(String target, String[] enums, int[] vals) throws IllegalArgumentException {
         int base = 0;
         int limit = enums.length - 1;
 
@@ -1428,8 +1416,7 @@ public abstract class DateUtil {
             }
         }
 
-        throw new IllegalArgumentException(
-                "Target value \"" + target + "\" not found in enumeration");
+        throw new IllegalArgumentException("Target value \"" + target + "\" not found in enumeration");
     }
 
     /**
@@ -1444,8 +1431,7 @@ public abstract class DateUtil {
      * @return number of decoded bytes
      * @throws IllegalArgumentException if invalid character in base64 representation
      */
-    private static int decodeChunk(int base, char[] chrs, int fill, byte[] byts)
-            throws IllegalArgumentException {
+    private static int decodeChunk(int base, char[] chrs, int fill, byte[] byts) throws IllegalArgumentException {
         // find the byte count to be decoded
         int length = 3;
 

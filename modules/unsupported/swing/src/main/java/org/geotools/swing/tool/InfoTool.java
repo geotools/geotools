@@ -185,8 +185,7 @@ public class InfoTool extends CursorTool implements TextReporterListener {
     private void createReporter() {
         if (textReporterConnection == null) {
             textReporterConnection =
-                    JTextReporter.showDialog(
-                            "Feature info", null, JTextReporter.DEFAULT_FLAGS, 20, 40);
+                    JTextReporter.showDialog("Feature info", null, JTextReporter.DEFAULT_FLAGS, 20, 40);
 
             textReporterConnection.addListener(this);
         }

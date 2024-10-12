@@ -113,9 +113,7 @@ public class CQL2GeoOperationTest {
     /** RELATE operator is gone in CQL2 */
     @Test(expected = CQLException.class)
     public void relate() throws CQLException {
-        CQL2.toFilter(
-                "RELATE(the_geom, LINESTRING (-134.921387 58.687767, -135.303391 59"
-                        + ".092838), T*****FF*)");
+        CQL2.toFilter("RELATE(the_geom, LINESTRING (-134.921387 58.687767, -135.303391 59" + ".092838), T*****FF*)");
     }
 
     /** BBOX spatial operator is gone */
@@ -126,8 +124,7 @@ public class CQL2GeoOperationTest {
 
     @Test
     public void IntersectsWithTwoLiteral() throws CQLException {
-        Filter resultFilter =
-                CQL2.toFilter("S_INTERSECTS(POLYGON((1 2, 2 2, 2 3, 1 2)), POINT(1 2))");
+        Filter resultFilter = CQL2.toFilter("S_INTERSECTS(POLYGON((1 2, 2 2, 2 3, 1 2)), POINT(1 2))");
         assertTrue("Intersects was expected", resultFilter instanceof Intersects);
     }
 
@@ -151,8 +148,7 @@ public class CQL2GeoOperationTest {
     @Test
     public void functionAsFirstAndSecondArgument() throws CQLException {
 
-        Filter resultFilter =
-                CQL2.toFilter("S_INTERSECTS(centroid(the_geom), buffer(POINT(1 2) ,10))");
+        Filter resultFilter = CQL2.toFilter("S_INTERSECTS(centroid(the_geom), buffer(POINT(1 2) ,10))");
 
         assertTrue("Intersects was expected", resultFilter instanceof Intersects);
     }

@@ -98,8 +98,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
     @Test
     public void testBoundsWithQuery() throws Exception {
         FilterFactory ff = dataStore.getFilterFactory();
-        PropertyIsEqualTo filter =
-                ff.equals(ff.property(aname("stringProperty")), ff.literal("one"));
+        PropertyIsEqualTo filter = ff.equals(ff.property(aname("stringProperty")), ff.literal("one"));
 
         Query query = new Query();
         query.setFilter(filter);
@@ -149,8 +148,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
     @Test
     public void testCountWithFilter() throws Exception {
         FilterFactory ff = dataStore.getFilterFactory();
-        PropertyIsEqualTo filter =
-                ff.equals(ff.property(aname("stringProperty")), ff.literal("one"));
+        PropertyIsEqualTo filter = ff.equals(ff.property(aname("stringProperty")), ff.literal("one"));
 
         Query query = new Query();
         query.setFilter(filter);
@@ -174,8 +172,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
     @Test
     public void testGetFeaturesWithFilter() throws Exception {
         FilterFactory ff = dataStore.getFilterFactory();
-        PropertyIsEqualTo filter =
-                ff.equals(ff.property(aname("stringProperty")), ff.literal("one"));
+        PropertyIsEqualTo filter = ff.equals(ff.property(aname("stringProperty")), ff.literal("one"));
 
         SimpleFeatureCollection features = featureSource.getFeatures(filter);
         assertEquals(1, features.size());
@@ -206,8 +203,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
     @Test
     public void testGetFeaturesWithLogicFilter() throws Exception {
         FilterFactory ff = dataStore.getFilterFactory();
-        PropertyIsEqualTo property =
-                ff.equals(ff.property(aname("stringProperty")), ff.literal("one"));
+        PropertyIsEqualTo property = ff.equals(ff.property(aname("stringProperty")), ff.literal("one"));
         BBOX bbox = ff.bbox(aname("geometry"), -20, -20, 20, 20, "EPSG:4326");
         And filter = ff.and(property, bbox);
 
@@ -226,10 +222,8 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
     @Test
     public void testCaseInsensitiveFilter() throws Exception {
         FilterFactory ff = dataStore.getFilterFactory();
-        PropertyIsEqualTo sensitive =
-                ff.equal(ff.property(aname("stringProperty")), ff.literal("OnE"), true);
-        PropertyIsEqualTo insensitive =
-                ff.equal(ff.property(aname("stringProperty")), ff.literal("OnE"), false);
+        PropertyIsEqualTo sensitive = ff.equal(ff.property(aname("stringProperty")), ff.literal("OnE"), true);
+        PropertyIsEqualTo insensitive = ff.equal(ff.property(aname("stringProperty")), ff.literal("OnE"), false);
         assertEquals(0, featureSource.getCount(new Query(null, sensitive)));
         assertEquals(1, featureSource.getCount(new Query(null, insensitive)));
     }
@@ -237,8 +231,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
     @Test
     public void testGetFeaturesWithQuery() throws Exception {
         FilterFactory ff = dataStore.getFilterFactory();
-        PropertyIsEqualTo filter =
-                ff.equals(ff.property(aname("stringProperty")), ff.literal("one"));
+        PropertyIsEqualTo filter = ff.equals(ff.property(aname("stringProperty")), ff.literal("one"));
 
         Query query = new Query();
         query.setPropertyNames(aname("doubleProperty"), aname("intProperty"));
@@ -327,8 +320,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         // check actual iteration
         try (SimpleFeatureIterator it = features.features()) {
             int count = 0;
-            ReferencedEnvelope env =
-                    new ReferencedEnvelope(features.getSchema().getCoordinateReferenceSystem());
+            ReferencedEnvelope env = new ReferencedEnvelope(features.getSchema().getCoordinateReferenceSystem());
             while (it.hasNext()) {
                 SimpleFeature f = it.next();
                 env.expandToInclude(ReferencedEnvelope.reference(f.getBounds()));
@@ -390,10 +382,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         // no sorting, let's see if the database can use native one
         FilterFactory ff = dataStore.getFilterFactory();
         PropertyIsEqualTo filter =
-                ff.equal(
-                        ff.literal("one"),
-                        ff.function("strToLowerCase", ff.property(aname("stringProperty"))),
-                        true);
+                ff.equal(ff.literal("one"), ff.function("strToLowerCase", ff.property(aname("stringProperty"))), true);
         q.setFilter(filter);
         q.setStartIndex(0);
         q.setMaxFeatures(1);
@@ -419,10 +408,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
     public void testRendererBehaviour() throws Exception {
         Query query = new Query(featureSource.getSchema().getTypeName());
         query.setHints(
-                new Hints(
-                        new Hints(
-                                Hints.JTS_COORDINATE_SEQUENCE_FACTORY,
-                                new LiteCoordinateSequenceFactory())));
+                new Hints(new Hints(Hints.JTS_COORDINATE_SEQUENCE_FACTORY, new LiteCoordinateSequenceFactory())));
         SimpleFeatureCollection fc = featureSource.getFeatures(query);
         try (SimpleFeatureIterator fi = fc.features()) {
             while (fi.hasNext()) {
@@ -492,8 +478,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
     @Test
     public void testFeatureIteratorEmptyContract() throws Exception {
         FilterFactory ff = dataStore.getFilterFactory();
-        PropertyIsEqualTo filter =
-                ff.equals(ff.property(aname("stringProperty")), ff.literal("not_there"));
+        PropertyIsEqualTo filter = ff.equals(ff.property(aname("stringProperty")), ff.literal("not_there"));
         try (SimpleFeatureIterator features = featureSource.getFeatures(filter).features()) {
             // 1) non empty iterator, calling next() should just return the feature
             SimpleFeature f = features.next();
@@ -506,10 +491,8 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
     @Test
     public void testLikeFilter() throws Exception {
         FilterFactory ff = (FilterFactory) dataStore.getFilterFactory();
-        PropertyIsLike caseSensitiveLike =
-                ff.like(ff.property(aname("stringProperty")), "Z*", "*", "?", "\\", true);
-        PropertyIsLike caseInsensitiveLike =
-                ff.like(ff.property(aname("stringProperty")), "Z*", "*", "?", "\\", false);
+        PropertyIsLike caseSensitiveLike = ff.like(ff.property(aname("stringProperty")), "Z*", "*", "?", "\\", true);
+        PropertyIsLike caseInsensitiveLike = ff.like(ff.property(aname("stringProperty")), "Z*", "*", "?", "\\", false);
         PropertyIsLike caseInsensitiveLike2 =
                 ff.like(ff.property(aname("stringProperty")), "z*", "*", "?", "\\", false);
         assertEquals(0, featureSource.getCount(new Query(null, caseSensitiveLike)));
@@ -520,10 +503,8 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
     @Test
     public void testConversionFilter() throws Exception {
         FilterFactory ff = dataStore.getFilterFactory();
-        PropertyIsEqualTo f =
-                ff.equals(
-                        ff.property(aname("doubleProperty")),
-                        ff.add(ff.property(aname("intProperty")), ff.literal("0.1")));
+        PropertyIsEqualTo f = ff.equals(
+                ff.property(aname("doubleProperty")), ff.add(ff.property(aname("intProperty")), ff.literal("0.1")));
         assertEquals(1, featureSource.getCount(new Query(null, f)));
     }
 
@@ -533,15 +514,13 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         Filter f = ff.equal(ff.property(aname("stringProperty")), ff.literal("one"), true);
         f = ff.not(f);
 
-        assertEquals(
-                featureSource.getCount(Query.ALL) - 1, featureSource.getCount(new Query(null, f)));
+        assertEquals(featureSource.getCount(Query.ALL) - 1, featureSource.getCount(new Query(null, f)));
     }
 
     @Test
     public void testGeometryFactoryHint() throws Exception {
         FilterFactory ff = dataStore.getFilterFactory();
-        PropertyIsEqualTo filter =
-                ff.equals(ff.property(aname("stringProperty")), ff.literal("one"));
+        PropertyIsEqualTo filter = ff.equals(ff.property(aname("stringProperty")), ff.literal("one"));
 
         Query query = new Query();
         query.setFilter(filter);
@@ -609,12 +588,10 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         FilterFactory ff = dataStore.getFilterFactory();
         String property = aname("stringProperty");
         PropertyName p = ff.property(property);
-        Or orFilter =
-                ff.or(
-                        Arrays.asList(
-                                ff.equal(p, ff.literal("zero"), true),
-                                ff.equal(p, ff.literal("one"), true),
-                                ff.equal(p, ff.literal("two"), true)));
+        Or orFilter = ff.or(Arrays.asList(
+                ff.equal(p, ff.literal("zero"), true),
+                ff.equal(p, ff.literal("one"), true),
+                ff.equal(p, ff.literal("two"), true)));
         Filter[] filters = featureSource.getFeatureSource().splitFilter(orFilter);
         // nothing to be post-filtered
         assertEquals(filters[1], Filter.INCLUDE);
@@ -631,18 +608,11 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
                             + " IS NOT NULL )",
                     sql);
         } else if (dialect instanceof PreparedStatementSQLDialect) {
-            PreparedFilterToSQL filterToSQL =
-                    ((PreparedStatementSQLDialect) dialect).createPreparedFilterToSQL();
+            PreparedFilterToSQL filterToSQL = ((PreparedStatementSQLDialect) dialect).createPreparedFilterToSQL();
             filterToSQL.setFeatureType(featureSource.getSchema());
             String sql = filterToSQL.encodeToString(filters[0]);
             String escapedProperty = filterToSQL.escapeName(property);
-            assertEquals(
-                    "WHERE ("
-                            + escapedProperty
-                            + " IN (?, ?, ?) AND "
-                            + escapedProperty
-                            + " IS NOT NULL )",
-                    sql);
+            assertEquals("WHERE (" + escapedProperty + " IN (?, ?, ?) AND " + escapedProperty + " IS NOT NULL )", sql);
             List<Object> literals = filterToSQL.getLiteralValues();
             assertEquals(Arrays.asList("zero", "one", "two"), literals);
         } else {
@@ -664,14 +634,12 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         PropertyName ipp = ff.property(ip);
         String dp = aname("doubleProperty");
         PropertyName dpp = ff.property(dp);
-        Or orFilter =
-                ff.or(
-                        Arrays.asList(
-                                ff.equal(spp, ff.literal("zero"), true),
-                                ff.equal(ipp, ff.literal(1), true),
-                                ff.equal(dpp, ff.literal(0d), true),
-                                ff.equal(spp, ff.literal("two"), true),
-                                ff.equal(ipp, ff.literal(2), true)));
+        Or orFilter = ff.or(Arrays.asList(
+                ff.equal(spp, ff.literal("zero"), true),
+                ff.equal(ipp, ff.literal(1), true),
+                ff.equal(dpp, ff.literal(0d), true),
+                ff.equal(spp, ff.literal("two"), true),
+                ff.equal(ipp, ff.literal(2), true)));
         Filter[] filters = featureSource.getFeatureSource().splitFilter(orFilter);
         // nothing to be post-filtered
         assertEquals(filters[1], Filter.INCLUDE);
@@ -700,8 +668,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
                             + " IS NOT NULL ))",
                     sql);
         } else if (dialect instanceof PreparedStatementSQLDialect) {
-            PreparedFilterToSQL filterToSQL =
-                    ((PreparedStatementSQLDialect) dialect).createPreparedFilterToSQL();
+            PreparedFilterToSQL filterToSQL = ((PreparedStatementSQLDialect) dialect).createPreparedFilterToSQL();
             // some dialects actually need the feature type to work, JDBCDataStore code
             // always set its up, mimic that behavior in the test
             filterToSQL.setFeatureType(featureSource.getSchema());

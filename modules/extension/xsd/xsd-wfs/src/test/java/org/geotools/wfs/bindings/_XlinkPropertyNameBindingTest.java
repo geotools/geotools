@@ -53,9 +53,8 @@ public class _XlinkPropertyNameBindingTest extends WFSTestSupport {
     @Override
     @Test
     public void testParse() throws Exception {
-        final String xml =
-                "<XlinkPropertyName traverseXlinkDepth=\"1\" "
-                        + "traverseXlinkExpiry=\"10\">gt:propertyC/gt:propertyD</XlinkPropertyName>";
+        final String xml = "<XlinkPropertyName traverseXlinkDepth=\"1\" "
+                + "traverseXlinkExpiry=\"10\">gt:propertyC/gt:propertyD</XlinkPropertyName>";
 
         buildDocument(xml);
 

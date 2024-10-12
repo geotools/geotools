@@ -76,10 +76,7 @@ import org.geotools.util.factory.Hints;
  * @author Martin Desruisseaux (IRD)
  */
 public class ThreadedEpsgFactory extends DeferredAuthorityFactory
-        implements CRSAuthorityFactory,
-                CSAuthorityFactory,
-                DatumAuthorityFactory,
-                CoordinateOperationAuthorityFactory {
+        implements CRSAuthorityFactory, CSAuthorityFactory, DatumAuthorityFactory, CoordinateOperationAuthorityFactory {
     /**
      * The default JDBC {@linkplain DataSource data source} name in JNDI. This is the name used if
      * no other name were specified through the {@link Hints#EPSG_DATA_SOURCE EPSG_DATA_SOURCE}
@@ -156,30 +153,21 @@ public class ThreadedEpsgFactory extends DeferredAuthorityFactory
         }
         factories = ReferencingFactoryContainer.instance(userHints);
         long timeout = 30 * 60 * 1000;
-        String defaultTimeout =
-                System.getProperty(
-                        "org.geotools.epsg.factory.timeout", String.valueOf(30 * 60 * 1000));
+        String defaultTimeout = System.getProperty("org.geotools.epsg.factory.timeout", String.valueOf(30 * 60 * 1000));
         try {
             timeout = Long.valueOf(defaultTimeout);
         } catch (NumberFormatException e) {
             LOGGER.log(
                     Level.WARNING,
-                    "Invalid value for org.geotools.epsg.factory.timeout, "
-                            + "using the default (30 minutes) instead");
+                    "Invalid value for org.geotools.epsg.factory.timeout, " + "using the default (30 minutes) instead");
         }
         // in case of negative timeout, we don't release the data source and backing store
         if (timeout > 0) {
             LOGGER.log(
-                    Level.FINE,
-                    "Setting the EPSG factory "
-                            + getClass().getName()
-                            + " to a "
-                            + timeout
-                            + "ms timeout");
+                    Level.FINE, "Setting the EPSG factory " + getClass().getName() + " to a " + timeout + "ms timeout");
             setTimeout(timeout); // Close the connection after 1 second of inactivity.
         } else {
-            LOGGER.log(
-                    Level.FINE, "The EPSG factory " + getClass().getName() + " will not timeout");
+            LOGGER.log(Level.FINE, "The EPSG factory " + getClass().getName() + " will not timeout");
         }
     }
 
@@ -393,8 +381,7 @@ public class ThreadedEpsgFactory extends DeferredAuthorityFactory
                 url = info.getURL();
             }
         } catch (SQLException exception) {
-            throw new FactoryException(
-                    MessageFormat.format(ErrorKeys.CANT_CONNECT_DATABASE_$1, "EPSG"), exception);
+            throw new FactoryException(MessageFormat.format(ErrorKeys.CANT_CONNECT_DATABASE_$1, "EPSG"), exception);
         }
         log(Loggings.format(Level.CONFIG, LoggingKeys.CONNECTED_EPSG_DATABASE_$2, url, product));
         if (factory instanceof DirectEpsgFactory) {

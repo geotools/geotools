@@ -39,37 +39,28 @@ public class GMLLineStringMemberTypeBindingTest extends AbstractGMLBindingTest {
     public void setUp() throws Exception {
         super.setUp();
 
-        association =
-                createElement(
-                        GML.NAMESPACE,
-                        "myAssociation",
-                        new QName("http://www.opengis.net/gml", "LineStringMemberType"),
-                        null);
+        association = createElement(
+                GML.NAMESPACE, "myAssociation", new QName("http://www.opengis.net/gml", "LineStringMemberType"), null);
         geometry = createElement(GML.NAMESPACE, "myGeometry", GML.LineStringType, null);
     }
 
     @Test
     public void testWithGeometry() throws Exception {
-        Node node =
-                createNode(
-                        association,
-                        new ElementInstance[] {geometry},
-                        new Object[] {
-                            new GeometryFactory()
-                                    .createLineString(
-                                            new Coordinate[] {
-                                                new Coordinate(0, 0), new Coordinate(1, 1)
-                                            })
-                        },
-                        null,
-                        null);
+        Node node = createNode(
+                association,
+                new ElementInstance[] {geometry},
+                new Object[] {
+                    new GeometryFactory()
+                            .createLineString(new Coordinate[] {new Coordinate(0, 0), new Coordinate(1, 1)})
+                },
+                null,
+                null);
         GMLGeometryAssociationTypeBinding s1 =
                 (GMLGeometryAssociationTypeBinding) getBinding(GML.GeometryAssociationType);
         Geometry g = (Geometry) s1.parse(association, node, null);
 
-        GMLLineStringMemberTypeBinding s2 =
-                (GMLLineStringMemberTypeBinding)
-                        getBinding(new QName("http://www.opengis.net/gml", "LineStringMemberType"));
+        GMLLineStringMemberTypeBinding s2 = (GMLLineStringMemberTypeBinding)
+                getBinding(new QName("http://www.opengis.net/gml", "LineStringMemberType"));
         g = (Geometry) s2.parse(association, node, g);
 
         assertNotNull(g);

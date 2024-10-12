@@ -118,8 +118,7 @@ public class GeometryJSONTest extends GeoJSONTestSupport {
     }
 
     LineString line3d() {
-        LineString l =
-                gf.createLineString(array(new double[][] {{100.1, 0.1, 10.2}, {101.1, 1.1, 10.2}}));
+        LineString l = gf.createLineString(array(new double[][] {{100.1, 0.1, 10.2}, {101.1, 1.1, 10.2}}));
         return l;
     }
 
@@ -144,108 +143,91 @@ public class GeometryJSONTest extends GeoJSONTestSupport {
     }
 
     Polygon polygon2() {
-        Polygon poly =
-                gf.createPolygon(
-                        gf.createLinearRing(
-                                array(
-                                        new double[][] {
-                                            {100.1, 0.1},
-                                            {101.1, 0.1},
-                                            {101.1, 1.1},
-                                            {100.1, 1.1},
-                                            {100.1, 0.1}
-                                        })),
-                        new LinearRing[] {
-                            gf.createLinearRing(
-                                    array(
-                                            new double[][] {
-                                                {100.2, 0.2},
-                                                {100.8, 0.2},
-                                                {100.8, 0.8},
-                                                {100.2, 0.8},
-                                                {100.2, 0.2}
-                                            }))
-                        });
+        Polygon poly = gf.createPolygon(
+                gf.createLinearRing(array(new double[][] {
+                    {100.1, 0.1},
+                    {101.1, 0.1},
+                    {101.1, 1.1},
+                    {100.1, 1.1},
+                    {100.1, 0.1}
+                })),
+                new LinearRing[] {
+                    gf.createLinearRing(array(new double[][] {
+                        {100.2, 0.2},
+                        {100.8, 0.2},
+                        {100.8, 0.8},
+                        {100.2, 0.8},
+                        {100.2, 0.2}
+                    }))
+                });
         return poly;
     }
 
     Polygon polygon3() {
-        Polygon poly =
-                gf.createPolygon(
-                        gf.createLinearRing(
-                                array(
-                                        new double[][] {
-                                            {100.1, 0.1, 10.2},
-                                            {101.1, 0.1, 11.2},
-                                            {101.1, 1.1, 11.2},
-                                            {100.1, 1.1, 10.2},
-                                            {100.1, 0.1, 10.2}
-                                        })),
-                        new LinearRing[] {
-                            gf.createLinearRing(
-                                    array(
-                                            new double[][] {
-                                                {100.2, 0.2, 10.2},
-                                                {100.8, 0.2, 11.2},
-                                                {100.8, 0.8, 11.2},
-                                                {100.2, 0.8, 10.2},
-                                                {100.2, 0.2, 10.2}
-                                            }))
-                        });
+        Polygon poly = gf.createPolygon(
+                gf.createLinearRing(array(new double[][] {
+                    {100.1, 0.1, 10.2},
+                    {101.1, 0.1, 11.2},
+                    {101.1, 1.1, 11.2},
+                    {100.1, 1.1, 10.2},
+                    {100.1, 0.1, 10.2}
+                })),
+                new LinearRing[] {
+                    gf.createLinearRing(array(new double[][] {
+                        {100.2, 0.2, 10.2},
+                        {100.8, 0.2, 11.2},
+                        {100.8, 0.8, 11.2},
+                        {100.2, 0.8, 10.2},
+                        {100.2, 0.2, 10.2}
+                    }))
+                });
         return poly;
     }
 
     String polygonText3() {
-        return strip(
-                "{ 'type': 'Polygon',"
-                        + "    'coordinates': ["
-                        + "      [ [100.1, 0.1, 10.2], [101.1, 0.1, 11.2], [101.1, 1.1, 11.2], [100.1, 1.1, 10.2], [100.1, 0.1, 10.2] ],"
-                        + "      [ [100.2, 0.2, 10.2], [100.8, 0.2, 11.2], [100.8, 0.8, 11.2], [100.2, 0.8, 10.2], [100.2, 0.2, 10.2] ]"
-                        + "      ]"
-                        + "   }");
+        return strip("{ 'type': 'Polygon',"
+                + "    'coordinates': ["
+                + "      [ [100.1, 0.1, 10.2], [101.1, 0.1, 11.2], [101.1, 1.1, 11.2], [100.1, 1.1, 10.2], [100.1, 0.1, 10.2] ],"
+                + "      [ [100.2, 0.2, 10.2], [100.8, 0.2, 11.2], [100.8, 0.8, 11.2], [100.2, 0.8, 10.2], [100.2, 0.2, 10.2] ]"
+                + "      ]"
+                + "   }");
     }
 
     String polygonText1() {
-        return strip(
-                "{ 'type': 'Polygon',"
-                        + "'coordinates': ["
-                        + "  [ [100.1, 0.1], [101.1, 0.1], [101.1, 1.1], [100.1, 1.1], [100.1, 0.1] ]"
-                        + "  ]"
-                        + "}");
+        return strip("{ 'type': 'Polygon',"
+                + "'coordinates': ["
+                + "  [ [100.1, 0.1], [101.1, 0.1], [101.1, 1.1], [100.1, 1.1], [100.1, 0.1] ]"
+                + "  ]"
+                + "}");
     }
 
     String badPolygonText1() {
-        return strip(
-                "{ 'type': 'Polygon',"
-                        + "'coordinates': ["
-                        + "  [ [100.1, 0.1], [101.1], [101.1, 1.1], [100.1, 1.1], [100.1, 0.1] ]"
-                        + "  ]"
-                        + "}");
+        return strip("{ 'type': 'Polygon',"
+                + "'coordinates': ["
+                + "  [ [100.1, 0.1], [101.1], [101.1, 1.1], [100.1, 1.1], [100.1, 0.1] ]"
+                + "  ]"
+                + "}");
     }
 
     String polygonText2() {
-        return strip(
-                "{ 'type': 'Polygon',"
-                        + "    'coordinates': ["
-                        + "      [ [100.1, 0.1], [101.1, 0.1], [101.1, 1.1], [100.1, 1.1], [100.1, 0.1] ],"
-                        + "      [ [100.2, 0.2], [100.8, 0.2], [100.8, 0.8], [100.2, 0.8], [100.2, 0.2] ]"
-                        + "      ]"
-                        + "   }");
+        return strip("{ 'type': 'Polygon',"
+                + "    'coordinates': ["
+                + "      [ [100.1, 0.1], [101.1, 0.1], [101.1, 1.1], [100.1, 1.1], [100.1, 0.1] ],"
+                + "      [ [100.2, 0.2], [100.8, 0.2], [100.8, 0.8], [100.2, 0.8], [100.2, 0.2] ]"
+                + "      ]"
+                + "   }");
     }
 
     Polygon polygon1() {
-        Polygon poly =
-                gf.createPolygon(
-                        gf.createLinearRing(
-                                array(
-                                        new double[][] {
-                                            {100.1, 0.1},
-                                            {101.1, 0.1},
-                                            {101.1, 1.1},
-                                            {100.1, 1.1},
-                                            {100.1, 0.1}
-                                        })),
-                        null);
+        Polygon poly = gf.createPolygon(
+                gf.createLinearRing(array(new double[][] {
+                    {100.1, 0.1},
+                    {101.1, 0.1},
+                    {101.1, 1.1},
+                    {100.1, 1.1},
+                    {100.1, 0.1}
+                })),
+                null);
         return poly;
     }
 
@@ -269,30 +251,22 @@ public class GeometryJSONTest extends GeoJSONTestSupport {
     }
 
     String multiPointText() {
-        return strip(
-                "{ 'type': 'MultiPoint'," + "'coordinates': [ [100.1, 0.1], [101.1, 1.1] ]" + "}");
+        return strip("{ 'type': 'MultiPoint'," + "'coordinates': [ [100.1, 0.1], [101.1, 1.1] ]" + "}");
     }
 
     MultiPoint multiPoint() {
         MultiPoint mpoint =
-                gf.createMultiPoint(
-                        new CoordinateArraySequence(
-                                array(new double[][] {{100.1, 0.1}, {101.1, 1.1}})));
+                gf.createMultiPoint(new CoordinateArraySequence(array(new double[][] {{100.1, 0.1}, {101.1, 1.1}})));
         return mpoint;
     }
 
     String multiPoint3dText() {
-        return strip(
-                "{ 'type': 'MultiPoint',"
-                        + "'coordinates': [ [100.1, 0.1, 10.2], [101.1, 1.1, 11.2] ]"
-                        + "}");
+        return strip("{ 'type': 'MultiPoint'," + "'coordinates': [ [100.1, 0.1, 10.2], [101.1, 1.1, 11.2] ]" + "}");
     }
 
     MultiPoint multiPoint3d() {
-        MultiPoint mpoint =
-                gf.createMultiPoint(
-                        new CoordinateArraySequence(
-                                array(new double[][] {{100.1, 0.1, 10.2}, {101.1, 1.1, 11.2}})));
+        MultiPoint mpoint = gf.createMultiPoint(
+                new CoordinateArraySequence(array(new double[][] {{100.1, 0.1, 10.2}, {101.1, 1.1, 11.2}})));
         return mpoint;
     }
 
@@ -309,44 +283,36 @@ public class GeometryJSONTest extends GeoJSONTestSupport {
     }
 
     String multiLineText() {
-        return strip(
-                "{ 'type': 'MultiLineString',"
-                        + "    'coordinates': ["
-                        + "        [ [100.1, 0.1], [101.1, 1.1] ],"
-                        + "        [ [102.1, 2.1], [103.1, 3.1] ]"
-                        + "      ]"
-                        + "    }");
+        return strip("{ 'type': 'MultiLineString',"
+                + "    'coordinates': ["
+                + "        [ [100.1, 0.1], [101.1, 1.1] ],"
+                + "        [ [102.1, 2.1], [103.1, 3.1] ]"
+                + "      ]"
+                + "    }");
     }
 
     MultiLineString multiLine() {
-        MultiLineString mline =
-                gf.createMultiLineString(
-                        new LineString[] {
-                            gf.createLineString(array(new double[][] {{100.1, 0.1}, {101.1, 1.1}})),
-                            gf.createLineString(array(new double[][] {{102.1, 2.1}, {103.1, 3.1}}))
-                        });
+        MultiLineString mline = gf.createMultiLineString(new LineString[] {
+            gf.createLineString(array(new double[][] {{100.1, 0.1}, {101.1, 1.1}})),
+            gf.createLineString(array(new double[][] {{102.1, 2.1}, {103.1, 3.1}}))
+        });
         return mline;
     }
 
     String multiLine3dText() {
-        return strip(
-                "{ 'type': 'MultiLineString',"
-                        + "    'coordinates': ["
-                        + "        [ [100.1, 0.1, 10.2], [101.1, 1.1, 10.2] ],"
-                        + "        [ [102.1, 2.1, 11.2], [103.1, 3.1, 11.2] ]"
-                        + "      ]"
-                        + "    }");
+        return strip("{ 'type': 'MultiLineString',"
+                + "    'coordinates': ["
+                + "        [ [100.1, 0.1, 10.2], [101.1, 1.1, 10.2] ],"
+                + "        [ [102.1, 2.1, 11.2], [103.1, 3.1, 11.2] ]"
+                + "      ]"
+                + "    }");
     }
 
     MultiLineString multiLine3d() {
-        MultiLineString mline =
-                gf.createMultiLineString(
-                        new LineString[] {
-                            gf.createLineString(
-                                    array(new double[][] {{100.1, 0.1, 10.2}, {101.1, 1.1, 10.2}})),
-                            gf.createLineString(
-                                    array(new double[][] {{102.1, 2.1, 11.2}, {103.1, 3.1, 11.2}}))
-                        });
+        MultiLineString mline = gf.createMultiLineString(new LineString[] {
+            gf.createLineString(array(new double[][] {{100.1, 0.1, 10.2}, {101.1, 1.1, 10.2}})),
+            gf.createLineString(array(new double[][] {{102.1, 2.1, 11.2}, {103.1, 3.1, 11.2}}))
+        });
         return mline;
     }
 
@@ -363,104 +329,86 @@ public class GeometryJSONTest extends GeoJSONTestSupport {
     }
 
     String multiPolygonText() {
-        return strip(
-                "{ 'type': 'MultiPolygon',"
-                        + "    'coordinates': ["
-                        + "      [[[102.1, 2.1], [103.1, 2.1], [103.1, 3.1], [102.1, 3.1], [102.1, 2.1]]],"
-                        + "      [[[100.1, 0.1], [101.1, 0.1], [101.1, 1.1], [100.1, 1.1], [100.1, 0.1]],"
-                        + "       [[100.2, 0.2], [100.8, 0.2], [100.8, 0.8], [100.2, 0.8], [100.2, 0.2]]]"
-                        + "      ]"
-                        + "    }");
+        return strip("{ 'type': 'MultiPolygon',"
+                + "    'coordinates': ["
+                + "      [[[102.1, 2.1], [103.1, 2.1], [103.1, 3.1], [102.1, 3.1], [102.1, 2.1]]],"
+                + "      [[[100.1, 0.1], [101.1, 0.1], [101.1, 1.1], [100.1, 1.1], [100.1, 0.1]],"
+                + "       [[100.2, 0.2], [100.8, 0.2], [100.8, 0.8], [100.2, 0.8], [100.2, 0.2]]]"
+                + "      ]"
+                + "    }");
     }
 
     MultiPolygon multiPolygon() {
-        MultiPolygon mpoly =
-                gf.createMultiPolygon(
-                        new Polygon[] {
-                            gf.createPolygon(
-                                    gf.createLinearRing(
-                                            array(
-                                                    new double[][] {
-                                                        {102.1, 2.1},
-                                                        {103.1, 2.1},
-                                                        {103.1, 3.1},
-                                                        {102.1, 3.1},
-                                                        {102.1, 2.1}
-                                                    })),
-                                    null),
-                            gf.createPolygon(
-                                    gf.createLinearRing(
-                                            array(
-                                                    new double[][] {
-                                                        {100.1, 0.1},
-                                                        {101.1, 0.1},
-                                                        {101.1, 1.1},
-                                                        {100.1, 1.1},
-                                                        {100.1, 0.1}
-                                                    })),
-                                    new LinearRing[] {
-                                        gf.createLinearRing(
-                                                array(
-                                                        new double[][] {
-                                                            {100.2, 0.2},
-                                                            {100.8, 0.2},
-                                                            {100.8, 0.8},
-                                                            {100.2, 0.8},
-                                                            {100.2, 0.2}
-                                                        }))
-                                    })
-                        });
+        MultiPolygon mpoly = gf.createMultiPolygon(new Polygon[] {
+            gf.createPolygon(
+                    gf.createLinearRing(array(new double[][] {
+                        {102.1, 2.1},
+                        {103.1, 2.1},
+                        {103.1, 3.1},
+                        {102.1, 3.1},
+                        {102.1, 2.1}
+                    })),
+                    null),
+            gf.createPolygon(
+                    gf.createLinearRing(array(new double[][] {
+                        {100.1, 0.1},
+                        {101.1, 0.1},
+                        {101.1, 1.1},
+                        {100.1, 1.1},
+                        {100.1, 0.1}
+                    })),
+                    new LinearRing[] {
+                        gf.createLinearRing(array(new double[][] {
+                            {100.2, 0.2},
+                            {100.8, 0.2},
+                            {100.8, 0.8},
+                            {100.2, 0.8},
+                            {100.2, 0.2}
+                        }))
+                    })
+        });
         return mpoly;
     }
 
     String multiPolygon3dText() {
-        return strip(
-                "{ 'type': 'MultiPolygon',"
-                        + "    'coordinates': ["
-                        + "      [[[102.1, 2.1, 10.2], [103.1, 2.1, 10.2], [103.1, 3.1, 10.2], [102.1, 3.1, 10.2], [102.1, 2.1, 10.2]]],"
-                        + "      [[[100.1, 0.1, 10.2], [101.1, 0.1, 10.2], [101.1, 1.1, 10.2], [100.1, 1.1, 10.2], [100.1, 0.1, 10.2]],"
-                        + "       [[100.2, 0.2, 10.2], [100.8, 0.2, 10.2], [100.8, 0.8, 10.2], [100.2, 0.8, 10.2], [100.2, 0.2, 10.2]]]"
-                        + "      ]"
-                        + "    }");
+        return strip("{ 'type': 'MultiPolygon',"
+                + "    'coordinates': ["
+                + "      [[[102.1, 2.1, 10.2], [103.1, 2.1, 10.2], [103.1, 3.1, 10.2], [102.1, 3.1, 10.2], [102.1, 2.1, 10.2]]],"
+                + "      [[[100.1, 0.1, 10.2], [101.1, 0.1, 10.2], [101.1, 1.1, 10.2], [100.1, 1.1, 10.2], [100.1, 0.1, 10.2]],"
+                + "       [[100.2, 0.2, 10.2], [100.8, 0.2, 10.2], [100.8, 0.8, 10.2], [100.2, 0.8, 10.2], [100.2, 0.2, 10.2]]]"
+                + "      ]"
+                + "    }");
     }
 
     MultiPolygon multiPolygon3d() {
-        MultiPolygon mpoly =
-                gf.createMultiPolygon(
-                        new Polygon[] {
-                            gf.createPolygon(
-                                    gf.createLinearRing(
-                                            array(
-                                                    new double[][] {
-                                                        {102.1, 2.1, 10.2},
-                                                        {103.1, 2.1, 10.2},
-                                                        {103.1, 3.1, 10.2},
-                                                        {102.1, 3.1, 10.2},
-                                                        {102.1, 2.1, 10.2}
-                                                    })),
-                                    null),
-                            gf.createPolygon(
-                                    gf.createLinearRing(
-                                            array(
-                                                    new double[][] {
-                                                        {100.1, 0.1, 10.2},
-                                                        {101.1, 0.1, 10.2},
-                                                        {101.1, 1.1, 10.2},
-                                                        {100.1, 1.1, 10.2},
-                                                        {100.1, 0.1, 10.2}
-                                                    })),
-                                    new LinearRing[] {
-                                        gf.createLinearRing(
-                                                array(
-                                                        new double[][] {
-                                                            {100.2, 0.2, 10.2},
-                                                            {100.8, 0.2, 10.2},
-                                                            {100.8, 0.8, 10.2},
-                                                            {100.2, 0.8, 10.2},
-                                                            {100.2, 0.2, 10.2}
-                                                        }))
-                                    })
-                        });
+        MultiPolygon mpoly = gf.createMultiPolygon(new Polygon[] {
+            gf.createPolygon(
+                    gf.createLinearRing(array(new double[][] {
+                        {102.1, 2.1, 10.2},
+                        {103.1, 2.1, 10.2},
+                        {103.1, 3.1, 10.2},
+                        {102.1, 3.1, 10.2},
+                        {102.1, 2.1, 10.2}
+                    })),
+                    null),
+            gf.createPolygon(
+                    gf.createLinearRing(array(new double[][] {
+                        {100.1, 0.1, 10.2},
+                        {101.1, 0.1, 10.2},
+                        {101.1, 1.1, 10.2},
+                        {100.1, 1.1, 10.2},
+                        {100.1, 0.1, 10.2}
+                    })),
+                    new LinearRing[] {
+                        gf.createLinearRing(array(new double[][] {
+                            {100.2, 0.2, 10.2},
+                            {100.8, 0.2, 10.2},
+                            {100.8, 0.8, 10.2},
+                            {100.2, 0.8, 10.2},
+                            {100.2, 0.2, 10.2}
+                        }))
+                    })
+        });
         return mpoly;
     }
 
@@ -477,66 +425,58 @@ public class GeometryJSONTest extends GeoJSONTestSupport {
     }
 
     private String collectionText() {
-        return strip(
-                "{ 'type': 'GeometryCollection',"
-                        + "    'geometries': ["
-                        + "      { 'type': 'Point',"
-                        + "        'coordinates': [100.1, 0.1]"
-                        + "        },"
-                        + "      { 'type': 'LineString',"
-                        + "        'coordinates': [ [101.1, 0.1], [102.1, 1.1] ]"
-                        + "        }"
-                        + "    ]"
-                        + "  }");
+        return strip("{ 'type': 'GeometryCollection',"
+                + "    'geometries': ["
+                + "      { 'type': 'Point',"
+                + "        'coordinates': [100.1, 0.1]"
+                + "        },"
+                + "      { 'type': 'LineString',"
+                + "        'coordinates': [ [101.1, 0.1], [102.1, 1.1] ]"
+                + "        }"
+                + "    ]"
+                + "  }");
     }
 
     private String collectionTypeLastText() {
-        return strip(
-                "{ "
-                        + "    'geometries': ["
-                        + "      { 'type': 'Point',"
-                        + "        'coordinates': [100.1, 0.1]"
-                        + "        },"
-                        + "      { 'type': 'LineString',"
-                        + "        'coordinates': [ [101.1, 0.1], [102.1, 1.1] ]"
-                        + "        }"
-                        + "    ], "
-                        + "    'type': 'GeometryCollection'"
-                        + "  }");
+        return strip("{ "
+                + "    'geometries': ["
+                + "      { 'type': 'Point',"
+                + "        'coordinates': [100.1, 0.1]"
+                + "        },"
+                + "      { 'type': 'LineString',"
+                + "        'coordinates': [ [101.1, 0.1], [102.1, 1.1] ]"
+                + "        }"
+                + "    ], "
+                + "    'type': 'GeometryCollection'"
+                + "  }");
     }
 
     GeometryCollection collection() {
-        GeometryCollection gcol =
-                gf.createGeometryCollection(
-                        new Geometry[] {
-                            gf.createPoint(new Coordinate(100.1, 0.1)),
-                            gf.createLineString(array(new double[][] {{101.1, 0.1}, {102.1, 1.1}}))
-                        });
+        GeometryCollection gcol = gf.createGeometryCollection(new Geometry[] {
+            gf.createPoint(new Coordinate(100.1, 0.1)),
+            gf.createLineString(array(new double[][] {{101.1, 0.1}, {102.1, 1.1}}))
+        });
         return gcol;
     }
 
     private String collection3dText() {
-        return strip(
-                "{ 'type': 'GeometryCollection',"
-                        + "    'geometries': ["
-                        + "      { 'type': 'Point',"
-                        + "        'coordinates': [100.1, 0.1, 10.2]"
-                        + "        },"
-                        + "      { 'type': 'LineString',"
-                        + "        'coordinates': [ [101.1, 0.1, 10.2], [102.1, 1.1, 11.2] ]"
-                        + "        }"
-                        + "    ]"
-                        + "  }");
+        return strip("{ 'type': 'GeometryCollection',"
+                + "    'geometries': ["
+                + "      { 'type': 'Point',"
+                + "        'coordinates': [100.1, 0.1, 10.2]"
+                + "        },"
+                + "      { 'type': 'LineString',"
+                + "        'coordinates': [ [101.1, 0.1, 10.2], [102.1, 1.1, 11.2] ]"
+                + "        }"
+                + "    ]"
+                + "  }");
     }
 
     GeometryCollection collection3d() {
-        GeometryCollection gcol =
-                gf.createGeometryCollection(
-                        new Geometry[] {
-                            gf.createPoint(new Coordinate(100.1, 0.1, 10.2)),
-                            gf.createLineString(
-                                    array(new double[][] {{101.1, 0.1, 10.2}, {102.1, 1.1, 11.2}}))
-                        });
+        GeometryCollection gcol = gf.createGeometryCollection(new Geometry[] {
+            gf.createPoint(new Coordinate(100.1, 0.1, 10.2)),
+            gf.createLineString(array(new double[][] {{101.1, 0.1, 10.2}, {102.1, 1.1, 11.2}}))
+        });
         return gcol;
     }
 
@@ -574,35 +514,29 @@ public class GeometryJSONTest extends GeoJSONTestSupport {
         json = strip("{'coordinates': [[100.1,0.1],[101.1,1.1]], 'type': 'LineString'}");
         assertTrue(line().equals(gjson.read(reader(json))));
 
-        json =
-                strip(
-                        "{ 'coordinates': ["
-                                + "      [ [100.1, 0.1, 10.2], [101.1, 0.1, 11.2], [101.1, 1.1, 11.2], [100.1, 1.1, 10.2], [100.1, 0.1, 10.2] ],"
-                                + "      [ [100.2, 0.2, 10.2], [100.8, 0.2, 11.2], [100.8, 0.8, 11.2], [100.2, 0.8, 10.2], [100.2, 0.2, 10.2] ]"
-                                + "      ]"
-                                + ", 'type': 'Polygon' }");
+        json = strip("{ 'coordinates': ["
+                + "      [ [100.1, 0.1, 10.2], [101.1, 0.1, 11.2], [101.1, 1.1, 11.2], [100.1, 1.1, 10.2], [100.1, 0.1, 10.2] ],"
+                + "      [ [100.2, 0.2, 10.2], [100.8, 0.2, 11.2], [100.8, 0.8, 11.2], [100.2, 0.8, 10.2], [100.2, 0.2, 10.2] ]"
+                + "      ]"
+                + ", 'type': 'Polygon' }");
         assertTrue(polygon3().equals(gjson.read(reader(json))));
 
         json = strip("{ 'coordinates': [ [100.1, 0.1], [101.1, 1.1] ], 'type': 'MultiPoint'}");
         assertTrue(multiPoint().equals(gjson.read(reader(json))));
 
-        json =
-                strip(
-                        "{ 'coordinates': ["
-                                + "        [ [100.1, 0.1], [101.1, 1.1] ],"
-                                + "        [ [102.1, 2.1], [103.1, 3.1] ]"
-                                + "      ]"
-                                + "    , 'type': 'MultiLineString'}");
+        json = strip("{ 'coordinates': ["
+                + "        [ [100.1, 0.1], [101.1, 1.1] ],"
+                + "        [ [102.1, 2.1], [103.1, 3.1] ]"
+                + "      ]"
+                + "    , 'type': 'MultiLineString'}");
         assertTrue(multiLine().equals(gjson.read(reader(json))));
 
-        json =
-                strip(
-                        "{ 'coordinates': ["
-                                + "      [[[102.1, 2.1], [103.1, 2.1], [103.1, 3.1], [102.1, 3.1], [102.1, 2.1]]],"
-                                + "      [[[100.1, 0.1], [101.1, 0.1], [101.1, 1.1], [100.1, 1.1], [100.1, 0.1]],"
-                                + "       [[100.2, 0.2], [100.8, 0.2], [100.8, 0.8], [100.2, 0.8], [100.2, 0.2]]]"
-                                + "      ]"
-                                + "   , 'type': 'MultiPolygon' }");
+        json = strip("{ 'coordinates': ["
+                + "      [[[102.1, 2.1], [103.1, 2.1], [103.1, 3.1], [102.1, 3.1], [102.1, 2.1]]],"
+                + "      [[[100.1, 0.1], [101.1, 0.1], [101.1, 1.1], [100.1, 1.1], [100.1, 0.1]],"
+                + "       [[100.2, 0.2], [100.8, 0.2], [100.8, 0.8], [100.2, 0.8], [100.2, 0.2]]]"
+                + "      ]"
+                + "   , 'type': 'MultiPolygon' }");
         assertTrue(multiPolygon().equals(gjson.read(reader(json))));
     }
 
@@ -656,34 +590,31 @@ public class GeometryJSONTest extends GeoJSONTestSupport {
         /* Test parsing of two variations of the same GeoJSON object. */
 
         /* input1 tests parsing when "type" occurs at the top of each sub-object */
-        String input1 =
-                "{"
-                        + " \"type\": \"GeometryCollection\","
-                        + " \"geometries\": [{"
-                        + "  \"type\": \"Polygon\","
-                        + "  \"coordinates\": [[[100.0, 1.0],[101.0, 1.0],[100.5, 1.5],[100.0, 1.0]]]"
-                        + "  }]"
-                        + "}";
+        String input1 = "{"
+                + " \"type\": \"GeometryCollection\","
+                + " \"geometries\": [{"
+                + "  \"type\": \"Polygon\","
+                + "  \"coordinates\": [[[100.0, 1.0],[101.0, 1.0],[100.5, 1.5],[100.0, 1.0]]]"
+                + "  }]"
+                + "}";
 
         /* input2 tests parsing when "type" in a geometry of the geom collection occurs after "coordinates" */
-        String input2 =
-                "{"
-                        + " \"type\": \"GeometryCollection\","
-                        + " \"geometries\": [{"
-                        + "  \"coordinates\": [[[100.0, 1.0],[101.0, 1.0],[100.5, 1.5],[100.0, 1.0]]],"
-                        + "  \"type\": \"Polygon\""
-                        + " }]"
-                        + "}";
+        String input2 = "{"
+                + " \"type\": \"GeometryCollection\","
+                + " \"geometries\": [{"
+                + "  \"coordinates\": [[[100.0, 1.0],[101.0, 1.0],[100.5, 1.5],[100.0, 1.0]]],"
+                + "  \"type\": \"Polygon\""
+                + " }]"
+                + "}";
 
         /* input3 tests parsing when  "type" of the geometry collection occurs after "geometries" */
-        String input3 =
-                "{"
-                        + " \"geometries\": [{"
-                        + "  \"coordinates\": [[[100.0, 1.0],[101.0, 1.0],[100.5, 1.5],[100.0, 1.0]]],"
-                        + "  \"type\": \"Polygon\""
-                        + " }],"
-                        + " \"type\": \"GeometryCollection\""
-                        + "}";
+        String input3 = "{"
+                + " \"geometries\": [{"
+                + "  \"coordinates\": [[[100.0, 1.0],[101.0, 1.0],[100.5, 1.5],[100.0, 1.0]]],"
+                + "  \"type\": \"Polygon\""
+                + " }],"
+                + " \"type\": \"GeometryCollection\""
+                + "}";
 
         Point expectedLastPoint = gf.createPoint(new Coordinate(100.0, 1.0));
 

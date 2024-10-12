@@ -122,8 +122,7 @@ public class CategorizeBinding extends AbstractComplexBinding {
             entry = styleFactory.createColorMapEntry();
             entry.setQuantity((Expression) children.get(i).getValue());
             if (i + 1 >= children.size()) {
-                throw new IllegalArgumentException(
-                        "Incorrectly specified color map Threshold/Value pair");
+                throw new IllegalArgumentException("Incorrectly specified color map Threshold/Value pair");
             }
 
             entry.setColor((Expression) children.get(i + 1).getValue());

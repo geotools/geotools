@@ -31,9 +31,7 @@ public class GetFeatureResponse extends WFSResponse {
     private boolean featuresReturned;
 
     public GetFeatureResponse(
-            WFSRequest originatingRequest,
-            HTTPResponse httpResponse,
-            GetParser<SimpleFeature> features)
+            WFSRequest originatingRequest, HTTPResponse httpResponse, GetParser<SimpleFeature> features)
             throws ServiceException, IOException {
 
         super(originatingRequest, httpResponse);

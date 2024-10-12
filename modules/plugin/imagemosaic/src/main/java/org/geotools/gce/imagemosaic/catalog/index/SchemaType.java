@@ -50,9 +50,11 @@ public class SchemaType {
     @XmlElement(required = true)
     protected String attributes;
 
-    @XmlAttribute protected String name;
+    @XmlAttribute
+    protected String name;
 
-    @XmlAttribute protected String ref;
+    @XmlAttribute
+    protected String ref;
 
     /**
      * Gets the value of the attributes property.

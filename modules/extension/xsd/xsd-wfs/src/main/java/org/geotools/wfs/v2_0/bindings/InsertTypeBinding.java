@@ -45,8 +45,7 @@ public class InsertTypeBinding extends AbstractComplexEMFBinding {
     }
 
     @Override
-    public List<Object[]> getProperties(Object object, XSDElementDeclaration element)
-            throws Exception {
+    public List<Object[]> getProperties(Object object, XSDElementDeclaration element) throws Exception {
         InsertType insert = (InsertType) object;
         List<Object[]> properties = new ArrayList<>();
         for (final Object feature : insert.getAny()) {

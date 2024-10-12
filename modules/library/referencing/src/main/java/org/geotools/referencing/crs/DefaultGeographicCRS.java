@@ -82,20 +82,15 @@ public class DefaultGeographicCRS extends AbstractSingleCRS implements Geographi
     static {
         final Map<String, Object> properties = new HashMap<>(4);
         properties.put(NAME_KEY, "WGS84(DD)"); // Name used in WCS 1.0.
-        final String[] alias = {
-            "WGS84", "WGS 84" // EPSG name.
+        final String[] alias = {"WGS84", "WGS 84" // EPSG name.
         };
         properties.put(ALIAS_KEY, alias);
         properties.put(DOMAIN_OF_VALIDITY_KEY, ExtentImpl.WORLD);
         properties.put(IDENTIFIERS_KEY, new NamedIdentifier(Citations.EPSG, "4326"));
-        WGS84 =
-                new DefaultGeographicCRS(
-                        properties, DefaultGeodeticDatum.WGS84, DefaultEllipsoidalCS.GEODETIC_2D);
+        WGS84 = new DefaultGeographicCRS(properties, DefaultGeodeticDatum.WGS84, DefaultEllipsoidalCS.GEODETIC_2D);
         alias[1] = "WGS 84 (geographic 3D)"; // Replaces the EPSG name.
         properties.put(IDENTIFIERS_KEY, new NamedIdentifier(Citations.EPSG, "4327"));
-        WGS84_3D =
-                new DefaultGeographicCRS(
-                        properties, DefaultGeodeticDatum.WGS84, DefaultEllipsoidalCS.GEODETIC_3D);
+        WGS84_3D = new DefaultGeographicCRS(properties, DefaultGeodeticDatum.WGS84, DefaultEllipsoidalCS.GEODETIC_3D);
     }
 
     /**
@@ -130,8 +125,7 @@ public class DefaultGeographicCRS extends AbstractSingleCRS implements Geographi
      * @param datum The datum.
      * @param cs The coordinate system.
      */
-    public DefaultGeographicCRS(
-            final String name, final GeodeticDatum datum, final EllipsoidalCS cs) {
+    public DefaultGeographicCRS(final String name, final GeodeticDatum datum, final EllipsoidalCS cs) {
         this(Collections.singletonMap(NAME_KEY, name), datum, cs);
     }
 
@@ -144,8 +138,7 @@ public class DefaultGeographicCRS extends AbstractSingleCRS implements Geographi
      * @param datum The datum.
      * @param cs The coordinate system.
      */
-    public DefaultGeographicCRS(
-            final Map<String, ?> properties, final GeodeticDatum datum, final EllipsoidalCS cs) {
+    public DefaultGeographicCRS(final Map<String, ?> properties, final GeodeticDatum datum, final EllipsoidalCS cs) {
         super(properties, datum, cs);
     }
 

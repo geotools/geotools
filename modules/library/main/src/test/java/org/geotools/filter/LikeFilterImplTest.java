@@ -52,16 +52,15 @@ public class LikeFilterImplTest {
     @Test
     public void testReDOS1() {
         try {
-            PropertyIsLike l =
-                    ff.like(
-                            ff.function(
-                                    "strTrim",
-                                    ff.literal(
-                                            "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab")),
-                            "$",
-                            "*",
-                            "?",
-                            "(a+)+");
+            PropertyIsLike l = ff.like(
+                    ff.function(
+                            "strTrim",
+                            ff.literal(
+                                    "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab")),
+                    "$",
+                    "*",
+                    "?",
+                    "(a+)+");
             l.evaluate(null);
             fail();
         } catch (IllegalArgumentException e) {
@@ -72,14 +71,13 @@ public class LikeFilterImplTest {
     @Test
     public void testReDOS2() {
         try {
-            PropertyIsLike l =
-                    ff.like(
-                            ff.literal(
-                                    "hchcchicihcchciiicichhcichcihcchiihichiciiiihhcchicchhcihchcihiihciichhccciccichcichiihcchcihhicchcciicchcccihiiihhihihihichicihhcciccchihhhcchichchciihiicihciihcccciciccicciiiiiiiiicihhhiiiihchccchchhhhiiihchihcccchhhiiiiiiiicicichicihcciciihichhhhchihciiihhiccccccciciihhichiccchhicchicihihccichicciihcichccihhiciccccccccichhhhihihhcchchihihiihhihihihicichihiiiihhhhihhhchhichiicihhiiiiihchccccchichci"),
-                            "$",
-                            "*",
-                            "?",
-                            "(h|h|ih(((i|a|c|c|a|i|i|j|b|a|i|b|a|a|j))+h)ahbfhba|c|i)*");
+            PropertyIsLike l = ff.like(
+                    ff.literal(
+                            "hchcchicihcchciiicichhcichcihcchiihichiciiiihhcchicchhcihchcihiihciichhccciccichcichiihcchcihhicchcciicchcccihiiihhihihihichicihhcciccchihhhcchichchciihiicihciihcccciciccicciiiiiiiiicihhhiiiihchccchchhhhiiihchihcccchhhiiiiiiiicicichicihcciciihichhhhchihciiihhiccccccciciihhichiccchhicchicihihccichicciihcichccihhiciccccccccichhhhihihhcchchihihiihhihihihicichihiiiihhhhihhhchhichiicihhiiiiihchccccchichci"),
+                    "$",
+                    "*",
+                    "?",
+                    "(h|h|ih(((i|a|c|c|a|i|i|j|b|a|i|b|a|a|j))+h)ahbfhba|c|i)*");
             l.evaluate(null);
             fail();
         } catch (IllegalArgumentException e) {

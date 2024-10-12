@@ -46,8 +46,7 @@ class SimpleFeatureCollectionBridge implements SimpleFeatureCollection {
 
     private FeatureCollection<SimpleFeatureType, SimpleFeature> collection;
 
-    public SimpleFeatureCollectionBridge(
-            FeatureCollection<SimpleFeatureType, SimpleFeature> featureCollection) {
+    public SimpleFeatureCollectionBridge(FeatureCollection<SimpleFeatureType, SimpleFeature> featureCollection) {
         if (featureCollection == null) {
             throw new NullPointerException("FeatureCollection required");
         }

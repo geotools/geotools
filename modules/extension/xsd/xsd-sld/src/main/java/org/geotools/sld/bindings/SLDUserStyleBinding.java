@@ -127,8 +127,7 @@ public class SLDUserStyleBinding extends AbstractComplexBinding {
 
         // &lt;xsd:element ref="sld:Abstract" minOccurs="0"/&gt;
         if (node.hasChild("Abstract")) {
-            style.getDescription()
-                    .setAbstract((InternationalString) node.getChildValue("Abstract"));
+            style.getDescription().setAbstract((InternationalString) node.getChildValue("Abstract"));
         }
 
         // &lt;xsd:element ref="sld:IsDefault" minOccurs="0"/&gt;

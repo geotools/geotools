@@ -122,8 +122,7 @@ public final class CustomPaletteBuilder {
         //
         // //
         final IndexColorModel icm = getIndexColorModel();
-        final WritableRaster destWr =
-                icm.createCompatibleWritableRaster(src.getWidth(), src.getHeight());
+        final WritableRaster destWr = icm.createCompatibleWritableRaster(src.getWidth(), src.getHeight());
         final BufferedImage dst = new BufferedImage(icm, destWr, false, null);
 
         // //
@@ -528,8 +527,7 @@ public final class CustomPaletteBuilder {
         return new IndexColorModel(8, currSize, red, green, blue);
     }
 
-    protected int findPaletteEntry(
-            ColorNode aNode, int index, byte[] red, byte[] green, byte[] blue) {
+    protected int findPaletteEntry(ColorNode aNode, int index, byte[] red, byte[] green, byte[] blue) {
         if (aNode == null) {
             return index;
         }

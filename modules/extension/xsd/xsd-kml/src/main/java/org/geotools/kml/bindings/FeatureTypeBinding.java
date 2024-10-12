@@ -117,8 +117,7 @@ public class FeatureTypeBinding extends AbstractComplexBinding {
         FeatureType = tb.buildFeatureType();
     }
 
-    public FeatureTypeBinding(
-            StyleMap styleMap, FolderStack folderStack, SchemaRegistry schemaRegistry) {
+    public FeatureTypeBinding(StyleMap styleMap, FolderStack folderStack, SchemaRegistry schemaRegistry) {
         this.styleMap = styleMap;
         this.folderStack = folderStack;
         this.schemaRegistry = schemaRegistry;
@@ -142,8 +141,7 @@ public class FeatureTypeBinding extends AbstractComplexBinding {
         return SimpleFeature.class;
     }
 
-    private SimpleFeatureType appendAttributes(
-            SimpleFeatureType acc, SimpleFeatureType typeToAppend) {
+    private SimpleFeatureType appendAttributes(SimpleFeatureType acc, SimpleFeatureType typeToAppend) {
         if (typeToAppend == null) {
             return acc;
         }
@@ -327,8 +325,7 @@ public class FeatureTypeBinding extends AbstractComplexBinding {
                 for (AttributeDescriptor ad : t.getAttributeDescriptors()) {
                     Object obj = feature.getAttribute(ad.getName());
                     // do not include geographic attributes
-                    if (!(obj instanceof Geometry))
-                        attributes.add(new AbstractMap.SimpleEntry<>(ad.getName(), obj));
+                    if (!(obj instanceof Geometry)) attributes.add(new AbstractMap.SimpleEntry<>(ad.getName(), obj));
                 }
                 return attributes;
             }

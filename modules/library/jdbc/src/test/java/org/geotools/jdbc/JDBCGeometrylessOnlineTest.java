@@ -54,13 +54,10 @@ public abstract class JDBCGeometrylessOnlineTest extends JDBCTestSupport {
     protected void connect() throws Exception {
         super.connect();
 
-        personSchema =
-                DataUtilities.createType(
-                        dataStore.getNamespaceURI() + "." + PERSON,
-                        ID + ":0," + NAME + ":String," + AGE + ":0");
+        personSchema = DataUtilities.createType(
+                dataStore.getNamespaceURI() + "." + PERSON, ID + ":0," + NAME + ":String," + AGE + ":0");
         zipCodeSchema =
-                DataUtilities.createType(
-                        dataStore.getNamespaceURI() + "." + ZIPCODE, ID + ":0," + CODE + ":String");
+                DataUtilities.createType(dataStore.getNamespaceURI() + "." + ZIPCODE, ID + ":0," + CODE + ":String");
     }
 
     @Test
@@ -96,8 +93,7 @@ public abstract class JDBCGeometrylessOnlineTest extends JDBCTestSupport {
 
     @Test
     public void testWriteFeatures() throws Exception {
-        try (FeatureWriter fw =
-                dataStore.getFeatureWriterAppend(tname(PERSON), Transaction.AUTO_COMMIT)) {
+        try (FeatureWriter fw = dataStore.getFeatureWriterAppend(tname(PERSON), Transaction.AUTO_COMMIT)) {
             SimpleFeature f = (SimpleFeature) fw.next();
             f.setAttribute(aname("name"), "Joe");
             f.setAttribute(aname("age"), 27);

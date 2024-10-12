@@ -117,31 +117,22 @@ public abstract class AbstractHttpClient implements HTTPClient {
      * @return A new URL with the appended query parameters.
      * @throws MalformedURLException If the resulting URL is malformed.
      */
-    protected static URL appendURL(URL oldUrl, Map<String, String> appendQuery)
-            throws MalformedURLException {
+    protected static URL appendURL(URL oldUrl, Map<String, String> appendQuery) throws MalformedURLException {
         String oldQuery = oldUrl.getQuery();
 
         StringJoiner stringJoiner = new StringJoiner("&");
-        appendQuery.forEach(
-                (key, value) -> {
-                    try {
-                        stringJoiner.add(
-                                URLEncoder.encode(key, "UTF-8")
-                                        + "="
-                                        + URLEncoder.encode(value, "UTF-8"));
-                    } catch (UnsupportedEncodingException e) {
-                        throw new UncheckedIOException(e);
-                    }
-                });
+        appendQuery.forEach((key, value) -> {
+            try {
+                stringJoiner.add(URLEncoder.encode(key, "UTF-8") + "=" + URLEncoder.encode(value, "UTF-8"));
+            } catch (UnsupportedEncodingException e) {
+                throw new UncheckedIOException(e);
+            }
+        });
         String query = stringJoiner.toString();
 
         String newQuery = oldQuery != null ? oldQuery + "&" + query : query;
 
-        return new URL(
-                oldUrl.getProtocol(),
-                oldUrl.getHost(),
-                oldUrl.getPort(),
-                oldUrl.getPath() + "?" + newQuery);
+        return new URL(oldUrl.getProtocol(), oldUrl.getHost(), oldUrl.getPort(), oldUrl.getPath() + "?" + newQuery);
     }
 
     protected boolean isFile(URL url) {
@@ -155,6 +146,5 @@ public abstract class AbstractHttpClient implements HTTPClient {
     }
 
     @Override
-    public abstract HTTPResponse post(URL url, InputStream content, String contentType)
-            throws IOException;
+    public abstract HTTPResponse post(URL url, InputStream content, String contentType) throws IOException;
 }

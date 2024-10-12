@@ -51,14 +51,11 @@ public abstract class Selector implements Comparable<Selector> {
     private static List<AndCombiner> AND_COMBINERS;
 
     static {
-        Class<?>[] baseClasses = {
-            TypeName.class, ScaleRange.class, Id.class, Data.class, PseudoClass.class
-        };
+        Class<?>[] baseClasses = {TypeName.class, ScaleRange.class, Id.class, Data.class, PseudoClass.class};
         AND_COMBINERS = new ArrayList<>();
         for (Class<?> baseClass : baseClasses) {
             try {
-                Method combineAnd =
-                        baseClass.getDeclaredMethod("combineAnd", List.class, Object.class);
+                Method combineAnd = baseClass.getDeclaredMethod("combineAnd", List.class, Object.class);
                 AND_COMBINERS.add(new AndCombiner(baseClass, combineAnd));
             } catch (NoSuchMethodException | SecurityException e) {
                 throw new RuntimeException(e);
@@ -130,16 +127,13 @@ public abstract class Selector implements Comparable<Selector> {
             if (classSelectors.size() > 1) {
                 try {
 
-                    Selector result =
-                            (Selector) combiner.andMethod.invoke(null, classSelectors, context);
+                    Selector result = (Selector) combiner.andMethod.invoke(null, classSelectors, context);
                     if (result == REJECT) {
                         return REJECT;
                     } else if (result == ACCEPT) {
                         classifieds.remove(combiner.clazz);
                     } else if (result instanceof And) {
-                        classifieds.put(
-                                combiner.clazz,
-                                new ArrayList<>(((Composite) result).getChildren()));
+                        classifieds.put(combiner.clazz, new ArrayList<>(((Composite) result).getChildren()));
                     } else {
                         classifieds.put(combiner.clazz, Collections.singletonList(result));
                     }
@@ -236,8 +230,7 @@ public abstract class Selector implements Comparable<Selector> {
         }
     }
 
-    private static void flatten(
-            List<Selector> selectors, Selector s, Class<? extends Composite> clazz) {
+    private static void flatten(List<Selector> selectors, Selector s, Class<? extends Composite> clazz) {
         if (!clazz.isInstance(s)) {
             selectors.add(s);
         } else {

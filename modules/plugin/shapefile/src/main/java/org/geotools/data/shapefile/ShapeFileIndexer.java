@@ -111,13 +111,12 @@ class ShapeFileIndexer implements FileWriter {
     }
 
     private static void usage() {
-        System.out.println(
-                "Usage: ShapeFileIndexer "
-                        + "-t <QIX> "
-                        + "[-M <max tree depth>] "
-                        + "[-b <byte order NL | NM>] "
-                        + "<shape file>"
-                        + "[-s <max number of items in a leaf>]");
+        System.out.println("Usage: ShapeFileIndexer "
+                + "-t <QIX> "
+                + "[-M <max tree depth>] "
+                + "[-b <byte order NL | NM>] "
+                + "<shape file>"
+                + "[-s <max number of items in a leaf>]");
 
         System.out.println();
 
@@ -137,8 +136,7 @@ class ShapeFileIndexer implements FileWriter {
      * @return The number of indexed records
      */
     public int index(boolean verbose, /*unused*/ ProgressListener listener)
-            throws MalformedURLException, IOException, TreeException, StoreException,
-                    LockTimeoutException {
+            throws MalformedURLException, IOException, TreeException, StoreException, LockTimeoutException {
 
         if (this.shpFiles == null) {
             throw new IOException("You have to set a shape file name!");
@@ -153,8 +151,7 @@ class ShapeFileIndexer implements FileWriter {
             maxDepth = computeMaxDepth();
         }
 
-        try (ShapefileReader reader =
-                new ShapefileReader(shpFiles, true, false, new GeometryFactory())) {
+        try (ShapefileReader reader = new ShapefileReader(shpFiles, true, false, new GeometryFactory())) {
 
             cnt = this.buildQuadTree(reader, treeFile, verbose);
         }
@@ -172,8 +169,7 @@ class ShapeFileIndexer implements FileWriter {
      */
     private int computeMaxDepth() throws IOException {
         int maxDepth;
-        try (ShapefileReader reader =
-                new ShapefileReader(shpFiles, true, false, new GeometryFactory())) {
+        try (ShapefileReader reader = new ShapefileReader(shpFiles, true, false, new GeometryFactory())) {
             int features = reader.getCount(0);
             maxDepth = 1;
             int nodes = 1;
@@ -188,13 +184,8 @@ class ShapeFileIndexer implements FileWriter {
         }
     }
 
-    private int buildQuadTree(ShapefileReader reader, File file, boolean verbose)
-            throws IOException, StoreException {
-        LOGGER.fine(
-                "Building quadtree spatial index with depth "
-                        + maxDepth
-                        + " for file "
-                        + file.getAbsolutePath());
+    private int buildQuadTree(ShapefileReader reader, File file, boolean verbose) throws IOException, StoreException {
+        LOGGER.fine("Building quadtree spatial index with depth " + maxDepth + " for file " + file.getAbsolutePath());
 
         final byte fileByteOrder = resolveStorageByteOrder();
 
@@ -203,9 +194,7 @@ class ShapeFileIndexer implements FileWriter {
         try (IndexFile shpIndex = new IndexFile(shpFiles, false);
                 // strategy to speed up optimizeTree()
                 BoundsReader boundsHelper = createBoundsReader(reader, shpIndex);
-                QuadTree tree =
-                        new QuadTree(
-                                shpIndex.getRecordCount(), maxDepth, getBounds(reader), shpIndex)) {
+                QuadTree tree = new QuadTree(shpIndex.getRecordCount(), maxDepth, getBounds(reader), shpIndex)) {
             Envelope env = new Envelope();
             while (reader.hasNext()) {
                 Record rec = reader.nextRecord();

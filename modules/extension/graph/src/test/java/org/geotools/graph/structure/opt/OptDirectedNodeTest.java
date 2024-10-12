@@ -359,20 +359,16 @@ public class OptDirectedNodeTest {
 
         Iterator related = m_node.getRelated();
         OptDirectedNode dn = (OptDirectedNode) related.next();
-        Assert.assertTrue(
-                dn == m_inNode1 || dn == m_inNode2 || dn == m_outNode1 || dn == m_outNode2);
+        Assert.assertTrue(dn == m_inNode1 || dn == m_inNode2 || dn == m_outNode1 || dn == m_outNode2);
 
         dn = (OptDirectedNode) related.next();
-        Assert.assertTrue(
-                dn == m_inNode1 || dn == m_inNode2 || dn == m_outNode1 || dn == m_outNode2);
+        Assert.assertTrue(dn == m_inNode1 || dn == m_inNode2 || dn == m_outNode1 || dn == m_outNode2);
 
         dn = (OptDirectedNode) related.next();
-        Assert.assertTrue(
-                dn == m_inNode1 || dn == m_inNode2 || dn == m_outNode1 || dn == m_outNode2);
+        Assert.assertTrue(dn == m_inNode1 || dn == m_inNode2 || dn == m_outNode1 || dn == m_outNode2);
 
         dn = (OptDirectedNode) related.next();
-        Assert.assertTrue(
-                dn == m_inNode1 || dn == m_inNode2 || dn == m_outNode1 || dn == m_outNode2);
+        Assert.assertTrue(dn == m_inNode1 || dn == m_inNode2 || dn == m_outNode1 || dn == m_outNode2);
 
         Assert.assertFalse(related.hasNext());
 
@@ -391,52 +387,22 @@ public class OptDirectedNodeTest {
 
         related = m_node.getRelated();
         dn = (OptDirectedNode) related.next();
-        Assert.assertTrue(
-                dn == m_inNode1
-                        || dn == m_inNode2
-                        || dn == m_outNode1
-                        || dn == m_outNode2
-                        || dn == m_node);
+        Assert.assertTrue(dn == m_inNode1 || dn == m_inNode2 || dn == m_outNode1 || dn == m_outNode2 || dn == m_node);
 
         dn = (OptDirectedNode) related.next();
-        Assert.assertTrue(
-                dn == m_inNode1
-                        || dn == m_inNode2
-                        || dn == m_outNode1
-                        || dn == m_outNode2
-                        || dn == m_node);
+        Assert.assertTrue(dn == m_inNode1 || dn == m_inNode2 || dn == m_outNode1 || dn == m_outNode2 || dn == m_node);
 
         dn = (OptDirectedNode) related.next();
-        Assert.assertTrue(
-                dn == m_inNode1
-                        || dn == m_inNode2
-                        || dn == m_outNode1
-                        || dn == m_outNode2
-                        || dn == m_node);
+        Assert.assertTrue(dn == m_inNode1 || dn == m_inNode2 || dn == m_outNode1 || dn == m_outNode2 || dn == m_node);
 
         dn = (OptDirectedNode) related.next();
-        Assert.assertTrue(
-                dn == m_inNode1
-                        || dn == m_inNode2
-                        || dn == m_outNode1
-                        || dn == m_outNode2
-                        || dn == m_node);
+        Assert.assertTrue(dn == m_inNode1 || dn == m_inNode2 || dn == m_outNode1 || dn == m_outNode2 || dn == m_node);
 
         dn = (OptDirectedNode) related.next();
-        Assert.assertTrue(
-                dn == m_inNode1
-                        || dn == m_inNode2
-                        || dn == m_outNode1
-                        || dn == m_outNode2
-                        || dn == m_node);
+        Assert.assertTrue(dn == m_inNode1 || dn == m_inNode2 || dn == m_outNode1 || dn == m_outNode2 || dn == m_node);
 
         dn = (OptDirectedNode) related.next();
-        Assert.assertTrue(
-                dn == m_inNode1
-                        || dn == m_inNode2
-                        || dn == m_outNode1
-                        || dn == m_outNode2
-                        || dn == m_node);
+        Assert.assertTrue(dn == m_inNode1 || dn == m_inNode2 || dn == m_outNode1 || dn == m_outNode2 || dn == m_node);
 
         Assert.assertFalse(related.hasNext());
     }

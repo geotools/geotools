@@ -39,13 +39,11 @@ public class MultiPolygonTest extends BaseJtsModuleTest<MultiPolygon> {
 
     @Override
     protected MultiPolygon createGeometry() {
-        LinearRing shell =
-                gf.createLinearRing(
-                        new Coordinate[] {
-                            new Coordinate(102.0, 2.0), new Coordinate(103.0, 2.0),
-                            new Coordinate(103.0, 3.0), new Coordinate(102.0, 3.0),
-                            new Coordinate(102.0, 2.0)
-                        });
+        LinearRing shell = gf.createLinearRing(new Coordinate[] {
+            new Coordinate(102.0, 2.0), new Coordinate(103.0, 2.0),
+            new Coordinate(103.0, 3.0), new Coordinate(102.0, 3.0),
+            new Coordinate(102.0, 2.0)
+        });
         return gf.createMultiPolygon(new Polygon[] {gf.createPolygon(shell, null)});
     }
 }

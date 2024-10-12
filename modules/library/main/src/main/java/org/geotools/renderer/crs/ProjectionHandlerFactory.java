@@ -37,9 +37,6 @@ public interface ProjectionHandlerFactory {
      *     usage)
      */
     ProjectionHandler getHandler(
-            ReferencedEnvelope renderingEnvelope,
-            CoordinateReferenceSystem sourceCRS,
-            boolean wrap,
-            int wrapLimit)
+            ReferencedEnvelope renderingEnvelope, CoordinateReferenceSystem sourceCRS, boolean wrap, int wrapLimit)
             throws FactoryException;
 }

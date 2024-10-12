@@ -36,29 +36,21 @@ public class SimpleFeaturePropertyAccessorFactoryTest {
     public void test() {
 
         // make sure features are supported
-        Assert.assertNotNull(
-                factory.createPropertyAccessor(SimpleFeature.class, "xpath", null, null));
-        Assert.assertNotNull(
-                factory.createPropertyAccessor(SimpleFeatureType.class, "xpath", null, null));
+        Assert.assertNotNull(factory.createPropertyAccessor(SimpleFeature.class, "xpath", null, null));
+        Assert.assertNotNull(factory.createPropertyAccessor(SimpleFeatureType.class, "xpath", null, null));
         Assert.assertNull(factory.createPropertyAccessor(Map.class, "xpath", null, null));
 
         // make sure only simple xpath
-        Assert.assertNull(
-                factory.createPropertyAccessor(SimpleFeature.class, "@xpath", null, null));
-        Assert.assertNull(
-                factory.createPropertyAccessor(SimpleFeatureType.class, "@xpath", null, null));
+        Assert.assertNull(factory.createPropertyAccessor(SimpleFeature.class, "@xpath", null, null));
+        Assert.assertNull(factory.createPropertyAccessor(SimpleFeatureType.class, "@xpath", null, null));
 
-        Assert.assertNull(
-                factory.createPropertyAccessor(SimpleFeature.class, "/xpath", null, null));
-        Assert.assertNull(
-                factory.createPropertyAccessor(SimpleFeatureType.class, "/xpath", null, null));
+        Assert.assertNull(factory.createPropertyAccessor(SimpleFeature.class, "/xpath", null, null));
+        Assert.assertNull(factory.createPropertyAccessor(SimpleFeatureType.class, "/xpath", null, null));
 
         Assert.assertNull(factory.createPropertyAccessor(SimpleFeature.class, "*[0]", null, null));
-        Assert.assertNull(
-                factory.createPropertyAccessor(SimpleFeatureType.class, "*[0]", null, null));
+        Assert.assertNull(factory.createPropertyAccessor(SimpleFeatureType.class, "*[0]", null, null));
 
         Assert.assertNull(factory.createPropertyAccessor(SimpleFeature.class, "===", null, null));
-        Assert.assertNull(
-                factory.createPropertyAccessor(SimpleFeature.class, "34x?<>", null, null));
+        Assert.assertNull(factory.createPropertyAccessor(SimpleFeature.class, "34x?<>", null, null));
     }
 }

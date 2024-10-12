@@ -55,9 +55,7 @@ public class JTSFactoryFinder extends FactoryFinder {
         if (registry == null) {
             synchronized (JTSFactoryFinder.class) {
                 if (registry == null) {
-                    FactoryRegistry temp =
-                            new FactoryCreator(
-                                    Arrays.asList(new Class<?>[] {GeometryFactory.class}));
+                    FactoryRegistry temp = new FactoryCreator(Arrays.asList(new Class<?>[] {GeometryFactory.class}));
                     temp.registerFactory(new GeometryFactory(), GeometryFactory.class);
                     registry = temp;
                 }
@@ -80,11 +78,9 @@ public class JTSFactoryFinder extends FactoryFinder {
      * @throws FactoryRegistryException if no implementation was found or can be created for the
      *     {@link GeometryFactory} category and the given hints.
      */
-    public static synchronized GeometryFactory getGeometryFactory(Hints hints)
-            throws FactoryRegistryException {
+    public static synchronized GeometryFactory getGeometryFactory(Hints hints) throws FactoryRegistryException {
         hints = mergeSystemHints(hints);
-        return getServiceRegistry()
-                .getFactory(GeometryFactory.class, null, hints, Hints.JTS_GEOMETRY_FACTORY);
+        return getServiceRegistry().getFactory(GeometryFactory.class, null, hints, Hints.JTS_GEOMETRY_FACTORY);
     }
     /**
      * Returns the first implementation of {@link GeometryFactory}, a new one is created if possible
@@ -94,8 +90,7 @@ public class JTSFactoryFinder extends FactoryFinder {
      * @throws FactoryRegistryException if no implementation was found or can be created for the
      *     {@link GeometryFactory} category.
      */
-    public static synchronized GeometryFactory getGeometryFactory()
-            throws FactoryRegistryException {
+    public static synchronized GeometryFactory getGeometryFactory() throws FactoryRegistryException {
         return getGeometryFactory(null);
     }
     /**
@@ -117,11 +112,9 @@ public class JTSFactoryFinder extends FactoryFinder {
      * @throws FactoryRegistryException if no implementation was found or can be created for the
      *     {@link PrecisionModel} category and the given hints.
      */
-    public static synchronized PrecisionModel getPrecisionModel(Hints hints)
-            throws FactoryRegistryException {
+    public static synchronized PrecisionModel getPrecisionModel(Hints hints) throws FactoryRegistryException {
         hints = mergeSystemHints(hints);
-        return getServiceRegistry()
-                .getFactory(PrecisionModel.class, null, hints, Hints.JTS_PRECISION_MODEL);
+        return getServiceRegistry().getFactory(PrecisionModel.class, null, hints, Hints.JTS_PRECISION_MODEL);
     }
 
     /**
@@ -147,11 +140,7 @@ public class JTSFactoryFinder extends FactoryFinder {
             throws FactoryRegistryException {
         hints = mergeSystemHints(hints);
         return getServiceRegistry()
-                .getFactory(
-                        CoordinateSequenceFactory.class,
-                        null,
-                        hints,
-                        Hints.JTS_COORDINATE_SEQUENCE_FACTORY);
+                .getFactory(CoordinateSequenceFactory.class, null, hints, Hints.JTS_COORDINATE_SEQUENCE_FACTORY);
     }
 
     /**
@@ -161,8 +150,7 @@ public class JTSFactoryFinder extends FactoryFinder {
      * @return Set of available coordinate sequence factory implementations.
      */
     public static synchronized Set<CoordinateSequenceFactory> getCoordinateSequenceFactories() {
-        return new LazySet<>(
-                getServiceRegistry().getFactories(CoordinateSequenceFactory.class, null, null));
+        return new LazySet<>(getServiceRegistry().getFactories(CoordinateSequenceFactory.class, null, null));
     }
 
     /**
@@ -188,13 +176,8 @@ public class JTSFactoryFinder extends FactoryFinder {
     private static final class Registry extends FactoryCreator {
         /** Creates a registry for JTS factories. */
         public Registry() {
-            super(
-                    Arrays.asList(
-                            new Class<?>[] {
-                                GeometryFactory.class,
-                                PrecisionModel.class,
-                                CoordinateSequenceFactory.class
-                            }));
+            super(Arrays.asList(
+                    new Class<?>[] {GeometryFactory.class, PrecisionModel.class, CoordinateSequenceFactory.class}));
         }
 
         /** Extracts the SRID from the hints, or returns {@code 0} if none. */
@@ -223,8 +206,7 @@ public class JTSFactoryFinder extends FactoryFinder {
          * @return {@code true} if the {@code provider} meets the user requirements.
          */
         @Override
-        protected <T> boolean isAcceptable(
-                final T provider, final Class<T> category, final Hints hints) {
+        protected <T> boolean isAcceptable(final T provider, final Class<T> category, final Hints hints) {
             if (GeometryFactory.class.isAssignableFrom(category)) {
                 final GeometryFactory factory = (GeometryFactory) provider;
                 final CoordinateSequenceFactory sequence = factory.getCoordinateSequenceFactory();

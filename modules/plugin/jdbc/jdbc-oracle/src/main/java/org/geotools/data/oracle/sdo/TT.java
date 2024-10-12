@@ -79,8 +79,7 @@ public interface TT {
      * A map from geomery type, as a string, to JTS Geometry. See Oracle Spatial documentation,
      * Table 2-1, Valid SDO_GTYPE values.
      */
-    public static final Map<String, Class<?>> GEOM_CLASSES =
-            Collections.unmodifiableMap(new GeomClasses());
+    public static final Map<String, Class<?>> GEOM_CLASSES = Collections.unmodifiableMap(new GeomClasses());
 
     static final class GeomClasses extends HashMap<String, Class<?>> {
         private static final long serialVersionUID = -3359664692996608331L;

@@ -142,21 +142,18 @@ public class AppSchemaDataAccessConfigurator {
 
     /** Convenience method for "joining" property. */
     public static boolean isJoining() {
-        String s =
-                AppSchemaDataAccessRegistry.getAppSchemaProperties().getProperty(PROPERTY_JOINING);
+        String s = AppSchemaDataAccessRegistry.getAppSchemaProperties().getProperty(PROPERTY_JOINING);
         return s == null || s.equalsIgnoreCase("true");
     }
 
     public static boolean isJoiningSet() {
-        String s =
-                AppSchemaDataAccessRegistry.getAppSchemaProperties().getProperty(PROPERTY_JOINING);
+        String s = AppSchemaDataAccessRegistry.getAppSchemaProperties().getProperty(PROPERTY_JOINING);
         return s != null;
     }
 
     public static boolean isOrUnionReplacementEnabled() {
         final String orUnionReplacement =
-                AppSchemaDataAccessRegistry.getAppSchemaProperties()
-                        .getProperty(PROPERTY_REPLACE_OR_UNION);
+                AppSchemaDataAccessRegistry.getAppSchemaProperties().getProperty(PROPERTY_REPLACE_OR_UNION);
         return (!"false".equalsIgnoreCase(orUnionReplacement));
     }
 
@@ -168,8 +165,7 @@ public class AppSchemaDataAccessConfigurator {
      */
     public static boolean shouldEncodeNestedFilters() {
         String propValue =
-                AppSchemaDataAccessRegistry.getAppSchemaProperties()
-                        .getProperty(PROPERTY_ENCODE_NESTED_FILTERS);
+                AppSchemaDataAccessRegistry.getAppSchemaProperties().getProperty(PROPERTY_ENCODE_NESTED_FILTERS);
         return propValue == null || propValue.equalsIgnoreCase("true");
     }
 
@@ -194,10 +190,7 @@ public class AppSchemaDataAccessConfigurator {
         // check included namespaces
         final Set<String> evaluatedURLs = new HashSet<>();
         config.getIncludes()
-                .forEach(
-                        filename ->
-                                processNamespaces(
-                                        config.getBaseSchemasUrl(), filename, evaluatedURLs));
+                .forEach(filename -> processNamespaces(config.getBaseSchemasUrl(), filename, evaluatedURLs));
     }
 
     private void processNamespaces(String baseURL, String filename, Set<String> evaluatedURLs) {
@@ -208,7 +201,8 @@ public class AppSchemaDataAccessConfigurator {
             if (evaluatedURLs.contains(url.toExternalForm())) return;
             else evaluatedURLs.add(url.toExternalForm());
             AppSchemaDataAccessDTO config = configReader.parse(url);
-            for (Entry<String, String> stringStringEntry : config.getNamespaces().entrySet()) {
+            for (Entry<String, String> stringStringEntry :
+                    config.getNamespaces().entrySet()) {
                 Entry entry = (Entry) stringStringEntry;
                 String prefix = (String) entry.getKey();
                 String namespace = (String) entry.getValue();
@@ -237,8 +231,8 @@ public class AppSchemaDataAccessConfigurator {
      *     FeatureType mapping definitions
      * @throws IOException if any error occurs while creating the mappings
      */
-    public static Set<FeatureTypeMapping> buildMappings(
-            AppSchemaDataAccessDTO config, boolean isInclude) throws IOException {
+    public static Set<FeatureTypeMapping> buildMappings(AppSchemaDataAccessDTO config, boolean isInclude)
+            throws IOException {
         return buildMappings(config, new DataAccessMap(), isInclude);
     }
 
@@ -250,8 +244,7 @@ public class AppSchemaDataAccessConfigurator {
      * @return a Set of {@link org.geotools.data.complex.FeatureTypeMapping} source to target
      * @throws IOException if any error occurs while creating the mappings
      */
-    public static Set<FeatureTypeMapping> buildMappings(AppSchemaDataAccessDTO config)
-            throws IOException {
+    public static Set<FeatureTypeMapping> buildMappings(AppSchemaDataAccessDTO config) throws IOException {
         return buildMappings(config, new DataAccessMap(), false);
     }
 
@@ -265,8 +258,7 @@ public class AppSchemaDataAccessConfigurator {
      * @param isInclude whether the mappings are for an include
      */
     public static Set<FeatureTypeMapping> buildMappings(
-            AppSchemaDataAccessDTO config, DataAccessMap sourceDataStoreMap, boolean isInclude)
-            throws IOException {
+            AppSchemaDataAccessDTO config, DataAccessMap sourceDataStoreMap, boolean isInclude) throws IOException {
 
         AppSchemaDataAccessConfigurator mappingsBuilder =
                 new AppSchemaDataAccessConfigurator(config, sourceDataStoreMap, isInclude);
@@ -320,8 +312,7 @@ public class AppSchemaDataAccessConfigurator {
                 for (FeatureTypeMapping mapping : featureTypeMappings) {
                     if (mapping.getSource().getDataStore() == dataAccess
                             || (mapping.getIndexSource() != null
-                                    && Objects.equals(
-                                            mapping.getIndexSource().getDataStore(), dataAccess))) {
+                                    && Objects.equals(mapping.getIndexSource().getDataStore(), dataAccess))) {
                         usedDataAccess = true;
                         break;
                     }
@@ -334,8 +325,7 @@ public class AppSchemaDataAccessConfigurator {
     }
 
     private Set<FeatureTypeMapping> createFeatureTypeMappings(
-            Map<String, DataAccess<FeatureType, Feature>> sourceDataStores, boolean isInclude)
-            throws IOException {
+            Map<String, DataAccess<FeatureType, Feature>> sourceDataStores, boolean isInclude) throws IOException {
         Set mappingsConfigs = config.getTypeMappings();
 
         Set<FeatureTypeMapping> featureTypeMappings = new HashSet<>();
@@ -359,38 +349,29 @@ public class AppSchemaDataAccessConfigurator {
                 target.getType().getUserData().put("schemaURI", schemaURIs);
 
                 // set mappings namespaces
-                target.getType()
-                        .getUserData()
-                        .put(Types.DECLARED_NAMESPACES_MAP, getNamespacesMap());
+                target.getType().getUserData().put(Types.DECLARED_NAMESPACES_MAP, getNamespacesMap());
 
                 boolean isDatabaseBackend =
-                        featureSource instanceof JDBCFeatureSource
-                                || featureSource instanceof JDBCFeatureStore;
+                        featureSource instanceof JDBCFeatureSource || featureSource instanceof JDBCFeatureStore;
 
-                List<AttributeMapping> attMappings =
-                        getAttributeMappings(
-                                target,
-                                dto.getAttributeMappings(),
-                                dto.getItemXpath(),
-                                crs,
-                                isDatabaseBackend);
+                List<AttributeMapping> attMappings = getAttributeMappings(
+                        target, dto.getAttributeMappings(), dto.getItemXpath(), crs, isDatabaseBackend);
 
                 // if an external index (e.g. Solr) is used in the mappings, get its data store
                 FeatureSource<SimpleFeatureType, SimpleFeature> indexFeatureSource =
                         getIndexFeatureSource(dto, sourceDataStores);
 
-                FeatureTypeMapping mapping =
-                        FeatureTypeMappingFactory.getInstance(
-                                featureSource,
-                                indexFeatureSource,
-                                target,
-                                dto.getDefaultGeometryXPath(),
-                                attMappings,
-                                namespaces,
-                                dto.getItemXpath(),
-                                dto.isXmlDataStore(),
-                                dto.isDenormalised(),
-                                dto.getSourceDataStore());
+                FeatureTypeMapping mapping = FeatureTypeMappingFactory.getInstance(
+                        featureSource,
+                        indexFeatureSource,
+                        target,
+                        dto.getDefaultGeometryXPath(),
+                        attMappings,
+                        namespaces,
+                        dto.getItemXpath(),
+                        dto.isXmlDataStore(),
+                        dto.isDenormalised(),
+                        dto.getSourceDataStore());
 
                 String mappingName = dto.getMappingName();
                 if (mappingName != null) {
@@ -400,28 +381,23 @@ public class AppSchemaDataAccessConfigurator {
                 mapping.setInclude(isInclude);
                 featureTypeMappings.add(mapping);
             } catch (Exception e) {
-                LOGGER.warning(
-                        "Error creating app-schema data store for '"
-                                + (dto.getMappingName() != null
-                                        ? dto.getMappingName()
-                                        : dto.getTargetElementName())
-                                + "', caused by: "
-                                + e.getMessage());
+                LOGGER.warning("Error creating app-schema data store for '"
+                        + (dto.getMappingName() != null ? dto.getMappingName() : dto.getTargetElementName())
+                        + "', caused by: "
+                        + e.getMessage());
                 throw new IOException(e);
             }
         }
         return featureTypeMappings;
     }
 
-    private AttributeDescriptor getTargetDescriptor(TypeMapping dto, CoordinateReferenceSystem crs)
-            throws IOException {
+    private AttributeDescriptor getTargetDescriptor(TypeMapping dto, CoordinateReferenceSystem crs) throws IOException {
         String prefixedTargetName = dto.getTargetElementName();
         Name targetNodeName = Types.degloseName(prefixedTargetName, namespaces);
 
         AttributeDescriptor targetDescriptor = typeRegistry.getDescriptor(targetNodeName, crs);
         if (targetDescriptor == null) {
-            throw new NoSuchElementException(
-                    "descriptor " + targetNodeName + " not found in parsed schema");
+            throw new NoSuchElementException("descriptor " + targetNodeName + " not found in parsed schema");
         }
 
         // check if default geometry was set in FeatureTypeMapping
@@ -434,8 +410,7 @@ public class AppSchemaDataAccessConfigurator {
         return targetDescriptor;
     }
 
-    private AttributeDescriptor retypeAddingDefaultGeometry(
-            AttributeDescriptor descriptor, String defaultGeomXPath) {
+    private AttributeDescriptor retypeAddingDefaultGeometry(AttributeDescriptor descriptor, String defaultGeomXPath) {
         AttributeDescriptor newDescriptor = descriptor;
         FeatureType type = (FeatureType) descriptor.getType();
 
@@ -445,43 +420,39 @@ public class AppSchemaDataAccessConfigurator {
 
             String defGeomNamespace = type.getName().getNamespaceURI();
             String defGeomLocalName = ComplexFeatureConstants.DEFAULT_GEOMETRY_LOCAL_NAME;
-            GeometryDescriptor defGeom =
-                    ftf.createGeometryDescriptor(
-                            geom.getType(),
-                            new NameImpl(defGeomNamespace, defGeomLocalName),
-                            geom.getMinOccurs(),
-                            geom.getMaxOccurs(),
-                            geom.isNillable(),
-                            geom.getDefaultValue());
+            GeometryDescriptor defGeom = ftf.createGeometryDescriptor(
+                    geom.getType(),
+                    new NameImpl(defGeomNamespace, defGeomLocalName),
+                    geom.getMinOccurs(),
+                    geom.getMaxOccurs(),
+                    geom.isNillable(),
+                    geom.getDefaultValue());
 
             Collection<PropertyDescriptor> descriptors = new HashSet<>(type.getDescriptors());
             descriptors.add(defGeom);
 
-            FeatureType newType =
-                    ftf.createFeatureType(
-                            type.getName(),
-                            descriptors,
-                            defGeom,
-                            type.isAbstract(),
-                            type.getRestrictions(),
-                            type.getSuper(),
-                            type.getDescription());
+            FeatureType newType = ftf.createFeatureType(
+                    type.getName(),
+                    descriptors,
+                    defGeom,
+                    type.isAbstract(),
+                    type.getRestrictions(),
+                    type.getSuper(),
+                    type.getDescription());
             newType.getUserData().putAll(type.getUserData());
 
-            newDescriptor =
-                    new AttributeDescriptorImpl(
-                            newType,
-                            descriptor.getName(),
-                            descriptor.getMinOccurs(),
-                            descriptor.getMaxOccurs(),
-                            descriptor.isNillable(),
-                            descriptor.getDefaultValue());
+            newDescriptor = new AttributeDescriptorImpl(
+                    newType,
+                    descriptor.getName(),
+                    descriptor.getMinOccurs(),
+                    descriptor.getMaxOccurs(),
+                    descriptor.isNillable(),
+                    descriptor.getDefaultValue());
             newDescriptor.getUserData().putAll(descriptor.getUserData());
         } else {
-            throw new IllegalArgumentException(
-                    String.format(
-                            "Default geometry descriptor could not be found for type \"%s\" at x-path \"%s\"",
-                            descriptor.getName().toString(), defaultGeomXPath));
+            throw new IllegalArgumentException(String.format(
+                    "Default geometry descriptor could not be found for type \"%s\" at x-path \"%s\"",
+                    descriptor.getName().toString(), defaultGeomXPath));
         }
 
         return newDescriptor;
@@ -492,19 +463,16 @@ public class AppSchemaDataAccessConfigurator {
         FeaturePropertyAccessorFactory accessorFactory = new FeaturePropertyAccessorFactory();
         Hints hints = new Hints(PropertyAccessorFactory.NAMESPACE_CONTEXT, namespaces);
         PropertyAccessor accessor =
-                accessorFactory.createPropertyAccessor(
-                        featureType.getClass(), xpath, GeometryAttribute.class, hints);
+                accessorFactory.createPropertyAccessor(featureType.getClass(), xpath, GeometryAttribute.class, hints);
 
         GeometryDescriptor geom = null;
         if (accessor != null) {
             try {
                 geom = accessor.get(featureType, xpath, GeometryDescriptor.class);
             } catch (Exception e) {
-                LOGGER.finest(
-                        String.format(
-                                "Exception occurred retrieving geometry descriptor "
-                                        + "at x-path \"%s\": %s",
-                                xpath, e.getMessage()));
+                LOGGER.finest(String.format(
+                        "Exception occurred retrieving geometry descriptor " + "at x-path \"%s\": %s",
+                        xpath, e.getMessage()));
             }
         }
 
@@ -537,8 +505,7 @@ public class AppSchemaDataAccessConfigurator {
                 idXpath = attDto.getIdentifierPath();
                 if (idXpath != null) {
                     // validate without indexed elements
-                    final StepList inputXPathSteps =
-                            XPath.steps(root, itemXpath + "/" + idXpath, namespaces);
+                    final StepList inputXPathSteps = XPath.steps(root, itemXpath + "/" + idXpath, namespaces);
                     validateConfiguredNamespaces(inputXPathSteps);
                 }
             }
@@ -549,8 +516,7 @@ public class AppSchemaDataAccessConfigurator {
                 // this might be because it's an XPath expression
                 inputXPath = attDto.getInputAttributePath();
                 if (inputXPath != null) {
-                    final StepList inputXPathSteps =
-                            XPath.steps(root, itemXpath + "/" + inputXPath, namespaces);
+                    final StepList inputXPathSteps = XPath.steps(root, itemXpath + "/" + inputXPath, namespaces);
                     validateConfiguredNamespaces(inputXPathSteps);
                 }
             }
@@ -562,25 +528,17 @@ public class AppSchemaDataAccessConfigurator {
 
             final boolean isMultiValued = attDto.isMultiple();
 
-            final Expression idExpression =
-                    (idXpath == null)
-                            ? parseOgcCqlExpression(idExpr)
-                            : new AttributeExpressionImpl(
-                                    idXpath,
-                                    new Hints(
-                                            FeaturePropertyAccessorFactory.NAMESPACE_CONTEXT,
-                                            this.namespaces));
+            final Expression idExpression = (idXpath == null)
+                    ? parseOgcCqlExpression(idExpr)
+                    : new AttributeExpressionImpl(
+                            idXpath, new Hints(FeaturePropertyAccessorFactory.NAMESPACE_CONTEXT, this.namespaces));
             // if the data source is a data access, the input XPath expression is the source
             // expression
 
-            final Expression sourceExpression =
-                    (inputXPath == null)
-                            ? parseOgcCqlExpression(sourceExpr)
-                            : new AttributeExpressionImpl(
-                                    inputXPath,
-                                    new Hints(
-                                            FeaturePropertyAccessorFactory.NAMESPACE_CONTEXT,
-                                            this.namespaces));
+            final Expression sourceExpression = (inputXPath == null)
+                    ? parseOgcCqlExpression(sourceExpr)
+                    : new AttributeExpressionImpl(
+                            inputXPath, new Hints(FeaturePropertyAccessorFactory.NAMESPACE_CONTEXT, this.namespaces));
 
             final AttributeType expectedInstanceOf;
 
@@ -590,12 +548,11 @@ public class AppSchemaDataAccessConfigurator {
                 Name expectedNodeTypeName = Types.degloseName(expectedInstanceTypeName, namespaces);
                 expectedInstanceOf = typeRegistry.getAttributeType(expectedNodeTypeName, null, crs);
                 if (expectedInstanceOf == null) {
-                    String msg =
-                            "mapping expects and instance of "
-                                    + expectedNodeTypeName
-                                    + " for attribute "
-                                    + targetXPath
-                                    + " but the attribute descriptor was not found";
+                    String msg = "mapping expects and instance of "
+                            + expectedNodeTypeName
+                            + " for attribute "
+                            + targetXPath
+                            + " but the attribute descriptor was not found";
                     throw new DataSourceException(msg);
                 }
             } else {
@@ -615,54 +572,50 @@ public class AppSchemaDataAccessConfigurator {
                     sourceFieldSteps = XPath.steps(root, sourceField, namespaces);
                 }
                 // a nested feature
-                NestedAttributeMapping customNestedMapping =
-                        CustomImplementationsFinder.find(
-                                this,
-                                idExpression,
-                                sourceExpression,
-                                targetXPathSteps,
-                                isMultiValued,
-                                clientProperties,
-                                elementExpr,
-                                sourceFieldSteps,
-                                namespaces);
+                NestedAttributeMapping customNestedMapping = CustomImplementationsFinder.find(
+                        this,
+                        idExpression,
+                        sourceExpression,
+                        targetXPathSteps,
+                        isMultiValued,
+                        clientProperties,
+                        elementExpr,
+                        sourceFieldSteps,
+                        namespaces);
                 if (customNestedMapping != null) {
                     attMapping = customNestedMapping;
                 } else if (isJoining() && isJDBC) {
-                    attMapping =
-                            new JoiningNestedAttributeMapping(
-                                    idExpression,
-                                    sourceExpression,
-                                    targetXPathSteps,
-                                    isMultiValued,
-                                    clientProperties,
-                                    elementExpr,
-                                    sourceFieldSteps,
-                                    namespaces);
+                    attMapping = new JoiningNestedAttributeMapping(
+                            idExpression,
+                            sourceExpression,
+                            targetXPathSteps,
+                            isMultiValued,
+                            clientProperties,
+                            elementExpr,
+                            sourceFieldSteps,
+                            namespaces);
                 } else {
-                    attMapping =
-                            new NestedAttributeMapping(
-                                    idExpression,
-                                    sourceExpression,
-                                    targetXPathSteps,
-                                    isMultiValued,
-                                    clientProperties,
-                                    elementExpr,
-                                    sourceFieldSteps,
-                                    namespaces);
+                    attMapping = new NestedAttributeMapping(
+                            idExpression,
+                            sourceExpression,
+                            targetXPathSteps,
+                            isMultiValued,
+                            clientProperties,
+                            elementExpr,
+                            sourceFieldSteps,
+                            namespaces);
                 }
 
             } else {
-                attMapping =
-                        new AttributeMapping(
-                                idExpression,
-                                sourceExpression,
-                                attDto.getSourceIndex(),
-                                targetXPathSteps,
-                                expectedInstanceOf,
-                                isMultiValued,
-                                clientProperties,
-                                attDto.getMultipleValue());
+                attMapping = new AttributeMapping(
+                        idExpression,
+                        sourceExpression,
+                        attDto.getSourceIndex(),
+                        targetXPathSteps,
+                        expectedInstanceOf,
+                        isMultiValued,
+                        clientProperties,
+                        attDto.getMultipleValue());
             }
 
             if (attDto.isList()) {
@@ -703,13 +656,12 @@ public class AppSchemaDataAccessConfigurator {
             QName name = step.getName();
             if (!XMLConstants.DEFAULT_NS_PREFIX.equals(name.getPrefix())) {
                 if (XMLConstants.DEFAULT_NS_PREFIX.equals(name.getNamespaceURI())) {
-                    throw new IllegalArgumentException(
-                            "location step "
-                                    + step
-                                    + " has prefix "
-                                    + name.getPrefix()
-                                    + " for which no namespace was set. "
-                                    + "(Check the Namespaces section in the config file)");
+                    throw new IllegalArgumentException("location step "
+                            + step
+                            + " has prefix "
+                            + name.getPrefix()
+                            + " for which no namespace was set. "
+                            + "(Check the Namespaces section in the config file)");
                 }
             }
         }
@@ -728,8 +680,7 @@ public class AppSchemaDataAccessConfigurator {
      * @return the parsed expression
      * @throws DataSourceException if the expression text representation could not be parsed
      */
-    public static Expression parseOgcCqlExpression(String sourceExpr, FilterFactory ff)
-            throws DataSourceException {
+    public static Expression parseOgcCqlExpression(String sourceExpr, FilterFactory ff) throws DataSourceException {
         Expression expression = Expression.NIL;
         if (sourceExpr != null && sourceExpr.trim().length() > 0) {
             try {
@@ -738,10 +689,7 @@ public class AppSchemaDataAccessConfigurator {
                 String formattedErrorMessage = e.getMessage();
                 AppSchemaDataAccessConfigurator.LOGGER.log(Level.SEVERE, formattedErrorMessage, e);
                 throw new DataSourceException(
-                        "Error parsing CQL expression "
-                                + sourceExpr
-                                + ":\n"
-                                + formattedErrorMessage);
+                        "Error parsing CQL expression " + sourceExpr + ":\n" + formattedErrorMessage);
             } catch (Exception e) {
                 java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
                 String msg = "parsing expression " + sourceExpr;
@@ -756,19 +704,19 @@ public class AppSchemaDataAccessConfigurator {
      * @return Map&lt;Name, Expression&gt; with the values per qualified name (attribute name in the
      *     mapping)
      */
-    private Map<Name, Expression> getClientProperties(
-            org.geotools.data.complex.config.AttributeMapping dto) throws DataSourceException {
+    private Map<Name, Expression> getClientProperties(org.geotools.data.complex.config.AttributeMapping dto)
+            throws DataSourceException {
         final Map<Name, Expression> clientProperties = new HashMap<>();
 
         if (dto.getClientProperties().size() > 0) {
-            for (Entry<String, String> stringStringEntry : dto.getClientProperties().entrySet()) {
+            for (Entry<String, String> stringStringEntry :
+                    dto.getClientProperties().entrySet()) {
                 Entry entry = (Entry) stringStringEntry;
                 String name = (String) entry.getKey();
                 Name qName = Types.degloseName(name, namespaces);
                 String cqlExpression = (String) entry.getValue();
                 Expression expression = parseOgcCqlExpression(cqlExpression);
-                Expression fixedExpr =
-                        fixClientPropertyIfJDBCMultipleValueIsPresent(dto, expression);
+                Expression fixedExpr = fixClientPropertyIfJDBCMultipleValueIsPresent(dto, expression);
                 clientProperties.put(qName, fixedExpr);
             }
         }
@@ -785,59 +733,49 @@ public class AppSchemaDataAccessConfigurator {
         MultipleValue multipleValue = dto.getMultipleValue();
         if (multipleValue instanceof JdbcMultipleValue) {
             JdbcMultipleValue jdbcMultipleValue = (JdbcMultipleValue) multipleValue;
-            DuplicatingFilterVisitor duplicatingFilterVisitor =
-                    new DuplicatingFilterVisitor() {
-                        @Override
-                        public Object visit(PropertyName propertyName, Object extraData) {
-                            // create a JoinPropertyName out of the PropertyName
-                            // using the JDBCMultipleValue id as an alias.
-                            // the same alias is being used by the JoiningJDBCFeatureSource
-                            // when joining the targetTable
-                            JoinPropertyName joinPn =
-                                    new JoinPropertyName(
-                                            null,
-                                            jdbcMultipleValue.getId(),
-                                            propertyName.getPropertyName());
-                            joinPn.namespaceSupport = propertyName.getNamespaceContext();
-                            return joinPn;
-                        }
-                    };
-            clientPropertyExpr =
-                    (Expression) clientPropertyExpr.accept(duplicatingFilterVisitor, null);
+            DuplicatingFilterVisitor duplicatingFilterVisitor = new DuplicatingFilterVisitor() {
+                @Override
+                public Object visit(PropertyName propertyName, Object extraData) {
+                    // create a JoinPropertyName out of the PropertyName
+                    // using the JDBCMultipleValue id as an alias.
+                    // the same alias is being used by the JoiningJDBCFeatureSource
+                    // when joining the targetTable
+                    JoinPropertyName joinPn =
+                            new JoinPropertyName(null, jdbcMultipleValue.getId(), propertyName.getPropertyName());
+                    joinPn.namespaceSupport = propertyName.getNamespaceContext();
+                    return joinPn;
+                }
+            };
+            clientPropertyExpr = (Expression) clientPropertyExpr.accept(duplicatingFilterVisitor, null);
         }
         return clientPropertyExpr;
     }
 
     private void addAnonymousAttributes(
-            org.geotools.data.complex.config.AttributeMapping dto,
-            final Map<Name, Expression> clientProperties)
+            org.geotools.data.complex.config.AttributeMapping dto, final Map<Name, Expression> clientProperties)
             throws DataSourceException {
         for (Map.Entry<String, String> entry : dto.getAnonymousAttributes().entrySet()) {
             Name qname = Types.degloseName(entry.getKey(), namespaces);
-            ComplexNameImpl complexName =
-                    new ComplexNameImpl(qname.getNamespaceURI(), qname.getLocalPart(), true);
+            ComplexNameImpl complexName = new ComplexNameImpl(qname.getNamespaceURI(), qname.getLocalPart(), true);
             Expression expression = parseOgcCqlExpression(entry.getValue());
             clientProperties.put(complexName, expression);
         }
     }
 
     private FeatureSource<? extends FeatureType, ? extends Feature> getFeatureSource(
-            TypeMapping dto, Map<String, DataAccess<FeatureType, Feature>> sourceDataStores)
-            throws IOException {
+            TypeMapping dto, Map<String, DataAccess<FeatureType, Feature>> sourceDataStores) throws IOException {
         String dsId = dto.getSourceDataStore();
         String typeName = dto.getSourceTypeName();
 
         DataAccess<FeatureType, Feature> sourceDataStore = sourceDataStores.get(dsId);
         if (sourceDataStore == null) {
-            throw new DataSourceException(
-                    "datastore " + dsId + " not found for type mapping " + dto);
+            throw new DataSourceException("datastore " + dsId + " not found for type mapping " + dto);
         }
 
         AppSchemaDataAccessConfigurator.LOGGER.fine(
                 "asking datastore " + sourceDataStore + " for source type " + typeName);
         Name name = Types.degloseName(typeName, namespaces);
-        FeatureSource<? extends FeatureType, ? extends Feature> fSource =
-                sourceDataStore.getFeatureSource(name);
+        FeatureSource<? extends FeatureType, ? extends Feature> fSource = sourceDataStore.getFeatureSource(name);
         if (fSource instanceof XmlFeatureSource) {
             ((XmlFeatureSource) fSource).setNamespaces(namespaces);
         }
@@ -872,8 +810,7 @@ public class AppSchemaDataAccessConfigurator {
         for (Object schemaFile : schemaFiles) {
             schemaLocation = (String) schemaFile;
             final URL schemaUrl = resolveResourceLocation(baseUrl, schemaLocation);
-            AppSchemaDataAccessConfigurator.LOGGER.fine(
-                    "parsing schema " + schemaUrl.toExternalForm());
+            AppSchemaDataAccessConfigurator.LOGGER.fine("parsing schema " + schemaUrl.toExternalForm());
 
             nameSpace = schemaParser.findSchemaNamespace(schemaUrl);
             schemaLocation = schemaUrl.toExternalForm();
@@ -898,14 +835,13 @@ public class AppSchemaDataAccessConfigurator {
                 URL resolvedCatalogLocation = resolveResourceLocation(baseUrl, catalogLocation);
                 return SchemaCatalog.build(resolvedCatalogLocation);
             } catch (MalformedURLException e) {
-                LOGGER.warning(
-                        "Malformed URL encountered while setting OASIS catalog location. "
-                                + "Mapping file URL: "
-                                + config.getBaseSchemasUrl()
-                                + " Catalog location: "
-                                + config.getCatalog()
-                                + " Detail: "
-                                + e.getMessage());
+                LOGGER.warning("Malformed URL encountered while setting OASIS catalog location. "
+                        + "Mapping file URL: "
+                        + config.getBaseSchemasUrl()
+                        + " Catalog location: "
+                        + config.getCatalog()
+                        + " Detail: "
+                        + e.getMessage());
                 return null;
             }
         }
@@ -914,14 +850,9 @@ public class AppSchemaDataAccessConfigurator {
     /** Build the cache for this data access. */
     private SchemaCache buildCache() {
         try {
-            return SchemaCache.buildAutomaticallyConfiguredUsingFileUrl(
-                    new URL(config.getBaseSchemasUrl()));
+            return SchemaCache.buildAutomaticallyConfiguredUsingFileUrl(new URL(config.getBaseSchemasUrl()));
         } catch (MalformedURLException e) {
-            LOGGER.warning(
-                    "Malformed mapping file URL: "
-                            + config.getBaseSchemasUrl()
-                            + " Detail: "
-                            + e.getMessage());
+            LOGGER.warning("Malformed mapping file URL: " + config.getBaseSchemasUrl() + " Detail: " + e.getMessage());
             return null;
         }
     }
@@ -931,21 +862,18 @@ public class AppSchemaDataAccessConfigurator {
         return new SchemaResolver(buildCatalog(), buildCache());
     }
 
-    private URL resolveResourceLocation(final URL baseUrl, String schemaLocation)
-            throws MalformedURLException {
+    private URL resolveResourceLocation(final URL baseUrl, String schemaLocation) throws MalformedURLException {
         final URL schemaUrl;
         if (schemaLocation.startsWith("file:") || schemaLocation.startsWith("http:")) {
-            AppSchemaDataAccessConfigurator.LOGGER.fine(
-                    "using resource location as absolute path: " + schemaLocation);
+            AppSchemaDataAccessConfigurator.LOGGER.fine("using resource location as absolute path: " + schemaLocation);
             schemaUrl = new URL(schemaLocation);
         } else {
             if (baseUrl == null) {
                 schemaUrl = new URL(schemaLocation);
-                AppSchemaDataAccessConfigurator.LOGGER.warning(
-                        "base url not provided, may be unable to locate"
-                                + schemaLocation
-                                + ". Path resolved to: "
-                                + schemaUrl.toExternalForm());
+                AppSchemaDataAccessConfigurator.LOGGER.warning("base url not provided, may be unable to locate"
+                        + schemaLocation
+                        + ". Path resolved to: "
+                        + schemaUrl.toExternalForm());
             } else {
                 AppSchemaDataAccessConfigurator.LOGGER.fine(
                         "using schema location " + schemaLocation + " as relative to " + baseUrl);
@@ -959,10 +887,8 @@ public class AppSchemaDataAccessConfigurator {
      * @return a Map&lt;String,DataStore&gt; where the key is the id given to the datastore in the
      *     configuration.
      */
-    private Map<String, DataAccess<FeatureType, Feature>> acquireSourceDatastores()
-            throws IOException {
-        AppSchemaDataAccessConfigurator.LOGGER.entering(
-                getClass().getName(), "acquireSourceDatastores");
+    private Map<String, DataAccess<FeatureType, Feature>> acquireSourceDatastores() throws IOException {
+        AppSchemaDataAccessConfigurator.LOGGER.entering(getClass().getName(), "acquireSourceDatastores");
 
         final Map<String, DataAccess<FeatureType, Feature>> datastores = new LinkedHashMap<>();
         final List<SourceDataStore> dsParams = config.getSourceDataStores();
@@ -988,10 +914,7 @@ public class AppSchemaDataAccessConfigurator {
                     // if no custom data store handled this configuration let's fallback on the
                     // default
                     // constructor
-                    dataStore =
-                            dataStore == null
-                                    ? DataAccessFinder.getDataStore(datastoreParams)
-                                    : dataStore;
+                    dataStore = dataStore == null ? DataAccessFinder.getDataStore(datastoreParams) : dataStore;
                     // store the store in the data stores map
                     dataStoreMap.put(datastoreParams, dataStore);
                 }
@@ -1000,10 +923,9 @@ public class AppSchemaDataAccessConfigurator {
             if (dataStore == null) {
                 AppSchemaDataAccessConfigurator.LOGGER.log(
                         Level.SEVERE, "Cannot find a DataAccess for parameters " + datastoreParams);
-                throw new DataSourceException(
-                        "Cannot find a DataAccess for parameters "
-                                + "(some not shown) "
-                                + filterDatastoreParams(datastoreParams));
+                throw new DataSourceException("Cannot find a DataAccess for parameters "
+                        + "(some not shown) "
+                        + filterDatastoreParams(datastoreParams));
             }
 
             AppSchemaDataAccessConfigurator.LOGGER.fine("got datastore " + dataStore);
@@ -1045,19 +967,18 @@ public class AppSchemaDataAccessConfigurator {
      * can be pretty sure are not passwords.)
      */
     @SuppressWarnings("serial")
-    private static final List<String> SAFE_DATASTORE_PARAMS =
-            List.of(
-                    "url", // shapefile
-                    "directory", // propertyfile
-                    "namespace", // just about everything
-                    "dbtype", // jdbc
-                    "jndiReferenceName", // jdni
-                    // these are all various jdbc options
-                    "host",
-                    "port",
-                    "database",
-                    "schema",
-                    "user");
+    private static final List<String> SAFE_DATASTORE_PARAMS = List.of(
+            "url", // shapefile
+            "directory", // propertyfile
+            "namespace", // just about everything
+            "dbtype", // jdbc
+            "jndiReferenceName", // jdni
+            // these are all various jdbc options
+            "host",
+            "port",
+            "database",
+            "schema",
+            "user");
 
     /**
      * Return datastore params filtered to include only known-safe parameters. We cannot try to find
@@ -1080,12 +1001,10 @@ public class AppSchemaDataAccessConfigurator {
      *
      * @return parameter map with resolved file url
      */
-    private Map<String, Serializable> resolveRelativePaths(
-            final Map<String, Serializable> datastoreParams) {
+    private Map<String, Serializable> resolveRelativePaths(final Map<String, Serializable> datastoreParams) {
         Map<String, Serializable> resolvedParams = new HashMap<>();
 
-        AppSchemaDataAccessConfigurator.LOGGER.entering(
-                getClass().getName(), "resolveRelativePaths");
+        AppSchemaDataAccessConfigurator.LOGGER.entering(getClass().getName(), "resolveRelativePaths");
         for (Map.Entry<String, Serializable> entry : datastoreParams.entrySet()) {
             String key = entry.getKey();
             String value = (String) entry.getValue();
@@ -1100,10 +1019,7 @@ public class AppSchemaDataAccessConfigurator {
 
                 if (!f.isAbsolute()) {
                     AppSchemaDataAccessConfigurator.LOGGER.fine(
-                            "resolving original parameter "
-                                    + value
-                                    + " for datastore parameter "
-                                    + key);
+                            "resolving original parameter " + value + " for datastore parameter " + key);
                     try {
                         // use of URL here should be safe as the base schema url should
                         // not yet have undergone any conversion to file or
@@ -1112,7 +1028,8 @@ public class AppSchemaDataAccessConfigurator {
                         AppSchemaDataAccessConfigurator.LOGGER.finer(
                                 "mapping file URL is " + mappingFileUrl.toString());
 
-                        String mappingFileDirPath = URLs.urlToFile(mappingFileUrl).getParent();
+                        String mappingFileDirPath =
+                                URLs.urlToFile(mappingFileUrl).getParent();
                         AppSchemaDataAccessConfigurator.LOGGER.finer(
                                 "mapping file parent directory is " + mappingFileDirPath);
 
@@ -1120,9 +1037,8 @@ public class AppSchemaDataAccessConfigurator {
                         // but it might be better to add this method to DataUtilities
                         resolvedDataPath = FilenameUtils.concat(mappingFileDirPath, inputDataPath);
                         if (resolvedDataPath == null) {
-                            throw new RuntimeException(
-                                    "Relative path to datastore is incompatible with"
-                                            + " the base path - check double dot steps.");
+                            throw new RuntimeException("Relative path to datastore is incompatible with"
+                                    + " the base path - check double dot steps.");
                         }
                     } catch (Exception e) {
                         AppSchemaDataAccessConfigurator.LOGGER.throwing(
@@ -1132,8 +1048,7 @@ public class AppSchemaDataAccessConfigurator {
                 } else {
                     resolvedDataPath = inputDataPath;
                 }
-                AppSchemaDataAccessConfigurator.LOGGER.finer(
-                        "Path to data has been resolved to " + resolvedDataPath);
+                AppSchemaDataAccessConfigurator.LOGGER.finer("Path to data has been resolved to " + resolvedDataPath);
 
                 /*
                  * Shapefile expects the protocol "file:" at the beginning of the parameter value,
@@ -1148,8 +1063,7 @@ public class AppSchemaDataAccessConfigurator {
                 } else {
                     value = resolvedDataPath;
                 }
-                AppSchemaDataAccessConfigurator.LOGGER.fine(
-                        "Resolved " + oldValue + " -> " + value);
+                AppSchemaDataAccessConfigurator.LOGGER.fine("Resolved " + oldValue + " -> " + value);
             }
             resolvedParams.put(key, value);
         }
@@ -1162,8 +1076,7 @@ public class AppSchemaDataAccessConfigurator {
      * the data source cannot be found an exception will be throw.
      */
     private FeatureSource<SimpleFeatureType, SimpleFeature> getIndexFeatureSource(
-            TypeMapping dto, Map<String, DataAccess<FeatureType, Feature>> sourceDataStores)
-            throws IOException {
+            TypeMapping dto, Map<String, DataAccess<FeatureType, Feature>> sourceDataStores) throws IOException {
         String dsId = dto.getIndexDataStore();
         String typeName = dto.getIndexTypeName();
 
@@ -1172,8 +1085,7 @@ public class AppSchemaDataAccessConfigurator {
 
         DataAccess sourceDataStore = sourceDataStores.get(dsId);
         if (sourceDataStore == null) {
-            throw new DataSourceException(
-                    "datastore " + dsId + " not found for type mapping " + dto);
+            throw new DataSourceException("datastore " + dsId + " not found for type mapping " + dto);
         }
 
         Name name = Types.degloseName(typeName, namespaces);

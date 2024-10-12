@@ -126,9 +126,6 @@ public class AttributeNodePointer extends NodePointer {
     @Override
     public NodeIterator attributeIterator(QName qname) {
         return new XmlAttributeNodeIterator(
-                this,
-                Types.typeName(
-                        getNamespaceResolver().getNamespaceURI(qname.getPrefix()),
-                        qname.getName()));
+                this, Types.typeName(getNamespaceResolver().getNamespaceURI(qname.getPrefix()), qname.getName()));
     }
 }

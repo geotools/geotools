@@ -83,50 +83,45 @@ final class Properties extends AbstractMap<String, Object> {
             case 0:
                 return info.getName();
             case 1:
-                return info.getIdentifiers()
-                        .toArray(AbstractIdentifiedObject.EMPTY_IDENTIFIER_ARRAY);
+                return info.getIdentifiers().toArray(AbstractIdentifiedObject.EMPTY_IDENTIFIER_ARRAY);
             case 2:
                 return info.getAlias().toArray(AbstractIdentifiedObject.EMPTY_ALIAS_ARRAY);
             case 3:
                 return info.getRemarks();
-            case 4:
-                {
-                    if (info instanceof ReferenceSystem) {
-                        return ((ReferenceSystem) info).getScope();
-                    } else if (info instanceof Datum) {
-                        return ((Datum) info).getScope();
-                    } else if (info instanceof CoordinateOperation) {
-                        return ((CoordinateOperation) info).getScope();
-                    }
-                    break;
+            case 4: {
+                if (info instanceof ReferenceSystem) {
+                    return ((ReferenceSystem) info).getScope();
+                } else if (info instanceof Datum) {
+                    return ((Datum) info).getScope();
+                } else if (info instanceof CoordinateOperation) {
+                    return ((CoordinateOperation) info).getScope();
                 }
-            case 5:
-                {
-                    if (info instanceof ReferenceSystem) {
-                        return ((ReferenceSystem) info).getDomainOfValidity();
-                    } else if (info instanceof Datum) {
-                        return ((Datum) info).getDomainOfValidity();
-                    } else if (info instanceof CoordinateOperation) {
-                        return ((CoordinateOperation) info).getDomainOfValidity();
-                    }
-                    break;
+                break;
+            }
+            case 5: {
+                if (info instanceof ReferenceSystem) {
+                    return ((ReferenceSystem) info).getDomainOfValidity();
+                } else if (info instanceof Datum) {
+                    return ((Datum) info).getDomainOfValidity();
+                } else if (info instanceof CoordinateOperation) {
+                    return ((CoordinateOperation) info).getDomainOfValidity();
                 }
-            case 6:
-                {
-                    if (info instanceof CoordinateOperation) {
-                        return ((CoordinateOperation) info).getOperationVersion();
-                    }
-                    break;
+                break;
+            }
+            case 6: {
+                if (info instanceof CoordinateOperation) {
+                    return ((CoordinateOperation) info).getOperationVersion();
                 }
-            case 7:
-                {
-                    if (info instanceof CoordinateOperation) {
-                        return ((CoordinateOperation) info)
-                                .getCoordinateOperationAccuracy()
-                                .toArray(AbstractCoordinateOperation.EMPTY_ACCURACY_ARRAY);
-                    }
-                    break;
+                break;
+            }
+            case 7: {
+                if (info instanceof CoordinateOperation) {
+                    return ((CoordinateOperation) info)
+                            .getCoordinateOperationAccuracy()
+                            .toArray(AbstractCoordinateOperation.EMPTY_ACCURACY_ARRAY);
                 }
+                break;
+            }
         }
         return null;
     }

@@ -121,8 +121,7 @@ public class ListZoomContextTest {
     public void testRange() {
 
         ListZoomContext ctxt =
-                new ListZoomContext(
-                        Arrays.asList(5000000d, 2000000d, 1000000d, 500000d, 200000d, 100000d));
+                new ListZoomContext(Arrays.asList(5000000d, 2000000d, 1000000d, 500000d, 200000d, 100000d));
 
         ScaleRange result = ctxt.getRange(1, 3);
 
@@ -140,8 +139,7 @@ public class ListZoomContextTest {
     public void testRangeFirst() {
 
         ListZoomContext ctxt =
-                new ListZoomContext(
-                        Arrays.asList(5000000d, 2000000d, 1000000d, 500000d, 200000d, 100000d));
+                new ListZoomContext(Arrays.asList(5000000d, 2000000d, 1000000d, 500000d, 200000d, 100000d));
 
         ScaleRange result = ctxt.getRange(0, 3);
 
@@ -159,8 +157,7 @@ public class ListZoomContextTest {
     public void testRangeLast() {
 
         ListZoomContext ctxt =
-                new ListZoomContext(
-                        Arrays.asList(5000000d, 2000000d, 1000000d, 500000d, 200000d, 100000d));
+                new ListZoomContext(Arrays.asList(5000000d, 2000000d, 1000000d, 500000d, 200000d, 100000d));
 
         ScaleRange result = ctxt.getRange(3, 5);
 
@@ -179,8 +176,7 @@ public class ListZoomContextTest {
     public void testRangeOpenStart() {
 
         ListZoomContext ctxt =
-                new ListZoomContext(
-                        Arrays.asList(5000000d, 2000000d, 1000000d, 500000d, 200000d, 100000d));
+                new ListZoomContext(Arrays.asList(5000000d, 2000000d, 1000000d, 500000d, 200000d, 100000d));
 
         ScaleRange result = ctxt.getRange(null, 3);
 
@@ -198,8 +194,7 @@ public class ListZoomContextTest {
     public void testRangeOpenEnd() {
 
         ListZoomContext ctxt =
-                new ListZoomContext(
-                        Arrays.asList(5000000d, 2000000d, 1000000d, 500000d, 200000d, 100000d));
+                new ListZoomContext(Arrays.asList(5000000d, 2000000d, 1000000d, 500000d, 200000d, 100000d));
 
         ScaleRange result = ctxt.getRange(3, null);
 
@@ -217,8 +212,7 @@ public class ListZoomContextTest {
     public void testRangePastStart() {
 
         ListZoomContext ctxt =
-                new ListZoomContext(
-                        Arrays.asList(5000000d, 2000000d, 1000000d, 500000d, 200000d, 100000d));
+                new ListZoomContext(Arrays.asList(5000000d, 2000000d, 1000000d, 500000d, 200000d, 100000d));
 
         ScaleRange result = ctxt.getRange(-1, 3);
 
@@ -236,8 +230,7 @@ public class ListZoomContextTest {
     public void testRangePastEnd() {
 
         ListZoomContext ctxt =
-                new ListZoomContext(
-                        Arrays.asList(5000000d, 2000000d, 1000000d, 500000d, 200000d, 100000d));
+                new ListZoomContext(Arrays.asList(5000000d, 2000000d, 1000000d, 500000d, 200000d, 100000d));
 
         ScaleRange result = ctxt.getRange(3, 6);
 
@@ -255,8 +248,7 @@ public class ListZoomContextTest {
     public void testRangeEntirelyPastEnd() {
 
         ListZoomContext ctxt =
-                new ListZoomContext(
-                        Arrays.asList(5000000d, 2000000d, 1000000d, 500000d, 200000d, 100000d));
+                new ListZoomContext(Arrays.asList(5000000d, 2000000d, 1000000d, 500000d, 200000d, 100000d));
 
         ScaleRange result = ctxt.getRange(7, 8);
 
@@ -274,8 +266,7 @@ public class ListZoomContextTest {
     public void testRangeEntirelyPastStart() {
 
         ListZoomContext ctxt =
-                new ListZoomContext(
-                        Arrays.asList(5000000d, 2000000d, 1000000d, 500000d, 200000d, 100000d));
+                new ListZoomContext(Arrays.asList(5000000d, 2000000d, 1000000d, 500000d, 200000d, 100000d));
 
         ScaleRange result = ctxt.getRange(-3, -2);
 

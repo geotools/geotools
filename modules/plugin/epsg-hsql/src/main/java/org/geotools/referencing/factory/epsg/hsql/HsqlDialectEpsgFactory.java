@@ -37,8 +37,7 @@ final class HsqlDialectEpsgFactory extends AnsiDialectEpsgFactory {
      * The regular expression pattern for searching the "FROM (" clause. This is the pattern for the
      * opening parenthesis.
      */
-    private static final Pattern OPENING_PATTERN =
-            Pattern.compile("\\s+FROM\\s*\\(", Pattern.CASE_INSENSITIVE);
+    private static final Pattern OPENING_PATTERN = Pattern.compile("\\s+FROM\\s*\\(", Pattern.CASE_INSENSITIVE);
 
     /** Constructs the factory for the given connection to the HSQL database. */
     public HsqlDialectEpsgFactory(final Hints hints) throws SQLException {
@@ -80,10 +79,7 @@ final class HsqlDialectEpsgFactory extends AnsiDialectEpsgFactory {
                     break;
                 }
             }
-            query =
-                    query.substring(0, opening)
-                            + query.substring(opening + 1, closing)
-                            + query.substring(closing + 1);
+            query = query.substring(0, opening) + query.substring(opening + 1, closing) + query.substring(closing + 1);
         }
         return query;
     }

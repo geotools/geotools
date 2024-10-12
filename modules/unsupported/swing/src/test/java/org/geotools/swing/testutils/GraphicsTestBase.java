@@ -84,14 +84,12 @@ public abstract class GraphicsTestBase<S, C extends Window, D extends WindowDriv
      * @return the button fixture
      */
     protected JButtonFixture getButton(final String buttonText) {
-        JButtonFixture button =
-                windowFixture.button(
-                        new GenericTypeMatcher<JButton>(JButton.class) {
-                            @Override
-                            protected boolean isMatching(JButton component) {
-                                return buttonText.equals(component.getText());
-                            }
-                        });
+        JButtonFixture button = windowFixture.button(new GenericTypeMatcher<JButton>(JButton.class) {
+            @Override
+            protected boolean isMatching(JButton component) {
+                return buttonText.equals(component.getText());
+            }
+        });
 
         assertNotNull(button);
         return button;

@@ -41,14 +41,12 @@ public class DisposeStopperTest {
         final File tiff = TestData.file(MosaicTest.class, "sample0.tif");
 
         boolean readSuccess = true;
-        final TIFFImageReader reader =
-                (it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReader)
-                        new TIFFImageReaderSpi().createReaderInstance();
+        final TIFFImageReader reader = (it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReader)
+                new TIFFImageReaderSpi().createReaderInstance();
         try (ImageInputStream stream = ImageIO.createImageInputStream(tiff)) {
             reader.setInput(stream);
             RenderedImage image =
-                    ImageReadDescriptor.create(
-                            stream, 0, false, false, false, null, null, null, reader, null);
+                    ImageReadDescriptor.create(stream, 0, false, false, false, null, null, null, reader, null);
 
             DisposeStopper stopper = new DisposeStopper(image);
 

@@ -83,10 +83,7 @@ public final class SwingUtilities {
      *     Component.setVisible(true)} must be invoked in order to show the frame.
      */
     public static Component toFrame(
-            Component owner,
-            final JComponent panel,
-            final String title,
-            final WindowListener listener) {
+            Component owner, final JComponent panel, final String title, final WindowListener listener) {
         while (owner != null) {
             if (owner == panel) {
                 throw new IllegalArgumentException();
@@ -157,8 +154,7 @@ public final class SwingUtilities {
      * @param title The title string for the dialog.
      * @return {@code true} if user clicked "Ok", {@code false} otherwise.
      */
-    public static boolean showOptionDialog(
-            final Component owner, final Object dialog, final String title) {
+    public static boolean showOptionDialog(final Component owner, final Object dialog, final String title) {
         return showOptionDialog(owner, dialog, title, null);
     }
 
@@ -175,10 +171,7 @@ public final class SwingUtilities {
      * @return {@code true} if user clicked "Ok", {@code false} otherwise.
      */
     public static boolean showOptionDialog(
-            final Component owner,
-            final Object dialog,
-            final String title,
-            final ActionListener reset) {
+            final Component owner, final Object dialog, final String title, final ActionListener reset) {
         // Delegates to Swing thread if this method is invoked from an other thread.
         if (!EventQueue.isDispatchThread()) {
             final boolean[] result = new boolean[1];
@@ -190,8 +183,7 @@ public final class SwingUtilities {
         Object initialValue = null;
         int okChoice = JOptionPane.OK_OPTION;
         if (reset != null) {
-            final Vocabulary resources =
-                    Vocabulary.getResources(owner != null ? owner.getLocale() : null);
+            final Vocabulary resources = Vocabulary.getResources(owner != null ? owner.getLocale() : null);
             final JButton button;
             if (reset instanceof Action) {
                 button = new JButton((Action) reset);
@@ -199,39 +191,34 @@ public final class SwingUtilities {
                 button = new JButton(resources.getString(VocabularyKeys.RESET));
                 button.addActionListener(reset);
             }
-            options =
-                    new Object[] {
-                        resources.getString(VocabularyKeys.OK),
-                        resources.getString(VocabularyKeys.CANCEL),
-                        button
-                    };
+            options = new Object[] {
+                resources.getString(VocabularyKeys.OK), resources.getString(VocabularyKeys.CANCEL), button
+            };
             initialValue = options[okChoice = 0];
         }
 
         // Brings ups the dialog box.
         final int choice;
         if (JOptionPane.getDesktopPaneForComponent(owner) != null) {
-            choice =
-                    JOptionPane.showInternalOptionDialog(
-                            owner, // Composante parente
-                            dialog, // Message
-                            title, // Titre de la boîte de dialogue
-                            JOptionPane.OK_CANCEL_OPTION, // Boutons à placer
-                            JOptionPane.PLAIN_MESSAGE, // Type du message
-                            null, // Icone
-                            options, // Liste des boutons
-                            initialValue); // Bouton par défaut
+            choice = JOptionPane.showInternalOptionDialog(
+                    owner, // Composante parente
+                    dialog, // Message
+                    title, // Titre de la boîte de dialogue
+                    JOptionPane.OK_CANCEL_OPTION, // Boutons à placer
+                    JOptionPane.PLAIN_MESSAGE, // Type du message
+                    null, // Icone
+                    options, // Liste des boutons
+                    initialValue); // Bouton par défaut
         } else {
-            choice =
-                    JOptionPane.showOptionDialog(
-                            owner, // Composante parente
-                            dialog, // Message
-                            title, // Titre de la boîte de dialogue
-                            JOptionPane.OK_CANCEL_OPTION, // Boutons à placer
-                            JOptionPane.PLAIN_MESSAGE, // Type du message
-                            null, // Icone
-                            options, // Liste des boutons
-                            initialValue); // Bouton par défaut
+            choice = JOptionPane.showOptionDialog(
+                    owner, // Composante parente
+                    dialog, // Message
+                    title, // Titre de la boîte de dialogue
+                    JOptionPane.OK_CANCEL_OPTION, // Boutons à placer
+                    JOptionPane.PLAIN_MESSAGE, // Type du message
+                    null, // Icone
+                    options, // Liste des boutons
+                    initialValue); // Bouton par défaut
         }
         return choice == okChoice;
     }
@@ -289,21 +276,19 @@ public final class SwingUtilities {
         }
         final int choice;
         if (JOptionPane.getDesktopPaneForComponent(owner) != null) {
-            choice =
-                    JOptionPane.showInternalConfirmDialog(
-                            owner, // Composante parente
-                            message, // Message
-                            title, // Titre de la boîte de dialogue
-                            JOptionPane.YES_NO_OPTION, // Boutons à faire apparaître
-                            type); // Type du message
+            choice = JOptionPane.showInternalConfirmDialog(
+                    owner, // Composante parente
+                    message, // Message
+                    title, // Titre de la boîte de dialogue
+                    JOptionPane.YES_NO_OPTION, // Boutons à faire apparaître
+                    type); // Type du message
         } else {
-            choice =
-                    JOptionPane.showConfirmDialog(
-                            owner, // Composante parente
-                            message, // Message
-                            title, // Titre de la boîte de dialogue
-                            JOptionPane.YES_NO_OPTION, // Boutons à faire apparaître
-                            type); // Type du message
+            choice = JOptionPane.showConfirmDialog(
+                    owner, // Composante parente
+                    message, // Message
+                    title, // Titre de la boîte de dialogue
+                    JOptionPane.YES_NO_OPTION, // Boutons à faire apparaître
+                    type); // Type du message
         }
         return choice == JOptionPane.YES_OPTION;
     }
@@ -327,8 +312,7 @@ public final class SwingUtilities {
         label.setFocusable(false);
         label.setOpaque(false);
         label.setBorder(null); // Certains L&F placent une bordure.
-        LookAndFeel.installColorsAndFont(
-                label, "Label.background", "Label.foreground", "Label.font");
+        LookAndFeel.installColorsAndFont(label, "Label.background", "Label.foreground", "Label.font");
         return label;
     }
 

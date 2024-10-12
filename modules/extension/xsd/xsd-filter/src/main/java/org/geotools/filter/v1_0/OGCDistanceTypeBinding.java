@@ -91,8 +91,7 @@ public class OGCDistanceTypeBinding extends AbstractComplexBinding {
     @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         Object units = node.getAttributeValue("units");
-        return DistanceUnits.of(
-                Double.parseDouble((String) value), units != null ? units.toString() : null);
+        return DistanceUnits.of(Double.parseDouble((String) value), units != null ? units.toString() : null);
     }
 
     @Override

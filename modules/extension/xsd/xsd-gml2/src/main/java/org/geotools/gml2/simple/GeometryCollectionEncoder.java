@@ -27,8 +27,7 @@ import org.xml.sax.helpers.AttributesImpl;
  * @author
  */
 public class GeometryCollectionEncoder extends GeometryEncoder<GeometryCollection> {
-    static final QualifiedName GEOMETRY_COLLECTION =
-            new QualifiedName(GML.NAMESPACE, "GeometryCollection", "gml");
+    static final QualifiedName GEOMETRY_COLLECTION = new QualifiedName(GML.NAMESPACE, "GeometryCollection", "gml");
 
     Encoder encoder;
 
@@ -38,8 +37,7 @@ public class GeometryCollectionEncoder extends GeometryEncoder<GeometryCollectio
     }
 
     @Override
-    public void encode(GeometryCollection geometry, AttributesImpl atts, GMLWriter handler)
-            throws Exception {
+    public void encode(GeometryCollection geometry, AttributesImpl atts, GMLWriter handler) throws Exception {
         handler.startElement(GEOMETRY_COLLECTION, atts);
         if (geometry.getNumGeometries() < 1) {
             throw new Exception("More than 1 geometry required!");

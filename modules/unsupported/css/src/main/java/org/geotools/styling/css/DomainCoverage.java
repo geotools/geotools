@@ -54,8 +54,7 @@ import org.geotools.util.logging.Logging;
 class DomainCoverage {
 
     /** The full range of scales possible. Once this is covered, the whole domain is */
-    static final NumberRange<Double> FULL_SCALE_RANGE =
-            new NumberRange<>(Double.class, 0d, Double.POSITIVE_INFINITY);
+    static final NumberRange<Double> FULL_SCALE_RANGE = new NumberRange<>(Double.class, 0d, Double.POSITIVE_INFINITY);
 
     static final Logger LOGGER = Logging.getLogger(DomainCoverage.class);
 
@@ -75,13 +74,12 @@ class DomainCoverage {
         Integer complexity;
 
         public SLDSelector(NumberRange<?> scaleRange, Filter filter) {
-            this.scaleRange =
-                    new NumberRange<>(
-                            Double.class,
-                            scaleRange.getMinimum(),
-                            scaleRange.isMinIncluded(),
-                            scaleRange.getMaximum(),
-                            scaleRange.isMaxIncluded());
+            this.scaleRange = new NumberRange<>(
+                    Double.class,
+                    scaleRange.getMinimum(),
+                    scaleRange.isMinIncluded(),
+                    scaleRange.getMaximum(),
+                    scaleRange.isMaxIncluded());
             this.filter = filter;
         }
 
@@ -224,9 +222,7 @@ class DomainCoverage {
 
     /** Create a new domain coverage for the given feature type */
     public DomainCoverage(
-            FeatureType targetFeatureType,
-            UnboundSimplifyingFilterVisitor simplifier,
-            ZoomContext zoomContext) {
+            FeatureType targetFeatureType, UnboundSimplifyingFilterVisitor simplifier, ZoomContext zoomContext) {
         this.elements = new ArrayList<>();
         this.targetFeatureType = targetFeatureType;
         this.simplifier = simplifier;
@@ -241,10 +237,9 @@ class DomainCoverage {
         Selector selector = rule.getSelector();
 
         // turns the rule in a set of domain coverage expressions (simplified selectors)
-        List<SLDSelector> ruleCoverage =
-                toSLDSelectors(selector, targetFeatureType).stream()
-                        .filter(s -> !generatedSelectors.contains(s))
-                        .collect(Collectors.toList());
+        List<SLDSelector> ruleCoverage = toSLDSelectors(selector, targetFeatureType).stream()
+                .filter(s -> !generatedSelectors.contains(s))
+                .collect(Collectors.toList());
         if (ruleCoverage.isEmpty()) {
             return Collections.emptyList();
         } else {
@@ -291,11 +286,7 @@ class DomainCoverage {
                 List<CssRule> derivedRules = new ArrayList<>();
                 reducedCoverage = combineSLDSelectors(reducedCoverage);
                 for (SLDSelector rc : reducedCoverage) {
-                    derivedRules.add(
-                            new CssRule(
-                                    rc.toSelector(simplifier),
-                                    rule.getProperties(),
-                                    rule.getComment()));
+                    derivedRules.add(new CssRule(rc.toSelector(simplifier), rule.getProperties(), rule.getComment()));
                 }
 
                 elements.addAll(reducedCoverage);
@@ -320,15 +311,13 @@ class DomainCoverage {
                 org.geotools.api.filter.Or or = FF.or(ss.filter, prev.filter);
                 Filter simplified = simplify(or);
                 prev = new SLDSelector(prev.scaleRange, simplified);
-            } else if (prev.scaleRange.getMaximum() == ss.scaleRange.getMinimum()
-                    && prev.filter.equals(ss.filter)) {
-                NumberRange combinedRange =
-                        new NumberRange<>(
-                                Double.class,
-                                prev.scaleRange.getMinimum(),
-                                prev.scaleRange.isMinIncluded(),
-                                ss.scaleRange.getMaximum(),
-                                ss.scaleRange.isMaxIncluded());
+            } else if (prev.scaleRange.getMaximum() == ss.scaleRange.getMinimum() && prev.filter.equals(ss.filter)) {
+                NumberRange combinedRange = new NumberRange<>(
+                        Double.class,
+                        prev.scaleRange.getMinimum(),
+                        prev.scaleRange.isMinIncluded(),
+                        ss.scaleRange.getMaximum(),
+                        ss.scaleRange.isMaxIncluded());
                 prev = new SLDSelector(combinedRange, prev.filter);
             } else {
                 combined.add(prev);
@@ -353,9 +342,7 @@ class DomainCoverage {
 
         List<CssRule> result = new ArrayList<>();
         for (SLDSelector ss : ruleCoverage) {
-            result.add(
-                    new CssRule(
-                            ss.toSelector(simplifier), rule.getProperties(), rule.getComment()));
+            result.add(new CssRule(ss.toSelector(simplifier), rule.getProperties(), rule.getComment()));
         }
 
         return result;
@@ -368,10 +355,9 @@ class DomainCoverage {
             Or or = (Or) selector;
             for (Selector s : or.getChildren()) {
                 if (s instanceof Or) {
-                    throw new IllegalArgumentException(
-                            "Unexpected or selector nested inside another one, "
-                                    + "at this point they should have been all flattened: "
-                                    + selector);
+                    throw new IllegalArgumentException("Unexpected or selector nested inside another one, "
+                            + "at this point they should have been all flattened: "
+                            + selector);
                 }
                 toIndependentSLDSelectors(s, targetFeatureType, result);
             }
@@ -387,9 +373,7 @@ class DomainCoverage {
      * scaleDependentFilters list
      */
     private void toIndependentSLDSelectors(
-            Selector selector,
-            FeatureType targetFeatureType,
-            List<SLDSelector> scaleDependentFilters) {
+            Selector selector, FeatureType targetFeatureType, List<SLDSelector> scaleDependentFilters) {
         Range<Double> range = ScaleRangeExtractor.getScaleRange(selector, zoomContext);
         if (range == null) {
             range = FULL_SCALE_RANGE;
@@ -425,8 +409,9 @@ class DomainCoverage {
 
     @Override
     public String toString() {
-        StringBuilder sb =
-                new StringBuilder("DomainCoverage[items=").append(elements.size()).append(",\n");
+        StringBuilder sb = new StringBuilder("DomainCoverage[items=")
+                .append(elements.size())
+                .append(",\n");
         for (SLDSelector selector : elements) {
             sb.append(selector).append("\n");
         }

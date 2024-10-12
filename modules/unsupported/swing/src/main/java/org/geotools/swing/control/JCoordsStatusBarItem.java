@@ -42,8 +42,7 @@ import org.geotools.swing.locale.LocaleUtils;
  * @version $Id$
  */
 public class JCoordsStatusBarItem extends StatusBarItem {
-    private static final String COMPONENT_NAME =
-            LocaleUtils.getValue("StatusBar", "CoordsItemName");
+    private static final String COMPONENT_NAME = LocaleUtils.getValue("StatusBar", "CoordsItemName");
 
     private static final String TOOL_TIP = LocaleUtils.getValue("StatusBar", "CoordsTooltip");
     private static final int DEFAULT_NUM_INTEGER_DIGITS = 3;
@@ -78,31 +77,29 @@ public class JCoordsStatusBarItem extends StatusBarItem {
 
         setFormat(mapPane.getDisplayArea());
 
-        mapPane.addMouseListener(
-                new MapMouseAdapter() {
-                    @Override
-                    public void onMouseEntered(MapMouseEvent ev) {
-                        displayCoords(ev.getWorldPos());
-                    }
+        mapPane.addMouseListener(new MapMouseAdapter() {
+            @Override
+            public void onMouseEntered(MapMouseEvent ev) {
+                displayCoords(ev.getWorldPos());
+            }
 
-                    @Override
-                    public void onMouseExited(MapMouseEvent ev) {
-                        displayNoCursor();
-                    }
+            @Override
+            public void onMouseExited(MapMouseEvent ev) {
+                displayNoCursor();
+            }
 
-                    @Override
-                    public void onMouseMoved(MapMouseEvent ev) {
-                        displayCoords(ev.getWorldPos());
-                    }
-                });
+            @Override
+            public void onMouseMoved(MapMouseEvent ev) {
+                displayCoords(ev.getWorldPos());
+            }
+        });
 
-        mapPane.addMapPaneListener(
-                new MapPaneAdapter() {
-                    @Override
-                    public void onDisplayAreaChanged(MapPaneEvent ev) {
-                        setFormat(((ReferencedEnvelope) ev.getData()));
-                    }
-                });
+        mapPane.addMapPaneListener(new MapPaneAdapter() {
+            @Override
+            public void onDisplayAreaChanged(MapPaneEvent ev) {
+                setFormat(((ReferencedEnvelope) ev.getData()));
+            }
+        });
 
         displayNoCursor();
     }

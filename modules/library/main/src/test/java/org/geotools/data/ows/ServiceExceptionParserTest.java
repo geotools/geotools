@@ -37,93 +37,72 @@ public class ServiceExceptionParserTest {
     @Test
     public void testSimple() throws Exception {
         ServiceException exception =
-                ServiceExceptionParser.parse(
-                        mockStream(
-                                "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
-                                        + "<ServiceExceptionReport>\n"
-                                        + "  <ServiceException code=\"42\">test</ServiceException>\n"
-                                        + "</ServiceExceptionReport>"));
+                ServiceExceptionParser.parse(mockStream("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
+                        + "<ServiceExceptionReport>\n"
+                        + "  <ServiceException code=\"42\">test</ServiceException>\n"
+                        + "</ServiceExceptionReport>"));
 
-        assertThat(
-                exception,
-                both(hasProperty("message", equalTo("test")))
-                        .and(hasProperty("code", equalTo("42"))));
+        assertThat(exception, both(hasProperty("message", equalTo("test"))).and(hasProperty("code", equalTo("42"))));
         assertThat(exception.getNext(), nullValue());
     }
 
     @Test
     public void testCoalescing() throws Exception {
         ServiceException exception =
-                ServiceExceptionParser.parse(
-                        mockStream(
-                                "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
-                                        + "<ServiceExceptionReport>\n"
-                                        + "  <ServiceException code=\"42\"><![CDATA[coalesced]]> message</ServiceException>\n"
-                                        + "</ServiceExceptionReport>"));
+                ServiceExceptionParser.parse(mockStream("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
+                        + "<ServiceExceptionReport>\n"
+                        + "  <ServiceException code=\"42\"><![CDATA[coalesced]]> message</ServiceException>\n"
+                        + "</ServiceExceptionReport>"));
 
         assertThat(
                 exception,
-                both(hasProperty("message", equalTo("coalesced message")))
-                        .and(hasProperty("code", equalTo("42"))));
+                both(hasProperty("message", equalTo("coalesced message"))).and(hasProperty("code", equalTo("42"))));
         assertThat(exception.getNext(), nullValue());
     }
 
     @Test
     public void testSequence() throws Exception {
         ServiceException exception =
-                ServiceExceptionParser.parse(
-                        mockStream(
-                                "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
-                                        + "<ServiceExceptionReport>\n"
-                                        + "  <ServiceException code=\"42\">test</ServiceException>\n"
-                                        + "  <ServiceException code=\"20\">another test</ServiceException>\n"
-                                        + "  <ServiceException code=\"60\">yet another test</ServiceException>\n"
-                                        + "</ServiceExceptionReport>"));
+                ServiceExceptionParser.parse(mockStream("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
+                        + "<ServiceExceptionReport>\n"
+                        + "  <ServiceException code=\"42\">test</ServiceException>\n"
+                        + "  <ServiceException code=\"20\">another test</ServiceException>\n"
+                        + "  <ServiceException code=\"60\">yet another test</ServiceException>\n"
+                        + "</ServiceExceptionReport>"));
 
-        assertThat(
-                exception,
-                both(hasProperty("message", equalTo("test")))
-                        .and(hasProperty("code", equalTo("42"))));
+        assertThat(exception, both(hasProperty("message", equalTo("test"))).and(hasProperty("code", equalTo("42"))));
         assertThat(
                 exception.getNext(),
-                both(hasProperty("message", equalTo("another test")))
-                        .and(hasProperty("code", equalTo("20"))));
+                both(hasProperty("message", equalTo("another test"))).and(hasProperty("code", equalTo("20"))));
         assertThat(
                 exception.getNext().getNext(),
-                both(hasProperty("message", equalTo("yet another test")))
-                        .and(hasProperty("code", equalTo("60"))));
+                both(hasProperty("message", equalTo("yet another test"))).and(hasProperty("code", equalTo("60"))));
         assertThat(exception.getNext().getNext().getNext(), nullValue());
     }
 
     @Test
     public void testSequenceWithEmptyCodes() throws Exception {
         ServiceException exception =
-                ServiceExceptionParser.parse(
-                        mockStream(
-                                "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
-                                        + "<ServiceExceptionReport>\n"
-                                        + "  <ServiceException>test</ServiceException>\n"
-                                        + "  <ServiceException code=\"\">another test</ServiceException>\n"
-                                        + "  <ServiceException code=\"60\">yet another test</ServiceException>\n"
-                                        + "  <ServiceException code=\"20\">still another test</ServiceException>\n"
-                                        + "</ServiceExceptionReport>"));
+                ServiceExceptionParser.parse(mockStream("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
+                        + "<ServiceExceptionReport>\n"
+                        + "  <ServiceException>test</ServiceException>\n"
+                        + "  <ServiceException code=\"\">another test</ServiceException>\n"
+                        + "  <ServiceException code=\"60\">yet another test</ServiceException>\n"
+                        + "  <ServiceException code=\"20\">still another test</ServiceException>\n"
+                        + "</ServiceExceptionReport>"));
 
         assertThat(
                 exception,
-                both(hasProperty("message", equalTo("yet another test")))
-                        .and(hasProperty("code", equalTo("60"))));
+                both(hasProperty("message", equalTo("yet another test"))).and(hasProperty("code", equalTo("60"))));
         assertThat(
                 exception.getNext(),
-                both(hasProperty("message", equalTo("still another test")))
-                        .and(hasProperty("code", equalTo("20"))));
+                both(hasProperty("message", equalTo("still another test"))).and(hasProperty("code", equalTo("20"))));
         assertThat(
                 exception.getNext().getNext(),
-                both(hasProperty("message", equalTo("test")))
-                        .and(hasProperty("code", nullValue())));
+                both(hasProperty("message", equalTo("test"))).and(hasProperty("code", nullValue())));
         assertThat(
                 exception.getNext().getNext().getNext(),
-                both(hasProperty("message", equalTo("another test")))
-                        .and(hasProperty("code", equalTo(""))));
+                both(hasProperty("message", equalTo("another test"))).and(hasProperty("code", equalTo(""))));
         assertThat(exception.getNext().getNext().getNext().getNext(), nullValue());
     }
 
@@ -131,23 +110,19 @@ public class ServiceExceptionParserTest {
     public void testXXE() throws Exception {
         URL resource = ServiceExceptionParserTest.class.getResource("secret.txt");
         ServiceException exception =
-                ServiceExceptionParser.parse(
-                        mockStream(
-                                "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
-                                        + "<!DOCTYPE foo [ <!ELEMENT ServiceExceptionReport ANY ><!ENTITY xxe SYSTEM \""
-                                        + resource
-                                        + "\" >]>"
-                                        + "<ServiceExceptionReport>\n"
-                                        + "  <ServiceException code=\"42\">&xxe;</ServiceException>\n"
-                                        + "</ServiceExceptionReport>"));
+                ServiceExceptionParser.parse(mockStream("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
+                        + "<!DOCTYPE foo [ <!ELEMENT ServiceExceptionReport ANY ><!ENTITY xxe SYSTEM \""
+                        + resource
+                        + "\" >]>"
+                        + "<ServiceExceptionReport>\n"
+                        + "  <ServiceException code=\"42\">&xxe;</ServiceException>\n"
+                        + "</ServiceExceptionReport>"));
 
         assertThat(
                 exception,
                 hasProperty(
                         "message",
-                        not(
-                                containsString(
-                                        "Top secret information that shouldn't appear in an error message."))));
+                        not(containsString("Top secret information that shouldn't appear in an error message."))));
         assertThat(exception.getNext(), nullValue());
     }
 

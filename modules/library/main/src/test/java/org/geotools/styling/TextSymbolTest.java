@@ -80,13 +80,10 @@ public class TextSymbolTest {
         for (int j = 0; j < rows; j++) {
             for (int i = 0; i < symbol.length; i++) {
                 point = makeSamplePoint(geomFac, ((double) i * 5.0) + 5.0, 5.0 + (j * 5));
-                pointFeature =
-                        SimpleFeatureBuilder.build(
-                                pointType,
-                                new Object[] {
-                                    point, Double.valueOf(size), Double.valueOf(rotation), symbol[i]
-                                },
-                                null);
+                pointFeature = SimpleFeatureBuilder.build(
+                        pointType,
+                        new Object[] {point, Double.valueOf(size), Double.valueOf(rotation), symbol[i]},
+                        null);
                 data.add(pointFeature);
             }
 

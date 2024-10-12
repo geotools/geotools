@@ -92,11 +92,9 @@ public class MappedPosition implements Serializable {
      * @param object User argument.
      * @throws InvalidParameterValueException if {@code object} is null.
      */
-    private static void ensureNonNull(final String name, final Object object)
-            throws IllegalArgumentException {
+    private static void ensureNonNull(final String name, final Object object) throws IllegalArgumentException {
         if (object == null) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, name));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, name));
         }
     }
 
@@ -168,8 +166,7 @@ public class MappedPosition implements Serializable {
      *     if none. The content of this buffer will be overwritten.
      * @return The distance in units of the target CRS axis.
      */
-    final double getError(final MathTransform transform, final Position buffer)
-            throws TransformException {
+    final double getError(final MathTransform transform, final Position buffer) throws TransformException {
         return distance(transform.transform(source, buffer), target);
     }
 

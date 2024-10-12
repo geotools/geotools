@@ -284,8 +284,7 @@ public interface GridCoverage2DReader extends GridCoverageReader {
      * @return an array of 2 double with the resolution of the selected overview.
      * @throws IOException in case an error occurs.
      */
-    double[] getReadingResolutions(OverviewPolicy policy, double[] requestedResolution)
-            throws IOException;
+    double[] getReadingResolutions(OverviewPolicy policy, double[] requestedResolution) throws IOException;
 
     /**
      * Return the resolution of the overview which would be picked out for the provided requested
@@ -300,8 +299,7 @@ public interface GridCoverage2DReader extends GridCoverageReader {
      * @throws NullPointerException if the specified coverageName is <code>null</code>
      * @throws IllegalArgumentException if the specified coverageName does not exist
      */
-    double[] getReadingResolutions(
-            String coverageName, OverviewPolicy policy, double[] requestedResolution)
+    double[] getReadingResolutions(String coverageName, OverviewPolicy policy, double[] requestedResolution)
             throws IOException;
 
     /**

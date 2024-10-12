@@ -42,10 +42,7 @@ public interface Renderer {
      * @param viewport The visible extent to be rendered
      * @param style The style definition to apply to each feature
      */
-    void render(
-            FeatureCollection<? extends FeatureType, ? extends Feature> fc,
-            Envelope viewport,
-            Style style);
+    void render(FeatureCollection<? extends FeatureType, ? extends Feature> fc, Envelope viewport, Style style);
 
     /**
      * Getter for property interactive.

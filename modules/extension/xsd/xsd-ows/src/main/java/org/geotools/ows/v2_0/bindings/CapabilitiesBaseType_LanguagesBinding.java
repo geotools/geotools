@@ -102,9 +102,7 @@ public class CapabilitiesBaseType_LanguagesBinding extends AbstractComplexEMFBin
         LanguagesType complex = (LanguagesType) object;
         if (!StringUtils.isEmpty(complex.getLanguage())) {
             for (String currentLanguage : complex.getLanguage().split(",")) {
-                Element elem =
-                        document.createElementNS(
-                                OWS.Language.getNamespaceURI(), OWS.Language.getLocalPart());
+                Element elem = document.createElementNS(OWS.Language.getNamespaceURI(), OWS.Language.getLocalPart());
                 elem.appendChild(document.createTextNode(currentLanguage));
                 value.appendChild(elem);
             }

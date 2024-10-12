@@ -95,8 +95,8 @@ public class ApplicationSchemaXSD extends XSD {
 
                     if (schemaLocationFolder.startsWith("file:")) {
                         try {
-                            schemaLocationFolder =
-                                    URLs.urlToFile(new URL(schemaLocationFolder)).getPath();
+                            schemaLocationFolder = URLs.urlToFile(new URL(schemaLocationFolder))
+                                    .getPath();
                         } catch (MalformedURLException e) {
                             // this can't be a good outcome, but try anyway
                             schemaLocationFolder = schemaLocationFolder.substring("file:".length());
@@ -109,9 +109,7 @@ public class ApplicationSchemaXSD extends XSD {
                         locationUri = locationFile.toURI().toString();
                     }
 
-                    if (locationUri == null
-                            && location != null
-                            && schemaLocationFolder.startsWith("jar:file:")) {
+                    if (locationUri == null && location != null && schemaLocationFolder.startsWith("jar:file:")) {
                         // handle schemas included in a JAR file
                         locationUri = schemaLocationFolder + "/" + location;
                     }

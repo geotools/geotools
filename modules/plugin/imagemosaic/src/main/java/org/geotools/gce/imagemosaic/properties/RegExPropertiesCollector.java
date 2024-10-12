@@ -43,10 +43,7 @@ public abstract class RegExPropertiesCollector extends PropertiesCollector {
     }
 
     public RegExPropertiesCollector(
-            PropertiesCollectorSPI spi,
-            List<String> propertyNames,
-            String regex,
-            boolean fullPath) {
+            PropertiesCollectorSPI spi, List<String> propertyNames, String regex, boolean fullPath) {
         super(spi, propertyNames);
         this.fullPath = fullPath;
         pattern = Pattern.compile(regex);
@@ -111,7 +108,8 @@ public abstract class RegExPropertiesCollector extends PropertiesCollector {
             }
             addMatch(match);
         }
-    };
+    }
+    ;
 
     @Override
     public void setProperties(Map<String, Object> map) {
@@ -121,8 +119,7 @@ public abstract class RegExPropertiesCollector extends PropertiesCollector {
 
         // set the properties, only if we have matches!
         if (matches.isEmpty()) {
-            if (LOGGER.isLoggable(Level.FINE))
-                LOGGER.fine("No matches found for this property extractor:");
+            if (LOGGER.isLoggable(Level.FINE)) LOGGER.fine("No matches found for this property extractor:");
         }
         int index = 0;
         for (String propertyName : getPropertyNames()) {

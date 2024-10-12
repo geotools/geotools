@@ -78,15 +78,13 @@ public class MBTilesFileTest {
             final File journal = new File(temp.getAbsolutePath() + "-journal");
             // Initialize the journal file
             // Define a counter thread
-            Thread th =
-                    new Thread(
-                            () -> {
-                                while (true) {
-                                    if (journal.exists()) {
-                                        counter.incrementAndGet();
-                                    }
-                                }
-                            });
+            Thread th = new Thread(() -> {
+                while (true) {
+                    if (journal.exists()) {
+                        counter.incrementAndGet();
+                    }
+                }
+            });
             // launch the thread
             th.start();
             // add data to the mbtile
@@ -199,8 +197,7 @@ public class MBTilesFileTest {
     public void testMBTilesBounds() throws IOException, SQLException {
         // this one has different bounds per zoom level, even in geographic terms
         try (MBTilesFile mbTilesFile =
-                new MBTilesFile(
-                        new File("./src/test/resources/org/geotools/mbtiles/madagascar.mbtiles"))) {
+                new MBTilesFile(new File("./src/test/resources/org/geotools/mbtiles/madagascar.mbtiles"))) {
             RectangleLong bounds = mbTilesFile.getTileBounds(7, true);
             assertEquals(79, bounds.getMinX());
             assertEquals(82, bounds.getMaxX());
@@ -217,8 +214,7 @@ public class MBTilesFileTest {
     @Test
     public void testMBTilesMetadataCenter() throws IOException, SQLException {
         try (MBTilesFile mbTilesFile =
-                new MBTilesFile(
-                        new File("./src/test/resources/org/geotools/mbtiles/madagascar.mbtiles"))) {
+                new MBTilesFile(new File("./src/test/resources/org/geotools/mbtiles/madagascar.mbtiles"))) {
             MBTilesMetadata metadata = mbTilesFile.loadMetaData();
             double[] center = metadata.getCenter();
             assertEquals(-12.2168, center[0], DELTA);
@@ -230,8 +226,7 @@ public class MBTilesFileTest {
     @Test
     public void testWorldEnvelopeToTiles() throws IOException, SQLException {
         try (MBTilesFile mbTilesFile =
-                new MBTilesFile(
-                        new File("./src/test/resources/org/geotools/mbtiles/madagascar.mbtiles"))) {
+                new MBTilesFile(new File("./src/test/resources/org/geotools/mbtiles/madagascar.mbtiles"))) {
             RectangleLong bounds = mbTilesFile.toTilesRectangle(MBTilesFile.WORLD_ENVELOPE, 7);
             assertEquals(0, bounds.getMinX());
             assertEquals(128, bounds.getMaxX());
@@ -243,8 +238,7 @@ public class MBTilesFileTest {
     @Test
     public void testLocalEnvelopeToTiles() throws IOException, SQLException {
         try (MBTilesFile mbTilesFile =
-                new MBTilesFile(
-                        new File("./src/test/resources/org/geotools/mbtiles/madagascar.mbtiles"))) {
+                new MBTilesFile(new File("./src/test/resources/org/geotools/mbtiles/madagascar.mbtiles"))) {
             ReferencedEnvelope envelope =
                     new ReferencedEnvelope(0, 5000000, 0, 5000000, MBTilesFile.SPHERICAL_MERCATOR);
             RectangleLong bounds = mbTilesFile.toTilesRectangle(envelope, 7);

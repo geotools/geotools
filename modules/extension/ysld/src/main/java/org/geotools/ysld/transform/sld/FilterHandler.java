@@ -34,19 +34,14 @@ public class FilterHandler extends SldTransformHandler {
     ParserHandler delegate;
 
     @Override
-    public void element(XMLStreamReader xml, SldTransformContext context)
-            throws XMLStreamException, IOException {
+    public void element(XMLStreamReader xml, SldTransformContext context) throws XMLStreamException, IOException {
         try {
             if (delegate == null && "Filter".equals(xml.getLocalName())) {
                 delegate = new ParserHandler(config(context));
                 delegate.startDocument();
             }
             if (delegate != null) {
-                delegate.startElement(
-                        xml.getNamespaceURI(),
-                        xml.getLocalName(),
-                        qname(xml.getName()),
-                        attributes(xml));
+                delegate.startElement(xml.getNamespaceURI(), xml.getLocalName(), qname(xml.getName()), attributes(xml));
             }
         } catch (SAXException e) {
             throw new XMLStreamException(e);
@@ -54,12 +49,10 @@ public class FilterHandler extends SldTransformHandler {
     }
 
     @Override
-    public void characters(XMLStreamReader xml, SldTransformContext context)
-            throws XMLStreamException, IOException {
+    public void characters(XMLStreamReader xml, SldTransformContext context) throws XMLStreamException, IOException {
         if (delegate != null) {
             try {
-                delegate.characters(
-                        xml.getTextCharacters(), xml.getTextStart(), xml.getTextLength());
+                delegate.characters(xml.getTextCharacters(), xml.getTextStart(), xml.getTextLength());
             } catch (SAXException e) {
                 throw new XMLStreamException(e);
             }
@@ -67,12 +60,10 @@ public class FilterHandler extends SldTransformHandler {
     }
 
     @Override
-    public void endElement(XMLStreamReader xml, SldTransformContext context)
-            throws XMLStreamException, IOException {
+    public void endElement(XMLStreamReader xml, SldTransformContext context) throws XMLStreamException, IOException {
         if (delegate != null) {
             try {
-                delegate.endElement(
-                        xml.getNamespaceURI(), xml.getLocalName(), qname(xml.getName()));
+                delegate.endElement(xml.getNamespaceURI(), xml.getLocalName(), qname(xml.getName()));
             } catch (SAXException e) {
                 throw new XMLStreamException(e);
             }

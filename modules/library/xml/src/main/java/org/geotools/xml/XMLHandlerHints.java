@@ -42,8 +42,7 @@ public class XMLHandlerHints implements Map<String, Object> {
     /** Tells the parser to "Stream" */
     public static final String STREAM_HINT = "org.geotools.xml.gml.STREAM_HINT";
     /** Sets the level of compliance that the filter encoder should use */
-    public static final String FILTER_COMPLIANCE_STRICTNESS =
-            "org.geotools.xml.filter.FILTER_COMPLIANCE_STRICTNESS";
+    public static final String FILTER_COMPLIANCE_STRICTNESS = "org.geotools.xml.filter.FILTER_COMPLIANCE_STRICTNESS";
     /** Supplied {@link EntityResolver} for Schema and/or DTD validation */
     public static final String ENTITY_RESOLVER = GeoTools.ENTITY_RESOLVER;
     /** Supplied {@link SaxParserFactory} */

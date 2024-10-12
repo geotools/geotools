@@ -46,8 +46,7 @@ public enum DateFormat {
     basic_date_time("uuuuMMdd'T'HHmmss.SSS[X]", "uuuuMMdd'T'HHmmss.SSS[VV][X]"), //
     basic_date_time_no_millis("uuuuMMdd'T'HHmmss[X]", "uuuuMMdd'T'HHmmss[VV][X]"), //
     basic_ordinal_date("uuuuDDD"), //
-    basic_ordinal_date_time(
-            "yyyyDDD'T'HHmmss.SSS[X]", "yyyyDDD'T'HHmmss[.SSSSSSSSS][.SSS][.S][VV][X]"), //
+    basic_ordinal_date_time("yyyyDDD'T'HHmmss.SSS[X]", "yyyyDDD'T'HHmmss[.SSSSSSSSS][.SSS][.S][VV][X]"), //
     basic_ordinal_date_time_no_millis("yyyyDDD'T'HHmmss[X]", "yyyyDDD'T'HHmmss[VV][X]"), //
     basic_time("HHmmss[.SSS][X]", "HHmmss[.SSSSSSSSS][.SSS][.S][VV][X]"), //
     basic_time_no_millis("HHmmss[X]", "HHmmss[VV][X]"), //
@@ -65,13 +64,10 @@ public enum DateFormat {
     date_hour_minute_second("u-M-d'T'H:m:s"), //
     date_hour_minute_second_fraction(
             "uuuu-MM-dd'T'HH:mm:ss[.SSS]", "[uuuu-MM-dd'T'HH:mm:ss[.SSSSSSSSS][.SSS][.S]]"), //
-    date_hour_minute_second_millis(
-            "uuuu-MM-dd'T'HH:mm:ss.SSS", "uuuu-MM-dd'T'HH:mm:ss[.SSSSSSSSS][.SSS][.S]"), //
+    date_hour_minute_second_millis("uuuu-MM-dd'T'HH:mm:ss.SSS", "uuuu-MM-dd'T'HH:mm:ss[.SSSSSSSSS][.SSS][.S]"), //
     // insanely flexible format, has to be built by hand
     date_optional_time("date_optional_time"), //
-    date_time(
-            "uuuu-MM-dd'T'HH:mm:ss[.SSS][X]",
-            "u-M-d'T'H:m:s[.SSSSSSSSS][.SSS][.SS][.S][VV][X]"), //
+    date_time("uuuu-MM-dd'T'HH:mm:ss[.SSS][X]", "u-M-d'T'H:m:s[.SSSSSSSSS][.SSS][.SS][.S][VV][X]"), //
     date_time_no_millis("uuuu-MM-dd'T'HH:mm:ss[X]", "u-M-d'T'H:m:s[VV][X]"),
     epoch_millis("epoch_millis"), //
     epoch_second("epoch_second"), //
@@ -81,17 +77,14 @@ public enum DateFormat {
     hour_minute_second_fraction("HH:mm:ss[.SSS]", "H:m:s[.SSSSSSSSS][.SSS][.S]"), //
     hour_minute_second_millis("HH:mm:ss[.SSS]", "H:m:s[.SSSSSSSSS][.SSS][.S]"), //
     ordinal_date("uuuu-DDD", "u-D"), //
-    ordinal_date_time(
-            "uuuu-DDD'T'HH:mm:ss[.SSS][X]", "u-D'T'H:m:s[.SSSSSSSSS][.SSS][.S][VV][X]"), //
+    ordinal_date_time("uuuu-DDD'T'HH:mm:ss[.SSS][X]", "u-D'T'H:m:s[.SSSSSSSSS][.SSS][.S][VV][X]"), //
     ordinal_date_time_no_millis("uuuu-DDD'T'HH:mm:ss[X]", "u-D'T'H:m:s[VV][X]"), //
     time("HH:mm:ss.SSS[X]", "H:m:s[.SSSSSSSSS][.SSS][.S][VV][X]"), //
     time_no_millis("HH:mm:ss[X]", "H:m:s[VV][X]"), //
     t_time("'T'HH:mm:ss[.SSS][X]", "'T'H:m:s[.SSSSSSSSS][.SSS][.S][VV][X]"), //
     t_time_no_millis("'T'HH:mm:ss[X]", "'T'H:m:s[VV][X]"), //
     week_date("YYYY-'W'ww-e", "Y-'W'w-e"), //
-    week_date_time(
-            "YYYY-'W'ww-e'T'HH:mm:ss[.SSS][X]",
-            "Y-'W'w-e'T'H:m:s[.SSSSSSSSS][.SSS][.S][VV][X]"), //
+    week_date_time("YYYY-'W'ww-e'T'HH:mm:ss[.SSS][X]", "Y-'W'w-e'T'H:m:s[.SSSSSSSSS][.SSS][.S][VV][X]"), //
     week_date_time_no_millis("YYYY-'W'ww-e'T'HH:mm:ss[X]", "Y-'W'w-e'T'H:m:s[VV][X]"), //
     year("uuuu", "u"), //
     year_month("uuuu-MM", "u-M"), //

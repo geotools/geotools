@@ -63,33 +63,31 @@ public class DirectLayerLabelsTest {
         Assert.assertNotNull(style);
         MapContent map = new MapContent();
         map.addLayer(new FeatureLayer(collection, style));
-        DirectLayer dl =
-                new DirectLayer() {
+        DirectLayer dl = new DirectLayer() {
 
-                    @Override
-                    public ReferencedEnvelope getBounds() {
-                        // TODO Auto-generated method stub
-                        return null;
-                    }
+            @Override
+            public ReferencedEnvelope getBounds() {
+                // TODO Auto-generated method stub
+                return null;
+            }
 
-                    @Override
-                    public void draw(Graphics2D graphics, MapContent map, MapViewport viewport) {
-                        graphics.setColor(Color.BLACK);
-                        graphics.drawString("DirectLayer", 10, 10);
-                    }
-                };
+            @Override
+            public void draw(Graphics2D graphics, MapContent map, MapViewport viewport) {
+                graphics.setColor(Color.BLACK);
+                graphics.drawString("DirectLayer", 10, 10);
+            }
+        };
         map.addLayer(dl);
         StreamingRenderer renderer = new StreamingRenderer();
         renderer.setMapContent(map);
         ReferencedEnvelope env = map.getMaxBounds();
         int boundary = 10;
-        env =
-                new ReferencedEnvelope(
-                        env.getMinX() - boundary,
-                        env.getMaxX() + boundary,
-                        env.getMinY() - boundary,
-                        env.getMaxY() + boundary,
-                        null);
+        env = new ReferencedEnvelope(
+                env.getMinX() - boundary,
+                env.getMaxX() + boundary,
+                env.getMinY() - boundary,
+                env.getMaxY() + boundary,
+                null);
         RendererBaseTest.showRender("testDirectLabeling", renderer, timout, env);
         map.dispose();
     }

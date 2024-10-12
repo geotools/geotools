@@ -59,8 +59,7 @@ public class XSAnyTypeBindingTest extends GML3TestSupport {
 
         public static final String NAMESPACE = "http://www.geotools.org/anytypetest";
 
-        public static final QName OBSERVATION =
-                new QName("http://www.geotools.org/anytypetest", "Observation");
+        public static final QName OBSERVATION = new QName("http://www.geotools.org/anytypetest", "Observation");
 
         public static final QName UNRESTRICTED = new QName(NAMESPACE, "unrestrictedEl");
 
@@ -129,12 +128,12 @@ public class XSAnyTypeBindingTest extends GML3TestSupport {
         Document dom = encode(myCode, observation);
         // print(dom);
         assertEquals("test:Observation", dom.getDocumentElement().getNodeName());
-        assertEquals(1, dom.getDocumentElement().getElementsByTagName("test:class").getLength());
-        assertNotNull(
-                dom.getDocumentElement()
-                        .getElementsByTagName("test:class")
-                        .item(0)
-                        .getFirstChild());
+        assertEquals(
+                1, dom.getDocumentElement().getElementsByTagName("test:class").getLength());
+        assertNotNull(dom.getDocumentElement()
+                .getElementsByTagName("test:class")
+                .item(0)
+                .getFirstChild());
         assertEquals(
                 SAMPLE_CLASS_VALUE,
                 dom.getDocumentElement()
@@ -165,22 +164,14 @@ public class XSAnyTypeBindingTest extends GML3TestSupport {
         Name attName = new NameImpl(typeName.getNamespaceURI(), "class");
         // Name name, Class<?> binding, boolean isAbstract, List<Filter> restrictions,
         // PropertyType superType, InternationalString description
-        AttributeType p =
-                new AttributeTypeImpl(attName, String.class, false, false, null, null, null);
+        AttributeType p = new AttributeTypeImpl(attName, String.class, false, false, null, null, null);
         AttributeDescriptor pd = new AttributeDescriptorImpl(p, attName, 0, 0, false, null);
 
         propertyDescriptors.add(pd);
         properties.add(new AttributeImpl(classValue, pd, null));
 
         ComplexTypeImpl at =
-                new ComplexTypeImpl(
-                        myType,
-                        propertyDescriptors,
-                        false,
-                        false,
-                        Collections.emptyList(),
-                        null,
-                        null);
+                new ComplexTypeImpl(myType, propertyDescriptors, false, false, Collections.emptyList(), null, null);
 
         AttributeDescriptorImpl ai = new AttributeDescriptorImpl(at, myType, 0, 0, false, null);
 
@@ -195,25 +186,22 @@ public class XSAnyTypeBindingTest extends GML3TestSupport {
 
         // create fake attribute simpleContent
         Name attName = new NameImpl(null, "simpleContent");
-        AttributeType p =
-                new AttributeTypeImpl(attName, String.class, false, false, null, null, null);
+        AttributeType p = new AttributeTypeImpl(attName, String.class, false, false, null, null, null);
         AttributeDescriptor pd = new AttributeDescriptorImpl(p, attName, 0, 0, true, null);
 
         propertyDescriptors.add(pd);
         properties.add(new AttributeImpl(contents, pd, null));
 
-        ComplexTypeImpl at =
-                new ComplexTypeImpl(
-                        unrestrictedType,
-                        propertyDescriptors,
-                        false,
-                        false,
-                        Collections.emptyList(),
-                        XSSchema.ANYTYPE_TYPE,
-                        null);
+        ComplexTypeImpl at = new ComplexTypeImpl(
+                unrestrictedType,
+                propertyDescriptors,
+                false,
+                false,
+                Collections.emptyList(),
+                XSSchema.ANYTYPE_TYPE,
+                null);
 
-        AttributeDescriptorImpl ai =
-                new AttributeDescriptorImpl(at, unrestrictedType, 0, 0, false, null);
+        AttributeDescriptorImpl ai = new AttributeDescriptorImpl(at, unrestrictedType, 0, 0, false, null);
 
         return new ComplexAttributeImpl(properties, ai, null);
     }

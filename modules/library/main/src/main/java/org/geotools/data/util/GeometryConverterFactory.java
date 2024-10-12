@@ -67,17 +67,15 @@ public class GeometryConverterFactory implements ConverterFactory {
                     public <T> T convert(Object source, Class<T> target) throws Exception {
                         Envelope e = (Envelope) source;
                         GeometryFactory factory = new GeometryFactory();
-                        return target.cast(
-                                factory.createPolygon(
-                                        factory.createLinearRing(
-                                                new Coordinate[] {
-                                                    new Coordinate(e.getMinX(), e.getMinY()),
-                                                    new Coordinate(e.getMaxX(), e.getMinY()),
-                                                    new Coordinate(e.getMaxX(), e.getMaxY()),
-                                                    new Coordinate(e.getMinX(), e.getMaxY()),
-                                                    new Coordinate(e.getMinX(), e.getMinY())
-                                                }),
-                                        null));
+                        return target.cast(factory.createPolygon(
+                                factory.createLinearRing(new Coordinate[] {
+                                    new Coordinate(e.getMinX(), e.getMinY()),
+                                    new Coordinate(e.getMaxX(), e.getMinY()),
+                                    new Coordinate(e.getMaxX(), e.getMaxY()),
+                                    new Coordinate(e.getMinX(), e.getMaxY()),
+                                    new Coordinate(e.getMinX(), e.getMinY())
+                                }),
+                                null));
                     }
                 };
             }
@@ -92,10 +90,8 @@ public class GeometryConverterFactory implements ConverterFactory {
                         Geometry geometry = (Geometry) source;
                         Envelope envelope = geometry.getEnvelopeInternal();
                         if (geometry.getUserData() instanceof CoordinateReferenceSystem) {
-                            envelope =
-                                    new ReferencedEnvelope(
-                                            envelope,
-                                            (CoordinateReferenceSystem) geometry.getUserData());
+                            envelope = new ReferencedEnvelope(
+                                    envelope, (CoordinateReferenceSystem) geometry.getUserData());
                         }
                         return target.cast(envelope);
                     }

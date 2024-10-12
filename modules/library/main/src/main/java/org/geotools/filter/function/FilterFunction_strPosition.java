@@ -44,26 +44,22 @@ public class FilterFunction_strPosition extends FunctionExpressionImpl {
     public static FunctionName NAME;
 
     static {
-        Parameter<String> method =
-                new Parameter<>(
-                        "method",
-                        String.class,
-                        Text.text("direction"),
-                        Text.text("direction to search"),
-                        true,
-                        1,
-                        1,
-                        "forward",
-                        new KVP(
-                                Parameter.OPTIONS,
-                                Arrays.asList(new String[] {"forward", "backToFront"})));
-        NAME =
-                new FunctionNameImpl(
-                        "strPosition",
-                        parameter("string", String.class),
-                        parameter("string", String.class),
-                        parameter("lookup", String.class),
-                        method);
+        Parameter<String> method = new Parameter<>(
+                "method",
+                String.class,
+                Text.text("direction"),
+                Text.text("direction to search"),
+                true,
+                1,
+                1,
+                "forward",
+                new KVP(Parameter.OPTIONS, Arrays.asList(new String[] {"forward", "backToFront"})));
+        NAME = new FunctionNameImpl(
+                "strPosition",
+                parameter("string", String.class),
+                parameter("string", String.class),
+                parameter("lookup", String.class),
+                method);
     }
 
     public FilterFunction_strPosition() {

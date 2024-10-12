@@ -78,8 +78,7 @@ public class ChannelSelectionImpl implements ChannelSelection {
     }
 
     @Override
-    public void setRGBChannels(
-            SelectedChannelType red, SelectedChannelType green, SelectedChannelType blue) {
+    public void setRGBChannels(SelectedChannelType red, SelectedChannelType green, SelectedChannelType blue) {
         this.red = red;
         this.green = green;
         this.blue = blue;

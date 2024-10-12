@@ -89,8 +89,7 @@ public class KMLConfiguration extends Configuration {
         container.registerComponentInstance(new StyleMap());
         container.registerComponentInstance(new FolderStack());
         SchemaRegistry schemaRegistry = new SchemaRegistry();
-        KMLCustomSchemaHandlerFactory handlerFactory =
-                new KMLCustomSchemaHandlerFactory(schemaRegistry);
+        KMLCustomSchemaHandlerFactory handlerFactory = new KMLCustomSchemaHandlerFactory(schemaRegistry);
         container.registerComponentInstance(schemaRegistry);
         container.registerComponentInstance(handlerFactory);
     }
@@ -105,14 +104,10 @@ public class KMLConfiguration extends Configuration {
         // Types
         //
         // container.registerComponentImplementation(KML.AbstractColorStyleType,AbstractColorStyleTypeBinding.class);
-        container.registerComponentImplementation(
-                KML.AbstractColorStyleType, ColorStyleTypeBinding.class);
-        container.registerComponentImplementation(
-                KML.AbstractContainerType, ContainerTypeBinding.class);
-        container.registerComponentImplementation(
-                KML.AbstractFeatureType, FeatureTypeBinding.class);
-        container.registerComponentImplementation(
-                KML.AbstractGeometryType, GeometryTypeBinding.class);
+        container.registerComponentImplementation(KML.AbstractColorStyleType, ColorStyleTypeBinding.class);
+        container.registerComponentImplementation(KML.AbstractContainerType, ContainerTypeBinding.class);
+        container.registerComponentImplementation(KML.AbstractFeatureType, FeatureTypeBinding.class);
+        container.registerComponentImplementation(KML.AbstractGeometryType, GeometryTypeBinding.class);
         //
         // container.registerComponentImplementation(KML.AbstractLatLonBoxType,AbstractLatLonBoxTypeBinding.class);
         container.registerComponentImplementation(KML.AbstractObjectType, ObjectTypeBinding.class);
@@ -149,8 +144,7 @@ public class KMLConfiguration extends Configuration {
         //
         // container.registerComponentImplementation(KML.colorModeEnumType,ColorModeEnumTypeBinding.class);
         //        container.registerComponentImplementation(KML.colorType,ColorTypeBinding.class);
-        container.registerComponentImplementation(
-                KML.coordinatesType, CoordinatesTypeBinding.class);
+        container.registerComponentImplementation(KML.coordinatesType, CoordinatesTypeBinding.class);
         //        container.registerComponentImplementation(KML.CreateType,CreateTypeBinding.class);
         container.registerComponentImplementation(KML.DataType, DataTypeBinding.class);
         container.registerComponentImplementation(KML.dateTimeType, DateTimeTypeBinding.class);
@@ -158,8 +152,7 @@ public class KMLConfiguration extends Configuration {
         //
         // container.registerComponentImplementation(KML.displayModeEnumType,DisplayModeEnumTypeBinding.class);
         container.registerComponentImplementation(KML.DocumentType, DocumentTypeV22Binding.class);
-        container.registerComponentImplementation(
-                KML.ExtendedDataType, ExtendedDataTypeBinding.class);
+        container.registerComponentImplementation(KML.ExtendedDataType, ExtendedDataTypeBinding.class);
         container.registerComponentImplementation(KML.FolderType, FolderTypeBinding.class);
         container.registerComponentImplementation(KML.Folder, FolderBinding.class);
         //
@@ -197,8 +190,7 @@ public class KMLConfiguration extends Configuration {
         container.registerComponentImplementation(KML.LookAtType, LookAtTypeBinding.class);
         container.registerComponentImplementation(KML.MetadataType, MetadataTypeBinding.class);
         //        container.registerComponentImplementation(KML.ModelType,ModelTypeBinding.class);
-        container.registerComponentImplementation(
-                KML.MultiGeometryType, MultiGeometryTypeBinding.class);
+        container.registerComponentImplementation(KML.MultiGeometryType, MultiGeometryTypeBinding.class);
         //
         // container.registerComponentImplementation(KML.NetworkLinkControlType,NetworkLinkControlTypeBinding.class);
         //

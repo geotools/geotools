@@ -65,8 +65,7 @@ public class GeneralOblique extends MapProjection {
      * @param parameters The group of parameter values.
      * @throws ParameterNotFoundException if a required parameter was not found.
      */
-    protected GeneralOblique(final ParameterValueGroup parameters)
-            throws ParameterNotFoundException {
+    protected GeneralOblique(final ParameterValueGroup parameters) throws ParameterNotFoundException {
         super(parameters);
     }
 
@@ -78,8 +77,7 @@ public class GeneralOblique extends MapProjection {
      * @param y The latitude of the coordinate, in <strong>radians</strong>.
      */
     @Override
-    protected Point2D transformNormalized(double x, double y, Point2D ptDst)
-            throws ProjectionException {
+    protected Point2D transformNormalized(double x, double y, Point2D ptDst) throws ProjectionException {
         final double sinlat = sin(y);
         final double coslat = cos(y);
         final double sinlatP = sin(latitudeOfOrigin);
@@ -87,12 +85,7 @@ public class GeneralOblique extends MapProjection {
         final double sinlon1 = sin(x);
         final double coslon1 = cos(x);
 
-        x =
-                toDegrees(
-                                atan(
-                                        (coslat * sinlon1)
-                                                / (coslat * sinlatP * coslon1 + sinlat * coslatP)))
-                        / globalScale;
+        x = toDegrees(atan((coslat * sinlon1) / (coslat * sinlatP * coslon1 + sinlat * coslatP))) / globalScale;
         y = toDegrees(asin(sinlat * sinlatP - coslat * coslatP * coslon1)) / globalScale;
 
         if (ptDst != null) {
@@ -107,8 +100,7 @@ public class GeneralOblique extends MapProjection {
      * stores the result in {@code ptDst} (linear distance on a unit sphere).
      */
     @Override
-    protected Point2D inverseTransformNormalized(double x, double y, Point2D ptDst)
-            throws ProjectionException {
+    protected Point2D inverseTransformNormalized(double x, double y, Point2D ptDst) throws ProjectionException {
         final double scalePI = globalScale * PI / 180;
         final double sinlat = sin(y * scalePI);
         final double coslat = cos(y * scalePI);
@@ -157,20 +149,19 @@ public class GeneralOblique extends MapProjection {
         private static final long serialVersionUID = 8452425384927757022L;
 
         /** The parameters group. */
-        static final ParameterDescriptorGroup PARAMETERS =
-                createDescriptorGroup(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.AUTO, "General_Oblique"),
-                        },
-                        new ParameterDescriptor[] {
-                            SEMI_MAJOR,
-                            SEMI_MINOR,
-                            CENTRAL_MERIDIAN,
-                            LATITUDE_OF_ORIGIN,
-                            SCALE_FACTOR,
-                            FALSE_EASTING,
-                            FALSE_NORTHING
-                        });
+        static final ParameterDescriptorGroup PARAMETERS = createDescriptorGroup(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.AUTO, "General_Oblique"),
+                },
+                new ParameterDescriptor[] {
+                    SEMI_MAJOR,
+                    SEMI_MINOR,
+                    CENTRAL_MERIDIAN,
+                    LATITUDE_OF_ORIGIN,
+                    SCALE_FACTOR,
+                    FALSE_EASTING,
+                    FALSE_NORTHING
+                });
 
         /** Constructs a new provider. */
         public Provider() {

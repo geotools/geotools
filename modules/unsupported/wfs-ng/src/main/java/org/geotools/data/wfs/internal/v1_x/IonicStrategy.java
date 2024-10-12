@@ -35,23 +35,21 @@ import org.picocontainer.MutablePicoContainer;
 public class IonicStrategy extends StrictWFS_1_x_Strategy {
 
     /** A filter 1.0 configuration to encode Filters issued to Ionic */
-    private static final Configuration Ionic_filter_1_0_0_Configuration =
-            new OGCConfiguration() {
+    private static final Configuration Ionic_filter_1_0_0_Configuration = new OGCConfiguration() {
 
-                @Override
-                protected void registerBindings(Map<QName, Object> bindings) {
-                    super.registerBindings(bindings);
-                }
+        @Override
+        protected void registerBindings(Map<QName, Object> bindings) {
+            super.registerBindings(bindings);
+        }
 
-                @Override
-                protected void registerBindings(MutablePicoContainer container) {
-                    super.registerBindings(container);
-                    // override the binding for GML.BoxType to use the one producing an output Ionic
-                    // understands
-                    container.registerComponentImplementation(
-                            GML.BoxType, IonicGML2BoxTypeBinding.class);
-                }
-            };
+        @Override
+        protected void registerBindings(MutablePicoContainer container) {
+            super.registerBindings(container);
+            // override the binding for GML.BoxType to use the one producing an output Ionic
+            // understands
+            container.registerComponentImplementation(GML.BoxType, IonicGML2BoxTypeBinding.class);
+        }
+    };
 
     /**
      * A gml:Box binding to override the default one to adapt to the Ionic server that recognizes

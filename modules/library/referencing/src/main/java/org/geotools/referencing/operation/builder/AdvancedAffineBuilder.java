@@ -95,8 +95,8 @@ public class AdvancedAffineBuilder extends MathTransformBuilder {
      * @param vectors GCPs
      */
     public AdvancedAffineBuilder(final List<MappedPosition> vectors)
-            throws IllegalArgumentException, MismatchedDimensionException,
-                    MismatchedReferenceSystemException, FactoryException {
+            throws IllegalArgumentException, MismatchedDimensionException, MismatchedReferenceSystemException,
+                    FactoryException {
         /** use constructor with approximate values taken from 6 parameters of affine transform */
         this(vectors, (AffineTransform2D) (new AffineTransformBuilder(vectors).getMathTransform()));
     }
@@ -109,8 +109,8 @@ public class AdvancedAffineBuilder extends MathTransformBuilder {
      * @param affineTrans approximate affine transformation
      */
     public AdvancedAffineBuilder(final List<MappedPosition> vectors, AffineTransform2D affineTrans)
-            throws IllegalArgumentException, MismatchedDimensionException,
-                    MismatchedReferenceSystemException, FactoryException {
+            throws IllegalArgumentException, MismatchedDimensionException, MismatchedReferenceSystemException,
+                    FactoryException {
         super.setMappedPositions(vectors);
 
         /** sets approximate values */
@@ -229,12 +229,8 @@ public class AdvancedAffineBuilder extends MathTransformBuilder {
             double y = getSourcePoints()[j].getOrdinate(1);
 
             /* a1 is target value - transfomed value*/
-            double dx =
-                    getTargetPoints()[j].getOrdinate(0)
-                            - (sx * cosphix * x - sy * sinphiy * y + tx);
-            double dy =
-                    getTargetPoints()[j].getOrdinate(1)
-                            - (sx * sinphix * x + sy * cosphiy * y + ty);
+            double dx = getTargetPoints()[j].getOrdinate(0) - (sx * cosphix * x - sy * sinphiy * y + tx);
+            double dy = getTargetPoints()[j].getOrdinate(1) - (sx * sinphix * x + sy * cosphiy * y + ty);
 
             l.setElement(j, 0, dx);
             l.setElement((l.getNumRow() / 2) + j, 0, dy);
@@ -450,9 +446,7 @@ public class AdvancedAffineBuilder extends MathTransformBuilder {
         GeneralMatrix BT = B.clone();
         BT.transpose();
 
-        GeneralMatrix AAB =
-                new GeneralMatrix(
-                        ATA.getNumRow() + B.getNumRow(), ATA.getNumCol() + BT.getNumCol());
+        GeneralMatrix AAB = new GeneralMatrix(ATA.getNumRow() + B.getNumRow(), ATA.getNumCol() + BT.getNumCol());
 
         ATA.copySubMatrix(0, 0, ATA.getNumRow(), ATA.getNumCol(), 0, 0, AAB);
         B.copySubMatrix(0, 0, B.getNumRow(), B.getNumCol(), ATA.getNumRow(), 0, AAB);
@@ -460,8 +454,7 @@ public class AdvancedAffineBuilder extends MathTransformBuilder {
 
         GeneralMatrix zero = new GeneralMatrix(B.getNumRow(), B.getNumRow());
         zero.setZero();
-        zero.copySubMatrix(
-                0, 0, zero.getNumRow(), zero.getNumCol(), B.getNumCol(), B.getNumCol(), AAB);
+        zero.copySubMatrix(0, 0, zero.getNumRow(), zero.getNumCol(), B.getNumCol(), B.getNumCol(), AAB);
 
         return AAB;
     }

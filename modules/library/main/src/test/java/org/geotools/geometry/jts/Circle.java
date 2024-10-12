@@ -89,14 +89,13 @@ class Circle {
             double d = Math.sqrt(dx * dx + dy * dy);
             double distanceFromCircle = Math.abs(radius - d);
             if (distanceFromCircle > tolerance) {
-                fail(
-                        "Found a point "
-                                + x
-                                + ","
-                                + y
-                                + " that's not on the circle with distance "
-                                + distanceFromCircle
-                                + " from it");
+                fail("Found a point "
+                        + x
+                        + ","
+                        + y
+                        + " that's not on the circle with distance "
+                        + distanceFromCircle
+                        + " from it");
             }
             assertEquals(radius, d, tolerance);
             double angle = atan2(dy, dx);
@@ -112,12 +111,11 @@ class Circle {
                 double apothem = Math.sqrt(radius * radius - halfChordLength * halfChordLength);
                 double distance = radius - apothem;
                 if (distance > tolerance) {
-                    fail(
-                            "Max tolerance is "
-                                    + tolerance
-                                    + " but found a chord that is at "
-                                    + distance
-                                    + " from the circle");
+                    fail("Max tolerance is "
+                            + tolerance
+                            + " but found a chord that is at "
+                            + distance
+                            + " from the circle");
                 }
             }
             prevAngle = angle;

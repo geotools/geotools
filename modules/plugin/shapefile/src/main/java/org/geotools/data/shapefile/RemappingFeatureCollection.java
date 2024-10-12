@@ -45,8 +45,7 @@ class RemappingFeatureCollection extends DecoratingSimpleFeatureCollection {
      * and field names have a max length of 10. Will return the original collection if already
      * compatible
      */
-    public static SimpleFeatureCollection getShapefileCompatibleCollection(
-            SimpleFeatureCollection fc) {
+    public static SimpleFeatureCollection getShapefileCompatibleCollection(SimpleFeatureCollection fc) {
         Map<String, String> attributeMappings = createAttributeMappings(fc.getSchema());
 
         // check if the remapping is actually needed
@@ -101,8 +100,7 @@ class RemappingFeatureCollection extends DecoratingSimpleFeatureCollection {
 
     Map<String, String> attributesMapping;
 
-    public RemappingFeatureCollection(
-            SimpleFeatureCollection delegate, Map<String, String> attributesMapping) {
+    public RemappingFeatureCollection(SimpleFeatureCollection delegate, Map<String, String> attributesMapping) {
         super(delegate);
         this.attributesMapping = attributesMapping;
     }
@@ -156,9 +154,7 @@ class RemappingFeatureCollection extends DecoratingSimpleFeatureCollection {
      * the mapped schema.
      */
     static SimpleFeature remap(
-            SimpleFeature source,
-            Map<String, String> attributeMappings,
-            SimpleFeatureBuilder builder) {
+            SimpleFeature source, Map<String, String> attributeMappings, SimpleFeatureBuilder builder) {
         SimpleFeatureType target = builder.getFeatureType();
         for (int i = 0; i < target.getAttributeCount(); i++) {
             AttributeDescriptor attributeType = target.getDescriptor(i);
@@ -183,9 +179,7 @@ class RemappingFeatureCollection extends DecoratingSimpleFeatureCollection {
         SimpleFeatureBuilder builder;
 
         public RemappingIterator(
-                SimpleFeatureIterator delegate,
-                Map<String, String> attributesMapping,
-                SimpleFeatureType schema) {
+                SimpleFeatureIterator delegate, Map<String, String> attributesMapping, SimpleFeatureType schema) {
             this.delegate = delegate;
             this.attributesMapping = RemappingFeatureCollection.invertMappings(attributesMapping);
             this.builder = new SimpleFeatureBuilder(schema);

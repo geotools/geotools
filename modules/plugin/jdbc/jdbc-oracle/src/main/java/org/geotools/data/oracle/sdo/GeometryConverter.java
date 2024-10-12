@@ -163,15 +163,8 @@ public class GeometryConverter {
                 int[] elemInfo = {1, 1003, 3};
                 double[] ordinates;
                 if (SDO.D(geom) == 2)
-                    ordinates =
-                            new double[] {
-                                env.getMinX(), env.getMinY(), env.getMaxX(), env.getMaxY()
-                            };
-                else
-                    ordinates =
-                            new double[] {
-                                env.getMinX(), env.getMinY(), 0, env.getMaxX(), env.getMaxY(), 0
-                            };
+                    ordinates = new double[] {env.getMinX(), env.getMinY(), env.getMaxX(), env.getMaxY()};
+                else ordinates = new double[] {env.getMinX(), env.getMinY(), 0, env.getMaxX(), env.getMaxY(), 0};
 
                 SDO_POINT = null;
                 SDO_ELEM_INFO = toARRAY(elemInfo, "MDSYS.SDO_ELEM_INFO_ARRAY");
@@ -264,8 +257,7 @@ public class GeometryConverter {
      * @param measures Per Coordinate Measures, {@code null} if not required
      * @param D Dimension of Coordinates (limited to 2d, 3d)
      */
-    protected final OracleArray toORDINATE(CoordinateList list, double[][] measures, final int D)
-            throws SQLException {
+    protected final OracleArray toORDINATE(CoordinateList list, double[][] measures, final int D) throws SQLException {
 
         final int LENGTH = measures != null ? measures.length : 0;
         final int LEN = D + LENGTH;
@@ -379,14 +371,11 @@ public class GeometryConverter {
     }
 
     /** Presents struct as a double[] */
-    protected double[] asDoubleArray(OracleStruct struct, final double DEFAULT)
-            throws SQLException {
+    protected double[] asDoubleArray(OracleStruct struct, final double DEFAULT) throws SQLException {
         if (struct == null) return null;
         // cannot cast Object[] to Number[]
         return asDoubleArray(
-                Arrays.copyOf(
-                        struct.getAttributes(), struct.getAttributes().length, Number[].class),
-                DEFAULT);
+                Arrays.copyOf(struct.getAttributes(), struct.getAttributes().length, Number[].class), DEFAULT);
     }
 
     /** Presents array as a double[] */

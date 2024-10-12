@@ -34,8 +34,7 @@ import org.geotools.feature.FeatureIterator;
  *
  * @author Jody Garnett, Refractions Research, Inc.
  */
-public class DelegateFeatureReader<T extends FeatureType, F extends Feature>
-        implements FeatureReader<T, F> {
+public class DelegateFeatureReader<T extends FeatureType, F extends Feature> implements FeatureReader<T, F> {
     FeatureIterator<F> delegate;
     T schema;
 

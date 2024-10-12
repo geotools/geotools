@@ -65,22 +65,18 @@ public class OptDirectedGraphSerializerTest {
             Assert.assertEquals(before.getEdges().size(), after.getEdges().size());
 
             // ensure two nodes of degree 1, and nnodes-2 nodes of degree 2
-            GraphVisitor visitor =
-                    component -> {
-                        DirectedNode node = (DirectedNode) component;
-                        if (node.getInDegree() == 0 || node.getOutDegree() == 0)
-                            return (Graph.PASS_AND_CONTINUE);
-                        return (Graph.FAIL_QUERY);
-                    };
+            GraphVisitor visitor = component -> {
+                DirectedNode node = (DirectedNode) component;
+                if (node.getInDegree() == 0 || node.getOutDegree() == 0) return (Graph.PASS_AND_CONTINUE);
+                return (Graph.FAIL_QUERY);
+            };
             Assert.assertEquals(2, after.queryNodes(visitor).size());
 
-            visitor =
-                    component -> {
-                        DirectedNode node = (DirectedNode) component;
-                        if (node.getInDegree() == 1 || node.getOutDegree() == 1)
-                            return (Graph.PASS_AND_CONTINUE);
-                        return (Graph.FAIL_QUERY);
-                    };
+            visitor = component -> {
+                DirectedNode node = (DirectedNode) component;
+                if (node.getInDegree() == 1 || node.getOutDegree() == 1) return (Graph.PASS_AND_CONTINUE);
+                return (Graph.FAIL_QUERY);
+            };
 
             Assert.assertEquals(after.getNodesOfDegree(2).size(), nnodes - 2);
 
@@ -114,32 +110,25 @@ public class OptDirectedGraphSerializerTest {
             Assert.assertEquals(before.getNodes().size(), after.getNodes().size());
             Assert.assertEquals(before.getEdges().size(), after.getEdges().size());
 
-            GraphVisitor visitor =
-                    component -> {
-                        DirectedNode node = (DirectedNode) component;
-                        if (node.getInDegree() == 0 && node.getOutDegree() == 2)
-                            return (Graph.PASS_AND_CONTINUE);
-                        return (Graph.FAIL_QUERY);
-                    };
+            GraphVisitor visitor = component -> {
+                DirectedNode node = (DirectedNode) component;
+                if (node.getInDegree() == 0 && node.getOutDegree() == 2) return (Graph.PASS_AND_CONTINUE);
+                return (Graph.FAIL_QUERY);
+            };
             Assert.assertEquals(1, after.queryNodes(visitor).size()); // root
 
-            visitor =
-                    component -> {
-                        DirectedNode node = (DirectedNode) component;
-                        if (node.getInDegree() == 1 && node.getOutDegree() == 2)
-                            return (Graph.PASS_AND_CONTINUE);
-                        return (Graph.FAIL_QUERY);
-                    };
-            Assert.assertEquals(
-                    after.queryNodes(visitor).size(), (int) Math.pow(2, k) - 2); // internal
+            visitor = component -> {
+                DirectedNode node = (DirectedNode) component;
+                if (node.getInDegree() == 1 && node.getOutDegree() == 2) return (Graph.PASS_AND_CONTINUE);
+                return (Graph.FAIL_QUERY);
+            };
+            Assert.assertEquals(after.queryNodes(visitor).size(), (int) Math.pow(2, k) - 2); // internal
 
-            visitor =
-                    component -> {
-                        DirectedNode node = (DirectedNode) component;
-                        if (node.getInDegree() == 1 && node.getOutDegree() == 0)
-                            return (Graph.PASS_AND_CONTINUE);
-                        return (Graph.FAIL_QUERY);
-                    };
+            visitor = component -> {
+                DirectedNode node = (DirectedNode) component;
+                if (node.getInDegree() == 1 && node.getOutDegree() == 0) return (Graph.PASS_AND_CONTINUE);
+                return (Graph.FAIL_QUERY);
+            };
             Assert.assertEquals(after.queryNodes(visitor).size(), (int) Math.pow(2, k)); // leaves
         } catch (Exception e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);

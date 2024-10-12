@@ -63,22 +63,19 @@ public class OracleGroupByVisitorTestSetup extends JDBCGroupByVisitorTestSetup {
 
     @Override
     protected void createFt1GroupByTable() throws Exception {
-        String sql =
-                "CREATE TABLE FT1_GROUP_BY ("
-                        + "id INT, geometry MDSYS.SDO_GEOMETRY, intProperty INT, "
-                        + "doubleProperty FLOAT, stringProperty VARCHAR(255)"
-                        + ", PRIMARY KEY(id))";
+        String sql = "CREATE TABLE FT1_GROUP_BY ("
+                + "id INT, geometry MDSYS.SDO_GEOMETRY, intProperty INT, "
+                + "doubleProperty FLOAT, stringProperty VARCHAR(255)"
+                + ", PRIMARY KEY(id))";
         run(sql);
 
-        sql =
-                "INSERT INTO USER_SDO_GEOM_METADATA (TABLE_NAME, COLUMN_NAME, DIMINFO, SRID ) "
-                        + "VALUES ('ft1_group_by','geometry',MDSYS.SDO_DIM_ARRAY(MDSYS.SDO_DIM_ELEMENT('X',-180,180,0.5), "
-                        + "MDSYS.SDO_DIM_ELEMENT('Y',-90,90,0.5)), 4326)";
+        sql = "INSERT INTO USER_SDO_GEOM_METADATA (TABLE_NAME, COLUMN_NAME, DIMINFO, SRID ) "
+                + "VALUES ('ft1_group_by','geometry',MDSYS.SDO_DIM_ARRAY(MDSYS.SDO_DIM_ELEMENT('X',-180,180,0.5), "
+                + "MDSYS.SDO_DIM_ELEMENT('Y',-90,90,0.5)), 4326)";
         run(sql);
 
-        sql =
-                "CREATE INDEX FT1_GROUP_BY_GEOMETRY_IDX ON FT1_GROUP_BY(GEOMETRY) INDEXTYPE IS MDSYS.SPATIAL_INDEX" //
-                        + " PARAMETERS ('SDO_INDX_DIMS=2 LAYER_GTYPE=\"POINT\"')";
+        sql = "CREATE INDEX FT1_GROUP_BY_GEOMETRY_IDX ON FT1_GROUP_BY(GEOMETRY) INDEXTYPE IS MDSYS.SPATIAL_INDEX" //
+                + " PARAMETERS ('SDO_INDX_DIMS=2 LAYER_GTYPE=\"POINT\"')";
         run(sql);
 
         run("INSERT INTO FT1_GROUP_BY VALUES (0," + pointSql(4326, 0, 0) + ", 0, 0.0,'aa')");

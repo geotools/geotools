@@ -29,8 +29,7 @@ import org.geotools.util.factory.Hints;
 public class FilterFunction_abs_2 extends FunctionExpressionImpl {
 
     public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "abs_2", parameter("long", Long.class), parameter("number", Long.class));
+            new FunctionNameImpl("abs_2", parameter("long", Long.class), parameter("number", Long.class));
 
     public FilterFunction_abs_2() {
         super("abs_2");

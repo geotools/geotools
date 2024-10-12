@@ -59,8 +59,7 @@ public class GML3ParsingTest {
 
         // update the schemaLocation to point at the schema
         Document instance = db.parse(getClass().getResourceAsStream("states.xml"));
-        instance.getDocumentElement()
-                .setAttribute("schemaLocation", "http://www.openplans.org/topp target/states.xsd");
+        instance.getDocumentElement().setAttribute("schemaLocation", "http://www.openplans.org/topp target/states.xsd");
 
         File xml = new File("target/states.xml");
         // xml.deleteOnExit();
@@ -91,10 +90,8 @@ public class GML3ParsingTest {
 
         Polygon polygon = (Polygon) g;
         Assert.assertEquals(3, CoordinateSequences.coordinateDimension(polygon));
-        Geometry expected =
-                new WKTReader()
-                        .read(
-                                "POLYGON((94000 471000 10, 94001 471000 11, 94001 471001 12, 94000 471001 13, 94000 471000 10))");
+        Geometry expected = new WKTReader()
+                .read("POLYGON((94000 471000 10, 94001 471000 11, 94001 471001 12, 94000 471001 13, 94000 471000 10))");
         Assert.assertTrue(CoordinateSequences.equalsND(expected, polygon));
     }
 
@@ -109,7 +106,8 @@ public class GML3ParsingTest {
         java.util.Calendar calendar = java.util.Calendar.getInstance(gmt);
         calendar.clear();
         calendar.set(2006, 5, 28, 4, 8, 0);
-        Assert.assertEquals(calendar.getTime(), period.getBeginning().getPosition().getDate());
+        Assert.assertEquals(
+                calendar.getTime(), period.getBeginning().getPosition().getDate());
         calendar.set(2009, 5, 28, 6, 8, 0);
         Assert.assertEquals(calendar.getTime(), period.getEnding().getPosition().getDate());
     }

@@ -251,50 +251,49 @@ public class SLDTransformerTest extends XmlTestSupport {
     /** SLD Fragment reported to produce error on user list - no related Jira. */
     @Test
     public void testTextSymbolizerLabelPalcement() {
-        String xml =
-                "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>"
-                        + "<StyledLayerDescriptor version=\"1.0.0\" "
-                        + "              xsi:schemaLocation=\"http://www.opengis.net/sld StyledLayerDescriptor.xsd\" "
-                        + "              xmlns=\"http://www.opengis.net/sld\" "
-                        + "              xmlns:ogc=\"http://www.opengis.net/ogc\" "
-                        + "              xmlns:xlink=\"http://www.w3.org/1999/xlink\" "
-                        + "              xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">"
-                        + "      <NamedLayer>"
-                        + "              <Name>Default Line</Name>"
-                        + "              <UserStyle>"
-                        + "                      <Title>A boring default style</Title>"
-                        + "                      <Abstract>A sample style that just prints out a blue line</Abstract>"
-                        + "                              <FeatureTypeStyle>"
-                        + "                              <Rule>"
-                        + "                                      <Name>Rule 1</Name>"
-                        + "                                      <Title>Blue Line</Title>"
-                        + "                                      <Abstract>A blue line with a 1 pixel width</Abstract>"
-                        + "                                      <LineSymbolizer>"
-                        + "                                              <Stroke>"
-                        + "                                                      <CssParameter name=\"stroke\">#0000ff</CssParameter>"
-                        + "                                              </Stroke>"
-                        + "                                      </LineSymbolizer>"
-                        + "                              </Rule>"
-                        + "                              <Rule>"
-                        + "                              <TextSymbolizer>"
-                        + "                <Label><ogc:PropertyName>name</ogc:PropertyName></Label>"
-                        + "                <Font>"
-                        + "                    <CssParameter name=\"font-family\">Arial</CssParameter>"
-                        + "                    <CssParameter name=\"font-style\">normal</CssParameter>"
-                        + "                    <CssParameter name=\"font-size\">12</CssParameter>"
-                        + "                    <CssParameter name=\"font-weight\">normal</CssParameter>"
-                        + "                </Font>"
-                        + "                <LabelPlacement>"
-                        + "                      <LinePlacement>"
-                        + "                              <PerpendicularOffset>0</PerpendicularOffset>"
-                        + "                      </LinePlacement>"
-                        + "                </LabelPlacement>"
-                        + "                </TextSymbolizer>"
-                        + "                              </Rule>"
-                        + "                  </FeatureTypeStyle>"
-                        + "              </UserStyle>"
-                        + "      </NamedLayer>"
-                        + "</StyledLayerDescriptor>";
+        String xml = "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>"
+                + "<StyledLayerDescriptor version=\"1.0.0\" "
+                + "              xsi:schemaLocation=\"http://www.opengis.net/sld StyledLayerDescriptor.xsd\" "
+                + "              xmlns=\"http://www.opengis.net/sld\" "
+                + "              xmlns:ogc=\"http://www.opengis.net/ogc\" "
+                + "              xmlns:xlink=\"http://www.w3.org/1999/xlink\" "
+                + "              xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">"
+                + "      <NamedLayer>"
+                + "              <Name>Default Line</Name>"
+                + "              <UserStyle>"
+                + "                      <Title>A boring default style</Title>"
+                + "                      <Abstract>A sample style that just prints out a blue line</Abstract>"
+                + "                              <FeatureTypeStyle>"
+                + "                              <Rule>"
+                + "                                      <Name>Rule 1</Name>"
+                + "                                      <Title>Blue Line</Title>"
+                + "                                      <Abstract>A blue line with a 1 pixel width</Abstract>"
+                + "                                      <LineSymbolizer>"
+                + "                                              <Stroke>"
+                + "                                                      <CssParameter name=\"stroke\">#0000ff</CssParameter>"
+                + "                                              </Stroke>"
+                + "                                      </LineSymbolizer>"
+                + "                              </Rule>"
+                + "                              <Rule>"
+                + "                              <TextSymbolizer>"
+                + "                <Label><ogc:PropertyName>name</ogc:PropertyName></Label>"
+                + "                <Font>"
+                + "                    <CssParameter name=\"font-family\">Arial</CssParameter>"
+                + "                    <CssParameter name=\"font-style\">normal</CssParameter>"
+                + "                    <CssParameter name=\"font-size\">12</CssParameter>"
+                + "                    <CssParameter name=\"font-weight\">normal</CssParameter>"
+                + "                </Font>"
+                + "                <LabelPlacement>"
+                + "                      <LinePlacement>"
+                + "                              <PerpendicularOffset>0</PerpendicularOffset>"
+                + "                      </LinePlacement>"
+                + "                </LabelPlacement>"
+                + "                </TextSymbolizer>"
+                + "                              </Rule>"
+                + "                  </FeatureTypeStyle>"
+                + "              </UserStyle>"
+                + "      </NamedLayer>"
+                + "</StyledLayerDescriptor>";
 
         StringReader reader = new StringReader(xml);
         SLDParser sldParser = new SLDParser(sf, reader);
@@ -322,36 +321,35 @@ public class SLDTransformerTest extends XmlTestSupport {
      */
     @Test
     public void testPointPlacementEmpty() {
-        String xml =
-                "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
-                        + "<StyledLayerDescriptor version=\"1.0.0\" xmlns=\"http://www.opengis.net/sld\" xmlns:ogc=\"http://www.opengis.net/ogc\""
-                        + "  xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\""
-                        + "  xsi:schemaLocation=\"http://www.opengis.net/sld http://schemas.opengis.net/sld/1.0.0/StyledLayerDescriptor.xsd\">"
-                        + "  <NamedLayer>"
-                        + "    <Name>foo</Name>"
-                        + "    <UserStyle>"
-                        + "      <Name>pointplacement</Name>"
-                        + "      <FeatureTypeStyle>"
-                        + "        <Rule>"
-                        + "          <MaxScaleDenominator>32000</MaxScaleDenominator>"
-                        + "          <TextSymbolizer>"
-                        + "            <Label>"
-                        + "              <ogc:PropertyName>NAME</ogc:PropertyName>"
-                        + "            </Label>"
-                        + "            <Font>"
-                        + "              <CssParameter name=\"font-family\">Arial</CssParameter>"
-                        + "              <CssParameter name=\"font-weight\">Bold</CssParameter>"
-                        + "              <CssParameter name=\"font-size\">14</CssParameter>"
-                        + "            </Font>"
-                        + "            <LabelPlacement>" // completely empty PointPlacement
-                        + "              <PointPlacement />"
-                        + "            </LabelPlacement>"
-                        + "          </TextSymbolizer>"
-                        + "        </Rule>"
-                        + "      </FeatureTypeStyle>"
-                        + "    </UserStyle>"
-                        + "  </NamedLayer>"
-                        + "</StyledLayerDescriptor>";
+        String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+                + "<StyledLayerDescriptor version=\"1.0.0\" xmlns=\"http://www.opengis.net/sld\" xmlns:ogc=\"http://www.opengis.net/ogc\""
+                + "  xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\""
+                + "  xsi:schemaLocation=\"http://www.opengis.net/sld http://schemas.opengis.net/sld/1.0.0/StyledLayerDescriptor.xsd\">"
+                + "  <NamedLayer>"
+                + "    <Name>foo</Name>"
+                + "    <UserStyle>"
+                + "      <Name>pointplacement</Name>"
+                + "      <FeatureTypeStyle>"
+                + "        <Rule>"
+                + "          <MaxScaleDenominator>32000</MaxScaleDenominator>"
+                + "          <TextSymbolizer>"
+                + "            <Label>"
+                + "              <ogc:PropertyName>NAME</ogc:PropertyName>"
+                + "            </Label>"
+                + "            <Font>"
+                + "              <CssParameter name=\"font-family\">Arial</CssParameter>"
+                + "              <CssParameter name=\"font-weight\">Bold</CssParameter>"
+                + "              <CssParameter name=\"font-size\">14</CssParameter>"
+                + "            </Font>"
+                + "            <LabelPlacement>" // completely empty PointPlacement
+                + "              <PointPlacement />"
+                + "            </LabelPlacement>"
+                + "          </TextSymbolizer>"
+                + "        </Rule>"
+                + "      </FeatureTypeStyle>"
+                + "    </UserStyle>"
+                + "  </NamedLayer>"
+                + "</StyledLayerDescriptor>";
         StringReader reader = new StringReader(xml);
         SLDParser sldParser = new SLDParser(sf, reader);
 
@@ -376,39 +374,38 @@ public class SLDTransformerTest extends XmlTestSupport {
      */
     @Test
     public void testPointPlacementNoAnchorPoint() throws TransformerException {
-        String xml =
-                "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
-                        + "<StyledLayerDescriptor version=\"1.0.0\" xmlns=\"http://www.opengis.net/sld\" xmlns:ogc=\"http://www.opengis.net/ogc\""
-                        + "  xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\""
-                        + "  xsi:schemaLocation=\"http://www.opengis.net/sld http://schemas.opengis.net/sld/1.0.0/StyledLayerDescriptor.xsd\">"
-                        + "  <NamedLayer>"
-                        + "    <Name>foo</Name>"
-                        + "    <UserStyle>"
-                        + "      <Name>pointplacement</Name>"
-                        + "      <FeatureTypeStyle>"
-                        + "        <Rule>"
-                        + "          <TextSymbolizer>"
-                        + "            <Label>"
-                        + "              <ogc:PropertyName>NAME</ogc:PropertyName>"
-                        + "            </Label>"
-                        + "            <Font>"
-                        + "              <CssParameter name=\"font-family\">Arial</CssParameter>"
-                        + "              <CssParameter name=\"font-weight\">Bold</CssParameter>"
-                        + "              <CssParameter name=\"font-size\">14</CssParameter>"
-                        + "            </Font>"
-                        + "            <LabelPlacement>"
-                        + "              <PointPlacement>" // PointPlacement w/o AnchorPoint
-                        + "                <Rotation>"
-                        + "                  42"
-                        + "                </Rotation>"
-                        + "              </PointPlacement>"
-                        + "            </LabelPlacement>"
-                        + "          </TextSymbolizer>"
-                        + "        </Rule>"
-                        + "      </FeatureTypeStyle>"
-                        + "    </UserStyle>"
-                        + "  </NamedLayer>"
-                        + "</StyledLayerDescriptor>";
+        String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+                + "<StyledLayerDescriptor version=\"1.0.0\" xmlns=\"http://www.opengis.net/sld\" xmlns:ogc=\"http://www.opengis.net/ogc\""
+                + "  xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\""
+                + "  xsi:schemaLocation=\"http://www.opengis.net/sld http://schemas.opengis.net/sld/1.0.0/StyledLayerDescriptor.xsd\">"
+                + "  <NamedLayer>"
+                + "    <Name>foo</Name>"
+                + "    <UserStyle>"
+                + "      <Name>pointplacement</Name>"
+                + "      <FeatureTypeStyle>"
+                + "        <Rule>"
+                + "          <TextSymbolizer>"
+                + "            <Label>"
+                + "              <ogc:PropertyName>NAME</ogc:PropertyName>"
+                + "            </Label>"
+                + "            <Font>"
+                + "              <CssParameter name=\"font-family\">Arial</CssParameter>"
+                + "              <CssParameter name=\"font-weight\">Bold</CssParameter>"
+                + "              <CssParameter name=\"font-size\">14</CssParameter>"
+                + "            </Font>"
+                + "            <LabelPlacement>"
+                + "              <PointPlacement>" // PointPlacement w/o AnchorPoint
+                + "                <Rotation>"
+                + "                  42"
+                + "                </Rotation>"
+                + "              </PointPlacement>"
+                + "            </LabelPlacement>"
+                + "          </TextSymbolizer>"
+                + "        </Rule>"
+                + "      </FeatureTypeStyle>"
+                + "    </UserStyle>"
+                + "  </NamedLayer>"
+                + "</StyledLayerDescriptor>";
         StringReader reader = new StringReader(xml);
         SLDParser sldParser = new SLDParser(sf, reader);
 
@@ -438,80 +435,79 @@ public class SLDTransformerTest extends XmlTestSupport {
      */
     @Test
     public void testPointSymbolizer() {
-        String xml =
-                "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
-                        + "<sld:StyledLayerDescriptor xmlns:sld=\"http://www.opengis.net/sld\" "
-                        + "xmlns:ogc=\"http://www.opengis.net/ogc\""
-                        + " xmlns:gml=\"http://www.opengis.net/gml\" version=\"1.0.0\">"
-                        + "    <sld:UserLayer>"
-                        + "       <sld:LayerFeatureConstraints>"
-                        + "            <sld:FeatureTypeConstraint/>"
-                        + "        </sld:LayerFeatureConstraints>"
-                        + "        <sld:UserStyle>"
-                        + "            <sld:Name>Default Styler</sld:Name> "
-                        + "            <sld:Title>Default Styler</sld:Title>"
-                        + "            <sld:Abstract/>"
-                        + "            <sld:FeatureTypeStyle>"
-                        + "                <sld:Name>simple</sld:Name>"
-                        + "                <sld:Title>title</sld:Title>"
-                        + "                <sld:Abstract>abstract</sld:Abstract>"
-                        + "                <sld:FeatureTypeName>Feature</sld:FeatureTypeName>"
-                        + "                <sld:SemanticTypeIdentifier>generic:geometry</sld:SemanticTypeIdentifier>"
-                        + "                <sld:SemanticTypeIdentifier>simple</sld:SemanticTypeIdentifier>"
-                        + "                <sld:Rule>"
-                        + "                    <sld:Name>name</sld:Name>"
-                        + "                    <sld:Title>title</sld:Title>"
-                        + "                    <sld:Abstract>Abstract</sld:Abstract>"
-                        + "                    <sld:MaxScaleDenominator>1.7976931348623157E308</sld:MaxScaleDenominator>"
-                        + "                    <sld:PointSymbolizer>"
-                        + "                        <sld:Graphic>"
-                        + "                            <sld:Mark>"
-                        + "                                <sld:WellKnownName>triangle</sld:WellKnownName>"
-                        + "                                <sld:Fill>"
-                        + "                                    <sld:CssParameter name=\"fill\">"
-                        + "                                        <ogc:Literal>#FFFF00</ogc:Literal>"
-                        + "                                    </sld:CssParameter>"
-                        + "                                    <sld:CssParameter name=\"fill-opacity\">"
-                        + "                                        <ogc:Literal>1.0</ogc:Literal>"
-                        + "                                    </sld:CssParameter>"
-                        + "                                </sld:Fill>"
-                        + "                                <sld:Stroke>"
-                        + "                                    <sld:CssParameter name=\"stroke\">"
-                        + "                                        <ogc:Literal>#008000</ogc:Literal>"
-                        + "                                    </sld:CssParameter>"
-                        + "                                    <sld:CssParameter name=\"stroke-linecap\">"
-                        + "                                        <ogc:Literal>butt</ogc:Literal>"
-                        + "                                    </sld:CssParameter>"
-                        + "                                    <sld:CssParameter name=\"stroke-linejoin\">"
-                        + "                                        <ogc:Literal>miter</ogc:Literal>"
-                        + "                                    </sld:CssParameter>"
-                        + "                                    <sld:CssParameter name=\"stroke-opacity\">"
-                        + "                                        <ogc:Literal>1.0</ogc:Literal>"
-                        + "                                    </sld:CssParameter>"
-                        + "                                    <sld:CssParameter name=\"stroke-width\">"
-                        + "                                        <ogc:Literal>1.0</ogc:Literal>"
-                        + "                                    </sld:CssParameter>"
-                        + "                                    <sld:CssParameter name=\"stroke-dashoffset\">"
-                        + "                                        <ogc:Literal>0.0</ogc:Literal>"
-                        + "                                    </sld:CssParameter>"
-                        + "                                </sld:Stroke>"
-                        + "                            </sld:Mark>"
-                        + "                            <sld:Opacity>"
-                        + "                                <ogc:Literal>1.0</ogc:Literal>"
-                        + "                            </sld:Opacity>"
-                        + "                            <sld:Size>"
-                        + "                                <ogc:Literal>10.0</ogc:Literal>"
-                        + "                            </sld:Size>"
-                        + "                            <sld:Rotation>"
-                        + "                                <ogc:Literal>0.0</ogc:Literal>"
-                        + "                            </sld:Rotation>"
-                        + "                        </sld:Graphic>"
-                        + "                    </sld:PointSymbolizer>"
-                        + "                </sld:Rule>"
-                        + "            </sld:FeatureTypeStyle>"
-                        + "        </sld:UserStyle>"
-                        + "    </sld:UserLayer>"
-                        + "</sld:StyledLayerDescriptor>";
+        String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+                + "<sld:StyledLayerDescriptor xmlns:sld=\"http://www.opengis.net/sld\" "
+                + "xmlns:ogc=\"http://www.opengis.net/ogc\""
+                + " xmlns:gml=\"http://www.opengis.net/gml\" version=\"1.0.0\">"
+                + "    <sld:UserLayer>"
+                + "       <sld:LayerFeatureConstraints>"
+                + "            <sld:FeatureTypeConstraint/>"
+                + "        </sld:LayerFeatureConstraints>"
+                + "        <sld:UserStyle>"
+                + "            <sld:Name>Default Styler</sld:Name> "
+                + "            <sld:Title>Default Styler</sld:Title>"
+                + "            <sld:Abstract/>"
+                + "            <sld:FeatureTypeStyle>"
+                + "                <sld:Name>simple</sld:Name>"
+                + "                <sld:Title>title</sld:Title>"
+                + "                <sld:Abstract>abstract</sld:Abstract>"
+                + "                <sld:FeatureTypeName>Feature</sld:FeatureTypeName>"
+                + "                <sld:SemanticTypeIdentifier>generic:geometry</sld:SemanticTypeIdentifier>"
+                + "                <sld:SemanticTypeIdentifier>simple</sld:SemanticTypeIdentifier>"
+                + "                <sld:Rule>"
+                + "                    <sld:Name>name</sld:Name>"
+                + "                    <sld:Title>title</sld:Title>"
+                + "                    <sld:Abstract>Abstract</sld:Abstract>"
+                + "                    <sld:MaxScaleDenominator>1.7976931348623157E308</sld:MaxScaleDenominator>"
+                + "                    <sld:PointSymbolizer>"
+                + "                        <sld:Graphic>"
+                + "                            <sld:Mark>"
+                + "                                <sld:WellKnownName>triangle</sld:WellKnownName>"
+                + "                                <sld:Fill>"
+                + "                                    <sld:CssParameter name=\"fill\">"
+                + "                                        <ogc:Literal>#FFFF00</ogc:Literal>"
+                + "                                    </sld:CssParameter>"
+                + "                                    <sld:CssParameter name=\"fill-opacity\">"
+                + "                                        <ogc:Literal>1.0</ogc:Literal>"
+                + "                                    </sld:CssParameter>"
+                + "                                </sld:Fill>"
+                + "                                <sld:Stroke>"
+                + "                                    <sld:CssParameter name=\"stroke\">"
+                + "                                        <ogc:Literal>#008000</ogc:Literal>"
+                + "                                    </sld:CssParameter>"
+                + "                                    <sld:CssParameter name=\"stroke-linecap\">"
+                + "                                        <ogc:Literal>butt</ogc:Literal>"
+                + "                                    </sld:CssParameter>"
+                + "                                    <sld:CssParameter name=\"stroke-linejoin\">"
+                + "                                        <ogc:Literal>miter</ogc:Literal>"
+                + "                                    </sld:CssParameter>"
+                + "                                    <sld:CssParameter name=\"stroke-opacity\">"
+                + "                                        <ogc:Literal>1.0</ogc:Literal>"
+                + "                                    </sld:CssParameter>"
+                + "                                    <sld:CssParameter name=\"stroke-width\">"
+                + "                                        <ogc:Literal>1.0</ogc:Literal>"
+                + "                                    </sld:CssParameter>"
+                + "                                    <sld:CssParameter name=\"stroke-dashoffset\">"
+                + "                                        <ogc:Literal>0.0</ogc:Literal>"
+                + "                                    </sld:CssParameter>"
+                + "                                </sld:Stroke>"
+                + "                            </sld:Mark>"
+                + "                            <sld:Opacity>"
+                + "                                <ogc:Literal>1.0</ogc:Literal>"
+                + "                            </sld:Opacity>"
+                + "                            <sld:Size>"
+                + "                                <ogc:Literal>10.0</ogc:Literal>"
+                + "                            </sld:Size>"
+                + "                            <sld:Rotation>"
+                + "                                <ogc:Literal>0.0</ogc:Literal>"
+                + "                            </sld:Rotation>"
+                + "                        </sld:Graphic>"
+                + "                    </sld:PointSymbolizer>"
+                + "                </sld:Rule>"
+                + "            </sld:FeatureTypeStyle>"
+                + "        </sld:UserStyle>"
+                + "    </sld:UserLayer>"
+                + "</sld:StyledLayerDescriptor>";
 
         StringReader reader = new StringReader(xml);
         SLDParser sldParser = new SLDParser(sf, reader);
@@ -565,8 +561,7 @@ public class SLDTransformerTest extends XmlTestSupport {
             Color value = color.evaluate(null, Color.class);
             assertNotNull("color", value);
             assertEquals("blue", Color.BLUE, value);
-            assertEquals(
-                    "expected width", 2, (int) stroke.getWidth().evaluate(null, Integer.class));
+            assertEquals("expected width", 2, (int) stroke.getWidth().evaluate(null, Integer.class));
         } finally {
             logger.setLevel(before);
         }
@@ -647,8 +642,7 @@ public class SLDTransformerTest extends XmlTestSupport {
         Function envFunction = ff.function("env", ff.literal(b1), ff.literal("1"));
         RasterSymbolizer rasterSymbolizer = sf.createRasterSymbolizer();
         rasterSymbolizer.setChannelSelection(
-                sf.createChannelSelection(
-                        sf.createSelectedChannelType(envFunction, sf.createContrastEnhancement())));
+                sf.createChannelSelection(sf.createSelectedChannelType(envFunction, sf.createContrastEnhancement())));
         String xmlFragment = transformer.transform(rasterSymbolizer);
         assertNotNull(xmlFragment);
 
@@ -868,14 +862,11 @@ public class SLDTransformerTest extends XmlTestSupport {
 
     // GEOT-5726
     @Test
-    public void testTextSymbolizerTransformOutAndInAndOutAndInAgainWithEmptyFontFamily()
-            throws Exception {
+    public void testTextSymbolizerTransformOutAndInAndOutAndInAgainWithEmptyFontFamily() throws Exception {
         // Construct a style with an empty "" font
         StyleBuilder sb = new StyleBuilder();
 
-        Font font =
-                sb.createFont(
-                        ff.literal(""), ff.literal("normal"), ff.literal("normal"), ff.literal(12));
+        Font font = sb.createFont(ff.literal(""), ff.literal("normal"), ff.literal("normal"), ff.literal(12));
         TextSymbolizer ts = sb.createStaticTextSymbolizer(Color.BLACK, font, "label");
         Style style = sb.createStyle(ts);
 
@@ -904,12 +895,15 @@ public class SLDTransformerTest extends XmlTestSupport {
 
     private String getFontFamily(Style s) {
 
-        List<Symbolizer> symbolizers = s.featureTypeStyles().get(0).rules().get(0).symbolizers();
+        List<Symbolizer> symbolizers =
+                s.featureTypeStyles().get(0).rules().get(0).symbolizers();
         for (Symbolizer symbolizer : symbolizers) {
             if (symbolizer instanceof TextSymbolizer) {
                 Font font = ((TextSymbolizer) symbolizer).fonts().get(0);
                 assertTrue(font.getFamily().size() > 0);
-                return font.getFamily().get(0) == null ? null : font.getFamily().get(0).toString();
+                return font.getFamily().get(0) == null
+                        ? null
+                        : font.getFamily().get(0).toString();
             }
         }
         fail("Style should contain a TextSymbolizer");
@@ -924,8 +918,7 @@ public class SLDTransformerTest extends XmlTestSupport {
         StyleBuilder sb = new StyleBuilder();
 
         TextSymbolizer ts = sb.createTextSymbolizer();
-        PropertyName literalPrio =
-                CommonFactoryFinder.getFilterFactory(null).property("quantVariable");
+        PropertyName literalPrio = CommonFactoryFinder.getFilterFactory(null).property("quantVariable");
         ts.setPriority(literalPrio);
         Style style = sb.createStyle(ts);
 
@@ -939,15 +932,13 @@ public class SLDTransformerTest extends XmlTestSupport {
 
         {
             Style reimportedStyle = firstImport[0];
-            TextSymbolizer reimportedTs =
-                    (TextSymbolizer)
-                            reimportedStyle
-                                    .featureTypeStyles()
-                                    .get(0)
-                                    .rules()
-                                    .get(0)
-                                    .symbolizers()
-                                    .get(0);
+            TextSymbolizer reimportedTs = (TextSymbolizer) reimportedStyle
+                    .featureTypeStyles()
+                    .get(0)
+                    .rules()
+                    .get(0)
+                    .symbolizers()
+                    .get(0);
             assertNotNull(reimportedTs.getPriority());
             assertEquals("quantVariable", reimportedTs.getPriority().toString());
         }
@@ -961,15 +952,13 @@ public class SLDTransformerTest extends XmlTestSupport {
             Style[] readXML = sldp2.readXML();
 
             Style reimportedStyle = readXML[0];
-            TextSymbolizer reimportedTs =
-                    (TextSymbolizer)
-                            reimportedStyle
-                                    .featureTypeStyles()
-                                    .get(0)
-                                    .rules()
-                                    .get(0)
-                                    .symbolizers()
-                                    .get(0);
+            TextSymbolizer reimportedTs = (TextSymbolizer) reimportedStyle
+                    .featureTypeStyles()
+                    .get(0)
+                    .rules()
+                    .get(0)
+                    .symbolizers()
+                    .get(0);
             assertNotNull(reimportedTs.getPriority());
             assertEquals("quantVariable", reimportedTs.getPriority().toString());
         }
@@ -1053,15 +1042,9 @@ public class SLDTransformerTest extends XmlTestSupport {
         assertThat(xml, hasXPath("count(/sld:LineSymbolizer/*)", equalTo("1")));
         assertThat(xml, hasXPath("count(/sld:LineSymbolizer/sld:Stroke/*)", equalTo("2")));
         assertThat(
-                xml,
-                hasXPath(
-                        "/sld:LineSymbolizer/sld:Stroke/sld:CssParameter[@name='stroke']",
-                        equalTo("#FFFF00")));
+                xml, hasXPath("/sld:LineSymbolizer/sld:Stroke/sld:CssParameter[@name='stroke']", equalTo("#FFFF00")));
         assertThat(
-                xml,
-                hasXPath(
-                        "/sld:LineSymbolizer/sld:Stroke/sld:CssParameter[@name='stroke-width']",
-                        equalTo("3")));
+                xml, hasXPath("/sld:LineSymbolizer/sld:Stroke/sld:CssParameter[@name='stroke-width']", equalTo("3")));
     }
 
     @Test
@@ -1082,11 +1065,7 @@ public class SLDTransformerTest extends XmlTestSupport {
         assertThat(xml, hasXPath("count(/sld:PolygonSymbolizer/*)", equalTo("2")));
         assertThat(xml, hasXPath("count(/sld:PolygonSymbolizer/sld:Stroke/*)", equalTo("0")));
         assertThat(xml, hasXPath("count(/sld:PolygonSymbolizer/sld:Fill/*)", equalTo("1")));
-        assertThat(
-                xml,
-                hasXPath(
-                        "/sld:PolygonSymbolizer/sld:Fill/sld:CssParameter[@name='fill']",
-                        equalTo("#0000FF")));
+        assertThat(xml, hasXPath("/sld:PolygonSymbolizer/sld:Fill/sld:CssParameter[@name='fill']", equalTo("#0000FF")));
     }
 
     @Test
@@ -1098,28 +1077,11 @@ public class SLDTransformerTest extends XmlTestSupport {
         // check PolygonSymbolizer has a fill and a stroke, both empty
         assertThat(xml, hasXPath("count(/sld:PointSymbolizer/*)", equalTo("1")));
         assertThat(xml, hasXPath("count(/sld:PointSymbolizer/sld:Graphic/*)", equalTo("1")));
-        assertThat(
-                xml, hasXPath("count(/sld:PointSymbolizer/sld:Graphic/sld:Mark/*)", equalTo("2")));
-        assertThat(
-                xml,
-                hasXPath(
-                        "/sld:PointSymbolizer/sld:Graphic/sld:Mark/sld:Fill",
-                        notNullValue(String.class)));
-        assertThat(
-                xml,
-                hasXPath(
-                        "/sld:PointSymbolizer/sld:Graphic/sld:Mark/sld:Stroke",
-                        notNullValue(String.class)));
-        assertThat(
-                xml,
-                hasXPath(
-                        "count(/sld:PointSymbolizer/sld:Graphic/sld:Mark/sld:Fill/*)",
-                        equalTo("0")));
-        assertThat(
-                xml,
-                hasXPath(
-                        "count(/sld:PointSymbolizer/sld:Graphic/sld:Mark/sld:Stroke/*)",
-                        equalTo("0")));
+        assertThat(xml, hasXPath("count(/sld:PointSymbolizer/sld:Graphic/sld:Mark/*)", equalTo("2")));
+        assertThat(xml, hasXPath("/sld:PointSymbolizer/sld:Graphic/sld:Mark/sld:Fill", notNullValue(String.class)));
+        assertThat(xml, hasXPath("/sld:PointSymbolizer/sld:Graphic/sld:Mark/sld:Stroke", notNullValue(String.class)));
+        assertThat(xml, hasXPath("count(/sld:PointSymbolizer/sld:Graphic/sld:Mark/sld:Fill/*)", equalTo("0")));
+        assertThat(xml, hasXPath("count(/sld:PointSymbolizer/sld:Graphic/sld:Mark/sld:Stroke/*)", equalTo("0")));
     }
 
     @Test
@@ -1131,8 +1093,7 @@ public class SLDTransformerTest extends XmlTestSupport {
         // check RasterSymbolizer just has the default geometry value
         // (which is not a default in SLD, just in our builder)
         assertThat(xml, hasXPath("count(/sld:RasterSymbolizer)", equalTo("1")));
-        assertThat(
-                xml, hasXPath("/sld:RasterSymbolizer/sld:Geometry/ogc:PropertyName", equalTo("")));
+        assertThat(xml, hasXPath("/sld:RasterSymbolizer/sld:Geometry/ogc:PropertyName", equalTo("")));
     }
 
     @Test
@@ -1144,18 +1105,11 @@ public class SLDTransformerTest extends XmlTestSupport {
         // check RasterSymbolizer just has the default geometry value
         // (which is not a default in SLD, just in our builder)
         assertThat(xml, hasXPath("count(/sld:UserStyle/sld:FeatureTypeStyle/*)", equalTo("2")));
+        assertThat(xml, hasXPath("count(/sld:UserStyle/sld:FeatureTypeStyle/sld:Name)", equalTo("1")));
+        assertThat(xml, hasXPath("count(/sld:UserStyle/sld:FeatureTypeStyle/sld:Rule)", equalTo("1")));
+        assertThat(xml, hasXPath("count(/sld:UserStyle/sld:FeatureTypeStyle/sld:Rule/*)", equalTo("1")));
         assertThat(
-                xml, hasXPath("count(/sld:UserStyle/sld:FeatureTypeStyle/sld:Name)", equalTo("1")));
-        assertThat(
-                xml, hasXPath("count(/sld:UserStyle/sld:FeatureTypeStyle/sld:Rule)", equalTo("1")));
-        assertThat(
-                xml,
-                hasXPath("count(/sld:UserStyle/sld:FeatureTypeStyle/sld:Rule/*)", equalTo("1")));
-        assertThat(
-                xml,
-                hasXPath(
-                        "count(/sld:UserStyle/sld:FeatureTypeStyle/sld:Rule/sld:PointSymbolizer)",
-                        equalTo("1")));
+                xml, hasXPath("count(/sld:UserStyle/sld:FeatureTypeStyle/sld:Rule/sld:PointSymbolizer)", equalTo("1")));
     }
 
     @Test
@@ -1173,23 +1127,19 @@ public class SLDTransformerTest extends XmlTestSupport {
         String xml = transformer.transform(sld);
 
         assertThat(
-                xml,
-                hasXPath(
-                        "/sld:StyledLayerDescriptor/sld:NamedLayer/sld:UserStyle/sld:IsDefault",
-                        equalTo("1")));
+                xml, hasXPath("/sld:StyledLayerDescriptor/sld:NamedLayer/sld:UserStyle/sld:IsDefault", equalTo("1")));
     }
 
     @Test
     public void testLocalizedTitle() throws TransformerException {
         RuleImpl rule = (RuleImpl) CommonFactoryFinder.getStyleFactory().createRule();
-        GrowableInternationalString intString =
-                new GrowableInternationalString("title") {
+        GrowableInternationalString intString = new GrowableInternationalString("title") {
 
-                    @Override
-                    public String toString() {
-                        return super.toString(null);
-                    }
-                };
+            @Override
+            public String toString() {
+                return super.toString(null);
+            }
+        };
         intString.add(Locale.ITALIAN, "titolo");
         intString.add(Locale.FRENCH, "titre");
         intString.add(Locale.CANADA_FRENCH, "titre");
@@ -1199,34 +1149,26 @@ public class SLDTransformerTest extends XmlTestSupport {
         assertThat(xml, hasXPath("normalize-space(//sld:Title/text()[1])", equalTo("title")));
         assertThat(
                 xml,
-                hasXPath(
-                        "//sld:Title/sld:Localized[@lang='" + Locale.ITALIAN.toString() + "']",
-                        equalTo("titolo")));
+                hasXPath("//sld:Title/sld:Localized[@lang='" + Locale.ITALIAN.toString() + "']", equalTo("titolo")));
+        assertThat(
+                xml, hasXPath("//sld:Title/sld:Localized[@lang='" + Locale.FRENCH.toString() + "']", equalTo("titre")));
         assertThat(
                 xml,
                 hasXPath(
-                        "//sld:Title/sld:Localized[@lang='" + Locale.FRENCH.toString() + "']",
-                        equalTo("titre")));
-        assertThat(
-                xml,
-                hasXPath(
-                        "//sld:Title/sld:Localized[@lang='"
-                                + Locale.CANADA_FRENCH.toString()
-                                + "']",
+                        "//sld:Title/sld:Localized[@lang='" + Locale.CANADA_FRENCH.toString() + "']",
                         equalTo("titre")));
     }
 
     @Test
     public void testLocalizedAbstract() throws TransformerException {
         RuleImpl rule = (RuleImpl) CommonFactoryFinder.getStyleFactory().createRule();
-        GrowableInternationalString intString =
-                new GrowableInternationalString("title") {
+        GrowableInternationalString intString = new GrowableInternationalString("title") {
 
-                    @Override
-                    public String toString() {
-                        return super.toString(null);
-                    }
-                };
+            @Override
+            public String toString() {
+                return super.toString(null);
+            }
+        };
         intString.add(Locale.ITALIAN, "titolo");
         intString.add(Locale.FRENCH, "titre");
         intString.add(Locale.CANADA_FRENCH, "titre");
@@ -1235,20 +1177,14 @@ public class SLDTransformerTest extends XmlTestSupport {
         assertThat(xml, hasXPath("normalize-space(//sld:Abstract/text()[1])", equalTo("title")));
         assertThat(
                 xml,
-                hasXPath(
-                        "//sld:Abstract/sld:Localized[@lang='" + Locale.ITALIAN.toString() + "']",
-                        equalTo("titolo")));
+                hasXPath("//sld:Abstract/sld:Localized[@lang='" + Locale.ITALIAN.toString() + "']", equalTo("titolo")));
+        assertThat(
+                xml,
+                hasXPath("//sld:Abstract/sld:Localized[@lang='" + Locale.FRENCH.toString() + "']", equalTo("titre")));
         assertThat(
                 xml,
                 hasXPath(
-                        "//sld:Abstract/sld:Localized[@lang='" + Locale.FRENCH.toString() + "']",
-                        equalTo("titre")));
-        assertThat(
-                xml,
-                hasXPath(
-                        "//sld:Abstract/sld:Localized[@lang='"
-                                + Locale.CANADA_FRENCH.toString()
-                                + "']",
+                        "//sld:Abstract/sld:Localized[@lang='" + Locale.CANADA_FRENCH.toString() + "']",
                         equalTo("titre")));
     }
 
@@ -1294,9 +1230,7 @@ public class SLDTransformerTest extends XmlTestSupport {
         assertThat(actual, hasXPath("count(/sld:TextSymbolizer/sld:Graphic)", equalTo("1")));
         assertThat(actual, hasXPath("count(/sld:TextSymbolizer/sld:Snippet)", equalTo("1")));
         assertThat(actual, hasXPath("count(/sld:TextSymbolizer/sld:OtherText)", equalTo("1")));
-        assertThat(
-                actual,
-                hasXPath("count(/sld:TextSymbolizer/sld:FeatureDescription)", equalTo("1")));
+        assertThat(actual, hasXPath("count(/sld:TextSymbolizer/sld:FeatureDescription)", equalTo("1")));
 
         // Transform and reimport and compare
         String xml = transformer.transform(sb.createStyle(ts2));
@@ -1304,15 +1238,13 @@ public class SLDTransformerTest extends XmlTestSupport {
         SLDParser sldParser = new SLDParser(sf);
         sldParser.setInput(new StringReader(xml));
         Style importedStyle = sldParser.readXML()[0];
-        TextSymbolizer copy =
-                (TextSymbolizer)
-                        importedStyle
-                                .featureTypeStyles()
-                                .get(0)
-                                .rules()
-                                .get(0)
-                                .symbolizers()
-                                .get(0);
+        TextSymbolizer copy = (TextSymbolizer) importedStyle
+                .featureTypeStyles()
+                .get(0)
+                .rules()
+                .get(0)
+                .symbolizers()
+                .get(0);
 
         // compare it
         assertEquals(
@@ -1324,9 +1256,7 @@ public class SLDTransformerTest extends XmlTestSupport {
                 gr.getSize(),
                 copy.getGraphic().getSize());
         assertEquals(
-                "Snippet of TextSymbolizer2 has not been correctly ex- and reimported",
-                snippet,
-                copy.getSnippet());
+                "Snippet of TextSymbolizer2 has not been correctly ex- and reimported", snippet, copy.getSnippet());
         assertEquals(
                 "FeatureDescription of TextSymbolizer2 has not been correctly ex- and reimported",
                 fD,
@@ -1350,9 +1280,7 @@ public class SLDTransformerTest extends XmlTestSupport {
 
         // check XML
         String actual = transformer.transform(ls);
-        assertThat(
-                actual,
-                hasXPath("count(/sld:LineSymbolizer/sld:PerpendicularOffset)", equalTo("1")));
+        assertThat(actual, hasXPath("count(/sld:LineSymbolizer/sld:PerpendicularOffset)", equalTo("1")));
 
         // Transform, reimport and compare
         String xml = transformer.transform(sb.createStyle(ls));
@@ -1360,15 +1288,13 @@ public class SLDTransformerTest extends XmlTestSupport {
         SLDParser sldParser = new SLDParser(sf);
         sldParser.setInput(new StringReader(xml));
         Style importedStyle = sldParser.readXML()[0];
-        LineSymbolizer copy =
-                (LineSymbolizer)
-                        importedStyle
-                                .featureTypeStyles()
-                                .get(0)
-                                .rules()
-                                .get(0)
-                                .symbolizers()
-                                .get(0);
+        LineSymbolizer copy = (LineSymbolizer) importedStyle
+                .featureTypeStyles()
+                .get(0)
+                .rules()
+                .get(0)
+                .symbolizers()
+                .get(0);
 
         // compare
         assertEquals(
@@ -1386,37 +1312,36 @@ public class SLDTransformerTest extends XmlTestSupport {
     @Test
     public void testFeatureTypeStyleTransformation() throws TransformerException {
 
-        String xml =
-                "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
-                        + "<sld:UserStyle xmlns=\"http://www.opengis.net/sld\" "
-                        + "    xmlns:sld=\"http://www.opengis.net/sld\" "
-                        + "    xmlns:ogc=\"http://www.opengis.net/ogc\" "
-                        + "    xmlns:gml=\"http://www.opengis.net/gml\">"
-                        + "    <sld:Name>Default Styler</sld:Name>"
-                        + "    <sld:Title/>"
-                        + "    <sld:FeatureTypeStyle>"
-                        + "        <sld:Name>Buffer</sld:Name>"
-                        + "        <sld:Transformation>"
-                        + "            <ogc:Function name=\"buffer\">"
-                        + "               <ogc:PropertyName>the_geom</ogc:PropertyName>"
-                        + "               <ogc:Literal>500</ogc:Literal>"
-                        + "            </ogc:Function>"
-                        + "        </sld:Transformation>"
-                        + "        <sld:Rule>"
-                        + "            <sld:LineSymbolizer>"
-                        + "                <sld:Stroke>"
-                        + "                    <sld:CssParameter name=\"stroke\">#312624</sld:CssParameter>"
-                        + "                    <sld:CssParameter name=\"stroke-width\">0.1</sld:CssParameter>"
-                        + "                </sld:Stroke>"
-                        + "            </sld:LineSymbolizer>"
-                        + "            <sld:PolygonSymbolizer>"
-                        + "                <sld:Fill>"
-                        + "                    <sld:CssParameter name=\"fill\">#f5deb3</sld:CssParameter>"
-                        + "                </sld:Fill>"
-                        + "            </sld:PolygonSymbolizer>"
-                        + "       </sld:Rule>"
-                        + "    </sld:FeatureTypeStyle>"
-                        + "</sld:UserStyle>";
+        String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+                + "<sld:UserStyle xmlns=\"http://www.opengis.net/sld\" "
+                + "    xmlns:sld=\"http://www.opengis.net/sld\" "
+                + "    xmlns:ogc=\"http://www.opengis.net/ogc\" "
+                + "    xmlns:gml=\"http://www.opengis.net/gml\">"
+                + "    <sld:Name>Default Styler</sld:Name>"
+                + "    <sld:Title/>"
+                + "    <sld:FeatureTypeStyle>"
+                + "        <sld:Name>Buffer</sld:Name>"
+                + "        <sld:Transformation>"
+                + "            <ogc:Function name=\"buffer\">"
+                + "               <ogc:PropertyName>the_geom</ogc:PropertyName>"
+                + "               <ogc:Literal>500</ogc:Literal>"
+                + "            </ogc:Function>"
+                + "        </sld:Transformation>"
+                + "        <sld:Rule>"
+                + "            <sld:LineSymbolizer>"
+                + "                <sld:Stroke>"
+                + "                    <sld:CssParameter name=\"stroke\">#312624</sld:CssParameter>"
+                + "                    <sld:CssParameter name=\"stroke-width\">0.1</sld:CssParameter>"
+                + "                </sld:Stroke>"
+                + "            </sld:LineSymbolizer>"
+                + "            <sld:PolygonSymbolizer>"
+                + "                <sld:Fill>"
+                + "                    <sld:CssParameter name=\"fill\">#f5deb3</sld:CssParameter>"
+                + "                </sld:Fill>"
+                + "            </sld:PolygonSymbolizer>"
+                + "       </sld:Rule>"
+                + "    </sld:FeatureTypeStyle>"
+                + "</sld:UserStyle>";
 
         StringReader reader = new StringReader(xml);
         SLDParser sldParser = new SLDParser(sf, reader);
@@ -1460,15 +1385,13 @@ public class SLDTransformerTest extends XmlTestSupport {
         SLDParser parser = new SLDParser(sf);
         parser.setInput(new StringReader(xml));
         Style importedStyle = parser.readXML()[0];
-        PointSymbolizer psCopy =
-                (PointSymbolizer)
-                        importedStyle
-                                .featureTypeStyles()
-                                .get(0)
-                                .rules()
-                                .get(0)
-                                .symbolizers()
-                                .get(0);
+        PointSymbolizer psCopy = (PointSymbolizer) importedStyle
+                .featureTypeStyles()
+                .get(0)
+                .rules()
+                .get(0)
+                .symbolizers()
+                .get(0);
         org.geotools.api.style.ExternalGraphic egCopy =
                 (ExternalGraphic) psCopy.getGraphic().graphicalSymbols().get(0);
         assertEquals(chartURI, egCopy.getLocation().toExternalForm());
@@ -1496,10 +1419,7 @@ public class SLDTransformerTest extends XmlTestSupport {
         String xml = transformer.transform(sld);
 
         assertThat(
-                xml,
-                hasXPath(
-                        "//sld:LineSymbolizer/sld:Stroke/sld:CssParameter[@name='stroke-width']",
-                        equalTo("1m")));
+                xml, hasXPath("//sld:LineSymbolizer/sld:Stroke/sld:CssParameter[@name='stroke-width']", equalTo("1m")));
     }
 
     @Test
@@ -1511,11 +1431,7 @@ public class SLDTransformerTest extends XmlTestSupport {
 
         String xml = transformer.transform(sld);
 
-        assertThat(
-                xml,
-                hasXPath(
-                        "//sld:TextSymbolizer/sld:Font/sld:CssParameter[@name='font-size']",
-                        equalTo("1m")));
+        assertThat(xml, hasXPath("//sld:TextSymbolizer/sld:Font/sld:CssParameter[@name='font-size']", equalTo("1m")));
     }
 
     @Test
@@ -1554,16 +1470,15 @@ public class SLDTransformerTest extends XmlTestSupport {
         StyleBuilder sb = new StyleBuilder();
         TextSymbolizer ts = sb.createTextSymbolizer();
 
-        ts.setGeometry(
+        ts.setGeometry(ff.function(
+                "geomFromWKT",
                 ff.function(
-                        "geomFromWKT",
-                        ff.function(
-                                "Concatenate",
-                                ff.literal("POINT("),
-                                ff.property("lng"),
-                                ff.literal(" "), // this space needs to be encoded within CDATA
-                                ff.property("lat"),
-                                ff.literal(")"))));
+                        "Concatenate",
+                        ff.literal("POINT("),
+                        ff.property("lng"),
+                        ff.literal(" "), // this space needs to be encoded within CDATA
+                        ff.property("lat"),
+                        ff.literal(")"))));
 
         StyledLayerDescriptor sld = buildSLDAroundSymbolizer(ts);
 
@@ -1629,11 +1544,10 @@ public class SLDTransformerTest extends XmlTestSupport {
     public void testLabelNested() throws TransformerException {
         StyleBuilder sb = new StyleBuilder();
         TextSymbolizer ts = sb.createTextSymbolizer();
-        ts.setLabel(
-                ff.function(
-                        "strConcat",
-                        ff.literal("abc "),
-                        ff.function("strConcat", ff.property("myProperty"), ff.literal(" def"))));
+        ts.setLabel(ff.function(
+                "strConcat",
+                ff.literal("abc "),
+                ff.function("strConcat", ff.property("myProperty"), ff.literal(" def"))));
         StyledLayerDescriptor sld = buildSLDAroundSymbolizer(ts);
 
         String xml = transformer.transform(sld);
@@ -1652,36 +1566,35 @@ public class SLDTransformerTest extends XmlTestSupport {
     @Test
     public void testWellKnownNameWithExpression() throws TransformerException {
 
-        String originalStyleXml =
-                "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
-                        + "<sld:StyledLayerDescriptor xmlns=\"http://www.opengis.net/sld\""
-                        + "                           xmlns:sld=\"http://www.opengis.net/sld\""
-                        + "                           xmlns:ogc=\"http://www.opengis.net/ogc\""
-                        + "                           xmlns:gml=\"http://www.opengis.net/gml\" version=\"1.0.0\">"
-                        + "	<sld:NamedLayer>"
-                        + "		<sld:Name>test</sld:Name>"
-                        + "		<sld:UserStyle>"
-                        + "			<sld:Name>test</sld:Name>"
-                        + "			<sld:FeatureTypeStyle>"
-                        + "				<sld:Name>name</sld:Name>"
-                        + "				<sld:Rule>"
-                        + "					<sld:PointSymbolizer>"
-                        + "						<sld:Graphic>"
-                        + "							<sld:Mark>"
-                        + "								<sld:WellKnownName>"
-                        + "									<ogc:Function name=\"strConcat\">"
-                        + "										<ogc:Literal>mark-</ogc:Literal>"
-                        + "      							    <ogc:PropertyName>MARK_NAME</ogc:PropertyName>"
-                        + "									</ogc:Function>"
-                        + "								</sld:WellKnownName>"
-                        + "							</sld:Mark>"
-                        + "						</sld:Graphic>"
-                        + "					</sld:PointSymbolizer>"
-                        + "				</sld:Rule>"
-                        + "			</sld:FeatureTypeStyle>"
-                        + "		</sld:UserStyle>"
-                        + "	</sld:NamedLayer>"
-                        + "</sld:StyledLayerDescriptor>";
+        String originalStyleXml = "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
+                + "<sld:StyledLayerDescriptor xmlns=\"http://www.opengis.net/sld\""
+                + "                           xmlns:sld=\"http://www.opengis.net/sld\""
+                + "                           xmlns:ogc=\"http://www.opengis.net/ogc\""
+                + "                           xmlns:gml=\"http://www.opengis.net/gml\" version=\"1.0.0\">"
+                + "	<sld:NamedLayer>"
+                + "		<sld:Name>test</sld:Name>"
+                + "		<sld:UserStyle>"
+                + "			<sld:Name>test</sld:Name>"
+                + "			<sld:FeatureTypeStyle>"
+                + "				<sld:Name>name</sld:Name>"
+                + "				<sld:Rule>"
+                + "					<sld:PointSymbolizer>"
+                + "						<sld:Graphic>"
+                + "							<sld:Mark>"
+                + "								<sld:WellKnownName>"
+                + "									<ogc:Function name=\"strConcat\">"
+                + "										<ogc:Literal>mark-</ogc:Literal>"
+                + "      							    <ogc:PropertyName>MARK_NAME</ogc:PropertyName>"
+                + "									</ogc:Function>"
+                + "								</sld:WellKnownName>"
+                + "							</sld:Mark>"
+                + "						</sld:Graphic>"
+                + "					</sld:PointSymbolizer>"
+                + "				</sld:Rule>"
+                + "			</sld:FeatureTypeStyle>"
+                + "		</sld:UserStyle>"
+                + "	</sld:NamedLayer>"
+                + "</sld:StyledLayerDescriptor>";
 
         Style originalStyle = validateWellKnownNameWithExpressionStyle(originalStyleXml);
 
@@ -1698,35 +1611,34 @@ public class SLDTransformerTest extends XmlTestSupport {
     @Test
     public void testStrokeDasharrayWithExpressions() throws TransformerException {
 
-        String originalStyleXml =
-                "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
-                        + "<sld:StyledLayerDescriptor xmlns=\"http://www.opengis.net/sld\""
-                        + "                           xmlns:sld=\"http://www.opengis.net/sld\""
-                        + "                           xmlns:ogc=\"http://www.opengis.net/ogc\""
-                        + "                           xmlns:gml=\"http://www.opengis.net/gml\" version=\"1.0.0\">"
-                        + "	<sld:NamedLayer>"
-                        + "		<sld:Name>test</sld:Name>"
-                        + "		<sld:UserStyle>"
-                        + "			<sld:Name>test</sld:Name>"
-                        + "			<sld:FeatureTypeStyle>"
-                        + "				<sld:Name>name</sld:Name>"
-                        + "				<sld:Rule>"
-                        + "					 <LineSymbolizer>"
-                        + "                     <Stroke>"
-                        + "                         <CssParameter name=\"stroke\">#0000FF</CssParameter>"
-                        + "                         <CssParameter name=\"stroke-dasharray\">"
-                        + "                             <PropertyName>stroke1</PropertyName>"
-                        + "                             1.0"
-                        + "                             <PropertyName>stroke2</PropertyName>"
-                        + "                             <![CDATA[2.0]]>"
-                        + "                         </CssParameter>"
-                        + "                     </Stroke>"
-                        + "                 </LineSymbolizer>"
-                        + "				</sld:Rule>"
-                        + "			</sld:FeatureTypeStyle>"
-                        + "		</sld:UserStyle>"
-                        + "	</sld:NamedLayer>"
-                        + "</sld:StyledLayerDescriptor>";
+        String originalStyleXml = "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
+                + "<sld:StyledLayerDescriptor xmlns=\"http://www.opengis.net/sld\""
+                + "                           xmlns:sld=\"http://www.opengis.net/sld\""
+                + "                           xmlns:ogc=\"http://www.opengis.net/ogc\""
+                + "                           xmlns:gml=\"http://www.opengis.net/gml\" version=\"1.0.0\">"
+                + "	<sld:NamedLayer>"
+                + "		<sld:Name>test</sld:Name>"
+                + "		<sld:UserStyle>"
+                + "			<sld:Name>test</sld:Name>"
+                + "			<sld:FeatureTypeStyle>"
+                + "				<sld:Name>name</sld:Name>"
+                + "				<sld:Rule>"
+                + "					 <LineSymbolizer>"
+                + "                     <Stroke>"
+                + "                         <CssParameter name=\"stroke\">#0000FF</CssParameter>"
+                + "                         <CssParameter name=\"stroke-dasharray\">"
+                + "                             <PropertyName>stroke1</PropertyName>"
+                + "                             1.0"
+                + "                             <PropertyName>stroke2</PropertyName>"
+                + "                             <![CDATA[2.0]]>"
+                + "                         </CssParameter>"
+                + "                     </Stroke>"
+                + "                 </LineSymbolizer>"
+                + "				</sld:Rule>"
+                + "			</sld:FeatureTypeStyle>"
+                + "		</sld:UserStyle>"
+                + "	</sld:NamedLayer>"
+                + "</sld:StyledLayerDescriptor>";
 
         SLDTransformer styleTransform = new SLDTransformer();
         styleTransform.setIndentation(2);
@@ -1776,32 +1688,31 @@ public class SLDTransformerTest extends XmlTestSupport {
     @Test
     public void testStrokeDasharrayWithOnlyLiteralExpressions() throws TransformerException {
 
-        String originalStyleXml =
-                "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
-                        + "<sld:StyledLayerDescriptor xmlns=\"http://www.opengis.net/sld\""
-                        + "                           xmlns:sld=\"http://www.opengis.net/sld\""
-                        + "                           xmlns:ogc=\"http://www.opengis.net/ogc\""
-                        + "                           xmlns:gml=\"http://www.opengis.net/gml\" version=\"1.0.0\">"
-                        + "	<sld:NamedLayer>"
-                        + "		<sld:Name>test</sld:Name>"
-                        + "		<sld:UserStyle>"
-                        + "			<sld:Name>test</sld:Name>"
-                        + "			<sld:FeatureTypeStyle>"
-                        + "				<sld:Name>name</sld:Name>"
-                        + "				<sld:Rule>"
-                        + "                 <LineSymbolizer>"
-                        + "                     <Stroke>"
-                        + "                         <CssParameter name=\"stroke\">#0000FF</CssParameter>"
-                        + "                         <CssParameter name=\"stroke-dasharray\">"
-                        + "                             10.0 5.0 20.0 15.0"
-                        + "                         </CssParameter>"
-                        + "                     </Stroke>"
-                        + "                 </LineSymbolizer>"
-                        + "				</sld:Rule>"
-                        + "			</sld:FeatureTypeStyle>"
-                        + "		</sld:UserStyle>"
-                        + "	</sld:NamedLayer>"
-                        + "</sld:StyledLayerDescriptor>";
+        String originalStyleXml = "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
+                + "<sld:StyledLayerDescriptor xmlns=\"http://www.opengis.net/sld\""
+                + "                           xmlns:sld=\"http://www.opengis.net/sld\""
+                + "                           xmlns:ogc=\"http://www.opengis.net/ogc\""
+                + "                           xmlns:gml=\"http://www.opengis.net/gml\" version=\"1.0.0\">"
+                + "	<sld:NamedLayer>"
+                + "		<sld:Name>test</sld:Name>"
+                + "		<sld:UserStyle>"
+                + "			<sld:Name>test</sld:Name>"
+                + "			<sld:FeatureTypeStyle>"
+                + "				<sld:Name>name</sld:Name>"
+                + "				<sld:Rule>"
+                + "                 <LineSymbolizer>"
+                + "                     <Stroke>"
+                + "                         <CssParameter name=\"stroke\">#0000FF</CssParameter>"
+                + "                         <CssParameter name=\"stroke-dasharray\">"
+                + "                             10.0 5.0 20.0 15.0"
+                + "                         </CssParameter>"
+                + "                     </Stroke>"
+                + "                 </LineSymbolizer>"
+                + "				</sld:Rule>"
+                + "			</sld:FeatureTypeStyle>"
+                + "		</sld:UserStyle>"
+                + "	</sld:NamedLayer>"
+                + "</sld:StyledLayerDescriptor>";
 
         SLDTransformer styleTransform = new SLDTransformer();
         styleTransform.setIndentation(2);
@@ -1809,9 +1720,8 @@ public class SLDTransformerTest extends XmlTestSupport {
         styleTransform.transform(parseStyles(originalStyleXml), writerWriter);
         String transformedStyleXml = writerWriter.toString();
 
-        assertTrue(
-                transformedStyleXml.contains(
-                        "<sld:CssParameter name=\"stroke-dasharray\">10.0 5.0 20.0 15.0</sld:CssParameter>"));
+        assertTrue(transformedStyleXml.contains(
+                "<sld:CssParameter name=\"stroke-dasharray\">10.0 5.0 20.0 15.0</sld:CssParameter>"));
     }
 
     private Style[] parseStyles(String styleXml) {
@@ -1833,10 +1743,8 @@ public class SLDTransformerTest extends XmlTestSupport {
         SLDTransformer st = new SLDTransformer();
         String xml = st.transform(graphic);
 
-        assertThat(
-                xml, hasXPath("//sld:Graphic/sld:Displacement/sld:DisplacementX", equalTo("10.0")));
-        assertThat(
-                xml, hasXPath("//sld:Graphic/sld:Displacement/sld:DisplacementY", equalTo("10.0")));
+        assertThat(xml, hasXPath("//sld:Graphic/sld:Displacement/sld:DisplacementX", equalTo("10.0")));
+        assertThat(xml, hasXPath("//sld:Graphic/sld:Displacement/sld:DisplacementY", equalTo("10.0")));
         assertThat(xml, hasXPath("//sld:Graphic/sld:AnchorPoint/sld:AnchorPointX", equalTo("1.0")));
         assertThat(xml, hasXPath("//sld:Graphic/sld:AnchorPoint/sld:AnchorPointY", equalTo("0.3")));
     }
@@ -1852,9 +1760,7 @@ public class SLDTransformerTest extends XmlTestSupport {
         String xml = st.transform(style);
 
         assertThat(xml, hasXPath("count(//sld:FeatureTypeStyle/sld:VendorOption)", equalTo("1")));
-        assertThat(
-                xml,
-                hasXPath("//sld:FeatureTypeStyle/sld:VendorOption[@name='key']", equalTo("value")));
+        assertThat(xml, hasXPath("//sld:FeatureTypeStyle/sld:VendorOption[@name='key']", equalTo("value")));
     }
 
     private Style validateWellKnownNameWithExpressionStyle(String xmlStyle) {
@@ -1918,10 +1824,7 @@ public class SLDTransformerTest extends XmlTestSupport {
         assertTrue("second parameter is", secondParameter instanceof PropertyName);
 
         PropertyName propertyName = (PropertyName) secondParameter;
-        assertEquals(
-                "property name is different of 'MARK_NAME'",
-                "MARK_NAME",
-                propertyName.getPropertyName());
+        assertEquals("property name is different of 'MARK_NAME'", "MARK_NAME", propertyName.getPropertyName());
 
         return style;
     }
@@ -1937,14 +1840,10 @@ public class SLDTransformerTest extends XmlTestSupport {
         SLDTransformer st = new SLDTransformer();
         String xml = st.transform(ce);
 
+        assertThat(xml, hasXPath("//sld:ContrastEnhancement/sld:Normalize", notNullValue(String.class)));
         assertThat(
                 xml,
-                hasXPath("//sld:ContrastEnhancement/sld:Normalize", notNullValue(String.class)));
-        assertThat(
-                xml,
-                hasXPath(
-                        "//sld:ContrastEnhancement/sld:Normalize/sld:VendorOption[@name='p1']",
-                        equalTo("false")));
+                hasXPath("//sld:ContrastEnhancement/sld:Normalize/sld:VendorOption[@name='p1']", equalTo("false")));
         assertThat(
                 xml,
                 hasXPath(
@@ -1987,14 +1886,8 @@ public class SLDTransformerTest extends XmlTestSupport {
         SLDTransformer st = new SLDTransformer();
         String xml = st.transform(ce);
 
-        assertThat(
-                xml,
-                hasXPath("//sld:ContrastEnhancement/sld:GammaValue", notNullValue(String.class)));
-        assertThat(
-                xml,
-                hasXPath(
-                        "//sld:ContrastEnhancement/sld:GammaValue/ogc:Add",
-                        notNullValue(String.class)));
+        assertThat(xml, hasXPath("//sld:ContrastEnhancement/sld:GammaValue", notNullValue(String.class)));
+        assertThat(xml, hasXPath("//sld:ContrastEnhancement/sld:GammaValue/ogc:Add", notNullValue(String.class)));
 
         String expected =
                 "<?xml version=\"1.0\" encoding=\"UTF-8\"?><sld:ContrastEnhancement xmlns=\"http://www.opengis.net/sld\" xmlns:sld=\"http://www.opengis.net/sld\" xmlns:gml=\"http://www.opengis.net/gml\" xmlns:ogc=\"http://www.opengis.net/ogc\"><sld:GammaValue><ogc:Add><ogc:Literal>1.0</ogc:Literal><ogc:Literal>0.5</ogc:Literal></ogc:Add></sld:GammaValue></sld:ContrastEnhancement>";
@@ -2017,24 +1910,17 @@ public class SLDTransformerTest extends XmlTestSupport {
         assertThat(xml, hasXPath("count(//sld:TextSymbolizer/sld:Font)", equalTo("1")));
         assertThat(
                 xml,
-                hasXPath(
-                        "count(//sld:TextSymbolizer/sld:Font/sld:CssParameter[@name=\"font-family\"])",
-                        equalTo("2")));
+                hasXPath("count(//sld:TextSymbolizer/sld:Font/sld:CssParameter[@name=\"font-family\"])", equalTo("2")));
         assertThat(
                 xml,
-                hasXPath(
-                        "//sld:TextSymbolizer/sld:Font/sld:CssParameter[@name=\"font-family\"][1]",
-                        equalTo("Arial")));
+                hasXPath("//sld:TextSymbolizer/sld:Font/sld:CssParameter[@name=\"font-family\"][1]", equalTo("Arial")));
         assertThat(
                 xml,
                 hasXPath(
                         "//sld:TextSymbolizer/sld:Font/sld:CssParameter[@name=\"font-family\"][2]",
                         equalTo("Comic Sans MS")));
         assertThat(
-                xml,
-                hasXPath(
-                        "//sld:TextSymbolizer/sld:Font/sld:CssParameter[@name=\"font-size\"]",
-                        equalTo("10.0")));
+                xml, hasXPath("//sld:TextSymbolizer/sld:Font/sld:CssParameter[@name=\"font-size\"]", equalTo("10.0")));
     }
 
     @Test
@@ -2070,10 +1956,7 @@ public class SLDTransformerTest extends XmlTestSupport {
                         "//sld:TextSymbolizer/sld:Font[2]/sld:CssParameter[@name=\"font-family\"]",
                         equalTo("Comic Sans MS")));
         assertThat(
-                xml,
-                hasXPath(
-                        "//sld:TextSymbolizer/sld:Font/sld:CssParameter[@name=\"font-size\"]",
-                        equalTo("10.0")));
+                xml, hasXPath("//sld:TextSymbolizer/sld:Font/sld:CssParameter[@name=\"font-size\"]", equalTo("10.0")));
     }
 
     @Test
@@ -2087,15 +1970,8 @@ public class SLDTransformerTest extends XmlTestSupport {
         String xml = st.transform(ls);
 
         assertThat(
-                xml,
-                hasXPath(
-                        "//sld:LineSymbolizer/sld:PerpendicularOffset/ogc:Mul/ogc:PropertyName",
-                        equalTo("a")));
-        assertThat(
-                xml,
-                hasXPath(
-                        "//sld:LineSymbolizer/sld:PerpendicularOffset/ogc:Mul/ogc:Literal",
-                        equalTo("2")));
+                xml, hasXPath("//sld:LineSymbolizer/sld:PerpendicularOffset/ogc:Mul/ogc:PropertyName", equalTo("a")));
+        assertThat(xml, hasXPath("//sld:LineSymbolizer/sld:PerpendicularOffset/ogc:Mul/ogc:Literal", equalTo("2")));
     }
 
     /** See https://osgeo-org.atlassian.net/browse/GEOT-5613 */
@@ -2111,10 +1987,7 @@ public class SLDTransformerTest extends XmlTestSupport {
 
         assertThat(xml, hasXPath("//sld:LineSymbolizer/sld:Stroke", notNullValue(String.class)));
         assertThat(
-                xml,
-                hasXPath(
-                        "//sld:LineSymbolizer/sld:Stroke/sld:CssParameter[@name='stroke']",
-                        equalTo("#000000")));
+                xml, hasXPath("//sld:LineSymbolizer/sld:Stroke/sld:CssParameter[@name='stroke']", equalTo("#000000")));
 
         st.setExportDefaultValues(false);
         xml = st.transform(ls);
@@ -2134,15 +2007,10 @@ public class SLDTransformerTest extends XmlTestSupport {
         assertThat(xml, hasXPath("//sld:PolygonSymbolizer/sld:Stroke", notNullValue(String.class)));
         assertThat(
                 xml,
-                hasXPath(
-                        "//sld:PolygonSymbolizer/sld:Stroke/sld:CssParameter[@name='stroke']",
-                        equalTo("#000000")));
+                hasXPath("//sld:PolygonSymbolizer/sld:Stroke/sld:CssParameter[@name='stroke']", equalTo("#000000")));
         assertThat(xml, hasXPath("//sld:PolygonSymbolizer/sld:Fill", notNullValue(String.class)));
         assertThat(
-                xml,
-                hasXPath(
-                        "//sld:PolygonSymbolizer/sld:Fill/sld:CssParameter[@name='fill']",
-                        equalTo("#808080")));
+                xml, hasXPath("//sld:PolygonSymbolizer/sld:Fill/sld:CssParameter[@name='fill']", equalTo("#808080")));
 
         st.setExportDefaultValues(false);
         xml = st.transform(ps);
@@ -2150,37 +2018,23 @@ public class SLDTransformerTest extends XmlTestSupport {
         assertThat(xml, hasXPath("//sld:PolygonSymbolizer/sld:Stroke", notNullValue(String.class)));
         assertThat(
                 xml,
-                hasXPath(
-                        "count(//sld:PolygonSymbolizer/sld:Stroke/sld:CssParameter[@name='stroke'])",
-                        equalTo("0")));
+                hasXPath("count(//sld:PolygonSymbolizer/sld:Stroke/sld:CssParameter[@name='stroke'])", equalTo("0")));
         assertThat(xml, hasXPath("//sld:PolygonSymbolizer/sld:Fill", notNullValue(String.class)));
         assertThat(
-                xml,
-                hasXPath(
-                        "count(//sld:PolygonSymbolizer/sld:Fill/sld:CssParameter[@name='fill'])",
-                        equalTo("0")));
+                xml, hasXPath("count(//sld:PolygonSymbolizer/sld:Fill/sld:CssParameter[@name='fill'])", equalTo("0")));
 
         st.setExportDefaultValues(true);
-        PointSymbolizer pos =
-                sb.createPointSymbolizer(sb.createGraphic(null, sb.createMark("square"), null));
+        PointSymbolizer pos = sb.createPointSymbolizer(sb.createGraphic(null, sb.createMark("square"), null));
 
         xml = st.transform(pos);
 
-        assertThat(
-                xml,
-                hasXPath(
-                        "//sld:PointSymbolizer/sld:Graphic/sld:Mark/sld:Stroke",
-                        notNullValue(String.class)));
+        assertThat(xml, hasXPath("//sld:PointSymbolizer/sld:Graphic/sld:Mark/sld:Stroke", notNullValue(String.class)));
         assertThat(
                 xml,
                 hasXPath(
                         "//sld:PointSymbolizer/sld:Graphic/sld:Mark/sld:Stroke/sld:CssParameter[@name='stroke']",
                         equalTo("#000000")));
-        assertThat(
-                xml,
-                hasXPath(
-                        "//sld:PointSymbolizer/sld:Graphic/sld:Mark/sld:Fill",
-                        notNullValue(String.class)));
+        assertThat(xml, hasXPath("//sld:PointSymbolizer/sld:Graphic/sld:Mark/sld:Fill", notNullValue(String.class)));
         assertThat(
                 xml,
                 hasXPath(
@@ -2191,21 +2045,13 @@ public class SLDTransformerTest extends XmlTestSupport {
         st.setExportDefaultValues(false);
         xml = st.transform(pos);
 
-        assertThat(
-                xml,
-                hasXPath(
-                        "//sld:PointSymbolizer/sld:Graphic/sld:Mark/sld:Stroke",
-                        notNullValue(String.class)));
+        assertThat(xml, hasXPath("//sld:PointSymbolizer/sld:Graphic/sld:Mark/sld:Stroke", notNullValue(String.class)));
         assertThat(
                 xml,
                 hasXPath(
                         "count(//sld:PointSymbolizer/sld:Graphic/sld:Mark/sld:Stroke/sld:CssParameter[@name='stroke'])",
                         equalTo("0")));
-        assertThat(
-                xml,
-                hasXPath(
-                        "//sld:PointSymbolizer/sld:Graphic/sld:Mark/sld:Fill",
-                        notNullValue(String.class)));
+        assertThat(xml, hasXPath("//sld:PointSymbolizer/sld:Graphic/sld:Mark/sld:Fill", notNullValue(String.class)));
         assertThat(
                 xml,
                 hasXPath(
@@ -2217,44 +2063,43 @@ public class SLDTransformerTest extends XmlTestSupport {
     @Test
     public void testWKTMarkAlongLine() throws TransformerException {
 
-        String xml =
-                "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>"
-                        + "<StyledLayerDescriptor version=\"1.0.0\""
-                        + "                       xsi:schemaLocation=\"http://www.opengis.net/sld http://schemas.opengis.net/sld/1.0.0/StyledLayerDescriptor.xsd\""
-                        + "                       xmlns=\"http://www.opengis.net/sld\" xmlns:ogc=\"http://www.opengis.net/ogc\""
-                        + "                       xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">"
-                        + "  <NamedLayer>"
-                        + "    <Name>hel-zigzag</Name>"
-                        + "    <UserStyle>"
-                        + "      <Title>A sin wave line</Title>"
-                        + "      <FeatureTypeStyle>"
-                        + "        <Rule>"
-                        + "          <Name>Sine Wave</Name>"
-                        + "          <LineSymbolizer>"
-                        + "            <Stroke>"
-                        + "              <GraphicStroke>"
-                        + "                <Graphic>"
-                        + "                  <Mark>"
-                        + "                    <WellKnownName>wkt://COMPOUNDCURVE(CIRCULARSTRING(0 0, 0.25 0.25, 0.5 0), CIRCULARSTRING(0.5 0, 0.75 -0.25, 1 0))</WellKnownName>"
-                        + "                    <Stroke>"
-                        + "                      <CssParameter name=\"stroke\">0x0000AA</CssParameter>"
-                        + "                      <CssParameter name=\"stroke-width\">3</CssParameter>"
-                        + "                      <CssParameter name=\"stroke-linecap\">round</CssParameter>"
-                        + "                    </Stroke>"
-                        + "                  </Mark>"
-                        + "                  <Size>20</Size>"
-                        + "                </Graphic>"
-                        + "              </GraphicStroke>"
-                        + "            </Stroke>"
-                        + "            <VendorOption name=\"markAlongLine\">true</VendorOption>"
-                        + "            <VendorOption name=\"markAlongLineScaleLimit\">0.9</VendorOption>"
-                        + "            <VendorOption name=\"markAlongLineSimplify\">0.4</VendorOption>"
-                        + "          </LineSymbolizer>"
-                        + "        </Rule>"
-                        + "      </FeatureTypeStyle>"
-                        + "    </UserStyle>"
-                        + "  </NamedLayer>"
-                        + "</StyledLayerDescriptor>";
+        String xml = "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>"
+                + "<StyledLayerDescriptor version=\"1.0.0\""
+                + "                       xsi:schemaLocation=\"http://www.opengis.net/sld http://schemas.opengis.net/sld/1.0.0/StyledLayerDescriptor.xsd\""
+                + "                       xmlns=\"http://www.opengis.net/sld\" xmlns:ogc=\"http://www.opengis.net/ogc\""
+                + "                       xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">"
+                + "  <NamedLayer>"
+                + "    <Name>hel-zigzag</Name>"
+                + "    <UserStyle>"
+                + "      <Title>A sin wave line</Title>"
+                + "      <FeatureTypeStyle>"
+                + "        <Rule>"
+                + "          <Name>Sine Wave</Name>"
+                + "          <LineSymbolizer>"
+                + "            <Stroke>"
+                + "              <GraphicStroke>"
+                + "                <Graphic>"
+                + "                  <Mark>"
+                + "                    <WellKnownName>wkt://COMPOUNDCURVE(CIRCULARSTRING(0 0, 0.25 0.25, 0.5 0), CIRCULARSTRING(0.5 0, 0.75 -0.25, 1 0))</WellKnownName>"
+                + "                    <Stroke>"
+                + "                      <CssParameter name=\"stroke\">0x0000AA</CssParameter>"
+                + "                      <CssParameter name=\"stroke-width\">3</CssParameter>"
+                + "                      <CssParameter name=\"stroke-linecap\">round</CssParameter>"
+                + "                    </Stroke>"
+                + "                  </Mark>"
+                + "                  <Size>20</Size>"
+                + "                </Graphic>"
+                + "              </GraphicStroke>"
+                + "            </Stroke>"
+                + "            <VendorOption name=\"markAlongLine\">true</VendorOption>"
+                + "            <VendorOption name=\"markAlongLineScaleLimit\">0.9</VendorOption>"
+                + "            <VendorOption name=\"markAlongLineSimplify\">0.4</VendorOption>"
+                + "          </LineSymbolizer>"
+                + "        </Rule>"
+                + "      </FeatureTypeStyle>"
+                + "    </UserStyle>"
+                + "  </NamedLayer>"
+                + "</StyledLayerDescriptor>";
 
         StringReader reader = new StringReader(xml);
         SLDParser sldParser = new SLDParser(sf, reader);
@@ -2277,9 +2122,7 @@ public class SLDTransformerTest extends XmlTestSupport {
 
         assertThat(
                 lineSymbolizerXML,
-                hasXPath(
-                        "//sld:LineSymbolizer/sld:VendorOption[@name='markAlongLine']",
-                        notNullValue(String.class)));
+                hasXPath("//sld:LineSymbolizer/sld:VendorOption[@name='markAlongLine']", notNullValue(String.class)));
         assertThat(
                 lineSymbolizerXML,
                 hasXPath(
@@ -2318,14 +2161,10 @@ public class SLDTransformerTest extends XmlTestSupport {
 
         assertThat(
                 styleXML,
-                hasXPath(
-                        "//sld:UserStyle/sld:Background/sld:CssParameter[@name='fill']",
-                        equalTo("#FF0000")));
+                hasXPath("//sld:UserStyle/sld:Background/sld:CssParameter[@name='fill']", equalTo("#FF0000")));
         assertThat(
                 styleXML,
-                hasXPath(
-                        "//sld:UserStyle/sld:Background/sld:CssParameter[@name='fill-opacity']",
-                        equalTo("1.0")));
+                hasXPath("//sld:UserStyle/sld:Background/sld:CssParameter[@name='fill-opacity']", equalTo("1.0")));
     }
 
     @Test
@@ -2362,36 +2201,35 @@ public class SLDTransformerTest extends XmlTestSupport {
 
     @Test
     public void testVendorOptionsRule() {
-        String xml =
-                "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>"
-                        + "<StyledLayerDescriptor version=\"1.0.0\" "
-                        + "              xsi:schemaLocation=\"http://www.opengis.net/sld StyledLayerDescriptor.xsd\" "
-                        + "              xmlns=\"http://www.opengis.net/sld\" "
-                        + "              xmlns:ogc=\"http://www.opengis.net/ogc\" "
-                        + "              xmlns:xlink=\"http://www.w3.org/1999/xlink\" "
-                        + "              xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">"
-                        + "      <NamedLayer>"
-                        + "              <Name>Default Line</Name>"
-                        + "              <UserStyle>"
-                        + "                      <Title>A boring default style</Title>"
-                        + "                      <Abstract>A sample style that just prints out a blue line</Abstract>"
-                        + "                              <FeatureTypeStyle>"
-                        + "                              <Rule>"
-                        + "                                      <Name>Rule 1</Name>"
-                        + "                                      <Title>Blue Line</Title>"
-                        + "                                      <Abstract>A blue line with a 1 pixel width</Abstract>"
-                        + "                                      <LineSymbolizer>"
-                        + "                                              <Stroke>"
-                        + "                                                      <CssParameter name=\"stroke\">#0000ff</CssParameter>"
-                        + "                                              </Stroke>"
-                        + "                                      </LineSymbolizer>"
-                        + "                                      <VendorOption name=\"firstOption\">firstValue</VendorOption>"
-                        + "                                      <VendorOption name=\"secondOption\">secondValue</VendorOption>"
-                        + "                              </Rule>"
-                        + "                  </FeatureTypeStyle>"
-                        + "              </UserStyle>"
-                        + "      </NamedLayer>"
-                        + "</StyledLayerDescriptor>";
+        String xml = "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>"
+                + "<StyledLayerDescriptor version=\"1.0.0\" "
+                + "              xsi:schemaLocation=\"http://www.opengis.net/sld StyledLayerDescriptor.xsd\" "
+                + "              xmlns=\"http://www.opengis.net/sld\" "
+                + "              xmlns:ogc=\"http://www.opengis.net/ogc\" "
+                + "              xmlns:xlink=\"http://www.w3.org/1999/xlink\" "
+                + "              xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">"
+                + "      <NamedLayer>"
+                + "              <Name>Default Line</Name>"
+                + "              <UserStyle>"
+                + "                      <Title>A boring default style</Title>"
+                + "                      <Abstract>A sample style that just prints out a blue line</Abstract>"
+                + "                              <FeatureTypeStyle>"
+                + "                              <Rule>"
+                + "                                      <Name>Rule 1</Name>"
+                + "                                      <Title>Blue Line</Title>"
+                + "                                      <Abstract>A blue line with a 1 pixel width</Abstract>"
+                + "                                      <LineSymbolizer>"
+                + "                                              <Stroke>"
+                + "                                                      <CssParameter name=\"stroke\">#0000ff</CssParameter>"
+                + "                                              </Stroke>"
+                + "                                      </LineSymbolizer>"
+                + "                                      <VendorOption name=\"firstOption\">firstValue</VendorOption>"
+                + "                                      <VendorOption name=\"secondOption\">secondValue</VendorOption>"
+                + "                              </Rule>"
+                + "                  </FeatureTypeStyle>"
+                + "              </UserStyle>"
+                + "      </NamedLayer>"
+                + "</StyledLayerDescriptor>";
 
         StringReader reader = new StringReader(xml);
         SLDParser sldParser = new SLDParser(sf, reader);
@@ -2418,8 +2256,6 @@ public class SLDTransformerTest extends XmlTestSupport {
         st.setIndentation(2);
         String xml = st.transform(rs);
 
-        assertThat(
-                xml,
-                hasXPath("/sld:RasterSymbolizer/sld:VendorOption[@name='test']", equalTo("value")));
+        assertThat(xml, hasXPath("/sld:RasterSymbolizer/sld:VendorOption[@name='test']", equalTo("value")));
     }
 }

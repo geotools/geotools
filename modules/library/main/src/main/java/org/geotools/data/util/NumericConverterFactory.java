@@ -46,8 +46,7 @@ import org.geotools.util.factory.Hints;
  */
 public class NumericConverterFactory implements ConverterFactory {
 
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(NumericConverterFactory.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(NumericConverterFactory.class);
 
     @Override
     public Converter createConverter(Class source, Class target, Hints hints) {
@@ -57,8 +56,7 @@ public class NumericConverterFactory implements ConverterFactory {
 
         // check if source is a number or a string. We can't convert to a number
         // from anything else.
-        if (!(Number.class.isAssignableFrom(source)) && !(String.class.isAssignableFrom(source)))
-            return null;
+        if (!(Number.class.isAssignableFrom(source)) && !(String.class.isAssignableFrom(source))) return null;
 
         // check if target is one of supported
         if (Long.class.equals(target)
@@ -74,8 +72,7 @@ public class NumericConverterFactory implements ConverterFactory {
             // check if the safe conversion flag was set and if so only allow save conversions
             if (hints != null) {
                 Object safeConversion = hints.get(ConverterFactory.SAFE_CONVERSION);
-                if (safeConversion instanceof Boolean
-                        && ((Boolean) safeConversion).booleanValue()) {
+                if (safeConversion instanceof Boolean && ((Boolean) safeConversion).booleanValue()) {
                     return new SafeNumericConverter();
                 }
             }
@@ -112,10 +109,7 @@ public class NumericConverterFactory implements ConverterFactory {
                         // return Double.valueOf(source.toString());
                     }
                 } else if (Float.class.equals(target)) {
-                    if (c == Float.class
-                            || c == Integer.class
-                            || c == Short.class
-                            || c == Byte.class) {
+                    if (c == Float.class || c == Integer.class || c == Short.class || c == Byte.class) {
                         return Float.valueOf(number.floatValue());
                         // return Float.valueOf(source.toString());
                     }
@@ -129,10 +123,7 @@ public class NumericConverterFactory implements ConverterFactory {
                         // return new BigInteger(source.toString());
                     }
                 } else if (Long.class.equals(target)) {
-                    if (c == Long.class
-                            || c == Integer.class
-                            || c == Short.class
-                            || c == Byte.class) {
+                    if (c == Long.class || c == Integer.class || c == Short.class || c == Byte.class) {
                         return Long.valueOf(number.longValue());
                         // return Long.valueOf(source.toString());
                     }
@@ -371,9 +362,7 @@ public class NumericConverterFactory implements ConverterFactory {
                         || Byte.class.equals(target)
                         || BigInteger.class.equals(target))) {
             try {
-                return ((String) source).toUpperCase().contains("E")
-                        ? new BigDecimal((String) source)
-                        : null;
+                return ((String) source).toUpperCase().contains("E") ? new BigDecimal((String) source) : null;
             } catch (NumberFormatException ex) {
                 if (LOGGER.isLoggable(Level.FINEST)) {
                     LOGGER.finest("NumberFormatException for source=" + source);

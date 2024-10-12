@@ -137,17 +137,20 @@ public class LegendURLBinding extends OnlineResourceTypeBinding {
 
         Object childValue = node.getChildValue("format");
         if (childValue != null) {
-            ((LegendURLType) value).setFormat((String) node.getAttribute("format").getValue());
+            ((LegendURLType) value)
+                    .setFormat((String) node.getAttribute("format").getValue());
         }
 
         childValue = node.getChildValue("height");
         if (childValue != null) {
-            ((LegendURLType) value).setHeight((BigInteger) node.getAttribute("height").getValue());
+            ((LegendURLType) value)
+                    .setHeight((BigInteger) node.getAttribute("height").getValue());
         }
 
         childValue = node.getChildValue("width");
         if (childValue != null) {
-            ((LegendURLType) value).setWidth((BigInteger) node.getAttribute("width").getValue());
+            ((LegendURLType) value)
+                    .setWidth((BigInteger) node.getAttribute("width").getValue());
         }
 
         childValue = node.getChildValue("maxScaleDenominator");

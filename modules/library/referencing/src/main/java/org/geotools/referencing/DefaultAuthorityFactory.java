@@ -52,8 +52,7 @@ import org.geotools.util.logging.Logging;
  * @author Martin Desruisseaux
  * @author Andrea Aime
  */
-final class DefaultAuthorityFactory extends ThreadedAuthorityFactory
-        implements CRSAuthorityFactory {
+final class DefaultAuthorityFactory extends ThreadedAuthorityFactory implements CRSAuthorityFactory {
     /**
      * List of codes without authority space. We can not defines them in an ordinary authority
      * factory.
@@ -93,9 +92,7 @@ final class DefaultAuthorityFactory extends ThreadedAuthorityFactory
              */
 
             if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.fine(
-                        "Factories with FORCE_LONGITUDE_FIRST_AXIS_ORDER=true :\n"
-                                + logClassNames(factories));
+                LOGGER.fine("Factories with FORCE_LONGITUDE_FIRST_AXIS_ORDER=true :\n" + logClassNames(factories));
             }
             factories.addAll(ReferencingFactoryFinder.getCRSAuthorityFactories(hints));
         }
@@ -119,8 +116,7 @@ final class DefaultAuthorityFactory extends ThreadedAuthorityFactory
      */
     static Set<String> getSupportedCodes(final String authority) {
         final Set<String> result = new LinkedHashSet<>(AUTHORITY_LESS);
-        for (final CRSAuthorityFactory factory :
-                ReferencingFactoryFinder.getCRSAuthorityFactories(null)) {
+        for (final CRSAuthorityFactory factory : ReferencingFactoryFinder.getCRSAuthorityFactories(null)) {
             if (Citations.identifierMatches(factory.getAuthority(), authority)) {
                 final Set<String> codes;
                 try {
@@ -149,8 +145,7 @@ final class DefaultAuthorityFactory extends ThreadedAuthorityFactory
      */
     static Set<String> getSupportedAuthorities(final boolean returnAliases) {
         final Set<String> result = new LinkedHashSet<>();
-        for (final CRSAuthorityFactory factory :
-                ReferencingFactoryFinder.getCRSAuthorityFactories(null)) {
+        for (final CRSAuthorityFactory factory : ReferencingFactoryFinder.getCRSAuthorityFactories(null)) {
             for (final Identifier id : factory.getAuthority().getIdentifiers()) {
                 result.add(id.getCode());
                 if (!returnAliases) {
@@ -163,8 +158,7 @@ final class DefaultAuthorityFactory extends ThreadedAuthorityFactory
 
     /** Returns the coordinate reference system for the given code. */
     @Override
-    public CoordinateReferenceSystem createCoordinateReferenceSystem(String code)
-            throws FactoryException {
+    public CoordinateReferenceSystem createCoordinateReferenceSystem(String code) throws FactoryException {
         if (code != null) {
             code = code.trim();
             if (LOGGER.isLoggable(Level.FINE)) {

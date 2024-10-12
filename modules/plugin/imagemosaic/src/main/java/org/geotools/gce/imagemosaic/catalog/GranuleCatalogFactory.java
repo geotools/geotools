@@ -64,13 +64,10 @@ public abstract class GranuleCatalogFactory {
         if (storeName != null && !storeName.trim().isEmpty()) {
             if (repository == null) {
                 throw new IllegalArgumentException(
-                        "Was given a store name "
-                                + storeName
-                                + " but there is no Repository to resolve it");
+                        "Was given a store name " + storeName + " but there is no Repository to resolve it");
             } else {
-                gtCatalog =
-                        new RepositoryDataStoreCatalog(
-                                params, configurations, create, repository, storeName, spi, hints);
+                gtCatalog = new RepositoryDataStoreCatalog(
+                        params, configurations, create, repository, storeName, spi, hints);
             }
         } else {
             gtCatalog = new GTDataStoreGranuleCatalog(params, configurations, create, spi, hints);
@@ -85,14 +82,10 @@ public abstract class GranuleCatalogFactory {
                         "Cannot perform in complete memory caching of granules when having multiple coverages");
             catalog = new STRTreeGranuleCatalog(params, gtCatalog, hints);
         } else {
-            Integer maxAge =
-                    Converters.convert(params.get(Utils.Prop.QUERY_CACHE_MAX_AGE), Integer.class);
-            Integer maxFeatures =
-                    Converters.convert(
-                            params.get(Utils.Prop.QUERY_CACHE_MAX_FEATURES), Integer.class);
+            Integer maxAge = Converters.convert(params.get(Utils.Prop.QUERY_CACHE_MAX_AGE), Integer.class);
+            Integer maxFeatures = Converters.convert(params.get(Utils.Prop.QUERY_CACHE_MAX_FEATURES), Integer.class);
             if (maxAge != null && maxFeatures != null) {
-                GranuleCatalog queryCache =
-                        new QueryCacheGranuleCatalog(gtCatalog, maxFeatures, maxAge);
+                GranuleCatalog queryCache = new QueryCacheGranuleCatalog(gtCatalog, maxFeatures, maxAge);
                 catalog = new CachingDataStoreGranuleCatalog(queryCache);
             } else {
                 catalog = new CachingDataStoreGranuleCatalog(gtCatalog);
@@ -102,10 +95,8 @@ public abstract class GranuleCatalogFactory {
         // locking wrappers
         if (store instanceof Wrapper) {
             try {
-                store =
-                        Optional.ofNullable(
-                                        (DataStore) ((Wrapper) store).unwrap(JDBCDataStore.class))
-                                .orElse(store);
+                store = Optional.ofNullable((DataStore) ((Wrapper) store).unwrap(JDBCDataStore.class))
+                        .orElse(store);
             } catch (IllegalArgumentException e) {
                 LOGGER.log(
                         Level.FINER,
@@ -135,7 +126,8 @@ public abstract class GranuleCatalogFactory {
         if (sourceURL != null) {
             File parentDirectory = URLs.urlToFile(sourceURL);
             if (parentDirectory.isFile()) parentDirectory = parentDirectory.getParentFile();
-            params.put(Utils.Prop.PARENT_LOCATION, URLs.fileToUrl(parentDirectory).toString());
+            params.put(
+                    Utils.Prop.PARENT_LOCATION, URLs.fileToUrl(parentDirectory).toString());
         }
         // SPI
         DataStoreFactorySpi spi = null;
@@ -166,9 +158,8 @@ public abstract class GranuleCatalogFactory {
             final String SPIClass = properties.getProperty("SPI");
             try {
                 // create a datastore as instructed
-                spi =
-                        (DataStoreFactorySpi)
-                                Class.forName(SPIClass).getDeclaredConstructor().newInstance();
+                spi = (DataStoreFactorySpi)
+                        Class.forName(SPIClass).getDeclaredConstructor().newInstance();
             } catch (Exception e) {
                 // if we are directed to use a pre-existing store then don't complain about lack of
                 // SPI

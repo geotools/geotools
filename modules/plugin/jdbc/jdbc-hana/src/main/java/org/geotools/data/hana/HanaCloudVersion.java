@@ -43,16 +43,14 @@ class HanaCloudVersion implements Comparable<HanaCloudVersion> {
     public HanaCloudVersion(String versionString) {
         String[] components = versionString.replace('-', '.').split("\\.");
         if (components.length < 3) {
-            throw new IllegalArgumentException(
-                    "Invalid HANA Cloud version string " + versionString);
+            throw new IllegalArgumentException("Invalid HANA Cloud version string " + versionString);
         }
         try {
             this.year = Integer.parseInt(components[0]);
             this.week = Integer.parseInt(components[1]);
             this.patch = Integer.parseInt(components[2]);
         } catch (NumberFormatException e) {
-            throw new IllegalArgumentException(
-                    "Invalid HANA Cloud version string " + versionString);
+            throw new IllegalArgumentException("Invalid HANA Cloud version string " + versionString);
         }
     }
 

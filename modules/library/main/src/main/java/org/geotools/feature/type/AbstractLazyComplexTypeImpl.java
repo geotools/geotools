@@ -41,8 +41,7 @@ import org.geotools.feature.NameImpl;
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
  * @see ComplexTypeImpl
  */
-public abstract class AbstractLazyComplexTypeImpl extends AbstractLazyAttributeTypeImpl
-        implements ComplexType {
+public abstract class AbstractLazyComplexTypeImpl extends AbstractLazyAttributeTypeImpl implements ComplexType {
 
     private Collection<PropertyDescriptor> descriptors;
 

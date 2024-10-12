@@ -144,7 +144,10 @@ public class MongoGeometryBuilder {
         for (int i = 0; i < mp.getNumGeometries(); i++) {
             l.add(toList(((Polygon) mp.getGeometryN(i))));
         }
-        return BasicDBObjectBuilder.start().add("type", "MultiPolygon").add("coordinates", l).get();
+        return BasicDBObjectBuilder.start()
+                .add("type", "MultiPolygon")
+                .add("coordinates", l)
+                .get();
     }
 
     public MultiLineString toMultiLineString(List<?> list) {

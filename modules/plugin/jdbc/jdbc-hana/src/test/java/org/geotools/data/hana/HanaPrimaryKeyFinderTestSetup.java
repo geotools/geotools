@@ -78,15 +78,11 @@ public class HanaPrimaryKeyFinderTestSetup extends JDBCPrimaryKeyFinderTestSetup
             htu.createTestTable(SEQ_TABLE, cols);
             htu.createSequence(htu.getTestSchema(), SEQUENCE, 1);
 
-            htu.insertIntoTestTable(
-                    SEQ_TABLE, htu.nextSequenceValue(htu.getTestSchema(), SEQUENCE), "one", null);
-            htu.insertIntoTestTable(
-                    SEQ_TABLE, htu.nextSequenceValue(htu.getTestSchema(), SEQUENCE), "two", null);
-            htu.insertIntoTestTable(
-                    SEQ_TABLE, htu.nextSequenceValue(htu.getTestSchema(), SEQUENCE), "three", null);
+            htu.insertIntoTestTable(SEQ_TABLE, htu.nextSequenceValue(htu.getTestSchema(), SEQUENCE), "one", null);
+            htu.insertIntoTestTable(SEQ_TABLE, htu.nextSequenceValue(htu.getTestSchema(), SEQUENCE), "two", null);
+            htu.insertIntoTestTable(SEQ_TABLE, htu.nextSequenceValue(htu.getTestSchema(), SEQUENCE), "three", null);
 
-            htu.insertIntoTestTable(
-                    METADATA_TABLE, htu.getTestSchema(), SEQ_TABLE, "key", 0, "sequence", SEQUENCE);
+            htu.insertIntoTestTable(METADATA_TABLE, htu.getTestSchema(), SEQ_TABLE, "key", 0, "sequence", SEQUENCE);
         }
     }
 
@@ -134,14 +130,7 @@ public class HanaPrimaryKeyFinderTestSetup extends JDBCPrimaryKeyFinderTestSetup
             htu.createTestSchema();
 
             htu.createTestView(SINGLEPK_VIEW, PLAIN_TABLE);
-            htu.insertIntoTestTable(
-                    METADATA_TABLE,
-                    htu.getTestSchema(),
-                    SINGLEPK_VIEW,
-                    "key1",
-                    0,
-                    "assigned",
-                    null);
+            htu.insertIntoTestTable(METADATA_TABLE, htu.getTestSchema(), SINGLEPK_VIEW, "key1", 0, "assigned", null);
         }
     }
 
@@ -161,10 +150,8 @@ public class HanaPrimaryKeyFinderTestSetup extends JDBCPrimaryKeyFinderTestSetup
 
             htu.createTestView(MULTIPK_VIEW, PLAIN_TABLE);
 
-            htu.insertIntoTestTable(
-                    METADATA_TABLE, htu.getTestSchema(), MULTIPK_VIEW, "key1", 0, "assigned", null);
-            htu.insertIntoTestTable(
-                    METADATA_TABLE, htu.getTestSchema(), MULTIPK_VIEW, "key2", 1, "assigned", null);
+            htu.insertIntoTestTable(METADATA_TABLE, htu.getTestSchema(), MULTIPK_VIEW, "key1", 0, "assigned", null);
+            htu.insertIntoTestTable(METADATA_TABLE, htu.getTestSchema(), MULTIPK_VIEW, "key2", 1, "assigned", null);
         }
     }
 

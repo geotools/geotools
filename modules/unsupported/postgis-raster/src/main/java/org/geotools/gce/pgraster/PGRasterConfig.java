@@ -98,19 +98,14 @@ class PGRasterConfig implements Closeable {
     PGRasterConfig(Document config) {
         Element root = config.getDocumentElement();
         if (!"pgraster".equalsIgnoreCase(root.getNodeName())) {
-            throw new IllegalArgumentException(
-                    "Not a postgis raster configuration, root element must be 'pgraster'");
+            throw new IllegalArgumentException("Not a postgis raster configuration, root element must be 'pgraster'");
         }
 
         this.name = first(root, "name").map(this::nodeValue).orElse(null);
         this.enableDrivers = first(root, "enableDrivers").map(this::nodeValue).orElse(null);
 
-        Element db =
-                first(config.getDocumentElement(), "database")
-                        .orElseThrow(
-                                () ->
-                                        new IllegalArgumentException(
-                                                "Config has no database element"));
+        Element db = first(config.getDocumentElement(), "database")
+                .orElseThrow(() -> new IllegalArgumentException("Config has no database element"));
 
         DataSource dataSource = null;
 
@@ -129,16 +124,14 @@ class PGRasterConfig implements Closeable {
 
             String host = first(db, "host").map(this::nodeValue).orElse("localhost");
 
-            Integer port =
-                    first(db, "port").map(this::nodeValue).map(Integer::parseInt).orElse(5432);
+            Integer port = first(db, "port")
+                    .map(this::nodeValue)
+                    .map(Integer::parseInt)
+                    .orElse(5432);
 
-            String name =
-                    first(db, "name")
-                            .map(this::nodeValue)
-                            .orElseThrow(
-                                    () ->
-                                            new IllegalArgumentException(
-                                                    "database 'name' not specified"));
+            String name = first(db, "name")
+                    .map(this::nodeValue)
+                    .orElseThrow(() -> new IllegalArgumentException("database 'name' not specified"));
 
             source.setUrl("jdbc:postgresql://" + host + ":" + port + "/" + name);
 
@@ -146,53 +139,30 @@ class PGRasterConfig implements Closeable {
 
             first(db, "passwd").map(this::nodeValue).ifPresent(source::setPassword);
 
-            first(db, "pool")
-                    .ifPresent(
-                            p -> {
-                                first(p, "min")
-                                        .map(this::nodeValue)
-                                        .map(Integer::parseInt)
-                                        .ifPresent(source::setMinIdle);
-                                first(p, "max")
-                                        .map(this::nodeValue)
-                                        .map(Integer::parseInt)
-                                        .ifPresent(source::setMaxActive);
-                            });
+            first(db, "pool").ifPresent(p -> {
+                first(p, "min").map(this::nodeValue).map(Integer::parseInt).ifPresent(source::setMinIdle);
+                first(p, "max").map(this::nodeValue).map(Integer::parseInt).ifPresent(source::setMaxActive);
+            });
 
             dataSource = new PGRasterDataSource(source);
         }
 
         this.dataSource = dataSource;
 
-        Element ras =
-                first(config.getDocumentElement(), "raster")
-                        .orElseThrow(
-                                () ->
-                                        new IllegalArgumentException(
-                                                "Config has no 'raster' element"));
+        Element ras = first(config.getDocumentElement(), "raster")
+                .orElseThrow(() -> new IllegalArgumentException("Config has no 'raster' element"));
 
         this.schema = first(ras, "schema").map(this::nodeValue).orElse("public");
-        this.table =
-                first(ras, "table")
-                        .map(this::nodeValue)
-                        .orElseThrow(
-                                () ->
-                                        new IllegalArgumentException(
-                                                "column must specify a 'table' element"));
+        this.table = first(ras, "table")
+                .map(this::nodeValue)
+                .orElseThrow(() -> new IllegalArgumentException("column must specify a 'table' element"));
         this.column = first(ras, "column").map(this::nodeValue).orElse(null);
 
         // time
-        first(config.getDocumentElement(), "time")
-                .ifPresent(
-                        el -> {
-                            first(el, "enabled")
-                                    .map(this::nodeValue)
-                                    .map(Boolean::parseBoolean)
-                                    .ifPresent(it -> time.enabled = it);
-                            first(el, "column")
-                                    .map(this::nodeValue)
-                                    .ifPresent(it -> time.column = it);
-                        });
+        first(config.getDocumentElement(), "time").ifPresent(el -> {
+            first(el, "enabled").map(this::nodeValue).map(Boolean::parseBoolean).ifPresent(it -> time.enabled = it);
+            first(el, "column").map(this::nodeValue).ifPresent(it -> time.column = it);
+        });
     }
 
     @VisibleForTesting

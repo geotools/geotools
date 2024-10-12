@@ -172,8 +172,7 @@ import org.xml.sax.helpers.AttributesImpl;
  *     that this type can be used directly as a feature.
  */
 public class FeatureTypeTransformer extends TransformerBase {
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(FeatureTypeTransformer.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(FeatureTypeTransformer.class);
     private static final String SCHEMA_NS = "http://www.w3.org/2001/XMLSchema";
 
     /**
@@ -217,8 +216,8 @@ public class FeatureTypeTransformer extends TransformerBase {
             if (o instanceof SimpleFeatureType) {
                 encode((SimpleFeatureType) o);
             } else {
-                throw new IllegalArgumentException(
-                        "Translator does not know how to translate " + o.getClass().getName());
+                throw new IllegalArgumentException("Translator does not know how to translate "
+                        + o.getClass().getName());
             }
         }
 
@@ -251,8 +250,7 @@ public class FeatureTypeTransformer extends TransformerBase {
 
             contentHandler.startElement(SCHEMA_NS, "complexType", "xs:complexType", atts);
 
-            contentHandler.startElement(
-                    SCHEMA_NS, "complexContent", "xs:complexContent", new AttributesImpl());
+            contentHandler.startElement(SCHEMA_NS, "complexContent", "xs:complexContent", new AttributesImpl());
 
             atts = new AttributesImpl();
 
@@ -320,21 +318,17 @@ public class FeatureTypeTransformer extends TransformerBase {
                 if (f == Filter.INCLUDE || f == Filter.EXCLUDE) continue;
 
                 try {
-                    if (f instanceof PropertyIsLessThan
-                            || f instanceof PropertyIsLessThanOrEqualTo) {
+                    if (f instanceof PropertyIsLessThan || f instanceof PropertyIsLessThanOrEqualTo) {
                         BinaryComparisonOperator cf = (BinaryComparisonOperator) f;
                         Expression e = cf.getExpression1();
                         if (e != null && e instanceof LengthFunction) {
-                            length =
-                                    Integer.parseInt(
-                                            ((Literal) cf.getExpression2()).getValue().toString());
+                            length = Integer.parseInt(
+                                    ((Literal) cf.getExpression2()).getValue().toString());
                         } else {
                             if (cf.getExpression2() instanceof LengthFunction) {
-                                length =
-                                        Integer.parseInt(
-                                                ((Literal) cf.getExpression1())
-                                                        .getValue()
-                                                        .toString());
+                                length = Integer.parseInt(((Literal) cf.getExpression1())
+                                        .getValue()
+                                        .toString());
                             }
                         }
                     }
@@ -354,8 +348,7 @@ public class FeatureTypeTransformer extends TransformerBase {
             } else {
                 contentHandler.startElement(SCHEMA_NS, "element", "xs:element", atts);
 
-                contentHandler.startElement(
-                        SCHEMA_NS, "simpleType", "xs:simpleType", new AttributesImpl());
+                contentHandler.startElement(SCHEMA_NS, "simpleType", "xs:simpleType", new AttributesImpl());
 
                 atts = new AttributesImpl();
 
@@ -421,8 +414,7 @@ public class FeatureTypeTransformer extends TransformerBase {
             AttributesImpl atts = createStandardAttributes(attribute);
 
             Class binding = attribute.getType().getBinding();
-            if (java.sql.Date.class.isAssignableFrom(binding))
-                atts.addAttribute("", "type", "type", "", "xs:date");
+            if (java.sql.Date.class.isAssignableFrom(binding)) atts.addAttribute("", "type", "type", "", "xs:date");
             else if (java.sql.Time.class.isAssignableFrom(binding))
                 atts.addAttribute("", "type", "type", "", "xs:time");
             else atts.addAttribute("", "type", "type", "", "xs:dateTime");

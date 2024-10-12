@@ -98,17 +98,16 @@ public class ReadWFSKommuner {
             throw new RuntimeException("WFS didn't return a Kommune feature.");
         }
 
-        FeatureSource<FeatureType, Feature> kommuneSource =
-                complexDataAccess.getFeatureSource(featureName);
+        FeatureSource<FeatureType, Feature> kommuneSource = complexDataAccess.getFeatureSource(featureName);
 
         try (FeatureIterator<Feature> features = kommuneSource.getFeatures().features()) {
 
             while (features.hasNext()) {
                 Feature nextFeature = features.next();
-                String kommunenr = (String) nextFeature.getProperty("kommunenummer").getValue();
+                String kommunenr =
+                        (String) nextFeature.getProperty("kommunenummer").getValue();
                 String kommunenavn = "Uten norsk navn";
-                ComplexAttribute kommunenavnAttribute =
-                        (ComplexAttribute) nextFeature.getProperty("kommunenavn");
+                ComplexAttribute kommunenavnAttribute = (ComplexAttribute) nextFeature.getProperty("kommunenavn");
                 for (Property administrativEnhetNavn : kommunenavnAttribute.getProperties()) {
                     ComplexAttribute innerElement = innerComplex(administrativEnhetNavn);
                     if ("nor".equals(innerElement.getProperty("språk").getValue())) {
@@ -127,7 +126,8 @@ public class ReadWFSKommuner {
     }
 
     private static ComplexAttribute innerComplex(Property complex) {
-        return (ComplexAttribute) ((ComplexAttribute) complex).getProperties().iterator().next();
+        return (ComplexAttribute)
+                ((ComplexAttribute) complex).getProperties().iterator().next();
     }
 
     /** Call read */

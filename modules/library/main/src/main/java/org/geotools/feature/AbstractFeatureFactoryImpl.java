@@ -90,14 +90,12 @@ public abstract class AbstractFeatureFactoryImpl implements FeatureFactory {
     }
 
     @Override
-    public ComplexAttribute createComplexAttribute(
-            Collection<Property> value, ComplexType type, String id) {
+    public ComplexAttribute createComplexAttribute(Collection<Property> value, ComplexType type, String id) {
         return new ComplexAttributeImpl(value, type, id == null ? null : ff.gmlObjectId(id));
     }
 
     @Override
-    public Feature createFeature(
-            Collection<Property> value, AttributeDescriptor descriptor, String id) {
+    public Feature createFeature(Collection<Property> value, AttributeDescriptor descriptor, String id) {
         return new FeatureImpl(value, descriptor, ff.featureId(id));
     }
 
@@ -116,8 +114,7 @@ public abstract class AbstractFeatureFactoryImpl implements FeatureFactory {
     }
 
     @Override
-    public SimpleFeature createSimpleFeautre(
-            Object[] array, AttributeDescriptor descriptor, String id) {
+    public SimpleFeature createSimpleFeautre(Object[] array, AttributeDescriptor descriptor, String id) {
         return createSimpleFeature(array, (SimpleFeatureType) descriptor, id);
     }
 }

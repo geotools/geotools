@@ -62,8 +62,7 @@ class RangeVisitor implements FeatureCalc {
             final long endFirst = firstDateRange.getMaxValue().getTime();
             final long beginSecond = secondDateRange.getMinValue().getTime();
             final long endSecond = secondDateRange.getMaxValue().getTime();
-            return NumberRangeComparator.doubleCompare(
-                    beginFirst, endFirst, beginSecond, endSecond);
+            return NumberRangeComparator.doubleCompare(beginFirst, endFirst, beginSecond, endSecond);
         }
     }
 
@@ -71,8 +70,7 @@ class RangeVisitor implements FeatureCalc {
     static class NumberRangeComparator implements Comparator<Range<? extends Number>> {
 
         @Override
-        public int compare(
-                Range<? extends Number> firstRange, Range<? extends Number> secondRange) {
+        public int compare(Range<? extends Number> firstRange, Range<? extends Number> secondRange) {
             Utilities.ensureNonNull("firstRange", firstRange);
             Utilities.ensureNonNull("secondRange", secondRange);
             final Number firstRangeMin = firstRange.getMinValue();
@@ -154,10 +152,7 @@ class RangeVisitor implements FeatureCalc {
         FilterFactory factory = CommonFactoryFinder.getFilterFactory(null);
         expr1 = factory.property(attributeTypeName1);
         expr2 = factory.property(attributeTypeName2);
-        this.comparator =
-                rangeType == RangeType.NUMBER
-                        ? new NumberRangeComparator()
-                        : new DateRangeComparator();
+        this.comparator = rangeType == RangeType.NUMBER ? new NumberRangeComparator() : new DateRangeComparator();
         set = buildSet();
     }
 
@@ -249,8 +244,7 @@ class RangeVisitor implements FeatureCalc {
         @Override
         public boolean isCompatible(CalcResult targetResults) {
             // list each calculation result which can merge with this type of result
-            if (targetResults instanceof RangeResult || targetResults == CalcResult.NULL_RESULT)
-                return true;
+            if (targetResults instanceof RangeResult || targetResults == CalcResult.NULL_RESULT) return true;
             return false;
         }
 

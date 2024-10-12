@@ -68,8 +68,7 @@ public class TileViewer {
         final MapContent map = new MapContent();
 
         map.setTitle("TileLab");
-        ReferencedEnvelope env =
-                new ReferencedEnvelope(-180, 180, -80, 80, DefaultGeographicCRS.WGS84);
+        ReferencedEnvelope env = new ReferencedEnvelope(-180, 180, -80, 80, DefaultGeographicCRS.WGS84);
 
         env = new ReferencedEnvelope(5, 15, 45, 55, DefaultGeographicCRS.WGS84);
 
@@ -85,8 +84,7 @@ public class TileViewer {
         String baseURL =
                 "http://ak.dynamic.t2.tiles.virtualearth.net/comp/ch/${code}?mkt=de-de&it=G,VE,BX,L,LA&shading=hill&og=78&n=z";
         map.addLayer(new TileLayer(new BingService("Road", baseURL)));
-        map.addLayer(
-                new AsyncTileLayer(new OSMService("Mapnik", "http://tile.openstreetmap.org/")));
+        map.addLayer(new AsyncTileLayer(new OSMService("Mapnik", "http://tile.openstreetmap.org/")));
 
         /*
          * String baseURL =
@@ -127,8 +125,7 @@ public class TileViewer {
         String baseURL = "http://tile.openstreetmap.org/";
         TileService service = new OSMService("OSM", baseURL);
         TileIdentifier identifier =
-                new OSMTileIdentifier(
-                        38596, 49269, new WebMercatorZoomLevel(17), service.getName());
+                new OSMTileIdentifier(38596, 49269, new WebMercatorZoomLevel(17), service.getName());
 
         Tile t = new OSMTileFactory().create(identifier, service);
 

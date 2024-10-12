@@ -77,8 +77,7 @@ public class HanaTestSetupBase extends JDBCTestSetup {
         String database = fixture.getProperty("database");
         String useSsl = fixture.getProperty("use ssl");
 
-        if ((fixture.getProperty("schemabase") != null)
-                && (fixture.getProperty("schema") == null)) {
+        if ((fixture.getProperty("schemabase") != null) && (fixture.getProperty("schema") == null)) {
             String schemaBase = fixture.getProperty("schemabase");
             int counter = schemaCounter.getAndIncrement();
             String schema = schemaBase + "_" + counter;

@@ -103,8 +103,7 @@ public class MultiGeometryTypeBinding extends AbstractComplexBinding {
             for (Geometry geometry : g) geometries.add(geometry);
         }
 
-        return factory.createGeometryCollection(
-                geometries.toArray(new Geometry[geometries.size()]));
+        return factory.createGeometryCollection(geometries.toArray(new Geometry[geometries.size()]));
     }
 
     @Override

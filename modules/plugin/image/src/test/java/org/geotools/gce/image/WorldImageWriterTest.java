@@ -60,15 +60,16 @@ public class WorldImageWriterTest extends WorldImageBaseTestCase {
      */
     @Test
     public void testWrite()
-            throws MalformedURLException, IOException, IllegalArgumentException, FactoryException,
-                    TransformException, ParseException {
+            throws MalformedURLException, IOException, IllegalArgumentException, FactoryException, TransformException,
+                    ParseException {
 
         // checking test data directory for all kind of inputs
         final File test_data_dir = TestData.file(this, null);
         File output;
         final String[] fileList = test_data_dir.list(new MyFileFilter());
         for (String format : supportedFormat) {
-            final StringBuffer buff = new StringBuffer("Format is ").append(format).append("\n");
+            final StringBuffer buff =
+                    new StringBuffer("Format is ").append(format).append("\n");
             for (String filePath : fileList) {
                 buff.append(" Testing ability to write ").append(filePath);
                 // url
@@ -96,8 +97,7 @@ public class WorldImageWriterTest extends WorldImageBaseTestCase {
      * @param source Object The object on disk representing the coverage to test.
      */
     private File write(Object source, String format)
-            throws IOException, IllegalArgumentException, FactoryException, TransformException,
-                    ParseException {
+            throws IOException, IllegalArgumentException, FactoryException, TransformException, ParseException {
         // instantiating a reader
         WorldImageReader wiReader = new WorldImageReader(source);
 

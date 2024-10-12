@@ -33,10 +33,9 @@ public class STACOfflineTest {
     protected static final String COLLECTIONS_URL = BASE_URL + "/collections?f=application%2Fjson";
     protected static final String MAJA_ALL_URL =
             BASE_URL + "/search?f=application%2Fgeo%2Bjson&collections=S2_L2A_MAJA";
-    protected static final String MAJA_ONE =
-            BASE_URL
-                    + "/search?f=application%2Fgeo%2Bjson&collections=S2_L2A_MAJA&datetime=2022"
-                    + "-07-14T10:46:29.0240000Z";
+    protected static final String MAJA_ONE = BASE_URL
+            + "/search?f=application%2Fgeo%2Bjson&collections=S2_L2A_MAJA&datetime=2022"
+            + "-07-14T10:46:29.0240000Z";
 
     protected static final String LANDING_AU = "https://explorer.sandbox.dea.ga.gov.au/stac/";
     protected static final String COLLECTIONS_AU = LANDING_AU + "collections";

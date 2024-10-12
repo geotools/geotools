@@ -32,54 +32,39 @@ public class IndexQueryUtilsTest {
 
     @Test
     public void testCheckAllPropertiesIndexedXpath() {
-        try (TestFeatureSource fsource =
-                new TestFeatureSource(
-                        "/test-data/index/",
-                        "stationsIndexed.xml",
-                        "http://www.stations.org/1.0",
-                        "stationsIndexed")) {
-            assertTrue(
-                    IndexQueryUtils.checkAllPropertiesIndexed(
-                            IndexQueryUtils.getAttributesOnFilter(totallyIndexedFilterXpath()),
-                            fsource.getMappedSource().getMapping()));
-            assertFalse(
-                    IndexQueryUtils.checkAllPropertiesIndexed(
-                            IndexQueryUtils.getAttributesOnFilter(partialIndexedFilterXpath()),
-                            fsource.getMappedSource().getMapping()));
+        try (TestFeatureSource fsource = new TestFeatureSource(
+                "/test-data/index/", "stationsIndexed.xml", "http://www.stations.org/1.0", "stationsIndexed")) {
+            assertTrue(IndexQueryUtils.checkAllPropertiesIndexed(
+                    IndexQueryUtils.getAttributesOnFilter(totallyIndexedFilterXpath()),
+                    fsource.getMappedSource().getMapping()));
+            assertFalse(IndexQueryUtils.checkAllPropertiesIndexed(
+                    IndexQueryUtils.getAttributesOnFilter(partialIndexedFilterXpath()),
+                    fsource.getMappedSource().getMapping()));
         }
     }
 
     @Test
     public void testEqualsXpath() {
-        try (TestFeatureSource fsource =
-                new TestFeatureSource(
-                        "/test-data/index/",
-                        "stationsIndexed.xml",
-                        "http://www.stations.org/1.0",
-                        "stationsIndexed")) {
-            AttributeMapping attMap =
-                    fsource.getMappedSource()
-                            .getMapping()
-                            .getAttributeMapping("st:Station/st:name");
+        try (TestFeatureSource fsource = new TestFeatureSource(
+                "/test-data/index/", "stationsIndexed.xml", "http://www.stations.org/1.0", "stationsIndexed")) {
+            AttributeMapping attMap = fsource.getMappedSource().getMapping().getAttributeMapping("st:Station/st:name");
             assertNotNull(attMap);
         }
     }
 
     private Filter totallyIndexedFilterXpath() {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory();
-        Filter filter =
-                ff.and(
-                        ff.equals(ff.property("st:Station"), ff.literal("st.1")),
-                        ff.like(ff.property("st:Station/st:name"), "*fer*"));
+        Filter filter = ff.and(
+                ff.equals(ff.property("st:Station"), ff.literal("st.1")),
+                ff.like(ff.property("st:Station/st:name"), "*fer*"));
         return filter;
     }
 
     private Filter partialIndexedFilterXpath() {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory();
-        Filter filter =
-                ff.and(
-                        ff.equals(ff.property("st:Station"), ff.literal("st.1")),
-                        ff.like(ff.property("st:Station/st:location/st:name"), "*fer*"));
+        Filter filter = ff.and(
+                ff.equals(ff.property("st:Station"), ff.literal("st.1")),
+                ff.like(ff.property("st:Station/st:location/st:name"), "*fer*"));
         return filter;
     }
 }

@@ -63,8 +63,7 @@ public class ClientPropertiesNoDuplicatesTest extends AbstractStationsTest {
     /** Tests GML encoding of client properties doesn't affect parent containers. */
     @Test
     public void testGMLEncodingProperties() throws IOException {
-        FeatureSource fs =
-                stationsDataAccess.getFeatureSource(STATION_WITH_MEASUREMENTS_CODE_FEATURE);
+        FeatureSource fs = stationsDataAccess.getFeatureSource(STATION_WITH_MEASUREMENTS_CODE_FEATURE);
         GMLConfiguration gml31Config = new GMLConfiguration();
         Encoder encoder = new Encoder(gml31Config);
         // filter for station with id "st.1"
@@ -77,23 +76,18 @@ public class ClientPropertiesNoDuplicatesTest extends AbstractStationsTest {
             Document dom = encoder.encodeAsDOM(station1, GML.featureMember);
 
             List<Element> measurements =
-                    getElementsFromDocumentUsingXpath(
-                            dom, "//st:StationWithMeasurementCode/st:measurements");
+                    getElementsFromDocumentUsingXpath(dom, "//st:StationWithMeasurementCode/st:measurements");
             assertFalse(measurements.isEmpty());
             assertFalse(measurements.get(0).hasAttribute("codename"));
 
-            measurements =
-                    getElementsFromDocumentUsingXpath(
-                            dom,
-                            "//st:StationWithMeasurementCode/st:measurements/ms:MeasurementCode");
+            measurements = getElementsFromDocumentUsingXpath(
+                    dom, "//st:StationWithMeasurementCode/st:measurements/ms:MeasurementCode");
             assertFalse(measurements.isEmpty());
             assertTrue(measurements.get(0).hasAttribute("codename"));
             assertFalse(measurements.get(0).hasAttribute("code"));
 
-            List<Element> names =
-                    getElementsFromDocumentUsingXpath(
-                            dom,
-                            "//st:StationWithMeasurementCode/st:measurements/ms:MeasurementCode/ms:name");
+            List<Element> names = getElementsFromDocumentUsingXpath(
+                    dom, "//st:StationWithMeasurementCode/st:measurements/ms:MeasurementCode/ms:name");
             assertFalse(names.isEmpty());
             assertTrue(names.get(0).hasAttribute("code"));
 

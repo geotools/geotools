@@ -73,10 +73,9 @@ public class ReprojectFeatureResults extends AbstractFeatureCollection {
 
     /** Creates a new reprojecting feature results */
     public ReprojectFeatureResults(
-            FeatureCollection<SimpleFeatureType, SimpleFeature> results,
-            CoordinateReferenceSystem destinationCS)
-            throws IOException, SchemaException, TransformException, OperationNotFoundException,
-                    NoSuchElementException, FactoryException {
+            FeatureCollection<SimpleFeatureType, SimpleFeature> results, CoordinateReferenceSystem destinationCS)
+            throws IOException, SchemaException, TransformException, OperationNotFoundException, NoSuchElementException,
+                    FactoryException {
 
         super(forceType(origionalType(results), destinationCS));
         this.results = origionalCollection(results);
@@ -84,9 +83,7 @@ public class ReprojectFeatureResults extends AbstractFeatureCollection {
         CoordinateReferenceSystem originalCs = null;
         if (results instanceof ForceCoordinateSystemFeatureResults)
             originalCs = results.getSchema().getGeometryDescriptor().getCoordinateReferenceSystem();
-        else
-            originalCs =
-                    this.results.getSchema().getGeometryDescriptor().getCoordinateReferenceSystem();
+        else originalCs = this.results.getSchema().getGeometryDescriptor().getCoordinateReferenceSystem();
         this.transform = CRS.findMathTransform(originalCs, destinationCS, true);
     }
 
@@ -123,8 +120,7 @@ public class ReprojectFeatureResults extends AbstractFeatureCollection {
         return results;
     }
 
-    private static SimpleFeatureType origionalType(
-            FeatureCollection<SimpleFeatureType, SimpleFeature> results) {
+    private static SimpleFeatureType origionalType(FeatureCollection<SimpleFeatureType, SimpleFeature> results) {
         while (true) {
             if (results instanceof ReprojectFeatureResults) {
                 results = ((ReprojectFeatureResults) results).getOrigin();
@@ -137,8 +133,7 @@ public class ReprojectFeatureResults extends AbstractFeatureCollection {
         return results.getSchema();
     }
 
-    private static SimpleFeatureType forceType(
-            SimpleFeatureType startingType, CoordinateReferenceSystem forcedCS)
+    private static SimpleFeatureType forceType(SimpleFeatureType startingType, CoordinateReferenceSystem forcedCS)
             throws SchemaException {
         if (forcedCS == null) {
             throw new NullPointerException("CoordinateSystem required");
@@ -178,9 +173,9 @@ public class ReprojectFeatureResults extends AbstractFeatureCollection {
                     newBBox.expandToInclude(internal);
                 }
             }
-            Optional<CoordinateReferenceSystem> crs =
-                    Optional.ofNullable(getSchema().getGeometryDescriptor())
-                            .map(GeometryDescriptor::getCoordinateReferenceSystem);
+            Optional<CoordinateReferenceSystem> crs = Optional.ofNullable(
+                            getSchema().getGeometryDescriptor())
+                    .map(GeometryDescriptor::getCoordinateReferenceSystem);
             if (crs.isPresent()) {
                 return ReferencedEnvelope.envelope(newBBox, crs.get());
             } else {
@@ -198,8 +193,7 @@ public class ReprojectFeatureResults extends AbstractFeatureCollection {
 
     @Override
     public void accepts(
-            org.geotools.api.feature.FeatureVisitor visitor,
-            org.geotools.api.util.ProgressListener progress)
+            org.geotools.api.feature.FeatureVisitor visitor, org.geotools.api.util.ProgressListener progress)
             throws IOException {
         if (canDelegate(visitor)) {
             results.accepts(visitor, progress);

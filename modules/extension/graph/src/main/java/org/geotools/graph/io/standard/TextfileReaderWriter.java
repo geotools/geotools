@@ -44,8 +44,7 @@ import org.geotools.graph.structure.Node;
  *
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
  */
-public abstract class TextfileReaderWriter extends AbstractReaderWriter
-        implements FileReaderWriter {
+public abstract class TextfileReaderWriter extends AbstractReaderWriter implements FileReaderWriter {
 
     /** line delimiter key * */
     public static final String DELIMITER = "DELIMITER";
@@ -62,8 +61,7 @@ public abstract class TextfileReaderWriter extends AbstractReaderWriter
         GraphGenerator generator = (GraphGenerator) getProperty(GENERATOR);
 
         // create in the file reader
-        try (BufferedReader in =
-                new BufferedReader(new FileReader((String) getProperty(FILENAME)))) {
+        try (BufferedReader in = new BufferedReader(new FileReader((String) getProperty(FILENAME)))) {
 
             // read the delimiter property
             String delim = (String) getProperty(DELIMITER);
@@ -90,8 +88,7 @@ public abstract class TextfileReaderWriter extends AbstractReaderWriter
     @Override
     public void write(Graph g) throws Exception {
         // create the file writer
-        try (BufferedWriter out =
-                new BufferedWriter(new FileWriter((String) getProperty(FILENAME)))) {
+        try (BufferedWriter out = new BufferedWriter(new FileWriter((String) getProperty(FILENAME)))) {
 
             // check NODES property
             if (getProperty(NODES) != null) {

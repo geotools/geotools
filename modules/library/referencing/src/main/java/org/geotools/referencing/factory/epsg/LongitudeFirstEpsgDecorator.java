@@ -56,10 +56,7 @@ import org.geotools.util.factory.Hints;
  * @see Hints#FORCE_LONGITUDE_FIRST_AXIS_ORDER
  */
 public class LongitudeFirstEpsgDecorator extends DeferredAuthorityFactory
-        implements CRSAuthorityFactory,
-                CSAuthorityFactory,
-                CoordinateOperationAuthorityFactory,
-                DatumAuthorityFactory {
+        implements CRSAuthorityFactory, CSAuthorityFactory, CoordinateOperationAuthorityFactory, DatumAuthorityFactory {
     /*
      * Implementation note: in theory the DatumAuthorityFactory interface is useless here, since
      * "axis order" doesn't make any sense for them. However if we do not register this class for
@@ -153,17 +150,14 @@ public class LongitudeFirstEpsgDecorator extends DeferredAuthorityFactory
          * false since forcing axis directions / units is handled by OrderedAxisAuthorityFactory
          * and we don't want the backing store to interfer with that.
          */
-        final Hints backingStoreHints =
-                new Hints(Hints.CRS_AUTHORITY_FACTORY, AbstractEpsgMediator.class);
+        final Hints backingStoreHints = new Hints(Hints.CRS_AUTHORITY_FACTORY, AbstractEpsgMediator.class);
         backingStoreHints.put(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.FALSE);
         backingStoreHints.put(Hints.FORCE_STANDARD_AXIS_DIRECTIONS, Boolean.FALSE);
         backingStoreHints.put(Hints.FORCE_STANDARD_AXIS_UNITS, Boolean.FALSE);
         final AbstractAuthorityFactory factory;
         try {
-            factory =
-                    (AbstractAuthorityFactory)
-                            ReferencingFactoryFinder.getCRSAuthorityFactory(
-                                    "EPSG", backingStoreHints);
+            factory = (AbstractAuthorityFactory)
+                    ReferencingFactoryFinder.getCRSAuthorityFactory("EPSG", backingStoreHints);
         } catch (FactoryNotFoundException exception) {
             throw new org.geotools.referencing.factory.FactoryNotFoundException(exception);
         } catch (FactoryRegistryException exception) {

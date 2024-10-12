@@ -62,9 +62,7 @@ public class WMS1_1_1_Test {
             assertEquals(
                     capabilities.getService().get_abstract(),
                     "WMT Map Server maintained by Microsoft Corporation.  Data returned provided by US Geological Survey.  Contact: tbarclay@microsoft.com or gylee@usgs.gov.");
-            assertEquals(
-                    capabilities.getService().getOnlineResource(),
-                    new URL("http://terraservice.net/"));
+            assertEquals(capabilities.getService().getOnlineResource(), new URL("http://terraservice.net/"));
 
             String[] keywords = {"USGS", "DOQ", "DRG", "Topographic", "UrbanArea", "Urban Areas"};
 
@@ -72,9 +70,7 @@ public class WMS1_1_1_Test {
                 assertEquals(capabilities.getService().getKeywordList()[i], keywords[i]);
             }
 
-            assertEquals(
-                    capabilities.getService().getContactInformation().getIndividualName(),
-                    "Some guy");
+            assertEquals(capabilities.getService().getContactInformation().getIndividualName(), "Some guy");
             assertEquals(
                     capabilities
                             .getService()
@@ -83,7 +79,11 @@ public class WMS1_1_1_Test {
                             .toString(),
                     "Some company");
             assertEquals(
-                    capabilities.getService().getContactInformation().getPositionName().toString(),
+                    capabilities
+                            .getService()
+                            .getContactInformation()
+                            .getPositionName()
+                            .toString(),
                     "Researcher");
             assertEquals(
                     capabilities
@@ -162,8 +162,7 @@ public class WMS1_1_1_Test {
                     "email@domain.com");
 
             assertEquals(
-                    capabilities.getRequest().getGetCapabilities().getFormats().get(0),
-                    "application/vnd.ogc.wms_xml");
+                    capabilities.getRequest().getGetCapabilities().getFormats().get(0), "application/vnd.ogc.wms_xml");
             assertEquals(
                     capabilities.getRequest().getGetCapabilities().getGet(),
                     new URL("http://terraservice.net/ogccapabilities.ashx"));
@@ -173,8 +172,7 @@ public class WMS1_1_1_Test {
 
             assertEquals(capabilities.getRequest().getGetMap().getFormats().get(0), "image/jpeg");
             assertEquals(
-                    capabilities.getRequest().getGetMap().getGet(),
-                    new URL("http://terraservice.net/ogcmap.ashx"));
+                    capabilities.getRequest().getGetMap().getGet(), new URL("http://terraservice.net/ogcmap.ashx"));
 
             assertNull(capabilities.getRequest().getGetFeatureInfo());
 
@@ -231,9 +229,7 @@ public class WMS1_1_1_Test {
 
             StyleImpl utmGrid = layer.getStyles().get(0);
             assertEquals(utmGrid.getName(), "UTMGrid");
-            assertEquals(
-                    utmGrid.getAbstract().toString(),
-                    "Display grid lines in Goldenrod on the DOQ image");
+            assertEquals(utmGrid.getAbstract().toString(), "Display grid lines in Goldenrod on the DOQ image");
             assertEquals(utmGrid.getTitle().toString(), "Goldedrod Grid Lines on UTM coordinates");
 
             assertFalse(layer.isQueryable());
@@ -273,8 +269,7 @@ public class WMS1_1_1_Test {
             URL getCapsURL = getCaps.toURI().toURL();
             Map<String, Object> hints = new HashMap<>();
             hints.put(DocumentHandler.DEFAULT_NAMESPACE_HINT_KEY, WMSSchema.getInstance());
-            Object object =
-                    DocumentFactory.getInstance(getCapsURL.openStream(), hints, Level.WARNING);
+            Object object = DocumentFactory.getInstance(getCapsURL.openStream(), hints, Level.WARNING);
 
             SchemaFactory.getInstance(WMSSchema.NAMESPACE);
 
@@ -292,8 +287,7 @@ public class WMS1_1_1_Test {
         }
     }
 
-    protected void validateBoundingBox(
-            CRSEnvelope llbbox, double minX, double minY, double maxX, double maxY) {
+    protected void validateBoundingBox(CRSEnvelope llbbox, double minX, double minY, double maxX, double maxY) {
         assertNotNull(llbbox);
         assertEquals(llbbox.getMinX(), minX, 0.0);
         assertEquals(llbbox.getMinY(), minY, 0.0);

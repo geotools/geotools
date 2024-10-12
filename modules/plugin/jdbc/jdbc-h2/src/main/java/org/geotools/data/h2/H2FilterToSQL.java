@@ -80,13 +80,8 @@ public class H2FilterToSQL extends FilterToSQL {
 
     @Override
     protected Object visitBinarySpatialOperator(
-            BinarySpatialOperator filter,
-            PropertyName property,
-            Literal geometry,
-            boolean swapped,
-            Object extraData) {
-        return visitBinarySpatialOperator(
-                filter, property, (Expression) geometry, swapped, extraData);
+            BinarySpatialOperator filter, PropertyName property, Literal geometry, boolean swapped, Object extraData) {
+        return visitBinarySpatialOperator(filter, property, (Expression) geometry, swapped, extraData);
     }
 
     @Override
@@ -96,11 +91,7 @@ public class H2FilterToSQL extends FilterToSQL {
     }
 
     protected Object visitBinarySpatialOperator(
-            BinarySpatialOperator filter,
-            Expression e1,
-            Expression e2,
-            boolean swapped,
-            Object extraData) {
+            BinarySpatialOperator filter, Expression e1, Expression e2, boolean swapped, Object extraData) {
 
         double distance = 0;
         try {
@@ -164,8 +155,7 @@ public class H2FilterToSQL extends FilterToSQL {
 
             Expression geometry = e1 instanceof Literal ? e1 : e2 instanceof Literal ? e2 : null;
             if (geometry != null && !(filter instanceof Disjoint) && !(filter instanceof Beyond)) {
-                String spatialIndex =
-                        (String) currentGeometry.getUserData().get(H2Dialect.H2_SPATIAL_INDEX);
+                String spatialIndex = (String) currentGeometry.getUserData().get(H2Dialect.H2_SPATIAL_INDEX);
                 if (spatialIndex != null) {
                     // property map the column type
                     if (primaryKey.getColumns().size() == 1
@@ -189,14 +179,7 @@ public class H2FilterToSQL extends FilterToSQL {
                             out.write("'PUBLIC', ");
                         }
                         out.write("'" + featureType.getTypeName() + "', ");
-                        out.write(
-                                e.getMinX()
-                                        + ", "
-                                        + e.getMaxX()
-                                        + ", "
-                                        + e.getMinY()
-                                        + ", "
-                                        + e.getMaxY());
+                        out.write(e.getMinX() + ", " + e.getMaxX() + ", " + e.getMinY() + ", " + e.getMaxY());
                         out.write(")");
                         out.write(")");
                     }

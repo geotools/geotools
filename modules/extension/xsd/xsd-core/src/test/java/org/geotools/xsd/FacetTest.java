@@ -33,14 +33,11 @@ public class FacetTest {
         DocumentBuilder db = dbf.newDocumentBuilder();
         Document doc = db.parse(getClass().getResourceAsStream("list.xml"));
 
-        String schemaLocation =
-                "http://geotools.org/test " + getClass().getResource("facets.xsd").getFile();
+        String schemaLocation = "http://geotools.org/test "
+                + getClass().getResource("facets.xsd").getFile();
 
         doc.getDocumentElement()
-                .setAttributeNS(
-                        "http://www.w3.org/2001/XMLSchema-instance",
-                        "schemaLocation",
-                        schemaLocation);
+                .setAttributeNS("http://www.w3.org/2001/XMLSchema-instance", "schemaLocation", schemaLocation);
 
         DOMParser parser = new DOMParser(new XSConfiguration(), doc);
         Object o = parser.parse();
@@ -62,14 +59,11 @@ public class FacetTest {
         DocumentBuilder db = dbf.newDocumentBuilder();
         Document doc = db.parse(getClass().getResourceAsStream("whitespace.xml"));
 
-        String schemaLocation =
-                "http://geotools.org/test " + getClass().getResource("facets.xsd").getFile();
+        String schemaLocation = "http://geotools.org/test "
+                + getClass().getResource("facets.xsd").getFile();
 
         doc.getDocumentElement()
-                .setAttributeNS(
-                        "http://www.w3.org/2001/XMLSchema-instance",
-                        "schemaLocation",
-                        schemaLocation);
+                .setAttributeNS("http://www.w3.org/2001/XMLSchema-instance", "schemaLocation", schemaLocation);
 
         DOMParser parser = new DOMParser(new XSConfiguration(), doc);
         String s = (String) parser.parse();
@@ -85,23 +79,16 @@ public class FacetTest {
         DocumentBuilder db = dbf.newDocumentBuilder();
         Document doc = db.parse(getClass().getResourceAsStream("whitespace-cdata.xml"));
 
-        String schemaLocation =
-                "http://geotools.org/test " + getClass().getResource("facets.xsd").getFile();
+        String schemaLocation = "http://geotools.org/test "
+                + getClass().getResource("facets.xsd").getFile();
 
         doc.getDocumentElement()
-                .setAttributeNS(
-                        "http://www.w3.org/2001/XMLSchema-instance",
-                        "schemaLocation",
-                        schemaLocation);
+                .setAttributeNS("http://www.w3.org/2001/XMLSchema-instance", "schemaLocation", schemaLocation);
 
         DOMParser parser = new DOMParser(new XSConfiguration(), doc);
         String s = (String) parser.parse();
 
         Assert.assertEquals(
-                " this is a \n"
-                        + " normal string \n"
-                        + " with some whitespace and \n"
-                        + " some new lines",
-                s);
+                " this is a \n" + " normal string \n" + " with some whitespace and \n" + " some new lines", s);
     }
 }

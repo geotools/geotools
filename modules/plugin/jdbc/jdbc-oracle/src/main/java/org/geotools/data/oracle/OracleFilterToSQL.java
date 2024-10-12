@@ -92,17 +92,16 @@ import org.locationtech.jts.geom.Polygon;
 public class OracleFilterToSQL extends PreparedFilterToSQL {
 
     /** Contains filter type to SDO_RELATE mask type mappings */
-    private static final Map<Class<?>, String> SDO_RELATE_MASK_MAP =
-            Map.of(
-                    Contains.class, "contains",
-                    Crosses.class, "overlapbdydisjoint",
-                    Equals.class, "equal",
-                    Overlaps.class, "overlapbdyintersect",
-                    Touches.class, "touch",
-                    Within.class, "inside",
-                    Disjoint.class, "disjoint",
-                    BBOX.class, "anyinteract",
-                    Intersects.class, "anyinteract");
+    private static final Map<Class<?>, String> SDO_RELATE_MASK_MAP = Map.of(
+            Contains.class, "contains",
+            Crosses.class, "overlapbdydisjoint",
+            Equals.class, "equal",
+            Overlaps.class, "overlapbdyintersect",
+            Touches.class, "touch",
+            Within.class, "inside",
+            Disjoint.class, "disjoint",
+            BBOX.class, "anyinteract",
+            Intersects.class, "anyinteract");
 
     /** The whole world in WGS84 */
     private static final Envelope WORLD = new Envelope(-179.99, 179.99, -89.99, 89.99);
@@ -111,19 +110,18 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
      * If we have to turn <code>a op b</code> into <code>b op2 a</code>, what's the op2 that returns
      * the same result?
      */
-    private static final Map<String, String> INVERSE_OPERATOR_MAP =
-            Map.of(
+    private static final Map<String, String> INVERSE_OPERATOR_MAP = Map.of(
 
-                    // asymmetric operators, op2 = !op
-                    "contains", "inside",
-                    "inside", "contains",
-                    // symmetric operators, op2 = op
-                    "overlapbdydisjoint", "overlapbdydisjoint",
-                    "overlapbdyintersect", "overlapbdyintersect",
-                    "touch", "touch",
-                    "equal", "equal",
-                    "anyinteract", "anyinteract",
-                    "disjoint", "disjoint");
+            // asymmetric operators, op2 = !op
+            "contains", "inside",
+            "inside", "contains",
+            // symmetric operators, op2 = op
+            "overlapbdydisjoint", "overlapbdydisjoint",
+            "overlapbdyintersect", "overlapbdyintersect",
+            "touch", "touch",
+            "equal", "equal",
+            "anyinteract", "anyinteract",
+            "disjoint", "disjoint");
 
     private static final Pattern ARRAY_INDEX_PATTERN = Pattern.compile("\\d+");
 
@@ -261,10 +259,9 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
         if (json instanceof PropertyName && pointer instanceof Literal) {
             String strPointer = ((Literal) pointer).getValue().toString();
             String escapedLiteral = EscapeSql.escapeLiteral(strPointer, true, true);
-            List<String> pointerEl =
-                    Stream.of(escapedLiteral.split("/"))
-                            .filter(p -> !p.equals(""))
-                            .collect(Collectors.toList());
+            List<String> pointerEl = Stream.of(escapedLiteral.split("/"))
+                    .filter(p -> !p.equals(""))
+                    .collect(Collectors.toList());
 
             StringBuilder sb = new StringBuilder("$");
             for (String property : pointerEl) {
@@ -357,10 +354,7 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
                     out.write(sb.toString());
                     sb.setLength(0);
 
-                    Filter cqlExp =
-                            CQL.toFilter(
-                                    (String)
-                                            evaluateLiteral((Literal) cqlLiteralExp, String.class));
+                    Filter cqlExp = CQL.toFilter((String) evaluateLiteral((Literal) cqlLiteralExp, String.class));
                     cqlExp.accept(this, extraData);
                 } catch (CQLException e) {
                     throw new IllegalArgumentException(e);
@@ -403,11 +397,7 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
     }
 
     private Integer getFeatureTypeGeometrySRID() {
-        return (Integer)
-                featureType
-                        .getGeometryDescriptor()
-                        .getUserData()
-                        .get(JDBCDataStore.JDBC_NATIVE_SRID);
+        return (Integer) featureType.getGeometryDescriptor().getUserData().get(JDBCDataStore.JDBC_NATIVE_SRID);
     }
 
     private Integer getFeatureTypeGeometryDimension() {
@@ -417,23 +407,14 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
 
     private boolean isFeatureTypeGeometryGeodetic() {
         Boolean geodetic =
-                (Boolean)
-                        featureType
-                                .getGeometryDescriptor()
-                                .getUserData()
-                                .get(OracleDialect.GEODETIC);
+                (Boolean) featureType.getGeometryDescriptor().getUserData().get(OracleDialect.GEODETIC);
         return geodetic != null && geodetic;
     }
 
     @Override
     protected Object visitBinarySpatialOperator(
-            BinarySpatialOperator filter,
-            PropertyName property,
-            Literal geometry,
-            boolean swapped,
-            Object extraData) {
-        return visitBinarySpatialOperator(
-                filter, property, (Expression) geometry, swapped, extraData);
+            BinarySpatialOperator filter, PropertyName property, Literal geometry, boolean swapped, Object extraData) {
+        return visitBinarySpatialOperator(filter, property, (Expression) geometry, swapped, extraData);
     }
 
     @Override
@@ -443,18 +424,13 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
     }
 
     protected Object visitBinarySpatialOperator(
-            BinarySpatialOperator filter,
-            Expression e1,
-            Expression e2,
-            boolean swapped,
-            Object extraData) {
+            BinarySpatialOperator filter, Expression e1, Expression e2, boolean swapped, Object extraData) {
 
         try {
             e1 = clipToWorld(filter, e1);
             e2 = clipToWorld(filter, e2);
 
-            if (filter instanceof Beyond || filter instanceof DWithin)
-                doSDODistance(filter, e1, e2, extraData);
+            if (filter instanceof Beyond || filter instanceof DWithin) doSDODistance(filter, e1, e2, extraData);
             else if (filter instanceof BBOX && looseBBOXEnabled) {
                 doSDOFilter(filter, e1, e2, extraData);
             } else doSDORelate(filter, e1, e2, swapped, extraData);
@@ -469,9 +445,7 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
             Geometry eval = e.evaluate(filter, Geometry.class);
             // Oracle cannot deal with filters using geometries that span beyond the whole world
             // in case the
-            if (dialect != null
-                    && isCurrentGeometryGeodetic()
-                    && !WORLD.contains(eval.getEnvelopeInternal())) {
+            if (dialect != null && isCurrentGeometryGeodetic() && !WORLD.contains(eval.getEnvelopeInternal())) {
                 Geometry result = eval.intersection(JTS.toGeometry(WORLD));
 
                 if (result != null && !result.isEmpty()) {
@@ -499,13 +473,11 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
         if (original instanceof Polygon || original instanceof MultiPolygon) {
             List<Polygon> polys = new ArrayList<>();
             accumulateGeometries(polys, coll, Polygon.class);
-            return original.getFactory()
-                    .createMultiPolygon((polys.toArray(new Polygon[polys.size()])));
+            return original.getFactory().createMultiPolygon((polys.toArray(new Polygon[polys.size()])));
         } else if (original instanceof LineString || original instanceof MultiLineString) {
             List<LineString> ls = new ArrayList<>();
             accumulateGeometries(ls, coll, LineString.class);
-            return original.getFactory()
-                    .createMultiLineString(ls.toArray(new LineString[ls.size()]));
+            return original.getFactory().createMultiLineString(ls.toArray(new LineString[ls.size()]));
         } else if (original instanceof Point || original instanceof MultiPoint) {
             List<Point> points = new ArrayList<>();
             accumulateGeometries(points, coll, Point.class);
@@ -515,8 +487,7 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
         }
     }
 
-    protected <T> void accumulateGeometries(
-            List<T> collection, Geometry g, Class<? extends T> target) {
+    protected <T> void accumulateGeometries(List<T> collection, Geometry g, Class<? extends T> target) {
         if (target.isInstance(g)) {
             collection.add(target.cast(g));
         } else if (g instanceof GeometryCollection) {
@@ -527,8 +498,7 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
         }
     }
 
-    protected void doSDOFilter(Filter filter, Expression e1, Expression e2, Object extraData)
-            throws IOException {
+    protected void doSDOFilter(Filter filter, Expression e1, Expression e2, Object extraData) throws IOException {
         out.write("SDO_FILTER(");
         e1.accept(this, extraData);
         out.write(", ");
@@ -538,18 +508,15 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
     }
 
     /** Encodes an SDO relate */
-    protected void doSDORelate(
-            Filter filter, Expression e1, Expression e2, boolean swapped, Object extraData)
+    protected void doSDORelate(Filter filter, Expression e1, Expression e2, boolean swapped, Object extraData)
             throws IOException {
         // grab the operating mask
         String mask = null;
         for (Class<?> filterClass : SDO_RELATE_MASK_MAP.keySet()) {
-            if (filterClass.isAssignableFrom(filter.getClass()))
-                mask = SDO_RELATE_MASK_MAP.get(filterClass);
+            if (filterClass.isAssignableFrom(filter.getClass())) mask = SDO_RELATE_MASK_MAP.get(filterClass);
         }
         if (mask == null)
-            throw new IllegalArgumentException(
-                    "Cannot encode filter " + filter.getClass() + " into a SDO_RELATE");
+            throw new IllegalArgumentException("Cannot encode filter " + filter.getClass() + " into a SDO_RELATE");
         if (swapped) mask = INVERSE_OPERATOR_MAP.get(mask);
 
         // ok, ready to write out the SDO_RELATE
@@ -565,8 +532,7 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
         }
     }
 
-    protected void doSDODistance(
-            BinarySpatialOperator filter, Expression e1, Expression e2, Object extraData)
+    protected void doSDODistance(BinarySpatialOperator filter, Expression e1, Expression e2, Object extraData)
             throws IOException {
         double distance = ((DistanceBufferOperator) filter).getDistance();
         String unit = getSDOUnitFromOGCUnit(((DistanceBufferOperator) filter).getDistanceUnits());
@@ -590,17 +556,16 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
      * obtained by issuing "select * from MDSYS.SDO_DIST_UNITS WHERE SDO_UNIT IS NOT NULL order by
      * SDO_UNIT;"
      */
-    private static final Map<String, String> UNITS_MAP =
-            Map.of(
-                    "metre", "m",
-                    "meters", "m",
-                    "kilometers", "km",
-                    "mi", "Mile",
-                    "miles", "Mile",
-                    "NM", "naut_mile",
-                    "feet", "foot",
-                    "ft", "foot",
-                    "in", "inch");
+    private static final Map<String, String> UNITS_MAP = Map.of(
+            "metre", "m",
+            "meters", "m",
+            "kilometers", "km",
+            "mi", "Mile",
+            "miles", "Mile",
+            "NM", "naut_mile",
+            "feet", "foot",
+            "ft", "foot",
+            "in", "inch");
 
     private static String getSDOUnitFromOGCUnit(String ogcUnit) {
         Object sdoUnit = ogcUnit != null ? UNITS_MAP.get(ogcUnit) : null;
@@ -644,9 +609,7 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
             } catch (java.io.IOException ioe) {
                 throw new RuntimeException(IO_ERROR, ioe);
             }
-        } else
-            super.encodeBinaryComparisonOperator(
-                    filter, extraData, left, right, leftContext, rightContext);
+        } else super.encodeBinaryComparisonOperator(filter, extraData, left, right, leftContext, rightContext);
     }
 
     public String jsonExists(Function function) {
@@ -658,11 +621,9 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
         if (pointers.length > 0) {
             String strJsonPath = escapeLiteral(String.join(".", pointers));
             String strExpected = escapeLiteral(expected.evaluate(null, String.class));
-            return String.format(
-                    "json_exists(%s, '$%s?(@ == \"%s\")')", columnName, strJsonPath, strExpected);
+            return String.format("json_exists(%s, '$%s?(@ == \"%s\")')", columnName, strJsonPath, strExpected);
         } else {
-            throw new IllegalArgumentException(
-                    "Cannot encode filter Invalid pointer " + jsonPath.getValue());
+            throw new IllegalArgumentException("Cannot encode filter Invalid pointer " + jsonPath.getValue());
         }
     }
 

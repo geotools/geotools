@@ -134,10 +134,9 @@ public class ElementHandlerImpl extends HandlerImpl implements ElementHandler {
                     decl.setTargetNamespace(attQName.getNamespaceURI());
 
                     // set the type to be of string
-                    XSDSimpleTypeDefinition type =
-                            XSDUtil.getSchemaForSchema(XSDUtil.SCHEMA_FOR_SCHEMA_URI_2001)
-                                    .getSimpleTypeIdMap()
-                                    .get("string");
+                    XSDSimpleTypeDefinition type = XSDUtil.getSchemaForSchema(XSDUtil.SCHEMA_FOR_SCHEMA_URI_2001)
+                            .getSimpleTypeIdMap()
+                            .get("string");
 
                     decl.setTypeDefinition(type);
                 }
@@ -173,11 +172,9 @@ public class ElementHandlerImpl extends HandlerImpl implements ElementHandler {
         // parse the attributes
         for (int i = 0; i < element.getAttributes().length; i++) {
             AttributeInstance attribute = element.getAttributes()[i];
-            ParseExecutor executor =
-                    new ParseExecutor(attribute, null, parent.getContext(), parser);
+            ParseExecutor executor = new ParseExecutor(attribute, null, parent.getContext(), parser);
 
-            parser.getBindingWalker()
-                    .walk(attribute.getAttributeDeclaration(), executor, parent.getContext());
+            parser.getBindingWalker().walk(attribute.getAttributeDeclaration(), executor, parent.getContext());
 
             Object parsed = executor.getValue();
             node.addAttribute(new NodeImpl(attribute, parsed));
@@ -185,8 +182,7 @@ public class ElementHandlerImpl extends HandlerImpl implements ElementHandler {
 
         // trigger the leading edge initialize callback
         ElementInitializer initer = new ElementInitializer(element, node, parent.getContext());
-        parser.getBindingWalker()
-                .walk(element.getElementDeclaration(), initer, container(), parent.getContext());
+        parser.getBindingWalker().walk(element.getElementDeclaration(), initer, container(), parent.getContext());
 
         // create context for children
         // TODO: this should only be done if the element is complex, this class
@@ -262,8 +258,7 @@ public class ElementHandlerImpl extends HandlerImpl implements ElementHandler {
     /** Checks if a certain attribute is nil */
     private boolean isNil(ElementImpl element) {
         for (AttributeInstance att : element.getAttributes()) {
-            if ("nil".equals(att.getName())
-                    && "http://www.w3.org/2001/XMLSchema-instance".equals(att.getNamespace())) {
+            if ("nil".equals(att.getName()) && "http://www.w3.org/2001/XMLSchema-instance".equals(att.getNamespace())) {
                 return "true".equals(att.getText());
             }
         }
@@ -283,8 +278,7 @@ public class ElementHandlerImpl extends HandlerImpl implements ElementHandler {
 
         if (element != null) {
             // TODO: determine whether the element is complex or simple, and create
-            ElementHandler handler =
-                    parser.getHandlerFactory().createElementHandler(element, this, parser);
+            ElementHandler handler = parser.getHandlerFactory().createElementHandler(element, this, parser);
 
             return handler;
         }
@@ -306,8 +300,7 @@ public class ElementHandlerImpl extends HandlerImpl implements ElementHandler {
                     // a handler for the actual element, or the element it
                     // substitutable for - the answer is to check the bindings
                     // TODO: ask the binding
-                    handler =
-                            parser.getHandlerFactory().createElementHandler(element, this, parser);
+                    handler = parser.getHandlerFactory().createElementHandler(element, this, parser);
                     return handler;
                 }
             }
@@ -338,10 +331,8 @@ public class ElementHandlerImpl extends HandlerImpl implements ElementHandler {
         if (child instanceof ElementHandler) {
             // get the containing type (we do this for anonymous complex types)
             ElementInstance childInstance = (ElementInstance) child.getComponent();
-            ContextInitializer initer =
-                    new ContextInitializer(childInstance, node, child.getContext());
-            parser.getBindingWalker()
-                    .walk(element.getElementDeclaration(), initer, container(), getContext());
+            ContextInitializer initer = new ContextInitializer(childInstance, node, child.getContext());
+            parser.getBindingWalker().walk(element.getElementDeclaration(), initer, container(), getContext());
         }
     }
 

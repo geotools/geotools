@@ -31,7 +31,8 @@ public class LabelOrientationTest {
     @Before
     public void setUp() throws Exception {
         // setup data
-        File property = new File(TestData.getResource(this, "diaglines.properties").toURI());
+        File property =
+                new File(TestData.getResource(this, "diaglines.properties").toURI());
         PropertyDataStore ds = new PropertyDataStore(property.getParentFile());
         fs = ds.getFeatureSource("diaglines");
         bounds = new ReferencedEnvelope(0, 10, 0, 10, DefaultGeographicCRS.WGS84);
@@ -81,8 +82,7 @@ public class LabelOrientationTest {
 
         renderer.setMapContent(mc);
 
-        BufferedImage image =
-                RendererBaseTest.showRender("Lines with circl stroke", renderer, TIME, bounds);
+        BufferedImage image = RendererBaseTest.showRender("Lines with circl stroke", renderer, TIME, bounds);
         String refPath = "./src/test/resources/org/geotools/renderer/lite/test-data/oneway.png";
         ImageAssert.assertEquals(new File(refPath), image, 100);
     }

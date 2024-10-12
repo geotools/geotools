@@ -30,10 +30,7 @@ import org.geotools.filter.capability.FunctionNameImpl;
 public class MapBoxLengthFunction extends FunctionExpressionImpl {
     public final FilterFactory ff = CommonFactoryFinder.getFilterFactory();
     public static final FunctionName NAME =
-            new FunctionNameImpl(
-                    "mbLength",
-                    parameter("object", Object.class),
-                    parameter("fallback", Object.class));
+            new FunctionNameImpl("mbLength", parameter("object", Object.class), parameter("fallback", Object.class));
 
     public MapBoxLengthFunction() {
         super(NAME);

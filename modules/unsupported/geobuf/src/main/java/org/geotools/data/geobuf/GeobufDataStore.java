@@ -65,8 +65,7 @@ public class GeobufDataStore extends ContentDataStore {
     }
 
     @Override
-    protected ContentFeatureSource createFeatureSource(ContentEntry contentEntry)
-            throws IOException {
+    protected ContentFeatureSource createFeatureSource(ContentEntry contentEntry) throws IOException {
         if (!file.exists() || file.canWrite()) {
             return new GeobufFeatureStore(contentEntry, Query.ALL, precision, dimension);
         } else {
@@ -82,8 +81,7 @@ public class GeobufDataStore extends ContentDataStore {
     @Override
     public void removeSchema(String typeName) throws IOException {
         if (!file.exists()) {
-            throw new IOException(
-                    "Can't delete " + file.getAbsolutePath() + " because it doesn't exist!");
+            throw new IOException("Can't delete " + file.getAbsolutePath() + " because it doesn't exist!");
         }
         file.delete();
     }

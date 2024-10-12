@@ -36,20 +36,15 @@ import org.xml.sax.helpers.AttributesImpl;
  */
 class WFS20FeatureCollectionEncoderDelegate extends FeatureCollectionEncoderDelegate {
 
-    public WFS20FeatureCollectionEncoderDelegate(
-            SimpleFeatureCollection features, Encoder encoder) {
+    public WFS20FeatureCollectionEncoderDelegate(SimpleFeatureCollection features, Encoder encoder) {
         super(features, encoder, new WFS20EncoderDelegate(encoder));
         this.encodeGeometryIds = true;
     }
 
     @Override
     protected Attributes getPropertyAttributes(
-            QualifiedName name,
-            FeatureType featureType,
-            AttributeDescriptor attribute,
-            Object value) {
-        if ("identifier".equals(name.getLocalPart())
-                && GML.NAMESPACE.equals(name.getNamespaceURI())) {
+            QualifiedName name, FeatureType featureType, AttributeDescriptor attribute, Object value) {
+        if ("identifier".equals(name.getLocalPart()) && GML.NAMESPACE.equals(name.getNamespaceURI())) {
             AttributesImpl atts = new AttributesImpl();
             atts.addAttribute(
                     null, "codeSpace", "codeSpace", null, featureType.getName().getNamespaceURI());
@@ -61,8 +56,7 @@ class WFS20FeatureCollectionEncoderDelegate extends FeatureCollectionEncoderDele
 
     static class WFS20EncoderDelegate extends GML32FeatureCollectionEncoderDelegate.GML32Delegate {
 
-        static final QualifiedName MEMBER =
-                new QualifiedName(WFS.NAMESPACE, GML.member.getLocalPart(), "wfs");
+        static final QualifiedName MEMBER = new QualifiedName(WFS.NAMESPACE, GML.member.getLocalPart(), "wfs");
 
         static final QualifiedName TUPLE = new QualifiedName(WFS.NAMESPACE, "Tuple", "wfs");
 

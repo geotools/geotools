@@ -52,8 +52,7 @@ public class ColorMapEntryBuilder extends AbstractStyleBuilder<ColorMapEntry> {
     public ColorMapEntryBuilder colorHex(String hex) {
         Color color = Converters.convert(hex, Color.class);
         if (color == null) {
-            throw new IllegalArgumentException(
-                    "The provided expression could not be turned into a color: " + hex);
+            throw new IllegalArgumentException("The provided expression could not be turned into a color: " + hex);
         }
         return color(color);
     }

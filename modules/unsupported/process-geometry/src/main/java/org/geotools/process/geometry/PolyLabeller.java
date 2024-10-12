@@ -73,8 +73,7 @@ public class PolyLabeller {
             for (int i = 0; i < geometry.getNumGeometries(); i++) {
                 Polygon p = (Polygon) geometry.getGeometryN(i);
                 LabelPosition polylabel = getPolyLabel_(p, precision);
-                if (widest == null || polylabel.getDistance() > widest.getDistance())
-                    widest = polylabel;
+                if (widest == null || polylabel.getDistance() > widest.getDistance()) widest = polylabel;
             }
             return widest.getPosition();
         } else {
@@ -102,13 +101,11 @@ public class PolyLabeller {
         double distanceEnvelope = envelopeCenter.distance(boundary);
 
         // prefer the centroid if inside and the distance is competitive with the poly label one
-        if (distanceCentroid > (distancePolyLabel * DISTANCE_TOLERANCE_PERC)
-                && polygon.contains(centroid)) {
+        if (distanceCentroid > (distancePolyLabel * DISTANCE_TOLERANCE_PERC) && polygon.contains(centroid)) {
             return new LabelPosition(centroid, distanceCentroid);
         }
         // prefer the envelope center if inside and the distance is competitive with the poly label
-        if (distanceEnvelope > (distancePolyLabel * DISTANCE_TOLERANCE_PERC)
-                && polygon.contains(envelopeCenter)) {
+        if (distanceEnvelope > (distancePolyLabel * DISTANCE_TOLERANCE_PERC) && polygon.contains(envelopeCenter)) {
             return new LabelPosition(envelopeCenter, distanceEnvelope);
         }
 

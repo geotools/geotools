@@ -70,7 +70,8 @@ public class DateRangeVisitorTest {
         Set<String> range = visitor.getRange();
         assertEquals(1, range.size());
         assertEquals(
-                "2008-10-31T00:00:00.000Z/2008-11-01T00:00:00.000Z/PT1S", range.iterator().next());
+                "2008-10-31T00:00:00.000Z/2008-11-01T00:00:00.000Z/PT1S",
+                range.iterator().next());
     }
 
     @Test

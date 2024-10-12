@@ -57,10 +57,8 @@ final class ImagingParameter<T> extends AbstractParameter implements ParameterVa
     /** Returns the exception to be throws for an operation on a wrong parameter type. */
     private InvalidParameterTypeException invalidType(final ClassCastException cause) {
         final Object arg0 = getType();
-        final InvalidParameterTypeException exception =
-                new InvalidParameterTypeException(
-                        MessageFormat.format(ErrorKeys.ILLEGAL_OPERATION_FOR_VALUE_CLASS_$1, arg0),
-                        getName(descriptor));
+        final InvalidParameterTypeException exception = new InvalidParameterTypeException(
+                MessageFormat.format(ErrorKeys.ILLEGAL_OPERATION_FOR_VALUE_CLASS_$1, arg0), getName(descriptor));
         exception.initCause(cause);
         return exception;
     }

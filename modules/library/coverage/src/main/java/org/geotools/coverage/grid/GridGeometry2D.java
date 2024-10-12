@@ -234,9 +234,7 @@ public class GridGeometry2D extends GeneralGridGeometry {
      * @since 2.2
      */
     public GridGeometry2D(
-            final GridEnvelope gridRange,
-            final MathTransform gridToCRS,
-            final CoordinateReferenceSystem crs)
+            final GridEnvelope gridRange, final MathTransform gridToCRS, final CoordinateReferenceSystem crs)
             throws IllegalArgumentException, MismatchedDimensionException {
         this(gridRange, PixelInCell.CELL_CENTER, gridToCRS, crs, null);
     }
@@ -388,10 +386,8 @@ public class GridGeometry2D extends GeneralGridGeometry {
             this.gridToCRS2D = (MathTransform2D) super.gridToCRS;
         } else {
             final int xdim = (gridDimensionX < gridDimensionY) ? 0 : 1;
-            this.gridToCRS2D =
-                    (MathTransform2D)
-                            PixelTranslation.translate(
-                                    gridToCRS2D, anchor, PixelOrientation.CENTER, xdim, xdim ^ 1);
+            this.gridToCRS2D = (MathTransform2D)
+                    PixelTranslation.translate(gridToCRS2D, anchor, PixelOrientation.CENTER, xdim, xdim ^ 1);
         }
         gridFromCRS2D = inverse(this.gridToCRS2D);
         crs2D = createCRS2D();
@@ -420,10 +416,7 @@ public class GridGeometry2D extends GeneralGridGeometry {
      * @since 2.5
      */
     public GridGeometry2D(
-            final PixelInCell anchor,
-            final MathTransform gridToCRS,
-            final Bounds envelope,
-            final Hints hints)
+            final PixelInCell anchor, final MathTransform gridToCRS, final Bounds envelope, final Hints hints)
             throws MismatchedDimensionException, IllegalArgumentException {
         super(anchor, gridToCRS, envelope);
         final int[] dimensions = new int[4];
@@ -491,12 +484,8 @@ public class GridGeometry2D extends GeneralGridGeometry {
      */
     public GridGeometry2D(final Rectangle gridRange, final Rectangle2D userRange) {
         this(
-                gridRange instanceof GridEnvelope2D
-                        ? (GridEnvelope2D) gridRange
-                        : new GridEnvelope2D(gridRange),
-                userRange instanceof Bounds
-                        ? (Bounds) userRange
-                        : ReferencedEnvelope.create(userRange, null));
+                gridRange instanceof GridEnvelope2D ? (GridEnvelope2D) gridRange : new GridEnvelope2D(gridRange),
+                userRange instanceof Bounds ? (Bounds) userRange : ReferencedEnvelope.create(userRange, null));
     }
 
     /**
@@ -534,10 +523,7 @@ public class GridGeometry2D extends GeneralGridGeometry {
      * @throws IllegalArgumentException if the 2D part is not separable.
      */
     private static MathTransform2D getMathTransform2D(
-            final MathTransform transform,
-            final GridEnvelope gridRange,
-            final int[] axis,
-            final Hints hints)
+            final MathTransform transform, final GridEnvelope gridRange, final int[] axis, final Hints hints)
             throws IllegalArgumentException {
         if (transform == null || transform instanceof MathTransform2D) {
             axis[1] = axis[3] = 1; // Identity: (0,1) --> (0,1)
@@ -599,8 +585,7 @@ public class GridGeometry2D extends GeneralGridGeometry {
      *
      * @throws IllegalArgumentException if the transform is non-invertible.
      */
-    private static MathTransform2D inverse(final MathTransform2D gridToCRS2D)
-            throws IllegalArgumentException {
+    private static MathTransform2D inverse(final MathTransform2D gridToCRS2D) throws IllegalArgumentException {
         if (gridToCRS2D == null) {
             return null;
         } else
@@ -608,9 +593,7 @@ public class GridGeometry2D extends GeneralGridGeometry {
                 return gridToCRS2D.inverse();
             } catch (NoninvertibleTransformException exception) {
                 throw new IllegalArgumentException(
-                        MessageFormat.format(
-                                ErrorKeys.BAD_TRANSFORM_$1, Classes.getClass(gridToCRS2D)),
-                        exception);
+                        MessageFormat.format(ErrorKeys.BAD_TRANSFORM_$1, Classes.getClass(gridToCRS2D)), exception);
             }
     }
 
@@ -676,8 +659,7 @@ public class GridGeometry2D extends GeneralGridGeometry {
      * @throws FactoryException if the given CRS can't be reduced to two dimensions.
      * @since 2.5
      */
-    public CoordinateReferenceSystem reduce(final CoordinateReferenceSystem crs)
-            throws FactoryException {
+    public CoordinateReferenceSystem reduce(final CoordinateReferenceSystem crs) throws FactoryException {
         // Reminder: is is garanteed that axisDimensionX < axisDimensionY
         if (crs == null || crs.getCoordinateSystem().getDimension() <= 2) {
             return crs;
@@ -706,8 +688,7 @@ public class GridGeometry2D extends GeneralGridGeometry {
      * @see #getCoordinateReferenceSystem
      * @since 2.2
      */
-    public CoordinateReferenceSystem getCoordinateReferenceSystem2D()
-            throws InvalidGridGeometryException {
+    public CoordinateReferenceSystem getCoordinateReferenceSystem2D() throws InvalidGridGeometryException {
         if (crs2D != null) {
             assert isDefined(CRS_BITMASK);
             return crs2D;
@@ -741,9 +722,7 @@ public class GridGeometry2D extends GeneralGridGeometry {
         }
         assert !isDefined(ENVELOPE_BITMASK);
         throw new InvalidGridGeometryException(
-                gridToCRS == null
-                        ? ErrorKeys.UNSPECIFIED_TRANSFORM
-                        : ErrorKeys.UNSPECIFIED_IMAGE_SIZE);
+                gridToCRS == null ? ErrorKeys.UNSPECIFIED_TRANSFORM : ErrorKeys.UNSPECIFIED_IMAGE_SIZE);
     }
 
     /**
@@ -887,8 +866,7 @@ public class GridGeometry2D extends GeneralGridGeometry {
     private MathTransform2D computeGridToCRS2D(final PixelOrientation orientation) {
         final int xdim = (gridDimensionX < gridDimensionY) ? 0 : 1;
         return (MathTransform2D)
-                PixelTranslation.translate(
-                        gridToCRS2D, PixelOrientation.CENTER, orientation, xdim, xdim ^ 1);
+                PixelTranslation.translate(gridToCRS2D, PixelOrientation.CENTER, orientation, xdim, xdim ^ 1);
     }
 
     /**
@@ -994,10 +972,7 @@ public class GridGeometry2D extends GeneralGridGeometry {
             CoordinateReferenceSystem targetCRS = getCoordinateReferenceSystem();
             if (!CRS.equalsIgnoreMetadata(sourceCRS, targetCRS)) {
                 throw new IllegalArgumentException(
-                        MessageFormat.format(
-                                ErrorKeys.ILLEGAL_COORDINATE_SYSTEM_FOR_CRS_$2,
-                                sourceCRS,
-                                targetCRS));
+                        MessageFormat.format(ErrorKeys.ILLEGAL_COORDINATE_SYSTEM_FOR_CRS_$2, sourceCRS, targetCRS));
             }
         }
 
@@ -1009,12 +984,11 @@ public class GridGeometry2D extends GeneralGridGeometry {
         Point ucGrid = new Point();
         mt.transform(uc, ucGrid);
 
-        GridEnvelope2D gridEnv =
-                new GridEnvelope2D(
-                        Math.min(lcGrid.x, ucGrid.x),
-                        Math.min(lcGrid.y, ucGrid.y),
-                        Math.abs(lcGrid.x - ucGrid.x),
-                        Math.abs(lcGrid.y - ucGrid.y));
+        GridEnvelope2D gridEnv = new GridEnvelope2D(
+                Math.min(lcGrid.x, ucGrid.x),
+                Math.min(lcGrid.y, ucGrid.y),
+                Math.abs(lcGrid.x - ucGrid.x),
+                Math.abs(lcGrid.y - ucGrid.y));
 
         return gridEnv;
     }
@@ -1053,10 +1027,7 @@ public class GridGeometry2D extends GeneralGridGeometry {
             CoordinateReferenceSystem targetCRS = getCoordinateReferenceSystem();
             if (!CRS.equalsIgnoreMetadata(sourceCRS, targetCRS)) {
                 throw new IllegalArgumentException(
-                        MessageFormat.format(
-                                ErrorKeys.ILLEGAL_COORDINATE_SYSTEM_FOR_CRS_$2,
-                                sourceCRS,
-                                targetCRS));
+                        MessageFormat.format(ErrorKeys.ILLEGAL_COORDINATE_SYSTEM_FOR_CRS_$2, sourceCRS, targetCRS));
             }
         }
 
@@ -1068,12 +1039,11 @@ public class GridGeometry2D extends GeneralGridGeometry {
         Point ucGrid = new Point();
         mt.transform(uc, ucGrid);
 
-        GridEnvelope2D gridEnv =
-                new GridEnvelope2D(
-                        Math.min(lcGrid.x, ucGrid.x),
-                        Math.min(lcGrid.y, ucGrid.y),
-                        Math.abs(lcGrid.x - ucGrid.x),
-                        Math.abs(lcGrid.y - ucGrid.y));
+        GridEnvelope2D gridEnv = new GridEnvelope2D(
+                Math.min(lcGrid.x, ucGrid.x),
+                Math.min(lcGrid.y, ucGrid.y),
+                Math.abs(lcGrid.x - ucGrid.x),
+                Math.abs(lcGrid.y - ucGrid.y));
 
         return gridEnv;
     }
@@ -1100,8 +1070,7 @@ public class GridGeometry2D extends GeneralGridGeometry {
             return new Position2D(getCoordinateReferenceSystem2D(), trPoint.getX(), trPoint.getY());
 
         } else {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.POINT_OUTSIDE_COVERAGE_$1, point));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.POINT_OUTSIDE_COVERAGE_$1, point));
         }
     }
 
@@ -1120,8 +1089,7 @@ public class GridGeometry2D extends GeneralGridGeometry {
      * @throws IllegalArgumentException if the input rectangle lies outside the coverage
      * @since 2.6
      */
-    public final ReferencedEnvelope gridToWorld(final GridEnvelope2D gridEnv)
-            throws TransformException {
+    public final ReferencedEnvelope gridToWorld(final GridEnvelope2D gridEnv) throws TransformException {
 
         MathTransform2D mt = getGridToCRS2D();
 
@@ -1132,11 +1100,9 @@ public class GridGeometry2D extends GeneralGridGeometry {
             GridCoordinates2D high = gridEnv.getHigh();
             Point2D trHigh = mt.transform(new Point2D.Double(high.x + 0.5, high.y + 0.5), null);
 
-            return new ReferencedEnvelope(
-                    trLow.getX(), trHigh.getX(), trLow.getY(), trHigh.getY(), crs2D);
+            return new ReferencedEnvelope(trLow.getX(), trHigh.getX(), trLow.getY(), trHigh.getY(), crs2D);
         } else {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.POINT_OUTSIDE_COVERAGE_$1, gridEnv));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.POINT_OUTSIDE_COVERAGE_$1, gridEnv));
         }
     }
 
@@ -1148,8 +1114,7 @@ public class GridGeometry2D extends GeneralGridGeometry {
      * @throws CannotEvaluateException if a reprojection was required and failed.
      * @throws MismatchedDimensionException if the point doesn't have the expected dimension.
      */
-    Point2D toPoint2D(final Position point)
-            throws CannotEvaluateException, MismatchedDimensionException {
+    Point2D toPoint2D(final Position point) throws CannotEvaluateException, MismatchedDimensionException {
         /*
          * If the point contains a CRS, transforms the point on the fly
          */
@@ -1181,16 +1146,14 @@ public class GridGeometry2D extends GeneralGridGeometry {
          */
         if (point.getDimension() < 2) {
             final Object arg0 = point.getDimension();
-            throw new MismatchedDimensionException(
-                    MessageFormat.format(ErrorKeys.MISMATCHED_DIMENSION_$2, arg0, 2));
+            throw new MismatchedDimensionException(MessageFormat.format(ErrorKeys.MISMATCHED_DIMENSION_$2, arg0, 2));
         }
 
         if (point instanceof Point2D) {
             return (Point2D) point;
         }
         assert axisDimensionX < axisDimensionY;
-        return new Point2D.Double(
-                point.getOrdinate(axisDimensionX), point.getOrdinate(axisDimensionY));
+        return new Point2D.Double(point.getOrdinate(axisDimensionX), point.getOrdinate(axisDimensionY));
     }
 
     /**
@@ -1208,8 +1171,7 @@ public class GridGeometry2D extends GeneralGridGeometry {
                 return gridFromCRS2D.transform(point, null);
             } catch (TransformException exception) {
                 final Object arg0 = AbstractGridCoverage.toString(point, Locale.getDefault());
-                throw new CannotEvaluateException(
-                        MessageFormat.format(ErrorKeys.CANT_EVALUATE_$1, arg0, exception));
+                throw new CannotEvaluateException(MessageFormat.format(ErrorKeys.CANT_EVALUATE_$1, arg0, exception));
             }
         }
         throw new InvalidGridGeometryException(ErrorKeys.NO_TRANSFORM2D_AVAILABLE);
@@ -1321,11 +1283,9 @@ public class GridGeometry2D extends GeneralGridGeometry {
             return this;
         }
 
-        GridEnvelope2D canonicalRange =
-                new GridEnvelope2D(0, 0, gridRange.getSpan(0), gridRange.getSpan(1));
+        GridEnvelope2D canonicalRange = new GridEnvelope2D(0, 0, gridRange.getSpan(0), gridRange.getSpan(1));
         AffineTransform2D translation = new AffineTransform2D(1, 0, 0, 1, lowX, lowY);
         MathTransform canonicalTransform = ConcatenatedTransform.create(translation, gridToCRS2D);
-        return new GridGeometry2D(
-                canonicalRange, canonicalTransform, getCoordinateReferenceSystem());
+        return new GridGeometry2D(canonicalRange, canonicalTransform, getCoordinateReferenceSystem());
     }
 }

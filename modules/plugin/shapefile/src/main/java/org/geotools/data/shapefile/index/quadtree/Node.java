@@ -116,8 +116,7 @@ public class Node {
      */
     public int getShapeId(int pos) {
         if (pos >= this.numShapesId) {
-            throw new ArrayIndexOutOfBoundsException(
-                    "Requsted " + pos + " but size = " + this.numShapesId);
+            throw new ArrayIndexOutOfBoundsException("Requsted " + pos + " but size = " + this.numShapesId);
         }
 
         return this.shapesId[pos];

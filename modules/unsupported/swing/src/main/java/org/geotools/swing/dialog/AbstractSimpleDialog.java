@@ -107,8 +107,7 @@ public abstract class AbstractSimpleDialog extends JDialog {
     @Override
     public void setVisible(boolean b) {
         if (b && !initialized) {
-            throw new IllegalStateException(
-                    "Sub-class did not call initComponents() before showing dialog");
+            throw new IllegalStateException("Sub-class did not call initComponents() before showing dialog");
         }
 
         super.setVisible(b);

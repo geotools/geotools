@@ -48,8 +48,7 @@ public final class FactoryIteratorProviderTest {
      * @throws org.geotools.util.factory.FactoryRegistryException if a factory can't be returned for
      *     some other reason.
      */
-    private static DummyFactory getFactory(
-            final FactoryRegistry registry, final Class<? extends DummyFactory> type)
+    private static DummyFactory getFactory(final FactoryRegistry registry, final Class<? extends DummyFactory> type)
             throws FactoryRegistryException {
         Hints hints = null;
         if (type != null) {

@@ -30,8 +30,7 @@ import org.locationtech.jts.geom.impl.PackedCoordinateSequenceFactory;
 
 /** @author ian */
 public class ProcessTestUtilities {
-    public static SimpleFeatureCollection createPoints(
-            Coordinate[] pts, ReferencedEnvelope bounds) {
+    public static SimpleFeatureCollection createPoints(Coordinate[] pts, ReferencedEnvelope bounds) {
 
         SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
         tb.setName("obsType");

@@ -34,12 +34,11 @@ import org.geotools.filter.capability.FunctionNameImpl;
  */
 public class FilterFunction_dateFormat extends FunctionExpressionImpl {
 
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "dateFormat",
-                    parameter("formatted", String.class),
-                    parameter("format", String.class),
-                    parameter("date", Date.class));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "dateFormat",
+            parameter("formatted", String.class),
+            parameter("format", String.class),
+            parameter("date", Date.class));
 
     public FilterFunction_dateFormat() {
         super(NAME);

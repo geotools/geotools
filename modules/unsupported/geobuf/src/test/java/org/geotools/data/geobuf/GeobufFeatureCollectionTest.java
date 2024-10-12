@@ -41,7 +41,8 @@ import org.locationtech.jts.geom.GeometryFactory;
 
 public class GeobufFeatureCollectionTest {
 
-    @Rule public TemporaryFolder temporaryFolder = new TemporaryFolder();
+    @Rule
+    public TemporaryFolder temporaryFolder = new TemporaryFolder();
 
     @Test
     public void encodeDecode() throws Exception {
@@ -53,26 +54,14 @@ public class GeobufFeatureCollectionTest {
         store.createSchema(featureType);
         SimpleFeatureStore featureStore = (SimpleFeatureStore) store.getFeatureSource("points");
         GeometryFactory gf = JTSFactoryFinder.getGeometryFactory();
-        SimpleFeature feature1 =
-                SimpleFeatureBuilder.build(
-                        featureType,
-                        new Object[] {
-                            gf.createPoint(new Coordinate(-8.349609375, 14.349547837185362)),
-                            "ABC",
-                            null,
-                            1
-                        },
-                        "location.1");
-        SimpleFeature feature2 =
-                SimpleFeatureBuilder.build(
-                        featureType,
-                        new Object[] {
-                            gf.createPoint(new Coordinate(-18.349609375, 24.349547837185362)),
-                            "DEF",
-                            "not_null",
-                            -2
-                        },
-                        "location.2");
+        SimpleFeature feature1 = SimpleFeatureBuilder.build(
+                featureType,
+                new Object[] {gf.createPoint(new Coordinate(-8.349609375, 14.349547837185362)), "ABC", null, 1},
+                "location.1");
+        SimpleFeature feature2 = SimpleFeatureBuilder.build(
+                featureType,
+                new Object[] {gf.createPoint(new Coordinate(-18.349609375, 24.349547837185362)), "DEF", "not_null", -2},
+                "location.2");
         SimpleFeatureCollection collection = DataUtilities.collection(feature1, feature2);
         featureStore.addFeatures(collection);
 
@@ -81,8 +70,7 @@ public class GeobufFeatureCollectionTest {
             geobufFeatureCollection.encode(collection, out);
         }
         try (InputStream inputStream = new FileInputStream(file)) {
-            SimpleFeatureCollection decodedFeatureCollection =
-                    geobufFeatureCollection.decode(inputStream);
+            SimpleFeatureCollection decodedFeatureCollection = geobufFeatureCollection.decode(inputStream);
             assertEquals(2, decodedFeatureCollection.size());
             try (SimpleFeatureIterator it = decodedFeatureCollection.features()) {
                 int c = 0;
@@ -91,14 +79,16 @@ public class GeobufFeatureCollectionTest {
                     if (c == 0) {
                         assertEquals("location.1", f.getID());
                         assertEquals(
-                                "POINT (-8.349609 14.349548)", f.getDefaultGeometry().toString());
+                                "POINT (-8.349609 14.349548)",
+                                f.getDefaultGeometry().toString());
                         assertEquals(1, f.getAttribute("id"));
                         assertEquals("ABC", f.getAttribute("name"));
                         assertNull(f.getAttribute("nullable"));
                     } else if (c == 1) {
                         assertEquals("location.2", f.getID());
                         assertEquals(
-                                "POINT (-18.349609 24.349548)", f.getDefaultGeometry().toString());
+                                "POINT (-18.349609 24.349548)",
+                                f.getDefaultGeometry().toString());
                         assertEquals(-2, f.getAttribute("id"));
                         assertEquals("DEF", f.getAttribute("name"));
                         assertEquals("not_null", f.getAttribute("nullable"));

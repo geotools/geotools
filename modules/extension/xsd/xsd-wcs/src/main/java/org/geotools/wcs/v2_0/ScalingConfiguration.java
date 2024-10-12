@@ -56,45 +56,29 @@ public class ScalingConfiguration extends Configuration {
         // manually setup bindings
         bindings.put(
                 Scaling.ScalingType,
-                new ComplexEMFBinding(
-                        Wcs20Factory.eINSTANCE, Scaling.ScalingType, ScalingType.class));
+                new ComplexEMFBinding(Wcs20Factory.eINSTANCE, Scaling.ScalingType, ScalingType.class));
         bindings.put(
                 Scaling.ScaleByFactorType,
-                new ComplexEMFBinding(
-                        Wcs20Factory.eINSTANCE,
-                        Scaling.ScaleByFactorType,
-                        ScaleByFactorType.class));
+                new ComplexEMFBinding(Wcs20Factory.eINSTANCE, Scaling.ScaleByFactorType, ScaleByFactorType.class));
         bindings.put(
                 Scaling.ScaleAxesByFactorType,
                 new ComplexEMFBinding(
-                        Wcs20Factory.eINSTANCE,
-                        Scaling.ScaleAxesByFactorType,
-                        ScaleAxisByFactorType.class));
+                        Wcs20Factory.eINSTANCE, Scaling.ScaleAxesByFactorType, ScaleAxisByFactorType.class));
         bindings.put(
                 Scaling.ScaleAxisType,
-                new ComplexEMFBinding(
-                        Wcs20Factory.eINSTANCE, Scaling.ScaleAxisType, ScaleAxisType.class));
+                new ComplexEMFBinding(Wcs20Factory.eINSTANCE, Scaling.ScaleAxisType, ScaleAxisType.class));
         bindings.put(
                 Scaling.ScaleToSizeType,
-                new ComplexEMFBinding(
-                        Wcs20Factory.eINSTANCE, Scaling.ScaleToSizeType, ScaleToSizeType.class));
+                new ComplexEMFBinding(Wcs20Factory.eINSTANCE, Scaling.ScaleToSizeType, ScaleToSizeType.class));
         bindings.put(
                 Scaling.TargetAxisSizeType,
-                new ComplexEMFBinding(
-                        Wcs20Factory.eINSTANCE,
-                        Scaling.TargetAxisSizeType,
-                        TargetAxisSizeType.class));
+                new ComplexEMFBinding(Wcs20Factory.eINSTANCE, Scaling.TargetAxisSizeType, TargetAxisSizeType.class));
         bindings.put(
                 Scaling.ScaleToExtentType,
-                new ComplexEMFBinding(
-                        Wcs20Factory.eINSTANCE,
-                        Scaling.ScaleToExtentType,
-                        ScaleToExtentType.class));
+                new ComplexEMFBinding(Wcs20Factory.eINSTANCE, Scaling.ScaleToExtentType, ScaleToExtentType.class));
         bindings.put(
                 Scaling.TargetAxisExtentType,
                 new ComplexEMFBinding(
-                        Wcs20Factory.eINSTANCE,
-                        Scaling.TargetAxisExtentType,
-                        TargetAxisExtentType.class));
+                        Wcs20Factory.eINSTANCE, Scaling.TargetAxisExtentType, TargetAxisExtentType.class));
     }
 }

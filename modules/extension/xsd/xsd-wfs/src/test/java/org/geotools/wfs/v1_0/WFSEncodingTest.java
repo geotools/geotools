@@ -89,16 +89,8 @@ public class WFSEncodingTest extends XmlTestSupport {
         // System.out.println(encoder.encodeAsString(update, WFS.Update));
         doc = encoder.encodeAsDOM(update, WFS.Update);
 
-        assertThat(
-                doc,
-                hasXPath(
-                        "//wfs:Update/wfs:Property/wfs:Value/gml:Point/gml:coord/gml:X",
-                        equalTo("5.2")));
-        assertThat(
-                doc,
-                hasXPath(
-                        "//wfs:Update/wfs:Property/wfs:Value/gml:Point/gml:coord/gml:Y",
-                        equalTo("7.5")));
+        assertThat(doc, hasXPath("//wfs:Update/wfs:Property/wfs:Value/gml:Point/gml:coord/gml:X", equalTo("5.2")));
+        assertThat(doc, hasXPath("//wfs:Update/wfs:Property/wfs:Value/gml:Point/gml:coord/gml:Y", equalTo("7.5")));
     }
 
     @Test
@@ -109,17 +101,9 @@ public class WFSEncodingTest extends XmlTestSupport {
         FeatureTypeFactory ftf = new FeatureTypeFactoryImpl();
 
         AttributeDescriptor ad =
-                ftf.createAttributeDescriptor(
-                        XSSchema.STRING_TYPE, new NameImpl("dummyAttribute"), 0, 1, true, null);
-        SimpleFeatureType ft =
-                ftf.createSimpleFeatureType(
-                        new NameImpl("dummyFeatureType"),
-                        Collections.singletonList(ad),
-                        null,
-                        false,
-                        null,
-                        null,
-                        null);
+                ftf.createAttributeDescriptor(XSSchema.STRING_TYPE, new NameImpl("dummyAttribute"), 0, 1, true, null);
+        SimpleFeatureType ft = ftf.createSimpleFeatureType(
+                new NameImpl("dummyFeatureType"), Collections.singletonList(ad), null, false, null, null, null);
         SimpleFeature feature = ff.createSimpleFeature(new Object[] {"dummyValue"}, ft, "dummyId");
 
         InsertElementType insert = wfsfac.createInsertElementType();
@@ -130,11 +114,7 @@ public class WFSEncodingTest extends XmlTestSupport {
         Document doc = encoder.encodeAsDOM(insert, WFS.Insert);
 
         assertThat(doc, hasXPath("//wfs:Insert/wfs:dummyFeatureType/@fid", equalTo("dummyId")));
-        assertThat(
-                doc,
-                hasXPath(
-                        "//wfs:Insert/wfs:dummyFeatureType/wfs:dummyAttribute",
-                        equalTo("dummyValue")));
+        assertThat(doc, hasXPath("//wfs:Insert/wfs:dummyFeatureType/wfs:dummyAttribute", equalTo("dummyValue")));
     }
 
     @Test

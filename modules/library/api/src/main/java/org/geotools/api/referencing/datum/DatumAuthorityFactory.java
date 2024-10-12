@@ -53,8 +53,7 @@ public interface DatumAuthorityFactory extends AuthorityFactory {
      * @throws FactoryException if the object creation failed for some other reason.
      * @see org.geotools.api.referencing.crs.CRSAuthorityFactory#createEngineeringCRS
      */
-    EngineeringDatum createEngineeringDatum(String code)
-            throws NoSuchAuthorityCodeException, FactoryException;
+    EngineeringDatum createEngineeringDatum(String code) throws NoSuchAuthorityCodeException, FactoryException;
 
     /**
      * Creates a {@linkplain ImageDatum image datum} from a code.
@@ -76,8 +75,7 @@ public interface DatumAuthorityFactory extends AuthorityFactory {
      * @throws FactoryException if the object creation failed for some other reason.
      * @see org.geotools.api.referencing.crs.CRSAuthorityFactory#createVerticalCRS
      */
-    VerticalDatum createVerticalDatum(String code)
-            throws NoSuchAuthorityCodeException, FactoryException;
+    VerticalDatum createVerticalDatum(String code) throws NoSuchAuthorityCodeException, FactoryException;
 
     /**
      * Creates a {@linkplain TemporalDatum temporal datum} from a code.
@@ -88,8 +86,7 @@ public interface DatumAuthorityFactory extends AuthorityFactory {
      * @throws FactoryException if the object creation failed for some other reason.
      * @see org.geotools.api.referencing.crs.CRSAuthorityFactory#createTemporalCRS
      */
-    TemporalDatum createTemporalDatum(String code)
-            throws NoSuchAuthorityCodeException, FactoryException;
+    TemporalDatum createTemporalDatum(String code) throws NoSuchAuthorityCodeException, FactoryException;
 
     /**
      * Returns a {@linkplain GeodeticDatum geodetic datum} from a code.
@@ -103,8 +100,7 @@ public interface DatumAuthorityFactory extends AuthorityFactory {
      * @see org.geotools.api.referencing.crs.CRSAuthorityFactory#createGeographicCRS
      * @see org.geotools.api.referencing.crs.CRSAuthorityFactory#createProjectedCRS
      */
-    GeodeticDatum createGeodeticDatum(String code)
-            throws NoSuchAuthorityCodeException, FactoryException;
+    GeodeticDatum createGeodeticDatum(String code) throws NoSuchAuthorityCodeException, FactoryException;
 
     /**
      * Returns an {@linkplain Ellipsoid ellipsoid} from a code.
@@ -126,6 +122,5 @@ public interface DatumAuthorityFactory extends AuthorityFactory {
      * @throws FactoryException if the object creation failed for some other reason.
      * @see #createGeodeticDatum
      */
-    PrimeMeridian createPrimeMeridian(String code)
-            throws NoSuchAuthorityCodeException, FactoryException;
+    PrimeMeridian createPrimeMeridian(String code) throws NoSuchAuthorityCodeException, FactoryException;
 }

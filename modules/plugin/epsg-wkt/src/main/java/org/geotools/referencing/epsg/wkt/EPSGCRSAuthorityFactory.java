@@ -105,8 +105,7 @@ public class EPSGCRSAuthorityFactory extends AbstractFactory implements CRSAutho
     }
 
     /** */
-    protected EPSGCRSAuthorityFactory(final CRSFactory factory, URL definition)
-            throws FactoryException {
+    protected EPSGCRSAuthorityFactory(final CRSFactory factory, URL definition) throws FactoryException {
         this(factory);
 
         try {
@@ -148,22 +147,19 @@ public class EPSGCRSAuthorityFactory extends AbstractFactory implements CRSAutho
     }
 
     @Override
-    public synchronized CoordinateReferenceSystem createCoordinateReferenceSystem(String code)
-            throws FactoryException {
+    public synchronized CoordinateReferenceSystem createCoordinateReferenceSystem(String code) throws FactoryException {
         if (code == null) {
             return null;
         }
         if (!code.startsWith(AUTHORITY_PREFIX)) {
-            throw new NoSuchAuthorityCodeException(
-                    "This factory only understand EPSG codes", AUTHORITY, code);
+            throw new NoSuchAuthorityCodeException("This factory only understand EPSG codes", AUTHORITY, code);
         }
         final String EPSG_NUMBER = code.substring(code.indexOf(':') + 1).trim();
 
         if (cache.containsKey(EPSG_NUMBER)) {
             Object value = cache.get(EPSG_NUMBER);
             if (value instanceof Throwable) {
-                throw new FactoryException(
-                        "WKT for " + code + " could not be parsed", (Throwable) value);
+                throw new FactoryException("WKT for " + code + " could not be parsed", (Throwable) value);
             }
             if (value instanceof CoordinateReferenceSystem) {
                 return (CoordinateReferenceSystem) value;
@@ -302,44 +298,37 @@ public class EPSGCRSAuthorityFactory extends AbstractFactory implements CRSAutho
     }
 
     @Override
-    public org.geotools.api.referencing.crs.CompoundCRS createCompoundCRS(String str)
-            throws FactoryException {
+    public org.geotools.api.referencing.crs.CompoundCRS createCompoundCRS(String str) throws FactoryException {
         throw new FactoryException("Not implemented");
     }
 
     @Override
-    public org.geotools.api.referencing.crs.DerivedCRS createDerivedCRS(String str)
-            throws FactoryException {
+    public org.geotools.api.referencing.crs.DerivedCRS createDerivedCRS(String str) throws FactoryException {
         throw new FactoryException("Not implemented");
     }
 
     @Override
-    public org.geotools.api.referencing.crs.EngineeringCRS createEngineeringCRS(String str)
-            throws FactoryException {
+    public org.geotools.api.referencing.crs.EngineeringCRS createEngineeringCRS(String str) throws FactoryException {
         throw new FactoryException("Not implemented");
     }
 
     @Override
-    public org.geotools.api.referencing.crs.GeocentricCRS createGeocentricCRS(String str)
-            throws FactoryException {
+    public org.geotools.api.referencing.crs.GeocentricCRS createGeocentricCRS(String str) throws FactoryException {
         throw new FactoryException("Not implemented");
     }
 
     @Override
-    public org.geotools.api.referencing.crs.ImageCRS createImageCRS(String str)
-            throws FactoryException {
+    public org.geotools.api.referencing.crs.ImageCRS createImageCRS(String str) throws FactoryException {
         throw new FactoryException("Not implemented");
     }
 
     @Override
-    public org.geotools.api.referencing.crs.TemporalCRS createTemporalCRS(String str)
-            throws FactoryException {
+    public org.geotools.api.referencing.crs.TemporalCRS createTemporalCRS(String str) throws FactoryException {
         throw new FactoryException("Not implemented");
     }
 
     @Override
-    public org.geotools.api.referencing.crs.VerticalCRS createVerticalCRS(String str)
-            throws FactoryException {
+    public org.geotools.api.referencing.crs.VerticalCRS createVerticalCRS(String str) throws FactoryException {
         throw new FactoryException("Not implemented");
     }
 }

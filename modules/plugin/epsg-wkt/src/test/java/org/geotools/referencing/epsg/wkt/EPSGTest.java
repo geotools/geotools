@@ -53,7 +53,8 @@ public class EPSGTest {
         Citation authority = factory.getAuthority();
 
         assertNotNull(authority);
-        Assert.assertEquals("European Petroleum Survey Group", authority.getTitle().toString());
+        Assert.assertEquals(
+                "European Petroleum Survey Group", authority.getTitle().toString());
         Assert.assertTrue(Citations.identifierMatches(authority, "EPSG"));
     }
 
@@ -75,30 +76,26 @@ public class EPSGTest {
     /** A random CRS for fun. */
     @Test
     public void test26910() throws Exception {
-        CoordinateReferenceSystem crs =
-                (CoordinateReferenceSystem) factory.createObject("EPSG:26910");
+        CoordinateReferenceSystem crs = (CoordinateReferenceSystem) factory.createObject("EPSG:26910");
         assertNotNull(crs);
     }
 
     /** UDIG requires this to work */
     @Test
     public void test4326() throws Exception {
-        CoordinateReferenceSystem crs =
-                (CoordinateReferenceSystem) factory.createObject("EPSG:4326");
+        CoordinateReferenceSystem crs = (CoordinateReferenceSystem) factory.createObject("EPSG:4326");
         assertNotNull(crs);
     }
     /** UDIG requires this to work */
     @Test
     public void test4269() throws Exception {
-        CoordinateReferenceSystem crs =
-                (CoordinateReferenceSystem) factory.createObject("EPSG:4269");
+        CoordinateReferenceSystem crs = (CoordinateReferenceSystem) factory.createObject("EPSG:4269");
         assertNotNull(crs);
     }
     /** UDIG requires this to work */
     @Test
     public void test42102() throws Exception {
-        CoordinateReferenceSystem crs =
-                (CoordinateReferenceSystem) factory.createObject("EPSG:42102");
+        CoordinateReferenceSystem crs = (CoordinateReferenceSystem) factory.createObject("EPSG:42102");
         assertNotNull(crs);
         assertNotNull(crs.getIdentifiers());
         Assert.assertTrue(crs.getIdentifiers().size() > 0);

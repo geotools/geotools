@@ -106,11 +106,7 @@ public class GridReaderLayerHelperTest {
 
     @Test
     public void getInfoOutsideCoverageReturnsEmptyResult() throws Exception {
-        Position2D pos =
-                new Position2D(
-                        WORLD.getCoordinateReferenceSystem(),
-                        WORLD.getMaxX() + 1,
-                        WORLD.getMaxY() + 1);
+        Position2D pos = new Position2D(WORLD.getCoordinateReferenceSystem(), WORLD.getMaxX() + 1, WORLD.getMaxY() + 1);
 
         InfoToolResult info = helper.getInfo(pos);
         assertNotNull(info);
@@ -119,7 +115,8 @@ public class GridReaderLayerHelperTest {
 
     private int[] getValues(Position pos) throws Exception {
         if (worldToGridTransform == null) {
-            worldToGridTransform = reader.getOriginalGridToWorld(PixelInCell.CELL_CORNER).inverse();
+            worldToGridTransform =
+                    reader.getOriginalGridToWorld(PixelInCell.CELL_CORNER).inverse();
         }
 
         Position gridPos = worldToGridTransform.transform(pos, null);

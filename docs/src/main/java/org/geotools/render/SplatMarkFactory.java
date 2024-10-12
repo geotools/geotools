@@ -31,8 +31,7 @@ class SplatMarkFactory implements MarkFactory {
         SPLAT.lineTo(0.3f, 1.10f);
     }
 
-    public Shape getShape(Graphics2D graphics, Expression symbolUrl, Feature feature)
-            throws Exception {
+    public Shape getShape(Graphics2D graphics, Expression symbolUrl, Feature feature) throws Exception {
         if (symbolUrl == null) {
             // cannot handle a null url
             return null;

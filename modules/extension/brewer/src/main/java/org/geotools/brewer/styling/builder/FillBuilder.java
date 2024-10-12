@@ -56,8 +56,7 @@ public class FillBuilder extends AbstractStyleBuilder<org.geotools.api.style.Fil
     public FillBuilder colorHex(String hex) {
         Color color = Converters.convert(hex, Color.class);
         if (color == null) {
-            throw new IllegalArgumentException(
-                    "The provided expression could not be turned into a color: " + hex);
+            throw new IllegalArgumentException("The provided expression could not be turned into a color: " + hex);
         }
         return color(color);
     }

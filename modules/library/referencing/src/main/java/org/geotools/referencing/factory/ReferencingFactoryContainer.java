@@ -172,11 +172,8 @@ public class ReferencingFactoryContainer extends ReferencingFactory {
          */
         synchronized (ReferencingFactoryFinder.class) {
             if (cache == null) {
-                cache =
-                        new FactoryCreator(
-                                Arrays.asList(new Class<?>[] {ReferencingFactoryContainer.class}));
-                cache.registerFactory(
-                        new ReferencingFactoryContainer(null), ReferencingFactoryContainer.class);
+                cache = new FactoryCreator(Arrays.asList(new Class<?>[] {ReferencingFactoryContainer.class}));
+                cache.registerFactory(new ReferencingFactoryContainer(null), ReferencingFactoryContainer.class);
             }
             return cache.getFactory(ReferencingFactoryContainer.class, null, completed, null);
         }
@@ -308,8 +305,7 @@ public class ReferencingFactoryContainer extends ReferencingFactory {
             if (candidate instanceof VerticalCRS) {
                 if (vertical == null) {
                     vertical = (VerticalCRS) candidate;
-                    if (VerticalDatumType.ELLIPSOIDAL.equals(
-                            vertical.getDatum().getVerticalDatumType())) {
+                    if (VerticalDatumType.ELLIPSOIDAL.equals(vertical.getDatum().getVerticalDatumType())) {
                         vi = i;
                         continue;
                     }
@@ -334,8 +330,7 @@ public class ReferencingFactoryContainer extends ReferencingFactory {
              * only ones, the result is returned directly. Otherwise, a new compound CRS is created.
              */
             final boolean xyFirst = (hi < vi);
-            final SingleCRS single =
-                    toGeodetic3D(count == 2 ? crs : null, horizontal, vertical, xyFirst);
+            final SingleCRS single = toGeodetic3D(count == 2 ? crs : null, horizontal, vertical, xyFirst);
             if (count == 2) {
                 return single;
             }
@@ -364,10 +359,7 @@ public class ReferencingFactoryContainer extends ReferencingFactory {
      * @throws FactoryException if the object creation failed.
      */
     private SingleCRS toGeodetic3D(
-            final CompoundCRS crs,
-            final SingleCRS horizontal,
-            final VerticalCRS vertical,
-            final boolean xyFirst)
+            final CompoundCRS crs, final SingleCRS horizontal, final VerticalCRS vertical, final boolean xyFirst)
             throws FactoryException {
         /*
          * Creates the set of axis in an order which depends of the xyFirst argument.
@@ -395,8 +387,7 @@ public class ReferencingFactoryContainer extends ReferencingFactory {
              * part - we just give the 3 axis all together to a new GeographicCRS.
              */
             final GeographicCRS sourceCRS = (GeographicCRS) horizontal;
-            final EllipsoidalCS targetCS =
-                    csFactory.createEllipsoidalCS(csName, axis[0], axis[1], axis[2]);
+            final EllipsoidalCS targetCS = csFactory.createEllipsoidalCS(csName, axis[0], axis[1], axis[2]);
             return crsFactory.createGeographicCRS(crsName, sourceCRS.getDatum(), targetCS);
         }
         if (horizontal instanceof ProjectedCRS) {
@@ -409,25 +400,19 @@ public class ReferencingFactoryContainer extends ReferencingFactory {
              * otherwise).
              */
             final ProjectedCRS sourceCRS = (ProjectedCRS) horizontal;
-            final CartesianCS targetCS =
-                    csFactory.createCartesianCS(csName, axis[0], axis[1], axis[2]);
+            final CartesianCS targetCS = csFactory.createCartesianCS(csName, axis[0], axis[1], axis[2]);
             final GeographicCRS base2D = sourceCRS.getBaseCRS();
-            final GeographicCRS base3D =
-                    (GeographicCRS) toGeodetic3D(null, base2D, vertical, xyFirst);
+            final GeographicCRS base3D = (GeographicCRS) toGeodetic3D(null, base2D, vertical, xyFirst);
             final Matrix prepend = toStandard(base2D, false);
             final Matrix append = toStandard(sourceCRS, true);
             Conversion projection = sourceCRS.getConversionFromBase();
             if (!prepend.isIdentity() || !append.isIdentity()) {
                 final MathTransformFactory mtFactory = getMathTransformFactory();
                 MathTransform mt = projection.getMathTransform();
-                mt =
-                        mtFactory.createConcatenatedTransform(
-                                mtFactory.createConcatenatedTransform(
-                                        mtFactory.createAffineTransform(prepend), mt),
-                                mtFactory.createAffineTransform(append));
-                projection =
-                        new DefiningConversion(
-                                AbstractCS.getProperties(projection), projection.getMethod(), mt);
+                mt = mtFactory.createConcatenatedTransform(
+                        mtFactory.createConcatenatedTransform(mtFactory.createAffineTransform(prepend), mt),
+                        mtFactory.createAffineTransform(append));
+                projection = new DefiningConversion(AbstractCS.getProperties(projection), projection.getMethod(), mt);
             }
             return crsFactory.createProjectedCRS(crsName, base3D, projection, targetCS);
         }
@@ -454,16 +439,15 @@ public class ReferencingFactoryContainer extends ReferencingFactory {
      * @return The CRS with only the specified dimensions.
      * @throws FactoryException if the given dimensions can not be isolated in the given CRS.
      */
-    public CoordinateReferenceSystem separate(
-            final CoordinateReferenceSystem crs, final int[] dimensions) throws FactoryException {
+    public CoordinateReferenceSystem separate(final CoordinateReferenceSystem crs, final int[] dimensions)
+            throws FactoryException {
         final int length = dimensions.length;
         final int crsDimension = crs.getCoordinateSystem().getDimension();
         if (length == 0
                 || dimensions[0] < 0
                 || dimensions[length - 1] >= crsDimension
                 || !XArray.isStrictlySorted(dimensions)) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$1, "dimension"));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$1, "dimension"));
         }
         if (length == crsDimension) {
             return crs;
@@ -475,10 +459,8 @@ public class ReferencingFactoryContainer extends ReferencingFactory {
          */
         if (crs instanceof CompoundCRS) {
             int count = 0, lowerDimension = 0, lowerIndex = 0;
-            final List<CoordinateReferenceSystem> sources =
-                    ((CompoundCRS) crs).getCoordinateReferenceSystems();
-            final CoordinateReferenceSystem[] targets =
-                    new CoordinateReferenceSystem[sources.size()];
+            final List<CoordinateReferenceSystem> sources = ((CompoundCRS) crs).getCoordinateReferenceSystems();
+            final CoordinateReferenceSystem[] targets = new CoordinateReferenceSystem[sources.size()];
             search:
             for (final CoordinateReferenceSystem source : sources) {
                 final int upperDimension =
@@ -515,8 +497,7 @@ public class ReferencingFactoryContainer extends ReferencingFactory {
             if (count == 1) {
                 return targets[0];
             }
-            return getCRSFactory()
-                    .createCompoundCRS(getTemporaryName(crs), XArray.resize(targets, count));
+            return getCRSFactory().createCompoundCRS(getTemporaryName(crs), XArray.resize(targets, count));
         }
         /*
          * TODO: Implement other cases here (3D-GeographicCRS, etc.).

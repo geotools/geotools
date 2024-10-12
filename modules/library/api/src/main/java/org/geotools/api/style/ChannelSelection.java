@@ -29,8 +29,7 @@ public interface ChannelSelection {
      * @param green the green channel
      * @param blue the blue channel
      */
-    void setRGBChannels(
-            SelectedChannelType red, SelectedChannelType green, SelectedChannelType blue);
+    void setRGBChannels(SelectedChannelType red, SelectedChannelType green, SelectedChannelType blue);
 
     /**
      * Set the RGB channels to be used

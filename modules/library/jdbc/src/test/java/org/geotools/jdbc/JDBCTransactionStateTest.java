@@ -56,19 +56,15 @@ public class JDBCTransactionStateTest {
     @Before
     public void setUp() {
         // when(mockLogHandler.publish(any(LogRecord.class)));
-        doAnswer(
-                        (Answer<Object>)
-                                invocation -> {
-                                    Object[] arguments = invocation.getArguments();
-                                    LogRecord logRecord = (LogRecord) arguments[0];
-                                    if (logRecord.getLevel() == Level.WARNING
-                                            && !logRecord
-                                                    .getSourceMethodName()
-                                                    .equals("finalize")) {
-                                        warningsCount++;
-                                    }
-                                    return null;
-                                })
+        doAnswer((Answer<Object>) invocation -> {
+                    Object[] arguments = invocation.getArguments();
+                    LogRecord logRecord = (LogRecord) arguments[0];
+                    if (logRecord.getLevel() == Level.WARNING
+                            && !logRecord.getSourceMethodName().equals("finalize")) {
+                        warningsCount++;
+                    }
+                    return null;
+                })
                 .when(mockLogHandler)
                 .publish(any(LogRecord.class));
         dataStore = new JDBCDataStore();

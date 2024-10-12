@@ -204,8 +204,7 @@ public class DbaseFileHeader {
      * @param inDecimalCount For numeric fields, the number of decimal places to track.
      * @throws DbaseFileException If the type is not recognized.
      */
-    public void addColumn(
-            String inFieldName, char inFieldType, int inFieldLength, int inDecimalCount)
+    public void addColumn(String inFieldName, char inFieldType, int inFieldLength, int inDecimalCount)
             throws DbaseFileException {
         if (inFieldLength <= 0) {
             throw new DbaseFileException("field length <= 0");
@@ -237,11 +236,10 @@ public class DbaseFileHeader {
         if (!tempFieldName.equals(fitFieldName)) {
             tempFieldName = fitFieldName;
             if (LOGGER.isLoggable(Level.WARNING)) {
-                LOGGER.warning(
-                        "FieldName "
-                                + inFieldName
-                                + " is longer than 10 bytes in given charset, truncating to "
-                                + tempFieldName);
+                LOGGER.warning("FieldName "
+                        + inFieldName
+                        + " is longer than 10 bytes in given charset, truncating to "
+                        + tempFieldName);
             }
         }
         tempFieldDescriptors[fields.length].fieldName = tempFieldName;
@@ -251,12 +249,11 @@ public class DbaseFileHeader {
             tempFieldDescriptors[fields.length].fieldType = 'C';
             if (inFieldLength > 254) {
                 if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.fine(
-                            "Field Length for "
-                                    + inFieldName
-                                    + " set to "
-                                    + inFieldLength
-                                    + " Which is longer than 254, not consistent with dbase III");
+                    LOGGER.fine("Field Length for "
+                            + inFieldName
+                            + " set to "
+                            + inFieldLength
+                            + " Which is longer than 254, not consistent with dbase III");
                 }
             }
         } else if ((inFieldType == 'S') || (inFieldType == 's')) {
@@ -269,12 +266,11 @@ public class DbaseFileHeader {
             }
             if (inFieldLength > 254) {
                 if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.fine(
-                            "Field Length for "
-                                    + inFieldName
-                                    + " set to "
-                                    + inFieldLength
-                                    + " Which is longer than 254, not consistent with dbase III");
+                    LOGGER.fine("Field Length for "
+                            + inFieldName
+                            + " set to "
+                            + inFieldLength
+                            + " Which is longer than 254, not consistent with dbase III");
                 }
             }
             tempFieldDescriptors[fields.length].fieldLength = 8;
@@ -282,12 +278,11 @@ public class DbaseFileHeader {
             tempFieldDescriptors[fields.length].fieldType = 'D';
             if (inFieldLength != 8) {
                 if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.fine(
-                            "Field Length for "
-                                    + inFieldName
-                                    + " set to "
-                                    + inFieldLength
-                                    + " Setting to 8 digits YYYYMMDD");
+                    LOGGER.fine("Field Length for "
+                            + inFieldName
+                            + " set to "
+                            + inFieldLength
+                            + " Setting to 8 digits YYYYMMDD");
                 }
             }
             tempFieldDescriptors[fields.length].fieldLength = 8;
@@ -295,13 +290,12 @@ public class DbaseFileHeader {
             tempFieldDescriptors[fields.length].fieldType = '@';
             if (inFieldLength != 8) {
                 if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.fine(
-                            "Field Length for "
-                                    + inFieldName
-                                    + " set to "
-                                    + inFieldLength
-                                    + " Setting to 8 digits - two longs,"
-                                    + "one long for date and one long for time");
+                    LOGGER.fine("Field Length for "
+                            + inFieldName
+                            + " set to "
+                            + inFieldLength
+                            + " Setting to 8 digits - two longs,"
+                            + "one long for date and one long for time");
                 }
             }
             tempFieldDescriptors[fields.length].fieldLength = 8;
@@ -321,35 +315,32 @@ public class DbaseFileHeader {
             tempFieldDescriptors[fields.length].fieldType = 'N';
             if (inFieldLength > 18) {
                 if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.fine(
-                            "Field Length for "
-                                    + inFieldName
-                                    + " set to "
-                                    + inFieldLength
-                                    + " Preserving length, but should be set to Max of 18 for dbase III specification.");
+                    LOGGER.fine("Field Length for "
+                            + inFieldName
+                            + " set to "
+                            + inFieldLength
+                            + " Preserving length, but should be set to Max of 18 for dbase III specification.");
                 }
             }
             if (inDecimalCount < 0) {
                 if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.fine(
-                            "Field Decimal Position for "
-                                    + inFieldName
-                                    + " set to "
-                                    + inDecimalCount
-                                    + " Setting to 0 no decimal data will be saved.");
+                    LOGGER.fine("Field Decimal Position for "
+                            + inFieldName
+                            + " set to "
+                            + inDecimalCount
+                            + " Setting to 0 no decimal data will be saved.");
                 }
                 tempFieldDescriptors[fields.length].decimalCount = 0;
             }
             if (inDecimalCount > inFieldLength - 1) {
                 if (LOGGER.isLoggable(Level.WARNING)) {
-                    LOGGER.warning(
-                            "Field Decimal Position for "
-                                    + inFieldName
-                                    + " set to "
-                                    + inDecimalCount
-                                    + " Setting to "
-                                    + (inFieldLength - 1)
-                                    + " no non decimal data will be saved.");
+                    LOGGER.warning("Field Decimal Position for "
+                            + inFieldName
+                            + " set to "
+                            + inDecimalCount
+                            + " Setting to "
+                            + (inFieldLength - 1)
+                            + " no non decimal data will be saved.");
                 }
                 tempFieldDescriptors[fields.length].decimalCount = inFieldLength - 1;
             }
@@ -357,18 +348,16 @@ public class DbaseFileHeader {
             tempFieldDescriptors[fields.length].fieldType = 'L';
             if (inFieldLength != 1) {
                 if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.fine(
-                            "Field Length for "
-                                    + inFieldName
-                                    + " set to "
-                                    + inFieldLength
-                                    + " Setting to length of 1 for logical fields.");
+                    LOGGER.fine("Field Length for "
+                            + inFieldName
+                            + " set to "
+                            + inFieldLength
+                            + " Setting to length of 1 for logical fields.");
                 }
             }
             tempFieldDescriptors[fields.length].fieldLength = 1;
         } else {
-            throw new DbaseFileException(
-                    "Undefined field type " + inFieldType + " For column " + inFieldName);
+            throw new DbaseFileException("Undefined field type " + inFieldType + " For column " + inFieldName);
         }
         // the length of a record
         tempLength = tempLength + tempFieldDescriptors[fields.length].fieldLength;
@@ -406,8 +395,7 @@ public class DbaseFileHeader {
                 // if this is the last field and we still haven't found the
                 // named field
                 if (i == j && i == fields.length - 1) {
-                    LOGGER.warning(
-                            "Could not find a field named '" + inFieldName + "' for removal");
+                    LOGGER.warning("Could not find a field named '" + inFieldName + "' for removal");
                     return retCol;
                 }
                 tempFieldDescriptors[j] = fields[i];
@@ -853,7 +841,8 @@ public class DbaseFileHeader {
             buffer.position(0);
 
             int r = buffer.remaining();
-            while ((r -= out.write(buffer)) > 0) {; // do nothing
+            while ((r -= out.write(buffer)) > 0) {
+                ; // do nothing
             }
         } finally {
             NIOUtilities.clean(buffer, false);
@@ -869,17 +858,16 @@ public class DbaseFileHeader {
     public String toString() {
         StringBuffer fs = new StringBuffer();
         for (DbaseField f : fields) {
-            fs.append(
-                    f.fieldName
-                            + " "
-                            + f.fieldType
-                            + " "
-                            + f.fieldLength
-                            + " "
-                            + f.decimalCount
-                            + " "
-                            + f.fieldDataAddress
-                            + "\n");
+            fs.append(f.fieldName
+                    + " "
+                    + f.fieldType
+                    + " "
+                    + f.fieldLength
+                    + " "
+                    + f.decimalCount
+                    + " "
+                    + f.fieldDataAddress
+                    + "\n");
         }
 
         return "DB3 Header\n"

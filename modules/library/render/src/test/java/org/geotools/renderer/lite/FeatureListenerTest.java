@@ -50,17 +50,16 @@ public class FeatureListenerTest {
         StreamingRenderer renderer = new StreamingRenderer();
         renderer.setMapContent(mc);
         AtomicInteger count = new AtomicInteger();
-        renderer.addRenderListener(
-                new RenderListener() {
+        renderer.addRenderListener(new RenderListener() {
 
-                    @Override
-                    public void featureRenderer(SimpleFeature feature) {
-                        count.incrementAndGet();
-                    }
+            @Override
+            public void featureRenderer(SimpleFeature feature) {
+                count.incrementAndGet();
+            }
 
-                    @Override
-                    public void errorOccurred(Exception e) {}
-                });
+            @Override
+            public void errorOccurred(Exception e) {}
+        });
 
         RendererBaseTest.renderImage(renderer, bounds, null);
         mc.dispose();

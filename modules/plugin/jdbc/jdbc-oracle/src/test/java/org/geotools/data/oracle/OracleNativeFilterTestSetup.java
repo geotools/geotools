@@ -28,25 +28,22 @@ public final class OracleNativeFilterTestSetup extends JDBCNativeFilterTestSetup
     @Override
     protected void createMeasurementsTable() throws Exception {
         // create the necessary able
-        run(
-                "CREATE TABLE GT_JDBC_TEST_MEASUREMENTS ("
-                        + "id INTEGER PRIMARY KEY, "
-                        + "code VARCHAR2(50) NOT NULL, "
-                        + "type VARCHAR2(100) NOT NULL, "
-                        + "value REAL NOT NULL, "
-                        + "location SDO_GEOMETRY NOT NULL)");
+        run("CREATE TABLE GT_JDBC_TEST_MEASUREMENTS ("
+                + "id INTEGER PRIMARY KEY, "
+                + "code VARCHAR2(50) NOT NULL, "
+                + "type VARCHAR2(100) NOT NULL, "
+                + "value REAL NOT NULL, "
+                + "location SDO_GEOMETRY NOT NULL)");
         // insert he needed spatial metadata
-        run(
-                "INSERT INTO USER_SDO_GEOM_METADATA (TABLE_NAME, COLUMN_NAME, DIMINFO, SRID)"
-                        + "   VALUES ('GT_JDBC_TEST_MEASUREMENTS', 'LOCATION',"
-                        + "   SDO_DIM_ARRAY ("
-                        + "      SDO_DIM_ELEMENT('X', -180.0, 180.0, 0.5),"
-                        + "      SDO_DIM_ELEMENT('Y', -90.0, 90.0, 0.5)),"
-                        + "      4326)");
+        run("INSERT INTO USER_SDO_GEOM_METADATA (TABLE_NAME, COLUMN_NAME, DIMINFO, SRID)"
+                + "   VALUES ('GT_JDBC_TEST_MEASUREMENTS', 'LOCATION',"
+                + "   SDO_DIM_ARRAY ("
+                + "      SDO_DIM_ELEMENT('X', -180.0, 180.0, 0.5),"
+                + "      SDO_DIM_ELEMENT('Y', -90.0, 90.0, 0.5)),"
+                + "      4326)");
         // create the spatial index
-        run(
-                "CREATE INDEX GT_JDBC_TEST_MEASUREMENTS_GEOM_INDEX ON "
-                        + "GT_JDBC_TEST_MEASUREMENTS(location) INDEXTYPE IS MDSYS.SPATIAL_INDEX");
+        run("CREATE INDEX GT_JDBC_TEST_MEASUREMENTS_GEOM_INDEX ON "
+                + "GT_JDBC_TEST_MEASUREMENTS(location) INDEXTYPE IS MDSYS.SPATIAL_INDEX");
         // insert the needed records
         // NB we could use '"INSERT INTO GT_JDBC_TEST_MEASUREMENTS VALUES (1, '#1', 'temperature',
         // 15.0, SDO_GEOMETRY('POINT (1.0 2.0)', 4326))"'
@@ -70,8 +67,7 @@ public final class OracleNativeFilterTestSetup extends JDBCNativeFilterTestSetup
         // drop the spatial index
         runSafe("DROP INDEX GT_JDBC_TEST_MEASUREMENTS_GEOM_INDEX");
         // drop the spatial metadata
-        runSafe(
-                "DELETE FROM USER_SDO_GEOM_METADATA WHERE TABLE_NAME = 'GT_JDBC_TEST_MEASUREMENTS'");
+        runSafe("DELETE FROM USER_SDO_GEOM_METADATA WHERE TABLE_NAME = 'GT_JDBC_TEST_MEASUREMENTS'");
         // drop the table
         runSafe("DROP TABLE GT_JDBC_TEST_MEASUREMENTS");
     }

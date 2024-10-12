@@ -35,8 +35,7 @@ import org.geotools.util.factory.Hints;
 // See https://github.com/geosolutions-it/imageio-ext/issues/148
 public final class JP2ECWFormat extends BaseGDALGridFormat implements Format {
     /** Logger. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(JP2ECWFormat.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(JP2ECWFormat.class);
 
     /** Creates an instance and sets the metadata. */
     public JP2ECWFormat() {

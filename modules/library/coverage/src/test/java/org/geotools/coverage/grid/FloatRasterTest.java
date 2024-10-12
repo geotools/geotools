@@ -43,8 +43,7 @@ public final class FloatRasterTest extends GridCoverageTestBase {
          */
         final int width = 500;
         final int height = 500;
-        WritableRaster raster =
-                RasterFactory.createBandedRaster(DataBuffer.TYPE_FLOAT, width, height, 1, null);
+        WritableRaster raster = RasterFactory.createBandedRaster(DataBuffer.TYPE_FLOAT, width, height, 1, null);
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 raster.setSample(x, y, 0, x + y);
@@ -69,16 +68,7 @@ public final class FloatRasterTest extends GridCoverageTestBase {
          * default value.
          */
         Color[] colors = {Color.BLUE, Color.CYAN, Color.WHITE, Color.YELLOW, Color.RED};
-        gc =
-                factory.create(
-                        "My colored coverage",
-                        raster,
-                        envelope,
-                        null,
-                        null,
-                        null,
-                        new Color[][] {colors},
-                        null);
+        gc = factory.create("My colored coverage", raster, envelope, null, null, null, new Color[][] {colors}, null);
         if (SHOW) {
             ((GridCoverage2D) gc).show();
         }

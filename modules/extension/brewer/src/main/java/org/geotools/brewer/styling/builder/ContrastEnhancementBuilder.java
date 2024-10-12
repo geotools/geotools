@@ -64,8 +64,7 @@ public class ContrastEnhancementBuilder extends AbstractStyleBuilder<ContrastEnh
         return contrastMethod("logarithm", constrastParameters);
     }
 
-    private ContrastEnhancementBuilder contrastMethod(
-            String name, Map<String, Expression> constrastParameters) {
+    private ContrastEnhancementBuilder contrastMethod(String name, Map<String, Expression> constrastParameters) {
         /*if ("histogram".equals(name)) {
             this.method = ContrastMethod.HISTOGRAM;
         } else if ("normalize".equals(name)) {
@@ -127,8 +126,7 @@ public class ContrastEnhancementBuilder extends AbstractStyleBuilder<ContrastEnh
 
     @Override
     protected void buildStyleInternal(StyleBuilder sb) {
-        throw new UnsupportedOperationException(
-                "Cannot build a meaningful style out of a contrast enhancement alone");
+        throw new UnsupportedOperationException("Cannot build a meaningful style out of a contrast enhancement alone");
     }
 
     /** @return */

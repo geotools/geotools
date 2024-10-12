@@ -38,8 +38,7 @@ import org.geotools.ows.ServiceException;
  *
  * @author Roar Brænden
  */
-public class ComplexGetFeatureResponseParserFactory
-        extends AbstractGetFeatureResponseParserFactory {
+public class ComplexGetFeatureResponseParserFactory extends AbstractGetFeatureResponseParserFactory {
 
     /**
      * Supporting GetFeature requests that also have request.getFullType() not being a
@@ -72,15 +71,13 @@ public class ComplexGetFeatureResponseParserFactory
      * <p>Using "in" instead of response.getResponseStream()
      */
     @Override
-    protected WFSResponse createResponseImpl(
-            WFSRequest request, HTTPResponse response, InputStream in) throws IOException {
-        FeatureType schema =
-                ((GetFeatureRequest) request).getQueryType() == null
-                        ? ((GetFeatureRequest) request).getFullType()
-                        : ((GetFeatureRequest) request).getQueryType();
+    protected WFSResponse createResponseImpl(WFSRequest request, HTTPResponse response, InputStream in)
+            throws IOException {
+        FeatureType schema = ((GetFeatureRequest) request).getQueryType() == null
+                ? ((GetFeatureRequest) request).getFullType()
+                : ((GetFeatureRequest) request).getQueryType();
         XmlComplexFeatureParser parser =
-                new XmlComplexFeatureParser(
-                        in, schema, request.getTypeName(), null, request.getStrategy());
+                new XmlComplexFeatureParser(in, schema, request.getTypeName(), null, request.getStrategy());
         try {
             return new ComplexGetFeatureResponse(request, response, parser);
         } catch (ServiceException e) {
@@ -89,8 +86,7 @@ public class ComplexGetFeatureResponseParserFactory
     }
 
     @Override
-    protected GetParser<SimpleFeature> parser(GetFeatureRequest request, InputStream in)
-            throws IOException {
+    protected GetParser<SimpleFeature> parser(GetFeatureRequest request, InputStream in) throws IOException {
         throw new UnsupportedOperationException("We don't support parsing SimpleFeature's.");
     }
 }

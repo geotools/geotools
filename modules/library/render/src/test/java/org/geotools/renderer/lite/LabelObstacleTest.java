@@ -99,11 +99,8 @@ public class LabelObstacleTest {
         WKTReader wkt = new WKTReader();
 
         try (FeatureWriter w = mem.getFeatureWriter(name, Transaction.AUTO_COMMIT);
-                BufferedReader r =
-                        new BufferedReader(
-                                new InputStreamReader(
-                                        LabelObstacleTest.class.getResourceAsStream(
-                                                "test-data/obstacles/" + name + ".txt")))) {
+                BufferedReader r = new BufferedReader(new InputStreamReader(
+                        LabelObstacleTest.class.getResourceAsStream("test-data/obstacles/" + name + ".txt")))) {
             String line = null;
             while ((line = r.readLine()) != null) {
                 String[] values = line.split(";");
@@ -124,10 +121,9 @@ public class LabelObstacleTest {
 
     Style style(String name) throws Exception {
         // return RendererBaseTest.loadStyle(this, "test-data/obstacles/" + name + ".sld");
-        SLDParser p =
-                new SLDParser(
-                        CommonFactoryFinder.getStyleFactory(null),
-                        getClass().getResourceAsStream("test-data/obstacles/" + name + ".sld"));
+        SLDParser p = new SLDParser(
+                CommonFactoryFinder.getStyleFactory(null),
+                getClass().getResourceAsStream("test-data/obstacles/" + name + ".sld"));
         return p.readXML()[0];
     }
 
@@ -173,16 +169,12 @@ public class LabelObstacleTest {
     }
 
     File file(String name) {
-        return new File(
-                "src/test/resources/org/geotools/renderer/lite/test-data/obstacles/"
-                        + name
-                        + ".png");
+        return new File("src/test/resources/org/geotools/renderer/lite/test-data/obstacles/" + name + ".png");
     }
 
     @Test
     public void testExternalGraphicNoObstacle() throws Exception {
-        BufferedImage labels =
-                render(sources("roads", "points"), styles("label", "grinNoObstacle"));
+        BufferedImage labels = render(sources("roads", "points"), styles("label", "grinNoObstacle"));
         BufferedImage points = render(sources("roads", "points"), styles(null, "grinNoObstacle"));
 
         ImageWorker extrema = intersectionExtrema(labels, points);
@@ -263,8 +255,7 @@ public class LabelObstacleTest {
         // w.binarize(1).getRenderedImage();//BinarizeDescriptor.create(labelsCombine, 1.0, null);
         // get anything that is not fully white
         RenderedImage binaryObstacles =
-                w1.binarize(250)
-                        .getRenderedImage(); // BinarizeDescriptor.create(pointsCombine, 250.0,
+                w1.binarize(250).getRenderedImage(); // BinarizeDescriptor.create(pointsCombine, 250.0,
         // null);
 
         // combine the two, only pixels that are both black in both images will be black (0)

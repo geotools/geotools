@@ -15,12 +15,11 @@ import org.w3c.dom.Document;
 public class FunctionTypeBindingTest extends FESTestSupport {
     @Test
     public void testParse() throws Exception {
-        String xml =
-                "<fes:Function xmlns:fes='"
-                        + FES.NAMESPACE
-                        + "' name='abs'>"
-                        + "   <fes:Literal>12</fes:Literal> "
-                        + "</fes:Function>";
+        String xml = "<fes:Function xmlns:fes='"
+                + FES.NAMESPACE
+                + "' name='abs'>"
+                + "   <fes:Literal>12</fes:Literal> "
+                + "</fes:Function>";
         buildDocument(xml);
 
         Function f = (Function) parse();

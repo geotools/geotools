@@ -36,8 +36,7 @@ import org.xml.sax.SAXException;
 public class TestFilterHandler implements ContentHandler, FilterHandler {
 
     /** Standard logging class */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(TestFilterHandler.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(TestFilterHandler.class);
 
     /**
      * ****************************************************** Local tracking methods to deal with
@@ -103,8 +102,7 @@ public class TestFilterHandler implements ContentHandler, FilterHandler {
      * @param rawName Raw name of element.
      */
     @Override
-    public void endElement(String namespaceURI, String localName, String rawName)
-            throws SAXException {}
+    public void endElement(String namespaceURI, String localName, String rawName) throws SAXException {}
 
     /**
      * Checks if inside parsed element and adds its contents to the appropriate variable.

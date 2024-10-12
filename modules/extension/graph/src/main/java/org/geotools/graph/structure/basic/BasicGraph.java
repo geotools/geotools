@@ -123,11 +123,10 @@ public class BasicGraph implements Graph, Serializable {
     public List<Node> getNodesOfDegree(int n) {
         final int degree = n;
 
-        return (queryNodes(
-                component -> {
-                    if (((Node) component).getDegree() == degree) return (PASS_AND_CONTINUE);
-                    return (FAIL_QUERY);
-                }));
+        return (queryNodes(component -> {
+            if (((Node) component).getDegree() == degree) return (PASS_AND_CONTINUE);
+            return (FAIL_QUERY);
+        }));
     }
 
     /** @see Graph#getVisitedNodes(boolean) */
@@ -185,8 +184,7 @@ public class BasicGraph implements Graph, Serializable {
     /*
      * Internal query method.
      */
-    private List<? extends Graphable> query(
-            Collection<? extends Graphable> components, GraphVisitor visitor) {
+    private List<? extends Graphable> query(Collection<? extends Graphable> components, GraphVisitor visitor) {
         ArrayList<Graphable> result = new ArrayList<>();
 
         for (Graphable component : components) {
@@ -219,14 +217,11 @@ public class BasicGraph implements Graph, Serializable {
     /*
      * Internal getVisited method.
      */
-    private List<? extends Graphable> getVisited(
-            Collection<? extends Graphable> components, boolean visited) {
+    private List<? extends Graphable> getVisited(Collection<? extends Graphable> components, boolean visited) {
         final boolean isVisited = visited;
-        return (query(
-                components,
-                component -> {
-                    if (component.isVisited() == isVisited) return (PASS_AND_CONTINUE);
-                    return (FAIL_QUERY);
-                }));
+        return (query(components, component -> {
+            if (component.isVisited() == isVisited) return (PASS_AND_CONTINUE);
+            return (FAIL_QUERY);
+        }));
     }
 }

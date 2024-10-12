@@ -63,10 +63,7 @@ public class ReIcon {
                 @Override
                 public void paintIcon(Component c, Graphics g, int x, int y) {
                     BufferedImage img =
-                            new BufferedImage(
-                                    icon.getIconWidth(),
-                                    icon.getIconHeight(),
-                                    BufferedImage.TYPE_INT_ARGB);
+                            new BufferedImage(icon.getIconWidth(), icon.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
                     // we can cache the img when aaime gets out a profiler and tells us it is
                     // worthwhile
                     icon.paintIcon(c, img.getGraphics(), 0, 0);

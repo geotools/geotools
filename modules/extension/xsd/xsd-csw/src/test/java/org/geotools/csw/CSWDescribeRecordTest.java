@@ -13,9 +13,7 @@ public class CSWDescribeRecordTest {
 
     @Test
     public void testParseDescribeRecord() throws Exception {
-        DescribeRecordType dr =
-                (DescribeRecordType)
-                        parser.parse(getClass().getResourceAsStream("DescribeRecord.xml"));
+        DescribeRecordType dr = (DescribeRecordType) parser.parse(getClass().getResourceAsStream("DescribeRecord.xml"));
         assertEquals("CSW", dr.getService());
         assertEquals("2.0.2", dr.getVersion());
         assertEquals(2, dr.getTypeName().size());

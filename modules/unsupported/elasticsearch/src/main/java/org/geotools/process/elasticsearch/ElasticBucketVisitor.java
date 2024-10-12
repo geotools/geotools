@@ -45,9 +45,8 @@ public class ElasticBucketVisitor implements FeatureAttributeVisitor {
 
     @Override
     public void visit(Feature feature) {
-        throw new RuntimeException(
-                "The ElasticBucketVisitor is only for Elasticsearch data sources "
-                        + "and is not designed to work in memory.");
+        throw new RuntimeException("The ElasticBucketVisitor is only for Elasticsearch data sources "
+                + "and is not designed to work in memory.");
     }
 
     public List<Map<String, Object>> getBuckets() {

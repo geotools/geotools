@@ -52,8 +52,7 @@ public interface Type {
      * @see ElementValue
      * @return Object
      */
-    public Object getValue(
-            Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
+    public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
             throws SAXException, OperationNotSupportedException;
 
     /**
@@ -101,8 +100,7 @@ public interface Type {
      * @throws OperationNotSupportedException When this type cannot be encoded ... and wasn't
      *     checked first.
      */
-    public void encode(
-            Element element, Object value, PrintHandler output, Map<String, Object> hints)
+    public void encode(Element element, Object value, PrintHandler output, Map<String, Object> hints)
             throws IOException, OperationNotSupportedException;
 
     /**

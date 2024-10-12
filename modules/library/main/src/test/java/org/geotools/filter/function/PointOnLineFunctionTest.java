@@ -48,22 +48,19 @@ public class PointOnLineFunctionTest {
 
     @Test
     public void testInvalidPercentageAbove() {
-        Function pointOnLine =
-                FF.function(NAME, FF.literal("LINESTRING(0 0, 0 1, 1 1)"), FF.literal(1.5));
+        Function pointOnLine = FF.function(NAME, FF.literal("LINESTRING(0 0, 0 1, 1 1)"), FF.literal(1.5));
         assertThrows(IllegalArgumentException.class, () -> pointOnLine.evaluate(null));
     }
 
     @Test
     public void testInvalidPercentageBelow() {
-        Function pointOnLine =
-                FF.function(NAME, FF.literal("LINESTRING(0 0, 0 1, 1 1)"), FF.literal(-0.1));
+        Function pointOnLine = FF.function(NAME, FF.literal("LINESTRING(0 0, 0 1, 1 1)"), FF.literal(-0.1));
         assertThrows(IllegalArgumentException.class, () -> pointOnLine.evaluate(null));
     }
 
     @Test
     public void testInvalidMultiLineString() {
-        Function pointOnLine =
-                FF.function(NAME, FF.literal("MULTILINESTRING((0 0, 1 1), (2 2, 3 3))"));
+        Function pointOnLine = FF.function(NAME, FF.literal("MULTILINESTRING((0 0, 1 1), (2 2, 3 3))"));
         assertThrows(IllegalArgumentException.class, () -> pointOnLine.evaluate(null));
     }
 
@@ -91,10 +88,7 @@ public class PointOnLineFunctionTest {
         double[] percentages = {0.0, 0.25, 0.5, 0.75, 1.0};
         for (double percentage : percentages) {
             Function pointOnLine =
-                    FF.function(
-                            "pointOnLine",
-                            FF.literal("LINESTRING(0 0, 3 3)"),
-                            FF.literal(percentage));
+                    FF.function("pointOnLine", FF.literal("LINESTRING(0 0, 3 3)"), FF.literal(percentage));
             Point point = (Point) pointOnLine.evaluate(null);
             assertNotNull(point);
 

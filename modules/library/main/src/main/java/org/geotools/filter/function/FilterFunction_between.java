@@ -26,17 +26,12 @@ import org.geotools.filter.capability.FunctionNameImpl;
 
 public class FilterFunction_between extends FunctionExpressionImpl {
 
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "between",
-                    parameter(
-                            "between",
-                            Boolean.class,
-                            "Between",
-                            "Returns true if between min and max."),
-                    parameter("value", Object.class, "Value", "Number or string value"),
-                    parameter("min", Object.class, "Min", "Minimum number or string"),
-                    parameter("max", Object.class, "Max", "Maximum number or string"));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "between",
+            parameter("between", Boolean.class, "Between", "Returns true if between min and max."),
+            parameter("value", Object.class, "Value", "Number or string value"),
+            parameter("min", Object.class, "Min", "Minimum number or string"),
+            parameter("max", Object.class, "Max", "Maximum number or string"));
 
     public FilterFunction_between() {
         super(NAME);

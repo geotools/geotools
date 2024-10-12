@@ -30,9 +30,7 @@ public class GML2EncodingUtilsTest {
     public void testCRS84() throws Exception {
         CoordinateReferenceSystem crs84 = CRS.decode("CRS:84");
         assertEquals("CRS:84", toURI(crs84, SrsSyntax.AUTH_CODE, false));
-        assertEquals(
-                "http://www.opengis.net/def/crs/CRS/0/84",
-                toURI(crs84, SrsSyntax.OGC_HTTP_URI, false));
+        assertEquals("http://www.opengis.net/def/crs/CRS/0/84", toURI(crs84, SrsSyntax.OGC_HTTP_URI, false));
         assertEquals("urn:ogc:def:crs:CRS::84", toURI(crs84, SrsSyntax.OGC_URN, false));
     }
 }

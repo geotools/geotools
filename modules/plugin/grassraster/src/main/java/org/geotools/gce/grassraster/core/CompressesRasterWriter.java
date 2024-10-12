@@ -92,9 +92,7 @@ public class CompressesRasterWriter {
      * @param theCreatedNullFile - handler for the file of the null map (in cell_misc)
      */
     public void compressAndWrite(
-            ImageOutputStream theCreatedFile,
-            ImageOutputStream theCreatedNullFile,
-            RenderedImage renderedImage)
+            ImageOutputStream theCreatedFile, ImageOutputStream theCreatedNullFile, RenderedImage renderedImage)
             throws IOException {
         // set the number of bytes needed for the values to write to disk
         int numberofbytes = outputToDiskType * 4;
@@ -125,8 +123,7 @@ public class CompressesRasterWriter {
         int width = renderedImage.getWidth();
         // FIXME here I want to exploit tiling, not have the whole image loaded,
         // but when I do, I get an
-        RandomIter iterator =
-                RandomIterFactory.create(renderedImage, new Rectangle(0, 0, width, height));
+        RandomIter iterator = RandomIterFactory.create(renderedImage, new Rectangle(0, 0, width, height));
         // NewWritableFileRandomIter iterator =
         // NewFileImageRandomIterFactory.createWritableFileRandomIter((FileImage) renderedImage,
         // new Rectangle(0, 0, width, height));

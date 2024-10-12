@@ -128,10 +128,7 @@ public class FactoryCreator extends FactoryRegistry {
      */
     @Override
     public <T> T getFactory(
-            final Class<T> category,
-            final Predicate<? super T> filter,
-            final Hints hints,
-            final Hints.Key key)
+            final Class<T> category, final Predicate<? super T> filter, final Hints hints, final Hints.Key key)
             throws FactoryRegistryException {
         final FactoryNotFoundException notFound;
         try {
@@ -241,8 +238,7 @@ public class FactoryCreator extends FactoryRegistry {
      * of the same category. For example this is the case of {@link
      * org.geotools.referencing.operation.BufferedCoordinateOperationFactory}.
      */
-    private <T> T createSafe(
-            final Class<T> category, final Class<?> implementation, final Hints hints) {
+    private <T> T createSafe(final Class<T> category, final Class<?> implementation, final Hints hints) {
         if (!underConstruction.add(implementation)) {
             return null;
         }
@@ -273,16 +269,13 @@ public class FactoryCreator extends FactoryRegistry {
      * @return The factory.
      * @throws FactoryRegistryException if the factory creation failed.
      */
-    protected <T> T createFactory(
-            final Class<T> category, final Class<?> implementation, final Hints hints)
+    protected <T> T createFactory(final Class<T> category, final Class<?> implementation, final Hints hints)
             throws FactoryRegistryException {
         Throwable cause;
         try {
             try {
                 return category.cast(
-                        implementation
-                                .getConstructor(HINTS_ARGUMENT)
-                                .newInstance(new Object[] {hints}));
+                        implementation.getConstructor(HINTS_ARGUMENT).newInstance(new Object[] {hints}));
             } catch (NoSuchMethodException exception) {
                 // Constructor do not exists or is not public. We will fallback on the no-arg one.
                 cause = exception;

@@ -148,13 +148,12 @@ public class AbstractDerivedCRS extends AbstractSingleCRS implements GeneralDeri
         if (c != null) {
             typeHint = c.asSubclass(typeHint);
         }
-        this.conversionFromBase =
-                DefaultConversion.create(
-                        /* definition */ conversionFromBase,
-                        /* sourceCRS  */ base,
-                        /* targetCRS  */ this,
-                        /* transform  */ baseToDerived,
-                        /* typeHints  */ typeHint);
+        this.conversionFromBase = DefaultConversion.create(
+                /* definition */ conversionFromBase,
+                /* sourceCRS  */ base,
+                /* targetCRS  */ this,
+                /* transform  */ baseToDerived,
+                /* typeHints  */ typeHint);
     }
 
     /**
@@ -228,17 +227,13 @@ public class AbstractDerivedCRS extends AbstractSingleCRS implements GeneralDeri
          */
         checkDimensions(base, baseToDerived, derivedCS);
         DefaultOperationMethod.checkDimensions(method, baseToDerived);
-        this.conversionFromBase =
-                (Conversion)
-                        DefaultOperation.create(
-                                /* properties */ new UnprefixedMap(properties, "conversion."),
-                                /* sourceCRS  */ base,
-                                /* targetCRS  */ this,
-                                /* transform  */ baseToDerived,
-                                /* method     */ method,
-                                /* type       */ (this instanceof ProjectedCRS)
-                                        ? Projection.class
-                                        : Conversion.class);
+        this.conversionFromBase = (Conversion) DefaultOperation.create(
+                /* properties */ new UnprefixedMap(properties, "conversion."),
+                /* sourceCRS  */ base,
+                /* targetCRS  */ this,
+                /* transform  */ baseToDerived,
+                /* method     */ method,
+                /* type       */ (this instanceof ProjectedCRS) ? Projection.class : Conversion.class);
     }
 
     /**
@@ -254,17 +249,14 @@ public class AbstractDerivedCRS extends AbstractSingleCRS implements GeneralDeri
 
     /** Checks consistency between the base CRS and the "base to derived" transform. */
     private static void checkDimensions(
-            final CoordinateReferenceSystem base,
-            final MathTransform baseToDerived,
-            final CoordinateSystem derivedCS)
+            final CoordinateReferenceSystem base, final MathTransform baseToDerived, final CoordinateSystem derivedCS)
             throws MismatchedDimensionException {
         final int dimSource = baseToDerived.getSourceDimensions();
         final int dimTarget = baseToDerived.getTargetDimensions();
         int dim1, dim2;
         if ((dim1 = dimSource) != (dim2 = base.getCoordinateSystem().getDimension())
                 || (dim1 = dimTarget) != (dim2 = derivedCS.getDimension())) {
-            throw new MismatchedDimensionException(
-                    MessageFormat.format(ErrorKeys.MISMATCHED_DIMENSION_$2, dim1, dim2));
+            throw new MismatchedDimensionException(MessageFormat.format(ErrorKeys.MISMATCHED_DIMENSION_$2, dim1, dim2));
         }
     }
 
@@ -322,8 +314,7 @@ public class AbstractDerivedCRS extends AbstractSingleCRS implements GeneralDeri
                 }
                 try {
                     _COMPARING.set(Boolean.TRUE);
-                    return equals(
-                            this.conversionFromBase, that.conversionFromBase, compareMetadata);
+                    return equals(this.conversionFromBase, that.conversionFromBase, compareMetadata);
                 } finally {
                     _COMPARING.remove();
                 }

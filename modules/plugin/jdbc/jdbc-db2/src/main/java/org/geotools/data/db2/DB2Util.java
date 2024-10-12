@@ -98,8 +98,7 @@ public class DB2Util {
         }
     }
 
-    public static void executeUnRegister(
-            String schemaName, String tableName, String columnName, Connection con)
+    public static void executeUnRegister(String schemaName, String tableName, String columnName, Connection con)
             throws SQLException {
 
         String stmt = "call db2gse.ST_unregister_spatial_column(?,?,?,?,?)";
@@ -123,13 +122,10 @@ public class DB2Util {
         PARAMETER_MARKES.put(LineString.class, "DB2GSE.ST_LineFromWKB(cast (? as BLOB(2G)),{0})");
         PARAMETER_MARKES.put(Polygon.class, "DB2GSE.ST_PolyFromWKB(cast (? as BLOB(2G)),{0})");
         PARAMETER_MARKES.put(MultiPoint.class, "DB2GSE.ST_MPointFromWKB(cast (? as BLOB(2G)),{0})");
-        PARAMETER_MARKES.put(
-                MultiLineString.class, "DB2GSE.ST_MLineFromWKB(cast (? as BLOB(2G)),{0})");
-        PARAMETER_MARKES.put(
-                MultiPolygon.class, "DB2GSE.ST_MPolyFromWKB(cast (? as BLOB(2G)),{0})");
+        PARAMETER_MARKES.put(MultiLineString.class, "DB2GSE.ST_MLineFromWKB(cast (? as BLOB(2G)),{0})");
+        PARAMETER_MARKES.put(MultiPolygon.class, "DB2GSE.ST_MPolyFromWKB(cast (? as BLOB(2G)),{0})");
         PARAMETER_MARKES.put(Geometry.class, "DB2GSE.ST_GeomFromWKB(cast (? as BLOB(2G)),{0})");
-        PARAMETER_MARKES.put(
-                GeometryCollection.class, "DB2GSE.ST_GeomCollFromWKB(cast (? as BLOB(2G)),{0})");
+        PARAMETER_MARKES.put(GeometryCollection.class, "DB2GSE.ST_GeomCollFromWKB(cast (? as BLOB(2G)),{0})");
 
         PARAMETER_LITERALS = new HashMap<>();
         PARAMETER_LITERALS.put(Point.class, "DB2GSE.ST_PointFromText({0},{1})");
@@ -172,8 +168,7 @@ public class DB2Util {
         sql.append(MessageFormat.format(pattern, new Object[] {Integer.toString(srid)}));
     }
 
-    public static void encodeGeometryValue(Geometry value, int srid, StringBuffer sql)
-            throws IOException {
+    public static void encodeGeometryValue(Geometry value, int srid, StringBuffer sql) throws IOException {
 
         if (value == null || value.isEmpty()) {
             sql.append("null");
@@ -185,9 +180,6 @@ public class DB2Util {
             sql.append("null");
             return;
         }
-        sql.append(
-                MessageFormat.format(
-                        pattern,
-                        new Object[] {new WKTWriter().write(value), Integer.toString(srid)}));
+        sql.append(MessageFormat.format(pattern, new Object[] {new WKTWriter().write(value), Integer.toString(srid)}));
     }
 }

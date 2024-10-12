@@ -33,8 +33,7 @@ public class TransformFeatureStoreTest extends AbstractTransformTest {
     public void setupWriteTest() throws IOException {
         // clone the file to avoid issues with write tests
         new File("./target/ ").mkdirs();
-        File source =
-                new File("./src/test/resources/org/geotools/data/transform/states.properties");
+        File source = new File("./src/test/resources/org/geotools/data/transform/states.properties");
         File target = new File("./target/transform/states.properties");
         target.delete();
         FileUtils.copyFile(source, target);
@@ -50,8 +49,7 @@ public class TransformFeatureStoreTest extends AbstractTransformTest {
         definitions.add(new Definition("total", ECQL.toExpression("male + female")));
         definitions.add(new Definition("people", ECQL.toExpression("persons")));
 
-        SimpleFeatureSource transformed =
-                TransformFactory.transform(STATES, "bstates", definitions);
+        SimpleFeatureSource transformed = TransformFactory.transform(STATES, "bstates", definitions);
         return transformed;
     }
 
@@ -134,7 +132,8 @@ public class TransformFeatureStoreTest extends AbstractTransformTest {
 
         assertEquals(
                 1,
-                STATES.getFeatures(new Query(null, CQL.toFilter("state_name = 'baloon'"))).size());
+                STATES.getFeatures(new Query(null, CQL.toFilter("state_name = 'baloon'")))
+                        .size());
         assertEquals(
                 1,
                 transformed
@@ -160,10 +159,13 @@ public class TransformFeatureStoreTest extends AbstractTransformTest {
 
         assertEquals(
                 1,
-                STATES.getFeatures(new Query(null, CQL.toFilter("state_name = 'baloon'"))).size());
+                STATES.getFeatures(new Query(null, CQL.toFilter("state_name = 'baloon'")))
+                        .size());
         assertEquals(
                 1,
-                transformed.getFeatures(new Query(null, CQL.toFilter("name = 'baloon'"))).size());
+                transformed
+                        .getFeatures(new Query(null, CQL.toFilter("name = 'baloon'")))
+                        .size());
     }
 
     @Test
@@ -184,9 +186,14 @@ public class TransformFeatureStoreTest extends AbstractTransformTest {
         assertEquals(11, size);
 
         // the name won't be preserved since it's transformed, we use the population instead
-        assertEquals(1, STATES.getFeatures(new Query(null, CQL.toFilter("persons = 1"))).size());
         assertEquals(
-                1, transformed.getFeatures(new Query(null, CQL.toFilter("people = 1"))).size());
+                1,
+                STATES.getFeatures(new Query(null, CQL.toFilter("persons = 1"))).size());
+        assertEquals(
+                1,
+                transformed
+                        .getFeatures(new Query(null, CQL.toFilter("people = 1")))
+                        .size());
     }
 
     @Test
@@ -207,7 +214,8 @@ public class TransformFeatureStoreTest extends AbstractTransformTest {
 
         assertEquals(
                 1,
-                STATES.getFeatures(new Query(null, CQL.toFilter("state_name = 'baloon'"))).size());
+                STATES.getFeatures(new Query(null, CQL.toFilter("state_name = 'baloon'")))
+                        .size());
         assertEquals(
                 1,
                 transformed
@@ -233,10 +241,13 @@ public class TransformFeatureStoreTest extends AbstractTransformTest {
 
         assertEquals(
                 1,
-                STATES.getFeatures(new Query(null, CQL.toFilter("state_name = 'baloon'"))).size());
+                STATES.getFeatures(new Query(null, CQL.toFilter("state_name = 'baloon'")))
+                        .size());
         assertEquals(
                 1,
-                transformed.getFeatures(new Query(null, CQL.toFilter("name = 'baloon'"))).size());
+                transformed
+                        .getFeatures(new Query(null, CQL.toFilter("name = 'baloon'")))
+                        .size());
     }
 
     @Test
@@ -257,9 +268,14 @@ public class TransformFeatureStoreTest extends AbstractTransformTest {
         assertEquals(1, size);
 
         // the name won't be preserved since it's transformed, we use the population instead
-        assertEquals(1, STATES.getFeatures(new Query(null, CQL.toFilter("persons = 1"))).size());
         assertEquals(
-                1, transformed.getFeatures(new Query(null, CQL.toFilter("people = 1"))).size());
+                1,
+                STATES.getFeatures(new Query(null, CQL.toFilter("persons = 1"))).size());
+        assertEquals(
+                1,
+                transformed
+                        .getFeatures(new Query(null, CQL.toFilter("people = 1")))
+                        .size());
     }
 
     @Test
@@ -270,9 +286,10 @@ public class TransformFeatureStoreTest extends AbstractTransformTest {
         transformed.modifyFeatures("persons", 0, CQL.toFilter("state_name = 'Illinois'"));
 
         // check it has been modified
-        assertEquals(1, STATES.getFeatures(new Query(null, CQL.toFilter("persons = 0"))).size());
-        SimpleFeatureCollection rfc =
-                transformed.getFeatures(new Query(null, CQL.toFilter("persons = 0")));
+        assertEquals(
+                1,
+                STATES.getFeatures(new Query(null, CQL.toFilter("persons = 0"))).size());
+        SimpleFeatureCollection rfc = transformed.getFeatures(new Query(null, CQL.toFilter("persons = 0")));
         assertEquals(1, rfc.size());
 
         // double check the features themselves
@@ -291,9 +308,10 @@ public class TransformFeatureStoreTest extends AbstractTransformTest {
         transformed.modifyFeatures("people", 0, CQL.toFilter("name = 'Illinois'"));
 
         // check it has been modified
-        assertEquals(1, STATES.getFeatures(new Query(null, CQL.toFilter("persons = 0"))).size());
-        SimpleFeatureCollection rfc =
-                transformed.getFeatures(new Query(null, CQL.toFilter("people = 0")));
+        assertEquals(
+                1,
+                STATES.getFeatures(new Query(null, CQL.toFilter("persons = 0"))).size());
+        SimpleFeatureCollection rfc = transformed.getFeatures(new Query(null, CQL.toFilter("people = 0")));
         assertEquals(1, rfc.size());
 
         // double check the features themselves
@@ -312,9 +330,10 @@ public class TransformFeatureStoreTest extends AbstractTransformTest {
         transformed.modifyFeatures("people", 0, CQL.toFilter("name = 'illinois'"));
 
         // check it has been modified
-        assertEquals(1, STATES.getFeatures(new Query(null, CQL.toFilter("persons = 0"))).size());
-        SimpleFeatureCollection rfc =
-                transformed.getFeatures(new Query(null, CQL.toFilter("people = 0")));
+        assertEquals(
+                1,
+                STATES.getFeatures(new Query(null, CQL.toFilter("persons = 0"))).size());
+        SimpleFeatureCollection rfc = transformed.getFeatures(new Query(null, CQL.toFilter("people = 0")));
         assertEquals(1, rfc.size());
 
         // double check the features themselves

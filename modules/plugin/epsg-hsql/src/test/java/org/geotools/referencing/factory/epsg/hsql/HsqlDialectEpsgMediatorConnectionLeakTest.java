@@ -51,12 +51,11 @@ public class HsqlDialectEpsgMediatorConnectionLeakTest {
         hints.put(Hints.AUTHORITY_MAX_ACTIVE, Integer.valueOf(MAX_WORKERS));
 
         final DataSource database = HsqlEpsgDatabase.createDataSource();
-        datasource =
-                new BasicDataSource() {
-                    {
-                        this.dataSource = database;
-                    }
-                };
+        datasource = new BasicDataSource() {
+            {
+                this.dataSource = database;
+            }
+        };
         mediator = new HsqlDialectEpsgMediator(80, hints, datasource);
         codes = HsqlDialectEpsgMediatorStressTest.getCodes();
     }

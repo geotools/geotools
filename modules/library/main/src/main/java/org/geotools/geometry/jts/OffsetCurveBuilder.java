@@ -87,8 +87,7 @@ public class OffsetCurveBuilder {
         this.maxSearchDistanceSquared = offset * offset * thresholdRatio * thresholdRatio;
         if (quadrantSegments < 1) {
             throw new IllegalArgumentException(
-                    "Invalid number of quadrantSegments, must be greater than zero: "
-                            + quadrantSegments);
+                    "Invalid number of quadrantSegments, must be greater than zero: " + quadrantSegments);
         }
         this.quadrantSegments = quadrantSegments;
     }
@@ -144,8 +143,7 @@ public class OffsetCurveBuilder {
             return offsets.get(0);
         } else {
             GeometryFactory factory = offsets.get(0).getFactory();
-            MultiLineString result =
-                    factory.createMultiLineString(offsets.toArray(new LineString[offsets.size()]));
+            MultiLineString result = factory.createMultiLineString(offsets.toArray(new LineString[offsets.size()]));
             return result;
         }
     }
@@ -157,13 +155,11 @@ public class OffsetCurveBuilder {
         if (g instanceof Polygon) {
             g.normalize();
         } else if (g instanceof GeometryCollection) {
-            g.apply(
-                    (GeometryFilter)
-                            geom -> {
-                                if (geom instanceof Polygon) {
-                                    geom.normalize();
-                                }
-                            });
+            g.apply((GeometryFilter) geom -> {
+                if (geom instanceof Polygon) {
+                    geom.normalize();
+                }
+            });
         }
 
         // then extract the lines
@@ -171,13 +167,11 @@ public class OffsetCurveBuilder {
         if (g instanceof LineString) {
             lines.add((LineString) g);
         } else {
-            g.apply(
-                    (GeometryComponentFilter)
-                            geom -> {
-                                if (geom instanceof LineString) {
-                                    lines.add((LineString) geom);
-                                }
-                            });
+            g.apply((GeometryComponentFilter) geom -> {
+                if (geom instanceof LineString) {
+                    lines.add((LineString) geom);
+                }
+            });
         }
         return lines;
     }
@@ -252,8 +246,7 @@ public class OffsetCurveBuilder {
         return result;
     }
 
-    private GrowableOrdinateArray cleanupOrdinates(
-            GrowableOrdinateArray ordinates, boolean closed) {
+    private GrowableOrdinateArray cleanupOrdinates(GrowableOrdinateArray ordinates, boolean closed) {
         final int max = ordinates.size();
         if (max <= 8 && closed || (max < 8 && !closed)) {
             // not enough points for self intersection anyways
@@ -384,12 +377,7 @@ public class OffsetCurveBuilder {
         }
     }
 
-    private void addBulge(
-            GrowableOrdinateArray ordinates,
-            double c1x,
-            double c1y,
-            double angle10,
-            double angle12) {
+    private void addBulge(GrowableOrdinateArray ordinates, double c1x, double c1y, double angle10, double angle12) {
         double curveAngle = reflexAngle(angle12 - angle10);
         double segmentTurns = quadrantSegments * abs(curveAngle);
         int steps = 1 + (int) (segmentTurns / PI * 2);
@@ -445,8 +433,7 @@ public class OffsetCurveBuilder {
      * Appends to ordinates a point calculated as the perpendicular offset to the specified angle,
      * from location x,y
      */
-    private void appendPerpendicular(
-            double x, double y, double angle, GrowableOrdinateArray ordinates) {
+    private void appendPerpendicular(double x, double y, double angle, GrowableOrdinateArray ordinates) {
         double px = x - offset * sin(angle);
         double py = y + offset * cos(angle);
         ordinates.add(px, py);
@@ -476,9 +463,7 @@ public class OffsetCurveBuilder {
         // a very small angle can cause the point to spike away, control this
         // by adding some limits (yes, these are just heuristics)
         double maxAllowedDistanceSquared =
-                Math.max(
-                        maxSearchDistanceSquared,
-                        Math.max(squaredDistance(dx10, dy10), squaredDistance(dx12, dy12)));
+                Math.max(maxSearchDistanceSquared, Math.max(squaredDistance(dx10, dy10), squaredDistance(dx12, dy12)));
         if (squaredDistance(px - x, py - y) > maxAllowedDistanceSquared) {
             double angle = atan2(py - y, px - x);
             double maxAllowedDistance = Math.sqrt(maxAllowedDistanceSquared);

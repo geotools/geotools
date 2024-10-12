@@ -100,13 +100,8 @@ public class GeoPkgGeomReader {
                     && header.getFlags().getEnvelopeIndicator() != EnvelopeType.NONE
                     && envelope.getWidth() < simplificationDistance.doubleValue()
                     && envelope.getHeight() < simplificationDistance.doubleValue()) {
-                Geometry simplified =
-                        getSimplifiedShape(
-                                geometryType,
-                                envelope.getMinX(),
-                                envelope.getMinY(),
-                                envelope.getMaxX(),
-                                envelope.getMaxY());
+                Geometry simplified = getSimplifiedShape(
+                        geometryType, envelope.getMinX(), envelope.getMinY(), envelope.getMaxX(), envelope.getMaxY());
                 if (simplified != null) {
                     geometry = simplified;
                 }
@@ -119,8 +114,7 @@ public class GeoPkgGeomReader {
         return geometry;
     }
 
-    public Geometry getSimplifiedShape(
-            Class type, double minX, double minY, double maxX, double maxY) {
+    public Geometry getSimplifiedShape(Class type, double minX, double minY, double maxX, double maxY) {
         CoordinateSequenceFactory csf = factory.getCoordinateSequenceFactory();
         if (Point.class.equals(type)) {
             CoordinateSequence cs = JTS.createCS(csf, 1, 2);
@@ -138,8 +132,7 @@ public class GeoPkgGeomReader {
             cs.setOrdinate(1, 1, maxY);
             return factory.createLineString(cs);
         } else if (MultiLineString.class.equals(type)) {
-            LineString ls =
-                    (LineString) getSimplifiedShape(LineString.class, minX, minY, maxX, maxY);
+            LineString ls = (LineString) getSimplifiedShape(LineString.class, minX, minY, maxX, maxY);
             return factory.createMultiLineString(new LineString[] {ls});
         } else if (Polygon.class.equals(type)) {
             CoordinateSequence cs = JTS.createCS(csf, 5, 2);

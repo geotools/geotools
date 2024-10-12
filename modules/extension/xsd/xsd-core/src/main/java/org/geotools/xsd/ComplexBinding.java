@@ -60,8 +60,7 @@ public interface ComplexBinding extends Binding {
      * @param node The parse node for the parent element.
      * @param context the context in which the child element will be parsed.
      */
-    void initializeChildContext(
-            ElementInstance childInstance, Node node, MutablePicoContainer context);
+    void initializeChildContext(ElementInstance childInstance, Node node, MutablePicoContainer context);
 
     /**
      * Parses a complex element from an instance document into an object representation.

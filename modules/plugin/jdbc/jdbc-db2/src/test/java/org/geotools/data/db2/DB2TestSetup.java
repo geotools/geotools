@@ -73,31 +73,21 @@ public class DB2TestSetup extends JDBCTestSetup {
                     .append("\"doubleProperty\" double, \"stringProperty\" varchar(255))");
             con.prepareStatement(sb.toString()).execute();
 
-            DB2Util.executeRegister(
-                    DB2TestUtil.SCHEMA, "ft1", "geometry", DB2TestUtil.SRSNAME, con);
+            DB2Util.executeRegister(DB2TestUtil.SCHEMA, "ft1", "geometry", DB2TestUtil.SRSNAME, con);
 
             sb = new StringBuffer();
             sb.append("INSERT INTO " + DB2TestUtil.SCHEMA_QUOTED + ".\"ft1\" VALUES (")
-                    .append(
-                            "0,db2gse.st_PointFromText('POINT(0 0)',"
-                                    + DB2TestUtil.SRID
-                                    + "), 0, 0.0,'zero')");
+                    .append("0,db2gse.st_PointFromText('POINT(0 0)'," + DB2TestUtil.SRID + "), 0, 0.0,'zero')");
             con.prepareStatement(sb.toString()).execute();
 
             sb = new StringBuffer();
             sb.append("INSERT INTO " + DB2TestUtil.SCHEMA_QUOTED + ".\"ft1\" VALUES (")
-                    .append(
-                            "1,db2gse.st_PointFromText('POINT(1 1)',"
-                                    + DB2TestUtil.SRID
-                                    + "), 1, 1.1,'one')");
+                    .append("1,db2gse.st_PointFromText('POINT(1 1)'," + DB2TestUtil.SRID + "), 1, 1.1,'one')");
             con.prepareStatement(sb.toString()).execute();
 
             sb = new StringBuffer();
             sb.append("INSERT INTO " + DB2TestUtil.SCHEMA_QUOTED + ".\"ft1\" VALUES (")
-                    .append(
-                            "2,db2gse.st_PointFromText('POINT(2 2)',"
-                                    + DB2TestUtil.SRID
-                                    + "), 2, 2.2,'two')");
+                    .append("2,db2gse.st_PointFromText('POINT(2 2)'," + DB2TestUtil.SRID + "), 2, 2.2,'two')");
             con.prepareStatement(sb.toString()).execute();
 
             sb = new StringBuffer();
@@ -107,63 +97,41 @@ public class DB2TestSetup extends JDBCTestSetup {
                     .append("\"doubleProperty\" double, \"stringProperty\" varchar(255))");
             con.prepareStatement(sb.toString()).execute();
 
-            DB2Util.executeRegister(
-                    DB2TestUtil.SCHEMA, "ft4", "geometry", DB2TestUtil.SRSNAME, con);
+            DB2Util.executeRegister(DB2TestUtil.SCHEMA, "ft4", "geometry", DB2TestUtil.SRSNAME, con);
 
             sb = new StringBuffer();
             sb.append("INSERT INTO " + DB2TestUtil.SCHEMA_QUOTED + ".\"ft4\" VALUES (")
-                    .append(
-                            "0,db2gse.st_PointFromText('POINT(0 0)',"
-                                    + DB2TestUtil.SRID
-                                    + "), 0, 0.0,'zero')");
+                    .append("0,db2gse.st_PointFromText('POINT(0 0)'," + DB2TestUtil.SRID + "), 0, 0.0,'zero')");
             con.prepareStatement(sb.toString()).execute();
 
             sb = new StringBuffer();
             sb.append("INSERT INTO " + DB2TestUtil.SCHEMA_QUOTED + ".\"ft4\" VALUES (")
-                    .append(
-                            "1,db2gse.st_PointFromText('POINT(1 1)',"
-                                    + DB2TestUtil.SRID
-                                    + "), 1, 1.1,'one')");
+                    .append("1,db2gse.st_PointFromText('POINT(1 1)'," + DB2TestUtil.SRID + "), 1, 1.1,'one')");
             con.prepareStatement(sb.toString()).execute();
 
             sb = new StringBuffer();
             sb.append("INSERT INTO " + DB2TestUtil.SCHEMA_QUOTED + ".\"ft4\" VALUES (")
-                    .append(
-                            "2,db2gse.st_PointFromText('POINT(2 2)',"
-                                    + DB2TestUtil.SRID
-                                    + "), 1, 1.1,'one_2')");
+                    .append("2,db2gse.st_PointFromText('POINT(2 2)'," + DB2TestUtil.SRID + "), 1, 1.1,'one_2')");
             con.prepareStatement(sb.toString()).execute();
 
             sb = new StringBuffer();
             sb.append("INSERT INTO " + DB2TestUtil.SCHEMA_QUOTED + ".\"ft4\" VALUES (")
-                    .append(
-                            "3,db2gse.st_PointFromText('POINT(3 3)',"
-                                    + DB2TestUtil.SRID
-                                    + "), 1, 1.1,'one_2')");
+                    .append("3,db2gse.st_PointFromText('POINT(3 3)'," + DB2TestUtil.SRID + "), 1, 1.1,'one_2')");
             con.prepareStatement(sb.toString()).execute();
 
             sb = new StringBuffer();
             sb.append("INSERT INTO " + DB2TestUtil.SCHEMA_QUOTED + ".\"ft4\" VALUES (")
-                    .append(
-                            "4,db2gse.st_PointFromText('POINT(4 4)',"
-                                    + DB2TestUtil.SRID
-                                    + "), 2, 2.2,'two')");
+                    .append("4,db2gse.st_PointFromText('POINT(4 4)'," + DB2TestUtil.SRID + "), 2, 2.2,'two')");
             con.prepareStatement(sb.toString()).execute();
 
             sb = new StringBuffer();
             sb.append("INSERT INTO " + DB2TestUtil.SCHEMA_QUOTED + ".\"ft4\" VALUES (")
-                    .append(
-                            "5,db2gse.st_PointFromText('POINT(5 5)',"
-                                    + DB2TestUtil.SRID
-                                    + "), 2, 2.2,'two_2')");
+                    .append("5,db2gse.st_PointFromText('POINT(5 5)'," + DB2TestUtil.SRID + "), 2, 2.2,'two_2')");
             con.prepareStatement(sb.toString()).execute();
 
             sb = new StringBuffer();
             sb.append("INSERT INTO " + DB2TestUtil.SCHEMA_QUOTED + ".\"ft4\" VALUES (")
-                    .append(
-                            "6,db2gse.st_PointFromText('POINT(6 6)',"
-                                    + DB2TestUtil.SRID
-                                    + "), 3, 3.3,'three')");
+                    .append("6,db2gse.st_PointFromText('POINT(6 6)'," + DB2TestUtil.SRID + "), 3, 3.3,'three')");
             con.prepareStatement(sb.toString()).execute();
         }
     }

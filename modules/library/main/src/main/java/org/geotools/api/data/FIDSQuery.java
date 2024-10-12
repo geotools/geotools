@@ -210,8 +210,7 @@ class FIDSQuery extends Query {
                         : getCoordinateSystem().equals(other.getCoordinateSystem()))
                 && ((getCoordinateSystemReproject() == null)
                         ? (other.getCoordinateSystemReproject() == null)
-                        : getCoordinateSystemReproject()
-                                .equals(other.getCoordinateSystemReproject()));
+                        : getCoordinateSystemReproject().equals(other.getCoordinateSystemReproject()));
     }
 
     /**
@@ -278,8 +277,7 @@ class FIDSQuery extends Query {
      */
     @Override
     public void setCoordinateSystem(CoordinateReferenceSystem system) {
-        throw new UnsupportedOperationException(
-                "Query.ALL cannot be changed, please just use as a default.");
+        throw new UnsupportedOperationException("Query.ALL cannot be changed, please just use as a default.");
     }
     /**
      * Not applicable to FIDSQuery.
@@ -288,8 +286,7 @@ class FIDSQuery extends Query {
      */
     @Override
     public void setCoordinateSystemReproject(CoordinateReferenceSystem system) {
-        throw new UnsupportedOperationException(
-                "Query.ALL cannot be changed, please just use as a default.");
+        throw new UnsupportedOperationException("Query.ALL cannot be changed, please just use as a default.");
     }
     /**
      * Not applicable to FIDSQuery.
@@ -298,8 +295,7 @@ class FIDSQuery extends Query {
      */
     @Override
     public void setFilter(Filter filter) {
-        throw new UnsupportedOperationException(
-                "Query.ALL cannot be changed, please just use as a default.");
+        throw new UnsupportedOperationException("Query.ALL cannot be changed, please just use as a default.");
     }
     /**
      * Not applicable to FIDSQuery.
@@ -308,8 +304,7 @@ class FIDSQuery extends Query {
      */
     @Override
     public void setHandle(String handle) {
-        throw new UnsupportedOperationException(
-                "Query.ALL cannot be changed, please just use as a default.");
+        throw new UnsupportedOperationException("Query.ALL cannot be changed, please just use as a default.");
     }
     /**
      * Not applicable to FIDSQuery.
@@ -318,8 +313,7 @@ class FIDSQuery extends Query {
      */
     @Override
     public void setHints(Hints hints) {
-        throw new UnsupportedOperationException(
-                "Query.ALL cannot be changed, please just use as a default.");
+        throw new UnsupportedOperationException("Query.ALL cannot be changed, please just use as a default.");
     }
     /**
      * Not applicable to FIDSQuery.
@@ -328,8 +322,7 @@ class FIDSQuery extends Query {
      */
     @Override
     public void setMaxFeatures(int maxFeatures) {
-        throw new UnsupportedOperationException(
-                "Query.ALL cannot be changed, please just use as a default.");
+        throw new UnsupportedOperationException("Query.ALL cannot be changed, please just use as a default.");
     }
     /**
      * Not applicable to FIDSQuery.
@@ -338,8 +331,7 @@ class FIDSQuery extends Query {
      */
     @Override
     public void setNamespace(URI namespace) {
-        throw new UnsupportedOperationException(
-                "Query.ALL cannot be changed, please just use as a default.");
+        throw new UnsupportedOperationException("Query.ALL cannot be changed, please just use as a default.");
     }
     /**
      * Not applicable to FIDSQuery.
@@ -348,8 +340,7 @@ class FIDSQuery extends Query {
      */
     @Override
     public void setPropertyNames(List<String> propNames) {
-        throw new UnsupportedOperationException(
-                "Query.FIDS cannot be changed, please just use as a default.");
+        throw new UnsupportedOperationException("Query.FIDS cannot be changed, please just use as a default.");
     }
     /**
      * Not applicable to FIDSQuery.
@@ -358,8 +349,7 @@ class FIDSQuery extends Query {
      */
     @Override
     public void setPropertyNames(String[] propNames) {
-        throw new UnsupportedOperationException(
-                "Query.FIDS cannot be changed, please just use as a default.");
+        throw new UnsupportedOperationException("Query.FIDS cannot be changed, please just use as a default.");
     }
     /**
      * Not applicable to FIDSQuery.
@@ -368,8 +358,7 @@ class FIDSQuery extends Query {
      */
     @Override
     public void setSortBy(SortBy[] sortBy) {
-        throw new UnsupportedOperationException(
-                "Query.FIDS cannot be changed, please just use as a default.");
+        throw new UnsupportedOperationException("Query.FIDS cannot be changed, please just use as a default.");
     }
     /**
      * Not applicable to FIDSQuery.
@@ -378,8 +367,7 @@ class FIDSQuery extends Query {
      */
     @Override
     public void setStartIndex(Integer startIndex) {
-        throw new UnsupportedOperationException(
-                "Query.FIDS cannot be changed, please just use as a default.");
+        throw new UnsupportedOperationException("Query.FIDS cannot be changed, please just use as a default.");
     }
     /**
      * Not applicable to FIDSQuery.
@@ -388,8 +376,7 @@ class FIDSQuery extends Query {
      */
     @Override
     public void setTypeName(String typeName) {
-        throw new UnsupportedOperationException(
-                "Query.FIDS cannot be changed, please just use as a default.");
+        throw new UnsupportedOperationException("Query.FIDS cannot be changed, please just use as a default.");
     }
     /**
      * Not applicable to FIDSQuery.
@@ -398,7 +385,6 @@ class FIDSQuery extends Query {
      */
     @Override
     public void setVersion(String version) {
-        throw new UnsupportedOperationException(
-                "Query.FIDS cannot be changed, please just use as a default.");
+        throw new UnsupportedOperationException("Query.FIDS cannot be changed, please just use as a default.");
     }
 }

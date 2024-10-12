@@ -58,8 +58,7 @@ class MergeSortReader implements SimpleFeatureReader {
     }
 
     @Override
-    public SimpleFeature next()
-            throws IOException, IllegalArgumentException, NoSuchElementException {
+    public SimpleFeature next() throws IOException, IllegalArgumentException, NoSuchElementException {
         if (readers.isEmpty()) {
             throw new NoSuchElementException();
         }

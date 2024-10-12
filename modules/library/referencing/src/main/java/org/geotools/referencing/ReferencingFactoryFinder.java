@@ -105,20 +105,18 @@ public final class ReferencingFactoryFinder extends FactoryFinder {
     private static FactoryRegistry getServiceRegistry() {
         assert Thread.holdsLock(ReferencingFactoryFinder.class);
         if (registry == null) {
-            registry =
-                    new FactoryCreator(
-                            new Class<?>[] {
-                                DatumFactory.class,
-                                CSFactory.class,
-                                CRSFactory.class,
-                                DatumAuthorityFactory.class,
-                                CSAuthorityFactory.class,
-                                CRSAuthorityFactory.class,
-                                MathTransformFactory.class,
-                                CoordinateOperationFactory.class,
-                                CoordinateOperationAuthorityFactory.class,
-                                GridShiftLocator.class
-                            });
+            registry = new FactoryCreator(new Class<?>[] {
+                DatumFactory.class,
+                CSFactory.class,
+                CRSFactory.class,
+                DatumAuthorityFactory.class,
+                CSAuthorityFactory.class,
+                CRSAuthorityFactory.class,
+                MathTransformFactory.class,
+                CoordinateOperationFactory.class,
+                CoordinateOperationAuthorityFactory.class,
+                GridShiftLocator.class
+            });
         }
         return registry;
     }
@@ -177,8 +175,7 @@ public final class ReferencingFactoryFinder extends FactoryFinder {
      * @param hints An optional map of hints, or {@code null} if none.
      * @return Set of available factory implementations.
      */
-    private static synchronized <T extends Factory> Set<T> getFactories(
-            final Class<T> category, Hints hints) {
+    private static synchronized <T extends Factory> Set<T> getFactories(final Class<T> category, Hints hints) {
         hints = mergeSystemHints(hints);
         return new LazySet<>(getServiceRegistry().getFactories(category, null, hints));
     }
@@ -194,8 +191,7 @@ public final class ReferencingFactoryFinder extends FactoryFinder {
      *     specified interface.
      */
     private static synchronized <T extends Factory> T getFactory(
-            final Class<T> category, Hints hints, final Hints.Key key)
-            throws FactoryRegistryException {
+            final Class<T> category, Hints hints, final Hints.Key key) throws FactoryRegistryException {
         hints = mergeSystemHints(hints);
         return getServiceRegistry().getFactory(category, null, hints, key);
     }
@@ -219,8 +215,7 @@ public final class ReferencingFactoryFinder extends FactoryFinder {
             final Class<T> category, final String authority, Hints hints, final Hints.Key key)
             throws FactoryRegistryException {
         hints = mergeSystemHints(hints);
-        return getServiceRegistry()
-                .getFactory(category, new AuthorityFilter(authority), hints, key);
+        return getServiceRegistry().getFactory(category, new AuthorityFilter(authority), hints, key);
     }
 
     /**
@@ -319,8 +314,7 @@ public final class ReferencingFactoryFinder extends FactoryFinder {
      */
     public static CoordinateOperationFactory getCoordinateOperationFactory(final Hints hints)
             throws FactoryRegistryException {
-        return getFactory(
-                CoordinateOperationFactory.class, hints, Hints.COORDINATE_OPERATION_FACTORY);
+        return getFactory(CoordinateOperationFactory.class, hints, Hints.COORDINATE_OPERATION_FACTORY);
     }
 
     /**
@@ -330,8 +324,7 @@ public final class ReferencingFactoryFinder extends FactoryFinder {
      * @param hints An optional map of hints, or {@code null} if none.
      * @return Set of available coordinate operation factory implementations.
      */
-    public static Set<CoordinateOperationFactory> getCoordinateOperationFactories(
-            final Hints hints) {
+    public static Set<CoordinateOperationFactory> getCoordinateOperationFactories(final Hints hints) {
         return getFactories(CoordinateOperationFactory.class, hints);
     }
 
@@ -348,10 +341,9 @@ public final class ReferencingFactoryFinder extends FactoryFinder {
      * @throws FactoryRegistryException if no implementation was found or can be created for the
      *     {@link DatumAuthorityFactory} interface.
      */
-    public static DatumAuthorityFactory getDatumAuthorityFactory(
-            final String authority, final Hints hints) throws FactoryRegistryException {
-        return getAuthorityFactory(
-                DatumAuthorityFactory.class, authority, hints, Hints.DATUM_AUTHORITY_FACTORY);
+    public static DatumAuthorityFactory getDatumAuthorityFactory(final String authority, final Hints hints)
+            throws FactoryRegistryException {
+        return getAuthorityFactory(DatumAuthorityFactory.class, authority, hints, Hints.DATUM_AUTHORITY_FACTORY);
     }
 
     /**
@@ -383,10 +375,9 @@ public final class ReferencingFactoryFinder extends FactoryFinder {
      * @throws FactoryRegistryException if no implementation was found or can be created for the
      *     {@link CSAuthorityFactory} interface.
      */
-    public static CSAuthorityFactory getCSAuthorityFactory(
-            final String authority, final Hints hints) throws FactoryRegistryException {
-        return getAuthorityFactory(
-                CSAuthorityFactory.class, authority, hints, Hints.CS_AUTHORITY_FACTORY);
+    public static CSAuthorityFactory getCSAuthorityFactory(final String authority, final Hints hints)
+            throws FactoryRegistryException {
+        return getAuthorityFactory(CSAuthorityFactory.class, authority, hints, Hints.CS_AUTHORITY_FACTORY);
     }
 
     /**
@@ -433,10 +424,9 @@ public final class ReferencingFactoryFinder extends FactoryFinder {
      * @throws FactoryRegistryException if no implementation was found or can be created for the
      *     {@link CRSAuthorityFactory} interface.
      */
-    public static CRSAuthorityFactory getCRSAuthorityFactory(
-            final String authority, final Hints hints) throws FactoryRegistryException {
-        return getAuthorityFactory(
-                CRSAuthorityFactory.class, authority, hints, Hints.CRS_AUTHORITY_FACTORY);
+    public static CRSAuthorityFactory getCRSAuthorityFactory(final String authority, final Hints hints)
+            throws FactoryRegistryException {
+        return getAuthorityFactory(CRSAuthorityFactory.class, authority, hints, Hints.CRS_AUTHORITY_FACTORY);
     }
 
     /**
@@ -482,8 +472,7 @@ public final class ReferencingFactoryFinder extends FactoryFinder {
      * @param hints An optional map of hints, or {@code null} if none.
      * @return Set of available coordinate operation authority factory implementations.
      */
-    public static Set<CoordinateOperationAuthorityFactory> getCoordinateOperationAuthorityFactories(
-            final Hints hints) {
+    public static Set<CoordinateOperationAuthorityFactory> getCoordinateOperationAuthorityFactories(final Hints hints) {
         return getFactories(CoordinateOperationAuthorityFactory.class, hints);
     }
 
@@ -509,8 +498,7 @@ public final class ReferencingFactoryFinder extends FactoryFinder {
      * @throws FactoryRegistryException if no implementation was found or can be created for the
      *     {@link MathTransformFactory} interface.
      */
-    public static MathTransformFactory getMathTransformFactory(final Hints hints)
-            throws FactoryRegistryException {
+    public static MathTransformFactory getMathTransformFactory(final Hints hints) throws FactoryRegistryException {
         return getFactory(MathTransformFactory.class, hints, Hints.MATH_TRANSFORM_FACTORY);
     }
 
@@ -543,11 +531,9 @@ public final class ReferencingFactoryFinder extends FactoryFinder {
      * @param vendor2 The vendor to which {@code vendor1} is preferred.
      * @return {@code true} if the ordering was set for at least one category.
      */
-    public static synchronized boolean setVendorOrdering(
-            final String vendor1, final String vendor2) {
+    public static synchronized boolean setVendorOrdering(final String vendor1, final String vendor2) {
         return getServiceRegistry()
-                .setOrdering(
-                        Factory.class, true, new VendorFilter(vendor1), new VendorFilter(vendor2));
+                .setOrdering(Factory.class, true, new VendorFilter(vendor1), new VendorFilter(vendor2));
     }
 
     /**
@@ -559,11 +545,9 @@ public final class ReferencingFactoryFinder extends FactoryFinder {
      * @param vendor2 The vendor to which {@code vendor1} is preferred.
      * @return {@code true} if the ordering was unset for at least one category.
      */
-    public static synchronized boolean unsetVendorOrdering(
-            final String vendor1, final String vendor2) {
+    public static synchronized boolean unsetVendorOrdering(final String vendor1, final String vendor2) {
         return getServiceRegistry()
-                .setOrdering(
-                        Factory.class, false, new VendorFilter(vendor1), new VendorFilter(vendor2));
+                .setOrdering(Factory.class, false, new VendorFilter(vendor1), new VendorFilter(vendor2));
     }
 
     /** A filter for factories provided by a given vendor. */
@@ -601,14 +585,10 @@ public final class ReferencingFactoryFinder extends FactoryFinder {
      * @param authority2 The authority to which {@code authority1} is preferred.
      * @return {@code true} if the ordering was set for at least one category.
      */
-    public static synchronized boolean setAuthorityOrdering(
-            final String authority1, final String authority2) {
+    public static synchronized boolean setAuthorityOrdering(final String authority1, final String authority2) {
         return getServiceRegistry()
                 .setOrdering(
-                        AuthorityFactory.class,
-                        true,
-                        new AuthorityFilter(authority1),
-                        new AuthorityFilter(authority2));
+                        AuthorityFactory.class, true, new AuthorityFilter(authority1), new AuthorityFilter(authority2));
     }
 
     /**
@@ -620,8 +600,7 @@ public final class ReferencingFactoryFinder extends FactoryFinder {
      * @param authority2 The vendor to which {@code authority1} is preferred.
      * @return {@code true} if the ordering was unset for at least one category.
      */
-    public static synchronized boolean unsetAuthorityOrdering(
-            final String authority1, final String authority2) {
+    public static synchronized boolean unsetAuthorityOrdering(final String authority1, final String authority2) {
         return getServiceRegistry()
                 .setOrdering(
                         AuthorityFactory.class,
@@ -715,8 +694,7 @@ public final class ReferencingFactoryFinder extends FactoryFinder {
      * @param locale The locale for the list, or {@code null}.
      * @throws IOException if an error occurs while writting to {@code out}.
      */
-    public static synchronized void listProviders(final Writer out, final Locale locale)
-            throws IOException {
+    public static synchronized void listProviders(final Writer out, final Locale locale) throws IOException {
         final FactoryRegistry registry = getServiceRegistry();
         new FactoryPrinter().list(registry, out, locale);
     }

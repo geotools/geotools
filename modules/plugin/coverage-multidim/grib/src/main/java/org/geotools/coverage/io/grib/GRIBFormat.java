@@ -57,12 +57,9 @@ public class GRIBFormat extends NetCDFFormat {
 
         // reading parameters
         readParameters =
-                new ParameterGroup(
-                        new DefaultParameterDescriptorGroup(
-                                mInfo,
-                                new GeneralParameterDescriptor[] {
-                                    READ_GRIDGEOMETRY2D, TIME, ELEVATION, FILTER,
-                                }));
+                new ParameterGroup(new DefaultParameterDescriptorGroup(mInfo, new GeneralParameterDescriptor[] {
+                    READ_GRIDGEOMETRY2D, TIME, ELEVATION, FILTER,
+                }));
 
         // reading parameters
         writeParameters = null;
@@ -84,8 +81,7 @@ public class GRIBFormat extends NetCDFFormat {
 
             // Check if it is a GRIB data and if the GRIB library is available
             boolean gribExtension =
-                    NetCDFUtilities.isGribAvailable()
-                            && (fileName.contains("grb") || fileName.contains("grib"));
+                    NetCDFUtilities.isGribAvailable() && (fileName.contains("grb") || fileName.contains("grib"));
 
             if (fileName.endsWith("ncml") || gribExtension) {
                 if (LOGGER.isLoggable(Level.FINEST)) {

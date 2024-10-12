@@ -28,12 +28,7 @@ public class AttributeDescriptorImpl extends PropertyDescriptorImpl implements A
     protected final Object defaultValue;
 
     public AttributeDescriptorImpl(
-            AttributeType type,
-            Name name,
-            int min,
-            int max,
-            boolean isNillable,
-            Object defaultValue) {
+            AttributeType type, Name name, int min, int max, boolean isNillable, Object defaultValue) {
         super(type, name, min, max, isNillable);
 
         this.defaultValue = defaultValue;

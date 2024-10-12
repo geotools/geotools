@@ -88,8 +88,7 @@ public class H2GISFilterToSQLHelper {
      * @param encodeFunctions
      * @return
      */
-    public static FilterCapabilities createFilterCapabilities(
-            boolean encodeFunctions, FilterCapabilities superCaps) {
+    public static FilterCapabilities createFilterCapabilities(boolean encodeFunctions, FilterCapabilities superCaps) {
         FilterCapabilities caps = superCaps;
         caps.addAll(SQLDialect.BASE_DBMS_CAPABILITIES);
         // adding the spatial filters support
@@ -141,15 +140,10 @@ public class H2GISFilterToSQLHelper {
      * @return
      */
     protected Object visitBinarySpatialOperator(
-            BinarySpatialOperator filter,
-            PropertyName property,
-            Literal geometry,
-            boolean swapped,
-            Object extraData) {
+            BinarySpatialOperator filter, PropertyName property, Literal geometry, boolean swapped, Object extraData) {
         try {
             if (filter instanceof DistanceBufferOperator) {
-                visitDistanceSpatialOperator(
-                        (DistanceBufferOperator) filter, property, geometry, swapped, extraData);
+                visitDistanceSpatialOperator((DistanceBufferOperator) filter, property, geometry, swapped, extraData);
             } else {
                 visitComparisonSpatialOperator(filter, property, geometry, swapped, extraData);
             }
@@ -185,11 +179,7 @@ public class H2GISFilterToSQLHelper {
      * @throws IOException
      */
     private void visitDistanceSpatialOperator(
-            DistanceBufferOperator filter,
-            PropertyName property,
-            Literal geometry,
-            boolean swapped,
-            Object extraData)
+            DistanceBufferOperator filter, PropertyName property, Literal geometry, boolean swapped, Object extraData)
             throws IOException {
         if ((filter instanceof DWithin && !swapped) || (filter instanceof Beyond && swapped)) {
             out.write("ST_DWithin(");
@@ -219,11 +209,7 @@ public class H2GISFilterToSQLHelper {
      * @throws IOException
      */
     private void visitComparisonSpatialOperator(
-            BinarySpatialOperator filter,
-            PropertyName property,
-            Literal geometry,
-            boolean swapped,
-            Object extraData)
+            BinarySpatialOperator filter, PropertyName property, Literal geometry, boolean swapped, Object extraData)
             throws IOException {
         // add && filter if possible
         if (!(filter instanceof Disjoint)) {
@@ -236,8 +222,7 @@ public class H2GISFilterToSQLHelper {
             }
             out.write(" AND ");
         }
-        visitBinarySpatialOperator(
-                filter, (Expression) property, (Expression) geometry, swapped, extraData);
+        visitBinarySpatialOperator(filter, (Expression) property, (Expression) geometry, swapped, extraData);
     }
 
     /**
@@ -249,11 +234,7 @@ public class H2GISFilterToSQLHelper {
      * @throws IOException
      */
     private void visitBinarySpatialOperator(
-            BinarySpatialOperator filter,
-            Expression e1,
-            Expression e2,
-            boolean swapped,
-            Object extraData)
+            BinarySpatialOperator filter, Expression e1, Expression e2, boolean swapped, Object extraData)
             throws IOException {
         String closingParenthesis = ")";
         if (filter instanceof Equals) {
@@ -419,12 +400,11 @@ public class H2GISFilterToSQLHelper {
         final List<Expression> params = function.getParameters();
         if (params == null || params.size() <= idx) {
             if (mandatory) {
-                throw new IllegalArgumentException(
-                        "Missing parameter number "
-                                + (idx + 1)
-                                + "for function "
-                                + function.getName()
-                                + ", cannot encode in SQL");
+                throw new IllegalArgumentException("Missing parameter number "
+                        + (idx + 1)
+                        + "for function "
+                        + function.getName()
+                        + ", cannot encode in SQL");
             }
         }
         return params.get(idx);

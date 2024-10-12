@@ -29,8 +29,7 @@ import org.geotools.api.referencing.cs.AxisDirection;
  * @author Martin Desruisseaux
  * @since 2.7.2
  */
-public final class DirectionAlongMeridian
-        implements Comparable<DirectionAlongMeridian>, Serializable {
+public final class DirectionAlongMeridian implements Comparable<DirectionAlongMeridian>, Serializable {
     /** For cross-version compatibility. */
     private static final long serialVersionUID = 1602711631943838328L;
 
@@ -42,10 +41,8 @@ public final class DirectionAlongMeridian
      *
      * <p>"<cite>South along 180 deg</cite>", "<cite>South along 90 deg East</cite>"
      */
-    private static final Pattern EPSG =
-            Pattern.compile(
-                    "(\\p{Graph}+)\\s+along\\s+([\\-\\p{Digit}\\.]+)\\s*(deg|°)\\s*(\\p{Graph}+)?",
-                    Pattern.CASE_INSENSITIVE);
+    private static final Pattern EPSG = Pattern.compile(
+            "(\\p{Graph}+)\\s+along\\s+([\\-\\p{Digit}\\.]+)\\s*(deg|°)\\s*(\\p{Graph}+)?", Pattern.CASE_INSENSITIVE);
 
     /**
      * The base directions we are interested in. Any direction not in this group will be rejected by
@@ -133,8 +130,7 @@ public final class DirectionAlongMeridian
     }
 
     /** Searchs for the specified name in the specified set of directions. */
-    private static AxisDirection findDirection(
-            final AxisDirection[] values, final String direction) {
+    private static AxisDirection findDirection(final AxisDirection[] values, final String direction) {
         for (final AxisDirection candidate : values) {
             final String name = candidate.name();
             if (direction.equalsIgnoreCase(name)) {
@@ -279,9 +275,7 @@ public final class DirectionAlongMeridian
     @Override
     public int hashCode() {
         final long code = Double.doubleToLongBits(meridian);
-        return (int) serialVersionUID
-                ^ (int) code
-                ^ (int) (code >> 32) + 37 * baseDirection.hashCode();
+        return (int) serialVersionUID ^ (int) code ^ (int) (code >> 32) + 37 * baseDirection.hashCode();
     }
 
     /**

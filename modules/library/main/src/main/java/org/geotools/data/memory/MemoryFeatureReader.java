@@ -40,7 +40,8 @@ public class MemoryFeatureReader implements FeatureReader<SimpleFeatureType, Sim
         featureType = state.getFeatureType();
         MemoryEntry entry = (MemoryEntry) state.getEntry();
 
-        final List<SimpleFeature> internalCollection = new ArrayList<>(entry.getMemory().values());
+        final List<SimpleFeature> internalCollection =
+                new ArrayList<>(entry.getMemory().values());
         iterator = internalCollection.iterator();
     }
 
@@ -50,8 +51,7 @@ public class MemoryFeatureReader implements FeatureReader<SimpleFeatureType, Sim
     }
 
     @Override
-    public SimpleFeature next()
-            throws IOException, IllegalAttributeException, NoSuchElementException {
+    public SimpleFeature next() throws IOException, IllegalAttributeException, NoSuchElementException {
         if (iterator == null) {
             throw new IOException("Feature Reader has been closed");
         }

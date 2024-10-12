@@ -74,8 +74,7 @@ public class LinesTest {
     }
 
     private void assertLineFeatures(
-            SimpleFeatureSource featureSource, LineOrientation lineOrientation, double minOrdinate)
-            throws Exception {
+            SimpleFeatureSource featureSource, LineOrientation lineOrientation, double minOrdinate) throws Exception {
 
         try (SimpleFeatureIterator iterator = featureSource.getFeatures().features()) {
             Object obj = null;

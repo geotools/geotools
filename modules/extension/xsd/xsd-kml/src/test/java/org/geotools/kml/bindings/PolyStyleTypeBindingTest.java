@@ -41,11 +41,7 @@ public class PolyStyleTypeBindingTest extends KMLTestSupport {
     @Test
     public void testParse() throws Exception {
         String xml =
-                "<PolyStyle>"
-                        + "<color>ffff0000</color>"
-                        + "<outline>1</outline>"
-                        + "<fill>1</fill>"
-                        + "</PolyStyle>";
+                "<PolyStyle>" + "<color>ffff0000</color>" + "<outline>1</outline>" + "<fill>1</fill>" + "</PolyStyle>";
 
         buildDocument(xml);
 
@@ -53,12 +49,7 @@ public class PolyStyleTypeBindingTest extends KMLTestSupport {
         assertEquals(Color.RED, SLD.color(poly.getFill()));
         assertEquals(1, SLD.width(poly.getStroke()));
 
-        xml =
-                "<PolyStyle>"
-                        + "<color>ffff0000</color>"
-                        + "<outline>0</outline>"
-                        + "<fill>0</fill>"
-                        + "</PolyStyle>";
+        xml = "<PolyStyle>" + "<color>ffff0000</color>" + "<outline>0</outline>" + "<fill>0</fill>" + "</PolyStyle>";
 
         buildDocument(xml);
         poly = (PolygonSymbolizer) parse();

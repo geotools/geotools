@@ -103,8 +103,7 @@ public class SVGGraphicFactory implements Factory, ExternalGraphicFactory, Graph
         return new SVGIcon(svg, size);
     }
 
-    protected RenderableSVG toRenderableSVG(String svgfile, URL svgUrl)
-            throws SAXException, IOException {
+    protected RenderableSVG toRenderableSVG(String svgfile, URL svgUrl) throws SAXException, IOException {
         String parser = XMLResourceDescriptor.getXMLParserClassName();
         SAXSVGDocumentFactory f = new SAXSVGDocumentFactory(parser);
         String svgUri = svgfile;
@@ -261,10 +260,9 @@ public class SVGGraphicFactory implements Factory, ExternalGraphicFactory, Graph
             double targetWidth = bounds.getWidth();
             double targetHeight = bounds.getHeight();
             if (size > 0) {
-                double shapeAspectRatio =
-                        (bounds.getHeight() > 0 && bounds.getWidth() > 0)
-                                ? bounds.getWidth() / bounds.getHeight()
-                                : 1.0;
+                double shapeAspectRatio = (bounds.getHeight() > 0 && bounds.getWidth() > 0)
+                        ? bounds.getWidth() / bounds.getHeight()
+                        : 1.0;
                 targetWidth = shapeAspectRatio * size;
                 targetHeight = size;
             }

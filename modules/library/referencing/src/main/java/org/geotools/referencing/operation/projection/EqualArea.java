@@ -66,8 +66,7 @@ public class EqualArea extends MapProjection {
     }
 
     @Override
-    protected Point2D inverseTransformNormalized(double x, double y, Point2D ptDst)
-            throws ProjectionException {
+    protected Point2D inverseTransformNormalized(double x, double y, Point2D ptDst) throws ProjectionException {
         double tol, y2, y6, f, fder;
 
         /* make sure y is inside valid range */
@@ -109,14 +108,12 @@ public class EqualArea extends MapProjection {
     }
 
     @Override
-    protected Point2D transformNormalized(double lpLambda, double lpPhi, Point2D ptDst)
-            throws ProjectionException {
+    protected Point2D transformNormalized(double lpLambda, double lpPhi, Point2D ptDst) throws ProjectionException {
         double phi = asin(M * sin(lpPhi));
         double phi2 = phi * phi;
         double phi6 = phi2 * phi2 * phi2;
 
-        double x =
-                lpLambda * cos(phi) / (M * (A1 + 3 * A2 * phi2 + phi6 * (7 * A3 + 9 * A4 * phi2)));
+        double x = lpLambda * cos(phi) / (M * (A1 + 3 * A2 * phi2 + phi6 * (7 * A3 + 9 * A4 * phi2)));
         double y = phi * (A1 + A2 * phi2 + phi6 * (A3 + A4 * phi2));
         if (ptDst != null) {
             ptDst.setLocation(x, y);
@@ -139,14 +136,11 @@ public class EqualArea extends MapProjection {
         private static final long serialVersionUID = -339526664946772642L;
 
         /** The parameters group. */
-        static final ParameterDescriptorGroup PARAMETERS =
-                createDescriptorGroup(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.GEOTOOLS, "Equal Earth"),
-                        },
-                        new ParameterDescriptor[] {
-                            SEMI_MAJOR, SEMI_MINOR, CENTRAL_MERIDIAN, FALSE_EASTING, FALSE_NORTHING
-                        });
+        static final ParameterDescriptorGroup PARAMETERS = createDescriptorGroup(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.GEOTOOLS, "Equal Earth"),
+                },
+                new ParameterDescriptor[] {SEMI_MAJOR, SEMI_MINOR, CENTRAL_MERIDIAN, FALSE_EASTING, FALSE_NORTHING});
 
         /** Constructs a new provider. */
         public Provider() {

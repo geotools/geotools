@@ -256,8 +256,7 @@ public class LocalizationGrid implements Serializable {
      * @param targetY <var>y</var> coordinates in "real world" coordinates.
      * @throws IndexOutOfBoundsException If the source coordinates is not in this grid's range.
      */
-    public synchronized void setLocalizationPoint(
-            int sourceX, int sourceY, double targetX, double targetY) {
+    public synchronized void setLocalizationPoint(int sourceX, int sourceY, double targetX, double targetY) {
         final int offset = computeOffset(sourceX, sourceY);
         notifyChange();
         global = null;
@@ -371,8 +370,7 @@ public class LocalizationGrid implements Serializable {
      * @return 0 if the array is unordered. Otherwise, returns {@code flags} with maybe one of
      *     {@link #INCREASING} or {@link #DECREASING} flags cleared.
      */
-    private static int testOrder(
-            final double[] grid, int offset, int num, final int step, int flags) {
+    private static int testOrder(final double[] grid, int offset, int num, final int step, int flags) {
         // We will check (num-1) combinations of coordinates.
         for (--num; --num >= 0; offset += step) {
             final double v1 = grid[offset];
@@ -451,8 +449,7 @@ public class LocalizationGrid implements Serializable {
                 final int currentOffset = previousOffset + step;
                 if (grid[previousOffset] == grid[currentOffset]) {
                     if (singularityOffset == -1) {
-                        singularityOffset =
-                                (previousOffset == offset) ? previousOffset : previousOffset - step;
+                        singularityOffset = (previousOffset == offset) ? previousOffset : previousOffset - step;
                     }
                 } else if (singularityOffset != -1) {
                     final int num = (currentOffset - singularityOffset) / step + 1;
@@ -485,10 +482,8 @@ public class LocalizationGrid implements Serializable {
      * @param num The number of element.
      * @param step The amount to increment {@code offset} in order to reach the next element.
      */
-    private static void replaceSingularity(
-            final double[] grid, int offset, int num, final int step) {
-        final double increment =
-                (grid[offset + (num - 1) * step] - grid[offset]) / ((double) (num - 1));
+    private static void replaceSingularity(final double[] grid, int offset, int num, final int step) {
+        final double increment = (grid[offset + (num - 1) * step] - grid[offset]) / ((double) (num - 1));
         final double value = grid[offset];
         offset += step;
         for (int i = 0; i < (num - 2); i++, offset += step) {
@@ -632,25 +627,20 @@ public class LocalizationGrid implements Serializable {
         if (transforms[degree] == null) {
             final MathTransform2D tr;
             switch (degree) {
-                case 0:
-                    {
-                        // NOTE: 'grid' is not cloned. This GridLocalization's grid will need to be
-                        // cloned if a "set" method is invoked after the math transform creation.
-                        tr =
-                                new LocalizationGridTransform2D(
-                                        width, height, grid, getAffineTransform());
-                        break;
-                    }
-                case 1:
-                    {
-                        tr = (MathTransform2D) ProjectiveTransform.create(getAffineTransform());
-                        break;
-                    }
-                default:
-                    {
-                        tr = fitWarps(degree);
-                        break;
-                    }
+                case 0: {
+                    // NOTE: 'grid' is not cloned. This GridLocalization's grid will need to be
+                    // cloned if a "set" method is invoked after the math transform creation.
+                    tr = new LocalizationGridTransform2D(width, height, grid, getAffineTransform());
+                    break;
+                }
+                case 1: {
+                    tr = (MathTransform2D) ProjectiveTransform.create(getAffineTransform());
+                    break;
+                }
+                default: {
+                    tr = fitWarps(degree);
+                    break;
+                }
             }
             transforms[degree] = tr;
         }

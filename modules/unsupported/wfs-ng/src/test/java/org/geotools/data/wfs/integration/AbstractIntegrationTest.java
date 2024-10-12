@@ -149,21 +149,15 @@ public abstract class AbstractIntegrationTest {
 
         test.feat1Filter = ff.id(ff.featureId(test.features[0].getID()));
         test.feat2Filter = ff.id(ff.featureId(test.features[1].getID()));
-        test.feat12Filter =
-                ff.id(
-                        ff.featureId(test.features[0].getID()),
-                        ff.featureId(test.features[1].getID()));
+        test.feat12Filter = ff.id(ff.featureId(test.features[0].getID()), ff.featureId(test.features[1].getID()));
 
-        test.bounds =
-                new ReferencedEnvelope(
-                        test.features[0].getFeatureType().getCoordinateReferenceSystem());
+        test.bounds = new ReferencedEnvelope(test.features[0].getFeatureType().getCoordinateReferenceSystem());
         for (int i = 0; i < test.numberOfFeatures; i++) {
             test.bounds.expandToInclude(new ReferencedEnvelope(test.features[i].getBounds()));
         }
 
         test.feat12Bounds =
-                new ReferencedEnvelope(
-                        test.features[0].getFeatureType().getCoordinateReferenceSystem());
+                new ReferencedEnvelope(test.features[0].getFeatureType().getCoordinateReferenceSystem());
         test.feat12Bounds.expandToInclude(new ReferencedEnvelope(test.features[0].getBounds()));
         test.feat12Bounds.expandToInclude(new ReferencedEnvelope(test.features[1].getBounds()));
     }
@@ -274,15 +268,13 @@ public abstract class AbstractIntegrationTest {
     @Test
     public void testFixture() throws Exception {
         SimpleFeatureType type =
-                DataUtilities.createType(
-                        "namespace.typename", "name:String,id:0,geom:MultiLineString");
+                DataUtilities.createType("namespace.typename", "name:String,id:0,geom:MultiLineString");
         assertEquals("namespace", "namespace", type.getName().getNamespaceURI());
         assertEquals("typename", "typename", type.getTypeName());
         assertEquals("attributes", 3, type.getAttributeCount());
 
         AttributeDescriptor[] a =
-                type.getAttributeDescriptors()
-                        .toArray(new AttributeDescriptor[type.getAttributeCount()]);
+                type.getAttributeDescriptors().toArray(new AttributeDescriptor[type.getAttributeCount()]);
         assertEquals("a1", "name", a[0].getLocalName());
         assertEquals("a1", String.class, a[0].getType().getBinding());
 
@@ -496,8 +488,7 @@ public abstract class AbstractIntegrationTest {
         }
 
         @SuppressWarnings("PMD.CloseResource") // used to test behavior after close
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                data.getFeatureReader(query, Transaction.AUTO_COMMIT);
+        FeatureReader<SimpleFeatureType, SimpleFeature> reader = data.getFeatureReader(query, Transaction.AUTO_COMMIT);
 
         while (reader.hasNext()) {
             feature = reader.next();
@@ -521,8 +512,7 @@ public abstract class AbstractIntegrationTest {
                 FeatureReader<SimpleFeatureType, SimpleFeature> reader2 =
                         data.getFeatureReader(query, Transaction.AUTO_COMMIT);
                 FeatureReader<SimpleFeatureType, SimpleFeature> reader3 =
-                        data.getFeatureReader(
-                                new Query(second.typeName), Transaction.AUTO_COMMIT)) {
+                        data.getFeatureReader(new Query(second.typeName), Transaction.AUTO_COMMIT)) {
 
             while (reader1.hasNext() || reader2.hasNext() || reader3.hasNext()) {
                 assertTrue(containsFeature(first.features, reader1.next()));
@@ -566,16 +556,14 @@ public abstract class AbstractIntegrationTest {
         }
 
         try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                data.getFeatureReader(
-                        new Query(first.typeName, Filter.EXCLUDE), Transaction.AUTO_COMMIT)) {
+                data.getFeatureReader(new Query(first.typeName, Filter.EXCLUDE), Transaction.AUTO_COMMIT)) {
 
             assertEquals(type, reader.getFeatureType());
             assertEquals(0, count(reader));
         }
 
         try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                data.getFeatureReader(
-                        new Query(first.typeName, first.feat1Filter), Transaction.AUTO_COMMIT)) {
+                data.getFeatureReader(new Query(first.typeName, first.feat1Filter), Transaction.AUTO_COMMIT)) {
 
             assertEquals(type, reader.getFeatureType());
             assertEquals(1, count(reader));
@@ -610,8 +598,7 @@ public abstract class AbstractIntegrationTest {
                 assertEquals(type, reader.getFeatureType());
                 assertEquals(1, count(reader));
 
-                SimpleFeatureStore store =
-                        (SimpleFeatureStore) data.getFeatureSource(first.typeName);
+                SimpleFeatureStore store = (SimpleFeatureStore) data.getFeatureSource(first.typeName);
                 store.setTransaction(t);
                 store.removeFeatures(first.feat1Filter);
             }
@@ -649,8 +636,7 @@ public abstract class AbstractIntegrationTest {
         }
     }
 
-    void assertCovered(
-            SimpleFeature[] features, FeatureReader<SimpleFeatureType, SimpleFeature> reader)
+    void assertCovered(SimpleFeature[] features, FeatureReader<SimpleFeatureType, SimpleFeature> reader)
             throws Exception {
         int count = 0;
 
@@ -686,8 +672,7 @@ public abstract class AbstractIntegrationTest {
      * Ensure that FeatureReader<SimpleFeatureType, SimpleFeature> reader contains extactly the
      * contents of array.
      */
-    boolean covers(FeatureReader<SimpleFeatureType, SimpleFeature> reader, SimpleFeature[] array)
-            throws Exception {
+    boolean covers(FeatureReader<SimpleFeatureType, SimpleFeature> reader, SimpleFeature[] array) throws Exception {
         SimpleFeature feature;
         int count = 0;
 
@@ -709,8 +694,7 @@ public abstract class AbstractIntegrationTest {
         return true;
     }
 
-    boolean covers(SimpleFeatureIterator reader, SimpleFeature[] array)
-            throws NoSuchElementException, IOException {
+    boolean covers(SimpleFeatureIterator reader, SimpleFeature[] array) throws NoSuchElementException, IOException {
         SimpleFeature feature;
         int count = 0;
 
@@ -732,8 +716,7 @@ public abstract class AbstractIntegrationTest {
         return true;
     }
 
-    boolean coversLax(FeatureReader<SimpleFeatureType, SimpleFeature> reader, SimpleFeature[] array)
-            throws Exception {
+    boolean coversLax(FeatureReader<SimpleFeatureType, SimpleFeature> reader, SimpleFeature[] array) throws Exception {
         SimpleFeature feature;
         int count = 0;
 
@@ -873,9 +856,7 @@ public abstract class AbstractIntegrationTest {
             feature = null;
 
             try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                    data.getFeatureReader(
-                            new Query(first.typeName, first.feat1Filter),
-                            Transaction.AUTO_COMMIT)) {
+                    data.getFeatureReader(new Query(first.typeName, first.feat1Filter), Transaction.AUTO_COMMIT)) {
 
                 if (reader.hasNext()) {
                     feature = reader.next();
@@ -986,8 +967,7 @@ public abstract class AbstractIntegrationTest {
                 assertTrue(covers(reader, ORIGIONAL));
             }
 
-            try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                    data.getFeatureReader(allRoadsQuery, t1)) {
+            try (FeatureReader<SimpleFeatureType, SimpleFeature> reader = data.getFeatureReader(allRoadsQuery, t1)) {
                 assertTrue(covers(reader, REMOVE));
             }
 
@@ -1002,8 +982,7 @@ public abstract class AbstractIntegrationTest {
                 assertTrue(covers(reader, ORIGIONAL));
             }
 
-            try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                    data.getFeatureReader(allRoadsQuery, t1)) {
+            try (FeatureReader<SimpleFeatureType, SimpleFeature> reader = data.getFeatureReader(allRoadsQuery, t1)) {
                 assertTrue(covers(reader, REMOVE));
             }
 
@@ -1019,8 +998,7 @@ public abstract class AbstractIntegrationTest {
                     data.getFeatureReader(allRoadsQuery, Transaction.AUTO_COMMIT)) {
                 assertTrue(covers(reader, ORIGIONAL));
             }
-            try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                    data.getFeatureReader(allRoadsQuery, t2)) {
+            try (FeatureReader<SimpleFeatureType, SimpleFeature> reader = data.getFeatureReader(allRoadsQuery, t2)) {
                 assertTrue(coversLax(reader, ADD));
             }
 
@@ -1034,8 +1012,7 @@ public abstract class AbstractIntegrationTest {
                     data.getFeatureReader(allRoadsQuery, Transaction.AUTO_COMMIT)) {
                 assertTrue(covers(reader, ORIGIONAL));
             }
-            try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                    data.getFeatureReader(allRoadsQuery, t2)) {
+            try (FeatureReader<SimpleFeatureType, SimpleFeature> reader = data.getFeatureReader(allRoadsQuery, t2)) {
                 assertTrue(coversLax(reader, ADD));
             }
 
@@ -1051,12 +1028,10 @@ public abstract class AbstractIntegrationTest {
                     data.getFeatureReader(allRoadsQuery, Transaction.AUTO_COMMIT)) {
                 assertTrue(covers(reader, REMOVE));
             }
-            try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                    data.getFeatureReader(allRoadsQuery, t1)) {
+            try (FeatureReader<SimpleFeatureType, SimpleFeature> reader = data.getFeatureReader(allRoadsQuery, t1)) {
                 assertTrue(covers(reader, REMOVE));
             }
-            try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                    data.getFeatureReader(allRoadsQuery, t2)) {
+            try (FeatureReader<SimpleFeatureType, SimpleFeature> reader = data.getFeatureReader(allRoadsQuery, t2)) {
                 assertTrue(coversLax(reader, FINAL));
             }
 
@@ -1070,12 +1045,10 @@ public abstract class AbstractIntegrationTest {
                     data.getFeatureReader(allRoadsQuery, Transaction.AUTO_COMMIT)) {
                 assertTrue(coversLax(reader, FINAL));
             }
-            try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                    data.getFeatureReader(allRoadsQuery, t1)) {
+            try (FeatureReader<SimpleFeatureType, SimpleFeature> reader = data.getFeatureReader(allRoadsQuery, t1)) {
                 assertTrue(coversLax(reader, FINAL));
             }
-            try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                    data.getFeatureReader(allRoadsQuery, t2)) {
+            try (FeatureReader<SimpleFeatureType, SimpleFeature> reader = data.getFeatureReader(allRoadsQuery, t2)) {
                 assertTrue(coversLax(reader, FINAL));
             }
         }
@@ -1108,14 +1081,10 @@ public abstract class AbstractIntegrationTest {
         assertEquals(test.feat12Bounds, some.getBounds());
         assertEquals(some.getSchema(), source.getSchema());
 
-        Query query =
-                new Query(
-                        test.typeName,
-                        test.feat12Filter,
-                        new String[] {
-                            test.stringAttribute,
-                            test.featureType.getGeometryDescriptor().getName().getLocalPart()
-                        });
+        Query query = new Query(test.typeName, test.feat12Filter, new String[] {
+            test.stringAttribute,
+            test.featureType.getGeometryDescriptor().getName().getLocalPart()
+        });
 
         SimpleFeatureCollection half = source.getFeatures(query);
         assertEquals(2, half.size());
@@ -1188,8 +1157,7 @@ public abstract class AbstractIntegrationTest {
 
     @Test
     public void testGetFeatureStoreAddFeatures() throws IOException {
-        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                DataUtilities.reader(first.newFeature)) {
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader = DataUtilities.reader(first.newFeature)) {
             SimpleFeatureStore road = (SimpleFeatureStore) data.getFeatureSource(first.typeName);
 
             road.addFeatures(DataUtilities.collection(reader));
@@ -1199,17 +1167,12 @@ public abstract class AbstractIntegrationTest {
 
     @Test
     public void testGetFeatureStoreSetFeatures() throws IOException {
-        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                DataUtilities.reader(first.newFeature)) {
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader = DataUtilities.reader(first.newFeature)) {
             SimpleFeatureStore road = (SimpleFeatureStore) data.getFeatureSource(first.typeName);
 
             assertEquals(3, road.getFeatures().size());
             road.setFeatures(reader);
-            assertEquals(
-                    1,
-                    count(
-                            data.getFeatureReader(
-                                    new Query(first.typeName), Transaction.AUTO_COMMIT)));
+            assertEquals(1, count(data.getFeatureReader(new Query(first.typeName), Transaction.AUTO_COMMIT)));
             assertEquals(1, road.getFeatures().size());
         }
     }
@@ -1379,8 +1342,7 @@ public abstract class AbstractIntegrationTest {
             {
                 SimpleFeatureSource source = data.getFeatureSource(first.typeName);
                 if (!(source instanceof FeatureLocking)) {
-                    LOGGER.info(
-                            "testLockFeatureInteraction ignored, store does not support locking");
+                    LOGGER.info("testLockFeatureInteraction ignored, store does not support locking");
                     return;
                 }
 
@@ -1388,8 +1350,7 @@ public abstract class AbstractIntegrationTest {
 
                 source = data.getFeatureSource(first.typeName);
                 if (!(source instanceof FeatureLocking)) {
-                    LOGGER.info(
-                            "testLockFeatureInteraction ignored, store does not support locking");
+                    LOGGER.info("testLockFeatureInteraction ignored, store does not support locking");
                     return;
                 }
                 road2 = (FeatureLocking<SimpleFeatureType, SimpleFeature>) source;
@@ -1481,7 +1442,8 @@ public abstract class AbstractIntegrationTest {
             assertEquals("typeName", exceptionData.get(0).getLocator());
             assertEquals(2, exceptionData.get(0).getTexts().size());
             assertEquals("MyErrorMessage", exceptionData.get(0).getTexts().get(0));
-            assertEquals("AdditionalErrorMessage", exceptionData.get(0).getTexts().get(1));
+            assertEquals(
+                    "AdditionalErrorMessage", exceptionData.get(0).getTexts().get(1));
             return;
         }
         fail();
@@ -1492,8 +1454,7 @@ public abstract class AbstractIntegrationTest {
      *
      * <p>This method will close the reader.
      */
-    protected static int count(FeatureReader<SimpleFeatureType, SimpleFeature> reader)
-            throws IOException {
+    protected static int count(FeatureReader<SimpleFeatureType, SimpleFeature> reader) throws IOException {
         if (reader == null) {
             return -1;
         }

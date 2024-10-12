@@ -61,8 +61,7 @@ public class CSVFeatureWriter implements FeatureWriter<SimpleFeatureType, Simple
         this(csvFileState, csvStrategy, Query.ALL);
     }
 
-    public CSVFeatureWriter(CSVFileState csvFileState, CSVStrategy csvStrategy, Query query)
-            throws IOException {
+    public CSVFeatureWriter(CSVFileState csvFileState, CSVStrategy csvStrategy, Query query) throws IOException {
         this.csvFileState = csvFileState;
         File file = csvFileState.getFile();
         File directory = file.getParentFile();
@@ -99,8 +98,7 @@ public class CSVFeatureWriter implements FeatureWriter<SimpleFeatureType, Simple
 
     // next start
     @Override
-    public SimpleFeature next()
-            throws IOException, IllegalArgumentException, NoSuchElementException {
+    public SimpleFeature next() throws IOException, IllegalArgumentException, NoSuchElementException {
         if (csvWriter == null) {
             throw new IOException("Writer has been closed");
         }

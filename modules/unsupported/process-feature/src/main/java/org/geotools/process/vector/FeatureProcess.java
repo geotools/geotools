@@ -29,24 +29,18 @@ import org.geotools.process.factory.DescribeResult;
 import org.geotools.referencing.CRS;
 import org.locationtech.jts.geom.Geometry;
 
-@DescribeProcess(
-        title = "Feature from Geometry",
-        description = "Converts a geometry into a feature collection.")
+@DescribeProcess(title = "Feature from Geometry", description = "Converts a geometry into a feature collection.")
 public class FeatureProcess implements VectorProcess {
 
     @DescribeResult(name = "result", description = "Output feature collection")
     public SimpleFeatureCollection execute(
-            @DescribeParameter(name = "geometry", description = "Input geometry", min = 1)
-                    Geometry geometry,
+            @DescribeParameter(name = "geometry", description = "Input geometry", min = 1) Geometry geometry,
             @DescribeParameter(
                             name = "crs",
                             description =
                                     "Coordinate reference system of the input geometry (if not provided in the geometry)")
                     CoordinateReferenceSystem crs,
-            @DescribeParameter(
-                            name = "typeName",
-                            description = "Feauturetype name for the feature collection",
-                            min = 1)
+            @DescribeParameter(name = "typeName", description = "Feauturetype name for the feature collection", min = 1)
                     String name) {
         // get the crs
         if (crs == null) {

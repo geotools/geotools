@@ -64,8 +64,7 @@ public abstract class JDBCConnectionLifecycleOnlineTest extends JDBCTestSupport 
         // now write something within a transaction
         try (Transaction t = new DefaultTransaction()) {
             SimpleFeatureBuilder b = new SimpleFeatureBuilder(featureStore.getSchema());
-            DefaultFeatureCollection collection =
-                    new DefaultFeatureCollection(null, featureStore.getSchema());
+            DefaultFeatureCollection collection = new DefaultFeatureCollection(null, featureStore.getSchema());
             featureStore.setTransaction(t);
             for (int i = 3; i < 6; i++) {
                 b.set(aname("intProperty"), Integer.valueOf(i));

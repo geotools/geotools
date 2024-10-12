@@ -73,13 +73,8 @@ public class MockMapPane extends JPanel implements MapPane {
             // assume that it is the current CRS
             crs = mapContent.getCoordinateReferenceSystem();
         }
-        ReferencedEnvelope refEnv =
-                new ReferencedEnvelope(
-                        envelope.getMinimum(0),
-                        envelope.getMaximum(0),
-                        envelope.getMinimum(1),
-                        envelope.getMaximum(1),
-                        crs);
+        ReferencedEnvelope refEnv = new ReferencedEnvelope(
+                envelope.getMinimum(0), envelope.getMaximum(0), envelope.getMinimum(1), envelope.getMaximum(1), crs);
         mapContent.getViewport().setBounds(refEnv);
     }
 

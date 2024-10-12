@@ -144,23 +144,11 @@ public class OGCSchema implements Schema {
             synchronized (OGCSchema.class) {
                 if (elements == null) {
                     Element[] array = new Element[3];
-                    array[GET_CAPABILITIES] =
-                            new ogcElement(
-                                    "GetCapabilities",
-                                    ogcComplexTypes._GetCapabilities.getInstance(),
-                                    null,
-                                    1,
-                                    1);
-                    array[GET_MAP] =
-                            new ogcElement(
-                                    "GetMap", ogcComplexTypes._GetMap.getInstance(), null, 1, 1);
-                    array[GET_FEATURE_INFO] =
-                            new ogcElement(
-                                    "ogc:GetFeatureInfo",
-                                    ogcComplexTypes._GetFeatureInfo.getInstance(),
-                                    null,
-                                    1,
-                                    1);
+                    array[GET_CAPABILITIES] = new ogcElement(
+                            "GetCapabilities", ogcComplexTypes._GetCapabilities.getInstance(), null, 1, 1);
+                    array[GET_MAP] = new ogcElement("GetMap", ogcComplexTypes._GetMap.getInstance(), null, 1, 1);
+                    array[GET_FEATURE_INFO] = new ogcElement(
+                            "ogc:GetFeatureInfo", ogcComplexTypes._GetFeatureInfo.getInstance(), null, 1, 1);
                     elements = array;
                 }
             }
@@ -178,13 +166,12 @@ public class OGCSchema implements Schema {
     @Override
     public SimpleType[] getSimpleTypes() {
         if (simpleTypes == null) {
-            simpleTypes =
-                    new SimpleType[] {
-                        ogcSimpleTypes.CapabilitiesSectionType.getInstance(),
-                        ogcSimpleTypes.FormatType.getInstance(),
-                        ogcSimpleTypes.OWSType.getInstance(),
-                        ogcSimpleTypes.ExceptionsType.getInstance()
-                    };
+            simpleTypes = new SimpleType[] {
+                ogcSimpleTypes.CapabilitiesSectionType.getInstance(),
+                ogcSimpleTypes.FormatType.getInstance(),
+                ogcSimpleTypes.OWSType.getInstance(),
+                ogcSimpleTypes.ExceptionsType.getInstance()
+            };
         }
         return simpleTypes;
     }

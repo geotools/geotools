@@ -49,9 +49,7 @@ public class CompositePrimaryKeyFinder extends PrimaryKeyFinder {
             } catch (SQLException e) {
                 LOGGER.log(
                         Level.WARNING,
-                        "Failure occurred while looking up the primary "
-                                + "key with finder: "
-                                + finder,
+                        "Failure occurred while looking up the primary " + "key with finder: " + finder,
                         e);
             }
         }

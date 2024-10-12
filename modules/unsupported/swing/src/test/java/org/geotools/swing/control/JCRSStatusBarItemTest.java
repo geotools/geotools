@@ -44,13 +44,12 @@ public class JCRSStatusBarItemTest extends GraphicsTestBase {
 
     @Before
     public void setup() {
-        GuiActionRunner.execute(
-                new GuiTask() {
-                    @Override
-                    protected void executeInEDT() throws Throwable {
-                        mapPane = new MockMapPane();
-                    }
-                });
+        GuiActionRunner.execute(new GuiTask() {
+            @Override
+            protected void executeInEDT() throws Throwable {
+                mapPane = new MockMapPane();
+            }
+        });
     }
 
     @Test
@@ -67,12 +66,11 @@ public class JCRSStatusBarItemTest extends GraphicsTestBase {
     }
 
     private void createItemInEDT() {
-        GuiActionRunner.execute(
-                new GuiTask() {
-                    @Override
-                    protected void executeInEDT() throws Throwable {
-                        new JCRSStatusBarItem(mapPane);
-                    }
-                });
+        GuiActionRunner.execute(new GuiTask() {
+            @Override
+            protected void executeInEDT() throws Throwable {
+                new JCRSStatusBarItem(mapPane);
+            }
+        });
     }
 }

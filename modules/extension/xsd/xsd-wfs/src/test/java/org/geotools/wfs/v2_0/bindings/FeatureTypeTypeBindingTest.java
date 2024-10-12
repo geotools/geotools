@@ -20,7 +20,8 @@ public class FeatureTypeTypeBindingTest extends WFSTestSupport {
 
         FeatureTypeListType gc = (FeatureTypeListType) parse();
         assertNotNull(gc);
-        assertEquals(8, gc.getFeatureType().get(0).getOutputFormats().getFormat().size());
+        assertEquals(
+                8, gc.getFeatureType().get(0).getOutputFormats().getFormat().size());
         assertEquals(
                 "application/gml+xml; version=3.2",
                 gc.getFeatureType().get(0).getOutputFormats().getFormat().get(0));

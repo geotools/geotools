@@ -29,9 +29,7 @@ import org.geotools.filter.function.JsonPointerFunction;
 public class JsonPointerFilterSplittingVisitor extends PostPreProcessFilterSplittingVisitor {
 
     public JsonPointerFilterSplittingVisitor(
-            FilterCapabilities fcs,
-            SimpleFeatureType parent,
-            ClientTransactionAccessor transactionAccessor) {
+            FilterCapabilities fcs, SimpleFeatureType parent, ClientTransactionAccessor transactionAccessor) {
         super(fcs, parent, transactionAccessor);
     }
 
@@ -56,8 +54,7 @@ public class JsonPointerFilterSplittingVisitor extends PostPreProcessFilterSplit
         } else return super.supports(value);
     }
 
-    private Function constantParameterToLiteral(
-            Function expression, Expression param, int paramIdx) {
+    private Function constantParameterToLiteral(Function expression, Expression param, int paramIdx) {
         FilterAttributeExtractor extractor = new FilterAttributeExtractor();
         param.accept(extractor, null);
         if (extractor.isConstantExpression()) {

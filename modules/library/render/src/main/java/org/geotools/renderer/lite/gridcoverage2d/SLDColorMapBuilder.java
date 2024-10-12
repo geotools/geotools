@@ -169,11 +169,8 @@ public class SLDColorMapBuilder {
         //
         /////
         if (!LinearColorMapType.validateColorMapTye(colorMapType))
-            throw new IllegalArgumentException(
-                    MessageFormat.format(
-                            ErrorKeys.ILLEGAL_ARGUMENT_$2,
-                            "colorMapType",
-                            Integer.toString(colorMapType)));
+            throw new IllegalArgumentException(MessageFormat.format(
+                    ErrorKeys.ILLEGAL_ARGUMENT_$2, "colorMapType", Integer.toString(colorMapType)));
         /// set the linear colormap type
         this.linearColorMapType = colorMapType;
         return this;
@@ -244,12 +241,8 @@ public class SLDColorMapBuilder {
         Color newColorValue = getColor(colorMapEntry);
         ColorMapUtilities.ensureNonNull("newColorValue", newColorValue);
         final double opacityValue = getOpacity(colorMapEntry);
-        newColorValue =
-                new Color(
-                        newColorValue.getRed(),
-                        newColorValue.getGreen(),
-                        newColorValue.getBlue(),
-                        (int) (opacityValue * 255 + 0.5));
+        newColorValue = new Color(newColorValue.getRed(), newColorValue.getGreen(), newColorValue.getBlue(), (int)
+                (opacityValue * 255 + 0.5));
 
         ////
         //
@@ -270,33 +263,24 @@ public class SLDColorMapBuilder {
 
             switch (linearColorMapType) {
                 case org.geotools.api.style.ColorMap.TYPE_RAMP:
-                    colormapElements.add(
-                            LinearColorMapElement.create(
-                                    label,
-                                    newColorValue,
-                                    RangeFactory.create(Double.NEGATIVE_INFINITY, false, q, false),
-                                    0));
+                    colormapElements.add(LinearColorMapElement.create(
+                            label, newColorValue, RangeFactory.create(Double.NEGATIVE_INFINITY, false, q, false), 0));
                     break;
                 case org.geotools.api.style.ColorMap.TYPE_VALUES:
                     colormapElements.add(LinearColorMapElement.create(label, newColorValue, q, 0));
                     break;
                 case org.geotools.api.style.ColorMap.TYPE_INTERVALS:
-                    colormapElements.add(
-                            LinearColorMapElement.create(
-                                    label,
-                                    newColorValue,
-                                    RangeFactory.create(Double.NEGATIVE_INFINITY, false, q, false),
-                                    0));
+                    colormapElements.add(LinearColorMapElement.create(
+                            label, newColorValue, RangeFactory.create(Double.NEGATIVE_INFINITY, false, q, false), 0));
                     break;
                 default:
                     // should not happen
                     final Object arg1 = Double.toString(opacityValue);
-                    throw new IllegalArgumentException(
-                            MessageFormat.format(
-                                    ErrorKeys.ILLEGAL_ARGUMENT_$2,
-                                    "ColorMapTransform.type",
-                                    arg1,
-                                    Integer.valueOf(linearColorMapType)));
+                    throw new IllegalArgumentException(MessageFormat.format(
+                            ErrorKeys.ILLEGAL_ARGUMENT_$2,
+                            "ColorMapTransform.type",
+                            arg1,
+                            Integer.valueOf(linearColorMapType)));
             }
 
         } else {
@@ -310,8 +294,7 @@ public class SLDColorMapBuilder {
 
             // Get the previous category
             final int newColorMapElementIndex = this.colormapElements.size();
-            final LinearColorMapElement previous =
-                    this.colormapElements.get(newColorMapElementIndex - 1);
+            final LinearColorMapElement previous = this.colormapElements.get(newColorMapElementIndex - 1);
 
             // //
             //
@@ -332,36 +315,26 @@ public class SLDColorMapBuilder {
                         // max at the beginning of the range in case that happens (uses might
                         // want to have a sharp jump in a ramp, achieved by having two subseqent
                         // entries with the same value, but different color)
-                        boolean minIncluded =
-                                previousColors[previousColors.length - 1].equals(colors[0]);
-                        Range sampleRange =
-                                RangeFactory.create(
-                                        previousMaximum,
-                                        minIncluded,
-                                        colorsPerColorMapElement + previousMaximum,
-                                        false);
-                        colormapElements.add(
-                                LinearColorMapElement.create(
-                                        label, colors, valueRange, sampleRange));
+                        boolean minIncluded = previousColors[previousColors.length - 1].equals(colors[0]);
+                        Range sampleRange = RangeFactory.create(
+                                previousMaximum, minIncluded, colorsPerColorMapElement + previousMaximum, false);
+                        colormapElements.add(LinearColorMapElement.create(label, colors, valueRange, sampleRange));
                         break;
                     case org.geotools.api.style.ColorMap.TYPE_VALUES:
                         colormapElements.add(
-                                LinearColorMapElement.create(
-                                        label, newColorValue, q, newColorMapElementIndex));
+                                LinearColorMapElement.create(label, newColorValue, q, newColorMapElementIndex));
                         break;
                     case org.geotools.api.style.ColorMap.TYPE_INTERVALS:
-                        colormapElements.add(
-                                LinearColorMapElement.create(
-                                        label, newColorValue, valueRange, newColorMapElementIndex));
+                        colormapElements.add(LinearColorMapElement.create(
+                                label, newColorValue, valueRange, newColorMapElementIndex));
                         break;
                     default:
                         final Object arg1 = Double.toString(opacityValue);
-                        throw new IllegalArgumentException(
-                                MessageFormat.format(
-                                        ErrorKeys.ILLEGAL_ARGUMENT_$2,
-                                        "ColorMapTransform.type",
-                                        arg1,
-                                        Integer.valueOf(linearColorMapType)));
+                        throw new IllegalArgumentException(MessageFormat.format(
+                                ErrorKeys.ILLEGAL_ARGUMENT_$2,
+                                "ColorMapTransform.type",
+                                arg1,
+                                Integer.valueOf(linearColorMapType)));
                 }
             }
         }
@@ -400,21 +373,18 @@ public class SLDColorMapBuilder {
             // valued, hence we take them out of the count because we don't.
             //
             // //
-            double colorsToDistribute =
-                    !extendedColors && numberColorMapEntries < 256 ? 256 : 65536;
+            double colorsToDistribute = !extendedColors && numberColorMapEntries < 256 ? 256 : 65536;
             // default color
             if (gapsColor != null) colorsToDistribute--;
             // preserved values
             if (preservedValuesColor != null) colorsToDistribute--;
 
             // compute the number of colors we can use for each color map element
-            colorsPerColorMapElement =
-                    (int)
-                            ((colorsToDistribute)
-                                    /
-                                    // we remove one since the first and last element use 1 color
-                                    // only, hence we want to account only the internal ranges
-                                    (numberOfColorMapElements - 1));
+            colorsPerColorMapElement = (int) ((colorsToDistribute)
+                    /
+                    // we remove one since the first and last element use 1 color
+                    // only, hence we want to account only the internal ranges
+                    (numberOfColorMapElements - 1));
 
             // now keep into account the last element
             numberOfColorMapElements++;
@@ -488,8 +458,7 @@ public class SLDColorMapBuilder {
     }
 
     /** */
-    private static double getOpacity(ColorMapEntry entry)
-            throws IllegalArgumentException, MissingResourceException {
+    private static double getOpacity(ColorMapEntry entry) throws IllegalArgumentException, MissingResourceException {
 
         ColorMapUtilities.ensureNonNull("ColorMapEntry", entry);
         // //
@@ -513,8 +482,7 @@ public class SLDColorMapBuilder {
             opacityValue = opacity.evaluate(null, Double.class);
         }
         if (opacityValue == null) {
-            throw new IllegalArgumentException(
-                    "Opacity value null or could not be converted to a double" + opacity);
+            throw new IllegalArgumentException("Opacity value null or could not be converted to a double" + opacity);
         }
         if ((opacityValue.doubleValue() - 1) > 0 || opacityValue.doubleValue() < 0) {
             throw new IllegalArgumentException(
@@ -567,8 +535,7 @@ public class SLDColorMapBuilder {
      * @uml.property name="extendedColors"
      */
     public SLDColorMapBuilder setExtendedColors(boolean extendedColors) {
-        if (this.numberColorMapEntries != -1)
-            throw new IllegalStateException(ErrorKeys.ILLEGAL_STATE);
+        if (this.numberColorMapEntries != -1) throw new IllegalStateException(ErrorKeys.ILLEGAL_STATE);
         checkIfColorMapCreated();
         this.extendedColors = extendedColors;
         return this;
@@ -595,14 +562,10 @@ public class SLDColorMapBuilder {
      */
     public SLDColorMapBuilder setNumberColorMapEntries(final int numberColorMapEntries) {
         checkIfColorMapCreated();
-        if (this.numberColorMapEntries != -1)
-            throw new IllegalStateException(ErrorKeys.ILLEGAL_STATE);
+        if (this.numberColorMapEntries != -1) throw new IllegalStateException(ErrorKeys.ILLEGAL_STATE);
         if (numberColorMapEntries <= 0 || numberColorMapEntries > (extendedColors ? 65536 : 256))
-            throw new IllegalArgumentException(
-                    MessageFormat.format(
-                            ErrorKeys.ILLEGAL_ARGUMENT_$2,
-                            "numberColorMapEntries",
-                            Integer.toString(numberColorMapEntries)));
+            throw new IllegalArgumentException(MessageFormat.format(
+                    ErrorKeys.ILLEGAL_ARGUMENT_$2, "numberColorMapEntries", Integer.toString(numberColorMapEntries)));
         this.numberColorMapEntries = numberColorMapEntries;
         return this;
     }
@@ -625,8 +588,7 @@ public class SLDColorMapBuilder {
 
     /** */
     public LinearColorMap buildLinearColorMap() {
-        if (this.numberColorMapEntries == -1)
-            throw new IllegalStateException(ErrorKeys.ILLEGAL_STATE);
+        if (this.numberColorMapEntries == -1) throw new IllegalStateException(ErrorKeys.ILLEGAL_STATE);
 
         // /////////////////////////////////////////////////////////////////////
         //
@@ -655,16 +617,12 @@ public class SLDColorMapBuilder {
             // Build the last one
             //
             // //
-            last =
-                    LinearColorMapElement.create(
-                            "ColorMapEntry" + this.colormapElements.size(),
-                            lastColorValue,
-                            RangeFactory.create(
-                                    previous.getRange().getMax().doubleValue(),
-                                    true,
-                                    Double.POSITIVE_INFINITY,
-                                    false),
-                            previous.getOutputRange().getMax().intValue());
+            last = LinearColorMapElement.create(
+                    "ColorMapEntry" + this.colormapElements.size(),
+                    lastColorValue,
+                    RangeFactory.create(
+                            previous.getRange().getMax().doubleValue(), true, Double.POSITIVE_INFINITY, false),
+                    previous.getOutputRange().getMax().intValue());
             this.colormapElements.add(last);
         }
 
@@ -674,27 +632,22 @@ public class SLDColorMapBuilder {
         // all of them
         //
         // /////////////////////////////////////////////////////////////////////
-        final LinearColorMapElement[] preservedValuesElement =
-                new LinearColorMapElement[preservedValues.size()];
+        final LinearColorMapElement[] preservedValuesElement = new LinearColorMapElement[preservedValues.size()];
         final int value = (int) last.getOutputMaximum() + 1;
         for (int i = 0; i < preservedValuesElement.length; i++) {
-            preservedValuesElement[i] =
-                    LinearColorMapElement.create(
-                            org.geotools.metadata.i18n.Vocabulary.format(
-                                            org.geotools.metadata.i18n.VocabularyKeys.NODATA)
-                                    + Integer.toString(i + 1),
-                            preservedValuesColor,
-                            RangeFactory.create(preservedValues.get(i), preservedValues.get(i)),
-                            value);
+            preservedValuesElement[i] = LinearColorMapElement.create(
+                    org.geotools.metadata.i18n.Vocabulary.format(org.geotools.metadata.i18n.VocabularyKeys.NODATA)
+                            + Integer.toString(i + 1),
+                    preservedValuesColor,
+                    RangeFactory.create(preservedValues.get(i), preservedValues.get(i)),
+                    value);
         }
 
-        this.colorMap =
-                new LinearColorMap(
-                        name,
-                        colormapElements.toArray(
-                                new LinearColorMapElement[colormapElements.size()]),
-                        preservedValuesElement,
-                        this.gapsColor);
+        this.colorMap = new LinearColorMap(
+                name,
+                colormapElements.toArray(new LinearColorMapElement[colormapElements.size()]),
+                preservedValuesElement,
+                this.gapsColor);
         return colorMap;
     }
 }

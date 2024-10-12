@@ -32,8 +32,7 @@ import org.geotools.util.factory.Hints;
  * @author Simone Giannecchini (simboss), GeoSolutions
  * @since 2.5.x
  */
-public final class ErdasImgReader extends BaseGDALGridCoverage2DReader
-        implements GridCoverageReader {
+public final class ErdasImgReader extends BaseGDALGridCoverage2DReader implements GridCoverageReader {
     private static final String worldFileExt = "";
 
     /**

@@ -79,8 +79,7 @@ public class IndexedFidWriter implements FileWriter, AutoCloseable {
 
     private void init(ShpFiles shpFiles, StorageFile storageFile) throws IOException {
         if (!shpFiles.isLocal()) {
-            throw new IllegalArgumentException(
-                    "Currently only local files are supported for writing");
+            throw new IllegalArgumentException("Currently only local files are supported for writing");
         }
 
         try {
@@ -231,8 +230,7 @@ public class IndexedFidWriter implements FileWriter, AutoCloseable {
      * @throws IOException if current fid index is null
      */
     public void remove() throws IOException {
-        if (current == -1)
-            throw new IOException("Current fid index is null, next must be called before remove");
+        if (current == -1) throw new IOException("Current fid index is null, next must be called before remove");
         if (hasNext()) {
             removes++;
             current = -1;
@@ -247,8 +245,7 @@ public class IndexedFidWriter implements FileWriter, AutoCloseable {
      * @see #remove()
      */
     public void write() throws IOException {
-        if (current == -1)
-            throw new IOException("Current fid index is null, next must be called before write()");
+        if (current == -1) throw new IOException("Current fid index is null, next must be called before write()");
 
         if (writeBuffer == null) {
             allocateBuffers();
@@ -274,30 +271,29 @@ public class IndexedFidWriter implements FileWriter, AutoCloseable {
         return getClass().getName();
     }
 
-    public static final IndexedFidWriter EMPTY_WRITER =
-            new IndexedFidWriter() {
-                @Override
-                public void close() throws IOException {}
+    public static final IndexedFidWriter EMPTY_WRITER = new IndexedFidWriter() {
+        @Override
+        public void close() throws IOException {}
 
-                @Override
-                public boolean hasNext() throws IOException {
-                    return false;
-                }
+        @Override
+        public boolean hasNext() throws IOException {
+            return false;
+        }
 
-                @Override
-                public boolean isClosed() {
-                    return false;
-                }
+        @Override
+        public boolean isClosed() {
+            return false;
+        }
 
-                @Override
-                public void write() throws IOException {}
+        @Override
+        public void write() throws IOException {}
 
-                @Override
-                public long next() throws IOException {
-                    return 0;
-                }
+        @Override
+        public long next() throws IOException {
+            return 0;
+        }
 
-                @Override
-                public void remove() throws IOException {}
-            };
+        @Override
+        public void remove() throws IOException {}
+    };
 }

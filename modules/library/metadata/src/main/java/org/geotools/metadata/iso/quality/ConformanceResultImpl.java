@@ -64,9 +64,7 @@ public class ConformanceResultImpl extends MetadataEntity implements Conformance
 
     /** Creates a conformance result initialized to the given values. */
     public ConformanceResultImpl(
-            final Citation specification,
-            final InternationalString explanation,
-            final boolean pass) {
+            final Citation specification, final InternationalString explanation, final boolean pass) {
         setSpecification(specification);
         setExplanation(explanation);
         setPass(pass);

@@ -44,9 +44,7 @@ public class STACDataStoreTest extends AbstractSTACStoreTest {
     @Test
     public void testNames() throws Exception {
         List<Name> expectedList =
-                Arrays.stream(TYPE_NAMES)
-                        .map(n -> (Name) new NameImpl(n))
-                        .collect(Collectors.toList());
+                Arrays.stream(TYPE_NAMES).map(n -> (Name) new NameImpl(n)).collect(Collectors.toList());
         assertEquals(expectedList, store.getNames());
     }
 

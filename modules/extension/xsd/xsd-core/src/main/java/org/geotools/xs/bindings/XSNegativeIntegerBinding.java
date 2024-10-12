@@ -87,8 +87,7 @@ public class XSNegativeIntegerBinding implements SimpleBinding {
         Number number = (Number) value;
 
         if (number.longValue() == 0) {
-            throw new IllegalArgumentException(
-                    "negativeInteger value '" + number + "' required to be negative");
+            throw new IllegalArgumentException("negativeInteger value '" + number + "' required to be negative");
         }
 
         return number;

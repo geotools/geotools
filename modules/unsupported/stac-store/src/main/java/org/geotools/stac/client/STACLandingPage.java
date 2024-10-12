@@ -42,21 +42,19 @@ public class STACLandingPage extends AbstractDocument {
     }
 
     public String getSearchLink(HttpMethod method) {
-        String link =
-                getLinks().stream()
-                        .filter(l -> isSearchLink(l, method, GEOJSON_MIME))
-                        .map(l -> l.getHref())
-                        .findFirst()
-                        .orElse(null);
+        String link = getLinks().stream()
+                .filter(l -> isSearchLink(l, method, GEOJSON_MIME))
+                .map(l -> l.getHref())
+                .findFirst()
+                .orElse(null);
 
         // bit of tolerance, although this is wrong
         if (link == null)
-            link =
-                    getLinks().stream()
-                            .filter(l -> isSearchLink(l, method, JSON_MIME))
-                            .map(l -> l.getHref())
-                            .findFirst()
-                            .orElse(null);
+            link = getLinks().stream()
+                    .filter(l -> isSearchLink(l, method, JSON_MIME))
+                    .map(l -> l.getHref())
+                    .findFirst()
+                    .orElse(null);
 
         return link;
     }

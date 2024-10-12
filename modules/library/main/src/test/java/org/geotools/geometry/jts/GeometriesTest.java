@@ -46,11 +46,7 @@ public class GeometriesTest {
     private static GeometryFactory geomFactory = new GeometryFactory();
 
     private static final Coordinate[] coords = {
-        new Coordinate(0, 0),
-        new Coordinate(0, 10),
-        new Coordinate(10, 10),
-        new Coordinate(10, 0),
-        new Coordinate(0, 0)
+        new Coordinate(0, 0), new Coordinate(0, 10), new Coordinate(10, 10), new Coordinate(10, 0), new Coordinate(0, 0)
     };
 
     @Test

@@ -117,8 +117,7 @@ public class ElementEncodeExecutor implements BindingWalker.Visitor {
                 if (logger.isLoggable(Level.FINE)) {
                     // do not log the object, may be a multi-megabyte feature collection
                     // that can trigger an OOM toStringing itself
-                    logger.fine(
-                            "[ " + object.getClass() + " ] is not of type " + binding.getType());
+                    logger.fine("[ " + object.getClass() + " ] is not of type " + binding.getType());
                 }
 
                 return;
@@ -135,11 +134,7 @@ public class ElementEncodeExecutor implements BindingWalker.Visitor {
                     encoding = element;
                 }
             } catch (Throwable t) {
-                String msg =
-                        "Encode failed for "
-                                + element.getName()
-                                + ". Cause: "
-                                + t.getLocalizedMessage();
+                String msg = "Encode failed for " + element.getName() + ". Cause: " + t.getLocalizedMessage();
                 throw new RuntimeException(msg, t);
             }
         } else {
@@ -182,11 +177,7 @@ public class ElementEncodeExecutor implements BindingWalker.Visitor {
                     encoding.setAttribute(prefix + ":nil", "true");
                 }
             } catch (Throwable t) {
-                String msg =
-                        "Encode failed for "
-                                + element.getName()
-                                + ". Cause: "
-                                + t.getLocalizedMessage();
+                String msg = "Encode failed for " + element.getName() + ". Cause: " + t.getLocalizedMessage();
                 throw new RuntimeException(msg, t);
             }
         }

@@ -237,9 +237,7 @@ final class GridConvergenceAngleCalc {
         for (int i = 0; i < numDimensions; i++) {
             CoordinateSystemAxis axis = crs.getCoordinateSystem().getAxis(i);
             String axisName = axis.getName().toString().toUpperCase();
-            if (axisName.equals("Y")
-                    || axisName.equals("NORTHING")
-                    || axisName.contains("NORTHING")) {
+            if (axisName.equals("Y") || axisName.equals("NORTHING") || axisName.contains("NORTHING")) {
                 return i;
             }
         }

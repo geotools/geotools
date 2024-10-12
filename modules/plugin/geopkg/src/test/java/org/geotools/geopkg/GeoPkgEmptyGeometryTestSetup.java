@@ -25,41 +25,36 @@ public class GeoPkgEmptyGeometryTestSetup extends JDBCEmptyGeometryTestSetup {
         super(delegate);
     }
 
-    String[] types = {
-        "POINT", "LINESTRING", "POLYGON", "MULTIPOINT", "MULTILINESTRING", "MULTIPOLYGON"
-    };
+    String[] types = {"POINT", "LINESTRING", "POLYGON", "MULTIPOINT", "MULTILINESTRING", "MULTIPOLYGON"};
 
     @Override
     protected void createEmptyGeometryTable() throws Exception {
         // create table schema
 
         for (String type : types) {
-            run(
-                    "CREATE TABLE \"empty_"
-                            + type.toLowerCase()
-                            + "\"(" //
-                            + "\"fid\" serial primary key, " //
-                            + "\"id\" integer, " //
-                            + "\"geom_"
-                            + type.toLowerCase()
-                            + "\" geometry, "
-                            + "\"name\" varchar)");
+            run("CREATE TABLE \"empty_"
+                    + type.toLowerCase()
+                    + "\"(" //
+                    + "\"fid\" serial primary key, " //
+                    + "\"id\" integer, " //
+                    + "\"geom_"
+                    + type.toLowerCase()
+                    + "\" geometry, "
+                    + "\"name\" varchar)");
 
-            String sql =
-                    "INSERT INTO gpkg_contents (table_name, data_type, identifier, srs_id) VALUES "
-                            + "('empty_"
-                            + type.toLowerCase()
-                            + "', 'features', 'empty_"
-                            + type.toLowerCase()
-                            + "', 4326)";
+            String sql = "INSERT INTO gpkg_contents (table_name, data_type, identifier, srs_id) VALUES "
+                    + "('empty_"
+                    + type.toLowerCase()
+                    + "', 'features', 'empty_"
+                    + type.toLowerCase()
+                    + "', 4326)";
             run(sql);
 
-            sql =
-                    "INSERT INTO gpkg_geometry_columns VALUES ('empty_"
-                            + type.toLowerCase()
-                            + "', 'geom_point', '"
-                            + type
-                            + "', 4326, 0, 0)";
+            sql = "INSERT INTO gpkg_geometry_columns VALUES ('empty_"
+                    + type.toLowerCase()
+                    + "', 'geom_point', '"
+                    + type
+                    + "', 4326, 0, 0)";
             run(sql);
         }
 

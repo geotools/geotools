@@ -36,20 +36,21 @@ public interface CalcResult {
      * The result obtained when a FeatureCalc found no features to visit. It lets itself merge with
      * any other result by just returning the other result as the output of the merge
      */
-    public static final CalcResult NULL_RESULT =
-            new AbstractCalcResult() {
-                /** Always compatible */
-                @Override
-                public boolean isCompatible(CalcResult targetResults) {
-                    return true;
-                };
+    public static final CalcResult NULL_RESULT = new AbstractCalcResult() {
+        /** Always compatible */
+        @Override
+        public boolean isCompatible(CalcResult targetResults) {
+            return true;
+        }
+        ;
 
-                /** Just returns the other result */
-                @Override
-                public CalcResult merge(CalcResult resultsToAdd) {
-                    return resultsToAdd;
-                };
-            };
+        /** Just returns the other result */
+        @Override
+        public CalcResult merge(CalcResult resultsToAdd) {
+            return resultsToAdd;
+        }
+        ;
+    };
 
     /**
      * Returns true if the target results is a compatible type with the current results, with

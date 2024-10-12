@@ -160,8 +160,7 @@ public enum NetCDFCoordinateReferenceSystemType {
         if (crs instanceof DefaultGeographicCRS) {
             crsType = WGS84;
         } else if (crs instanceof DefaultDerivedCRS
-                && ((DefaultDerivedCRS) crs).getConversionFromBase().getMathTransform()
-                        instanceof RotatedPole) {
+                && ((DefaultDerivedCRS) crs).getConversionFromBase().getMathTransform() instanceof RotatedPole) {
             return ROTATED_POLE;
         } else if (crs instanceof ProjectedCRS) {
             ProjectedCRS projectedCRS = (ProjectedCRS) crs;
@@ -188,11 +187,9 @@ public enum NetCDFCoordinateReferenceSystemType {
         return crsType;
     }
 
-    private static NetCDFCoordinateReferenceSystemType extractProjectionType(
-            ConcatenatedTransform cmt) {
+    private static NetCDFCoordinateReferenceSystemType extractProjectionType(ConcatenatedTransform cmt) {
         // Make sure we only have 2 transformations that are not concatenated further.
-        if (!(cmt.transform1 instanceof ConcatenatedTransform)
-                && !(cmt.transform2 instanceof ConcatenatedTransform)) {
+        if (!(cmt.transform1 instanceof ConcatenatedTransform) && !(cmt.transform2 instanceof ConcatenatedTransform)) {
 
             // Make sure the 1st transformation is supported
             NetCDFCoordinateReferenceSystemType projectionType = getProjectionType(cmt.transform1);
@@ -200,8 +197,7 @@ public enum NetCDFCoordinateReferenceSystemType {
                 return projectionType;
             }
         }
-        throw new IllegalArgumentException(
-                "The specified projection's transformation is not supported: " + cmt);
+        throw new IllegalArgumentException("The specified projection's transformation is not supported: " + cmt);
     }
 
     private static boolean hasConcatenatedTransform(ProjectedCRS projectedCRS) {
@@ -210,14 +206,12 @@ public enum NetCDFCoordinateReferenceSystemType {
         return mt instanceof ConcatenatedTransform;
     }
 
-    private static NetCDFCoordinateReferenceSystemType getProjectionType(
-            ProjectedCRS projectedCRS) {
+    private static NetCDFCoordinateReferenceSystemType getProjectionType(ProjectedCRS projectedCRS) {
         Projection projection = projectedCRS.getConversionFromBase();
         MathTransform transform = projection.getMathTransform();
         NetCDFCoordinateReferenceSystemType projectionType = getProjectionType(transform);
         if (projectionType == null) {
-            throw new IllegalArgumentException(
-                    "The specified projection is not supported: " + transform.getClass());
+            throw new IllegalArgumentException("The specified projection is not supported: " + transform.getClass());
         }
         return projectionType;
     }
@@ -297,8 +291,7 @@ public enum NetCDFCoordinateReferenceSystemType {
         return axisCoordinates;
     }
 
-    private static final Logger LOGGER =
-            Logging.getLogger(NetCDFCoordinateReferenceSystemType.class);
+    private static final Logger LOGGER = Logging.getLogger(NetCDFCoordinateReferenceSystemType.class);
 
     /**
      * Contains basic information related to a NetCDF Coordinate such as: - short name (as an
@@ -308,53 +301,47 @@ public enum NetCDFCoordinateReferenceSystemType {
      */
     public static class NetCDFCoordinate {
 
-        private static final NetCDFCoordinate LAT_COORDINATE =
-                new NetCDFCoordinate(
-                        NetCDFUtilities.LAT,
-                        NetCDFUtilities.LATITUDE,
-                        NetCDFUtilities.LATITUDE,
-                        NetCDFUtilities.LAT,
-                        NetCDFUtilities.LAT_UNITS);
+        private static final NetCDFCoordinate LAT_COORDINATE = new NetCDFCoordinate(
+                NetCDFUtilities.LAT,
+                NetCDFUtilities.LATITUDE,
+                NetCDFUtilities.LATITUDE,
+                NetCDFUtilities.LAT,
+                NetCDFUtilities.LAT_UNITS);
 
-        private static final NetCDFCoordinate LON_COORDINATE =
-                new NetCDFCoordinate(
-                        NetCDFUtilities.LON,
-                        NetCDFUtilities.LONGITUDE,
-                        NetCDFUtilities.LONGITUDE,
-                        NetCDFUtilities.LON,
-                        NetCDFUtilities.LON_UNITS);
+        private static final NetCDFCoordinate LON_COORDINATE = new NetCDFCoordinate(
+                NetCDFUtilities.LON,
+                NetCDFUtilities.LONGITUDE,
+                NetCDFUtilities.LONGITUDE,
+                NetCDFUtilities.LON,
+                NetCDFUtilities.LON_UNITS);
 
-        private static final NetCDFCoordinate RLAT_COORDINATE =
-                new NetCDFCoordinate(
-                        NetCDFUtilities.RLAT,
-                        NetCDFUtilities.GRID_LATITUDE,
-                        NetCDFUtilities.GRID_LATITUDE,
-                        NetCDFUtilities.RLAT,
-                        NetCDFUtilities.RLATLON_UNITS);
+        private static final NetCDFCoordinate RLAT_COORDINATE = new NetCDFCoordinate(
+                NetCDFUtilities.RLAT,
+                NetCDFUtilities.GRID_LATITUDE,
+                NetCDFUtilities.GRID_LATITUDE,
+                NetCDFUtilities.RLAT,
+                NetCDFUtilities.RLATLON_UNITS);
 
-        private static final NetCDFCoordinate RLON_COORDINATE =
-                new NetCDFCoordinate(
-                        NetCDFUtilities.RLON,
-                        NetCDFUtilities.GRID_LONGITUDE,
-                        NetCDFUtilities.GRID_LONGITUDE,
-                        NetCDFUtilities.RLON,
-                        NetCDFUtilities.RLATLON_UNITS);
+        private static final NetCDFCoordinate RLON_COORDINATE = new NetCDFCoordinate(
+                NetCDFUtilities.RLON,
+                NetCDFUtilities.GRID_LONGITUDE,
+                NetCDFUtilities.GRID_LONGITUDE,
+                NetCDFUtilities.RLON,
+                NetCDFUtilities.RLATLON_UNITS);
 
-        private static final NetCDFCoordinate X_COORDINATE =
-                new NetCDFCoordinate(
-                        NetCDFUtilities.X,
-                        NetCDFUtilities.X_COORD_PROJ,
-                        NetCDFUtilities.X_PROJ_COORD,
-                        NetCDFUtilities.X,
-                        NetCDFUtilities.M);
+        private static final NetCDFCoordinate X_COORDINATE = new NetCDFCoordinate(
+                NetCDFUtilities.X,
+                NetCDFUtilities.X_COORD_PROJ,
+                NetCDFUtilities.X_PROJ_COORD,
+                NetCDFUtilities.X,
+                NetCDFUtilities.M);
 
-        private static final NetCDFCoordinate Y_COORDINATE =
-                new NetCDFCoordinate(
-                        NetCDFUtilities.Y,
-                        NetCDFUtilities.Y_COORD_PROJ,
-                        NetCDFUtilities.Y_PROJ_COORD,
-                        NetCDFUtilities.Y,
-                        NetCDFUtilities.M);
+        private static final NetCDFCoordinate Y_COORDINATE = new NetCDFCoordinate(
+                NetCDFUtilities.Y,
+                NetCDFUtilities.Y_COORD_PROJ,
+                NetCDFUtilities.Y_PROJ_COORD,
+                NetCDFUtilities.Y,
+                NetCDFUtilities.M);
 
         public NetCDFCoordinate(NetCDFCoordinate that) {
             this.shortName = that.getShortName();
@@ -442,11 +429,7 @@ public enum NetCDFCoordinateReferenceSystemType {
 
         /** Create a {@link NetCDFCoordinate} instance with all the required information */
         public NetCDFCoordinate(
-                String shortName,
-                String longName,
-                String standardName,
-                String dimensionName,
-                String units) {
+                String shortName, String longName, String standardName, String dimensionName, String units) {
             this.shortName = shortName;
             this.longName = longName;
             this.standardName = standardName;

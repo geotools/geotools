@@ -57,8 +57,7 @@ public abstract class StyleVisitorCoverageProcessingNodeAdapter extends StyleVis
     }
 
     /** Default constructor for {@link StyleVisitorCoverageProcessingNodeAdapter} */
-    public StyleVisitorCoverageProcessingNodeAdapter(
-            InternationalString name, InternationalString description) {
+    public StyleVisitorCoverageProcessingNodeAdapter(InternationalString name, InternationalString description) {
         this(-1, name, description);
     }
 
@@ -80,21 +79,16 @@ public abstract class StyleVisitorCoverageProcessingNodeAdapter extends StyleVis
      *     can be <code>null</code>.
      */
     public StyleVisitorCoverageProcessingNodeAdapter(
-            int maxSources,
-            Hints hints,
-            InternationalString name,
-            InternationalString description) {
-        adaptee =
-                new BaseCoverageProcessingNode(
-                        maxSources, hints != null ? hints.clone() : null, name, description) {
+            int maxSources, Hints hints, InternationalString name, InternationalString description) {
+        adaptee = new BaseCoverageProcessingNode(maxSources, hints != null ? hints.clone() : null, name, description) {
 
-                    @Override
-                    protected GridCoverage execute() {
-                        synchronized (StyleVisitorCoverageProcessingNodeAdapter.this) {
-                            return StyleVisitorCoverageProcessingNodeAdapter.this.execute();
-                        }
-                    }
-                };
+            @Override
+            protected GridCoverage execute() {
+                synchronized (StyleVisitorCoverageProcessingNodeAdapter.this) {
+                    return StyleVisitorCoverageProcessingNodeAdapter.this.execute();
+                }
+            }
+        };
     }
 
     /** @see BaseCoverageProcessingNode#execute() */

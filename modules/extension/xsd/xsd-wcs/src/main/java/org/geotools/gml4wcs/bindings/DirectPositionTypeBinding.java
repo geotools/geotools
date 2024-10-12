@@ -105,9 +105,7 @@ public class DirectPositionTypeBinding extends AbstractComplexBinding {
         Position dp = (Position) object;
 
         if (dp == null) {
-            value.appendChild(
-                    document.createElementNS(
-                            GML.NAMESPACE, org.geotools.gml3.GML.Null.getLocalPart()));
+            value.appendChild(document.createElementNS(GML.NAMESPACE, org.geotools.gml3.GML.Null.getLocalPart()));
         } else {
             double[] coordinates = dp.getCoordinate();
             StringBuilder sb = new StringBuilder();

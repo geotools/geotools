@@ -48,8 +48,7 @@ import org.geotools.util.factory.Hints;
  *
  * @author Simone Giannecchini, GeoSolutions
  */
-public class RasterSymbolizerHelper extends SubchainStyleVisitorCoverageProcessingAdapter
-        implements StyleVisitor {
+public class RasterSymbolizerHelper extends SubchainStyleVisitorCoverageProcessingAdapter implements StyleVisitor {
 
     private float opacity = 1.0F;
 
@@ -78,10 +77,9 @@ public class RasterSymbolizerHelper extends SubchainStyleVisitorCoverageProcessi
         RenderedImage outputImage = output.getRenderedImage();
 
         // Getting NoData
-        Range nodata =
-                CoverageUtilities.getNoDataProperty(output) != null
-                        ? CoverageUtilities.getNoDataProperty(output).getAsRange()
-                        : null;
+        Range nodata = CoverageUtilities.getNoDataProperty(output) != null
+                ? CoverageUtilities.getNoDataProperty(output).getAsRange()
+                : null;
         ROI roiProp = CoverageUtilities.getROIProperty(output);
 
         ///////////////////////////////////////////////////////////////////////
@@ -100,11 +98,10 @@ public class RasterSymbolizerHelper extends SubchainStyleVisitorCoverageProcessi
         if (numBands > 4) {
             // get the visible band
             final int visibleBand = CoverageUtilities.getVisibleBand(outputImage);
-            outputImage =
-                    new ImageWorker(outputImage)
-                            .setRenderingHints(this.getHints())
-                            .retainBands(new int[] {visibleBand})
-                            .getRenderedImage();
+            outputImage = new ImageWorker(outputImage)
+                    .setRenderingHints(this.getHints())
+                    .retainBands(new int[] {visibleBand})
+                    .getRenderedImage();
             sd = new GridSampleDimension[] {output.getSampleDimension(visibleBand)};
         } else {
             sd = output.getSampleDimensions();
@@ -128,12 +125,11 @@ public class RasterSymbolizerHelper extends SubchainStyleVisitorCoverageProcessi
             case DataBuffer.TYPE_SHORT:
                 // rescale to byte
                 ImageWorker w = new ImageWorker(outputImage);
-                outputImage =
-                        w.setROI(roiProp)
-                                .setNoData(nodata)
-                                .setRenderingHints(this.getHints())
-                                .rescaleToBytes()
-                                .getRenderedImage();
+                outputImage = w.setROI(roiProp)
+                        .setNoData(nodata)
+                        .setRenderingHints(this.getHints())
+                        .rescaleToBytes()
+                        .getRenderedImage();
                 roiProp = w.getROI();
                 nodata = w.getNoData();
         }
@@ -158,10 +154,8 @@ public class RasterSymbolizerHelper extends SubchainStyleVisitorCoverageProcessi
             numBands = finalImage.getSampleModel().getNumBands();
             sd = new GridSampleDimension[numBands];
             for (int i = 0; i < numBands; i++) {
-                sd[i] =
-                        new GridSampleDimension(
-                                TypeMap.getColorInterpretation(finalImage.getColorModel(), i)
-                                        .name());
+                sd[i] = new GridSampleDimension(TypeMap.getColorInterpretation(finalImage.getColorModel(), i)
+                        .name());
             }
 
             CoverageUtilities.setNoDataProperty(properties, ow.getNoData());
@@ -193,10 +187,8 @@ public class RasterSymbolizerHelper extends SubchainStyleVisitorCoverageProcessi
         super(
                 1,
                 hints,
-                SimpleInternationalString.wrap(
-                        Vocabulary.format(VocabularyKeys.RASTER_SYMBOLIZER_HELPER)),
-                SimpleInternationalString.wrap(
-                        "Simple Coverage Processing Node for RasterSymbolizerHelper"));
+                SimpleInternationalString.wrap(Vocabulary.format(VocabularyKeys.RASTER_SYMBOLIZER_HELPER)),
+                SimpleInternationalString.wrap("Simple Coverage Processing Node for RasterSymbolizerHelper"));
 
         // add a source that will just give me back my gridcoverage
         this.addSource(new RootNode(sourceCoverage, hints));

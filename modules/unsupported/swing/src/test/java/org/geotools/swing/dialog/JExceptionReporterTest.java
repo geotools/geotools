@@ -44,8 +44,7 @@ import org.junit.runner.RunWith;
 @RunWith(GraphicsTestRunner.class)
 public class JExceptionReporterTest extends GraphicsTestBase<DialogFixture, Dialog, DialogDriver> {
 
-    private static final Class<? extends Dialog> DIALOG_CLASS =
-            JExceptionReporter.ReportingDialog.class;
+    private static final Class<? extends Dialog> DIALOG_CLASS = JExceptionReporter.ReportingDialog.class;
 
     private WindowActivatedListener<DialogFixture, Dialog, DialogDriver> listener;
 

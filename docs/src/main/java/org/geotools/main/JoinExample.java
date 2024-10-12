@@ -73,8 +73,7 @@ public class JoinExample {
     }
 
     // joinExample start
-    private static void joinExample(SimpleFeatureSource shapes, SimpleFeatureSource shapes2)
-            throws Exception {
+    private static void joinExample(SimpleFeatureSource shapes, SimpleFeatureSource shapes2) throws Exception {
         SimpleFeatureType schema = shapes.getSchema();
         String typeName = schema.getTypeName();
         String geomName = schema.getGeometryDescriptor().getLocalName();
@@ -97,8 +96,7 @@ public class JoinExample {
                         // skip bad data
                         continue;
                     }
-                    Filter innerFilter =
-                            ff.intersects(ff.property(geomName2), ff.literal(geometry));
+                    Filter innerFilter = ff.intersects(ff.property(geomName2), ff.literal(geometry));
                     Query innerQuery = new Query(typeName2, innerFilter, Query.NO_NAMES);
                     SimpleFeatureCollection join = shapes2.getFeatures(innerQuery);
                     int size = join.size();
@@ -109,14 +107,7 @@ public class JoinExample {
         } finally {
             iterator.close();
         }
-        System.out.println(
-                "At most "
-                        + max
-                        + " "
-                        + typeName2
-                        + " features in a single "
-                        + typeName
-                        + " feature");
+        System.out.println("At most " + max + " " + typeName2 + " features in a single " + typeName + " feature");
     }
     // joinExample end
 

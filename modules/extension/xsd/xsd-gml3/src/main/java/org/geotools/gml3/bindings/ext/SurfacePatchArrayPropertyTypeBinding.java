@@ -52,8 +52,7 @@ public class SurfacePatchArrayPropertyTypeBinding
 
     @Override
     public Object getProperty(Object object, QName name) {
-        if ("_SurfacePatch".equals(name.getLocalPart())
-                || "AbstractSurfacePatch".equals(name.getLocalPart())) {
+        if ("_SurfacePatch".equals(name.getLocalPart()) || "AbstractSurfacePatch".equals(name.getLocalPart())) {
             Polygon[] patches = (Polygon[]) object;
             return patches;
         }

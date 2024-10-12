@@ -38,14 +38,13 @@ public class EqualAreaFunction extends AbstractQuantityClassificationFunction {
 
     private static final FilterFactory FF = CommonFactoryFinder.getFilterFactory();
 
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "EqualArea",
-                    RangedClassifier.class,
-                    parameter("value", Double.class),
-                    parameter("classes", Integer.class),
-                    parameter("areaFunction", Double.class, 0, 1),
-                    parameter("percentages", Boolean.class, 0, 1));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "EqualArea",
+            RangedClassifier.class,
+            parameter("value", Double.class),
+            parameter("classes", Integer.class),
+            parameter("areaFunction", Double.class, 0, 1),
+            parameter("percentages", Boolean.class, 0, 1));
 
     public EqualAreaFunction() {
         super(NAME);

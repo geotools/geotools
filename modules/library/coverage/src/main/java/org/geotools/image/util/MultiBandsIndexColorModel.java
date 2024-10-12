@@ -115,24 +115,21 @@ final class MultiBandsIndexColorModel extends IndexColorModel {
         pixel = super.getDataElements(RGB, pixel);
         switch (transferType) {
             case DataBuffer.TYPE_SHORT: // fall through
-            case DataBuffer.TYPE_USHORT:
-                {
-                    final short[] array = (short[]) pixel;
-                    Arrays.fill(array, 1, numBands, array[0]);
-                    break;
-                }
-            case DataBuffer.TYPE_BYTE:
-                {
-                    final byte[] array = (byte[]) pixel;
-                    Arrays.fill(array, 1, numBands, array[0]);
-                    break;
-                }
-            case DataBuffer.TYPE_INT:
-                {
-                    final int[] array = (int[]) pixel;
-                    Arrays.fill(array, 1, numBands, array[0]);
-                    break;
-                }
+            case DataBuffer.TYPE_USHORT: {
+                final short[] array = (short[]) pixel;
+                Arrays.fill(array, 1, numBands, array[0]);
+                break;
+            }
+            case DataBuffer.TYPE_BYTE: {
+                final byte[] array = (byte[]) pixel;
+                Arrays.fill(array, 1, numBands, array[0]);
+                break;
+            }
+            case DataBuffer.TYPE_INT: {
+                final int[] array = (int[]) pixel;
+                Arrays.fill(array, 1, numBands, array[0]);
+                break;
+            }
             default:
                 throw new UnsupportedOperationException(unsupported());
         }
@@ -171,25 +168,21 @@ final class MultiBandsIndexColorModel extends IndexColorModel {
     public int getRed(final Object inData) {
         final int pixel;
         switch (transferType) {
-            case DataBuffer.TYPE_BYTE:
-                {
-                    pixel = ((byte[]) inData)[visibleBand] & 0xff;
-                    break;
-                }
-            case DataBuffer.TYPE_USHORT:
-                {
-                    pixel = ((short[]) inData)[visibleBand] & 0xffff;
-                    break;
-                }
-            case DataBuffer.TYPE_INT:
-                {
-                    pixel = ((int[]) inData)[visibleBand];
-                    break;
-                }
-            default:
-                {
-                    throw new UnsupportedOperationException(unsupported());
-                }
+            case DataBuffer.TYPE_BYTE: {
+                pixel = ((byte[]) inData)[visibleBand] & 0xff;
+                break;
+            }
+            case DataBuffer.TYPE_USHORT: {
+                pixel = ((short[]) inData)[visibleBand] & 0xffff;
+                break;
+            }
+            case DataBuffer.TYPE_INT: {
+                pixel = ((int[]) inData)[visibleBand];
+                break;
+            }
+            default: {
+                throw new UnsupportedOperationException(unsupported());
+            }
         }
         return getRed(pixel);
     }
@@ -202,25 +195,21 @@ final class MultiBandsIndexColorModel extends IndexColorModel {
     public int getGreen(final Object inData) {
         final int pixel;
         switch (transferType) {
-            case DataBuffer.TYPE_BYTE:
-                {
-                    pixel = ((byte[]) inData)[visibleBand] & 0xff;
-                    break;
-                }
-            case DataBuffer.TYPE_USHORT:
-                {
-                    pixel = ((short[]) inData)[visibleBand] & 0xffff;
-                    break;
-                }
-            case DataBuffer.TYPE_INT:
-                {
-                    pixel = ((int[]) inData)[visibleBand];
-                    break;
-                }
-            default:
-                {
-                    throw new UnsupportedOperationException(unsupported());
-                }
+            case DataBuffer.TYPE_BYTE: {
+                pixel = ((byte[]) inData)[visibleBand] & 0xff;
+                break;
+            }
+            case DataBuffer.TYPE_USHORT: {
+                pixel = ((short[]) inData)[visibleBand] & 0xffff;
+                break;
+            }
+            case DataBuffer.TYPE_INT: {
+                pixel = ((int[]) inData)[visibleBand];
+                break;
+            }
+            default: {
+                throw new UnsupportedOperationException(unsupported());
+            }
         }
         return getGreen(pixel);
     }
@@ -233,25 +222,21 @@ final class MultiBandsIndexColorModel extends IndexColorModel {
     public int getBlue(final Object inData) {
         final int pixel;
         switch (transferType) {
-            case DataBuffer.TYPE_BYTE:
-                {
-                    pixel = ((byte[]) inData)[visibleBand] & 0xff;
-                    break;
-                }
-            case DataBuffer.TYPE_USHORT:
-                {
-                    pixel = ((short[]) inData)[visibleBand] & 0xffff;
-                    break;
-                }
-            case DataBuffer.TYPE_INT:
-                {
-                    pixel = ((int[]) inData)[visibleBand];
-                    break;
-                }
-            default:
-                {
-                    throw new UnsupportedOperationException(unsupported());
-                }
+            case DataBuffer.TYPE_BYTE: {
+                pixel = ((byte[]) inData)[visibleBand] & 0xff;
+                break;
+            }
+            case DataBuffer.TYPE_USHORT: {
+                pixel = ((short[]) inData)[visibleBand] & 0xffff;
+                break;
+            }
+            case DataBuffer.TYPE_INT: {
+                pixel = ((int[]) inData)[visibleBand];
+                break;
+            }
+            default: {
+                throw new UnsupportedOperationException(unsupported());
+            }
         }
         return getBlue(pixel);
     }
@@ -261,25 +246,21 @@ final class MultiBandsIndexColorModel extends IndexColorModel {
     public int getAlpha(final Object inData) {
         final int pixel;
         switch (transferType) {
-            case DataBuffer.TYPE_BYTE:
-                {
-                    pixel = ((byte[]) inData)[visibleBand] & 0xff;
-                    break;
-                }
-            case DataBuffer.TYPE_USHORT:
-                {
-                    pixel = ((short[]) inData)[visibleBand] & 0xffff;
-                    break;
-                }
-            case DataBuffer.TYPE_INT:
-                {
-                    pixel = ((int[]) inData)[visibleBand];
-                    break;
-                }
-            default:
-                {
-                    throw new UnsupportedOperationException(unsupported());
-                }
+            case DataBuffer.TYPE_BYTE: {
+                pixel = ((byte[]) inData)[visibleBand] & 0xff;
+                break;
+            }
+            case DataBuffer.TYPE_USHORT: {
+                pixel = ((short[]) inData)[visibleBand] & 0xffff;
+                break;
+            }
+            case DataBuffer.TYPE_INT: {
+                pixel = ((int[]) inData)[visibleBand];
+                break;
+            }
+            default: {
+                throw new UnsupportedOperationException(unsupported());
+            }
         }
         return getAlpha(pixel);
     }

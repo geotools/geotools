@@ -94,8 +94,7 @@ final class OldReferencingObjectCache {
         pool.put(key, object);
         int toReplace = pool.size() - maxStrongReferences;
         if (toReplace > 0) {
-            for (final Iterator<Map.Entry<Object, Object>> it = pool.entrySet().iterator();
-                    it.hasNext(); ) {
+            for (final Iterator<Map.Entry<Object, Object>> it = pool.entrySet().iterator(); it.hasNext(); ) {
                 final Map.Entry<Object, Object> entry = it.next();
                 final Object value = entry.getValue();
                 if (value instanceof Reference) {

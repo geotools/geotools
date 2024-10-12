@@ -49,8 +49,7 @@ public class TestHttpResponse implements HTTPResponse {
     public TestHttpResponse(String contentType, String charset, InputStream contentInputStream) {
         this.contentType = contentType;
         this.charset = charset;
-        try (BufferedReader reader =
-                new BufferedReader(new InputStreamReader(contentInputStream))) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(contentInputStream))) {
             StringBuilder sb = new StringBuilder();
             String line;
             while ((line = reader.readLine()) != null) {

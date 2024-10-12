@@ -48,9 +48,7 @@ public class XSAnySimpleTypeStrategyTest extends TestSchema {
 
     @Test
     public void testAnyTypeParse() throws Exception {
-        assertEquals(
-                "  hello world",
-                stratagy.parse(element("  hello world", XS.ANYSIMPLETYPE), "  hello world"));
+        assertEquals("  hello world", stratagy.parse(element("  hello world", XS.ANYSIMPLETYPE), "  hello world"));
     }
 
     @Test

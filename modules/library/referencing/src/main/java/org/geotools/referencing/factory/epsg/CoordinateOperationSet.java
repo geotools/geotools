@@ -72,9 +72,7 @@ final class CoordinateOperationSet extends IdentifiedObjectSet {
         if (projections != null) {
             final String crs = projections.get(code);
             if (crs != null) {
-                return ((CRSAuthorityFactory) factory)
-                        .createProjectedCRS(crs)
-                        .getConversionFromBase();
+                return ((CRSAuthorityFactory) factory).createProjectedCRS(crs).getConversionFromBase();
             }
         }
         return ((CoordinateOperationAuthorityFactory) factory).createCoordinateOperation(code);

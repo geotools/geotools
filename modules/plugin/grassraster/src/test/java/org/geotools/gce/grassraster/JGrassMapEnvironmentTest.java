@@ -44,86 +44,39 @@ public class JGrassMapEnvironmentTest {
     private void checkEnvironment(JGrassMapEnvironment jME) {
         File cell = jME.getCELL();
         Assert.assertTrue(cell.exists());
-        Assert.assertTrue(
-                cell.getAbsolutePath()
-                        .endsWith(
-                                "testlocation"
-                                        + File.separator
-                                        + "test"
-                                        + File.separator
-                                        + "cell"
-                                        + File.separator
-                                        + "pit"));
+        Assert.assertTrue(cell.getAbsolutePath()
+                .endsWith("testlocation" + File.separator + "test" + File.separator + "cell" + File.separator + "pit"));
 
         File cellFolder = jME.getCellFolder();
         Assert.assertTrue(cellFolder.exists() && cellFolder.isDirectory());
-        Assert.assertTrue(
-                cellFolder
-                        .getAbsolutePath()
-                        .endsWith(
-                                "testlocation"
-                                        + File.separator
-                                        + "test"
-                                        + File.separator
-                                        + "cell"));
+        Assert.assertTrue(cellFolder
+                .getAbsolutePath()
+                .endsWith("testlocation" + File.separator + "test" + File.separator + "cell"));
 
         File fcell = jME.getFCELL();
         Assert.assertTrue(fcell.exists());
-        Assert.assertTrue(
-                fcell.getAbsolutePath()
-                        .endsWith(
-                                "testlocation"
-                                        + File.separator
-                                        + "test"
-                                        + File.separator
-                                        + "fcell"
-                                        + File.separator
-                                        + "pit"));
+        Assert.assertTrue(fcell.getAbsolutePath()
+                .endsWith(
+                        "testlocation" + File.separator + "test" + File.separator + "fcell" + File.separator + "pit"));
 
         File fcellFolder = jME.getFcellFolder();
         Assert.assertTrue(fcellFolder.exists() && fcellFolder.isDirectory());
-        Assert.assertTrue(
-                fcellFolder
-                        .getAbsolutePath()
-                        .endsWith(
-                                "testlocation"
-                                        + File.separator
-                                        + "test"
-                                        + File.separator
-                                        + "fcell"));
+        Assert.assertTrue(fcellFolder
+                .getAbsolutePath()
+                .endsWith("testlocation" + File.separator + "test" + File.separator + "fcell"));
 
         File colr = jME.getCOLR();
-        Assert.assertTrue(
-                colr.getAbsolutePath()
-                        .endsWith(
-                                "testlocation"
-                                        + File.separator
-                                        + "test"
-                                        + File.separator
-                                        + "colr"
-                                        + File.separator
-                                        + "pit"));
+        Assert.assertTrue(colr.getAbsolutePath()
+                .endsWith("testlocation" + File.separator + "test" + File.separator + "colr" + File.separator + "pit"));
 
         File colrFolder = jME.getColrFolder();
-        Assert.assertTrue(
-                colrFolder
-                        .getAbsolutePath()
-                        .endsWith(
-                                "testlocation"
-                                        + File.separator
-                                        + "test"
-                                        + File.separator
-                                        + "colr"));
+        Assert.assertTrue(colrFolder
+                .getAbsolutePath()
+                .endsWith("testlocation" + File.separator + "test" + File.separator + "colr"));
 
         File wind = jME.getWIND();
         Assert.assertTrue(wind.exists());
         Assert.assertTrue(
-                wind.getAbsolutePath()
-                        .endsWith(
-                                "testlocation"
-                                        + File.separator
-                                        + "test"
-                                        + File.separator
-                                        + "WIND"));
+                wind.getAbsolutePath().endsWith("testlocation" + File.separator + "test" + File.separator + "WIND"));
     }
 }

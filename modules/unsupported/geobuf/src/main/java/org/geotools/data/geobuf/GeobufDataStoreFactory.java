@@ -31,31 +31,13 @@ public class GeobufDataStoreFactory implements DataStoreFactorySpi {
     private static final Logger LOGGER = Logging.getLogger(GeobufDataStoreFactory.class);
 
     public static final Param FILE_PARAM =
-            new Param(
-                    "file",
-                    File.class,
-                    "The Geobuf file or directory",
-                    true,
-                    null,
-                    new KVP(Param.EXT, "pbf"));
+            new Param("file", File.class, "The Geobuf file or directory", true, null, new KVP(Param.EXT, "pbf"));
 
     public static final Param PRECISION_PARAM =
-            new Param(
-                    "precision",
-                    Integer.class,
-                    "The coordinate preceision",
-                    false,
-                    6,
-                    new KVP("precision", "6"));
+            new Param("precision", Integer.class, "The coordinate preceision", false, 6, new KVP("precision", "6"));
 
     public static final Param DIMENSION_PARAM =
-            new Param(
-                    "dimension",
-                    Integer.class,
-                    "The geometry dimension",
-                    false,
-                    2,
-                    new KVP("precision", "2"));
+            new Param("dimension", Integer.class, "The geometry dimension", false, 2, new KVP("precision", "2"));
 
     public GeobufDataStoreFactory() {}
 

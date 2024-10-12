@@ -44,37 +44,29 @@ public class XSUnsignedBindingsTest {
 
     @Test
     public void testParseUnsignedInt() throws Exception {
-        Long l = (Long) p.parse(new ByteArrayInputStream(doc("unsignedInt", "12").getBytes(UTF_8)));
+        Long l =
+                (Long) p.parse(new ByteArrayInputStream(doc("unsignedInt", "12").getBytes(UTF_8)));
         Assert.assertEquals(12l, l.longValue());
     }
 
     @Test
     public void testParseUnsignedByte() throws Exception {
-        Short s =
-                (Short)
-                        p.parse(
-                                new ByteArrayInputStream(
-                                        doc("unsignedByte", "12").getBytes(UTF_8)));
+        Short s = (Short)
+                p.parse(new ByteArrayInputStream(doc("unsignedByte", "12").getBytes(UTF_8)));
         Assert.assertEquals(12, s.shortValue());
     }
 
     @Test
     public void testParseUnsignedShort() throws Exception {
-        Integer i =
-                (Integer)
-                        p.parse(
-                                new ByteArrayInputStream(
-                                        doc("unsignedShort", "12").getBytes(UTF_8)));
+        Integer i = (Integer)
+                p.parse(new ByteArrayInputStream(doc("unsignedShort", "12").getBytes(UTF_8)));
         Assert.assertEquals(12, i.longValue());
     }
 
     @Test
     public void testParseUnsignedLong() throws Exception {
-        BigDecimal l =
-                (BigDecimal)
-                        p.parse(
-                                new ByteArrayInputStream(
-                                        doc("unsignedLong", "12").getBytes(UTF_8)));
+        BigDecimal l = (BigDecimal)
+                p.parse(new ByteArrayInputStream(doc("unsignedLong", "12").getBytes(UTF_8)));
         Assert.assertEquals(12l, l.longValue());
     }
 

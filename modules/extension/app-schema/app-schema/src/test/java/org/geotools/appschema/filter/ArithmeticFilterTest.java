@@ -79,40 +79,32 @@ public class ArithmeticFilterTest extends AppSchemaTestSupport {
         // evaluating first feature with Location accuracy value = 200
 
         // 200 x 2 = 400
-        Filter arithmeticMultiplyFilter =
-                ff.equals(
-                        ff.multiply(
-                                ff.property(
-                                        "gsml:positionalAccuracy/gsml:CGI_NumericValue/gsml:principalValue"),
-                                ff.literal(2)),
-                        ff.literal(400));
+        Filter arithmeticMultiplyFilter = ff.equals(
+                ff.multiply(
+                        ff.property("gsml:positionalAccuracy/gsml:CGI_NumericValue/gsml:principalValue"),
+                        ff.literal(2)),
+                ff.literal(400));
 
         // 200 / 2 = 100
-        Filter arithmeticDivideFilter =
-                ff.equals(
-                        ff.divide(
-                                ff.property(
-                                        "gsml:positionalAccuracy/gsml:CGI_NumericValue/gsml:principalValue"),
-                                ff.literal(2)),
-                        ff.literal(100));
+        Filter arithmeticDivideFilter = ff.equals(
+                ff.divide(
+                        ff.property("gsml:positionalAccuracy/gsml:CGI_NumericValue/gsml:principalValue"),
+                        ff.literal(2)),
+                ff.literal(100));
 
         // 200 + 100 = 300
-        Filter arithmeticAdditionFilter =
-                ff.equals(
-                        ff.add(
-                                ff.property(
-                                        "gsml:positionalAccuracy/gsml:CGI_NumericValue/gsml:principalValue"),
-                                ff.literal(100)),
-                        ff.literal(300));
+        Filter arithmeticAdditionFilter = ff.equals(
+                ff.add(
+                        ff.property("gsml:positionalAccuracy/gsml:CGI_NumericValue/gsml:principalValue"),
+                        ff.literal(100)),
+                ff.literal(300));
 
         // 200 - 100 = 100
-        Filter arithmeticSubtractionFilter =
-                ff.equals(
-                        ff.subtract(
-                                ff.property(
-                                        "gsml:positionalAccuracy/gsml:CGI_NumericValue/gsml:principalValue"),
-                                ff.literal(100)),
-                        ff.literal(100));
+        Filter arithmeticSubtractionFilter = ff.equals(
+                ff.subtract(
+                        ff.property("gsml:positionalAccuracy/gsml:CGI_NumericValue/gsml:principalValue"),
+                        ff.literal(100)),
+                ff.literal(100));
 
         FeatureCollection<FeatureType, Feature> features = fSource.getFeatures();
 

@@ -33,8 +33,7 @@ public class LanguagesBindingTest extends WPSTestSupport {
 
         Document dom = encode(languages, WPS.Languages);
 
-        Element def =
-                getElementByQName(dom.getDocumentElement(), new QName(WPS.NAMESPACE, "Default"));
+        Element def = getElementByQName(dom.getDocumentElement(), new QName(WPS.NAMESPACE, "Default"));
         assertNotNull(def);
 
         assertNotNull(getElementByQName(def, OWS.Language));
@@ -46,7 +45,6 @@ public class LanguagesBindingTest extends WPSTestSupport {
                 getElementByQName(dom.getDocumentElement(), new QName(WPS.NAMESPACE, "Default"))
                         .getFirstChild()
                         .getTextContent());
-        assertNotNull(
-                getElementByQName(dom.getDocumentElement(), new QName(WPS.NAMESPACE, "Supported")));
+        assertNotNull(getElementByQName(dom.getDocumentElement(), new QName(WPS.NAMESPACE, "Supported")));
     }
 }

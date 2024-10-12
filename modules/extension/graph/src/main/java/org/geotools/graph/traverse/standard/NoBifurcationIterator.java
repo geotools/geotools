@@ -63,8 +63,7 @@ public class NoBifurcationIterator extends SourceGraphIterator {
     public void setSource(Graphable source) {
         // check that source node if of degree <= 2
         if (((Node) source).getDegree() > 2) {
-            throw new IllegalStateException(
-                    "Cannot start a no bifurcation traversal  on a node that " + "bifurcates.");
+            throw new IllegalStateException("Cannot start a no bifurcation traversal  on a node that " + "bifurcates.");
         }
         super.setSource(source);
         m_next = (Node) getSource();
@@ -92,8 +91,7 @@ public class NoBifurcationIterator extends SourceGraphIterator {
         // find a related node that is non visited and degree <= 2
         Iterator<? extends Graphable> itr = current.getRelated();
         m_next = (Node) itr.next();
-        if (itr.hasNext() && (traversal.isVisited(m_next) || m_next.getDegree() > 2))
-            m_next = (Node) itr.next();
+        if (itr.hasNext() && (traversal.isVisited(m_next) || m_next.getDegree() > 2)) m_next = (Node) itr.next();
         if (traversal.isVisited(m_next) || m_next.getDegree() > 2) m_next = null;
     }
 

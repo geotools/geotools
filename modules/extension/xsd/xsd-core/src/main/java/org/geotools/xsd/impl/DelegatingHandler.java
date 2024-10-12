@@ -137,8 +137,6 @@ public class DelegatingHandler implements DocumentHandler, ElementHandler {
     }
 
     String qname(QName name) {
-        return name.getNamespaceURI() != null
-                ? name.getPrefix() + ":" + name.getLocalPart()
-                : name.getLocalPart();
+        return name.getNamespaceURI() != null ? name.getPrefix() + ":" + name.getLocalPart() : name.getLocalPart();
     }
 }

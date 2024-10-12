@@ -61,9 +61,7 @@ public class ListFunctionsTest {
 
         List<Integer> list = Arrays.asList(1, 2, 3, 4);
 
-        Function exp =
-                ff.function(
-                        "lapply", ff.property("."), ff.multiply(ff.property("."), ff.literal(2)));
+        Function exp = ff.function("lapply", ff.property("."), ff.multiply(ff.property("."), ff.literal(2)));
         Object value = exp.evaluate(list);
         assertTrue(value instanceof List);
         assertEquals(Arrays.asList(2.0, 4.0, 6.0, 8.0), value);

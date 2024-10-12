@@ -69,12 +69,10 @@ public class LoggingTest {
              * Tests level setting, ending with OFF in order to avoid
              * polluting the standard output stream with this test.
              */
-            final org.apache.logging.log4j.Logger log4j =
-                    org.apache.logging.log4j.LogManager.getLogger("org.geotools");
+            final org.apache.logging.log4j.Logger log4j = org.apache.logging.log4j.LogManager.getLogger("org.geotools");
             final org.apache.logging.log4j.Level oldLevel = log4j.getLevel();
 
-            org.apache.logging.log4j.core.config.Configurator.setLevel(
-                    log4j, org.apache.logging.log4j.Level.WARN);
+            org.apache.logging.log4j.core.config.Configurator.setLevel(log4j, org.apache.logging.log4j.Level.WARN);
 
             // logger.setLevel(Level.WARNING);
             assertSame("java level mapped", Level.WARNING, logger.getLevel());
@@ -82,15 +80,13 @@ public class LoggingTest {
             assertTrue(logger.isLoggable(Level.SEVERE));
             assertFalse(logger.isLoggable(Level.CONFIG));
 
-            org.apache.logging.log4j.core.config.Configurator.setLevel(
-                    log4j, org.apache.logging.log4j.Level.DEBUG);
+            org.apache.logging.log4j.core.config.Configurator.setLevel(log4j, org.apache.logging.log4j.Level.DEBUG);
             //          assertEquals(Level.FINER, logger.getLevel());
             // Commented-out because in older version of commons-logging, "trace" maps to "debug".
             assertTrue(logger.isLoggable(Level.FINE));
             assertTrue(logger.isLoggable(Level.SEVERE));
 
-            org.apache.logging.log4j.core.config.Configurator.setLevel(
-                    log4j, org.apache.logging.log4j.Level.OFF);
+            org.apache.logging.log4j.core.config.Configurator.setLevel(log4j, org.apache.logging.log4j.Level.OFF);
             assertSame("java level mapped", Level.OFF, logger.getLevel());
 
             logger.finest("Message to Commons-logging at FINEST level.");
@@ -123,8 +119,7 @@ public class LoggingTest {
 
             logger.setLevel(Level.WARNING);
             assertSame("java level mapped", Level.WARNING, logger.getLevel());
-            assertSame(
-                    "log4j level mapped", org.apache.log4j.Level.WARN, logger4j.logger.getLevel());
+            assertSame("log4j level mapped", org.apache.log4j.Level.WARN, logger4j.logger.getLevel());
             assertTrue(logger.isLoggable(Level.WARNING));
             assertFalse(logger.isLoggable(Level.INFO));
 
@@ -136,15 +131,13 @@ public class LoggingTest {
 
             logger.setLevel(Level.FINER);
             assertSame("java level mapped", Level.FINER, logger.getLevel());
-            assertSame(
-                    "log4j level mapped", org.apache.log4j.Level.TRACE, logger4j.logger.getLevel());
+            assertSame("log4j level mapped", org.apache.log4j.Level.TRACE, logger4j.logger.getLevel());
             assertTrue(logger.isLoggable(Level.FINER));
             assertTrue(logger.isLoggable(Level.SEVERE));
 
             logger.setLevel(Level.OFF);
             assertSame("java level mapped", Level.OFF, logger.getLevel());
-            assertSame(
-                    "log4j level mapped", org.apache.log4j.Level.OFF, logger4j.logger.getLevel());
+            assertSame("log4j level mapped", org.apache.log4j.Level.OFF, logger4j.logger.getLevel());
 
             logger.finer("Message to Log4J at FINER level.");
             logger.fine("Message to Log4J at FINE level.");
@@ -175,10 +168,7 @@ public class LoggingTest {
 
             logger.setLevel(Level.WARNING);
             assertSame("java level mapped", Level.WARNING, logger.getLevel());
-            assertSame(
-                    "log4j level mapped",
-                    org.apache.logging.log4j.Level.WARN,
-                    logger4j.logger.getLevel());
+            assertSame("log4j level mapped", org.apache.logging.log4j.Level.WARN, logger4j.logger.getLevel());
             assertTrue(logger.isLoggable(Level.WARNING));
             assertTrue(logger.isLoggable(Level.SEVERE));
             assertFalse(logger.isLoggable(Level.CONFIG));
@@ -192,19 +182,13 @@ public class LoggingTest {
 
             logger.setLevel(Level.FINER);
             assertSame(Level.FINER, logger.getLevel());
-            assertSame(
-                    "log4j level mapped",
-                    org.apache.logging.log4j.Level.TRACE,
-                    logger4j.logger.getLevel());
+            assertSame("log4j level mapped", org.apache.logging.log4j.Level.TRACE, logger4j.logger.getLevel());
             assertTrue(logger.isLoggable(Level.FINER));
             assertTrue(logger.isLoggable(Level.SEVERE));
 
             logger.setLevel(Level.OFF);
             assertSame("java level mapped", Level.OFF, logger.getLevel());
-            assertSame(
-                    "log4j level mapped",
-                    org.apache.logging.log4j.Level.OFF,
-                    logger4j.logger.getLevel());
+            assertSame("log4j level mapped", org.apache.logging.log4j.Level.OFF, logger4j.logger.getLevel());
 
             logger.finer("Message to Log4J at FINER level.");
             logger.fine("Message to Log4J at FINE level.");

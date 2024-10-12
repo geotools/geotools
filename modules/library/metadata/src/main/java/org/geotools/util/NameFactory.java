@@ -101,8 +101,7 @@ public final class NameFactory {
      * @param length The valid length of {@code names} array.
      * @param separator The separator character to use.
      */
-    private static GenericName create(
-            final CharSequence[] names, final int length, final char separator) {
+    private static GenericName create(final CharSequence[] names, final int length, final char separator) {
         if (length <= 0) {
             throw new IllegalArgumentException(String.valueOf(length));
         }
@@ -150,7 +149,6 @@ public final class NameFactory {
             return names;
         }
         // TODO: localize
-        throw new ClassCastException(
-                "Cannot convert " + Classes.getShortClassName(value) + " to GenericName[]");
+        throw new ClassCastException("Cannot convert " + Classes.getShortClassName(value) + " to GenericName[]");
     }
 }

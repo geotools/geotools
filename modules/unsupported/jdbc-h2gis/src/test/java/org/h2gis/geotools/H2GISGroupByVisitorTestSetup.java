@@ -32,20 +32,19 @@ public class H2GISGroupByVisitorTestSetup extends JDBCGroupByVisitorTestSetup {
                 "CREATE TABLE  \"geotools\".\"buildings_group_by_tests\" (\"id\" int PRIMARY KEY, \"building_id\" varchar(255), "
                         + "\"building_type\" varchar(255), \"energy_type\" varchar(255), \"fuel_consumption\" float,"
                         + "\"energy_consumption\" float, \"last_update\" timestamp, \"last_update_date\" date)");
-        run(
-                "INSERT INTO  \"geotools\".\"buildings_group_by_tests\" VALUES "
-                        + "(1, 'SCHOOL_A', 'SCHOOL', 'FLOWING_WATER', NULL, 50.0, '2016-06-03 12:00:00', '2016-06-03'),"
-                        + "(2, 'SCHOOL_A', 'SCHOOL', 'NUCLEAR', NULL, 10.0, '2016-06-03 16:00:00', '2016-06-03'),"
-                        + "(3, 'SCHOOL_A', 'SCHOOL', 'WIND', NULL, 20.0, '2016-06-03 20:00:00', '2016-06-03'),"
-                        + "(4, 'SCHOOL_B', 'SCHOOL', 'SOLAR', NULL, 30.0, '2016-06-05 12:00:00', '2016-06-05'),"
-                        + "(5, 'SCHOOL_B', 'SCHOOL', 'FUEL', NULL, 60.0, '2016-06-06 12:00:00', '2016-06-06'),"
-                        + "(6, 'SCHOOL_B', 'SCHOOL', 'NUCLEAR', NULL, 10.0, '2016-06-06 14:00:00', '2016-06-06'),"
-                        + "(7, 'FABRIC_A', 'FABRIC', 'FLOWING_WATER', NULL, 500.0, '2016-06-07 12:00:00', '2016-06-07'),"
-                        + "(8, 'FABRIC_A', 'FABRIC', 'NUCLEAR', NULL, 150.0, '2016-06-07 18:00:00', '2016-06-07'),"
-                        + "(9, 'FABRIC_B', 'FABRIC', 'WIND', NULL, 20.0, '2016-06-07 20:00:00', '2016-06-07'),"
-                        + "(10, 'FABRIC_B', 'FABRIC', 'SOLAR', NULL, 30.0, '2016-06-15 12:00:00', '2016-06-15'),"
-                        + "(11, 'HOUSE_A', 'HOUSE', 'FUEL', NULL, 6.0, '2016-06-15 19:00:00', '2016-06-15'),"
-                        + "(12, 'HOUSE_B', 'HOUSE', 'NUCLEAR', NULL, 4.0, '2016-06-15 20:00:00', '2016-06-15');");
+        run("INSERT INTO  \"geotools\".\"buildings_group_by_tests\" VALUES "
+                + "(1, 'SCHOOL_A', 'SCHOOL', 'FLOWING_WATER', NULL, 50.0, '2016-06-03 12:00:00', '2016-06-03'),"
+                + "(2, 'SCHOOL_A', 'SCHOOL', 'NUCLEAR', NULL, 10.0, '2016-06-03 16:00:00', '2016-06-03'),"
+                + "(3, 'SCHOOL_A', 'SCHOOL', 'WIND', NULL, 20.0, '2016-06-03 20:00:00', '2016-06-03'),"
+                + "(4, 'SCHOOL_B', 'SCHOOL', 'SOLAR', NULL, 30.0, '2016-06-05 12:00:00', '2016-06-05'),"
+                + "(5, 'SCHOOL_B', 'SCHOOL', 'FUEL', NULL, 60.0, '2016-06-06 12:00:00', '2016-06-06'),"
+                + "(6, 'SCHOOL_B', 'SCHOOL', 'NUCLEAR', NULL, 10.0, '2016-06-06 14:00:00', '2016-06-06'),"
+                + "(7, 'FABRIC_A', 'FABRIC', 'FLOWING_WATER', NULL, 500.0, '2016-06-07 12:00:00', '2016-06-07'),"
+                + "(8, 'FABRIC_A', 'FABRIC', 'NUCLEAR', NULL, 150.0, '2016-06-07 18:00:00', '2016-06-07'),"
+                + "(9, 'FABRIC_B', 'FABRIC', 'WIND', NULL, 20.0, '2016-06-07 20:00:00', '2016-06-07'),"
+                + "(10, 'FABRIC_B', 'FABRIC', 'SOLAR', NULL, 30.0, '2016-06-15 12:00:00', '2016-06-15'),"
+                + "(11, 'HOUSE_A', 'HOUSE', 'FUEL', NULL, 6.0, '2016-06-15 19:00:00', '2016-06-15'),"
+                + "(12, 'HOUSE_B', 'HOUSE', 'NUCLEAR', NULL, 4.0, '2016-06-15 20:00:00', '2016-06-15');");
     }
 
     @Override
@@ -64,27 +63,17 @@ public class H2GISGroupByVisitorTestSetup extends JDBCGroupByVisitorTestSetup {
                         + "\"doubleProperty\" double precision, " //
                         + "\"stringProperty\" varchar(255))");
 
-        run(
-                "INSERT INTO \"geotools\".\"ft1_group_by\" VALUES(0, ST_GeomFromText('POINT(0 0)', 4326), 0, 0.0, 'aa')");
-        run(
-                "INSERT INTO \"geotools\".\"ft1_group_by\" VALUES(1, ST_GeomFromText('POINT(0 0)', 4326), 1, 1.0, 'ba')");
-        run(
-                "INSERT INTO \"geotools\".\"ft1_group_by\" VALUES(2, ST_GeomFromText('POINT(0 0)', 4326), 2, 2.0, 'ca')");
-        run(
-                "INSERT INTO \"geotools\".\"ft1_group_by\" VALUES(3, ST_GeomFromText('POINT(1 1)', 4326), 10, 10.0, 'ab')");
-        run(
-                "INSERT INTO \"geotools\".\"ft1_group_by\" VALUES(4, ST_GeomFromText('POINT(1 1)', 4326), 11, 11.0, 'bb')");
-        run(
-                "INSERT INTO \"geotools\".\"ft1_group_by\" VALUES(5, ST_GeomFromText('POINT(1 1)', 4326), 12, 12.0, 'cb')");
-        run(
-                "INSERT INTO \"geotools\".\"ft1_group_by\" VALUES(6, ST_GeomFromText('POINT(2 2)', 4326), 20, 20.0, 'ac')");
-        run(
-                "INSERT INTO \"geotools\".\"ft1_group_by\" VALUES(7, ST_GeomFromText('POINT(2 2)', 4326), 21, 21.0, 'bc')");
-        run(
-                "INSERT INTO \"geotools\".\"ft1_group_by\" VALUES(8, ST_GeomFromText('POINT(2 2)', 4326), 22, 22.0, 'cc')");
+        run("INSERT INTO \"geotools\".\"ft1_group_by\" VALUES(0, ST_GeomFromText('POINT(0 0)', 4326), 0, 0.0, 'aa')");
+        run("INSERT INTO \"geotools\".\"ft1_group_by\" VALUES(1, ST_GeomFromText('POINT(0 0)', 4326), 1, 1.0, 'ba')");
+        run("INSERT INTO \"geotools\".\"ft1_group_by\" VALUES(2, ST_GeomFromText('POINT(0 0)', 4326), 2, 2.0, 'ca')");
+        run("INSERT INTO \"geotools\".\"ft1_group_by\" VALUES(3, ST_GeomFromText('POINT(1 1)', 4326), 10, 10.0, 'ab')");
+        run("INSERT INTO \"geotools\".\"ft1_group_by\" VALUES(4, ST_GeomFromText('POINT(1 1)', 4326), 11, 11.0, 'bb')");
+        run("INSERT INTO \"geotools\".\"ft1_group_by\" VALUES(5, ST_GeomFromText('POINT(1 1)', 4326), 12, 12.0, 'cb')");
+        run("INSERT INTO \"geotools\".\"ft1_group_by\" VALUES(6, ST_GeomFromText('POINT(2 2)', 4326), 20, 20.0, 'ac')");
+        run("INSERT INTO \"geotools\".\"ft1_group_by\" VALUES(7, ST_GeomFromText('POINT(2 2)', 4326), 21, 21.0, 'bc')");
+        run("INSERT INTO \"geotools\".\"ft1_group_by\" VALUES(8, ST_GeomFromText('POINT(2 2)', 4326), 22, 22.0, 'cc')");
 
-        run(
-                "CREATE SPATIAL INDEX IF NOT EXISTS spIdx ON \"geotools\".\"ft1_group_by\"(\"geometry\")");
+        run("CREATE SPATIAL INDEX IF NOT EXISTS spIdx ON \"geotools\".\"ft1_group_by\"(\"geometry\")");
     }
 
     @Override

@@ -64,8 +64,7 @@ public abstract class DirectAuthorityFactory extends AbstractAuthorityFactory {
      * @param priority The priority for this factory, as a number between {@link #MINIMUM_PRIORITY
      *     MINIMUM_PRIORITY} and {@link #MAXIMUM_PRIORITY MAXIMUM_PRIORITY} inclusive.
      */
-    protected DirectAuthorityFactory(
-            final ReferencingFactoryContainer factories, final int priority) {
+    protected DirectAuthorityFactory(final ReferencingFactoryContainer factories, final int priority) {
         super(priority);
         this.factories = factories;
         ensureNonNull("factories", factories);

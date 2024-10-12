@@ -44,9 +44,7 @@ public class SubmosaicProducerFactoryFinder {
      */
     private static FactoryRegistry getServiceRegistry() {
         if (registry == null) {
-            registry =
-                    new FactoryCreator(
-                            Arrays.asList(new Class<?>[] {SubmosaicProducerFactory.class}));
+            registry = new FactoryCreator(Arrays.asList(new Class<?>[] {SubmosaicProducerFactory.class}));
         }
         return registry;
     }

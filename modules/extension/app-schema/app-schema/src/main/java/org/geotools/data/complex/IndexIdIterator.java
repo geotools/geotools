@@ -101,9 +101,7 @@ public interface IndexIdIterator extends Iterator<String>, Closeable {
         private int counter = 0;
 
         public IndexUniqueVisitorIterator(
-                FeatureCollection<SimpleFeatureType, SimpleFeature> fc,
-                Query idQuery,
-                String idFieldName) {
+                FeatureCollection<SimpleFeatureType, SimpleFeature> fc, Query idQuery, String idFieldName) {
             super();
             this.fc = fc;
             this.idQuery = idQuery;

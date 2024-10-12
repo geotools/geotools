@@ -115,13 +115,12 @@ public class MetadataTablePrimaryKeyFinder extends PrimaryKeyFinder {
                         try {
                             // This is a database-agnostic way to check if the table exists without
                             // resulting in error messages. It also checks for case sensitivity.
-                            tablesRs =
-                                    cx.getMetaData()
-                                            .getTables(
-                                                    null,
-                                                    metadataSchema,
-                                                    "%",
-                                                    store.getSQLDialect().getDesiredTablesType());
+                            tablesRs = cx.getMetaData()
+                                    .getTables(
+                                            null,
+                                            metadataSchema,
+                                            "%",
+                                            store.getSQLDialect().getDesiredTablesType());
 
                             metadataTableExists = false;
 
@@ -180,10 +179,9 @@ public class MetadataTablePrimaryKeyFinder extends PrimaryKeyFinder {
             sb.append("pk_column_idx");
             sb.append(" ASC");
             String sql = sb.toString();
-            LOGGER.log(
-                    Level.FINE,
-                    "Reading metadata table metadata: {0} [ parameters = {1} ]",
-                    new Object[] {sql, parameters});
+            LOGGER.log(Level.FINE, "Reading metadata table metadata: {0} [ parameters = {1} ]", new Object[] {
+                sql, parameters
+            });
 
             // extract information column by column
             DatabaseMetaData metaData = cx.getMetaData();
@@ -214,11 +212,10 @@ public class MetadataTablePrimaryKeyFinder extends PrimaryKeyFinder {
                     try {
                         policy = Policy.valueOf(policyStr.toLowerCase());
                     } catch (IllegalArgumentException e) {
-                        LOGGER.warning(
-                                "Invalid policy value "
-                                        + policyStr
-                                        + ", valid values are"
-                                        + Arrays.asList(Policy.values()));
+                        LOGGER.warning("Invalid policy value "
+                                + policyStr
+                                + ", valid values are"
+                                + Arrays.asList(Policy.values()));
                         return null;
                     }
                 }
@@ -238,8 +235,7 @@ public class MetadataTablePrimaryKeyFinder extends PrimaryKeyFinder {
             if (!columns.isEmpty()) return new PrimaryKey(table, columns);
             else return null;
         } catch (SQLException e) {
-            LOGGER.log(
-                    Level.WARNING, "Errors occurred accessing the primary key metadata table ", e);
+            LOGGER.log(Level.WARNING, "Errors occurred accessing the primary key metadata table ", e);
             return null;
         } finally {
             store.closeSafe(rs);
@@ -247,18 +243,13 @@ public class MetadataTablePrimaryKeyFinder extends PrimaryKeyFinder {
         }
     }
 
-    Set<String> getColumnNames(
-            JDBCDataStore store, DatabaseMetaData metaData, String schema, String table)
+    Set<String> getColumnNames(JDBCDataStore store, DatabaseMetaData metaData, String schema, String table)
             throws SQLException {
         ResultSet rs = null;
         Set<String> result = new HashSet<>();
         try {
-            rs =
-                    metaData.getColumns(
-                            null,
-                            store.escapeNamePattern(metaData, schema),
-                            store.escapeNamePattern(metaData, table),
-                            null);
+            rs = metaData.getColumns(
+                    null, store.escapeNamePattern(metaData, schema), store.escapeNamePattern(metaData, table), null);
             while (rs.next()) {
                 result.add(rs.getString("COLUMN_NAME"));
             }

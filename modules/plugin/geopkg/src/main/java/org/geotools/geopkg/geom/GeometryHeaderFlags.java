@@ -72,9 +72,7 @@ public class GeometryHeaderFlags {
     }
 
     public int getEndianess() {
-        return (b & MASK_ENDIANESS) == 1
-                ? ByteOrderValues.LITTLE_ENDIAN
-                : ByteOrderValues.BIG_ENDIAN;
+        return (b & MASK_ENDIANESS) == 1 ? ByteOrderValues.LITTLE_ENDIAN : ByteOrderValues.BIG_ENDIAN;
     }
 
     public void setEndianess(int endian) {

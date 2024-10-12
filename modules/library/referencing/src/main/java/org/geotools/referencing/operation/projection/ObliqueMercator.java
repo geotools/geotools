@@ -285,8 +285,7 @@ public class ObliqueMercator extends MapProjection {
      * @todo Current implementation assumes a "azimuth" case. We may try to detect the "two points"
      *     case in a future version if needed.
      */
-    protected ObliqueMercator(final ParameterValueGroup parameters)
-            throws ParameterNotFoundException {
+    protected ObliqueMercator(final ParameterValueGroup parameters) throws ParameterNotFoundException {
         this(parameters, Provider.PARAMETERS.descriptors(), false, false);
     }
 
@@ -364,8 +363,7 @@ public class ObliqueMercator extends MapProjection {
             p2Lat = doubleValue(expected, Provider_TwoPoint.LAT_OF_2ND_POINT, parameters);
             ensureLatitudeInRange(Provider_TwoPoint.LAT_OF_2ND_POINT, p2Lat, true);
             // Will be assigned to the field later.
-            double longitudeOf2ndPoint =
-                    doubleValue(expected, Provider_TwoPoint.LONG_OF_2ND_POINT, parameters);
+            double longitudeOf2ndPoint = doubleValue(expected, Provider_TwoPoint.LONG_OF_2ND_POINT, parameters);
             ensureLongitudeInRange(Provider_TwoPoint.LONG_OF_2ND_POINT, longitudeOf2ndPoint, true);
             /*
              * Ensures that (phi1 != phi2), (phi1 != 0°) and (phi2 != -90°),
@@ -391,9 +389,7 @@ public class ObliqueMercator extends MapProjection {
             if (desc != null) {
                 final String name = desc.getName().getCode();
                 throw new InvalidParameterValueException(
-                        MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, name, value),
-                        name,
-                        value);
+                        MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, name, value), name, value);
             }
             /*
              * The coefficients for the "two points" case.
@@ -411,11 +407,8 @@ public class ObliqueMercator extends MapProjection {
                 longitudeOf2ndPoint += 2.0 * PI;
             }
             this.p2Lon = longitudeOf2ndPoint;
-            centralMeridian =
-                    rollLongitude(
-                            0.5 * (p1Lon + longitudeOf2ndPoint)
-                                    - atan(J * tan(0.5 * B * (p1Lon - longitudeOf2ndPoint)) / P)
-                                            / B);
+            centralMeridian = rollLongitude(0.5 * (p1Lon + longitudeOf2ndPoint)
+                    - atan(J * tan(0.5 * B * (p1Lon - longitudeOf2ndPoint)) / P) / B);
             gamma0 = atan(2.0 * sin(B * rollLongitude(p1Lon - centralMeridian)) / (Fp - 1.0 / Fp));
             azimuth = asin(D * sin(gamma0));
             rectifiedGridAngle = azimuth;
@@ -433,14 +426,11 @@ public class ObliqueMercator extends MapProjection {
             ensureLongitudeInRange(Provider.LONGITUDE_OF_CENTRE, longitudeOfCentre, true);
             azimuth = doubleValue(expected, Provider.AZIMUTH, parameters);
             // Already checked for +-360 deg. above.
-            if ((azimuth > -1.5 * PI && azimuth < -0.5 * PI)
-                    || (azimuth > 0.5 * PI && azimuth < 1.5 * PI)) {
+            if ((azimuth > -1.5 * PI && azimuth < -0.5 * PI) || (azimuth > 0.5 * PI && azimuth < 1.5 * PI)) {
                 final String name = Provider.AZIMUTH.getName().getCode();
                 final Angle value = new Angle(toDegrees(azimuth));
                 throw new InvalidParameterValueException(
-                        MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, name, value),
-                        name,
-                        value);
+                        MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, name, value), name, value);
             }
             temp = doubleValue(expected, Provider.RECTIFIED_GRID_ANGLE, parameters);
             if (Double.isNaN(temp)) {
@@ -518,8 +508,7 @@ public class ObliqueMercator extends MapProjection {
      * @param y The latitude of the coordinate, in <strong>radians</strong>.
      */
     @Override
-    protected Point2D transformNormalized(double x, double y, Point2D ptDst)
-            throws ProjectionException {
+    protected Point2D transformNormalized(double x, double y, Point2D ptDst) throws ProjectionException {
         double u, v;
         if (abs(abs(y) - PI / 2.0) > EPSILON) {
             double Q = E / pow(tsfn(y, sin(y)), B);
@@ -554,8 +543,7 @@ public class ObliqueMercator extends MapProjection {
 
     /** {@inheritDoc} */
     @Override
-    protected Point2D inverseTransformNormalized(double x, double y, Point2D ptDst)
-            throws ProjectionException {
+    protected Point2D inverseTransformNormalized(double x, double y, Point2D ptDst) throws ProjectionException {
         double v = x * cosrot - y * sinrot;
         double u = y * cosrot + x * sinrot + u_c;
         double Qp = exp(-BrA * v);
@@ -621,9 +609,7 @@ public class ObliqueMercator extends MapProjection {
                     &&
                     // normalizing angles here
                     equals(rollLongitude(this.azimuth), rollLongitude(that.azimuth))
-                    && equals(
-                            rollLongitude(this.rectifiedGridAngle),
-                            rollLongitude(that.rectifiedGridAngle))
+                    && equals(rollLongitude(this.rectifiedGridAngle), rollLongitude(that.rectifiedGridAngle))
                     && equals(this.p1Lat, that.p1Lat)
                     && equals(this.p1Lon, that.p1Lon)
                     && equals(this.p2Lat, that.p2Lat)
@@ -661,103 +647,94 @@ public class ObliqueMercator extends MapProjection {
          * The operation parameter descriptor for the {@link #latitudeOfCentre latitudeOfCentre}
          * parameter value. Valid values range is from -90 to 90°. Default value is 0.
          */
-        public static final ParameterDescriptor LATITUDE_OF_CENTRE =
-                createDescriptor(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.OGC, "latitude_of_center"),
-                            new NamedIdentifier(Citations.EPSG, "Latitude of projection centre"),
-                            new NamedIdentifier(Citations.ESRI, "Latitude_Of_Center"),
-                            new NamedIdentifier(Citations.GEOTIFF, "CenterLat")
-                        },
-                        0,
-                        -90,
-                        90,
-                        NonSI.DEGREE_ANGLE);
+        public static final ParameterDescriptor LATITUDE_OF_CENTRE = createDescriptor(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.OGC, "latitude_of_center"),
+                    new NamedIdentifier(Citations.EPSG, "Latitude of projection centre"),
+                    new NamedIdentifier(Citations.ESRI, "Latitude_Of_Center"),
+                    new NamedIdentifier(Citations.GEOTIFF, "CenterLat")
+                },
+                0,
+                -90,
+                90,
+                NonSI.DEGREE_ANGLE);
 
         /**
          * The operation parameter descriptor for the {@link #longitudeOfCentre longitudeOfCentre}
          * parameter value. Valid values range is from -180 to 180°. Default value is 0.
          */
-        public static final ParameterDescriptor LONGITUDE_OF_CENTRE =
-                createDescriptor(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.OGC, "longitude_of_center"),
-                            new NamedIdentifier(Citations.EPSG, "Longitude of projection centre"),
-                            new NamedIdentifier(Citations.ESRI, "Longitude_Of_Center"),
-                            new NamedIdentifier(Citations.GEOTIFF, "CenterLong")
-                        },
-                        0,
-                        -180,
-                        180,
-                        NonSI.DEGREE_ANGLE);
+        public static final ParameterDescriptor LONGITUDE_OF_CENTRE = createDescriptor(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.OGC, "longitude_of_center"),
+                    new NamedIdentifier(Citations.EPSG, "Longitude of projection centre"),
+                    new NamedIdentifier(Citations.ESRI, "Longitude_Of_Center"),
+                    new NamedIdentifier(Citations.GEOTIFF, "CenterLong")
+                },
+                0,
+                -180,
+                180,
+                NonSI.DEGREE_ANGLE);
 
         /**
          * The operation parameter descriptor for the {@link #azimuth azimuth} parameter value.
          * Valid values range is from -360 to -270, -90 to 90, and 270 to 360 degrees. Default value
          * is 0.
          */
-        public static final ParameterDescriptor AZIMUTH =
-                createDescriptor(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.OGC, "azimuth"),
-                            new NamedIdentifier(Citations.ESRI, "Azimuth"),
-                            new NamedIdentifier(Citations.EPSG, "Azimuth of initial line"),
-                            new NamedIdentifier(Citations.GEOTIFF, "AzimuthAngle")
-                        },
-                        0,
-                        -360,
-                        360,
-                        NonSI.DEGREE_ANGLE);
+        public static final ParameterDescriptor AZIMUTH = createDescriptor(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.OGC, "azimuth"),
+                    new NamedIdentifier(Citations.ESRI, "Azimuth"),
+                    new NamedIdentifier(Citations.EPSG, "Azimuth of initial line"),
+                    new NamedIdentifier(Citations.GEOTIFF, "AzimuthAngle")
+                },
+                0,
+                -360,
+                360,
+                NonSI.DEGREE_ANGLE);
 
         /**
          * The operation parameter descriptor for the {@link #rectifiedGridAngle rectifiedGridAngle}
          * parameter value. It is an optional parameter with valid values ranging from -360 to 360°.
          * Default value is {@link #azimuth azimuth}.
          */
-        public static final ParameterDescriptor RECTIFIED_GRID_ANGLE =
-                createOptionalDescriptor(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.OGC, "rectified_grid_angle"),
-                            new NamedIdentifier(
-                                    Citations.EPSG, "Angle from Rectified to Skew Grid"),
-                            new NamedIdentifier(Citations.ESRI, "XY_Plane_Rotation"),
-                            new NamedIdentifier(Citations.GEOTIFF, "RectifiedGridAngle")
-                        },
-                        -360,
-                        360,
-                        NonSI.DEGREE_ANGLE);
+        public static final ParameterDescriptor RECTIFIED_GRID_ANGLE = createOptionalDescriptor(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.OGC, "rectified_grid_angle"),
+                    new NamedIdentifier(Citations.EPSG, "Angle from Rectified to Skew Grid"),
+                    new NamedIdentifier(Citations.ESRI, "XY_Plane_Rotation"),
+                    new NamedIdentifier(Citations.GEOTIFF, "RectifiedGridAngle")
+                },
+                -360,
+                360,
+                NonSI.DEGREE_ANGLE);
 
         /** The localized name for "Oblique Mercator". */
         static final InternationalString NAME =
                 Vocabulary.formatInternational(VocabularyKeys.OBLIQUE_MERCATOR_PROJECTION);
 
         /** The parameters group. */
-        static final ParameterDescriptorGroup PARAMETERS =
-                createDescriptorGroup(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.OGC, "Oblique_Mercator"),
-                            new NamedIdentifier(Citations.EPSG, "Oblique Mercator"),
-                            new NamedIdentifier(
-                                    Citations.EPSG, "Hotine Oblique Mercator (variant B)"),
-                            new NamedIdentifier(Citations.EPSG, "9815"),
-                            new NamedIdentifier(Citations.GEOTIFF, "CT_ObliqueMercator"),
-                            new NamedIdentifier(
-                                    Citations.ESRI, "Hotine_Oblique_Mercator_Azimuth_Center"),
-                            new NamedIdentifier(
-                                    Citations.ESRI, "Rectified_Skew_Orthomorphic_Center"),
-                            new NamedIdentifier(Citations.GEOTOOLS, NAME)
-                        },
-                        new ParameterDescriptor[] {
-                            SEMI_MAJOR,
-                            SEMI_MINOR,
-                            LONGITUDE_OF_CENTRE,
-                            LATITUDE_OF_CENTRE,
-                            AZIMUTH,
-                            RECTIFIED_GRID_ANGLE,
-                            SCALE_FACTOR,
-                            FALSE_EASTING,
-                            FALSE_NORTHING
-                        });
+        static final ParameterDescriptorGroup PARAMETERS = createDescriptorGroup(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.OGC, "Oblique_Mercator"),
+                    new NamedIdentifier(Citations.EPSG, "Oblique Mercator"),
+                    new NamedIdentifier(Citations.EPSG, "Hotine Oblique Mercator (variant B)"),
+                    new NamedIdentifier(Citations.EPSG, "9815"),
+                    new NamedIdentifier(Citations.GEOTIFF, "CT_ObliqueMercator"),
+                    new NamedIdentifier(Citations.ESRI, "Hotine_Oblique_Mercator_Azimuth_Center"),
+                    new NamedIdentifier(Citations.ESRI, "Rectified_Skew_Orthomorphic_Center"),
+                    new NamedIdentifier(Citations.GEOTOOLS, NAME)
+                },
+                new ParameterDescriptor[] {
+                    SEMI_MAJOR,
+                    SEMI_MINOR,
+                    LONGITUDE_OF_CENTRE,
+                    LATITUDE_OF_CENTRE,
+                    AZIMUTH,
+                    RECTIFIED_GRID_ANGLE,
+                    SCALE_FACTOR,
+                    FALSE_EASTING,
+                    FALSE_NORTHING
+                });
 
         /** Constructs a new provider. */
         public Provider() {
@@ -812,73 +789,59 @@ public class ObliqueMercator extends MapProjection {
          * The operation parameter descriptor for the {@code latitudeOf1stPoint} parameter value.
          * Valid values range is from -90 to 90°. Default value is 0.
          */
-        public static final ParameterDescriptor LAT_OF_1ST_POINT =
-                createDescriptor(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.ESRI, "Latitude_Of_1st_Point")
-                        },
-                        0,
-                        -90,
-                        90,
-                        NonSI.DEGREE_ANGLE);
+        public static final ParameterDescriptor LAT_OF_1ST_POINT = createDescriptor(
+                new NamedIdentifier[] {new NamedIdentifier(Citations.ESRI, "Latitude_Of_1st_Point")},
+                0,
+                -90,
+                90,
+                NonSI.DEGREE_ANGLE);
 
         /**
          * The operation parameter descriptor for the {@code longitudeOf1stPoint} parameter value.
          * Valid values range is from -180 to 180°. Default value is 0.
          */
-        public static final ParameterDescriptor LONG_OF_1ST_POINT =
-                createDescriptor(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.ESRI, "Longitude_Of_1st_Point")
-                        },
-                        0,
-                        -180,
-                        180,
-                        NonSI.DEGREE_ANGLE);
+        public static final ParameterDescriptor LONG_OF_1ST_POINT = createDescriptor(
+                new NamedIdentifier[] {new NamedIdentifier(Citations.ESRI, "Longitude_Of_1st_Point")},
+                0,
+                -180,
+                180,
+                NonSI.DEGREE_ANGLE);
 
         /**
          * The operation parameter descriptor for the {@code latitudeOf2ndPoint} parameter value.
          * Valid values range is from -90 to 90°. Default value is 0.
          */
-        public static final ParameterDescriptor LAT_OF_2ND_POINT =
-                createDescriptor(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.ESRI, "Latitude_Of_2nd_Point")
-                        },
-                        0,
-                        -90,
-                        90,
-                        NonSI.DEGREE_ANGLE);
+        public static final ParameterDescriptor LAT_OF_2ND_POINT = createDescriptor(
+                new NamedIdentifier[] {new NamedIdentifier(Citations.ESRI, "Latitude_Of_2nd_Point")},
+                0,
+                -90,
+                90,
+                NonSI.DEGREE_ANGLE);
 
         /**
          * The operation parameter descriptor for the {@code longitudeOf2ndPoint} parameter value.
          * Valid values range is from -180 to 180°. Default value is 0.
          */
-        public static final ParameterDescriptor LONG_OF_2ND_POINT =
-                createDescriptor(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.ESRI, "Longitude_Of_2nd_Point")
-                        },
-                        0,
-                        -180,
-                        180,
-                        NonSI.DEGREE_ANGLE);
+        public static final ParameterDescriptor LONG_OF_2ND_POINT = createDescriptor(
+                new NamedIdentifier[] {new NamedIdentifier(Citations.ESRI, "Longitude_Of_2nd_Point")},
+                0,
+                -180,
+                180,
+                NonSI.DEGREE_ANGLE);
 
         /** The parameters group. */
-        static final ParameterDescriptorGroup PARAMETERS =
-                createDescriptorGroup(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(
-                                    Citations.ESRI, "Hotine_Oblique_Mercator_Two_Point_Center"),
-                            new NamedIdentifier(Citations.GEOTOOLS, NAME)
-                        },
-                        new ParameterDescriptor[] {
-                            SEMI_MAJOR, SEMI_MINOR,
-                            LAT_OF_1ST_POINT, LONG_OF_1ST_POINT,
-                            LAT_OF_2ND_POINT, LONG_OF_2ND_POINT,
-                            LATITUDE_OF_CENTRE, SCALE_FACTOR,
-                            FALSE_EASTING, FALSE_NORTHING
-                        });
+        static final ParameterDescriptorGroup PARAMETERS = createDescriptorGroup(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.ESRI, "Hotine_Oblique_Mercator_Two_Point_Center"),
+                    new NamedIdentifier(Citations.GEOTOOLS, NAME)
+                },
+                new ParameterDescriptor[] {
+                    SEMI_MAJOR, SEMI_MINOR,
+                    LAT_OF_1ST_POINT, LONG_OF_1ST_POINT,
+                    LAT_OF_2ND_POINT, LONG_OF_2ND_POINT,
+                    LATITUDE_OF_CENTRE, SCALE_FACTOR,
+                    FALSE_EASTING, FALSE_NORTHING
+                });
 
         /** Constructs a new provider. */
         public Provider_TwoPoint() {

@@ -55,7 +55,8 @@ public class DimensionParsingTest {
                         "Don't know how to handle a get request over " + url.toExternalForm());
             }
         }
-    };
+    }
+    ;
 
     @Test
     public void testDimensionExtent130() throws Exception {

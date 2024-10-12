@@ -42,20 +42,14 @@ public class PartialIndexedMappingFeatureIteratorTest extends IndexesTest {
 
     @Test
     public void testPartialInstance() throws IOException {
-        try (TestFeatureSource fsource =
-                new TestFeatureSource(
-                        "/test-data/index/",
-                        "stationsIndexed.xml",
-                        "http://www.stations.org/1.0",
-                        "stationsIndexed")) {
+        try (TestFeatureSource fsource = new TestFeatureSource(
+                "/test-data/index/", "stationsIndexed.xml", "http://www.stations.org/1.0", "stationsIndexed")) {
             FeatureCollection<FeatureType, Feature> fcoll =
-                    fsource.getMappedSource()
-                            .getFeatures(this.partialIndexedFilter_2idxfilterResults());
+                    fsource.getMappedSource().getFeatures(this.partialIndexedFilter_2idxfilterResults());
             try (FeatureIterator<Feature> iterator = fcoll.features()) {
                 assertTrue(iterator instanceof PartialIndexedMappingFeatureIterator);
             }
-            List<Feature> features =
-                    FeatureStreams.toFeatureStream(fcoll).collect(Collectors.toList());
+            List<Feature> features = FeatureStreams.toFeatureStream(fcoll).collect(Collectors.toList());
             assertEquals(features.size(), 6);
             assertEquals(features.get(0).getIdentifier().getID(), "st.1");
             assertEquals(features.get(1).getIdentifier().getID(), "st.2");
@@ -70,15 +64,14 @@ public class PartialIndexedMappingFeatureIteratorTest extends IndexesTest {
     @Override
     protected Filter partialIndexedFilter_2idxfilterResults() {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory();
-        List<Filter> filters =
-                Arrays.asList(
-                        ff.or(
-                                ff.equals(ff.property(this.attName), ff.literal("station11")),
-                                ff.equals(ff.property(this.attId), ff.literal("st.1"))),
-                        ff.like(ff.property(attLocationName), "*America*"),
-                        ff.or(
-                                ff.equals(ff.property(this.attName), ff.literal("station10")),
-                                ff.equals(ff.property(this.attId), ff.literal("st.2"))));
+        List<Filter> filters = Arrays.asList(
+                ff.or(
+                        ff.equals(ff.property(this.attName), ff.literal("station11")),
+                        ff.equals(ff.property(this.attId), ff.literal("st.1"))),
+                ff.like(ff.property(attLocationName), "*America*"),
+                ff.or(
+                        ff.equals(ff.property(this.attName), ff.literal("station10")),
+                        ff.equals(ff.property(this.attId), ff.literal("st.2"))));
         Filter filter = ff.or(filters);
         return filter;
     }

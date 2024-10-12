@@ -39,8 +39,7 @@ public class PagingFeatureCollection extends BaseSimpleFeatureCollection {
     SimpleFeatureCollection first;
     ObjectNode next;
 
-    public PagingFeatureCollection(
-            SimpleFeatureCollection first, ObjectNode next, Integer matched) {
+    public PagingFeatureCollection(SimpleFeatureCollection first, ObjectNode next, Integer matched) {
         super(first.getSchema());
         this.first = first;
         this.next = next;

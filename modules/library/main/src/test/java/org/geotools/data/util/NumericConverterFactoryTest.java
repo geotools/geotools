@@ -36,28 +36,22 @@ public class NumericConverterFactoryTest {
     @Test
     public void testIntegral() throws Exception {
         // to byte
-        Assert.assertEquals(
-                Byte.valueOf((byte) 127), convert(Byte.valueOf((byte) 127), Byte.class));
-        Assert.assertEquals(
-                Byte.valueOf((byte) 127), convert(Short.valueOf((short) 127), Byte.class));
+        Assert.assertEquals(Byte.valueOf((byte) 127), convert(Byte.valueOf((byte) 127), Byte.class));
+        Assert.assertEquals(Byte.valueOf((byte) 127), convert(Short.valueOf((short) 127), Byte.class));
         Assert.assertEquals(Byte.valueOf((byte) 127), convert(Integer.valueOf(127), Byte.class));
         Assert.assertEquals(Byte.valueOf((byte) 127), convert(Long.valueOf(127), Byte.class));
         Assert.assertEquals(Byte.valueOf((byte) 127), convert(BigInteger.valueOf(127), Byte.class));
 
         // to short
-        Assert.assertEquals(
-                Short.valueOf((short) 127), convert(Byte.valueOf((byte) 127), Short.class));
-        Assert.assertEquals(
-                Short.valueOf((short) 127), convert(Short.valueOf((short) 127), Short.class));
+        Assert.assertEquals(Short.valueOf((short) 127), convert(Byte.valueOf((byte) 127), Short.class));
+        Assert.assertEquals(Short.valueOf((short) 127), convert(Short.valueOf((short) 127), Short.class));
         Assert.assertEquals(Short.valueOf((short) 127), convert(Integer.valueOf(127), Short.class));
         Assert.assertEquals(Short.valueOf((short) 127), convert(Long.valueOf(127), Short.class));
-        Assert.assertEquals(
-                Short.valueOf((short) 127), convert(BigInteger.valueOf(127), Short.class));
+        Assert.assertEquals(Short.valueOf((short) 127), convert(BigInteger.valueOf(127), Short.class));
 
         // to integer
         Assert.assertEquals(Integer.valueOf(127), convert(Byte.valueOf((byte) 127), Integer.class));
-        Assert.assertEquals(
-                Integer.valueOf(127), convert(Short.valueOf((short) 127), Integer.class));
+        Assert.assertEquals(Integer.valueOf(127), convert(Short.valueOf((short) 127), Integer.class));
         Assert.assertEquals(Integer.valueOf(127), convert(Integer.valueOf(127), Integer.class));
         Assert.assertEquals(Integer.valueOf(127), convert(Long.valueOf(127), Integer.class));
         Assert.assertEquals(Integer.valueOf(127), convert(BigInteger.valueOf(127), Integer.class));
@@ -70,15 +64,11 @@ public class NumericConverterFactoryTest {
         Assert.assertEquals(Long.valueOf(127), convert(BigInteger.valueOf(127), Long.class));
 
         // to big integer
-        Assert.assertEquals(
-                BigInteger.valueOf(127), convert(Byte.valueOf((byte) 127), BigInteger.class));
-        Assert.assertEquals(
-                BigInteger.valueOf(127), convert(Short.valueOf((short) 127), BigInteger.class));
-        Assert.assertEquals(
-                BigInteger.valueOf(127), convert(Integer.valueOf(127), BigInteger.class));
+        Assert.assertEquals(BigInteger.valueOf(127), convert(Byte.valueOf((byte) 127), BigInteger.class));
+        Assert.assertEquals(BigInteger.valueOf(127), convert(Short.valueOf((short) 127), BigInteger.class));
+        Assert.assertEquals(BigInteger.valueOf(127), convert(Integer.valueOf(127), BigInteger.class));
         Assert.assertEquals(BigInteger.valueOf(127), convert(Long.valueOf(127), BigInteger.class));
-        Assert.assertEquals(
-                BigInteger.valueOf(127), convert(BigInteger.valueOf(127), BigInteger.class));
+        Assert.assertEquals(BigInteger.valueOf(127), convert(BigInteger.valueOf(127), BigInteger.class));
     }
 
     @Test
@@ -86,14 +76,10 @@ public class NumericConverterFactoryTest {
         // to float
         Assert.assertEquals(Float.valueOf(127.127f), convert(Float.valueOf(127.127f), Float.class));
         Assert.assertEquals(Float.valueOf(127.127f), convert(Double.valueOf(127.127), Float.class));
-        Assert.assertEquals(
-                Float.valueOf(127.127f), convert(BigDecimal.valueOf(127.127), Float.class));
+        Assert.assertEquals(Float.valueOf(127.127f), convert(BigDecimal.valueOf(127.127), Float.class));
 
         // to double
-        Assert.assertEquals(
-                127.127,
-                ((Double) convert(Float.valueOf(127.127f), Double.class)).doubleValue(),
-                1e-10);
+        Assert.assertEquals(127.127, ((Double) convert(Float.valueOf(127.127f), Double.class)).doubleValue(), 1e-10);
         Assert.assertEquals(127.127, convert(Double.valueOf(127.127), Double.class));
         Assert.assertEquals(127.127, convert(BigDecimal.valueOf(127.127), Double.class));
 
@@ -102,11 +88,8 @@ public class NumericConverterFactoryTest {
                 BigDecimal.valueOf(127.127).doubleValue(),
                 ((BigDecimal) convert(Float.valueOf(127.127f), BigDecimal.class)).doubleValue(),
                 1e-10);
-        Assert.assertEquals(
-                BigDecimal.valueOf(127.127), convert(Double.valueOf(127.127), BigDecimal.class));
-        Assert.assertEquals(
-                BigDecimal.valueOf(127.127),
-                convert(BigDecimal.valueOf(127.127), BigDecimal.class));
+        Assert.assertEquals(BigDecimal.valueOf(127.127), convert(Double.valueOf(127.127), BigDecimal.class));
+        Assert.assertEquals(BigDecimal.valueOf(127.127), convert(BigDecimal.valueOf(127.127), BigDecimal.class));
     }
 
     @Test
@@ -118,21 +101,16 @@ public class NumericConverterFactoryTest {
         Assert.assertEquals(Float.valueOf(127f), convert(BigInteger.valueOf(127), Float.class));
 
         Assert.assertEquals(Double.valueOf(127.0), convert(Byte.valueOf((byte) 127), Double.class));
-        Assert.assertEquals(
-                Double.valueOf(127.0), convert(Short.valueOf((short) 127), Double.class));
+        Assert.assertEquals(Double.valueOf(127.0), convert(Short.valueOf((short) 127), Double.class));
         Assert.assertEquals(Double.valueOf(127.0), convert(Integer.valueOf(127), Double.class));
         Assert.assertEquals(Double.valueOf(127.0), convert(Long.valueOf(127), Double.class));
         Assert.assertEquals(Double.valueOf(127.0), convert(BigInteger.valueOf(127), Double.class));
 
-        Assert.assertEquals(
-                BigDecimal.valueOf(127), convert(Byte.valueOf((byte) 127), BigDecimal.class));
-        Assert.assertEquals(
-                BigDecimal.valueOf(127), convert(Short.valueOf((short) 127), BigDecimal.class));
-        Assert.assertEquals(
-                BigDecimal.valueOf(127), convert(Integer.valueOf(127), BigDecimal.class));
+        Assert.assertEquals(BigDecimal.valueOf(127), convert(Byte.valueOf((byte) 127), BigDecimal.class));
+        Assert.assertEquals(BigDecimal.valueOf(127), convert(Short.valueOf((short) 127), BigDecimal.class));
+        Assert.assertEquals(BigDecimal.valueOf(127), convert(Integer.valueOf(127), BigDecimal.class));
         Assert.assertEquals(BigDecimal.valueOf(127), convert(Long.valueOf(127), BigDecimal.class));
-        Assert.assertEquals(
-                BigDecimal.valueOf(127), convert(BigInteger.valueOf(127), BigDecimal.class));
+        Assert.assertEquals(BigDecimal.valueOf(127), convert(BigInteger.valueOf(127), BigDecimal.class));
     }
 
     @Test
@@ -140,22 +118,17 @@ public class NumericConverterFactoryTest {
         // to byte
         Assert.assertEquals(Byte.valueOf((byte) 127), convert(Float.valueOf(127.127f), Byte.class));
         Assert.assertEquals(Byte.valueOf((byte) 127), convert(Double.valueOf(127.127), Byte.class));
-        Assert.assertEquals(
-                Byte.valueOf((byte) 127), convert(BigDecimal.valueOf(127.127), Byte.class));
+        Assert.assertEquals(Byte.valueOf((byte) 127), convert(BigDecimal.valueOf(127.127), Byte.class));
 
         // to short
-        Assert.assertEquals(
-                Short.valueOf((short) 127), convert(Float.valueOf(127.127f), Short.class));
-        Assert.assertEquals(
-                Short.valueOf((short) 127), convert(Double.valueOf(127.127), Short.class));
-        Assert.assertEquals(
-                Short.valueOf((short) 127), convert(BigDecimal.valueOf(127.127), Short.class));
+        Assert.assertEquals(Short.valueOf((short) 127), convert(Float.valueOf(127.127f), Short.class));
+        Assert.assertEquals(Short.valueOf((short) 127), convert(Double.valueOf(127.127), Short.class));
+        Assert.assertEquals(Short.valueOf((short) 127), convert(BigDecimal.valueOf(127.127), Short.class));
 
         // to integer
         Assert.assertEquals(Integer.valueOf(127), convert(Float.valueOf(127.127f), Integer.class));
         Assert.assertEquals(Integer.valueOf(127), convert(Double.valueOf(127.127), Integer.class));
-        Assert.assertEquals(
-                Integer.valueOf(127), convert(BigDecimal.valueOf(127.127), Integer.class));
+        Assert.assertEquals(Integer.valueOf(127), convert(BigDecimal.valueOf(127.127), Integer.class));
 
         // to long
         Assert.assertEquals(Long.valueOf(127), convert(Float.valueOf(127.127f), Long.class));
@@ -163,12 +136,9 @@ public class NumericConverterFactoryTest {
         Assert.assertEquals(Long.valueOf(127), convert(BigDecimal.valueOf(127.127), Long.class));
 
         // to big integer
-        Assert.assertEquals(
-                BigInteger.valueOf(127), convert(Float.valueOf(127.127f), BigInteger.class));
-        Assert.assertEquals(
-                BigInteger.valueOf(127), convert(Double.valueOf(127.127), BigInteger.class));
-        Assert.assertEquals(
-                BigInteger.valueOf(127), convert(BigDecimal.valueOf(127.127), BigInteger.class));
+        Assert.assertEquals(BigInteger.valueOf(127), convert(Float.valueOf(127.127f), BigInteger.class));
+        Assert.assertEquals(BigInteger.valueOf(127), convert(Double.valueOf(127.127), BigInteger.class));
+        Assert.assertEquals(BigInteger.valueOf(127), convert(BigDecimal.valueOf(127.127), BigInteger.class));
     }
 
     @Test
@@ -219,8 +189,7 @@ public class NumericConverterFactoryTest {
     @Test
     public void testSafeConversion() throws Exception {
         // byte
-        Assert.assertEquals(
-                Byte.valueOf((byte) 127), convertSafe(Byte.valueOf((byte) 127), Byte.class));
+        Assert.assertEquals(Byte.valueOf((byte) 127), convertSafe(Byte.valueOf((byte) 127), Byte.class));
         Assert.assertNull(convertSafe(Short.valueOf((short) 128), Byte.class));
         Assert.assertNull(convertSafe(Integer.valueOf(128), Byte.class));
         Assert.assertNull(convertSafe(Long.valueOf(128), Byte.class));
@@ -230,10 +199,8 @@ public class NumericConverterFactoryTest {
         Assert.assertNull(convertSafe(Float.valueOf(128.1f), Byte.class));
 
         // short
-        Assert.assertEquals(
-                Short.valueOf((short) 127), convertSafe(Byte.valueOf((byte) 127), Short.class));
-        Assert.assertEquals(
-                Short.valueOf((short) 1111), convertSafe(Short.valueOf((short) 1111), Short.class));
+        Assert.assertEquals(Short.valueOf((short) 127), convertSafe(Byte.valueOf((byte) 127), Short.class));
+        Assert.assertEquals(Short.valueOf((short) 1111), convertSafe(Short.valueOf((short) 1111), Short.class));
         Assert.assertNull(convertSafe(Integer.valueOf(128), Short.class));
         Assert.assertNull(convertSafe(Long.valueOf(128), Short.class));
         Assert.assertNull(convertSafe(BigInteger.valueOf(128), Short.class));
@@ -242,12 +209,9 @@ public class NumericConverterFactoryTest {
         Assert.assertNull(convertSafe(Float.valueOf(128.1f), Short.class));
 
         // integer
-        Assert.assertEquals(
-                Integer.valueOf(127), convertSafe(Byte.valueOf((byte) 127), Integer.class));
-        Assert.assertEquals(
-                Integer.valueOf(1111), convertSafe(Short.valueOf((short) 1111), Integer.class));
-        Assert.assertEquals(
-                Integer.valueOf(12345), convertSafe(Integer.valueOf(12345), Integer.class));
+        Assert.assertEquals(Integer.valueOf(127), convertSafe(Byte.valueOf((byte) 127), Integer.class));
+        Assert.assertEquals(Integer.valueOf(1111), convertSafe(Short.valueOf((short) 1111), Integer.class));
+        Assert.assertEquals(Integer.valueOf(12345), convertSafe(Integer.valueOf(12345), Integer.class));
         Assert.assertNull(convertSafe(Long.valueOf(128), Integer.class));
         Assert.assertNull(convertSafe(BigInteger.valueOf(128), Integer.class));
         Assert.assertNull(convertSafe(Double.valueOf(128.1), Integer.class));
@@ -256,85 +220,54 @@ public class NumericConverterFactoryTest {
 
         // long
         Assert.assertEquals(Long.valueOf(127), convertSafe(Byte.valueOf((byte) 127), Long.class));
-        Assert.assertEquals(
-                Long.valueOf(1111), convertSafe(Short.valueOf((short) 1111), Long.class));
+        Assert.assertEquals(Long.valueOf(1111), convertSafe(Short.valueOf((short) 1111), Long.class));
         Assert.assertEquals(Long.valueOf(12345), convertSafe(Integer.valueOf(12345), Long.class));
-        Assert.assertEquals(
-                Long.valueOf(1234567), convertSafe(Integer.valueOf(1234567), Long.class));
+        Assert.assertEquals(Long.valueOf(1234567), convertSafe(Integer.valueOf(1234567), Long.class));
         Assert.assertNull(convertSafe(BigInteger.valueOf(128), Long.class));
         Assert.assertNull(convertSafe(Double.valueOf(128.1), Long.class));
         Assert.assertNull(convertSafe(BigDecimal.valueOf(128.1), Long.class));
         Assert.assertNull(convertSafe(Float.valueOf(128.1f), Long.class));
 
         // big integer
-        Assert.assertEquals(
-                BigInteger.valueOf(127), convertSafe(Byte.valueOf((byte) 127), BigInteger.class));
-        Assert.assertEquals(
-                BigInteger.valueOf(1111),
-                convertSafe(Short.valueOf((short) 1111), BigInteger.class));
-        Assert.assertEquals(
-                BigInteger.valueOf(12345), convertSafe(Integer.valueOf(12345), BigInteger.class));
-        Assert.assertEquals(
-                BigInteger.valueOf(1234567),
-                convertSafe(Integer.valueOf(1234567), BigInteger.class));
-        Assert.assertEquals(
-                BigInteger.valueOf(12345678),
-                convertSafe(BigInteger.valueOf(12345678), BigInteger.class));
+        Assert.assertEquals(BigInteger.valueOf(127), convertSafe(Byte.valueOf((byte) 127), BigInteger.class));
+        Assert.assertEquals(BigInteger.valueOf(1111), convertSafe(Short.valueOf((short) 1111), BigInteger.class));
+        Assert.assertEquals(BigInteger.valueOf(12345), convertSafe(Integer.valueOf(12345), BigInteger.class));
+        Assert.assertEquals(BigInteger.valueOf(1234567), convertSafe(Integer.valueOf(1234567), BigInteger.class));
+        Assert.assertEquals(BigInteger.valueOf(12345678), convertSafe(BigInteger.valueOf(12345678), BigInteger.class));
         Assert.assertNull(convertSafe(Double.valueOf(128.1), Long.class));
         Assert.assertNull(convertSafe(BigDecimal.valueOf(128.1), Long.class));
         Assert.assertNull(convertSafe(Float.valueOf(128.1f), Long.class));
 
         // double
-        Assert.assertEquals(
-                Double.valueOf(127), convertSafe(Byte.valueOf((byte) 127), Double.class));
-        Assert.assertEquals(
-                Double.valueOf(1111), convertSafe(Short.valueOf((short) 1111), Double.class));
-        Assert.assertEquals(
-                Double.valueOf(12345), convertSafe(Integer.valueOf(12345), Double.class));
-        Assert.assertEquals(
-                Double.valueOf(1234567), convertSafe(Integer.valueOf(1234567), Double.class));
+        Assert.assertEquals(Double.valueOf(127), convertSafe(Byte.valueOf((byte) 127), Double.class));
+        Assert.assertEquals(Double.valueOf(1111), convertSafe(Short.valueOf((short) 1111), Double.class));
+        Assert.assertEquals(Double.valueOf(12345), convertSafe(Integer.valueOf(12345), Double.class));
+        Assert.assertEquals(Double.valueOf(1234567), convertSafe(Integer.valueOf(1234567), Double.class));
         // assertEquals(Double.valueOf(12345678), convertSafe(BigInteger.valueOf(12345678),
         // Double.class));
-        Assert.assertEquals(
-                Double.valueOf(12.123456), convertSafe(Double.valueOf(12.123456), Double.class));
+        Assert.assertEquals(Double.valueOf(12.123456), convertSafe(Double.valueOf(12.123456), Double.class));
         Assert.assertNull(convertSafe(BigDecimal.valueOf(128.1), Long.class));
-        Assert.assertEquals(
-                Double.valueOf(12.12), convertSafe(Float.valueOf(12.12f), Double.class));
+        Assert.assertEquals(Double.valueOf(12.12), convertSafe(Float.valueOf(12.12f), Double.class));
 
         // float
         Assert.assertEquals(Float.valueOf(127), convertSafe(Byte.valueOf((byte) 127), Float.class));
-        Assert.assertEquals(
-                Float.valueOf(1111), convertSafe(Short.valueOf((short) 1111), Float.class));
+        Assert.assertEquals(Float.valueOf(1111), convertSafe(Short.valueOf((short) 1111), Float.class));
         Assert.assertEquals(Float.valueOf(12345), convertSafe(Integer.valueOf(12345), Float.class));
-        Assert.assertEquals(
-                Float.valueOf(1234567), convertSafe(Integer.valueOf(1234567), Float.class));
+        Assert.assertEquals(Float.valueOf(1234567), convertSafe(Integer.valueOf(1234567), Float.class));
         Assert.assertNull(convertSafe(BigInteger.valueOf(12345678), Float.class));
         Assert.assertNull(convertSafe(Double.valueOf(128.1), Float.class));
         Assert.assertNull(convertSafe(BigDecimal.valueOf(128.1), Float.class));
         Assert.assertEquals(Float.valueOf(12.12f), convertSafe(Float.valueOf(12.12f), Float.class));
 
         // Big Decimal
-        Assert.assertEquals(
-                BigDecimal.valueOf(127), convertSafe(Byte.valueOf((byte) 127), BigDecimal.class));
-        Assert.assertEquals(
-                BigDecimal.valueOf(1111),
-                convertSafe(Short.valueOf((short) 1111), BigDecimal.class));
-        Assert.assertEquals(
-                BigDecimal.valueOf(12345), convertSafe(Integer.valueOf(12345), BigDecimal.class));
-        Assert.assertEquals(
-                BigDecimal.valueOf(1234567),
-                convertSafe(Integer.valueOf(1234567), BigDecimal.class));
-        Assert.assertEquals(
-                BigDecimal.valueOf(12345678),
-                convertSafe(BigInteger.valueOf(12345678), BigDecimal.class));
-        Assert.assertEquals(
-                BigDecimal.valueOf(12.123456),
-                convertSafe(Double.valueOf(12.123456), BigDecimal.class));
-        Assert.assertEquals(
-                BigDecimal.valueOf(128.1),
-                convertSafe(BigDecimal.valueOf(128.1), BigDecimal.class));
-        Assert.assertEquals(
-                BigDecimal.valueOf(12.12d), convertSafe(Float.valueOf(12.12f), BigDecimal.class));
+        Assert.assertEquals(BigDecimal.valueOf(127), convertSafe(Byte.valueOf((byte) 127), BigDecimal.class));
+        Assert.assertEquals(BigDecimal.valueOf(1111), convertSafe(Short.valueOf((short) 1111), BigDecimal.class));
+        Assert.assertEquals(BigDecimal.valueOf(12345), convertSafe(Integer.valueOf(12345), BigDecimal.class));
+        Assert.assertEquals(BigDecimal.valueOf(1234567), convertSafe(Integer.valueOf(1234567), BigDecimal.class));
+        Assert.assertEquals(BigDecimal.valueOf(12345678), convertSafe(BigInteger.valueOf(12345678), BigDecimal.class));
+        Assert.assertEquals(BigDecimal.valueOf(12.123456), convertSafe(Double.valueOf(12.123456), BigDecimal.class));
+        Assert.assertEquals(BigDecimal.valueOf(128.1), convertSafe(BigDecimal.valueOf(128.1), BigDecimal.class));
+        Assert.assertEquals(BigDecimal.valueOf(12.12d), convertSafe(Float.valueOf(12.12f), BigDecimal.class));
 
         // test strings
         Assert.assertEquals(BigDecimal.valueOf(127), convertSafe("127", BigDecimal.class));
@@ -373,9 +306,7 @@ public class NumericConverterFactoryTest {
         Assert.assertEquals(Long.valueOf("1103442244"), convert("1.1034422448E9", Long.class));
         Assert.assertEquals(Long.valueOf("1103442244"), convert("1.1034422448e9", Long.class));
 
-        Assert.assertEquals(
-                Double.valueOf("1103442244.8"), convert("1.1034422448E9", Double.class));
-        Assert.assertEquals(
-                Double.valueOf("1103442244.8"), convert("1.1034422448e9", Double.class));
+        Assert.assertEquals(Double.valueOf("1103442244.8"), convert("1.1034422448E9", Double.class));
+        Assert.assertEquals(Double.valueOf("1103442244.8"), convert("1.1034422448e9", Double.class));
     }
 }

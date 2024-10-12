@@ -40,10 +40,7 @@ public class ParserTest {
     @Test
     public void testParse() throws Exception {
         Parser parser = new Parser(new MLConfiguration());
-        List mails =
-                (List)
-                        parser.parse(
-                                MLSchemaLocationResolver.class.getResourceAsStream("mails.xml"));
+        List mails = (List) parser.parse(MLSchemaLocationResolver.class.getResourceAsStream("mails.xml"));
 
         Assert.assertEquals(2, mails.size());
 
@@ -67,11 +64,7 @@ public class ParserTest {
     public void testParseNull() throws Exception {
         Parser parser = new Parser(new MLConfiguration());
         parser.setValidating(true);
-        List mails =
-                (List)
-                        parser.parse(
-                                MLSchemaLocationResolver.class.getResourceAsStream(
-                                        "null-mail.xml"));
+        List mails = (List) parser.parse(MLSchemaLocationResolver.class.getResourceAsStream("null-mail.xml"));
 
         Assert.assertEquals(0, parser.getValidationErrors().size());
         Assert.assertEquals(1, mails.size());
@@ -107,8 +100,7 @@ public class ParserTest {
         // test immeediate failure case
         parser.setFailOnValidationError(true);
         try {
-            parser.validate(
-                    MLSchemaLocationResolver.class.getResourceAsStream("mails-invalid.xml"));
+            parser.validate(MLSchemaLocationResolver.class.getResourceAsStream("mails-invalid.xml"));
             Assert.fail("should have thrown an error with setFailOnValidationError set");
         } catch (SAXException e) {
         }
@@ -179,8 +171,7 @@ public class ParserTest {
         public void startDocument() throws SAXException {}
 
         @Override
-        public void startElement(String uri, String localName, String name, Attributes atts)
-                throws SAXException {
+        public void startElement(String uri, String localName, String name, Attributes atts) throws SAXException {
             if (!foo && "foo".equals(localName)) {
                 foo = true;
             }
@@ -190,8 +181,7 @@ public class ParserTest {
         public void startPrefixMapping(String prefix, String uri) throws SAXException {}
 
         @Override
-        public boolean canHandle(
-                QName elementName, Attributes attributes, Handler handler, Handler parent) {
+        public boolean canHandle(QName elementName, Attributes attributes, Handler handler, Handler parent) {
             return canHandle(elementName);
         }
     }
@@ -199,32 +189,28 @@ public class ParserTest {
     @Test
     public void testMixedContent() throws Exception {
         final StringBuffer sb = new StringBuffer();
-        XSD xsd =
-                new XSD() {
-                    @Override
-                    public String getSchemaLocation() {
-                        return ParserTest.class.getResource("mixed.xsd").getFile();
-                    }
+        XSD xsd = new XSD() {
+            @Override
+            public String getSchemaLocation() {
+                return ParserTest.class.getResource("mixed.xsd").getFile();
+            }
 
-                    @Override
-                    public String getNamespaceURI() {
-                        return "http://geotools.org/test";
-                    }
-                };
-        Configuration cfg =
-                new Configuration(xsd) {
-                    @Override
-                    protected void registerBindings(Map<QName, Object> bindings) {
-                        bindings.put(
-                                new QName("http://geotools.org/test", "MixedType"),
-                                new MixedTypeBinding(sb));
-                    }
+            @Override
+            public String getNamespaceURI() {
+                return "http://geotools.org/test";
+            }
+        };
+        Configuration cfg = new Configuration(xsd) {
+            @Override
+            protected void registerBindings(Map<QName, Object> bindings) {
+                bindings.put(new QName("http://geotools.org/test", "MixedType"), new MixedTypeBinding(sb));
+            }
 
-                    @Override
-                    protected void configureParser(Parser parser) {
-                        parser.setHandleMixedContent(true);
-                    }
-                };
+            @Override
+            protected void configureParser(Parser parser) {
+                parser.setHandleMixedContent(true);
+            }
+        };
 
         Parser p = new Parser(cfg);
 
@@ -275,132 +261,107 @@ public class ParserTest {
         Parser parser = new Parser(new MLConfiguration());
 
         try {
-            parser.parse(
-                    MLSchemaLocationResolver.class.getResourceAsStream(
-                            "mails-external-entities.xml"));
+            parser.parse(MLSchemaLocationResolver.class.getResourceAsStream("mails-external-entities.xml"));
             Assert.fail("parsing should throw an exception since referenced file does not exist");
         } catch (FileNotFoundException e) {
         }
         try {
-            parser.validate(
-                    MLSchemaLocationResolver.class.getResourceAsStream(
-                            "mails-external-entities.xml"));
-            Assert.fail(
-                    "validating should throw an exception since referenced file does not exist");
+            parser.validate(MLSchemaLocationResolver.class.getResourceAsStream("mails-external-entities.xml"));
+            Assert.fail("validating should throw an exception since referenced file does not exist");
         } catch (FileNotFoundException e) {
         }
 
         // Set an EntityResolver implementation to prevent usage of external entities.
         // When parsing an XML entity, the empty InputSource returned by this resolver provokes
         // a java.net.MalformedURLException
-        parser.setEntityResolver(
-                new EntityResolver2() {
-                    @Override
-                    public InputSource resolveEntity(String publicId, String systemId)
-                            throws SAXException, IOException {
-                        return new InputSource();
-                    }
+        parser.setEntityResolver(new EntityResolver2() {
+            @Override
+            public InputSource resolveEntity(String publicId, String systemId) throws SAXException, IOException {
+                return new InputSource();
+            }
 
-                    @Override
-                    public InputSource getExternalSubset(String name, String baseURI)
-                            throws SAXException, IOException {
-                        return new InputSource();
-                    }
+            @Override
+            public InputSource getExternalSubset(String name, String baseURI) throws SAXException, IOException {
+                return new InputSource();
+            }
 
-                    @Override
-                    public InputSource resolveEntity(
-                            String name, String publicId, String baseURI, String systemId)
-                            throws SAXException, IOException {
-                        return new InputSource();
-                    }
-                });
+            @Override
+            public InputSource resolveEntity(String name, String publicId, String baseURI, String systemId)
+                    throws SAXException, IOException {
+                return new InputSource();
+            }
+        });
 
         try {
-            parser.parse(
-                    MLSchemaLocationResolver.class.getResourceAsStream(
-                            "mails-external-entities.xml"));
-            Assert.fail(
-                    "parsing an XML with external entities should throw a MalformedURLException");
+            parser.parse(MLSchemaLocationResolver.class.getResourceAsStream("mails-external-entities.xml"));
+            Assert.fail("parsing an XML with external entities should throw a MalformedURLException");
         } catch (MalformedURLException e) {
         }
         try {
-            parser.validate(
-                    MLSchemaLocationResolver.class.getResourceAsStream(
-                            "mails-external-entities.xml"));
-            Assert.fail(
-                    "validating an XML with external entities should throw a MalformedURLException");
+            parser.validate(MLSchemaLocationResolver.class.getResourceAsStream("mails-external-entities.xml"));
+            Assert.fail("validating an XML with external entities should throw a MalformedURLException");
         } catch (MalformedURLException e) {
         }
 
         // Set another EntityResolver
-        parser.setEntityResolver(
-                new EntityResolver2() {
-                    @Override
-                    public InputSource resolveEntity(String publicId, String systemId)
-                            throws SAXException, IOException {
-                        if ("file:///this/file/does/not/exist".equals(systemId)) {
-                            return new InputSource(new StringReader("hello"));
-                        } else {
-                            return new InputSource();
-                        }
-                    }
+        parser.setEntityResolver(new EntityResolver2() {
+            @Override
+            public InputSource resolveEntity(String publicId, String systemId) throws SAXException, IOException {
+                if ("file:///this/file/does/not/exist".equals(systemId)) {
+                    return new InputSource(new StringReader("hello"));
+                } else {
+                    return new InputSource();
+                }
+            }
 
-                    @Override
-                    public InputSource getExternalSubset(String name, String baseURI)
-                            throws SAXException, IOException {
-                        // TODO Auto-generated method stub
-                        return null;
-                    }
+            @Override
+            public InputSource getExternalSubset(String name, String baseURI) throws SAXException, IOException {
+                // TODO Auto-generated method stub
+                return null;
+            }
 
-                    @Override
-                    public InputSource resolveEntity(
-                            String name, String publicId, String baseURI, String systemId)
-                            throws SAXException, IOException {
-                        if ("file:///this/file/does/not/exist".equals(systemId)) {
-                            return new InputSource(new StringReader("hello"));
-                        } else {
-                            return new InputSource();
-                        }
-                    }
-                });
+            @Override
+            public InputSource resolveEntity(String name, String publicId, String baseURI, String systemId)
+                    throws SAXException, IOException {
+                if ("file:///this/file/does/not/exist".equals(systemId)) {
+                    return new InputSource(new StringReader("hello"));
+                } else {
+                    return new InputSource();
+                }
+            }
+        });
 
         // parsing shouldn't throw an exception
-        parser.parse(
-                MLSchemaLocationResolver.class.getResourceAsStream("mails-external-entities.xml"));
-        parser.validate(
-                MLSchemaLocationResolver.class.getResourceAsStream("mails-external-entities.xml"));
+        parser.parse(MLSchemaLocationResolver.class.getResourceAsStream("mails-external-entities.xml"));
+        parser.validate(MLSchemaLocationResolver.class.getResourceAsStream("mails-external-entities.xml"));
     }
 
     /** Tests returned exception caused by entity expansion limit configuration on Parser. */
     @Test
     public void testEntityExpansionLimitException() throws Exception {
         final StringBuffer sb = new StringBuffer();
-        XSD xsd =
-                new XSD() {
-                    @Override
-                    public String getSchemaLocation() {
-                        return ParserTest.class.getResource("mixed.xsd").getFile();
-                    }
+        XSD xsd = new XSD() {
+            @Override
+            public String getSchemaLocation() {
+                return ParserTest.class.getResource("mixed.xsd").getFile();
+            }
 
-                    @Override
-                    public String getNamespaceURI() {
-                        return "http://geotools.org/test";
-                    }
-                };
-        Configuration cfg =
-                new Configuration(xsd) {
-                    @Override
-                    protected void registerBindings(Map<QName, Object> bindings) {
-                        bindings.put(
-                                new QName("http://geotools.org/test", "MixedType"),
-                                new MixedTypeBinding(sb));
-                    }
+            @Override
+            public String getNamespaceURI() {
+                return "http://geotools.org/test";
+            }
+        };
+        Configuration cfg = new Configuration(xsd) {
+            @Override
+            protected void registerBindings(Map<QName, Object> bindings) {
+                bindings.put(new QName("http://geotools.org/test", "MixedType"), new MixedTypeBinding(sb));
+            }
 
-                    @Override
-                    protected void configureParser(Parser parser) {
-                        parser.setHandleMixedContent(true);
-                    }
-                };
+            @Override
+            protected void configureParser(Parser parser) {
+                parser.setHandleMixedContent(true);
+            }
+        };
 
         Parser p = new Parser(cfg);
         p.setEntityExpansionLimit(1);
@@ -419,32 +380,28 @@ public class ParserTest {
     @Test
     public void testEntityExpansionLimitAllowed() throws Exception {
         final StringBuffer sb = new StringBuffer();
-        XSD xsd =
-                new XSD() {
-                    @Override
-                    public String getSchemaLocation() {
-                        return ParserTest.class.getResource("mixed.xsd").getFile();
-                    }
+        XSD xsd = new XSD() {
+            @Override
+            public String getSchemaLocation() {
+                return ParserTest.class.getResource("mixed.xsd").getFile();
+            }
 
-                    @Override
-                    public String getNamespaceURI() {
-                        return "http://geotools.org/test";
-                    }
-                };
-        Configuration cfg =
-                new Configuration(xsd) {
-                    @Override
-                    protected void registerBindings(Map<QName, Object> bindings) {
-                        bindings.put(
-                                new QName("http://geotools.org/test", "MixedType"),
-                                new MixedTypeBinding(sb));
-                    }
+            @Override
+            public String getNamespaceURI() {
+                return "http://geotools.org/test";
+            }
+        };
+        Configuration cfg = new Configuration(xsd) {
+            @Override
+            protected void registerBindings(Map<QName, Object> bindings) {
+                bindings.put(new QName("http://geotools.org/test", "MixedType"), new MixedTypeBinding(sb));
+            }
 
-                    @Override
-                    protected void configureParser(Parser parser) {
-                        parser.setHandleMixedContent(true);
-                    }
-                };
+            @Override
+            protected void configureParser(Parser parser) {
+                parser.setHandleMixedContent(true);
+            }
+        };
 
         Parser p = new Parser(cfg);
         p.setEntityExpansionLimit(100);

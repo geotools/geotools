@@ -39,8 +39,7 @@ public final class NativeFilterImpl implements NativeFilter {
 
     @Override
     public boolean evaluate(Object object) {
-        throw new RuntimeException(
-                String.format("Native filter '%s' can be executed in memory.", nativeFilter));
+        throw new RuntimeException(String.format("Native filter '%s' can be executed in memory.", nativeFilter));
     }
 
     @Override

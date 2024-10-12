@@ -51,15 +51,14 @@ public class FilterVisitorTest {
     @SuppressWarnings("unchecked")
     public void testDefaultFilterVisitorFeatureIdExample() {
         Filter myFilter = ff.id(Collections.singleton(ff.featureId("fred")));
-        FilterVisitor allFids =
-                new DefaultFilterVisitor() {
-                    @Override
-                    public Object visit(Id filter, Object data) {
-                        Set<Object> set = (Set) data;
-                        set.addAll(filter.getIDs());
-                        return set;
-                    }
-                };
+        FilterVisitor allFids = new DefaultFilterVisitor() {
+            @Override
+            public Object visit(Id filter, Object data) {
+                Set<Object> set = (Set) data;
+                set.addAll(filter.getIDs());
+                return set;
+            }
+        };
         Set set = (Set) myFilter.accept(allFids, new HashSet());
         Assert.assertEquals(1, set.size());
     }
@@ -91,16 +90,15 @@ public class FilterVisitorTest {
         filter = Filter.INCLUDE;
         Assert.assertEquals(Integer.valueOf(1), filter.accept(NullFilterVisitor.NULL_VISITOR, 1));
 
-        FilterVisitor allFids =
-                new NullFilterVisitor() {
-                    @Override
-                    public Object visit(Id filter, Object data) {
-                        if (data == null) return null;
-                        Set<Object> set = (Set) data;
-                        set.addAll(filter.getIDs());
-                        return set;
-                    }
-                };
+        FilterVisitor allFids = new NullFilterVisitor() {
+            @Override
+            public Object visit(Id filter, Object data) {
+                if (data == null) return null;
+                Set<Object> set = (Set) data;
+                set.addAll(filter.getIDs());
+                return set;
+            }
+        };
         Filter myFilter = ff.id(Collections.singleton(ff.featureId("fred")));
 
         Set<Object> set = (Set) myFilter.accept(allFids, new HashSet<>());

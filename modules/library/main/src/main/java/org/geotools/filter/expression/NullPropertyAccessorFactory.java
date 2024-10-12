@@ -29,8 +29,7 @@ public class NullPropertyAccessorFactory implements PropertyAccessorFactory {
     private static PropertyAccessor NULLPA = new NullPropertyAccessor();
 
     @Override
-    public PropertyAccessor createPropertyAccessor(
-            Class type, String xpath, Class target, Hints hints) {
+    public PropertyAccessor createPropertyAccessor(Class type, String xpath, Class target, Hints hints) {
         return NULLPA;
     }
 
@@ -48,14 +47,12 @@ public class NullPropertyAccessorFactory implements PropertyAccessorFactory {
         }
 
         @Override
-        public <T> T get(Object object, String xpath, Class<T> target)
-                throws IllegalArgumentException {
+        public <T> T get(Object object, String xpath, Class<T> target) throws IllegalArgumentException {
             return null;
         }
 
         @Override
-        public <T> void set(Object object, String xpath, T value, Class<T> target)
-                throws IllegalArgumentException {
+        public <T> void set(Object object, String xpath, T value, Class<T> target) throws IllegalArgumentException {
             throw new IllegalArgumentException("Cannot assign a value to Expression/NIL.");
         }
     }

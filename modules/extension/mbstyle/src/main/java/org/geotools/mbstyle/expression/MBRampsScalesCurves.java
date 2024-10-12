@@ -63,8 +63,7 @@ public class MBRampsScalesCurves extends MBExpression {
             case "step":
                 return rscStep();
             default:
-                throw new MBFormatException(
-                        name + " is an unsupported ramps, scales, curves expression");
+                throw new MBFormatException(name + " is an unsupported ramps, scales, curves expression");
         }
     }
 }

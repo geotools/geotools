@@ -80,8 +80,7 @@ public abstract class FeatureCollectionEncoderDelegate implements EncoderDelegat
 
     protected boolean encodeGeometryIds = false;
 
-    protected FeatureCollectionEncoderDelegate(
-            SimpleFeatureCollection features, Encoder encoder, GMLDelegate gml) {
+    protected FeatureCollectionEncoderDelegate(SimpleFeatureCollection features, Encoder encoder, GMLDelegate gml) {
         this.features = features;
         this.gml = gml;
         this.encoder = encoder;
@@ -95,17 +94,15 @@ public abstract class FeatureCollectionEncoderDelegate implements EncoderDelegat
 
     @Override
     public void encode(ContentHandler handler) throws Exception {
-        GMLWriter output =
-                new GMLWriter(
-                        handler,
-                        namespaces,
-                        gml.getNumDecimals(),
-                        gml.forceDecimalEncoding(),
-                        gml.padWithZeros(),
-                        gml.getGmlPrefix(),
-                        gml.getEncodeMeasures());
-        boolean featureBounds =
-                !encoder.getConfiguration().hasProperty(GMLConfiguration.NO_FEATURE_BOUNDS);
+        GMLWriter output = new GMLWriter(
+                handler,
+                namespaces,
+                gml.getNumDecimals(),
+                gml.forceDecimalEncoding(),
+                gml.padWithZeros(),
+                gml.getGmlPrefix(),
+                gml.getEncodeMeasures());
+        boolean featureBounds = !encoder.getConfiguration().hasProperty(GMLConfiguration.NO_FEATURE_BOUNDS);
 
         try (SimpleFeatureIterator fi = features.features()) {
             if (!fi.hasNext()) {
@@ -189,32 +186,22 @@ public abstract class FeatureCollectionEncoderDelegate implements EncoderDelegat
     }
 
     private void encodeValue(
-            GMLWriter output,
-            ObjectEncoder<Object> ee,
-            Object value,
-            AttributeContext attribute,
-            String featureId)
+            GMLWriter output, ObjectEncoder<Object> ee, Object value, AttributeContext attribute, String featureId)
             throws SAXException, Exception {
         output.startElement(
                 attribute.name,
-                getPropertyAttributes(
-                        attribute.name, attribute.featureType, attribute.descriptor, value));
+                getPropertyAttributes(attribute.name, attribute.featureType, attribute.descriptor, value));
 
         if (value instanceof Geometry) {
             Geometry g = (Geometry) value;
-            Integer dimension =
-                    GML2EncodingUtils.getGeometryDimension(g, encoder.getConfiguration());
-            AttributesImpl atts =
-                    buildSrsAttributes(
-                            ((GeometryDescriptor) attribute.descriptor)
-                                    .getCoordinateReferenceSystem(),
-                            dimension);
+            Integer dimension = GML2EncodingUtils.getGeometryDimension(g, encoder.getConfiguration());
+            AttributesImpl atts = buildSrsAttributes(
+                    ((GeometryDescriptor) attribute.descriptor).getCoordinateReferenceSystem(), dimension);
             GeometryEncoder<Geometry> geometryEncoder = getGeometryEncoder(value, attribute);
             geometryEncoder.encode(g, atts, output, featureId);
         } else if (value instanceof Envelope) {
             ReferencedEnvelope e = (ReferencedEnvelope) value;
-            Integer dimension =
-                    GML2EncodingUtils.getEnvelopeDimension(e, encoder.getConfiguration());
+            Integer dimension = GML2EncodingUtils.getEnvelopeDimension(e, encoder.getConfiguration());
             AttributesImpl atts = buildSrsAttributes(e.getCoordinateReferenceSystem(), dimension);
             ee.encode(e, atts, output);
         } else if (attribute.binding instanceof SimpleBinding) {
@@ -236,10 +223,7 @@ public abstract class FeatureCollectionEncoderDelegate implements EncoderDelegat
      * @return A Attributes, or null if no attributes are desired
      */
     protected Attributes getPropertyAttributes(
-            QualifiedName name,
-            FeatureType featureType,
-            AttributeDescriptor attribute,
-            Object value) {
+            QualifiedName name, FeatureType featureType, AttributeDescriptor attribute, Object value) {
         return null;
     }
 
@@ -260,8 +244,7 @@ public abstract class FeatureCollectionEncoderDelegate implements EncoderDelegat
         }
 
         if (encoder == null) {
-            throw new RuntimeException(
-                    "Failed to find an appropriate geometry encoder for class " + value.getClass());
+            throw new RuntimeException("Failed to find an appropriate geometry encoder for class " + value.getClass());
         } else {
             return encoder;
         }
@@ -281,8 +264,7 @@ public abstract class FeatureCollectionEncoderDelegate implements EncoderDelegat
         return atts;
     }
 
-    private void encodeSimpleBinding(GMLWriter output, Object value, Binding binding)
-            throws Exception, SAXException {
+    private void encodeSimpleBinding(GMLWriter output, Object value, Binding binding) throws Exception, SAXException {
         if (!binding.getType().isInstance(value)) {
             Object converted = Converters.convert(value, binding.getType());
             if (converted != null) {
@@ -331,21 +313,18 @@ public abstract class FeatureCollectionEncoderDelegate implements EncoderDelegat
 
         public FeatureTypeContext(SimpleFeature f, GMLDelegate gml) {
             this.featureType = f.getFeatureType();
-            QName featureName =
-                    new QName(
-                            featureType.getName().getNamespaceURI(),
-                            featureType.getName().getLocalPart());
+            QName featureName = new QName(
+                    featureType.getName().getNamespaceURI(),
+                    featureType.getName().getLocalPart());
 
             // look up the element in the schema
-            XSDElementDeclaration element =
-                    encoder.getSchemaIndex().getElementDeclaration(featureName);
+            XSDElementDeclaration element = encoder.getSchemaIndex().getElementDeclaration(featureName);
             if (element == null) {
                 // create one
                 element = XSDFactory.eINSTANCE.createXSDElementDeclaration();
                 element.setName(featureType.getName().getLocalPart());
                 element.setTargetNamespace(featureType.getName().getNamespaceURI());
-                element.setTypeDefinition(
-                        encoder.getSchemaIndex().getTypeDefinition(GML.AbstractFeatureType));
+                element.setTypeDefinition(encoder.getSchemaIndex().getTypeDefinition(GML.AbstractFeatureType));
             }
 
             // look up all the bindings for each property
@@ -375,12 +354,9 @@ public abstract class FeatureCollectionEncoderDelegate implements EncoderDelegat
                 String prefix = namespaces.getPrefix(content.getTargetNamespace());
                 QualifiedName contentName;
                 if (prefix != null) {
-                    contentName =
-                            QualifiedName.build(
-                                    content.getTargetNamespace(), content.getName(), prefix);
+                    contentName = QualifiedName.build(content.getTargetNamespace(), content.getName(), prefix);
                 } else {
-                    contentName =
-                            new QualifiedName(content.getTargetNamespace(), content.getName());
+                    contentName = new QualifiedName(content.getTargetNamespace(), content.getName());
                 }
                 AttributeContext attribute = new AttributeContext(contentName);
                 attribute.featureType = schema;
@@ -413,11 +389,9 @@ public abstract class FeatureCollectionEncoderDelegate implements EncoderDelegat
                         throw new IllegalArgumentException("Could not find non annonymous type");
                     }
 
-                    QName contentTypeName =
-                            new QName(contentType.getTargetNamespace(), contentType.getName());
+                    QName contentTypeName = new QName(contentType.getTargetNamespace(), contentType.getName());
 
-                    Binding binding =
-                            bindingLoader.loadBinding(contentTypeName, encoder.getContext());
+                    Binding binding = bindingLoader.loadBinding(contentTypeName, encoder.getContext());
                     attribute.binding = binding;
                 }
             }

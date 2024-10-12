@@ -148,8 +148,7 @@ public final class GeoTools {
      * @see Hints#CRS_AUTHORITY_EXTRA_DIRECTORY
      * @see #getDefaultHints
      */
-    public static final String CRS_AUTHORITY_EXTRA_DIRECTORY =
-            "org.geotools.referencing.crs-directory";
+    public static final String CRS_AUTHORITY_EXTRA_DIRECTORY = "org.geotools.referencing.crs-directory";
 
     /**
      * The {@linkplain System#getProperty(String) system property} key for the default value to be
@@ -184,8 +183,7 @@ public final class GeoTools {
      * @see Hints#FORCE_LONGITUDE_FIRST_AXIS_ORDER
      * @see #getDefaultHints
      */
-    public static final String FORCE_LONGITUDE_FIRST_AXIS_ORDER =
-            "org.geotools.referencing.forceXY";
+    public static final String FORCE_LONGITUDE_FIRST_AXIS_ORDER = "org.geotools.referencing.forceXY";
 
     /**
      * The {@linkplain System#getProperty(String) system property} key for the default value to be
@@ -302,8 +300,7 @@ public final class GeoTools {
      * which are used to look-up plug-ins. Class loaders are added via {@link
      * #addClassLoader(ClassLoader)}
      */
-    private static final Set<ClassLoader> addedClassLoaders =
-            Collections.synchronizedSet(new HashSet<>());
+    private static final Set<ClassLoader> addedClassLoaders = Collections.synchronizedSet(new HashSet<>());
 
     /**
      * The bindings between {@linkplain System#getProperties system properties} and a hint key.
@@ -334,22 +331,19 @@ public final class GeoTools {
      * Default JNDI name validator, allows lookups only on names without a scheme, or using the
      * <code>java</code> scheme.
      */
-    public static final Predicate<String> DEFAULT_JNDI_VALIDATOR =
-            name -> {
-                Logger LOGGER = Logging.getLogger(GeoTools.class);
-                try {
-                    URI uri = new URI(name);
-                    boolean result = uri.getScheme() == null || uri.getScheme().equals("java");
-                    if (!result)
-                        LOGGER.warning(
-                                "JNDI lookup allowed only on java scheme, or no scheme. Found instead: "
-                                        + name);
-                    return result;
-                } catch (URISyntaxException e) {
-                    LOGGER.log(Level.WARNING, "Invalid JNDI name provided", e);
-                    return false;
-                }
-            };
+    public static final Predicate<String> DEFAULT_JNDI_VALIDATOR = name -> {
+        Logger LOGGER = Logging.getLogger(GeoTools.class);
+        try {
+            URI uri = new URI(name);
+            boolean result = uri.getScheme() == null || uri.getScheme().equals("java");
+            if (!result)
+                LOGGER.warning("JNDI lookup allowed only on java scheme, or no scheme. Found instead: " + name);
+            return result;
+        } catch (URISyntaxException e) {
+            LOGGER.log(Level.WARNING, "Invalid JNDI name provided", e);
+            return false;
+        }
+    };
 
     private static Predicate<String> jndiValidator = DEFAULT_JNDI_VALIDATOR;
 
@@ -366,9 +360,7 @@ public final class GeoTools {
      *     property.
      */
     private static void bind(
-            final String property,
-            final RenderingHints.Key key,
-            Map<String, RenderingHints.Key> bindings) {
+            final String property, final RenderingHints.Key key, Map<String, RenderingHints.Key> bindings) {
         final RenderingHints.Key old = bindings.putIfAbsent(property, key);
         if (old != null) {
             throw new IllegalArgumentException(
@@ -414,9 +406,7 @@ public final class GeoTools {
         sb.append(System.getProperty("java.version"));
 
         sb.append(newline).append("Operating system: ");
-        sb.append(System.getProperty("os.name"))
-                .append(' ')
-                .append(System.getProperty("os.version"));
+        sb.append(System.getProperty("os.name")).append(' ').append(System.getProperty("os.version"));
 
         return sb.toString();
     }
@@ -540,9 +530,7 @@ public final class GeoTools {
                     manifest.read(content);
                 }
                 for (String attribute :
-                        new String[] {
-                            "Implementation-Version", "Project-Version", "Specification-Version"
-                        }) {
+                        new String[] {"Implementation-Version", "Project-Version", "Specification-Version"}) {
                     String value = manifest.getMainAttributes().getValue(attribute);
                     if (value != null) {
                         return new Version(value);
@@ -610,10 +598,7 @@ public final class GeoTools {
         URL url;
         if (classLocation.startsWith("jar:")) {
             try {
-                url =
-                        new URL(
-                                classLocation.substring(0, classLocation.lastIndexOf("!") + 1)
-                                        + "/META-INF/MANIFEST.MF");
+                url = new URL(classLocation.substring(0, classLocation.lastIndexOf("!") + 1) + "/META-INF/MANIFEST.MF");
                 return url;
             } catch (MalformedURLException e) {
                 return null;
@@ -654,11 +639,8 @@ public final class GeoTools {
         if (manifest.getMainAttributes().isEmpty()) {
             // must be running in IDE
             String name = type.getName();
-            if (name.startsWith("org.geotools")
-                    || name.startsWith("org.opengis")
-                    || name.startsWith("net.opengis")) {
-                String generated =
-                        "Manifest-Version: 1.0\n" + "Project-Version: " + getVersion() + "\n";
+            if (name.startsWith("org.geotools") || name.startsWith("org.opengis") || name.startsWith("net.opengis")) {
+                String generated = "Manifest-Version: 1.0\n" + "Project-Version: " + getVersion() + "\n";
 
                 try {
                     manifest.read(new ByteArrayInputStream(generated.getBytes()));
@@ -807,8 +789,7 @@ public final class GeoTools {
                         // check if delegating to jdk14logger
                         LoggerFactory factory = Logging.ALL.getLoggerFactory();
                         if (factory != null) {
-                            Logger logger =
-                                    Logging.ALL.getLoggerFactory().getLogger("org.geotools");
+                            Logger logger = Logging.ALL.getLoggerFactory().getLogger("org.geotools");
                             if (!(logger instanceof LoggerAdapter)) {
                                 continue; // configured to delegate to jdk14logger
                             }
@@ -961,8 +942,7 @@ public final class GeoTools {
                 return (EntityResolver) hint;
             } else if (hint instanceof String) {
                 String className = (String) hint;
-                return instantiate(
-                        className, EntityResolver.class, PreventLocalEntityResolver.INSTANCE);
+                return instantiate(className, EntityResolver.class, PreventLocalEntityResolver.INSTANCE);
             }
         }
         return PreventLocalEntityResolver.INSTANCE;
@@ -987,23 +967,16 @@ public final class GeoTools {
             // step 1 look for instance field
             for (Field field : kind.getDeclaredFields()) {
                 int modifier = field.getModifiers();
-                if ("INSTANCE".equals(field.getName())
-                        && Modifier.isStatic(modifier)
-                        && Modifier.isPublic(modifier)) {
+                if ("INSTANCE".equals(field.getName()) && Modifier.isStatic(modifier) && Modifier.isPublic(modifier)) {
                     try {
                         Object value = field.get(null);
                         if (value != null && value instanceof EntityResolver) {
                             return type.cast(value);
                         } else {
-                            LOGGER.log(
-                                    Level.FINER,
-                                    "Unable to use ENTITY_RESOLVER: " + className + ".INSTANCE");
+                            LOGGER.log(Level.FINER, "Unable to use ENTITY_RESOLVER: " + className + ".INSTANCE");
                         }
                     } catch (Throwable t) {
-                        LOGGER.log(
-                                Level.FINER,
-                                "Unable to instantiate ENTITY_RESOLVER: " + className + ".INSTANCE",
-                                t);
+                        LOGGER.log(Level.FINER, "Unable to instantiate ENTITY_RESOLVER: " + className + ".INSTANCE", t);
                     }
                     return defaultValue;
                 }
@@ -1018,14 +991,10 @@ public final class GeoTools {
                     | IllegalAccessException
                     | NoSuchMethodException
                     | InvocationTargetException e) {
-                LOGGER.log(
-                        Level.FINER, "Unable to instantiate ENTITY_RESOLVER: " + e.getMessage(), e);
+                LOGGER.log(Level.FINER, "Unable to instantiate ENTITY_RESOLVER: " + e.getMessage(), e);
             }
         } catch (ClassNotFoundException notFound) {
-            LOGGER.log(
-                    Level.FINER,
-                    "Unable to instantiate ENTITY_RESOLVER: " + notFound.getMessage(),
-                    notFound);
+            LOGGER.log(Level.FINER, "Unable to instantiate ENTITY_RESOLVER: " + notFound.getMessage(), notFound);
         }
         return defaultValue;
     }
@@ -1115,18 +1084,16 @@ public final class GeoTools {
                     .append(contextFactory == null ? "" : (String) contextFactory)
                     .append("\n");
 
-            Enumeration<URL> urls =
-                    AccessController.doPrivileged(
-                            new PrivilegedAction<Enumeration<URL>>() {
-                                @Override
-                                public Enumeration<URL> run() {
-                                    try {
-                                        return ClassLoader.getSystemResources(propFileName);
-                                    } catch (IOException e) {
-                                        return null;
-                                    }
-                                }
-                            });
+            Enumeration<URL> urls = AccessController.doPrivileged(new PrivilegedAction<Enumeration<URL>>() {
+                @Override
+                public Enumeration<URL> run() {
+                    try {
+                        return ClassLoader.getSystemResources(propFileName);
+                    } catch (IOException e) {
+                        return null;
+                    }
+                }
+            });
             if (urls != null) {
                 sb.append("Or from these property files:\n");
                 while (urls.hasMoreElements()) {
@@ -1135,28 +1102,22 @@ public final class GeoTools {
                 sb.append("\n");
             }
 
-            String javaHome =
-                    AccessController.doPrivileged(
-                            new PrivilegedAction<String>() {
-                                @Override
-                                public String run() {
-                                    try {
-                                        String javahome = System.getProperty("java.home");
-                                        if (javahome == null) {
-                                            return null;
-                                        }
-                                        String pathname =
-                                                javahome
-                                                        + java.io.File.separator
-                                                        + "lib"
-                                                        + java.io.File.separator
-                                                        + propFileName;
-                                        return pathname;
-                                    } catch (Exception e) {
-                                        return null;
-                                    }
-                                }
-                            });
+            String javaHome = AccessController.doPrivileged(new PrivilegedAction<String>() {
+                @Override
+                public String run() {
+                    try {
+                        String javahome = System.getProperty("java.home");
+                        if (javahome == null) {
+                            return null;
+                        }
+                        String pathname =
+                                javahome + java.io.File.separator + "lib" + java.io.File.separator + propFileName;
+                        return pathname;
+                    } catch (Exception e) {
+                        return null;
+                    }
+                }
+            });
             if (javaHome != null) {
                 sb.append("Or from a file specified by system property java.home:\n")
                         .append(javaHome)

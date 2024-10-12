@@ -46,8 +46,7 @@ public abstract class MathExpressionImpl extends DefaultExpression implements Bi
     protected MathExpressionImpl() {}
 
     protected MathExpressionImpl(
-            org.geotools.api.filter.expression.Expression e1,
-            org.geotools.api.filter.expression.Expression e2) {
+            org.geotools.api.filter.expression.Expression e1, org.geotools.api.filter.expression.Expression e2) {
         this.leftValue = e1;
         this.rightValue = e2;
     }
@@ -65,8 +64,7 @@ public abstract class MathExpressionImpl extends DefaultExpression implements Bi
     /** Gets the left or first expression. */
     public void setExpression1(org.geotools.api.filter.expression.Expression expression) {
         if (isGeometryExpression(Filters.getExpressionType(expression))) {
-            throw new IllegalFilterException(
-                    "Attempted to add Geometry expression to math expression.");
+            throw new IllegalFilterException("Attempted to add Geometry expression to math expression.");
         }
         this.leftValue = expression;
     }
@@ -85,8 +83,7 @@ public abstract class MathExpressionImpl extends DefaultExpression implements Bi
     public void setExpression2(org.geotools.api.filter.expression.Expression expression) {
         // Check to see if this is a valid math expression before adding.
         if (isGeometryExpression(Filters.getExpressionType(expression))) {
-            throw new IllegalFilterException(
-                    "Attempted to add Geometry expression to math expression.");
+            throw new IllegalFilterException("Attempted to add Geometry expression to math expression.");
         }
         this.rightValue = expression;
     }
@@ -98,8 +95,7 @@ public abstract class MathExpressionImpl extends DefaultExpression implements Bi
     protected void ensureOperandsSet() throws IllegalArgumentException {
         // Checks to make sure both sub expressions exist.
         if ((leftValue == null) || (rightValue == null)) {
-            throw new IllegalArgumentException(
-                    "Attempted read math expression with missing sub expressions.");
+            throw new IllegalArgumentException("Attempted read math expression with missing sub expressions.");
         }
     }
 
@@ -118,9 +114,7 @@ public abstract class MathExpressionImpl extends DefaultExpression implements Bi
             @SuppressWarnings("unchecked")
             Collection<Object> c1 = (Collection<Object>) value1;
             numericList =
-                    c1.stream()
-                            .map(v -> Converters.convert(v, Number.class))
-                            .collect(Collectors.toList());
+                    c1.stream().map(v -> Converters.convert(v, Number.class)).collect(Collectors.toList());
             scalar = Filters.number(value2);
 
         } else {
@@ -128,9 +122,7 @@ public abstract class MathExpressionImpl extends DefaultExpression implements Bi
             @SuppressWarnings("unchecked")
             Collection<Object> unc = (Collection<Object>) value2;
             numericList =
-                    unc.stream()
-                            .map(v -> Converters.convert(v, Number.class))
-                            .collect(Collectors.toList());
+                    unc.stream().map(v -> Converters.convert(v, Number.class)).collect(Collectors.toList());
             scalar = Filters.number(value1);
         }
 

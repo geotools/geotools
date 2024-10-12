@@ -38,9 +38,7 @@ public class GMLMultiPointPropertyTypeBindingTest extends AbstractGMLBindingTest
     public void setUp() throws Exception {
         super.setUp();
 
-        association =
-                createElement(
-                        GML.NAMESPACE, "myMultiPointProperty", GML.MultiPointPropertyType, null);
+        association = createElement(GML.NAMESPACE, "myMultiPointProperty", GML.MultiPointPropertyType, null);
         geometry = createElement(GML.NAMESPACE, "myMultiPoint", GML.MultiPointType, null);
 
         container = new DefaultPicoContainer();
@@ -54,23 +52,18 @@ public class GMLMultiPointPropertyTypeBindingTest extends AbstractGMLBindingTest
         Point p1 = new GeometryFactory().createPoint(new Coordinate(0, 0));
         Point p2 = new GeometryFactory().createPoint(new Coordinate(1, 1));
 
-        Node node =
-                createNode(
-                        association,
-                        new ElementInstance[] {geometry},
-                        new Object[] {new GeometryFactory().createMultiPoint(new Point[] {p1, p2})},
-                        null,
-                        null);
+        Node node = createNode(
+                association,
+                new ElementInstance[] {geometry},
+                new Object[] {new GeometryFactory().createMultiPoint(new Point[] {p1, p2})},
+                null,
+                null);
 
-        GMLGeometryAssociationTypeBinding s =
-                (GMLGeometryAssociationTypeBinding)
-                        container.getComponentInstanceOfType(
-                                GMLGeometryAssociationTypeBinding.class);
+        GMLGeometryAssociationTypeBinding s = (GMLGeometryAssociationTypeBinding)
+                container.getComponentInstanceOfType(GMLGeometryAssociationTypeBinding.class);
 
-        GMLMultiPointPropertyTypeBinding s1 =
-                (GMLMultiPointPropertyTypeBinding)
-                        container.getComponentInstanceOfType(
-                                GMLMultiPointPropertyTypeBinding.class);
+        GMLMultiPointPropertyTypeBinding s1 = (GMLMultiPointPropertyTypeBinding)
+                container.getComponentInstanceOfType(GMLMultiPointPropertyTypeBinding.class);
 
         MultiPoint p = (MultiPoint) s1.parse(association, node, s.parse(association, node, null));
         assertNotNull(p);

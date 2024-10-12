@@ -157,10 +157,7 @@ public class StreamingParser {
      */
     public StreamingParser(Configuration configuration, InputStream input, QName elementName)
             throws ParserConfigurationException, SAXException {
-        this(
-                configuration,
-                input,
-                new ElementNameStreamingParserHandler(configuration, elementName));
+        this(configuration, input, new ElementNameStreamingParserHandler(configuration, elementName));
     }
 
     /**
@@ -181,8 +178,8 @@ public class StreamingParser {
      *
      * <p>We do this to allow the jxpath component to be removed... and avoid its dependencies.
      */
-    static StreamingParserHandler createJXpathStreamingParserHandler(
-            Configuration configuration, String xpath) throws ParserConfigurationException {
+    static StreamingParserHandler createJXpathStreamingParserHandler(Configuration configuration, String xpath)
+            throws ParserConfigurationException {
 
         Class<?> clazz;
         try {
@@ -204,8 +201,7 @@ public class StreamingParser {
     }
 
     /** Internal constructor. */
-    protected StreamingParser(
-            Configuration configuration, InputStream input, StreamingParserHandler handler)
+    protected StreamingParser(Configuration configuration, InputStream input, StreamingParserHandler handler)
             throws ParserConfigurationException, SAXException {
         SAXParserFactory spf = SAXParserFactory.newInstance();
         spf.setNamespaceAware(true);
@@ -228,16 +224,15 @@ public class StreamingParser {
      */
     public Object parse() {
         if (thread == null) {
-            Runnable runnable =
-                    () -> {
-                        try {
-                            parser.parse(input, handler);
-                        } catch (Exception e) {
-                            // close the buffer
-                            handler.getBuffer().close();
-                            throw new RuntimeException(e);
-                        }
-                    };
+            Runnable runnable = () -> {
+                try {
+                    parser.parse(input, handler);
+                } catch (Exception e) {
+                    // close the buffer
+                    handler.getBuffer().close();
+                    throw new RuntimeException(e);
+                }
+            };
 
             thread = new Thread(runnable);
             thread.start();

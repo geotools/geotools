@@ -46,6 +46,7 @@ public class SortByTypeBindingTest extends FilterTestSupport {
     @Test
     public void testEncode() throws Exception {
         Document doc = encode(FilterMockData.sortBy(), OGC.SortBy);
-        assertEquals(2, doc.getElementsByTagNameNS(OGC.NAMESPACE, "SortProperty").getLength());
+        assertEquals(
+                2, doc.getElementsByTagNameNS(OGC.NAMESPACE, "SortProperty").getLength());
     }
 }

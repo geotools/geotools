@@ -52,8 +52,7 @@ import org.locationtech.jts.geom.Geometry;
  * @author Jody Garnett, Refractions Research
  */
 @SuppressWarnings("unchecked") // Diff is coded against SimpleFeature, while this is generified
-public class DiffFeatureReader<T extends FeatureType, F extends Feature>
-        implements FeatureReader<T, F> {
+public class DiffFeatureReader<T extends FeatureType, F extends Feature> implements FeatureReader<T, F> {
     FeatureReader<T, F> reader;
     Diff diff;
 
@@ -271,10 +270,7 @@ public class DiffFeatureReader<T extends FeatureType, F extends Feature>
     }
 
     protected boolean isDefaultGeometry(PropertyName ae) {
-        return reader.getFeatureType()
-                .getGeometryDescriptor()
-                .getLocalName()
-                .equals(ae.getPropertyName());
+        return reader.getFeatureType().getGeometryDescriptor().getLocalName().equals(ae.getPropertyName());
     }
 
     protected boolean isSubsetOfBboxFilter(Filter f) {

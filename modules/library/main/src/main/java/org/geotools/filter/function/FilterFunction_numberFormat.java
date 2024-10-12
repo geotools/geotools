@@ -46,13 +46,12 @@ public class FilterFunction_numberFormat extends FunctionExpressionImpl {
         }
     }
 
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "numberFormat",
-                    String.class,
-                    parameter("format", String.class),
-                    parameter("number", Number.class),
-                    parameter("language", String.class, 0, 1));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "numberFormat",
+            String.class,
+            parameter("format", String.class),
+            parameter("number", Number.class),
+            parameter("language", String.class, 0, 1));
 
     public FilterFunction_numberFormat() {
         super(NAME);
@@ -101,8 +100,7 @@ public class FilterFunction_numberFormat extends FunctionExpressionImpl {
             }
 
         } else {
-            throw new IllegalArgumentException(
-                    "Unknown language code '" + localeString + "' in numberFormat function");
+            throw new IllegalArgumentException("Unknown language code '" + localeString + "' in numberFormat function");
         }
         if (locale == null) {
             locale = Locale.getDefault();

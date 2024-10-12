@@ -51,38 +51,25 @@ public class LantmaterietWMTSServerOnlineTest extends WMTSOnlineTestCase {
 
     @Override
     public void setUpInternal() throws Exception {
-        this.server =
-                new URL(
-                        "https://api.lantmateriet.se/open/topowebb-ccby/v1/wmts/token/8d61b10d-e93b-3c04-b4ae-4f4bdd1afe1b/?request=getcapabilities&service=wmts");
+        this.server = new URL(
+                "https://api.lantmateriet.se/open/topowebb-ccby/v1/wmts/token/8d61b10d-e93b-3c04-b4ae-4f4bdd1afe1b/?request=getcapabilities&service=wmts");
         this.serverWithStyle = new URL("https://www.basemap.at/wmts/1.0.0/WMTSCapabilities.xml");
     }
 
     @Test
-    public void testGetTiles()
-            throws IOException, ServiceException, FactoryException, TransformException {
+    public void testGetTiles() throws IOException, ServiceException, FactoryException, TransformException {
         WebMapTileServer wmts = new WebMapTileServer(server);
 
         WMTSCapabilities capabilities = wmts.getCapabilities();
 
         CoordinateReferenceSystem crs = CRS.decode("EPSG:3857");
-        ReferencedEnvelope envelope =
-                new ReferencedEnvelope(
-                        181896.32913603852,
-                        1086312.9422175875,
-                        6091282.433471196,
-                        7689478.305598114,
-                        crs);
+        ReferencedEnvelope envelope = new ReferencedEnvelope(
+                181896.32913603852, 1086312.9422175875, 6091282.433471196, 7689478.305598114, crs);
 
         // envelope to request tiles for 5th zoom level
-        ReferencedEnvelope re1 =
-                new ReferencedEnvelope(
-                        -9772.986997677013,
-                        3743054.020110313,
-                        6674950.119413431,
-                        1.042777712652142E7,
-                        crs);
-        Set<Tile> responses =
-                issueTileRequest(wmts, capabilities, envelope, re1, crs, "topowebb_nedtonad");
+        ReferencedEnvelope re1 = new ReferencedEnvelope(
+                -9772.986997677013, 3743054.020110313, 6674950.119413431, 1.042777712652142E7, crs);
+        Set<Tile> responses = issueTileRequest(wmts, capabilities, envelope, re1, crs, "topowebb_nedtonad");
         assertFalse(responses.isEmpty());
         for (Tile response : responses) {
             // checking the identifier
@@ -91,14 +78,8 @@ public class LantmaterietWMTSServerOnlineTest extends WMTSOnlineTestCase {
         }
         // envelope to request tiles for 7th zoom level
         ReferencedEnvelope re2 =
-                new ReferencedEnvelope(
-                        381146.49290940526,
-                        1441515.582157366,
-                        7403037.65074037,
-                        9279451.154294366,
-                        crs);
-        Set<Tile> responses2 =
-                issueTileRequest(wmts, capabilities, envelope, re2, crs, "topowebb_nedtonad");
+                new ReferencedEnvelope(381146.49290940526, 1441515.582157366, 7403037.65074037, 9279451.154294366, crs);
+        Set<Tile> responses2 = issueTileRequest(wmts, capabilities, envelope, re2, crs, "topowebb_nedtonad");
         for (Tile response : responses2) {
             // checking the identifier
             assertTrue(response.getId().startsWith("wmts_7"));
@@ -107,42 +88,24 @@ public class LantmaterietWMTSServerOnlineTest extends WMTSOnlineTestCase {
     }
 
     @Test
-    public void testWMTSCoverageReader()
-            throws IOException, ServiceException, FactoryException, TransformException {
+    public void testWMTSCoverageReader() throws IOException, ServiceException, FactoryException, TransformException {
         WebMapTileServer wmts = new WebMapTileServer(server);
         WMTSCapabilities capabilities = wmts.getCapabilities();
         CoordinateReferenceSystem crs = CRS.decode("EPSG:3857");
         // layer bboxes
-        ReferencedEnvelope envelope =
-                new ReferencedEnvelope(
-                        181896.32913603852,
-                        1086312.9422175875,
-                        6091282.433471196,
-                        7689478.305598114,
-                        crs);
+        ReferencedEnvelope envelope = new ReferencedEnvelope(
+                181896.32913603852, 1086312.9422175875, 6091282.433471196, 7689478.305598114, crs);
 
         // first envelope 5th zoom level
-        ReferencedEnvelope re1 =
-                new ReferencedEnvelope(
-                        -9772.986997677013,
-                        3743054.020110313,
-                        6674950.119413431,
-                        1.042777712652142E7,
-                        crs);
-        RenderedImage ri1 =
-                getRenderImageResult(wmts, capabilities, envelope, re1, "topowebb_nedtonad");
+        ReferencedEnvelope re1 = new ReferencedEnvelope(
+                -9772.986997677013, 3743054.020110313, 6674950.119413431, 1.042777712652142E7, crs);
+        RenderedImage ri1 = getRenderImageResult(wmts, capabilities, envelope, re1, "topowebb_nedtonad");
         File img1 = new File(getClass().getResource("wmtsTestResultZoom5.png").getFile());
         ImageAssert.assertEquals(img1, ri1, 50);
         // second envelope 7th zoomLevel
         ReferencedEnvelope re2 =
-                new ReferencedEnvelope(
-                        381146.49290940526,
-                        1441515.582157366,
-                        7403037.65074037,
-                        9279451.154294366,
-                        crs);
-        RenderedImage ri2 =
-                getRenderImageResult(wmts, capabilities, envelope, re2, "topowebb_nedtonad");
+                new ReferencedEnvelope(381146.49290940526, 1441515.582157366, 7403037.65074037, 9279451.154294366, crs);
+        RenderedImage ri2 = getRenderImageResult(wmts, capabilities, envelope, re2, "topowebb_nedtonad");
         File img2 = new File(getClass().getResource("wmtsTestResultZoom7.png").getFile());
         ImageAssert.assertEquals(img2, ri2, 100);
     }
@@ -184,80 +147,48 @@ public class LantmaterietWMTSServerOnlineTest extends WMTSOnlineTestCase {
     }
 
     @Test
-    public void testReproject()
-            throws IOException, ServiceException, FactoryException, URISyntaxException {
+    public void testReproject() throws IOException, ServiceException, FactoryException, URISyntaxException {
         WebMapTileServer wmts = new WebMapTileServer(serverWithStyle);
         WMTSCapabilities capabilities = wmts.getCapabilities();
         CoordinateReferenceSystem crs = CRS.decode("EPSG:2056");
         // layer bboxes
-        ReferencedEnvelope envelope =
-                new ReferencedEnvelope(
-                        2698313.7525878195,
-                        3348542.311391488,
-                        1135039.4713045221,
-                        1476372.4030413276,
-                        crs);
+        ReferencedEnvelope envelope = new ReferencedEnvelope(
+                2698313.7525878195, 3348542.311391488, 1135039.4713045221, 1476372.4030413276, crs);
 
-        ReferencedEnvelope requested1 =
-                new ReferencedEnvelope(
-                        2788966.1644620905,
-                        3258069.540350589,
-                        1182531.426718924,
-                        1429299.3484102695,
-                        crs);
-        RenderedImage ri =
-                getRenderImageResult(wmts, capabilities, envelope, requested1, "bmaporthofoto30cm");
+        ReferencedEnvelope requested1 = new ReferencedEnvelope(
+                2788966.1644620905, 3258069.540350589, 1182531.426718924, 1429299.3484102695, crs);
+        RenderedImage ri = getRenderImageResult(wmts, capabilities, envelope, requested1, "bmaporthofoto30cm");
         URL url = getClass().getResource("wmts-rep1.png");
         ImageAssert.assertEquals(new File(url.toURI()), ri, 100);
 
-        ReferencedEnvelope requested2 =
-                new ReferencedEnvelope(
-                        3025961.099155759,
-                        3260512.787100008,
-                        1210934.1701809228,
-                        1334318.1310265958,
-                        crs);
-        RenderedImage ri2 =
-                getRenderImageResult(wmts, capabilities, envelope, requested2, "bmaporthofoto30cm");
+        ReferencedEnvelope requested2 = new ReferencedEnvelope(
+                3025961.099155759, 3260512.787100008, 1210934.1701809228, 1334318.1310265958, crs);
+        RenderedImage ri2 = getRenderImageResult(wmts, capabilities, envelope, requested2, "bmaporthofoto30cm");
         url = getClass().getResource("wmts-rep2.png");
         ImageAssert.assertEquals(new File(url.toURI()), ri2, 100);
     }
 
     @Test
-    public void testGetTilesReproject()
-            throws IOException, ServiceException, FactoryException, TransformException {
+    public void testGetTilesReproject() throws IOException, ServiceException, FactoryException, TransformException {
         WebMapTileServer wmts = new WebMapTileServer(serverWithStyle);
 
         WMTSCapabilities capabilities = wmts.getCapabilities();
 
         CoordinateReferenceSystem crs = CRS.decode("EPSG:2056");
         // layer bboxes
-        ReferencedEnvelope envelope =
-                new ReferencedEnvelope(
-                        2698313.7525878195,
-                        3348542.311391488,
-                        1135039.4713045221,
-                        1476372.4030413276,
-                        crs);
+        ReferencedEnvelope envelope = new ReferencedEnvelope(
+                2698313.7525878195, 3348542.311391488, 1135039.4713045221, 1476372.4030413276, crs);
 
-        ReferencedEnvelope requested1 =
-                new ReferencedEnvelope(
-                        2788966.1644620905,
-                        3258069.540350589,
-                        1182531.426718924,
-                        1429299.3484102695,
-                        crs);
-        Set<Tile> responses =
-                issueTileRequest(
-                        wmts, capabilities, envelope, requested1, crs, "bmaporthofoto30cm");
+        ReferencedEnvelope requested1 = new ReferencedEnvelope(
+                2788966.1644620905, 3258069.540350589, 1182531.426718924, 1429299.3484102695, crs);
+        Set<Tile> responses = issueTileRequest(wmts, capabilities, envelope, requested1, crs, "bmaporthofoto30cm");
         assertFalse(responses.isEmpty());
         for (Tile response : responses) {
             // checking the identifier
             assertTrue(response.getId().startsWith("wmts_8"));
             ReferencedEnvelope nativeEnv = response.getExtent();
             assertEquals("EPSG:3857", CRS.toSRS(nativeEnv.getCoordinateReferenceSystem()));
-            ReferencedEnvelope env =
-                    response.getExtent().transform(requested1.getCoordinateReferenceSystem(), true);
+            ReferencedEnvelope env = response.getExtent().transform(requested1.getCoordinateReferenceSystem(), true);
             requested1.contains(env.toBounds(requested1.getCoordinateReferenceSystem()));
         }
     }
@@ -278,29 +209,17 @@ public class LantmaterietWMTSServerOnlineTest extends WMTSOnlineTestCase {
             // server supports urn:ogc:def:crs:EPSG::3006
             CoordinateReferenceSystem crs = CRS.decode("EPSG:3006");
             // layer bboxes
-            ReferencedEnvelope envelope =
-                    new ReferencedEnvelope(
-                            1200000.0000000005,
-                            2994304.0000000005,
-                            4305696.000000001,
-                            8500000.000000002,
-                            crs);
+            ReferencedEnvelope envelope = new ReferencedEnvelope(
+                    1200000.0000000005, 2994304.0000000005, 4305696.000000001, 8500000.000000002, crs);
 
-            ReferencedEnvelope requested =
-                    new ReferencedEnvelope(
-                            662730.6807799754,
-                            1131834.056668474,
-                            6168587.230596287,
-                            6637690.606484786,
-                            crs);
-            WMTSCoverageReader reader =
-                    wmtsCoverageReader(wmts, capabilities, envelope, "topowebb_nedtonad");
+            ReferencedEnvelope requested = new ReferencedEnvelope(
+                    662730.6807799754, 1131834.056668474, 6168587.230596287, 6637690.606484786, crs);
+            WMTSCoverageReader reader = wmtsCoverageReader(wmts, capabilities, envelope, "topowebb_nedtonad");
             RenderedImage ri = getRenderImageResult(reader, requested);
 
             Assert.assertTrue(
                     "Url's for getTile should contain matrixTileSet=3006",
-                    client.paths.stream()
-                            .anyMatch(path -> path.contains("/topowebb_nedtonad/default/3006/")));
+                    client.paths.stream().anyMatch(path -> path.contains("/topowebb_nedtonad/default/3006/")));
 
             URL url = getClass().getResource("different_srs_def.png");
             ImageAssert.assertEquals(new File(url.toURI()), ri, 100);

@@ -41,8 +41,7 @@ import org.geotools.coverage.grid.io.GridFormatFactorySpi;
  */
 public final class JP2KFormatFactory implements GridFormatFactorySpi {
     /** Logger. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(JP2KFormatFactory.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(JP2KFormatFactory.class);
 
     static ImageReaderSpi cachedSpi;
 
@@ -70,8 +69,7 @@ public final class JP2KFormatFactory implements GridFormatFactorySpi {
         try {
             // check if our jp2k plugin is in the path
             Class.forName("it.geosolutions.imageio.plugins.jp2k.JP2KKakaduImageReaderSpi");
-            kakaduJp2Name =
-                    it.geosolutions.imageio.plugins.jp2k.JP2KKakaduImageReaderSpi.class.getName();
+            kakaduJp2Name = it.geosolutions.imageio.plugins.jp2k.JP2KKakaduImageReaderSpi.class.getName();
             hasKakaduSpi = true;
         } catch (ClassNotFoundException e) {
             if (LOGGER.isLoggable(Level.WARNING))
@@ -80,8 +78,7 @@ public final class JP2KFormatFactory implements GridFormatFactorySpi {
 
         try {
             Class.forName("com.sun.media.imageioimpl.plugins.jpeg2000.J2KImageReaderSpi");
-            standardJp2Name =
-                    com.sun.media.imageioimpl.plugins.jpeg2000.J2KImageReaderSpi.class.getName();
+            standardJp2Name = com.sun.media.imageioimpl.plugins.jpeg2000.J2KImageReaderSpi.class.getName();
             hasStandardJp2 = true;
 
         } catch (ClassNotFoundException e) {
@@ -91,9 +88,7 @@ public final class JP2KFormatFactory implements GridFormatFactorySpi {
 
         try {
             Class.forName("com.sun.media.imageioimpl.plugins.jpeg2000.J2KImageReaderCodecLibSpi");
-            jp2CodecLibName =
-                    com.sun.media.imageioimpl.plugins.jpeg2000.J2KImageReaderCodecLibSpi.class
-                            .getName();
+            jp2CodecLibName = com.sun.media.imageioimpl.plugins.jpeg2000.J2KImageReaderCodecLibSpi.class.getName();
             hasNativeJp2 = true;
 
         } catch (ClassNotFoundException e) {
@@ -104,11 +99,9 @@ public final class JP2KFormatFactory implements GridFormatFactorySpi {
         if (hasKakaduSpi && KakaduUtilities.isKakaduAvailable()) {
             cachedSpi = new JP2KKakaduImageReaderSpi();
             if (hasStandardJp2)
-                ImageIOUtilities.replaceProvider(
-                        ImageReaderSpi.class, kakaduJp2Name, standardJp2Name, "JPEG2000");
+                ImageIOUtilities.replaceProvider(ImageReaderSpi.class, kakaduJp2Name, standardJp2Name, "JPEG2000");
             if (hasNativeJp2)
-                ImageIOUtilities.replaceProvider(
-                        ImageReaderSpi.class, kakaduJp2Name, jp2CodecLibName, "JPEG2000");
+                ImageIOUtilities.replaceProvider(ImageReaderSpi.class, kakaduJp2Name, jp2CodecLibName, "JPEG2000");
         } else if (hasStandardJp2) cachedSpi = new J2KImageReaderSpi();
         else cachedSpi = new J2KImageReaderCodecLibSpi();
     }

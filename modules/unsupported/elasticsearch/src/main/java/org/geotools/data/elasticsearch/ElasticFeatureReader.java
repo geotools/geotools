@@ -90,9 +90,8 @@ class ElasticFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFea
                     (ElasticDataStore) contentState.getEntry().getDataStore();
             this.arrayEncoding = dataStore.getArrayEncoding();
         } else {
-            this.arrayEncoding =
-                    ElasticDataStore.ArrayEncoding.valueOf(
-                            (String) ElasticDataStoreFactory.ARRAY_ENCODING.getDefaultValue());
+            this.arrayEncoding = ElasticDataStore.ArrayEncoding.valueOf(
+                    (String) ElasticDataStoreFactory.ARRAY_ENCODING.getDefaultValue());
         }
 
         this.mapper = new ObjectMapper();
@@ -132,8 +131,7 @@ class ElasticFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFea
 
         for (final AttributeDescriptor descriptor : type.getAttributeDescriptors()) {
             final String name = descriptor.getType().getName().getLocalPart();
-            final String sourceName =
-                    (String) descriptor.getUserData().get(ElasticConstants.FULL_NAME);
+            final String sourceName = (String) descriptor.getUserData().get(ElasticConstants.FULL_NAME);
 
             List<Object> values = hit.field(sourceName);
             if (values == null && source != null) {
@@ -170,8 +168,7 @@ class ElasticFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFea
                 } else {
                     @SuppressWarnings("unchecked")
                     final List<String> validFormats =
-                            (List<String>)
-                                    descriptor.getUserData().get(ElasticConstants.DATE_FORMAT);
+                            (List<String>) descriptor.getUserData().get(ElasticConstants.DATE_FORMAT);
                     ElasticsearchDateConverter dateFormatter = null;
                     Date date = null;
                     if (!(validFormats == null) && !(validFormats.isEmpty())) {
@@ -181,11 +178,7 @@ class ElasticFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFea
                                 date = dateFormatter.parse((String) dataVal);
                                 break;
                             } catch (Exception e) {
-                                LOGGER.fine(
-                                        "Unable to parse date format ('"
-                                                + format
-                                                + "') for "
-                                                + descriptor);
+                                LOGGER.fine("Unable to parse date format ('" + format + "') for " + descriptor);
                             }
                         }
                     }

@@ -56,26 +56,22 @@ public class PostGIS3DTestSetup extends JDBC3DTestSetup {
         String geometryType = atLeastV2 ? "geometry(LINESTRINGZ, 4326)" : "geometry";
 
         // setup table
-        run(
-                "CREATE TABLE \"line3d\"(\"fid\" serial PRIMARY KEY, \"id\" int, "
-                        + "\"geom\" "
-                        + geometryType
-                        + ", \"name\" varchar )");
+        run("CREATE TABLE \"line3d\"(\"fid\" serial PRIMARY KEY, \"id\" int, "
+                + "\"geom\" "
+                + geometryType
+                + ", \"name\" varchar )");
         if (!atLeastV2) {
-            run(
-                    "INSERT INTO GEOMETRY_COLUMNS VALUES('', 'public', 'line3d', 'geom', 3, '4326', 'LINESTRING')");
+            run("INSERT INTO GEOMETRY_COLUMNS VALUES('', 'public', 'line3d', 'geom', 3, '4326', 'LINESTRING')");
         }
         run("CREATE INDEX line3d_GEOM_IDX ON \"line3d\" USING GIST (\"geom\") ");
 
         // insert data
-        run(
-                "INSERT INTO \"line3d\" (\"id\",\"geom\",\"name\") VALUES (0,"
-                        + "ST_GeomFromText('LINESTRING(1 1 0, 2 2 0, 4 2 1, 5 1 1)', 4326),"
-                        + "'l1')");
-        run(
-                "INSERT INTO \"line3d\" (\"id\",\"geom\",\"name\") VALUES (1,"
-                        + "ST_GeomFromText('LINESTRING(3 0 1, 3 2 2, 3 3 3, 3 4 5)', 4326),"
-                        + "'l2')");
+        run("INSERT INTO \"line3d\" (\"id\",\"geom\",\"name\") VALUES (0,"
+                + "ST_GeomFromText('LINESTRING(1 1 0, 2 2 0, 4 2 1, 5 1 1)', 4326),"
+                + "'l1')");
+        run("INSERT INTO \"line3d\" (\"id\",\"geom\",\"name\") VALUES (1,"
+                + "ST_GeomFromText('LINESTRING(3 0 1, 3 2 2, 3 3 3, 3 4 5)', 4326),"
+                + "'l2')");
     }
 
     @Override
@@ -85,26 +81,22 @@ public class PostGIS3DTestSetup extends JDBC3DTestSetup {
         String geometryType = atLeastV2 ? "geometry(POINTZ, 4326)" : "geometry";
 
         // setup table
-        run(
-                "CREATE TABLE \"point3d\"(\"fid\" serial PRIMARY KEY, \"id\" int, "
-                        + "\"geom\" "
-                        + geometryType
-                        + ", \"name\" varchar )");
+        run("CREATE TABLE \"point3d\"(\"fid\" serial PRIMARY KEY, \"id\" int, "
+                + "\"geom\" "
+                + geometryType
+                + ", \"name\" varchar )");
         if (atLeastV2) {
-            run(
-                    "INSERT INTO GEOMETRY_COLUMNS VALUES('', 'public', 'point3d', 'geom', 3, '4326', 'POINT')");
+            run("INSERT INTO GEOMETRY_COLUMNS VALUES('', 'public', 'point3d', 'geom', 3, '4326', 'POINT')");
         }
         run("CREATE INDEX POINT3D_GEOM_IDX ON \"point3d\" USING GIST (\"geom\") ");
 
         // insert data
-        run(
-                "INSERT INTO \"point3d\" (\"id\",\"geom\",\"name\") VALUES (0,"
-                        + "ST_GeomFromText('POINT(1 1 1)', 4326),"
-                        + "'p1')");
-        run(
-                "INSERT INTO \"point3d\" (\"id\",\"geom\",\"name\") VALUES (1,"
-                        + "ST_GeomFromText('POINT(3 0 1)', 4326),"
-                        + "'p2')");
+        run("INSERT INTO \"point3d\" (\"id\",\"geom\",\"name\") VALUES (0,"
+                + "ST_GeomFromText('POINT(1 1 1)', 4326),"
+                + "'p1')");
+        run("INSERT INTO \"point3d\" (\"id\",\"geom\",\"name\") VALUES (1,"
+                + "ST_GeomFromText('POINT(3 0 1)', 4326),"
+                + "'p2')");
     }
 
     @Override

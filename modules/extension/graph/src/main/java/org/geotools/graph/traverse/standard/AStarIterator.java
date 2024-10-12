@@ -162,7 +162,9 @@ public class AStarIterator extends SourceGraphIterator {
     /** */
     public Node getParent(Node n) {
         AStarNode asn = m_nodemap.get(n);
-        return (asn == null ? null : asn.getParent() == null ? null : asn.getParent().getNode());
+        return (asn == null
+                ? null
+                : asn.getParent() == null ? null : asn.getParent().getNode());
     }
 
     protected Iterator<?> getRelated(Graphable current) {
@@ -174,12 +176,11 @@ public class AStarIterator extends SourceGraphIterator {
     }
 
     /** Decides which node has more priority */
-    private static Comparator<AStarNode> comparator =
-            (o1, o2) -> {
-                AStarNode n1 = o1;
-                AStarNode n2 = o2;
-                return (n1.getF() < n2.getF() ? -1 : n1.getF() > n2.getF() ? 1 : 0);
-            };
+    private static Comparator<AStarNode> comparator = (o1, o2) -> {
+        AStarNode n1 = o1;
+        AStarNode n2 = o2;
+        return (n1.getF() < n2.getF() ? -1 : n1.getF() > n2.getF() ? 1 : 0);
+    };
 
     /**
      * Internal data structure used to track node costs, and parent nodes.

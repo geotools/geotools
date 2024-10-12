@@ -107,8 +107,7 @@ public class Preprocessor extends Format {
      * @return The string buffer passed in as {@code toAppendTo}, with formatted text appended
      */
     @Override
-    public StringBuffer format(
-            final Object object, final StringBuffer toAppendTo, final FieldPosition position) {
+    public StringBuffer format(final Object object, final StringBuffer toAppendTo, final FieldPosition position) {
         return parser.format(object, toAppendTo, position);
     }
 
@@ -180,8 +179,7 @@ public class Preprocessor extends Format {
      * @throws ParseException if parsing the specified WKT failed.
      * @throws FactoryException if the object is not of the expected type.
      */
-    public Object parseObject(String text, final Class<?> type)
-            throws ParseException, FactoryException {
+    public Object parseObject(String text, final Class<?> type) throws ParseException, FactoryException {
         Object value;
         final Definition def = definitions.get(text);
         if (def != null) {
@@ -203,8 +201,7 @@ public class Preprocessor extends Format {
             if (type.isAssignableFrom(actualType)) {
                 return value;
             }
-            throw new FactoryException(
-                    MessageFormat.format(ErrorKeys.ILLEGAL_CLASS_$2, actualType, type));
+            throw new FactoryException(MessageFormat.format(ErrorKeys.ILLEGAL_CLASS_$2, actualType, type));
         }
         throw new NoSuchIdentifierException(
                 MessageFormat.format(ErrorKeys.NO_SUCH_AUTHORITY_CODE_$2, type, text), text);
@@ -236,8 +233,7 @@ public class Preprocessor extends Format {
                 }
                 shift += r.shift;
             }
-            final ParseException adjusted =
-                    new ParseException(exception.getLocalizedMessage(), errorOffset - shift);
+            final ParseException adjusted = new ParseException(exception.getLocalizedMessage(), errorOffset - shift);
             adjusted.setStackTrace(exception.getStackTrace());
             adjusted.initCause(exception.getCause());
             throw adjusted;
@@ -269,8 +265,7 @@ public class Preprocessor extends Format {
                 final int upper = index + name.length();
                 final CharSequence cs = (buffer != null) ? buffer : text;
                 if ((index == 0 || !Character.isJavaIdentifierPart(cs.charAt(index - 1)))
-                        && (upper == cs.length()
-                                || !Character.isJavaIdentifierPart(cs.charAt(upper)))) {
+                        && (upper == cs.length() || !Character.isJavaIdentifierPart(cs.charAt(upper)))) {
                     /*
                      * Count the number of quotes before the text to substitute. If this
                      * number is odd, then the text is between quotes and should not be
@@ -278,10 +273,7 @@ public class Preprocessor extends Format {
                      */
                     int count = 0;
                     for (int scan = index; --scan >= 0; ) {
-                        scan =
-                                (buffer != null)
-                                        ? buffer.lastIndexOf("\"", scan)
-                                        : text.lastIndexOf('"', scan);
+                        scan = (buffer != null) ? buffer.lastIndexOf("\"", scan) : text.lastIndexOf('"', scan);
                         if (scan < 0) {
                             break;
                         }
@@ -332,8 +324,7 @@ public class Preprocessor extends Format {
             throw new IllegalArgumentException(ErrorKeys.MISSING_WKT_DEFINITION);
         }
         if (!isIdentifier(name)) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.ILLEGAL_IDENTIFIER_$1, name));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.ILLEGAL_IDENTIFIER_$1, name));
         }
         value = substitute(value);
         final Definition newDef = new Definition(value, forwardParse(value));

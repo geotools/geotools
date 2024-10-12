@@ -33,16 +33,11 @@ import org.geotools.filter.capability.FunctionNameImpl;
  */
 public class LapplyFunction extends FunctionExpressionImpl {
 
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "lapply",
-                    parameter("result", List.class, "Result", "The new list"),
-                    parameter("source", List.class, "Source", "The original list"),
-                    parameter(
-                            "expression",
-                            Object.class,
-                            "Expression",
-                            "Expression to apply to each item in the list."));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "lapply",
+            parameter("result", List.class, "Result", "The new list"),
+            parameter("source", List.class, "Source", "The original list"),
+            parameter("expression", Object.class, "Expression", "Expression to apply to each item in the list."));
 
     public LapplyFunction() {
         super(NAME);

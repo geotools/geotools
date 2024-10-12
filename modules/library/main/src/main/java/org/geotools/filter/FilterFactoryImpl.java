@@ -269,8 +269,7 @@ public class FilterFactoryImpl implements Factory, org.geotools.api.filter.Filte
     }
 
     @Override
-    public PropertyIsBetween between(
-            Expression expr, Expression lower, Expression upper, MatchAction matchAction) {
+    public PropertyIsBetween between(Expression expr, Expression lower, Expression upper, MatchAction matchAction) {
         return new IsBetweenImpl(lower, expr, upper, matchAction);
     }
 
@@ -285,8 +284,7 @@ public class FilterFactoryImpl implements Factory, org.geotools.api.filter.Filte
     }
 
     @Override
-    public PropertyIsEqualTo equal(
-            Expression expr1, Expression expr2, boolean matchCase, MatchAction matchAction) {
+    public PropertyIsEqualTo equal(Expression expr1, Expression expr2, boolean matchCase, MatchAction matchAction) {
         return new IsEqualsToImpl(expr1, expr2, matchCase, matchAction);
     }
 
@@ -328,8 +326,7 @@ public class FilterFactoryImpl implements Factory, org.geotools.api.filter.Filte
     }
 
     @Override
-    public PropertyIsGreaterThanOrEqualTo greaterOrEqual(
-            Expression expr1, Expression expr2, boolean matchCase) {
+    public PropertyIsGreaterThanOrEqualTo greaterOrEqual(Expression expr1, Expression expr2, boolean matchCase) {
         return new IsGreaterThanOrEqualToImpl(expr1, expr2, matchCase);
     }
 
@@ -350,8 +347,7 @@ public class FilterFactoryImpl implements Factory, org.geotools.api.filter.Filte
     }
 
     @Override
-    public PropertyIsLessThan less(
-            Expression expr1, Expression expr2, boolean matchCase, MatchAction matchAction) {
+    public PropertyIsLessThan less(Expression expr1, Expression expr2, boolean matchCase, MatchAction matchAction) {
         return new IsLessThenImpl(expr1, expr2, matchCase, matchAction);
     }
 
@@ -361,8 +357,7 @@ public class FilterFactoryImpl implements Factory, org.geotools.api.filter.Filte
     }
 
     @Override
-    public PropertyIsLessThanOrEqualTo lessOrEqual(
-            Expression expr1, Expression expr2, boolean matchCase) {
+    public PropertyIsLessThanOrEqualTo lessOrEqual(Expression expr1, Expression expr2, boolean matchCase) {
         return new IsLessThenOrEqualToImpl(expr1, expr2, false);
     }
 
@@ -378,19 +373,13 @@ public class FilterFactoryImpl implements Factory, org.geotools.api.filter.Filte
     }
 
     @Override
-    public PropertyIsLike like(
-            Expression expr, String pattern, String wildcard, String singleChar, String escape) {
+    public PropertyIsLike like(Expression expr, String pattern, String wildcard, String singleChar, String escape) {
         return like(expr, pattern, wildcard, singleChar, escape, false);
     }
 
     @Override
     public PropertyIsLike like(
-            Expression expr,
-            String pattern,
-            String wildcard,
-            String singleChar,
-            String escape,
-            boolean matchCase) {
+            Expression expr, String pattern, String wildcard, String singleChar, String escape, boolean matchCase) {
         LikeFilterImpl filter = new LikeFilterImpl();
         filter.setExpression(expr);
 
@@ -443,8 +432,7 @@ public class FilterFactoryImpl implements Factory, org.geotools.api.filter.Filte
      * </code>
      */
     @Override
-    public BBOX bbox(
-            String propertyName, double minx, double miny, double maxx, double maxy, String srs) {
+    public BBOX bbox(String propertyName, double minx, double miny, double maxx, double maxy, String srs) {
 
         PropertyName name = property(propertyName);
         return bbox(name, minx, miny, maxx, maxy, srs);
@@ -461,8 +449,7 @@ public class FilterFactoryImpl implements Factory, org.geotools.api.filter.Filte
             Object value = ((Literal) bounds).getValue();
             if (value instanceof BoundingBox3D) {
                 return bbox(geometry, (BoundingBox3D) value, machAction);
-            } else if (value instanceof org.locationtech.jts.geom.Geometry
-                    && geometry instanceof PropertyName) {
+            } else if (value instanceof org.locationtech.jts.geom.Geometry && geometry instanceof PropertyName) {
                 org.locationtech.jts.geom.Geometry g = (org.locationtech.jts.geom.Geometry) value;
                 if (g.getUserData() instanceof CoordinateReferenceSystem) {
                     CoordinateReferenceSystem crs = (CoordinateReferenceSystem) g.getUserData();
@@ -525,20 +512,13 @@ public class FilterFactoryImpl implements Factory, org.geotools.api.filter.Filte
     }
 
     @Override
-    public BBOX bbox(
-            Expression geometry, double minx, double miny, double maxx, double maxy, String srs) {
+    public BBOX bbox(Expression geometry, double minx, double miny, double maxx, double maxy, String srs) {
         return bbox(geometry, minx, miny, maxx, maxy, srs, MatchAction.ANY);
     }
 
     @Override
     public BBOX bbox(
-            Expression e,
-            double minx,
-            double miny,
-            double maxx,
-            double maxy,
-            String srs,
-            MatchAction matchAction) {
+            Expression e, double minx, double miny, double maxx, double maxy, String srs, MatchAction matchAction) {
 
         BBOXImpl box = null;
         try {
@@ -600,11 +580,7 @@ public class FilterFactoryImpl implements Factory, org.geotools.api.filter.Filte
 
     @Override
     public Beyond beyond(
-            String propertyName,
-            Geometry geometry,
-            double distance,
-            String units,
-            MatchAction matchAction) {
+            String propertyName, Geometry geometry, double distance, String units, MatchAction matchAction) {
         PropertyName name = property(propertyName);
         Literal geom = literal(geometry);
 
@@ -612,8 +588,7 @@ public class FilterFactoryImpl implements Factory, org.geotools.api.filter.Filte
     }
 
     @Override
-    public Beyond beyond(
-            Expression geometry1, Expression geometry2, double distance, String units) {
+    public Beyond beyond(Expression geometry1, Expression geometry2, double distance, String units) {
 
         BeyondImpl beyond = new BeyondImpl(geometry1, geometry2);
         beyond.setDistance(distance);
@@ -624,11 +599,7 @@ public class FilterFactoryImpl implements Factory, org.geotools.api.filter.Filte
 
     @Override
     public Beyond beyond(
-            Expression geometry1,
-            Expression geometry2,
-            double distance,
-            String units,
-            MatchAction matchAction) {
+            Expression geometry1, Expression geometry2, double distance, String units, MatchAction matchAction) {
         BeyondImpl beyond = new BeyondImpl(geometry1, geometry2, matchAction);
         beyond.setDistance(distance);
         beyond.setUnits(units);
@@ -724,11 +695,7 @@ public class FilterFactoryImpl implements Factory, org.geotools.api.filter.Filte
 
     @Override
     public DWithin dwithin(
-            String propertyName,
-            Geometry geometry,
-            double distance,
-            String units,
-            MatchAction matchAction) {
+            String propertyName, Geometry geometry, double distance, String units, MatchAction matchAction) {
         PropertyName name = property(propertyName);
         Literal geom = literal(geometry);
 
@@ -737,11 +704,7 @@ public class FilterFactoryImpl implements Factory, org.geotools.api.filter.Filte
 
     @Override
     public DWithin dwithin(
-            Expression geometry1,
-            Expression geometry2,
-            double distance,
-            String units,
-            MatchAction matchAction) {
+            Expression geometry1, Expression geometry2, double distance, String units, MatchAction matchAction) {
         DWithinImpl dwithin = new DWithinImpl(geometry1, geometry2, matchAction);
         dwithin.setDistance(distance);
         dwithin.setUnits(units);
@@ -750,8 +713,7 @@ public class FilterFactoryImpl implements Factory, org.geotools.api.filter.Filte
     }
 
     @Override
-    public DWithin dwithin(
-            Expression geometry1, Expression geometry2, double distance, String units) {
+    public DWithin dwithin(Expression geometry1, Expression geometry2, double distance, String units) {
         DWithinImpl dwithin = new DWithinImpl(geometry1, geometry2);
         dwithin.setDistance(distance);
         dwithin.setUnits(units);
@@ -807,8 +769,7 @@ public class FilterFactoryImpl implements Factory, org.geotools.api.filter.Filte
     }
 
     @Override
-    public Intersects intersects(
-            Expression geometry1, Expression geometry2, MatchAction matchAction) {
+    public Intersects intersects(Expression geometry1, Expression geometry2, MatchAction matchAction) {
         return new IntersectsImpl(geometry1, geometry2, matchAction);
     }
 
@@ -923,21 +884,17 @@ public class FilterFactoryImpl implements Factory, org.geotools.api.filter.Filte
     }
 
     public Function function(String name, Expression arg1) {
-        Function function =
-                functionFinder.findFunction(name, Arrays.asList(new Expression[] {arg1}));
+        Function function = functionFinder.findFunction(name, Arrays.asList(new Expression[] {arg1}));
         return function;
     }
 
     public Function function(String name, Expression arg1, Expression arg2) {
-        Function function =
-                functionFinder.findFunction(name, Arrays.asList(new Expression[] {arg1, arg2}));
+        Function function = functionFinder.findFunction(name, Arrays.asList(new Expression[] {arg1, arg2}));
         return function;
     }
 
     public Function function(String name, Expression arg1, Expression arg2, Expression arg3) {
-        Function function =
-                functionFinder.findFunction(
-                        name, Arrays.asList(new Expression[] {arg1, arg2, arg3}));
+        Function function = functionFinder.findFunction(name, Arrays.asList(new Expression[] {arg1, arg2, arg3}));
 
         return function;
     }
@@ -990,9 +947,7 @@ public class FilterFactoryImpl implements Factory, org.geotools.api.filter.Filte
 
     @Override
     public Literal literal(boolean b) {
-        return b
-                ? new LiteralExpressionImpl(Boolean.TRUE)
-                : new LiteralExpressionImpl(Boolean.FALSE);
+        return b ? new LiteralExpressionImpl(Boolean.TRUE) : new LiteralExpressionImpl(Boolean.FALSE);
     }
 
     @Override
@@ -1207,7 +1162,8 @@ public class FilterFactoryImpl implements Factory, org.geotools.api.filter.Filte
             T defaultValue) {
         return new org.geotools.api.data.Parameter<>(
                 name, type, title, description, required, minOccurs, maxOccurs, defaultValue, null);
-    };
+    }
+    ;
 
     @Override
     public FunctionName functionName(String name, int nargs) {
@@ -1261,10 +1217,7 @@ public class FilterFactoryImpl implements Factory, org.geotools.api.filter.Filte
 
     @Override
     public FilterCapabilities capabilities(
-            String version,
-            ScalarCapabilities scalar,
-            SpatialCapabilities spatial,
-            IdCapabilities id) {
+            String version, ScalarCapabilities scalar, SpatialCapabilities spatial, IdCapabilities id) {
         return new FilterCapabilitiesImpl(version, scalar, spatial, id);
     }
 
@@ -1280,15 +1233,12 @@ public class FilterFactoryImpl implements Factory, org.geotools.api.filter.Filte
 
     @Override
     public ScalarCapabilities scalarCapabilities(
-            ComparisonOperators comparison,
-            ArithmeticOperators arithmetic,
-            boolean logicalOperators) {
+            ComparisonOperators comparison, ArithmeticOperators arithmetic, boolean logicalOperators) {
         return new ScalarCapabilitiesImpl(comparison, arithmetic, logicalOperators);
     }
 
     @Override
-    public SpatialCapabilities spatialCapabilities(
-            GeometryOperand[] geometryOperands, SpatialOperators spatial) {
+    public SpatialCapabilities spatialCapabilities(GeometryOperand[] geometryOperands, SpatialOperators spatial) {
         return new SpatialCapabiltiesImpl(geometryOperands, spatial);
     }
 

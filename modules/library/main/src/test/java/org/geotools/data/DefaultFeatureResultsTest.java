@@ -39,8 +39,7 @@ public class DefaultFeatureResultsTest {
         q.setMaxFeatures(10);
 
         // mock up the feature source so that it'll return a count of 20
-        SimpleFeatureType type =
-                DataUtilities.createType("roads", "_=the_geom:Point,FID:String,NAME:String");
+        SimpleFeatureType type = DataUtilities.createType("roads", "_=the_geom:Point,FID:String,NAME:String");
         SimpleFeatureSource fs = createMock(SimpleFeatureSource.class);
         expect(fs.getSchema()).andReturn(type).anyTimes();
         expect(fs.getCount(q)).andReturn(20);
@@ -66,8 +65,7 @@ public class DefaultFeatureResultsTest {
         expect(ds.getFeatureReader(q, Transaction.AUTO_COMMIT)).andReturn(fr);
         replay(ds);
 
-        SimpleFeatureType type =
-                DataUtilities.createType("roads", "_=the_geom:Point,FID:String,NAME:String");
+        SimpleFeatureType type = DataUtilities.createType("roads", "_=the_geom:Point,FID:String,NAME:String");
         SimpleFeatureSource fs = createMock(SimpleFeatureSource.class);
         expect(fs.getSchema()).andReturn(type).anyTimes();
         expect(fs.getCount(q)).andReturn(-1);

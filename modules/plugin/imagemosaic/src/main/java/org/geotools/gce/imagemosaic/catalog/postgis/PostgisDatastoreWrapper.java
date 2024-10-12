@@ -62,21 +62,19 @@ public class PostgisDatastoreWrapper extends DataStoreWrapper {
     }
 
     @Override
-    protected FeatureTypeMapper getFeatureTypeMapper(SimpleFeatureType featureType)
-            throws Exception {
+    protected FeatureTypeMapper getFeatureTypeMapper(SimpleFeatureType featureType) throws Exception {
         return new PostgisFeatureTypeMapper(featureType);
     }
 
     @Override
-    protected SimpleFeatureSource transformFeatureStore(
-            SimpleFeatureStore store, FeatureTypeMapper mapper) throws IOException {
+    protected SimpleFeatureSource transformFeatureStore(SimpleFeatureStore store, FeatureTypeMapper mapper)
+            throws IOException {
         SimpleFeatureSource transformedSource = mapper.getSimpleFeatureSource();
         if (transformedSource != null) {
             return transformedSource;
         } else {
             transformedSource =
-                    new PostgisTransformFeatureStore(
-                            store, mapper.getName(), mapper.getDefinitions(), datastore);
+                    new PostgisTransformFeatureStore(store, mapper.getName(), mapper.getDefinitions(), datastore);
             ((PostgisFeatureTypeMapper) mapper).setSimpleFeatureSource(transformedSource);
             return transformedSource;
         }
@@ -102,9 +100,9 @@ public class PostgisDatastoreWrapper extends DataStoreWrapper {
         schema = schema.substring(0, schema.length() - 1);
         properties.setProperty(SCHEMA, schema);
         properties.setProperty(
-                COORDINATE_REFERENCE_SYSTEM, mapper.getCoordinateReferenceSystem().toWKT());
-        properties.setProperty(
-                SRID, Integer.toString(((PostgisFeatureTypeMapper) mapper).getSrID()));
+                COORDINATE_REFERENCE_SYSTEM,
+                mapper.getCoordinateReferenceSystem().toWKT());
+        properties.setProperty(SRID, Integer.toString(((PostgisFeatureTypeMapper) mapper).getSrID()));
         // Storing properties
         storeProperties(properties, typeName);
     }

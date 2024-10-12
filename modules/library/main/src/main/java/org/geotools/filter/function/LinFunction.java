@@ -33,12 +33,11 @@ import org.geotools.filter.capability.FunctionNameImpl;
  */
 public class LinFunction extends FunctionExpressionImpl {
 
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "lin",
-                    parameter("result", Boolean.class, "Result", "whether the item is in the list"),
-                    parameter("item", Object.class, "item", "The item"),
-                    parameter("source", List.class, "Source", "The list"));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "lin",
+            parameter("result", Boolean.class, "Result", "whether the item is in the list"),
+            parameter("item", Object.class, "item", "The item"),
+            parameter("source", List.class, "Source", "The list"));
 
     public LinFunction() {
         super(NAME);

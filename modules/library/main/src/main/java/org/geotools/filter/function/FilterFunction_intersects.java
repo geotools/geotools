@@ -27,12 +27,11 @@ import org.locationtech.jts.geom.Geometry;
 
 public class FilterFunction_intersects extends FunctionExpressionImpl {
 
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "intersects",
-                    Boolean.class,
-                    parameter("geometry1", Geometry.class),
-                    parameter("geometry2", Geometry.class));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "intersects",
+            Boolean.class,
+            parameter("geometry1", Geometry.class),
+            parameter("geometry2", Geometry.class));
 
     public FilterFunction_intersects() {
         super(NAME);

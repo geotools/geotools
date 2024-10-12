@@ -31,8 +31,7 @@ public interface PropertyAccessorFactory {
      * String, Class, Hints)} in the form of a {@link NamespaceSupport} instance with the
      * prefix/namespaceURI mappings
      */
-    public static final Key NAMESPACE_CONTEXT =
-            new Hints.Key(org.xml.sax.helpers.NamespaceSupport.class);
+    public static final Key NAMESPACE_CONTEXT = new Hints.Key(org.xml.sax.helpers.NamespaceSupport.class);
 
     /**
      * Creates a property accessor for a particular class.
@@ -44,6 +43,5 @@ public interface PropertyAccessorFactory {
      * @return The property accessor, or <code>null</code> if this factory cannot create an accessor
      *     for the specified type.
      */
-    PropertyAccessor createPropertyAccessor(
-            Class<?> type, String xpath, Class<?> target, Hints hints);
+    PropertyAccessor createPropertyAccessor(Class<?> type, String xpath, Class<?> target, Hints hints);
 }

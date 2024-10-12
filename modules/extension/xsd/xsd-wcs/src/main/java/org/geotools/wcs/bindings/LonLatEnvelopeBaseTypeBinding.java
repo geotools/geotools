@@ -180,10 +180,8 @@ public class LonLatEnvelopeBaseTypeBinding extends AbstractComplexBinding {
             if (spatialCRS != null) {
                 List<Position> envelopePositions = new LinkedList<>();
 
-                GeneralPosition lowerCorner =
-                        new GeneralPosition(envelope.getCoordinateReferenceSystem());
-                GeneralPosition upperCorner =
-                        new GeneralPosition(envelope.getCoordinateReferenceSystem());
+                GeneralPosition lowerCorner = new GeneralPosition(envelope.getCoordinateReferenceSystem());
+                GeneralPosition upperCorner = new GeneralPosition(envelope.getCoordinateReferenceSystem());
 
                 for (int i = 0; i < spatialCRS.getCoordinateSystem().getDimension(); i++) {
                     lowerCorner.setOrdinate(i, envelope.getLowerCorner().getOrdinate(i));

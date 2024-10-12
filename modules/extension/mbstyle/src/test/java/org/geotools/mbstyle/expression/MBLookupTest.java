@@ -117,7 +117,6 @@ public class MBLookupTest extends AbstractMBExpressionTest {
         List<FeatureTypeStyle> getFeatures = rgbLayer.transformInternal(getTest);
         String xml = new SLDTransformer().transform(getFeatures.get(0));
         assertTrue(
-                xml.contains(
-                        "<ogc:Function name=\"PropertyExists\"><ogc:Literal>name</ogc:Literal></ogc:Function>"));
+                xml.contains("<ogc:Function name=\"PropertyExists\"><ogc:Literal>name</ogc:Literal></ogc:Function>"));
     }
 }

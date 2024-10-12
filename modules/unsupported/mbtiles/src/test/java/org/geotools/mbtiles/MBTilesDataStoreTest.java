@@ -109,15 +109,12 @@ public class MBTilesDataStoreTest {
             SimpleFeature feature = reader.next();
             assertThat(feature.getAttribute("bool_false"), equalTo(false));
             assertThat(feature.getAttribute("bool_true"), equalTo(true));
-            assertThat(
-                    ((Number) feature.getAttribute("float_value")).doubleValue(),
-                    closeTo(1.25, 0.01));
+            assertThat(((Number) feature.getAttribute("float_value")).doubleValue(), closeTo(1.25, 0.01));
             assertThat(feature.getAttribute("int64_value"), equalTo(123456789012345L));
             assertThat(feature.getAttribute("neg_int_value"), equalTo(-1L));
             assertThat(feature.getAttribute("pos_int_value"), equalTo(1L));
             assertThat(feature.getAttribute("string_value"), equalTo("str"));
-            Point expected =
-                    (Point) new WKTReader().read("POINT (215246.671651058 6281289.23636264)");
+            Point expected = (Point) new WKTReader().read("POINT (215246.671651058 6281289.23636264)");
             Point actual = (Point) feature.getDefaultGeometry();
             assertTrue(actual.equalsExact(expected, 0.01));
         }

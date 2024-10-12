@@ -76,8 +76,7 @@ public class DefaultEngineeringCRS extends AbstractSingleCRS implements Engineer
      * geographic coordinate reference system} for example).
      */
     public static final DefaultEngineeringCRS CARTESIAN_2D =
-            new DefaultEngineeringCRS(
-                    VocabularyKeys.CARTESIAN_2D, DefaultCartesianCS.GENERIC_2D, false);
+            new DefaultEngineeringCRS(VocabularyKeys.CARTESIAN_2D, DefaultCartesianCS.GENERIC_2D, false);
 
     /**
      * A three-dimensional cartesian coordinate reference system with {@linkplain
@@ -87,8 +86,7 @@ public class DefaultEngineeringCRS extends AbstractSingleCRS implements Engineer
      * a {@linkplain DefaultGeographicCRS geographic coordinate reference system} for example).
      */
     public static final DefaultEngineeringCRS CARTESIAN_3D =
-            new DefaultEngineeringCRS(
-                    VocabularyKeys.CARTESIAN_3D, DefaultCartesianCS.GENERIC_3D, false);
+            new DefaultEngineeringCRS(VocabularyKeys.CARTESIAN_3D, DefaultCartesianCS.GENERIC_3D, false);
 
     /**
      * A two-dimensional wildcard coordinate system with {@linkplain DefaultCoordinateSystemAxis#X
@@ -102,8 +100,7 @@ public class DefaultEngineeringCRS extends AbstractSingleCRS implements Engineer
      * explicitly specified.
      */
     public static final DefaultEngineeringCRS GENERIC_2D =
-            new DefaultEngineeringCRS(
-                    VocabularyKeys.GENERIC_CARTESIAN_2D, DefaultCartesianCS.GENERIC_2D, true);
+            new DefaultEngineeringCRS(VocabularyKeys.GENERIC_CARTESIAN_2D, DefaultCartesianCS.GENERIC_2D, true);
 
     /**
      * A three-dimensional wildcard coordinate system with {@linkplain DefaultCoordinateSystemAxis#X
@@ -117,8 +114,7 @@ public class DefaultEngineeringCRS extends AbstractSingleCRS implements Engineer
      * This CRS is usefull as a kind of wildcard when no CRS were explicitly specified.
      */
     public static final DefaultEngineeringCRS GENERIC_3D =
-            new DefaultEngineeringCRS(
-                    VocabularyKeys.GENERIC_CARTESIAN_3D, DefaultCartesianCS.GENERIC_3D, true);
+            new DefaultEngineeringCRS(VocabularyKeys.GENERIC_CARTESIAN_3D, DefaultCartesianCS.GENERIC_3D, true);
 
     DefaultEngineeringCRS(final int key, final CoordinateSystem cs, boolean wildcard) {
         this(name(key), DefaultEngineeringDatum.UNKNOWN, cs);
@@ -148,8 +144,7 @@ public class DefaultEngineeringCRS extends AbstractSingleCRS implements Engineer
      * @param datum The datum.
      * @param cs The coordinate system.
      */
-    public DefaultEngineeringCRS(
-            final String name, final EngineeringDatum datum, final CoordinateSystem cs) {
+    public DefaultEngineeringCRS(final String name, final EngineeringDatum datum, final CoordinateSystem cs) {
         this(Collections.singletonMap(NAME_KEY, name), datum, cs);
     }
 
@@ -163,9 +158,7 @@ public class DefaultEngineeringCRS extends AbstractSingleCRS implements Engineer
      * @param cs The coordinate system.
      */
     public DefaultEngineeringCRS(
-            final Map<String, ?> properties,
-            final EngineeringDatum datum,
-            final CoordinateSystem cs) {
+            final Map<String, ?> properties, final EngineeringDatum datum, final CoordinateSystem cs) {
         super(properties, datum, cs);
     }
 

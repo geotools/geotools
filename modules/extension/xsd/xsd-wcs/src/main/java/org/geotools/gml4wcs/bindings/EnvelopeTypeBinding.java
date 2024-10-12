@@ -105,8 +105,7 @@ public class EnvelopeTypeBinding extends AbstractComplexBinding {
             GeneralBounds envelope = new GeneralBounds(p1, p2);
 
             for (AttributeInstance att : instance.getAttributes()) {
-                if (att.getName().equals("srsName"))
-                    envelope.setCoordinateReferenceSystem(CRS.decode(att.getText()));
+                if (att.getName().equals("srsName")) envelope.setCoordinateReferenceSystem(CRS.decode(att.getText()));
             }
 
             return envelope;
@@ -138,9 +137,7 @@ public class EnvelopeTypeBinding extends AbstractComplexBinding {
         GeneralBounds envelope = (GeneralBounds) object;
 
         if (envelope == null) {
-            value.appendChild(
-                    document.createElementNS(
-                            GML.NAMESPACE, org.geotools.gml3.GML.Null.getLocalPart()));
+            value.appendChild(document.createElementNS(GML.NAMESPACE, org.geotools.gml3.GML.Null.getLocalPart()));
         }
 
         return null;
@@ -182,10 +179,8 @@ public class EnvelopeTypeBinding extends AbstractComplexBinding {
             if (spatialCRS != null) {
                 List<Position> envelopePositions = new LinkedList<>();
 
-                GeneralPosition lowerCorner =
-                        new GeneralPosition(envelope.getCoordinateReferenceSystem());
-                GeneralPosition upperCorner =
-                        new GeneralPosition(envelope.getCoordinateReferenceSystem());
+                GeneralPosition lowerCorner = new GeneralPosition(envelope.getCoordinateReferenceSystem());
+                GeneralPosition upperCorner = new GeneralPosition(envelope.getCoordinateReferenceSystem());
 
                 for (int i = 0; i < spatialCRS.getCoordinateSystem().getDimension(); i++) {
                     lowerCorner.setOrdinate(i, envelope.getLowerCorner().getOrdinate(i));

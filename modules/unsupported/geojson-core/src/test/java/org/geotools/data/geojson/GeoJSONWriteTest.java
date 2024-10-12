@@ -150,10 +150,7 @@ public class GeoJSONWriteTest {
         SimpleFeatureType type = DataUtilities.createType("test", "the_geom:Polygon:srid=27700");
         SimpleFeatureBuilder builder = new SimpleFeatureBuilder(type);
         Coordinate[] coords = {
-            new Coordinate(100, 200),
-            new Coordinate(140, 500),
-            new Coordinate(300, 600),
-            new Coordinate(100, 200)
+            new Coordinate(100, 200), new Coordinate(140, 500), new Coordinate(300, 600), new Coordinate(100, 200)
         };
         builder.add(gf.createPolygon(coords));
         SimpleFeature feature = builder.buildFeature(null);
@@ -228,16 +225,14 @@ public class GeoJSONWriteTest {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         try (GeoJSONWriter writer = new GeoJSONWriter(out)) {
             writer.setPrettyPrinting(true);
-            SimpleFeatureType type =
-                    DataUtilities.createType("test", "the_geom:Polygon:srid=27700");
+            SimpleFeatureType type = DataUtilities.createType("test", "the_geom:Polygon:srid=27700");
             writer.writeFeatureCollection(new EmptyFeatureCollection(type));
         }
         String json = new String(out.toByteArray(), StandardCharsets.UTF_8);
-        String expected =
-                "{\n" //
-                        + "  \"type\" : \"FeatureCollection\",\n" //
-                        + "  \"features\" : [ ]\n" //
-                        + "}";
+        String expected = "{\n" //
+                + "  \"type\" : \"FeatureCollection\",\n" //
+                + "  \"features\" : [ ]\n" //
+                + "}";
         assertEquals(normalizeLineEnds(expected), normalizeLineEnds(json));
     }
 
@@ -262,8 +257,7 @@ public class GeoJSONWriteTest {
     @Test
     public void testWriteDate() throws Exception {
         // test feature
-        SimpleFeatureType type =
-                DataUtilities.createType("test", "the_geom:Point:srid=4326,date:java.util.Date");
+        SimpleFeatureType type = DataUtilities.createType("test", "the_geom:Point:srid=4326,date:java.util.Date");
         SimpleFeatureBuilder builder = new SimpleFeatureBuilder(type);
         builder.add(new GeometryFactory().createPoint(new Coordinate(1, 2)));
         builder.add(new Date());
@@ -271,8 +265,7 @@ public class GeoJSONWriteTest {
 
         String json = writeSingleFeature(feature);
         JsonNode root = new ObjectMapper().readTree(json);
-        String isoDatePattern =
-                "(\\d{4})-(\\d{2})-(\\d{2})T(\\d{2})\\:(\\d{2})\\:(\\d{2})\\.(\\d{3})Z";
+        String isoDatePattern = "(\\d{4})-(\\d{2})-(\\d{2})T(\\d{2})\\:(\\d{2})\\:(\\d{2})\\.(\\d{3})Z";
         String date = root.get("properties").get("date").textValue();
         assertTrue(date + " does not match ISO date", date.matches(isoDatePattern));
     }
@@ -282,8 +275,7 @@ public class GeoJSONWriteTest {
         Date testDate = new Date();
 
         // test feature
-        SimpleFeatureType type =
-                DataUtilities.createType("test", "the_geom:Point:srid=4326,date:java.util.Date");
+        SimpleFeatureType type = DataUtilities.createType("test", "the_geom:Point:srid=4326,date:java.util.Date");
         SimpleFeatureBuilder builder = new SimpleFeatureBuilder(type);
         builder.add(new GeometryFactory().createPoint(new Coordinate(1, 2)));
         builder.add(testDate);
@@ -300,10 +292,8 @@ public class GeoJSONWriteTest {
         JsonNode root = new ObjectMapper().readTree(json);
         String date = root.get("properties").get("date").textValue();
 
-        FastDateFormat utm =
-                FastDateFormat.getInstance(
-                        DateFormatUtils.ISO_8601_EXTENDED_DATE_FORMAT.getPattern(),
-                        GeoJSONWriter.DEFAULT_TIME_ZONE);
+        FastDateFormat utm = FastDateFormat.getInstance(
+                DateFormatUtils.ISO_8601_EXTENDED_DATE_FORMAT.getPattern(), GeoJSONWriter.DEFAULT_TIME_ZONE);
         assertEquals(utm.format(testDate), date);
     }
 
@@ -311,8 +301,7 @@ public class GeoJSONWriteTest {
     public void testWriteBooleans() throws Exception {
         // test feature
         SimpleFeatureType type =
-                DataUtilities.createType(
-                        "test", "the_geom:Point:srid=4326,boolTrue:Boolean,boolFalse:Boolean");
+                DataUtilities.createType("test", "the_geom:Point:srid=4326,boolTrue:Boolean,boolFalse:Boolean");
         SimpleFeatureBuilder builder = new SimpleFeatureBuilder(type);
         builder.add(new GeometryFactory().createPoint(new Coordinate(1, 2)));
         builder.add(Boolean.TRUE);

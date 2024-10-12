@@ -38,8 +38,7 @@ public class StoredQueryConfiguration implements Serializable {
         return storedQueryParameterMappings;
     }
 
-    public void setStoredQueryParameterMappings(
-            List<ParameterMapping> storedQueryParameterMappings) {
+    public void setStoredQueryParameterMappings(List<ParameterMapping> storedQueryParameterMappings) {
         this.storedQueryParameterMappings = storedQueryParameterMappings;
     }
 }

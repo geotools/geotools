@@ -107,8 +107,7 @@ public class AbstractReferenceSystem extends AbstractIdentifiedObject implements
      * Work around for RFE #4093999 in Sun's bug database ("Relax constraint on placement of
      * this()/super() call in constructors").
      */
-    private AbstractReferenceSystem(
-            final Map<String, ?> properties, final Map<String, Object> subProperties) {
+    private AbstractReferenceSystem(final Map<String, ?> properties, final Map<String, Object> subProperties) {
         super(properties, subProperties, LOCALIZABLES);
         domainOfValidity = (Extent) subProperties.get(DOMAIN_OF_VALIDITY_KEY);
         scope = (InternationalString) subProperties.get(SCOPE_KEY);
@@ -151,8 +150,7 @@ public class AbstractReferenceSystem extends AbstractIdentifiedObject implements
                 return true;
             }
             final AbstractReferenceSystem that = (AbstractReferenceSystem) object;
-            return Utilities.equals(domainOfValidity, that.domainOfValidity)
-                    && Utilities.equals(scope, that.scope);
+            return Utilities.equals(domainOfValidity, that.domainOfValidity) && Utilities.equals(scope, that.scope);
         }
         return false;
     }

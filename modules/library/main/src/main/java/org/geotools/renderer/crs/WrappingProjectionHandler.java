@@ -103,8 +103,7 @@ public class WrappingProjectionHandler extends ProjectionHandler {
     public void setProjectionParameters(Map<String, Object> projectionParameters) {
         super.setProjectionParameters(projectionParameters);
         if (projectionParameters.containsKey(DATELINE_WRAPPING_CHECK_ENABLED)) {
-            datelineWrappingCheckEnabled =
-                    (Boolean) projectionParameters.get(DATELINE_WRAPPING_CHECK_ENABLED);
+            datelineWrappingCheckEnabled = (Boolean) projectionParameters.get(DATELINE_WRAPPING_CHECK_ENABLED);
         }
     }
 
@@ -151,9 +150,7 @@ public class WrappingProjectionHandler extends ProjectionHandler {
         final double reWidth = getWidth(renderingEnvelope, targetAxisOrder);
 
         // if it was large and still larger, or small and still small, it likely did not wrap
-        if (width < targetHalfCircle
-                && renderingEnvelope.contains(env)
-                && reWidth <= targetHalfCircle * 2) {
+        if (width < targetHalfCircle && renderingEnvelope.contains(env) && reWidth <= targetHalfCircle * 2) {
             return geometry;
         }
 
@@ -170,14 +167,12 @@ public class WrappingProjectionHandler extends ProjectionHandler {
                         || (geometry.getUserData() != null
                                 && geometry.getUserData().equals(PREFLIPPED_OBJECT)))) {
             final Geometry wrapped = geometry.copy();
-            wrapped.apply(
-                    new WrappingCoordinateFilter(
-                            targetHalfCircle,
-                            targetHalfCircle * 2,
-                            mt,
-                            northEast,
-                            geometry.getUserData() != null
-                                    && geometry.getUserData().equals(PREFLIPPED_OBJECT)));
+            wrapped.apply(new WrappingCoordinateFilter(
+                    targetHalfCircle,
+                    targetHalfCircle * 2,
+                    mt,
+                    northEast,
+                    geometry.getUserData() != null && geometry.getUserData().equals(PREFLIPPED_OBJECT)));
             wrapped.geometryChanged();
             geometry = wrapped;
             env = geometry.getEnvelopeInternal();
@@ -198,26 +193,20 @@ public class WrappingProjectionHandler extends ProjectionHandler {
         if (northEast) {
             base = env.getMinY();
             curr = env.getMinY();
-            lowLimit =
-                    Math.max(
-                            renderingEnvelope.getMinY(),
-                            renderingEnvelope.getMedian(1) - maxWraps * targetHalfCircle * 2);
-            highLimit =
-                    Math.min(
-                            renderingEnvelope.getMaxY(),
-                            renderingEnvelope.getMedian(1) + maxWraps * targetHalfCircle * 2);
+            lowLimit = Math.max(
+                    renderingEnvelope.getMinY(), renderingEnvelope.getMedian(1) - maxWraps * targetHalfCircle * 2);
+            highLimit = Math.min(
+                    renderingEnvelope.getMaxY(), renderingEnvelope.getMedian(1) + maxWraps * targetHalfCircle * 2);
         } else {
             base = env.getMinX();
             curr = env.getMinX();
             double geometryWidth = geometry.getEnvelopeInternal().getWidth();
-            lowLimit =
-                    Math.max(
-                            renderingEnvelope.getMinX() - geometryWidth,
-                            renderingEnvelope.getMedian(0) - maxWraps * targetHalfCircle * 2);
-            highLimit =
-                    Math.min(
-                            renderingEnvelope.getMaxX() + geometryWidth,
-                            renderingEnvelope.getMedian(0) + maxWraps * targetHalfCircle * 2);
+            lowLimit = Math.max(
+                    renderingEnvelope.getMinX() - geometryWidth,
+                    renderingEnvelope.getMedian(0) - maxWraps * targetHalfCircle * 2);
+            highLimit = Math.min(
+                    renderingEnvelope.getMaxX() + geometryWidth,
+                    renderingEnvelope.getMedian(0) + maxWraps * targetHalfCircle * 2);
         }
         while (curr > lowLimit) {
             curr -= targetHalfCircle * 2;
@@ -259,8 +248,7 @@ public class WrappingProjectionHandler extends ProjectionHandler {
             Polygon[] polys = geoms.toArray(new Polygon[geoms.size()]);
             return geometry.getFactory().createMultiPolygon(polys);
         } else {
-            return geometry.getFactory()
-                    .createGeometryCollection(geoms.toArray(new Geometry[geoms.size()]));
+            return geometry.getFactory().createGeometryCollection(geoms.toArray(new Geometry[geoms.size()]));
         }
     }
 
@@ -280,8 +268,7 @@ public class WrappingProjectionHandler extends ProjectionHandler {
         }
         // preflipped width will be very close to twice the source half circle
         // but only applies if it doesn't touch both datelines
-        return width > sourceHalfCircle * DATELINE_PROXIMITY_TOLERANCE
-                && width < sourceHalfCircle * 2;
+        return width > sourceHalfCircle * DATELINE_PROXIMITY_TOLERANCE && width < sourceHalfCircle * 2;
     }
 
     /**
@@ -291,8 +278,7 @@ public class WrappingProjectionHandler extends ProjectionHandler {
      * @return the geometry type that all geometries added to the collection conform to. Worst case
      *     it's going to be Geometry.class
      */
-    static Class accumulate(
-            List<Geometry> geoms, Geometry geometry, Class geomType, ReferencedEnvelope envelope) {
+    static Class accumulate(List<Geometry> geoms, Geometry geometry, Class geomType, ReferencedEnvelope envelope) {
         Class gtype = null;
         for (int i = 0; i < geometry.getNumGeometries(); i++) {
             Geometry g = geometry.getGeometryN(i);

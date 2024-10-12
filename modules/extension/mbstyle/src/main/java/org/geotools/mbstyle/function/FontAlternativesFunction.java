@@ -30,11 +30,8 @@ import org.geotools.renderer.style.FontCache;
  */
 public class FontAlternativesFunction extends FunctionImpl {
 
-    public static final FunctionName NAME =
-            new FunctionNameImpl(
-                    "fontAlternatives",
-                    parameter("fontList", List.class),
-                    parameter("baseName", Integer.class));
+    public static final FunctionName NAME = new FunctionNameImpl(
+            "fontAlternatives", parameter("fontList", List.class), parameter("baseName", Integer.class));
 
     public FontAlternativesFunction() {
         this.functionName = NAME;

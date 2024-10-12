@@ -45,8 +45,7 @@ public class MaxVisitor implements FeatureCalc, FeatureAttributeVisitor {
         expr = factory.property(attributeTypeName);
     }
 
-    public MaxVisitor(int attributeTypeIndex, SimpleFeatureType type)
-            throws IllegalFilterException {
+    public MaxVisitor(int attributeTypeIndex, SimpleFeatureType type) throws IllegalFilterException {
         FilterFactory factory = CommonFactoryFinder.getFilterFactory(null);
         expr = factory.property(type.getDescriptor(attributeTypeIndex).getLocalName());
     }
@@ -213,13 +212,10 @@ public class MaxVisitor implements FeatureCalc, FeatureAttributeVisitor {
                 Comparable toAdd = (Comparable) resultsToAdd.getValue();
                 Comparable newMax = maxValue;
 
-                if (newMax.getClass()
-                        != toAdd.getClass()) { // 2 different data types, therefore convert
+                if (newMax.getClass() != toAdd.getClass()) { // 2 different data types, therefore convert
                     Class bestClass = CalcUtil.bestClass(toAdd, newMax);
-                    if (bestClass != toAdd.getClass())
-                        toAdd = (Comparable) CalcUtil.convert(toAdd, bestClass);
-                    if (bestClass != newMax.getClass())
-                        newMax = (Comparable) CalcUtil.convert(newMax, bestClass);
+                    if (bestClass != toAdd.getClass()) toAdd = (Comparable) CalcUtil.convert(toAdd, bestClass);
+                    if (bestClass != newMax.getClass()) newMax = (Comparable) CalcUtil.convert(newMax, bestClass);
                 }
                 if (newMax.compareTo(toAdd) < 0) {
                     newMax = toAdd;

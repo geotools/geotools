@@ -141,17 +141,16 @@ public class Resample extends Operation2D {
     private static final long serialVersionUID = -2022393087647420577L;
 
     /** The parameter descriptor for the interpolation type. */
-    public static final ParameterDescriptor<Object> INTERPOLATION_TYPE =
-            new DefaultParameterDescriptor<>(
-                    Citations.OGC,
-                    "InterpolationType",
-                    Object.class, // Value class (mandatory)
-                    null, // Array of valid values
-                    "NearestNeighbor", // Default value
-                    null, // Minimal value
-                    null, // Maximal value
-                    null, // Unit of measure
-                    false); // Parameter is optional
+    public static final ParameterDescriptor<Object> INTERPOLATION_TYPE = new DefaultParameterDescriptor<>(
+            Citations.OGC,
+            "InterpolationType",
+            Object.class, // Value class (mandatory)
+            null, // Array of valid values
+            "NearestNeighbor", // Default value
+            null, // Minimal value
+            null, // Maximal value
+            null, // Unit of measure
+            false); // Parameter is optional
 
     /** The parameter descriptor for the coordinate reference system. */
     public static final ParameterDescriptor<CoordinateReferenceSystem> COORDINATE_REFERENCE_SYSTEM =
@@ -167,30 +166,28 @@ public class Resample extends Operation2D {
                     false); // Parameter is optional
 
     /** The parameter descriptor for the grid geometry. */
-    public static final ParameterDescriptor<GridGeometry> GRID_GEOMETRY =
-            new DefaultParameterDescriptor<>(
-                    Citations.OGC,
-                    "GridGeometry",
-                    GridGeometry.class, // Value class (mandatory)
-                    null, // Array of valid values
-                    null, // Default value
-                    null, // Minimal value
-                    null, // Maximal value
-                    null, // Unit of measure
-                    false); // Parameter is optional
+    public static final ParameterDescriptor<GridGeometry> GRID_GEOMETRY = new DefaultParameterDescriptor<>(
+            Citations.OGC,
+            "GridGeometry",
+            GridGeometry.class, // Value class (mandatory)
+            null, // Array of valid values
+            null, // Default value
+            null, // Minimal value
+            null, // Maximal value
+            null, // Unit of measure
+            false); // Parameter is optional
 
     /** The parameter descriptor for the BackgroundValues. */
-    public static final ParameterDescriptor<double[]> BACKGROUND_VALUES =
-            new DefaultParameterDescriptor<>(
-                    Citations.JAI,
-                    "BackgroundValues",
-                    double[].class, // Value class (mandatory)
-                    null, // Array of valid values
-                    null, // Default value
-                    null, // Minimal value
-                    null, // Maximal value
-                    null, // Unit of measure
-                    false); // Parameter is optional
+    public static final ParameterDescriptor<double[]> BACKGROUND_VALUES = new DefaultParameterDescriptor<>(
+            Citations.JAI,
+            "BackgroundValues",
+            double[].class, // Value class (mandatory)
+            null, // Array of valid values
+            null, // Default value
+            null, // Minimal value
+            null, // Maximal value
+            null, // Unit of measure
+            false); // Parameter is optional
 
     /** Key for the reprojection operation being used (null if no operation is performed) */
     public static final String OPERATION = "method";
@@ -206,17 +203,9 @@ public class Resample extends Operation2D {
 
     /** Constructs a {@code "Resample"} operation. */
     public Resample() {
-        super(
-                new DefaultParameterDescriptorGroup(
-                        Citations.OGC,
-                        "Resample",
-                        new ParameterDescriptor[] {
-                            SOURCE_0,
-                            INTERPOLATION_TYPE,
-                            COORDINATE_REFERENCE_SYSTEM,
-                            GRID_GEOMETRY,
-                            BACKGROUND_VALUES
-                        }));
+        super(new DefaultParameterDescriptorGroup(Citations.OGC, "Resample", new ParameterDescriptor[] {
+            SOURCE_0, INTERPOLATION_TYPE, COORDINATE_REFERENCE_SYSTEM, GRID_GEOMETRY, BACKGROUND_VALUES
+        }));
     }
 
     /**
@@ -226,18 +215,17 @@ public class Resample extends Operation2D {
     @Override
     @SuppressWarnings("unchecked")
     public Coverage doOperation(final ParameterValueGroup parameters, final Hints hints) {
-        final GridCoverage2D source = (GridCoverage2D) parameters.parameter("Source").getValue();
-        final Interpolation interpolation =
-                ImageUtilities.toInterpolation(
-                        parameters.parameter("InterpolationType").getValue());
-        CoordinateReferenceSystem targetCRS =
-                (CoordinateReferenceSystem)
-                        parameters.parameter("CoordinateReferenceSystem").getValue();
+        final GridCoverage2D source =
+                (GridCoverage2D) parameters.parameter("Source").getValue();
+        final Interpolation interpolation = ImageUtilities.toInterpolation(
+                parameters.parameter("InterpolationType").getValue());
+        CoordinateReferenceSystem targetCRS = (CoordinateReferenceSystem)
+                parameters.parameter("CoordinateReferenceSystem").getValue();
         if (targetCRS == null) {
             targetCRS = source.getCoordinateReferenceSystem();
         }
-        final GridGeometry2D targetGG =
-                GridGeometry2D.wrap((GridGeometry) parameters.parameter("GridGeometry").getValue());
+        final GridGeometry2D targetGG = GridGeometry2D.wrap(
+                (GridGeometry) parameters.parameter("GridGeometry").getValue());
         final Object bgValueParam = parameters.parameter("BackgroundValues");
         final double[] bgValues;
         if (bgValueParam != null && bgValueParam instanceof Parameter<?>) {
@@ -255,8 +243,7 @@ public class Resample extends Operation2D {
                     bgValues);
         } catch (FactoryException | TransformException exception) {
             final Object arg0 = source.getName();
-            throw new CannotReprojectException(
-                    MessageFormat.format(ErrorKeys.CANT_REPROJECT_$1, arg0), exception);
+            throw new CannotReprojectException(MessageFormat.format(ErrorKeys.CANT_REPROJECT_$1, arg0), exception);
         }
     }
 
@@ -308,11 +295,8 @@ public class Resample extends Operation2D {
              * this time with the target envelope.
              */
             try {
-                final GeneralBounds transformed =
-                        CRS.transform(
-                                CRS.getCoordinateOperationFactory(true)
-                                        .createOperation(targetCRS, reducedCRS),
-                                target);
+                final GeneralBounds transformed = CRS.transform(
+                        CRS.getCoordinateOperationFactory(true).createOperation(targetCRS, reducedCRS), target);
                 final Bounds reduced;
                 final MathTransform gridToCRS;
                 if (reducedCRS == sourceCRS) {
@@ -323,8 +307,7 @@ public class Resample extends Operation2D {
                     gridToCRS = GridGeometry2D.wrap(gridGeometry).getGridToCRS2D();
                 }
                 transformed.intersect(reduced);
-                gridGeometry =
-                        new GridGeometry2D(PixelInCell.CELL_CENTER, gridToCRS, transformed, null);
+                gridGeometry = new GridGeometry2D(PixelInCell.CELL_CENTER, gridToCRS, transformed, null);
             } catch (FactoryException | TransformException exception) {
                 recoverableException("resample", exception);
             } // Will use the grid range from the original geometry,

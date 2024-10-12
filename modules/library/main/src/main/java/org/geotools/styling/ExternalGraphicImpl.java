@@ -60,8 +60,7 @@ public class ExternalGraphicImpl implements Symbol, Cloneable, ExternalGraphic {
         this(null, null, null);
     }
 
-    public ExternalGraphicImpl(
-            Icon icon, Collection<ColorReplacement> replaces, OnLineResource source) {
+    public ExternalGraphicImpl(Icon icon, Collection<ColorReplacement> replaces, OnLineResource source) {
         this.inlineContent = icon;
         if (replaces == null) {
             colorReplacements = new TreeSet<>();

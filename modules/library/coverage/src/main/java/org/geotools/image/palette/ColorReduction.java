@@ -52,33 +52,24 @@ public class ColorReduction extends PointOpImage {
     private RenderingHints hints;
 
     public ColorReduction(
-            RenderedImage image,
-            RenderingHints hints,
-            int numColors,
-            int alpaThreshold,
-            int subsx,
-            int subsy) {
+            RenderedImage image, RenderingHints hints, int numColors, int alpaThreshold, int subsx, int subsy) {
         super(image, new ImageLayout(image), null, false);
         this.numColors = numColors;
         this.alphaThreshold = alpaThreshold;
         if (image.getColorModel().hasAlpha()) {
-            RenderedImage alpha =
-                    BandSelectDescriptor.create(
-                            image, new int[] {image.getSampleModel().getNumBands() - 1}, null);
+            RenderedImage alpha = BandSelectDescriptor.create(
+                    image, new int[] {image.getSampleModel().getNumBands() - 1}, null);
             alpha = MultiplyConstDescriptor.create(alpha, new double[] {alphaThreshold}, null);
             image = BandSelectDescriptor.create(image, new int[] {0, 1, 2}, null);
 
             final ImageLayout layout = new ImageLayout();
-            layout.setColorModel(
-                    new ComponentColorModel(
-                            ColorSpace.getInstance(ColorSpace.CS_sRGB),
-                            true,
-                            false,
-                            Transparency.BITMASK,
-                            DataBuffer.TYPE_BYTE));
-            ImageWorker w =
-                    new ImageWorker(image)
-                            .setRenderingHints(new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout));
+            layout.setColorModel(new ComponentColorModel(
+                    ColorSpace.getInstance(ColorSpace.CS_sRGB),
+                    true,
+                    false,
+                    Transparency.BITMASK,
+                    DataBuffer.TYPE_BYTE));
+            ImageWorker w = new ImageWorker(image).setRenderingHints(new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout));
             w.addBand(alpha, false);
             image = w.getRenderedImage();
             this.setSource(image, 0);
@@ -95,9 +86,7 @@ public class ColorReduction extends PointOpImage {
 
         layout.setColorModel(this.paletteBuilder.getIndexColorModel());
         layout.setSampleModel(
-                paletteBuilder
-                        .getIndexColorModel()
-                        .createCompatibleSampleModel(image.getWidth(), image.getHeight()));
+                paletteBuilder.getIndexColorModel().createCompatibleSampleModel(image.getWidth(), image.getHeight()));
         return layout;
     }
 
@@ -123,16 +112,13 @@ public class ColorReduction extends PointOpImage {
         final int miny = sourceRaster.getMinY();
         final int maxy = miny + h;
         final WritableRaster destRaster =
-                this.colorModel
-                        .createCompatibleWritableRaster(w, h)
-                        .createWritableTranslatedChild(minx, miny);
+                this.colorModel.createCompatibleWritableRaster(w, h).createWritableTranslatedChild(minx, miny);
 
         // scan the provided tile and for each pixel assing the best color we have
         for (int i = minx; i < maxx; i++)
             for (int j = miny; j < maxy; j++) {
                 sourceRaster.getPixel(i, j, rgba);
-                destRaster.setSample(
-                        i, j, 0, paletteBuilder.findNearestColorIndex(rgba, alphaBand));
+                destRaster.setSample(i, j, 0, paletteBuilder.findNearestColorIndex(rgba, alphaBand));
             }
         return destRaster;
     }

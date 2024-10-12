@@ -99,59 +99,51 @@ public class QueryLab extends JFrame {
         pack();
 
         // docs start file menu
-        fileMenu.add(
-                new SafeAction("Open shapefile...") {
-                    public void action(ActionEvent e) throws Throwable {
-                        connect(new ShapefileDataStoreFactory());
-                    }
-                });
-        fileMenu.add(
-                new SafeAction("Connect to PostGIS database...") {
-                    public void action(ActionEvent e) throws Throwable {
-                        connect(new PostgisNGDataStoreFactory());
-                    }
-                });
-        fileMenu.add(
-                new SafeAction("Connect to DataStore...") {
-                    public void action(ActionEvent e) throws Throwable {
-                        connect(null);
-                    }
-                });
+        fileMenu.add(new SafeAction("Open shapefile...") {
+            public void action(ActionEvent e) throws Throwable {
+                connect(new ShapefileDataStoreFactory());
+            }
+        });
+        fileMenu.add(new SafeAction("Connect to PostGIS database...") {
+            public void action(ActionEvent e) throws Throwable {
+                connect(new PostgisNGDataStoreFactory());
+            }
+        });
+        fileMenu.add(new SafeAction("Connect to DataStore...") {
+            public void action(ActionEvent e) throws Throwable {
+                connect(null);
+            }
+        });
         fileMenu.addSeparator();
-        fileMenu.add(
-                new SafeAction("Exit") {
-                    public void action(ActionEvent e) throws Throwable {
-                        System.exit(0);
-                    }
-                });
+        fileMenu.add(new SafeAction("Exit") {
+            public void action(ActionEvent e) throws Throwable {
+                System.exit(0);
+            }
+        });
         // docs end file menu
 
         // docs start data menu
-        dataMenu.add(
-                new SafeAction("Get features") {
-                    public void action(ActionEvent e) throws Throwable {
-                        filterFeatures();
-                    }
-                });
-        dataMenu.add(
-                new SafeAction("Count") {
-                    public void action(ActionEvent e) throws Throwable {
-                        countFeatures();
-                    }
-                });
-        dataMenu.add(
-                new SafeAction("Geometry") {
-                    public void action(ActionEvent e) throws Throwable {
-                        queryFeatures();
-                    }
-                });
+        dataMenu.add(new SafeAction("Get features") {
+            public void action(ActionEvent e) throws Throwable {
+                filterFeatures();
+            }
+        });
+        dataMenu.add(new SafeAction("Count") {
+            public void action(ActionEvent e) throws Throwable {
+                countFeatures();
+            }
+        });
+        dataMenu.add(new SafeAction("Geometry") {
+            public void action(ActionEvent e) throws Throwable {
+                queryFeatures();
+            }
+        });
         // docs end data menu
-        dataMenu.add(
-                new SafeAction("Center") {
-                    public void action(ActionEvent e) throws Throwable {
-                        centerFeatures();
-                    }
-                });
+        dataMenu.add(new SafeAction("Center") {
+            public void action(ActionEvent e) throws Throwable {
+                centerFeatures();
+            }
+        });
     }
     // docs end constructor
 

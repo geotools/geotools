@@ -182,21 +182,14 @@ public class TransformProcess implements VectorProcess {
                 String expressionDefinition = line.substring(mark + 1).trim();
 
                 if (check.contains(name)) {
-                    throw new IllegalArgumentException(
-                            "Attribute " + name + " defined more than once");
+                    throw new IllegalArgumentException("Attribute " + name + " defined more than once");
                 }
                 Expression expression;
                 try {
                     expression = ECQL.toExpression(expressionDefinition);
                 } catch (CQLException e) {
                     throw new IllegalArgumentException(
-                            "Unable to parse expression "
-                                    + name
-                                    + "="
-                                    + expressionDefinition
-                                    + " "
-                                    + e,
-                            e);
+                            "Unable to parse expression " + name + "=" + expressionDefinition + " " + e, e);
                 }
                 Definition def = new Definition();
                 def.name = name;
@@ -265,8 +258,7 @@ public class TransformProcess implements VectorProcess {
             if (Geometry.class.isAssignableFrom(binding)) {
                 CoordinateReferenceSystem crs;
                 AttributeType originalAttributeType = origional.getType(name);
-                if (originalAttributeType != null
-                        && originalAttributeType instanceof GeometryType) {
+                if (originalAttributeType != null && originalAttributeType instanceof GeometryType) {
                     GeometryType geometryType = (GeometryType) originalAttributeType;
                     crs = geometryType.getCoordinateReferenceSystem();
                 } else {
@@ -296,8 +288,7 @@ public class TransformProcess implements VectorProcess {
         List<Definition> definition;
         SimpleFeatureType schema;
 
-        public ReshapeFeatureCollection(
-                SimpleFeatureCollection delegate, List<Definition> definition) {
+        public ReshapeFeatureCollection(SimpleFeatureCollection delegate, List<Definition> definition) {
             super(delegate);
             this.definition = definition;
             this.schema = toReShapeFeatureType(delegate, definition);
@@ -326,9 +317,7 @@ public class TransformProcess implements VectorProcess {
         SimpleFeatureBuilder fb;
 
         public ReshapeFeatureIterator(
-                SimpleFeatureIterator delegate,
-                List<Definition> definition,
-                SimpleFeatureType schema) {
+                SimpleFeatureIterator delegate, List<Definition> definition, SimpleFeatureType schema) {
             this.delegate = delegate;
             this.definition = definition;
             fb = new SimpleFeatureBuilder(schema);

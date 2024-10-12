@@ -78,17 +78,14 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
         implements CoordinateOperationFactory {
     /** The identifier for an identity operation. */
     protected static final ReferenceIdentifier IDENTITY =
-            new NamedIdentifier(
-                    Citations.GEOTOOLS, Vocabulary.formatInternational(VocabularyKeys.IDENTITY));
+            new NamedIdentifier(Citations.GEOTOOLS, Vocabulary.formatInternational(VocabularyKeys.IDENTITY));
 
     /**
      * The identifier for conversion using an affine transform for axis swapping and/or unit
      * conversions.
      */
     protected static final ReferenceIdentifier AXIS_CHANGES =
-            new NamedIdentifier(
-                    Citations.GEOTOOLS,
-                    Vocabulary.formatInternational(VocabularyKeys.AXIS_CHANGES));
+            new NamedIdentifier(Citations.GEOTOOLS, Vocabulary.formatInternational(VocabularyKeys.AXIS_CHANGES));
 
     /**
      * The identifier for a transformation which is a datum shift.
@@ -96,8 +93,7 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
      * @see PositionalAccuracyImpl#DATUM_SHIFT_APPLIED
      */
     protected static final ReferenceIdentifier DATUM_SHIFT =
-            new NamedIdentifier(
-                    Citations.GEOTOOLS, Vocabulary.formatInternational(VocabularyKeys.DATUM_SHIFT));
+            new NamedIdentifier(Citations.GEOTOOLS, Vocabulary.formatInternational(VocabularyKeys.DATUM_SHIFT));
 
     /**
      * The identifier for a transformation which is a datum shift without {@linkplain
@@ -109,21 +105,15 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
      * @see PositionalAccuracyImpl#DATUM_SHIFT_OMITTED
      */
     protected static final ReferenceIdentifier ELLIPSOID_SHIFT =
-            new NamedIdentifier(
-                    Citations.GEOTOOLS,
-                    Vocabulary.formatInternational(VocabularyKeys.ELLIPSOID_SHIFT));
+            new NamedIdentifier(Citations.GEOTOOLS, Vocabulary.formatInternational(VocabularyKeys.ELLIPSOID_SHIFT));
 
     /** The identifier for a geocentric conversion. */
-    protected static final ReferenceIdentifier GEOCENTRIC_CONVERSION =
-            new NamedIdentifier(
-                    Citations.GEOTOOLS,
-                    Vocabulary.formatInternational(VocabularyKeys.GEOCENTRIC_TRANSFORM));
+    protected static final ReferenceIdentifier GEOCENTRIC_CONVERSION = new NamedIdentifier(
+            Citations.GEOTOOLS, Vocabulary.formatInternational(VocabularyKeys.GEOCENTRIC_TRANSFORM));
 
     /** The identifier for an inverse operation. */
     protected static final ReferenceIdentifier INVERSE_OPERATION =
-            new NamedIdentifier(
-                    Citations.GEOTOOLS,
-                    Vocabulary.formatInternational(VocabularyKeys.INVERSE_OPERATION));
+            new NamedIdentifier(Citations.GEOTOOLS, Vocabulary.formatInternational(VocabularyKeys.INVERSE_OPERATION));
 
     /**
      * The set of helper methods on factories.
@@ -144,8 +134,7 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
      * A pool of coordinate operation. This pool is used in order to returns instance of existing
      * operations when possible.
      */
-    private final CanonicalSet<CoordinateOperation> pool =
-            CanonicalSet.newInstance(CoordinateOperation.class);
+    private final CanonicalSet<CoordinateOperation> pool = CanonicalSet.newInstance(CoordinateOperation.class);
 
     /**
      * Tells if {@link FactoryGroup#hints} has been invoked. It must be invoked exactly once, but
@@ -263,8 +252,7 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
      * @throws OperationNotFoundException If the affine transform can't be constructed.
      * @see AbstractCS#swapAndScaleAxis
      */
-    protected Matrix swapAndScaleAxis(
-            final CoordinateSystem sourceCS, final CoordinateSystem targetCS)
+    protected Matrix swapAndScaleAxis(final CoordinateSystem sourceCS, final CoordinateSystem targetCS)
             throws OperationNotFoundException {
         try {
             return AbstractCS.swapAndScaleAxis(sourceCS, targetCS);
@@ -290,13 +278,11 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
         if (name == DATUM_SHIFT || name == ELLIPSOID_SHIFT) {
             properties = new HashMap<>(4);
             properties.put(NAME_KEY, name);
-            properties.put(
-                    CoordinateOperation.COORDINATE_OPERATION_ACCURACY_KEY,
-                    new PositionalAccuracy[] {
-                        name == DATUM_SHIFT
-                                ? PositionalAccuracyImpl.DATUM_SHIFT_APPLIED
-                                : PositionalAccuracyImpl.DATUM_SHIFT_OMITTED
-                    });
+            properties.put(CoordinateOperation.COORDINATE_OPERATION_ACCURACY_KEY, new PositionalAccuracy[] {
+                name == DATUM_SHIFT
+                        ? PositionalAccuracyImpl.DATUM_SHIFT_APPLIED
+                        : PositionalAccuracyImpl.DATUM_SHIFT_OMITTED
+            });
         } else {
             properties = Collections.singletonMap(NAME_KEY, name);
         }
@@ -359,8 +345,7 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
         final Map<String, ?> properties = getProperties(name);
         final MathTransform transform = mtFactory.createParameterizedTransform(parameters);
         final OperationMethod method = mtFactory.getLastMethodUsed();
-        return createFromMathTransform(
-                properties, sourceCRS, targetCRS, transform, method, Operation.class);
+        return createFromMathTransform(properties, sourceCRS, targetCRS, transform, method, Operation.class);
     }
 
     /**
@@ -425,8 +410,7 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
                 }
             }
         }
-        operation =
-                DefaultOperation.create(properties, sourceCRS, targetCRS, transform, method, type);
+        operation = DefaultOperation.create(properties, sourceCRS, targetCRS, transform, method, type);
         operation = pool.unique(operation);
         return operation;
     }
@@ -444,9 +428,7 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
      */
     @Override
     public Conversion createDefiningConversion(
-            final Map<String, ?> properties,
-            final OperationMethod method,
-            final ParameterValueGroup parameters)
+            final Map<String, ?> properties, final OperationMethod method, final ParameterValueGroup parameters)
             throws FactoryException {
         Conversion conversion = new DefiningConversion(properties, method, parameters);
         conversion = pool.unique(conversion);
@@ -463,8 +445,7 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
      */
     @Override
     public CoordinateOperation createConcatenatedOperation(
-            final Map<String, ?> properties, final CoordinateOperation[] operations)
-            throws FactoryException {
+            final Map<String, ?> properties, final CoordinateOperation[] operations) throws FactoryException {
         CoordinateOperation operation;
         operation = new DefaultConcatenatedOperation(properties, operations, mtFactory);
         operation = pool.unique(operation);
@@ -482,8 +463,7 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
      * @return A concatenated operation, or {@code null} if all arguments was nul.
      * @throws FactoryException if the operation can't be constructed.
      */
-    protected CoordinateOperation concatenate(
-            final CoordinateOperation step1, final CoordinateOperation step2)
+    protected CoordinateOperation concatenate(final CoordinateOperation step1, final CoordinateOperation step2)
             throws FactoryException {
         if (step1 == null) return step2;
         if (step2 == null) return step1;
@@ -494,10 +474,8 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
         final CoordinateReferenceSystem sourceCRS = step1.getSourceCRS();
         final CoordinateReferenceSystem targetCRS = step2.getTargetCRS();
         CoordinateOperation step = null;
-        if (step1.getName() == AXIS_CHANGES
-                && mt1.getSourceDimensions() == mt1.getTargetDimensions()) step = step2;
-        if (step2.getName() == AXIS_CHANGES
-                && mt2.getSourceDimensions() == mt2.getTargetDimensions()) step = step1;
+        if (step1.getName() == AXIS_CHANGES && mt1.getSourceDimensions() == mt1.getTargetDimensions()) step = step2;
+        if (step2.getName() == AXIS_CHANGES && mt2.getSourceDimensions() == mt2.getTargetDimensions()) step = step1;
         if (step instanceof Operation) {
             /*
              * Applies only on operation in order to avoid merging with PassThroughOperation.
@@ -528,8 +506,7 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
      * @throws FactoryException if the operation can't be constructed.
      */
     protected Set<CoordinateOperation> concatenate(
-            final Set<CoordinateOperation> candidatesStep1,
-            final Set<CoordinateOperation> candidatesStep2)
+            final Set<CoordinateOperation> candidatesStep1, final Set<CoordinateOperation> candidatesStep2)
             throws FactoryException {
         HashSet<CoordinateOperation> result = new HashSet<>();
         for (CoordinateOperation step1 : candidatesStep1) {
@@ -585,9 +562,7 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
      * @throws FactoryException if the operation can't be constructed.
      */
     protected CoordinateOperation concatenate(
-            final CoordinateOperation step1,
-            final CoordinateOperation step2,
-            final CoordinateOperation step3)
+            final CoordinateOperation step1, final CoordinateOperation step2, final CoordinateOperation step3)
             throws FactoryException {
         if (step1 == null) return concatenate(step2, step3);
         if (step2 == null) return concatenate(step1, step3);
@@ -603,8 +578,7 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
         final CoordinateReferenceSystem sourceCRS = step1.getSourceCRS();
         final CoordinateReferenceSystem targetCRS = step3.getTargetCRS();
         return createConcatenatedOperation(
-                getTemporaryName(sourceCRS, targetCRS),
-                new CoordinateOperation[] {step1, step2, step3});
+                getTemporaryName(sourceCRS, targetCRS), new CoordinateOperation[] {step1, step2, step3});
     }
 
     /**
@@ -629,23 +603,18 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
             throws NoninvertibleTransformException, FactoryException {
         final CoordinateReferenceSystem sourceCRS = operation.getSourceCRS();
         final CoordinateReferenceSystem targetCRS = operation.getTargetCRS();
-        final Map<String, Object> properties =
-                AbstractIdentifiedObject.getProperties(operation, null);
+        final Map<String, Object> properties = AbstractIdentifiedObject.getProperties(operation, null);
         properties.putAll(getTemporaryName(targetCRS, sourceCRS));
         if (operation instanceof ConcatenatedOperation) {
             final LinkedList<CoordinateOperation> inverted = new LinkedList<>();
-            for (final CoordinateOperation op :
-                    ((ConcatenatedOperation) operation).getOperations()) {
+            for (final CoordinateOperation op : ((ConcatenatedOperation) operation).getOperations()) {
                 inverted.addFirst(inverse(op));
             }
-            return createConcatenatedOperation(
-                    properties, inverted.toArray(new CoordinateOperation[inverted.size()]));
+            return createConcatenatedOperation(properties, inverted.toArray(new CoordinateOperation[inverted.size()]));
         }
         final MathTransform transform = operation.getMathTransform().inverse();
-        final Class<? extends CoordinateOperation> type =
-                AbstractCoordinateOperation.getType(operation);
-        final OperationMethod method =
-                (operation instanceof Operation) ? ((Operation) operation).getMethod() : null;
+        final Class<? extends CoordinateOperation> type = AbstractCoordinateOperation.getType(operation);
+        final OperationMethod method = (operation instanceof Operation) ? ((Operation) operation).getMethod() : null;
         return createFromMathTransform(properties, targetCRS, sourceCRS, transform, method, type);
     }
 
@@ -681,12 +650,7 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
 
         /** Constructs an identifier derived from the specified one. */
         public TemporaryIdentifier(final ReferenceIdentifier parent) {
-            this(
-                    parent,
-                    ((parent instanceof TemporaryIdentifier)
-                                    ? ((TemporaryIdentifier) parent).count
-                                    : 0)
-                            + 1);
+            this(parent, ((parent instanceof TemporaryIdentifier) ? ((TemporaryIdentifier) parent).count : 0) + 1);
         }
 
         /** Work around for RFE #4093999 in Sun's bug database */
@@ -739,8 +703,7 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
         properties.put(NAME_KEY, new TemporaryIdentifier(source.getName()));
         properties.put(
                 IdentifiedObject.REMARKS_KEY,
-                Vocabulary.formatInternational(
-                        VocabularyKeys.DERIVED_FROM_$1, getClassName(source)));
+                Vocabulary.formatInternational(VocabularyKeys.DERIVED_FROM_$1, getClassName(source)));
         return properties;
     }
 
@@ -763,8 +726,7 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
      * @param target The target CRS.
      * @return A default error message.
      */
-    protected static String getErrorMessage(
-            final IdentifiedObject source, final IdentifiedObject target) {
+    protected static String getErrorMessage(final IdentifiedObject source, final IdentifiedObject target) {
         final Object arg0 = getClassName(source);
         final Object arg1 = getClassName(target);
         return MessageFormat.format(ErrorKeys.NO_TRANSFORMATION_PATH_$2, arg0, arg1);
@@ -777,11 +739,9 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
      * @param object User argument.
      * @throws IllegalArgumentException if {@code object} is null.
      */
-    protected static void ensureNonNull(final String name, final Object object)
-            throws IllegalArgumentException {
+    protected static void ensureNonNull(final String name, final Object object) throws IllegalArgumentException {
         if (object == null) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, name));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, name));
         }
     }
 }

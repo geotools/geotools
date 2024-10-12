@@ -87,8 +87,7 @@ public class InFunction extends FunctionExpressionImpl {
         return caps;
     }
 
-    public static FunctionName NAME =
-            functionName("in", "result:Boolean", "candidate:Object:1,1", "v:Object:1,");
+    public static FunctionName NAME = functionName("in", "result:Boolean", "candidate:Object:1,1", "v:Object:1,");
 
     public InFunction() {
         super(NAME);
@@ -152,7 +151,8 @@ public class InFunction extends FunctionExpressionImpl {
         }
 
         boolean result = false;
-        List<Expression> valuesToTest = getParameters().subList(1, getParameters().size());
+        List<Expression> valuesToTest =
+                getParameters().subList(1, getParameters().size());
         for (Expression expression : valuesToTest) {
             Object value = expression.evaluate(feature);
             if (candidate == null) {

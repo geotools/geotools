@@ -74,8 +74,7 @@ public class CSVFeatureReader implements FeatureReader<SimpleFeatureType, Simple
      * @throws IllegalAttributeException for invalid data
      * @throws NoSuchElementException If hasNext() indicates no more features are available
      */
-    public SimpleFeature next()
-            throws IOException, IllegalArgumentException, NoSuchElementException {
+    public SimpleFeature next() throws IOException, IllegalArgumentException, NoSuchElementException {
         SimpleFeature feature;
         if (next != null) {
             feature = next;

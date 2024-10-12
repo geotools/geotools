@@ -46,10 +46,7 @@ public class GranuleCatalogStore extends GranuleCatalogSource implements Granule
     private Transaction transaction;
 
     public GranuleCatalogStore(
-            RasterManager manager,
-            GranuleCatalog catalog,
-            final String typeName,
-            final Hints hints) {
+            RasterManager manager, GranuleCatalog catalog, final String typeName, final Hints hints) {
         super(manager, catalog, typeName, hints);
     }
 
@@ -67,8 +64,7 @@ public class GranuleCatalogStore extends GranuleCatalogSource implements Granule
                 try {
                     catalog.addGranule(typeName, feature, transaction);
                 } catch (IOException e) {
-                    throw new RuntimeException(
-                            "Exception occurred while adding granules to the catalog", e);
+                    throw new RuntimeException("Exception occurred while adding granules to the catalog", e);
                 }
             }
         }
@@ -93,8 +89,7 @@ public class GranuleCatalogStore extends GranuleCatalogSource implements Granule
                         "The schema of the provided collection is not the same of the underlying catalog");
             }
         } catch (IOException e) {
-            throw new RuntimeException(
-                    "Exception occurred while getting the underlying catalog schema");
+            throw new RuntimeException("Exception occurred while getting the underlying catalog schema");
         }
     }
 

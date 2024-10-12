@@ -24,8 +24,7 @@ import javax.xml.stream.XMLStreamReader;
 /** Handles xml parse events for {@link org.geotools.styling.TextSymbolizer} elements. */
 public class TextSymbolizerHandler extends SymbolizerHandler {
     @Override
-    public void element(XMLStreamReader xml, SldTransformContext context)
-            throws XMLStreamException, IOException {
+    public void element(XMLStreamReader xml, SldTransformContext context) throws XMLStreamException, IOException {
         String name = xml.getLocalName();
         if ("TextSymbolizer".equals(name)) {
             context.mapping().scalar("text").mapping();
@@ -45,8 +44,7 @@ public class TextSymbolizerHandler extends SymbolizerHandler {
     }
 
     @Override
-    public void endElement(XMLStreamReader xml, SldTransformContext context)
-            throws XMLStreamException, IOException {
+    public void endElement(XMLStreamReader xml, SldTransformContext context) throws XMLStreamException, IOException {
         String name = xml.getLocalName();
         if ("TextSymbolizer".equals(name)) {
             dumpOptions(context).endMapping().endMapping().pop();
@@ -58,8 +56,7 @@ public class TextSymbolizerHandler extends SymbolizerHandler {
     static class FontHandler extends SldTransformHandler {
 
         @Override
-        public void element(XMLStreamReader xml, SldTransformContext context)
-                throws XMLStreamException, IOException {
+        public void element(XMLStreamReader xml, SldTransformContext context) throws XMLStreamException, IOException {
             String name = xml.getLocalName();
             if ("CssParameter".equals(name) || "SvgParameter".equals(name)) {
                 context.push(new ParameterHandler());
@@ -79,8 +76,7 @@ public class TextSymbolizerHandler extends SymbolizerHandler {
     static class PlacementHandler extends SldTransformHandler {
 
         @Override
-        public void element(XMLStreamReader xml, SldTransformContext context)
-                throws XMLStreamException, IOException {
+        public void element(XMLStreamReader xml, SldTransformContext context) throws XMLStreamException, IOException {
             String name = xml.getLocalName();
             if ("LabelPlacement".equals(name)) {
                 context.mapping();
@@ -121,8 +117,7 @@ public class TextSymbolizerHandler extends SymbolizerHandler {
 
     static class HaloHandler extends SldTransformHandler {
         @Override
-        public void element(XMLStreamReader xml, SldTransformContext context)
-                throws XMLStreamException, IOException {
+        public void element(XMLStreamReader xml, SldTransformContext context) throws XMLStreamException, IOException {
             String name = xml.getLocalName();
             if ("Halo".equals(name)) {
                 context.mapping();

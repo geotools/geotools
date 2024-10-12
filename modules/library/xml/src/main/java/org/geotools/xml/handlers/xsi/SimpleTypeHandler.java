@@ -87,10 +87,7 @@ public class SimpleTypeHandler extends XSIElementHandler {
                     child = lh;
                 } else {
                     throw new SAXNotRecognizedException(
-                            getLocalName()
-                                    + " may only have one '"
-                                    + ListHandler.LOCALNAME
-                                    + "' declaration.");
+                            getLocalName() + " may only have one '" + ListHandler.LOCALNAME + "' declaration.");
                 }
 
                 return lh;
@@ -104,10 +101,7 @@ public class SimpleTypeHandler extends XSIElementHandler {
                     child = lh;
                 } else {
                     throw new SAXNotRecognizedException(
-                            getLocalName()
-                                    + " may only have one '"
-                                    + RestrictionHandler.LOCALNAME
-                                    + "' declaration.");
+                            getLocalName() + " may only have one '" + RestrictionHandler.LOCALNAME + "' declaration.");
                 }
 
                 return lh;
@@ -121,10 +115,7 @@ public class SimpleTypeHandler extends XSIElementHandler {
                     child = lh;
                 } else {
                     throw new SAXNotRecognizedException(
-                            getLocalName()
-                                    + " may only have one '"
-                                    + UnionHandler.LOCALNAME
-                                    + "' declaration.");
+                            getLocalName() + " may only have one '" + UnionHandler.LOCALNAME + "' declaration.");
                 }
 
                 return lh;
@@ -219,15 +210,8 @@ public class SimpleTypeHandler extends XSIElementHandler {
 
         SimpleType[] simpleTypes = getSimpleTypes(child, parent);
 
-        cache =
-                new SimpleTypeGT(
-                        id,
-                        name,
-                        parent.getTargetNamespace(),
-                        child.getHandlerType(),
-                        simpleTypes,
-                        facets,
-                        finaL);
+        cache = new SimpleTypeGT(
+                id, name, parent.getTargetNamespace(), child.getHandlerType(), simpleTypes, facets, finaL);
 
         logger.info("End compressing SimpleType " + getName());
         id = null;
@@ -248,8 +232,7 @@ public class SimpleTypeHandler extends XSIElementHandler {
                 return getSimpleTypes((UnionHandler) child, parent);
 
             default:
-                throw new RuntimeException(
-                        "Should not be here ... child is one of the other three types.");
+                throw new RuntimeException("Should not be here ... child is one of the other three types.");
         }
     }
 

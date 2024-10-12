@@ -36,8 +36,7 @@ import org.geotools.util.factory.Hints;
  */
 public final class IDRISIFormat extends BaseGDALGridFormat implements Format {
     /** Logger. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(IDRISIFormat.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(IDRISIFormat.class);
 
     /** Creates an instance and sets the metadata. */
     public IDRISIFormat() {

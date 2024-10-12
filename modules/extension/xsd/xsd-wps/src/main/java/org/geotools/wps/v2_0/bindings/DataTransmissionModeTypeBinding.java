@@ -85,8 +85,7 @@ public class DataTransmissionModeTypeBinding extends AbstractSimpleBinding {
      */
     @Override
     public Object parse(InstanceComponent instance, Object value) throws Exception {
-        DataTransmissionModeType dataTransmissionMode =
-                DataTransmissionModeType.getByName((String) value);
+        DataTransmissionModeType dataTransmissionMode = DataTransmissionModeType.getByName((String) value);
         return super.parse(instance, dataTransmissionMode);
     }
 }

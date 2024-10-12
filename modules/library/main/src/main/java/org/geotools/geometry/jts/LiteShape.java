@@ -92,16 +92,8 @@ public class LiteShape implements Shape, Cloneable {
             yScale = xScale = 1;
             return;
         }
-        xScale =
-                (float)
-                        Math.sqrt(
-                                (at.getScaleX() * at.getScaleX())
-                                        + (at.getShearX() * at.getShearX()));
-        yScale =
-                (float)
-                        Math.sqrt(
-                                (at.getScaleY() * at.getScaleY())
-                                        + (at.getShearY() * at.getShearY()));
+        xScale = (float) Math.sqrt((at.getScaleX() * at.getScaleX()) + (at.getShearX() * at.getShearX()));
+        yScale = (float) Math.sqrt((at.getScaleY() * at.getScaleY()) + (at.getShearY() * at.getShearY()));
     }
 
     private GeometryFactory getGeometryFactory() {
@@ -295,8 +287,7 @@ public class LiteShape implements Shape, Cloneable {
     @Override
     public Rectangle2D getBounds2D() {
         Envelope env = geometry.getEnvelopeInternal();
-        return new Rectangle2D.Double(
-                env.getMinX(), env.getMinY(), env.getWidth(), env.getHeight());
+        return new Rectangle2D.Double(env.getMinX(), env.getMinY(), env.getWidth(), env.getHeight());
     }
 
     /**
@@ -356,15 +347,8 @@ public class LiteShape implements Shape, Cloneable {
             //	                    (float) maxDistance);
             //        	else
             if (combined == affineTransform)
-                lineIterator.init(
-                        (LineString) geometry,
-                        combined,
-                        generalize,
-                        (float) maxDistance,
-                        xScale,
-                        yScale);
-            else
-                lineIterator.init((LineString) geometry, combined, generalize, (float) maxDistance);
+                lineIterator.init((LineString) geometry, combined, generalize, (float) maxDistance, xScale, yScale);
+            else lineIterator.init((LineString) geometry, combined, generalize, (float) maxDistance);
             pi = lineIterator;
         } else if (this.geometry instanceof GeometryCollection) {
             collIterator.init((GeometryCollection) geometry, combined, generalize, maxDistance);

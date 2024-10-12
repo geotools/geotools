@@ -52,17 +52,13 @@ import org.geotools.util.logging.Logging;
 public class JMapStatusBar extends JPanel {
     private static final Logger LOGGER = Logging.getLogger(JMapStatusBar.class);
 
-    private static final String CONFIGURE_TOOL_TIP =
-            LocaleUtils.getValue("StatusBar", "ConfigureTooltip");
+    private static final String CONFIGURE_TOOL_TIP = LocaleUtils.getValue("StatusBar", "ConfigureTooltip");
 
-    private static final String SET_DECIMALS_STRING =
-            LocaleUtils.getValue("StatusBar", "ConfigureSetNumDecimals");
+    private static final String SET_DECIMALS_STRING = LocaleUtils.getValue("StatusBar", "ConfigureSetNumDecimals");
 
-    private static final String DECIMAL_DIALOG_TITLE =
-            LocaleUtils.getValue("StatusBar", "ConfigureDecimalDialogTitle");
+    private static final String DECIMAL_DIALOG_TITLE = LocaleUtils.getValue("StatusBar", "ConfigureDecimalDialogTitle");
 
-    private static final String DECIMAL_DIALOG_LABEL =
-            LocaleUtils.getValue("StatusBar", "ConfigureDecimalDialogLabel");
+    private static final String DECIMAL_DIALOG_LABEL = LocaleUtils.getValue("StatusBar", "ConfigureDecimalDialogLabel");
 
     private static final int INSET = 0;
 
@@ -82,8 +78,7 @@ public class JMapStatusBar extends JPanel {
         final int componentIndex;
         boolean showing;
 
-        public ItemInfo(
-                StatusBarItem item, boolean configurable, int componentIndex, boolean showing) {
+        public ItemInfo(StatusBarItem item, boolean configurable, int componentIndex, boolean showing) {
 
             this.item = item;
             this.configurable = configurable;
@@ -120,8 +115,7 @@ public class JMapStatusBar extends JPanel {
 
         } else {
             try {
-                SwingUtilities.invokeAndWait(
-                        () -> statusBar[0] = doCreateDefaultStatusBar(mapPane));
+                SwingUtilities.invokeAndWait(() -> statusBar[0] = doCreateDefaultStatusBar(mapPane));
             } catch (Exception ex) {
                 throw new RuntimeException(ex);
             }
@@ -161,13 +155,12 @@ public class JMapStatusBar extends JPanel {
 
         URL url = this.getClass().getResource("icons/configure-3.png");
         ImageIcon icon = new ImageIcon(url);
-        PopupMenuProvider menuProvider =
-                () -> {
-                    if (configMenu == null) {
-                        configMenu = createItemMenu();
-                    }
-                    return configMenu;
-                };
+        PopupMenuProvider menuProvider = () -> {
+            if (configMenu == null) {
+                configMenu = createItemMenu();
+            }
+            return configMenu;
+        };
 
         StatusBarItem item = new JMenuStatusBarItem("", icon, CONFIGURE_TOOL_TIP, menuProvider);
         addItem(item, false, true);
@@ -217,10 +210,9 @@ public class JMapStatusBar extends JPanel {
             return true;
 
         } else {
-            LOGGER.log(
-                    Level.WARNING,
-                    "Item label:{0} id:{1} is already in the status bar",
-                    new Object[] {item.getName(), item.getID()});
+            LOGGER.log(Level.WARNING, "Item label:{0} id:{1} is already in the status bar", new Object[] {
+                item.getName(), item.getID()
+            });
             return false;
         }
     }
@@ -285,18 +277,17 @@ public class JMapStatusBar extends JPanel {
         for (final ItemInfo info : itemInfo) {
             if (info.configurable) {
                 JMenuItem menuItem = new JCheckBoxMenuItem(info.item.getName(), info.showing);
-                menuItem.addActionListener(
-                        e -> {
-                            info.showing = !info.showing;
-                            Rectangle r = info.item.getBounds();
-                            if (info.showing) {
-                                add(info.item, info.componentIndex);
-                            } else {
-                                remove(info.item);
-                            }
-                            revalidate();
-                            repaint(r);
-                        });
+                menuItem.addActionListener(e -> {
+                    info.showing = !info.showing;
+                    Rectangle r = info.item.getBounds();
+                    if (info.showing) {
+                        add(info.item, info.componentIndex);
+                    } else {
+                        remove(info.item);
+                    }
+                    revalidate();
+                    repaint(r);
+                });
                 menu.add(menuItem);
             }
         }

@@ -60,23 +60,20 @@ public class NetCDFFormat extends AbstractGridFormat {
 
         // reading parameters
         readParameters =
-                new ParameterGroup(
-                        new DefaultParameterDescriptorGroup(
-                                mInfo,
-                                new GeneralParameterDescriptor[] {
-                                    READ_GRIDGEOMETRY2D,
-                                    //                        INPUT_TRANSPARENT_COLOR,
-                                    //                BACKGROUND_VALUES,
-                                    //                SUGGESTED_TILE_SIZE,
-                                    //                ALLOW_MULTITHREADING,
-                                    //                MAX_ALLOWED_TILES,
-                                    TIME,
-                                    ELEVATION,
-                                    FILTER,
-                                    //                SORT_BY,
-                                    //                MERGE_BEHAVIOR
-                                    BANDS
-                                }));
+                new ParameterGroup(new DefaultParameterDescriptorGroup(mInfo, new GeneralParameterDescriptor[] {
+                    READ_GRIDGEOMETRY2D,
+                    //                        INPUT_TRANSPARENT_COLOR,
+                    //                BACKGROUND_VALUES,
+                    //                SUGGESTED_TILE_SIZE,
+                    //                ALLOW_MULTITHREADING,
+                    //                MAX_ALLOWED_TILES,
+                    TIME,
+                    ELEVATION,
+                    FILTER,
+                    //                SORT_BY,
+                    //                MERGE_BEHAVIOR
+                    BANDS
+                }));
 
         // reading parameters
         writeParameters = null;
@@ -94,8 +91,7 @@ public class NetCDFFormat extends AbstractGridFormat {
             final NetCDFReader reader = new NetCDFReader(source, hints);
             return reader;
         } catch (IOException e) {
-            if (LOGGER.isLoggable(Level.WARNING))
-                LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
+            if (LOGGER.isLoggable(Level.WARNING)) LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
             return null;
         }
     }

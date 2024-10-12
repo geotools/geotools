@@ -72,8 +72,7 @@ public class AttributeMapping {
     private String indexField;
 
     /** Creates a new AttributeMapping object. */
-    public AttributeMapping(
-            Expression idExpression, Expression sourceExpression, StepList targetXPath) {
+    public AttributeMapping(Expression idExpression, Expression sourceExpression, StepList targetXPath) {
         this(idExpression, sourceExpression, null, targetXPath, null, false, null);
     }
 
@@ -138,8 +137,7 @@ public class AttributeMapping {
         this.sourceIndex = sourceIndex;
         this.targetXPath = targetXPath;
         this.targetNodeInstance = targetNodeInstance;
-        this.clientProperties =
-                clientProperties == null ? Collections.emptyMap() : clientProperties;
+        this.clientProperties = clientProperties == null ? Collections.emptyMap() : clientProperties;
         this.multipleValue = multipleValue;
         if (multipleValue != null) {
             this.isMultiValued = true;
@@ -248,8 +246,7 @@ public class AttributeMapping {
 
     @Override
     public int hashCode() {
-        return (37 * identifierExpression.hashCode() + 37 * sourceExpression.hashCode())
-                ^ targetXPath.hashCode();
+        return (37 * identifierExpression.hashCode() + 37 * sourceExpression.hashCode()) ^ targetXPath.hashCode();
     }
 
     @Override

@@ -61,16 +61,9 @@ public class NumberRange<T extends Number & Comparable<? super T>> extends Range
      * @since 2.5
      */
     public static NumberRange<Byte> create(
-            final byte minimum,
-            final boolean isMinIncluded,
-            final byte maximum,
-            final boolean isMaxIncluded) {
+            final byte minimum, final boolean isMinIncluded, final byte maximum, final boolean isMaxIncluded) {
         return new NumberRange<>(
-                Byte.class,
-                Byte.valueOf(minimum),
-                isMinIncluded,
-                Byte.valueOf(maximum),
-                isMaxIncluded);
+                Byte.class, Byte.valueOf(minimum), isMinIncluded, Byte.valueOf(maximum), isMaxIncluded);
     }
 
     /**
@@ -94,16 +87,9 @@ public class NumberRange<T extends Number & Comparable<? super T>> extends Range
      * @since 2.5
      */
     public static NumberRange<Short> create(
-            final short minimum,
-            final boolean isMinIncluded,
-            final short maximum,
-            final boolean isMaxIncluded) {
+            final short minimum, final boolean isMinIncluded, final short maximum, final boolean isMaxIncluded) {
         return new NumberRange<>(
-                Short.class,
-                Short.valueOf(minimum),
-                isMinIncluded,
-                Short.valueOf(maximum),
-                isMaxIncluded);
+                Short.class, Short.valueOf(minimum), isMinIncluded, Short.valueOf(maximum), isMaxIncluded);
     }
 
     /**
@@ -127,16 +113,9 @@ public class NumberRange<T extends Number & Comparable<? super T>> extends Range
      * @since 2.5
      */
     public static NumberRange<Integer> create(
-            final int minimum,
-            final boolean isMinIncluded,
-            final int maximum,
-            final boolean isMaxIncluded) {
+            final int minimum, final boolean isMinIncluded, final int maximum, final boolean isMaxIncluded) {
         return new NumberRange<>(
-                Integer.class,
-                Integer.valueOf(minimum),
-                isMinIncluded,
-                Integer.valueOf(maximum),
-                isMaxIncluded);
+                Integer.class, Integer.valueOf(minimum), isMinIncluded, Integer.valueOf(maximum), isMaxIncluded);
     }
 
     /**
@@ -160,16 +139,9 @@ public class NumberRange<T extends Number & Comparable<? super T>> extends Range
      * @since 2.5
      */
     public static NumberRange<Long> create(
-            final long minimum,
-            final boolean isMinIncluded,
-            final long maximum,
-            final boolean isMaxIncluded) {
+            final long minimum, final boolean isMinIncluded, final long maximum, final boolean isMaxIncluded) {
         return new NumberRange<>(
-                Long.class,
-                Long.valueOf(minimum),
-                isMinIncluded,
-                Long.valueOf(maximum),
-                isMaxIncluded);
+                Long.class, Long.valueOf(minimum), isMinIncluded, Long.valueOf(maximum), isMaxIncluded);
     }
 
     /**
@@ -193,16 +165,9 @@ public class NumberRange<T extends Number & Comparable<? super T>> extends Range
      * @since 2.5
      */
     public static NumberRange<Float> create(
-            final float minimum,
-            final boolean isMinIncluded,
-            final float maximum,
-            final boolean isMaxIncluded) {
+            final float minimum, final boolean isMinIncluded, final float maximum, final boolean isMaxIncluded) {
         return new NumberRange<>(
-                Float.class,
-                Float.valueOf(minimum),
-                isMinIncluded,
-                Float.valueOf(maximum),
-                isMaxIncluded);
+                Float.class, Float.valueOf(minimum), isMinIncluded, Float.valueOf(maximum), isMaxIncluded);
     }
 
     /**
@@ -226,16 +191,9 @@ public class NumberRange<T extends Number & Comparable<? super T>> extends Range
      * @since 2.5
      */
     public static NumberRange<Double> create(
-            final double minimum,
-            final boolean isMinIncluded,
-            final double maximum,
-            final boolean isMaxIncluded) {
+            final double minimum, final boolean isMinIncluded, final double maximum, final boolean isMaxIncluded) {
         return new NumberRange<>(
-                Double.class,
-                Double.valueOf(minimum),
-                isMinIncluded,
-                Double.valueOf(maximum),
-                isMaxIncluded);
+                Double.class, Double.valueOf(minimum), isMinIncluded, Double.valueOf(maximum), isMaxIncluded);
     }
 
     /**
@@ -249,8 +207,7 @@ public class NumberRange<T extends Number & Comparable<? super T>> extends Range
      * @throws IllegalArgumentException if at least one argument is not of the expected type.
      */
     @SuppressWarnings("unchecked")
-    NumberRange(Class<T> type, Comparable<T> minimum, Comparable<T> maximum)
-            throws IllegalArgumentException {
+    NumberRange(Class<T> type, Comparable<T> minimum, Comparable<T> maximum) throws IllegalArgumentException {
         super(type, (T) minimum, (T) maximum);
     }
 
@@ -294,8 +251,7 @@ public class NumberRange<T extends Number & Comparable<? super T>> extends Range
      * @param range The range to copy. The elements must be {@link Number} instances.
      * @throws IllegalArgumentException if the values are not convertible to the specified class.
      */
-    NumberRange(final Class<T> type, final Range<? extends Number> range)
-            throws IllegalArgumentException {
+    NumberRange(final Class<T> type, final Range<? extends Number> range) throws IllegalArgumentException {
         // TODO: remove the (Number) casts when we will be allowed to compile for Java 6.
         this(
                 type,
@@ -327,10 +283,7 @@ public class NumberRange<T extends Number & Comparable<? super T>> extends Range
      */
     @Override
     NumberRange<T> create(
-            final T minValue,
-            final boolean isMinIncluded,
-            final T maxValue,
-            final boolean isMaxIncluded) {
+            final T minValue, final boolean isMinIncluded, final T maxValue, final boolean isMaxIncluded) {
         return new NumberRange<>(elementClass, minValue, isMinIncluded, maxValue, isMaxIncluded);
     }
 
@@ -344,8 +297,7 @@ public class NumberRange<T extends Number & Comparable<? super T>> extends Range
     }
 
     /** Returns the type of minimum and maximum values. */
-    private static Class<? extends Number> getElementClass(final Range<?> range)
-            throws IllegalArgumentException {
+    private static Class<? extends Number> getElementClass(final Range<?> range) throws IllegalArgumentException {
         ensureNonNull("range", range);
         final Class<?> type = range.elementClass;
         ensureNumberClass(type);
@@ -362,8 +314,7 @@ public class NumberRange<T extends Number & Comparable<? super T>> extends Range
     /** Ensures that the given class is {@link Number} or a subclass. */
     private static void ensureNumberClass(final Class<?> type) throws IllegalArgumentException {
         if (!Number.class.isAssignableFrom(type)) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.ILLEGAL_CLASS_$2, type, Number.class));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.ILLEGAL_CLASS_$2, type, Number.class));
         }
     }
 
@@ -375,8 +326,7 @@ public class NumberRange<T extends Number & Comparable<? super T>> extends Range
      * @param range The range to wrap.
      * @return The same range than {@code range} as a {@code NumberRange} object.
      */
-    public static <N extends Number & Comparable<? super N>> NumberRange<N> wrap(
-            final Range<N> range) {
+    public static <N extends Number & Comparable<? super N>> NumberRange<N> wrap(final Range<N> range) {
         if (range instanceof NumberRange) {
             final NumberRange<N> cast = (NumberRange<N>) range;
             return cast;
@@ -397,8 +347,7 @@ public class NumberRange<T extends Number & Comparable<? super T>> extends Range
      * @throws IllegalArgumentException if the values are not convertible to the specified class.
      */
     <N extends Number & Comparable<? super N>> NumberRange<N> convertAndCast(
-            final Range<? extends Number> range, final Class<N> type)
-            throws IllegalArgumentException {
+            final Range<? extends Number> range, final Class<N> type) throws IllegalArgumentException {
         if (type.equals(range.getElementClass())) {
             @SuppressWarnings("unchecked") // Safe because we checked in the line just above.
             final NumberRange<N> cast = (NumberRange) wrap((Range) range);
@@ -545,8 +494,7 @@ public class NumberRange<T extends Number & Comparable<? super T>> extends Range
     @SuppressWarnings("unchecked")
     public NumberRange<?>[] subtract(Range<?> range) {
         Class<? extends Number> type = getWidestClass(elementClass, getElementClass(range));
-        return (NumberRange[])
-                castTo((Class) type).subtractNC(convertAndCast((Range) range, (Class) type));
+        return (NumberRange[]) castTo((Class) type).subtractNC(convertAndCast((Range) range, (Class) type));
     }
 
     /**

@@ -41,8 +41,7 @@ public abstract class PolygonBuilder {
         this.gridBounds = gridBounds;
     }
 
-    public boolean buildGrid(
-            GridFeatureBuilder gridFeatureBuilder, double vertexSpacing, ListFeatureCollection fc) {
+    public boolean buildGrid(GridFeatureBuilder gridFeatureBuilder, double vertexSpacing, ListFeatureCollection fc) {
 
         boolean result = true;
 

@@ -145,10 +145,10 @@ public class TileMatrixSetBinding extends DescriptionTypeBinding {
         // Call DescriptionType parser to load the object with the DescriptionType values
         value = super.parse(instance, node, value);
 
-        ((TileMatrixSetType) value)
-                .setBoundingBox((BoundingBoxType) node.getChildValue("BoundingBox"));
+        ((TileMatrixSetType) value).setBoundingBox((BoundingBoxType) node.getChildValue("BoundingBox"));
         ((TileMatrixSetType) value).setIdentifier((CodeType) node.getChildValue("Identifier"));
-        ((TileMatrixSetType) value).setSupportedCRS(node.getChildValue("SupportedCRS").toString());
+        ((TileMatrixSetType) value)
+                .setSupportedCRS(node.getChildValue("SupportedCRS").toString());
 
         URI wkss = (URI) node.getChildValue("WellKnownScaleSet");
         if (wkss != null) {

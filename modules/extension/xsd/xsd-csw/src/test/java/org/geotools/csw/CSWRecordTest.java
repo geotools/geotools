@@ -36,18 +36,20 @@ public class CSWRecordTest {
 
     @Test
     public void testParseBriefRecord() throws Exception {
-        BriefRecordType br =
-                (BriefRecordType) parser.parse(getClass().getResourceAsStream("BriefRecord.xml"));
-        assertEquals("00180e67-b7cf-40a3-861d-b3a09337b195", br.getIdentifier().get(0).getValue());
-        assertEquals("Image2000 Product 1 (at1) Multispectral", br.getTitle().get(0).getValue());
-        assertEquals("Image2000 Product 1 (at1) Multispectral", br.getTitle().get(0).getValue());
+        BriefRecordType br = (BriefRecordType) parser.parse(getClass().getResourceAsStream("BriefRecord.xml"));
+        assertEquals(
+                "00180e67-b7cf-40a3-861d-b3a09337b195",
+                br.getIdentifier().get(0).getValue());
+        assertEquals(
+                "Image2000 Product 1 (at1) Multispectral", br.getTitle().get(0).getValue());
+        assertEquals(
+                "Image2000 Product 1 (at1) Multispectral", br.getTitle().get(0).getValue());
         assertEquals("dataset", br.getType().getValue());
     }
 
     @Test
     public void testRoundTripBriefRecord() throws Exception {
-        BriefRecordType br =
-                (BriefRecordType) parser.parse(getClass().getResourceAsStream("BriefRecord.xml"));
+        BriefRecordType br = (BriefRecordType) parser.parse(getClass().getResourceAsStream("BriefRecord.xml"));
         String encoded = encoder.encodeAsString(br, CSW.BriefRecord);
         BriefRecordType reparsed = (BriefRecordType) parser.parse(new StringReader(encoded));
         assertTrue(EMFUtils.emfEquals(br, reparsed));
@@ -55,11 +57,12 @@ public class CSWRecordTest {
 
     @Test
     public void testParseSummaryRecord() throws Exception {
-        SummaryRecordType sr =
-                (SummaryRecordType)
-                        parser.parse(getClass().getResourceAsStream("SummaryRecord.xml"));
-        assertEquals("00180e67-b7cf-40a3-861d-b3a09337b195", sr.getIdentifier().get(0).getValue());
-        assertEquals("Image2000 Product 1 (at1) Multispectral", sr.getTitle().get(0).getValue());
+        SummaryRecordType sr = (SummaryRecordType) parser.parse(getClass().getResourceAsStream("SummaryRecord.xml"));
+        assertEquals(
+                "00180e67-b7cf-40a3-861d-b3a09337b195",
+                sr.getIdentifier().get(0).getValue());
+        assertEquals(
+                "Image2000 Product 1 (at1) Multispectral", sr.getTitle().get(0).getValue());
         assertEquals("dataset", sr.getType().getValue());
         assertEquals("imagery", sr.getSubject().get(0).getValue());
         assertEquals("baseMaps", sr.getSubject().get(1).getValue());
@@ -73,9 +76,7 @@ public class CSWRecordTest {
 
     @Test
     public void testRoundTripSummaryRecord() throws Exception {
-        SummaryRecordType sr =
-                (SummaryRecordType)
-                        parser.parse(getClass().getResourceAsStream("SummaryRecord.xml"));
+        SummaryRecordType sr = (SummaryRecordType) parser.parse(getClass().getResourceAsStream("SummaryRecord.xml"));
         String encoded = encoder.encodeAsString(sr, CSW.SummaryRecord);
         SummaryRecordType reparsed = (SummaryRecordType) parser.parse(new StringReader(encoded));
         assertTrue(EMFUtils.emfEquals(sr, reparsed));

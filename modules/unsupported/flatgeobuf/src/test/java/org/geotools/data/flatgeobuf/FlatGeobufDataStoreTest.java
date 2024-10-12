@@ -58,7 +58,8 @@ import org.locationtech.jts.io.WKTReader;
 
 public class FlatGeobufDataStoreTest {
 
-    @Rule public TemporaryFolder temporaryFolder = new TemporaryFolder();
+    @Rule
+    public TemporaryFolder temporaryFolder = new TemporaryFolder();
 
     @Test
     public void readPoints() throws Exception {
@@ -69,9 +70,7 @@ public class FlatGeobufDataStoreTest {
         assertEquals(1, store.getTypeNames().length);
         assertEquals("points", store.getTypeNames()[0]);
         SimpleFeatureSource featureSource = store.getFeatureSource("points");
-        assertEquals(
-                "geom:Point,name:String,id:Integer",
-                DataUtilities.encodeType(featureSource.getSchema()));
+        assertEquals("geom:Point,name:String,id:Integer", DataUtilities.encodeType(featureSource.getSchema()));
         SimpleFeatureCollection featureCollection = featureSource.getFeatures();
         assertEquals(2, featureCollection.size());
         try (SimpleFeatureIterator it = featureCollection.features()) {
@@ -107,29 +106,18 @@ public class FlatGeobufDataStoreTest {
         DataStore store = DataStoreFinder.getDataStore(params);
 
         // Write
-        SimpleFeatureType featureType =
-                DataUtilities.createType("test2", "geom:Point,name:String,id:int");
+        SimpleFeatureType featureType = DataUtilities.createType("test2", "geom:Point,name:String,id:int");
         store.createSchema(featureType);
         SimpleFeatureStore featureStore = (SimpleFeatureStore) store.getFeatureSource("points");
         GeometryFactory gf = JTSFactoryFinder.getGeometryFactory();
-        SimpleFeature feature1 =
-                SimpleFeatureBuilder.build(
-                        featureType,
-                        new Object[] {
-                            gf.createPoint(new Coordinate(-8.349609375, 14.349547837185362)),
-                            "ABC",
-                            1
-                        },
-                        "location.1");
-        SimpleFeature feature2 =
-                SimpleFeatureBuilder.build(
-                        featureType,
-                        new Object[] {
-                            gf.createPoint(new Coordinate(-18.349609375, 24.349547837185362)),
-                            "DEF",
-                            2
-                        },
-                        "location.2");
+        SimpleFeature feature1 = SimpleFeatureBuilder.build(
+                featureType,
+                new Object[] {gf.createPoint(new Coordinate(-8.349609375, 14.349547837185362)), "ABC", 1},
+                "location.1");
+        SimpleFeature feature2 = SimpleFeatureBuilder.build(
+                featureType,
+                new Object[] {gf.createPoint(new Coordinate(-18.349609375, 24.349547837185362)), "DEF", 2},
+                "location.2");
         SimpleFeatureCollection collection = DataUtilities.collection(feature1, feature2);
         featureStore.addFeatures(collection);
 
@@ -170,9 +158,7 @@ public class FlatGeobufDataStoreTest {
         assertEquals(1, store.getTypeNames().length);
         assertEquals("lines", store.getTypeNames()[0]);
         SimpleFeatureSource featureSource = store.getFeatureSource("lines");
-        assertEquals(
-                "geom:LineString,name:String,id:Integer",
-                DataUtilities.encodeType(featureSource.getSchema()));
+        assertEquals("geom:LineString,name:String,id:Integer", DataUtilities.encodeType(featureSource.getSchema()));
         SimpleFeatureCollection featureCollection = featureSource.getFeatures();
         assertEquals(2, featureCollection.size());
         try (SimpleFeatureIterator it = featureCollection.features()) {
@@ -181,7 +167,8 @@ public class FlatGeobufDataStoreTest {
                 SimpleFeature feature = it.next();
                 if (c == 0) {
                     assertEquals(
-                            "LINESTRING (0 0, 10 10)", feature.getDefaultGeometry().toString());
+                            "LINESTRING (0 0, 10 10)",
+                            feature.getDefaultGeometry().toString());
                     assertEquals(1, feature.getAttribute("id"));
                     assertEquals("ABC", feature.getAttribute("name"));
                 } else if (c == 1) {
@@ -214,37 +201,25 @@ public class FlatGeobufDataStoreTest {
         DataStore store = DataStoreFinder.getDataStore(params);
 
         // Write
-        SimpleFeatureType featureType =
-                DataUtilities.createType("lines", "geom:LineString,name:String,id:int");
+        SimpleFeatureType featureType = DataUtilities.createType("lines", "geom:LineString,name:String,id:int");
         store.createSchema(featureType);
         SimpleFeatureStore featureStore = (SimpleFeatureStore) store.getFeatureSource("lines");
         GeometryFactory gf = JTSFactoryFinder.getGeometryFactory();
-        SimpleFeature feature1 =
-                SimpleFeatureBuilder.build(
-                        featureType,
-                        new Object[] {
-                            gf.createLineString(
-                                    new Coordinate[] {
-                                        new Coordinate(0, 0), new Coordinate(10, 10)
-                                    }),
-                            "ABC",
-                            1
-                        },
-                        "location.1");
-        SimpleFeature feature2 =
-                SimpleFeatureBuilder.build(
-                        featureType,
-                        new Object[] {
-                            gf.createLineString(
-                                    new Coordinate[] {
-                                        new Coordinate(20, 20),
-                                        new Coordinate(21, 21),
-                                        new Coordinate(23, 23)
-                                    }),
-                            "DEF",
-                            2
-                        },
-                        "location.2");
+        SimpleFeature feature1 = SimpleFeatureBuilder.build(
+                featureType,
+                new Object[] {
+                    gf.createLineString(new Coordinate[] {new Coordinate(0, 0), new Coordinate(10, 10)}), "ABC", 1
+                },
+                "location.1");
+        SimpleFeature feature2 = SimpleFeatureBuilder.build(
+                featureType,
+                new Object[] {
+                    gf.createLineString(
+                            new Coordinate[] {new Coordinate(20, 20), new Coordinate(21, 21), new Coordinate(23, 23)}),
+                    "DEF",
+                    2
+                },
+                "location.2");
         SimpleFeatureCollection collection = DataUtilities.collection(feature1, feature2);
         featureStore.addFeatures(collection);
 
@@ -256,12 +231,14 @@ public class FlatGeobufDataStoreTest {
             while (it.hasNext()) {
                 SimpleFeature f = it.next();
                 if (c == 0) {
-                    assertEquals("LINESTRING (0 0, 10 10)", f.getDefaultGeometry().toString());
+                    assertEquals(
+                            "LINESTRING (0 0, 10 10)", f.getDefaultGeometry().toString());
                     assertEquals(1, f.getAttribute("id"));
                     assertEquals("ABC", f.getAttribute("name"));
                 } else if (c == 1) {
                     assertEquals(
-                            "LINESTRING (20 20, 21 21, 23 23)", f.getDefaultGeometry().toString());
+                            "LINESTRING (20 20, 21 21, 23 23)",
+                            f.getDefaultGeometry().toString());
                     assertEquals(2, f.getAttribute("id"));
                     assertEquals("DEF", f.getAttribute("name"));
                 }
@@ -280,9 +257,7 @@ public class FlatGeobufDataStoreTest {
         assertEquals(1, store.getTypeNames().length);
         assertEquals("polygons", store.getTypeNames()[0]);
         SimpleFeatureSource featureSource = store.getFeatureSource("polygons");
-        assertEquals(
-                "geom:Polygon,name:String,id:Integer",
-                DataUtilities.encodeType(featureSource.getSchema()));
+        assertEquals("geom:Polygon,name:String,id:Integer", DataUtilities.encodeType(featureSource.getSchema()));
         SimpleFeatureCollection featureCollection = featureSource.getFeatures();
         assertEquals(4, featureCollection.size());
         try (SimpleFeatureIterator it = featureCollection.features()) {
@@ -340,58 +315,48 @@ public class FlatGeobufDataStoreTest {
         DataStore store = DataStoreFinder.getDataStore(params);
 
         // Write
-        SimpleFeatureType featureType =
-                DataUtilities.createType("lines", "geom:Polygon,name:String,id:int");
+        SimpleFeatureType featureType = DataUtilities.createType("lines", "geom:Polygon,name:String,id:int");
         store.createSchema(featureType);
         SimpleFeatureStore featureStore = (SimpleFeatureStore) store.getFeatureSource("polygons");
         WKTReader reader = new WKTReader();
-        SimpleFeature feature1 =
-                SimpleFeatureBuilder.build(
-                        featureType,
-                        new Object[] {
-                            reader.read(
-                                    "POLYGON ((59.0625 57.704147, 37.617187 24.527135, 98.789062 36.031332, "
-                                            + "59.062499 57.704147, 59.0625 57.704147))"),
-                            "ABC",
-                            1
-                        },
-                        "location.1");
-        SimpleFeature feature2 =
-                SimpleFeatureBuilder.build(
-                        featureType,
-                        new Object[] {
-                            reader.read(
-                                    "POLYGON ((-72.773438 58.077876, -89.296876 17.644022, -37.265626 -2.460181, "
-                                            + "-2.109376 42.811522, -15.117189 60.413853, -50.976564 29.840645, -64.687502 39.909737, "
-                                            + "-58.71094 56.365251, -72.77344 58.077877, -72.773438 58.077876))"),
-                            "DEF",
-                            2
-                        },
-                        "location.2");
-        SimpleFeature feature3 =
-                SimpleFeatureBuilder.build(
-                        featureType,
-                        new Object[] {
-                            reader.read(
-                                    "POLYGON ((12.65625 63.548552, 12.65625 69.534517, 29.179687 69.534517, "
-                                            + "29.179687 63.548552, 12.65625 63.548552))"),
-                            "GHI",
-                            3
-                        },
-                        "location.3");
-        SimpleFeature feature4 =
-                SimpleFeatureBuilder.build(
-                        featureType,
-                        new Object[] {
-                            reader.read(
-                                    "POLYGON ((-22.5 67.875541, -22.5 73.124945, -8.789062 73.124945, "
-                                            + "-8.789062 67.875541, -22.5 67.875541))"),
-                            "JKL",
-                            4
-                        },
-                        "location.4");
-        SimpleFeatureCollection collection =
-                DataUtilities.collection(feature1, feature2, feature3, feature4);
+        SimpleFeature feature1 = SimpleFeatureBuilder.build(
+                featureType,
+                new Object[] {
+                    reader.read("POLYGON ((59.0625 57.704147, 37.617187 24.527135, 98.789062 36.031332, "
+                            + "59.062499 57.704147, 59.0625 57.704147))"),
+                    "ABC",
+                    1
+                },
+                "location.1");
+        SimpleFeature feature2 = SimpleFeatureBuilder.build(
+                featureType,
+                new Object[] {
+                    reader.read("POLYGON ((-72.773438 58.077876, -89.296876 17.644022, -37.265626 -2.460181, "
+                            + "-2.109376 42.811522, -15.117189 60.413853, -50.976564 29.840645, -64.687502 39.909737, "
+                            + "-58.71094 56.365251, -72.77344 58.077877, -72.773438 58.077876))"),
+                    "DEF",
+                    2
+                },
+                "location.2");
+        SimpleFeature feature3 = SimpleFeatureBuilder.build(
+                featureType,
+                new Object[] {
+                    reader.read("POLYGON ((12.65625 63.548552, 12.65625 69.534517, 29.179687 69.534517, "
+                            + "29.179687 63.548552, 12.65625 63.548552))"),
+                    "GHI",
+                    3
+                },
+                "location.3");
+        SimpleFeature feature4 = SimpleFeatureBuilder.build(
+                featureType,
+                new Object[] {
+                    reader.read("POLYGON ((-22.5 67.875541, -22.5 73.124945, -8.789062 73.124945, "
+                            + "-8.789062 67.875541, -22.5 67.875541))"),
+                    "JKL",
+                    4
+                },
+                "location.4");
+        SimpleFeatureCollection collection = DataUtilities.collection(feature1, feature2, feature3, feature4);
         featureStore.addFeatures(collection);
 
         // Read
@@ -451,9 +416,7 @@ public class FlatGeobufDataStoreTest {
         assertEquals(1, store.getTypeNames().length);
         assertEquals("multipoints", store.getTypeNames()[0]);
         SimpleFeatureSource featureSource = store.getFeatureSource("multipoints");
-        assertEquals(
-                "geom:MultiPoint,name:String,id:Integer",
-                DataUtilities.encodeType(featureSource.getSchema()));
+        assertEquals("geom:MultiPoint,name:String,id:Integer", DataUtilities.encodeType(featureSource.getSchema()));
         SimpleFeatureCollection featureCollection = featureSource.getFeatures();
         assertEquals(2, featureCollection.size());
         try (SimpleFeatureIterator it = featureCollection.features()) {
@@ -489,27 +452,16 @@ public class FlatGeobufDataStoreTest {
         DataStore store = DataStoreFinder.getDataStore(params);
 
         // Write
-        SimpleFeatureType featureType =
-                DataUtilities.createType("test2", "geom:MultiPoint,name:String,id:int");
+        SimpleFeatureType featureType = DataUtilities.createType("test2", "geom:MultiPoint,name:String,id:int");
         store.createSchema(featureType);
-        SimpleFeatureStore featureStore =
-                (SimpleFeatureStore) store.getFeatureSource("multipoints");
+        SimpleFeatureStore featureStore = (SimpleFeatureStore) store.getFeatureSource("multipoints");
         WKTReader reader = new WKTReader();
-        SimpleFeature feature1 =
-                SimpleFeatureBuilder.build(
-                        featureType,
-                        new Object[] {
-                            reader.read(
-                                    "MULTIPOINT ((24.257813 49.61071), (-92.460937 40.178873))"),
-                            "ABC",
-                            9
-                        },
-                        "location.1");
-        SimpleFeature feature2 =
-                SimpleFeatureBuilder.build(
-                        featureType,
-                        new Object[] {reader.read("MULTIPOINT ((100 0), (101 1))"), "TYU", 56},
-                        "location.2");
+        SimpleFeature feature1 = SimpleFeatureBuilder.build(
+                featureType,
+                new Object[] {reader.read("MULTIPOINT ((24.257813 49.61071), (-92.460937 40.178873))"), "ABC", 9},
+                "location.1");
+        SimpleFeature feature2 = SimpleFeatureBuilder.build(
+                featureType, new Object[] {reader.read("MULTIPOINT ((100 0), (101 1))"), "TYU", 56}, "location.2");
         SimpleFeatureCollection collection = DataUtilities.collection(feature1, feature2);
         featureStore.addFeatures(collection);
 
@@ -549,8 +501,7 @@ public class FlatGeobufDataStoreTest {
         assertEquals("multilinestrings", store.getTypeNames()[0]);
         SimpleFeatureSource featureSource = store.getFeatureSource("multilinestrings");
         assertEquals(
-                "geom:MultiLineString,name:String,id:Integer",
-                DataUtilities.encodeType(featureSource.getSchema()));
+                "geom:MultiLineString,name:String,id:Integer", DataUtilities.encodeType(featureSource.getSchema()));
         SimpleFeatureCollection featureCollection = featureSource.getFeatures();
         assertEquals(2, featureCollection.size());
         try (SimpleFeatureIterator it = featureCollection.features()) {
@@ -587,31 +538,23 @@ public class FlatGeobufDataStoreTest {
         DataStore store = DataStoreFinder.getDataStore(params);
 
         // Write
-        SimpleFeatureType featureType =
-                DataUtilities.createType("test2", "geom:MultiLineString,name:String,id:int");
+        SimpleFeatureType featureType = DataUtilities.createType("test2", "geom:MultiLineString,name:String,id:int");
         store.createSchema(featureType);
-        SimpleFeatureStore featureStore =
-                (SimpleFeatureStore) store.getFeatureSource("multilinestrings");
+        SimpleFeatureStore featureStore = (SimpleFeatureStore) store.getFeatureSource("multilinestrings");
         WKTReader reader = new WKTReader();
-        SimpleFeature feature1 =
-                SimpleFeatureBuilder.build(
-                        featureType,
-                        new Object[] {
-                            reader.read(
-                                    "MULTILINESTRING ((24.257813 49.61071, 45.12 67.45), (-92.460937 40.178873, 54.321 65.562))"),
-                            "ABC",
-                            9
-                        },
-                        "location.1");
-        SimpleFeature feature2 =
-                SimpleFeatureBuilder.build(
-                        featureType,
-                        new Object[] {
-                            reader.read("MULTILINESTRING ((100 0, 101 1), (102 2, 103 3))"),
-                            "TYU",
-                            56
-                        },
-                        "location.2");
+        SimpleFeature feature1 = SimpleFeatureBuilder.build(
+                featureType,
+                new Object[] {
+                    reader.read(
+                            "MULTILINESTRING ((24.257813 49.61071, 45.12 67.45), (-92.460937 40.178873, 54.321 65.562))"),
+                    "ABC",
+                    9
+                },
+                "location.1");
+        SimpleFeature feature2 = SimpleFeatureBuilder.build(
+                featureType,
+                new Object[] {reader.read("MULTILINESTRING ((100 0, 101 1), (102 2, 103 3))"), "TYU", 56},
+                "location.2");
         SimpleFeatureCollection collection = DataUtilities.collection(feature1, feature2);
         featureStore.addFeatures(collection);
 
@@ -651,9 +594,7 @@ public class FlatGeobufDataStoreTest {
         assertEquals(1, store.getTypeNames().length);
         assertEquals("multipolygons", store.getTypeNames()[0]);
         SimpleFeatureSource featureSource = store.getFeatureSource("multipolygons");
-        assertEquals(
-                "geom:MultiPolygon,name:String,id:Integer",
-                DataUtilities.encodeType(featureSource.getSchema()));
+        assertEquals("geom:MultiPolygon,name:String,id:Integer", DataUtilities.encodeType(featureSource.getSchema()));
         SimpleFeatureCollection featureCollection = featureSource.getFeatures();
         assertEquals(3, featureCollection.size());
         try (SimpleFeatureIterator it = featureCollection.features()) {
@@ -683,8 +624,7 @@ public class FlatGeobufDataStoreTest {
                     assertEquals("TYU", feature.getAttribute("name"));
                 } else if (c == 2) {
                     assertEquals(
-                            "MULTIPOLYGON (((30 20, 45 40, 10 40, 30 20)), "
-                                    + "((15 5, 40 10, 10 20, 5 10, 15 5)))",
+                            "MULTIPOLYGON (((30 20, 45 40, 10 40, 30 20)), " + "((15 5, 40 10, 10 20, 5 10, 15 5)))",
                             feature.getDefaultGeometry().toString());
                     assertEquals(32, feature.getAttribute("id"));
                     assertEquals("WER", feature.getAttribute("name"));
@@ -705,52 +645,44 @@ public class FlatGeobufDataStoreTest {
         DataStore store = DataStoreFinder.getDataStore(params);
 
         // Write
-        SimpleFeatureType featureType =
-                DataUtilities.createType("test2", "geom:MultiPolygon,name:String,id:int");
+        SimpleFeatureType featureType = DataUtilities.createType("test2", "geom:MultiPolygon,name:String,id:int");
         store.createSchema(featureType);
-        SimpleFeatureStore featureStore =
-                (SimpleFeatureStore) store.getFeatureSource("multipolygons");
+        SimpleFeatureStore featureStore = (SimpleFeatureStore) store.getFeatureSource("multipolygons");
         WKTReader reader = new WKTReader();
-        SimpleFeature feature1 =
-                SimpleFeatureBuilder.build(
-                        featureType,
-                        new Object[] {
-                            reader.read(
-                                    "MULTIPOLYGON (((102 2, 103 2, 103 3, 102 3, 102 2)), "
-                                            + "((102 2, 103 2, 103 3, 102 3, 102 2)), "
-                                            + "((102 2, 103 2, 103 3, 102 3, 102 2)))"),
-                            "ABC",
-                            9
-                        },
-                        "location.1");
-        SimpleFeature feature2 =
-                SimpleFeatureBuilder.build(
-                        featureType,
-                        new Object[] {
-                            reader.read(
-                                    "MULTIPOLYGON ("
-                                            +
-                                            // Polygon #1
-                                            "((40 40, 20 45, 45 30, 40 40)), "
-                                            +
-                                            // Polygon #2
-                                            "((20 35, 10 30, 10 10, 30 5, 45 20, 20 35), "
-                                            + "(30 20, 20 15, 20 25, 30 20)))"),
-                            "TYU",
-                            56
-                        },
-                        "location.2");
-        SimpleFeature feature3 =
-                SimpleFeatureBuilder.build(
-                        featureType,
-                        new Object[] {
-                            reader.read(
-                                    "MULTIPOLYGON (((30 20, 45 40, 10 40, 30 20)), "
-                                            + "((15 5, 40 10, 10 20, 5 10, 15 5)))"),
-                            "WER",
-                            32
-                        },
-                        "location.3");
+        SimpleFeature feature1 = SimpleFeatureBuilder.build(
+                featureType,
+                new Object[] {
+                    reader.read("MULTIPOLYGON (((102 2, 103 2, 103 3, 102 3, 102 2)), "
+                            + "((102 2, 103 2, 103 3, 102 3, 102 2)), "
+                            + "((102 2, 103 2, 103 3, 102 3, 102 2)))"),
+                    "ABC",
+                    9
+                },
+                "location.1");
+        SimpleFeature feature2 = SimpleFeatureBuilder.build(
+                featureType,
+                new Object[] {
+                    reader.read("MULTIPOLYGON ("
+                            +
+                            // Polygon #1
+                            "((40 40, 20 45, 45 30, 40 40)), "
+                            +
+                            // Polygon #2
+                            "((20 35, 10 30, 10 10, 30 5, 45 20, 20 35), "
+                            + "(30 20, 20 15, 20 25, 30 20)))"),
+                    "TYU",
+                    56
+                },
+                "location.2");
+        SimpleFeature feature3 = SimpleFeatureBuilder.build(
+                featureType,
+                new Object[] {
+                    reader.read(
+                            "MULTIPOLYGON (((30 20, 45 40, 10 40, 30 20)), " + "((15 5, 40 10, 10 20, 5 10, 15 5)))"),
+                    "WER",
+                    32
+                },
+                "location.3");
 
         SimpleFeatureCollection collection = DataUtilities.collection(feature1, feature2, feature3);
         featureStore.addFeatures(collection);
@@ -785,8 +717,7 @@ public class FlatGeobufDataStoreTest {
                     assertEquals("TYU", f.getAttribute("name"));
                 } else if (c == 2) {
                     assertEquals(
-                            "MULTIPOLYGON (((30 20, 45 40, 10 40, 30 20)), "
-                                    + "((15 5, 40 10, 10 20, 5 10, 15 5)))",
+                            "MULTIPOLYGON (((30 20, 45 40, 10 40, 30 20)), " + "((15 5, 40 10, 10 20, 5 10, 15 5)))",
                             f.getDefaultGeometry().toString());
                     assertEquals(32, f.getAttribute("id"));
                     assertEquals("WER", f.getAttribute("name"));
@@ -817,8 +748,7 @@ public class FlatGeobufDataStoreTest {
         SimpleFeatureType schema = featureSource.getSchema();
         FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         String geometryPropertyName = schema.getGeometryDescriptor().getLocalName();
-        CoordinateReferenceSystem targetCRS =
-                schema.getGeometryDescriptor().getCoordinateReferenceSystem();
+        CoordinateReferenceSystem targetCRS = schema.getGeometryDescriptor().getCoordinateReferenceSystem();
         Envelope env = new Envelope(12, 13, 56, 57);
         ReferencedEnvelope bbox = new ReferencedEnvelope(env, targetCRS);
         Filter filter = ff.bbox(ff.property(geometryPropertyName), bbox);
@@ -873,9 +803,7 @@ public class FlatGeobufDataStoreTest {
     @Test
     @Ignore("Depends on external data")
     public void readCountriesFromWeb() throws IOException {
-        URL url =
-                new URL(
-                        "https://github.com/flatgeobuf/flatgeobuf/raw/master/test/data/countries.fgb");
+        URL url = new URL("https://github.com/flatgeobuf/flatgeobuf/raw/master/test/data/countries.fgb");
         Map<String, Serializable> params = new HashMap<>();
         params.put("url", url);
         DataStore store = DataStoreFinder.getDataStore(params);
@@ -897,8 +825,7 @@ public class FlatGeobufDataStoreTest {
         SimpleFeatureType schema = featureSource.getSchema();
         FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         String geometryPropertyName = schema.getGeometryDescriptor().getLocalName();
-        CoordinateReferenceSystem targetCRS =
-                schema.getGeometryDescriptor().getCoordinateReferenceSystem();
+        CoordinateReferenceSystem targetCRS = schema.getGeometryDescriptor().getCoordinateReferenceSystem();
         Envelope env = new Envelope(12, 13, 56, 57);
         ReferencedEnvelope bbox = new ReferencedEnvelope(env, targetCRS);
         Filter filter = ff.bbox(ff.property(geometryPropertyName), bbox);

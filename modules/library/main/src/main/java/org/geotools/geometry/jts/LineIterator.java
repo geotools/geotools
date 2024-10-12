@@ -108,12 +108,7 @@ public final class LineIterator extends AbstractLiteIterator {
 
     /** @param ls a LineString */
     public void init(
-            LineString ls,
-            AffineTransform at,
-            boolean generalize,
-            float maxDistance,
-            float xScale,
-            float yScale) {
+            LineString ls, AffineTransform at, boolean generalize, float maxDistance, float xScale, float yScale) {
         this.xScale = xScale;
         this.yScale = yScale;
 
@@ -125,16 +120,8 @@ public final class LineIterator extends AbstractLiteIterator {
         if (at == null) at = new AffineTransform();
         _init(ls, at, generalize, maxDistance);
 
-        xScale =
-                (float)
-                        Math.sqrt(
-                                (at.getScaleX() * at.getScaleX())
-                                        + (at.getShearX() * at.getShearX()));
-        yScale =
-                (float)
-                        Math.sqrt(
-                                (at.getScaleY() * at.getScaleY())
-                                        + (at.getShearY() * at.getShearY()));
+        xScale = (float) Math.sqrt((at.getScaleX() * at.getScaleX()) + (at.getShearX() * at.getShearX()));
+        yScale = (float) Math.sqrt((at.getScaleY() * at.getScaleY()) + (at.getShearY() * at.getShearY()));
     }
 
     /** */
@@ -270,8 +257,7 @@ public final class LineIterator extends AbstractLiteIterator {
      */
     @Override
     public void next() {
-        if (((currentCoord == (coordinateCount - 1)) && !isClosed)
-                || ((currentCoord == coordinateCount) && isClosed)) {
+        if (((currentCoord == (coordinateCount - 1)) && !isClosed) || ((currentCoord == coordinateCount) && isClosed)) {
             done = true;
         } else {
             if (generalize) {

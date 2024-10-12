@@ -33,12 +33,8 @@ import org.geotools.filter.capability.FunctionNameImpl;
  */
 public class FilterFunction_listMultiply extends FunctionExpressionImpl {
 
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "listMultiply",
-                    String.class,
-                    parameter("factor", Number.class),
-                    parameter("list", String.class));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "listMultiply", String.class, parameter("factor", Number.class), parameter("list", String.class));
 
     public FilterFunction_listMultiply() {
         super(NAME);

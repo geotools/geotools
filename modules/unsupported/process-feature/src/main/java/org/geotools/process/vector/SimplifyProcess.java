@@ -40,20 +40,17 @@ import org.locationtech.jts.simplify.TopologyPreservingSimplifier;
  */
 @DescribeProcess(
         title = "Simplify",
-        description =
-                "Simplifies feature geometry by reducing vertices using Douglas-Peucker simplification.")
+        description = "Simplifies feature geometry by reducing vertices using Douglas-Peucker simplification.")
 public class SimplifyProcess implements VectorProcess {
 
     @DescribeResult(name = "result", description = "The simplified feature collection")
     public SimpleFeatureCollection execute(
             @DescribeParameter(name = "features", description = "Input feature collection")
                     SimpleFeatureCollection features,
-            @DescribeParameter(name = "distance", description = "Simplification distance tolerance")
-                    double distance,
+            @DescribeParameter(name = "distance", description = "Simplification distance tolerance") double distance,
             @DescribeParameter(
                             name = "preserveTopology",
-                            description =
-                                    "If True, ensures that simplified features are topologically valid",
+                            description = "If True, ensures that simplified features are topologically valid",
                             defaultValue = "false")
                     boolean preserveTopology)
             throws ProcessException {
@@ -78,8 +75,7 @@ public class SimplifyProcess implements VectorProcess {
 
         @Override
         public SimpleFeatureIterator features() {
-            return new SimplifyingFeatureIterator(
-                    delegate.features(), distance, preserveTopology, getSchema());
+            return new SimplifyingFeatureIterator(delegate.features(), distance, preserveTopology, getSchema());
         }
     }
 
@@ -93,10 +89,7 @@ public class SimplifyProcess implements VectorProcess {
         SimpleFeatureBuilder fb;
 
         public SimplifyingFeatureIterator(
-                SimpleFeatureIterator delegate,
-                double distance,
-                boolean preserveTopology,
-                SimpleFeatureType schema) {
+                SimpleFeatureIterator delegate, double distance, boolean preserveTopology, SimpleFeatureType schema) {
             this.delegate = delegate;
             this.distance = distance;
             this.preserveTopology = preserveTopology;
@@ -119,12 +112,9 @@ public class SimplifyProcess implements VectorProcess {
             for (Object attribute : f.getAttributes()) {
                 if (attribute instanceof Geometry) {
                     if (preserveTopology) {
-                        attribute =
-                                TopologyPreservingSimplifier.simplify(
-                                        (Geometry) attribute, distance);
+                        attribute = TopologyPreservingSimplifier.simplify((Geometry) attribute, distance);
                     } else {
-                        attribute =
-                                DouglasPeuckerSimplifier.simplify((Geometry) attribute, distance);
+                        attribute = DouglasPeuckerSimplifier.simplify((Geometry) attribute, distance);
                     }
                 }
                 fb.add(attribute);

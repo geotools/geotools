@@ -19,8 +19,7 @@ import org.geotools.filter.visitor.OperatorNameFilterVisitor;
 
 public abstract class BinaryTemporalOperatorImpl implements BinaryTemporalOperator {
 
-    private static final OperatorNameFilterVisitor operationNameVisitor =
-            new OperatorNameFilterVisitor();
+    private static final OperatorNameFilterVisitor operationNameVisitor = new OperatorNameFilterVisitor();
 
     protected Expression e1, e2;
     protected MatchAction matchAction;

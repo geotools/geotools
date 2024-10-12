@@ -44,8 +44,7 @@ import org.geotools.util.factory.Hints;
  * @author Simone Giannecchini
  * @author Martin Desruisseaux
  */
-public class BufferedCoordinateOperationFactory extends AbstractCoordinateOperationFactory
-        implements BufferedFactory {
+public class BufferedCoordinateOperationFactory extends AbstractCoordinateOperationFactory implements BufferedFactory {
     /** The priority level for this factory. */
     static final int PRIORITY = AuthorityBackedFactory.PRIORITY + 10;
 
@@ -62,9 +61,7 @@ public class BufferedCoordinateOperationFactory extends AbstractCoordinateOperat
         private final CoordinateReferenceSystem sourceCRS, targetCRS;
 
         /** Creates a {@code CRSPair} for the specified source and target CRS. */
-        public CRSPair(
-                final CoordinateReferenceSystem sourceCRS,
-                final CoordinateReferenceSystem targetCRS) {
+        public CRSPair(final CoordinateReferenceSystem sourceCRS, final CoordinateReferenceSystem targetCRS) {
             this.sourceCRS = sourceCRS;
             this.targetCRS = targetCRS;
             this.hash = (37 * sourceCRS.hashCode()) + targetCRS.hashCode();
@@ -151,8 +148,7 @@ public class BufferedCoordinateOperationFactory extends AbstractCoordinateOperat
      * @param priority The priority for this factory, as a number between {@link #MINIMUM_PRIORITY
      *     MINIMUM_PRIORITY} and {@link #MAXIMUM_PRIORITY MAXIMUM_PRIORITY} inclusive.
      */
-    public BufferedCoordinateOperationFactory(
-            final CoordinateOperationFactory factory, final int priority) {
+    public BufferedCoordinateOperationFactory(final CoordinateOperationFactory factory, final int priority) {
         this(factory, null, priority);
     }
 

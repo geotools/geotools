@@ -50,8 +50,7 @@ public class TestHttpClient extends MockHttpClient {
      * @return mockResponse The response set in the contructor
      */
     @Override
-    public HTTPResponse post(
-            final URL url, final InputStream postContent, final String postContentType)
+    public HTTPResponse post(final URL url, final InputStream postContent, final String postContentType)
             throws IOException {
 
         this.targetUrl = url;
@@ -59,13 +58,11 @@ public class TestHttpClient extends MockHttpClient {
         IOUtils.copy(postContent, out);
         String strippedPostContent = out.toString().replaceAll("handle=\"(.*?)\"", "");
 
-        return super.post(
-                url, new ByteArrayInputStream(strippedPostContent.getBytes()), postContentType);
+        return super.post(url, new ByteArrayInputStream(strippedPostContent.getBytes()), postContentType);
     }
 
     @Override
-    public void expectPost(
-            URL url, String postContent, String postContentType, HTTPResponse response) {
+    public void expectPost(URL url, String postContent, String postContentType, HTTPResponse response) {
         String strippedPostContent = postContent.toString().replaceAll("handle=\"(.*?)\"", "");
         super.expectPost(url, strippedPostContent, postContentType, response);
     }

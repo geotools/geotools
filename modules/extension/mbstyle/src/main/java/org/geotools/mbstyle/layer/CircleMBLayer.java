@@ -190,8 +190,7 @@ public class CircleMBLayer extends MBLayer {
      * @return Displacement to offset symbol
      */
     public Displacement circleTranslateDisplacement() {
-        return parse.displacement(
-                paint, "circle-translate", sf.displacement(ff.literal(0), ff.literal(0)));
+        return parse.displacement(paint, "circle-translate", sf.displacement(ff.literal(0), ff.literal(0)));
     }
 
     /**
@@ -331,64 +330,48 @@ public class CircleMBLayer extends MBLayer {
     public List<FeatureTypeStyle> transformInternal(MBStyle styleContext) {
         // default linecap because StrokeImpl.getOpacity has a bug. If lineCap == null, it returns a
         // default opacity.
-        Stroke s =
-                sf.stroke(
-                        circleStrokeColor(),
-                        circleStrokeOpacity(),
-                        circleStrokeWidth(),
-                        null,
-                        StrokeImpl.DEFAULT.getLineCap(),
-                        null,
-                        null);
+        Stroke s = sf.stroke(
+                circleStrokeColor(),
+                circleStrokeOpacity(),
+                circleStrokeWidth(),
+                null,
+                StrokeImpl.DEFAULT.getLineCap(),
+                null,
+                null);
         Fill f = sf.fill(null, circleColor(), circleOpacity());
         Mark m = sf.mark(ff.literal("circle"), f, s);
 
-        Graphic gr =
-                sf.graphic(
-                        Arrays.asList(m),
-                        null,
-                        ff.multiply(ff.literal(2), circleRadius()),
-                        null,
-                        null,
-                        circleTranslateDisplacement());
+        Graphic gr = sf.graphic(
+                Arrays.asList(m),
+                null,
+                ff.multiply(ff.literal(2), circleRadius()),
+                null,
+                null,
+                circleTranslateDisplacement());
         gr.graphicalSymbols().clear();
         gr.graphicalSymbols().add(m);
 
-        PointSymbolizer ps =
-                sf.pointSymbolizer(
-                        getId(),
-                        ff.property((String) null),
-                        sf.description(
-                                Text.text("MBStyle " + getId()),
-                                Text.text("Generated for " + getSourceLayer())),
-                        Units.PIXEL,
-                        gr);
+        PointSymbolizer ps = sf.pointSymbolizer(
+                getId(),
+                ff.property((String) null),
+                sf.description(Text.text("MBStyle " + getId()), Text.text("Generated for " + getSourceLayer())),
+                Units.PIXEL,
+                gr);
 
         MBFilter filter = getFilter();
 
         List<org.geotools.api.style.Rule> rules = new ArrayList<>();
-        Rule rule =
-                sf.rule(
-                        getId(),
-                        null,
-                        null,
-                        0.0,
-                        Double.POSITIVE_INFINITY,
-                        Arrays.asList(ps),
-                        filter.filter());
+        Rule rule = sf.rule(getId(), null, null, 0.0, Double.POSITIVE_INFINITY, Arrays.asList(ps), filter.filter());
 
         rules.add(rule);
 
-        return Collections.singletonList(
-                sf.featureTypeStyle(
-                        getId(),
-                        sf.description(
-                                Text.text("MBStyle " + getId()),
-                                Text.text("Generated for " + getSourceLayer())),
-                        null,
-                        Collections.emptySet(),
-                        filter.semanticTypeIdentifiers(),
-                        rules));
+        return Collections.singletonList(sf.featureTypeStyle(
+                getId(),
+                sf.description(Text.text("MBStyle " + getId()), Text.text("Generated for " + getSourceLayer())),
+                null,
+                Collections.emptySet(),
+                filter.semanticTypeIdentifiers(),
+                rules));
     }
 
     /**

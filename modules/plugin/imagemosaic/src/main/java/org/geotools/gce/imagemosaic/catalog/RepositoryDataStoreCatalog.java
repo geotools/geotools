@@ -114,8 +114,7 @@ public class RepositoryDataStoreCatalog extends AbstractGTDataStoreGranuleCatalo
         if (dataStore == null) {
             // see if we can fall back on a data access exposing simple feature types
             @SuppressWarnings("unchecked")
-            DataAccess<FeatureType, Feature> access =
-                    (DataAccess<FeatureType, Feature>) repository.access(storeName);
+            DataAccess<FeatureType, Feature> access = (DataAccess<FeatureType, Feature>) repository.access(storeName);
             if (access != null) {
                 if (cachedWrapped != null && cachedWrapped.wraps(access)) {
                     return cachedWrapped;
@@ -125,8 +124,7 @@ public class RepositoryDataStoreCatalog extends AbstractGTDataStoreGranuleCatalo
                     dataStore = wrapper;
                 }
             } else {
-                throw new IllegalStateException(
-                        "Could not find a data store with name " + flatStoreName);
+                throw new IllegalStateException("Could not find a data store with name " + flatStoreName);
             }
         }
 

@@ -51,8 +51,7 @@ public interface DatumFactory extends ObjectFactory {
      * @return The datum for the given properties.
      * @throws FactoryException if the object creation failed.
      */
-    GeodeticDatum createGeodeticDatum(
-            Map<String, ?> properties, Ellipsoid ellipsoid, PrimeMeridian primeMeridian)
+    GeodeticDatum createGeodeticDatum(Map<String, ?> properties, Ellipsoid ellipsoid, PrimeMeridian primeMeridian)
             throws FactoryException;
 
     /**
@@ -65,8 +64,7 @@ public interface DatumFactory extends ObjectFactory {
      * @return The datum for the given properties.
      * @throws FactoryException if the object creation failed.
      */
-    ImageDatum createImageDatum(Map<String, ?> properties, PixelInCell pixelInCell)
-            throws FactoryException;
+    ImageDatum createImageDatum(Map<String, ?> properties, PixelInCell pixelInCell) throws FactoryException;
 
     /**
      * Creates a temporal datum from an enumerated type value.
@@ -77,8 +75,7 @@ public interface DatumFactory extends ObjectFactory {
      * @return The datum for the given properties.
      * @throws FactoryException if the object creation failed.
      */
-    TemporalDatum createTemporalDatum(Map<String, ?> properties, Date origin)
-            throws FactoryException;
+    TemporalDatum createTemporalDatum(Map<String, ?> properties, Date origin) throws FactoryException;
 
     /**
      * Creates a vertical datum from an enumerated type value.
@@ -89,8 +86,7 @@ public interface DatumFactory extends ObjectFactory {
      * @return The datum for the given properties.
      * @throws FactoryException if the object creation failed.
      */
-    VerticalDatum createVerticalDatum(Map<String, ?> properties, VerticalDatumType type)
-            throws FactoryException;
+    VerticalDatum createVerticalDatum(Map<String, ?> properties, VerticalDatumType type) throws FactoryException;
 
     /**
      * Creates an ellipsoid from radius values.
@@ -103,11 +99,7 @@ public interface DatumFactory extends ObjectFactory {
      * @return The ellipsoid for the given properties.
      * @throws FactoryException if the object creation failed.
      */
-    Ellipsoid createEllipsoid(
-            Map<String, ?> properties,
-            double semiMajorAxis,
-            double semiMinorAxis,
-            Unit<Length> unit)
+    Ellipsoid createEllipsoid(Map<String, ?> properties, double semiMajorAxis, double semiMinorAxis, Unit<Length> unit)
             throws FactoryException;
 
     /**
@@ -122,10 +114,7 @@ public interface DatumFactory extends ObjectFactory {
      * @throws FactoryException if the object creation failed.
      */
     Ellipsoid createFlattenedSphere(
-            Map<String, ?> properties,
-            double semiMajorAxis,
-            double inverseFlattening,
-            Unit<Length> unit)
+            Map<String, ?> properties, double semiMajorAxis, double inverseFlattening, Unit<Length> unit)
             throws FactoryException;
 
     /**

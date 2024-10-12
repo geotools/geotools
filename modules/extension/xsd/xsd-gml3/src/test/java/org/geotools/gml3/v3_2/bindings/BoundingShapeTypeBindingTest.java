@@ -43,10 +43,9 @@ public class BoundingShapeTypeBindingTest extends GML32TestSupport {
         Envelope e = new ReferencedEnvelope(-180, -90, 180, 90, CRS.decode("EPSG:4326"));
         Document dom = encode(e, GML.boundedBy);
         assertEquals("gml:Envelope", dom.getDocumentElement().getFirstChild().getNodeName());
-        assertTrue(
-                ((Element) dom.getDocumentElement().getFirstChild())
-                        .getAttribute("srsName")
-                        .endsWith("4326"));
+        assertTrue(((Element) dom.getDocumentElement().getFirstChild())
+                .getAttribute("srsName")
+                .endsWith("4326"));
     }
 
     @Test

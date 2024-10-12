@@ -25,12 +25,11 @@ import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 
 public class FilterFunction_strLastIndexOf extends FunctionExpressionImpl {
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "strLastIndexOf",
-                    parameter("index", Integer.class),
-                    parameter("String", String.class),
-                    parameter("lookup", String.class));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "strLastIndexOf",
+            parameter("index", Integer.class),
+            parameter("String", String.class),
+            parameter("lookup", String.class));
 
     public FilterFunction_strLastIndexOf() {
         super(NAME);

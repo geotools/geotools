@@ -67,8 +67,7 @@ public class DefaultAffineCS extends AbstractCS implements AffineCS {
      * @param axis0 The first axis.
      * @param axis1 The second axis.
      */
-    public DefaultAffineCS(
-            final String name, final CoordinateSystemAxis axis0, final CoordinateSystemAxis axis1) {
+    public DefaultAffineCS(final String name, final CoordinateSystemAxis axis0, final CoordinateSystemAxis axis1) {
         super(name, axis0, axis1);
     }
 
@@ -98,9 +97,7 @@ public class DefaultAffineCS extends AbstractCS implements AffineCS {
      * @param axis1 The second axis.
      */
     public DefaultAffineCS(
-            final Map<String, ?> properties,
-            final CoordinateSystemAxis axis0,
-            final CoordinateSystemAxis axis1) {
+            final Map<String, ?> properties, final CoordinateSystemAxis axis0, final CoordinateSystemAxis axis1) {
         super(properties, axis0, axis1);
     }
 

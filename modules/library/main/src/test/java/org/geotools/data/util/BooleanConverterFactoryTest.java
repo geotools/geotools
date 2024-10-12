@@ -51,7 +51,6 @@ public class BooleanConverterFactoryTest {
     }
 
     Boolean convert(Object value) throws Exception {
-        return factory.createConverter(value.getClass(), Boolean.class, null)
-                .convert(value, Boolean.class);
+        return factory.createConverter(value.getClass(), Boolean.class, null).convert(value, Boolean.class);
     }
 }

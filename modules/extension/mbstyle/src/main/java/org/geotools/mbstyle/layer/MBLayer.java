@@ -114,11 +114,10 @@ public abstract class MBLayer {
                 case "fill-extrusion":
                     return new FillExtrusionMBLayer(layer);
                 default:
-                    throw new MBFormatException(
-                            ("\"type\" "
-                                    + type
-                                    + " is not a valid layer type. Must be one of: "
-                                    + "background, fill, line, symbol, raster, circle, fill-extrusion"));
+                    throw new MBFormatException(("\"type\" "
+                            + type
+                            + " is not a valid layer type. Must be one of: "
+                            + "background, fill, line, symbol, raster, circle, fill-extrusion"));
             }
         }
         // technically we may be able to do this via a ref

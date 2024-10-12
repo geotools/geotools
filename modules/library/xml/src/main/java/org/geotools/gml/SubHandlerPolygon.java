@@ -35,8 +35,7 @@ import org.locationtech.jts.geom.Polygon;
  */
 public class SubHandlerPolygon extends SubHandler {
     /** The logger for the GML module. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(SubHandlerPolygon.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(SubHandlerPolygon.class);
 
     /** Factory for creating the Polygon geometry. */
     private GeometryFactory geometryFactory = new GeometryFactory();

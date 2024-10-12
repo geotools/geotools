@@ -45,8 +45,7 @@ public class FeatureTypeDBObjectTest {
     public FeatureTypeDBObjectTest() {}
 
     @Test
-    public void testRoundTripConversion()
-            throws FileNotFoundException, IOException, FactoryException {
+    public void testRoundTripConversion() throws FileNotFoundException, IOException, FactoryException {
 
         SimpleFeatureType original = buildDummyFeatureType("dummy");
 
@@ -113,8 +112,7 @@ public class FeatureTypeDBObjectTest {
         return original;
     }
 
-    static void compareFeatureTypes(
-            SimpleFeatureType left, SimpleFeatureType right, boolean strictGeometryClass) {
+    static void compareFeatureTypes(SimpleFeatureType left, SimpleFeatureType right, boolean strictGeometryClass) {
 
         assertThat(right.getTypeName(), is(equalTo(left.getTypeName())));
         // verify feature type user data persisted
@@ -134,18 +132,13 @@ public class FeatureTypeDBObjectTest {
         // verify we persist and restore CRS (this should always be WGS84 in the wild)
         assertTrue(
                 "CRS are equal",
-                CRS.equalsIgnoreMetadata(
-                        right.getCoordinateReferenceSystem(), left.getCoordinateReferenceSystem()));
+                CRS.equalsIgnoreMetadata(right.getCoordinateReferenceSystem(), left.getCoordinateReferenceSystem()));
 
         if (strictGeometryClass) {
             assertThat(
                     right.getGeometryDescriptor().getType().getBinding().getSimpleName(),
-                    is(
-                            equalTo(
-                                    left.getGeometryDescriptor()
-                                            .getType()
-                                            .getBinding()
-                                            .getSimpleName())));
+                    is(equalTo(
+                            left.getGeometryDescriptor().getType().getBinding().getSimpleName())));
         } else {
             // NOTE!  Geometry type is generalized when persisted...
             assertThat(

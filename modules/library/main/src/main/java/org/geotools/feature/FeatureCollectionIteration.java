@@ -50,8 +50,7 @@ public class FeatureCollectionIteration {
      * @param collection The collection to iterate over.
      * @throws NullPointerException If handler or collection are null.
      */
-    public FeatureCollectionIteration(Handler handler, FeatureCollection<?, ?> collection)
-            throws NullPointerException {
+    public FeatureCollectionIteration(Handler handler, FeatureCollection<?, ?> collection) throws NullPointerException {
         if (handler == null) {
             throw new NullPointerException("handler");
         }

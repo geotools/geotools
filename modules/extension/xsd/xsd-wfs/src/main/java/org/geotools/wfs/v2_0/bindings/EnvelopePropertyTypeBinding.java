@@ -63,8 +63,7 @@ public class EnvelopePropertyTypeBinding extends AbstractComplexBinding {
     }
 
     @Override
-    public List<Object[]> getProperties(Object object, XSDElementDeclaration element)
-            throws Exception {
+    public List<Object[]> getProperties(Object object, XSDElementDeclaration element) throws Exception {
         List<Object[]> l = new ArrayList<>();
         l.add(new Object[] {GML.Envelope, object});
         return l;
@@ -72,8 +71,7 @@ public class EnvelopePropertyTypeBinding extends AbstractComplexBinding {
 
     @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-        EnvelopePropertyType envelopPropertyType =
-                Wfs20Factory.eINSTANCE.createEnvelopePropertyType();
+        EnvelopePropertyType envelopPropertyType = Wfs20Factory.eINSTANCE.createEnvelopePropertyType();
 
         Object childValue = node.getChildValue(referencedEnvelopeClass);
         if (childValue != null) {

@@ -34,8 +34,7 @@ public class QueryTypeBinding extends org.geotools.wfs.bindings.QueryTypeBinding
     FilterFactory filterFactory;
     NamespaceContext namespaceContext;
 
-    public QueryTypeBinding(
-            WfsFactory factory, FilterFactory filterFactory, NamespaceContext namespaceContext) {
+    public QueryTypeBinding(WfsFactory factory, FilterFactory filterFactory, NamespaceContext namespaceContext) {
         super(factory);
         this.filterFactory = filterFactory;
         this.namespaceContext = namespaceContext;

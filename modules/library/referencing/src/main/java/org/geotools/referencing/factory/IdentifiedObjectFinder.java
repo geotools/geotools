@@ -72,8 +72,7 @@ public class IdentifiedObjectFinder {
      * @param factory The factory to scan for the identified objects.
      * @param type The type of objects to lookup.
      */
-    protected IdentifiedObjectFinder(
-            final AuthorityFactory factory, final Class<? extends IdentifiedObject> type) {
+    protected IdentifiedObjectFinder(final AuthorityFactory factory, final Class<? extends IdentifiedObject> type) {
         setProxy(AuthorityFactoryProxy.getInstance(factory, type));
     }
 
@@ -225,8 +224,7 @@ public class IdentifiedObjectFinder {
      * @see #createFromNames
      * @throws FactoryException if an error occured while creating an object.
      */
-    final IdentifiedObject createFromIdentifiers(final IdentifiedObject object)
-            throws FactoryException {
+    final IdentifiedObject createFromIdentifiers(final IdentifiedObject object) throws FactoryException {
         final Citation authority = getProxy().getAuthorityFactory().getAuthority();
         final boolean isAll = ReferencingFactory.ALL.equals(authority);
         for (ReferenceIdentifier referenceIdentifier : object.getIdentifiers()) {
@@ -317,11 +315,9 @@ public class IdentifiedObjectFinder {
      * @see #createFromIdentifiers
      * @see #createFromNames
      */
-    final IdentifiedObject createFromCodes(final IdentifiedObject object, boolean specific)
-            throws FactoryException {
+    final IdentifiedObject createFromCodes(final IdentifiedObject object, boolean specific) throws FactoryException {
         @SuppressWarnings("unchecked")
-        final Set<String> codes =
-                specific ? getSpecificCodeCandidates(object) : getCodeCandidates(object);
+        final Set<String> codes = specific ? getSpecificCodeCandidates(object) : getCodeCandidates(object);
         for (final String code : codes) {
             IdentifiedObject candidate;
             try {
@@ -331,10 +327,7 @@ public class IdentifiedObjectFinder {
                 // Some object cannot be created properly.
                 continue;
             } catch (Exception problemCode) {
-                LOGGER.log(
-                        Level.FINEST,
-                        "Could not create '" + code + "':" + problemCode,
-                        problemCode);
+                LOGGER.log(Level.FINEST, "Could not create '" + code + "':" + problemCode, problemCode);
                 continue;
             }
 
@@ -407,8 +400,7 @@ public class IdentifiedObjectFinder {
      *     specified model.
      * @throws FactoryException if an error occured while creating a derived object.
      */
-    protected IdentifiedObject deriveEquivalent(
-            final IdentifiedObject candidate, final IdentifiedObject model)
+    protected IdentifiedObject deriveEquivalent(final IdentifiedObject candidate, final IdentifiedObject model)
             throws FactoryException {
         return CRS.equalsIgnoreMetadata(candidate, model) ? candidate : null;
     }
@@ -454,8 +446,7 @@ public class IdentifiedObjectFinder {
          * the specified one. The default implementation delegates to the backing finder.
          */
         @Override
-        protected Set<String> getCodeCandidates(final IdentifiedObject object)
-                throws FactoryException {
+        protected Set<String> getCodeCandidates(final IdentifiedObject object) throws FactoryException {
             return finder.getCodeCandidates(object);
         }
 
@@ -470,8 +461,7 @@ public class IdentifiedObjectFinder {
          * The default implementation delegates to the backing finder.
          */
         @Override
-        protected IdentifiedObject deriveEquivalent(
-                final IdentifiedObject candidate, final IdentifiedObject model)
+        protected IdentifiedObject deriveEquivalent(final IdentifiedObject candidate, final IdentifiedObject model)
                 throws FactoryException {
             return finder.deriveEquivalent(candidate, model);
         }

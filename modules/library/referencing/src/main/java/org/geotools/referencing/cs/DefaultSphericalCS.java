@@ -54,12 +54,11 @@ public class DefaultSphericalCS extends AbstractCS implements SphericalCS {
      *
      * @see DefaultCartesianCS#GEOCENTRIC
      */
-    public static DefaultSphericalCS GEOCENTRIC =
-            new DefaultSphericalCS(
-                    name(VocabularyKeys.GEOCENTRIC),
-                    DefaultCoordinateSystemAxis.SPHERICAL_LONGITUDE,
-                    DefaultCoordinateSystemAxis.SPHERICAL_LATITUDE,
-                    DefaultCoordinateSystemAxis.GEOCENTRIC_RADIUS);
+    public static DefaultSphericalCS GEOCENTRIC = new DefaultSphericalCS(
+            name(VocabularyKeys.GEOCENTRIC),
+            DefaultCoordinateSystemAxis.SPHERICAL_LONGITUDE,
+            DefaultCoordinateSystemAxis.SPHERICAL_LATITUDE,
+            DefaultCoordinateSystemAxis.GEOCENTRIC_RADIUS);
 
     /**
      * Constructs a three-dimensional coordinate system from a name.

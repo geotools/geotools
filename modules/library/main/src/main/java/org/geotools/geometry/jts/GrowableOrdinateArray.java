@@ -108,8 +108,7 @@ class GrowableOrdinateArray {
 
     public void setSize(int newSize) {
         if (newSize < 0) {
-            throw new IllegalArgumentException(
-                    "The size must zero or positive, it was " + newSize + " instead");
+            throw new IllegalArgumentException("The size must zero or positive, it was " + newSize + " instead");
         }
         ensureLength(newSize);
         curr = newSize;

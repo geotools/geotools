@@ -62,25 +62,23 @@ public class HanaVirtualTableOnlineTest extends JDBCVirtualTableOnlineTest {
     }
 
     private static Handler getHandler() {
-        Handler handler =
-                new Handler() {
-                    @Override
-                    public synchronized void publish(LogRecord record) {
-                        fail(
-                                "Fast extent estimation should not have been triggered on virtual "
-                                        + "tables, but we received a log message anyway.");
-                    }
+        Handler handler = new Handler() {
+            @Override
+            public synchronized void publish(LogRecord record) {
+                fail("Fast extent estimation should not have been triggered on virtual "
+                        + "tables, but we received a log message anyway.");
+            }
 
-                    @Override
-                    public void flush() {
-                        // nothing to do
-                    }
+            @Override
+            public void flush() {
+                // nothing to do
+            }
 
-                    @Override
-                    public void close() throws SecurityException {
-                        // nothing to do
-                    }
-                };
+            @Override
+            public void close() throws SecurityException {
+                // nothing to do
+            }
+        };
         handler.setLevel(Level.WARNING);
         return handler;
     }

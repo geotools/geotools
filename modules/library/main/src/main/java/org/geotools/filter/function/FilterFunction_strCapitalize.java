@@ -27,10 +27,7 @@ import org.geotools.filter.capability.FunctionNameImpl;
 public class FilterFunction_strCapitalize extends FunctionExpressionImpl {
 
     public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "strCapitalize",
-                    parameter("string", String.class),
-                    parameter("string", String.class));
+            new FunctionNameImpl("strCapitalize", parameter("string", String.class), parameter("string", String.class));
 
     public FilterFunction_strCapitalize() {
         super(NAME);

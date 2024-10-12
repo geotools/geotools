@@ -65,8 +65,7 @@ public class EquatorialStereographic extends StereographicUSGS {
      * @param parameters The group of parameter values.
      * @throws ParameterNotFoundException if a required parameter was not found.
      */
-    protected EquatorialStereographic(final ParameterValueGroup parameters)
-            throws ParameterNotFoundException {
+    protected EquatorialStereographic(final ParameterValueGroup parameters) throws ParameterNotFoundException {
         this(parameters, Stereographic.Provider.PARAMETERS);
     }
 
@@ -77,8 +76,7 @@ public class EquatorialStereographic extends StereographicUSGS {
      * @param descriptor The expected parameter descriptor.
      * @throws ParameterNotFoundException if a required parameter was not found.
      */
-    EquatorialStereographic(
-            final ParameterValueGroup parameters, final ParameterDescriptorGroup descriptor)
+    EquatorialStereographic(final ParameterValueGroup parameters, final ParameterDescriptorGroup descriptor)
             throws ParameterNotFoundException {
         super(parameters, descriptor);
         assert super.k0 == k0 : super.k0;
@@ -90,8 +88,7 @@ public class EquatorialStereographic extends StereographicUSGS {
      * radians) and stores the result in {@code ptDst} (linear distance on a unit sphere).
      */
     @Override
-    protected Point2D transformNormalized(double x, double y, Point2D ptDst)
-            throws ProjectionException {
+    protected Point2D transformNormalized(double x, double y, Point2D ptDst) throws ProjectionException {
         // Compute using oblique formulas, for comparaison later.
         assert (ptDst = super.transformNormalized(x, y, ptDst)) != null;
 
@@ -139,8 +136,7 @@ public class EquatorialStereographic extends StereographicUSGS {
          * radians) and stores the result in {@code ptDst} (linear distance on a unit sphere).
          */
         @Override
-        protected Point2D transformNormalized(double x, double y, Point2D ptDst)
-                throws ProjectionException {
+        protected Point2D transformNormalized(double x, double y, Point2D ptDst) throws ProjectionException {
             // Compute using ellipsoidal formulas, for comparaison later.
             assert (ptDst = super.transformNormalized(x, y, ptDst)) != null;
 
@@ -166,8 +162,7 @@ public class EquatorialStereographic extends StereographicUSGS {
          * {@code ptDst}.
          */
         @Override
-        protected Point2D inverseTransformNormalized(double x, double y, Point2D ptDst)
-                throws ProjectionException {
+        protected Point2D inverseTransformNormalized(double x, double y, Point2D ptDst) throws ProjectionException {
             // Compute using ellipsoidal formulas, for comparaison later.
             assert (ptDst = super.inverseTransformNormalized(x, y, ptDst)) != null;
 

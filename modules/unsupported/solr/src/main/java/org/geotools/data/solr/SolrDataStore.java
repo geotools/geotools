@@ -90,17 +90,13 @@ public class SolrDataStore extends ContentDataStore {
     public SolrDataStore(URL url, SolrLayerMapper layerMapper, IndexesConfig indexesConfig) {
         this(url, layerMapper);
         // build the feature types based on the provided indexes configuration
-        indexesConfig
-                .getIndexesNames()
-                .forEach(
-                        indexName -> {
-                            // get from Apache Solr the index schema and retrieve its attributes
-                            List<SolrAttribute> solrAttributes = getSolrAttributes(indexName);
-                            // build the feature type using the index configuration
-                            SimpleFeatureType defaultFeatureType =
-                                    indexesConfig.buildFeatureType(indexName, solrAttributes);
-                            defaultFeatureTypes.put(indexName, defaultFeatureType);
-                        });
+        indexesConfig.getIndexesNames().forEach(indexName -> {
+            // get from Apache Solr the index schema and retrieve its attributes
+            List<SolrAttribute> solrAttributes = getSolrAttributes(indexName);
+            // build the feature type using the index configuration
+            SimpleFeatureType defaultFeatureType = indexesConfig.buildFeatureType(indexName, solrAttributes);
+            defaultFeatureTypes.put(indexName, defaultFeatureType);
+        });
     }
 
     /**
@@ -123,13 +119,12 @@ public class SolrDataStore extends ContentDataStore {
         // TODO: make connection timeouts configurable
         this.url = url;
         this.layerMapper = layerMapper;
-        this.solrServer =
-                new HttpSolrClient.Builder()
-                        .withBaseSolrUrl(url.toString())
-                        .allowCompression(true)
-                        .withConnectionTimeout(10000)
-                        .withSocketTimeout(10000)
-                        .build();
+        this.solrServer = new HttpSolrClient.Builder()
+                .withBaseSolrUrl(url.toString())
+                .allowCompression(true)
+                .withConnectionTimeout(10000)
+                .withSocketTimeout(10000)
+                .build();
         this.solrServer.setFollowRedirects(true);
     }
 
@@ -171,8 +166,7 @@ public class SolrDataStore extends ContentDataStore {
                         Class<?> objType = SolrUtils.decodeSolrFieldType(solrTypeName);
                         if (objType != null) {
                             ExtendedFieldSchemaInfo extendedFieldSchemaInfo =
-                                    new SolrUtils.ExtendedFieldSchemaInfo(
-                                            processSchema, processField, name);
+                                    new SolrUtils.ExtendedFieldSchemaInfo(processSchema, processField, name);
                             SolrAttribute at = new SolrAttribute(name, objType);
                             at.setSolrType(solrTypeName);
                             if (extendedFieldSchemaInfo.getUniqueKey()) {
@@ -338,14 +332,9 @@ public class SolrDataStore extends ContentDataStore {
                     if (sort.getPropertyName() != null) {
                         query.addSort(
                                 sort.getPropertyName().getPropertyName(),
-                                sort.getSortOrder().equals(SortOrder.ASCENDING)
-                                        ? ORDER.asc
-                                        : ORDER.desc);
+                                sort.getSortOrder().equals(SortOrder.ASCENDING) ? ORDER.asc : ORDER.desc);
                     } else {
-                        naturalSortOrder =
-                                sort.getSortOrder().equals(SortOrder.ASCENDING)
-                                        ? ORDER.asc
-                                        : ORDER.desc;
+                        naturalSortOrder = sort.getSortOrder().equals(SortOrder.ASCENDING) ? ORDER.asc : ORDER.desc;
                     }
                 }
             }
@@ -378,8 +367,7 @@ public class SolrDataStore extends ContentDataStore {
      * @param visitor UniqueVisitor with group settings
      * @return Solr query
      */
-    protected SolrQuery selectUniqueValues(
-            SimpleFeatureType featureType, Query q, UniqueVisitor visitor) {
+    protected SolrQuery selectUniqueValues(SimpleFeatureType featureType, Query q, UniqueVisitor visitor) {
         SolrQuery query = select(featureType, q);
         // normal fields empty
         query.setFields(new String[] {});

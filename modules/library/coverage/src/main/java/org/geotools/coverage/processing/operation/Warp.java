@@ -51,9 +51,9 @@ public class Warp extends BaseScaleOperationJAI {
     }
 
     @Override
-    protected void handleJAIEXTParams(
-            ParameterBlockJAI parameters, ParameterValueGroup parameters2) {
-        GridCoverage2D source = (GridCoverage2D) parameters2.parameter("source0").getValue();
+    protected void handleJAIEXTParams(ParameterBlockJAI parameters, ParameterValueGroup parameters2) {
+        GridCoverage2D source =
+                (GridCoverage2D) parameters2.parameter("source0").getValue();
         handleROINoDataInternal(parameters, source, WARP, 3, 4);
     }
 
@@ -75,15 +75,13 @@ public class Warp extends BaseScaleOperationJAI {
 
         // Setting NoData property if needed
         double[] background = (double[]) parameters.parameters.getObjectParameter(2);
-        if (parameters.parameters.getNumParameters() > 3
-                && parameters.parameters.getObjectParameter(4) != null) {
+        if (parameters.parameters.getNumParameters() > 3 && parameters.parameters.getObjectParameter(4) != null) {
             CoverageUtilities.setNoDataProperty(properties, background);
         }
 
         // Setting ROI if present
         PropertyGenerator propertyGenerator =
-                getOperationDescriptor(WARP)
-                        .getPropertyGenerators(RenderedRegistryMode.MODE_NAME)[0];
+                getOperationDescriptor(WARP).getPropertyGenerators(RenderedRegistryMode.MODE_NAME)[0];
         Object roiProp = propertyGenerator.getProperty(ROI, data);
         if (roiProp != null && roiProp instanceof ROI) {
             CoverageUtilities.setROIProperty(properties, (ROI) roiProp);

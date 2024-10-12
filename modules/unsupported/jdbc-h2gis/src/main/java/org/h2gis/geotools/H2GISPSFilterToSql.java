@@ -53,11 +53,7 @@ public class H2GISPSFilterToSql extends PreparedFilterToSQL {
 
     @Override
     protected Object visitBinarySpatialOperator(
-            BinarySpatialOperator filter,
-            PropertyName property,
-            Literal geometry,
-            boolean swapped,
-            Object extraData) {
+            BinarySpatialOperator filter, PropertyName property, Literal geometry, boolean swapped, Object extraData) {
         helper.out = out;
         return helper.visitBinarySpatialOperator(filter, property, geometry, swapped, extraData);
     }

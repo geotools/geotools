@@ -73,24 +73,18 @@ public class MultiLevelROIRasterProvider implements MultiLevelROIProvider {
                 try {
                     // When looking for formats which may parse this file, make sure to exclude the
                     // ImageMosaicFormat as return
-                    AbstractGridFormat format =
-                            GridFormatFinder.findFormat(file, Utils.EXCLUDE_MOSAIC_HINTS);
+                    AbstractGridFormat format = GridFormatFinder.findFormat(file, Utils.EXCLUDE_MOSAIC_HINTS);
                     AbstractGridCoverage2DReader reader = format.getReader(file);
                     // Getting Dataset Layout
                     DatasetLayout layout = reader.getDatasetLayout();
                     // If present use it
                     if (layout != null) {
                         // Getting Total Number of masks
-                        int numExternalMasks =
-                                layout.getNumExternalMasks() > 0 ? layout.getNumExternalMasks() : 0;
-                        int numInternalMasks =
-                                layout.getNumInternalMasks() > 0 ? layout.getNumInternalMasks() : 0;
+                        int numExternalMasks = layout.getNumExternalMasks() > 0 ? layout.getNumExternalMasks() : 0;
+                        int numInternalMasks = layout.getNumInternalMasks() > 0 ? layout.getNumInternalMasks() : 0;
                         int numExternalMaskOverviews =
-                                layout.getNumExternalMaskOverviews() > 0
-                                        ? layout.getNumExternalMaskOverviews()
-                                        : 0;
-                        int totalMasks =
-                                numExternalMasks + numInternalMasks + numExternalMaskOverviews;
+                                layout.getNumExternalMaskOverviews() > 0 ? layout.getNumExternalMaskOverviews() : 0;
+                        int totalMasks = numExternalMasks + numInternalMasks + numExternalMaskOverviews;
 
                         // Check if masks are present
                         // NOTE No Mask: Outside ROI
@@ -100,20 +94,16 @@ public class MultiLevelROIRasterProvider implements MultiLevelROIProvider {
                             if (crs != null
                                     && indexSchema != null
                                     && indexSchema.getCoordinateReferenceSystem() != null
-                                    && !CRS.equalsIgnoreMetadata(
-                                            crs, indexSchema.getCoordinateReferenceSystem())) {
+                                    && !CRS.equalsIgnoreMetadata(crs, indexSchema.getCoordinateReferenceSystem())) {
                                 // do not trust the feature footprint, it's reprojected
                                 ReferencedEnvelope envelope =
                                         ReferencedEnvelope.reference(reader.getOriginalEnvelope());
                                 Polygon nativeFootprint = JTS.toGeometry(envelope);
                                 SimpleFeatureType ftNative =
-                                        FeatureTypes.transform(
-                                                indexSchema, reader.getCoordinateReferenceSystem());
+                                        FeatureTypes.transform(indexSchema, reader.getCoordinateReferenceSystem());
                                 SimpleFeatureBuilder fb = new SimpleFeatureBuilder(ftNative);
                                 fb.init(sf);
-                                fb.set(
-                                        indexSchema.getGeometryDescriptor().getLocalName(),
-                                        nativeFootprint);
+                                fb.set(indexSchema.getGeometryDescriptor().getLocalName(), nativeFootprint);
                                 SimpleFeature nativeFeature = fb.buildFeature(sf.getID());
                                 return new MultiLevelROIRaster(layout, file, nativeFeature);
                             } else {
@@ -122,17 +112,15 @@ public class MultiLevelROIRasterProvider implements MultiLevelROIProvider {
                         }
                     }
                 } catch (Exception e) {
-                    throw new IOException(
-                            "Failed to load the footprint for granule " + strValue, e);
+                    throw new IOException("Failed to load the footprint for granule " + strValue, e);
                 }
             }
             return result;
         } else {
             if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.fine(
-                        "Could not use the location attribute value to search for "
-                                + "the file, the value was: "
-                                + value);
+                LOGGER.fine("Could not use the location attribute value to search for "
+                        + "the file, the value was: "
+                        + value);
             }
             return null;
         }

@@ -62,8 +62,7 @@ public class SchemaIndexImpl implements SchemaIndex {
             new SoftValueHashMap<>(1000);
 
     /** Cache of elements to attributes */
-    HashMap<XSDElementDeclaration, List<XSDAttributeDeclaration>> element2attributes =
-            new HashMap<>();
+    HashMap<XSDElementDeclaration, List<XSDAttributeDeclaration>> element2attributes = new HashMap<>();
 
     /** Adapter for tracking changes to schemas. */
     SchemaAdapter adapter;
@@ -197,8 +196,7 @@ public class SchemaIndexImpl implements SchemaIndex {
                 if (children == null) {
                     children = new ListOrderedMap<>();
 
-                    for (XSDParticle particle :
-                            Schemas.getChildElementParticles(parent.getType(), true)) {
+                    for (XSDParticle particle : Schemas.getChildElementParticles(parent.getType(), true)) {
                         XSDElementDeclaration child = (XSDElementDeclaration) particle.getContent();
 
                         if (child.isElementDeclarationReference()) {
@@ -212,9 +210,7 @@ public class SchemaIndexImpl implements SchemaIndex {
                         } else if (parent.getTargetNamespace() != null) {
                             childName = new QName(parent.getTargetNamespace(), child.getName());
                         } else if (parent.getType().getTargetNamespace() != null) {
-                            childName =
-                                    new QName(
-                                            parent.getType().getTargetNamespace(), child.getName());
+                            childName = new QName(parent.getType().getTargetNamespace(), child.getName());
                         } else {
                             childName = new QName(null, child.getName());
                         }

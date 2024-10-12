@@ -41,8 +41,7 @@ public class VPFCovFeatureSource extends VPFFeatureSource {
     }
 
     @Override
-    protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query)
-            throws IOException {
+    protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query) throws IOException {
         return new VPFFeatureReader(getState(), featureType);
     }
 

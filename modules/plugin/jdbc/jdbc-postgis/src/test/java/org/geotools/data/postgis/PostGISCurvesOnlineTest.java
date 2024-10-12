@@ -58,7 +58,6 @@ public class PostGISCurvesOnlineTest extends JDBCCurvesTest {
         // check the interior ring has been normalized
         assertEquals(1, p.getNumInteriorRing());
         CircularRing hole = (CircularRing) p.getInteriorRingN(0);
-        assertArrayEquals(
-                new double[] {-9.0, -8.5, -9.0, -9.5, -9.0, -8.5}, hole.getControlPoints(), 1e-6);
+        assertArrayEquals(new double[] {-9.0, -8.5, -9.0, -9.5, -9.0, -8.5}, hole.getControlPoints(), 1e-6);
     }
 }

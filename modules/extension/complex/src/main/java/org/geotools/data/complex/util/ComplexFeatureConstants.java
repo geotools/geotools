@@ -36,8 +36,7 @@ public class ComplexFeatureConstants {
     /** Static attribute name used to link different feature types. */
     public static final String FEATURE_CHAINING_LINK_STRING = "FEATURE_LINK";
 
-    public static final Name FEATURE_CHAINING_LINK_NAME =
-            new NameImpl(FEATURE_CHAINING_LINK_STRING);
+    public static final Name FEATURE_CHAINING_LINK_NAME = new NameImpl(FEATURE_CHAINING_LINK_STRING);
 
     /**
      * Static attribute descriptor used to link different feature types. This attribute won't appear
@@ -46,8 +45,7 @@ public class ComplexFeatureConstants {
      * feature types.
      */
     public static final PropertyDescriptor FEATURE_CHAINING_LINK =
-            new AttributeDescriptorImpl(
-                    XSSchema.STRING_TYPE, FEATURE_CHAINING_LINK_NAME, 0, -1, true, null);
+            new AttributeDescriptorImpl(XSSchema.STRING_TYPE, FEATURE_CHAINING_LINK_NAME, 0, -1, true, null);
 
     /**
      * Static attribute name used for the auxiliary default geometry attribute, which is created
@@ -85,8 +83,7 @@ public class ComplexFeatureConstants {
     public static Object unpack(Object value) {
 
         if (value instanceof org.geotools.api.feature.ComplexAttribute) {
-            Property simpleContent =
-                    ((org.geotools.api.feature.ComplexAttribute) value).getProperty(SIMPLE_CONTENT);
+            Property simpleContent = ((org.geotools.api.feature.ComplexAttribute) value).getProperty(SIMPLE_CONTENT);
             if (simpleContent == null) {
                 return null;
             } else {

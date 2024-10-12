@@ -38,12 +38,7 @@ public class GMLMultiPolygonPropertyTypeBindingTest extends AbstractGMLBindingTe
     public void setUp() throws Exception {
         super.setUp();
 
-        association =
-                createElement(
-                        GML.NAMESPACE,
-                        "myMultiPolygonProperty",
-                        GML.MultiPolygonPropertyType,
-                        null);
+        association = createElement(GML.NAMESPACE, "myMultiPolygonProperty", GML.MultiPolygonPropertyType, null);
         geometry = createElement(GML.NAMESPACE, "myMultiPolygon", GML.MultiPointType, null);
 
         container = new DefaultPicoContainer();
@@ -54,53 +49,33 @@ public class GMLMultiPolygonPropertyTypeBindingTest extends AbstractGMLBindingTe
 
     @Test
     public void testWithGeometry() throws Exception {
-        Polygon p1 =
-                new GeometryFactory()
-                        .createPolygon(
-                                new GeometryFactory()
-                                        .createLinearRing(
-                                                new Coordinate[] {
-                                                    new Coordinate(0, 0),
-                                                    new Coordinate(1, 1),
-                                                    new Coordinate(2, 2),
-                                                    new Coordinate(0, 0)
-                                                }),
-                                null);
-        Polygon p2 =
-                new GeometryFactory()
-                        .createPolygon(
-                                new GeometryFactory()
-                                        .createLinearRing(
-                                                new Coordinate[] {
-                                                    new Coordinate(2, 2),
-                                                    new Coordinate(3, 3),
-                                                    new Coordinate(4, 4),
-                                                    new Coordinate(2, 2)
-                                                }),
-                                null);
-
-        Node node =
-                createNode(
-                        association,
-                        new ElementInstance[] {geometry},
-                        new Object[] {
-                            new GeometryFactory().createMultiPolygon(new Polygon[] {p1, p2})
-                        },
-                        null,
+        Polygon p1 = new GeometryFactory()
+                .createPolygon(
+                        new GeometryFactory().createLinearRing(new Coordinate[] {
+                            new Coordinate(0, 0), new Coordinate(1, 1), new Coordinate(2, 2), new Coordinate(0, 0)
+                        }),
+                        null);
+        Polygon p2 = new GeometryFactory()
+                .createPolygon(
+                        new GeometryFactory().createLinearRing(new Coordinate[] {
+                            new Coordinate(2, 2), new Coordinate(3, 3), new Coordinate(4, 4), new Coordinate(2, 2)
+                        }),
                         null);
 
-        GMLGeometryAssociationTypeBinding s =
-                (GMLGeometryAssociationTypeBinding)
-                        container.getComponentInstanceOfType(
-                                GMLGeometryAssociationTypeBinding.class);
+        Node node = createNode(
+                association,
+                new ElementInstance[] {geometry},
+                new Object[] {new GeometryFactory().createMultiPolygon(new Polygon[] {p1, p2})},
+                null,
+                null);
 
-        GMLMultiPolygonPropertyTypeBinding s1 =
-                (GMLMultiPolygonPropertyTypeBinding)
-                        container.getComponentInstanceOfType(
-                                GMLMultiPolygonPropertyTypeBinding.class);
+        GMLGeometryAssociationTypeBinding s = (GMLGeometryAssociationTypeBinding)
+                container.getComponentInstanceOfType(GMLGeometryAssociationTypeBinding.class);
 
-        MultiPolygon p =
-                (MultiPolygon) s1.parse(association, node, s.parse(association, node, null));
+        GMLMultiPolygonPropertyTypeBinding s1 = (GMLMultiPolygonPropertyTypeBinding)
+                container.getComponentInstanceOfType(GMLMultiPolygonPropertyTypeBinding.class);
+
+        MultiPolygon p = (MultiPolygon) s1.parse(association, node, s.parse(association, node, null));
         assertNotNull(p);
     }
 }

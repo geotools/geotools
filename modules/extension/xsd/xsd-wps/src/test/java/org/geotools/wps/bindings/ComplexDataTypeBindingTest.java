@@ -42,16 +42,15 @@ import org.xml.sax.helpers.AttributesImpl;
 public class ComplexDataTypeBindingTest extends WPSTestSupport {
     @Test
     public void testParsePolygon() throws Exception {
-        String xml =
-                "<wps:ComplexData xmlns:wps='http://www.opengis.net/wps/1.0.0'>"
-                        + "<gml:Polygon xmlns:gml='http://www.opengis.net/gml'>"
-                        + "<gml:exterior>"
-                        + "<gml:LinearRing>"
-                        + "<gml:posList>1 1 2 1 2 2 1 2 1 1</gml:posList>"
-                        + "</gml:LinearRing>"
-                        + "</gml:exterior>"
-                        + "</gml:Polygon>"
-                        + "</wps:ComplexData>";
+        String xml = "<wps:ComplexData xmlns:wps='http://www.opengis.net/wps/1.0.0'>"
+                + "<gml:Polygon xmlns:gml='http://www.opengis.net/gml'>"
+                + "<gml:exterior>"
+                + "<gml:LinearRing>"
+                + "<gml:posList>1 1 2 1 2 2 1 2 1 1</gml:posList>"
+                + "</gml:LinearRing>"
+                + "</gml:exterior>"
+                + "</gml:Polygon>"
+                + "</wps:ComplexData>";
         buildDocument(xml);
 
         Object o = parse(WPS.ComplexDataType);
@@ -65,29 +64,28 @@ public class ComplexDataTypeBindingTest extends WPSTestSupport {
 
     @Test
     public void testParseFeatureCollection() throws Exception {
-        String xml =
-                "<wps:ComplexData xmlns:wps='http://www.opengis.net/wps/1.0.0'>"
-                        + "<wfs:FeatureCollection xmlns='http://www.opengis.net/wfs' "
-                        + "xmlns:wfs='http://www.opengis.net/wfs' xmlns:geotools='http://geotools.org' "
-                        + "xmlns:gml='http://www.opengis.net/gml'>"
-                        + "<gml:boundedBy>"
-                        + "<gml:Envelope srsName='urn:x-ogc:def:crs:EPSG:4326'>"
-                        + "<gml:lowerCorner>0 0</gml:lowerCorner>"
-                        + "<gml:upperCorner>1 1</gml:upperCorner>"
-                        + "</gml:Envelope>"
-                        + "</gml:boundedBy>"
-                        + "<gml:featureMember>"
-                        + "<geotools:feature fid='feature.1'>"
-                        + "<geotools:geometry>"
-                        + "<gml:LineString>"
-                        + "<gml:posList>0 0 1 1</gml:posList>"
-                        + "</gml:LineString>"
-                        + "</geotools:geometry>"
-                        + "<geotools:integer>1</geotools:integer>"
-                        + "</geotools:feature>"
-                        + "</gml:featureMember>"
-                        + "</wfs:FeatureCollection>"
-                        + "</wps:ComplexData>";
+        String xml = "<wps:ComplexData xmlns:wps='http://www.opengis.net/wps/1.0.0'>"
+                + "<wfs:FeatureCollection xmlns='http://www.opengis.net/wfs' "
+                + "xmlns:wfs='http://www.opengis.net/wfs' xmlns:geotools='http://geotools.org' "
+                + "xmlns:gml='http://www.opengis.net/gml'>"
+                + "<gml:boundedBy>"
+                + "<gml:Envelope srsName='urn:x-ogc:def:crs:EPSG:4326'>"
+                + "<gml:lowerCorner>0 0</gml:lowerCorner>"
+                + "<gml:upperCorner>1 1</gml:upperCorner>"
+                + "</gml:Envelope>"
+                + "</gml:boundedBy>"
+                + "<gml:featureMember>"
+                + "<geotools:feature fid='feature.1'>"
+                + "<geotools:geometry>"
+                + "<gml:LineString>"
+                + "<gml:posList>0 0 1 1</gml:posList>"
+                + "</gml:LineString>"
+                + "</geotools:geometry>"
+                + "<geotools:integer>1</geotools:integer>"
+                + "</geotools:feature>"
+                + "</gml:featureMember>"
+                + "</wfs:FeatureCollection>"
+                + "</wps:ComplexData>";
         buildDocument(xml);
 
         Object o = parse(WPS.ComplexDataType);
@@ -110,22 +108,17 @@ public class ComplexDataTypeBindingTest extends WPSTestSupport {
         Wps10Factory factory = Wps10Factory.eINSTANCE;
         ComplexDataType complexData = factory.createComplexDataType();
         complexData.setMimeType("text/plain");
-        complexData
-                .getData()
-                .add(
-                        0,
-                        (EncoderDelegate)
-                                output -> {
-                                    ((LexicalHandler) output).startCDATA();
-                                    Reader r = new StringReader("test data");
-                                    char[] buffer = new char[1024];
-                                    int read;
-                                    while ((read = r.read(buffer)) > 0) {
-                                        output.characters(buffer, 0, read);
-                                    }
-                                    r.close();
-                                    ((LexicalHandler) output).endCDATA();
-                                });
+        complexData.getData().add(0, (EncoderDelegate) output -> {
+            ((LexicalHandler) output).startCDATA();
+            Reader r = new StringReader("test data");
+            char[] buffer = new char[1024];
+            int read;
+            while ((read = r.read(buffer)) > 0) {
+                output.characters(buffer, 0, read);
+            }
+            r.close();
+            ((LexicalHandler) output).endCDATA();
+        });
 
         Encoder encoder = new Encoder(new WPSConfiguration());
         encoder.setIndenting(true);
@@ -148,21 +141,16 @@ public class ComplexDataTypeBindingTest extends WPSTestSupport {
         Wps10Factory factory = Wps10Factory.eINSTANCE;
         ComplexDataType complexData = factory.createComplexDataType();
         complexData.setMimeType("text/xml");
-        complexData
-                .getData()
-                .add(
-                        0,
-                        (EncoderDelegate)
-                                output -> {
-                                    String ns = "http://www.geotools.org";
-                                    String local = "myElement";
-                                    String qualified = "gt:myElement";
-                                    output.startPrefixMapping("gt", ns);
-                                    output.startElement(ns, local, qualified, new AttributesImpl());
-                                    String txt = "hello world";
-                                    output.characters(txt.toCharArray(), 0, txt.length());
-                                    output.endElement(ns, local, qualified);
-                                });
+        complexData.getData().add(0, (EncoderDelegate) output -> {
+            String ns = "http://www.geotools.org";
+            String local = "myElement";
+            String qualified = "gt:myElement";
+            output.startPrefixMapping("gt", ns);
+            output.startElement(ns, local, qualified, new AttributesImpl());
+            String txt = "hello world";
+            output.characters(txt.toCharArray(), 0, txt.length());
+            output.endElement(ns, local, qualified);
+        });
 
         Encoder encoder = new Encoder(new WPSConfiguration());
         encoder.setIndenting(true);

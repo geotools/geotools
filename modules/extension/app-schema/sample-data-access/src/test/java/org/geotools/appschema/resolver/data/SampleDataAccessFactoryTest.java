@@ -40,8 +40,7 @@ public class SampleDataAccessFactoryTest {
      */
     @Test
     public void testFindSamplesDataAccessFactory() throws Exception {
-        DataAccess<FeatureType, Feature> dataAccess =
-                DataAccessFinder.getDataStore(SampleDataAccessFactory.PARAMS);
+        DataAccess<FeatureType, Feature> dataAccess = DataAccessFinder.getDataStore(SampleDataAccessFactory.PARAMS);
         Assert.assertNotNull(dataAccess);
         Assert.assertEquals(SampleDataAccess.class, dataAccess.getClass());
     }

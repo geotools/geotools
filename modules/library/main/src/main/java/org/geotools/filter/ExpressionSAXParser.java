@@ -43,8 +43,7 @@ import org.xml.sax.Attributes;
  */
 public class ExpressionSAXParser {
     /** The logger for the filter module. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(ExpressionSAXParser.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(ExpressionSAXParser.class);
 
     /** Factory to construct filters. */
     @SuppressWarnings("PMD.UnusedPrivateField")
@@ -128,8 +127,7 @@ public class ExpressionSAXParser {
                 if (function != null && function instanceof FunctionExpression) {
                     curExprssn = function;
                 } else {
-                    throw new IllegalFilterException(
-                            name + " not availabel as FunctionExpressio:" + function);
+                    throw new IllegalFilterException(name + " not availabel as FunctionExpressio:" + function);
                 }
                 LOGGER.finer("is <function> expression");
             }
@@ -213,20 +211,17 @@ public class ExpressionSAXParser {
                     // currentState = "accumulate";  //leave unchanged
                     LOGGER.finer("just added a parameter for a function: " + currentState);
 
-                    if (((FunctionExpression) curExprssn).getFunctionName().getArgumentCount()
-                            == expressions.size()) {
+                    if (((FunctionExpression) curExprssn).getFunctionName().getArgumentCount() == expressions.size()) {
                         // hay, we've parsed all the arguments!
                         currentState = "complete";
 
                         // accumalationOfExpressions
                         ((FunctionExpression) curExprssn).setParameters(expressions);
                     } else {
-                        expFactory =
-                                new ExpressionSAXParser(schema); // we're gonna get more expressions
+                        expFactory = new ExpressionSAXParser(schema); // we're gonna get more expressions
                     }
                 } else {
-                    throw new IllegalFilterException(
-                            "Attempted to add sub expression in a bad state: " + currentState);
+                    throw new IllegalFilterException("Attempted to add sub expression in a bad state: " + currentState);
                 }
             }
         } else if (declaredType.equals(message) && currentState.equals("complete")) {
@@ -235,8 +230,7 @@ public class ExpressionSAXParser {
             readChars = false;
             readyFlag = true;
         } else { // otherwise, throw exception
-            throw new IllegalFilterException(
-                    "Reached end of unready, non-nested expression: " + currentState);
+            throw new IllegalFilterException("Reached end of unready, non-nested expression: " + currentState);
         }
     }
 
@@ -428,14 +422,10 @@ public class ExpressionSAXParser {
     public String getFunctionName(Attributes map) {
         String result = map.getValue("name");
         if (result == null) {
-            result =
-                    map.getValue(
-                            "ogc:name"); // highly unlikely for this to happen.  But, it might...
+            result = map.getValue("ogc:name"); // highly unlikely for this to happen.  But, it might...
         }
         if (result == null) {
-            result =
-                    map.getValue(
-                            "ows:name"); // highly unlikely for this to happen.  But, it might...
+            result = map.getValue("ows:name"); // highly unlikely for this to happen.  But, it might...
         }
         return result;
     }

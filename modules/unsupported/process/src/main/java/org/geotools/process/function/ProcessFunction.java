@@ -74,10 +74,7 @@ public class ProcessFunction implements Function {
             Literal fallbackValue) {
         super();
         String nsuri = processName.getNamespaceURI();
-        this.name =
-                nsuri == null
-                        ? processName.getLocalPart()
-                        : nsuri + ":" + processName.getLocalPart();
+        this.name = nsuri == null ? processName.getLocalPart() : nsuri + ":" + processName.getLocalPart();
         this.processName = processName;
         this.inputExpressions = inputExpressions;
         this.parameters = parameters;
@@ -99,13 +96,13 @@ public class ProcessFunction implements Function {
             for (String pn : paramNames) {
                 // we do not specify the parameter type to avoid validation issues with the
                 // different positional/named conventions
-                org.geotools.api.parameter.Parameter param =
-                        FunctionNameImpl.parameter(pn, Object.class, 0, 1);
+                org.geotools.api.parameter.Parameter param = FunctionNameImpl.parameter(pn, Object.class, 0, 1);
                 inputParams.add(param);
             }
         }
         Map<String, Parameter<?>> resultParams = Processors.getResultInfo(processName, null);
-        org.geotools.api.parameter.Parameter result = resultParams.values().iterator().next();
+        org.geotools.api.parameter.Parameter result =
+                resultParams.values().iterator().next();
         functionName = new FunctionNameImpl(name, result, inputParams);
     }
 
@@ -158,14 +155,12 @@ public class ProcessFunction implements Function {
             if (listener.getExceptions().size() > 0) {
                 // uh oh, an exception occurred during processing
                 Throwable t = listener.getExceptions().get(0);
-                throw new RuntimeException(
-                        "Failed to evaluate process function, error is: " + t.getMessage(), t);
+                throw new RuntimeException("Failed to evaluate process function, error is: " + t.getMessage(), t);
             }
 
             return getResult(results, processInputs);
         } catch (ProcessException e) {
-            throw new RuntimeException(
-                    "Failed to evaluate the process function, error is: " + e.getMessage(), e);
+            throw new RuntimeException("Failed to evaluate the process function, error is: " + e.getMessage(), e);
         }
     }
 
@@ -185,11 +180,10 @@ public class ProcessFunction implements Function {
             if (result != null) {
                 Map map = (Map) result;
                 if (map.size() > 1) {
-                    throw new InvalidParameterException(
-                            "The parameters to a ProcessFunction "
-                                    + "must all be maps with a single entry, "
-                                    + "the key is the process argument name, "
-                                    + "the value is the argument value");
+                    throw new InvalidParameterException("The parameters to a ProcessFunction "
+                            + "must all be maps with a single entry, "
+                            + "the key is the process argument name, "
+                            + "the value is the argument value");
                 } else {
                     // handle the key/value
                     Iterator it = map.entrySet().iterator();
@@ -201,11 +195,10 @@ public class ProcessFunction implements Function {
                     // see if we have a parameter with that name
                     Parameter<?> param = parameters.get(paramName);
                     if (param == null) {
-                        throw new InvalidParameterException(
-                                "Parameter "
-                                        + paramName
-                                        + " is not among the process parameters: "
-                                        + parameters.keySet());
+                        throw new InvalidParameterException("Parameter "
+                                + paramName
+                                + " is not among the process parameters: "
+                                + parameters.keySet());
                     } else {
                         // if the value is not null, convert to the param target type and add
                         // to the process invocation params
@@ -229,11 +222,11 @@ public class ProcessFunction implements Function {
             // from type to type
             if (!(paramValue instanceof Collection) && !(paramValue.getClass().isArray())) {
                 List<Object> collection = Collections.singletonList(paramValue);
-                converted =
-                        Converters.convert(collection, Array.newInstance(param.type, 0).getClass());
+                converted = Converters.convert(
+                        collection, Array.newInstance(param.type, 0).getClass());
             } else {
-                converted =
-                        Converters.convert(paramValue, Array.newInstance(param.type, 0).getClass());
+                converted = Converters.convert(
+                        paramValue, Array.newInstance(param.type, 0).getClass());
             }
         } else {
             converted = Converters.convert(paramValue, param.type);
@@ -245,13 +238,12 @@ public class ProcessFunction implements Function {
                 for (Object original : collection) {
                     Object convertedItem = Converters.convert(original, param.type);
                     if (original != null && convertedItem == null) {
-                        throw new InvalidParameterException(
-                                "Could not convert the value "
-                                        + original
-                                        + " into the expected type "
-                                        + param.type
-                                        + " for parameter "
-                                        + paramName);
+                        throw new InvalidParameterException("Could not convert the value "
+                                + original
+                                + " into the expected type "
+                                + param.type
+                                + " for parameter "
+                                + paramName);
                     }
                     convertedCollection.add(convertedItem);
                 }
@@ -263,13 +255,12 @@ public class ProcessFunction implements Function {
                 }
                 converted = array;
             } else {
-                throw new InvalidParameterException(
-                        "Could not convert the value "
-                                + paramValue
-                                + " into the expected type "
-                                + param.type
-                                + " for parameter "
-                                + paramName);
+                throw new InvalidParameterException("Could not convert the value "
+                        + paramValue
+                        + " into the expected type "
+                        + param.type
+                        + " for parameter "
+                        + paramName);
             }
         }
         return converted;

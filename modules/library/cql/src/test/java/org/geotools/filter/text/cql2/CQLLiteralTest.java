@@ -79,8 +79,7 @@ public class CQLLiteralTest {
 
         // Point":" <time-second> "Z"
         BinarySpatialOperator result =
-                (BinarySpatialOperator)
-                        CompilerUtil.parseFilter(this.language, "WITHIN(ATTR1, POINT(1 2))");
+                (BinarySpatialOperator) CompilerUtil.parseFilter(this.language, "WITHIN(ATTR1, POINT(1 2))");
 
         Literal geom = (Literal) result.getExpression2();
 
@@ -88,10 +87,8 @@ public class CQLLiteralTest {
         Assert.assertTrue(geom.getValue() instanceof org.locationtech.jts.geom.Point);
 
         // LineString
-        result =
-                (BinarySpatialOperator)
-                        CompilerUtil.parseFilter(
-                                this.language, "WITHIN(ATTR1, LINESTRING(1 2, 10 15))");
+        result = (BinarySpatialOperator)
+                CompilerUtil.parseFilter(this.language, "WITHIN(ATTR1, LINESTRING(1 2, 10 15))");
 
         geom = (Literal) result.getExpression2();
 
@@ -99,11 +96,8 @@ public class CQLLiteralTest {
         Assert.assertTrue(geom.getValue() instanceof org.locationtech.jts.geom.LineString);
 
         // Polygon
-        result =
-                (BinarySpatialOperator)
-                        CompilerUtil.parseFilter(
-                                this.language,
-                                "WITHIN(ATTR1, POLYGON((1 2, 15 2, 15 20, 15 21, 1 2)))");
+        result = (BinarySpatialOperator)
+                CompilerUtil.parseFilter(this.language, "WITHIN(ATTR1, POLYGON((1 2, 15 2, 15 20, 15 21, 1 2)))");
 
         geom = (Literal) result.getExpression2();
 
@@ -111,11 +105,8 @@ public class CQLLiteralTest {
         Assert.assertTrue(geom.getValue() instanceof org.locationtech.jts.geom.Polygon);
 
         // MultiPoint
-        result =
-                (BinarySpatialOperator)
-                        CompilerUtil.parseFilter(
-                                this.language,
-                                "WITHIN(ATTR1, MULTIPOINT( (1 2), (15 2), (15 20), (15 21), (1 2) ))");
+        result = (BinarySpatialOperator) CompilerUtil.parseFilter(
+                this.language, "WITHIN(ATTR1, MULTIPOINT( (1 2), (15 2), (15 20), (15 21), (1 2) ))");
 
         geom = (Literal) result.getExpression2();
 
@@ -123,11 +114,8 @@ public class CQLLiteralTest {
         Assert.assertTrue(geom.getValue() instanceof org.locationtech.jts.geom.MultiPoint);
 
         // MultiLineString
-        result =
-                (BinarySpatialOperator)
-                        CompilerUtil.parseFilter(
-                                this.language,
-                                "WITHIN(ATTR1, MULTILINESTRING((10 10, 20 20),(15 15,30 15)) )");
+        result = (BinarySpatialOperator) CompilerUtil.parseFilter(
+                this.language, "WITHIN(ATTR1, MULTILINESTRING((10 10, 20 20),(15 15,30 15)) )");
 
         geom = (Literal) result.getExpression2();
 
@@ -135,11 +123,10 @@ public class CQLLiteralTest {
         Assert.assertTrue(geom.getValue() instanceof org.locationtech.jts.geom.MultiLineString);
 
         // MultiPolygon
-        result =
-                (BinarySpatialOperator)
-                        CompilerUtil.parseFilter(
-                                this.language,
-                                "WITHIN(ATTR1, MULTIPOLYGON( ((10 10, 10 20, 20 20, 20 15, 10 10)),((60 60, 70 70, 80 60, 60 60 )) ) )");
+        result = (BinarySpatialOperator)
+                CompilerUtil.parseFilter(
+                        this.language,
+                        "WITHIN(ATTR1, MULTIPOLYGON( ((10 10, 10 20, 20 20, 20 15, 10 10)),((60 60, 70 70, 80 60, 60 60 )) ) )");
 
         geom = (Literal) result.getExpression2();
 
@@ -147,10 +134,8 @@ public class CQLLiteralTest {
         Assert.assertTrue(geom.getValue() instanceof org.locationtech.jts.geom.MultiPolygon);
 
         // ENVELOPE
-        result =
-                (BinarySpatialOperator)
-                        CompilerUtil.parseFilter(
-                                this.language, "WITHIN(ATTR1, ENVELOPE( 10, 20, 30, 40) )");
+        result = (BinarySpatialOperator)
+                CompilerUtil.parseFilter(this.language, "WITHIN(ATTR1, ENVELOPE( 10, 20, 30, 40) )");
 
         geom = (Literal) result.getExpression2();
 
@@ -182,8 +167,7 @@ public class CQLLiteralTest {
 
         // space check
         final String strWithSpace = "ALL PRACTICES";
-        Filter filterWithSpace =
-                CompilerUtil.parseFilter(language, "practice='" + strWithSpace + "'");
+        Filter filterWithSpace = CompilerUtil.parseFilter(language, "practice='" + strWithSpace + "'");
         Assert.assertNotNull(filterWithSpace);
         Assert.assertTrue(filterWithSpace instanceof PropertyIsEqualTo);
 
@@ -205,8 +189,7 @@ public class CQLLiteralTest {
         final String expectedWithout = "ab";
 
         Filter filterWithoutQuote =
-                CompilerUtil.parseFilter(
-                        language, "MAJOR_WATERSHED_SYSTEM = '" + expectedWithout + "'");
+                CompilerUtil.parseFilter(language, "MAJOR_WATERSHED_SYSTEM = '" + expectedWithout + "'");
 
         Assert.assertNotNull(filterWithoutQuote);
         Assert.assertTrue(filterWithoutQuote instanceof PropertyIsEqualTo);
@@ -326,12 +309,9 @@ public class CQLLiteralTest {
             Assert.assertEquals(Long.parseLong(expected), actual.longValue());
         }
         {
-            PropertyIsEqualTo resultFilter =
-                    (PropertyIsEqualTo)
-                            CompilerUtil.parseFilter(
-                                    language,
-                                    "RELATE(the_geom, LINESTRING (-134.921387 58.687767, -135.303391 59"
-                                            + ".092838), 201000002)");
+            PropertyIsEqualTo resultFilter = (PropertyIsEqualTo) CompilerUtil.parseFilter(
+                    language,
+                    "RELATE(the_geom, LINESTRING (-134.921387 58.687767, -135.303391 59" + ".092838), 201000002)");
 
             Expression relateFunction = resultFilter.getExpression1();
             Assert.assertTrue(relateFunction instanceof FilterFunction_relatePattern);
@@ -359,14 +339,9 @@ public class CQLLiteralTest {
 
     private void testRelatePatten(final String pattern) throws CQLException {
 
-        PropertyIsEqualTo resultFilter =
-                (PropertyIsEqualTo)
-                        CompilerUtil.parseFilter(
-                                language,
-                                "RELATE(the_geom, LINESTRING (-134.921387 58.687767, -135.303391 59"
-                                        + ".092838), "
-                                        + pattern
-                                        + ")");
+        PropertyIsEqualTo resultFilter = (PropertyIsEqualTo) CompilerUtil.parseFilter(
+                language,
+                "RELATE(the_geom, LINESTRING (-134.921387 58.687767, -135.303391 59" + ".092838), " + pattern + ")");
 
         Expression relateFunction = resultFilter.getExpression1();
         Assert.assertTrue(relateFunction instanceof FilterFunction_relatePattern);
@@ -432,16 +407,15 @@ public class CQLLiteralTest {
 
     /** Asserts that the geometries are equals */
     protected void assertEqualsReferencedGeometries(
-            final String strGeomExpected, final Geometry actualGeometry, final int expectedSrid)
-            throws Exception {
+            final String strGeomExpected, final Geometry actualGeometry, final int expectedSrid) throws Exception {
         CoordinateReferenceSystem expectedCRS = CRS.decode("EPSG:" + expectedSrid);
         assertThat(actualGeometry.getUserData(), equalTo(expectedCRS));
         assertEqualsGeometries(strGeomExpected, actualGeometry);
     }
 
     /** Asserts that the geometries are equals */
-    protected void assertEqualsGeometries(
-            final String strGeomExpected, final Geometry actualGeometry) throws Exception {
+    protected void assertEqualsGeometries(final String strGeomExpected, final Geometry actualGeometry)
+            throws Exception {
 
         WKTReader reader = new WKTReader();
         Geometry expectedGeometry = reader.read(strGeomExpected);

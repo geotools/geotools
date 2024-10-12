@@ -53,8 +53,7 @@ public class XMLUtils {
             } catch (IllegalArgumentException e) {
                 classes.add(transformerFactory.getClass().getName());
             }
-            SchemaFactory schemaFactory =
-                    SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+            SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
             try {
                 schemaFactory.setProperty(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
                 schemaFactory.setProperty(XMLConstants.ACCESS_EXTERNAL_DTD, "");
@@ -65,8 +64,7 @@ public class XMLUtils {
             throw new IllegalStateException("Unable to check support for JAXP 1.5 properties", e);
         }
         if (!classes.isEmpty()) {
-            throw new IllegalStateException(
-                    "JAXP 1.5 properties are not supported by: " + String.join(", ", classes));
+            throw new IllegalStateException("JAXP 1.5 properties are not supported by: " + String.join(", ", classes));
         }
     }
 

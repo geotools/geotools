@@ -57,8 +57,7 @@ public class StringFileNameExtractorTest {
     @Test
     public void testGroupExtraction() {
         PropertiesCollectorSPI spi = getStringFileNameSpi();
-        PropertiesCollector collector =
-                spi.create("regex=_([0-9]{8}T[0-9]{6})_", Arrays.asList("seq"));
+        PropertiesCollector collector = spi.create("regex=_([0-9]{8}T[0-9]{6})_", Arrays.asList("seq"));
         File file = new File("polyphemus_20130301T000000_.nc");
         collector.collect(file);
         collector.setProperties(feature);
@@ -70,8 +69,7 @@ public class StringFileNameExtractorTest {
     @Test
     public void testMultipleGroupExtraction() {
         PropertiesCollectorSPI spi = getStringFileNameSpi();
-        PropertiesCollector collector =
-                spi.create("regex=_([0-9]{8})T([0-9]{6})_", Arrays.asList("seq"));
+        PropertiesCollector collector = spi.create("regex=_([0-9]{8})T([0-9]{6})_", Arrays.asList("seq"));
         File file = new File("polyphemus_20130301T000000_.nc");
         collector.collect(file);
         collector.setProperties(feature);

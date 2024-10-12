@@ -61,12 +61,9 @@ class SrsReader {
         } else {
             throw new RuntimeException("SRS-CSV is malformed");
         }
-        Double majorAxis =
-                "null".equals(entries.get(9)) ? null : Double.parseDouble(entries.get(9));
-        Double minorAxis =
-                "null".equals(entries.get(10)) ? null : Double.parseDouble(entries.get(10));
-        Double invFlattening =
-                "null".equals(entries.get(11)) ? null : Double.parseDouble(entries.get(11));
+        Double majorAxis = "null".equals(entries.get(9)) ? null : Double.parseDouble(entries.get(9));
+        Double minorAxis = "null".equals(entries.get(10)) ? null : Double.parseDouble(entries.get(10));
+        Double invFlattening = "null".equals(entries.get(11)) ? null : Double.parseDouble(entries.get(11));
         double minx = Double.parseDouble(entries.get(12));
         double maxx = Double.parseDouble(entries.get(13));
         double miny = Double.parseDouble(entries.get(14));

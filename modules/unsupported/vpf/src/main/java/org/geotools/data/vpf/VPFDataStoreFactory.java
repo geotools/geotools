@@ -140,8 +140,7 @@ public class VPFDataStoreFactory implements DataStoreFactorySpi {
         Path lhtParentPath = lhtRealPath.getParent();
 
         if (lhtParentPath == null) {
-            throw new IOException(
-                    "Fileparent either doesn't exist or is unreadable : " + lhtRealPath);
+            throw new IOException("Fileparent either doesn't exist or is unreadable : " + lhtRealPath);
         }
 
         String rootDir = lhtParentPath.toString();
@@ -184,8 +183,7 @@ public class VPFDataStoreFactory implements DataStoreFactorySpi {
         try {
             result = new VPFLibrary(libraryFeature, file, namespace);
         } catch (SchemaException exc) {
-            throw new IOException(
-                    "There was a problem making one of " + "the feature classes as a FeatureType.");
+            throw new IOException("There was a problem making one of " + "the feature classes as a FeatureType.");
         }
 
         return result;
@@ -234,8 +232,7 @@ public class VPFDataStoreFactory implements DataStoreFactorySpi {
         return create(params);
     }
     /** A parameter which is the directory containing the LHT file */
-    public static final Param DIR =
-            new Param("url", URL.class, "Directory containing lht file", true);
+    public static final Param DIR = new Param("url", URL.class, "Directory containing lht file", true);
 
     public static final Param NAMESPACEP =
             new Param("namespace", URI.class, "uri to a the namespace", false); // not required

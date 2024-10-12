@@ -142,8 +142,7 @@ import org.xml.sax.helpers.NamespaceSupport;
  */
 public abstract class XMLTestSupport extends XmlTestSupport {
     /** Logging instance */
-    protected static Logger logger =
-            org.geotools.util.logging.Logging.getLogger(XMLTestSupport.class);
+    protected static Logger logger = org.geotools.util.logging.Logging.getLogger(XMLTestSupport.class);
 
     /** the instance document */
     protected Document document;
@@ -181,8 +180,7 @@ public abstract class XMLTestSupport extends XmlTestSupport {
         Configuration config = createConfiguration();
 
         if (type != null) {
-            config.getContext()
-                    .registerComponentInstance("http://geotools.org/typeDefinition", type);
+            config.getContext().registerComponentInstance("http://geotools.org/typeDefinition", type);
         }
 
         // register additional namespaces
@@ -250,9 +248,7 @@ public abstract class XMLTestSupport extends XmlTestSupport {
 
         if (type != null) {
             // set the hint
-            configuration
-                    .getContext()
-                    .registerComponentInstance("http://geotools.org/typeDefinition", type);
+            configuration.getContext().registerComponentInstance("http://geotools.org/typeDefinition", type);
         }
 
         XSDSchema schema = configuration.getXSD().getSchema();

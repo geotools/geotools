@@ -155,8 +155,7 @@ public class Contours {
      * @param contourValue
      * @return
      */
-    public ArrayList<LineString> extractContour(
-            Collection<QuadEdge> primaryEdges, double contourValue) {
+    public ArrayList<LineString> extractContour(Collection<QuadEdge> primaryEdges, double contourValue) {
         ArrayList<LineString> lines = new ArrayList<>();
         for (QuadEdge edge : primaryEdges) {
             Vertex[] v = new Vertex[3];

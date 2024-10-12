@@ -79,17 +79,14 @@ public class AbstractCapabilitiesFilterSplitterTests {
 
     protected Function testFunction = new FilterFunction_geometryType();
 
-    protected CapabilitiesFilterSplitter newVisitor(Capabilities supportedCaps)
-            throws SchemaException {
+    protected CapabilitiesFilterSplitter newVisitor(Capabilities supportedCaps) throws SchemaException {
         return new CapabilitiesFilterSplitter(
                 supportedCaps,
-                DataUtilities.createType(
-                        typeName, geomAtt + ":Point," + nameAtt + ":String," + numAtt + ":int"),
+                DataUtilities.createType(typeName, geomAtt + ":Point," + nameAtt + ":String," + numAtt + ":int"),
                 accessor);
     }
 
-    protected PropertyIsEqualTo createPropertyIsEqualToFilter(String attr, String value)
-            throws IllegalFilterException {
+    protected PropertyIsEqualTo createPropertyIsEqualToFilter(String attr, String value) throws IllegalFilterException {
         return ff.equals(ff.property(attr), ff.literal(value));
     }
 
@@ -106,8 +103,7 @@ public class AbstractCapabilitiesFilterSplitterTests {
      *     FilterType used in filter
      * @param attToEdit the attribute in filter that is queried. If null then edit test is not ran.
      */
-    protected void runTest(Filter filter, Capabilities supportedCaps, String attToEdit)
-            throws SchemaException {
+    protected void runTest(Filter filter, Capabilities supportedCaps, String attToEdit) throws SchemaException {
         // initialize fields that might be previously modified in current test
         CapabilitiesFilterSplitter visitor = newVisitor(new Capabilities());
         if (accessor != null) accessor.setUpdate("", null);

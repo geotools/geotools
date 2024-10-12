@@ -73,11 +73,8 @@ public class ScreenMapShapefileTest {
         fb.set("name", "The name");
         feature = fb.buildFeature(null);
 
-        File shpFile =
-                new File(
-                        "./target/screenMapTest/"
-                                + feature.getFeatureType().getName().getLocalPart()
-                                + ".shp");
+        File shpFile = new File(
+                "./target/screenMapTest/" + feature.getFeatureType().getName().getLocalPart() + ".shp");
         shpFile.getParentFile().mkdirs();
 
         ShapefileDataStoreFactory dataStoreFactory = new ShapefileDataStoreFactory();
@@ -85,9 +82,8 @@ public class ScreenMapShapefileTest {
         params.put(ShapefileDataStoreFactory.URLP.key, shpFile.toURI().toURL());
         shapeFileDataStore = dataStoreFactory.createNewDataStore(params);
         shapeFileDataStore.createSchema(feature.getFeatureType());
-        SimpleFeatureStore featureStore =
-                (SimpleFeatureStore)
-                        shapeFileDataStore.getFeatureSource(shapeFileDataStore.getTypeNames()[0]);
+        SimpleFeatureStore featureStore = (SimpleFeatureStore)
+                shapeFileDataStore.getFeatureSource(shapeFileDataStore.getTypeNames()[0]);
         featureStore.addFeatures(DataUtilities.collection(feature));
 
         RendererBaseTest.setupVeraFonts();
@@ -114,30 +110,12 @@ public class ScreenMapShapefileTest {
 
     private static void checkTiles(SimpleFeatureSource featureSource) {
         Style style = createPointStyle();
-        BufferedImage untiled =
-                renderImage(
-                        featureSource,
-                        100,
-                        100,
-                        new Rectangle2D.Double(5, 5, 10, 10),
-                        style,
-                        Collections.emptyMap());
+        BufferedImage untiled = renderImage(
+                featureSource, 100, 100, new Rectangle2D.Double(5, 5, 10, 10), style, Collections.emptyMap());
         BufferedImage tile1 =
-                renderImage(
-                        featureSource,
-                        50,
-                        100,
-                        new Rectangle2D.Double(5, 5, 5, 10),
-                        style,
-                        Collections.emptyMap());
-        BufferedImage tile2 =
-                renderImage(
-                        featureSource,
-                        50,
-                        100,
-                        new Rectangle2D.Double(10, 5, 5, 10),
-                        style,
-                        Collections.emptyMap());
+                renderImage(featureSource, 50, 100, new Rectangle2D.Double(5, 5, 5, 10), style, Collections.emptyMap());
+        BufferedImage tile2 = renderImage(
+                featureSource, 50, 100, new Rectangle2D.Double(10, 5, 5, 10), style, Collections.emptyMap());
 
         assertEqualsImage(untiled.getSubimage(0, 0, 50, 100), tile1);
         assertEqualsImage(untiled.getSubimage(50, 0, 50, 100), tile2);
@@ -150,8 +128,7 @@ public class ScreenMapShapefileTest {
             for (int x = 0; x < expected.getWidth(); ++x) {
                 int expectedRgb = expected.getRGB(x, y);
                 int actualRgb = actual.getRGB(x, y);
-                assertEquals(
-                        "[" + y + ", " + x + "]", new Color(expectedRgb), new Color(actualRgb));
+                assertEquals("[" + y + ", " + x + "]", new Color(expectedRgb), new Color(actualRgb));
             }
         }
     }
@@ -185,8 +162,7 @@ public class ScreenMapShapefileTest {
         StyleFactory sf = CommonFactoryFinder.getStyleFactory();
         URL iconUrl = ScreenMapShapefileTest.class.getResource("icon.png");
         ExternalGraphic icon = sf.createExternalGraphic(iconUrl, "image/png");
-        Graphic graphic =
-                sf.createGraphic(new ExternalGraphic[] {icon}, null, null, null, null, null);
+        Graphic graphic = sf.createGraphic(new ExternalGraphic[] {icon}, null, null, null, null, null);
         PointSymbolizer symbolizer = sf.createPointSymbolizer(graphic, "the_geom");
 
         Rule rule = sf.createRule();
@@ -205,14 +181,10 @@ public class ScreenMapShapefileTest {
         SimpleFeatureSource fs = shapeFileDataStore.getFeatureSource(featureType.getTypeName());
         Style style = createLabelOffsetStyle();
         Map<Object, Object> renderingHints = new HashMap<>();
-        BufferedImage image =
-                renderImage(
-                        fs, 200, 200, new Rectangle2D.Double(15, 0, 25, 10), style, renderingHints);
+        BufferedImage image = renderImage(fs, 200, 200, new Rectangle2D.Double(15, 0, 25, 10), style, renderingHints);
         assertEquals(0, countNonBlankPixels(image));
         renderingHints.put(StreamingRenderer.RENDERING_BUFFER, 100);
-        image =
-                renderImage(
-                        fs, 200, 200, new Rectangle2D.Double(15, 0, 25, 10), style, renderingHints);
+        image = renderImage(fs, 200, 200, new Rectangle2D.Double(15, 0, 25, 10), style, renderingHints);
         assertTrue(countNonBlankPixels(image) > 0);
     }
 

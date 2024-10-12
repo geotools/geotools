@@ -281,13 +281,10 @@ public class Statistics implements Cloneable, Serializable {
     /** Returns a hash code value for this statistics. */
     @Override
     public int hashCode() {
-        final long code =
-                (Double.doubleToLongBits(min)
-                        + 37
-                                * (Double.doubleToLongBits(max)
-                                        + 37
-                                                * (Double.doubleToLongBits(sum)
-                                                        + 37 * (Double.doubleToLongBits(sum2)))));
+        final long code = (Double.doubleToLongBits(min)
+                + 37
+                        * (Double.doubleToLongBits(max)
+                                + 37 * (Double.doubleToLongBits(sum) + 37 * (Double.doubleToLongBits(sum2)))));
         return (int) code ^ (int) (code >>> 32) ^ n;
     }
 
@@ -321,18 +318,10 @@ public class Statistics implements Cloneable, Serializable {
      * separated by tabulations. Otherwise, they are separated by spaces.
      */
     public String toString(final Locale locale, final boolean tabulations) {
-        String text =
-                Descriptions.getResources(locale)
-                        .getString(
-                                DescriptionKeys.STATISTICS_TO_STRING_$6,
-                                new Number[] {
-                                    count(),
-                                    minimum(),
-                                    maximum(),
-                                    mean(),
-                                    rms(),
-                                    standardDeviation(false)
-                                });
+        String text = Descriptions.getResources(locale)
+                .getString(
+                        DescriptionKeys.STATISTICS_TO_STRING_$6,
+                        new Number[] {count(), minimum(), maximum(), mean(), rms(), standardDeviation(false)});
         if (!tabulations) {
             try (final TableWriter tmp = new TableWriter(null, 1)) {
                 tmp.write(text);

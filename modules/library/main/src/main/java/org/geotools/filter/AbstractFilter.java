@@ -28,8 +28,7 @@ import org.geotools.api.filter.Filter;
 public abstract class AbstractFilter extends FilterAbstract implements FilterType, Filter {
 
     /** The logger for the default core module. */
-    protected static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(AbstractFilter.class);
+    protected static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(AbstractFilter.class);
 
     protected AbstractFilter() {}
 

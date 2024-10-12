@@ -27,11 +27,10 @@ public class DB2EmptyTestSetup extends JDBCEmptyTestSetup {
     @Override
     protected void createEmptyTable() throws Exception {
         try (Connection con = getDataSource().getConnection()) {
-            con.prepareStatement(
-                            "CREATE TABLE "
-                                    + DB2TestUtil.SCHEMA_QUOTED
-                                    + ".\"empty\"(\"id\" int  PRIMARY KEY not null GENERATED ALWAYS AS IDENTITY,  "
-                                    + "\"geom\" db2gse.ST_POLYGON) ")
+            con.prepareStatement("CREATE TABLE "
+                            + DB2TestUtil.SCHEMA_QUOTED
+                            + ".\"empty\"(\"id\" int  PRIMARY KEY not null GENERATED ALWAYS AS IDENTITY,  "
+                            + "\"geom\" db2gse.ST_POLYGON) ")
                     .execute();
             DB2Util.executeRegister(DB2TestUtil.SCHEMA, "empty", "geom", DB2TestUtil.SRSNAME, con);
         }

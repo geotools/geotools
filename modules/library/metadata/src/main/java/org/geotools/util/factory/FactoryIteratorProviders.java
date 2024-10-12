@@ -144,8 +144,7 @@ final class FactoryIteratorProviders {
             if (GLOBAL.iteratorProviders == null) {
                 return new FactoryIteratorProvider[0];
             }
-            return GLOBAL.iteratorProviders.toArray(
-                    new FactoryIteratorProvider[GLOBAL.iteratorProviders.size()]);
+            return GLOBAL.iteratorProviders.toArray(new FactoryIteratorProvider[GLOBAL.iteratorProviders.size()]);
         }
     }
 }

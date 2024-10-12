@@ -200,8 +200,7 @@ final class CQL2FilterBuilder extends AbstractFilterBuilder {
      */
     public MultiLineString buildMultiLineString(final int linestringtextNode) throws CQLException {
 
-        MultiLineStringBuilder builder =
-                new MultiLineStringBuilder(getStatement(), getResultStack());
+        MultiLineStringBuilder builder = new MultiLineStringBuilder(getStatement(), getResultStack());
 
         MultiLineString ml = (MultiLineString) builder.build(linestringtextNode);
 
@@ -228,11 +227,9 @@ final class CQL2FilterBuilder extends AbstractFilterBuilder {
      *
      * @return GeometryCollection
      */
-    public GeometryCollection buildGeometryCollection(final int jjtgeometryliteral)
-            throws CQLException {
+    public GeometryCollection buildGeometryCollection(final int jjtgeometryliteral) throws CQLException {
 
-        GeometryCollectionBuilder builder =
-                new GeometryCollectionBuilder(getStatement(), getResultStack());
+        GeometryCollectionBuilder builder = new GeometryCollectionBuilder(getStatement(), getResultStack());
 
         GeometryCollection gc = (GeometryCollection) builder.build(jjtgeometryliteral);
 
@@ -266,8 +263,7 @@ final class CQL2FilterBuilder extends AbstractFilterBuilder {
     @Override
     public BinarySpatialOperator buildSpatialEqualFilter() throws CQLException {
 
-        SpatialOperationBuilder builder =
-                new SpatialOperationBuilder(getResultStack(), getFilterFactory());
+        SpatialOperationBuilder builder = new SpatialOperationBuilder(getResultStack(), getFilterFactory());
         BinarySpatialOperator filter = builder.buildEquals();
 
         return filter;
@@ -275,8 +271,7 @@ final class CQL2FilterBuilder extends AbstractFilterBuilder {
 
     @Override
     public BinarySpatialOperator buildSpatialDisjointFilter() throws CQLException {
-        SpatialOperationBuilder builder =
-                new SpatialOperationBuilder(getResultStack(), getFilterFactory());
+        SpatialOperationBuilder builder = new SpatialOperationBuilder(getResultStack(), getFilterFactory());
 
         BinarySpatialOperator filter = builder.buildDisjoint();
 
@@ -286,8 +281,7 @@ final class CQL2FilterBuilder extends AbstractFilterBuilder {
     @Override
     public BinarySpatialOperator buildSpatialIntersectsFilter() throws CQLException {
 
-        SpatialOperationBuilder builder =
-                new SpatialOperationBuilder(getResultStack(), getFilterFactory());
+        SpatialOperationBuilder builder = new SpatialOperationBuilder(getResultStack(), getFilterFactory());
 
         BinarySpatialOperator filter = builder.buildIntersects();
 
@@ -297,8 +291,7 @@ final class CQL2FilterBuilder extends AbstractFilterBuilder {
     @Override
     public BinarySpatialOperator buildSpatialTouchesFilter() throws CQLException {
 
-        SpatialOperationBuilder builder =
-                new SpatialOperationBuilder(getResultStack(), getFilterFactory());
+        SpatialOperationBuilder builder = new SpatialOperationBuilder(getResultStack(), getFilterFactory());
 
         BinarySpatialOperator filter = builder.buildTouches();
 
@@ -308,8 +301,7 @@ final class CQL2FilterBuilder extends AbstractFilterBuilder {
     @Override
     public BinarySpatialOperator buildSpatialCrossesFilter() throws CQLException {
 
-        SpatialOperationBuilder builder =
-                new SpatialOperationBuilder(getResultStack(), getFilterFactory());
+        SpatialOperationBuilder builder = new SpatialOperationBuilder(getResultStack(), getFilterFactory());
 
         BinarySpatialOperator filter = builder.buildCrosses();
 
@@ -333,8 +325,7 @@ final class CQL2FilterBuilder extends AbstractFilterBuilder {
 
         // validates the length
         if (pattern.length() != 9) {
-            throw new CQLException(
-                    "the pattern DE-9IM must have nine (9) characters", token, getStatement());
+            throw new CQLException("the pattern DE-9IM must have nine (9) characters", token, getStatement());
         }
 
         // validates that the pattern has only the characters T,F,*,0,1,2
@@ -367,8 +358,7 @@ final class CQL2FilterBuilder extends AbstractFilterBuilder {
     @Override
     public BinarySpatialOperator buildSpatialWithinFilter() throws CQLException {
 
-        SpatialOperationBuilder builder =
-                new SpatialOperationBuilder(getResultStack(), getFilterFactory());
+        SpatialOperationBuilder builder = new SpatialOperationBuilder(getResultStack(), getFilterFactory());
 
         BinarySpatialOperator filter = builder.buildWithin();
 
@@ -378,8 +368,7 @@ final class CQL2FilterBuilder extends AbstractFilterBuilder {
     @Override
     public BinarySpatialOperator buildSpatialContainsFilter() throws CQLException {
 
-        SpatialOperationBuilder builder =
-                new SpatialOperationBuilder(getResultStack(), getFilterFactory());
+        SpatialOperationBuilder builder = new SpatialOperationBuilder(getResultStack(), getFilterFactory());
 
         BinarySpatialOperator filter = builder.buildContains();
 
@@ -389,8 +378,7 @@ final class CQL2FilterBuilder extends AbstractFilterBuilder {
     @Override
     public BinarySpatialOperator buildSpatialOverlapsFilter() throws CQLException {
 
-        SpatialOperationBuilder builder =
-                new SpatialOperationBuilder(getResultStack(), getFilterFactory());
+        SpatialOperationBuilder builder = new SpatialOperationBuilder(getResultStack(), getFilterFactory());
 
         BinarySpatialOperator filter = builder.buildOverlaps();
 
@@ -400,8 +388,7 @@ final class CQL2FilterBuilder extends AbstractFilterBuilder {
     @Override
     public BBOX buildBBox() throws CQLException {
 
-        SpatialOperationBuilder builder =
-                new SpatialOperationBuilder(getResultStack(), getFilterFactory());
+        SpatialOperationBuilder builder = new SpatialOperationBuilder(getResultStack(), getFilterFactory());
 
         BBOX filter = builder.buildBBox();
 
@@ -411,8 +398,7 @@ final class CQL2FilterBuilder extends AbstractFilterBuilder {
     @Override
     public BBOX buildBBoxWithCRS() throws CQLException {
 
-        SpatialOperationBuilder builder =
-                new SpatialOperationBuilder(getResultStack(), getFilterFactory());
+        SpatialOperationBuilder builder = new SpatialOperationBuilder(getResultStack(), getFilterFactory());
 
         BBOX filter = builder.buildBBoxWithCRS();
 
@@ -450,8 +436,7 @@ final class CQL2FilterBuilder extends AbstractFilterBuilder {
             PeriodNode pn = (PeriodNode) built;
             Position start = new DefaultPosition(pn.getBeginning().evaluate(null, Date.class));
             Position end = new DefaultPosition(pn.getEnding().evaluate(null, Date.class));
-            return filterFactory.literal(
-                    new DefaultPeriod(new DefaultInstant(start), new DefaultInstant(end)));
+            return filterFactory.literal(new DefaultPeriod(new DefaultInstant(start), new DefaultInstant(end)));
         }
         return (Expression) built;
     }
@@ -467,8 +452,7 @@ final class CQL2FilterBuilder extends AbstractFilterBuilder {
         if (ex1 instanceof PropertyName && ex2 instanceof Literal) {
             Object value = ex2.evaluate(null);
             if (value instanceof Period) {
-                return filterFactory.before(
-                        ex1, filterFactory.literal(getBeginDate((Period) value)));
+                return filterFactory.before(ex1, filterFactory.literal(getBeginDate((Period) value)));
             }
         }
         return filterFactory.before(ex1, ex2);

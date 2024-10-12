@@ -84,8 +84,7 @@ public class JFileDataStoreChooser extends JFileChooser {
 
                 } else {
                     // fallback
-                    fileAssociations.put(
-                            ext, ext.toUpperCase().substring(1) + "files (*" + ext + ")");
+                    fileAssociations.put(ext, ext.toUpperCase().substring(1) + "files (*" + ext + ")");
                 }
             }
         }
@@ -136,30 +135,28 @@ public class JFileDataStoreChooser extends JFileChooser {
     private void init(final Map<String, String> fileAssociations) {
 
         for (final String ext : fileAssociations.keySet()) {
-            addChoosableFileFilter(
-                    new FileFilter() {
+            addChoosableFileFilter(new FileFilter() {
 
-                        @Override
-                        public boolean accept(File f) {
-                            if (f.isDirectory()) {
-                                return true;
-                            }
+                @Override
+                public boolean accept(File f) {
+                    if (f.isDirectory()) {
+                        return true;
+                    }
 
-                            for (String ext : fileAssociations.keySet()) {
-                                if (f.getPath().endsWith(ext)
-                                        || f.getPath().endsWith(ext.toUpperCase())) {
-                                    return true;
-                                }
-                            }
-
-                            return false;
+                    for (String ext : fileAssociations.keySet()) {
+                        if (f.getPath().endsWith(ext) || f.getPath().endsWith(ext.toUpperCase())) {
+                            return true;
                         }
+                    }
 
-                        @Override
-                        public String getDescription() {
-                            return fileAssociations.get(ext);
-                        }
-                    });
+                    return false;
+                }
+
+                @Override
+                public String getDescription() {
+                    return fileAssociations.get(ext);
+                }
+            });
         }
     }
 
@@ -170,31 +167,30 @@ public class JFileDataStoreChooser extends JFileChooser {
      */
     public JFileDataStoreChooser(final FileDataStoreFactorySpi format) {
 
-        setFileFilter(
-                new FileFilter() {
+        setFileFilter(new FileFilter() {
 
-                    @Override
-                    public boolean accept(File f) {
-                        if (f.isDirectory()) {
-                            return true;
-                        }
+            @Override
+            public boolean accept(File f) {
+                if (f.isDirectory()) {
+                    return true;
+                }
 
-                        for (String ext : format.getFileExtensions()) {
-                            if (f.getPath().endsWith(ext)) {
-                                return true;
-                            }
-                            if (f.getPath().endsWith(ext.toUpperCase())) {
-                                return true;
-                            }
-                        }
-                        return false;
+                for (String ext : format.getFileExtensions()) {
+                    if (f.getPath().endsWith(ext)) {
+                        return true;
                     }
-
-                    @Override
-                    public String getDescription() {
-                        return format.getDescription();
+                    if (f.getPath().endsWith(ext.toUpperCase())) {
+                        return true;
                     }
-                });
+                }
+                return false;
+            }
+
+            @Override
+            public String getDescription() {
+                return format.getDescription();
+            }
+        });
     }
 
     /**
@@ -219,8 +215,7 @@ public class JFileDataStoreChooser extends JFileChooser {
      * @return the selected file or null if the user cancelled the selection
      * @throws java.awt.HeadlessException if run in an unsupported environment
      */
-    public static File showOpenFile(String extension, File initialDir, Component parent)
-            throws HeadlessException {
+    public static File showOpenFile(String extension, File initialDir, Component parent) throws HeadlessException {
         JFileDataStoreChooser dialog = new JFileDataStoreChooser(extension);
         if (initialDir != null) {
             if (initialDir.isDirectory()) {
@@ -245,8 +240,7 @@ public class JFileDataStoreChooser extends JFileChooser {
      * @return the selected file or null if the user cancelled the selection
      * @throws java.awt.HeadlessException if run in an unsupported environment
      */
-    public static File showOpenFile(String[] extensions, Component parent)
-            throws HeadlessException {
+    public static File showOpenFile(String[] extensions, Component parent) throws HeadlessException {
         return showOpenFile(extensions, null, parent);
     }
 
@@ -260,8 +254,7 @@ public class JFileDataStoreChooser extends JFileChooser {
      * @return the selected file or null if the user cancelled the selection
      * @throws java.awt.HeadlessException if run in an unsupported environment
      */
-    public static File showOpenFile(String[] extensions, File initialDir, Component parent)
-            throws HeadlessException {
+    public static File showOpenFile(String[] extensions, File initialDir, Component parent) throws HeadlessException {
 
         JFileDataStoreChooser dialog = new JFileDataStoreChooser(extensions);
         if (initialDir != null) {
@@ -287,8 +280,7 @@ public class JFileDataStoreChooser extends JFileChooser {
      * @return the selected file or null if the user cancelled the selection
      * @throws java.awt.HeadlessException if run in an unsupported environment
      */
-    public static File showOpenFile(FileDataStoreFactorySpi format, Component parent)
-            throws HeadlessException {
+    public static File showOpenFile(FileDataStoreFactorySpi format, Component parent) throws HeadlessException {
         return showOpenFile(format, null, parent);
     }
 
@@ -302,8 +294,7 @@ public class JFileDataStoreChooser extends JFileChooser {
      * @return the selected file or null if the user cancelled the selection
      * @throws java.awt.HeadlessException if run in an unsupported environment
      */
-    public static File showOpenFile(
-            FileDataStoreFactorySpi format, File initialDir, Component parent)
+    public static File showOpenFile(FileDataStoreFactorySpi format, File initialDir, Component parent)
             throws HeadlessException {
 
         JFileDataStoreChooser dialog = new JFileDataStoreChooser(format);

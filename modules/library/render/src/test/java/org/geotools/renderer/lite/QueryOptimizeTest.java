@@ -58,17 +58,16 @@ public class QueryOptimizeTest {
         mc.addLayer(new FeatureLayer(squareFS, style));
 
         renderer.setMapContent(mc);
-        renderer.addRenderListener(
-                new RenderListener() {
+        renderer.addRenderListener(new RenderListener() {
 
-                    @Override
-                    public void featureRenderer(SimpleFeature feature) {
-                        count++;
-                    }
+            @Override
+            public void featureRenderer(SimpleFeature feature) {
+                count++;
+            }
 
-                    @Override
-                    public void errorOccurred(Exception e) {}
-                });
+            @Override
+            public void errorOccurred(Exception e) {}
+        });
 
         RendererBaseTest.showRender("OneSquare", renderer, TIME, bounds);
         Assert.assertEquals(2, count);

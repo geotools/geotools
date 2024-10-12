@@ -86,9 +86,8 @@ public class FeatureTypeMappingIndexTest extends AppSchemaTestSupport {
 
     @Test
     public void testIndexesSources() throws Exception {
-        try (Stream<SimpleFeature> fstream =
-                FeatureStreams.toFeatureStream(
-                        mappedSource.getMapping().getIndexSource().getFeatures())) {
+        try (Stream<SimpleFeature> fstream = FeatureStreams.toFeatureStream(
+                mappedSource.getMapping().getIndexSource().getFeatures())) {
             assertTrue(fstream.anyMatch(f -> f.getIdentifier().getID().equals("st.1")));
         }
     }

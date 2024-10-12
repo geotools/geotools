@@ -319,8 +319,7 @@ public class DataUtilities {
      * <p>The feature type is supplied as contexts used to lookup expressions in cases where the
      * attributeName does not match the actual name of the type.
      */
-    public static Set<PropertyName> propertyNames(
-            Filter filter, final SimpleFeatureType featureType) {
+    public static Set<PropertyName> propertyNames(Filter filter, final SimpleFeatureType featureType) {
         if (filter == null) {
             return Collections.emptySet();
         }
@@ -346,8 +345,7 @@ public class DataUtilities {
      * <p>The feature type is supplied as contexts used to lookup expressions in cases where the
      * attributeName does not match the actual name of the type.
      */
-    public static String[] attributeNames(
-            Expression expression, final SimpleFeatureType featureType) {
+    public static String[] attributeNames(Expression expression, final SimpleFeatureType featureType) {
         if (expression == null) {
             return new String[0];
         }
@@ -363,8 +361,7 @@ public class DataUtilities {
      * <p>The feature type is supplied as contexts used to lookup expressions in cases where the
      * attributeName does not match the actual name of the type.
      */
-    public static Set<PropertyName> propertyNames(
-            Expression expression, final SimpleFeatureType featureType) {
+    public static Set<PropertyName> propertyNames(Expression expression, final SimpleFeatureType featureType) {
         if (expression == null) {
             return Collections.emptySet();
         }
@@ -451,8 +448,7 @@ public class DataUtilities {
      * @param typeB FeatureType being compared against
      * @param strict flag controlling the comparison check
      */
-    protected static int compareInternal(
-            SimpleFeatureType typeA, SimpleFeatureType typeB, boolean strict) {
+    protected static int compareInternal(SimpleFeatureType typeA, SimpleFeatureType typeB, boolean strict) {
         if (typeA == typeB) {
             return 0;
         }
@@ -606,8 +602,7 @@ public class DataUtilities {
      *
      * @param duplicate True to perform {@link #duplicate(Object)} on each attribute
      */
-    public static SimpleFeature reType(
-            SimpleFeatureType featureType, SimpleFeature feature, boolean duplicate)
+    public static SimpleFeature reType(SimpleFeatureType featureType, SimpleFeature feature, boolean duplicate)
             throws IllegalAttributeException {
         if (duplicate) {
             return reType(featureType, feature);
@@ -774,8 +769,7 @@ public class DataUtilities {
      * @param featureType Type of feature we wish to create
      * @return A new Feature of type featureType
      */
-    public static SimpleFeature template(SimpleFeatureType featureType)
-            throws IllegalAttributeException {
+    public static SimpleFeature template(SimpleFeatureType featureType) throws IllegalAttributeException {
         return SimpleFeatureBuilder.build(featureType, defaultValues(featureType), null);
     }
 
@@ -809,8 +803,7 @@ public class DataUtilities {
      *     featureType
      */
     public static SimpleFeature template(SimpleFeatureType featureType, Object... providedValues) {
-        return SimpleFeatureBuilder.build(
-                featureType, defaultValues(featureType, providedValues), null);
+        return SimpleFeatureBuilder.build(featureType, defaultValues(featureType, providedValues), null);
     }
 
     /**
@@ -822,10 +815,8 @@ public class DataUtilities {
      * @throws ArrayIndexOutOfBoundsException If the number of provided values does not match the
      *     featureType
      */
-    public static SimpleFeature template(
-            SimpleFeatureType featureType, String featureID, Object... providedValues) {
-        return SimpleFeatureBuilder.build(
-                featureType, defaultValues(featureType, providedValues), featureID);
+    public static SimpleFeature template(SimpleFeatureType featureType, String featureID, Object... providedValues) {
+        return SimpleFeatureBuilder.build(featureType, defaultValues(featureType, providedValues), featureID);
     }
 
     /**
@@ -924,20 +915,13 @@ public class DataUtilities {
         if (type == MultiPoint.class) {
             return fac.createMultiPoint(new Point[] {point});
         }
-        LineString lineString =
-                fac.createLineString(new Coordinate[] {new Coordinate(0, 0), new Coordinate(0, 1)});
+        LineString lineString = fac.createLineString(new Coordinate[] {new Coordinate(0, 0), new Coordinate(0, 1)});
         if (type == LineString.class) {
             return lineString;
         }
-        LinearRing linearRing =
-                fac.createLinearRing(
-                        new Coordinate[] {
-                            new Coordinate(0, 0),
-                            new Coordinate(0, 1),
-                            new Coordinate(1, 1),
-                            new Coordinate(1, 0),
-                            new Coordinate(0, 0)
-                        });
+        LinearRing linearRing = fac.createLinearRing(new Coordinate[] {
+            new Coordinate(0, 0), new Coordinate(0, 1), new Coordinate(1, 1), new Coordinate(1, 0), new Coordinate(0, 0)
+        });
         if (type == LinearRing.class) {
             return linearRing;
         }
@@ -969,8 +953,8 @@ public class DataUtilities {
      * @return FeatureReader<SimpleFeatureType, SimpleFeature> spaning provided feature array
      * @throws IOException If provided features Are null or empty
      */
-    public static FeatureReader<SimpleFeatureType, SimpleFeature> reader(
-            final SimpleFeature... features) throws IOException {
+    public static FeatureReader<SimpleFeatureType, SimpleFeature> reader(final SimpleFeature... features)
+            throws IOException {
         if ((features == null) || (features.length == 0)) {
             throw new IOException("Provided features where empty");
         }
@@ -1025,8 +1009,7 @@ public class DataUtilities {
         for (SimpleFeature feature : collection) {
             if (feature.getFeatureType() != featureType) {
                 String typeName = featureType.getTypeName();
-                throw new IllegalStateException(
-                        "Array inconsistent, expected each feature of type  " + typeName);
+                throw new IllegalStateException("Array inconsistent, expected each feature of type  " + typeName);
             }
         }
         return source(collection);
@@ -1044,8 +1027,7 @@ public class DataUtilities {
      * @throws IllegalArgumentException If the provided collection is inconsistent (perhaps
      *     containing mixed feature types)
      */
-    public static SimpleFeatureSource source(
-            final FeatureCollection<SimpleFeatureType, SimpleFeature> collection) {
+    public static SimpleFeatureSource source(final FeatureCollection<SimpleFeatureType, SimpleFeature> collection) {
         if (collection == null) {
             throw new NullPointerException("No content provided");
         }
@@ -1095,8 +1077,7 @@ public class DataUtilities {
      * @throws IOException if the data store cannot be accessed
      * @throws SchemaException if the query is incompatible with the store's contents
      */
-    public static SimpleFeatureSource createView(
-            final SimpleFeatureSource source, final Query query)
+    public static SimpleFeatureSource createView(final SimpleFeatureSource source, final Query query)
             throws IOException, SchemaException {
         return new DefaultView(source, query);
     }
@@ -1131,8 +1112,8 @@ public class DataUtilities {
      * @return FeatureRedaer over the provided contents
      * @throws IOException IOException if there is any problem reading the content.
      */
-    public static FeatureReader<SimpleFeatureType, SimpleFeature> reader(
-            Collection<SimpleFeature> collection) throws IOException {
+    public static FeatureReader<SimpleFeatureType, SimpleFeature> reader(Collection<SimpleFeature> collection)
+            throws IOException {
         return reader(collection.toArray(new SimpleFeature[collection.size()]));
     }
 
@@ -1143,8 +1124,8 @@ public class DataUtilities {
      * @return FeatureRedaer over the provided contents
      * @throws IOException IOException if there is any problem reading the content.
      */
-    public static SimpleFeatureReader reader(
-            FeatureCollection<SimpleFeatureType, SimpleFeature> collection) throws IOException {
+    public static SimpleFeatureReader reader(FeatureCollection<SimpleFeatureType, SimpleFeature> collection)
+            throws IOException {
         @SuppressWarnings("PMD.CloseResource") // wrapped and returned
         final FeatureIterator<SimpleFeature> it = collection.features();
         return new SimpleFeatureReader() {
@@ -1154,8 +1135,7 @@ public class DataUtilities {
             }
 
             @Override
-            public SimpleFeature next()
-                    throws IOException, IllegalArgumentException, NoSuchElementException {
+            public SimpleFeature next() throws IOException, IllegalArgumentException, NoSuchElementException {
                 return it.next();
             }
 
@@ -1278,8 +1258,7 @@ public class DataUtilities {
                 "The provided feature collection contains complex features, cannot be bridged to a simple one");
     }
 
-    public static SimpleFeatureReader simple(
-            FeatureReader<SimpleFeatureType, SimpleFeature> reader) {
+    public static SimpleFeatureReader simple(FeatureReader<SimpleFeatureType, SimpleFeature> reader) {
         if (reader instanceof SimpleFeatureReader) {
             return (SimpleFeatureReader) reader;
         } else {
@@ -1349,8 +1328,7 @@ public class DataUtilities {
      * @return SimpleFeatureType created by stripping any complicated content from the provided
      *     featureType
      */
-    public static SimpleFeatureType simple(final FeatureType featureType)
-            throws DataSourceException {
+    public static SimpleFeatureType simple(final FeatureType featureType) throws DataSourceException {
         if (featureType == null) {
             return null;
         }
@@ -1365,10 +1343,7 @@ public class DataUtilities {
         // HACK HACK!! the parser sets no namespace to the properties so we're
         // doing a hardcode property name black list
         final List<String> ignoreList =
-                Arrays.asList(
-                        new String[] {
-                            "location", "metaDataProperty", "description", "name", "boundedBy"
-                        });
+                Arrays.asList(new String[] {"location", "metaDataProperty", "description", "name", "boundedBy"});
 
         for (Iterator<PropertyDescriptor> it = attributes.iterator(); it.hasNext(); ) {
             PropertyDescriptor property = it.next();
@@ -1409,8 +1384,7 @@ public class DataUtilities {
         SimpleFeatureType simpleFeatureType;
         try {
             if (featureType instanceof SimpleFeature) {
-                simpleFeatureType =
-                        DataUtilities.createSubType((SimpleFeatureType) featureType, properties);
+                simpleFeatureType = DataUtilities.createSubType((SimpleFeatureType) featureType, properties);
             } else {
                 SimpleFeatureTypeBuilder build = new SimpleFeatureTypeBuilder();
                 build.setName(featureType.getName());
@@ -1474,8 +1448,7 @@ public class DataUtilities {
      * @param maxFeatures Maximum number of features to load
      * @return List of features copied into memory
      */
-    public static <F extends Feature> List<F> list(
-            FeatureCollection<?, F> featureCollection, int maxFeatures) {
+    public static <F extends Feature> List<F> list(FeatureCollection<?, F> featureCollection, int maxFeatures) {
         final ArrayList<F> list = new ArrayList<>();
         try (FeatureIterator<F> iter = featureCollection.features()) {
             for (int count = 0; iter.hasNext() && count < maxFeatures; count++) {
@@ -1503,7 +1476,8 @@ public class DataUtilities {
     public static Set<String> fidSet(FeatureCollection<?, ?> featureCollection) {
         final HashSet<String> fids = new HashSet<>();
         try {
-            featureCollection.accepts(feature -> fids.add(feature.getIdentifier().getID()), null);
+            featureCollection.accepts(
+                    feature -> fids.add(feature.getIdentifier().getID()), null);
         } catch (IOException ignore) {
         }
         return fids;
@@ -1517,13 +1491,11 @@ public class DataUtilities {
      * @return Collection
      */
     @SuppressWarnings("unchecked")
-    public static <F extends Feature> Collection<F> collectionCast(
-            FeatureCollection<?, F> featureCollection) {
+    public static <F extends Feature> Collection<F> collectionCast(FeatureCollection<?, F> featureCollection) {
         if (featureCollection instanceof Collection<?>) {
             return (Collection<F>) featureCollection;
         } else {
-            throw new IllegalArgumentException(
-                    "Require access to SimpleFeatureCollection implementing Collecion.add");
+            throw new IllegalArgumentException("Require access to SimpleFeatureCollection implementing Collecion.add");
         }
     }
     //
@@ -1578,8 +1550,8 @@ public class DataUtilities {
      *
      * @return FeatureCollection
      */
-    public static SimpleFeatureCollection collection(
-            FeatureReader<SimpleFeatureType, SimpleFeature> reader) throws IOException {
+    public static SimpleFeatureCollection collection(FeatureReader<SimpleFeatureType, SimpleFeature> reader)
+            throws IOException {
         DefaultFeatureCollection collection = new DefaultFeatureCollection(null, null);
         try {
             while (reader.hasNext()) {
@@ -1610,8 +1582,7 @@ public class DataUtilities {
      *
      * @return FeatureCollection
      */
-    public static SimpleFeatureCollection collection(SimpleFeatureIterator reader)
-            throws IOException {
+    public static SimpleFeatureCollection collection(SimpleFeatureIterator reader) throws IOException {
         DefaultFeatureCollection collection = new DefaultFeatureCollection(null, null);
         try {
             while (reader.hasNext()) {
@@ -1685,8 +1656,7 @@ public class DataUtilities {
             }
         }
 
-        return createSubType(
-                featureType, properties, override, featureType.getTypeName(), namespaceURI);
+        return createSubType(featureType, properties, override, featureType.getTypeName(), namespaceURI);
     }
     /**
      * Create a derived FeatureType
@@ -1718,21 +1688,16 @@ public class DataUtilities {
         }
 
         String namespaceURI = namespace != null ? namespace.toString() : null;
-        boolean same =
-                featureType.getAttributeCount() == properties.length
-                        && featureType.getTypeName().equals(typeName)
-                        && Utilities.equals(featureType.getName().getNamespaceURI(), namespaceURI);
+        boolean same = featureType.getAttributeCount() == properties.length
+                && featureType.getTypeName().equals(typeName)
+                && Utilities.equals(featureType.getName().getNamespaceURI(), namespaceURI);
 
         for (int i = 0; (i < featureType.getAttributeCount()) && same; i++) {
             AttributeDescriptor type = featureType.getDescriptor(i);
-            same =
-                    type.getLocalName().equals(properties[i])
-                            && (((override != null) && type instanceof GeometryDescriptor)
-                                    ? assertEquals(
-                                            override,
-                                            ((GeometryDescriptor) type)
-                                                    .getCoordinateReferenceSystem())
-                                    : true);
+            same = type.getLocalName().equals(properties[i])
+                    && (((override != null) && type instanceof GeometryDescriptor)
+                            ? assertEquals(override, ((GeometryDescriptor) type).getCoordinateReferenceSystem())
+                            : true);
         }
 
         if (same) {
@@ -1778,8 +1743,8 @@ public class DataUtilities {
      *
      * @return type limited to the named properties provided
      */
-    public static SimpleFeatureType createSubType(
-            SimpleFeatureType featureType, String... properties) throws SchemaException {
+    public static SimpleFeatureType createSubType(SimpleFeatureType featureType, String... properties)
+            throws SchemaException {
         if (properties == null) {
             return featureType;
         }
@@ -1811,9 +1776,7 @@ public class DataUtilities {
     }
 
     private static void setDefaultGeometry(
-            SimpleFeatureTypeBuilder typeBuilder,
-            String[] properties,
-            SimpleFeatureType featureType) {
+            SimpleFeatureTypeBuilder typeBuilder, String[] properties, SimpleFeatureType featureType) {
         GeometryDescriptor geometryDescriptor = featureType.getGeometryDescriptor();
         if (geometryDescriptor != null) {
             String propertyName = geometryDescriptor.getLocalName();
@@ -1874,8 +1837,7 @@ public class DataUtilities {
      * @param typeName identification of FeatureType: (<i>namesapce</i>).<i>typeName</i>
      * @param typeSpec Specification of FeatureType attributes "name:Type,name2:Type2,..."
      */
-    public static SimpleFeatureType createType(String typeName, String typeSpec)
-            throws SchemaException {
+    public static SimpleFeatureType createType(String typeName, String typeSpec) throws SchemaException {
         int split = typeName.lastIndexOf('.');
         String namespace = (split == -1) ? null : typeName.substring(0, split);
         String name = (split == -1) ? typeName : typeName.substring(split + 1);
@@ -1892,8 +1854,7 @@ public class DataUtilities {
      * @param name Typename name, as qualified by namespace
      * @param typeSpec Definition of attributes, for details see {@link #createType(String, String)}
      */
-    public static SimpleFeatureType createType(String namespace, String name, String typeSpec)
-            throws SchemaException {
+    public static SimpleFeatureType createType(String namespace, String name, String typeSpec) throws SchemaException {
         SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
         builder.setName(name);
         builder.setNamespaceURI(namespace);
@@ -1950,9 +1911,7 @@ public class DataUtilities {
                 if (code != null) {
                     Citation authority = code.getKey();
                     Integer srid = code.getValue();
-                    if (authority == null
-                            || authority.getIdentifiers().isEmpty()
-                            || isEPSG(authority)) {
+                    if (authority == null || authority.getIdentifiers().isEmpty() || isEPSG(authority)) {
                         buf.append(":srid=" + srid);
                     } else {
                         String authorityCode =
@@ -2079,15 +2038,14 @@ public class DataUtilities {
         for (String str : data.split("\\|", -1)) {
             if (i == type.getAttributeCount()) {
                 // limit reached
-                throw new IllegalArgumentException(
-                        "format error: expected "
-                                + text.length
-                                + " attributes, stopped after finding "
-                                + i
-                                + ". ["
-                                + data
-                                + "] split into "
-                                + Arrays.asList(text));
+                throw new IllegalArgumentException("format error: expected "
+                        + text.length
+                        + " attributes, stopped after finding "
+                        + i
+                        + ". ["
+                        + data
+                        + "] split into "
+                        + Arrays.asList(text));
             }
             if (str.endsWith("\\")) {
                 item.append(str);
@@ -2100,15 +2058,14 @@ public class DataUtilities {
             }
         }
         if (i < type.getAttributeCount()) {
-            throw new IllegalArgumentException(
-                    "createFeature format error: expected "
-                            + type.getAttributeCount()
-                            + " attributes, but only found "
-                            + i
-                            + ". ["
-                            + data
-                            + "] split into "
-                            + Arrays.asList(text));
+            throw new IllegalArgumentException("createFeature format error: expected "
+                    + type.getAttributeCount()
+                    + " attributes, but only found "
+                    + i
+                    + ". ["
+                    + data
+                    + "] split into "
+                    + Arrays.asList(text));
         }
         return text;
     }
@@ -2145,8 +2102,7 @@ public class DataUtilities {
 
         if (descriptor.getType() instanceof GeometryType) {
             // this is to be passed on in the geometry objects so the srs name gets encoded
-            CoordinateReferenceSystem crs =
-                    ((GeometryType) descriptor.getType()).getCoordinateReferenceSystem();
+            CoordinateReferenceSystem crs = ((GeometryType) descriptor.getType()).getCoordinateReferenceSystem();
             if (crs != null) {
                 // must be geometry, but check anyway
                 if (value != null && value instanceof Geometry) {
@@ -2386,10 +2342,7 @@ public class DataUtilities {
         if ((firstQuery.getTypeName() != null) && (secondQuery.getTypeName() != null)) {
             if (!firstQuery.getTypeName().equals(secondQuery.getTypeName())) {
                 String msg =
-                        "Type names do not match: "
-                                + firstQuery.getTypeName()
-                                + " != "
-                                + secondQuery.getTypeName();
+                        "Type names do not match: " + firstQuery.getTypeName() + " != " + secondQuery.getTypeName();
                 throw new IllegalArgumentException(msg);
             }
         }
@@ -2397,10 +2350,8 @@ public class DataUtilities {
         // mix versions, if possible
         String version;
         if (firstQuery.getVersion() != null) {
-            if (secondQuery.getVersion() != null
-                    && !secondQuery.getVersion().equals(firstQuery.getVersion()))
-                throw new IllegalArgumentException(
-                        "First and second query refer different versions");
+            if (secondQuery.getVersion() != null && !secondQuery.getVersion().equals(firstQuery.getVersion()))
+                throw new IllegalArgumentException("First and second query refer different versions");
             version = firstQuery.getVersion();
         } else {
             version = secondQuery.getVersion();
@@ -2411,8 +2362,7 @@ public class DataUtilities {
         int maxFeatures = Math.min(firstQuery.getMaxFeatures(), secondQuery.getMaxFeatures());
 
         // join attributes names
-        List<PropertyName> propNames =
-                joinAttributes(firstQuery.getProperties(), secondQuery.getProperties());
+        List<PropertyName> propNames = joinAttributes(firstQuery.getProperties(), secondQuery.getProperties());
 
         // join filters
         Filter filter = firstQuery.getFilter();
@@ -2440,10 +2390,7 @@ public class DataUtilities {
             hints.putAll(secondQuery.getHints());
         }
         // build the mixed query
-        String typeName =
-                firstQuery.getTypeName() != null
-                        ? firstQuery.getTypeName()
-                        : secondQuery.getTypeName();
+        String typeName = firstQuery.getTypeName() != null ? firstQuery.getTypeName() : secondQuery.getTypeName();
         // check the sort
         SortBy[] sort;
         if (secondQuery.getSortBy() != null && secondQuery.getSortBy().length > 0) {
@@ -2514,8 +2461,7 @@ public class DataUtilities {
      *     appended to the resulting list
      * @return Set of attribute names from <code>atts1</code> and <code>atts2</code>
      */
-    private static List<PropertyName> joinAttributes(
-            List<PropertyName> atts1, List<PropertyName> atts2) {
+    private static List<PropertyName> joinAttributes(List<PropertyName> atts1, List<PropertyName> atts2) {
 
         if (atts1 == null && atts2 == null) {
             return null;
@@ -2545,8 +2491,7 @@ public class DataUtilities {
      * @param oldProps given list of properties
      * @return list of properties including all mandatory properties
      */
-    public static List<PropertyName> addMandatoryProperties(
-            SimpleFeatureType type, List<PropertyName> oldProps) {
+    public static List<PropertyName> addMandatoryProperties(SimpleFeatureType type, List<PropertyName> oldProps) {
         Iterator<PropertyDescriptor> ii = type.getDescriptors().iterator();
 
         List<PropertyName> properties = new ArrayList<>();
@@ -2638,27 +2583,12 @@ public class DataUtilities {
 
             Class<?> clazz = type(type);
             if (Geometry.class.isAssignableFrom(clazz)) {
-                GeometryType at =
-                        new GeometryTypeImpl(
-                                new NameImpl(name),
-                                clazz,
-                                crs,
-                                false,
-                                false,
-                                Collections.emptyList(),
-                                null,
-                                null);
+                GeometryType at = new GeometryTypeImpl(
+                        new NameImpl(name), clazz, crs, false, false, Collections.emptyList(), null, null);
                 return new GeometryDescriptorImpl(at, new NameImpl(name), 0, 1, nillable, null);
             } else {
-                AttributeType at =
-                        new AttributeTypeImpl(
-                                new NameImpl(name),
-                                clazz,
-                                false,
-                                false,
-                                Collections.emptyList(),
-                                null,
-                                null);
+                AttributeType at = new AttributeTypeImpl(
+                        new NameImpl(name), clazz, false, false, Collections.emptyList(), null, null);
                 return new AttributeDescriptorImpl(at, new NameImpl(name), 0, 1, nillable, null);
             }
         } catch (ClassNotFoundException e) {
@@ -2697,8 +2627,7 @@ public class DataUtilities {
      *
      * @return number of featuers in feature collection
      */
-    public static int count(
-            FeatureCollection<? extends FeatureType, ? extends Feature> collection) {
+    public static int count(FeatureCollection<? extends FeatureType, ? extends Feature> collection) {
         int count = 0;
         try (FeatureIterator<? extends Feature> i = collection.features()) {
             while (i.hasNext()) {
@@ -2749,8 +2678,7 @@ public class DataUtilities {
      *
      * @return bounds of features in feature collection
      */
-    public static ReferencedEnvelope bounds(
-            FeatureCollection<? extends FeatureType, ? extends Feature> collection) {
+    public static ReferencedEnvelope bounds(FeatureCollection<? extends FeatureType, ? extends Feature> collection) {
         try (FeatureIterator<? extends Feature> i = collection.features()) {
             // Implementation taken from DefaultFeatureCollection implementation - thanks IanS
             CoordinateReferenceSystem crs = collection.getSchema().getCoordinateReferenceSystem();
@@ -2779,8 +2707,7 @@ public class DataUtilities {
      * test-case results. Client code should always call {@link
      * FeatureCollection#accepts(FeatureVisitor, ProgressListener)}
      */
-    public static void visit(
-            FeatureCollection<?, ?> collection, FeatureVisitor visitor, ProgressListener progress)
+    public static void visit(FeatureCollection<?, ?> collection, FeatureVisitor visitor, ProgressListener progress)
             throws IOException {
 
         float size = progress != null ? collection.size() : 0;
@@ -2800,10 +2727,10 @@ public class DataUtilities {
                     }
                 } catch (Exception erp) {
                     progress.exceptionOccurred(erp);
-                    String fid = feature == null ? "feature" : feature.getIdentifier().toString();
-                    throw new IOException(
-                            "Problem with " + collection.getID() + " visiting " + fid + ":" + erp,
-                            erp);
+                    String fid = feature == null
+                            ? "feature"
+                            : feature.getIdentifier().toString();
+                    throw new IOException("Problem with " + collection.getID() + " visiting " + fid + ":" + erp, erp);
                 }
             }
         } finally {
@@ -2822,22 +2749,21 @@ public class DataUtilities {
      */
     public static boolean checkFileReadable(final File file, final Logger logger) {
         if (logger != null && logger.isLoggable(Level.FINE)) {
-            final StringBuilder builder =
-                    new StringBuilder("Checking file:")
-                            .append(file.getAbsolutePath())
-                            .append("\n")
-                            .append("canRead:")
-                            .append(file.canRead())
-                            .append("\n")
-                            .append("isHidden:")
-                            .append(file.isHidden())
-                            .append("\n")
-                            .append("isFile")
-                            .append(file.isFile())
-                            .append("\n")
-                            .append("canWrite")
-                            .append(file.canWrite())
-                            .append("\n");
+            final StringBuilder builder = new StringBuilder("Checking file:")
+                    .append(file.getAbsolutePath())
+                    .append("\n")
+                    .append("canRead:")
+                    .append(file.canRead())
+                    .append("\n")
+                    .append("isHidden:")
+                    .append(file.isHidden())
+                    .append("\n")
+                    .append("isFile")
+                    .append(file.isFile())
+                    .append("\n")
+                    .append("canWrite")
+                    .append(file.canWrite())
+                    .append("\n");
             logger.fine(builder.toString());
         }
         if (!file.exists() || !file.canRead() || !file.isFile()) return false;
@@ -2956,8 +2882,7 @@ public class DataUtilities {
      * @param filters additional filters to be excluded
      * @return the updated {@link IOFileFilter}
      */
-    public static FilenameFilter excludeFilters(
-            final FilenameFilter inputFilter, final FilenameFilter... filters) {
+    public static FilenameFilter excludeFilters(final FilenameFilter inputFilter, final FilenameFilter... filters) {
         return (dir, name) -> {
             if (inputFilter.accept(dir, name)) {
                 for (FilenameFilter exclude : filters) {
@@ -2979,8 +2904,7 @@ public class DataUtilities {
      * @param filters additional filters to be included in the main filter.
      * @return the updated {@link IOFileFilter}
      */
-    public static FilenameFilter includeFilters(
-            final FilenameFilter inputFilter, final FilenameFilter... filters) {
+    public static FilenameFilter includeFilters(final FilenameFilter inputFilter, final FilenameFilter... filters) {
         return (dir, name) -> {
             if (inputFilter.accept(dir, name)) {
                 return true;
@@ -3007,17 +2931,11 @@ public class DataUtilities {
         for (PropertyDescriptor pd : schema.getDescriptors()) {
             if (pd instanceof AttributeDescriptor) {
                 if (pd instanceof GeometryDescriptor) {
-                    value.add(
-                            new GeometryAttributeImpl(
-                                    ((AttributeDescriptor) pd).getDefaultValue(),
-                                    (GeometryDescriptor) pd,
-                                    null));
+                    value.add(new GeometryAttributeImpl(
+                            ((AttributeDescriptor) pd).getDefaultValue(), (GeometryDescriptor) pd, null));
                 } else {
-                    value.add(
-                            new AttributeImpl(
-                                    ((AttributeDescriptor) pd).getDefaultValue(),
-                                    (AttributeDescriptor) pd,
-                                    null));
+                    value.add(new AttributeImpl(
+                            ((AttributeDescriptor) pd).getDefaultValue(), (AttributeDescriptor) pd, null));
                 }
             }
         }
@@ -3031,7 +2949,6 @@ public class DataUtilities {
      * String} keys, and may contain any kind of object as values.
      */
     public static Map<String, Object> toConnectionParameters(Properties properties) {
-        return properties.entrySet().stream()
-                .collect(Collectors.toMap(e -> (String) e.getKey(), e -> e.getValue()));
+        return properties.entrySet().stream().collect(Collectors.toMap(e -> (String) e.getKey(), e -> e.getValue()));
     }
 }

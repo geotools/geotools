@@ -46,11 +46,10 @@ public class ExhaustivePathFinder {
 
     public Path getPath(Node from, Node to) {
         final Node dst = to;
-        GraphVisitor visitor =
-                component -> {
-                    if (component.equals(dst)) return (END_PATH_AND_STOP);
-                    return (CONTINUE_PATH);
-                };
+        GraphVisitor visitor = component -> {
+            if (component.equals(dst)) return (END_PATH_AND_STOP);
+            return (CONTINUE_PATH);
+        };
         List paths = getPaths(from, visitor);
         if (paths.isEmpty()) return (null);
         return ((Path) paths.get(0));
@@ -58,11 +57,10 @@ public class ExhaustivePathFinder {
 
     public List getPaths(Node from, Node to) {
         final Node dst = to;
-        GraphVisitor visitor =
-                component -> {
-                    if (component.equals(dst)) return (END_PATH_AND_CONTINUE);
-                    return (CONTINUE_PATH);
-                };
+        GraphVisitor visitor = component -> {
+            if (component.equals(dst)) return (END_PATH_AND_CONTINUE);
+            return (CONTINUE_PATH);
+        };
         return (getPaths(from, visitor));
     }
 

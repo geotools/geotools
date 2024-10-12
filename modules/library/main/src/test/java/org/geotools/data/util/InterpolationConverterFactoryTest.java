@@ -41,8 +41,7 @@ public class InterpolationConverterFactoryTest extends Assert {
     public void testInterpolationConverterFactory() {
 
         // make sure the class is registered and assigned
-        Set<ConverterFactory> set =
-                Converters.getConverterFactories(String.class, INTERPOLATION_CLASS);
+        Set<ConverterFactory> set = Converters.getConverterFactories(String.class, INTERPOLATION_CLASS);
         assertNotNull(set);
         assertFalse(set.isEmpty());
         assertEquals(set.size(), 1);
@@ -51,9 +50,7 @@ public class InterpolationConverterFactoryTest extends Assert {
         //
         assertNull(new InterpolationConverterFactory().createConverter(null, null, null));
         assertNull(new InterpolationConverterFactory().createConverter(String.class, null, null));
-        assertNull(
-                new InterpolationConverterFactory()
-                        .createConverter(String.class, Double.class, null));
+        assertNull(new InterpolationConverterFactory().createConverter(String.class, Double.class, null));
     }
 
     @Test

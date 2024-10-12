@@ -49,13 +49,8 @@ public class PGRasterFormat extends AbstractGridFormat {
         info.put("version", "1.0");
         mInfo = info;
 
-        readParameters =
-                new ParameterGroup(
-                        new DefaultParameterDescriptorGroup(
-                                mInfo,
-                                new GeneralParameterDescriptor[] {
-                                    READ_GRIDGEOMETRY2D, TIME, OVERVIEW_POLICY
-                                }));
+        readParameters = new ParameterGroup(new DefaultParameterDescriptorGroup(
+                mInfo, new GeneralParameterDescriptor[] {READ_GRIDGEOMETRY2D, TIME, OVERVIEW_POLICY}));
 
         writeParameters = null;
     }

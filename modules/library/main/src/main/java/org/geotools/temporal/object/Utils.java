@@ -137,10 +137,8 @@ public class Utils {
 
         // we look if the period contains months (2628000000 ms)
         if (periodDuration.indexOf('M') != -1
-                && (periodDuration.indexOf("T") == -1
-                        || periodDuration.indexOf("T") > periodDuration.indexOf('M'))) {
-            int nbMonth =
-                    Integer.parseInt(periodDuration.substring(0, periodDuration.indexOf('M')));
+                && (periodDuration.indexOf("T") == -1 || periodDuration.indexOf("T") > periodDuration.indexOf('M'))) {
+            int nbMonth = Integer.parseInt(periodDuration.substring(0, periodDuration.indexOf('M')));
             time += nbMonth * monthMS;
             periodDuration = periodDuration.substring(periodDuration.indexOf('M') + 1);
         }
@@ -287,8 +285,7 @@ public class Utils {
             Number minute = 0;
             Number second = 0;
             if (clock.length > 3) {
-                throw new IllegalArgumentException(
-                        "The ClockTime Number array is malformed ! see ISO 8601 format.");
+                throw new IllegalArgumentException("The ClockTime Number array is malformed ! see ISO 8601 format.");
             } else {
                 hour = clock[0];
                 if (clock.length > 0) {
@@ -313,8 +310,7 @@ public class Utils {
         final DefaultTemporalCoordinate timeCoord = (DefaultTemporalCoordinate) temporalCoord;
         Number value = timeCoord.getCoordinateValue();
         if (timeCoord.getFrame() instanceof TemporalCoordinateSystem) {
-            DefaultTemporalCoordinateSystem coordSystem =
-                    (DefaultTemporalCoordinateSystem) timeCoord.getFrame();
+            DefaultTemporalCoordinateSystem coordSystem = (DefaultTemporalCoordinateSystem) timeCoord.getFrame();
             Date origin = coordSystem.getOrigin();
             String interval = coordSystem.getInterval().toString();
 

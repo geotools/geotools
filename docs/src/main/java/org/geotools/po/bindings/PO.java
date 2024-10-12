@@ -55,8 +55,7 @@ public final class PO extends XSD {
     /** @generated */
     public static final QName Items = new QName("http://www.geotools.org/po", "Items");
     /** @generated */
-    public static final QName PurchaseOrderType =
-            new QName("http://www.geotools.org/po", "PurchaseOrderType");
+    public static final QName PurchaseOrderType = new QName("http://www.geotools.org/po", "PurchaseOrderType");
     /** @generated */
     public static final QName SKU = new QName("http://www.geotools.org/po", "SKU");
     /** @generated */
@@ -68,8 +67,7 @@ public final class PO extends XSD {
     /** @generated */
     public static final QName comment = new QName("http://www.geotools.org/po", "comment");
     /** @generated */
-    public static final QName purchaseOrder =
-            new QName("http://www.geotools.org/po", "purchaseOrder");
+    public static final QName purchaseOrder = new QName("http://www.geotools.org/po", "purchaseOrder");
 
     /* Attributes */
 

@@ -64,12 +64,9 @@ final class GeoPkgExtensionFactoryFinder {
     private static FactoryRegistry getServiceRegistry() {
         assert Thread.holdsLock(GeoPkgExtensionFactoryFinder.class);
         if (registry == null) {
-            registry =
-                    new FactoryCreator(
-                            Arrays.asList(
-                                    new Class<?>[] {
-                                        GeoPkgExtensionFactory.class,
-                                    }));
+            registry = new FactoryCreator(Arrays.asList(new Class<?>[] {
+                GeoPkgExtensionFactory.class,
+            }));
         }
         return registry;
     }

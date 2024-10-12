@@ -124,18 +124,7 @@ public class ShapefileReader implements FileReader, Closeable {
         /** A summary of the record. */
         @Override
         public String toString() {
-            return "Record "
-                    + number
-                    + " length "
-                    + length
-                    + " bounds "
-                    + minX
-                    + ","
-                    + minY
-                    + " "
-                    + maxX
-                    + ","
-                    + maxY;
+            return "Record " + number + " length " + length + " bounds " + minX + "," + minY + " " + maxX + "," + maxY;
         }
 
         public Envelope envelope() {
@@ -148,16 +137,14 @@ public class ShapefileReader implements FileReader, Closeable {
                 CoordinateSequence cs = JTS.createCS(csf, 1, 2);
                 cs.setOrdinate(0, 0, (minX + maxX) / 2);
                 cs.setOrdinate(0, 1, (minY + maxY) / 2);
-                return geometryFactory.createMultiPoint(
-                        new Point[] {geometryFactory.createPoint(cs)});
+                return geometryFactory.createMultiPoint(new Point[] {geometryFactory.createPoint(cs)});
             } else if (type.isLineType()) {
                 CoordinateSequence cs = JTS.createCS(csf, 2, 2);
                 cs.setOrdinate(0, 0, minX);
                 cs.setOrdinate(0, 1, minY);
                 cs.setOrdinate(1, 0, maxX);
                 cs.setOrdinate(1, 1, maxY);
-                return geometryFactory.createMultiLineString(
-                        new LineString[] {geometryFactory.createLineString(cs)});
+                return geometryFactory.createMultiLineString(new LineString[] {geometryFactory.createLineString(cs)});
             } else if (type.isPolygonType()) {
                 CoordinateSequence cs = JTS.createCS(csf, 5, 2);
                 cs.setOrdinate(0, 0, minX);
@@ -171,8 +158,7 @@ public class ShapefileReader implements FileReader, Closeable {
                 cs.setOrdinate(4, 0, minX);
                 cs.setOrdinate(4, 1, minY);
                 LinearRing ring = geometryFactory.createLinearRing(cs);
-                return geometryFactory.createMultiPolygon(
-                        new Polygon[] {geometryFactory.createPolygon(ring, null)});
+                return geometryFactory.createMultiPolygon(new Polygon[] {geometryFactory.createPolygon(ring, null)});
             } else {
                 return shape();
             }
@@ -234,8 +220,7 @@ public class ShapefileReader implements FileReader, Closeable {
      * @throws IOException If problems arise.
      * @throws ShapefileException If for some reason the file contains invalid records.
      */
-    public ShapefileReader(
-            ShpFiles shapefileFiles, boolean strict, boolean useMemoryMapped, GeometryFactory gf)
+    public ShapefileReader(ShpFiles shapefileFiles, boolean strict, boolean useMemoryMapped, GeometryFactory gf)
             throws IOException, ShapefileException {
         this(shapefileFiles, strict, useMemoryMapped, gf, false);
     }
@@ -292,8 +277,7 @@ public class ShapefileReader implements FileReader, Closeable {
             } catch (Exception e) {
                 LOGGER.log(
                         Level.WARNING,
-                        "Could not open the .shx file, continuing "
-                                + "assuming the .shp file is not sparse",
+                        "Could not open the .shx file, continuing " + "assuming the .shp file is not sparse",
                         e);
                 currentShape = UNKNOWN;
             }
@@ -484,8 +468,7 @@ public class ShapefileReader implements FileReader, Closeable {
      * @param bounds double array of length four for transfering the bounds into
      * @return The length of the record transfered in bytes
      */
-    public int transferTo(ShapefileWriter writer, int recordNum, double[] bounds)
-            throws IOException {
+    public int transferTo(ShapefileWriter writer, int recordNum, double[] bounds) throws IOException {
 
         ((Buffer) buffer).position(this.toBufferOffset(record.end));
         buffer.order(ByteOrder.BIG_ENDIAN);
@@ -606,8 +589,7 @@ public class ShapefileReader implements FileReader, Closeable {
         // this usually happens if the handler logic is bunk,
         // but bad files could exist as well...
         if (recordType != ShapeType.NULL && recordType != fileShapeType) {
-            throw new IllegalStateException(
-                    "ShapeType changed illegally from " + fileShapeType + " to " + recordType);
+            throw new IllegalStateException("ShapeType changed illegally from " + fileShapeType + " to " + recordType);
         }
 
         // peek at bounds, then reset for handler

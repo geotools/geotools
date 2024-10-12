@@ -68,8 +68,7 @@ public class FloatParameter extends AbstractParameter implements ParameterValue<
         final Class type = descriptor.getValueClass();
         final Class expected = Double.class;
         if (!expected.equals(type) && !Double.TYPE.equals(type)) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.ILLEGAL_CLASS_$2, type, expected));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.ILLEGAL_CLASS_$2, type, expected));
         }
         final Number value = descriptor.getDefaultValue();
         this.value = (value != null) ? value.doubleValue() : Double.NaN;
@@ -311,8 +310,7 @@ public class FloatParameter extends AbstractParameter implements ParameterValue<
 
     /** Always throws an exception, since this parameter is not an array. */
     @Override
-    public void setValue(double[] values, final Unit<?> unit)
-            throws InvalidParameterValueException {
+    public void setValue(double[] values, final Unit<?> unit) throws InvalidParameterValueException {
         throw new InvalidParameterTypeException(getClassTypeError(), Parameter.getName(descriptor));
     }
 

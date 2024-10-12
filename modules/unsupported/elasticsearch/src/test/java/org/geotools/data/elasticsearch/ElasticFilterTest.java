@@ -128,23 +128,14 @@ public class ElasticFilterTest {
         geoPointAttBuilder.setBinding(Point.class);
         AttributeDescriptor geoPointAtt =
                 geoPointAttBuilder.buildDescriptor("geo_point", geoPointAttBuilder.buildType());
-        geoPointAtt
-                .getUserData()
-                .put(
-                        ElasticConstants.GEOMETRY_TYPE,
-                        ElasticAttribute.ElasticGeometryType.GEO_POINT);
+        geoPointAtt.getUserData().put(ElasticConstants.GEOMETRY_TYPE, ElasticAttribute.ElasticGeometryType.GEO_POINT);
         typeBuilder.add(geoPointAtt);
 
         AttributeTypeBuilder geoShapeAttBuilder = new AttributeTypeBuilder();
         geoShapeAttBuilder.setName("geom");
         geoShapeAttBuilder.setBinding(Geometry.class);
-        AttributeDescriptor geoShapeAtt =
-                geoShapeAttBuilder.buildDescriptor("geom", geoShapeAttBuilder.buildType());
-        geoShapeAtt
-                .getUserData()
-                .put(
-                        ElasticConstants.GEOMETRY_TYPE,
-                        ElasticAttribute.ElasticGeometryType.GEO_SHAPE);
+        AttributeDescriptor geoShapeAtt = geoShapeAttBuilder.buildDescriptor("geom", geoShapeAttBuilder.buildType());
+        geoShapeAtt.getUserData().put(ElasticConstants.GEOMETRY_TYPE, ElasticAttribute.ElasticGeometryType.GEO_SHAPE);
         typeBuilder.add(geoShapeAtt);
 
         AttributeTypeBuilder analyzedAttBuilder = new AttributeTypeBuilder();
@@ -158,8 +149,7 @@ public class ElasticFilterTest {
         AttributeTypeBuilder nestedAttBuilder = new AttributeTypeBuilder();
         nestedAttBuilder.setName("nested.hej");
         nestedAttBuilder.setBinding(String.class);
-        AttributeDescriptor netsedAtt =
-                nestedAttBuilder.buildDescriptor("nested.hej", nestedAttBuilder.buildType());
+        AttributeDescriptor netsedAtt = nestedAttBuilder.buildDescriptor("nested.hej", nestedAttBuilder.buildType());
         netsedAtt.getUserData().put(ElasticConstants.NESTED, true);
         netsedAtt.getUserData().put(ElasticConstants.ANALYZED, true);
         typeBuilder.add(netsedAtt);
@@ -168,8 +158,7 @@ public class ElasticFilterTest {
         nestedDateAttBuilder.setName("nested.datehej");
         nestedDateAttBuilder.setBinding(Date.class);
         AttributeDescriptor netsedDateAtt =
-                nestedDateAttBuilder.buildDescriptor(
-                        "nested.datehej", nestedDateAttBuilder.buildType());
+                nestedDateAttBuilder.buildDescriptor("nested.datehej", nestedDateAttBuilder.buildType());
         netsedDateAtt.getUserData().put(ElasticConstants.NESTED, true);
         typeBuilder.add(netsedDateAtt);
 
@@ -200,8 +189,7 @@ public class ElasticFilterTest {
         AttributeTypeBuilder dateAttBuilder = new AttributeTypeBuilder();
         dateAttBuilder.setName("dateAttrWithFormat");
         dateAttBuilder.setBinding(Date.class);
-        AttributeDescriptor dateAtt =
-                dateAttBuilder.buildDescriptor("dateAttrWithFormat", dateAttBuilder.buildType());
+        AttributeDescriptor dateAtt = dateAttBuilder.buildDescriptor("dateAttrWithFormat", dateAttBuilder.buildType());
         List<String> validFormats = new ArrayList<>();
         validFormats.add(format);
         dateAtt.getUserData().put(ElasticConstants.DATE_FORMAT, validFormats);
@@ -225,8 +213,7 @@ public class ElasticFilterTest {
     @Test
     public void testId() {
         final Id filter = ff.id(ff.featureId("id"));
-        Map<String, Object> expected =
-                ImmutableMap.of("ids", ImmutableMap.of("values", ImmutableList.of("id")));
+        Map<String, Object> expected = ImmutableMap.of("ids", ImmutableMap.of("values", ImmutableList.of("id")));
 
         builder.visit(filter, null);
         assertTrue(builder.createCapabilities().fullySupports(filter));
@@ -236,19 +223,13 @@ public class ElasticFilterTest {
     @Test
     public void testAnd() {
         And filter = ff.and(ff.id(ff.featureId("id1")), ff.id(ff.featureId("id2")));
-        Map<String, Object> expected =
+        Map<String, Object> expected = ImmutableMap.of(
+                "bool",
                 ImmutableMap.of(
-                        "bool",
-                        ImmutableMap.of(
-                                "must",
-                                ImmutableList.of(
-                                        ImmutableMap.of(
-                                                "ids",
-                                                ImmutableMap.of("values", ImmutableList.of("id1"))),
-                                        ImmutableMap.of(
-                                                "ids",
-                                                ImmutableMap.of(
-                                                        "values", ImmutableList.of("id2"))))));
+                        "must",
+                        ImmutableList.of(
+                                ImmutableMap.of("ids", ImmutableMap.of("values", ImmutableList.of("id1"))),
+                                ImmutableMap.of("ids", ImmutableMap.of("values", ImmutableList.of("id2"))))));
 
         builder.visit(filter, null);
         assertTrue(builder.createCapabilities().fullySupports(filter));
@@ -258,19 +239,13 @@ public class ElasticFilterTest {
     @Test
     public void testOr() {
         final Or filter = ff.or(ff.id(ff.featureId("id1")), ff.id(ff.featureId("id2")));
-        Map<String, Object> expected =
+        Map<String, Object> expected = ImmutableMap.of(
+                "bool",
                 ImmutableMap.of(
-                        "bool",
-                        ImmutableMap.of(
-                                "should",
-                                ImmutableList.of(
-                                        ImmutableMap.of(
-                                                "ids",
-                                                ImmutableMap.of("values", ImmutableList.of("id1"))),
-                                        ImmutableMap.of(
-                                                "ids",
-                                                ImmutableMap.of(
-                                                        "values", ImmutableList.of("id2"))))));
+                        "should",
+                        ImmutableList.of(
+                                ImmutableMap.of("ids", ImmutableMap.of("values", ImmutableList.of("id1"))),
+                                ImmutableMap.of("ids", ImmutableMap.of("values", ImmutableList.of("id2"))))));
 
         builder.visit(filter, null);
         assertTrue(builder.createCapabilities().fullySupports(filter));
@@ -280,13 +255,9 @@ public class ElasticFilterTest {
     @Test
     public void testNot() {
         Not filter = ff.not(ff.id(ff.featureId("id")));
-        Map<String, Object> expected =
-                ImmutableMap.of(
-                        "bool",
-                        ImmutableMap.of(
-                                "must_not",
-                                ImmutableMap.of(
-                                        "ids", ImmutableMap.of("values", ImmutableList.of("id")))));
+        Map<String, Object> expected = ImmutableMap.of(
+                "bool",
+                ImmutableMap.of("must_not", ImmutableMap.of("ids", ImmutableMap.of("values", ImmutableList.of("id")))));
 
         builder.visit(filter, null);
         assertTrue(builder.createCapabilities().fullySupports(filter));
@@ -296,12 +267,8 @@ public class ElasticFilterTest {
     @Test
     public void testPropertyIsNull() {
         PropertyIsNull filter = ff.isNull(ff.property("prop"));
-        Map<String, Object> expected =
-                ImmutableMap.of(
-                        "bool",
-                        ImmutableMap.of(
-                                "must_not",
-                                ImmutableMap.of("exists", ImmutableMap.of("field", "prop"))));
+        Map<String, Object> expected = ImmutableMap.of(
+                "bool", ImmutableMap.of("must_not", ImmutableMap.of("exists", ImmutableMap.of("field", "prop"))));
 
         builder.visit(filter, null);
         assertTrue(builder.createCapabilities().fullySupports(filter));
@@ -321,8 +288,7 @@ public class ElasticFilterTest {
     @Test
     public void testPropertyIsEqualToString() {
         PropertyIsEqualTo filter = ff.equals(ff.property("stringAttr"), ff.literal("value"));
-        Map<String, Object> expected =
-                ImmutableMap.of("term", ImmutableMap.of("stringAttr", "value"));
+        Map<String, Object> expected = ImmutableMap.of("term", ImmutableMap.of("stringAttr", "value"));
 
         builder.visit(filter, null);
         assertTrue(builder.createCapabilities().fullySupports(filter));
@@ -332,14 +298,10 @@ public class ElasticFilterTest {
     @Test
     public void testNestedPropertyIsEqualToString() {
         PropertyIsEqualTo filter = ff.equals(ff.property("nested.hej"), ff.literal("value"));
-        Map<String, Object> expected =
+        Map<String, Object> expected = ImmutableMap.of(
+                "nested",
                 ImmutableMap.of(
-                        "nested",
-                        ImmutableMap.of(
-                                "path",
-                                "nested",
-                                "query",
-                                ImmutableMap.of("term", ImmutableMap.of("nested.hej", "value"))));
+                        "path", "nested", "query", ImmutableMap.of("term", ImmutableMap.of("nested.hej", "value"))));
 
         builder.visit(filter, null);
         assertTrue(builder.createCapabilities().fullySupports(filter));
@@ -349,14 +311,10 @@ public class ElasticFilterTest {
     @Test
     public void testNestedStringIsEqualToProperty() {
         PropertyIsEqualTo filter = ff.equals(ff.literal("value"), ff.property("nested.hej"));
-        Map<String, Object> expected =
+        Map<String, Object> expected = ImmutableMap.of(
+                "nested",
                 ImmutableMap.of(
-                        "nested",
-                        ImmutableMap.of(
-                                "path",
-                                "nested",
-                                "query",
-                                ImmutableMap.of("term", ImmutableMap.of("nested.hej", "value"))));
+                        "path", "nested", "query", ImmutableMap.of("term", ImmutableMap.of("nested.hej", "value"))));
 
         builder.visit(filter, null);
         assertTrue(builder.createCapabilities().fullySupports(filter));
@@ -366,12 +324,8 @@ public class ElasticFilterTest {
     @Test
     public void testPropertyIsNotEqualToString() {
         PropertyIsNotEqualTo filter = ff.notEqual(ff.property("stringAttr"), ff.literal("value"));
-        Map<String, Object> expected =
-                ImmutableMap.of(
-                        "bool",
-                        ImmutableMap.of(
-                                "must_not",
-                                ImmutableMap.of("term", ImmutableMap.of("stringAttr", "value"))));
+        Map<String, Object> expected = ImmutableMap.of(
+                "bool", ImmutableMap.of("must_not", ImmutableMap.of("term", ImmutableMap.of("stringAttr", "value"))));
 
         builder.visit(filter, null);
         assertTrue(builder.createCapabilities().fullySupports(filter));
@@ -401,12 +355,8 @@ public class ElasticFilterTest {
     @Test
     public void testPropertyIsNotEqualToDouble() {
         PropertyIsNotEqualTo filter = ff.notEqual(ff.property("doubleAttr"), ff.literal("4.5"));
-        Map<String, Object> expected =
-                ImmutableMap.of(
-                        "bool",
-                        ImmutableMap.of(
-                                "must_not",
-                                ImmutableMap.of("term", ImmutableMap.of("doubleAttr", 4.5))));
+        Map<String, Object> expected = ImmutableMap.of(
+                "bool", ImmutableMap.of("must_not", ImmutableMap.of("term", ImmutableMap.of("doubleAttr", 4.5))));
 
         builder.visit(filter, null);
         assertTrue(builder.createCapabilities().fullySupports(filter));
@@ -436,8 +386,7 @@ public class ElasticFilterTest {
     @Test
     public void testPropertyIsEqualToBoolean() {
         PropertyIsEqualTo filter = ff.equals(ff.property("booleanAttr"), ff.literal("true"));
-        Map<String, Object> expected =
-                ImmutableMap.of("term", ImmutableMap.of("booleanAttr", true));
+        Map<String, Object> expected = ImmutableMap.of("term", ImmutableMap.of("booleanAttr", true));
 
         builder.visit(filter, null);
         assertTrue(builder.createCapabilities().fullySupports(filter));
@@ -468,11 +417,9 @@ public class ElasticFilterTest {
 
     @Test
     public void testPropertyIsGreaterThanOrEqualTo() {
-        PropertyIsGreaterThanOrEqualTo filter =
-                ff.greaterOrEqual(ff.property("doubleAttr"), ff.literal("4.5"));
+        PropertyIsGreaterThanOrEqualTo filter = ff.greaterOrEqual(ff.property("doubleAttr"), ff.literal("4.5"));
         Map<String, Object> expected =
-                ImmutableMap.of(
-                        "range", ImmutableMap.of("doubleAttr", ImmutableMap.of("gte", 4.5)));
+                ImmutableMap.of("range", ImmutableMap.of("doubleAttr", ImmutableMap.of("gte", 4.5)));
 
         builder.visit(filter, null);
         assertTrue(builder.createCapabilities().fullySupports(filter));
@@ -481,11 +428,9 @@ public class ElasticFilterTest {
 
     @Test
     public void testPropertyIsLessThanOrEqualTo() {
-        PropertyIsLessThanOrEqualTo filter =
-                ff.lessOrEqual(ff.property("doubleAttr"), ff.literal("4.5"));
+        PropertyIsLessThanOrEqualTo filter = ff.lessOrEqual(ff.property("doubleAttr"), ff.literal("4.5"));
         Map<String, Object> expected =
-                ImmutableMap.of(
-                        "range", ImmutableMap.of("doubleAttr", ImmutableMap.of("lte", 4.5)));
+                ImmutableMap.of("range", ImmutableMap.of("doubleAttr", ImmutableMap.of("lte", 4.5)));
 
         builder.visit(filter, null);
         assertTrue(builder.createCapabilities().fullySupports(filter));
@@ -494,12 +439,9 @@ public class ElasticFilterTest {
 
     @Test
     public void testPropertyIsBetween() {
-        PropertyIsBetween filter =
-                ff.between(ff.property("doubleAttr"), ff.literal("4.5"), ff.literal("5.5"));
+        PropertyIsBetween filter = ff.between(ff.property("doubleAttr"), ff.literal("4.5"), ff.literal("5.5"));
         Map<String, Object> expected =
-                ImmutableMap.of(
-                        "range",
-                        ImmutableMap.of("doubleAttr", ImmutableMap.of("gte", 4.5, "lte", 5.5)));
+                ImmutableMap.of("range", ImmutableMap.of("doubleAttr", ImmutableMap.of("gte", 4.5, "lte", 5.5)));
 
         builder.visit(filter, null);
         assertTrue(builder.createCapabilities().fullySupports(filter));
@@ -508,12 +450,9 @@ public class ElasticFilterTest {
 
     @Test
     public void testUnknownPropertyIsBetween() {
-        PropertyIsBetween filter =
-                ff.between(ff.property("unknownStr"), ff.literal("a"), ff.literal("c"));
+        PropertyIsBetween filter = ff.between(ff.property("unknownStr"), ff.literal("a"), ff.literal("c"));
         Map<String, Object> expected =
-                ImmutableMap.of(
-                        "range",
-                        ImmutableMap.of("unknownStr", ImmutableMap.of("gte", "a", "lte", "c")));
+                ImmutableMap.of("range", ImmutableMap.of("unknownStr", ImmutableMap.of("gte", "a", "lte", "c")));
 
         builder.visit(filter, null);
         assertTrue(builder.createCapabilities().fullySupports(filter));
@@ -532,8 +471,7 @@ public class ElasticFilterTest {
     @Test
     public void testExcludeFilter() {
         ExcludeFilter filter = Filter.EXCLUDE;
-        Map<String, Object> expected =
-                ImmutableMap.of("bool", ImmutableMap.of("must_not", ElasticConstants.MATCH_ALL));
+        Map<String, Object> expected = ImmutableMap.of("bool", ImmutableMap.of("must_not", ElasticConstants.MATCH_ALL));
 
         builder.visit(filter, null);
         assertTrue(builder.createCapabilities().fullySupports(filter));
@@ -567,9 +505,7 @@ public class ElasticFilterTest {
     public void testPropertyIsLike() {
         PropertyIsLike filter = ff.like(ff.property("analyzed"), "hello");
         Map<String, Object> expected =
-                ImmutableMap.of(
-                        "query_string",
-                        ImmutableMap.of("query", "hello", "default_field", "analyzed"));
+                ImmutableMap.of("query_string", ImmutableMap.of("query", "hello", "default_field", "analyzed"));
 
         builder.visit(filter, null);
         assertTrue(builder.createCapabilities().fullySupports(filter));
@@ -580,9 +516,7 @@ public class ElasticFilterTest {
     public void testCaseSensitivePropertyIsLike() {
         PropertyIsLike filter = ff.like(ff.property("analyzed"), "hello", "\\", "*", ".", true);
         Map<String, Object> expected =
-                ImmutableMap.of(
-                        "query_string",
-                        ImmutableMap.of("query", "hello", "default_field", "analyzed"));
+                ImmutableMap.of("query_string", ImmutableMap.of("query", "hello", "default_field", "analyzed"));
 
         builder.visit(filter, null);
         assertTrue(builder.createCapabilities().fullySupports(filter));
@@ -593,12 +527,9 @@ public class ElasticFilterTest {
     public void testNestedPropertyIsLike() {
         PropertyIsLike filter = ff.like(ff.property("nested.hej"), "hello");
         Map<String, Object> expectedFilter =
-                ImmutableMap.of(
-                        "query_string",
-                        ImmutableMap.of("query", "hello", "default_field", "nested.hej"));
+                ImmutableMap.of("query_string", ImmutableMap.of("query", "hello", "default_field", "nested.hej"));
         Map<String, Object> expected =
-                ImmutableMap.of(
-                        "nested", ImmutableMap.of("path", "nested", "query", expectedFilter));
+                ImmutableMap.of("nested", ImmutableMap.of("path", "nested", "query", expectedFilter));
 
         builder.visit(filter, null);
         assertTrue(builder.createCapabilities().fullySupports(filter));
@@ -620,8 +551,7 @@ public class ElasticFilterTest {
         assertEquals("broadway.", FilterToElastic.convertToRegex('!', '*', '.', "broadway."));
         assertEquals("broadway", FilterToElastic.convertToRegex('!', '*', '.', "broadway!"));
         assertEquals("broadway\\!", FilterToElastic.convertToRegex('!', '*', '.', "broadway!!"));
-        assertEquals(
-                "broadway\\\\", FilterToElastic.convertToRegex('\\', '*', '.', "broadway\\\\"));
+        assertEquals("broadway\\\\", FilterToElastic.convertToRegex('\\', '*', '.', "broadway\\\\"));
         assertEquals("broadway\\", FilterToElastic.convertToRegex('!', '*', '.', "broadway\\"));
     }
 
@@ -632,22 +562,16 @@ public class ElasticFilterTest {
         assertEquals("broadway", FilterToElastic.convertToQueryString('!', '*', '.', "broadway"));
 
         assertEquals("broad?ay", FilterToElastic.convertToQueryString('!', '*', '.', "broad.ay"));
-        assertEquals(
-                "broad\\.ay", FilterToElastic.convertToQueryString('!', '*', '.', "broad!.ay"));
+        assertEquals("broad\\.ay", FilterToElastic.convertToQueryString('!', '*', '.', "broad!.ay"));
 
         assertEquals("broa'dway", FilterToElastic.convertToQueryString('!', '*', '.', "broa'dway"));
-        assertEquals(
-                "broa''dway", FilterToElastic.convertToQueryString('!', '*', '.', "broa''dway"));
+        assertEquals("broa''dway", FilterToElastic.convertToQueryString('!', '*', '.', "broa''dway"));
 
         assertEquals("broadway?", FilterToElastic.convertToQueryString('!', '*', '.', "broadway."));
         assertEquals("broadway", FilterToElastic.convertToQueryString('!', '*', '.', "broadway!"));
-        assertEquals(
-                "broadway\\!", FilterToElastic.convertToQueryString('!', '*', '.', "broadway!!"));
-        assertEquals(
-                "broadway\\\\",
-                FilterToElastic.convertToQueryString('\\', '*', '.', "broadway\\\\"));
-        assertEquals(
-                "broadway\\", FilterToElastic.convertToQueryString('!', '*', '.', "broadway\\"));
+        assertEquals("broadway\\!", FilterToElastic.convertToQueryString('!', '*', '.', "broadway!!"));
+        assertEquals("broadway\\\\", FilterToElastic.convertToQueryString('\\', '*', '.', "broadway\\\\"));
+        assertEquals("broadway\\", FilterToElastic.convertToQueryString('!', '*', '.', "broadway\\"));
     }
 
     @Test
@@ -661,58 +585,42 @@ public class ElasticFilterTest {
         coords.add(ImmutableList.of(0, 0));
         // vertices in reverse order
         final List<List<Number>> reverseCoords =
-                ImmutableList.of(
-                        coords.get(0), coords.get(3), coords.get(2), coords.get(1), coords.get(4));
+                ImmutableList.of(coords.get(0), coords.get(3), coords.get(2), coords.get(1), coords.get(4));
         ImmutableMap<String, Serializable> geo =
                 ImmutableMap.of("coordinates", ImmutableList.of(coords), "type", "Polygon");
-        Map<String, Object> expected =
+        Map<String, Object> expected = ImmutableMap.of(
+                "bool",
                 ImmutableMap.of(
-                        "bool",
+                        "must",
+                        ElasticConstants.MATCH_ALL,
+                        "filter",
                         ImmutableMap.of(
-                                "must",
-                                ElasticConstants.MATCH_ALL,
-                                "filter",
-                                ImmutableMap.of(
-                                        "geo_shape",
-                                        ImmutableMap.of(
-                                                "geom",
-                                                ImmutableMap.of(
-                                                        "shape", geo, "relation", "INTERSECTS")))));
+                                "geo_shape",
+                                ImmutableMap.of("geom", ImmutableMap.of("shape", geo, "relation", "INTERSECTS")))));
 
         builder.visit(filter, null);
         assertTrue(builder.createCapabilities().fullySupports(filter));
         assertThat(
                 builder.getQueryBuilder().toString(),
-                oneOf(
-                        expected.toString(),
-                        expected.toString().replace(coords.toString(), reverseCoords.toString())));
+                oneOf(expected.toString(), expected.toString().replace(coords.toString(), reverseCoords.toString())));
     }
 
     @Test
     public void testGeoShapeIntersectsFilter() throws CQLException {
-        Intersects filter =
-                (Intersects) ECQL.toFilter("INTERSECTS(\"geom\", LINESTRING(0 0,1.1 1.1))");
+        Intersects filter = (Intersects) ECQL.toFilter("INTERSECTS(\"geom\", LINESTRING(0 0,1.1 1.1))");
         List<List<Number>> coords = new ArrayList<>();
         coords.add(ImmutableList.of(0, 0));
         coords.add(ImmutableList.of(1.1, 1.1));
-        ImmutableMap<String, Object> shape =
-                ImmutableMap.of("coordinates", coords, "type", "LineString");
-        Map<String, Object> expected =
+        ImmutableMap<String, Object> shape = ImmutableMap.of("coordinates", coords, "type", "LineString");
+        Map<String, Object> expected = ImmutableMap.of(
+                "bool",
                 ImmutableMap.of(
-                        "bool",
+                        "must",
+                        ElasticConstants.MATCH_ALL,
+                        "filter",
                         ImmutableMap.of(
-                                "must",
-                                ElasticConstants.MATCH_ALL,
-                                "filter",
-                                ImmutableMap.of(
-                                        "geo_shape",
-                                        ImmutableMap.of(
-                                                "geom",
-                                                ImmutableMap.of(
-                                                        "shape",
-                                                        shape,
-                                                        "relation",
-                                                        "INTERSECTS")))));
+                                "geo_shape",
+                                ImmutableMap.of("geom", ImmutableMap.of("shape", shape, "relation", "INTERSECTS")))));
 
         builder.visit(filter, null);
         assertTrue(builder.createCapabilities().fullySupports(filter));
@@ -725,8 +633,7 @@ public class ElasticFilterTest {
         LineString ls = gf.createLineString(new Coordinate[0]);
         Intersects filter = ff.intersects(ff.property("geom"), ff.literal(ls));
 
-        Map<String, Object> expected =
-                ImmutableMap.of("bool", ImmutableMap.of("must_not", ElasticConstants.MATCH_ALL));
+        Map<String, Object> expected = ImmutableMap.of("bool", ImmutableMap.of("must_not", ElasticConstants.MATCH_ALL));
 
         builder.visit(filter, null);
         assertTrue(builder.createCapabilities().fullySupports(filter));
@@ -745,29 +652,20 @@ public class ElasticFilterTest {
 
     @Test
     public void testGeoShapeIntersectsFilterReversed() throws CQLException {
-        Intersects filter =
-                (Intersects) ECQL.toFilter("INTERSECTS(LINESTRING(0 0,1.1 1.1), \"geom\")");
+        Intersects filter = (Intersects) ECQL.toFilter("INTERSECTS(LINESTRING(0 0,1.1 1.1), \"geom\")");
         List<List<Number>> coords = new ArrayList<>();
         coords.add(ImmutableList.of(0, 0));
         coords.add(ImmutableList.of(1.1, 1.1));
-        ImmutableMap<String, Object> shape =
-                ImmutableMap.of("coordinates", coords, "type", "LineString");
-        Map<String, Object> expected =
+        ImmutableMap<String, Object> shape = ImmutableMap.of("coordinates", coords, "type", "LineString");
+        Map<String, Object> expected = ImmutableMap.of(
+                "bool",
                 ImmutableMap.of(
-                        "bool",
+                        "must",
+                        ElasticConstants.MATCH_ALL,
+                        "filter",
                         ImmutableMap.of(
-                                "must",
-                                ElasticConstants.MATCH_ALL,
-                                "filter",
-                                ImmutableMap.of(
-                                        "geo_shape",
-                                        ImmutableMap.of(
-                                                "geom",
-                                                ImmutableMap.of(
-                                                        "shape",
-                                                        shape,
-                                                        "relation",
-                                                        "INTERSECTS")))));
+                                "geo_shape",
+                                ImmutableMap.of("geom", ImmutableMap.of("shape", shape, "relation", "INTERSECTS")))));
 
         builder.visit(filter, null);
         assertTrue(builder.createCapabilities().fullySupports(filter));
@@ -776,8 +674,7 @@ public class ElasticFilterTest {
 
     @Test
     public void testAndWithBbox() {
-        And filter =
-                ff.and(ff.id(ff.featureId("id1")), ff.bbox("geom", 0, 0, 1.1, 1.1, "EPSG:4326"));
+        And filter = ff.and(ff.id(ff.featureId("id1")), ff.bbox("geom", 0, 0, 1.1, 1.1, "EPSG:4326"));
         List<List<Number>> coords = new ArrayList<>();
         coords.add(ImmutableList.of(0, 0));
         coords.add(ImmutableList.of(0, 1.1));
@@ -786,67 +683,51 @@ public class ElasticFilterTest {
         coords.add(ImmutableList.of(0, 0));
         // vertices in reverse order
         List<List<Number>> reverseCoords =
-                ImmutableList.of(
-                        coords.get(0), coords.get(3), coords.get(2), coords.get(1), coords.get(4));
-        Map<String, Object> geoShape =
+                ImmutableList.of(coords.get(0), coords.get(3), coords.get(2), coords.get(1), coords.get(4));
+        Map<String, Object> geoShape = ImmutableMap.of(
+                "geo_shape",
                 ImmutableMap.of(
-                        "geo_shape",
+                        "geom",
                         ImmutableMap.of(
-                                "geom",
+                                "shape",
+                                ImmutableMap.of("coordinates", ImmutableList.of(coords), "type", "Polygon"),
+                                "relation",
+                                "INTERSECTS")));
+        Map<String, Object> expected = ImmutableMap.of(
+                "bool",
+                ImmutableMap.of(
+                        "must",
+                        ImmutableList.of(
+                                ImmutableMap.of("ids", ImmutableMap.of("values", ImmutableList.of("id1"))),
                                 ImmutableMap.of(
-                                        "shape",
-                                        ImmutableMap.of(
-                                                "coordinates",
-                                                ImmutableList.of(coords),
-                                                "type",
-                                                "Polygon"),
-                                        "relation",
-                                        "INTERSECTS")));
-        Map<String, Object> expected =
-                ImmutableMap.of(
-                        "bool",
-                        ImmutableMap.of(
-                                "must",
-                                ImmutableList.of(
-                                        ImmutableMap.of(
-                                                "ids",
-                                                ImmutableMap.of("values", ImmutableList.of("id1"))),
-                                        ImmutableMap.of(
-                                                "bool",
-                                                ImmutableMap.of(
-                                                        "must",
-                                                        ElasticConstants.MATCH_ALL,
-                                                        "filter",
-                                                        geoShape)))));
+                                        "bool",
+                                        ImmutableMap.of("must", ElasticConstants.MATCH_ALL, "filter", geoShape)))));
 
         builder.visit(filter, null);
         assertTrue(builder.createCapabilities().fullySupports(filter));
         assertThat(
                 builder.getQueryBuilder().toString(),
-                oneOf(
-                        expected.toString(),
-                        expected.toString().replace(coords.toString(), reverseCoords.toString())));
+                oneOf(expected.toString(), expected.toString().replace(coords.toString(), reverseCoords.toString())));
     }
 
     @Test
     public void testGeoPointBboxFilter() {
         BBOX filter = ff.bbox("geo_point", 0., 0., 1., 1., "EPSG:4326");
-        Map<String, Object> expected =
+        Map<String, Object> expected = ImmutableMap.of(
+                "bool",
                 ImmutableMap.of(
-                        "bool",
+                        "must",
+                        ElasticConstants.MATCH_ALL,
+                        "filter",
                         ImmutableMap.of(
-                                "must",
-                                ElasticConstants.MATCH_ALL,
-                                "filter",
+                                "geo_bounding_box",
                                 ImmutableMap.of(
-                                        "geo_bounding_box",
+                                        "geo_point",
                                         ImmutableMap.of(
-                                                "geo_point",
-                                                ImmutableMap.of(
-                                                        "top_left",
-                                                        ImmutableList.of(0., 1.),
-                                                        "bottom_right",
-                                                        ImmutableList.of(1., 0.))))));
+                                                "top_left",
+                                                ImmutableList.of(0., 1.),
+                                                "bottom_right",
+                                                ImmutableList.of(1., 0.))))));
 
         builder.visit(filter, null);
         assertTrue(builder.createCapabilities().fullySupports(filter));
@@ -856,27 +737,21 @@ public class ElasticFilterTest {
     @Test
     public void testGeoPolygonFilter() throws CQLException {
         Intersects filter =
-                (Intersects)
-                        ECQL.toFilter(
-                                "INTERSECTS(\"geo_point\", POLYGON((0 0, 0 1.1, 1.1 1.1, 1.1 0, 0 0)))");
-        List<List<Double>> points =
-                ImmutableList.of(
-                        ImmutableList.of(0., 0.),
-                        ImmutableList.of(0., 1.1),
-                        ImmutableList.of(1.1, 1.1),
-                        ImmutableList.of(1.1, 0.),
-                        ImmutableList.of(0., 0.));
-        Map<String, Object> expected =
+                (Intersects) ECQL.toFilter("INTERSECTS(\"geo_point\", POLYGON((0 0, 0 1.1, 1.1 1.1, 1.1 0, 0 0)))");
+        List<List<Double>> points = ImmutableList.of(
+                ImmutableList.of(0., 0.),
+                ImmutableList.of(0., 1.1),
+                ImmutableList.of(1.1, 1.1),
+                ImmutableList.of(1.1, 0.),
+                ImmutableList.of(0., 0.));
+        Map<String, Object> expected = ImmutableMap.of(
+                "bool",
                 ImmutableMap.of(
-                        "bool",
+                        "must",
+                        ElasticConstants.MATCH_ALL,
+                        "filter",
                         ImmutableMap.of(
-                                "must",
-                                ElasticConstants.MATCH_ALL,
-                                "filter",
-                                ImmutableMap.of(
-                                        "geo_polygon",
-                                        ImmutableMap.of(
-                                                "geo_point", ImmutableMap.of("points", points)))));
+                                "geo_polygon", ImmutableMap.of("geo_point", ImmutableMap.of("points", points)))));
 
         builder.visit(filter, null);
         assertTrue(builder.createCapabilities().fullySupports(filter));
@@ -885,22 +760,16 @@ public class ElasticFilterTest {
 
     @Test
     public void testDWithinFilter() throws CQLException {
-        DWithin filter =
-                (DWithin) ECQL.toFilter("DWITHIN(\"geo_point\", POINT(0 1.1), 1.0, meters)");
-        Map<String, Object> expected =
+        DWithin filter = (DWithin) ECQL.toFilter("DWITHIN(\"geo_point\", POINT(0 1.1), 1.0, meters)");
+        Map<String, Object> expected = ImmutableMap.of(
+                "bool",
                 ImmutableMap.of(
-                        "bool",
+                        "must",
+                        ElasticConstants.MATCH_ALL,
+                        "filter",
                         ImmutableMap.of(
-                                "must",
-                                ElasticConstants.MATCH_ALL,
-                                "filter",
-                                ImmutableMap.of(
-                                        "geo_distance",
-                                        ImmutableMap.of(
-                                                "distance",
-                                                "1.0m",
-                                                "geo_point",
-                                                ImmutableList.of(0., 1.1)))));
+                                "geo_distance",
+                                ImmutableMap.of("distance", "1.0m", "geo_point", ImmutableList.of(0., 1.1)))));
 
         builder.visit(filter, null);
         assertTrue(builder.createCapabilities().fullySupports(filter));
@@ -910,23 +779,16 @@ public class ElasticFilterTest {
     @Test
     public void testDWithinPolygonFilter() throws CQLException {
         DWithin filter =
-                (DWithin)
-                        ECQL.toFilter(
-                                "DWITHIN(\"geo_point\", POLYGON((0 0, 0 1, 1 1, 1 0, 0 0)), 1.0, meters)");
-        Map<String, Object> expected =
+                (DWithin) ECQL.toFilter("DWITHIN(\"geo_point\", POLYGON((0 0, 0 1, 1 1, 1 0, 0 0)), 1.0, meters)");
+        Map<String, Object> expected = ImmutableMap.of(
+                "bool",
                 ImmutableMap.of(
-                        "bool",
+                        "must",
+                        ElasticConstants.MATCH_ALL,
+                        "filter",
                         ImmutableMap.of(
-                                "must",
-                                ElasticConstants.MATCH_ALL,
-                                "filter",
-                                ImmutableMap.of(
-                                        "geo_distance",
-                                        ImmutableMap.of(
-                                                "distance",
-                                                "1.0m",
-                                                "geo_point",
-                                                ImmutableList.of(0.5, 0.5)))));
+                                "geo_distance",
+                                ImmutableMap.of("distance", "1.0m", "geo_point", ImmutableList.of(0.5, 0.5)))));
 
         builder.visit(filter, null);
         assertTrue(builder.createCapabilities().fullySupports(filter));
@@ -936,23 +798,14 @@ public class ElasticFilterTest {
     @Test
     public void testDBeyondFilter() throws CQLException {
         Beyond filter = (Beyond) ECQL.toFilter("BEYOND(\"geo_point\", POINT(0 1.1), 1.0, meters)");
-        Map<String, Object> filterBit =
+        Map<String, Object> filterBit = ImmutableMap.of(
+                "geo_distance", ImmutableMap.of("distance", "1.0m", "geo_point", ImmutableList.of(0., 1.1)));
+        Map<String, Object> expected = ImmutableMap.of(
+                "bool",
                 ImmutableMap.of(
-                        "geo_distance",
+                        "must_not",
                         ImmutableMap.of(
-                                "distance", "1.0m", "geo_point", ImmutableList.of(0., 1.1)));
-        Map<String, Object> expected =
-                ImmutableMap.of(
-                        "bool",
-                        ImmutableMap.of(
-                                "must_not",
-                                ImmutableMap.of(
-                                        "bool",
-                                        ImmutableMap.of(
-                                                "must",
-                                                ElasticConstants.MATCH_ALL,
-                                                "filter",
-                                                filterBit))));
+                                "bool", ImmutableMap.of("must", ElasticConstants.MATCH_ALL, "filter", filterBit))));
 
         builder.visit(filter, null);
         assertTrue(builder.createCapabilities().fullySupports(filter));
@@ -961,14 +814,9 @@ public class ElasticFilterTest {
 
     @Test
     public void testLinearRingVisit() {
-        final Geometry ring =
-                gf.createLinearRing(
-                        new Coordinate[] {
-                            new Coordinate(0, 0),
-                            new Coordinate(1, 1),
-                            new Coordinate(1, 0),
-                            new Coordinate(0, 0)
-                        });
+        final Geometry ring = gf.createLinearRing(
+                new Coordinate[] {new Coordinate(0, 0), new Coordinate(1, 1), new Coordinate(1, 0), new Coordinate(0, 0)
+                });
         builder.visit(ff.literal(ring), null);
 
         assertEquals("LineString", builder.currentGeometry.getGeometryType());
@@ -976,41 +824,28 @@ public class ElasticFilterTest {
 
     @Test
     public void testCompoundFilter() throws CQLException {
-        Filter filter =
-                ECQL.toFilter(
-                        "time > \"1970-01-01\" and INTERSECTS(\"geom\", LINESTRING(0 0,1.1 1.1))");
+        Filter filter = ECQL.toFilter("time > \"1970-01-01\" and INTERSECTS(\"geom\", LINESTRING(0 0,1.1 1.1))");
         List<List<Number>> coords = new ArrayList<>();
         coords.add(ImmutableList.of(0, 0));
         coords.add(ImmutableList.of(1.1, 1.1));
-        Map<String, Object> geoShape =
+        Map<String, Object> geoShape = ImmutableMap.of(
+                "geo_shape",
                 ImmutableMap.of(
-                        "geo_shape",
+                        "geom",
                         ImmutableMap.of(
-                                "geom",
+                                "shape",
+                                ImmutableMap.of("coordinates", coords, "type", "LineString"),
+                                "relation",
+                                "INTERSECTS")));
+        Map<String, Object> expected = ImmutableMap.of(
+                "bool",
+                ImmutableMap.of(
+                        "must",
+                        ImmutableList.of(
+                                ImmutableMap.of("range", ImmutableMap.of("time", ImmutableMap.of("gt", "1970-01-01"))),
                                 ImmutableMap.of(
-                                        "shape",
-                                        ImmutableMap.of(
-                                                "coordinates", coords, "type", "LineString"),
-                                        "relation",
-                                        "INTERSECTS")));
-        Map<String, Object> expected =
-                ImmutableMap.of(
-                        "bool",
-                        ImmutableMap.of(
-                                "must",
-                                ImmutableList.of(
-                                        ImmutableMap.of(
-                                                "range",
-                                                ImmutableMap.of(
-                                                        "time",
-                                                        ImmutableMap.of("gt", "1970-01-01"))),
-                                        ImmutableMap.of(
-                                                "bool",
-                                                ImmutableMap.of(
-                                                        "must",
-                                                        ElasticConstants.MATCH_ALL,
-                                                        "filter",
-                                                        geoShape)))));
+                                        "bool",
+                                        ImmutableMap.of("must", ElasticConstants.MATCH_ALL, "filter", geoShape)))));
 
         builder.encode(filter);
         assertTrue(builder.createCapabilities().fullySupports(filter));
@@ -1020,8 +855,7 @@ public class ElasticFilterTest {
     @Test
     public void testCql() throws CQLException {
         Filter filter = ECQL.toFilter("\"object.field\"='value'");
-        Map<String, Object> expected =
-                ImmutableMap.of("term", ImmutableMap.of("object.field", "value"));
+        Map<String, Object> expected = ImmutableMap.of("term", ImmutableMap.of("object.field", "value"));
 
         builder.encode(filter);
         assertTrue(builder.createCapabilities().fullySupports(filter));
@@ -1039,8 +873,7 @@ public class ElasticFilterTest {
 
     @Test
     public void testQueryViewParam() throws JsonProcessingException {
-        Map<String, Object> idsQuery =
-                ImmutableMap.of("ids", ImmutableMap.of("value", ImmutableList.of("type1")));
+        Map<String, Object> idsQuery = ImmutableMap.of("ids", ImmutableMap.of("value", ImmutableList.of("type1")));
         parameters.put("q", new ObjectMapper().writeValueAsString(idsQuery));
 
         builder.addViewParams(query);
@@ -1056,9 +889,7 @@ public class ElasticFilterTest {
         assertEquals(
                 ImmutableMap.of(
                         "ageohash_grid_agg",
-                        ImmutableMap.of(
-                                "geohash_grid",
-                                ImmutableMap.of("field", "a_field", "precision", 1))),
+                        ImmutableMap.of("geohash_grid", ImmutableMap.of("field", "a_field", "precision", 1))),
                 builder.aggregations);
     }
 
@@ -1071,9 +902,7 @@ public class ElasticFilterTest {
         assertEquals(
                 ImmutableMap.of(
                         "ageohash_grid_agg",
-                        ImmutableMap.of(
-                                "geohash_grid",
-                                ImmutableMap.of("field", "a_field", "precision", 1))),
+                        ImmutableMap.of("geohash_grid", ImmutableMap.of("field", "a_field", "precision", 1))),
                 builder.aggregations);
     }
 
@@ -1087,8 +916,7 @@ public class ElasticFilterTest {
 
     @Test
     public void testAndQueryViewParam() throws JsonProcessingException {
-        Map<String, Object> idsQuery =
-                ImmutableMap.of("ids", ImmutableMap.of("value", ImmutableList.of("id")));
+        Map<String, Object> idsQuery = ImmutableMap.of("ids", ImmutableMap.of("value", ImmutableList.of("id")));
         builder.queryBuilder = idsQuery;
         parameters.put("q", new ObjectMapper().writeValueAsString(idsQuery));
 
@@ -1099,8 +927,7 @@ public class ElasticFilterTest {
     @Test
     public void testNativeOnlyQueryViewParam() throws JsonProcessingException {
         parameters.put("native-only", "true");
-        Map<String, Object> idsQuery =
-                ImmutableMap.of("ids", ImmutableMap.of("value", ImmutableList.of("id")));
+        Map<String, Object> idsQuery = ImmutableMap.of("ids", ImmutableMap.of("value", ImmutableList.of("id")));
         builder.queryBuilder = idsQuery;
         parameters.put("q", new ObjectMapper().writeValueAsString(idsQuery));
 
@@ -1111,8 +938,7 @@ public class ElasticFilterTest {
     @Test(expected = FilterToElasticException.class)
     public void testNativeQueryViewParamWithError() {
         parameters.put("native-only", "true");
-        builder.queryBuilder =
-                ImmutableMap.of("ids", ImmutableMap.of("value", ImmutableList.of("id")));
+        builder.queryBuilder = ImmutableMap.of("ids", ImmutableMap.of("value", ImmutableList.of("id")));
         parameters.put("q", "{\"x}");
 
         builder.addViewParams(query);
@@ -1122,9 +948,7 @@ public class ElasticFilterTest {
     public void testTemporalStringLiteral() {
         After filter = ff.after(ff.property("dateAttr"), ff.literal("1970-01-01T00:00:00.000Z"));
         Map<String, Object> expected =
-                ImmutableMap.of(
-                        "range",
-                        ImmutableMap.of("dateAttr", ImmutableMap.of("gt", "1970-01-01T00:00:00Z")));
+                ImmutableMap.of("range", ImmutableMap.of("dateAttr", ImmutableMap.of("gt", "1970-01-01T00:00:00Z")));
 
         builder.visit(filter, null);
         assertTrue(builder.createCapabilities().fullySupports(filter));
@@ -1133,17 +957,11 @@ public class ElasticFilterTest {
 
     @Test
     public void testNestedTemporalStringLiteral() {
-        After filter =
-                ff.after(ff.property("nested.datehej"), ff.literal("1970-01-01T00:00:00.123Z"));
-        Map<String, Object> expectedFilter =
-                ImmutableMap.of(
-                        "range",
-                        ImmutableMap.of(
-                                "nested.datehej",
-                                ImmutableMap.of("gt", "1970-01-01T00:00:00.123Z")));
+        After filter = ff.after(ff.property("nested.datehej"), ff.literal("1970-01-01T00:00:00.123Z"));
+        Map<String, Object> expectedFilter = ImmutableMap.of(
+                "range", ImmutableMap.of("nested.datehej", ImmutableMap.of("gt", "1970-01-01T00:00:00.123Z")));
         Map<String, Object> expected =
-                ImmutableMap.of(
-                        "nested", ImmutableMap.of("path", "nested", "query", expectedFilter));
+                ImmutableMap.of("nested", ImmutableMap.of("path", "nested", "query", expectedFilter));
 
         builder.visit(filter, null);
         assertTrue(builder.createCapabilities().fullySupports(filter));
@@ -1158,9 +976,7 @@ public class ElasticFilterTest {
         Instant temporalInstant = new DefaultInstant(new DefaultPosition(date1));
         After filter = ff.after(ff.property("dateAttr"), ff.literal(temporalInstant));
         Map<String, Object> expected =
-                ImmutableMap.of(
-                        "range",
-                        ImmutableMap.of("dateAttr", ImmutableMap.of("gt", "1970-07-19T00:00:00Z")));
+                ImmutableMap.of("range", ImmutableMap.of("dateAttr", ImmutableMap.of("gt", "1970-07-19T00:00:00Z")));
 
         builder.visit(filter, null);
         assertTrue(builder.createCapabilities().fullySupports(filter));
@@ -1176,9 +992,7 @@ public class ElasticFilterTest {
         Instant temporalInstant = new DefaultInstant(new DefaultPosition(date1));
         After filter = ff.after(ff.property("dateAttrWithFormat"), ff.literal(temporalInstant));
         Map<String, Object> expected =
-                ImmutableMap.of(
-                        "range",
-                        ImmutableMap.of("dateAttrWithFormat", ImmutableMap.of("gt", "1970-07-19")));
+                ImmutableMap.of("range", ImmutableMap.of("dateAttrWithFormat", ImmutableMap.of("gt", "1970-07-19")));
 
         builder.visit(filter, null);
         assertTrue(builder.createCapabilities().fullySupports(filter));
@@ -1193,12 +1007,8 @@ public class ElasticFilterTest {
         Date date1 = dateFormat.parse("1970-07-19T01:02:03.456-0100");
         Instant temporalInstant = new DefaultInstant(new DefaultPosition(date1));
         After filter = ff.after(ff.property("dateAttrWithFormat"), ff.literal(temporalInstant));
-        Map<String, Object> expected =
-                ImmutableMap.of(
-                        "range",
-                        ImmutableMap.of(
-                                "dateAttrWithFormat",
-                                ImmutableMap.of("gt", "19700719T020203.456Z")));
+        Map<String, Object> expected = ImmutableMap.of(
+                "range", ImmutableMap.of("dateAttrWithFormat", ImmutableMap.of("gt", "19700719T020203.456Z")));
 
         builder.visit(filter, null);
         assertTrue(builder.createCapabilities().fullySupports(filter));
@@ -1212,11 +1022,8 @@ public class ElasticFilterTest {
         Date date1 = dateFormat.parse("1970-07-19T01:02:03.456-0100");
         Instant temporalInstant = new DefaultInstant(new DefaultPosition(date1));
         After filter = ff.after(ff.property("dateAttr"), ff.literal(temporalInstant));
-        Map<String, Object> expected =
-                ImmutableMap.of(
-                        "range",
-                        ImmutableMap.of(
-                                "dateAttr", ImmutableMap.of("gt", "1970-07-19T02:02:03.456Z")));
+        Map<String, Object> expected = ImmutableMap.of(
+                "range", ImmutableMap.of("dateAttr", ImmutableMap.of("gt", "1970-07-19T02:02:03.456Z")));
 
         builder.visit(filter, null);
         assertTrue(builder.createCapabilities().fullySupports(filter));
@@ -1230,11 +1037,8 @@ public class ElasticFilterTest {
         Date date1 = dateFormat.parse("1970-07-19T01:02:03.456-0100");
         Instant temporalInstant = new DefaultInstant(new DefaultPosition(date1));
         After filter = ff.after(ff.literal(temporalInstant), ff.property("dateAttr"));
-        Map<String, Object> expected =
-                ImmutableMap.of(
-                        "range",
-                        ImmutableMap.of(
-                                "dateAttr", ImmutableMap.of("lt", "1970-07-19T02:02:03.456Z")));
+        Map<String, Object> expected = ImmutableMap.of(
+                "range", ImmutableMap.of("dateAttr", ImmutableMap.of("lt", "1970-07-19T02:02:03.456Z")));
 
         builder.visit(filter, null);
         assertTrue(builder.createCapabilities().fullySupports(filter));
@@ -1249,11 +1053,8 @@ public class ElasticFilterTest {
         Instant temporalInstant2 = new DefaultInstant(new DefaultPosition(date2));
         Period period = new DefaultPeriod(temporalInstant, temporalInstant2);
         After filter = ff.after(ff.property("dateAttr"), ff.literal(period));
-        Map<String, Object> expected =
-                ImmutableMap.of(
-                        "range",
-                        ImmutableMap.of(
-                                "dateAttr", ImmutableMap.of("gt", "1970-07-19T07:08:09.101Z")));
+        Map<String, Object> expected = ImmutableMap.of(
+                "range", ImmutableMap.of("dateAttr", ImmutableMap.of("gt", "1970-07-19T07:08:09.101Z")));
 
         builder.visit(filter, null);
         assertTrue(builder.createCapabilities().fullySupports(filter));
@@ -1268,11 +1069,8 @@ public class ElasticFilterTest {
         Instant temporalInstant2 = new DefaultInstant(new DefaultPosition(date2));
         Period period = new DefaultPeriod(temporalInstant, temporalInstant2);
         After filter = ff.after(ff.literal(period), ff.property("dateAttr"));
-        Map<String, Object> expected =
-                ImmutableMap.of(
-                        "range",
-                        ImmutableMap.of(
-                                "dateAttr", ImmutableMap.of("lt", "1970-07-19T01:02:03.456Z")));
+        Map<String, Object> expected = ImmutableMap.of(
+                "range", ImmutableMap.of("dateAttr", ImmutableMap.of("lt", "1970-07-19T01:02:03.456Z")));
 
         builder.visit(filter, null);
         assertTrue(builder.createCapabilities().fullySupports(filter));
@@ -1285,11 +1083,8 @@ public class ElasticFilterTest {
         Instant temporalInstant = new DefaultInstant(new DefaultPosition(date1));
         org.geotools.api.filter.temporal.Before filter =
                 ff.before(ff.property("dateAttr"), ff.literal(temporalInstant));
-        Map<String, Object> expected =
-                ImmutableMap.of(
-                        "range",
-                        ImmutableMap.of(
-                                "dateAttr", ImmutableMap.of("lt", "1970-07-19T01:02:03.456Z")));
+        Map<String, Object> expected = ImmutableMap.of(
+                "range", ImmutableMap.of("dateAttr", ImmutableMap.of("lt", "1970-07-19T01:02:03.456Z")));
 
         builder.visit(filter, null);
         assertTrue(builder.createCapabilities().fullySupports(filter));
@@ -1304,13 +1099,9 @@ public class ElasticFilterTest {
         Instant temporalInstant2 = new DefaultInstant(new DefaultPosition(date2));
         Period period = new DefaultPeriod(temporalInstant, temporalInstant2);
 
-        org.geotools.api.filter.temporal.Before filter =
-                ff.before(ff.property("dateAttr"), ff.literal(period));
-        Map<String, Object> expected =
-                ImmutableMap.of(
-                        "range",
-                        ImmutableMap.of(
-                                "dateAttr", ImmutableMap.of("lt", "1970-07-19T01:02:03.456Z")));
+        org.geotools.api.filter.temporal.Before filter = ff.before(ff.property("dateAttr"), ff.literal(period));
+        Map<String, Object> expected = ImmutableMap.of(
+                "range", ImmutableMap.of("dateAttr", ImmutableMap.of("lt", "1970-07-19T01:02:03.456Z")));
 
         builder.visit(filter, null);
         assertTrue(builder.createCapabilities().fullySupports(filter));
@@ -1325,13 +1116,9 @@ public class ElasticFilterTest {
         Instant temporalInstant2 = new DefaultInstant(new DefaultPosition(date2));
         Period period = new DefaultPeriod(temporalInstant, temporalInstant2);
 
-        org.geotools.api.filter.temporal.Before filter =
-                ff.before(ff.literal(period), ff.property("dateAttr"));
-        Map<String, Object> expected =
-                ImmutableMap.of(
-                        "range",
-                        ImmutableMap.of(
-                                "dateAttr", ImmutableMap.of("gt", "1970-07-19T07:08:09.101Z")));
+        org.geotools.api.filter.temporal.Before filter = ff.before(ff.literal(period), ff.property("dateAttr"));
+        Map<String, Object> expected = ImmutableMap.of(
+                "range", ImmutableMap.of("dateAttr", ImmutableMap.of("gt", "1970-07-19T07:08:09.101Z")));
 
         builder.visit(filter, null);
         assertTrue(builder.createCapabilities().fullySupports(filter));
@@ -1347,8 +1134,7 @@ public class ElasticFilterTest {
         Period period = new DefaultPeriod(temporalInstant, temporalInstant2);
 
         Begins filter = ff.begins(ff.property("dateAttr"), ff.literal(period));
-        Map<String, Object> expected =
-                ImmutableMap.of("term", ImmutableMap.of("dateAttr", "1970-07-19T01:02:03.456Z"));
+        Map<String, Object> expected = ImmutableMap.of("term", ImmutableMap.of("dateAttr", "1970-07-19T01:02:03.456Z"));
 
         builder.visit(filter, null);
         assertTrue(builder.createCapabilities().fullySupports(filter));
@@ -1384,8 +1170,7 @@ public class ElasticFilterTest {
         Period period = new DefaultPeriod(temporalInstant, temporalInstant2);
 
         BegunBy filter = ff.begunBy(ff.literal(period), ff.property("dateAttr"));
-        Map<String, Object> expected =
-                ImmutableMap.of("term", ImmutableMap.of("dateAttr", "1970-07-19T01:02:03.456Z"));
+        Map<String, Object> expected = ImmutableMap.of("term", ImmutableMap.of("dateAttr", "1970-07-19T01:02:03.456Z"));
 
         builder.visit(filter, null);
         assertTrue(builder.createCapabilities().fullySupports(filter));
@@ -1401,16 +1186,11 @@ public class ElasticFilterTest {
         Period period = new DefaultPeriod(temporalInstant, temporalInstant2);
 
         During filter = ff.during(ff.property("dateAttr"), ff.literal(period));
-        Map<String, Object> expected =
+        Map<String, Object> expected = ImmutableMap.of(
+                "range",
                 ImmutableMap.of(
-                        "range",
-                        ImmutableMap.of(
-                                "dateAttr",
-                                ImmutableMap.of(
-                                        "gt",
-                                        "1970-07-19T01:02:03.456Z",
-                                        "lt",
-                                        "1970-07-19T07:08:09.101Z")));
+                        "dateAttr",
+                        ImmutableMap.of("gt", "1970-07-19T01:02:03.456Z", "lt", "1970-07-19T07:08:09.101Z")));
 
         builder.visit(filter, null);
         assertTrue(builder.createCapabilities().fullySupports(filter));
@@ -1426,8 +1206,7 @@ public class ElasticFilterTest {
         Period period = new DefaultPeriod(temporalInstant, temporalInstant2);
 
         Ends filter = ff.ends(ff.property("dateAttr"), ff.literal(period));
-        Map<String, Object> expected =
-                ImmutableMap.of("term", ImmutableMap.of("dateAttr", "1970-07-19T07:08:09.101Z"));
+        Map<String, Object> expected = ImmutableMap.of("term", ImmutableMap.of("dateAttr", "1970-07-19T07:08:09.101Z"));
 
         builder.visit(filter, null);
         assertTrue(builder.createCapabilities().fullySupports(filter));
@@ -1443,8 +1222,7 @@ public class ElasticFilterTest {
         Period period = new DefaultPeriod(temporalInstant, temporalInstant2);
 
         EndedBy filter = ff.endedBy(ff.literal(period), ff.property("dateAttr"));
-        Map<String, Object> expected =
-                ImmutableMap.of("term", ImmutableMap.of("dateAttr", "1970-07-19T07:08:09.101Z"));
+        Map<String, Object> expected = ImmutableMap.of("term", ImmutableMap.of("dateAttr", "1970-07-19T07:08:09.101Z"));
 
         builder.visit(filter, null);
         assertTrue(builder.createCapabilities().fullySupports(filter));
@@ -1460,8 +1238,7 @@ public class ElasticFilterTest {
         Period period = new DefaultPeriod(temporalInstant, temporalInstant2);
 
         EndedBy filter = ff.endedBy(ff.property("dateAttr"), ff.literal(period));
-        Map<String, Object> expected =
-                ImmutableMap.of("term", ImmutableMap.of("dateAttr", "1970-07-19T07:08:09.101Z"));
+        Map<String, Object> expected = ImmutableMap.of("term", ImmutableMap.of("dateAttr", "1970-07-19T07:08:09.101Z"));
 
         builder.visit(filter, null);
         assertTrue(builder.createCapabilities().fullySupports(filter));
@@ -1477,16 +1254,11 @@ public class ElasticFilterTest {
         Period period = new DefaultPeriod(temporalInstant, temporalInstant2);
 
         TContains filter = ff.tcontains(ff.literal(period), ff.property("dateAttr"));
-        Map<String, Object> expected =
+        Map<String, Object> expected = ImmutableMap.of(
+                "range",
                 ImmutableMap.of(
-                        "range",
-                        ImmutableMap.of(
-                                "dateAttr",
-                                ImmutableMap.of(
-                                        "gt",
-                                        "1970-07-19T01:02:03.456Z",
-                                        "lt",
-                                        "1970-07-19T07:08:09.101Z")));
+                        "dateAttr",
+                        ImmutableMap.of("gt", "1970-07-19T01:02:03.456Z", "lt", "1970-07-19T07:08:09.101Z")));
 
         builder.visit(filter, null);
         assertTrue(builder.createCapabilities().fullySupports(filter));
@@ -1498,8 +1270,7 @@ public class ElasticFilterTest {
         Date date1 = dateFormat.parse("1970-07-19T01:02:03.456Z");
         Instant temporalInstant = new DefaultInstant(new DefaultPosition(date1));
         TEquals filter = ff.tequals(ff.property("dateAttr"), ff.literal(temporalInstant));
-        Map<String, Object> expected =
-                ImmutableMap.of("term", ImmutableMap.of("dateAttr", "1970-07-19T01:02:03.456Z"));
+        Map<String, Object> expected = ImmutableMap.of("term", ImmutableMap.of("dateAttr", "1970-07-19T01:02:03.456Z"));
 
         builder.visit(filter, null);
         assertTrue(builder.createCapabilities().fullySupports(filter));
@@ -1537,9 +1308,7 @@ public class ElasticFilterTest {
 
     @Test(expected = UnsupportedOperationException.class)
     public void testUnsupportedBinaryComparisonOperatorWithBinaryExpression() {
-        builder.visit(
-                ff.equals(ff.subtract(ff.property("doubleAttr"), ff.literal(2.5)), ff.literal(0.0)),
-                null);
+        builder.visit(ff.equals(ff.subtract(ff.property("doubleAttr"), ff.literal(2.5)), ff.literal(0.0)), null);
     }
 
     @Test(expected = UnsupportedOperationException.class)
@@ -1580,18 +1349,13 @@ public class ElasticFilterTest {
     @Test
     public void testGetMaxDecimalsForEnvelope() {
         Envelope bigEnv = new Envelope(-180, 180, -90, 90);
-        assertEquals(
-                JtsModule.DEFAULT_MAX_DECIMALS, FilterToElastic.getMaxDecimalsForEnvelope(bigEnv));
+        assertEquals(JtsModule.DEFAULT_MAX_DECIMALS, FilterToElastic.getMaxDecimalsForEnvelope(bigEnv));
 
         Envelope superBigEnv = new Envelope(-18000, 18000, -9000, 9000);
-        assertEquals(
-                JtsModule.DEFAULT_MAX_DECIMALS,
-                FilterToElastic.getMaxDecimalsForEnvelope(superBigEnv));
+        assertEquals(JtsModule.DEFAULT_MAX_DECIMALS, FilterToElastic.getMaxDecimalsForEnvelope(superBigEnv));
 
         Envelope bigEnvWithDec2 = new Envelope(-18000, 18999.1, -9000, 9999.1);
-        assertEquals(
-                JtsModule.DEFAULT_MAX_DECIMALS,
-                FilterToElastic.getMaxDecimalsForEnvelope(bigEnvWithDec2));
+        assertEquals(JtsModule.DEFAULT_MAX_DECIMALS, FilterToElastic.getMaxDecimalsForEnvelope(bigEnvWithDec2));
 
         Envelope smallEnv = new Envelope(-180, -179.9999999, -90, -89.9999999);
         assertEquals(7, FilterToElastic.getMaxDecimalsForEnvelope(smallEnv));

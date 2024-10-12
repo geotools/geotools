@@ -71,7 +71,9 @@ public class OGCFilterTypeBindingTest extends FilterTestSupport {
         Document doc = encode(FilterMockData.propertyIsEqualTo(), OGC.Filter);
 
         assertEquals("ogc:Filter", doc.getDocumentElement().getNodeName());
-        assertEquals(1, doc.getElementsByTagNameNS(OGC.NAMESPACE, "PropertyIsEqualTo").getLength());
+        assertEquals(
+                1,
+                doc.getElementsByTagNameNS(OGC.NAMESPACE, "PropertyIsEqualTo").getLength());
     }
 
     @Test

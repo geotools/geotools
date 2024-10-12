@@ -74,8 +74,7 @@ public class GeometryUtil {
             for (int i = 0; i < l1.getNumPoints() - 1; i++) {
                 merged[i + l2.getNumPoints()] = l1.getCoordinateN(i + 1);
             }
-        } else if (l1.getCoordinateN(l1.getNumPoints() - 1)
-                .equals(l2.getCoordinateN(l2.getNumPoints() - 1))) {
+        } else if (l1.getCoordinateN(l1.getNumPoints() - 1).equals(l2.getCoordinateN(l2.getNumPoints() - 1))) {
             // tip to tip
             for (int i = 0; i < l1.getNumPoints(); i++) {
                 merged[i] = l1.getCoordinateN(i);
@@ -110,12 +109,8 @@ public class GeometryUtil {
         // use the cosine law to calculate angle between
 
         // transform line segments tail to tail, originating at (0,0)
-        LineSegment tls1 =
-                new LineSegment(
-                        new Coordinate(0, 0), new Coordinate(l1.p1.x - l1.p0.x, l1.p1.y - l1.p0.y));
-        LineSegment tls2 =
-                new LineSegment(
-                        new Coordinate(0, 0), new Coordinate(l2.p1.x - l2.p0.x, l2.p1.y - l2.p0.y));
+        LineSegment tls1 = new LineSegment(new Coordinate(0, 0), new Coordinate(l1.p1.x - l1.p0.x, l1.p1.y - l1.p0.y));
+        LineSegment tls2 = new LineSegment(new Coordinate(0, 0), new Coordinate(l2.p1.x - l2.p0.x, l2.p1.y - l2.p0.y));
 
         // line segment for third side of triangle
         LineSegment ls3 = new LineSegment(tls1.p1, tls2.p1);
@@ -129,9 +124,7 @@ public class GeometryUtil {
 
     public static double angleBetween(LineString l1, LineString l2, double tol) {
         LineSegment ls1 =
-                new LineSegment(
-                        l1.getCoordinateN(l1.getNumPoints() - 2),
-                        l1.getCoordinateN(l1.getNumPoints() - 1));
+                new LineSegment(l1.getCoordinateN(l1.getNumPoints() - 2), l1.getCoordinateN(l1.getNumPoints() - 1));
         LineSegment ls2 = new LineSegment(l2.getCoordinateN(0), l2.getCoordinateN(1));
 
         return (angleBetween(ls1, ls2, tol));
@@ -220,13 +213,8 @@ public class GeometryUtil {
         x /= n;
         y /= n;
 
-        LineString simple =
-                gf().createLineString(
-                                new Coordinate[] {
-                                    line.getCoordinateN(0),
-                                    new Coordinate(x, y),
-                                    line.getCoordinateN(n - 1)
-                                });
+        LineString simple = gf().createLineString(
+                        new Coordinate[] {line.getCoordinateN(0), new Coordinate(x, y), line.getCoordinateN(n - 1)});
 
         return (simple);
     }

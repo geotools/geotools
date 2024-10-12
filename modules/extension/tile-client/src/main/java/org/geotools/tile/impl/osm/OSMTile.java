@@ -40,11 +40,7 @@ public class OSMTile extends Tile {
     }
 
     public OSMTile(TileIdentifier tileName, TileService service) {
-        super(
-                tileName,
-                WebMercatorTileFactory.getExtentFromTileName(tileName),
-                DEFAULT_TILE_SIZE,
-                service);
+        super(tileName, WebMercatorTileFactory.getExtentFromTileName(tileName), DEFAULT_TILE_SIZE, service);
     }
 
     @Override

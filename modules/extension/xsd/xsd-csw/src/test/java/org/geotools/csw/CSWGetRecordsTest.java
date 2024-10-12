@@ -32,9 +32,7 @@ public class CSWGetRecordsTest {
 
     @Test
     public void testParseGetRecordsEbrimBrief() throws Exception {
-        GetRecordsType gr =
-                (GetRecordsType)
-                        parser.parse(getClass().getResourceAsStream("GetRecordsBrief.xml"));
+        GetRecordsType gr = (GetRecordsType) parser.parse(getClass().getResourceAsStream("GetRecordsBrief.xml"));
         assertEquals("CSW", gr.getService());
         assertEquals("2.0.2", gr.getVersion());
 
@@ -69,9 +67,7 @@ public class CSWGetRecordsTest {
 
     @Test
     public void testParseGetRecordsFilterSimple() throws Exception {
-        GetRecordsType gr =
-                (GetRecordsType)
-                        parser.parse(getClass().getResourceAsStream("GetRecordsFilterSimple.xml"));
+        GetRecordsType gr = (GetRecordsType) parser.parse(getClass().getResourceAsStream("GetRecordsFilterSimple.xml"));
 
         // check the attributes
         assertEquals("CSW", gr.getService());
@@ -103,9 +99,7 @@ public class CSWGetRecordsTest {
 
     @Test
     public void testParseGetRecordsById() throws Exception {
-        GetRecordByIdType gr =
-                (GetRecordByIdType)
-                        parser.parse(getClass().getResourceAsStream("GetRecordById.xml"));
+        GetRecordByIdType gr = (GetRecordByIdType) parser.parse(getClass().getResourceAsStream("GetRecordById.xml"));
         // check the attributes
         assertEquals("CSW", gr.getService());
         assertEquals("2.0.2", gr.getVersion());
@@ -126,8 +120,7 @@ public class CSWGetRecordsTest {
     @Test
     public void testParseGetRecordsByIdResponse() throws Exception {
         GetRecordByIdResponseType response =
-                (GetRecordByIdResponseType)
-                        parser.parse(getClass().getResourceAsStream("GetRecordByIdResponse.xml"));
+                (GetRecordByIdResponseType) parser.parse(getClass().getResourceAsStream("GetRecordByIdResponse.xml"));
         assertNotNull(response);
         EList<AbstractRecordType> records = response.getAbstractRecord();
         assertEquals(1, records.size());

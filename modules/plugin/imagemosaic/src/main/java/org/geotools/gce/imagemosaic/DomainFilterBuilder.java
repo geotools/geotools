@@ -75,13 +75,9 @@ public class DomainFilterBuilder {
                 if (value instanceof Range) {
                     // RANGE
                     final Range range = (Range) value;
-                    filters.add(
-                            ff.and(
-                                    ff.lessOrEqual(
-                                            ff.property(property), ff.literal(range.getMaxValue())),
-                                    ff.greaterOrEqual(
-                                            ff.property(property),
-                                            ff.literal(range.getMinValue()))));
+                    filters.add(ff.and(
+                            ff.lessOrEqual(ff.property(property), ff.literal(range.getMaxValue())),
+                            ff.greaterOrEqual(ff.property(property), ff.literal(range.getMinValue()))));
                 } else {
                     // SINGLE value
                     filters.add(ff.equal(ff.property(property), ff.literal(value), true));
@@ -97,10 +93,8 @@ public class DomainFilterBuilder {
                     if (maxValue.compareTo(minValue) != 0) {
                         // logic comes from Range.intersectsNC(Range)
                         // in summary, requestedMax > min && requestedMin < max
-                        Filter maxCondition =
-                                ff.greaterOrEqual(ff.literal(maxValue), ff.property(property));
-                        Filter minCondition =
-                                ff.lessOrEqual(ff.literal(minValue), ff.property(endProperty));
+                        Filter maxCondition = ff.greaterOrEqual(ff.literal(maxValue), ff.property(property));
+                        Filter minCondition = ff.lessOrEqual(ff.literal(minValue), ff.property(endProperty));
 
                         filters.add(ff.and(Arrays.asList(maxCondition, minCondition)));
                         continue;
@@ -108,10 +102,9 @@ public class DomainFilterBuilder {
                         value = maxValue;
                     }
                 }
-                filters.add(
-                        ff.and(
-                                ff.lessOrEqual(ff.property(property), ff.literal(value)),
-                                ff.greaterOrEqual(ff.property(endProperty), ff.literal(value))));
+                filters.add(ff.and(
+                        ff.lessOrEqual(ff.property(property), ff.literal(value)),
+                        ff.greaterOrEqual(ff.property(endProperty), ff.literal(value))));
             }
         }
         if (filters.size() == 1) return filters.get(0);

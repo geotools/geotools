@@ -106,8 +106,7 @@ public interface DataAccessFactory extends Factory {
      * @throws IOException if there were any problems setting up (creating or connecting) the
      *     datasource.
      */
-    DataAccess<? extends FeatureType, ? extends Feature> createDataStore(Map<String, ?> params)
-            throws IOException;
+    DataAccess<? extends FeatureType, ? extends Feature> createDataStore(Map<String, ?> params) throws IOException;
 
     /**
      * Name suitable for display to end user.
@@ -304,8 +303,7 @@ public interface DataAccessFactory extends Factory {
          * @param required <code>true</code> is param is required
          * @param sample Sample value as an example for user input
          */
-        public Param(
-                String key, Class<?> type, String description, boolean required, Object sample) {
+        public Param(String key, Class<?> type, String description, boolean required, Object sample) {
             this(
                     key,
                     type,
@@ -324,22 +322,8 @@ public interface DataAccessFactory extends Factory {
          * @param required <code>true</code> is param is required
          * @param sample Sample value as an example for user input
          */
-        public Param(
-                String key,
-                Class<?> type,
-                InternationalString description,
-                boolean required,
-                Object sample) {
-            super(
-                    key,
-                    type,
-                    new SimpleInternationalString(key),
-                    description,
-                    required,
-                    1,
-                    1,
-                    sample,
-                    null);
+        public Param(String key, Class<?> type, InternationalString description, boolean required, Object sample) {
+            super(key, type, new SimpleInternationalString(key), description, required, 1, 1, sample, null);
         }
 
         /**
@@ -364,12 +348,7 @@ public interface DataAccessFactory extends Factory {
         }
 
         public Param(
-                String key,
-                Class<?> type,
-                String description,
-                boolean required,
-                Object sample,
-                Object... metadata) {
+                String key, Class<?> type, String description, boolean required, Object sample, Object... metadata) {
             this(key, type, description, required, sample, new KVP(metadata));
         }
 
@@ -391,16 +370,7 @@ public interface DataAccessFactory extends Factory {
                 boolean required,
                 Object sample,
                 Map<String, ?> metadata) {
-            super(
-                    key,
-                    type,
-                    new SimpleInternationalString(key),
-                    description,
-                    required,
-                    1,
-                    1,
-                    sample,
-                    metadata);
+            super(key, type, new SimpleInternationalString(key), description, required, 1, 1, sample, metadata);
         }
 
         /**
@@ -465,12 +435,11 @@ public interface DataAccessFactory extends Factory {
             }
 
             if (!type.isInstance(value)) {
-                throw new IOException(
-                        type.getName()
-                                + " required for parameter "
-                                + key
-                                + ": not "
-                                + value.getClass().getName());
+                throw new IOException(type.getName()
+                        + " required for parameter "
+                        + key
+                        + ": not "
+                        + value.getClass().getName());
             }
 
             return value;
@@ -532,8 +501,7 @@ public interface DataAccessFactory extends Factory {
                         throw ioException;
                     } catch (Throwable throwable) {
                         throw new DataSourceException(
-                                "Problem creating " + type.getName() + " from '" + text + "'",
-                                throwable);
+                                "Problem creating " + type.getName() + " from '" + text + "'", throwable);
                     }
 
                     result.add(element);
@@ -553,8 +521,7 @@ public interface DataAccessFactory extends Factory {
             } catch (IOException ioException) {
                 throw ioException;
             } catch (Throwable throwable) {
-                throw new DataSourceException(
-                        "Problem creating " + type.getName() + " from '" + text + "'", throwable);
+                throw new DataSourceException("Problem creating " + type.getName() + " from '" + text + "'", throwable);
             }
         }
 
@@ -591,16 +558,14 @@ public interface DataAccessFactory extends Factory {
             } // No type( String ) constructor
 
             try {
-                return constructor.newInstance(
-                        new Object[] {
-                            text,
-                        });
+                return constructor.newInstance(new Object[] {
+                    text,
+                });
             } catch (IllegalArgumentException
                     | IllegalAccessException
                     | InstantiationException illegalArgumentException) {
                 throw new DataSourceException(
-                        "Could not create " + type.getName() + ": from '" + text + "'",
-                        illegalArgumentException);
+                        "Could not create " + type.getName() + ": from '" + text + "'", illegalArgumentException);
             } catch (InvocationTargetException targetException) {
                 throw targetException.getCause();
             }

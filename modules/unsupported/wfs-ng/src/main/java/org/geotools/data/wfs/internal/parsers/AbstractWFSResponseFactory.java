@@ -61,8 +61,7 @@ public abstract class AbstractWFSResponseFactory implements WFSResponseFactory {
      * @see WFSException
      */
     @Override
-    public WFSResponse createResponse(WFSRequest request, HTTPResponse response)
-            throws IOException {
+    public WFSResponse createResponse(WFSRequest request, HTTPResponse response) throws IOException {
 
         // We can't rely on the server returning the correct output format. Some, for example
         // CubeWerx, upon a successful GetFeature request, set the response's content-type
@@ -75,8 +74,7 @@ public abstract class AbstractWFSResponseFactory implements WFSResponseFactory {
             buffSize = 512;
         }
         @SuppressWarnings("PMD.CloseResource") // closed in delegates it would seem... but unsure
-        PushbackInputStream pushbackIn =
-                new PushbackInputStream(response.getResponseStream(), buffSize);
+        PushbackInputStream pushbackIn = new PushbackInputStream(response.getResponseStream(), buffSize);
         byte[] buff = new byte[buffSize];
         int readCount = 0;
         int r;
@@ -96,8 +94,7 @@ public abstract class AbstractWFSResponseFactory implements WFSResponseFactory {
 
         StringBuilder head = new StringBuilder();
         try (BufferedReader reader =
-                new BufferedReader(
-                        new InputStreamReader(new ByteArrayInputStream(buff), charset))) {
+                new BufferedReader(new InputStreamReader(new ByteArrayInputStream(buff), charset))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 head.append(line).append('\n');
@@ -125,8 +122,8 @@ public abstract class AbstractWFSResponseFactory implements WFSResponseFactory {
      *     explicitly but to dispose the response instead.
      * @return The actual response
      */
-    protected abstract WFSResponse createResponseImpl(
-            WFSRequest request, HTTPResponse response, InputStream in) throws IOException;
+    protected abstract WFSResponse createResponseImpl(WFSRequest request, HTTPResponse response, InputStream in)
+            throws IOException;
 
     /**
      * @param head The first couple of characters from the response, typically the first 512
@@ -138,8 +135,7 @@ public abstract class AbstractWFSResponseFactory implements WFSResponseFactory {
      * @return An {@link WFSException}
      * @throws IOException in case the parsing of the exception report failed
      */
-    public WFSException parseException(WFSRequest originatingRequest, InputStream inputStream)
-            throws IOException {
+    public WFSException parseException(WFSRequest originatingRequest, InputStream inputStream) throws IOException {
         Parser parser = new Parser(originatingRequest.getStrategy().getWfsConfiguration());
         EntityResolver resolver = originatingRequest.getStrategy().getConfig().getEntityResolver();
         if (resolver != null) {
@@ -157,8 +153,7 @@ public abstract class AbstractWFSResponseFactory implements WFSResponseFactory {
             return new WFSException("Exception parsing server exception report", e);
         }
         if (parsed instanceof net.opengis.ows10.ExceptionReportType) {
-            net.opengis.ows10.ExceptionReportType report =
-                    (net.opengis.ows10.ExceptionReportType) parsed;
+            net.opengis.ows10.ExceptionReportType report = (net.opengis.ows10.ExceptionReportType) parsed;
             List<net.opengis.ows10.ExceptionType> exceptions = report.getException();
 
             StringBuilder msg = new StringBuilder("WFS returned an exception.");
@@ -171,8 +166,7 @@ public abstract class AbstractWFSResponseFactory implements WFSResponseFactory {
             }
             return result;
         } else if (parsed instanceof net.opengis.ows11.ExceptionReportType) {
-            net.opengis.ows11.ExceptionReportType report =
-                    (net.opengis.ows11.ExceptionReportType) parsed;
+            net.opengis.ows11.ExceptionReportType report = (net.opengis.ows11.ExceptionReportType) parsed;
             @SuppressWarnings("unchecked")
             List<net.opengis.ows11.ExceptionType> exceptions = report.getException();
 
@@ -187,8 +181,7 @@ public abstract class AbstractWFSResponseFactory implements WFSResponseFactory {
             }
             return result;
         } else {
-            net.opengis.ows20.ExceptionReportType report =
-                    (net.opengis.ows20.ExceptionReportType) parsed;
+            net.opengis.ows20.ExceptionReportType report = (net.opengis.ows20.ExceptionReportType) parsed;
             List<net.opengis.ows20.ExceptionType> exceptions = report.getException();
 
             StringBuilder msg = new StringBuilder("WFS returned an exception.");

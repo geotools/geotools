@@ -52,8 +52,7 @@ import java.util.ResourceBundle;
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
-public class ResourceInternationalString extends AbstractInternationalString
-        implements Serializable {
+public class ResourceInternationalString extends AbstractInternationalString implements Serializable {
     /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = 6339944890723487336L;
 
@@ -107,8 +106,7 @@ public class ResourceInternationalString extends AbstractInternationalString
     public boolean equals(final Object object) {
         if (object != null && object.getClass().equals(getClass())) {
             final ResourceInternationalString that = (ResourceInternationalString) object;
-            return Utilities.equals(this.key, that.key)
-                    && Utilities.equals(this.resources, that.resources);
+            return Utilities.equals(this.key, that.key) && Utilities.equals(this.resources, that.resources);
         }
         return false;
     }

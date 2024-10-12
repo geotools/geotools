@@ -111,16 +111,15 @@ public final class CropTest extends GridProcessingTestBase {
          */
 
         final Bounds oldEnvelope = source.getEnvelope();
-        final GeneralBounds cropEnvelope =
-                new GeneralBounds(
-                        new double[] {
-                            oldEnvelope.getMinimum(0) + oldEnvelope.getSpan(0) * 3 / 8,
-                            oldEnvelope.getMinimum(1) + oldEnvelope.getSpan(1) * 3 / 8
-                        },
-                        new double[] {
-                            oldEnvelope.getMinimum(0) + oldEnvelope.getSpan(0) * 5 / 8,
-                            oldEnvelope.getMinimum(1) + oldEnvelope.getSpan(1) * 5 / 8
-                        });
+        final GeneralBounds cropEnvelope = new GeneralBounds(
+                new double[] {
+                    oldEnvelope.getMinimum(0) + oldEnvelope.getSpan(0) * 3 / 8,
+                    oldEnvelope.getMinimum(1) + oldEnvelope.getSpan(1) * 3 / 8
+                },
+                new double[] {
+                    oldEnvelope.getMinimum(0) + oldEnvelope.getSpan(0) * 5 / 8,
+                    oldEnvelope.getMinimum(1) + oldEnvelope.getSpan(1) * 5 / 8
+                });
         cropEnvelope.setCoordinateReferenceSystem(oldEnvelope.getCoordinateReferenceSystem());
         /*
          * Do the crop without conserving the envelope.
@@ -134,7 +133,8 @@ public final class CropTest extends GridProcessingTestBase {
             Viewer.show(cropped);
         } else {
             // Force computation
-            assertNotNull(PlanarImage.wrapRenderedImage(cropped.getRenderedImage()).getTiles());
+            assertNotNull(
+                    PlanarImage.wrapRenderedImage(cropped.getRenderedImage()).getTiles());
         }
         RenderedImage raster = cropped.getRenderedImage();
         assertEquals(168, raster.getMinX());
@@ -161,15 +161,14 @@ public final class CropTest extends GridProcessingTestBase {
         Map<String, Object> properties = new HashMap<>();
         final Double theNoData = Double.valueOf(-123);
         CoverageUtilities.setNoDataProperty(properties, theNoData);
-        GridCoverage2D source =
-                new GridCoverageFactory()
-                        .create(
-                                coverage.getName().toString(),
-                                coverage.getRenderedImage(),
-                                coverage.getEnvelope(),
-                                coverage.getSampleDimensions(),
-                                null,
-                                properties);
+        GridCoverage2D source = new GridCoverageFactory()
+                .create(
+                        coverage.getName().toString(),
+                        coverage.getRenderedImage(),
+                        coverage.getEnvelope(),
+                        coverage.getSampleDimensions(),
+                        null,
+                        properties);
 
         // check the grid coverage
         GridCoverage2D cropped = testCrop(source);
@@ -199,16 +198,15 @@ public final class CropTest extends GridProcessingTestBase {
          */
         final GridCoverage2D source = coverage;
         final Bounds oldEnvelope = source.getEnvelope();
-        final GeneralBounds cropEnvelope =
-                new GeneralBounds(
-                        new double[] {
-                            oldEnvelope.getMinimum(0) + oldEnvelope.getSpan(0) * 3 / 8,
-                            oldEnvelope.getMinimum(1) + oldEnvelope.getSpan(1) * 3 / 8
-                        },
-                        new double[] {
-                            oldEnvelope.getMinimum(0) + oldEnvelope.getSpan(0) * 5 / 8,
-                            oldEnvelope.getMinimum(1) + oldEnvelope.getSpan(1) * 5 / 8
-                        });
+        final GeneralBounds cropEnvelope = new GeneralBounds(
+                new double[] {
+                    oldEnvelope.getMinimum(0) + oldEnvelope.getSpan(0) * 3 / 8,
+                    oldEnvelope.getMinimum(1) + oldEnvelope.getSpan(1) * 3 / 8
+                },
+                new double[] {
+                    oldEnvelope.getMinimum(0) + oldEnvelope.getSpan(0) * 5 / 8,
+                    oldEnvelope.getMinimum(1) + oldEnvelope.getSpan(1) * 5 / 8
+                });
         cropEnvelope.setCoordinateReferenceSystem(oldEnvelope.getCoordinateReferenceSystem());
         ReferencedEnvelope env2D = new ReferencedEnvelope(cropEnvelope);
 
@@ -224,7 +222,8 @@ public final class CropTest extends GridProcessingTestBase {
             Viewer.show(cropped);
         } else {
             // Force computation
-            assertNotNull(PlanarImage.wrapRenderedImage(cropped.getRenderedImage()).getTiles());
+            assertNotNull(
+                    PlanarImage.wrapRenderedImage(cropped.getRenderedImage()).getTiles());
         }
         RenderedImage raster = cropped.getRenderedImage();
         assertEquals(168, raster.getMinX());
@@ -244,7 +243,8 @@ public final class CropTest extends GridProcessingTestBase {
             Viewer.show(cropped);
         } else {
             // Force computation
-            assertNotNull(PlanarImage.wrapRenderedImage(cropped.getRenderedImage()).getTiles());
+            assertNotNull(
+                    PlanarImage.wrapRenderedImage(cropped.getRenderedImage()).getTiles());
         }
         raster = cropped.getRenderedImage();
         assertEquals(168, raster.getMinX());
@@ -287,8 +287,7 @@ public final class CropTest extends GridProcessingTestBase {
         // for OS/architecture
         final int width = 450;
         final int height = 225;
-        final BufferedImage image =
-                new BufferedImage(width, height, BufferedImage.TYPE_USHORT_GRAY);
+        final BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_USHORT_GRAY);
         final WritableRaster raster = (WritableRaster) image.getData();
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
@@ -297,16 +296,14 @@ public final class CropTest extends GridProcessingTestBase {
         }
         image.setData(raster);
         final GridCoverageFactory factory = CoverageFactoryFinder.getGridCoverageFactory(null);
-        GridGeometry2D gg =
-                new GridGeometry2D(
-                        new GridEnvelope2D(0, 0, 450, 225),
-                        new AffineTransform2D(0.8, 0, 0, -0.8, -179.6, 89.6),
-                        DefaultGeographicCRS.WGS84);
+        GridGeometry2D gg = new GridGeometry2D(
+                new GridEnvelope2D(0, 0, 450, 225),
+                new AffineTransform2D(0.8, 0, 0, -0.8, -179.6, 89.6),
+                DefaultGeographicCRS.WGS84);
         GridCoverage2D coverage = factory.create("UInt16 coverage", image, gg, null, null, null);
 
         final CoverageProcessor processor = CoverageProcessor.getInstance();
-        ReferencedEnvelope re =
-                new ReferencedEnvelope(-180, 0, -270, -90, DefaultGeographicCRS.WGS84);
+        ReferencedEnvelope re = new ReferencedEnvelope(-180, 0, -270, -90, DefaultGeographicCRS.WGS84);
 
         /*
          * Do the crop
@@ -318,9 +315,7 @@ public final class CropTest extends GridProcessingTestBase {
             processor.doOperation(param);
             fail("Should have thrown an exception here, there is no overlap");
         } catch (EmptyIntersectionException e) {
-            assertEquals(
-                    "Crop envelope intersects in model space, but not in raster space",
-                    e.getMessage());
+            assertEquals("Crop envelope intersects in model space, but not in raster space", e.getMessage());
         }
     }
 
@@ -352,16 +347,15 @@ public final class CropTest extends GridProcessingTestBase {
          */
         final CoverageProcessor processor = CoverageProcessor.getInstance();
         final Bounds oldEnvelope = rotated.getEnvelope();
-        final GeneralBounds cropEnvelope =
-                new GeneralBounds(
-                        new double[] {
-                            oldEnvelope.getMinimum(0) + oldEnvelope.getSpan(0) * 3 / 8,
-                            oldEnvelope.getMinimum(1) + oldEnvelope.getSpan(1) * 3 / 8
-                        },
-                        new double[] {
-                            oldEnvelope.getMinimum(0) + oldEnvelope.getSpan(0) * 5 / 8,
-                            oldEnvelope.getMinimum(1) + oldEnvelope.getSpan(1) * 5 / 8
-                        });
+        final GeneralBounds cropEnvelope = new GeneralBounds(
+                new double[] {
+                    oldEnvelope.getMinimum(0) + oldEnvelope.getSpan(0) * 3 / 8,
+                    oldEnvelope.getMinimum(1) + oldEnvelope.getSpan(1) * 3 / 8
+                },
+                new double[] {
+                    oldEnvelope.getMinimum(0) + oldEnvelope.getSpan(0) * 5 / 8,
+                    oldEnvelope.getMinimum(1) + oldEnvelope.getSpan(1) * 5 / 8
+                });
         cropEnvelope.setCoordinateReferenceSystem(oldEnvelope.getCoordinateReferenceSystem());
         /*
          * Do the crop without trying to conserve the envelope.
@@ -375,8 +369,10 @@ public final class CropTest extends GridProcessingTestBase {
             Viewer.show(cropped);
         } else {
             // Force computation
-            assertNotNull(PlanarImage.wrapRenderedImage(cropped.getRenderedImage()).getTiles());
-            assertNotNull(PlanarImage.wrapRenderedImage(coverage.getRenderedImage()).getTiles());
+            assertNotNull(
+                    PlanarImage.wrapRenderedImage(cropped.getRenderedImage()).getTiles());
+            assertNotNull(
+                    PlanarImage.wrapRenderedImage(coverage.getRenderedImage()).getTiles());
         }
         RenderedImage raster = cropped.getRenderedImage();
         assertEquals(111, raster.getMinX());
@@ -394,15 +390,13 @@ public final class CropTest extends GridProcessingTestBase {
         assertTrue(property instanceof ROI);
         ROI roi = (ROI) property;
         assertEquals(
-                new Rectangle(
-                        raster.getMinX(), raster.getMinY(), raster.getWidth(), raster.getHeight()),
+                new Rectangle(raster.getMinX(), raster.getMinY(), raster.getWidth(), raster.getHeight()),
                 roi.getBounds());
     }
 
     /** Tests the "Crop" operation with a ROI set. */
     @Test
-    public void testCropWithROI()
-            throws TransformException, InterruptedException, FactoryException {
+    public void testCropWithROI() throws TransformException, InterruptedException, FactoryException {
         final CoverageProcessor processor = CoverageProcessor.getInstance();
 
         /*
@@ -410,20 +404,18 @@ public final class CropTest extends GridProcessingTestBase {
          */
         final GridCoverage2D source = coverage;
         final Bounds oldEnvelope = source.getEnvelope();
-        final GeneralBounds cropEnvelope =
-                new GeneralBounds(
-                        new double[] {
-                            oldEnvelope.getMinimum(0) /*+ oldEnvelope.getSpan(0) * 3 / 8*/,
-                            oldEnvelope.getMinimum(1) /*+ oldEnvelope.getSpan(1) * 3 / 8*/
-                        },
-                        new double[] {
-                            oldEnvelope.getMinimum(0) + oldEnvelope.getSpan(0) * 5 / 8,
-                            oldEnvelope.getMinimum(1) + oldEnvelope.getSpan(1) * 5 / 8
-                        });
+        final GeneralBounds cropEnvelope = new GeneralBounds(
+                new double[] {
+                    oldEnvelope.getMinimum(0) /*+ oldEnvelope.getSpan(0) * 3 / 8*/,
+                    oldEnvelope.getMinimum(1) /*+ oldEnvelope.getSpan(1) * 3 / 8*/
+                },
+                new double[] {
+                    oldEnvelope.getMinimum(0) + oldEnvelope.getSpan(0) * 5 / 8,
+                    oldEnvelope.getMinimum(1) + oldEnvelope.getSpan(1) * 5 / 8
+                });
         cropEnvelope.setCoordinateReferenceSystem(oldEnvelope.getCoordinateReferenceSystem());
 
-        GeometryFactory geometryFactory =
-                JTSFactoryFinder.getGeometryFactory(JTSFactoryFinder.EMPTY_HINTS);
+        GeometryFactory geometryFactory = JTSFactoryFinder.getGeometryFactory(JTSFactoryFinder.EMPTY_HINTS);
 
         double mid0 = oldEnvelope.getMinimum(0) + oldEnvelope.getSpan(0) / 2;
         double mid1 = oldEnvelope.getMinimum(1) + oldEnvelope.getSpan(1) * 4 / 10;
@@ -497,14 +489,11 @@ public final class CropTest extends GridProcessingTestBase {
         LinearRing shape4 = geometryFactory.createLinearRing(cs4);
         org.locationtech.jts.geom.Polygon poly4 = geometryFactory.createPolygon(shape4, null);
 
-        Geometry mpoly =
-                geometryFactory.createMultiPolygon(
-                        new org.locationtech.jts.geom.Polygon[] {poly1, poly2});
+        Geometry mpoly = geometryFactory.createMultiPolygon(new org.locationtech.jts.geom.Polygon[] {poly1, poly2});
 
         //        Geometry union = geometryFactory.createGeometryCollection(new Geometry[]{
         //            poly1, poly2, poly3, poly4});
-        Geometry union =
-                geometryFactory.createGeometryCollection(new Geometry[] {mpoly, poly3, poly4});
+        Geometry union = geometryFactory.createGeometryCollection(new Geometry[] {mpoly, poly3, poly4});
 
         ParameterValueGroup param = processor.getOperation("CoverageCrop").getParameters();
         param.parameter("Source").setValue(source);
@@ -518,7 +507,8 @@ public final class CropTest extends GridProcessingTestBase {
             Thread.sleep(10000);
         } else {
             // Force computation
-            assertNotNull(PlanarImage.wrapRenderedImage(cropped.getRenderedImage()).getTiles());
+            assertNotNull(
+                    PlanarImage.wrapRenderedImage(cropped.getRenderedImage()).getTiles());
         }
         RenderedImage raster = cropped.getRenderedImage();
 
@@ -534,8 +524,7 @@ public final class CropTest extends GridProcessingTestBase {
 
     /** Tests the "Crop" operation with a ROI set. */
     @Test
-    public void testCropWithROIForceMosaic()
-            throws TransformException, InterruptedException, FactoryException {
+    public void testCropWithROIForceMosaic() throws TransformException, InterruptedException, FactoryException {
         runROIForceMosaic(null);
     }
 
@@ -565,20 +554,18 @@ public final class CropTest extends GridProcessingTestBase {
          */
         final GridCoverage2D source = coverage;
         final Bounds oldEnvelope = source.getEnvelope();
-        final GeneralBounds cropEnvelope =
-                new GeneralBounds(
-                        new double[] {
-                            oldEnvelope.getMinimum(0) /*+ oldEnvelope.getSpan(0) * 3 / 8*/,
-                            oldEnvelope.getMinimum(1) /*+ oldEnvelope.getSpan(1) * 3 / 8*/
-                        },
-                        new double[] {
-                            oldEnvelope.getMinimum(0) + oldEnvelope.getSpan(0), // * 5 / 8,
-                            oldEnvelope.getMinimum(1) + oldEnvelope.getSpan(1) // * 5 / 8
-                        });
+        final GeneralBounds cropEnvelope = new GeneralBounds(
+                new double[] {
+                    oldEnvelope.getMinimum(0) /*+ oldEnvelope.getSpan(0) * 3 / 8*/,
+                    oldEnvelope.getMinimum(1) /*+ oldEnvelope.getSpan(1) * 3 / 8*/
+                },
+                new double[] {
+                    oldEnvelope.getMinimum(0) + oldEnvelope.getSpan(0), // * 5 / 8,
+                    oldEnvelope.getMinimum(1) + oldEnvelope.getSpan(1) // * 5 / 8
+                });
         cropEnvelope.setCoordinateReferenceSystem(oldEnvelope.getCoordinateReferenceSystem());
 
-        GeometryFactory geometryFactory =
-                JTSFactoryFinder.getGeometryFactory(JTSFactoryFinder.EMPTY_HINTS);
+        GeometryFactory geometryFactory = JTSFactoryFinder.getGeometryFactory(JTSFactoryFinder.EMPTY_HINTS);
 
         // Use this crop ROI
         //   (E) *---------* (A)
@@ -641,8 +628,7 @@ public final class CropTest extends GridProcessingTestBase {
 
     /** Tests the intersection of the ROI and the cropEnvelope in the "Crop" operation. */
     @Test
-    public void testCropWithROIIntersection()
-            throws TransformException, InterruptedException, FactoryException {
+    public void testCropWithROIIntersection() throws TransformException, InterruptedException, FactoryException {
         final CoverageProcessor processor = CoverageProcessor.getInstance();
 
         /*
@@ -650,20 +636,18 @@ public final class CropTest extends GridProcessingTestBase {
          */
         final GridCoverage2D source = coverage;
         final Bounds oldEnvelope = source.getEnvelope();
-        final GeneralBounds cropEnvelope =
-                new GeneralBounds(
-                        new double[] {
-                            oldEnvelope.getMinimum(0) /*+ oldEnvelope.getSpan(0) * 3 / 8*/,
-                            oldEnvelope.getMinimum(1) /*+ oldEnvelope.getSpan(1) * 3 / 8*/
-                        },
-                        new double[] {
-                            oldEnvelope.getMinimum(0) + oldEnvelope.getSpan(0) / 4,
-                            oldEnvelope.getMinimum(1) + oldEnvelope.getSpan(1)
-                        });
+        final GeneralBounds cropEnvelope = new GeneralBounds(
+                new double[] {
+                    oldEnvelope.getMinimum(0) /*+ oldEnvelope.getSpan(0) * 3 / 8*/,
+                    oldEnvelope.getMinimum(1) /*+ oldEnvelope.getSpan(1) * 3 / 8*/
+                },
+                new double[] {
+                    oldEnvelope.getMinimum(0) + oldEnvelope.getSpan(0) / 4,
+                    oldEnvelope.getMinimum(1) + oldEnvelope.getSpan(1)
+                });
         cropEnvelope.setCoordinateReferenceSystem(oldEnvelope.getCoordinateReferenceSystem());
 
-        GeometryFactory geometryFactory =
-                JTSFactoryFinder.getGeometryFactory(JTSFactoryFinder.EMPTY_HINTS);
+        GeometryFactory geometryFactory = JTSFactoryFinder.getGeometryFactory(JTSFactoryFinder.EMPTY_HINTS);
 
         // overlapping square #1 - rotated by 45deg
         CoordinateSequence cs1 = new CoordinateArraySequence(5);
@@ -693,7 +677,8 @@ public final class CropTest extends GridProcessingTestBase {
             Thread.sleep(10000);
         } else {
             // Force computation
-            assertNotNull(PlanarImage.wrapRenderedImage(cropped.getRenderedImage()).getTiles());
+            assertNotNull(
+                    PlanarImage.wrapRenderedImage(cropped.getRenderedImage()).getTiles());
         }
         RenderedImage raster = cropped.getRenderedImage();
 
@@ -709,8 +694,7 @@ public final class CropTest extends GridProcessingTestBase {
 
     /** Tests cropping to an external ROI. */
     @Test
-    public void testCropWithExternalROI()
-            throws TransformException, InterruptedException, FactoryException {
+    public void testCropWithExternalROI() throws TransformException, InterruptedException, FactoryException {
         final CoverageProcessor processor = CoverageProcessor.getInstance();
 
         /*
@@ -719,16 +703,13 @@ public final class CropTest extends GridProcessingTestBase {
         final GridCoverage2D source = coverage;
         final Bounds oldEnvelope = source.getEnvelope();
         final GeneralBounds cropEnvelope =
-                new GeneralBounds(
-                        new double[] {oldEnvelope.getMinimum(0), oldEnvelope.getMinimum(1)},
-                        new double[] {
-                            oldEnvelope.getMinimum(0) + oldEnvelope.getSpan(0) / 4,
-                            oldEnvelope.getMinimum(1) + oldEnvelope.getSpan(1)
-                        });
+                new GeneralBounds(new double[] {oldEnvelope.getMinimum(0), oldEnvelope.getMinimum(1)}, new double[] {
+                    oldEnvelope.getMinimum(0) + oldEnvelope.getSpan(0) / 4,
+                    oldEnvelope.getMinimum(1) + oldEnvelope.getSpan(1)
+                });
         cropEnvelope.setCoordinateReferenceSystem(oldEnvelope.getCoordinateReferenceSystem());
 
-        GeometryFactory geometryFactory =
-                JTSFactoryFinder.getGeometryFactory(JTSFactoryFinder.EMPTY_HINTS);
+        GeometryFactory geometryFactory = JTSFactoryFinder.getGeometryFactory(JTSFactoryFinder.EMPTY_HINTS);
 
         // external tri
         CoordinateSequence cs1 = new CoordinateArraySequence(4);
@@ -758,8 +739,7 @@ public final class CropTest extends GridProcessingTestBase {
 
     /** Test robustness checks */
     @Test
-    public void testCropWithoutNeededParams()
-            throws TransformException, InterruptedException, FactoryException {
+    public void testCropWithoutNeededParams() throws TransformException, InterruptedException, FactoryException {
         final CoverageProcessor processor = CoverageProcessor.getInstance();
 
         /*
@@ -779,8 +759,7 @@ public final class CropTest extends GridProcessingTestBase {
 
     /** Tests the "Crop" operation with a ROI set, clipping at half pixel. */
     @Test
-    public void testCropWithROIHalfPixel()
-            throws TransformException, InterruptedException, FactoryException {
+    public void testCropWithROIHalfPixel() throws TransformException, InterruptedException, FactoryException {
         // Disable MediaLib for this test
         // Getting initial value
         String disableMediaLibKey = "com.sun.media.jai.disableMediaLib";
@@ -793,10 +772,8 @@ public final class CropTest extends GridProcessingTestBase {
          * Create a simple Red image
          */
         Byte[] red = {(byte) 255, 0, 0};
-        RenderedOp image =
-                ConstantDescriptor.create(Float.valueOf(40), Float.valueOf(37), red, null);
-        final Bounds envelope =
-                new ReferencedEnvelope(-1d, 1d, -1d, 1d, DefaultGeographicCRS.WGS84);
+        RenderedOp image = ConstantDescriptor.create(Float.valueOf(40), Float.valueOf(37), red, null);
+        final Bounds envelope = new ReferencedEnvelope(-1d, 1d, -1d, 1d, DefaultGeographicCRS.WGS84);
         /*
          * Get the source coverage and build the cropped envelope.
          */
@@ -804,12 +781,9 @@ public final class CropTest extends GridProcessingTestBase {
         final GridCoverage2D source = factory.create("test", image, envelope);
 
         // Creating ROI for cropping
-        final ReferencedEnvelope cropBounds =
-                new ReferencedEnvelope(0d, 1d, 0d, 1d, DefaultGeographicCRS.WGS84);
+        final ReferencedEnvelope cropBounds = new ReferencedEnvelope(0d, 1d, 0d, 1d, DefaultGeographicCRS.WGS84);
         org.locationtech.jts.geom.Polygon polygon = JTS.toGeometry(cropBounds);
-        Geometry roi =
-                polygon.getFactory()
-                        .createMultiPolygon(new org.locationtech.jts.geom.Polygon[] {polygon});
+        Geometry roi = polygon.getFactory().createMultiPolygon(new org.locationtech.jts.geom.Polygon[] {polygon});
 
         ParameterValueGroup param = processor.getOperation("CoverageCrop").getParameters();
         param.parameter("Source").setValue(source);
@@ -823,7 +797,8 @@ public final class CropTest extends GridProcessingTestBase {
             Thread.sleep(10000);
         } else {
             // Force computation
-            assertNotNull(PlanarImage.wrapRenderedImage(cropped.getRenderedImage()).getTiles());
+            assertNotNull(
+                    PlanarImage.wrapRenderedImage(cropped.getRenderedImage()).getTiles());
         }
         RenderedImage raster = cropped.getRenderedImage();
 
@@ -849,8 +824,7 @@ public final class CropTest extends GridProcessingTestBase {
 
     /** Tests the "Crop" with a topologically invalid ROI */
     @Test
-    public void testCropWithToplogicalInvalidROI()
-            throws TransformException, InterruptedException, FactoryException {
+    public void testCropWithToplogicalInvalidROI() throws TransformException, InterruptedException, FactoryException {
         final CoverageProcessor processor = CoverageProcessor.getInstance();
 
         /*
@@ -858,10 +832,9 @@ public final class CropTest extends GridProcessingTestBase {
          */
         final GridCoverage2D source = coverage;
         final Bounds oldEnvelope = source.getEnvelope();
-        final GeneralBounds cropEnvelope =
-                new GeneralBounds(
-                        new double[] {oldEnvelope.getMinimum(0), oldEnvelope.getMinimum(1)},
-                        new double[] {oldEnvelope.getMaximum(0), oldEnvelope.getMaximum(1)});
+        final GeneralBounds cropEnvelope = new GeneralBounds(
+                new double[] {oldEnvelope.getMinimum(0), oldEnvelope.getMinimum(1)},
+                new double[] {oldEnvelope.getMaximum(0), oldEnvelope.getMaximum(1)});
         cropEnvelope.setCoordinateReferenceSystem(oldEnvelope.getCoordinateReferenceSystem());
 
         // hourglass shaped polygon, self intersecting
@@ -870,20 +843,18 @@ public final class CropTest extends GridProcessingTestBase {
         //  X
         // / \
         // ---
-        LiteCoordinateSequence cs =
-                new LiteCoordinateSequence(
-                        oldEnvelope.getMinimum(0),
-                        oldEnvelope.getMinimum(1),
-                        oldEnvelope.getMaximum(0),
-                        oldEnvelope.getMinimum(1),
-                        oldEnvelope.getMinimum(0),
-                        oldEnvelope.getMaximum(1),
-                        oldEnvelope.getMaximum(0),
-                        oldEnvelope.getMaximum(1),
-                        oldEnvelope.getMinimum(0),
-                        oldEnvelope.getMinimum(1));
-        GeometryFactory geometryFactory =
-                JTSFactoryFinder.getGeometryFactory(JTSFactoryFinder.EMPTY_HINTS);
+        LiteCoordinateSequence cs = new LiteCoordinateSequence(
+                oldEnvelope.getMinimum(0),
+                oldEnvelope.getMinimum(1),
+                oldEnvelope.getMaximum(0),
+                oldEnvelope.getMinimum(1),
+                oldEnvelope.getMinimum(0),
+                oldEnvelope.getMaximum(1),
+                oldEnvelope.getMaximum(0),
+                oldEnvelope.getMaximum(1),
+                oldEnvelope.getMinimum(0),
+                oldEnvelope.getMinimum(1));
+        GeometryFactory geometryFactory = JTSFactoryFinder.getGeometryFactory(JTSFactoryFinder.EMPTY_HINTS);
         Geometry mask = geometryFactory.createPolygon(cs);
 
         ParameterValueGroup param = processor.getOperation("CoverageCrop").getParameters();
@@ -897,8 +868,7 @@ public final class CropTest extends GridProcessingTestBase {
         RenderedImage raster = cropped.getRenderedImage();
 
         // The value should be zero since that portion has been cut away
-        assertEquals(
-                0, raster.getTile(0, 0).getSample(0, raster.getMinY() + raster.getHeight() / 2, 0));
+        assertEquals(0, raster.getTile(0, 0).getSample(0, raster.getMinY() + raster.getHeight() / 2, 0));
         assertEquals(cropEnvelope, cropped.getEnvelope());
     }
 }

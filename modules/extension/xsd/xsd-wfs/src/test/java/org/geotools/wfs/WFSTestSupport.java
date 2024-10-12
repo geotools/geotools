@@ -53,10 +53,7 @@ public abstract class WFSTestSupport extends XMLTestSupport {
 
     protected final Binding binding;
 
-    protected WFSTestSupport(
-            final QName qname,
-            final Class<? extends EObject> bindingClass,
-            final int executionMode) {
+    protected WFSTestSupport(final QName qname, final Class<? extends EObject> bindingClass, final int executionMode) {
         super();
         this.qname = qname;
         this.bindingTargetClass = bindingClass;
@@ -119,27 +116,24 @@ public abstract class WFSTestSupport extends XMLTestSupport {
      * Returns the value of the element named <code>propertyName</code> at index <code>index</code>,
      * where the index starts at 0 (zero).
      */
-    protected final String getElementValueByQName(
-            final Document dom, final QName propertyName, final int index) {
+    protected final String getElementValueByQName(final Document dom, final QName propertyName, final int index) {
         final NodeList elementsByQName = getElementsByQName(dom, propertyName);
 
         if (elementsByQName.getLength() == 0) {
-            throw new NoSuchElementException(
-                    "No element named "
-                            + propertyName
-                            + " in "
-                            + dom.getDocumentElement().getLocalName());
+            throw new NoSuchElementException("No element named "
+                    + propertyName
+                    + " in "
+                    + dom.getDocumentElement().getLocalName());
         }
 
         if (index > elementsByQName.getLength()) {
-            throw new NoSuchElementException(
-                    "Expected element named "
-                            + propertyName
-                            + " at index "
-                            + index
-                            + " but there are only "
-                            + elementsByQName.getLength()
-                            + " elements in the node list");
+            throw new NoSuchElementException("Expected element named "
+                    + propertyName
+                    + " at index "
+                    + index
+                    + " but there are only "
+                    + elementsByQName.getLength()
+                    + " elements in the node list");
         }
 
         final Node item = elementsByQName.item(index);

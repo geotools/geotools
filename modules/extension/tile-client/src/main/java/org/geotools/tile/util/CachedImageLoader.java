@@ -61,18 +61,13 @@ public class CachedImageLoader implements ImageLoader {
         File imgFile = new File(this.cacheDirectory, tile.getId() + ".png");
         if (imgFile.exists()) {
             if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.fine(
-                        "Found image in cache for '"
-                                + tile.getId()
-                                + "' at "
-                                + imgFile.getAbsolutePath());
+                LOGGER.fine("Found image in cache for '" + tile.getId() + "' at " + imgFile.getAbsolutePath());
             }
             img = ImageIOExt.readBufferedImage(imgFile);
 
         } else {
             if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.fine(
-                        "Not found in cache '" + tile.getId() + "'. Loading from " + tile.getUrl());
+                LOGGER.fine("Not found in cache '" + tile.getId() + "'. Loading from " + tile.getUrl());
             }
             img = ImageIOExt.readBufferedImage(tile.getUrl());
             ImageIO.write(img, "png", imgFile);

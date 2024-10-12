@@ -39,8 +39,7 @@ import org.locationtech.jts.geom.Polygon;
 public class AreaFunction extends FunctionExpressionImpl {
 
     public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "Area", parameter("area", Double.class), parameter("geometry", Geometry.class));
+            new FunctionNameImpl("Area", parameter("area", Double.class), parameter("geometry", Geometry.class));
 
     /** Creates a new instance of AreaFunction */
     public AreaFunction() {
@@ -197,12 +196,8 @@ public class AreaFunction extends FunctionExpressionImpl {
         // each pair of coordinates in exteriorRingCoordinates to the x-axis.
         // x[i]<x[i-1] will contribute a negative area
         for (int i = 0; i < (numberOfExteriorRingCoordinates - 1); i++) {
-            area +=
-                    (((exteriorRingCoordinates[i + 1].x - minx)
-                                    - (exteriorRingCoordinates[i].x - minx))
-                            * (((exteriorRingCoordinates[i + 1].y - miny)
-                                            + (exteriorRingCoordinates[i].y - miny))
-                                    / 2d));
+            area += (((exteriorRingCoordinates[i + 1].x - minx) - (exteriorRingCoordinates[i].x - minx))
+                    * (((exteriorRingCoordinates[i + 1].y - miny) + (exteriorRingCoordinates[i].y - miny)) / 2d));
         }
         area = Math.abs(area);
         // Calculate area of each trapezoid formed by dropping lines
@@ -225,12 +220,8 @@ public class AreaFunction extends FunctionExpressionImpl {
                 maxy = Math.max(maxy, interiorRingCoordinates[j].y);
             }
             for (int j = 0; j < (numberOfInteriorRingCoordinates - 1); j++) {
-                interiorArea +=
-                        (((interiorRingCoordinates[j + 1].x - minx)
-                                        - (interiorRingCoordinates[j].x - minx))
-                                * (((interiorRingCoordinates[j + 1].y - miny)
-                                                + (interiorRingCoordinates[j].y - miny))
-                                        / 2d));
+                interiorArea += (((interiorRingCoordinates[j + 1].x - minx) - (interiorRingCoordinates[j].x - minx))
+                        * (((interiorRingCoordinates[j + 1].y - miny) + (interiorRingCoordinates[j].y - miny)) / 2d));
             }
             area -= Math.abs(interiorArea);
         }

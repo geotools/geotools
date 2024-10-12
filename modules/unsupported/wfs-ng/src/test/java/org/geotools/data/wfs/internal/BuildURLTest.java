@@ -29,8 +29,7 @@ public class BuildURLTest {
     @Test
     public void testSimpleKvp() {
 
-        String url =
-                URIs.buildURL("http://www.google.com", "/q", buildMap("hello", "world"), "UTF-8");
+        String url = URIs.buildURL("http://www.google.com", "/q", buildMap("hello", "world"), "UTF-8");
 
         assertEquals("http://www.google.com/q?hello=world", url);
     }
@@ -38,8 +37,7 @@ public class BuildURLTest {
     @Test
     public void testKvpNoPath() {
 
-        String url =
-                URIs.buildURL("http://www.google.com/q", null, buildMap("hello", "world"), "UTF-8");
+        String url = URIs.buildURL("http://www.google.com/q", null, buildMap("hello", "world"), "UTF-8");
 
         assertEquals("http://www.google.com/q?hello=world", url);
     }

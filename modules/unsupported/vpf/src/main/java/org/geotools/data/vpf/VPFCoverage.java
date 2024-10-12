@@ -78,17 +78,15 @@ public class VPFCoverage {
      * @throws IOException if the directory does not contain a valid FCS file
      * @throws SchemaException For problems making one of the feature classes as a FeatureType.
      */
-    public VPFCoverage(
-            VPFLibrary cLibrary, SimpleFeature feature, String cDirectoryName, URI namespace)
+    public VPFCoverage(VPFLibrary cLibrary, SimpleFeature feature, String cDirectoryName, URI namespace)
             throws IOException, SchemaException {
         topologyLevel = Short.parseShort(feature.getAttribute(FIELD_LEVEL).toString());
         library = cLibrary;
         description = feature.getAttribute(VPFCoverageIfc.FIELD_DESCRIPTION).toString();
         this.namespace = namespace;
-        pathName =
-                cDirectoryName
-                        .concat(File.separator)
-                        .concat(feature.getAttribute(FIELD_COVERAGE_NAME).toString().toUpperCase());
+        pathName = cDirectoryName
+                .concat(File.separator)
+                .concat(feature.getAttribute(FIELD_COVERAGE_NAME).toString().toUpperCase());
         discoverFeatureClasses();
         discoverFeatureTypes();
     }
@@ -137,7 +135,8 @@ public class VPFCoverage {
 
                 // if (!ALLOWED_FCODE_ATTRIBUTES_LIST.contains(attr)) continue;
 
-                String tableFileName = row.getAttribute("table").toString().trim().toUpperCase();
+                String tableFileName =
+                        row.getAttribute("table").toString().trim().toUpperCase();
 
                 // We need to go through all of this
                 // so that entries match what is in FCS
@@ -239,12 +238,6 @@ public class VPFCoverage {
      */
     @Override
     public String toString() {
-        return "VPF Coverage "
-                + getName()
-                + ". "
-                + description
-                + "\n"
-                + "Topology level "
-                + topologyLevel;
+        return "VPF Coverage " + getName() + ". " + description + "\n" + "Topology level " + topologyLevel;
     }
 }

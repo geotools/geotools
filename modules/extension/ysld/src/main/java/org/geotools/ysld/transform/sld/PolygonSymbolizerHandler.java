@@ -25,8 +25,7 @@ import javax.xml.stream.XMLStreamReader;
 public class PolygonSymbolizerHandler extends SymbolizerHandler {
 
     @Override
-    public void element(XMLStreamReader xml, SldTransformContext context)
-            throws XMLStreamException, IOException {
+    public void element(XMLStreamReader xml, SldTransformContext context) throws XMLStreamException, IOException {
         String name = xml.getLocalName();
         if ("PolygonSymbolizer".equals(name)) {
             context.mapping().scalar("polygon").mapping();
@@ -40,8 +39,7 @@ public class PolygonSymbolizerHandler extends SymbolizerHandler {
     }
 
     @Override
-    public void endElement(XMLStreamReader xml, SldTransformContext context)
-            throws XMLStreamException, IOException {
+    public void endElement(XMLStreamReader xml, SldTransformContext context) throws XMLStreamException, IOException {
         String name = xml.getLocalName();
         if ("PolygonSymbolizer".equals(name)) {
             dumpOptions(context).endMapping().endMapping().pop();

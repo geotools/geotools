@@ -36,24 +36,19 @@ import org.geotools.gce.grassraster.GrassBinaryImageWriter;
  */
 public class GrassBinaryImageWriterSpi extends ImageWriterSpi {
     private static final String[] suffixes = {""};
-    private static final String[] formatNames = {
-        "grass", "GRASS", "grassbin", "GRASS binary raster"
-    };
+    private static final String[] formatNames = {"grass", "GRASS", "grassbin", "GRASS binary raster"};
     private static final String[] MIMETypes = {"image/grass"};
     private static final String version = "1.0";
     private static final String vendorName = "www.hydrologis.com";
 
     /** the class name of the image writer. */
-    private static final String writerCN =
-            "eu.hydrologis.jgrass.grassbinary.imageio.io.GrassBinaryImageWriter";
+    private static final String writerCN = "eu.hydrologis.jgrass.grassbinary.imageio.io.GrassBinaryImageWriter";
 
     /** the outputTypes handled by the {@link GrassBinaryImageWriter}. */
     private static final Class<?>[] outputTypes = {File.class};
 
     /** the readerSpiName */
-    private static final String[] rSN = {
-        "eu.hydrologis.jgrass.grassbinary.imageio.io.GrassBinaryImageReaderSpi"
-    };
+    private static final String[] rSN = {"eu.hydrologis.jgrass.grassbinary.imageio.io.GrassBinaryImageReaderSpi"};
 
     /** the flag for stream metadata support. */
     private static final boolean supportsStandardStreamMetadataFormat = false;

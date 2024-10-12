@@ -63,14 +63,12 @@ public class JMapPaneGraphicsTest extends JMapPaneGraphicsTestBase {
     public void setup() {
         listener = new WaitingMapPaneListener();
 
-        TestFrame frame =
-                GuiActionRunner.execute(
-                        new GuiQuery<TestFrame>() {
-                            @Override
-                            protected TestFrame executeInEDT() throws Throwable {
-                                return new TestFrame(listener);
-                            }
-                        });
+        TestFrame frame = GuiActionRunner.execute(new GuiQuery<TestFrame>() {
+            @Override
+            protected TestFrame executeInEDT() throws Throwable {
+                return new TestFrame(listener);
+            }
+        });
 
         window = new FrameFixture(frame);
     }
@@ -183,24 +181,22 @@ public class JMapPaneGraphicsTest extends JMapPaneGraphicsTestBase {
     @Test
     public void mapPaneShouldHonourInitialViewportBounds() throws Exception {
         window.show(new Dimension(WIDTH, HEIGHT));
-        GuiActionRunner.execute(
-                new GuiTask() {
-                    @Override
-                    protected void executeInEDT() throws Throwable {
-                        window.target().setVisible(false);
-                    }
-                });
+        GuiActionRunner.execute(new GuiTask() {
+            @Override
+            protected void executeInEDT() throws Throwable {
+                window.target().setVisible(false);
+            }
+        });
 
         ReferencedEnvelope fullBounds = createMatchedBounds(mapPane.getVisibleRect());
         MapContent mapContent = createMapContent(fullBounds);
 
-        ReferencedEnvelope subBounds =
-                new ReferencedEnvelope(
-                        fullBounds.getMinX(),
-                        fullBounds.getMinX() + fullBounds.getWidth() / 2,
-                        fullBounds.getMinY(),
-                        fullBounds.getMinY() + fullBounds.getHeight() / 2,
-                        fullBounds.getCoordinateReferenceSystem());
+        ReferencedEnvelope subBounds = new ReferencedEnvelope(
+                fullBounds.getMinX(),
+                fullBounds.getMinX() + fullBounds.getWidth() / 2,
+                fullBounds.getMinY(),
+                fullBounds.getMinY() + fullBounds.getHeight() / 2,
+                fullBounds.getCoordinateReferenceSystem());
 
         mapContent.getViewport().setBounds(subBounds);
         listener.setExpected(MapPaneEvent.Type.NEW_MAPCONTENT);

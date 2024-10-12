@@ -88,8 +88,7 @@ public class LineStringCursor {
 
             final double distance = c1.distance(c2);
             segmentLenghts[i - 1] = distance;
-            if (i < coords.size() - 1)
-                segmentStartOrdinate[i] = segmentStartOrdinate[i - 1] + distance;
+            if (i < coords.size() - 1) segmentStartOrdinate[i] = segmentStartOrdinate[i - 1] + distance;
         }
 
         // fill up the segment angles cache with placeholders
@@ -188,9 +187,8 @@ public class LineStringCursor {
                 }
             }
         }
-        throw new RuntimeException(
-                "You have stumbled into a software bug, "
-                        + "the code should never get here. Please report with a reproducable test case");
+        throw new RuntimeException("You have stumbled into a software bug, "
+                + "the code should never get here. Please report with a reproducable test case");
     }
 
     /** Returns the Point representing the current position along the LineString */
@@ -294,8 +292,7 @@ public class LineStringCursor {
                 // but also to cover at least "step" distance (might require more than one segment)
                 double distance = segmentLenghts[delegate.segment] - delegate.offsetDistance;
                 delegate.offsetDistance = 0;
-                while (((distance < step && ordinate + distance < endOrdinate)
-                                || delegate.segment == prevSegment)
+                while (((distance < step && ordinate + distance < endOrdinate) || delegate.segment == prevSegment)
                         && delegate.segment < (delegate.segmentLenghts.length - 1)) {
                     delegate.segment++;
                     distance += segmentLenghts[delegate.segment];
@@ -309,8 +306,7 @@ public class LineStringCursor {
 
                 // move to next segment
                 delegate.segment++;
-            } while (ordinate < endOrdinate
-                    && (delegate.segment < (delegate.segmentLenghts.length)));
+            } while (ordinate < endOrdinate && (delegate.segment < (delegate.segmentLenghts.length)));
         } catch (Exception e) {
             LOGGER.log(Level.INFO, "Error occurred while computing max angle change in label", e);
         }

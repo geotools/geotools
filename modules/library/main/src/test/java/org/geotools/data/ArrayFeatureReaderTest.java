@@ -45,23 +45,21 @@ public class ArrayFeatureReaderTest {
     @Before
     public void setUp() throws Exception {
         type = DataUtilities.createType("TestType", "geom:Geometry");
-        features =
-                new SimpleFeature[] {
-                    SimpleFeatureBuilder.build(type, new Object[] {null}, "f1"),
-                    SimpleFeatureBuilder.build(type, new Object[] {null}, "f2"),
-                    SimpleFeatureBuilder.build(type, new Object[] {null}, "f3"),
-                    SimpleFeatureBuilder.build(type, new Object[] {null}, "f4"),
-                    SimpleFeatureBuilder.build(type, new Object[] {null}, "f5"),
-                    SimpleFeatureBuilder.build(type, new Object[] {null}, "f6")
-                };
+        features = new SimpleFeature[] {
+            SimpleFeatureBuilder.build(type, new Object[] {null}, "f1"),
+            SimpleFeatureBuilder.build(type, new Object[] {null}, "f2"),
+            SimpleFeatureBuilder.build(type, new Object[] {null}, "f3"),
+            SimpleFeatureBuilder.build(type, new Object[] {null}, "f4"),
+            SimpleFeatureBuilder.build(type, new Object[] {null}, "f5"),
+            SimpleFeatureBuilder.build(type, new Object[] {null}, "f6")
+        };
 
         DefaultFeatureCollection collection = new DefaultFeatureCollection();
         List<SimpleFeature> list = Arrays.asList(features);
         collection.addAll(list);
         arrayReader = new CollectionFeatureReader(features);
         collectionReader = new CollectionFeatureReader(list, type);
-        featureCollectionReader =
-                new CollectionFeatureReader((SimpleFeatureCollection) collection, type);
+        featureCollectionReader = new CollectionFeatureReader((SimpleFeatureCollection) collection, type);
     }
 
     /** Test method for 'org.geotools.data.ArrayFeatureReader.getFeatureType()' */

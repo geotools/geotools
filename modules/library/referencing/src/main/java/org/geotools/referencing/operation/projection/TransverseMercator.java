@@ -136,8 +136,7 @@ public class TransverseMercator extends MapProjection {
      * @param parameters The parameter values in standard units.
      * @throws ParameterNotFoundException if a mandatory parameter is missing.
      */
-    protected TransverseMercator(final ParameterValueGroup parameters)
-            throws ParameterNotFoundException {
+    protected TransverseMercator(final ParameterValueGroup parameters) throws ParameterNotFoundException {
         // Fetch parameters
         super(parameters);
 
@@ -157,8 +156,7 @@ public class TransverseMercator extends MapProjection {
      * radians) and stores the result in {@code ptDst} (linear distance on a unit sphere).
      */
     @Override
-    protected Point2D transformNormalized(double x, double y, Point2D ptDst)
-            throws ProjectionException {
+    protected Point2D transformNormalized(double x, double y, Point2D ptDst) throws ProjectionException {
         double sinphi = sin(y);
         double cosphi = cos(y);
 
@@ -191,8 +189,7 @@ public class TransverseMercator extends MapProjection {
      * {@code ptDst}.
      */
     @Override
-    protected Point2D inverseTransformNormalized(double x, double y, Point2D ptDst)
-            throws ProjectionException {
+    protected Point2D inverseTransformNormalized(double x, double y, Point2D ptDst) throws ProjectionException {
         double phi = inv_mlfn(ml0 + y);
 
         if (abs(phi) >= PI / 2) {
@@ -261,16 +258,14 @@ public class TransverseMercator extends MapProjection {
          * @param parameters The parameter values in standard units.
          * @throws ParameterNotFoundException if a mandatory parameter is missing.
          */
-        protected Spherical(final ParameterValueGroup parameters)
-                throws ParameterNotFoundException {
+        protected Spherical(final ParameterValueGroup parameters) throws ParameterNotFoundException {
             super(parameters);
             ensureSpherical();
         }
 
         /** {@inheritDoc} */
         @Override
-        protected Point2D transformNormalized(double x, double y, Point2D ptDst)
-                throws ProjectionException {
+        protected Point2D transformNormalized(double x, double y, Point2D ptDst) throws ProjectionException {
             // Compute using ellipsoidal formulas, for comparaison later.
             final double normalizedLongitude = x;
             assert (ptDst = super.transformNormalized(x, y, ptDst)) != null;
@@ -286,8 +281,7 @@ public class TransverseMercator extends MapProjection {
             y = atan2(tan(y), cos(x)) - latitudeOfOrigin; /* Snyder 8-3 */
             x = 0.5 * log((1.0 + b) / (1.0 - b)); /* Snyder 8-1 */
 
-            assert checkTransform(
-                    x, y, ptDst, getToleranceForSphereAssertions(normalizedLongitude));
+            assert checkTransform(x, y, ptDst, getToleranceForSphereAssertions(normalizedLongitude));
             if (ptDst != null) {
                 ptDst.setLocation(x, y);
                 return ptDst;
@@ -297,8 +291,7 @@ public class TransverseMercator extends MapProjection {
 
         /** {@inheritDoc} */
         @Override
-        protected Point2D inverseTransformNormalized(double x, double y, Point2D ptDst)
-                throws ProjectionException {
+        protected Point2D inverseTransformNormalized(double x, double y, Point2D ptDst) throws ProjectionException {
             // Compute using ellipsoidal formulas, for comparaison later.
             assert (ptDst = super.inverseTransformNormalized(x, y, ptDst)) != null;
 
@@ -369,12 +362,8 @@ public class TransverseMercator extends MapProjection {
     private int getZone(final double centralLongitudeZone1, final double zoneWidth) {
         final double zoneCount = abs(360 / zoneWidth);
         double t;
-        t =
-                centralLongitudeZone1
-                        - 0.5 * zoneWidth; // Longitude at the beginning of the first zone.
-        t =
-                toDegrees(centralMeridian)
-                        - t; // Degrees of longitude between the central longitude and longitude 1.
+        t = centralLongitudeZone1 - 0.5 * zoneWidth; // Longitude at the beginning of the first zone.
+        t = toDegrees(centralMeridian) - t; // Degrees of longitude between the central longitude and longitude 1.
         t = floor(t / zoneWidth + EPSILON); // Number of zones between the central longitude and
         // longitude 1.
         t -= zoneCount * floor(t / zoneCount); // If negative, bring back to the interval 0
@@ -479,32 +468,27 @@ public class TransverseMercator extends MapProjection {
      */
     public static class Provider extends AbstractProvider {
         /** Returns a descriptor group for the specified parameters. */
-        static ParameterDescriptorGroup createDescriptorGroup(
-                final ReferenceIdentifier... identifiers) {
-            return createDescriptorGroup(
-                    identifiers,
-                    new ParameterDescriptor[] {
-                        SEMI_MAJOR, SEMI_MINOR,
-                        CENTRAL_MERIDIAN, LATITUDE_OF_ORIGIN,
-                        SCALE_FACTOR, FALSE_EASTING,
-                        FALSE_NORTHING
-                    });
+        static ParameterDescriptorGroup createDescriptorGroup(final ReferenceIdentifier... identifiers) {
+            return createDescriptorGroup(identifiers, new ParameterDescriptor[] {
+                SEMI_MAJOR, SEMI_MINOR,
+                CENTRAL_MERIDIAN, LATITUDE_OF_ORIGIN,
+                SCALE_FACTOR, FALSE_EASTING,
+                FALSE_NORTHING
+            });
         }
 
         /** The parameters group. */
-        static final ParameterDescriptorGroup PARAMETERS =
-                createDescriptorGroup(
-                        new NamedIdentifier(Citations.OGC, "Transverse_Mercator"),
-                        new NamedIdentifier(Citations.EPSG, "Transverse Mercator"),
-                        new NamedIdentifier(Citations.EPSG, "Gauss-Kruger"),
-                        new NamedIdentifier(Citations.EPSG, "9807"),
-                        new NamedIdentifier(Citations.GEOTIFF, "CT_TransverseMercator"),
-                        new NamedIdentifier(Citations.ESRI, "Transverse_Mercator"),
-                        new NamedIdentifier(Citations.ESRI, "Gauss_Kruger"),
-                        new NamedIdentifier(
-                                Citations.GEOTOOLS,
-                                Vocabulary.formatInternational(
-                                        VocabularyKeys.TRANSVERSE_MERCATOR_PROJECTION)));
+        static final ParameterDescriptorGroup PARAMETERS = createDescriptorGroup(
+                new NamedIdentifier(Citations.OGC, "Transverse_Mercator"),
+                new NamedIdentifier(Citations.EPSG, "Transverse Mercator"),
+                new NamedIdentifier(Citations.EPSG, "Gauss-Kruger"),
+                new NamedIdentifier(Citations.EPSG, "9807"),
+                new NamedIdentifier(Citations.GEOTIFF, "CT_TransverseMercator"),
+                new NamedIdentifier(Citations.ESRI, "Transverse_Mercator"),
+                new NamedIdentifier(Citations.ESRI, "Gauss_Kruger"),
+                new NamedIdentifier(
+                        Citations.GEOTOOLS,
+                        Vocabulary.formatInternational(VocabularyKeys.TRANSVERSE_MERCATOR_PROJECTION)));
 
         /** Constructs a new provider. */
         public Provider() {
@@ -588,11 +572,9 @@ public class TransverseMercator extends MapProjection {
     public static class Provider_SouthOrientated extends Provider {
         /** Constructs a new provider. */
         public Provider_SouthOrientated() {
-            super(
-                    createDescriptorGroup(
-                            new NamedIdentifier(
-                                    Citations.EPSG, "Transverse Mercator (South Orientated)"),
-                            new NamedIdentifier(Citations.EPSG, "9808")));
+            super(createDescriptorGroup(
+                    new NamedIdentifier(Citations.EPSG, "Transverse Mercator (South Orientated)"),
+                    new NamedIdentifier(Citations.EPSG, "9808")));
         }
 
         /**
@@ -610,8 +592,7 @@ public class TransverseMercator extends MapProjection {
                 return projection;
             }
             final AffineTransform step =
-                    AffineTransform.getTranslateInstance(
-                            -2 * projection.falseEasting, -2 * projection.falseNorthing);
+                    AffineTransform.getTranslateInstance(-2 * projection.falseEasting, -2 * projection.falseNorthing);
             return ConcatenatedTransform.create(ProjectiveTransform.create(step), projection);
         }
     }

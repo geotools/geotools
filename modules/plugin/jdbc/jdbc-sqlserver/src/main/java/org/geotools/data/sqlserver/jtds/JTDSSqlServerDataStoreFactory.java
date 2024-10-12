@@ -27,14 +27,13 @@ import org.geotools.jdbc.SQLDialect;
 
 public class JTDSSqlServerDataStoreFactory extends SQLServerDataStoreFactory {
     /** parameter for database type */
-    public static final Param DBTYPE =
-            new Param(
-                    "dbtype",
-                    String.class,
-                    "Type",
-                    true,
-                    "jtds-sqlserver",
-                    Collections.singletonMap(Parameter.LEVEL, "program"));
+    public static final Param DBTYPE = new Param(
+            "dbtype",
+            String.class,
+            "Type",
+            true,
+            "jtds-sqlserver",
+            Collections.singletonMap(Parameter.LEVEL, "program"));
     /* (non-Javadoc)
      * @see org.geotools.data.sqlserver.SQLServerDataStoreFactory#getDescription()
      */

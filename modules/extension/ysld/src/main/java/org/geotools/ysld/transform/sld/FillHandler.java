@@ -24,8 +24,7 @@ import javax.xml.stream.XMLStreamReader;
 /** Handles xml parse events for the {@link org.geotools.styling.Fill} element. */
 public class FillHandler extends SldTransformHandler {
     @Override
-    public void element(XMLStreamReader xml, SldTransformContext context)
-            throws XMLStreamException, IOException {
+    public void element(XMLStreamReader xml, SldTransformContext context) throws XMLStreamException, IOException {
         String name = xml.getLocalName();
         if ("CssParameter".equals(name) || "SvgParameter".equals(name)) {
             context.push(new ParameterHandler().rename("fill", "fill-color"));
@@ -35,8 +34,7 @@ public class FillHandler extends SldTransformHandler {
     }
 
     @Override
-    public void endElement(XMLStreamReader xml, SldTransformContext context)
-            throws XMLStreamException, IOException {
+    public void endElement(XMLStreamReader xml, SldTransformContext context) throws XMLStreamException, IOException {
         String name = xml.getLocalName();
         if ("Fill".equals(name)) {
             context.pop();

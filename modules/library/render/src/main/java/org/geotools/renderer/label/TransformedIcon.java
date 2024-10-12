@@ -47,8 +47,7 @@ class TransformedIcon implements Icon {
     public TransformedIcon(Icon icon, AffineTransform at) {
         this.icon = icon;
         this.at = at;
-        Rectangle2D bounds =
-                new Rectangle2D.Double(0, 0, icon.getIconWidth(), icon.getIconHeight());
+        Rectangle2D bounds = new Rectangle2D.Double(0, 0, icon.getIconWidth(), icon.getIconHeight());
         bounds = at.createTransformedShape(bounds).getBounds2D();
         this.width = (int) Math.round(bounds.getWidth());
         this.height = (int) Math.round(bounds.getHeight());
@@ -76,8 +75,7 @@ class TransformedIcon implements Icon {
             AffineTransform at = new AffineTransform(tmp);
             at.concatenate(this.at);
             g2d.setTransform(at);
-            g2d.setRenderingHint(
-                    RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+            g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
             icon.paintIcon(c, g2d, 0, 0);
         } finally {
             g2d.setTransform(tmp);

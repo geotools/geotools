@@ -38,12 +38,11 @@ public class LookAtTypeBindingTest extends KMLTestSupport {
 
     @Test
     public void testParse() throws Exception {
-        String xml =
-                "<LookAt>"
-                        + "<longitude>1</longitude>"
-                        + "<latitude>2</latitude>"
-                        + "<altitude>3</altitude>"
-                        + "</LookAt>";
+        String xml = "<LookAt>"
+                + "<longitude>1</longitude>"
+                + "<latitude>2</latitude>"
+                + "<altitude>3</altitude>"
+                + "</LookAt>";
         buildDocument(xml);
 
         Point p = (Point) parse();

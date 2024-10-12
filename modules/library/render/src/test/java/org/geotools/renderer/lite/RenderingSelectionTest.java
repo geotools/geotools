@@ -21,7 +21,8 @@ public class RenderingSelectionTest {
     @Before
     public void setUp() throws Exception {
         // setup data
-        File property = new File(TestData.getResource(this, "pointRotation.properties").toURI());
+        File property =
+                new File(TestData.getResource(this, "pointRotation.properties").toURI());
         PropertyDataStore ds = new PropertyDataStore(property.getParentFile());
         pointFS = ds.getFeatureSource("pointRotation");
     }
@@ -39,12 +40,11 @@ public class RenderingSelectionTest {
         StreamingRenderer renderer = new StreamingRenderer();
         renderer.setMapContent(mc);
 
-        BufferedImage image =
-                RendererBaseTest.showRender(
-                        "Rule rendering selection",
-                        renderer,
-                        3000,
-                        new ReferencedEnvelope(0, 10, 0, 10, CRS.decode("EPSG:4326")));
+        BufferedImage image = RendererBaseTest.showRender(
+                "Rule rendering selection",
+                renderer,
+                3000,
+                new ReferencedEnvelope(0, 10, 0, 10, CRS.decode("EPSG:4326")));
         ImageAssert.assertEquals(file("mapRenderingSelectionRule"), image, 150);
     }
 
@@ -61,12 +61,11 @@ public class RenderingSelectionTest {
         StreamingRenderer renderer = new StreamingRenderer();
         renderer.setMapContent(mc);
 
-        BufferedImage image =
-                RendererBaseTest.showRender(
-                        "FTS rendering selection",
-                        renderer,
-                        3000,
-                        new ReferencedEnvelope(0, 10, 0, 10, CRS.decode("EPSG:4326")));
+        BufferedImage image = RendererBaseTest.showRender(
+                "FTS rendering selection",
+                renderer,
+                3000,
+                new ReferencedEnvelope(0, 10, 0, 10, CRS.decode("EPSG:4326")));
         ImageAssert.assertEquals(file("mapRenderingSelectionFTS"), image, 150);
     }
 
@@ -83,19 +82,15 @@ public class RenderingSelectionTest {
         StreamingRenderer renderer = new StreamingRenderer();
         renderer.setMapContent(mc);
 
-        BufferedImage image =
-                RendererBaseTest.showRender(
-                        "FTS rendering selection",
-                        renderer,
-                        3000,
-                        new ReferencedEnvelope(0, 10, 0, 10, CRS.decode("EPSG:4326")));
+        BufferedImage image = RendererBaseTest.showRender(
+                "FTS rendering selection",
+                renderer,
+                3000,
+                new ReferencedEnvelope(0, 10, 0, 10, CRS.decode("EPSG:4326")));
         ImageAssert.assertEquals(file("mapRenderingSelectionSymbolizer"), image, 150);
     }
 
     File file(String name) {
-        return new File(
-                "src/test/resources/org/geotools/renderer/lite/test-data/renderingSelection/"
-                        + name
-                        + ".png");
+        return new File("src/test/resources/org/geotools/renderer/lite/test-data/renderingSelection/" + name + ".png");
     }
 }

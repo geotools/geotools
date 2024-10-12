@@ -106,7 +106,9 @@ public class FeatureTypeListTypeBindingTest extends WFSTestSupport {
         Element keywords = getElementByQName(ft, OWS.Keywords);
         assertNotNull(keywords);
         assertEquals(
-                2, getElementsByQName(keywords, new QName(OWS.NAMESPACE, "Keyword")).getLength());
+                2,
+                getElementsByQName(keywords, new QName(OWS.NAMESPACE, "Keyword"))
+                        .getLength());
 
         Element defaultCrs = getElementByQName(ft, new QName(WFS.NAMESPACE, "DefaultSRS"));
         assertEquals("urn:ogc:crs:EPSG:6.7:4326", defaultCrs.getFirstChild().getNodeValue());

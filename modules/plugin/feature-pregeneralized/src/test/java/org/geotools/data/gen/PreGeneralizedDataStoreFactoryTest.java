@@ -31,9 +31,7 @@ public class PreGeneralizedDataStoreFactoryTest {
 
         Map<String, Serializable> paramMap = new HashMap<>();
         try {
-            paramMap.put(
-                    PreGeneralizedDataStoreFactory.REPOSITORY_CLASS.key,
-                    DefaultRepository.class.getName());
+            paramMap.put(PreGeneralizedDataStoreFactory.REPOSITORY_CLASS.key, DefaultRepository.class.getName());
             Assert.assertNull(DataStoreFinder.getDataStore(paramMap));
 
             paramMap.clear();
@@ -43,9 +41,7 @@ public class PreGeneralizedDataStoreFactoryTest {
             Assert.assertNull(DataStoreFinder.getDataStore(paramMap));
 
             paramMap.clear();
-            paramMap.put(
-                    PreGeneralizedDataStoreFactory.REPOSITORY_CLASS.key,
-                    DefaultRepository.class.getName());
+            paramMap.put(PreGeneralizedDataStoreFactory.REPOSITORY_CLASS.key, DefaultRepository.class.getName());
             paramMap.put(
                     PreGeneralizedDataStoreFactory.GENERALIZATION_INFOS_PROVIDER_CLASS.key,
                     "org.geotools.data.gen.info.GeneralizationInfosProviderImpl");
@@ -60,14 +56,11 @@ public class PreGeneralizedDataStoreFactoryTest {
         paramMap.clear();
         boolean error = false;
         try {
-            paramMap.put(
-                    PreGeneralizedDataStoreFactory.REPOSITORY_CLASS.key,
-                    DefaultRepository.class.getName());
+            paramMap.put(PreGeneralizedDataStoreFactory.REPOSITORY_CLASS.key, DefaultRepository.class.getName());
             paramMap.put(
                     PreGeneralizedDataStoreFactory.GENERALIZATION_INFOS_PROVIDER_CLASS.key,
                     "org.geotools.data.gen.info.GeneralizationInfosProviderImpl");
-            paramMap.put(
-                    PreGeneralizedDataStoreFactory.GENERALIZATION_INFOS_PROVIDER_PARAM.key, "yyyy");
+            paramMap.put(PreGeneralizedDataStoreFactory.GENERALIZATION_INFOS_PROVIDER_PARAM.key, "yyyy");
             DataStoreFinder.getDataStore(paramMap);
         } catch (IOException ex) {
             error = true;

@@ -37,8 +37,7 @@ public abstract class AbstractCompilerFactory {
      *
      * @return CQLCompiler
      */
-    public ICompiler makeCompiler(final String predicate, final FilterFactory filterFactory)
-            throws CQLException {
+    public ICompiler makeCompiler(final String predicate, final FilterFactory filterFactory) throws CQLException {
 
         FilterFactory ff = filterFactory;
 
@@ -50,6 +49,5 @@ public abstract class AbstractCompilerFactory {
         return compiler;
     }
 
-    protected abstract ICompiler createCompiler(
-            final String predicate, final FilterFactory filterFactory);
+    protected abstract ICompiler createCompiler(final String predicate, final FilterFactory filterFactory);
 }

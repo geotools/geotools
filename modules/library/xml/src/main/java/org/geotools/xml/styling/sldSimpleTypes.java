@@ -35,8 +35,7 @@ public class sldSimpleTypes {
         }
 
         private static SimpleType[] parents = {
-            org.geotools.xml.xsi.XSISimpleTypes.String
-                    .getInstance() /* simpleType name is string */,
+            org.geotools.xml.xsi.XSISimpleTypes.String.getInstance() /* simpleType name is string */,
             org.geotools.xml.xsi.XSISimpleTypes.String.getInstance() /* simpleType name is string */
         };
         private static Facet[] facets = {new FacetGT(1, "WFS"), new FacetGT(1, "WCS")};

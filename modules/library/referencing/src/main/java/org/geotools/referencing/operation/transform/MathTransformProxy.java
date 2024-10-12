@@ -86,11 +86,7 @@ public class MathTransformProxy implements MathTransform, Serializable {
     /** Transforms a list of coordinate point ordinal values. */
     @Override
     public void transform(
-            final double[] srcPts,
-            final int srcOff,
-            final double[] dstPts,
-            final int dstOff,
-            final int numPts)
+            final double[] srcPts, final int srcOff, final double[] dstPts, final int dstOff, final int numPts)
             throws TransformException {
         transform.transform(srcPts, srcOff, dstPts, dstOff, numPts);
     }
@@ -98,11 +94,7 @@ public class MathTransformProxy implements MathTransform, Serializable {
     /** Transforms a list of coordinate point ordinal values. */
     @Override
     public void transform(
-            final float[] srcPts,
-            final int srcOff,
-            final float[] dstPts,
-            final int dstOff,
-            final int numPts)
+            final float[] srcPts, final int srcOff, final float[] dstPts, final int dstOff, final int numPts)
             throws TransformException {
         transform.transform(srcPts, srcOff, dstPts, dstOff, numPts);
     }
@@ -115,11 +107,7 @@ public class MathTransformProxy implements MathTransform, Serializable {
      */
     @Override
     public void transform(
-            final float[] srcPts,
-            final int srcOff,
-            final double[] dstPts,
-            final int dstOff,
-            final int numPts)
+            final float[] srcPts, final int srcOff, final double[] dstPts, final int dstOff, final int numPts)
             throws TransformException {
         transform.transform(srcPts, srcOff, dstPts, dstOff, numPts);
     }
@@ -132,11 +120,7 @@ public class MathTransformProxy implements MathTransform, Serializable {
      */
     @Override
     public void transform(
-            final double[] srcPts,
-            final int srcOff,
-            final float[] dstPts,
-            final int dstOff,
-            final int numPts)
+            final double[] srcPts, final int srcOff, final float[] dstPts, final int dstOff, final int numPts)
             throws TransformException {
         transform.transform(srcPts, srcOff, dstPts, dstOff, numPts);
     }

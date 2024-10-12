@@ -53,8 +53,7 @@ public class AverageVisitor implements FeatureCalc, FeatureAttributeVisitor {
      * @param attributeTypeIndex integer representing the AttributeDescriptor
      * @param type FeatureType
      */
-    public AverageVisitor(int attributeTypeIndex, SimpleFeatureType type)
-            throws IllegalFilterException {
+    public AverageVisitor(int attributeTypeIndex, SimpleFeatureType type) throws IllegalFilterException {
         FilterFactory factory = CommonFactoryFinder.getFilterFactory(null);
         AttributeDescriptor attributeType = type.getDescriptor(attributeTypeIndex);
         expr = factory.property(attributeType.getLocalName());
@@ -91,15 +90,13 @@ public class AverageVisitor implements FeatureCalc, FeatureAttributeVisitor {
     @Override
     public Optional<List<Class>> getResultType(List<Class> inputTypes) {
         if (inputTypes == null || inputTypes.size() != 1)
-            throw new IllegalArgumentException(
-                    "Expecting a single type in input, not " + inputTypes);
+            throw new IllegalArgumentException("Expecting a single type in input, not " + inputTypes);
 
         Class type = inputTypes.get(0);
         if (Number.class.isAssignableFrom(type)) {
             return Optional.of(Collections.singletonList(Double.class));
         }
-        throw new IllegalArgumentException(
-                "The input type for sum must be numeric, instead this was found: " + type);
+        throw new IllegalArgumentException("The input type for sum must be numeric, instead this was found: " + type);
     }
 
     /**
@@ -179,9 +176,7 @@ public class AverageVisitor implements FeatureCalc, FeatureAttributeVisitor {
         } else if (newAverage instanceof Number) {
             strategy = new FixedResultAverageStrategy((Number) newAverage);
             isOptimized = true;
-        } else
-            throw new IllegalArgumentException(
-                    "Cannot set the value, should be a Number or an AverageStrategy");
+        } else throw new IllegalArgumentException("Cannot set the value, should be a Number or an AverageStrategy");
     }
 
     public void setValue(int newCount, Object newSum) {
@@ -345,8 +340,7 @@ public class AverageVisitor implements FeatureCalc, FeatureAttributeVisitor {
      * problem when the final result has been calculated already by storage)
      */
     static class FixedResultAverageStrategy implements AverageStrategy {
-        private static final String NO_MERGE_ERROR =
-                "This strategy does not support merge with other results";
+        private static final String NO_MERGE_ERROR = "This strategy does not support merge with other results";
         Number result;
 
         public FixedResultAverageStrategy(Number result) {
@@ -390,10 +384,9 @@ public class AverageVisitor implements FeatureCalc, FeatureAttributeVisitor {
             } else if (value instanceof Number) {
                 averageStrategy = new FixedResultAverageStrategy((Number) value);
             } else {
-                throw new IllegalArgumentException(
-                        "Cannot build an AverageResult using "
-                                + value
-                                + ", must be a Number or an instance of AverageStrategy");
+                throw new IllegalArgumentException("Cannot build an AverageResult using "
+                        + value
+                        + ", must be a Number or an instance of AverageStrategy");
             }
         }
 
@@ -476,18 +469,12 @@ public class AverageVisitor implements FeatureCalc, FeatureAttributeVisitor {
 
                 // ensure both results are NOT optimized
                 if (isOptimized || moreResults.isOptimized) {
-                    throw new IllegalArgumentException(
-                            "Optimized average results cannot be merged.");
+                    throw new IllegalArgumentException("Optimized average results cannot be merged.");
                 }
 
-                Number[] sums = {
-                    (Number) averageStrategy.getSum(), (Number) moreResults.averageStrategy.getSum()
-                };
+                Number[] sums = {(Number) averageStrategy.getSum(), (Number) moreResults.averageStrategy.getSum()};
                 Number newSum = CalcUtil.sum(sums);
-                Number newCount =
-                        Integer.valueOf(
-                                averageStrategy.getCount()
-                                        + moreResults.averageStrategy.getCount());
+                Number newCount = Integer.valueOf(averageStrategy.getCount() + moreResults.averageStrategy.getCount());
                 Number[] params = {newSum, newCount};
                 Object newAverage = CalcUtil.getObject(params);
                 AverageStrategy newAverageObj = createStrategy(newAverage.getClass());

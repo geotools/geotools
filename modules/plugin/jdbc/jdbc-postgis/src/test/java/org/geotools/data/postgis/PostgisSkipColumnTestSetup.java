@@ -17,12 +17,10 @@ public class PostgisSkipColumnTestSetup extends JDBCSkipColumnTestSetup {
                         + "\"geom\" geometry, " //
                         + "\"weirdproperty\" macaddr," //
                         + "\"name\" varchar)");
-        run(
-                "INSERT INTO GEOMETRY_COLUMNS VALUES('', 'public', 'skipcolumn', 'geom', 2, '4326', 'POINT')");
+        run("INSERT INTO GEOMETRY_COLUMNS VALUES('', 'public', 'skipcolumn', 'geom', 2, '4326', 'POINT')");
         run("CREATE INDEX SKIPCOLUMN_GEOM_INDEX ON \"skipcolumn\" USING GIST (\"geom\") ");
 
-        run(
-                "INSERT INTO \"skipcolumn\" VALUES(0, 0, ST_GeometryFromText('POINT(0 0)', 4326), null, 'GeoTools')");
+        run("INSERT INTO \"skipcolumn\" VALUES(0, 0, ST_GeometryFromText('POINT(0 0)', 4326), null, 'GeoTools')");
     }
 
     @Override

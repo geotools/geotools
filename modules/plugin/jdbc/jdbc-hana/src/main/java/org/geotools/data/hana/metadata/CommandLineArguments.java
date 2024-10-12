@@ -91,16 +91,13 @@ class CommandLineArguments {
 
         switch (connType) {
             case USING_PORT:
-                return new CommandLineArguments(
-                        user, HanaConnectionParameters.forPort(host, port, options));
+                return new CommandLineArguments(user, HanaConnectionParameters.forPort(host, port, options));
             case SINGLE_CONTAINER:
                 return new CommandLineArguments(
                         user, HanaConnectionParameters.forSingleContainer(host, instance, options));
             case MULTI_CONTAINER:
                 return new CommandLineArguments(
-                        user,
-                        HanaConnectionParameters.forMultiContainer(
-                                host, instance, database, options));
+                        user, HanaConnectionParameters.forMultiContainer(host, instance, database, options));
             default:
                 throw new AssertionError();
         }
@@ -128,8 +125,7 @@ class CommandLineArguments {
     private static void showUsage() {
         System.out.println("HANA Metadata Importer");
         System.out.println();
-        System.out.println(
-                "This tool imports spatial unit of measures and spatial reference systems into a");
+        System.out.println("This tool imports spatial unit of measures and spatial reference systems into a");
         System.out.println("HANA database.");
         System.out.println();
         System.out.println("Usage:");
@@ -140,12 +136,9 @@ class CommandLineArguments {
         System.out.println("  port     - The port to connect to");
         System.out.println("  host     - The database host to connect to");
         System.out.println("  instance - The number of the instance to connect to");
-        System.out.println(
-                "  database - The database to connect to. Omit this parameter in case of a");
-        System.out.println(
-                "             single container database. Otherwise, set this parameter either to");
-        System.out.println(
-                "             SYSTEMDB to connect to the system database or to the name of the");
+        System.out.println("  database - The database to connect to. Omit this parameter in case of a");
+        System.out.println("             single container database. Otherwise, set this parameter either to");
+        System.out.println("             SYSTEMDB to connect to the system database or to the name of the");
         System.out.println("             tenant database");
         System.out.println("  --ssl    - Use SSL to connect to the database");
         System.out.println();

@@ -64,11 +64,8 @@ public class MapServerWFSStrategy extends StrictWFS_1_x_Strategy {
     public FeatureTypeType translateTypeInfo(FeatureTypeType typeInfo) {
         if ("wfs".equals(typeInfo.getName().getPrefix())
                 || "http://www.opengis.net/wfs".equals(typeInfo.getName().getNamespaceURI())) {
-            QName newName =
-                    new QName(
-                            "http://mapserver.gis.umn.edu/mapserver",
-                            typeInfo.getName().getLocalPart(),
-                            "ms");
+            QName newName = new QName(
+                    "http://mapserver.gis.umn.edu/mapserver", typeInfo.getName().getLocalPart(), "ms");
             typeInfo.setName(newName);
         }
         return typeInfo;
@@ -77,10 +74,8 @@ public class MapServerWFSStrategy extends StrictWFS_1_x_Strategy {
     @Override
     public Map<QName, Class<?>> getFieldTypeMappings() {
         Map<QName, Class<?>> mappings = new HashMap<>();
-        mappings.put(
-                new QName("http://www.w3.org/2001/XMLSchema", "Character"), XSStringBinding.class);
-        mappings.put(
-                new QName("http://www.w3.org/2001/XMLSchema", "Integer"), XSIntegerBinding.class);
+        mappings.put(new QName("http://www.w3.org/2001/XMLSchema", "Character"), XSStringBinding.class);
+        mappings.put(new QName("http://www.w3.org/2001/XMLSchema", "Integer"), XSIntegerBinding.class);
         mappings.put(new QName("http://www.w3.org/2001/XMLSchema", "Real"), XSDoubleBinding.class);
         return mappings;
     }
@@ -124,22 +119,15 @@ public class MapServerWFSStrategy extends StrictWFS_1_x_Strategy {
                                 Element coord1 = (Element) coords.item(0);
                                 Element coord2 = (Element) coords.item(1);
                                 if (coord1 != null && coord2 != null) {
-                                    Element coordX1 =
-                                            (Element)
-                                                    (coord1.getElementsByTagName("gml:X").item(0));
-                                    Element coordY1 =
-                                            (Element)
-                                                    (coord1.getElementsByTagName("gml:Y").item(0));
-                                    Element coordX2 =
-                                            (Element)
-                                                    (coord2.getElementsByTagName("gml:X").item(0));
-                                    Element coordY2 =
-                                            (Element)
-                                                    (coord2.getElementsByTagName("gml:Y").item(0));
-                                    if (coordX1 != null
-                                            && coordY1 != null
-                                            && coordX2 != null
-                                            && coordY2 != null) {
+                                    Element coordX1 = (Element) (coord1.getElementsByTagName("gml:X")
+                                            .item(0));
+                                    Element coordY1 = (Element) (coord1.getElementsByTagName("gml:Y")
+                                            .item(0));
+                                    Element coordX2 = (Element) (coord2.getElementsByTagName("gml:X")
+                                            .item(0));
+                                    Element coordY2 = (Element) (coord2.getElementsByTagName("gml:Y")
+                                            .item(0));
+                                    if (coordX1 != null && coordY1 != null && coordX2 != null && coordY2 != null) {
                                         reformatted = true;
                                         String x1 = coordX1.getTextContent();
                                         String y1 = coordY1.getTextContent();
@@ -154,8 +142,7 @@ public class MapServerWFSStrategy extends StrictWFS_1_x_Strategy {
                                         coordinates.setAttribute("decimal", ".");
                                         coordinates.setAttribute("ts", " ");
                                         coordinates.appendChild(
-                                                doc.createTextNode(
-                                                        x1 + "," + y1 + " " + x2 + "," + y2));
+                                                doc.createTextNode(x1 + "," + y1 + " " + x2 + "," + y2));
                                         box.appendChild(coordinates);
                                     }
                                 }
@@ -178,10 +165,7 @@ public class MapServerWFSStrategy extends StrictWFS_1_x_Strategy {
                     in.close();
                     in = new ByteArrayInputStream(pc.getBytes());
                 }
-            } catch (SAXException
-                    | ParserConfigurationException
-                    | TransformerException
-                    | IOException ex) {
+            } catch (SAXException | ParserConfigurationException | TransformerException | IOException ex) {
                 LOGGER.log(
                         Level.FINE,
                         "Unexpected exception while rewriting 1.0.0 GETFEATURE request with BBOX filter",

@@ -39,13 +39,11 @@ public class CurvedGeometries {
         }
 
         final AtomicBoolean curveFound = new AtomicBoolean(false);
-        geometry.apply(
-                (GeometryComponentFilter)
-                        geom -> {
-                            if (geom instanceof CurvedGeometry<?>) {
-                                curveFound.set(true);
-                            }
-                        });
+        geometry.apply((GeometryComponentFilter) geom -> {
+            if (geom instanceof CurvedGeometry<?>) {
+                curveFound.set(true);
+            }
+        });
 
         return curveFound.get();
     }
@@ -106,8 +104,7 @@ public class CurvedGeometries {
                             return false;
                         }
                         Coordinate cc = curr.getCenter();
-                        if (!CircularArc.equals(cc.x, center.x)
-                                || !CircularArc.equals(cc.y, center.y)) {
+                        if (!CircularArc.equals(cc.x, center.x) || !CircularArc.equals(cc.y, center.y)) {
                             return false;
                         }
                     }
@@ -121,14 +118,12 @@ public class CurvedGeometries {
     /** Builds a circular arc out of the specified coordinate sequence */
     public static CircularArc getArc(CoordinateSequence cs, int startCoordinate) {
         if (cs.size() < (startCoordinate + 3)) {
-            throw new IllegalArgumentException(
-                    "The coordinate sequence has "
-                            + cs.size()
-                            + " points, cannot extract a circular arc starting from coordinate "
-                            + startCoordinate);
+            throw new IllegalArgumentException("The coordinate sequence has "
+                    + cs.size()
+                    + " points, cannot extract a circular arc starting from coordinate "
+                    + startCoordinate);
         } else if (startCoordinate < 0) {
-            throw new IllegalArgumentException(
-                    "Start coordinate must be 0 or positive, not: " + startCoordinate);
+            throw new IllegalArgumentException("Start coordinate must be 0 or positive, not: " + startCoordinate);
         }
 
         return new CircularArc(
@@ -141,8 +136,7 @@ public class CurvedGeometries {
     }
 
     /** Returns the circle containing this arc */
-    public static CircularRing toCircle(
-            CircularArc arc, GeometryFactory geometryFactory, double tolerance) {
+    public static CircularRing toCircle(CircularArc arc, GeometryFactory geometryFactory, double tolerance) {
         double radius = arc.getRadius();
         Coordinate center = arc.getCenter();
 

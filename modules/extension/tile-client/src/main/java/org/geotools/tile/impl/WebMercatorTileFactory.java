@@ -44,13 +44,12 @@ public abstract class WebMercatorTileFactory extends TileFactory {
 
         final int z = tileName.getZ();
 
-        ReferencedEnvelope extent =
-                new ReferencedEnvelope(
-                        tile2lon(tileName.getX(), z),
-                        tile2lon(tileName.getX() + 1, z),
-                        tile2lat(tileName.getY(), z),
-                        tile2lat(tileName.getY() + 1, z),
-                        DefaultGeographicCRS.WGS84);
+        ReferencedEnvelope extent = new ReferencedEnvelope(
+                tile2lon(tileName.getX(), z),
+                tile2lon(tileName.getX() + 1, z),
+                tile2lat(tileName.getY(), z),
+                tile2lat(tileName.getY() + 1, z),
+                DefaultGeographicCRS.WGS84);
 
         return extent;
     }

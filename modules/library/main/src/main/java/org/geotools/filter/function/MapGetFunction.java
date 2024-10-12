@@ -32,12 +32,8 @@ public class MapGetFunction extends FunctionExpressionImpl implements VolatileFu
 
     FilterFactory FF = CommonFactoryFinder.getFilterFactory();
 
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "mapGet",
-                    parameter("value", Object.class),
-                    parameter("map", Map.class),
-                    parameter("key", String.class));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "mapGet", parameter("value", Object.class), parameter("map", Map.class), parameter("key", String.class));
 
     public MapGetFunction() {
         super(NAME);

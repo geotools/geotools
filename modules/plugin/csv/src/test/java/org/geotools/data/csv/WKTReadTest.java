@@ -37,8 +37,7 @@ public class WKTReadTest {
         assertNotNull(instore);
 
         SimpleFeatureCollection features =
-                instore.getFeatureSource()
-                        .getFeatures(/* CQL.toFilter("STATE_NAME = 'Wyoming'") */ );
+                instore.getFeatureSource().getFeatures(/* CQL.toFilter("STATE_NAME = 'Wyoming'") */ );
         SimpleFeature feature = DataUtilities.first(features);
         assertNotNull(feature);
 

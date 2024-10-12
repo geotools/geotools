@@ -132,9 +132,7 @@ public class RasterLayout implements Cloneable {
     }
 
     public RasterLayout(Rectangle bounds) {
-        if (bounds == null)
-            throw new NullPointerException(
-                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "bounds"));
+        if (bounds == null) throw new NullPointerException(MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "bounds"));
         this.height = bounds.height;
         this.width = bounds.width;
         this.minX = bounds.x;
@@ -408,7 +406,6 @@ public class RasterLayout implements Cloneable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(
-                minX, minY, width, height, tileGridXOffset, tileGridYOffset, tileWidth, tileHeight);
+        return Objects.hash(minX, minY, width, height, tileGridXOffset, tileGridYOffset, tileWidth, tileHeight);
     }
 }

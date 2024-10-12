@@ -53,17 +53,11 @@ public class GMLPointTypeBindingTest extends AbstractGMLBindingTest {
 
     @Test
     public void testParseCoordinate() throws Exception {
-        Node node =
-                createNode(
-                        point,
-                        new ElementInstance[] {coord},
-                        new Object[] {new Coordinate(12.34, 56.78)},
-                        null,
-                        null);
+        Node node = createNode(
+                point, new ElementInstance[] {coord}, new Object[] {new Coordinate(12.34, 56.78)}, null, null);
 
         GMLPointTypeBinding strategy =
-                (GMLPointTypeBinding)
-                        container.getComponentInstanceOfType(GMLPointTypeBinding.class);
+                (GMLPointTypeBinding) container.getComponentInstanceOfType(GMLPointTypeBinding.class);
 
         Point p = (Point) strategy.parse(point, node, null);
         assertNotNull(p);
@@ -73,17 +67,15 @@ public class GMLPointTypeBindingTest extends AbstractGMLBindingTest {
 
     @Test
     public void testParseCoordinates() throws Exception {
-        Node node =
-                createNode(
-                        point,
-                        new ElementInstance[] {coords},
-                        new Object[] {createCoordinateSequence(new Coordinate(12.34, 56.78))},
-                        null,
-                        null);
+        Node node = createNode(
+                point,
+                new ElementInstance[] {coords},
+                new Object[] {createCoordinateSequence(new Coordinate(12.34, 56.78))},
+                null,
+                null);
 
         GMLPointTypeBinding strategy =
-                (GMLPointTypeBinding)
-                        container.getComponentInstanceOfType(GMLPointTypeBinding.class);
+                (GMLPointTypeBinding) container.getComponentInstanceOfType(GMLPointTypeBinding.class);
 
         Point p = (Point) strategy.parse(point, node, null);
         assertNotNull(p);
@@ -93,22 +85,18 @@ public class GMLPointTypeBindingTest extends AbstractGMLBindingTest {
 
     @Test
     public void testParseMultiCoordinates() throws Exception {
-        Node node =
-                createNode(
-                        point,
-                        new ElementInstance[] {coords},
-                        new Object[] {
-                            createCoordinateSequence(
-                                    new Coordinate[] {
-                                        new Coordinate(12.34, 56.78), new Coordinate(9.10, 11.12)
-                                    })
-                        },
-                        null,
-                        null);
+        Node node = createNode(
+                point,
+                new ElementInstance[] {coords},
+                new Object[] {
+                    createCoordinateSequence(
+                            new Coordinate[] {new Coordinate(12.34, 56.78), new Coordinate(9.10, 11.12)})
+                },
+                null,
+                null);
 
         GMLPointTypeBinding strategy =
-                (GMLPointTypeBinding)
-                        container.getComponentInstanceOfType(GMLPointTypeBinding.class);
+                (GMLPointTypeBinding) container.getComponentInstanceOfType(GMLPointTypeBinding.class);
 
         try {
             strategy.parse(point, node, null);

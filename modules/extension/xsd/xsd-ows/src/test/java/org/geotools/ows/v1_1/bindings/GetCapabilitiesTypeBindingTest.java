@@ -38,12 +38,11 @@ public class GetCapabilitiesTypeBindingTest extends OWSTestSupport_1_1 {
 
     @Test
     public void testParse() throws Exception {
-        String xml =
-                "<ows:GetCapabilities xmlns:ows=\"http://www.opengis.net/ows\" version=\"1.1.0\">"
-                        + "<ows:AcceptVersions>"
-                        + "<ows:Version>1.0.0</ows:Version>"
-                        + "</ows:AcceptVersions>"
-                        + "</ows:GetCapabilities>";
+        String xml = "<ows:GetCapabilities xmlns:ows=\"http://www.opengis.net/ows\" version=\"1.1.0\">"
+                + "<ows:AcceptVersions>"
+                + "<ows:Version>1.0.0</ows:Version>"
+                + "</ows:AcceptVersions>"
+                + "</ows:GetCapabilities>";
 
         buildDocument(xml);
 

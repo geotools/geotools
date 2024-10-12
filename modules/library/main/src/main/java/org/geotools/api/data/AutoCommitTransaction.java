@@ -36,8 +36,7 @@ class AutoCommitTransaction implements Transaction {
      */
     @Override
     public Set<String> getAuthorizations() {
-        throw new UnsupportedOperationException(
-                "Authorization IDs are not valid for AutoCommit Transaction");
+        throw new UnsupportedOperationException("Authorization IDs are not valid for AutoCommit Transaction");
     }
 
     /**
@@ -51,8 +50,7 @@ class AutoCommitTransaction implements Transaction {
      */
     @Override
     public void putState(Object key, State state) {
-        throw new UnsupportedOperationException(
-                "AutoCommit does not support the putState opperations");
+        throw new UnsupportedOperationException("AutoCommit does not support the putState opperations");
     }
 
     /**
@@ -65,8 +63,7 @@ class AutoCommitTransaction implements Transaction {
      */
     @Override
     public void removeState(Object key) {
-        throw new UnsupportedOperationException(
-                "AutoCommit does not support the removeState opperations");
+        throw new UnsupportedOperationException("AutoCommit does not support the removeState opperations");
     }
 
     /**
@@ -80,8 +77,7 @@ class AutoCommitTransaction implements Transaction {
      */
     @Override
     public State getState(Object key) {
-        throw new UnsupportedOperationException(
-                "AutoCommit does not support the getState opperations");
+        throw new UnsupportedOperationException("AutoCommit does not support the getState opperations");
     }
 
     /**
@@ -148,8 +144,7 @@ class AutoCommitTransaction implements Transaction {
      */
     @Override
     public Object getProperty(Object key) {
-        throw new UnsupportedOperationException(
-                "AutoCommit does not support the getProperty opperations");
+        throw new UnsupportedOperationException("AutoCommit does not support the getProperty opperations");
     }
 
     /**
@@ -159,7 +154,6 @@ class AutoCommitTransaction implements Transaction {
      */
     @Override
     public void putProperty(Object key, Object value) {
-        throw new UnsupportedOperationException(
-                "AutoCommit does not support the addProperty opperations");
+        throw new UnsupportedOperationException("AutoCommit does not support the addProperty opperations");
     }
 }

@@ -35,10 +35,6 @@ public class FirstEPSGFactory extends MockCRSAuthorityFactory {
                 "First",
                 Citations.EPSG,
                 MAXIMUM_PRIORITY - 50,
-                new Hints(
-                        Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER,
-                        Boolean.FALSE,
-                        Hints.VERSION,
-                        new Version("1.0")));
+                new Hints(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.FALSE, Hints.VERSION, new Version("1.0")));
     }
 }

@@ -32,8 +32,7 @@ class MultiPointEncoder extends GeometryEncoder<MultiPoint> {
 
     static final QualifiedName MULTI_POINT = new QualifiedName(GML.NAMESPACE, "MultiPoint", "gml");
 
-    static final QualifiedName POINT_MEMBER =
-            new QualifiedName(GML.NAMESPACE, "pointMember", "gml");
+    static final QualifiedName POINT_MEMBER = new QualifiedName(GML.NAMESPACE, "pointMember", "gml");
 
     PointEncoder pe;
 
@@ -49,8 +48,7 @@ class MultiPointEncoder extends GeometryEncoder<MultiPoint> {
     }
 
     @Override
-    public void encode(MultiPoint geometry, AttributesImpl atts, GMLWriter handler)
-            throws Exception {
+    public void encode(MultiPoint geometry, AttributesImpl atts, GMLWriter handler) throws Exception {
         handler.startElement(multiPoint, atts);
 
         for (int i = 0; i < geometry.getNumGeometries(); i++) {

@@ -26,18 +26,16 @@ public class DB2TypeNamesTestSetup extends JDBCTypeNamesTestSetup {
 
     @Override
     protected void createTypes() throws Exception {
-        run(
-                "CREATE TABLE "
-                        + DB2TestUtil.SCHEMA_QUOTED
-                        + ".\"ftntable\" ("
-                        + "\"id\" INT, \"name\" VARCHAR(255), \"geom\" db2gse.st_point)");
-        run(
-                "CREATE VIEW "
-                        + DB2TestUtil.SCHEMA_QUOTED
-                        + ".\"ftnview\""
-                        + " AS SELECT \"id\", \"geom\" FROM "
-                        + DB2TestUtil.SCHEMA_QUOTED
-                        + ".\"ftntable\"");
+        run("CREATE TABLE "
+                + DB2TestUtil.SCHEMA_QUOTED
+                + ".\"ftntable\" ("
+                + "\"id\" INT, \"name\" VARCHAR(255), \"geom\" db2gse.st_point)");
+        run("CREATE VIEW "
+                + DB2TestUtil.SCHEMA_QUOTED
+                + ".\"ftnview\""
+                + " AS SELECT \"id\", \"geom\" FROM "
+                + DB2TestUtil.SCHEMA_QUOTED
+                + ".\"ftntable\"");
     }
 
     @Override

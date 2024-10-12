@@ -133,8 +133,7 @@ public class ProgressTask implements Runnable, Progress {
      *
      * <p>Uses AQS synchronizer state to represent run status
      */
-    private final class Synchronizer extends AbstractQueuedSynchronizer
-            implements ProgressListener {
+    private final class Synchronizer extends AbstractQueuedSynchronizer implements ProgressListener {
 
         private static final long serialVersionUID = 6633428077533811475L;
 

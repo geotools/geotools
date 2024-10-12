@@ -126,27 +126,20 @@ public class Range<T extends Comparable<? super T>> implements Serializable {
      * Creates a new range using the same element class than this range. This method will be
      * overriden by subclasses in order to create a range of a more specific type.
      */
-    Range<T> create(
-            final T minValue,
-            final boolean isMinIncluded,
-            final T maxValue,
-            final boolean isMaxIncluded) {
+    Range<T> create(final T minValue, final boolean isMinIncluded, final T maxValue, final boolean isMaxIncluded) {
         return new Range<>(elementClass, minValue, isMinIncluded, maxValue, isMaxIncluded);
     }
 
     /** Ensures that the given argument is non-null. */
-    static void ensureNonNull(final String name, final Object value)
-            throws IllegalArgumentException {
+    static void ensureNonNull(final String name, final Object value) throws IllegalArgumentException {
         if (value == null) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, name));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, name));
         }
     }
 
     /** Ensures that the given range use the same element class than this range. */
     @SuppressWarnings("unchecked")
-    private Range<? extends T> ensureCompatible(final Range<?> range)
-            throws IllegalArgumentException {
+    private Range<? extends T> ensureCompatible(final Range<?> range) throws IllegalArgumentException {
         ensureNonNull("range", range);
         ensureCompatible(range.elementClass);
         return (Range<? extends T>) range;
@@ -155,8 +148,7 @@ public class Range<T extends Comparable<? super T>> implements Serializable {
     /** Ensures that the given type is compatible with the type expected by this range. */
     private void ensureCompatible(final Class<?> type) throws IllegalArgumentException {
         if (!elementClass.isAssignableFrom(type)) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.ILLEGAL_CLASS_$2, type, elementClass));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.ILLEGAL_CLASS_$2, type, elementClass));
         }
     }
 
@@ -310,8 +302,7 @@ public class Range<T extends Comparable<? super T>> implements Serializable {
      */
     final boolean containsNC(final Range<? extends T> range) {
         return (minValue == null || compareMinTo(range.minValue, range.isMinIncluded ? 0 : +1) <= 0)
-                && (maxValue == null
-                        || compareMaxTo(range.maxValue, range.isMaxIncluded ? 0 : -1) >= 0);
+                && (maxValue == null || compareMaxTo(range.maxValue, range.isMaxIncluded ? 0 : -1) >= 0);
     }
 
     /**
@@ -355,13 +346,10 @@ public class Range<T extends Comparable<? super T>> implements Serializable {
      * Implementation of {@link #intersect(Range)} to be invoked directly by subclasses. "NC" stands
      * for "No Cast" - this method do not try to cast the value to a compatible type.
      */
-    final Range<? extends T> intersectNC(final Range<? extends T> range)
-            throws IllegalArgumentException {
+    final Range<? extends T> intersectNC(final Range<? extends T> range) throws IllegalArgumentException {
         final Range<? extends T> intersect;
-        final Range<? extends T> min =
-                compareMinTo(range.minValue, range.isMinIncluded ? 0 : +1) < 0 ? range : this;
-        final Range<? extends T> max =
-                compareMaxTo(range.maxValue, range.isMaxIncluded ? 0 : -1) > 0 ? range : this;
+        final Range<? extends T> min = compareMinTo(range.minValue, range.isMinIncluded ? 0 : +1) < 0 ? range : this;
+        final Range<? extends T> max = compareMaxTo(range.maxValue, range.isMaxIncluded ? 0 : -1) > 0 ? range : this;
         if (min == max) {
             intersect = min;
         } else {
@@ -415,10 +403,8 @@ public class Range<T extends Comparable<? super T>> implements Serializable {
             } else {
                 if (!clipMax) {
                     final Range<T>[] array = newArray(2);
-                    array[0] =
-                            create(minValue, isMinIncluded, range.minValue, !range.isMinIncluded);
-                    array[1] =
-                            create(range.maxValue, !range.isMaxIncluded, maxValue, isMaxIncluded);
+                    array[0] = create(minValue, isMinIncluded, range.minValue, !range.isMinIncluded);
+                    array[1] = create(range.maxValue, !range.isMaxIncluded, maxValue, isMaxIncluded);
                     return array;
                 }
                 subtract = create(minValue, isMinIncluded, range.minValue, !range.isMinIncluded);
@@ -450,10 +436,8 @@ public class Range<T extends Comparable<? super T>> implements Serializable {
      */
     final Range<?> unionNC(final Range<? extends T> range) throws IllegalArgumentException {
         final Range<? extends T> union;
-        final Range<? extends T> min =
-                compareMinTo(range.minValue, range.isMinIncluded ? 0 : +1) > 0 ? range : this;
-        final Range<? extends T> max =
-                compareMaxTo(range.maxValue, range.isMaxIncluded ? 0 : -1) < 0 ? range : this;
+        final Range<? extends T> min = compareMinTo(range.minValue, range.isMinIncluded ? 0 : +1) > 0 ? range : this;
+        final Range<? extends T> max = compareMaxTo(range.maxValue, range.isMaxIncluded ? 0 : -1) < 0 ? range : this;
         if (min == max) {
             union = min;
         } else {

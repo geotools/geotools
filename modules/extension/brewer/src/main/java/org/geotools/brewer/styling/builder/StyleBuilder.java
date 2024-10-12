@@ -94,8 +94,7 @@ public class StyleBuilder extends AbstractStyleBuilder<Style> {
         } else {
             s = sf.createStyle();
             s.setName(name);
-            if (styleAbstract != null)
-                s.getDescription().setAbstract(new SimpleInternationalString(styleAbstract));
+            if (styleAbstract != null) s.getDescription().setAbstract(new SimpleInternationalString(styleAbstract));
             if (title != null) s.getDescription().setTitle(new SimpleInternationalString(title));
             for (FeatureTypeStyleBuilder builder : fts) {
                 s.featureTypeStyles().add(builder.build());
@@ -137,14 +136,12 @@ public class StyleBuilder extends AbstractStyleBuilder<Style> {
             fts.add(new FeatureTypeStyleBuilder(this).reset(ft));
         }
         name = style.getName();
-        styleAbstract =
-                Optional.ofNullable(style.getDescription().getAbstract())
-                        .map(Object::toString)
-                        .orElse(null);
-        title =
-                Optional.ofNullable(style.getDescription().getTitle())
-                        .map(Object::toString)
-                        .orElse(null);
+        styleAbstract = Optional.ofNullable(style.getDescription().getAbstract())
+                .map(Object::toString)
+                .orElse(null);
+        title = Optional.ofNullable(style.getDescription().getTitle())
+                .map(Object::toString)
+                .orElse(null);
         isDefault = style.isDefault();
         background = new FillBuilder().reset(style.getBackground());
         unset = false;

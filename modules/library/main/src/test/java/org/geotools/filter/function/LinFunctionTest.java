@@ -28,36 +28,28 @@ public class LinFunctionTest {
     @Test
     public void testMatchIntegers() throws Exception {
         FilterFactoryImpl ff = new FilterFactoryImpl();
-        Function func =
-                ff.function(
-                        "lin", ff.literal(9), ff.literal(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9)));
+        Function func = ff.function("lin", ff.literal(9), ff.literal(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9)));
         assertTrue((Boolean) func.evaluate(new Object()));
     }
 
     @Test
     public void testMatchStrings() throws Exception {
         FilterFactoryImpl ff = new FilterFactoryImpl();
-        Function func =
-                ff.function("lin", ff.literal("b"), ff.literal(Arrays.asList("a", "b", "c", "d")));
+        Function func = ff.function("lin", ff.literal("b"), ff.literal(Arrays.asList("a", "b", "c", "d")));
         assertTrue((Boolean) func.evaluate(new Object()));
     }
 
     @Test
     public void testDoesNotMatchIntegers() throws Exception {
         FilterFactoryImpl ff = new FilterFactoryImpl();
-        Function func =
-                ff.function(
-                        "lin",
-                        ff.literal(10),
-                        ff.literal(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9)));
+        Function func = ff.function("lin", ff.literal(10), ff.literal(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9)));
         assertFalse((Boolean) func.evaluate(new Object()));
     }
 
     @Test
     public void testDoesNotMatchStrings() throws Exception {
         FilterFactoryImpl ff = new FilterFactoryImpl();
-        Function func =
-                ff.function("lin", ff.literal("g"), ff.literal(Arrays.asList("a", "b", "c", "d")));
+        Function func = ff.function("lin", ff.literal("g"), ff.literal(Arrays.asList("a", "b", "c", "d")));
         assertFalse((Boolean) func.evaluate(new Object()));
     }
 

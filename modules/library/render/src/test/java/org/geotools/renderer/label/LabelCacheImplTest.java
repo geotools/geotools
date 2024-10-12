@@ -142,26 +142,19 @@ public class LabelCacheImplTest {
     public void testCustomBehaviour() throws TransformException, FactoryException {
         final List<String> labels = new ArrayList<>();
         Graphics2D graphics = Mockito.mock(Graphics2D.class);
-        LabelCacheImpl myCache =
-                new LabelCacheImpl() {
-                    @Override
-                    int paintLabel(
-                            Graphics2D graphics,
-                            Rectangle displayArea,
-                            LabelIndex glyphs,
-                            int paintedLineLabels,
-                            LabelPainter painter,
-                            LabelCacheItem labelItem) {
-                        labels.add(labelItem.getLabel());
-                        return super.paintLabel(
-                                graphics,
-                                displayArea,
-                                glyphs,
-                                paintedLineLabels,
-                                painter,
-                                labelItem);
-                    }
-                };
+        LabelCacheImpl myCache = new LabelCacheImpl() {
+            @Override
+            int paintLabel(
+                    Graphics2D graphics,
+                    Rectangle displayArea,
+                    LabelIndex glyphs,
+                    int paintedLineLabels,
+                    LabelPainter painter,
+                    LabelCacheItem labelItem) {
+                labels.add(labelItem.getLabel());
+                return super.paintLabel(graphics, displayArea, glyphs, paintedLineLabels, painter, labelItem);
+            }
+        };
         TextSymbolizer ts = sb.createTextSymbolizer(Color.BLACK, (Font) null, "name");
         SimpleFeature f1 = createFeature("label1", L1);
         myCache.enableLayer(LAYER_ID);
@@ -177,20 +170,19 @@ public class LabelCacheImplTest {
         TextSymbolizer ts = sb.createTextSymbolizer(Color.BLACK, (Font) null, "name");
 
         AtomicReference<Exception> exception = new AtomicReference<>(null);
-        RenderListener listener =
-                new RenderListener() {
+        RenderListener listener = new RenderListener() {
 
-                    @Override
-                    public void featureRenderer(SimpleFeature feature) {
-                        // TODO Auto-generated method stub
+            @Override
+            public void featureRenderer(SimpleFeature feature) {
+                // TODO Auto-generated method stub
 
-                    }
+            }
 
-                    @Override
-                    public void errorOccurred(Exception e) {
-                        exception.set(e);
-                    }
-                };
+            @Override
+            public void errorOccurred(Exception e) {
+                exception.set(e);
+            }
+        };
         cache.addRenderListener(listener);
         SimpleFeature f1 = createFeature("label1", L1);
         addToCache(cache, ts, f1);
@@ -226,20 +218,19 @@ public class LabelCacheImplTest {
         ts.getOptions().put(org.geotools.api.style.TextSymbolizer.FOLLOW_LINE_KEY, "true");
 
         AtomicReference<Exception> exception = new AtomicReference<>(null);
-        RenderListener listener =
-                new RenderListener() {
+        RenderListener listener = new RenderListener() {
 
-                    @Override
-                    public void featureRenderer(SimpleFeature feature) {
-                        // TODO Auto-generated method stub
+            @Override
+            public void featureRenderer(SimpleFeature feature) {
+                // TODO Auto-generated method stub
 
-                    }
+            }
 
-                    @Override
-                    public void errorOccurred(Exception e) {
-                        exception.set(e);
-                    }
-                };
+            @Override
+            public void errorOccurred(Exception e) {
+                exception.set(e);
+            }
+        };
         cache.addRenderListener(listener);
         SimpleFeature f1 = createFeature("label1", L4);
         addToCache(cache, ts, f1);
@@ -306,11 +297,6 @@ public class LabelCacheImplTest {
 
     private void addToCache(LabelCacheImpl cache, TextSymbolizer ts, SimpleFeature f1)
             throws TransformException, FactoryException {
-        cache.put(
-                LAYER_ID,
-                ts,
-                f1,
-                new LiteShape2((Geometry) f1.getDefaultGeometry(), null, null, false),
-                ALL_SCALES);
+        cache.put(LAYER_ID, ts, f1, new LiteShape2((Geometry) f1.getDefaultGeometry(), null, null, false), ALL_SCALES);
     }
 }

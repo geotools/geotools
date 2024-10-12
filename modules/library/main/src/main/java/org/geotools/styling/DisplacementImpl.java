@@ -35,51 +35,49 @@ import org.geotools.util.factory.GeoTools;
  */
 public class DisplacementImpl implements Cloneable, org.geotools.api.style.Displacement {
     /** Default Displacement instance. */
-    public static final Displacement DEFAULT =
-            new ConstantDisplacement() {
-                private void cannotModifyConstant() {
-                    throw new UnsupportedOperationException("Constant Stroke may not be modified");
-                }
+    public static final Displacement DEFAULT = new ConstantDisplacement() {
+        private void cannotModifyConstant() {
+            throw new UnsupportedOperationException("Constant Stroke may not be modified");
+        }
 
-                @Override
-                public Expression getDisplacementX() {
-                    return ConstantExpression.ZERO;
-                }
+        @Override
+        public Expression getDisplacementX() {
+            return ConstantExpression.ZERO;
+        }
 
-                @Override
-                public Expression getDisplacementY() {
-                    return ConstantExpression.ZERO;
-                }
+        @Override
+        public Expression getDisplacementY() {
+            return ConstantExpression.ZERO;
+        }
 
-                @Override
-                public Object accept(TraversingStyleVisitor visitor, Object extraData) {
-                    cannotModifyConstant();
-                    return null;
-                }
-            };
+        @Override
+        public Object accept(TraversingStyleVisitor visitor, Object extraData) {
+            cannotModifyConstant();
+            return null;
+        }
+    };
     /** Null Displacement instance. */
-    public static final Displacement NULL =
-            new ConstantDisplacement() {
-                private void cannotModifyConstant() {
-                    throw new UnsupportedOperationException("Constant Stroke may not be modified");
-                }
+    public static final Displacement NULL = new ConstantDisplacement() {
+        private void cannotModifyConstant() {
+            throw new UnsupportedOperationException("Constant Stroke may not be modified");
+        }
 
-                @Override
-                public Expression getDisplacementX() {
-                    return ConstantExpression.NULL;
-                }
+        @Override
+        public Expression getDisplacementX() {
+            return ConstantExpression.NULL;
+        }
 
-                @Override
-                public Expression getDisplacementY() {
-                    return ConstantExpression.NULL;
-                }
+        @Override
+        public Expression getDisplacementY() {
+            return ConstantExpression.NULL;
+        }
 
-                @Override
-                public Object accept(TraversingStyleVisitor visitor, Object extraData) {
-                    cannotModifyConstant();
-                    return null;
-                }
-            };
+        @Override
+        public Object accept(TraversingStyleVisitor visitor, Object extraData) {
+            cannotModifyConstant();
+            return null;
+        }
+    };
     /** The logger for the default core module. */
     private static final java.util.logging.Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(DisplacementImpl.class);

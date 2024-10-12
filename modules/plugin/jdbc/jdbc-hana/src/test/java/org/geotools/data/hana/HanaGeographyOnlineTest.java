@@ -67,11 +67,8 @@ public class HanaGeographyOnlineTest extends JDBCGeographyOnlineTest {
         assertTrue(ft.getDescriptor(aname("geo")) instanceof GeometryDescriptor);
         assertEquals(Geometry.class, ft.getDescriptor("geo").getType().getBinding());
 
-        int epsg =
-                CRS.lookupEpsgCode(
-                        ((GeometryDescriptor) ft.getDescriptor(aname("geo")))
-                                .getCoordinateReferenceSystem(),
-                        false);
+        int epsg = CRS.lookupEpsgCode(
+                ((GeometryDescriptor) ft.getDescriptor(aname("geo"))).getCoordinateReferenceSystem(), false);
         assertEquals(4326, epsg);
     }
 
@@ -83,7 +80,8 @@ public class HanaGeographyOnlineTest extends JDBCGeographyOnlineTest {
         ReferencedEnvelope expected = new ReferencedEnvelope(-110, 0, 29, 49, decodeEPSG(4326));
         try {
             // Test with estimation disabled
-            ReferencedEnvelope env = dataStore.getFeatureSource(tname("geopoint")).getBounds();
+            ReferencedEnvelope env =
+                    dataStore.getFeatureSource(tname("geopoint")).getBounds();
             assertTrue(env.boundsEquals2D(expected, Math.ulp(1.0)));
 
             // Test with estimation enabled

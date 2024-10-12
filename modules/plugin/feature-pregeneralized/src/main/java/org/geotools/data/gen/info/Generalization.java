@@ -34,11 +34,7 @@ public class Generalization implements Comparable<Generalization> {
 
     private GeneralizationInfo parent;
 
-    public Generalization(
-            Double distance,
-            String featureName,
-            String geomPropertyName,
-            GeneralizationInfo parent) {
+    public Generalization(Double distance, String featureName, String geomPropertyName, GeneralizationInfo parent) {
         super();
         this.distance = distance;
         this.featureName = featureName;

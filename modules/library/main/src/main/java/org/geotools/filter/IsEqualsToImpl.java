@@ -27,15 +27,13 @@ import org.geotools.util.factory.Hints;
 /** @author jdeolive TODO: rename this class to IsEqualToImpl */
 public class IsEqualsToImpl extends MultiCompareFilterImpl implements PropertyIsEqualTo {
 
-    public static final Hints SAFE_CONVERSION_HINTS =
-            new Hints(ConverterFactory.SAFE_CONVERSION, true);
+    public static final Hints SAFE_CONVERSION_HINTS = new Hints(ConverterFactory.SAFE_CONVERSION, true);
 
     protected IsEqualsToImpl(Expression expression1, Expression expression2) {
         this(expression1, expression2, true);
     }
 
-    protected IsEqualsToImpl(
-            Expression expression1, Expression expression2, MatchAction matchAction) {
+    protected IsEqualsToImpl(Expression expression1, Expression expression2, MatchAction matchAction) {
         this(expression1, expression2, true, matchAction);
     }
 
@@ -44,10 +42,7 @@ public class IsEqualsToImpl extends MultiCompareFilterImpl implements PropertyIs
     }
 
     protected IsEqualsToImpl(
-            Expression expression1,
-            Expression expression2,
-            boolean matchCase,
-            MatchAction matchAction) {
+            Expression expression1, Expression expression2, boolean matchCase, MatchAction matchAction) {
         super(expression1, expression2, matchCase, matchAction);
     }
 

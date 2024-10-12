@@ -40,12 +40,8 @@ import java.util.Map;
  */
 public class OracleNGOCIDataStoreFactory extends OracleNGDataStoreFactory {
     /** The alias parameter used to specify the database to connect to */
-    public static final Param ALIAS =
-            new Param(
-                    "alias",
-                    String.class,
-                    "The alias to the oracle server, as defined in the tnsnames.ora file",
-                    true);
+    public static final Param ALIAS = new Param(
+            "alias", String.class, "The alias to the oracle server, as defined in the tnsnames.ora file", true);
 
     @Override
     public String getDisplayName() {
@@ -70,13 +66,7 @@ public class OracleNGOCIDataStoreFactory extends OracleNGDataStoreFactory {
         // a full override is needed to make sure we get a good looking param order
 
         parameters.put(
-                DBTYPE.key,
-                new Param(
-                        DBTYPE.key,
-                        DBTYPE.type,
-                        DBTYPE.description,
-                        DBTYPE.required,
-                        getDatabaseID()));
+                DBTYPE.key, new Param(DBTYPE.key, DBTYPE.type, DBTYPE.description, DBTYPE.required, getDatabaseID()));
         parameters.put(SCHEMA.key, SCHEMA);
 
         parameters.put(ALIAS.key, ALIAS);
@@ -95,12 +85,9 @@ public class OracleNGOCIDataStoreFactory extends OracleNGDataStoreFactory {
         parameters.put(OracleNGDataStoreFactory.LOOSEBBOX.key, OracleNGDataStoreFactory.LOOSEBBOX);
         parameters.put(MAX_OPEN_PREPARED_STATEMENTS.key, MAX_OPEN_PREPARED_STATEMENTS);
 
+        parameters.put(OracleNGDataStoreFactory.ESTIMATED_EXTENTS.key, OracleNGDataStoreFactory.ESTIMATED_EXTENTS);
         parameters.put(
-                OracleNGDataStoreFactory.ESTIMATED_EXTENTS.key,
-                OracleNGDataStoreFactory.ESTIMATED_EXTENTS);
-        parameters.put(
-                OracleNGDataStoreFactory.GEOMETRY_METADATA_TABLE.key,
-                OracleNGDataStoreFactory.GEOMETRY_METADATA_TABLE);
+                OracleNGDataStoreFactory.GEOMETRY_METADATA_TABLE.key, OracleNGDataStoreFactory.GEOMETRY_METADATA_TABLE);
         parameters.put(METADATA_BBOX.key, METADATA_BBOX);
         parameters.put(GET_REMARKS.key, GET_REMARKS);
     }

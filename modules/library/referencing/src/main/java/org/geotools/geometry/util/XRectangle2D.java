@@ -236,8 +236,7 @@ public class XRectangle2D extends Rectangle2D implements Serializable {
      *     of rectangular coordinates; {@code false} otherwise.
      */
     @Override
-    public boolean intersects(
-            final double x, final double y, final double width, final double height) {
+    public boolean intersects(final double x, final double y, final double width, final double height) {
         if (!(xmin < xmax && ymin < ymax && width > 0 && height > 0)) {
             return false;
         } else {
@@ -382,8 +381,7 @@ public class XRectangle2D extends Rectangle2D implements Serializable {
      *     rectangular coordinates; {@code false} otherwise.
      */
     @Override
-    public boolean contains(
-            final double x, final double y, final double width, final double height) {
+    public boolean contains(final double x, final double y, final double width, final double height) {
         if (!(xmin < xmax && ymin < ymax && width > 0 && height > 0)) {
             return false;
         } else {

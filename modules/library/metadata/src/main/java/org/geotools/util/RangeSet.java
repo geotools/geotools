@@ -65,19 +65,17 @@ public class RangeSet<T extends Comparable<? super T>> extends AbstractSet<Range
      * but not used for internal working in this class.
      */
     @SuppressWarnings("unchecked")
-    private static final Comparator<Range> COMPARATOR =
-            (r1, r2) -> {
-                int cmin = r1.getMinValue().compareTo(r2.getMinValue());
-                int cmax = r1.getMaxValue().compareTo(r2.getMaxValue());
-                if (cmin == 0) cmin = (r1.isMinIncluded() ? -1 : 0) - (r2.isMinIncluded() ? -1 : 0);
-                if (cmax == 0) cmax = (r1.isMaxIncluded() ? +1 : 0) - (r2.isMaxIncluded() ? +1 : 0);
-                if (cmin == cmax)
-                    return cmax; // Easy case: min and max are both greater, smaller or eq.
-                if (cmin == 0) return cmax; // Easy case: only max value differ.
-                if (cmax == 0) return cmin; // Easy case: only min value differ.
-                // One range is included in the other.
-                throw new IllegalArgumentException("Unordered ranges");
-            };
+    private static final Comparator<Range> COMPARATOR = (r1, r2) -> {
+        int cmin = r1.getMinValue().compareTo(r2.getMinValue());
+        int cmax = r1.getMaxValue().compareTo(r2.getMaxValue());
+        if (cmin == 0) cmin = (r1.isMinIncluded() ? -1 : 0) - (r2.isMinIncluded() ? -1 : 0);
+        if (cmax == 0) cmax = (r1.isMaxIncluded() ? +1 : 0) - (r2.isMaxIncluded() ? +1 : 0);
+        if (cmin == cmax) return cmax; // Easy case: min and max are both greater, smaller or eq.
+        if (cmin == 0) return cmax; // Easy case: only max value differ.
+        if (cmax == 0) return cmin; // Easy case: only min value differ.
+        // One range is included in the other.
+        throw new IllegalArgumentException("Unordered ranges");
+    };
 
     /** The {@linkplain #getElementClass element class} of ranges. */
     private final Class<T> elementClass;
@@ -152,8 +150,7 @@ public class RangeSet<T extends Comparable<? super T>> extends AbstractSet<Range
      */
     public RangeSet(final Class<T> type) throws IllegalArgumentException {
         if (!Comparable.class.isAssignableFrom(type)) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.NOT_COMPARABLE_CLASS_$1, type));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.NOT_COMPARABLE_CLASS_$1, type));
         }
         Class<?> elementType = ClassChanger.getTransformedClass(type); // e.g. change Date --> Long
         useClassChanger = (elementType != type);
@@ -172,8 +169,7 @@ public class RangeSet<T extends Comparable<? super T>> extends AbstractSet<Range
             throw new IllegalArgumentException(
                     value == null
                             ? MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "value")
-                            : MessageFormat.format(
-                                    ErrorKeys.ILLEGAL_CLASS_$2, value.getClass(), elementClass));
+                            : MessageFormat.format(ErrorKeys.ILLEGAL_CLASS_$2, value.getClass(), elementClass));
         }
         if (useClassChanger)
             try {
@@ -183,12 +179,8 @@ public class RangeSet<T extends Comparable<? super T>> extends AbstractSet<Range
                  * Should not happen since the constructor should have make sure
                  * that this operation is legal for value of class 'type'.
                  */
-                final ClassCastException exception =
-                        new ClassCastException(
-                                MessageFormat.format(
-                                        ErrorKeys.ILLEGAL_CLASS_$2,
-                                        value.getClass(),
-                                        elementClass));
+                final ClassCastException exception = new ClassCastException(
+                        MessageFormat.format(ErrorKeys.ILLEGAL_CLASS_$2, value.getClass(), elementClass));
                 exception.initCause(cause);
                 throw exception;
             }
@@ -249,8 +241,7 @@ public class RangeSet<T extends Comparable<? super T>> extends AbstractSet<Range
         Comparable lower = toArrayElement(min);
         Comparable upper = toArrayElement(max);
         if (lower.compareTo(upper) > 0) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.BAD_RANGE_$2, min, max));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.BAD_RANGE_$2, min, max));
         }
         if (array == null) {
             modCount++;
@@ -466,8 +457,7 @@ public class RangeSet<T extends Comparable<? super T>> extends AbstractSet<Range
         Comparable lower = toArrayElement(min);
         Comparable upper = toArrayElement(max);
         if (lower.compareTo(upper) >= 0) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.BAD_RANGE_$2, min, max));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.BAD_RANGE_$2, min, max));
         }
         // if already empty, or range outside the current set, nothing to change
         if (array == null) {
@@ -724,12 +714,9 @@ public class RangeSet<T extends Comparable<? super T>> extends AbstractSet<Range
      * @throws IndexOutOfBoundsException if {@code index} is out of bounds.
      * @throws ClassCastException if range elements are not convertible to numbers.
      */
-    public final double getMinValueAsDouble(int index)
-            throws IndexOutOfBoundsException, ClassCastException {
+    public final double getMinValueAsDouble(int index) throws IndexOutOfBoundsException, ClassCastException {
         index *= 2;
-        return (isPrimitive)
-                ? Array.getDouble(array, index)
-                : ((Number) Array.get(array, index)).doubleValue();
+        return (isPrimitive) ? Array.getDouble(array, index) : ((Number) Array.get(array, index)).doubleValue();
     }
 
     /**
@@ -742,12 +729,9 @@ public class RangeSet<T extends Comparable<? super T>> extends AbstractSet<Range
      * @throws IndexOutOfBoundsException if {@code index} is out of bounds.
      * @throws ClassCastException if range elements are not convertible to numbers.
      */
-    public final double getMaxValueAsDouble(int index)
-            throws IndexOutOfBoundsException, ClassCastException {
+    public final double getMaxValueAsDouble(int index) throws IndexOutOfBoundsException, ClassCastException {
         index = 2 * index + 1;
-        return (isPrimitive)
-                ? Array.getDouble(array, index)
-                : ((Number) Array.get(array, index)).doubleValue();
+        return (isPrimitive) ? Array.getDouble(array, index) : ((Number) Array.get(array, index)).doubleValue();
     }
 
     /**
@@ -784,8 +768,7 @@ public class RangeSet<T extends Comparable<? super T>> extends AbstractSet<Range
         final Range<T> range = (Range<T>) object;
         if (elementClass.equals(range.elementClass)) {
             if (range.isMinIncluded() && range.isMaxIncluded()) {
-                final int index =
-                        binarySearch(toArrayElement((Comparable<? super T>) range.getMinValue()));
+                final int index = binarySearch(toArrayElement((Comparable<? super T>) range.getMinValue()));
                 if (index >= 0 && (index & 1) == 0) {
                     final int c = get(index + 1).compareTo(range.getMaxValue());
                     return c == 0;

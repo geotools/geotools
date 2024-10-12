@@ -48,8 +48,7 @@ public class RenderingTask implements Callable<Boolean>, RenderListener {
     private final AtomicBoolean cancelled;
 
     /** Creates a new rendering task. */
-    public RenderingTask(
-            MapContent mapContent, Graphics2D destinationGraphics, GTRenderer renderer) {
+    public RenderingTask(MapContent mapContent, Graphics2D destinationGraphics, GTRenderer renderer) {
 
         if (mapContent == null) {
             throw new IllegalArgumentException("mapContent must not be null");

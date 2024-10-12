@@ -334,13 +334,12 @@ public class SDOOnlineTest extends JDBCTestSupport {
     public final void testGeometryCollection2() throws Exception {
         if (this.connection == null) return;
 
-        String wkt =
-                "GEOMETRYCOLLECTION (LINESTRING (679572.8376 5151850.0275, 679583.1288 5151850.8366, "
-                        + "679615.3222 5151853.3675, 679611.828 5151902.3184, 679611.846517919 5151904.66336728, "
-                        + "679611.995 5151923.466, 679602.995 5151920.386, 679582.765 5151918.536, "
-                        + "679577.8433 5151918.0814, 679567.425 5151917.796), "
-                        + "LINESTRING (679569.221815255 5151900.91179101, 679611.846517919 5151904.66336728), "
-                        + "POINT (679611.982873552 5151904.66229049))";
+        String wkt = "GEOMETRYCOLLECTION (LINESTRING (679572.8376 5151850.0275, 679583.1288 5151850.8366, "
+                + "679615.3222 5151853.3675, 679611.828 5151902.3184, 679611.846517919 5151904.66336728, "
+                + "679611.995 5151923.466, 679602.995 5151920.386, 679582.765 5151918.536, "
+                + "679577.8433 5151918.0814, 679567.425 5151917.796), "
+                + "LINESTRING (679569.221815255 5151900.91179101, 679611.846517919 5151904.66336728), "
+                + "POINT (679611.982873552 5151904.66229049))";
         Geometry original = new WKTReader().read(wkt);
         original.setSRID(25832);
         OracleStruct datum = converter.toSDO(original);
@@ -366,8 +365,7 @@ public class SDOOnlineTest extends JDBCTestSupport {
     public final void testGeometryCollectionMultipoint() throws Exception {
         if (this.connection == null) return;
 
-        String wkt =
-                "GEOMETRYCOLLECTION (POLYGON ((0 0, 10 0, 10 10, 0 10, 0 0)), MULTIPOINT ((5 5), (10 10)))";
+        String wkt = "GEOMETRYCOLLECTION (POLYGON ((0 0, 10 0, 10 10, 0 10, 0 0)), MULTIPOINT ((5 5), (10 10)))";
         Geometry original = new WKTReader().read(wkt);
         original.setSRID(4326);
         OracleStruct datum = converter.toSDO(original);

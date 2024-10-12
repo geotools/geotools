@@ -26,12 +26,11 @@ import org.geotools.filter.capability.FunctionNameImpl;
 import org.locationtech.jts.geom.Geometry;
 
 public class FilterFunction_intersection extends FunctionExpressionImpl {
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "intersection",
-                    Geometry.class,
-                    parameter("geometry1", Geometry.class),
-                    parameter("geometry2", Geometry.class));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "intersection",
+            Geometry.class,
+            parameter("geometry1", Geometry.class),
+            parameter("geometry2", Geometry.class));
 
     public FilterFunction_intersection() {
         super(NAME);

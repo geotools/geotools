@@ -56,18 +56,8 @@ public class TileDecoder implements Callable<Tile> {
             int y = (int) Math.round((clippedBounds.getMaxY() - bounds.getMinY()) * scaleY);
             y = image.getHeight() - y;
 
-            int w =
-                    (int)
-                            Math.round(
-                                    image.getWidth()
-                                            / bounds.getWidth()
-                                            * clippedBounds.getWidth());
-            int h =
-                    (int)
-                            Math.round(
-                                    image.getHeight()
-                                            / bounds.getHeight()
-                                            * clippedBounds.getHeight());
+            int w = (int) Math.round(image.getWidth() / bounds.getWidth() * clippedBounds.getWidth());
+            int h = (int) Math.round(image.getHeight() / bounds.getHeight() * clippedBounds.getHeight());
 
             if (w > 0 && h > 0) {
                 image = image.getSubimage(x, y, w, h);

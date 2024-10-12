@@ -42,10 +42,8 @@ public class StorageFileTest implements FileReader {
 
     @Before
     public void setUp() throws Exception {
-        Map<ShpFileType, File> files1 =
-                ShpFilesTest.createFiles("Files1", ShpFileType.values(), false);
-        Map<ShpFileType, File> files2 =
-                ShpFilesTest.createFiles("Files2", ShpFileType.values(), false);
+        Map<ShpFileType, File> files1 = ShpFilesTest.createFiles("Files1", ShpFileType.values(), false);
+        Map<ShpFileType, File> files2 = ShpFilesTest.createFiles("Files2", ShpFileType.values(), false);
 
         shpFiles1 = new ShpFiles(files1.get(SHP));
         shpFiles2 = new ShpFiles(files2.get(SHP));
@@ -82,8 +80,7 @@ public class StorageFileTest implements FileReader {
         }
     }
 
-    private void assertCorrectData(ShpFiles files1, ShpFileType type, String writtenToStorageFile)
-            throws IOException {
+    private void assertCorrectData(ShpFiles files1, ShpFileType type, String writtenToStorageFile) throws IOException {
         try (ReadableByteChannel channel = files1.getReadChannel(type, this)) {
             ByteBuffer buffer = ByteBuffer.allocate(20);
             channel.read(buffer);
@@ -112,8 +109,7 @@ public class StorageFileTest implements FileReader {
             writeData(storagePRJ2, sPRJ2);
             writeData(storageSHP2, sSHP2);
 
-            StorageFile.replaceOriginals(
-                    storagePRJ1, storagePRJ2, storageSHP1, storageSHP2, storageSHP2);
+            StorageFile.replaceOriginals(storagePRJ1, storagePRJ2, storageSHP1, storageSHP2, storageSHP2);
 
             this.assertCorrectData(shpFiles1, PRJ, sPRJ1);
             this.assertCorrectData(shpFiles1, SHP, sSHP1);

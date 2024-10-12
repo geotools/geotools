@@ -30,8 +30,7 @@ import org.locationtech.jts.geom.PrecisionModel;
 /** Default granule handling */
 public class DefaultGranuleHandler implements GranuleHandler {
 
-    private static final PrecisionModel PRECISION_MODEL =
-            new PrecisionModel(PrecisionModel.FLOATING);
+    private static final PrecisionModel PRECISION_MODEL = new PrecisionModel(PrecisionModel.FLOATING);
 
     private static final GeometryFactory GEOM_FACTORY = new GeometryFactory(PRECISION_MODEL);
 

@@ -139,8 +139,7 @@ public final class CachedAuthorityDecorator extends AbstractAuthorityFactory
      * @param factory The factory to cache. Can not be {@code null}.
      * @param cache The cache to use
      */
-    protected CachedAuthorityDecorator(
-            AuthorityFactory factory, ObjectCache<Object, Object> cache) {
+    protected CachedAuthorityDecorator(AuthorityFactory factory, ObjectCache<Object, Object> cache) {
         super(((ReferencingFactory) factory).getPriority()); // TODO
         this.cache = cache;
         authority = factory;
@@ -152,8 +151,7 @@ public final class CachedAuthorityDecorator extends AbstractAuthorityFactory
     }
 
     /** Utility method used to produce cache based on hint */
-    protected static <K, V> ObjectCache<K, V> createCache(final Hints hints)
-            throws FactoryRegistryException {
+    protected static <K, V> ObjectCache<K, V> createCache(final Hints hints) throws FactoryRegistryException {
         return ObjectCaches.create(hints);
     }
 
@@ -192,8 +190,7 @@ public final class CachedAuthorityDecorator extends AbstractAuthorityFactory
     }
 
     @Override
-    public Set<String> getAuthorityCodes(Class<? extends IdentifiedObject> type)
-            throws FactoryException {
+    public Set<String> getAuthorityCodes(Class<? extends IdentifiedObject> type) throws FactoryException {
         return authority.getAuthorityCodes(type);
     }
 
@@ -225,8 +222,7 @@ public final class CachedAuthorityDecorator extends AbstractAuthorityFactory
     }
 
     @Override
-    public CoordinateReferenceSystem createCoordinateReferenceSystem(String code)
-            throws FactoryException {
+    public CoordinateReferenceSystem createCoordinateReferenceSystem(String code) throws FactoryException {
         final String key = toKey(code);
         CoordinateReferenceSystem crs = (CoordinateReferenceSystem) cache.get(key);
         if (crs == null) {
@@ -776,9 +772,7 @@ public final class CachedAuthorityDecorator extends AbstractAuthorityFactory
                 cache.writeLock(key);
                 operations = (Set<CoordinateOperation>) cache.peek(key);
                 if (operations == null) {
-                    operations =
-                            operationAuthority.createFromCoordinateReferenceSystemCodes(
-                                    sourceCode, targetCode);
+                    operations = operationAuthority.createFromCoordinateReferenceSystemCodes(sourceCode, targetCode);
                     // can we not trust operationAuthority to return us an unmodifiableSet ?
                     // operations = Collections.unmodifiableSet( operations );
 

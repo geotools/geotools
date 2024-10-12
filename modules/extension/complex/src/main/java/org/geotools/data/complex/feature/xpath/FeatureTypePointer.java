@@ -98,8 +98,7 @@ public class FeatureTypePointer extends NodePointer {
                 String nameSpace = nodeNameTest.getNamespaceURI();
                 if (nameSpace == null) nameSpace = getNamespaceResolver().getNamespaceURI("");
 
-                return new SingleFeatureTypeAttributeIterator(
-                        this, featureType, Types.typeName(nameSpace, localName));
+                return new SingleFeatureTypeAttributeIterator(this, featureType, Types.typeName(nameSpace, localName));
             } else {
                 return new FeatureTypeAttributeIterator(this, featureType);
             }

@@ -34,8 +34,7 @@ import org.geotools.util.factory.Hints;
  */
 public final class VRTFormat extends BaseGDALGridFormat implements Format {
     /** Logger. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(VRTFormat.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(VRTFormat.class);
 
     /** Creates an instance and sets the metadata. */
     public VRTFormat() {

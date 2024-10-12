@@ -110,11 +110,7 @@ public class GeocentricTransform extends AbstractMathTransform implements Serial
      *     are 3-D), or {@code false} if they are only 2-D.
      */
     public GeocentricTransform(final Ellipsoid ellipsoid, final boolean hasHeight) {
-        this(
-                ellipsoid.getSemiMajorAxis(),
-                ellipsoid.getSemiMinorAxis(),
-                ellipsoid.getAxisUnit(),
-                hasHeight);
+        this(ellipsoid.getSemiMajorAxis(), ellipsoid.getSemiMinorAxis(), ellipsoid.getAxisUnit(), hasHeight);
     }
 
     /**
@@ -127,10 +123,7 @@ public class GeocentricTransform extends AbstractMathTransform implements Serial
      *     are 3-D), or {@code false} if they are only 2-D.
      */
     public GeocentricTransform(
-            final double semiMajor,
-            final double semiMinor,
-            final Unit<Length> units,
-            final boolean hasHeight) {
+            final double semiMajor, final double semiMinor, final Unit<Length> units, final boolean hasHeight) {
         this.hasHeight = hasHeight;
         final UnitConverter converter = units.getConverterTo(SI.METRE);
         a = converter.convert(semiMajor);
@@ -155,8 +148,7 @@ public class GeocentricTransform extends AbstractMathTransform implements Serial
             throws IllegalArgumentException {
         if (!(value >= 0 && value <= max)) {
             // Use '!' in order to trap NaN
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, name, value));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, name, value));
         }
     }
 
@@ -221,12 +213,7 @@ public class GeocentricTransform extends AbstractMathTransform implements Serial
      * use height in computation. This is used for assertion with {@link #checkTransform}.
      */
     private void transform(
-            double[] srcPts,
-            int srcOff,
-            final double[] dstPts,
-            int dstOff,
-            int numPts,
-            boolean hasHeight) {
+            double[] srcPts, int srcOff, final double[] dstPts, int dstOff, int numPts, boolean hasHeight) {
         final int dimSource = getSourceDimensions();
         hasHeight |= (dimSource >= 3);
         if (srcPts == dstPts && needCopy(srcOff, dimSource, dstOff, 3, numPts)) {
@@ -256,8 +243,7 @@ public class GeocentricTransform extends AbstractMathTransform implements Serial
      * z) according to the current ellipsoid parameters.
      */
     @Override
-    public void transform(
-            float[] srcPts, int srcOff, final float[] dstPts, int dstOff, int numPts) {
+    public void transform(float[] srcPts, int srcOff, final float[] dstPts, int dstOff, int numPts) {
         final int dimSource = getSourceDimensions();
         final boolean hasHeight = (dimSource >= 3);
         if (srcPts == dstPts && needCopy(srcOff, dimSource, dstOff, 3, numPts)) {
@@ -276,8 +262,7 @@ public class GeocentricTransform extends AbstractMathTransform implements Serial
             final double sinLat = Math.sin(P);
             final double rn = a / Math.sqrt(1 - e2 * (sinLat * sinLat));
 
-            dstPts[dstOff++] =
-                    (float) ((rn + h) * cosLat * Math.cos(L)); // X: Toward prime meridian
+            dstPts[dstOff++] = (float) ((rn + h) * cosLat * Math.cos(L)); // X: Toward prime meridian
             dstPts[dstOff++] = (float) ((rn + h) * cosLat * Math.sin(L)); // Y: Toward East
             dstPts[dstOff++] = (float) ((rn * (1 - e2) + h) * sinLat); // Z: Toward North
         }
@@ -297,8 +282,7 @@ public class GeocentricTransform extends AbstractMathTransform implements Serial
      *     destination array.
      * @param numPts the number of point objects to be transformed.
      */
-    public void inverseTransform(
-            double[] srcPts, int srcOff, final double[] dstPts, int dstOff, final int numPts) {
+    public void inverseTransform(double[] srcPts, int srcOff, final double[] dstPts, int dstOff, final int numPts) {
         final int dimTarget = getSourceDimensions();
         if (srcPts == dstPts && needCopy(srcOff, 3, dstOff, dimTarget, numPts)) {
             // Source and destination arrays overlaps: copy in a temporary buffer.
@@ -324,8 +308,7 @@ public class GeocentricTransform extends AbstractMathTransform implements Serial
      *     destination array.
      * @param numPts the number of point objects to be transformed.
      */
-    public void inverseTransform(
-            float[] srcPts, int srcOff, final float[] dstPts, int dstOff, final int numPts) {
+    public void inverseTransform(float[] srcPts, int srcOff, final float[] dstPts, int dstOff, final int numPts) {
         final int dimTarget = getSourceDimensions();
         if (srcPts == dstPts && needCopy(srcOff, 3, dstOff, dimTarget, numPts)) {
             // Source and destination arrays overlaps: copy in a temporary buffer.
@@ -349,8 +332,7 @@ public class GeocentricTransform extends AbstractMathTransform implements Serial
             final int dimTarget) {
         final boolean hasHeight = (dimTarget >= 3);
         boolean computeHeight = hasHeight;
-        assert (computeHeight = true)
-                == true; // Force computeHeight to true if assertions are enabled.
+        assert (computeHeight = true) == true; // Force computeHeight to true if assertions are enabled.
         while (--numPts >= 0) {
             final double x, y, z;
             if (srcPts2 != null) {
@@ -378,8 +360,7 @@ public class GeocentricTransform extends AbstractMathTransform implements Serial
             final double sin3_B0 = sin_B0 * sin_B0 * sin_B0; // cube of sin(B0)
             final double T1 = z + b * ep2 * sin3_B0; // corrected estimate of vertical component
             final double sum = W - a * e2 * (cos_B0 * cos_B0 * cos_B0); // numerator of cos(phi1)
-            final double S1 =
-                    Math.sqrt(T1 * T1 + sum * sum); // corrected estimate of horizontal component
+            final double S1 = Math.sqrt(T1 * T1 + sum * sum); // corrected estimate of horizontal component
             final double sin_p1 = T1 / S1; // sin(phi1), phi1 is estimated latitude
             final double cos_p1 = sum / S1; // cos(phi1)
 
@@ -395,8 +376,7 @@ public class GeocentricTransform extends AbstractMathTransform implements Serial
                 dstPts1[dstOff++] = (float) latitude;
             }
             if (computeHeight) {
-                final double rn =
-                        a / Math.sqrt(1 - e2 * (sin_p1 * sin_p1)); // Earth radius at location
+                final double rn = a / Math.sqrt(1 - e2 * (sin_p1 * sin_p1)); // Earth radius at location
                 if (cos_p1 >= +COS_67P5) height = W / +cos_p1 - rn;
                 else if (cos_p1 <= -COS_67P5) height = W / -cos_p1 - rn;
                 else height = z / sin_p1 + rn * (e2 - 1.0);
@@ -410,12 +390,7 @@ public class GeocentricTransform extends AbstractMathTransform implements Serial
                 // If assertion are enabled, then transform the
                 // result and compare it with the input array.
                 double distance;
-                assert MAX_ERROR
-                                > (distance =
-                                        checkTransform(
-                                                new double[] {
-                                                    x, y, z, longitude, latitude, height
-                                                }))
+                assert MAX_ERROR > (distance = checkTransform(new double[] {x, y, z, longitude, latitude, height}))
                         : distance;
             }
         }
@@ -507,11 +482,7 @@ public class GeocentricTransform extends AbstractMathTransform implements Serial
         /** Inverse transform an array of points. */
         @Override
         public void transform(
-                final float[] source,
-                final int srcOffset,
-                final float[] dest,
-                final int dstOffset,
-                final int length) {
+                final float[] source, final int srcOffset, final float[] dest, final int dstOffset, final int length) {
             GeocentricTransform.this.inverseTransform(source, srcOffset, dest, dstOffset, length);
         }
 
@@ -538,72 +509,55 @@ public class GeocentricTransform extends AbstractMathTransform implements Serial
          * The operation parameter descriptor for the "semi_major" parameter value. Valid values
          * range from 0 to infinity.
          */
-        public static final ParameterDescriptor<Double> SEMI_MAJOR =
-                createDescriptor(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.OGC, "semi_major"),
-                            new NamedIdentifier(
-                                    Citations.EPSG,
-                                    "semi-major axis") // epsg does not specifically define this
-                            // parameter
-                        },
-                        Double.NaN,
-                        0,
-                        Double.POSITIVE_INFINITY,
-                        SI.METRE);
+        public static final ParameterDescriptor<Double> SEMI_MAJOR = createDescriptor(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.OGC, "semi_major"),
+                    new NamedIdentifier(Citations.EPSG, "semi-major axis") // epsg does not specifically define this
+                    // parameter
+                },
+                Double.NaN,
+                0,
+                Double.POSITIVE_INFINITY,
+                SI.METRE);
 
         /**
          * The operation parameter descriptor for the "semi_minor" parameter value. Valid values
          * range from 0 to infinity.
          */
-        public static final ParameterDescriptor<Double> SEMI_MINOR =
-                createDescriptor(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.OGC, "semi_minor"),
-                            new NamedIdentifier(
-                                    Citations.EPSG,
-                                    "semi-minor axis") // epsg does not specifically define this
-                            // parameter
-                        },
-                        Double.NaN,
-                        0,
-                        Double.POSITIVE_INFINITY,
-                        SI.METRE);
+        public static final ParameterDescriptor<Double> SEMI_MINOR = createDescriptor(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.OGC, "semi_minor"),
+                    new NamedIdentifier(Citations.EPSG, "semi-minor axis") // epsg does not specifically define this
+                    // parameter
+                },
+                Double.NaN,
+                0,
+                Double.POSITIVE_INFINITY,
+                SI.METRE);
 
         /**
          * The number of geographic dimension (2 or 3). This is a Geotools-specific argument. The
          * default value is 3, which is the value implied in OGC's WKT.
          */
-        static final ParameterDescriptor<Integer> DIM =
-                DefaultParameterDescriptor.create(
-                        Collections.singletonMap(
-                                NAME_KEY, new NamedIdentifier(Citations.GEOTOOLS, "dim")),
-                        3,
-                        2,
-                        3,
-                        false);
+        static final ParameterDescriptor<Integer> DIM = DefaultParameterDescriptor.create(
+                Collections.singletonMap(NAME_KEY, new NamedIdentifier(Citations.GEOTOOLS, "dim")), 3, 2, 3, false);
 
         /** The parameters group. */
-        static final ParameterDescriptorGroup PARAMETERS =
-                createDescriptorGroup(
-                        "Ellipsoid_To_Geocentric", // OGC name
-                        "Geographic/geocentric conversions", // EPSG name
-                        "9602", // EPSG identifier
-                        VocabularyKeys.GEOCENTRIC_TRANSFORM); // Geotools name
+        static final ParameterDescriptorGroup PARAMETERS = createDescriptorGroup(
+                "Ellipsoid_To_Geocentric", // OGC name
+                "Geographic/geocentric conversions", // EPSG name
+                "9602", // EPSG identifier
+                VocabularyKeys.GEOCENTRIC_TRANSFORM); // Geotools name
 
         /** Constructs the parameters group. */
         static ParameterDescriptorGroup createDescriptorGroup(
-                final String ogc,
-                final String epsgName,
-                final String epsgCode,
-                final int geotools) {
+                final String ogc, final String epsgName, final String epsgCode, final int geotools) {
             return createDescriptorGroup(
                     new NamedIdentifier[] {
                         new NamedIdentifier(Citations.OGC, ogc),
                         new NamedIdentifier(Citations.EPSG, epsgName),
                         new NamedIdentifier(Citations.EPSG, epsgCode),
-                        new NamedIdentifier(
-                                Citations.GEOTOOLS, Vocabulary.formatInternational(geotools))
+                        new NamedIdentifier(Citations.GEOTOOLS, Vocabulary.formatInternational(geotools))
                     },
                     new ParameterDescriptor[] {SEMI_MAJOR, SEMI_MINOR, DIM});
         }
@@ -623,10 +577,7 @@ public class GeocentricTransform extends AbstractMathTransform implements Serial
          * @param targetDimensions Number of dimensions in the target CRS of this operation method.
          * @param parameters The set of parameters (never {@code null}).
          */
-        Provider(
-                final int sourceDimensions,
-                final int targetDimensions,
-                final ParameterDescriptorGroup parameters) {
+        Provider(final int sourceDimensions, final int targetDimensions, final ParameterDescriptorGroup parameters) {
             super(sourceDimensions, targetDimensions, parameters);
         }
 
@@ -650,8 +601,7 @@ public class GeocentricTransform extends AbstractMathTransform implements Serial
             final double semiMajor = doubleValue(SEMI_MAJOR, values);
             final double semiMinor = doubleValue(SEMI_MINOR, values);
             final boolean hasHeight = (dimGeographic != 2); // Value may be 0, which default as 3.
-            MathTransform transform =
-                    new GeocentricTransform(semiMajor, semiMinor, SI.METRE, hasHeight);
+            MathTransform transform = new GeocentricTransform(semiMajor, semiMinor, SI.METRE, hasHeight);
             if (!hasHeight) {
                 if (noHeight == null) {
                     noHeight = new Provider(2, 3, PARAMETERS);
@@ -680,12 +630,11 @@ public class GeocentricTransform extends AbstractMathTransform implements Serial
          *
          * @todo The EPSG code seems to be the same than for the direct transform.
          */
-        static final ParameterDescriptorGroup PARAMETERS =
-                createDescriptorGroup(
-                        "Geocentric_To_Ellipsoid", // OGC name
-                        "Geographic/geocentric conversions", // EPSG name
-                        "9602", // EPSG identifier
-                        VocabularyKeys.GEOCENTRIC_TRANSFORM); // Geotools name
+        static final ParameterDescriptorGroup PARAMETERS = createDescriptorGroup(
+                "Geocentric_To_Ellipsoid", // OGC name
+                "Geographic/geocentric conversions", // EPSG name
+                "9602", // EPSG identifier
+                VocabularyKeys.GEOCENTRIC_TRANSFORM); // Geotools name
 
         /** Creates a provider. */
         public ProviderInverse() {
@@ -700,9 +649,7 @@ public class GeocentricTransform extends AbstractMathTransform implements Serial
          * @param parameters The set of parameters (never {@code null}).
          */
         ProviderInverse(
-                final int sourceDimensions,
-                final int targetDimensions,
-                final ParameterDescriptorGroup parameters) {
+                final int sourceDimensions, final int targetDimensions, final ParameterDescriptorGroup parameters) {
             super(sourceDimensions, targetDimensions, parameters);
         }
 
@@ -714,14 +661,12 @@ public class GeocentricTransform extends AbstractMathTransform implements Serial
          * @throws ParameterNotFoundException if a required parameter was not found.
          */
         @Override
-        public MathTransform createMathTransform(final ParameterValueGroup values)
-                throws ParameterNotFoundException {
+        public MathTransform createMathTransform(final ParameterValueGroup values) throws ParameterNotFoundException {
             final int dimGeographic = intValue(DIM, values);
             final double semiMajor = doubleValue(SEMI_MAJOR, values);
             final double semiMinor = doubleValue(SEMI_MINOR, values);
             final boolean hasHeight = (dimGeographic != 2); // Value may be 0, which default as 3.
-            MathTransform transform =
-                    new GeocentricTransform(semiMajor, semiMinor, SI.METRE, hasHeight).inverse();
+            MathTransform transform = new GeocentricTransform(semiMajor, semiMinor, SI.METRE, hasHeight).inverse();
             if (!hasHeight) {
                 if (noHeight == null) {
                     noHeight = new ProviderInverse(3, 2, PARAMETERS);

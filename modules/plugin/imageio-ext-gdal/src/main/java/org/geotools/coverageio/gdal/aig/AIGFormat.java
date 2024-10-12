@@ -35,8 +35,7 @@ import org.geotools.util.factory.Hints;
  */
 public final class AIGFormat extends BaseGDALGridFormat implements Format {
     /** Logger. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(AIGFormat.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(AIGFormat.class);
 
     /** Creates an instance and sets the metadata. */
     public AIGFormat() {
@@ -49,8 +48,7 @@ public final class AIGFormat extends BaseGDALGridFormat implements Format {
         setInfo();
     }
 
-    private static final InfoWrapper INFO =
-            new InfoWrapper("Arc/Info Binary Grid (AIG) Coverage Format", "AIG");
+    private static final InfoWrapper INFO = new InfoWrapper("Arc/Info Binary Grid (AIG) Coverage Format", "AIG");
 
     /** Sets the metadata information. */
     @Override

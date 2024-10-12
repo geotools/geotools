@@ -39,8 +39,7 @@ public class OracleConnectionLifecycleOnlineTest extends JDBCConnectionLifecycle
             // doubly wrapped (adding LifeCycleConnection).
             // That tests ability of OracleDialect to unwrap properly.
             Properties addStartupSql = (Properties) getFixture().clone();
-            addStartupSql.setProperty(
-                    JDBCDataStoreFactory.SQL_ON_BORROW.key, "select sysdate from dual");
+            addStartupSql.setProperty(JDBCDataStoreFactory.SQL_ON_BORROW.key, "select sysdate from dual");
             Map<String, Object> params = createDataStoreFactoryParams();
             addStartupSql.forEach((k, v) -> params.put((String) k, v));
             DataStore withWrap = DataStoreFinder.getDataStore(params);

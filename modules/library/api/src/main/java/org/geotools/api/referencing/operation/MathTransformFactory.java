@@ -135,9 +135,7 @@ public interface MathTransformFactory extends Factory {
      * @since GeoAPI 2.1
      */
     MathTransform createBaseToDerived(
-            CoordinateReferenceSystem baseCRS,
-            ParameterValueGroup parameters,
-            CoordinateSystem derivedCS)
+            CoordinateReferenceSystem baseCRS, ParameterValueGroup parameters, CoordinateSystem derivedCS)
             throws NoSuchIdentifierException, FactoryException;
 
     /**
@@ -187,10 +185,7 @@ public interface MathTransformFactory extends Factory {
      * @see #getDefaultParameters
      * @see #getAvailableMethods
      */
-    @UML(
-            identifier = "createParameterizedTransform",
-            obligation = MANDATORY,
-            specification = OGC_01009)
+    @UML(identifier = "createParameterizedTransform", obligation = MANDATORY, specification = OGC_01009)
     MathTransform createParameterizedTransform(ParameterValueGroup parameters)
             throws NoSuchIdentifierException, FactoryException;
 
@@ -221,10 +216,7 @@ public interface MathTransformFactory extends Factory {
      * @return The concatenated transform.
      * @throws FactoryException if the object creation failed.
      */
-    @UML(
-            identifier = "createConcatenatedTransform",
-            obligation = MANDATORY,
-            specification = OGC_01009)
+    @UML(identifier = "createConcatenatedTransform", obligation = MANDATORY, specification = OGC_01009)
     MathTransform createConcatenatedTransform(MathTransform transform1, MathTransform transform2)
             throws FactoryException;
 
@@ -247,13 +239,9 @@ public interface MathTransformFactory extends Factory {
      *
      * @throws FactoryException if the object creation failed.
      */
-    @UML(
-            identifier = "createPassThroughTransform",
-            obligation = MANDATORY,
-            specification = OGC_01009)
+    @UML(identifier = "createPassThroughTransform", obligation = MANDATORY, specification = OGC_01009)
     MathTransform createPassThroughTransform(
-            int firstAffectedOrdinate, MathTransform subTransform, int numTrailingOrdinates)
-            throws FactoryException;
+            int firstAffectedOrdinate, MathTransform subTransform, int numTrailingOrdinates) throws FactoryException;
 
     /**
      * Creates a math transform object from a XML string.

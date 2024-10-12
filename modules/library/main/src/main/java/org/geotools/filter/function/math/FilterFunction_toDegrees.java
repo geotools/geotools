@@ -30,10 +30,7 @@ public class FilterFunction_toDegrees extends FunctionExpressionImpl {
 
     // public static FunctionName NAME = new FunctionNameImpl("toDegrees","radians");
     public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "toDegrees",
-                    parameter("degrees", Double.class),
-                    parameter("radians", Number.class));
+            new FunctionNameImpl("toDegrees", parameter("degrees", Double.class), parameter("radians", Number.class));
 
     public FilterFunction_toDegrees() {
         super(NAME);

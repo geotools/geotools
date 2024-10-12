@@ -80,29 +80,15 @@ public abstract class MBExpression extends FunctionImpl {
     public static final List<String> decisions;
 
     static {
-        decisions =
-                Collections.unmodifiableList(
-                        Arrays.asList(
-                                "!",
-                                "!=",
-                                "<",
-                                "<=",
-                                "==",
-                                ">",
-                                ">=",
-                                "all",
-                                "any",
-                                "case",
-                                "coalesce",
-                                "match"));
+        decisions = Collections.unmodifiableList(
+                Arrays.asList("!", "!=", "<", "<=", "==", ">", ">=", "all", "any", "case", "coalesce", "match"));
     }
 
     /* A list of feature data expression names */
     public static final List featureData;
 
     static {
-        featureData =
-                Collections.unmodifiableList(Arrays.asList("geometry-type", "id", "properties"));
+        featureData = Collections.unmodifiableList(Arrays.asList("geometry-type", "id", "properties"));
     }
 
     /* A list of heatmap expression names */
@@ -116,10 +102,9 @@ public abstract class MBExpression extends FunctionImpl {
     public static final List lookUp = Arrays.asList("at", "length", "has", "get");
 
     /* A list of math expression names */
-    public static final List math =
-            Arrays.asList(
-                    "-", "*", "/", "%", "^", "+", "acos", "asin", "atan", "cos", "e", "ln", "ln2",
-                    "log10", "log2", "max", "min", "pi", "sin", "sqrt", "tan");
+    public static final List math = Arrays.asList(
+            "-", "*", "/", "%", "^", "+", "acos", "asin", "atan", "cos", "e", "ln", "ln2", "log10", "log2", "max",
+            "min", "pi", "sin", "sqrt", "tan");
 
     /* A list of ramps expression names */
     public static final List ramps = Arrays.asList("interpolate", "step");
@@ -128,19 +113,18 @@ public abstract class MBExpression extends FunctionImpl {
     public static final List string = Arrays.asList("concat", "downcase", "upcase");
 
     /* A list of types expression names */
-    public static final List types =
-            Arrays.asList(
-                    "array",
-                    "boolean",
-                    "literal",
-                    "number",
-                    "object",
-                    "string",
-                    "to-boolean",
-                    "to-color",
-                    "to-number",
-                    "to-string",
-                    "typeof");
+    public static final List types = Arrays.asList(
+            "array",
+            "boolean",
+            "literal",
+            "number",
+            "object",
+            "string",
+            "to-boolean",
+            "to-color",
+            "to-number",
+            "to-string",
+            "typeof");
 
     /* A list of variable bindings expression names */
     public static final List variableBindings = Arrays.asList("let", "var");
@@ -182,11 +166,10 @@ public abstract class MBExpression extends FunctionImpl {
             } else if (zoom.contains(name)) {
                 return new MBZoom(json);
             } else {
-                throw new MBFormatException(
-                        "Data expression \""
-                                + name
-                                + "\" invalid. It may be misspelled or not supported by this implementation:"
-                                + json);
+                throw new MBFormatException("Data expression \""
+                        + name
+                        + "\" invalid. It may be misspelled or not supported by this implementation:"
+                        + json);
             }
         }
         throw new MBFormatException("Requires a string name of the data expression at position 0");
@@ -231,19 +214,13 @@ public abstract class MBExpression extends FunctionImpl {
         return create(json).getExpression();
     }
 
-    protected void throwUnexpectedArgumentCount(String expression, int argCount)
-            throws MBFormatException {
+    protected void throwUnexpectedArgumentCount(String expression, int argCount) throws MBFormatException {
         throw new MBFormatException(
-                String.format(
-                        "Expression \"%s\" should have exactly %d argument(s)",
-                        expression, argCount));
+                String.format("Expression \"%s\" should have exactly %d argument(s)", expression, argCount));
     }
 
-    protected void throwInsufficientArgumentCount(String expression, int argCount)
-            throws MBFormatException {
+    protected void throwInsufficientArgumentCount(String expression, int argCount) throws MBFormatException {
         throw new MBFormatException(
-                String.format(
-                        "Expression \"%s\" should have at least %d argument(s)",
-                        expression, argCount));
+                String.format("Expression \"%s\" should have at least %d argument(s)", expression, argCount));
     }
 }

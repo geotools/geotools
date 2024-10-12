@@ -111,8 +111,7 @@ public abstract class JDBCDistanceFiltersTest extends JDBCTestSupport {
         return false;
     }
 
-    private void assertDWithinFilter(int expectedMatches, double distance, String unit)
-            throws IOException {
+    private void assertDWithinFilter(int expectedMatches, double distance, String unit) throws IOException {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         final PropertyName geomProperty = ff.property(aname("geometry"));
         final ContentFeatureSource features = dataStore.getFeatureSource(tname("ft1"));
@@ -123,8 +122,7 @@ public abstract class JDBCDistanceFiltersTest extends JDBCTestSupport {
         assertEquals(expectedMatches, fc.size());
     }
 
-    private void assertBeyondFilter(int expectedMatches, double distance, String unit)
-            throws IOException {
+    private void assertBeyondFilter(int expectedMatches, double distance, String unit) throws IOException {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         final PropertyName geomProperty = ff.property(aname("geometry"));
         final ContentFeatureSource features = dataStore.getFeatureSource(tname("ft1"));

@@ -243,20 +243,16 @@ public class BasicDirectedEdgeTest {
         itr = m_edge.getRelated();
 
         de = (BasicDirectedEdge) itr.next();
-        Assert.assertTrue(
-                de == m_inEdge || de == m_outEdge || de == m_inoutEdge || de == m_outinEdge);
+        Assert.assertTrue(de == m_inEdge || de == m_outEdge || de == m_inoutEdge || de == m_outinEdge);
 
         de = (BasicDirectedEdge) itr.next();
-        Assert.assertTrue(
-                de == m_inEdge || de == m_outEdge || de == m_inoutEdge || de == m_outinEdge);
+        Assert.assertTrue(de == m_inEdge || de == m_outEdge || de == m_inoutEdge || de == m_outinEdge);
 
         de = (BasicDirectedEdge) itr.next();
-        Assert.assertTrue(
-                de == m_inEdge || de == m_outEdge || de == m_inoutEdge || de == m_outinEdge);
+        Assert.assertTrue(de == m_inEdge || de == m_outEdge || de == m_inoutEdge || de == m_outinEdge);
 
         de = (BasicDirectedEdge) itr.next();
-        Assert.assertTrue(
-                de == m_inEdge || de == m_outEdge || de == m_inoutEdge || de == m_outinEdge);
+        Assert.assertTrue(de == m_inEdge || de == m_outEdge || de == m_inoutEdge || de == m_outinEdge);
 
         Assert.assertFalse(itr.hasNext());
     }

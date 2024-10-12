@@ -65,15 +65,9 @@ public class LinearRingTypeBindingTest extends KMLTestSupport {
 
     @Test
     public void testEncode() throws Exception {
-        LinearRing l =
-                new GeometryFactory()
-                        .createLinearRing(
-                                new Coordinate[] {
-                                    new Coordinate(1, 1),
-                                    new Coordinate(2, 2),
-                                    new Coordinate(3, 3),
-                                    new Coordinate(1, 1)
-                                });
+        LinearRing l = new GeometryFactory().createLinearRing(new Coordinate[] {
+            new Coordinate(1, 1), new Coordinate(2, 2), new Coordinate(3, 3), new Coordinate(1, 1)
+        });
         Document dom = encode(l, KML.LinearRing);
         assertNotNull(getElementByQName(dom, KML.coordinates));
     }

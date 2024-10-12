@@ -67,18 +67,17 @@ public class EnsureAuthorizationTest {
         @Override
         public Statement createStatement() throws SQLException {
             // statement used for all queries
-            stmt =
-                    new MockStatement(this) {
+            stmt = new MockStatement(this) {
 
-                        @Override
-                        public ResultSet executeQuery(String sql) throws SQLException {
-                            // check if the condition ID = 'some text' is present in the query
-                            if (sql.matches("^.*\"ID\"\\s+=\\s+'.*'.*$")) {
-                                filteredOnIds = true;
-                            }
-                            return new MockResultSet(SAMPLE_FEATURE_NAME);
-                        }
-                    };
+                @Override
+                public ResultSet executeQuery(String sql) throws SQLException {
+                    // check if the condition ID = 'some text' is present in the query
+                    if (sql.matches("^.*\"ID\"\\s+=\\s+'.*'.*$")) {
+                        filteredOnIds = true;
+                    }
+                    return new MockResultSet(SAMPLE_FEATURE_NAME);
+                }
+            };
             calls++;
             return stmt;
         }
@@ -89,20 +88,18 @@ public class EnsureAuthorizationTest {
         }
 
         @Override
-        public PreparedStatement prepareStatement(final String sql, int arg1, int arg2)
-                throws SQLException {
-            pstmt =
-                    new MockPreparedStatement(this, sql, arg1, arg2) {
+        public PreparedStatement prepareStatement(final String sql, int arg1, int arg2) throws SQLException {
+            pstmt = new MockPreparedStatement(this, sql, arg1, arg2) {
 
-                        @Override
-                        public ResultSet executeQuery() throws SQLException {
-                            // check if the condition ID = ? is present in the query
-                            if (sql.matches("^.*\"ID\"\\s+=\\s+\\?.*$")) {
-                                filteredOnIds = true;
-                            }
-                            return new MockResultSet(SAMPLE_FEATURE_NAME);
-                        }
-                    };
+                @Override
+                public ResultSet executeQuery() throws SQLException {
+                    // check if the condition ID = ? is present in the query
+                    if (sql.matches("^.*\"ID\"\\s+=\\s+\\?.*$")) {
+                        filteredOnIds = true;
+                    }
+                    return new MockResultSet(SAMPLE_FEATURE_NAME);
+                }
+            };
             calls++;
             return pstmt;
         }
@@ -165,8 +162,7 @@ public class EnsureAuthorizationTest {
     }
 
     @Test
-    public void testQueryIsFilteredOnLockedFeatureIdsWithPreparedStatements()
-            throws IOException, SQLException {
+    public void testQueryIsFilteredOnLockedFeatureIdsWithPreparedStatements() throws IOException, SQLException {
         dataStore.setSQLDialect(createPreparedSQLDialect());
         createLock();
         dataStore.ensureAuthorization(featureType, Filter.INCLUDE, tx, cx);
@@ -174,8 +170,7 @@ public class EnsureAuthorizationTest {
     }
 
     @Test
-    public void testQueryIsNotFilteredOnLockedFeatureIdsIfThereAreTooManyLocks()
-            throws IOException, SQLException {
+    public void testQueryIsNotFilteredOnLockedFeatureIdsIfThereAreTooManyLocks() throws IOException, SQLException {
         createManyLocks();
         dataStore.ensureAuthorization(featureType, Filter.INCLUDE, tx, cx);
         assertFalse(cx.filteredOnIds);
@@ -185,11 +180,7 @@ public class EnsureAuthorizationTest {
         for (int count = 0; count < JDBCDataStore.MAX_IDS_IN_FILTER + 1; count++) {
             dataStore
                     .getLockingManager()
-                    .lockFeatureID(
-                            SAMPLE_FEATURE_NAME,
-                            count + "",
-                            tx,
-                            new FeatureLock(count + "", 10000000L));
+                    .lockFeatureID(SAMPLE_FEATURE_NAME, count + "", tx, new FeatureLock(count + "", 10000000L));
         }
     }
 
@@ -197,10 +188,7 @@ public class EnsureAuthorizationTest {
         dataStore
                 .getLockingManager()
                 .lockFeatureID(
-                        SAMPLE_FEATURE_NAME,
-                        SAMPLE_FEATURE_ID,
-                        tx,
-                        new FeatureLock(SAMPLE_FEATURE_ID, 10000000L));
+                        SAMPLE_FEATURE_NAME, SAMPLE_FEATURE_ID, tx, new FeatureLock(SAMPLE_FEATURE_ID, 10000000L));
     }
 
     @SuppressWarnings("PMD.CloseResource") // they are mocks
@@ -222,26 +210,23 @@ public class EnsureAuthorizationTest {
         key.addColumn("COLUMN_NAME");
         key.addColumn("DATA_TYPE");
         key.addRow(new Object[] {"ID", 1});
-        ((MockDatabaseMetaData) cx.getMetaData())
-                .setPrimaryKeys(null, null, SAMPLE_FEATURE_NAME, key);
+        ((MockDatabaseMetaData) cx.getMetaData()).setPrimaryKeys(null, null, SAMPLE_FEATURE_NAME, key);
         MockResultSet columns = new MockResultSet("COLUMNS");
         columns.addColumn("COLUMN_NAME");
         columns.addColumn("DATA_TYPE");
         columns.addRow(new Object[] {"ID", 1});
-        ((MockDatabaseMetaData) cx.getMetaData())
-                .setColumns(null, null, SAMPLE_FEATURE_NAME, "ID", columns);
+        ((MockDatabaseMetaData) cx.getMetaData()).setColumns(null, null, SAMPLE_FEATURE_NAME, "ID", columns);
     }
 
     private BasicSQLDialect createBasicSQLDialect() {
         return new BasicSQLDialect(dataStore) {
 
             @Override
-            public void encodeGeometryValue(
-                    Geometry value, int dimension, int srid, StringBuffer sql) throws IOException {}
+            public void encodeGeometryValue(Geometry value, int dimension, int srid, StringBuffer sql)
+                    throws IOException {}
 
             @Override
-            public void encodeGeometryEnvelope(
-                    String tableName, String geometryColumn, StringBuffer sql) {}
+            public void encodeGeometryEnvelope(String tableName, String geometryColumn, StringBuffer sql) {}
 
             @Override
             public Envelope decodeGeometryEnvelope(ResultSet rs, int column, Connection cx)
@@ -266,8 +251,7 @@ public class EnsureAuthorizationTest {
     private PreparedStatementSQLDialect createPreparedSQLDialect() {
         return new PreparedStatementSQLDialect(dataStore) {
             @Override
-            public void encodeGeometryEnvelope(
-                    String tableName, String geometryColumn, StringBuffer sql) {}
+            public void encodeGeometryEnvelope(String tableName, String geometryColumn, StringBuffer sql) {}
 
             @Override
             public Envelope decodeGeometryEnvelope(ResultSet rs, int column, Connection cx)
@@ -289,12 +273,7 @@ public class EnsureAuthorizationTest {
 
             @Override
             public void setGeometryValue(
-                    Geometry g,
-                    int dimension,
-                    int srid,
-                    Class binding,
-                    PreparedStatement ps,
-                    int column)
+                    Geometry g, int dimension, int srid, Class binding, PreparedStatement ps, int column)
                     throws SQLException {}
         };
     }

@@ -42,8 +42,7 @@ public class CollectGeometries implements VectorProcess {
 
     @DescribeResult(name = "result", description = "Geometry collection of all input geometries")
     public GeometryCollection execute(
-            @DescribeParameter(name = "features", description = "Input feature collection")
-                    FeatureCollection features,
+            @DescribeParameter(name = "features", description = "Input feature collection") FeatureCollection features,
             ProgressListener progressListener)
             throws IOException {
         int count = features.size();

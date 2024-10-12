@@ -43,8 +43,7 @@ import org.junit.Test;
  *     <p>Testing {@link JP2KReader}
  */
 public final class JP2KTest extends GDALTestCase {
-    protected static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(JP2KTest.class);
+    protected static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(JP2KTest.class);
 
     /** file name of a valid JP2K sample data to be used for tests. */
     private static final String fileName = "sample.jp2";
@@ -58,11 +57,10 @@ public final class JP2KTest extends GDALTestCase {
     public void test() throws Exception {
         // read in the grid coverage
         if (fileName.equalsIgnoreCase("")) {
-            LOGGER.info(
-                    "===================================================================\n"
-                            + " Warning! No valid test File has been yet specified.\n"
-                            + " Please provide a valid sample in the source code and repeat this test!\n"
-                            + "========================================================================");
+            LOGGER.info("===================================================================\n"
+                    + " Warning! No valid test File has been yet specified.\n"
+                    + " Please provide a valid sample in the source code and repeat this test!\n"
+                    + "========================================================================");
 
             return;
         }
@@ -75,8 +73,7 @@ public final class JP2KTest extends GDALTestCase {
         }
 
         final BaseGDALGridCoverage2DReader reader = new JP2KReader(file);
-        final ParameterValue gg =
-                ((AbstractGridFormat) reader.getFormat()).READ_GRIDGEOMETRY2D.createValue();
+        final ParameterValue gg = ((AbstractGridFormat) reader.getFormat()).READ_GRIDGEOMETRY2D.createValue();
         final GeneralBounds oldEnvelope = reader.getOriginalEnvelope();
         gg.setValue(new GridGeometry2D(reader.getOriginalGridRange(), oldEnvelope));
 

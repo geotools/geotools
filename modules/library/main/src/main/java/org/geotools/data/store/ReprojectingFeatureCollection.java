@@ -75,17 +75,12 @@ public class ReprojectingFeatureCollection extends DecoratingSimpleFeatureCollec
     GeometryCoordinateSequenceTransformer transformer;
 
     public ReprojectingFeatureCollection(
-            FeatureCollection<SimpleFeatureType, SimpleFeature> delegate,
-            CoordinateReferenceSystem target) {
+            FeatureCollection<SimpleFeatureType, SimpleFeature> delegate, CoordinateReferenceSystem target) {
         this(DataUtilities.simple(delegate), target);
     }
 
-    public ReprojectingFeatureCollection(
-            SimpleFeatureCollection delegate, CoordinateReferenceSystem target) {
-        this(
-                delegate,
-                delegate.getSchema().getGeometryDescriptor().getCoordinateReferenceSystem(),
-                target);
+    public ReprojectingFeatureCollection(SimpleFeatureCollection delegate, CoordinateReferenceSystem target) {
+        this(delegate, delegate.getSchema().getGeometryDescriptor().getCoordinateReferenceSystem(), target);
     }
 
     public ReprojectingFeatureCollection(
@@ -96,9 +91,7 @@ public class ReprojectingFeatureCollection extends DecoratingSimpleFeatureCollec
     }
 
     public ReprojectingFeatureCollection(
-            SimpleFeatureCollection delegate,
-            CoordinateReferenceSystem source,
-            CoordinateReferenceSystem target) {
+            SimpleFeatureCollection delegate, CoordinateReferenceSystem source, CoordinateReferenceSystem target) {
         super(delegate);
         this.target = target;
         SimpleFeatureType schema = delegate.getSchema();
@@ -119,8 +112,7 @@ public class ReprojectingFeatureCollection extends DecoratingSimpleFeatureCollec
         this.transformer = transformer;
     }
 
-    private MathTransform transform(
-            CoordinateReferenceSystem source, CoordinateReferenceSystem target) {
+    private MathTransform transform(CoordinateReferenceSystem source, CoordinateReferenceSystem target) {
         try {
             return CRS.findMathTransform(source, target, true);
         } catch (FactoryException e) {
@@ -143,8 +135,7 @@ public class ReprojectingFeatureCollection extends DecoratingSimpleFeatureCollec
     @Override
     public SimpleFeatureIterator features() {
         try {
-            return new ReprojectingFeatureIterator(
-                    delegate.features(), transform, schema, transformer);
+            return new ReprojectingFeatureIterator(delegate.features(), transform, schema, transformer);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -164,8 +155,7 @@ public class ReprojectingFeatureCollection extends DecoratingSimpleFeatureCollec
             DefaultCRSFilterVisitor defaulter = new DefaultCRSFilterVisitor(FF, crs);
             filter = (Filter) filter.accept(defaulter, null);
             if (crsDelegate != null && !CRS.equalsIgnoreMetadata(crs, crsDelegate)) {
-                ReprojectingFilterVisitor reprojector =
-                        new ReprojectingFilterVisitor(FF, delegate.getSchema());
+                ReprojectingFilterVisitor reprojector = new ReprojectingFilterVisitor(FF, delegate.getSchema());
                 filter = (Filter) filter.accept(reprojector, null);
             }
         }

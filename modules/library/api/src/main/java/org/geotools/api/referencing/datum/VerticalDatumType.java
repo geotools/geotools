@@ -73,10 +73,7 @@ public final class VerticalDatumType extends CodeList<VerticalDatumType> {
      *     geographic CRS.
      * @issue http://jira.codehaus.org/browse/GEO-133
      */
-    @UML(
-            identifier = "CS_DatumType.CS_VD_Ellipsoidal",
-            obligation = CONDITIONAL,
-            specification = OGC_01009)
+    @UML(identifier = "CS_DatumType.CS_VD_Ellipsoidal", obligation = CONDITIONAL, specification = OGC_01009)
     public static final VerticalDatumType ELLIPSOIDAL = new VerticalDatumType("ELLIPSOIDAL");
 
     /**
@@ -101,10 +98,7 @@ public final class VerticalDatumType extends CodeList<VerticalDatumType> {
     public static final VerticalDatumType BAROMETRIC = new VerticalDatumType("BAROMETRIC");
 
     /** A vertical datum for orthometric heights that are measured along the plumb line. */
-    @UML(
-            identifier = "CS_DatumType.CS_VD_Orthometric",
-            obligation = CONDITIONAL,
-            specification = OGC_01009)
+    @UML(identifier = "CS_DatumType.CS_VD_Orthometric", obligation = CONDITIONAL, specification = OGC_01009)
     public static final VerticalDatumType ORTHOMETRIC = new VerticalDatumType("ORTHOMETRIC");
 
     /**

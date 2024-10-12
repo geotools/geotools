@@ -36,10 +36,7 @@ public class ReadableByteChannelDecorator implements ReadableByteChannel {
     private boolean closed;
 
     public ReadableByteChannelDecorator(
-            ReadableByteChannel newChannel,
-            ShpFiles shapefileFiles,
-            URL url,
-            FileReader requestor) {
+            ReadableByteChannel newChannel, ShpFiles shapefileFiles, URL url, FileReader requestor) {
         this.wrapped = newChannel;
         this.shapefileFiles = shapefileFiles;
         this.url = url;

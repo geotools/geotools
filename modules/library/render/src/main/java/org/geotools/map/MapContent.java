@@ -58,8 +58,7 @@ public class MapContent {
     /** The logger for the map module. */
     protected static final Logger LOGGER = Logging.getLogger(MapContent.class);
 
-    static final String UNDISPOSED_MAPCONTENT_ERROR =
-            "Call MapContent dispose() to prevent memory leaks";
+    static final String UNDISPOSED_MAPCONTENT_ERROR = "Call MapContent dispose() to prevent memory leaks";
 
     /** List of Layers to be rendered */
     private final LayerList layerList;
@@ -182,51 +181,50 @@ public class MapContent {
                 return; // not worth listening nobody is interested
             }
             if (layerListener == null) {
-                layerListener =
-                        new MapLayerListener() {
+                layerListener = new MapLayerListener() {
 
-                            @Override
-                            public void layerShown(MapLayerEvent event) {
-                                Layer layer = (Layer) event.getSource();
-                                int index = layerList.indexOf(layer);
-                                fireLayerEvent(layer, index, event);
-                            }
+                    @Override
+                    public void layerShown(MapLayerEvent event) {
+                        Layer layer = (Layer) event.getSource();
+                        int index = layerList.indexOf(layer);
+                        fireLayerEvent(layer, index, event);
+                    }
 
-                            @Override
-                            public void layerSelected(MapLayerEvent event) {
-                                Layer layer = (Layer) event.getSource();
-                                int index = layerList.indexOf(layer);
-                                fireLayerEvent(layer, index, event);
-                            }
+                    @Override
+                    public void layerSelected(MapLayerEvent event) {
+                        Layer layer = (Layer) event.getSource();
+                        int index = layerList.indexOf(layer);
+                        fireLayerEvent(layer, index, event);
+                    }
 
-                            @Override
-                            public void layerHidden(MapLayerEvent event) {
-                                Layer layer = (Layer) event.getSource();
-                                int index = layerList.indexOf(layer);
-                                fireLayerEvent(layer, index, event);
-                            }
+                    @Override
+                    public void layerHidden(MapLayerEvent event) {
+                        Layer layer = (Layer) event.getSource();
+                        int index = layerList.indexOf(layer);
+                        fireLayerEvent(layer, index, event);
+                    }
 
-                            @Override
-                            public void layerDeselected(MapLayerEvent event) {
-                                Layer layer = (Layer) event.getSource();
-                                int index = layerList.indexOf(layer);
-                                fireLayerEvent(layer, index, event);
-                            }
+                    @Override
+                    public void layerDeselected(MapLayerEvent event) {
+                        Layer layer = (Layer) event.getSource();
+                        int index = layerList.indexOf(layer);
+                        fireLayerEvent(layer, index, event);
+                    }
 
-                            @Override
-                            public void layerChanged(MapLayerEvent event) {
-                                Layer layer = (Layer) event.getSource();
-                                int index = layerList.indexOf(layer);
-                                fireLayerEvent(layer, index, event);
-                            }
+                    @Override
+                    public void layerChanged(MapLayerEvent event) {
+                        Layer layer = (Layer) event.getSource();
+                        int index = layerList.indexOf(layer);
+                        fireLayerEvent(layer, index, event);
+                    }
 
-                            @Override
-                            public void layerPreDispose(MapLayerEvent event) {
-                                Layer layer = (Layer) event.getSource();
-                                int index = layerList.indexOf(layer);
-                                fireLayerEvent(layer, index, event);
-                            }
-                        };
+                    @Override
+                    public void layerPreDispose(MapLayerEvent event) {
+                        Layer layer = (Layer) event.getSource();
+                        int index = layerList.indexOf(layer);
+                        fireLayerEvent(layer, index, event);
+                    }
+                };
             }
             if (listen) {
                 for (Layer layer : layerList) {
@@ -523,8 +521,7 @@ public class MapContent {
                         continue;
                     }
                     ReferencedEnvelope normalized;
-                    if (CRS.equalsIgnoreMetadata(
-                            mapCrs, layerBounds.getCoordinateReferenceSystem())) {
+                    if (CRS.equalsIgnoreMetadata(mapCrs, layerBounds.getCoordinateReferenceSystem())) {
                         normalized = layerBounds;
                     } else {
                         try {
@@ -726,37 +723,35 @@ public class MapContent {
         monitor.writeLock().lock();
         try {
             if (userData == null) {
-                userData =
-                        new HashMap<String, Object>() {
-                            private static final long serialVersionUID = 8011733882551971475L;
+                userData = new HashMap<String, Object>() {
+                    private static final long serialVersionUID = 8011733882551971475L;
 
-                            @Override
-                            public Object put(String key, Object value) {
-                                Object old = super.put(key, value);
-                                fireProperty(key, old, value);
-                                return old;
-                            }
+                    @Override
+                    public Object put(String key, Object value) {
+                        Object old = super.put(key, value);
+                        fireProperty(key, old, value);
+                        return old;
+                    }
 
-                            @Override
-                            public Object remove(Object key) {
-                                Object old = super.remove(key);
-                                fireProperty((String) key, old, null);
-                                return old;
-                            }
+                    @Override
+                    public Object remove(Object key) {
+                        Object old = super.remove(key);
+                        fireProperty((String) key, old, null);
+                        return old;
+                    }
 
-                            @Override
-                            public void putAll(
-                                    java.util.Map<? extends String, ? extends Object> m) {
-                                super.putAll(m);
-                                fireProperty("userData", null, null);
-                            }
+                    @Override
+                    public void putAll(java.util.Map<? extends String, ? extends Object> m) {
+                        super.putAll(m);
+                        fireProperty("userData", null, null);
+                    }
 
-                            @Override
-                            public void clear() {
-                                super.clear();
-                                fireProperty("userData", null, null);
-                            }
-                        };
+                    @Override
+                    public void clear() {
+                        super.clear();
+                        fireProperty("userData", null, null);
+                    }
+                };
             }
             return this.userData;
         } finally {

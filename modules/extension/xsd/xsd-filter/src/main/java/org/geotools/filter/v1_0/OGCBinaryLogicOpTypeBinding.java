@@ -148,8 +148,7 @@ public class OGCBinaryLogicOpTypeBinding extends AbstractComplexBinding {
             List<Filter> comparison = new ArrayList<>();
 
             for (Filter filter : operator.getChildren()) {
-                if (!(filter instanceof BinarySpatialOperator
-                                || filter instanceof BinaryTemporalOperator)
+                if (!(filter instanceof BinarySpatialOperator || filter instanceof BinaryTemporalOperator)
                         && (filter instanceof BinaryComparisonOperator
                                 || filter instanceof PropertyIsLike
                                 || filter instanceof PropertyIsNull

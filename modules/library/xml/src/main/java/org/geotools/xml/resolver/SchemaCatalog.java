@@ -34,8 +34,7 @@ import org.apache.xml.resolver.CatalogManager;
  */
 public class SchemaCatalog {
 
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(SchemaCatalog.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(SchemaCatalog.class);
 
     private final Catalog catalog;
 
@@ -66,13 +65,12 @@ public class SchemaCatalog {
                 LOGGER.fine("Catalog resolved " + location + " to " + resolvedLocation);
             } catch (IOException e) {
                 // catalog miss
-                LOGGER.fine(
-                        "Catalog did not resolve "
-                                + location
-                                + " to "
-                                + resolvedLocation
-                                + " despite matching catalog entry because an error occurred: "
-                                + e.getMessage());
+                LOGGER.fine("Catalog did not resolve "
+                        + location
+                        + " to "
+                        + resolvedLocation
+                        + " despite matching catalog entry because an error occurred: "
+                        + e.getMessage());
                 resolvedLocation = null;
             }
         }
@@ -100,8 +98,7 @@ public class SchemaCatalog {
         try {
             catalog.parseCatalog(catalogLocation);
         } catch (IOException e) {
-            throw new RuntimeException(
-                    "Error trying to load OASIS catalog from URL " + catalogLocation.toString(), e);
+            throw new RuntimeException("Error trying to load OASIS catalog from URL " + catalogLocation.toString(), e);
         }
         return catalog;
     }

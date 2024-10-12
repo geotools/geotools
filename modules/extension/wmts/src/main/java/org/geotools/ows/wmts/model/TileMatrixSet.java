@@ -67,8 +67,7 @@ public class TileMatrixSet {
         try {
             this.setCoordinateReferenceSystem(parseCoordinateReferenceSystem(crs));
         } catch (Exception ex) {
-            throw new IllegalArgumentException(
-                    "Can't parse crs " + crs + ":" + ex.getMessage(), ex);
+            throw new IllegalArgumentException("Can't parse crs " + crs + ":" + ex.getMessage(), ex);
         }
 
         this.crs = crs;

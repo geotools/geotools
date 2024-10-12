@@ -51,8 +51,7 @@ public abstract class TileFactory {
      * @param service the service
      * @return a tile
      */
-    public abstract Tile findTileAtCoordinate(
-            double lon, double lat, ZoomLevel zoomLevel, TileService service);
+    public abstract Tile findTileAtCoordinate(double lon, double lat, ZoomLevel zoomLevel, TileService service);
 
     /**
      * Gets the ZoomLevel (object) for a given zoom level integer.

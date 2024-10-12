@@ -151,8 +151,7 @@ public class SimpleFeatureStoreExamples {
         Filter filter = ff.id(Collections.singleton(ff.featureId("fred")));
         try {
             final Set<FeatureId> removed = new HashSet<>();
-            SimpleFeatureCollection collection =
-                    store.getFeatures(new Query(typeName, filter, Query.NO_NAMES));
+            SimpleFeatureCollection collection = store.getFeatures(new Query(typeName, filter, Query.NO_NAMES));
             collection.accepts(
                     new FeatureVisitor() {
                         public void visit(Feature feature) {

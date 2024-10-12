@@ -179,11 +179,7 @@ public class Parameter<T> implements org.geotools.api.parameter.Parameter<T> {
      * @param description Human readable description
      */
     public Parameter(String key, Class<T> type, String title, String description) {
-        this(
-                key,
-                type,
-                new SimpleInternationalString(title),
-                new SimpleInternationalString(description));
+        this(key, type, new SimpleInternationalString(title), new SimpleInternationalString(description));
     }
 
     /**
@@ -195,18 +191,8 @@ public class Parameter<T> implements org.geotools.api.parameter.Parameter<T> {
      * @param title Human readable title used for use in a user interface
      * @param description Human readable description
      */
-    public Parameter(
-            String key,
-            Class<T> type,
-            String title,
-            String description,
-            Map<String, Object> metadata) {
-        this(
-                key,
-                type,
-                new SimpleInternationalString(title),
-                new SimpleInternationalString(description),
-                metadata);
+    public Parameter(String key, Class<T> type, String title, String description, Map<String, Object> metadata) {
+        this(key, type, new SimpleInternationalString(title), new SimpleInternationalString(description), metadata);
     }
     /**
      * Mandatory parameter
@@ -216,8 +202,7 @@ public class Parameter<T> implements org.geotools.api.parameter.Parameter<T> {
      * @param title Human readable title used for use in a user interface
      * @param description Human readable description
      */
-    public Parameter(
-            String key, Class<T> type, InternationalString title, InternationalString description) {
+    public Parameter(String key, Class<T> type, InternationalString title, InternationalString description) {
         this(key, type, title, description, true, 1, 1, null, null);
     }
 
@@ -283,8 +268,7 @@ public class Parameter<T> implements org.geotools.api.parameter.Parameter<T> {
         this.minOccurs = min;
         this.maxOccurs = max;
         this.sample = sample;
-        this.metadata =
-                metadata == null ? Collections.emptyMap() : Collections.unmodifiableMap(metadata);
+        this.metadata = metadata == null ? Collections.emptyMap() : Collections.unmodifiableMap(metadata);
     }
 
     /**

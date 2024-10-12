@@ -49,8 +49,7 @@ public class VectorMosaicGranule implements Serializable {
 
     public static VectorMosaicGranule fromDelegateFeature(SimpleFeature delegateFeature) {
         VectorMosaicGranule config = new VectorMosaicGranule();
-        config.params =
-                (String) delegateFeature.getAttribute(CONNECTION_PARAMETERS_DELEGATE_FIELD_DEFAULT);
+        config.params = (String) delegateFeature.getAttribute(CONNECTION_PARAMETERS_DELEGATE_FIELD_DEFAULT);
         if (delegateFeature.getAttribute(GRANULE_TYPE_NAME) != null) {
             config.granuleTypeName = (String) delegateFeature.getAttribute(GRANULE_TYPE_NAME);
         }

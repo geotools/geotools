@@ -57,16 +57,14 @@ public class DefaultEllipsoid extends AbstractIdentifiedObject implements Ellips
      * WGS 1984 ellipsoid with axis in {@linkplain SI#METER metres}. This ellipsoid is used in GPS
      * systems and is the default for most {@code org.geotools} packages.
      */
-    public static final DefaultEllipsoid WGS84 =
-            createFlattenedSphere("WGS84", 6378137.0, 298.257223563, SI.METRE);
+    public static final DefaultEllipsoid WGS84 = createFlattenedSphere("WGS84", 6378137.0, 298.257223563, SI.METRE);
 
     /**
      * GRS 80 ellipsoid with axis in {@linkplain SI#METER metres}.
      *
      * @since 2.2
      */
-    public static final DefaultEllipsoid GRS80 =
-            createFlattenedSphere("GRS80", 6378137.0, 298.257222101, SI.METRE);
+    public static final DefaultEllipsoid GRS80 = createFlattenedSphere("GRS80", 6378137.0, 298.257222101, SI.METRE);
 
     /** International 1924 ellipsoid with axis in {@linkplain SI#METER metres}. */
     public static final DefaultEllipsoid INTERNATIONAL_1924 =
@@ -85,8 +83,7 @@ public class DefaultEllipsoid extends AbstractIdentifiedObject implements Ellips
      * algorithm for {@linkplain #orthodromicDistance orthodromic distance computation}, which may
      * be faster and more robust.
      */
-    public static final DefaultEllipsoid SPHERE =
-            createEllipsoid("SPHERE", 6371000, 6371000, SI.METRE);
+    public static final DefaultEllipsoid SPHERE = createEllipsoid("SPHERE", 6371000, 6371000, SI.METRE);
 
     /**
      * The equatorial radius.
@@ -180,12 +177,8 @@ public class DefaultEllipsoid extends AbstractIdentifiedObject implements Ellips
      * @return An ellipsoid with the given axis length.
      */
     public static DefaultEllipsoid createEllipsoid(
-            final String name,
-            final double semiMajorAxis,
-            final double semiMinorAxis,
-            final Unit<Length> unit) {
-        return createEllipsoid(
-                Collections.singletonMap(NAME_KEY, name), semiMajorAxis, semiMinorAxis, unit);
+            final String name, final double semiMajorAxis, final double semiMinorAxis, final Unit<Length> unit) {
+        return createEllipsoid(Collections.singletonMap(NAME_KEY, name), semiMajorAxis, semiMinorAxis, unit);
     }
 
     /**
@@ -227,12 +220,8 @@ public class DefaultEllipsoid extends AbstractIdentifiedObject implements Ellips
      * @return An ellipsoid with the given axis length.
      */
     public static DefaultEllipsoid createFlattenedSphere(
-            final String name,
-            final double semiMajorAxis,
-            final double inverseFlattening,
-            final Unit<Length> unit) {
-        return createFlattenedSphere(
-                Collections.singletonMap(NAME_KEY, name), semiMajorAxis, inverseFlattening, unit);
+            final String name, final double semiMajorAxis, final double inverseFlattening, final Unit<Length> unit) {
+        return createFlattenedSphere(Collections.singletonMap(NAME_KEY, name), semiMajorAxis, inverseFlattening, unit);
     }
 
     /**
@@ -304,8 +293,7 @@ public class DefaultEllipsoid extends AbstractIdentifiedObject implements Ellips
         if (value > 0) {
             return value;
         }
-        throw new IllegalArgumentException(
-                MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, name, value));
+        throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, name, value));
     }
 
     /**
@@ -447,8 +435,7 @@ public class DefaultEllipsoid extends AbstractIdentifiedObject implements Ellips
             if (!compareMetadata) {
                 UnitConverter converter = that.unit.getConverterTo(this.unit);
                 return Utilities.equals(this.semiMajorAxis, converter.convert(that.semiMajorAxis))
-                        && Utilities.equals(
-                                this.semiMinorAxis, converter.convert(that.semiMinorAxis));
+                        && Utilities.equals(this.semiMinorAxis, converter.convert(that.semiMinorAxis));
             } else {
                 return (this.ivfDefinitive == that.ivfDefinitive)
                         && Utilities.equals(this.semiMajorAxis, that.semiMajorAxis)

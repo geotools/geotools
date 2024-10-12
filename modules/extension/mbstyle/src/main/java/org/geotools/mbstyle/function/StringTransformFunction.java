@@ -47,17 +47,16 @@ public class StringTransformFunction extends FunctionImpl {
     static {
         Parameter<Object> result = new Parameter<>("result", Object.class, 1, 1);
         Parameter<Object> input = new Parameter<>("input", Object.class, 1, 1);
-        Parameter<Object> transform =
-                new Parameter<>(
-                        "transform",
-                        Object.class,
-                        Text.text("transform"),
-                        Text.text("The transform to perform ('uppercase', 'lowercase', or 'none')"),
-                        true,
-                        0,
-                        1,
-                        "uppercase",
-                        null);
+        Parameter<Object> transform = new Parameter<>(
+                "transform",
+                Object.class,
+                Text.text("transform"),
+                Text.text("The transform to perform ('uppercase', 'lowercase', or 'none')"),
+                true,
+                0,
+                1,
+                "uppercase",
+                null);
         NAME = new FunctionNameImpl("StringTransform", result, input, transform);
     }
 

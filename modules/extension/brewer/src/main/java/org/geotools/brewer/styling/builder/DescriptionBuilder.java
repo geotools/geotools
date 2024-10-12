@@ -93,7 +93,6 @@ public class DescriptionBuilder extends AbstractStyleBuilder<Description> {
 
     @Override
     protected void buildStyleInternal(StyleBuilder sb) {
-        throw new UnsupportedOperationException(
-                "Does not make sense to build a style out of a description");
+        throw new UnsupportedOperationException("Does not make sense to build a style out of a description");
     }
 }

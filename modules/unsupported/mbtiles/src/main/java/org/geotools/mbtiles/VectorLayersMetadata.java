@@ -49,9 +49,6 @@ class VectorLayersMetadata {
 
     /** Returns the {@link VectorLayerMetadata} list as a map keyed from the layer id */
     public LinkedHashMap<String, VectorLayerMetadata> getLayersMap() {
-        return layers.stream()
-                .collect(
-                        Collectors.toMap(
-                                l -> l.getId(), l -> l, (l1, l2) -> l1, LinkedHashMap::new));
+        return layers.stream().collect(Collectors.toMap(l -> l.getId(), l -> l, (l1, l2) -> l1, LinkedHashMap::new));
     }
 }

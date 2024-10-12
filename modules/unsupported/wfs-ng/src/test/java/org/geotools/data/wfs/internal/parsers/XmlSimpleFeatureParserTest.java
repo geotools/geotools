@@ -39,8 +39,7 @@ public class XmlSimpleFeatureParserTest extends AbstractGetFeatureParserTest {
             throws IOException {
 
         InputStream inputStream = new BufferedInputStream(getFeaturesRequest.openStream());
-        GetParser<SimpleFeature> parser =
-                new XmlSimpleFeatureParser(inputStream, featureType, featureName, axisOrder);
+        GetParser<SimpleFeature> parser = new XmlSimpleFeatureParser(inputStream, featureType, featureName, axisOrder);
         return parser;
     }
 

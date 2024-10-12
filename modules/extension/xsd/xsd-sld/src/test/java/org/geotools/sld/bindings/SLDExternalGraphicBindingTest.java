@@ -35,7 +35,8 @@ public class SLDExternalGraphicBindingTest extends SLDTestSupport {
         document.appendChild(document.createElementNS(SLD.NAMESPACE, "ExternalGraphic"));
 
         Element r = document.createElementNS(SLD.NAMESPACE, "OnlineResource");
-        r.setAttributeNS(XLINK.NAMESPACE, "href", getClass().getResource("eclipse.png").toString());
+        r.setAttributeNS(
+                XLINK.NAMESPACE, "href", getClass().getResource("eclipse.png").toString());
 
         Element f = document.createElementNS(SLD.NAMESPACE, "Format");
         f.appendChild(document.createTextNode("image/png"));

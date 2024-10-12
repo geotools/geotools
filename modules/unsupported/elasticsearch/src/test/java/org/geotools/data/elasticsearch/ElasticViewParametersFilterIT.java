@@ -48,8 +48,7 @@ public class ElasticViewParametersFilterIT extends ElasticTestSupport {
         vparams.put("q", mapper.writeValueAsString(query));
         // check it works both directly and as part of an aggregation
         List<Hints.ClassKey> keys =
-                Arrays.asList(
-                        Hints.VIRTUAL_TABLE_PARAMETERS, ElasticBucketVisitor.ES_AGGREGATE_BUCKET);
+                Arrays.asList(Hints.VIRTUAL_TABLE_PARAMETERS, ElasticBucketVisitor.ES_AGGREGATE_BUCKET);
         for (Hints.ClassKey key : keys) {
             Hints hints = new Hints(key, vparams);
             Query q = new Query(featureSource.getSchema().getTypeName());
@@ -90,14 +89,13 @@ public class ElasticViewParametersFilterIT extends ElasticTestSupport {
     public void testNativeBooleanQuery() throws Exception {
         init();
         Map<String, String> vparams = new HashMap<>();
-        Map<String, Object> query =
+        Map<String, Object> query = ImmutableMap.of(
+                "bool",
                 ImmutableMap.of(
-                        "bool",
-                        ImmutableMap.of(
-                                "must",
-                                ImmutableMap.of("term", ImmutableMap.of("security_ss", "WPA")),
-                                "must_not",
-                                ImmutableMap.of("term", ImmutableMap.of("modem_b", true))));
+                        "must",
+                        ImmutableMap.of("term", ImmutableMap.of("security_ss", "WPA")),
+                        "must_not",
+                        ImmutableMap.of("term", ImmutableMap.of("modem_b", true))));
         vparams.put("q", mapper.writeValueAsString(query));
         Hints hints = new Hints(Hints.VIRTUAL_TABLE_PARAMETERS, vparams);
         Query q = new Query(featureSource.getSchema().getTypeName());
@@ -120,13 +118,12 @@ public class ElasticViewParametersFilterIT extends ElasticTestSupport {
         init();
         Query q = new Query(featureSource.getSchema().getTypeName());
         ElasticBucketVisitor elasticBucketVisitor =
-                new ElasticBucketVisitor(
-                        "{\"agg\": {\"geohash_grid\": {\"field\": \"geo\", \"precision\": 3}}}",
-                        null);
+                new ElasticBucketVisitor("{\"agg\": {\"geohash_grid\": {\"field\": \"geo\", \"precision\": 3}}}", null);
         featureSource.accepts(q, elasticBucketVisitor, null);
         List<Map<String, Object>> buckets = elasticBucketVisitor.getBuckets();
         // all 11 features in the store accounted for
         assertEquals(10, buckets.size());
-        assertEquals(11, buckets.stream().mapToInt(b -> (int) b.get("doc_count")).sum());
+        assertEquals(
+                11, buckets.stream().mapToInt(b -> (int) b.get("doc_count")).sum());
     }
 }

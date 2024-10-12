@@ -32,8 +32,7 @@ import org.geotools.util.factory.Hints;
 public final class EnviHdrFormat extends BaseGDALGridFormat implements Format {
 
     /** Logger. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(EnviHdrFormat.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(EnviHdrFormat.class);
 
     /**
      * Constructor for the {@code BaseGDALGridFormat}. It is invoked by the underlying

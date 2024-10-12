@@ -48,18 +48,13 @@ public class DCConfiguration extends Configuration {
     @Override
     protected void registerBindings(Map<QName, Object> bindings) {
         bindings.put(
-                DC.elementContainer,
-                new SimpleContentComplexEMFBinding(Csw20Factory.eINSTANCE, DC.elementContainer));
-        bindings.put(
-                DC.SimpleLiteral,
-                new SimpleContentComplexEMFBinding(Csw20Factory.eINSTANCE, DC.SimpleLiteral));
+                DC.elementContainer, new SimpleContentComplexEMFBinding(Csw20Factory.eINSTANCE, DC.elementContainer));
+        bindings.put(DC.SimpleLiteral, new SimpleContentComplexEMFBinding(Csw20Factory.eINSTANCE, DC.SimpleLiteral));
         bindings.put(DC.contributor, new SimpleLiteralBinding(DC.contributor));
         bindings.put(DC.coverage, new SimpleLiteralBinding(DC.coverage));
         bindings.put(DC.creator, new SimpleLiteralBinding(DC.creator));
         bindings.put(DC.date, new SimpleLiteralBinding(DC.date));
-        bindings.put(
-                DC.DCelement,
-                new SimpleContentComplexEMFBinding(Csw20Factory.eINSTANCE, DC.DCelement));
+        bindings.put(DC.DCelement, new SimpleContentComplexEMFBinding(Csw20Factory.eINSTANCE, DC.DCelement));
         bindings.put(DC.description, new SimpleLiteralBinding(DC.description));
         bindings.put(DC.format, new SimpleLiteralBinding(DC.format));
         bindings.put(DC.identifier, new SimpleLiteralBinding(DC.identifier));
@@ -84,12 +79,11 @@ public class DCConfiguration extends Configuration {
         for (Field f : DC.class.getFields()) {
             if ((f.getModifiers() & (Modifier.STATIC | Modifier.FINAL)) != 0
                     && f.getType().equals(QName.class)) {
-                System.out.println(
-                        "bindings.put(DC."
-                                + f.getName()
-                                + ", new SimpleContentComplexEMFBinding(Csw20Factory.eINSTANCE, DC."
-                                + f.getName()
-                                + "));");
+                System.out.println("bindings.put(DC."
+                        + f.getName()
+                        + ", new SimpleContentComplexEMFBinding(Csw20Factory.eINSTANCE, DC."
+                        + f.getName()
+                        + "));");
             }
         }
     }

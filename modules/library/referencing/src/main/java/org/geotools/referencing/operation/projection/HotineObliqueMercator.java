@@ -53,8 +53,7 @@ public class HotineObliqueMercator extends ObliqueMercator {
      *     "two points" case in a future version if needed. Note that this limitation doesn't apply
      *     to projection created from the {@link Provider_TwoPoint}.
      */
-    protected HotineObliqueMercator(final ParameterValueGroup parameters)
-            throws ParameterNotFoundException {
+    protected HotineObliqueMercator(final ParameterValueGroup parameters) throws ParameterNotFoundException {
         this(parameters, Provider.PARAMETERS.descriptors(), false);
     }
 
@@ -105,34 +104,29 @@ public class HotineObliqueMercator extends ObliqueMercator {
         private static final long serialVersionUID = 5822488360988630419L;
 
         /** The parameters group. */
-        static final ParameterDescriptorGroup PARAMETERS =
-                createDescriptorGroup(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.OGC, "Hotine_Oblique_Mercator"),
-                            new NamedIdentifier(Citations.EPSG, "Hotine Oblique Mercator"),
-                            new NamedIdentifier(
-                                    Citations.EPSG, "Hotine Oblique Mercator (variant A)"),
-                            new NamedIdentifier(Citations.EPSG, "Hotine Oblique Mercator"),
-                            new NamedIdentifier(Citations.EPSG, "9812"),
-                            new NamedIdentifier(Citations.GEOTIFF, "CT_ObliqueMercator_Hotine"),
-                            new NamedIdentifier(
-                                    Citations.ESRI,
-                                    "Hotine_Oblique_Mercator_Azimuth_Natural_Origin"),
-                            new NamedIdentifier(
-                                    Citations.ESRI, "Rectified_Skew_Orthomorphic_Natural_Origin"),
-                            new NamedIdentifier(Citations.GEOTOOLS, NAME)
-                        },
-                        new ParameterDescriptor[] {
-                            SEMI_MAJOR,
-                            SEMI_MINOR,
-                            LONGITUDE_OF_CENTRE,
-                            LATITUDE_OF_CENTRE,
-                            AZIMUTH,
-                            RECTIFIED_GRID_ANGLE,
-                            SCALE_FACTOR,
-                            FALSE_EASTING,
-                            FALSE_NORTHING
-                        });
+        static final ParameterDescriptorGroup PARAMETERS = createDescriptorGroup(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.OGC, "Hotine_Oblique_Mercator"),
+                    new NamedIdentifier(Citations.EPSG, "Hotine Oblique Mercator"),
+                    new NamedIdentifier(Citations.EPSG, "Hotine Oblique Mercator (variant A)"),
+                    new NamedIdentifier(Citations.EPSG, "Hotine Oblique Mercator"),
+                    new NamedIdentifier(Citations.EPSG, "9812"),
+                    new NamedIdentifier(Citations.GEOTIFF, "CT_ObliqueMercator_Hotine"),
+                    new NamedIdentifier(Citations.ESRI, "Hotine_Oblique_Mercator_Azimuth_Natural_Origin"),
+                    new NamedIdentifier(Citations.ESRI, "Rectified_Skew_Orthomorphic_Natural_Origin"),
+                    new NamedIdentifier(Citations.GEOTOOLS, NAME)
+                },
+                new ParameterDescriptor[] {
+                    SEMI_MAJOR,
+                    SEMI_MINOR,
+                    LONGITUDE_OF_CENTRE,
+                    LATITUDE_OF_CENTRE,
+                    AZIMUTH,
+                    RECTIFIED_GRID_ANGLE,
+                    SCALE_FACTOR,
+                    FALSE_EASTING,
+                    FALSE_NORTHING
+                });
 
         /** Constructs a new provider. */
         public Provider() {
@@ -169,21 +163,18 @@ public class HotineObliqueMercator extends ObliqueMercator {
         private static final long serialVersionUID = -3104452416276842816L;
 
         /** The parameters group. */
-        static final ParameterDescriptorGroup PARAMETERS =
-                createDescriptorGroup(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(
-                                    Citations.ESRI,
-                                    "Hotine_Oblique_Mercator_Two_Point_Natural_Origin"),
-                            new NamedIdentifier(Citations.GEOTOOLS, NAME)
-                        },
-                        new ParameterDescriptor[] {
-                            SEMI_MAJOR, SEMI_MINOR,
-                            LAT_OF_1ST_POINT, LONG_OF_1ST_POINT,
-                            LAT_OF_2ND_POINT, LONG_OF_2ND_POINT,
-                            LATITUDE_OF_CENTRE, SCALE_FACTOR,
-                            FALSE_EASTING, FALSE_NORTHING
-                        });
+        static final ParameterDescriptorGroup PARAMETERS = createDescriptorGroup(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.ESRI, "Hotine_Oblique_Mercator_Two_Point_Natural_Origin"),
+                    new NamedIdentifier(Citations.GEOTOOLS, NAME)
+                },
+                new ParameterDescriptor[] {
+                    SEMI_MAJOR, SEMI_MINOR,
+                    LAT_OF_1ST_POINT, LONG_OF_1ST_POINT,
+                    LAT_OF_2ND_POINT, LONG_OF_2ND_POINT,
+                    LATITUDE_OF_CENTRE, SCALE_FACTOR,
+                    FALSE_EASTING, FALSE_NORTHING
+                });
 
         /** Constructs a new provider. */
         public Provider_TwoPoint() {

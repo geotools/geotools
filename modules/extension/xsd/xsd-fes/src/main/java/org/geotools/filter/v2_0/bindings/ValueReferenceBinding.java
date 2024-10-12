@@ -78,7 +78,6 @@ public class ValueReferenceBinding extends AbstractSimpleBinding {
     @Override
     public Object parse(InstanceComponent instance, Object value) throws Exception {
         return ((FilterFactory) filterFactory)
-                .property(
-                        (String) value, GML3EncodingUtils.copyNamespaceSupport((namespaceSupport)));
+                .property((String) value, GML3EncodingUtils.copyNamespaceSupport((namespaceSupport)));
     }
 }

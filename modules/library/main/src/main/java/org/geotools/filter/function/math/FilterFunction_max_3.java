@@ -29,12 +29,11 @@ import org.geotools.util.factory.Hints;
 public class FilterFunction_max_3 extends FunctionExpressionImpl {
 
     // public static FunctionName NAME = new FunctionNameImpl("max_3","float","float");
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "max_3",
-                    parameter("maximum", Float.class),
-                    parameter("float", Number.class),
-                    parameter("float", Number.class));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "max_3",
+            parameter("maximum", Float.class),
+            parameter("float", Number.class),
+            parameter("float", Number.class));
 
     public FilterFunction_max_3() {
         super("max_3"); // this was formally max_4 as a mistake

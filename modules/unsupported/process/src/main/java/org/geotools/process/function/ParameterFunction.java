@@ -51,12 +51,11 @@ import org.geotools.util.Converters;
  */
 class ParameterFunction implements Function {
 
-    static final FunctionName NAME =
-            new FunctionNameImpl(
-                    "parameter",
-                    parameter("parameterMap", Map.class),
-                    parameter("argumentName", String.class),
-                    parameter("values", Object.class, 0, Integer.MAX_VALUE));
+    static final FunctionName NAME = new FunctionNameImpl(
+            "parameter",
+            parameter("parameterMap", Map.class),
+            parameter("argumentName", String.class),
+            parameter("values", Object.class, 0, Integer.MAX_VALUE));
 
     Literal fallbackValue;
 
@@ -96,16 +95,14 @@ class ParameterFunction implements Function {
     public Object evaluate(Object object) {
         if (parameters.isEmpty()) {
             throw new IllegalArgumentException(
-                    "The parameter function requires at "
-                            + "least one parameter, the argument name");
+                    "The parameter function requires at " + "least one parameter, the argument name");
         }
 
         // get the param name
         String name = parameters.get(0).evaluate(object, String.class);
         if (name == null) {
             throw new IllegalArgumentException(
-                    "The first function parameter should be a string, "
-                            + "the name of a process argument");
+                    "The first function parameter should be a string, " + "the name of a process argument");
         }
 
         // get the other values

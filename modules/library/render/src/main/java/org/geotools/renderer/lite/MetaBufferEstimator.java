@@ -76,8 +76,7 @@ import org.geotools.renderer.style.SLDStyleFactory;
  */
 public class MetaBufferEstimator extends FilterAttributeExtractor implements StyleVisitor {
     /** The logger for the rendering module. */
-    protected static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(MetaBufferEstimator.class);
+    protected static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(MetaBufferEstimator.class);
 
     protected FilterAttributeExtractor attributeExtractor = new FilterAttributeExtractor();
 
@@ -171,8 +170,7 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
     protected boolean isNull(Expression exp) {
         return exp == null
                 || exp instanceof NilExpression
-                || (exp instanceof ConstantExpression
-                        && ((ConstantExpression) exp).getValue() == null);
+                || (exp instanceof ConstantExpression && ((ConstantExpression) exp).getValue() == null);
     }
 
     /** @see StyleVisitor#visit(org.geotools.api.style.Symbolizer) */
@@ -330,17 +328,13 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
                             return;
                         }
 
-                        Iterator<ExternalGraphicFactory> it =
-                                DynamicSymbolFactoryFinder.getExternalGraphicFactories();
+                        Iterator<ExternalGraphicFactory> it = DynamicSymbolFactoryFinder.getExternalGraphicFactories();
                         while (it.hasNext() && icon == null) {
                             try {
                                 ExternalGraphicFactory factory = it.next();
                                 icon = factory.getIcon(null, expanded, eg.getFormat(), imageSize);
                             } catch (Exception e) {
-                                LOGGER.log(
-                                        Level.FINE,
-                                        "Error occurred evaluating external graphic",
-                                        e);
+                                LOGGER.log(Level.FINE, "Error occurred evaluating external graphic", e);
                             }
                         }
                     }
@@ -386,8 +380,7 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
             estimateAccurate = false;
             LOGGER.log(
                     Level.INFO,
-                    "Error occured during the graphic size estimation, "
-                            + "meta buffer estimate cannot be performed",
+                    "Error occured during the graphic size estimation, " + "meta buffer estimate cannot be performed",
                     e);
         }
     }

@@ -28,8 +28,7 @@ import org.geotools.util.URLs;
  */
 public class ShapefileDirectoryFactory extends ShapefileDataStoreFactory {
     /** The directory to be scanned for file data stores */
-    public static final Param URLP =
-            new Param("url", URL.class, "Directory containing geospatial files", true);
+    public static final Param URLP = new Param("url", URL.class, "Directory containing geospatial files", true);
 
     @Override
     public String getDisplayName() {

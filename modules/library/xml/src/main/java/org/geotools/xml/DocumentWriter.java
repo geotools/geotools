@@ -59,8 +59,7 @@ import org.xml.sax.helpers.AttributesImpl;
  */
 public class DocumentWriter {
 
-    public static final Logger logger =
-            org.geotools.util.logging.Logging.getLogger(DocumentWriter.class);
+    public static final Logger logger = org.geotools.util.logging.Logging.getLogger(DocumentWriter.class);
 
     private static Level level = Level.WARNING;
 
@@ -129,10 +128,8 @@ public class DocumentWriter {
             Map<String, Object> hints2 = new HashMap<>(hints);
             hints2.remove(WRITE_SCHEMA);
 
-            File f2 =
-                    new File(
-                            f.getParentFile(),
-                            f.getName().substring(0, f.getName().indexOf(".")) + ".xsd");
+            File f2 = new File(
+                    f.getParentFile(), f.getName().substring(0, f.getName().indexOf(".")) + ".xsd");
             try (FileWriter wf = new FileWriter(f2)) {
                 writeSchema(schema, wf, hints2);
             }
@@ -157,8 +154,7 @@ public class DocumentWriter {
      *
      * @param hints optional hints for writing
      */
-    public static void writeDocument(
-            Object value, Schema schema, Writer w, Map<String, Object> hints)
+    public static void writeDocument(Object value, Schema schema, Writer w, Map<String, Object> hints)
             throws OperationNotSupportedException, IOException {
         if ((hints != null) && hints.containsKey(WRITE_SCHEMA)) {
             @SuppressWarnings("PMD.CloseResource")
@@ -166,8 +162,7 @@ public class DocumentWriter {
             writeSchema(schema, w2, hints);
         }
 
-        WriterContentHandler wch =
-                new WriterContentHandler(schema, w, hints); // should deal with xmlns declarations
+        WriterContentHandler wch = new WriterContentHandler(schema, w, hints); // should deal with xmlns declarations
         wch.startDocument();
 
         writeFragment(value, wch);
@@ -211,11 +206,9 @@ public class DocumentWriter {
      *
      * @param hints optional hints for writing
      */
-    public static void writeFragment(
-            Object value, Schema schema, Writer w, Map<String, Object> hints)
+    public static void writeFragment(Object value, Schema schema, Writer w, Map<String, Object> hints)
             throws OperationNotSupportedException, IOException {
-        WriterContentHandler wch =
-                new WriterContentHandler(schema, w, hints); // should deal with xmlns declarations
+        WriterContentHandler wch = new WriterContentHandler(schema, w, hints); // should deal with xmlns declarations
 
         writeFragment(value, wch);
 
@@ -244,17 +237,14 @@ public class DocumentWriter {
             Type type = e.getType();
             type.encode(e, value, wch, wch.hints);
         } else {
-            throw new OperationNotSupportedException(
-                    "Could not find an appropriate Element to use for encoding of a "
-                            + ((value == null) ? null : value.getClass().getName()));
+            throw new OperationNotSupportedException("Could not find an appropriate Element to use for encoding of a "
+                    + ((value == null) ? null : value.getClass().getName()));
         }
     }
 
     /** @throws IOException */
-    public static void writeSchema(Schema schema, Writer w, Map<String, Object> hints)
-            throws IOException {
-        WriterContentHandler wch =
-                new WriterContentHandler(schema, w, hints); // should deal with xmlns declarations
+    public static void writeSchema(Schema schema, Writer w, Map<String, Object> hints) throws IOException {
+        WriterContentHandler wch = new WriterContentHandler(schema, w, hints); // should deal with xmlns declarations
         Element[] elems = schema.getElements();
 
         if (elems == null) {
@@ -268,8 +258,7 @@ public class DocumentWriter {
         wch.endDocument();
     }
 
-    private static void writeSchema(Schema schema, PrintHandler ph, Map<String, Object> hints)
-            throws IOException {
+    private static void writeSchema(Schema schema, PrintHandler ph, Map<String, Object> hints) throws IOException {
         if (schema == null) {
             return;
         }
@@ -315,20 +304,12 @@ public class DocumentWriter {
 
         if (schema.getBlockDefault() != Schema.NONE) {
             ai.addAttribute(
-                    "",
-                    "blockDefault",
-                    "",
-                    "NMTOKENS",
-                    ComplexTypeHandler.writeBlock(schema.getBlockDefault()));
+                    "", "blockDefault", "", "NMTOKENS", ComplexTypeHandler.writeBlock(schema.getBlockDefault()));
         }
 
         if (schema.getFinalDefault() != Schema.NONE) {
             ai.addAttribute(
-                    "",
-                    "finalDefault",
-                    "",
-                    "NMTOKENS",
-                    ComplexTypeHandler.writeFinal(schema.getFinalDefault()));
+                    "", "finalDefault", "", "NMTOKENS", ComplexTypeHandler.writeFinal(schema.getFinalDefault()));
         }
 
         ph.startElement(XSISimpleTypes.NAMESPACE, "schema", ai);
@@ -381,7 +362,8 @@ public class DocumentWriter {
             ai.addAttribute("", "id", "", "ID", schema.getId());
         }
 
-        ai.addAttribute("", "namespace", "", "anyUri", schema.getTargetNamespace().toString());
+        ai.addAttribute(
+                "", "namespace", "", "anyUri", schema.getTargetNamespace().toString());
 
         if (schema.getURI() != null) {
             ai.addAttribute("", "schemaLocation", "", "anyUri", schema.getURI().toString());
@@ -390,8 +372,7 @@ public class DocumentWriter {
         ph.element(XSISimpleTypes.NAMESPACE, "import", ai);
     }
 
-    private static void writeElement(
-            Element element, Schema schema, PrintHandler ph, Map<String, Object> hints)
+    private static void writeElement(Element element, Schema schema, PrintHandler ph, Map<String, Object> hints)
             throws IOException {
         AttributesImpl ai = new AttributesImpl();
 
@@ -459,7 +440,8 @@ public class DocumentWriter {
                             ai.addAttribute("", "name", "", "QName", element.getName());
                         }
 
-                        ai.addAttribute("", "type", "", "QName", element.getType().getName());
+                        ai.addAttribute(
+                                "", "type", "", "QName", element.getType().getName());
                     }
 
                 types = schema.getSimpleTypes();
@@ -474,7 +456,8 @@ public class DocumentWriter {
                             ai.addAttribute("", "name", "", "QName", element.getName());
                         }
 
-                        ai.addAttribute("", "type", "", "QName", element.getType().getName());
+                        ai.addAttribute(
+                                "", "type", "", "QName", element.getType().getName());
                     }
 
                 if (!found) {
@@ -507,9 +490,7 @@ public class DocumentWriter {
         if (element.getSubstitutionGroup() != null) {
             String s = "";
 
-            if (!element.getSubstitutionGroup()
-                    .getNamespace()
-                    .equals(schema.getTargetNamespace())) {
+            if (!element.getSubstitutionGroup().getNamespace().equals(schema.getTargetNamespace())) {
                 Schema sss =
                         SchemaFactory.getInstance(element.getSubstitutionGroup().getNamespace());
                 s = sss.getPrefix() + ":";
@@ -524,13 +505,11 @@ public class DocumentWriter {
         }
 
         if (element.getFinal() != Schema.NONE) {
-            ai.addAttribute(
-                    "", "final", "", "NMTOKENS", ComplexTypeHandler.writeFinal(element.getFinal()));
+            ai.addAttribute("", "final", "", "NMTOKENS", ComplexTypeHandler.writeFinal(element.getFinal()));
         }
 
         if (element.getBlock() != Schema.NONE) {
-            ai.addAttribute(
-                    "", "block", "", "NMTOKENS", ComplexTypeHandler.writeBlock(element.getBlock()));
+            ai.addAttribute("", "block", "", "NMTOKENS", ComplexTypeHandler.writeBlock(element.getBlock()));
         }
 
         if (element.isAbstract()) {
@@ -550,8 +529,7 @@ public class DocumentWriter {
         ph.endElement(XSISimpleTypes.NAMESPACE, "element");
     }
 
-    private static void writeAttribute(
-            Attribute attribute, Schema schema, PrintHandler ph, Map<String, Object> hints)
+    private static void writeAttribute(Attribute attribute, Schema schema, PrintHandler ph, Map<String, Object> hints)
             throws IOException {
         AttributesImpl ai = new AttributesImpl();
 
@@ -600,12 +578,17 @@ public class DocumentWriter {
                     if (attribute.getSimpleType().getName().equals(types[i].getName())) {
                         found = true;
 
-                        if ((attribute.getName() != null) && (!attribute.getName().isEmpty())) {
+                        if ((attribute.getName() != null)
+                                && (!attribute.getName().isEmpty())) {
                             ai.addAttribute("", "name", "", "QName", attribute.getName());
                         }
 
                         ai.addAttribute(
-                                "", "type", "", "QName", attribute.getSimpleType().getName());
+                                "",
+                                "type",
+                                "",
+                                "QName",
+                                attribute.getSimpleType().getName());
                     }
 
                 if (!found) {
@@ -624,8 +607,7 @@ public class DocumentWriter {
         }
 
         if (attribute.getUse() != Attribute.OPTIONAL) {
-            ai.addAttribute(
-                    "", "use", "", "NMTOKEN", AttributeHandler.writeUse(attribute.getUse()));
+            ai.addAttribute("", "use", "", "NMTOKEN", AttributeHandler.writeUse(attribute.getUse()));
         }
 
         if ((attribute.getDefault() != null) && (!attribute.getDefault().isEmpty())) {
@@ -649,8 +631,7 @@ public class DocumentWriter {
         ph.endElement(XSISimpleTypes.NAMESPACE, "attribute");
     }
 
-    private static void writeGroup(
-            Group group, Schema schema, PrintHandler ph, Map<String, Object> hints)
+    private static void writeGroup(Group group, Schema schema, PrintHandler ph, Map<String, Object> hints)
             throws IOException {
         AttributesImpl ai = new AttributesImpl();
 
@@ -688,9 +669,7 @@ public class DocumentWriter {
                     "maxOccurs",
                     "",
                     "Union",
-                    (group.getMaxOccurs() == ElementGrouping.UNBOUNDED)
-                            ? "unbounded"
-                            : ("" + group.getMaxOccurs()));
+                    (group.getMaxOccurs() == ElementGrouping.UNBOUNDED) ? "unbounded" : ("" + group.getMaxOccurs()));
         }
 
         if (group.getMinOccurs() != 1) {
@@ -711,10 +690,7 @@ public class DocumentWriter {
     }
 
     private static void writeAttributeGroup(
-            AttributeGroup attributeGroup,
-            Schema schema,
-            PrintHandler ph,
-            Map<String, Object> hints)
+            AttributeGroup attributeGroup, Schema schema, PrintHandler ph, Map<String, Object> hints)
             throws IOException {
         AttributesImpl ai = new AttributesImpl();
 
@@ -751,8 +727,7 @@ public class DocumentWriter {
         if (nested) {
             if (attributeGroup.getAnyAttributeNameSpace() != null) {
                 ai = new AttributesImpl();
-                ai.addAttribute(
-                        "", "namespace", "", "special", attributeGroup.getAnyAttributeNameSpace());
+                ai.addAttribute("", "namespace", "", "special", attributeGroup.getAnyAttributeNameSpace());
                 ph.element(XSISimpleTypes.NAMESPACE, "anyAttribute", ai);
             }
 
@@ -767,8 +742,7 @@ public class DocumentWriter {
     }
 
     private static void writeSimpleType(
-            SimpleType simpleType, Schema schema, PrintHandler ph, Map<String, Object> hints)
-            throws IOException {
+            SimpleType simpleType, Schema schema, PrintHandler ph, Map<String, Object> hints) throws IOException {
         AttributesImpl ai = new AttributesImpl();
 
         if ((simpleType.getId() != null) && (!simpleType.getId().isEmpty())) {
@@ -780,12 +754,7 @@ public class DocumentWriter {
         }
 
         if (simpleType.getFinal() != Schema.NONE) {
-            ai.addAttribute(
-                    "",
-                    "final",
-                    "",
-                    "NMTOKENS",
-                    ComplexTypeHandler.writeFinal(simpleType.getFinal()));
+            ai.addAttribute("", "final", "", "NMTOKENS", ComplexTypeHandler.writeFinal(simpleType.getFinal()));
         }
 
         ph.startElement(XSISimpleTypes.NAMESPACE, "simpleType", ai);
@@ -854,8 +823,7 @@ public class DocumentWriter {
                     ai = new AttributesImpl();
 
                     Schema s = SchemaFactory.getInstance(st.getNamespace());
-                    ai.addAttribute(
-                            "", "itemType", "", "QName", s.getPrefix() + ":" + st.getName());
+                    ai.addAttribute("", "itemType", "", "QName", s.getPrefix() + ":" + st.getName());
                 }
 
                 ph.startElement(XSISimpleTypes.NAMESPACE, "list", ai);
@@ -937,8 +905,7 @@ public class DocumentWriter {
         ph.endElement(XSISimpleTypes.NAMESPACE, "simpleType");
     }
 
-    private static void writeChoice(
-            Choice choice, Schema schema, PrintHandler ph, Map<String, Object> hints)
+    private static void writeChoice(Choice choice, Schema schema, PrintHandler ph, Map<String, Object> hints)
             throws IOException {
         AttributesImpl ai = new AttributesImpl();
 
@@ -952,9 +919,7 @@ public class DocumentWriter {
                     "maxOccurs",
                     "",
                     "Union",
-                    (choice.getMaxOccurs() == ElementGrouping.UNBOUNDED)
-                            ? "unbounded"
-                            : ("" + choice.getMaxOccurs()));
+                    (choice.getMaxOccurs() == ElementGrouping.UNBOUNDED) ? "unbounded" : ("" + choice.getMaxOccurs()));
         }
 
         if (choice.getMinOccurs() != 1) {
@@ -1005,8 +970,7 @@ public class DocumentWriter {
         ph.endElement(XSISimpleTypes.NAMESPACE, "choice");
     }
 
-    private static void writeSequence(
-            Sequence sequence, Schema schema, PrintHandler ph, Map<String, Object> hints)
+    private static void writeSequence(Sequence sequence, Schema schema, PrintHandler ph, Map<String, Object> hints)
             throws IOException {
         AttributesImpl ai = new AttributesImpl();
 
@@ -1082,9 +1046,7 @@ public class DocumentWriter {
                     "maxOccurs",
                     "",
                     "Union",
-                    (all.getMaxOccurs() == ElementGrouping.UNBOUNDED)
-                            ? "unbounded"
-                            : ("" + all.getMaxOccurs()));
+                    (all.getMaxOccurs() == ElementGrouping.UNBOUNDED) ? "unbounded" : ("" + all.getMaxOccurs()));
         }
 
         if (all.getMinOccurs() != 1) {
@@ -1118,9 +1080,7 @@ public class DocumentWriter {
                     "maxOccurs",
                     "",
                     "Union",
-                    (any.getMaxOccurs() == ElementGrouping.UNBOUNDED)
-                            ? "unbounded"
-                            : ("" + any.getMaxOccurs()));
+                    (any.getMaxOccurs() == ElementGrouping.UNBOUNDED) ? "unbounded" : ("" + any.getMaxOccurs()));
         }
 
         if (any.getMinOccurs() != 1) {
@@ -1135,8 +1095,7 @@ public class DocumentWriter {
     }
 
     private static void writeComplexType(
-            ComplexType complexType, Schema schema, PrintHandler ph, Map<String, Object> hints)
-            throws IOException {
+            ComplexType complexType, Schema schema, PrintHandler ph, Map<String, Object> hints) throws IOException {
         AttributesImpl ai = new AttributesImpl();
 
         if ((complexType.getId() != null) && (!complexType.getId().isEmpty())) {
@@ -1152,21 +1111,11 @@ public class DocumentWriter {
         }
 
         if (complexType.getFinal() != Schema.NONE) {
-            ai.addAttribute(
-                    "",
-                    "final",
-                    "",
-                    "NMTOKENS",
-                    ComplexTypeHandler.writeFinal(complexType.getFinal()));
+            ai.addAttribute("", "final", "", "NMTOKENS", ComplexTypeHandler.writeFinal(complexType.getFinal()));
         }
 
         if (complexType.getBlock() != Schema.NONE) {
-            ai.addAttribute(
-                    "",
-                    "block",
-                    "",
-                    "NMTOKENS",
-                    ComplexTypeHandler.writeBlock(complexType.getBlock()));
+            ai.addAttribute("", "block", "", "NMTOKENS", ComplexTypeHandler.writeBlock(complexType.getBlock()));
         }
 
         if (complexType.isMixed()) {
@@ -1302,8 +1251,7 @@ public class DocumentWriter {
     private static class WriterContentHandler implements PrintHandler {
         private boolean firstElement = true; // needed for NS declarations
         private Writer writer;
-        private Map<URI, String>
-                prefixMappings; // when the value is null it has not been included yet into the
+        private Map<URI, String> prefixMappings; // when the value is null it has not been included yet into the
         // document ...
         private Schema schema;
         protected Map<String, Object> hints;
@@ -1328,8 +1276,7 @@ public class DocumentWriter {
             Schema[] imports = schema.getImports();
 
             if (imports != null) {
-                for (Schema anImport : imports)
-                    prefixMappings.put(anImport.getTargetNamespace(), anImport.getPrefix());
+                for (Schema anImport : imports) prefixMappings.put(anImport.getTargetNamespace(), anImport.getPrefix());
             }
         }
 
@@ -1352,12 +1299,7 @@ public class DocumentWriter {
                             s = schema.getTargetNamespace() + " " + endResult;
                         }
                     } else {
-                        writer.write(
-                                " xmlns:"
-                                        + anImport.getPrefix()
-                                        + "=\""
-                                        + anImport.getTargetNamespace()
-                                        + "\"");
+                        writer.write(" xmlns:" + anImport.getPrefix() + "=\"" + anImport.getTargetNamespace() + "\"");
                     }
 
                     URI location = anImport.getURI();
@@ -1370,8 +1312,7 @@ public class DocumentWriter {
 
                     if ((location != null) && location.isAbsolute()) {
                         if (anImport.includesURI(location) || forced) {
-                            if ((location != null)
-                                    && !location.equals(anImport.getTargetNamespace())) {
+                            if ((location != null) && !location.equals(anImport.getTargetNamespace())) {
                                 String endResult = location.toString();
                                 endResult = endResult.replaceAll("&", "&amp;");
                                 s += (" " + anImport.getTargetNamespace() + " " + endResult);
@@ -1396,8 +1337,7 @@ public class DocumentWriter {
          * @param attributes Attributes
          */
         @Override
-        public void startElement(URI namespaceURI, String localName, Attributes attributes)
-                throws IOException {
+        public void startElement(URI namespaceURI, String localName, Attributes attributes) throws IOException {
             String prefix = prefixMappings.get(namespaceURI);
 
             if (prefix != null) {
@@ -1454,8 +1394,7 @@ public class DocumentWriter {
          * @param attributes Attributes
          */
         @Override
-        public void element(URI namespaceURI, String localName, Attributes attributes)
-                throws IOException {
+        public void element(URI namespaceURI, String localName, Attributes attributes) throws IOException {
             String prefix = prefixMappings.get(namespaceURI);
 
             if (prefix != null) {
@@ -1618,8 +1557,7 @@ public class DocumentWriter {
 
                 if (elems != null) {
                     for (Element elem : elems)
-                        if ((elem.getType() != null)
-                                && elem.getType().canEncode(elem, value, hints)) {
+                        if ((elem.getType() != null) && elem.getType().canEncode(elem, value, hints)) {
                             return elem;
                         }
                 }
@@ -1662,10 +1600,9 @@ public class DocumentWriter {
 
             if (((hints == null) || (hints.get(SCHEMA_ORDER) == null))
                     && ((schema.getImports() == null) || (schema.getImports().length == 0))) {
-                searchOrder =
-                        new Schema[] {
-                            schema,
-                        };
+                searchOrder = new Schema[] {
+                    schema,
+                };
             } else {
                 List<Schema> so = new LinkedList<>();
 
@@ -1735,13 +1672,11 @@ public class DocumentWriter {
                         // TODO fill this in
                         so.add(schema);
 
-                        for (int i = 0; i < schema.getImports().length; i++)
-                            so.add(schema.getImports()[i]);
+                        for (int i = 0; i < schema.getImports().length; i++) so.add(schema.getImports()[i]);
                     } else {
                         so.add(schema);
 
-                        for (int i = 0; i < schema.getImports().length; i++)
-                            so.add(schema.getImports()[i]);
+                        for (int i = 0; i < schema.getImports().length; i++) so.add(schema.getImports()[i]);
                     }
                 }
 

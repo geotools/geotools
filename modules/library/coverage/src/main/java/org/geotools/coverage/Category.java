@@ -85,8 +85,7 @@ public class Category implements Serializable {
      * data" localized to the requested locale.
      */
     public static final Category NODATA =
-            new Category(
-                    Vocabulary.formatInternational(VocabularyKeys.NODATA), TRANSPARENT, 0, false);
+            new Category(Vocabulary.formatInternational(VocabularyKeys.NODATA), TRANSPARENT, 0, false);
 
     /**
      * A default category for the boolean "{@link Boolean#FALSE false}" value. This default identity
@@ -173,11 +172,7 @@ public class Category implements Serializable {
      * @param color The category color, or {@code null} for a default color.
      * @param sample The sample value as an integer, usually in the range 0 to 255.
      */
-    public Category(
-            final CharSequence name,
-            final Color color,
-            final int sample,
-            final boolean isQuantitative) {
+    public Category(final CharSequence name, final Color color, final int sample, final boolean isQuantitative) {
         this(name, toARGB(color, sample), Integer.valueOf(sample), isQuantitative);
         assert minimum == sample : minimum;
         assert maximum == sample : maximum;
@@ -198,11 +193,7 @@ public class Category implements Serializable {
 
     /** Constructs a category for sample value {@code sample}. */
     @SuppressWarnings("unchecked")
-    private Category(
-            final CharSequence name,
-            final int[] ARGB,
-            final Number sample,
-            final boolean isQuantitative) {
+    private Category(final CharSequence name, final int[] ARGB, final Number sample, final boolean isQuantitative) {
         this(name, ARGB, new NumberRange(sample.getClass(), sample, sample), isQuantitative);
     }
 
@@ -215,8 +206,7 @@ public class Category implements Serializable {
      *     usually {@link Integer}, but {@link Float} and {@link Double} are accepted as well.
      * @throws IllegalArgumentException If the given range is invalid.
      */
-    public Category(
-            final CharSequence name, final Color color, final NumberRange<?> sampleValueRange)
+    public Category(final CharSequence name, final Color color, final NumberRange<?> sampleValueRange)
             throws IllegalArgumentException {
         this(name, toArray(color), sampleValueRange, true);
     }
@@ -253,10 +243,7 @@ public class Category implements Serializable {
      * @throws IllegalArgumentException if {@code lower} is not smaller than {@code upper}, or if
      *     {@code scale} or {@code offset} are not real numbers.
      */
-    public Category(
-            final CharSequence name,
-            final Color[] colors,
-            final NumberRange<? extends Number> sampleValueRange)
+    public Category(final CharSequence name, final Color[] colors, final NumberRange<? extends Number> sampleValueRange)
             throws IllegalArgumentException {
         this(name, colors, sampleValueRange, true);
     }
@@ -322,8 +309,7 @@ public class Category implements Serializable {
         if (!(minimum <= maximum) || Double.isInfinite(minimum) || Double.isInfinite(maximum)) {
             final Object arg0 = range.getMinValue();
             final Object arg1 = range.getMaxValue();
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.BAD_RANGE_$2, arg0, arg1));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.BAD_RANGE_$2, arg0, arg1));
         }
     }
 
@@ -349,8 +335,7 @@ public class Category implements Serializable {
      * @param direction -1 to return the previous representable number, +1 to return the next
      *     representable number, or 0 to return the number with no change.
      */
-    private static double doubleValue(
-            final Class<?> type, final Comparable number, final int direction) {
+    private static double doubleValue(final Class<?> type, final Comparable number, final int direction) {
         assert (direction >= -1) && (direction <= +1) : direction;
         return org.geotools.util.XMath.rool(type, ((Number) number).doubleValue(), direction);
     }
@@ -491,8 +476,7 @@ public class Category implements Serializable {
         if (object != null && object.getClass().equals(getClass())) {
             final Category that = (Category) object;
             if (Double.doubleToRawLongBits(minimum) == Double.doubleToRawLongBits(that.minimum)
-                    && Double.doubleToRawLongBits(maximum)
-                            == Double.doubleToRawLongBits(that.maximum)
+                    && Double.doubleToRawLongBits(maximum) == Double.doubleToRawLongBits(that.maximum)
                     && Utilities.equals(this.name, that.name)
                     && Arrays.equals(this.ARGB, that.ARGB)) {
                 if (this.range != null && that.range != null) {
@@ -516,9 +500,7 @@ public class Category implements Serializable {
         final StringBuilder buffer = new StringBuilder(Classes.getShortClassName(this));
         buffer.append("(\"").append(name).append("\":[");
         if (Classes.isInteger(getRange().getElementClass())) {
-            buffer.append(Math.round(minimum))
-                    .append("...")
-                    .append(Math.round(maximum)); // Inclusive
+            buffer.append(Math.round(minimum)).append("...").append(Math.round(maximum)); // Inclusive
         } else {
             buffer.append(minimum).append(" ... ").append(maximum); // Inclusive
         }
@@ -532,11 +514,9 @@ public class Category implements Serializable {
      * @param object User argument.
      * @throws IllegalArgumentException if {@code object} is null.
      */
-    static void ensureNonNull(final String name, final Object object)
-            throws IllegalArgumentException {
+    static void ensureNonNull(final String name, final Object object) throws IllegalArgumentException {
         if (object == null) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, name));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, name));
         }
     }
 }

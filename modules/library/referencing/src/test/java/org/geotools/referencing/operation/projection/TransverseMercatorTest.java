@@ -43,8 +43,7 @@ public class TransverseMercatorTest {
     @Test
     public void testEpsgExample() throws Exception {
         MathTransformFactory mtFactory = ReferencingFactoryFinder.getMathTransformFactory(null);
-        final ParameterValueGroup parameters =
-                mtFactory.getDefaultParameters("Transverse_Mercator");
+        final ParameterValueGroup parameters = mtFactory.getDefaultParameters("Transverse_Mercator");
 
         // build the transformation using the guidance provided values
         parameter(SEMI_MAJOR, parameters).setValue(6377563.396);

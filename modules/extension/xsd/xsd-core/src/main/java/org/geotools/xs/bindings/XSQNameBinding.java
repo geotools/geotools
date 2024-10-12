@@ -112,9 +112,7 @@ public class XSQNameBinding implements SimpleBinding {
 
         QName qName = null;
         try {
-            qName =
-                    DatatypeConverterImpl.getInstance()
-                            .parseQName((String) value, namespaceContext);
+            qName = DatatypeConverterImpl.getInstance().parseQName((String) value, namespaceContext);
         } catch (Exception e) {
             // could occur if a prefix that was not registered was found
         }

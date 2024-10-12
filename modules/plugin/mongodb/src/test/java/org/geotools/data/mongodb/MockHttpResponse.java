@@ -29,8 +29,7 @@ public class MockHttpResponse implements HTTPResponse {
         this(response.getBytes(), contentType, headers);
     }
 
-    public MockHttpResponse(URL response, String contentType, String... headers)
-            throws IOException {
+    public MockHttpResponse(URL response, String contentType, String... headers) throws IOException {
         this(IOUtils.toByteArray(response.openStream()), contentType, headers);
     }
 
@@ -41,9 +40,8 @@ public class MockHttpResponse implements HTTPResponse {
 
         if (headers != null) {
             if (headers.length % 2 != 0) {
-                throw new IllegalArgumentException(
-                        "The headers must be a alternated sequence of keys "
-                                + "and values, should have an even number of entries");
+                throw new IllegalArgumentException("The headers must be a alternated sequence of keys "
+                        + "and values, should have an even number of entries");
             }
 
             for (int i = 0; i < headers.length; i += 2) {

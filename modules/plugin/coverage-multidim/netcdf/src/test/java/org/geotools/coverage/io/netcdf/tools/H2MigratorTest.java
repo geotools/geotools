@@ -77,20 +77,18 @@ import org.junit.rules.TemporaryFolder;
 
 public class H2MigratorTest {
 
-    @Rule public TemporaryFolder tempFolder = new TemporaryFolder();
+    @Rule
+    public TemporaryFolder tempFolder = new TemporaryFolder();
 
     public static ParameterValue<Boolean> NO_DEFERRED_LOADING_PARAM;
 
     static {
-        final ParameterValue<Boolean> imageRead =
-                AbstractGridFormat.USE_JAI_IMAGEREAD.createValue();
+        final ParameterValue<Boolean> imageRead = AbstractGridFormat.USE_JAI_IMAGEREAD.createValue();
         imageRead.setValue(false);
         NO_DEFERRED_LOADING_PARAM = imageRead;
     }
 
-    public static final GeneralParameterValue[] NO_DEFERRED_LOADING_PARAMS = {
-        NO_DEFERRED_LOADING_PARAM
-    };
+    public static final GeneralParameterValue[] NO_DEFERRED_LOADING_PARAMS = {NO_DEFERRED_LOADING_PARAM};
 
     @BeforeClass
     public static void init() {
@@ -119,21 +117,19 @@ public class H2MigratorTest {
     public void testMultiCoverageDirect() throws Exception {
         File testDir = tempFolder.newFolder("multi-coverage");
         URL testUrl = URLs.fileToUrl(testDir);
-        FileUtils.copyDirectory(
-                TestData.file(NetCDFMosaicReaderTest.class, "multi-coverage"), testDir);
+        FileUtils.copyDirectory(TestData.file(NetCDFMosaicReaderTest.class, "multi-coverage"), testDir);
         // setup the reader, will make it generate the H2 indexes
         testMultiCoverageMosaic(testUrl, null);
 
         // build the target store config file
         final File targetStoreConfiguration = new File(testDir, "target.properties");
-        final String properties =
-                String.format(
-                        "SPI=org.geotools.data.h2.H2DataStoreFactory\n"
-                                + "driver=org.h2.Driver\n"
-                                + "database=%s\n"
-                                + "user=sa\n"
-                                + "password=",
-                        getTargetDbForProperties(testDir));
+        final String properties = String.format(
+                "SPI=org.geotools.data.h2.H2DataStoreFactory\n"
+                        + "driver=org.h2.Driver\n"
+                        + "database=%s\n"
+                        + "user=sa\n"
+                        + "password=",
+                getTargetDbForProperties(testDir));
         FileUtils.writeStringToFile(targetStoreConfiguration, properties, "UTF-8");
 
         File logDir = new File(testDir, "logs");
@@ -162,14 +158,12 @@ public class H2MigratorTest {
 
     @Test
     public void testMultiCoverageRepository() throws Exception {
-        testMultiCoverageRepository(
-                new String[] {"air_temperature", "sea_surface_temperature"}, false);
+        testMultiCoverageRepository(new String[] {"air_temperature", "sea_surface_temperature"}, false);
     }
 
     @Test
     public void testMultiCoverageRepositoryStoreName() throws Exception {
-        testMultiCoverageRepository(
-                new String[] {"air_temperature", "sea_surface_temperature"}, true);
+        testMultiCoverageRepository(new String[] {"air_temperature", "sea_surface_temperature"}, true);
     }
 
     @Test
@@ -178,13 +172,11 @@ public class H2MigratorTest {
     }
 
     /** Test migration on a mosaic with multiple files each one having multiple coverages */
-    protected void testMultiCoverageRepository(String[] coverageNames, boolean setIndexStoreName)
-            throws Exception {
+    protected void testMultiCoverageRepository(String[] coverageNames, boolean setIndexStoreName) throws Exception {
         // copy the data over
         File testDir = tempFolder.newFolder("multi-coverage");
         URL testUrl = URLs.fileToUrl(testDir);
-        FileUtils.copyDirectory(
-                TestData.file(NetCDFMosaicReaderTest.class, "multi-coverage"), testDir);
+        FileUtils.copyDirectory(TestData.file(NetCDFMosaicReaderTest.class, "multi-coverage"), testDir);
 
         // create an H2 store to hold the mosaic slices
         final String mosaicDatabasePath = new File(testDir, "customDB").getAbsolutePath();
@@ -200,8 +192,7 @@ public class H2MigratorTest {
             // change the configuration to refer to a store by name (mimics OpenSearch mosaic
             // setups)
             final File mosaicStoreConfiguration = new File(testDir, "datastore.properties");
-            FileUtils.writeStringToFile(
-                    mosaicStoreConfiguration, "StoreName=mosaicSlices", "UTF-8");
+            FileUtils.writeStringToFile(mosaicStoreConfiguration, "StoreName=mosaicSlices", "UTF-8");
 
             // setup the reader, will make it generate the H2 indexes
             Hints hints = new Hints(Hints.REPOSITORY, repository);
@@ -209,24 +200,20 @@ public class H2MigratorTest {
 
             // build the sourcestore config file
             final File sourceStoreConfiguration = new File(testDir, "source.properties");
-            final String sourceProperties =
-                    String.format(
-                            "SPI=org.geotools.data.h2.H2DataStoreFactory\n"
-                                    + "driver=org.h2.Driver\n"
-                                    + "database=%s\n",
-                            mosaicDatabasePath.replace("\\", "\\\\"));
+            final String sourceProperties = String.format(
+                    "SPI=org.geotools.data.h2.H2DataStoreFactory\n" + "driver=org.h2.Driver\n" + "database=%s\n",
+                    mosaicDatabasePath.replace("\\", "\\\\"));
             FileUtils.writeStringToFile(sourceStoreConfiguration, sourceProperties, "UTF-8");
 
             // build the target store config file
             final File targetStoreConfiguration = new File(testDir, "target.properties");
-            final String targetProperties =
-                    String.format(
-                            "SPI=org.geotools.data.h2.H2DataStoreFactory\n"
-                                    + "driver=org.h2.Driver\n"
-                                    + "database=%s\n"
-                                    + "user=sa\n"
-                                    + "password=",
-                            getTargetDbForProperties(testDir));
+            final String targetProperties = String.format(
+                    "SPI=org.geotools.data.h2.H2DataStoreFactory\n"
+                            + "driver=org.h2.Driver\n"
+                            + "database=%s\n"
+                            + "user=sa\n"
+                            + "password=",
+                    getTargetDbForProperties(testDir));
             FileUtils.writeStringToFile(targetStoreConfiguration, targetProperties, "UTF-8");
 
             File logDir = new File(testDir, "logs");
@@ -285,17 +272,15 @@ public class H2MigratorTest {
     }
 
     @SuppressWarnings("unchecked")
-    public void assertMultiCoverageMigration(
-            File testDir, File logDir, H2MigrateConfiguration config) throws Exception {
+    public void assertMultiCoverageMigration(File testDir, File logDir, H2MigrateConfiguration config)
+            throws Exception {
         // check the migrated data
-        final DataStore store =
-                H2MigrateConfiguration.getDataStore(config.getTargetStoreConfiguration());
+        final DataStore store = H2MigrateConfiguration.getDataStore(config.getTargetStoreConfiguration());
         try {
             assertEquals(2, store.getTypeNames().length);
             assertThat(
                     store.getTypeNames(),
-                    Matchers.arrayContainingInAnyOrder(
-                            "air_temperature", "sea_surface_temperature"));
+                    Matchers.arrayContainingInAnyOrder("air_temperature", "sea_surface_temperature"));
 
             // check the records for the various files are there
             UniqueVisitor u1 = new UniqueVisitor("location");
@@ -305,8 +290,7 @@ public class H2MigratorTest {
             airTemperature.accepts(u1, null);
             assertThat(
                     getUniqueStrings(u1),
-                    Matchers.containsInAnyOrder(
-                            endsWith("multi-coverage-1.nc"), endsWith("multi-coverage-2.nc")));
+                    Matchers.containsInAnyOrder(endsWith("multi-coverage-1.nc"), endsWith("multi-coverage-2.nc")));
 
             UniqueVisitor u2 = new UniqueVisitor("location");
             final SimpleFeatureCollection seaSurfaceTemperature =
@@ -315,8 +299,7 @@ public class H2MigratorTest {
             seaSurfaceTemperature.accepts(u2, null);
             assertThat(
                     getUniqueStrings(u2),
-                    Matchers.containsInAnyOrder(
-                            endsWith("multi-coverage-1.nc"), endsWith("multi-coverage-2.nc")));
+                    Matchers.containsInAnyOrder(endsWith("multi-coverage-1.nc"), endsWith("multi-coverage-2.nc")));
 
         } finally {
             store.dispose();
@@ -329,15 +312,12 @@ public class H2MigratorTest {
         assertEquals(2, netcdfList.size());
         assertThat(
                 netcdfList,
-                Matchers.containsInAnyOrder(
-                        endsWith("multi-coverage-1.nc"), endsWith("multi-coverage-2.nc")));
+                Matchers.containsInAnyOrder(endsWith("multi-coverage-1.nc"), endsWith("multi-coverage-2.nc")));
         File h2Log = new File(logDir, "h2.txt");
         assertTrue(h2Log.exists());
         final List<String> h2List = Files.readLines(h2Log, UTF_8);
         assertEquals(10, h2List.size());
-        assertThat(
-                h2List,
-                Matchers.everyItem(allOf(containsString("multi-coverage-"), endsWith(".db"))));
+        assertThat(h2List, Matchers.everyItem(allOf(containsString("multi-coverage-"), endsWith(".db"))));
         // for extra measure, check and remove the H2 dbs, they should not be needed anymore
         for (String h2File : h2List) {
             final File file = new File(h2File);
@@ -348,8 +328,7 @@ public class H2MigratorTest {
         assertIndexerUpdated(testDir);
 
         // check each mosaic property file has the aux datastore property too
-        assertCoveragePropertiesUpdate(
-                testDir, new String[] {"air_temperature", "sea_surface_temperature"});
+        assertCoveragePropertiesUpdate(testDir, new String[] {"air_temperature", "sea_surface_temperature"});
     }
 
     @SuppressWarnings("unchecked")
@@ -364,11 +343,10 @@ public class H2MigratorTest {
         File indexerFile = new File(testDir, "indexer.xml");
         assertTrue(indexerFile.exists());
         final Indexer indexer = Utils.unmarshal(indexerFile);
-        final Optional<String> auxDataStore =
-                indexer.getParameters().getParameter().stream()
-                        .filter(p -> Utils.Prop.AUXILIARY_DATASTORE_FILE.equals(p.getName()))
-                        .map(p -> p.getValue())
-                        .findFirst();
+        final Optional<String> auxDataStore = indexer.getParameters().getParameter().stream()
+                .filter(p -> Utils.Prop.AUXILIARY_DATASTORE_FILE.equals(p.getName()))
+                .map(p -> p.getValue())
+                .findFirst();
         assertTrue(auxDataStore.isPresent());
         assertEquals(H2Migrator.NETCDF_DATASTORE_PROPERTIES, auxDataStore.get());
     }
@@ -379,11 +357,9 @@ public class H2MigratorTest {
             reader = new ImageMosaicReader(testUrl, hints);
             assertNotNull(reader);
             checkMultiCoverage(reader, "air_temperature", -85, 26, "2017-02-06T00:00:00.000", 295);
-            checkMultiCoverage(
-                    reader, "sea_surface_temperature", -85, 26, "2017-02-06T00:00:00.000", 296);
+            checkMultiCoverage(reader, "sea_surface_temperature", -85, 26, "2017-02-06T00:00:00.000", 296);
             checkMultiCoverage(reader, "air_temperature", -85, 26, "2017-02-06T12:00:00.000", 296);
-            checkMultiCoverage(
-                    reader, "sea_surface_temperature", -85, 26, "2017-02-06T12:00:00.000", 295);
+            checkMultiCoverage(reader, "sea_surface_temperature", -85, 26, "2017-02-06T12:00:00.000", 295);
 
         } finally {
             if (reader != null) {
@@ -410,10 +386,7 @@ public class H2MigratorTest {
         GridCoverage2D coverage = reader.read(coverageName, params);
         assertNotNull(coverage);
         // delta is zero because an exact match is expected
-        assertEquals(
-                expected,
-                coverage.evaluate(new Point2D.Double(longitude, latitude), (double[]) null)[0],
-                0);
+        assertEquals(expected, coverage.evaluate(new Point2D.Double(longitude, latitude), (double[]) null)[0], 0);
     }
 
     private Date parseTimeStamp(String timeStamp) throws ParseException {
@@ -435,11 +408,11 @@ public class H2MigratorTest {
         assertTrue(new File(testDir, "netcdf_datastore.properties").delete());
         final File indexerFile = new File(testDir, "indexer.xml");
         final Indexer indexer = Utils.unmarshal(indexerFile);
-        final List<ParametersType.Parameter> parameters = indexer.getParameters().getParameter();
-        final List<ParametersType.Parameter> filteredParameters =
-                parameters.stream()
-                        .filter(p -> !p.getName().equals(Utils.Prop.AUXILIARY_DATASTORE_FILE))
-                        .collect(Collectors.toList());
+        final List<ParametersType.Parameter> parameters =
+                indexer.getParameters().getParameter();
+        final List<ParametersType.Parameter> filteredParameters = parameters.stream()
+                .filter(p -> !p.getName().equals(Utils.Prop.AUXILIARY_DATASTORE_FILE))
+                .collect(Collectors.toList());
         parameters.addAll(filteredParameters);
         Utils.marshal(indexer, indexerFile);
 
@@ -448,14 +421,13 @@ public class H2MigratorTest {
 
         // build the target store config file
         final File targetStoreConfiguration = new File(testDir, "target.properties");
-        final String properties =
-                String.format(
-                        "SPI=org.geotools.data.h2.H2DataStoreFactory\n"
-                                + "driver=org.h2.Driver\n"
-                                + "database=%s\n"
-                                + "user=sa\n"
-                                + "password=",
-                        getTargetDbForProperties(testDir));
+        final String properties = String.format(
+                "SPI=org.geotools.data.h2.H2DataStoreFactory\n"
+                        + "driver=org.h2.Driver\n"
+                        + "database=%s\n"
+                        + "user=sa\n"
+                        + "password=",
+                getTargetDbForProperties(testDir));
         FileUtils.writeStringToFile(targetStoreConfiguration, properties, "UTF-8");
 
         File logDir = new File(testDir, "logs");
@@ -471,8 +443,7 @@ public class H2MigratorTest {
 
         // perform the basic migration checks
         // check the migrated data
-        final DataStore store =
-                H2MigrateConfiguration.getDataStore(config.getTargetStoreConfiguration());
+        final DataStore store = H2MigrateConfiguration.getDataStore(config.getTargetStoreConfiguration());
         try {
             assertEquals(2, store.getTypeNames().length);
             assertThat(store.getTypeNames(), Matchers.arrayContainingInAnyOrder("BrO", "NO2"));
@@ -484,8 +455,7 @@ public class H2MigratorTest {
             bro.accepts(u1, null);
             assertThat(
                     getUniqueStrings(u1),
-                    Matchers.containsInAnyOrder(
-                            endsWith("20130101.BrO.DUMMY.nc"), endsWith("20130108.BrO.DUMMY.nc")));
+                    Matchers.containsInAnyOrder(endsWith("20130101.BrO.DUMMY.nc"), endsWith("20130108.BrO.DUMMY.nc")));
 
             final SimpleFeatureCollection no2 = store.getFeatureSource("NO2").getFeatures();
             assertEquals(2, no2.size());
@@ -493,8 +463,7 @@ public class H2MigratorTest {
             no2.accepts(u2, null);
             assertThat(
                     getUniqueStrings(u2),
-                    Matchers.containsInAnyOrder(
-                            endsWith("20130101.NO2.DUMMY.nc"), endsWith("20130108.NO2.DUMMY.nc")));
+                    Matchers.containsInAnyOrder(endsWith("20130101.NO2.DUMMY.nc"), endsWith("20130108.NO2.DUMMY.nc")));
 
         } finally {
             store.dispose();
@@ -535,8 +504,7 @@ public class H2MigratorTest {
         genericMosaicLoadAndRead(testUrl);
     }
 
-    public void assertCoveragePropertiesUpdate(File testDir, String[] coverageNames)
-            throws IOException {
+    public void assertCoveragePropertiesUpdate(File testDir, String[] coverageNames) throws IOException {
         for (String coverage : coverageNames) {
             File coverageConfigFile = new File(testDir, coverage + ".properties");
             Properties properties1 = new Properties();

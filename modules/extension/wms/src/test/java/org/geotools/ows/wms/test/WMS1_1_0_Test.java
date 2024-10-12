@@ -73,10 +73,10 @@ public class WMS1_1_0_Test {
                     new URL("http://dev1.dmsolutions.ca/cgi-bin/mswms_gmap?"));
             assertNull(capabilities.getService().getKeywordList());
 
-            assertEquals(capabilities.getRequest().getGetCapabilities().getFormats().size(), 1);
             assertEquals(
-                    capabilities.getRequest().getGetCapabilities().getFormats().get(0),
-                    "application/vnd.ogc.wms_xml");
+                    capabilities.getRequest().getGetCapabilities().getFormats().size(), 1);
+            assertEquals(
+                    capabilities.getRequest().getGetCapabilities().getFormats().get(0), "application/vnd.ogc.wms_xml");
             assertEquals(
                     capabilities.getRequest().getGetCapabilities().getGet(),
                     new URL("http://dev1.dmsolutions.ca/cgi-bin/mswms_gmap?"));
@@ -95,15 +95,14 @@ public class WMS1_1_0_Test {
                     capabilities.getRequest().getGetMap().getPost(),
                     new URL("http://dev1.dmsolutions.ca/cgi-bin/mswms_gmap?"));
 
-            assertEquals(capabilities.getRequest().getGetFeatureInfo().getFormats().size(), 3);
             assertEquals(
-                    capabilities.getRequest().getGetFeatureInfo().getFormats().get(0),
-                    "text/plain");
+                    capabilities.getRequest().getGetFeatureInfo().getFormats().size(), 3);
+            assertEquals(
+                    capabilities.getRequest().getGetFeatureInfo().getFormats().get(0), "text/plain");
             assertEquals(
                     capabilities.getRequest().getGetFeatureInfo().getFormats().get(1), "text/html");
             assertEquals(
-                    capabilities.getRequest().getGetFeatureInfo().getFormats().get(2),
-                    "application/vnd.ogc.gml");
+                    capabilities.getRequest().getGetFeatureInfo().getFormats().get(2), "application/vnd.ogc.gml");
 
             assertEquals(capabilities.getLayerList().size(), 12);
 
@@ -152,8 +151,7 @@ public class WMS1_1_0_Test {
             assertEquals(layer2.getName(), "park");
             assertEquals(layer2.getTitle(), "Parks");
 
-            validateBoundingBox(
-                    layer2.getLatLonBoundingBox(), -173.433, 41.4271, -13.3643, 83.7466);
+            validateBoundingBox(layer2.getLatLonBoundingBox(), -173.433, 41.4271, -13.3643, 83.7466);
 
             assertTrue(layer2.getSrs().contains("EPSG:42304"));
             assertTrue(layer2.isQueryable());
@@ -185,8 +183,7 @@ public class WMS1_1_0_Test {
             URL getCapsURL = getCaps.toURI().toURL();
             Map<String, Object> hints = new HashMap<>();
             hints.put(DocumentHandler.DEFAULT_NAMESPACE_HINT_KEY, WMSSchema.getInstance());
-            Object object =
-                    DocumentFactory.getInstance(getCapsURL.openStream(), hints, Level.WARNING);
+            Object object = DocumentFactory.getInstance(getCapsURL.openStream(), hints, Level.WARNING);
 
             SchemaFactory.getInstance(WMSSchema.NAMESPACE);
 
@@ -204,8 +201,7 @@ public class WMS1_1_0_Test {
         }
     }
 
-    protected void validateBoundingBox(
-            CRSEnvelope llbbox, double minX, double minY, double maxX, double maxY) {
+    protected void validateBoundingBox(CRSEnvelope llbbox, double minX, double minY, double maxX, double maxY) {
         assertNotNull(llbbox);
         assertEquals(llbbox.getMinX(), minX, 0.0);
         assertEquals(llbbox.getMinY(), minY, 0.0);

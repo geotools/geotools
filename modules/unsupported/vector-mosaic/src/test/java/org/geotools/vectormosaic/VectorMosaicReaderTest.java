@@ -39,15 +39,11 @@ public class VectorMosaicReaderTest extends VectorMosaicTest {
 
     @Test
     public void testDelegateGeomFieldNameDifferentFromGranule() throws Exception {
-        SimpleFeatureSource featureSource =
-                MOSAIC_STORE_FROM_PROPERTIES.getFeatureSource(MOSAIC_PROPERTIES_TYPE_NAME);
+        SimpleFeatureSource featureSource = MOSAIC_STORE_FROM_PROPERTIES.getFeatureSource(MOSAIC_PROPERTIES_TYPE_NAME);
         Query q = new Query();
-        Filter intersects =
-                FF.intersects(
-                        FF.property("the_geom"),
-                        FF.literal(
-                                new ReferencedEnvelope(
-                                        -82, 36, -76, 40, DefaultGeographicCRS.WGS84)));
+        Filter intersects = FF.intersects(
+                FF.property("the_geom"),
+                FF.literal(new ReferencedEnvelope(-82, 36, -76, 40, DefaultGeographicCRS.WGS84)));
         q.setFilter(intersects);
         SimpleFeatureCollection fc = featureSource.getFeatures(q);
         try (SimpleFeatureIterator iterator = fc.features(); ) {
@@ -80,12 +76,8 @@ public class VectorMosaicReaderTest extends VectorMosaicTest {
             }
             assertEquals(1, count);
         }
-        assertEquals(
-                Filter.INCLUDE,
-                ((VectorMosaicFeatureSource) featureSource).filterTracker.getGranuleFilter());
-        assertNotEquals(
-                Filter.INCLUDE,
-                ((VectorMosaicFeatureSource) featureSource).filterTracker.getDelegateFilter());
+        assertEquals(Filter.INCLUDE, ((VectorMosaicFeatureSource) featureSource).filterTracker.getGranuleFilter());
+        assertNotEquals(Filter.INCLUDE, ((VectorMosaicFeatureSource) featureSource).filterTracker.getDelegateFilter());
         // only one index hit so only one granule checked
         assertEquals(1, tracker.getGranuleNames().size());
     }
@@ -112,12 +104,8 @@ public class VectorMosaicReaderTest extends VectorMosaicTest {
             }
             assertEquals(1, count);
         }
-        assertEquals(
-                Filter.INCLUDE,
-                ((VectorMosaicFeatureSource) featureSource).filterTracker.getDelegateFilter());
-        assertNotEquals(
-                Filter.INCLUDE,
-                ((VectorMosaicFeatureSource) featureSource).filterTracker.getGranuleFilter());
+        assertEquals(Filter.INCLUDE, ((VectorMosaicFeatureSource) featureSource).filterTracker.getDelegateFilter());
+        assertNotEquals(Filter.INCLUDE, ((VectorMosaicFeatureSource) featureSource).filterTracker.getGranuleFilter());
         // all indexes are hit, so all granules are checked
         assertEquals(3, tracker.getGranuleNames().size());
         // we access the granules more times than we instantiate the datastore, avoiding redundant
@@ -150,12 +138,8 @@ public class VectorMosaicReaderTest extends VectorMosaicTest {
             }
             assertEquals(1, count);
         }
-        assertNotEquals(
-                Filter.INCLUDE,
-                ((VectorMosaicFeatureSource) featureSource).filterTracker.getDelegateFilter());
-        assertNotEquals(
-                Filter.INCLUDE,
-                ((VectorMosaicFeatureSource) featureSource).filterTracker.getGranuleFilter());
+        assertNotEquals(Filter.INCLUDE, ((VectorMosaicFeatureSource) featureSource).filterTracker.getDelegateFilter());
+        assertNotEquals(Filter.INCLUDE, ((VectorMosaicFeatureSource) featureSource).filterTracker.getGranuleFilter());
         // only one index hit and only one granule checked
         assertEquals(1, tracker.getGranuleNames().size());
     }
@@ -182,12 +166,8 @@ public class VectorMosaicReaderTest extends VectorMosaicTest {
             }
             assertEquals(0, count);
         }
-        assertNotEquals(
-                Filter.INCLUDE,
-                ((VectorMosaicFeatureSource) featureSource).filterTracker.getDelegateFilter());
-        assertNotEquals(
-                Filter.INCLUDE,
-                ((VectorMosaicFeatureSource) featureSource).filterTracker.getGranuleFilter());
+        assertNotEquals(Filter.INCLUDE, ((VectorMosaicFeatureSource) featureSource).filterTracker.getDelegateFilter());
+        assertNotEquals(Filter.INCLUDE, ((VectorMosaicFeatureSource) featureSource).filterTracker.getGranuleFilter());
         // No granules are checked because the index filter doesn't match
         assertEquals(0, tracker.getGranuleNames().size());
     }
@@ -200,8 +180,7 @@ public class VectorMosaicReaderTest extends VectorMosaicTest {
         finder.granuleTracker = tracker;
 
         Query q = new Query();
-        Filter fBbox =
-                FF.bbox("the_geom", -271.40625, -136.40625, 271.40625, 136.40625, "EPSG:4326");
+        Filter fBbox = FF.bbox("the_geom", -271.40625, -136.40625, 271.40625, 136.40625, "EPSG:4326");
         // tractorid is in the granule, not in the index
         Filter qequals = FF.equals(FF.property("tractorid"), FF.literal("deere2"));
 
@@ -218,12 +197,8 @@ public class VectorMosaicReaderTest extends VectorMosaicTest {
             }
             assertEquals(1, count);
         }
-        assertNotEquals(
-                Filter.INCLUDE,
-                ((VectorMosaicFeatureSource) featureSource).filterTracker.getDelegateFilter());
-        assertNotEquals(
-                Filter.INCLUDE,
-                ((VectorMosaicFeatureSource) featureSource).filterTracker.getGranuleFilter());
+        assertNotEquals(Filter.INCLUDE, ((VectorMosaicFeatureSource) featureSource).filterTracker.getDelegateFilter());
+        assertNotEquals(Filter.INCLUDE, ((VectorMosaicFeatureSource) featureSource).filterTracker.getGranuleFilter());
         // all indexes are hit, so all granules are checked
         assertEquals(3, tracker.getGranuleNames().size());
     }
@@ -236,8 +211,7 @@ public class VectorMosaicReaderTest extends VectorMosaicTest {
         finder.granuleTracker = tracker;
 
         Query q = new Query();
-        Filter fBbox =
-                FF.bbox("the_geom", -271.40625, -136.40625, 271.40625, 136.40625, "EPSG:4326");
+        Filter fBbox = FF.bbox("the_geom", -271.40625, -136.40625, 271.40625, 136.40625, "EPSG:4326");
         // tractorid is in the granule, not in the index
         Filter qequals = FF.like(FF.property("tractorid"), "deere*");
 
@@ -253,12 +227,8 @@ public class VectorMosaicReaderTest extends VectorMosaicTest {
             }
             assertEquals(3, count);
         }
-        assertNotEquals(
-                Filter.INCLUDE,
-                ((VectorMosaicFeatureSource) featureSource).filterTracker.getDelegateFilter());
-        assertNotEquals(
-                Filter.INCLUDE,
-                ((VectorMosaicFeatureSource) featureSource).filterTracker.getGranuleFilter());
+        assertNotEquals(Filter.INCLUDE, ((VectorMosaicFeatureSource) featureSource).filterTracker.getDelegateFilter());
+        assertNotEquals(Filter.INCLUDE, ((VectorMosaicFeatureSource) featureSource).filterTracker.getGranuleFilter());
         // all indexes are hit, so all granules are checked
         assertEquals(3, tracker.getGranuleNames().size());
     }

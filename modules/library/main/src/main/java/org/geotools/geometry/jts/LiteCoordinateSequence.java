@@ -43,8 +43,7 @@ import org.locationtech.jts.geom.impl.PackedCoordinateSequence;
  */
 public class LiteCoordinateSequence extends PackedCoordinateSequence implements Cloneable {
 
-    private static final GeometryFactory geomFac =
-            new GeometryFactory(new LiteCoordinateSequenceFactory());
+    private static final GeometryFactory geomFac = new GeometryFactory(new LiteCoordinateSequenceFactory());
 
     /** The packed coordinate array */
     private double[] coords;
@@ -69,11 +68,9 @@ public class LiteCoordinateSequence extends PackedCoordinateSequence implements 
     /** Private initializer, allows sharing code between constructors */
     void init(double[] coords, int dimensions) {
         this.dimension = dimensions;
-        if (dimensions < 2)
-            throw new IllegalArgumentException("Invalid dimensions, must be at least 2");
+        if (dimensions < 2) throw new IllegalArgumentException("Invalid dimensions, must be at least 2");
         if (coords.length % dimension != 0) {
-            throw new IllegalArgumentException(
-                    "Packed array does not contain an integral number of coordinates");
+            throw new IllegalArgumentException("Packed array does not contain an integral number of coordinates");
         }
         this.coords = coords;
         this.size = coords.length / dimensions;
@@ -371,8 +368,7 @@ public class LiteCoordinateSequence extends PackedCoordinateSequence implements 
     }
 
     private static final Geometry cloneGeometry(Point geom, int dimension) {
-        return geomFac.createPoint(
-                new LiteCoordinateSequence(geom.getCoordinateSequence(), dimension));
+        return geomFac.createPoint(new LiteCoordinateSequence(geom.getCoordinateSequence(), dimension));
     }
 
     private static final Geometry cloneGeometry(LineString geom, int dimension) {
@@ -393,8 +389,7 @@ public class LiteCoordinateSequence extends PackedCoordinateSequence implements 
             }
             return new CompoundCurve(clonedComponents, geomFac, dimension);
         } else {
-            return geomFac.createLineString(
-                    new LiteCoordinateSequence(geom.getCoordinateSequence(), dimension));
+            return geomFac.createLineString(new LiteCoordinateSequence(geom.getCoordinateSequence(), dimension));
         }
     }
 
@@ -416,8 +411,7 @@ public class LiteCoordinateSequence extends PackedCoordinateSequence implements 
             }
             return new CompoundRing(clonedComponents, geomFac, dimension);
         } else {
-            return geomFac.createLinearRing(
-                    new LiteCoordinateSequence(geom.getCoordinateSequence(), dimension));
+            return geomFac.createLinearRing(new LiteCoordinateSequence(geom.getCoordinateSequence(), dimension));
         }
     }
 

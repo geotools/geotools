@@ -40,8 +40,7 @@ public class FileChannelDecorator extends FileChannel implements ReadableByteCha
     private final FileWriter writer;
     private boolean closed;
 
-    public FileChannelDecorator(
-            FileChannel channel, ShpFiles shapefileFiles, URL url, FileReader requestor) {
+    public FileChannelDecorator(FileChannel channel, ShpFiles shapefileFiles, URL url, FileReader requestor) {
         this.wrapped = channel;
         this.shapefileFiles = shapefileFiles;
         this.url = url;
@@ -50,8 +49,7 @@ public class FileChannelDecorator extends FileChannel implements ReadableByteCha
         this.closed = false;
     }
 
-    public FileChannelDecorator(
-            FileChannel channel, ShpFiles shapefileFiles, URL url, FileWriter requestor) {
+    public FileChannelDecorator(FileChannel channel, ShpFiles shapefileFiles, URL url, FileWriter requestor) {
         this.wrapped = channel;
         this.shapefileFiles = shapefileFiles;
         this.url = url;
@@ -106,14 +104,12 @@ public class FileChannelDecorator extends FileChannel implements ReadableByteCha
     }
 
     @Override
-    public long transferFrom(ReadableByteChannel src, long position, long count)
-            throws IOException {
+    public long transferFrom(ReadableByteChannel src, long position, long count) throws IOException {
         return wrapped.transferFrom(src, position, count);
     }
 
     @Override
-    public long transferTo(long position, long count, WritableByteChannel target)
-            throws IOException {
+    public long transferTo(long position, long count, WritableByteChannel target) throws IOException {
         return wrapped.transferTo(position, count, target);
     }
 

@@ -141,9 +141,8 @@ public class GeometryTransformationTest {
 
         // setup a point layer with the right geometry trnasformation
         Style style = SLD.createPointStyle("circle", Color.BLUE, Color.BLUE, 1f, 10f);
-        PointSymbolizer ps =
-                (PointSymbolizer)
-                        style.featureTypeStyles().get(0).rules().get(0).symbolizers().get(0);
+        PointSymbolizer ps = (PointSymbolizer)
+                style.featureTypeStyles().get(0).rules().get(0).symbolizers().get(0);
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         ps.setGeometry(ff.function("convert", ff.property("wkt"), ff.literal(Point.class)));
 
@@ -157,8 +156,7 @@ public class GeometryTransformationTest {
         StreamingRenderer renderer = new StreamingRenderer();
         Graphics2D graphics = bi.createGraphics();
         renderer.setMapContent(map);
-        renderer.paint(
-                graphics, new Rectangle(100, 100), new ReferencedEnvelope(0, 10, 0, 10, null));
+        renderer.paint(graphics, new Rectangle(100, 100), new ReferencedEnvelope(0, 10, 0, 10, null));
         graphics.dispose();
         map.dispose();
 

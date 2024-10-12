@@ -76,8 +76,7 @@ public interface HTTPClient {
      * @param headers a list of custom headers to add to the request.
      * @return the {@link HTTPResponse} encapsulating the response to the HTTP POST request
      */
-    default HTTPResponse post(
-            URL url, InputStream postContent, String postContentType, Map<String, String> headers)
+    default HTTPResponse post(URL url, InputStream postContent, String postContentType, Map<String, String> headers)
             throws IOException {
         return post(url, postContent, postContentType);
     }

@@ -125,8 +125,7 @@ public class MemoryFeatureCollectionTest extends DataTestCase {
         assertEquals(roads.size(), count);
 
         count = 0;
-        try (FilteredIterator<SimpleFeature> filteredIterator =
-                new FilteredIterator<>(roads, rd12Filter)) {
+        try (FilteredIterator<SimpleFeature> filteredIterator = new FilteredIterator<>(roads, rd12Filter)) {
             while (filteredIterator.hasNext()) {
                 @SuppressWarnings("unused")
                 SimpleFeature feature = filteredIterator.next();

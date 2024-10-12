@@ -42,15 +42,12 @@ public class ReprojectFeatureResultsTest extends FeatureCollectionWrapperTestSup
     @Before
     public void setUp() throws Exception {
         super.setUp();
-        target =
-                CRS.parseWKT(
-                        "PROJCS[\"BC_Albers\",GEOGCS[\"GCS_North_American_1983\",DATUM[\"North_American_Datum_1983\",SPHEROID[\"GRS_1980\",6378137,298.257222101],TOWGS84[0,0,0]],PRIMEM[\"Greenwich\",0],UNIT[\"Degree\",0.017453292519943295]],PROJECTION[\"Albers_Conic_Equal_Area\"],PARAMETER[\"False_Easting\",1000000],PARAMETER[\"False_Northing\",0],PARAMETER[\"Central_Meridian\",-126],PARAMETER[\"Standard_Parallel_1\",50],PARAMETER[\"Standard_Parallel_2\",58.5],PARAMETER[\"Latitude_Of_Origin\",45],UNIT[\"Meter\",1],AUTHORITY[\"EPSG\",\"42102\"]]");
+        target = CRS.parseWKT(
+                "PROJCS[\"BC_Albers\",GEOGCS[\"GCS_North_American_1983\",DATUM[\"North_American_Datum_1983\",SPHEROID[\"GRS_1980\",6378137,298.257222101],TOWGS84[0,0,0]],PRIMEM[\"Greenwich\",0],UNIT[\"Degree\",0.017453292519943295]],PROJECTION[\"Albers_Conic_Equal_Area\"],PARAMETER[\"False_Easting\",1000000],PARAMETER[\"False_Northing\",0],PARAMETER[\"Central_Meridian\",-126],PARAMETER[\"Standard_Parallel_1\",50],PARAMETER[\"Standard_Parallel_2\",58.5],PARAMETER[\"Latitude_Of_Origin\",45],UNIT[\"Meter\",1],AUTHORITY[\"EPSG\",\"42102\"]]");
 
-        MathTransform2D tx =
-                (MathTransform2D)
-                        ReferencingFactoryFinder.getCoordinateOperationFactory(null)
-                                .createOperation(crs, target)
-                                .getMathTransform();
+        MathTransform2D tx = (MathTransform2D) ReferencingFactoryFinder.getCoordinateOperationFactory(null)
+                .createOperation(crs, target)
+                .getMathTransform();
         transformer = new GeometryCoordinateSequenceTransformer();
         transformer.setMathTransform(tx);
         transformer.setCoordinateReferenceSystem(target);

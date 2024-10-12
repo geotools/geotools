@@ -29,12 +29,11 @@ import org.geotools.util.factory.Hints;
 public class FilterFunction_IEEEremainder extends FunctionExpressionImpl {
 
     // public static FunctionName NAME = new FunctionNameImpl("IEEEremainder","dividend","divisor");
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "IEEEremainder",
-                    parameter("remainder", Double.class),
-                    parameter("dividend", Number.class),
-                    parameter("divisor", Number.class));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "IEEEremainder",
+            parameter("remainder", Double.class),
+            parameter("dividend", Number.class),
+            parameter("divisor", Number.class));
 
     public FilterFunction_IEEEremainder() {
         super("IEEEremainder");
@@ -50,11 +49,7 @@ public class FilterFunction_IEEEremainder extends FunctionExpressionImpl {
             return null;
         }
 
-        arg0 =
-                Converters.convert(
-                        arg0,
-                        Double.class,
-                        new Hints()); // attempt to get value and perform conversion
+        arg0 = Converters.convert(arg0, Double.class, new Hints()); // attempt to get value and perform conversion
         arg1 = Converters.convert(arg1, Double.class, new Hints());
 
         if (arg0 == null) {

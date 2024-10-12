@@ -55,7 +55,8 @@ public class BinaryOperatorTypeBindingTest extends FilterTestSupport {
 
         assertEquals(
                 2,
-                dom.getElementsByTagNameNS(OGC.NAMESPACE, OGC.Literal.getLocalPart()).getLength());
+                dom.getElementsByTagNameNS(OGC.NAMESPACE, OGC.Literal.getLocalPart())
+                        .getLength());
     }
 
     @Test
@@ -78,7 +79,8 @@ public class BinaryOperatorTypeBindingTest extends FilterTestSupport {
         Document dom = encode(FilterMockData.sub(), OGC.Sub);
         assertEquals(
                 2,
-                dom.getElementsByTagNameNS(OGC.NAMESPACE, OGC.Literal.getLocalPart()).getLength());
+                dom.getElementsByTagNameNS(OGC.NAMESPACE, OGC.Literal.getLocalPart())
+                        .getLength());
     }
 
     @Test
@@ -101,7 +103,8 @@ public class BinaryOperatorTypeBindingTest extends FilterTestSupport {
         Document dom = encode(FilterMockData.div(), OGC.Div);
         assertEquals(
                 2,
-                dom.getElementsByTagNameNS(OGC.NAMESPACE, OGC.Literal.getLocalPart()).getLength());
+                dom.getElementsByTagNameNS(OGC.NAMESPACE, OGC.Literal.getLocalPart())
+                        .getLength());
     }
 
     @Test
@@ -124,6 +127,7 @@ public class BinaryOperatorTypeBindingTest extends FilterTestSupport {
         Document dom = encode(FilterMockData.mul(), OGC.Mul);
         assertEquals(
                 2,
-                dom.getElementsByTagNameNS(OGC.NAMESPACE, OGC.Literal.getLocalPart()).getLength());
+                dom.getElementsByTagNameNS(OGC.NAMESPACE, OGC.Literal.getLocalPart())
+                        .getLength());
     }
 }

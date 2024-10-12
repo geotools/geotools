@@ -40,8 +40,7 @@ public class PointPlacementBuilder extends AbstractStyleBuilder<PointPlacement> 
         if (unset) {
             return null;
         }
-        PointPlacement placement =
-                sf.pointPlacement(anchor.build(), displacement.build(), rotation);
+        PointPlacement placement = sf.pointPlacement(anchor.build(), displacement.build(), rotation);
         if (parent == null) {
             reset();
         }

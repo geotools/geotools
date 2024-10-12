@@ -101,9 +101,7 @@ public class ImagingParameters extends AbstractParameter implements ParameterVal
         super(descriptor);
         if (descriptor.operation instanceof OperationDescriptor) {
             // Parameters with sources
-            parameters =
-                    new ParameterBlockJAI(
-                            (OperationDescriptor) descriptor.operation, descriptor.registryMode);
+            parameters = new ParameterBlockJAI((OperationDescriptor) descriptor.operation, descriptor.registryMode);
         } else {
             // Parameters without sources
             parameters = new ParameterListImpl(descriptor.descriptor);
@@ -171,8 +169,7 @@ public class ImagingParameters extends AbstractParameter implements ParameterVal
         if (enumerated != null) {
             for (String s : enumerated) {
                 if (name.equalsIgnoreCase(s)) {
-                    final EnumeratedParameter[] restrictions =
-                            listDescriptor.getEnumeratedParameterValues(name);
+                    final EnumeratedParameter[] restrictions = listDescriptor.getEnumeratedParameterValues(name);
                     final Set<?> valids = descriptor.getValidValues();
                     if (valids == null || !Arrays.asList(restrictions).containsAll(valids)) {
                         return false;
@@ -193,8 +190,7 @@ public class ImagingParameters extends AbstractParameter implements ParameterVal
      *     array should be discarted.
      */
     private GeneralParameterValue[] createElements() {
-        final ImagingParameterDescriptors descriptor =
-                (ImagingParameterDescriptors) this.descriptor;
+        final ImagingParameterDescriptors descriptor = (ImagingParameterDescriptors) this.descriptor;
         final ParameterListDescriptor listDescriptor = parameters.getParameterListDescriptor();
         final String[] names = listDescriptor.getParamNames();
         final Class[] types = listDescriptor.getParamClasses();
@@ -233,9 +229,7 @@ public class ImagingParameters extends AbstractParameter implements ParameterVal
                     if (AbstractIdentifiedObject.nameMatches(d, name)) {
                         final Object arg0 = d.getName().getCode();
                         throw new InvalidParameterNameException(
-                                MessageFormat.format(
-                                        ErrorKeys.PARAMETER_NAME_CLASH_$4, arg0, j, name, i),
-                                name);
+                                MessageFormat.format(ErrorKeys.PARAMETER_NAME_CLASH_$4, arg0, j, name, i), name);
                     }
                 }
             }
@@ -261,8 +255,7 @@ public class ImagingParameters extends AbstractParameter implements ParameterVal
         if (values == null) {
             createElements();
         }
-        assert ((ParameterDescriptorGroup) descriptor).descriptors().size() == values.size()
-                : values;
+        assert ((ParameterDescriptorGroup) descriptor).descriptors().size() == values.size() : values;
         return values;
     }
 
@@ -287,8 +280,7 @@ public class ImagingParameters extends AbstractParameter implements ParameterVal
                 return value;
             }
         }
-        throw new ParameterNotFoundException(
-                MessageFormat.format(ErrorKeys.MISSING_PARAMETER_$1, name), name);
+        throw new ParameterNotFoundException(MessageFormat.format(ErrorKeys.MISSING_PARAMETER_$1, name), name);
     }
 
     /**
@@ -297,8 +289,7 @@ public class ImagingParameters extends AbstractParameter implements ParameterVal
      */
     @Override
     public List<ParameterValueGroup> groups(final String name) throws ParameterNotFoundException {
-        throw new ParameterNotFoundException(
-                MessageFormat.format(ErrorKeys.MISSING_PARAMETER_$1, name), name);
+        throw new ParameterNotFoundException(MessageFormat.format(ErrorKeys.MISSING_PARAMETER_$1, name), name);
     }
 
     /**
@@ -307,8 +298,7 @@ public class ImagingParameters extends AbstractParameter implements ParameterVal
      */
     @Override
     public ParameterValueGroup addGroup(final String name) throws ParameterNotFoundException {
-        throw new ParameterNotFoundException(
-                MessageFormat.format(ErrorKeys.MISSING_PARAMETER_$1, name), name);
+        throw new ParameterNotFoundException(MessageFormat.format(ErrorKeys.MISSING_PARAMETER_$1, name), name);
     }
 
     /** Compares the specified object with this parameter group for equality. */

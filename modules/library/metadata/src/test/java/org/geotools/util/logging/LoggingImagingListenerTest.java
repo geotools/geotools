@@ -41,8 +41,7 @@ public class LoggingImagingListenerTest {
         LoggingImagingListener listener = new LoggingImagingListener();
         Throwable thrown = new Throwable("Continuing in pure Java mode");
         try {
-            boolean recoverySuccess =
-                    listener.errorOccurred(thrown.getMessage(), thrown, JAI.class, false);
+            boolean recoverySuccess = listener.errorOccurred(thrown.getMessage(), thrown, JAI.class, false);
             assertFalse(recoverySuccess);
         } catch (Throwable ignore) {
             // expected

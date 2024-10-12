@@ -302,35 +302,31 @@ public class MonolineFormatter extends Formatter {
         String logger = record.getLoggerName();
         String classname = record.getSourceClassName();
         switch (sourceFormat) {
-            case LOGGER_SHORT:
-                {
-                    int pos = logger.lastIndexOf('.');
-                    if (pos >= 0) {
-                        logger = logger.substring(pos);
-                    }
-                    // fall through
+            case LOGGER_SHORT: {
+                int pos = logger.lastIndexOf('.');
+                if (pos >= 0) {
+                    logger = logger.substring(pos);
                 }
-            case LOGGER_LONG:
-                {
-                    buffer.append(' ');
-                    buffer.append(logger);
-                    break;
+                // fall through
+            }
+            case LOGGER_LONG: {
+                buffer.append(' ');
+                buffer.append(logger);
+                break;
+            }
+            case CLASS_SHORT: {
+                int dot = classname.lastIndexOf('.');
+                if (dot >= 0) {
+                    classname = classname.substring(dot + 1);
                 }
-            case CLASS_SHORT:
-                {
-                    int dot = classname.lastIndexOf('.');
-                    if (dot >= 0) {
-                        classname = classname.substring(dot + 1);
-                    }
-                    classname = classname.replace('$', '.');
-                    // fall through
-                }
-            case CLASS_LONG:
-                {
-                    buffer.append(' ');
-                    buffer.append(classname);
-                    break;
-                }
+                classname = classname.replace('$', '.');
+                // fall through
+            }
+            case CLASS_LONG: {
+                buffer.append(' ');
+                buffer.append(classname);
+                break;
+            }
         }
         buffer.append(SUFFIX);
         /*
@@ -374,8 +370,7 @@ public class MonolineFormatter extends Formatter {
      * @return The registered {@code MonolineFormatter} (never {@code null}). The formatter output
      *     can be configured using the {@link #setTimeFormat} and {@link #setSourceFormat} methods.
      */
-    public static MonolineFormatter configureConsoleHandler(
-            final Logger logger, final Level level) {
+    public static MonolineFormatter configureConsoleHandler(final Logger logger, final Level level) {
         MonolineFormatter monoline = null;
         boolean foundConsoleHandler = false;
         Handler[] handlers = logger.getHandlers();

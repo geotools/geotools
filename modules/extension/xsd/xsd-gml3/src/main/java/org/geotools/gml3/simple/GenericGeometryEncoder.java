@@ -55,8 +55,7 @@ public class GenericGeometryEncoder extends GeometryEncoder<Geometry> {
         init(encoder, gmlPrefix, gmlUri);
     }
 
-    public GenericGeometryEncoder(
-            Encoder encoder, String gmlPrefix, String gmlUri, boolean encodeGmlId) {
+    public GenericGeometryEncoder(Encoder encoder, String gmlPrefix, String gmlUri, boolean encodeGmlId) {
         super(encoder, encodeGmlId);
         init(encoder, gmlPrefix, gmlUri);
     }
@@ -68,12 +67,10 @@ public class GenericGeometryEncoder extends GeometryEncoder<Geometry> {
     }
 
     @Override
-    public void encode(Geometry geometry, AttributesImpl atts, GMLWriter handler, String parentId)
-            throws Exception {
+    public void encode(Geometry geometry, AttributesImpl atts, GMLWriter handler, String parentId) throws Exception {
 
         if (geometry instanceof LineString) {
-            LineStringEncoder lineString =
-                    new LineStringEncoder(encoder, LineStringEncoder.LINE_STRING);
+            LineStringEncoder lineString = new LineStringEncoder(encoder, LineStringEncoder.LINE_STRING);
             lineString.encode((LineString) geometry, atts, handler, parentId);
         } else if (geometry instanceof Point) {
             PointEncoder pt = new PointEncoder(encoder, gmlPrefix, gmlUri);
@@ -82,8 +79,7 @@ public class GenericGeometryEncoder extends GeometryEncoder<Geometry> {
             PolygonEncoder polygon = new PolygonEncoder(encoder, gmlPrefix, gmlUri);
             polygon.encode((Polygon) geometry, atts, handler, parentId);
         } else if (geometry instanceof MultiLineString) {
-            MultiLineStringEncoder multiLineString =
-                    new MultiLineStringEncoder(encoder, gmlPrefix, gmlUri, true);
+            MultiLineStringEncoder multiLineString = new MultiLineStringEncoder(encoder, gmlPrefix, gmlUri, true);
             multiLineString.encode(geometry, atts, handler, parentId);
         } else if (geometry instanceof MultiPoint) {
             MultiPointEncoder multiPoint = new MultiPointEncoder(encoder, gmlPrefix, gmlUri);

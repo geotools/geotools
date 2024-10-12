@@ -85,8 +85,7 @@ public final class CoordinateHandlerFinder {
     private static FactoryRegistry getServiceRegistry() {
         assert Thread.holdsLock(CoordinateHandlerFinder.class);
         if (registry == null) {
-            registry =
-                    new FactoryCreator(Arrays.asList(new Class<?>[] {CoordinateHandlerSpi.class}));
+            registry = new FactoryCreator(Arrays.asList(new Class<?>[] {CoordinateHandlerSpi.class}));
         }
         return registry;
     }

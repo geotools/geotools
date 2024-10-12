@@ -38,8 +38,7 @@ public class VPFFileFeatureSource extends VPFFeatureSource {
     }
 
     @Override
-    protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query)
-            throws IOException {
+    protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query) throws IOException {
         VPFFileStore vpf = (VPFFileStore) this.getDataStore();
         String typeName = this.entry.getTypeName();
         VPFFile file = vpf.getFile(typeName);

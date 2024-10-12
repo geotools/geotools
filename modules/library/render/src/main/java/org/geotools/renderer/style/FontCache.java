@@ -43,8 +43,7 @@ import java.util.logging.Logger;
  */
 public class FontCache {
     /** The logger for the rendering module. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(FontCache.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(FontCache.class);
 
     static volatile FontCache defaultInstance;
 
@@ -140,9 +139,7 @@ public class FontCache {
     }
 
     private static InputStream getInputStream(String fontUrl) {
-        if (fontUrl.startsWith("http")
-                || fontUrl.startsWith("file:")
-                || fontUrl.startsWith("jar:")) {
+        if (fontUrl.startsWith("http") || fontUrl.startsWith("file:") || fontUrl.startsWith("jar:")) {
             try {
                 URL url = new URL(fontUrl);
                 return url.openStream();

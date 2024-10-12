@@ -89,14 +89,8 @@ public final class MetadataStandardTest {
 
         // Note: AbstractCollection do not defines hashCode(); we have to wraps in a HashSet.
         final int hashCode = citation.hashCode();
-        assertEquals(
-                "hashCode() should be as in a Set.",
-                hashCode,
-                new HashSet<>(map.values()).hashCode());
-        assertEquals(
-                "hashCode() should be as in a Set.",
-                hashCode,
-                new HashSet<>(copy.values()).hashCode());
+        assertEquals("hashCode() should be as in a Set.", hashCode, new HashSet<>(map.values()).hashCode());
+        assertEquals("hashCode() should be as in a Set.", hashCode, new HashSet<>(copy.values()).hashCode());
 
         map.remove("identifiers");
         final int newHashCode = citation.hashCode();

@@ -34,19 +34,18 @@ public class PolygonGraphGeneratorTest {
 
     @Before
     public void setUp() throws Exception {
-        PolygonGraphGenerator.PolygonRelationship rel =
-                new PolygonGraphGenerator.PolygonRelationship() {
+        PolygonGraphGenerator.PolygonRelationship rel = new PolygonGraphGenerator.PolygonRelationship() {
 
-                    @Override
-                    public boolean related(Polygon p1, Polygon p2) {
-                        return p1.intersects(p2);
-                    }
+            @Override
+            public boolean related(Polygon p1, Polygon p2) {
+                return p1.intersects(p2);
+            }
 
-                    @Override
-                    public boolean equal(Polygon p1, Polygon p2) {
-                        return p1.equalsTopo(p2);
-                    }
-                };
+            @Override
+            public boolean equal(Polygon p1, Polygon p2) {
+                return p1.equalsTopo(p2);
+            }
+        };
 
         gg = new PolygonGraphGenerator(new BasicGraphBuilder(), rel);
     }
@@ -106,9 +105,7 @@ public class PolygonGraphGeneratorTest {
         while (tokens.hasMoreTokens()) {
             String token = tokens.nextToken();
             String[] oordinates = token.split(" ");
-            c[i++] =
-                    new Coordinate(
-                            Double.parseDouble(oordinates[0]), Double.parseDouble(oordinates[1]));
+            c[i++] = new Coordinate(Double.parseDouble(oordinates[0]), Double.parseDouble(oordinates[1]));
         }
 
         return gf.createPolygon(gf.createLinearRing(c), null);

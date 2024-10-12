@@ -37,8 +37,7 @@ public class HexagonBuilder extends PolygonBuilder {
     private int xIndex = 0;
     private int yIndex = 0;
 
-    public HexagonBuilder(
-            ReferencedEnvelope gridBounds, double sideLen, HexagonOrientation orientation) {
+    public HexagonBuilder(ReferencedEnvelope gridBounds, double sideLen, HexagonOrientation orientation) {
         super(gridBounds);
         this.sideLen = sideLen;
         this.orientation = orientation;
@@ -112,9 +111,7 @@ public class HexagonBuilder extends PolygonBuilder {
 
         if (!isValidNeighbor(neighbor)) {
             throw new IllegalArgumentException(
-                    neighbor
-                            + " is not a valid neighbour position for orientation "
-                            + hexagon.getOrientation());
+                    neighbor + " is not a valid neighbour position for orientation " + hexagon.getOrientation());
         }
 
         ReferencedEnvelope bounds = hexagon.getBounds();

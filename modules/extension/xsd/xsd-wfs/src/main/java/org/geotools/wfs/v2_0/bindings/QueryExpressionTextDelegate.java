@@ -38,8 +38,7 @@ public class QueryExpressionTextDelegate extends CopyingHandler implements Parse
     }
 
     @Override
-    public void startElement(String uri, String localName, String qName, Attributes attributes)
-            throws SAXException {
+    public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
 
         if (QueryExpressionText.getLocalPart().equals(localName)) {
             // root element
@@ -83,8 +82,7 @@ public class QueryExpressionTextDelegate extends CopyingHandler implements Parse
     }
 
     @Override
-    public boolean canHandle(
-            QName elementName, Attributes attributes, Handler handler, Handler parent) {
+    public boolean canHandle(QName elementName, Attributes attributes, Handler handler, Handler parent) {
         return canHandle(elementName);
     }
 

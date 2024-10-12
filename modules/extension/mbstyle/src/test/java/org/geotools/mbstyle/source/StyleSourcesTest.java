@@ -132,8 +132,7 @@ public class StyleSourcesTest {
         assertEquals(14, vector.getMaxZoom().intValue());
         assertEquals(
                 Arrays.asList(
-                        "http://a.example.com/tiles/{z}/{x}/{y}.pbf",
-                        "http://b.example.com/tiles/{z}/{x}/{y}.pbf"),
+                        "http://a.example.com/tiles/{z}/{x}/{y}.pbf", "http://b.example.com/tiles/{z}/{x}/{y}.pbf"),
                 vector.getTiles());
     }
 

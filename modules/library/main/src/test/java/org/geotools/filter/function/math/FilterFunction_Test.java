@@ -56,18 +56,10 @@ public class FilterFunction_Test {
         literal_pi = ff.literal(String.valueOf(Math.PI));
         literal_05pi = ff.literal(String.valueOf(0.5 * Math.PI));
         literal_null = ff.literal(null);
+        Assert.assertEquals("Literal Expression 0.0", Double.valueOf(1.0), literal_1.evaluate(null, Double.class));
+        Assert.assertEquals("Literal Expression pi", Double.valueOf(Math.PI), literal_pi.evaluate(null, Double.class));
         Assert.assertEquals(
-                "Literal Expression 0.0",
-                Double.valueOf(1.0),
-                literal_1.evaluate(null, Double.class));
-        Assert.assertEquals(
-                "Literal Expression pi",
-                Double.valueOf(Math.PI),
-                literal_pi.evaluate(null, Double.class));
-        Assert.assertEquals(
-                "Literal Expression 05pi",
-                Double.valueOf(0.5 * Math.PI),
-                literal_05pi.evaluate(null, Double.class));
+                "Literal Expression 05pi", Double.valueOf(0.5 * Math.PI), literal_05pi.evaluate(null, Double.class));
     }
 
     @After
@@ -84,56 +76,36 @@ public class FilterFunction_Test {
             Function sinFunction = ff.function("sin", literal_1);
             double good0 = Math.sin(1.0);
             if (Double.isNaN(good0)) {
-                Assert.assertTrue(
-                        "sin of (1.0):",
-                        Double.isNaN(((Double) sinFunction.evaluate(null)).doubleValue()));
+                Assert.assertTrue("sin of (1.0):", Double.isNaN(((Double) sinFunction.evaluate(null)).doubleValue()));
             } else {
                 Assert.assertEquals(
-                        "sin of (1.0):",
-                        Math.sin(1.0),
-                        ((Double) sinFunction.evaluate(null)).doubleValue(),
-                        0.00001);
+                        "sin of (1.0):", Math.sin(1.0), ((Double) sinFunction.evaluate(null)).doubleValue(), 0.00001);
             }
 
             sinFunction = ff.function("sin", literal_m1);
             double good1 = Math.sin(-1.0);
             if (Double.isNaN(good1)) {
-                Assert.assertTrue(
-                        "sin of (-1.0):",
-                        Double.isNaN(((Double) sinFunction.evaluate(null)).doubleValue()));
+                Assert.assertTrue("sin of (-1.0):", Double.isNaN(((Double) sinFunction.evaluate(null)).doubleValue()));
             } else {
                 Assert.assertEquals(
-                        "sin of (-1.0):",
-                        Math.sin(-1.0),
-                        ((Double) sinFunction.evaluate(null)).doubleValue(),
-                        0.00001);
+                        "sin of (-1.0):", Math.sin(-1.0), ((Double) sinFunction.evaluate(null)).doubleValue(), 0.00001);
             }
             sinFunction = ff.function("sin", literal_2);
             double good2 = Math.sin(2.0);
             if (Double.isNaN(good2)) {
-                Assert.assertTrue(
-                        "sin of (2.0):",
-                        Double.isNaN(((Double) sinFunction.evaluate(null)).doubleValue()));
+                Assert.assertTrue("sin of (2.0):", Double.isNaN(((Double) sinFunction.evaluate(null)).doubleValue()));
             } else {
                 Assert.assertEquals(
-                        "sin of (2.0):",
-                        Math.sin(2.0),
-                        ((Double) sinFunction.evaluate(null)).doubleValue(),
-                        0.00001);
+                        "sin of (2.0):", Math.sin(2.0), ((Double) sinFunction.evaluate(null)).doubleValue(), 0.00001);
             }
 
             sinFunction = ff.function("sin", literal_m2);
             double good3 = Math.sin(-2.0);
             if (Double.isNaN(good3)) {
-                Assert.assertTrue(
-                        "sin of (-2.0):",
-                        Double.isNaN(((Double) sinFunction.evaluate(null)).doubleValue()));
+                Assert.assertTrue("sin of (-2.0):", Double.isNaN(((Double) sinFunction.evaluate(null)).doubleValue()));
             } else {
                 Assert.assertEquals(
-                        "sin of (-2.0):",
-                        Math.sin(-2.0),
-                        ((Double) sinFunction.evaluate(null)).doubleValue(),
-                        0.00001);
+                        "sin of (-2.0):", Math.sin(-2.0), ((Double) sinFunction.evaluate(null)).doubleValue(), 0.00001);
             }
 
             sinFunction = ff.function("sin", literal_pi);
@@ -178,8 +150,7 @@ public class FilterFunction_Test {
         try {
 
             FilterFunction_cos cos =
-                    (FilterFunction_cos)
-                            ff.function("cos", org.geotools.api.filter.expression.Expression.NIL);
+                    (FilterFunction_cos) ff.function("cos", org.geotools.api.filter.expression.Expression.NIL);
             Assert.assertEquals("Name is, ", "cos", cos.getName());
             Assert.assertEquals(
                     "Number of arguments, ", 1, cos.getFunctionName().getArgumentCount());
@@ -187,57 +158,37 @@ public class FilterFunction_Test {
             Function cosFunction = ff.function("cos", literal_1);
             double good0 = Math.cos(1.0);
             if (Double.isNaN(good0)) {
-                Assert.assertTrue(
-                        "cos of (1.0):",
-                        Double.isNaN(((Double) cosFunction.evaluate(null)).doubleValue()));
+                Assert.assertTrue("cos of (1.0):", Double.isNaN(((Double) cosFunction.evaluate(null)).doubleValue()));
             } else {
                 Assert.assertEquals(
-                        "cos of (1.0):",
-                        Math.cos(1.0),
-                        ((Double) cosFunction.evaluate(null)).doubleValue(),
-                        0.00001);
+                        "cos of (1.0):", Math.cos(1.0), ((Double) cosFunction.evaluate(null)).doubleValue(), 0.00001);
             }
 
             cosFunction = ff.function("cos", literal_m1);
             double good1 = Math.cos(-1.0);
             if (Double.isNaN(good1)) {
-                Assert.assertTrue(
-                        "cos of (-1.0):",
-                        Double.isNaN(((Double) cosFunction.evaluate(null)).doubleValue()));
+                Assert.assertTrue("cos of (-1.0):", Double.isNaN(((Double) cosFunction.evaluate(null)).doubleValue()));
             } else {
                 Assert.assertEquals(
-                        "cos of (-1.0):",
-                        Math.cos(-1.0),
-                        ((Double) cosFunction.evaluate(null)).doubleValue(),
-                        0.00001);
+                        "cos of (-1.0):", Math.cos(-1.0), ((Double) cosFunction.evaluate(null)).doubleValue(), 0.00001);
             }
 
             cosFunction = ff.function("cos", literal_2);
             double good2 = Math.cos(2.0);
             if (Double.isNaN(good2)) {
-                Assert.assertTrue(
-                        "cos of (2.0):",
-                        Double.isNaN(((Double) cosFunction.evaluate(null)).doubleValue()));
+                Assert.assertTrue("cos of (2.0):", Double.isNaN(((Double) cosFunction.evaluate(null)).doubleValue()));
             } else {
                 Assert.assertEquals(
-                        "cos of (2.0):",
-                        Math.cos(2.0),
-                        ((Double) cosFunction.evaluate(null)).doubleValue(),
-                        0.00001);
+                        "cos of (2.0):", Math.cos(2.0), ((Double) cosFunction.evaluate(null)).doubleValue(), 0.00001);
             }
 
             cosFunction = ff.function("cos", literal_m2);
             double good3 = Math.cos(-2.0);
             if (Double.isNaN(good3)) {
-                Assert.assertTrue(
-                        "cos of (-2.0):",
-                        Double.isNaN(((Double) cosFunction.evaluate(null)).doubleValue()));
+                Assert.assertTrue("cos of (-2.0):", Double.isNaN(((Double) cosFunction.evaluate(null)).doubleValue()));
             } else {
                 Assert.assertEquals(
-                        "cos of (-2.0):",
-                        Math.cos(-2.0),
-                        ((Double) cosFunction.evaluate(null)).doubleValue(),
-                        0.00001);
+                        "cos of (-2.0):", Math.cos(-2.0), ((Double) cosFunction.evaluate(null)).doubleValue(), 0.00001);
             }
 
             cosFunction = ff.function("cos", literal_pi);
@@ -282,8 +233,7 @@ public class FilterFunction_Test {
         try {
 
             FilterFunction_tan tan =
-                    (FilterFunction_tan)
-                            ff.function("tan", org.geotools.api.filter.expression.Expression.NIL);
+                    (FilterFunction_tan) ff.function("tan", org.geotools.api.filter.expression.Expression.NIL);
             Assert.assertEquals("Name is, ", "tan", tan.getName());
             Assert.assertEquals(
                     "Number of arguments, ", 1, tan.getFunctionName().getArgumentCount());
@@ -291,57 +241,37 @@ public class FilterFunction_Test {
             Function tanFunction = ff.function("tan", literal_1);
             double good0 = Math.tan(1.0);
             if (Double.isNaN(good0)) {
-                Assert.assertTrue(
-                        "tan of (1.0):",
-                        Double.isNaN(((Double) tanFunction.evaluate(null)).doubleValue()));
+                Assert.assertTrue("tan of (1.0):", Double.isNaN(((Double) tanFunction.evaluate(null)).doubleValue()));
             } else {
                 Assert.assertEquals(
-                        "tan of (1.0):",
-                        Math.tan(1.0),
-                        ((Double) tanFunction.evaluate(null)).doubleValue(),
-                        0.00001);
+                        "tan of (1.0):", Math.tan(1.0), ((Double) tanFunction.evaluate(null)).doubleValue(), 0.00001);
             }
 
             tanFunction = ff.function("tan", literal_m1);
             double good1 = Math.tan(-1.0);
             if (Double.isNaN(good1)) {
-                Assert.assertTrue(
-                        "tan of (-1.0):",
-                        Double.isNaN(((Double) tanFunction.evaluate(null)).doubleValue()));
+                Assert.assertTrue("tan of (-1.0):", Double.isNaN(((Double) tanFunction.evaluate(null)).doubleValue()));
             } else {
                 Assert.assertEquals(
-                        "tan of (-1.0):",
-                        Math.tan(-1.0),
-                        ((Double) tanFunction.evaluate(null)).doubleValue(),
-                        0.00001);
+                        "tan of (-1.0):", Math.tan(-1.0), ((Double) tanFunction.evaluate(null)).doubleValue(), 0.00001);
             }
 
             tanFunction = ff.function("tan", literal_2);
             double good2 = Math.tan(2.0);
             if (Double.isNaN(good2)) {
-                Assert.assertTrue(
-                        "tan of (2.0):",
-                        Double.isNaN(((Double) tanFunction.evaluate(null)).doubleValue()));
+                Assert.assertTrue("tan of (2.0):", Double.isNaN(((Double) tanFunction.evaluate(null)).doubleValue()));
             } else {
                 Assert.assertEquals(
-                        "tan of (2.0):",
-                        Math.tan(2.0),
-                        ((Double) tanFunction.evaluate(null)).doubleValue(),
-                        0.00001);
+                        "tan of (2.0):", Math.tan(2.0), ((Double) tanFunction.evaluate(null)).doubleValue(), 0.00001);
             }
 
             tanFunction = ff.function("tan", literal_m2);
             double good3 = Math.tan(-2.0);
             if (Double.isNaN(good3)) {
-                Assert.assertTrue(
-                        "tan of (-2.0):",
-                        Double.isNaN(((Double) tanFunction.evaluate(null)).doubleValue()));
+                Assert.assertTrue("tan of (-2.0):", Double.isNaN(((Double) tanFunction.evaluate(null)).doubleValue()));
             } else {
                 Assert.assertEquals(
-                        "tan of (-2.0):",
-                        Math.tan(-2.0),
-                        ((Double) tanFunction.evaluate(null)).doubleValue(),
-                        0.00001);
+                        "tan of (-2.0):", Math.tan(-2.0), ((Double) tanFunction.evaluate(null)).doubleValue(), 0.00001);
             }
 
             tanFunction = ff.function("tan", literal_pi);
@@ -384,12 +314,10 @@ public class FilterFunction_Test {
     @Test
     public void testatan2() {
         try {
-            FilterFunction_atan2 atan2 =
-                    (FilterFunction_atan2)
-                            ff.function(
-                                    "atan2",
-                                    org.geotools.api.filter.expression.Expression.NIL,
-                                    org.geotools.api.filter.expression.Expression.NIL);
+            FilterFunction_atan2 atan2 = (FilterFunction_atan2) ff.function(
+                    "atan2",
+                    org.geotools.api.filter.expression.Expression.NIL,
+                    org.geotools.api.filter.expression.Expression.NIL);
             Assert.assertEquals("Name is, ", "atan2", atan2.getName());
             Assert.assertEquals(
                     "Number of arguments, ", 2, atan2.getFunctionName().getArgumentCount());
@@ -398,8 +326,7 @@ public class FilterFunction_Test {
             double good0 = Math.atan2(1.0, -1.0);
             if (Double.isNaN(good0)) {
                 Assert.assertTrue(
-                        "atan2 of (1.0,-1.0):",
-                        Double.isNaN(((Double) atan2Function.evaluate(null)).doubleValue()));
+                        "atan2 of (1.0,-1.0):", Double.isNaN(((Double) atan2Function.evaluate(null)).doubleValue()));
             } else {
                 Assert.assertEquals(
                         "atan2 of (1.0,-1.0):",
@@ -412,8 +339,7 @@ public class FilterFunction_Test {
             double good1 = Math.atan2(-1.0, 2.0);
             if (Double.isNaN(good1)) {
                 Assert.assertTrue(
-                        "atan2 of (-1.0,2.0):",
-                        Double.isNaN(((Double) atan2Function.evaluate(null)).doubleValue()));
+                        "atan2 of (-1.0,2.0):", Double.isNaN(((Double) atan2Function.evaluate(null)).doubleValue()));
             } else {
                 Assert.assertEquals(
                         "atan2 of (-1.0,2.0):",
@@ -426,8 +352,7 @@ public class FilterFunction_Test {
             double good2 = Math.atan2(2.0, -2.0);
             if (Double.isNaN(good2)) {
                 Assert.assertTrue(
-                        "atan2 of (2.0,-2.0):",
-                        Double.isNaN(((Double) atan2Function.evaluate(null)).doubleValue()));
+                        "atan2 of (2.0,-2.0):", Double.isNaN(((Double) atan2Function.evaluate(null)).doubleValue()));
             } else {
                 Assert.assertEquals(
                         "atan2 of (2.0,-2.0):",
@@ -497,8 +422,7 @@ public class FilterFunction_Test {
     public void testsqrt() {
         try {
             FilterFunction_sqrt sqrt =
-                    (FilterFunction_sqrt)
-                            ff.function("sqrt", org.geotools.api.filter.expression.Expression.NIL);
+                    (FilterFunction_sqrt) ff.function("sqrt", org.geotools.api.filter.expression.Expression.NIL);
             Assert.assertEquals("Name is, ", "sqrt", sqrt.getName());
             Assert.assertEquals(
                     "Number of arguments, ", 1, sqrt.getFunctionName().getArgumentCount());
@@ -506,9 +430,7 @@ public class FilterFunction_Test {
             Function sqrtFunction = ff.function("sqrt", literal_1);
             double good0 = Math.sqrt(1.0);
             if (Double.isNaN(good0)) {
-                Assert.assertTrue(
-                        "sqrt of (1.0):",
-                        Double.isNaN(((Double) sqrtFunction.evaluate(null)).doubleValue()));
+                Assert.assertTrue("sqrt of (1.0):", Double.isNaN(((Double) sqrtFunction.evaluate(null)).doubleValue()));
             } else {
                 Assert.assertEquals(
                         "sqrt of (1.0):",
@@ -521,8 +443,7 @@ public class FilterFunction_Test {
             double good1 = Math.sqrt(-1.0);
             if (Double.isNaN(good1)) {
                 Assert.assertTrue(
-                        "sqrt of (-1.0):",
-                        Double.isNaN(((Double) sqrtFunction.evaluate(null)).doubleValue()));
+                        "sqrt of (-1.0):", Double.isNaN(((Double) sqrtFunction.evaluate(null)).doubleValue()));
             } else {
                 Assert.assertEquals(
                         "sqrt of (-1.0):",
@@ -534,9 +455,7 @@ public class FilterFunction_Test {
             sqrtFunction = ff.function("sqrt", literal_2);
             double good2 = Math.sqrt(2.0);
             if (Double.isNaN(good2)) {
-                Assert.assertTrue(
-                        "sqrt of (2.0):",
-                        Double.isNaN(((Double) sqrtFunction.evaluate(null)).doubleValue()));
+                Assert.assertTrue("sqrt of (2.0):", Double.isNaN(((Double) sqrtFunction.evaluate(null)).doubleValue()));
             } else {
                 Assert.assertEquals(
                         "sqrt of (2.0):",
@@ -549,8 +468,7 @@ public class FilterFunction_Test {
             double good3 = Math.sqrt(-2.0);
             if (Double.isNaN(good3)) {
                 Assert.assertTrue(
-                        "sqrt of (-2.0):",
-                        Double.isNaN(((Double) sqrtFunction.evaluate(null)).doubleValue()));
+                        "sqrt of (-2.0):", Double.isNaN(((Double) sqrtFunction.evaluate(null)).doubleValue()));
             } else {
                 Assert.assertEquals(
                         "sqrt of (-2.0):",
@@ -599,12 +517,10 @@ public class FilterFunction_Test {
     @Test
     public void testpow() {
         try {
-            FilterFunction_pow pow =
-                    (FilterFunction_pow)
-                            ff.function(
-                                    "pow",
-                                    org.geotools.api.filter.expression.Expression.NIL,
-                                    org.geotools.api.filter.expression.Expression.NIL);
+            FilterFunction_pow pow = (FilterFunction_pow) ff.function(
+                    "pow",
+                    org.geotools.api.filter.expression.Expression.NIL,
+                    org.geotools.api.filter.expression.Expression.NIL);
             Assert.assertEquals("Name is, ", "pow", pow.getName());
             Assert.assertEquals(
                     "Number of arguments, ", 2, pow.getFunctionName().getArgumentCount());
@@ -613,8 +529,7 @@ public class FilterFunction_Test {
             double good0 = Math.pow(1.0, -1.0);
             if (Double.isNaN(good0)) {
                 Assert.assertTrue(
-                        "pow of (1.0,-1.0):",
-                        Double.isNaN(((Double) powFunction.evaluate(null)).doubleValue()));
+                        "pow of (1.0,-1.0):", Double.isNaN(((Double) powFunction.evaluate(null)).doubleValue()));
             } else {
                 Assert.assertEquals(
                         "pow of (1.0,-1.0):",
@@ -627,8 +542,7 @@ public class FilterFunction_Test {
             double good1 = Math.pow(-1.0, 2.0);
             if (Double.isNaN(good1)) {
                 Assert.assertTrue(
-                        "pow of (-1.0,2.0):",
-                        Double.isNaN(((Double) powFunction.evaluate(null)).doubleValue()));
+                        "pow of (-1.0,2.0):", Double.isNaN(((Double) powFunction.evaluate(null)).doubleValue()));
             } else {
                 Assert.assertEquals(
                         "pow of (-1.0,2.0):",
@@ -641,8 +555,7 @@ public class FilterFunction_Test {
             double good2 = Math.pow(2.0, -2.0);
             if (Double.isNaN(good2)) {
                 Assert.assertTrue(
-                        "pow of (2.0,-2.0):",
-                        Double.isNaN(((Double) powFunction.evaluate(null)).doubleValue()));
+                        "pow of (2.0,-2.0):", Double.isNaN(((Double) powFunction.evaluate(null)).doubleValue()));
             } else {
                 Assert.assertEquals(
                         "pow of (2.0,-2.0):",
@@ -712,9 +625,7 @@ public class FilterFunction_Test {
     public void testmin_4() {
         try {
             FilterFunction_min_4 min_4 =
-                    (FilterFunction_min_4)
-                            ff.function(
-                                    "min_4", new org.geotools.api.filter.expression.Expression[2]);
+                    (FilterFunction_min_4) ff.function("min_4", new org.geotools.api.filter.expression.Expression[2]);
             Assert.assertEquals("Name is, ", "min_4", min_4.getName());
             Assert.assertEquals(
                     "Number of arguments, ", 2, min_4.getFunctionName().getArgumentCount());
@@ -780,9 +691,7 @@ public class FilterFunction_Test {
     public void testmin_2() {
         try {
             FilterFunction_min_2 min_2 =
-                    (FilterFunction_min_2)
-                            ff.function(
-                                    "min_2", new org.geotools.api.filter.expression.Expression[2]);
+                    (FilterFunction_min_2) ff.function("min_2", new org.geotools.api.filter.expression.Expression[2]);
             Assert.assertEquals("Name is, ", "min_2", min_2.getName());
             Assert.assertEquals(
                     "Number of arguments, ", 2, min_2.getFunctionName().getArgumentCount());
@@ -848,9 +757,7 @@ public class FilterFunction_Test {
     public void testmin_3() {
         try {
             FilterFunction_min_3 min_3 =
-                    (FilterFunction_min_3)
-                            ff.function(
-                                    "min_3", new org.geotools.api.filter.expression.Expression[2]);
+                    (FilterFunction_min_3) ff.function("min_3", new org.geotools.api.filter.expression.Expression[2]);
             Assert.assertEquals("Name is, ", "min_3", min_3.getName());
             Assert.assertEquals(
                     "Number of arguments, ", 2, min_3.getFunctionName().getArgumentCount());
@@ -916,9 +823,7 @@ public class FilterFunction_Test {
     public void testmin() {
         try {
             FilterFunction_min min =
-                    (FilterFunction_min)
-                            ff.function(
-                                    "min", new org.geotools.api.filter.expression.Expression[2]);
+                    (FilterFunction_min) ff.function("min", new org.geotools.api.filter.expression.Expression[2]);
             Assert.assertEquals("Name is, ", "min", min.getName());
             Assert.assertEquals(
                     "Number of arguments, ", 2, min.getFunctionName().getArgumentCount());
@@ -984,9 +889,7 @@ public class FilterFunction_Test {
     public void testmax_4() {
         try {
             FilterFunction_max_4 max_4 =
-                    (FilterFunction_max_4)
-                            ff.function(
-                                    "max_4", new org.geotools.api.filter.expression.Expression[2]);
+                    (FilterFunction_max_4) ff.function("max_4", new org.geotools.api.filter.expression.Expression[2]);
             Assert.assertEquals("Name is, ", "max_4", max_4.getName());
             Assert.assertEquals(
                     "Number of arguments, ", 2, max_4.getFunctionName().getArgumentCount());
@@ -1052,9 +955,7 @@ public class FilterFunction_Test {
     public void testmax_2() {
         try {
             FilterFunction_max_2 max_2 =
-                    (FilterFunction_max_2)
-                            ff.function(
-                                    "max_2", new org.geotools.api.filter.expression.Expression[2]);
+                    (FilterFunction_max_2) ff.function("max_2", new org.geotools.api.filter.expression.Expression[2]);
             Assert.assertEquals("Name is, ", "max_2", max_2.getName());
             Assert.assertEquals(
                     "Number of arguments, ", 2, max_2.getFunctionName().getArgumentCount());
@@ -1120,9 +1021,7 @@ public class FilterFunction_Test {
     public void testmax_3() {
         try {
             FilterFunction_max_3 max_3 =
-                    (FilterFunction_max_3)
-                            ff.function(
-                                    "max_3", new org.geotools.api.filter.expression.Expression[2]);
+                    (FilterFunction_max_3) ff.function("max_3", new org.geotools.api.filter.expression.Expression[2]);
             Assert.assertEquals("Name is, ", "max_3", max_3.getName());
             Assert.assertEquals(
                     "Number of arguments, ", 2, max_3.getFunctionName().getArgumentCount());
@@ -1188,9 +1087,7 @@ public class FilterFunction_Test {
     public void testmax() {
         try {
             FilterFunction_max max =
-                    (FilterFunction_max)
-                            ff.function(
-                                    "max", new org.geotools.api.filter.expression.Expression[2]);
+                    (FilterFunction_max) ff.function("max", new org.geotools.api.filter.expression.Expression[2]);
             Assert.assertEquals("Name is, ", "max", max.getName());
             Assert.assertEquals(
                     "Number of arguments, ", 2, max.getFunctionName().getArgumentCount());
@@ -1255,39 +1152,26 @@ public class FilterFunction_Test {
     public void testabs() {
         try {
             FilterFunction_abs abs =
-                    (FilterFunction_abs)
-                            ff.function("abs", org.geotools.api.filter.expression.Expression.NIL);
+                    (FilterFunction_abs) ff.function("abs", org.geotools.api.filter.expression.Expression.NIL);
             Assert.assertEquals("Name is, ", "abs", abs.getName());
             Assert.assertEquals(
                     "Number of arguments, ", 1, abs.getFunctionName().getArgumentCount());
 
             Function absFunction = ff.function("abs", literal_1);
             Assert.assertEquals(
-                    "abs of (1.0):",
-                    (int) Math.abs(1.0),
-                    ((Integer) absFunction.evaluate(null)).intValue(),
-                    0.00001);
+                    "abs of (1.0):", (int) Math.abs(1.0), ((Integer) absFunction.evaluate(null)).intValue(), 0.00001);
 
             absFunction = ff.function("abs", literal_m1);
             Assert.assertEquals(
-                    "abs of (-1.0):",
-                    (int) Math.abs(-1.0),
-                    ((Integer) absFunction.evaluate(null)).intValue(),
-                    0.00001);
+                    "abs of (-1.0):", (int) Math.abs(-1.0), ((Integer) absFunction.evaluate(null)).intValue(), 0.00001);
 
             absFunction = ff.function("abs", literal_2);
             Assert.assertEquals(
-                    "abs of (2.0):",
-                    (int) Math.abs(2.0),
-                    ((Integer) absFunction.evaluate(null)).intValue(),
-                    0.00001);
+                    "abs of (2.0):", (int) Math.abs(2.0), ((Integer) absFunction.evaluate(null)).intValue(), 0.00001);
 
             absFunction = ff.function("abs", literal_m2);
             Assert.assertEquals(
-                    "abs of (-2.0):",
-                    (int) Math.abs(-2.0),
-                    ((Integer) absFunction.evaluate(null)).intValue(),
-                    0.00001);
+                    "abs of (-2.0):", (int) Math.abs(-2.0), ((Integer) absFunction.evaluate(null)).intValue(), 0.00001);
 
             absFunction = ff.function("abs", literal_pi);
             Assert.assertEquals(
@@ -1316,39 +1200,26 @@ public class FilterFunction_Test {
     public void testabs_4() {
         try {
             FilterFunction_abs_4 abs_4 =
-                    (FilterFunction_abs_4)
-                            ff.function("abs_4", org.geotools.api.filter.expression.Expression.NIL);
+                    (FilterFunction_abs_4) ff.function("abs_4", org.geotools.api.filter.expression.Expression.NIL);
             Assert.assertEquals("Name is, ", "abs_4", abs_4.getName());
             Assert.assertEquals(
                     "Number of arguments, ", 1, abs_4.getFunctionName().getArgumentCount());
 
             Function abs_4Function = ff.function("abs_4", literal_1);
             Assert.assertEquals(
-                    "abs_4 of (1.0):",
-                    Math.abs(1.0),
-                    ((Double) abs_4Function.evaluate(null)).doubleValue(),
-                    0.00001);
+                    "abs_4 of (1.0):", Math.abs(1.0), ((Double) abs_4Function.evaluate(null)).doubleValue(), 0.00001);
 
             abs_4Function = ff.function("abs_4", literal_m1);
             Assert.assertEquals(
-                    "abs_4 of (-1.0):",
-                    Math.abs(-1.0),
-                    ((Double) abs_4Function.evaluate(null)).doubleValue(),
-                    0.00001);
+                    "abs_4 of (-1.0):", Math.abs(-1.0), ((Double) abs_4Function.evaluate(null)).doubleValue(), 0.00001);
 
             abs_4Function = ff.function("abs_4", literal_2);
             Assert.assertEquals(
-                    "abs_4 of (2.0):",
-                    Math.abs(2.0),
-                    ((Double) abs_4Function.evaluate(null)).doubleValue(),
-                    0.00001);
+                    "abs_4 of (2.0):", Math.abs(2.0), ((Double) abs_4Function.evaluate(null)).doubleValue(), 0.00001);
 
             abs_4Function = ff.function("abs_4", literal_m2);
             Assert.assertEquals(
-                    "abs_4 of (-2.0):",
-                    Math.abs(-2.0),
-                    ((Double) abs_4Function.evaluate(null)).doubleValue(),
-                    0.00001);
+                    "abs_4 of (-2.0):", Math.abs(-2.0), ((Double) abs_4Function.evaluate(null)).doubleValue(), 0.00001);
 
             abs_4Function = ff.function("abs_4", literal_pi);
             Assert.assertEquals(
@@ -1377,8 +1248,7 @@ public class FilterFunction_Test {
     public void testabs_3() {
         try {
             FilterFunction_abs_3 abs_3 =
-                    (FilterFunction_abs_3)
-                            ff.function("abs_3", org.geotools.api.filter.expression.Expression.NIL);
+                    (FilterFunction_abs_3) ff.function("abs_3", org.geotools.api.filter.expression.Expression.NIL);
             Assert.assertEquals("Name is, ", "abs_3", abs_3.getName());
             Assert.assertEquals(
                     "Number of arguments, ", 1, abs_3.getFunctionName().getArgumentCount());
@@ -1437,8 +1307,7 @@ public class FilterFunction_Test {
     public void testabs_2() {
         try {
             FilterFunction_abs_2 abs_2 =
-                    (FilterFunction_abs_2)
-                            ff.function("abs_2", org.geotools.api.filter.expression.Expression.NIL);
+                    (FilterFunction_abs_2) ff.function("abs_2", org.geotools.api.filter.expression.Expression.NIL);
             Assert.assertEquals("Name is, ", "abs_2", abs_2.getName());
             Assert.assertEquals(
                     "Number of arguments, ", 1, abs_2.getFunctionName().getArgumentCount());
@@ -1497,12 +1366,10 @@ public class FilterFunction_Test {
     @Test
     public void testIEEEremainder() {
         try {
-            FilterFunction_IEEEremainder IEEEremainder =
-                    (FilterFunction_IEEEremainder)
-                            ff.function(
-                                    "IEEEremainder",
-                                    org.geotools.api.filter.expression.Expression.NIL,
-                                    org.geotools.api.filter.expression.Expression.NIL);
+            FilterFunction_IEEEremainder IEEEremainder = (FilterFunction_IEEEremainder) ff.function(
+                    "IEEEremainder",
+                    org.geotools.api.filter.expression.Expression.NIL,
+                    org.geotools.api.filter.expression.Expression.NIL);
             Assert.assertEquals("Name is, ", "IEEEremainder", IEEEremainder.getName());
             Assert.assertEquals(
                     "Number of arguments, ", 2, IEEEremainder.getFunctionName().getArgumentCount());
@@ -1512,8 +1379,7 @@ public class FilterFunction_Test {
             if (Double.isNaN(good0)) {
                 Assert.assertTrue(
                         "IEEEremainder of (1.0,-1.0):",
-                        Double.isNaN(
-                                ((Double) IEEEremainderFunction.evaluate(null)).doubleValue()));
+                        Double.isNaN(((Double) IEEEremainderFunction.evaluate(null)).doubleValue()));
             } else {
                 Assert.assertEquals(
                         "IEEEremainder of (1.0,-1.0):",
@@ -1527,8 +1393,7 @@ public class FilterFunction_Test {
             if (Double.isNaN(good1)) {
                 Assert.assertTrue(
                         "IEEEremainder of (-1.0,2.0):",
-                        Double.isNaN(
-                                ((Double) IEEEremainderFunction.evaluate(null)).doubleValue()));
+                        Double.isNaN(((Double) IEEEremainderFunction.evaluate(null)).doubleValue()));
             } else {
                 Assert.assertEquals(
                         "IEEEremainder of (-1.0,2.0):",
@@ -1542,8 +1407,7 @@ public class FilterFunction_Test {
             if (Double.isNaN(good2)) {
                 Assert.assertTrue(
                         "IEEEremainder of (2.0,-2.0):",
-                        Double.isNaN(
-                                ((Double) IEEEremainderFunction.evaluate(null)).doubleValue()));
+                        Double.isNaN(((Double) IEEEremainderFunction.evaluate(null)).doubleValue()));
             } else {
                 Assert.assertEquals(
                         "IEEEremainder of (2.0,-2.0):",
@@ -1557,8 +1421,7 @@ public class FilterFunction_Test {
             if (Double.isNaN(good3)) {
                 Assert.assertTrue(
                         "IEEEremainder of (-2.0,3.141592653589793):",
-                        Double.isNaN(
-                                ((Double) IEEEremainderFunction.evaluate(null)).doubleValue()));
+                        Double.isNaN(((Double) IEEEremainderFunction.evaluate(null)).doubleValue()));
             } else {
                 Assert.assertEquals(
                         "IEEEremainder of (-2.0,3.141592653589793):",
@@ -1572,8 +1435,7 @@ public class FilterFunction_Test {
             if (Double.isNaN(good4)) {
                 Assert.assertTrue(
                         "IEEEremainder of (3.141592653589793,1.5707963267948966):",
-                        Double.isNaN(
-                                ((Double) IEEEremainderFunction.evaluate(null)).doubleValue()));
+                        Double.isNaN(((Double) IEEEremainderFunction.evaluate(null)).doubleValue()));
             } else {
                 Assert.assertEquals(
                         "IEEEremainder of (3.141592653589793,1.5707963267948966):",
@@ -1587,8 +1449,7 @@ public class FilterFunction_Test {
             if (Double.isNaN(good5)) {
                 Assert.assertTrue(
                         "IEEEremainder of (1.5707963267948966,1.0):",
-                        Double.isNaN(
-                                ((Double) IEEEremainderFunction.evaluate(null)).doubleValue()));
+                        Double.isNaN(((Double) IEEEremainderFunction.evaluate(null)).doubleValue()));
             } else {
                 Assert.assertEquals(
                         "IEEEremainder of (1.5707963267948966,1.0):",
@@ -1616,8 +1477,7 @@ public class FilterFunction_Test {
     public void testacos() {
         try {
             FilterFunction_acos acos =
-                    (FilterFunction_acos)
-                            ff.function("acos", org.geotools.api.filter.expression.Expression.NIL);
+                    (FilterFunction_acos) ff.function("acos", org.geotools.api.filter.expression.Expression.NIL);
             Assert.assertEquals("Name is, ", "acos", acos.getName());
             Assert.assertEquals(
                     "Number of arguments, ", 1, acos.getFunctionName().getArgumentCount());
@@ -1625,9 +1485,7 @@ public class FilterFunction_Test {
             Function acosFunction = ff.function("acos", literal_1);
             double good0 = Math.acos(1.0);
             if (Double.isNaN(good0)) {
-                Assert.assertTrue(
-                        "acos of (1.0):",
-                        Double.isNaN(((Double) acosFunction.evaluate(null)).doubleValue()));
+                Assert.assertTrue("acos of (1.0):", Double.isNaN(((Double) acosFunction.evaluate(null)).doubleValue()));
             } else {
                 Assert.assertEquals(
                         "acos of (1.0):",
@@ -1640,8 +1498,7 @@ public class FilterFunction_Test {
             double good1 = Math.acos(-1.0);
             if (Double.isNaN(good1)) {
                 Assert.assertTrue(
-                        "acos of (-1.0):",
-                        Double.isNaN(((Double) acosFunction.evaluate(null)).doubleValue()));
+                        "acos of (-1.0):", Double.isNaN(((Double) acosFunction.evaluate(null)).doubleValue()));
             } else {
                 Assert.assertEquals(
                         "acos of (-1.0):",
@@ -1653,9 +1510,7 @@ public class FilterFunction_Test {
             acosFunction = ff.function("acos", literal_2);
             double good2 = Math.acos(2.0);
             if (Double.isNaN(good2)) {
-                Assert.assertTrue(
-                        "acos of (2.0):",
-                        Double.isNaN(((Double) acosFunction.evaluate(null)).doubleValue()));
+                Assert.assertTrue("acos of (2.0):", Double.isNaN(((Double) acosFunction.evaluate(null)).doubleValue()));
             } else {
                 Assert.assertEquals(
                         "acos of (2.0):",
@@ -1668,8 +1523,7 @@ public class FilterFunction_Test {
             double good3 = Math.acos(-2.0);
             if (Double.isNaN(good3)) {
                 Assert.assertTrue(
-                        "acos of (-2.0):",
-                        Double.isNaN(((Double) acosFunction.evaluate(null)).doubleValue()));
+                        "acos of (-2.0):", Double.isNaN(((Double) acosFunction.evaluate(null)).doubleValue()));
             } else {
                 Assert.assertEquals(
                         "acos of (-2.0):",
@@ -1719,8 +1573,7 @@ public class FilterFunction_Test {
     public void testasin() {
         try {
             FilterFunction_asin asin =
-                    (FilterFunction_asin)
-                            ff.function("asin", org.geotools.api.filter.expression.Expression.NIL);
+                    (FilterFunction_asin) ff.function("asin", org.geotools.api.filter.expression.Expression.NIL);
             Assert.assertEquals("Name is, ", "asin", asin.getName());
             Assert.assertEquals(
                     "Number of arguments, ", 1, asin.getFunctionName().getArgumentCount());
@@ -1728,9 +1581,7 @@ public class FilterFunction_Test {
             Function asinFunction = ff.function("asin", literal_1);
             double good0 = Math.asin(1.0);
             if (Double.isNaN(good0)) {
-                Assert.assertTrue(
-                        "asin of (1.0):",
-                        Double.isNaN(((Double) asinFunction.evaluate(null)).doubleValue()));
+                Assert.assertTrue("asin of (1.0):", Double.isNaN(((Double) asinFunction.evaluate(null)).doubleValue()));
             } else {
                 Assert.assertEquals(
                         "asin of (1.0):",
@@ -1743,8 +1594,7 @@ public class FilterFunction_Test {
             double good1 = Math.asin(-1.0);
             if (Double.isNaN(good1)) {
                 Assert.assertTrue(
-                        "asin of (-1.0):",
-                        Double.isNaN(((Double) asinFunction.evaluate(null)).doubleValue()));
+                        "asin of (-1.0):", Double.isNaN(((Double) asinFunction.evaluate(null)).doubleValue()));
             } else {
                 Assert.assertEquals(
                         "asin of (-1.0):",
@@ -1756,9 +1606,7 @@ public class FilterFunction_Test {
             asinFunction = ff.function("asin", literal_2);
             double good2 = Math.asin(2.0);
             if (Double.isNaN(good2)) {
-                Assert.assertTrue(
-                        "asin of (2.0):",
-                        Double.isNaN(((Double) asinFunction.evaluate(null)).doubleValue()));
+                Assert.assertTrue("asin of (2.0):", Double.isNaN(((Double) asinFunction.evaluate(null)).doubleValue()));
             } else {
                 Assert.assertEquals(
                         "asin of (2.0):",
@@ -1771,8 +1619,7 @@ public class FilterFunction_Test {
             double good3 = Math.asin(-2.0);
             if (Double.isNaN(good3)) {
                 Assert.assertTrue(
-                        "asin of (-2.0):",
-                        Double.isNaN(((Double) asinFunction.evaluate(null)).doubleValue()));
+                        "asin of (-2.0):", Double.isNaN(((Double) asinFunction.evaluate(null)).doubleValue()));
             } else {
                 Assert.assertEquals(
                         "asin of (-2.0):",
@@ -1822,8 +1669,7 @@ public class FilterFunction_Test {
     public void testatan() {
         try {
             FilterFunction_atan atan =
-                    (FilterFunction_atan)
-                            ff.function("atan", org.geotools.api.filter.expression.Expression.NIL);
+                    (FilterFunction_atan) ff.function("atan", org.geotools.api.filter.expression.Expression.NIL);
             Assert.assertEquals("Name is, ", "atan", atan.getName());
             Assert.assertEquals(
                     "Number of arguments, ", 1, atan.getFunctionName().getArgumentCount());
@@ -1831,9 +1677,7 @@ public class FilterFunction_Test {
             Function atanFunction = ff.function("atan", literal_1);
             double good0 = Math.atan(1.0);
             if (Double.isNaN(good0)) {
-                Assert.assertTrue(
-                        "atan of (1.0):",
-                        Double.isNaN(((Double) atanFunction.evaluate(null)).doubleValue()));
+                Assert.assertTrue("atan of (1.0):", Double.isNaN(((Double) atanFunction.evaluate(null)).doubleValue()));
             } else {
                 Assert.assertEquals(
                         "atan of (1.0):",
@@ -1846,8 +1690,7 @@ public class FilterFunction_Test {
             double good1 = Math.atan(-1.0);
             if (Double.isNaN(good1)) {
                 Assert.assertTrue(
-                        "atan of (-1.0):",
-                        Double.isNaN(((Double) atanFunction.evaluate(null)).doubleValue()));
+                        "atan of (-1.0):", Double.isNaN(((Double) atanFunction.evaluate(null)).doubleValue()));
             } else {
                 Assert.assertEquals(
                         "atan of (-1.0):",
@@ -1859,9 +1702,7 @@ public class FilterFunction_Test {
             atanFunction = ff.function("atan", literal_2);
             double good2 = Math.atan(2.0);
             if (Double.isNaN(good2)) {
-                Assert.assertTrue(
-                        "atan of (2.0):",
-                        Double.isNaN(((Double) atanFunction.evaluate(null)).doubleValue()));
+                Assert.assertTrue("atan of (2.0):", Double.isNaN(((Double) atanFunction.evaluate(null)).doubleValue()));
             } else {
                 Assert.assertEquals(
                         "atan of (2.0):",
@@ -1874,8 +1715,7 @@ public class FilterFunction_Test {
             double good3 = Math.atan(-2.0);
             if (Double.isNaN(good3)) {
                 Assert.assertTrue(
-                        "atan of (-2.0):",
-                        Double.isNaN(((Double) atanFunction.evaluate(null)).doubleValue()));
+                        "atan of (-2.0):", Double.isNaN(((Double) atanFunction.evaluate(null)).doubleValue()));
             } else {
                 Assert.assertEquals(
                         "atan of (-2.0):",
@@ -1925,8 +1765,7 @@ public class FilterFunction_Test {
     public void testceil() {
         try {
             FilterFunction_ceil ceil =
-                    (FilterFunction_ceil)
-                            ff.function("ceil", org.geotools.api.filter.expression.Expression.NIL);
+                    (FilterFunction_ceil) ff.function("ceil", org.geotools.api.filter.expression.Expression.NIL);
             Assert.assertEquals("Name is, ", "ceil", ceil.getName());
             Assert.assertEquals(
                     "Number of arguments, ", 1, ceil.getFunctionName().getArgumentCount());
@@ -1934,9 +1773,7 @@ public class FilterFunction_Test {
             Function ceilFunction = ff.function("ceil", literal_1);
             double good0 = Math.ceil(1.0);
             if (Double.isNaN(good0)) {
-                Assert.assertTrue(
-                        "ceil of (1.0):",
-                        Double.isNaN(((Double) ceilFunction.evaluate(null)).doubleValue()));
+                Assert.assertTrue("ceil of (1.0):", Double.isNaN(((Double) ceilFunction.evaluate(null)).doubleValue()));
             } else {
                 Assert.assertEquals(
                         "ceil of (1.0):",
@@ -1949,8 +1786,7 @@ public class FilterFunction_Test {
             double good1 = Math.ceil(-1.0);
             if (Double.isNaN(good1)) {
                 Assert.assertTrue(
-                        "ceil of (-1.0):",
-                        Double.isNaN(((Double) ceilFunction.evaluate(null)).doubleValue()));
+                        "ceil of (-1.0):", Double.isNaN(((Double) ceilFunction.evaluate(null)).doubleValue()));
             } else {
                 Assert.assertEquals(
                         "ceil of (-1.0):",
@@ -1962,9 +1798,7 @@ public class FilterFunction_Test {
             ceilFunction = ff.function("ceil", literal_2);
             double good2 = Math.ceil(2.0);
             if (Double.isNaN(good2)) {
-                Assert.assertTrue(
-                        "ceil of (2.0):",
-                        Double.isNaN(((Double) ceilFunction.evaluate(null)).doubleValue()));
+                Assert.assertTrue("ceil of (2.0):", Double.isNaN(((Double) ceilFunction.evaluate(null)).doubleValue()));
             } else {
                 Assert.assertEquals(
                         "ceil of (2.0):",
@@ -1977,8 +1811,7 @@ public class FilterFunction_Test {
             double good3 = Math.ceil(-2.0);
             if (Double.isNaN(good3)) {
                 Assert.assertTrue(
-                        "ceil of (-2.0):",
-                        Double.isNaN(((Double) ceilFunction.evaluate(null)).doubleValue()));
+                        "ceil of (-2.0):", Double.isNaN(((Double) ceilFunction.evaluate(null)).doubleValue()));
             } else {
                 Assert.assertEquals(
                         "ceil of (-2.0):",
@@ -2028,8 +1861,7 @@ public class FilterFunction_Test {
     public void testexp() {
         try {
             FilterFunction_exp exp =
-                    (FilterFunction_exp)
-                            ff.function("exp", org.geotools.api.filter.expression.Expression.NIL);
+                    (FilterFunction_exp) ff.function("exp", org.geotools.api.filter.expression.Expression.NIL);
             Assert.assertEquals("Name is, ", "exp", exp.getName());
             Assert.assertEquals(
                     "Number of arguments, ", 1, exp.getFunctionName().getArgumentCount());
@@ -2037,57 +1869,37 @@ public class FilterFunction_Test {
             Function expFunction = ff.function("exp", literal_1);
             double good0 = Math.exp(1.0);
             if (Double.isNaN(good0)) {
-                Assert.assertTrue(
-                        "exp of (1.0):",
-                        Double.isNaN(((Double) expFunction.evaluate(null)).doubleValue()));
+                Assert.assertTrue("exp of (1.0):", Double.isNaN(((Double) expFunction.evaluate(null)).doubleValue()));
             } else {
                 Assert.assertEquals(
-                        "exp of (1.0):",
-                        Math.exp(1.0),
-                        ((Double) expFunction.evaluate(null)).doubleValue(),
-                        0.00001);
+                        "exp of (1.0):", Math.exp(1.0), ((Double) expFunction.evaluate(null)).doubleValue(), 0.00001);
             }
 
             expFunction = ff.function("exp", literal_m1);
             double good1 = Math.exp(-1.0);
             if (Double.isNaN(good1)) {
-                Assert.assertTrue(
-                        "exp of (-1.0):",
-                        Double.isNaN(((Double) expFunction.evaluate(null)).doubleValue()));
+                Assert.assertTrue("exp of (-1.0):", Double.isNaN(((Double) expFunction.evaluate(null)).doubleValue()));
             } else {
                 Assert.assertEquals(
-                        "exp of (-1.0):",
-                        Math.exp(-1.0),
-                        ((Double) expFunction.evaluate(null)).doubleValue(),
-                        0.00001);
+                        "exp of (-1.0):", Math.exp(-1.0), ((Double) expFunction.evaluate(null)).doubleValue(), 0.00001);
             }
 
             expFunction = ff.function("exp", literal_2);
             double good2 = Math.exp(2.0);
             if (Double.isNaN(good2)) {
-                Assert.assertTrue(
-                        "exp of (2.0):",
-                        Double.isNaN(((Double) expFunction.evaluate(null)).doubleValue()));
+                Assert.assertTrue("exp of (2.0):", Double.isNaN(((Double) expFunction.evaluate(null)).doubleValue()));
             } else {
                 Assert.assertEquals(
-                        "exp of (2.0):",
-                        Math.exp(2.0),
-                        ((Double) expFunction.evaluate(null)).doubleValue(),
-                        0.00001);
+                        "exp of (2.0):", Math.exp(2.0), ((Double) expFunction.evaluate(null)).doubleValue(), 0.00001);
             }
 
             expFunction = ff.function("exp", literal_m2);
             double good3 = Math.exp(-2.0);
             if (Double.isNaN(good3)) {
-                Assert.assertTrue(
-                        "exp of (-2.0):",
-                        Double.isNaN(((Double) expFunction.evaluate(null)).doubleValue()));
+                Assert.assertTrue("exp of (-2.0):", Double.isNaN(((Double) expFunction.evaluate(null)).doubleValue()));
             } else {
                 Assert.assertEquals(
-                        "exp of (-2.0):",
-                        Math.exp(-2.0),
-                        ((Double) expFunction.evaluate(null)).doubleValue(),
-                        0.00001);
+                        "exp of (-2.0):", Math.exp(-2.0), ((Double) expFunction.evaluate(null)).doubleValue(), 0.00001);
             }
 
             expFunction = ff.function("exp", literal_pi);
@@ -2131,8 +1943,7 @@ public class FilterFunction_Test {
     public void testfloor() {
         try {
             FilterFunction_floor floor =
-                    (FilterFunction_floor)
-                            ff.function("floor", org.geotools.api.filter.expression.Expression.NIL);
+                    (FilterFunction_floor) ff.function("floor", org.geotools.api.filter.expression.Expression.NIL);
             Assert.assertEquals("Name is, ", "floor", floor.getName());
             Assert.assertEquals(
                     "Number of arguments, ", 1, floor.getFunctionName().getArgumentCount());
@@ -2141,8 +1952,7 @@ public class FilterFunction_Test {
             double good0 = Math.floor(1.0);
             if (Double.isNaN(good0)) {
                 Assert.assertTrue(
-                        "floor of (1.0):",
-                        Double.isNaN(((Double) floorFunction.evaluate(null)).doubleValue()));
+                        "floor of (1.0):", Double.isNaN(((Double) floorFunction.evaluate(null)).doubleValue()));
             } else {
                 Assert.assertEquals(
                         "floor of (1.0):",
@@ -2155,8 +1965,7 @@ public class FilterFunction_Test {
             double good1 = Math.floor(-1.0);
             if (Double.isNaN(good1)) {
                 Assert.assertTrue(
-                        "floor of (-1.0):",
-                        Double.isNaN(((Double) floorFunction.evaluate(null)).doubleValue()));
+                        "floor of (-1.0):", Double.isNaN(((Double) floorFunction.evaluate(null)).doubleValue()));
             } else {
                 Assert.assertEquals(
                         "floor of (-1.0):",
@@ -2169,8 +1978,7 @@ public class FilterFunction_Test {
             double good2 = Math.floor(2.0);
             if (Double.isNaN(good2)) {
                 Assert.assertTrue(
-                        "floor of (2.0):",
-                        Double.isNaN(((Double) floorFunction.evaluate(null)).doubleValue()));
+                        "floor of (2.0):", Double.isNaN(((Double) floorFunction.evaluate(null)).doubleValue()));
             } else {
                 Assert.assertEquals(
                         "floor of (2.0):",
@@ -2183,8 +1991,7 @@ public class FilterFunction_Test {
             double good3 = Math.floor(-2.0);
             if (Double.isNaN(good3)) {
                 Assert.assertTrue(
-                        "floor of (-2.0):",
-                        Double.isNaN(((Double) floorFunction.evaluate(null)).doubleValue()));
+                        "floor of (-2.0):", Double.isNaN(((Double) floorFunction.evaluate(null)).doubleValue()));
             } else {
                 Assert.assertEquals(
                         "floor of (-2.0):",
@@ -2234,8 +2041,7 @@ public class FilterFunction_Test {
     public void testlog() {
         try {
             FilterFunction_log log =
-                    (FilterFunction_log)
-                            ff.function("log", org.geotools.api.filter.expression.Expression.NIL);
+                    (FilterFunction_log) ff.function("log", org.geotools.api.filter.expression.Expression.NIL);
             Assert.assertEquals("Name is, ", "log", log.getName());
             Assert.assertEquals(
                     "Number of arguments, ", 1, log.getFunctionName().getArgumentCount());
@@ -2243,57 +2049,37 @@ public class FilterFunction_Test {
             Function logFunction = ff.function("log", literal_1);
             double good0 = Math.log(1.0);
             if (Double.isNaN(good0)) {
-                Assert.assertTrue(
-                        "log of (1.0):",
-                        Double.isNaN(((Double) logFunction.evaluate(null)).doubleValue()));
+                Assert.assertTrue("log of (1.0):", Double.isNaN(((Double) logFunction.evaluate(null)).doubleValue()));
             } else {
                 Assert.assertEquals(
-                        "log of (1.0):",
-                        Math.log(1.0),
-                        ((Double) logFunction.evaluate(null)).doubleValue(),
-                        0.00001);
+                        "log of (1.0):", Math.log(1.0), ((Double) logFunction.evaluate(null)).doubleValue(), 0.00001);
             }
 
             logFunction = ff.function("log", literal_m1);
             double good1 = Math.log(-1.0);
             if (Double.isNaN(good1)) {
-                Assert.assertTrue(
-                        "log of (-1.0):",
-                        Double.isNaN(((Double) logFunction.evaluate(null)).doubleValue()));
+                Assert.assertTrue("log of (-1.0):", Double.isNaN(((Double) logFunction.evaluate(null)).doubleValue()));
             } else {
                 Assert.assertEquals(
-                        "log of (-1.0):",
-                        Math.log(-1.0),
-                        ((Double) logFunction.evaluate(null)).doubleValue(),
-                        0.00001);
+                        "log of (-1.0):", Math.log(-1.0), ((Double) logFunction.evaluate(null)).doubleValue(), 0.00001);
             }
 
             logFunction = ff.function("log", literal_2);
             double good2 = Math.log(2.0);
             if (Double.isNaN(good2)) {
-                Assert.assertTrue(
-                        "log of (2.0):",
-                        Double.isNaN(((Double) logFunction.evaluate(null)).doubleValue()));
+                Assert.assertTrue("log of (2.0):", Double.isNaN(((Double) logFunction.evaluate(null)).doubleValue()));
             } else {
                 Assert.assertEquals(
-                        "log of (2.0):",
-                        Math.log(2.0),
-                        ((Double) logFunction.evaluate(null)).doubleValue(),
-                        0.00001);
+                        "log of (2.0):", Math.log(2.0), ((Double) logFunction.evaluate(null)).doubleValue(), 0.00001);
             }
 
             logFunction = ff.function("log", literal_m2);
             double good3 = Math.log(-2.0);
             if (Double.isNaN(good3)) {
-                Assert.assertTrue(
-                        "log of (-2.0):",
-                        Double.isNaN(((Double) logFunction.evaluate(null)).doubleValue()));
+                Assert.assertTrue("log of (-2.0):", Double.isNaN(((Double) logFunction.evaluate(null)).doubleValue()));
             } else {
                 Assert.assertEquals(
-                        "log of (-2.0):",
-                        Math.log(-2.0),
-                        ((Double) logFunction.evaluate(null)).doubleValue(),
-                        0.00001);
+                        "log of (-2.0):", Math.log(-2.0), ((Double) logFunction.evaluate(null)).doubleValue(), 0.00001);
             }
 
             logFunction = ff.function("log", literal_pi);
@@ -2338,14 +2124,10 @@ public class FilterFunction_Test {
         try {
 
             FilterFunction_random randomFunction =
-                    (FilterFunction_random)
-                            ff.function(
-                                    "random", new org.geotools.api.filter.expression.Expression[0]);
+                    (FilterFunction_random) ff.function("random", new org.geotools.api.filter.expression.Expression[0]);
             Assert.assertEquals("Name is, ", "random", randomFunction.getName());
             Assert.assertEquals(
-                    "Number of arguments, ",
-                    0,
-                    randomFunction.getFunctionName().getArgumentCount());
+                    "Number of arguments, ", 0, randomFunction.getFunctionName().getArgumentCount());
         } catch (FactoryRegistryException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             Assert.fail("Unexpected exception: " + e.getMessage());
@@ -2356,8 +2138,7 @@ public class FilterFunction_Test {
     public void testrint() {
         try {
             FilterFunction_rint rint =
-                    (FilterFunction_rint)
-                            ff.function("rint", org.geotools.api.filter.expression.Expression.NIL);
+                    (FilterFunction_rint) ff.function("rint", org.geotools.api.filter.expression.Expression.NIL);
             Assert.assertEquals("Name is, ", "rint", rint.getName());
             Assert.assertEquals(
                     "Number of arguments, ", 1, rint.getFunctionName().getArgumentCount());
@@ -2365,9 +2146,7 @@ public class FilterFunction_Test {
             Function rintFunction = ff.function("rint", literal_1);
             double good0 = Math.rint(1.0);
             if (Double.isNaN(good0)) {
-                Assert.assertTrue(
-                        "rint of (1.0):",
-                        Double.isNaN(((Double) rintFunction.evaluate(null)).doubleValue()));
+                Assert.assertTrue("rint of (1.0):", Double.isNaN(((Double) rintFunction.evaluate(null)).doubleValue()));
             } else {
                 Assert.assertEquals(
                         "rint of (1.0):",
@@ -2380,8 +2159,7 @@ public class FilterFunction_Test {
             double good1 = Math.rint(-1.0);
             if (Double.isNaN(good1)) {
                 Assert.assertTrue(
-                        "rint of (-1.0):",
-                        Double.isNaN(((Double) rintFunction.evaluate(null)).doubleValue()));
+                        "rint of (-1.0):", Double.isNaN(((Double) rintFunction.evaluate(null)).doubleValue()));
             } else {
                 Assert.assertEquals(
                         "rint of (-1.0):",
@@ -2393,9 +2171,7 @@ public class FilterFunction_Test {
             rintFunction = ff.function("rint", literal_2);
             double good2 = Math.rint(2.0);
             if (Double.isNaN(good2)) {
-                Assert.assertTrue(
-                        "rint of (2.0):",
-                        Double.isNaN(((Double) rintFunction.evaluate(null)).doubleValue()));
+                Assert.assertTrue("rint of (2.0):", Double.isNaN(((Double) rintFunction.evaluate(null)).doubleValue()));
             } else {
                 Assert.assertEquals(
                         "rint of (2.0):",
@@ -2408,8 +2184,7 @@ public class FilterFunction_Test {
             double good3 = Math.rint(-2.0);
             if (Double.isNaN(good3)) {
                 Assert.assertTrue(
-                        "rint of (-2.0):",
-                        Double.isNaN(((Double) rintFunction.evaluate(null)).doubleValue()));
+                        "rint of (-2.0):", Double.isNaN(((Double) rintFunction.evaluate(null)).doubleValue()));
             } else {
                 Assert.assertEquals(
                         "rint of (-2.0):",
@@ -2459,8 +2234,7 @@ public class FilterFunction_Test {
     public void testround() {
         try {
             FilterFunction_round round =
-                    (FilterFunction_round)
-                            ff.function("round", org.geotools.api.filter.expression.Expression.NIL);
+                    (FilterFunction_round) ff.function("round", org.geotools.api.filter.expression.Expression.NIL);
             Assert.assertEquals("Name is, ", "round", round.getName());
             Assert.assertEquals(
                     "Number of arguments, ", 1, round.getFunctionName().getArgumentCount());
@@ -2520,19 +2294,14 @@ public class FilterFunction_Test {
     public void testround_2() {
         try {
             FilterFunction_round_2 round_2 =
-                    (FilterFunction_round_2)
-                            ff.function(
-                                    "round_2", org.geotools.api.filter.expression.Expression.NIL);
+                    (FilterFunction_round_2) ff.function("round_2", org.geotools.api.filter.expression.Expression.NIL);
             Assert.assertEquals("Name is, ", "round_2", round_2.getName());
             Assert.assertEquals(
                     "Number of arguments, ", 1, round_2.getFunctionName().getArgumentCount());
 
             Function round_2Function = ff.function("round_2", literal_1);
             Assert.assertEquals(
-                    "round_2 of (1.0):",
-                    Math.round(1.0),
-                    ((Long) round_2Function.evaluate(null)).longValue(),
-                    0.00001);
+                    "round_2 of (1.0):", Math.round(1.0), ((Long) round_2Function.evaluate(null)).longValue(), 0.00001);
 
             round_2Function = ff.function("round_2", literal_m1);
             Assert.assertEquals(
@@ -2543,10 +2312,7 @@ public class FilterFunction_Test {
 
             round_2Function = ff.function("round_2", literal_2);
             Assert.assertEquals(
-                    "round_2 of (2.0):",
-                    Math.round(2.0),
-                    ((Long) round_2Function.evaluate(null)).longValue(),
-                    0.00001);
+                    "round_2 of (2.0):", Math.round(2.0), ((Long) round_2Function.evaluate(null)).longValue(), 0.00001);
 
             round_2Function = ff.function("round_2", literal_m2);
             Assert.assertEquals(
@@ -2581,10 +2347,8 @@ public class FilterFunction_Test {
     @Test
     public void testtoDegrees() {
         try {
-            FilterFunction_toDegrees toDegrees =
-                    (FilterFunction_toDegrees)
-                            ff.function(
-                                    "toDegrees", org.geotools.api.filter.expression.Expression.NIL);
+            FilterFunction_toDegrees toDegrees = (FilterFunction_toDegrees)
+                    ff.function("toDegrees", org.geotools.api.filter.expression.Expression.NIL);
             Assert.assertEquals("Name is, ", "toDegrees", toDegrees.getName());
             Assert.assertEquals(
                     "Number of arguments, ", 1, toDegrees.getFunctionName().getArgumentCount());
@@ -2593,8 +2357,7 @@ public class FilterFunction_Test {
             double good0 = Math.toDegrees(1.0);
             if (Double.isNaN(good0)) {
                 Assert.assertTrue(
-                        "toDegrees of (1.0):",
-                        Double.isNaN(((Double) toDegreesFunction.evaluate(null)).doubleValue()));
+                        "toDegrees of (1.0):", Double.isNaN(((Double) toDegreesFunction.evaluate(null)).doubleValue()));
             } else {
                 Assert.assertEquals(
                         "toDegrees of (1.0):",
@@ -2621,8 +2384,7 @@ public class FilterFunction_Test {
             double good2 = Math.toDegrees(2.0);
             if (Double.isNaN(good2)) {
                 Assert.assertTrue(
-                        "toDegrees of (2.0):",
-                        Double.isNaN(((Double) toDegreesFunction.evaluate(null)).doubleValue()));
+                        "toDegrees of (2.0):", Double.isNaN(((Double) toDegreesFunction.evaluate(null)).doubleValue()));
             } else {
                 Assert.assertEquals(
                         "toDegrees of (2.0):",
@@ -2685,10 +2447,8 @@ public class FilterFunction_Test {
     @Test
     public void testtoRadians() {
         try {
-            FilterFunction_toRadians toRadians =
-                    (FilterFunction_toRadians)
-                            ff.function(
-                                    "toRadians", org.geotools.api.filter.expression.Expression.NIL);
+            FilterFunction_toRadians toRadians = (FilterFunction_toRadians)
+                    ff.function("toRadians", org.geotools.api.filter.expression.Expression.NIL);
             Assert.assertEquals("Name is, ", "toRadians", toRadians.getName());
             Assert.assertEquals(
                     "Number of arguments, ", 1, toRadians.getFunctionName().getArgumentCount());
@@ -2697,8 +2457,7 @@ public class FilterFunction_Test {
             double good0 = Math.toRadians(1.0);
             if (Double.isNaN(good0)) {
                 Assert.assertTrue(
-                        "toRadians of (1.0):",
-                        Double.isNaN(((Double) toRadiansFunction.evaluate(null)).doubleValue()));
+                        "toRadians of (1.0):", Double.isNaN(((Double) toRadiansFunction.evaluate(null)).doubleValue()));
             } else {
                 Assert.assertEquals(
                         "toRadians of (1.0):",
@@ -2725,8 +2484,7 @@ public class FilterFunction_Test {
             double good2 = Math.toRadians(2.0);
             if (Double.isNaN(good2)) {
                 Assert.assertTrue(
-                        "toRadians of (2.0):",
-                        Double.isNaN(((Double) toRadiansFunction.evaluate(null)).doubleValue()));
+                        "toRadians of (2.0):", Double.isNaN(((Double) toRadiansFunction.evaluate(null)).doubleValue()));
             } else {
                 Assert.assertEquals(
                         "toRadians of (2.0):",

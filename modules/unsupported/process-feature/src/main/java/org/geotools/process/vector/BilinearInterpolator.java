@@ -95,10 +95,7 @@ public class BilinearInterpolator {
                     float v10 = src[ix + 1][iy];
                     float v01 = src[ix][iy + 1];
                     float v11 = src[ix + 1][iy + 1];
-                    if (v00 == noDataValue
-                            || v10 == noDataValue
-                            || v01 == noDataValue
-                            || v11 == noDataValue) {
+                    if (v00 == noDataValue || v10 == noDataValue || v01 == noDataValue || v11 == noDataValue) {
                         // handle src cell with NO_DATA value(s)
                         if (smoothBoundary) {
                             val = interpolateBoundaryCell(xfrac, yfrac, v00, v10, v01, v11);
@@ -108,11 +105,10 @@ public class BilinearInterpolator {
                     } else {
                         // All src cell corners have values
                         // Compute bilinear interpolation over the src cell
-                        val =
-                                (v00 * (1 - xfrac) * (1 - yfrac)
-                                        + v10 * (xfrac) * (1 - yfrac)
-                                        + v01 * (yfrac) * (1 - xfrac)
-                                        + v11 * (xfrac * yfrac));
+                        val = (v00 * (1 - xfrac) * (1 - yfrac)
+                                + v10 * (xfrac) * (1 - yfrac)
+                                + v01 * (yfrac) * (1 - xfrac)
+                                + v11 * (xfrac * yfrac));
                     }
                 } else {
                     // dest index at edge of grid
@@ -138,8 +134,7 @@ public class BilinearInterpolator {
      * @param v11 the upper right value
      * @return the interpolated value
      */
-    private float interpolateBoundaryCell(
-            float xfrac, float yfrac, float v00, float v10, float v01, float v11) {
+    private float interpolateBoundaryCell(float xfrac, float yfrac, float v00, float v10, float v01, float v11) {
         // count noData values
         int count = 0;
         if (v00 == noDataValue) count++;
@@ -155,13 +150,10 @@ public class BilinearInterpolator {
          * normalized to put noData in NE. This is done by flipping the cell across the X or Y axis,
          * or both (and transforming the point offsets likewise)
          */
-        if (v00 == noDataValue)
-            return interpolateBoundaryCellNorm(1.0f - yfrac, 1.0f - xfrac, v11, v10, v01);
+        if (v00 == noDataValue) return interpolateBoundaryCellNorm(1.0f - yfrac, 1.0f - xfrac, v11, v10, v01);
         if (v11 == noDataValue) return interpolateBoundaryCellNorm(xfrac, yfrac, v00, v10, v01);
-        if (v10 == noDataValue)
-            return interpolateBoundaryCellNorm(xfrac, 1.0f - yfrac, v01, v11, v00);
-        if (v01 == noDataValue)
-            return interpolateBoundaryCellNorm(1.0f - xfrac, yfrac, v10, v00, v11);
+        if (v10 == noDataValue) return interpolateBoundaryCellNorm(xfrac, 1.0f - yfrac, v01, v11, v00);
+        if (v01 == noDataValue) return interpolateBoundaryCellNorm(1.0f - xfrac, yfrac, v10, v00, v11);
 
         // should never reach here
         return noDataValue;
@@ -180,8 +172,7 @@ public class BilinearInterpolator {
      * @param v01 the upper left value
      * @return the interpolated value
      */
-    private float interpolateBoundaryCellNorm(
-            float xfrac, float yfrac, float v00, float v10, float v01) {
+    private float interpolateBoundaryCellNorm(float xfrac, float yfrac, float v00, float v10, float v01) {
         // if point is in NE triangle, value is NO_DATA
         if (xfrac + yfrac > 1) return noDataValue;
 

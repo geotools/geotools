@@ -92,11 +92,9 @@ public class SpriteGraphicFactory implements ExternalGraphicFactory, GraphicCach
 
     final JSONParser jsonParser = new JSONParser();
 
-    protected static final Map<URL, BufferedImage> imageCache =
-            Collections.synchronizedMap(new SoftValueHashMap<>());
+    protected static final Map<URL, BufferedImage> imageCache = Collections.synchronizedMap(new SoftValueHashMap<>());
 
-    protected static final Map<URL, SpriteIndex> indexCache =
-            Collections.synchronizedMap(new SoftValueHashMap<>());
+    protected static final Map<URL, SpriteIndex> indexCache = Collections.synchronizedMap(new SoftValueHashMap<>());
 
     private static final Logger LOGGER = Logging.getLogger(SpriteGraphicFactory.class);
 
@@ -130,9 +128,7 @@ public class SpriteGraphicFactory implements ExternalGraphicFactory, GraphicCach
             }
         } catch (NumberFormatException e) {
             throw new MBSpriteException(
-                    "Exception parsing size parameter from Sprite External Graphic URL. URL was: "
-                            + loc,
-                    e);
+                    "Exception parsing size parameter from Sprite External Graphic URL. URL was: " + loc, e);
         }
 
         // Retrieve and parse the sprite index file.
@@ -143,11 +139,7 @@ public class SpriteGraphicFactory implements ExternalGraphicFactory, GraphicCach
         // Retrieve the sprite sheet and get the icon as a sub image
         BufferedImage spriteImg = getSpriteSheet(baseUrl);
         BufferedImage iconSubImg =
-                spriteImg.getSubimage(
-                        iconInfo.getX(),
-                        iconInfo.getY(),
-                        iconInfo.getWidth(),
-                        iconInfo.getHeight());
+                spriteImg.getSubimage(iconInfo.getX(), iconInfo.getY(), iconInfo.getWidth(), iconInfo.getHeight());
 
         // Use "size" to scale the image, if > 0
         if (size > 0 && iconSubImg.getHeight() != size) {
@@ -161,8 +153,7 @@ public class SpriteGraphicFactory implements ExternalGraphicFactory, GraphicCach
 
         // Use the size multiplier, if any, to scale the image
         if (sizeMultiplier != 1.0) {
-            AffineTransform scaleTx =
-                    AffineTransform.getScaleInstance(sizeMultiplier, sizeMultiplier);
+            AffineTransform scaleTx = AffineTransform.getScaleInstance(sizeMultiplier, sizeMultiplier);
             AffineTransformOp ato = new AffineTransformOp(scaleTx, AffineTransformOp.TYPE_BILINEAR);
             iconSubImg = ato.filter(iconSubImg, null);
         }
@@ -212,9 +203,7 @@ public class SpriteGraphicFactory implements ExternalGraphicFactory, GraphicCach
 
             } catch (UnsupportedEncodingException uee) {
                 throw new MBSpriteException(
-                        "Exception decoding URL fragment for external graphic URL. URL was: "
-                                + urlStr,
-                        uee);
+                        "Exception decoding URL fragment for external graphic URL. URL was: " + urlStr, uee);
             }
         }
 
@@ -241,8 +230,7 @@ public class SpriteGraphicFactory implements ExternalGraphicFactory, GraphicCach
         if (!urlStr.contains(ICON_NAME_DELIMITER)) {
 
             throw new IllegalArgumentException(
-                    "Mapbox-style sprite external graphics must have url#{iconName}. URL was: "
-                            + urlStr);
+                    "Mapbox-style sprite external graphics must have url#{iconName}. URL was: " + urlStr);
         }
 
         String[] splitStr = url.toExternalForm().split(ICON_NAME_DELIMITER);
@@ -250,8 +238,7 @@ public class SpriteGraphicFactory implements ExternalGraphicFactory, GraphicCach
 
         if (iconName.trim().length() == 0) {
             throw new IllegalArgumentException(
-                    "Mapbox-style sprite external graphics must have non-empty url#{iconName}. URL was: "
-                            + urlStr);
+                    "Mapbox-style sprite external graphics must have non-empty url#{iconName}. URL was: " + urlStr);
         }
 
         return iconName;
@@ -290,23 +277,20 @@ public class SpriteGraphicFactory implements ExternalGraphicFactory, GraphicCach
             HTTPResponse response = client.get(url);
             String charset = Optional.ofNullable(response.getResponseCharset()).orElse("UTF-8");
             try (BufferedReader reader =
-                    new BufferedReader(
-                            new InputStreamReader(response.getResponseStream(), charset))) {
+                    new BufferedReader(new InputStreamReader(response.getResponseStream(), charset))) {
                 Object parsed = jsonParser.parse(reader);
                 if (parsed instanceof JSONObject) {
                     spriteIndex = new SpriteIndex(indexUrlStr, (JSONObject) parsed);
                     indexCache.put(baseUrl, spriteIndex);
                 } else {
-                    throw new MBSpriteException(
-                            "Exception parsing sprite index file from: "
-                                    + indexUrlStr
-                                    + ". Expected JSONObject, but was: "
-                                    + parsed.getClass().getSimpleName());
+                    throw new MBSpriteException("Exception parsing sprite index file from: "
+                            + indexUrlStr
+                            + ". Expected JSONObject, but was: "
+                            + parsed.getClass().getSimpleName());
                 }
 
             } catch (ParseException e) {
-                throw new MBSpriteException(
-                        "Exception parsing sprite index file from: " + indexUrlStr, e);
+                throw new MBSpriteException("Exception parsing sprite index file from: " + indexUrlStr, e);
             }
         }
 
@@ -332,15 +316,13 @@ public class SpriteGraphicFactory implements ExternalGraphicFactory, GraphicCach
                     client.get(new URL(baseUrl.toExternalForm() + ".png")).getResponseStream()) {
                 image = ImageIOExt.readBufferedImage(is);
             } catch (Exception e) {
-                LOGGER.warning(
-                        "Unable to retrieve sprite sheet from location: "
-                                + baseUrl.toExternalForm()
-                                + " ("
-                                + e.getMessage()
-                                + ")");
+                LOGGER.warning("Unable to retrieve sprite sheet from location: "
+                        + baseUrl.toExternalForm()
+                        + " ("
+                        + e.getMessage()
+                        + ")");
                 throw new MBSpriteException(
-                        "Failed to retrieve sprite sheet for baseUrl: " + baseUrl.toExternalForm(),
-                        e);
+                        "Failed to retrieve sprite sheet for baseUrl: " + baseUrl.toExternalForm(), e);
             }
             imageCache.put(baseUrl, image);
         }

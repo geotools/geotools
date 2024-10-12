@@ -41,31 +41,15 @@ public class TeradataDataStoreFactory extends JDBCDataStoreFactory {
     public static final Logger LOGGER = Logging.getLogger(TeradataDataStoreFactory.class);
 
     /** parameter for database type */
-    public static final Param DBTYPE =
-            new Param(
-                    "dbtype",
-                    String.class,
-                    "Type",
-                    true,
-                    "teradata",
-                    Collections.singletonMap(Parameter.LEVEL, "program"));
+    public static final Param DBTYPE = new Param(
+            "dbtype", String.class, "Type", true, "teradata", Collections.singletonMap(Parameter.LEVEL, "program"));
 
     public static final Param LOBWORKAROUND =
-            new Param(
-                    "Disable LOB Workaround",
-                    Boolean.class,
-                    "Disable LOB workaround",
-                    false,
-                    Boolean.FALSE);
+            new Param("Disable LOB Workaround", Boolean.class, "Disable LOB workaround", false, Boolean.FALSE);
 
     /** enables using &amp;&amp; in bbox queries */
     public static final Param LOOSEBBOX =
-            new Param(
-                    "Loose bbox",
-                    Boolean.class,
-                    "Perform only primary filter on bbox",
-                    false,
-                    Boolean.TRUE);
+            new Param("Loose bbox", Boolean.class, "Perform only primary filter on bbox", false, Boolean.TRUE);
 
     /** parameter for database port */
     public static final Param PORT = new Param("port", Integer.class, "Port", true, 1025);
@@ -78,30 +62,17 @@ public class TeradataDataStoreFactory extends JDBCDataStoreFactory {
 
     /** Tessellation lookup table */
     public static final Param TESSELLATION_TABLE =
-            new Param(
-                    "tessellationTable",
-                    String.class,
-                    "Tessellation lookup table",
-                    false,
-                    "sysspatial.tessellation");
+            new Param("tessellationTable", String.class, "Tessellation lookup table", false, "sysspatial.tessellation");
 
     /** Flag controlling estimated bounds. */
     public static final Param ESTIMATED_BOUNDS =
-            new Param(
-                    "estimatedBounds",
-                    Boolean.class,
-                    "Use estimated bounds from tessellation table",
-                    false,
-                    false);
+            new Param("estimatedBounds", Boolean.class, "Use estimated bounds from tessellation table", false, false);
 
     public static final Param APPLICATION =
             new Param("application", String.class, "ApplicationName query band", false, "GeoTools");
 
-    private static final PrimaryKeyFinder KEY_FINDER =
-            new CompositePrimaryKeyFinder(
-                    new MetadataTablePrimaryKeyFinder(),
-                    new TeradataPrimaryKeyFinder(),
-                    new HeuristicPrimaryKeyFinder());
+    private static final PrimaryKeyFinder KEY_FINDER = new CompositePrimaryKeyFinder(
+            new MetadataTablePrimaryKeyFinder(), new TeradataPrimaryKeyFinder(), new HeuristicPrimaryKeyFinder());
 
     @Override
     protected SQLDialect createSQLDialect(JDBCDataStore dataStore) {
@@ -134,8 +105,8 @@ public class TeradataDataStoreFactory extends JDBCDataStoreFactory {
     }
 
     @Override
-    protected JDBCDataStore createDataStoreInternal(
-            JDBCDataStore dataStore, final Map<String, ?> params) throws IOException {
+    protected JDBCDataStore createDataStoreInternal(JDBCDataStore dataStore, final Map<String, ?> params)
+            throws IOException {
 
         // setup loose bbox
         TeradataDialect dialect = (TeradataDialect) dataStore.getSQLDialect();
@@ -179,8 +150,7 @@ public class TeradataDataStoreFactory extends JDBCDataStoreFactory {
                 username = ((BasicDataSource) dataSource).getUsername();
             } else if (dataSource instanceof DBCPDataSource) {
                 try {
-                    username =
-                            ((BasicDataSource) dataSource.unwrap(DataSource.class)).getUsername();
+                    username = ((BasicDataSource) dataSource.unwrap(DataSource.class)).getUsername();
                 } catch (SQLException e) {
                     throw (IOException) new IOException().initCause(e);
                 }
@@ -223,8 +193,7 @@ public class TeradataDataStoreFactory extends JDBCDataStoreFactory {
             mode = TMODE.sample.toString();
         }
 
-        String url =
-                "jdbc:teradata://" + host + "/DATABASE=" + db + ",PORT=" + port + ",TMODE=" + mode;
+        String url = "jdbc:teradata://" + host + "/DATABASE=" + db + ",PORT=" + port + ",TMODE=" + mode;
 
         // JD: only add charset if user specifically set it... it seems when CHARSET is set
         // writing clob data does not work... need to investigate

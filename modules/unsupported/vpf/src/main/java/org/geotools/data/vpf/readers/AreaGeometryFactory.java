@@ -85,16 +85,18 @@ public class AreaGeometryFactory extends VPFGeometryFactory implements FileConst
 
         // If the primitive table is there, this coverage is not tiled
         if (!new File(tileDirectory.concat(File.separator).concat(FACE_PRIMITIVE)).exists()) {
-            Short tileId =
-                    Short.valueOf(Short.parseShort(values.getAttribute("tile_id").toString()));
+            Short tileId = Short.valueOf(
+                    Short.parseShort(values.getAttribute("tile_id").toString()));
 
             VPFLibrary vpf = featureClass.getCoverage().getLibrary();
             String tileName = vpf.getTileMap().get(tileId);
 
             if (tileName != null) {
 
-                tileDirectory =
-                        tileDirectory.concat(File.separator).concat(tileName.toUpperCase()).trim();
+                tileDirectory = tileDirectory
+                        .concat(File.separator)
+                        .concat(tileName.toUpperCase())
+                        .trim();
             }
         }
 
@@ -122,12 +124,11 @@ public class AreaGeometryFactory extends VPFGeometryFactory implements FileConst
             if (faceFeature.getAttribute("id").equals(Integer.valueOf(faceId))) {
                 coordinates = new LinkedList<>();
 
-                int ringId = Integer.parseInt(faceFeature.getAttribute("ring_ptr").toString());
+                int ringId =
+                        Integer.parseInt(faceFeature.getAttribute("ring_ptr").toString());
 
                 // Get the starting edge
-                int startEdgeId =
-                        ((Number) ringFile.getRowFromId("id", ringId).getAttribute("start_edge"))
-                                .intValue();
+                int startEdgeId = ((Number) ringFile.getRowFromId("id", ringId).getAttribute("start_edge")).intValue();
                 int nextEdgeId = startEdgeId;
                 int prevNodeId = -1;
 
@@ -218,8 +219,7 @@ public class AreaGeometryFactory extends VPFGeometryFactory implements FileConst
                                 coordinate =
                                         edgeGeometry.getCoordinateSequence().getCoordinate(inx);
 
-                                if ((previousCoordinate == null)
-                                        || (!coordinate.equals3D(previousCoordinate))) {
+                                if ((previousCoordinate == null) || (!coordinate.equals3D(previousCoordinate))) {
                                     coordinates.add(coordinate);
                                     previousCoordinate = coordinate;
                                 }
@@ -229,19 +229,16 @@ public class AreaGeometryFactory extends VPFGeometryFactory implements FileConst
                                 coordinate =
                                         edgeGeometry.getCoordinateSequence().getCoordinate(inx);
 
-                                if ((previousCoordinate == null)
-                                        || (!coordinate.equals3D(previousCoordinate))) {
+                                if ((previousCoordinate == null) || (!coordinate.equals3D(previousCoordinate))) {
                                     coordinates.add(coordinate);
                                     previousCoordinate = coordinate;
                                 }
                             }
                         }
                     } else {
-                        coordinate =
-                                edgeGeometry
-                                        .getCoordinateSequence()
-                                        .getCoordinate(
-                                                isLeft ? 0 : edgeGeometry.getNumPoints() - 1);
+                        coordinate = edgeGeometry
+                                .getCoordinateSequence()
+                                .getCoordinate(isLeft ? 0 : edgeGeometry.getNumPoints() - 1);
                     }
 
                     tempEdgeId = isLeft ? leftEdge : rightEdge;

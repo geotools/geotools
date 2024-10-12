@@ -101,8 +101,7 @@ public class FilterAttributeExtractorTest {
      */
     @Test
     public void testCompare() throws IllegalFilterException {
-        PropertyIsEqualTo filter =
-                fac.equals(fac.property("testString"), fac.literal("test string data"));
+        PropertyIsEqualTo filter = fac.equals(fac.property("testString"), fac.literal("test string data"));
         assertAttributeName(filter, "testString");
     }
 
@@ -169,8 +168,7 @@ public class FilterAttributeExtractorTest {
         assertAttributeName(fac.between(pint, lower, upper), "testInteger");
         assertAttributeName(fac.between(pint, pint, pint), "testInteger");
 
-        assertAttributeName(
-                fac.between(pint, plong, pfloat), "testInteger", "testLong", "testFloat");
+        assertAttributeName(fac.between(pint, plong, pfloat), "testInteger", "testLong", "testFloat");
     }
 
     /**
@@ -236,8 +234,7 @@ public class FilterAttributeExtractorTest {
         PropertyIsEqualTo filterTrue = fac.equals(testAttribute, fac.literal("test string data"));
 
         // Set up false sub filter
-        PropertyIsEqualTo filterFalse =
-                fac.equals(testAttribute, fac.literal("incorrect test string data"));
+        PropertyIsEqualTo filterFalse = fac.equals(testAttribute, fac.literal("incorrect test string data"));
 
         // Test OR for false negatives
         Or filter = fac.or(Arrays.asList(filterFalse, filterTrue));

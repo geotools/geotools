@@ -44,13 +44,12 @@ public class GMLPointMemberTypeBindingTest extends AbstractGMLBindingTest {
 
     @Test
     public void testWithGeometry() throws Exception {
-        Node node =
-                createNode(
-                        association,
-                        new ElementInstance[] {geometry},
-                        new Object[] {new GeometryFactory().createPoint(new Coordinate(0, 0))},
-                        null,
-                        null);
+        Node node = createNode(
+                association,
+                new ElementInstance[] {geometry},
+                new Object[] {new GeometryFactory().createPoint(new Coordinate(0, 0))},
+                null,
+                null);
         GMLGeometryAssociationTypeBinding s1 =
                 (GMLGeometryAssociationTypeBinding) getBinding(GML.GeometryAssociationType);
         Geometry g = (Geometry) s1.parse(association, node, null);

@@ -40,8 +40,7 @@ import org.xml.sax.helpers.ParserAdapter;
  */
 public class ParserTest extends FilterTestSupport {
     /** Standard logging instance */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(ParserTest.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(ParserTest.class);
 
     /** Constructor with test name. */
     String dataFolder = "";
@@ -92,8 +91,7 @@ public class ParserTest extends FilterTestSupport {
         attributes[10] = Double.valueOf(0.0);
 
         // Creates the feature itself
-        FilterTestSupport.testFeature =
-                SimpleFeatureBuilder.build(FilterTestSupport.testSchema, attributes, null);
+        FilterTestSupport.testFeature = SimpleFeatureBuilder.build(FilterTestSupport.testSchema, attributes, null);
     }
 
     @Test

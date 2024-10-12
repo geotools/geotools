@@ -61,10 +61,7 @@ public class ListHandler extends XSIElementHandler {
                     simpleType = sth;
                 } else {
                     throw new SAXNotRecognizedException(
-                            getLocalName()
-                                    + " may only have one '"
-                                    + AllHandler.LOCALNAME
-                                    + "' declaration.");
+                            getLocalName() + " may only have one '" + AllHandler.LOCALNAME + "' declaration.");
                 }
 
                 return sth;

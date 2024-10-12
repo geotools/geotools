@@ -35,8 +35,7 @@ import org.geotools.api.data.Transaction;
  */
 public class DefaultTransaction implements Transaction {
     /** The logger for the data module. */
-    protected static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(DefaultTransaction.class);
+    protected static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(DefaultTransaction.class);
 
     /** Records State by key */
     Map<Object, Object> stateLookup = new HashMap<>();
@@ -84,20 +83,18 @@ public class DefaultTransaction implements Transaction {
             State current = (State) stateLookup.get(key);
 
             if (state == current) {
-                throw new IllegalArgumentException(
-                        "Transaction "
-                                + handle
-                                + " already has an this State for key: "
-                                + key
-                                + ". Please check for existing State before creating your own.");
+                throw new IllegalArgumentException("Transaction "
+                        + handle
+                        + " already has an this State for key: "
+                        + key
+                        + ". Please check for existing State before creating your own.");
             } else {
-                throw new IllegalArgumentException(
-                        "Transaction "
-                                + handle
-                                + " already has an entry for key:"
-                                + key
-                                + ". Please check for existing State before creating your own: "
-                                + current);
+                throw new IllegalArgumentException("Transaction "
+                        + handle
+                        + " already has an entry for key:"
+                        + key
+                        + ". Please check for existing State before creating your own: "
+                        + current);
             }
         } else {
             stateLookup.put(key, state);
@@ -126,9 +123,7 @@ public class DefaultTransaction implements Transaction {
             state.setTransaction(null);
         } else {
             throw new IllegalArgumentException(
-                    "Transaction does not no anything about key:"
-                            + key
-                            + ". Has this key already been removed?");
+                    "Transaction does not no anything about key:" + key + ". Has this key already been removed?");
         }
     }
 
@@ -181,8 +176,7 @@ public class DefaultTransaction implements Transaction {
                 throw io;
             }
 
-            throw new DataSourceException(
-                    "Commit encountered " + problemCount + " problems - the first was", io);
+            throw new DataSourceException("Commit encountered " + problemCount + " problems - the first was", io);
         }
         authorizations.clear();
     }
@@ -219,8 +213,7 @@ public class DefaultTransaction implements Transaction {
                 throw io;
             }
 
-            throw new DataSourceException(
-                    "Rollback encountered " + problemCount + " problems - the first was", io);
+            throw new DataSourceException("Rollback encountered " + problemCount + " problems - the first was", io);
         }
         authorizations.clear();
     }
@@ -291,8 +284,7 @@ public class DefaultTransaction implements Transaction {
                 throw io;
             }
             throw new DataSourceException(
-                    "setAuthorization encountered " + problemCount + " problems - the first was",
-                    io);
+                    "setAuthorization encountered " + problemCount + " problems - the first was", io);
         }
     }
 
@@ -336,10 +328,9 @@ public class DefaultTransaction implements Transaction {
     @SuppressWarnings("deprecation") // finalize is deprecated in Java 9
     protected void finalize() throws Throwable {
         if (stateLookup != null) {
-            LOGGER.severe(
-                    "There's code leaving transaction unclosed. "
-                            + "Call Transaction.close() after using them to ensure they do not hold state "
-                            + "such as JDBC connections or file handles");
+            LOGGER.severe("There's code leaving transaction unclosed. "
+                    + "Call Transaction.close() after using them to ensure they do not hold state "
+                    + "such as JDBC connections or file handles");
             LOGGER.severe("Unclosed transaction handle is '" + handle + "'");
             close();
         }

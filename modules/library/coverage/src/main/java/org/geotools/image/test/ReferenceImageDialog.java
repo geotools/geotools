@@ -34,25 +34,21 @@ class ReferenceImageDialog extends JDialog {
         JPanel content = new JPanel(new BorderLayout());
         this.setContentPane(content);
         this.setTitle("ImageAssert");
-        final JLabel topLabel =
-                new JLabel(
-                        "<html><body>Reference image file is missing.<br>"
-                                + "This is the result, do you want to make it the referecence?</html></body>");
+        final JLabel topLabel = new JLabel("<html><body>Reference image file is missing.<br>"
+                + "This is the result, do you want to make it the referecence?</html></body>");
         content.add(topLabel, BorderLayout.NORTH);
         content.add(new javax.media.jai.widget.ScrollingImagePanel(image, 400, 400));
         JPanel commands = new JPanel(new FlowLayout(FlowLayout.CENTER));
         JButton accept = new JButton("Accept as reference");
-        accept.addActionListener(
-                e -> {
-                    this.accept = true;
-                    setVisible(false);
-                });
+        accept.addActionListener(e -> {
+            this.accept = true;
+            setVisible(false);
+        });
         JButton reject = new JButton("Reject output");
-        reject.addActionListener(
-                e -> {
-                    this.accept = false;
-                    setVisible(false);
-                });
+        reject.addActionListener(e -> {
+            this.accept = false;
+            setVisible(false);
+        });
         commands.add(accept);
         commands.add(reject);
         content.add(commands, BorderLayout.SOUTH);

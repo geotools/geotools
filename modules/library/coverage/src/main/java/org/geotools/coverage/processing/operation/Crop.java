@@ -161,17 +161,16 @@ public class Crop extends Operation2D {
      * The parameter descriptor used to pass this operation the envelope to use when doing the
      * spatial crop.
      */
-    public static final ParameterDescriptor<Bounds> CROP_ENVELOPE =
-            new DefaultParameterDescriptor<>(
-                    Citations.GEOTOOLS,
-                    PARAMNAME_ENVELOPE,
-                    Bounds.class, // Value class
-                    null, // Array of valid values
-                    null, // Default value
-                    null, // Minimal value
-                    null, // Maximal value
-                    null, // Unit of measure
-                    true); // Parameter is optional
+    public static final ParameterDescriptor<Bounds> CROP_ENVELOPE = new DefaultParameterDescriptor<>(
+            Citations.GEOTOOLS,
+            PARAMNAME_ENVELOPE,
+            Bounds.class, // Value class
+            null, // Array of valid values
+            null, // Default value
+            null, // Minimal value
+            null, // Maximal value
+            null, // Unit of measure
+            true); // Parameter is optional
 
     /**
      * The parameter descriptor used to pass this operation the polygons(s) to use when doing the
@@ -182,92 +181,77 @@ public class Crop extends Operation2D {
      *
      * <p>The parameter shall be a Polygon instance, or a GeometryCollection holding Polygons
      */
-    public static final ParameterDescriptor<Geometry> CROP_ROI =
-            new DefaultParameterDescriptor<>(
-                    Citations.JAI,
-                    PARAMNAME_ROI,
-                    Geometry.class, // Value class
-                    null, // Array of valid values
-                    null, // Default value
-                    null, // Minimal value
-                    null, // Maximal value
-                    null, // Unit of measure
-                    true); // Parameter is optional
+    public static final ParameterDescriptor<Geometry> CROP_ROI = new DefaultParameterDescriptor<>(
+            Citations.JAI,
+            PARAMNAME_ROI,
+            Geometry.class, // Value class
+            null, // Array of valid values
+            null, // Default value
+            null, // Minimal value
+            null, // Maximal value
+            null, // Unit of measure
+            true); // Parameter is optional
 
     /**
      * The parameter descriptor used to tell this operation to optimize the crop using a Mosaic in
      * where the area of the image we would not load is smaller than
      * ROI_OPTIMISATION_TOLERANCE*FULL_CROP.
      */
-    public static final ParameterDescriptor<Double> ROI_OPTIMISATION_TOLERANCE =
-            new DefaultParameterDescriptor<>(
-                    Citations.GEOTOOLS,
-                    PARAMNAME_ROITOLERANCE,
-                    Double.class, // Value class
-                    null, // Array of valid values
-                    0.6, // Default value
-                    0.0, // Minimal value
-                    1.0, // Maximal value
-                    null, // Unit of measure
-                    true); // Parameter is optional
+    public static final ParameterDescriptor<Double> ROI_OPTIMISATION_TOLERANCE = new DefaultParameterDescriptor<>(
+            Citations.GEOTOOLS,
+            PARAMNAME_ROITOLERANCE,
+            Double.class, // Value class
+            null, // Array of valid values
+            0.6, // Default value
+            0.0, // Minimal value
+            1.0, // Maximal value
+            null, // Unit of measure
+            true); // Parameter is optional
 
     /**
      * The parameter descriptor used to tell this operation to force the usage of a mosaic by
      * avoiding any kind of optimization
      */
-    public static final ParameterDescriptor<Boolean> FORCE_MOSAIC =
-            new DefaultParameterDescriptor<>(
-                    Citations.GEOTOOLS,
-                    PARAMNAME_FORCEMOSAIC,
-                    Boolean.class, // Value class
-                    null, // Array of valid values
-                    false, // Default value
-                    null, // Minimal value
-                    null, // Maximal value
-                    null, // Unit of measure
-                    true); // Parameter is optional
+    public static final ParameterDescriptor<Boolean> FORCE_MOSAIC = new DefaultParameterDescriptor<>(
+            Citations.GEOTOOLS,
+            PARAMNAME_FORCEMOSAIC,
+            Boolean.class, // Value class
+            null, // Array of valid values
+            false, // Default value
+            null, // Minimal value
+            null, // Maximal value
+            null, // Unit of measure
+            true); // Parameter is optional
 
     /** The parameter descriptor used to tell this operation to check NoData */
-    public static final ParameterDescriptor<Range> NODATA =
-            new DefaultParameterDescriptor<>(
-                    Citations.JAI,
-                    PARAMNAME_NODATA,
-                    Range.class, // Value class
-                    null, // Array of valid values
-                    null, // Default value
-                    null, // Minimal value
-                    null, // Maximal value
-                    null, // Unit of measure
-                    true); // Parameter is optional
+    public static final ParameterDescriptor<Range> NODATA = new DefaultParameterDescriptor<>(
+            Citations.JAI,
+            PARAMNAME_NODATA,
+            Range.class, // Value class
+            null, // Array of valid values
+            null, // Default value
+            null, // Minimal value
+            null, // Maximal value
+            null, // Unit of measure
+            true); // Parameter is optional
 
     /** The parameter descriptor used to tell this operation to set destinationNoData */
-    public static final ParameterDescriptor<double[]> DEST_NODATA =
-            new DefaultParameterDescriptor<>(
-                    Citations.JAI,
-                    PARAMNAME_DEST_NODATA,
-                    double[].class, // Value class
-                    null, // Array of valid values
-                    null, // Default value
-                    null, // Minimal value
-                    null, // Maximal value
-                    null, // Unit of measure
-                    true); // Parameter is optional
+    public static final ParameterDescriptor<double[]> DEST_NODATA = new DefaultParameterDescriptor<>(
+            Citations.JAI,
+            PARAMNAME_DEST_NODATA,
+            double[].class, // Value class
+            null, // Array of valid values
+            null, // Default value
+            null, // Minimal value
+            null, // Maximal value
+            null, // Unit of measure
+            true); // Parameter is optional
 
     /** Constructs a default {@code "Crop"} operation. */
     public Crop() {
-        super(
-                new DefaultParameterDescriptorGroup(
-                        Citations.JAI,
-                        "CoverageCrop",
-                        new ParameterDescriptor[] {
-                            SOURCE_0,
-                            CROP_ENVELOPE,
-                            CROP_ROI,
-                            ROI_OPTIMISATION_TOLERANCE,
-                            FORCE_MOSAIC,
-                            NODATA,
-                            DEST_NODATA
-                        }));
+        super(new DefaultParameterDescriptorGroup(Citations.JAI, "CoverageCrop", new ParameterDescriptor[] {
+            SOURCE_0, CROP_ENVELOPE, CROP_ROI, ROI_OPTIMISATION_TOLERANCE, FORCE_MOSAIC, NODATA, DEST_NODATA
+        }));
     }
 
     /**
@@ -282,8 +266,10 @@ public class Crop extends Operation2D {
 
         final Geometry cropRoi; // extracted from parameters
         GeneralBounds cropEnvelope = null; // extracted from parameters
-        final double roiTolerance = parameters.parameter(Crop.PARAMNAME_ROITOLERANCE).doubleValue();
-        final boolean forceMosaic = parameters.parameter(Crop.PARAMNAME_FORCEMOSAIC).booleanValue();
+        final double roiTolerance =
+                parameters.parameter(Crop.PARAMNAME_ROITOLERANCE).doubleValue();
+        final boolean forceMosaic =
+                parameters.parameter(Crop.PARAMNAME_FORCEMOSAIC).booleanValue();
         Range nodata = (Range) parameters.parameter(Crop.PARAMNAME_NODATA).getValue();
         double[] destnodata =
                 (double[]) parameters.parameter(Crop.PARAMNAME_DEST_NODATA).getValue();
@@ -298,10 +284,7 @@ public class Crop extends Operation2D {
         final ParameterValue sourceParameter = parameters.parameter("Source");
         if (sourceParameter == null || !(sourceParameter.getValue() instanceof GridCoverage2D)) {
             throw new CannotCropException(
-                    MessageFormat.format(
-                            ErrorKeys.NULL_PARAMETER_$2,
-                            "Source",
-                            GridCoverage2D.class.toString()));
+                    MessageFormat.format(ErrorKeys.NULL_PARAMETER_$2, "Source", GridCoverage2D.class.toString()));
         }
         // extracted from parameters
         final GridCoverage2D source = (GridCoverage2D) sourceParameter.getValue();
@@ -318,11 +301,8 @@ public class Crop extends Operation2D {
 
         if ((envelopeParameter == null || envelopeParameter.getValue() == null)
                 && (roiParameter == null || roiParameter.getValue() == null))
-            throw new CannotCropException(
-                    MessageFormat.format(
-                            ErrorKeys.NULL_PARAMETER_$2,
-                            PARAMNAME_ENVELOPE,
-                            GeneralBounds.class.toString()));
+            throw new CannotCropException(MessageFormat.format(
+                    ErrorKeys.NULL_PARAMETER_$2, PARAMNAME_ENVELOPE, GeneralBounds.class.toString()));
 
         Object envelope = envelopeParameter.getValue();
         if (envelope != null) {
@@ -336,20 +316,16 @@ public class Crop extends Operation2D {
 
         // Check crop ROI
         try {
-            cropRoi =
-                    IntersectUtils.unrollGeometries(
-                            (Geometry) roiParameter.getValue()); // may throw if format not correct
+            cropRoi = IntersectUtils.unrollGeometries(
+                    (Geometry) roiParameter.getValue()); // may throw if format not correct
         } catch (IllegalArgumentException ex) {
             final Object arg1 = ex.getMessage();
-            throw new CannotCropException(
-                    MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, PARAMNAME_ROI, arg1), ex);
+            throw new CannotCropException(MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, PARAMNAME_ROI, arg1), ex);
         }
 
         // Setting a GeneralEnvelope from ROI if needed
         if (cropRoi != null && cropEnvelope == null) {
-            Bounds e2d =
-                    new ReferencedEnvelope(
-                            cropRoi.getEnvelopeInternal(), source.getCoordinateReferenceSystem());
+            Bounds e2d = new ReferencedEnvelope(cropRoi.getEnvelopeInternal(), source.getCoordinateReferenceSystem());
             cropEnvelope = new GeneralBounds(e2d);
         }
 
@@ -366,8 +342,7 @@ public class Crop extends Operation2D {
         // crop envelope
         ReferencedEnvelope destinationEnvelope = new ReferencedEnvelope(cropEnvelope);
         CoordinateReferenceSystem sourceCRS = sourceEnvelope.getCoordinateReferenceSystem();
-        CoordinateReferenceSystem destinationCRS =
-                destinationEnvelope.getCoordinateReferenceSystem();
+        CoordinateReferenceSystem destinationCRS = destinationEnvelope.getCoordinateReferenceSystem();
         if (destinationCRS == null) {
             // Do not change the user provided object - clone it first.
             final ReferencedEnvelope ge = new ReferencedEnvelope(destinationEnvelope);
@@ -384,8 +359,7 @@ public class Crop extends Operation2D {
         if (!CRS.equalsIgnoreMetadata(sourceCRS, destinationCRS)) {
             final Object arg0 = sourceCRS.getName().getCode();
             final Object arg1 = destinationCRS.getName().getCode();
-            throw new CannotCropException(
-                    MessageFormat.format(ErrorKeys.MISMATCHED_ENVELOPE_CRS_$2, arg0, arg1));
+            throw new CannotCropException(MessageFormat.format(ErrorKeys.MISMATCHED_ENVELOPE_CRS_$2, arg0, arg1));
         }
 
         // TODO: check ROI SRID
@@ -407,11 +381,8 @@ public class Crop extends Operation2D {
         // intersect
         if (cropRoi != null) {
             final Geometry jis =
-                    JTS.toGeometry(
-                            (org.locationtech.jts.geom.Envelope)
-                                    new ReferencedEnvelope(intersectionEnvelope));
-            if (!IntersectUtils.intersects(cropRoi, jis))
-                throw new CannotCropException(ErrorKeys.CANT_CROP);
+                    JTS.toGeometry((org.locationtech.jts.geom.Envelope) new ReferencedEnvelope(intersectionEnvelope));
+            if (!IntersectUtils.intersects(cropRoi, jis)) throw new CannotCropException(ErrorKeys.CANT_CROP);
         }
         // //
         //
@@ -439,8 +410,7 @@ public class Crop extends Operation2D {
         //
         // //
         final double tolerance = XAffineTransform.getScale(sourceCornerGridToWorld);
-        if (cropRoi != null
-                || !intersectionEnvelope.equals(sourceEnvelope, tolerance / 2.0, false)) {
+        if (cropRoi != null || !intersectionEnvelope.equals(sourceEnvelope, tolerance / 2.0, false)) {
             cropEnvelope = intersectionEnvelope.clone();
             return buildResult(
                     internalROI,
@@ -537,13 +507,10 @@ public class Crop extends Operation2D {
                 // intersection(cropEnvelope, envelope(roi))
                 try {
 
-                    final Polygon modelSpaceROI =
-                            FeatureUtilities.getPolygon(cropEnvelope, GFACTORY);
+                    final Polygon modelSpaceROI = FeatureUtilities.getPolygon(cropEnvelope, GFACTORY);
                     Geometry intersection = IntersectUtils.intersection(cropROI, modelSpaceROI);
-                    ReferencedEnvelope e2d =
-                            ReferencedEnvelope.envelope(
-                                    intersection.getEnvelopeInternal(),
-                                    cropEnvelope.getCoordinateReferenceSystem());
+                    ReferencedEnvelope e2d = ReferencedEnvelope.envelope(
+                            intersection.getEnvelopeInternal(), cropEnvelope.getCoordinateReferenceSystem());
                     GeneralBounds ge = new GeneralBounds(e2d);
                     cropEnvelope.setEnvelope(ge);
                 } catch (TopologyException e) {
@@ -551,16 +518,11 @@ public class Crop extends Operation2D {
                     // envelope(roi)), as the
                     // ROI will do the rest (we'll just carry around a larger image but pixels only
                     // get out within the ROI)
-                    org.locationtech.jts.geom.Envelope cropROIEnvelope =
-                            cropROI.getEnvelopeInternal();
+                    org.locationtech.jts.geom.Envelope cropROIEnvelope = cropROI.getEnvelopeInternal();
                     org.locationtech.jts.geom.Envelope intersection =
-                            cropROIEnvelope.intersection(
-                                    ReferencedEnvelope.reference(cropEnvelope));
-                    cropEnvelope.setEnvelope(
-                            new GeneralBounds(
-                                    new ReferencedEnvelope(
-                                            intersection,
-                                            cropEnvelope.getCoordinateReferenceSystem())));
+                            cropROIEnvelope.intersection(ReferencedEnvelope.reference(cropEnvelope));
+                    cropEnvelope.setEnvelope(new GeneralBounds(
+                            new ReferencedEnvelope(intersection, cropEnvelope.getCoordinateReferenceSystem())));
                 }
             }
 
@@ -571,8 +533,7 @@ public class Crop extends Operation2D {
             // OGC PIXEL-IS-CENTER ImageDatum assumption.
             //
             // //
-            final AffineTransform sourceWorldToGridTransform =
-                    sourceGridToWorldTransform.createInverse();
+            final AffineTransform sourceWorldToGridTransform = sourceGridToWorldTransform.createInverse();
 
             // //
             //
@@ -586,8 +547,7 @@ public class Crop extends Operation2D {
             //
             // //
             final Rectangle2D finalRasterAreaDouble =
-                    XAffineTransform.transform(
-                            sourceWorldToGridTransform, cropEnvelope.toRectangle2D(), null);
+                    XAffineTransform.transform(sourceWorldToGridTransform, cropEnvelope.toRectangle2D(), null);
             final Rectangle finalRasterArea = finalRasterAreaDouble.getBounds();
 
             // intersection with the original range in order to not try to crop outside the image
@@ -611,8 +571,7 @@ public class Crop extends Operation2D {
 
             // we do not have to crop in this case (should not really happen at
             // this time)
-            if (finalRasterArea.equals(sourceGridRange) && isSimpleTransform && cropROI == null)
-                return sourceCoverage;
+            if (finalRasterArea.equals(sourceGridRange) && isSimpleTransform && cropROI == null) return sourceCoverage;
 
             // //
             //
@@ -635,8 +594,7 @@ public class Crop extends Operation2D {
             java.awt.Polygon rasterSpaceROI = null;
 
             double[] background = destnodata;
-            if (background == null)
-                background = CoverageUtilities.getBackgroundValues(sourceCoverage);
+            if (background == null) background = CoverageUtilities.getBackgroundValues(sourceCoverage);
 
             String operatioName = null;
             if (!isSimpleTransform || cropROI != null) {
@@ -656,25 +614,18 @@ public class Crop extends Operation2D {
                 //
                 // //
                 final List<Point2D> points = new ArrayList<>(5);
-                rasterSpaceROI =
-                        FeatureUtilities.convertPolygonToPointArray(
-                                modelSpaceROI,
-                                ProjectiveTransform.create(sourceWorldToGridTransform),
-                                points);
+                rasterSpaceROI = FeatureUtilities.convertPolygonToPointArray(
+                        modelSpaceROI, ProjectiveTransform.create(sourceWorldToGridTransform), points);
                 if (isSimpleTransform && cropROI == null) {
                     rasterSpaceROI = rectangleToPolygon(finalRasterArea);
                 }
                 if (rasterSpaceROI == null || rasterSpaceROI.getBounds().isEmpty())
-                    if (finalRasterArea.isEmpty())
-                        throw new CannotCropException(ErrorKeys.CANT_CROP);
+                    if (finalRasterArea.isEmpty()) throw new CannotCropException(ErrorKeys.CANT_CROP);
                 if (forceMosaic || cropROI != null || internalROI != null || nodata != null) {
                     // prepare the params for the mosaic
                     ROI[] roiarr = null;
                     if (cropROI != null) {
-                        Geometry txROI =
-                                JTS.transform(
-                                        cropROI,
-                                        ProjectiveTransform.create(sourceWorldToGridTransform));
+                        Geometry txROI = JTS.transform(cropROI, ProjectiveTransform.create(sourceWorldToGridTransform));
                         if (!hasIntegerBounds(JTS.toRectangle2D(txROI.getEnvelopeInternal()))) {
                             // Approximate Geometry
                             transformGeometry(txROI);
@@ -793,7 +744,9 @@ public class Crop extends Operation2D {
                                     new GridEnvelope2D(croppedImage.getBounds()),
                                     sourceGridGeometry.getGridToCRS2D(PixelOrientation.CENTER),
                                     sourceCoverage.getCoordinateReferenceSystem()),
-                            actionTaken == 1 ? null : sourceCoverage.getSampleDimensions().clone(),
+                            actionTaken == 1
+                                    ? null
+                                    : sourceCoverage.getSampleDimensions().clone(),
                             new GridCoverage[] {sourceCoverage},
                             properties);
 
@@ -849,8 +802,7 @@ public class Crop extends Operation2D {
      * @param hints {@link Hints} to use for initializing the returned layout.
      * @return an {@link ImageLayout} instance.
      */
-    private static ImageLayout initLayout(
-            final RenderedImage sourceImage, final RenderingHints hints) {
+    private static ImageLayout initLayout(final RenderedImage sourceImage, final RenderingHints hints) {
 
         ImageLayout layout = (ImageLayout) hints.get(JAI.KEY_IMAGE_LAYOUT);
         if (layout != null) {

@@ -83,8 +83,7 @@ public abstract class JDBCTemporalFilterOnlineTest extends JDBCTestSupport {
                 SimpleFeature f = it.next();
                 Date expected = date(dates[i++]);
 
-                assertEquals(
-                        Converters.convert(expected, Timestamp.class), f.getAttribute(aname("dt")));
+                assertEquals(Converters.convert(expected, Timestamp.class), f.getAttribute(aname("dt")));
             }
         }
     }

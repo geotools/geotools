@@ -29,8 +29,7 @@ public class KMLPlacemarkLookAtTest extends KMLTestSupport {
     @Test
     public void testParseDocument() throws Exception {
         Parser parser = new Parser(createConfiguration());
-        SimpleFeature doc =
-                (SimpleFeature) parser.parse(getClass().getResourceAsStream("geot5666.kml"));
+        SimpleFeature doc = (SimpleFeature) parser.parse(getClass().getResourceAsStream("geot5666.kml"));
         assertNotNull(doc);
         assertEquals("document", doc.getType().getTypeName());
         assertEquals("GEOT-5666", doc.getAttribute("name"));

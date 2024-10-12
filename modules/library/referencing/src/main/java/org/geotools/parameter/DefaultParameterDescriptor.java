@@ -57,8 +57,7 @@ import org.geotools.util.Utilities;
  * @see Parameter
  * @see DefaultParameterDescriptorGroup
  */
-public class DefaultParameterDescriptor<T> extends AbstractParameterDescriptor
-        implements ParameterDescriptor<T> {
+public class DefaultParameterDescriptor<T> extends AbstractParameterDescriptor implements ParameterDescriptor<T> {
     /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = -295668622297737705L;
 
@@ -114,19 +113,8 @@ public class DefaultParameterDescriptor<T> extends AbstractParameterDescriptor
      * @param defaultValue The default value for the parameter, or {@code null}.
      */
     public DefaultParameterDescriptor(
-            final String name,
-            final Class<T> valueClass,
-            final T[] validValues,
-            final T defaultValue) {
-        this(
-                Collections.singletonMap(NAME_KEY, name),
-                valueClass,
-                validValues,
-                defaultValue,
-                null,
-                null,
-                null,
-                true);
+            final String name, final Class<T> valueClass, final T[] validValues, final T defaultValue) {
+        this(Collections.singletonMap(NAME_KEY, name), valueClass, validValues, defaultValue, null, null, null, true);
     }
 
     /**
@@ -233,8 +221,7 @@ public class DefaultParameterDescriptor<T> extends AbstractParameterDescriptor
         AbstractParameter.ensureValidClass(valueClass, maximum);
         if (minimum != null && maximum != null) {
             if (minimum.compareTo(valueClass.cast(maximum)) > 0) {
-                throw new IllegalArgumentException(
-                        MessageFormat.format(ErrorKeys.BAD_RANGE_$2, minimum, maximum));
+                throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.BAD_RANGE_$2, minimum, maximum));
             }
         }
         if (validValues != null) {
@@ -264,8 +251,7 @@ public class DefaultParameterDescriptor<T> extends AbstractParameterDescriptor
      */
     public static DefaultParameterDescriptor<Integer> create(
             final String name, final int defaultValue, final int minimum, final int maximum) {
-        return create(
-                Collections.singletonMap(NAME_KEY, name), defaultValue, minimum, maximum, true);
+        return create(Collections.singletonMap(NAME_KEY, name), defaultValue, minimum, maximum, true);
     }
 
     /**
@@ -313,13 +299,7 @@ public class DefaultParameterDescriptor<T> extends AbstractParameterDescriptor
             final double minimum,
             final double maximum,
             final Unit<?> unit) {
-        return create(
-                Collections.singletonMap(NAME_KEY, name),
-                defaultValue,
-                minimum,
-                maximum,
-                unit,
-                true);
+        return create(Collections.singletonMap(NAME_KEY, name), defaultValue, minimum, maximum, unit, true);
     }
 
     /**
@@ -375,10 +355,7 @@ public class DefaultParameterDescriptor<T> extends AbstractParameterDescriptor
             try {
                 @SuppressWarnings("unchecked") // Type checked with reflection.
                 final T[] tmp =
-                        (T[])
-                                valueClass
-                                        .getMethod("values", (Class<?>[]) null)
-                                        .invoke(null, (Object[]) null);
+                        (T[]) valueClass.getMethod("values", (Class<?>[]) null).invoke(null, (Object[]) null);
                 codeList = tmp;
             } catch (Exception exception) {
                 // No code list defined. Not a problem; we will just

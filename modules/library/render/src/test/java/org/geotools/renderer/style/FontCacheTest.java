@@ -57,9 +57,7 @@ public class FontCacheTest {
         fc.registerFont(loadFont("DroidNaskh-Regular.ttf"));
 
         List<String> alternatives = fc.getAlternatives("Droid");
-        assertThat(
-                alternatives,
-                hasItems("Droid Arabic Naskh", "Droid Sans Armenian", "Droid Sans Fallback"));
+        assertThat(alternatives, hasItems("Droid Arabic Naskh", "Droid Sans Armenian", "Droid Sans Fallback"));
     }
 
     private Font loadFont(String fontName) {
@@ -78,8 +76,7 @@ public class FontCacheTest {
         FontCache.collectAlternative(baseName, "Noto Sans SemiBold", alternatives);
         FontCache.collectAlternative(baseName, "Noto Sans Armenian", alternatives);
         FontCache.collectAlternative(baseName, "Noto Sans Armenian Thin", alternatives);
-        List<String> expected =
-                List.of("Noto Sans Regular", "Noto Sans Arabic Regular", "Noto Sans Armenian");
+        List<String> expected = List.of("Noto Sans Regular", "Noto Sans Arabic Regular", "Noto Sans Armenian");
         assertEquals(expected, alternatives);
     }
 }

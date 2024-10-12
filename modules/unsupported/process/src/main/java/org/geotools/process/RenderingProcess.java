@@ -43,8 +43,7 @@ public interface RenderingProcess extends Process {
      * @param gridGeometry The grid geometry desired for the outputs of the transformation
      * @return The transformed query, or null if no inversion is possible/meaningful
      */
-    Query invertQuery(Map<String, Object> input, Query targetQuery, GridGeometry gridGeometry)
-            throws ProcessException;
+    Query invertQuery(Map<String, Object> input, Query targetQuery, GridGeometry gridGeometry) throws ProcessException;
 
     /**
      * Given a target query and a target grid geometry returns the grid geometry to be used to read
@@ -56,8 +55,7 @@ public interface RenderingProcess extends Process {
      * @param targetGridGeometry The grid geometry desired for the outputs of the transformation
      * @return The transformed query, or null if no inversion is possible/meaningful
      */
-    GridGeometry invertGridGeometry(
-            Map<String, Object> input, Query targetQuery, GridGeometry targetGridGeometry)
+    GridGeometry invertGridGeometry(Map<String, Object> input, Query targetQuery, GridGeometry targetGridGeometry)
             throws ProcessException;
 
     /**

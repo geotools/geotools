@@ -49,8 +49,7 @@ public class DefaultTemporalPosition implements TemporalPosition {
      * @param frame cannot be @CODE null
      * @param indeterminatePosition can be @CODE NULL if none.
      */
-    public DefaultTemporalPosition(
-            TemporalReferenceSystem frame, IndeterminateValue indeterminatePosition) {
+    public DefaultTemporalPosition(TemporalReferenceSystem frame, IndeterminateValue indeterminatePosition) {
         this.frame = frame;
         this.indeterminatePosition = indeterminatePosition;
     }
@@ -70,12 +69,8 @@ public class DefaultTemporalPosition implements TemporalPosition {
      */
     public TemporalReferenceSystem getFrame() {
         if (frame == null) {
-            frame =
-                    new DefaultTemporalReferenceSystem(
-                            new NamedIdentifier(
-                                    Citations.CRS,
-                                    new SimpleInternationalString("Gregorian calendar")),
-                            null);
+            frame = new DefaultTemporalReferenceSystem(
+                    new NamedIdentifier(Citations.CRS, new SimpleInternationalString("Gregorian calendar")), null);
         }
         return frame;
     }
@@ -106,11 +101,7 @@ public class DefaultTemporalPosition implements TemporalPosition {
     public int hashCode() {
         int hash = 5;
         hash = 37 * hash + (this.frame != null ? this.frame.hashCode() : 0);
-        hash =
-                37 * hash
-                        + (this.indeterminatePosition != null
-                                ? this.indeterminatePosition.hashCode()
-                                : 0);
+        hash = 37 * hash + (this.indeterminatePosition != null ? this.indeterminatePosition.hashCode() : 0);
         return hash;
     }
 

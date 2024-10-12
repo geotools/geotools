@@ -40,11 +40,11 @@ import si.uom.NonSI;
  */
 public class DefaultPrimeMeridian extends AbstractIdentifiedObject implements PrimeMeridian {
     /** Serial number for interoperability with different versions. */
-    private static final long serialVersionUID = 541978454643213305L;;
+    private static final long serialVersionUID = 541978454643213305L;
+    ;
 
     /** The Greenwich meridian, with angular measurements in decimal degrees. */
-    public static final DefaultPrimeMeridian GREENWICH =
-            new DefaultPrimeMeridian("Greenwich", 0, NonSI.DEGREE_ANGLE);
+    public static final DefaultPrimeMeridian GREENWICH = new DefaultPrimeMeridian("Greenwich", 0, NonSI.DEGREE_ANGLE);
 
     /** Longitude of the prime meridian measured from the Greenwich meridian, positive eastward. */
     private final double greenwichLongitude;
@@ -85,8 +85,7 @@ public class DefaultPrimeMeridian extends AbstractIdentifiedObject implements Pr
      * @param greenwichLongitude The longitude value relative to the Greenwich Meridian.
      * @param angularUnit The angular unit of the longitude.
      */
-    public DefaultPrimeMeridian(
-            final String name, final double greenwichLongitude, final Unit<Angle> angularUnit) {
+    public DefaultPrimeMeridian(final String name, final double greenwichLongitude, final Unit<Angle> angularUnit) {
         this(Collections.singletonMap(NAME_KEY, name), greenwichLongitude, angularUnit);
     }
 
@@ -100,9 +99,7 @@ public class DefaultPrimeMeridian extends AbstractIdentifiedObject implements Pr
      * @param angularUnit The angular unit of the longitude.
      */
     public DefaultPrimeMeridian(
-            final Map<String, ?> properties,
-            final double greenwichLongitude,
-            final Unit<Angle> angularUnit) {
+            final Map<String, ?> properties, final double greenwichLongitude, final Unit<Angle> angularUnit) {
         super(properties);
         this.greenwichLongitude = greenwichLongitude;
         this.angularUnit = angularUnit;
@@ -160,8 +157,7 @@ public class DefaultPrimeMeridian extends AbstractIdentifiedObject implements Pr
                         && Utilities.equals(this.angularUnit, that.angularUnit);
             } else {
                 return Utilities.equals(
-                        this.getGreenwichLongitude(NonSI.DEGREE_ANGLE),
-                        that.getGreenwichLongitude(NonSI.DEGREE_ANGLE));
+                        this.getGreenwichLongitude(NonSI.DEGREE_ANGLE), that.getGreenwichLongitude(NonSI.DEGREE_ANGLE));
 
                 /*
                  * Note: if compareMetadata==false, we relax the unit check because EPSG uses

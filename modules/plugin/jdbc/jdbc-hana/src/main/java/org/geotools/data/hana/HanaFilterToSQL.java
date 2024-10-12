@@ -110,12 +110,11 @@ public class HanaFilterToSQL extends PreparedFilterToSQL {
         UNITS_MAP.put("feet", 0.3048);
         UNITS_MAP.put("ft", 0.3048);
         UNITS_MAP.put("in", 0.0254);
-    };
+    }
+    ;
 
     public HanaFilterToSQL(
-            PreparedStatementSQLDialect dialect,
-            boolean functionEncodingEnabled,
-            HanaVersion hanaVersion) {
+            PreparedStatementSQLDialect dialect, boolean functionEncodingEnabled, HanaVersion hanaVersion) {
         super(dialect);
         this.functionEncodingEnabled = functionEncodingEnabled;
         this.hanaVersion = hanaVersion;
@@ -181,19 +180,14 @@ public class HanaFilterToSQL extends PreparedFilterToSQL {
 
     @Override
     protected Object visitBinarySpatialOperator(
-            BinarySpatialOperator filter,
-            PropertyName property,
-            Literal geometry,
-            boolean swapped,
-            Object extraData) {
+            BinarySpatialOperator filter, PropertyName property, Literal geometry, boolean swapped, Object extraData) {
         if (filter instanceof DistanceBufferOperator) {
             return visitDistanceSpatialOperator(
                     (DistanceBufferOperator) filter, property, geometry, swapped, extraData);
         } else if (filter instanceof BBOX) {
             return visitBBOXSpatialOperator((BBOX) filter, property, geometry, extraData);
         } else {
-            return visitBinarySpatialOperator(
-                    filter, property, (Expression) geometry, swapped, extraData);
+            return visitBinarySpatialOperator(filter, property, (Expression) geometry, swapped, extraData);
         }
     }
 
@@ -209,11 +203,7 @@ public class HanaFilterToSQL extends PreparedFilterToSQL {
     }
 
     private Object visitDistanceSpatialOperator(
-            DistanceBufferOperator filter,
-            PropertyName property,
-            Literal geometry,
-            boolean swapped,
-            Object extraData) {
+            DistanceBufferOperator filter, PropertyName property, Literal geometry, boolean swapped, Object extraData) {
         if (!(filter instanceof DWithin) && !(filter instanceof Beyond)) {
             throw new IllegalArgumentException("Unsupported filter type " + filter.getClass());
         }
@@ -246,8 +236,7 @@ public class HanaFilterToSQL extends PreparedFilterToSQL {
 
     private static final int FLAT_OFFSET = 1000000000;
 
-    private Object visitBBOXSpatialOperator(
-            BBOX filter, PropertyName property, Literal geometry, Object extraData) {
+    private Object visitBBOXSpatialOperator(BBOX filter, PropertyName property, Literal geometry, Object extraData) {
         try {
             property.accept(this, extraData);
             if (hanaVersion.getVersion() > 1) {
@@ -255,13 +244,10 @@ public class HanaFilterToSQL extends PreparedFilterToSQL {
                 writeIntersectsRectArguments("ST_IntersectsRectPlanar", bbox);
             } else {
                 CoordinateReferenceSystem hcrs = getHorizontalCRS(filter.getBounds());
-                if ((hcrs instanceof GeographicCRS)
-                        && (currentSRID != null)
-                        && (currentSRID <= FLAT_OFFSET)) {
+                if ((hcrs instanceof GeographicCRS) && (currentSRID != null) && (currentSRID <= FLAT_OFFSET)) {
                     currentSRID += FLAT_OFFSET;
                     try {
-                        String function =
-                                "ST_SRID(" + Integer.toString(currentSRID) + ").ST_IntersectsRect";
+                        String function = "ST_SRID(" + Integer.toString(currentSRID) + ").ST_IntersectsRect";
                         BoundingBox bbox = clamp(filter.getBounds(), 0.5);
                         writeIntersectsRectArguments(function, bbox);
                     } finally {
@@ -301,8 +287,7 @@ public class HanaFilterToSQL extends PreparedFilterToSQL {
         return hcrs;
     }
 
-    private void writeIntersectsRectArguments(String function, BoundingBox bbox)
-            throws IOException {
+    private void writeIntersectsRectArguments(String function, BoundingBox bbox) throws IOException {
         out.write('.');
         out.write(function);
         out.write("(");
@@ -361,11 +346,7 @@ public class HanaFilterToSQL extends PreparedFilterToSQL {
     }
 
     private Object visitBinarySpatialOperator(
-            BinarySpatialOperator filter,
-            Expression e1,
-            Expression e2,
-            boolean swapped,
-            Object extraData) {
+            BinarySpatialOperator filter, Expression e1, Expression e2, boolean swapped, Object extraData) {
         try {
             e1.accept(this, extraData);
             out.write('.');

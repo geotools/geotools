@@ -74,12 +74,11 @@ public class CookbookPolygonTest extends AbstractStyleTest {
 
     @Test
     public void testGraphicFill() {
-        Style style =
-                new FillBuilder()
-                        .graphicFill()
-                        .size(93)
-                        .externalGraphic("colorblocks.png", "image/png")
-                        .buildStyle();
+        Style style = new FillBuilder()
+                .graphicFill()
+                .size(93)
+                .externalGraphic("colorblocks.png", "image/png")
+                .buildStyle();
         // print(style);
 
         // round up the basic elements and check its simple
@@ -90,24 +89,23 @@ public class CookbookPolygonTest extends AbstractStyleTest {
         // check the symbolizer
         PolygonSymbolizer ps = (PolygonSymbolizer) collector.symbolizers.get(0);
         assertNull(ps.getStroke());
-        ExternalGraphic eg =
-                (ExternalGraphic) ps.getFill().getGraphicFill().graphicalSymbols().get(0);
+        ExternalGraphic eg = (ExternalGraphic)
+                ps.getFill().getGraphicFill().graphicalSymbols().get(0);
         assertEquals("colorblocks.png", eg.getOnlineResource().getLinkage().toString());
         assertEquals("image/png", eg.getFormat());
     }
 
     @Test
     public void testHatch() {
-        Style style =
-                new FillBuilder()
-                        .graphicFill()
-                        .size(93)
-                        .mark()
-                        .name("shape://times")
-                        .stroke()
-                        .colorHex("#990099")
-                        .width(1)
-                        .buildStyle();
+        Style style = new FillBuilder()
+                .graphicFill()
+                .size(93)
+                .mark()
+                .name("shape://times")
+                .stroke()
+                .colorHex("#990099")
+                .width(1)
+                .buildStyle();
         // print(style);
 
         // round up the basic elements and check its simple
@@ -157,12 +155,8 @@ public class CookbookPolygonTest extends AbstractStyleTest {
         Font font = ts.getFont();
         assertEquals("Arial", font.getFamily().get(0).evaluate(null, String.class));
         assertEquals(11, (int) font.getSize().evaluate(null, Integer.class));
-        assertEquals(
-                org.geotools.api.style.Font.Style.NORMAL,
-                font.getStyle().evaluate(null, String.class));
-        assertEquals(
-                org.geotools.api.style.Font.Weight.BOLD,
-                font.getWeight().evaluate(null, String.class));
+        assertEquals(org.geotools.api.style.Font.Style.NORMAL, font.getStyle().evaluate(null, String.class));
+        assertEquals(org.geotools.api.style.Font.Weight.BOLD, font.getWeight().evaluate(null, String.class));
 
         // placement
         PointPlacement pp = (PointPlacement) ts.getLabelPlacement();

@@ -82,8 +82,7 @@ public class MapEntry<K, V> implements Map.Entry<K, V>, Serializable {
     public boolean equals(final Object object) {
         if (object instanceof Map.Entry) {
             final Map.Entry that = (Map.Entry) object;
-            return Utilities.equals(this.getKey(), that.getKey())
-                    && Utilities.equals(this.getValue(), that.getValue());
+            return Utilities.equals(this.getKey(), that.getKey()) && Utilities.equals(this.getValue(), that.getValue());
         }
         return false;
     }

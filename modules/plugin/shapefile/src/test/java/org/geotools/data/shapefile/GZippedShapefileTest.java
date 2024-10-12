@@ -46,9 +46,7 @@ import org.locationtech.jts.geom.Point;
 public final class GZippedShapefileTest {
 
     private static final String BASE = "gzipped/gzipped";
-    private static final String[] NAMES = {
-        BASE + ".dbf.gz", BASE + ".prj.gz", BASE + ".shp.gz", BASE + ".shx.gz"
-    };
+    private static final String[] NAMES = {BASE + ".dbf.gz", BASE + ".prj.gz", BASE + ".shp.gz", BASE + ".shx.gz"};
 
     private static final Map<String, Serializable> PARAMS = new HashMap<>();
 
@@ -103,8 +101,7 @@ public final class GZippedShapefileTest {
         assertEquals("gzipped", typeName);
         final Query query = new Query(typeName);
         int count = 0;
-        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                dataStore.getFeatureReader(query, AUTO_COMMIT)) {
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader = dataStore.getFeatureReader(query, AUTO_COMMIT)) {
             while (reader.hasNext()) {
                 final SimpleFeature feature = reader.next();
                 final Object geometry = feature.getDefaultGeometry();

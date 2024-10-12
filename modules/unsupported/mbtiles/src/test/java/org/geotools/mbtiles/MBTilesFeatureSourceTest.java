@@ -75,15 +75,13 @@ public class MBTilesFeatureSourceTest {
 
     @Test
     public void readSinglePointDataTypes() throws IOException, ParseException {
-        File file =
-                URLs.urlToFile(MBTilesFileVectorTileTest.class.getResource("datatypes.mbtiles"));
+        File file = URLs.urlToFile(MBTilesFileVectorTileTest.class.getResource("datatypes.mbtiles"));
         this.store = new MBTilesDataStore(new MBTilesFile(file));
         SimpleFeature feature =
                 DataUtilities.first(store.getFeatureSource("datatypes").getFeatures(Query.ALL));
         assertThat(feature.getAttribute("bool_false"), equalTo(false));
         assertThat(feature.getAttribute("bool_true"), equalTo(true));
-        assertThat(
-                ((Float) feature.getAttribute("float_value")).doubleValue(), closeTo(1.25, 0.01));
+        assertThat(((Float) feature.getAttribute("float_value")).doubleValue(), closeTo(1.25, 0.01));
         assertThat(feature.getAttribute("int64_value"), equalTo(123456789012345L));
         assertThat(feature.getAttribute("neg_int_value"), equalTo(-1L));
         assertThat(feature.getAttribute("pos_int_value"), equalTo(1L));
@@ -105,18 +103,14 @@ public class MBTilesFeatureSourceTest {
                 "POLYGON ((5953527.258247068 -1570322.3088720688, 5630657.250815428 -1570322.3088720688, 5630657.250815428 -1247452.301440428, 5953527.258247068 -1247452.301440428, 5953527.258247068 -1570322.3088720688))";
         Polygon expected = (Polygon) new WKTReader().read(wkt);
         Polygon actual = (Polygon) feature.getDefaultGeometry();
-        assertTrue(
-                "Expected:\n" + expected + "\nBut got:\n" + actual,
-                actual.equalsExact(expected, 0.1));
+        assertTrue("Expected:\n" + expected + "\nBut got:\n" + actual, actual.equalsExact(expected, 0.1));
 
         // check the clip mask
         Geometry clip = (Geometry) feature.getUserData().get(Hints.GEOMETRY_CLIP);
         String clipWkt =
                 "POLYGON ((5635549.220624998 -1565430.3390625007, 5948635.288437498 -1565430.3390625007, 5948635.288437498 -1252344.2712500007, 5635549.220624998 -1252344.2712500007, 5635549.220624998 -1565430.3390625007))";
         Polygon expectedClip = (Polygon) new WKTReader().read(clipWkt);
-        assertTrue(
-                "Expected:\n" + expectedClip + "\nBut got:\n" + clip,
-                clip.equalsExact(expectedClip, 0.1));
+        assertTrue("Expected:\n" + expectedClip + "\nBut got:\n" + clip, clip.equalsExact(expectedClip, 0.1));
     }
 
     @Test
@@ -152,9 +146,7 @@ public class MBTilesFeatureSourceTest {
 
     private MBTilesFeatureSource getMadagascarSource(String typeName) throws IOException {
         if (this.store == null) {
-            File file =
-                    URLs.urlToFile(
-                            MBTilesFileVectorTileTest.class.getResource("madagascar.mbtiles"));
+            File file = URLs.urlToFile(MBTilesFileVectorTileTest.class.getResource("madagascar.mbtiles"));
             this.store = new MBTilesDataStore(new MBTilesFile(file));
         }
         return (MBTilesFeatureSource) store.getFeatureSource(typeName);
@@ -169,12 +161,8 @@ public class MBTilesFeatureSourceTest {
         assertEquals(1, fc.size());
         SimpleFeature feature = DataUtilities.first(fc);
         // this one got from ogrinfo on the tile
-        Geometry expected =
-                new WKTReader()
-                        .read(
-                                IOUtils.toString(
-                                        getClass().getResourceAsStream("ocean_1_0_1.wkt"),
-                                        StandardCharsets.UTF_8));
+        Geometry expected = new WKTReader()
+                .read(IOUtils.toString(getClass().getResourceAsStream("ocean_1_0_1.wkt"), StandardCharsets.UTF_8));
         Geometry actual = (Geometry) feature.getDefaultGeometry();
         // there is some difference in size, but nothing major (200k square meters are a square
         // with a side of less than 500 meters, against a tile that covers 1/4 of the planet
@@ -192,12 +180,8 @@ public class MBTilesFeatureSourceTest {
         assertEquals(1, fc.size());
         SimpleFeature feature = DataUtilities.first(fc);
         // this one got from ogrinfo on the tile
-        Geometry expected =
-                new WKTReader()
-                        .read(
-                                IOUtils.toString(
-                                        getClass().getResourceAsStream("ocean_1_0_1.wkt"),
-                                        StandardCharsets.UTF_8));
+        Geometry expected = new WKTReader()
+                .read(IOUtils.toString(getClass().getResourceAsStream("ocean_1_0_1.wkt"), StandardCharsets.UTF_8));
         Geometry actual = (Geometry) feature.getDefaultGeometry();
         // there is some difference in size, but nothing major (200k square meters are a square
         // with a side of less than 500 meters, against a tile that covers 1/4 of the planet
@@ -216,8 +200,7 @@ public class MBTilesFeatureSourceTest {
         checkFirstFeature("place", "name", "Madagascar");
     }
 
-    public void checkFirstFeature(String layerName, String propertyName, Object propertyValue)
-            throws IOException {
+    public void checkFirstFeature(String layerName, String propertyName, Object propertyValue) throws IOException {
         MBTilesFeatureSource fs = getMadagascarSource(layerName);
         assertEquals(layerName, fs.getSchema().getTypeName());
         Filter filter = FF.equal(FF.property(propertyName), FF.literal(propertyValue), true);
@@ -285,8 +268,7 @@ public class MBTilesFeatureSourceTest {
         assertEquals(3, countByVisit(fc));
         assertThat(
                 rangesRead,
-                Matchers.contains(
-                        new MBTilesRange(7, 82, 82, 59, 59), new MBTilesRange(7, 82, 82, 56, 57)));
+                Matchers.contains(new MBTilesRange(7, 82, 82, 59, 59), new MBTilesRange(7, 82, 82, 56, 57)));
     }
 
     @Test
@@ -319,8 +301,7 @@ public class MBTilesFeatureSourceTest {
 
     @Test
     public void testGetBBOXQueryALL() throws Exception {
-        File file =
-                URLs.urlToFile(MBTilesFileVectorTileTest.class.getResource("madagascar.mbtiles"));
+        File file = URLs.urlToFile(MBTilesFileVectorTileTest.class.getResource("madagascar.mbtiles"));
         this.store = new MBTilesDataStore(new MBTilesFile(file));
         ReferencedEnvelope envelope = store.getFeatureSource("water").getBounds();
         assertNotNull(envelope);
@@ -347,30 +328,19 @@ public class MBTilesFeatureSourceTest {
     }
 
     private BBOX getMercatorBoxFilter(double minX, double maxX, double minY, double maxY) {
-        return FF.bbox(
-                DEFAULT_GEOM, new ReferencedEnvelope(minX, maxX, minY, maxY, SPHERICAL_MERCATOR));
+        return FF.bbox(DEFAULT_GEOM, new ReferencedEnvelope(minX, maxX, minY, maxY, SPHERICAL_MERCATOR));
     }
 
-    private MBTilesDataStore getMadagascarRangeReadRecorder(Set<MBTilesRange> rangesRead)
-            throws IOException {
-        File file =
-                URLs.urlToFile(MBTilesFileVectorTileTest.class.getResource("madagascar.mbtiles"));
-        MBTilesFile mbtiles =
-                new MBTilesFile(file) {
-                    @Override
-                    public TileIterator tiles(
-                            long zoomLevel,
-                            long leftTile,
-                            long bottomTile,
-                            long rightTile,
-                            long topTile)
-                            throws SQLException {
-                        rangesRead.add(
-                                new MBTilesRange(
-                                        zoomLevel, leftTile, rightTile, bottomTile, topTile));
-                        return super.tiles(zoomLevel, leftTile, bottomTile, rightTile, topTile);
-                    }
-                };
+    private MBTilesDataStore getMadagascarRangeReadRecorder(Set<MBTilesRange> rangesRead) throws IOException {
+        File file = URLs.urlToFile(MBTilesFileVectorTileTest.class.getResource("madagascar.mbtiles"));
+        MBTilesFile mbtiles = new MBTilesFile(file) {
+            @Override
+            public TileIterator tiles(long zoomLevel, long leftTile, long bottomTile, long rightTile, long topTile)
+                    throws SQLException {
+                rangesRead.add(new MBTilesRange(zoomLevel, leftTile, rightTile, bottomTile, topTile));
+                return super.tiles(zoomLevel, leftTile, bottomTile, rightTile, topTile);
+            }
+        };
         return new MBTilesDataStore(mbtiles);
     }
 

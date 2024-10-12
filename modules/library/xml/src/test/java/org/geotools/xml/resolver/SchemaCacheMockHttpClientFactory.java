@@ -50,8 +50,7 @@ public class SchemaCacheMockHttpClientFactory extends AbstractHTTPClientFactory 
         public SchemaCacheMockHttpClient() {
             try {
                 final MockHttpResponse response =
-                        new MockHttpResponse(
-                                SchemaCacheTest.MOCK_HTTP_RESPONSE_BODY, "application/xml");
+                        new MockHttpResponse(SchemaCacheTest.MOCK_HTTP_RESPONSE_BODY, "application/xml");
                 expectGet(new URL(SchemaCacheTest.MOCK_SCHEMA_LOCATION), response);
             } catch (Exception e) {
                 throw new RuntimeException(e);

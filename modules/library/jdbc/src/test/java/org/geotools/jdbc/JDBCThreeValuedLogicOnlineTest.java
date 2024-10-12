@@ -36,12 +36,7 @@ public abstract class JDBCThreeValuedLogicOnlineTest extends JDBCTestSupport {
 
     @Test
     public void testBetweenNegation() throws Exception {
-        Not filter =
-                ff.not(
-                        ff.between(
-                                ff.property(aname(B)),
-                                ff.property(aname(A)),
-                                ff.property(aname(C))));
+        Not filter = ff.not(ff.between(ff.property(aname(B)), ff.property(aname(A)), ff.property(aname(C))));
         ContentFeatureSource fs = dataStore.getFeatureSource(tname(ABC));
         Query q = new Query(tname(ABC), filter);
         int count = fs.getCount(q);
@@ -66,12 +61,7 @@ public abstract class JDBCThreeValuedLogicOnlineTest extends JDBCTestSupport {
 
     @Test
     public void test() throws Exception {
-        Not filter =
-                ff.not(
-                        ff.between(
-                                ff.property(aname(B)),
-                                ff.property(aname(A)),
-                                ff.property(aname(C))));
+        Not filter = ff.not(ff.between(ff.property(aname(B)), ff.property(aname(A)), ff.property(aname(C))));
         ContentFeatureSource fs = dataStore.getFeatureSource(tname(ABC));
         Query q = new Query(tname(ABC), filter);
         int count = fs.getCount(q);

@@ -557,15 +557,8 @@ public class TypeBuilder {
      * @return AttributeType created
      */
     public AttributeType attribute() {
-        AttributeType type =
-                factory.createAttributeType(
-                        typeName(),
-                        getBinding(),
-                        isIdentified(),
-                        isAbstract(),
-                        restrictions(),
-                        getSuper(),
-                        getDescription());
+        AttributeType type = factory.createAttributeType(
+                typeName(), getBinding(), isIdentified(), isAbstract(), restrictions(), getSuper(), getDescription());
         reset();
         return type;
     }
@@ -573,12 +566,7 @@ public class TypeBuilder {
     /** Create AssociationType */
     public AssociationType association() {
         return factory.createAssociationType(
-                typeName(),
-                getReferenceType(),
-                true,
-                this.restrictions,
-                getAssociationSuper(),
-                this.getDescription());
+                typeName(), getReferenceType(), true, this.restrictions, getAssociationSuper(), this.getDescription());
     }
 
     /**
@@ -640,16 +628,15 @@ public class TypeBuilder {
      * @return ComplexType
      */
     public ComplexType complex() {
-        ComplexType type =
-                getTypeFactory()
-                        .createComplexType(
-                                typeName(),
-                                properties(),
-                                isIdentified(),
-                                isAbstract(),
-                                restrictions(),
-                                getSuper(),
-                                getDescription());
+        ComplexType type = getTypeFactory()
+                .createComplexType(
+                        typeName(),
+                        properties(),
+                        isIdentified(),
+                        isAbstract(),
+                        restrictions(),
+                        getSuper(),
+                        getDescription());
         reset();
         return type;
     }
@@ -670,25 +657,23 @@ public class TypeBuilder {
         // TODO: handle default value
         AttributeDescriptor attribute;
         if (propertyType instanceof GeometryType) {
-            attribute =
-                    getTypeFactory()
-                            .createGeometryDescriptor(
-                                    (GeometryType) propertyType,
-                                    typeName(),
-                                    getMinOccurs(),
-                                    getMaxOccurs(),
-                                    isNillable(),
-                                    null);
+            attribute = getTypeFactory()
+                    .createGeometryDescriptor(
+                            (GeometryType) propertyType,
+                            typeName(),
+                            getMinOccurs(),
+                            getMaxOccurs(),
+                            isNillable(),
+                            null);
         } else {
-            attribute =
-                    getTypeFactory()
-                            .createAttributeDescriptor(
-                                    (AttributeType) propertyType,
-                                    typeName(),
-                                    getMinOccurs(),
-                                    getMaxOccurs(),
-                                    isNillable(),
-                                    null);
+            attribute = getTypeFactory()
+                    .createAttributeDescriptor(
+                            (AttributeType) propertyType,
+                            typeName(),
+                            getMinOccurs(),
+                            getMaxOccurs(),
+                            isNillable(),
+                            null);
         }
         reset();
         return attribute;
@@ -708,14 +693,9 @@ public class TypeBuilder {
      * @return AttributeDescriptor used to define sturcture of ComplexAttribtues
      */
     public AssociationDescriptor associationDescriptor() {
-        AssociationDescriptor association =
-                getTypeFactory()
-                        .createAssociationDescriptor(
-                                (AssociationType) propertyType,
-                                typeName(),
-                                getMinOccurs(),
-                                getMaxOccurs(),
-                                isNillable());
+        AssociationDescriptor association = getTypeFactory()
+                .createAssociationDescriptor(
+                        (AssociationType) propertyType, typeName(), getMinOccurs(), getMaxOccurs(), isNillable());
         reset();
         return association;
     }
@@ -727,15 +707,14 @@ public class TypeBuilder {
      */
     public FeatureType feature() {
         // FeatureTypeFactory typeFactory = getTypeFactory();
-        FeatureType type =
-                factory.createFeatureType(
-                        typeName(),
-                        properties(),
-                        defaultGeometry(),
-                        isAbstract(),
-                        restrictions(),
-                        getSuper(),
-                        getDescription());
+        FeatureType type = factory.createFeatureType(
+                typeName(),
+                properties(),
+                defaultGeometry(),
+                isAbstract(),
+                restrictions(),
+                getSuper(),
+                getDescription());
         reset();
         return type;
     }
@@ -1011,10 +990,8 @@ public class TypeBuilder {
 
     public TypeBuilder attribute(Name name, AttributeType type) {
         // TODO: handle default value
-        AttributeDescriptor descriptor =
-                getTypeFactory()
-                        .createAttributeDescriptor(
-                                type, name, getMinOccurs(), getMaxOccurs(), isNillable(), null);
+        AttributeDescriptor descriptor = getTypeFactory()
+                .createAttributeDescriptor(type, name, getMinOccurs(), getMaxOccurs(), isNillable(), null);
         add(descriptor);
         return this;
     }
@@ -1041,10 +1018,8 @@ public class TypeBuilder {
 
     public void addAttribute(Name name, AttributeType type) {
         // TODO: handle default value
-        AttributeDescriptor descriptor =
-                getTypeFactory()
-                        .createAttributeDescriptor(
-                                type, name, getMinOccurs(), getMaxOccurs(), isNillable(), null);
+        AttributeDescriptor descriptor = getTypeFactory()
+                .createAttributeDescriptor(type, name, getMinOccurs(), getMaxOccurs(), isNillable(), null);
         add(descriptor);
     }
 
@@ -1072,9 +1047,7 @@ public class TypeBuilder {
 
     public TypeBuilder association(Name name, AssociationType type) {
         AssociationDescriptor descriptor =
-                getTypeFactory()
-                        .createAssociationDescriptor(
-                                type, name, getMinOccurs(), getMaxOccurs(), isNillable());
+                getTypeFactory().createAssociationDescriptor(type, name, getMinOccurs(), getMaxOccurs(), isNillable());
 
         add(descriptor);
         return this;
@@ -1290,8 +1263,7 @@ public class TypeBuilder {
         try {
             setCRS(CRS.decode(SRS));
         } catch (Exception e) {
-            IllegalArgumentException iae =
-                    new IllegalArgumentException("SRS '" + SRS + "' unknown:" + e);
+            IllegalArgumentException iae = new IllegalArgumentException("SRS '" + SRS + "' unknown:" + e);
             iae.initCause(e);
             throw iae;
         }
@@ -1384,9 +1356,7 @@ public class TypeBuilder {
      */
     public TypeBuilder member(Name name, AssociationType type) {
         AssociationDescriptor descriptor =
-                getTypeFactory()
-                        .createAssociationDescriptor(
-                                type, name, getMinOccurs(), getMaxOccurs(), isNillable());
+                getTypeFactory().createAssociationDescriptor(type, name, getMinOccurs(), getMaxOccurs(), isNillable());
         clear();
         return member(descriptor);
     }

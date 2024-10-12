@@ -38,14 +38,11 @@ public class WFSCapabilitiesConfiguration extends org.geotools.wfs.WFSConfigurat
     @Override
     protected void configureBindings(org.picocontainer.MutablePicoContainer container) {
 
-        container.registerComponentImplementation(
-                WFSCapabilities.Service, ServiceTypeBinding.class);
-        container.registerComponentImplementation(
-                WFSCapabilities.LatLongBoundingBox, LatLongBoundingBoxBinding.class);
+        container.registerComponentImplementation(WFSCapabilities.Service, ServiceTypeBinding.class);
+        container.registerComponentImplementation(WFSCapabilities.LatLongBoundingBox, LatLongBoundingBoxBinding.class);
 
         container.registerComponentImplementation(WFSCapabilities.DCPType, DCPTypeBinding.class);
-        container.registerComponentImplementation(
-                WFSCapabilities.Capability, CapabilityBinding.class);
+        container.registerComponentImplementation(WFSCapabilities.Capability, CapabilityBinding.class);
 
         container.registerComponentImplementation(WFS.OperationsType, OperationsTypeBinding.class);
     }

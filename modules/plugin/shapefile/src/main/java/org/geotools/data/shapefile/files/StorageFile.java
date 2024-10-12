@@ -113,18 +113,16 @@ public final class StorageFile implements Comparable<StorageFile>, FileWriter {
 
                     if (dest.exists()) {
                         if (!dest.delete()) {
-                            LOGGER.severe(
-                                    "Unable to delete the file: "
-                                            + dest
-                                            + " when attempting to replace with temporary copy.");
+                            LOGGER.severe("Unable to delete the file: "
+                                    + dest
+                                    + " when attempting to replace with temporary copy.");
                         }
                     }
 
                     if (storage.exists() && !storage.renameTo(dest)) {
-                        LOGGER.fine(
-                                "Unable to rename temporary file to the file: "
-                                        + dest
-                                        + " when attempting to replace with temporary copy");
+                        LOGGER.fine("Unable to rename temporary file to the file: "
+                                + dest
+                                + " when attempting to replace with temporary copy");
                         copyFile(storage, url, dest);
                     }
                 } catch (IOException e) {
@@ -145,8 +143,7 @@ public final class StorageFile implements Comparable<StorageFile>, FileWriter {
 
             if (!exceptionMessages.isEmpty()) {
                 StringBuilder sb = new StringBuilder();
-                sb.append(
-                        "Couldn't replace original file with a temporary after a write operation.\nBecause of:\n");
+                sb.append("Couldn't replace original file with a temporary after a write operation.\nBecause of:\n");
                 exceptionMessages.forEach(s -> sb.append("    ").append(s).append("\n"));
                 throw new IOException(sb.toString());
             }
@@ -154,8 +151,7 @@ public final class StorageFile implements Comparable<StorageFile>, FileWriter {
     }
 
     @SuppressWarnings("resource")
-    private static void copyFile(File storage, URL url, File dest)
-            throws FileNotFoundException, IOException {
+    private static void copyFile(File storage, URL url, File dest) throws FileNotFoundException, IOException {
         try (FileChannel in = new FileInputStream(storage).getChannel();
                 FileChannel out = new FileOutputStream(dest).getChannel()) {
 

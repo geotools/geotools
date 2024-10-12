@@ -77,8 +77,7 @@ public class Position3D implements Position, Serializable, Cloneable {
      * @param y The <var>y</var> value.
      * @param z The <var>z</var> value.
      */
-    public Position3D(
-            final CoordinateReferenceSystem crs, final double x, final double y, final double z) {
+    public Position3D(final CoordinateReferenceSystem crs, final double x, final double y, final double z) {
         this(x, y, z);
         setCoordinateReferenceSystem(crs);
     }

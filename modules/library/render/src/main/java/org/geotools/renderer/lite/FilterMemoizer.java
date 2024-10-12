@@ -78,12 +78,10 @@ class FilterMemoizer {
 
         // cache results using a memoizing proxy
         @SuppressWarnings("unchecked")
-        T result =
-                (T)
-                        Proxy.newProxyInstance(
-                                FilterMemoizer.class.getClassLoader(),
-                                delegate.getClass().getInterfaces(),
-                                new MemoizingHandler(delegate));
+        T result = (T) Proxy.newProxyInstance(
+                FilterMemoizer.class.getClassLoader(),
+                delegate.getClass().getInterfaces(),
+                new MemoizingHandler(delegate));
         return result;
     }
 
@@ -101,8 +99,7 @@ class FilterMemoizer {
         @Override
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
             if (lastMethod == method
-                    || ("evaluate".equals(method.getName())
-                            && method.getParameterTypes().length == 1)) {
+                    || ("evaluate".equals(method.getName()) && method.getParameterTypes().length == 1)) {
                 lastMethod = method;
                 if (args[0] != lastFeature) {
                     lastFeature = args[0];

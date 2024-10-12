@@ -38,15 +38,14 @@ public class RegionTypeBindingTest extends KMLTestSupport {
 
     @Test
     public void testParse() throws Exception {
-        String xml =
-                "<Region>"
-                        + "<LatLonAltBox>"
-                        + "<north>1</north>"
-                        + "<south>-1</south>"
-                        + "<east>1</east>"
-                        + "<west>-1</west>"
-                        + "</LatLonAltBox>"
-                        + "</Region>";
+        String xml = "<Region>"
+                + "<LatLonAltBox>"
+                + "<north>1</north>"
+                + "<south>-1</south>"
+                + "<east>1</east>"
+                + "<west>-1</west>"
+                + "</LatLonAltBox>"
+                + "</Region>";
 
         buildDocument(xml);
 

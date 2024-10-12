@@ -90,8 +90,7 @@ public class OptNode extends OptGraphable implements Node {
     public Edge getEdge(Node other) {
         for (Edge m_edge : m_edges) {
             if (m_edge.getNodeA().equals(this) && m_edge.getNodeB().equals(other)
-                    || m_edge.getNodeB().equals(this) && m_edge.getNodeA().equals(other))
-                return m_edge;
+                    || m_edge.getNodeB().equals(this) && m_edge.getNodeA().equals(other)) return m_edge;
         }
         return (null);
     }
@@ -102,8 +101,7 @@ public class OptNode extends OptGraphable implements Node {
         ArrayList<Edge> edges = new ArrayList<>();
         for (Edge m_edge : m_edges) {
             if (m_edge.getNodeA().equals(this) && m_edge.getNodeB().equals(other)
-                    || m_edge.getNodeB().equals(this) && m_edge.getNodeA().equals(other))
-                edges.add(m_edge);
+                    || m_edge.getNodeB().equals(this) && m_edge.getNodeA().equals(other)) edges.add(m_edge);
         }
         return (edges);
     }

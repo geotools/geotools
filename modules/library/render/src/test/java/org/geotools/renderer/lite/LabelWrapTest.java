@@ -54,27 +54,12 @@ public class LabelWrapTest {
         SimpleFeatureType type = builder.buildFeatureType();
 
         GeometryFactory gf = new GeometryFactory();
-        SimpleFeature f1 =
-                SimpleFeatureBuilder.build(
-                        type,
-                        new Object[] {
-                            gf.createPoint(new Coordinate(5, 8)), "A long label, no newlines"
-                        },
-                        null);
-        SimpleFeature f2 =
-                SimpleFeatureBuilder.build(
-                        type,
-                        new Object[] {
-                            gf.createPoint(new Coordinate(5, 5)), "A long label\nwith newlines"
-                        },
-                        null);
-        SimpleFeature f3 =
-                SimpleFeatureBuilder.build(
-                        type,
-                        new Object[] {
-                            gf.createPoint(new Coordinate(5, 2)), "A long label with (parenthesis)"
-                        },
-                        null);
+        SimpleFeature f1 = SimpleFeatureBuilder.build(
+                type, new Object[] {gf.createPoint(new Coordinate(5, 8)), "A long label, no newlines"}, null);
+        SimpleFeature f2 = SimpleFeatureBuilder.build(
+                type, new Object[] {gf.createPoint(new Coordinate(5, 5)), "A long label\nwith newlines"}, null);
+        SimpleFeature f3 = SimpleFeatureBuilder.build(
+                type, new Object[] {gf.createPoint(new Coordinate(5, 2)), "A long label with (parenthesis)"}, null);
 
         MemoryDataStore data = new MemoryDataStore();
         data.addFeature(f1);
@@ -87,8 +72,7 @@ public class LabelWrapTest {
     public void testNoAutoWrap() throws Exception {
         Style style = RendererBaseTest.loadStyle(this, "textWrapDisabled.sld");
         BufferedImage image = renderLabels(fs, style, "Label wrap disabled");
-        String refPath =
-                "./src/test/resources/org/geotools/renderer/lite/test-data/textWrapDisabled.png";
+        String refPath = "./src/test/resources/org/geotools/renderer/lite/test-data/textWrapDisabled.png";
         ImageAssert.assertEquals(new File(refPath), image, 3200);
     }
 
@@ -96,65 +80,48 @@ public class LabelWrapTest {
     public void testAutoWrap() throws Exception {
         Style style = RendererBaseTest.loadStyle(this, "textWrapEnabled.sld");
         BufferedImage image = renderLabels(fs, style, "Label wrap enabled");
-        String refPath =
-                "./src/test/resources/org/geotools/renderer/lite/test-data/textWrapEnabled.png";
+        String refPath = "./src/test/resources/org/geotools/renderer/lite/test-data/textWrapEnabled.png";
         ImageAssert.assertEquals(new File(refPath), image, 3000);
     }
 
     @Test
     public void testAutoWrapWithIncreasedSpacing() throws Exception {
         Style spacedStyle =
-                getCharSpacedStyle(
-                        "textWrapEnabled.sld",
-                        org.geotools.api.style.TextSymbolizer.CHAR_SPACING_KEY,
-                        5);
-        BufferedImage image =
-                renderLabels(fs, spacedStyle, "Label wrap enabled with extra char spacing");
-        String refPath =
-                "./src/test/resources/org/geotools/renderer/lite/test-data/textWrapEnabledSpaceIncreased.png";
+                getCharSpacedStyle("textWrapEnabled.sld", org.geotools.api.style.TextSymbolizer.CHAR_SPACING_KEY, 5);
+        BufferedImage image = renderLabels(fs, spacedStyle, "Label wrap enabled with extra char spacing");
+        String refPath = "./src/test/resources/org/geotools/renderer/lite/test-data/textWrapEnabledSpaceIncreased.png";
         ImageAssert.assertEquals(new File(refPath), image, 3000);
     }
 
     @Test
     public void testAutoWrapWithDecreasedSpacing() throws Exception {
         Style spacedStyle =
-                getCharSpacedStyle(
-                        "textWrapEnabled.sld",
-                        org.geotools.api.style.TextSymbolizer.CHAR_SPACING_KEY,
-                        -2);
-        BufferedImage image =
-                renderLabels(fs, spacedStyle, "Label wrap enabled with extra char spacing");
-        String refPath =
-                "./src/test/resources/org/geotools/renderer/lite/test-data/textWrapEnabledSpaceDecreased.png";
+                getCharSpacedStyle("textWrapEnabled.sld", org.geotools.api.style.TextSymbolizer.CHAR_SPACING_KEY, -2);
+        BufferedImage image = renderLabels(fs, spacedStyle, "Label wrap enabled with extra char spacing");
+        String refPath = "./src/test/resources/org/geotools/renderer/lite/test-data/textWrapEnabledSpaceDecreased.png";
         ImageAssert.assertEquals(new File(refPath), image, 3000);
     }
 
     @Test
     public void testAutoWrapWithIncreasedWordSpacing() throws Exception {
         Style spacedStyle =
-                getCharSpacedStyle(
-                        "textWrapEnabled.sld",
-                        org.geotools.api.style.TextSymbolizer.WORD_SPACING_KEY,
-                        15);
-        BufferedImage image =
-                renderLabels(fs, spacedStyle, "Label wrap enabled with extra char spacing");
+                getCharSpacedStyle("textWrapEnabled.sld", org.geotools.api.style.TextSymbolizer.WORD_SPACING_KEY, 15);
+        BufferedImage image = renderLabels(fs, spacedStyle, "Label wrap enabled with extra char spacing");
         String refPath =
                 "./src/test/resources/org/geotools/renderer/lite/test-data/textWrapEnabledWordSpaceIncreased.png";
         ImageAssert.assertEquals(new File(refPath), image, 3000);
     }
 
-    private Style getCharSpacedStyle(String styleFile, String key, float spacing)
-            throws IOException {
+    private Style getCharSpacedStyle(String styleFile, String key, float spacing) throws IOException {
         Style style = RendererBaseTest.loadStyle(this, styleFile);
-        DuplicatingStyleVisitor visitor =
-                new DuplicatingStyleVisitor() {
-                    @Override
-                    public void visit(TextSymbolizer text) {
-                        super.visit(text);
-                        TextSymbolizer ts = (TextSymbolizer) getCopy();
-                        ts.getOptions().put(key, String.valueOf(spacing));
-                    }
-                };
+        DuplicatingStyleVisitor visitor = new DuplicatingStyleVisitor() {
+            @Override
+            public void visit(TextSymbolizer text) {
+                super.visit(text);
+                TextSymbolizer ts = (TextSymbolizer) getCopy();
+                ts.getOptions().put(key, String.valueOf(spacing));
+            }
+        };
         style.accept(visitor);
         Style spacedStyle = (Style) visitor.getCopy();
         return spacedStyle;
@@ -178,19 +145,12 @@ public class LabelWrapTest {
         g.setColor(Color.white);
         g.fillRect(0, 0, SIZE, SIZE);
         g.setTransform(
-                new AffineTransform(
-                        1.1,
-                        Math.sin(Math.toRadians(15)),
-                        -Math.sin(Math.toRadians(15)),
-                        1.1,
-                        15,
-                        20));
+                new AffineTransform(1.1, Math.sin(Math.toRadians(15)), -Math.sin(Math.toRadians(15)), 1.1, 15, 20));
         renderer.paint(g, new Rectangle(SIZE, SIZE), bounds);
         mc.dispose();
         renderer.getMapContent().dispose();
 
-        String refPath =
-                "./src/test/resources/org/geotools/renderer/lite/test-data/textWrapEnabledLocalTransform.png";
+        String refPath = "./src/test/resources/org/geotools/renderer/lite/test-data/textWrapEnabledLocalTransform.png";
         ImageAssert.assertEquals(new File(refPath), image, 3000);
     }
 
@@ -200,34 +160,30 @@ public class LabelWrapTest {
         MapContent mc = new MapContent();
         mc.getViewport().setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);
         mc.addLayer(new FeatureLayer(fs, style));
-        mc.addLayer(
-                new DirectLayer() {
+        mc.addLayer(new DirectLayer() {
 
-                    @Override
-                    public ReferencedEnvelope getBounds() {
-                        // no dice
-                        return null;
-                    }
+            @Override
+            public ReferencedEnvelope getBounds() {
+                // no dice
+                return null;
+            }
 
-                    @Override
-                    public void draw(Graphics2D graphics, MapContent map, MapViewport viewport) {
-                        // nothing to do, just want to check labels are painted anyways
-                    }
-                });
+            @Override
+            public void draw(Graphics2D graphics, MapContent map, MapViewport viewport) {
+                // nothing to do, just want to check labels are painted anyways
+            }
+        });
 
         StreamingRenderer renderer = new StreamingRenderer();
         renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
         renderer.setMapContent(mc);
 
-        BufferedImage image =
-                RendererBaseTest.showRender("Label and direct layers", renderer, TIME, bounds);
-        String refPath =
-                "./src/test/resources/org/geotools/renderer/lite/test-data/textWrapEnabled.png";
+        BufferedImage image = RendererBaseTest.showRender("Label and direct layers", renderer, TIME, bounds);
+        String refPath = "./src/test/resources/org/geotools/renderer/lite/test-data/textWrapEnabled.png";
         ImageAssert.assertEquals(new File(refPath), image, 3000);
     }
 
-    private BufferedImage renderLabels(SimpleFeatureSource fs, Style style, String title)
-            throws Exception {
+    private BufferedImage renderLabels(SimpleFeatureSource fs, Style style, String title) throws Exception {
         MapContent mc = new MapContent();
         mc.getViewport().setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);
         mc.addLayer(new FeatureLayer(fs, style));

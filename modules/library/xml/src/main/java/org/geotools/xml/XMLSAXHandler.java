@@ -58,8 +58,7 @@ import org.xml.sax.helpers.DefaultHandler;
  */
 public class XMLSAXHandler extends DefaultHandler {
     /** the logger -- should be used for debugging (assuming there are bugs LOL) */
-    protected static final Logger logger =
-            org.geotools.util.logging.Logging.getLogger(XMLSAXHandler.class);
+    protected static final Logger logger = org.geotools.util.logging.Logging.getLogger(XMLSAXHandler.class);
 
     protected static Level level = Level.FINE;
 
@@ -97,8 +96,7 @@ public class XMLSAXHandler extends DefaultHandler {
      * @exception org.xml.sax.SAXException Any SAX exception, possibly wrapping another exception.
      */
     @Override
-    public InputSource resolveEntity(String publicId, String systemId)
-            throws SAXException, IOException {
+    public InputSource resolveEntity(String publicId, String systemId) throws SAXException, IOException {
         // avoid dtd files
         if (systemId != null && systemId.endsWith("dtd")) {
             return new InputSource(new StringReader(""));
@@ -235,8 +233,7 @@ public class XMLSAXHandler extends DefaultHandler {
      *     java.lang.String)
      */
     @Override
-    public void endElement(String namespaceURI, String localName, String qName)
-            throws SAXException {
+    public void endElement(String namespaceURI, String localName, String qName) throws SAXException {
         handleCharacters();
         logger.fine("END: " + qName);
         XMLElementHandler handler = null;
@@ -251,16 +248,15 @@ public class XMLSAXHandler extends DefaultHandler {
             logger.warning(e.getMessage());
             logger.warning("Line " + locator.getLineNumber() + " Col " + locator.getColumnNumber());
 
-            SAXException exception =
-                    new SAXException(
-                            e.getMessage()
-                                    + " at Line "
-                                    + locator.getLineNumber()
-                                    + " Col "
-                                    + locator.getColumnNumber()
-                                    + " tag is: \n"
-                                    + qName,
-                            e);
+            SAXException exception = new SAXException(
+                    e.getMessage()
+                            + " at Line "
+                            + locator.getLineNumber()
+                            + " Col "
+                            + locator.getColumnNumber()
+                            + " tag is: \n"
+                            + qName,
+                    e);
             exception.initCause(e);
             throw exception;
         } finally {
@@ -271,8 +267,7 @@ public class XMLSAXHandler extends DefaultHandler {
                     ComplexElementHandler complexParent = (ComplexElementHandler) parent;
                     String typename = complexParent.getType().getClass().getName();
                     // TODO: HACK The required Type is not in this Module
-                    if (typename.equals(
-                            "org.geotools.xml.wfs.WFSBasicComplexTypes$FeatureCollectionType")) {
+                    if (typename.equals("org.geotools.xml.wfs.WFSBasicComplexTypes$FeatureCollectionType")) {
                         complexParent.removeElement(handler);
                     }
                 }
@@ -300,8 +295,7 @@ public class XMLSAXHandler extends DefaultHandler {
      *     java.lang.String, org.xml.sax.Attributes)
      */
     @Override
-    public void startElement(String namespaceURI, String localName, String qName, Attributes atts)
-            throws SAXException {
+    public void startElement(String namespaceURI, String localName, String qName, Attributes atts) throws SAXException {
         characters.setLength(0);
 
         checkStatus();
@@ -321,8 +315,7 @@ public class XMLSAXHandler extends DefaultHandler {
 
                 if (targ2uri != null) {
                     if (targ2uri.length != 0 && targ2uri.length % 2 != 0)
-                        throw new SAXException(
-                                "Bad Schema location attribute: you must have an even number of terms");
+                        throw new SAXException("Bad Schema location attribute: you must have an even number of terms");
 
                     for (int i = 0; i < (targ2uri.length / 2); i++) {
                         String uri = targ2uri[(i * 2) + 1];
@@ -344,10 +337,7 @@ public class XMLSAXHandler extends DefaultHandler {
 
                         if (!set) {
                             try {
-                                targUri =
-                                        (instanceDocument == null)
-                                                ? new URI(uri)
-                                                : instanceDocument.resolve(uri);
+                                targUri = (instanceDocument == null) ? new URI(uri) : instanceDocument.resolve(uri);
                             } catch (URISyntaxException e1) {
                                 logger.warning(e1.toString());
                             }
@@ -375,12 +365,7 @@ public class XMLSAXHandler extends DefaultHandler {
 
         try {
             XMLElementHandler parent = handlers.peek();
-            logger.finest(
-                    "Parent Node = "
-                            + parent.getClass().getName()
-                            + "  '"
-                            + parent.getName()
-                            + "'");
+            logger.finest("Parent Node = " + parent.getClass().getName() + "  '" + parent.getName() + "'");
 
             //            logger.finest("Parent Node = "+parent.getClass().getName()+"
             // '"+parent.getName()+"' "+
@@ -410,16 +395,15 @@ public class XMLSAXHandler extends DefaultHandler {
             logger.warning(e.toString());
             logger.warning("Line " + locator.getLineNumber() + " Col " + locator.getColumnNumber());
 
-            SAXException exception =
-                    new SAXException(
-                            e.getMessage()
-                                    + " at Line "
-                                    + locator.getLineNumber()
-                                    + " Col "
-                                    + locator.getColumnNumber()
-                                    + " tag is: \n"
-                                    + qName,
-                            e);
+            SAXException exception = new SAXException(
+                    e.getMessage()
+                            + " at Line "
+                            + locator.getLineNumber()
+                            + " Col "
+                            + locator.getColumnNumber()
+                            + " tag is: \n"
+                            + qName,
+                    e);
             exception.initCause(e);
             throw exception;
         }

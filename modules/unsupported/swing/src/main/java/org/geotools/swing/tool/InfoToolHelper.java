@@ -81,10 +81,7 @@ public abstract class InfoToolHelper implements MapBoundsListener {
      * @return {@code true} if both map content and layer references are valid
      */
     public boolean isValid() {
-        return contentRef != null
-                && contentRef.get() != null
-                && layerRef != null
-                && layerRef.get() != null;
+        return contentRef != null && contentRef.get() != null && layerRef != null && layerRef.get() != null;
     }
 
     /**

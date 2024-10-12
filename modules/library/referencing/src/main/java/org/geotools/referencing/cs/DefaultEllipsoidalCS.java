@@ -59,11 +59,10 @@ public class DefaultEllipsoidalCS extends AbstractCS implements EllipsoidalCS {
      * DefaultCoordinateSystemAxis#GEODETIC_LATITUDE geodetic latitude}</var> axis in decimal
      * degrees.
      */
-    public static DefaultEllipsoidalCS GEODETIC_2D =
-            new DefaultEllipsoidalCS(
-                    name(VocabularyKeys.GEODETIC_2D),
-                    DefaultCoordinateSystemAxis.GEODETIC_LONGITUDE,
-                    DefaultCoordinateSystemAxis.GEODETIC_LATITUDE);
+    public static DefaultEllipsoidalCS GEODETIC_2D = new DefaultEllipsoidalCS(
+            name(VocabularyKeys.GEODETIC_2D),
+            DefaultCoordinateSystemAxis.GEODETIC_LONGITUDE,
+            DefaultCoordinateSystemAxis.GEODETIC_LATITUDE);
 
     /**
      * A three-dimensional ellipsoidal CS with <var>{@linkplain
@@ -71,12 +70,11 @@ public class DefaultEllipsoidalCS extends AbstractCS implements EllipsoidalCS {
      * DefaultCoordinateSystemAxis#GEODETIC_LATITUDE geodetic latitude}</var>, <var>{@linkplain
      * DefaultCoordinateSystemAxis#ELLIPSOIDAL_HEIGHT ellipsoidal height}</var> axis.
      */
-    public static DefaultEllipsoidalCS GEODETIC_3D =
-            new DefaultEllipsoidalCS(
-                    name(VocabularyKeys.GEODETIC_3D),
-                    DefaultCoordinateSystemAxis.GEODETIC_LONGITUDE,
-                    DefaultCoordinateSystemAxis.GEODETIC_LATITUDE,
-                    DefaultCoordinateSystemAxis.ELLIPSOIDAL_HEIGHT);
+    public static DefaultEllipsoidalCS GEODETIC_3D = new DefaultEllipsoidalCS(
+            name(VocabularyKeys.GEODETIC_3D),
+            DefaultCoordinateSystemAxis.GEODETIC_LONGITUDE,
+            DefaultCoordinateSystemAxis.GEODETIC_LATITUDE,
+            DefaultCoordinateSystemAxis.ELLIPSOIDAL_HEIGHT);
 
     /**
      * The axis number for longitude, latitude and height. Will be constructed only when first
@@ -110,8 +108,7 @@ public class DefaultEllipsoidalCS extends AbstractCS implements EllipsoidalCS {
      * @param axis0 The first axis.
      * @param axis1 The second axis.
      */
-    public DefaultEllipsoidalCS(
-            final String name, final CoordinateSystemAxis axis0, final CoordinateSystemAxis axis1) {
+    public DefaultEllipsoidalCS(final String name, final CoordinateSystemAxis axis0, final CoordinateSystemAxis axis1) {
         super(name, axis0, axis1);
     }
 
@@ -141,9 +138,7 @@ public class DefaultEllipsoidalCS extends AbstractCS implements EllipsoidalCS {
      * @param axis1 The second axis.
      */
     public DefaultEllipsoidalCS(
-            final Map<String, ?> properties,
-            final CoordinateSystemAxis axis0,
-            final CoordinateSystemAxis axis1) {
+            final Map<String, ?> properties, final CoordinateSystemAxis axis0, final CoordinateSystemAxis axis1) {
         super(properties, axis0, axis1);
     }
 
@@ -166,8 +161,7 @@ public class DefaultEllipsoidalCS extends AbstractCS implements EllipsoidalCS {
     }
 
     /** For {@link #usingUnit} usage only. */
-    private DefaultEllipsoidalCS(
-            final Map<String, ?> properties, final CoordinateSystemAxis... axis) {
+    private DefaultEllipsoidalCS(final Map<String, ?> properties, final CoordinateSystemAxis... axis) {
         super(properties, axis);
     }
 
@@ -228,8 +222,7 @@ public class DefaultEllipsoidalCS extends AbstractCS implements EllipsoidalCS {
                     continue;
                 }
             } catch (UnconvertibleException | IncommensurableException e) {
-                throw new MismatchedDimensionException(
-                        "The axis unit is not convertible to the expected dimension", e);
+                throw new MismatchedDimensionException("The axis unit is not convertible to the expected dimension", e);
             }
             // Should not happen, since 'isCompatibleDirection'
             // has already checked axis directions.

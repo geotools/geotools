@@ -37,8 +37,7 @@ public class JDBCJNDITestSetup extends JDBCDelegatingTestSetup {
         super(delegate);
     }
 
-    protected void setupJNDIEnvironment(JDBCDataStoreFactory jdbcDataStoreFactory)
-            throws IOException {
+    protected void setupJNDIEnvironment(JDBCDataStoreFactory jdbcDataStoreFactory) throws IOException {
 
         @SuppressWarnings("unchecked") // Properties is a Map<Object, Object>
         Map<String, Object> params = new HashMap(fixture);
@@ -46,8 +45,7 @@ public class JDBCJNDITestSetup extends JDBCDelegatingTestSetup {
         dataSource = jdbcDataStoreFactory.createDataSource(params);
         MockInitialDirContextFactory.setDataSource(dataSource);
 
-        System.setProperty(
-                Context.INITIAL_CONTEXT_FACTORY, MockInitialDirContextFactory.class.getName());
+        System.setProperty(Context.INITIAL_CONTEXT_FACTORY, MockInitialDirContextFactory.class.getName());
         try {
             GeoTools.clearInitialContext();
         } catch (NamingException e) {
@@ -57,8 +55,7 @@ public class JDBCJNDITestSetup extends JDBCDelegatingTestSetup {
 
     @Override
     public DataSource getDataSource() throws IOException {
-        System.setProperty(
-                Context.INITIAL_CONTEXT_FACTORY, MockInitialDirContextFactory.class.getName());
+        System.setProperty(Context.INITIAL_CONTEXT_FACTORY, MockInitialDirContextFactory.class.getName());
         return super.getDataSource();
     }
 

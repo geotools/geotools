@@ -36,105 +36,71 @@ import org.geotools.util.factory.Hints;
 
 public class STACDataStoreFactory implements DataStoreFactorySpi {
 
-    public static final Param DBTYPE =
-            new Param(
-                    "dbtype",
-                    String.class,
-                    "Type",
-                    true,
-                    "stac",
-                    Collections.singletonMap(Parameter.LEVEL, "program"));
+    public static final Param DBTYPE = new Param(
+            "dbtype", String.class, "Type", true, "stac", Collections.singletonMap(Parameter.LEVEL, "program"));
 
     public static final Param LANDING_PAGE =
             new Param("landingPage", URL.class, "The STAC server landing page URL", true);
 
     public static final Param NAMESPACE =
-            new Param(
-                    "namespace",
-                    URI.class,
-                    "uri to the namespace",
-                    false,
-                    null,
-                    new KVP(Param.LEVEL, "advanced"));
+            new Param("namespace", URI.class, "uri to the namespace", false, null, new KVP(Param.LEVEL, "advanced"));
 
-    public static final Param SEARCH_MODE =
-            new Param(
-                    "searchMode",
-                    SearchMode.class,
-                    "How to perform search queries, GET, POST or decide based on conformance classes",
-                    false,
-                    SearchMode.GET,
-                    Collections.singletonMap(
-                            Parameter.OPTIONS, Arrays.asList(SearchMode.values())));
+    public static final Param SEARCH_MODE = new Param(
+            "searchMode",
+            SearchMode.class,
+            "How to perform search queries, GET, POST or decide based on conformance classes",
+            false,
+            SearchMode.GET,
+            Collections.singletonMap(Parameter.OPTIONS, Arrays.asList(SearchMode.values())));
 
-    public static final Param FETCH_SIZE =
-            new Param(
-                    "fetchSize",
-                    Integer.class,
-                    "How many items to fetch in a single request (just a suggestion to the server)",
-                    false,
-                    STACDataStore.DEFAULT_FETCH_SIZE,
-                    Collections.singletonMap(Parameter.MIN, 1));
+    public static final Param FETCH_SIZE = new Param(
+            "fetchSize",
+            Integer.class,
+            "How many items to fetch in a single request (just a suggestion to the server)",
+            false,
+            STACDataStore.DEFAULT_FETCH_SIZE,
+            Collections.singletonMap(Parameter.MIN, 1));
 
-    public static final Param FEATURE_TYPE_ITEMS =
-            new Param(
-                    "featureTypeItems",
-                    Integer.class,
-                    "How many items to fetch in order to guess the items structure",
-                    false,
-                    STACDataStore.DEFAULT_FEATURE_TYPE_ITEMS,
-                    Collections.singletonMap(Parameter.MIN, 1));
+    public static final Param FEATURE_TYPE_ITEMS = new Param(
+            "featureTypeItems",
+            Integer.class,
+            "How many items to fetch in order to guess the items structure",
+            false,
+            STACDataStore.DEFAULT_FEATURE_TYPE_ITEMS,
+            Collections.singletonMap(Parameter.MIN, 1));
 
-    public static final Param HARD_LIMIT =
-            new Param(
-                    "hardLimit",
-                    Integer.class,
-                    "How many items to fetch from a collection, tops, even while paging. Set to zero or negative to disable.",
-                    false,
-                    STACDataStore.DEFAULT_HARD_LIMIT,
-                    Collections.singletonMap(Parameter.MIN, 1));
+    public static final Param HARD_LIMIT = new Param(
+            "hardLimit",
+            Integer.class,
+            "How many items to fetch from a collection, tops, even while paging. Set to zero or negative to disable.",
+            false,
+            STACDataStore.DEFAULT_HARD_LIMIT,
+            Collections.singletonMap(Parameter.MIN, 1));
 
     public static final Param USE_CONNECTION_POOLING =
-            new Param(
-                    "useConnectionPooling",
-                    Boolean.class,
-                    "Use HTTP connection pooling",
-                    false,
-                    Boolean.TRUE);
+            new Param("useConnectionPooling", Boolean.class, "Use HTTP connection pooling", false, Boolean.TRUE);
 
-    public static final Param MAX_CONNECTIONS =
-            new Param(
-                    "maxConnections",
-                    Integer.class,
-                    "Maximum number of connections",
-                    false,
-                    Integer.valueOf(6),
-                    Collections.singletonMap(Parameter.MIN, 1));
+    public static final Param MAX_CONNECTIONS = new Param(
+            "maxConnections",
+            Integer.class,
+            "Maximum number of connections",
+            false,
+            Integer.valueOf(6),
+            Collections.singletonMap(Parameter.MIN, 1));
 
     public static final Param TRY_GZIP =
-            new Param(
-                    "tryGZIP",
-                    Boolean.class,
-                    "Use GZIP compression, if available",
-                    false,
-                    Boolean.TRUE);
+            new Param("tryGZIP", Boolean.class, "Use GZIP compression, if available", false, Boolean.TRUE);
 
     public static final Param USERNAME =
             new Param("username", String.class, "User name for HTTP basic authentication", false);
 
     public static final Param PASSWORD =
-            new Param(
-                    "password",
-                    String.class,
-                    "Password for HTTP basic authentication",
-                    false,
-                    Boolean.TRUE);
+            new Param("password", String.class, "Password for HTTP basic authentication", false, Boolean.TRUE);
 
     public static final Param CONNECTION_TIMEOUT =
             new Param("connectionTimeout", Integer.class, "Connection timeout (sec)", false, 10);
 
-    public static final Param READ_TIMEOUT =
-            new Param("readTimeout", Integer.class, "Read timeout (sec)", false, 10);
+    public static final Param READ_TIMEOUT = new Param("readTimeout", Integer.class, "Read timeout (sec)", false, 10);
 
     @Override
     public String getDisplayName() {
@@ -208,9 +174,7 @@ public class STACDataStoreFactory implements DataStoreFactorySpi {
             Integer maxConnections = (Integer) MAX_CONNECTIONS.lookUp(params);
             if (maxConnections != null) pc.setMaxConnections(maxConnections);
         } else {
-            client =
-                    HTTPClientFinder.createClient(
-                            new Hints(Hints.HTTP_CLIENT, SimpleHttpClient.class));
+            client = HTTPClientFinder.createClient(new Hints(Hints.HTTP_CLIENT, SimpleHttpClient.class));
         }
 
         Boolean gzip = (Boolean) TRY_GZIP.lookUp(params);

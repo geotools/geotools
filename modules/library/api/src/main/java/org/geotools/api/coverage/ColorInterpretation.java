@@ -53,8 +53,7 @@ public final class ColorInterpretation extends CodeList<ColorInterpretation> {
      * @see #GRAY_INDEX
      */
     @UML(identifier = "CV_PaletteIndex", obligation = CONDITIONAL, specification = OGC_01004)
-    public static final ColorInterpretation PALETTE_INDEX =
-            new ColorInterpretation("PALETTE_INDEX");
+    public static final ColorInterpretation PALETTE_INDEX = new ColorInterpretation("PALETTE_INDEX");
 
     /**
      * Red Band for the {@linkplain PaletteInterpretation#RGB RGB} color model components.
@@ -119,8 +118,7 @@ public final class ColorInterpretation extends CodeList<ColorInterpretation> {
      * @see PaletteInterpretation#HLS
      */
     @UML(identifier = "CV_SaturationBand", obligation = CONDITIONAL, specification = OGC_01004)
-    public static final ColorInterpretation SATURATION_BAND =
-            new ColorInterpretation("SATURATION_BAND");
+    public static final ColorInterpretation SATURATION_BAND = new ColorInterpretation("SATURATION_BAND");
 
     /**
      * Lightness Band for the {@linkplain PaletteInterpretation#HLS HLS} color model.
@@ -130,8 +128,7 @@ public final class ColorInterpretation extends CodeList<ColorInterpretation> {
      * @see PaletteInterpretation#HLS
      */
     @UML(identifier = "CV_LightnessBand", obligation = CONDITIONAL, specification = OGC_01004)
-    public static final ColorInterpretation LIGHTNESS_BAND =
-            new ColorInterpretation("LIGHTNESS_BAND");
+    public static final ColorInterpretation LIGHTNESS_BAND = new ColorInterpretation("LIGHTNESS_BAND");
 
     /**
      * Cyan Band for the {@linkplain PaletteInterpretation#CMYK CMYK} color model.

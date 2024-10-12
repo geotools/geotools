@@ -57,8 +57,7 @@ public class EquatorialOrthographic extends ObliqueOrthographic {
      * @param parameters The parameter values in standard units.
      * @throws ParameterNotFoundException if a mandatory parameter is missing.
      */
-    protected EquatorialOrthographic(final ParameterValueGroup parameters)
-            throws ParameterNotFoundException {
+    protected EquatorialOrthographic(final ParameterValueGroup parameters) throws ParameterNotFoundException {
         super(parameters);
         ensureLatitudeEquals(Provider.LATITUDE_OF_ORIGIN, latitudeOfOrigin, 0);
         latitudeOfOrigin = 0.0;
@@ -69,8 +68,7 @@ public class EquatorialOrthographic extends ObliqueOrthographic {
      * radians) and stores the result in {@code ptDst} (linear distance on a unit sphere).
      */
     @Override
-    protected Point2D transformNormalized(double x, double y, Point2D ptDst)
-            throws ProjectionException {
+    protected Point2D transformNormalized(double x, double y, Point2D ptDst) throws ProjectionException {
         // Compute using oblique formulas, for comparaison later.
         assert (ptDst = super.transformNormalized(x, y, ptDst)) != null;
         final double cosphi = cos(y);
@@ -94,8 +92,7 @@ public class EquatorialOrthographic extends ObliqueOrthographic {
      * {@code ptDst}.
      */
     @Override
-    protected Point2D inverseTransformNormalized(double x, double y, Point2D ptDst)
-            throws ProjectionException {
+    protected Point2D inverseTransformNormalized(double x, double y, Point2D ptDst) throws ProjectionException {
         // Compute using oblique formulas, for comparaison later.
         assert (ptDst = super.inverseTransformNormalized(x, y, ptDst)) != null;
         final double rho = hypot(x, y);

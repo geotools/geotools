@@ -32,8 +32,7 @@ public class ServiceExceptionTest {
         assertSame(throwable, sax2.getException());
 
         // Workaround with ServiceException
-        ServiceException serviceException1 =
-                (ServiceException) new ServiceException("example").initCause(throwable);
+        ServiceException serviceException1 = (ServiceException) new ServiceException("example").initCause(throwable);
         assertSame(throwable, serviceException1.getCause());
         assertSame(throwable, serviceException1.getException());
     }

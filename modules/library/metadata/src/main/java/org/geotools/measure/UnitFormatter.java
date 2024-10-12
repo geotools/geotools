@@ -35,8 +35,7 @@ public interface UnitFormatter {
         }
     }
 
-    Unit<?> parse(CharSequence csq, ParsePosition pos)
-            throws IllegalArgumentException, MeasurementParseException;
+    Unit<?> parse(CharSequence csq, ParsePosition pos) throws IllegalArgumentException, MeasurementParseException;
 
     Unit<?> parse(CharSequence csq) throws MeasurementParseException;
 }

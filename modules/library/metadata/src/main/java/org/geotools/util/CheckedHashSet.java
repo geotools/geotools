@@ -75,8 +75,7 @@ public class CheckedHashSet<E> extends LinkedHashSet<E> implements CheckedCollec
     /** Make sure that {@link #type} is non-null. */
     private void ensureNonNull() {
         if (type == null) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "type"));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "type"));
         }
     }
 
@@ -110,8 +109,7 @@ public class CheckedHashSet<E> extends LinkedHashSet<E> implements CheckedCollec
      * @param collection the collection to check, or {@code null}.
      * @throws IllegalArgumentException if at least one element is not of the expected type.
      */
-    private void ensureValid(final Collection<? extends E> collection)
-            throws IllegalArgumentException {
+    private void ensureValid(final Collection<? extends E> collection) throws IllegalArgumentException {
         if (collection != null) {
             for (final E element : collection) {
                 ensureValidType(element);
@@ -184,8 +182,7 @@ public class CheckedHashSet<E> extends LinkedHashSet<E> implements CheckedCollec
      * @throws UnsupportedOperationException if this collection is unmodifiable.
      */
     @Override
-    public boolean add(final E element)
-            throws IllegalArgumentException, UnsupportedOperationException {
+    public boolean add(final E element) throws IllegalArgumentException, UnsupportedOperationException {
         ensureValidType(element);
         synchronized (getLock()) {
             checkWritePermission();

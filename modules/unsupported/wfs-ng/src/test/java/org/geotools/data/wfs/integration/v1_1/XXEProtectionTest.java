@@ -90,23 +90,20 @@ public class XXEProtectionTest {
     public void testTransactionProtection() throws Exception {
         WFSConfig config = WFSTestData.getGmlCompatibleConfig();
         String baseDirectory = "GeoServer_2.0/1.1.0_XXE_Transaction/";
-        IntegrationTestWFSClient client =
-                new IntegrationTestWFSClient(baseDirectory, config) {
-                    @Override
-                    protected org.geotools.data.ows.Response mockTransactionSuccess(
-                            org.geotools.data.wfs.internal.TransactionRequest request)
-                            throws java.io.IOException {
-                        String resource = "Transaction.xml";
-                        URL contentUrl = new URL(baseDirectory, resource);
+        IntegrationTestWFSClient client = new IntegrationTestWFSClient(baseDirectory, config) {
+            @Override
+            protected org.geotools.data.ows.Response mockTransactionSuccess(
+                    org.geotools.data.wfs.internal.TransactionRequest request) throws java.io.IOException {
+                String resource = "Transaction.xml";
+                URL contentUrl = new URL(baseDirectory, resource);
 
-                        HTTPResponse httpResp =
-                                new TestHttpResponse("text/xml", "UTF-8", contentUrl);
-                        return request.createResponse(httpResp);
-                    };
-                };
+                HTTPResponse httpResp = new TestHttpResponse("text/xml", "UTF-8", contentUrl);
+                return request.createResponse(httpResp);
+            }
+            ;
+        };
         WFSDataStore store = new WFSDataStore(client);
-        SimpleFeatureStore fs =
-                (SimpleFeatureStore) store.getFeatureSource(store.getTypeNames()[0]);
+        SimpleFeatureStore fs = (SimpleFeatureStore) store.getFeatureSource(store.getTypeNames()[0]);
         try {
             fs.removeFeatures(Filter.INCLUDE);
         } catch (Exception e) {

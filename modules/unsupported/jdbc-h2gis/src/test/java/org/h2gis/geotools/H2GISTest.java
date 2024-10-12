@@ -132,8 +132,7 @@ class H2GISTest extends H2GISTestSetup {
         st.execute("DROP TABLE IF EXISTS h2gis.geomtable; COMMIT;");
 
         String sql =
-                "CREATE TABLE h2gis.geomtable (id int AUTO_INCREMENT(1) PRIMARY KEY, "
-                        + "the_geom GEOMETRY(POINT))";
+                "CREATE TABLE h2gis.geomtable (id int AUTO_INCREMENT(1) PRIMARY KEY, " + "the_geom GEOMETRY(POINT))";
         st.execute(sql);
 
         sql = "INSERT INTO h2gis.geomtable VALUES (" + "0,ST_GeomFromText('POINT(12 0)',4326));";
@@ -155,11 +154,10 @@ class H2GISTest extends H2GISTestSetup {
     @Test
     void getFeatureSchema() throws SQLException, IOException {
         st.execute("drop table if exists FORESTS");
-        st.execute(
-                "CREATE TABLE FORESTS ( FID INTEGER, NAME CHARACTER VARYING(64),"
-                        + " THE_GEOM GEOMETRY(MULTIPOLYGON));"
-                        + "INSERT INTO FORESTS VALUES(109, 'Green Forest', ST_MPolyFromText( 'MULTIPOLYGON(((28 26,28 0,84 0,"
-                        + "84 42,28 26), (52 18,66 23,73 9,48 6,52 18)),((59 18,67 18,67 13,59 13,59 18)))', 101));");
+        st.execute("CREATE TABLE FORESTS ( FID INTEGER, NAME CHARACTER VARYING(64),"
+                + " THE_GEOM GEOMETRY(MULTIPOLYGON));"
+                + "INSERT INTO FORESTS VALUES(109, 'Green Forest', ST_MPolyFromText( 'MULTIPOLYGON(((28 26,28 0,84 0,"
+                + "84 42,28 26), (52 18,66 23,73 9,48 6,52 18)),((59 18,67 18,67 13,59 13,59 18)))', 101));");
 
         SimpleFeatureSource fs = ds.getFeatureSource("FORESTS");
         SimpleFeatureType schema = fs.getSchema();
@@ -176,10 +174,9 @@ class H2GISTest extends H2GISTestSetup {
     @Test
     void getFeatureSchemaLinkedTable() throws SQLException, IOException {
         st.execute("drop table if exists LANDCOVER_LINKED");
-        st.execute(
-                "CALL FILE_TABLE('"
-                        + H2GISTest.class.getResource("landcover.shp").getPath()
-                        + "', 'LANDCOVER_LINKED');");
+        st.execute("CALL FILE_TABLE('"
+                + H2GISTest.class.getResource("landcover.shp").getPath()
+                + "', 'LANDCOVER_LINKED');");
         SimpleFeatureSource fs = (SimpleFeatureSource) ds.getFeatureSource("LANDCOVER_LINKED");
         SimpleFeatureType schema = fs.getSchema();
         GeometryDescriptor geomDesc = schema.getGeometryDescriptor();
@@ -188,9 +185,7 @@ class H2GISTest extends H2GISTestSetup {
 
         try (ResultSet rs = st.executeQuery("SELECT ST_EXTENT(THE_GEOM) FROM LANDCOVER_LINKED")) {
             rs.next();
-            assertTrue(
-                    JTS.toEnvelope(((Geometry) rs.getObject(1)))
-                            .boundsEquals2D(fs.getBounds(), 0.01));
+            assertTrue(JTS.toEnvelope(((Geometry) rs.getObject(1))).boundsEquals2D(fs.getBounds(), 0.01));
         }
         st.execute("drop table LANDCOVER_LINKED");
     }
@@ -198,10 +193,9 @@ class H2GISTest extends H2GISTestSetup {
     @Test
     void getBoundingBox() throws SQLException, IOException, ParseException {
         st.execute("drop table if exists FORESTS");
-        st.execute(
-                "CREATE TABLE FORESTS ( FID INTEGER PRIMARY KEY, NAME CHARACTER VARYING(64),"
-                        + " THE_GEOM GEOMETRY(POLYGON));"
-                        + "INSERT INTO FORESTS VALUES(109, 'Green Forest', 'POLYGON((0 0,10 0,10 10, 0 10, 0 0))');");
+        st.execute("CREATE TABLE FORESTS ( FID INTEGER PRIMARY KEY, NAME CHARACTER VARYING(64),"
+                + " THE_GEOM GEOMETRY(POLYGON));"
+                + "INSERT INTO FORESTS VALUES(109, 'Green Forest', 'POLYGON((0 0,10 0,10 10, 0 10, 0 0))');");
 
         SimpleFeatureSource fs = (SimpleFeatureSource) ds.getFeatureSource("FORESTS");
         SimpleFeatureType schema = fs.getSchema();
@@ -211,9 +205,8 @@ class H2GISTest extends H2GISTestSetup {
             FeatureCollection<SimpleFeatureType, SimpleFeature> collection = fs.getFeatures(query);
             bounds = collection.getBounds();
         }
-        assertTrue(
-                JTS.toEnvelope(wKTReader.read("POLYGON((0 0,10 0,10 10, 0 10, 0 0))"))
-                        .boundsEquals2D(bounds, 0.01));
+        assertTrue(JTS.toEnvelope(wKTReader.read("POLYGON((0 0,10 0,10 10, 0 10, 0 0))"))
+                .boundsEquals2D(bounds, 0.01));
         st.execute("drop table FORESTS");
     }
 
@@ -287,12 +280,11 @@ class H2GISTest extends H2GISTestSetup {
     @Test
     void getFeaturesFilter3() throws SQLException, IOException, CQLException {
         st.execute("drop table if exists LANDCOVER");
-        st.execute(
-                "CREATE TABLE LANDCOVER ( FID INTEGER, CODE INTEGER,"
-                        + " THE_GEOM GEOMETRY(POLYGON));"
-                        + "INSERT INTO LANDCOVER VALUES(1, -1, 'POLYGON((110 330, 210 330, 210 240, 110 240, 110 330))');"
-                        + "INSERT INTO LANDCOVER VALUES(2, 3, 'POLYGON((200 220, 310 220, 310 160, 200 160, 200 220))');"
-                        + "INSERT INTO LANDCOVER VALUES(3, -1, 'POLYGON((90 130, 140 130, 140 110, 90 110, 90 130))');");
+        st.execute("CREATE TABLE LANDCOVER ( FID INTEGER, CODE INTEGER,"
+                + " THE_GEOM GEOMETRY(POLYGON));"
+                + "INSERT INTO LANDCOVER VALUES(1, -1, 'POLYGON((110 330, 210 330, 210 240, 110 240, 110 330))');"
+                + "INSERT INTO LANDCOVER VALUES(2, 3, 'POLYGON((200 220, 310 220, 310 160, 200 160, 200 220))');"
+                + "INSERT INTO LANDCOVER VALUES(3, -1, 'POLYGON((90 130, 140 130, 140 110, 90 110, 90 130))');");
 
         SimpleFeatureSource fs = (SimpleFeatureSource) ds.getFeatureSource("LANDCOVER");
         Filter filter = CQL.toFilter("FID < abs(CODE)");
@@ -304,12 +296,11 @@ class H2GISTest extends H2GISTestSetup {
     @Test
     void testBboxFilter() throws SQLException, IOException, ParseException {
         st.execute("drop table if exists LANDCOVER");
-        st.execute(
-                "CREATE TABLE LANDCOVER ( FID INTEGER, NAME CHARACTER VARYING(64),"
-                        + " THE_GEOM GEOMETRY(POINT));"
-                        + "INSERT INTO LANDCOVER VALUES(1, 'Green Forest', 'POINT(5 5)');"
-                        + "INSERT INTO LANDCOVER VALUES(2, 'Cereal', 'POINT(200 220)');"
-                        + "INSERT INTO LANDCOVER VALUES(3, 'Building', 'POINT(90 130)');");
+        st.execute("CREATE TABLE LANDCOVER ( FID INTEGER, NAME CHARACTER VARYING(64),"
+                + " THE_GEOM GEOMETRY(POINT));"
+                + "INSERT INTO LANDCOVER VALUES(1, 'Green Forest', 'POINT(5 5)');"
+                + "INSERT INTO LANDCOVER VALUES(2, 'Cereal', 'POINT(200 220)');"
+                + "INSERT INTO LANDCOVER VALUES(3, 'Building', 'POINT(90 130)');");
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         BBOX bbox = ff.bbox("THE_GEOM", 0, 0, 10, 10, "EPSG:4326");
         FeatureCollection<?, ?> fc = ds.getFeatureSource("LANDCOVER").getFeatures(bbox);
@@ -322,15 +313,13 @@ class H2GISTest extends H2GISTestSetup {
     @Test
     void testIntersectsFilter() throws Exception {
         st.execute("drop table if exists LANDCOVER");
-        st.execute(
-                "CREATE TABLE LANDCOVER ( FID INTEGER, NAME CHARACTER VARYING(64),"
-                        + " THE_GEOM GEOMETRY(POINT));"
-                        + "INSERT INTO LANDCOVER VALUES(1, 'Green Forest', 'POINT(5 5)');"
-                        + "INSERT INTO LANDCOVER VALUES(2, 'Cereal', 'POINT(200 220)');"
-                        + "INSERT INTO LANDCOVER VALUES(3, 'Building', 'POINT(90 130)');");
+        st.execute("CREATE TABLE LANDCOVER ( FID INTEGER, NAME CHARACTER VARYING(64),"
+                + " THE_GEOM GEOMETRY(POINT));"
+                + "INSERT INTO LANDCOVER VALUES(1, 'Green Forest', 'POINT(5 5)');"
+                + "INSERT INTO LANDCOVER VALUES(2, 'Cereal', 'POINT(200 220)');"
+                + "INSERT INTO LANDCOVER VALUES(3, 'Building', 'POINT(90 130)');");
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
-        Intersects is =
-                ff.intersects(ff.property("THE_GEOM"), ff.literal(wKTReader.read("POINT(5 5)")));
+        Intersects is = ff.intersects(ff.property("THE_GEOM"), ff.literal(wKTReader.read("POINT(5 5)")));
         FeatureCollection<?, ?> fc = ds.getFeatureSource("LANDCOVER").getFeatures(is);
         assertEquals(1, fc.size());
         SimpleFeature[] features = fc.toArray(new SimpleFeature[fc.size()]);
@@ -358,11 +347,10 @@ class H2GISTest extends H2GISTestSetup {
     @Test
     void testWithCRS() throws Exception {
         st.execute("drop table if exists FORESTS");
-        st.execute(
-                "CREATE TABLE FORESTS ( FID INTEGER, NAME CHARACTER VARYING(64),"
-                        + " THE_GEOM GEOMETRY(MULTIPOLYGON, 4326));"
-                        + "INSERT INTO FORESTS VALUES(109, 'Green Forest', ST_MPolyFromText( 'MULTIPOLYGON(((28 26,28 0,84 0,"
-                        + "84 42,28 26), (52 18,66 23,73 9,48 6,52 18)),((59 18,67 18,67 13,59 13,59 18)))', 4326));");
+        st.execute("CREATE TABLE FORESTS ( FID INTEGER, NAME CHARACTER VARYING(64),"
+                + " THE_GEOM GEOMETRY(MULTIPOLYGON, 4326));"
+                + "INSERT INTO FORESTS VALUES(109, 'Green Forest', ST_MPolyFromText( 'MULTIPOLYGON(((28 26,28 0,84 0,"
+                + "84 42,28 26), (52 18,66 23,73 9,48 6,52 18)),((59 18,67 18,67 13,59 13,59 18)))', 4326));");
 
         SimpleFeatureSource fs = ds.getFeatureSource("FORESTS");
         SimpleFeatureCollection features = fs.getFeatures(Filter.INCLUDE);
@@ -381,8 +369,7 @@ class H2GISTest extends H2GISTestSetup {
                         + "INSERT INTO LANDCOVER VALUES(1, 'Green Forest', 'POLYGON((110 330, 210 330, 210 240, 110 240, 110 330))');"
                         + "INSERT INTO LANDCOVER VALUES(2, 'Cereal', 'POLYGON((200 220, 310 220, 310 160, 200 160, 200 220))');"
                         + "INSERT INTO LANDCOVER VALUES(3, 'Building', 'POLYGON((90 130, 140 130, 140 110, 90 110, 90 130))');");
-        VirtualTable vTable =
-                new VirtualTable("LANDCOVER_CEREAL", "SELECT * FROM PUBLIC.LANDCOVER WHERE FID=2");
+        VirtualTable vTable = new VirtualTable("LANDCOVER_CEREAL", "SELECT * FROM PUBLIC.LANDCOVER WHERE FID=2");
         vTable.addGeometryMetadatata("THE_GEOM", Polygon.class, 4326);
         ds.createVirtualTable(vTable);
         SimpleFeatureType type = ds.getSchema("LANDCOVER_CEREAL");
@@ -391,11 +378,8 @@ class H2GISTest extends H2GISTestSetup {
         FeatureSource<?, ?> fsView = ds.getFeatureSource("LANDCOVER_CEREAL");
         ReferencedEnvelope env = fsView.getBounds();
         assertNotNull(env);
-        assertTrue(
-                JTS.toEnvelope(
-                                wKTReader.read(
-                                        "POLYGON((200 220, 310 220, 310 160, 200 160, 200 220))"))
-                        .boundsEquals2D(env, 0.01));
+        assertTrue(JTS.toEnvelope(wKTReader.read("POLYGON((200 220, 310 220, 310 160, 200 160, 200 220))"))
+                .boundsEquals2D(env, 0.01));
         ds.dropVirtualTable("LANDCOVER_CEREAL");
         st.execute("drop table LANDCOVER");
     }
@@ -409,8 +393,7 @@ class H2GISTest extends H2GISTestSetup {
                         + "INSERT INTO LANDCOVER VALUES(1, 'Green Forest', 'POLYGON((110 330, 210 330, 210 240, 110 240, 110 330))');"
                         + "INSERT INTO LANDCOVER VALUES(2, 'Cereal', 'POLYGON((200 220, 310 220, 310 160, 200 160, 200 220))');"
                         + "INSERT INTO LANDCOVER VALUES(3, 'Building', 'POLYGON((90 130, 140 130, 140 110, 90 110, 90 130))');");
-        VirtualTable vTable =
-                new VirtualTable("LANDCOVER_CEREAL", "SELECT * FROM PUBLIC.LANDCOVER WHERE FID=2");
+        VirtualTable vTable = new VirtualTable("LANDCOVER_CEREAL", "SELECT * FROM PUBLIC.LANDCOVER WHERE FID=2");
         // TODO workaround due to H2 2.0 changes on geometry type
         vTable.addGeometryMetadatata("THE_GEOM", Polygon.class, -1);
         ds.createVirtualTable(vTable);
@@ -420,11 +403,8 @@ class H2GISTest extends H2GISTestSetup {
         FeatureSource<?, ?> fsView = ds.getFeatureSource("LANDCOVER_CEREAL");
         ReferencedEnvelope env = fsView.getBounds();
         assertNotNull(env);
-        assertTrue(
-                JTS.toEnvelope(
-                                wKTReader.read(
-                                        "POLYGON((200 220, 310 220, 310 160, 200 160, 200 220))"))
-                        .boundsEquals2D(env, 0.01));
+        assertTrue(JTS.toEnvelope(wKTReader.read("POLYGON((200 220, 310 220, 310 160, 200 160, 200 220))"))
+                .boundsEquals2D(env, 0.01));
         ds.dropVirtualTable("LANDCOVER_CEREAL");
         st.execute("drop table LANDCOVER");
     }
@@ -432,10 +412,9 @@ class H2GISTest extends H2GISTestSetup {
     @Test
     void testH2GISFileTable() throws SQLException, IOException {
         st.execute("drop table if exists LANDCOVER");
-        st.execute(
-                "CALL FILE_TABLE('"
-                        + H2GISTest.class.getResource("landcover.shp").getPath()
-                        + "', 'LANDCOVER');");
+        st.execute("CALL FILE_TABLE('"
+                + H2GISTest.class.getResource("landcover.shp").getPath()
+                + "', 'LANDCOVER');");
         assertTrue(st.execute("SELECT * FROM LANDCOVER LIMIT 0;"));
         SimpleFeatureSource fs = (SimpleFeatureSource) ds.getFeatureSource("LANDCOVER");
         SimpleFeatureType schema = fs.getSchema();
@@ -462,15 +441,12 @@ class H2GISTest extends H2GISTestSetup {
                         + "INSERT INTO LANDCOVER VALUES(2, 'Cereal', 'POLYGON((200 220, 310 220, 310 160, 200 160, 200 220))');"
                         + "INSERT INTO LANDCOVER VALUES(3, 'Building', 'POLYGON((90 130, 140 130, 140 110, 90 110, 90 130))');");
 
-        SimpleFeatureType newFS =
-                DataUtilities.createType("LANDCOVER", "FID:Integer,NAME:String,THE_GEOM:Polygon");
+        SimpleFeatureType newFS = DataUtilities.createType("LANDCOVER", "FID:Integer,NAME:String,THE_GEOM:Polygon");
 
         assertEquals(newFS.getGeometryDescriptor().getType().getBinding(), Polygon.class);
         dialect.postCreateTable(schemaName, newFS, ds.getDataSource().getConnection());
         assertEquals(
-                0,
-                GeometryTableUtilities.getSRID(
-                        ds.getDataSource().getConnection(), new TableLocation("LANDCOVER")));
+                0, GeometryTableUtilities.getSRID(ds.getDataSource().getConnection(), new TableLocation("LANDCOVER")));
     }
 
     @Test
@@ -539,8 +515,7 @@ class H2GISTest extends H2GISTestSetup {
     void createSchema() throws SQLException, IOException, SchemaException {
         String tableName = "mygeotable";
         st.execute("DROP TABLE if exists \"" + tableName + "\"");
-        SimpleFeatureType schema =
-                DataUtilities.createType(tableName, "geom:Point:srid=4326,id:Integer,name:String");
+        SimpleFeatureType schema = DataUtilities.createType(tableName, "geom:Point:srid=4326,id:Integer,name:String");
         ds.createSchema(schema);
         SimpleFeatureType dbSchema = ds.getSchema(schema.getName());
         assertNotNull(dbSchema);
@@ -557,8 +532,7 @@ class H2GISTest extends H2GISTestSetup {
         assertNotNull(ds.getFeatureSource(tableName));
         assertEquals(Point.class, dbSchema.getGeometryDescriptor().getType().getBinding());
         ReferenceIdentifier crsidentifier =
-                dbSchema.getGeometryDescriptor().getCoordinateReferenceSystem().getIdentifiers()
-                        .stream()
+                dbSchema.getGeometryDescriptor().getCoordinateReferenceSystem().getIdentifiers().stream()
                         .findFirst()
                         .get();
         assertNotNull(crsidentifier);
@@ -573,8 +547,7 @@ class H2GISTest extends H2GISTestSetup {
                 "CREATE TABLE LANDCOVER ( FID INTEGER, NAME CHARACTER VARYING(64),"
                         + " THE_GEOM GEOMETRY(POLYGON,4326));"
                         + "INSERT INTO LANDCOVER VALUES(1, 'Green Forest', 'SRID=4326;POLYGON((110 330, 210 330, 210 240, 110 240, 110 330))');");
-        VirtualTable vTable =
-                new VirtualTable("LANDCOVER_CEREAL", "SELECT * FROM PUBLIC.LANDCOVER");
+        VirtualTable vTable = new VirtualTable("LANDCOVER_CEREAL", "SELECT * FROM PUBLIC.LANDCOVER");
         ds.createVirtualTable(vTable);
         FeatureSource<?, ?> fs = ds.getFeatureSource("LANDCOVER_CEREAL");
         GeometryDescriptor geomDes = fs.getSchema().getGeometryDescriptor();
@@ -588,10 +561,9 @@ class H2GISTest extends H2GISTestSetup {
     // TODO : FIX detect PK on table engine
     void getPrimaryKeyFromLinkedFile() throws SQLException, IOException {
         st.execute("drop table if exists LANDCOVER_LINKED");
-        st.execute(
-                "CALL FILE_TABLE('"
-                        + H2GISTest.class.getResource("landcover.shp").getPath()
-                        + "', 'LANDCOVER_LINKED');");
+        st.execute("CALL FILE_TABLE('"
+                + H2GISTest.class.getResource("landcover.shp").getPath()
+                + "', 'LANDCOVER_LINKED');");
         SimpleFeatureType schema = ds.getFeatureSource("LANDCOVER_LINKED").getSchema();
         PrimaryKey pk = ds.getPrimaryKey(schema);
         assertEquals(1, pk.getColumns().size());

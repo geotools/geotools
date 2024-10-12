@@ -57,8 +57,7 @@ class GridCoverageUtil {
      * Since it's called only with reprojection enabled, assuming the original envelope is in the
      * normal range of lat and lon
      */
-    public static ReferencedEnvelope pad(
-            org.locationtech.jts.geom.Envelope envelope, int precision) {
+    public static ReferencedEnvelope pad(org.locationtech.jts.geom.Envelope envelope, int precision) {
         double cellWidth = GeoHash.widthDegrees(precision);
         double cellHeight = GeoHash.widthDegrees(precision);
         double minLon = Math.max(-180 + cellWidth / 2, envelope.getMinX() - cellWidth);

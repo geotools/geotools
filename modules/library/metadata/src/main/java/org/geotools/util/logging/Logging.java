@@ -73,12 +73,11 @@ public final class Logging {
     }
 
     /** Compares {@link Logging} or {@link String} objects for alphabetical order. */
-    private static final Comparator<Object> COMPARATOR =
-            (o1, o2) -> {
-                final String n1 = (o1 instanceof Logging) ? ((Logging) o1).name : o1.toString();
-                final String n2 = (o2 instanceof Logging) ? ((Logging) o2).name : o2.toString();
-                return n1.compareTo(n2);
-            };
+    private static final Comparator<Object> COMPARATOR = (o1, o2) -> {
+        final String n1 = (o1 instanceof Logging) ? ((Logging) o1).name : o1.toString();
+        final String n2 = (o2 instanceof Logging) ? ((Logging) o2).name : o2.toString();
+        return n1.compareTo(n2);
+    };
 
     /** An empty array of logging. Also used for locks. */
     private static final Logging[] EMPTY = new Logging[0];
@@ -139,8 +138,7 @@ public final class Logging {
             Object jai = getDefaultInstance.invoke(null, null);
             Object imagingListener = getImagingListener.invoke(jai, null);
 
-            if (imagingListener == null
-                    || imagingListener.getClass().getName().contains("ImagingListenerImpl")) {
+            if (imagingListener == null || imagingListener.getClass().getName().contains("ImagingListenerImpl")) {
                 // Client code has not provided an ImagingListener so we can use our own
                 // Custom GeoTools ImagingListener used to ignore common warnings
                 setImagingListener.invoke(jai, new LoggingImagingListener());
@@ -149,9 +147,7 @@ public final class Logging {
                 }
             } else {
                 if (LOGGING_TRACE) {
-                    System.out.println(
-                            "Logging JAI messages: ImagingListener already in use: "
-                                    + imagingListener);
+                    System.out.println("Logging JAI messages: ImagingListener already in use: " + imagingListener);
                 }
             }
         } catch (Throwable ignore) {
@@ -318,8 +314,7 @@ public final class Logging {
      * Returns {@code true} if all children use the specified factory. Used in order to detect a
      * possible optimization for this very common case.
      */
-    private static boolean sameLoggerFactory(
-            final Logging[] children, final LoggerFactory<?> factory) {
+    private static boolean sameLoggerFactory(final Logging[] children, final LoggerFactory<?> factory) {
         assert Thread.holdsLock(EMPTY);
         for (final Logging logging : children) {
             if (logging.factory != factory || !sameLoggerFactory(logging.children, factory)) {
@@ -340,8 +335,7 @@ public final class Logging {
      *     LoggerFactory}, or if no public static {@code getInstance()} method has been found or can
      *     be executed.
      */
-    public void setLoggerFactory(final String className)
-            throws ClassNotFoundException, IllegalArgumentException {
+    public void setLoggerFactory(final String className) throws ClassNotFoundException, IllegalArgumentException {
         final LoggerFactory<?> factory;
         if (className == null) {
             factory = DefaultLoggerFactory.getInstance();
@@ -354,8 +348,7 @@ public final class Logging {
             }
             if (!LoggerFactory.class.isAssignableFrom(factoryClass)) {
                 throw new IllegalArgumentException(
-                        MessageFormat.format(
-                                ErrorKeys.ILLEGAL_CLASS_$2, factoryClass, LoggerFactory.class));
+                        MessageFormat.format(ErrorKeys.ILLEGAL_CLASS_$2, factoryClass, LoggerFactory.class));
             }
             try {
                 final Method method = factoryClass.getMethod("getInstance", (Class[]) null);
@@ -388,8 +381,7 @@ public final class Logging {
      * Wraps a unchecked {@link NoClassDefFoundError} into a checked {@link ClassNotFoundException}.
      */
     private static ClassNotFoundException factoryNotFound(String name, NoClassDefFoundError error) {
-        return new ClassNotFoundException(
-                MessageFormat.format(ErrorKeys.FACTORY_NOT_FOUND_$1, name), error);
+        return new ClassNotFoundException(MessageFormat.format(ErrorKeys.FACTORY_NOT_FOUND_$1, name), error);
     }
 
     /**
@@ -502,10 +494,7 @@ public final class Logging {
      *     anything at the {@link Level#WARNING WARNING} level.
      */
     public static boolean unexpectedException(
-            final Logger logger,
-            final Class<?> classe,
-            final String method,
-            final Throwable error) {
+            final Logger logger, final Class<?> classe, final String method, final Throwable error) {
         final String classname = (classe != null) ? classe.getName() : null;
         return unexpectedException(logger, classname, method, error, Level.WARNING);
     }
@@ -659,10 +648,7 @@ public final class Logging {
      * @since 2.5
      */
     public static boolean recoverableException(
-            final Logger logger,
-            final Class<?> classe,
-            final String method,
-            final Throwable error) {
+            final Logger logger, final Class<?> classe, final String method, final Throwable error) {
         final String classname = (classe != null) ? classe.getName() : null;
         return unexpectedException(logger, classname, method, error, Level.FINE);
     }
@@ -679,8 +665,7 @@ public final class Logging {
      *     anything at the specified level.
      * @since 2.5
      */
-    public static boolean recoverableException(
-            final Class<?> classe, final String method, final Throwable error) {
+    public static boolean recoverableException(final Class<?> classe, final String method, final Throwable error) {
         return recoverableException(null, classe, method, error);
     }
 

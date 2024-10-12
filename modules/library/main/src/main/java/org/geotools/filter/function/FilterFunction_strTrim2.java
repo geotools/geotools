@@ -44,26 +44,22 @@ public class FilterFunction_strTrim2 extends FunctionExpressionImpl {
     public static FunctionName NAME;
 
     static {
-        Parameter<String> method =
-                new Parameter<>(
-                        "method",
-                        String.class,
-                        Text.text("method"),
-                        Text.text("Method used to trim the provided text"),
-                        true,
-                        1,
-                        1,
-                        "both",
-                        new KVP(
-                                Parameter.OPTIONS,
-                                Arrays.asList(new String[] {"leading", "trailing", "both"})));
-        NAME =
-                new FunctionNameImpl(
-                        "strTrim2",
-                        parameter("trim", String.class),
-                        parameter("string", String.class),
-                        method,
-                        parameter("character", String.class));
+        Parameter<String> method = new Parameter<>(
+                "method",
+                String.class,
+                Text.text("method"),
+                Text.text("Method used to trim the provided text"),
+                true,
+                1,
+                1,
+                "both",
+                new KVP(Parameter.OPTIONS, Arrays.asList(new String[] {"leading", "trailing", "both"})));
+        NAME = new FunctionNameImpl(
+                "strTrim2",
+                parameter("trim", String.class),
+                parameter("string", String.class),
+                method,
+                parameter("character", String.class));
     }
 
     public FilterFunction_strTrim2() {

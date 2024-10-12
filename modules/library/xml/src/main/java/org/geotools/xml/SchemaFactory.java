@@ -130,19 +130,15 @@ public class SchemaFactory {
                 while (e.hasMoreElements()) {
                     URL res = (URL) e.nextElement();
                     try (BufferedReader rd =
-                            new BufferedReader(
-                                    new InputStreamReader(res.openStream(), "UTF" + "-8"))) {
+                            new BufferedReader(new InputStreamReader(res.openStream(), "UTF" + "-8"))) {
 
                         while (rd.ready()) {
                             String factoryClassName = rd.readLine().trim();
 
                             try {
-                                Schema s =
-                                        (Schema)
-                                                cl.loadClass(factoryClassName)
-                                                        .getDeclaredMethod(
-                                                                "getInstance", new Class[0])
-                                                        .invoke(null, new Object[0]);
+                                Schema s = (Schema) cl.loadClass(factoryClassName)
+                                        .getDeclaredMethod("getInstance", new Class[0])
+                                        .invoke(null, new Object[0]);
                                 schemas.put(s.getTargetNamespace(), s);
                             } catch (IllegalArgumentException
                                     | ClassNotFoundException
@@ -271,13 +267,13 @@ public class SchemaFactory {
      * @return Schema an instance of the desired schema.
      * @throws SAXException When something goes wrong
      */
-    public static synchronized Schema getInstance(
-            URI targetNamespace, URI desiredSchema, Level level) throws SAXException {
+    public static synchronized Schema getInstance(URI targetNamespace, URI desiredSchema, Level level)
+            throws SAXException {
         return getInstance().getRealInstance(targetNamespace, desiredSchema, level);
     }
 
-    private synchronized Schema getRealInstance(
-            URI targetNamespace2, URI desiredSchema, Level level) throws SAXException {
+    private synchronized Schema getRealInstance(URI targetNamespace2, URI desiredSchema, Level level)
+            throws SAXException {
         URI targetNamespace = targetNamespace2;
         if ((targetNamespace == null) || (schemas.get(targetNamespace) == null)) {
             setParser();
@@ -477,16 +473,16 @@ public class SchemaFactory {
                 version = s1.getVersion();
             }
 
-            if ((s1.getTargetNamespace() == null) || s1.getTargetNamespace().toString().isEmpty()) {
+            if ((s1.getTargetNamespace() == null)
+                    || s1.getTargetNamespace().toString().isEmpty()) {
                 targetNamespace = s2.getTargetNamespace();
             } else {
                 if ((s2.getTargetNamespace() != null)
                         && !s1.getTargetNamespace().equals(s2.getTargetNamespace())) {
-                    throw new SAXException(
-                            "cannot merge two target namespaces. "
-                                    + s1.getTargetNamespace()
-                                    + " "
-                                    + s2.getTargetNamespace());
+                    throw new SAXException("cannot merge two target namespaces. "
+                            + s1.getTargetNamespace()
+                            + " "
+                            + s2.getTargetNamespace());
                 }
 
                 targetNamespace = s1.getTargetNamespace();
@@ -509,8 +505,7 @@ public class SchemaFactory {
                 ag2 = new AttributeGroup[0];
             }
 
-            for (AttributeGroup attributeGroup1 : ag1)
-                m.put(attributeGroup1.getName(), attributeGroup1);
+            for (AttributeGroup attributeGroup1 : ag1) m.put(attributeGroup1.getName(), attributeGroup1);
 
             for (AttributeGroup attributeGroup : ag2)
                 if (!m.containsKey(attributeGroup.getName())) {

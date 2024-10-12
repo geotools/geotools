@@ -74,11 +74,7 @@ public class InformixFilterToSQL extends FilterToSQL {
 
     @Override
     protected Object visitBinarySpatialOperator(
-            BinarySpatialOperator filter,
-            PropertyName property,
-            Literal geometry,
-            boolean swapped,
-            Object extraData) {
+            BinarySpatialOperator filter, PropertyName property, Literal geometry, boolean swapped, Object extraData) {
 
         return visitBinarySpatialOperatorEnhanced(
                 filter, (Expression) property, (Expression) geometry, swapped, extraData);
@@ -91,11 +87,7 @@ public class InformixFilterToSQL extends FilterToSQL {
     }
 
     protected Object visitBinarySpatialOperatorEnhanced(
-            BinarySpatialOperator filter,
-            Expression e1,
-            Expression e2,
-            boolean swapped,
-            Object extraData) {
+            BinarySpatialOperator filter, Expression e1, Expression e2, boolean swapped, Object extraData) {
 
         try {
 
@@ -156,9 +148,8 @@ public class InformixFilterToSQL extends FilterToSQL {
 
     @Override
     protected void writeLiteral(Object literal) throws IOException {
-        LOGGER.fine(
-                "Writing literal of type "
-                        + (literal != null ? literal.getClass().getName() : null));
+        LOGGER.fine("Writing literal of type "
+                + (literal != null ? literal.getClass().getName() : null));
         if (literal instanceof java.sql.Time) {
             SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
             out.write("'" + format.format(literal) + "'");

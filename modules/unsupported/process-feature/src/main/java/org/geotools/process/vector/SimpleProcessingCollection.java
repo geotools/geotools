@@ -32,8 +32,7 @@ import org.geotools.feature.collection.SortedSimpleFeatureCollection;
  *
  * @author Andrea Aime - GeoSolutions
  */
-public abstract class SimpleProcessingCollection
-        extends ProcessingCollection<SimpleFeatureType, SimpleFeature>
+public abstract class SimpleProcessingCollection extends ProcessingCollection<SimpleFeatureType, SimpleFeature>
         implements SimpleFeatureCollection {
 
     @Override

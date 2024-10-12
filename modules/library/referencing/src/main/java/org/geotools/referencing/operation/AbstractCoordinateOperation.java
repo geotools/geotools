@@ -75,8 +75,7 @@ import si.uom.SI;
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
-public class AbstractCoordinateOperation extends AbstractIdentifiedObject
-        implements CoordinateOperation {
+public class AbstractCoordinateOperation extends AbstractIdentifiedObject implements CoordinateOperation {
     /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = 1237358357729193885L;
 
@@ -259,13 +258,11 @@ public class AbstractCoordinateOperation extends AbstractIdentifiedObject
      * @param crs The coordinate reference system to check.
      * @param expected The expected number of dimensions.
      */
-    private static void checkDimension(
-            final String name, final CoordinateReferenceSystem crs, final int expected) {
+    private static void checkDimension(final String name, final CoordinateReferenceSystem crs, final int expected) {
         final int actual = crs.getCoordinateSystem().getDimension();
         if (actual != expected) {
             throw new IllegalArgumentException(
-                    MessageFormat.format(
-                            ErrorKeys.MISMATCHED_DIMENSION_$3, name, actual, expected));
+                    MessageFormat.format(ErrorKeys.MISMATCHED_DIMENSION_$3, name, actual, expected));
         }
     }
 
@@ -364,8 +361,7 @@ public class AbstractCoordinateOperation extends AbstractIdentifiedObject
      * calls.
      */
     private static double getAccuracy0(final CoordinateOperation operation) {
-        final Collection<PositionalAccuracy> accuracies =
-                operation.getCoordinateOperationAccuracy();
+        final Collection<PositionalAccuracy> accuracies = operation.getCoordinateOperationAccuracy();
         if (accuracies != null)
             for (final PositionalAccuracy accuracy : accuracies) {
                 if (accuracy != null)
@@ -378,10 +374,12 @@ public class AbstractCoordinateOperation extends AbstractIdentifiedObject
                                 final Unit<Length> unit = (Unit<Length>) quantity.getValueUnit();
                                 if (unit != null && SI.METRE.isCompatible(unit)) {
                                     for (final Record record : records) {
-                                        for (final Object value : record.getAttributes().values()) {
+                                        for (final Object value :
+                                                record.getAttributes().values()) {
                                             if (value instanceof Number) {
                                                 double v = ((Number) value).doubleValue();
-                                                v = unit.getConverterTo(SI.METRE).convert(v);
+                                                v = unit.getConverterTo(SI.METRE)
+                                                        .convert(v);
                                                 return v;
                                             }
                                         }
@@ -503,9 +501,7 @@ public class AbstractCoordinateOperation extends AbstractIdentifiedObject
                 if (compareMetadata) {
                     if (!Utilities.equals(this.domainOfValidity, that.domainOfValidity)
                             || !Utilities.equals(this.scope, that.scope)
-                            || !Utilities.equals(
-                                    this.coordinateOperationAccuracy,
-                                    that.coordinateOperationAccuracy)) {
+                            || !Utilities.equals(this.coordinateOperationAccuracy, that.coordinateOperationAccuracy)) {
                         return false;
                     }
                 }
@@ -563,25 +559,22 @@ public class AbstractCoordinateOperation extends AbstractIdentifiedObject
      * @param type The label to put in front of the object name.
      */
     @SuppressWarnings("serial")
-    static void append(
-            final Formatter formatter, final IdentifiedObject object, final String type) {
+    static void append(final Formatter formatter, final IdentifiedObject object, final String type) {
         if (object != null) {
             final Map<String, Object> properties = new HashMap<>(4);
             properties.put(IdentifiedObject.NAME_KEY, formatter.getName(object));
             properties.put(IdentifiedObject.IDENTIFIERS_KEY, formatter.getIdentifier(object));
-            formatter.append(
-                    (IdentifiedObject)
-                            new AbstractIdentifiedObject(properties) {
-                                @Override
-                                protected String formatWKT(final Formatter formatter) {
-                                    /*
-                                     * Do not invoke super.formatWKT(formatter), since it doesn't do anything
-                                     * more than invoking 'formatter.setInvalidWKT(...)' (we ignore the value
-                                     * returned). This method will rather be invoked by the enclosing class.
-                                     */
-                                    return type;
-                                }
-                            });
+            formatter.append((IdentifiedObject) new AbstractIdentifiedObject(properties) {
+                @Override
+                protected String formatWKT(final Formatter formatter) {
+                    /*
+                     * Do not invoke super.formatWKT(formatter), since it doesn't do anything
+                     * more than invoking 'formatter.setInvalidWKT(...)' (we ignore the value
+                     * returned). This method will rather be invoked by the enclosing class.
+                     */
+                    return type;
+                }
+            });
         }
     }
 }

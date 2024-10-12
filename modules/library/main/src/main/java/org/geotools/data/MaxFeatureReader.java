@@ -31,8 +31,7 @@ import org.geotools.api.feature.type.FeatureType;
  * @author Chris Holmes
  * @version $Id$
  */
-public class MaxFeatureReader<T extends FeatureType, F extends Feature>
-        implements DelegatingFeatureReader<T, F> {
+public class MaxFeatureReader<T extends FeatureType, F extends Feature> implements DelegatingFeatureReader<T, F> {
 
     protected final FeatureReader<T, F> featureReader;
     protected final int maxFeatures;

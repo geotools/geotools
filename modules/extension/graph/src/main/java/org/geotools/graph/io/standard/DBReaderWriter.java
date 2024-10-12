@@ -136,8 +136,7 @@ public abstract class DBReaderWriter extends AbstractReaderWriter {
         String username = (String) getProperty(USERNAME);
 
         Class.forName(driverclass);
-        return (DriverManager.getConnection(
-                driverurl + server + ":" + port + "/" + dbname + "?user=" + username));
+        return (DriverManager.getConnection(driverurl + server + ":" + port + "/" + dbname + "?user=" + username));
     }
 
     /**

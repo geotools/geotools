@@ -36,8 +36,7 @@ import org.geotools.api.util.Cloneable;
  * @author Johann Sorel (Geomatys)
  * @version $Id$
  */
-public class PolygonSymbolizerImpl extends AbstractSymbolizer
-        implements PolygonSymbolizer, Cloneable {
+public class PolygonSymbolizerImpl extends AbstractSymbolizer implements PolygonSymbolizer, Cloneable {
 
     private Expression offset;
     private DisplacementImpl disp;

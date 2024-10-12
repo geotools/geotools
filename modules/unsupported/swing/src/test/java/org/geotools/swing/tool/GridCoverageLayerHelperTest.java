@@ -99,11 +99,7 @@ public class GridCoverageLayerHelperTest {
 
     @Test
     public void getInfoOutsideCoverageReturnsEmptyResult() throws Exception {
-        Position2D pos =
-                new Position2D(
-                        WORLD.getCoordinateReferenceSystem(),
-                        WORLD.getMaxX() + 1,
-                        WORLD.getMaxY() + 1);
+        Position2D pos = new Position2D(WORLD.getCoordinateReferenceSystem(), WORLD.getMaxX() + 1, WORLD.getMaxY() + 1);
 
         InfoToolResult info = helper.getInfo(pos);
         assertNotNull(info);

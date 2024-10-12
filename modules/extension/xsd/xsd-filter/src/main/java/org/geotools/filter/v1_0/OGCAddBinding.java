@@ -77,7 +77,6 @@ public class OGCAddBinding extends AbstractComplexBinding {
      */
     @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-        return filterfactory.add(
-                (Expression) node.getChildValue(0), (Expression) node.getChildValue(1));
+        return filterfactory.add((Expression) node.getChildValue(0), (Expression) node.getChildValue(1));
     }
 }

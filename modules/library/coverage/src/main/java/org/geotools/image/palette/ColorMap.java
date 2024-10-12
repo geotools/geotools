@@ -261,22 +261,20 @@ final class ColorMap implements Iterable<ColorEntry> {
                 sum += count;
             }
         }
-        LOGGER.info(
-                "Bins "
-                        + table.length
-                        + ", empty: "
-                        + empty
-                        + " largest: "
-                        + largest
-                        + " avg: "
-                        + sum * 1.0 / (table.length - empty));
-        LOGGER.info(
-                "Accesses: "
-                        + accessCount
-                        + ", scans: "
-                        + scanCount
-                        + ", scan per access: "
-                        + (scanCount * 1.0 / accessCount));
+        LOGGER.info("Bins "
+                + table.length
+                + ", empty: "
+                + empty
+                + " largest: "
+                + largest
+                + " avg: "
+                + sum * 1.0 / (table.length - empty));
+        LOGGER.info("Accesses: "
+                + accessCount
+                + ", scans: "
+                + scanCount
+                + ", scan per access: "
+                + (scanCount * 1.0 / accessCount));
         accessCount = 0;
         scanCount = 0;
     }
@@ -315,8 +313,7 @@ final class ColorMap implements Iterable<ColorEntry> {
         @Override
         public boolean hasNext() {
             if (reference != modificationCount) {
-                throw new ConcurrentModificationException(
-                        "The map entry count has been modified during the iteration");
+                throw new ConcurrentModificationException("The map entry count has been modified during the iteration");
             }
 
             if (current == null) {

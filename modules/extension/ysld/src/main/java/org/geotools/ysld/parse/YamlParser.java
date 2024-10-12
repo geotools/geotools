@@ -55,15 +55,15 @@ public class YamlParser {
      *     YamlObject}..
      */
     @SuppressWarnings("PMD.EmptyControlStatement")
-    public <T extends YamlParseHandler> T parse(T root, Map<String, Object> hints)
-            throws IOException {
+    public <T extends YamlParseHandler> T parse(T root, Map<String, Object> hints) throws IOException {
         Object parsed = YamlUtil.getSafeYaml().load(yaml);
 
         YamlParseContext context = new YamlParseContext();
         context.mergeDocHints(hints);
         context.push(YamlObject.create(parsed), root);
 
-        while (context.next()) ;
+        while (context.next())
+            ;
 
         return root;
     }

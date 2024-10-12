@@ -122,6 +122,12 @@ public class AnchorPointBuilder extends AbstractStyleBuilder<AnchorPoint> {
 
     @Override
     protected void buildStyleInternal(StyleBuilder sb) {
-        sb.featureTypeStyle().rule().text().labelText("label").pointPlacement().anchor().init(this);
+        sb.featureTypeStyle()
+                .rule()
+                .text()
+                .labelText("label")
+                .pointPlacement()
+                .anchor()
+                .init(this);
     }
 }

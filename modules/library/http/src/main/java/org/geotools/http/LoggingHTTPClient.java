@@ -50,8 +50,7 @@ public class LoggingHTTPClient extends DelegateHTTPClient {
     }
 
     @Override
-    public HTTPResponse post(URL url, InputStream postContent, String postContentType)
-            throws IOException {
+    public HTTPResponse post(URL url, InputStream postContent, String postContentType) throws IOException {
         final int myCount = ++counter;
         LOGGER.info(String.format("POST Request #%d URL: %s", myCount, url));
         if (LOGGER.isLoggable(Level.FINEST)) {
@@ -61,19 +60,14 @@ public class LoggingHTTPClient extends DelegateHTTPClient {
 
             postContent = new ByteArrayInputStream(out.toByteArray());
         }
-        return new LoggingHTTPResponse(
-                delegate.post(url, postContent, postContentType), charsetName, myCount);
+        return new LoggingHTTPResponse(delegate.post(url, postContent, postContentType), charsetName, myCount);
     }
 
     @Override
-    public HTTPResponse post(
-            URL url, InputStream postContent, String postContentType, Map<String, String> headers)
+    public HTTPResponse post(URL url, InputStream postContent, String postContentType, Map<String, String> headers)
             throws IOException {
         final int myCount = ++counter;
-        LOGGER.info(
-                String.format(
-                        "POST Request #%d URL with additional headers %s : %s",
-                        myCount, headers, url));
+        LOGGER.info(String.format("POST Request #%d URL with additional headers %s : %s", myCount, headers, url));
         if (LOGGER.isLoggable(Level.FINEST)) {
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             copy(postContent, out);
@@ -81,8 +75,7 @@ public class LoggingHTTPClient extends DelegateHTTPClient {
 
             postContent = new ByteArrayInputStream(out.toByteArray());
         }
-        return new LoggingHTTPResponse(
-                delegate.post(url, postContent, postContentType, headers), charsetName, myCount);
+        return new LoggingHTTPResponse(delegate.post(url, postContent, postContentType, headers), charsetName, myCount);
     }
 
     @Override
@@ -95,10 +88,7 @@ public class LoggingHTTPClient extends DelegateHTTPClient {
     @Override
     public HTTPResponse get(URL url, Map<String, String> headers) throws IOException {
         final int myCount = ++counter;
-        LOGGER.info(
-                String.format(
-                        "GET Request #%d URL with additional headers %s : %s",
-                        myCount, headers, url));
+        LOGGER.info(String.format("GET Request #%d URL with additional headers %s : %s", myCount, headers, url));
         return new LoggingHTTPResponse(delegate.get(url, headers), charsetName, myCount);
     }
 
@@ -114,8 +104,7 @@ public class LoggingHTTPClient extends DelegateHTTPClient {
 
         private InputStream input;
 
-        public LoggingHTTPResponse(HTTPResponse delegate, String charsetName, final int myCount)
-                throws IOException {
+        public LoggingHTTPResponse(HTTPResponse delegate, String charsetName, final int myCount) throws IOException {
             super(delegate);
             LOGGER.info(String.format("Response #%d received.", myCount));
 

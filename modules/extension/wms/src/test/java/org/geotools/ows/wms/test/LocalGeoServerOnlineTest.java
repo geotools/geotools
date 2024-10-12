@@ -130,13 +130,9 @@ public class LocalGeoServerOnlineTest extends WMSOnlineTestSupport {
             // do setup once!
             if (serverURL != null) {
                 try {
-                    wms =
-                            new WebMapServer(
-                                    serverURL,
-                                    HTTPClientFinder.createClient(
-                                            new Hints(
-                                                    Hints.HTTP_CLIENT,
-                                                    MultithreadedHttpClient.class)));
+                    wms = new WebMapServer(
+                            serverURL,
+                            HTTPClientFinder.createClient(new Hints(Hints.HTTP_CLIENT, MultithreadedHttpClient.class)));
                     capabilities = wms.getCapabilities();
                 } catch (Exception eek) {
                     serverURL = null;
@@ -321,8 +317,7 @@ public class LocalGeoServerOnlineTest extends WMSOnlineTestSupport {
      *
      * <p>Attempt is made to request the entire image.
      */
-    private void checkGetMap(WebMapServer wms, Layer layer, CoordinateReferenceSystem crs)
-            throws Exception {
+    private void checkGetMap(WebMapServer wms, Layer layer, CoordinateReferenceSystem crs) throws Exception {
 
         GetMapRequest getMap = generateGetMap(wms, layer, crs);
         GetMapResponse response = wms.issueRequest(getMap);
@@ -351,8 +346,7 @@ public class LocalGeoServerOnlineTest extends WMSOnlineTestSupport {
      * @param crs
      * @return
      */
-    private GetMapRequest generateGetMap(
-            WebMapServer wms2, Layer layer, CoordinateReferenceSystem crs) {
+    private GetMapRequest generateGetMap(WebMapServer wms2, Layer layer, CoordinateReferenceSystem crs) {
         layer.clearCache();
         GeneralBounds envelope = wms2.getEnvelope(layer, crs);
         Assert.assertFalse(envelope.isEmpty() || envelope.isNull() || envelope.isInfinite());
@@ -392,8 +386,7 @@ public class LocalGeoServerOnlineTest extends WMSOnlineTestSupport {
      *
      * <p>Attempt is made to request the entire image.
      */
-    private void checkGetFeatureInfo(WebMapServer wms, Layer layer, CoordinateReferenceSystem crs)
-            throws Exception {
+    private void checkGetFeatureInfo(WebMapServer wms, Layer layer, CoordinateReferenceSystem crs) throws Exception {
 
         GetMapRequest getMap = generateGetMap(wms, layer, crs);
         GetFeatureInfoRequest getFeatureInfo = wms.createGetFeatureInfoRequest(getMap);
@@ -427,15 +420,14 @@ public class LocalGeoServerOnlineTest extends WMSOnlineTestSupport {
 
         StyleFactory styleFactory = new StyleFactoryImpl();
 
-        WebMapServer server =
-                new WebMapServer(url) {
-                    // GetStyle is only implemented in WMS 1.1.1
-                    @Override
-                    protected void setupSpecifications() {
-                        specs = new Specification[1];
-                        specs[0] = new WMS1_1_1();
-                    }
-                };
+        WebMapServer server = new WebMapServer(url) {
+            // GetStyle is only implemented in WMS 1.1.1
+            @Override
+            protected void setupSpecifications() {
+                specs = new Specification[1];
+                specs[0] = new WMS1_1_1();
+            }
+        };
 
         GetStylesRequest wmsRequest = server.createGetStylesRequest();
         wmsRequest.setLayers(layers);
@@ -487,14 +479,11 @@ public class LocalGeoServerOnlineTest extends WMSOnlineTestSupport {
         }
     }
 
-    private InputStreamReader getInputStreamReader(
-            GetStylesResponse wmsResponse, ContentType contentType)
+    private InputStreamReader getInputStreamReader(GetStylesResponse wmsResponse, ContentType contentType)
             throws UnsupportedEncodingException {
         InputStreamReader stream;
         if (contentType.getParameter("charset") != null)
-            stream =
-                    new InputStreamReader(
-                            wmsResponse.getInputStream(), contentType.getParameter("charset"));
+            stream = new InputStreamReader(wmsResponse.getInputStream(), contentType.getParameter("charset"));
         else stream = new InputStreamReader(wmsResponse.getInputStream());
         return stream;
     }

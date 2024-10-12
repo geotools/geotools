@@ -59,9 +59,7 @@ public class DiffContentFeatureWriter implements FeatureWriter<SimpleFeatureType
 
     /** DiffFeatureWriter construction. */
     public DiffContentFeatureWriter(
-            ContentFeatureStore store,
-            Diff diff,
-            FeatureReader<SimpleFeatureType, SimpleFeature> reader) {
+            ContentFeatureStore store, Diff diff, FeatureReader<SimpleFeatureType, SimpleFeature> reader) {
         this(store, diff, reader, new SimpleFeatureBuilder(reader.getFeatureType()));
     }
 
@@ -113,9 +111,7 @@ public class DiffContentFeatureWriter implements FeatureWriter<SimpleFeatureType
             // (The real writer will supply a FID later)
             live = null;
             next = null;
-            current =
-                    builder.buildFeature(
-                            "new" + diff.nextFID, new Object[type.getAttributeCount()]);
+            current = builder.buildFeature("new" + diff.nextFID, new Object[type.getAttributeCount()]);
             diff.nextFID++;
             return current;
         }
@@ -163,9 +159,7 @@ public class DiffContentFeatureWriter implements FeatureWriter<SimpleFeatureType
                 if (current.getUserData().containsKey(Hints.PROVIDED_FID)) {
                     fid = (String) current.getUserData().get(Hints.PROVIDED_FID);
                     Map<Object, Object> userData = current.getUserData();
-                    current =
-                            SimpleFeatureBuilder.build(
-                                    current.getFeatureType(), current.getAttributes(), fid);
+                    current = SimpleFeatureBuilder.build(current.getFeatureType(), current.getAttributes(), fid);
                     current.getUserData().putAll(userData);
                 }
             }

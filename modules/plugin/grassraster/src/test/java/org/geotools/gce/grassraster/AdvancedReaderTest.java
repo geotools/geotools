@@ -254,13 +254,11 @@ public class AdvancedReaderTest {
         checkMatrixEqual(readCoverage.getRenderedImage(), mapData, 0);
     }
 
-    private GridCoverage2D read(File file, JGrassRegion r, CoordinateReferenceSystem crs)
-            throws IOException {
+    private GridCoverage2D read(File file, JGrassRegion r, CoordinateReferenceSystem crs) throws IOException {
         GeneralParameterValue[] readParams = new GeneralParameterValue[1];
         Parameter<GridGeometry2D> readGG = new Parameter<>(AbstractGridFormat.READ_GRIDGEOMETRY2D);
         GridEnvelope2D gridEnvelope = new GridEnvelope2D(0, 0, r.getCols(), r.getRows());
-        ReferencedEnvelope env =
-                new ReferencedEnvelope(r.getWest(), r.getEast(), r.getSouth(), r.getNorth(), crs);
+        ReferencedEnvelope env = new ReferencedEnvelope(r.getWest(), r.getEast(), r.getSouth(), r.getNorth(), crs);
         readGG.setValue(new GridGeometry2D(gridEnvelope, env));
         readParams[0] = readGG;
 
@@ -271,14 +269,7 @@ public class AdvancedReaderTest {
     }
 
     private GridCoverage2D readFile(
-            File file,
-            int cols,
-            int rows,
-            double n,
-            double s,
-            double w,
-            double e,
-            CoordinateReferenceSystem crs)
+            File file, int cols, int rows, double n, double s, double w, double e, CoordinateReferenceSystem crs)
             throws Exception {
         // JGrassRegion jgr = new JGrassRegion(w, e, s, n, rows, cols);
         // return read(file, jgr, crs);

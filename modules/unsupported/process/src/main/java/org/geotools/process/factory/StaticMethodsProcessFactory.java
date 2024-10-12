@@ -32,8 +32,7 @@ import org.geotools.feature.NameImpl;
 public class StaticMethodsProcessFactory<T> extends AnnotationDrivenProcessFactory {
     Class<T> targetClass;
 
-    public StaticMethodsProcessFactory(
-            InternationalString title, String namespace, Class<T> targetClass) {
+    public StaticMethodsProcessFactory(InternationalString title, String namespace, Class<T> targetClass) {
         super(title, namespace);
         this.targetClass = targetClass;
     }
@@ -72,12 +71,11 @@ public class StaticMethodsProcessFactory<T> extends AnnotationDrivenProcessFacto
             if (dp != null) {
                 Name name = new NameImpl(namespace, method.getName());
                 if (names.contains(name)) {
-                    throw new IllegalStateException(
-                            targetClass.getName()
-                                    + " has two methods named "
-                                    + method.getName()
-                                    + ", both annotated with DescribeProcess, this is an ambiguity. "
-                                    + "Please a different name");
+                    throw new IllegalStateException(targetClass.getName()
+                            + " has two methods named "
+                            + method.getName()
+                            + ", both annotated with DescribeProcess, this is an ambiguity. "
+                            + "Please a different name");
                 }
                 names.add(name);
             }

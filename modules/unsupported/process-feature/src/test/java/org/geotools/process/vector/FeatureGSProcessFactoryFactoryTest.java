@@ -58,16 +58,15 @@ public class FeatureGSProcessFactoryFactoryTest {
     public void testSum() throws Exception {
         SimpleFeatureSource source = bugs.getFeatureSource("bugsites");
 
-        Map<String, Object> input =
-                new KVP(
-                        "features",
-                        source.getFeatures(),
-                        "aggregationAttribute",
-                        "cat",
-                        "function",
-                        EnumSet.of(AggregationFunction.Sum),
-                        "singlePass",
-                        true);
+        Map<String, Object> input = new KVP(
+                "features",
+                source.getFeatures(),
+                "aggregationAttribute",
+                "cat",
+                "function",
+                EnumSet.of(AggregationFunction.Sum),
+                "singlePass",
+                true);
 
         NameImpl name = new NameImpl("vec", "Aggregate");
         Process process = Processors.createProcess(name);

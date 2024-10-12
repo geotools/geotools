@@ -70,8 +70,7 @@ public class ReTypingFeatureCollectionTest extends FeatureCollectionWrapperTestS
         expectLastCall().once();
         replay(delegate);
 
-        ReTypingFeatureCollection rtc =
-                new ReTypingFeatureCollection(delegate, stb.buildFeatureType());
+        ReTypingFeatureCollection rtc = new ReTypingFeatureCollection(delegate, stb.buildFeatureType());
         rtc.accepts(vis, null);
         verify(delegate);
 
@@ -109,8 +108,7 @@ public class ReTypingFeatureCollectionTest extends FeatureCollectionWrapperTestS
         expectLastCall().once();
         replay(delegate);
 
-        ReTypingFeatureCollection rtc =
-                new ReTypingFeatureCollection(delegate, stb.buildFeatureType());
+        ReTypingFeatureCollection rtc = new ReTypingFeatureCollection(delegate, stb.buildFeatureType());
         rtc.accepts(vis, null);
         verify(delegate);
 

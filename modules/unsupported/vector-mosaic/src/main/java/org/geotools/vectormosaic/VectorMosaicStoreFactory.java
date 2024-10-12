@@ -28,39 +28,34 @@ public class VectorMosaicStoreFactory implements DataStoreFactorySpi {
 
     private static final String DISPLAY_NAME = "Vector Mosaic Data Store";
     private static final String DESCRIPTION = "Creates Vector Mosaic from multiple sources";
-    public static final Param REPOSITORY_PARAM =
-            new Param(
-                    "repository",
-                    Repository.class,
-                    "The repository that will provide the store intances",
-                    true,
-                    null,
-                    new KVP(Param.LEVEL, "advanced"));
-    public static final Param NAMESPACE =
-            new Param("namespace", String.class, "Namespace prefix", false);
+    public static final Param REPOSITORY_PARAM = new Param(
+            "repository",
+            Repository.class,
+            "The repository that will provide the store intances",
+            true,
+            null,
+            new KVP(Param.LEVEL, "advanced"));
+    public static final Param NAMESPACE = new Param("namespace", String.class, "Namespace prefix", false);
 
-    public static final Param DELEGATE_STORE_NAME =
-            new Param(
-                    "delegateStoreName",
-                    String.class,
-                    "The name of the delegate store.  "
-                            + "The delegate store must point to vector features with the same attributes/schema.",
-                    true);
-    public static final Param PREFERRED_DATASTORE_SPI =
-            new Param(
-                    "preferredDataStoreSPI",
-                    String.class,
-                    "The preferred DataStoreSPI to test connection parameters against. "
-                            + "If not specified, the first DataStoreSPI found that accepts connection parameters will be used. "
-                            + "Default is org.geotools.data.shapefile.ShapefileDataStoreFactory",
-                    false);
+    public static final Param DELEGATE_STORE_NAME = new Param(
+            "delegateStoreName",
+            String.class,
+            "The name of the delegate store.  "
+                    + "The delegate store must point to vector features with the same attributes/schema.",
+            true);
+    public static final Param PREFERRED_DATASTORE_SPI = new Param(
+            "preferredDataStoreSPI",
+            String.class,
+            "The preferred DataStoreSPI to test connection parameters against. "
+                    + "If not specified, the first DataStoreSPI found that accepts connection parameters will be used. "
+                    + "Default is org.geotools.data.shapefile.ShapefileDataStoreFactory",
+            false);
 
-    public static final Param CONNECTION_PARAMETER_KEY =
-            new Param(
-                    "connectionParameterKey",
-                    String.class,
-                    "The key to use for the connection parameter.  Default is 'url'",
-                    false);
+    public static final Param CONNECTION_PARAMETER_KEY = new Param(
+            "connectionParameterKey",
+            String.class,
+            "The key to use for the connection parameter.  Default is 'url'",
+            false);
 
     @Override
     public DataStore createDataStore(Map<String, ?> params) throws IOException {
@@ -93,11 +88,7 @@ public class VectorMosaicStoreFactory implements DataStoreFactorySpi {
     @Override
     public Param[] getParametersInfo() {
         return new Param[] {
-            REPOSITORY_PARAM,
-            NAMESPACE,
-            DELEGATE_STORE_NAME,
-            CONNECTION_PARAMETER_KEY,
-            PREFERRED_DATASTORE_SPI
+            REPOSITORY_PARAM, NAMESPACE, DELEGATE_STORE_NAME, CONNECTION_PARAMETER_KEY, PREFERRED_DATASTORE_SPI
         };
     }
 

@@ -44,8 +44,7 @@ public class GetCapabilitiesTest {
         WPSConfiguration wps = new WPSConfiguration();
         Parser parser = new Parser(wps);
 
-        Object o =
-                parser.parse(getClass().getResourceAsStream("20_wpsGetCapabilities_response.xml"));
+        Object o = parser.parse(getClass().getResourceAsStream("20_wpsGetCapabilities_response.xml"));
         Assert.assertTrue(o instanceof WPSCapabilitiesType);
 
         WPSCapabilitiesType caps = (WPSCapabilitiesType) o;
@@ -134,8 +133,7 @@ public class GetCapabilitiesTest {
         AddressType a = ci.getAddress();
         Assert.assertNotNull(a);
         Assert.assertNotNull(a.getDeliveryPoint());
-        Assert.assertEquals(
-                "Room 1135, Neatby Building, 960, Carling Avenue", a.getDeliveryPoint());
+        Assert.assertEquals("Room 1135, Neatby Building, 960, Carling Avenue", a.getDeliveryPoint());
         Assert.assertEquals("Ottawa", a.getCity());
         Assert.assertEquals("ON", a.getAdministrativeArea());
         Assert.assertEquals("Canada", a.getCountry());

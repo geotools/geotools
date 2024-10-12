@@ -77,7 +77,6 @@ public class OGCMulBinding extends AbstractComplexBinding {
      */
     @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-        return filterfactory.multiply(
-                (Expression) node.getChildValue(0), (Expression) node.getChildValue(1));
+        return filterfactory.multiply((Expression) node.getChildValue(0), (Expression) node.getChildValue(1));
     }
 }

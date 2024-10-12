@@ -83,10 +83,8 @@ public final class Transform3DTest {
         final CSFactory csFactory = ReferencingFactoryFinder.getCSFactory(hints);
         final CRSFactory crsFactory = ReferencingFactoryFinder.getCRSFactory(hints);
         final DatumFactory datumFactory = ReferencingFactoryFinder.getDatumFactory(hints);
-        final MathTransformFactory mtFactory =
-                ReferencingFactoryFinder.getMathTransformFactory(hints);
-        final CoordinateOperationFactory opFactory =
-                ReferencingFactoryFinder.getCoordinateOperationFactory(hints);
+        final MathTransformFactory mtFactory = ReferencingFactoryFinder.getMathTransformFactory(hints);
+        final CoordinateOperationFactory opFactory = ReferencingFactoryFinder.getCoordinateOperationFactory(hints);
 
         // ----------------------------------------------------------
         // Creates datum
@@ -94,14 +92,11 @@ public final class Transform3DTest {
         final PrimeMeridian greenwichMeridian =
                 datumFactory.createPrimeMeridian(name("Greenwich Meridian"), 0, NonSI.DEGREE_ANGLE);
         final Ellipsoid wgs84Ellipsoid =
-                datumFactory.createFlattenedSphere(
-                        name("WGS84 Ellipsoid"), 6378137, 298.257223563, SI.METRE);
+                datumFactory.createFlattenedSphere(name("WGS84 Ellipsoid"), 6378137, 298.257223563, SI.METRE);
         final GeodeticDatum wgs84 =
-                datumFactory.createGeodeticDatum(
-                        name("WGS84 Datum"), wgs84Ellipsoid, greenwichMeridian);
+                datumFactory.createGeodeticDatum(name("WGS84 Datum"), wgs84Ellipsoid, greenwichMeridian);
         final VerticalDatum wgs84_height =
-                datumFactory.createVerticalDatum(
-                        name("WGS84 Ellispoidal height"), VerticalDatumType.ELLIPSOIDAL);
+                datumFactory.createVerticalDatum(name("WGS84 Ellispoidal height"), VerticalDatumType.ELLIPSOIDAL);
 
         // ----------------------------------------------------------
         // Creates non-standard (in geodesy) geocentric axis
@@ -116,39 +111,30 @@ public final class Transform3DTest {
         // ----------------------------------------------------------
         // Creates target CRS
         // ----------------------------------------------------------
-        final CartesianCS world_cs =
-                csFactory.createCartesianCS(name("Rendered Cartesian CS"), x_axis, z_axis, y_axis);
-        final GeocentricCRS output_crs =
-                crsFactory.createGeocentricCRS(name("Output Cartesian CRS"), wgs84, world_cs);
+        final CartesianCS world_cs = csFactory.createCartesianCS(name("Rendered Cartesian CS"), x_axis, z_axis, y_axis);
+        final GeocentricCRS output_crs = crsFactory.createGeocentricCRS(name("Output Cartesian CRS"), wgs84, world_cs);
 
         // ----------------------------------------------------------
         // Creates geographic and projected axis for source CRS
         // ----------------------------------------------------------
-        final CoordinateSystemAxis latitude_axis =
-                csFactory.createCoordinateSystemAxis(
-                        name("Geodetic Latitude"), "lat", AxisDirection.NORTH, NonSI.DEGREE_ANGLE);
-        final CoordinateSystemAxis longitude_axis =
-                csFactory.createCoordinateSystemAxis(
-                        name("Geodetic Longitude"), "lon", AxisDirection.EAST, NonSI.DEGREE_ANGLE);
+        final CoordinateSystemAxis latitude_axis = csFactory.createCoordinateSystemAxis(
+                name("Geodetic Latitude"), "lat", AxisDirection.NORTH, NonSI.DEGREE_ANGLE);
+        final CoordinateSystemAxis longitude_axis = csFactory.createCoordinateSystemAxis(
+                name("Geodetic Longitude"), "lon", AxisDirection.EAST, NonSI.DEGREE_ANGLE);
         final CoordinateSystemAxis northing_axis =
-                csFactory.createCoordinateSystemAxis(
-                        name("Northing"), "N", AxisDirection.NORTH, SI.METRE);
+                csFactory.createCoordinateSystemAxis(name("Northing"), "N", AxisDirection.NORTH, SI.METRE);
         final CoordinateSystemAxis easting_axis =
-                csFactory.createCoordinateSystemAxis(
-                        name("Easting"), "E", AxisDirection.EAST, SI.METRE);
+                csFactory.createCoordinateSystemAxis(name("Easting"), "E", AxisDirection.EAST, SI.METRE);
         final CoordinateSystemAxis height_axis =
-                csFactory.createCoordinateSystemAxis(
-                        name("Ellipsoidal height"), "Up", AxisDirection.UP, SI.METRE);
+                csFactory.createCoordinateSystemAxis(name("Ellipsoidal height"), "Up", AxisDirection.UP, SI.METRE);
 
         // ----------------------------------------------------------
         // Creates the geographic CRS
         // ----------------------------------------------------------
         final EllipsoidalCS ellipsoidal_2d_cs =
-                csFactory.createEllipsoidalCS(
-                        name("2D ellipsoidal"), longitude_axis, latitude_axis);
+                csFactory.createEllipsoidalCS(name("2D ellipsoidal"), longitude_axis, latitude_axis);
         final EllipsoidalCS ellipsoidal_3d_cs =
-                csFactory.createEllipsoidalCS(
-                        name("3D ellipsoidal"), longitude_axis, latitude_axis, height_axis);
+                csFactory.createEllipsoidalCS(name("3D ellipsoidal"), longitude_axis, latitude_axis, height_axis);
         final GeographicCRS geographic_2d_crs =
                 crsFactory.createGeographicCRS(name("2D geographic CRS"), wgs84, ellipsoidal_2d_cs);
         final GeographicCRS geographic_3d_crs =
@@ -158,11 +144,9 @@ public final class Transform3DTest {
         // Creates various coordinate systems for projected CRS
         // ----------------------------------------------------------
         final CartesianCS utm_cartesian_3d_cs =
-                csFactory.createCartesianCS(
-                        name("UTM 3D Cartesian CS"), northing_axis, easting_axis, height_axis);
+                csFactory.createCartesianCS(name("UTM 3D Cartesian CS"), northing_axis, easting_axis, height_axis);
         final CartesianCS utm_cartesian_2d_cs =
-                csFactory.createCartesianCS(
-                        name("UTM 2D Cartesian CS"), northing_axis, easting_axis);
+                csFactory.createCartesianCS(name("UTM 2D Cartesian CS"), northing_axis, easting_axis);
         final VerticalCS utm_height_cs = csFactory.createVerticalCS(name("Height CS"), height_axis);
         final VerticalCRS height_crs =
                 crsFactory.createVerticalCRS(name("WGS84 Height CRS"), wgs84_height, utm_height_cs);
@@ -171,8 +155,7 @@ public final class Transform3DTest {
         // Set the projection for UTM zone 12
         // ----------------------------------------------------------
         final int zone_num = 12;
-        final ParameterValueGroup parameters =
-                mtFactory.getDefaultParameters("Transverse_Mercator");
+        final ParameterValueGroup parameters = mtFactory.getDefaultParameters("Transverse_Mercator");
         parameters.parameter("central_meridian").setValue(-180 + zone_num * 6 - 3);
         parameters.parameter("latitude_of_origin").setValue(0.0);
         parameters.parameter("scale_factor").setValue(0.9996);
@@ -183,27 +166,23 @@ public final class Transform3DTest {
         // From here we create a 2D projected system and combine
         // it with a height-only CRS to give it a full 3D transform
         // ----------------------------------------------------------
-        final ProjectedCRS proj_2d =
-                crsFactory.createProjectedCRS(
-                        name("WGS 84 / UTM Zone 12/ 2D"),
-                        geographic_2d_crs,
-                        new DefiningConversion("Transverse_Mercator", parameters),
-                        utm_cartesian_2d_cs);
+        final ProjectedCRS proj_2d = crsFactory.createProjectedCRS(
+                name("WGS 84 / UTM Zone 12/ 2D"),
+                geographic_2d_crs,
+                new DefiningConversion("Transverse_Mercator", parameters),
+                utm_cartesian_2d_cs);
         final CompoundCRS compound_3d =
-                crsFactory.createCompoundCRS(
-                        name("3D Compound WGS 84 / UTM Zone 12"), proj_2d, height_crs);
-        final double[] out1 =
-                checkTransformation(opFactory.createOperation(compound_3d, output_crs));
+                crsFactory.createCompoundCRS(name("3D Compound WGS 84 / UTM Zone 12"), proj_2d, height_crs);
+        final double[] out1 = checkTransformation(opFactory.createOperation(compound_3d, output_crs));
 
         // ----------------------------------------------------------
         // From here we create a 3D projected system directly
         // ----------------------------------------------------------
-        final ProjectedCRS proj_3d =
-                crsFactory.createProjectedCRS(
-                        name("WGS 84 / UTM Zone 12/ 3D"),
-                        geographic_3d_crs,
-                        new DefiningConversion("Transverse_Mercator", parameters),
-                        utm_cartesian_3d_cs);
+        final ProjectedCRS proj_3d = crsFactory.createProjectedCRS(
+                name("WGS 84 / UTM Zone 12/ 3D"),
+                geographic_3d_crs,
+                new DefiningConversion("Transverse_Mercator", parameters),
+                utm_cartesian_3d_cs);
         final double[] out2 = checkTransformation(opFactory.createOperation(proj_3d, output_crs));
 
         // ----------------------------------------------------------
@@ -224,8 +203,7 @@ public final class Transform3DTest {
      *
      * @return Transformed coordinates.
      */
-    private static double[] checkTransformation(final CoordinateOperation operation)
-            throws TransformException {
+    private static double[] checkTransformation(final CoordinateOperation operation) throws TransformException {
         assertTrue(operation.getSourceCRS() instanceof ProjectedCRS);
         assertTrue(operation.getTargetCRS() instanceof GeocentricCRS);
         assertTrue(operation.getTargetCRS().getCoordinateSystem() instanceof CartesianCS);

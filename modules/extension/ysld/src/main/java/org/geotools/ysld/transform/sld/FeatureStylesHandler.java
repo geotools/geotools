@@ -24,8 +24,7 @@ import javax.xml.stream.XMLStreamReader;
 /** Handles xml parse events for {@link org.geotools.styling.FeatureTypeStyle} elements. */
 public class FeatureStylesHandler extends SldTransformHandler {
     @Override
-    public void element(XMLStreamReader xml, SldTransformContext context)
-            throws XMLStreamException, IOException {
+    public void element(XMLStreamReader xml, SldTransformContext context) throws XMLStreamException, IOException {
         String name = xml.getLocalName();
         if ("FeatureTypeStyle".equals(name)) {
             context.mapping();
@@ -44,8 +43,7 @@ public class FeatureStylesHandler extends SldTransformHandler {
     }
 
     @Override
-    public void endElement(XMLStreamReader xml, SldTransformContext context)
-            throws XMLStreamException, IOException {
+    public void endElement(XMLStreamReader xml, SldTransformContext context) throws XMLStreamException, IOException {
         if ("FeatureTypeStyle".equals(xml.getLocalName())) {
             context.endSequence().endMapping();
         } else if ("UserStyle".equals(xml.getLocalName())) {

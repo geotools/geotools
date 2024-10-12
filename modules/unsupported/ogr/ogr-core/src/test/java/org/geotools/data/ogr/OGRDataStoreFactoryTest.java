@@ -67,9 +67,7 @@ public abstract class OGRDataStoreFactoryTest extends TestCaseSupport {
         try {
             store = dataStoreFactory.createDataStore(map);
             SimpleFeatureType schema =
-                    store.getSchema(
-                            STATE_POP.substring(
-                                    STATE_POP.lastIndexOf('/') + 1, STATE_POP.lastIndexOf('.')));
+                    store.getSchema(STATE_POP.substring(STATE_POP.lastIndexOf('/') + 1, STATE_POP.lastIndexOf('.')));
             assertEquals(namespace.toString(), schema.getName().getNamespaceURI());
         } finally {
             disposeQuietly(store);

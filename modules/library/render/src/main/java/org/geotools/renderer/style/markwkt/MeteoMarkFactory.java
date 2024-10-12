@@ -41,8 +41,7 @@ public class MeteoMarkFactory implements MarkFactory {
     public static final String SHAPE_PREFIX = "extshape://";
 
     /** The logger for the rendering module. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(MeteoMarkFactory.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(MeteoMarkFactory.class);
 
     /**
      * Key for the extshape://arrow height ratio (between 0 and 1000). Default value is 2, twice as
@@ -132,8 +131,7 @@ public class MeteoMarkFactory implements MarkFactory {
      * org.geotools.api.filter.expression.Expression, org.geotools.api.feature.Feature)
      */
     @Override
-    public Shape getShape(Graphics2D graphics, Expression symbolUrl, Feature feature)
-            throws Exception {
+    public Shape getShape(Graphics2D graphics, Expression symbolUrl, Feature feature) throws Exception {
         // cannot handle a null url
         if (symbolUrl == null) return null;
 
@@ -189,12 +187,7 @@ public class MeteoMarkFactory implements MarkFactory {
                     arrowBase = value;
                     break;
                 default:
-                    LOGGER.warning(
-                            "Unexpected key value pair "
-                                    + key
-                                    + "="
-                                    + svalue
-                                    + " for extshape://arrow");
+                    LOGGER.warning("Unexpected key value pair " + key + "=" + svalue + " for extshape://arrow");
             }
         }
         return buildDynamicArrow(height, thickness, arrowBase);
@@ -231,16 +224,15 @@ public class MeteoMarkFactory implements MarkFactory {
 
     private void validateRange(String key, double value, double min, double max) {
         if (value < min || value > max) {
-            throw new IllegalArgumentException(
-                    "Invalid value "
-                            + value
-                            + " for key "
-                            + key
-                            + ", should have been between "
-                            + min
-                            + " and "
-                            + max
-                            + " (extreme excluded)");
+            throw new IllegalArgumentException("Invalid value "
+                    + value
+                    + " for key "
+                    + key
+                    + ", should have been between "
+                    + min
+                    + " and "
+                    + max
+                    + " (extreme excluded)");
         }
     }
 

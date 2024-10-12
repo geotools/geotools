@@ -55,8 +55,7 @@ import org.locationtech.jts.geom.Geometry;
  * @author etj
  */
 public class WPSUtils {
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(WPSUtils.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(WPSUtils.class);
 
     /** static ints representing the input types */
     public static final int INPUTTYPE_LITERAL = 1;
@@ -129,8 +128,7 @@ public class WPSUtils {
      * @return the created DataType input object
      */
     @SuppressWarnings("unchecked")
-    public static DataType createInputDataType(
-            Object obj, int type, String schema, String mimeType) {
+    public static DataType createInputDataType(Object obj, int type, String schema, String mimeType) {
         DataType dt = Wps10Factory.eINSTANCE.createDataType();
 
         if (type == INPUTTYPE_LITERAL) {
@@ -224,17 +222,16 @@ public class WPSUtils {
             InternationalString description =
                     Text.text(isAbstractNull(idt) ? "" : idt.getAbstract().getValue());
             @SuppressWarnings("unchecked")
-            Parameter<?> param =
-                    new Parameter(
-                            identifier,
-                            type,
-                            title,
-                            description,
-                            required,
-                            idt.getMinOccurs().intValue(),
-                            idt.getMaxOccurs().intValue(),
-                            null,
-                            null);
+            Parameter<?> param = new Parameter(
+                    identifier,
+                    type,
+                    title,
+                    description,
+                    required,
+                    idt.getMinOccurs().intValue(),
+                    idt.getMaxOccurs().intValue(),
+                    null,
+                    null);
             map.put(identifier, param);
         }
 
@@ -318,12 +315,11 @@ public class WPSUtils {
             InternationalString description =
                     Text.text(isAbstractNull(odt) ? "" : odt.getAbstract().getValue());
             @SuppressWarnings("unchecked")
-            Parameter<?> param =
-                    new Parameter(
-                            odt.getIdentifier().getValue(),
-                            type,
-                            Text.text(odt.getTitle().getValue()),
-                            description);
+            Parameter<?> param = new Parameter(
+                    odt.getIdentifier().getValue(),
+                    type,
+                    Text.text(odt.getTitle().getValue()),
+                    description);
             map.put(odt.getIdentifier().getValue(), param);
         }
 
@@ -422,8 +418,7 @@ public class WPSUtils {
      * @param map the map to store the results in (will be created if null)
      * @return the results in a key,Object map
      */
-    public static Map<String, Object> createResultMap(
-            ExecuteResponseType ert, Map<String, Object> map) {
+    public static Map<String, Object> createResultMap(ExecuteResponseType ert, Map<String, Object> map) {
         if (map == null) {
             map = new TreeMap<>();
         }

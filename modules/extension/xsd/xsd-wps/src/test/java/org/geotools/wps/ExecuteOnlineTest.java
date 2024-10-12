@@ -38,20 +38,17 @@ public class ExecuteOnlineTest {
      */
     @Test
     public void testExecute() throws IOException, SAXException, ParserConfigurationException {
-        URL url =
-                new URL(
-                        "http://schemas.opengis.net/wps/1.0.0/examples/51_wpsExecute_request_ResponseDocument.xml");
+        URL url = new URL("http://schemas.opengis.net/wps/1.0.0/examples/51_wpsExecute_request_ResponseDocument.xml");
         try (BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()))) {
             Parser parser = new Parser(new WPSConfiguration());
             Object obj = parser.parse(in);
             Assert.assertNotNull(obj);
         } catch (UnknownHostException notFound) {
             LOGGER.warning(notFound.getClass().getName() + ":" + notFound.getMessage());
-            LOGGER.warning(
-                    "the server was not found - you may be running"
-                            + "in offline mode - or behind a firewall?"
-                            + "in anycase this represents a failure of network"
-                            + "and not our software");
+            LOGGER.warning("the server was not found - you may be running"
+                    + "in offline mode - or behind a firewall?"
+                    + "in anycase this represents a failure of network"
+                    + "and not our software");
         }
     }
 }

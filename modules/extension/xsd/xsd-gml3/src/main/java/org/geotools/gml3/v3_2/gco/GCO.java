@@ -73,14 +73,12 @@ public final class GCO extends GML.DelegatingXSD {
     public static final QName AbstractObject_Type =
             new QName("http://www.isotc211.org/2005/gco", "AbstractObject_Type");
     /** @generated */
-    public static final QName Angle_PropertyType =
-            new QName("http://www.isotc211.org/2005/gco", "Angle_PropertyType");
+    public static final QName Angle_PropertyType = new QName("http://www.isotc211.org/2005/gco", "Angle_PropertyType");
     /** @generated */
     public static final QName Binary_PropertyType =
             new QName("http://www.isotc211.org/2005/gco", "Binary_PropertyType");
     /** @generated */
-    public static final QName Binary_Type =
-            new QName("http://www.isotc211.org/2005/gco", "Binary_Type");
+    public static final QName Binary_Type = new QName("http://www.isotc211.org/2005/gco", "Binary_Type");
     /** @generated */
     public static final QName Boolean_PropertyType =
             new QName("http://www.isotc211.org/2005/gco", "Boolean_PropertyType");
@@ -88,14 +86,11 @@ public final class GCO extends GML.DelegatingXSD {
     public static final QName CharacterString_PropertyType =
             new QName("http://www.isotc211.org/2005/gco", "CharacterString_PropertyType");
     /** @generated */
-    public static final QName CodeListValue_Type =
-            new QName("http://www.isotc211.org/2005/gco", "CodeListValue_Type");
+    public static final QName CodeListValue_Type = new QName("http://www.isotc211.org/2005/gco", "CodeListValue_Type");
     /** @generated */
-    public static final QName Date_PropertyType =
-            new QName("http://www.isotc211.org/2005/gco", "Date_PropertyType");
+    public static final QName Date_PropertyType = new QName("http://www.isotc211.org/2005/gco", "Date_PropertyType");
     /** @generated */
-    public static final QName Date_Type =
-            new QName("http://www.isotc211.org/2005/gco", "Date_Type");
+    public static final QName Date_Type = new QName("http://www.isotc211.org/2005/gco", "Date_Type");
     /** @generated */
     public static final QName DateTime_PropertyType =
             new QName("http://www.isotc211.org/2005/gco", "DateTime_PropertyType");
@@ -124,14 +119,12 @@ public final class GCO extends GML.DelegatingXSD {
     public static final QName MemberName_PropertyType =
             new QName("http://www.isotc211.org/2005/gco", "MemberName_PropertyType");
     /** @generated */
-    public static final QName MemberName_Type =
-            new QName("http://www.isotc211.org/2005/gco", "MemberName_Type");
+    public static final QName MemberName_Type = new QName("http://www.isotc211.org/2005/gco", "MemberName_Type");
     /** @generated */
     public static final QName Multiplicity_PropertyType =
             new QName("http://www.isotc211.org/2005/gco", "Multiplicity_PropertyType");
     /** @generated */
-    public static final QName Multiplicity_Type =
-            new QName("http://www.isotc211.org/2005/gco", "Multiplicity_Type");
+    public static final QName Multiplicity_Type = new QName("http://www.isotc211.org/2005/gco", "Multiplicity_Type");
     /** @generated */
     public static final QName MultiplicityRange_PropertyType =
             new QName("http://www.isotc211.org/2005/gco", "MultiplicityRange_PropertyType");
@@ -145,8 +138,7 @@ public final class GCO extends GML.DelegatingXSD {
     public static final QName ObjectReference_PropertyType =
             new QName("http://www.isotc211.org/2005/gco", "ObjectReference_PropertyType");
     /** @generated */
-    public static final QName Real_PropertyType =
-            new QName("http://www.isotc211.org/2005/gco", "Real_PropertyType");
+    public static final QName Real_PropertyType = new QName("http://www.isotc211.org/2005/gco", "Real_PropertyType");
     /** @generated */
     public static final QName Record_PropertyType =
             new QName("http://www.isotc211.org/2005/gco", "Record_PropertyType");
@@ -154,11 +146,9 @@ public final class GCO extends GML.DelegatingXSD {
     public static final QName RecordType_PropertyType =
             new QName("http://www.isotc211.org/2005/gco", "RecordType_PropertyType");
     /** @generated */
-    public static final QName RecordType_Type =
-            new QName("http://www.isotc211.org/2005/gco", "RecordType_Type");
+    public static final QName RecordType_Type = new QName("http://www.isotc211.org/2005/gco", "RecordType_Type");
     /** @generated */
-    public static final QName Scale_PropertyType =
-            new QName("http://www.isotc211.org/2005/gco", "Scale_PropertyType");
+    public static final QName Scale_PropertyType = new QName("http://www.isotc211.org/2005/gco", "Scale_PropertyType");
     /** @generated */
     public static final QName ScopedName_PropertyType =
             new QName("http://www.isotc211.org/2005/gco", "ScopedName_PropertyType");
@@ -166,8 +156,7 @@ public final class GCO extends GML.DelegatingXSD {
     public static final QName TypeName_PropertyType =
             new QName("http://www.isotc211.org/2005/gco", "TypeName_PropertyType");
     /** @generated */
-    public static final QName TypeName_Type =
-            new QName("http://www.isotc211.org/2005/gco", "TypeName_Type");
+    public static final QName TypeName_Type = new QName("http://www.isotc211.org/2005/gco", "TypeName_Type");
     /** @generated */
     public static final QName UnitOfMeasure_PropertyType =
             new QName("http://www.isotc211.org/2005/gco", "UnitOfMeasure_PropertyType");
@@ -204,8 +193,7 @@ public final class GCO extends GML.DelegatingXSD {
     public static final QName AbstractGenericName =
             new QName("http://www.isotc211.org/2005/gco", "AbstractGenericName");
     /** @generated */
-    public static final QName AbstractObject =
-            new QName("http://www.isotc211.org/2005/gco", "AbstractObject");
+    public static final QName AbstractObject = new QName("http://www.isotc211.org/2005/gco", "AbstractObject");
     /** @generated */
     public static final QName Angle = new QName("http://www.isotc211.org/2005/gco", "Angle");
     /** @generated */
@@ -213,8 +201,7 @@ public final class GCO extends GML.DelegatingXSD {
     /** @generated */
     public static final QName Boolean = new QName("http://www.isotc211.org/2005/gco", "Boolean");
     /** @generated */
-    public static final QName CharacterString =
-            new QName("http://www.isotc211.org/2005/gco", "CharacterString");
+    public static final QName CharacterString = new QName("http://www.isotc211.org/2005/gco", "CharacterString");
     /** @generated */
     public static final QName Date = new QName("http://www.isotc211.org/2005/gco", "Date");
     /** @generated */
@@ -228,41 +215,33 @@ public final class GCO extends GML.DelegatingXSD {
     /** @generated */
     public static final QName Length = new QName("http://www.isotc211.org/2005/gco", "Length");
     /** @generated */
-    public static final QName LocalName =
-            new QName("http://www.isotc211.org/2005/gco", "LocalName");
+    public static final QName LocalName = new QName("http://www.isotc211.org/2005/gco", "LocalName");
     /** @generated */
     public static final QName Measure = new QName("http://www.isotc211.org/2005/gco", "Measure");
     /** @generated */
-    public static final QName MemberName =
-            new QName("http://www.isotc211.org/2005/gco", "MemberName");
+    public static final QName MemberName = new QName("http://www.isotc211.org/2005/gco", "MemberName");
     /** @generated */
-    public static final QName Multiplicity =
-            new QName("http://www.isotc211.org/2005/gco", "Multiplicity");
+    public static final QName Multiplicity = new QName("http://www.isotc211.org/2005/gco", "Multiplicity");
     /** @generated */
-    public static final QName MultiplicityRange =
-            new QName("http://www.isotc211.org/2005/gco", "MultiplicityRange");
+    public static final QName MultiplicityRange = new QName("http://www.isotc211.org/2005/gco", "MultiplicityRange");
     /** @generated */
     public static final QName Real = new QName("http://www.isotc211.org/2005/gco", "Real");
     /** @generated */
     public static final QName Record = new QName("http://www.isotc211.org/2005/gco", "Record");
     /** @generated */
-    public static final QName RecordType =
-            new QName("http://www.isotc211.org/2005/gco", "RecordType");
+    public static final QName RecordType = new QName("http://www.isotc211.org/2005/gco", "RecordType");
     /** @generated */
     public static final QName Scale = new QName("http://www.isotc211.org/2005/gco", "Scale");
     /** @generated */
-    public static final QName ScopedName =
-            new QName("http://www.isotc211.org/2005/gco", "ScopedName");
+    public static final QName ScopedName = new QName("http://www.isotc211.org/2005/gco", "ScopedName");
     /** @generated */
     public static final QName TypeName = new QName("http://www.isotc211.org/2005/gco", "TypeName");
     /** @generated */
-    public static final QName UnlimitedInteger =
-            new QName("http://www.isotc211.org/2005/gco", "UnlimitedInteger");
+    public static final QName UnlimitedInteger = new QName("http://www.isotc211.org/2005/gco", "UnlimitedInteger");
 
     /* Attributes */
     /** @generated */
     public static final QName isoType = new QName("http://www.isotc211.org/2005/gco", "isoType");
     /** @generated */
-    public static final QName nilReason =
-            new QName("http://www.isotc211.org/2005/gco", "nilReason");
+    public static final QName nilReason = new QName("http://www.isotc211.org/2005/gco", "nilReason");
 }

@@ -42,17 +42,12 @@ public class AppSchemaValidatorTest {
     @Test
     public void validateErMineralOccurrenceWithErrors() {
         try {
-            AppSchemaValidator.validateResource(
-                    "/test-data/er_MineralOccurrence_with_errors.xml", null);
-            Assert.fail(
-                    "Unexpected schema validation success for known-invalid XML instance document");
+            AppSchemaValidator.validateResource("/test-data/er_MineralOccurrence_with_errors.xml", null);
+            Assert.fail("Unexpected schema validation success for known-invalid XML instance document");
         } catch (Exception e) {
             Assert.assertTrue(
                     e.getMessage(),
-                    e.getMessage()
-                            .startsWith(
-                                    "Schema validation failures: 2"
-                                            + System.getProperty("line.separator")));
+                    e.getMessage().startsWith("Schema validation failures: 2" + System.getProperty("line.separator")));
         }
     }
 
@@ -72,22 +67,14 @@ public class AppSchemaValidatorTest {
         Assert.assertNull(AppSchemaValidator.getEncoding("<?xml version=\"1.0\"?>"));
         Assert.assertNull(AppSchemaValidator.getEncoding("<?xml version=\"1.0\"? >"));
         Assert.assertNull(AppSchemaValidator.getEncoding("<?xml version=\"1.0\"?><root/>"));
+        Assert.assertEquals("UTF-8", AppSchemaValidator.getEncoding("<?xml version=\"1.0\" encoding=\"UTF-8\"?>"));
+        Assert.assertEquals("UTF-8", AppSchemaValidator.getEncoding("<?xml version='1.0' encoding='UTF-8'?>"));
+        Assert.assertEquals("UTF-8", AppSchemaValidator.getEncoding("<?xml version=\"1.0\" encoding=\"UTF-8\"?>"));
         Assert.assertEquals(
                 "UTF-8",
-                AppSchemaValidator.getEncoding("<?xml version=\"1.0\" encoding=\"UTF-8\"?>"));
+                AppSchemaValidator.getEncoding("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>"));
         Assert.assertEquals(
-                "UTF-8", AppSchemaValidator.getEncoding("<?xml version='1.0' encoding='UTF-8'?>"));
-        Assert.assertEquals(
-                "UTF-8",
-                AppSchemaValidator.getEncoding("<?xml version=\"1.0\" encoding=\"UTF-8\"?>"));
-        Assert.assertEquals(
-                "UTF-8",
-                AppSchemaValidator.getEncoding(
-                        "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>"));
-        Assert.assertEquals(
-                "UTF-8",
-                AppSchemaValidator.getEncoding(
-                        "<?xml version=\"1.0\" encoding=\"UTF-8\"?><root/>"));
+                "UTF-8", AppSchemaValidator.getEncoding("<?xml version=\"1.0\" encoding=\"UTF-8\"?><root/>"));
     }
 
     /**
@@ -124,15 +111,11 @@ public class AppSchemaValidatorTest {
     public void validateErMineralOccurrenceWithErrorsAsString() {
         try {
             validateResourceAsString("/test-data/er_MineralOccurrence_with_errors.xml");
-            Assert.fail(
-                    "Unexpected schema validation success for known-invalid XML instance document");
+            Assert.fail("Unexpected schema validation success for known-invalid XML instance document");
         } catch (Exception e) {
             Assert.assertTrue(
                     e.getMessage(),
-                    e.getMessage()
-                            .startsWith(
-                                    "Schema validation failures: 2"
-                                            + System.getProperty("line.separator")));
+                    e.getMessage().startsWith("Schema validation failures: 2" + System.getProperty("line.separator")));
         }
     }
 

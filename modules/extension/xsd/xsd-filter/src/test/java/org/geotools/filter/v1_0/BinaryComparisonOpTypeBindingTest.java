@@ -33,7 +33,9 @@ import org.w3c.dom.Document;
 public class BinaryComparisonOpTypeBindingTest extends FilterTestSupport {
     @Test
     public void testBinaryComparisonOpType() {
-        assertEquals(BinaryComparisonOperator.class, binding(OGC.BinaryComparisonOpType).getType());
+        assertEquals(
+                BinaryComparisonOperator.class,
+                binding(OGC.BinaryComparisonOpType).getType());
     }
 
     @Test
@@ -68,12 +70,14 @@ public class BinaryComparisonOpTypeBindingTest extends FilterTestSupport {
                         .getLength());
         assertEquals(
                 1,
-                dom.getElementsByTagNameNS(OGC.NAMESPACE, OGC.Literal.getLocalPart()).getLength());
+                dom.getElementsByTagNameNS(OGC.NAMESPACE, OGC.Literal.getLocalPart())
+                        .getLength());
     }
 
     @Test
     public void testPropertyIsNotEqualToType() {
-        assertEquals(PropertyIsNotEqualTo.class, binding(OGC.PropertyIsNotEqualTo).getType());
+        assertEquals(
+                PropertyIsNotEqualTo.class, binding(OGC.PropertyIsNotEqualTo).getType());
     }
 
     @Test
@@ -103,7 +107,8 @@ public class BinaryComparisonOpTypeBindingTest extends FilterTestSupport {
                         .getLength());
         assertEquals(
                 1,
-                dom.getElementsByTagNameNS(OGC.NAMESPACE, OGC.Literal.getLocalPart()).getLength());
+                dom.getElementsByTagNameNS(OGC.NAMESPACE, OGC.Literal.getLocalPart())
+                        .getLength());
     }
 
     @Test
@@ -138,7 +143,8 @@ public class BinaryComparisonOpTypeBindingTest extends FilterTestSupport {
                         .getLength());
         assertEquals(
                 1,
-                dom.getElementsByTagNameNS(OGC.NAMESPACE, OGC.Literal.getLocalPart()).getLength());
+                dom.getElementsByTagNameNS(OGC.NAMESPACE, OGC.Literal.getLocalPart())
+                        .getLength());
     }
 
     @Test
@@ -175,12 +181,14 @@ public class BinaryComparisonOpTypeBindingTest extends FilterTestSupport {
                         .getLength());
         assertEquals(
                 1,
-                dom.getElementsByTagNameNS(OGC.NAMESPACE, OGC.Literal.getLocalPart()).getLength());
+                dom.getElementsByTagNameNS(OGC.NAMESPACE, OGC.Literal.getLocalPart())
+                        .getLength());
     }
 
     @Test
     public void testPropertyIsGreaterThanType() {
-        assertEquals(PropertyIsGreaterThan.class, binding(OGC.PropertyIsGreaterThan).getType());
+        assertEquals(
+                PropertyIsGreaterThan.class, binding(OGC.PropertyIsGreaterThan).getType());
     }
 
     @Test
@@ -211,7 +219,8 @@ public class BinaryComparisonOpTypeBindingTest extends FilterTestSupport {
                         .getLength());
         assertEquals(
                 1,
-                dom.getElementsByTagNameNS(OGC.NAMESPACE, OGC.Literal.getLocalPart()).getLength());
+                dom.getElementsByTagNameNS(OGC.NAMESPACE, OGC.Literal.getLocalPart())
+                        .getLength());
     }
 
     @Test
@@ -225,7 +234,8 @@ public class BinaryComparisonOpTypeBindingTest extends FilterTestSupport {
                         .getLength());
         assertEquals(
                 1,
-                dom.getElementsByTagNameNS(OGC.NAMESPACE, OGC.Literal.getLocalPart()).getLength());
+                dom.getElementsByTagNameNS(OGC.NAMESPACE, OGC.Literal.getLocalPart())
+                        .getLength());
     }
 
     @Test
@@ -262,6 +272,7 @@ public class BinaryComparisonOpTypeBindingTest extends FilterTestSupport {
                         .getLength());
         assertEquals(
                 1,
-                dom.getElementsByTagNameNS(OGC.NAMESPACE, OGC.Literal.getLocalPart()).getLength());
+                dom.getElementsByTagNameNS(OGC.NAMESPACE, OGC.Literal.getLocalPart())
+                        .getLength());
     }
 }

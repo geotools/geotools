@@ -37,8 +37,7 @@ import org.geotools.feature.type.GeometryDescriptorImpl;
  */
 public class AppSchemaAttributeBuilder extends AttributeBuilder {
 
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(AppSchemaAttributeBuilder.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(AppSchemaAttributeBuilder.class);
 
     public AppSchemaAttributeBuilder(FeatureFactory attributeFactory) {
         super(attributeFactory);
@@ -57,8 +56,7 @@ public class AppSchemaAttributeBuilder extends AttributeBuilder {
      * @param type the actual type of the attribute, which might be the same as the declared type
      *     for the given AttributeDescriptor or a derived type.
      */
-    public Attribute add(
-            final String id, final Object value, final Name name, final AttributeType type) {
+    public Attribute add(final String id, final Object value, final Name name, final AttributeType type) {
         // existence check
         AttributeDescriptor descriptor = attributeDescriptor(name);
         AttributeType declaredType = descriptor.getType();
@@ -71,13 +69,12 @@ public class AppSchemaAttributeBuilder extends AttributeBuilder {
                  * IllegalArgumentException(type.getName() + " is not a subtype of " +
                  * declaredType.getName());
                  */
-                LOGGER.fine(
-                        "Adding attribute "
-                                + name
-                                + " of type "
-                                + type.getName()
-                                + " which is not a subtype of "
-                                + declaredType.getName());
+                LOGGER.fine("Adding attribute "
+                        + name
+                        + " of type "
+                        + type.getName()
+                        + " which is not a subtype of "
+                        + declaredType.getName());
             }
             int minOccurs = descriptor.getMinOccurs();
             int maxOccurs = descriptor.getMaxOccurs();
@@ -85,18 +82,10 @@ public class AppSchemaAttributeBuilder extends AttributeBuilder {
             // TODO: handle default value
             Object defaultValue = null;
             if (type instanceof GeometryType) {
-                descriptor =
-                        new GeometryDescriptorImpl(
-                                (GeometryType) type,
-                                name,
-                                minOccurs,
-                                maxOccurs,
-                                nillable,
-                                defaultValue);
+                descriptor = new GeometryDescriptorImpl(
+                        (GeometryType) type, name, minOccurs, maxOccurs, nillable, defaultValue);
             } else {
-                descriptor =
-                        new AttributeDescriptorImpl(
-                                type, name, minOccurs, maxOccurs, nillable, defaultValue);
+                descriptor = new AttributeDescriptorImpl(type, name, minOccurs, maxOccurs, nillable, defaultValue);
             }
         }
         Attribute attribute;

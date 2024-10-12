@@ -28,9 +28,7 @@ import org.locationtech.jts.geom.PrecisionModel;
 public final class ShapefileDataStoreSetGeometryFactoryTest {
 
     private static final String BASE = "mzvalues/mpoints";
-    private static final String[] NAMES = {
-        BASE + ".dbf", BASE + ".prj", BASE + ".shp", BASE + ".shx"
-    };
+    private static final String[] NAMES = {BASE + ".dbf", BASE + ".prj", BASE + ".shp", BASE + ".shx"};
 
     private static final Map<String, Serializable> PARAMS = new HashMap<>();
 
@@ -54,8 +52,7 @@ public final class ShapefileDataStoreSetGeometryFactoryTest {
         final String typeName = dataStore.getTypeNames()[0];
         dataStore.setGeometryFactory(myGeometryFactory);
         final Query query = new Query(typeName);
-        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                dataStore.getFeatureReader(query, AUTO_COMMIT)) {
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader = dataStore.getFeatureReader(query, AUTO_COMMIT)) {
             assertTrue(reader.hasNext());
             final SimpleFeature feature = reader.next();
             final Object geometry = feature.getDefaultGeometry();

@@ -54,13 +54,12 @@ public class FormatDateTimezoneFunctionTest {
      * @return the formatted day
      */
     private String formatTimezone(String timezone) {
-        return (String)
-                ff.function(
-                                FormatDateTimezoneFunction.NAME.getFunctionName(),
-                                ff.literal(PATTERN),
-                                ff.literal(TIME),
-                                ff.literal(timezone))
-                        .evaluate(null);
+        return (String) ff.function(
+                        FormatDateTimezoneFunction.NAME.getFunctionName(),
+                        ff.literal(PATTERN),
+                        ff.literal(TIME),
+                        ff.literal(timezone))
+                .evaluate(null);
     }
 
     /** Test formatting in UTC time zone. */
@@ -85,16 +84,12 @@ public class FormatDateTimezoneFunctionTest {
     @Test
     public void wrongNumberOfParameters() {
         try {
-            ff.function(
-                            FormatDateTimezoneFunction.NAME.getFunctionName(),
-                            ff.literal(PATTERN),
-                            ff.literal(TIME))
+            ff.function(FormatDateTimezoneFunction.NAME.getFunctionName(), ff.literal(PATTERN), ff.literal(TIME))
                     .evaluate(null);
             Assert.fail("Unexpected success");
         } catch (RuntimeException e) {
             Assert.assertEquals(
-                    FormatDateTimezoneFunction.NAME.getFunctionName()
-                            + ": wrong number of parameters (2 not 3)",
+                    FormatDateTimezoneFunction.NAME.getFunctionName() + ": wrong number of parameters (2 not 3)",
                     e.getMessage());
         }
     }
@@ -112,8 +107,7 @@ public class FormatDateTimezoneFunctionTest {
             Assert.fail("Unexpected success");
         } catch (RuntimeException e) {
             Assert.assertEquals(
-                    FormatDateTimezoneFunction.NAME.getFunctionName()
-                            + ": could not parse date: not a valid time",
+                    FormatDateTimezoneFunction.NAME.getFunctionName() + ": could not parse date: not a valid time",
                     e.getMessage());
         }
     }
@@ -121,36 +115,33 @@ public class FormatDateTimezoneFunctionTest {
     /** Test that a null pattern causes null to be returned. */
     @Test
     public void nullPattern() {
-        Assert.assertNull(
-                ff.function(
-                                FormatDateTimezoneFunction.NAME.getFunctionName(),
-                                ff.literal(null),
-                                ff.literal(TIME),
-                                ff.literal("UTC"))
-                        .evaluate(null));
+        Assert.assertNull(ff.function(
+                        FormatDateTimezoneFunction.NAME.getFunctionName(),
+                        ff.literal(null),
+                        ff.literal(TIME),
+                        ff.literal("UTC"))
+                .evaluate(null));
     }
 
     /** Test that a null date causes null to be returned. */
     @Test
     public void nullDate() {
-        Assert.assertNull(
-                ff.function(
-                                FormatDateTimezoneFunction.NAME.getFunctionName(),
-                                ff.literal(PATTERN),
-                                ff.literal(null),
-                                ff.literal("UTC"))
-                        .evaluate(null));
+        Assert.assertNull(ff.function(
+                        FormatDateTimezoneFunction.NAME.getFunctionName(),
+                        ff.literal(PATTERN),
+                        ff.literal(null),
+                        ff.literal("UTC"))
+                .evaluate(null));
     }
 
     /** Test that a null timezone causes null to be returned. */
     @Test
     public void nullTimezone() {
-        Assert.assertNull(
-                ff.function(
-                                FormatDateTimezoneFunction.NAME.getFunctionName(),
-                                ff.literal(PATTERN),
-                                ff.literal(TIME),
-                                ff.literal(null))
-                        .evaluate(null));
+        Assert.assertNull(ff.function(
+                        FormatDateTimezoneFunction.NAME.getFunctionName(),
+                        ff.literal(PATTERN),
+                        ff.literal(TIME),
+                        ff.literal(null))
+                .evaluate(null));
     }
 }

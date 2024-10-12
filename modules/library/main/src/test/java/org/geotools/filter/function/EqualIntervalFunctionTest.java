@@ -39,14 +39,12 @@ import org.locationtech.jts.geom.GeometryFactory;
 /** @author James */
 public class EqualIntervalFunctionTest extends FunctionTestSupport {
 
-    private static final org.geotools.api.filter.FilterFactory ff =
-            CommonFactoryFinder.getFilterFactory(null);
+    private static final org.geotools.api.filter.FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
     /** Test of getName method, of class org.geotools.filter.functions.EqualIntervalFunction. */
     @Test
     public void testInstance() {
-        Function equInt =
-                ff.function("EqualInterval", org.geotools.api.filter.expression.Expression.NIL);
+        Function equInt = ff.function("EqualInterval", org.geotools.api.filter.expression.Expression.NIL);
         assertNotNull(equInt);
         assertEquals("test get name", "EqualInterval", equInt.getName());
     }
@@ -60,8 +58,7 @@ public class EqualIntervalFunctionTest extends FunctionTestSupport {
         PropertyName property = ff.property("foo");
         Literal literal = ff.literal(3);
 
-        EqualIntervalFunction func =
-                (EqualIntervalFunction) ff.function("EqualInterval", property, literal);
+        EqualIntervalFunction func = (EqualIntervalFunction) ff.function("EqualInterval", property, literal);
         assertEquals(3, func.getClasses());
 
         func.getParameters().set(1, ff.literal(12));
@@ -124,8 +121,7 @@ public class EqualIntervalFunctionTest extends FunctionTestSupport {
         Function classify = ff.function("classify", ff.property("foo"), ff.literal(split));
 
         SimpleFeature victim = testFeatures[2]; // foo = 20
-        assertEquals(
-                "Feature was placed in wrong bin", Integer.valueOf(2), classify.evaluate(victim));
+        assertEquals("Feature was placed in wrong bin", Integer.valueOf(2), classify.evaluate(victim));
     }
 
     @Test
@@ -166,23 +162,21 @@ public class EqualIntervalFunctionTest extends FunctionTestSupport {
 
     @Test
     public void testEvaluateNumericalWithPercentagesAndOutlier() throws SchemaException {
-        SimpleFeatureType dataType =
-                DataUtilities.createType("classification.test1", "id:0,foo:int,geom:Point");
+        SimpleFeatureType dataType = DataUtilities.createType("classification.test1", "id:0,foo:int,geom:Point");
 
         int[] iVal = {1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 14, 15, 16};
         FeatureCollection featureCollection = new ListFeatureCollection(dataType);
         GeometryFactory fac = new GeometryFactory();
         featureCollection = new ListFeatureCollection(dataType);
         for (int i = 0; i < iVal.length; i++) {
-            SimpleFeature feature =
-                    SimpleFeatureBuilder.build(
-                            dataType,
-                            new Object[] {
-                                Integer.valueOf(i + 1),
-                                Integer.valueOf(iVal[i]),
-                                fac.createPoint(new Coordinate(iVal[i], iVal[i]))
-                            },
-                            "classification.t" + (i + 1));
+            SimpleFeature feature = SimpleFeatureBuilder.build(
+                    dataType,
+                    new Object[] {
+                        Integer.valueOf(i + 1),
+                        Integer.valueOf(iVal[i]),
+                        fac.createPoint(new Coordinate(iVal[i], iVal[i]))
+                    },
+                    "classification.t" + (i + 1));
             ((ListFeatureCollection) featureCollection).add(feature);
         }
         Literal classes = ff.literal(3);

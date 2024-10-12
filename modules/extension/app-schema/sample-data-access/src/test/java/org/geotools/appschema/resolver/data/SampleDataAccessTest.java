@@ -42,8 +42,7 @@ public class SampleDataAccessTest {
      */
     @Test
     public void testDataAccess() throws Exception {
-        DataAccess<FeatureType, Feature> dataAccess =
-                DataAccessFinder.getDataStore(SampleDataAccessFactory.PARAMS);
+        DataAccess<FeatureType, Feature> dataAccess = DataAccessFinder.getDataStore(SampleDataAccessFactory.PARAMS);
         FeatureSource<FeatureType, Feature> featureSource =
                 dataAccess.getFeatureSource(SampleDataAccessData.MAPPEDFEATURE_TYPE_NAME);
         FeatureCollection<FeatureType, Feature> featureCollection = featureSource.getFeatures();

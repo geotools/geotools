@@ -28,8 +28,7 @@ import org.locationtech.jts.geom.Geometry;
 public class FilterFunction_geomFromWKT extends FunctionExpressionImpl {
 
     public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "geomFromWKT", Geometry.class, parameter("geometry", String.class));
+            new FunctionNameImpl("geomFromWKT", Geometry.class, parameter("geometry", String.class));
 
     public FilterFunction_geomFromWKT() {
         super("geomFromWKT");

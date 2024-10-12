@@ -33,8 +33,7 @@ import org.geotools.util.factory.Hints;
  * @since 2.5.x
  */
 public final class MrSIDFormat extends BaseGDALGridFormat implements Format {
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(MrSIDFormat.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(MrSIDFormat.class);
 
     /** Creates an instance and sets the metadata. */
     public MrSIDFormat() {

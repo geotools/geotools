@@ -21,18 +21,16 @@ public class GeoTiffDeadlockTest {
     public void testForDeadlock() throws Exception {
         // grab all the test data files (but not those that contain known errors)
         final File dir = TestData.file(GeoTiffReaderTest.class, "");
-        final File[] files =
-                dir.listFiles(
-                        file -> {
-                            String name = file.getName();
-                            if (name.startsWith("no_crs_no_envelope")
-                                    || name.startsWith("ovr")
-                                    || name.startsWith("leak")
-                                    || file.isDirectory()) {
-                                return false;
-                            }
-                            return true;
-                        });
+        final File[] files = dir.listFiles(file -> {
+            String name = file.getName();
+            if (name.startsWith("no_crs_no_envelope")
+                    || name.startsWith("ovr")
+                    || name.startsWith("leak")
+                    || file.isDirectory()) {
+                return false;
+            }
+            return true;
+        });
         final int numFiles = files.length;
 
         // prepare the loaders
@@ -45,17 +43,16 @@ public class GeoTiffDeadlockTest {
         // System.out.println("Testing with " + total + " threads");
         for (int index = 0; index < total; index++) {
             final File file = files[index % numFiles];
-            Runnable testRunner =
-                    () -> {
-                        try {
-                            GeoTiffReader reader = new GeoTiffReader(file);
-                            reader.read(null);
-                        } catch (Exception e) {
-                            throw new RuntimeException("Exception opening file " + file, e);
-                        } finally {
-                            ai.decrementAndGet();
-                        }
-                    };
+            Runnable testRunner = () -> {
+                try {
+                    GeoTiffReader reader = new GeoTiffReader(file);
+                    reader.read(null);
+                } catch (Exception e) {
+                    throw new RuntimeException("Exception opening file " + file, e);
+                } finally {
+                    ai.decrementAndGet();
+                }
+            };
 
             final Thread thread = new Thread(testRunner);
             thread.start();
@@ -68,9 +65,7 @@ public class GeoTiffDeadlockTest {
             while (ai.get() > 0) {
                 long[] deadlockedThreads = mbean.findMonitorDeadlockedThreads();
                 if (deadlockedThreads != null && deadlockedThreads.length > 0) {
-                    fail(
-                            "Deadlock detected between the following threads: "
-                                    + Arrays.toString(deadlockedThreads));
+                    fail("Deadlock detected between the following threads: " + Arrays.toString(deadlockedThreads));
                 }
                 // sleep for a bit
                 Thread.sleep(10);

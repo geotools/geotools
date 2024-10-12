@@ -43,12 +43,7 @@ public class HanaLobTestSetup extends JDBCLobTestSetup {
             };
             htu.createRegisteredTestTable(TABLE, cols);
 
-            htu.insertIntoTestTable(
-                    TABLE,
-                    1,
-                    new byte[] {1, 2, 3, 4, 5},
-                    "small clob",
-                    new byte[] {6, 7, 8, 9, 10});
+            htu.insertIntoTestTable(TABLE, 1, new byte[] {1, 2, 3, 4, 5}, "small clob", new byte[] {6, 7, 8, 9, 10});
         }
     }
 

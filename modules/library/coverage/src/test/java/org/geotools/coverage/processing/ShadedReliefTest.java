@@ -97,10 +97,10 @@ public class ShadedReliefTest extends GridProcessingTestBase {
     }
 
     private ParameterValueGroup createDefaultParams(final GridCoverage2D coverage)
-            throws InvalidParameterValueException, OperationNotFoundException,
-                    ParameterNotFoundException {
+            throws InvalidParameterValueException, OperationNotFoundException, ParameterNotFoundException {
         // Getting parameters for doing a scale.
-        final ParameterValueGroup params = processor.getOperation("ShadedRelief").getParameters();
+        final ParameterValueGroup params =
+                processor.getOperation("ShadedRelief").getParameters();
         params.parameter("Source").setValue(coverage);
         params.parameter("roi").setValue(null);
         params.parameter("srcNoData").setValue(null);

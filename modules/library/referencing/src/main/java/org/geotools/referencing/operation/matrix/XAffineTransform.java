@@ -65,8 +65,7 @@ public class XAffineTransform extends AffineTransform {
      *
      * @since 2.5
      */
-    public XAffineTransform(
-            double m00, double m10, double m01, double m11, double m02, double m12) {
+    public XAffineTransform(double m00, double m10, double m01, double m11, double m02, double m12) {
         super(m00, m10, m01, m11, m02, m12);
     }
 
@@ -170,8 +169,7 @@ public class XAffineTransform extends AffineTransform {
 
     /** Checks for {@linkplain #checkPermission permission} before setting this transform. */
     @Override
-    public void setTransform(
-            double m00, double m10, double m01, double m11, double m02, double m12) {
+    public void setTransform(double m00, double m10, double m01, double m11, double m02, double m12) {
         checkPermission();
         super.setTransform(m00, m10, m01, m11, m02, m12);
     }
@@ -574,8 +572,7 @@ public class XAffineTransform extends AffineTransform {
      * @return Affine transform of a zoom which leaves the (<var>x</var>,<var>y</var>) coordinate
      *     unchanged.
      */
-    public static AffineTransform getScaleInstance(
-            final double sx, final double sy, final double x, final double y) {
+    public static AffineTransform getScaleInstance(final double sx, final double sy, final double x, final double y) {
         return new AffineTransform(sx, 0, 0, sy, (1 - sx) * x, (1 - sy) * y);
     }
 

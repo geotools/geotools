@@ -43,8 +43,7 @@ import org.geotools.referencing.operation.matrix.Matrix2;
  * @see LogarithmicTransform1D
  * @see ExponentialTransform1D
  */
-public class LinearTransform1D extends AbstractMathTransform
-        implements MathTransform1D, LinearTransform, Serializable {
+public class LinearTransform1D extends AbstractMathTransform implements MathTransform1D, LinearTransform, Serializable {
     /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = -7595037195668813000L;
 
@@ -185,8 +184,7 @@ public class LinearTransform1D extends AbstractMathTransform
 
     /** Transforms a list of coordinate point ordinal values. */
     @Override
-    public void transform(
-            final float[] srcPts, int srcOff, final float[] dstPts, int dstOff, int numPts) {
+    public void transform(final float[] srcPts, int srcOff, final float[] dstPts, int dstOff, int numPts) {
         if (srcPts != dstPts || srcOff >= dstOff) {
             while (--numPts >= 0) {
                 dstPts[dstOff++] = (float) (offset + scale * srcPts[srcOff++]);
@@ -202,8 +200,7 @@ public class LinearTransform1D extends AbstractMathTransform
 
     /** Transforms a list of coordinate point ordinal values. */
     @Override
-    public void transform(
-            final double[] srcPts, int srcOff, final double[] dstPts, int dstOff, int numPts) {
+    public void transform(final double[] srcPts, int srcOff, final double[] dstPts, int dstOff, int numPts) {
         if (srcPts != dstPts || srcOff >= dstOff) {
             while (--numPts >= 0) {
                 dstPts[dstOff++] = offset + scale * srcPts[srcOff++];
@@ -239,8 +236,7 @@ public class LinearTransform1D extends AbstractMathTransform
         if (super.equals(object)) {
             final LinearTransform1D that = (LinearTransform1D) object;
             return Double.doubleToRawLongBits(this.scale) == Double.doubleToRawLongBits(that.scale)
-                    && Double.doubleToRawLongBits(this.offset)
-                            == Double.doubleToRawLongBits(that.offset);
+                    && Double.doubleToRawLongBits(this.offset) == Double.doubleToRawLongBits(that.offset);
             /*
              * NOTE: 'LinearTransform1D' and 'ConstantTransform1D' are heavily used by 'Category'
              *       from 'org.geotools.cv' package. It is essential for Cateory to differenciate

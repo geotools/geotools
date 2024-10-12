@@ -89,8 +89,7 @@ public class CustomPaletteBuilderTest {
         RenderedImage indexed = builder.buildPalette().getIndexedImage();
         assertTrue(indexed.getColorModel() instanceof IndexColorModel);
         IndexColorModel icm = (IndexColorModel) indexed.getColorModel();
-        assertEquals(
-                4, icm.getMapSize()); // Black background, white fill, light gray fill, dark gray
+        assertEquals(4, icm.getMapSize()); // Black background, white fill, light gray fill, dark gray
         // fill = 4 colors
     }
 
@@ -106,24 +105,22 @@ public class CustomPaletteBuilderTest {
         g.fillRect(216, 236, 20, 20);
         g.dispose();
 
-        TiledImage image =
-                new TiledImage(
-                        0,
-                        0,
-                        256,
-                        256,
-                        128,
-                        128,
-                        image_.getColorModel().createCompatibleSampleModel(256, 256),
-                        image_.getColorModel());
+        TiledImage image = new TiledImage(
+                0,
+                0,
+                256,
+                256,
+                128,
+                128,
+                image_.getColorModel().createCompatibleSampleModel(256, 256),
+                image_.getColorModel());
         image.set(image_);
 
         CustomPaletteBuilder builder = new CustomPaletteBuilder(image, 256, 1, 1, 1);
         RenderedImage indexed = builder.buildPalette().getIndexedImage();
         assertTrue(indexed.getColorModel() instanceof IndexColorModel);
         IndexColorModel icm = (IndexColorModel) indexed.getColorModel();
-        assertEquals(
-                4, icm.getMapSize()); // Black background, white fill, light gray fill, dark gray
+        assertEquals(4, icm.getMapSize()); // Black background, white fill, light gray fill, dark gray
         // fill = 4 colors
 
         // check image not black
@@ -153,8 +150,7 @@ public class CustomPaletteBuilderTest {
         RenderedImage indexed = builder.buildPalette().getIndexedImage();
         assertTrue(indexed.getColorModel() instanceof IndexColorModel);
         IndexColorModel icm = (IndexColorModel) indexed.getColorModel();
-        assertEquals(
-                4, icm.getMapSize()); // Black background, white fill, light gray fill, dark gray
+        assertEquals(4, icm.getMapSize()); // Black background, white fill, light gray fill, dark gray
         // fill = 4 colors
 
         // check image not black
@@ -198,24 +194,22 @@ public class CustomPaletteBuilderTest {
         //
         // now use the JAI op
         //
-        assertNotNull(
-                JAI.getDefaultInstance()
-                        .getOperationRegistry()
-                        .getDescriptor(OperationDescriptor.class, "org.geotools.ColorReduction"));
+        assertNotNull(JAI.getDefaultInstance()
+                .getOperationRegistry()
+                .getDescriptor(OperationDescriptor.class, "org.geotools.ColorReduction"));
         ParameterBlockJAI pbj = new ParameterBlockJAI("org.geotools.ColorReduction");
         // I will tile the image in 4 tiles and force parallelism here
         JAI.getDefaultInstance().getTileScheduler().setParallelism(4);
-        pbj.addSource(
-                new ImageWorker(image)
-                        .setRenderingHint(
-                                JAI.KEY_IMAGE_LAYOUT,
-                                new ImageLayout(image)
-                                        .setTileGridXOffset(0)
-                                        .setTileGridYOffset(0)
-                                        .setTileHeight(64)
-                                        .setTileWidth(64))
-                        .tile()
-                        .getRenderedImage());
+        pbj.addSource(new ImageWorker(image)
+                .setRenderingHint(
+                        JAI.KEY_IMAGE_LAYOUT,
+                        new ImageLayout(image)
+                                .setTileGridXOffset(0)
+                                .setTileGridYOffset(0)
+                                .setTileHeight(64)
+                                .setTileWidth(64))
+                .tile()
+                .getRenderedImage());
         pbj.setParameter("numColors", 255);
         pbj.setParameter("alphaThreshold", 1);
         pbj.setParameter("subsampleX", 1);
@@ -235,22 +229,20 @@ public class CustomPaletteBuilderTest {
         //
         // now use the inversion of color
         //
-        assertNotNull(
-                JAI.getDefaultInstance()
-                        .getOperationRegistry()
-                        .getDescriptor(OperationDescriptor.class, "org.geotools.ColorInversion"));
+        assertNotNull(JAI.getDefaultInstance()
+                .getOperationRegistry()
+                .getDescriptor(OperationDescriptor.class, "org.geotools.ColorInversion"));
         pbj = new ParameterBlockJAI("org.geotools.ColorInversion");
-        pbj.addSource(
-                new ImageWorker(image)
-                        .setRenderingHint(
-                                JAI.KEY_IMAGE_LAYOUT,
-                                new ImageLayout(image)
-                                        .setTileGridXOffset(0)
-                                        .setTileGridYOffset(0)
-                                        .setTileHeight(64)
-                                        .setTileWidth(64))
-                        .tile()
-                        .getRenderedImage());
+        pbj.addSource(new ImageWorker(image)
+                .setRenderingHint(
+                        JAI.KEY_IMAGE_LAYOUT,
+                        new ImageLayout(image)
+                                .setTileGridXOffset(0)
+                                .setTileGridYOffset(0)
+                                .setTileHeight(64)
+                                .setTileWidth(64))
+                .tile()
+                .getRenderedImage());
         pbj.setParameter("quantizationColors", InverseColorMapRasterOp.DEFAULT_QUANTIZATION_COLORS);
         pbj.setParameter("alphaThreshold", 1);
         pbj.setParameter("IndexColorModel", icm);

@@ -30,11 +30,9 @@ import org.xml.sax.helpers.AttributesImpl;
  */
 class MultiPolygonEncoder extends GeometryEncoder<MultiPolygon> {
 
-    static final QualifiedName MULTI_POLYGON =
-            new QualifiedName(GML.NAMESPACE, "MultiPolygon", "gml");
+    static final QualifiedName MULTI_POLYGON = new QualifiedName(GML.NAMESPACE, "MultiPolygon", "gml");
 
-    static final QualifiedName POLYGON_MEMBER =
-            new QualifiedName(GML.NAMESPACE, "polygonMember", "gml");
+    static final QualifiedName POLYGON_MEMBER = new QualifiedName(GML.NAMESPACE, "polygonMember", "gml");
 
     QualifiedName multiPolygon;
 
@@ -50,8 +48,7 @@ class MultiPolygonEncoder extends GeometryEncoder<MultiPolygon> {
     }
 
     @Override
-    public void encode(MultiPolygon geometry, AttributesImpl atts, GMLWriter handler)
-            throws Exception {
+    public void encode(MultiPolygon geometry, AttributesImpl atts, GMLWriter handler) throws Exception {
         handler.startElement(multiPolygon, atts);
 
         for (int i = 0; i < geometry.getNumGeometries(); i++) {

@@ -43,8 +43,7 @@ public class TestFeatureSource implements Closeable {
     private DataAccess<FeatureType, Feature> dataStore;
     private MappingFeatureSource mappedSource;
 
-    public TestFeatureSource(
-            String schemaBase, String filename, String nsUri, String mappedTypeName) {
+    public TestFeatureSource(String schemaBase, String filename, String nsUri, String mappedTypeName) {
         this.schemaBase = schemaBase;
         this.filename = filename;
         this.nsUri = nsUri;

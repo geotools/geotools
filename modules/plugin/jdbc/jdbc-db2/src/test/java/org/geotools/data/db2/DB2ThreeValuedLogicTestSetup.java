@@ -28,14 +28,10 @@ public class DB2ThreeValuedLogicTestSetup extends JDBCThreeValuedLogicTestSetup 
 
     @Override
     protected void createAbcTable() throws Exception {
-        run(
-                "CREATE TABLE "
-                        + DB2TestUtil.SCHEMA_QUOTED
-                        + ".\"abc\"(\"name\" varchar(10), \"a\" int, \"b\" int, \"c\" int)");
-        run(
-                "INSERT INTO "
-                        + DB2TestUtil.SCHEMA_QUOTED
-                        + ".\"abc\" VALUES('n_n_n', null, null, null)");
+        run("CREATE TABLE "
+                + DB2TestUtil.SCHEMA_QUOTED
+                + ".\"abc\"(\"name\" varchar(10), \"a\" int, \"b\" int, \"c\" int)");
+        run("INSERT INTO " + DB2TestUtil.SCHEMA_QUOTED + ".\"abc\" VALUES('n_n_n', null, null, null)");
         run("INSERT INTO " + DB2TestUtil.SCHEMA_QUOTED + ".\"abc\" VALUES('a_b_c', 1, 2, 3)");
     }
 

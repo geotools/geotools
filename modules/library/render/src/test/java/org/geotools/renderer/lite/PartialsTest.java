@@ -56,18 +56,18 @@ public class PartialsTest {
     @Before
     public void setUp() throws Exception {
 
-        File property_point =
-                new File(TestData.getResource(this, "partialPointLabel.properties").toURI());
+        File property_point = new File(
+                TestData.getResource(this, "partialPointLabel.properties").toURI());
         PropertyDataStore ds_point = new PropertyDataStore(property_point.getParentFile());
         fs_point = ds_point.getFeatureSource("partialPointLabel");
 
-        File property_line =
-                new File(TestData.getResource(this, "partialLineLabel.properties").toURI());
+        File property_line = new File(
+                TestData.getResource(this, "partialLineLabel.properties").toURI());
         PropertyDataStore ds_line = new PropertyDataStore(property_line.getParentFile());
         fs_line = ds_line.getFeatureSource("partialLineLabel");
 
-        File property_area =
-                new File(TestData.getResource(this, "partialAreaLabel.properties").toURI());
+        File property_area = new File(
+                TestData.getResource(this, "partialAreaLabel.properties").toURI());
         PropertyDataStore ds_area = new PropertyDataStore(property_area.getParentFile());
         fs_area = ds_area.getFeatureSource("partialAreaLabel");
 
@@ -268,36 +268,33 @@ public class PartialsTest {
         // PartialsTest.showImage("Area Partials:True", TIME, image);
     }
 
-    public static void showImage(String testName, long timeOut, final BufferedImage image)
-            throws InterruptedException {
+    public static void showImage(String testName, long timeOut, final BufferedImage image) throws InterruptedException {
         // final String headless = System.getProperty("java.awt.headless", "false");
         // if (!headless.equalsIgnoreCase("true") && TestData.isInteractiveTest()) {
         try {
             Frame frame = new Frame(testName);
-            frame.addWindowListener(
-                    new WindowAdapter() {
+            frame.addWindowListener(new WindowAdapter() {
 
-                        @Override
-                        public void windowClosing(WindowEvent e) {
-                            e.getWindow().dispose();
-                        }
-                    });
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    e.getWindow().dispose();
+                }
+            });
 
-            Panel p =
-                    new Panel() {
+            Panel p = new Panel() {
 
-                        /** <code>serialVersionUID</code> field */
-                        private static final long serialVersionUID = 1L;
+                /** <code>serialVersionUID</code> field */
+                private static final long serialVersionUID = 1L;
 
-                        {
-                            setPreferredSize(new Dimension(image.getWidth(), image.getHeight()));
-                        }
+                {
+                    setPreferredSize(new Dimension(image.getWidth(), image.getHeight()));
+                }
 
-                        @Override
-                        public void paint(Graphics g) {
-                            g.drawImage(image, 0, 0, this);
-                        }
-                    };
+                @Override
+                public void paint(Graphics g) {
+                    g.drawImage(image, 0, 0, this);
+                }
+            };
 
             frame.add(p);
             frame.pack();

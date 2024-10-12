@@ -115,11 +115,9 @@ public class NetCDFAggregationTest extends NetCDFBaseTest {
 
         NetCDFImageReaderSpi readerSpiReversed = new NetCDFImageReaderSpi();
         File fileReversed = TestData.file(this, "unidata/aggExistingReversed.ncml");
-        NetCDFImageReader readerReversed =
-                (NetCDFImageReader) readerSpiReversed.createReaderInstance();
+        NetCDFImageReader readerReversed = (NetCDFImageReader) readerSpiReversed.createReaderInstance();
         readerReversed.setInput(fileReversed);
-        VariableAdapter variableAdapterReversed =
-                readerReversed.getCoverageDescriptor(new NameImpl("T"));
+        VariableAdapter variableAdapterReversed = readerReversed.getCoverageDescriptor(new NameImpl("T"));
 
         assertEquals(
                 variableAdapter.getTemporalDomain().getTemporalExtent(),

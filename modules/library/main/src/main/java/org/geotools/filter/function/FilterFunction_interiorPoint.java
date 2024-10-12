@@ -29,8 +29,7 @@ import org.locationtech.jts.geom.Point;
 public class FilterFunction_interiorPoint extends FunctionExpressionImpl {
 
     public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "interiorPoint", Point.class, parameter("geometry", Geometry.class));
+            new FunctionNameImpl("interiorPoint", Point.class, parameter("geometry", Geometry.class));
 
     public FilterFunction_interiorPoint() {
         super(NAME);

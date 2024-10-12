@@ -53,8 +53,7 @@ public class Features {
             }
 
             @Override
-            public SimpleFeature next()
-                    throws IOException, IllegalArgumentException, NoSuchElementException {
+            public SimpleFeature next() throws IOException, IllegalArgumentException, NoSuchElementException {
                 return (SimpleFeature) r.next();
             }
         };

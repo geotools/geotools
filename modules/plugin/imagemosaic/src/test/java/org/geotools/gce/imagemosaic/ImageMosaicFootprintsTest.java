@@ -112,7 +112,8 @@ import org.locationtech.jts.precision.EnhancedPrecisionOp;
 
 public class ImageMosaicFootprintsTest {
 
-    @Rule public TemporaryFolder folder = new TemporaryFolder();
+    @Rule
+    public TemporaryFolder folder = new TemporaryFolder();
 
     private File testMosaic;
 
@@ -156,9 +157,7 @@ public class ImageMosaicFootprintsTest {
     @Test
     public void testWkbSidecars() throws Exception {
         // create wkb sidecar files
-        ShapefileDataStore ds =
-                new ShapefileDataStore(
-                        URLs.fileToUrl(new File(footprintsSource, "footprints.shp")));
+        ShapefileDataStore ds = new ShapefileDataStore(URLs.fileToUrl(new File(footprintsSource, "footprints.shp")));
         ds.getFeatureSource()
                 .getFeatures()
                 .accepts(
@@ -168,8 +167,7 @@ public class ImageMosaicFootprintsTest {
                                 String fileName = (String) sf.getAttribute("location");
                                 int idx = fileName.lastIndexOf(".");
                                 Geometry g = (Geometry) sf.getDefaultGeometry();
-                                File wkbFile =
-                                        new File(testMosaic, fileName.substring(0, idx) + ".wkb");
+                                File wkbFile = new File(testMosaic, fileName.substring(0, idx) + ".wkb");
                                 byte[] bytes = new WKBWriter().write(g);
                                 FileUtils.writeByteArrayToFile(wkbFile, bytes);
                             } catch (IOException e) {
@@ -184,9 +182,7 @@ public class ImageMosaicFootprintsTest {
     @Test
     public void testWktSidecars() throws Exception {
         // create wkb sidecar files
-        ShapefileDataStore ds =
-                new ShapefileDataStore(
-                        URLs.fileToUrl(new File(footprintsSource, "footprints.shp")));
+        ShapefileDataStore ds = new ShapefileDataStore(URLs.fileToUrl(new File(footprintsSource, "footprints.shp")));
         ds.getFeatureSource()
                 .getFeatures()
                 .accepts(
@@ -196,8 +192,7 @@ public class ImageMosaicFootprintsTest {
                                 String fileName = (String) sf.getAttribute("location");
                                 int idx = fileName.lastIndexOf(".");
                                 Geometry g = (Geometry) sf.getDefaultGeometry();
-                                File wkbFile =
-                                        new File(testMosaic, fileName.substring(0, idx) + ".wkt");
+                                File wkbFile = new File(testMosaic, fileName.substring(0, idx) + ".wkt");
                                 String wkt = new WKTWriter().write(g);
                                 FileUtils.writeStringToFile(wkbFile, wkt, "UTF-8");
                             } catch (IOException e) {
@@ -227,19 +222,14 @@ public class ImageMosaicFootprintsTest {
     }
 
     private void testMultipleSidecars(
-            String testFolder,
-            String loaderClassName,
-            boolean overviewsInRasterSpace,
-            String overviewsSuffixFormat)
+            String testFolder, String loaderClassName, boolean overviewsInRasterSpace, String overviewsSuffixFormat)
             throws Exception {
 
         ImageMosaicReader reader =
-                getMultipleSidecarReader(
-                        testFolder, loaderClassName, overviewsInRasterSpace, overviewsSuffixFormat);
+                getMultipleSidecarReader(testFolder, loaderClassName, overviewsInRasterSpace, overviewsSuffixFormat);
 
         // limit yourself to reading just a bit of it
-        final ParameterValue<GridGeometry2D> gg =
-                AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
+        final ParameterValue<GridGeometry2D> gg = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
         final GeneralBounds envelope = reader.getOriginalEnvelope();
         final Dimension dim = new Dimension();
 
@@ -259,16 +249,13 @@ public class ImageMosaicFootprintsTest {
         double minX = maxX - envelope.getSpan(0) * (spanRatioX);
         double maxY = minY + envelope.getSpan(1) * (spanRatioY);
 
-        final GeneralBounds env2 =
-                new GeneralBounds(new double[] {minX, minY}, new double[] {maxX, maxY});
+        final GeneralBounds env2 = new GeneralBounds(new double[] {minX, minY}, new double[] {maxX, maxY});
         env2.setCoordinateReferenceSystem(envelope.getCoordinateReferenceSystem());
         gg.setValue(new GridGeometry2D(range, env2));
 
-        ParameterValue<String> footprintManagement =
-                AbstractGridFormat.FOOTPRINT_BEHAVIOR.createValue();
+        ParameterValue<String> footprintManagement = AbstractGridFormat.FOOTPRINT_BEHAVIOR.createValue();
         footprintManagement.setValue(FootprintBehavior.Transparent.name());
-        GridCoverage2D coverage =
-                reader.read(new GeneralParameterValue[] {footprintManagement, gg});
+        GridCoverage2D coverage = reader.read(new GeneralParameterValue[] {footprintManagement, gg});
 
         byte[] pixel = new byte[4];
 
@@ -287,30 +274,22 @@ public class ImageMosaicFootprintsTest {
     }
 
     private ImageMosaicReader getMultipleSidecarReader(
-            String testFolder,
-            String loaderClassName,
-            boolean overviewsInRasterSpace,
-            String overviewsSuffixFormat)
+            String testFolder, String loaderClassName, boolean overviewsInRasterSpace, String overviewsSuffixFormat)
             throws IOException {
         TemporaryFolder folder = new TemporaryFolder();
         folder.create();
         File multiWkbs = folder.getRoot();
         FileUtils.copyDirectory(TestData.file(this, testFolder), multiWkbs);
         Properties p = new Properties();
-        p.put(
-                MultiLevelROIProviderFactory.SOURCE_PROPERTY,
-                MultiLevelROIProviderFactory.TYPE_MULTIPLE_SIDECAR);
-        p.put(
-                MultiLevelROIGeometryOverviewsProvider.OVERVIEWS_SUFFIX_FORMAT_KEY,
-                overviewsSuffixFormat);
+        p.put(MultiLevelROIProviderFactory.SOURCE_PROPERTY, MultiLevelROIProviderFactory.TYPE_MULTIPLE_SIDECAR);
+        p.put(MultiLevelROIGeometryOverviewsProvider.OVERVIEWS_SUFFIX_FORMAT_KEY, overviewsSuffixFormat);
         p.put(
                 MultiLevelROIGeometryOverviewsProvider.OVERVIEWS_ROI_IN_RASTER_SPACE_KEY,
                 Boolean.toString(overviewsInRasterSpace));
         if (loaderClassName != null) {
             p.put(MultiLevelROIGeometryOverviewsProvider.FOOTPRINT_LOADER_SPI, loaderClassName);
         }
-        try (FileOutputStream fos =
-                new FileOutputStream(new File(multiWkbs, "footprints.properties"))) {
+        try (FileOutputStream fos = new FileOutputStream(new File(multiWkbs, "footprints.properties"))) {
             p.store(fos, null);
         }
 
@@ -321,9 +300,7 @@ public class ImageMosaicFootprintsTest {
     @Test
     public void testShapefileSidecars() throws Exception {
         // create wkb sidecar files
-        ShapefileDataStore ds =
-                new ShapefileDataStore(
-                        URLs.fileToUrl(new File(footprintsSource, "footprints.shp")));
+        ShapefileDataStore ds = new ShapefileDataStore(URLs.fileToUrl(new File(footprintsSource, "footprints.shp")));
         ds.getFeatureSource()
                 .getFeatures()
                 .accepts(
@@ -335,15 +312,11 @@ public class ImageMosaicFootprintsTest {
                                 Geometry g = (Geometry) sf.getDefaultGeometry();
                                 String filename = fileName.substring(0, idx);
                                 File shpFile = new File(testMosaic, filename + ".shp");
-                                ShapefileDataStore sds =
-                                        new ShapefileDataStore(URLs.fileToUrl(shpFile));
+                                ShapefileDataStore sds = new ShapefileDataStore(URLs.fileToUrl(shpFile));
                                 SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
                                 tb.setName(filename);
                                 GeometryDescriptor gd = sf.getFeatureType().getGeometryDescriptor();
-                                tb.add(
-                                        "the_geom",
-                                        gd.getType().getBinding(),
-                                        gd.getCoordinateReferenceSystem());
+                                tb.add("the_geom", gd.getType().getBinding(), gd.getCoordinateReferenceSystem());
                                 SimpleFeatureType sft = tb.buildFeatureType();
                                 sds.createSchema(sft);
 
@@ -437,8 +410,7 @@ public class ImageMosaicFootprintsTest {
         maskCoverage(true, 10d, decimatingMask);
     }
 
-    private void maskCoverage(boolean footprint, double buffer, Geometry geometryMask)
-            throws Exception {
+    private void maskCoverage(boolean footprint, double buffer, Geometry geometryMask) throws Exception {
         TemporaryFolder folder = new TemporaryFolder();
         folder.create();
         File multiWkts = folder.getRoot();
@@ -446,11 +418,8 @@ public class ImageMosaicFootprintsTest {
 
         // Setting up granules footprint properties
         Properties p = new Properties();
-        p.put(
-                MultiLevelROIProviderFactory.SOURCE_PROPERTY,
-                MultiLevelROIProviderFactory.TYPE_MULTIPLE_SIDECAR);
-        try (FileOutputStream fos =
-                new FileOutputStream(new File(multiWkts, "footprints.properties"))) {
+        p.put(MultiLevelROIProviderFactory.SOURCE_PROPERTY, MultiLevelROIProviderFactory.TYPE_MULTIPLE_SIDECAR);
+        try (FileOutputStream fos = new FileOutputStream(new File(multiWkts, "footprints.properties"))) {
             p.store(fos, null);
         }
 
@@ -459,23 +428,20 @@ public class ImageMosaicFootprintsTest {
         GridCoverage2D coverage = null;
         try {
             reader = format.getReader(multiWkts);
-            AffineTransform2D g2w =
-                    (AffineTransform2D) reader.getOriginalGridToWorld(PixelInCell.CELL_CENTER);
+            AffineTransform2D g2w = (AffineTransform2D) reader.getOriginalGridToWorld(PixelInCell.CELL_CENTER);
             double xScale = g2w.getScaleX();
 
             boolean useBuffer = !Double.isNaN(buffer);
 
             // Setup the intersection mask
-            Geometry intersectingMask =
-                    useBuffer ? geometryMask.buffer(buffer * xScale) : geometryMask;
+            Geometry intersectingMask = useBuffer ? geometryMask.buffer(buffer * xScale) : geometryMask;
             Geometry unionGeometry = null;
             if (footprint) {
                 Geometry leftGeometry = readWktGeometry("r1c1.wkt");
                 Geometry rightGeometry = readWktGeometry("r1c2.wkt");
                 unionGeometry = leftGeometry.union(rightGeometry);
             } else {
-                unionGeometry =
-                        JTS.toGeometry(new ReferencedEnvelope(reader.getOriginalEnvelope()));
+                unionGeometry = JTS.toGeometry(new ReferencedEnvelope(reader.getOriginalEnvelope()));
             }
             Geometry maskedGeometry = unionGeometry.intersection(intersectingMask);
             double inputMaskArea = maskedGeometry.getArea();
@@ -485,8 +451,7 @@ public class ImageMosaicFootprintsTest {
             // Setup reading params
             // FOOTPRINT
             if (footprint) {
-                ParameterValue<String> footprintManagement =
-                        AbstractGridFormat.FOOTPRINT_BEHAVIOR.createValue();
+                ParameterValue<String> footprintManagement = AbstractGridFormat.FOOTPRINT_BEHAVIOR.createValue();
                 footprintManagement.setValue(FootprintBehavior.Transparent.name());
                 paramList.add(footprintManagement);
             }
@@ -503,8 +468,7 @@ public class ImageMosaicFootprintsTest {
 
             // BUFFER
             if (useBuffer) {
-                ParameterValue<Double> maskingBuffer =
-                        ImageMosaicFormat.MASKING_BUFFER_PIXELS.createValue();
+                ParameterValue<Double> maskingBuffer = ImageMosaicFormat.MASKING_BUFFER_PIXELS.createValue();
                 maskingBuffer.setValue(buffer);
                 paramList.add(maskingBuffer);
             }
@@ -523,10 +487,9 @@ public class ImageMosaicFootprintsTest {
             ROIGeometry roi = (ROIGeometry) image.getProperty("ROI");
 
             // Transform the ROI to model space
-            MathTransform2D tx =
-                    coverage.getGridGeometry()
-                            .getCRSToGrid2D(PixelOrientation.UPPER_LEFT)
-                            .inverse();
+            MathTransform2D tx = coverage.getGridGeometry()
+                    .getCRSToGrid2D(PixelOrientation.UPPER_LEFT)
+                    .inverse();
             Geometry roiGeometry = roi.getAsGeometry();
             double tolerance = 0.1d;
             if (geometryMask != this.geometryMask) {
@@ -572,11 +535,8 @@ public class ImageMosaicFootprintsTest {
 
         // Setting up granules footprint properties
         Properties p = new Properties();
-        p.put(
-                MultiLevelROIProviderFactory.SOURCE_PROPERTY,
-                MultiLevelROIProviderFactory.TYPE_MULTIPLE_SIDECAR);
-        try (FileOutputStream fos =
-                new FileOutputStream(new File(multiWkts, "footprints.properties"))) {
+        p.put(MultiLevelROIProviderFactory.SOURCE_PROPERTY, MultiLevelROIProviderFactory.TYPE_MULTIPLE_SIDECAR);
+        try (FileOutputStream fos = new FileOutputStream(new File(multiWkts, "footprints.properties"))) {
             p.store(fos, null);
         }
 
@@ -590,8 +550,7 @@ public class ImageMosaicFootprintsTest {
 
             // Setup reading params
             // FOOTPRINT
-            ParameterValue<String> footprintManagement =
-                    AbstractGridFormat.FOOTPRINT_BEHAVIOR.createValue();
+            ParameterValue<String> footprintManagement = AbstractGridFormat.FOOTPRINT_BEHAVIOR.createValue();
             footprintManagement.setValue(FootprintBehavior.Cut.name());
             paramList.add(footprintManagement);
 
@@ -613,29 +572,23 @@ public class ImageMosaicFootprintsTest {
 
             // GRIDGEOMETRY (specify a chunk of the whole envelope)
             final GeneralBounds oldEnvelope = reader.getOriginalEnvelope();
-            final GeneralBounds cropEnvelope =
-                    new GeneralBounds(
-                            new double[] {
-                                oldEnvelope.getLowerCorner().getOrdinate(0)
-                                        + oldEnvelope.getSpan(0) / 4,
-                                oldEnvelope.getLowerCorner().getOrdinate(1)
-                                        + oldEnvelope.getSpan(1) / 2
-                            },
-                            new double[] {
-                                oldEnvelope.getUpperCorner().getOrdinate(0)
-                                        - oldEnvelope.getSpan(0) / 2,
-                                oldEnvelope.getUpperCorner().getOrdinate(1)
-                            });
+            final GeneralBounds cropEnvelope = new GeneralBounds(
+                    new double[] {
+                        oldEnvelope.getLowerCorner().getOrdinate(0) + oldEnvelope.getSpan(0) / 4,
+                        oldEnvelope.getLowerCorner().getOrdinate(1) + oldEnvelope.getSpan(1) / 2
+                    },
+                    new double[] {
+                        oldEnvelope.getUpperCorner().getOrdinate(0) - oldEnvelope.getSpan(0) / 2,
+                        oldEnvelope.getUpperCorner().getOrdinate(1)
+                    });
             cropEnvelope.setCoordinateReferenceSystem(reader.getCoordinateReferenceSystem());
 
-            ParameterValue<GridGeometry2D> gg =
-                    AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
-            gg.setValue(
-                    new GridGeometry2D(
-                            PixelInCell.CELL_CENTER,
-                            reader.getOriginalGridToWorld(PixelInCell.CELL_CENTER),
-                            cropEnvelope,
-                            null));
+            ParameterValue<GridGeometry2D> gg = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
+            gg.setValue(new GridGeometry2D(
+                    PixelInCell.CELL_CENTER,
+                    reader.getOriginalGridToWorld(PixelInCell.CELL_CENTER),
+                    cropEnvelope,
+                    null));
             paramList.add(gg);
 
             GeneralParameterValue[] params = new GeneralParameterValue[paramList.size()];
@@ -648,10 +601,9 @@ public class ImageMosaicFootprintsTest {
             ROIGeometry roi = (ROIGeometry) image.getProperty("ROI");
 
             // Transform the ROI to model space
-            MathTransform2D tx =
-                    coverage.getGridGeometry()
-                            .getCRSToGrid2D(PixelOrientation.UPPER_LEFT)
-                            .inverse();
+            MathTransform2D tx = coverage.getGridGeometry()
+                    .getCRSToGrid2D(PixelOrientation.UPPER_LEFT)
+                    .inverse();
             Geometry roiGeometry = roi.getAsGeometry();
             Geometry coverageGeometry = JTS.transform(roiGeometry, tx);
             double coverageMaskArea = coverageGeometry.getArea();
@@ -705,8 +657,7 @@ public class ImageMosaicFootprintsTest {
         }
     }
 
-    private Geometry readWktGeometry(String fileName)
-            throws FileNotFoundException, IOException, ParseException {
+    private Geometry readWktGeometry(String fileName) throws FileNotFoundException, IOException, ParseException {
         WKTReader wktReader = new WKTReader();
         File file = TestData.file(this, "footprint_wkts" + File.separatorChar + fileName);
         try (FileReader fileReader = new FileReader(file)) {
@@ -714,8 +665,7 @@ public class ImageMosaicFootprintsTest {
         }
     }
 
-    private void assertItalyFootprints()
-            throws NoSuchAuthorityCodeException, FactoryException, IOException {
+    private void assertItalyFootprints() throws NoSuchAuthorityCodeException, FactoryException, IOException {
         GridCoverage2D coverage = readCoverage();
 
         // RenderedImageBrowser.showChain(coverage.getRenderedImage());
@@ -741,14 +691,12 @@ public class ImageMosaicFootprintsTest {
         assertTrue(pixel[0] + pixel[1] + pixel[2] > 0);
     }
 
-    private GridCoverage2D readCoverage()
-            throws NoSuchAuthorityCodeException, FactoryException, IOException {
+    private GridCoverage2D readCoverage() throws NoSuchAuthorityCodeException, FactoryException, IOException {
         final AbstractGridFormat format = TestUtils.getFormat(testMosaicUrl);
         final ImageMosaicReader reader = TestUtils.getReader(testMosaicUrl, format);
         // activate footprint management
         GeneralParameterValue[] params = new GeneralParameterValue[2];
-        ParameterValue<String> footprintManagement =
-                AbstractGridFormat.FOOTPRINT_BEHAVIOR.createValue();
+        ParameterValue<String> footprintManagement = AbstractGridFormat.FOOTPRINT_BEHAVIOR.createValue();
         footprintManagement.setValue(FootprintBehavior.Cut.name());
         params[0] = footprintManagement;
 
@@ -774,8 +722,7 @@ public class ImageMosaicFootprintsTest {
 
         // activate footprint management
         GeneralParameterValue[] params = new GeneralParameterValue[3];
-        ParameterValue<String> footprintManagement =
-                AbstractGridFormat.FOOTPRINT_BEHAVIOR.createValue();
+        ParameterValue<String> footprintManagement = AbstractGridFormat.FOOTPRINT_BEHAVIOR.createValue();
         footprintManagement.setValue(FootprintBehavior.Transparent.name());
         params[0] = footprintManagement;
 
@@ -785,8 +732,7 @@ public class ImageMosaicFootprintsTest {
         params[1] = jaiImageRead;
 
         // limit yourself to reading just a bit of it
-        final ParameterValue<GridGeometry2D> gg =
-                AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
+        final ParameterValue<GridGeometry2D> gg = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
         final Dimension dim = new Dimension();
         dim.setSize(4, 4);
         final Rectangle rasterArea = ((GridEnvelope2D) reader.getOriginalGridRange());
@@ -794,13 +740,12 @@ public class ImageMosaicFootprintsTest {
         rasterArea.x = 0;
         rasterArea.y = (int) (rasterArea.getHeight() / 2);
         final GridEnvelope2D range = new GridEnvelope2D(rasterArea);
-        gg.setValue(
-                new GridGeometry2D(
-                        range,
-                        PixelInCell.CELL_CENTER,
-                        reader.getOriginalGridToWorld(PixelInCell.CELL_CENTER),
-                        reader.getCoordinateReferenceSystem(),
-                        null));
+        gg.setValue(new GridGeometry2D(
+                range,
+                PixelInCell.CELL_CENTER,
+                reader.getOriginalGridToWorld(PixelInCell.CELL_CENTER),
+                reader.getCoordinateReferenceSystem(),
+                null));
         params[2] = gg;
 
         GridCoverage2D coverage = reader.read(params);
@@ -835,8 +780,7 @@ public class ImageMosaicFootprintsTest {
 
         // activate footprint management
         GeneralParameterValue[] params = new GeneralParameterValue[3];
-        ParameterValue<String> footprintManagement =
-                AbstractGridFormat.FOOTPRINT_BEHAVIOR.createValue();
+        ParameterValue<String> footprintManagement = AbstractGridFormat.FOOTPRINT_BEHAVIOR.createValue();
         footprintManagement.setValue(FootprintBehavior.Transparent.name());
         params[0] = footprintManagement;
 
@@ -848,8 +792,7 @@ public class ImageMosaicFootprintsTest {
         // limit yourself to reading just a bit of it
         MathTransform mt = reader.getOriginalGridToWorld(PixelInCell.CELL_CENTER);
         GridEnvelope2D ge = new GridEnvelope2D(6, 44, 1, 1);
-        final ParameterValue<GridGeometry2D> gg =
-                AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
+        final ParameterValue<GridGeometry2D> gg = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
         gg.setValue(new GridGeometry2D(ge, mt, DefaultGeographicCRS.WGS84));
         params[2] = gg;
 
@@ -914,12 +857,10 @@ public class ImageMosaicFootprintsTest {
         assertTrue(pixel[0] + pixel[1] + pixel[2] > 0);
         disposeCoverage(coverage);
 
-        final ImageMosaicReader reader =
-                TestUtils.getReader(testMosaicUrl, new ImageMosaicFormat());
+        final ImageMosaicReader reader = TestUtils.getReader(testMosaicUrl, new ImageMosaicFormat());
         // activate footprint management
         GeneralParameterValue[] params = new GeneralParameterValue[3];
-        ParameterValue<String> footprintManagement =
-                AbstractGridFormat.FOOTPRINT_BEHAVIOR.createValue();
+        ParameterValue<String> footprintManagement = AbstractGridFormat.FOOTPRINT_BEHAVIOR.createValue();
         footprintManagement.setValue(FootprintBehavior.Transparent.name());
         params[0] = footprintManagement;
 
@@ -929,19 +870,14 @@ public class ImageMosaicFootprintsTest {
         params[1] = jaiImageRead;
 
         // GridGeometry, small aread at the upper right corner
-        final GridEnvelope2D ge2D =
-                new GridEnvelope2D(
-                        reader.getOriginalGridRange().getHigh(0) - 3,
-                        reader.getOriginalGridRange().getLow(1),
-                        3,
-                        3);
-        final GridGeometry2D gg2D =
-                new GridGeometry2D(
-                        ge2D,
-                        reader.getOriginalGridToWorld(PixelInCell.CELL_CENTER),
-                        reader.getCoordinateReferenceSystem());
-        ParameterValue<GridGeometry2D> gg2DParam =
-                ImageMosaicFormat.READ_GRIDGEOMETRY2D.createValue();
+        final GridEnvelope2D ge2D = new GridEnvelope2D(
+                reader.getOriginalGridRange().getHigh(0) - 3,
+                reader.getOriginalGridRange().getLow(1),
+                3,
+                3);
+        final GridGeometry2D gg2D = new GridGeometry2D(
+                ge2D, reader.getOriginalGridToWorld(PixelInCell.CELL_CENTER), reader.getCoordinateReferenceSystem());
+        ParameterValue<GridGeometry2D> gg2DParam = ImageMosaicFormat.READ_GRIDGEOMETRY2D.createValue();
         gg2DParam.setValue(gg2D);
         params[2] = gg2DParam;
 
@@ -1000,12 +936,10 @@ public class ImageMosaicFootprintsTest {
         assertTrue(pixel[0] + pixel[1] + pixel[2] > 0);
         disposeCoverage(coverage);
 
-        final ImageMosaicReader reader =
-                TestUtils.getReader(testMosaicUrl, new ImageMosaicFormat());
+        final ImageMosaicReader reader = TestUtils.getReader(testMosaicUrl, new ImageMosaicFormat());
         // activate footprint management
         GeneralParameterValue[] params = new GeneralParameterValue[3];
-        ParameterValue<String> footprintManagement =
-                AbstractGridFormat.FOOTPRINT_BEHAVIOR.createValue();
+        ParameterValue<String> footprintManagement = AbstractGridFormat.FOOTPRINT_BEHAVIOR.createValue();
         footprintManagement.setValue(FootprintBehavior.Transparent.name());
         params[0] = footprintManagement;
 
@@ -1015,19 +949,14 @@ public class ImageMosaicFootprintsTest {
         params[1] = jaiImageRead;
 
         // GridGeometry, small read at the upper right corner
-        final GridEnvelope2D ge2D =
-                new GridEnvelope2D(
-                        reader.getOriginalGridRange().getHigh(0) - 3,
-                        reader.getOriginalGridRange().getLow(1),
-                        3,
-                        3);
-        final GridGeometry2D gg2D =
-                new GridGeometry2D(
-                        ge2D,
-                        reader.getOriginalGridToWorld(PixelInCell.CELL_CENTER),
-                        reader.getCoordinateReferenceSystem());
-        ParameterValue<GridGeometry2D> gg2DParam =
-                ImageMosaicFormat.READ_GRIDGEOMETRY2D.createValue();
+        final GridEnvelope2D ge2D = new GridEnvelope2D(
+                reader.getOriginalGridRange().getHigh(0) - 3,
+                reader.getOriginalGridRange().getLow(1),
+                3,
+                3);
+        final GridGeometry2D gg2D = new GridGeometry2D(
+                ge2D, reader.getOriginalGridToWorld(PixelInCell.CELL_CENTER), reader.getCoordinateReferenceSystem());
+        ParameterValue<GridGeometry2D> gg2DParam = ImageMosaicFormat.READ_GRIDGEOMETRY2D.createValue();
         gg2DParam.setValue(gg2D);
         params[2] = gg2DParam;
 
@@ -1062,8 +991,7 @@ public class ImageMosaicFootprintsTest {
     }
 
     private void saveFootprintProperties(Properties p) throws FileNotFoundException, IOException {
-        try (FileOutputStream fos =
-                new FileOutputStream(new File(testMosaic, "footprints.properties"))) {
+        try (FileOutputStream fos = new FileOutputStream(new File(testMosaic, "footprints.properties"))) {
             p.store(fos, null);
         }
     }
@@ -1113,14 +1041,10 @@ public class ImageMosaicFootprintsTest {
 
     @Test
     public void testFootprintA() throws IOException {
-        ImageMosaicReader reader =
-                (ImageMosaicReader)
-                        new ImageMosaicFormatFactory()
-                                .createFormat()
-                                .getReader(TestData.file(this, "footprint_a"));
+        ImageMosaicReader reader = (ImageMosaicReader)
+                new ImageMosaicFormatFactory().createFormat().getReader(TestData.file(this, "footprint_a"));
         GeneralParameterValue[] params = new GeneralParameterValue[1];
-        ParameterValue<String> footprintManagement =
-                AbstractGridFormat.FOOTPRINT_BEHAVIOR.createValue();
+        ParameterValue<String> footprintManagement = AbstractGridFormat.FOOTPRINT_BEHAVIOR.createValue();
         footprintManagement.setValue(FootprintBehavior.Transparent.name());
         params[0] = footprintManagement;
 
@@ -1160,12 +1084,11 @@ public class ImageMosaicFootprintsTest {
     }
 
     public void checkFootprint(File mosaic) throws IOException {
-        ImageMosaicReader reader =
-                (ImageMosaicReader) new ImageMosaicFormatFactory().createFormat().getReader(mosaic);
+        ImageMosaicReader reader = (ImageMosaicReader)
+                new ImageMosaicFormatFactory().createFormat().getReader(mosaic);
 
         GeneralParameterValue[] params = new GeneralParameterValue[1];
-        ParameterValue<String> footprintManagement =
-                AbstractGridFormat.FOOTPRINT_BEHAVIOR.createValue();
+        ParameterValue<String> footprintManagement = AbstractGridFormat.FOOTPRINT_BEHAVIOR.createValue();
         footprintManagement.setValue(FootprintBehavior.Transparent.name());
         params[0] = footprintManagement;
 
@@ -1430,8 +1353,8 @@ public class ImageMosaicFootprintsTest {
         assertEquals(results[3], 0);
     }
 
-    private GridCoverage2D readRasterFootprint(
-            String path, File testMosaicRaster, boolean testOverviews) throws Exception {
+    private GridCoverage2D readRasterFootprint(String path, File testMosaicRaster, boolean testOverviews)
+            throws Exception {
         // create the base mosaic we are going to use
         File mosaicSourceRaster = TestData.file(this, path);
         FileUtils.copyDirectory(mosaicSourceRaster, testMosaicRaster);
@@ -1440,8 +1363,7 @@ public class ImageMosaicFootprintsTest {
         Properties p = new Properties();
         // Setting Raster property
         p.put(MultiLevelROIProviderFactory.SOURCE_PROPERTY, "raster");
-        try (FileOutputStream fos =
-                new FileOutputStream(new File(testMosaicRaster, "footprints.properties"))) {
+        try (FileOutputStream fos = new FileOutputStream(new File(testMosaicRaster, "footprints.properties"))) {
             p.store(fos, null);
         }
         final AbstractGridFormat format = TestUtils.getFormat(testMosaicRasterUrl);
@@ -1449,8 +1371,7 @@ public class ImageMosaicFootprintsTest {
 
         // activate footprint management
         GeneralParameterValue[] params = new GeneralParameterValue[3];
-        ParameterValue<String> footprintManagement =
-                AbstractGridFormat.FOOTPRINT_BEHAVIOR.createValue();
+        ParameterValue<String> footprintManagement = AbstractGridFormat.FOOTPRINT_BEHAVIOR.createValue();
         footprintManagement.setValue(FootprintBehavior.Transparent.name());
         params[0] = footprintManagement;
 
@@ -1460,8 +1381,7 @@ public class ImageMosaicFootprintsTest {
         params[1] = jaiImageRead;
 
         // setup how much we are going to read
-        final ParameterValue<GridGeometry2D> gg =
-                AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
+        final ParameterValue<GridGeometry2D> gg = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
         final Rectangle rasterArea = ((GridEnvelope2D) reader.getOriginalGridRange());
         if (testOverviews) {
             Dimension dim = new Dimension();
@@ -1472,13 +1392,12 @@ public class ImageMosaicFootprintsTest {
             params[2] = gg;
         } else {
             final GridEnvelope2D range = new GridEnvelope2D(rasterArea);
-            gg.setValue(
-                    new GridGeometry2D(
-                            range,
-                            PixelInCell.CELL_CENTER,
-                            reader.getOriginalGridToWorld(PixelInCell.CELL_CENTER),
-                            reader.getCoordinateReferenceSystem(),
-                            null));
+            gg.setValue(new GridGeometry2D(
+                    range,
+                    PixelInCell.CELL_CENTER,
+                    reader.getOriginalGridToWorld(PixelInCell.CELL_CENTER),
+                    reader.getCoordinateReferenceSystem(),
+                    null));
             params[2] = gg;
         }
         // Read the coverage
@@ -1501,7 +1420,8 @@ public class ImageMosaicFootprintsTest {
         return coverage;
     }
 
-    @Rule public TemporaryFolder redFootprintFolder = new TemporaryFolder();
+    @Rule
+    public TemporaryFolder redFootprintFolder = new TemporaryFolder();
 
     /**
      * When the mosaic bounds don't match the requested image bounds, there's only one granule in
@@ -1518,23 +1438,19 @@ public class ImageMosaicFootprintsTest {
         File testFolder = redFootprintFolder.newFolder();
         File mosaic = TestData.file(this, "red_footprint_test");
         FileUtils.copyDirectory(mosaic, testFolder);
-        ImageMosaicReader reader =
-                (ImageMosaicReader)
-                        new ImageMosaicFormatFactory().createFormat().getReader(testFolder);
+        ImageMosaicReader reader = (ImageMosaicReader)
+                new ImageMosaicFormatFactory().createFormat().getReader(testFolder);
 
-        ParameterValue<String> footprintBehaviorParam =
-                AbstractGridFormat.FOOTPRINT_BEHAVIOR.createValue();
+        ParameterValue<String> footprintBehaviorParam = AbstractGridFormat.FOOTPRINT_BEHAVIOR.createValue();
         footprintBehaviorParam.setValue(FootprintBehavior.Transparent.name());
 
-        ParameterValue<GridGeometry2D> readGeom =
-                AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
+        ParameterValue<GridGeometry2D> readGeom = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
 
         CoordinateReferenceSystem coordinateReferenceSystem =
                 reader.getOriginalEnvelope().getCoordinateReferenceSystem();
 
         GridEnvelope2D gridRange = new GridEnvelope2D(0, 0, 100, 100);
-        Bounds requestEnvelope =
-                new ReferencedEnvelope(989960, 990800, 217380, 219200, coordinateReferenceSystem);
+        Bounds requestEnvelope = new ReferencedEnvelope(989960, 990800, 217380, 219200, coordinateReferenceSystem);
         GridGeometry2D readGeometry = new GridGeometry2D(gridRange, requestEnvelope);
         readGeom.setValue(readGeometry);
         GeneralParameterValue[] readParams = {footprintBehaviorParam, readGeom};
@@ -1588,8 +1504,7 @@ public class ImageMosaicFootprintsTest {
             PropertyIsLike granuleFilter)
             throws IOException {
         ImageMosaicReader reader =
-                getMultipleSidecarReader(
-                        footprint_wkbs, name, overviewsInRasterSpace, overviewsSuffixFormat);
+                getMultipleSidecarReader(footprint_wkbs, name, overviewsInRasterSpace, overviewsSuffixFormat);
         File directory = (File) reader.getSource();
 
         // collect the existing files matching the removal criteria
@@ -1598,8 +1513,7 @@ public class ImageMosaicFootprintsTest {
         assertThat(existingFiles, arrayWithSize(6));
         int otherFilesCount = directory.listFiles(notFileFilter).length;
 
-        GranuleStore store =
-                (GranuleStore) reader.getGranules(reader.getGridCoverageNames()[0], false);
+        GranuleStore store = (GranuleStore) reader.getGranules(reader.getGridCoverageNames()[0], false);
         Hints hints = new Hints(Hints.GRANULE_REMOVAL_POLICY, GranuleRemovalPolicy.ALL);
         int removed = store.removeGranules(granuleFilter, hints);
         assertEquals(1, removed);
@@ -1645,15 +1559,14 @@ public class ImageMosaicFootprintsTest {
         try {
             for (int i = 0; i < numberOfSamples; i++) {
                 int finalI = i;
-                service.submit(
-                        () -> {
-                            try {
-                                geometries.add(loader.loadFootprint(testFiles[finalI]));
-                            } catch (Exception e) {
-                                errors.getAndIncrement();
-                            }
-                            latch.countDown();
-                        });
+                service.submit(() -> {
+                    try {
+                        geometries.add(loader.loadFootprint(testFiles[finalI]));
+                    } catch (Exception e) {
+                        errors.getAndIncrement();
+                    }
+                    latch.countDown();
+                });
             }
             latch.await();
         } finally {

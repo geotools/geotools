@@ -107,8 +107,7 @@ public final class ColorUtilities {
      * @param upper Index (exclusive) of the last element of {@code ARGB} to change.
      */
     @SuppressWarnings("fallthrough")
-    public static void expand(
-            final Color[] colors, final int[] ARGB, final int lower, final int upper) {
+    public static void expand(final Color[] colors, final int[] ARGB, final int lower, final int upper) {
         /*
          * Trivial cases.
          */
@@ -142,11 +141,10 @@ public final class ColorUtilities {
             final int oldBase = base;
             do {
                 final double delta = index - base;
-                ARGB[i] =
-                        (roundByte(A0 + delta * A1) << 24)
-                                | (roundByte(R0 + delta * R1) << 16)
-                                | (roundByte(G0 + delta * G1) << 8)
-                                | (roundByte(B0 + delta * B1));
+                ARGB[i] = (roundByte(A0 + delta * A1) << 24)
+                        | (roundByte(R0 + delta * R1) << 16)
+                        | (roundByte(G0 + delta * G1) << 8)
+                        | (roundByte(B0 + delta * B1));
                 if (++i == upper) {
                     return;
                 }
@@ -188,8 +186,7 @@ public final class ColorUtilities {
      *     IndexColorModel inherits a equals(Object) implementation from ColorModel, but do not
      *     override it, so the definition is incomplete.
      */
-    public static IndexColorModel getIndexColorModel(
-            final int[] ARGB, final int numBands, final int visibleBand) {
+    public static IndexColorModel getIndexColorModel(final int[] ARGB, final int numBands, final int visibleBand) {
         boolean hasAlpha = false;
         int transparent = -1;
         final int length = ARGB.length;
@@ -258,11 +255,7 @@ public final class ColorUtilities {
         color[2] /= 0.8249; //                    1.08883;
         for (int i = 0; i < 3; i++) {
             final float c = color[i];
-            color[i] =
-                    (float)
-                            ((c > 216 / 24389f)
-                                    ? Math.pow(c, 1.0 / 3)
-                                    : ((24389 / 27.0) * c + 16) / 116);
+            color[i] = (float) ((c > 216 / 24389f) ? Math.pow(c, 1.0 / 3) : ((24389 / 27.0) * c + 16) / 116);
         }
         final float L = 116 * color[1] - 16;
         final float a = 500 * (color[0] - color[1]);
@@ -353,12 +346,9 @@ public final class ColorUtilities {
      *     #getTransparentPixel transparent} pixel), or -1 if none.
      * @return The index of the color, or 0.
      */
-    public static int getColorIndex(
-            final IndexColorModel colors, final Color color, final int exclude) {
+    public static int getColorIndex(final IndexColorModel colors, final Color color, final int exclude) {
         final ColorSpace space = colors.getColorSpace();
-        final float[] RGB = {
-            color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f
-        };
+        final float[] RGB = {color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f};
         final float[] REF = XYZtoLAB(space.toCIEXYZ(RGB));
         float delta = Float.POSITIVE_INFINITY;
         int index = 0;
@@ -450,8 +440,7 @@ public final class ColorUtilities {
                 return -Float.MAX_VALUE;
             default:
                 throw new IllegalArgumentException(
-                        MessageFormat.format(
-                                ErrorKeys.ILLEGAL_ARGUMENT_$2, "DataType unknown:", dataType));
+                        MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "DataType unknown:", dataType));
         }
     }
 
@@ -491,11 +480,8 @@ public final class ColorUtilities {
      */
     public static int findColorIndex(Color bgColor, IndexColorModel icm) {
         if (bgColor == null)
-            throw new NullPointerException(
-                    (MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "bgColor")));
-        if (icm == null)
-            throw new NullPointerException(
-                    (MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "icm")));
+            throw new NullPointerException((MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "bgColor")));
+        if (icm == null) throw new NullPointerException((MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "icm")));
 
         final int r = bgColor.getRed();
         final int g = bgColor.getGreen();
@@ -602,40 +588,19 @@ public final class ColorUtilities {
 
             default:
                 throw new IllegalArgumentException(
-                        MessageFormat.format(
-                                ErrorKeys.ILLEGAL_ARGUMENT_$2, "DataType unknown:", dataType));
+                        MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "DataType unknown:", dataType));
         }
     }
 
-    public static final ComponentColorModel GRAY_CM =
-            new ComponentColorModel(
-                    ColorSpace.getInstance(ColorSpace.CS_GRAY),
-                    false,
-                    false,
-                    Transparency.OPAQUE,
-                    DataBuffer.TYPE_BYTE);
+    public static final ComponentColorModel GRAY_CM = new ComponentColorModel(
+            ColorSpace.getInstance(ColorSpace.CS_GRAY), false, false, Transparency.OPAQUE, DataBuffer.TYPE_BYTE);
 
-    public static final ComponentColorModel GRAY_ALPHA_CM =
-            new ComponentColorModel(
-                    ColorSpace.getInstance(ColorSpace.CS_GRAY),
-                    true,
-                    false,
-                    Transparency.TRANSLUCENT,
-                    DataBuffer.TYPE_BYTE);
+    public static final ComponentColorModel GRAY_ALPHA_CM = new ComponentColorModel(
+            ColorSpace.getInstance(ColorSpace.CS_GRAY), true, false, Transparency.TRANSLUCENT, DataBuffer.TYPE_BYTE);
 
-    public static final ComponentColorModel RGB_CM =
-            new ComponentColorModel(
-                    ColorSpace.getInstance(ColorSpace.CS_sRGB),
-                    false,
-                    false,
-                    Transparency.OPAQUE,
-                    DataBuffer.TYPE_BYTE);
+    public static final ComponentColorModel RGB_CM = new ComponentColorModel(
+            ColorSpace.getInstance(ColorSpace.CS_sRGB), false, false, Transparency.OPAQUE, DataBuffer.TYPE_BYTE);
 
-    public static final ComponentColorModel RGB_ALPHA_CM =
-            new ComponentColorModel(
-                    ColorSpace.getInstance(ColorSpace.CS_sRGB),
-                    true,
-                    false,
-                    Transparency.TRANSLUCENT,
-                    DataBuffer.TYPE_BYTE);
+    public static final ComponentColorModel RGB_ALPHA_CM = new ComponentColorModel(
+            ColorSpace.getInstance(ColorSpace.CS_sRGB), true, false, Transparency.TRANSLUCENT, DataBuffer.TYPE_BYTE);
 }

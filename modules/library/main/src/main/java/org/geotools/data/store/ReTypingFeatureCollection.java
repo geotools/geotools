@@ -45,13 +45,11 @@ public class ReTypingFeatureCollection extends DecoratingSimpleFeatureCollection
     SimpleFeatureType featureType;
 
     public ReTypingFeatureCollection(
-            FeatureCollection<SimpleFeatureType, SimpleFeature> delegate,
-            SimpleFeatureType featureType) {
+            FeatureCollection<SimpleFeatureType, SimpleFeature> delegate, SimpleFeatureType featureType) {
         this(DataUtilities.simple(delegate), featureType);
     }
 
-    public ReTypingFeatureCollection(
-            SimpleFeatureCollection delegate, SimpleFeatureType featureType) {
+    public ReTypingFeatureCollection(SimpleFeatureCollection delegate, SimpleFeatureType featureType) {
         super(delegate);
         this.featureType = featureType;
     }

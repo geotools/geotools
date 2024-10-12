@@ -14,8 +14,7 @@ import org.geotools.swing.event.MapMouseListener;
  * @since 8.0
  * @version $Id$
  */
-public class WaitingMapMouseListener
-        extends WaitingListener<MapMouseEvent, WaitingMapMouseListener.Type>
+public class WaitingMapMouseListener extends WaitingListener<MapMouseEvent, WaitingMapMouseListener.Type>
         implements MapMouseListener {
 
     public static enum Type {

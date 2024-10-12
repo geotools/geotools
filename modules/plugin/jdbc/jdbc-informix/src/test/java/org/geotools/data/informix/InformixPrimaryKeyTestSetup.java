@@ -53,9 +53,8 @@ public class InformixPrimaryKeyTestSetup extends JDBCPrimaryKeyTestSetup {
 
     @Override
     protected void createMultiColumnPrimaryKeyTable() throws Exception {
-        run(
-                "CREATE TABLE multi ( pkey1 int NOT NULL, pkey2 VARCHAR(255) NOT NULL, "
-                        + "name VARCHAR(255), geom ST_GEOMETRY)");
+        run("CREATE TABLE multi ( pkey1 int NOT NULL, pkey2 VARCHAR(255) NOT NULL, "
+                + "name VARCHAR(255), geom ST_GEOMETRY)");
         run("ALTER TABLE multi ADD CONSTRAINT PRIMARY KEY (pkey1,pkey2)");
 
         run("INSERT INTO multi VALUES (1, 'x', 'one', NULL)");

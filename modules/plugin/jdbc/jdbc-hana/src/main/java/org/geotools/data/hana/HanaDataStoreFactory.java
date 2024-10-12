@@ -35,79 +35,60 @@ public class HanaDataStoreFactory extends JDBCDataStoreFactory {
 
     private static final String DATABASE_ID = "hana";
 
-    public static final Param DBTYPE =
-            new Param(
-                    "dbtype",
-                    String.class,
-                    "Type",
-                    true,
-                    DATABASE_ID,
-                    Collections.singletonMap(Parameter.LEVEL, "program"));
+    public static final Param DBTYPE = new Param(
+            "dbtype", String.class, "Type", true, DATABASE_ID, Collections.singletonMap(Parameter.LEVEL, "program"));
 
     public static final Param PORT =
-            new Param(
-                    "port",
-                    Integer.class,
-                    "Port to connect to. If omitted, you have to specify an instance.",
-                    false);
+            new Param("port", Integer.class, "Port to connect to. If omitted, you have to specify an instance.", false);
 
     public static final Param INSTANCE =
-            new Param(
-                    "instance",
-                    Integer.class,
-                    "Instance Number. Leave empty if you have specified a port.",
-                    false);
+            new Param("instance", Integer.class, "Instance Number. Leave empty if you have specified a port.", false);
 
-    public static final Param DATABASE =
-            new Param(
-                    "database",
-                    String.class,
-                    "Database. Leave empty if you have specified a port or if you want to connect in single database mode. "
-                            + "Use SYSTEMDB for the system database. ",
-                    false);
+    public static final Param DATABASE = new Param(
+            "database",
+            String.class,
+            "Database. Leave empty if you have specified a port or if you want to connect in single database mode. "
+                    + "Use SYSTEMDB for the system database. ",
+            false);
 
     public static final Param USE_SSL = new Param("use ssl", Boolean.class, "Use SSL", false);
 
     /** Enables direct encoding of selected filter functions in sql */
-    public static final Param ENCODE_FUNCTIONS =
-            new Param(
-                    "encode functions",
-                    Boolean.class,
-                    "Set to true to have a set of filter functions be translated directly in SQL. "
-                            + "Due to differences in the type systems the result might not be the same as evaluating "
-                            + "them in memory, including the SQL failing with errors while the in memory version works fine. "
-                            + "However this allows to push more of the filter into the database, increasing performance.",
-                    false,
-                    Boolean.FALSE,
-                    Collections.singletonMap(Param.LEVEL, "advanced"));
+    public static final Param ENCODE_FUNCTIONS = new Param(
+            "encode functions",
+            Boolean.class,
+            "Set to true to have a set of filter functions be translated directly in SQL. "
+                    + "Due to differences in the type systems the result might not be the same as evaluating "
+                    + "them in memory, including the SQL failing with errors while the in memory version works fine. "
+                    + "However this allows to push more of the filter into the database, increasing performance.",
+            false,
+            Boolean.FALSE,
+            Collections.singletonMap(Param.LEVEL, "advanced"));
 
     /** Prevents simplification by the database */
-    public static final Param DISABLE_SIMPLIFY =
-            new Param(
-                    "disable simplification",
-                    Boolean.class,
-                    "Certain operations like map rendering can request geometry simplification from the database. "
-                            + "Setting this option to true will prevent geometry simplifcation by the database.",
-                    false,
-                    Boolean.FALSE);
+    public static final Param DISABLE_SIMPLIFY = new Param(
+            "disable simplification",
+            Boolean.class,
+            "Certain operations like map rendering can request geometry simplification from the database. "
+                    + "Setting this option to true will prevent geometry simplifcation by the database.",
+            false,
+            Boolean.FALSE);
 
-    public static final Param SELECT_HINTS =
-            new Param(
-                    "SELECT Hints",
-                    String.class,
-                    "Comma-separated list of hints that will be applied to SELECT queries, e.g. ESTIMATION_SAMPLES(0), NO_HASH_JOIN",
-                    false,
-                    null,
-                    Collections.singletonMap(Parameter.IS_LARGE_TEXT, Boolean.TRUE));
+    public static final Param SELECT_HINTS = new Param(
+            "SELECT Hints",
+            String.class,
+            "Comma-separated list of hints that will be applied to SELECT queries, e.g. ESTIMATION_SAMPLES(0), NO_HASH_JOIN",
+            false,
+            null,
+            Collections.singletonMap(Parameter.IS_LARGE_TEXT, Boolean.TRUE));
 
     /** parameter that enables estimated extents instead of exact ones */
-    public static final Param ESTIMATED_EXTENTS =
-            new Param(
-                    "Estimated extents",
-                    Boolean.class,
-                    "Use cached data to quickly get an estimate of the data bounds",
-                    false,
-                    Boolean.FALSE);
+    public static final Param ESTIMATED_EXTENTS = new Param(
+            "Estimated extents",
+            Boolean.class,
+            "Use cached data to quickly get an estimate of the data bounds",
+            false,
+            Boolean.FALSE);
 
     private static final String DESCRIPTION = "SAP HANA";
 
@@ -186,19 +167,18 @@ public class HanaDataStoreFactory extends JDBCDataStoreFactory {
             return HanaConnectionParameters.forPort(host, port, options).buildUrl();
         }
         if (instance == null) {
-            throw new IOException(
-                    "Either a port or an instance number must be given in the connection properties");
+            throw new IOException("Either a port or an instance number must be given in the connection properties");
         }
         if ((database != null) && (!database.isEmpty())) {
             return HanaConnectionParameters.forMultiContainer(host, instance, database, options)
                     .buildUrl();
         }
-        return HanaConnectionParameters.forSingleContainer(host, instance, options).buildUrl();
+        return HanaConnectionParameters.forSingleContainer(host, instance, options)
+                .buildUrl();
     }
 
     @Override
-    protected JDBCDataStore createDataStoreInternal(JDBCDataStore dataStore, Map<String, ?> params)
-            throws IOException {
+    protected JDBCDataStore createDataStoreInternal(JDBCDataStore dataStore, Map<String, ?> params) throws IOException {
         HanaDialect dialect = (HanaDialect) dataStore.getSQLDialect();
         Boolean encodeFunctions = (Boolean) ENCODE_FUNCTIONS.lookUp(params);
         dialect.setFunctionEncodingEnabled((encodeFunctions != null) && encodeFunctions);

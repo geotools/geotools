@@ -55,11 +55,8 @@ public class BBOXImpl extends AbstractPreparedGeometryFilter implements BBOX {
         if (e2 != null) setExpression2(e2);
     }
 
-    public BBOXImpl(
-            Expression name, double minx, double miny, double maxx, double maxy, String srs) {
-        this(
-                name,
-                new LiteralExpressionImpl(boundingPolygon(new Envelope(minx, maxx, miny, maxy))));
+    public BBOXImpl(Expression name, double minx, double miny, double maxx, double maxy, String srs) {
+        this(name, new LiteralExpressionImpl(boundingPolygon(new Envelope(minx, maxx, miny, maxy))));
         this.srs = srs;
     }
 
@@ -70,18 +67,8 @@ public class BBOXImpl extends AbstractPreparedGeometryFilter implements BBOX {
     }
 
     public BBOXImpl(
-            Expression name,
-            double minx,
-            double miny,
-            double maxx,
-            double maxy,
-            String srs,
-            MatchAction matchAction) {
-        this(
-                name,
-                new LiteralExpressionImpl(
-                        boundingPolygon(buildEnvelope(minx, maxx, miny, maxy, srs))),
-                matchAction);
+            Expression name, double minx, double miny, double maxx, double maxy, String srs, MatchAction matchAction) {
+        this(name, new LiteralExpressionImpl(boundingPolygon(buildEnvelope(minx, maxx, miny, maxy, srs))), matchAction);
         this.srs = srs;
     }
 
@@ -94,18 +81,15 @@ public class BBOXImpl extends AbstractPreparedGeometryFilter implements BBOX {
         switch (literals) {
             case BOTH:
                 return cacheValue;
-            case RIGHT:
-                {
-                    return preppedEvaluate(rightPreppedGeom, left);
-                }
-            case LEFT:
-                {
-                    return preppedEvaluate(leftPreppedGeom, right);
-                }
-            default:
-                {
-                    return basicEvaluate(left, right);
-                }
+            case RIGHT: {
+                return preppedEvaluate(rightPreppedGeom, left);
+            }
+            case LEFT: {
+                return preppedEvaluate(leftPreppedGeom, right);
+            }
+            default: {
+                return basicEvaluate(left, right);
+            }
         }
     }
 
@@ -232,8 +216,7 @@ public class BBOXImpl extends AbstractPreparedGeometryFilter implements BBOX {
         return polygon;
     }
 
-    private static ReferencedEnvelope buildEnvelope(
-            double minx, double maxx, double miny, double maxy, String srs) {
+    private static ReferencedEnvelope buildEnvelope(double minx, double maxx, double miny, double maxy, String srs) {
         CoordinateReferenceSystem crs = null;
 
         if (srs != null && !("".equals(srs)))

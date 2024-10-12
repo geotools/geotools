@@ -32,13 +32,11 @@ public class GeoPkgNoPrimaryKeyTestSetup extends JDBCNoPrimaryKeyTestSetup {
         run(
                 /*"CREATE TABLE lake (id INTEGER )");*/
                 "CREATE TABLE lake (id INTEGER, geom BLOB)");
-        String sql =
-                "INSERT INTO gpkg_geometry_columns VALUES ('lake', 'geom', 'POLYGON', 4326, 0, 0)";
+        String sql = "INSERT INTO gpkg_geometry_columns VALUES ('lake', 'geom', 'POLYGON', 4326, 0, 0)";
 
         run(sql);
-        sql =
-                "INSERT INTO gpkg_contents (table_name, data_type, identifier, srs_id) VALUES "
-                        + "('lake', 'features', 'lake', 4326)";
+        sql = "INSERT INTO gpkg_contents (table_name, data_type, identifier, srs_id) VALUES "
+                + "('lake', 'features', 'lake', 4326)";
         run(sql);
 
         run("ALTER TABLE lake add name VARCHAR");
@@ -46,11 +44,7 @@ public class GeoPkgNoPrimaryKeyTestSetup extends JDBCNoPrimaryKeyTestSetup {
         Polygon poly = gb.polygon(12, 6, 14, 8, 16, 6, 16, 4, 14, 4, 12, 6);
         // run( "INSERT INTO lake VALUES (0," +
         //    "GeomFromText('POLYGON((12 6, 14 8, 16 6, 16 4, 14 4, 12 6))',4326),'muddy')");
-        sql =
-                "INSERT INTO lake VALUES ("
-                        + "1,X'"
-                        + ((GeoPkgTestSetup) delegate).toString(poly)
-                        + "', 'muddy');";
+        sql = "INSERT INTO lake VALUES (" + "1,X'" + ((GeoPkgTestSetup) delegate).toString(poly) + "', 'muddy');";
         run(sql);
     }
 

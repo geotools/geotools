@@ -25,8 +25,7 @@ import org.geotools.gce.imagemosaic.properties.PropertiesCollectorSPI;
  *
  * @author Simone Giannecchini, GeoSolutions SAS
  */
-abstract class NumericFileNameExtractorSPI extends DefaultPropertiesCollectorSPI
-        implements PropertiesCollectorSPI {
+abstract class NumericFileNameExtractorSPI extends DefaultPropertiesCollectorSPI implements PropertiesCollectorSPI {
 
     public NumericFileNameExtractorSPI(final String name) {
         super(name);

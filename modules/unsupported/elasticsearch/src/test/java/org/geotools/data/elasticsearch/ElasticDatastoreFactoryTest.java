@@ -78,18 +78,13 @@ public class ElasticDatastoreFactoryTest {
         dataStoreFactory = Mockito.spy(new ElasticDataStoreFactory());
         clientBuilder = mock(RestClientBuilder.class);
         hostsCaptor = ArgumentCaptor.forClass(HttpHost[].class);
-        Mockito.doReturn(clientBuilder)
-                .when(dataStoreFactory)
-                .createClientBuilder(hostsCaptor.capture());
+        Mockito.doReturn(clientBuilder).when(dataStoreFactory).createClientBuilder(hostsCaptor.capture());
         @SuppressWarnings("PMD.CloseResource")
         final RestClient restClient = mock(RestClient.class);
         when(clientBuilder.build()).thenReturn(restClient);
         final DataStore dataStore = mock(DataStore.class);
-        Mockito.doReturn(dataStore)
-                .when(dataStoreFactory)
-                .createDataStore(any(RestClient.class), any(), anyMap());
-        configCallbackCaptor =
-                ArgumentCaptor.forClass(RestClientBuilder.HttpClientConfigCallback.class);
+        Mockito.doReturn(dataStore).when(dataStoreFactory).createDataStore(any(RestClient.class), any(), anyMap());
+        configCallbackCaptor = ArgumentCaptor.forClass(RestClientBuilder.HttpClientConfigCallback.class);
         when(clientBuilder.setHttpClientConfigCallback(configCallbackCaptor.capture()))
                 .thenReturn(clientBuilder);
         httpClientBuilder = mock(HttpAsyncClientBuilder.class);
@@ -97,10 +92,8 @@ public class ElasticDatastoreFactoryTest {
         when(httpClientBuilder.setDefaultCredentialsProvider(credentialsProviderCaptor.capture()))
                 .thenReturn(httpClientBuilder);
         threadFactoryCaptor = ArgumentCaptor.forClass(ThreadFactory.class);
-        when(httpClientBuilder.setThreadFactory(threadFactoryCaptor.capture()))
-                .thenReturn(httpClientBuilder);
-        requestConfigCallbackCaptor =
-                ArgumentCaptor.forClass(RestClientBuilder.RequestConfigCallback.class);
+        when(httpClientBuilder.setThreadFactory(threadFactoryCaptor.capture())).thenReturn(httpClientBuilder);
+        requestConfigCallbackCaptor = ArgumentCaptor.forClass(RestClientBuilder.RequestConfigCallback.class);
         when(clientBuilder.setRequestConfigCallback(requestConfigCallbackCaptor.capture()))
                 .thenReturn(clientBuilder);
         requestConfigBuilder = mock(RequestConfig.Builder.class);
@@ -110,8 +103,7 @@ public class ElasticDatastoreFactoryTest {
         ElasticDataStoreFactory.httpThreads.set(1);
     }
 
-    private Map<String, Serializable> getParams(
-            String hosts, int port, String user, String proxyUser) {
+    private Map<String, Serializable> getParams(String hosts, int port, String user, String proxyUser) {
         final Map<String, Serializable> params = new HashMap<>();
         params.put(ElasticDataStoreFactory.HOSTNAME.key, hosts);
         params.put(ElasticDataStoreFactory.HOSTPORT.key, port);
@@ -137,18 +129,13 @@ public class ElasticDatastoreFactoryTest {
 
         assertEquals(2, configCallbackCaptor.getAllValues().size());
         configCallbackCaptor.getAllValues().get(0).customizeHttpClient(httpClientBuilder);
-        Credentials credentials =
-                credentialsProviderCaptor
-                        .getValue()
-                        .getCredentials(new AuthScope("localhost", 9200));
+        Credentials credentials = credentialsProviderCaptor.getValue().getCredentials(new AuthScope("localhost", 9200));
         assertNotNull(credentials);
         assertEquals("admin", credentials.getUserPrincipal().getName());
         assertEquals("admin", credentials.getPassword());
         configCallbackCaptor.getAllValues().get(1).customizeHttpClient(httpClientBuilder);
         Credentials proxyCredentials =
-                credentialsProviderCaptor
-                        .getValue()
-                        .getCredentials(new AuthScope("localhost", 9200));
+                credentialsProviderCaptor.getValue().getCredentials(new AuthScope("localhost", 9200));
         assertNotNull(proxyCredentials);
         assertEquals("proxy", proxyCredentials.getUserPrincipal().getName());
         assertEquals("proxy", proxyCredentials.getPassword());
@@ -161,10 +148,7 @@ public class ElasticDatastoreFactoryTest {
         Thread proxyThread = proxyThreadFactory.newThread(mock(Runnable.class));
         assertEquals("esrest-asynchttp-PROXY_USER-2", proxyThread.getName());
 
-        assertNotNull(
-                requestConfigCallbackCaptor
-                        .getValue()
-                        .customizeRequestConfig(requestConfigBuilder));
+        assertNotNull(requestConfigCallbackCaptor.getValue().customizeRequestConfig(requestConfigBuilder));
     }
 
     @Test
@@ -178,10 +162,7 @@ public class ElasticDatastoreFactoryTest {
 
         assertEquals(1, configCallbackCaptor.getAllValues().size());
         configCallbackCaptor.getAllValues().get(0).customizeHttpClient(httpClientBuilder);
-        Credentials credentials =
-                credentialsProviderCaptor
-                        .getValue()
-                        .getCredentials(new AuthScope("localhost", 9200));
+        Credentials credentials = credentialsProviderCaptor.getValue().getCredentials(new AuthScope("localhost", 9200));
         assertNotNull(credentials);
         assertEquals("admin", credentials.getUserPrincipal().getName());
         assertEquals("admin", credentials.getPassword());
@@ -191,10 +172,7 @@ public class ElasticDatastoreFactoryTest {
         Thread thread = threadFactory.newThread(mock(Runnable.class));
         assertEquals("esrest-asynchttp-ADMIN-1", thread.getName());
 
-        assertNotNull(
-                requestConfigCallbackCaptor
-                        .getValue()
-                        .customizeRequestConfig(requestConfigBuilder));
+        assertNotNull(requestConfigCallbackCaptor.getValue().customizeRequestConfig(requestConfigBuilder));
     }
 
     @Test
@@ -227,14 +205,8 @@ public class ElasticDatastoreFactoryTest {
         assertEquals("localhost2", hostsCaptor.getValue()[1].getHostName());
         assertEquals(9201, hostsCaptor.getValue()[1].getPort());
         configCallbackCaptor.getValue().customizeHttpClient(httpClientBuilder);
-        assertNotNull(
-                credentialsProviderCaptor
-                        .getValue()
-                        .getCredentials(new AuthScope("localhost1", 9201)));
-        assertNotNull(
-                credentialsProviderCaptor
-                        .getValue()
-                        .getCredentials(new AuthScope("localhost2", 9201)));
+        assertNotNull(credentialsProviderCaptor.getValue().getCredentials(new AuthScope("localhost1", 9201)));
+        assertNotNull(credentialsProviderCaptor.getValue().getCredentials(new AuthScope("localhost2", 9201)));
     }
 
     @Test
@@ -255,8 +227,7 @@ public class ElasticDatastoreFactoryTest {
 
     @Test(expected = UncheckedIOException.class)
     @Ignore
-    public void testBuildClientWithSslRejectUnauthorizedDisabledAndInvalidSSLContext()
-            throws IOException {
+    public void testBuildClientWithSslRejectUnauthorizedDisabledAndInvalidSSLContext() throws IOException {
         params.put(ElasticDataStoreFactory.SSL_REJECT_UNAUTHORIZED.key, false);
         assertNotNull(dataStoreFactory.createDataStore(params));
         assertTrue(configCallbackCaptor.getAllValues().size() > 0);

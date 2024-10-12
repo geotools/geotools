@@ -53,37 +53,29 @@ public class EqualAreaListVisitorTest {
     public static final Expression PERSONS = FF.property("PERSONS");
 
     /** Returns a feature collection with a simplified US geometry and PERSONS count */
-    public static ListFeatureCollection getSimplifiedStatesCollection()
-            throws SchemaException, IOException {
+    public static ListFeatureCollection getSimplifiedStatesCollection() throws SchemaException, IOException {
         SimpleFeatureType schema =
-                DataUtilities.createType(
-                        "states", "the_geom:MultiPolygon,STATE_ABBR:String,PERSONS:Double");
+                DataUtilities.createType("states", "the_geom:MultiPolygon,STATE_ABBR:String,PERSONS:Double");
 
-        try (BufferedReader br =
-                new BufferedReader(
-                        new InputStreamReader(
-                                EqualAreaListVisitorTest.class.getResourceAsStream(
-                                        "states.properties")))) {
-            List<SimpleFeature> featureList =
-                    br.lines()
-                            .map(line -> DataUtilities.createFeature(schema, line))
-                            .collect(Collectors.toList());
+        try (BufferedReader br = new BufferedReader(
+                new InputStreamReader(EqualAreaListVisitorTest.class.getResourceAsStream("states.properties")))) {
+            List<SimpleFeature> featureList = br.lines()
+                    .map(line -> DataUtilities.createFeature(schema, line))
+                    .collect(Collectors.toList());
             return new ListFeatureCollection(schema, featureList);
         }
     }
 
     public static double getTotalArea(ListFeatureCollection fc, Expression areaFunction) {
-        return fc.stream().mapToDouble(f -> areaFunction.evaluate(f, Double.class)).sum();
+        return fc.stream()
+                .mapToDouble(f -> areaFunction.evaluate(f, Double.class))
+                .sum();
     }
 
     /** Returns min and max value applying the expression over the feature collection */
-    public static NumberRange<Double> getMinMax(
-            ListFeatureCollection fc, Expression attributeExpression) {
+    public static NumberRange<Double> getMinMax(ListFeatureCollection fc, Expression attributeExpression) {
         DoubleSummaryStatistics stats =
-                fc.stream()
-                        .collect(
-                                Collectors.summarizingDouble(
-                                        f -> attributeExpression.evaluate(f, Double.class)));
+                fc.stream().collect(Collectors.summarizingDouble(f -> attributeExpression.evaluate(f, Double.class)));
         return new NumberRange<>(Double.class, stats.getMin(), stats.getMax());
     }
 
@@ -92,8 +84,7 @@ public class EqualAreaListVisitorTest {
         @Test
         public void testEmptyCollection() throws SchemaException, IOException {
             EqualAreaListVisitor visitor =
-                    new EqualAreaListVisitor(
-                            PERSONS, EqualAreaFunction.getCartesianAreaFunction(), 2);
+                    new EqualAreaListVisitor(PERSONS, EqualAreaFunction.getCartesianAreaFunction(), 2);
             ListFeatureCollection empty =
                     new ListFeatureCollection(getSimplifiedStatesCollection().getSchema());
             empty.accepts(visitor, null);
@@ -106,8 +97,7 @@ public class EqualAreaListVisitorTest {
             Expression areaFunction = EqualAreaFunction.getCartesianAreaFunction();
 
             // twice as many classes
-            EqualAreaListVisitor visitor =
-                    new EqualAreaListVisitor(PERSONS, areaFunction, fc.size() * 2);
+            EqualAreaListVisitor visitor = new EqualAreaListVisitor(PERSONS, areaFunction, fc.size() * 2);
             fc.accepts(visitor, null);
             @SuppressWarnings("unchecked")
             List<Double>[] result = (List<Double>[]) visitor.getResult().getValue();
@@ -125,7 +115,8 @@ public class EqualAreaListVisitorTest {
     @RunWith(Parameterized.class)
     public static class ParametricBreaksTest {
 
-        @Parameterized.Parameter public int numClasses;
+        @Parameterized.Parameter
+        public int numClasses;
 
         @Parameterized.Parameter(1)
         public double tolerance;
@@ -134,8 +125,7 @@ public class EqualAreaListVisitorTest {
         public static Collection<Object[]> data() {
             // as a rule of thumb, the more classes, the harder it is to split them in even blocks,
             // especially if the original polygons have much variation in size
-            return Arrays.asList(
-                    new Object[][] {{2, 0.1}, {3, 0.1}, {4, 0.4}, {5, 0.5}, {6, 0.6}, {7, 0.5}});
+            return Arrays.asList(new Object[][] {{2, 0.1}, {3, 0.1}, {4, 0.4}, {5, 0.5}, {6, 0.6}, {7, 0.5}});
         }
 
         @Test
@@ -145,8 +135,7 @@ public class EqualAreaListVisitorTest {
             double totalArea = getTotalArea(fc, areaFunction);
             NumberRange<Double> minMax = getMinMax(fc, PERSONS);
 
-            EqualAreaListVisitor visitor =
-                    new EqualAreaListVisitor(PERSONS, areaFunction, numClasses);
+            EqualAreaListVisitor visitor = new EqualAreaListVisitor(PERSONS, areaFunction, numClasses);
             fc.accepts(visitor, null);
             @SuppressWarnings("unchecked")
             List<Double>[] result = (List<Double>[]) visitor.getResult().getValue();
@@ -156,22 +145,15 @@ public class EqualAreaListVisitorTest {
             List<Double> lastBin = result[result.length - 1];
             assertThat(minMax.getMaximum(), Matchers.equalTo(lastBin.get(lastBin.size() - 1)));
 
-            Map<PropertyIsBetween, Double> filterMap =
-                    Arrays.stream(result)
-                            .map(
-                                    list ->
-                                            FF.between(
-                                                    PERSONS,
-                                                    FF.literal(list.get(0)),
-                                                    FF.literal(list.get(list.size() - 1))))
-                            .collect(Collectors.toMap(k -> k, k -> Double.valueOf(0)));
+            Map<PropertyIsBetween, Double> filterMap = Arrays.stream(result)
+                    .map(list -> FF.between(PERSONS, FF.literal(list.get(0)), FF.literal(list.get(list.size() - 1))))
+                    .collect(Collectors.toMap(k -> k, k -> Double.valueOf(0)));
             for (SimpleFeature feature : fc) {
                 boolean found = false;
                 for (Map.Entry<PropertyIsBetween, Double> entry : filterMap.entrySet()) {
 
                     if (entry.getKey().evaluate(feature)) {
-                        entry.setValue(
-                                entry.getValue() + areaFunction.evaluate(feature, Double.class));
+                        entry.setValue(entry.getValue() + areaFunction.evaluate(feature, Double.class));
                         found = true;
                         break;
                     }

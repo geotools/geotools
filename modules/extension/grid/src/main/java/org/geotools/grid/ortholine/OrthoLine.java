@@ -51,11 +51,7 @@ public class OrthoLine implements LineElement {
      * @param ordinate position of the line
      * @param level integer level associated with this line
      */
-    public OrthoLine(
-            ReferencedEnvelope gridBounds,
-            LineOrientation orientation,
-            double ordinate,
-            int level) {
+    public OrthoLine(ReferencedEnvelope gridBounds, LineOrientation orientation, double ordinate, int level) {
 
         this.crs = gridBounds.getCoordinateReferenceSystem();
         this.orientation = orientation;

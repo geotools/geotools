@@ -30,14 +30,8 @@ public class FunctionImplTest {
 
     @Test
     public void testFunctionName() throws Exception {
-        FunctionName fn =
-                FunctionImpl.functionName(
-                        "foo",
-                        "bar:Integer",
-                        "a",
-                        "x:String:1,1",
-                        "y:MultiPolygon",
-                        "z:java.util.Date:1,");
+        FunctionName fn = FunctionImpl.functionName(
+                "foo", "bar:Integer", "a", "x:String:1,1", "y:MultiPolygon", "z:java.util.Date:1,");
 
         Assert.assertEquals("foo", fn.getName());
         check(fn.getReturn(), "bar", Integer.class, 1, 1);

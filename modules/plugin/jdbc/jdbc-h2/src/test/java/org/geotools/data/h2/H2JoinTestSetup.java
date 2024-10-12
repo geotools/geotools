@@ -26,9 +26,8 @@ public class H2JoinTestSetup extends JDBCJoinTestSetup {
 
     @Override
     protected void createJoinTable() throws Exception {
-        run(
-                "CREATE TABLE \"geotools\".\"ftjoin\" ( \"id\" int PRIMARY KEY, "
-                        + "\"name\" VARCHAR, \"geom\" GEOMETRY, \"join1intProperty\" int)");
+        run("CREATE TABLE \"geotools\".\"ftjoin\" ( \"id\" int PRIMARY KEY, "
+                + "\"name\" VARCHAR, \"geom\" GEOMETRY, \"join1intProperty\" int)");
         run("CALL AddGeometryColumn('geotools', 'ftjoin', 'geom', 4326, 'GEOMETRY', 2)");
 
         run(

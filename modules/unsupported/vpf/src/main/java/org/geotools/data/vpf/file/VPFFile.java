@@ -369,8 +369,7 @@ public class VPFFile {
      * @param id The value of the column to check
      * @return a TableRow that matches the other parameters
      */
-    private synchronized SimpleFeature getRowFromIterator(
-            Iterator<SimpleFeature> iter, String idName, int id) {
+    private synchronized SimpleFeature getRowFromIterator(Iterator<SimpleFeature> iter, String idName, int id) {
         SimpleFeature result = null;
         SimpleFeature currentFeature;
         int value = -1;
@@ -487,8 +486,7 @@ public class VPFFile {
      * @exception IOException if an error occurs
      * @exception NumberFormatException if an error occurs
      */
-    private synchronized VPFColumn readColumn()
-            throws VPFHeaderFormatException, IOException, NumberFormatException {
+    private synchronized VPFColumn readColumn() throws VPFHeaderFormatException, IOException, NumberFormatException {
         char ctrl = readChar();
 
         if (ctrl == VPF_RECORD_SEPARATOR) {
@@ -518,13 +516,11 @@ public class VPFFile {
         }
 
         String colDesc = readString(String.valueOf(VPF_ELEMENT_SEPARATOR) + VPF_FIELD_SEPARATOR);
-        String descTableName =
-                readString(String.valueOf(VPF_ELEMENT_SEPARATOR) + VPF_FIELD_SEPARATOR);
+        String descTableName = readString(String.valueOf(VPF_ELEMENT_SEPARATOR) + VPF_FIELD_SEPARATOR);
         String indexFile = readString(String.valueOf(VPF_ELEMENT_SEPARATOR) + VPF_FIELD_SEPARATOR);
         String narrTable = readString(String.valueOf(VPF_ELEMENT_SEPARATOR) + VPF_FIELD_SEPARATOR);
 
-        return new VPFColumn(
-                name, type, elements, key, colDesc, descTableName, indexFile, narrTable);
+        return new VPFColumn(name, type, elements, key, colDesc, descTableName, indexFile, narrTable);
     }
     /**
      * Constructs an object which is an instance of Geometry by reading values from the file.
@@ -535,8 +531,8 @@ public class VPFFile {
      * @return the constructed object
      * @throws IOException on any file IO errors
      */
-    protected synchronized Object readGeometry(
-            int instancesCount, int dimensionality, boolean readDoubles) throws IOException {
+    protected synchronized Object readGeometry(int instancesCount, int dimensionality, boolean readDoubles)
+            throws IOException {
         Object result = null;
         Coordinate coordinate = null;
         CoordinateList coordinates = new CoordinateList();
@@ -545,19 +541,16 @@ public class VPFFile {
         for (int inx = 0; inx < instancesCount; inx++) {
             switch (dimensionality) {
                 case 2:
-                    coordinate =
-                            new Coordinate(
-                                    readDoubles ? readDouble() : readFloat(),
-                                    readDoubles ? readDouble() : readFloat());
+                    coordinate = new Coordinate(
+                            readDoubles ? readDouble() : readFloat(), readDoubles ? readDouble() : readFloat());
 
                     break;
 
                 case 3:
-                    coordinate =
-                            new Coordinate(
-                                    readDoubles ? readDouble() : readFloat(),
-                                    readDoubles ? readDouble() : readFloat(),
-                                    readDoubles ? readDouble() : readFloat());
+                    coordinate = new Coordinate(
+                            readDoubles ? readDouble() : readFloat(),
+                            readDoubles ? readDouble() : readFloat(),
+                            readDoubles ? readDouble() : readFloat());
 
                     break;
 
@@ -579,9 +572,7 @@ public class VPFFile {
         if (instancesCount == 1) {
             result = factory.createPoint(coordinate);
         } else {
-            result =
-                    factory.createLineString(
-                            new CoordinateArraySequence(coordinates.toCoordinateArray()));
+            result = factory.createLineString(new CoordinateArraySequence(coordinates.toCoordinateArray()));
         }
 
         return result;
@@ -621,14 +612,10 @@ public class VPFFile {
                 AttributeDescriptor descriptor = column.getDescriptor();
 
                 if (descriptor.getType().getRestrictions().isEmpty()
-                        || descriptor
-                                .getType()
-                                .getRestrictions()
-                                .contains(org.geotools.api.filter.Filter.INCLUDE)) {
+                        || descriptor.getType().getRestrictions().contains(org.geotools.api.filter.Filter.INCLUDE)) {
                     values[inx] = readVariableSizeData(column.getTypeChar());
                 } else {
-                    values[inx] =
-                            readFixedSizeData(column.getTypeChar(), column.getElementsNumber());
+                    values[inx] = readFixedSizeData(column.getTypeChar(), column.getElementsNumber());
                 }
             }
             if (textPrimitive) {
@@ -668,8 +655,7 @@ public class VPFFile {
      * @return an <code>Object</code> value
      * @exception IOException if an error occurs
      */
-    protected synchronized Object readFixedSizeData(char dataType, int instancesCount)
-            throws IOException {
+    protected synchronized Object readFixedSizeData(char dataType, int instancesCount) throws IOException {
         Object result = null;
 
         switch (dataType) {
@@ -790,8 +776,7 @@ public class VPFFile {
             ctrl = readChar();
 
             if (ctrl != VPF_FIELD_SEPARATOR && ctrl != VPF_RECORD_SEPARATOR) {
-                throw new VPFHeaderFormatException(
-                        "Header format does not fit VPF file definition.");
+                throw new VPFHeaderFormatException("Header format does not fit VPF file definition.");
             }
 
             if (ctrl == VPF_RECORD_SEPARATOR) column = null;
@@ -799,8 +784,7 @@ public class VPFFile {
         }
 
         if (getRecordSize() < 0) {
-            variableIndex =
-                    new VariableIndexInputStream(getVariableIndexFileName(), getByteOrder());
+            variableIndex = new VariableIndexInputStream(getVariableIndexFileName(), getByteOrder());
         }
     }
 
@@ -1006,10 +990,9 @@ public class VPFFile {
         if (fileName.equalsIgnoreCase(FEATURE_CLASS_SCHEMA_TABLE)) {
             result = getDirectoryName().concat(File.separator).concat("FCZ");
         } else {
-            result =
-                    getDirectoryName()
-                            .concat(File.separator)
-                            .concat(fileName.substring(0, fileName.length() - 1) + "X");
+            result = getDirectoryName()
+                    .concat(File.separator)
+                    .concat(fileName.substring(0, fileName.length() - 1) + "X");
         }
 
         return result;

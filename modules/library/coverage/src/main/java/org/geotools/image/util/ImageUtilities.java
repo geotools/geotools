@@ -128,22 +128,21 @@ public final class ImageUtilities {
                 // native libs installed
                 if (mediaLib) {
                     final Class<?> mImage = mediaLibImage;
-                    PrivilegedAction<Boolean> action =
-                            () -> {
-                                try {
-                                    // get the method
-                                    final Class<?>[] params = {};
-                                    Method method = mImage.getDeclaredMethod("isAvailable", params);
+                    PrivilegedAction<Boolean> action = () -> {
+                        try {
+                            // get the method
+                            final Class<?>[] params = {};
+                            Method method = mImage.getDeclaredMethod("isAvailable", params);
 
-                                    // invoke
-                                    final Object[] paramsObj = {};
+                            // invoke
+                            final Object[] paramsObj = {};
 
-                                    final Object o = mImage.getDeclaredConstructor().newInstance();
-                                    return (Boolean) method.invoke(o, paramsObj);
-                                } catch (Throwable e) {
-                                    return false;
-                                }
-                            };
+                            final Object o = mImage.getDeclaredConstructor().newInstance();
+                            return (Boolean) method.invoke(o, paramsObj);
+                        } catch (Throwable e) {
+                            return false;
+                        }
+                    };
                     mediaLib = AccessController.doPrivileged(action);
                 }
             } catch (Throwable e) {
@@ -180,8 +179,7 @@ public final class ImageUtilities {
 
     /** {@link RenderingHints} for requesting Nearest Neighbor intepolation. */
     public static final RenderingHints NN_INTERPOLATION_HINT =
-            new RenderingHints(
-                    JAI.KEY_INTERPOLATION, Interpolation.getInstance(Interpolation.INTERP_NEAREST));
+            new RenderingHints(JAI.KEY_INTERPOLATION, Interpolation.getInstance(Interpolation.INTERP_NEAREST));
 
     /** {@link RenderingHints} for avoiding caching of {@link JAI} {@link RenderedOp}s. */
     public static final RenderingHints NOCACHE_HINT = new RenderingHints(JAI.KEY_TILE_CACHE, null);
@@ -191,18 +189,14 @@ public final class ImageUtilities {
      * operations. It contains an instance of a {@link BorderExtenderCopy}.
      */
     public static final RenderingHints EXTEND_BORDER_BY_COPYING =
-            new RenderingHints(
-                    JAI.KEY_BORDER_EXTENDER,
-                    BorderExtender.createInstance(BorderExtender.BORDER_COPY));
+            new RenderingHints(JAI.KEY_BORDER_EXTENDER, BorderExtender.createInstance(BorderExtender.BORDER_COPY));
 
     /**
      * Cached instance of a {@link RenderingHints} for controlling border extension on {@link JAI}
      * operations. It contains an instance of a {@link BorderExtenderReflect}.
      */
     public static final RenderingHints EXTEND_BORDER_BY_REFLECT =
-            new RenderingHints(
-                    JAI.KEY_BORDER_EXTENDER,
-                    BorderExtender.createInstance(BorderExtender.BORDER_REFLECT));
+            new RenderingHints(JAI.KEY_BORDER_EXTENDER, BorderExtender.createInstance(BorderExtender.BORDER_REFLECT));
 
     /**
      * The default tile size. This default tile size can be overridden with a call to {@link
@@ -249,8 +243,7 @@ public final class ImageUtilities {
     public static final RenderingHints BORDER_EXTENDER_HINTS =
             new RenderingHints(JAI.KEY_BORDER_EXTENDER, DEFAULT_BORDER_EXTENDER);
 
-    public static final String DIRECT_KAKADU_PLUGIN =
-            "it.geosolutions.imageio.plugins.jp2k.JP2KKakaduImageReader";
+    public static final String DIRECT_KAKADU_PLUGIN = "it.geosolutions.imageio.plugins.jp2k.JP2KKakaduImageReader";
 
     // FORMULAE FOR FORWARD MAP are derived as follows
     //     Nearest
@@ -329,8 +322,7 @@ public final class ImageUtilities {
      * true}, then all parameters are initially set equal to those of the given {@link
      * RenderedImage} and the returned layout is never {@code null} (except if the image is null).
      */
-    private static ImageLayout getImageLayout(
-            final RenderedImage image, final boolean initToImage) {
+    private static ImageLayout getImageLayout(final RenderedImage image, final boolean initToImage) {
         if (image == null) {
             return null;
         }
@@ -513,8 +505,7 @@ public final class ImageUtilities {
      * @param sources The list of sources {@link RenderedImage}.
      * @return A new {@code ImageLayout}, or the original {@code layout} if no change was needed.
      */
-    public static ImageLayout createIntersection(
-            final ImageLayout layout, final List<RenderedImage> sources) {
+    public static ImageLayout createIntersection(final ImageLayout layout, final List<RenderedImage> sources) {
         ImageLayout result = layout;
         if (result == null) {
             result = new ImageLayout();
@@ -591,8 +582,7 @@ public final class ImageUtilities {
                 }
             }
         }
-        throw new IllegalArgumentException(
-                MessageFormat.format(ErrorKeys.UNKNOW_INTERPOLATION_$1, type));
+        throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.UNKNOW_INTERPOLATION_$1, type));
     }
 
     /**
@@ -915,12 +905,7 @@ public final class ImageUtilities {
     }
 
     public static Rectangle2D layoutHelper(
-            RenderedImage source,
-            float scaleX,
-            float scaleY,
-            float transX,
-            float transY,
-            Interpolation interp) {
+            RenderedImage source, float scaleX, float scaleY, float transX, float transY, Interpolation interp) {
 
         // Represent the scale factors as Rational numbers.
         // Since a value of 1.2 is represented as 1.200001 which
@@ -1052,8 +1037,7 @@ public final class ImageUtilities {
      * @return an instance of {@link ReferencedEnvelope} in WGS84 or <code>null</code> in case a
      *     problem during the conversion occurs.
      */
-    public static ReferencedEnvelope getWGS84ReferencedEnvelope(
-            final GeneralBounds coverageEnvelope) {
+    public static ReferencedEnvelope getWGS84ReferencedEnvelope(final GeneralBounds coverageEnvelope) {
         Utilities.ensureNonNull("coverageEnvelope", coverageEnvelope);
         final ReferencedEnvelope refEnv = new ReferencedEnvelope(coverageEnvelope);
         try {
@@ -1079,13 +1063,11 @@ public final class ImageUtilities {
      * @throws IOException in case the {@link ImageReader} or the {@link ImageInputStream} fail.
      */
     public static Rectangle getDimension(
-            final int imageIndex, final ImageInputStream inStream, final ImageReader reader)
-            throws IOException {
+            final int imageIndex, final ImageInputStream inStream, final ImageReader reader) throws IOException {
         Utilities.ensureNonNull("inStream", inStream);
         Utilities.ensureNonNull("reader", reader);
         if (imageIndex < 0)
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.INDEX_OUT_OF_BOUNDS_$1, imageIndex));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.INDEX_OUT_OF_BOUNDS_$1, imageIndex));
         inStream.reset();
         reader.setInput(inStream);
         return new Rectangle(0, 0, reader.getWidth(imageIndex), reader.getHeight(imageIndex));
@@ -1118,11 +1100,9 @@ public final class ImageUtilities {
      * Build a background values array using the same dataType of the input {@link SampleModel} (if
      * available) and the values provided in the input array.
      */
-    public static Number[] getBackgroundValues(
-            final SampleModel sampleModel, final double[] backgroundValues) {
+    public static Number[] getBackgroundValues(final SampleModel sampleModel, final double[] backgroundValues) {
         Number[] values = null;
-        final int dataType =
-                sampleModel != null ? sampleModel.getDataType() : DataBuffer.TYPE_DOUBLE;
+        final int dataType = sampleModel != null ? sampleModel.getDataType() : DataBuffer.TYPE_DOUBLE;
         final int numBands = sampleModel != null ? sampleModel.getNumBands() : 1;
         switch (dataType) {
             case DataBuffer.TYPE_BYTE:
@@ -1132,10 +1112,9 @@ public final class ImageUtilities {
                 } else {
                     // we have background values available
                     for (int i = 0; i < values.length; i++)
-                        values[i] =
-                                i >= backgroundValues.length
-                                        ? Byte.valueOf((byte) backgroundValues[0])
-                                        : Byte.valueOf((byte) backgroundValues[i]);
+                        values[i] = i >= backgroundValues.length
+                                ? Byte.valueOf((byte) backgroundValues[0])
+                                : Byte.valueOf((byte) backgroundValues[i]);
                 }
                 break;
             case DataBuffer.TYPE_SHORT:
@@ -1145,10 +1124,9 @@ public final class ImageUtilities {
                 else {
                     // we have background values available
                     for (int i = 0; i < values.length; i++)
-                        values[i] =
-                                i >= backgroundValues.length
-                                        ? Short.valueOf((short) backgroundValues[0])
-                                        : Short.valueOf((short) backgroundValues[i]);
+                        values[i] = i >= backgroundValues.length
+                                ? Short.valueOf((short) backgroundValues[0])
+                                : Short.valueOf((short) backgroundValues[i]);
                 }
                 break;
             case DataBuffer.TYPE_INT:
@@ -1157,10 +1135,9 @@ public final class ImageUtilities {
                 else {
                     // we have background values available
                     for (int i = 0; i < values.length; i++)
-                        values[i] =
-                                i >= backgroundValues.length
-                                        ? Integer.valueOf((int) backgroundValues[0])
-                                        : Integer.valueOf((int) backgroundValues[i]);
+                        values[i] = i >= backgroundValues.length
+                                ? Integer.valueOf((int) backgroundValues[0])
+                                : Integer.valueOf((int) backgroundValues[i]);
                 }
                 break;
             case DataBuffer.TYPE_FLOAT:
@@ -1169,10 +1146,9 @@ public final class ImageUtilities {
                 else {
                     // we have background values available
                     for (int i = 0; i < values.length; i++)
-                        values[i] =
-                                i >= backgroundValues.length
-                                        ? Float.valueOf((float) backgroundValues[0])
-                                        : Float.valueOf((float) backgroundValues[i]);
+                        values[i] = i >= backgroundValues.length
+                                ? Float.valueOf((float) backgroundValues[0])
+                                : Float.valueOf((float) backgroundValues[i]);
                 }
                 break;
             case DataBuffer.TYPE_DOUBLE:
@@ -1181,10 +1157,9 @@ public final class ImageUtilities {
                 else {
                     // we have background values available
                     for (int i = 0; i < values.length; i++)
-                        values[i] =
-                                i >= backgroundValues.length
-                                        ? Double.valueOf(backgroundValues[0])
-                                        : Double.valueOf(backgroundValues[i]);
+                        values[i] = i >= backgroundValues.length
+                                ? Double.valueOf(backgroundValues[0])
+                                : Double.valueOf(backgroundValues[i]);
                 }
                 break;
         }
@@ -1224,9 +1199,7 @@ public final class ImageUtilities {
                     Object imageReader = null;
 
                     try {
-                        imageReader =
-                                inputImage.getProperty(
-                                        ImageReadDescriptor.PROPERTY_NAME_IMAGE_READER);
+                        imageReader = inputImage.getProperty(ImageReadDescriptor.PROPERTY_NAME_IMAGE_READER);
                     } catch (NullPointerException npe) {
                         // for some reason, chained cleanup may have already cleaned (and null) some
                         // underlying images. let's ignore it
@@ -1268,8 +1241,7 @@ public final class ImageUtilities {
             // for some reason, chained cleanup may have already cleaned (and null) some images
             // let's ignore it
         }
-        if ((roi != null)
-                && ((ROI.class.equals(roi.getClass()) || (roi instanceof RenderedImage)))) {
+        if ((roi != null) && ((ROI.class.equals(roi.getClass()) || (roi instanceof RenderedImage)))) {
             if (roi instanceof ROI) {
                 ROI roiImage = (ROI) roi;
                 Rectangle bounds = roiImage.getBounds();
@@ -1359,8 +1331,7 @@ public final class ImageUtilities {
      * @param hints The image processing hints, if any (can be null)
      * @return The original image, or a rescaled image
      */
-    public static RenderedImage applyRescaling(
-            Double[] scales, Double[] offsets, RenderedImage image, Hints hints) {
+    public static RenderedImage applyRescaling(Double[] scales, Double[] offsets, RenderedImage image, Hints hints) {
         // if there is nothing to do, return immediately
         if (scales == null && offsets == null) {
             return image;
@@ -1380,28 +1351,20 @@ public final class ImageUtilities {
 
         // use the input hints if possible, but create a proper layout to impose the target data
         // type
-        RenderingHints localHints =
-                hints != null
-                        ? hints.clone()
-                        : (RenderingHints) JAI.getDefaultInstance().getRenderingHints().clone();
-        final ImageLayout layout =
-                Optional.ofNullable((ImageLayout) localHints.get(JAI.KEY_IMAGE_LAYOUT))
-                        .map(il -> (ImageLayout) il.clone())
-                        .orElse(new ImageLayout2(image));
-        SampleModel sm =
-                RasterFactory.createBandedSampleModel(
-                        DataBuffer.TYPE_DOUBLE,
-                        image.getTileWidth(),
-                        image.getTileHeight(),
-                        image.getSampleModel().getNumBands());
+        RenderingHints localHints = hints != null
+                ? hints.clone()
+                : (RenderingHints) JAI.getDefaultInstance().getRenderingHints().clone();
+        final ImageLayout layout = Optional.ofNullable((ImageLayout) localHints.get(JAI.KEY_IMAGE_LAYOUT))
+                .map(il -> (ImageLayout) il.clone())
+                .orElse(new ImageLayout2(image));
+        SampleModel sm = RasterFactory.createBandedSampleModel(
+                DataBuffer.TYPE_DOUBLE,
+                image.getTileWidth(),
+                image.getTileHeight(),
+                image.getSampleModel().getNumBands());
         layout.setSampleModel(sm);
-        layout.setColorModel(
-                new ComponentColorModel(
-                        new BogusColorSpace(numBands),
-                        false,
-                        false,
-                        Transparency.OPAQUE,
-                        DataBuffer.TYPE_DOUBLE));
+        layout.setColorModel(new ComponentColorModel(
+                new BogusColorSpace(numBands), false, false, Transparency.OPAQUE, DataBuffer.TYPE_DOUBLE));
         localHints.put(JAI.KEY_IMAGE_LAYOUT, layout);
 
         // at least one band is getting rescaled, apply the operation
@@ -1448,15 +1411,13 @@ public final class ImageUtilities {
         int subSamplingFactorX = (int) Math.round(requestedRes[0] / selectedRes[0]);
         subSamplingFactorX = subSamplingFactorX == 0 ? 1 : subSamplingFactorX;
 
-        while (subSamplingFactorX > 0 && rasterWidth / subSamplingFactorX <= 0)
-            subSamplingFactorX--;
+        while (subSamplingFactorX > 0 && rasterWidth / subSamplingFactorX <= 0) subSamplingFactorX--;
         subSamplingFactorX = subSamplingFactorX <= 0 ? 1 : subSamplingFactorX;
 
         int subSamplingFactorY = (int) Math.round(requestedRes[1] / selectedRes[1]);
         subSamplingFactorY = subSamplingFactorY == 0 ? 1 : subSamplingFactorY;
 
-        while (subSamplingFactorY > 0 && rasterHeight / subSamplingFactorY <= 0)
-            subSamplingFactorY--;
+        while (subSamplingFactorY > 0 && rasterHeight / subSamplingFactorY <= 0) subSamplingFactorY--;
         subSamplingFactorY = subSamplingFactorY <= 0 ? 1 : subSamplingFactorY;
 
         readParameters.setSourceSubsampling(subSamplingFactorX, subSamplingFactorY, 0, 0);

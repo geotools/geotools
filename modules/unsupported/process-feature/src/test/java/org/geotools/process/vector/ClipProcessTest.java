@@ -42,13 +42,8 @@ public class ClipProcessTest extends Assert {
     public void testClipPoly3DIncluded() throws Exception {
         SimpleFeatureCollection features = fsMeters.getFeatures();
         ClipProcess cp = new ClipProcess();
-        SimpleFeatureCollection result =
-                cp.execute(
-                        features,
-                        new WKTReader()
-                                .read(
-                                        "POLYGON((-10 -10, -10 10010, 10010 10010, 10010 -10, -10 -10))"),
-                        true);
+        SimpleFeatureCollection result = cp.execute(
+                features, new WKTReader().read("POLYGON((-10 -10, -10 10010, 10010 10010, 10010 -10, -10 -10))"), true);
         assertEquals(2, result.size());
         assertSquaresMetersIdentical(result);
     }
@@ -58,10 +53,7 @@ public class ClipProcessTest extends Assert {
         SimpleFeatureCollection features = fsMeters.getFeatures();
         ClipProcess cp = new ClipProcess();
         SimpleFeatureCollection result =
-                cp.execute(
-                        features,
-                        new WKTReader().read("POLYGON((0 0, 0 10000, 10000 10000, 10000 0, 0 0))"),
-                        true);
+                cp.execute(features, new WKTReader().read("POLYGON((0 0, 0 10000, 10000 10000, 10000 0, 0 0))"), true);
         assertEquals(2, result.size());
         assertSquaresMetersIdentical(result);
     }
@@ -70,13 +62,8 @@ public class ClipProcessTest extends Assert {
     public void testClipPoly3DNewVertices() throws Exception {
         SimpleFeatureCollection features = fsMeters.getFeatures();
         ClipProcess cp = new ClipProcess();
-        SimpleFeatureCollection result =
-                cp.execute(
-                        features,
-                        new WKTReader()
-                                .read(
-                                        "POLYGON((0 5000, 0 10000, 10000 10000, 10000 5000, 0 5000))"),
-                        true);
+        SimpleFeatureCollection result = cp.execute(
+                features, new WKTReader().read("POLYGON((0 5000, 0 10000, 10000 10000, 10000 5000, 0 5000))"), true);
         assertEquals(1, result.size());
         try (SimpleFeatureIterator fi = result.features()) {
             // check the first polygon
@@ -102,13 +89,10 @@ public class ClipProcessTest extends Assert {
     public void testClipPoly3DFullyInside() throws Exception {
         SimpleFeatureCollection features = fsMeters.getFeatures();
         ClipProcess cp = new ClipProcess();
-        SimpleFeatureCollection result =
-                cp.execute(
-                        features,
-                        new WKTReader()
-                                .read(
-                                        "POLYGON((2500 2500, 2500 7500, 7500 7500, 7500 2500, 2500 2500))"),
-                        true);
+        SimpleFeatureCollection result = cp.execute(
+                features,
+                new WKTReader().read("POLYGON((2500 2500, 2500 7500, 7500 7500, 7500 2500, 2500 2500))"),
+                true);
         assertEquals(2, result.size());
         try (SimpleFeatureIterator fi = result.features()) {
             // check the first polygon
@@ -165,13 +149,8 @@ public class ClipProcessTest extends Assert {
     public void testClipLine3DIncluded() throws Exception {
         SimpleFeatureCollection features = fsLines.getFeatures();
         ClipProcess cp = new ClipProcess();
-        SimpleFeatureCollection result =
-                cp.execute(
-                        features,
-                        new WKTReader()
-                                .read(
-                                        "POLYGON((-10 -10, -10 10010, 10010 10010, 10010 -10, -10 -10))"),
-                        true);
+        SimpleFeatureCollection result = cp.execute(
+                features, new WKTReader().read("POLYGON((-10 -10, -10 10010, 10010 10010, 10010 -10, -10 -10))"), true);
         assertEquals(1, result.size());
         try (SimpleFeatureIterator fi = result.features()) {
             // check the first polygon
@@ -191,12 +170,8 @@ public class ClipProcessTest extends Assert {
     public void testClipLine3DMidFirstSegment() throws Exception {
         SimpleFeatureCollection features = fsLines.getFeatures();
         ClipProcess cp = new ClipProcess();
-        SimpleFeatureCollection result =
-                cp.execute(
-                        features,
-                        new WKTReader()
-                                .read("POLYGON((-10 -10, -10 10, 5000 10, 5000 -10, -10 -10))"),
-                        true);
+        SimpleFeatureCollection result = cp.execute(
+                features, new WKTReader().read("POLYGON((-10 -10, -10 10, 5000 10, 5000 -10, -10 -10))"), true);
         assertEquals(1, result.size());
         try (SimpleFeatureIterator fi = result.features()) {
             // check the first polygon
@@ -222,12 +197,9 @@ public class ClipProcessTest extends Assert {
 
         Map<String, Object> arguments = new HashMap<>();
         arguments.put("features", features);
-        arguments.put(
-                "clip",
-                new WKTReader().read("POLYGON((-10 -10, -10 10, 5000 10, 5000 -10, -10 -10))"));
+        arguments.put("clip", new WKTReader().read("POLYGON((-10 -10, -10 10, 5000 10, 5000 -10, -10 -10))"));
 
-        Map<String, Object> output =
-                factory.create(new NameImpl("vec", "Clip")).execute(arguments, null);
+        Map<String, Object> output = factory.create(new NameImpl("vec", "Clip")).execute(arguments, null);
         SimpleFeatureCollection result = (SimpleFeatureCollection) output.get("result");
         assertEquals(1, result.size());
     }
@@ -236,12 +208,8 @@ public class ClipProcessTest extends Assert {
     public void testClipCollinearLine3DMidFirstSegment() throws Exception {
         SimpleFeatureCollection features = fsCollinear.getFeatures();
         ClipProcess cp = new ClipProcess();
-        SimpleFeatureCollection result =
-                cp.execute(
-                        features,
-                        new WKTReader()
-                                .read("POLYGON((-10 -10, -10 10, 5000 10, 5000 -10, -10 -10))"),
-                        true);
+        SimpleFeatureCollection result = cp.execute(
+                features, new WKTReader().read("POLYGON((-10 -10, -10 10, 5000 10, 5000 -10, -10 -10))"), true);
         assertEquals(1, result.size());
         try (SimpleFeatureIterator fi = result.features()) {
             // check the first polygon
@@ -262,13 +230,10 @@ public class ClipProcessTest extends Assert {
     public void testClipLine3DMidSecondSegment() throws Exception {
         SimpleFeatureCollection features = fsLines.getFeatures();
         ClipProcess cp = new ClipProcess();
-        SimpleFeatureCollection result =
-                cp.execute(
-                        features,
-                        new WKTReader()
-                                .read(
-                                        "POLYGON((9000 5000, 9000 10000, 11000 10000, 11000 5000, 9000 5000))"),
-                        true);
+        SimpleFeatureCollection result = cp.execute(
+                features,
+                new WKTReader().read("POLYGON((9000 5000, 9000 10000, 11000 10000, 11000 5000, 9000 5000))"),
+                true);
         assertEquals(1, result.size());
         try (SimpleFeatureIterator fi = result.features()) {
             // check the first polygon
@@ -287,13 +252,10 @@ public class ClipProcessTest extends Assert {
     public void testClipExtractBend() throws Exception {
         SimpleFeatureCollection features = fsLines.getFeatures();
         ClipProcess cp = new ClipProcess();
-        SimpleFeatureCollection result =
-                cp.execute(
-                        features,
-                        new WKTReader()
-                                .read(
-                                        "POLYGON((5000 -10, 5000 5000, 11000 5000, 11000 -10, 5000 -10))"),
-                        true);
+        SimpleFeatureCollection result = cp.execute(
+                features,
+                new WKTReader().read("POLYGON((5000 -10, 5000 5000, 11000 5000, 11000 -10, 5000 -10))"),
+                true);
         assertEquals(1, result.size());
         try (SimpleFeatureIterator fi = result.features()) {
             // check the first polygon
@@ -314,13 +276,12 @@ public class ClipProcessTest extends Assert {
         SimpleFeatureCollection features = fsLines.getFeatures();
         ClipProcess cp = new ClipProcess();
         // clip with a rotated "C"
-        SimpleFeatureCollection result =
-                cp.execute(
-                        features,
-                        new WKTReader()
-                                .read(
-                                        "POLYGON((1000 -10, 1000 10, 9000 10, 9000 -10, 8000 -10, 8000 5, 2000 5, 2000 -10, 1000 -10))"),
-                        true);
+        SimpleFeatureCollection result = cp.execute(
+                features,
+                new WKTReader()
+                        .read(
+                                "POLYGON((1000 -10, 1000 10, 9000 10, 9000 -10, 8000 -10, 8000 5, 2000 5, 2000 -10, 1000 -10))"),
+                true);
         assertEquals(1, result.size());
         try (SimpleFeatureIterator fi = result.features()) {
             // check the first polygon
@@ -346,13 +307,11 @@ public class ClipProcessTest extends Assert {
         SimpleFeatureCollection features = fsLines.getFeatures();
         ClipProcess cp = new ClipProcess();
         // clip with a rotated "L"
-        SimpleFeatureCollection result =
-                cp.execute(
-                        features,
-                        new WKTReader()
-                                .read(
-                                        "POLYGON((1000 -10, 1000 5000, 11000 5000, 11000 4000, 2000 4000, 2000 -10, 1000 -10))"),
-                        true);
+        SimpleFeatureCollection result = cp.execute(
+                features,
+                new WKTReader()
+                        .read("POLYGON((1000 -10, 1000 5000, 11000 5000, 11000 4000, 2000 4000, 2000 -10, 1000 -10))"),
+                true);
         assertEquals(1, result.size());
         SimpleFeature f = DataUtilities.first(result);
         MultiLineString ml = (MultiLineString) f.getDefaultGeometry();
@@ -374,12 +333,8 @@ public class ClipProcessTest extends Assert {
         SimpleFeatureCollection features = fsMultilines.getFeatures();
         ClipProcess cp = new ClipProcess();
         // clip with a rotated "L"
-        SimpleFeatureCollection result =
-                cp.execute(
-                        features,
-                        new WKTReader()
-                                .read("POLYGON((900 900, 900 2100, 2100 2100, 2100 900, 900 900))"),
-                        true);
+        SimpleFeatureCollection result = cp.execute(
+                features, new WKTReader().read("POLYGON((900 900, 900 2100, 2100 2100, 2100 900, 900 900))"), true);
         assertEquals(1, result.size());
         // check the first polygon
         SimpleFeature f = DataUtilities.first(result);
@@ -409,8 +364,7 @@ public class ClipProcessTest extends Assert {
         // whose bbox will intersect the bbox of the geometry, but whose intersection is actually
         // emtpy
         SimpleFeatureCollection result =
-                cp.execute(
-                        features, new WKTReader().read("POLYGON((-8 -7, -8 3, 2 3, -8 -7))"), true);
+                cp.execute(features, new WKTReader().read("POLYGON((-8 -7, -8 3, 2 3, -8 -7))"), true);
         assertEquals(0, result.size());
         try (SimpleFeatureIterator fi = result.features()) {
             assertFalse(fi.hasNext());
@@ -422,10 +376,7 @@ public class ClipProcessTest extends Assert {
         SimpleFeatureCollection features = fsMultilines.getFeatures();
         ClipProcess cp = new ClipProcess();
         SimpleFeatureCollection result =
-                cp.execute(
-                        features,
-                        new WKTReader().read("POLYGON((-10 -10, -10 -5, -5 -5, -5 -10, -10 -10))"),
-                        true);
+                cp.execute(features, new WKTReader().read("POLYGON((-10 -10, -10 -5, -5 -5, -5 -10, -10 -10))"), true);
         assertEquals(0, result.size());
         try (SimpleFeatureIterator fi = result.features()) {
             assertFalse(fi.hasNext());

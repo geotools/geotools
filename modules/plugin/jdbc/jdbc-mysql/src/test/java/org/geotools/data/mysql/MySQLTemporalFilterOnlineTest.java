@@ -56,12 +56,9 @@ public class MySQLTemporalFilterOnlineTest extends JDBCTemporalFilterOnlineTest 
             int i = 0;
             while (it.hasNext()) {
                 SimpleFeature f = it.next();
-                LocalDateTime expected =
-                        new java.sql.Timestamp(date(dates[i++]).getTime()).toLocalDateTime();
+                LocalDateTime expected = new java.sql.Timestamp(date(dates[i++]).getTime()).toLocalDateTime();
 
-                assertEquals(
-                        Converters.convert(expected, LocalDateTime.class),
-                        f.getAttribute(aname("dt")));
+                assertEquals(Converters.convert(expected, LocalDateTime.class), f.getAttribute(aname("dt")));
             }
         }
     }

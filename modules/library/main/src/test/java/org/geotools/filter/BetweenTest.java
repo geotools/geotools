@@ -43,8 +43,7 @@ import org.locationtech.jts.geom.PrecisionModel;
  */
 public class BetweenTest {
     /** Standard logging instance */
-    protected static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(BetweenTest.class);
+    protected static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(BetweenTest.class);
 
     @Test
     public void testContains() throws Exception {
@@ -69,31 +68,16 @@ public class BetweenTest {
         LOGGER.fine("schema has value in it ? " + (schema.getDescriptor("value") != null));
 
         GeometryFactory gf = new GeometryFactory(new PrecisionModel());
-        SimpleFeature f1 =
-                SimpleFeatureBuilder.build(
-                        schema,
-                        new Object[] {Integer.valueOf(12), gf.createPoint(new Coordinate(12, 12))},
-                        null);
-        SimpleFeature f2 =
-                SimpleFeatureBuilder.build(
-                        schema,
-                        new Object[] {Integer.valueOf(3), gf.createPoint(new Coordinate(3, 3))},
-                        null);
-        SimpleFeature f3 =
-                SimpleFeatureBuilder.build(
-                        schema,
-                        new Object[] {Integer.valueOf(15), gf.createPoint(new Coordinate(15, 15))},
-                        null);
-        SimpleFeature f4 =
-                SimpleFeatureBuilder.build(
-                        schema,
-                        new Object[] {Integer.valueOf(5), gf.createPoint(new Coordinate(5, 5))},
-                        null);
-        SimpleFeature f5 =
-                SimpleFeatureBuilder.build(
-                        schema,
-                        new Object[] {Integer.valueOf(30), gf.createPoint(new Coordinate(30, 30))},
-                        null);
+        SimpleFeature f1 = SimpleFeatureBuilder.build(
+                schema, new Object[] {Integer.valueOf(12), gf.createPoint(new Coordinate(12, 12))}, null);
+        SimpleFeature f2 = SimpleFeatureBuilder.build(
+                schema, new Object[] {Integer.valueOf(3), gf.createPoint(new Coordinate(3, 3))}, null);
+        SimpleFeature f3 = SimpleFeatureBuilder.build(
+                schema, new Object[] {Integer.valueOf(15), gf.createPoint(new Coordinate(15, 15))}, null);
+        SimpleFeature f4 = SimpleFeatureBuilder.build(
+                schema, new Object[] {Integer.valueOf(5), gf.createPoint(new Coordinate(5, 5))}, null);
+        SimpleFeature f5 = SimpleFeatureBuilder.build(
+                schema, new Object[] {Integer.valueOf(30), gf.createPoint(new Coordinate(30, 30))}, null);
 
         assertTrue(a.evaluate(f1)); // in between
         assertFalse(a.evaluate(f2)); // too small

@@ -35,8 +35,7 @@ public class GridExamples {
 
     private void exampleSquareGrid() {
         // exampleSquareGrid start
-        ReferencedEnvelope gridBounds =
-                new ReferencedEnvelope(110.0, 150.0, -45.0, -5.0, DefaultGeographicCRS.WGS84);
+        ReferencedEnvelope gridBounds = new ReferencedEnvelope(110.0, 150.0, -45.0, -5.0, DefaultGeographicCRS.WGS84);
 
         SimpleFeatureSource grid = Grids.createSquareGrid(gridBounds, 10.0);
 
@@ -45,8 +44,7 @@ public class GridExamples {
 
     private void exampleDensifiedSquareGrid() {
         // exampleDensifiedSquareGrid start
-        ReferencedEnvelope gridBounds =
-                new ReferencedEnvelope(110, 160, -45, -8, DefaultGeographicCRS.WGS84);
+        ReferencedEnvelope gridBounds = new ReferencedEnvelope(110, 160, -45, -8, DefaultGeographicCRS.WGS84);
 
         double squareWidth = 20.0;
 
@@ -79,16 +77,15 @@ public class GridExamples {
 
         final ReferencedEnvelope bounds = new ReferencedEnvelope(0, 100, 0, 100, null);
 
-        GridFeatureBuilder builder =
-                new GridFeatureBuilder(TYPE) {
-                    @Override
-                    public void setAttributes(GridElement element, Map<String, Object> attributes) {
-                        PolygonElement polyEl = (PolygonElement) element;
-                        int g = (int) (255 * polyEl.getCenter().x / bounds.getWidth());
-                        int b = (int) (255 * polyEl.getCenter().y / bounds.getHeight());
-                        attributes.put("color", new Color(0, g, b));
-                    }
-                };
+        GridFeatureBuilder builder = new GridFeatureBuilder(TYPE) {
+            @Override
+            public void setAttributes(GridElement element, Map<String, Object> attributes) {
+                PolygonElement polyEl = (PolygonElement) element;
+                int g = (int) (255 * polyEl.getCenter().x / bounds.getWidth());
+                int b = (int) (255 * polyEl.getCenter().y / bounds.getHeight());
+                attributes.put("color", new Color(0, g, b));
+            }
+        };
 
         // Pass the GridFeatureBuilder object to the createHexagonalGrid method
         // (the -1 value here indicates that we don't need densified polygons)
@@ -133,8 +130,7 @@ public class GridExamples {
         ReferencedEnvelope gridBounds = new ReferencedEnvelope(0, 100, 0, 100, null);
         double sideLen = 5.0;
         GridFeatureBuilder builder = new DefaultGridFeatureBuilder();
-        SimpleFeatureSource grid =
-                Hexagons.createGrid(gridBounds, sideLen, HexagonOrientation.ANGLED, builder);
+        SimpleFeatureSource grid = Hexagons.createGrid(gridBounds, sideLen, HexagonOrientation.ANGLED, builder);
 
         // exampleHexagonOrientation end
     }
@@ -152,8 +148,7 @@ public class GridExamples {
 
     private void exampleMajorMinorLines() {
         // exampleMajorMinorLines start
-        ReferencedEnvelope gridBounds =
-                new ReferencedEnvelope(110.0, 150.0, -45.0, -5.0, DefaultGeographicCRS.WGS84);
+        ReferencedEnvelope gridBounds = new ReferencedEnvelope(110.0, 150.0, -45.0, -5.0, DefaultGeographicCRS.WGS84);
 
         /*
          * Line definitions:
@@ -161,15 +156,14 @@ public class GridExamples {
          * minor lines at 2 degree spacing are indicated by level = 1
          * (level values are arbitrary; only rank order matters)
          */
-        List<OrthoLineDef> lineDefs =
-                Arrays.asList(
-                        // vertical (longitude) lines
-                        new OrthoLineDef(LineOrientation.VERTICAL, 2, 10.0),
-                        new OrthoLineDef(LineOrientation.VERTICAL, 1, 2.0),
+        List<OrthoLineDef> lineDefs = Arrays.asList(
+                // vertical (longitude) lines
+                new OrthoLineDef(LineOrientation.VERTICAL, 2, 10.0),
+                new OrthoLineDef(LineOrientation.VERTICAL, 1, 2.0),
 
-                        // horizontal (latitude) lines
-                        new OrthoLineDef(LineOrientation.HORIZONTAL, 2, 10.0),
-                        new OrthoLineDef(LineOrientation.HORIZONTAL, 1, 2.0));
+                // horizontal (latitude) lines
+                new OrthoLineDef(LineOrientation.HORIZONTAL, 2, 10.0),
+                new OrthoLineDef(LineOrientation.HORIZONTAL, 1, 2.0));
 
         // Specify vertex spacing to get "densified" polygons
         double vertexSpacing = 0.1;

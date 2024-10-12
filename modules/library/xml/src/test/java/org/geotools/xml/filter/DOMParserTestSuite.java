@@ -46,8 +46,7 @@ import org.w3c.dom.NodeList;
 public class DOMParserTestSuite extends TestSuite {
 
     /** Standard logging instance */
-    protected static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(DOMParserTestSuite.class);
+    protected static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(DOMParserTestSuite.class);
 
     /** Schema on which to preform tests */
     protected static SimpleFeatureType testSchema = null;

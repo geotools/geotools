@@ -82,18 +82,12 @@ public class ElasticDataStore extends ContentDataStore {
         CSV
     }
 
-    public ElasticDataStore(String searchHost, Integer hostPort, String indexName)
-            throws IOException {
+    public ElasticDataStore(String searchHost, Integer hostPort, String indexName) throws IOException {
         this(RestClient.builder(new HttpHost(searchHost, hostPort, "http")).build(), indexName);
     }
 
     public ElasticDataStore(RestClient restClient, String indexName) throws IOException {
-        this(
-                restClient,
-                null,
-                indexName,
-                false,
-                (Integer) ElasticDataStoreFactory.RESPONSE_BUFFER_LIMIT.sample);
+        this(restClient, null, indexName, false, (Integer) ElasticDataStoreFactory.RESPONSE_BUFFER_LIMIT.sample);
     }
 
     public ElasticDataStore(
@@ -112,9 +106,7 @@ public class ElasticDataStore extends ContentDataStore {
             if (proxyRestClient != null) {
                 checkRestClient(proxyRestClient);
             }
-            client =
-                    new RestElasticClient(
-                            restClient, proxyRestClient, enableRunAs, responseBufferLimit);
+            client = new RestElasticClient(restClient, proxyRestClient, enableRunAs, responseBufferLimit);
         } catch (Exception e) {
             throw new IOException("Unable to create REST client", e);
         }
@@ -314,12 +306,7 @@ public class ElasticDataStore extends ContentDataStore {
                 }
 
                 if (ElasticParserUtil.isGeoPointFeature((Map) value)) {
-                    add(
-                            elasticAttributes,
-                            propertyKey + ".coordinates",
-                            "geo_point",
-                            (Map) value,
-                            nested);
+                    add(elasticAttributes, propertyKey + ".coordinates", "geo_point", (Map) value, nested);
                 } else {
                     walk(elasticAttributes, (Map) value, newPropertyKey, startType, nested);
                 }
@@ -384,10 +371,7 @@ public class ElasticDataStore extends ContentDataStore {
                                 validFormats.add(availableFormat);
                             } catch (Exception e) {
                                 LOGGER.fine(
-                                        "Unable to parse date format ('"
-                                                + availableFormat
-                                                + "') for "
-                                                + propertyKey);
+                                        "Unable to parse date format ('" + availableFormat + "') for " + propertyKey);
                             }
                         } else {
                             String[] formats = availableFormat.split("\\|\\|");
@@ -396,11 +380,7 @@ public class ElasticDataStore extends ContentDataStore {
                                     ElasticsearchDateConverter.forFormat(availableFormat);
                                     validFormats.add(format);
                                 } catch (Exception e) {
-                                    LOGGER.fine(
-                                            "Unable to parse date format ('"
-                                                    + format
-                                                    + "') for "
-                                                    + propertyKey);
+                                    LOGGER.fine("Unable to parse date format ('" + format + "') for " + propertyKey);
                                 }
                             }
                         }
@@ -438,8 +418,7 @@ public class ElasticDataStore extends ContentDataStore {
         final int status = response.getStatusLine().getStatusCode();
         if (status >= 400) {
             final String reason = response.getStatusLine().getReasonPhrase();
-            throw new IOException(
-                    String.format("Unexpected response from Elasticsearch: %d %s", status, reason));
+            throw new IOException(String.format("Unexpected response from Elasticsearch: %d %s", status, reason));
         }
     }
 

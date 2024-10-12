@@ -43,78 +43,55 @@ public class H2GISTestSetup extends JDBCTestSetup {
         runSafe("DELETE FROM geometry_columns WHERE f_table_name = 'ft2'");
         runSafe("DELETE FROM geometry_columns WHERE f_table_name = 'ft4'");
 
-        String sql =
-                "CREATE TABLE \"geotools\".\"ft1\" ("
-                        + "\"id\" INTEGER PRIMARY KEY, "
-                        + "\"geometry\" GEOMETRY(POINT, 4326), \"intProperty\" int, "
-                        + "\"doubleProperty\" double precision, \"stringProperty\" varchar"
-                        + ")";
+        String sql = "CREATE TABLE \"geotools\".\"ft1\" ("
+                + "\"id\" INTEGER PRIMARY KEY, "
+                + "\"geometry\" GEOMETRY(POINT, 4326), \"intProperty\" int, "
+                + "\"doubleProperty\" double precision, \"stringProperty\" varchar"
+                + ")";
         run(sql);
-        sql =
-                "INSERT INTO \"geotools\".\"ft1\" VALUES ("
-                        + "0,ST_GeomFromText('POINT(0 0)',4326), 0, 0.0,'zero');";
+        sql = "INSERT INTO \"geotools\".\"ft1\" VALUES (" + "0,ST_GeomFromText('POINT(0 0)',4326), 0, 0.0,'zero');";
         run(sql);
 
-        sql =
-                "INSERT INTO \"geotools\".\"ft1\" VALUES ("
-                        + "1,ST_GeomFromText('POINT(1 1)',4326), 1, 1.1,'one');";
+        sql = "INSERT INTO \"geotools\".\"ft1\" VALUES (" + "1,ST_GeomFromText('POINT(1 1)',4326), 1, 1.1,'one');";
         run(sql);
 
-        sql =
-                "INSERT INTO \"geotools\".\"ft1\" VALUES ("
-                        + "2,ST_GeomFromText('POINT(2 2)',4326), 2, 2.2,'two');";
+        sql = "INSERT INTO \"geotools\".\"ft1\" VALUES (" + "2,ST_GeomFromText('POINT(2 2)',4326), 2, 2.2,'two');";
         run(sql);
 
-        sql =
-                "CREATE SPATIAL INDEX IF NOT EXISTS \"ft1_sp_index\" ON \"geotools\".\"ft1\"(\"geometry\")";
+        sql = "CREATE SPATIAL INDEX IF NOT EXISTS \"ft1_sp_index\" ON \"geotools\".\"ft1\"(\"geometry\")";
         run(sql);
 
         runFt4();
     }
 
     private void runFt4() throws Exception {
-        String sql =
-                "CREATE TABLE \"geotools\".\"ft4\" ("
-                        + "\"id\" SERIAL PRIMARY KEY, "
-                        + "\"geometry\" GEOMETRY(POINT, 4326), \"intProperty\" int, "
-                        + "\"doubleProperty\" double precision, \"stringProperty\" varchar"
-                        + ")";
+        String sql = "CREATE TABLE \"geotools\".\"ft4\" ("
+                + "\"id\" SERIAL PRIMARY KEY, "
+                + "\"geometry\" GEOMETRY(POINT, 4326), \"intProperty\" int, "
+                + "\"doubleProperty\" double precision, \"stringProperty\" varchar"
+                + ")";
         run(sql);
 
-        sql =
-                "INSERT INTO \"geotools\".\"ft4\" VALUES ("
-                        + "0,ST_GeomFromText('POINT(0 0)',4326), 0, 0.0,'zero');";
+        sql = "INSERT INTO \"geotools\".\"ft4\" VALUES (" + "0,ST_GeomFromText('POINT(0 0)',4326), 0, 0.0,'zero');";
         run(sql);
 
-        sql =
-                "INSERT INTO \"geotools\".\"ft4\" VALUES ("
-                        + "1,ST_GeomFromText('POINT(1 1)',4326), 1, 1.1,'one');";
+        sql = "INSERT INTO \"geotools\".\"ft4\" VALUES (" + "1,ST_GeomFromText('POINT(1 1)',4326), 1, 1.1,'one');";
         run(sql);
 
-        sql =
-                "INSERT INTO \"geotools\".\"ft4\" VALUES ("
-                        + "2,ST_GeomFromText('POINT(2 2)',4326), 1, 1.1,'one_2');";
+        sql = "INSERT INTO \"geotools\".\"ft4\" VALUES (" + "2,ST_GeomFromText('POINT(2 2)',4326), 1, 1.1,'one_2');";
         run(sql);
 
-        sql =
-                "INSERT INTO \"geotools\".\"ft4\" VALUES ("
-                        + "3,ST_GeomFromText('POINT(3 3)',4326), 1, 1.1,'one_2');";
+        sql = "INSERT INTO \"geotools\".\"ft4\" VALUES (" + "3,ST_GeomFromText('POINT(3 3)',4326), 1, 1.1,'one_2');";
         run(sql);
 
-        sql =
-                "INSERT INTO \"geotools\".\"ft4\" VALUES ("
-                        + "4,ST_GeomFromText('POINT(4 4)',4326), 2, 2.2,'two');";
+        sql = "INSERT INTO \"geotools\".\"ft4\" VALUES (" + "4,ST_GeomFromText('POINT(4 4)',4326), 2, 2.2,'two');";
         run(sql);
 
-        sql =
-                "INSERT INTO \"geotools\".\"ft4\" VALUES ("
-                        + "5,ST_GeomFromText('POINT(5 5)',4326), 2, 2.2,'two_2');";
+        sql = "INSERT INTO \"geotools\".\"ft4\" VALUES (" + "5,ST_GeomFromText('POINT(5 5)',4326), 2, 2.2,'two_2');";
 
         run(sql);
 
-        sql =
-                "INSERT INTO \"geotools\".\"ft4\" VALUES ("
-                        + "6,ST_GeomFromText('POINT(6 6)',4326), 3, 3.3,'three');";
+        sql = "INSERT INTO \"geotools\".\"ft4\" VALUES (" + "6,ST_GeomFromText('POINT(6 6)',4326), 3, 3.3,'three');";
         run(sql);
 
         sql = "CREATE SPATIAL INDEX IF NOT EXISTS spIdx ON \"geotools\".\"ft4\"(\"geometry\")";

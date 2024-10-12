@@ -48,8 +48,7 @@ public final class URN_AuthorityFactoryTest {
     @Test
     public void testRegistration() {
         String authority = "URN:OGC:DEF";
-        final AuthorityFactory factory =
-                ReferencingFactoryFinder.getCRSAuthorityFactory(authority, null);
+        final AuthorityFactory factory = ReferencingFactoryFinder.getCRSAuthorityFactory(authority, null);
         assertSame(factory, ReferencingFactoryFinder.getCRSAuthorityFactory(authority, null));
         assertSame(factory, ReferencingFactoryFinder.getCSAuthorityFactory(authority, null));
         assertSame(factory, ReferencingFactoryFinder.getDatumAuthorityFactory(authority, null));
@@ -65,8 +64,7 @@ public final class URN_AuthorityFactoryTest {
     /** Tests the CRS factory. */
     @Test
     public void testCRS() throws FactoryException {
-        CRSAuthorityFactory factory =
-                ReferencingFactoryFinder.getCRSAuthorityFactory("URN:OGC:DEF", null);
+        CRSAuthorityFactory factory = ReferencingFactoryFinder.getCRSAuthorityFactory("URN:OGC:DEF", null);
         GeographicCRS crs;
         try {
             crs = factory.createGeographicCRS("CRS:84");

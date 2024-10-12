@@ -45,10 +45,7 @@ public interface Position {
      *
      * @return The coordinate reference system, or {@code null}.
      */
-    @UML(
-            identifier = "coordinateReferenceSystem",
-            obligation = MANDATORY,
-            specification = ISO_19107)
+    @UML(identifier = "coordinateReferenceSystem", obligation = MANDATORY, specification = ISO_19107)
     CoordinateReferenceSystem getCoordinateReferenceSystem();
 
     /**
@@ -138,8 +135,7 @@ public interface Position {
      *     the {@linkplain #getDimension envelope dimension}.
      * @throws UnsupportedOperationException if this direct position is immutable.
      */
-    void setOrdinate(int dimension, double value)
-            throws IndexOutOfBoundsException, UnsupportedOperationException;
+    void setOrdinate(int dimension, double value) throws IndexOutOfBoundsException, UnsupportedOperationException;
 
     /**
      * Compares this direct position with the specified object for equality. Two direct positions

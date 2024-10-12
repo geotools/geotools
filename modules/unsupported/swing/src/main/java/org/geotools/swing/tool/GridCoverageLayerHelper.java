@@ -56,8 +56,7 @@ public class GridCoverageLayerHelper extends InfoToolHelper {
         if (isValid()) {
             GridCoverage2D source = ((GridCoverageLayer) getLayer()).getCoverage();
             ReferencedEnvelope env = new ReferencedEnvelope(source.getEnvelope2D());
-            Position2D trPos =
-                    InfoToolHelperUtils.getTransformed(pos, getContentToLayerTransform());
+            Position2D trPos = InfoToolHelperUtils.getTransformed(pos, getContentToLayerTransform());
 
             if (env.contains(trPos)) {
                 Object objArray = source.evaluate(trPos);

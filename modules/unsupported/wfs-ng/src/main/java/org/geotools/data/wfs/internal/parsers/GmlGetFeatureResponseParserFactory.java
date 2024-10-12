@@ -38,39 +38,35 @@ import org.geotools.data.wfs.internal.Versions;
  */
 public class GmlGetFeatureResponseParserFactory extends AbstractGetFeatureResponseParserFactory {
 
-    private static final List<String> SUPPORTED_FORMATS =
-            Collections.unmodifiableList(
-                    Arrays.asList( //
-                            "text/xml; subtype=gml/3.1.1", //
-                            "text/xml;subtype=gml/3.1.1", //
-                            "text/xml; subtype=gml/3.1.1; charset=UTF-8",
-                            "text/xml; subtype=gml/3.1.1/profiles/gmlsf/0", //
-                            "text/xml;subtype=gml/3.1.1/profiles/gmlsf/0", //
-                            "application/gml+xml; subtype=gml/3.1.1", //
-                            "application/gml+xml;subtype=gml/3.1.1", //
-                            "application/gml+xml; subtype=gml/3.1.1/profiles/gmlsf/0", //
-                            "application/gml+xml;subtype=gml/3.1.1/profiles/gmlsf/0", //
-                            "GML3", //
-                            "GML3L0", //
-                            "text/xml", // oddly, GeoServer returns plain 'text/xml' instead of the
-                            // propper
-                            // subtype when resultType=hits. Guess we should make this something
-                            // the specific strategy can hanlde?
-                            "text/xml; charset=UTF-8",
-                            "text/gml; subtype=gml/3.1.1", // the incorrectly advertised GeoServer
-                            // format
-                            "GML2", //
-                            "text/xml; subtype=gml/2.1.2", //
-                            "application/xml" //
-                            ));
+    private static final List<String> SUPPORTED_FORMATS = Collections.unmodifiableList(Arrays.asList( //
+            "text/xml; subtype=gml/3.1.1", //
+            "text/xml;subtype=gml/3.1.1", //
+            "text/xml; subtype=gml/3.1.1; charset=UTF-8",
+            "text/xml; subtype=gml/3.1.1/profiles/gmlsf/0", //
+            "text/xml;subtype=gml/3.1.1/profiles/gmlsf/0", //
+            "application/gml+xml; subtype=gml/3.1.1", //
+            "application/gml+xml;subtype=gml/3.1.1", //
+            "application/gml+xml; subtype=gml/3.1.1/profiles/gmlsf/0", //
+            "application/gml+xml;subtype=gml/3.1.1/profiles/gmlsf/0", //
+            "GML3", //
+            "GML3L0", //
+            "text/xml", // oddly, GeoServer returns plain 'text/xml' instead of the
+            // propper
+            // subtype when resultType=hits. Guess we should make this something
+            // the specific strategy can hanlde?
+            "text/xml; charset=UTF-8",
+            "text/gml; subtype=gml/3.1.1", // the incorrectly advertised GeoServer
+            // format
+            "GML2", //
+            "text/xml; subtype=gml/2.1.2", //
+            "application/xml" //
+            ));
 
     private static final List<String> SUPPORTED_VERSIONS =
-            Collections.unmodifiableList(
-                    Arrays.asList(Versions.v1_0_0.toString(), Versions.v1_1_0.toString()));
+            Collections.unmodifiableList(Arrays.asList(Versions.v1_0_0.toString(), Versions.v1_1_0.toString()));
 
     @Override
-    protected GetParser<SimpleFeature> parser(GetFeatureRequest request, InputStream in)
-            throws IOException {
+    protected GetParser<SimpleFeature> parser(GetFeatureRequest request, InputStream in) throws IOException {
 
         final QName remoteFeatureName = request.getTypeName();
 
@@ -84,12 +80,8 @@ public class GmlGetFeatureResponseParserFactory extends AbstractGetFeatureRespon
 
         SimpleFeatureType schema = (SimpleFeatureType) queryType;
 
-        GetParser<SimpleFeature> featureReader =
-                new XmlSimpleFeatureParser(
-                        in,
-                        schema,
-                        remoteFeatureName,
-                        request.getStrategy().getConfig().getAxisOrder());
+        GetParser<SimpleFeature> featureReader = new XmlSimpleFeatureParser(
+                in, schema, remoteFeatureName, request.getStrategy().getConfig().getAxisOrder());
         return featureReader;
     }
 

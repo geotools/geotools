@@ -84,16 +84,15 @@ public class CategorizeFunction implements Function {
     private String belongsTo;
 
     /** Make the instance of FunctionName available in a consistent spot. */
-    public static final FunctionName NAME =
-            new FunctionNameImpl(
-                    "Categorize",
-                    "LookupValue",
-                    "Value",
-                    "Threshold 1",
-                    "Value 1",
-                    "Threshold 2",
-                    "Value 2",
-                    "succeeding or preceding");
+    public static final FunctionName NAME = new FunctionNameImpl(
+            "Categorize",
+            "LookupValue",
+            "Value",
+            "Threshold 1",
+            "Value 1",
+            "Threshold 2",
+            "Value 2",
+            "succeeding or preceding");
 
     public CategorizeFunction() {
         this(new ArrayList<>(), null);
@@ -276,8 +275,7 @@ public class CategorizeFunction implements Function {
         List<org.geotools.api.filter.expression.Expression> params = getParameters();
         if (params != null) {
             org.geotools.api.filter.expression.Expression exp;
-            for (Iterator<org.geotools.api.filter.expression.Expression> it = params.iterator();
-                    it.hasNext(); ) {
+            for (Iterator<org.geotools.api.filter.expression.Expression> it = params.iterator(); it.hasNext(); ) {
                 exp = it.next();
                 sb.append("[");
                 sb.append(exp);
@@ -308,8 +306,7 @@ public class CategorizeFunction implements Function {
 
     @Override
     public int hashCode() {
-        int result =
-                Objects.hash(parameters, fallback, staticTable, convertedValuesContext, belongsTo);
+        int result = Objects.hash(parameters, fallback, staticTable, convertedValuesContext, belongsTo);
         result = 31 * result + Arrays.hashCode(thresholds);
         result = 31 * result + Arrays.hashCode(values);
         result = 31 * result + Arrays.hashCode(convertedValues);

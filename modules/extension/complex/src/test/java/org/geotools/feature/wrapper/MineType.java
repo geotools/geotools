@@ -18,8 +18,7 @@ import org.geotools.data.complex.feature.wrapper.XSDMapping;
 @XSDMapping(namespace = "urn:org:example", separator = ":")
 public class MineType extends FeatureWrapper {
     @XSDMapping(local = "MineNamePropertyType")
-    public ArrayList<MineNamePropertyType>
-            MineNameProperties; // ArrayLists are allowed for multi-valued types.
+    public ArrayList<MineNamePropertyType> MineNameProperties; // ArrayLists are allowed for multi-valued types.
 
     // You can use path to allow a lower-level value to be set in the current class. This might be
     // useful if you don't want to have

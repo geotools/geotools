@@ -50,8 +50,7 @@ public class ResponsiblePartyImpl extends MetadataEntity implements ResponsibleP
      *
      * @todo Localize.
      */
-    static final InternationalString OGC_NAME =
-            new SimpleInternationalString("Open Geospatial Consortium");
+    static final InternationalString OGC_NAME = new SimpleInternationalString("Open Geospatial Consortium");
 
     /**
      * Creates a responsible party metadata entry for OGC involvement. The organisation name is
@@ -83,8 +82,7 @@ public class ResponsiblePartyImpl extends MetadataEntity implements ResponsibleP
      * @param onlineResource The URI to the resource.
      * @return Responsible party describing OGC involvement.
      */
-    public static ResponsibleParty OGC(
-            final Role role, final OnLineFunction function, final URI onlineResource) {
+    public static ResponsibleParty OGC(final Role role, final OnLineFunction function, final URI onlineResource) {
         final OnLineResourceImpl resource = new OnLineResourceImpl(onlineResource);
         resource.setFunction(function);
         resource.freeze();
@@ -100,8 +98,7 @@ public class ResponsiblePartyImpl extends MetadataEntity implements ResponsibleP
      * @param onlineResource The URI on the resource.
      * @return Responsible party describing OGC involvement.
      */
-    static ResponsibleParty OGC(
-            final Role role, final OnLineFunction function, final String onlineResource) {
+    static ResponsibleParty OGC(final Role role, final OnLineFunction function, final String onlineResource) {
         try {
             return OGC(role, function, new URI(onlineResource));
         } catch (URISyntaxException badContact) {

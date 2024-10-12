@@ -48,12 +48,10 @@ public class Function_NamesTypeBindingTest extends FilterCapabilitiesTestSupport
 
     @Test
     public void testEncode() throws Exception {
-        Document dom =
-                encode(
-                        FilterMockData.functionNames(),
-                        new QName(OGC.NAMESPACE, "Function_Names"),
-                        OGC.Function_NamesType);
+        Document dom = encode(
+                FilterMockData.functionNames(), new QName(OGC.NAMESPACE, "Function_Names"), OGC.Function_NamesType);
 
-        assertEquals(2, dom.getElementsByTagNameNS(OGC.NAMESPACE, "Function_Name").getLength());
+        assertEquals(
+                2, dom.getElementsByTagNameNS(OGC.NAMESPACE, "Function_Name").getLength());
     }
 }

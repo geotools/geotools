@@ -38,20 +38,18 @@ public class GMLGeometryAssociationTypeBindingTest extends AbstractGMLBindingTes
     public void setUp() throws Exception {
         super.setUp();
 
-        association =
-                createElement(GML.NAMESPACE, "myAssociation", GML.GeometryAssociationType, null);
+        association = createElement(GML.NAMESPACE, "myAssociation", GML.GeometryAssociationType, null);
         geometry = createElement(GML.NAMESPACE, "myGeometry", GML.AbstractGeometryType, null);
     }
 
     @Test
     public void testWithGeometry() throws Exception {
-        Node node =
-                createNode(
-                        association,
-                        new ElementInstance[] {geometry},
-                        new Object[] {new GeometryFactory().createPoint(new Coordinate(0, 0))},
-                        null,
-                        null);
+        Node node = createNode(
+                association,
+                new ElementInstance[] {geometry},
+                new Object[] {new GeometryFactory().createPoint(new Coordinate(0, 0))},
+                null,
+                null);
         GMLGeometryAssociationTypeBinding s =
                 (GMLGeometryAssociationTypeBinding) getBinding(GML.GeometryAssociationType);
         Geometry g = (Geometry) s.parse(association, node, null);

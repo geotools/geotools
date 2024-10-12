@@ -39,8 +39,7 @@ public class LineStyleTypeBindingTest extends KMLTestSupport {
 
     @Test
     public void testParse() throws Exception {
-        String xml =
-                "<LineStyle>" + "<color>ffff0000</color>" + "<width>2</width>" + "</LineStyle>";
+        String xml = "<LineStyle>" + "<color>ffff0000</color>" + "<width>2</width>" + "</LineStyle>";
 
         buildDocument(xml);
 

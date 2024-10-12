@@ -62,11 +62,9 @@ public class PostgisGroupByVisitorOnlineTest extends JDBCGroupByVisitorOnlineTes
     public void testAggregateOnFunction(boolean expectOptimized) throws IOException {
         FilterFactory ff = dataStore.getFilterFactory();
         Function buildingTypeSub =
-                ff.function(
-                        "strSubstring", ff.property("building_type"), ff.literal(0), ff.literal(3));
+                ff.function("strSubstring", ff.property("building_type"), ff.literal(0), ff.literal(3));
 
-        List<Object[]> value =
-                genericGroupByTestTest(Query.ALL, Aggregate.MAX, expectOptimized, buildingTypeSub);
+        List<Object[]> value = genericGroupByTestTest(Query.ALL, Aggregate.MAX, expectOptimized, buildingTypeSub);
         assertNotNull(value);
 
         assertEquals(3, value.size());

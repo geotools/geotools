@@ -55,8 +55,7 @@ public class TeradataViewOnlineTest extends JDBCViewOnlineTest {
 
         SimpleFeatureType schema = dataStore.getSchema("lakesview2");
         TessellationInfo tesselation =
-                (TessellationInfo)
-                        schema.getGeometryDescriptor().getUserData().get(TessellationInfo.KEY);
+                (TessellationInfo) schema.getGeometryDescriptor().getUserData().get(TessellationInfo.KEY);
         assertNotNull("expected tessleation info", tesselation);
         assertEquals("lakesview2_geom_idx", tesselation.getIndexTableName());
 

@@ -61,8 +61,7 @@ import org.locationtech.jts.geom.Geometry;
  *     of them are mutable when creating them. Other issue is that lots of code will need to be
  *     changed for immutability. (comments by cholmes) - MUTABLE FACTORIES! Sax and immutability.
  */
-public abstract class GeometryFilterImpl extends BinaryComparisonAbstract
-        implements BinarySpatialOperator {
+public abstract class GeometryFilterImpl extends BinaryComparisonAbstract implements BinarySpatialOperator {
 
     protected MatchAction matchAction;
 
@@ -83,8 +82,7 @@ public abstract class GeometryFilterImpl extends BinaryComparisonAbstract
     }
 
     protected GeometryFilterImpl(
-            org.geotools.api.filter.expression.Expression e1,
-            org.geotools.api.filter.expression.Expression e2) {
+            org.geotools.api.filter.expression.Expression e1, org.geotools.api.filter.expression.Expression e2) {
         this(e1, e2, MatchAction.ANY);
     }
 
@@ -92,8 +90,7 @@ public abstract class GeometryFilterImpl extends BinaryComparisonAbstract
      * NC - support for multiple values Convenience method for returning expression as either a
      * geometry or a list of geometries.
      */
-    protected static Object getGeometries(
-            org.geotools.api.filter.expression.Expression expr, Object feature) {
+    protected static Object getGeometries(org.geotools.api.filter.expression.Expression expr, Object feature) {
 
         Object o = expr.evaluate(feature);
 
@@ -218,15 +215,13 @@ public abstract class GeometryFilterImpl extends BinaryComparisonAbstract
         }
 
         @SuppressWarnings("unchecked")
-        Collection<Geometry> leftValues =
-                object1 instanceof Collection
-                        ? (Collection<Geometry>) object1
-                        : Collections.singletonList((Geometry) object1);
+        Collection<Geometry> leftValues = object1 instanceof Collection
+                ? (Collection<Geometry>) object1
+                : Collections.singletonList((Geometry) object1);
         @SuppressWarnings("unchecked")
-        Collection<Geometry> rightValues =
-                object2 instanceof Collection
-                        ? (Collection<Geometry>) object2
-                        : Collections.singletonList((Geometry) object2);
+        Collection<Geometry> rightValues = object2 instanceof Collection
+                ? (Collection<Geometry>) object2
+                : Collections.singletonList((Geometry) object2);
 
         int count = 0;
         for (Geometry leftValue : leftValues) {

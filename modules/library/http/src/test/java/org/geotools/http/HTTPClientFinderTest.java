@@ -44,8 +44,7 @@ public class HTTPClientFinderTest {
     @Test
     public void findingCustomHttpClientTestByHints() throws Exception {
 
-        HTTPClient client =
-                HTTPClientFinder.createClient(new Hints(Hints.HTTP_CLIENT, CustomHttpClient.class));
+        HTTPClient client = HTTPClientFinder.createClient(new Hints(Hints.HTTP_CLIENT, CustomHttpClient.class));
 
         assertTrue(client instanceof CustomHttpClient);
     }
@@ -67,8 +66,7 @@ public class HTTPClientFinderTest {
         Hints.putSystemDefault(Hints.HTTP_LOGGING, "True");
         try {
 
-            HTTPClient client =
-                    HTTPClientFinder.createClient(new Hints(Hints.HTTP_LOGGING, "False"));
+            HTTPClient client = HTTPClientFinder.createClient(new Hints(Hints.HTTP_LOGGING, "False"));
             assertTrue(client instanceof SimpleHttpClient);
         } finally {
             Hints.removeSystemDefault(Hints.HTTP_LOGGING);

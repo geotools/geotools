@@ -81,11 +81,9 @@ public class FeaturePropertyAccessorFactory implements PropertyAccessorFactory {
     static final Pattern FID_PATTERN = Pattern.compile("@(\\w+:)?id");
 
     @Override
-    public PropertyAccessor createPropertyAccessor(
-            Class type, String xpath, Class target, Hints hints) {
+    public PropertyAccessor createPropertyAccessor(Class type, String xpath, Class target, Hints hints) {
 
-        if (SimpleFeature.class.isAssignableFrom(type)
-                || SimpleFeatureType.class.isAssignableFrom(type)) {
+        if (SimpleFeature.class.isAssignableFrom(type) || SimpleFeatureType.class.isAssignableFrom(type)) {
             /*
              * This class is not intended for use with SimpleFeature and causes problems when
              * discovered via SPI and used by code expecting SimpleFeature behaviour. In particular
@@ -108,8 +106,7 @@ public class FeaturePropertyAccessorFactory implements PropertyAccessorFactory {
         // if (xpath.matches("(\\w+:)?(\\w+)")) {
         NamespaceSupport namespaces = null;
         if (hints != null) {
-            namespaces =
-                    (NamespaceSupport) hints.get(FeaturePropertyAccessorFactory.NAMESPACE_CONTEXT);
+            namespaces = (NamespaceSupport) hints.get(FeaturePropertyAccessorFactory.NAMESPACE_CONTEXT);
         }
         if (namespaces == null) {
             return ATTRIBUTE_ACCESS;
@@ -136,16 +133,14 @@ public class FeaturePropertyAccessorFactory implements PropertyAccessorFactory {
 
         @Override
         @SuppressWarnings("unchecked")
-        public <T> T get(Object object, String xpath, Class<T> target)
-                throws IllegalArgumentException {
+        public <T> T get(Object object, String xpath, Class<T> target) throws IllegalArgumentException {
             Attribute feature = (Attribute) object;
             return (T) feature.getIdentifier().toString();
         }
 
         @Override
         public void set(Object object, String xpath, Object value, Class target) {
-            throw new org.geotools.api.feature.IllegalAttributeException(
-                    null, value, "feature id is immutable");
+            throw new org.geotools.api.feature.IllegalAttributeException(null, value, "feature id is immutable");
         }
     }
 
@@ -163,10 +158,8 @@ public class FeaturePropertyAccessorFactory implements PropertyAccessorFactory {
 
         @Override
         @SuppressWarnings("unchecked")
-        public <T> T get(Object object, String xpath, Class<T> target)
-                throws IllegalArgumentException {
-            if (object instanceof Feature)
-                return (T) ((Feature) object).getDefaultGeometryProperty();
+        public <T> T get(Object object, String xpath, Class<T> target) throws IllegalArgumentException {
+            if (object instanceof Feature) return (T) ((Feature) object).getDefaultGeometryProperty();
             if (object instanceof FeatureType) {
                 FeatureType ft = (FeatureType) object;
                 GeometryDescriptor gd = ft.getGeometryDescriptor();
@@ -184,8 +177,7 @@ public class FeaturePropertyAccessorFactory implements PropertyAccessorFactory {
         }
 
         @Override
-        public void set(Object object, String xpath, Object value, Class target)
-                throws IllegalAttributeException {
+        public void set(Object object, String xpath, Object value, Class target) throws IllegalAttributeException {
 
             if (object instanceof Feature) {
                 final Feature f = (Feature) object;
@@ -259,11 +251,9 @@ public class FeaturePropertyAccessorFactory implements PropertyAccessorFactory {
 
         @Override
         @SuppressWarnings("unchecked")
-        public <T> T get(Object object, String xpath, Class<T> target)
-                throws IllegalArgumentException {
+        public <T> T get(Object object, String xpath, Class<T> target) throws IllegalArgumentException {
 
-            JXPathContext context =
-                    JXPathUtils.newSafeContext(object, false, this.namespaces, true);
+            JXPathContext context = JXPathUtils.newSafeContext(object, false, this.namespaces, true);
             Iterator it = context.iteratePointers(xpath);
             List results = new ArrayList<>();
             while (it.hasNext()) {
@@ -285,15 +275,13 @@ public class FeaturePropertyAccessorFactory implements PropertyAccessorFactory {
         }
 
         @Override
-        public void set(Object object, String xpath, Object value, Class target)
-                throws IllegalAttributeException {
+        public void set(Object object, String xpath, Object value, Class target) throws IllegalAttributeException {
 
             if (object instanceof FeatureType) {
                 throw new IllegalAttributeException(null, "feature type is immutable");
             }
 
-            JXPathContext context =
-                    JXPathUtils.newSafeContext(object, false, this.namespaces, true);
+            JXPathContext context = JXPathUtils.newSafeContext(object, false, this.namespaces, true);
             context.setValue(xpath, value);
 
             assert value == context.getValue(xpath);

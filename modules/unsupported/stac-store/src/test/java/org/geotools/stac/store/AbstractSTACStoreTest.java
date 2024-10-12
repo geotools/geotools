@@ -27,9 +27,7 @@ public abstract class AbstractSTACStoreTest extends STACOfflineTest {
             BASE_URL + "/search?f=application%2Fgeo%2Bjson&collections=S2_L2A_MAJA&limit=100";
     protected static final String NS_URI = "https://stacspec.org/store";
     protected static final String MAJA = "S2_L2A_MAJA";
-    protected static final String[] TYPE_NAMES = {
-        "D4H", MAJA, "S2_L3A_WASP", "SUPERSITES", "WSF_2019"
-    };
+    protected static final String[] TYPE_NAMES = {"D4H", MAJA, "S2_L3A_WASP", "SUPERSITES", "WSF_2019"};
     protected STACDataStore store;
 
     @Override

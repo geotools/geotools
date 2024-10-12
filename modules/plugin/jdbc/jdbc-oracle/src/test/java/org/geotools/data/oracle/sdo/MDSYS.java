@@ -9,13 +9,11 @@ public class MDSYS {
 
     protected static final int NULL = -1;
 
-    public static SDO_GEOMETRY SDO_GEOMETRY(
-            int gType, int srid, int ptType, int[] elemInfo, double[] ordinates) {
+    public static SDO_GEOMETRY SDO_GEOMETRY(int gType, int srid, int ptType, int[] elemInfo, double[] ordinates) {
         return new SDO_GEOMETRY(gType, srid, elemInfo, ordinates);
     }
 
-    public static SDO_GEOMETRY SDO_GEOMETRY(
-            int gType, int srid, double[] ptType, int null1, int null2) {
+    public static SDO_GEOMETRY SDO_GEOMETRY(int gType, int srid, double[] ptType, int null1, int null2) {
         return new SDO_GEOMETRY(gType, srid, ptType);
     }
 

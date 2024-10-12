@@ -38,8 +38,7 @@ class BoundsFeatureCollection extends DecoratingSimpleFeatureCollection {
     private final Function<SimpleFeature, GranuleDescriptor> granuleMapper;
 
     protected BoundsFeatureCollection(
-            SimpleFeatureCollection delegate,
-            Function<SimpleFeature, GranuleDescriptor> granuleMapper) {
+            SimpleFeatureCollection delegate, Function<SimpleFeature, GranuleDescriptor> granuleMapper) {
         super(delegate);
         this.granuleMapper = granuleMapper;
     }

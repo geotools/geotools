@@ -62,11 +62,10 @@ public class DocumentHandler extends XMLElementHandler {
 
     /** @see org.geotools.xml.XMLElementHandler#getHandler(java.lang.String, java.lang.String) */
     @Override
-    public XMLElementHandler getHandler(
-            URI namespaceURI, String localName, Map<String, Object> hints) throws SAXException {
+    public XMLElementHandler getHandler(URI namespaceURI, String localName, Map<String, Object> hints)
+            throws SAXException {
         if (xeh != null) {
-            throw new SAXNotRecognizedException(
-                    "XML Documents may only have one top-level element");
+            throw new SAXNotRecognizedException("XML Documents may only have one top-level element");
         }
         if (hints != null && hints.containsKey(DEFAULT_NAMESPACE_HINT_KEY)) {
             Object t = hints.get(DEFAULT_NAMESPACE_HINT_KEY);

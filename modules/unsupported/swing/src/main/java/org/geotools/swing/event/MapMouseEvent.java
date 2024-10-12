@@ -114,8 +114,7 @@ public final class MapMouseEvent extends MouseEvent {
      * @return world position
      */
     public Position2D getWorldPos() {
-        return new Position2D(
-                worldCoords.getCoordinateReferenceSystem(), worldCoords.x, worldCoords.y);
+        return new Position2D(worldCoords.getCoordinateReferenceSystem(), worldCoords.x, worldCoords.y);
     }
 
     /**
@@ -153,19 +152,15 @@ public final class MapMouseEvent extends MouseEvent {
             throw new IllegalArgumentException("invalid value for widthPixels: " + widthPixels);
         }
 
-        Rectangle2D screenRect =
-                new Rectangle2D.Double(
-                        getX() - (widthPixels / 2),
-                        getY() - (widthPixels / 2),
-                        widthPixels,
-                        widthPixels);
+        Rectangle2D screenRect = new Rectangle2D.Double(
+                getX() - (widthPixels / 2), getY() - (widthPixels / 2), widthPixels, widthPixels);
 
         MapPane pane = getSource();
-        Rectangle2D worldRect =
-                pane.getScreenToWorldTransform().createTransformedShape(screenRect).getBounds2D();
+        Rectangle2D worldRect = pane.getScreenToWorldTransform()
+                .createTransformedShape(screenRect)
+                .getBounds2D();
 
-        return new ReferencedEnvelope(
-                worldRect, pane.getMapContent().getCoordinateReferenceSystem());
+        return new ReferencedEnvelope(worldRect, pane.getMapContent().getCoordinateReferenceSystem());
     }
 
     /**

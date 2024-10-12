@@ -208,20 +208,17 @@ public abstract class GeoToolsWriteParams extends ImageWriteParam {
 
     @Override
     public boolean activateController() {
-        throw new UnsupportedOperationException(
-                "This operation is not currently supported by this API");
+        throw new UnsupportedOperationException("This operation is not currently supported by this API");
     }
 
     @Override
     public IIOParamController getController() {
-        throw new UnsupportedOperationException(
-                "This operation is not currently supported by this API");
+        throw new UnsupportedOperationException("This operation is not currently supported by this API");
     }
 
     @Override
     public IIOParamController getDefaultController() {
-        throw new UnsupportedOperationException(
-                "This operation is not currently supported by this API");
+        throw new UnsupportedOperationException("This operation is not currently supported by this API");
     }
 
     @Override
@@ -271,14 +268,12 @@ public abstract class GeoToolsWriteParams extends ImageWriteParam {
 
     @Override
     public void setController(IIOParamController controller) {
-        throw new UnsupportedOperationException(
-                "This operation is not currently supported by this API");
+        throw new UnsupportedOperationException("This operation is not currently supported by this API");
     }
 
     @Override
     public void setDestinationOffset(Point destinationOffset) {
-        throw new UnsupportedOperationException(
-                "This operation is not currently supported by this API");
+        throw new UnsupportedOperationException("This operation is not currently supported by this API");
     }
 
     @Override
@@ -293,12 +288,8 @@ public abstract class GeoToolsWriteParams extends ImageWriteParam {
 
     @Override
     public void setSourceSubsampling(
-            int sourceXSubsampling,
-            int sourceYSubsampling,
-            int subsamplingXOffset,
-            int subsamplingYOffset) {
-        adaptee.setSourceSubsampling(
-                sourceXSubsampling, sourceYSubsampling, subsamplingXOffset, subsamplingYOffset);
+            int sourceXSubsampling, int sourceYSubsampling, int subsamplingXOffset, int subsamplingYOffset) {
+        adaptee.setSourceSubsampling(sourceXSubsampling, sourceYSubsampling, subsamplingXOffset, subsamplingYOffset);
     }
 
     /** */

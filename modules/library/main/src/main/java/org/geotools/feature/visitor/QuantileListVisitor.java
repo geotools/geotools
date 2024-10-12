@@ -82,8 +82,7 @@ public class QuantileListVisitor implements FeatureCalc {
             for (int binMember = 0; binMember < binPop; binMember++) {
                 bin[binIndex].add(items.get(item++));
             }
-            if (lastBigBin == binIndex)
-                binPop--; // decrease the number of items in a bin for the next item
+            if (lastBigBin == binIndex) binPop--; // decrease the number of items in a bin for the next item
         }
         return new AbstractCalcResult() {
             @Override

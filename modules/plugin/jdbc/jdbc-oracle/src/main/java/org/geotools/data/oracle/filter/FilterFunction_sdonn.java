@@ -29,16 +29,15 @@ import org.locationtech.jts.geom.Geometry;
  */
 public class FilterFunction_sdonn extends FunctionExpressionImpl implements VolatileFunction {
 
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "sdo_nn",
-                    Boolean.class,
-                    // required parameters:
-                    FunctionNameImpl.parameter("geometry", Geometry.class),
-                    FunctionNameImpl.parameter("sdo_num_res", Integer.class),
-                    // optional parameters:
-                    FunctionNameImpl.parameter("cql_filter", String.class, 0, 1),
-                    FunctionNameImpl.parameter("sdo_batch_size", Integer.class, 0, 1));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "sdo_nn",
+            Boolean.class,
+            // required parameters:
+            FunctionNameImpl.parameter("geometry", Geometry.class),
+            FunctionNameImpl.parameter("sdo_num_res", Integer.class),
+            // optional parameters:
+            FunctionNameImpl.parameter("cql_filter", String.class, 0, 1),
+            FunctionNameImpl.parameter("sdo_batch_size", Integer.class, 0, 1));
 
     public FilterFunction_sdonn() {
         super(NAME);

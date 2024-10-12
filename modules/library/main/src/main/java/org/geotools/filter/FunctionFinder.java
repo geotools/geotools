@@ -65,15 +65,13 @@ public class FunctionFinder {
             List<FunctionName> functionNames = factory.getFunctionNames();
             allFunctionDescriptions.addAll(functionNames);
         }
-        Collections.sort(
-                allFunctionDescriptions,
-                (o1, o2) -> {
-                    if (o1 == null && o2 == null) return 0;
-                    if (o1 == null && o2 != null) return 1;
-                    if (o1 != null && o2 == null) return -1;
+        Collections.sort(allFunctionDescriptions, (o1, o2) -> {
+            if (o1 == null && o2 == null) return 0;
+            if (o1 == null && o2 != null) return 1;
+            if (o1 != null && o2 == null) return -1;
 
-                    return o1.getName().compareTo(o2.getName());
-                });
+            return o1.getName().compareTo(o2.getName());
+        });
         return Collections.unmodifiableList(allFunctionDescriptions);
     }
     /**

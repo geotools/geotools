@@ -122,8 +122,7 @@ public class Types extends org.geotools.feature.type.Types {
             // type was derived from xs:anyType: check derivation mode and content type category
             Map<Object, Object> userData = type.getUserData();
             if (userData != null && userData.get(XSDTypeDefinition.class) != null) {
-                XSDTypeDefinition typeDef =
-                        (XSDTypeDefinition) userData.get(XSDTypeDefinition.class);
+                XSDTypeDefinition typeDef = (XSDTypeDefinition) userData.get(XSDTypeDefinition.class);
                 if (typeDef instanceof XSDComplexTypeDefinition) {
                     XSDComplexTypeDefinition complexTypeDef = (XSDComplexTypeDefinition) typeDef;
                     XSDContentTypeCategory category = complexTypeDef.getContentTypeCategory();

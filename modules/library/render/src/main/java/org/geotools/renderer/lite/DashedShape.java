@@ -263,8 +263,7 @@ public class DashedShape implements Shape {
                 // if the lastType is a line to we need to decide if we're pen down or pen
                 // up depending on what of the dash segments we're in
                 if (lastType == PathIterator.SEG_LINETO) {
-                    dashedType =
-                            dashIndex % 2 == 0 ? PathIterator.SEG_LINETO : PathIterator.SEG_MOVETO;
+                    dashedType = dashIndex % 2 == 0 ? PathIterator.SEG_LINETO : PathIterator.SEG_MOVETO;
                 } else {
                     dashedType = lastType;
                 }

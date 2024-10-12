@@ -64,8 +64,7 @@ public class SimpleFeatureIOTest {
     }
 
     private void checkStringNameEncodeDecode(String name)
-            throws IOException, NoSuchAuthorityCodeException, FactoryException,
-                    FileNotFoundException {
+            throws IOException, NoSuchAuthorityCodeException, FactoryException, FileNotFoundException {
         File tempFile = File.createTempFile("temp", "simpleFeatureIO");
         SimpleFeatureTypeBuilder typeBuilder = new SimpleFeatureTypeBuilder();
         typeBuilder.setName("type1");
@@ -73,9 +72,7 @@ public class SimpleFeatureIOTest {
         typeBuilder.add("location", Point.class, CRS.decode("EPSG:4326"));
         SimpleFeatureType type = typeBuilder.buildFeatureType();
         if (name.getBytes().length >= SimpleFeatureIO.MAX_BYTES_LENGTH)
-            type.getDescriptor(NAME_FIELD)
-                    .getUserData()
-                    .put(SimpleFeatureIO.BIG_STRING, Boolean.TRUE);
+            type.getDescriptor(NAME_FIELD).getUserData().put(SimpleFeatureIO.BIG_STRING, Boolean.TRUE);
         // create a feature
         SimpleFeatureBuilder fbuilder = new SimpleFeatureBuilder(type);
         fbuilder.set(NAME_FIELD, name);
@@ -120,8 +117,7 @@ public class SimpleFeatureIOTest {
         doTestDeserialization(true, true);
     }
 
-    private static void doTestDeserialization(boolean exception1, boolean exception2)
-            throws Exception {
+    private static void doTestDeserialization(boolean exception1, boolean exception2) throws Exception {
         URI uri = URI.create("http://localhost/");
         File tempFile = File.createTempFile("temp", "simpleFeatureIODeserialization");
         SimpleFeatureTypeBuilder typeBuilder = new SimpleFeatureTypeBuilder();

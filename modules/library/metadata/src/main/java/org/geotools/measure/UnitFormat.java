@@ -36,17 +36,16 @@ public final class UnitFormat extends BaseUnitFormatter {
         super(unitDefinitions);
     }
 
-    private static final List<UnitDefinition> UNIT_DEFINITIONS =
-            Stream.of(
-                            UnitDefinitions.DIMENSIONLESS,
-                            UnitDefinitions.CONSTANTS,
-                            UnitDefinitions.SI_BASE,
-                            UnitDefinitions.SI_DERIVED,
-                            UnitDefinitions.NON_SI,
-                            UnitDefinitions.US_CUSTOMARY,
-                            UnitDefinitions.GEOTOOLS)
-                    .flatMap(Collection::stream)
-                    .collect(Collectors.toUnmodifiableList());
+    private static final List<UnitDefinition> UNIT_DEFINITIONS = Stream.of(
+                    UnitDefinitions.DIMENSIONLESS,
+                    UnitDefinitions.CONSTANTS,
+                    UnitDefinitions.SI_BASE,
+                    UnitDefinitions.SI_DERIVED,
+                    UnitDefinitions.NON_SI,
+                    UnitDefinitions.US_CUSTOMARY,
+                    UnitDefinitions.GEOTOOLS)
+            .flatMap(Collection::stream)
+            .collect(Collectors.toUnmodifiableList());
 
     private static final UnitFormat INSTANCE = new UnitFormat(UNIT_DEFINITIONS);
 }

@@ -85,8 +85,10 @@ public class STACClientOfflineTest extends STACOfflineTest {
         assertThat(names, CoreMatchers.hasItems("S2_L2A_MAJA", "S2_L3A_WASP"));
 
         // check basics of one collection
-        Collection s2 =
-                collections.stream().filter(c -> "S2_L3A_WASP".equals(c.getId())).findFirst().get();
+        Collection s2 = collections.stream()
+                .filter(c -> "S2_L3A_WASP".equals(c.getId()))
+                .findFirst()
+                .get();
         assertEquals(
                 "Sentinel-2 L3A WASP Products of Germany processed by DLR using the WASP processor",
                 s2.getDescription());
@@ -121,18 +123,16 @@ public class STACClientOfflineTest extends STACOfflineTest {
         assertEquals("1.3", processing.get("CATENA").textValue());
 
         // test the extra properties outside the properties node
-        Map<String, Object> top =
-                (Map<String, Object>) feature.getUserData().get(GeoJSONReader.TOP_LEVEL_ATTRIBUTES);
+        Map<String, Object> top = (Map<String, Object>) feature.getUserData().get(GeoJSONReader.TOP_LEVEL_ATTRIBUTES);
 
         // check the links
         ArrayNode links = (ArrayNode) top.get("links");
         assertNotNull(links);
-        String license =
-                StreamSupport.stream(links.spliterator(), false)
-                        .filter(l -> "license".equals(l.get("rel").textValue()))
-                        .map(l -> l.get("href").textValue())
-                        .findFirst()
-                        .orElseThrow(() -> new AssertionError("Could not find the license rel"));
+        String license = StreamSupport.stream(links.spliterator(), false)
+                .filter(l -> "license".equals(l.get("rel").textValue()))
+                .map(l -> l.get("href").textValue())
+                .findFirst()
+                .orElseThrow(() -> new AssertionError("Could not find the license rel"));
         assertEquals("https://spdx.org/licenses/CC-BY-4.0", license);
 
         // check  assets
@@ -164,8 +164,7 @@ public class STACClientOfflineTest extends STACOfflineTest {
 
         // test the extra properties outside the properties node
         Map<String, JsonNode> top =
-                (Map<String, JsonNode>)
-                        feature.getUserData().get(GeoJSONReader.TOP_LEVEL_ATTRIBUTES);
+                (Map<String, JsonNode>) feature.getUserData().get(GeoJSONReader.TOP_LEVEL_ATTRIBUTES);
 
         // check  assets
         ObjectNode assets = (ObjectNode) top.get("assets");
@@ -175,7 +174,8 @@ public class STACClientOfflineTest extends STACOfflineTest {
         assertNotNull(visual.get("href"));
 
         // check id
-        assertEquals("SENTINEL2B_20220714-105646-098_L2A_T32ULB_C", top.get("id").textValue());
+        assertEquals(
+                "SENTINEL2B_20220714-105646-098_L2A_T32ULB_C", top.get("id").textValue());
     }
 
     @Test
@@ -184,9 +184,7 @@ public class STACClientOfflineTest extends STACOfflineTest {
         List<String> collections =
                 client.getCollections().stream().map(c -> c.getId()).collect(Collectors.toList());
         // just checking a few items are there
-        assertThat(
-                collections,
-                Matchers.hasItems("aster_aloh_group_composition", "aster_aloh_group_content"));
+        assertThat(collections, Matchers.hasItems("aster_aloh_group_composition", "aster_aloh_group_content"));
 
         // also check the search page is found, despite using the wrong mime
         assertEquals(

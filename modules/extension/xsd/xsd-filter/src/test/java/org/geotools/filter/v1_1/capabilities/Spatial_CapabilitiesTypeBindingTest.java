@@ -48,7 +48,8 @@ import org.w3c.dom.Document;
 public class Spatial_CapabilitiesTypeBindingTest extends OGCTestSupport {
     @Test
     public void testType() {
-        assertEquals(SpatialCapabilities.class, binding(OGC.Spatial_CapabilitiesType).getType());
+        assertEquals(
+                SpatialCapabilities.class, binding(OGC.Spatial_CapabilitiesType).getType());
     }
 
     @Test
@@ -67,11 +68,10 @@ public class Spatial_CapabilitiesTypeBindingTest extends OGCTestSupport {
 
     @Test
     public void testEncode() throws Exception {
-        Document dom =
-                encode(
-                        FilterMockData.spatialCapabilities(),
-                        new QName(OGC.NAMESPACE, "SpatialCapabilities"),
-                        OGC.Spatial_CapabilitiesType);
+        Document dom = encode(
+                FilterMockData.spatialCapabilities(),
+                new QName(OGC.NAMESPACE, "SpatialCapabilities"),
+                OGC.Spatial_CapabilitiesType);
 
         assertNotNull(getElementByQName(dom, new QName(OGC.NAMESPACE, "SpatialOperators")));
     }

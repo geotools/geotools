@@ -97,12 +97,8 @@ public abstract class SolrSpatialStrategy {
             }
             bbox[0] = bbox[0].substring(bbox[0].indexOf("(") + 1, bbox[0].length());
             bbox[3] = bbox[3].substring(0, bbox[3].indexOf(")"));
-            Envelope env =
-                    new Envelope(
-                            parseDouble(bbox[0]),
-                            parseDouble(bbox[1]),
-                            parseDouble(bbox[2]),
-                            parseDouble(bbox[3]));
+            Envelope env = new Envelope(
+                    parseDouble(bbox[0]), parseDouble(bbox[1]), parseDouble(bbox[2]), parseDouble(bbox[3]));
             return JTS.toGeometry(env);
         }
 
@@ -111,12 +107,8 @@ public abstract class SolrSpatialStrategy {
             if (bbox.length != 4) {
                 throw new ParseException("Illegal bounding box: " + str);
             }
-            Envelope env =
-                    new Envelope(
-                            parseDouble(bbox[0]),
-                            parseDouble(bbox[2]),
-                            parseDouble(bbox[1]),
-                            parseDouble(bbox[3]));
+            Envelope env = new Envelope(
+                    parseDouble(bbox[0]), parseDouble(bbox[2]), parseDouble(bbox[1]), parseDouble(bbox[3]));
             return JTS.toGeometry(env);
         }
     }

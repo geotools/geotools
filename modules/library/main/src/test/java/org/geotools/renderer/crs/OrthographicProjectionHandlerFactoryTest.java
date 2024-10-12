@@ -84,9 +84,7 @@ public class OrthographicProjectionHandlerFactoryTest {
         // area towards the north-pole area is fully inside
         for (double lon = -179; lon < 180; lon += 5) {
             for (double lat = 44.9; lat < 89.7; lat += 5)
-                assertTrue(
-                        "Failed check with " + lon + "," + lat,
-                        validArea.contains(point(lon, lat)));
+                assertTrue("Failed check with " + lon + "," + lat, validArea.contains(point(lon, lat)));
         }
 
         // query envelope covers all norther hemisphere, and part of the south
@@ -121,9 +119,7 @@ public class OrthographicProjectionHandlerFactoryTest {
         // area towards the north-pole area is fully inside (mind there is a small gap)
         for (double lon = -179; lon < 180; lon += 5) {
             for (double lat = -89.7; lat < -41; lat += 5)
-                assertTrue(
-                        "Failed check with " + lon + "," + lat,
-                        validArea.contains(point(lon, lat)));
+                assertTrue("Failed check with " + lon + "," + lat, validArea.contains(point(lon, lat)));
         }
 
         // query envelope covers all norther emisphere, and part of the south

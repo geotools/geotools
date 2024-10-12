@@ -45,13 +45,10 @@ public class PointSymbolizerImpl extends AbstractSymbolizer implements PointSymb
                 null,
                 null,
                 null,
-                new DescriptionImpl(
-                        new SimpleInternationalString("title"),
-                        new SimpleInternationalString("abstract")));
+                new DescriptionImpl(new SimpleInternationalString("title"), new SimpleInternationalString("abstract")));
     }
 
-    protected PointSymbolizerImpl(
-            Graphic graphic, Unit<Length> uom, String geom, String name, Description desc) {
+    protected PointSymbolizerImpl(Graphic graphic, Unit<Length> uom, String geom, String name, Description desc) {
         super(name, desc, geom, uom);
         this.graphic = GraphicImpl.cast(graphic);
     }

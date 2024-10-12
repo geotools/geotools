@@ -98,9 +98,7 @@ public interface TemporalFactory {
      * @return ClockTime
      */
     ClockTime createClockTime(
-            TemporalReferenceSystem frame,
-            IndeterminateValue indeterminatePosition,
-            Number... clockTime);
+            TemporalReferenceSystem frame, IndeterminateValue indeterminatePosition, Number... clockTime);
 
     /**
      * @param frame : This is the TM_ReferenceSystem associated with this TM_TemporalPosition, if
@@ -154,9 +152,7 @@ public interface TemporalFactory {
      * @return JulianDate
      */
     JulianDate createJulianDate(
-            TemporalReferenceSystem frame,
-            IndeterminateValue indeterminatePosition,
-            Number coordinateValue);
+            TemporalReferenceSystem frame, IndeterminateValue indeterminatePosition, Number coordinateValue);
 
     /**
      * @param name : This is a string that identifies the ordinal era within the
@@ -166,8 +162,7 @@ public interface TemporalFactory {
      * @param end : This is the temporal position at which the ordinal era ended.
      * @return OrdinalEra
      */
-    OrdinalEra createOrdinalEra(
-            InternationalString name, Date beginning, Date end, Collection<OrdinalEra> composition);
+    OrdinalEra createOrdinalEra(InternationalString name, Date beginning, Date end, Collection<OrdinalEra> composition);
 
     /**
      * @param frame : This is the TM_ReferenceSystem associated with this TM_TemporalPosition, if
@@ -178,9 +173,7 @@ public interface TemporalFactory {
      * @return OrdinalPosition
      */
     OrdinalPosition createOrdinalPosition(
-            TemporalReferenceSystem frame,
-            IndeterminateValue indeterminatePosition,
-            OrdinalEra ordinalPosition);
+            TemporalReferenceSystem frame, IndeterminateValue indeterminatePosition, OrdinalEra ordinalPosition);
 
     /**
      * @param name : This is a name that uniquely identifies the temporal reference system.
@@ -189,9 +182,7 @@ public interface TemporalFactory {
      * @return OrdinalReferenceSystem
      */
     OrdinalReferenceSystem createOrdinalReferenceSystem(
-            ReferenceIdentifier name,
-            Extent domainOfValidity,
-            Collection<OrdinalEra> ordinalEraSequence);
+            ReferenceIdentifier name, Extent domainOfValidity, Collection<OrdinalEra> ordinalEraSequence);
 
     /**
      * @param begin : This is the TM_Instant at which this Period starts.
@@ -227,9 +218,7 @@ public interface TemporalFactory {
      * @return TemporalCoordinate
      */
     TemporalCoordinate createTemporalCoordinate(
-            TemporalReferenceSystem frame,
-            IndeterminateValue indeterminatePosition,
-            Number coordinateValue);
+            TemporalReferenceSystem frame, IndeterminateValue indeterminatePosition, Number coordinateValue);
 
     /**
      * @param name : This is a name that uniquely identifies the temporal reference system.
@@ -241,10 +230,7 @@ public interface TemporalFactory {
      * @return TemporalCoordinateSystem
      */
     TemporalCoordinateSystem createTemporalCoordinateSystem(
-            ReferenceIdentifier name,
-            Extent domainOfValidity,
-            Date origin,
-            InternationalString interval);
+            ReferenceIdentifier name, Extent domainOfValidity, Date origin, InternationalString interval);
 
     /**
      * @param frame : This is the TM_ReferenceSystem associated with this TM_TemporalPosition, if
@@ -253,13 +239,11 @@ public interface TemporalFactory {
      *     unless a subtype of TM_TemporalPosition is used as the data type.
      * @return TemporalPosition
      */
-    TemporalPosition createTemporalPosition(
-            TemporalReferenceSystem frame, IndeterminateValue indeterminatePosition);
+    TemporalPosition createTemporalPosition(TemporalReferenceSystem frame, IndeterminateValue indeterminatePosition);
 
     /**
      * @param name : This is a name that uniquely identifies the temporal reference system.
      * @return TemporalReferenceSystem
      */
-    TemporalReferenceSystem createTemporalReferenceSystem(
-            ReferenceIdentifier name, Extent domainOfValidity);
+    TemporalReferenceSystem createTemporalReferenceSystem(ReferenceIdentifier name, Extent domainOfValidity);
 }

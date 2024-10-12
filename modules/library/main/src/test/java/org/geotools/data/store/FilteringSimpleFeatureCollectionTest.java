@@ -49,25 +49,23 @@ public class FilteringSimpleFeatureCollectionTest extends FeatureCollectionWrapp
     public void setUp() throws Exception {
         super.setUp();
         SimpleFeatureType schema =
-                DataUtilities.createType(
-                        "BasicPolygons", "the_geom:MultiPolygon:srid=4326,ID:String,value:int");
-        visitorCollection =
-                new ListFeatureCollection(schema) {
-                    @Override
-                    public void accepts(FeatureVisitor visitor, ProgressListener progress)
-                            throws java.io.IOException {
-                        lastVisitor = visitor;
-                    };
+                DataUtilities.createType("BasicPolygons", "the_geom:MultiPolygon:srid=4326,ID:String,value:int");
+        visitorCollection = new ListFeatureCollection(schema) {
+            @Override
+            public void accepts(FeatureVisitor visitor, ProgressListener progress) throws java.io.IOException {
+                lastVisitor = visitor;
+            }
+            ;
 
-                    @Override
-                    public SimpleFeatureCollection subCollection(Filter filter) {
-                        if (filter == Filter.INCLUDE) {
-                            return this;
-                        } else {
-                            return super.subCollection(filter);
-                        }
-                    }
-                };
+            @Override
+            public SimpleFeatureCollection subCollection(Filter filter) {
+                if (filter == Filter.INCLUDE) {
+                    return this;
+                } else {
+                    return super.subCollection(filter);
+                }
+            }
+        };
     }
 
     @Test

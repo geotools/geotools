@@ -52,8 +52,7 @@ public class CSVFeatureReader implements FeatureReader<SimpleFeatureType, Simple
     }
 
     @Override
-    public SimpleFeature next()
-            throws IOException, IllegalArgumentException, NoSuchElementException {
+    public SimpleFeature next() throws IOException, IllegalArgumentException, NoSuchElementException {
         return iterator.next();
     }
 

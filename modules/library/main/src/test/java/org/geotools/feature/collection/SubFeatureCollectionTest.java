@@ -44,20 +44,18 @@ public class SubFeatureCollectionTest extends DataTestCase {
 
     @Test
     public void testBounds() {
-        SimpleFeatureCollection subCollection =
-                features.subCollection(
-                        new Filter() {
+        SimpleFeatureCollection subCollection = features.subCollection(new Filter() {
 
-                            @Override
-                            public Object accept(FilterVisitor arg0, Object arg1) {
-                                return null;
-                            }
+            @Override
+            public Object accept(FilterVisitor arg0, Object arg1) {
+                return null;
+            }
 
-                            @Override
-                            public boolean evaluate(Object arg0) {
-                                return true;
-                            }
-                        });
+            @Override
+            public boolean evaluate(Object arg0) {
+                return true;
+            }
+        });
 
         // Should not throw an UnsupportedOperationException
         // TODO Not semantically testing the bounds

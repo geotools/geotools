@@ -46,8 +46,7 @@ public abstract class JDBCFeatureStoreExposePkOnlineTest extends JDBCFeatureStor
     @Test
     public void testModifyExposedPk() throws IOException {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory();
-        PropertyIsEqualTo filter =
-                ff.equal(ff.property(aname("stringProperty")), ff.literal("zero"), false);
+        PropertyIsEqualTo filter = ff.equal(ff.property(aname("stringProperty")), ff.literal("zero"), false);
         featureStore.modifyFeatures(
                 new Name[] {new NameImpl(aname("stringProperty")), new NameImpl(aname("id"))},
                 new Object[] {"foo", 123},

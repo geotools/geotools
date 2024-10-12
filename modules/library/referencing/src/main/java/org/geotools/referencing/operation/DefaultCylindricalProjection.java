@@ -36,8 +36,7 @@ import org.geotools.api.referencing.operation.OperationMethod;
  * @see <A HREF="http://mathworld.wolfram.com/CylindricalProjection.html">Cylindrical projection on
  *     MathWorld</A>
  */
-public class DefaultCylindricalProjection extends DefaultProjection
-        implements CylindricalProjection {
+public class DefaultCylindricalProjection extends DefaultProjection implements CylindricalProjection {
     /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = -969486613826553580L;
 

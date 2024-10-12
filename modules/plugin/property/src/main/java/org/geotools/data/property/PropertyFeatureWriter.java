@@ -63,8 +63,7 @@ public class PropertyFeatureWriter implements FeatureWriter<SimpleFeatureType, S
     SimpleFeature live = null;
     private ContentState state;
 
-    public PropertyFeatureWriter(
-            ContentFeatureSource source, ContentState contentState, Query query, boolean append)
+    public PropertyFeatureWriter(ContentFeatureSource source, ContentState contentState, Query query, boolean append)
             throws IOException {
         this.state = contentState;
         this.featureSource = source;

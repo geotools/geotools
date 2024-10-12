@@ -53,7 +53,8 @@ public abstract class AbstractLabelLineTest {
         RendererBaseTest.setupVeraFonts();
 
         // load the data, in this case a set of different linestring
-        File property = new File(TestData.getResource(this, "nonStraightLines.properties").toURI());
+        File property = new File(
+                TestData.getResource(this, "nonStraightLines.properties").toURI());
         PropertyDataStore dataStore = new PropertyDataStore(property.getParentFile());
         featureSource = dataStore.getFeatureSource("nonStraightLines");
         // expand the bands so we can view all the labels
@@ -61,8 +62,7 @@ public abstract class AbstractLabelLineTest {
         bounds.expandBy(1, 1);
     }
 
-    protected Style loadParametricStyle(Object loader, String sldFilename, String... parameters)
-            throws IOException {
+    protected Style loadParametricStyle(Object loader, String sldFilename, String... parameters) throws IOException {
         StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
 
         java.net.URL url = TestData.getResource(loader, sldFilename);
@@ -80,11 +80,7 @@ public abstract class AbstractLabelLineTest {
     }
 
     protected BufferedImage renderNonStraightLines(
-            SimpleFeatureSource featureSource,
-            Style style,
-            int width,
-            int height,
-            ReferencedEnvelope bounds) {
+            SimpleFeatureSource featureSource, Style style, int width, int height, ReferencedEnvelope bounds) {
         MapContent mapContent = new MapContent();
         mapContent.addLayer(new FeatureLayer(featureSource, style));
         // instantiate and initiate the render

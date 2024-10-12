@@ -89,10 +89,8 @@ public class VectorMosaicFeatureSourceTest extends VectorMosaicTest {
     public void testCacheFeatureType() throws Exception {
         VectorMosaicFeatureSource featureSource =
                 (VectorMosaicFeatureSource) MOSAIC_STORE.getFeatureSource(MOSAIC_TYPE_NAME);
-        VectorMosaicState state =
-                new VectorMosaicState(
-                        new ContentEntry(
-                                (ContentDataStore) MOSAIC_STORE, new NameImpl(MOSAIC_TYPE_NAME)));
+        VectorMosaicState state = new VectorMosaicState(
+                new ContentEntry((ContentDataStore) MOSAIC_STORE, new NameImpl(MOSAIC_TYPE_NAME)));
         SimpleFeatureType oldType = MOSAIC_STORE.getSchema(MOSAIC_TYPE_NAME);
         SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
         tb.setName("cachedType");
@@ -374,13 +372,11 @@ public class VectorMosaicFeatureSourceTest extends VectorMosaicTest {
         Filter f = FF.lessOrEqual(p, FF.literal(100));
         q.setFilter(f);
         q.setPropertyNames("weight");
-        try (VectorMosaicFeatureReader featureReader =
-                (VectorMosaicFeatureReader) featureSource.getReader(q); ) {
+        try (VectorMosaicFeatureReader featureReader = (VectorMosaicFeatureReader) featureSource.getReader(q); ) {
             if (featureReader.hasNext()) {
-                String granuleAttributes =
-                        featureReader.rawGranule.getType().getDescriptors().stream()
-                                .map(d -> d.getName().getLocalPart())
-                                .collect(Collectors.joining(","));
+                String granuleAttributes = featureReader.rawGranule.getType().getDescriptors().stream()
+                        .map(d -> d.getName().getLocalPart())
+                        .collect(Collectors.joining(","));
                 assertEquals("weight", granuleAttributes);
             }
         }
@@ -395,13 +391,11 @@ public class VectorMosaicFeatureSourceTest extends VectorMosaicTest {
         Filter f = FF.lessOrEqual(p, FF.literal(100));
         q.setFilter(f);
         q.setPropertyNames("rank");
-        try (VectorMosaicFeatureReader featureReader =
-                (VectorMosaicFeatureReader) featureSource.getReader(q); ) {
+        try (VectorMosaicFeatureReader featureReader = (VectorMosaicFeatureReader) featureSource.getReader(q); ) {
             if (featureReader.hasNext()) {
-                String delegateAttributes =
-                        featureReader.delegateFeature.getType().getDescriptors().stream()
-                                .map(d -> d.getName().getLocalPart())
-                                .collect(Collectors.joining(","));
+                String delegateAttributes = featureReader.delegateFeature.getType().getDescriptors().stream()
+                        .map(d -> d.getName().getLocalPart())
+                        .collect(Collectors.joining(","));
                 // params is a required element of the delegate feature, so is type
                 assertEquals("rank,params,type", delegateAttributes);
             }
@@ -417,19 +411,16 @@ public class VectorMosaicFeatureSourceTest extends VectorMosaicTest {
         Filter f = FF.lessOrEqual(p, FF.literal(100));
         q.setFilter(f);
         q.setPropertyNames("rank", "weight");
-        try (VectorMosaicFeatureReader featureReader =
-                (VectorMosaicFeatureReader) featureSource.getReader(q); ) {
+        try (VectorMosaicFeatureReader featureReader = (VectorMosaicFeatureReader) featureSource.getReader(q); ) {
             if (featureReader.hasNext()) {
-                String delegateAttributes =
-                        featureReader.delegateFeature.getType().getDescriptors().stream()
-                                .map(d -> d.getName().getLocalPart())
-                                .collect(Collectors.joining(","));
+                String delegateAttributes = featureReader.delegateFeature.getType().getDescriptors().stream()
+                        .map(d -> d.getName().getLocalPart())
+                        .collect(Collectors.joining(","));
                 // params is a required element of the delegate feature, so is type
                 assertEquals("rank,params,type", delegateAttributes);
-                String granuleAttributes =
-                        featureReader.rawGranule.getType().getDescriptors().stream()
-                                .map(d -> d.getName().getLocalPart())
-                                .collect(Collectors.joining(","));
+                String granuleAttributes = featureReader.rawGranule.getType().getDescriptors().stream()
+                        .map(d -> d.getName().getLocalPart())
+                        .collect(Collectors.joining(","));
                 assertEquals("weight", granuleAttributes);
                 // validate that both show in final merged feature, following the query order
                 Feature f1 = featureReader.next();

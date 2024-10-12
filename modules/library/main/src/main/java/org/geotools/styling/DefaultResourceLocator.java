@@ -66,9 +66,7 @@ public class DefaultResourceLocator implements ResourceLocator {
             }
             if (url == null) {
                 url = getClass().getResource(uri);
-                if (url == null)
-                    LOGGER.warning(
-                            "can't parse " + uri + " as a java resource present in the classpath");
+                if (url == null) LOGGER.warning("can't parse " + uri + " as a java resource present in the classpath");
             }
         }
         return url;

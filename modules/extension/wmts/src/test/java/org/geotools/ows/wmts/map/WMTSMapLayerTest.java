@@ -40,18 +40,18 @@ public class WMTSMapLayerTest {
 
     @Test
     public void testConstructorSourceCRS() throws Exception {
-        URL url = TestData.file(null, "geodata.nationaalgeoregister.nl.xml").toURI().toURL();
+        URL url = TestData.file(null, "geodata.nationaalgeoregister.nl.xml")
+                .toURI()
+                .toURL();
         WebMapTileServer server = new WebMapTileServer(url);
-        WMTSCapabilities caps =
-                WMTSTestUtils.createCapabilities("geodata.nationaalgeoregister.nl.xml");
+        WMTSCapabilities caps = WMTSTestUtils.createCapabilities("geodata.nationaalgeoregister.nl.xml");
         WMTSLayer layer = caps.getLayerList().get(0);
         WMTSMapLayer mapLayer = new WMTSMapLayer(server, layer, CRS.decode("EPSG:3857"));
         SimpleFeatureCollection fc = mapLayer.toFeatureCollection();
         SimpleFeature f = fc.features().next();
         AttributeExpressionImpl xpath = new AttributeExpressionImpl("params");
         GeneralParameterValue[] params = xpath.evaluate(f, GeneralParameterValue[].class);
-        CoordinateReferenceSystem crs =
-                (CoordinateReferenceSystem) ((ParameterValue) params[0]).getValue();
+        CoordinateReferenceSystem crs = (CoordinateReferenceSystem) ((ParameterValue) params[0]).getValue();
         assertEquals(CRS.decode("EPSG:3857"), crs);
     }
 

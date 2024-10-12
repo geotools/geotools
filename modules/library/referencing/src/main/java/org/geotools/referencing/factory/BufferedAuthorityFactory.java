@@ -150,8 +150,7 @@ public class BufferedAuthorityFactory extends AbstractAuthorityFactory implement
      * @param factory The factory to cache. Can not be {@code null}.
      * @param maxStrongReferences The maximum number of objects to keep by strong reference.
      */
-    protected BufferedAuthorityFactory(
-            AbstractAuthorityFactory factory, final int maxStrongReferences) {
+    protected BufferedAuthorityFactory(AbstractAuthorityFactory factory, final int maxStrongReferences) {
         super(factory.getPriority());
         while (factory instanceof BufferedAuthorityFactory) {
             factory = ((BufferedAuthorityFactory) factory).backingStore;
@@ -271,8 +270,7 @@ public class BufferedAuthorityFactory extends AbstractAuthorityFactory implement
                 }
             }
             final LogRecord record =
-                    Loggings.format(
-                            Level.WARNING, LoggingKeys.UNAVAILABLE_AUTHORITY_FACTORY_$1, title);
+                    Loggings.format(Level.WARNING, LoggingKeys.UNAVAILABLE_AUTHORITY_FACTORY_$1, title);
             record.setSourceClassName(getClass().getName());
             record.setSourceMethodName("isAvailable");
             record.setThrown(exception);
@@ -334,8 +332,7 @@ public class BufferedAuthorityFactory extends AbstractAuthorityFactory implement
      * @throws FactoryException if access to the underlying database failed.
      */
     @Override
-    public Set<String> getAuthorityCodes(final Class<? extends IdentifiedObject> type)
-            throws FactoryException {
+    public Set<String> getAuthorityCodes(final Class<? extends IdentifiedObject> type) throws FactoryException {
         return getBackingStore().getAuthorityCodes(type);
     }
 
@@ -398,8 +395,7 @@ public class BufferedAuthorityFactory extends AbstractAuthorityFactory implement
      * @throws FactoryException if the object creation failed.
      */
     @Override
-    public synchronized EngineeringDatum createEngineeringDatum(final String code)
-            throws FactoryException {
+    public synchronized EngineeringDatum createEngineeringDatum(final String code) throws FactoryException {
         final EngineeringDatum datum;
         final String key = trimAuthority(code);
         final Object cached = get(key);
@@ -437,8 +433,7 @@ public class BufferedAuthorityFactory extends AbstractAuthorityFactory implement
      * @throws FactoryException if the object creation failed.
      */
     @Override
-    public synchronized VerticalDatum createVerticalDatum(final String code)
-            throws FactoryException {
+    public synchronized VerticalDatum createVerticalDatum(final String code) throws FactoryException {
         final VerticalDatum datum;
         final String key = trimAuthority(code);
         final Object cached = get(key);
@@ -457,8 +452,7 @@ public class BufferedAuthorityFactory extends AbstractAuthorityFactory implement
      * @throws FactoryException if the object creation failed.
      */
     @Override
-    public synchronized TemporalDatum createTemporalDatum(final String code)
-            throws FactoryException {
+    public synchronized TemporalDatum createTemporalDatum(final String code) throws FactoryException {
         final TemporalDatum datum;
         final String key = trimAuthority(code);
         final Object cached = get(key);
@@ -477,8 +471,7 @@ public class BufferedAuthorityFactory extends AbstractAuthorityFactory implement
      * @throws FactoryException if the object creation failed.
      */
     @Override
-    public synchronized GeodeticDatum createGeodeticDatum(final String code)
-            throws FactoryException {
+    public synchronized GeodeticDatum createGeodeticDatum(final String code) throws FactoryException {
         final GeodeticDatum datum;
         final String key = trimAuthority(code);
         final Object cached = get(key);
@@ -516,8 +509,7 @@ public class BufferedAuthorityFactory extends AbstractAuthorityFactory implement
      * @throws FactoryException if the object creation failed.
      */
     @Override
-    public synchronized PrimeMeridian createPrimeMeridian(final String code)
-            throws FactoryException {
+    public synchronized PrimeMeridian createPrimeMeridian(final String code) throws FactoryException {
         final PrimeMeridian meridian;
         final String key = trimAuthority(code);
         final Object cached = get(key);
@@ -555,8 +547,7 @@ public class BufferedAuthorityFactory extends AbstractAuthorityFactory implement
      * @throws FactoryException if the object creation failed.
      */
     @Override
-    public synchronized CoordinateSystem createCoordinateSystem(final String code)
-            throws FactoryException {
+    public synchronized CoordinateSystem createCoordinateSystem(final String code) throws FactoryException {
         final CoordinateSystem cs;
         final String key = trimAuthority(code);
         final Object cached = get(key);
@@ -613,8 +604,7 @@ public class BufferedAuthorityFactory extends AbstractAuthorityFactory implement
      * @throws FactoryException if the object creation failed.
      */
     @Override
-    public synchronized CylindricalCS createCylindricalCS(final String code)
-            throws FactoryException {
+    public synchronized CylindricalCS createCylindricalCS(final String code) throws FactoryException {
         final CylindricalCS cs;
         final String key = trimAuthority(code);
         final Object cached = get(key);
@@ -652,8 +642,7 @@ public class BufferedAuthorityFactory extends AbstractAuthorityFactory implement
      * @throws FactoryException if the object creation failed.
      */
     @Override
-    public synchronized EllipsoidalCS createEllipsoidalCS(final String code)
-            throws FactoryException {
+    public synchronized EllipsoidalCS createEllipsoidalCS(final String code) throws FactoryException {
         final EllipsoidalCS cs;
         final String key = trimAuthority(code);
         final Object cached = get(key);
@@ -710,8 +699,7 @@ public class BufferedAuthorityFactory extends AbstractAuthorityFactory implement
      * @throws FactoryException if the object creation failed.
      */
     @Override
-    public synchronized CoordinateSystemAxis createCoordinateSystemAxis(final String code)
-            throws FactoryException {
+    public synchronized CoordinateSystemAxis createCoordinateSystemAxis(final String code) throws FactoryException {
         final CoordinateSystemAxis axis;
         final String key = trimAuthority(code);
         final Object cached = get(key);
@@ -807,8 +795,7 @@ public class BufferedAuthorityFactory extends AbstractAuthorityFactory implement
      * @throws FactoryException if the object creation failed.
      */
     @Override
-    public synchronized EngineeringCRS createEngineeringCRS(final String code)
-            throws FactoryException {
+    public synchronized EngineeringCRS createEngineeringCRS(final String code) throws FactoryException {
         final EngineeringCRS crs;
         final String key = trimAuthority(code);
         final Object cached = get(key);
@@ -827,8 +814,7 @@ public class BufferedAuthorityFactory extends AbstractAuthorityFactory implement
      * @throws FactoryException if the object creation failed.
      */
     @Override
-    public synchronized GeographicCRS createGeographicCRS(final String code)
-            throws FactoryException {
+    public synchronized GeographicCRS createGeographicCRS(final String code) throws FactoryException {
         final GeographicCRS crs;
         final String key = trimAuthority(code);
         final Object cached = get(key);
@@ -847,8 +833,7 @@ public class BufferedAuthorityFactory extends AbstractAuthorityFactory implement
      * @throws FactoryException if the object creation failed.
      */
     @Override
-    public synchronized GeocentricCRS createGeocentricCRS(final String code)
-            throws FactoryException {
+    public synchronized GeocentricCRS createGeocentricCRS(final String code) throws FactoryException {
         final GeocentricCRS crs;
         final String key = trimAuthority(code);
         final Object cached = get(key);
@@ -944,8 +929,7 @@ public class BufferedAuthorityFactory extends AbstractAuthorityFactory implement
      * @since 2.2
      */
     @Override
-    public synchronized ParameterDescriptor createParameterDescriptor(final String code)
-            throws FactoryException {
+    public synchronized ParameterDescriptor createParameterDescriptor(final String code) throws FactoryException {
         final ParameterDescriptor parameter;
         final String key = trimAuthority(code);
         final Object cached = get(key);
@@ -965,8 +949,7 @@ public class BufferedAuthorityFactory extends AbstractAuthorityFactory implement
      * @since 2.2
      */
     @Override
-    public synchronized OperationMethod createOperationMethod(final String code)
-            throws FactoryException {
+    public synchronized OperationMethod createOperationMethod(final String code) throws FactoryException {
         final OperationMethod method;
         final String key = trimAuthority(code);
         final Object cached = get(key);
@@ -986,8 +969,7 @@ public class BufferedAuthorityFactory extends AbstractAuthorityFactory implement
      * @since 2.2
      */
     @Override
-    public synchronized CoordinateOperation createCoordinateOperation(final String code)
-            throws FactoryException {
+    public synchronized CoordinateOperation createCoordinateOperation(final String code) throws FactoryException {
         final CoordinateOperation operation;
         final String key = trimAuthority(code);
         final Object cached = get(key);
@@ -1017,11 +999,8 @@ public class BufferedAuthorityFactory extends AbstractAuthorityFactory implement
             Set<CoordinateOperation> cast = (Set<CoordinateOperation>) cached;
             operations = cast;
         } else {
-            operations =
-                    Collections.unmodifiableSet(
-                            getBackingStore()
-                                    .createFromCoordinateReferenceSystemCodes(
-                                            sourceCRS, targetCRS));
+            operations = Collections.unmodifiableSet(
+                    getBackingStore().createFromCoordinateReferenceSystemCodes(sourceCRS, targetCRS));
         }
         put(key, operations);
         return operations;
@@ -1051,8 +1030,7 @@ public class BufferedAuthorityFactory extends AbstractAuthorityFactory implement
         public boolean equals(final Object other) {
             if (other instanceof CodePair) {
                 final CodePair that = (CodePair) other;
-                return Utilities.equals(this.source, that.source)
-                        && Utilities.equals(this.target, that.target);
+                return Utilities.equals(this.source, that.source) && Utilities.equals(this.target, that.target);
             }
             return false;
         }
@@ -1071,8 +1049,8 @@ public class BufferedAuthorityFactory extends AbstractAuthorityFactory implement
      * @since 2.4
      */
     @Override
-    public synchronized IdentifiedObjectFinder getIdentifiedObjectFinder(
-            final Class<? extends IdentifiedObject> type) throws FactoryException {
+    public synchronized IdentifiedObjectFinder getIdentifiedObjectFinder(final Class<? extends IdentifiedObject> type)
+            throws FactoryException {
         return new Finder(getBackingStore().getIdentifiedObjectFinder(type));
     }
 
@@ -1182,8 +1160,7 @@ public class BufferedAuthorityFactory extends AbstractAuthorityFactory implement
         pool.put(key, object);
         int toReplace = pool.size() - maxStrongReferences;
         if (toReplace > 0) {
-            for (final Iterator<Map.Entry<Object, Object>> it = pool.entrySet().iterator();
-                    it.hasNext(); ) {
+            for (final Iterator<Map.Entry<Object, Object>> it = pool.entrySet().iterator(); it.hasNext(); ) {
                 final Map.Entry<Object, Object> entry = it.next();
                 final Object value = entry.getValue();
                 if (value instanceof Reference) {

@@ -57,8 +57,7 @@ public class SQLServerJNDIDataSourceOnlineTest extends JDBCJNDIDataSourceOnlineT
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             return true;
         } catch (ClassNotFoundException e) {
-            LOGGER.info(
-                    "Skipping SQLServerJNDIDataSourceOnlineTest test as the Microsoft driver is not available");
+            LOGGER.info("Skipping SQLServerJNDIDataSourceOnlineTest test as the Microsoft driver is not available");
             return false;
         }
     }

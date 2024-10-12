@@ -64,13 +64,12 @@ public class SingleLayerMapContentTest {
     public void disposeDoesNotCallLayerDispose() {
         final boolean[] layerDisposed = new boolean[1];
 
-        Layer layer =
-                new MockLayer(WORLD) {
-                    @Override
-                    public void dispose() {
-                        layerDisposed[0] = true;
-                    }
-                };
+        Layer layer = new MockLayer(WORLD) {
+            @Override
+            public void dispose() {
+                layerDisposed[0] = true;
+            }
+        };
 
         MapContent mc = new SingleLayerMapContent(layer);
         mc.dispose();

@@ -90,42 +90,37 @@ public class SelectSampleDimension extends Operation2D {
     private static final long serialVersionUID = 6889502343896409135L;
 
     /** The parameter descriptor for the sample dimension indices. */
-    public static final ParameterDescriptor<int[]> SAMPLE_DIMENSIONS =
-            new DefaultParameterDescriptor<>(
-                    Citations.OGC,
-                    "SampleDimensions",
-                    int[].class, // Value class (mandatory)
-                    null, // Array of valid values
-                    null, // Default value
-                    null, // Minimal value
-                    null, // Maximal value
-                    null, // Unit of measure
-                    false); // Parameter is optional
+    public static final ParameterDescriptor<int[]> SAMPLE_DIMENSIONS = new DefaultParameterDescriptor<>(
+            Citations.OGC,
+            "SampleDimensions",
+            int[].class, // Value class (mandatory)
+            null, // Array of valid values
+            null, // Default value
+            null, // Minimal value
+            null, // Maximal value
+            null, // Unit of measure
+            false); // Parameter is optional
 
     /**
      * The parameter descriptor for the visible dimension indice. This is a Geotools-specific
      * parameter.
      */
-    public static final ParameterDescriptor<Integer> VISIBLE_SAMPLE_DIMENSION =
-            new DefaultParameterDescriptor<>(
-                    Citations.GEOTOOLS,
-                    "VisibleSampleDimension",
-                    Integer.class, // Value class (mandatory)
-                    null, // Array of valid values
-                    null, // Default value
-                    0, // Minimal value
-                    null, // Maximal value
-                    null, // Unit of measure
-                    false); // Parameter is optional
+    public static final ParameterDescriptor<Integer> VISIBLE_SAMPLE_DIMENSION = new DefaultParameterDescriptor<>(
+            Citations.GEOTOOLS,
+            "VisibleSampleDimension",
+            Integer.class, // Value class (mandatory)
+            null, // Array of valid values
+            null, // Default value
+            0, // Minimal value
+            null, // Maximal value
+            null, // Unit of measure
+            false); // Parameter is optional
 
     /** Constructs a default {@code "SelectSampleDimension"} operation. */
     public SelectSampleDimension() {
-        super(
-                new DefaultParameterDescriptorGroup(
-                        "SelectSampleDimension",
-                        new ParameterDescriptor[] {
-                            SOURCE_0, SAMPLE_DIMENSIONS, VISIBLE_SAMPLE_DIMENSION
-                        }));
+        super(new DefaultParameterDescriptorGroup(
+                "SelectSampleDimension",
+                new ParameterDescriptor[] {SOURCE_0, SAMPLE_DIMENSIONS, VISIBLE_SAMPLE_DIMENSION}));
     }
 
     /**

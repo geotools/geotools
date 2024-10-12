@@ -533,8 +533,7 @@ public class Encoder {
         }
 
         // create the document serializer
-        SAXTransformerFactory txFactory =
-                (SAXTransformerFactory) SAXTransformerFactory.newInstance();
+        SAXTransformerFactory txFactory = (SAXTransformerFactory) SAXTransformerFactory.newInstance();
 
         TransformerHandler xmls;
         try {
@@ -578,18 +577,13 @@ public class Encoder {
         // let's see if all the properties have the same type, and that the type is equal to the
         // current element type
         if (!nestedProperties.stream()
-                .allMatch(
-                        property ->
-                                property == null
-                                        || property.getType()
-                                                .getName()
-                                                .equals(complex.getType().getName()))) {
+                .allMatch(property -> property == null
+                        || property.getType().getName().equals(complex.getType().getName()))) {
             // different types which means we are not in the case of nested complex features
             return false;
         }
         // so let's see if the nested type is a reference
-        for (XSDParticle childParticle :
-                Schemas.getChildElementParticles(element.getTypeDefinition(), true)) {
+        for (XSDParticle childParticle : Schemas.getChildElementParticles(element.getTypeDefinition(), true)) {
             XSDElementDeclaration childElement = (XSDElementDeclaration) childParticle.getContent();
             if (childElement.isElementDeclarationReference()) {
                 childElement = childElement.getResolvedElementDeclaration();
@@ -606,8 +600,7 @@ public class Encoder {
         return true;
     }
 
-    public void encode(Object object, QName name, ContentHandler handler)
-            throws IOException, SAXException {
+    public void encode(Object object, QName name, ContentHandler handler) throws IOException, SAXException {
 
         // maintain a stack of (encoding,element declaration pairs)
         Stack<EncodingEntry> encoded = null;
@@ -618,10 +611,7 @@ public class Encoder {
         }
 
         try {
-            serializer =
-                    (handler instanceof QNameValidatingHandler)
-                            ? handler
-                            : new QNameValidatingHandler(handler);
+            serializer = (handler instanceof QNameValidatingHandler) ? handler : new QNameValidatingHandler(handler);
 
             if (!inline) {
                 serializer.startDocument();
@@ -692,8 +682,7 @@ public class Encoder {
         }
     }
 
-    private void startEncoding(Object object, EncodingEntry entry)
-            throws SAXException, IOException {
+    private void startEncoding(Object object, EncodingEntry entry) throws SAXException, IOException {
         // first make sure the element is not abstract
         if (entry.element.isAbstract()) {
             // look for a non abstract substitute - substitution groups are subject to
@@ -714,11 +703,9 @@ public class Encoder {
             logger.fine(entry.element.getName() + " is abstract");
         }
 
-        entry.encoding =
-                entry.parent != null
-                        ? (Element)
-                                encode(entry.object, entry.element, entry.parent.element.getType())
-                        : (Element) encode(entry.object, entry.element);
+        entry.encoding = entry.parent != null
+                ? (Element) encode(entry.object, entry.element, entry.parent.element.getType())
+                : (Element) encode(entry.object, entry.element);
 
         // add any more attributes
         setupEntryAttributes(object, entry);
@@ -798,8 +785,7 @@ public class Encoder {
 
                         if (node instanceof Element) {
                             if (ns != null) {
-                                if (ns.equals(node.getNamespaceURI())
-                                        && local.equals(node.getLocalName())) {
+                                if (ns.equals(node.getNamespaceURI()) && local.equals(node.getLocalName())) {
                                     continue O;
                                 }
                             } else {
@@ -821,12 +807,7 @@ public class Encoder {
                         } else if (!child.isNillable()) {
                             // log an error and skip the element, but we're encoding
                             // something invalid
-                            logger.fine(
-                                    "Property "
-                                            + ns
-                                            + ":"
-                                            + local
-                                            + " not found but minoccurs > 0 ");
+                            logger.fine("Property " + ns + ":" + local + " not found but minoccurs > 0 ");
                             // skip this regardless
                             continue;
                         }
@@ -868,8 +849,7 @@ public class Encoder {
                             iterator = collection.iterator();
                         } else if (obj instanceof FeatureCollection) {
                             @SuppressWarnings("unchecked")
-                            FeatureCollection<FeatureType, Feature> collection =
-                                    (FeatureCollection) obj;
+                            FeatureCollection<FeatureType, Feature> collection = (FeatureCollection) obj;
                             iterator = DataUtilities.iterator(collection.features());
                         } else {
                             iterator = new SingleIterator(obj);
@@ -910,9 +890,7 @@ public class Encoder {
                 }
 
                 entry.encoding.setAttributeNS(
-                        XSDUtil.SCHEMA_INSTANCE_URI_2001,
-                        "xsi:schemaLocation",
-                        schemaLocation.toString());
+                        XSDUtil.SCHEMA_INSTANCE_URI_2001, "xsi:schemaLocation", schemaLocation.toString());
             }
 
             schemaLocations = null;
@@ -935,9 +913,7 @@ public class Encoder {
             }
 
             // look up the binding
-            Binding binding =
-                    bindingLoader.loadBinding(
-                            new QName(e.getTargetNamespace(), e.getName()), context);
+            Binding binding = bindingLoader.loadBinding(new QName(e.getTargetNamespace(), e.getName()), context);
 
             if (binding == null) {
                 // try the type
@@ -947,9 +923,7 @@ public class Encoder {
                     continue;
                 }
 
-                binding =
-                        bindingLoader.loadBinding(
-                                new QName(type.getTargetNamespace(), type.getName()), context);
+                binding = bindingLoader.loadBinding(new QName(type.getTargetNamespace(), type.getName()), context);
             }
 
             if (binding == null) {
@@ -996,8 +970,7 @@ public class Encoder {
         return null;
     }
 
-    private void finishElement(Stack<EncodingEntry> encoded, EncodingEntry entry)
-            throws SAXException {
+    private void finishElement(Stack<EncodingEntry> encoded, EncodingEntry entry) throws SAXException {
         end(entry.encoding, entry.element);
         encoded.pop();
 
@@ -1009,11 +982,9 @@ public class Encoder {
         entry.parent = null;
     }
 
-    private void processChildren(
-            ContentHandler handler, Stack<EncodingEntry> encoded, EncodingEntry entry) {
+    private void processChildren(ContentHandler handler, Stack<EncodingEntry> encoded, EncodingEntry entry) {
         Object[] child = entry.children.get(0);
-        XSDElementDeclaration element =
-                ((XSDElementDeclaration) child[0]).getResolvedElementDeclaration();
+        XSDElementDeclaration element = ((XSDElementDeclaration) child[0]).getResolvedElementDeclaration();
         Iterator itr = (Iterator) child[1];
 
         if (itr.hasNext()) {
@@ -1028,9 +999,7 @@ public class Encoder {
                     throw new RuntimeException("Error encoding object to xml-element", e);
                 }
             } else {
-                if (next instanceof ComplexAttribute
-                        && relaxed
-                        && isNonStripedNestedElement(next, element)) {
+                if (next instanceof ComplexAttribute && relaxed && isNonStripedNestedElement(next, element)) {
                     for (Property property : ((ComplexAttribute) next).getProperties()) {
                         // add object sub properties, i.e. nested complex features
                         encoded.push(new EncodingEntry(property, element, entry));
@@ -1060,8 +1029,7 @@ public class Encoder {
             QName typeDefintion = rootElementType;
 
             if (typeDefintion == null) {
-                typeDefintion =
-                        (QName) context.getComponentInstance("http://geotools.org/typeDefinition");
+                typeDefintion = (QName) context.getComponentInstance("http://geotools.org/typeDefinition");
             }
 
             if (typeDefintion != null) {
@@ -1143,8 +1111,7 @@ public class Encoder {
      * <p>Note that this method should be used for testing or convenience since it does not stream
      * and loads the entire encoded result into memory.
      */
-    public Document encodeAsDOM(Object object, QName name)
-            throws IOException, SAXException, TransformerException {
+    public Document encodeAsDOM(Object object, QName name) throws IOException, SAXException, TransformerException {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         encode(object, name, out);
 
@@ -1244,9 +1211,7 @@ public class Encoder {
                 Element child = (Element) node;
                 QName childName = new QName(child.getNamespaceURI(), child.getNodeName());
                 XSDElementDeclaration childDecl =
-                        declaration != null
-                                ? Schemas.getChildElementDeclaration(declaration, childName)
-                                : null;
+                        declaration != null ? Schemas.getChildElementDeclaration(declaration, childName) : null;
                 start(child, childDecl);
                 end(child, childDecl);
             }

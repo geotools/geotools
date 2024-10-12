@@ -93,7 +93,8 @@ public class StringFunctionTest {
         assertEquals(
                 "orcpzsiayd",
                 ff.function("strStripAccents", ff.literal("orčpžsíáýd")).evaluate(null));
-        assertEquals("eclair", ff.function("strStripAccents", ff.literal("éclair")).evaluate(null));
+        assertEquals(
+                "eclair", ff.function("strStripAccents", ff.literal("éclair")).evaluate(null));
     }
 
     @Test
@@ -132,35 +133,19 @@ public class StringFunctionTest {
     public void testStrTrim2() throws Exception {
         assertEquals(
                 "hello",
-                ff.function(
-                                "strTrim2",
-                                ff.literal("  hello  "),
-                                ff.literal("both"),
-                                ff.literal(" "))
+                ff.function("strTrim2", ff.literal("  hello  "), ff.literal("both"), ff.literal(" "))
                         .evaluate(null));
         assertEquals(
                 "hello  ",
-                ff.function(
-                                "strTrim2",
-                                ff.literal("  hello  "),
-                                ff.literal("leading"),
-                                ff.literal(" "))
+                ff.function("strTrim2", ff.literal("  hello  "), ff.literal("leading"), ff.literal(" "))
                         .evaluate(null));
         assertEquals(
                 "  hello",
-                ff.function(
-                                "strTrim2",
-                                ff.literal("  hello  "),
-                                ff.literal("trailing"),
-                                ff.literal(" "))
+                ff.function("strTrim2", ff.literal("  hello  "), ff.literal("trailing"), ff.literal(" "))
                         .evaluate(null));
         assertEquals(
                 "hello",
-                ff.function(
-                                "strTrim2",
-                                ff.literal("xxhelloxx"),
-                                ff.literal("both"),
-                                ff.literal("x"))
+                ff.function("strTrim2", ff.literal("xxhelloxx"), ff.literal("both"), ff.literal("x"))
                         .evaluate(null));
     }
 
@@ -168,66 +153,39 @@ public class StringFunctionTest {
     public void testStrPosition() throws Exception {
         assertEquals(
                 "1",
-                ff.function(
-                                "strPosition",
-                                ff.literal("he"),
-                                ff.literal("hello"),
-                                ff.literal("frontToBack"))
+                ff.function("strPosition", ff.literal("he"), ff.literal("hello"), ff.literal("frontToBack"))
                         .evaluate(null, String.class));
         assertEquals(
                 "1",
-                ff.function(
-                                "strPosition",
-                                ff.literal("he"),
-                                ff.literal("hello"),
-                                ff.literal("backToFront"))
+                ff.function("strPosition", ff.literal("he"), ff.literal("hello"), ff.literal("backToFront"))
                         .evaluate(null, String.class));
         assertEquals(
                 "0",
-                ff.function(
-                                "strPosition",
-                                ff.literal("x"),
-                                ff.literal("hello"),
-                                ff.literal("backToFront"))
+                ff.function("strPosition", ff.literal("x"), ff.literal("hello"), ff.literal("backToFront"))
                         .evaluate(null, String.class));
         assertEquals(
                 "0",
-                ff.function(
-                                "strPosition",
-                                ff.literal("x"),
-                                ff.literal("hello"),
-                                ff.literal("frontToBack"))
+                ff.function("strPosition", ff.literal("x"), ff.literal("hello"), ff.literal("frontToBack"))
                         .evaluate(null, String.class));
         assertEquals(
                 "3",
-                ff.function(
-                                "strPosition",
-                                ff.literal("l"),
-                                ff.literal("hello"),
-                                ff.literal("frontToBack"))
+                ff.function("strPosition", ff.literal("l"), ff.literal("hello"), ff.literal("frontToBack"))
                         .evaluate(null, String.class));
         assertEquals(
                 "4",
-                ff.function(
-                                "strPosition",
-                                ff.literal("l"),
-                                ff.literal("hello"),
-                                ff.literal("backToFront"))
+                ff.function("strPosition", ff.literal("l"), ff.literal("hello"), ff.literal("backToFront"))
                         .evaluate(null, String.class));
     }
 
     @Test
     public void testStrSubstring() throws Exception {
         // test bad ranges return null
-        assertNull(
-                ff.function("strSubstring", ff.literal("ABCD"), ff.literal(-1), ff.literal(2))
-                        .evaluate(null));
-        assertNull(
-                ff.function("strSubstring", ff.literal("ABCD"), ff.literal(2), ff.literal(5))
-                        .evaluate(null));
-        assertNull(
-                ff.function("strSubstring", ff.literal("ABCD"), ff.literal(3), ff.literal(2))
-                        .evaluate(null));
+        assertNull(ff.function("strSubstring", ff.literal("ABCD"), ff.literal(-1), ff.literal(2))
+                .evaluate(null));
+        assertNull(ff.function("strSubstring", ff.literal("ABCD"), ff.literal(2), ff.literal(5))
+                .evaluate(null));
+        assertNull(ff.function("strSubstring", ff.literal("ABCD"), ff.literal(3), ff.literal(2))
+                .evaluate(null));
         // test empty string input
         assertEquals(
                 "",
@@ -276,28 +234,32 @@ public class StringFunctionTest {
     @Test
     public void testStrSubstringStart() throws Exception {
         // test bad index returns null
-        assertNull(
-                ff.function("strSubstringStart", ff.literal("ABCD"), ff.literal(-1))
-                        .evaluate(null));
-        assertNull(
-                ff.function("strSubstringStart", ff.literal("ABCD"), ff.literal(5)).evaluate(null));
+        assertNull(ff.function("strSubstringStart", ff.literal("ABCD"), ff.literal(-1))
+                .evaluate(null));
+        assertNull(ff.function("strSubstringStart", ff.literal("ABCD"), ff.literal(5))
+                .evaluate(null));
         // test empty string input
         assertEquals(
-                "", ff.function("strSubstringStart", ff.literal(""), ff.literal(0)).evaluate(null));
+                "",
+                ff.function("strSubstringStart", ff.literal(""), ff.literal(0)).evaluate(null));
         // test empty string output
         assertEquals(
                 "",
-                ff.function("strSubstringStart", ff.literal("ABCD"), ff.literal(4)).evaluate(null));
+                ff.function("strSubstringStart", ff.literal("ABCD"), ff.literal(4))
+                        .evaluate(null));
         // test non-empty substrings
         assertEquals(
                 "ABCD",
-                ff.function("strSubstringStart", ff.literal("ABCD"), ff.literal(0)).evaluate(null));
+                ff.function("strSubstringStart", ff.literal("ABCD"), ff.literal(0))
+                        .evaluate(null));
         assertEquals(
                 "CD",
-                ff.function("strSubstringStart", ff.literal("ABCD"), ff.literal(2)).evaluate(null));
+                ff.function("strSubstringStart", ff.literal("ABCD"), ff.literal(2))
+                        .evaluate(null));
         assertEquals(
                 "D",
-                ff.function("strSubstringStart", ff.literal("ABCD"), ff.literal(3)).evaluate(null));
+                ff.function("strSubstringStart", ff.literal("ABCD"), ff.literal(3))
+                        .evaluate(null));
     }
 
     @Test

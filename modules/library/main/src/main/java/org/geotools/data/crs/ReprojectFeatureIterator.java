@@ -65,9 +65,7 @@ public class ReprojectFeatureIterator implements Iterator<SimpleFeature>, Simple
     GeometryCoordinateSequenceTransformer transformer = new GeometryCoordinateSequenceTransformer();
 
     public ReprojectFeatureIterator(
-            FeatureIterator<SimpleFeature> reader,
-            SimpleFeatureType schema,
-            MathTransform transform) {
+            FeatureIterator<SimpleFeature> reader, SimpleFeatureType schema, MathTransform transform) {
         this.reader = reader;
         this.schema = schema;
         transformer.setMathTransform(transform);
@@ -117,8 +115,7 @@ public class ReprojectFeatureIterator implements Iterator<SimpleFeature>, Simple
             }
         } catch (TransformException e) {
             throw (IllegalStateException)
-                    new IllegalStateException(
-                                    "A transformation exception occurred while reprojecting data on the fly")
+                    new IllegalStateException("A transformation exception occurred while reprojecting data on the fly")
                             .initCause(e);
         }
 

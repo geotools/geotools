@@ -75,10 +75,7 @@ import org.geotools.xsd.Node;
  */
 public class MarkBinding extends SLDMarkBinding {
 
-    public MarkBinding(
-            StyleFactory styleFactory,
-            FilterFactory filterFactory,
-            ResourceLocator resourceLocator) {
+    public MarkBinding(StyleFactory styleFactory, FilterFactory filterFactory, ResourceLocator resourceLocator) {
         super(styleFactory, filterFactory, resourceLocator);
     }
 
@@ -110,11 +107,8 @@ public class MarkBinding extends SLDMarkBinding {
             ExternalMark emark = null;
 
             if (node.hasChild("OnlineResource")) {
-                emark =
-                        styleFactory.externalMark(
-                                new OnLineResourceImpl((URI) node.getChildValue("OnlineResource")),
-                                format,
-                                markIndex);
+                emark = styleFactory.externalMark(
+                        new OnLineResourceImpl((URI) node.getChildValue("OnlineResource")), format, markIndex);
             } else if (node.hasChild("InlineContent")) {
                 Icon ic = (Icon) node.getChildValue("InlineContent");
                 emark = styleFactory.externalMark(ic);

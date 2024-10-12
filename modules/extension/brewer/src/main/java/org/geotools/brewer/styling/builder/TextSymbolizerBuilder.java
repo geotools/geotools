@@ -122,9 +122,7 @@ public class TextSymbolizerBuilder extends SymbolizerBuilder<TextSymbolizer> {
                 array[i] = fonts.get(i).build();
             }
         }
-        TextSymbolizer ts =
-                sf.createTextSymbolizer(
-                        fill.build(), array, halo.build(), label, placement.build(), null);
+        TextSymbolizer ts = sf.createTextSymbolizer(fill.build(), array, halo.build(), label, placement.build(), null);
         ts.setGeometry(geometry);
         if (uom != null) {
             ts.setUnitOfMeasure(uom);

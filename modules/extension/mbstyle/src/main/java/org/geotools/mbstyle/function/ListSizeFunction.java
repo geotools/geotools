@@ -27,10 +27,7 @@ import org.geotools.filter.capability.FunctionNameImpl;
 public class ListSizeFunction extends FunctionExpressionImpl {
 
     public static final FunctionName NAME =
-            new FunctionNameImpl(
-                    "listSize",
-                    parameter("list", Collection.class),
-                    parameter("size", Integer.class));
+            new FunctionNameImpl("listSize", parameter("list", Collection.class), parameter("size", Integer.class));
 
     public ListSizeFunction() {
         super(NAME);

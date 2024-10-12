@@ -56,8 +56,7 @@ public final class Scaling extends XSD {
         return getClass().getResource("scal/v1_0/scal.xsd").toString();
     }
 
-    public static final String NAMESPACE =
-            "http://www.opengis.net/WCS_service-extension_scaling/1.0";
+    public static final String NAMESPACE = "http://www.opengis.net/WCS_service-extension_scaling/1.0";
 
     public static final QName ScalingType = new QName(NAMESPACE, "ScalingType");
 

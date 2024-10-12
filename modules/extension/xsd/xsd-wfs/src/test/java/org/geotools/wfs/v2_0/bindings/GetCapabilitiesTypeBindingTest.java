@@ -9,10 +9,9 @@ import org.junit.Test;
 public class GetCapabilitiesTypeBindingTest extends WFSTestSupport {
     @Test
     public void testParse() throws Exception {
-        String xml =
-                "<GetCapabilities service='WFS' xmlns='http://www.opengis.net/wfs/2.0' "
-                        + "xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' "
-                        + "xsi:schemaLocation='http://www.opengis.net/wfs/2.0 http://schemas.opengis.net/wfs/2.0/wfs.xsd'/>";
+        String xml = "<GetCapabilities service='WFS' xmlns='http://www.opengis.net/wfs/2.0' "
+                + "xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' "
+                + "xsi:schemaLocation='http://www.opengis.net/wfs/2.0 http://schemas.opengis.net/wfs/2.0/wfs.xsd'/>";
         buildDocument(xml);
 
         GetCapabilitiesType gc = (GetCapabilitiesType) parse();

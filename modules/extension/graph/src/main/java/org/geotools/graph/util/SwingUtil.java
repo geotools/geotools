@@ -70,23 +70,18 @@ public class SwingUtil {
     }
 
     public static void addDoubleClickEvent(JList list) {
-        list.addMouseListener(
-                new MouseAdapter() {
-                    @Override
-                    public void mouseClicked(MouseEvent e) {
-                        JList source = (JList) e.getSource();
-                        if (e.getClickCount() == 2) {
-                            ListSelectionListener[] listeners = source.getListSelectionListeners();
-                            for (ListSelectionListener listener : listeners) {
-                                listener.valueChanged(
-                                        new ListSelectionEvent(
-                                                source,
-                                                source.getSelectedIndex(),
-                                                source.getSelectedIndex(),
-                                                false));
-                            }
-                        }
+        list.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                JList source = (JList) e.getSource();
+                if (e.getClickCount() == 2) {
+                    ListSelectionListener[] listeners = source.getListSelectionListeners();
+                    for (ListSelectionListener listener : listeners) {
+                        listener.valueChanged(new ListSelectionEvent(
+                                source, source.getSelectedIndex(), source.getSelectedIndex(), false));
                     }
-                });
+                }
+            }
+        });
     }
 }

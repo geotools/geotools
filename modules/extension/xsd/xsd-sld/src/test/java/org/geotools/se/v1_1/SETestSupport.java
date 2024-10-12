@@ -44,8 +44,7 @@ public abstract class SETestSupport extends XMLTestSupport {
 
     protected static void assertImagesEqual(BufferedImage expected, Icon icon) {
         BufferedImage actual =
-                new BufferedImage(
-                        icon.getIconWidth(), icon.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
+                new BufferedImage(icon.getIconWidth(), icon.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = actual.createGraphics();
         try {
             icon.paintIcon(null, g, 0, 0);
@@ -60,10 +59,7 @@ public abstract class SETestSupport extends XMLTestSupport {
         int h = actual.getHeight();
         for (int x = 0; x < w; ++x) {
             for (int y = 0; y < h; ++y) {
-                assertEquals(
-                        "mismatch at (" + x + ", " + y + ")",
-                        expected.getRGB(x, y),
-                        actual.getRGB(x, y));
+                assertEquals("mismatch at (" + x + ", " + y + ")", expected.getRGB(x, y), actual.getRGB(x, y));
             }
         }
     }

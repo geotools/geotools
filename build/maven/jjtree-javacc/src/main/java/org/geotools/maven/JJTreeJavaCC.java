@@ -237,8 +237,7 @@ public class JJTreeJavaCC extends AbstractMojo {
          */
         if (windowsOs) {
             try {
-                String[] files =
-                        FileUtils.getFilesFromExtension(outputDirectory, new String[] {"java"});
+                String[] files = FileUtils.getFilesFromExtension(outputDirectory, new String[] {"java"});
                 for (String file : files) {
                     System.out.println("Fixing " + file);
                     fixHeader(new File(file));
@@ -333,8 +332,7 @@ public class JJTreeJavaCC extends AbstractMojo {
      * @param sourceDir The source directory.
      * @param ext The extension to search of ({@code .jjt} or {@code .jj}).
      */
-    private Set searchStaleGrammars(final File sourceDir, final String ext)
-            throws MojoExecutionException {
+    private Set searchStaleGrammars(final File sourceDir, final String ext) throws MojoExecutionException {
         final String extCAP = ext.toUpperCase();
         final SuffixMapping mapping = new SuffixMapping(ext, ext);
         final SuffixMapping mappingCAP = new SuffixMapping(extCAP, extCAP);
@@ -346,10 +344,7 @@ public class JJTreeJavaCC extends AbstractMojo {
             return scanner.getIncludedSources(sourceDir, outDir);
         } catch (InclusionScanException e) {
             throw new MojoExecutionException(
-                    "Error scanning source root \""
-                            + sourceDir.getPath()
-                            + "\" for stale grammars to reprocess.",
-                    e);
+                    "Error scanning source root \"" + sourceDir.getPath() + "\" for stale grammars to reprocess.", e);
         }
     }
 

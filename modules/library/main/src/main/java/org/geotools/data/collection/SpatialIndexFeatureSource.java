@@ -73,18 +73,16 @@ import org.locationtech.jts.geom.Geometry;
 public class SpatialIndexFeatureSource implements SimpleFeatureSource {
     SpatialIndexFeatureCollection contents;
 
-    private static final Set<Class> supportedFilterTypes =
-            new HashSet<>(
-                    Arrays.asList(
-                            BBOX.class,
-                            Contains.class,
-                            Crosses.class,
-                            DWithin.class,
-                            Equals.class,
-                            Intersects.class,
-                            Overlaps.class,
-                            Touches.class,
-                            Within.class));
+    private static final Set<Class> supportedFilterTypes = new HashSet<>(Arrays.asList(
+            BBOX.class,
+            Contains.class,
+            Crosses.class,
+            DWithin.class,
+            Equals.class,
+            Intersects.class,
+            Overlaps.class,
+            Touches.class,
+            Within.class));
 
     public SpatialIndexFeatureSource(SpatialIndexFeatureCollection original) {
         this.contents = original;
@@ -138,15 +136,13 @@ public class SpatialIndexFeatureSource implements SimpleFeatureSource {
         return getFeatureCollection(query, bounds);
     }
 
-    private SimpleFeatureCollection getFeatureCollection(Query query, Envelope bounds)
-            throws IOException {
+    private SimpleFeatureCollection getFeatureCollection(Query query, Envelope bounds) throws IOException {
         query = DataUtilities.resolvePropertyNames(query, getSchema());
         final int offset = query.getStartIndex() != null ? query.getStartIndex() : 0;
         if (offset > 0 && query.getSortBy() == null) {
             if (!getQueryCapabilities().supportsSorting(query.getSortBy())) {
-                throw new IllegalStateException(
-                        "Feature source does not support this sorting "
-                                + "so there is no way a stable paging (offset/limit) can be performed");
+                throw new IllegalStateException("Feature source does not support this sorting "
+                        + "so there is no way a stable paging (offset/limit) can be performed");
             }
             Query copy = new Query(query);
             copy.setSortBy(SortBy.NATURAL_ORDER);
@@ -167,9 +163,7 @@ public class SpatialIndexFeatureSource implements SimpleFeatureSource {
         }
         // step two: reproject
         if (query.getCoordinateSystemReproject() != null) {
-            collection =
-                    new ReprojectingFeatureCollection(
-                            collection, query.getCoordinateSystemReproject());
+            collection = new ReprojectingFeatureCollection(collection, query.getCoordinateSystemReproject());
         }
         // step two sort! (note this makes a sorted copy)
         if (query.getSortBy() != null && query.getSortBy().length != 0) {
@@ -197,8 +191,7 @@ public class SpatialIndexFeatureSource implements SimpleFeatureSource {
         if (query.getPropertyNames() != Query.ALL_NAMES) {
             // rebuild the type and wrap the reader
             SimpleFeatureType schema = collection.getSchema();
-            SimpleFeatureType target =
-                    SimpleFeatureTypeBuilder.retype(schema, query.getPropertyNames());
+            SimpleFeatureType target = SimpleFeatureTypeBuilder.retype(schema, query.getPropertyNames());
             if (!target.equals(schema)) {
                 collection = new ReTypingFeatureCollection(collection, target);
             }

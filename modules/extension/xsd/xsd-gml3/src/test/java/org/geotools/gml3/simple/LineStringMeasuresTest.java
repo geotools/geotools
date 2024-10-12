@@ -32,8 +32,7 @@ public final class LineStringMeasuresTest extends GeometryEncoderTestSupport {
     @Test
     public void testEncodeLineMFromLiteCS() throws Exception {
         // create a linestring with M values and encode it in GML
-        LiteCoordinateSequence cs =
-                new LiteCoordinateSequence(new double[] {0, 1, -1.5, 3, 4, -2.5}, 3, 1);
+        LiteCoordinateSequence cs = new LiteCoordinateSequence(new double[] {0, 1, -1.5, 3, 4, -2.5}, 3, 1);
         LineString geometry = new GeometryFactory().createLineString(cs);
         LineStringEncoder encoder = new LineStringEncoder(gtEncoder, "gml", GML.NAMESPACE);
         Document document = encode(encoder, geometry, "line");
@@ -44,8 +43,7 @@ public final class LineStringMeasuresTest extends GeometryEncoderTestSupport {
     @Test
     public void testEncodeLineMFromLiteCSNoMeasuresEncoded() throws Exception {
         // create a linestring with M values and encode it in GML
-        LiteCoordinateSequence cs =
-                new LiteCoordinateSequence(new double[] {0, 1, -1.5, 3, 4, -2.5}, 3, 1);
+        LiteCoordinateSequence cs = new LiteCoordinateSequence(new double[] {0, 1, -1.5, 3, 4, -2.5}, 3, 1);
         LineString geometry = new GeometryFactory().createLineString(cs);
         LineStringEncoder encoder = new LineStringEncoder(gtEncoder, "gml", GML.NAMESPACE);
         Document document = encode(encoder, geometry, false, "line");
@@ -78,8 +76,7 @@ public final class LineStringMeasuresTest extends GeometryEncoderTestSupport {
     @Test
     public void testEncodeLineZMFromLiteCS() throws Exception {
         // create a linestring with ZM values and encode it in GML 3.1
-        LiteCoordinateSequence cs =
-                new LiteCoordinateSequence(new double[] {0, 1, 10, -1.5, 3, 4, 15, -2.5}, 4, 1);
+        LiteCoordinateSequence cs = new LiteCoordinateSequence(new double[] {0, 1, 10, -1.5, 3, 4, 15, -2.5}, 4, 1);
         LineString geometry = new GeometryFactory().createLineString(cs);
         LineStringEncoder encoder = new LineStringEncoder(gtEncoder, "gml", GML.NAMESPACE);
         Document document = encode(encoder, geometry, "line");
@@ -90,8 +87,7 @@ public final class LineStringMeasuresTest extends GeometryEncoderTestSupport {
     @Test
     public void testEncodeLineZMFromLiteCSNoMeasuresEncoded() throws Exception {
         // create a linestring with ZM values and encode it in GML 3.1
-        LiteCoordinateSequence cs =
-                new LiteCoordinateSequence(new double[] {0, 1, 10, -1.5, 3, 4, 15, -2.5}, 4, 1);
+        LiteCoordinateSequence cs = new LiteCoordinateSequence(new double[] {0, 1, 10, -1.5, 3, 4, 15, -2.5}, 4, 1);
         LineString geometry = new GeometryFactory().createLineString(cs);
         LineStringEncoder encoder = new LineStringEncoder(gtEncoder, "gml", GML.NAMESPACE);
         Document document = encode(encoder, geometry, false, "line");

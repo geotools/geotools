@@ -11,9 +11,7 @@ public class GetDomainTest {
 
     @Test
     public void testParseGetDomainParameter() throws Exception {
-        GetDomainType gd =
-                (GetDomainType)
-                        parser.parse(getClass().getResourceAsStream("GetDomainParameter.xml"));
+        GetDomainType gd = (GetDomainType) parser.parse(getClass().getResourceAsStream("GetDomainParameter.xml"));
         // check the attributes
         assertEquals("CSW", gd.getService());
         assertEquals("2.0.2", gd.getVersion());
@@ -23,9 +21,7 @@ public class GetDomainTest {
 
     @Test
     public void testParseGetDomainProperty() throws Exception {
-        GetDomainType gd =
-                (GetDomainType)
-                        parser.parse(getClass().getResourceAsStream("GetDomainProperty.xml"));
+        GetDomainType gd = (GetDomainType) parser.parse(getClass().getResourceAsStream("GetDomainProperty.xml"));
         // check the attributes
         assertEquals("CSW", gd.getService());
         assertEquals("2.0.2", gd.getVersion());

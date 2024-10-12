@@ -97,12 +97,9 @@ public class MapPaneKeyHandler extends KeyAdapter {
 
         defaultBindings.put(new KeyInfo(KeyEvent.VK_DOWN, 0, "Down"), Action.SCROLL_DOWN);
 
-        defaultBindings.put(
-                new KeyInfo(KeyEvent.VK_UP, KeyEvent.SHIFT_DOWN_MASK, "Shift+Up"), Action.ZOOM_IN);
+        defaultBindings.put(new KeyInfo(KeyEvent.VK_UP, KeyEvent.SHIFT_DOWN_MASK, "Shift+Up"), Action.ZOOM_IN);
 
-        defaultBindings.put(
-                new KeyInfo(KeyEvent.VK_DOWN, KeyEvent.SHIFT_DOWN_MASK, "Shift+Down"),
-                Action.ZOOM_OUT);
+        defaultBindings.put(new KeyInfo(KeyEvent.VK_DOWN, KeyEvent.SHIFT_DOWN_MASK, "Shift+Down"), Action.ZOOM_OUT);
 
         defaultBindings.put(new KeyInfo(KeyEvent.VK_EQUALS, 0, "="), Action.ZOOM_FULL_EXTENT);
     }
@@ -323,13 +320,12 @@ public class MapPaneKeyHandler extends KeyAdapter {
             double w = env.getWidth() * zoom;
             double h = env.getHeight() * zoom;
 
-            ReferencedEnvelope newEnv =
-                    new ReferencedEnvelope(
-                            centreX - w / 2,
-                            centreX + w / 2,
-                            centreY - h / 2,
-                            centreY + h / 2,
-                            env.getCoordinateReferenceSystem());
+            ReferencedEnvelope newEnv = new ReferencedEnvelope(
+                    centreX - w / 2,
+                    centreX + w / 2,
+                    centreY - h / 2,
+                    centreY + h / 2,
+                    env.getCoordinateReferenceSystem());
 
             mapPane.setDisplayArea(newEnv);
         }

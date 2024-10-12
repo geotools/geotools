@@ -38,20 +38,17 @@ public class PolygonWithHolesTest extends BaseJtsModuleTest<Polygon> {
 
     @Override
     protected Polygon createGeometry() {
-        LinearRing shell =
-                gf.createLinearRing(
-                        new Coordinate[] {
-                            new Coordinate(102.0, 2.0), new Coordinate(103.0, 2.0),
-                            new Coordinate(103.0, 3.0), new Coordinate(102.0, 3.0),
-                            new Coordinate(102.0, 2.0)
-                        });
+        LinearRing shell = gf.createLinearRing(new Coordinate[] {
+            new Coordinate(102.0, 2.0), new Coordinate(103.0, 2.0),
+            new Coordinate(103.0, 3.0), new Coordinate(102.0, 3.0),
+            new Coordinate(102.0, 2.0)
+        });
         LinearRing[] holes = {
-            gf.createLinearRing(
-                    new Coordinate[] {
-                        new Coordinate(100.2, 0.2), new Coordinate(100.8, 0.2),
-                        new Coordinate(100.8, 0.8), new Coordinate(100.2, 0.8),
-                        new Coordinate(100.2, 0.2)
-                    })
+            gf.createLinearRing(new Coordinate[] {
+                new Coordinate(100.2, 0.2), new Coordinate(100.8, 0.2),
+                new Coordinate(100.8, 0.8), new Coordinate(100.2, 0.8),
+                new Coordinate(100.2, 0.2)
+            })
         };
         return gf.createPolygon(shell, holes);
     }

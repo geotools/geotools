@@ -42,8 +42,7 @@ public class InformixBooleanOnlineTest extends JDBCTestSupport {
 
     @Test
     public void testGetFeatures() throws Exception {
-        try (FeatureReader r =
-                dataStore.getFeatureReader(new Query(tname("b")), Transaction.AUTO_COMMIT)) {
+        try (FeatureReader r = dataStore.getFeatureReader(new Query(tname("b")), Transaction.AUTO_COMMIT)) {
             r.hasNext();
             SimpleFeature f = (SimpleFeature) r.next();
             assertEquals(Boolean.FALSE, f.getAttribute("boolproperty"));

@@ -37,10 +37,8 @@ public class SEMockData {
 
     static Element formatDate(Document document, Node parent) {
         Element formatDate = element(SE.FormatDate, document, parent);
-        element(SE.DateValue, document, formatDate)
-                .appendChild(document.createTextNode("1981-06-20"));
-        element(SE.Pattern, document, formatDate)
-                .appendChild(document.createTextNode("yyyy/MM/dd"));
+        element(SE.DateValue, document, formatDate).appendChild(document.createTextNode("1981-06-20"));
+        element(SE.Pattern, document, formatDate).appendChild(document.createTextNode("yyyy/MM/dd"));
         return formatDate;
     }
 
@@ -62,8 +60,7 @@ public class SEMockData {
     static Element stringPosition(Document document, Node parent) {
         Element strPosition = element(SE.StringPosition, document, parent);
         element(SE.LookupString, document, strPosition).appendChild(document.createTextNode("l"));
-        element(SE.StringValue, document, strPosition)
-                .appendChild(document.createTextNode("hello"));
+        element(SE.StringValue, document, strPosition).appendChild(document.createTextNode("hello"));
         strPosition.setAttribute("searchDirection", "backToFront");
 
         return strPosition;
@@ -71,16 +68,14 @@ public class SEMockData {
 
     static Element stringLength(Document document, Node parent) {
         Element stringLength = element(SE.StringLength, document, parent);
-        element(SE.StringValue, document, stringLength)
-                .appendChild(document.createTextNode("hello"));
+        element(SE.StringValue, document, stringLength).appendChild(document.createTextNode("hello"));
 
         return stringLength;
     }
 
     static Element substring(Document document, Node parent) {
         Element stringLength = element(SE.Substring, document, parent);
-        element(SE.StringValue, document, stringLength)
-                .appendChild(document.createTextNode("hello"));
+        element(SE.StringValue, document, stringLength).appendChild(document.createTextNode("hello"));
         element(SE.Position, document, stringLength).appendChild(document.createTextNode("2"));
         element(SE.Length, document, stringLength).appendChild(document.createTextNode("3"));
         return stringLength;

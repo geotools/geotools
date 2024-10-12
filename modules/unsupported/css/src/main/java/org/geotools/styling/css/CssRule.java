@@ -107,12 +107,7 @@ public class CssRule {
 
     @Override
     public String toString() {
-        String base =
-                "Rule [\n    selector="
-                        + getSelector()
-                        + ",\n    properties="
-                        + getProperties()
-                        + "]";
+        String base = "Rule [\n    selector=" + getSelector() + ",\n    properties=" + getProperties() + "]";
         return base;
     }
 
@@ -121,7 +116,8 @@ public class CssRule {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((getComment() == null) ? 0 : getComment().hashCode());
-        result = prime * result + ((getProperties() == null) ? 0 : getProperties().hashCode());
+        result = prime * result
+                + ((getProperties() == null) ? 0 : getProperties().hashCode());
         result = prime * result + ((getSelector() == null) ? 0 : getSelector().hashCode());
         return result;
     }
@@ -148,8 +144,7 @@ public class CssRule {
      * Returns the property values by pseudo-class, matching those that satisfy the specified name
      * prefixes
      */
-    public Map<String, List<Value>> getPropertyValues(
-            PseudoClass pseudoClass, String... symbolizerPrefixes) {
+    public Map<String, List<Value>> getPropertyValues(PseudoClass pseudoClass, String... symbolizerPrefixes) {
         List<Property> psProperties = getProperties().get(pseudoClass);
         if (psProperties == null) {
             return Collections.emptyMap();
@@ -284,8 +279,7 @@ public class CssRule {
                 int zIndexPosition = it.nextIndex();
                 Integer nextZIndex = it.next();
                 if (nextZIndex == NO_Z_INDEX) {
-                    if (zIndexMode == ZIndexMode.NoZIndexAll
-                            || !PseudoClass.ROOT.equals(entry.getKey())) {
+                    if (zIndexMode == ZIndexMode.NoZIndexAll || !PseudoClass.ROOT.equals(entry.getKey())) {
                         // this set of properties is z-index independent
                         zProperties.put(entry.getKey(), new ArrayList<>(props));
                     } else if (zIndex == 0) {
@@ -302,10 +296,7 @@ public class CssRule {
                         }
                         List<Value> values = property.getValues();
                         if (zIndexPosition < values.size()) {
-                            Property p =
-                                    new Property(
-                                            property.getName(),
-                                            Arrays.asList(values.get(zIndexPosition)));
+                            Property p = new Property(property.getName(), Arrays.asList(values.get(zIndexPosition)));
                             zIndexProperties.add(p);
                         } else if (values.size() == 1) {
                             // properties that does not have multiple values are bound to all levels
@@ -322,11 +313,10 @@ public class CssRule {
 
         List<CssRule> nestedByZIndex = Collections.emptyList();
         if (nestedRules != null) {
-            nestedByZIndex =
-                    nestedRules.stream()
-                            .map(r -> r.getSubRuleByZIndex(zIndex, zIndexMode))
-                            .filter(r -> r != null)
-                            .collect(Collectors.toList());
+            nestedByZIndex = nestedRules.stream()
+                    .map(r -> r.getSubRuleByZIndex(zIndex, zIndexMode))
+                    .filter(r -> r != null)
+                    .collect(Collectors.toList());
         }
 
         if (!zProperties.isEmpty()) {
@@ -338,10 +328,7 @@ public class CssRule {
                     rootProperties = new ArrayList<>();
                     zProperties.put(PseudoClass.ROOT, rootProperties);
                 }
-                rootProperties.add(
-                        new Property(
-                                "z-index",
-                                Arrays.asList(new Value.Literal(String.valueOf(zIndex)))));
+                rootProperties.add(new Property("z-index", Arrays.asList(new Value.Literal(String.valueOf(zIndex)))));
             }
             CssRule zRule = new CssRule(this.getSelector(), zProperties, this.getComment());
             zRule.nestedRules = nestedByZIndex;
@@ -535,8 +522,7 @@ public class CssRule {
      * Adds pseudo classes for fill and stroke, whose ability to mix-in depends on whether a
      * function (symbol) or a straight value was used for the value of the property
      */
-    private void addPseudoClassesForConditionallyMixableProperty(
-            Set<PseudoClass> result, Property property) {
+    private void addPseudoClassesForConditionallyMixableProperty(Set<PseudoClass> result, Property property) {
         String propertyName = property.getName();
         List<Value> values = property.getValues();
         if (values.size() == 1 && values.get(0) instanceof Function) {
@@ -613,8 +599,7 @@ public class CssRule {
         List<CssRule> pseudoRules = new ArrayList<>();
         for (CssRule nested : nestedRules) {
             final CssRule flattened = nested.flattenPseudoSelectors();
-            final Selector removed =
-                    (Selector) flattened.getSelector().accept(new PseudoClassRemover());
+            final Selector removed = (Selector) flattened.getSelector().accept(new PseudoClassRemover());
             if (Selector.ACCEPT.equals(removed)) {
                 CssRule cleaned = new CssRule(removed, flattened.properties, flattened.comment);
                 cleaned.nestedRules = flattened.nestedRules;
@@ -628,8 +613,7 @@ public class CssRule {
 
         if (!pseudoRules.isEmpty()) {
             pseudoRules.add(0, this);
-            final CssRule combined =
-                    new RulesCombiner(new SimplifyingFilterVisitor()).combineRules(pseudoRules);
+            final CssRule combined = new RulesCombiner(new SimplifyingFilterVisitor()).combineRules(pseudoRules);
             combined.nestedRules = residual;
             return combined;
         } else {

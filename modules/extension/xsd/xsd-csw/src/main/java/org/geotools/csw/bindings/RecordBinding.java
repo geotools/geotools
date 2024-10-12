@@ -40,8 +40,7 @@ public class RecordBinding extends ComplexEMFBinding {
     }
 
     @Override
-    public List<Object[]> getProperties(Object object, XSDElementDeclaration element)
-            throws Exception {
+    public List<Object[]> getProperties(Object object, XSDElementDeclaration element) throws Exception {
         RecordType record = (RecordType) object;
 
         List<Object[]> result = new ArrayList<>();
@@ -71,13 +70,9 @@ public class RecordBinding extends ComplexEMFBinding {
             for (Object box : record.getBoundingBox()) {
                 XSDElementDeclaration bboxElement;
                 if (box instanceof WGS84BoundingBoxType) {
-                    bboxElement =
-                            OWS.getInstance()
-                                    .getSchema()
-                                    .resolveElementDeclaration("WGS84BoundingBox");
+                    bboxElement = OWS.getInstance().getSchema().resolveElementDeclaration("WGS84BoundingBox");
                 } else {
-                    bboxElement =
-                            OWS.getInstance().getSchema().resolveElementDeclaration("BoundingBox");
+                    bboxElement = OWS.getInstance().getSchema().resolveElementDeclaration("BoundingBox");
                 }
                 XSDParticle particle = buildParticle(bboxElement);
                 result.add(new Object[] {particle, box});

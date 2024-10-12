@@ -55,8 +55,7 @@ import org.geotools.xsd.SchemaIndex;
  *
  * @generated
  */
-public class MemberPropertyTypeBinding
-        extends org.geotools.gml3.bindings.FeaturePropertyTypeBinding {
+public class MemberPropertyTypeBinding extends org.geotools.gml3.bindings.FeaturePropertyTypeBinding {
 
     SchemaIndex schemaIndex;
 
@@ -86,8 +85,7 @@ public class MemberPropertyTypeBinding
     }
 
     @Override
-    public List<Object[]> getProperties(Object object, XSDElementDeclaration element)
-            throws Exception {
+    public List<Object[]> getProperties(Object object, XSDElementDeclaration element) throws Exception {
         List<Object[]> list = new ArrayList<>();
         Object member = super.getProperty(object, org.geotools.gml3.GML._Feature);
         if (member != null) {
@@ -112,11 +110,8 @@ public class MemberPropertyTypeBinding
         XSDFactory factory = XSDFactory.eINSTANCE;
 
         AttributeType attType = att.getType();
-        XSDTypeDefinition xsdType =
-                schemaIndex.getTypeDefinition(
-                        new QName(
-                                attType.getName().getNamespaceURI(),
-                                attType.getName().getLocalPart()));
+        XSDTypeDefinition xsdType = schemaIndex.getTypeDefinition(
+                new QName(attType.getName().getNamespaceURI(), attType.getName().getLocalPart()));
 
         XSDElementDeclaration element = factory.createXSDElementDeclaration();
         element.setName(att.getName().getLocalPart());

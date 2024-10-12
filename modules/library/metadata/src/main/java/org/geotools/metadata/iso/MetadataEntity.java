@@ -74,11 +74,9 @@ public class MetadataEntity extends ModifiableMetadata implements Serializable {
      * @throws InvalidMetadataException if {@code object} is null.
      * @since 2.4
      */
-    protected static void ensureNonNull(final String name, final Object object)
-            throws InvalidMetadataException {
+    protected static void ensureNonNull(final String name, final Object object) throws InvalidMetadataException {
         if (object == null) {
-            throw new InvalidMetadataException(
-                    MessageFormat.format(ErrorKeys.NULL_ATTRIBUTE_$1, name));
+            throw new InvalidMetadataException(MessageFormat.format(ErrorKeys.NULL_ATTRIBUTE_$1, name));
         }
     }
 }

@@ -190,8 +190,7 @@ public class GeodeticCalculator {
     /** For internal use by public constructors only. */
     private GeodeticCalculator(final Ellipsoid ellipsoid, final CoordinateReferenceSystem crs) {
         if (ellipsoid == null) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "ellipsoid"));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "ellipsoid"));
         }
         this.ellipsoid = ellipsoid;
         semiMajorAxis = ellipsoid.getSemiMajorAxis();
@@ -233,12 +232,10 @@ public class GeodeticCalculator {
         }
         final Datum datum = CRSUtilities.getDatum(crs);
         if (datum instanceof GeodeticDatum) {
-            return new DefaultGeographicCRS(
-                    "Geodetic", (GeodeticDatum) datum, DefaultEllipsoidalCS.GEODETIC_2D);
+            return new DefaultGeographicCRS("Geodetic", (GeodeticDatum) datum, DefaultEllipsoidalCS.GEODETIC_2D);
         }
         if (crs instanceof CompoundCRS) {
-            for (final CoordinateReferenceSystem component :
-                    ((CompoundCRS) crs).getCoordinateReferenceSystems()) {
+            for (final CoordinateReferenceSystem component : ((CompoundCRS) crs).getCoordinateReferenceSystems()) {
                 final GeographicCRS candidate = getGeographicCRS(component);
                 if (candidate != null) {
                     return candidate;
@@ -252,8 +249,7 @@ public class GeodeticCalculator {
      * Returns {@code true} if the specified axis is oriented toward the specified direction and
      * uses decimal degrees units.
      */
-    private static boolean isStandard(
-            final CoordinateSystemAxis axis, final AxisDirection direction) {
+    private static boolean isStandard(final CoordinateSystemAxis axis, final AxisDirection direction) {
         return direction.equals(axis.getDirection()) && NonSI.DEGREE_ANGLE.equals(axis.getUnit());
     }
 
@@ -267,8 +263,7 @@ public class GeodeticCalculator {
     private static void checkLatitude(final double latitude) throws IllegalArgumentException {
         if (!(latitude >= Latitude.MIN_VALUE && latitude <= Latitude.MAX_VALUE)) {
             final Object arg0 = new Latitude(latitude);
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.LATITUDE_OUT_OF_RANGE_$1, arg0));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.LATITUDE_OUT_OF_RANGE_$1, arg0));
         }
     }
 
@@ -281,8 +276,7 @@ public class GeodeticCalculator {
     private static void checkLongitude(final double longitude) throws IllegalArgumentException {
         if (!(Math.abs(longitude) <= Double.MAX_VALUE)) {
             final Object arg1 = new Longitude(longitude);
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "longitude", arg1));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "longitude", arg1));
         }
     }
 
@@ -295,8 +289,7 @@ public class GeodeticCalculator {
     private static void checkAzimuth(final double azimuth) throws IllegalArgumentException {
         if (!(Math.abs(azimuth) <= Double.MAX_VALUE)) {
             final Object arg1 = new Longitude(azimuth);
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "azimuth", arg1));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "azimuth", arg1));
         }
     }
 
@@ -307,8 +300,7 @@ public class GeodeticCalculator {
      * @param distance The orthodromic distance value.
      * @throws IllegalArgumentException if {@code orthodromic distance} is not finite.
      */
-    private static void checkOrthodromicDistance(final double distance)
-            throws IllegalArgumentException {
+    private static void checkOrthodromicDistance(final double distance) throws IllegalArgumentException {
         if (!(Math.abs(distance) <= Double.MAX_VALUE)) {
             throw new IllegalArgumentException(
                     MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "distance", distance));
@@ -355,12 +347,10 @@ public class GeodeticCalculator {
     public GeographicCRS getGeographicCRS() {
         if (geographicCRS == null) {
             final String name = Vocabulary.format(VocabularyKeys.GEODETIC_2D);
-            geographicCRS =
-                    new DefaultGeographicCRS(
-                            name,
-                            new DefaultGeodeticDatum(
-                                    name, getEllipsoid(), DefaultPrimeMeridian.GREENWICH),
-                            DefaultEllipsoidalCS.GEODETIC_2D);
+            geographicCRS = new DefaultGeographicCRS(
+                    name,
+                    new DefaultGeodeticDatum(name, getEllipsoid(), DefaultPrimeMeridian.GREENWICH),
+                    DefaultEllipsoidalCS.GEODETIC_2D);
         }
         return geographicCRS;
     }
@@ -385,8 +375,7 @@ public class GeodeticCalculator {
      * @throws IllegalArgumentException if the longitude or the latitude is out of bounds.
      * @since 2.3
      */
-    public void setStartingGeographicPoint(double longitude, double latitude)
-            throws IllegalArgumentException {
+    public void setStartingGeographicPoint(double longitude, double latitude) throws IllegalArgumentException {
         // Check first in case an exception is raised
         // (in other words, we change all or nothing).
         checkLongitude(longitude);
@@ -475,8 +464,7 @@ public class GeodeticCalculator {
      * @throws IllegalArgumentException if the longitude or the latitude is out of bounds.
      * @since 2.3
      */
-    public void setDestinationGeographicPoint(double longitude, double latitude)
-            throws IllegalArgumentException {
+    public void setDestinationGeographicPoint(double longitude, double latitude) throws IllegalArgumentException {
         // Check first in case an exception is raised
         // (in other words, we change all or nothing).
         checkLongitude(longitude);
@@ -578,8 +566,7 @@ public class GeodeticCalculator {
      * @see #getAzimuth
      * @see #getOrthodromicDistance
      */
-    public void setDirection(double azimuth, final double distance)
-            throws IllegalArgumentException {
+    public void setDirection(double azimuth, final double distance) throws IllegalArgumentException {
         // Check first in case an exception is raised
         // (in other words, we change all or nothing).
         checkAzimuth(azimuth);
@@ -763,11 +750,7 @@ public class GeodeticCalculator {
 
         for (int i = 1; i <= numPoints + 1; i++) {
             GeodesicData g =
-                    line.Position(
-                            i * delta,
-                            GeodesicMask.LATITUDE
-                                    | GeodesicMask.LONGITUDE
-                                    | GeodesicMask.LONG_UNROLL);
+                    line.Position(i * delta, GeodesicMask.LATITUDE | GeodesicMask.LONGITUDE | GeodesicMask.LONG_UNROLL);
             points.add(new Point2D.Double(g.lon2, g.lat2));
         }
 

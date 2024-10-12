@@ -198,9 +198,7 @@ public class OrderedAxisCRSAuthorityFactory extends TransformedAuthorityFactory
      * @since 2.3
      */
     public OrderedAxisCRSAuthorityFactory(
-            final AbstractAuthorityFactory factory,
-            final Hints userHints,
-            final AxisDirection... axisOrder)
+            final AbstractAuthorityFactory factory, final Hints userHints, final AxisDirection... axisOrder)
             throws IllegalArgumentException {
         super(factory);
         forceStandardUnits = booleanValue(userHints, Hints.FORCE_STANDARD_AXIS_UNITS);
@@ -227,8 +225,7 @@ public class OrderedAxisCRSAuthorityFactory extends TransformedAuthorityFactory
      *
      * @throws IllegalArgumentException If at least two axis directions are colinear.
      */
-    protected static int[] computeDirectionRanks(AxisDirection... axisOrder)
-            throws IllegalArgumentException {
+    protected static int[] computeDirectionRanks(AxisDirection... axisOrder) throws IllegalArgumentException {
         if (axisOrder == null) {
             axisOrder = DEFAULT_ORDER;
         }
@@ -248,11 +245,8 @@ public class OrderedAxisCRSAuthorityFactory extends TransformedAuthorityFactory
             final int previous = directionRanks[ordinal];
             if (previous != length) {
                 // TODO: Use the localized version of 'getName' in GeoAPI 2.1
-                throw new IllegalArgumentException(
-                        MessageFormat.format(
-                                ErrorKeys.COLINEAR_AXIS_$2,
-                                axisOrder[previous].name(),
-                                axisOrder[i].name()));
+                throw new IllegalArgumentException(MessageFormat.format(
+                        ErrorKeys.COLINEAR_AXIS_$2, axisOrder[previous].name(), axisOrder[i].name()));
             }
             directionRanks[ordinal] = i;
         }
@@ -312,8 +306,7 @@ public class OrderedAxisCRSAuthorityFactory extends TransformedAuthorityFactory
             String abb2 = axis2.getAbbreviation();
             if (abb1.equals(NORTHING.getAbbreviation()) && abb2.equals(EASTING.getAbbreviation())) {
                 return 1;
-            } else if (abb1.equals(EASTING.getAbbreviation())
-                    && abb2.equals(NORTHING.getAbbreviation())) {
+            } else if (abb1.equals(EASTING.getAbbreviation()) && abb2.equals(NORTHING.getAbbreviation())) {
                 return -1;
             }
         }

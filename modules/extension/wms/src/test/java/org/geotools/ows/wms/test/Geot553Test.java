@@ -34,21 +34,19 @@ public class Geot553Test {
     @Test
     public void testGeot553() throws Exception {
         // prepare the responses
-        MockHttpClient client =
-                new MockHttpClient() {
+        MockHttpClient client = new MockHttpClient() {
 
-                    @Override
-                    public HTTPResponse get(URL url) throws IOException {
-                        if (url.getQuery().contains("GetCapabilities")) {
-                            URL caps = TestData.getResource(this, "geot553capabilities.xml");
-                            return new MockHttpResponse(caps, "text/xml");
-                        } else {
-                            throw new IllegalArgumentException(
-                                    "Don't know how to handle a get request over "
-                                            + url.toExternalForm());
-                        }
-                    }
-                };
+            @Override
+            public HTTPResponse get(URL url) throws IOException {
+                if (url.getQuery().contains("GetCapabilities")) {
+                    URL caps = TestData.getResource(this, "geot553capabilities.xml");
+                    return new MockHttpResponse(caps, "text/xml");
+                } else {
+                    throw new IllegalArgumentException(
+                            "Don't know how to handle a get request over " + url.toExternalForm());
+                }
+            }
+        };
 
         WebMapServer wms = new WebMapServer(new URL("http://test.org"), client);
         Layer layer = wms.getCapabilities().getLayer().getChildren()[2];

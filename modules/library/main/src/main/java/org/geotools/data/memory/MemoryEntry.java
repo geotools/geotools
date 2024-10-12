@@ -86,12 +86,11 @@ public class MemoryEntry extends ContentEntry {
         if (feature == null) {
             throw new IllegalArgumentException("Provided Feature is empty");
         } else if (!feature.getFeatureType().equals(schema)) {
-            throw new IllegalArgumentException(
-                    "addFeatures expected "
-                            + schema.getTypeName()
-                            + "(but was "
-                            + feature.getFeatureType().getTypeName()
-                            + ")");
+            throw new IllegalArgumentException("addFeatures expected "
+                    + schema.getTypeName()
+                    + "(but was "
+                    + feature.getFeatureType().getTypeName()
+                    + ")");
         }
         getMemory().put(feature.getID(), feature);
     }

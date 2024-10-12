@@ -26,13 +26,12 @@ import org.geotools.filter.capability.FunctionNameImpl;
 import org.locationtech.jts.geom.Geometry;
 
 public class FilterFunction_relatePattern extends FunctionExpressionImpl {
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "relatePattern",
-                    parameter("related", Boolean.class),
-                    parameter("geometry", Geometry.class),
-                    parameter("geometry", Geometry.class),
-                    parameter("pattern", String.class));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "relatePattern",
+            parameter("related", Boolean.class),
+            parameter("geometry", Geometry.class),
+            parameter("geometry", Geometry.class),
+            parameter("pattern", String.class));
 
     public FilterFunction_relatePattern() {
         super(NAME);

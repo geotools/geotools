@@ -155,20 +155,17 @@ public class SLDRuleBinding extends AbstractComplexBinding {
 
         // &lt;xsd:element ref="sld:MinScaleDenominator" minOccurs="0"/&gt;
         if (node.hasChild("MinScaleDenominator")) {
-            rule.setMinScaleDenominator(
-                    ((Double) node.getChildValue("MinScaleDenominator")).doubleValue());
+            rule.setMinScaleDenominator(((Double) node.getChildValue("MinScaleDenominator")).doubleValue());
         }
 
         // &lt;xsd:element ref="sld:MaxScaleDenominator" minOccurs="0"/&gt;
         if (node.hasChild("MaxScaleDenominator")) {
-            rule.setMaxScaleDenominator(
-                    ((Double) node.getChildValue("MaxScaleDenominator")).doubleValue());
+            rule.setMaxScaleDenominator(((Double) node.getChildValue("MaxScaleDenominator")).doubleValue());
         }
 
         // &lt;xsd:element ref="sld:VendorOption" minOccurs="0" maxOccurs="unbounded"/&gt;
         for (CssParameter param : node.getChildValues(CssParameter.class)) {
-            rule.getOptions()
-                    .put(param.getName(), param.getExpression().evaluate(null, String.class));
+            rule.getOptions().put(param.getName(), param.getExpression().evaluate(null, String.class));
         }
 
         // &lt;xsd:element ref="sld:Symbolizer" maxOccurs="unbounded"/&gt;

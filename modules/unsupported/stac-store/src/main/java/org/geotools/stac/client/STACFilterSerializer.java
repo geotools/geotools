@@ -27,8 +27,7 @@ import org.geotools.filter.text.cqljson.CQL2Json;
 
 public class STACFilterSerializer extends JsonSerializer<Filter> {
     @Override
-    public void serialize(
-            Filter filter, JsonGenerator jsonGenerator, SerializerProvider serializerProvider)
+    public void serialize(Filter filter, JsonGenerator jsonGenerator, SerializerProvider serializerProvider)
             throws IOException {
         FilterLang lang = null;
         Object container = jsonGenerator.currentValue();

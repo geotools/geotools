@@ -41,9 +41,7 @@ public abstract class ExternalGraphicParser extends YsldParseHandler {
         if (map.has("url")) {
             String value = map.str("url");
             try {
-                external.setLocation(
-                        ((ResourceLocator) context.getDocHint("resourceLocator"))
-                                .locateResource(value));
+                external.setLocation(((ResourceLocator) context.getDocHint("resourceLocator")).locateResource(value));
             } catch (IllegalArgumentException e) {
                 external.setURI("file:" + value);
             }

@@ -100,9 +100,7 @@ public class DbaseNullSupportTest {
                     reader.getHeader().getNumRecords());
             for (int row = 0; row < values.length; row++) {
                 Object[] current = reader.readEntry();
-                assertTrue(
-                        "Number of columns incorrect",
-                        current != null && current.length == values.length);
+                assertTrue("Number of columns incorrect", current != null && current.length == values.length);
                 for (int column = 0; column < values.length; column++) {
                     if (column == row) {
                         assertNotNull("Column was null and should not have been", current[column]);

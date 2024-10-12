@@ -39,10 +39,7 @@ public interface Citation {
      *
      * @return Other names for the resource, or an empty collection if none.
      */
-    @UML(
-            identifier = "alternateTitle",
-            obligation = Obligation.OPTIONAL,
-            specification = Specification.ISO_19115)
+    @UML(identifier = "alternateTitle", obligation = Obligation.OPTIONAL, specification = Specification.ISO_19115)
     Collection<? extends InternationalString> getAlternateTitles();
 
     /**

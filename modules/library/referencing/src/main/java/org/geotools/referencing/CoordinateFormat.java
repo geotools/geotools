@@ -391,19 +391,14 @@ public class CoordinateFormat extends Format {
      * @throws IllegalArgumentException if this {@code CoordinateFormat} cannot format the given
      *     object.
      */
-    public StringBuffer format(
-            final Position point, final StringBuffer toAppendTo, final FieldPosition position)
+    public StringBuffer format(final Position point, final StringBuffer toAppendTo, final FieldPosition position)
             throws IllegalArgumentException {
         final int dimension = point.getDimension();
         final CoordinateSystem cs;
         if (crs != null) {
             if (dimension != formats.length) {
                 throw new MismatchedDimensionException(
-                        MessageFormat.format(
-                                ErrorKeys.MISMATCHED_DIMENSION_$3,
-                                "point",
-                                dimension,
-                                formats.length));
+                        MessageFormat.format(ErrorKeys.MISMATCHED_DIMENSION_$3, "point", dimension, formats.length));
             }
             cs = crs.getCoordinateSystem();
         } else {
@@ -427,16 +422,15 @@ public class CoordinateFormat extends Format {
                 case ANGLE:
                     object = new Angle(value);
                     break;
-                case DATE:
-                    {
-                        final CoordinateSystemAxis axis = cs.getAxis(i);
-                        long offset = Math.round(toMillis[fi].convert(value));
-                        if (AxisDirection.PAST.equals(axis.getDirection())) {
-                            offset = -offset;
-                        }
-                        object = new Date(epochs[fi] + offset);
-                        break;
+                case DATE: {
+                    final CoordinateSystemAxis axis = cs.getAxis(i);
+                    long offset = Math.round(toMillis[fi].convert(value));
+                    if (AxisDirection.PAST.equals(axis.getDirection())) {
+                        offset = -offset;
                     }
+                    object = new Date(epochs[fi] + offset);
+                    break;
+                }
             }
             if (i != 0) {
                 toAppendTo.append(separator);
@@ -477,8 +471,7 @@ public class CoordinateFormat extends Format {
      *     object.
      */
     @Override
-    public StringBuffer format(
-            final Object object, final StringBuffer toAppendTo, final FieldPosition position)
+    public StringBuffer format(final Object object, final StringBuffer toAppendTo, final FieldPosition position)
             throws IllegalArgumentException {
         if (object instanceof Position) {
             return format((Position) object, toAppendTo, position);

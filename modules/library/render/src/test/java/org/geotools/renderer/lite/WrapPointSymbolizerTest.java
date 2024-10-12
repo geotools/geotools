@@ -24,7 +24,8 @@ public class WrapPointSymbolizerTest {
 
     @Before
     public void setUp() throws Exception {
-        File property = new File(TestData.getResource(this, "bigsquare.properties").toURI());
+        File property =
+                new File(TestData.getResource(this, "bigsquare.properties").toURI());
         PropertyDataStore ds = new PropertyDataStore(property.getParentFile());
         fs = ds.getFeatureSource("bigsquare");
     }
@@ -35,8 +36,7 @@ public class WrapPointSymbolizerTest {
 
         MapContent mc = new MapContent();
         mc.addLayer(new FeatureLayer(fs, style));
-        ReferencedEnvelope bounds =
-                new ReferencedEnvelope(0, 370, 0, 10, DefaultGeographicCRS.WGS84);
+        ReferencedEnvelope bounds = new ReferencedEnvelope(0, 370, 0, 10, DefaultGeographicCRS.WGS84);
         mc.getViewport().setBounds(bounds);
 
         StreamingRenderer renderer = new StreamingRenderer();

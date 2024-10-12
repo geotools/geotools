@@ -65,8 +65,7 @@ public class FilterParsingUtils {
         if ("comparisonOps".equals(name)) {
             // JD: extra check here because many of our spatial implementations
             // extend both
-            if (filter instanceof BinaryComparisonOperator
-                    && !(filter instanceof BinarySpatialOperator)) {
+            if (filter instanceof BinaryComparisonOperator && !(filter instanceof BinarySpatialOperator)) {
                 return filter;
             } else {
                 // filters that don't extend BinaryComparisonOperator but are still
@@ -80,8 +79,7 @@ public class FilterParsingUtils {
         }
 
         // &lt;xsd:element ref="ogc:logicOps"/&gt;
-        if ("logicOps".equals(name)
-                && (filter instanceof BinaryLogicOperator || filter instanceof Not)) {
+        if ("logicOps".equals(name) && (filter instanceof BinaryLogicOperator || filter instanceof Not)) {
             return filter;
         }
         // &lt;xsd:element ref="ogc:temporalOps"/&gt;
@@ -90,8 +88,7 @@ public class FilterParsingUtils {
         }
 
         // &lt;xsd:element maxOccurs="unbounded" ref="ogc:_Id"/&gt;
-        if (filter instanceof Id
-                && ("_Id".equals(name) /*1.1/2.0*/ || "FeatureId".equals(name) /*1.0*/)) {
+        if (filter instanceof Id && ("_Id".equals(name) /*1.1/2.0*/ || "FeatureId".equals(name) /*1.0*/)) {
             // unwrap
             Id id = (Id) filter;
 
@@ -120,8 +117,7 @@ public class FilterParsingUtils {
         return filters;
     }
 
-    public static List<Filter> parseExtendedOperators(
-            Node node, org.geotools.api.filter.FilterFactory factory) {
+    public static List<Filter> parseExtendedOperators(Node node, org.geotools.api.filter.FilterFactory factory) {
         List<Filter> extOps = new ArrayList<>();
 
         // TODO: this doesn't actually handle the case of an extended operator that does not take
@@ -129,19 +125,18 @@ public class FilterParsingUtils {
         if (node.hasChild(Expression.class)) {
             // case of a single operator containing a single expression
             Node n = node.getChild(Expression.class);
-            Name opName = new NameImpl(n.getComponent().getNamespace(), n.getComponent().getName());
+            Name opName = new NameImpl(
+                    n.getComponent().getNamespace(), n.getComponent().getName());
 
-            Filter extOp =
-                    lookupExtendedOperator(
-                            opName, Arrays.asList((Expression) n.getValue()), factory);
+            Filter extOp = lookupExtendedOperator(opName, Arrays.asList((Expression) n.getValue()), factory);
             if (extOp != null) {
                 extOps.add(extOp);
             }
         } else if (node.hasChild(Map.class)) {
             List<Node> children = node.getChildren(Map.class);
             for (Node n : children) {
-                Name opName =
-                        new NameImpl(n.getComponent().getNamespace(), n.getComponent().getName());
+                Name opName = new NameImpl(
+                        n.getComponent().getNamespace(), n.getComponent().getName());
                 Map map = (Map) n.getValue();
 
                 List<Expression> expressions = new ArrayList<>();
@@ -162,9 +157,7 @@ public class FilterParsingUtils {
     }
 
     static Filter lookupExtendedOperator(
-            Name opName,
-            List<Expression> expressions,
-            org.geotools.api.filter.FilterFactory factory) {
+            Name opName, List<Expression> expressions, org.geotools.api.filter.FilterFactory factory) {
         FunctionFinder finder = new FunctionFinder(null);
         Function f = finder.findFunction(opName.getLocalPart(), expressions);
         return factory.equal(f, factory.literal(true), true);

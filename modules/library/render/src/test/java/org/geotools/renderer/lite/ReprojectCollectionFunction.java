@@ -17,8 +17,7 @@ import org.geotools.referencing.CRS;
  */
 public class ReprojectCollectionFunction extends FunctionExpressionImpl {
 
-    public static FunctionName NAME =
-            new FunctionNameImpl("ReprojectCollection", parameter("crs", String.class));
+    public static FunctionName NAME = new FunctionNameImpl("ReprojectCollection", parameter("crs", String.class));
 
     public ReprojectCollectionFunction() {
         super(NAME);
@@ -41,18 +40,14 @@ public class ReprojectCollectionFunction extends FunctionExpressionImpl {
             T result = getExpression(expressionIdx).evaluate(object, targetClass);
             if (result == null && mandatory) {
                 throw new IllegalArgumentException(
-                        "Could not find function argument #"
-                                + expressionIdx
-                                + ", but it's mandatory");
+                        "Could not find function argument #" + expressionIdx + ", but it's mandatory");
             }
             return result;
         } catch (Exception e) {
             // probably a type error
             if (mandatory) {
                 throw new IllegalArgumentException(
-                        "Could not find function argument #"
-                                + expressionIdx
-                                + ", but it's mandatory");
+                        "Could not find function argument #" + expressionIdx + ", but it's mandatory");
             } else {
                 return null;
             }

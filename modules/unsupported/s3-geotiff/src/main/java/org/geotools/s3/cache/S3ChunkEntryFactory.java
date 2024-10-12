@@ -54,16 +54,14 @@ public class S3ChunkEntryFactory implements CacheEntryFactory, CacheLoader {
         CacheEntryKey entryKey = (CacheEntryKey) key;
         int nBytes;
         byte[] buffer = new byte[cacheBlockSize];
-        try (S3Object object =
-                this.initStream(
-                        (long) entryKey.getBlock() * (long) this.cacheBlockSize,
-                        entryKey.getBucket(),
-                        entryKey.getKey(),
-                        entryKey.getBlockSize(),
-                        connector.getS3Client())) {
+        try (S3Object object = this.initStream(
+                (long) entryKey.getBlock() * (long) this.cacheBlockSize,
+                entryKey.getBucket(),
+                entryKey.getKey(),
+                entryKey.getBlockSize(),
+                connector.getS3Client())) {
             if (object == null) {
-                throw new RuntimeException(
-                        "Unable to instantiate S3 stream. See logs for details.");
+                throw new RuntimeException("Unable to instantiate S3 stream. See logs for details.");
             }
             int readLength = this.cacheBlockSize;
 
@@ -87,13 +85,10 @@ public class S3ChunkEntryFactory implements CacheEntryFactory, CacheLoader {
         return val;
     }
 
-    private S3Object initStream(
-            long offset, String bucket, String key, int blockSize, AmazonS3 s3Client) {
+    private S3Object initStream(long offset, String bucket, String key, int blockSize, AmazonS3 s3Client) {
         try {
             S3Object object =
-                    s3Client.getObject(
-                            (new GetObjectRequest(bucket, key))
-                                    .withRange(offset, offset + blockSize));
+                    s3Client.getObject((new GetObjectRequest(bucket, key)).withRange(offset, offset + blockSize));
 
             return object;
         } catch (Exception e) {

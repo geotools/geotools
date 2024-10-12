@@ -72,10 +72,7 @@ public class GeoPkgDataStoreAPIOnlineTest extends JDBCDataStoreAPIOnlineTest {
         assertTrue(fs.getSupportedHints().contains(Hints.GEOMETRY_DISTANCE));
 
         FilterFactory factory = dataStore.getFilterFactory();
-        Query q =
-                new Query(
-                        tname("road"),
-                        factory.id(Collections.singleton(factory.featureId("road.0"))));
+        Query q = new Query(tname("road"), factory.id(Collections.singleton(factory.featureId("road.0"))));
         Hints hints = new Hints(Hints.GEOMETRY_DISTANCE, Double.valueOf(10));
         q.setHints(hints);
 
@@ -101,17 +98,9 @@ public class GeoPkgDataStoreAPIOnlineTest extends JDBCDataStoreAPIOnlineTest {
         assertTrue(fs.getSupportedHints().contains(Hints.SCREENMAP));
 
         FilterFactory factory = dataStore.getFilterFactory();
-        Query q =
-                new Query(
-                        tname("road"),
-                        factory.id(Collections.singleton(factory.featureId("road.0"))));
+        Query q = new Query(tname("road"), factory.id(Collections.singleton(factory.featureId("road.0"))));
         ScreenMap screenMap =
-                new ScreenMap(
-                        0,
-                        0,
-                        10,
-                        10,
-                        new AffineTransform2D(AffineTransform.getScaleInstance(0.1, 0.1)));
+                new ScreenMap(0, 0, 10, 10, new AffineTransform2D(AffineTransform.getScaleInstance(0.1, 0.1)));
         screenMap.setSpans(10, 10);
         Hints hints = new Hints(Hints.SCREENMAP, screenMap);
         q.setHints(hints);

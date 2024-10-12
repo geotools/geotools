@@ -94,21 +94,19 @@ public final class CitationsTest {
                 PositionalAccuracyImpl.DATUM_SHIFT_OMITTED,
                 PositionalAccuracyImpl.DATUM_SHIFT_OMITTED);
 
-        assertNotSame(
-                PositionalAccuracyImpl.DATUM_SHIFT_APPLIED,
-                PositionalAccuracyImpl.DATUM_SHIFT_OMITTED);
+        assertNotSame(PositionalAccuracyImpl.DATUM_SHIFT_APPLIED, PositionalAccuracyImpl.DATUM_SHIFT_OMITTED);
 
         final Collection appliedResults = PositionalAccuracyImpl.DATUM_SHIFT_APPLIED.getResults();
         final Collection omittedResults = PositionalAccuracyImpl.DATUM_SHIFT_OMITTED.getResults();
-        final ConformanceResult applied = (ConformanceResult) appliedResults.iterator().next();
-        final ConformanceResult omitted = (ConformanceResult) omittedResults.iterator().next();
+        final ConformanceResult applied =
+                (ConformanceResult) appliedResults.iterator().next();
+        final ConformanceResult omitted =
+                (ConformanceResult) omittedResults.iterator().next();
         assertNotSame(applied, omitted);
         assertTrue(applied.pass());
         assertFalse(omitted.pass());
         assertNotEquals(applied, omitted);
         assertNotEquals(appliedResults, omittedResults);
-        assertNotEquals(
-                PositionalAccuracyImpl.DATUM_SHIFT_APPLIED,
-                PositionalAccuracyImpl.DATUM_SHIFT_OMITTED);
+        assertNotEquals(PositionalAccuracyImpl.DATUM_SHIFT_APPLIED, PositionalAccuracyImpl.DATUM_SHIFT_OMITTED);
     }
 }

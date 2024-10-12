@@ -42,8 +42,7 @@ import org.geotools.util.Utilities;
  * @author Martin Desruisseaux (IRD)
  * @see AbstractParameterDescriptor
  */
-public abstract class AbstractParameter extends Formattable
-        implements GeneralParameterValue, Serializable {
+public abstract class AbstractParameter extends Formattable implements GeneralParameterValue, Serializable {
     /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = 8458179223988766398L;
 
@@ -76,11 +75,9 @@ public abstract class AbstractParameter extends Formattable
      * @param object User argument.
      * @throws IllegalArgumentException if {@code object} is null.
      */
-    static void ensureNonNull(final String name, final Object object)
-            throws IllegalArgumentException {
+    static void ensureNonNull(final String name, final Object object) throws IllegalArgumentException {
         if (object == null) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, name));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, name));
         }
     }
 
@@ -108,14 +105,12 @@ public abstract class AbstractParameter extends Formattable
      * @param value The expected value, or {@code null}.
      * @throws IllegalArgumentException if {@code value} is non-null and has a non-assignable class.
      */
-    static <T> void ensureValidClass(final Class<?> expectedClass, final Object value)
-            throws IllegalArgumentException {
+    static <T> void ensureValidClass(final Class<?> expectedClass, final Object value) throws IllegalArgumentException {
         if (value != null) {
             final Class<?> valueClass = value.getClass();
             if (!expectedClass.isAssignableFrom(valueClass)) {
                 throw new IllegalArgumentException(
-                        MessageFormat.format(
-                                ErrorKeys.ILLEGAL_CLASS_$2, valueClass, expectedClass));
+                        MessageFormat.format(ErrorKeys.ILLEGAL_CLASS_$2, valueClass, expectedClass));
             }
         }
     }
@@ -126,8 +121,7 @@ public abstract class AbstractParameter extends Formattable
      */
     static IllegalStateException unitlessParameter(final GeneralParameterDescriptor descriptor) {
         final Object arg0 = getName(descriptor);
-        return new IllegalStateException(
-                MessageFormat.format(ErrorKeys.UNITLESS_PARAMETER_$1, arg0));
+        return new IllegalStateException(MessageFormat.format(ErrorKeys.UNITLESS_PARAMETER_$1, arg0));
     }
 
     /**

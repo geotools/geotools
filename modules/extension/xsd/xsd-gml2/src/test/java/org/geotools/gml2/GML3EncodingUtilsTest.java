@@ -74,10 +74,7 @@ public class GML3EncodingUtilsTest {
         assertEquals(
                 "http://www.opengis.net/def/crs/IAU/0/1000",
                 GML2EncodingUtils.toURI(crs, SrsSyntax.OGC_HTTP_URI, true));
-        assertEquals(
-                "urn:x-ogc:def:crs:IAU:1000",
-                GML2EncodingUtils.toURI(crs, SrsSyntax.OGC_URN_EXPERIMENTAL, true));
-        assertEquals(
-                "urn:ogc:def:crs:IAU::1000", GML2EncodingUtils.toURI(crs, SrsSyntax.OGC_URN, true));
+        assertEquals("urn:x-ogc:def:crs:IAU:1000", GML2EncodingUtils.toURI(crs, SrsSyntax.OGC_URN_EXPERIMENTAL, true));
+        assertEquals("urn:ogc:def:crs:IAU::1000", GML2EncodingUtils.toURI(crs, SrsSyntax.OGC_URN, true));
     }
 }

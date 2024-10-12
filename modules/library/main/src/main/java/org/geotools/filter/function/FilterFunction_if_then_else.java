@@ -26,13 +26,12 @@ import org.geotools.filter.capability.FunctionNameImpl;
 
 public class FilterFunction_if_then_else extends FunctionExpressionImpl {
 
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "if_then_else",
-                    Object.class,
-                    parameter("condition", Boolean.class),
-                    parameter("then", Object.class),
-                    parameter("else", Object.class));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "if_then_else",
+            Object.class,
+            parameter("condition", Boolean.class),
+            parameter("then", Object.class),
+            parameter("else", Object.class));
 
     public FilterFunction_if_then_else() {
         super(NAME);

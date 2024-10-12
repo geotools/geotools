@@ -89,7 +89,8 @@ public final class AUTOTest {
         assertSame(utm, factory.createObject("42001 ,0,0"));
         assertNotSame(utm, factory.createObject("AUTO :42001 ,30,0"));
         assertEquals(
-                "Transverse_Mercator", utm.getConversionFromBase().getMethod().getName().getCode());
+                "Transverse_Mercator",
+                utm.getConversionFromBase().getMethod().getName().getCode());
     }
 
     /** Check we can parse also the unit */
@@ -102,22 +103,28 @@ public final class AUTOTest {
         assertSame(utm, factory.createObject("42001, 9001,0,0"));
         assertNotSame(utm, factory.createObject("AUTO :42001, 9001,30,0"));
         assertEquals(
-                "Transverse_Mercator", utm.getConversionFromBase().getMethod().getName().getCode());
+                "Transverse_Mercator",
+                utm.getConversionFromBase().getMethod().getName().getCode());
     }
 
     @Test
     public void test42003() throws FactoryException {
         ProjectedCRS eqc = factory.createProjectedCRS("AUTO:42003,9001,0.0,0");
-        assertEquals("Orthographic", eqc.getConversionFromBase().getMethod().getName().getCode());
-        assertTrue(
-                eqc.getConversionFromBase().getMathTransform() instanceof EquatorialOrthographic);
+        assertEquals(
+                "Orthographic",
+                eqc.getConversionFromBase().getMethod().getName().getCode());
+        assertTrue(eqc.getConversionFromBase().getMathTransform() instanceof EquatorialOrthographic);
 
         eqc = factory.createProjectedCRS("AUTO:42003,9001,0.0,90");
-        assertEquals("Orthographic", eqc.getConversionFromBase().getMethod().getName().getCode());
+        assertEquals(
+                "Orthographic",
+                eqc.getConversionFromBase().getMethod().getName().getCode());
         assertTrue(eqc.getConversionFromBase().getMathTransform() instanceof PolarOrthographic);
 
         eqc = factory.createProjectedCRS("AUTO:42003,9001,0.0,45");
-        assertEquals("Orthographic", eqc.getConversionFromBase().getMethod().getName().getCode());
+        assertEquals(
+                "Orthographic",
+                eqc.getConversionFromBase().getMethod().getName().getCode());
         assertTrue(eqc.getConversionFromBase().getMathTransform() instanceof ObliqueOrthographic);
     }
 
@@ -129,71 +136,69 @@ public final class AUTOTest {
                 eqc.getConversionFromBase().getMethod().getName().getCode());
         String stdParallel1Code =
                 EquidistantCylindrical.Provider.STANDARD_PARALLEL_1.getName().getCode();
-        double stdParallel1 =
-                eqc.getConversionFromBase()
-                        .getParameterValues()
-                        .parameter(stdParallel1Code)
-                        .doubleValue();
+        double stdParallel1 = eqc.getConversionFromBase()
+                .getParameterValues()
+                .parameter(stdParallel1Code)
+                .doubleValue();
         assertEquals(35.0, stdParallel1, 1e-9);
     }
 
     @Test
     public void test97001() throws FactoryException {
         ProjectedCRS crs = factory.createProjectedCRS("AUTO:97001,9001,-17.0,23.0");
-        assertEquals("Gnomonic", crs.getConversionFromBase().getMethod().getName().getCode());
+        assertEquals(
+                "Gnomonic", crs.getConversionFromBase().getMethod().getName().getCode());
         assertTrue(crs.getConversionFromBase().getMathTransform() instanceof Gnomonic);
 
         String centreLatCode = Gnomonic.Provider.LATITUDE_OF_CENTRE.getName().getCode();
-        double centreLat =
-                crs.getConversionFromBase()
-                        .getParameterValues()
-                        .parameter(centreLatCode)
-                        .doubleValue();
+        double centreLat = crs.getConversionFromBase()
+                .getParameterValues()
+                .parameter(centreLatCode)
+                .doubleValue();
         assertEquals(23.0, centreLat, 1e-9);
 
         String centreLongCode = Gnomonic.Provider.LONGITUDE_OF_CENTRE.getName().getCode();
-        double centreLong =
-                crs.getConversionFromBase()
-                        .getParameterValues()
-                        .parameter(centreLongCode)
-                        .doubleValue();
+        double centreLong = crs.getConversionFromBase()
+                .getParameterValues()
+                .parameter(centreLongCode)
+                .doubleValue();
         assertEquals(-17.0, centreLong, 1e-9);
     }
 
     @Test
     public void test97002() throws FactoryException {
         ProjectedCRS crs = factory.createProjectedCRS("AUTO:97002,9001,-17.0,23.0");
-        assertEquals("Stereographic", crs.getConversionFromBase().getMethod().getName().getCode());
+        assertEquals(
+                "Stereographic",
+                crs.getConversionFromBase().getMethod().getName().getCode());
         assertTrue(crs.getConversionFromBase().getMathTransform() instanceof Stereographic);
 
-        String centreLatCode = Stereographic.Provider.LATITUDE_OF_ORIGIN.getName().getCode();
-        double centreLat =
-                crs.getConversionFromBase()
-                        .getParameterValues()
-                        .parameter(centreLatCode)
-                        .doubleValue();
+        String centreLatCode =
+                Stereographic.Provider.LATITUDE_OF_ORIGIN.getName().getCode();
+        double centreLat = crs.getConversionFromBase()
+                .getParameterValues()
+                .parameter(centreLatCode)
+                .doubleValue();
         assertEquals(23.0, centreLat, 1e-9);
 
-        String centreLongCode = Stereographic.Provider.CENTRAL_MERIDIAN.getName().getCode();
-        double centreLong =
-                crs.getConversionFromBase()
-                        .getParameterValues()
-                        .parameter(centreLongCode)
-                        .doubleValue();
+        String centreLongCode =
+                Stereographic.Provider.CENTRAL_MERIDIAN.getName().getCode();
+        double centreLong = crs.getConversionFromBase()
+                .getParameterValues()
+                .parameter(centreLongCode)
+                .doubleValue();
         assertEquals(-17.0, centreLong, 1e-9);
 
         String semiMajorString = Stereographic.Provider.SEMI_MAJOR.getName().getCode();
-        double semiMajor =
-                crs.getConversionFromBase()
-                        .getParameterValues()
-                        .parameter(semiMajorString)
-                        .doubleValue();
+        double semiMajor = crs.getConversionFromBase()
+                .getParameterValues()
+                .parameter(semiMajorString)
+                .doubleValue();
         String semiMinorString = Stereographic.Provider.SEMI_MINOR.getName().getCode();
-        double semiMinor =
-                crs.getConversionFromBase()
-                        .getParameterValues()
-                        .parameter(semiMinorString)
-                        .doubleValue();
+        double semiMinor = crs.getConversionFromBase()
+                .getParameterValues()
+                .parameter(semiMinorString)
+                .doubleValue();
         assertEquals(semiMajor, semiMinor, 1e-9);
     }
 
@@ -203,24 +208,22 @@ public final class AUTOTest {
         assertEquals(
                 "Azimuthal_Equidistant",
                 crs.getConversionFromBase().getMethod().getName().getCode());
-        assertTrue(
-                crs.getConversionFromBase().getMathTransform()
-                        instanceof AzimuthalEquidistant.Ellipsoidal);
+        assertTrue(crs.getConversionFromBase().getMathTransform() instanceof AzimuthalEquidistant.Ellipsoidal);
 
-        String centreLongCode = Stereographic.Provider.CENTRAL_MERIDIAN.getName().getCode();
-        double centreLong =
-                crs.getConversionFromBase()
-                        .getParameterValues()
-                        .parameter(centreLongCode)
-                        .doubleValue();
+        String centreLongCode =
+                Stereographic.Provider.CENTRAL_MERIDIAN.getName().getCode();
+        double centreLong = crs.getConversionFromBase()
+                .getParameterValues()
+                .parameter(centreLongCode)
+                .doubleValue();
         assertEquals(-71.43, centreLong, 1e-9);
 
-        String centreLatCode = Stereographic.Provider.LATITUDE_OF_ORIGIN.getName().getCode();
-        double centreLat =
-                crs.getConversionFromBase()
-                        .getParameterValues()
-                        .parameter(centreLatCode)
-                        .doubleValue();
+        String centreLatCode =
+                Stereographic.Provider.LATITUDE_OF_ORIGIN.getName().getCode();
+        double centreLat = crs.getConversionFromBase()
+                .getParameterValues()
+                .parameter(centreLatCode)
+                .doubleValue();
         assertEquals(42.56, centreLat, 1e-9);
     }
 
@@ -228,25 +231,22 @@ public final class AUTOTest {
     public void test97004() throws Exception {
         ProjectedCRS crs = factory.createProjectedCRS("AUTO:97004,9001,20,0");
         assertEquals("GEOS", crs.getConversionFromBase().getMethod().getName().getCode());
-        assertTrue(
-                crs.getConversionFromBase().getMathTransform()
-                        instanceof GeostationarySatellite.Ellipsoidal);
+        assertTrue(crs.getConversionFromBase().getMathTransform() instanceof GeostationarySatellite.Ellipsoidal);
 
         String centreLongCode =
                 GeostationarySatellite.Provider.CENTRAL_MERIDIAN.getName().getCode();
-        double centreLong =
-                crs.getConversionFromBase()
-                        .getParameterValues()
-                        .parameter(centreLongCode)
-                        .doubleValue();
+        double centreLong = crs.getConversionFromBase()
+                .getParameterValues()
+                .parameter(centreLongCode)
+                .doubleValue();
         assertEquals(20, centreLong, 1e-9);
 
-        String heightCode = GeostationarySatellite.Provider.SATELLITE_HEIGHT.getName().getCode();
-        double height =
-                crs.getConversionFromBase()
-                        .getParameterValues()
-                        .parameter(heightCode)
-                        .doubleValue();
+        String heightCode =
+                GeostationarySatellite.Provider.SATELLITE_HEIGHT.getName().getCode();
+        double height = crs.getConversionFromBase()
+                .getParameterValues()
+                .parameter(heightCode)
+                .doubleValue();
         assertEquals(Auto97004.SATELLITE_HEIGHT, height, 1e-9);
     }
 }

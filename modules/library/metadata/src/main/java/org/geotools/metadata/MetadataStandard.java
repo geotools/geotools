@@ -55,16 +55,14 @@ public final class MetadataStandard {
      *
      * @since 2.5
      */
-    public static final MetadataStandard ISO_19111 =
-            new MetadataStandard("org.geotools.api.referencing.");
+    public static final MetadataStandard ISO_19111 = new MetadataStandard("org.geotools.api.referencing.");
 
     /**
      * An instance working on ISO 19115 standard as defined by <A
      * HREF="http://geoapi.sourceforge.net">GeoAPI</A> interfaces in the {@link
      * org.geotools.api.metadata} package and subpackages.
      */
-    public static final MetadataStandard ISO_19115 =
-            new MetadataStandard("org.geotools.api.metadata.");
+    public static final MetadataStandard ISO_19115 = new MetadataStandard("org.geotools.api.metadata.");
 
     /**
      * An instance working on ISO 19119 standard as defined by <A
@@ -73,8 +71,7 @@ public final class MetadataStandard {
      *
      * @since 2.5
      */
-    public static final MetadataStandard ISO_19119 =
-            new MetadataStandard("org.geotools.api.service.");
+    public static final MetadataStandard ISO_19119 = new MetadataStandard("org.geotools.api.service.");
 
     /** The root packages for metadata interfaces. Must ends with {@code "."}. */
     private final String interfacePackage;
@@ -86,13 +83,12 @@ public final class MetadataStandard {
      * Shared pool of {@link PropertyTree} instances, once for each thread (in order to avoid the
      * need for thread synchronization).
      */
-    private final ThreadLocal<PropertyTree> treeBuilders =
-            new ThreadLocal<PropertyTree>() {
-                @Override
-                protected PropertyTree initialValue() {
-                    return new PropertyTree(MetadataStandard.this);
-                }
-            };
+    private final ThreadLocal<PropertyTree> treeBuilders = new ThreadLocal<PropertyTree>() {
+        @Override
+        protected PropertyTree initialValue() {
+            return new PropertyTree(MetadataStandard.this);
+        }
+    };
 
     /**
      * Creates a new instance working on implementation of interfaces defined in the specified
@@ -117,8 +113,7 @@ public final class MetadataStandard {
     private PropertyAccessor getAccessor(final Class<?> implementation) throws ClassCastException {
         final PropertyAccessor accessor = getAccessorOptional(implementation);
         if (accessor == null) {
-            throw new ClassCastException(
-                    MessageFormat.format(ErrorKeys.UNKNOW_TYPE_$1, implementation.getName()));
+            throw new ClassCastException(MessageFormat.format(ErrorKeys.UNKNOW_TYPE_$1, implementation.getName()));
         }
         return accessor;
     }
@@ -245,8 +240,7 @@ public final class MetadataStandard {
         if (!accessor.type.isInstance(source)) {
             ensureNonNull("source", source);
             throw new ClassCastException(
-                    MessageFormat.format(
-                            ErrorKeys.ILLEGAL_CLASS_$2, source.getClass(), accessor.type));
+                    MessageFormat.format(ErrorKeys.ILLEGAL_CLASS_$2, source.getClass(), accessor.type));
         }
         if (!accessor.shallowCopy(source, target, skipNulls)) {
             throw new UnmodifiableMetadataException(ErrorKeys.UNMODIFIABLE_METADATA);
@@ -273,8 +267,7 @@ public final class MetadataStandard {
      *     interface of the expected package.
      * @see AbstractMetadata#equals
      */
-    public boolean shallowEquals(
-            final Object metadata1, final Object metadata2, final boolean skipNulls)
+    public boolean shallowEquals(final Object metadata1, final Object metadata2, final boolean skipNulls)
             throws ClassCastException {
         if (metadata1 == metadata2) {
             return true;

@@ -24,8 +24,7 @@ import javax.xml.stream.XMLStreamReader;
 /** Handles xml parse events for {@link org.geotools.api.style.RasterSymbolizer} elements. */
 public class RasterSymbolizerHandler extends SymbolizerHandler {
     @Override
-    public void element(XMLStreamReader xml, SldTransformContext context)
-            throws XMLStreamException, IOException {
+    public void element(XMLStreamReader xml, SldTransformContext context) throws XMLStreamException, IOException {
         String name = xml.getLocalName();
         if ("RasterSymbolizer".equals(name)) {
             context.mapping().scalar("raster").mapping();
@@ -49,8 +48,7 @@ public class RasterSymbolizerHandler extends SymbolizerHandler {
     }
 
     @Override
-    public void endElement(XMLStreamReader xml, SldTransformContext context)
-            throws XMLStreamException, IOException {
+    public void endElement(XMLStreamReader xml, SldTransformContext context) throws XMLStreamException, IOException {
         String name = xml.getLocalName();
         if ("RasterSymbolizer".equals(name)) {
             dumpOptions(context).endMapping().endMapping().pop();
@@ -60,8 +58,7 @@ public class RasterSymbolizerHandler extends SymbolizerHandler {
 
     static class ColorMapHandler extends SldTransformHandler {
         @Override
-        public void element(XMLStreamReader xml, SldTransformContext context)
-                throws XMLStreamException, IOException {
+        public void element(XMLStreamReader xml, SldTransformContext context) throws XMLStreamException, IOException {
             String name = xml.getLocalName();
             if ("ColorMap".equals(name)) {
                 context.mapping();
@@ -100,8 +97,7 @@ public class RasterSymbolizerHandler extends SymbolizerHandler {
 
     static class ContrastEnhancementHandler extends SldTransformHandler {
         @Override
-        public void element(XMLStreamReader xml, SldTransformContext context)
-                throws XMLStreamException, IOException {
+        public void element(XMLStreamReader xml, SldTransformContext context) throws XMLStreamException, IOException {
             String name = xml.getLocalName();
             if ("ContrastEnhancement".equals(name)) {
                 context.mapping();
@@ -125,8 +121,7 @@ public class RasterSymbolizerHandler extends SymbolizerHandler {
 
     static class ChannelSelectionHandler extends SldTransformHandler {
         @Override
-        public void element(XMLStreamReader xml, SldTransformContext context)
-                throws XMLStreamException, IOException {
+        public void element(XMLStreamReader xml, SldTransformContext context) throws XMLStreamException, IOException {
             String name = xml.getLocalName();
             if ("ChannelSelection".equals(name)) {
                 context.sequence();
@@ -153,8 +148,7 @@ public class RasterSymbolizerHandler extends SymbolizerHandler {
 
     static class ChannelHandler extends SldTransformHandler {
         @Override
-        public void element(XMLStreamReader xml, SldTransformContext context)
-                throws XMLStreamException, IOException {
+        public void element(XMLStreamReader xml, SldTransformContext context) throws XMLStreamException, IOException {
             String name = xml.getLocalName();
             if (name.endsWith("Channel")) {
                 context.mapping();
@@ -177,8 +171,7 @@ public class RasterSymbolizerHandler extends SymbolizerHandler {
 
     static class OverlapBehaviorHandler extends SldTransformHandler {
         @Override
-        public void element(XMLStreamReader xml, SldTransformContext context)
-                throws XMLStreamException, IOException {
+        public void element(XMLStreamReader xml, SldTransformContext context) throws XMLStreamException, IOException {
             String name = xml.getLocalName();
             if ("LATEST_ON_TOP".equals(name)) {
                 context.scalar("latest-on-top").pop();
@@ -194,8 +187,7 @@ public class RasterSymbolizerHandler extends SymbolizerHandler {
 
     static class ShadedReliefHandler extends SldTransformHandler {
         @Override
-        public void element(XMLStreamReader xml, SldTransformContext context)
-                throws XMLStreamException, IOException {
+        public void element(XMLStreamReader xml, SldTransformContext context) throws XMLStreamException, IOException {
             String name = xml.getLocalName();
             if ("ShadedRelief".equals(name)) {
                 context.mapping();
@@ -218,8 +210,7 @@ public class RasterSymbolizerHandler extends SymbolizerHandler {
 
     static class ImageOutlineHandler extends SldTransformHandler {
         @Override
-        public void element(XMLStreamReader xml, SldTransformContext context)
-                throws XMLStreamException, IOException {
+        public void element(XMLStreamReader xml, SldTransformContext context) throws XMLStreamException, IOException {
             String name = xml.getLocalName();
             if ("ImageOutline".equals(name)) {
                 context.scalar("image-outline").mapping();

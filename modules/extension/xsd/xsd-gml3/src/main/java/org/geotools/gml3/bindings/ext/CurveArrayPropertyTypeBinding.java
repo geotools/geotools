@@ -27,8 +27,8 @@ import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.MultiLineString;
 
 @SuppressWarnings("ComparableType")
-public class CurveArrayPropertyTypeBinding
-        extends org.geotools.gml3.bindings.CurveArrayPropertyTypeBinding implements Comparable {
+public class CurveArrayPropertyTypeBinding extends org.geotools.gml3.bindings.CurveArrayPropertyTypeBinding
+        implements Comparable {
 
     public CurveArrayPropertyTypeBinding(GeometryFactory gf) {
         super(gf);

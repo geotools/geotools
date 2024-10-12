@@ -47,9 +47,7 @@ public class SQLServerFeatureStoreExposedPkOnlineTest extends JDBCFeatureStoreEx
         try {
             cx = dataStore.getConnection(Transaction.AUTO_COMMIT);
             st = cx.createStatement();
-            rs =
-                    st.executeQuery(
-                            "SELECT is_read_committed_snapshot_on FROM sys.databases WHERE name= db_name()");
+            rs = st.executeQuery("SELECT is_read_committed_snapshot_on FROM sys.databases WHERE name= db_name()");
             if (rs.next()) {
                 if (rs.getBoolean(1)) {
                     super.testExternalConnection();

@@ -73,8 +73,7 @@ class FeatureMapper {
      */
     static final DecimalFormatSymbols DECIMAL_SYMBOLS = new DecimalFormatSymbols();
 
-    public FeatureMapper(
-            SimpleFeatureType targetSchema, Object layer, GeometryFactory geomFactory, OGR ogr) {
+    public FeatureMapper(SimpleFeatureType targetSchema, Object layer, GeometryFactory geomFactory, OGR ogr) {
         this.schema = targetSchema;
         this.builder = new SimpleFeatureBuilder(schema);
         this.geomMapper = new GeometryMapper.WKB(geomFactory, ogr);
@@ -136,8 +135,7 @@ class FeatureMapper {
         return ogrFeature;
     }
 
-    static void setFieldValue(
-            Object featureDefinition, Object ogrFeature, int fieldIdx, Object value, OGR ogr)
+    static void setFieldValue(Object featureDefinition, Object ogrFeature, int fieldIdx, Object value, OGR ogr)
             throws IOException {
         if (value == null) {
             ogr.FeatureUnsetField(ogrFeature, fieldIdx);
@@ -174,8 +172,7 @@ class FeatureMapper {
                 int hour = cal.get(Calendar.HOUR_OF_DAY);
                 int minute = cal.get(Calendar.MINUTE);
                 int second = cal.get(Calendar.SECOND);
-                ogr.FeatureSetFieldDateTime(
-                        ogrFeature, fieldIdx, year, month, day, hour, minute, second, 0);
+                ogr.FeatureSetFieldDateTime(ogrFeature, fieldIdx, year, month, day, hour, minute, second, 0);
             } else {
                 // anything else we treat as a string
                 String str = Converters.convert(value, String.class);
@@ -195,9 +192,7 @@ class FeatureMapper {
             else return geomFactory.createMultiPolygon(new Polygon[] {(Polygon) ogrGeometry});
         } else if (MultiLineString.class.equals(ad.getType().getBinding())) {
             if (ogrGeometry instanceof MultiLineString) return ogrGeometry;
-            else
-                return geomFactory.createMultiLineString(
-                        new LineString[] {(LineString) ogrGeometry});
+            else return geomFactory.createMultiLineString(new LineString[] {(LineString) ogrGeometry});
         }
         return ogrGeometry;
     }
@@ -267,8 +262,7 @@ class FeatureMapper {
             Calendar cal = getDateField(ogrFeature, idx);
             return cal.getTime();
         } else {
-            throw new IllegalArgumentException(
-                    "Don't know how to read " + clazz.getName() + " fields");
+            throw new IllegalArgumentException("Don't know how to read " + clazz.getName() + " fields");
         }
     }
 
@@ -282,8 +276,7 @@ class FeatureMapper {
         int[] second = new int[1];
         int[] timeZone = new int[1];
 
-        ogr.FeatureGetFieldAsDateTime(
-                ogrFeature, idx, year, month, day, hour, minute, second, timeZone);
+        ogr.FeatureGetFieldAsDateTime(ogrFeature, idx, year, month, day, hour, minute, second, timeZone);
 
         Calendar cal = Calendar.getInstance();
         // from ogr_core.h

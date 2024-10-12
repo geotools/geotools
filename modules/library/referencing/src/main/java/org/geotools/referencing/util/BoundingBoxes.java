@@ -68,8 +68,7 @@ public final class BoundingBoxes {
      * @param envelope The source envelope.
      * @param box The target bounding box.
      */
-    public static void copy(Bounds envelope, final GeographicBoundingBoxImpl box)
-            throws TransformException {
+    public static void copy(Bounds envelope, final GeographicBoundingBoxImpl box) throws TransformException {
         final CoordinateReferenceSystem crs = envelope.getCoordinateReferenceSystem();
         if (crs != null) {
             final GeographicCRS standardCRS = CRSUtilities.getStandardGeographicCRS2D(crs);
@@ -95,8 +94,7 @@ public final class BoundingBoxes {
     }
 
     /** Returns {@code true} if the specified {@code crs} starts with the specified {@code head}. */
-    private static final boolean startsWith(
-            final CoordinateReferenceSystem crs, final CoordinateReferenceSystem head) {
+    private static final boolean startsWith(final CoordinateReferenceSystem crs, final CoordinateReferenceSystem head) {
         final int dimension = head.getCoordinateSystem().getDimension();
         return crs.getCoordinateSystem().getDimension() >= dimension
                 && CRS.equalsIgnoreMetadata(CRSUtilities.getSubCRS(crs, 0, dimension), head);
@@ -110,10 +108,8 @@ public final class BoundingBoxes {
      * @param pattern The angle pattern (e.g. {@code DD°MM'SS.s"}.
      * @param locale The locale, or {@code null} for the default one.
      */
-    public static String toString(
-            final GeographicBoundingBox box, final String pattern, final Locale locale) {
-        final AngleFormat format =
-                (locale != null) ? new AngleFormat(pattern, locale) : new AngleFormat(pattern);
+    public static String toString(final GeographicBoundingBox box, final String pattern, final Locale locale) {
+        final AngleFormat format = (locale != null) ? new AngleFormat(pattern, locale) : new AngleFormat(pattern);
         final FieldPosition pos = new FieldPosition(0);
         final StringBuffer buffer = new StringBuffer();
         format.format(new Latitude(box.getNorthBoundLatitude()), buffer, pos).append(", ");

@@ -441,15 +441,13 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
                 return ff.equal(pe.getExpression1(), pe.getExpression2(), pe.isMatchingCase());
             } else if (simplified instanceof PropertyIsGreaterThan) {
                 PropertyIsGreaterThan pg = (PropertyIsGreaterThan) simplified;
-                return ff.lessOrEqual(
-                        pg.getExpression1(), pg.getExpression2(), pg.isMatchingCase());
+                return ff.lessOrEqual(pg.getExpression1(), pg.getExpression2(), pg.isMatchingCase());
             } else if (simplified instanceof PropertyIsGreaterThanOrEqualTo) {
                 PropertyIsGreaterThanOrEqualTo pg = (PropertyIsGreaterThanOrEqualTo) simplified;
                 return ff.less(pg.getExpression1(), pg.getExpression2(), pg.isMatchingCase());
             } else if (simplified instanceof PropertyIsLessThan) {
                 PropertyIsLessThan pl = (PropertyIsLessThan) simplified;
-                return ff.greaterOrEqual(
-                        pl.getExpression1(), pl.getExpression2(), pl.isMatchingCase());
+                return ff.greaterOrEqual(pl.getExpression1(), pl.getExpression2(), pl.isMatchingCase());
             } else if (simplified instanceof PropertyIsLessThanOrEqualTo) {
                 PropertyIsLessThanOrEqualTo pl = (PropertyIsLessThanOrEqualTo) simplified;
                 return ff.greater(pl.getExpression1(), pl.getExpression2(), pl.isMatchingCase());
@@ -557,8 +555,7 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
 
     @Override
     public Object visit(PropertyIsEqualTo filter, Object extraData) {
-        return simplifyBinaryComparisonOperator(
-                (BinaryComparisonOperator) super.visit(filter, extraData));
+        return simplifyBinaryComparisonOperator((BinaryComparisonOperator) super.visit(filter, extraData));
     }
 
     private Object simplifyBinaryComparisonOperator(BinaryComparisonOperator clone) {
@@ -571,32 +568,27 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
 
     @Override
     public Object visit(PropertyIsNotEqualTo filter, Object extraData) {
-        return simplifyBinaryComparisonOperator(
-                (BinaryComparisonOperator) super.visit(filter, extraData));
+        return simplifyBinaryComparisonOperator((BinaryComparisonOperator) super.visit(filter, extraData));
     }
 
     @Override
     public Object visit(PropertyIsGreaterThan filter, Object extraData) {
-        return simplifyBinaryComparisonOperator(
-                (BinaryComparisonOperator) super.visit(filter, extraData));
+        return simplifyBinaryComparisonOperator((BinaryComparisonOperator) super.visit(filter, extraData));
     }
 
     @Override
     public Object visit(PropertyIsGreaterThanOrEqualTo filter, Object extraData) {
-        return simplifyBinaryComparisonOperator(
-                (BinaryComparisonOperator) super.visit(filter, extraData));
+        return simplifyBinaryComparisonOperator((BinaryComparisonOperator) super.visit(filter, extraData));
     }
 
     @Override
     public Object visit(PropertyIsLessThan filter, Object extraData) {
-        return simplifyBinaryComparisonOperator(
-                (BinaryComparisonOperator) super.visit(filter, extraData));
+        return simplifyBinaryComparisonOperator((BinaryComparisonOperator) super.visit(filter, extraData));
     }
 
     @Override
     public Object visit(PropertyIsLessThanOrEqualTo filter, Object extraData) {
-        return simplifyBinaryComparisonOperator(
-                (BinaryComparisonOperator) super.visit(filter, extraData));
+        return simplifyBinaryComparisonOperator((BinaryComparisonOperator) super.visit(filter, extraData));
     }
 
     @Override

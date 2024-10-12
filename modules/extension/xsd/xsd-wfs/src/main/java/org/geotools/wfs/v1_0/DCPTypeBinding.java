@@ -65,8 +65,7 @@ public class DCPTypeBinding extends AbstractComplexEMFBinding {
         return dcpType;
     }
 
-    private RequestMethodType createRequestMethodType(
-            Ows10Factory ows10Factory, Node getOrPostNode) {
+    private RequestMethodType createRequestMethodType(Ows10Factory ows10Factory, Node getOrPostNode) {
         RequestMethodType methodType = ows10Factory.createRequestMethodType();
         String href = (String) getOrPostNode.getAttributeValue("onlineResource");
         methodType.setHref(href);

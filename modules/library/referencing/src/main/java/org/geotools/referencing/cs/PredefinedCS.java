@@ -54,19 +54,18 @@ final class PredefinedCS implements Comparator<CoordinateSystem> {
 
     /** Our ordering for coordinate system objects. */
     @SuppressWarnings({"unchecked", "PMD.UseShortArrayInitializer"})
-    private final Class<? extends CoordinateSystem>[] types =
-            new Class[] {
-                CartesianCS.class,
-                AffineCS.class,
-                EllipsoidalCS.class,
-                SphericalCS.class,
-                CylindricalCS.class,
-                PolarCS.class,
-                VerticalCS.class,
-                TimeCS.class,
-                LinearCS.class,
-                UserDefinedCS.class
-            };
+    private final Class<? extends CoordinateSystem>[] types = new Class[] {
+        CartesianCS.class,
+        AffineCS.class,
+        EllipsoidalCS.class,
+        SphericalCS.class,
+        CylindricalCS.class,
+        PolarCS.class,
+        VerticalCS.class,
+        TimeCS.class,
+        LinearCS.class,
+        UserDefinedCS.class
+    };
 
     /** Creates a comparator. */
     private PredefinedCS() {}
@@ -93,29 +92,27 @@ final class PredefinedCS implements Comparator<CoordinateSystem> {
         final int dimension = cs.getDimension();
         if (cs instanceof CartesianCS) {
             switch (dimension) {
-                case 2:
-                    {
-                        if (DefaultCartesianCS.PROJECTED.axisColinearWith(cs)) {
-                            return DefaultCartesianCS.PROJECTED;
-                        }
-                        if (DefaultCartesianCS.GRID.axisColinearWith(cs)) {
-                            return DefaultCartesianCS.GRID;
-                        }
-                        if (DefaultCartesianCS.GENERIC_2D.directionColinearWith(cs)) {
-                            return DefaultCartesianCS.GENERIC_2D;
-                        }
-                        return rightHanded((CartesianCS) cs);
+                case 2: {
+                    if (DefaultCartesianCS.PROJECTED.axisColinearWith(cs)) {
+                        return DefaultCartesianCS.PROJECTED;
                     }
-                case 3:
-                    {
-                        if (DefaultCartesianCS.GEOCENTRIC.axisColinearWith(cs)) {
-                            return DefaultCartesianCS.GEOCENTRIC;
-                        }
-                        if (DefaultCartesianCS.GENERIC_3D.directionColinearWith(cs)) {
-                            return DefaultCartesianCS.GENERIC_3D;
-                        }
-                        return rightHanded((CartesianCS) cs);
+                    if (DefaultCartesianCS.GRID.axisColinearWith(cs)) {
+                        return DefaultCartesianCS.GRID;
                     }
+                    if (DefaultCartesianCS.GENERIC_2D.directionColinearWith(cs)) {
+                        return DefaultCartesianCS.GENERIC_2D;
+                    }
+                    return rightHanded((CartesianCS) cs);
+                }
+                case 3: {
+                    if (DefaultCartesianCS.GEOCENTRIC.axisColinearWith(cs)) {
+                        return DefaultCartesianCS.GEOCENTRIC;
+                    }
+                    if (DefaultCartesianCS.GENERIC_3D.directionColinearWith(cs)) {
+                        return DefaultCartesianCS.GENERIC_3D;
+                    }
+                    return rightHanded((CartesianCS) cs);
+                }
             }
         }
         if (cs instanceof AffineCS) {
@@ -137,10 +134,9 @@ final class PredefinedCS implements Comparator<CoordinateSystem> {
         }
         if (cs instanceof VerticalCS) {
             switch (dimension) {
-                case 1:
-                    {
-                        return DefaultVerticalCS.ELLIPSOIDAL_HEIGHT;
-                    }
+                case 1: {
+                    return DefaultVerticalCS.ELLIPSOIDAL_HEIGHT;
+                }
             }
         }
         if (cs instanceof TimeCS) {
@@ -150,8 +146,7 @@ final class PredefinedCS implements Comparator<CoordinateSystem> {
             }
         }
         if (cs instanceof DefaultCompoundCS) {
-            final List<CoordinateSystem> components =
-                    ((DefaultCompoundCS) cs).getCoordinateSystems();
+            final List<CoordinateSystem> components = ((DefaultCompoundCS) cs).getCoordinateSystems();
             final CoordinateSystem[] user = new CoordinateSystem[components.size()];
             final CoordinateSystem[] std = new CoordinateSystem[user.length];
             for (int i = 0; i < std.length; i++) {
@@ -164,8 +159,7 @@ final class PredefinedCS implements Comparator<CoordinateSystem> {
             return Arrays.equals(user, std) ? cs : new DefaultCompoundCS(std);
         }
         final Object arg0 = cs.getName().getCode();
-        throw new IllegalArgumentException(
-                MessageFormat.format(ErrorKeys.UNSUPPORTED_COORDINATE_SYSTEM_$1, arg0));
+        throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.UNSUPPORTED_COORDINATE_SYSTEM_$1, arg0));
     }
 
     /**

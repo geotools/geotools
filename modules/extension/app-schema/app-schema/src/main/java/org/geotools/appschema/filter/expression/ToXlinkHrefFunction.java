@@ -90,8 +90,6 @@ public class ToXlinkHrefFunction implements Function {
     @SuppressWarnings("unchecked")
     public <T> T evaluate(Object object, Class<T> context) {
         return (T)
-                new Hints(
-                        ComplexFeatureConstants.STRING_KEY,
-                        parameters.get(0).evaluate(object, String.class));
+                new Hints(ComplexFeatureConstants.STRING_KEY, parameters.get(0).evaluate(object, String.class));
     }
 }

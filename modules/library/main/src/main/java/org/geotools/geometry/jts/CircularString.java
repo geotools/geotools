@@ -71,8 +71,7 @@ public class CircularString extends LineString implements SingleCurvedGeometry<L
 
     /** This sequence is used as a fake to trick the constructor */
     static final CoordinateSequence FAKE_STRING_2D =
-            new CoordinateArraySequence(
-                    new Coordinate[] {new Coordinate(0, 0), new Coordinate(1, 1)});
+            new CoordinateArraySequence(new Coordinate[] {new Coordinate(0, 0), new Coordinate(1, 1)});
 
     double[] controlPoints;
 
@@ -90,9 +89,8 @@ public class CircularString extends LineString implements SingleCurvedGeometry<L
             controlPoints[i * 2] = points.getX(i);
             controlPoints[i * 2 + 1] = points.getY(i);
             if (points.getDimension() > 2 && !Double.isNaN(points.getZ(i))) {
-                throw new IllegalArgumentException(
-                        "Circular strings are restricted to 2 dimensions "
-                                + "at the moment. Contributions to get ND support welcomed!");
+                throw new IllegalArgumentException("Circular strings are restricted to 2 dimensions "
+                        + "at the moment. Contributions to get ND support welcomed!");
             }
         }
         init(controlPoints, tolerance);
@@ -111,11 +109,10 @@ public class CircularString extends LineString implements SingleCurvedGeometry<L
         }
         int pointCount = length / 2;
         if ((pointCount != 0 && pointCount < 3) || (pointCount > 3 && (pointCount % 2) == 0)) {
-            throw new IllegalArgumentException(
-                    "Invalid number of points, a circular string "
-                            + "is always made of an odd number of points, with a mininum of 3, "
-                            + "and adding 2 for each extra circular arc in the sequence. Found: "
-                            + pointCount);
+            throw new IllegalArgumentException("Invalid number of points, a circular string "
+                    + "is always made of an odd number of points, with a mininum of 3, "
+                    + "and adding 2 for each extra circular arc in the sequence. Found: "
+                    + pointCount);
         }
         this.controlPoints = controlPoints;
         this.tolerance = tolerance;
@@ -241,9 +238,7 @@ public class CircularString extends LineString implements SingleCurvedGeometry<L
         int idx = controlPoints.length / 2;
         return new Point(
                 new CoordinateArraySequence(
-                        new Coordinate[] {
-                            new Coordinate(controlPoints[idx], controlPoints[idx + 1])
-                        }),
+                        new Coordinate[] {new Coordinate(controlPoints[idx], controlPoints[idx + 1])}),
                 getFactory());
     }
 
@@ -408,20 +403,16 @@ public class CircularString extends LineString implements SingleCurvedGeometry<L
     @Override
     public Point getStartPoint() {
         return new Point(
-                new CoordinateArraySequence(
-                        new Coordinate[] {new Coordinate(controlPoints[0], controlPoints[1])}),
+                new CoordinateArraySequence(new Coordinate[] {new Coordinate(controlPoints[0], controlPoints[1])}),
                 getFactory());
     }
 
     @Override
     public Point getEndPoint() {
         return new Point(
-                new CoordinateArraySequence(
-                        new Coordinate[] {
-                            new Coordinate(
-                                    controlPoints[controlPoints.length - 2],
-                                    controlPoints[controlPoints.length - 1])
-                        }),
+                new CoordinateArraySequence(new Coordinate[] {
+                    new Coordinate(controlPoints[controlPoints.length - 2], controlPoints[controlPoints.length - 1])
+                }),
                 getFactory());
     }
 

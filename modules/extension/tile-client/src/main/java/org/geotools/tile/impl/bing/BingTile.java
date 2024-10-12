@@ -46,16 +46,13 @@ public class BingTile extends Tile {
 
     public BingTile(TileIdentifier tileName, TileService service) {
 
-        super(
-                tileName,
-                WebMercatorTileFactory.getExtentFromTileName(tileName),
-                DEFAULT_TILE_SIZE,
-                service);
+        super(tileName, WebMercatorTileFactory.getExtentFromTileName(tileName), DEFAULT_TILE_SIZE, service);
     }
 
     @Override
     public URL getUrl() {
-        String url = this.service.getBaseUrl().replace("${code}", getTileIdentifier().getCode());
+        String url =
+                this.service.getBaseUrl().replace("${code}", getTileIdentifier().getCode());
         try {
             return new URL(url);
         } catch (Exception e) {

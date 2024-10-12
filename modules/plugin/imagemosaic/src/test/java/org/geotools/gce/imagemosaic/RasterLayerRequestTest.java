@@ -53,13 +53,11 @@ public class RasterLayerRequestTest {
         // Overviews: 70x94, 35x47
         GridGeometry2D gg = new GridGeometry2D(new GridEnvelope2D(0, 0, 35, 47), reTransformed);
 
-        ParameterValue<GridGeometry2D> ggParam =
-                AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
+        ParameterValue<GridGeometry2D> ggParam = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
         ggParam.setValue(gg);
 
         // Creating a request
-        final RasterLayerRequest request =
-                new RasterLayerRequest(new GeneralParameterValue[] {ggParam}, manager);
+        final RasterLayerRequest request = new RasterLayerRequest(new GeneralParameterValue[] {ggParam}, manager);
         double[] rr = request.spatialRequestHelper.getComputedResolution();
         // System.out.println(Arrays.toString(rr));
         double resolution = Math.min(rr[0], rr[1]);

@@ -48,8 +48,7 @@ public class OrdnanceSurveyOnlineTest extends OnlineTestCase {
     @Override
     protected Properties createExampleFixture() {
         Properties example = new Properties();
-        example.put(
-                "key", "<< You should sign up for a API key at https://osdatahub.os.uk/plans >>");
+        example.put("key", "<< You should sign up for a API key at https://osdatahub.os.uk/plans >>");
         example.put("wmts_url", "https://api.os.uk/maps/raster/v1/wmts");
 
         return example;

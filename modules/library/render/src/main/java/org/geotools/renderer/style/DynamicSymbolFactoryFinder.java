@@ -91,12 +91,9 @@ public final class DynamicSymbolFactoryFinder {
      */
     @SuppressWarnings("unchecked")
     public static synchronized Iterator<MarkFactory> getMarkFactories(Hints hints) {
-        Comparator<MarkFactory> sort =
-                hints != null ? (Comparator<MarkFactory>) hints.get(MARK_FACTORY_ORDER) : null;
-        Predicate<MarkFactory> filter =
-                hints != null ? (Predicate<MarkFactory>) hints.get(MARK_FACTORY_FILTER) : null;
-        Stream<MarkFactory> factories =
-                getServiceRegistry().getFactories(MarkFactory.class, filter, hints);
+        Comparator<MarkFactory> sort = hints != null ? (Comparator<MarkFactory>) hints.get(MARK_FACTORY_ORDER) : null;
+        Predicate<MarkFactory> filter = hints != null ? (Predicate<MarkFactory>) hints.get(MARK_FACTORY_FILTER) : null;
+        Stream<MarkFactory> factories = getServiceRegistry().getFactories(MarkFactory.class, filter, hints);
 
         return sort != null ? factories.sorted(sort).iterator() : factories.iterator();
     }
@@ -118,8 +115,7 @@ public final class DynamicSymbolFactoryFinder {
      * @param hints An optional map of hints for factory configfuration, or {@code null} if none.
      * @return An iterator over all registered ExternalGraphicFactory
      */
-    public static synchronized Iterator<ExternalGraphicFactory> getExternalGraphicFactories(
-            Hints hints) {
+    public static synchronized Iterator<ExternalGraphicFactory> getExternalGraphicFactories(Hints hints) {
         return getServiceRegistry()
                 .getFactories(ExternalGraphicFactory.class, null, hints)
                 .iterator();
@@ -133,11 +129,7 @@ public final class DynamicSymbolFactoryFinder {
         assert Thread.holdsLock(DynamicSymbolFactoryFinder.class);
         if (registry == null) {
             registry =
-                    new FactoryCreator(
-                            Arrays.asList(
-                                    new Class<?>[] {
-                                        MarkFactory.class, ExternalGraphicFactory.class
-                                    }));
+                    new FactoryCreator(Arrays.asList(new Class<?>[] {MarkFactory.class, ExternalGraphicFactory.class}));
         }
         return registry;
     }

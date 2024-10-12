@@ -43,15 +43,14 @@ public class PolygonTypeBindingTest extends KMLTestSupport {
 
     @Test
     public void testParse() throws Exception {
-        String xml =
-                "<Polygon>"
-                        + "<outerBoundaryIs>"
-                        + "<LinearRing><coordinates>1,1 2,2 3,3 1,1</coordinates></LinearRing>"
-                        + "</outerBoundaryIs>"
-                        + "<innerBoundaryIs>"
-                        + "<LinearRing><coordinates>1,1 2,2 3,3 1,1</coordinates></LinearRing>"
-                        + "</innerBoundaryIs>"
-                        + "</Polygon>";
+        String xml = "<Polygon>"
+                + "<outerBoundaryIs>"
+                + "<LinearRing><coordinates>1,1 2,2 3,3 1,1</coordinates></LinearRing>"
+                + "</outerBoundaryIs>"
+                + "<innerBoundaryIs>"
+                + "<LinearRing><coordinates>1,1 2,2 3,3 1,1</coordinates></LinearRing>"
+                + "</innerBoundaryIs>"
+                + "</Polygon>";
 
         buildDocument(xml);
 
@@ -62,27 +61,16 @@ public class PolygonTypeBindingTest extends KMLTestSupport {
 
     @Test
     public void testEncode() throws Exception {
-        Polygon p =
-                new GeometryFactory()
-                        .createPolygon(
-                                new GeometryFactory()
-                                        .createLinearRing(
-                                                new Coordinate[] {
-                                                    new Coordinate(1, 1),
-                                                    new Coordinate(2, 2),
-                                                    new Coordinate(3, 3),
-                                                    new Coordinate(1, 1)
-                                                }),
-                                new LinearRing[] {
-                                    new GeometryFactory()
-                                            .createLinearRing(
-                                                    new Coordinate[] {
-                                                        new Coordinate(1, 1),
-                                                        new Coordinate(2, 2),
-                                                        new Coordinate(3, 3),
-                                                        new Coordinate(1, 1)
-                                                    })
-                                });
+        Polygon p = new GeometryFactory()
+                .createPolygon(
+                        new GeometryFactory().createLinearRing(new Coordinate[] {
+                            new Coordinate(1, 1), new Coordinate(2, 2), new Coordinate(3, 3), new Coordinate(1, 1)
+                        }),
+                        new LinearRing[] {
+                            new GeometryFactory().createLinearRing(new Coordinate[] {
+                                new Coordinate(1, 1), new Coordinate(2, 2), new Coordinate(3, 3), new Coordinate(1, 1)
+                            })
+                        });
         Document dom = encode(p, KML.Polygon);
 
         assertNotNull(getElementByQName(dom, new QName(KML.NAMESPACE, "outerBoundaryIs")));

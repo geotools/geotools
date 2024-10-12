@@ -90,44 +90,43 @@ public class ShapefileReadWriteTest extends TestCaseSupport {
         System.runFinalization(); // If some streams are still open, it may
         // help to close them.
         final File file = getTempFile();
-        Runnable reader =
-                new Runnable() {
-                    @Override
-                    public void run() {
-                        int cutoff = 0;
+        Runnable reader = new Runnable() {
+            @Override
+            public void run() {
+                int cutoff = 0;
 
-                        try (FileInputStream fr = new FileInputStream(file)) {
+                try (FileInputStream fr = new FileInputStream(file)) {
+                    try {
+                        fr.read();
+                    } catch (IOException e1) {
+                        exception = e1;
+                        return;
+                    }
+                    // if (verbose) {
+                    // System.out.println("locked");
+                    // }
+                    readStarted = true;
+                    while (cutoff < 10) {
+                        synchronized (this) {
                             try {
-                                fr.read();
-                            } catch (IOException e1) {
-                                exception = e1;
-                                return;
-                            }
-                            // if (verbose) {
-                            // System.out.println("locked");
-                            // }
-                            readStarted = true;
-                            while (cutoff < 10) {
-                                synchronized (this) {
-                                    try {
-                                        try {
-                                            fr.read();
-                                        } catch (IOException e) {
-                                            exception = e;
-                                            return;
-                                        }
-                                        wait(500);
-                                        cutoff++;
-                                    } catch (InterruptedException e) {
-                                        cutoff = 10;
-                                    }
+                                try {
+                                    fr.read();
+                                } catch (IOException e) {
+                                    exception = e;
+                                    return;
                                 }
+                                wait(500);
+                                cutoff++;
+                            } catch (InterruptedException e) {
+                                cutoff = 10;
                             }
-                        } catch (Exception e) {
-                            fail();
                         }
                     }
-                };
+                } catch (Exception e) {
+                    fail();
+                }
+            }
+        };
         Thread readThread = new Thread(reader);
         readThread.start();
         while (!readStarted) {
@@ -246,8 +245,7 @@ public class ShapefileReadWriteTest extends TestCaseSupport {
                 }
             } else {
                 if (!att1.equals(att2)) {
-                    throw new Exception(
-                            "Different attribute (" + i + "): [" + att1 + "] - [" + att2 + "]");
+                    throw new Exception("Different attribute (" + i + "): [" + att1 + "] - [" + att2 + "]");
                 }
             }
         }

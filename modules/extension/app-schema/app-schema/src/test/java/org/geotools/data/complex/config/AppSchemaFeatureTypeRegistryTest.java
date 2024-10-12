@@ -34,8 +34,7 @@ public class AppSchemaFeatureTypeRegistryTest extends AppSchemaTestSupport {
     public static void oneTimeSetUp() throws IOException {
         SchemaResolver resolver = new SchemaResolver();
         String schemalocation =
-                SchemaResolver.resolveClasspathLocation(
-                        "http://schemas.geosciml.org/borehole/3.2/borehole.xsd");
+                SchemaResolver.resolveClasspathLocation("http://schemas.geosciml.org/borehole/3.2/borehole.xsd");
         EmfComplexFeatureReader schemaParser = EmfComplexFeatureReader.newInstance();
         schemaParser.setResolver(resolver);
         schemaIndex = schemaParser.parse(BOREHOLE_NS, schemalocation);

@@ -45,15 +45,12 @@ public class WFSConfiguration_1_0 extends org.geotools.wfs.WFSConfiguration {
                 WFS.WFS_TransactionResponseType, WFS_TransactionResponseTypeBinding.class);
         container.registerComponentImplementation(
                 WFS.WFS_LockFeatureResponseType, WFS_LockFeatureResponseTypeBinding.class);
-        container.registerComponentImplementation(
-                WFS.InsertResultType, InsertResultTypeBinding.class);
-        container.registerComponentImplementation(
-                WFS.TransactionResultType, TransactionResultTypeBinding.class);
+        container.registerComponentImplementation(WFS.InsertResultType, InsertResultTypeBinding.class);
+        container.registerComponentImplementation(WFS.TransactionResultType, TransactionResultTypeBinding.class);
         container.registerComponentImplementation(WFS.OperationsType, OperationsTypeBinding.class);
 
         // override feature collection binding
         container.unregisterComponent(org.geotools.wfs.bindings.FeatureCollectionTypeBinding.class);
-        container.registerComponentImplementation(
-                WFS.FeatureCollection, FeatureCollectionTypeBinding.class);
+        container.registerComponentImplementation(WFS.FeatureCollection, FeatureCollectionTypeBinding.class);
     }
 }

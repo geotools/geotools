@@ -71,19 +71,17 @@ public class PreGeneralizedDataStore implements DataStore {
     }
 
     /** */
-    public PreGeneralizedDataStore(
-            GeneralizationInfos infos, Repository repository, URI namespace) {
+    public PreGeneralizedDataStore(GeneralizationInfos infos, Repository repository, URI namespace) {
         this.namespace = namespace;
         featureSources = new HashMap<>();
         for (GeneralizationInfo gi : infos.getGeneralizationInfoCollection()) {
-            featureSources.put(
-                    gi.getFeatureName(), new PreGeneralizedFeatureSource(gi, repository, this));
+            featureSources.put(gi.getFeatureName(), new PreGeneralizedFeatureSource(gi, repository, this));
         }
     }
 
     @Override
-    public FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader(
-            Query query, Transaction transaction) throws IOException {
+    public FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader(Query query, Transaction transaction)
+            throws IOException {
         PreGeneralizedFeatureSource fs = featureSources.get(query.getTypeName());
         if (fs == null) throw new IOException(query.getTypeName() + " not found");
         return fs.getFeatureReader(query, transaction);
@@ -97,8 +95,8 @@ public class PreGeneralizedDataStore implements DataStore {
     }
 
     @Override
-    public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(
-            String typeName, Transaction transaction) throws IOException {
+    public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(String typeName, Transaction transaction)
+            throws IOException {
 
         throw new UnsupportedOperationException("getFeatureWriter");
     }

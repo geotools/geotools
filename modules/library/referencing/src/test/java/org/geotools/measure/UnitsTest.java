@@ -47,10 +47,7 @@ import tech.units.indriya.unit.TransformedUnit;
 public class UnitsTest {
     /** Compares two values for equality. */
     private static <Q extends Quantity<Q>> void checkConversion(
-            final double expected,
-            final Unit<Q> unitExpected,
-            final double actual,
-            final Unit<Q> unitActual) {
+            final double expected, final Unit<Q> unitExpected, final double actual, final Unit<Q> unitActual) {
         UnitConverter converter = unitActual.getConverterTo(unitExpected);
         assertEquals(expected, converter.convert(actual), 1E-6);
         converter = converter.inverse();
@@ -75,14 +72,12 @@ public class UnitsTest {
      * @throws ClassNotFoundException Should never occurs.
      */
     @SuppressWarnings("BanSerializableRead")
-    private static Object serialize(final Object object)
-            throws IOException, ClassNotFoundException {
+    private static Object serialize(final Object object) throws IOException, ClassNotFoundException {
         final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
         final ObjectOutputStream out = new ObjectOutputStream(buffer);
         out.writeObject(object);
         out.close();
-        final ObjectInputStream in =
-                new ObjectInputStream(new ByteArrayInputStream(buffer.toByteArray()));
+        final ObjectInputStream in = new ObjectInputStream(new ByteArrayInputStream(buffer.toByteArray()));
         final Object read = in.readObject();
         in.close();
         return read;
@@ -104,14 +99,9 @@ public class UnitsTest {
 
     @Test
     public void testUnitsMatch1() {
-        Unit<Angle> degree =
-                Units.autoCorrect(
-                        new TransformedUnit<>(
-                                SI.RADIAN,
-                                MultiplyConverter.ofPiExponent(1)
-                                        .concatenate(MultiplyConverter.ofRational(1, 180))));
-        assertEquals(
-                "auto correction of degree definition from JSR 385", NonSI.DEGREE_ANGLE, degree);
+        Unit<Angle> degree = Units.autoCorrect(new TransformedUnit<>(
+                SI.RADIAN, MultiplyConverter.ofPiExponent(1).concatenate(MultiplyConverter.ofRational(1, 180))));
+        assertEquals("auto correction of degree definition from JSR 385", NonSI.DEGREE_ANGLE, degree);
         assertTrue("JSR 385 degree definition", isDegreeAngle(degree));
     }
 
@@ -119,23 +109,15 @@ public class UnitsTest {
     public void testUnitsMatch2() {
         // UNIT["degree", 0.017453292519943295],
         Unit<Angle> degree =
-                Units.autoCorrect(
-                        new TransformedUnit<>(
-                                SI.RADIAN, MultiplyConverter.of(0.017453292519943295)));
-        assertEquals(
-                "auto correction of degree definition from EsriLookupTest",
-                NonSI.DEGREE_ANGLE,
-                degree);
+                Units.autoCorrect(new TransformedUnit<>(SI.RADIAN, MultiplyConverter.of(0.017453292519943295)));
+        assertEquals("auto correction of degree definition from EsriLookupTest", NonSI.DEGREE_ANGLE, degree);
         assertTrue("degree definition from EsriLookupTest", isDegreeAngle(degree));
     }
 
     @Test
     public void testUnitsMatch3() {
         Unit<Length> feet = Units.autoCorrect(SI.METRE.multiply(1200).divide(3937));
-        assertEquals(
-                "auto correction of US Survey definition from EsriLookupTest",
-                USCustomary.FOOT_SURVEY,
-                feet);
+        assertEquals("auto correction of US Survey definition from EsriLookupTest", USCustomary.FOOT_SURVEY, feet);
         assertTrue("survey foot definition from EsriLookupTest", isUSSurveyFoot(feet));
     }
 

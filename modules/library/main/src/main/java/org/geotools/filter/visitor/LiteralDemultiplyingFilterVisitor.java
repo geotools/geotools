@@ -88,22 +88,15 @@ public class LiteralDemultiplyingFilterVisitor extends DuplicatingFilterVisitor 
      * An implementation for Binary Comparison Operators Takes the method name in the FilterFactory
      * to create the filter
      */
-    protected class BinaryComparisonOperatorReplacer
-            implements FilterReplacer<BinaryComparisonOperator> {
+    protected class BinaryComparisonOperatorReplacer implements FilterReplacer<BinaryComparisonOperator> {
 
         protected Method method;
 
         public BinaryComparisonOperatorReplacer(String methodName) {
 
             try {
-                method =
-                        ff.getClass()
-                                .getMethod(
-                                        methodName,
-                                        Expression.class,
-                                        Expression.class,
-                                        boolean.class,
-                                        MatchAction.class);
+                method = ff.getClass()
+                        .getMethod(methodName, Expression.class, Expression.class, boolean.class, MatchAction.class);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
@@ -124,12 +117,7 @@ public class LiteralDemultiplyingFilterVisitor extends DuplicatingFilterVisitor 
                 BinaryComparisonOperator filter, Expression expression1, Expression expression2) {
             try {
                 return (Filter)
-                        method.invoke(
-                                ff,
-                                expression1,
-                                expression2,
-                                filter.isMatchingCase(),
-                                filter.getMatchAction());
+                        method.invoke(ff, expression1, expression2, filter.isMatchingCase(), filter.getMatchAction());
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
@@ -147,13 +135,7 @@ public class LiteralDemultiplyingFilterVisitor extends DuplicatingFilterVisitor 
         public BinarySpatialOperatorReplacer(String methodName) {
 
             try {
-                method =
-                        ff.getClass()
-                                .getMethod(
-                                        methodName,
-                                        Expression.class,
-                                        Expression.class,
-                                        MatchAction.class);
+                method = ff.getClass().getMethod(methodName, Expression.class, Expression.class, MatchAction.class);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
@@ -170,11 +152,9 @@ public class LiteralDemultiplyingFilterVisitor extends DuplicatingFilterVisitor 
         }
 
         @Override
-        public Filter replaceExpressions(
-                BinarySpatialOperator filter, Expression expression1, Expression expression2) {
+        public Filter replaceExpressions(BinarySpatialOperator filter, Expression expression1, Expression expression2) {
             try {
-                return (Filter)
-                        method.invoke(ff, expression1, expression2, filter.getMatchAction());
+                return (Filter) method.invoke(ff, expression1, expression2, filter.getMatchAction());
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
@@ -185,21 +165,14 @@ public class LiteralDemultiplyingFilterVisitor extends DuplicatingFilterVisitor 
      * An implementation for Binary Temporal Operators Takes the method name in the FilterFactory to
      * create the filter
      */
-    protected class BinaryTemporalOperatorReplacer
-            implements FilterReplacer<BinaryTemporalOperator> {
+    protected class BinaryTemporalOperatorReplacer implements FilterReplacer<BinaryTemporalOperator> {
 
         protected Method method;
 
         public BinaryTemporalOperatorReplacer(String methodName) {
 
             try {
-                method =
-                        ff.getClass()
-                                .getMethod(
-                                        methodName,
-                                        Expression.class,
-                                        Expression.class,
-                                        MatchAction.class);
+                method = ff.getClass().getMethod(methodName, Expression.class, Expression.class, MatchAction.class);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
@@ -219,8 +192,7 @@ public class LiteralDemultiplyingFilterVisitor extends DuplicatingFilterVisitor 
         public Filter replaceExpressions(
                 BinaryTemporalOperator filter, Expression expression1, Expression expression2) {
             try {
-                return (Filter)
-                        method.invoke(ff, expression1, expression2, filter.getMatchAction());
+                return (Filter) method.invoke(ff, expression1, expression2, filter.getMatchAction());
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
@@ -234,8 +206,7 @@ public class LiteralDemultiplyingFilterVisitor extends DuplicatingFilterVisitor 
      * @param replacer The filter replacer
      * @return the new filter
      */
-    protected <T extends MultiValuedFilter> Filter demultiplyFirst(
-            T filter, FilterReplacer<T> replacer) {
+    protected <T extends MultiValuedFilter> Filter demultiplyFirst(T filter, FilterReplacer<T> replacer) {
 
         Expression one = replacer.getExpression1(filter);
         Expression two = replacer.getExpression2(filter);
@@ -276,8 +247,7 @@ public class LiteralDemultiplyingFilterVisitor extends DuplicatingFilterVisitor 
     }
 
     /** Demultiplies first and second expression */
-    protected <T extends MultiValuedFilter> Filter demultiply(
-            T filter, FilterReplacer<T> replacer) {
+    protected <T extends MultiValuedFilter> Filter demultiply(T filter, FilterReplacer<T> replacer) {
 
         Expression one = replacer.getExpression1(filter);
         Expression two = replacer.getExpression2(filter);
@@ -364,8 +334,7 @@ public class LiteralDemultiplyingFilterVisitor extends DuplicatingFilterVisitor 
     public Object visit(Beyond filter, Object extraData) {
         return demultiply(
                 filter,
-                new FilterReplacer<
-                        Beyond>() { // beyond filter takes extra properties, therefore needs its own
+                new FilterReplacer<Beyond>() { // beyond filter takes extra properties, therefore needs its own
                     // filterreplacer
 
                     @Override
@@ -379,8 +348,7 @@ public class LiteralDemultiplyingFilterVisitor extends DuplicatingFilterVisitor 
                     }
 
                     @Override
-                    public Filter replaceExpressions(
-                            Beyond filter, Expression expression1, Expression expression2) {
+                    public Filter replaceExpressions(Beyond filter, Expression expression1, Expression expression2) {
                         return ff.beyond(
                                 expression1,
                                 expression2,
@@ -410,8 +378,7 @@ public class LiteralDemultiplyingFilterVisitor extends DuplicatingFilterVisitor 
     public Object visit(DWithin filter, Object extraData) {
         return demultiply(
                 filter,
-                new FilterReplacer<
-                        DWithin>() { // DWithin filter takes extra properties, therefore needs its
+                new FilterReplacer<DWithin>() { // DWithin filter takes extra properties, therefore needs its
                     // own filterreplacer
 
                     @Override
@@ -425,8 +392,7 @@ public class LiteralDemultiplyingFilterVisitor extends DuplicatingFilterVisitor 
                     }
 
                     @Override
-                    public Filter replaceExpressions(
-                            DWithin filter, Expression expression1, Expression expression2) {
+                    public Filter replaceExpressions(DWithin filter, Expression expression1, Expression expression2) {
                         return ff.dwithin(
                                 expression1,
                                 expression2,

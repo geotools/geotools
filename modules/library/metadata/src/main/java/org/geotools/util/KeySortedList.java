@@ -41,8 +41,7 @@ import java.util.TreeMap;
  * @author Simone Giannecchini
  * @author Martin Desruisseaux
  */
-public class KeySortedList<K extends Comparable<K>, V> extends AbstractSequentialList<V>
-        implements Serializable {
+public class KeySortedList<K extends Comparable<K>, V> extends AbstractSequentialList<V> implements Serializable {
     /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = 6969483179756527012L;
 

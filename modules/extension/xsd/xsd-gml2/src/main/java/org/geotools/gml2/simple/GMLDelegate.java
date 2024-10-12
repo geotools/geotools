@@ -52,8 +52,7 @@ public interface GMLDelegate {
      * (different versions support different types of geometries, e.g., GML3 supports also curved
      * ones)
      */
-    void registerGeometryEncoders(
-            Map<Class, GeometryEncoder<? extends Geometry>> encoders, Encoder encoder);
+    void registerGeometryEncoders(Map<Class, GeometryEncoder<? extends Geometry>> encoders, Encoder encoder);
 
     /** Sets the SRS attribute with the proper syntax for the given GML version */
     void setSrsNameAttribute(AttributesImpl atts, CoordinateReferenceSystem crs);

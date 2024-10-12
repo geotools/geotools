@@ -48,14 +48,12 @@ public abstract class GranuleCatalog {
         this.configurations = configurations;
     }
 
-    public void addGranule(
-            final String typeName, final SimpleFeature granule, final Transaction transaction)
+    public void addGranule(final String typeName, final SimpleFeature granule, final Transaction transaction)
             throws IOException {
         addGranules(typeName, Collections.singleton(granule), transaction);
     }
 
-    public abstract void addGranules(
-            final String typeName, Collection<SimpleFeature> granules, Transaction transaction)
+    public abstract void addGranules(final String typeName, Collection<SimpleFeature> granules, Transaction transaction)
             throws IOException;
 
     public abstract void computeAggregateFunction(Query q, FeatureCalc function) throws IOException;
@@ -65,8 +63,7 @@ public abstract class GranuleCatalog {
 
     public abstract void createType(SimpleFeatureType featureType) throws IOException;
 
-    public abstract void createType(String identification, String typeSpec)
-            throws SchemaException, IOException;
+    public abstract void createType(String identification, String typeSpec) throws SchemaException, IOException;
 
     public abstract void dispose();
 
@@ -92,8 +89,7 @@ public abstract class GranuleCatalog {
 
     public abstract int getGranulesCount(Query q) throws IOException;
 
-    public abstract void getGranuleDescriptors(Query q, GranuleCatalogVisitor visitor)
-            throws IOException;
+    public abstract void getGranuleDescriptors(Query q, GranuleCatalogVisitor visitor) throws IOException;
 
     public abstract QueryCapabilities getQueryCapabilities(final String typeName);
 

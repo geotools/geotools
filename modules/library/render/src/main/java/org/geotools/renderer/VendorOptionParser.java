@@ -37,8 +37,7 @@ public class VendorOptionParser {
      * Extracts a enumeration from the vendor options map, returns it if found, returns the default
      * value if not
      */
-    public <T extends Enum<T>> Enum<T> getEnumOption(
-            Symbolizer symbolizer, String optionName, Enum<T> defaultValue) {
+    public <T extends Enum<T>> Enum<T> getEnumOption(Symbolizer symbolizer, String optionName, Enum<T> defaultValue) {
         String value = getOption(symbolizer, optionName);
 
         if (value == null) return defaultValue;
@@ -95,15 +94,12 @@ public class VendorOptionParser {
      * Extracts a boolean from the vendor options map, returns it if found, returns the default
      * value if not
      */
-    public boolean getBooleanOption(
-            Symbolizer symbolizer, String optionName, boolean defaultValue) {
+    public boolean getBooleanOption(Symbolizer symbolizer, String optionName, boolean defaultValue) {
         String value = getOption(symbolizer, optionName);
         if (value == null) {
             return defaultValue;
         }
-        return value.equalsIgnoreCase("yes")
-                || value.equalsIgnoreCase("true")
-                || value.equalsIgnoreCase("1");
+        return value.equalsIgnoreCase("yes") || value.equalsIgnoreCase("true") || value.equalsIgnoreCase("1");
     }
 
     /**
@@ -120,8 +116,7 @@ public class VendorOptionParser {
             if (values.length == 0) {
                 return null;
             } else if (values.length > 4) {
-                throw new IllegalArgumentException(
-                        "The graphic margin is to be specified with 1, 2 or 4 values");
+                throw new IllegalArgumentException("The graphic margin is to be specified with 1, 2 or 4 values");
             }
             int[] parsed = new int[values.length];
             boolean allZeroMargin = false;
@@ -163,14 +158,13 @@ public class VendorOptionParser {
             int[] parsed = new int[values.length];
             for (int i = 0; i < parsed.length; i++) {
                 try {
-                    DisplacementMode mode =
-                            TextSymbolizer.DisplacementMode.valueOf(values[i].trim().toUpperCase());
+                    DisplacementMode mode = TextSymbolizer.DisplacementMode.valueOf(
+                            values[i].trim().toUpperCase());
                     parsed[i] = mode.getAngle();
                 } catch (Exception e) {
-                    throw new IllegalArgumentException(
-                            values[i]
-                                    + " is not legal. The values of displacement mode must be one of the following: "
-                                    + Arrays.toString(TextSymbolizer.DisplacementMode.values()));
+                    throw new IllegalArgumentException(values[i]
+                            + " is not legal. The values of displacement mode must be one of the following: "
+                            + Arrays.toString(TextSymbolizer.DisplacementMode.values()));
                 }
             }
             return parsed;

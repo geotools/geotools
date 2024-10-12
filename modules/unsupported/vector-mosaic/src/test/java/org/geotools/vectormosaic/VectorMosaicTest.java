@@ -47,13 +47,10 @@ public class VectorMosaicTest {
         if (initialized) return;
         try {
             REPOSITORY = new DefaultRepository();
-            File delegate =
-                    new File(
-                            "src/test/resources/org.geotools.vectormosaic.data/mosaic_delegate.shp");
+            File delegate = new File("src/test/resources/org.geotools.vectormosaic.data/mosaic_delegate.shp");
             URL url = delegate.toURI().toURL();
 
-            ShapefileDataStore ds =
-                    (ShapefileDataStore) new ShapefileDataStoreFactory().createDataStore(url);
+            ShapefileDataStore ds = (ShapefileDataStore) new ShapefileDataStoreFactory().createDataStore(url);
             REPOSITORY.register("delegate", ds);
             VECTOR_MOSAIC_STORE_FACTORY = new VectorMosaicStoreFactory();
             Map<String, Object> params = new HashMap<>();
@@ -70,8 +67,7 @@ public class VectorMosaicTest {
             File directory = new File("src/test/resources/org.geotools.vectormosaic.data/");
             propertyParams.put("directory", directory);
             PropertyDataStore propertyDataStore =
-                    (PropertyDataStore)
-                            new PropertyDataStoreFactory().createDataStore(propertyParams);
+                    (PropertyDataStore) new PropertyDataStoreFactory().createDataStore(propertyParams);
             REPOSITORY.register("propertyDelegate", propertyDataStore);
             params.put(VectorMosaicStoreFactory.DELEGATE_STORE_NAME.getName(), "propertyDelegate");
             MOSAIC_STORE_FROM_PROPERTIES = VECTOR_MOSAIC_STORE_FACTORY.createDataStore(params);

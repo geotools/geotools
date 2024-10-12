@@ -86,12 +86,11 @@ public class VPFFileFactory implements DataStoreFactorySpi {
     }
 
     /** Parameter description of information required to connect */
-    public static final Param FILE_PARAM =
-            new Param(
-                    "file", File.class, "VPF file", true, null
-                    // ,(KVP)null
-                    /* new KVP(Param.EXT, "") */
-                    );
+    public static final Param FILE_PARAM = new Param(
+            "file", File.class, "VPF file", true, null
+            // ,(KVP)null
+            /* new KVP(Param.EXT, "") */
+            );
 
     /* (non-Javadoc)
      * @see org.geotools.api.data.DataStoreFactorySpi#getParametersInfo()

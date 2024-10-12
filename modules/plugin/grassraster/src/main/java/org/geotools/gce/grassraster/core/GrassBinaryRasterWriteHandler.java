@@ -99,8 +99,7 @@ public class GrassBinaryRasterWriteHandler implements Closeable {
      * @param destMapset the mapset file into which the map has to be written.
      * @param newMapName the name for the written map.
      */
-    public GrassBinaryRasterWriteHandler(
-            File destMapset, String newMapName, ProgressListener monitor) {
+    public GrassBinaryRasterWriteHandler(File destMapset, String newMapName, ProgressListener monitor) {
         if (monitor != null) this.monitor = monitor;
         writerGrassEnv = new JGrassMapEnvironment(destMapset, newMapName);
         abortRequired = false;
@@ -129,8 +128,7 @@ public class GrassBinaryRasterWriteHandler implements Closeable {
             double noDataValue)
             throws IOException {
         boolean hasListeners = false;
-        if (!checkStructure())
-            throw new IOException("Inconsistent output structure for grass map. Check your paths.");
+        if (!checkStructure()) throw new IOException("Inconsistent output structure for grass map. Check your paths.");
 
         /*
          * open the streams: the file for the map to create but also the needed null-file inside of
@@ -153,17 +151,16 @@ public class GrassBinaryRasterWriteHandler implements Closeable {
         /*
          * finally writing to disk
          */
-        CompressesRasterWriter crwriter =
-                new CompressesRasterWriter(
-                        outputToDiskType,
-                        noDataValue,
-                        jump,
-                        range,
-                        pointerInFilePosition,
-                        addressesOfRows,
-                        dataWindow,
-                        monitor,
-                        writerGrassEnv.getMapName());
+        CompressesRasterWriter crwriter = new CompressesRasterWriter(
+                outputToDiskType,
+                noDataValue,
+                jump,
+                range,
+                pointerInFilePosition,
+                addressesOfRows,
+                dataWindow,
+                monitor,
+                writerGrassEnv.getMapName());
         crwriter.compressAndWrite(imageOS, imageNullFileOS, renderedImage);
         createUtilityFiles(dataWindow);
     }
@@ -215,13 +212,7 @@ public class GrassBinaryRasterWriteHandler implements Closeable {
         if (!ds.exists()) if (!ds.mkdir()) return false;
         ds = new File(mapsetPath + File.separator + JGrassConstants.CELL_MISC + File.separator);
         if (!ds.exists()) if (!ds.mkdir()) return false;
-        ds =
-                new File(
-                        mapsetPath
-                                + File.separator
-                                + JGrassConstants.CELL_MISC
-                                + File.separator
-                                + name);
+        ds = new File(mapsetPath + File.separator + JGrassConstants.CELL_MISC + File.separator + name);
         if (!ds.exists()) if (!ds.mkdir()) return false;
         ds = new File(mapsetPath + File.separator + JGrassConstants.FCELL + File.separator);
         if (!ds.exists()) if (!ds.mkdir()) return false;
@@ -266,14 +257,12 @@ public class GrassBinaryRasterWriteHandler implements Closeable {
     private void createUtilityFiles(JGrassRegion dataRegion) throws IOException {
         // create the right files in the right places
         // cats/<name>
-        try (OutputStreamWriter catsWriter =
-                new OutputStreamWriter(new FileOutputStream(writerGrassEnv.getCATS()))) {
+        try (OutputStreamWriter catsWriter = new OutputStreamWriter(new FileOutputStream(writerGrassEnv.getCATS()))) {
             catsWriter.write("# xyz categories\n#\n#\n 0.00 0.00 0.00 0.00"); // $NON-NLS-1$
         }
 
         // cell/<name>
-        try (OutputStreamWriter cellWriter =
-                new OutputStreamWriter(new FileOutputStream(writerGrassEnv.getCELL()))) {
+        try (OutputStreamWriter cellWriter = new OutputStreamWriter(new FileOutputStream(writerGrassEnv.getCELL()))) {
             cellWriter.write(""); // $NON-NLS-1$
         }
 
@@ -286,11 +275,9 @@ public class GrassBinaryRasterWriteHandler implements Closeable {
         try (OutputStreamWriter cell_miscFormatWriter =
                 new OutputStreamWriter(new FileOutputStream(writerGrassEnv.getCELLMISC_FORMAT()))) {
             if (outputToDiskType * 4 == 8) {
-                cell_miscFormatWriter.write(
-                        "type: double\nbyte_order: xdr\nlzw_compression_bits: -1"); // $NON-NLS-1$
+                cell_miscFormatWriter.write("type: double\nbyte_order: xdr\nlzw_compression_bits: -1"); // $NON-NLS-1$
             } else {
-                cell_miscFormatWriter.write(
-                        "type: float\nbyte_order: xdr\nlzw_compression_bits: -1"); // $NON-NLS-1$
+                cell_miscFormatWriter.write("type: float\nbyte_order: xdr\nlzw_compression_bits: -1"); // $NON-NLS-1$
             }
         }
 
@@ -301,8 +288,7 @@ public class GrassBinaryRasterWriteHandler implements Closeable {
         }
 
         // f_range
-        try (OutputStream cell_miscRangeStream =
-                new FileOutputStream(writerGrassEnv.getCELLMISC_RANGE())) {
+        try (OutputStream cell_miscRangeStream = new FileOutputStream(writerGrassEnv.getCELLMISC_RANGE())) {
             cell_miscRangeStream.write(double2bytearray(range[0]));
             cell_miscRangeStream.write(double2bytearray(range[1]));
         }
@@ -328,8 +314,7 @@ public class GrassBinaryRasterWriteHandler implements Closeable {
                 1);
 
         // hist/<name>
-        try (OutputStreamWriter windFile =
-                new OutputStreamWriter(new FileOutputStream(writerGrassEnv.getHIST()))) {
+        try (OutputStreamWriter windFile = new OutputStreamWriter(new FileOutputStream(writerGrassEnv.getHIST()))) {
             Date date = new Date();
             windFile.write(date + "\n"); // $NON-NLS-1$
             windFile.write(writerGrassEnv.getCELL().getName() + "\n"); // $NON-NLS-1$
@@ -384,8 +369,7 @@ public class GrassBinaryRasterWriteHandler implements Closeable {
                 .append("e-w resol:   " + chewres + "\n")
                 .append("format:   " + chformat + "\n")
                 .append("compressed:   " + chcompressed);
-        try (OutputStreamWriter windFile =
-                new OutputStreamWriter(new FileOutputStream(writerGrassEnv.getCELLHD()))) {
+        try (OutputStreamWriter windFile = new OutputStreamWriter(new FileOutputStream(writerGrassEnv.getCELLHD()))) {
             windFile.write(data.toString());
         }
     }
@@ -437,12 +421,11 @@ public class GrassBinaryRasterWriteHandler implements Closeable {
     public CoordinateReferenceSystem getCrs() throws IOException {
         String locationPath = writerGrassEnv.getLOCATION().getAbsolutePath();
         CoordinateReferenceSystem readCrs = null;
-        String projWtkFilePath =
-                locationPath
-                        + File.separator
-                        + JGrassConstants.PERMANENT_MAPSET
-                        + File.separator
-                        + JGrassConstants.PROJ_WKT;
+        String projWtkFilePath = locationPath
+                + File.separator
+                + JGrassConstants.PERMANENT_MAPSET
+                + File.separator
+                + JGrassConstants.PROJ_WKT;
         File projWtkFile = new File(projWtkFilePath);
         if (projWtkFile.exists()) {
 

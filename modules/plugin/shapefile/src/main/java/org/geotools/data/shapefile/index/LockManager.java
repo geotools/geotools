@@ -43,8 +43,7 @@ public class LockManager {
     public synchronized Lock aquireExclusive() throws LockTimeoutException {
         int cnt = 0;
 
-        while (((this.exclusiveLock != null) || (this.leases > 0))
-                && (cnt < EXCLUSIVE_LOCK_TIMEOUT)) {
+        while (((this.exclusiveLock != null) || (this.leases > 0)) && (cnt < EXCLUSIVE_LOCK_TIMEOUT)) {
             cnt++;
 
             try {

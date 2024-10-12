@@ -25,8 +25,7 @@ import java.util.Properties;
  *
  * @author gdavis
  */
-public abstract class AbstractDescribeProcessRequest extends AbstractWPSRequest
-        implements DescribeProcessRequest {
+public abstract class AbstractDescribeProcessRequest extends AbstractWPSRequest implements DescribeProcessRequest {
 
     /**
      * Constructs a basic DescribeProcessRequest, without versioning info.

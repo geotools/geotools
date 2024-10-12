@@ -34,11 +34,9 @@ class EnvelopeEncoder extends ObjectEncoder<Envelope> {
 
     static final QualifiedName ENVELOPE = new QualifiedName(GML.NAMESPACE, "Envelope", "gml");
 
-    static final QualifiedName LOWER_CORNER =
-            new QualifiedName(GML.NAMESPACE, "lowerCorner", "gml");
+    static final QualifiedName LOWER_CORNER = new QualifiedName(GML.NAMESPACE, "lowerCorner", "gml");
 
-    static final QualifiedName UPPER_CORNER =
-            new QualifiedName(GML.NAMESPACE, "upperCorner", "gml");
+    static final QualifiedName UPPER_CORNER = new QualifiedName(GML.NAMESPACE, "upperCorner", "gml");
 
     QualifiedName box;
 

@@ -142,8 +142,7 @@ public class GML3MockData {
      * @return a 2D LineString
      */
     public static LineString lineStringLite2D() {
-        return liteGF.createLineString(
-                new Coordinate[] {new Coordinate(1, 2), new Coordinate(3, 4)});
+        return liteGF.createLineString(new Coordinate[] {new Coordinate(1, 2), new Coordinate(3, 4)});
     }
 
     /**
@@ -217,8 +216,7 @@ public class GML3MockData {
         return lineStringWithPosList3D(document, parent, true);
     }
 
-    public static Element lineStringWithPosList3D(
-            Document document, Node parent, boolean addSrsDimension) {
+    public static Element lineStringWithPosList3D(Document document, Node parent, boolean addSrsDimension) {
         Element lineString = element(qName("LineString"), document, parent);
         if (addSrsDimension) {
             lineString.setAttribute("srsDimension", "3");
@@ -255,11 +253,7 @@ public class GML3MockData {
 
     public static LinearRing linearRing() {
         return gf.createLinearRing(
-                new Coordinate[] {
-                    new Coordinate(1, 1),
-                    new Coordinate(2, 2),
-                    new Coordinate(3, 3),
-                    new Coordinate(1, 1)
+                new Coordinate[] {new Coordinate(1, 1), new Coordinate(2, 2), new Coordinate(3, 3), new Coordinate(1, 1)
                 });
     }
 
@@ -285,8 +279,7 @@ public class GML3MockData {
         return linearRing;
     }
 
-    public static Element linearRingWithPos3D(
-            Document document, Node parent, boolean addSrsDimension) {
+    public static Element linearRingWithPos3D(Document document, Node parent, boolean addSrsDimension) {
         Element linearRing = element(qName("LinearRing"), document, parent);
         if (addSrsDimension) {
             linearRing.setAttribute("srsDimension", "3");
@@ -318,8 +311,7 @@ public class GML3MockData {
         return linearRing;
     }
 
-    public static Element linearRingWithPosList3D(
-            Document document, Node parent, boolean addSrsDimension) {
+    public static Element linearRingWithPosList3D(Document document, Node parent, boolean addSrsDimension) {
         Element linearRing = element(qName("LinearRing"), document, parent);
         if (addSrsDimension) {
             linearRing.setAttribute("srsDimension", "3");
@@ -328,8 +320,7 @@ public class GML3MockData {
         Element posList = element(qName("posList"), document, linearRing);
 
         linearRing.appendChild(posList);
-        posList.appendChild(
-                document.createTextNode("1.0 2.0 10.0 3.0 4.0 20.0 5.0 6.0 30.0 1.0 2.0 10.0"));
+        posList.appendChild(document.createTextNode("1.0 2.0 10.0 3.0 4.0 20.0 5.0 6.0 30.0 1.0 2.0 10.0"));
 
         return linearRing;
     }
@@ -345,9 +336,7 @@ public class GML3MockData {
      */
     public static Polygon polygonLite2D() {
         return liteGF.createPolygon(
-                liteGF.createLinearRing(
-                        liteCSF.create(new double[] {1, 1, 2, 1, 2, 2, 1, 2, 1, 1}, 2)),
-                null);
+                liteGF.createLinearRing(liteCSF.create(new double[] {1, 1, 2, 1, 2, 2, 1, 2, 1, 1}, 2)), null);
     }
 
     /**
@@ -358,9 +347,7 @@ public class GML3MockData {
     public static Polygon polygonLite3D() {
         return liteGF.createPolygon(
                 liteGF.createLinearRing(
-                        liteCSF.create(
-                                new double[] {1, 1, 100, 2, 1, 99, 2, 2, 98, 1, 2, 97, 1, 1, 100},
-                                3)),
+                        liteCSF.create(new double[] {1, 1, 100, 2, 1, 99, 2, 2, 98, 1, 2, 97, 1, 1, 100}, 3)),
                 null);
     }
 
@@ -376,8 +363,7 @@ public class GML3MockData {
         return polygonWithPosList3D(document, parent, qName("Polygon"), false);
     }
 
-    public static Element polygon(
-            Document document, Node parent, QName name, boolean withInterior) {
+    public static Element polygon(Document document, Node parent, QName name, boolean withInterior) {
         Element polygon = element(name, document, parent);
 
         Element exterior = element(qName("exterior"), document, polygon);
@@ -395,8 +381,7 @@ public class GML3MockData {
         return polygonWithPos3D(document, parent, qName("Polygon"), true);
     }
 
-    public static Element polygonWithPos3D(
-            Document document, Node parent, QName name, boolean addSrsDimension) {
+    public static Element polygonWithPos3D(Document document, Node parent, QName name, boolean addSrsDimension) {
         Element polygon = element(name, document, parent);
         if (addSrsDimension) {
             polygon.setAttribute("srsDimension", "3");
@@ -411,8 +396,7 @@ public class GML3MockData {
         return polygon;
     }
 
-    public static Element polygonWithPosList(
-            Document document, Node parent, QName name, boolean withInterior) {
+    public static Element polygonWithPosList(Document document, Node parent, QName name, boolean withInterior) {
         Element polygon = element(name, document, parent);
 
         Element exterior = element(qName("exterior"), document, polygon);
@@ -426,13 +410,11 @@ public class GML3MockData {
         return polygon;
     }
 
-    public static Element polygonWithPosList3D(
-            Document document, Node parent, boolean addSrsDimension) {
+    public static Element polygonWithPosList3D(Document document, Node parent, boolean addSrsDimension) {
         return polygonWithPosList3D(document, parent, qName("Polygon"), true);
     }
 
-    public static Element polygonWithPosList3D(
-            Document document, Node parent, QName name, boolean addSrsDimension) {
+    public static Element polygonWithPosList3D(Document document, Node parent, QName name, boolean addSrsDimension) {
         Element polygon = element(name, document, parent);
         if (addSrsDimension) {
             polygon.setAttribute("srsDimension", "3");
@@ -449,8 +431,7 @@ public class GML3MockData {
 
     public static MultiPoint multiPoint() {
         return gf.createMultiPoint(
-                new CoordinateArraySequence(
-                        new Coordinate[] {new Coordinate(1, 1), new Coordinate(2, 2)}));
+                new CoordinateArraySequence(new Coordinate[] {new Coordinate(1, 1), new Coordinate(2, 2)}));
     }
 
     public static Element multiPoint(Document document, Node parent) {
@@ -496,9 +477,7 @@ public class GML3MockData {
 
     public static LineString compoundCurve() {
         CurvedGeometryFactory factory = new CurvedGeometryFactory(0.1);
-        LineString curve =
-                factory.createCurvedGeometry(
-                        new LiteCoordinateSequence(1, 1, 2, 2, 3, 1, 5, 5, 7, 3));
+        LineString curve = factory.createCurvedGeometry(new LiteCoordinateSequence(1, 1, 2, 2, 3, 1, 5, 5, 7, 3));
         LineString straight = factory.createLineString(new LiteCoordinateSequence(7, 3, 10, 15));
         LineString compound = factory.createCurvedGeometry(curve, straight);
         return compound;
@@ -563,9 +542,7 @@ public class GML3MockData {
         LineString curve1 = gf.createCurvedGeometry(2, 0, 0, 2, 0, 2, 1, 2, 3, 4, 3);
         LineString line1 = gf.createLineString(new LiteCoordinateSequence(4, 3, 4, 5, 1, 4, 0, 0));
         LinearRing shell = (LinearRing) gf.createCurvedGeometry(Arrays.asList(curve1, line1));
-        LinearRing hole =
-                (LinearRing)
-                        gf.createCurvedGeometry(2, 1.7, 1, 1.4, 0.4, 1.6, 0.4, 1.6, 0.5, 1.7, 1);
+        LinearRing hole = (LinearRing) gf.createCurvedGeometry(2, 1.7, 1, 1.4, 0.4, 1.6, 0.4, 1.6, 0.5, 1.7, 1);
         return gf.createPolygon(shell, new LinearRing[] {hole});
     }
 

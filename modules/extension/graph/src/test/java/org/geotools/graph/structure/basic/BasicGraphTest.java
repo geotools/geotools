@@ -78,12 +78,10 @@ public class BasicGraphTest {
 
     @Test
     public void test_queryNodes() {
-        GraphVisitor visitor =
-                component -> {
-                    if (component == m_nodes.get(1) || component == m_nodes.get(2))
-                        return (BasicGraph.PASS_AND_CONTINUE);
-                    return (BasicGraph.FAIL_QUERY);
-                };
+        GraphVisitor visitor = component -> {
+            if (component == m_nodes.get(1) || component == m_nodes.get(2)) return (BasicGraph.PASS_AND_CONTINUE);
+            return (BasicGraph.FAIL_QUERY);
+        };
         List result = m_graph.queryNodes(visitor);
 
         Assert.assertEquals(2, result.size());
@@ -93,12 +91,10 @@ public class BasicGraphTest {
 
     @Test
     public void test_queryEdges() {
-        GraphVisitor visitor =
-                component -> {
-                    if (component == m_edges.get(1) || component == m_edges.get(2))
-                        return (BasicGraph.PASS_AND_CONTINUE);
-                    return (BasicGraph.FAIL_QUERY);
-                };
+        GraphVisitor visitor = component -> {
+            if (component == m_edges.get(1) || component == m_edges.get(2)) return (BasicGraph.PASS_AND_CONTINUE);
+            return (BasicGraph.FAIL_QUERY);
+        };
         List result = m_graph.queryEdges(visitor);
 
         Assert.assertEquals(2, result.size());
@@ -109,11 +105,10 @@ public class BasicGraphTest {
     @Test
     public void test_visitNodes() {
         final Set<Graphable> visited = new HashSet<>();
-        GraphVisitor visitor =
-                component -> {
-                    visited.add(component);
-                    return (0);
-                };
+        GraphVisitor visitor = component -> {
+            visited.add(component);
+            return (0);
+        };
 
         m_graph.visitNodes(visitor);
 
@@ -125,11 +120,10 @@ public class BasicGraphTest {
     @Test
     public void test_visitEdges() {
         final Set<Graphable> visited = new HashSet<>();
-        GraphVisitor visitor =
-                component -> {
-                    visited.add(component);
-                    return (0);
-                };
+        GraphVisitor visitor = component -> {
+            visited.add(component);
+            return (0);
+        };
 
         m_graph.visitEdges(visitor);
 

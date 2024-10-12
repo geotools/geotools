@@ -15,8 +15,7 @@ public class GetCapabilitiesTest {
     public void testParseCapabilitiesRequest() throws Exception {
         String capRequestPath = "requestGetCapabilities.xml";
         @SuppressWarnings("unchecked")
-        HashMap<String, Object> caps =
-                (HashMap) parser.parse(getClass().getResourceAsStream(capRequestPath));
+        HashMap<String, Object> caps = (HashMap) parser.parse(getClass().getResourceAsStream(capRequestPath));
         assertEquals("WCS", caps.get("service"));
 
         List versions = (List) ((HashMap) caps.get("AcceptVersions")).get("Version");

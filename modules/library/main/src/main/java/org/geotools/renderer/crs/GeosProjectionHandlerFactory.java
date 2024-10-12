@@ -56,10 +56,7 @@ public class GeosProjectionHandlerFactory implements ProjectionHandlerFactory {
 
     @Override
     public ProjectionHandler getHandler(
-            ReferencedEnvelope renderingEnvelope,
-            CoordinateReferenceSystem sourceCRS,
-            boolean wrap,
-            int wrapLimit)
+            ReferencedEnvelope renderingEnvelope, CoordinateReferenceSystem sourceCRS, boolean wrap, int wrapLimit)
             throws FactoryException {
         CoordinateReferenceSystem targetCRS = renderingEnvelope.getCoordinateReferenceSystem();
         MapProjection mapProjection = CRS.getMapProjection(targetCRS);
@@ -129,9 +126,7 @@ public class GeosProjectionHandlerFactory implements ProjectionHandlerFactory {
         Geometry p2;
 
         public GeosProjectionHandler(
-                CoordinateReferenceSystem sourceCRS,
-                Geometry validArea,
-                ReferencedEnvelope renderingEnvelope)
+                CoordinateReferenceSystem sourceCRS, Geometry validArea, ReferencedEnvelope renderingEnvelope)
                 throws FactoryException {
             super(sourceCRS, validArea, renderingEnvelope);
             if (validArea instanceof MultiPolygon) {
@@ -147,16 +142,13 @@ public class GeosProjectionHandlerFactory implements ProjectionHandlerFactory {
          * rather than working with envelopes
          */
         @Override
-        protected ReferencedEnvelope transformEnvelope(
-                ReferencedEnvelope envelope, CoordinateReferenceSystem targetCRS)
+        protected ReferencedEnvelope transformEnvelope(ReferencedEnvelope envelope, CoordinateReferenceSystem targetCRS)
                 throws TransformException, FactoryException {
             return transformEnvelope(envelope, targetCRS, validArea);
         }
 
         protected ReferencedEnvelope transformEnvelope(
-                ReferencedEnvelope envelope,
-                CoordinateReferenceSystem targetCRS,
-                Geometry validArea)
+                ReferencedEnvelope envelope, CoordinateReferenceSystem targetCRS, Geometry validArea)
                 throws FactoryException, TransformException {
             // need to transform at all?
             CoordinateReferenceSystem envelopeCRS = envelope.getCoordinateReferenceSystem();
@@ -164,9 +156,7 @@ public class GeosProjectionHandlerFactory implements ProjectionHandlerFactory {
 
             // reduce envelope to valid area
             Geometry validAreaInEnvelopeCRS =
-                    JTS.transform(
-                            validArea,
-                            CRS.findMathTransform(DefaultGeographicCRS.WGS84, envelopeCRS));
+                    JTS.transform(validArea, CRS.findMathTransform(DefaultGeographicCRS.WGS84, envelopeCRS));
             if (validArea instanceof MultiPolygon) {
                 validAreaInEnvelopeCRS = validAreaInEnvelopeCRS.buffer(0);
             }
@@ -182,17 +172,12 @@ public class GeosProjectionHandlerFactory implements ProjectionHandlerFactory {
             intersection = Densifier.densify(intersection, distance);
 
             // transform to target CRS
-            Geometry transformed =
-                    JTS.transform(intersection, CRS.findMathTransform(envelopeCRS, targetCRS));
+            Geometry transformed = JTS.transform(intersection, CRS.findMathTransform(envelopeCRS, targetCRS));
 
             // does the target CRS have a strict notion of what's possible in terms of
             // valid coordinate ranges?
-            ProjectionHandler handler =
-                    ProjectionHandlerFinder.getHandler(
-                            new ReferencedEnvelope(targetCRS),
-                            DefaultGeographicCRS.WGS84,
-                            true,
-                            Collections.emptyMap());
+            ProjectionHandler handler = ProjectionHandlerFinder.getHandler(
+                    new ReferencedEnvelope(targetCRS), DefaultGeographicCRS.WGS84, true, Collections.emptyMap());
             if (handler == null || handler instanceof WrappingProjectionHandler) {
                 return new ReferencedEnvelope(transformed.getEnvelopeInternal(), targetCRS);
             }
@@ -209,8 +194,7 @@ public class GeosProjectionHandlerFactory implements ProjectionHandlerFactory {
         }
 
         @Override
-        public List<ReferencedEnvelope> getQueryEnvelopes()
-                throws TransformException, FactoryException {
+        public List<ReferencedEnvelope> getQueryEnvelopes() throws TransformException, FactoryException {
             // non equatorial case?
             if (p1 == null) return super.getQueryEnvelopes();
 

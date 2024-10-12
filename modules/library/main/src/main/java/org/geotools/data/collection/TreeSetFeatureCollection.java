@@ -70,8 +70,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
  * @author Ian Schneider
  */
 public class TreeSetFeatureCollection implements SimpleFeatureCollection {
-    protected static Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(TreeSetFeatureCollection.class);
+    protected static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(TreeSetFeatureCollection.class);
 
     /**
      * Contents of collection, referenced by FeatureID.
@@ -103,8 +102,7 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
      *
      * @param collection SimpleFeatureCollection to copy into memory
      */
-    public TreeSetFeatureCollection(
-            FeatureCollection<SimpleFeatureType, SimpleFeature> collection) {
+    public TreeSetFeatureCollection(FeatureCollection<SimpleFeatureType, SimpleFeature> collection) {
         this(collection.getID(), collection.getSchema());
         addAll(collection);
     }
@@ -515,8 +513,7 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
             }
 
             @Override
-            public SimpleFeature next()
-                    throws IOException, IllegalAttributeException, NoSuchElementException {
+            public SimpleFeature next() throws IOException, IllegalAttributeException, NoSuchElementException {
                 return iterator.next();
             }
 
@@ -567,8 +564,7 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
 
     @Override
     public void accepts(
-            org.geotools.api.feature.FeatureVisitor visitor,
-            org.geotools.api.util.ProgressListener progress)
+            org.geotools.api.feature.FeatureVisitor visitor, org.geotools.api.util.ProgressListener progress)
             throws IOException {
         DataUtilities.visit(this, visitor, progress);
     }

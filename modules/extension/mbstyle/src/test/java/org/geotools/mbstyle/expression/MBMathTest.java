@@ -68,8 +68,8 @@ public class MBMathTest extends AbstractMBExpressionTest {
         for (int i = 0; i < intVals.length; ++i) {
             _assertEquals(
                     Math.log(2),
-                    Double.parseDouble(
-                            getExpressionEvaluation(j, "naturalLog2", testFeatures[i]).toString()));
+                    Double.parseDouble(getExpressionEvaluation(j, "naturalLog2", testFeatures[i])
+                            .toString()));
         }
     }
 
@@ -79,8 +79,8 @@ public class MBMathTest extends AbstractMBExpressionTest {
         for (int i = 0; i < intVals.length; ++i) {
             _assertEquals(
                     Math.log(intVals[i]),
-                    Double.parseDouble(
-                            getExpressionEvaluation(j, "naturalLog", testFeatures[i]).toString()));
+                    Double.parseDouble(getExpressionEvaluation(j, "naturalLog", testFeatures[i])
+                            .toString()));
         }
     }
 
@@ -90,8 +90,8 @@ public class MBMathTest extends AbstractMBExpressionTest {
         for (int i = 0; i < intVals.length; ++i) {
             _assertEquals(
                     Math.log10(intVals[i]),
-                    Double.parseDouble(
-                            getExpressionEvaluation(j, "logBase10", testFeatures[i]).toString()));
+                    Double.parseDouble(getExpressionEvaluation(j, "logBase10", testFeatures[i])
+                            .toString()));
         }
     }
 
@@ -101,8 +101,8 @@ public class MBMathTest extends AbstractMBExpressionTest {
         for (int i = 0; i < intVals.length; ++i) {
             _assertEquals(
                     Math.log(intVals[i]) / Math.log(2),
-                    Double.parseDouble(
-                            getExpressionEvaluation(j, "logBase2", testFeatures[i]).toString()));
+                    Double.parseDouble(getExpressionEvaluation(j, "logBase2", testFeatures[i])
+                            .toString()));
         }
     }
 
@@ -116,13 +116,12 @@ public class MBMathTest extends AbstractMBExpressionTest {
                             getExpressionEvaluation(j, "sqrt4", testFeatures[i]).toString()));
             _assertEquals(
                     10d,
-                    Double.parseDouble(
-                            getExpressionEvaluation(j, "sqrt100", testFeatures[i]).toString()));
+                    Double.parseDouble(getExpressionEvaluation(j, "sqrt100", testFeatures[i])
+                            .toString()));
             _assertEquals(
                     Math.sqrt(intVals[i]),
-                    Double.parseDouble(
-                            getExpressionEvaluation(j, "sqrtWithFeature", testFeatures[i])
-                                    .toString()));
+                    Double.parseDouble(getExpressionEvaluation(j, "sqrtWithFeature", testFeatures[i])
+                            .toString()));
         }
     }
 
@@ -144,13 +143,12 @@ public class MBMathTest extends AbstractMBExpressionTest {
                             getExpressionEvaluation(j, "add3", testFeatures[i]).toString()));
             _assertEquals(
                     -5d,
-                    Double.parseDouble(
-                            getExpressionEvaluation(j, "addNegative", testFeatures[i]).toString()));
+                    Double.parseDouble(getExpressionEvaluation(j, "addNegative", testFeatures[i])
+                            .toString()));
             _assertEquals(
                     54d + intVals[i],
-                    Double.parseDouble(
-                            getExpressionEvaluation(j, "addWithFeature", testFeatures[i])
-                                    .toString()));
+                    Double.parseDouble(getExpressionEvaluation(j, "addWithFeature", testFeatures[i])
+                            .toString()));
         }
     }
 
@@ -160,23 +158,20 @@ public class MBMathTest extends AbstractMBExpressionTest {
         for (int i = 0; i < intVals.length; ++i) {
             _assertEquals(
                     6d,
-                    Double.parseDouble(
-                            getExpressionEvaluation(j, "subtract", testFeatures[i]).toString()));
+                    Double.parseDouble(getExpressionEvaluation(j, "subtract", testFeatures[i])
+                            .toString()));
             _assertEquals(
                     -2d,
-                    Double.parseDouble(
-                            getExpressionEvaluation(j, "subtractLargeFromSmall", testFeatures[i])
-                                    .toString()));
+                    Double.parseDouble(getExpressionEvaluation(j, "subtractLargeFromSmall", testFeatures[i])
+                            .toString()));
             _assertEquals(
                     3d,
-                    Double.parseDouble(
-                            getExpressionEvaluation(j, "subtractNegative", testFeatures[i])
-                                    .toString()));
+                    Double.parseDouble(getExpressionEvaluation(j, "subtractNegative", testFeatures[i])
+                            .toString()));
             _assertEquals(
                     -10d + intVals[i],
-                    Double.parseDouble(
-                            getExpressionEvaluation(j, "subtractWithFeature", testFeatures[i])
-                                    .toString()));
+                    Double.parseDouble(getExpressionEvaluation(j, "subtractWithFeature", testFeatures[i])
+                            .toString()));
         }
     }
 
@@ -186,22 +181,20 @@ public class MBMathTest extends AbstractMBExpressionTest {
         for (int i = 0; i < intVals.length; ++i) {
             _assertEquals(
                     6d,
-                    Double.parseDouble(
-                            getExpressionEvaluation(j, "multiply", testFeatures[i]).toString()));
+                    Double.parseDouble(getExpressionEvaluation(j, "multiply", testFeatures[i])
+                            .toString()));
             _assertEquals(
                     24d,
-                    Double.parseDouble(
-                            getExpressionEvaluation(j, "multiply3", testFeatures[i]).toString()));
+                    Double.parseDouble(getExpressionEvaluation(j, "multiply3", testFeatures[i])
+                            .toString()));
             _assertEquals(
                     12d,
-                    Double.parseDouble(
-                            getExpressionEvaluation(j, "multiplyNegative", testFeatures[i])
-                                    .toString()));
+                    Double.parseDouble(getExpressionEvaluation(j, "multiplyNegative", testFeatures[i])
+                            .toString()));
             _assertEquals(
                     720d * intVals[i],
-                    Double.parseDouble(
-                            getExpressionEvaluation(j, "multiplyWithFeature", testFeatures[i])
-                                    .toString()));
+                    Double.parseDouble(getExpressionEvaluation(j, "multiplyWithFeature", testFeatures[i])
+                            .toString()));
         }
     }
 
@@ -211,18 +204,16 @@ public class MBMathTest extends AbstractMBExpressionTest {
         for (int i = 0; i < intVals.length; ++i) {
             _assertEquals(
                     2.5d,
-                    Double.parseDouble(
-                            getExpressionEvaluation(j, "divide", testFeatures[i]).toString()));
+                    Double.parseDouble(getExpressionEvaluation(j, "divide", testFeatures[i])
+                            .toString()));
             _assertEquals(
                     0.25d,
-                    Double.parseDouble(
-                            getExpressionEvaluation(j, "divideNegative", testFeatures[i])
-                                    .toString()));
+                    Double.parseDouble(getExpressionEvaluation(j, "divideNegative", testFeatures[i])
+                            .toString()));
             _assertEquals(
                     0.1d * intVals[i],
-                    Double.parseDouble(
-                            getExpressionEvaluation(j, "divideWithFeature", testFeatures[i])
-                                    .toString()));
+                    Double.parseDouble(getExpressionEvaluation(j, "divideWithFeature", testFeatures[i])
+                            .toString()));
         }
     }
 
@@ -233,20 +224,18 @@ public class MBMathTest extends AbstractMBExpressionTest {
             // test data is 10 remainder 4
             _assertEquals(
                     2d,
-                    Double.parseDouble(
-                            getExpressionEvaluation(j, "remainder", testFeatures[i]).toString()));
+                    Double.parseDouble(getExpressionEvaluation(j, "remainder", testFeatures[i])
+                            .toString()));
             // test data is -1 remainder -4
             _assertEquals(
                     -1d,
-                    Double.parseDouble(
-                            getExpressionEvaluation(j, "remainderNegative", testFeatures[i])
-                                    .toString()));
+                    Double.parseDouble(getExpressionEvaluation(j, "remainderNegative", testFeatures[i])
+                            .toString()));
             // test data is intVals[i] remainder 10
             _assertEquals(
                     intVals[i] % 10d,
-                    Double.parseDouble(
-                            getExpressionEvaluation(j, "remainderWithFeature", testFeatures[i])
-                                    .toString()));
+                    Double.parseDouble(getExpressionEvaluation(j, "remainderWithFeature", testFeatures[i])
+                            .toString()));
         }
     }
 
@@ -260,13 +249,12 @@ public class MBMathTest extends AbstractMBExpressionTest {
                             getExpressionEvaluation(j, "min", testFeatures[i]).toString()));
             _assertEquals(
                     -20d,
-                    Double.parseDouble(
-                            getExpressionEvaluation(j, "minOf10", testFeatures[i]).toString()));
+                    Double.parseDouble(getExpressionEvaluation(j, "minOf10", testFeatures[i])
+                            .toString()));
             _assertEquals(
                     Math.min(intVals[i], 5),
-                    Double.parseDouble(
-                            getExpressionEvaluation(j, "minWithFeature", testFeatures[i])
-                                    .toString()));
+                    Double.parseDouble(getExpressionEvaluation(j, "minWithFeature", testFeatures[i])
+                            .toString()));
         }
     }
 
@@ -280,13 +268,12 @@ public class MBMathTest extends AbstractMBExpressionTest {
                             getExpressionEvaluation(j, "max", testFeatures[i]).toString()));
             _assertEquals(
                     18d,
-                    Double.parseDouble(
-                            getExpressionEvaluation(j, "maxOf10", testFeatures[i]).toString()));
+                    Double.parseDouble(getExpressionEvaluation(j, "maxOf10", testFeatures[i])
+                            .toString()));
             _assertEquals(
                     Math.max(intVals[i], 5),
-                    Double.parseDouble(
-                            getExpressionEvaluation(j, "maxWithFeature", testFeatures[i])
-                                    .toString()));
+                    Double.parseDouble(getExpressionEvaluation(j, "maxWithFeature", testFeatures[i])
+                            .toString()));
         }
     }
 
@@ -296,18 +283,16 @@ public class MBMathTest extends AbstractMBExpressionTest {
         for (int i = 0; i < intVals.length; ++i) {
             _assertEquals(
                     10000d,
-                    Double.parseDouble(
-                            getExpressionEvaluation(j, "exponent", testFeatures[i]).toString()));
+                    Double.parseDouble(getExpressionEvaluation(j, "exponent", testFeatures[i])
+                            .toString()));
             _assertEquals(
                     0.0001d,
-                    Double.parseDouble(
-                            getExpressionEvaluation(j, "exponentNegative", testFeatures[i])
-                                    .toString()));
+                    Double.parseDouble(getExpressionEvaluation(j, "exponentNegative", testFeatures[i])
+                            .toString()));
             _assertEquals(
                     Math.pow(intVals[i], 5),
-                    Double.parseDouble(
-                            getExpressionEvaluation(j, "exponentWithFeature", testFeatures[i])
-                                    .toString()));
+                    Double.parseDouble(getExpressionEvaluation(j, "exponentWithFeature", testFeatures[i])
+                            .toString()));
         }
     }
 

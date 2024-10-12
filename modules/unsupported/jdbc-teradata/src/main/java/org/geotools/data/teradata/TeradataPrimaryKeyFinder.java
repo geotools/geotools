@@ -63,8 +63,7 @@ class TeradataPrimaryKeyFinder extends PrimaryKeyFinder {
         }
     }
 
-    private List<PrimaryKeyColumn> tryAsView(String schema, String table, Connection cx)
-            throws SQLException {
+    private List<PrimaryKeyColumn> tryAsView(String schema, String table, Connection cx) throws SQLException {
         List<PrimaryKeyColumn> columns = new ArrayList<>();
         StringBuilder sql = new StringBuilder("SELECT RequestText FROM DBC.tables WHERE ");
         if (schema != null) {
@@ -105,10 +104,9 @@ class TeradataPrimaryKeyFinder extends PrimaryKeyFinder {
                             String columnLabel = md.getColumnLabel(i);
                             Class<?> columnType;
                             try {
-                                columnType =
-                                        Thread.currentThread()
-                                                .getContextClassLoader()
-                                                .loadClass(md.getColumnClassName(i));
+                                columnType = Thread.currentThread()
+                                        .getContextClassLoader()
+                                        .loadClass(md.getColumnClassName(i));
                             } catch (ClassNotFoundException e) {
                                 columnType = Object.class;
                             }
@@ -120,27 +118,20 @@ class TeradataPrimaryKeyFinder extends PrimaryKeyFinder {
                     if (schema != null) {
                         from = "'" + schema + "'." + from;
                     }
-                    LOGGER.warning(
-                            "Unable to perform select used to create view "
-                                    + from
-                                    + ".\nSQL: "
-                                    + select);
+                    LOGGER.warning("Unable to perform select used to create view " + from + ".\nSQL: " + select);
                 }
             }
         }
         return columns;
     }
 
-    private List<PrimaryKeyColumn> tryForSequence(String schema, String table, Connection cx)
-            throws SQLException {
+    private List<PrimaryKeyColumn> tryForSequence(String schema, String table, Connection cx) throws SQLException {
         List<PrimaryKeyColumn> columns = new ArrayList<>();
         StringBuilder sql = new StringBuilder("SELECT DISTINCT ColumnName FROM DBC.columns WHERE ");
         if (schema != null) {
             sql.append("DatabaseName = '").append(schema).append("' AND ");
         }
-        sql.append("TableName = '")
-                .append(table)
-                .append("' AND (IdColType='GA' or IdColType='GD')");
+        sql.append("TableName = '").append(table).append("' AND (IdColType='GA' or IdColType='GD')");
         try (Statement st = cx.createStatement();
                 ResultSet result = st.executeQuery(sql.toString())) {
             boolean next = result.next();
@@ -161,11 +152,9 @@ class TeradataPrimaryKeyFinder extends PrimaryKeyFinder {
         return columns;
     }
 
-    private List<PrimaryKeyColumn> tryForPrimaryKey(String schema, String table, Connection cx)
-            throws SQLException {
+    private List<PrimaryKeyColumn> tryForPrimaryKey(String schema, String table, Connection cx) throws SQLException {
         List<PrimaryKeyColumn> columns = new ArrayList<>();
-        StringBuilder sql =
-                new StringBuilder("select ColumnName,ColumnPosition from dbc.indices WHERE ");
+        StringBuilder sql = new StringBuilder("select ColumnName,ColumnPosition from dbc.indices WHERE ");
         if (schema != null) {
             sql.append("DatabaseName = '").append(schema).append("' AND ");
         }
@@ -176,7 +165,8 @@ class TeradataPrimaryKeyFinder extends PrimaryKeyFinder {
             TableMetadata tableMetadata = new TableMetadata(st, schema, table);
 
             while (next) {
-                int ordinal = Integer.parseInt(result.getString("ColumnPosition").trim());
+                int ordinal =
+                        Integer.parseInt(result.getString("ColumnPosition").trim());
                 String columnName = result.getString("ColumnName").trim();
                 Class<?> columnClass = tableMetadata.columnClass(ordinal);
                 if (tableMetadata.isAutoIncrement(ordinal)) {
@@ -192,8 +182,7 @@ class TeradataPrimaryKeyFinder extends PrimaryKeyFinder {
         return columns;
     }
 
-    private List<PrimaryKeyColumn> tryForPrimaryKey1(String schema, String table, Connection cx)
-            throws SQLException {
+    private List<PrimaryKeyColumn> tryForPrimaryKey1(String schema, String table, Connection cx) throws SQLException {
         List<PrimaryKeyColumn> columns = new ArrayList<>();
         try (ResultSet md = cx.getMetaData().getPrimaryKeys(null, schema, table)) {
             boolean next = md.next();
@@ -206,12 +195,9 @@ class TeradataPrimaryKeyFinder extends PrimaryKeyFinder {
                         if (ordinal >= 0) {
                             Class<?> columnClass = tableMetadata.columnClass(ordinal);
                             if (tableMetadata.isAutoIncrement(ordinal)) {
-                                columns.add(
-                                        new AutoGeneratedPrimaryKeyColumn(columnName, columnClass));
+                                columns.add(new AutoGeneratedPrimaryKeyColumn(columnName, columnClass));
                             } else {
-                                columns.add(
-                                        new NonIncrementingPrimaryKeyColumn(
-                                                columnName, columnClass));
+                                columns.add(new NonIncrementingPrimaryKeyColumn(columnName, columnClass));
                             }
                         }
                         next = md.next();

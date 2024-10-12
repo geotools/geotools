@@ -56,8 +56,7 @@ public class HanaPrimaryKeyTestSetup extends JDBCPrimaryKeyTestSetup {
 
             htu.insertFieldsIntoTable(htu.getTestSchema(), AUTO_TABLE, "name", "geom", "one", null);
             htu.insertFieldsIntoTable(htu.getTestSchema(), AUTO_TABLE, "name", "geom", "two", null);
-            htu.insertFieldsIntoTable(
-                    htu.getTestSchema(), AUTO_TABLE, "name", "geom", "three", null);
+            htu.insertFieldsIntoTable(htu.getTestSchema(), AUTO_TABLE, "name", "geom", "three", null);
         }
     }
 
@@ -115,12 +114,9 @@ public class HanaPrimaryKeyTestSetup extends JDBCPrimaryKeyTestSetup {
             htu.createRegisteredTestTable(SEQ_TABLE, cols);
 
             htu.skipSequenceValueFor(htu.getTestSchema(), SEQ_TABLE, "key");
-            htu.insertIntoTestTable(
-                    SEQ_TABLE, htu.nextTestSequenceValueForColumn(SEQ_TABLE, "key"), "one", null);
-            htu.insertIntoTestTable(
-                    SEQ_TABLE, htu.nextTestSequenceValueForColumn(SEQ_TABLE, "key"), "two", null);
-            htu.insertIntoTestTable(
-                    SEQ_TABLE, htu.nextTestSequenceValueForColumn(SEQ_TABLE, "key"), "three", null);
+            htu.insertIntoTestTable(SEQ_TABLE, htu.nextTestSequenceValueForColumn(SEQ_TABLE, "key"), "one", null);
+            htu.insertIntoTestTable(SEQ_TABLE, htu.nextTestSequenceValueForColumn(SEQ_TABLE, "key"), "two", null);
+            htu.insertIntoTestTable(SEQ_TABLE, htu.nextTestSequenceValueForColumn(SEQ_TABLE, "key"), "three", null);
         }
     }
 
@@ -145,9 +141,7 @@ public class HanaPrimaryKeyTestSetup extends JDBCPrimaryKeyTestSetup {
             HanaTestUtil htu = new HanaTestUtil(conn, fixture);
             htu.createTestSchema();
 
-            String[][] cols = {
-                {"key", "INT"}, {"name", "VARCHAR(255)"}, {"geom", "ST_Geometry(1000004326)"}
-            };
+            String[][] cols = {{"key", "INT"}, {"name", "VARCHAR(255)"}, {"geom", "ST_Geometry(1000004326)"}};
             htu.createTestTable(UNIQ_TABLE, cols);
 
             htu.addUniqueIndex(htu.getTestSchema(), UNIQ_TABLE, "uniq_key_index", "key");
@@ -170,12 +164,9 @@ public class HanaPrimaryKeyTestSetup extends JDBCPrimaryKeyTestSetup {
             };
             htu.createTestTable(NONFIRST_TABLE, cols);
 
-            htu.insertFieldsIntoTable(
-                    htu.getTestSchema(), NONFIRST_TABLE, "name", "geom", "one", null);
-            htu.insertFieldsIntoTable(
-                    htu.getTestSchema(), NONFIRST_TABLE, "name", "geom", "two", null);
-            htu.insertFieldsIntoTable(
-                    htu.getTestSchema(), NONFIRST_TABLE, "name", "geom", "three", null);
+            htu.insertFieldsIntoTable(htu.getTestSchema(), NONFIRST_TABLE, "name", "geom", "one", null);
+            htu.insertFieldsIntoTable(htu.getTestSchema(), NONFIRST_TABLE, "name", "geom", "two", null);
+            htu.insertFieldsIntoTable(htu.getTestSchema(), NONFIRST_TABLE, "name", "geom", "three", null);
         }
     }
 

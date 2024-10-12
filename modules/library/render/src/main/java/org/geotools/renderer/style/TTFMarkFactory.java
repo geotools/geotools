@@ -48,8 +48,7 @@ import org.geotools.renderer.util.ExplicitBoundsShape;
  */
 public class TTFMarkFactory implements MarkFactory {
 
-    private static FontRenderContext FONT_RENDER_CONTEXT =
-            new FontRenderContext(new AffineTransform(), false, false);
+    private static FontRenderContext FONT_RENDER_CONTEXT = new FontRenderContext(new AffineTransform(), false, false);
 
     /**
      * The factory is completely stateless, this single instance can be safely used across multiple
@@ -58,8 +57,7 @@ public class TTFMarkFactory implements MarkFactory {
     public static TTFMarkFactory INSTANCE = new TTFMarkFactory();
 
     @Override
-    public Shape getShape(Graphics2D graphics, Expression symbolUrl, Feature feature)
-            throws Exception {
+    public Shape getShape(Graphics2D graphics, Expression symbolUrl, Feature feature) throws Exception {
         String markUrl = symbolUrl.evaluate(feature, String.class);
 
         // if it does not start with the right prefix, it's not our business
@@ -67,10 +65,9 @@ public class TTFMarkFactory implements MarkFactory {
 
         // if it does not match the expected format, complain before exiting
         if (!markUrl.matches("ttf://.+#.+")) {
-            throw new IllegalArgumentException(
-                    "Mark URL font found, but does not match the required "
-                            + "structure font://<fontName>#<charNumber>, e.g., ttf://wingdigs#0x7B. You specified "
-                            + markUrl);
+            throw new IllegalArgumentException("Mark URL font found, but does not match the required "
+                    + "structure font://<fontName>#<charNumber>, e.g., ttf://wingdigs#0x7B. You specified "
+                    + markUrl);
         }
         String[] fontElements = markUrl.substring(6).split("#");
 
@@ -84,8 +81,7 @@ public class TTFMarkFactory implements MarkFactory {
             // this will handle most numeric formats like decimal, hex and octal
             character = (char) Integer.decode(code).intValue();
         } catch (NumberFormatException e) {
-            throw new IllegalArgumentException(
-                    "Invalid character specification " + fontElements[1], e);
+            throw new IllegalArgumentException("Invalid character specification " + fontElements[1], e);
         }
 
         // look up the font
@@ -108,8 +104,7 @@ public class TTFMarkFactory implements MarkFactory {
         }
 
         // build the shape out of the font
-        GlyphVector textGlyphVector =
-                font.createGlyphVector(FONT_RENDER_CONTEXT, new char[] {character});
+        GlyphVector textGlyphVector = font.createGlyphVector(FONT_RENDER_CONTEXT, new char[] {character});
         Shape s = textGlyphVector.getOutline();
 
         // have the shape be centered in the origin, and sitting in a square of side 1
@@ -159,8 +154,7 @@ public class TTFMarkFactory implements MarkFactory {
         System.out.println((int) c);
 
         Font font = new Font("Webdings", Font.PLAIN, 60);
-        for (int i = 0; i < 65536; i++)
-            if (font.canDisplay(i)) System.out.println(i + ": " + Long.toHexString(i));
+        for (int i = 0; i < 65536; i++) if (font.canDisplay(i)) System.out.println(i + ": " + Long.toHexString(i));
         GlyphVector textGlyphVector = font.createGlyphVector(FONT_RENDER_CONTEXT, new char[] {,});
         Shape shape = textGlyphVector.getOutline();
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);

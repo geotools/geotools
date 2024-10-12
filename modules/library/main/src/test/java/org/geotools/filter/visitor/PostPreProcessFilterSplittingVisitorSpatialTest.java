@@ -33,8 +33,7 @@ import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 
-public class PostPreProcessFilterSplittingVisitorSpatialTest
-        extends AbstractPostPreProcessFilterSplittingVisitorTests {
+public class PostPreProcessFilterSplittingVisitorSpatialTest extends AbstractPostPreProcessFilterSplittingVisitorTests {
 
     Geometry geom = new GeometryFactory().createPoint();
 

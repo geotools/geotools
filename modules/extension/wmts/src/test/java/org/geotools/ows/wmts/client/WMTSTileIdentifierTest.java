@@ -48,8 +48,7 @@ public class WMTSTileIdentifierTest {
         this.tileId = null;
     }
 
-    protected TileIdentifier createTestTileIdentifier(int z, int x, int y, String name)
-            throws Exception {
+    protected TileIdentifier createTestTileIdentifier(int z, int x, int y, String name) throws Exception {
         if (service == null) {
             this.setup();
         }
@@ -68,8 +67,7 @@ public class WMTSTileIdentifierTest {
             File capaFile = new File(capaKvp.toURI());
             WMTSCapabilities capa = WMTSTileFactory4326Test.createCapabilities(capaFile);
 
-            String baseURL =
-                    "http://demo.geo-solutions.it/geoserver/gwc/service/wmts?REQUEST=getcapabilities";
+            String baseURL = "http://demo.geo-solutions.it/geoserver/gwc/service/wmts?REQUEST=getcapabilities";
 
             WMTSLayer layer = capa.getLayer("spearfish");
             TileMatrixSet matrixSet = capa.getMatrixSet("EPSG:4326");
@@ -95,22 +93,19 @@ public class WMTSTileIdentifierTest {
 
     @Test
     public void testGetRightNeighbour() {
-        WMTSTileIdentifier neighbour =
-                new WMTSTileIdentifier(11, 12, new WMTSZoomLevel(5, service), "SomeService");
+        WMTSTileIdentifier neighbour = new WMTSTileIdentifier(11, 12, new WMTSZoomLevel(5, service), "SomeService");
 
         Assert.assertEquals(neighbour, this.tileId.getRightNeighbour());
     }
 
     @Test
     public void testGetLowertNeighbour() {
-        WMTSTileIdentifier neighbour =
-                new WMTSTileIdentifier(10, 13, new WMTSZoomLevel(5, service), "SomeService");
+        WMTSTileIdentifier neighbour = new WMTSTileIdentifier(10, 13, new WMTSZoomLevel(5, service), "SomeService");
 
         Assert.assertEquals(neighbour, this.tileId.getLowerNeighbour());
     }
 
-    protected TileIdentifier createTestTileIdentifier(
-            ZoomLevel zoomLevel, int x, int y, String name) {
+    protected TileIdentifier createTestTileIdentifier(ZoomLevel zoomLevel, int x, int y, String name) {
         return new WMTSTileIdentifier(x, y, zoomLevel, name);
     }
 }

@@ -10,8 +10,7 @@ public class SQLServerUuidTestSetup extends JDBCUuidTestSetup {
 
     @Override
     protected void createUuidTable() throws Exception {
-        run(
-                "CREATE TABLE \"guid\" ( \"id\" int identity(0, 1) PRIMARY KEY, \"uuidProperty\" uniqueidentifier)");
+        run("CREATE TABLE \"guid\" ( \"id\" int identity(0, 1) PRIMARY KEY, \"uuidProperty\" uniqueidentifier)");
         run("INSERT INTO \"guid\" (\"uuidProperty\") VALUES ('" + uuid1 + "')");
         run("INSERT INTO \"guid\" (\"uuidProperty\") VALUES ('" + uuid2 + "')");
 

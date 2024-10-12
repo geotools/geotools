@@ -132,8 +132,7 @@ public class JCRSPopupMenu extends JPopupMenu {
     private void showCRS() {
         if (mapPane != null && mapPane.getMapContent() != null) {
             CoordinateReferenceSystem crs = mapPane.getMapContent().getCoordinateReferenceSystem();
-            JTextReporter.showDialog(
-                    "Coordinate reference system", crs.toWKT(), JTextReporter.FLAG_MODAL);
+            JTextReporter.showDialog("Coordinate reference system", crs.toWKT(), JTextReporter.FLAG_MODAL);
         }
     }
 }

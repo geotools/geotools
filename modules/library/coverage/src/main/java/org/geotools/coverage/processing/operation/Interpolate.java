@@ -95,23 +95,21 @@ public class Interpolate extends Operation2D {
     private static final long serialVersionUID = 6742127682733620661L;
 
     /** The parameter descriptor for the interpolation type. */
-    public static final ParameterDescriptor<Object> TYPE =
-            new DefaultParameterDescriptor<>(
-                    Citations.OGC,
-                    "Type",
-                    Object.class, // Value class (mandatory)
-                    null, // Array of valid values
-                    "NearestNeighbor", // Default value
-                    null, // Minimal value
-                    null, // Maximal value
-                    null, // Unit of measure
-                    true); // Parameter is mandatory
+    public static final ParameterDescriptor<Object> TYPE = new DefaultParameterDescriptor<>(
+            Citations.OGC,
+            "Type",
+            Object.class, // Value class (mandatory)
+            null, // Array of valid values
+            "NearestNeighbor", // Default value
+            null, // Minimal value
+            null, // Maximal value
+            null, // Unit of measure
+            true); // Parameter is mandatory
 
     /** Constructs an {@code "Interpolate"} operation. */
     public Interpolate() {
-        super(
-                new DefaultParameterDescriptorGroup(
-                        Citations.OGC, "Interpolate", new ParameterDescriptor[] {SOURCE_0, TYPE}));
+        super(new DefaultParameterDescriptorGroup(
+                Citations.OGC, "Interpolate", new ParameterDescriptor[] {SOURCE_0, TYPE}));
     }
 
     /**
@@ -120,7 +118,8 @@ public class Interpolate extends Operation2D {
      */
     @Override
     public Coverage doOperation(final ParameterValueGroup parameters, final Hints hints) {
-        final GridCoverage2D source = (GridCoverage2D) parameters.parameter("Source").getValue();
+        final GridCoverage2D source =
+                (GridCoverage2D) parameters.parameter("Source").getValue();
         final Object type = parameters.parameter("Type").getValue();
         final Interpolation[] interpolations;
         if (type.getClass().isArray()) {

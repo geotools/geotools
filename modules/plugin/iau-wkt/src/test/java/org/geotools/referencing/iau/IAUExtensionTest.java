@@ -47,8 +47,7 @@ public class IAUExtensionTest {
     /** Get the authority factory for IAU. */
     @Before
     public void setUp() throws Exception {
-        factory =
-                (IAUAuthorityFactory) ReferencingFactoryFinder.getCRSAuthorityFactory("IAU", null);
+        factory = (IAUAuthorityFactory) ReferencingFactoryFinder.getCRSAuthorityFactory("IAU", null);
     }
 
     /** Tests the authority code. */

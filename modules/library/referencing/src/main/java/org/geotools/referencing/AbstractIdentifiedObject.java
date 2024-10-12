@@ -77,8 +77,7 @@ import tech.units.indriya.AbstractUnit;
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
-public class AbstractIdentifiedObject extends Formattable
-        implements IdentifiedObject, Serializable {
+public class AbstractIdentifiedObject extends Formattable implements IdentifiedObject, Serializable {
     /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = -5173281694258483264L;
 
@@ -117,8 +116,7 @@ public class AbstractIdentifiedObject extends Formattable
      * {@link #NAME_COMPARATOR} implementation as a named class (rather than anonymous) for more
      * predictable serialization.
      */
-    private static final class NameComparator
-            implements Comparator<IdentifiedObject>, Serializable {
+    private static final class NameComparator implements Comparator<IdentifiedObject>, Serializable {
         /** For cross-version compatibility. */
         private static final long serialVersionUID = -6605097017814062198L;
 
@@ -135,15 +133,13 @@ public class AbstractIdentifiedObject extends Formattable
     }
 
     /** A comparator for sorting identified objects by {@linkplain #getIdentifiers identifiers}. */
-    public static final Comparator<IdentifiedObject> IDENTIFIER_COMPARATOR =
-            new IdentifierComparator();
+    public static final Comparator<IdentifiedObject> IDENTIFIER_COMPARATOR = new IdentifierComparator();
 
     /**
      * {@link #IDENTIFIER_COMPARATOR} implementation as a named class (rather than anonymous) for
      * more predictable serialization.
      */
-    private static final class IdentifierComparator
-            implements Comparator<IdentifiedObject>, Serializable {
+    private static final class IdentifierComparator implements Comparator<IdentifiedObject>, Serializable {
         /** For cross-version compatibility. */
         private static final long serialVersionUID = -7315726806679993522L;
 
@@ -182,8 +178,7 @@ public class AbstractIdentifiedObject extends Formattable
      * {@link #REMARKS_COMPARATOR} implementation as a named class (rather than anonymous) for more
      * predictable serialization.
      */
-    private static final class RemarksComparator
-            implements Comparator<IdentifiedObject>, Serializable {
+    private static final class RemarksComparator implements Comparator<IdentifiedObject>, Serializable {
         /** For cross-version compatibility. */
         private static final long serialVersionUID = -6675419613224162715L;
 
@@ -293,8 +288,7 @@ public class AbstractIdentifiedObject extends Formattable
      * @throws InvalidParameterValueException if a property has an invalid value.
      * @throws IllegalArgumentException if a property is invalid for some other reason.
      */
-    public AbstractIdentifiedObject(final Map<String, ?> properties)
-            throws IllegalArgumentException {
+    public AbstractIdentifiedObject(final Map<String, ?> properties) throws IllegalArgumentException {
         this(properties, null, null);
     }
 
@@ -317,9 +311,7 @@ public class AbstractIdentifiedObject extends Formattable
      * @throws IllegalArgumentException if a property is invalid for some other reason.
      */
     protected AbstractIdentifiedObject(
-            final Map<String, ?> properties,
-            final Map<String, Object> subProperties,
-            final String... localizables)
+            final Map<String, ?> properties, final Map<String, Object> subProperties, final String... localizables)
             throws IllegalArgumentException {
         ensureNonNull("properties", properties);
         Object name = null;
@@ -358,8 +350,7 @@ public class AbstractIdentifiedObject extends Formattable
                     if (key.equalsIgnoreCase("operationVersion")) key = "operationVersion";
                     break;
                 case 1479434472:
-                    if (key.equalsIgnoreCase("coordinateOperationAccuracy"))
-                        key = "coordinateOperationAccuracy";
+                    if (key.equalsIgnoreCase("coordinateOperationAccuracy")) key = "coordinateOperationAccuracy";
                     break;
                 case 1126917133:
                     if (key.equalsIgnoreCase("positionalAccuracy")) key = "positionalAccuracy";
@@ -377,65 +368,60 @@ public class AbstractIdentifiedObject extends Formattable
                     // -------------------------------------
                     // "name": String or ReferenceIdentifier
                     // -------------------------------------
-                case 3373707:
-                    {
-                        if (key.equals(NAME_KEY)) {
-                            if (value instanceof String) {
-                                name = new NamedIdentifier(properties, false);
-                                assert value.equals(((Identifier) name).getCode()) : name;
-                            } else {
-                                // Should be an instance of ReferenceIdentifier, but we don't check
-                                // here. The type will be checked at the end of this method, which
-                                // will thrown an exception with detailed message in case of
-                                // mismatch.
-                                name = value;
-                            }
-                            continue NEXT_KEY;
+                case 3373707: {
+                    if (key.equals(NAME_KEY)) {
+                        if (value instanceof String) {
+                            name = new NamedIdentifier(properties, false);
+                            assert value.equals(((Identifier) name).getCode()) : name;
+                        } else {
+                            // Should be an instance of ReferenceIdentifier, but we don't check
+                            // here. The type will be checked at the end of this method, which
+                            // will thrown an exception with detailed message in case of
+                            // mismatch.
+                            name = value;
                         }
-                        break;
+                        continue NEXT_KEY;
                     }
+                    break;
+                }
                     // -------------------------------------------------------
                     // "alias": String, String[], GenericName or GenericName[]
                     // -------------------------------------------------------
-                case 92902992:
-                    {
-                        if (key.equals(ALIAS_KEY)) {
-                            alias = NameFactory.toArray(value);
-                            continue NEXT_KEY;
-                        }
-                        break;
+                case 92902992: {
+                    if (key.equals(ALIAS_KEY)) {
+                        alias = NameFactory.toArray(value);
+                        continue NEXT_KEY;
                     }
+                    break;
+                }
                     // -----------------------------------------------------------
                     // "identifiers": ReferenceIdentifier or ReferenceIdentifier[]
                     // -----------------------------------------------------------
-                case 1368189162:
-                    {
-                        if (key.equals(IDENTIFIERS_KEY)) {
-                            if (value != null) {
-                                if (value instanceof ReferenceIdentifier) {
-                                    identifiers =
-                                            new ReferenceIdentifier[] {(ReferenceIdentifier) value};
-                                } else {
-                                    identifiers = value;
-                                }
+                case 1368189162: {
+                    if (key.equals(IDENTIFIERS_KEY)) {
+                        if (value != null) {
+                            if (value instanceof ReferenceIdentifier) {
+                                identifiers = new ReferenceIdentifier[] {(ReferenceIdentifier) value};
+                            } else {
+                                identifiers = value;
                             }
-                            continue NEXT_KEY;
                         }
-                        break;
+                        continue NEXT_KEY;
                     }
+                    break;
+                }
                     // ----------------------------------------
                     // "remarks": String or InternationalString
                     // ----------------------------------------
-                case 1091415283:
-                    {
-                        if (key.equals(REMARKS_KEY)) {
-                            if (value instanceof InternationalString) {
-                                remarks = value;
-                                continue NEXT_KEY;
-                            }
+                case 1091415283: {
+                    if (key.equals(REMARKS_KEY)) {
+                        if (value instanceof InternationalString) {
+                            remarks = value;
+                            continue NEXT_KEY;
                         }
-                        break;
                     }
+                    break;
+                }
             }
             /*
              * Search for additional locales for remarks (e.g. "remarks_fr").
@@ -499,8 +485,7 @@ public class AbstractIdentifiedObject extends Formattable
                 remarks = growable;
             } else if (!growable.isSubsetOf(remarks)) {
                 final Logger logger = Logging.getLogger(AbstractIdentifiedObject.class);
-                final LogRecord record =
-                        Loggings.format(Level.WARNING, LoggingKeys.LOCALES_DISCARTED);
+                final LogRecord record = Loggings.format(Level.WARNING, LoggingKeys.LOCALES_DISCARTED);
                 record.setLoggerName(logger.getName());
                 logger.log(record);
             }
@@ -518,8 +503,7 @@ public class AbstractIdentifiedObject extends Formattable
                         subProperties.put(prefix, growable);
                     } else if (!growable.isSubsetOf(current)) {
                         final Logger logger = Logging.getLogger(AbstractIdentifiedObject.class);
-                        final LogRecord record =
-                                Loggings.format(Level.WARNING, LoggingKeys.LOCALES_DISCARTED);
+                        final LogRecord record = Loggings.format(Level.WARNING, LoggingKeys.LOCALES_DISCARTED);
                         record.setLoggerName(logger.getName());
                         logger.log(record);
                     }
@@ -546,11 +530,8 @@ public class AbstractIdentifiedObject extends Formattable
             key = REMARKS_KEY;
             this.remarks = (InternationalString) (value = remarks);
         } catch (ClassCastException exception) {
-            InvalidParameterValueException e =
-                    new InvalidParameterValueException(
-                            MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, key, value),
-                            key,
-                            value);
+            InvalidParameterValueException e = new InvalidParameterValueException(
+                    MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, key, value), key, value);
             e.initCause(exception);
             throw e;
         }
@@ -638,8 +619,7 @@ public class AbstractIdentifiedObject extends Formattable
      *     going to have any declared authority.
      * @return An view of the identified object as a mutable map.
      */
-    public static Map<String, Object> getProperties(
-            final IdentifiedObject info, final Citation authority) {
+    public static Map<String, Object> getProperties(final IdentifiedObject info, final Citation authority) {
         final Map<String, Object> properties = new HashMap<>(getProperties(info));
         properties.put(NAME_KEY, new NamedIdentifier(authority, info.getName().getCode()));
         properties.remove(IDENTIFIERS_KEY);
@@ -673,8 +653,7 @@ public class AbstractIdentifiedObject extends Formattable
      *     authority was found.
      * @since 2.2
      */
-    public static ReferenceIdentifier getIdentifier(
-            final IdentifiedObject info, final Citation authority) {
+    public static ReferenceIdentifier getIdentifier(final IdentifiedObject info, final Citation authority) {
         if (info instanceof AbstractIdentifiedObject) {
             // Gives a chances to subclasses to get their overridden method invoked.
             return ((AbstractIdentifiedObject) info).getIdentifier(authority);
@@ -683,8 +662,7 @@ public class AbstractIdentifiedObject extends Formattable
     }
 
     /** Implementation of {@link #getIdentifier(Citation)}. */
-    private static ReferenceIdentifier getIdentifier0(
-            final IdentifiedObject info, final Citation authority) {
+    private static ReferenceIdentifier getIdentifier0(final IdentifiedObject info, final Citation authority) {
         if (info == null) {
             return null;
         }
@@ -846,7 +824,8 @@ public class AbstractIdentifiedObject extends Formattable
      * @since 2.4
      */
     public static boolean nameMatches(final IdentifiedObject o1, final IdentifiedObject o2) {
-        return nameMatches(o1, o2.getName().getCode()) || nameMatches(o2, o1.getName().getCode());
+        return nameMatches(o1, o2.getName().getCode())
+                || nameMatches(o2, o1.getName().getCode());
     }
 
     /**
@@ -868,7 +847,8 @@ public class AbstractIdentifiedObject extends Formattable
         if (alias != null) {
             for (final GenericName asName : alias) {
                 final GenericName asScoped = asName.toFullyQualifiedName();
-                if (asScoped != asName && name.equalsIgnoreCase(asScoped.toString().trim())) {
+                if (asScoped != asName
+                        && name.equalsIgnoreCase(asScoped.toString().trim())) {
                     return true;
                 }
                 if (name.equalsIgnoreCase(asName.tip().toString().trim())) {
@@ -887,8 +867,7 @@ public class AbstractIdentifiedObject extends Formattable
      */
     @Override
     public final boolean equals(final Object object) {
-        return (object instanceof AbstractIdentifiedObject)
-                && equals((AbstractIdentifiedObject) object, true);
+        return (object instanceof AbstractIdentifiedObject) && equals((AbstractIdentifiedObject) object, true);
     }
 
     /**
@@ -944,8 +923,7 @@ public class AbstractIdentifiedObject extends Formattable
             final AbstractIdentifiedObject object1,
             final AbstractIdentifiedObject object2,
             final boolean compareMetadata) {
-        return (object1 == object2)
-                || (object1 != null && object1.equals(object2, compareMetadata));
+        return (object1 == object2) || (object1 != null && object1.equals(object2, compareMetadata));
     }
 
     /**
@@ -959,17 +937,10 @@ public class AbstractIdentifiedObject extends Formattable
      * @return {@code true} if both objects are equal.
      */
     protected static boolean equals(
-            final IdentifiedObject object1,
-            final IdentifiedObject object2,
-            final boolean compareMetadata) {
-        if (!(object1 instanceof AbstractIdentifiedObject))
-            return Utilities.equals(object1, object2);
-        if (!(object2 instanceof AbstractIdentifiedObject))
-            return Utilities.equals(object2, object1);
-        return equals(
-                (AbstractIdentifiedObject) object1,
-                (AbstractIdentifiedObject) object2,
-                compareMetadata);
+            final IdentifiedObject object1, final IdentifiedObject object2, final boolean compareMetadata) {
+        if (!(object1 instanceof AbstractIdentifiedObject)) return Utilities.equals(object1, object2);
+        if (!(object2 instanceof AbstractIdentifiedObject)) return Utilities.equals(object2, object1);
+        return equals((AbstractIdentifiedObject) object1, (AbstractIdentifiedObject) object2, compareMetadata);
     }
 
     /**
@@ -983,9 +954,7 @@ public class AbstractIdentifiedObject extends Formattable
      * @return {@code true} if both arrays are equal.
      */
     protected static boolean equals(
-            final IdentifiedObject[] array1,
-            final IdentifiedObject[] array2,
-            final boolean compareMetadata) {
+            final IdentifiedObject[] array1, final IdentifiedObject[] array2, final boolean compareMetadata) {
         if (array1 != array2) {
             if ((array1 == null) || (array2 == null) || (array1.length != array2.length)) {
                 return false;
@@ -1093,8 +1062,7 @@ public class AbstractIdentifiedObject extends Formattable
      * @param object User argument.
      * @throws InvalidParameterValueException if {@code object} is null.
      */
-    protected static void ensureNonNull(final String name, final Object object)
-            throws InvalidParameterValueException {
+    protected static void ensureNonNull(final String name, final Object object) throws InvalidParameterValueException {
         if (object == null) {
             throw new InvalidParameterValueException(
                     MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, name), name, object);
@@ -1114,9 +1082,7 @@ public class AbstractIdentifiedObject extends Formattable
             throws InvalidParameterValueException {
         if (array[index] == null) {
             throw new InvalidParameterValueException(
-                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, name + '[' + index + ']'),
-                    name,
-                    array);
+                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, name + '[' + index + ']'), name, array);
         }
     }
 
@@ -1129,8 +1095,7 @@ public class AbstractIdentifiedObject extends Formattable
      */
     protected static void ensureTimeUnit(final Unit<?> unit) throws IllegalArgumentException {
         if (!SI.SECOND.isCompatible(unit)) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.NON_TEMPORAL_UNIT_$1, unit));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.NON_TEMPORAL_UNIT_$1, unit));
         }
     }
 
@@ -1143,8 +1108,7 @@ public class AbstractIdentifiedObject extends Formattable
      */
     protected static void ensureLinearUnit(final Unit<?> unit) throws IllegalArgumentException {
         if (!SI.METRE.isCompatible(unit)) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.NON_LINEAR_UNIT_$1, unit));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.NON_LINEAR_UNIT_$1, unit));
         }
     }
 
@@ -1157,8 +1121,7 @@ public class AbstractIdentifiedObject extends Formattable
      */
     protected static void ensureAngularUnit(final Unit<?> unit) throws IllegalArgumentException {
         if (!SI.RADIAN.isCompatible(unit) && !AbstractUnit.ONE.equals(unit)) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.NON_ANGULAR_UNIT_$1, unit));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.NON_ANGULAR_UNIT_$1, unit));
         }
     }
 }

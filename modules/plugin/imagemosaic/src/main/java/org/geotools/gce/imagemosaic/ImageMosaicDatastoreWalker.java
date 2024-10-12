@@ -43,8 +43,7 @@ class ImageMosaicDatastoreWalker extends ImageMosaicWalker implements Runnable {
     protected ImageMosaicElementConsumer<SimpleFeature> consumer;
 
     /** Default Logger * */
-    static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(ImageMosaicDatastoreWalker.class);
+    static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(ImageMosaicDatastoreWalker.class);
 
     public ImageMosaicDatastoreWalker(
             ImageMosaicConfigHandler configHandler,
@@ -65,16 +64,13 @@ class ImageMosaicDatastoreWalker extends ImageMosaicWalker implements Runnable {
 
             // start looking into catalog
             catalog = configHandler.getCatalog();
-            String locationAttrName =
-                    configHandler.getRunConfiguration().getParameter(Prop.LOCATION_ATTRIBUTE);
-            String requestedTypeName =
-                    configHandler.getRunConfiguration().getParameter(Prop.TYPENAME);
+            String locationAttrName = configHandler.getRunConfiguration().getParameter(Prop.LOCATION_ATTRIBUTE);
+            String requestedTypeName = configHandler.getRunConfiguration().getParameter(Prop.TYPENAME);
 
             if (requestedTypeName != null) {
                 SimpleFeatureType type = catalog.getType(requestedTypeName);
                 if (!Utils.isValidMosaicSchema(type, locationAttrName)) {
-                    LOGGER.log(
-                            Level.FINE, "Skipping invalid mosaic index table " + requestedTypeName);
+                    LOGGER.log(Level.FINE, "Skipping invalid mosaic index table " + requestedTypeName);
                 } else {
                     processGranules(catalog, requestedTypeName);
                 }
@@ -82,10 +78,8 @@ class ImageMosaicDatastoreWalker extends ImageMosaicWalker implements Runnable {
                 String[] typeNames = catalog.getTypeNames();
                 if (typeNames != null) {
                     for (String typeName : typeNames) {
-                        if (!Utils.isValidMosaicSchema(
-                                catalog.getType(typeName), locationAttrName)) {
-                            LOGGER.log(
-                                    Level.FINE, "Skipping invalid mosaic index table " + typeName);
+                        if (!Utils.isValidMosaicSchema(catalog.getType(typeName), locationAttrName)) {
+                            LOGGER.log(Level.FINE, "Skipping invalid mosaic index table " + typeName);
                             continue;
                         }
                         processGranules(catalog, typeName);
@@ -146,13 +140,11 @@ class ImageMosaicDatastoreWalker extends ImageMosaicWalker implements Runnable {
         }
     }
 
-    private void processGranules(GranuleCatalog catalog, String requestedTypeName)
-            throws IOException {
+    private void processGranules(GranuleCatalog catalog, String requestedTypeName) throws IOException {
         // how many rows for this feature type?
         final Query query = new Query(requestedTypeName);
-        Integer maxInitializationTiles =
-                IndexerUtils.getParameterAsInteger(
-                        Prop.MAX_INIT_TILES, configHandler.getRunConfiguration().getIndexer());
+        Integer maxInitializationTiles = IndexerUtils.getParameterAsInteger(
+                Prop.MAX_INIT_TILES, configHandler.getRunConfiguration().getIndexer());
         if (maxInitializationTiles != null) query.setMaxFeatures(maxInitializationTiles);
 
         // cool, now let's walk over the features

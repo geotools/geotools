@@ -33,15 +33,14 @@ public class ContentDataStoreTest extends AbstractContentTest {
     public void testRepeatedTypeListCreation() throws IOException {
         // setup a store in which we can count how many times we call createTypeNames()
         final AtomicInteger creationCounter = new AtomicInteger(0);
-        MockContentDataStore store =
-                new MockContentDataStore() {
-                    @Override
-                    protected java.util.List<org.geotools.api.feature.type.Name> createTypeNames()
-                            throws java.io.IOException {
-                        creationCounter.incrementAndGet();
-                        return super.createTypeNames();
-                    };
-                };
+        MockContentDataStore store = new MockContentDataStore() {
+            @Override
+            protected java.util.List<org.geotools.api.feature.type.Name> createTypeNames() throws java.io.IOException {
+                creationCounter.incrementAndGet();
+                return super.createTypeNames();
+            }
+            ;
+        };
 
         store.getFeatureSource(TYPENAME.getLocalPart());
         assertEquals(1, creationCounter.get());
@@ -55,15 +54,14 @@ public class ContentDataStoreTest extends AbstractContentTest {
     public void testCallCreateTypeNamesOnce() throws IOException {
         // setup a store in which we can count how many times we call createTypeNames()
         final AtomicInteger creationCounter = new AtomicInteger(0);
-        MockContentDataStore store =
-                new MockContentDataStore() {
-                    @Override
-                    protected java.util.List<org.geotools.api.feature.type.Name> createTypeNames()
-                            throws java.io.IOException {
-                        creationCounter.incrementAndGet();
-                        return Arrays.asList(TYPENAME, TYPENAME2);
-                    };
-                };
+        MockContentDataStore store = new MockContentDataStore() {
+            @Override
+            protected java.util.List<org.geotools.api.feature.type.Name> createTypeNames() throws java.io.IOException {
+                creationCounter.incrementAndGet();
+                return Arrays.asList(TYPENAME, TYPENAME2);
+            }
+            ;
+        };
 
         store.getFeatureSource(TYPENAME.getLocalPart());
         assertEquals(1, creationCounter.get());

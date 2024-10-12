@@ -27,9 +27,7 @@ public abstract class JDBCEscapingOnlineTest extends JDBCTestSupport {
     protected void connect() throws Exception {
         super.connect();
         escapingSchema =
-                DataUtilities.createType(
-                        dataStore.getNamespaceURI() + "." + ESCAPING,
-                        ID + ":0," + NAME + ":String");
+                DataUtilities.createType(dataStore.getNamespaceURI() + "." + ESCAPING, ID + ":0," + NAME + ":String");
     }
 
     @Test
@@ -45,7 +43,8 @@ public abstract class JDBCEscapingOnlineTest extends JDBCTestSupport {
             fw.write();
         }
 
-        ContentFeatureCollection fc = dataStore.getFeatureSource(tname(ESCAPING)).getFeatures();
+        ContentFeatureCollection fc =
+                dataStore.getFeatureSource(tname(ESCAPING)).getFeatures();
         assertEquals(1, fc.size());
         try (SimpleFeatureIterator fr = fc.features()) {
             assertTrue(fr.hasNext());

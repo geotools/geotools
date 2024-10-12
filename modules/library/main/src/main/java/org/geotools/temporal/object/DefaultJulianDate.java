@@ -31,9 +31,7 @@ public class DefaultJulianDate extends DefaultTemporalCoordinate implements Juli
 
     /** Creates a new instance of JulianDate. */
     public DefaultJulianDate(
-            TemporalReferenceSystem frame,
-            IndeterminateValue indeterminatePosition,
-            Number coordinateValue) {
+            TemporalReferenceSystem frame, IndeterminateValue indeterminatePosition, Number coordinateValue) {
         super(frame, indeterminatePosition, coordinateValue);
     }
 }

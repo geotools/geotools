@@ -44,8 +44,7 @@ public final class IndexedFeatureResults extends DataFeatureCollection {
     int count;
     private Envelope queryBounds;
 
-    public IndexedFeatureResults(SimpleFeatureCollection results)
-            throws IOException, IllegalAttributeException {
+    public IndexedFeatureResults(SimpleFeatureCollection results) throws IOException, IllegalAttributeException {
         // copy results attributes
         super(null, results.getSchema());
 
@@ -66,8 +65,7 @@ public final class IndexedFeatureResults extends DataFeatureCollection {
     }
 
     /** @see org.geotools.data.FeatureResults#reader() */
-    public FeatureReader<SimpleFeatureType, SimpleFeature> reader(Envelope envelope)
-            throws IOException {
+    public FeatureReader<SimpleFeatureType, SimpleFeature> reader(Envelope envelope) throws IOException {
         List results = index.query(envelope);
         final Iterator resultsIterator = results.iterator();
 
@@ -80,8 +78,7 @@ public final class IndexedFeatureResults extends DataFeatureCollection {
 
             /** @see FeatureReader#next() */
             @Override
-            public SimpleFeature next()
-                    throws IOException, IllegalAttributeException, NoSuchElementException {
+            public SimpleFeature next() throws IOException, IllegalAttributeException, NoSuchElementException {
                 return (SimpleFeature) resultsIterator.next();
             }
 

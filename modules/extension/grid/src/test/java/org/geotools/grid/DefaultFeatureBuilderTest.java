@@ -72,8 +72,7 @@ public class DefaultFeatureBuilderTest {
         // empty
     }
 
-    private void assertSetter(
-            DefaultGridFeatureBuilder setter, String typeName, CoordinateReferenceSystem crs) {
+    private void assertSetter(DefaultGridFeatureBuilder setter, String typeName, CoordinateReferenceSystem crs) {
         SimpleFeatureType type = setter.getType();
         assertEquals(2, type.getAttributeCount());
         assertNotNull(type.getDescriptor(GridFeatureBuilder.DEFAULT_GEOMETRY_ATTRIBUTE_NAME));

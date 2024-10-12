@@ -62,8 +62,7 @@ public class CSVFeatureWriter implements FeatureWriter<SimpleFeatureType, Simple
         this(csvFileState, csvStrategy, Query.ALL);
     }
 
-    public CSVFeatureWriter(CSVFileState csvFileState, CSVStrategy csvStrategy, Query query)
-            throws IOException {
+    public CSVFeatureWriter(CSVFileState csvFileState, CSVStrategy csvStrategy, Query query) throws IOException {
         this.csvFileState = csvFileState;
         File file = csvFileState.getFile();
         File directory = file.getParentFile();
@@ -73,13 +72,12 @@ public class CSVFeatureWriter implements FeatureWriter<SimpleFeatureType, Simple
         this.featureType = csvStrategy.getFeatureType();
         this.iterator = csvStrategy.iterator();
         this.csvStrategy = csvStrategy;
-        this.csvWriter =
-                new CSVWriter(
-                        new FileWriter(this.temp),
-                        csvStrategy.getSeparator(),
-                        csvStrategy.getQuotechar(),
-                        csvStrategy.getEscapechar(),
-                        csvStrategy.getLineSeparator());
+        this.csvWriter = new CSVWriter(
+                new FileWriter(this.temp),
+                csvStrategy.getSeparator(),
+                csvStrategy.getQuotechar(),
+                csvStrategy.getEscapechar(),
+                csvStrategy.getLineSeparator());
         this.csvWriter.writeNext(this.csvFileState.getCSVHeaders(), csvStrategy.isQuoteAllFields());
     }
 
@@ -105,8 +103,7 @@ public class CSVFeatureWriter implements FeatureWriter<SimpleFeatureType, Simple
 
     // next start
     @Override
-    public SimpleFeature next()
-            throws IOException, IllegalArgumentException, NoSuchElementException {
+    public SimpleFeature next() throws IOException, IllegalArgumentException, NoSuchElementException {
         if (csvWriter == null) {
             throw new IOException("Writer has been closed");
         }
@@ -150,8 +147,7 @@ public class CSVFeatureWriter implements FeatureWriter<SimpleFeatureType, Simple
         if (this.currentFeature == null) {
             return; // current feature has been deleted
         }
-        this.csvWriter.writeNext(
-                this.csvStrategy.encode(this.currentFeature), csvStrategy.isQuoteAllFields());
+        this.csvWriter.writeNext(this.csvStrategy.encode(this.currentFeature), csvStrategy.isQuoteAllFields());
         nextRow++;
         this.currentFeature = null; // indicate that it has been written
     }
@@ -183,8 +179,7 @@ public class CSVFeatureWriter implements FeatureWriter<SimpleFeatureType, Simple
         Files.copy(temp.toPath(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
 
         if (csvStrategy.isWritePrj()) {
-            File prjFile =
-                    new File(file.getParent(), FilenameUtils.getBaseName(file.getName()) + ".prj");
+            File prjFile = new File(file.getParent(), FilenameUtils.getBaseName(file.getName()) + ".prj");
             if (prjFile.exists()) {
                 prjFile.delete();
             }

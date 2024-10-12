@@ -54,11 +54,11 @@ public class SnapToLine {
         FeatureSource source = store.getFeatureSource();
 
         // Check that we have line features
-        Class<?> geomBinding = source.getSchema().getGeometryDescriptor().getType().getBinding();
-        boolean isLine =
-                geomBinding != null
-                        && (LineString.class.isAssignableFrom(geomBinding)
-                                || MultiLineString.class.isAssignableFrom(geomBinding));
+        Class<?> geomBinding =
+                source.getSchema().getGeometryDescriptor().getType().getBinding();
+        boolean isLine = geomBinding != null
+                && (LineString.class.isAssignableFrom(geomBinding)
+                        || MultiLineString.class.isAssignableFrom(geomBinding));
 
         if (!isLine) {
             System.out.println("This example needs a shapefile with line features");
@@ -99,10 +99,9 @@ public class SnapToLine {
         Coordinate[] points = new Coordinate[NUM_POINTS];
         Random rand = new Random(file.hashCode());
         for (int i = 0; i < NUM_POINTS; i++) {
-            points[i] =
-                    new Coordinate(
-                            bounds.getMinX() + rand.nextDouble() * bounds.getWidth(),
-                            bounds.getMinY() + rand.nextDouble() * bounds.getHeight());
+            points[i] = new Coordinate(
+                    bounds.getMinX() + rand.nextDouble() * bounds.getWidth(),
+                    bounds.getMinY() + rand.nextDouble() * bounds.getHeight());
         }
 
         // generate points end (docs marker)
@@ -121,8 +120,7 @@ public class SnapToLine {
         int pointsSnapped = 0;
         long elapsedTime = 0;
         long startTime = System.currentTimeMillis();
-        while (pointsProcessed < NUM_POINTS
-                && (elapsedTime = System.currentTimeMillis() - startTime) < DURATION) {
+        while (pointsProcessed < NUM_POINTS && (elapsedTime = System.currentTimeMillis() - startTime) < DURATION) {
 
             // Get point and create search envelope
             Coordinate pt = points[pointsProcessed++];

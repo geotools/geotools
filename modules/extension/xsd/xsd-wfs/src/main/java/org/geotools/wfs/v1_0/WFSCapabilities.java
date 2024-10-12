@@ -55,8 +55,7 @@ public final class WFSCapabilities extends org.geotools.wfs.WFS {
 
     public static final QName Service = new QName("http://www.opengis.net/wfs", "Service");
 
-    public static final QName LatLongBoundingBox =
-            new QName("http://www.opengis.net/wfs", "LatLongBoundingBox");
+    public static final QName LatLongBoundingBox = new QName("http://www.opengis.net/wfs", "LatLongBoundingBox");
 
     public static final QName DCPType = new QName("http://www.opengis.net/wfs", "DCPType");
 

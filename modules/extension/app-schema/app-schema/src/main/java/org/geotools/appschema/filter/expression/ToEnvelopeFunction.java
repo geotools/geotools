@@ -53,11 +53,10 @@ public class ToEnvelopeFunction implements Function {
 
     private final Literal fallback;
 
-    public static final FunctionName NAME =
-            new FunctionNameImpl(
-                    "ToEnvelope",
-                    FunctionNameImpl.parameter("return", Envelope.class),
-                    FunctionNameImpl.parameter("parameter", Object.class, 2, 5));
+    public static final FunctionName NAME = new FunctionNameImpl(
+            "ToEnvelope",
+            FunctionNameImpl.parameter("return", Envelope.class),
+            FunctionNameImpl.parameter("parameter", Object.class, 2, 5));
 
     public ToEnvelopeFunction() {
         this(new ArrayList<>(), null);
@@ -119,8 +118,7 @@ public class ToEnvelopeFunction implements Function {
                                     + ". Cause: "
                                     + e.getMessage());
                 } catch (FactoryException e) {
-                    throw new RuntimeException(
-                            "Unable to decode SRS name. Cause: " + e.getMessage());
+                    throw new RuntimeException("Unable to decode SRS name. Cause: " + e.getMessage());
                 }
             }
             Coordinate coordinate = new Coordinate(xvalue, yvalue);
@@ -152,8 +150,7 @@ public class ToEnvelopeFunction implements Function {
                                     + ". Cause: "
                                     + e.getMessage());
                 } catch (FactoryException e) {
-                    throw new RuntimeException(
-                            "Unable to decode SRS name. Cause: " + e.getMessage());
+                    throw new RuntimeException("Unable to decode SRS name. Cause: " + e.getMessage());
                 }
             }
             envelope = new Envelope(minxvalue, maxxvalue, minyvalue, maxyvalue);

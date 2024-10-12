@@ -37,8 +37,7 @@ public class WFSFeatureWriter extends DiffContentFeatureWriter {
                 store,
                 localSate.getDiff(),
                 reader,
-                new SimpleFeatureBuilder(
-                        reader.getFeatureType(), new MutableIdentifierFeatureFactory()));
+                new SimpleFeatureBuilder(reader.getFeatureType(), new MutableIdentifierFeatureFactory()));
 
         if (autoCommit) {
             WFSDataStore dataStore = store.getDataStore();

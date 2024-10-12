@@ -90,21 +90,21 @@ class GeometrySmoother {
      * Default smoothing control. Specifies no minimum vertex distance and a constant number of
      * points per smoothed segment.
      */
-    private SmootherControl DEFAULT_CONTROL =
-            new SmootherControl() {
-                @Override
-                public double getMinLength() {
-                    return 0.0;
-                }
+    private SmootherControl DEFAULT_CONTROL = new SmootherControl() {
+        @Override
+        public double getMinLength() {
+            return 0.0;
+        }
 
-                @Override
-                public int getNumVertices(double length) {
-                    return 10;
-                }
-            };
+        @Override
+        public int getNumVertices(double length) {
+            return 10;
+        }
+    };
 
     /** The current SmootherControl instance. */
-    private SmootherControl control;;
+    private SmootherControl control;
+    ;
 
     /** The current {@code GeometryFactory} being used. */
     private final GeometryFactory geomFactory;
@@ -158,12 +158,7 @@ class GeometrySmoother {
             } else {
                 int smoothN = control.getNumVertices(dist);
                 Coordinate[] segment =
-                        cubicBezier(
-                                coords[i],
-                                coords[i + 1],
-                                controlPoints[i][1],
-                                controlPoints[i + 1][0],
-                                smoothN);
+                        cubicBezier(coords[i], coords[i + 1], controlPoints[i][1], controlPoints[i + 1][0], smoothN);
 
                 int copyN = i < N - 1 ? segment.length - 1 : segment.length;
                 for (int k = 0; k < copyN; k++) {
@@ -206,12 +201,7 @@ class GeometrySmoother {
             } else {
                 int smoothN = control.getNumVertices(dist);
                 Coordinate[] segment =
-                        cubicBezier(
-                                coords[i],
-                                coords[next],
-                                controlPoints[i][1],
-                                controlPoints[next][0],
-                                smoothN);
+                        cubicBezier(coords[i], coords[next], controlPoints[i][1], controlPoints[next][0], smoothN);
 
                 int copyN = i < N - 1 ? segment.length - 1 : segment.length;
                 for (int k = 0; k < copyN; k++) {
@@ -266,10 +256,7 @@ class GeometrySmoother {
         v[2] = coords[0];
 
         // Dummy coordinate for end of line
-        Coordinate vN =
-                new Coordinate(
-                        2 * coords[N - 1].x - coords[N - 2].x,
-                        2 * coords[N - 1].y - coords[N - 2].y);
+        Coordinate vN = new Coordinate(2 * coords[N - 1].x - coords[N - 2].x, 2 * coords[N - 1].y - coords[N - 2].y);
 
         mid[1].x = (v[1].x + v[2].x) / 2.0;
         mid[1].y = (v[1].y + v[2].y) / 2.0;
@@ -295,15 +282,13 @@ class GeometrySmoother {
             double xdelta = anchor.x - v[1].x;
             double ydelta = anchor.y - v[1].y;
 
-            ctrl[i][0] =
-                    new Coordinate(
-                            alpha * (v[1].x - mid[0].x + xdelta) + mid[0].x - xdelta,
-                            alpha * (v[1].y - mid[0].y + ydelta) + mid[0].y - ydelta);
+            ctrl[i][0] = new Coordinate(
+                    alpha * (v[1].x - mid[0].x + xdelta) + mid[0].x - xdelta,
+                    alpha * (v[1].y - mid[0].y + ydelta) + mid[0].y - ydelta);
 
-            ctrl[i][1] =
-                    new Coordinate(
-                            alpha * (v[1].x - mid[1].x + xdelta) + mid[1].x - xdelta,
-                            alpha * (v[1].y - mid[1].y + ydelta) + mid[1].y - ydelta);
+            ctrl[i][1] = new Coordinate(
+                    alpha * (v[1].x - mid[1].x + xdelta) + mid[1].x - xdelta,
+                    alpha * (v[1].y - mid[1].y + ydelta) + mid[1].y - ydelta);
         }
 
         return ctrl;
@@ -362,15 +347,13 @@ class GeometrySmoother {
             double xdelta = anchor.x - v[1].x;
             double ydelta = anchor.y - v[1].y;
 
-            ctrl[i][0] =
-                    new Coordinate(
-                            alpha * (v[1].x - mid[0].x + xdelta) + mid[0].x - xdelta,
-                            alpha * (v[1].y - mid[0].y + ydelta) + mid[0].y - ydelta);
+            ctrl[i][0] = new Coordinate(
+                    alpha * (v[1].x - mid[0].x + xdelta) + mid[0].x - xdelta,
+                    alpha * (v[1].y - mid[0].y + ydelta) + mid[0].y - ydelta);
 
-            ctrl[i][1] =
-                    new Coordinate(
-                            alpha * (v[1].x - mid[1].x + xdelta) + mid[1].x - xdelta,
-                            alpha * (v[1].y - mid[1].y + ydelta) + mid[1].y - ydelta);
+            ctrl[i][1] = new Coordinate(
+                    alpha * (v[1].x - mid[1].x + xdelta) + mid[1].x - xdelta,
+                    alpha * (v[1].y - mid[1].y + ydelta) + mid[1].y - ydelta);
         }
 
         return ctrl;
@@ -408,17 +391,9 @@ class GeometrySmoother {
         for (int i = 1; i < nv - 1; i++) {
             Coordinate c = new Coordinate();
 
-            c.x =
-                    ip[i].t[0] * start.x
-                            + ip[i].t[1] * ctrl1.x
-                            + ip[i].t[2] * ctrl2.x
-                            + ip[i].t[3] * end.x;
+            c.x = ip[i].t[0] * start.x + ip[i].t[1] * ctrl1.x + ip[i].t[2] * ctrl2.x + ip[i].t[3] * end.x;
             c.x /= ip[i].tsum;
-            c.y =
-                    ip[i].t[0] * start.y
-                            + ip[i].t[1] * ctrl1.y
-                            + ip[i].t[2] * ctrl2.y
-                            + ip[i].t[3] * end.y;
+            c.y = ip[i].t[0] * start.y + ip[i].t[1] * ctrl1.y + ip[i].t[2] * ctrl2.y + ip[i].t[3] * end.y;
             c.y /= ip[i].tsum;
 
             curve[i] = c;

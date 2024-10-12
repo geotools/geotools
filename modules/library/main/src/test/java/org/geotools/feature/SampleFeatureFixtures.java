@@ -119,15 +119,13 @@ public class SampleFeatureFixtures {
         return createChoiceAttrType("choiceTest2", choices);
     }
 
-    public static AttributeDescriptor createChoiceAttrType(
-            String name, AttributeDescriptor... choices) {
+    public static AttributeDescriptor createChoiceAttrType(String name, AttributeDescriptor... choices) {
 
         throw new RuntimeException("Figure out how to handle choice");
         // return new ChoiceAttributeType(name, choices);
     }
 
-    public static AttributeDescriptor createGeomChoiceAttrType(
-            String name, GeometryDescriptor... choices) {
+    public static AttributeDescriptor createGeomChoiceAttrType(String name, GeometryDescriptor... choices) {
         throw new RuntimeException("Figure out how to handle choice");
         // return new ChoiceAttributeType.Geometric(name, choices);
     }

@@ -204,10 +204,7 @@ public class ExpressionToText implements ExpressionVisitor {
                         output.append("SRID=").append(code).append(";");
                     }
                 } catch (FactoryException e) {
-                    LOGGER.log(
-                            Level.FINE,
-                            "Error while trying to get SRID for geometry, will not encode it",
-                            e);
+                    LOGGER.log(Level.FINE, "Error while trying to get SRID for geometry, will not encode it", e);
                 }
             }
             WKTWriter writer = new WKTWriter();
@@ -307,43 +304,42 @@ public class ExpressionToText implements ExpressionVisitor {
 
     static {
         Set<String> reservedWords = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
-        reservedWords.addAll(
-                Arrays.asList(
-                        "NOT",
-                        "AND",
-                        "OR",
-                        "LIKE",
-                        "IS",
-                        "NULL",
-                        "EXISTS",
-                        "DOES-NOT-EXIST",
-                        "DURING",
-                        "AFTER",
-                        "BEFORE",
-                        "ID", // deprecated but accepted by the parser
-                        "IN",
-                        "INCLUDE",
-                        "EXCLUDE",
-                        "TRUE",
-                        "FALSE",
-                        "EQUALS",
-                        "DISJOINT",
-                        "INTERSECTS",
-                        "TOUCHES",
-                        "CROSSES",
-                        "WITHIN",
-                        "CONTAINS",
-                        "OVERLAPS",
-                        "RELATE",
-                        "DWITHIN",
-                        "BEYOND",
-                        "POINT",
-                        "LINESTRING",
-                        "POLYGON",
-                        "MULTIPOINT",
-                        "MULTILINESTRING",
-                        "MULTIPOLYGON",
-                        "GEOMETRYCOLLECTION"));
+        reservedWords.addAll(Arrays.asList(
+                "NOT",
+                "AND",
+                "OR",
+                "LIKE",
+                "IS",
+                "NULL",
+                "EXISTS",
+                "DOES-NOT-EXIST",
+                "DURING",
+                "AFTER",
+                "BEFORE",
+                "ID", // deprecated but accepted by the parser
+                "IN",
+                "INCLUDE",
+                "EXCLUDE",
+                "TRUE",
+                "FALSE",
+                "EQUALS",
+                "DISJOINT",
+                "INTERSECTS",
+                "TOUCHES",
+                "CROSSES",
+                "WITHIN",
+                "CONTAINS",
+                "OVERLAPS",
+                "RELATE",
+                "DWITHIN",
+                "BEYOND",
+                "POINT",
+                "LINESTRING",
+                "POLYGON",
+                "MULTIPOINT",
+                "MULTILINESTRING",
+                "MULTIPOLYGON",
+                "GEOMETRYCOLLECTION"));
         RESERVED_WORDS = Collections.unmodifiableSet(reservedWords);
     }
 

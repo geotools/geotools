@@ -80,8 +80,7 @@ public class OGCDistanceBufferTypeBinding extends AbstractComplexBinding {
     @Override
     public Object getProperty(Object object, QName name) throws Exception {
         DistanceBufferOperator operator = (DistanceBufferOperator) object;
-        Object property =
-                OGCUtils.property(operator.getExpression1(), operator.getExpression2(), name);
+        Object property = OGCUtils.property(operator.getExpression1(), operator.getExpression2(), name);
 
         if (property != null) {
             return property;

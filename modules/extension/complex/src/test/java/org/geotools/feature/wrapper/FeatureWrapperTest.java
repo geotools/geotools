@@ -31,49 +31,39 @@ public class FeatureWrapperTest {
     private static Feature getFeature() {
         // AttributeImpl:mineName<string id=mineName_1>=Pieces of Eight -
         // Admiral Hill
-        Attribute mineName =
-                new AttributeImpl(
-                        "Pieces of Eight - Admiral Hill",
-                        Mine.mineNAME_DESCRIPTOR,
-                        new GmlObjectIdImpl("mineName"));
+        Attribute mineName = new AttributeImpl(
+                "Pieces of Eight - Admiral Hill", Mine.mineNAME_DESCRIPTOR, new GmlObjectIdImpl("mineName"));
 
         // AttributeImpl:isPreferred<boolean id=isPreferred_1>=true,
         Attribute isPreferred =
-                new AttributeImpl(
-                        true, Mine.ISPREFERRED_DESCRIPTOR, new GmlObjectIdImpl("isPreferred"));
+                new AttributeImpl(true, Mine.ISPREFERRED_DESCRIPTOR, new GmlObjectIdImpl("isPreferred"));
 
         Collection<Property> MineNameTypeProperties = new ArrayList<>();
         MineNameTypeProperties.add(mineName);
         MineNameTypeProperties.add(isPreferred);
 
         // ComplexAttributeImpl:MineNameType=
-        ComplexAttribute MineNameType =
-                new ComplexAttributeImpl(MineNameTypeProperties, Mine.MINENAMETYPE_TYPE, null);
+        ComplexAttribute MineNameType = new ComplexAttributeImpl(MineNameTypeProperties, Mine.MINENAMETYPE_TYPE, null);
 
         Collection<Property> MineNameProperties = new ArrayList<>();
         MineNameProperties.add(MineNameType);
 
         // ComplexAttributeImpl:MineName<MineNameType id=MINENAMETYPE_TYPE_1>=
         ComplexAttribute MineName =
-                new ComplexAttributeImpl(
-                        MineNameProperties,
-                        Mine.MINENAME_DESCRIPTOR,
-                        new GmlObjectIdImpl("MineName"));
+                new ComplexAttributeImpl(MineNameProperties, Mine.MINENAME_DESCRIPTOR, new GmlObjectIdImpl("MineName"));
 
         Collection<Property> MineNamePropertyProperties = new ArrayList<>();
         MineNamePropertyProperties.add(MineName);
 
         // ComplexAttributeImpl:MineNamePropertyType=
         ComplexAttribute MineNamePropertyType =
-                new ComplexAttributeImpl(
-                        MineNamePropertyProperties, Mine.MINENAMEPROPERTYTYPE_TYPE, null);
+                new ComplexAttributeImpl(MineNamePropertyProperties, Mine.MINENAMEPROPERTYTYPE_TYPE, null);
 
         Collection<Property> MineProperties = new ArrayList<>();
         MineProperties.add(MineNamePropertyType);
 
         // FeatureImpl:MineType<MineType id=Mine>=
-        Feature mine =
-                new FeatureImpl(MineProperties, Mine.MINETYPE_TYPE, new FeatureIdImpl("Mine"));
+        Feature mine = new FeatureImpl(MineProperties, Mine.MINETYPE_TYPE, new FeatureIdImpl("Mine"));
 
         return mine;
     }
@@ -87,9 +77,7 @@ public class FeatureWrapperTest {
         MineType wrappedMine = FeatureWrapper.wrap(mine, MineType.class);
 
         // Assert
-        Assert.assertEquals(
-                "Pieces of Eight - Admiral Hill",
-                wrappedMine.MineNameProperties.get(0).MineName.mineName);
+        Assert.assertEquals("Pieces of Eight - Admiral Hill", wrappedMine.MineNameProperties.get(0).MineName.mineName);
     }
 
     @Test
@@ -105,12 +93,10 @@ public class FeatureWrapperTest {
     }
 
     @Test(expected = InvalidClassException.class)
-    public void wrap_invalidFeatureCannotResolvePath_throwsInvalidClassException()
-            throws Exception {
+    public void wrap_invalidFeatureCannotResolvePath_throwsInvalidClassException() throws Exception {
         // Arrange
         Collection<Property> properties = new ArrayList<>();
-        Feature mine =
-                new FeatureImpl(properties, Mine.MINETYPE_TYPE, new FeatureIdImpl("Invalid mine."));
+        Feature mine = new FeatureImpl(properties, Mine.MINETYPE_TYPE, new FeatureIdImpl("Invalid mine."));
 
         // Act
         try {
@@ -126,42 +112,34 @@ public class FeatureWrapperTest {
     public void wrap_invalidFeatureMissingAttribute_throwsInvalidClassException() throws Exception {
         // AttributeImpl:isPreferred<boolean id=isPreferred_1>=true,
         Attribute isPreferred =
-                new AttributeImpl(
-                        true, Mine.ISPREFERRED_DESCRIPTOR, new GmlObjectIdImpl("isPreferred"));
+                new AttributeImpl(true, Mine.ISPREFERRED_DESCRIPTOR, new GmlObjectIdImpl("isPreferred"));
 
         Collection<Property> MineNameTypeProperties = new ArrayList<>();
         // Deliberately neglect to add: MineNameTypeProperties.add(mineName);
         MineNameTypeProperties.add(isPreferred);
 
         // ComplexAttributeImpl:MineNameType=
-        ComplexAttribute MineNameType =
-                new ComplexAttributeImpl(MineNameTypeProperties, Mine.MINENAMETYPE_TYPE, null);
+        ComplexAttribute MineNameType = new ComplexAttributeImpl(MineNameTypeProperties, Mine.MINENAMETYPE_TYPE, null);
 
         Collection<Property> MineNameProperties = new ArrayList<>();
         MineNameProperties.add(MineNameType);
 
         // ComplexAttributeImpl:MineName<MineNameType id=MINENAMETYPE_TYPE_1>=
         ComplexAttribute MineName =
-                new ComplexAttributeImpl(
-                        MineNameProperties,
-                        Mine.MINENAME_DESCRIPTOR,
-                        new GmlObjectIdImpl("MineName"));
+                new ComplexAttributeImpl(MineNameProperties, Mine.MINENAME_DESCRIPTOR, new GmlObjectIdImpl("MineName"));
 
         Collection<Property> MineNamePropertyProperties = new ArrayList<>();
         MineNamePropertyProperties.add(MineName);
 
         // ComplexAttributeImpl:MineNamePropertyType=
         ComplexAttribute MineNamePropertyType =
-                new ComplexAttributeImpl(
-                        MineNamePropertyProperties, Mine.MINENAMEPROPERTYTYPE_TYPE, null);
+                new ComplexAttributeImpl(MineNamePropertyProperties, Mine.MINENAMEPROPERTYTYPE_TYPE, null);
 
         Collection<Property> MineProperties = new ArrayList<>();
         MineProperties.add(MineNamePropertyType);
 
         // FeatureImpl:MineType<MineType id=Mine>=
-        Feature mine =
-                new FeatureImpl(
-                        MineProperties, Mine.MINETYPE_TYPE, new FeatureIdImpl("Invalid Mine"));
+        Feature mine = new FeatureImpl(MineProperties, Mine.MINETYPE_TYPE, new FeatureIdImpl("Invalid Mine"));
 
         // Act
         try {
@@ -174,34 +152,27 @@ public class FeatureWrapperTest {
     }
 
     @Test(expected = InvalidClassException.class)
-    public void wrap_invalidFeatureMissingMineNameTypeProperty_throwsInvalidClassException()
-            throws Exception {
+    public void wrap_invalidFeatureMissingMineNameTypeProperty_throwsInvalidClassException() throws Exception {
         // Arrange
         Collection<Property> MineNameProperties = new ArrayList<>();
         // MineNameProperties.add(MineNameType); Deliberately not adding this.
 
         // ComplexAttributeImpl:MineName<MineNameType id=MINENAMETYPE_TYPE_1>=
         ComplexAttribute MineName =
-                new ComplexAttributeImpl(
-                        MineNameProperties,
-                        Mine.MINENAME_DESCRIPTOR,
-                        new GmlObjectIdImpl("MineName"));
+                new ComplexAttributeImpl(MineNameProperties, Mine.MINENAME_DESCRIPTOR, new GmlObjectIdImpl("MineName"));
 
         Collection<Property> MineNamePropertyProperties = new ArrayList<>();
         MineNamePropertyProperties.add(MineName);
 
         // ComplexAttributeImpl:MineNamePropertyType=
         ComplexAttribute MineNamePropertyType =
-                new ComplexAttributeImpl(
-                        MineNamePropertyProperties, Mine.MINENAMEPROPERTYTYPE_TYPE, null);
+                new ComplexAttributeImpl(MineNamePropertyProperties, Mine.MINENAMEPROPERTYTYPE_TYPE, null);
 
         Collection<Property> MineProperties = new ArrayList<>();
         MineProperties.add(MineNamePropertyType);
 
         // FeatureImpl:MineType<MineType id=Mine>=
-        Feature mine =
-                new FeatureImpl(
-                        MineProperties, Mine.MINETYPE_TYPE, new FeatureIdImpl("Invalid Mine"));
+        Feature mine = new FeatureImpl(MineProperties, Mine.MINETYPE_TYPE, new FeatureIdImpl("Invalid Mine"));
 
         // Act
         try {
@@ -222,16 +193,13 @@ public class FeatureWrapperTest {
 
         // ComplexAttributeImpl:MineNamePropertyType=
         ComplexAttribute MineNamePropertyType =
-                new ComplexAttributeImpl(
-                        MineNamePropertyProperties, Mine.MINENAMEPROPERTYTYPE_TYPE, null);
+                new ComplexAttributeImpl(MineNamePropertyProperties, Mine.MINENAMEPROPERTYTYPE_TYPE, null);
 
         Collection<Property> MineProperties = new ArrayList<>();
         MineProperties.add(MineNamePropertyType);
 
         // FeatureImpl:MineType<MineType id=Mine>=
-        Feature mine =
-                new FeatureImpl(
-                        MineProperties, Mine.MINETYPE_TYPE, new FeatureIdImpl("Invalid Mine"));
+        Feature mine = new FeatureImpl(MineProperties, Mine.MINETYPE_TYPE, new FeatureIdImpl("Invalid Mine"));
 
         // Act
         try {

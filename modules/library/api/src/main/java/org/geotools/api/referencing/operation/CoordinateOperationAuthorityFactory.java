@@ -37,8 +37,7 @@ public interface CoordinateOperationAuthorityFactory extends AuthorityFactory {
      * @throws NoSuchAuthorityCodeException if the specified {@code code} was not found.
      * @throws FactoryException if the object creation failed for some other reason.
      */
-    CoordinateOperation createCoordinateOperation(String code)
-            throws NoSuchAuthorityCodeException, FactoryException;
+    CoordinateOperation createCoordinateOperation(String code) throws NoSuchAuthorityCodeException, FactoryException;
 
     /**
      * Creates operations from {@linkplain CoordinateReferenceSystem coordinate reference system}
@@ -56,7 +55,6 @@ public interface CoordinateOperationAuthorityFactory extends AuthorityFactory {
      * @throws NoSuchAuthorityCodeException if a specified code was not found.
      * @throws FactoryException if the object creation failed for some other reason.
      */
-    Set<CoordinateOperation> createFromCoordinateReferenceSystemCodes(
-            String sourceCRS, String targetCRS)
+    Set<CoordinateOperation> createFromCoordinateReferenceSystemCodes(String sourceCRS, String targetCRS)
             throws NoSuchAuthorityCodeException, FactoryException;
 }

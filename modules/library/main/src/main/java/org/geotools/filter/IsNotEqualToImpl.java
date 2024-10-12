@@ -41,10 +41,7 @@ public class IsNotEqualToImpl extends MultiCompareFilterImpl implements Property
     }
 
     protected IsNotEqualToImpl(
-            Expression expression1,
-            Expression expression2,
-            boolean matchCase,
-            MatchAction matchAction) {
+            Expression expression1, Expression expression2, boolean matchCase, MatchAction matchAction) {
         super(expression1, expression2, matchCase, matchAction);
         delegate = new IsEqualsToImpl(expression1, expression2, matchCase);
     }

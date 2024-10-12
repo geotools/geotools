@@ -46,8 +46,7 @@ class TileImageReader {
             lastReader.reset();
             lastReader.setInput(getImageInputStream(data));
         }
-        if (lastReader == null
-                || !lastReader.getOriginatingProvider().canDecodeInput(getImageInputStream(data))) {
+        if (lastReader == null || !lastReader.getOriginatingProvider().canDecodeInput(getImageInputStream(data))) {
             boolean found = false;
             for (ImageReader ir : readersCache) {
                 if (ir != lastReader) {
@@ -62,8 +61,7 @@ class TileImageReader {
             if (!found) {
                 Iterator<ImageReader> readers = ImageIO.getImageReaders(getImageInputStream(data));
                 if (!readers.hasNext()) {
-                    throw new IOException(
-                            "Unexpected, cannot find a reader for the current tile image format");
+                    throw new IOException("Unexpected, cannot find a reader for the current tile image format");
                 }
                 lastReader = readers.next();
                 lastReader.setInput(getImageInputStream(data));

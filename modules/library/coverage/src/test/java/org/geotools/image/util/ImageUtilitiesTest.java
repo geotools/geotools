@@ -56,67 +56,61 @@ public class ImageUtilitiesTest {
         // with a check on whether they get disposed of
         AtomicBoolean readerDisposed = new AtomicBoolean(false);
         AtomicBoolean streamDisposed = new AtomicBoolean(false);
-        byte[] bytes =
-                Base64.getDecoder().decode("R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==");
-        MemoryCacheImageInputStream is =
-                new MemoryCacheImageInputStream(new ByteArrayInputStream(bytes)) {
-                    @Override
-                    public void close() {
-                        streamDisposed.set(true);
-                    }
-                };
-        final ImageReader nativeReader = ImageIO.getImageReadersByFormatName("GIF").next();
+        byte[] bytes = Base64.getDecoder().decode("R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==");
+        MemoryCacheImageInputStream is = new MemoryCacheImageInputStream(new ByteArrayInputStream(bytes)) {
+            @Override
+            public void close() {
+                streamDisposed.set(true);
+            }
+        };
+        final ImageReader nativeReader =
+                ImageIO.getImageReadersByFormatName("GIF").next();
         nativeReader.setInput(is);
-        ImageReader reader =
-                new ImageReader(null) {
+        ImageReader reader = new ImageReader(null) {
 
-                    @Override
-                    public int getNumImages(boolean allowSearch) throws IOException {
-                        return nativeReader.getNumImages(allowSearch);
-                    }
+            @Override
+            public int getNumImages(boolean allowSearch) throws IOException {
+                return nativeReader.getNumImages(allowSearch);
+            }
 
-                    @Override
-                    public int getWidth(int imageIndex) throws IOException {
-                        return nativeReader.getWidth(imageIndex);
-                    }
+            @Override
+            public int getWidth(int imageIndex) throws IOException {
+                return nativeReader.getWidth(imageIndex);
+            }
 
-                    @Override
-                    public int getHeight(int imageIndex) throws IOException {
-                        return nativeReader.getHeight(imageIndex);
-                    }
+            @Override
+            public int getHeight(int imageIndex) throws IOException {
+                return nativeReader.getHeight(imageIndex);
+            }
 
-                    @Override
-                    public Iterator<ImageTypeSpecifier> getImageTypes(int imageIndex)
-                            throws IOException {
-                        return nativeReader.getImageTypes(imageIndex);
-                    }
+            @Override
+            public Iterator<ImageTypeSpecifier> getImageTypes(int imageIndex) throws IOException {
+                return nativeReader.getImageTypes(imageIndex);
+            }
 
-                    @Override
-                    public IIOMetadata getStreamMetadata() throws IOException {
-                        return nativeReader.getStreamMetadata();
-                    }
+            @Override
+            public IIOMetadata getStreamMetadata() throws IOException {
+                return nativeReader.getStreamMetadata();
+            }
 
-                    @Override
-                    public IIOMetadata getImageMetadata(int imageIndex) throws IOException {
-                        return nativeReader.getImageMetadata(imageIndex);
-                    }
+            @Override
+            public IIOMetadata getImageMetadata(int imageIndex) throws IOException {
+                return nativeReader.getImageMetadata(imageIndex);
+            }
 
-                    @Override
-                    public BufferedImage read(int imageIndex, ImageReadParam param)
-                            throws IOException {
-                        return nativeReader.read(imageIndex, param);
-                    }
+            @Override
+            public BufferedImage read(int imageIndex, ImageReadParam param) throws IOException {
+                return nativeReader.read(imageIndex, param);
+            }
 
-                    @Override
-                    public void dispose() {
-                        nativeReader.dispose();
-                        readerDisposed.set(true);
-                    }
-                };
+            @Override
+            public void dispose() {
+                nativeReader.dispose();
+                readerDisposed.set(true);
+            }
+        };
         // wrap it in a image read
-        RenderedOp image =
-                ImageReadDescriptor.create(
-                        is, 0, false, false, false, null, null, null, reader, null);
+        RenderedOp image = ImageReadDescriptor.create(is, 0, false, false, false, null, null, null, reader, null);
 
         // dispose the chain, check the stream and reader have been disposed of
         ImageUtilities.disposePlanarImageChain(image);
@@ -126,8 +120,7 @@ public class ImageUtilitiesTest {
 
     @Test
     public void testDisposeWritableRenderedImage()
-            throws NoSuchFieldException, SecurityException, IllegalArgumentException,
-                    IllegalAccessException {
+            throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
         BufferedImage bi = new BufferedImage(256, 256, BufferedImage.TYPE_BYTE_GRAY);
         WritableRenderedImageAdapter wria = new WritableRenderedImageAdapter(bi);
         ImageUtilities.disposeSinglePlanarImage(wria);
@@ -154,8 +147,7 @@ public class ImageUtilitiesTest {
     public void testPixelRescaleFull() throws Exception {
         BufferedImage bi = new BufferedImage(100, 100, BufferedImage.TYPE_BYTE_GRAY);
         bi.getRaster().getDataBuffer().setElemDouble(0, 0, 10);
-        RenderedImage result =
-                ImageUtilities.applyRescaling(new Double[] {10d}, new Double[] {1d}, bi, null);
+        RenderedImage result = ImageUtilities.applyRescaling(new Double[] {10d}, new Double[] {1d}, bi, null);
         assertEquals(DataBuffer.TYPE_DOUBLE, result.getSampleModel().getDataType());
         assertThat(result.getColorModel(), CoreMatchers.instanceOf(ComponentColorModel.class));
         double[] pixel = new double[1];
@@ -170,12 +162,8 @@ public class ImageUtilitiesTest {
         ImageLayout layout = new ImageLayout(bi);
         layout.setTileHeight(50);
         layout.setTileWidth(50);
-        RenderedImage result =
-                ImageUtilities.applyRescaling(
-                        new Double[] {10d},
-                        new Double[] {1d},
-                        bi,
-                        new Hints(JAI.KEY_IMAGE_LAYOUT, layout));
+        RenderedImage result = ImageUtilities.applyRescaling(
+                new Double[] {10d}, new Double[] {1d}, bi, new Hints(JAI.KEY_IMAGE_LAYOUT, layout));
         assertEquals(DataBuffer.TYPE_DOUBLE, result.getSampleModel().getDataType());
         assertEquals(50, result.getTileWidth());
         assertEquals(50, result.getTileHeight());

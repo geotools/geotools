@@ -48,11 +48,7 @@ final class TableInfo {
     public final String[] typeNames;
 
     /** Stores information about a specific table. */
-    TableInfo(
-            final Class<?> type,
-            final String table,
-            final String codeColumn,
-            final String nameColumn) {
+    TableInfo(final Class<?> type, final String table, final String codeColumn, final String nameColumn) {
         this(type, table, codeColumn, nameColumn, null, null, null);
     }
 

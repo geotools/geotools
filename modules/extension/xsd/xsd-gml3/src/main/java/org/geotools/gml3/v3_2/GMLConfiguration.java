@@ -87,12 +87,10 @@ public class GMLConfiguration extends Configuration {
      * Boolean property which controls whether geometry and envelope objects are encoded with an srs
      * dimension attribute.
      */
-    public static final QName NO_SRS_DIMENSION =
-            org.geotools.gml3.GMLConfiguration.NO_SRS_DIMENSION;
+    public static final QName NO_SRS_DIMENSION = org.geotools.gml3.GMLConfiguration.NO_SRS_DIMENSION;
 
     /** Property which engages "fast" gml encoding. */
-    public static final QName OPTIMIZED_ENCODING =
-            org.geotools.gml3.GMLConfiguration.OPTIMIZED_ENCODING;
+    public static final QName OPTIMIZED_ENCODING = org.geotools.gml3.GMLConfiguration.OPTIMIZED_ENCODING;
 
     /** gml3 configuration used to delegate to for configuration */
     org.geotools.gml3.GMLConfiguration delegate;
@@ -144,137 +142,99 @@ public class GMLConfiguration extends Configuration {
     @Override
     protected final void registerBindings(MutablePicoContainer container) {
         // Types
-        container.registerComponentImplementation(
-                GML.AbstractFeatureType, AbstractFeatureTypeBinding.class);
+        container.registerComponentImplementation(GML.AbstractFeatureType, AbstractFeatureTypeBinding.class);
         container.registerComponentImplementation(
                 GML.AbstractFeatureCollectionType, AbstractFeatureCollectionTypeBinding.class);
-        container.registerComponentImplementation(
-                GML.AbstractGeometryType, AbstractGeometryTypeBinding.class);
-        container.registerComponentImplementation(
-                GML.AbstractRingPropertyType, AbstractRingPropertyTypeBinding.class);
-        container.registerComponentImplementation(
-                GML.AbstractRingType, AbstractRingTypeBinding.class);
-        container.registerComponentImplementation(
-                GML.BoundingShapeType, BoundingShapeTypeBinding.class);
-        container.registerComponentImplementation(
-                GML.CoordinatesType, GMLCoordinatesTypeBinding.class);
+        container.registerComponentImplementation(GML.AbstractGeometryType, AbstractGeometryTypeBinding.class);
+        container.registerComponentImplementation(GML.AbstractRingPropertyType, AbstractRingPropertyTypeBinding.class);
+        container.registerComponentImplementation(GML.AbstractRingType, AbstractRingTypeBinding.class);
+        container.registerComponentImplementation(GML.BoundingShapeType, BoundingShapeTypeBinding.class);
+        container.registerComponentImplementation(GML.CoordinatesType, GMLCoordinatesTypeBinding.class);
 
-        container.registerComponentImplementation(
-                GML.CurveArrayPropertyType, CurveArrayPropertyTypeBinding.class);
+        container.registerComponentImplementation(GML.CurveArrayPropertyType, CurveArrayPropertyTypeBinding.class);
         container.registerComponentImplementation(GML.CurveType, CurveTypeBinding.class);
         container.registerComponentImplementation(
                 GML.CurveSegmentArrayPropertyType, CurveSegmentArrayPropertyTypeBinding.class);
-        container.registerComponentImplementation(
-                GML.DirectPositionListType, DirectPositionListTypeBinding.class);
-        container.registerComponentImplementation(
-                GML.DirectPositionType, DirectPositionTypeBinding.class);
+        container.registerComponentImplementation(GML.DirectPositionListType, DirectPositionListTypeBinding.class);
+        container.registerComponentImplementation(GML.DirectPositionType, DirectPositionTypeBinding.class);
         container.registerComponentImplementation(GML.doubleList, DoubleListBinding.class);
         container.registerComponentImplementation(GML.EnvelopeType, EnvelopeTypeBinding.class);
-        container.registerComponentImplementation(
-                GML.FeatureArrayPropertyType, FeatureArrayPropertyTypeBinding.class);
-        container.registerComponentImplementation(
-                GML.FeaturePropertyType, FeaturePropertyTypeBinding.class);
-        container.registerComponentImplementation(
-                GML.GeometryPropertyType, GeometryPropertyTypeBinding.class);
+        container.registerComponentImplementation(GML.FeatureArrayPropertyType, FeatureArrayPropertyTypeBinding.class);
+        container.registerComponentImplementation(GML.FeaturePropertyType, FeaturePropertyTypeBinding.class);
+        container.registerComponentImplementation(GML.GeometryPropertyType, GeometryPropertyTypeBinding.class);
         container.registerComponentImplementation(GML.integerList, IntegerListBinding.class);
-        container.registerComponentImplementation(
-                GML.LinearRingPropertyType, LinearRingPropertyTypeBinding.class);
+        container.registerComponentImplementation(GML.LinearRingPropertyType, LinearRingPropertyTypeBinding.class);
         container.registerComponentImplementation(GML.LinearRingType, LinearRingTypeBinding.class);
 
-        container.registerComponentImplementation(
-                GML.LineStringSegmentType, LineStringSegmentTypeBinding.class);
+        container.registerComponentImplementation(GML.LineStringSegmentType, LineStringSegmentTypeBinding.class);
         container.registerComponentImplementation(GML.LineStringType, LineStringTypeBinding.class);
-        container.registerComponentImplementation(
-                GML.LocationPropertyType, LocationPropertyTypeBinding.class);
+        container.registerComponentImplementation(GML.LocationPropertyType, LocationPropertyTypeBinding.class);
 
         container.registerComponentImplementation(GML.MeasureType, MeasureTypeBinding.class);
         container.registerComponentImplementation(GML.MultiCurveType, MultiCurveTypeBinding.class);
-        container.registerComponentImplementation(
-                GML.MultiCurvePropertyType, MultiCurvePropertyTypeBinding.class);
+        container.registerComponentImplementation(GML.MultiCurvePropertyType, MultiCurvePropertyTypeBinding.class);
 
-        container.registerComponentImplementation(
-                GML.MultiPointPropertyType, MultiPointPropertyTypeBinding.class);
+        container.registerComponentImplementation(GML.MultiPointPropertyType, MultiPointPropertyTypeBinding.class);
         container.registerComponentImplementation(GML.MultiPointType, MultiPointTypeBinding.class);
 
-        container.registerComponentImplementation(
-                GML.MultiSurfaceType, MultiSurfaceTypeBinding.class);
-        container.registerComponentImplementation(
-                GML.MultiSurfacePropertyType, MultiSurfacePropertyTypeBinding.class);
-        container.registerComponentImplementation(
-                GML.PointArrayPropertyType, PointArrayPropertyTypeBinding.class);
-        container.registerComponentImplementation(
-                GML.PointPropertyType, PointPropertyTypeBinding.class);
+        container.registerComponentImplementation(GML.MultiSurfaceType, MultiSurfaceTypeBinding.class);
+        container.registerComponentImplementation(GML.MultiSurfacePropertyType, MultiSurfacePropertyTypeBinding.class);
+        container.registerComponentImplementation(GML.PointArrayPropertyType, PointArrayPropertyTypeBinding.class);
+        container.registerComponentImplementation(GML.PointPropertyType, PointPropertyTypeBinding.class);
         container.registerComponentImplementation(GML.PointType, PointTypeBinding.class);
 
         container.registerComponentImplementation(GML.PolygonType, PolygonTypeBinding.class);
         container.registerComponentImplementation(GML.ReferenceType, ReferenceTypeBinding.class);
-        container.registerComponentImplementation(
-                GML.SurfaceArrayPropertyType, SurfaceArrayPropertyTypeBinding.class);
-        container.registerComponentImplementation(
-                GML.SurfacePropertyType, SurfacePropertyTypeBinding.class);
+        container.registerComponentImplementation(GML.SurfaceArrayPropertyType, SurfaceArrayPropertyTypeBinding.class);
+        container.registerComponentImplementation(GML.SurfacePropertyType, SurfacePropertyTypeBinding.class);
         container.registerComponentImplementation(XS.ANYTYPE, ComplexSupportXSAnyTypeBinding.class);
 
-        container.registerComponentImplementation(
-                GML.TimeInstantType, TimeInstantTypeBinding.class);
-        container.registerComponentImplementation(
-                GML.TimeInstantPropertyType, TimeInstantPropertyTypeBinding.class);
+        container.registerComponentImplementation(GML.TimeInstantType, TimeInstantTypeBinding.class);
+        container.registerComponentImplementation(GML.TimeInstantPropertyType, TimeInstantPropertyTypeBinding.class);
         container.registerComponentImplementation(GML.TimePeriodType, TimePeriodTypeBinding.class);
-        container.registerComponentImplementation(
-                GML.TimePositionType, TimePositionTypeBinding.class);
-        container.registerComponentImplementation(
-                GML.TimePositionUnion, TimePositionUnionBinding.class);
+        container.registerComponentImplementation(GML.TimePositionType, TimePositionTypeBinding.class);
+        container.registerComponentImplementation(GML.TimePositionUnion, TimePositionUnionBinding.class);
 
         container.registerComponentImplementation(
-                GML.CurvePropertyType,
-                org.geotools.gml3.bindings.ext.CurvePropertyTypeBinding.class);
+                GML.CurvePropertyType, org.geotools.gml3.bindings.ext.CurvePropertyTypeBinding.class);
         container.registerComponentImplementation(GML.ArcStringType, ArcStringTypeBinding.class);
         container.registerComponentImplementation(GML.ArcType, ArcTypeBinding.class);
         container.registerComponentImplementation(GML.RingType, RingTypeBinding.class);
-        container.registerComponentImplementation(
-                GML.CompositeCurveType, CompositeCurveTypeBinding.class);
+        container.registerComponentImplementation(GML.CompositeCurveType, CompositeCurveTypeBinding.class);
 
         container.registerComponentImplementation(
                 GML.MultiGeometryType, org.geotools.gml3.bindings.MultiGeometryTypeBinding.class);
         container.registerComponentImplementation(
-                GML.MultiGeometryPropertyType,
-                org.geotools.gml3.bindings.MultiGeometryPropertyTypeBinding.class);
+                GML.MultiGeometryPropertyType, org.geotools.gml3.bindings.MultiGeometryPropertyTypeBinding.class);
 
         // extended bindings for arc/surface support
         if (isExtendedArcSurfaceSupport()) {
-            container.registerComponentImplementation(
-                    GML.ArcStringType, ArcStringTypeBinding.class);
+            container.registerComponentImplementation(GML.ArcStringType, ArcStringTypeBinding.class);
             container.registerComponentImplementation(GML.ArcType, ArcTypeBinding.class);
             container.registerComponentImplementation(GML.CircleType, CircleTypeBinding.class);
-            container.registerComponentImplementation(
-                    GML.PolygonPatchType, PolygonPatchTypeBinding.class);
+            container.registerComponentImplementation(GML.PolygonPatchType, PolygonPatchTypeBinding.class);
             container.registerComponentImplementation(GML.RingType, RingTypeBinding.class);
             container.registerComponentImplementation(
                     GML.SurfacePatchArrayPropertyType, SurfacePatchArrayPropertyTypeBinding.class);
             container.registerComponentImplementation(GML.SurfaceType, SurfaceTypeBinding.class);
+            container.registerComponentImplementation(GML.CompositeCurveType, CompositeCurveTypeBinding.class);
             container.registerComponentImplementation(
-                    GML.CompositeCurveType, CompositeCurveTypeBinding.class);
-            container.registerComponentImplementation(
-                    GML.CurveArrayPropertyType,
-                    org.geotools.gml3.bindings.ext.CurveArrayPropertyTypeBinding.class);
+                    GML.CurveArrayPropertyType, org.geotools.gml3.bindings.ext.CurveArrayPropertyTypeBinding.class);
             container.registerComponentImplementation(
                     GML.CurveType, org.geotools.gml3.bindings.ext.CurveTypeBinding.class);
             container.registerComponentImplementation(
                     GML.MultiCurveType, org.geotools.gml3.bindings.ext.MultiCurveTypeBinding.class);
             container.registerComponentImplementation(
-                    GML.MultiSurfaceType,
-                    org.geotools.gml3.bindings.ext.MultiSurfaceTypeBinding.class);
+                    GML.MultiSurfaceType, org.geotools.gml3.bindings.ext.MultiSurfaceTypeBinding.class);
             container.registerComponentImplementation(
-                    GML.PolygonPatchType,
-                    org.geotools.gml3.bindings.ext.PolygonPatchTypeBinding.class);
+                    GML.PolygonPatchType, org.geotools.gml3.bindings.ext.PolygonPatchTypeBinding.class);
             container.registerComponentImplementation(
-                    GML.SurfaceArrayPropertyType,
-                    org.geotools.gml3.bindings.ext.SurfaceArrayPropertyTypeBinding.class);
+                    GML.SurfaceArrayPropertyType, org.geotools.gml3.bindings.ext.SurfaceArrayPropertyTypeBinding.class);
             container.registerComponentImplementation(
                     GML.SurfacePatchArrayPropertyType,
                     org.geotools.gml3.bindings.ext.SurfacePatchArrayPropertyTypeBinding.class);
             container.registerComponentImplementation(
-                    GML.SurfacePropertyType,
-                    org.geotools.gml3.bindings.ext.SurfacePropertyTypeBinding.class);
+                    GML.SurfacePropertyType, org.geotools.gml3.bindings.ext.SurfacePropertyTypeBinding.class);
             container.registerComponentImplementation(
                     GML.SurfaceType, org.geotools.gml3.bindings.ext.SurfaceTypeBinding.class);
         }

@@ -57,8 +57,7 @@ public class GeoJSONFeatureReader implements FeatureReader<SimpleFeatureType, Si
     }
 
     @Override
-    public SimpleFeature next()
-            throws IOException, IllegalArgumentException, NoSuchElementException {
+    public SimpleFeature next() throws IOException, IllegalArgumentException, NoSuchElementException {
         if (iterator == null) {
             iterator = reader.getIterator();
         }

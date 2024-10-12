@@ -89,8 +89,7 @@ public class VisitorCalculationTest extends DataTestCase {
         SimpleFeatureType boringType = DataUtilities.createType("fc3.boring", "id:0");
         SimpleFeature[] boringFeatures = new SimpleFeature[100];
         for (int i = 1; i <= 100; i++) {
-            boringFeatures[i - 1] =
-                    SimpleFeatureBuilder.build(boringType, new Object[] {Integer.valueOf(i)}, null);
+            boringFeatures[i - 1] = SimpleFeatureBuilder.build(boringType, new Object[] {Integer.valueOf(i)}, null);
         }
 
         ft3 = boringType;
@@ -457,9 +456,7 @@ public class VisitorCalculationTest extends DataTestCase {
         CalcResult uniqueResult1 = uniqueVisitor.getResult();
         CalcResult uniqueResult2 = uniqueVisitor2.getResult();
         CalcResult uniqueResult3 = uniqueResult1.merge(uniqueResult2);
-        assertEquals(
-                5,
-                uniqueResult3.toSet().size()); // 3 and 3.0 are different, so there are actually 5
+        assertEquals(5, uniqueResult3.toSet().size()); // 3 and 3.0 are different, so there are actually 5
         // ensure merge was not destructive
         assertEquals(3, uniqueResult1.toSet().size());
         // test a merge with duplicate elements
@@ -600,34 +597,17 @@ public class VisitorCalculationTest extends DataTestCase {
 
     @Test
     public void testNearest() throws Exception {
-        SimpleFeatureType type =
-                DataUtilities.createType(
-                        "nearestTest",
-                        "name:String,size:int,flow:double,event:java.util.Date,data:java.io.File");
+        SimpleFeatureType type = DataUtilities.createType(
+                "nearestTest", "name:String,size:int,flow:double,event:java.util.Date,data:java.io.File");
         ListFeatureCollection fc = new ListFeatureCollection(type);
         SimpleDateFormat df = new SimpleDateFormat("yyyy-mm-dd", Locale.ENGLISH);
         df.setTimeZone(TimeZone.getTimeZone("GMT"));
-        fc.add(
-                SimpleFeatureBuilder.build(
-                        type,
-                        new Object[] {
-                            "abc", 10, 10.5, df.parse("2014-12-10"), new File("/tmp/test.txt")
-                        },
-                        null));
-        fc.add(
-                SimpleFeatureBuilder.build(
-                        type,
-                        new Object[] {
-                            "ade", 5, 3.5, df.parse("2012-11-10"), new File("/tmp/abc.txt")
-                        },
-                        null));
-        fc.add(
-                SimpleFeatureBuilder.build(
-                        type,
-                        new Object[] {
-                            "zaa", 2, 50.4, df.parse("2010-11-10"), new File("/tmp/zaa.txt")
-                        },
-                        null));
+        fc.add(SimpleFeatureBuilder.build(
+                type, new Object[] {"abc", 10, 10.5, df.parse("2014-12-10"), new File("/tmp/test.txt")}, null));
+        fc.add(SimpleFeatureBuilder.build(
+                type, new Object[] {"ade", 5, 3.5, df.parse("2012-11-10"), new File("/tmp/abc.txt")}, null));
+        fc.add(SimpleFeatureBuilder.build(
+                type, new Object[] {"zaa", 2, 50.4, df.parse("2010-11-10"), new File("/tmp/zaa.txt")}, null));
 
         // test on integer
         testNearest(fc, "size", 5, 5); // exact match
@@ -654,8 +634,7 @@ public class VisitorCalculationTest extends DataTestCase {
         testNearest(fc, "name", "zzz", "zaa"); // above max
 
         // test on random comparable (a file)
-        testNearest(
-                fc, "data", new File("/tmp/test.txt"), new File("/tmp/test.txt")); // exact match
+        testNearest(fc, "data", new File("/tmp/test.txt"), new File("/tmp/test.txt")); // exact match
         testNearest(fc, "data", new File("/tmp/aaa.txt"), new File("/tmp/abc.txt")); // below min
         testNearest(
                 fc,
@@ -666,8 +645,7 @@ public class VisitorCalculationTest extends DataTestCase {
         testNearest(fc, "data", new File("/tmp/zzz.txt"), new File("/tmp/zaa.txt")); // above max
     }
 
-    private void testNearest(
-            SimpleFeatureCollection fc, String attributeName, Object target, Object... validResults)
+    private void testNearest(SimpleFeatureCollection fc, String attributeName, Object target, Object... validResults)
             throws IOException {
         PropertyName expr = ff.property(attributeName);
         NearestVisitor visitor = new NearestVisitor(expr, target);
@@ -682,10 +660,7 @@ public class VisitorCalculationTest extends DataTestCase {
             }
 
             assertTrue(
-                    "Could match nearest "
-                            + nearestMatch
-                            + " among valid values "
-                            + Arrays.asList(validResults),
+                    "Could match nearest " + nearestMatch + " among valid values " + Arrays.asList(validResults),
                     found);
         }
     }

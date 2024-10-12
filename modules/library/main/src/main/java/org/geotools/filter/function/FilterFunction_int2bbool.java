@@ -26,8 +26,7 @@ import org.geotools.filter.capability.FunctionNameImpl;
 
 public class FilterFunction_int2bbool extends FunctionExpressionImpl {
 
-    public static FunctionName NAME =
-            new FunctionNameImpl("int2bbool", Boolean.class, parameter("int", Integer.class));
+    public static FunctionName NAME = new FunctionNameImpl("int2bbool", Boolean.class, parameter("int", Integer.class));
 
     public FilterFunction_int2bbool() {
         super(NAME);

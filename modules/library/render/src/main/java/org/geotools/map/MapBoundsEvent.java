@@ -76,10 +76,7 @@ public class MapBoundsEvent extends EventObject {
      * @throws IllegalArgumentException if type is invalid
      */
     public MapBoundsEvent(
-            MapContent source,
-            int type,
-            ReferencedEnvelope oldAreaOfInterest,
-            ReferencedEnvelope newAreaOfInterest) {
+            MapContent source, int type, ReferencedEnvelope oldAreaOfInterest, ReferencedEnvelope newAreaOfInterest) {
         super(source);
 
         this.type = EnumSet.noneOf(Type.class);
@@ -89,10 +86,7 @@ public class MapBoundsEvent extends EventObject {
             this.type.add(Type.CRS);
         } else {
             throw new IllegalArgumentException(
-                    "Type is not acceptable, maximum value is "
-                            + (NEXT_FLAG - 1)
-                            + ", passed value is "
-                            + type);
+                    "Type is not acceptable, maximum value is " + (NEXT_FLAG - 1) + ", passed value is " + type);
         }
         this.oldAreaOfInterest = oldAreaOfInterest;
         this.newAreaOfInterest = newAreaOfInterest;
@@ -113,11 +107,7 @@ public class MapBoundsEvent extends EventObject {
      * @param newBounds the context's new area of interest
      * @throws IllegalArgumentException if type is invalid
      */
-    public MapBoundsEvent(
-            MapViewport source,
-            Type type,
-            ReferencedEnvelope oldBounds,
-            ReferencedEnvelope newBounds) {
+    public MapBoundsEvent(MapViewport source, Type type, ReferencedEnvelope oldBounds, ReferencedEnvelope newBounds) {
         this(source, EnumSet.of(type), oldBounds, newBounds);
     }
 
@@ -138,10 +128,7 @@ public class MapBoundsEvent extends EventObject {
      * @throws IllegalArgumentException if type is invalid
      */
     public MapBoundsEvent(
-            MapViewport source,
-            EnumSet<Type> type,
-            ReferencedEnvelope oldBounds,
-            ReferencedEnvelope newBounds) {
+            MapViewport source, EnumSet<Type> type, ReferencedEnvelope oldBounds, ReferencedEnvelope newBounds) {
         super(source);
         this.type = type;
         this.oldAreaOfInterest = oldBounds;

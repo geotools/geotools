@@ -199,8 +199,7 @@ public class EpsgFallbackTest {
         Assert.assertEquals("World_Mercator", String.valueOf(factory.getDescriptionText(code)));
 
         // Equivalent standard ESPG
-        Assert.assertEquals(
-                "WGS 84 / World Mercator", String.valueOf(factory.getDescriptionText("EPSG:3395")));
+        Assert.assertEquals("WGS 84 / World Mercator", String.valueOf(factory.getDescriptionText("EPSG:3395")));
         // TODO: enable if we implement more intelligent 'equalsIgnoreMetadata'
         // final CoordinateReferenceSystem standard =
         // factory.createCoordinateReferenceSystem("EPSG:3395");
@@ -221,7 +220,6 @@ public class EpsgFallbackTest {
         Assert.assertFalse(codes.contains("EPSG:4326")); // This is a GeographicCRS, not a
         // ProjectedCRS
         assertTrue(codes.contains("EPSG:100002")); // Defined in unnamed database
-        Assert.assertFalse(
-                codes.contains("EPSG:100001")); // This is a GeographicCRS, not a ProjectedCRS
+        Assert.assertFalse(codes.contains("EPSG:100001")); // This is a GeographicCRS, not a ProjectedCRS
     }
 }

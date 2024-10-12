@@ -71,8 +71,7 @@ public class JsonPointerFilterSplitterVisitorTest {
     /** Tests that visitor does not apply json pointer function if it is not being used */
     @Test
     public void nonJsonPointerSplittingTest() {
-        PropertyIsEqualTo testFilter =
-                ff.equals(ff.property("testProperty"), ff.literal(TEST_VALUE));
+        PropertyIsEqualTo testFilter = ff.equals(ff.property("testProperty"), ff.literal(TEST_VALUE));
 
         visitor.visit(testFilter, null);
         assertEquals(Filter.INCLUDE, visitor.getFilterPost());

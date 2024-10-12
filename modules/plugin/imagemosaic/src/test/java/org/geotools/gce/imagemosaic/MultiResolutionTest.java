@@ -68,10 +68,8 @@ public class MultiResolutionTest {
         // we have to be sure that we are working against a valid grid range.
         final GridEnvelope2D testRange = new GridEnvelope2D(minX, minY, maxX, maxY);
         // build the corresponding envelope
-        final MathTransform gridToWorldCorner =
-                reader.getOriginalGridToWorld(PixelInCell.CELL_CORNER);
-        final GeneralBounds testEnvelope =
-                CRS.transform(gridToWorldCorner, new GeneralBounds(testRange.getBounds()));
+        final MathTransform gridToWorldCorner = reader.getOriginalGridToWorld(PixelInCell.CELL_CORNER);
+        final GeneralBounds testEnvelope = CRS.transform(gridToWorldCorner, new GeneralBounds(testRange.getBounds()));
         testEnvelope.setCoordinateReferenceSystem(nativeCRS);
         ParameterValue<GridGeometry2D> pam = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
         pam.setValue(new GridGeometry2D(testRange, testEnvelope));
@@ -95,8 +93,7 @@ public class MultiResolutionTest {
         MathTransform g2w = reader.getOriginalGridToWorld(PixelInCell.CELL_CORNER);
         AffineTransform2D at = (AffineTransform2D) g2w;
 
-        ParameterValue<double[]> virtualNativeRes =
-                ImageMosaicFormat.VIRTUAL_NATIVE_RESOLUTION.createValue();
+        ParameterValue<double[]> virtualNativeRes = ImageMosaicFormat.VIRTUAL_NATIVE_RESOLUTION.createValue();
 
         // Specifying a lower virtual native resolution
         virtualNativeRes.setValue(new double[] {at.getScaleX() * 16, -at.getScaleY() * 16});
@@ -128,8 +125,7 @@ public class MultiResolutionTest {
         MathTransform g2w = reader.getOriginalGridToWorld(PixelInCell.CELL_CORNER);
         AffineTransform2D at = (AffineTransform2D) g2w;
 
-        ParameterValue<double[]> virtualNativeRes =
-                ImageMosaicFormat.VIRTUAL_NATIVE_RESOLUTION.createValue();
+        ParameterValue<double[]> virtualNativeRes = ImageMosaicFormat.VIRTUAL_NATIVE_RESOLUTION.createValue();
 
         // Specifying a lower virtual native resolution
         virtualNativeRes.setValue(new double[] {at.getScaleX() * 16, -at.getScaleY() * 16});
@@ -180,28 +176,23 @@ public class MultiResolutionTest {
         MathTransform g2w = reader.getOriginalGridToWorld(PixelInCell.CELL_CORNER);
         AffineTransform2D at = (AffineTransform2D) g2w;
 
-        ParameterValue<double[]> virtualNativeRes =
-                ImageMosaicFormat.VIRTUAL_NATIVE_RESOLUTION.createValue();
+        ParameterValue<double[]> virtualNativeRes = ImageMosaicFormat.VIRTUAL_NATIVE_RESOLUTION.createValue();
 
         // Specifying a lower virtual native resolution
         virtualNativeRes.setValue(new double[] {at.getScaleX() * 40, -at.getScaleY() * 40});
 
         // This will trigger a first scale operation so that we can check
         // that the 2 scales aren't collapsed together
-        ParameterValue<DecimationPolicy> decimation =
-                ImageMosaicFormat.DECIMATION_POLICY.createValue();
+        ParameterValue<DecimationPolicy> decimation = ImageMosaicFormat.DECIMATION_POLICY.createValue();
         decimation.setValue(DecimationPolicy.DISALLOW);
 
         ParameterValue<GridGeometry2D> gg = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
         gg.setValue(new GridGeometry2D(originalRange, envelope));
 
-        ParameterValue<Interpolation> interpolation =
-                AbstractGridFormat.INTERPOLATION.createValue();
+        ParameterValue<Interpolation> interpolation = AbstractGridFormat.INTERPOLATION.createValue();
         interpolation.setValue(Interpolation.getInstance(Interpolation.INTERP_NEAREST));
 
-        GridCoverage2D gc =
-                reader.read(
-                        new ParameterValue<?>[] {virtualNativeRes, gg, decimation, interpolation});
+        GridCoverage2D gc = reader.read(new ParameterValue<?>[] {virtualNativeRes, gg, decimation, interpolation});
         RenderedImage ri = gc.getRenderedImage();
 
         // Given that we are requesting full bbox on full width*height

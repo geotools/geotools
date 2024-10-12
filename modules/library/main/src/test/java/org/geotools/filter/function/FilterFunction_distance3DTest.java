@@ -33,11 +33,8 @@ public class FilterFunction_distance3DTest {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
 
-        Feature f =
-                SimpleFeatureBuilder.build(
-                        type,
-                        new Object[] {"testFeature1", gf.createPoint(new Coordinate(10, 20, 30))},
-                        null);
+        Feature f = SimpleFeatureBuilder.build(
+                type, new Object[] {"testFeature1", gf.createPoint(new Coordinate(10, 20, 30))}, null);
         Literal literal_geom = ff.literal(gf.createPoint(new Coordinate(10, 30, 40)));
 
         Function exp = ff.function("distance3D", ff.property("geom"), literal_geom);

@@ -80,16 +80,15 @@ public class FeatureClassStatsTest {
     @Test
     public void testEqualInterval() throws Exception {
 
-        Results result =
-                new FeatureClassStats()
-                        .execute(
-                                features,
-                                "valu",
-                                new LinkedHashSet<>(Arrays.asList(Statistic.MEAN, Statistic.SUM)),
-                                4,
-                                ClassificationMethod.EQUAL_INTERVAL,
-                                null,
-                                null);
+        Results result = new FeatureClassStats()
+                .execute(
+                        features,
+                        "valu",
+                        new LinkedHashSet<>(Arrays.asList(Statistic.MEAN, Statistic.SUM)),
+                        4,
+                        ClassificationMethod.EQUAL_INTERVAL,
+                        null,
+                        null);
 
         assertResult(
                 result,
@@ -102,16 +101,15 @@ public class FeatureClassStatsTest {
 
     @Test
     public void testQuantile() throws Exception {
-        Results result =
-                new FeatureClassStats()
-                        .execute(
-                                features,
-                                "valu",
-                                new LinkedHashSet<>(Arrays.asList(Statistic.MEAN, Statistic.SUM)),
-                                4,
-                                ClassificationMethod.QUANTILE,
-                                null,
-                                null);
+        Results result = new FeatureClassStats()
+                .execute(
+                        features,
+                        "valu",
+                        new LinkedHashSet<>(Arrays.asList(Statistic.MEAN, Statistic.SUM)),
+                        4,
+                        ClassificationMethod.QUANTILE,
+                        null,
+                        null);
 
         assertResult(
                 result,
@@ -124,16 +122,15 @@ public class FeatureClassStatsTest {
 
     @Test
     public void testNatural() throws Exception {
-        Results result =
-                new FeatureClassStats()
-                        .execute(
-                                features,
-                                "valu",
-                                new LinkedHashSet<>(Arrays.asList(Statistic.MEAN, Statistic.SUM)),
-                                4,
-                                ClassificationMethod.NATURAL_BREAKS,
-                                null,
-                                null);
+        Results result = new FeatureClassStats()
+                .execute(
+                        features,
+                        "valu",
+                        new LinkedHashSet<>(Arrays.asList(Statistic.MEAN, Statistic.SUM)),
+                        4,
+                        ClassificationMethod.NATURAL_BREAKS,
+                        null,
+                        null);
 
         assertResult(
                 result,
@@ -145,12 +142,7 @@ public class FeatureClassStatsTest {
     }
 
     void assertResult(
-            Results result,
-            int classes,
-            Number[][] ranges,
-            Integer[] counts,
-            Number[] sums,
-            Number[] averages) {
+            Results result, int classes, Number[][] ranges, Integer[] counts, Number[] sums, Number[] averages) {
 
         assertEquals(classes, result.size());
 

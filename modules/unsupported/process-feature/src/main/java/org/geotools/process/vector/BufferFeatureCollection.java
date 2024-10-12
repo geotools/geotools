@@ -53,9 +53,7 @@ public class BufferFeatureCollection implements VectorProcess {
     public SimpleFeatureCollection execute(
             @DescribeParameter(name = "features", description = "Input feature collection")
                     SimpleFeatureCollection features,
-            @DescribeParameter(
-                            name = "distance",
-                            description = "Fixed value to use for the buffer distance")
+            @DescribeParameter(name = "distance", description = "Fixed value to use for the buffer distance")
                     Double distance,
             @DescribeParameter(
                             name = "attributeName",
@@ -98,8 +96,7 @@ public class BufferFeatureCollection implements VectorProcess {
 
         SimpleFeatureCollection delegate;
 
-        public BufferedFeatureCollection(
-                SimpleFeatureCollection delegate, String attribute, Double distance) {
+        public BufferedFeatureCollection(SimpleFeatureCollection delegate, String attribute, Double distance) {
             this.distance = distance;
             this.attribute = attribute;
             this.delegate = delegate;
@@ -107,8 +104,7 @@ public class BufferFeatureCollection implements VectorProcess {
 
         @Override
         public SimpleFeatureIterator features() {
-            return new BufferedFeatureIterator(
-                    delegate, this.attribute, this.distance, getSchema());
+            return new BufferedFeatureIterator(delegate, this.attribute, this.distance, getSchema());
         }
 
         @Override
@@ -172,10 +168,7 @@ public class BufferFeatureCollection implements VectorProcess {
         SimpleFeature next;
 
         public BufferedFeatureIterator(
-                SimpleFeatureCollection delegate,
-                String attribute,
-                Double distance,
-                SimpleFeatureType schema) {
+                SimpleFeatureCollection delegate, String attribute, Double distance, SimpleFeatureType schema) {
             this.delegate = delegate.features();
             this.distance = distance;
             this.collection = delegate;
@@ -196,9 +189,7 @@ public class BufferFeatureCollection implements VectorProcess {
                     if (value instanceof Geometry) {
                         Double fDistance = distance;
                         if (this.attribute != null) {
-                            fDistance =
-                                    Converters.convert(
-                                            f.getAttribute(this.attribute), Double.class);
+                            fDistance = Converters.convert(f.getAttribute(this.attribute), Double.class);
                         }
                         if (fDistance != null && fDistance != 0.0) {
                             value = ((Geometry) value).buffer(fDistance);

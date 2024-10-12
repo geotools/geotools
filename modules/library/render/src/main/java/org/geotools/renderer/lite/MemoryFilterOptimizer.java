@@ -264,8 +264,7 @@ class MemoryFilterOptimizer extends DuplicatingFilterVisitor {
         return memoize(filter, extraData, super::visit);
     }
 
-    public <T extends Filter> T memoize(
-            T filter, Object extraData, BiFunction<T, Object, Object> duplicator) {
+    public <T extends Filter> T memoize(T filter, Object extraData, BiFunction<T, Object, Object> duplicator) {
         // do we want to memoize this filter?
         if (!memoizeCandidates.contains(filter)) {
             // drill down, this clones and at the same time visits sub-filters
@@ -291,8 +290,7 @@ class MemoryFilterOptimizer extends DuplicatingFilterVisitor {
     public Object visit(PropertyName expression, Object extraData) {
         Expression replacement = expressionReplacements.get(expression);
         if (replacement == null) {
-            if (simpleFeatureType != null
-                    && simpleFeatureType.indexOf(expression.getPropertyName()) >= 0) {
+            if (simpleFeatureType != null && simpleFeatureType.indexOf(expression.getPropertyName()) >= 0) {
                 // index access is significantly faster, does not need memoization
                 replacement = new IndexPropertyName(simpleFeatureType, expression);
             } else if (memoizeCandidates.contains(expression)) {
@@ -366,11 +364,7 @@ class MemoryFilterOptimizer extends DuplicatingFilterVisitor {
                         }
                     } catch (ArrayIndexOutOfBoundsException e) {
                         throw new RuntimeException(
-                                "Could not locate attribute at index "
-                                        + index
-                                        + " on feature "
-                                        + object,
-                                e);
+                                "Could not locate attribute at index " + index + " on feature " + object, e);
                     }
                 }
             }

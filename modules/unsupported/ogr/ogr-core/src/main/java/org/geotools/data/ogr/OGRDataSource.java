@@ -33,8 +33,7 @@ class OGRDataSource {
      * When true, the stack trace that created a reader that wasn't closed is recorded and then
      * printed out when warning the user about this.
      */
-    protected static final Boolean TRACE_ENABLED =
-            "true".equalsIgnoreCase(System.getProperty(TRACE_ENABLED_KEY));
+    protected static final Boolean TRACE_ENABLED = "true".equalsIgnoreCase(System.getProperty(TRACE_ENABLED_KEY));
 
     long creationTime;
     OGRDataSourcePool pool;
@@ -92,8 +91,7 @@ class OGRDataSource {
         return ogr.DataSourceGetDriver(source);
     }
 
-    public Object createLayer(
-            String typeName, Object spatialReference, long ogrGeomType, String[] options) {
+    public Object createLayer(String typeName, Object spatialReference, long ogrGeomType, String[] options) {
         return ogr.DataSourceCreateLayer(source, typeName, spatialReference, ogrGeomType, options);
     }
 
@@ -142,10 +140,7 @@ class OGRDataSource {
                             + TRACE_ENABLED_KEY
                             + " system variable to true");
             if (TRACE_ENABLED) {
-                LOGGER.log(
-                        Level.WARNING,
-                        "The unclosed reader originated on this stack trace",
-                        tracer);
+                LOGGER.log(Level.WARNING, "The unclosed reader originated on this stack trace", tracer);
             }
             close();
         }

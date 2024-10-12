@@ -96,8 +96,7 @@ public class MemoryDataStore extends ContentDataStore {
         addFeatures(array);
     }
 
-    public MemoryDataStore(FeatureReader<SimpleFeatureType, SimpleFeature> reader)
-            throws IOException {
+    public MemoryDataStore(FeatureReader<SimpleFeatureType, SimpleFeature> reader) throws IOException {
         addFeatures(reader);
     }
 
@@ -112,8 +111,7 @@ public class MemoryDataStore extends ContentDataStore {
      * @throws IOException If problems are encountered while adding
      * @throws DataSourceException See IOException
      */
-    public void addFeatures(FeatureReader<SimpleFeatureType, SimpleFeature> reader)
-            throws IOException {
+    public void addFeatures(FeatureReader<SimpleFeatureType, SimpleFeature> reader) throws IOException {
         try {
             SimpleFeature feature = reader.next();
 
@@ -276,12 +274,7 @@ public class MemoryDataStore extends ContentDataStore {
                     return entry;
                 } else {
                     throw new IOException(
-                            "Entry "
-                                    + typeName
-                                    + " schema "
-                                    + entry.schema
-                                    + " incompatible with provided "
-                                    + schema);
+                            "Entry " + typeName + " schema " + entry.schema + " incompatible with provided " + schema);
                 }
             } else {
                 MemoryEntry entry = new MemoryEntry(this, schema);

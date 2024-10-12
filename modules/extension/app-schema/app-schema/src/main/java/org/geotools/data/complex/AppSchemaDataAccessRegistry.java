@@ -71,8 +71,8 @@ public class AppSchemaDataAccessRegistry extends DataAccessRegistry {
      *
      * @return feature source
      */
-    public static FeatureSource<? extends FeatureType, ? extends Feature> getSimpleFeatureSource(
-            Name featureTypeName) throws IOException {
+    public static FeatureSource<? extends FeatureType, ? extends Feature> getSimpleFeatureSource(Name featureTypeName)
+            throws IOException {
         return getMappingByElement(featureTypeName).getSource();
     }
 

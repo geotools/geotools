@@ -38,15 +38,13 @@ import org.geotools.util.logging.Logging;
 class TimestampFileNameExtractor extends RegExPropertiesCollector {
     private static final Logger LOGGER = Logging.getLogger(TimestampFileNameExtractor.class);
 
-    private static final int DEFAULT_TIME_PARSER_FLAGS =
-            DateTimeParser.FLAG_GET_TIME_ON_CURRENT
-                    | DateTimeParser.FLAG_GET_TIME_ON_NOW
-                    | DateTimeParser.FLAG_GET_TIME_ON_PRESENT
-                    | DateTimeParser.FLAG_IS_LENIENT;
+    private static final int DEFAULT_TIME_PARSER_FLAGS = DateTimeParser.FLAG_GET_TIME_ON_CURRENT
+            | DateTimeParser.FLAG_GET_TIME_ON_NOW
+            | DateTimeParser.FLAG_GET_TIME_ON_PRESENT
+            | DateTimeParser.FLAG_IS_LENIENT;
 
     private static final DateTimeParser PARSER =
-            new DateTimeParser(
-                    -1, DEFAULT_TIME_PARSER_FLAGS | DateTimeParser.FLAG_SINGLE_DATE_AS_DATERANGE);
+            new DateTimeParser(-1, DEFAULT_TIME_PARSER_FLAGS | DateTimeParser.FLAG_SINGLE_DATE_AS_DATERANGE);
 
     private DateFormat customFormat;
 
@@ -84,27 +82,20 @@ class TimestampFileNameExtractor extends RegExPropertiesCollector {
                     if (useHighTime) {
                         // Special case to make t and z upper case for ISO8601 matching.
                         format = format.replace("t", "T").replace("z", "Z");
-                        parsed =
-                                FormatAndPrecision.expandFromCustomFormat(parsed, format)
-                                        .getMaxValue();
+                        parsed = FormatAndPrecision.expandFromCustomFormat(parsed, format)
+                                .getMaxValue();
                     }
                     dates.add(parsed);
                 } else {
                     Collection<?> parsed = PARSER.parse(match);
-                    parsed.stream()
-                            .forEach(
-                                    d -> {
-                                        DateRange range = (DateRange) d;
-                                        Date date =
-                                                useHighTime
-                                                        ? range.getMaxValue()
-                                                        : range.getMinValue();
-                                        dates.add(date);
-                                    });
+                    parsed.stream().forEach(d -> {
+                        DateRange range = (DateRange) d;
+                        Date date = useHighTime ? range.getMaxValue() : range.getMinValue();
+                        dates.add(date);
+                    });
                 }
             } catch (ParseException e) {
-                if (LOGGER.isLoggable(Level.FINE))
-                    LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
+                if (LOGGER.isLoggable(Level.FINE)) LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
             }
         }
 

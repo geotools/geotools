@@ -37,8 +37,7 @@ import org.geotools.api.util.NameSpace;
  * @author Martin Desruisseaux (IRD)
  * @see NameFactory
  */
-public class ScopedName extends org.geotools.util.GenericName
-        implements org.geotools.api.util.ScopedName {
+public class ScopedName extends org.geotools.util.GenericName implements org.geotools.api.util.ScopedName {
     /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = -7664125655784137729L;
 

@@ -38,7 +38,6 @@ public class MLConfiguration extends Configuration {
         container.registerComponentImplementation(ML.ENVELOPETYPE, MLEnvelopeTypeBinding.class);
         container.registerComponentImplementation(ML.MAILSTYPE, MLMailsTypeBinding.class);
         container.registerComponentImplementation(ML.MAILTYPE, MLMailTypeBinding.class);
-        container.registerComponentImplementation(
-                ML.MIMETOPLEVELTYPE, MLMimeTopLevelTypeBinding.class);
+        container.registerComponentImplementation(ML.MIMETOPLEVELTYPE, MLMimeTopLevelTypeBinding.class);
     }
 }

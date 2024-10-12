@@ -30,8 +30,7 @@ public class FilterFunction_sqrt extends FunctionExpressionImpl {
 
     // public static FunctionName NAME = new FunctionNameImpl("sqrt", "number");
     public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "sqrt", parameter("root", Double.class), parameter("number", Number.class));
+            new FunctionNameImpl("sqrt", parameter("root", Double.class), parameter("number", Number.class));
 
     public FilterFunction_sqrt() {
         super(NAME);

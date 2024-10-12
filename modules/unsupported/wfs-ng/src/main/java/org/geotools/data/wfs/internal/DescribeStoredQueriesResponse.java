@@ -74,8 +74,7 @@ public class DescribeStoredQueriesResponse extends WFSResponse {
             describeStoredQueriesResponse = parseStoredQueries(rawDocument, WFS_2_0_CONFIGURATION);
 
             if (null == describeStoredQueriesResponse) {
-                throw new IllegalStateException(
-                        "Unable to parse DescribeStoredQueriesResponse document");
+                throw new IllegalStateException("Unable to parse DescribeStoredQueriesResponse document");
             }
 
         } finally {
@@ -83,8 +82,8 @@ public class DescribeStoredQueriesResponse extends WFSResponse {
         }
     }
 
-    private DescribeStoredQueriesResponseType parseStoredQueries(
-            Document document, Configuration wfsConfig) throws DataSourceException {
+    private DescribeStoredQueriesResponseType parseStoredQueries(Document document, Configuration wfsConfig)
+            throws DataSourceException {
         DOMParser parser = new DOMParser(wfsConfig, document);
         final Object parsed;
         try {

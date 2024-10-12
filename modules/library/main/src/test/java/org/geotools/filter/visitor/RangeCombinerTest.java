@@ -40,10 +40,9 @@ public class RangeCombinerTest {
 
     @Before
     public void setup() throws Exception {
-        ft =
-                DataUtilities.createType(
-                        "test",
-                        "theGeom:LineString,b:java.lang.Byte,s:java.lang.Short,i:java.lang.Integer,l:java.lang.Long,d:java.lang.Double,label:String");
+        ft = DataUtilities.createType(
+                "test",
+                "theGeom:LineString,b:java.lang.Byte,s:java.lang.Short,i:java.lang.Integer,l:java.lang.Long,d:java.lang.Double,label:String");
         visitor = new ExpressionTypeVisitor(ft);
     }
 

@@ -29,10 +29,7 @@ import org.locationtech.jts.geom.Point;
 public class FilterFunction_centroid extends FunctionExpressionImpl {
 
     public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "centroid",
-                    parameter("centroid", Point.class),
-                    parameter("geometry", Geometry.class));
+            new FunctionNameImpl("centroid", parameter("centroid", Point.class), parameter("geometry", Geometry.class));
 
     public FilterFunction_centroid() {
         super(NAME);

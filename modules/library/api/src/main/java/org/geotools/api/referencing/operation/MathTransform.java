@@ -68,8 +68,7 @@ public interface MathTransform {
      *     expected dimension.
      * @throws TransformException if the point can't be transformed.
      */
-    Position transform(Position ptSrc, Position ptDst)
-            throws MismatchedDimensionException, TransformException;
+    Position transform(Position ptSrc, Position ptDst) throws MismatchedDimensionException, TransformException;
 
     /**
      * Transforms a list of coordinate point ordinal values. This method is provided for efficiently
@@ -93,8 +92,7 @@ public interface MathTransform {
      *     Implementations that fall in the later case should set the {@linkplain
      *     TransformException#getLastCompletedTransform last completed transform} to {@code this}.
      */
-    void transform(double[] srcPts, int srcOff, double[] dstPts, int dstOff, int numPts)
-            throws TransformException;
+    void transform(double[] srcPts, int srcOff, double[] dstPts, int dstOff, int numPts) throws TransformException;
 
     /**
      * Transforms a list of coordinate point ordinal values. This method is provided for efficiently
@@ -118,8 +116,7 @@ public interface MathTransform {
      *     Implementations that fall in the later case should set the {@linkplain
      *     TransformException#getLastCompletedTransform last completed transform} to {@code this}.
      */
-    void transform(float[] srcPts, int srcOff, float[] dstPts, int dstOff, int numPts)
-            throws TransformException;
+    void transform(float[] srcPts, int srcOff, float[] dstPts, int dstOff, int numPts) throws TransformException;
 
     /**
      * Transforms a list of coordinate point ordinal values. This method is provided for efficiently
@@ -143,8 +140,7 @@ public interface MathTransform {
      *     TransformException#getLastCompletedTransform last completed transform} to {@code this}.
      * @since GeoAPI 2.2
      */
-    void transform(float[] srcPts, int srcOff, double[] dstPts, int dstOff, int numPts)
-            throws TransformException;
+    void transform(float[] srcPts, int srcOff, double[] dstPts, int dstOff, int numPts) throws TransformException;
 
     /**
      * Transforms a list of coordinate point ordinal values. This method is provided for efficiently
@@ -168,8 +164,7 @@ public interface MathTransform {
      *     TransformException#getLastCompletedTransform last completed transform} to {@code this}.
      * @since GeoAPI 2.2
      */
-    void transform(double[] srcPts, int srcOff, float[] dstPts, int dstOff, int numPts)
-            throws TransformException;
+    void transform(double[] srcPts, int srcOff, float[] dstPts, int dstOff, int numPts) throws TransformException;
 
     /**
      * Gets the derivative of this transform at a point. The derivative is the matrix of the

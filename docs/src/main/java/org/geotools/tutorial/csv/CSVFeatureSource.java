@@ -45,8 +45,7 @@ public class CSVFeatureSource extends ContentFeatureSource {
     // getDataStore end
 
     // reader start
-    protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query)
-            throws IOException {
+    protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query) throws IOException {
         return new CSVFeatureReader(getState(), query);
     }
 

@@ -81,16 +81,12 @@ public class WMTSConfigurationTest extends XmlTestSupport {
             parsed = p.parse(is);
         }
 
-        assertTrue(
-                "Capabilities failed to parse " + parsed.getClass(),
-                parsed instanceof CapabilitiesType);
+        assertTrue("Capabilities failed to parse " + parsed.getClass(), parsed instanceof CapabilitiesType);
 
         CapabilitiesType caps = (CapabilitiesType) parsed;
         ServiceIdentificationType service = caps.getServiceIdentification();
         assertNotNull(service);
-        assertEquals(
-                "http://www.opengis.net/spec/wmts-simple/1.0/conf/simple-profile/CRS84",
-                service.getProfile());
+        assertEquals("http://www.opengis.net/spec/wmts-simple/1.0/conf/simple-profile/CRS84", service.getProfile());
         ContentsType contents = caps.getContents();
         assertNotNull(contents);
     }
@@ -116,9 +112,7 @@ public class WMTSConfigurationTest extends XmlTestSupport {
             parsed = p.parse(is);
         }
 
-        assertTrue(
-                "Capabilities failed to parse " + parsed.getClass(),
-                parsed instanceof CapabilitiesType);
+        assertTrue("Capabilities failed to parse " + parsed.getClass(), parsed instanceof CapabilitiesType);
 
         CapabilitiesType caps = (CapabilitiesType) parsed;
         ContentsType contents = caps.getContents();
@@ -161,9 +155,7 @@ public class WMTSConfigurationTest extends XmlTestSupport {
         if (!p.getValidationErrors().isEmpty()) {
             for (Exception exception : p.getValidationErrors()) {
                 SAXParseException ex = (SAXParseException) exception;
-                LOGGER.log(
-                        Level.SEVERE,
-                        ex.getLineNumber() + "," + ex.getColumnNumber() + " -" + ex.toString());
+                LOGGER.log(Level.SEVERE, ex.getLineNumber() + "," + ex.getColumnNumber() + " -" + ex.toString());
             }
             fail("Document did not validate.");
         }
@@ -177,9 +169,7 @@ public class WMTSConfigurationTest extends XmlTestSupport {
 
         Parser myParser = new Parser(new WMTSConfiguration());
 
-        CapabilitiesType caps =
-                (CapabilitiesType)
-                        myParser.parse(getClass().getResourceAsStream("nasa.getcapa.xml"));
+        CapabilitiesType caps = (CapabilitiesType) myParser.parse(getClass().getResourceAsStream("nasa.getcapa.xml"));
 
         Encoder encoder = new Encoder(new WMTSConfiguration());
         encoder.setIndenting(true);
@@ -315,9 +305,7 @@ public class WMTSConfigurationTest extends XmlTestSupport {
         // Check one of the TileMatrices and that it has the right values set
         assertThat(
                 doc,
-                hasXPath(
-                        "count(//wmts:Contents/wmts:TileMatrixSet[ows:Identifier[text()='31.25m']])",
-                        equalTo("1")));
+                hasXPath("count(//wmts:Contents/wmts:TileMatrixSet[ows:Identifier[text()='31.25m']])", equalTo("1")));
         assertThat(
                 doc,
                 hasXPath(
@@ -444,14 +432,9 @@ public class WMTSConfigurationTest extends XmlTestSupport {
                         equalTo("1")));
         assertThat(
                 doc,
-                hasXPath(
-                        "//ows:ServiceContact/ows:IndividualName[text()]",
-                        equalTo("ServiceContact IndividualName")));
+                hasXPath("//ows:ServiceContact/ows:IndividualName[text()]", equalTo("ServiceContact IndividualName")));
         assertThat(
-                doc,
-                hasXPath(
-                        "//ows:ServiceContact/ows:PositionName[text()]",
-                        equalTo("ServiceContact PositionName")));
+                doc, hasXPath("//ows:ServiceContact/ows:PositionName[text()]", equalTo("ServiceContact PositionName")));
         assertThat(
                 doc,
                 hasXPath(
@@ -493,8 +476,7 @@ public class WMTSConfigurationTest extends XmlTestSupport {
     protected void print(Document dom) throws Exception {
         TransformerFactory txFactory = TransformerFactory.newInstance();
         try {
-            txFactory.setAttribute(
-                    "{http://xml.apache.org/xalan}indent-number", Integer.valueOf(4));
+            txFactory.setAttribute("{http://xml.apache.org/xalan}indent-number", Integer.valueOf(4));
         } catch (Exception e) {
             // some
         }
@@ -503,8 +485,6 @@ public class WMTSConfigurationTest extends XmlTestSupport {
         tx.setOutputProperty(OutputKeys.METHOD, "xml");
         tx.setOutputProperty(OutputKeys.INDENT, "yes");
 
-        tx.transform(
-                new DOMSource(dom),
-                new StreamResult(new OutputStreamWriter(System.out, StandardCharsets.UTF_8)));
+        tx.transform(new DOMSource(dom), new StreamResult(new OutputStreamWriter(System.out, StandardCharsets.UTF_8)));
     }
 }

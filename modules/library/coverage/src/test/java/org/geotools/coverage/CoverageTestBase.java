@@ -104,8 +104,7 @@ public class CoverageTestBase {
     protected static GeneralBounds getGeneralEnvelope(final Coverage coverage) {
         final Bounds envelope = coverage.getEnvelope();
         assertNotNull(envelope);
-        assertEquals(
-                coverage.getCoordinateReferenceSystem(), envelope.getCoordinateReferenceSystem());
+        assertEquals(coverage.getCoordinateReferenceSystem(), envelope.getCoordinateReferenceSystem());
         if (coverage instanceof GeneralBounds) {
             return (GeneralBounds) envelope;
         } else {
@@ -168,8 +167,7 @@ public class CoverageTestBase {
      * @param expected The image containing the expected pixel values.
      * @param actual The image containing the actual pixel values.
      */
-    protected static void assertRasterEquals(
-            final RenderedImage expected, final RenderedImage actual) {
+    protected static void assertRasterEquals(final RenderedImage expected, final RenderedImage actual) {
         final RectIter e = RectIterFactory.create(expected, null);
         final RectIter a = RectIterFactory.create(actual, null);
         if (!e.finishedLines())

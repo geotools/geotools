@@ -28,8 +28,7 @@ import java.util.regex.Pattern;
  * @author Martin Desruisseaux (IRD)
  * @since 2.0
  */
-public class DefaultFileFilter extends javax.swing.filechooser.FileFilter
-        implements FileFilter, FilenameFilter {
+public class DefaultFileFilter extends javax.swing.filechooser.FileFilter implements FileFilter, FilenameFilter {
     /** The description of this filter, usually for graphical user interfaces. */
     private final String description;
 

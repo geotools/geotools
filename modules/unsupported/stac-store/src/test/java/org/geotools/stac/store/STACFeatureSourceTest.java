@@ -62,9 +62,8 @@ public class STACFeatureSourceTest extends AbstractSTACStoreTest {
 
     private static FilterFactory FF = CommonFactoryFinder.getFilterFactory();
 
-    private static String MAJA_SPACE_TIME =
-            BASE_URL
-                    + "/search?bbox=50.0,12.0,50.001,12.001&collections=S2_L2A_MAJA&datetime=2022-07-22T10:05:59.024Z/2022-07-22T10:05:59.025Z&f=application/geo%2Bjson&limit=1000";
+    private static String MAJA_SPACE_TIME = BASE_URL
+            + "/search?bbox=50.0,12.0,50.001,12.001&collections=S2_L2A_MAJA&datetime=2022-07-22T10:05:59.024Z/2022-07-22T10:05:59.025Z&f=application/geo%2Bjson&limit=1000";
 
     private static final String DATETIME_FIELDS =
             "&fields=geometry,properties.datetime,type,id,-bbox,-properties,-assets,-links";
@@ -73,20 +72,17 @@ public class STACFeatureSourceTest extends AbstractSTACStoreTest {
     private static final String DATETIME_MINMAX_FIELDS =
             "&fields=properties.datetime,type,id,-bbox,-properties,-assets,-links";
 
-    private static String MAJA_MIN =
-            BASE_URL
-                    + "/search?collections=S2_L2A_MAJA&f=application/geo%2Bjson&limit=1"
-                    + DATETIME_MINMAX_FIELDS
-                    + "&sortby=datetime";
+    private static String MAJA_MIN = BASE_URL
+            + "/search?collections=S2_L2A_MAJA&f=application/geo%2Bjson&limit=1"
+            + DATETIME_MINMAX_FIELDS
+            + "&sortby=datetime";
 
-    private static String MAJA_MAX =
-            BASE_URL
-                    + "/search?collections=S2_L2A_MAJA&f=application/geo%2Bjson&limit=1"
-                    + DATETIME_MINMAX_FIELDS
-                    + "&sortby=-datetime";
+    private static String MAJA_MAX = BASE_URL
+            + "/search?collections=S2_L2A_MAJA&f=application/geo%2Bjson&limit=1"
+            + DATETIME_MINMAX_FIELDS
+            + "&sortby=-datetime";
 
-    private static String MAJA_PAGE_1 =
-            BASE_URL + "/search?collections=S2_L2A_MAJA&f=application/geo%2Bjson&limit=10";
+    private static String MAJA_PAGE_1 = BASE_URL + "/search?collections=S2_L2A_MAJA&f=application/geo%2Bjson&limit=10";
 
     private static String MAJA_PAGE_2 =
             "https://geoservice.dlr.de/eoc/ogc/stac/search?collections=S2_L2A_MAJA&requestId=1234&page=2";
@@ -112,10 +108,8 @@ public class STACFeatureSourceTest extends AbstractSTACStoreTest {
         // GET request support
         Class<?> cls = STACOfflineTest.class;
         httpClient.expectGet(new URL(MAJA_1000), geojsonResponse("majaAll.json", cls));
-        httpClient.expectGet(
-                new URL(MAJA_SPACE_TIME), geojsonResponse("majaBoxDateTime.json", cls));
-        httpClient.expectGet(
-                new URL(MAJA_PROPERTY_SELECTED), geojsonResponse("majaPropertySelected.json", cls));
+        httpClient.expectGet(new URL(MAJA_SPACE_TIME), geojsonResponse("majaBoxDateTime.json", cls));
+        httpClient.expectGet(new URL(MAJA_PROPERTY_SELECTED), geojsonResponse("majaPropertySelected.json", cls));
         httpClient.expectGet(new URL(MAJA_MIN), geojsonResponse("majaMin.json", cls));
         httpClient.expectGet(new URL(MAJA_MAX), geojsonResponse("majaMax.json", cls));
         httpClient.expectGet(new URL(MAJA_PAGE_1), geojsonResponse("maja10.json", cls));
@@ -125,14 +119,10 @@ public class STACFeatureSourceTest extends AbstractSTACStoreTest {
 
         // POST request support
         URL postURL = new URL(BASE_URL + "/search?f=application/geo%2Bjson");
-        httpClient.expectPost(
-                postURL, MAJA_100_POST, APPLICATION_JSON, geojsonResponse("majaAll.json", cls));
+        httpClient.expectPost(postURL, MAJA_100_POST, APPLICATION_JSON, geojsonResponse("majaAll.json", cls));
 
         httpClient.expectPost(
-                postURL,
-                MAJA_CC_50_POST,
-                APPLICATION_JSON,
-                geojsonResponse("majaCloudCover50.json", cls));
+                postURL, MAJA_CC_50_POST, APPLICATION_JSON, geojsonResponse("majaCloudCover50.json", cls));
 
         @SuppressWarnings("PMD.CloseResource") // managed by the store, based on mocks
         STACClient client = new STACClient(new URL(LANDING_PAGE_URL), httpClient);
@@ -147,8 +137,7 @@ public class STACFeatureSourceTest extends AbstractSTACStoreTest {
         ReferencedEnvelope bounds = fs.getBounds();
         assertEquals(DefaultGeographicCRS.WGS84, bounds.getCoordinateReferenceSystem());
         // from the collection spatial extent, fast count
-        ReferencedEnvelope expected =
-                new ReferencedEnvelope(5.76, 15.16, 46.8, 55.94, DefaultGeographicCRS.WGS84);
+        ReferencedEnvelope expected = new ReferencedEnvelope(5.76, 15.16, 46.8, 55.94, DefaultGeographicCRS.WGS84);
         assertTrue(bounds.boundsEquals2D(expected, 0.01));
     }
 
@@ -189,9 +178,7 @@ public class STACFeatureSourceTest extends AbstractSTACStoreTest {
         SimpleFeature f = DataUtilities.first(fc);
 
         // check a few attributes
-        assertEquals(
-                Converters.convert("2022-07-22T10:05:59.024+00:00", Date.class),
-                f.getAttribute("datetime"));
+        assertEquals(Converters.convert("2022-07-22T10:05:59.024+00:00", Date.class), f.getAttribute("datetime"));
         assertEquals("SENTINEL-2B", f.getAttribute("platform"));
         assertEquals(106.80, (Double) f.getAttribute("view:azimuth"), 0.01);
         JsonNode processing = (JsonNode) f.getAttribute("processing:software");
@@ -224,8 +211,7 @@ public class STACFeatureSourceTest extends AbstractSTACStoreTest {
     private static Query getSpaceTimeFilter() {
         Query q = new Query();
         BBOX bbox = FF.bbox("", 12, 50, 12.001, 50.001, "EPSG:4326");
-        PropertyIsEqualTo datetime =
-                FF.equals(FF.property("datetime"), FF.literal("2022-07-22T10:05:59.024Z"));
+        PropertyIsEqualTo datetime = FF.equals(FF.property("datetime"), FF.literal("2022-07-22T10:05:59.024Z"));
         And spaceTimeFilter = FF.and(bbox, datetime);
         q.setFilter(spaceTimeFilter);
         return q;
@@ -246,9 +232,7 @@ public class STACFeatureSourceTest extends AbstractSTACStoreTest {
         SimpleFeature f = DataUtilities.first(fc);
 
         // check a few attributes
-        assertEquals(
-                Converters.convert("2022-07-22T10:05:59.024+00:00", Date.class),
-                f.getAttribute("datetime"));
+        assertEquals(Converters.convert("2022-07-22T10:05:59.024+00:00", Date.class), f.getAttribute("datetime"));
         // filtered out fields
         assertNull(f.getAttribute("platform"));
         assertNull(f.getAttribute("view:azimuth"));
@@ -269,14 +253,13 @@ public class STACFeatureSourceTest extends AbstractSTACStoreTest {
         SimpleFeatureSource fs = store.getFeatureSource(MAJA);
         SimpleFeatureCollection fc = fs.getFeatures();
         AtomicBoolean optimized = new AtomicBoolean(false);
-        MinVisitor visitor =
-                new MinVisitor("datetime") {
-                    @Override
-                    public void setValue(Object result) {
-                        optimized.set(true);
-                        super.setValue(result);
-                    }
-                };
+        MinVisitor visitor = new MinVisitor("datetime") {
+            @Override
+            public void setValue(Object result) {
+                optimized.set(true);
+                super.setValue(result);
+            }
+        };
         fc.accepts(visitor, null);
 
         assertTrue("The visitor should have been optimized out", optimized.get());
@@ -288,14 +271,13 @@ public class STACFeatureSourceTest extends AbstractSTACStoreTest {
         SimpleFeatureSource fs = store.getFeatureSource(MAJA);
         SimpleFeatureCollection fc = fs.getFeatures();
         AtomicBoolean optimized = new AtomicBoolean(false);
-        MaxVisitor visitor =
-                new MaxVisitor("datetime") {
-                    @Override
-                    public void setValue(Object result) {
-                        optimized.set(true);
-                        super.setValue(result);
-                    }
-                };
+        MaxVisitor visitor = new MaxVisitor("datetime") {
+            @Override
+            public void setValue(Object result) {
+                optimized.set(true);
+                super.setValue(result);
+            }
+        };
         fc.accepts(visitor, null);
 
         assertTrue("The visitor should have been optimized out", optimized.get());

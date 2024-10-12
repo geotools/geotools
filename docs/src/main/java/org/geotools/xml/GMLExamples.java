@@ -97,18 +97,13 @@ public class GMLExamples {
     private void transformExample() throws Exception {
         // transformExample start
         SimpleFeatureType TYPE =
-                DataUtilities.createType(
-                        "urn:org.geotools.xml.examples", "location", "geom:Point,name:String");
+                DataUtilities.createType("urn:org.geotools.xml.examples", "location", "geom:Point,name:String");
         TYPE.getUserData().put("prefix", "ex");
 
         WKTReader2 wkt = new WKTReader2();
         List<SimpleFeature> collection = new LinkedList<>();
-        collection.add(
-                SimpleFeatureBuilder.build(
-                        TYPE, new Object[] {wkt.read("POINT (1 2)"), "name1"}, null));
-        collection.add(
-                SimpleFeatureBuilder.build(
-                        TYPE, new Object[] {wkt.read("POINT (4 4)"), "name2"}, null));
+        collection.add(SimpleFeatureBuilder.build(TYPE, new Object[] {wkt.read("POINT (1 2)"), "name1"}, null));
+        collection.add(SimpleFeatureBuilder.build(TYPE, new Object[] {wkt.read("POINT (4 4)"), "name2"}, null));
 
         SimpleFeatureCollection featureCollection = new ListFeatureCollection(TYPE, collection);
 
@@ -172,9 +167,8 @@ public class GMLExamples {
     private void xdoExample() throws Exception {
         // xdoExample start
         XMLReader reader = getXMLReader();
-        URI schemaLoc =
-                new java.net.URI(
-                        "http://giswebservices.massgis.state.ma.us/geoserver/wfs?request=describefeaturetype&service=wfs&version=1.0.0&typename=massgis:GISDATA.COUNTIES_POLY");
+        URI schemaLoc = new java.net.URI(
+                "http://giswebservices.massgis.state.ma.us/geoserver/wfs?request=describefeaturetype&service=wfs&version=1.0.0&typename=massgis:GISDATA.COUNTIES_POLY");
 
         XSISAXHandler schemaHandler = new XSISAXHandler(schemaLoc);
 
@@ -206,8 +200,7 @@ public class GMLExamples {
         String namespaceURI = featureName.getNamespaceURI();
         String uri = schemaLocation.toExternalForm();
 
-        Configuration wfsConfiguration =
-                new org.geotools.gml3.ApplicationSchemaConfiguration(namespaceURI, uri);
+        Configuration wfsConfiguration = new org.geotools.gml3.ApplicationSchemaConfiguration(namespaceURI, uri);
 
         FeatureType parsed = GTXML.parseFeatureType(wfsConfiguration, featureName, crs);
         // safely cast down to SimpleFeatureType
@@ -231,17 +224,16 @@ public class GMLExamples {
         XSD xsd = new org.geotools.gml2.ApplicationSchemaXSD(namespaceURI, uri);
 
         // Step 2: custom configuration
-        Configuration configuration =
-                new Configuration(xsd) {
-                    {
-                        addDependency(new XSConfiguration());
-                        addDependency(new org.geotools.gml2.GMLConfiguration());
-                    }
+        Configuration configuration = new Configuration(xsd) {
+            {
+                addDependency(new XSConfiguration());
+                addDependency(new org.geotools.gml2.GMLConfiguration());
+            }
 
-                    protected void registerBindings(java.util.Map bindings) {
-                        // we have no special bindings
-                    }
-                };
+            protected void registerBindings(java.util.Map bindings) {
+                // we have no special bindings
+            }
+        };
         FeatureType parsed = GTXML.parseFeatureType(configuration, featureName, crs);
         // safely cast down to SimpleFeatureType
         SimpleFeatureType schema = DataUtilities.simple(parsed);

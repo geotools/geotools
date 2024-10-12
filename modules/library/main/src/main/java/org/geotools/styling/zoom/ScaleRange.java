@@ -42,8 +42,7 @@ public class ScaleRange {
             throw new IllegalArgumentException("maxDenom must be non-negative");
         }
         if (!(minDenom <= maxDenom)) {
-            throw new IllegalArgumentException(
-                    "maxDenom must be greater than or equal to minDenom");
+            throw new IllegalArgumentException("maxDenom must be greater than or equal to minDenom");
         }
 
         this.minDenom = minDenom;

@@ -80,8 +80,7 @@ public class LikeFilterImpl extends AbstractFilter implements PropertyIsLike {
      * (IllegalArgumentException).
      */
     @Deprecated
-    public static String convertToSQL92(
-            char escape, char multi, char single, boolean matchCase, String pattern)
+    public static String convertToSQL92(char escape, char multi, char single, boolean matchCase, String pattern)
             throws IllegalArgumentException {
         return convertToSQL92(escape, multi, single, matchCase, pattern, true);
     }
@@ -112,12 +111,7 @@ public class LikeFilterImpl extends AbstractFilter implements PropertyIsLike {
      * (IllegalArgumentException).
      */
     public static String convertToSQL92(
-            char escape,
-            char multi,
-            char single,
-            boolean matchCase,
-            String pattern,
-            boolean escapeSingleQuote) {
+            char escape, char multi, char single, boolean matchCase, String pattern, boolean escapeSingleQuote) {
         if ((escape == '\'') || (multi == '\'') || (single == '\''))
             throw new IllegalArgumentException("do not use single quote (') as special char!");
 
@@ -147,30 +141,21 @@ public class LikeFilterImpl extends AbstractFilter implements PropertyIsLike {
     @Deprecated
     public String getSQL92LikePattern() throws IllegalArgumentException {
         if (escape.length() != 1) {
-            throw new IllegalArgumentException(
-                    "Like Pattern --> escape char should be of length exactly 1");
+            throw new IllegalArgumentException("Like Pattern --> escape char should be of length exactly 1");
         }
         if (wildcardSingle.length() != 1) {
-            throw new IllegalArgumentException(
-                    "Like Pattern --> wildcardSingle char should be of length exactly 1");
+            throw new IllegalArgumentException("Like Pattern --> wildcardSingle char should be of length exactly 1");
         }
         if (wildcardMulti.length() != 1) {
-            throw new IllegalArgumentException(
-                    "Like Pattern --> wildcardMulti char should be of length exactly 1");
+            throw new IllegalArgumentException("Like Pattern --> wildcardMulti char should be of length exactly 1");
         }
         return LikeFilterImpl.convertToSQL92(
-                escape.charAt(0),
-                wildcardMulti.charAt(0),
-                wildcardSingle.charAt(0),
-                matchingCase,
-                pattern,
-                true);
+                escape.charAt(0), wildcardMulti.charAt(0), wildcardSingle.charAt(0), matchingCase, pattern, true);
     }
 
     public void setWildCard(String wildCard) {
         if (wildCard == null || wildCard.isEmpty() || wildCard.length() > 1) {
-            throw new IllegalArgumentException(
-                    "Like Pattern --> wildcardMulti char should be of length exactly 1");
+            throw new IllegalArgumentException("Like Pattern --> wildcardMulti char should be of length exactly 1");
         }
         this.wildcardMulti = wildCard;
         compPattern = null;
@@ -178,8 +163,7 @@ public class LikeFilterImpl extends AbstractFilter implements PropertyIsLike {
 
     public void setSingleChar(String singleChar) {
         if (singleChar == null || singleChar.length() != 1) {
-            throw new IllegalArgumentException(
-                    "Like Pattern --> wildcardSingle char should be of length exactly 1");
+            throw new IllegalArgumentException("Like Pattern --> wildcardSingle char should be of length exactly 1");
         }
         this.wildcardSingle = singleChar;
         compPattern = null;
@@ -190,13 +174,11 @@ public class LikeFilterImpl extends AbstractFilter implements PropertyIsLike {
         if (escape.startsWith("\\")) {
             if (escape.length() < 1 || escape.length() > 3) {
                 throw new IllegalArgumentException(
-                        "Like Pattern --> escape char should be of length exactly 1, not "
-                                + escape.length());
+                        "Like Pattern --> escape char should be of length exactly 1, not " + escape.length());
             }
         } else if (!escape.isEmpty() && escape.length() > 1) {
             throw new IllegalArgumentException(
-                    "Like Pattern --> escape char should be of length exactly 1, not "
-                            + escape.length());
+                    "Like Pattern --> escape char should be of length exactly 1, not " + escape.length());
         }
         this.escape = escape;
         compPattern = null;
@@ -224,11 +206,9 @@ public class LikeFilterImpl extends AbstractFilter implements PropertyIsLike {
     private Matcher getMatcher(String string) {
         if (compPattern == null) {
             String pattern = new LikeToRegexConverter(this).getPattern();
-            compPattern =
-                    isMatchingCase()
-                            ? Pattern.compile(pattern)
-                            : Pattern.compile(
-                                    pattern, Pattern.CASE_INSENSITIVE /* | Pattern.UNICODE_CASE */);
+            compPattern = isMatchingCase()
+                    ? Pattern.compile(pattern)
+                    : Pattern.compile(pattern, Pattern.CASE_INSENSITIVE /* | Pattern.UNICODE_CASE */);
         }
         return compPattern.matcher(string);
     }

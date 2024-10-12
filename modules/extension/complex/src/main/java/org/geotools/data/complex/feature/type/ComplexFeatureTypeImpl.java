@@ -66,7 +66,8 @@ public class ComplexFeatureTypeImpl extends UniqueNameFeatureTypeImpl {
 
                     {
                         add(ComplexFeatureConstants.FEATURE_CHAINING_LINK);
-                    };
+                    }
+                    ;
                 },
                 defaultGeometry,
                 isAbstract,
@@ -83,8 +84,7 @@ public class ComplexFeatureTypeImpl extends UniqueNameFeatureTypeImpl {
      * @param type Type to copy
      * @param schema Set of descriptors
      */
-    public ComplexFeatureTypeImpl(
-            ComplexFeatureTypeImpl type, Collection<PropertyDescriptor> schema) {
+    public ComplexFeatureTypeImpl(ComplexFeatureTypeImpl type, Collection<PropertyDescriptor> schema) {
         super(
                 type.name,
                 schema,

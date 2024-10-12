@@ -45,8 +45,7 @@ public class Oblongs {
      * @return a new {@code Oblong} object
      * @throws IllegalArgumentException if either {@code width} or {@code height} are {@code <=} 0
      */
-    public static Oblong create(
-            double minX, double minY, double width, double height, CoordinateReferenceSystem crs) {
+    public static Oblong create(double minX, double minY, double width, double height, CoordinateReferenceSystem crs) {
         return new OblongImpl(minX, minY, width, height, crs);
     }
 
@@ -64,10 +63,7 @@ public class Oblongs {
      *     {@code GridFeatureBuilder} are both non-null but different
      */
     public static SimpleFeatureSource createGrid(
-            ReferencedEnvelope bounds,
-            double width,
-            double height,
-            GridFeatureBuilder gridBuilder) {
+            ReferencedEnvelope bounds, double width, double height, GridFeatureBuilder gridBuilder) {
         return createGrid(bounds, width, height, -1.0, gridBuilder);
     }
 
@@ -107,13 +103,9 @@ public class Oblongs {
         }
 
         CoordinateReferenceSystem boundsCRS = bounds.getCoordinateReferenceSystem();
-        CoordinateReferenceSystem builderCRS =
-                gridFeatureBuilder.getType().getCoordinateReferenceSystem();
-        if (boundsCRS != null
-                && builderCRS != null
-                && !CRS.equalsIgnoreMetadata(boundsCRS, builderCRS)) {
-            throw new IllegalArgumentException(
-                    "Different CRS set for bounds and the feature builder");
+        CoordinateReferenceSystem builderCRS = gridFeatureBuilder.getType().getCoordinateReferenceSystem();
+        if (boundsCRS != null && builderCRS != null && !CRS.equalsIgnoreMetadata(boundsCRS, builderCRS)) {
+            throw new IllegalArgumentException("Different CRS set for bounds and the feature builder");
         }
 
         final ListFeatureCollection fc = new ListFeatureCollection(gridFeatureBuilder.getType());

@@ -99,8 +99,7 @@ public class PreparedFilterToSQL extends FilterToSQL {
         literalValues.add(literalValue);
         SRIDs.add(currentSRID);
         dimensions.add(currentDimension);
-        descriptors.add(
-                context instanceof AttributeDescriptor ? (AttributeDescriptor) context : null);
+        descriptors.add(context instanceof AttributeDescriptor ? (AttributeDescriptor) context : null);
         literalTypes.add(clazz);
 
         try {
@@ -111,8 +110,7 @@ public class PreparedFilterToSQL extends FilterToSQL {
                 if (Geometry.class.isAssignableFrom(literalValue.getClass())) {
                     int srid = currentSRID != null ? currentSRID : -1;
                     int dimension = currentDimension != null ? currentDimension : -1;
-                    dialect.prepareGeometryValue(
-                            (Geometry) literalValue, dimension, srid, Geometry.class, sb);
+                    dialect.prepareGeometryValue((Geometry) literalValue, dimension, srid, Geometry.class, sb);
                 } else if (encodingFunction) {
                     dialect.prepareFunctionArgument(clazz, sb);
                 } else {

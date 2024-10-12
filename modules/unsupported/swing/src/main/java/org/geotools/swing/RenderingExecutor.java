@@ -62,11 +62,7 @@ public interface RenderingExecutor {
      * @throws IllegalArgumentException if any arguments are {@code null}
      * @throws IllegalStateException if called after the executor has been shut down
      */
-    long submit(
-            MapContent mapContent,
-            GTRenderer renderer,
-            Graphics2D graphics,
-            RenderingExecutorListener listener);
+    long submit(MapContent mapContent, GTRenderer renderer, Graphics2D graphics, RenderingExecutorListener listener);
 
     /**
      * Submits a new rendering task to the executor. The specified listener will be notified of task
@@ -81,10 +77,7 @@ public interface RenderingExecutor {
      * @throws IllegalArgumentException if any arguments are {@code null}
      * @throws IllegalStateException if called after the executor has been shut down
      */
-    long submit(
-            MapContent mapContent,
-            List<RenderingOperands> operands,
-            RenderingExecutorListener listener);
+    long submit(MapContent mapContent, List<RenderingOperands> operands, RenderingExecutorListener listener);
 
     /**
      * Cancels a specific rendering task.

@@ -31,12 +31,11 @@ import org.geotools.filter.capability.FunctionNameImpl;
  */
 public class SpinFunction extends FunctionImpl {
 
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "spin",
-                    parameter("result", Color.class),
-                    parameter("color", Color.class),
-                    parameter("amount", Double.class));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "spin",
+            parameter("result", Color.class),
+            parameter("color", Color.class),
+            parameter("amount", Double.class));
 
     public SpinFunction() {
         this.functionName = NAME;

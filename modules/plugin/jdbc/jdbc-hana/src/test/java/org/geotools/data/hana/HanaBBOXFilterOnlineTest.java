@@ -47,9 +47,7 @@ public class HanaBBOXFilterOnlineTest extends JDBCTestSupport {
         FilterFactory ff = dataStore.getFilterFactory();
         BBOX filter = ff.bbox(aname("GEOM"), 1, 2, 3, 4, "EPSG:4326");
         String s = filterToSQL.encodeToString(filter);
-        assertEquals(
-                "WHERE GEOM.ST_IntersectsRectPlanar(ST_GeomFromWKB(?, -1), ST_GeomFromWKB(?, -1)) = 1",
-                s);
+        assertEquals("WHERE GEOM.ST_IntersectsRectPlanar(ST_GeomFromWKB(?, -1), ST_GeomFromWKB(?, -1)) = 1", s);
 
         GeometryFactory f = new GeometryFactory();
         List<Object> literals = filterToSQL.getLiteralValues();

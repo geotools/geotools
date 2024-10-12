@@ -116,8 +116,7 @@ public interface GridCoverageReader {
      *     {@link javax.imageio.IIOException} if an error was thrown by the underlying image
      *     library.
      */
-    GridCoverage read(GeneralParameterValue... parameters)
-            throws IllegalArgumentException, IOException;
+    GridCoverage read(GeneralParameterValue... parameters) throws IllegalArgumentException, IOException;
 
     /**
      * Read the grid coverage specified by coverageName parameter.

@@ -83,8 +83,7 @@ public class CQLBetweenPredicateTest {
         final String propExpected = "gmd:aa:bb/gmd:cc/gmd:dd";
         Filter resultFilter = parseFilter(prop + " BETWEEN 100 AND 200 ");
 
-        Assert.assertTrue(
-                "PropertyIsBetween filter was expected", resultFilter instanceof PropertyIsBetween);
+        Assert.assertTrue("PropertyIsBetween filter was expected", resultFilter instanceof PropertyIsBetween);
 
         PropertyIsBetween filter = (PropertyIsBetween) resultFilter;
         Expression property = filter.getExpression();
@@ -93,8 +92,7 @@ public class CQLBetweenPredicateTest {
     }
 
     /** Execute the test with the provided sample */
-    protected void testBetweenPredicate(final String samplePredicate, Filter expected)
-            throws Exception {
+    protected void testBetweenPredicate(final String samplePredicate, Filter expected) throws Exception {
 
         Filter actual = parseFilter(samplePredicate);
 

@@ -56,10 +56,8 @@ public class SerializedReaderWriter extends AbstractReaderWriter implements File
         GraphBuilder builder = (GraphBuilder) getProperty(BUILDER);
 
         // create file input stream
-        try (ValidatingObjectInputStream objin =
-                new ValidatingObjectInputStream(
-                        new BufferedInputStream(
-                                new FileInputStream((String) getProperty(FILENAME))))) {
+        try (ValidatingObjectInputStream objin = new ValidatingObjectInputStream(
+                new BufferedInputStream(new FileInputStream((String) getProperty(FILENAME))))) {
             // only allow graph objects and arrays of graph objects
             objin.accept("org.geotools.graph.structure.*", "[Lorg.geotools.graph.structure.*");
 
@@ -115,10 +113,8 @@ public class SerializedReaderWriter extends AbstractReaderWriter implements File
     @Override
     public void write(Graph graph) throws Exception {
         // create file output stream
-        try (ObjectOutputStream objout =
-                new ObjectOutputStream(
-                        new BufferedOutputStream(
-                                new FileOutputStream((String) getProperty(FILENAME))))) {
+        try (ObjectOutputStream objout = new ObjectOutputStream(
+                new BufferedOutputStream(new FileOutputStream((String) getProperty(FILENAME))))) {
 
             // create header
             // 1. number of nodes

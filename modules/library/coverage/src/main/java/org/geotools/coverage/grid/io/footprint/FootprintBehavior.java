@@ -38,16 +38,14 @@ import org.geotools.util.factory.Hints;
 public enum FootprintBehavior {
     None(false) {
         @Override
-        public RenderedImage postProcessBlankResponse(
-                RenderedImage finalImage, RenderingHints hints) {
+        public RenderedImage postProcessBlankResponse(RenderedImage finalImage, RenderingHints hints) {
             return finalImage;
         }
     },
     Cut(true),
     Transparent(true) {
         @Override
-        public RenderedImage postProcessMosaic(
-                RenderedImage mosaic, ROI overallROI, RenderingHints hints) {
+        public RenderedImage postProcessMosaic(RenderedImage mosaic, ROI overallROI, RenderingHints hints) {
 
             // force the current image in RGB or Gray
             final ImageWorker imageWorker = new ImageWorker(mosaic);
@@ -65,20 +63,18 @@ public enum FootprintBehavior {
             // do we already have a alpha band in the input image?
             if (imageWorker.getRenderedImage().getColorModel().hasAlpha()) {
                 // if so we reuse it applying the ROI on top of it
-                RenderedImage alpha =
-                        new ImageWorker(imageWorker.getRenderedImage())
-                                .retainLastBand()
-                                .getRenderedImage();
-                RenderedImage maskedAlpha =
-                        new ImageWorker(hints)
-                                .mosaic(
-                                        new RenderedImage[] {alpha},
-                                        MosaicDescriptor.MOSAIC_TYPE_OVERLAY,
-                                        null,
-                                        new ROI[] {overallROI},
-                                        null,
-                                        null)
-                                .getRenderedImage();
+                RenderedImage alpha = new ImageWorker(imageWorker.getRenderedImage())
+                        .retainLastBand()
+                        .getRenderedImage();
+                RenderedImage maskedAlpha = new ImageWorker(hints)
+                        .mosaic(
+                                new RenderedImage[] {alpha},
+                                MosaicDescriptor.MOSAIC_TYPE_OVERLAY,
+                                null,
+                                new ROI[] {overallROI},
+                                null,
+                                null)
+                        .getRenderedImage();
 
                 imageWorker.retainBands(mosaic.getColorModel().getNumColorComponents());
                 imageWorker.addBand(maskedAlpha, false, true, null);
@@ -88,38 +84,31 @@ public enum FootprintBehavior {
                 final ImageWorker roiImageWorker = new ImageWorker(overallROI.getAsImage());
                 roiImageWorker.setRenderingHints(hints);
 
-                PlanarImage alpha =
-                        roiImageWorker
-                                .forceComponentColorModel()
-                                .retainFirstBand()
-                                .getPlanarImage();
+                PlanarImage alpha = roiImageWorker
+                        .forceComponentColorModel()
+                        .retainFirstBand()
+                        .getPlanarImage();
                 if (!alpha.getBounds().equals(imageWorker.getPlanarImage().getBounds())) {
                     // build final layout and use it for giving the alpha band a simil size and
                     // tiling
                     // to the one of the image
                     final ImageLayout layout =
-                            new ImageLayout(
-                                    mosaic.getMinX(),
-                                    mosaic.getMinY(),
-                                    mosaic.getWidth(),
-                                    mosaic.getHeight());
+                            new ImageLayout(mosaic.getMinX(), mosaic.getMinY(), mosaic.getWidth(), mosaic.getHeight());
 
                     final SampleModel sampleModel = mosaic.getSampleModel();
-                    layout.setTileHeight(sampleModel.getWidth())
-                            .setTileWidth(sampleModel.getHeight());
+                    layout.setTileHeight(sampleModel.getWidth()).setTileWidth(sampleModel.getHeight());
                     hints.add(new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout));
 
                     // correct bounds of the current image
-                    alpha =
-                            new ImageWorker(hints)
-                                    .mosaic(
-                                            new RenderedImage[] {alpha},
-                                            MosaicDescriptor.MOSAIC_TYPE_OVERLAY,
-                                            null,
-                                            new ROI[] {overallROI},
-                                            null,
-                                            null)
-                                    .getRenderedOperation();
+                    alpha = new ImageWorker(hints)
+                            .mosaic(
+                                    new RenderedImage[] {alpha},
+                                    MosaicDescriptor.MOSAIC_TYPE_OVERLAY,
+                                    null,
+                                    new ROI[] {overallROI},
+                                    null,
+                                    null)
+                            .getRenderedOperation();
                 }
                 imageWorker.addBand(alpha, false, true, null);
             }
@@ -140,8 +129,7 @@ public enum FootprintBehavior {
         }
 
         @Override
-        public RenderedImage postProcessBlankResponse(
-                RenderedImage finalImage, RenderingHints hints) {
+        public RenderedImage postProcessBlankResponse(RenderedImage finalImage, RenderingHints hints) {
             // force the current image in RGB or Gray
             final ImageWorker imageWorker = new ImageWorker(finalImage);
             hints = prepareHints(hints);
@@ -161,11 +149,10 @@ public enum FootprintBehavior {
                 imageWorker2.setRenderingHints(hints);
 
                 // trick to get a 0 band
-                RenderedImage alpha =
-                        imageWorker2
-                                .retainFirstBand()
-                                .multiplyConst(new double[] {0.0})
-                                .getRenderedImage();
+                RenderedImage alpha = imageWorker2
+                        .retainFirstBand()
+                        .multiplyConst(new double[] {0.0})
+                        .getRenderedImage();
                 imageWorker2.dispose();
                 imageWorker.addBand(alpha, false, true, null);
             }
@@ -211,26 +198,20 @@ public enum FootprintBehavior {
     }
 
     /** Applies post processing to the result mosaic, eventually making certain areas transparent */
-    public RenderedImage postProcessMosaic(
-            RenderedImage mosaic, ROI overallROI, RenderingHints hints) {
+    public RenderedImage postProcessMosaic(RenderedImage mosaic, ROI overallROI, RenderingHints hints) {
         return mosaic;
     }
 
     /** Post processes a blank image response, eventually making it transparent */
     public RenderedImage postProcessBlankResponse(RenderedImage finalImage, RenderingHints hints) {
         // prepare a ROI made of only zeroes
-        ImageLayout layout =
-                new ImageLayout(
-                        finalImage.getMinX(),
-                        finalImage.getMinY(),
-                        finalImage.getWidth(),
-                        finalImage.getHeight());
-        RenderedOp roi =
-                ConstantDescriptor.create(
-                        (float) finalImage.getWidth(),
-                        (float) finalImage.getHeight(),
-                        new Byte[] {0},
-                        new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout));
+        ImageLayout layout = new ImageLayout(
+                finalImage.getMinX(), finalImage.getMinY(), finalImage.getWidth(), finalImage.getHeight());
+        RenderedOp roi = ConstantDescriptor.create(
+                (float) finalImage.getWidth(),
+                (float) finalImage.getHeight(),
+                new Byte[] {0},
+                new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout));
 
         ImageWorker iw = new ImageWorker(finalImage);
         iw.setROI(new ROI(roi));

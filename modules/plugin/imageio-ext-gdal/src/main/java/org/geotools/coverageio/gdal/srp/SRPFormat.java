@@ -33,8 +33,7 @@ import org.geotools.util.factory.Hints;
  */
 public final class SRPFormat extends BaseGDALGridFormat implements Format {
     /** Logger. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(SRPFormat.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(SRPFormat.class);
 
     /** Creates an instance and sets the metadata. */
     public SRPFormat() {

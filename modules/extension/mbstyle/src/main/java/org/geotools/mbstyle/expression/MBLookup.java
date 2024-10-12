@@ -39,9 +39,8 @@ public class MBLookup extends MBExpression {
             Expression at = parse.string(json, 1);
             return ff.function("at", e, at);
         }
-        throw new MBFormatException(
-                "The \"at\" expression requires an integer value at index 1, and a literal"
-                        + " array value at index 2");
+        throw new MBFormatException("The \"at\" expression requires an integer value at index 1, and a literal"
+                + " array value at index 2");
     }
 
     /**
@@ -93,8 +92,7 @@ public class MBLookup extends MBExpression {
             Expression object = parse.string(json, 2);
             return ff.function("has", value, object);
         }
-        throw new MBFormatException(
-                "Expression \"has\" requires 1 or 2 arguments " + json.size() + " arguments found");
+        throw new MBFormatException("Expression \"has\" requires 1 or 2 arguments " + json.size() + " arguments found");
     }
 
     /**

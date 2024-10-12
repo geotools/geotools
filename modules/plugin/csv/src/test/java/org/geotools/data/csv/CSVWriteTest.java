@@ -141,10 +141,8 @@ public class CSVWriteTest {
 
             SimpleFeatureType type = store.getSchema("locations");
             SimpleFeatureStore auto = (SimpleFeatureStore) store.getFeatureSource("locations");
-            SimpleFeatureStore featureStore1 =
-                    (SimpleFeatureStore) store.getFeatureSource("locations");
-            SimpleFeatureStore featureStore2 =
-                    (SimpleFeatureStore) store.getFeatureSource("locations");
+            SimpleFeatureStore featureStore1 = (SimpleFeatureStore) store.getFeatureSource("locations");
+            SimpleFeatureStore featureStore2 = (SimpleFeatureStore) store.getFeatureSource("locations");
 
             featureStore1.setTransaction(t1);
             featureStore2.setTransaction(t2);
@@ -159,7 +157,10 @@ public class CSVWriteTest {
             featureStore1.removeFeatures(filter1); // road1 removes fid1 on t1
 
             // Tests after removal
-            assertEquals("auto after featureStore1 removes fid1", 9, auto.getFeatures().size());
+            assertEquals(
+                    "auto after featureStore1 removes fid1",
+                    9,
+                    auto.getFeatures().size());
             assertEquals(
                     "featureStore1 after featureStore1 removes fid1",
                     8,
@@ -171,11 +172,8 @@ public class CSVWriteTest {
 
             // new feature to add!
             // 45.52, -122.681944, Portland, 800, 2014
-            SimpleFeature feature =
-                    SimpleFeatureBuilder.build(
-                            type,
-                            new Object[] {45.52, -122.681944, "Portland", 800, 2014},
-                            "locations-fid10");
+            SimpleFeature feature = SimpleFeatureBuilder.build(
+                    type, new Object[] {45.52, -122.681944, "Portland", 800, 2014}, "locations-fid10");
             SimpleFeatureCollection collection = DataUtilities.collection(feature);
 
             featureStore2.addFeatures(collection);
@@ -251,9 +249,11 @@ public class CSVWriteTest {
             }
 
             // Test the contents have been removed
-            SimpleFeatureStore featureStore =
-                    (SimpleFeatureStore) store.getFeatureSource("locations");
-            assertEquals("featureStore should be empty", 0, featureStore.getFeatures().size());
+            SimpleFeatureStore featureStore = (SimpleFeatureStore) store.getFeatureSource("locations");
+            assertEquals(
+                    "featureStore should be empty",
+                    0,
+                    featureStore.getFeatures().size());
             // Make sure the file is empty
             assertEquals("file should have no content", "", getFileContents(statesfile));
             t.commit();
@@ -282,8 +282,7 @@ public class CSVWriteTest {
         GeometryFactory gf = JTSFactoryFinder.getGeometryFactory();
         Point portland = gf.createPoint(new Coordinate(45.52, -122.681944));
         SimpleFeature f =
-                SimpleFeatureBuilder.build(
-                        type, new Object[] {portland, "Portland", 800, 2014}, "locations.1");
+                SimpleFeatureBuilder.build(type, new Object[] {portland, "Portland", 800, 2014}, "locations.1");
         collection.add(f);
 
         try (FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
@@ -312,8 +311,7 @@ public class CSVWriteTest {
                 1,
                 featureStore.getFeatures().size());
         final String newline = System.lineSeparator();
-        String contents =
-                "LAT,LON,CITY,NUMBER,YEAR" + newline + "45.52,-122.681944,Portland,800,2014";
+        String contents = "LAT,LON,CITY,NUMBER,YEAR" + newline + "45.52,-122.681944,Portland,800,2014";
         assertEquals(
                 "Ensure the file has only the one feature we created",
                 contents.trim(),
@@ -366,8 +364,7 @@ public class CSVWriteTest {
 
         // Making sure whitespace doesn't cause problems
         // and adjust for potential windows line endings.
-        assertEqualsIgnoreWhitespace(
-                "Contents of both files should be the same", contents1, contents2);
+        assertEqualsIgnoreWhitespace("Contents of both files should be the same", contents1, contents2);
     }
 
     @Test
@@ -380,8 +377,7 @@ public class CSVWriteTest {
         file2.deleteOnExit();
         Map<String, Serializable> params2 = new HashMap<>();
         params2.put("file", file2);
-        params2.put(
-                CSVDataStoreFactory.STRATEGYP.key, CSVDataStoreFactory.ATTRIBUTES_ONLY_STRATEGY);
+        params2.put(CSVDataStoreFactory.STRATEGYP.key, CSVDataStoreFactory.ATTRIBUTES_ONLY_STRATEGY);
 
         CSVDataStoreFactory factory = new CSVDataStoreFactory();
         DataStore duplicate = factory.createNewDataStore(params2);
@@ -393,8 +389,7 @@ public class CSVWriteTest {
 
         try (FeatureReader<SimpleFeatureType, SimpleFeature> reader = store.getFeatureReader();
                 FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
-                        duplicate.getFeatureWriterAppend(
-                                duplicate.getTypeNames()[0], Transaction.AUTO_COMMIT)) {
+                        duplicate.getFeatureWriterAppend(duplicate.getTypeNames()[0], Transaction.AUTO_COMMIT)) {
             while (reader.hasNext()) {
                 feature = reader.next();
                 newFeature = writer.next();
@@ -405,8 +400,7 @@ public class CSVWriteTest {
         }
         assertTrue("Temp files being left behind", cleanedup());
         String contents = getFileContents(file2);
-        try (BufferedReader lineReader =
-                new BufferedReader(new CharArrayReader(contents.toCharArray()))) {
+        try (BufferedReader lineReader = new BufferedReader(new CharArrayReader(contents.toCharArray()))) {
             String line = lineReader.readLine(); // header
             assertNotNull(line);
             assertFalse("Geom is included", line.toLowerCase().contains("the_geom"));
@@ -434,8 +428,7 @@ public class CSVWriteTest {
         GeometryFactory gf = JTSFactoryFinder.getGeometryFactory();
         Point portland = gf.createPoint(new Coordinate(45.52, -122.681944));
         SimpleFeature f =
-                SimpleFeatureBuilder.build(
-                        type, new Object[] {portland, "Portland", 800, 2014}, "locations.1");
+                SimpleFeatureBuilder.build(type, new Object[] {portland, "Portland", 800, 2014}, "locations.1");
         collection.add(f);
 
         File file2 = File.createTempFile("CSVTest", ".csv");
@@ -455,8 +448,7 @@ public class CSVWriteTest {
         try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
                         store.getFeatureReader(new Query("locations"), Transaction.AUTO_COMMIT);
                 FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
-                        duplicate.getFeatureWriterAppend(
-                                duplicate.getTypeNames()[0], Transaction.AUTO_COMMIT)) {
+                        duplicate.getFeatureWriterAppend(duplicate.getTypeNames()[0], Transaction.AUTO_COMMIT)) {
             while (reader.hasNext()) {
                 feature = reader.next();
                 newFeature = writer.next();
@@ -467,8 +459,7 @@ public class CSVWriteTest {
         }
         assertTrue("Temp files being left behind", cleanedup());
         String contents = getFileContents(file2);
-        try (BufferedReader lineReader =
-                new BufferedReader(new CharArrayReader(contents.toCharArray()))) {
+        try (BufferedReader lineReader = new BufferedReader(new CharArrayReader(contents.toCharArray()))) {
             String line = lineReader.readLine(); // header
             assertNotNull(line);
             assertTrue("No Lat", line.contains("LAT"));
@@ -533,8 +524,7 @@ public class CSVWriteTest {
 
         try (FeatureReader<SimpleFeatureType, SimpleFeature> reader = store.getFeatureReader();
                 FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
-                        duplicate.getFeatureWriterAppend(
-                                duplicate.getTypeNames()[0], Transaction.AUTO_COMMIT)) {
+                        duplicate.getFeatureWriterAppend(duplicate.getTypeNames()[0], Transaction.AUTO_COMMIT)) {
             while (reader.hasNext()) {
                 feature = reader.next();
                 newFeature = writer.next();
@@ -546,8 +536,7 @@ public class CSVWriteTest {
         assertTrue("Temp files being left behind", cleanedup());
         String contents = getFileContents(file2);
 
-        try (BufferedReader lineReader =
-                new BufferedReader(new CharArrayReader(contents.toCharArray()))) {
+        try (BufferedReader lineReader = new BufferedReader(new CharArrayReader(contents.toCharArray()))) {
             String line = lineReader.readLine(); // header
             assertNotNull(line);
             assertTrue("Geom is not included", line.toLowerCase().contains("the_geom_wkt"));
@@ -558,8 +547,7 @@ public class CSVWriteTest {
         file2.delete();
     }
 
-    public static void assertEqualsIgnoreWhitespace(
-            String message, String expected, String actual) {
+    public static void assertEqualsIgnoreWhitespace(String message, String expected, String actual) {
         expected = removeWhitespace(expected);
         actual = removeWhitespace(actual);
         assertEquals(message, expected, actual);

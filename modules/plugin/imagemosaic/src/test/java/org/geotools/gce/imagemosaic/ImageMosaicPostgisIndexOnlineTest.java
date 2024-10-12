@@ -140,8 +140,7 @@ public class ImageMosaicPostgisIndexOnlineTest extends OnlineTestCase {
     public void testPostgisIndexing() throws Exception {
         final File workDir = new File(TestData.file(this, "."), tempFolderName1);
         assertTrue(workDir.mkdir());
-        FileUtils.copyFile(
-                TestData.file(this, "watertemp.zip"), new File(workDir, "watertemp.zip"));
+        FileUtils.copyFile(TestData.file(this, "watertemp.zip"), new File(workDir, "watertemp.zip"));
         TestData.unzipFile(this, tempFolderName1 + "/watertemp.zip");
         final URL timeElevURL = TestData.url(this, tempFolderName1);
 
@@ -178,8 +177,7 @@ public class ImageMosaicPostgisIndexOnlineTest extends OnlineTestCase {
                 1E-6);
 
         // limit yourself to reading just a bit of it
-        final ParameterValue<GridGeometry2D> gg =
-                AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
+        final ParameterValue<GridGeometry2D> gg = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
         final GeneralBounds envelope = reader.getOriginalEnvelope();
         final Dimension dim = new Dimension();
         dim.setSize(
@@ -211,17 +209,13 @@ public class ImageMosaicPostgisIndexOnlineTest extends OnlineTestCase {
         // Test the output coverage
         assertNotNull(reader.read(new GeneralParameterValue[] {gg, time, bkg, elevation, direct}));
         TestUtils.checkCoverage(
-                reader,
-                new GeneralParameterValue[] {gg, time, bkg, elevation, direct},
-                "Time-Elevation Test");
+                reader, new GeneralParameterValue[] {gg, time, bkg, elevation, direct}, "Time-Elevation Test");
 
         // Test the output coverage
         reader = TestUtils.getReader(timeElevURL, format);
         elevation.setValue(Arrays.asList(NumberRange.create(0.0, 10.0)));
         TestUtils.checkCoverage(
-                reader,
-                new GeneralParameterValue[] {gg, time, bkg, elevation, direct},
-                "Time-Elevation Test");
+                reader, new GeneralParameterValue[] {gg, time, bkg, elevation, direct}, "Time-Elevation Test");
 
         reader.dispose();
     }
@@ -232,8 +226,7 @@ public class ImageMosaicPostgisIndexOnlineTest extends OnlineTestCase {
         final File workDir = new File(TestData.file(this, "."), tempFolderNoEpsg);
         workDir.mkdir();
         assertTrue(workDir.exists());
-        FileUtils.copyFile(
-                TestData.file(this, "rgb_noepsg.zip"), new File(workDir, "rgb_noepsg.zip"));
+        FileUtils.copyFile(TestData.file(this, "rgb_noepsg.zip"), new File(workDir, "rgb_noepsg.zip"));
         TestData.unzipFile(this, tempFolderNoEpsg + "/rgb_noepsg.zip");
         final URL noEpsgURL = TestData.url(this, tempFolderNoEpsg);
 
@@ -252,8 +245,7 @@ public class ImageMosaicPostgisIndexOnlineTest extends OnlineTestCase {
         final File workDir = new File(TestData.file(this, "."), tempFolderName4);
         workDir.mkdir();
         assertTrue(workDir.exists());
-        FileUtils.copyFile(
-                TestData.file(this, "watertemp.zip"), new File(workDir, "watertemp.zip"));
+        FileUtils.copyFile(TestData.file(this, "watertemp.zip"), new File(workDir, "watertemp.zip"));
         TestData.unzipFile(this, tempFolderName4 + "/watertemp.zip");
         final URL timeElevURL = TestData.url(this, tempFolderName4);
 
@@ -279,9 +271,7 @@ public class ImageMosaicPostgisIndexOnlineTest extends OnlineTestCase {
 
     private void setupDataStoreProperties(String folder) throws IOException, FileNotFoundException {
         // place datastore.properties file in the dir for the indexing
-        try (FileWriter out =
-                new FileWriter(
-                        new File(TestData.file(this, "."), folder + "/datastore.properties"))) {
+        try (FileWriter out = new FileWriter(new File(TestData.file(this, "."), folder + "/datastore.properties"))) {
             final Set<Object> keyset = fixture.keySet();
             for (Object key : keyset) {
                 final String key_ = (String) key;
@@ -301,8 +291,7 @@ public class ImageMosaicPostgisIndexOnlineTest extends OnlineTestCase {
     public void testSortingAndLimiting() throws Exception {
         final File workDir = new File(TestData.file(this, "."), tempFolderName2);
         assertTrue(workDir.mkdir());
-        FileUtils.copyFile(
-                TestData.file(this, "watertemp.zip"), new File(workDir, "watertemp.zip"));
+        FileUtils.copyFile(TestData.file(this, "watertemp.zip"), new File(workDir, "watertemp.zip"));
         TestData.unzipFile(this, tempFolderName2 + "/watertemp.zip");
         final URL timeElevURL = TestData.url(this, tempFolderName2);
 
@@ -324,8 +313,7 @@ public class ImageMosaicPostgisIndexOnlineTest extends OnlineTestCase {
         // dispose and create new reader
         reader.dispose();
         final MyImageMosaicReader reader1 = new MyImageMosaicReader(timeElevURL);
-        final RasterManager rasterManager =
-                reader1.getRasterManager(reader1.getGridCoverageNames()[0]);
+        final RasterManager rasterManager = reader1.getRasterManager(reader1.getGridCoverageNames()[0]);
 
         // query
         final SimpleFeatureType type = rasterManager.granuleCatalog.getType("waterTempPG2");
@@ -340,12 +328,8 @@ public class ImageMosaicPostgisIndexOnlineTest extends OnlineTestCase {
 
             // sorting
             final SortBy[] clauses = {
-                new SortByImpl(
-                        FeatureUtilities.DEFAULT_FILTER_FACTORY.property("ingestion"),
-                        SortOrder.DESCENDING),
-                new SortByImpl(
-                        FeatureUtilities.DEFAULT_FILTER_FACTORY.property("elevation"),
-                        SortOrder.ASCENDING),
+                new SortByImpl(FeatureUtilities.DEFAULT_FILTER_FACTORY.property("ingestion"), SortOrder.DESCENDING),
+                new SortByImpl(FeatureUtilities.DEFAULT_FILTER_FACTORY.property("elevation"), SortOrder.ASCENDING),
             };
             query.setSortBy(clauses);
         }
@@ -368,12 +352,8 @@ public class ImageMosaicPostgisIndexOnlineTest extends OnlineTestCase {
 
         // Reverting order (the previous timestamp shouldn't match anymore)
         final SortBy[] clauses = {
-            new SortByImpl(
-                    FeatureUtilities.DEFAULT_FILTER_FACTORY.property("ingestion"),
-                    SortOrder.ASCENDING),
-            new SortByImpl(
-                    FeatureUtilities.DEFAULT_FILTER_FACTORY.property("elevation"),
-                    SortOrder.DESCENDING),
+            new SortByImpl(FeatureUtilities.DEFAULT_FILTER_FACTORY.property("ingestion"), SortOrder.ASCENDING),
+            new SortByImpl(FeatureUtilities.DEFAULT_FILTER_FACTORY.property("elevation"), SortOrder.DESCENDING),
         };
         query.setSortBy(clauses);
 
@@ -409,18 +389,15 @@ public class ImageMosaicPostgisIndexOnlineTest extends OnlineTestCase {
     private void dropTables(String[] tables, String database) throws Exception {
         // delete tables
         Class.forName("org.postgresql.Driver");
-        try (Connection connection =
-                        DriverManager.getConnection(
-                                "jdbc:postgresql://"
-                                        + fixture.getProperty("host")
-                                        + ":"
-                                        + fixture.getProperty("port")
-                                        + "/"
-                                        + (database != null
-                                                ? database
-                                                : fixture.getProperty("database")),
-                                fixture.getProperty("user"),
-                                fixture.getProperty("passwd"));
+        try (Connection connection = DriverManager.getConnection(
+                        "jdbc:postgresql://"
+                                + fixture.getProperty("host")
+                                + ":"
+                                + fixture.getProperty("port")
+                                + "/"
+                                + (database != null ? database : fixture.getProperty("database")),
+                        fixture.getProperty("user"),
+                        fixture.getProperty("passwd"));
                 Statement st = connection.createStatement()) {
             for (String table : tables) {
                 st.execute("DROP TABLE IF EXISTS \"" + table + "\"");
@@ -435,9 +412,7 @@ public class ImageMosaicPostgisIndexOnlineTest extends OnlineTestCase {
     public void testPostgisWrapping() throws Exception {
         final File workDir = new File(TestData.file(this, "."), tempFolderNameWrap);
         assertTrue(workDir.mkdir());
-        FileUtils.copyFile(
-                TestData.file(this, "watertemplongnames.zip"),
-                new File(workDir, "watertemplongnames.zip"));
+        FileUtils.copyFile(TestData.file(this, "watertemplongnames.zip"), new File(workDir, "watertemplongnames.zip"));
         TestData.unzipFile(this, tempFolderNameWrap + "/watertemplongnames.zip");
         final URL dataUrl = TestData.url(this, tempFolderNameWrap);
 
@@ -486,8 +461,7 @@ public class ImageMosaicPostgisIndexOnlineTest extends OnlineTestCase {
                 1E-6);
 
         // limit yourself to reading just a bit of it
-        final ParameterValue<GridGeometry2D> gg =
-                AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
+        final ParameterValue<GridGeometry2D> gg = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
         final GeneralBounds envelope = reader.getOriginalEnvelope();
         final Dimension dim = new Dimension();
         dim.setSize(
@@ -519,17 +493,13 @@ public class ImageMosaicPostgisIndexOnlineTest extends OnlineTestCase {
         // Test the output coverage
         assertNotNull(reader.read(new GeneralParameterValue[] {gg, time, bkg, elevation, direct}));
         TestUtils.checkCoverage(
-                reader,
-                new GeneralParameterValue[] {gg, time, bkg, elevation, direct},
-                "Time-Elevation Test");
+                reader, new GeneralParameterValue[] {gg, time, bkg, elevation, direct}, "Time-Elevation Test");
 
         // Test the output coverage
         reader = TestUtils.getReader(dataUrl, format, null);
         elevation.setValue(Arrays.asList(NumberRange.create(0.0, 10.0)));
         TestUtils.checkCoverage(
-                reader,
-                new GeneralParameterValue[] {gg, time, bkg, elevation, direct},
-                "Time-Elevation Test");
+                reader, new GeneralParameterValue[] {gg, time, bkg, elevation, direct}, "Time-Elevation Test");
         reader.dispose();
     }
 
@@ -537,30 +507,28 @@ public class ImageMosaicPostgisIndexOnlineTest extends OnlineTestCase {
     protected void tearDownInternal() throws Exception {
 
         // delete tables
-        dropTables(
-                new String[] {
-                    tempFolderNoEpsg,
-                    tempFolderName1,
-                    tempFolderName2,
-                    noGeomLast,
-                    noGeomFirst,
-                    tempFolderName3,
-                    VERY_LONG_NAME.substring(0, 63)
-                });
+        dropTables(new String[] {
+            tempFolderNoEpsg,
+            tempFolderName1,
+            tempFolderName2,
+            noGeomLast,
+            noGeomFirst,
+            tempFolderName3,
+            VERY_LONG_NAME.substring(0, 63)
+        });
 
         System.clearProperty("org.geotools.referencing.forceXY");
 
         // clean up disk
         if (!ImageMosaicReaderTest.INTERACTIVE) {
             File parent = TestData.file(this, ".");
-            for (String name :
-                    Arrays.asList(
-                            tempFolderName1,
-                            tempFolderName2,
-                            tempFolderName3,
-                            tempFolderName4,
-                            tempFolderNameWrap,
-                            tempFolderNoEpsg)) {
+            for (String name : Arrays.asList(
+                    tempFolderName1,
+                    tempFolderName2,
+                    tempFolderName3,
+                    tempFolderName4,
+                    tempFolderNameWrap,
+                    tempFolderNoEpsg)) {
                 File directory = new File(parent, name);
                 if (directory.isDirectory() && directory.exists()) {
                     FileUtils.deleteDirectory(directory);

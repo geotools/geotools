@@ -124,8 +124,7 @@ import org.geotools.xml.XMLHandlerHints;
  *
  * @author Jesse Eichar
  */
-@SuppressWarnings(
-        "unchecked") // gigantic mess, too much untyped structures and methods to work on them
+@SuppressWarnings("unchecked") // gigantic mess, too much untyped structures and methods to work on them
 public class FilterEncodingPreProcessor implements FilterVisitor {
     private static final int LOW = 0;
     private static final int MEDIUM = 1;
@@ -290,8 +289,7 @@ public class FilterEncodingPreProcessor implements FilterVisitor {
         }
     }
 
-    private Data createMediumLevelLogicFilter(Filter filter, int startOfFilterStack)
-            throws IllegalFilterException {
+    private Data createMediumLevelLogicFilter(Filter filter, int startOfFilterStack) throws IllegalFilterException {
         Data resultingFilter;
 
         if (filter instanceof And) {
@@ -299,8 +297,7 @@ public class FilterEncodingPreProcessor implements FilterVisitor {
             resultingFilter = buildFilter(filter, startOfFilterStack);
             resultingFilter.fids.addAll(fids);
 
-            if (resultingFilter.filter != Filter.EXCLUDE && !fids.isEmpty())
-                requiresPostProcessing = true;
+            if (resultingFilter.filter != Filter.EXCLUDE && !fids.isEmpty()) requiresPostProcessing = true;
         } else if (filter instanceof Or) {
             Set fids = orFids(startOfFilterStack);
             resultingFilter = buildFilter(filter, startOfFilterStack);
@@ -512,8 +509,7 @@ public class FilterEncodingPreProcessor implements FilterVisitor {
         }
     }
 
-    private Data createHighLevelLogicFilter(Filter filter, int startOfFilterStack)
-            throws IllegalFilterException {
+    private Data createHighLevelLogicFilter(Filter filter, int startOfFilterStack) throws IllegalFilterException {
         if (hasFidFilter(startOfFilterStack)) {
             Set fids;
 

@@ -41,13 +41,8 @@ public class XSDParserDelegate implements ParserDelegate {
     }
 
     @Override
-    public boolean canHandle(
-            QName elementName, Attributes attributes, Handler handler, Handler parent) {
-        return this.handler
-                .getConfiguration()
-                .getXSD()
-                .getNamespaceURI()
-                .equals(elementName.getNamespaceURI());
+    public boolean canHandle(QName elementName, Attributes attributes, Handler handler, Handler parent) {
+        return this.handler.getConfiguration().getXSD().getNamespaceURI().equals(elementName.getNamespaceURI());
     }
 
     @Override
@@ -81,8 +76,7 @@ public class XSDParserDelegate implements ParserDelegate {
     }
 
     @Override
-    public void startElement(String uri, String localName, String name, Attributes atts)
-            throws SAXException {
+    public void startElement(String uri, String localName, String name, Attributes atts) throws SAXException {
         handler.startElement(uri, localName, name, atts);
     }
 

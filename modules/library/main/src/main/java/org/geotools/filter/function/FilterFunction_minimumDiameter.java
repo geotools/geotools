@@ -31,8 +31,7 @@ import org.locationtech.jts.geom.Geometry;
 public class FilterFunction_minimumDiameter extends FunctionExpressionImpl {
 
     public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "minimumdiameter", Geometry.class, parameter("geometry", Geometry.class));
+            new FunctionNameImpl("minimumdiameter", Geometry.class, parameter("geometry", Geometry.class));
 
     /** Create a new FilterFunction_minimumDiameter instance */
     public FilterFunction_minimumDiameter() {

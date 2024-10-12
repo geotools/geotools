@@ -101,7 +101,8 @@ public class GMLPointTypeBinding extends AbstractComplexBinding {
         }
 
         if (node.getChild("coordinates") != null) {
-            CoordinateSequence seq = (CoordinateSequence) node.getChild("coordinates").getValue();
+            CoordinateSequence seq =
+                    (CoordinateSequence) node.getChild("coordinates").getValue();
 
             return gFactory.createPoint(seq);
         }

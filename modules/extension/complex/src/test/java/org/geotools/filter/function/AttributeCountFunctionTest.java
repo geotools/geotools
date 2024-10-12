@@ -66,31 +66,16 @@ public class AttributeCountFunctionTest extends FunctionTestSupport {
                 new AttributeDescriptorImpl(FakeTypes.STRING_TYPE, attOne, 0, -1, false, null);
         childSchema.add(attOneDescriptor);
         FeatureType childType =
-                new FeatureTypeImpl(
-                        new NameImpl("ns", "childType"),
-                        childSchema,
-                        null,
-                        false,
-                        null,
-                        null,
-                        null);
+                new FeatureTypeImpl(new NameImpl("ns", "childType"), childSchema, null, false, null, null, null);
 
         // parent feature type
         ArrayList<PropertyDescriptor> parentSchema = new ArrayList<>();
         parentSchema.add(attOneDescriptor);
         Name attTwo = new NameImpl("ns", "att2");
-        AttributeDescriptor attTwoDescriptor =
-                new AttributeDescriptorImpl(childType, attTwo, 1, -1, false, null);
+        AttributeDescriptor attTwoDescriptor = new AttributeDescriptorImpl(childType, attTwo, 1, -1, false, null);
         parentSchema.add(attTwoDescriptor);
         FeatureType parentType =
-                new FeatureTypeImpl(
-                        new NameImpl("ns", "parentType"),
-                        parentSchema,
-                        null,
-                        false,
-                        null,
-                        null,
-                        null);
+                new FeatureTypeImpl(new NameImpl("ns", "parentType"), parentSchema, null, false, null, null, null);
 
         // build complex feature
         ComplexFeatureBuilder builder = new ComplexFeatureBuilder(childType);
@@ -125,8 +110,7 @@ public class AttributeCountFunctionTest extends FunctionTestSupport {
         assertEquals(1, ff.function("attributeCount", att2).evaluate(complexFeature));
 
         // check att2/childType/att1
-        AttributeExpressionImpl nestedPath =
-                new AttributeExpressionImpl("ns:att2/ns:childType/ns:att1", hints);
+        AttributeExpressionImpl nestedPath = new AttributeExpressionImpl("ns:att2/ns:childType/ns:att1", hints);
         ff.function("attributeCount", nestedPath);
         assertEquals(2, ff.function("attributeCount", nestedPath).evaluate(complexFeature));
     }

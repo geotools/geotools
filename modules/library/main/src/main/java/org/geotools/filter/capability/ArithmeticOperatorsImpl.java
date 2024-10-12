@@ -41,10 +41,7 @@ public class ArithmeticOperatorsImpl implements ArithmeticOperators {
 
     public ArithmeticOperatorsImpl(ArithmeticOperators copy) {
         this.simpleArithmetic = copy.hasSimpleArithmetic();
-        this.functions =
-                copy.getFunctions() == null
-                        ? new FunctionsImpl()
-                        : new FunctionsImpl(copy.getFunctions());
+        this.functions = copy.getFunctions() == null ? new FunctionsImpl() : new FunctionsImpl(copy.getFunctions());
     }
 
     public void setSimpleArithmetic(boolean simpleArithmetic) {

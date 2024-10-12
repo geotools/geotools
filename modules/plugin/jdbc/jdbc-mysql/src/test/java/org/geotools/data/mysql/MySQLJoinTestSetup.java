@@ -49,16 +49,14 @@ public class MySQLJoinTestSetup extends JDBCJoinTestSetup {
 
         sb = new StringBuffer();
         sb.append("INSERT INTO ftjoin VALUES (")
-                .append(
-                        "2, 'two', ST_GeomFromText('POLYGON ((-10 -10, -10 10, 10 10, 10 -10, -10 -10))',4326), 2);");
+                .append("2, 'two', ST_GeomFromText('POLYGON ((-10 -10, -10 10, 10 10, 10 -10, -10 -10))',4326), 2);");
         run(sb.toString());
 
         sb = new StringBuffer();
         sb.append("INSERT INTO ftjoin VALUES (").append("3, 'three', NULL, 3);");
         run(sb.toString());
 
-        run(
-                "CREATE TABLE ftjoin2(id int PRIMARY KEY, join2intProperty int, stringProperty2 varchar(255))");
+        run("CREATE TABLE ftjoin2(id int PRIMARY KEY, join2intProperty int, stringProperty2 varchar(255))");
         run("INSERT INTO ftjoin2 VALUES (0, 0, '2nd zero')");
         run("INSERT INTO ftjoin2 VALUES (1, 1, '2nd one')");
         run("INSERT INTO ftjoin2 VALUES (2, 2, '2nd two')");

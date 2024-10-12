@@ -75,10 +75,7 @@ public class ColorInversionDescriptor extends OperationDescriptorImpl {
                     {"GlobalName", OPERATION_NAME},
                     {"LocalName", OPERATION_NAME},
                     {"Vendor", "it.geosolutions"},
-                    {
-                        "Description",
-                        "Produce a paletted imge from an RGB or RGBA image using a provided palette."
-                    },
+                    {"Description", "Produce a paletted imge from an RGB or RGBA image using a provided palette."},
                     {"DocURL", "http://www.geo-solutions.it/"}, // TODO:
                     // provides more
                     // accurate URL
@@ -90,9 +87,7 @@ public class ColorInversionDescriptor extends OperationDescriptorImpl {
                 new String[] {RenderedRegistryMode.MODE_NAME},
                 0, // Supported
                 // modes
-                new String[] {
-                    "IndexColorModel", "quantizationColors", "alphaThreshold"
-                }, // Parameter
+                new String[] {"IndexColorModel", "quantizationColors", "alphaThreshold"}, // Parameter
                 // names
                 new Class[] {
                     IndexColorModel.class, Integer.class, Integer.class,
@@ -117,8 +112,7 @@ public class ColorInversionDescriptor extends OperationDescriptorImpl {
      * @param message A buffer for formatting an error message if any.
      */
     @Override
-    protected boolean validateSources(
-            final String modeName, final ParameterBlock param, final StringBuffer message) {
+    protected boolean validateSources(final String modeName, final ParameterBlock param, final StringBuffer message) {
         if (super.validateSources(modeName, param, message)) {
             for (int i = param.getNumSources(); --i >= 0; ) {
                 final Object source = param.getSource(i);

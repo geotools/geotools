@@ -46,12 +46,8 @@ public class PartialIndexQueryManagerTest extends IndexesTest {
 
     @Test
     public void testIndexQuery() throws IOException, URISyntaxException {
-        try (TestFeatureSource fsource =
-                new TestFeatureSource(
-                        "/test-data/index/",
-                        "stationsIndexed.xml",
-                        "http://www.stations.org/1.0",
-                        "stationsIndexed")) {
+        try (TestFeatureSource fsource = new TestFeatureSource(
+                "/test-data/index/", "stationsIndexed.xml", "http://www.stations.org/1.0", "stationsIndexed")) {
             Filter filter = partialIndexedFilter_2idxfilterResults();
             Query query = new Query("stationsIndexed", filter);
             PartialIndexQueryManager piqm =
@@ -83,12 +79,11 @@ public class PartialIndexQueryManagerTest extends IndexesTest {
         File dir = new File(getClass().getResource("/test-data/index/").toURI());
         PropertyDataStore datastore = new PropertyDataStore(dir);
         FilterFactory ff1 = datastore.getFilterFactory();
-        Query query =
-                new Query(
-                        "stationsIndex",
-                        ff1.or(
-                                ff1.equals(ff1.property("NAME"), ff1.literal("station2")),
-                                ff1.equals(ff1.property("NAME"), ff1.literal("station3"))));
+        Query query = new Query(
+                "stationsIndex",
+                ff1.or(
+                        ff1.equals(ff1.property("NAME"), ff1.literal("station2")),
+                        ff1.equals(ff1.property("NAME"), ff1.literal("station3"))));
         return datastore.getFeatureSource("stationsIndex").getFeatures(query);
     }
 }

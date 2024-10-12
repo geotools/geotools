@@ -146,8 +146,7 @@ class WFSFeatureStore extends ContentFeatureStore {
     }
 
     @Override
-    protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query)
-            throws IOException {
+    protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query) throws IOException {
         return delegate.getReaderInternal(query);
     }
 
@@ -188,8 +187,7 @@ class WFSFeatureStore extends ContentFeatureStore {
     }
 
     @Override
-    public void modifyFeatures(Name[] properties, Object[] values, Filter filter)
-            throws IOException {
+    public void modifyFeatures(Name[] properties, Object[] values, Filter filter) throws IOException {
         if (filter == null) {
             throw new IllegalArgumentException("filter is null");
         }
@@ -227,25 +225,21 @@ class WFSFeatureStore extends ContentFeatureStore {
             if (Transaction.AUTO_COMMIT.equals(transaction)) {
                 // we're in auto commit. Do a batch update and commit right away
                 WFSLocalTransactionState localState = getState().getLocalTransactionState();
-                WFSRemoteTransactionState committingState =
-                        new WFSRemoteTransactionState(getDataStore());
+                WFSRemoteTransactionState committingState = new WFSRemoteTransactionState(getDataStore());
                 committingState.watch(localState.getState());
 
                 WFSDiff diff = localState.getDiff();
 
-                ReferencedEnvelope bounds =
-                        diff.batchModify(properties, values, filter, oldFeatures, contentState);
+                ReferencedEnvelope bounds = diff.batchModify(properties, values, filter, oldFeatures, contentState);
                 affectedBounds.expandToInclude(bounds);
                 committingState.commit();
 
             } else {
                 // we're in a transaction, record to local state and wait for commit to be called
-                WFSLocalTransactionState localState =
-                        (WFSLocalTransactionState) transaction.getState(getEntry());
+                WFSLocalTransactionState localState = (WFSLocalTransactionState) transaction.getState(getEntry());
                 WFSDiff diff = localState.getDiff();
 
-                ReferencedEnvelope bounds =
-                        diff.batchModify(properties, values, filter, oldFeatures, contentState);
+                ReferencedEnvelope bounds = diff.batchModify(properties, values, filter, oldFeatures, contentState);
                 affectedBounds.expandToInclude(bounds);
             }
 

@@ -95,8 +95,7 @@ public final class ECWTest extends GDALTestCase {
         // read once
         //
         // /////////////////////////////////////////////////////////////////////
-        final ParameterValue<Boolean> jai =
-                ((AbstractGridFormat) reader.getFormat()).USE_JAI_IMAGEREAD.createValue();
+        final ParameterValue<Boolean> jai = ((AbstractGridFormat) reader.getFormat()).USE_JAI_IMAGEREAD.createValue();
         jai.setValue(true);
         GridCoverage2D gc = reader.read(new GeneralParameterValue[] {jai});
         LOGGER.info(gc.toString());
@@ -110,41 +109,32 @@ public final class ECWTest extends GDALTestCase {
         final double cropFactor = 2.0;
         final Rectangle range = ((GridEnvelope2D) reader.getOriginalGridRange());
         final GeneralBounds oldEnvelope = reader.getOriginalEnvelope();
-        final GeneralBounds cropEnvelope =
-                new GeneralBounds(
-                        new double[] {
-                            oldEnvelope.getLowerCorner().getOrdinate(0)
-                                    + (oldEnvelope.getSpan(0) / cropFactor),
-                            oldEnvelope.getLowerCorner().getOrdinate(1)
-                                    + (oldEnvelope.getSpan(1) / cropFactor)
-                        },
-                        new double[] {
-                            oldEnvelope.getUpperCorner().getOrdinate(0),
-                            oldEnvelope.getUpperCorner().getOrdinate(1)
-                        });
+        final GeneralBounds cropEnvelope = new GeneralBounds(
+                new double[] {
+                    oldEnvelope.getLowerCorner().getOrdinate(0) + (oldEnvelope.getSpan(0) / cropFactor),
+                    oldEnvelope.getLowerCorner().getOrdinate(1) + (oldEnvelope.getSpan(1) / cropFactor)
+                },
+                new double[] {
+                    oldEnvelope.getUpperCorner().getOrdinate(0),
+                    oldEnvelope.getUpperCorner().getOrdinate(1)
+                });
         cropEnvelope.setCoordinateReferenceSystem(reader.getCoordinateReferenceSystem());
 
         final ParameterValue<GridGeometry2D> gg =
                 ((AbstractGridFormat) reader.getFormat()).READ_GRIDGEOMETRY2D.createValue();
-        gg.setValue(
-                new GridGeometry2D(
-                        new GridEnvelope2D(
-                                new Rectangle(
-                                        0,
-                                        0,
-                                        (int) (range.width / 4.0 / cropFactor),
-                                        (int) (range.height / 4.0 / cropFactor))),
-                        cropEnvelope));
+        gg.setValue(new GridGeometry2D(
+                new GridEnvelope2D(new Rectangle(
+                        0, 0, (int) (range.width / 4.0 / cropFactor), (int) (range.height / 4.0 / cropFactor))),
+                cropEnvelope));
         gc = reader.read(new GeneralParameterValue[] {gg});
         Assert.assertNotNull(gc);
         // NOTE: in some cases might be too restrictive
-        Assert.assertTrue(
-                cropEnvelope.equals(
-                        gc.getEnvelope(),
-                        XAffineTransform.getScale(
-                                        ((AffineTransform) gc.getGridGeometry().getGridToCRS2D()))
-                                / 2,
-                        true));
+        Assert.assertTrue(cropEnvelope.equals(
+                gc.getEnvelope(),
+                XAffineTransform.getScale(
+                                ((AffineTransform) gc.getGridGeometry().getGridToCRS2D()))
+                        / 2,
+                true));
 
         forceDataLoading(gc);
 
@@ -155,24 +145,21 @@ public final class ECWTest extends GDALTestCase {
         // /////////////////////////////////////////////////////////////////////
         final double translate0 = oldEnvelope.getSpan(0) + 100;
         final double translate1 = oldEnvelope.getSpan(1) + 100;
-        final GeneralBounds wrongEnvelope =
-                new GeneralBounds(
-                        new double[] {
-                            oldEnvelope.getLowerCorner().getOrdinate(0) + translate0,
-                            oldEnvelope.getLowerCorner().getOrdinate(1) + translate1
-                        },
-                        new double[] {
-                            oldEnvelope.getUpperCorner().getOrdinate(0) + translate0,
-                            oldEnvelope.getUpperCorner().getOrdinate(1) + translate1
-                        });
+        final GeneralBounds wrongEnvelope = new GeneralBounds(
+                new double[] {
+                    oldEnvelope.getLowerCorner().getOrdinate(0) + translate0,
+                    oldEnvelope.getLowerCorner().getOrdinate(1) + translate1
+                },
+                new double[] {
+                    oldEnvelope.getUpperCorner().getOrdinate(0) + translate0,
+                    oldEnvelope.getUpperCorner().getOrdinate(1) + translate1
+                });
         wrongEnvelope.setCoordinateReferenceSystem(reader.getCoordinateReferenceSystem());
 
         final ParameterValue<GridGeometry2D> gg2 =
                 ((AbstractGridFormat) reader.getFormat()).READ_GRIDGEOMETRY2D.createValue();
         gg2.setValue(
-                new GridGeometry2D(
-                        new GridEnvelope2D(new Rectangle(0, 0, range.width, range.height)),
-                        wrongEnvelope));
+                new GridGeometry2D(new GridEnvelope2D(new Rectangle(0, 0, range.width, range.height)), wrongEnvelope));
 
         gc = reader.read(new GeneralParameterValue[] {gg2});
         Assert.assertNull("Wrong envelope requested", gc);

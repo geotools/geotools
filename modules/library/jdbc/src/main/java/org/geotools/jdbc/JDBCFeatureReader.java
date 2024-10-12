@@ -75,8 +75,7 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
      * When true, the stack trace that created a reader that wasn't closed is recorded and then
      * printed out when warning the user about this.
      */
-    protected static final Boolean TRACE_ENABLED =
-            "true".equalsIgnoreCase(System.getProperty("gt2.jdbc.trace"));
+    protected static final Boolean TRACE_ENABLED = "true".equalsIgnoreCase(System.getProperty("gt2.jdbc.trace"));
 
     /** The feature source the reader originated from. */
     protected JDBCFeatureSource featureSource;
@@ -128,11 +127,7 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
     EnumMapper[] enumMappers;
 
     public JDBCFeatureReader(
-            String sql,
-            Connection cx,
-            JDBCFeatureSource featureSource,
-            SimpleFeatureType featureType,
-            Query query)
+            String sql, Connection cx, JDBCFeatureSource featureSource, SimpleFeatureType featureType, Query query)
             throws SQLException {
         init(featureSource, featureType, query);
 
@@ -144,10 +139,8 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
         SQLDialect sqlDialect = featureSource.getDataStore().getSQLDialect();
         if (sqlDialect instanceof BasicSQLDialect) {
             ((BasicSQLDialect) sqlDialect).onSelect(st, cx, featureType);
-        } else if (sqlDialect instanceof PreparedStatementSQLDialect
-                && st instanceof PreparedStatement) {
-            ((PreparedStatementSQLDialect) sqlDialect)
-                    .onSelect((PreparedStatement) st, cx, featureType);
+        } else if (sqlDialect instanceof PreparedStatementSQLDialect && st instanceof PreparedStatement) {
+            ((PreparedStatementSQLDialect) sqlDialect).onSelect((PreparedStatement) st, cx, featureType);
         }
 
         runQuery(() -> st.executeQuery(sql), st);
@@ -167,8 +160,7 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
         this.cx = cx;
         this.st = st;
 
-        ((PreparedStatementSQLDialect) featureSource.getDataStore().getSQLDialect())
-                .onSelect(st, cx, featureType);
+        ((PreparedStatementSQLDialect) featureSource.getDataStore().getSQLDialect()).onSelect(st, cx, featureType);
         runQuery(st::executeQuery, st);
     }
 
@@ -188,8 +180,7 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
         this.offset = offset;
     }
 
-    protected void init(
-            JDBCFeatureSource featureSource, SimpleFeatureType featureType, Query query) {
+    protected void init(JDBCFeatureSource featureSource, SimpleFeatureType featureType, Query query) {
         // init the tracer if we need to debug a connection leak
         if (TRACE_ENABLED) {
             tracer = new Exception();
@@ -205,8 +196,7 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
         this.hints = query != null ? query.getHints() : null;
 
         // grab a geometry factory... check for a special hint
-        geometryFactory =
-                (hints != null) ? (GeometryFactory) hints.get(Hints.JTS_GEOMETRY_FACTORY) : null;
+        geometryFactory = (hints != null) ? (GeometryFactory) hints.get(Hints.JTS_GEOMETRY_FACTORY) : null;
         if (geometryFactory == null) {
             // look for a coordinate sequence factory
             CoordinateSequenceFactory csFactory =
@@ -222,8 +212,7 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
             geometryFactory = dataStore.getGeometryFactory();
         }
 
-        Double linearizationTolerance =
-                hints != null ? (Double) hints.get(Hints.LINEARIZATION_TOLERANCE) : null;
+        Double linearizationTolerance = hints != null ? (Double) hints.get(Hints.LINEARIZATION_TOLERANCE) : null;
         if (linearizationTolerance != null) {
             geometryFactory = new CurvedGeometryFactory(geometryFactory, linearizationTolerance);
         }
@@ -233,8 +222,7 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
 
         // create a feature builder using the factory hinted or the one coming
         // from the datastore
-        FeatureFactory ff =
-                hints != null ? (FeatureFactory) hints.get(Hints.FEATURE_FACTORY) : null;
+        FeatureFactory ff = hints != null ? (FeatureFactory) hints.get(Hints.FEATURE_FACTORY) : null;
         if (ff == null) ff = featureSource.getDataStore().getFeatureFactory();
         builder = new SimpleFeatureBuilder(featureType, ff);
 
@@ -375,16 +363,10 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
 
                     // read the geometry
                     try {
-                        value =
-                                dataStore
-                                        .getSQLDialect()
-                                        .decodeGeometryValue(
-                                                gatt,
-                                                rs,
-                                                offset + attributeRsIndex[i],
-                                                geometryFactory,
-                                                cx,
-                                                hints);
+                        value = dataStore
+                                .getSQLDialect()
+                                .decodeGeometryValue(
+                                        gatt, rs, offset + attributeRsIndex[i], geometryFactory, cx, hints);
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
@@ -411,10 +393,7 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
                             }
                         } catch (TransformException e) {
                             if (LOGGER.isLoggable(Level.WARNING)) {
-                                LOGGER.log(
-                                        Level.WARNING,
-                                        "Failed to process screenmap checks, proceeding without",
-                                        e);
+                                LOGGER.log(Level.WARNING, "Failed to process screenmap checks, proceeding without", e);
                             }
                         }
                     }
@@ -441,11 +420,10 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
                     if (converted != null && converted != value) {
                         value = converted;
                         if (dataStore.getLogger().isLoggable(Level.FINER)) {
-                            String msg =
-                                    value
-                                            + " is not of type "
-                                            + type.getType().getBinding().getName()
-                                            + ", value was converted";
+                            String msg = value
+                                    + " is not of type "
+                                    + type.getType().getBinding().getName()
+                                    + ", value was converted";
                             dataStore.getLogger().finer(msg);
                         }
                     }
@@ -479,14 +457,12 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
     }
 
     @Override
-    public SimpleFeature next()
-            throws IOException, IllegalArgumentException, NoSuchElementException {
+    public SimpleFeature next() throws IOException, IllegalArgumentException, NoSuchElementException {
         try {
             ensureOpen();
             if (!hasNext()) {
-                throw new NoSuchElementException(
-                        "No more features in this reader, you should call "
-                                + "hasNext() to check for feature availability");
+                throw new NoSuchElementException("No more features in this reader, you should call "
+                        + "hasNext() to check for feature availability");
             }
 
             // join readers share the same resultset among many readers, won't call hasNext() on
@@ -495,8 +471,7 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
                 nextFeature = readNextFeature();
             }
             if (nextFeature == null && screenMap != null) {
-                throw new IllegalStateException(
-                        "Feature joining currently not supported along screenmap");
+                throw new IllegalStateException("Feature joining currently not supported along screenmap");
             }
 
             return nextFeature;
@@ -570,10 +545,7 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
             LOGGER.warning(
                     "There is code leaving feature readers/iterators open, this is leaking statements and connections!");
             if (TRACE_ENABLED) {
-                LOGGER.log(
-                        Level.WARNING,
-                        "The unclosed reader originated on this stack trace",
-                        tracer);
+                LOGGER.log(Level.WARNING, "The unclosed reader originated on this stack trace", tracer);
             }
             close();
         }
@@ -750,16 +722,10 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
                             AttributeDescriptor att = featureType.getDescriptor(index);
                             if (att instanceof GeometryDescriptor) {
                                 GeometryDescriptor gatt = (GeometryDescriptor) att;
-                                values[index] =
-                                        dataStore
-                                                .getSQLDialect()
-                                                .decodeGeometryValue(
-                                                        gatt,
-                                                        rs,
-                                                        rsindex,
-                                                        dataStore.getGeometryFactory(),
-                                                        cx,
-                                                        hints);
+                                values[index] = dataStore
+                                        .getSQLDialect()
+                                        .decodeGeometryValue(
+                                                gatt, rs, rsindex, dataStore.getGeometryFactory(), cx, hints);
                             } else {
                                 values[index] = rs.getObject(rsindex);
                             }
@@ -777,8 +743,7 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
             }
             Object value = values[index];
             EnumMapper mapper = enumMappers[index];
-            if (mapper != null)
-                value = mapper.fromInteger(Converters.convert(value, Integer.class));
+            if (mapper != null) value = mapper.fromInteger(Converters.convert(value, Integer.class));
             return value;
         }
 
@@ -853,11 +818,10 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
             if (object == null) {
                 throw new NullPointerException("Attributes array is null");
             } else if (object.length != values.length) {
-                throw new IllegalArgumentException(
-                        "The passed array has wrong size: passed_size="
-                                + object.length
-                                + " values_size"
-                                + values.length);
+                throw new IllegalArgumentException("The passed array has wrong size: passed_size="
+                        + object.length
+                        + " values_size"
+                        + values.length);
             }
             for (int i = 0; i < object.length; i++) {
                 setAttribute(i, object[i]);
@@ -887,8 +851,7 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
             GeometryAttribute geometryAttribute = null;
             if (geometryDescriptor != null) {
                 Object defaultGeometry = getDefaultGeometry();
-                geometryAttribute =
-                        new GeometryAttributeImpl(defaultGeometry, geometryDescriptor, null);
+                geometryAttribute = new GeometryAttributeImpl(defaultGeometry, geometryDescriptor, null);
             }
             return geometryAttribute;
         }
@@ -939,8 +902,7 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
 
         @Override
         public AttributeDescriptor getDescriptor() {
-            return new AttributeDescriptorImpl(
-                    featureType, featureType.getName(), 0, Integer.MAX_VALUE, true, null);
+            return new AttributeDescriptorImpl(featureType, featureType.getName(), 0, Integer.MAX_VALUE, true, null);
         }
 
         @Override

@@ -88,8 +88,7 @@ public class DefaultLinearCS extends AbstractCS implements LinearCS {
      * @throws MismatchedDimensionException if a coordinate doesn't have the expected dimension.
      */
     @Override
-    public Measure distance(final double[] coord1, final double[] coord2)
-            throws MismatchedDimensionException {
+    public Measure distance(final double[] coord1, final double[] coord2) throws MismatchedDimensionException {
         ensureDimensionMatch("coord1", coord1);
         ensureDimensionMatch("coord2", coord2);
         return new Measure(Math.abs(coord1[0] - coord2[0]), getDistanceUnit());

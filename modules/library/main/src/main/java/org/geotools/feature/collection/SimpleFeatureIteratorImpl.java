@@ -27,8 +27,7 @@ import org.geotools.data.simple.SimpleFeatureIterator;
  *
  * @author Ian Schneider
  */
-public class SimpleFeatureIteratorImpl extends FeatureIteratorImpl<SimpleFeature>
-        implements SimpleFeatureIterator {
+public class SimpleFeatureIteratorImpl extends FeatureIteratorImpl<SimpleFeature> implements SimpleFeatureIterator {
 
     /**
      * Create a new SimpleFeatureIterator using the Iterator from the given FeatureCollection.

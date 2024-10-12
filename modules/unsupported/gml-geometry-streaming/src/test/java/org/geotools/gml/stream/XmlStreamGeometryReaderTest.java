@@ -40,11 +40,9 @@ public class XmlStreamGeometryReaderTest {
         // DTD support allows XXE and XML bombs
         f.setProperty(XMLInputFactory.SUPPORT_DTD, Boolean.TRUE);
         XMLStreamReader r = f.createXMLStreamReader(new StringReader("<root></root>"));
-        XmlStreamGeometryReader geometryReader =
-                new XmlStreamGeometryReader(r, new GeometryFactory());
+        XmlStreamGeometryReader geometryReader = new XmlStreamGeometryReader(r, new GeometryFactory());
         r.nextTag();
-        Exception exception =
-                assertThrows(IllegalStateException.class, geometryReader::readGeometry);
+        Exception exception = assertThrows(IllegalStateException.class, geometryReader::readGeometry);
         assertTrue(exception.getMessage().contains("XMLStreamReader allows DTDs"));
     }
 
@@ -53,26 +51,20 @@ public class XmlStreamGeometryReaderTest {
         XMLInputFactory f = XMLInputFactory.newInstance();
         f.setProperty(XMLInputFactory.SUPPORT_DTD, Boolean.FALSE);
         XMLStreamReader r = f.createXMLStreamReader(new StringReader("<unknown></unknown>"));
-        XmlStreamGeometryReader geometryReader =
-                new XmlStreamGeometryReader(r, new GeometryFactory());
+        XmlStreamGeometryReader geometryReader = new XmlStreamGeometryReader(r, new GeometryFactory());
         r.nextTag();
-        Exception exception =
-                assertThrows(IllegalStateException.class, geometryReader::readGeometry);
-        assertEquals(
-                "Expected a geometry element in the GML namespace but found \"unknown\"",
-                exception.getMessage());
+        Exception exception = assertThrows(IllegalStateException.class, geometryReader::readGeometry);
+        assertEquals("Expected a geometry element in the GML namespace but found \"unknown\"", exception.getMessage());
     }
 
     @Test
     public void testZ() throws XMLStreamException, FactoryException, IOException {
         XMLInputFactory f = XMLInputFactory.newInstance();
         f.setProperty(XMLInputFactory.SUPPORT_DTD, Boolean.FALSE);
-        XMLStreamReader r =
-                f.createXMLStreamReader(
-                        new StringReader(
-                                "<gml:Point xmlns:gml=\"http://www.opengis.net/gml\" srsDimension=\"3\"><gml:pos>1 2 3</gml:pos></gml:Point>"));
-        XmlStreamGeometryReader geometryReader =
-                new XmlStreamGeometryReader(r, new GeometryFactory());
+        XMLStreamReader r = f.createXMLStreamReader(
+                new StringReader(
+                        "<gml:Point xmlns:gml=\"http://www.opengis.net/gml\" srsDimension=\"3\"><gml:pos>1 2 3</gml:pos></gml:Point>"));
+        XmlStreamGeometryReader geometryReader = new XmlStreamGeometryReader(r, new GeometryFactory());
         r.nextTag();
         Geometry g = geometryReader.readGeometry();
         assertNotNull(g);

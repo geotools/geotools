@@ -225,8 +225,7 @@ public final class XArray {
         }
         int arrayLength = Array.getLength(array);
         @SuppressWarnings("unchecked")
-        final T newArray =
-                (T) Array.newInstance(array.getClass().getComponentType(), arrayLength -= length);
+        final T newArray = (T) Array.newInstance(array.getClass().getComponentType(), arrayLength -= length);
         System.arraycopy(array, 0, newArray, 0, index);
         System.arraycopy(array, index + length, newArray, index, arrayLength - index);
         return newArray;
@@ -367,8 +366,7 @@ public final class XArray {
         }
         final int arrayLength = Array.getLength(array);
         @SuppressWarnings("unchecked")
-        final T newArray =
-                (T) Array.newInstance(array.getClass().getComponentType(), arrayLength + length);
+        final T newArray = (T) Array.newInstance(array.getClass().getComponentType(), arrayLength + length);
         System.arraycopy(array, 0, newArray, 0, index);
         System.arraycopy(array, index, newArray, index + length, arrayLength - index);
         return newArray;
@@ -532,8 +530,7 @@ public final class XArray {
         }
         final int dstLength = Array.getLength(dst);
         @SuppressWarnings("unchecked")
-        final T newArray =
-                (T) Array.newInstance(dst.getClass().getComponentType(), dstLength + length);
+        final T newArray = (T) Array.newInstance(dst.getClass().getComponentType(), dstLength + length);
         System.arraycopy(dst, 0, newArray, 0, dst_pos);
         System.arraycopy(src, src_pos, newArray, dst_pos, length);
         System.arraycopy(dst, dst_pos, newArray, dst_pos + length, dstLength - dst_pos);
@@ -555,8 +552,7 @@ public final class XArray {
      *     table.
      */
     @SuppressWarnings("unchecked")
-    public static <E> E[] insert(
-            final E[] src, final int src_pos, final E[] dst, final int dst_pos, final int length) {
+    public static <E> E[] insert(final E[] src, final int src_pos, final E[] dst, final int dst_pos, final int length) {
         // Following cast is required for Java 5 (remove with Java 6).
         return (E[]) doInsert(src, src_pos, dst, dst_pos, length);
     }
@@ -576,11 +572,7 @@ public final class XArray {
      *     table.
      */
     public static double[] insert(
-            final double[] src,
-            final int src_pos,
-            final double[] dst,
-            final int dst_pos,
-            final int length) {
+            final double[] src, final int src_pos, final double[] dst, final int dst_pos, final int length) {
         // Following cast is required for Java 5 (remove with Java 6).
         return (double[]) doInsert(src, src_pos, dst, dst_pos, length);
     }
@@ -600,11 +592,7 @@ public final class XArray {
      *     table.
      */
     public static float[] insert(
-            final float[] src,
-            final int src_pos,
-            final float[] dst,
-            final int dst_pos,
-            final int length) {
+            final float[] src, final int src_pos, final float[] dst, final int dst_pos, final int length) {
         // Following cast is required for Java 5 (remove with Java 6).
         return (float[]) doInsert(src, src_pos, dst, dst_pos, length);
     }
@@ -624,11 +612,7 @@ public final class XArray {
      *     table.
      */
     public static long[] insert(
-            final long[] src,
-            final int src_pos,
-            final long[] dst,
-            final int dst_pos,
-            final int length) {
+            final long[] src, final int src_pos, final long[] dst, final int dst_pos, final int length) {
         // Following cast is required for Java 5 (remove with Java 6).
         return (long[]) doInsert(src, src_pos, dst, dst_pos, length);
     }
@@ -648,11 +632,7 @@ public final class XArray {
      *     table.
      */
     public static int[] insert(
-            final int[] src,
-            final int src_pos,
-            final int[] dst,
-            final int dst_pos,
-            final int length) {
+            final int[] src, final int src_pos, final int[] dst, final int dst_pos, final int length) {
         // Following cast is required for Java 5 (remove with Java 6).
         return (int[]) doInsert(src, src_pos, dst, dst_pos, length);
     }
@@ -672,11 +652,7 @@ public final class XArray {
      *     table.
      */
     public static short[] insert(
-            final short[] src,
-            final int src_pos,
-            final short[] dst,
-            final int dst_pos,
-            final int length) {
+            final short[] src, final int src_pos, final short[] dst, final int dst_pos, final int length) {
         // Following cast is required for Java 5 (remove with Java 6).
         return (short[]) doInsert(src, src_pos, dst, dst_pos, length);
     }
@@ -696,11 +672,7 @@ public final class XArray {
      *     table.
      */
     public static byte[] insert(
-            final byte[] src,
-            final int src_pos,
-            final byte[] dst,
-            final int dst_pos,
-            final int length) {
+            final byte[] src, final int src_pos, final byte[] dst, final int dst_pos, final int length) {
         // Following cast is required for Java 5 (remove with Java 6).
         return (byte[]) doInsert(src, src_pos, dst, dst_pos, length);
     }
@@ -720,11 +692,7 @@ public final class XArray {
      *     table.
      */
     public static char[] insert(
-            final char[] src,
-            final int src_pos,
-            final char[] dst,
-            final int dst_pos,
-            final int length) {
+            final char[] src, final int src_pos, final char[] dst, final int dst_pos, final int length) {
         // Following cast is required for Java 5 (remove with Java 6).
         return (char[]) doInsert(src, src_pos, dst, dst_pos, length);
     }
@@ -744,11 +712,7 @@ public final class XArray {
      *     table.
      */
     public static boolean[] insert(
-            final boolean[] src,
-            final int src_pos,
-            final boolean[] dst,
-            final int dst_pos,
-            final int length) {
+            final boolean[] src, final int src_pos, final boolean[] dst, final int dst_pos, final int length) {
         // Following cast is required for Java 5 (remove with Java 6).
         return (boolean[]) doInsert(src, src_pos, dst, dst_pos, length);
     }

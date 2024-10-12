@@ -89,11 +89,9 @@ public class OptDirectedEdge extends OptGraphable implements DirectedEdge {
     /** @see Edge#compareNodes(Edge) */
     @Override
     public int compareNodes(Edge other) {
-        if (m_in.equals(other.getNodeA()) && m_out.equals(other.getNodeB()))
-            return (Edge.EQUAL_NODE_ORIENTATION);
+        if (m_in.equals(other.getNodeA()) && m_out.equals(other.getNodeB())) return (Edge.EQUAL_NODE_ORIENTATION);
 
-        if (m_in.equals(other.getNodeB()) && m_out.equals(other.getNodeA()))
-            return (Edge.OPPOSITE_NODE_ORIENTATION);
+        if (m_in.equals(other.getNodeB()) && m_out.equals(other.getNodeA())) return (Edge.OPPOSITE_NODE_ORIENTATION);
 
         return (Edge.UNEQUAL_NODE_ORIENTATION);
     }

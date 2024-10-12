@@ -63,7 +63,8 @@ public final class SRPTest extends GDALTestCase {
     public void testService() throws NoSuchAuthorityCodeException, FactoryException {
         GridFormatFinder.scanForPlugins();
 
-        Iterator<GridFormatFactorySpi> list = GridFormatFinder.getAvailableFormats().iterator();
+        Iterator<GridFormatFactorySpi> list =
+                GridFormatFinder.getAvailableFormats().iterator();
         boolean found = false;
         GridFormatFactorySpi fac = null;
 
@@ -125,35 +126,28 @@ public final class SRPTest extends GDALTestCase {
         assertEquals(128, oldW);
         assertEquals(128, oldH);
         // check for expected data type
-        assertEquals(DataBuffer.TYPE_BYTE, gc.getRenderedImage().getSampleModel().getDataType());
+        assertEquals(
+                DataBuffer.TYPE_BYTE, gc.getRenderedImage().getSampleModel().getDataType());
 
         final Rectangle range = ((GridEnvelope2D) reader.getOriginalGridRange());
         final GeneralBounds oldEnvelope = reader.getOriginalEnvelope();
 
-        final GeneralBounds cropEnvelope =
-                new GeneralBounds(
-                        new double[] {
-                            oldEnvelope.getLowerCorner().getOrdinate(0)
-                                    + (oldEnvelope.getSpan(0) / cropFactor),
-                            oldEnvelope.getLowerCorner().getOrdinate(1)
-                                    + (oldEnvelope.getSpan(1) / cropFactor)
-                        },
-                        new double[] {
-                            oldEnvelope.getUpperCorner().getOrdinate(0),
-                            oldEnvelope.getUpperCorner().getOrdinate(1)
-                        });
+        final GeneralBounds cropEnvelope = new GeneralBounds(
+                new double[] {
+                    oldEnvelope.getLowerCorner().getOrdinate(0) + (oldEnvelope.getSpan(0) / cropFactor),
+                    oldEnvelope.getLowerCorner().getOrdinate(1) + (oldEnvelope.getSpan(1) / cropFactor)
+                },
+                new double[] {
+                    oldEnvelope.getUpperCorner().getOrdinate(0),
+                    oldEnvelope.getUpperCorner().getOrdinate(1)
+                });
         cropEnvelope.setCoordinateReferenceSystem(reader.getCoordinateReferenceSystem());
 
         final ParameterValue gg = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
-        gg.setValue(
-                new GridGeometry2D(
-                        new GridEnvelope2D(
-                                new Rectangle(
-                                        0,
-                                        0,
-                                        (int) (range.width / 2.0 / cropFactor),
-                                        (int) (range.height / 2.0 / cropFactor))),
-                        cropEnvelope));
+        gg.setValue(new GridGeometry2D(
+                new GridEnvelope2D(new Rectangle(
+                        0, 0, (int) (range.width / 2.0 / cropFactor), (int) (range.height / 2.0 / cropFactor))),
+                cropEnvelope));
         GridCoverage2D gcSubsampled = reader.read(new GeneralParameterValue[] {gg});
         assertEquals(32, gcSubsampled.getGridGeometry().getGridRange2D().width);
         assertEquals(32, gcSubsampled.getGridGeometry().getGridRange2D().height);

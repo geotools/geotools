@@ -44,8 +44,7 @@ public class CSVFeatureSource extends ContentFeatureSource {
 
     // docs start getBoundsInternal
     protected ReferencedEnvelope getBoundsInternal(Query query) throws IOException {
-        ReferencedEnvelope bounds =
-                new ReferencedEnvelope(getSchema().getCoordinateReferenceSystem());
+        ReferencedEnvelope bounds = new ReferencedEnvelope(getSchema().getCoordinateReferenceSystem());
         try (FeatureReader<SimpleFeatureType, SimpleFeature> featureReader = getReader(query)) {
             while (featureReader.hasNext()) {
                 SimpleFeature feature = featureReader.next();
@@ -72,8 +71,7 @@ public class CSVFeatureSource extends ContentFeatureSource {
     // docs end getCountInternal
 
     // docs start getReaderInternal
-    protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query)
-            throws IOException {
+    protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query) throws IOException {
         CSVDataStore dataStore = getDataStore();
         return new CSVFeatureReader(dataStore.getCSVStrategy(), query);
     }

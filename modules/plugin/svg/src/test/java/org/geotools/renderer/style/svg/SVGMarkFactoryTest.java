@@ -51,9 +51,7 @@ public class SVGMarkFactoryTest {
         Shape shape = mf.getShape(null, ff.literal(url), null);
         assertNotNull(shape);
         final TransformedShape expected =
-                new TransformedShape(
-                        new Rectangle2D.Float(0, 0, 1, 1),
-                        new AffineTransform(1, 0, 0, -1, -0.5, 0.5));
+                new TransformedShape(new Rectangle2D.Float(0, 0, 1, 1), new AffineTransform(1, 0, 0, -1, -0.5, 0.5));
         assertEquals(expected, shape);
 
         // second call, hopefully using the cached path
@@ -97,11 +95,10 @@ public class SVGMarkFactoryTest {
                 fail("The two path iterators are not returning the same point type");
             }
             if (!Arrays.equals(d1, d2)) {
-                fail(
-                        "The two path iterators are not returning the same coordinates\n"
-                                + Arrays.toString(d1)
-                                + "\n"
-                                + Arrays.toString(d2));
+                fail("The two path iterators are not returning the same coordinates\n"
+                        + Arrays.toString(d1)
+                        + "\n"
+                        + Arrays.toString(d2));
             }
             it1.next();
             it2.next();

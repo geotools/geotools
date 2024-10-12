@@ -33,12 +33,10 @@ import org.geotools.util.factory.Hints;
  * @author Simone Giannecchini (simboss), GeoSolutions
  * @since 2.5.x
  */
-public final class EsriHdrReader extends BaseGDALGridCoverage2DReader
-        implements GridCoverageReader {
+public final class EsriHdrReader extends BaseGDALGridCoverage2DReader implements GridCoverageReader {
     /** Logger. */
     @SuppressWarnings("unused")
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(EsriHdrReader.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(EsriHdrReader.class);
 
     private static final String worldFileExt = ".wld";
 

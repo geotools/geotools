@@ -49,14 +49,12 @@ public class GeoTiffReaderCogOnlineTest extends Assert {
         String url =
                 "https://s3-us-west-2.amazonaws.com/sentinel-cogs/sentinel-s2-l2a-cogs/5/C/MK/2018/10/S2B_5CMK_20181020_0_L2A/B01.tif";
         BasicAuthURI cogUri = new BasicAuthURI(url, false);
-        HttpRangeReader rangeReader =
-                new HttpRangeReader(cogUri.getUri(), CogImageReadParam.DEFAULT_HEADER_LENGTH);
-        CogSourceSPIProvider input =
-                new CogSourceSPIProvider(
-                        cogUri,
-                        new CogImageReaderSpi(),
-                        new CogImageInputStreamSpi(),
-                        rangeReader.getClass().getName());
+        HttpRangeReader rangeReader = new HttpRangeReader(cogUri.getUri(), CogImageReadParam.DEFAULT_HEADER_LENGTH);
+        CogSourceSPIProvider input = new CogSourceSPIProvider(
+                cogUri,
+                new CogImageReaderSpi(),
+                new CogImageInputStreamSpi(),
+                rangeReader.getClass().getName());
         return input;
     }
 
@@ -97,8 +95,7 @@ public class GeoTiffReaderCogOnlineTest extends Assert {
 
         GeneralParameterValue[] params = new GeneralParameterValue[1];
         // Define a GridGeometry in order to reduce the output
-        final ParameterValue<GridGeometry2D> gg =
-                AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
+        final ParameterValue<GridGeometry2D> gg = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
         final GeneralBounds envelope = reader.getOriginalEnvelope();
         final Dimension dim = new Dimension();
         dim.setSize(

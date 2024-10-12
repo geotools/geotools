@@ -12,9 +12,7 @@ public class StringFunctionsTest {
 
     @Test
     public void testConcatenate() throws Exception {
-        Function function =
-                ff.function(
-                        "Concatenate", ff.literal("hello"), ff.literal(" "), ff.literal("world"));
+        Function function = ff.function("Concatenate", ff.literal("hello"), ff.literal(" "), ff.literal("world"));
         Assert.assertEquals("hello world", function.evaluate(null, String.class));
     }
 }

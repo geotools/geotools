@@ -38,25 +38,16 @@ import org.geotools.filter.visitor.DuplicatingFilterVisitor;
  */
 public class LiterateFunction extends FunctionExpressionImpl {
 
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "literate",
-                    parameter(
-                            "result",
-                            List.class,
-                            "Result",
-                            "List of items resulted from iteration."),
-                    parameter(
-                            "index",
-                            Object.class,
-                            "Index",
-                            "The index identifier in the expression"),
-                    parameter("times", Integer.class, "Times", "Number of iterations"),
-                    parameter(
-                            "expression",
-                            Object.class,
-                            "Expression",
-                            "Expression to be applied to each index of the iteration."));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "literate",
+            parameter("result", List.class, "Result", "List of items resulted from iteration."),
+            parameter("index", Object.class, "Index", "The index identifier in the expression"),
+            parameter("times", Integer.class, "Times", "Number of iterations"),
+            parameter(
+                    "expression",
+                    Object.class,
+                    "Expression",
+                    "Expression to be applied to each index of the iteration."));
 
     public LiterateFunction() {
         super(NAME);
@@ -65,29 +56,27 @@ public class LiterateFunction extends FunctionExpressionImpl {
     @Override
     public Object evaluate(Object feature) {
         if (!(getExpression(0) instanceof PropertyName)) {
-            throw new IllegalArgumentException(
-                    "literate function first argument must be index property name");
+            throw new IllegalArgumentException("literate function first argument must be index property name");
         }
         PropertyName indexName = (PropertyName) getExpression(0);
         Integer size = getExpression(1).evaluate(feature, Integer.class);
         if (size == null || size < 0) {
-            throw new IllegalArgumentException(
-                    "literate function requires non-null, positive size");
+            throw new IllegalArgumentException("literate function requires non-null, positive size");
         }
 
         List<Object> result = new ArrayList<>();
         for (int i = 0; i < size; i++) {
             final int index = i;
-            ExpressionVisitor indexVisitor =
-                    new DuplicatingFilterVisitor() {
-                        @Override
-                        public Object visit(PropertyName name, Object data) {
-                            if (name.equals(indexName)) {
-                                return new LiteralExpressionImpl(index);
-                            }
-                            return name;
-                        };
-                    };
+            ExpressionVisitor indexVisitor = new DuplicatingFilterVisitor() {
+                @Override
+                public Object visit(PropertyName name, Object data) {
+                    if (name.equals(indexName)) {
+                        return new LiteralExpressionImpl(index);
+                    }
+                    return name;
+                }
+                ;
+            };
             Expression indexedExpression = (Expression) getExpression(2).accept(indexVisitor, null);
             result.add(indexedExpression.evaluate(feature));
         }

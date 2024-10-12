@@ -65,8 +65,8 @@ public class TestCoverageSourceDescriptor extends CoverageSourceDescriptor {
         }
 
         @Override
-        public Set<? extends BoundingBox> getSpatialElements(
-                boolean overall, ProgressListener listener) throws IOException {
+        public Set<? extends BoundingBox> getSpatialElements(boolean overall, ProgressListener listener)
+                throws IOException {
             // TODO Auto-generated method stub
             return null;
         }
@@ -77,15 +77,14 @@ public class TestCoverageSourceDescriptor extends CoverageSourceDescriptor {
         }
 
         @Override
-        public MathTransform2D getGridToWorldTransform(ProgressListener listener)
-                throws IOException {
+        public MathTransform2D getGridToWorldTransform(ProgressListener listener) throws IOException {
             // TODO Auto-generated method stub
             return null;
         }
 
         @Override
-        public Set<? extends RasterLayout> getRasterElements(
-                boolean overall, ProgressListener listener) throws IOException {
+        public Set<? extends RasterLayout> getRasterElements(boolean overall, ProgressListener listener)
+                throws IOException {
             return layout;
         }
     }
@@ -102,8 +101,8 @@ public class TestCoverageSourceDescriptor extends CoverageSourceDescriptor {
         }
 
         @Override
-        public SortedSet<? extends DateRange> getTemporalElements(
-                boolean overall, ProgressListener listener) throws IOException {
+        public SortedSet<? extends DateRange> getTemporalElements(boolean overall, ProgressListener listener)
+                throws IOException {
             return new DateRangeTreeSet(dates);
         }
 
@@ -115,10 +114,8 @@ public class TestCoverageSourceDescriptor extends CoverageSourceDescriptor {
 
     private static SpatialDomain testSpatialDomain;
 
-    private static TemporalDomain testTemporalDomain =
-            new TestTemporalDomain(
-                    DefaultTemporalCRS.JAVA,
-                    Collections.singleton(new DateRange(new Date(10000), new Date(20000))));
+    private static TemporalDomain testTemporalDomain = new TestTemporalDomain(
+            DefaultTemporalCRS.JAVA, Collections.singleton(new DateRange(new Date(10000), new Date(20000))));
 
     public static final String TEST_COVERAGE = "testCoverage";
 

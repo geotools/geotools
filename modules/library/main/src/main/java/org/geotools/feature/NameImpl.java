@@ -41,8 +41,7 @@ import org.geotools.util.Utilities;
  *
  * @author Justin Deoliveira, The Open Planning Project, jdeolive@openplans.org
  */
-public class NameImpl
-        implements org.geotools.api.feature.type.Name, Serializable, Comparable<NameImpl> {
+public class NameImpl implements org.geotools.api.feature.type.Name, Serializable, Comparable<NameImpl> {
     private static final long serialVersionUID = 4564070184645559899L;
 
     /** namespace / scope */
@@ -125,8 +124,7 @@ public class NameImpl
     /** Returns a hash code value for this operand. */
     @Override
     public int hashCode() {
-        return (namespace == null ? 0 : namespace.hashCode())
-                + 37 * (local == null ? 0 : local.hashCode());
+        return (namespace == null ? 0 : namespace.hashCode()) + 37 * (local == null ? 0 : local.hashCode());
     }
 
     /** value object with equality based on name and namespace. */

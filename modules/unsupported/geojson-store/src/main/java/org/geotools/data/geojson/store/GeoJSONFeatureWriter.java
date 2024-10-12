@@ -36,8 +36,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.URLs;
 import org.geotools.util.logging.Logging;
 
-public class GeoJSONFeatureWriter
-        implements FeatureWriter<SimpleFeatureType, SimpleFeature>, AutoCloseable {
+public class GeoJSONFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleFeature>, AutoCloseable {
     Logger LOGGER = Logging.getLogger("org.geotools.data.geojson");
     /** State of current transaction */
     private ContentState state;
@@ -67,8 +66,7 @@ public class GeoJSONFeatureWriter
         String typeName = query.getTypeName();
         File file = URLs.urlToFile(((GeoJSONDataStore) state.getEntry().getDataStore()).getUrl());
         File directory = file.getParentFile();
-        this.temp =
-                File.createTempFile(typeName + System.currentTimeMillis(), "geojson", directory);
+        this.temp = File.createTempFile(typeName + System.currentTimeMillis(), "geojson", directory);
 
         this.writer = new GeoJSONWriter(new FileOutputStream(this.temp));
         this.writer.setEncodeFeatureBounds(writeBounds);
@@ -157,8 +155,7 @@ public class GeoJSONFeatureWriter
                 this.delegate.close();
                 this.delegate = null;
             }
-            File file =
-                    URLs.urlToFile(((GeoJSONDataStore) state.getEntry().getDataStore()).getUrl());
+            File file = URLs.urlToFile(((GeoJSONDataStore) state.getEntry().getDataStore()).getUrl());
 
             Files.copy(temp.toPath(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
         } finally {

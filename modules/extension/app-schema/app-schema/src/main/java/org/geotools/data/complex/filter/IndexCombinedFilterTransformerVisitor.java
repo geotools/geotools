@@ -39,9 +39,7 @@ public class IndexCombinedFilterTransformerVisitor extends DuplicatingFilterVisi
     private Filter idInFilter;
 
     public IndexCombinedFilterTransformerVisitor(
-            BinaryLogicOperator indexedParentLogicOperator,
-            List<Filter> indexedFilters,
-            Filter idInFilter) {
+            BinaryLogicOperator indexedParentLogicOperator, List<Filter> indexedFilters, Filter idInFilter) {
         super();
         this.indexedParentLogicOperator = indexedParentLogicOperator;
         this.indexedFilters = indexedFilters;

@@ -39,8 +39,7 @@ public final class CISetup extends CIBase {
 
     private static Logger LOGGER = Logging.getLogger(CISetup.class);
 
-    private static final String HOST =
-            "917df316-4e01-4a10-be54-eac1b6ab15fb.hana.prod-us10.hanacloud.ondemand.com";
+    private static final String HOST = "917df316-4e01-4a10-be54-eac1b6ab15fb.hana.prod-us10.hanacloud.ondemand.com";
 
     private static final int PORT = 443;
 
@@ -91,9 +90,8 @@ public final class CISetup extends CIBase {
 
     private ArrayList<String> getOldTestSchemas(Connection conn) throws SQLException {
         ArrayList<String> oldSchemas = new ArrayList<>();
-        try (PreparedStatement psGetOldSchemas =
-                conn.prepareStatement(
-                        "SELECT SCHEMA_NAME FROM SYS.SCHEMAS WHERE SCHEMA_NAME LIKE 'geotools__%' ESCAPE '_' AND LOCALTOUTC(CREATE_TIME) < ?")) {
+        try (PreparedStatement psGetOldSchemas = conn.prepareStatement(
+                "SELECT SCHEMA_NAME FROM SYS.SCHEMAS WHERE SCHEMA_NAME LIKE 'geotools__%' ESCAPE '_' AND LOCALTOUTC(CREATE_TIME) < ?")) {
             Instant oneDayAgo = Instant.now().minus(1, ChronoUnit.DAYS);
             String s = oneDayAgo.toString();
             LOGGER.info("Searching for geotools schemas created before " + s);
@@ -110,9 +108,7 @@ public final class CISetup extends CIBase {
     private String generateSchemaName() {
         StringBuilder sb = new StringBuilder();
         sb.append("geotools_");
-        sb.append(
-                DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss")
-                        .format(OffsetDateTime.now(ZoneOffset.UTC)));
+        sb.append(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss").format(OffsetDateTime.now(ZoneOffset.UTC)));
         sb.append("_");
         sb.append(Long.toHexString(new Random().nextLong()));
         return sb.toString();

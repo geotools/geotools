@@ -147,8 +147,7 @@ public class CubeWerxStrategy extends StrictWFS_1_x_Strategy {
         } else {
             boolean spatialAdded = false;
             // if a logical operator, check no more than one geometry filter is enclosed on it
-            List<Filter> children =
-                    new ArrayList<>(((BinaryLogicOperator) serverFilter).getChildren());
+            List<Filter> children = new ArrayList<>(((BinaryLogicOperator) serverFilter).getChildren());
             for (Iterator<Filter> it = children.iterator(); it.hasNext(); ) {
                 Filter f = it.next();
                 if (f instanceof BinarySpatialOperator) {

@@ -33,8 +33,7 @@ public class MongoFeature extends SimpleFeatureImpl {
         this(null, values, featureType, id);
     }
 
-    public MongoFeature(
-            DBObject mongoObject, Object[] values, SimpleFeatureType featureType, String id) {
+    public MongoFeature(DBObject mongoObject, Object[] values, SimpleFeatureType featureType, String id) {
         super(values, featureType, new FeatureIdImpl(id), false);
         this.values = values;
         this.mongoObject = mongoObject;

@@ -53,8 +53,7 @@ public abstract class LogicFilterImpl extends BinaryLogicAbstract {
      * @param filterType The final relation between all sub filters.
      * @throws IllegalFilterException Does not conform to logic filter structure
      */
-    protected LogicFilterImpl(Filter filter1, Filter filter2, short filterType)
-            throws IllegalFilterException {
+    protected LogicFilterImpl(Filter filter1, Filter filter2, short filterType) throws IllegalFilterException {
         this(new ArrayList<>());
 
         // Push the initial filter on the stack
@@ -71,13 +70,11 @@ public abstract class LogicFilterImpl extends BinaryLogicAbstract {
      * @throws IllegalFilterException Does not conform to logic filter structure
      * @task REVISIT: make all filters immutable. This should return a new filter.
      */
-    public final void addFilter(org.geotools.api.filter.Filter filter)
-            throws IllegalFilterException {
+    public final void addFilter(org.geotools.api.filter.Filter filter) throws IllegalFilterException {
         // reset
         cachedHash = 0;
         if (this instanceof Not && children.size() != 0) {
-            throw new IllegalFilterException(
-                    "Attempted to add an more than one filter to a NOT filter.");
+            throw new IllegalFilterException("Attempted to add an more than one filter to a NOT filter.");
         } else {
             children.add(filter);
         }

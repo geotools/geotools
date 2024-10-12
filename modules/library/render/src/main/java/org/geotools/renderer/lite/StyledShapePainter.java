@@ -71,21 +71,17 @@ public class StyledShapePainter {
     private static final AffineTransform IDENTITY_TRANSFORM = new AffineTransform();
 
     /** The logger for the rendering module. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(StyledShapePainter.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(StyledShapePainter.class);
     /** Whether icon centers should be matched to a pixel center, or not */
     public static boolean ROUND_ICON_COORDS =
-            Boolean.parseBoolean(
-                    System.getProperty("org.geotools.renderer.lite.roundIconCoords", "true"));
+            Boolean.parseBoolean(System.getProperty("org.geotools.renderer.lite.roundIconCoords", "true"));
 
     /**
      * Whether to apply the new vector hatch fill optimization, or not (on by default, this is just
      * a safeguard)
      */
     public static boolean OPTIMIZE_VECTOR_HATCH_FILLS =
-            Boolean.parseBoolean(
-                    System.getProperty(
-                            "org.geotools.renderer.lite.optimizeVectorHatchFills", "true"));
+            Boolean.parseBoolean(System.getProperty("org.geotools.renderer.lite.optimizeVectorHatchFills", "true"));
 
     /**
      * the label cache, used to populate the label cache with reserved areas for labeling obstacles
@@ -100,11 +96,7 @@ public class StyledShapePainter {
         this.labelCache = cache;
     }
 
-    public void paint(
-            final Graphics2D graphics,
-            final LiteShape2 shape,
-            final Style2D style,
-            final double scale) {
+    public void paint(final Graphics2D graphics, final LiteShape2 shape, final Style2D style, final double scale) {
         paint(graphics, shape, style, scale, false);
     }
 
@@ -169,9 +161,7 @@ public class StyledShapePainter {
 
                         if (isLabelObstacle) {
                             // TODO: rotation?
-                            labelCache.put(
-                                    new Rectangle2D.Double(
-                                            x, y, icon.getIconWidth(), icon.getIconHeight()));
+                            labelCache.put(new Rectangle2D.Double(x, y, icon.getIconWidth(), icon.getIconHeight()));
                         }
                     }
                     citer.next();
@@ -220,8 +210,7 @@ public class StyledShapePainter {
 
             BufferedImage image = gs2d.getImage();
             double dx = gs2d.getDisplacementX() - gs2d.getAnchorPointX() * image.getWidth();
-            double dy =
-                    gs2d.getDisplacementY() - ((1 - gs2d.getAnchorPointY()) * image.getHeight());
+            double dy = gs2d.getDisplacementY() - ((1 - gs2d.getAnchorPointY()) * image.getHeight());
             while (!(iter.isDone())) {
                 if (iter.currentSegment(coords) != PathIterator.SEG_MOVETO) {
                     renderImage(
@@ -243,8 +232,7 @@ public class StyledShapePainter {
             }
             // if the style is a polygon one, process it even if the polyline is
             // not closed (by SLD specification)
-            if (style instanceof PolygonStyle2D
-                    && !optimizeOutFill((PolygonStyle2D) style, shape)) {
+            if (style instanceof PolygonStyle2D && !optimizeOutFill((PolygonStyle2D) style, shape)) {
                 PolygonStyle2D ps2d = (PolygonStyle2D) style;
 
                 if (ps2d.getFill() != null) {
@@ -254,23 +242,17 @@ public class StyledShapePainter {
                         TexturePaint tp = (TexturePaint) paint;
                         BufferedImage image = tp.getImage();
                         Rectangle2D cornerRect = tp.getAnchorRect();
-                        Point2D anchorPoint =
-                                (Point2D) graphics.getRenderingHint(TEXTURE_ANCHOR_HINT_KEY);
+                        Point2D anchorPoint = (Point2D) graphics.getRenderingHint(TEXTURE_ANCHOR_HINT_KEY);
                         Rectangle2D alignedRect = null;
                         if (anchorPoint != null) {
-                            alignedRect =
-                                    new Rectangle2D.Double(
-                                            Math.round(anchorPoint.getX()),
-                                            Math.round(anchorPoint.getY()),
-                                            cornerRect.getWidth(),
-                                            cornerRect.getHeight());
+                            alignedRect = new Rectangle2D.Double(
+                                    Math.round(anchorPoint.getX()),
+                                    Math.round(anchorPoint.getY()),
+                                    cornerRect.getWidth(),
+                                    cornerRect.getHeight());
                         } else {
                             alignedRect =
-                                    new Rectangle2D.Double(
-                                            0.0,
-                                            0.0,
-                                            cornerRect.getWidth(),
-                                            cornerRect.getHeight());
+                                    new Rectangle2D.Double(0.0, 0.0, cornerRect.getWidth(), cornerRect.getHeight());
                         }
                         paint = new TexturePaint(image, alignedRect);
                     }
@@ -345,10 +327,7 @@ public class StyledShapePainter {
             // different in this case
             if (ls2d.getGraphicStroke() != null) {
                 drawWithGraphicsStroke(
-                        graphics,
-                        dashShape(shape, ls2d.getStroke()),
-                        ls2d.getGraphicStroke(),
-                        isLabelObstacle);
+                        graphics, dashShape(shape, ls2d.getStroke()), ls2d.getGraphicStroke(), isLabelObstacle);
             } else {
                 Paint paint = ls2d.getContour();
 
@@ -365,18 +344,16 @@ public class StyledShapePainter {
 
                 // debugShape(shape);
                 Stroke stroke = ls2d.getStroke();
-                if (graphics.getRenderingHint(RenderingHints.KEY_ANTIALIASING)
-                        == RenderingHints.VALUE_ANTIALIAS_ON) {
+                if (graphics.getRenderingHint(RenderingHints.KEY_ANTIALIASING) == RenderingHints.VALUE_ANTIALIAS_ON) {
                     if (stroke instanceof BasicStroke && strokeWidthAdjustment > 0) {
                         BasicStroke bs = (BasicStroke) stroke;
-                        stroke =
-                                new BasicStroke(
-                                        bs.getLineWidth() + strokeWidthAdjustment,
-                                        bs.getEndCap(),
-                                        bs.getLineJoin(),
-                                        bs.getMiterLimit(),
-                                        bs.getDashArray(),
-                                        bs.getDashPhase());
+                        stroke = new BasicStroke(
+                                bs.getLineWidth() + strokeWidthAdjustment,
+                                bs.getEndCap(),
+                                bs.getLineJoin(),
+                                bs.getMiterLimit(),
+                                bs.getDashArray(),
+                                bs.getDashPhase());
                     }
                 }
 
@@ -430,8 +407,7 @@ public class StyledShapePainter {
                 // degrees
                 double rotation = Math.toRadians(legend.getRotation().evaluate(null, Double.class));
                 float opacity = legend.getOpacity().evaluate(null, Float.class);
-                AlphaComposite composite =
-                        AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity);
+                AlphaComposite composite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity);
 
                 while (!(iter.isDone())) {
                     iter.currentSegment(coords);
@@ -440,26 +416,12 @@ public class StyledShapePainter {
                         if ((symbolScale > 0.0) && (symbolScale != 1.0)) {
                             int w = (int) (image.getWidth() / symbolScale);
                             int h = (int) (image.getHeight() / symbolScale);
-                            int imageType =
-                                    image.getType() == 0
-                                            ? BufferedImage.TYPE_4BYTE_ABGR
-                                            : image.getType();
+                            int imageType = image.getType() == 0 ? BufferedImage.TYPE_4BYTE_ABGR : image.getType();
                             BufferedImage rescaled = new BufferedImage(w, h, imageType);
                             Graphics2D g = rescaled.createGraphics();
                             g.setRenderingHint(
-                                    RenderingHints.KEY_INTERPOLATION,
-                                    RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-                            g.drawImage(
-                                    image,
-                                    0,
-                                    0,
-                                    w,
-                                    h,
-                                    0,
-                                    0,
-                                    image.getWidth(),
-                                    image.getHeight(),
-                                    null);
+                                    RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+                            g.drawImage(image, 0, 0, w, h, 0, 0, image.getWidth(), image.getHeight(), null);
                             g.dispose();
                             image = rescaled;
                         }
@@ -478,8 +440,7 @@ public class StyledShapePainter {
                                 composite,
                                 isLabelObstacle);
                     } catch (IOException ex) {
-                        Logger.getLogger(StyledShapePainter.class.getName())
-                                .log(Level.SEVERE, null, ex);
+                        Logger.getLogger(StyledShapePainter.class.getName()).log(Level.SEVERE, null, ex);
                     }
                     iter.next();
                 }
@@ -589,15 +550,14 @@ public class StyledShapePainter {
                     remainder = imageSize / 2.0;
 
                     if (LOGGER.isLoggable(Level.FINEST)) {
-                        LOGGER.finest(
-                                "closing from "
-                                        + previous[0]
-                                        + ","
-                                        + previous[1]
-                                        + " to "
-                                        + coords[0]
-                                        + ","
-                                        + coords[1]);
+                        LOGGER.finest("closing from "
+                                + previous[0]
+                                + ","
+                                + previous[1]
+                                + " to "
+                                + coords[0]
+                                + ","
+                                + coords[1]);
                     }
 
                     // no break here - fall through to next section
@@ -605,15 +565,14 @@ public class StyledShapePainter {
 
                     // draw from previous to coords
                     if (LOGGER.isLoggable(Level.FINEST)) {
-                        LOGGER.finest(
-                                "drawing from "
-                                        + previous[0]
-                                        + ","
-                                        + previous[1]
-                                        + " to "
-                                        + coords[0]
-                                        + ","
-                                        + coords[1]);
+                        LOGGER.finest("drawing from "
+                                + previous[0]
+                                + ","
+                                + previous[1]
+                                + " to "
+                                + coords[0]
+                                + ","
+                                + coords[1]);
                     }
 
                     dx = coords[0] - previous[0];
@@ -628,13 +587,7 @@ public class StyledShapePainter {
                         dy = (Math.cos(theta) * imageSize);
 
                         if (LOGGER.isLoggable(Level.FINEST)) {
-                            LOGGER.finest(
-                                    "dx = "
-                                            + dx
-                                            + " dy "
-                                            + dy
-                                            + " step = "
-                                            + Math.sqrt((dx * dx) + (dy * dy)));
+                            LOGGER.finest("dx = " + dx + " dy " + dy + " step = " + Math.sqrt((dx * dx) + (dy * dy)));
                         }
 
                         double rotation = -(theta - (Math.PI / 2d));
@@ -664,8 +617,7 @@ public class StyledShapePainter {
                         remainder = dist - len;
 
                         if (LOGGER.isLoggable(Level.FINEST)) {
-                            LOGGER.finest(
-                                    "loop end dist " + dist + " len " + len + " " + (len - dist));
+                            LOGGER.finest("loop end dist " + dist + " len " + len + " " + (len - dist));
                         }
                     }
 
@@ -732,8 +684,7 @@ public class StyledShapePainter {
             interpolation = RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR;
         }
         try {
-            graphics.setRenderingHint(
-                    RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+            graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
             graphics.drawRenderedImage(image, markAT);
         } finally {
             graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION, interpolation);
@@ -766,8 +717,7 @@ public class StyledShapePainter {
             // here we don't use the mark composite
             MarkStyle2D ms2d = (MarkStyle2D) style;
             Shape transformedShape =
-                    ms2d.getTransformedShape(
-                            (float) x, (float) y, (float) rotation, (float) graphicRotation);
+                    ms2d.getTransformedShape((float) x, (float) y, (float) rotation, (float) graphicRotation);
             if (transformedShape != null) {
                 if (ms2d.getFill() != null) {
                     graphics.setPaint(ms2d.getFill());
@@ -807,9 +757,7 @@ public class StyledShapePainter {
             }
 
             if (isLabelObstacle) {
-                labelCache.put(
-                        new Rectangle2D.Double(
-                                x + dx, y + dy, icon.getIconWidth(), icon.getIconHeight()));
+                labelCache.put(new Rectangle2D.Double(x + dx, y + dy, icon.getIconWidth(), icon.getIconHeight()));
             }
         }
     }
@@ -819,8 +767,7 @@ public class StyledShapePainter {
      * work around that by drawing each polygon as a separate shape
      */
     void fillLiteShape(Graphics2D g, LiteShape2 shape) {
-        if (shape.getGeometry() instanceof MultiPolygon
-                && shape.getGeometry().getNumGeometries() > 1) {
+        if (shape.getGeometry() instanceof MultiPolygon && shape.getGeometry().getNumGeometries() > 1) {
             MultiPolygon mp = (MultiPolygon) shape.getGeometry();
             for (int i = 0; i < mp.getNumGeometries(); i++) {
                 Polygon p = (Polygon) mp.getGeometryN(i);
@@ -828,8 +775,7 @@ public class StyledShapePainter {
                     g.fill(new LiteShape2(p, null, null, false, false));
                 } catch (Exception e) {
                     // should not really happen, but anyways
-                    throw new RuntimeException(
-                            "Unexpected error occurred while rendering a multipolygon", e);
+                    throw new RuntimeException("Unexpected error occurred while rendering a multipolygon", e);
                 }
             }
         } else {
@@ -845,8 +791,7 @@ public class StyledShapePainter {
      * @param graphicFill a Style2D that specified the graphic fill.
      * @param scale the scale of the current render.
      */
-    protected void paintGraphicFill(
-            Graphics2D graphics, Shape shape, Style2D graphicFill, double scale) {
+    protected void paintGraphicFill(Graphics2D graphics, Shape shape, Style2D graphicFill, double scale) {
         // retrieves the bounds of the provided shape
         Rectangle2D boundsShape = shape.getBounds2D();
 
@@ -857,10 +802,9 @@ public class StyledShapePainter {
             final Shape markShape = ms2d.getShape();
             double size = ms2d.getSize();
             Rectangle2D boundsFill = markShape.getBounds2D();
-            double aspect =
-                    (boundsFill.getHeight() > 0 && boundsFill.getWidth() > 0)
-                            ? boundsFill.getWidth() / boundsFill.getHeight()
-                            : 1.0;
+            double aspect = (boundsFill.getHeight() > 0 && boundsFill.getWidth() > 0)
+                    ? boundsFill.getWidth() / boundsFill.getHeight()
+                    : 1.0;
             stippleSize = new Rectangle2D.Double(0, 0, size * aspect, size);
 
             double scaleFactor = size;
@@ -868,9 +812,8 @@ public class StyledShapePainter {
                 scaleFactor = size / boundsFill.getHeight();
             }
             if (OPTIMIZE_VECTOR_HATCH_FILLS) {
-                final Shape rescaledStipple =
-                        AffineTransform.getScaleInstance(scaleFactor, scaleFactor)
-                                .createTransformedShape(markShape);
+                final Shape rescaledStipple = AffineTransform.getScaleInstance(scaleFactor, scaleFactor)
+                        .createTransformedShape(markShape);
                 ParallelLinesFiller filler = ParallelLinesFiller.fromStipple(rescaledStipple);
                 if (filler != null) {
                     Graphics2D clippedGraphics = (Graphics2D) graphics.create();
@@ -913,42 +856,25 @@ public class StyledShapePainter {
         // rendering
         int fromX = 0;
         if (boundsClip.getMinX() > boundsShape.getMinX()) {
-            fromX =
-                    (int)
-                            Math.floor(
-                                    (boundsClip.getMinX() - boundsShape.getMinX())
-                                            / stippleSize.getWidth());
+            fromX = (int) Math.floor((boundsClip.getMinX() - boundsShape.getMinX()) / stippleSize.getWidth());
         }
         if (boundsClip.getMaxX() < boundsShape.getMaxX()) {
-            toX -=
-                    (int)
-                            Math.floor(
-                                    (boundsShape.getMaxX() - boundsClip.getMaxX())
-                                            / stippleSize.getWidth());
+            toX -= (int) Math.floor((boundsShape.getMaxX() - boundsClip.getMaxX()) / stippleSize.getWidth());
         }
 
         // adjust the iteration indexes to avoid iterating a lot over areas that we won't be
         // rendering
         int fromY = 0;
         if (boundsClip.getMinY() > boundsShape.getMinY()) {
-            fromY =
-                    (int)
-                            Math.floor(
-                                    (boundsClip.getMinY() - boundsShape.getMinY())
-                                            / stippleSize.getHeight());
+            fromY = (int) Math.floor((boundsClip.getMinY() - boundsShape.getMinY()) / stippleSize.getHeight());
         }
         if (boundsClip.getMaxY() < boundsShape.getMaxY()) {
-            toY -=
-                    (int)
-                            Math.floor(
-                                    (boundsShape.getMaxY() - boundsClip.getMaxY())
-                                            / stippleSize.getHeight());
+            toY -= (int) Math.floor((boundsShape.getMaxY() - boundsClip.getMaxY()) / stippleSize.getHeight());
         }
 
         // builds the JTS geometry for the translated stipple
         GeometryFactory geomFactory = new GeometryFactory();
-        Coordinate stippleCoord =
-                new Coordinate(stippleSize.getCenterX(), stippleSize.getCenterY());
+        Coordinate stippleCoord = new Coordinate(stippleSize.getCenterX(), stippleSize.getCenterY());
         Geometry stipplePoint = geomFactory.createPoint(stippleCoord);
 
         // builds a LiteShape2 object from the JTS geometry
@@ -968,8 +894,7 @@ public class StyledShapePainter {
                 stipplePoint.geometryChanged();
                 LiteShape2 stippleShape;
                 try {
-                    stippleShape =
-                            new LiteShape2(stipplePoint, identityTransf, nullDecimator, false);
+                    stippleShape = new LiteShape2(stipplePoint, identityTransf, nullDecimator, false);
                 } catch (Exception e) {
                     throw new RuntimeException("Unxpected exception building lite shape", e);
                 }

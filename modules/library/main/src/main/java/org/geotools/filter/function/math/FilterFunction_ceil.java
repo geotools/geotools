@@ -29,8 +29,7 @@ import org.geotools.util.factory.Hints;
 public class FilterFunction_ceil extends FunctionExpressionImpl {
 
     public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "ceil", parameter("ceiling", Double.class), parameter("number", Number.class));
+            new FunctionNameImpl("ceil", parameter("ceiling", Double.class), parameter("number", Number.class));
 
     public FilterFunction_ceil() {
         super("ceil");

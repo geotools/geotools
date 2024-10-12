@@ -38,6 +38,5 @@ public interface MarkFactory {
      *     extract data from it, think complex attributes, in that case a visit to the expression
      *     and some direct attribute value extraction might be needed instead)
      */
-    public Shape getShape(Graphics2D graphics, Expression symbolUrl, Feature feature)
-            throws Exception;
+    public Shape getShape(Graphics2D graphics, Expression symbolUrl, Feature feature) throws Exception;
 }

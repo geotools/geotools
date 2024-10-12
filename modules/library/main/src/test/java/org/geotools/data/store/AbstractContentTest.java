@@ -47,9 +47,8 @@ public abstract class AbstractContentTest {
 
     /** The list of features on which paging is tested. */
     @SuppressWarnings("serial")
-    List<SimpleFeature> FEATURES =
-            Stream.of(buildFeature("mock.3"), buildFeature("mock.1"), buildFeature("mock.2"))
-                    .collect(Collectors.toList());
+    List<SimpleFeature> FEATURES = Stream.of(buildFeature("mock.3"), buildFeature("mock.1"), buildFeature("mock.2"))
+            .collect(Collectors.toList());
 
     /** Build the test type. */
     protected static SimpleFeatureType buildType() {
@@ -108,8 +107,7 @@ public abstract class AbstractContentTest {
         protected int getCountInternal(Query query) throws IOException {
             if (query.getFilter() == Filter.INCLUDE) {
                 int count = 0;
-                try (FeatureReader<SimpleFeatureType, SimpleFeature> featureReader =
-                        getReaderInternal(query)) {
+                try (FeatureReader<SimpleFeatureType, SimpleFeature> featureReader = getReaderInternal(query)) {
                     while (featureReader.hasNext()) {
                         featureReader.next();
                         count++;
@@ -122,8 +120,7 @@ public abstract class AbstractContentTest {
 
         /** @see org.geotools.data.store.ContentFeatureSource#getReaderInternal(Query) */
         @Override
-        protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query)
-                throws IOException {
+        protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query) throws IOException {
             return new MockSimpleFeatureReader();
         }
 
@@ -134,8 +131,8 @@ public abstract class AbstractContentTest {
         }
 
         @Override
-        protected FeatureWriter<SimpleFeatureType, SimpleFeature> getWriterInternal(
-                Query query, int flags) throws IOException {
+        protected FeatureWriter<SimpleFeatureType, SimpleFeature> getWriterInternal(Query query, int flags)
+                throws IOException {
             return new MockSimpleFeatureWriter();
         }
     }
@@ -154,8 +151,7 @@ public abstract class AbstractContentTest {
 
         /** @see FeatureReader#next() */
         @Override
-        public SimpleFeature next()
-                throws IOException, IllegalArgumentException, NoSuchElementException {
+        public SimpleFeature next() throws IOException, IllegalArgumentException, NoSuchElementException {
             return FEATURES.get(index++);
         }
 

@@ -31,12 +31,11 @@ import org.geotools.util.Converters;
  */
 public class FilterFunction_Convert extends FunctionExpressionImpl {
 
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "convert",
-                    parameter("converted", Object.class),
-                    parameter("value", Object.class),
-                    parameter("class", Class.class));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "convert",
+            parameter("converted", Object.class),
+            parameter("value", Object.class),
+            parameter("class", Class.class));
 
     public FilterFunction_Convert() {
         super(NAME);

@@ -117,11 +117,10 @@ public class JLayeredMapPane extends AbstractMapPane {
         }
 
         if (op.image == null || recreate) {
-            op.image =
-                    GraphicsEnvironment.getLocalGraphicsEnvironment()
-                            .getDefaultScreenDevice()
-                            .getDefaultConfiguration()
-                            .createCompatibleImage(r.width, r.height, Transparency.TRANSLUCENT);
+            op.image = GraphicsEnvironment.getLocalGraphicsEnvironment()
+                    .getDefaultScreenDevice()
+                    .getDefaultConfiguration()
+                    .createCompatibleImage(r.width, r.height, Transparency.TRANSLUCENT);
 
             if (op.graphics != null) {
                 op.graphics.dispose();

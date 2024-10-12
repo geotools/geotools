@@ -55,6 +55,7 @@ public class OGCFunctionTypeBindingTest extends FilterTestSupport {
                         .getLength());
         assertEquals(
                 1,
-                doc.getElementsByTagNameNS(OGC.NAMESPACE, OGC.Literal.getLocalPart()).getLength());
+                doc.getElementsByTagNameNS(OGC.NAMESPACE, OGC.Literal.getLocalPart())
+                        .getLength());
     }
 }

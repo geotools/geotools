@@ -63,8 +63,7 @@ import tech.units.indriya.AbstractUnit;
  * @see AbstractCS
  * @see Unit
  */
-public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
-        implements CoordinateSystemAxis {
+public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject implements CoordinateSystemAxis {
     /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = -7883614853277827689L;
 
@@ -84,8 +83,7 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
      * The list of predefined constants declared in this class, in declaration order. This order
      * matter.
      */
-    private static final DefaultCoordinateSystemAxis[] PREDEFINED =
-            new DefaultCoordinateSystemAxis[26];
+    private static final DefaultCoordinateSystemAxis[] PREDEFINED = new DefaultCoordinateSystemAxis[26];
 
     /**
      * Default axis info for geodetic longitudes in a {@linkplain
@@ -104,12 +102,8 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
      * @see #SPHERICAL_LONGITUDE
      * @see #GEODETIC_LATITUDE
      */
-    public static final DefaultCoordinateSystemAxis GEODETIC_LONGITUDE =
-            new DefaultCoordinateSystemAxis(
-                    VocabularyKeys.GEODETIC_LONGITUDE,
-                    "\u03BB",
-                    AxisDirection.EAST,
-                    NonSI.DEGREE_ANGLE);
+    public static final DefaultCoordinateSystemAxis GEODETIC_LONGITUDE = new DefaultCoordinateSystemAxis(
+            VocabularyKeys.GEODETIC_LONGITUDE, "\u03BB", AxisDirection.EAST, NonSI.DEGREE_ANGLE);
 
     /**
      * Default axis info for geodetic latitudes in a {@linkplain
@@ -128,12 +122,8 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
      * @see #SPHERICAL_LATITUDE
      * @see #GEODETIC_LONGITUDE
      */
-    public static final DefaultCoordinateSystemAxis GEODETIC_LATITUDE =
-            new DefaultCoordinateSystemAxis(
-                    VocabularyKeys.GEODETIC_LATITUDE,
-                    "\u03C6",
-                    AxisDirection.NORTH,
-                    NonSI.DEGREE_ANGLE);
+    public static final DefaultCoordinateSystemAxis GEODETIC_LATITUDE = new DefaultCoordinateSystemAxis(
+            VocabularyKeys.GEODETIC_LATITUDE, "\u03C6", AxisDirection.NORTH, NonSI.DEGREE_ANGLE);
 
     /**
      * Default axis info for longitudes.
@@ -151,8 +141,7 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
      * @see #LATITUDE
      */
     public static final DefaultCoordinateSystemAxis LONGITUDE =
-            new DefaultCoordinateSystemAxis(
-                    VocabularyKeys.LONGITUDE, "\u03BB", AxisDirection.EAST, NonSI.DEGREE_ANGLE);
+            new DefaultCoordinateSystemAxis(VocabularyKeys.LONGITUDE, "\u03BB", AxisDirection.EAST, NonSI.DEGREE_ANGLE);
 
     /**
      * Default axis info for latitudes.
@@ -170,8 +159,7 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
      * @see #LONGITUDE
      */
     public static final DefaultCoordinateSystemAxis LATITUDE =
-            new DefaultCoordinateSystemAxis(
-                    VocabularyKeys.LATITUDE, "\u03C6", AxisDirection.NORTH, NonSI.DEGREE_ANGLE);
+            new DefaultCoordinateSystemAxis(VocabularyKeys.LATITUDE, "\u03C6", AxisDirection.NORTH, NonSI.DEGREE_ANGLE);
 
     /**
      * The default axis for height values above the ellipsoid in a {@linkplain
@@ -192,8 +180,7 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
      * @see #DEPTH
      */
     public static final DefaultCoordinateSystemAxis ELLIPSOIDAL_HEIGHT =
-            new DefaultCoordinateSystemAxis(
-                    VocabularyKeys.ELLIPSOIDAL_HEIGHT, "h", AxisDirection.UP, SI.METRE);
+            new DefaultCoordinateSystemAxis(VocabularyKeys.ELLIPSOIDAL_HEIGHT, "h", AxisDirection.UP, SI.METRE);
 
     /**
      * The default axis for height values measured from gravity.
@@ -210,8 +197,7 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
      * @see #DEPTH
      */
     public static final DefaultCoordinateSystemAxis GRAVITY_RELATED_HEIGHT =
-            new DefaultCoordinateSystemAxis(
-                    VocabularyKeys.GRAVITY_RELATED_HEIGHT, "H", AxisDirection.UP, SI.METRE);
+            new DefaultCoordinateSystemAxis(VocabularyKeys.GRAVITY_RELATED_HEIGHT, "H", AxisDirection.UP, SI.METRE);
 
     /**
      * The default axis for altitude values.
@@ -230,8 +216,7 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
      * @see #DEPTH
      */
     public static final DefaultCoordinateSystemAxis ALTITUDE =
-            new DefaultCoordinateSystemAxis(
-                    VocabularyKeys.ALTITUDE, "h", AxisDirection.UP, SI.METRE);
+            new DefaultCoordinateSystemAxis(VocabularyKeys.ALTITUDE, "h", AxisDirection.UP, SI.METRE);
 
     /**
      * The default axis for depth.
@@ -247,8 +232,7 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
      * @see #GRAVITY_RELATED_HEIGHT
      */
     public static final DefaultCoordinateSystemAxis DEPTH =
-            new DefaultCoordinateSystemAxis(
-                    VocabularyKeys.DEPTH, "d", AxisDirection.DOWN, SI.METRE);
+            new DefaultCoordinateSystemAxis(VocabularyKeys.DEPTH, "d", AxisDirection.DOWN, SI.METRE);
 
     static {
         ALTITUDE.opposite = DEPTH;
@@ -274,8 +258,7 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
      * @see #DEPTH
      */
     public static final DefaultCoordinateSystemAxis GEOCENTRIC_RADIUS =
-            new DefaultCoordinateSystemAxis(
-                    VocabularyKeys.GEOCENTRIC_RADIUS, "r", AxisDirection.UP, SI.METRE);
+            new DefaultCoordinateSystemAxis(VocabularyKeys.GEOCENTRIC_RADIUS, "r", AxisDirection.UP, SI.METRE);
 
     /**
      * Default axis info for longitudes in a {@linkplain
@@ -295,12 +278,8 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
      * @see #GEODETIC_LONGITUDE
      * @see #SPHERICAL_LATITUDE
      */
-    public static final DefaultCoordinateSystemAxis SPHERICAL_LONGITUDE =
-            new DefaultCoordinateSystemAxis(
-                    VocabularyKeys.SPHERICAL_LONGITUDE,
-                    "\u03A9",
-                    AxisDirection.EAST,
-                    NonSI.DEGREE_ANGLE);
+    public static final DefaultCoordinateSystemAxis SPHERICAL_LONGITUDE = new DefaultCoordinateSystemAxis(
+            VocabularyKeys.SPHERICAL_LONGITUDE, "\u03A9", AxisDirection.EAST, NonSI.DEGREE_ANGLE);
 
     /**
      * Default axis info for latitudes in a {@linkplain
@@ -320,12 +299,8 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
      * @see #GEODETIC_LATITUDE
      * @see #SPHERICAL_LONGITUDE
      */
-    public static final DefaultCoordinateSystemAxis SPHERICAL_LATITUDE =
-            new DefaultCoordinateSystemAxis(
-                    VocabularyKeys.SPHERICAL_LATITUDE,
-                    "\u03B8",
-                    AxisDirection.NORTH,
-                    NonSI.DEGREE_ANGLE);
+    public static final DefaultCoordinateSystemAxis SPHERICAL_LATITUDE = new DefaultCoordinateSystemAxis(
+            VocabularyKeys.SPHERICAL_LATITUDE, "\u03B8", AxisDirection.NORTH, NonSI.DEGREE_ANGLE);
 
     /**
      * Default axis info for <var>x</var> values in a {@linkplain
@@ -396,8 +371,7 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
      * #GEOCENTRIC_Z} set.
      */
     public static final DefaultCoordinateSystemAxis GEOCENTRIC_X =
-            new DefaultCoordinateSystemAxis(
-                    VocabularyKeys.GEOCENTRIC_X, "X", AxisDirection.OTHER, SI.METRE);
+            new DefaultCoordinateSystemAxis(VocabularyKeys.GEOCENTRIC_X, "X", AxisDirection.OTHER, SI.METRE);
 
     /**
      * Default axis info for <var>y</var> values in a {@linkplain
@@ -414,8 +388,7 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
      * #GEOCENTRIC_Z} set.
      */
     public static final DefaultCoordinateSystemAxis GEOCENTRIC_Y =
-            new DefaultCoordinateSystemAxis(
-                    VocabularyKeys.GEOCENTRIC_Y, "Y", AxisDirection.EAST, SI.METRE);
+            new DefaultCoordinateSystemAxis(VocabularyKeys.GEOCENTRIC_Y, "Y", AxisDirection.EAST, SI.METRE);
 
     /**
      * Default axis info for <var>z</var> values in a {@linkplain
@@ -432,8 +405,7 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
      * #GEOCENTRIC_Z} set.
      */
     public static final DefaultCoordinateSystemAxis GEOCENTRIC_Z =
-            new DefaultCoordinateSystemAxis(
-                    VocabularyKeys.GEOCENTRIC_Z, "Z", AxisDirection.NORTH, SI.METRE);
+            new DefaultCoordinateSystemAxis(VocabularyKeys.GEOCENTRIC_Z, "Z", AxisDirection.NORTH, SI.METRE);
 
     /**
      * Default axis info for Easting values in a {@linkplain
@@ -452,8 +424,7 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
      * @see #WESTING
      */
     public static final DefaultCoordinateSystemAxis EASTING =
-            new DefaultCoordinateSystemAxis(
-                    VocabularyKeys.EASTING, "E", AxisDirection.EAST, SI.METRE);
+            new DefaultCoordinateSystemAxis(VocabularyKeys.EASTING, "E", AxisDirection.EAST, SI.METRE);
 
     /**
      * Default axis info for Westing values in a {@linkplain
@@ -470,8 +441,7 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
      * @see #WESTING
      */
     public static final DefaultCoordinateSystemAxis WESTING =
-            new DefaultCoordinateSystemAxis(
-                    VocabularyKeys.WESTING, "W", AxisDirection.WEST, SI.METRE);
+            new DefaultCoordinateSystemAxis(VocabularyKeys.WESTING, "W", AxisDirection.WEST, SI.METRE);
 
     static {
         EASTING.opposite = WESTING;
@@ -495,8 +465,7 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
      * @see #SOUTHING
      */
     public static final DefaultCoordinateSystemAxis NORTHING =
-            new DefaultCoordinateSystemAxis(
-                    VocabularyKeys.NORTHING, "N", AxisDirection.NORTH, SI.METRE);
+            new DefaultCoordinateSystemAxis(VocabularyKeys.NORTHING, "N", AxisDirection.NORTH, SI.METRE);
 
     /**
      * Default axis info for Southing values in a {@linkplain
@@ -513,8 +482,7 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
      * @see #SOUTHING
      */
     public static final DefaultCoordinateSystemAxis SOUTHING =
-            new DefaultCoordinateSystemAxis(
-                    VocabularyKeys.SOUTHING, "S", AxisDirection.SOUTH, SI.METRE);
+            new DefaultCoordinateSystemAxis(VocabularyKeys.SOUTHING, "S", AxisDirection.SOUTH, SI.METRE);
 
     static {
         NORTHING.opposite = SOUTHING;
@@ -540,9 +508,8 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
      *
      * <p>The abbreviation is lower case "<var>i</var>".
      */
-    public static final DefaultCoordinateSystemAxis COLUMN =
-            new DefaultCoordinateSystemAxis(
-                    VocabularyKeys.COLUMN, "i", AxisDirection.COLUMN_POSITIVE, AbstractUnit.ONE);
+    public static final DefaultCoordinateSystemAxis COLUMN = new DefaultCoordinateSystemAxis(
+            VocabularyKeys.COLUMN, "i", AxisDirection.COLUMN_POSITIVE, AbstractUnit.ONE);
 
     /**
      * A default axis for row indices in a {@linkplain org.geotools.api.coverage.grid.GridCoverage
@@ -552,8 +519,7 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
      * <p>The abbreviation is lower case "<var>j</var>".
      */
     public static final DefaultCoordinateSystemAxis ROW =
-            new DefaultCoordinateSystemAxis(
-                    VocabularyKeys.ROW, "j", AxisDirection.ROW_POSITIVE, AbstractUnit.ONE);
+            new DefaultCoordinateSystemAxis(VocabularyKeys.ROW, "j", AxisDirection.ROW_POSITIVE, AbstractUnit.ONE);
 
     /**
      * A default axis for <var>x</var> values in a display device. Increasing values go toward
@@ -719,8 +685,7 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
         ensureNonNull("unit", unit);
         ensureNonNull("rangeMeaning", rangeMeaning);
         if (!(minimum < maximum)) { // Use '!' for catching NaN
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.BAD_RANGE_$2, minimum, maximum));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.BAD_RANGE_$2, minimum, maximum));
         }
     }
 
@@ -756,8 +721,7 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
             try {
                 fromDegrees = NonSI.DEGREE_ANGLE.getConverterToAny(unit);
             } catch (UnconvertibleException | IncommensurableException e) {
-                throw new IllegalArgumentException(
-                        "The provided unit is not compatible with DEGREE_ANGLE unit", e);
+                throw new IllegalArgumentException("The provided unit is not compatible with DEGREE_ANGLE unit", e);
             }
             final AxisDirection dir = direction.absolute();
             if (dir.equals(AxisDirection.NORTH)) {
@@ -788,8 +752,7 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
      * @param direction The {@linkplain #getDirection direction} of this coordinate system axis.
      * @param unit The {@linkplain #getUnit unit of measure} used for this coordinate system axis.
      */
-    public DefaultCoordinateSystemAxis(
-            final String abbreviation, final AxisDirection direction, final Unit<?> unit) {
+    public DefaultCoordinateSystemAxis(final String abbreviation, final AxisDirection direction, final Unit<?> unit) {
         this(Collections.singletonMap(NAME_KEY, abbreviation), abbreviation, direction, unit);
     }
 
@@ -840,14 +803,9 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
      * @param unit The {@linkplain #getUnit unit of measure} used for this coordinate system axis.
      */
     private DefaultCoordinateSystemAxis(
-            final int name,
-            final String abbreviation,
-            final AxisDirection direction,
-            final Unit<?> unit) {
+            final int name, final String abbreviation, final AxisDirection direction, final Unit<?> unit) {
         this(
-                name >= 0
-                        ? Vocabulary.formatInternational(name)
-                        : new SimpleInternationalString(abbreviation),
+                name >= 0 ? Vocabulary.formatInternational(name) : new SimpleInternationalString(abbreviation),
                 abbreviation,
                 direction,
                 unit);
@@ -965,8 +923,7 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
             assert candidate == DirectionAlongMeridian.findDirection(meridian.toString());
             return candidate;
         }
-        throw new NoSuchElementException(
-                MessageFormat.format(ErrorKeys.UNKNOW_AXIS_DIRECTION_$1, direction));
+        throw new NoSuchElementException(MessageFormat.format(ErrorKeys.UNKNOW_AXIS_DIRECTION_$1, direction));
     }
 
     /**
@@ -1168,23 +1125,15 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
      * @return An axis using the specified unit.
      * @throws IllegalArgumentException If the specified unit is incompatible with the expected one.
      */
-    final DefaultCoordinateSystemAxis usingUnit(final Unit<?> newUnit)
-            throws IllegalArgumentException {
+    final DefaultCoordinateSystemAxis usingUnit(final Unit<?> newUnit) throws IllegalArgumentException {
         if (unit.equals(newUnit)) {
             return this;
         }
         if (unit.isCompatible(newUnit)) {
             return new DefaultCoordinateSystemAxis(
-                    getProperties(this, null),
-                    abbreviation,
-                    direction,
-                    newUnit,
-                    minimum,
-                    maximum,
-                    rangeMeaning);
+                    getProperties(this, null), abbreviation, direction, newUnit, minimum, maximum, rangeMeaning);
         }
-        throw new IllegalArgumentException(
-                MessageFormat.format(ErrorKeys.INCOMPATIBLE_UNIT_$1, newUnit));
+        throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.INCOMPATIBLE_UNIT_$1, newUnit));
     }
 
     /**
@@ -1255,9 +1204,7 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
      * conversions through {@link AbstractCS#swapAndScaleAxis}.
      */
     final boolean equals(
-            final DefaultCoordinateSystemAxis that,
-            final boolean compareMetadata,
-            final boolean compareUnit) {
+            final DefaultCoordinateSystemAxis that, final boolean compareMetadata, final boolean compareUnit) {
         if (compareMetadata) {
             if (!Utilities.equals(this.abbreviation, that.abbreviation)
                     || !Utilities.equals(this.rangeMeaning, that.rangeMeaning)

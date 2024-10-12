@@ -38,8 +38,7 @@ public class CoordinateWriterTest {
     /** Test normal 2D output */
     @Test
     public void test2DCoordSeq() throws Exception {
-        CoordinateSequence coords =
-                new CoordinateArraySequence(coords2D(new int[] {1, 1, 4, 4, 0, 4, 1, 1}));
+        CoordinateSequence coords = new CoordinateArraySequence(coords2D(new int[] {1, 1, 4, 4, 0, 4, 1, 1}));
 
         CoordinateWriter writer = new CoordinateWriter(4);
         CoordinateHandler output = new CoordinateHandler();
@@ -90,8 +89,7 @@ public class CoordinateWriterTest {
 
     @Test
     public void test2DWithDummyZCoordSeq() throws Exception {
-        CoordinateSequence coords =
-                new CoordinateArraySequence(coords2D(new int[] {1, 1, 4, 4, 0, 4, 1, 1}));
+        CoordinateSequence coords = new CoordinateArraySequence(coords2D(new int[] {1, 1, 4, 4, 0, 4, 1, 1}));
 
         final boolean useDummyZ = true;
         final double zValue = 0.0;
@@ -125,8 +123,7 @@ public class CoordinateWriterTest {
     @Test
     public void test3DCoordSeq() throws Exception {
         CoordinateSequence coords =
-                new CoordinateArraySequence(
-                        coords3D(new int[] {1, 1, 3, 4, 4, 2, 0, 4, 2, 1, 1, 3}));
+                new CoordinateArraySequence(coords3D(new int[] {1, 1, 3, 4, 4, 2, 0, 4, 2, 1, 1, 3}));
 
         CoordinateWriter writer = new CoordinateWriter(4, false, true, " ", ",", true, 0.0, 3);
         CoordinateHandler output = new CoordinateHandler();
@@ -142,8 +139,7 @@ public class CoordinateWriterTest {
     @Test
     public void test3DCoordSeqEvenWithWrongDimension() throws Exception {
         CoordinateSequence coords =
-                new CoordinateArraySequence(
-                        coords3D(new int[] {1, 1, 3, 4, 4, 2, 0, 4, 2, 1, 1, 3}));
+                new CoordinateArraySequence(coords3D(new int[] {1, 1, 3, 4, 4, 2, 0, 4, 2, 1, 1, 3}));
 
         CoordinateWriter writer = new CoordinateWriter(4, false, true, " ", ",", true, 0.0, 2);
         CoordinateHandler output = new CoordinateHandler();
@@ -158,8 +154,7 @@ public class CoordinateWriterTest {
     @Test
     public void testFormatting() throws Exception {
         CoordinateSequence coords =
-                new CoordinateArraySequence(
-                        coords3DDouble(new double[] {1, 1, 3, 4.5, 4, 2, 0, 4, 2, 1, 1, 3.582}));
+                new CoordinateArraySequence(coords3DDouble(new double[] {1, 1, 3, 4.5, 4, 2, 0, 4, 2, 1, 1, 3.582}));
 
         CoordinateWriter writer = new CoordinateWriter(2, true, true, " ", ",", true, 0.0, 2);
         CoordinateHandler output = new CoordinateHandler();
@@ -169,8 +164,7 @@ public class CoordinateWriterTest {
         output.endDocument();
 
         Assert.assertEquals(
-                "<coordinates>1.00,1.00,3.00 4.50,4.00,2.00 0.00,4.00,2.00 1.00,1.00,3"
-                        + ".58</coordinates>",
+                "<coordinates>1.00,1.00,3.00 4.50,4.00,2.00 0.00,4.00,2.00 1.00,1.00,3" + ".58</coordinates>",
                 output.received);
     }
 
@@ -216,8 +210,7 @@ public class CoordinateWriterTest {
         }
 
         @Override
-        public void startElement(String uri, String localName, String name, Attributes atts)
-                throws SAXException {
+        public void startElement(String uri, String localName, String name, Attributes atts) throws SAXException {
             buffer.append("<");
             buffer.append(localName);
             buffer.append(">");
@@ -225,7 +218,8 @@ public class CoordinateWriterTest {
 
         @Override
         public void startPrefixMapping(String prefix, String uri) throws SAXException {}
-    };
+    }
+    ;
 
     Coordinate[] coords2D(int[] array) {
         Coordinate[] coords = new Coordinate[array.length / 2];

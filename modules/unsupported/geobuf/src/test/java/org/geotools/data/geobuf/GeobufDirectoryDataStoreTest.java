@@ -50,7 +50,8 @@ import org.locationtech.jts.geom.GeometryFactory;
 
 public class GeobufDirectoryDataStoreTest {
 
-    @Rule public TemporaryFolder temporaryFolder = new TemporaryFolder();
+    @Rule
+    public TemporaryFolder temporaryFolder = new TemporaryFolder();
 
     @Test
     public void dataStore() throws Exception {
@@ -61,15 +62,10 @@ public class GeobufDirectoryDataStoreTest {
         // Copy over some PBF files
         String[] pbfNames = {"lines", "points", "polygons"};
         for (String name : pbfNames) {
-            File file =
-                    URLs.urlToFile(
-                            getClass()
-                                    .getClassLoader()
-                                    .getResource("org/geotools/data/geobuf/" + name + ".pbf"));
+            File file = URLs.urlToFile(
+                    getClass().getClassLoader().getResource("org/geotools/data/geobuf/" + name + ".pbf"));
             Files.copy(
-                    file.toPath(),
-                    new File(directory, file.getName()).toPath(),
-                    StandardCopyOption.REPLACE_EXISTING);
+                    file.toPath(), new File(directory, file.getName()).toPath(), StandardCopyOption.REPLACE_EXISTING);
         }
 
         // Get a DataStore
@@ -92,29 +88,18 @@ public class GeobufDirectoryDataStoreTest {
         }
 
         // Write a new Layer
-        SimpleFeatureType featureType =
-                DataUtilities.createType("locations", "geom:Point,name:String,id:int");
+        SimpleFeatureType featureType = DataUtilities.createType("locations", "geom:Point,name:String,id:int");
         store.createSchema(featureType);
         SimpleFeatureStore featureStore = (SimpleFeatureStore) store.getFeatureSource("locations");
         GeometryFactory gf = JTSFactoryFinder.getGeometryFactory();
-        SimpleFeature feature1 =
-                SimpleFeatureBuilder.build(
-                        featureType,
-                        new Object[] {
-                            gf.createPoint(new Coordinate(-8.349609375, 14.349547837185362)),
-                            "ABC",
-                            1
-                        },
-                        "location.1");
-        SimpleFeature feature2 =
-                SimpleFeatureBuilder.build(
-                        featureType,
-                        new Object[] {
-                            gf.createPoint(new Coordinate(-18.349609375, 24.349547837185362)),
-                            "DEF",
-                            2
-                        },
-                        "location.2");
+        SimpleFeature feature1 = SimpleFeatureBuilder.build(
+                featureType,
+                new Object[] {gf.createPoint(new Coordinate(-8.349609375, 14.349547837185362)), "ABC", 1},
+                "location.1");
+        SimpleFeature feature2 = SimpleFeatureBuilder.build(
+                featureType,
+                new Object[] {gf.createPoint(new Coordinate(-18.349609375, 24.349547837185362)), "DEF", 2},
+                "location.2");
         SimpleFeatureCollection collection = DataUtilities.collection(feature1, feature2);
         featureStore.addFeatures(collection);
         assertEquals(2, featureStore.getCount(Query.ALL));
@@ -123,8 +108,10 @@ public class GeobufDirectoryDataStoreTest {
     @Test
     public void removeSchema() throws Exception {
         File dir = temporaryFolder.newFolder("layers");
-        File file1 = Files.createFile(Paths.get(dir.getAbsolutePath(), "points.pbf")).toFile();
-        File file2 = Files.createFile(Paths.get(dir.getAbsolutePath(), "lines.pbf")).toFile();
+        File file1 =
+                Files.createFile(Paths.get(dir.getAbsolutePath(), "points.pbf")).toFile();
+        File file2 =
+                Files.createFile(Paths.get(dir.getAbsolutePath(), "lines.pbf")).toFile();
         Map<String, Serializable> params = new HashMap<>();
         params.put("file", dir);
         DataStore store = DataStoreFinder.getDataStore(params);

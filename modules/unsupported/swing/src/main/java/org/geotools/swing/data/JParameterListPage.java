@@ -51,10 +51,7 @@ public class JParameterListPage extends JPage {
     protected Map<String, Object> connectionParameters;
 
     public JParameterListPage(
-            String title,
-            String description,
-            List<Parameter<?>> contents,
-            Map<String, Object> params) {
+            String title, String description, List<Parameter<?>> contents, Map<String, Object> params) {
         this.title = title;
         this.description = description;
         this.contents = contents;

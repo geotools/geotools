@@ -27,19 +27,15 @@ import org.geotools.text.Text;
 import org.locationtech.jts.geom.Geometry;
 
 public class SkeletonizeProcess extends StaticMethodsProcessFactory<SkeletonizeProcess> {
-    private static final Logger LOG =
-            Logger.getLogger("org.geotools.process.geometry.SkeletonizeProcess");
+    private static final Logger LOG = Logger.getLogger("org.geotools.process.geometry.SkeletonizeProcess");
 
     public SkeletonizeProcess() {
 
         super(Text.text("geo"), "skeltonize", SkeletonizeProcess.class);
     }
 
-    @DescribeProcess(
-            title = "Skeletonize",
-            description = "Create the full skeleton line of a Polygon")
-    @DescribeResult(
-            description = "A geometry that is the center line (skeleton) of the input polygon")
+    @DescribeProcess(title = "Skeletonize", description = "Create the full skeleton line of a Polygon")
+    @DescribeResult(description = "A geometry that is the center line (skeleton) of the input polygon")
     public static Geometry centerLine(
             @DescribeParameter(
                             name = "geometry",

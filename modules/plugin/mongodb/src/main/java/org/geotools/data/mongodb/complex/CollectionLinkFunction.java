@@ -26,10 +26,7 @@ import org.geotools.filter.capability.FunctionNameImpl;
 public final class CollectionLinkFunction extends FunctionExpressionImpl {
 
     private static final FunctionName DEFINITION =
-            new FunctionNameImpl(
-                    "collectionLink",
-                    parameter("value", String.class),
-                    parameter("path", String.class));
+            new FunctionNameImpl("collectionLink", parameter("value", String.class), parameter("path", String.class));
 
     public CollectionLinkFunction() {
         super(DEFINITION);

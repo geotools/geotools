@@ -69,17 +69,13 @@ public abstract class AbstractStationsTest {
     static final Name STATION_WITH_MEASUREMENTS_FEATURE_TYPE =
             Types.typeName(STATIONS_NS, "StationWithMeasurementsType");
 
-    static final Name STATION_WITH_MEASUREMENTS_FEATURE =
-            Types.typeName(STATIONS_NS, "StationWithMeasurements");
+    static final Name STATION_WITH_MEASUREMENTS_FEATURE = Types.typeName(STATIONS_NS, "StationWithMeasurements");
 
-    static final Name STATION_WITH_GEOM_FEATURE_TYPE =
-            Types.typeName(STATIONS_NS, "StationWithGeometryPropertyType");
+    static final Name STATION_WITH_GEOM_FEATURE_TYPE = Types.typeName(STATIONS_NS, "StationWithGeometryPropertyType");
 
-    static final Name STATION_WITH_GEOM_FEATURE =
-            Types.typeName(STATIONS_NS, "StationWithGeometryProperty");
+    static final Name STATION_WITH_GEOM_FEATURE = Types.typeName(STATIONS_NS, "StationWithGeometryProperty");
 
-    static final Name STATION_DEFAULT_GEOM_OVERRIDE_MAPPING =
-            Types.typeName("stationsDefaultGeometryOverride");
+    static final Name STATION_DEFAULT_GEOM_OVERRIDE_MAPPING = Types.typeName("stationsDefaultGeometryOverride");
 
     static final String MEASUREMENTS_NS = "http://www.measurements.org/1.0";
 
@@ -168,11 +164,9 @@ public abstract class AbstractStationsTest {
         }
     }
 
-    protected List<Element> getElementsFromDocumentUsingXpath(
-            Document document, String xpathExpression) {
+    protected List<Element> getElementsFromDocumentUsingXpath(Document document, String xpathExpression) {
         try {
-            NodeList nodes =
-                    (NodeList) XPATH.evaluate(xpathExpression, document, XPathConstants.NODESET);
+            NodeList nodes = (NodeList) XPATH.evaluate(xpathExpression, document, XPathConstants.NODESET);
             // filter to have only Elements
             List<Element> elements = new ArrayList<>();
             for (int i = 0; i < nodes.getLength(); i++) {

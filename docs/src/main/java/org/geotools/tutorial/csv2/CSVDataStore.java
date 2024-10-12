@@ -81,8 +81,7 @@ public class CSVDataStore extends ContentDataStore {
         GeometryDescriptor geometryDescrptor = featureType.getGeometryDescriptor();
         if (geometryDescrptor != null
                 && CRS.equalsIgnoreMetadata(
-                        DefaultGeographicCRS.WGS84,
-                        geometryDescrptor.getCoordinateReferenceSystem())
+                        DefaultGeographicCRS.WGS84, geometryDescrptor.getCoordinateReferenceSystem())
                 && geometryDescrptor.getType().getBinding().isAssignableFrom(Point.class)) {
             header.add("LAT");
             header.add("LON");

@@ -84,10 +84,8 @@ public class FootprintsTransformationTest {
         try {
 
             // a bounding box that is matching one tile only
-            ReferencedEnvelope re =
-                    new ReferencedEnvelope(9.25, 12, 42.56, 44.57, DefaultGeographicCRS.WGS84);
-            final ParameterValue<GridGeometry2D> gg =
-                    AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
+            ReferencedEnvelope re = new ReferencedEnvelope(9.25, 12, 42.56, 44.57, DefaultGeographicCRS.WGS84);
+            final ParameterValue<GridGeometry2D> gg = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
             gg.setValue(new GridGeometry2D(new GridEnvelope2D(0, 0, 50, 50), re));
 
             ReaderAndParams ctx = new ReaderAndParams(reader, new GeneralParameterValue[] {gg});
@@ -124,16 +122,14 @@ public class FootprintsTransformationTest {
         }
     }
 
-    private void assertOneGranuleSort(
-            ImageMosaicReader reader, String sortValue, String expectedLocation) {
+    private void assertOneGranuleSort(ImageMosaicReader reader, String sortValue, String expectedLocation) {
         ParameterValue<String> sort = ImageMosaicFormat.SORT_BY.createValue();
         sort.setValue(sortValue);
 
         ParameterValue<Integer> maxTiles = ImageMosaicFormat.MAX_ALLOWED_TILES.createValue();
         maxTiles.setValue(1);
 
-        ReaderAndParams ctx =
-                new ReaderAndParams(reader, new GeneralParameterValue[] {sort, maxTiles});
+        ReaderAndParams ctx = new ReaderAndParams(reader, new GeneralParameterValue[] {sort, maxTiles});
         SimpleFeatureCollection fc = TX.evaluate(ctx);
 
         // one feature
@@ -151,8 +147,7 @@ public class FootprintsTransformationTest {
         try {
 
             ParameterValue<Filter> filter = ImageMosaicFormat.FILTER.createValue();
-            filter.setValue(
-                    CQL.toFilter("elevation = 0 and ingestion TEQUALS 2008-11-01T00:00:00Z"));
+            filter.setValue(CQL.toFilter("elevation = 0 and ingestion TEQUALS 2008-11-01T00:00:00Z"));
 
             ReaderAndParams ctx = new ReaderAndParams(reader, new GeneralParameterValue[] {filter});
             SimpleFeatureCollection fc = TX.evaluate(ctx);
@@ -160,8 +155,7 @@ public class FootprintsTransformationTest {
             assertEquals(1, fc.size());
             SimpleFeature first = DataUtilities.first(fc);
 
-            assertEquals(
-                    "NCOM_wattemp_000_20081101T0000000_12.tiff", first.getAttribute("location"));
+            assertEquals("NCOM_wattemp_000_20081101T0000000_12.tiff", first.getAttribute("location"));
         } finally {
             reader.dispose();
         }
@@ -185,15 +179,13 @@ public class FootprintsTransformationTest {
             ParameterValue<List> elevation = ImageMosaicFormat.ELEVATION.createValue();
             elevation.setValue(asList(0));
 
-            ReaderAndParams ctx =
-                    new ReaderAndParams(reader, new GeneralParameterValue[] {time, elevation});
+            ReaderAndParams ctx = new ReaderAndParams(reader, new GeneralParameterValue[] {time, elevation});
             SimpleFeatureCollection fc = TX.evaluate(ctx);
 
             assertEquals(1, fc.size());
             SimpleFeature first = DataUtilities.first(fc);
 
-            assertEquals(
-                    "NCOM_wattemp_000_20081101T0000000_12.tiff", first.getAttribute("location"));
+            assertEquals("NCOM_wattemp_000_20081101T0000000_12.tiff", first.getAttribute("location"));
         } finally {
             reader.dispose();
         }
@@ -210,27 +202,18 @@ public class FootprintsTransformationTest {
             ReaderAndParams ctx = new ReaderAndParams(reader, new GeneralParameterValue[] {time});
 
             // range above
-            time.setValue(
-                    asList(
-                            parseISO("2008-11-20T00:00:00.000Z"),
-                            parseISO("2008-11-25T12:00:00.000Z")));
+            time.setValue(asList(parseISO("2008-11-20T00:00:00.000Z"), parseISO("2008-11-25T12:00:00.000Z")));
 
             SimpleFeatureCollection fc = TX.evaluate(ctx);
             assertTrue(fc.isEmpty());
 
             // range in hole
-            time.setValue(
-                    asList(
-                            parseISO("2008-11-04T12:00:00.000Z"),
-                            parseISO("2008-11-04T18:00:00.000Z")));
+            time.setValue(asList(parseISO("2008-11-04T12:00:00.000Z"), parseISO("2008-11-04T18:00:00.000Z")));
             fc = TX.evaluate(ctx);
             assertTrue(fc.isEmpty());
 
             // range that catches the first date range
-            time.setValue(
-                    asList(
-                            parseISO("2008-10-28T00:00:00.000Z"),
-                            parseISO("2008-10-31T18:00:00.000Z")));
+            time.setValue(asList(parseISO("2008-10-28T00:00:00.000Z"), parseISO("2008-10-31T18:00:00.000Z")));
             fc = TX.evaluate(ctx);
             assertEquals(4, fc.size());
             Set<String> locations = collectLocations(fc);
@@ -256,22 +239,18 @@ public class FootprintsTransformationTest {
                             "temp_020_099_20081031T000000_20081103T000000_25_80.tiff"));
 
             // add a custom dimension filter
-            ParameterDescriptor<List> wavelengthDescriptor =
-                    reader.getDynamicParameters().stream()
-                            .filter(p -> p.getName().getCode().equalsIgnoreCase("wavelength"))
-                            .findFirst()
-                            .get();
+            ParameterDescriptor<List> wavelengthDescriptor = reader.getDynamicParameters().stream()
+                    .filter(p -> p.getName().getCode().equalsIgnoreCase("wavelength"))
+                    .findFirst()
+                    .get();
             ParameterValue<List> wavelength = wavelengthDescriptor.createValue();
             // ... range between 12 and 14
             wavelength.setValue(asList(new NumberRange<>(Double.class, 14d, 20d)));
-            ctx =
-                    new ReaderAndParams(
-                            reader, new GeneralParameterValue[] {time, elevation, wavelength});
+            ctx = new ReaderAndParams(reader, new GeneralParameterValue[] {time, elevation, wavelength});
             fc = TX.evaluate(ctx);
             assertEquals(1, fc.size());
             locations = collectLocations(fc);
-            assertThat(
-                    locations, hasItems("temp_020_099_20081031T000000_20081103T000000_12_24.tiff"));
+            assertThat(locations, hasItems("temp_020_099_20081031T000000_20081103T000000_12_24.tiff"));
         } finally {
             reader.dispose();
         }
@@ -317,17 +296,12 @@ public class FootprintsTransformationTest {
             ParameterValue<Filter> filter = ImageMosaicFormat.FILTER.createValue();
             filter.setValue(null);
 
-            ParameterValue<GridGeometry2D> gg =
-                    AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
+            ParameterValue<GridGeometry2D> gg = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
             gg.setValue(null);
 
             /* Check it can work without read parameters */
-            ReaderAndParams ctx =
-                    new ReaderAndParams(
-                            reader,
-                            new GeneralParameterValue[] {
-                                sort, maxTiles, time, elevation, filter, gg
-                            });
+            ReaderAndParams ctx = new ReaderAndParams(
+                    reader, new GeneralParameterValue[] {sort, maxTiles, time, elevation, filter, gg});
             SimpleFeatureCollection fc = TX.evaluate(ctx);
 
             // all files have been loaded
@@ -338,10 +312,9 @@ public class FootprintsTransformationTest {
     }
 
     private Set<String> collectLocations(SimpleFeatureCollection fc) {
-        Set<String> locations =
-                DataUtilities.list(fc).stream()
-                        .map(f -> (String) f.getAttribute("location"))
-                        .collect(Collectors.toSet());
+        Set<String> locations = DataUtilities.list(fc).stream()
+                .map(f -> (String) f.getAttribute("location"))
+                .collect(Collectors.toSet());
         return locations;
     }
 
@@ -355,8 +328,7 @@ public class FootprintsTransformationTest {
             FileUtils.deleteDirectory(workDir);
             assertTrue("Unable to create workdir:" + workDir, workDir.mkdir());
         }
-        FileUtils.copyFile(
-                TestData.file(this, "watertemp.zip"), new File(workDir, "watertemp.zip"));
+        FileUtils.copyFile(TestData.file(this, "watertemp.zip"), new File(workDir, "watertemp.zip"));
         TestData.unzipFile(this, targetDirectory + "/watertemp.zip");
 
         final URL timeElevURL = TestData.url(this, targetDirectory);

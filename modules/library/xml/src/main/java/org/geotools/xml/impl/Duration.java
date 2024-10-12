@@ -149,8 +149,7 @@ public class Duration implements Serializable, Comparable<Duration> {
         }
 
         if (len == 0 || pValue.charAt(offset) != 'P') {
-            throw new IllegalArgumentException(
-                    "Invalid duration: " + pValue + " (must start with P, +P, or -P)");
+            throw new IllegalArgumentException("Invalid duration: " + pValue + " (must start with P, +P, or -P)");
         } else {
             ++offset;
         }
@@ -167,9 +166,7 @@ public class Duration implements Serializable, Comparable<Duration> {
             } else if (c == 'T') {
                 if (separatorSeen) {
                     throw new IllegalArgumentException(
-                            "Invalid duration: "
-                                    + pValue
-                                    + " (date/time separator 'T' used twice)");
+                            "Invalid duration: " + pValue + " (date/time separator 'T' used twice)");
                 } else {
                     separatorSeen = true;
                 }
@@ -178,10 +175,9 @@ public class Duration implements Serializable, Comparable<Duration> {
                 if (preDecimalPoint >= 0) {
                     if (c == 'S') {
                         if (!separatorSeen) {
-                            throw new IllegalArgumentException(
-                                    "Invalid duration: "
-                                            + pValue
-                                            + "(seconds specified before date/time separator 'T' seen)");
+                            throw new IllegalArgumentException("Invalid duration: "
+                                    + pValue
+                                    + "(seconds specified before date/time separator 'T' seen)");
                         }
                         if (seconds != -1) {
                             throw new IllegalArgumentException(
@@ -191,39 +187,31 @@ public class Duration implements Serializable, Comparable<Duration> {
                         millis = l;
                         preDecimalPoint = -1;
                     } else {
-                        throw new IllegalArgumentException(
-                                "Invalid duration: "
-                                        + pValue
-                                        + " (decimal point not allowed here: "
-                                        + preDecimalPoint
-                                        + "."
-                                        + digits
-                                        + c
-                                        + ")");
+                        throw new IllegalArgumentException("Invalid duration: "
+                                + pValue
+                                + " (decimal point not allowed here: "
+                                + preDecimalPoint
+                                + "."
+                                + digits
+                                + c
+                                + ")");
                     }
                 } else if (l > Integer.MAX_VALUE) {
                     throw new IllegalArgumentException(
-                            "Invalid duration: "
-                                    + pValue
-                                    + " (max integer value exceeded by "
-                                    + digits
-                                    + ")");
+                            "Invalid duration: " + pValue + " (max integer value exceeded by " + digits + ")");
                 } else {
                     int i = (int) l;
                     if (c == '.') {
                         preDecimalPoint = i;
                     } else if (separatorSeen) {
                         if (c == 'Y' || c == 'D') {
-                            throw new IllegalArgumentException(
-                                    "Invalid duration: "
-                                            + pValue
-                                            + " (years or days of month specified after date/time separator 'T' seen)");
+                            throw new IllegalArgumentException("Invalid duration: "
+                                    + pValue
+                                    + " (years or days of month specified after date/time separator 'T' seen)");
                         } else if (c == 'S') {
                             if (seconds != -1) {
                                 throw new IllegalArgumentException(
-                                        "Invalid duration: "
-                                                + pValue
-                                                + " (seconds specified twice)");
+                                        "Invalid duration: " + pValue + " (seconds specified twice)");
                             }
                             seconds = i;
                             millis = 0;
@@ -236,10 +224,9 @@ public class Duration implements Serializable, Comparable<Duration> {
                         }
                     } else {
                         if (c == 'H' || c == 'S') {
-                            throw new IllegalArgumentException(
-                                    "Invalid duration: "
-                                            + pValue
-                                            + " (hours or seconds specified before date/time separator 'T' seen)");
+                            throw new IllegalArgumentException("Invalid duration: "
+                                    + pValue
+                                    + " (hours or seconds specified before date/time separator 'T' seen)");
                         } else if (c == 'Y') {
                             validateYears(pValue, years, months, daysOfMonth);
                             years = i;
@@ -249,9 +236,7 @@ public class Duration implements Serializable, Comparable<Duration> {
                         } else if (c == 'D') {
                             if (daysOfMonth != -1) {
                                 throw new IllegalArgumentException(
-                                        "Invalid duration: "
-                                                + pValue
-                                                + " (days of month specified twice)");
+                                        "Invalid duration: " + pValue + " (days of month specified twice)");
                             }
                             daysOfMonth = i;
                         }
@@ -280,11 +265,7 @@ public class Duration implements Serializable, Comparable<Duration> {
                 l = Long.parseLong(digits.toString());
             } catch (NumberFormatException e) {
                 throw new IllegalArgumentException(
-                        "Invalid duration: "
-                                + pValue
-                                + " (max long value exceeded by "
-                                + digits
-                                + ")");
+                        "Invalid duration: " + pValue + " (max long value exceeded by " + digits + ")");
             }
             digits.setLength(0);
         }
@@ -293,8 +274,7 @@ public class Duration implements Serializable, Comparable<Duration> {
 
     private static void validateMonths(String pValue, int months, int daysOfMonth) {
         if (months != -1) {
-            throw new IllegalArgumentException(
-                    "Invalid duration: " + pValue + " (months specified twice)");
+            throw new IllegalArgumentException("Invalid duration: " + pValue + " (months specified twice)");
         } else if (daysOfMonth != -1) {
             throw new IllegalArgumentException(
                     "Invalid duration: " + pValue + " (days of month specified after months)");
@@ -303,11 +283,9 @@ public class Duration implements Serializable, Comparable<Duration> {
 
     private static void validateYears(String pValue, int years, int months, int daysOfMonth) {
         if (years != -1) {
-            throw new IllegalArgumentException(
-                    "Invalid duration: " + pValue + " (years specified twice)");
+            throw new IllegalArgumentException("Invalid duration: " + pValue + " (years specified twice)");
         } else if (months != -1) {
-            throw new IllegalArgumentException(
-                    "Invalid duration: " + pValue + " (years specified after months)");
+            throw new IllegalArgumentException("Invalid duration: " + pValue + " (years specified after months)");
         } else if (daysOfMonth != -1) {
             throw new IllegalArgumentException(
                     "Invalid duration: " + pValue + " (years specified after days of month)");
@@ -316,24 +294,19 @@ public class Duration implements Serializable, Comparable<Duration> {
 
     private static void validateHours(String pValue, int hours, int minutes, int seconds) {
         if (hours != -1) {
-            throw new IllegalArgumentException(
-                    "Invalid duration: " + pValue + " (hours specified twice)");
+            throw new IllegalArgumentException("Invalid duration: " + pValue + " (hours specified twice)");
         } else if (minutes != -1) {
-            throw new IllegalArgumentException(
-                    "Invalid duration: " + pValue + " (hours specified after minutes)");
+            throw new IllegalArgumentException("Invalid duration: " + pValue + " (hours specified after minutes)");
         } else if (seconds != -1) {
-            throw new IllegalArgumentException(
-                    "Invalid duration: " + pValue + " (seconds specified after minutes)");
+            throw new IllegalArgumentException("Invalid duration: " + pValue + " (seconds specified after minutes)");
         }
     }
 
     private static void validateMinutes(String pValue, int minutes, int seconds) {
         if (minutes != -1) {
-            throw new IllegalArgumentException(
-                    "Invalid duration: " + pValue + " (minutes specified twice)");
+            throw new IllegalArgumentException("Invalid duration: " + pValue + " (minutes specified twice)");
         } else if (seconds != -1) {
-            throw new IllegalArgumentException(
-                    "Invalid duration: " + pValue + " (minutes specified after seconds)");
+            throw new IllegalArgumentException("Invalid duration: " + pValue + " (minutes specified after seconds)");
         }
     }
 
@@ -380,8 +353,6 @@ public class Duration implements Serializable, Comparable<Duration> {
 
     @Override
     public int hashCode() {
-        return isNegative
-                ? 1
-                : 0 + years + months + days + hours + minutes + seconds + (int) millis;
+        return isNegative ? 1 : 0 + years + months + days + hours + minutes + seconds + (int) millis;
     }
 }

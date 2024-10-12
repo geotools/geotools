@@ -87,8 +87,7 @@ class RootNode extends BaseCoverageProcessingNode implements CoverageProcessingN
     @Override
     public boolean addSource(CoverageProcessingNode source) {
         throw new UnsupportedOperationException(
-                MessageFormat.format(
-                        ErrorKeys.UNSUPPORTED_OPERATION_$1, "addSource(CoverageProcessingNode)"));
+                MessageFormat.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "addSource(CoverageProcessingNode)"));
     }
 
     /*

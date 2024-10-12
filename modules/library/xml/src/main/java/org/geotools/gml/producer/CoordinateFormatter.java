@@ -77,11 +77,10 @@ public final class CoordinateFormatter {
             if (formatted.indexOf(".") == -1) {
                 return formatted + "." + repeatZeros(numDecimals);
             } else {
-                int decimals =
-                        numDecimals
-                                - formatted
-                                        .substring(formatted.toString().indexOf('.') + 1)
-                                        .length();
+                int decimals = numDecimals
+                        - formatted
+                                .substring(formatted.toString().indexOf('.') + 1)
+                                .length();
                 if (formatted.toString().toLowerCase().indexOf("e") == -1 && decimals > 0) {
                     return formatted + repeatZeros(decimals);
                 }

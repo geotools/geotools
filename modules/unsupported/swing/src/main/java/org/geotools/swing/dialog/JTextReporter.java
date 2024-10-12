@@ -323,15 +323,11 @@ public class JTextReporter {
                         try {
                             SwingUtilities.invokeAndWait(() -> rtnText[0] = dialog.getText());
                         } catch (InterruptedException ex) {
-                            LOGGER.severe(
-                                    "Thread interrupted while getting text from text reporter");
+                            LOGGER.severe("Thread interrupted while getting text from text reporter");
                             rtnText[0] = "";
 
                         } catch (InvocationTargetException ex) {
-                            LOGGER.log(
-                                    Level.SEVERE,
-                                    "Error while trying to get text from text reporter",
-                                    ex);
+                            LOGGER.log(Level.SEVERE, "Error while trying to get text from text reporter", ex);
                             rtnText[0] = "";
                         }
                     }
@@ -480,12 +476,10 @@ public class JTextReporter {
         } else {
             final CountDownLatch latch = new CountDownLatch(1);
 
-            SwingUtilities.invokeLater(
-                    () -> {
-                        conn[0] =
-                                doShowDialog(title, initialText, flags, textAreaRows, textAreaCols);
-                        latch.countDown();
-                    });
+            SwingUtilities.invokeLater(() -> {
+                conn[0] = doShowDialog(title, initialText, flags, textAreaRows, textAreaCols);
+                latch.countDown();
+            });
 
             try {
                 latch.await(DIALOG_CREATION_TIMEOUT, TimeUnit.MILLISECONDS);
@@ -531,14 +525,9 @@ public class JTextReporter {
          * @param textAreaRows number of text area rows
          * @param textAreaCols number of text area columns
          */
-        private TextDialog(
-                String title, String initialText, int flags, int textAreaRows, int textAreaCols) {
+        private TextDialog(String title, String initialText, int flags, int textAreaRows, int textAreaCols) {
 
-            super(
-                    (JDialog) null,
-                    title,
-                    isFlagSet(flags, FLAG_MODAL),
-                    isFlagSet(flags, FLAG_RESIZABLE));
+            super((JDialog) null, title, isFlagSet(flags, FLAG_MODAL), isFlagSet(flags, FLAG_RESIZABLE));
             setAlwaysOnTop(isFlagSet(flags, FLAG_ALWAYS_ON_TOP));
 
             textArea = new JTextArea(textAreaRows, textAreaCols);
@@ -561,26 +550,25 @@ public class JTextReporter {
              * former is called when the dialog is closed via the system button
              * and the latter when it is closed using the dialog Close button.
              */
-            addWindowListener(
-                    new WindowAdapter() {
-                        private boolean flag = false;
+            addWindowListener(new WindowAdapter() {
+                private boolean flag = false;
 
-                        @Override
-                        public void windowClosing(WindowEvent e) {
-                            if (!flag) {
-                                conn.setDialogClosed();
-                                flag = true;
-                            }
-                        }
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    if (!flag) {
+                        conn.setDialogClosed();
+                        flag = true;
+                    }
+                }
 
-                        @Override
-                        public void windowClosed(WindowEvent e) {
-                            if (!flag) {
-                                conn.setDialogClosed();
-                                flag = true;
-                            }
-                        }
-                    });
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    if (!flag) {
+                        conn.setDialogClosed();
+                        flag = true;
+                    }
+                }
+            });
         }
 
         @Override
@@ -731,19 +719,18 @@ public class JTextReporter {
          */
         static File getFile() {
             JFileChooser chooser = new JFileChooser(cwd);
-            chooser.setFileFilter(
-                    new FileFilter() {
+            chooser.setFileFilter(new FileFilter() {
 
-                        @Override
-                        public boolean accept(File f) {
-                            return true;
-                        }
+                @Override
+                public boolean accept(File f) {
+                    return true;
+                }
 
-                        @Override
-                        public String getDescription() {
-                            return "All files";
-                        }
-                    });
+                @Override
+                public String getDescription() {
+                    return "All files";
+                }
+            });
 
             if (chooser.showSaveDialog(null) != JFileChooser.APPROVE_OPTION) {
                 return null;

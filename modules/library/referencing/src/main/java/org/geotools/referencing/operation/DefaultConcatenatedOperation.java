@@ -56,8 +56,7 @@ import org.geotools.util.UnmodifiableArrayList;
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
-public class DefaultConcatenatedOperation extends AbstractCoordinateOperation
-        implements ConcatenatedOperation {
+public class DefaultConcatenatedOperation extends AbstractCoordinateOperation implements ConcatenatedOperation {
     /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = 4199619838029045700L;
 
@@ -70,8 +69,7 @@ public class DefaultConcatenatedOperation extends AbstractCoordinateOperation
      * @param name The operation name.
      * @param operations The sequence of operations.
      */
-    public DefaultConcatenatedOperation(
-            final String name, final CoordinateOperation... operations) {
+    public DefaultConcatenatedOperation(final String name, final CoordinateOperation... operations) {
         this(Collections.singletonMap(NAME_KEY, name), operations);
     }
 
@@ -82,8 +80,7 @@ public class DefaultConcatenatedOperation extends AbstractCoordinateOperation
      * @param properties Set of properties. Should contains at least {@code "name"}.
      * @param operations The sequence of operations.
      */
-    public DefaultConcatenatedOperation(
-            final Map<String, ?> properties, final CoordinateOperation... operations) {
+    public DefaultConcatenatedOperation(final Map<String, ?> properties, final CoordinateOperation... operations) {
         this(properties, new ArrayList<>(operations.length), operations);
     }
 
@@ -98,9 +95,7 @@ public class DefaultConcatenatedOperation extends AbstractCoordinateOperation
      * @throws FactoryException if the factory can't concatenate the math transforms.
      */
     public DefaultConcatenatedOperation(
-            final Map<String, ?> properties,
-            final CoordinateOperation[] operations,
-            final MathTransformFactory factory)
+            final Map<String, ?> properties, final CoordinateOperation[] operations, final MathTransformFactory factory)
             throws FactoryException {
         this(properties, new ArrayList<>(operations.length), operations, factory);
     }
@@ -134,25 +129,20 @@ public class DefaultConcatenatedOperation extends AbstractCoordinateOperation
      * this()/super() call in constructors").
      */
     private DefaultConcatenatedOperation(
-            final Map<String, ?> properties,
-            final MathTransform transform,
-            final List<SingleOperation> operations) {
+            final Map<String, ?> properties, final MathTransform transform, final List<SingleOperation> operations) {
         super(
                 mergeAccuracy(properties, operations),
                 operations.get(0).getSourceCRS(),
                 operations.get(operations.size() - 1).getTargetCRS(),
                 transform);
-        this.operations =
-                UnmodifiableArrayList.wrap(
-                        operations.toArray(new SingleOperation[operations.size()]));
+        this.operations = UnmodifiableArrayList.wrap(operations.toArray(new SingleOperation[operations.size()]));
     }
 
     /**
      * Work around for RFE #4093999 in Sun's bug database ("Relax constraint on placement of
      * this()/super() call in constructors").
      */
-    private static MathTransform expand(
-            final CoordinateOperation[] operations, final List<SingleOperation> list) {
+    private static MathTransform expand(final CoordinateOperation[] operations, final List<SingleOperation> list) {
         try {
             return expand(operations, list, null, true);
         } catch (FactoryException exception) {
@@ -192,10 +182,7 @@ public class DefaultConcatenatedOperation extends AbstractCoordinateOperation
                 expand(cops.toArray(new CoordinateOperation[cops.size()]), target, factory, false);
             } else {
                 throw new IllegalArgumentException(
-                        MessageFormat.format(
-                                ErrorKeys.ILLEGAL_CLASS_$2,
-                                Classes.getClass(op),
-                                SingleOperation.class));
+                        MessageFormat.format(ErrorKeys.ILLEGAL_CLASS_$2, Classes.getClass(op), SingleOperation.class));
             }
             /*
              * Check the CRS dimensions.
@@ -208,8 +195,7 @@ public class DefaultConcatenatedOperation extends AbstractCoordinateOperation
                     final int dim2 = next.getCoordinateSystem().getDimension();
                     if (dim1 != dim2) {
                         throw new IllegalArgumentException(
-                                MessageFormat.format(
-                                        ErrorKeys.MISMATCHED_DIMENSION_$2, dim1, dim2));
+                                MessageFormat.format(ErrorKeys.MISMATCHED_DIMENSION_$2, dim1, dim2));
                     }
                 }
             }
@@ -231,8 +217,7 @@ public class DefaultConcatenatedOperation extends AbstractCoordinateOperation
             final int size = target.size();
             if (size <= 1) {
                 throw new IllegalArgumentException(
-                        MessageFormat.format(
-                                ErrorKeys.MISSING_PARAMETER_$1, "operations[" + size + ']'));
+                        MessageFormat.format(ErrorKeys.MISSING_PARAMETER_$1, "operations[" + size + ']'));
             }
         }
         return transform;
@@ -278,8 +263,7 @@ public class DefaultConcatenatedOperation extends AbstractCoordinateOperation
             if (accuracy != null) {
                 final Map<String, Object> merged = new HashMap<>(properties);
                 merged.put(
-                        COORDINATE_OPERATION_ACCURACY_KEY,
-                        accuracy.toArray(new PositionalAccuracy[accuracy.size()]));
+                        COORDINATE_OPERATION_ACCURACY_KEY, accuracy.toArray(new PositionalAccuracy[accuracy.size()]));
                 return merged;
             }
         }

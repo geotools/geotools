@@ -34,14 +34,8 @@ import org.geotools.jdbc.SQLDialect;
  */
 public class MySQLDataStoreFactory extends JDBCDataStoreFactory {
     /** parameter for database type */
-    public static final Param DBTYPE =
-            new Param(
-                    "dbtype",
-                    String.class,
-                    "Type",
-                    true,
-                    "mysql",
-                    Collections.singletonMap(Parameter.LEVEL, "program"));
+    public static final Param DBTYPE = new Param(
+            "dbtype", String.class, "Type", true, "mysql", Collections.singletonMap(Parameter.LEVEL, "program"));
     /** Default port number for MYSQL */
     public static final Param PORT = new Param("port", Integer.class, "Port", true, 3306);
     /** Storage engine to use when creating tables */
@@ -55,12 +49,7 @@ public class MySQLDataStoreFactory extends JDBCDataStoreFactory {
      * minimum bounding rectangles. As of version 8 it is the only option.
      */
     public static final Param ENHANCED_SPATIAL_SUPPORT =
-            new Param(
-                    "enhancedSpatialSupport",
-                    Boolean.class,
-                    "Enhanced Spatial Support",
-                    false,
-                    false);
+            new Param("enhancedSpatialSupport", Boolean.class, "Enhanced Spatial Support", false, false);
 
     protected boolean enhancedSpatialSupport = (boolean) ENHANCED_SPATIAL_SUPPORT.sample;
 
@@ -106,8 +95,7 @@ public class MySQLDataStoreFactory extends JDBCDataStoreFactory {
     }
 
     @Override
-    protected JDBCDataStore createDataStoreInternal(JDBCDataStore dataStore, Map<String, ?> params)
-            throws IOException {
+    protected JDBCDataStore createDataStoreInternal(JDBCDataStore dataStore, Map<String, ?> params) throws IOException {
         String storageEngine = (String) STORAGE_ENGINE.lookUp(params);
         if (storageEngine == null) {
             storageEngine = (String) STORAGE_ENGINE.sample;
@@ -119,9 +107,7 @@ public class MySQLDataStoreFactory extends JDBCDataStoreFactory {
             // version is at least 5.6.
             enhancedSpatialSupport = isMySqlVersion56OrAbove(dataStore);
         } else if (enhancedSpatialFlag && !isMySqlVersion56OrAbove(dataStore)) {
-            dataStore
-                    .getLogger()
-                    .info("MySQL version does not support enhancedSpatialSupport. Disabling it");
+            dataStore.getLogger().info("MySQL version does not support enhancedSpatialSupport. Disabling it");
             enhancedSpatialSupport = false;
         }
 
@@ -129,13 +115,11 @@ public class MySQLDataStoreFactory extends JDBCDataStoreFactory {
         if (dialect instanceof MySQLDialectBasic) {
             ((MySQLDialectBasic) dialect).setStorageEngine(storageEngine);
             ((MySQLDialectBasic) dialect).setUsePreciseSpatialOps(enhancedSpatialSupport);
-            ((MySQLDialectBasic) dialect)
-                    .setMySqlVersion80OrAbove(this.isMySqlVersion80OrAbove(dataStore));
+            ((MySQLDialectBasic) dialect).setMySqlVersion80OrAbove(this.isMySqlVersion80OrAbove(dataStore));
         } else {
             ((MySQLDialectPrepared) dialect).setStorageEngine(storageEngine);
             ((MySQLDialectPrepared) dialect).setUsePreciseSpatialOps(enhancedSpatialSupport);
-            ((MySQLDialectPrepared) dialect)
-                    .setMySqlVersion80OrAbove(this.isMySqlVersion80OrAbove(dataStore));
+            ((MySQLDialectPrepared) dialect).setMySqlVersion80OrAbove(this.isMySqlVersion80OrAbove(dataStore));
         }
 
         return dataStore;
@@ -153,11 +137,7 @@ public class MySQLDataStoreFactory extends JDBCDataStoreFactory {
             int minor = con.getMetaData().getDatabaseMinorVersion();
             isMySQLVersion56OrAbove = major > 5 || (major == 5 && minor > 6);
         } catch (SQLException | IllegalStateException e) {
-            dataStore
-                    .getLogger()
-                    .warning(
-                            "Unable to determine database version. Message: "
-                                    + e.getLocalizedMessage());
+            dataStore.getLogger().warning("Unable to determine database version. Message: " + e.getLocalizedMessage());
         }
         return isMySQLVersion56OrAbove;
     }
@@ -173,11 +153,7 @@ public class MySQLDataStoreFactory extends JDBCDataStoreFactory {
             int major = con.getMetaData().getDatabaseMajorVersion();
             isMySQLVersion80OrAbove = (major >= 8);
         } catch (SQLException | IllegalStateException e) {
-            dataStore
-                    .getLogger()
-                    .warning(
-                            "Unable to determine database version. Message: "
-                                    + e.getLocalizedMessage());
+            dataStore.getLogger().warning("Unable to determine database version. Message: " + e.getLocalizedMessage());
         }
         return isMySQLVersion80OrAbove;
     }

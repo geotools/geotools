@@ -40,8 +40,7 @@ public class ShapeMarkFactory implements MarkFactory {
         shapes.put("slash", new Line2D.Double(-0.5, -0.5, 0.5, 0.5));
         shapes.put("backslash", new Line2D.Double(-0.5, 0.5, 0.5, -0.5));
 
-        ExplicitBoundsShape dotShape =
-                new ExplicitBoundsShape(new Ellipse2D.Double(-0.1, -0.1, 0.1, 0.1));
+        ExplicitBoundsShape dotShape = new ExplicitBoundsShape(new Ellipse2D.Double(-0.1, -0.1, 0.1, 0.1));
         dotShape.setBounds(new Rectangle2D.Double(-0.5, 0.5, 1.0, 1.0));
         shapes.put("dot", dotShape);
 
@@ -95,8 +94,7 @@ public class ShapeMarkFactory implements MarkFactory {
     }
 
     @Override
-    public Shape getShape(Graphics2D graphics, Expression symbolUrl, Feature feature)
-            throws Exception {
+    public Shape getShape(Graphics2D graphics, Expression symbolUrl, Feature feature) throws Exception {
         // cannot handle a null url
         if (symbolUrl == null) return null;
 

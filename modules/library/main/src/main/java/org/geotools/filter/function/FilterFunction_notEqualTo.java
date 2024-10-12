@@ -26,12 +26,8 @@ import org.geotools.filter.capability.FunctionNameImpl;
 
 public class FilterFunction_notEqualTo extends FunctionExpressionImpl {
 
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "notEqualTo",
-                    Boolean.class,
-                    parameter("a", Object.class),
-                    parameter("b", Object.class));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "notEqualTo", Boolean.class, parameter("a", Object.class), parameter("b", Object.class));
 
     public FilterFunction_notEqualTo() {
         super(NAME);

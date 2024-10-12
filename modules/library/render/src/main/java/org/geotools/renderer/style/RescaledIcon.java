@@ -67,8 +67,7 @@ class RescaledIcon implements Icon {
             at.translate(x, y);
             at.scale(scale, scale);
             g2d.setTransform(at);
-            g2d.setRenderingHint(
-                    RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+            g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
             icon.paintIcon(c, g2d, 0, 0);
         } finally {
             g2d.setTransform(tmp);

@@ -60,8 +60,7 @@ public abstract class JDBCFunctionOnlineTest extends JDBCTestSupport {
     public void testStrfunc() throws IOException {
         assumeFalse(skipTests(FilterFunction_strConcat.class));
 
-        Function func =
-                ff.function("strConcat", ff.property(aname("stringProperty")), ff.literal("abc"));
+        Function func = ff.function("strConcat", ff.property(aname("stringProperty")), ff.literal("abc"));
         Filter filter = ff.equals(func, ff.literal("zeroabc"));
 
         assertFeatures(fs, filter, tname("ft1") + ".0");
@@ -71,11 +70,7 @@ public abstract class JDBCFunctionOnlineTest extends JDBCTestSupport {
     public void testStrfuncNumbers() throws IOException {
         assumeFalse(skipTests(FilterFunction_strConcat.class));
 
-        Function func =
-                ff.function(
-                        "strConcat",
-                        ff.property(aname("intProperty")),
-                        ff.property(aname("intProperty")));
+        Function func = ff.function("strConcat", ff.property(aname("intProperty")), ff.property(aname("intProperty")));
         Filter filter = ff.equals(func, ff.literal("11"));
 
         assertFeatures(fs, filter, tname("ft1") + ".1");
@@ -85,8 +80,7 @@ public abstract class JDBCFunctionOnlineTest extends JDBCTestSupport {
     public void testStrEndsWith() throws IOException {
         assumeFalse(skipTests(FilterFunction_strEndsWith.class));
 
-        Function func =
-                ff.function("strEndsWith", ff.property(aname("stringProperty")), ff.literal("o"));
+        Function func = ff.function("strEndsWith", ff.property(aname("stringProperty")), ff.literal("o"));
         Filter filter = ff.equals(func, ff.literal(true));
 
         assertFeatures(fs, filter, tname("ft1") + ".0", tname("ft1") + ".2");
@@ -97,10 +91,7 @@ public abstract class JDBCFunctionOnlineTest extends JDBCTestSupport {
         assumeFalse(skipTests(FilterFunction_strEndsWith.class));
 
         Function func =
-                ff.function(
-                        "strEndsWith",
-                        ff.property(aname("doubleProperty")),
-                        ff.property(aname("intProperty")));
+                ff.function("strEndsWith", ff.property(aname("doubleProperty")), ff.property(aname("intProperty")));
         Filter filter = ff.equals(func, ff.literal(true));
 
         assertFeatures(fs, filter, tname("ft1") + ".0", tname("ft1") + ".1", tname("ft1") + ".2");
@@ -110,9 +101,7 @@ public abstract class JDBCFunctionOnlineTest extends JDBCTestSupport {
     public void testStrStartsWith() throws IOException {
         assumeFalse(skipTests(FilterFunction_strStartsWith.class));
 
-        Function func =
-                ff.function(
-                        "strStartsWith", ff.property(aname("stringProperty")), ff.literal("ze"));
+        Function func = ff.function("strStartsWith", ff.property(aname("stringProperty")), ff.literal("ze"));
         Filter filter = ff.equals(func, ff.literal(true));
 
         assertFeatures(fs, filter, tname("ft1") + ".0");
@@ -123,10 +112,7 @@ public abstract class JDBCFunctionOnlineTest extends JDBCTestSupport {
         assumeFalse(skipTests(FilterFunction_strStartsWith.class));
 
         Function func =
-                ff.function(
-                        "strStartsWith",
-                        ff.property(aname("doubleProperty")),
-                        ff.property(aname("intProperty")));
+                ff.function("strStartsWith", ff.property(aname("doubleProperty")), ff.property(aname("intProperty")));
         Filter filter = ff.equals(func, ff.literal(true));
 
         assertFeatures(fs, filter, tname("ft1") + ".0", tname("ft1") + ".1", tname("ft1") + ".2");
@@ -136,8 +122,7 @@ public abstract class JDBCFunctionOnlineTest extends JDBCTestSupport {
     public void testStrIndexOf() throws IOException {
         assumeFalse(skipTests(FilterFunction_strIndexOf.class));
 
-        Function func =
-                ff.function("strIndexOf", ff.property(aname("stringProperty")), ff.literal("er"));
+        Function func = ff.function("strIndexOf", ff.property(aname("stringProperty")), ff.literal("er"));
         Filter filter = ff.equals(func, ff.literal(1));
 
         assertFeatures(fs, filter, tname("ft1") + ".0");
@@ -187,11 +172,7 @@ public abstract class JDBCFunctionOnlineTest extends JDBCTestSupport {
     public void testStrEqualsIgnoreCase() throws IOException {
         assumeFalse(skipTests(FilterFunction_strEqualsIgnoreCase.class));
 
-        Function func =
-                ff.function(
-                        "strEqualsIgnoreCase",
-                        ff.property(aname("stringProperty")),
-                        ff.literal("ZeRo"));
+        Function func = ff.function("strEqualsIgnoreCase", ff.property(aname("stringProperty")), ff.literal("ZeRo"));
         Filter filter = ff.equals(func, ff.literal(true));
 
         assertFeatures(fs, filter, tname("ft1") + ".0");
@@ -203,11 +184,7 @@ public abstract class JDBCFunctionOnlineTest extends JDBCTestSupport {
 
         // intentionally mixing string and int literals
         Function func =
-                ff.function(
-                        "strSubstring",
-                        ff.property(aname("stringProperty")),
-                        ff.literal("1"),
-                        ff.literal(3));
+                ff.function("strSubstring", ff.property(aname("stringProperty")), ff.literal("1"), ff.literal(3));
         Filter filter = ff.equals(func, ff.literal("er"));
 
         assertFeatures(fs, filter, tname("ft1") + ".0");
@@ -218,9 +195,7 @@ public abstract class JDBCFunctionOnlineTest extends JDBCTestSupport {
         assumeFalse(skipTests(FilterFunction_strSubstringStart.class));
 
         // intentionally mixing string and int literals
-        Function func =
-                ff.function(
-                        "strSubstringStart", ff.property(aname("stringProperty")), ff.literal("1"));
+        Function func = ff.function("strSubstringStart", ff.property(aname("stringProperty")), ff.literal("1"));
         Filter filter = ff.equals(func, ff.literal("ero"));
 
         assertFeatures(fs, filter, tname("ft1") + ".0");
@@ -232,8 +207,7 @@ public abstract class JDBCFunctionOnlineTest extends JDBCTestSupport {
         assumeFalse(skipTests(FilterFunction_strConcat.class));
 
         // intentionally mixing string and int literals
-        Function func1 =
-                ff.function("strConcat", ff.property(aname("stringProperty")), ff.literal("   "));
+        Function func1 = ff.function("strConcat", ff.property(aname("stringProperty")), ff.literal("   "));
         Function func2 = ff.function("strTrim", func1);
         Filter filter = ff.equals(func2, ff.literal("zero"));
 
@@ -327,10 +301,7 @@ public abstract class JDBCFunctionOnlineTest extends JDBCTestSupport {
 
     protected boolean skipTests(Class<?> fClass) {
         if (!dataStore.getFilterCapabilities().supports(fClass)) {
-            LOGGER.log(
-                    Level.INFO,
-                    "Function {0} is not natively supported, skipping test",
-                    fClass.getSimpleName());
+            LOGGER.log(Level.INFO, "Function {0} is not natively supported, skipping test", fClass.getSimpleName());
             return true;
         }
         return false;

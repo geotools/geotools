@@ -87,13 +87,11 @@ public class GMLMultiPolygonPropertyTypeBinding extends AbstractComplexBinding {
 
     @Override
     public Object getProperty(Object object, QName name) throws Exception {
-        return GML2EncodingUtils.GeometryPropertyType_getProperty(
-                (MultiPolygon) object, name, false);
+        return GML2EncodingUtils.GeometryPropertyType_getProperty((MultiPolygon) object, name, false);
     }
 
     @Override
-    public List<Object[]> getProperties(Object object, XSDElementDeclaration element)
-            throws Exception {
+    public List<Object[]> getProperties(Object object, XSDElementDeclaration element) throws Exception {
         return GML2EncodingUtils.GeometryPropertyType_getProperties((MultiPolygon) object);
     }
 }

@@ -51,8 +51,7 @@ public class MedianVisitor implements FeatureCalc, FeatureAttributeVisitor {
         expr = factory.property(attributeTypeName);
     }
 
-    public MedianVisitor(int attributeTypeIndex, SimpleFeatureType type)
-            throws IllegalFilterException {
+    public MedianVisitor(int attributeTypeIndex, SimpleFeatureType type) throws IllegalFilterException {
         FilterFactory factory = CommonFactoryFinder.getFilterFactory(null);
         expr = factory.property(type.getDescriptor(attributeTypeIndex).getLocalName());
     }
@@ -182,8 +181,7 @@ public class MedianVisitor implements FeatureCalc, FeatureAttributeVisitor {
         @Override
         public boolean isCompatible(CalcResult targetResults) {
             // list each calculation result which can merge with this type of result
-            if (targetResults instanceof MedianResult || targetResults == CalcResult.NULL_RESULT)
-                return true;
+            if (targetResults instanceof MedianResult || targetResults == CalcResult.NULL_RESULT) return true;
             return false;
         }
 
@@ -206,8 +204,7 @@ public class MedianVisitor implements FeatureCalc, FeatureAttributeVisitor {
                 MedianResult moreResults = (MedianResult) resultsToAdd;
                 // ensure both MedianResults are NOT optimized
                 if (isOptimized() || moreResults.isOptimized()) {
-                    throw new IllegalArgumentException(
-                            "Optimized median results cannot be merged.");
+                    throw new IllegalArgumentException("Optimized median results cannot be merged.");
                 }
                 // merge away...
                 List<Comparable> toAdd = moreResults.getList();

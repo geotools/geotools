@@ -26,8 +26,7 @@ import org.geotools.filter.capability.FunctionNameImpl;
 
 public class FilterFunction_isNull extends FunctionExpressionImpl {
 
-    public static FunctionName NAME =
-            new FunctionNameImpl("isNull", Boolean.class, parameter("object", Object.class));
+    public static FunctionName NAME = new FunctionNameImpl("isNull", Boolean.class, parameter("object", Object.class));
 
     public FilterFunction_isNull() {
         super(NAME);

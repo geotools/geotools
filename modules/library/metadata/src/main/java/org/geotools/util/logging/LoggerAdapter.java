@@ -243,8 +243,7 @@ public abstract class LoggerAdapter extends Logger {
      * to let the backing logging framework do its own check.
      */
     @Override
-    public void entering(
-            final String sourceClass, final String sourceMethod, final Object[] params) {
+    public void entering(final String sourceClass, final String sourceMethod, final Object[] params) {
         final String message;
         if (params == null) {
             message = "ENTRY";
@@ -259,15 +258,14 @@ public abstract class LoggerAdapter extends Logger {
                 case 2:
                     message = "ENTRY {0} {1}";
                     break;
-                default:
-                    {
-                        final StringBuilder builder = new StringBuilder("ENTRY");
-                        for (int i = 0; i < params.length; i++) {
-                            builder.append(" {").append(i).append('}');
-                        }
-                        message = builder.toString();
-                        break;
+                default: {
+                    final StringBuilder builder = new StringBuilder("ENTRY");
+                    for (int i = 0; i < params.length; i++) {
+                        builder.append(" {").append(i).append('}');
                     }
+                    message = builder.toString();
+                    break;
+                }
             }
         logp(getDebugLevel(), sourceClass, sourceMethod, message, params);
     }
@@ -365,12 +363,11 @@ public abstract class LoggerAdapter extends Logger {
     public void log(final Level level, final String message) {
         final int n = level.intValue();
         switch (n / 100) {
-            default:
-                {
-                    if (n < 0 || n == Integer.MAX_VALUE) break;
-                    // MAX_VALUE is a special value for Level.OFF. Otherwise and
-                    // if positive, fallthrough since we are greater than SEVERE.
-                }
+            default: {
+                if (n < 0 || n == Integer.MAX_VALUE) break;
+                // MAX_VALUE is a special value for Level.OFF. Otherwise and
+                // if positive, fallthrough since we are greater than SEVERE.
+            }
             case 10:
                 severe(message);
                 break;
@@ -439,11 +436,7 @@ public abstract class LoggerAdapter extends Logger {
      * </code>.
      */
     @Override
-    public void logp(
-            final Level level,
-            final String sourceClass,
-            final String sourceMethod,
-            final String message) {
+    public void logp(final Level level, final String sourceClass, final String sourceMethod, final String message) {
         log(level, message);
     }
 

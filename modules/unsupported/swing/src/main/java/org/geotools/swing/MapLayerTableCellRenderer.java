@@ -50,37 +50,26 @@ public class MapLayerTableCellRenderer extends JPanel implements ListCellRendere
          * drawn
          */
         VISIBLE(
-                new ImageIcon(
-                        MapLayerTableCellRenderer.class.getResource(
-                                "/org/geotools/swing/icons/eye_open.png")),
-                new ImageIcon(
-                        MapLayerTableCellRenderer.class.getResource(
-                                "/org/geotools/swing/icons/eye_closed.png"))),
+                new ImageIcon(MapLayerTableCellRenderer.class.getResource("/org/geotools/swing/icons/eye_open.png")),
+                new ImageIcon(MapLayerTableCellRenderer.class.getResource("/org/geotools/swing/icons/eye_closed.png"))),
 
         /**
          * Layer selection - the selected status of layers can be used to include or exclude them in
          * map queries etc.
          */
         SELECTED(
-                new ImageIcon(
-                        MapLayerTableCellRenderer.class.getResource(
-                                "/org/geotools/swing/icons/tick.png")),
-                new ImageIcon(
-                        MapLayerTableCellRenderer.class.getResource(
-                                "/org/geotools/swing/icons/cross.png"))),
+                new ImageIcon(MapLayerTableCellRenderer.class.getResource("/org/geotools/swing/icons/tick.png")),
+                new ImageIcon(MapLayerTableCellRenderer.class.getResource("/org/geotools/swing/icons/cross.png"))),
 
         /** Layer style - to open a style dialog for the layer */
         STYLE(
-                new ImageIcon(
-                        MapLayerTableCellRenderer.class.getResource(
-                                "/org/geotools/swing/icons/style_layer.png")),
+                new ImageIcon(MapLayerTableCellRenderer.class.getResource("/org/geotools/swing/icons/style_layer.png")),
                 null // no off state for this label
                 ),
 
         REMOVE(
                 new ImageIcon(
-                        MapLayerTableCellRenderer.class.getResource(
-                                "/org/geotools/swing/icons/remove_layer.png")),
+                        MapLayerTableCellRenderer.class.getResource("/org/geotools/swing/icons/remove_layer.png")),
                 null // no off state for this label
                 );
 
@@ -261,14 +250,10 @@ public class MapLayerTableCellRenderer extends JPanel implements ListCellRendere
         nameLabel.setText(name);
 
         visibleLabel.setIcon(
-                layer.isVisible()
-                        ? LayerControlItem.VISIBLE.getIcon()
-                        : LayerControlItem.VISIBLE.getOffIcon());
+                layer.isVisible() ? LayerControlItem.VISIBLE.getIcon() : LayerControlItem.VISIBLE.getOffIcon());
 
         selectedLabel.setIcon(
-                layer.isSelected()
-                        ? LayerControlItem.SELECTED.getIcon()
-                        : LayerControlItem.SELECTED.getOffIcon());
+                layer.isSelected() ? LayerControlItem.SELECTED.getIcon() : LayerControlItem.SELECTED.getOffIcon());
 
         if (isSelected) {
             setBackground(list.getSelectionBackground());

@@ -31,8 +31,7 @@ import org.locationtech.jts.geom.Geometry;
 public class FilterFunction_octagonalEnvelope extends FunctionExpressionImpl {
 
     public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "octagonalenvelope", Geometry.class, parameter("geometry", Geometry.class));
+            new FunctionNameImpl("octagonalenvelope", Geometry.class, parameter("geometry", Geometry.class));
 
     /** Create a new FilterFunction_octagonalEnvelope instance */
     public FilterFunction_octagonalEnvelope() {

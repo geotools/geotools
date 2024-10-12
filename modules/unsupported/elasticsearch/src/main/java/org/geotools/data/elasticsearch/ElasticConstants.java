@@ -22,8 +22,7 @@ import java.util.Map;
 
 final class ElasticConstants {
 
-    public static final Map<String, Object> MATCH_ALL =
-            ImmutableMap.of("match_all", Collections.emptyMap());
+    public static final Map<String, Object> MATCH_ALL = ImmutableMap.of("match_all", Collections.emptyMap());
 
     /** Key used in the feature type user data to store the format for date fields, if relevant. */
     public static final String DATE_FORMAT = "date_format";

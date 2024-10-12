@@ -58,23 +58,9 @@ public class BBOXImplTest {
         assertTrue(p.getEnvelopeInternal().contains(e2));
         assertTrue(p.getEnvelopeInternal().intersects(e1));
         BBOXImpl bbox1 =
-                (BBOXImpl)
-                        ff.bbox(
-                                ff.property("geom"),
-                                e1.getMinX(),
-                                e1.getMinY(),
-                                e1.getMaxX(),
-                                e1.getMaxY(),
-                                "");
+                (BBOXImpl) ff.bbox(ff.property("geom"), e1.getMinX(), e1.getMinY(), e1.getMaxX(), e1.getMaxY(), "");
         BBOXImpl bbox2 =
-                (BBOXImpl)
-                        ff.bbox(
-                                ff.property("geom"),
-                                e2.getMinX(),
-                                e2.getMinY(),
-                                e2.getMaxX(),
-                                e2.getMaxY(),
-                                "");
+                (BBOXImpl) ff.bbox(ff.property("geom"), e2.getMinX(), e2.getMinY(), e2.getMaxX(), e2.getMaxY(), "");
         assertFalse(bbox2.evaluate(f));
         assertFalse(bbox1.evaluate(f));
     }

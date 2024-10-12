@@ -87,9 +87,7 @@ public class DefaultTimeCS extends AbstractCS implements TimeCS {
         final InternationalString name = axis.getAlias().iterator().next().toInternationalString();
         axis = new DefaultCoordinateSystemAxis(name, "t", AxisDirection.FUTURE, SI.SECOND);
         SECONDS = new DefaultTimeCS(properties, axis);
-        axis =
-                new DefaultCoordinateSystemAxis(
-                        name, "t", AxisDirection.FUTURE, MetricPrefix.MILLI(SI.SECOND));
+        axis = new DefaultCoordinateSystemAxis(name, "t", AxisDirection.FUTURE, MetricPrefix.MILLI(SI.SECOND));
         MILLISECONDS = new DefaultTimeCS(properties, axis);
     }
 
@@ -160,8 +158,7 @@ public class DefaultTimeCS extends AbstractCS implements TimeCS {
      * @throws MismatchedDimensionException if a coordinate doesn't have the expected dimension.
      */
     @Override
-    public Measure distance(final double[] coord1, final double[] coord2)
-            throws MismatchedDimensionException {
+    public Measure distance(final double[] coord1, final double[] coord2) throws MismatchedDimensionException {
         ensureDimensionMatch("coord1", coord1);
         ensureDimensionMatch("coord2", coord2);
         return new Measure(Math.abs(coord1[0] - coord2[0]), getDistanceUnit());

@@ -36,15 +36,12 @@ public class H2LobTestSetup extends JDBCLobTestSetup {
     @Override
     protected void createLobTable() throws Exception {
 
-        run(
-                "CREATE TABLE \"testlob\" (\"fid\" INT AUTO_INCREMENT PRIMARY KEY, "
-                        + "\"blob_field\" BYTEA, \"clob_field\" TEXT, \"raw_field\" BYTEA)");
+        run("CREATE TABLE \"testlob\" (\"fid\" INT AUTO_INCREMENT PRIMARY KEY, "
+                + "\"blob_field\" BYTEA, \"clob_field\" TEXT, \"raw_field\" BYTEA)");
 
         try (Connection cx = getDataSource().getConnection();
-                PreparedStatement ps =
-                        cx.prepareStatement(
-                                "INSERT INTO \"testlob\" (\"blob_field\","
-                                        + "\"clob_field\",\"raw_field\") VALUES (?,?,?)")) {
+                PreparedStatement ps = cx.prepareStatement(
+                        "INSERT INTO \"testlob\" (\"blob_field\"," + "\"clob_field\",\"raw_field\") VALUES (?,?,?)")) {
 
             ps.setBytes(1, new byte[] {1, 2, 3, 4, 5});
             ps.setString(2, "small clob");

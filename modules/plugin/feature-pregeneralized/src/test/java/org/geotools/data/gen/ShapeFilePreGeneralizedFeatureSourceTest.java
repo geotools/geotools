@@ -20,8 +20,7 @@ package org.geotools.data.gen;
 import org.geotools.api.data.Repository;
 import org.junit.Test;
 
-public class ShapeFilePreGeneralizedFeatureSourceTest
-        extends AbstractPreGeneralizedFeatureSourceTest {
+public class ShapeFilePreGeneralizedFeatureSourceTest extends AbstractPreGeneralizedFeatureSourceTest {
 
     static final String ConfigName = "src/test/resources/geninfo_shapefile.xml";
 

@@ -67,16 +67,14 @@ public class TableColumnDefTest implements DataTypesDefinition, FileConstants {
     @Test
     @Ignore
     public void XtestGetColDesc() {
-        Assert.assertEquals(
-                "Cheking column description.", "Row id", varTableColumnDef.getColDesc());
+        Assert.assertEquals("Cheking column description.", "Row id", varTableColumnDef.getColDesc());
     } // end of testGetColDesc()
 
     /** Method for testing original source method: int getColumnSize() from tested class */
     @Test
     @Ignore
     public void XtestGetColumnSize() {
-        Assert.assertEquals(
-                "Cheking column size.", DATA_LONG_INTEGER_LEN, varTableColumnDef.getColumnSize());
+        Assert.assertEquals("Cheking column size.", DATA_LONG_INTEGER_LEN, varTableColumnDef.getColumnSize());
     } // end of testGetColumnSize()
 
     /** Method for testing original source method: int getElementsNumber() from tested class */
@@ -133,8 +131,7 @@ public class TableColumnDefTest implements DataTypesDefinition, FileConstants {
     @Test
     @Ignore
     public void XtestGetValDescTableName() {
-        Assert.assertNull(
-                "Cheking description table name.", varTableColumnDef.getValDescTableName());
+        Assert.assertNull("Cheking description table name.", varTableColumnDef.getValDescTableName());
     } // end of testGetValDescTableName()
 
     /** Method for testing original source method: boolean isNumeric() from tested class */

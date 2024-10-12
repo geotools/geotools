@@ -42,7 +42,8 @@ public abstract class Response {
             // be using a deflate input stream, which holds onto native resources
             httpResponse.getResponseStream().close();
             httpResponse.dispose();
-            throw new NullPointerException("Content type is required for " + getClass().getName());
+            throw new NullPointerException(
+                    "Content type is required for " + getClass().getName());
         }
         this.httpResponse = httpResponse;
         /*

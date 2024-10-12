@@ -71,7 +71,8 @@ public class ShapeFileDbaseHeaderCharsetTest extends TestCaseSupport {
     @Test
     public void testCreateShapefile_en() throws Exception {
         Fields fields;
-        try (InputStream inputStream = TestData.url(this, "dbase-cs/data_en.xml").openStream()) {
+        try (InputStream inputStream =
+                TestData.url(this, "dbase-cs/data_en.xml").openStream()) {
             fields = Fields.buildFromXml(inputStream);
         }
         createShapefile(testFile, null, fields);
@@ -82,7 +83,8 @@ public class ShapeFileDbaseHeaderCharsetTest extends TestCaseSupport {
     @Test
     public void testCreateShapefile_ru() throws Exception {
         Fields fields;
-        try (InputStream inputStream = TestData.url(this, "dbase-cs/data_ru.xml").openStream()) {
+        try (InputStream inputStream =
+                TestData.url(this, "dbase-cs/data_ru.xml").openStream()) {
             fields = Fields.buildFromXml(inputStream);
         }
         createShapefile(testFile, "CP1251", fields);
@@ -93,7 +95,8 @@ public class ShapeFileDbaseHeaderCharsetTest extends TestCaseSupport {
     @Test
     public void testCreateShapefile_cn() throws Exception {
         Fields fields;
-        try (InputStream inputStream = TestData.url(this, "dbase-cs/data_cn.xml").openStream()) {
+        try (InputStream inputStream =
+                TestData.url(this, "dbase-cs/data_cn.xml").openStream()) {
             fields = Fields.buildFromXml(inputStream);
         }
         createShapefile(testFile, "GB2312", fields);
@@ -101,14 +104,12 @@ public class ShapeFileDbaseHeaderCharsetTest extends TestCaseSupport {
         checkShapefile(testFile, "GB2312", fields, true);
     }
 
-    private void checkShapefile(
-            File shpfile, String charsetName, Fields fields, boolean memoryMapped)
+    private void checkShapefile(File shpfile, String charsetName, Fields fields, boolean memoryMapped)
             throws IOException {
         ShapefileDataStore dataStore = openShapefileDataStore(shpfile, charsetName, memoryMapped);
         try {
             String typeName = dataStore.getTypeNames()[0];
-            FeatureSource<SimpleFeatureType, SimpleFeature> source =
-                    dataStore.getFeatureSource(typeName);
+            FeatureSource<SimpleFeatureType, SimpleFeature> source = dataStore.getFeatureSource(typeName);
             checkFieldNames(fields, source);
             checkFieldValues(fields, source);
         } finally {
@@ -116,8 +117,7 @@ public class ShapeFileDbaseHeaderCharsetTest extends TestCaseSupport {
         }
     }
 
-    private void checkFieldValues(
-            Fields fields, FeatureSource<SimpleFeatureType, SimpleFeature> source)
+    private void checkFieldValues(Fields fields, FeatureSource<SimpleFeatureType, SimpleFeature> source)
             throws IOException {
         Filter filter = Filter.INCLUDE;
         FeatureCollection<SimpleFeatureType, SimpleFeature> collection = source.getFeatures(filter);
@@ -140,8 +140,7 @@ public class ShapeFileDbaseHeaderCharsetTest extends TestCaseSupport {
         }
     }
 
-    private void checkFieldNames(
-            Fields fields, FeatureSource<SimpleFeatureType, SimpleFeature> source) {
+    private void checkFieldNames(Fields fields, FeatureSource<SimpleFeatureType, SimpleFeature> source) {
         int i = 0;
         SimpleFeatureType schema = source.getSchema();
         for (AttributeDescriptor descriptor : schema.getAttributeDescriptors()) {
@@ -152,8 +151,8 @@ public class ShapeFileDbaseHeaderCharsetTest extends TestCaseSupport {
         }
     }
 
-    private ShapefileDataStore openShapefileDataStore(
-            File shpfile, String charsetName, boolean memoryMapped) throws IOException {
+    private ShapefileDataStore openShapefileDataStore(File shpfile, String charsetName, boolean memoryMapped)
+            throws IOException {
         ShapefileDataStoreFactory dataStoreFactory = new ShapefileDataStoreFactory();
         Map<String, Serializable> params = new HashMap<>();
         params.put("url", shpfile.toURI().toURL());
@@ -168,8 +167,7 @@ public class ShapeFileDbaseHeaderCharsetTest extends TestCaseSupport {
 
     private void createShapefile(File shpfile, String charsetName, Fields fields) throws Exception {
         String attributeDefinitionString = buildAttributeDefinitionString(fields);
-        SimpleFeatureType featureType =
-                DataUtilities.createType("Location", attributeDefinitionString);
+        SimpleFeatureType featureType = DataUtilities.createType("Location", attributeDefinitionString);
 
         List<SimpleFeature> features = buildFeatures(fields, featureType);
 
@@ -210,9 +208,7 @@ public class ShapeFileDbaseHeaderCharsetTest extends TestCaseSupport {
     }
 
     private void writeFeatures(
-            ShapefileDataStore newDataStore,
-            List<SimpleFeature> features,
-            SimpleFeatureType featureType)
+            ShapefileDataStore newDataStore, List<SimpleFeature> features, SimpleFeatureType featureType)
             throws IOException {
 
         SimpleFeatureCollection collection = new ListFeatureCollection(featureType, features);
@@ -230,8 +226,7 @@ public class ShapeFileDbaseHeaderCharsetTest extends TestCaseSupport {
         }
     }
 
-    private ShapefileDataStore createShapefileDataStore(File shpfile, String charsetName)
-            throws IOException {
+    private ShapefileDataStore createShapefileDataStore(File shpfile, String charsetName) throws IOException {
         ShapefileDataStoreFactory dataStoreFactory = new ShapefileDataStoreFactory();
         Map<String, Serializable> params = new HashMap<>();
         params.put("url", shpfile.toURI().toURL());
@@ -269,12 +264,14 @@ public class ShapeFileDbaseHeaderCharsetTest extends TestCaseSupport {
             Element root = document.getDocumentElement();
 
             // Coordinate's fields names
-            Element coordNode = (Element) root.getElementsByTagName("Coordinate").item(0);
+            Element coordNode =
+                    (Element) root.getElementsByTagName("Coordinate").item(0);
             fields.lon = coordNode.getElementsByTagName("longitude").item(0).getTextContent();
             fields.lat = coordNode.getElementsByTagName("latitude").item(0).getTextContent();
 
             // Attributes
-            Element attributesNode = (Element) root.getElementsByTagName("Attributes").item(0);
+            Element attributesNode =
+                    (Element) root.getElementsByTagName("Attributes").item(0);
             NodeList attrNodes = attributesNode.getElementsByTagName("Attribute");
             for (int i = 0; i < attrNodes.getLength(); i++) {
                 Row row = fields.new Row();

@@ -47,8 +47,7 @@ class MongoQueryCapabilities extends QueryCapabilities {
      * @return true if a correspondence is found, false if not or the attribute is a Geometry.
      */
     private boolean supportsPropertySorting(PropertyName propertyName) {
-        AttributeDescriptor descriptor =
-                (AttributeDescriptor) propertyName.evaluate(source.getSchema());
+        AttributeDescriptor descriptor = (AttributeDescriptor) propertyName.evaluate(source.getSchema());
         return descriptor != null
                 && !(Geometry.class.isAssignableFrom(descriptor.getType().getBinding()));
     }

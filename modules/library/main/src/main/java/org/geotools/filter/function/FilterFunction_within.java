@@ -27,12 +27,11 @@ import org.locationtech.jts.geom.Geometry;
 
 public class FilterFunction_within extends FunctionExpressionImpl {
 
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "within",
-                    parameter("within", Boolean.class),
-                    parameter("geometry", Geometry.class),
-                    parameter("geometry", Geometry.class));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "within",
+            parameter("within", Boolean.class),
+            parameter("geometry", Geometry.class),
+            parameter("geometry", Geometry.class));
 
     public FilterFunction_within() {
         super(NAME);

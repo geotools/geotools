@@ -36,8 +36,7 @@ import org.geotools.filter.v2_0.FES;
  *
  * @generated
  */
-public class PropertyIsGreaterThanOrEqualToBinding
-        extends OGCPropertyIsGreaterThanOrEqualToBinding {
+public class PropertyIsGreaterThanOrEqualToBinding extends OGCPropertyIsGreaterThanOrEqualToBinding {
 
     public PropertyIsGreaterThanOrEqualToBinding(FilterFactory filterfactory) {
         super(filterfactory);

@@ -70,8 +70,7 @@ import org.geotools.util.logging.Logging;
  * @author Martin Desruisseaux (IRD)
  */
 @SuppressWarnings("ComparableType") // comparable of different type than implementation
-public class NamedIdentifier
-        implements ReferenceIdentifier, GenericName, Comparable<GenericName>, Serializable {
+public class NamedIdentifier implements ReferenceIdentifier, GenericName, Comparable<GenericName>, Serializable {
     /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = 8474731565582774497L;
 
@@ -214,8 +213,7 @@ public class NamedIdentifier
      * Work around for RFE #4093999 in Sun's bug database ("Relax constraint on placement of
      * this()/super() call in constructors").
      */
-    private static Map<String, ?> toMap(
-            final Citation authority, final String code, final String version) {
+    private static Map<String, ?> toMap(final Citation authority, final String code, final String version) {
         final Map<String, Object> properties = new HashMap<>(4);
         if (authority != null) properties.put(AUTHORITY_KEY, authority);
         if (code != null) properties.put(CODE_KEY, code);
@@ -234,8 +232,7 @@ public class NamedIdentifier
      * @throws InvalidParameterValueException if a property has an invalid value.
      * @throws IllegalArgumentException if a property is invalid for some other reason.
      */
-    NamedIdentifier(final Map<String, ?> properties, final boolean standalone)
-            throws IllegalArgumentException {
+    NamedIdentifier(final Map<String, ?> properties, final boolean standalone) throws IllegalArgumentException {
         ensureNonNull("properties", properties);
         Object code = null;
         Object codespace = null;
@@ -262,59 +259,53 @@ public class NamedIdentifier
              *       so it should not change across implementations.
              */
             switch (key.hashCode()) {
-                case 3373707:
-                    {
-                        if (!standalone && key.equals("name")) {
-                            code = value;
+                case 3373707: {
+                    if (!standalone && key.equals("name")) {
+                        code = value;
+                        continue;
+                    }
+                    break;
+                }
+                case 3059181: {
+                    if (key.equals(CODE_KEY)) {
+                        code = value;
+                        continue;
+                    }
+                    break;
+                }
+                case -1108676807: {
+                    if (key.equals(CODESPACE_KEY)) {
+                        codespace = value;
+                        continue;
+                    }
+                    break;
+                }
+                case 351608024: {
+                    if (key.equals(VERSION_KEY)) {
+                        version = value;
+                        continue;
+                    }
+                    break;
+                }
+                case 1475610435: {
+                    if (key.equals(AUTHORITY_KEY)) {
+                        if (value instanceof String) {
+                            value = Citations.fromName(value.toString());
+                        }
+                        authority = value;
+                        continue;
+                    }
+                    break;
+                }
+                case 1091415283: {
+                    if (standalone && key.equals(REMARKS_KEY)) {
+                        if (value instanceof InternationalString) {
+                            remarks = value;
                             continue;
                         }
-                        break;
                     }
-                case 3059181:
-                    {
-                        if (key.equals(CODE_KEY)) {
-                            code = value;
-                            continue;
-                        }
-                        break;
-                    }
-                case -1108676807:
-                    {
-                        if (key.equals(CODESPACE_KEY)) {
-                            codespace = value;
-                            continue;
-                        }
-                        break;
-                    }
-                case 351608024:
-                    {
-                        if (key.equals(VERSION_KEY)) {
-                            version = value;
-                            continue;
-                        }
-                        break;
-                    }
-                case 1475610435:
-                    {
-                        if (key.equals(AUTHORITY_KEY)) {
-                            if (value instanceof String) {
-                                value = Citations.fromName(value.toString());
-                            }
-                            authority = value;
-                            continue;
-                        }
-                        break;
-                    }
-                case 1091415283:
-                    {
-                        if (standalone && key.equals(REMARKS_KEY)) {
-                            if (value instanceof InternationalString) {
-                                remarks = value;
-                                continue;
-                            }
-                        }
-                        break;
-                    }
+                    break;
+                }
             }
             /*
              * Search for additional locales (e.g. "remarks_fr").
@@ -340,8 +331,7 @@ public class NamedIdentifier
                 remarks = growable;
             } else {
                 final Logger logger = Logging.getLogger(NamedIdentifier.class);
-                final LogRecord record =
-                        Loggings.format(Level.WARNING, LoggingKeys.LOCALES_DISCARTED);
+                final LogRecord record = Loggings.format(Level.WARNING, LoggingKeys.LOCALES_DISCARTED);
                 record.setLoggerName(logger.getName());
                 logger.log(record);
             }
@@ -370,11 +360,8 @@ public class NamedIdentifier
             key = REMARKS_KEY;
             this.remarks = (InternationalString) (value = remarks);
         } catch (ClassCastException exception) {
-            InvalidParameterValueException e =
-                    new InvalidParameterValueException(
-                            MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, key, value),
-                            key,
-                            value);
+            InvalidParameterValueException e = new InvalidParameterValueException(
+                    MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, key, value), key, value);
             e.initCause(exception);
             throw e;
         }
@@ -391,8 +378,7 @@ public class NamedIdentifier
      * @param object User argument.
      * @throws InvalidParameterValueException if {@code object} is null.
      */
-    private static void ensureNonNull(final String name, final Object object)
-            throws IllegalArgumentException {
+    private static void ensureNonNull(final String name, final Object object) throws IllegalArgumentException {
         if (object == null) {
             throw new InvalidParameterValueException(
                     MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, name), name, object);

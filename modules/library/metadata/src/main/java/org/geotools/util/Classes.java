@@ -59,8 +59,7 @@ public final class Classes {
         new Classes(Integer.TYPE, Integer.class, false, true, (byte) Integer.SIZE, INTEGER);
         new Classes(Short.TYPE, Short.class, false, true, (byte) Short.SIZE, SHORT);
         new Classes(Byte.TYPE, Byte.class, false, true, (byte) Byte.SIZE, BYTE);
-        new Classes(
-                Character.TYPE, Character.class, false, false, (byte) Character.SIZE, CHARACTER);
+        new Classes(Character.TYPE, Character.class, false, false, (byte) Character.SIZE, CHARACTER);
         new Classes(Boolean.TYPE, Boolean.class, false, false, (byte) 1, BOOLEAN);
         new Classes(Void.TYPE, Void.class, false, false, (byte) 0, OTHER);
     }
@@ -321,9 +320,7 @@ public final class Classes {
      *     sub-interfaces of {@code base}.
      */
     public static <T> boolean sameInterfaces(
-            final Class<? extends T> object1,
-            final Class<? extends T> object2,
-            final Class<T> base) {
+            final Class<? extends T> object1, final Class<? extends T> object2, final Class<T> base) {
         if (object1 == object2) {
             return true;
         }

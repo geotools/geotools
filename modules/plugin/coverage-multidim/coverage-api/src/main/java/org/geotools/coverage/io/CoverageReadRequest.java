@@ -117,9 +117,7 @@ public class CoverageReadRequest extends CoverageRequest {
      *     org.geotools.api.referencing.crs.CoordinateReferenceSystem)
      */
     public void setDomainSubset(
-            final Rectangle rasterArea,
-            final MathTransform2D gridToWorldTrasform,
-            final CoordinateReferenceSystem crs)
+            final Rectangle rasterArea, final MathTransform2D gridToWorldTrasform, final CoordinateReferenceSystem crs)
             throws MismatchedDimensionException, TransformException {
 
         // get input elements
@@ -127,9 +125,7 @@ public class CoverageReadRequest extends CoverageRequest {
         this.gridToWorldTransform = gridToWorldTrasform;
 
         // create a bbox
-        GeneralBounds env =
-                CRS.transform(
-                        gridToWorldTrasform, new ReferencedEnvelope(rasterArea.getBounds2D(), crs));
+        GeneralBounds env = CRS.transform(gridToWorldTrasform, new ReferencedEnvelope(rasterArea.getBounds2D(), crs));
         this.geographicArea = new ReferencedEnvelope(new ReferencedEnvelope(env), crs);
     }
 
@@ -146,8 +142,7 @@ public class CoverageReadRequest extends CoverageRequest {
 
         // create a math transform
         final GridToEnvelopeMapper mapper =
-                new GridToEnvelopeMapper(
-                        new GridEnvelope2D(rasterArea), new ReferencedEnvelope(worldArea));
+                new GridToEnvelopeMapper(new GridEnvelope2D(rasterArea), new ReferencedEnvelope(worldArea));
         mapper.setPixelAnchor(PixelInCell.CELL_CENTER);
         this.gridToWorldTransform = (MathTransform2D) mapper.createTransform();
     }

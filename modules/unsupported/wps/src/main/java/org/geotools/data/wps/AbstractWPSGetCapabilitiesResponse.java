@@ -34,8 +34,7 @@ public abstract class AbstractWPSGetCapabilitiesResponse extends Response {
     protected WPSCapabilitiesType capabilities;
     protected ExceptionReportType excepResponse;
 
-    public AbstractWPSGetCapabilitiesResponse(HTTPResponse httpResponse)
-            throws ServiceException, IOException {
+    public AbstractWPSGetCapabilitiesResponse(HTTPResponse httpResponse) throws ServiceException, IOException {
         super(httpResponse);
     }
 

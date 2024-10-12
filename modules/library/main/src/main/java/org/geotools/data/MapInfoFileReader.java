@@ -52,8 +52,7 @@ import org.geotools.referencing.operation.builder.MappedPosition;
 public class MapInfoFileReader {
 
     /** Logger for this class. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(MapInfoFileReader.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(MapInfoFileReader.class);
 
     /** Projection mappings Mapinfo -> WKT */
     private static Map<Integer, String> PROJECTIONS = new HashMap<>();
@@ -379,12 +378,10 @@ public class MapInfoFileReader {
      */
     public MapInfoFileReader(final File tabfile) throws IOException {
         if (tabfile == null) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "tabfile"));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "tabfile"));
         }
         if (!tabfile.isFile() || !tabfile.canRead()) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.FILE_DOES_NOT_EXIST_$1, tabfile));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.FILE_DOES_NOT_EXIST_$1, tabfile));
         }
         parseTabFile(new BufferedReader(new FileReader(tabfile)));
     }
@@ -397,8 +394,7 @@ public class MapInfoFileReader {
      */
     public MapInfoFileReader(final URL tabfile) throws IOException {
         if (tabfile == null) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "inFile"));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "inFile"));
         }
         parseTabFile(new BufferedReader(new InputStreamReader(tabfile.openStream())));
     }
@@ -408,13 +404,10 @@ public class MapInfoFileReader {
      *
      * @param bufferedreader the buffered reader
      */
-    private void parseTabFile(final BufferedReader bufferedreader)
-            throws IOException, DataSourceException {
+    private void parseTabFile(final BufferedReader bufferedreader) throws IOException, DataSourceException {
         String str;
-        Pattern patternPoint =
-                Pattern.compile(" *\\(([0-9\\.]*),([0-9\\.]*)\\) *\\(([0-9\\.]*),([0-9\\.]*)\\).*");
-        Pattern patternCoordSys =
-                Pattern.compile("CoordSys *Earth *Projection *([0-9]*) *, *([0-9]*) *,?(.*)");
+        Pattern patternPoint = Pattern.compile(" *\\(([0-9\\.]*),([0-9\\.]*)\\) *\\(([0-9\\.]*),([0-9\\.]*)\\).*");
+        Pattern patternCoordSys = Pattern.compile("CoordSys *Earth *Projection *([0-9]*) *, *([0-9]*) *,?(.*)");
         Pattern patternUnit = Pattern.compile(" *\"([^\"]*)\" *,?(.*)");
 
         try {
@@ -491,8 +484,7 @@ public class MapInfoFileReader {
                         } catch (Exception e) {
                             LOGGER.log(
                                     Level.WARNING,
-                                    "Failed to parse and encode mapinfo crs: "
-                                            + e.getLocalizedMessage(),
+                                    "Failed to parse and encode mapinfo crs: " + e.getLocalizedMessage(),
                                     e);
                             // ignore coordinate reference system
                         }
@@ -512,8 +504,7 @@ public class MapInfoFileReader {
         }
         // did we find all we were looking for?
         if (controlPoints.size() < 3) {
-            throw new DataSourceException(
-                    "Didn't find a minimum of three control points in the .tab file.");
+            throw new DataSourceException("Didn't find a minimum of three control points in the .tab file.");
         }
     }
 

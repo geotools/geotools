@@ -130,8 +130,7 @@ public class ElasticsearchDateConverterParseTest {
     public void testDateHourMinuteSecondFraction() {
         assertRoundTrip("2018-12-31T12:12:12.1", DateFormat.date_hour_minute_second_fraction);
         assertRoundTrip("2018-12-31T12:12:12.123", DateFormat.date_hour_minute_second_fraction);
-        assertRoundTrip(
-                "2018-12-31T12:12:12.123456789", DateFormat.date_hour_minute_second_fraction);
+        assertRoundTrip("2018-12-31T12:12:12.123456789", DateFormat.date_hour_minute_second_fraction);
     }
 
     @Test

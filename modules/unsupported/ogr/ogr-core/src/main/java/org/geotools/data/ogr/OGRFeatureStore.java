@@ -50,8 +50,8 @@ class OGRFeatureStore extends ContentFeatureStore {
     }
 
     @Override
-    protected FeatureWriter<SimpleFeatureType, SimpleFeature> getWriterInternal(
-            Query query, int flags) throws IOException {
+    protected FeatureWriter<SimpleFeatureType, SimpleFeature> getWriterInternal(Query query, int flags)
+            throws IOException {
         OGRDataSource dataSource = null;
         Object layer = null;
         boolean cleanup = true;
@@ -65,8 +65,7 @@ class OGRFeatureStore extends ContentFeatureStore {
             FeatureReader<SimpleFeatureType, SimpleFeature> reader =
                     delegate.getReaderInternal(dataSource, layer, query);
             GeometryFactory gf = delegate.getGeometryFactory(query);
-            OGRDirectFeatureWriter result =
-                    new OGRDirectFeatureWriter(dataSource, layer, reader, getSchema(), gf, ogr);
+            OGRDirectFeatureWriter result = new OGRDirectFeatureWriter(dataSource, layer, reader, getSchema(), gf, ogr);
             cleanup = false;
             return result;
         } finally {
@@ -112,8 +111,7 @@ class OGRFeatureStore extends ContentFeatureStore {
     }
 
     @Override
-    protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query)
-            throws IOException {
+    protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query) throws IOException {
         return delegate.getReaderInternal(query);
     }
 

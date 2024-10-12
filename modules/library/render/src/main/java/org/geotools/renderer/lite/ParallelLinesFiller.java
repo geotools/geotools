@@ -127,21 +127,11 @@ public class ParallelLinesFiller {
                         // not a line crossing the bounds, does not form a repeating pattern
                         return null;
                     }
-                } else if ((equals(x1, bx1)
-                                && equals(y1, by1)
-                                && equals(x2, bx2)
-                                && equals(y2, by2))
-                        || (equals(x1, bx2) && equals(y1, by2))
-                                && equals(x2, bx1)
-                                && equals(y2, by1)) {
+                } else if ((equals(x1, bx1) && equals(y1, by1) && equals(x2, bx2) && equals(y2, by2))
+                        || (equals(x1, bx2) && equals(y1, by2)) && equals(x2, bx1) && equals(y2, by1)) {
                     lines.add(new Line(LineType.SLASH, 0));
-                } else if ((equals(x1, bx1)
-                                && equals(y1, by2)
-                                && equals(x2, bx2)
-                                && equals(y2, by1))
-                        || (equals(x1, bx2) && equals(y1, by1))
-                                && equals(x2, bx1)
-                                && equals(y2, by2)) {
+                } else if ((equals(x1, bx1) && equals(y1, by2) && equals(x2, bx2) && equals(y2, by1))
+                        || (equals(x1, bx2) && equals(y1, by1)) && equals(x2, bx1) && equals(y2, by2)) {
                     lines.add(new Line(LineType.BACKSLASH, 0));
                 } else {
                     // not a line crossing the bounds and forming a repeating pattern
@@ -165,8 +155,7 @@ public class ParallelLinesFiller {
     }
 
     /** Fills the specified rectangle with parallel lines */
-    public void fillRectangle(
-            Rectangle2D bounds, StyledShapePainter painter, Graphics2D graphics, LineStyle2D ls2d) {
+    public void fillRectangle(Rectangle2D bounds, StyledShapePainter painter, Graphics2D graphics, LineStyle2D ls2d) {
         // the shape painter works only with liteshape, prepare objects so that we don't end up
         // re-creating them
         // over and over
@@ -175,25 +164,20 @@ public class ParallelLinesFiller {
         GeometryFactory geomFactory = new GeometryFactory();
         Coordinate stippleCoord1 = new Coordinate(0, 0);
         Coordinate stippleCoord2 = new Coordinate(0, 0);
-        LineString stippleLine =
-                geomFactory.createLineString(new Coordinate[] {stippleCoord1, stippleCoord2});
+        LineString stippleLine = geomFactory.createLineString(new Coordinate[] {stippleCoord1, stippleCoord2});
 
         for (Line line : lines) {
             if (line.type == LineType.HORIZONTAL) {
                 stippleCoord1.x = bounds.getMinX();
                 stippleCoord2.x = bounds.getMaxX();
-                for (double y = bounds.getMinY() + line.initialOffset;
-                        y < bounds.getMaxY();
-                        y += yStep) {
+                for (double y = bounds.getMinY() + line.initialOffset; y < bounds.getMaxY(); y += yStep) {
                     stippleCoord1.y = stippleCoord2.y = y;
                     paintLine(painter, graphics, ls2d, identityTransf, nullDecimator, stippleLine);
                 }
             } else if (line.type == LineType.VERTICAL) {
                 stippleCoord1.y = bounds.getMinY();
                 stippleCoord2.y = bounds.getMaxY();
-                for (double x = bounds.getMinX() + line.initialOffset;
-                        x < bounds.getMaxX();
-                        x += xStep) {
+                for (double x = bounds.getMinX() + line.initialOffset; x < bounds.getMaxX(); x += xStep) {
                     stippleCoord1.x = stippleCoord2.x = x;
                     paintLine(painter, graphics, ls2d, identityTransf, nullDecimator, stippleLine);
                 }

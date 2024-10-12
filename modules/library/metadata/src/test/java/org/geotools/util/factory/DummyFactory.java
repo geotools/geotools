@@ -54,8 +54,7 @@ public interface DummyFactory extends InternalFactory {
 
         @Override
         public Map<RenderingHints.Key, ?> getImplementationHints() {
-            return Collections.singletonMap(
-                    Hints.KEY_INTERPOLATION, Hints.VALUE_INTERPOLATION_BILINEAR);
+            return Collections.singletonMap(Hints.KEY_INTERPOLATION, Hints.VALUE_INTERPOLATION_BILINEAR);
         }
     }
 
@@ -101,8 +100,7 @@ public interface DummyFactory extends InternalFactory {
 
         @Override
         public Map<RenderingHints.Key, ?> getImplementationHints() {
-            return Collections.singletonMap(
-                    Hints.KEY_INTERPOLATION, Hints.VALUE_INTERPOLATION_BICUBIC);
+            return Collections.singletonMap(Hints.KEY_INTERPOLATION, Hints.VALUE_INTERPOLATION_BICUBIC);
         }
     }
 

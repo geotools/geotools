@@ -55,19 +55,12 @@ public class GeometryPropertyTypeBindingTest extends GML3TestSupport {
 
     @Test
     public void testEncodeCurve() throws Exception {
-        LineString curve =
-                new CurvedGeometryFactory(0.1)
-                        .createCurvedGeometry(
-                                new LiteCoordinateSequence(
-                                        new double[] {1, 1, 2, 2, 3, 1, 5, 5, 7, 3}));
+        LineString curve = new CurvedGeometryFactory(0.1)
+                .createCurvedGeometry(new LiteCoordinateSequence(new double[] {1, 1, 2, 2, 3, 1, 5, 5, 7, 3}));
 
         Document dom = encode(curve, GML.geometryMember);
         String basePath = "/gml:geometryMember/gml:Curve/gml:segments/gml:ArcString";
-        assertThat(
-                dom,
-                hasXPath(
-                        "count(" + basePath + "[@interpolation='circularArc3Points'])",
-                        equalTo("1")));
+        assertThat(dom, hasXPath("count(" + basePath + "[@interpolation='circularArc3Points'])", equalTo("1")));
         assertThat(dom, hasXPath(basePath + "/gml:posList", equalTo("1 1 2 2 3 1 5 5 7 3")));
     }
 

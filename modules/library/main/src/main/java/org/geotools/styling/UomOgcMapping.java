@@ -81,8 +81,7 @@ public enum UomOgcMapping {
         for (UomOgcMapping uom : UomOgcMapping.values()) {
             if (uom.getSEString().equals(seString)) return uom;
         }
-        throw new IllegalArgumentException(
-                "'" + seString + "' is not a valid OGC SE standard Unit of Measure");
+        throw new IllegalArgumentException("'" + seString + "' is not a valid OGC SE standard Unit of Measure");
     }
 
     /**
@@ -97,7 +96,6 @@ public enum UomOgcMapping {
         for (UomOgcMapping uom : UomOgcMapping.values()) {
             if (uom.getUnit().equals(unit)) return uom;
         }
-        throw new IllegalArgumentException(
-                "'" + unit + "' is not a valid OGC SE standard Unit of Measure");
+        throw new IllegalArgumentException("'" + unit + "' is not a valid OGC SE standard Unit of Measure");
     }
 }

@@ -214,8 +214,7 @@ public class GML3EncodingUtils {
      *   <li>PolygonPropertyType
      * </ul>
      */
-    public Object GeometryPropertyType_GetProperty(
-            Geometry geometry, QName name, boolean makeEmpty) {
+    public Object GeometryPropertyType_GetProperty(Geometry geometry, QName name, boolean makeEmpty) {
         return e.GeometryPropertyType_getProperty(geometry, name, true, makeEmpty);
     }
 
@@ -234,8 +233,7 @@ public class GML3EncodingUtils {
         return e.GeometryPropertyType_getProperties(geometry);
     }
 
-    public Element AbstractFeatureTypeEncode(
-            Object object, Document document, Element value, XSDIdRegistry idSet) {
+    public Element AbstractFeatureTypeEncode(Object object, Document document, Element value, XSDIdRegistry idSet) {
         Feature feature = (Feature) object;
         String id = null;
         FeatureId identifier = feature.getIdentifier();
@@ -252,8 +250,7 @@ public class GML3EncodingUtils {
             // honour the name set in the descriptor
             typeName = feature.getDescriptor().getName();
         }
-        Element encoding =
-                document.createElementNS(typeName.getNamespaceURI(), typeName.getLocalPart());
+        Element encoding = document.createElementNS(typeName.getNamespaceURI(), typeName.getLocalPart());
         if (id != null) {
             if (!(feature instanceof SimpleFeature) && idSet != null) {
                 if (idSet.idExists(id)) {
@@ -262,8 +259,7 @@ public class GML3EncodingUtils {
                     // not schema valid. Attributes of the same ids should be encoded as xlink:href
                     // to
                     // the existing attribute.
-                    encoding.setAttributeNS(
-                            XLINK.NAMESPACE, XLINK.HREF.getLocalPart(), "#" + id.toString());
+                    encoding.setAttributeNS(XLINK.NAMESPACE, XLINK.HREF.getLocalPart(), "#" + id.toString());
                     // make sure the attributes aren't encoded
                     feature.setValue(Collections.emptyList());
                     return encoding;
@@ -279,21 +275,12 @@ public class GML3EncodingUtils {
     }
 
     public List<Object[]> AbstractFeatureTypeGetProperties(
-            Object object,
-            XSDElementDeclaration element,
-            SchemaIndex schemaIndex,
-            Configuration configuration) {
+            Object object, XSDElementDeclaration element, SchemaIndex schemaIndex, Configuration configuration) {
         return e.AbstractFeatureType_getProperties(
                 object,
                 element,
                 schemaIndex,
-                new HashSet<>(
-                        Arrays.asList(
-                                "name",
-                                "description",
-                                "boundedBy",
-                                "location",
-                                "metaDataProperty")),
+                new HashSet<>(Arrays.asList("name", "description", "boundedBy", "location", "metaDataProperty")),
                 configuration);
     }
 
@@ -330,8 +317,7 @@ public class GML3EncodingUtils {
      * @param document the containing document
      * @param element the element to which text node should be added
      */
-    public static void encodeSimpleContent(
-            ComplexAttribute complex, Document document, Element element) {
+    public static void encodeSimpleContent(ComplexAttribute complex, Document document, Element element) {
         Object value = getSimpleContent(complex);
         encodeAsText(document, element, value);
     }

@@ -33,8 +33,7 @@ import org.geotools.util.Utilities;
 class WindBarb {
 
     /** The logger. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(WindBarb.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(WindBarb.class);
 
     /**
      * A WindBarbDefinition contains parameters used to build the WindBarb, such as the main vector
@@ -187,13 +186,12 @@ class WindBarb {
      */
     WindBarbDefinition windBarbDefinition;
 
-    static WindBarbDefinition DEFAULT_WINDBARB_DEFINITION =
-            new WindBarbDefinition(
-                    WindBarb.DEFAULT_FLAGPOLE_LENGTH,
-                    WindBarb.DEFAULT_BASE_PENNANT_LENGTH,
-                    WindBarb.DEFAULT_ELEMENTS_SPACING,
-                    WindBarb.DEFAULT_BARB_LENGTH,
-                    WindBarb.DEFAULT_ZERO_WIND_RADIUS);
+    static WindBarbDefinition DEFAULT_WINDBARB_DEFINITION = new WindBarbDefinition(
+            WindBarb.DEFAULT_FLAGPOLE_LENGTH,
+            WindBarb.DEFAULT_BASE_PENNANT_LENGTH,
+            WindBarb.DEFAULT_ELEMENTS_SPACING,
+            WindBarb.DEFAULT_BARB_LENGTH,
+            WindBarb.DEFAULT_ZERO_WIND_RADIUS);
 
     public WindBarb(final int knots) {
         this(DEFAULT_WINDBARB_DEFINITION, knots);
@@ -202,11 +200,7 @@ class WindBarb {
     public WindBarb(final WindBarbDefinition definition, final int knots) {
         Utilities.ensureNonNull("definition", definition);
         if (LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.fine(
-                    "Creating WindBarb for knots: "
-                            + knots
-                            + " and WindBarbDefinition:"
-                            + definition.toString());
+            LOGGER.fine("Creating WindBarb for knots: " + knots + " and WindBarbDefinition:" + definition.toString());
         }
         this.windBarbDefinition = definition;
         this.knots = knots;
@@ -218,11 +212,10 @@ class WindBarb {
             }
             if (knots > WindBarbsFactory.MAX_SPEED) {
                 if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.fine(
-                            "speed is exceeding MaxSpeed = "
-                                    + WindBarbsFactory.MAX_SPEED
-                                    + "."
-                                    + "\nThe related WindBarb isn't in the cache");
+                    LOGGER.fine("speed is exceeding MaxSpeed = "
+                            + WindBarbsFactory.MAX_SPEED
+                            + "."
+                            + "\nThe related WindBarb isn't in the cache");
                 }
             }
         }
@@ -284,8 +277,7 @@ class WindBarb {
         }
 
         // FLIP for geotools
-        final Shape createTransformedShape =
-                path.createTransformedShape(AffineTransform.getScaleInstance(1, -1));
+        final Shape createTransformedShape = path.createTransformedShape(AffineTransform.getScaleInstance(1, -1));
         return createTransformedShape;
     }
 
@@ -302,22 +294,17 @@ class WindBarb {
         path.lineTo(0, positionOnPath);
 
         path.moveTo(
-                windBarbDefinition.shortBarbLength / 2.0f,
-                positionOnPath - windBarbDefinition.shortBarbLength / 2.0f);
+                windBarbDefinition.shortBarbLength / 2.0f, positionOnPath - windBarbDefinition.shortBarbLength / 2.0f);
         path.lineTo(
-                -windBarbDefinition.shortBarbLength / 2.0f,
-                positionOnPath + windBarbDefinition.shortBarbLength / 2.0f);
+                -windBarbDefinition.shortBarbLength / 2.0f, positionOnPath + windBarbDefinition.shortBarbLength / 2.0f);
 
         path.moveTo(
-                -windBarbDefinition.shortBarbLength / 2.0f,
-                positionOnPath - windBarbDefinition.shortBarbLength / 2.0f);
+                -windBarbDefinition.shortBarbLength / 2.0f, positionOnPath - windBarbDefinition.shortBarbLength / 2.0f);
         path.lineTo(
-                windBarbDefinition.shortBarbLength / 2.0f,
-                positionOnPath + windBarbDefinition.shortBarbLength / 2.0f);
+                windBarbDefinition.shortBarbLength / 2.0f, positionOnPath + windBarbDefinition.shortBarbLength / 2.0f);
 
         // FLIP for geotools
-        final Shape createTransformedShape =
-                path.createTransformedShape(AffineTransform.getScaleInstance(1, -1));
+        final Shape createTransformedShape = path.createTransformedShape(AffineTransform.getScaleInstance(1, -1));
         return createTransformedShape;
     }
 
@@ -328,9 +315,7 @@ class WindBarb {
         }
 
         path.moveTo(0, positionOnPath);
-        path.lineTo(
-                windBarbDefinition.shortBarbLength,
-                positionOnPath - windBarbDefinition.basePennantLength / 4.0);
+        path.lineTo(windBarbDefinition.shortBarbLength, positionOnPath - windBarbDefinition.basePennantLength / 4.0);
         return positionOnPath;
     }
 
@@ -347,9 +332,7 @@ class WindBarb {
             }
             // draw long barb
             path.moveTo(0, positionOnPath);
-            path.lineTo(
-                    windBarbDefinition.longBarbLength,
-                    positionOnPath - windBarbDefinition.basePennantLength / 2.0);
+            path.lineTo(windBarbDefinition.longBarbLength, positionOnPath - windBarbDefinition.basePennantLength / 2.0);
         }
         return positionOnPath;
     }

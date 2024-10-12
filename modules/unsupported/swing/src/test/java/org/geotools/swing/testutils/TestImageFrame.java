@@ -90,8 +90,7 @@ public class TestImageFrame {
      * @param title frame title
      * @param latch latch to count down when the frame is closed
      */
-    private static void doShowImage(
-            final RenderedImage image, final String title, final CountDownLatch latch) {
+    private static void doShowImage(final RenderedImage image, final String title, final CountDownLatch latch) {
 
         ImageFrameWithLatch frame = new ImageFrameWithLatch(image, title, latch);
         frame.setVisible(true);
@@ -104,13 +103,12 @@ public class TestImageFrame {
             super(img, title);
             this.closeLatch = latch;
 
-            addWindowListener(
-                    new WindowAdapter() {
-                        @Override
-                        public void windowClosing(WindowEvent e) {
-                            closeLatch.countDown();
-                        }
-                    });
+            addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    closeLatch.countDown();
+                }
+            });
         }
     }
 }

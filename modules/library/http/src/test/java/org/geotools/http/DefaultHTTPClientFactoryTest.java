@@ -62,8 +62,7 @@ public class DefaultHTTPClientFactoryTest {
     @Test
     public void testLoggingUsage() throws Exception {
         HTTPClientFactory factory = new DefaultHTTPClientFactory();
-        HTTPClient client =
-                factory.createClient(new Hints(Hints.HTTP_LOGGING, "TRUE"), new LinkedList<>());
+        HTTPClient client = factory.createClient(new Hints(Hints.HTTP_LOGGING, "TRUE"), new LinkedList<>());
         assertTrue(client instanceof LoggingHTTPClient);
 
         LoggingHTTPClient loggingClient = (LoggingHTTPClient) client;

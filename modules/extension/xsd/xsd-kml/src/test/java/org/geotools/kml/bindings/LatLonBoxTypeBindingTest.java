@@ -37,13 +37,12 @@ public class LatLonBoxTypeBindingTest extends KMLTestSupport {
 
     @Test
     public void testParse() throws Exception {
-        String xml =
-                "<LatLonBox>"
-                        + "<north>1</north>"
-                        + "<south>-1</south>"
-                        + "<east>1</east>"
-                        + "<west>-1</west>"
-                        + "</LatLonBox>";
+        String xml = "<LatLonBox>"
+                + "<north>1</north>"
+                + "<south>-1</south>"
+                + "<east>1</east>"
+                + "<west>-1</west>"
+                + "</LatLonBox>";
 
         buildDocument(xml);
 

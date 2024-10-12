@@ -54,9 +54,8 @@ public interface GranuleHandler {
             SimpleFeature inputFeature,
             SimpleFeatureType inputFeatureType,
             MosaicConfigurationBean mosaicConfiguration) {
-        Object geometryAttribute =
-                inputFeature.getAttribute(inputFeatureType.getGeometryDescriptor().getName());
-        targetFeature.setAttribute(
-                targetFeatureType.getGeometryDescriptor().getName(), geometryAttribute);
+        Object geometryAttribute = inputFeature.getAttribute(
+                inputFeatureType.getGeometryDescriptor().getName());
+        targetFeature.setAttribute(targetFeatureType.getGeometryDescriptor().getName(), geometryAttribute);
     }
 }

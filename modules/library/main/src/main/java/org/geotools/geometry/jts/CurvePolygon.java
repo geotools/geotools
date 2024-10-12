@@ -32,14 +32,12 @@ public class CurvePolygon extends Polygon implements CurvedGeometry<Polygon> {
     private static final long serialVersionUID = -6961191502473439328L;
     private double tolerance;
 
-    public CurvePolygon(
-            LinearRing shell, List<LinearRing> holes, GeometryFactory factory, double tolerance) {
+    public CurvePolygon(LinearRing shell, List<LinearRing> holes, GeometryFactory factory, double tolerance) {
         super(shell, holes.toArray(new LinearRing[holes.size()]), factory);
         this.tolerance = tolerance;
     }
 
-    public CurvePolygon(
-            LinearRing shell, LinearRing[] holes, GeometryFactory factory, double tolerance) {
+    public CurvePolygon(LinearRing shell, LinearRing[] holes, GeometryFactory factory, double tolerance) {
         super(shell, holes, factory);
         this.tolerance = tolerance;
     }

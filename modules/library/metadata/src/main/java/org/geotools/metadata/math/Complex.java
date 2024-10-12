@@ -186,59 +186,45 @@ public final class Complex implements Cloneable, Serializable {
         final double x = c.real;
         final double y = c.imag;
         switch (power) {
-            case 0:
-                {
-                    real = 1;
-                    imag = 0;
-                    break;
-                }
-            case 1:
-                {
-                    real = x;
-                    imag = y;
-                    break;
-                }
-            case 2:
-                {
-                    real = (x * x) - (y * y);
-                    imag = 2 * x * y;
-                    break;
-                }
-            case 3:
-                {
-                    real = (x * x * x) - (3 * x * y * y);
-                    imag = (3 * x * x * y) - (y * y * y);
-                    break;
-                }
-            case 4:
-                {
-                    real = (x * x * x * x) - (6 * x * x * y * y) + (y * y * y * y);
-                    imag = (4 * x * x * x * y) - (4 * x * y * y * y);
-                    break;
-                }
-            case 5:
-                {
-                    real = (x * x * x * x * x) - (10 * x * x * x * y * y) + (5 * x * y * y * y * y);
-                    imag = (5 * x * x * x * x * y) - (10 * x * x * y * y * y) + (y * y * y * y * y);
-                    break;
-                }
-            case 6:
-                {
-                    real =
-                            ((x * x * x * x * x * x)
-                                            - (15 * x * x * x * x * y * y)
-                                            + (15 * x * x * y * y * y * y))
-                                    - (y * y * y * y * y * y);
-                    imag =
-                            (6 * x * x * x * x * x * y)
-                                    - (20 * x * x * x * y * y * y)
-                                    + (6 * x * y * y * y * y * y);
-                    break;
-                }
-            default:
-                {
-                    throw new IllegalArgumentException(String.valueOf(power));
-                }
+            case 0: {
+                real = 1;
+                imag = 0;
+                break;
+            }
+            case 1: {
+                real = x;
+                imag = y;
+                break;
+            }
+            case 2: {
+                real = (x * x) - (y * y);
+                imag = 2 * x * y;
+                break;
+            }
+            case 3: {
+                real = (x * x * x) - (3 * x * y * y);
+                imag = (3 * x * x * y) - (y * y * y);
+                break;
+            }
+            case 4: {
+                real = (x * x * x * x) - (6 * x * x * y * y) + (y * y * y * y);
+                imag = (4 * x * x * x * y) - (4 * x * y * y * y);
+                break;
+            }
+            case 5: {
+                real = (x * x * x * x * x) - (10 * x * x * x * y * y) + (5 * x * y * y * y * y);
+                imag = (5 * x * x * x * x * y) - (10 * x * x * y * y * y) + (y * y * y * y * y);
+                break;
+            }
+            case 6: {
+                real = ((x * x * x * x * x * x) - (15 * x * x * x * x * y * y) + (15 * x * x * y * y * y * y))
+                        - (y * y * y * y * y * y);
+                imag = (6 * x * x * x * x * x * y) - (20 * x * x * x * y * y * y) + (6 * x * y * y * y * y * y);
+                break;
+            }
+            default: {
+                throw new IllegalArgumentException(String.valueOf(power));
+            }
         }
     }
 

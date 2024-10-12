@@ -69,9 +69,7 @@ public class ReadResolutionCalculator {
     private int maxOversamplingFactor = MAX_OVERSAMPLING_FACTOR_DEFAULT;
 
     public ReadResolutionCalculator(
-            GridGeometry2D requestedGridGeometry,
-            CoordinateReferenceSystem nativeCrs,
-            double[] fullResolution)
+            GridGeometry2D requestedGridGeometry, CoordinateReferenceSystem nativeCrs, double[] fullResolution)
             throws FactoryException {
         Utilities.ensureNonNull("gridGeometry", requestedGridGeometry);
         this.requestedBBox = new ReferencedEnvelope((Bounds) requestedGridGeometry.getEnvelope2D());
@@ -84,8 +82,7 @@ public class ReadResolutionCalculator {
             this.fullResolution = computeClassicResolution(requestedBBox);
             isFullResolutionInRequestedCRS = true;
         }
-        CoordinateReferenceSystem requestedCRS =
-                requestedGridGeometry.getCoordinateReferenceSystem();
+        CoordinateReferenceSystem requestedCRS = requestedGridGeometry.getCoordinateReferenceSystem();
         if (!CRS.equalsIgnoreMetadata(nativeCrs, requestedCRS)) {
             this.destinationToSourceTransform = CRS.findMathTransform(requestedCRS, nativeCrs);
         }
@@ -116,8 +113,7 @@ public class ReadResolutionCalculator {
                 // same and the conversion is not , we can get the resolution from envelope + raster
                 // directly
                 //
-                if (destinationToSourceTransform != null
-                        && !destinationToSourceTransform.isIdentity()) {
+                if (destinationToSourceTransform != null && !destinationToSourceTransform.isIdentity()) {
                     if (accurateResolution) {
                         return computeAccurateResolution(readBounds);
                     } else {
@@ -134,20 +130,16 @@ public class ReadResolutionCalculator {
             } else {
                 // should not happen
                 final Object arg0 = requestedGridToWorld.toString();
-                throw new UnsupportedOperationException(
-                        MessageFormat.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, arg0));
+                throw new UnsupportedOperationException(MessageFormat.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, arg0));
             }
         } catch (Throwable e) {
-            if (LOGGER.isLoggable(Level.INFO))
-                LOGGER.log(Level.INFO, "Unable to compute requested resolution", e);
+            if (LOGGER.isLoggable(Level.INFO)) LOGGER.log(Level.INFO, "Unable to compute requested resolution", e);
         }
 
         //
         // use the coverage resolution since we cannot compute the requested one
         //
-        LOGGER.log(
-                Level.WARNING,
-                "Unable to compute requested resolution, the reader will pick the native one");
+        LOGGER.log(Level.WARNING, "Unable to compute requested resolution, the reader will pick the native one");
         return fullResolution;
     }
 
@@ -170,18 +162,15 @@ public class ReadResolutionCalculator {
      */
     private double[] computeAccurateResolution(ReferencedEnvelope readBBox)
             throws TransformException, NoninvertibleTransformException, FactoryException {
-        final boolean isReprojected =
-                !CRS.equalsIgnoreMetadata(
-                        readBBox.getCoordinateReferenceSystem(),
-                        requestedBBox.getCoordinateReferenceSystem());
+        final boolean isReprojected = !CRS.equalsIgnoreMetadata(
+                readBBox.getCoordinateReferenceSystem(), requestedBBox.getCoordinateReferenceSystem());
         final ReferencedEnvelope originalReadBBox = readBBox;
         if (isReprojected) {
             readBBox = readBBox.transform(requestedBBox.getCoordinateReferenceSystem(), true);
         }
         double resX = XAffineTransform.getScaleX0(requestedGridToWorld);
         double resY = XAffineTransform.getScaleY0(requestedGridToWorld);
-        GeneralBounds cropBboxTarget =
-                CRS.transform(readBBox, requestedBBox.getCoordinateReferenceSystem());
+        GeneralBounds cropBboxTarget = CRS.transform(readBBox, requestedBBox.getCoordinateReferenceSystem());
         final int NPOINTS = 36;
         double[] points = new double[NPOINTS * 2];
         for (int i = 0; i < 3; i++) {
@@ -235,11 +224,9 @@ public class ReadResolutionCalculator {
             double y0 = requestedBBox.getMedian(1);
             double x1 = x0 + fullRes[0];
             double y1 = y0 + fullRes[1];
-            GeneralBounds envelope =
-                    new GeneralBounds(new double[] {x0, y0}, new double[] {x1, y1});
+            GeneralBounds envelope = new GeneralBounds(new double[] {x0, y0}, new double[] {x1, y1});
             envelope = CRS.transform(destinationToSourceTransform, envelope);
-            GridToEnvelopeMapper mapper =
-                    new GridToEnvelopeMapper(new GridEnvelope2D(0, 0, 1, 1), envelope);
+            GridToEnvelopeMapper mapper = new GridToEnvelopeMapper(new GridEnvelope2D(0, 0, 1, 1), envelope);
             AffineTransform transform = mapper.createAffineTransform();
             fullRes[0] = XAffineTransform.getScaleX0(transform);
             fullRes[1] = XAffineTransform.getScaleY0(transform);

@@ -77,11 +77,7 @@ public class Slice2DIndex {
 
     @Override
     public String toString() {
-        return "UnidataVariableIndex [index="
-                + Arrays.toString(index)
-                + ", variableName="
-                + variableName
-                + "]";
+        return "UnidataVariableIndex [index=" + Arrays.toString(index) + ", variableName=" + variableName + "]";
     }
 
     @Override
@@ -218,15 +214,12 @@ public class Slice2DIndex {
          * @param file the file to write to.
          * @param indexList the list of {@link Slice2DIndex} to dump to file.
          */
-        public static void writeIndexFile(File file, List<Slice2DIndex> indexList)
-                throws IOException {
+        public static void writeIndexFile(File file, List<Slice2DIndex> indexList) throws IOException {
             try (RandomAccessFile raf = new RandomAccessFile(file, "rw")) {
                 int size = indexList.size();
                 // write number of records
                 raf.writeInt(size);
-                long dataPosition =
-                        ADDRESS_POSITION
-                                + (size + 1) * ADDRESS_SIZE; // the +1 is to have the end address
+                long dataPosition = ADDRESS_POSITION + (size + 1) * ADDRESS_SIZE; // the +1 is to have the end address
 
                 long[] pointer = new long[size];
                 raf.seek(dataPosition);
@@ -262,14 +255,11 @@ public class Slice2DIndex {
         @SuppressWarnings("deprecation") // finalize is deprecated in Java 9
         protected void finalize() throws Throwable {
             if (raf != null) {
-                LOGGER.warning(
-                        "There is code leaving slice index managers open, this might cause "
-                                + "issues with file deletion on Windows!");
+                LOGGER.warning("There is code leaving slice index managers open, this might cause "
+                        + "issues with file deletion on Windows!");
                 if (NetCDFUtilities.TRACE_ENABLED) {
                     LOGGER.log(
-                            Level.WARNING,
-                            "The unclosed slice index managers originated on this stack trace",
-                            tracer);
+                            Level.WARNING, "The unclosed slice index managers originated on this stack trace", tracer);
                 }
                 dispose();
             }

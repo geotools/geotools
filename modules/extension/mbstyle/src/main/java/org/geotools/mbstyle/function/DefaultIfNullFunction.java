@@ -39,17 +39,16 @@ public class DefaultIfNullFunction extends FunctionImpl {
     static {
         Parameter<Object> result = new Parameter<>("result", Object.class, 1, 1);
         Parameter<Object> input = new Parameter<>("input", Object.class, 1, 1);
-        Parameter<Object> fallback =
-                new Parameter<>(
-                        "DefaultIfNull",
-                        Object.class,
-                        Text.text("DefaultIfNull"),
-                        Text.text("The value to return if the input is null"),
-                        true,
-                        0,
-                        1,
-                        1.0,
-                        null);
+        Parameter<Object> fallback = new Parameter<>(
+                "DefaultIfNull",
+                Object.class,
+                Text.text("DefaultIfNull"),
+                Text.text("The value to return if the input is null"),
+                true,
+                0,
+                1,
+                1.0,
+                null);
         NAME = new FunctionNameImpl("DefaultIfNull", result, input, fallback);
     }
 
@@ -70,22 +69,17 @@ public class DefaultIfNullFunction extends FunctionImpl {
         Expression input = parameters.get(0);
         Expression fallback = parameters.get(1);
 
-        T fallbackEvaluated =
-                context == null
-                        ? (T) fallback.evaluate(object)
-                        : fallback.evaluate(object, context);
+        T fallbackEvaluated = context == null ? (T) fallback.evaluate(object) : fallback.evaluate(object, context);
         T inputEvaluated;
         try {
-            inputEvaluated =
-                    context == null ? (T) input.evaluate(object) : input.evaluate(object, context);
+            inputEvaluated = context == null ? (T) input.evaluate(object) : input.evaluate(object, context);
         } catch (Exception e) {
             inputEvaluated = null;
-            LOGGER.warning(
-                    "Exception evaluating expression, falling back to default value. Exception was: "
-                            + e.getClass().getSimpleName()
-                            + " (message: "
-                            + e.getMessage()
-                            + ")");
+            LOGGER.warning("Exception evaluating expression, falling back to default value. Exception was: "
+                    + e.getClass().getSimpleName()
+                    + " (message: "
+                    + e.getMessage()
+                    + ")");
         }
 
         if (inputEvaluated != null) {

@@ -46,8 +46,7 @@ public class Lines {
      * @return the vector grid of lines
      * @see OrthoLineDef
      */
-    public static SimpleFeatureSource createOrthoLines(
-            ReferencedEnvelope bounds, Collection<OrthoLineDef> lineDefs) {
+    public static SimpleFeatureSource createOrthoLines(ReferencedEnvelope bounds, Collection<OrthoLineDef> lineDefs) {
 
         return createOrthoLines(bounds, lineDefs, 0.0);
     }
@@ -68,10 +67,7 @@ public class Lines {
             ReferencedEnvelope bounds, Collection<OrthoLineDef> lineDefs, double vertexSpacing) {
 
         return createOrthoLines(
-                bounds,
-                lineDefs,
-                vertexSpacing,
-                new OrthoLineFeatureBuilder(bounds.getCoordinateReferenceSystem()));
+                bounds, lineDefs, vertexSpacing, new OrthoLineFeatureBuilder(bounds.getCoordinateReferenceSystem()));
     }
 
     /**
@@ -102,13 +98,9 @@ public class Lines {
         }
 
         CoordinateReferenceSystem boundsCRS = bounds.getCoordinateReferenceSystem();
-        CoordinateReferenceSystem builderCRS =
-                lineFeatureBuilder.getType().getCoordinateReferenceSystem();
-        if (boundsCRS != null
-                && builderCRS != null
-                && !CRS.equalsIgnoreMetadata(boundsCRS, builderCRS)) {
-            throw new IllegalArgumentException(
-                    "Different CRS set for bounds and the feature builder");
+        CoordinateReferenceSystem builderCRS = lineFeatureBuilder.getType().getCoordinateReferenceSystem();
+        if (boundsCRS != null && builderCRS != null && !CRS.equalsIgnoreMetadata(boundsCRS, builderCRS)) {
+            throw new IllegalArgumentException("Different CRS set for bounds and the feature builder");
         }
 
         final ListFeatureCollection fc = new ListFeatureCollection(lineFeatureBuilder.getType());

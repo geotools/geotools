@@ -67,30 +67,22 @@ public class GeoServerIntegrationTest extends AbstractIntegrationTest {
         TestDataType testDataType = new TestDataType();
 
         testDataType.featureType =
-                DataUtilities.createType(
-                        "roadsType", "the_geom:MultiLineString,cat:java.lang.Long,label:String");
-        testDataType.featureType =
-                DataUtilities.createSubType(
-                        testDataType.featureType,
-                        null,
-                        CRS.decode("urn:x-ogc:def:crs:EPSG:6.11.2:26713"));
+                DataUtilities.createType("roadsType", "the_geom:MultiLineString,cat:java.lang.Long,label:String");
+        testDataType.featureType = DataUtilities.createSubType(
+                testDataType.featureType, null, CRS.decode("urn:x-ogc:def:crs:EPSG:6.11.2:26713"));
 
         testDataType.stringAttribute = "label";
         testDataType.numberOfFeatures = 3;
         testDataType.typeName = "sf_roads";
-        testDataType.newFeature =
-                SimpleFeatureBuilder.build(
-                        testDataType.featureType,
-                        new Object[] {
-                            new GeometryFactory()
-                                    .createLineString(
-                                            new Coordinate[] {
-                                                new Coordinate(1, 2), new Coordinate(2, 3)
-                                            }),
-                            Integer.valueOf(4),
-                            "somekindofroad"
-                        },
-                        "roads.4");
+        testDataType.newFeature = SimpleFeatureBuilder.build(
+                testDataType.featureType,
+                new Object[] {
+                    new GeometryFactory()
+                            .createLineString(new Coordinate[] {new Coordinate(1, 2), new Coordinate(2, 3)}),
+                    Integer.valueOf(4),
+                    "somekindofroad"
+                },
+                "roads.4");
 
         return testDataType;
     }
@@ -100,13 +92,9 @@ public class GeoServerIntegrationTest extends AbstractIntegrationTest {
         TestDataType testDataType = new TestDataType();
 
         testDataType.featureType =
-                DataUtilities.createType(
-                        "archsitesType", "the_geom:Point,cat:java.lang.Long,str1:String");
-        testDataType.featureType =
-                DataUtilities.createSubType(
-                        testDataType.featureType,
-                        null,
-                        CRS.decode("urn:x-ogc:def:crs:EPSG:6.11.2:26713", true));
+                DataUtilities.createType("archsitesType", "the_geom:Point,cat:java.lang.Long,str1:String");
+        testDataType.featureType = DataUtilities.createSubType(
+                testDataType.featureType, null, CRS.decode("urn:x-ogc:def:crs:EPSG:6.11.2:26713", true));
 
         testDataType.stringAttribute = "str1";
         testDataType.numberOfFeatures = 3;

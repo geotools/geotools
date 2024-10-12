@@ -28,16 +28,15 @@ public class SearchModule extends SimpleModule {
     @Override
     public void setupModule(SetupContext context) {
         super.setupModule(context);
-        context.addBeanSerializerModifier(
-                new BeanSerializerModifier() {
-                    @Override
-                    public JsonSerializer<?> modifyKeySerializer(
-                            SerializationConfig config,
-                            JavaType valueType,
-                            BeanDescription beanDesc,
-                            JsonSerializer<?> serializer) {
-                        return super.modifyKeySerializer(config, valueType, beanDesc, serializer);
-                    }
-                });
+        context.addBeanSerializerModifier(new BeanSerializerModifier() {
+            @Override
+            public JsonSerializer<?> modifyKeySerializer(
+                    SerializationConfig config,
+                    JavaType valueType,
+                    BeanDescription beanDesc,
+                    JsonSerializer<?> serializer) {
+                return super.modifyKeySerializer(config, valueType, beanDesc, serializer);
+            }
+        });
     }
 }

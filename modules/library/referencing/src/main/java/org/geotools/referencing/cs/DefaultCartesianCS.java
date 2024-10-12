@@ -62,11 +62,8 @@ public class DefaultCartesianCS extends DefaultAffineCS implements CartesianCS {
      * Easting}</var>, <var>{@linkplain DefaultCoordinateSystemAxis#NORTHING Northing}</var> axis in
      * metres.
      */
-    public static DefaultCartesianCS PROJECTED =
-            new DefaultCartesianCS(
-                    name(VocabularyKeys.PROJECTED),
-                    DefaultCoordinateSystemAxis.EASTING,
-                    DefaultCoordinateSystemAxis.NORTHING);
+    public static DefaultCartesianCS PROJECTED = new DefaultCartesianCS(
+            name(VocabularyKeys.PROJECTED), DefaultCoordinateSystemAxis.EASTING, DefaultCoordinateSystemAxis.NORTHING);
 
     /**
      * A three-dimensional cartesian CS with geocentric <var>{@linkplain
@@ -76,44 +73,36 @@ public class DefaultCartesianCS extends DefaultAffineCS implements CartesianCS {
      *
      * @see DefaultSphericalCS#GEOCENTRIC
      */
-    public static DefaultCartesianCS GEOCENTRIC =
-            new DefaultCartesianCS(
-                    name(VocabularyKeys.GEOCENTRIC),
-                    DefaultCoordinateSystemAxis.GEOCENTRIC_X,
-                    DefaultCoordinateSystemAxis.GEOCENTRIC_Y,
-                    DefaultCoordinateSystemAxis.GEOCENTRIC_Z);
+    public static DefaultCartesianCS GEOCENTRIC = new DefaultCartesianCS(
+            name(VocabularyKeys.GEOCENTRIC),
+            DefaultCoordinateSystemAxis.GEOCENTRIC_X,
+            DefaultCoordinateSystemAxis.GEOCENTRIC_Y,
+            DefaultCoordinateSystemAxis.GEOCENTRIC_Z);
 
     /**
      * A two-dimensional cartesian CS with <var>{@linkplain DefaultCoordinateSystemAxis#X x}</var>,
      * <var>{@linkplain DefaultCoordinateSystemAxis#Y y}</var> axis in metres.
      */
-    public static DefaultCartesianCS GENERIC_2D =
-            new DefaultCartesianCS(
-                    name(VocabularyKeys.CARTESIAN_2D),
-                    DefaultCoordinateSystemAxis.X,
-                    DefaultCoordinateSystemAxis.Y);
+    public static DefaultCartesianCS GENERIC_2D = new DefaultCartesianCS(
+            name(VocabularyKeys.CARTESIAN_2D), DefaultCoordinateSystemAxis.X, DefaultCoordinateSystemAxis.Y);
 
     /**
      * A three-dimensional cartesian CS with <var>{@linkplain DefaultCoordinateSystemAxis#X
      * x}</var>, <var>{@linkplain DefaultCoordinateSystemAxis#Y y}</var>, <var>{@linkplain
      * DefaultCoordinateSystemAxis#Z z}</var> axis in metres.
      */
-    public static DefaultCartesianCS GENERIC_3D =
-            new DefaultCartesianCS(
-                    name(VocabularyKeys.CARTESIAN_3D),
-                    DefaultCoordinateSystemAxis.X,
-                    DefaultCoordinateSystemAxis.Y,
-                    DefaultCoordinateSystemAxis.Z);
+    public static DefaultCartesianCS GENERIC_3D = new DefaultCartesianCS(
+            name(VocabularyKeys.CARTESIAN_3D),
+            DefaultCoordinateSystemAxis.X,
+            DefaultCoordinateSystemAxis.Y,
+            DefaultCoordinateSystemAxis.Z);
 
     /**
      * A two-dimensional cartesian CS with <var>{@linkplain DefaultCoordinateSystemAxis#COLUMN
      * column}</var>, <var>{@linkplain DefaultCoordinateSystemAxis#ROW row}</var> axis.
      */
-    public static DefaultCartesianCS GRID =
-            new DefaultCartesianCS(
-                    name(VocabularyKeys.GRID),
-                    DefaultCoordinateSystemAxis.COLUMN,
-                    DefaultCoordinateSystemAxis.ROW);
+    public static DefaultCartesianCS GRID = new DefaultCartesianCS(
+            name(VocabularyKeys.GRID), DefaultCoordinateSystemAxis.COLUMN, DefaultCoordinateSystemAxis.ROW);
 
     /**
      * A two-dimensional cartesian CS with <var>{@linkplain DefaultCoordinateSystemAxis#DISPLAY_X
@@ -122,11 +111,8 @@ public class DefaultCartesianCS extends DefaultAffineCS implements CartesianCS {
      *
      * @since 2.2
      */
-    public static DefaultCartesianCS DISPLAY =
-            new DefaultCartesianCS(
-                    name(VocabularyKeys.DISPLAY),
-                    DefaultCoordinateSystemAxis.DISPLAY_X,
-                    DefaultCoordinateSystemAxis.DISPLAY_Y);
+    public static DefaultCartesianCS DISPLAY = new DefaultCartesianCS(
+            name(VocabularyKeys.DISPLAY), DefaultCoordinateSystemAxis.DISPLAY_X, DefaultCoordinateSystemAxis.DISPLAY_Y);
 
     /**
      * Converters from {@linkplain CoordinateSystemAxis#getUnit axis units} to {@linkplain
@@ -155,8 +141,7 @@ public class DefaultCartesianCS extends DefaultAffineCS implements CartesianCS {
      * @param axis0 The first axis.
      * @param axis1 The second axis.
      */
-    public DefaultCartesianCS(
-            final String name, final CoordinateSystemAxis axis0, final CoordinateSystemAxis axis1) {
+    public DefaultCartesianCS(final String name, final CoordinateSystemAxis axis0, final CoordinateSystemAxis axis1) {
         super(name, axis0, axis1);
         ensurePerpendicularAxis();
     }
@@ -188,9 +173,7 @@ public class DefaultCartesianCS extends DefaultAffineCS implements CartesianCS {
      * @param axis1 The second axis.
      */
     public DefaultCartesianCS(
-            final Map<String, ?> properties,
-            final CoordinateSystemAxis axis0,
-            final CoordinateSystemAxis axis1) {
+            final Map<String, ?> properties, final CoordinateSystemAxis axis0, final CoordinateSystemAxis axis1) {
         super(properties, axis0, axis1);
         ensurePerpendicularAxis();
     }
@@ -230,10 +213,7 @@ public class DefaultCartesianCS extends DefaultAffineCS implements CartesianCS {
                 final double angle = DefaultCoordinateSystemAxis.getAngle(axis0, axis1);
                 if (Math.abs(Math.abs(angle) - 90) > DirectionAlongMeridian.EPS) {
                     throw new IllegalArgumentException(
-                            MessageFormat.format(
-                                    ErrorKeys.NON_PERPENDICULAR_AXIS_$2,
-                                    axis0.name(),
-                                    axis1.name()));
+                            MessageFormat.format(ErrorKeys.NON_PERPENDICULAR_AXIS_$2, axis0.name(), axis1.name()));
                 }
             }
         }
@@ -248,8 +228,7 @@ public class DefaultCartesianCS extends DefaultAffineCS implements CartesianCS {
      * @throws MismatchedDimensionException if a coordinate doesn't have the expected dimension.
      */
     @Override
-    public Measure distance(final double[] coord1, final double[] coord2)
-            throws MismatchedDimensionException {
+    public Measure distance(final double[] coord1, final double[] coord2) throws MismatchedDimensionException {
         ensureDimensionMatch("coord1", coord1);
         ensureDimensionMatch("coord2", coord2);
         final Unit<?> unit = getDistanceUnit();
@@ -259,11 +238,8 @@ public class DefaultCartesianCS extends DefaultAffineCS implements CartesianCS {
             for (int i = 0; i < converters.length; i++) {
                 try {
                     converters[i] = getAxis(i).getUnit().getConverterToAny(unit);
-                } catch (UnconvertibleException
-                        | IndexOutOfBoundsException
-                        | IncommensurableException e) {
-                    throw new MismatchedDimensionException(
-                            "Axis units are not mutually convertible", e);
+                } catch (UnconvertibleException | IndexOutOfBoundsException | IncommensurableException e) {
+                    throw new MismatchedDimensionException("Axis units are not mutually convertible", e);
                 }
             }
             this.converters = converters;

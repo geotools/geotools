@@ -77,9 +77,7 @@ public abstract class MathTransformProvider extends DefaultOperationMethod {
      * @param parameters The set of parameters (never {@code null}).
      */
     public MathTransformProvider(
-            final int sourceDimensions,
-            final int targetDimensions,
-            final ParameterDescriptorGroup parameters) {
+            final int sourceDimensions, final int targetDimensions, final ParameterDescriptorGroup parameters) {
         this(toMap(parameters), sourceDimensions, targetDimensions, parameters);
     }
 
@@ -110,8 +108,7 @@ public abstract class MathTransformProvider extends DefaultOperationMethod {
         ensureNonNull("parameters", parameters);
         final Map<String, Object> properties = new HashMap<>(4);
         properties.put(NAME_KEY, parameters.getName());
-        properties.put(
-                IDENTIFIERS_KEY, parameters.getIdentifiers().toArray(EMPTY_IDENTIFIER_ARRAY));
+        properties.put(IDENTIFIERS_KEY, parameters.getIdentifiers().toArray(EMPTY_IDENTIFIER_ARRAY));
         properties.put(ALIAS_KEY, parameters.getAlias().toArray(EMPTY_ALIAS_ARRAY));
         return properties;
     }
@@ -159,8 +156,8 @@ public abstract class MathTransformProvider extends DefaultOperationMethod {
      * @see MathTransformProvider.Delegate
      */
     protected abstract MathTransform createMathTransform(ParameterValueGroup values)
-            throws InvalidParameterNameException, ParameterNotFoundException,
-                    InvalidParameterValueException, FactoryException;
+            throws InvalidParameterNameException, ParameterNotFoundException, InvalidParameterValueException,
+                    FactoryException;
 
     /**
      * Constructs a parameter descriptor from a set of alias. The parameter is identified by codes
@@ -184,8 +181,7 @@ public abstract class MathTransformProvider extends DefaultOperationMethod {
             final double minimum,
             final double maximum,
             final Unit<?> unit) {
-        return DefaultParameterDescriptor.create(
-                toMap(identifiers), defaultValue, minimum, maximum, unit, true);
+        return DefaultParameterDescriptor.create(toMap(identifiers), defaultValue, minimum, maximum, unit, true);
     }
 
     /**
@@ -199,12 +195,8 @@ public abstract class MathTransformProvider extends DefaultOperationMethod {
      * @return The descriptor for the given identifiers.
      */
     protected static ParameterDescriptor<Double> createOptionalDescriptor(
-            final ReferenceIdentifier[] identifiers,
-            final double minimum,
-            final double maximum,
-            final Unit<?> unit) {
-        return DefaultParameterDescriptor.create(
-                toMap(identifiers), Double.NaN, minimum, maximum, unit, false);
+            final ReferenceIdentifier[] identifiers, final double minimum, final double maximum, final Unit<?> unit) {
+        return DefaultParameterDescriptor.create(toMap(identifiers), Double.NaN, minimum, maximum, unit, false);
     }
 
     /**
@@ -227,8 +219,7 @@ public abstract class MathTransformProvider extends DefaultOperationMethod {
      * @return The descriptor for the given identifiers.
      */
     protected static ParameterDescriptorGroup createDescriptorGroup(
-            final ReferenceIdentifier[] identifiers,
-            final GeneralParameterDescriptor[] parameters) {
+            final ReferenceIdentifier[] identifiers, final GeneralParameterDescriptor[] parameters) {
         return new DefaultParameterDescriptorGroup(toMap(identifiers), parameters);
     }
 
@@ -322,10 +313,10 @@ public abstract class MathTransformProvider extends DefaultOperationMethod {
                 /*
                  * Contains sub-group - invokes 'copy' recursively.
                  */
-                final GeneralParameterDescriptor descriptor = copy.getDescriptor().descriptor(name);
+                final GeneralParameterDescriptor descriptor =
+                        copy.getDescriptor().descriptor(name);
                 if (descriptor instanceof ParameterDescriptorGroup) {
-                    final ParameterValueGroup groups =
-                            (ParameterValueGroup) descriptor.createValue();
+                    final ParameterValueGroup groups = (ParameterValueGroup) descriptor.createValue();
                     copy((ParameterValueGroup) value, groups);
                     values.groups(name).add(groups);
                     continue;
@@ -342,10 +333,8 @@ public abstract class MathTransformProvider extends DefaultOperationMethod {
             try {
                 target = copy.parameter(name);
             } catch (ParameterNotFoundException cause) {
-                final InvalidParameterNameException exception =
-                        new InvalidParameterNameException(
-                                MessageFormat.format(ErrorKeys.UNEXPECTED_PARAMETER_$1, name),
-                                name);
+                final InvalidParameterNameException exception = new InvalidParameterNameException(
+                        MessageFormat.format(ErrorKeys.UNEXPECTED_PARAMETER_$1, name), name);
                 exception.initCause(cause);
                 throw exception;
             }
@@ -375,8 +364,7 @@ public abstract class MathTransformProvider extends DefaultOperationMethod {
      * @throws ParameterNotFoundException if the parameter is not found.
      */
     protected static <T> ParameterValue<T> getParameter(
-            final ParameterDescriptor<T> param, final ParameterValueGroup group)
-            throws ParameterNotFoundException {
+            final ParameterDescriptor<T> param, final ParameterValueGroup group) throws ParameterNotFoundException {
         /*
          * Search for an identifier matching the group's authority, if any.
          * This is needed if the parameter values group was created from an
@@ -422,8 +410,7 @@ public abstract class MathTransformProvider extends DefaultOperationMethod {
      * @throws ParameterNotFoundException if the parameter is not found.
      * @todo Move to the {@link org.geotools.parameter.Parameters} class.
      */
-    protected static <T> T value(
-            final ParameterDescriptor<T> param, final ParameterValueGroup group)
+    protected static <T> T value(final ParameterDescriptor<T> param, final ParameterValueGroup group)
             throws ParameterNotFoundException {
         final ParameterValue<T> value = getParameter(param, group);
         return (value != null) ? value.getValue() : null;
@@ -441,8 +428,7 @@ public abstract class MathTransformProvider extends DefaultOperationMethod {
      * @throws ParameterNotFoundException if the parameter is not found.
      * @todo Move to the {@link org.geotools.parameter.Parameters} class.
      */
-    protected static String stringValue(
-            final ParameterDescriptor<?> param, final ParameterValueGroup group)
+    protected static String stringValue(final ParameterDescriptor<?> param, final ParameterValueGroup group)
             throws ParameterNotFoundException {
         final ParameterValue<?> value = getParameter(param, group);
         return (value != null) ? value.stringValue() : null;
@@ -460,8 +446,7 @@ public abstract class MathTransformProvider extends DefaultOperationMethod {
      * @throws ParameterNotFoundException if the parameter is not found.
      * @todo Move to the {@link org.geotools.parameter.Parameters} class.
      */
-    protected static int intValue(
-            final ParameterDescriptor<?> param, final ParameterValueGroup group)
+    protected static int intValue(final ParameterDescriptor<?> param, final ParameterValueGroup group)
             throws ParameterNotFoundException {
         final ParameterValue<?> value = getParameter(param, group);
         return (value != null) ? value.intValue() : 0;
@@ -480,14 +465,11 @@ public abstract class MathTransformProvider extends DefaultOperationMethod {
      * @throws ParameterNotFoundException if the parameter is not found.
      * @todo Move to the {@link org.geotools.parameter.Parameters} class.
      */
-    protected static double doubleValue(
-            final ParameterDescriptor<?> param, final ParameterValueGroup group)
+    protected static double doubleValue(final ParameterDescriptor<?> param, final ParameterValueGroup group)
             throws ParameterNotFoundException {
         final Unit<?> unit = param.getUnit();
         final ParameterValue<?> value = getParameter(param, group);
-        return (value == null)
-                ? Double.NaN
-                : (unit != null) ? value.doubleValue(unit) : value.doubleValue();
+        return (value == null) ? Double.NaN : (unit != null) ? value.doubleValue(unit) : value.doubleValue();
     }
 
     /**

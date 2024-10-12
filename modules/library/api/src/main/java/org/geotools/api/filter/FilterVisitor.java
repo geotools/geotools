@@ -162,9 +162,8 @@ public interface FilterVisitor {
     Object visit(TOverlaps contains, Object extraData);
 
     default Object visit(NativeFilter nativeFilter, Object extraData) {
-        throw new UnsupportedOperationException(
-                String.format(
-                        "Native filters are not supported by visitor '%s'.",
-                        this.getClass().getName()));
+        throw new UnsupportedOperationException(String.format(
+                "Native filters are not supported by visitor '%s'.",
+                this.getClass().getName()));
     }
 }

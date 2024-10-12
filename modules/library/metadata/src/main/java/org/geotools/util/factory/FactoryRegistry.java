@@ -130,8 +130,7 @@ public class FactoryRegistry {
      * need to be scanned for plugins. After a category has been first used, it is removed from this
      * set so we don't scan for plugins again.
      */
-    private final Set<Class<?>> needScanForPlugins =
-            Collections.newSetFromMap(new ConcurrentHashMap<>());
+    private final Set<Class<?>> needScanForPlugins = Collections.newSetFromMap(new ConcurrentHashMap<>());
 
     /**
      * Categories under scanning. This is used by {@link #scanForPlugins(Collection,Class)} as a
@@ -229,9 +228,7 @@ public class FactoryRegistry {
      * @since 19
      */
     public <T> Stream<T> getFactories(
-            final Class<T> category,
-            final Predicate<? super T> factoryFilter,
-            final boolean useOrdering) {
+            final Class<T> category, final Predicate<? super T> factoryFilter, final boolean useOrdering) {
         Stream<T> factories = getFactories(category, useOrdering);
         return factoryFilter == null ? factories : factories.filter(factoryFilter);
     }
@@ -250,8 +247,7 @@ public class FactoryRegistry {
      * @return Factories ready to use for the specified category, filter and hints.
      * @since 19
      */
-    public <T> Stream<T> getFactories(
-            final Class<T> category, final Predicate<? super T> filter, final Hints hints) {
+    public <T> Stream<T> getFactories(final Class<T> category, final Predicate<? super T> filter, final Hints hints) {
         /*
          * The implementation of this method is very similar to the 'getUnfilteredFactories'
          * one except for filter handling. See the comments in 'getUnfilteredFactories' for
@@ -264,8 +260,7 @@ public class FactoryRegistry {
         }
         synchronizeIteratorProviders();
         scanForPluginsIfNeeded(category);
-        Predicate<T> isAcceptable =
-                factory -> isAcceptable(category.cast(factory), category, hints, filter);
+        Predicate<T> isAcceptable = factory -> isAcceptable(category.cast(factory), category, hints, filter);
         return getFactories(category, isAcceptable, true);
     }
 
@@ -331,10 +326,7 @@ public class FactoryRegistry {
      * @see FactoryCreator#getFactory
      */
     public <T> T getFactory(
-            final Class<T> category,
-            final Predicate<? super T> filter,
-            Hints hints,
-            final Hints.Key key)
+            final Class<T> category, final Predicate<? super T> filter, Hints hints, final Hints.Key key)
             throws FactoryRegistryException {
         synchronizeIteratorProviders();
         final boolean debug = LOGGER.isLoggable(DEBUG_LEVEL);
@@ -351,8 +343,7 @@ public class FactoryRegistry {
                 if (debug) {
                     debug("THROW", category, key, "unexpected type:", valueClass);
                 }
-                throw new IllegalArgumentException(
-                        MessageFormat.format(ErrorKeys.ILLEGAL_KEY_$1, key));
+                throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.ILLEGAL_KEY_$1, key));
             }
             if (hints != null) {
                 final Object hint = hints.get(key);
@@ -406,16 +397,10 @@ public class FactoryRegistry {
                             if (debug) {
                                 debug("CHECK", category, key, "consider hint[" + i + ']', type);
                             }
-                            final Optional<T> candidate =
-                                    getFactoryImplementation(category, type, filter, hints);
+                            final Optional<T> candidate = getFactoryImplementation(category, type, filter, hints);
                             if (candidate.isPresent()) {
                                 if (debug) {
-                                    debug(
-                                            "RETURN",
-                                            category,
-                                            key,
-                                            "found implementation",
-                                            candidate.getClass());
+                                    debug("RETURN", category, key, "found implementation", candidate.getClass());
                                 }
                                 return candidate.get();
                             }
@@ -432,8 +417,7 @@ public class FactoryRegistry {
         if (debug && implementation != null) {
             debug("CHECK", category, key, "consider hint[last]", implementation);
         }
-        final Optional<T> candidate =
-                getFactoryImplementation(category, implementation, filter, hints);
+        final Optional<T> candidate = getFactoryImplementation(category, implementation, filter, hints);
         if (candidate.isPresent()) {
             if (debug) {
                 debug("RETURN", category, key, "found implementation", candidate.getClass());
@@ -444,8 +428,7 @@ public class FactoryRegistry {
             debug("THROW", category, key, "could not find implementation.", null);
         }
         final Object arg0 = implementation != null ? implementation : category;
-        throw new FactoryNotFoundException(
-                MessageFormat.format(ErrorKeys.FACTORY_NOT_FOUND_$1, arg0));
+        throw new FactoryNotFoundException(MessageFormat.format(ErrorKeys.FACTORY_NOT_FOUND_$1, arg0));
     }
 
     /**
@@ -508,16 +491,12 @@ public class FactoryRegistry {
             final Class<?> implementation,
             final Predicate<? super T> filter,
             final Hints hints) {
-        Optional<T> factory =
-                getUnfilteredFactories(category)
-                        // Implementation class must be tested before 'isAcceptable'
-                        // in order to avoid StackOverflowError in some situations.
-                        .filter(
-                                candidate ->
-                                        implementation == null
-                                                || implementation.isInstance(candidate))
-                        .filter(candidate -> isAcceptable(candidate, category, hints, filter))
-                        .findFirst();
+        Optional<T> factory = getUnfilteredFactories(category)
+                // Implementation class must be tested before 'isAcceptable'
+                // in order to avoid StackOverflowError in some situations.
+                .filter(candidate -> implementation == null || implementation.isInstance(candidate))
+                .filter(candidate -> isAcceptable(candidate, category, hints, filter))
+                .findFirst();
         if (factory.isPresent()) {
             return factory;
         }
@@ -569,10 +548,7 @@ public class FactoryRegistry {
      * @return {@code true} if the {@code factory} meets the user requirements.
      */
     final <T> boolean isAcceptable(
-            final T candidate,
-            final Class<T> category,
-            final Hints hints,
-            final Predicate<? super T> candidateFilter) {
+            final T candidate, final Class<T> category, final Hints hints, final Predicate<? super T> candidateFilter) {
         if (candidateFilter != null && !candidateFilter.test(candidate)) {
             return false;
         }
@@ -611,10 +587,7 @@ public class FactoryRegistry {
      * @return {@code true} if the {@code factory} meets the hints requirements.
      */
     private boolean usesAcceptableHints(
-            final Factory factory,
-            final Class<?> category,
-            final Hints hints,
-            Set<Factory> alreadyDone) {
+            final Factory factory, final Class<?> category, final Hints hints, Set<Factory> alreadyDone) {
         /*
          * Ask for implementation hints with special care against infinite recursivity.
          * Some implementations use deferred algorithms fetching dependencies only when
@@ -736,8 +709,7 @@ public class FactoryRegistry {
      * @param hints The user requirements, or {@code null} if none.
      * @return {@code true} if the {@code provider} meets the user requirements.
      */
-    protected <T> boolean isAcceptable(
-            final T factory, final Class<T> category, final Hints hints) {
+    protected <T> boolean isAcceptable(final T factory, final Class<T> category, final Hints hints) {
         return true;
     }
 
@@ -858,8 +830,7 @@ public class FactoryRegistry {
      * @param category The category to scan for plug-ins.
      * @see ServiceLoader#load(Class, ClassLoader)
      */
-    private <T> void scanForPlugins(
-            final Collection<ClassLoader> loaders, final Class<T> category) {
+    private <T> void scanForPlugins(final Collection<ClassLoader> loaders, final Class<T> category) {
         if (!scanningCategories.addAndCheck(category)) {
             throw new RecursiveSearchException(category);
         }
@@ -958,8 +929,7 @@ public class FactoryRegistry {
      * @param message A buffer where to write the logging message.
      * @return {@code true} if at least one factory has been registered.
      */
-    private <T> boolean register(
-            final Iterator<T> factories, final Class<T> category, final StringBuilder message) {
+    private <T> boolean register(final Iterator<T> factories, final Class<T> category, final StringBuilder message) {
         boolean newFactories = false;
         final String lineSeparator = System.getProperty("line.separator", "\n");
         while (factories.hasNext()) {
@@ -1064,9 +1034,7 @@ public class FactoryRegistry {
                                 }
                             } catch (Exception exception) {
                                 throw new FactoryRegistryException(
-                                        MessageFormat.format(
-                                                ErrorKeys.CANT_CREATE_FACTORY_$1, classname),
-                                        exception);
+                                        MessageFormat.format(ErrorKeys.CANT_CREATE_FACTORY_$1, classname), exception);
                             }
                         /*
                          * Put this factory in front of every other factories (including the ones loaded
@@ -1095,8 +1063,7 @@ public class FactoryRegistry {
     }
 
     /** Invoked when a factory can't be loaded. Log a warning, but do not stop the process. */
-    private static void loadingFailure(
-            final Class<?> category, final Throwable error, final boolean showStackTrace) {
+    private static void loadingFailure(final Class<?> category, final Throwable error, final boolean showStackTrace) {
         final String name = Classes.getShortName(category);
         final StringBuilder cause = new StringBuilder(Classes.getShortClassName(error));
         final String message = error.getLocalizedMessage();
@@ -1105,8 +1072,7 @@ public class FactoryRegistry {
             cause.append(message);
         }
         final LogRecord record =
-                Loggings.format(
-                        Level.WARNING, LoggingKeys.CANT_LOAD_SERVICE_$2, name, cause.toString());
+                Loggings.format(Level.WARNING, LoggingKeys.CANT_LOAD_SERVICE_$2, name, cause.toString());
         if (showStackTrace) {
             record.setThrown(error);
         }
@@ -1119,8 +1085,7 @@ public class FactoryRegistry {
     /** Prepares a message to be logged if any factory has been registered. */
     private static StringBuilder getLogHeader(final Class<?> category) {
         return new StringBuilder(
-                Loggings.getResources(null)
-                        .getString(LoggingKeys.FACTORY_IMPLEMENTATIONS_$1, category));
+                Loggings.getResources(null).getString(LoggingKeys.FACTORY_IMPLEMENTATIONS_$1, category));
     }
 
     /** Log the specified message after all factories for a given category have been registered. */
@@ -1141,29 +1106,27 @@ public class FactoryRegistry {
      * @see FactoryIteratorProviders#addFactoryIteratorProvider
      */
     private void synchronizeIteratorProviders() {
-        final FactoryIteratorProvider[] newProviders =
-                globalConfiguration.synchronizeIteratorProviders();
+        final FactoryIteratorProvider[] newProviders = globalConfiguration.synchronizeIteratorProviders();
         if (newProviders == null) {
             return;
         }
 
         registry.streamCategories()
                 .filter(category -> !needScanForPlugins.contains(category))
-                .forEach(
-                        category -> {
-                            /*
-                             * Register immediately the factories only if some other factories were already
-                             * registered for this category,  because in such case scanForPlugin() will not
-                             * be invoked automatically. If no factory are registered for this category, do
-                             * nothing - we will rely on the lazy invocation of scanForPlugins() when first
-                             * needed. We perform this check because getFactory(category).hasNext()
-                             * is the criterion used by FactoryRegistry in order to decide if it should invoke
-                             * automatically scanForPlugins().
-                             */
-                            for (FactoryIteratorProvider newProvider : newProviders) {
-                                register(newProvider, category);
-                            }
-                        });
+                .forEach(category -> {
+                    /*
+                     * Register immediately the factories only if some other factories were already
+                     * registered for this category,  because in such case scanForPlugin() will not
+                     * be invoked automatically. If no factory are registered for this category, do
+                     * nothing - we will rely on the lazy invocation of scanForPlugins() when first
+                     * needed. We perform this check because getFactory(category).hasNext()
+                     * is the criterion used by FactoryRegistry in order to decide if it should invoke
+                     * automatically scanForPlugins().
+                     */
+                    for (FactoryIteratorProvider newProvider : newProviders) {
+                        register(newProvider, category);
+                    }
+                });
     }
 
     /** Registers every factories from the specified provider for the given category. */
@@ -1240,8 +1203,7 @@ public class FactoryRegistry {
      *
      * @return if this call establishes a new order
      */
-    public <T> boolean setOrdering(
-            final Class<T> category, final T firstFactory, final T secondFactory) {
+    public <T> boolean setOrdering(final Class<T> category, final T firstFactory, final T secondFactory) {
         if (firstFactory == secondFactory) {
             throw new IllegalArgumentException("Factories must not be the same instance.");
         }
@@ -1352,8 +1314,7 @@ public class FactoryRegistry {
      * @param category The category to clear instance order for.
      * @return {@code true} if that ordering was previously defined
      */
-    public <T> boolean unsetOrdering(
-            final Class<T> category, final T firstFactory, final T secondFactory) {
+    public <T> boolean unsetOrdering(final Class<T> category, final T firstFactory, final T secondFactory) {
         if (firstFactory == secondFactory) {
             throw new IllegalArgumentException("Factories must not be the same instance.");
         }

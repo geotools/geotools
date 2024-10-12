@@ -51,8 +51,7 @@ public class MemoryFeatureReaderTest extends DataTestCase {
         int currentFeatureCount = 0;
 
         try (FeatureReader<SimpleFeatureType, SimpleFeature> featureReader =
-                memoryDataStore.getFeatureReader(
-                        new Query(roadType.getTypeName(), Filter.INCLUDE), transaction)) {
+                memoryDataStore.getFeatureReader(new Query(roadType.getTypeName(), Filter.INCLUDE), transaction)) {
 
             // start iterating through content
             if (featureReader.hasNext()) {
@@ -74,8 +73,7 @@ public class MemoryFeatureReaderTest extends DataTestCase {
         int currentFeatureCount = 0;
 
         try (FeatureReader<SimpleFeatureType, SimpleFeature> featureReader =
-                memoryDataStore.getFeatureReader(
-                        new Query(roadType.getTypeName(), Filter.INCLUDE), transaction)) {
+                memoryDataStore.getFeatureReader(new Query(roadType.getTypeName(), Filter.INCLUDE), transaction)) {
 
             // start iterating through content
             if (featureReader.hasNext()) {
@@ -95,8 +93,7 @@ public class MemoryFeatureReaderTest extends DataTestCase {
 
                 transaction.commit();
 
-                assertReaderHasFeatureCount(
-                        expectedFeatureCount, currentFeatureCount, featureReader);
+                assertReaderHasFeatureCount(expectedFeatureCount, currentFeatureCount, featureReader);
             }
         }
     }
@@ -116,8 +113,6 @@ public class MemoryFeatureReaderTest extends DataTestCase {
         }
 
         assertEquals(
-                "a write in MemoryDataStore should not 'destroy' readers",
-                expectedFeatureCount,
-                currentFeatureCount);
+                "a write in MemoryDataStore should not 'destroy' readers", expectedFeatureCount, currentFeatureCount);
     }
 }

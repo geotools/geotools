@@ -70,10 +70,7 @@ public final class FactoryRegistryTest {
      */
     @SuppressWarnings("PMD.UnusedPrivateMethod") // PMD getting confused here?
     private FactoryRegistry getRegistry(
-            final boolean creator,
-            final Factory factory1,
-            final Factory factory2,
-            final Factory factory3) {
+            final boolean creator, final Factory factory1, final Factory factory2, final Factory factory3) {
         final Set<Class<?>> categories = Collections.singleton(DummyFactory.class);
         // The above line fails without the cast, I don't know why...
         final FactoryRegistry registry;
@@ -85,15 +82,9 @@ public final class FactoryRegistryTest {
         registry.registerFactory(factory1);
         registry.registerFactory(factory2);
         registry.registerFactory(factory3);
-        assertTrue(
-                registry.setOrdering(
-                        DummyFactory.class, (DummyFactory) factory1, (DummyFactory) factory2));
-        assertTrue(
-                registry.setOrdering(
-                        DummyFactory.class, (DummyFactory) factory2, (DummyFactory) factory3));
-        assertTrue(
-                registry.setOrdering(
-                        DummyFactory.class, (DummyFactory) factory1, (DummyFactory) factory3));
+        assertTrue(registry.setOrdering(DummyFactory.class, (DummyFactory) factory1, (DummyFactory) factory2));
+        assertTrue(registry.setOrdering(DummyFactory.class, (DummyFactory) factory2, (DummyFactory) factory3));
+        assertTrue(registry.setOrdering(DummyFactory.class, (DummyFactory) factory1, (DummyFactory) factory3));
 
         final List<?> factories =
                 registry.getFactories(DummyFactory.class, null, null).collect(toList());
@@ -183,10 +174,8 @@ public final class FactoryRegistryTest {
         /*
          * Same as above, but with classes specified in an array.
          */
-        hints =
-                new Hints(
-                        DummyFactory.DUMMY_FACTORY,
-                        new Class<?>[] {DummyFactory.Example3.class, DummyFactory.Example2.class});
+        hints = new Hints(
+                DummyFactory.DUMMY_FACTORY, new Class<?>[] {DummyFactory.Example3.class, DummyFactory.Example2.class});
         factory = registry.getFactory(DummyFactory.class, null, hints, key);
         assertSame("Factory of class #3 were requested. ", factory3, factory);
         /*
@@ -212,10 +201,8 @@ public final class FactoryRegistryTest {
          * In the particular case of this test suite, this extra step would not be needed
          * neither if factory #1 was last in the ordering rather than first.
          */
-        final Hints implementations =
-                new Hints(
-                        DummyFactory.DUMMY_FACTORY,
-                        new Class[] {DummyFactory.Example2.class, DummyFactory.Example3.class});
+        final Hints implementations = new Hints(
+                DummyFactory.DUMMY_FACTORY, new Class[] {DummyFactory.Example2.class, DummyFactory.Example3.class});
         /*
          * Now search NOT for factory #1, but rather for a factory using #1 internally.
          * This is the case of factory #2.
@@ -259,10 +246,7 @@ public final class FactoryRegistryTest {
         hints = new Hints(Hints.KEY_INTERPOLATION, Hints.VALUE_INTERPOLATION_BICUBIC);
         try {
             factory = registry.getFactory(DummyFactory.class, null, hints, key);
-            fail(
-                    "Found or created factory "
-                            + factory
-                            + ", while it should not have been allowed.");
+            fail("Found or created factory " + factory + ", while it should not have been allowed.");
         } catch (FactoryNotFoundException exception) {
             // This is the expected exception. Continue...
         }
@@ -277,10 +261,7 @@ public final class FactoryRegistryTest {
         registry.registerFactory(factory5);
         assertTrue(registry.setOrdering(DummyFactory.class, factory1, factory5));
         factory = registry.getFactory(DummyFactory.class, null, hints, key);
-        assertSame(
-                "An instance of Factory #5 should have been created.",
-                factory5.getClass(),
-                factory.getClass());
+        assertSame("An instance of Factory #5 should have been created.", factory5.getClass(), factory.getClass());
         assertNotSame("A NEW instance of Factory #5 should have been created", factory5, factory);
         /*
          * Tries again with a class explicitly specified as an implementation hint.
@@ -289,9 +270,7 @@ public final class FactoryRegistryTest {
         hints.put(DummyFactory.DUMMY_FACTORY, DummyFactory.Example4.class);
         factory = registry.getFactory(DummyFactory.class, null, hints, key);
         assertEquals(
-                "An instance of Factory #4 should have been created.",
-                DummyFactory.Example4.class,
-                factory.getClass());
+                "An instance of Factory #4 should have been created.", DummyFactory.Example4.class, factory.getClass());
     }
 
     @Ignore
@@ -308,10 +287,9 @@ public final class FactoryRegistryTest {
             GeoTools.addClassLoader(cl);
             reg.scanForPlugins();
 
-            Set<String> classes =
-                    reg.getFactories(DummyInterface.class, false)
-                            .map(factory -> factory.getClass().getName())
-                            .collect(toSet());
+            Set<String> classes = reg.getFactories(DummyInterface.class, false)
+                    .map(factory -> factory.getClass().getName())
+                    .collect(toSet());
 
             assertEquals(2, classes.size());
             assertTrue(classes.contains("pkg.Foo"));
@@ -321,8 +299,7 @@ public final class FactoryRegistryTest {
 
     /** Tests for GEOT-2817 */
     @Test
-    public void testLookupWithSameFactoryInTwoClassLoaders()
-            throws IOException, ClassNotFoundException {
+    public void testLookupWithSameFactoryInTwoClassLoaders() throws IOException, ClassNotFoundException {
         // create url to this project's classes
         URL projectClasses = getClass().getResource("/");
         // create 2 classloaders with parent null to avoid delegation to the system class loader !

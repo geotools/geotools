@@ -73,10 +73,9 @@ public class ReprojectingFeatureIterator implements SimpleFeatureIterator {
         this.schema = schema;
         tx = transformer;
 
-        MathTransform transform =
-                ReferencingFactoryFinder.getCoordinateOperationFactory(null)
-                        .createOperation(source, target)
-                        .getMathTransform();
+        MathTransform transform = ReferencingFactoryFinder.getCoordinateOperationFactory(null)
+                .createOperation(source, target)
+                .getMathTransform();
         tx.setMathTransform(transform);
     }
 

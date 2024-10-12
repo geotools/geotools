@@ -41,7 +41,8 @@ import org.locationtech.jts.geom.Point;
 
 public class GeoPkgDataStoreFactoryTest {
 
-    @Rule public TemporaryFolder tmp = new TemporaryFolder(new File("target"));
+    @Rule
+    public TemporaryFolder tmp = new TemporaryFolder(new File("target"));
 
     private static final String dbName = "test.gpkg";
     private static final String dbName2 = "test2.gpkg";
@@ -57,54 +58,44 @@ public class GeoPkgDataStoreFactoryTest {
         AtomicBoolean failed = new AtomicBoolean(false);
         AtomicLong time = new AtomicLong(0);
         CountDownLatch latch = new CountDownLatch(1);
-        Thread thread1 =
-                new Thread(
-                        () -> {
-                            try {
-                                createGeoPackage(dbName2, null, "foo");
-                                Connection connection =
-                                        DriverManager.getConnection(
-                                                "jdbc:sqlite:"
-                                                        + tmp.getRoot().getPath()
-                                                        + File.separator
-                                                        + dbName2);
-                                Statement statement = connection.createStatement();
-                                statement.executeUpdate("PRAGMA locking_mode = EXCLUSIVE");
-                                PreparedStatement preparedStatement =
-                                        connection.prepareStatement(
-                                                "INSERT INTO foo (name) VALUES (?)");
-                                for (int i = 0; i < 100; i++) {
-                                    preparedStatement.setString(1, String.valueOf(i));
-                                    preparedStatement.executeUpdate();
-                                }
-                            } catch (SQLException | IOException e) {
-                                failed.set(true);
-                            } finally {
-                                // Release the latch to allow Thread 2 to proceed
-                                latch.countDown();
-                            }
-                        });
+        Thread thread1 = new Thread(() -> {
+            try {
+                createGeoPackage(dbName2, null, "foo");
+                Connection connection = DriverManager.getConnection(
+                        "jdbc:sqlite:" + tmp.getRoot().getPath() + File.separator + dbName2);
+                Statement statement = connection.createStatement();
+                statement.executeUpdate("PRAGMA locking_mode = EXCLUSIVE");
+                PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO foo (name) VALUES (?)");
+                for (int i = 0; i < 100; i++) {
+                    preparedStatement.setString(1, String.valueOf(i));
+                    preparedStatement.executeUpdate();
+                }
+            } catch (SQLException | IOException e) {
+                failed.set(true);
+            } finally {
+                // Release the latch to allow Thread 2 to proceed
+                latch.countDown();
+            }
+        });
 
-        Thread thread2 =
-                new Thread(
-                        () -> {
-                            long start = System.currentTimeMillis();
-                            try {
-                                // Wait for Thread 1 to acquire the lock and start the transaction
-                                latch.await();
-                                // set the timeout to 1 ms in order to trigger the timeout exception
-                                // as soon as possible
-                                createGeoPackage(dbName2, 1, "moo");
-                                // Thread 2: Test should have timed out due to busy database.
-                                failed.set(true);
-                            } catch (InterruptedException | IOException e) {
-                                failed.set(true);
-                            } catch (RuntimeException re) {
-                                // this is expected because the database is locked
-                                long end = System.currentTimeMillis();
-                                time.set(end - start);
-                            }
-                        });
+        Thread thread2 = new Thread(() -> {
+            long start = System.currentTimeMillis();
+            try {
+                // Wait for Thread 1 to acquire the lock and start the transaction
+                latch.await();
+                // set the timeout to 1 ms in order to trigger the timeout exception
+                // as soon as possible
+                createGeoPackage(dbName2, 1, "moo");
+                // Thread 2: Test should have timed out due to busy database.
+                failed.set(true);
+            } catch (InterruptedException | IOException e) {
+                failed.set(true);
+            } catch (RuntimeException re) {
+                // this is expected because the database is locked
+                long end = System.currentTimeMillis();
+                time.set(end - start);
+            }
+        });
 
         thread1.start();
         thread2.start();
@@ -115,8 +106,7 @@ public class GeoPkgDataStoreFactoryTest {
         assertTrue(time.get() <= 10000);
     }
 
-    private void createGeoPackage(String geoPackageName, Integer connectTimeout, String tableName)
-            throws IOException {
+    private void createGeoPackage(String geoPackageName, Integer connectTimeout, String tableName) throws IOException {
         Map<String, Serializable> map = new HashMap<>();
         map.put(GeoPkgDataStoreFactory.DBTYPE.key, "geopkg");
         map.put(GeoPkgDataStoreFactory.DATABASE.key, geoPackageName);

@@ -44,37 +44,32 @@ public class ConicHandlerFactory implements ProjectionHandlerFactory {
 
     @Override
     public ProjectionHandler getHandler(
-            ReferencedEnvelope renderingEnvelope,
-            CoordinateReferenceSystem sourceCrs,
-            boolean wrap,
-            int maxWraps)
+            ReferencedEnvelope renderingEnvelope, CoordinateReferenceSystem sourceCrs, boolean wrap, int maxWraps)
             throws FactoryException {
         if (renderingEnvelope == null) {
             return null;
         }
 
-        MapProjection mapProjection =
-                CRS.getMapProjection(renderingEnvelope.getCoordinateReferenceSystem());
-        if (mapProjection instanceof LambertConformal
-                || mapProjection instanceof EquidistantConic) {
+        MapProjection mapProjection = CRS.getMapProjection(renderingEnvelope.getCoordinateReferenceSystem());
+        if (mapProjection instanceof LambertConformal || mapProjection instanceof EquidistantConic) {
             ParameterValueGroup params = mapProjection.getParameterValues();
-            double centralMeridian =
-                    params.parameter(AbstractProvider.CENTRAL_MERIDIAN.getName().getCode())
-                            .doubleValue();
+            double centralMeridian = params.parameter(
+                            AbstractProvider.CENTRAL_MERIDIAN.getName().getCode())
+                    .doubleValue();
             double minLat, maxLat;
 
             double latitudeOrigin;
             if (mapProjection instanceof LambertConformal1SP) {
-                latitudeOrigin =
-                        params.parameter(AbstractProvider.LATITUDE_OF_ORIGIN.getName().getCode())
-                                .doubleValue();
+                latitudeOrigin = params.parameter(
+                                AbstractProvider.LATITUDE_OF_ORIGIN.getName().getCode())
+                        .doubleValue();
             } else {
-                double stdParallel1 =
-                        params.parameter(AbstractProvider.STANDARD_PARALLEL_1.getName().getCode())
-                                .doubleValue();
-                double stdParallel2 =
-                        params.parameter(AbstractProvider.STANDARD_PARALLEL_2.getName().getCode())
-                                .doubleValue();
+                double stdParallel1 = params.parameter(
+                                AbstractProvider.STANDARD_PARALLEL_1.getName().getCode())
+                        .doubleValue();
+                double stdParallel2 = params.parameter(
+                                AbstractProvider.STANDARD_PARALLEL_2.getName().getCode())
+                        .doubleValue();
                 latitudeOrigin = (stdParallel1 + stdParallel2) / 2;
             }
             if (latitudeOrigin > 0) {
@@ -87,17 +82,12 @@ public class ConicHandlerFactory implements ProjectionHandlerFactory {
 
             if (centralMeridian != 0) {
                 // we need to divide geometries crossing the central antimeridian in two
-                double antiMeridian =
-                        centralMeridian > 0 ? centralMeridian - 180 : centralMeridian + 180;
-                Polygon beforeAntiMeridian =
-                        JTS.toGeometry(new Envelope(-180, antiMeridian - EPS, minLat, maxLat));
-                Polygon afterAntiMeridian =
-                        JTS.toGeometry(new Envelope(antiMeridian + EPS, 180, minLat, maxLat));
-                MultiPolygon mask =
-                        beforeAntiMeridian
-                                .getFactory()
-                                .createMultiPolygon(
-                                        new Polygon[] {beforeAntiMeridian, afterAntiMeridian});
+                double antiMeridian = centralMeridian > 0 ? centralMeridian - 180 : centralMeridian + 180;
+                Polygon beforeAntiMeridian = JTS.toGeometry(new Envelope(-180, antiMeridian - EPS, minLat, maxLat));
+                Polygon afterAntiMeridian = JTS.toGeometry(new Envelope(antiMeridian + EPS, 180, minLat, maxLat));
+                MultiPolygon mask = beforeAntiMeridian
+                        .getFactory()
+                        .createMultiPolygon(new Polygon[] {beforeAntiMeridian, afterAntiMeridian});
 
                 return new ProjectionHandler(sourceCrs, mask, renderingEnvelope);
             } else {

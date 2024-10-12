@@ -80,8 +80,7 @@ public class Spatial_CapabilitiesTypeBinding extends AbstractComplexBinding {
     @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         return factory.spatialCapabilities(
-                node.getChildValue(GeometryOperand[].class),
-                node.getChildValue(SpatialOperators.class));
+                node.getChildValue(GeometryOperand[].class), node.getChildValue(SpatialOperators.class));
     }
 
     @Override

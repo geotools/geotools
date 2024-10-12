@@ -28,55 +28,48 @@ import org.geotools.util.Converter;
 import org.geotools.util.factory.GeoTools;
 import org.geotools.util.logging.Logging;
 
-abstract class NumericFileNameExtractor<N extends Number & Comparable<N>>
-        extends RegExPropertiesCollector {
+abstract class NumericFileNameExtractor<N extends Number & Comparable<N>> extends RegExPropertiesCollector {
 
     static final NumericConverterFactory factory = new NumericConverterFactory();
 
     static class IntegerFileNameExtractor extends NumericFileNameExtractor<Integer> {
 
-        public IntegerFileNameExtractor(
-                PropertiesCollectorSPI spi, List<String> propertyNames, String regex) {
+        public IntegerFileNameExtractor(PropertiesCollectorSPI spi, List<String> propertyNames, String regex) {
             super(spi, propertyNames, regex, Integer.class);
         }
     }
 
     static class ShortFileNameExtractor extends NumericFileNameExtractor<Short> {
 
-        public ShortFileNameExtractor(
-                PropertiesCollectorSPI spi, List<String> propertyNames, String regex) {
+        public ShortFileNameExtractor(PropertiesCollectorSPI spi, List<String> propertyNames, String regex) {
             super(spi, propertyNames, regex, Short.class);
         }
     }
 
     static class DoubleFileNameExtractor extends NumericFileNameExtractor<Double> {
 
-        public DoubleFileNameExtractor(
-                PropertiesCollectorSPI spi, List<String> propertyNames, String regex) {
+        public DoubleFileNameExtractor(PropertiesCollectorSPI spi, List<String> propertyNames, String regex) {
             super(spi, propertyNames, regex, Double.class);
         }
     }
 
     static class FloatFileNameExtractor extends NumericFileNameExtractor<Float> {
 
-        public FloatFileNameExtractor(
-                PropertiesCollectorSPI spi, List<String> propertyNames, String regex) {
+        public FloatFileNameExtractor(PropertiesCollectorSPI spi, List<String> propertyNames, String regex) {
             super(spi, propertyNames, regex, Float.class);
         }
     }
 
     static class ByteFileNameExtractor extends NumericFileNameExtractor<Byte> {
 
-        public ByteFileNameExtractor(
-                PropertiesCollectorSPI spi, List<String> propertyNames, String regex) {
+        public ByteFileNameExtractor(PropertiesCollectorSPI spi, List<String> propertyNames, String regex) {
             super(spi, propertyNames, regex, Byte.class);
         }
     }
 
     static class LongFileNameExtractor extends NumericFileNameExtractor<Long> {
 
-        public LongFileNameExtractor(
-                PropertiesCollectorSPI spi, List<String> propertyNames, String regex) {
+        public LongFileNameExtractor(PropertiesCollectorSPI spi, List<String> propertyNames, String regex) {
             super(spi, propertyNames, regex, Long.class);
         }
     }
@@ -88,15 +81,11 @@ abstract class NumericFileNameExtractor<N extends Number & Comparable<N>>
     private Converter converter;
 
     public NumericFileNameExtractor(
-            PropertiesCollectorSPI spi,
-            List<String> propertyNames,
-            String regex,
-            final Class<N> targetClass) {
+            PropertiesCollectorSPI spi, List<String> propertyNames, String regex, final Class<N> targetClass) {
         super(spi, propertyNames, regex, false);
 
         this.targetClasse = targetClass;
-        this.converter =
-                factory.createConverter(String.class, targetClasse, GeoTools.getDefaultHints());
+        this.converter = factory.createConverter(String.class, targetClasse, GeoTools.getDefaultHints());
         // if (targetClasse != null) {
         // // look up a converter
         // final Set<ConverterFactory> converters = Converters.getConverterFactories(String.class,
@@ -122,15 +111,13 @@ abstract class NumericFileNameExtractor<N extends Number & Comparable<N>>
             try {
                 values.add(converter.convert(match, targetClasse));
             } catch (Exception e) {
-                if (LOGGER.isLoggable(Level.INFO))
-                    LOGGER.log(Level.INFO, e.getLocalizedMessage(), e);
+                if (LOGGER.isLoggable(Level.INFO)) LOGGER.log(Level.INFO, e.getLocalizedMessage(), e);
             }
         }
 
         // set the properties, if we have some
         if (values.isEmpty()) {
-            if (LOGGER.isLoggable(Level.FINE))
-                LOGGER.fine("No matches found for this property extractor:");
+            if (LOGGER.isLoggable(Level.FINE)) LOGGER.fine("No matches found for this property extractor:");
         }
         int index = 0;
         for (String propertyName : getPropertyNames()) {

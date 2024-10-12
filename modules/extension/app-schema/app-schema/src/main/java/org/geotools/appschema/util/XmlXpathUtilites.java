@@ -39,8 +39,7 @@ public class XmlXpathUtilites {
      * @param doc xml to search
      * @return a list of values matching the xpath in the xml supplied
      */
-    public static List<String> getXPathValues(
-            NamespaceSupport ns, String xpathString, Document doc) {
+    public static List<String> getXPathValues(NamespaceSupport ns, String xpathString, Document doc) {
         JXPathContext context = JXPathUtils.newSafeContext(doc, true, ns, false);
         return getXPathValues(xpathString, context);
     }
@@ -66,8 +65,7 @@ public class XmlXpathUtilites {
      * @param doc xml to search
      * @return the (single) value matching the xpath in the xml supplied
      */
-    public static String getSingleXPathValue(
-            NamespaceSupport ns, String xpathString, Document doc) {
+    public static String getSingleXPathValue(NamespaceSupport ns, String xpathString, Document doc) {
         String id = null;
         try {
             Object ob = JXPathUtils.newSafeContext(doc, true, ns, false).getValue(xpathString);

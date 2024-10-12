@@ -36,15 +36,13 @@ public class StandardDeviationFunctionTest extends FunctionTestSupport {
 
     @Test
     public void testInstance() {
-        Function stdDev =
-                ff.function("StandardDeviation", ff.literal(new DefaultFeatureCollection()));
+        Function stdDev = ff.function("StandardDeviation", ff.literal(new DefaultFeatureCollection()));
         assertNotNull(stdDev);
     }
 
     @Test
     public void testGetName() {
-        Function equInt =
-                ff.function("StandardDeviation", ff.literal(new DefaultFeatureCollection()));
+        Function equInt = ff.function("StandardDeviation", ff.literal(new DefaultFeatureCollection()));
         LOGGER.finer("testGetName");
         assertEquals("StandardDeviation", equInt.getName());
     }
@@ -55,8 +53,7 @@ public class StandardDeviationFunctionTest extends FunctionTestSupport {
 
         Literal classes = ff.literal(3);
         PropertyName exp = ff.property("foo");
-        StandardDeviationFunction func =
-                (StandardDeviationFunction) ff.function("StandardDeviation", exp, classes);
+        StandardDeviationFunction func = (StandardDeviationFunction) ff.function("StandardDeviation", exp, classes);
         assertEquals(3, func.getClasses());
         classes = ff.literal(12);
         func = (StandardDeviationFunction) ff.function("StandardDeviation", exp, classes);
@@ -71,8 +68,7 @@ public class StandardDeviationFunctionTest extends FunctionTestSupport {
         Function standardDeviation = ff.function("StandardDeviation", exp, classes);
         assertNotNull("step 1 - standard deviation function", standardDeviation);
 
-        final Classifier classifer =
-                standardDeviation.evaluate(featureCollection, Classifier.class);
+        final Classifier classifer = standardDeviation.evaluate(featureCollection, Classifier.class);
         featureCollection.accepts(
                 f -> {
                     SimpleFeature feature = (SimpleFeature) f;
@@ -145,12 +141,10 @@ public class StandardDeviationFunctionTest extends FunctionTestSupport {
     public void testPercentagesOddClassNum() {
         Literal classes = ff.literal(5);
         PropertyName exp = ff.property("foo");
-        Function standardDeviation =
-                ff.function("StandardDeviation", exp, classes, ff.literal(true));
+        Function standardDeviation = ff.function("StandardDeviation", exp, classes, ff.literal(true));
         assertNotNull("step 1 - standard deviation function", standardDeviation);
 
-        final Classifier classifier =
-                standardDeviation.evaluate(stddevCollection, Classifier.class);
+        final Classifier classifier = standardDeviation.evaluate(stddevCollection, Classifier.class);
         double[] percentages = classifier.getPercentages();
         assertNotNull(percentages);
         assertEquals(5, percentages.length);
@@ -167,12 +161,10 @@ public class StandardDeviationFunctionTest extends FunctionTestSupport {
     public void testPercentagesEvenClassNum() {
         Literal classes = ff.literal(6);
         PropertyName exp = ff.property("foo");
-        Function standardDeviation =
-                ff.function("StandardDeviation", exp, classes, ff.literal(true));
+        Function standardDeviation = ff.function("StandardDeviation", exp, classes, ff.literal(true));
         assertNotNull("step 1 - standard deviation function", standardDeviation);
 
-        final Classifier classifier =
-                standardDeviation.evaluate(stddevCollection, Classifier.class);
+        final Classifier classifier = standardDeviation.evaluate(stddevCollection, Classifier.class);
         double[] percentages = classifier.getPercentages();
         assertNotNull(percentages);
         assertEquals(6, percentages.length);

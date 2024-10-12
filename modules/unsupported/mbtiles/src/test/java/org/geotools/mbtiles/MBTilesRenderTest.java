@@ -134,13 +134,10 @@ public class MBTilesRenderTest {
         g.setColor(Color.white);
         g.fillRect(0, 0, w, h);
         renderer.paint(
-                g,
-                new Rectangle(0, 0, w, h),
-                new ReferencedEnvelope(4000000, 5500000, 6400000, 8400000, utm32s));
+                g, new Rectangle(0, 0, w, h), new ReferencedEnvelope(4000000, 5500000, 6400000, 8400000, utm32s));
         g.dispose();
 
-        File expected =
-                new File("src/test/resources/org/geotools/mbtiles/madagascar_reprojected.png");
+        File expected = new File("src/test/resources/org/geotools/mbtiles/madagascar_reprojected.png");
         ImageAssert.assertEquals(expected, image, (int) (w * h * 0.05));
     }
 
@@ -175,8 +172,7 @@ public class MBTilesRenderTest {
                 new Rectangle(0, 0, w, h),
                 new ReferencedEnvelope(4700000, 5700000, -3000000, -1300000, DEFAULT_CRS));
         g.dispose();
-        File expected =
-                new File("src/test/resources/org/geotools/mbtiles/overgeneralized_madagascar.png");
+        File expected = new File("src/test/resources/org/geotools/mbtiles/overgeneralized_madagascar.png");
         ImageAssert.assertEquals(expected, image, (int) (w * h * 0.05));
     }
 
@@ -198,17 +194,11 @@ public class MBTilesRenderTest {
         int w = 440;
         int h = 330;
         ContentFeatureSource fs = store.getFeatureSource("manypoints_test");
-        ReferencedEnvelope bbox =
-                new ReferencedEnvelope(
-                        4254790.681588205,
-                        4619242.456803064,
-                        4701182.96838953,
-                        4977579.240638782,
-                        DEFAULT_CRS);
+        ReferencedEnvelope bbox = new ReferencedEnvelope(
+                4254790.681588205, 4619242.456803064, 4701182.96838953, 4977579.240638782, DEFAULT_CRS);
         BufferedImage transformationImg = getImage(w, h, bbox, fs, styleTransformation);
         BufferedImage noTransformationImg = getImage(w, h, bbox, fs, styleNoTransformation);
-        File expectedT =
-                new File("src/test/resources/org/geotools/mbtiles/many_points_transformed.png");
+        File expectedT = new File("src/test/resources/org/geotools/mbtiles/many_points_transformed.png");
         File expected = new File("src/test/resources/org/geotools/mbtiles/many_points.png");
         ImageAssert.assertEquals(expectedT, transformationImg, (int) (w * h * 0.05));
         ImageAssert.assertEquals(expected, noTransformationImg, (int) (w * h * 0.05));
@@ -232,8 +222,7 @@ public class MBTilesRenderTest {
         return ((NamedLayer) sld.getStyledLayers()[0]).getStyles()[0];
     }
 
-    private BufferedImage getImage(
-            int w, int h, ReferencedEnvelope bbox, FeatureSource fs, Style style) {
+    private BufferedImage getImage(int w, int h, ReferencedEnvelope bbox, FeatureSource fs, Style style) {
         FeatureLayer layer = new FeatureLayer(fs, style);
 
         MapContent mc = new MapContent();
@@ -257,12 +246,7 @@ public class MBTilesRenderTest {
         Object pixel = raster.getDataElements(i, j, null);
         Color actual;
         if (cm.hasAlpha()) {
-            actual =
-                    new Color(
-                            cm.getRed(pixel),
-                            cm.getGreen(pixel),
-                            cm.getBlue(pixel),
-                            cm.getAlpha(pixel));
+            actual = new Color(cm.getRed(pixel), cm.getGreen(pixel), cm.getBlue(pixel), cm.getAlpha(pixel));
         } else {
             actual = new Color(cm.getRed(pixel), cm.getGreen(pixel), cm.getBlue(pixel), 255);
         }

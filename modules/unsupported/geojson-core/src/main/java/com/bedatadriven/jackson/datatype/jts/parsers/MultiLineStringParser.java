@@ -42,8 +42,7 @@ public class MultiLineStringParser extends BaseParser implements GeometryParser<
     private LineString[] lineStringsFromJson(JsonNode array) {
         LineString[] strings = new LineString[array.size()];
         for (int i = 0; i != array.size(); ++i) {
-            strings[i] =
-                    geometryFactory.createLineString(PointParser.coordinatesFromJson(array.get(i)));
+            strings[i] = geometryFactory.createLineString(PointParser.coordinatesFromJson(array.get(i)));
         }
         return strings;
     }

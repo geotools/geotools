@@ -37,24 +37,17 @@ public final class DefaultCartesianCSTest {
     @Test
     public void testAxis() {
         try {
-            new DefaultCartesianCS(
-                    "Test",
-                    DefaultCoordinateSystemAxis.LONGITUDE,
-                    DefaultCoordinateSystemAxis.LATITUDE);
+            new DefaultCartesianCS("Test", DefaultCoordinateSystemAxis.LONGITUDE, DefaultCoordinateSystemAxis.LATITUDE);
             fail("Angular units should not be accepted.");
         } catch (IllegalArgumentException e) {
             // Expected exception: illegal angular units.
         }
 
         // Legal CS (the most usual one).
-        new DefaultCartesianCS(
-                "Test", DefaultCoordinateSystemAxis.EASTING, DefaultCoordinateSystemAxis.NORTHING);
+        new DefaultCartesianCS("Test", DefaultCoordinateSystemAxis.EASTING, DefaultCoordinateSystemAxis.NORTHING);
 
         try {
-            new DefaultCartesianCS(
-                    "Test",
-                    DefaultCoordinateSystemAxis.SOUTHING,
-                    DefaultCoordinateSystemAxis.NORTHING);
+            new DefaultCartesianCS("Test", DefaultCoordinateSystemAxis.SOUTHING, DefaultCoordinateSystemAxis.NORTHING);
             fail("Colinear units should not be accepted.");
         } catch (IllegalArgumentException e) {
             // Expected exception: colinear axis.
@@ -130,9 +123,7 @@ public final class DefaultCartesianCSTest {
 
     /** Creates a coordinate system with the specified axis directions. */
     private static DefaultCartesianCS create(final String x, final String y) {
-        return create(
-                DefaultCoordinateSystemAxis.getDirection(x),
-                DefaultCoordinateSystemAxis.getDirection(y));
+        return create(DefaultCoordinateSystemAxis.getDirection(x), DefaultCoordinateSystemAxis.getDirection(y));
     }
 
     /** Tests ordering with a CS created from the specified axis. */
@@ -146,10 +137,7 @@ public final class DefaultCartesianCSTest {
      * it and compare with the expected axis.
      */
     private static void assertOrdered(
-            final String testX,
-            final String testY,
-            final String expectedX,
-            final String expectedY) {
+            final String testX, final String testY, final String expectedX, final String expectedY) {
         final CoordinateSystem cs = AbstractCS.standard(create(testX, testY));
         assertTrue(CRS.equalsIgnoreMetadata(create(expectedX, expectedY), cs));
     }

@@ -56,8 +56,7 @@ public class CoverageSlicesCatalogSource implements GranuleSource {
         Filter filter = q.getFilter();
         q.setFilter(filter);
         List<CoverageSlice> granules = innerCatalog.getGranules(q);
-        SimpleFeatureCollection collection =
-                new ListFeatureCollection(innerCatalog.getSchema(typeName));
+        SimpleFeatureCollection collection = new ListFeatureCollection(innerCatalog.getSchema(typeName));
         for (CoverageSlice granule : granules) {
             ((ListFeatureCollection) collection).add(granule.getOriginator());
         }

@@ -127,8 +127,7 @@ public class CatalogBuilderTest extends Assert {
         final ParameterValue<Boolean> useJai = AbstractGridFormat.USE_JAI_IMAGEREAD.createValue();
         useJai.setValue(false);
 
-        final ParameterValue<String> tileSize =
-                AbstractGridFormat.SUGGESTED_TILE_SIZE.createValue();
+        final ParameterValue<String> tileSize = AbstractGridFormat.SUGGESTED_TILE_SIZE.createValue();
         tileSize.setValue("128,128");
 
         // build a relative index and then make it run
@@ -137,7 +136,8 @@ public class CatalogBuilderTest extends Assert {
         c1.setParameter(Prop.LOCATION_ATTRIBUTE, "location");
         c1.setParameter(Prop.ABSOLUTE_PATH, "false");
         c1.setParameter(Prop.ROOT_MOSAIC_DIR, TestData.file(this, "/overview/0").toString());
-        c1.setParameter(Prop.INDEXING_DIRECTORIES, TestData.file(this, "/overview/0").toString());
+        c1.setParameter(
+                Prop.INDEXING_DIRECTORIES, TestData.file(this, "/overview/0").toString());
         //		c1.setIndexName("shpindex");
         //		c1.setLocationAttribute("location");
         //		c1.setAbsolute(false);
@@ -146,16 +146,13 @@ public class CatalogBuilderTest extends Assert {
         //	c1.setIndexingDirectories(Arrays.asList(TestData.file(this,"/overview/0").toString()));
         assertNotNull(c1.toString());
         ImageMosaicEventHandlers eventHandler = new ImageMosaicEventHandlers();
-        final ImageMosaicConfigHandler catalogHandler =
-                new ImageMosaicConfigHandler(c1, eventHandler);
+        final ImageMosaicConfigHandler catalogHandler = new ImageMosaicConfigHandler(c1, eventHandler);
         // TODO
         // build the index
-        ImageMosaicDirectoryWalker builder =
-                new ImageMosaicDirectoryWalker(catalogHandler, eventHandler);
+        ImageMosaicDirectoryWalker builder = new ImageMosaicDirectoryWalker(catalogHandler, eventHandler);
         eventHandler.addProcessingEventListener(new CatalogBuilderListener());
         builder.run();
-        final File relativeMosaic =
-                TestData.file(this, "/overview/" + c1.getParameter(Prop.INDEX_NAME) + ".shp");
+        final File relativeMosaic = TestData.file(this, "/overview/" + c1.getParameter(Prop.INDEX_NAME) + ".shp");
         assertTrue(relativeMosaic.exists());
 
         assertTrue(new ImageMosaicFormat().accepts(relativeMosaic));
@@ -202,7 +199,8 @@ public class CatalogBuilderTest extends Assert {
         c2.setParameter(Prop.ABSOLUTE_PATH, "true");
         c2.setParameter(Prop.CACHING, "true");
         c2.setParameter(Prop.ROOT_MOSAIC_DIR, TestData.file(this, "/overview").toString());
-        c2.setParameter(Prop.INDEXING_DIRECTORIES, TestData.file(this, "/overview").toString());
+        c2.setParameter(
+                Prop.INDEXING_DIRECTORIES, TestData.file(this, "/overview").toString());
         //		c2.setIndexName("shpindex_absolute");
         //		c2.setLocationAttribute("location");
         //		c2.setAbsolute(true);
@@ -212,21 +210,18 @@ public class CatalogBuilderTest extends Assert {
         //	c2.setIndexingDirectories(Arrays.asList(TestData.file(this,"/overview/0").toString()));
         assertNotNull(c2.toString());
         ImageMosaicEventHandlers eventHandler2 = new ImageMosaicEventHandlers();
-        final ImageMosaicConfigHandler catalogHandler2 =
-                new ImageMosaicConfigHandler(c2, eventHandler);
+        final ImageMosaicConfigHandler catalogHandler2 = new ImageMosaicConfigHandler(c2, eventHandler);
         // build the index
         builder = new ImageMosaicDirectoryWalker(catalogHandler2, eventHandler);
         eventHandler2.addProcessingEventListener(new CatalogBuilderListener());
         builder.run();
-        final File absoluteMosaic =
-                TestData.file(this, "/overview/" + c2.getParameter(Prop.INDEX_NAME) + ".shp");
+        final File absoluteMosaic = TestData.file(this, "/overview/" + c2.getParameter(Prop.INDEX_NAME) + ".shp");
         assertTrue(absoluteMosaic.exists());
 
         // caching should be false by default
         props = new Properties();
         try (InputStream in =
-                TestData.openStream(
-                        this, "/overview/" + c2.getParameter(Prop.INDEX_NAME) + ".properties")) {
+                TestData.openStream(this, "/overview/" + c2.getParameter(Prop.INDEX_NAME) + ".properties")) {
             assertNotNull("unable to find mosaic properties file", in);
             props.load(in);
 
@@ -278,7 +273,8 @@ public class CatalogBuilderTest extends Assert {
         c1.setParameter(Prop.LOCATION_ATTRIBUTE, "location");
         c1.setParameter(Prop.ABSOLUTE_PATH, "false");
         c1.setParameter(Prop.ROOT_MOSAIC_DIR, TestData.file(this, "/caching").toString());
-        c1.setParameter(Prop.INDEXING_DIRECTORIES, TestData.file(this, "/caching").toString());
+        c1.setParameter(
+                Prop.INDEXING_DIRECTORIES, TestData.file(this, "/caching").toString());
 
         Properties prop = new Properties();
 
@@ -288,18 +284,15 @@ public class CatalogBuilderTest extends Assert {
             c1.setParameter(Prop.CACHING, "false");
 
             ImageMosaicEventHandlers eventHandler = new ImageMosaicEventHandlers();
-            final ImageMosaicConfigHandler catalogHandler =
-                    new ImageMosaicConfigHandler(c1, eventHandler);
+            final ImageMosaicConfigHandler catalogHandler = new ImageMosaicConfigHandler(c1, eventHandler);
             // TODO
             // build the index
             builder = new ImageMosaicDirectoryWalker(catalogHandler, eventHandler);
             eventHandler.addProcessingEventListener(new CatalogBuilderListener());
             builder.run();
-            final File relativeMosaic =
-                    TestData.file(this, "/caching/" + c1.getParameter(Prop.INDEX_NAME) + ".shp");
+            final File relativeMosaic = TestData.file(this, "/caching/" + c1.getParameter(Prop.INDEX_NAME) + ".shp");
             final File propertiesFile =
-                    TestData.file(
-                            this, "/caching/" + c1.getParameter(Prop.INDEX_NAME) + ".properties");
+                    TestData.file(this, "/caching/" + c1.getParameter(Prop.INDEX_NAME) + ".properties");
             assertTrue(relativeMosaic.exists());
             try (InputStream inStream = new FileInputStream(propertiesFile)) {
                 prop.load(inStream);
@@ -329,18 +322,15 @@ public class CatalogBuilderTest extends Assert {
             c1.setParameter(Prop.CACHING, "true");
 
             ImageMosaicEventHandlers eventHandler = new ImageMosaicEventHandlers();
-            final ImageMosaicConfigHandler catalogHandler =
-                    new ImageMosaicConfigHandler(c1, eventHandler);
+            final ImageMosaicConfigHandler catalogHandler = new ImageMosaicConfigHandler(c1, eventHandler);
             // TODO
             // build the index
             builder = new ImageMosaicDirectoryWalker(catalogHandler, eventHandler);
             eventHandler.addProcessingEventListener(new CatalogBuilderListener());
             builder.run();
-            final File relativeMosaic =
-                    TestData.file(this, "/caching/" + c1.getParameter(Prop.INDEX_NAME) + ".shp");
+            final File relativeMosaic = TestData.file(this, "/caching/" + c1.getParameter(Prop.INDEX_NAME) + ".shp");
             final File propertiesFile =
-                    TestData.file(
-                            this, "/caching/" + c1.getParameter(Prop.INDEX_NAME) + ".properties");
+                    TestData.file(this, "/caching/" + c1.getParameter(Prop.INDEX_NAME) + ".properties");
             try (InputStream inStream = new FileInputStream(propertiesFile)) {
                 prop.load(inStream);
             }

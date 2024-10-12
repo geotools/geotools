@@ -39,8 +39,7 @@ public interface StructuredGridCoverage2DReader extends GridCoverage2DReader {
      * @param readOnly a boolean indicating whether we may want modify the GranuleSource
      * @return the requested {@link GranuleSource}
      */
-    GranuleSource getGranules(String coverageName, boolean readOnly)
-            throws IOException, UnsupportedOperationException;
+    GranuleSource getGranules(String coverageName, boolean readOnly) throws IOException, UnsupportedOperationException;
 
     /** Return whether this reader can modify the granule source */
     boolean isReadOnly();
@@ -50,8 +49,7 @@ public interface StructuredGridCoverage2DReader extends GridCoverage2DReader {
             throws IOException, UnsupportedOperationException;
 
     /** removes a granule store for the specified coverageName */
-    boolean removeCoverage(String coverageName, boolean delete)
-            throws IOException, UnsupportedOperationException;
+    boolean removeCoverage(String coverageName, boolean delete) throws IOException, UnsupportedOperationException;
 
     /**
      * delete all stuff (database content, indexer files, property files, associated auxiliary files

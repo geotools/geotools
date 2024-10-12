@@ -68,8 +68,7 @@ public class GML3CurveParsingTest extends GML3TestSupport {
         Object arc = p.parse(GML3CurveParsingTest.class.getResourceAsStream("v3_2/arcString.xml"));
         assertThat(arc, instanceOf(CircularString.class));
         CircularString cs = (CircularString) arc;
-        assertArrayEquals(
-                new double[] {10, 35, 15, 40, 20, 35, 25, 30, 30, 35}, cs.getControlPoints(), 0d);
+        assertArrayEquals(new double[] {10, 35, 15, 40, 20, 35, 25, 30, 30, 35}, cs.getControlPoints(), 0d);
         assertEquals(TOLERANCE, cs.getTolerance(), 0d);
     }
 
@@ -90,8 +89,7 @@ public class GML3CurveParsingTest extends GML3TestSupport {
         assertEquals(new Coordinate(20, 45), ls1.getCoordinateN(1));
 
         CircularString cs = (CircularString) components.get(1);
-        assertArrayEquals(
-                new double[] {20.0, 45.0, 23.0, 48.0, 20.0, 51.0}, cs.getControlPoints(), 0d);
+        assertArrayEquals(new double[] {20.0, 45.0, 23.0, 48.0, 20.0, 51.0}, cs.getControlPoints(), 0d);
 
         LineString ls2 = components.get(2);
         assertEquals(2, ls2.getNumPoints());
@@ -102,8 +100,7 @@ public class GML3CurveParsingTest extends GML3TestSupport {
     @Test
     public void testCompoundClosed() throws Exception {
         Parser p = new Parser(gml);
-        Object g =
-                p.parse(GML3CurveParsingTest.class.getResourceAsStream("v3_2/compoundClosed.xml"));
+        Object g = p.parse(GML3CurveParsingTest.class.getResourceAsStream("v3_2/compoundClosed.xml"));
         assertThat(g, instanceOf(CompoundCurvedGeometry.class));
 
         CompoundCurvedGeometry<?> compound = (CompoundCurvedGeometry<?>) g;
@@ -125,8 +122,7 @@ public class GML3CurveParsingTest extends GML3TestSupport {
     @Test
     public void testCirclePolygon() throws Exception {
         Parser p = new Parser(gml);
-        Object g =
-                p.parse(GML3CurveParsingTest.class.getResourceAsStream("v3_2/circlePolygon.xml"));
+        Object g = p.parse(GML3CurveParsingTest.class.getResourceAsStream("v3_2/circlePolygon.xml"));
         assertThat(g, instanceOf(CurvePolygon.class));
 
         CurvePolygon cp = (CurvePolygon) g;
@@ -145,8 +141,7 @@ public class GML3CurveParsingTest extends GML3TestSupport {
     @Test
     public void testCompoundPolygon() throws Exception {
         Parser p = new Parser(gml);
-        Object g =
-                p.parse(GML3CurveParsingTest.class.getResourceAsStream("v3_2/compoundPolygon.xml"));
+        Object g = p.parse(GML3CurveParsingTest.class.getResourceAsStream("v3_2/compoundPolygon.xml"));
         assertThat(g, instanceOf(CurvePolygon.class));
 
         CurvePolygon cp = (CurvePolygon) g;
@@ -170,10 +165,7 @@ public class GML3CurveParsingTest extends GML3TestSupport {
     @Test
     public void testCompoundPolygonWithHole() throws Exception {
         Parser p = new Parser(gml);
-        Object g =
-                p.parse(
-                        GML3CurveParsingTest.class.getResourceAsStream(
-                                "v3_2/compoundPolygonWithHole.xml"));
+        Object g = p.parse(GML3CurveParsingTest.class.getResourceAsStream("v3_2/compoundPolygonWithHole.xml"));
         assertThat(g, instanceOf(CurvePolygon.class));
 
         CurvePolygon cp = (CurvePolygon) g;
@@ -212,8 +204,7 @@ public class GML3CurveParsingTest extends GML3TestSupport {
     @Test
     public void testMultiSurface() throws Exception {
         Parser p = new Parser(gml);
-        Object g =
-                p.parse(GML3CurveParsingTest.class.getResourceAsStream("v3_2/multiSurface2.xml"));
+        Object g = p.parse(GML3CurveParsingTest.class.getResourceAsStream("v3_2/multiSurface2.xml"));
         assertThat(g, instanceOf(org.geotools.geometry.jts.MultiSurface.class));
 
         org.geotools.geometry.jts.MultiSurface mp = (org.geotools.geometry.jts.MultiSurface) g;
@@ -222,14 +213,25 @@ public class GML3CurveParsingTest extends GML3TestSupport {
 
         CurvePolygon p1 = (CurvePolygon) mp.getGeometryN(0);
         assertTrue(p1.getExteriorRing() instanceof CompoundCurvedGeometry<?>);
-        assertEquals(2, ((CompoundCurvedGeometry<?>) p1.getExteriorRing()).getComponents().size());
+        assertEquals(
+                2,
+                ((CompoundCurvedGeometry<?>) p1.getExteriorRing())
+                        .getComponents()
+                        .size());
         assertEquals(1, p1.getNumInteriorRing());
         assertEquals(
-                2, ((CompoundCurvedGeometry<?>) p1.getInteriorRingN(0)).getComponents().size());
+                2,
+                ((CompoundCurvedGeometry<?>) p1.getInteriorRingN(0))
+                        .getComponents()
+                        .size());
 
         CurvePolygon p2 = (CurvePolygon) mp.getGeometryN(1);
         assertTrue(p2.getExteriorRing() instanceof CompoundCurvedGeometry<?>);
-        assertEquals(2, ((CompoundCurvedGeometry<?>) p2.getExteriorRing()).getComponents().size());
+        assertEquals(
+                2,
+                ((CompoundCurvedGeometry<?>) p2.getExteriorRing())
+                        .getComponents()
+                        .size());
         assertEquals(0, p2.getNumInteriorRing());
     }
 

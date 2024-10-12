@@ -258,10 +258,7 @@ public class CommonsConverterFactory implements ConverterFactory {
     static class DateConverter implements Converter {
 
         public static List<String> formats =
-                Arrays.asList(
-                        "yyyy-MM-dd HH:mm:ss.S a",
-                        "yyyy-MM-dd HH:mm:ssa",
-                        "yyyy-MM-dd'T'HH:mm:ss.SSSX");
+                Arrays.asList("yyyy-MM-dd HH:mm:ss.S a", "yyyy-MM-dd HH:mm:ssa", "yyyy-MM-dd'T'HH:mm:ss.SSSX");
 
         @Override
         public <T> T convert(Object source, Class<T> target) throws Exception {

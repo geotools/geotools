@@ -42,14 +42,12 @@ public abstract class FillParser extends YsldParseHandler {
         if (map.has("fill-opacity")) {
             fill().setOpacity(Util.expression(map.str("fill-opacity"), factory));
         }
-        context.push(
-                "fill-graphic",
-                new GraphicParser(factory) {
-                    @Override
-                    protected void graphic(Graphic g) {
-                        fill().setGraphicFill(g);
-                    }
-                });
+        context.push("fill-graphic", new GraphicParser(factory) {
+            @Override
+            protected void graphic(Graphic g) {
+                fill().setGraphicFill(g);
+            }
+        });
     }
 
     Fill fill() {

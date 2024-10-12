@@ -38,8 +38,7 @@ public abstract class GeometryPropertyTypeBindingBase extends AbstractComplexBin
 
     private GML3EncodingUtils encodingUtils;
 
-    public GeometryPropertyTypeBindingBase(
-            GML3EncodingUtils encodingUtils, XSDIdRegistry idRegistry) {
+    public GeometryPropertyTypeBindingBase(GML3EncodingUtils encodingUtils, XSDIdRegistry idRegistry) {
         this.idSet = idRegistry;
         this.encodingUtils = encodingUtils;
     }
@@ -82,8 +81,7 @@ public abstract class GeometryPropertyTypeBindingBase extends AbstractComplexBin
     }
 
     @Override
-    public List<Object[]> getProperties(Object object, XSDElementDeclaration element)
-            throws Exception {
+    public List<Object[]> getProperties(Object object, XSDElementDeclaration element) throws Exception {
         return encodingUtils.GeometryPropertyType_GetProperties((Geometry) object);
     }
 

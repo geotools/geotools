@@ -108,26 +108,24 @@ public class Matrix2 implements XMatrix, Serializable {
     @Override
     public final double getElement(final int row, final int col) {
         switch (row) {
-            case 0:
-                {
-                    switch (col) {
-                        case 0:
-                            return m00;
-                        case 1:
-                            return m01;
-                    }
-                    break;
+            case 0: {
+                switch (col) {
+                    case 0:
+                        return m00;
+                    case 1:
+                        return m01;
                 }
-            case 1:
-                {
-                    switch (col) {
-                        case 0:
-                            return m10;
-                        case 1:
-                            return m11;
-                    }
-                    break;
+                break;
+            }
+            case 1: {
+                switch (col) {
+                    case 0:
+                        return m10;
+                    case 1:
+                        return m11;
                 }
+                break;
+            }
         }
         throw new IndexOutOfBoundsException();
     }
@@ -136,30 +134,28 @@ public class Matrix2 implements XMatrix, Serializable {
     @Override
     public final void setElement(final int row, final int col, final double value) {
         switch (row) {
-            case 0:
-                {
-                    switch (col) {
-                        case 0:
-                            m00 = value;
-                            return;
-                        case 1:
-                            m01 = value;
-                            return;
-                    }
-                    break;
+            case 0: {
+                switch (col) {
+                    case 0:
+                        m00 = value;
+                        return;
+                    case 1:
+                        m01 = value;
+                        return;
                 }
-            case 1:
-                {
-                    switch (col) {
-                        case 0:
-                            m10 = value;
-                            return;
-                        case 1:
-                            m11 = value;
-                            return;
-                    }
-                    break;
+                break;
+            }
+            case 1: {
+                switch (col) {
+                    case 0:
+                        m10 = value;
+                        return;
+                    case 1:
+                        m11 = value;
+                        return;
                 }
+                break;
+            }
         }
         throw new IndexOutOfBoundsException();
     }
@@ -288,11 +284,10 @@ public class Matrix2 implements XMatrix, Serializable {
     /** Returns a hash code value based on the data values in this object. */
     @Override
     public int hashCode() {
-        return (int)
-                ((((Double.doubleToLongBits(m00) + 37 * Double.doubleToLongBits(m01))
-                                        + 37 * Double.doubleToLongBits(m10))
-                                + 37 * Double.doubleToLongBits(m11))
-                        ^ serialVersionUID);
+        return (int) ((((Double.doubleToLongBits(m00) + 37 * Double.doubleToLongBits(m01))
+                                + 37 * Double.doubleToLongBits(m10))
+                        + 37 * Double.doubleToLongBits(m11))
+                ^ serialVersionUID);
     }
 
     /**
@@ -318,11 +313,10 @@ public class Matrix2 implements XMatrix, Serializable {
     @Override
     public void getRow(int row, double[] array) {
         if (array.length != SIZE) {
-            throw new IllegalArgumentException(
-                    "Call getRow received an array of length "
-                            + array.length
-                            + ".  "
-                            + "The dimensions of the matrix is 2 by 2.");
+            throw new IllegalArgumentException("Call getRow received an array of length "
+                    + array.length
+                    + ".  "
+                    + "The dimensions of the matrix is 2 by 2.");
         }
         if (row == 0) {
             array[0] = m00;
@@ -331,19 +325,17 @@ public class Matrix2 implements XMatrix, Serializable {
             array[0] = m10;
             array[1] = m11;
         } else {
-            throw new IllegalArgumentException(
-                    "Specified element is out of bounds: (" + row + ", 0)");
+            throw new IllegalArgumentException("Specified element is out of bounds: (" + row + ", 0)");
         }
     }
 
     @Override
     public void setRow(int row, double... values) {
         if (values.length != SIZE) {
-            throw new IllegalArgumentException(
-                    "Call setRow received an array of length "
-                            + values.length
-                            + ".  "
-                            + "The dimensions of the matrix is 2 by 2.");
+            throw new IllegalArgumentException("Call setRow received an array of length "
+                    + values.length
+                    + ".  "
+                    + "The dimensions of the matrix is 2 by 2.");
         }
         if (row == 0) {
             m00 = values[0];
@@ -352,19 +344,17 @@ public class Matrix2 implements XMatrix, Serializable {
             m10 = values[0];
             m11 = values[1];
         } else {
-            throw new IllegalArgumentException(
-                    "Specified element is out of bounds: (" + row + " , 0)");
+            throw new IllegalArgumentException("Specified element is out of bounds: (" + row + " , 0)");
         }
     }
 
     @Override
     public void getColumn(int column, double[] array) {
         if (array.length != SIZE) {
-            throw new IllegalArgumentException(
-                    "Call getColumn received an array of length "
-                            + array.length
-                            + ".  "
-                            + "The dimensions of the matrix is 2 by 2.");
+            throw new IllegalArgumentException("Call getColumn received an array of length "
+                    + array.length
+                    + ".  "
+                    + "The dimensions of the matrix is 2 by 2.");
         }
         if (column == 0) {
             array[0] = m00;
@@ -373,19 +363,17 @@ public class Matrix2 implements XMatrix, Serializable {
             array[0] = m01;
             array[1] = m11;
         } else {
-            throw new IllegalArgumentException(
-                    "Specified element is out of bounds: (0 , " + column + ")");
+            throw new IllegalArgumentException("Specified element is out of bounds: (0 , " + column + ")");
         }
     }
 
     @Override
     public void setColumn(int column, double... values) {
         if (values.length != SIZE) {
-            throw new IllegalArgumentException(
-                    "Call setColumn received an array of length "
-                            + values.length
-                            + ".  "
-                            + "The dimensions of the matrix is 2 by 2.");
+            throw new IllegalArgumentException("Call setColumn received an array of length "
+                    + values.length
+                    + ".  "
+                    + "The dimensions of the matrix is 2 by 2.");
         }
         if (column == 0) {
             m00 = values[0];
@@ -394,8 +382,7 @@ public class Matrix2 implements XMatrix, Serializable {
             m01 = values[0];
             m11 = values[1];
         } else {
-            throw new IllegalArgumentException(
-                    "Specified element is out of bounds: (0 , " + column + ")");
+            throw new IllegalArgumentException("Specified element is out of bounds: (0 , " + column + ")");
         }
     }
 

@@ -114,8 +114,7 @@ public class GeneralBounds extends AbstractBounds implements Cloneable, Serializ
      * @throws IllegalArgumentException if an ordinate value in the minimum point is not less than
      *     or equal to the corresponding ordinate value in the maximum point.
      */
-    public GeneralBounds(final double[] minDP, final double[] maxDP)
-            throws IllegalArgumentException {
+    public GeneralBounds(final double[] minDP, final double[] maxDP) throws IllegalArgumentException {
         ensureNonNull("minDP", minDP);
         ensureNonNull("maxDP", maxDP);
         ensureSameDimension(minDP.length, maxDP.length);
@@ -165,12 +164,7 @@ public class GeneralBounds extends AbstractBounds implements Cloneable, Serializ
      * @param crs The coordinate reference system.
      * @since 2.2
      */
-    public GeneralBounds(
-            final CoordinateReferenceSystem crs,
-            double xMin,
-            double yMin,
-            double width,
-            double height) {
+    public GeneralBounds(final CoordinateReferenceSystem crs, double xMin, double yMin, double width, double height) {
         this(crs.getCoordinateSystem().getDimension());
         this.setEnvelope(xMin, yMin, xMin + width, yMin + height);
         this.crs = crs;
@@ -219,13 +213,12 @@ public class GeneralBounds extends AbstractBounds implements Cloneable, Serializ
      */
     public GeneralBounds(final GeographicBoundingBox box) {
         ensureNonNull("box", box);
-        ordinates =
-                new double[] {
-                    box.getWestBoundLongitude(),
-                    box.getSouthBoundLatitude(),
-                    box.getEastBoundLongitude(),
-                    box.getNorthBoundLatitude()
-                };
+        ordinates = new double[] {
+            box.getWestBoundLongitude(),
+            box.getSouthBoundLatitude(),
+            box.getEastBoundLongitude(),
+            box.getNorthBoundLatitude()
+        };
         crs = DefaultGeographicCRS.WGS84;
     }
 
@@ -312,8 +305,7 @@ public class GeneralBounds extends AbstractBounds implements Cloneable, Serializ
             transformed = CRS.transform(gridToCRS, this);
         } catch (TransformException exception) {
             throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.BAD_TRANSFORM_$1, Classes.getClass(gridToCRS)),
-                    exception);
+                    MessageFormat.format(ErrorKeys.BAD_TRANSFORM_$1, Classes.getClass(gridToCRS)), exception);
         }
         assert transformed.ordinates.length == this.ordinates.length;
         System.arraycopy(transformed.ordinates, 0, this.ordinates, 0, ordinates.length);
@@ -327,20 +319,16 @@ public class GeneralBounds extends AbstractBounds implements Cloneable, Serializ
      * @param object User argument.
      * @throws InvalidParameterValueException if {@code object} is null.
      */
-    private static void ensureNonNull(final String name, final Object object)
-            throws IllegalArgumentException {
+    private static void ensureNonNull(final String name, final Object object) throws IllegalArgumentException {
         if (object == null) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, name));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, name));
         }
     }
 
     /** Makes sure the specified dimensions are identical. */
-    private static void ensureSameDimension(final int dim1, final int dim2)
-            throws MismatchedDimensionException {
+    private static void ensureSameDimension(final int dim1, final int dim2) throws MismatchedDimensionException {
         if (dim1 != dim2) {
-            throw new MismatchedDimensionException(
-                    MessageFormat.format(ErrorKeys.MISMATCHED_DIMENSION_$2, dim1, dim2));
+            throw new MismatchedDimensionException(MessageFormat.format(ErrorKeys.MISMATCHED_DIMENSION_$2, dim1, dim2));
         }
     }
 
@@ -368,8 +356,7 @@ public class GeneralBounds extends AbstractBounds implements Cloneable, Serializ
         final int dimension = ordinates.length / 2;
         for (int i = 0; i < dimension; i++) {
             if (!(ordinates[i] <= ordinates[dimension + i])) { // Use '!' in order to catch 'NaN'.
-                throw new IllegalArgumentException(
-                        MessageFormat.format(ErrorKeys.ILLEGAL_ENVELOPE_ORDINATE_$1, i));
+                throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.ILLEGAL_ENVELOPE_ORDINATE_$1, i));
             }
         }
     }
@@ -394,8 +381,7 @@ public class GeneralBounds extends AbstractBounds implements Cloneable, Serializ
      * @throws MismatchedDimensionException if the specified CRS doesn't have the expected number of
      *     dimensions.
      */
-    public void setCoordinateReferenceSystem(final CoordinateReferenceSystem crs)
-            throws MismatchedDimensionException {
+    public void setCoordinateReferenceSystem(final CoordinateReferenceSystem crs) throws MismatchedDimensionException {
         AbstractPosition.checkCoordinateReferenceSystemDimension(crs, getDimension());
         this.crs = crs;
     }
@@ -466,8 +452,7 @@ public class GeneralBounds extends AbstractBounds implements Cloneable, Serializ
                 } else if (RangeMeaning.WRAPAROUND.equals(rm)) {
                     final double length = maximum - minimum;
                     if (length > 0 && length < Double.POSITIVE_INFINITY) {
-                        final double offset =
-                                Math.floor((ordinates[i] - minimum) / length) * length;
+                        final double offset = Math.floor((ordinates[i] - minimum) / length) * length;
                         if (offset != 0) {
                             ordinates[i] -= offset;
                             ordinates[j] -= offset;
@@ -484,8 +469,7 @@ public class GeneralBounds extends AbstractBounds implements Cloneable, Serializ
             if (crsDomain) {
                 final Bounds domain = CRS.getEnvelope(crs);
                 if (domain != null) {
-                    final CoordinateReferenceSystem domainCRS =
-                            domain.getCoordinateReferenceSystem();
+                    final CoordinateReferenceSystem domainCRS = domain.getCoordinateReferenceSystem();
                     if (domainCRS == null) {
                         intersect(domain);
                     } else {
@@ -570,8 +554,7 @@ public class GeneralBounds extends AbstractBounds implements Cloneable, Serializ
 
     /** Creates an exception for an index out of bounds. */
     private static IndexOutOfBoundsException indexOutOfBounds(final int dimension) {
-        return new IndexOutOfBoundsException(
-                MessageFormat.format(ErrorKeys.INDEX_OUT_OF_BOUNDS_$1, dimension));
+        return new IndexOutOfBoundsException(MessageFormat.format(ErrorKeys.INDEX_OUT_OF_BOUNDS_$1, dimension));
     }
 
     /**
@@ -646,8 +629,7 @@ public class GeneralBounds extends AbstractBounds implements Cloneable, Serializ
      *     provided {@code dimension}
      * @since 2.5
      */
-    public double getSpan(final int dimension, final Unit<?> unit)
-            throws IndexOutOfBoundsException {
+    public double getSpan(final int dimension, final Unit<?> unit) throws IndexOutOfBoundsException {
         double value = getSpan(dimension);
         if (crs != null) {
             final Unit<?> source = crs.getCoordinateSystem().getAxis(dimension).getUnit();
@@ -666,8 +648,7 @@ public class GeneralBounds extends AbstractBounds implements Cloneable, Serializ
      * @param maximum The maximum value along the specified dimension.
      * @throws IndexOutOfBoundsException If the given index is out of bounds.
      */
-    public void setRange(final int dimension, double minimum, double maximum)
-            throws IndexOutOfBoundsException {
+    public void setRange(final int dimension, double minimum, double maximum) throws IndexOutOfBoundsException {
         if (minimum > maximum) {
             // Make an empty envelope (min == max)
             // while keeping it legal (min <= max).
@@ -696,15 +677,13 @@ public class GeneralBounds extends AbstractBounds implements Cloneable, Serializ
      */
     public void setEnvelope(final double... ordinates) {
         if ((ordinates.length & 1) != 0) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.ODD_ARRAY_LENGTH_$1, ordinates.length));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.ODD_ARRAY_LENGTH_$1, ordinates.length));
         }
         final int dimension = ordinates.length >>> 1;
         final int check = this.ordinates.length >>> 1;
         if (dimension != check) {
             throw new MismatchedDimensionException(
-                    MessageFormat.format(
-                            ErrorKeys.MISMATCHED_DIMENSION_$3, "ordinates", dimension, check));
+                    MessageFormat.format(ErrorKeys.MISMATCHED_DIMENSION_$3, "ordinates", dimension, check));
         }
         checkCoordinates(ordinates);
         System.arraycopy(ordinates, 0, this.ordinates, 0, ordinates.length);
@@ -797,8 +776,7 @@ public class GeneralBounds extends AbstractBounds implements Cloneable, Serializ
     }
 
     /** Check if the ordinates indicate a "nil" envelope. */
-    private static boolean isNilCoordinates(final double[] ordinates)
-            throws IllegalArgumentException {
+    private static boolean isNilCoordinates(final double[] ordinates) throws IllegalArgumentException {
         for (double ordinate : ordinates) {
             if (!Double.isNaN(ordinate)) {
                 return false;
@@ -898,8 +876,7 @@ public class GeneralBounds extends AbstractBounds implements Cloneable, Serializ
         for (int i = 0; i < dim; i++) {
             final double value = position.getOrdinate(i);
             if (value < ordinates[i] || Double.isNaN(ordinates[i])) ordinates[i] = value;
-            if (value > ordinates[i + dim] || Double.isNaN(ordinates[i + dim]))
-                ordinates[i + dim] = value;
+            if (value > ordinates[i + dim] || Double.isNaN(ordinates[i + dim])) ordinates[i + dim] = value;
         }
         assert isEmpty() || contains(position);
     }
@@ -972,8 +949,7 @@ public class GeneralBounds extends AbstractBounds implements Cloneable, Serializ
      * @see #equals(Bounds, double)
      * @since 2.2
      */
-    public boolean contains(final Bounds envelope, final boolean edgesInclusive)
-            throws MismatchedDimensionException {
+    public boolean contains(final Bounds envelope, final boolean edgesInclusive) throws MismatchedDimensionException {
         ensureNonNull("envelope", envelope);
         final int dim = ordinates.length / 2;
         AbstractPosition.ensureDimensionMatch("envelope", envelope.getDimension(), dim);
@@ -1011,8 +987,7 @@ public class GeneralBounds extends AbstractBounds implements Cloneable, Serializ
      * @see #equals(Bounds, double)
      * @since 2.2
      */
-    public boolean intersects(final Bounds envelope, final boolean edgesInclusive)
-            throws MismatchedDimensionException {
+    public boolean intersects(final Bounds envelope, final boolean edgesInclusive) throws MismatchedDimensionException {
         ensureNonNull("envelope", envelope);
         final int dim = ordinates.length / 2;
         AbstractPosition.ensureDimensionMatch("envelope", envelope.getDimension(), dim);
@@ -1071,17 +1046,14 @@ public class GeneralBounds extends AbstractBounds implements Cloneable, Serializ
      * @return The subenvelope.
      * @throws IndexOutOfBoundsException if an index is out of bounds.
      */
-    public GeneralBounds getSubEnvelope(final int lower, final int upper)
-            throws IndexOutOfBoundsException {
+    public GeneralBounds getSubEnvelope(final int lower, final int upper) throws IndexOutOfBoundsException {
         final int curDim = ordinates.length / 2;
         final int newDim = upper - lower;
         if (lower < 0 || lower > curDim) {
-            throw new IndexOutOfBoundsException(
-                    MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "lower", lower));
+            throw new IndexOutOfBoundsException(MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "lower", lower));
         }
         if (newDim < 0 || upper > curDim) {
-            throw new IndexOutOfBoundsException(
-                    MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "upper", upper));
+            throw new IndexOutOfBoundsException(MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "upper", upper));
         }
         final GeneralBounds envelope = new GeneralBounds(newDim);
         System.arraycopy(ordinates, lower, envelope.ordinates, 0, newDim);
@@ -1098,17 +1070,14 @@ public class GeneralBounds extends AbstractBounds implements Cloneable, Serializ
      * @return The subenvelope.
      * @throws IndexOutOfBoundsException if an index is out of bounds.
      */
-    public GeneralBounds getReducedEnvelope(final int lower, final int upper)
-            throws IndexOutOfBoundsException {
+    public GeneralBounds getReducedEnvelope(final int lower, final int upper) throws IndexOutOfBoundsException {
         final int curDim = ordinates.length / 2;
         final int rmvDim = upper - lower;
         if (lower < 0 || lower > curDim) {
-            throw new IndexOutOfBoundsException(
-                    MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "lower", lower));
+            throw new IndexOutOfBoundsException(MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "lower", lower));
         }
         if (rmvDim < 0 || upper > curDim) {
-            throw new IndexOutOfBoundsException(
-                    MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "upper", upper));
+            throw new IndexOutOfBoundsException(MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "upper", upper));
         }
         final GeneralBounds envelope = new GeneralBounds(curDim - rmvDim);
         System.arraycopy(ordinates, 0, envelope.ordinates, 0, lower);
@@ -1125,11 +1094,9 @@ public class GeneralBounds extends AbstractBounds implements Cloneable, Serializ
      */
     public Rectangle2D toRectangle2D() throws IllegalStateException {
         if (ordinates.length == 4) {
-            return XRectangle2D.createFromExtremums(
-                    ordinates[0], ordinates[1], ordinates[2], ordinates[3]);
+            return XRectangle2D.createFromExtremums(ordinates[0], ordinates[1], ordinates[2], ordinates[3]);
         } else {
-            throw new IllegalStateException(
-                    MessageFormat.format(ErrorKeys.NOT_TWO_DIMENSIONAL_$1, getDimension()));
+            throw new IllegalStateException(MessageFormat.format(ErrorKeys.NOT_TWO_DIMENSIONAL_$1, getDimension()));
         }
     }
 
@@ -1149,8 +1116,7 @@ public class GeneralBounds extends AbstractBounds implements Cloneable, Serializ
     public boolean equals(final Object object) {
         if (object != null && object.getClass().equals(getClass())) {
             final GeneralBounds that = (GeneralBounds) object;
-            return Arrays.equals(this.ordinates, that.ordinates)
-                    && Utilities.equals(this.crs, that.crs);
+            return Arrays.equals(this.ordinates, that.ordinates) && Utilities.equals(this.crs, that.crs);
         }
         return false;
     }

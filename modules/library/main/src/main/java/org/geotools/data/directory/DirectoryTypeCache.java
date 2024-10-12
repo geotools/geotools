@@ -79,18 +79,15 @@ class DirectoryTypeCache {
      */
     DirectoryTypeCache(File directory, FileStoreFactory factory) throws IOException {
         // some basic checks
-        if (directory == null)
-            throw new NullPointerException("Directory parameter should be not null");
+        if (directory == null) throw new NullPointerException("Directory parameter should be not null");
 
         if (!directory.exists()) {
-            throw new IllegalArgumentException(
-                    "Specified directory does not exists: " + directory.getAbsolutePath());
+            throw new IllegalArgumentException("Specified directory does not exists: " + directory.getAbsolutePath());
         }
 
         if (!directory.isDirectory()) {
             throw new IllegalArgumentException(
-                    "Specified path is not a directory, it'a s file instead: "
-                            + directory.getAbsolutePath());
+                    "Specified path is not a directory, it'a s file instead: " + directory.getAbsolutePath());
         }
 
         this.directory = directory;
@@ -241,10 +238,7 @@ class DirectoryTypeCache {
                         if (!result.containsKey(typeName)) result.put(typeName, entry);
                         else {
                             LOGGER.log(
-                                    Level.WARNING,
-                                    "Type name "
-                                            + typeName
-                                            + " is available from multiple datastores");
+                                    Level.WARNING, "Type name " + typeName + " is available from multiple datastores");
                         }
                     }
                 }
@@ -299,8 +293,7 @@ class DirectoryTypeCache {
             Param[] params = factory.getParametersInfo();
 
             if (params == null) {
-                LOGGER.fine(
-                        "DataStore factory " + factory + " returns null from getParametersInfo!");
+                LOGGER.fine("DataStore factory " + factory + " returns null from getParametersInfo!");
                 continue;
             }
 
@@ -309,11 +302,9 @@ class DirectoryTypeCache {
             for (Param param : params) {
                 Class<?> type = param.type;
                 String key = param.key;
-                if (File.class.isAssignableFrom(type) || URL.class.isAssignableFrom(type))
-                    fileParam = param;
+                if (File.class.isAssignableFrom(type) || URL.class.isAssignableFrom(type)) fileParam = param;
                 else if (key.equalsIgnoreCase("namespace")
-                        && (String.class.isAssignableFrom(type)
-                                || URI.class.isAssignableFrom(type))) nsParam = param;
+                        && (String.class.isAssignableFrom(type) || URI.class.isAssignableFrom(type))) nsParam = param;
             }
 
             if (fileParam != null) {

@@ -26,8 +26,7 @@ import org.geotools.api.feature.type.FeatureType;
  *
  * @author Jody Garnett, Refractions Research
  */
-public class EmptyFeatureReader<T extends FeatureType, F extends Feature>
-        implements FeatureReader<T, F> {
+public class EmptyFeatureReader<T extends FeatureType, F extends Feature> implements FeatureReader<T, F> {
     T featureType;
 
     /**

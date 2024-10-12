@@ -44,8 +44,7 @@ import org.locationtech.jts.geom.PrecisionModel;
 public class AreaFunctionTest {
 
     /** Standard logging instance */
-    protected static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(AreaFunctionTest.class);
+    protected static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(AreaFunctionTest.class);
     /** Feature on which to preform tests */
     private static SimpleFeature testFeature = null;
 
@@ -126,8 +125,7 @@ public class AreaFunctionTest {
         // _log.getLoggerRepository().setThreshold(Level.DEBUG);
     }
 
-    static org.geotools.api.filter.FilterFactory filterFactory =
-            CommonFactoryFinder.getFilterFactory(null);
+    static org.geotools.api.filter.FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory(null);
 
     /** Tests the min function expression. */
     @Test

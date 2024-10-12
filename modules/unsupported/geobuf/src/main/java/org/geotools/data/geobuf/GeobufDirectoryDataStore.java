@@ -57,8 +57,7 @@ public class GeobufDirectoryDataStore extends ContentDataStore {
         }
         File file = new File(directory, typeName);
         if (!file.exists()) {
-            throw new IOException(
-                    "Can't delete " + file.getAbsolutePath() + " because it doesn't exist!");
+            throw new IOException("Can't delete " + file.getAbsolutePath() + " because it doesn't exist!");
         }
         file.delete();
     }
@@ -87,8 +86,7 @@ public class GeobufDirectoryDataStore extends ContentDataStore {
     }
 
     @Override
-    protected ContentFeatureSource createFeatureSource(ContentEntry contentEntry)
-            throws IOException {
+    protected ContentFeatureSource createFeatureSource(ContentEntry contentEntry) throws IOException {
         return getDataStore(contentEntry.getTypeName()).createFeatureSource(contentEntry);
     }
 }

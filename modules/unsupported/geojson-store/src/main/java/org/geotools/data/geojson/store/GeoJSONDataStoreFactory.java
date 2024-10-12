@@ -41,29 +41,19 @@ public class GeoJSONDataStoreFactory implements FileDataStoreFactorySpi {
 
     /** Parameter description of information required to connect */
     public static final Param FILE_PARAM =
-            new Param(
-                    "file", File.class, "GeoJSON file", false, null, new KVP(Param.EXT, "geojson"));
+            new Param("file", File.class, "GeoJSON file", false, null, new KVP(Param.EXT, "geojson"));
 
     public static final Param URL_PARAM =
             new Param("url", URL.class, "GeoJSON URL", false, null, new KVP(Param.EXT, "geojson"));
     public static final Param BOUNDING_BOX =
-            new Param(
-                    "bbox",
-                    ReferencedEnvelope.class,
-                    "A bounding box for the features to be written",
-                    false);
+            new Param("bbox", ReferencedEnvelope.class, "A bounding box for the features to be written", false);
     public static final Param WRITE_BOUNDS =
-            new Param(
-                    "bounds",
-                    Boolean.class,
-                    "Should a bounding box be written out if available",
-                    false);
-    public static final Param QUICK_SCHEMA =
-            new Param(
-                    "quick",
-                    Boolean.class,
-                    "Should the schema be described by the first element of the collection (Default true)",
-                    false);
+            new Param("bounds", Boolean.class, "Should a bounding box be written out if available", false);
+    public static final Param QUICK_SCHEMA = new Param(
+            "quick",
+            Boolean.class,
+            "Should the schema be described by the first element of the collection (Default true)",
+            false);
 
     public GeoJSONDataStoreFactory() {}
 
@@ -155,8 +145,7 @@ public class GeoJSONDataStoreFactory implements FileDataStoreFactorySpi {
         if (isAvailable == null) {
             try {
                 @SuppressWarnings("PMD.UnusedLocalVariable")
-                Class geoJSONReaderType =
-                        Class.forName("com.fasterxml.jackson.databind.ObjectMapper");
+                Class geoJSONReaderType = Class.forName("com.fasterxml.jackson.databind.ObjectMapper");
                 ObjectMapper mapper = new ObjectMapper();
                 mapper.registerModule(new JtsModule());
                 isAvailable = true;

@@ -110,11 +110,7 @@ public class ProjectionBuilder {
      * <"central_meridian",-95>)
      */
     public static CoordinateReferenceSystem createProjection(
-            String projectionName,
-            String code,
-            Double semiMajor,
-            Double inverseFlattening,
-            Map<String, Double> params)
+            String projectionName, String code, Double semiMajor, Double inverseFlattening, Map<String, Double> params)
             throws FactoryException {
 
         ParameterValueGroup parameters = getProjectionParameters(projectionName);
@@ -126,13 +122,11 @@ public class ProjectionBuilder {
         for (String key : keys) {
             parameters.parameter(key).setValue(params.get(key));
         }
-        return buildCRS(
-                buildProperties(projectionName, Citations.EPSG, code), parameters, ellipsoid);
+        return buildCRS(buildProperties(projectionName, Citations.EPSG, code), parameters, ellipsoid);
     }
 
     /** Get Projection parameters from the specified projection name. */
-    public static ParameterValueGroup getProjectionParameters(String projectionName)
-            throws NoSuchIdentifierException {
+    public static ParameterValueGroup getProjectionParameters(String projectionName) throws NoSuchIdentifierException {
         return mtFactory.getDefaultParameters(projectionName);
     }
 
@@ -147,19 +141,14 @@ public class ProjectionBuilder {
         double inverseFlattening = ellipsoid.getInverseFlattening();
 
         // setting missing parameters
-        parameters
-                .parameter(NetCDFUtilities.SEMI_MINOR)
-                .setValue(semiMajor * (1 - (1 / inverseFlattening)));
+        parameters.parameter(NetCDFUtilities.SEMI_MINOR).setValue(semiMajor * (1 - (1 / inverseFlattening)));
         parameters.parameter(NetCDFUtilities.SEMI_MAJOR).setValue(semiMajor);
     }
 
     /** Create a {@link DefiningConversion} object from the input {@link MathTransform} */
-    public static DefiningConversion createConversionFromBase(
-            String name, MathTransform transform) {
+    public static DefiningConversion createConversionFromBase(String name, MathTransform transform) {
         return new DefiningConversion(
-                Collections.singletonMap(NAME, name),
-                new DefaultOperationMethod(transform),
-                transform);
+                Collections.singletonMap(NAME, name), new DefaultOperationMethod(transform), transform);
     }
 
     static Map<String, Object> buildProperties(String name, Citation authority, String code) {
@@ -205,8 +194,7 @@ public class ProjectionBuilder {
      * Build a {@link GeographicCRS} given the name to be assigned, the {@link GeodeticDatum} to be
      * used and the {@link EllipsoidalCS}.
      */
-    public static GeographicCRS createGeographicCRS(
-            String name, GeodeticDatum datum, EllipsoidalCS ellipsoidalCS) {
+    public static GeographicCRS createGeographicCRS(String name, GeodeticDatum datum, EllipsoidalCS ellipsoidalCS) {
         final Map<String, String> props = new HashMap<>();
         props.put(NAME, name);
         return new DefaultGeographicCRS(props, datum, ellipsoidalCS);
@@ -217,8 +205,7 @@ public class ProjectionBuilder {
             GeographicCRS baseCRS,
             DefiningConversion conversionFromBase,
             MathTransform transform) {
-        return new DefaultProjectedCRS(
-                props, conversionFromBase, baseCRS, transform, DefaultCartesianCS.PROJECTED);
+        return new DefaultProjectedCRS(props, conversionFromBase, baseCRS, transform, DefaultCartesianCS.PROJECTED);
     }
 
     /**
@@ -297,8 +284,7 @@ public class ProjectionBuilder {
             if (opMethod instanceof MathTransformProvider) {
                 final Map<String, Object> copy = new HashMap<>(props);
                 copy.put(
-                        DefaultProjectedCRS.CONVERSION_TYPE_KEY,
-                        ((MathTransformProvider) opMethod).getOperationType());
+                        DefaultProjectedCRS.CONVERSION_TYPE_KEY, ((MathTransformProvider) opMethod).getOperationType());
                 props = copy;
             }
         }
@@ -307,30 +293,16 @@ public class ProjectionBuilder {
             return ProjectionBuilder.createProjectedCRS(
                     props, baseCRS, conversionFromBase, transform, (CartesianCS) derivedCS);
         } else {
-            CoordinateSystemAxis axis1 =
-                    new DefaultCoordinateSystemAxis(
-                            new SimpleInternationalString(name + " axis 0"),
-                            "0",
-                            AxisDirection.OTHER,
-                            AbstractUnit.ONE);
-            CoordinateSystemAxis axis2 =
-                    new DefaultCoordinateSystemAxis(
-                            new SimpleInternationalString(name + " axis 1"),
-                            "1",
-                            AxisDirection.OTHER,
-                            AbstractUnit.ONE);
+            CoordinateSystemAxis axis1 = new DefaultCoordinateSystemAxis(
+                    new SimpleInternationalString(name + " axis 0"), "0", AxisDirection.OTHER, AbstractUnit.ONE);
+            CoordinateSystemAxis axis2 = new DefaultCoordinateSystemAxis(
+                    new SimpleInternationalString(name + " axis 1"), "1", AxisDirection.OTHER, AbstractUnit.ONE);
             final CoordinateSystem cs =
-                    new AbstractCS(
-                            Collections.singletonMap("name", name),
-                            new CoordinateSystemAxis[] {axis1, axis2});
+                    new AbstractCS(Collections.singletonMap("name", name), new CoordinateSystemAxis[] {axis1, axis2});
             CRSFactory factory = ReferencingFactoryFinder.getCRSFactory(null);
-            final Conversion conversion =
-                    new DefiningConversion(
-                            singletonMap(IdentifiedObject.NAME_KEY, method.getName().getCode()),
-                            method,
-                            transform);
-            return factory.createDerivedCRS(
-                    Collections.singletonMap("name", name), baseCRS, conversion, cs);
+            final Conversion conversion = new DefiningConversion(
+                    singletonMap(IdentifiedObject.NAME_KEY, method.getName().getCode()), method, transform);
+            return factory.createDerivedCRS(Collections.singletonMap("name", name), baseCRS, conversion, cs);
         }
     }
 
@@ -346,8 +318,7 @@ public class ProjectionBuilder {
             }
         }
         if (method != null) {
-            return new DefiningConversion(
-                    Collections.singletonMap("name", name), method, parameters);
+            return new DefiningConversion(Collections.singletonMap("name", name), method, parameters);
         } else {
             return new DefiningConversion(name, parameters);
         }
@@ -358,20 +329,12 @@ public class ProjectionBuilder {
             return new DefaultCartesianCS(
                     name,
                     new DefaultCoordinateSystemAxis(
-                            Vocabulary.formatInternational(VocabularyKeys.EASTING),
-                            "E",
-                            AxisDirection.EAST,
-                            unit),
+                            Vocabulary.formatInternational(VocabularyKeys.EASTING), "E", AxisDirection.EAST, unit),
                     new DefaultCoordinateSystemAxis(
-                            Vocabulary.formatInternational(VocabularyKeys.NORTHING),
-                            "N",
-                            AxisDirection.NORTH,
-                            unit));
+                            Vocabulary.formatInternational(VocabularyKeys.NORTHING), "N", AxisDirection.NORTH, unit));
         } else if (SI.RADIAN.isCompatible(unit)) {
             return new DefaultEllipsoidalCS(
-                    name,
-                    DefaultGeographicCRS.WGS84.getAxis(0),
-                    DefaultGeographicCRS.WGS84.getAxis(1));
+                    name, DefaultGeographicCRS.WGS84.getAxis(0), DefaultGeographicCRS.WGS84.getAxis(1));
         } else {
             throw new IllegalArgumentException("No support for axis unit " + unit);
         }
@@ -389,11 +352,10 @@ public class ProjectionBuilder {
                 }
             } catch (MeasurementParseException | UnsupportedOperationException e) {
                 if (LOGGER.isLoggable(Level.WARNING)) {
-                    LOGGER.warning(
-                            "Unabe to parse the specified axis unit: "
-                                    + axisUnit
-                                    + "Falling back on \"m (meter)\" as default for this projection's "
-                                    + "coordinate axis unit");
+                    LOGGER.warning("Unabe to parse the specified axis unit: "
+                            + axisUnit
+                            + "Falling back on \"m (meter)\" as default for this projection's "
+                            + "coordinate axis unit");
                 }
             }
         }
@@ -406,8 +368,7 @@ public class ProjectionBuilder {
     }
 
     /** Get a {@link ParameterValueGroup} parameters instance for the specified projectionName. */
-    public static ParameterValueGroup getDefaultparameters(String projectionName)
-            throws NoSuchIdentifierException {
+    public static ParameterValueGroup getDefaultparameters(String projectionName) throws NoSuchIdentifierException {
         Utilities.ensureNonNull("projectionName", projectionName);
         return mtFactory.getDefaultParameters(projectionName);
     }

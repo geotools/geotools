@@ -72,8 +72,7 @@ public abstract class DataStoreWrapper implements DataStore {
 
     protected static final String COORDINATE_REFERENCE_SYSTEM = "CRS";
 
-    protected static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(DataStoreWrapper.class);
+    protected static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(DataStoreWrapper.class);
 
     /** Auxiliary folder which contains properties file with mapping information */
     protected File auxiliaryFolder;
@@ -124,15 +123,11 @@ public abstract class DataStoreWrapper implements DataStore {
             this.auxiliaryFolder = file;
         } catch (MalformedURLException e) {
             if (LOGGER.isLoggable(Level.WARNING)) {
-                LOGGER.warning(
-                        "The specified config folder for datastore wrapping is not valid: "
-                                + auxFolderPath);
+                LOGGER.warning("The specified config folder for datastore wrapping is not valid: " + auxFolderPath);
             }
         } catch (Exception e) {
             if (LOGGER.isLoggable(Level.SEVERE)) {
-                LOGGER.severe(
-                        "Unable to initialize the wrapping mapping for this folder: "
-                                + auxFolderPath);
+                LOGGER.severe("Unable to initialize the wrapping mapping for this folder: " + auxFolderPath);
             }
         }
     }
@@ -148,8 +143,7 @@ public abstract class DataStoreWrapper implements DataStore {
         // Loop over files
         if (files != null) {
             for (String element : files) {
-                final Properties properties =
-                        loadProperties(parentPath + File.separatorChar + element);
+                final Properties properties = loadProperties(parentPath + File.separatorChar + element);
                 final FeatureTypeMapper mapper = getFeatureTypeMapper(properties);
                 final Name name = mapper.getName();
                 mapping.put(name, mapper);
@@ -218,10 +212,8 @@ public abstract class DataStoreWrapper implements DataStore {
 
     /** Store the properties on disk */
     protected void storeProperties(Properties properties, String typeName) {
-        final String propertiesPath =
-                auxiliaryFolder.getAbsolutePath() + File.separatorChar + typeName + ".properties";
-        try (OutputStream outStream =
-                new BufferedOutputStream(new FileOutputStream(new File(propertiesPath)))) {
+        final String propertiesPath = auxiliaryFolder.getAbsolutePath() + File.separatorChar + typeName + ".properties";
+        try (OutputStream outStream = new BufferedOutputStream(new FileOutputStream(new File(propertiesPath)))) {
             properties.store(outStream, null);
         } catch (IOException e) {
             if (LOGGER.isLoggable(Level.WARNING)) {
@@ -302,8 +294,7 @@ public abstract class DataStoreWrapper implements DataStore {
         if (mapper == null) {
             throw new IOException("No wrapper found for " + typeName);
         } else {
-            SimpleFeatureStore source =
-                    (SimpleFeatureStore) datastore.getFeatureSource(mapper.getMappedName());
+            SimpleFeatureStore source = (SimpleFeatureStore) datastore.getFeatureSource(mapper.getMappedName());
             if (source == null) {
                 throw new IOException("No feature source available for " + typeName);
             }
@@ -311,14 +302,14 @@ public abstract class DataStoreWrapper implements DataStore {
         }
     }
 
-    protected SimpleFeatureSource transformFeatureStore(
-            SimpleFeatureStore source, FeatureTypeMapper mapper) throws IOException {
+    protected SimpleFeatureSource transformFeatureStore(SimpleFeatureStore source, FeatureTypeMapper mapper)
+            throws IOException {
         return TransformFactory.transform(source, mapper.getName(), mapper.getDefinitions());
     }
 
     @Override
-    public FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader(
-            Query query, Transaction transaction) throws IOException {
+    public FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader(Query query, Transaction transaction)
+            throws IOException {
         throw new UnsupportedOperationException();
     }
 
@@ -329,8 +320,8 @@ public abstract class DataStoreWrapper implements DataStore {
     }
 
     @Override
-    public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(
-            String typeName, Transaction transaction) throws IOException {
+    public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(String typeName, Transaction transaction)
+            throws IOException {
         throw new UnsupportedOperationException();
     }
 
@@ -375,7 +366,8 @@ public abstract class DataStoreWrapper implements DataStore {
         schema = schema.substring(0, schema.length() - 1);
         properties.setProperty(SCHEMA, schema);
         properties.setProperty(
-                COORDINATE_REFERENCE_SYSTEM, mapper.getCoordinateReferenceSystem().toWKT());
+                COORDINATE_REFERENCE_SYSTEM,
+                mapper.getCoordinateReferenceSystem().toWKT());
 
         // Storing properties
         storeProperties(properties, typeName);
@@ -387,17 +379,12 @@ public abstract class DataStoreWrapper implements DataStore {
      */
     protected FeatureTypeMapper getFeatureTypeMapper(final Properties props) throws Exception {
         // Creating schema
-        SimpleFeatureType indexSchema =
-                DataUtilities.createType(props.getProperty(NAME), props.getProperty(SCHEMA));
-        CoordinateReferenceSystem crs =
-                CRS.parseWKT(props.getProperty(COORDINATE_REFERENCE_SYSTEM));
-        indexSchema =
-                DataUtilities.createSubType(
-                        indexSchema, DataUtilities.attributeNames(indexSchema), crs);
+        SimpleFeatureType indexSchema = DataUtilities.createType(props.getProperty(NAME), props.getProperty(SCHEMA));
+        CoordinateReferenceSystem crs = CRS.parseWKT(props.getProperty(COORDINATE_REFERENCE_SYSTEM));
+        indexSchema = DataUtilities.createSubType(indexSchema, DataUtilities.attributeNames(indexSchema), crs);
         return getFeatureTypeMapper(indexSchema);
     }
 
     /** Return a specific {@link FeatureTypeMapper} instance on top of an input featureType */
-    protected abstract FeatureTypeMapper getFeatureTypeMapper(final SimpleFeatureType featureType)
-            throws Exception;
+    protected abstract FeatureTypeMapper getFeatureTypeMapper(final SimpleFeatureType featureType) throws Exception;
 }

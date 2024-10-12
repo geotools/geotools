@@ -50,25 +50,20 @@ import tech.units.indriya.function.AbstractConverter;
  */
 @DescribeProcess(
         title = "Point Buffers",
-        description =
-                "Returns a collection of circular buffer polygons with specified radii centered on a given point")
+        description = "Returns a collection of circular buffer polygons with specified radii centered on a given point")
 public class PointBuffers implements VectorProcess {
 
     @DescribeResult(
             name = "buffers",
-            description =
-                    "Features for the circular buffer polygons around the point, with attributes geom and radius")
+            description = "Features for the circular buffer polygons around the point, with attributes geom and radius")
     public SimpleFeatureCollection execute(
             @DescribeParameter(name = "center", description = "Input point") Point center,
             @DescribeParameter(
                             name = "crs",
-                            description =
-                                    "Coordinate reference system of the point and the generated buffer polygons",
+                            description = "Coordinate reference system of the point and the generated buffer polygons",
                             min = 0)
                     CoordinateReferenceSystem crs,
-            @DescribeParameter(
-                            name = "distances",
-                            description = "Buffer radius distance, in meters")
+            @DescribeParameter(name = "distances", description = "Buffer radius distance, in meters")
                     double[] distances,
             @DescribeParameter(
                             name = "quadrantSegments",
@@ -96,7 +91,8 @@ public class PointBuffers implements VectorProcess {
                 generator = new GeographicGenerator(center, quadrantSegments, crs);
             } else {
                 @SuppressWarnings("unchecked")
-                Unit<Length> unit = (Unit<Length>) hor.getCoordinateSystem().getAxis(0).getUnit();
+                Unit<Length> unit =
+                        (Unit<Length>) hor.getCoordinateSystem().getAxis(0).getUnit();
                 UnitConverter converter = SI.METRE.getConverterTo(unit);
                 generator = new MetricGenerator(center, quadrantSegments, converter);
             }
@@ -162,8 +158,7 @@ public class PointBuffers implements VectorProcess {
 
         boolean latLon;
 
-        public GeographicGenerator(
-                Point center, int quadrantSegments, CoordinateReferenceSystem crs) {
+        public GeographicGenerator(Point center, int quadrantSegments, CoordinateReferenceSystem crs) {
             this.quadrantSegments = quadrantSegments;
             this.center = center;
             this.calculator = new GeodeticCalculator(crs);

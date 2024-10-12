@@ -64,13 +64,13 @@ public class GeometryOperandsTypeBindingTest extends OGCTestSupport {
 
     @Test
     public void testEncode() throws Exception {
-        Document dom =
-                encode(
-                        FilterMockData.geometryOperands(),
-                        new QName(OGC.NAMESPACE, "GeometryOperands"),
-                        OGC.GeometryOperandsType);
+        Document dom = encode(
+                FilterMockData.geometryOperands(),
+                new QName(OGC.NAMESPACE, "GeometryOperands"),
+                OGC.GeometryOperandsType);
         assertEquals(
                 2,
-                getElementsByQName(dom, new QName(OGC.NAMESPACE, "GeometryOperand")).getLength());
+                getElementsByQName(dom, new QName(OGC.NAMESPACE, "GeometryOperand"))
+                        .getLength());
     }
 }

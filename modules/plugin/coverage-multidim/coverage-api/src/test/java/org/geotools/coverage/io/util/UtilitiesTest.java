@@ -87,8 +87,7 @@ public class UtilitiesTest extends Assert {
         final double inverseFlattening = 298.257223563;
         final double equatorialRadius = 6378137;
         final DefaultGeodeticDatum datum =
-                Utilities.getDefaultGeodeticDatum(
-                        "WGS84", equatorialRadius, inverseFlattening, SI.METRE);
+                Utilities.getDefaultGeodeticDatum("WGS84", equatorialRadius, inverseFlattening, SI.METRE);
         final PrimeMeridian primeMeridian = datum.getPrimeMeridian();
         assertEquals(0, primeMeridian.getGreenwichLongitude(), DELTA);
         final Ellipsoid ellipsoid = datum.getEllipsoid();
@@ -99,8 +98,7 @@ public class UtilitiesTest extends Assert {
         final GeographicCRS geoCrs = Utilities.getBaseCRS(equatorialRadius, inverseFlattening);
         assertEquals(datum, geoCrs.getDatum());
 
-        CoordinateReferenceSystem mercatorCRS =
-                Utilities.getMercator2SPProjectedCRS(10, 0, 0, geoCrs, null);
+        CoordinateReferenceSystem mercatorCRS = Utilities.getMercator2SPProjectedCRS(10, 0, 0, geoCrs, null);
         assertTrue(mercatorCRS instanceof DefaultProjectedCRS);
         DefaultProjectedCRS mercator = (DefaultProjectedCRS) mercatorCRS;
         assertEquals(datum, mercator.getDatum());
@@ -117,8 +115,7 @@ public class UtilitiesTest extends Assert {
     }
 
     @Test
-    public void testEnvelopes()
-            throws NoSuchAuthorityCodeException, FactoryException, TransformException {
+    public void testEnvelopes() throws NoSuchAuthorityCodeException, FactoryException, TransformException {
         // Setting up an UTM and WGS84 CRSs
 
         // Setup a 3D envelope and return it as 2D, making sure there is no 3rd dimension anymore
@@ -182,8 +179,7 @@ public class UtilitiesTest extends Assert {
         GridGeometry2D gg2D = new GridGeometry2D(env, envelope);
 
         // Getting the crop region
-        Rectangle cropRegion =
-                Utilities.getCropRegion(envelope, gg2D.getGridToCRS2D(PixelOrientation.UPPER_LEFT));
+        Rectangle cropRegion = Utilities.getCropRegion(envelope, gg2D.getGridToCRS2D(PixelOrientation.UPPER_LEFT));
 
         // Ensure the crop region is contains the input one
         assertTrue(cropRegion.contains(rect));
@@ -228,9 +224,8 @@ public class UtilitiesTest extends Assert {
 
         // Check with the CELL_CORNER and the following transformation, the result is a
         // Linear Transform
-        assertTrue(
-                LinearTransform.class.isAssignableFrom(
-                        Utilities.getOriginalGridToWorld(tr, PixelInCell.CELL_CORNER).getClass()));
+        assertTrue(LinearTransform.class.isAssignableFrom(
+                Utilities.getOriginalGridToWorld(tr, PixelInCell.CELL_CORNER).getClass()));
 
         // Check that a Linear Transform is returned also with an Identity transform
         rect = new Rectangle(0, 0, 10, 10);
@@ -242,9 +237,8 @@ public class UtilitiesTest extends Assert {
         // Transform
         tr = gg2D.getGridToCRS2D(PixelOrientation.UPPER_LEFT);
 
-        assertTrue(
-                LinearTransform.class.isAssignableFrom(
-                        Utilities.getOriginalGridToWorld(tr, PixelInCell.CELL_CORNER).getClass()));
+        assertTrue(LinearTransform.class.isAssignableFrom(
+                Utilities.getOriginalGridToWorld(tr, PixelInCell.CELL_CORNER).getClass()));
     }
 
     @Test
@@ -253,43 +247,29 @@ public class UtilitiesTest extends Assert {
         GridCoverageFactory coverageFactory = new GridCoverageFactory(GeoTools.getDefaultHints());
         String coverageName = "test";
         int imageIndex = 0;
-        PlanarImage image =
-                ConstantDescriptor.create(10f, 10f, new Byte[] {1}, GeoTools.getDefaultHints());
+        PlanarImage image = ConstantDescriptor.create(10f, 10f, new Byte[] {1}, GeoTools.getDefaultHints());
         MathTransform raster2Model = new AffineTransform2D(AffineTransform.getScaleInstance(2, 2));
         CoordinateReferenceSystem spatialReferenceSystem2D = DefaultGeographicCRS.WGS84;
 
         // Calculate a gridGeometry from the image and the MathTransform
         Rectangle bounds = image.getBounds();
-        GridGeometry2D gg2D =
-                new GridGeometry2D(
-                        new GridEnvelope2D(bounds), raster2Model, spatialReferenceSystem2D);
+        GridGeometry2D gg2D = new GridGeometry2D(new GridEnvelope2D(bounds), raster2Model, spatialReferenceSystem2D);
 
         GeneralBounds coverageEnvelope2D = new GeneralBounds(gg2D.getEnvelope());
         GridSampleDimension[] sampleDimensions = {new GridSampleDimension("testDim")};
         // Creation of the Coverage
-        GridCoverage2D coverage1 =
-                (GridCoverage2D)
-                        Utilities.createCoverageFromImage(
-                                coverageFactory,
-                                coverageName,
-                                imageIndex,
-                                image,
-                                raster2Model,
-                                spatialReferenceSystem2D,
-                                null,
-                                sampleDimensions);
+        GridCoverage2D coverage1 = (GridCoverage2D) Utilities.createCoverageFromImage(
+                coverageFactory,
+                coverageName,
+                imageIndex,
+                image,
+                raster2Model,
+                spatialReferenceSystem2D,
+                null,
+                sampleDimensions);
 
-        GridCoverage2D coverage2 =
-                (GridCoverage2D)
-                        Utilities.createCoverageFromImage(
-                                coverageFactory,
-                                coverageName,
-                                imageIndex,
-                                image,
-                                null,
-                                null,
-                                coverageEnvelope2D,
-                                sampleDimensions);
+        GridCoverage2D coverage2 = (GridCoverage2D) Utilities.createCoverageFromImage(
+                coverageFactory, coverageName, imageIndex, image, null, null, coverageEnvelope2D, sampleDimensions);
 
         // Ensure the two coverages have the same envelope and raster dimensions
         assertTrue(coverage1.getEnvelope2D().boundsEquals(coverage2.getEnvelope2D(), 0, 1, 0.01d));

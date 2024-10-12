@@ -72,16 +72,11 @@ public class OracleJsonArrayContainsOnlineTest extends JDBCTestSupport {
         checkFunction("JSON_DATA_BLOB", "/arrayNum", 2, 1);
     }
 
-    private void checkFunction(String columnName, String pointer, Object expected, int countResult)
-            throws Exception {
+    private void checkFunction(String columnName, String pointer, Object expected, int countResult) throws Exception {
 
         ContentFeatureSource featureSource = dataStore.getFeatureSource(tname("json_data"));
         Function function =
-                ff.function(
-                        "jsonArrayContains",
-                        ff.property(columnName),
-                        ff.literal(pointer),
-                        ff.literal(expected));
+                ff.function("jsonArrayContains", ff.property(columnName), ff.literal(pointer), ff.literal(expected));
         Filter filter = ff.equals(function, ff.literal(true));
         try (SimpleFeatureIterator iterator = featureSource.getFeatures(filter).features()) {
             List<SimpleFeature> features = new ArrayList<>();
@@ -111,30 +106,25 @@ class OracleJsonArrayContainsTestSetup extends JDBCDelegatingTestSetup {
                         + "CONSTRAINT ensure_json_blob CHECK (json_data_blob IS JSON),"
                         + "CONSTRAINT ensure_json_vchar CHECK (json_data_varchar2 IS JSON),"
                         + " CONSTRAINT json_data_pk PRIMARY KEY(id))");
-        run(
-                "INSERT INTO json_data VALUES (1,"
-                        + "'{ \"arrayStr\": [ \"op1\"]}', "
-                        + "UTL_RAW.convert(UTL_RAW.cast_to_raw('{ \"arrayStr\": [ \"op1\"]}'), 'AL32UTF8', 'WE8MSWIN1252'),"
-                        + "'{ \"arrayStr\": [ \"op1\" ] }')");
-        run(
-                "INSERT INTO json_data VALUES (2,"
-                        + "'{ \"arrayStr\": [ \"op1\", \"op2\"]}', "
-                        + "UTL_RAW.convert(UTL_RAW.cast_to_raw('{ \"arrayStr\": [ \"op1\", \"op2\"]}'), 'AL32UTF8', 'WE8MSWIN1252'),"
-                        + "'{ \"arrayStr\": [ \"op1\", \"op2\"] }')");
-        run(
-                "INSERT INTO json_data VALUES (3,"
-                        + "'{ \"arrayNum\": [ 1 ]}', "
-                        + "UTL_RAW.convert(UTL_RAW.cast_to_raw('{ \"arrayNum\": [ 1 ]}'), 'AL32UTF8', 'WE8MSWIN1252'),"
-                        + "'{ \"arrayStr\": [ 1 ] }')");
-        run(
-                "INSERT INTO json_data VALUES (4,"
-                        + "'{ \"arrayNum\": [ 1, 2 ]}', "
-                        + "UTL_RAW.convert(UTL_RAW.cast_to_raw('{ \"arrayNum\": [ 1, 2 ]}'), 'AL32UTF8', 'WE8MSWIN1252'),"
-                        + "'{ \"arrayNum\": [ 1, 2] }')");
-        run(
-                "INSERT INTO json_data VALUES (5,"
-                        + "' { \"onNestedObj\": { \"arrayNum\": [ 1, 2 ]} }', "
-                        + "UTL_RAW.convert(UTL_RAW.cast_to_raw('{ \"onNestedObj\": { \"arrayNum\": [ 1, 2 ]} }'), 'AL32UTF8', 'WE8MSWIN1252'),"
-                        + "'{ \"onNestedObj\": { \"arrayNum\": [ 1, 2] } }')");
+        run("INSERT INTO json_data VALUES (1,"
+                + "'{ \"arrayStr\": [ \"op1\"]}', "
+                + "UTL_RAW.convert(UTL_RAW.cast_to_raw('{ \"arrayStr\": [ \"op1\"]}'), 'AL32UTF8', 'WE8MSWIN1252'),"
+                + "'{ \"arrayStr\": [ \"op1\" ] }')");
+        run("INSERT INTO json_data VALUES (2,"
+                + "'{ \"arrayStr\": [ \"op1\", \"op2\"]}', "
+                + "UTL_RAW.convert(UTL_RAW.cast_to_raw('{ \"arrayStr\": [ \"op1\", \"op2\"]}'), 'AL32UTF8', 'WE8MSWIN1252'),"
+                + "'{ \"arrayStr\": [ \"op1\", \"op2\"] }')");
+        run("INSERT INTO json_data VALUES (3,"
+                + "'{ \"arrayNum\": [ 1 ]}', "
+                + "UTL_RAW.convert(UTL_RAW.cast_to_raw('{ \"arrayNum\": [ 1 ]}'), 'AL32UTF8', 'WE8MSWIN1252'),"
+                + "'{ \"arrayStr\": [ 1 ] }')");
+        run("INSERT INTO json_data VALUES (4,"
+                + "'{ \"arrayNum\": [ 1, 2 ]}', "
+                + "UTL_RAW.convert(UTL_RAW.cast_to_raw('{ \"arrayNum\": [ 1, 2 ]}'), 'AL32UTF8', 'WE8MSWIN1252'),"
+                + "'{ \"arrayNum\": [ 1, 2] }')");
+        run("INSERT INTO json_data VALUES (5,"
+                + "' { \"onNestedObj\": { \"arrayNum\": [ 1, 2 ]} }', "
+                + "UTL_RAW.convert(UTL_RAW.cast_to_raw('{ \"onNestedObj\": { \"arrayNum\": [ 1, 2 ]} }'), 'AL32UTF8', 'WE8MSWIN1252'),"
+                + "'{ \"onNestedObj\": { \"arrayNum\": [ 1, 2] } }')");
     }
 }

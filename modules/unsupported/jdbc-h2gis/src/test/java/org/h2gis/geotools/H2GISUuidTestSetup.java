@@ -29,16 +29,14 @@ public class H2GISUuidTestSetup extends JDBCUuidTestSetup {
     @Override
     protected void createUuidTable() throws Exception {
         run("CREATE SCHEMA IF NOT EXISTS \"geotools\";");
-        run(
-                "CREATE TABLE \"geotools\".\"guid\" ( \"id\" serial PRIMARY KEY, \"uuidProperty\" uuid)");
+        run("CREATE TABLE \"geotools\".\"guid\" ( \"id\" serial PRIMARY KEY, \"uuidProperty\" uuid)");
         run("INSERT INTO \"geotools\".\"guid\" (\"uuidProperty\") VALUES ('" + uuid1 + "')");
         run("INSERT INTO \"geotools\".\"guid\" (\"uuidProperty\") VALUES ('" + uuid2 + "')");
 
         /*
          * A table with UUID as primary key
          */
-        run(
-                "CREATE TABLE \"geotools\".\"uuidt\" ( \"id\" uuid PRIMARY KEY, \"the_geom\" GEOMETRY(POINT))");
+        run("CREATE TABLE \"geotools\".\"uuidt\" ( \"id\" uuid PRIMARY KEY, \"the_geom\" GEOMETRY(POINT))");
     }
 
     @Override

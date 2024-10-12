@@ -64,8 +64,7 @@ import org.locationtech.jts.geom.Point;
  */
 public class GeometryFunctionsTest extends AppSchemaTestSupport {
 
-    public static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(GeometryFunctionsTest.class);
+    public static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(GeometryFunctionsTest.class);
 
     private static FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
@@ -78,22 +77,17 @@ public class GeometryFunctionsTest extends AppSchemaTestSupport {
     @BeforeClass
     public static void setUpOnce() {
         List<AttributeDescriptor> schema = new ArrayList<>();
-        schema.add(
-                new AttributeDescriptorImpl(
-                        XSSchema.DOUBLE_TYPE, Types.typeName("pointOne"), 0, 1, false, null));
-        schema.add(
-                new AttributeDescriptorImpl(
-                        XSSchema.DOUBLE_TYPE, Types.typeName("pointTwo"), 0, 1, false, null));
+        schema.add(new AttributeDescriptorImpl(XSSchema.DOUBLE_TYPE, Types.typeName("pointOne"), 0, 1, false, null));
+        schema.add(new AttributeDescriptorImpl(XSSchema.DOUBLE_TYPE, Types.typeName("pointTwo"), 0, 1, false, null));
 
-        SimpleFeatureType type =
-                new SimpleFeatureTypeImpl(
-                        Types.typeName("GeometryContainer"),
-                        schema,
-                        null,
-                        false,
-                        null,
-                        GMLSchema.ABSTRACTFEATURETYPE_TYPE,
-                        null);
+        SimpleFeatureType type = new SimpleFeatureTypeImpl(
+                Types.typeName("GeometryContainer"),
+                schema,
+                null,
+                false,
+                null,
+                GMLSchema.ABSTRACTFEATURETYPE_TYPE,
+                null);
         feature = SimpleFeatureBuilder.build(type, new Object[] {5.0, 2.5}, null);
         pointOne = ff.property("pointOne");
         pointTwo = ff.property("pointTwo");
@@ -103,13 +97,8 @@ public class GeometryFunctionsTest extends AppSchemaTestSupport {
     /** Test toDirectPosition function */
     public void testToDirectPosition() throws Exception {
         // 2 points with SRS
-        Function function =
-                ff.function(
-                        "toDirectPosition",
-                        ToDirectPositionFunction.SRS_NAME,
-                        ff.literal("EPSG:4326"),
-                        pointOne,
-                        pointTwo);
+        Function function = ff.function(
+                "toDirectPosition", ToDirectPositionFunction.SRS_NAME, ff.literal("EPSG:4326"), pointOne, pointTwo);
         Object value = function.evaluate(feature);
         assertTrue(value instanceof Position);
         Position pos = (Position) value;
@@ -128,13 +117,8 @@ public class GeometryFunctionsTest extends AppSchemaTestSupport {
         assertEquals(pos.getOrdinate(0), 5.0, 0);
         // invalid CRS
         try {
-            function =
-                    ff.function(
-                            "toDirectPosition",
-                            ToDirectPositionFunction.SRS_NAME,
-                            ff.literal("1"),
-                            pointOne,
-                            pointTwo);
+            function = ff.function(
+                    "toDirectPosition", ToDirectPositionFunction.SRS_NAME, ff.literal("1"), pointOne, pointTwo);
             function.evaluate(feature);
             fail("Shouldn't get this far with invalid SRS name: '1'");
         } catch (Throwable e) {
@@ -144,31 +128,25 @@ public class GeometryFunctionsTest extends AppSchemaTestSupport {
         try {
             function = ff.function("toDirectPosition", pointOne, pointTwo, pointOne);
             function.evaluate(feature);
-            fail(
-                    "Shouldn't get this far with too many parameters: "
-                            + pointOne.toString()
-                            + ", "
-                            + pointTwo.toString()
-                            + ", "
-                            + pointOne.toString());
+            fail("Shouldn't get this far with too many parameters: "
+                    + pointOne.toString()
+                    + ", "
+                    + pointTwo.toString()
+                    + ", "
+                    + pointOne.toString());
         } catch (Throwable e) {
             LOGGER.info("Testing exception: " + e.toString());
         }
         // no points
         try {
-            function =
-                    ff.function(
-                            "toDirectPosition",
-                            ToDirectPositionFunction.SRS_NAME,
-                            ff.literal("EPSG:WGS84"));
+            function = ff.function("toDirectPosition", ToDirectPositionFunction.SRS_NAME, ff.literal("EPSG:WGS84"));
             function.evaluate(feature);
-            fail(
-                    "Shouldn't get this far with too many parameters: "
-                            + pointOne.toString()
-                            + ", "
-                            + pointTwo.toString()
-                            + ", "
-                            + pointOne.toString());
+            fail("Shouldn't get this far with too many parameters: "
+                    + pointOne.toString()
+                    + ", "
+                    + pointTwo.toString()
+                    + ", "
+                    + pointOne.toString());
         } catch (Throwable e) {
             LOGGER.info("Testing exception: " + e.toString());
         }
@@ -178,14 +156,13 @@ public class GeometryFunctionsTest extends AppSchemaTestSupport {
     /** Test toPoint function */
     public void testToPoint() throws NoSuchAuthorityCodeException, FactoryException {
         // 2 points with SRS name and gml:id
-        Function function =
-                ff.function(
-                        "toPoint",
-                        ToDirectPositionFunction.SRS_NAME,
-                        ff.literal("EPSG:4283"),
-                        pointOne,
-                        pointTwo,
-                        ff.literal("1"));
+        Function function = ff.function(
+                "toPoint",
+                ToDirectPositionFunction.SRS_NAME,
+                ff.literal("EPSG:4283"),
+                pointOne,
+                pointTwo,
+                ff.literal("1"));
         Object value = function.evaluate(feature);
         assertTrue(value instanceof Point);
         Point pt = (Point) value;
@@ -215,23 +192,16 @@ public class GeometryFunctionsTest extends AppSchemaTestSupport {
             LOGGER.info("Testing exception: " + e.toString());
         }
         // 3 points
-        function =
-                ff.function(
-                        "toPoint",
-                        ToDirectPositionFunction.SRS_NAME,
-                        ff.literal("1"),
-                        pointOne,
-                        pointTwo,
-                        pointOne);
+        function = ff.function(
+                "toPoint", ToDirectPositionFunction.SRS_NAME, ff.literal("1"), pointOne, pointTwo, pointOne);
         try {
             function.evaluate(feature);
-            fail(
-                    "Shouldn't get this far with too many parameters: "
-                            + pointOne.toString()
-                            + ", "
-                            + pointTwo.toString()
-                            + ", "
-                            + pointOne.toString());
+            fail("Shouldn't get this far with too many parameters: "
+                    + pointOne.toString()
+                    + ", "
+                    + pointTwo.toString()
+                    + ", "
+                    + pointOne.toString());
         } catch (Throwable e) {
             LOGGER.info("Testing exception: " + e.toString());
         }
@@ -270,14 +240,7 @@ public class GeometryFunctionsTest extends AppSchemaTestSupport {
         assertEquals(env.getMaxY(), 5.0, 0);
         assertEquals(CRS.toSRS(refEnv.getCoordinateReferenceSystem()), "EPSG:4283");
         // Option 4 (2D Envelope with crsname): <OCQL>ToEnvelope(minx,maxx,miny,maxy,crsname)</OCQL>
-        function =
-                ff.function(
-                        "toEnvelope",
-                        pointTwo,
-                        pointOne,
-                        pointTwo,
-                        pointOne,
-                        ff.literal("EPSG:4283"));
+        function = ff.function("toEnvelope", pointTwo, pointOne, pointTwo, pointOne, ff.literal("EPSG:4283"));
         value = function.evaluate(feature);
         assertTrue(value instanceof ReferencedEnvelope);
         refEnv = (ReferencedEnvelope) value;
@@ -291,8 +254,7 @@ public class GeometryFunctionsTest extends AppSchemaTestSupport {
     @Test
     /** Test ToLineString with EPSG SRS. */
     public void testToLineStringEPSG() {
-        Function function =
-                ff.function("toLineString", ff.literal("EPSG:9902"), pointOne, pointTwo);
+        Function function = ff.function("toLineString", ff.literal("EPSG:9902"), pointOne, pointTwo);
         Object value = function.evaluate(feature);
         assertTrue(value instanceof LineString);
         LineString linestring = (LineString) value;
@@ -348,11 +310,7 @@ public class GeometryFunctionsTest extends AppSchemaTestSupport {
     /** Test ToLineString with invalid parameters. */
     public void testToLineStringInvalidParams() {
         Function function =
-                ff.function(
-                        "toLineString",
-                        ff.literal("#GA.borehole.100"),
-                        Literal.NIL,
-                        ff.literal("something"));
+                ff.function("toLineString", ff.literal("#GA.borehole.100"), Literal.NIL, ff.literal("something"));
         try {
             function.evaluate(feature);
             fail();

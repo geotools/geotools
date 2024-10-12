@@ -56,8 +56,7 @@ public class AggregateProcessTest {
 
         Set<AggregationFunction> functions = EnumSet.of(AggregationFunction.Sum);
 
-        Results result =
-                AggregateProcess.process(source.getFeatures(), "cat", functions, true, null);
+        Results result = AggregateProcess.process(source.getFeatures(), "cat", functions, true, null);
         assertTrue(result.sum > 0);
     }
 
@@ -67,8 +66,7 @@ public class AggregateProcessTest {
 
         Set<AggregationFunction> functions = EnumSet.of(AggregationFunction.SumArea);
 
-        Results result =
-                AggregateProcess.process(source.getFeatures(), "the_geom", functions, true, null);
+        Results result = AggregateProcess.process(source.getFeatures(), "the_geom", functions, true, null);
         assertTrue(result.area > 0);
     }
 
@@ -76,14 +74,8 @@ public class AggregateProcessTest {
     public void testSumWithGroupBy() throws Exception {
         SimpleFeatureSource source = bugs.getFeatureSource("bugsites");
         Set<AggregationFunction> functions = EnumSet.of(AggregationFunction.Sum);
-        Results result =
-                AggregateProcess.process(
-                        source.getFeatures(),
-                        "cat",
-                        functions,
-                        Collections.singletonList("str1"),
-                        true,
-                        null);
+        Results result = AggregateProcess.process(
+                source.getFeatures(), "cat", functions, Collections.singletonList("str1"), true, null);
         // we expect a group by result
         assertNotNull(result.getGroupByResult());
         // the group by result should not be empty
@@ -97,14 +89,8 @@ public class AggregateProcessTest {
     public void testSumAreaWithGroupBy() throws Exception {
         SimpleFeatureSource source = bugs.getFeatureSource("groupedzones");
         Set<AggregationFunction> functions = EnumSet.of(AggregationFunction.SumArea);
-        Results result =
-                AggregateProcess.process(
-                        source.getFeatures(),
-                        "the_geom",
-                        functions,
-                        Collections.singletonList("str1"),
-                        true,
-                        null);
+        Results result = AggregateProcess.process(
+                source.getFeatures(), "the_geom", functions, Collections.singletonList("str1"), true, null);
         // we expect a group by result
         assertNotNull(result.getGroupByResult());
         // the group by result should not be empty

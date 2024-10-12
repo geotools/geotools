@@ -99,8 +99,7 @@ import tech.units.indriya.AbstractUnit;
 /** @author Daniele Romagnoli, GeoSolutions */
 public class Utilities {
 
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(Utilities.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(Utilities.class);
 
     /**
      * TODO: Define a contains method which allows to know if the extent of a CoverageSlice contains
@@ -140,23 +139,17 @@ public class Utilities {
      * @return a properly built Datum.
      */
     public static DefaultGeodeticDatum getDefaultGeodeticDatum(
-            final String name,
-            final double equatorialRadius,
-            final double inverseFlattening,
-            Unit<Length> unit) {
+            final String name, final double equatorialRadius, final double inverseFlattening, Unit<Length> unit) {
 
         DefaultEllipsoid ellipsoid =
-                DefaultEllipsoid.createFlattenedSphere(
-                        name, equatorialRadius, inverseFlattening, unit);
+                DefaultEllipsoid.createFlattenedSphere(name, equatorialRadius, inverseFlattening, unit);
         final ReferenceIdentifier[] identifiers = Utilities.getIdentifiers(name);
         // TODO: Should I change this behavior?
-        if (identifiers == null)
-            throw new IllegalArgumentException("Reference Identifier not available");
+        if (identifiers == null) throw new IllegalArgumentException("Reference Identifier not available");
         final Map<String, Object> properties = new HashMap<>(4);
         properties.put(DefaultGeodeticDatum.NAME_KEY, identifiers[0]);
         properties.put(DefaultGeodeticDatum.ALIAS_KEY, identifiers);
-        DefaultGeodeticDatum datum =
-                new DefaultGeodeticDatum(properties, ellipsoid, DefaultPrimeMeridian.GREENWICH);
+        DefaultGeodeticDatum datum = new DefaultGeodeticDatum(properties, ellipsoid, DefaultPrimeMeridian.GREENWICH);
         return datum;
     }
 
@@ -224,15 +217,12 @@ public class Utilities {
             props.put("name", "Mercator CRS");
             OperationMethod method = null;
             final MathTransform mt =
-                    fg.getMathTransformFactory()
-                            .createBaseToDerived(sourceCRS, params, DefaultCartesianCS.PROJECTED);
+                    fg.getMathTransformFactory().createBaseToDerived(sourceCRS, params, DefaultCartesianCS.PROJECTED);
             if (method == null) {
                 method = fg.getMathTransformFactory().getLastMethodUsed();
             }
-            projectedCRS =
-                    ((ReferencingObjectFactory) fg.getCRSFactory())
-                            .createProjectedCRS(
-                                    props, method, sourceCRS, mt, DefaultCartesianCS.PROJECTED);
+            projectedCRS = ((ReferencingObjectFactory) fg.getCRSFactory())
+                    .createProjectedCRS(props, method, sourceCRS, mt, DefaultCartesianCS.PROJECTED);
         } catch (FactoryException e) {
             throw new DataSourceException(e);
         }
@@ -240,14 +230,11 @@ public class Utilities {
     }
 
     /** Build a base {@link GeographicCRS} given the parameters to specify a Geodetic Datum */
-    public static GeographicCRS getBaseCRS(
-            final double equatorialRadius, final double inverseFlattening) {
+    public static GeographicCRS getBaseCRS(final double equatorialRadius, final double inverseFlattening) {
         final DefaultGeodeticDatum datum =
-                Utilities.getDefaultGeodeticDatum(
-                        "WGS84", equatorialRadius, inverseFlattening, SI.METRE);
+                Utilities.getDefaultGeodeticDatum("WGS84", equatorialRadius, inverseFlattening, SI.METRE);
         final GeographicCRS sourceCRS =
-                new DefaultGeographicCRS(
-                        "WGS-84", datum, DefaultGeographicCRS.WGS84.getCoordinateSystem());
+                new DefaultGeographicCRS("WGS-84", datum, DefaultGeographicCRS.WGS84.getCoordinateSystem());
         return sourceCRS;
     }
 
@@ -274,8 +261,7 @@ public class Utilities {
         Unit<? extends Quantity<?>> unit = AbstractUnit.ONE;
         if (uom != null && uom.trim().length() > 0) {
             // TODO: Add more well known cases
-            if (uom.equalsIgnoreCase("temp_deg_c") || uom.equalsIgnoreCase("Celsius"))
-                unit = SI.CELSIUS;
+            if (uom.equalsIgnoreCase("temp_deg_c") || uom.equalsIgnoreCase("Celsius")) unit = SI.CELSIUS;
             else {
                 try {
                     unit = UnitFormat.getInstance().parse(uom);
@@ -334,12 +320,10 @@ public class Utilities {
      */
     public static GeneralBounds getRequestedEnvelope2D(GeneralBounds requestedEnvelope)
             throws FactoryException, TransformException {
-        if (requestedEnvelope == null)
-            throw new IllegalArgumentException("requested envelope is null");
+        if (requestedEnvelope == null) throw new IllegalArgumentException("requested envelope is null");
         GeneralBounds requestedEnvelope2D = null;
         final MathTransform transformTo2D;
-        CoordinateReferenceSystem requestedEnvelopeCRS2D =
-                requestedEnvelope.getCoordinateReferenceSystem();
+        CoordinateReferenceSystem requestedEnvelopeCRS2D = requestedEnvelope.getCoordinateReferenceSystem();
 
         // //
         //
@@ -347,9 +331,7 @@ public class Utilities {
         //
         // //
         if (requestedEnvelopeCRS2D.getCoordinateSystem().getDimension() != 2) {
-            transformTo2D =
-                    CRS.findMathTransform(
-                            requestedEnvelopeCRS2D, CRS.getHorizontalCRS(requestedEnvelopeCRS2D));
+            transformTo2D = CRS.findMathTransform(requestedEnvelopeCRS2D, CRS.getHorizontalCRS(requestedEnvelopeCRS2D));
             requestedEnvelopeCRS2D = CRS.getHorizontalCRS(requestedEnvelopeCRS2D);
         } else transformTo2D = IdentityTransform.create(2);
 
@@ -370,8 +352,7 @@ public class Utilities {
      * @return a {@code Rectangle} representing the crop region.
      * @throws TransformException in case a problem occurs when going back to raster space.
      */
-    public static Rectangle getCropRegion(
-            GeneralBounds envelope, final MathTransform gridToWorldTransform)
+    public static Rectangle getCropRegion(GeneralBounds envelope, final MathTransform gridToWorldTransform)
             throws TransformException {
         if (envelope == null || gridToWorldTransform == null) {
             boolean isEnvelope = envelope == null;
@@ -423,31 +404,22 @@ public class Utilities {
                 || requestedEnvelope2D == null
                 || requestedDim == null
                 || readGridToWorld == null) {
-            StringBuilder sb =
-                    new StringBuilder("Some of the specified parameters are null:")
-                            .append(baseEnvelope2D == null ? "base envelope \n" : "")
-                            .append(
-                                    spatialReferenceSystem2D == null
-                                            ? "native spatial reference system\n"
-                                            : "")
-                            .append(requestedEnvelope2D == null ? "requested envelope \n" : "")
-                            .append(requestedDim == null ? "requested dim\n" : "")
-                            .append(
-                                    readGridToWorld == null
-                                            ? "requested grid to world transformation \n"
-                                            : "");
+            StringBuilder sb = new StringBuilder("Some of the specified parameters are null:")
+                    .append(baseEnvelope2D == null ? "base envelope \n" : "")
+                    .append(spatialReferenceSystem2D == null ? "native spatial reference system\n" : "")
+                    .append(requestedEnvelope2D == null ? "requested envelope \n" : "")
+                    .append(requestedDim == null ? "requested dim\n" : "")
+                    .append(readGridToWorld == null ? "requested grid to world transformation \n" : "");
             throw new IllegalArgumentException(sb.toString());
         }
         GeneralBounds adjustedRequestedEnvelope = new GeneralBounds(2);
-        final CoordinateReferenceSystem requestedEnvelopeCRS2D =
-                requestedEnvelope2D.getCoordinateReferenceSystem();
+        final CoordinateReferenceSystem requestedEnvelopeCRS2D = requestedEnvelope2D.getCoordinateReferenceSystem();
         boolean tryWithWGS84 = false;
 
         try {
             // convert the requested envelope 2D to this coverage native crs.
             if (!CRS.equalsIgnoreMetadata(requestedEnvelopeCRS2D, spatialReferenceSystem2D)) {
-                adjustedRequestedEnvelope =
-                        CRS.transform(requestedEnvelope2D, spatialReferenceSystem2D);
+                adjustedRequestedEnvelope = CRS.transform(requestedEnvelope2D, spatialReferenceSystem2D);
             } else {
                 adjustedRequestedEnvelope.setEnvelope(requestedEnvelope2D);
             }
@@ -464,11 +436,9 @@ public class Utilities {
             // space to the requested raster space
             //
             // //
-            final Bounds requestedEnvelopeCropped =
-                    CRS.transform(adjustedRequestedEnvelope, requestedEnvelopeCRS2D);
-            final Rectangle2D ordinates =
-                    CRS.transform(readGridToWorld.inverse(), requestedEnvelopeCropped)
-                            .toRectangle2D();
+            final Bounds requestedEnvelopeCropped = CRS.transform(adjustedRequestedEnvelope, requestedEnvelopeCRS2D);
+            final Rectangle2D ordinates = CRS.transform(readGridToWorld.inverse(), requestedEnvelopeCropped)
+                    .toRectangle2D();
             final GeneralGridEnvelope finalRange = new GeneralGridEnvelope(ordinates.getBounds());
             final Rectangle tempRect = finalRange.toRectangle();
             // check that we stay inside the source rectangle
@@ -487,8 +457,7 @@ public class Utilities {
         //
         // //
         if (tryWithWGS84) {
-            final GeneralBounds requestedEnvelopeWGS84 =
-                    (GeneralBounds) getEnvelopeAsWGS84(requestedEnvelope2D, false);
+            final GeneralBounds requestedEnvelopeWGS84 = (GeneralBounds) getEnvelopeAsWGS84(requestedEnvelope2D, false);
 
             // checking the intersection in wgs84
             if (!requestedEnvelopeWGS84.intersects(wgs84BaseEnvelope2D, true)) return null;
@@ -496,8 +465,7 @@ public class Utilities {
             // intersect
             adjustedRequestedEnvelope = new GeneralBounds(requestedEnvelopeWGS84);
             adjustedRequestedEnvelope.intersect(wgs84BaseEnvelope2D);
-            adjustedRequestedEnvelope =
-                    CRS.transform(adjustedRequestedEnvelope, spatialReferenceSystem2D);
+            adjustedRequestedEnvelope = CRS.transform(adjustedRequestedEnvelope, spatialReferenceSystem2D);
             adjustedRequestedEnvelope.setCoordinateReferenceSystem(spatialReferenceSystem2D);
         }
         return adjustedRequestedEnvelope;
@@ -510,8 +478,7 @@ public class Utilities {
      * @param pixInCell specifies the datum of the transformation we want.
      * @return the original grid to world transformation
      */
-    public static MathTransform getOriginalGridToWorld(
-            MathTransform raster2Model, final PixelInCell pixInCell) {
+    public static MathTransform getOriginalGridToWorld(MathTransform raster2Model, final PixelInCell pixInCell) {
         // we do not have to change the pixel datum
         if (pixInCell == PixelInCell.CELL_CENTER) return raster2Model;
 
@@ -572,22 +539,20 @@ public class Utilities {
             //
             // ////////////////////////////////////////////////////////////////
             if (requestedEnvelope != null) {
-                final GeneralBounds requestedEnvelope2D =
-                        Utilities.getRequestedEnvelope2D(requestedEnvelope);
+                final GeneralBounds requestedEnvelope2D = Utilities.getRequestedEnvelope2D(requestedEnvelope);
 
                 // ////////////////////////////////////////////////////////////
                 //
                 // INTERSECT ENVELOPES AND CROP Destination REGION
                 //
                 // ////////////////////////////////////////////////////////////
-                adjustedRequestedEnvelope =
-                        Utilities.getIntersection(
-                                baseEnvelope2D,
-                                spatialReferenceSystem2D,
-                                requestedEnvelope2D,
-                                requestedDim,
-                                readGridToWorld,
-                                wgs84BaseEnvelope2D);
+                adjustedRequestedEnvelope = Utilities.getIntersection(
+                        baseEnvelope2D,
+                        spatialReferenceSystem2D,
+                        requestedEnvelope2D,
+                        requestedDim,
+                        readGridToWorld,
+                        wgs84BaseEnvelope2D);
                 if (adjustedRequestedEnvelope == null) return null;
 
                 // /////////////////////////////////////////////////////////////////////
@@ -595,16 +560,12 @@ public class Utilities {
                 // CROP SOURCE REGION
                 //
                 // /////////////////////////////////////////////////////////////////////
-                sourceRegion.setRect(
-                        Utilities.getCropRegion(
-                                adjustedRequestedEnvelope,
-                                Utilities.getOriginalGridToWorld(
-                                        originalGridToWorld, PixelInCell.CELL_CORNER)));
+                sourceRegion.setRect(Utilities.getCropRegion(
+                        adjustedRequestedEnvelope,
+                        Utilities.getOriginalGridToWorld(originalGridToWorld, PixelInCell.CELL_CORNER)));
                 if (sourceRegion.isEmpty()) {
                     if (LOGGER.isLoggable(Level.INFO)) {
-                        LOGGER.log(
-                                Level.INFO,
-                                "Too small envelope resulting in empty cropped raster region");
+                        LOGGER.log(Level.INFO, "Too small envelope resulting in empty cropped raster region");
                     }
                     return null;
                     // TODO: Future versions may define a 1x1 rectangle starting
@@ -615,15 +576,14 @@ public class Utilities {
                 sourceRegion.setRect(sourceRegion.intersection(baseGridRange.toRectangle()));
 
                 if (LOGGER.isLoggable(Level.FINE)) {
-                    StringBuilder sb =
-                            new StringBuilder("Adjusted Requested Envelope = ")
-                                    .append(adjustedRequestedEnvelope.toString())
-                                    .append("\n")
-                                    .append("Requested raster dimension = ")
-                                    .append(requestedDim.toString())
-                                    .append("\n")
-                                    .append("Corresponding raster source region = ")
-                                    .append(sourceRegion.toString());
+                    StringBuilder sb = new StringBuilder("Adjusted Requested Envelope = ")
+                            .append(adjustedRequestedEnvelope.toString())
+                            .append("\n")
+                            .append("Requested raster dimension = ")
+                            .append(requestedDim.toString())
+                            .append("\n")
+                            .append("Corresponding raster source region = ")
+                            .append(sourceRegion.toString());
                     LOGGER.log(Level.FINE, sb.toString());
                 }
 
@@ -664,19 +624,9 @@ public class Utilities {
         GridCoverage2D gridCoverage;
         // creating coverage
         if (raster2Model != null) {
-            gridCoverage =
-                    coverageFactory.create(
-                            coverageName,
-                            image,
-                            spatialReferenceSystem2D,
-                            raster2Model,
-                            bands,
-                            null,
-                            null);
-        } else
-            gridCoverage =
-                    coverageFactory.create(
-                            coverageName, image, coverageEnvelope2D, bands, null, null);
+            gridCoverage = coverageFactory.create(
+                    coverageName, image, spatialReferenceSystem2D, raster2Model, bands, null, null);
+        } else gridCoverage = coverageFactory.create(coverageName, image, coverageEnvelope2D, bands, null, null);
 
         return gridCoverage;
     }
@@ -691,10 +641,7 @@ public class Utilities {
      *     parameters.
      */
     public static void setDecimationParameters(
-            ImageReadParam readP,
-            GridEnvelope baseGridRange,
-            double[] requestedRes,
-            double[] highestRes) {
+            ImageReadParam readP, GridEnvelope baseGridRange, double[] requestedRes, double[] highestRes) {
         {
             if (readP == null || baseGridRange == null)
                 throw new IllegalArgumentException("Specified parameters are null");
@@ -725,8 +672,7 @@ public class Utilities {
         // TODO: fix if slashIndex == -1
         fileName = fileName.substring(slashIndex + 1, fileName.length());
         final int dotIndex = fileName.lastIndexOf(".");
-        final String coverageNameString =
-                (dotIndex == -1) ? fileName : fileName.substring(0, dotIndex);
+        final String coverageNameString = (dotIndex == -1) ? fileName : fileName.substring(0, dotIndex);
         return new NameImpl(coverageNameString);
     }
 
@@ -804,8 +750,7 @@ public class Utilities {
         // DECIMATION ON READING
         //
         // ////////////////////////////////////////////////////////////////////
-        if (highestRes == null)
-            throw new IllegalArgumentException("Unspecified highest Resolution");
+        if (highestRes == null) throw new IllegalArgumentException("Unspecified highest Resolution");
         if ((requestedRes[0] > highestRes[0]) || (requestedRes[1] > highestRes[1])) {
             Utilities.setDecimationParameters(readParam, gridRange, requestedRes, highestRes);
         }
@@ -843,8 +788,7 @@ public class Utilities {
         // Doing an image read for reading the coverage.
         //
         // ////////////////////////////////////////////////////////////////////
-        final PlanarImage image =
-                readImage(spi, input, imageIndex, useJAI, imageReadParam, useMultithreading);
+        final PlanarImage image = readImage(spi, input, imageIndex, useJAI, imageReadParam, useMultithreading);
 
         // /////////////////////////////////////////////////////////////////////
         //
@@ -882,8 +826,7 @@ public class Utilities {
                     image,
                     ConcatenatedTransform.create(
                             ProjectiveTransform.create(
-                                    new AffineTransform(
-                                            scaleX, 0, 0, scaleY, translateX, translateY)),
+                                    new AffineTransform(scaleX, 0, 0, scaleY, translateX, translateY)),
                             raster2Model),
                     coordinateReferenceSystem,
                     null,
@@ -892,14 +835,7 @@ public class Utilities {
             // In case of no transformation is required (As an instance,
             // when reading the whole image)
             return Utilities.createCoverageFromImage(
-                    coverageFactory,
-                    coverageName,
-                    imageIndex,
-                    image,
-                    null,
-                    null,
-                    coverageEnvelope2D,
-                    sampleDimensions);
+                    coverageFactory, coverageName, imageIndex, image, null, null, coverageEnvelope2D, sampleDimensions);
         }
     }
 
@@ -1253,8 +1189,7 @@ public class Utilities {
         try (InputStream openStream = propsURL.openStream()) {
             properties.load(openStream);
         } catch (IOException e) {
-            if (LOGGER.isLoggable(Level.SEVERE))
-                LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
+            if (LOGGER.isLoggable(Level.SEVERE)) LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
             return null;
         }
         return properties;

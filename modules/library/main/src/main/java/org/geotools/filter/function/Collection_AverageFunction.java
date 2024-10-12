@@ -45,18 +45,14 @@ import org.geotools.filter.capability.FunctionNameImpl;
  */
 public class Collection_AverageFunction extends FunctionExpressionImpl {
     /** The logger for the filter module. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(Collection_AverageFunction.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(Collection_AverageFunction.class);
 
     FeatureCollection<FeatureType, Feature> previousFeatureCollection = null;
     Object average = null;
     Expression expr;
 
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "Collection_Average",
-                    parameter("average", Number.class),
-                    parameter("expression", Number.class));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "Collection_Average", parameter("average", Number.class), parameter("expression", Number.class));
 
     /** Creates a new instance of Collection_AverageFunction */
     public Collection_AverageFunction() {
@@ -71,8 +67,7 @@ public class Collection_AverageFunction extends FunctionExpressionImpl {
      * @return An object containing the average value of the attributes
      */
     static CalcResult calculateAverage(
-            FeatureCollection<? extends FeatureType, ? extends Feature> collection,
-            Expression expression)
+            FeatureCollection<? extends FeatureType, ? extends Feature> collection, Expression expression)
             throws IllegalFilterException, IOException {
         AverageVisitor averageVisitor = new AverageVisitor(expression);
         collection.accepts(averageVisitor, null);
@@ -107,8 +102,7 @@ public class Collection_AverageFunction extends FunctionExpressionImpl {
         if (feature == null) {
             return Integer.valueOf(0); // no features were visited in the making of this answer
         }
-        FeatureCollection<FeatureType, Feature> featureCollection =
-                (FeatureCollection<FeatureType, Feature>) feature;
+        FeatureCollection<FeatureType, Feature> featureCollection = (FeatureCollection<FeatureType, Feature>) feature;
         synchronized (featureCollection) {
             if (featureCollection != previousFeatureCollection) {
                 previousFeatureCollection = featureCollection;

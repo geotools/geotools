@@ -68,8 +68,7 @@ public class MemoryFilterOptimizerTest extends DataTestCase {
 
     @Test
     public void testDuplicateWithoutTargets() {
-        MemoryFilterOptimizer optimizer =
-                new MemoryFilterOptimizer(roadType, Collections.emptySet());
+        MemoryFilterOptimizer optimizer = new MemoryFilterOptimizer(roadType, Collections.emptySet());
 
         final And copy = (And) and.accept(optimizer, null);
 
@@ -84,8 +83,7 @@ public class MemoryFilterOptimizerTest extends DataTestCase {
         checkPropertiesIndexed(equalNameCopy, equalIdCopy);
     }
 
-    public void checkPropertiesIndexed(
-            PropertyIsEqualTo equalNameCopy, PropertyIsEqualTo equalIdCopy) {
+    public void checkPropertiesIndexed(PropertyIsEqualTo equalNameCopy, PropertyIsEqualTo equalIdCopy) {
         assertTrue(equalNameCopy.getExpression1() instanceof IndexPropertyName);
         IndexPropertyName indexedName = (IndexPropertyName) equalNameCopy.getExpression1();
         assertEquals(2, indexedName.index);
@@ -100,8 +98,7 @@ public class MemoryFilterOptimizerTest extends DataTestCase {
     @Test
     public void testDuplicateAndMemoize() {
         MemoryFilterOptimizer optimizer =
-                new MemoryFilterOptimizer(
-                        roadType, new HashSet<>(Arrays.asList(equalName, equalId)));
+                new MemoryFilterOptimizer(roadType, new HashSet<>(Arrays.asList(equalName, equalId)));
 
         final And copy = (And) and.accept(optimizer, null);
         // this time they are not memoized, but property accesses should be indexed now
@@ -119,8 +116,7 @@ public class MemoryFilterOptimizerTest extends DataTestCase {
     public void testMemoizeDefaultGeometry() {
         PropertyName property = ff.property("");
 
-        MemoryFilterOptimizer optimizer =
-                new MemoryFilterOptimizer(roadType, Collections.singleton(property));
+        MemoryFilterOptimizer optimizer = new MemoryFilterOptimizer(roadType, Collections.singleton(property));
         PropertyName memoized = (PropertyName) property.accept(optimizer, null);
 
         SimpleFeature spy = Mockito.spy(roadFeatures[0]);
@@ -137,8 +133,7 @@ public class MemoryFilterOptimizerTest extends DataTestCase {
         // been replicated
         PropertyName property = ff.property("foobar");
 
-        MemoryFilterOptimizer optimizer =
-                new MemoryFilterOptimizer(roadType, Collections.singleton(property));
+        MemoryFilterOptimizer optimizer = new MemoryFilterOptimizer(roadType, Collections.singleton(property));
         PropertyName memoized = (PropertyName) property.accept(optimizer, null);
         assertNull(memoized.evaluate(roadFeatures[0]));
     }
@@ -150,8 +145,7 @@ public class MemoryFilterOptimizerTest extends DataTestCase {
         SimpleFeatureType subtype1 = SimpleFeatureTypeBuilder.retype(roadType, name);
         SimpleFeatureType subtype2 = SimpleFeatureTypeBuilder.retype(roadType, name);
 
-        MemoryFilterOptimizer optimizer =
-                new MemoryFilterOptimizer(subtype1, Collections.singleton(name));
+        MemoryFilterOptimizer optimizer = new MemoryFilterOptimizer(subtype1, Collections.singleton(name));
         PropertyName memoized = (PropertyName) property.accept(optimizer, null);
 
         // retype the feature with the second subtype
@@ -174,8 +168,7 @@ public class MemoryFilterOptimizerTest extends DataTestCase {
         Filter nameR3 = ff.equal(ff.property(name), ff.literal("r3"), true);
         List<Filter> filters = Arrays.asList(nameR1, nameR2, nameR3);
         Or or = ff.or(filters);
-        MemoryFilterOptimizer optimizer =
-                new MemoryFilterOptimizer(subtype1, Collections.singleton(name));
+        MemoryFilterOptimizer optimizer = new MemoryFilterOptimizer(subtype1, Collections.singleton(name));
         Object object = or.accept(optimizer, null);
         assertTrue(object instanceof PropertyIsEqualTo);
         PropertyIsEqualTo eq = (PropertyIsEqualTo) object;
@@ -184,11 +177,10 @@ public class MemoryFilterOptimizerTest extends DataTestCase {
         assertEquals(4, inFunction.getParameters().size());
         PropertyName propname = (PropertyName) inFunction.getParameters().get(0);
         assertEquals(name, propname.getPropertyName());
-        List<String> inLiterals =
-                inFunction.getParameters().stream()
-                        .filter(ex -> ex instanceof Literal)
-                        .map(ex -> ((Literal) ex).evaluate(null, String.class))
-                        .collect(Collectors.toList());
+        List<String> inLiterals = inFunction.getParameters().stream()
+                .filter(ex -> ex instanceof Literal)
+                .map(ex -> ((Literal) ex).evaluate(null, String.class))
+                .collect(Collectors.toList());
         assertTrue(inLiterals.contains("r1"));
         assertTrue(inLiterals.contains("r2"));
         assertTrue(inLiterals.contains("r3"));
@@ -205,8 +197,7 @@ public class MemoryFilterOptimizerTest extends DataTestCase {
         Filter nameR3 = ff.equal(property, ff.literal("r3"), true);
         List<Filter> filters = Arrays.asList(nameR1, nameR2, nameR3);
         Or or = ff.or(filters);
-        MemoryFilterOptimizer optimizer =
-                new MemoryFilterOptimizer(subtype1, Collections.singleton(name));
+        MemoryFilterOptimizer optimizer = new MemoryFilterOptimizer(subtype1, Collections.singleton(name));
         Object object = or.accept(optimizer, null);
         assertTrue(object instanceof Or);
     }
@@ -221,8 +212,7 @@ public class MemoryFilterOptimizerTest extends DataTestCase {
         Filter nameR3 = ff.equal(property, ff.literal("r3"), true);
         List<Filter> filters = Arrays.asList(nameR1, nameR2, nameR3);
         Or or = ff.or(filters);
-        MemoryFilterOptimizer optimizer =
-                new MemoryFilterOptimizer(subtype1, Collections.singleton(name));
+        MemoryFilterOptimizer optimizer = new MemoryFilterOptimizer(subtype1, Collections.singleton(name));
         Object object = or.accept(optimizer, null);
         assertTrue(object instanceof Or);
     }
@@ -242,8 +232,7 @@ public class MemoryFilterOptimizerTest extends DataTestCase {
         Filter nameR3 = ff.equal(concat, ff.literal("r3"), true);
         List<Filter> filters = Arrays.asList(nameR1, nameR2, nameR3);
         Or or = ff.or(filters);
-        MemoryFilterOptimizer optimizer =
-                new MemoryFilterOptimizer(subtype1, Collections.singleton(name));
+        MemoryFilterOptimizer optimizer = new MemoryFilterOptimizer(subtype1, Collections.singleton(name));
         Object object = or.accept(optimizer, null);
         assertTrue(object instanceof PropertyIsEqualTo);
         PropertyIsEqualTo eq = (PropertyIsEqualTo) object;
@@ -251,11 +240,10 @@ public class MemoryFilterOptimizerTest extends DataTestCase {
         InFunction inFunction = (InFunction) eq.getExpression1();
         assertEquals(4, inFunction.getParameters().size());
         assertTrue(inFunction.getParameters().get(0) instanceof FilterFunction_strConcat);
-        List<String> inLiterals =
-                inFunction.getParameters().stream()
-                        .filter(ex -> ex instanceof Literal)
-                        .map(ex -> ((Literal) ex).evaluate(null, String.class))
-                        .collect(Collectors.toList());
+        List<String> inLiterals = inFunction.getParameters().stream()
+                .filter(ex -> ex instanceof Literal)
+                .map(ex -> ((Literal) ex).evaluate(null, String.class))
+                .collect(Collectors.toList());
         assertTrue(inLiterals.contains("r1"));
         assertTrue(inLiterals.contains("r2"));
         assertTrue(inLiterals.contains("r3"));

@@ -252,12 +252,7 @@ final class ProjectionAnalyzer {
         }
         if (warning != null) {
             final LogRecord record =
-                    Loggings.format(
-                            Level.WARNING,
-                            LoggingKeys.APPLIED_UNIT_CONVERSION_$3,
-                            warning,
-                            unit,
-                            SI.METRE);
+                    Loggings.format(Level.WARNING, LoggingKeys.APPLIED_UNIT_CONVERSION_$3, warning, unit, SI.METRE);
             record.setSourceClassName(getClass().getName());
             record.setSourceMethodName("createLinearConversion"); // This is the public method.
             final Logger logger = ReferencingFactory.LOGGER;
@@ -276,11 +271,9 @@ final class ProjectionAnalyzer {
             final List<GeneralParameterValue> target,
             final double errorTolerance) {
         search:
-        for (final Iterator<GeneralParameterValue> targetIter = target.iterator();
-                targetIter.hasNext(); ) {
+        for (final Iterator<GeneralParameterValue> targetIter = target.iterator(); targetIter.hasNext(); ) {
             final GeneralParameterValue targetPrm = targetIter.next();
-            for (final Iterator<GeneralParameterValue> sourceIter = source.iterator();
-                    sourceIter.hasNext(); ) {
+            for (final Iterator<GeneralParameterValue> sourceIter = source.iterator(); sourceIter.hasNext(); ) {
                 final GeneralParameterValue sourcePrm = sourceIter.next();
                 if (!nameMatches(sourcePrm.getDescriptor(), targetPrm.getDescriptor())) {
                     continue;
@@ -358,9 +351,7 @@ final class ProjectionAnalyzer {
      *     {@code null} if no linear transform has been found.
      */
     public static Matrix createLinearConversion(
-            final ProjectedCRS sourceCRS,
-            final ProjectedCRS targetCRS,
-            final double errorTolerance) {
+            final ProjectedCRS sourceCRS, final ProjectedCRS targetCRS, final double errorTolerance) {
         /*
          * Checks if the datum are the same. To be stricter, we could compare the 'baseCRS'
          * instead. But this is not always needed. For example we don't really care if the

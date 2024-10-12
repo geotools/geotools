@@ -62,17 +62,16 @@ public final class CustomImplementationsFinder {
             XPathUtil.StepList sourcePath,
             NamespaceSupport namespaces) {
         for (CustomMappingFactory factory : mappingsFactories) {
-            NestedAttributeMapping mapping =
-                    factory.createNestedAttributeMapping(
-                            configuration,
-                            idExpression,
-                            parentExpression,
-                            targetXPath,
-                            isMultiValued,
-                            clientProperties,
-                            sourceElement,
-                            sourcePath,
-                            namespaces);
+            NestedAttributeMapping mapping = factory.createNestedAttributeMapping(
+                    configuration,
+                    idExpression,
+                    parentExpression,
+                    targetXPath,
+                    isMultiValued,
+                    clientProperties,
+                    sourceElement,
+                    sourcePath,
+                    namespaces);
             if (mapping != null) {
                 return mapping;
             }
@@ -81,12 +80,9 @@ public final class CustomImplementationsFinder {
     }
 
     public static Expression find(
-            FeatureTypeMapping mappings,
-            XPathUtil.StepList xpath,
-            NestedAttributeMapping nestedMapping) {
+            FeatureTypeMapping mappings, XPathUtil.StepList xpath, NestedAttributeMapping nestedMapping) {
         for (CustomAttributeExpressionFactory factory : attributesFactories) {
-            Expression attributeExpression =
-                    factory.createNestedAttributeExpression(mappings, xpath, nestedMapping);
+            Expression attributeExpression = factory.createNestedAttributeExpression(mappings, xpath, nestedMapping);
             if (attributeExpression != null) {
                 return attributeExpression;
             }

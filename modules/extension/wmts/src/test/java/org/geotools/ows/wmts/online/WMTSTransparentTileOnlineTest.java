@@ -60,10 +60,7 @@ public class WMTSTransparentTileOnlineTest extends OnlineTestCase {
 
     private WMTSTileService createKVPService() throws Exception {
         try {
-            URL capaResource =
-                    getClass()
-                            .getClassLoader()
-                            .getResource("test-data/geosolutions_getcapa_kvp.xml");
+            URL capaResource = getClass().getClassLoader().getResource("test-data/geosolutions_getcapa_kvp.xml");
             assertNotNull("Can't find KVP getCapa file", capaResource);
             File capaFile = new File(capaResource.toURI());
             WMTSCapabilities capa = WMTSTileFactory4326Test.createCapabilities(capaFile);
@@ -93,14 +90,11 @@ public class WMTSTransparentTileOnlineTest extends OnlineTestCase {
         ReferencedEnvelope mapBounds = service.getBounds();
         double heightToWidth = mapBounds.getSpan(1) / mapBounds.getSpan(0);
         int imageWidth = 600;
-        Rectangle imageBounds =
-                new Rectangle(0, 0, imageWidth, (int) Math.round(imageWidth * heightToWidth));
+        Rectangle imageBounds = new Rectangle(0, 0, imageWidth, (int) Math.round(imageWidth * heightToWidth));
         map.getViewport().setScreenArea(imageBounds);
         map.getViewport().setBounds(mapBounds);
 
-        BufferedImage image =
-                new BufferedImage(
-                        imageBounds.width, imageBounds.height, BufferedImage.TYPE_INT_RGB);
+        BufferedImage image = new BufferedImage(imageBounds.width, imageBounds.height, BufferedImage.TYPE_INT_RGB);
         Graphics2D gr = image.createGraphics();
 
         // set background color for assertion

@@ -27,8 +27,7 @@ public class SLDChannelSectionBindingTest extends SLDTestSupport {
 
     @Test
     public void testType() throws Exception {
-        assertEquals(
-                ChannelSelection.class, new SLDChannelSelectionBinding(styleFactory).getType());
+        assertEquals(ChannelSelection.class, new SLDChannelSelectionBinding(styleFactory).getType());
     }
 
     @Test
@@ -54,20 +53,32 @@ public class SLDChannelSectionBindingTest extends SLDTestSupport {
         // test default value: 1
         EnvFunction.removeLocalValue("B1");
         assertEquals(
-                cs.getRGBChannels()[0].getChannelName().evaluate(null, Integer.class).intValue(),
+                cs.getRGBChannels()[0]
+                        .getChannelName()
+                        .evaluate(null, Integer.class)
+                        .intValue(),
                 1);
         // test ENV variable B1:20
         EnvFunction.setLocalValue("B1", "20");
         assertEquals(
-                cs.getRGBChannels()[0].getChannelName().evaluate(null, Integer.class).intValue(),
+                cs.getRGBChannels()[0]
+                        .getChannelName()
+                        .evaluate(null, Integer.class)
+                        .intValue(),
                 20);
         EnvFunction.removeLocalValue("B1");
 
         assertEquals(
-                cs.getRGBChannels()[1].getChannelName().evaluate(null, Integer.class).intValue(),
+                cs.getRGBChannels()[1]
+                        .getChannelName()
+                        .evaluate(null, Integer.class)
+                        .intValue(),
                 2);
         assertEquals(
-                cs.getRGBChannels()[2].getChannelName().evaluate(null, Integer.class).intValue(),
+                cs.getRGBChannels()[2]
+                        .getChannelName()
+                        .evaluate(null, Integer.class)
+                        .intValue(),
                 3);
     }
 

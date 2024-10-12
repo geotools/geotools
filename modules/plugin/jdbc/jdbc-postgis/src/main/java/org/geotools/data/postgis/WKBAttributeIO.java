@@ -76,8 +76,7 @@ public class WKBAttributeIO {
      *     if the parser could not parse the WKB representation.
      */
     private Geometry wkb2Geometry(byte[] wkbBytes) throws IOException {
-        if (wkbBytes
-                == null) // DJB: null value from database --> null geometry (the same behavior as
+        if (wkbBytes == null) // DJB: null value from database --> null geometry (the same behavior as
             // WKT).  NOTE: sending back a GEOMETRYCOLLECTION(EMPTY) is also a
             // possibility, but this is not the same as NULL
             return null;

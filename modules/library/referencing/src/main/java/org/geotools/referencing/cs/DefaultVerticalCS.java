@@ -46,7 +46,8 @@ import org.geotools.measure.Measure;
  */
 public class DefaultVerticalCS extends AbstractCS implements VerticalCS {
     /** Serial number for interoperability with different versions. */
-    private static final long serialVersionUID = 1201155778896630499L;;
+    private static final long serialVersionUID = 1201155778896630499L;
+    ;
 
     /**
      * A one-dimensional vertical CS with <var>{@linkplain
@@ -69,8 +70,7 @@ public class DefaultVerticalCS extends AbstractCS implements VerticalCS {
      * A one-dimensional vertical CS with <var>{@linkplain DefaultCoordinateSystemAxis#DEPTH
      * depth}</var> axis in metres.
      */
-    public static DefaultVerticalCS DEPTH =
-            new DefaultVerticalCS(DefaultCoordinateSystemAxis.DEPTH);
+    public static DefaultVerticalCS DEPTH = new DefaultVerticalCS(DefaultCoordinateSystemAxis.DEPTH);
 
     /**
      * Constructs a new coordinate system with the same values than the specified one. This copy
@@ -136,8 +136,7 @@ public class DefaultVerticalCS extends AbstractCS implements VerticalCS {
      * @throws MismatchedDimensionException if a coordinate doesn't have the expected dimension.
      */
     @Override
-    public Measure distance(final double[] coord1, final double[] coord2)
-            throws MismatchedDimensionException {
+    public Measure distance(final double[] coord1, final double[] coord2) throws MismatchedDimensionException {
         ensureDimensionMatch("coord1", coord1);
         ensureDimensionMatch("coord2", coord2);
         return new Measure(Math.abs(coord1[0] - coord2[0]), getDistanceUnit());

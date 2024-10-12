@@ -40,8 +40,7 @@ public class Identification implements CharSequence, Serializable {
     private final String identifier;
 
     /** Creates an identification from the specified object name. */
-    public Identification(
-            final String name, final String remarks, final String alias, final String identifier) {
+    public Identification(final String name, final String remarks, final String alias, final String identifier) {
         this.name = name;
         this.remarks = remarks;
         this.alias = alias;

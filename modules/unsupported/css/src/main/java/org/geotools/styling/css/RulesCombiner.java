@@ -59,8 +59,7 @@ class RulesCombiner {
                     // we also have to fill values for the pseudo classes owned by this one
                     for (PseudoClass containedClass : properties.keySet()) {
                         if (ps.contains(containedClass)) {
-                            Map<String, Property> containedProperties =
-                                    properties.get(containedClass);
+                            Map<String, Property> containedProperties = properties.get(containedClass);
                             for (Property p : entry.getValue()) {
                                 containedProperties.put(p.getName(), p);
                             }

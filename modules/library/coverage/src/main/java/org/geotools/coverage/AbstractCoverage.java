@@ -244,9 +244,8 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
 
     /** Invoked when an unsupported operation is invoked. */
     private static final UnsupportedOperationException unsupported() {
-        throw new UnsupportedOperationException(
-                "This method is currently not implemented. "
-                        + "It may be implemented by next version of coverage module.");
+        throw new UnsupportedOperationException("This method is currently not implemented. "
+                + "It may be implemented by next version of coverage module.");
     }
 
     /** Returns a localized error message for the specified array. */
@@ -497,8 +496,7 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
      * @author Martin Desruisseaux (IRD)
      * @see AbstractCoverage#getRenderableImage
      */
-    protected class Renderable extends PropertySourceImpl
-            implements RenderableImage, ImageFunction {
+    protected class Renderable extends PropertySourceImpl implements RenderableImage, ImageFunction {
         /** For compatibility during cross-version serialization. */
         private static final long serialVersionUID = -6661389795161502552L;
 
@@ -534,10 +532,9 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
             this.xAxis = xAxis;
             this.yAxis = yAxis;
             final Bounds envelope = getEnvelope();
-            bounds =
-                    new Rectangle2D.Double(
-                            envelope.getMinimum(xAxis), envelope.getMinimum(yAxis),
-                            envelope.getSpan(xAxis), envelope.getSpan(yAxis));
+            bounds = new Rectangle2D.Double(
+                    envelope.getMinimum(xAxis), envelope.getMinimum(yAxis),
+                    envelope.getSpan(xAxis), envelope.getSpan(yAxis));
         }
 
         /** Returns {@code null} to indicate that no source information is available. */
@@ -640,8 +637,7 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
          * @return A rendered image containing the rendered data
          */
         @Override
-        public RenderedImage createScaledRendering(
-                int width, int height, final RenderingHints hints) {
+        public RenderedImage createScaledRendering(int width, int height, final RenderingHints hints) {
             final double boundsWidth = bounds.getWidth();
             final double boundsHeight = bounds.getHeight();
             if (!(width > 0)) { // Use '!' in order to catch NaN
@@ -675,8 +671,7 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
              * case, we really want to round toward the nearest integer.
              */
             final Rectangle2D bounds =
-                    XAffineTransform.transform(
-                            crsToGrid, (area != null) ? area.getBounds2D() : this.bounds, null);
+                    XAffineTransform.transform(crsToGrid, (area != null) ? area.getBounds2D() : this.bounds, null);
             final int xmin = (int) Math.round(bounds.getMinX());
             final int ymin = (int) Math.round(bounds.getMinY());
             final int xmax = (int) Math.round(bounds.getMaxX());
@@ -686,12 +681,9 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
              * Computes some properties of the image to be created.
              */
             final Dimension tileSize = ImageUtilities.toTileSize(gridBounds.getSize());
-            final GridSampleDimension band =
-                    GridSampleDimension.wrap(getSampleDimension(VISIBLE_BAND));
-            final ColorModel colorModel =
-                    band.getColorModel(VISIBLE_BAND, getNumSampleDimensions());
-            final SampleModel sampleModel =
-                    colorModel.createCompatibleSampleModel(tileSize.width, tileSize.height);
+            final GridSampleDimension band = GridSampleDimension.wrap(getSampleDimension(VISIBLE_BAND));
+            final ColorModel colorModel = band.getColorModel(VISIBLE_BAND, getNumSampleDimensions());
+            final SampleModel sampleModel = colorModel.createCompatibleSampleModel(tileSize.width, tileSize.height);
             /*
              * If the image can be created using the ImageFunction operation, do it.
              * It allow JAI to defer the computation until a tile is really requested.
@@ -700,28 +692,26 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
             if ((area == null || area instanceof Rectangle2D)
                     && crsToGrid.getShearX() == 0
                     && crsToGrid.getShearY() == 0) {
-                RenderingHints hints =
-                        new RenderingHints(
-                                JAI.KEY_IMAGE_LAYOUT,
-                                new ImageLayout()
-                                        .setMinX(gridBounds.x)
-                                        .setMinY(gridBounds.y)
-                                        .setTileWidth(tileSize.width)
-                                        .setTileHeight(tileSize.height)
-                                        .setSampleModel(sampleModel)
-                                        .setColorModel(colorModel));
-                image =
-                        new ImageWorker()
-                                .setRenderingHints(hints)
-                                .function(
-                                        this,
-                                        gridBounds.width,
-                                        gridBounds.height,
-                                        (float) (1 / crsToGrid.getScaleX()),
-                                        (float) (1 / crsToGrid.getScaleY()),
-                                        (float) crsToGrid.getTranslateX(),
-                                        (float) crsToGrid.getTranslateY())
-                                .getPlanarImage();
+                RenderingHints hints = new RenderingHints(
+                        JAI.KEY_IMAGE_LAYOUT,
+                        new ImageLayout()
+                                .setMinX(gridBounds.x)
+                                .setMinY(gridBounds.y)
+                                .setTileWidth(tileSize.width)
+                                .setTileHeight(tileSize.height)
+                                .setSampleModel(sampleModel)
+                                .setColorModel(colorModel));
+                image = new ImageWorker()
+                        .setRenderingHints(hints)
+                        .function(
+                                this,
+                                gridBounds.width,
+                                gridBounds.height,
+                                (float) (1 / crsToGrid.getScaleX()),
+                                (float) (1 / crsToGrid.getScaleY()),
+                                (float) crsToGrid.getTranslateX(),
+                                (float) crsToGrid.getTranslateY())
+                        .getPlanarImage();
                 //                        ImageFunctionDescriptor.create(this, // The functional
                 // description
                 //                        gridBounds.width,                    // The image width
@@ -747,16 +737,8 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
                 // Clones the coordinate point in order to allow multi-thread
                 // invocation.
                 final GeneralPosition coordinate = new GeneralPosition(this.coordinate);
-                final TiledImage tiled =
-                        new TiledImage(
-                                gridBounds.x,
-                                gridBounds.y,
-                                gridBounds.width,
-                                gridBounds.height,
-                                0,
-                                0,
-                                sampleModel,
-                                colorModel);
+                final TiledImage tiled = new TiledImage(
+                        gridBounds.x, gridBounds.y, gridBounds.width, gridBounds.height, 0, 0, sampleModel, colorModel);
                 final Point2D.Double point2D = new Point2D.Double();
                 final int numBands = tiled.getNumBands();
                 final double[] samples = new double[numBands];
@@ -790,8 +772,7 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
                         assert (y == gridBounds.y + gridBounds.height);
                     } catch (NoninvertibleTransformException exception) {
                         throw new IllegalArgumentException(
-                                MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$1, "context"),
-                                exception);
+                                MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$1, "context"), exception);
                     }
                 image = tiled;
             }
@@ -822,8 +803,7 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
          *     org.geotools.coverage.grid.GridGeometry2D#getGridToCRS2D}.
          * @see org.geotools.coverage.grid.GridGeometry2D#getGridToCRS2D
          */
-        protected RenderContext createRenderContext(
-                final Rectangle2D gridBounds, final RenderingHints hints) {
+        protected RenderContext createRenderContext(final Rectangle2D gridBounds, final RenderingHints hints) {
             final GeneralMatrix matrix;
             final GeneralBounds srcEnvelope = new GeneralBounds(bounds);
             final GeneralBounds dstEnvelope = new GeneralBounds(gridBounds);

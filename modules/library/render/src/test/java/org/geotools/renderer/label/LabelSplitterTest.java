@@ -34,16 +34,14 @@ public class LabelSplitterTest {
     @Before
     public void setUp() throws IOException, FontFormatException {
         FontCache.getDefaultInstance()
-                .registerFont(
-                        Font.createFont(
-                                Font.TRUETYPE_FONT,
-                                TestData.getResource(LineTest.class, "Vera.ttf").openStream()));
+                .registerFont(Font.createFont(
+                        Font.TRUETYPE_FONT,
+                        TestData.getResource(LineTest.class, "Vera.ttf").openStream()));
         FontCache.getDefaultInstance()
-                .registerFont(
-                        Font.createFont(
-                                Font.TRUETYPE_FONT,
-                                TestData.getResource(LineTest.class, "DroidSansFallback.ttf")
-                                        .openStream()));
+                .registerFont(Font.createFont(
+                        Font.TRUETYPE_FONT,
+                        TestData.getResource(LineTest.class, "DroidSansFallback.ttf")
+                                .openStream()));
     }
 
     @Test

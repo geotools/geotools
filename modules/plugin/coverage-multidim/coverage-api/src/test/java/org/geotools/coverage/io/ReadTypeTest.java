@@ -83,51 +83,23 @@ public class ReadTypeTest {
             assertEquals(jaiImageRead, defaultRead);
 
             // Test 1 = wrong region
-            RenderedImage output =
-                    jaiImageRead.read(
-                            readParameters,
-                            IMAGE_INDEX,
-                            granuleUrl,
-                            rasterDimensionsWrong,
-                            reader,
-                            hints,
-                            CLOSE_ELEMENTS);
+            RenderedImage output = jaiImageRead.read(
+                    readParameters, IMAGE_INDEX, granuleUrl, rasterDimensionsWrong, reader, hints, CLOSE_ELEMENTS);
             assertNull(output);
 
             // Test 2 = null URL
-            output =
-                    jaiImageRead.read(
-                            readParameters,
-                            IMAGE_INDEX,
-                            null,
-                            rasterDimensions,
-                            reader,
-                            hints,
-                            CLOSE_ELEMENTS);
+            output = jaiImageRead.read(
+                    readParameters, IMAGE_INDEX, null, rasterDimensions, reader, hints, CLOSE_ELEMENTS);
             assertNull(output);
 
             // Test 3 = null Reader
-            output =
-                    jaiImageRead.read(
-                            readParameters,
-                            IMAGE_INDEX,
-                            granuleUrl,
-                            rasterDimensions,
-                            null,
-                            hints,
-                            CLOSE_ELEMENTS);
+            output = jaiImageRead.read(
+                    readParameters, IMAGE_INDEX, granuleUrl, rasterDimensions, null, hints, CLOSE_ELEMENTS);
             assertNull(output);
 
             // Test 4 = correct
-            output =
-                    jaiImageRead.read(
-                            readParameters,
-                            IMAGE_INDEX,
-                            granuleUrl,
-                            rasterDimensions,
-                            reader,
-                            hints,
-                            CLOSE_ELEMENTS);
+            output = jaiImageRead.read(
+                    readParameters, IMAGE_INDEX, granuleUrl, rasterDimensions, reader, hints, CLOSE_ELEMENTS);
             assertNotNull(output);
             Rectangle sourceRegion = readParameters.getSourceRegion();
             // Calculate the intersection between the raster dimension and the read parameters
@@ -152,55 +124,29 @@ public class ReadTypeTest {
         ReadType directRead = ReadType.DIRECT_READ;
 
         // Test 1 = wrong region
-        RenderedImage output =
-                testRead(
-                        directRead,
-                        readParameters,
-                        IMAGE_INDEX,
-                        granuleUrl,
-                        rasterDimensionsWrong,
-                        hints,
-                        CLOSE_ELEMENTS,
-                        true);
+        RenderedImage output = testRead(
+                directRead,
+                readParameters,
+                IMAGE_INDEX,
+                granuleUrl,
+                rasterDimensionsWrong,
+                hints,
+                CLOSE_ELEMENTS,
+                true);
         assertNull(output);
 
         // Test 2 = null URL
-        output =
-                testRead(
-                        directRead,
-                        readParameters,
-                        IMAGE_INDEX,
-                        null,
-                        rasterDimensions,
-                        hints,
-                        CLOSE_ELEMENTS,
-                        true);
+        output = testRead(directRead, readParameters, IMAGE_INDEX, null, rasterDimensions, hints, CLOSE_ELEMENTS, true);
         assertNull(output);
 
         // Test 3 = null Reader
-        output =
-                testRead(
-                        directRead,
-                        readParameters,
-                        IMAGE_INDEX,
-                        granuleUrl,
-                        rasterDimensions,
-                        hints,
-                        CLOSE_ELEMENTS,
-                        false);
+        output = testRead(
+                directRead, readParameters, IMAGE_INDEX, granuleUrl, rasterDimensions, hints, CLOSE_ELEMENTS, false);
         assertNull(output);
 
         // Test 4 = correct
-        output =
-                testRead(
-                        directRead,
-                        readParameters,
-                        IMAGE_INDEX,
-                        granuleUrl,
-                        rasterDimensions,
-                        hints,
-                        CLOSE_ELEMENTS,
-                        true);
+        output = testRead(
+                directRead, readParameters, IMAGE_INDEX, granuleUrl, rasterDimensions, hints, CLOSE_ELEMENTS, true);
         assertNotNull(output);
 
         Rectangle sourceRegion = readParameters.getSourceRegion();
@@ -226,28 +172,15 @@ public class ReadTypeTest {
         ImageReader reader = null;
         try {
             if (getReader && granuleUrl != null) {
-                try (FileImageInputStream in =
-                        new FileImageInputStream(URLs.urlToFile(granuleUrl))) {
+                try (FileImageInputStream in = new FileImageInputStream(URLs.urlToFile(granuleUrl))) {
                     reader = new TIFFImageReaderSpi().createReaderInstance();
                     reader.setInput(in);
                     return directRead.read(
-                            readParameters,
-                            imageIndex,
-                            granuleUrl,
-                            rasterDimensions,
-                            reader,
-                            hints,
-                            closeElements);
+                            readParameters, imageIndex, granuleUrl, rasterDimensions, reader, hints, closeElements);
                 }
             }
             return directRead.read(
-                    readParameters,
-                    imageIndex,
-                    granuleUrl,
-                    rasterDimensions,
-                    reader,
-                    hints,
-                    closeElements);
+                    readParameters, imageIndex, granuleUrl, rasterDimensions, reader, hints, closeElements);
         } finally {
             if (reader != null) {
                 try {

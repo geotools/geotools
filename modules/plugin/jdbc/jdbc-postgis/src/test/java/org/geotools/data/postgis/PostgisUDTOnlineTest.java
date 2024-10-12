@@ -69,14 +69,17 @@ public class PostgisUDTOnlineTest extends JDBCUDTOnlineTest {
         assertEquals(Integer.class, type.getDescriptor(aname("ut8")).getType().getBinding());
         assertEquals(Time.class, type.getDescriptor(aname("ut9")).getType().getBinding());
         assertEquals(Time.class, type.getDescriptor(aname("ut10")).getType().getBinding());
-        assertEquals(Timestamp.class, type.getDescriptor(aname("ut11")).getType().getBinding());
-        assertEquals(Timestamp.class, type.getDescriptor(aname("ut12")).getType().getBinding());
+        assertEquals(
+                Timestamp.class, type.getDescriptor(aname("ut11")).getType().getBinding());
+        assertEquals(
+                Timestamp.class, type.getDescriptor(aname("ut12")).getType().getBinding());
         assertEquals(UUID.class, type.getDescriptor(aname("ut13")).getType().getBinding());
     }
 
     @Override
     public void testRead() throws Exception {
-        SimpleFeatureCollection features = dataStore.getFeatureSource(tname("udt")).getFeatures();
+        SimpleFeatureCollection features =
+                dataStore.getFeatureSource(tname("udt")).getFeatures();
         try (SimpleFeatureIterator fi = features.features()) {
             assertTrue(fi.hasNext());
             SimpleFeature item = fi.next();
@@ -89,8 +92,10 @@ public class PostgisUDTOnlineTest extends JDBCUDTOnlineTest {
             assertEquals("3.3", item.getAttribute(aname("ut7")).toString());
             assertEquals("2", item.getAttribute(aname("ut8")).toString());
             assertEquals("14:30:00", item.getAttribute(aname("ut9")).toString());
-            assertEquals("2004-10-31 16:30:00.0", item.getAttribute(aname("ut11")).toString());
-            assertEquals("2004-10-30 17:30:00.0", item.getAttribute(aname("ut12")).toString());
+            assertEquals(
+                    "2004-10-31 16:30:00.0", item.getAttribute(aname("ut11")).toString());
+            assertEquals(
+                    "2004-10-30 17:30:00.0", item.getAttribute(aname("ut12")).toString());
             assertEquals(
                     "00000000-0000-0000-0000-000000000000",
                     item.getAttribute(aname("ut13")).toString());
@@ -128,8 +133,7 @@ public class PostgisUDTOnlineTest extends JDBCUDTOnlineTest {
         assertEquals("292269055-12-02T16:47:04 BC", df.format(d));
 
         // test round trip
-        try (FeatureWriter w =
-                dataStore.getFeatureWriterAppend(tname("date_udt"), Transaction.AUTO_COMMIT)) {
+        try (FeatureWriter w = dataStore.getFeatureWriterAppend(tname("date_udt"), Transaction.AUTO_COMMIT)) {
             SimpleFeature f = (SimpleFeature) w.next();
             f.setAttribute(aname("bd"), new Date(-62135769600000L));
             f.setAttribute(aname("name"), "ce2");
@@ -141,8 +145,7 @@ public class PostgisUDTOnlineTest extends JDBCUDTOnlineTest {
 
         // test filters
         FilterFactory ff = dataStore.getFilterFactory();
-        Filter filter =
-                ff.equals(ff.property(aname("bd")), ff.literal(df.parse("1970-01-01T00:00:00 AD")));
+        Filter filter = ff.equals(ff.property(aname("bd")), ff.literal(df.parse("1970-01-01T00:00:00 AD")));
 
         FeatureCollection features = source.getFeatures(filter);
         try (FeatureIterator it = features.features()) {
@@ -154,9 +157,7 @@ public class PostgisUDTOnlineTest extends JDBCUDTOnlineTest {
             assertFalse(it.hasNext());
         }
 
-        filter =
-                ff.greaterOrEqual(
-                        ff.property(aname("bd")), ff.literal(df.parse("1970-01-01T00:00:00 AD")));
+        filter = ff.greaterOrEqual(ff.property(aname("bd")), ff.literal(df.parse("1970-01-01T00:00:00 AD")));
         features = source.getFeatures(filter);
 
         Set<String> names = new HashSet<>();
@@ -177,8 +178,7 @@ public class PostgisUDTOnlineTest extends JDBCUDTOnlineTest {
 
     SimpleFeature feature(FeatureSource source, String name) throws IOException {
         FilterFactory ff = dataStore.getFilterFactory();
-        FeatureCollection features =
-                source.getFeatures(ff.equals(ff.property(aname("name")), ff.literal(name)));
+        FeatureCollection features = source.getFeatures(ff.equals(ff.property(aname("name")), ff.literal(name)));
         try (FeatureIterator it = features.features()) {
             assertTrue("No feature with name: " + name, it.hasNext());
 

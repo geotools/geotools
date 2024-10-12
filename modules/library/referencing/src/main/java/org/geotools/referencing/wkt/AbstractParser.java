@@ -109,8 +109,7 @@ public abstract class AbstractParser extends Format {
      */
     public void setAuthority(final Citation authority) {
         if (authority == null) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "authority"));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "authority"));
         }
         getFormatter().setAuthority(authority);
     }
@@ -217,8 +216,7 @@ public abstract class AbstractParser extends Format {
      * @return The tree of elements to parse.
      * @throws ParseException If an parsing error occured while creating the tree.
      */
-    protected final Element getTree(final String text, final ParsePosition position)
-            throws ParseException {
+    protected final Element getTree(final String text, final ParsePosition position) throws ParseException {
         return new Element(new Element(this, text, position));
     }
 
@@ -247,8 +245,7 @@ public abstract class AbstractParser extends Format {
      * @see #getWarning
      */
     @Override
-    public StringBuffer format(
-            final Object object, final StringBuffer toAppendTo, final FieldPosition pos) {
+    public StringBuffer format(final Object object, final StringBuffer toAppendTo, final FieldPosition pos) {
         final Formatter formatter = getFormatter();
         try {
             formatter.clear();
@@ -281,8 +278,7 @@ public abstract class AbstractParser extends Format {
      * @throws IOException if an error occured while reading from the input stream or writting to
      *     the output stream.
      */
-    public void reformat(final BufferedReader in, final Writer out, final PrintWriter err)
-            throws IOException {
+    public void reformat(final BufferedReader in, final Writer out, final PrintWriter err) throws IOException {
         final String lineSeparator = System.getProperty("line.separator", "\n");
         String line = null;
         try {
@@ -321,8 +317,7 @@ public abstract class AbstractParser extends Format {
             if (formatter.warning != null) {
                 return formatter.warning;
             }
-            return MessageFormat.format(
-                    ErrorKeys.INVALID_WKT_FORMAT_$1, formatter.getUnformattableClass());
+            return MessageFormat.format(ErrorKeys.INVALID_WKT_FORMAT_$1, formatter.getUnformattableClass());
         }
         return null;
     }

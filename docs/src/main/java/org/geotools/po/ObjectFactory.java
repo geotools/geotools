@@ -37,8 +37,7 @@ import javax.xml.namespace.QName;
 public class ObjectFactory {
 
     private static final QName _Comment_QNAME = new QName("http://www.geotools.org/po", "comment");
-    private static final QName _PurchaseOrder_QNAME =
-            new QName("http://www.geotools.org/po", "purchaseOrder");
+    private static final QName _PurchaseOrder_QNAME = new QName("http://www.geotools.org/po", "purchaseOrder");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes

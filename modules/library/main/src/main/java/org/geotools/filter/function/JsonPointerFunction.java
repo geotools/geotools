@@ -35,12 +35,11 @@ import org.geotools.filter.capability.FunctionNameImpl;
 public class JsonPointerFunction extends FunctionExpressionImpl {
     private final JsonFactory factory;
 
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "jsonPointer",
-                    parameter("result", Object.class),
-                    parameter("json", String.class),
-                    parameter("pointer", String.class));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "jsonPointer",
+            parameter("result", Object.class),
+            parameter("json", String.class),
+            parameter("pointer", String.class));
 
     public JsonPointerFunction() {
         super(NAME);
@@ -57,8 +56,7 @@ public class JsonPointerFunction extends FunctionExpressionImpl {
         try (JsonParser parser = factory.createParser(json)) {
             while (parser.nextToken() != JsonFunctionUtils.END_OF_STREAM) {
                 final JsonPointer pointer = parser.getParsingContext().pathAsPointer();
-                if (pointer.equals(expectedPointer)
-                        && parser.currentTokenId() != JsonTokenId.ID_FIELD_NAME) {
+                if (pointer.equals(expectedPointer) && parser.currentTokenId() != JsonTokenId.ID_FIELD_NAME) {
                     switch (parser.currentTokenId()) {
                         case JsonTokenId.ID_STRING:
                             return parser.getText();

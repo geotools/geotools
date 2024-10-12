@@ -124,10 +124,9 @@ public final class ISOTest {
             final boolean isImplemented = isImplemented(accessor.type);
             if (isImplemented)
                 try {
-                    dummyInstance =
-                            accessor.implementation
-                                    .getConstructor((Class[]) null)
-                                    .newInstance((Object[]) null);
+                    dummyInstance = accessor.implementation
+                            .getConstructor((Class[]) null)
+                            .newInstance((Object[]) null);
                 } catch (Exception e) {
                     fail(e.toString());
                     return;
@@ -179,10 +178,7 @@ public final class ISOTest {
         if (!CodeList.class.isAssignableFrom(type)) {
             String name = type.getName();
             if (name.startsWith(INTERFACE_PACKAGE)) {
-                name =
-                        IMPLEMENTATION_PACKAGE
-                                + name.substring(INTERFACE_PACKAGE.length())
-                                + IMPLEMENTATION_SUFFIX;
+                name = IMPLEMENTATION_PACKAGE + name.substring(INTERFACE_PACKAGE.length()) + IMPLEMENTATION_SUFFIX;
                 try {
                     return Class.forName(name);
                 } catch (ClassNotFoundException e) {

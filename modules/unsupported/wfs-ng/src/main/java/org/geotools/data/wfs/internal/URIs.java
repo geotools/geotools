@@ -51,8 +51,7 @@ public class URIs {
         return buildURL(baseURL, null, kvp, "UTF-8");
     }
 
-    public static String buildURL(
-            final String baseURL, String path, Map<String, String> kvp, String encoding) {
+    public static String buildURL(final String baseURL, String path, Map<String, String> kvp, String encoding) {
 
         // prepare modifiable parameters
         StringBuilder baseURLBuffer = new StringBuilder(baseURL);

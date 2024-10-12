@@ -42,11 +42,7 @@ public class CQLException extends ParseException {
      * @param cause the cause
      * @param cqlSource string analyzed
      */
-    public CQLException(
-            final String message,
-            final IToken token,
-            final Throwable cause,
-            final String cqlSource) {
+    public CQLException(final String message, final IToken token, final Throwable cause, final String cqlSource) {
         super(message);
 
         assert message != null : "message can not be null";

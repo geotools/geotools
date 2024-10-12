@@ -26,8 +26,7 @@ import org.geotools.util.factory.Hints;
 
 public final class VSIFormat extends BaseGDALGridFormat implements Format {
 
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(VSIFormat.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(VSIFormat.class);
 
     /** Creates an instance and sets the metadata. */
     public VSIFormat() {

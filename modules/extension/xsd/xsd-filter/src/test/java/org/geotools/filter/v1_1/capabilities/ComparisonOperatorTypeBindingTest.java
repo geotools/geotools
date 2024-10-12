@@ -145,11 +145,10 @@ public class ComparisonOperatorTypeBindingTest extends OGCTestSupport {
 
     @Test
     public void testEncode() throws Exception {
-        Document dom =
-                encode(
-                        FilterMockData.comparisonOperator("LessThan"),
-                        new QName(OGC.NAMESPACE, "ComparisonOperator"),
-                        OGC.ComparisonOperatorType);
+        Document dom = encode(
+                FilterMockData.comparisonOperator("LessThan"),
+                new QName(OGC.NAMESPACE, "ComparisonOperator"),
+                OGC.ComparisonOperatorType);
         assertEquals("LessThan", dom.getDocumentElement().getFirstChild().getNodeValue());
     }
 }

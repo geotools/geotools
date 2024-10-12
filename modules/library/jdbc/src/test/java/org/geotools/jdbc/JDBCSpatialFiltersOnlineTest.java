@@ -160,8 +160,7 @@ public abstract class JDBCSpatialFiltersOnlineTest extends JDBCTestSupport {
         // should match only "r2"
         GeometryFactory gf = new GeometryFactory();
         PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
-        LinearRing shell =
-                gf.createLinearRing(sf.create(new double[] {2, -1, 2, 5, 4, 5, 4, -1, 2, -1}, 2));
+        LinearRing shell = gf.createLinearRing(sf.create(new double[] {2, -1, 2, 5, 4, 5, 4, -1, 2, -1}, 2));
         Polygon polygon = gf.createPolygon(shell, null);
         Contains cs = ff.contains(ff.literal(polygon), ff.property(aname("geom")));
         FeatureCollection features = dataStore.getFeatureSource(tname("road")).getFeatures(cs);
@@ -175,8 +174,7 @@ public abstract class JDBCSpatialFiltersOnlineTest extends JDBCTestSupport {
         // should match only "r2"
         GeometryFactory gf = new GeometryFactory();
         PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
-        LinearRing shell =
-                gf.createLinearRing(sf.create(new double[] {2, -1, 2, 5, 4, 5, 4, -1, 2, -1}, 2));
+        LinearRing shell = gf.createLinearRing(sf.create(new double[] {2, -1, 2, 5, 4, 5, 4, -1, 2, -1}, 2));
         Polygon polygon = gf.createPolygon(shell, null);
         Within wt = ff.within(ff.property(aname("geom")), ff.literal(polygon));
         FeatureCollection features = dataStore.getFeatureSource(tname("road")).getFeatures(wt);
@@ -189,8 +187,7 @@ public abstract class JDBCSpatialFiltersOnlineTest extends JDBCTestSupport {
         // should match only "r2"
         GeometryFactory gf = new GeometryFactory();
         PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
-        LinearRing shell =
-                gf.createLinearRing(sf.create(new double[] {4, -1, 4, 5, 6, 5, 6, -1, 4, -1}, 2));
+        LinearRing shell = gf.createLinearRing(sf.create(new double[] {4, -1, 4, 5, 6, 5, 6, -1, 4, -1}, 2));
         Polygon polygon = gf.createPolygon(shell, null);
         Disjoint dj = ff.disjoint(ff.property(aname("geom")), ff.literal(polygon));
         FeatureCollection features = dataStore.getFeatureSource(tname("road")).getFeatures(dj);

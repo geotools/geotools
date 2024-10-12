@@ -28,8 +28,7 @@ public class DWithinBindingTest extends FESTestSupport {
         DWithin dwithin = FilterMockData.dwithin();
         Document encodedDom = encode(dwithin, FES.DWithin);
 
-        Element distanceElem =
-                this.getElementByQName(encodedDom, new QName(FES.NAMESPACE, "Distance"));
+        Element distanceElem = this.getElementByQName(encodedDom, new QName(FES.NAMESPACE, "Distance"));
         assertNotNull(distanceElem);
 
         String unit = distanceElem.getAttribute("uom");
@@ -57,11 +56,9 @@ public class DWithinBindingTest extends FESTestSupport {
         buildDocument(dwithinStr);
         DWithin dwithin = (DWithin) parse();
 
-        assertEquals(
-                "geom", ((AttributeExpressionImpl) dwithin.getExpression1()).getPropertyName());
+        assertEquals("geom", ((AttributeExpressionImpl) dwithin.getExpression1()).getPropertyName());
         assertNotNull(((LiteralExpressionImpl) dwithin.getExpression2()).getValue());
-        Geometry geometry =
-                (Geometry) ((LiteralExpressionImpl) dwithin.getExpression2()).getValue();
+        Geometry geometry = (Geometry) ((LiteralExpressionImpl) dwithin.getExpression2()).getValue();
         assertEquals("MultiSurface", geometry.getGeometryType());
 
         String unit = dwithin.getDistanceUnits();
@@ -87,16 +84,11 @@ public class DWithinBindingTest extends FESTestSupport {
 
     @Test
     public void testEncodeNullUnit() throws Exception {
-        DWithin filter =
-                filterFact.dwithin(
-                        filterFact.property("the_geom"),
-                        filterFact.literal(FilterMockData.geometry()),
-                        2.0,
-                        null);
+        DWithin filter = filterFact.dwithin(
+                filterFact.property("the_geom"), filterFact.literal(FilterMockData.geometry()), 2.0, null);
         Document encodedDom = encode(filter, FES.DWithin);
 
-        Element distanceElem =
-                this.getElementByQName(encodedDom, new QName(FES.NAMESPACE, "Distance"));
+        Element distanceElem = this.getElementByQName(encodedDom, new QName(FES.NAMESPACE, "Distance"));
         String unit = distanceElem.getAttribute("uom");
         assertEquals("", unit);
     }

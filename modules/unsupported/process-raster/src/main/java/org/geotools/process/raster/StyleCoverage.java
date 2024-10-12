@@ -33,28 +33,22 @@ import org.geotools.renderer.lite.gridcoverage2d.SubchainStyleVisitorCoveragePro
  * @author Andrea Aime - GeoSolutions
  * @author ETj <etj at geo-solutions.it>
  */
-@DescribeProcess(
-        title = "Style Coverage",
-        description = "Styles a raster using a given SLD and raster symbolizer.")
+@DescribeProcess(title = "Style Coverage", description = "Styles a raster using a given SLD and raster symbolizer.")
 public class StyleCoverage implements RasterProcess {
 
     @DescribeResult(name = "result", description = "Styled image")
     public GridCoverage2D execute(
-            @DescribeParameter(name = "coverage", description = "Input raster")
-                    GridCoverage2D coverage,
+            @DescribeParameter(name = "coverage", description = "Input raster") GridCoverage2D coverage,
             @DescribeParameter(
                             name = "style",
-                            description =
-                                    "Styled Layer Descriptor (SLD) style containing a raster symbolizer")
+                            description = "Styled Layer Descriptor (SLD) style containing a raster symbolizer")
                     Style style)
             throws IOException {
         // TODO: perform a lookup in the entire style?
-        final RasterSymbolizer symbolizer =
-                (RasterSymbolizer)
-                        style.featureTypeStyles().get(0).rules().get(0).symbolizers().get(0);
+        final RasterSymbolizer symbolizer = (RasterSymbolizer)
+                style.featureTypeStyles().get(0).rules().get(0).symbolizers().get(0);
 
-        SubchainStyleVisitorCoverageProcessingAdapter rsh =
-                new RasterSymbolizerHelper(coverage, null);
+        SubchainStyleVisitorCoverageProcessingAdapter rsh = new RasterSymbolizerHelper(coverage, null);
         rsh.visit(symbolizer);
         return ((GridCoverage2D) rsh.execute());
     }

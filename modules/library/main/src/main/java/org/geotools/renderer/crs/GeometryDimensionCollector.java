@@ -38,9 +38,7 @@ public class GeometryDimensionCollector implements GeometryComponentFilter {
 
     @Override
     public void filter(Geometry geom) {
-        if (!(geom instanceof GeometryCollection)
-                && geom.getDimension() == targetDimension
-                && !geom.isEmpty()) {
+        if (!(geom instanceof GeometryCollection) && geom.getDimension() == targetDimension && !geom.isEmpty()) {
             geometries.add(geom);
         }
     }
@@ -64,11 +62,9 @@ public class GeometryDimensionCollector implements GeometryComponentFilter {
             if (targetDimension == 0) {
                 return factory.createMultiPoint(geometries.toArray(new Point[geometries.size()]));
             } else if (targetDimension == 1) {
-                return factory.createMultiLineString(
-                        geometries.toArray(new LineString[geometries.size()]));
+                return factory.createMultiLineString(geometries.toArray(new LineString[geometries.size()]));
             } else if (targetDimension == 2) {
-                return factory.createMultiPolygon(
-                        geometries.toArray(new Polygon[geometries.size()]));
+                return factory.createMultiPolygon(geometries.toArray(new Polygon[geometries.size()]));
             }
         }
 

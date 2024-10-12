@@ -37,11 +37,7 @@ public class HexagonTestBase extends TestBase {
     protected final double AREA = Math.sqrt(3.0) * 1.5;
 
     protected void assertVertices(
-            PolygonElement hexagon,
-            double minx,
-            double miny,
-            double sideLen,
-            HexagonOrientation orientation) {
+            PolygonElement hexagon, double minx, double miny, double sideLen, HexagonOrientation orientation) {
 
         assertTrue("error in test code", hexagon instanceof Hexagon);
 

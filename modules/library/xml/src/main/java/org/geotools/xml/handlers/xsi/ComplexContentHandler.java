@@ -38,9 +38,7 @@ public class ComplexContentHandler extends XSIElementHandler {
     @Override
     @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
-        return LOCALNAME.hashCode()
-                * ((id == null) ? 1 : id.hashCode())
-                * ((mixed == null) ? 2 : mixed.hashCode());
+        return LOCALNAME.hashCode() * ((id == null) ? 1 : id.hashCode()) * ((mixed == null) ? 2 : mixed.hashCode());
     }
 
     /**
@@ -75,8 +73,7 @@ public class ComplexContentHandler extends XSIElementHandler {
                 if (child == null) {
                     child = sth;
                 } else {
-                    throw new SAXNotRecognizedException(
-                            LOCALNAME + " may only have one child declaration.");
+                    throw new SAXNotRecognizedException(LOCALNAME + " may only have one child declaration.");
                 }
 
                 return sth;
@@ -89,8 +86,7 @@ public class ComplexContentHandler extends XSIElementHandler {
                 if (child == null) {
                     child = sth;
                 } else {
-                    throw new SAXNotRecognizedException(
-                            LOCALNAME + " may only have one child declaration.");
+                    throw new SAXNotRecognizedException(LOCALNAME + " may only have one child declaration.");
                 }
 
                 return sth;

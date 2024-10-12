@@ -82,8 +82,7 @@ public class CIBase {
         }
     }
 
-    protected void dropSchemasInParallel(Properties fixture, ArrayList<String> schemas)
-            throws InterruptedException {
+    protected void dropSchemasInParallel(Properties fixture, ArrayList<String> schemas) throws InterruptedException {
         if (schemas.isEmpty()) {
             return;
         }
@@ -101,8 +100,7 @@ public class CIBase {
 
     private class SchemaDropThread extends Thread {
 
-        public SchemaDropThread(
-                Properties fixture, ArrayList<String> schemas, AtomicInteger counter) {
+        public SchemaDropThread(Properties fixture, ArrayList<String> schemas, AtomicInteger counter) {
             this.fixture = fixture;
             this.schemas = schemas;
             this.counter = counter;

@@ -185,10 +185,9 @@ public final class NIOUtilities {
             return true;
         }
 
-        PrivilegedAction<Boolean> action =
-                SystemUtils.isJavaVersionAtLeast(JavaVersion.JAVA_9)
-                        ? () -> new CleanupAfterJdk8(buffer).clean()
-                        : () -> new CleanupPriorJdk9(buffer).clean();
+        PrivilegedAction<Boolean> action = SystemUtils.isJavaVersionAtLeast(JavaVersion.JAVA_9)
+                ? () -> new CleanupAfterJdk8(buffer).clean()
+                : () -> new CleanupPriorJdk9(buffer).clean();
 
         return AccessController.doPrivileged(action).booleanValue();
     }
@@ -238,8 +237,7 @@ public final class NIOUtilities {
                 final Field theUnsafeField = unsafeClass.getDeclaredField("theUnsafe");
                 theUnsafeField.setAccessible(true);
                 final Object theUnsafe = theUnsafeField.get(null);
-                final Method invokeCleanerMethod =
-                        unsafeClass.getMethod("invokeCleaner", ByteBuffer.class);
+                final Method invokeCleanerMethod = unsafeClass.getMethod("invokeCleaner", ByteBuffer.class);
                 invokeCleanerMethod.invoke(theUnsafe, buffer);
 
                 success = Boolean.TRUE;
@@ -306,13 +304,12 @@ public final class NIOUtilities {
     /** Logs a warning message. */
     private static synchronized void log(final Exception e, final ByteBuffer buffer) {
         warned = true;
-        String message =
-                "Error attempting to close a mapped byte buffer : "
-                        + buffer.getClass().getName()
-                        + "\n JVM : "
-                        + System.getProperty("java.version")
-                        + ' '
-                        + System.getProperty("java.vendor");
+        String message = "Error attempting to close a mapped byte buffer : "
+                + buffer.getClass().getName()
+                + "\n JVM : "
+                + System.getProperty("java.version")
+                + ' '
+                + System.getProperty("java.vendor");
         Logging.getLogger(NIOUtilities.class).log(Level.SEVERE, message, e);
     }
 }

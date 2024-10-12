@@ -29,20 +29,18 @@ public class DB2NoPrimaryKeyTestSetup extends JDBCNoPrimaryKeyTestSetup {
     protected void createLakeTable() throws Exception {
 
         try (Connection con = getDataSource().getConnection()) {
-            con.prepareStatement(
-                            "create table "
-                                    + DB2TestUtil.SCHEMA_QUOTED
-                                    + ".\"lake\" (\"id\" int  , \"geom\" DB2GSE.ST_POLYGON , \"name\" varchar(255))")
+            con.prepareStatement("create table "
+                            + DB2TestUtil.SCHEMA_QUOTED
+                            + ".\"lake\" (\"id\" int  , \"geom\" DB2GSE.ST_POLYGON , \"name\" varchar(255))")
                     .execute();
             DB2Util.executeRegister(DB2TestUtil.SCHEMA, "lake", "geom", DB2TestUtil.SRSNAME, con);
 
-            con.prepareStatement(
-                            "INSERT INTO "
-                                    + DB2TestUtil.SCHEMA_QUOTED
-                                    + ".\"lake\" VALUES (0,"
-                                    + "db2gse.ST_PolyFromText('POLYGON((12 6, 14 8, 16 6, 16 4, 14 4, 12 6))',"
-                                    + DB2TestUtil.SRID
-                                    + "),'muddy')")
+            con.prepareStatement("INSERT INTO "
+                            + DB2TestUtil.SCHEMA_QUOTED
+                            + ".\"lake\" VALUES (0,"
+                            + "db2gse.ST_PolyFromText('POLYGON((12 6, 14 8, 16 6, 16 4, 14 4, 12 6))',"
+                            + DB2TestUtil.SRID
+                            + "),'muddy')")
                     .execute();
         }
     }

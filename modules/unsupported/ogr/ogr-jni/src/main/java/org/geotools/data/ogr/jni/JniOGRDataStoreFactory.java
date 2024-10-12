@@ -40,8 +40,7 @@ public class JniOGRDataStoreFactory extends OGRDataStoreFactory {
         } catch (UnsatisfiedLinkError e) {
             LOGGER.log(
                     Level.FINE,
-                    "Error initializing GDAL/OGR library from \"gdalalljni\". "
-                            + "Falling back to \"gdaljni\"",
+                    "Error initializing GDAL/OGR library from \"gdalalljni\". " + "Falling back to \"gdaljni\"",
                     e);
             System.loadLibrary("gdaljni");
         }

@@ -50,8 +50,7 @@ import org.geotools.util.Utilities;
  * @see org.geotools.geometry.jts.ReferencedEnvelope
  * @see org.geotools.api.metadata.extent.GeographicBoundingBox
  */
-public class Envelope2DArchived extends Rectangle2D.Double
-        implements BoundingBox, Bounds, Cloneable {
+public class Envelope2DArchived extends Rectangle2D.Double implements BoundingBox, Bounds, Cloneable {
     /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = -3319231220761419350L;
 
@@ -98,8 +97,7 @@ public class Envelope2DArchived extends Rectangle2D.Double
         // TODO: check below should be first, if only Sun could fix RFE #4093999.
         final int dimension = envelope.getDimension();
         if (dimension != 2) {
-            throw new MismatchedDimensionException(
-                    MessageFormat.format(ErrorKeys.NOT_TWO_DIMENSIONAL_$1, dimension));
+            throw new MismatchedDimensionException(MessageFormat.format(ErrorKeys.NOT_TWO_DIMENSIONAL_$1, dimension));
         }
         setCoordinateReferenceSystem(envelope.getCoordinateReferenceSystem());
     }
@@ -223,8 +221,7 @@ public class Envelope2DArchived extends Rectangle2D.Double
 
     /** Creates an exception for an index out of bounds. */
     private static IndexOutOfBoundsException indexOutOfBounds(final int dimension) {
-        return new IndexOutOfBoundsException(
-                MessageFormat.format(ErrorKeys.INDEX_OUT_OF_BOUNDS_$1, dimension));
+        return new IndexOutOfBoundsException(MessageFormat.format(ErrorKeys.INDEX_OUT_OF_BOUNDS_$1, dimension));
     }
 
     /**
@@ -330,9 +327,7 @@ public class Envelope2DArchived extends Rectangle2D.Double
     public boolean equals(final Object object) {
         if (super.equals(object)) {
             final CoordinateReferenceSystem otherCRS =
-                    (object instanceof Envelope2DArchived)
-                            ? ((Envelope2DArchived) object).crs
-                            : null;
+                    (object instanceof Envelope2DArchived) ? ((Envelope2DArchived) object).crs : null;
             return Utilities.equals(crs, otherCRS);
         }
         return false;
@@ -515,14 +510,12 @@ public class Envelope2DArchived extends Rectangle2D.Double
      * @param bbox The other bounding box to test for compatibility.
      * @throws MismatchedReferenceSystemException if the CRS are incompatibles.
      */
-    private void ensureCompatibleReferenceSystem(final BoundingBox bbox)
-            throws MismatchedReferenceSystemException {
+    private void ensureCompatibleReferenceSystem(final BoundingBox bbox) throws MismatchedReferenceSystemException {
         if (crs != null) {
             final CoordinateReferenceSystem other = bbox.getCoordinateReferenceSystem();
             if (other != null) {
                 if (!CRS.equalsIgnoreMetadata(crs, other)) {
-                    throw new MismatchedReferenceSystemException(
-                            ErrorKeys.MISMATCHED_COORDINATE_REFERENCE_SYSTEM);
+                    throw new MismatchedReferenceSystemException(ErrorKeys.MISMATCHED_COORDINATE_REFERENCE_SYSTEM);
                 }
             }
         }
@@ -533,8 +526,7 @@ public class Envelope2DArchived extends Rectangle2D.Double
             final CoordinateReferenceSystem other = location.getCoordinateReferenceSystem();
             if (other != null) {
                 if (!CRS.equalsIgnoreMetadata(crs, other)) {
-                    throw new MismatchedReferenceSystemException(
-                            ErrorKeys.MISMATCHED_COORDINATE_REFERENCE_SYSTEM);
+                    throw new MismatchedReferenceSystemException(ErrorKeys.MISMATCHED_COORDINATE_REFERENCE_SYSTEM);
                 }
             }
         }

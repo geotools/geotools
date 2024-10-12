@@ -35,20 +35,17 @@ class PolygonExtractor {
     public static final PolygonExtractor INSTANCE = new PolygonExtractor();
 
     /** Returns all polygons found in the */
-    public List<Polygon> getPolygons(Geometry preProcessed)
-            throws TransformException, FactoryException {
+    public List<Polygon> getPolygons(Geometry preProcessed) throws TransformException, FactoryException {
         // the pre-processing might have cut or split the geometry
         final List<Polygon> polygons = new ArrayList<>();
         if (preProcessed instanceof Polygon) {
             polygons.add((Polygon) preProcessed);
         } else {
-            preProcessed.apply(
-                    (GeometryComponentFilter)
-                            geom -> {
-                                if (geom instanceof Polygon) {
-                                    polygons.add((Polygon) geom);
-                                }
-                            });
+            preProcessed.apply((GeometryComponentFilter) geom -> {
+                if (geom instanceof Polygon) {
+                    polygons.add((Polygon) geom);
+                }
+            });
         }
         return polygons;
     }

@@ -43,11 +43,7 @@ public class DefaultOrdinalEra implements OrdinalEra {
         this.end = end;
     }
 
-    public DefaultOrdinalEra(
-            InternationalString name,
-            Date beginning,
-            Date end,
-            Collection<OrdinalEra> composition) {
+    public DefaultOrdinalEra(InternationalString name, Date beginning, Date end, Collection<OrdinalEra> composition) {
         this.name = name;
         this.beginning = beginning;
         this.end = end;

@@ -37,8 +37,7 @@ class TransformFilterVisitor extends DuplicatingFilterVisitor {
     private final String targetName;
     private final Map<String, Expression> expressions;
 
-    public TransformFilterVisitor(
-            String sourceName, String targetName, Map<String, Expression> expressions) {
+    public TransformFilterVisitor(String sourceName, String targetName, Map<String, Expression> expressions) {
         this.sourceName = sourceName;
         this.targetName = targetName;
         this.expressions = expressions;
@@ -64,8 +63,7 @@ class TransformFilterVisitor extends DuplicatingFilterVisitor {
     public FeatureId reTypeId(FeatureId sourceId) {
         final String prefix = targetName + ".";
         if (sourceId.getID().startsWith(prefix)) {
-            return new FeatureIdImpl(
-                    sourceName + "." + sourceId.getID().substring(prefix.length()));
+            return new FeatureIdImpl(sourceName + "." + sourceId.getID().substring(prefix.length()));
         } else {
             return sourceId;
         }

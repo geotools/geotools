@@ -12,8 +12,7 @@ public class OracleLobTestSetup extends JDBCLobTestSetup {
 
     @Override
     protected void createLobTable() throws Exception {
-        run(
-                "CREATE TABLE testlob (fid int, blob_field BLOB, clob_field CLOB, raw_field RAW(50), PRIMARY KEY (fid) )");
+        run("CREATE TABLE testlob (fid int, blob_field BLOB, clob_field CLOB, raw_field RAW(50), PRIMARY KEY (fid) )");
         run("CREATE SEQUENCE testlob_fid_seq START WITH 0 MINVALUE 0");
 
         // insert data. We need to use prepared statements in order to insert blobs

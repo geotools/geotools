@@ -39,8 +39,7 @@ import org.geotools.referencing.AbstractIdentifiedObject;
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
-final class ParameterValueList extends AbstractList<GeneralParameterValue>
-        implements RandomAccess, Serializable {
+final class ParameterValueList extends AbstractList<GeneralParameterValue> implements RandomAccess, Serializable {
     /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = -7446077551686135264L;
 
@@ -56,8 +55,7 @@ final class ParameterValueList extends AbstractList<GeneralParameterValue>
      * @param descriptor The descriptor for this list.
      * @param values The parameter values for this list.
      */
-    public ParameterValueList(
-            final ParameterDescriptorGroup descriptor, final List<GeneralParameterValue> values) {
+    public ParameterValueList(final ParameterDescriptorGroup descriptor, final List<GeneralParameterValue> values) {
         this.descriptor = descriptor;
         this.values = values;
     }
@@ -146,8 +144,7 @@ final class ParameterValueList extends AbstractList<GeneralParameterValue>
                      * the descriptor was illegal.
                      */
                     throw new IllegalArgumentException(
-                            MessageFormat.format(
-                                    ErrorKeys.ILLEGAL_DESCRIPTOR_FOR_PARAMETER_$1, name));
+                            MessageFormat.format(ErrorKeys.ILLEGAL_DESCRIPTOR_FOR_PARAMETER_$1, name));
                 }
             }
             /*
@@ -227,9 +224,7 @@ final class ParameterValueList extends AbstractList<GeneralParameterValue>
         if (count <= min) {
             final int max = type.getMaximumOccurs();
             throw new InvalidParameterCardinalityException(
-                    MessageFormat.format(
-                            ErrorKeys.ILLEGAL_OCCURS_FOR_PARAMETER_$4, name, count - 1, min, max),
-                    name);
+                    MessageFormat.format(ErrorKeys.ILLEGAL_OCCURS_FOR_PARAMETER_$4, name, count - 1, min, max), name);
         }
         final GeneralParameterValue value = values.remove(index);
         assert value != null && type.equals(value.getDescriptor()) : value;

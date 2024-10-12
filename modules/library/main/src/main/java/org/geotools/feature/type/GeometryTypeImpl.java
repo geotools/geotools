@@ -68,7 +68,6 @@ public class GeometryTypeImpl extends AttributeTypeImpl implements GeometryType 
         if (o.getCoordinateReferenceSystem() == null) {
             return false;
         }
-        return org.geotools.referencing.CRS.equalsIgnoreMetadata(
-                CRS, o.getCoordinateReferenceSystem());
+        return org.geotools.referencing.CRS.equalsIgnoreMetadata(CRS, o.getCoordinateReferenceSystem());
     }
 }

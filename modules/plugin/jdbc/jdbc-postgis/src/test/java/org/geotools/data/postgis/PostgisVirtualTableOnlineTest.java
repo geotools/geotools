@@ -20,23 +20,22 @@ public class PostgisVirtualTableOnlineTest extends JDBCVirtualTableOnlineTest {
 
     @Test
     public void testOptimizedBounds() throws Exception {
-        Handler handler =
-                new Handler() {
-                    @Override
-                    public synchronized void publish(LogRecord record) {
-                        fail("We should not have received any log statement");
-                    }
+        Handler handler = new Handler() {
+            @Override
+            public synchronized void publish(LogRecord record) {
+                fail("We should not have received any log statement");
+            }
 
-                    @Override
-                    public void flush() {
-                        // nothing to do
-                    }
+            @Override
+            public void flush() {
+                // nothing to do
+            }
 
-                    @Override
-                    public void close() throws SecurityException {
-                        // nothing to do
-                    }
-                };
+            @Override
+            public void close() throws SecurityException {
+                // nothing to do
+            }
+        };
         handler.setLevel(Level.WARNING);
         ((PostGISDialect) dataStore.getSQLDialect()).setEstimatedExtentsEnabled(true);
         Logger logger = Logging.getLogger(PostgisVirtualTableOnlineTest.class);

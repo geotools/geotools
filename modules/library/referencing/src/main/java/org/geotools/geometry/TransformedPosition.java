@@ -146,9 +146,7 @@ public class TransformedPosition extends GeneralPosition {
      * @since 2.3
      */
     public TransformedPosition(
-            final CoordinateReferenceSystem sourceCRS,
-            final CoordinateReferenceSystem targetCRS,
-            final Hints hints)
+            final CoordinateReferenceSystem sourceCRS, final CoordinateReferenceSystem targetCRS, final Hints hints)
             throws FactoryRegistryException {
         super(targetCRS);
         ensureNonNull("targetCRS", targetCRS);
@@ -174,8 +172,7 @@ public class TransformedPosition extends GeneralPosition {
      *     dimensions.
      */
     @Override
-    public void setCoordinateReferenceSystem(final CoordinateReferenceSystem crs)
-            throws MismatchedDimensionException {
+    public void setCoordinateReferenceSystem(final CoordinateReferenceSystem crs) throws MismatchedDimensionException {
         ensureNonNull("crs", crs);
         super.setCoordinateReferenceSystem(crs);
         forward = null;
@@ -260,8 +257,7 @@ public class TransformedPosition extends GeneralPosition {
      * @throws TransformException if a coordinate transformation was required and failed.
      * @since 2.3
      */
-    public Position inverseTransform(final CoordinateReferenceSystem crs)
-            throws TransformException {
+    public Position inverseTransform(final CoordinateReferenceSystem crs) throws TransformException {
         if (inverse == null || !CRS.equalsIgnoreMetadata(sourceCRS, crs)) {
             ensureNonNull("crs", crs);
             setSourceCRS(crs);
@@ -295,11 +291,9 @@ public class TransformedPosition extends GeneralPosition {
      * @param object User argument.
      * @throws InvalidParameterValueException if {@code object} is null.
      */
-    private static void ensureNonNull(final String name, final Object object)
-            throws IllegalArgumentException {
+    private static void ensureNonNull(final String name, final Object object) throws IllegalArgumentException {
         if (object == null) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, name));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, name));
         }
     }
 }

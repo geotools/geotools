@@ -113,8 +113,7 @@ public final class PixelTranslation implements Serializable {
      * @return The corresponding pixel orientation, or {@code null} if the argument was null.
      * @throws IllegalArgumentException if the given code is unknown.
      */
-    public static PixelOrientation getPixelOrientation(final PixelInCell anchor)
-            throws IllegalArgumentException {
+    public static PixelOrientation getPixelOrientation(final PixelInCell anchor) throws IllegalArgumentException {
         if (PixelInCell.CELL_CENTER.equals(anchor)) {
             return CENTER;
         } else if (PixelInCell.CELL_CORNER.equals(anchor)) {
@@ -122,8 +121,7 @@ public final class PixelTranslation implements Serializable {
         } else if (anchor == null) {
             return null;
         } else {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "anchor", anchor));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "anchor", anchor));
         }
     }
 
@@ -151,8 +149,7 @@ public final class PixelTranslation implements Serializable {
         } else if (PixelInCell.CELL_CORNER.equals(anchor)) {
             return -0.5;
         } else {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "anchor", anchor));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "anchor", anchor));
         }
     }
 
@@ -177,12 +174,10 @@ public final class PixelTranslation implements Serializable {
      * @return The position relative to the pixel center.
      * @throws IllegalArgumentException if the specified orientation is unknown.
      */
-    public static PixelTranslation getPixelTranslation(final PixelOrientation anchor)
-            throws IllegalArgumentException {
+    public static PixelTranslation getPixelTranslation(final PixelOrientation anchor) throws IllegalArgumentException {
         final PixelTranslation offset = ORIENTATIONS.get(anchor);
         if (offset == null) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "anchor", anchor));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "anchor", anchor));
         }
         return offset;
     }
@@ -300,10 +295,8 @@ public final class PixelTranslation implements Serializable {
     }
 
     /** Formats an exception for an illegal dimension. */
-    private static IllegalArgumentException illegalDimension(
-            final String name, final Object dimension) {
-        return new IllegalArgumentException(
-                MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, name, dimension));
+    private static IllegalArgumentException illegalDimension(final String name, final Object dimension) {
+        return new IllegalArgumentException(MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, name, dimension));
     }
 
     /** Returns a string representation of this pixel translation. */

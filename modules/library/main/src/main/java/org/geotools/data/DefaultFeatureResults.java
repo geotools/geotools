@@ -55,8 +55,7 @@ import org.geotools.referencing.CRS;
  */
 public class DefaultFeatureResults extends DataFeatureCollection {
     /** Shared package logger */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(DefaultFeatureResults.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(DefaultFeatureResults.class);
 
     /** Query used to define this subset of features from the feature source */
     protected Query query;
@@ -115,8 +114,7 @@ public class DefaultFeatureResults extends DataFeatureCollection {
             try {
                 transform = CRS.findMathTransform(originalCRS, cs, true);
             } catch (FactoryException noTransform) {
-                throw (IOException)
-                        new IOException("Could not reproject data to " + cs).initCause(noTransform);
+                throw (IOException) new IOException("Could not reproject data to " + cs).initCause(noTransform);
             }
         }
     }
@@ -136,19 +134,12 @@ public class DefaultFeatureResults extends DataFeatureCollection {
                 if (query.retrieveAllProperties()) { // we can use the originalType as is
                     schema = featureSource.getSchema();
                 } else {
-                    schema =
-                            DataUtilities.createSubType(
-                                    featureSource.getSchema(), query.getPropertyNames());
+                    schema = DataUtilities.createSubType(featureSource.getSchema(), query.getPropertyNames());
                 }
             } else {
                 // we need to change the projection of the original type
-                schema =
-                        DataUtilities.createSubType(
-                                originalType,
-                                query.getPropertyNames(),
-                                cs,
-                                query.getTypeName(),
-                                null);
+                schema = DataUtilities.createSubType(
+                        originalType, query.getPropertyNames(), cs, query.getTypeName(), null);
             }
         } catch (SchemaException e) {
             // we were unable to create the schema requested!
@@ -199,8 +190,7 @@ public class DefaultFeatureResults extends DataFeatureCollection {
     @SuppressWarnings("PMD.CloseResource") // returned, the caller will close
     public FeatureReader<SimpleFeatureType, SimpleFeature> reader() throws IOException {
         FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                ((DataStore) featureSource.getDataStore())
-                        .getFeatureReader(query, getTransaction());
+                ((DataStore) featureSource.getDataStore()).getFeatureReader(query, getTransaction());
 
         int maxFeatures = query.getMaxFeatures();
         if (maxFeatures != Integer.MAX_VALUE) {

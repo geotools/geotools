@@ -85,7 +85,8 @@ public class ServersTest {
         //    	servers[10] = new
         // URL("http://gisdata.usgs.net/servlet/com.esri.wms.Esrimap?REQUEST=GetCapabilities&VERSION=1.3.0&SERVICE=WMS");
         //    	servers[11] = new
-        // URL("http://www.refractions.net:8080/geoserver/wms/?SERVICE=WMS&REQUEST=GetCapabilities&VERSION=1.3.0"); //$NON-NLS-1$
+        // URL("http://www.refractions.net:8080/geoserver/wms/?SERVICE=WMS&REQUEST=GetCapabilities&VERSION=1.3.0");
+        // //$NON-NLS-1$
         // 1.0.0 freezes.
         //    	servers[12] = new
         // URL("http://mapserv2.esrin.esa.it/cubestor/cubeserv/cubeserv.cgi?VERSION=1.1.1&REQUEST=GetCapabilities&SERVICE=WMS");
@@ -166,13 +167,7 @@ public class ServersTest {
             while (e != null) {
                 if (e.getLocator() != null && e.getLocator().length() != 0) {
                     out.println(
-                            "ServiceException at "
-                                    + e.getLocator()
-                                    + ": "
-                                    + e.getMessage()
-                                    + "("
-                                    + e.getCode()
-                                    + ")");
+                            "ServiceException at " + e.getLocator() + ": " + e.getMessage() + "(" + e.getCode() + ")");
                 }
                 out.println("ServiceException: " + e.getMessage() + "(" + e.getCode() + ")");
                 e = e.getNext();
@@ -201,10 +196,7 @@ public class ServersTest {
             Layer layer = (Layer) iter.next();
             if (layer.getLatLonBoundingBox() == null) {
                 if (layer.getName() != null) {
-                    out.println(
-                            "WARNING: Layer '"
-                                    + layer.getName()
-                                    + "' contains no LatLonBoundingBox.");
+                    out.println("WARNING: Layer '" + layer.getName() + "' contains no LatLonBoundingBox.");
                     passed = false;
                 }
             }
@@ -275,11 +267,7 @@ public class ServersTest {
             out.print("Checking returned format...");
             if (response.getContentType().indexOf(format) == -1) {
                 out.println(
-                        "server returned bad format. Expected "
-                                + format
-                                + ", got "
-                                + response.getContentType()
-                                + ".");
+                        "server returned bad format. Expected " + format + ", got " + response.getContentType() + ".");
                 passed = false;
             } else {
                 out.println("passed.");
@@ -291,11 +279,10 @@ public class ServersTest {
                 out.println("returned a bad image. ContentType is " + response.getContentType());
                 passed = false;
             } else if (image.getWidth() != 100 || image.getHeight() != 100) {
-                out.println(
-                        "server returned bad dimensions. Expect 100, 100. Returned "
-                                + image.getWidth()
-                                + ","
-                                + image.getHeight());
+                out.println("server returned bad dimensions. Expect 100, 100. Returned "
+                        + image.getWidth()
+                        + ","
+                        + image.getHeight());
                 passed = false;
             } else {
                 out.println("passed.");
@@ -306,13 +293,7 @@ public class ServersTest {
             while (e != null) {
                 if (e.getLocator() != null && e.getLocator().length() != 0) {
                     out.println(
-                            "ServiceException at "
-                                    + e.getLocator()
-                                    + ": "
-                                    + e.getMessage()
-                                    + "("
-                                    + e.getCode()
-                                    + ")");
+                            "ServiceException at " + e.getLocator() + ": " + e.getMessage() + "(" + e.getCode() + ")");
                 }
                 out.println("ServiceException: " + e.getMessage() + "(" + e.getCode() + ")");
                 e = e.getNext();

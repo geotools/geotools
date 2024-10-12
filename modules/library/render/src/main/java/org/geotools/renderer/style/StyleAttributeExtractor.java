@@ -408,10 +408,10 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor implements
         visitCqlExpression(exgr.getFormat());
 
         try {
-            if (exgr.getLocation() != null) visitCqlExpression(exgr.getLocation().toString());
+            if (exgr.getLocation() != null)
+                visitCqlExpression(exgr.getLocation().toString());
         } catch (MalformedURLException e) {
-            throw new RuntimeException(
-                    "Errors while inspecting " + "the location of an external graphic", e);
+            throw new RuntimeException("Errors while inspecting " + "the location of an external graphic", e);
         }
     }
 

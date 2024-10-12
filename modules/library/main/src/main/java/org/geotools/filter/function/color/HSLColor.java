@@ -141,11 +141,8 @@ public class HSLColor {
         g = Math.min(g, 1.0f);
         b = Math.min(b, 1.0f);
 
-        return new Color(
-                (int) Math.round(r * 255),
-                (int) Math.round(g * 255),
-                (int) Math.round(b * 255),
-                (int) Math.round(alpha * 255));
+        return new Color((int) Math.round(r * 255), (int) Math.round(g * 255), (int) Math.round(b * 255), (int)
+                Math.round(alpha * 255));
     }
 
     private double hueToRGB(double p, double q, double h) {

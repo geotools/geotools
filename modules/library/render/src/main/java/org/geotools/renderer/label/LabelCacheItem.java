@@ -80,8 +80,7 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
 
     double goodnessOfFit = 0;
 
-    TextSymbolizer.PolygonAlignOptions polygonAlign =
-            org.geotools.api.style.TextSymbolizer.PolygonAlignOptions.NONE;
+    TextSymbolizer.PolygonAlignOptions polygonAlign = org.geotools.api.style.TextSymbolizer.PolygonAlignOptions.NONE;
 
     GraphicResize graphicsResize = GraphicResize.NONE;
 
@@ -141,11 +140,7 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
 
     /** Construct <code>LabelCacheItem</code>. */
     public LabelCacheItem(
-            String layerId,
-            TextStyle2D textStyle,
-            LiteShape2 shape,
-            String label,
-            TextSymbolizer symbolizer) {
+            String layerId, TextStyle2D textStyle, LiteShape2 shape, String label, TextSymbolizer symbolizer) {
         this.textStyle = textStyle;
         this.geoms.add(shape.getGeometry());
         this.label = label;

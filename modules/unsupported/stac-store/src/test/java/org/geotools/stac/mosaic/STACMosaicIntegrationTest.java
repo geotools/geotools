@@ -40,26 +40,20 @@ import org.junit.Test;
 /** Tests integration between STAC store and mosaic store */
 public class STACMosaicIntegrationTest extends AbstractSTACStoreTest {
 
-    protected static String WSF_TYPE =
-            BASE_URL + "/search?f=application%2Fgeo%2Bjson&collections=WSF_2019&limit=100";
-    protected static String WSF_2 =
-            BASE_URL + "/search?f=application%2Fgeo%2Bjson&collections=WSF_2019&limit=2";
+    protected static String WSF_TYPE = BASE_URL + "/search?f=application%2Fgeo%2Bjson&collections=WSF_2019&limit=100";
+    protected static String WSF_2 = BASE_URL + "/search?f=application%2Fgeo%2Bjson&collections=WSF_2019&limit=2";
 
-    protected static String WSF_BOUNDS =
-            BASE_URL
-                    + "/search?f=application%2Fgeo%2Bjson&collections=WSF_2019&limit=1000&fields=geometry,type,id,-bbox,-properties,-assets,-links";
+    protected static String WSF_BOUNDS = BASE_URL
+            + "/search?f=application%2Fgeo%2Bjson&collections=WSF_2019&limit=1000&fields=geometry,type,id,-bbox,-properties,-assets,-links";
 
-    protected static String WSF_CRS_BOUNDS =
-            BASE_URL
-                    + "/search?f=application%2Fgeo%2Bjson&collections=WSF_2019&limit=1000&fields=geometry,assets.wsf2019.href,properties.proj:geometry,-assets,-links&FILTER=\"proj:epsg\" %3D 4326 AND BBOX(geometry, -76.01004945048919,39.98994217703509,-71.98999872252591,42.01007358796307)&FILTER-LANG=cql2-text";
+    protected static String WSF_CRS_BOUNDS = BASE_URL
+            + "/search?f=application%2Fgeo%2Bjson&collections=WSF_2019&limit=1000&fields=geometry,assets.wsf2019.href,properties.proj:geometry,-assets,-links&FILTER=\"proj:epsg\" %3D 4326 AND BBOX(geometry, -76.01004945048919,39.98994217703509,-71.98999872252591,42.01007358796307)&FILTER-LANG=cql2-text";
 
-    protected static String WSF_ITEMS =
-            BASE_URL
-                    + "/search?f=application%2Fgeo%2Bjson&collections=WSF_2019&limit=1000&bbox=-76.01004945048919,39.98994217703509,-71.98999872252591,42.01007358796307&fields=geometry,assets.wsf2019.href,properties.proj:epsg,type,id,-bbox,-properties,-assets,-links";
+    protected static String WSF_ITEMS = BASE_URL
+            + "/search?f=application%2Fgeo%2Bjson&collections=WSF_2019&limit=1000&bbox=-76.01004945048919,39.98994217703509,-71.98999872252591,42.01007358796307&fields=geometry,assets.wsf2019.href,properties.proj:epsg,type,id,-bbox,-properties,-assets,-links";
 
-    protected static String WSF_CRS =
-            BASE_URL
-                    + "/search?f=application%2Fgeo%2Bjson&collections=WSF_2019&limit=1&FILTER=%22proj%3Aepsg%22%20%3D%20%27EPSG%3A4326%27&FILTER-LANG=cql2-text&FIELDS=properties.proj:epsg,type,id,-links";
+    protected static String WSF_CRS = BASE_URL
+            + "/search?f=application%2Fgeo%2Bjson&collections=WSF_2019&limit=1&FILTER=%22proj%3Aepsg%22%20%3D%20%27EPSG%3A4326%27&FILTER-LANG=cql2-text&FIELDS=properties.proj:epsg,type,id,-links";
 
     @AfterClass
     public static void cleanupCRS() {

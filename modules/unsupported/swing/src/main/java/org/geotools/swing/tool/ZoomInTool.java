@@ -94,10 +94,9 @@ public class ZoomInTool extends AbstractZoomTool {
         double scale = getMapPane().getWorldToScreenTransform().getScaleX();
         double newScale = scale * zoom;
 
-        Position2D corner =
-                new Position2D(
-                        mapPos.getX() - 0.5d * paneArea.getWidth() / newScale,
-                        mapPos.getY() + 0.5d * paneArea.getHeight() / newScale);
+        Position2D corner = new Position2D(
+                mapPos.getX() - 0.5d * paneArea.getWidth() / newScale,
+                mapPos.getY() + 0.5d * paneArea.getHeight() / newScale);
 
         ReferencedEnvelope newMapArea = new ReferencedEnvelope();
         newMapArea.setFrameFromCenter(mapPos, corner);

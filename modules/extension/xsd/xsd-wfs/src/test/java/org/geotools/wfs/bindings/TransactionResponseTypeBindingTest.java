@@ -113,8 +113,7 @@ public class TransactionResponseTypeBindingTest extends WFSTestSupport {
         Element totalDeleted = getElementByQName(summary, new QName(WFS.NAMESPACE, "totalDeleted"));
         assertEquals("2", totalDeleted.getFirstChild().getNodeValue());
 
-        Element totalInserted =
-                getElementByQName(summary, new QName(WFS.NAMESPACE, "totalInserted"));
+        Element totalInserted = getElementByQName(summary, new QName(WFS.NAMESPACE, "totalInserted"));
         assertEquals("3", totalInserted.getFirstChild().getNodeValue());
 
         Element totalUpdated = getElementByQName(summary, new QName(WFS.NAMESPACE, "totalUpdated"));
@@ -165,11 +164,13 @@ public class TransactionResponseTypeBindingTest extends WFSTestSupport {
         {
             InsertResultsType insertResults = tr.getInsertResults();
             assertEquals(2, insertResults.getFeature().size());
-            InsertedFeatureType feature1 = (InsertedFeatureType) insertResults.getFeature().get(0);
+            InsertedFeatureType feature1 =
+                    (InsertedFeatureType) insertResults.getFeature().get(0);
             assertEquals("handle1", feature1.getHandle());
             assertEquals(2, feature1.getFeatureId().size());
 
-            InsertedFeatureType feature2 = (InsertedFeatureType) insertResults.getFeature().get(1);
+            InsertedFeatureType feature2 =
+                    (InsertedFeatureType) insertResults.getFeature().get(1);
             assertEquals("handle2", feature2.getHandle());
             assertEquals(1, feature2.getFeatureId().size());
         }

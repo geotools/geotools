@@ -27,10 +27,7 @@ public class VectorLayersMetadataTest {
 
     @Test
     public void testParseMetadata() throws Exception {
-        String json =
-                IOUtils.toString(
-                        getClass().getResourceAsStream("vectorLayers.json"),
-                        StandardCharsets.UTF_8);
+        String json = IOUtils.toString(getClass().getResourceAsStream("vectorLayers.json"), StandardCharsets.UTF_8);
         VectorLayersMetadata layersMetadata = VectorLayersMetadata.parseMetadata(json);
         List<VectorLayerMetadata> layers = layersMetadata.getLayers();
         assertEquals(15, layers.size());

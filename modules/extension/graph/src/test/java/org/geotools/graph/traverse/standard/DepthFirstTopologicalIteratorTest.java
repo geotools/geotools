@@ -48,17 +48,15 @@ public class DepthFirstTopologicalIteratorTest {
         int nnodes = 100;
         GraphTestUtil.buildNoBifurcations(builder(), nnodes);
 
-        CountingWalker walker =
-                new CountingWalker() {
-                    @Override
-                    public int visit(Graphable element, GraphTraversal traversal) {
-                        element.setCount(getCount());
-                        return super.visit(element, traversal);
-                    }
-                };
+        CountingWalker walker = new CountingWalker() {
+            @Override
+            public int visit(Graphable element, GraphTraversal traversal) {
+                element.setCount(getCount());
+                return super.visit(element, traversal);
+            }
+        };
         DepthFirstTopologicalIterator iterator = createIterator();
-        BasicGraphTraversal traversal =
-                new BasicGraphTraversal(builder().getGraph(), walker, iterator);
+        BasicGraphTraversal traversal = new BasicGraphTraversal(builder().getGraph(), walker, iterator);
         traversal.init();
         traversal.traverse();
 
@@ -92,16 +90,14 @@ public class DepthFirstTopologicalIteratorTest {
         CountingWalker walker = new CountingWalker();
         BreadthFirstTopologicalIterator iterator = createIterator();
 
-        BasicGraphTraversal traversal =
-                new BasicGraphTraversal(builder().getGraph(), walker, iterator);
+        BasicGraphTraversal traversal = new BasicGraphTraversal(builder().getGraph(), walker, iterator);
         traversal.init();
         traversal.traverse();
 
-        GraphVisitor visitor =
-                component -> {
-                    Assert.assertFalse(component.isVisited());
-                    return 0;
-                };
+        GraphVisitor visitor = component -> {
+            Assert.assertFalse(component.isVisited());
+            return 0;
+        };
         builder().getGraph().visitNodes(visitor);
 
         Assert.assertEquals(0, walker.getCount());

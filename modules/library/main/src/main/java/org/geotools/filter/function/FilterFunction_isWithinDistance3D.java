@@ -28,13 +28,12 @@ import org.locationtech.jts.operation.distance3d.Distance3DOp;
 
 public class FilterFunction_isWithinDistance3D extends FunctionExpressionImpl {
 
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "isWithinDistance3D",
-                    Double.class,
-                    parameter("geometry1", Geometry.class),
-                    parameter("geometry2", Geometry.class),
-                    parameter("distance", Double.class));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "isWithinDistance3D",
+            Double.class,
+            parameter("geometry1", Geometry.class),
+            parameter("geometry2", Geometry.class),
+            parameter("distance", Double.class));
 
     public FilterFunction_isWithinDistance3D() {
         super(NAME);

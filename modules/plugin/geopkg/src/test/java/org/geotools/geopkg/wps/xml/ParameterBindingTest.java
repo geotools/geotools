@@ -28,7 +28,8 @@ public class ParameterBindingTest extends GPKGTestSupport {
     @Test
     public void testType() {
         assertEquals(
-                GeoPackageProcessRequest.Parameter.class, binding(GPKG.parametertype).getType());
+                GeoPackageProcessRequest.Parameter.class,
+                binding(GPKG.parametertype).getType());
     }
 
     @Test
@@ -38,8 +39,7 @@ public class ParameterBindingTest extends GPKGTestSupport {
 
     @Test
     public void testParse() throws Exception {
-        buildDocument(
-                "<param name=\"env\" xmlns=\"http://www.opengis.net/gpkg\">date:2010-10-01</param>");
+        buildDocument("<param name=\"env\" xmlns=\"http://www.opengis.net/gpkg\">date:2010-10-01</param>");
         Object result = parse(GPKG.parametertype);
         assertThat(result, CoreMatchers.instanceOf(GeoPackageProcessRequest.Parameter.class));
         GeoPackageProcessRequest.Parameter parameter = (GeoPackageProcessRequest.Parameter) result;

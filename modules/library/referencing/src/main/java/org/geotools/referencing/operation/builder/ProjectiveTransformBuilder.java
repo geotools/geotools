@@ -83,8 +83,7 @@ public class ProjectiveTransformBuilder extends MathTransformBuilder {
      *     {@linkplain MappedPosition MappedPosition}
      */
     public ProjectiveTransformBuilder(List<MappedPosition> vectors)
-            throws IllegalArgumentException, MismatchedDimensionException,
-                    MismatchedReferenceSystemException {
+            throws IllegalArgumentException, MismatchedDimensionException, MismatchedReferenceSystemException {
         super.setMappedPositions(vectors);
     }
 
@@ -116,8 +115,8 @@ public class ProjectiveTransformBuilder extends MathTransformBuilder {
      * @throws MissingInfoException if accuracy is not defined.
      */
     protected void fillPMatrix() throws MissingInfoException {
-        this.P =
-                new GeneralMatrix(getMappedPositions().size() * 2, getMappedPositions().size() * 2);
+        this.P = new GeneralMatrix(
+                getMappedPositions().size() * 2, getMappedPositions().size() * 2);
 
         for (int i = 0; i < getMappedPositions().size(); i = i + 2) {
             if (Double.compare((getMappedPositions().get(i).getAccuracy()), Double.NaN) == 0) {
@@ -184,8 +183,8 @@ public class ProjectiveTransformBuilder extends MathTransformBuilder {
      *     does not have accuracy setup properly.
      */
     public void includeWeights(boolean include) throws MissingInfoException {
-        this.P =
-                new GeneralMatrix(getMappedPositions().size() * 2, getMappedPositions().size() * 2);
+        this.P = new GeneralMatrix(
+                getMappedPositions().size() * 2, getMappedPositions().size() * 2);
 
         if (include) {
             fillPMatrix();

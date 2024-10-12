@@ -99,13 +99,12 @@ public class JFileImageChooserTest extends GraphicsTestBase<DialogFixture, Dialo
 
         // Can't use base class getButton method because JFileChooser has
         // duplicate components
-        windowFixture.button(
-                new GenericTypeMatcher<JButton>(JButton.class) {
-                    @Override
-                    protected boolean isMatching(JButton component) {
-                        return component.isVisible() && "Open".equals(component.getText());
-                    }
-                });
+        windowFixture.button(new GenericTypeMatcher<JButton>(JButton.class) {
+            @Override
+            protected boolean isMatching(JButton component) {
+                return component.isVisible() && "Open".equals(component.getText());
+            }
+        });
     }
 
     @Test
@@ -114,13 +113,12 @@ public class JFileImageChooserTest extends GraphicsTestBase<DialogFixture, Dialo
 
         // Can't use base class getButton method because JFileChooser has
         // duplicate components
-        windowFixture.button(
-                new GenericTypeMatcher<JButton>(JButton.class) {
-                    @Override
-                    protected boolean isMatching(JButton component) {
-                        return component.isVisible() && "Save".equals(component.getText());
-                    }
-                });
+        windowFixture.button(new GenericTypeMatcher<JButton>(JButton.class) {
+            @Override
+            protected boolean isMatching(JButton component) {
+                return component.isVisible() && "Save".equals(component.getText());
+            }
+        });
     }
 
     @Test
@@ -137,9 +135,7 @@ public class JFileImageChooserTest extends GraphicsTestBase<DialogFixture, Dialo
             if (suffix.startsWith(".")) {
                 suffix = suffix.substring(1);
             }
-            assertTrue(
-                    "file suffix not a supported format: " + suffix,
-                    readerFileSuffixes.contains(suffix));
+            assertTrue("file suffix not a supported format: " + suffix, readerFileSuffixes.contains(suffix));
         }
     }
 
@@ -157,9 +153,7 @@ public class JFileImageChooserTest extends GraphicsTestBase<DialogFixture, Dialo
             if (suffix.startsWith(".")) {
                 suffix = suffix.substring(1);
             }
-            assertTrue(
-                    "file suffix not a supported format: " + suffix,
-                    writerFileSuffixes.contains(suffix));
+            assertTrue("file suffix not a supported format: " + suffix, writerFileSuffixes.contains(suffix));
         }
     }
 
@@ -171,11 +165,9 @@ public class JFileImageChooserTest extends GraphicsTestBase<DialogFixture, Dialo
      * @param workingDir optional initial working dir
      * @return a future for the task being run in a separate thread
      */
-    private Future<File> showOpenDialog(final Component parent, final File workingDir)
-            throws Exception {
+    private Future<File> showOpenDialog(final Component parent, final File workingDir) throws Exception {
 
-        Future<File> future =
-                executor.submit(() -> JFileImageChooser.showOpenFile(parent, workingDir));
+        Future<File> future = executor.submit(() -> JFileImageChooser.showOpenFile(parent, workingDir));
 
         assertComponentDisplayed(DIALOG_CLASS);
         windowFixture = listener.getFixture(DISPLAY_TIMEOUT);
@@ -190,11 +182,9 @@ public class JFileImageChooserTest extends GraphicsTestBase<DialogFixture, Dialo
      * @param workingDir optional initial working dir
      * @return a future for the task being run in a separate thread
      */
-    private Future<File> showSaveDialog(final Component parent, final File workingDir)
-            throws Exception {
+    private Future<File> showSaveDialog(final Component parent, final File workingDir) throws Exception {
 
-        Future<File> future =
-                executor.submit(() -> JFileImageChooser.showSaveFile(parent, workingDir));
+        Future<File> future = executor.submit(() -> JFileImageChooser.showSaveFile(parent, workingDir));
 
         assertComponentDisplayed(DIALOG_CLASS);
         windowFixture = listener.getFixture(DISPLAY_TIMEOUT);
@@ -207,12 +197,11 @@ public class JFileImageChooserTest extends GraphicsTestBase<DialogFixture, Dialo
      * @return FEST fixture for the component
      */
     private JComboBoxFixture getFileFormatComboBox() {
-        return windowFixture.comboBox(
-                new GenericTypeMatcher<JComboBox>(JComboBox.class) {
-                    @Override
-                    protected boolean isMatching(JComboBox component) {
-                        return component.getItemAt(0) instanceof JFileImageChooser.FormatFilter;
-                    }
-                });
+        return windowFixture.comboBox(new GenericTypeMatcher<JComboBox>(JComboBox.class) {
+            @Override
+            protected boolean isMatching(JComboBox component) {
+                return component.getItemAt(0) instanceof JFileImageChooser.FormatFilter;
+            }
+        });
     }
 }

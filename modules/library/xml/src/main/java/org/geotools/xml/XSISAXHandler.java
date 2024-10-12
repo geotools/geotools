@@ -43,8 +43,7 @@ import org.xml.sax.helpers.DefaultHandler;
  */
 public class XSISAXHandler extends DefaultHandler {
     // the logger -- should be used for debugging (assuming there are bugs LOL)
-    protected static final Logger logger =
-            org.geotools.util.logging.Logging.getLogger(XSISAXHandler.class);
+    protected static final Logger logger = org.geotools.util.logging.Logging.getLogger(XSISAXHandler.class);
 
     // the stack of handers representing a portion of the parse tree
     private Stack<XSIElementHandler> handlers = new Stack<>();
@@ -145,8 +144,7 @@ public class XSISAXHandler extends DefaultHandler {
      *     java.lang.String)
      */
     @Override
-    public void endElement(String namespaceURI, String localName, String qName)
-            throws SAXException {
+    public void endElement(String namespaceURI, String localName, String qName) throws SAXException {
         handleCharacters();
         logger.fine("END: " + qName);
 
@@ -166,8 +164,7 @@ public class XSISAXHandler extends DefaultHandler {
      *     java.lang.String, org.xml.sax.Attributes)
      */
     @Override
-    public void startElement(String namespaceURI, String localName, String qName, Attributes atts)
-            throws SAXException {
+    public void startElement(String namespaceURI, String localName, String qName, Attributes atts) throws SAXException {
         characters.setLength(0);
         logger.fine("START: " + qName);
 

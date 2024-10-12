@@ -68,36 +68,32 @@ public class LabelFontShrinkSizeMinTest {
         SimpleFeatureType type = builder.buildFeatureType();
 
         GeometryFactory gf = new GeometryFactory();
-        SimpleFeature f1 =
-                SimpleFeatureBuilder.build(
-                        type,
-                        new Object[] {
-                            gf.createPolygon(
-                                    new Coordinate[] {
-                                        new Coordinate(4, 7),
-                                        new Coordinate(4, 9),
-                                        new Coordinate(7, 9),
-                                        new Coordinate(7, 7),
-                                        new Coordinate(4, 7)
-                                    }),
-                            "labelPoly A"
-                        },
-                        null);
-        SimpleFeature f2 =
-                SimpleFeatureBuilder.build(
-                        type,
-                        new Object[] {
-                            gf.createPolygon(
-                                    new Coordinate[] {
-                                        new Coordinate(2.5, 7),
-                                        new Coordinate(2.5, 8),
-                                        new Coordinate(4, 8),
-                                        new Coordinate(4, 7),
-                                        new Coordinate(2.5, 7)
-                                    }),
-                            "labelPoly B"
-                        },
-                        null);
+        SimpleFeature f1 = SimpleFeatureBuilder.build(
+                type,
+                new Object[] {
+                    gf.createPolygon(new Coordinate[] {
+                        new Coordinate(4, 7),
+                        new Coordinate(4, 9),
+                        new Coordinate(7, 9),
+                        new Coordinate(7, 7),
+                        new Coordinate(4, 7)
+                    }),
+                    "labelPoly A"
+                },
+                null);
+        SimpleFeature f2 = SimpleFeatureBuilder.build(
+                type,
+                new Object[] {
+                    gf.createPolygon(new Coordinate[] {
+                        new Coordinate(2.5, 7),
+                        new Coordinate(2.5, 8),
+                        new Coordinate(4, 8),
+                        new Coordinate(4, 7),
+                        new Coordinate(2.5, 7)
+                    }),
+                    "labelPoly B"
+                },
+                null);
 
         MemoryDataStore data = new MemoryDataStore();
         data.addFeature(f2);
@@ -116,8 +112,7 @@ public class LabelFontShrinkSizeMinTest {
         ImageAssert.assertEquals(new File(refPath), image, 800);
     }
 
-    private BufferedImage renderLabels(SimpleFeatureSource fs, Style style, String title)
-            throws Exception {
+    private BufferedImage renderLabels(SimpleFeatureSource fs, Style style, String title) throws Exception {
         MapContent mc = new MapContent();
         mc.getViewport().setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);
         mc.addLayer(new FeatureLayer(fs, style));

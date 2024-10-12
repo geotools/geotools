@@ -85,8 +85,7 @@ public final class ObjectCaches {
         public boolean equals(final Object other) {
             if (other instanceof Pair) {
                 final Pair that = (Pair) other;
-                return Utilities.equals(this.source, that.source)
-                        && Utilities.equals(this.target, that.target);
+                return Utilities.equals(this.source, that.source) && Utilities.equals(this.target, that.target);
             }
             return false;
         }
@@ -115,8 +114,7 @@ public final class ObjectCaches {
      *
      * @return ObjectCache
      */
-    public static <K, V> ObjectCache<K, V> chain(
-            final ObjectCache<K, V> level1, final ObjectCache<K, V> level2) {
+    public static <K, V> ObjectCache<K, V> chain(final ObjectCache<K, V> level1, final ObjectCache<K, V> level2) {
         if (level1 == level2) {
             return level1;
         }

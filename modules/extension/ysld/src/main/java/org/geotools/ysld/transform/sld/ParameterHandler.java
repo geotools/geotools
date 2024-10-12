@@ -52,8 +52,7 @@ public class ParameterHandler extends SldTransformHandler {
     }
 
     @Override
-    public void element(XMLStreamReader xml, SldTransformContext context)
-            throws XMLStreamException, IOException {
+    public void element(XMLStreamReader xml, SldTransformContext context) throws XMLStreamException, IOException {
         String name = xml.getLocalName();
         if ("CssParameter".equals(name) || "SvgParameter".equals(name)) {
             String parameter = xml.getAttributeValue(null, "name");
@@ -78,8 +77,7 @@ public class ParameterHandler extends SldTransformHandler {
     }
 
     @Override
-    public void endElement(XMLStreamReader xml, SldTransformContext context)
-            throws XMLStreamException, IOException {
+    public void endElement(XMLStreamReader xml, SldTransformContext context) throws XMLStreamException, IOException {
         String name = xml.getLocalName();
         if ("CssParameter".equals(name) || "SvgParameter".equals(name)) {
             context.pop();

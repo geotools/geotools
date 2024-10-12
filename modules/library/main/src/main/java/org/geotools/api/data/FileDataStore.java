@@ -49,14 +49,12 @@ public interface FileDataStore extends DataStore {
     FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader() throws IOException;
 
     /** @see DataStore#getFeatureWriter(Filter,Transaction) */
-    FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(
-            Filter filter, Transaction transaction) throws IOException;
+    FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(Filter filter, Transaction transaction)
+            throws IOException;
 
     /** @see DataStore#getFeatureWriter(java.lang.String, Transaction) */
-    FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(Transaction transaction)
-            throws IOException;
+    FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(Transaction transaction) throws IOException;
 
     /** @see DataStore#getFeatureWriterAppend(java.lang.String, Transaction) */
-    FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriterAppend(Transaction transaction)
-            throws IOException;
+    FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriterAppend(Transaction transaction) throws IOException;
 }

@@ -88,17 +88,16 @@ public class Matrix3 implements XMatrix, Serializable {
         if (matrix instanceof Matrix3) {
             return ((Matrix3) matrix).mat;
         } else {
-            DMatrix3x3 a =
-                    new DMatrix3x3(
-                            matrix.getElement(0, 0),
-                            matrix.getElement(0, 1),
-                            matrix.getElement(0, 2),
-                            matrix.getElement(1, 0),
-                            matrix.getElement(1, 1),
-                            matrix.getElement(1, 2),
-                            matrix.getElement(2, 0),
-                            matrix.getElement(2, 1),
-                            matrix.getElement(2, 2));
+            DMatrix3x3 a = new DMatrix3x3(
+                    matrix.getElement(0, 0),
+                    matrix.getElement(0, 1),
+                    matrix.getElement(0, 2),
+                    matrix.getElement(1, 0),
+                    matrix.getElement(1, 1),
+                    matrix.getElement(1, 2),
+                    matrix.getElement(2, 0),
+                    matrix.getElement(2, 1),
+                    matrix.getElement(2, 2));
             return a;
         }
     }
@@ -241,15 +240,14 @@ public class Matrix3 implements XMatrix, Serializable {
     @Override
     public void setColumn(int column, double... values) {
         if (values.length != mat.getNumCols()) {
-            throw new IllegalArgumentException(
-                    "Call setRow received an array of length "
-                            + values.length
-                            + ".  "
-                            + "The dimensions of the matrix is "
-                            + mat.getNumRows()
-                            + " by "
-                            + mat.getNumCols()
-                            + ".");
+            throw new IllegalArgumentException("Call setRow received an array of length "
+                    + values.length
+                    + ".  "
+                    + "The dimensions of the matrix is "
+                    + mat.getNumRows()
+                    + " by "
+                    + mat.getNumCols()
+                    + ".");
         }
         for (int i = 0; i < values.length; i++) {
             mat.set(i, column, values[i]);
@@ -259,15 +257,14 @@ public class Matrix3 implements XMatrix, Serializable {
     @Override
     public void setRow(int row, double... values) {
         if (values.length != mat.getNumCols()) {
-            throw new IllegalArgumentException(
-                    "Call setRow received an array of length "
-                            + values.length
-                            + ".  "
-                            + "The dimensions of the matrix is "
-                            + mat.getNumRows()
-                            + " by "
-                            + mat.getNumCols()
-                            + ".");
+            throw new IllegalArgumentException("Call setRow received an array of length "
+                    + values.length
+                    + ".  "
+                    + "The dimensions of the matrix is "
+                    + mat.getNumRows()
+                    + " by "
+                    + mat.getNumCols()
+                    + ".");
         }
 
         for (int i = 0; i < values.length; i++) {

@@ -64,9 +64,7 @@ public class URLsTest {
     public void testFileToUrl() {
         String url = URLs.fileToUrl(new File("file café")).toString();
         assertTrue("Expected '" + url + "' to start with 'file:'", url.startsWith("file:"));
-        assertTrue(
-                "Expected '" + url + "' to end with 'file%20caf%C3%A9'",
-                url.endsWith("file%20caf%C3%A9"));
+        assertTrue("Expected '" + url + "' to end with 'file%20caf%C3%A9'", url.endsWith("file%20caf%C3%A9"));
     }
 
     @Test
@@ -116,8 +114,6 @@ public class URLsTest {
         assumeTrue("Ignoring test on non Windows OS, see GEOT-3300", SystemUtils.IS_OS_WINDOWS);
         URL url = new URL("file", "\\\\oehhwsfs09", "/some/path/on/the/server/filename.nds");
         File windowsShareFile = URLs.urlToFile(url);
-        assertEquals(
-                "\\\\oehhwsfs09\\some\\path\\on\\the\\server\\filename.nds",
-                windowsShareFile.toString());
+        assertEquals("\\\\oehhwsfs09\\some\\path\\on\\the\\server\\filename.nds", windowsShareFile.toString());
     }
 }

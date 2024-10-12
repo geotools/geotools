@@ -173,36 +173,33 @@ public class JMapFrame extends JFrame {
         mapPane.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
         // give keyboard focus to the map pane
-        addWindowFocusListener(
-                new WindowAdapter() {
-                    @Override
-                    public void windowGainedFocus(WindowEvent e) {
-                        mapPane.requestFocusInWindow();
-                    }
-                });
+        addWindowFocusListener(new WindowAdapter() {
+            @Override
+            public void windowGainedFocus(WindowEvent e) {
+                mapPane.requestFocusInWindow();
+            }
+        });
 
-        mapPane.addFocusListener(
-                new FocusAdapter() {
+        mapPane.addFocusListener(new FocusAdapter() {
 
-                    @Override
-                    public void focusGained(FocusEvent e) {
-                        mapPane.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-                    }
+            @Override
+            public void focusGained(FocusEvent e) {
+                mapPane.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+            }
 
-                    @Override
-                    public void focusLost(FocusEvent e) {
-                        mapPane.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
-                    }
-                });
+            @Override
+            public void focusLost(FocusEvent e) {
+                mapPane.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+            }
+        });
 
-        mapPane.addMouseListener(
-                new MouseAdapter() {
+        mapPane.addMouseListener(new MouseAdapter() {
 
-                    @Override
-                    public void mousePressed(MouseEvent e) {
-                        mapPane.requestFocusInWindow();
-                    }
-                });
+            @Override
+            public void mousePressed(MouseEvent e) {
+                mapPane.requestFocusInWindow();
+            }
+        });
     }
 
     /**
@@ -296,13 +293,11 @@ public class JMapFrame extends JFrame {
             sb.append("[min!]"); // status bar height
         }
 
-        JPanel panel =
-                new JPanel(
-                        new MigLayout(
-                                "wrap 1, insets 0", // layout constrains: 1 component per row, no
-                                // insets
-                                "[grow]", // column constraints: col grows when frame is resized
-                                sb.toString()));
+        JPanel panel = new JPanel(new MigLayout(
+                "wrap 1, insets 0", // layout constrains: 1 component per row, no
+                // insets
+                "[grow]", // column constraints: col grows when frame is resized
+                sb.toString()));
 
         /*
          * A toolbar with buttons for zooming in, zooming out,
@@ -381,8 +376,7 @@ public class JMapFrame extends JFrame {
              * JSplitPane divider
              */
             mapLayerTable.setPreferredSize(new Dimension(200, -1));
-            JSplitPane splitPane =
-                    new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, false, mapLayerTable, mapPane);
+            JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, false, mapLayerTable, mapPane);
             panel.add(splitPane, "grow");
 
         } else {

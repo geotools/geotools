@@ -61,6 +61,5 @@ public interface GridCoordinates extends Cloneable {
      *     the {@linkplain #getDimension grid dimension}.
      * @throws UnsupportedOperationException if this grid coordinates is not modifiable.
      */
-    void setCoordinateValue(int dimension, int value)
-            throws IndexOutOfBoundsException, UnsupportedOperationException;
+    void setCoordinateValue(int dimension, int value) throws IndexOutOfBoundsException, UnsupportedOperationException;
 }

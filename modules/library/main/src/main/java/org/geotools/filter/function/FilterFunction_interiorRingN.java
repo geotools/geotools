@@ -28,12 +28,8 @@ import org.locationtech.jts.geom.LinearRing;
 
 public class FilterFunction_interiorRingN extends FunctionExpressionImpl {
 
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "interiorRingN",
-                    LinearRing.class,
-                    parameter("geometry", Geometry.class),
-                    parameter("n", Integer.class));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "interiorRingN", LinearRing.class, parameter("geometry", Geometry.class), parameter("n", Integer.class));
 
     public FilterFunction_interiorRingN() {
         super(NAME);

@@ -67,8 +67,7 @@ public class WorldVanDerGrintenI extends MapProjection {
         super(values);
     }
 
-    public WorldVanDerGrintenI(
-            ParameterValueGroup values, Collection<GeneralParameterDescriptor> expected)
+    public WorldVanDerGrintenI(ParameterValueGroup values, Collection<GeneralParameterDescriptor> expected)
             throws ParameterNotFoundException {
         super(values, expected);
     }
@@ -84,8 +83,7 @@ public class WorldVanDerGrintenI extends MapProjection {
      * radians) and stores the result in {@code ptDst} (linear distance on a unit sphere).
      */
     @Override
-    protected Point2D transformNormalized(double lambda, double phi, Point2D ptDst)
-            throws ProjectionException {
+    protected Point2D transformNormalized(double lambda, double phi, Point2D ptDst) throws ProjectionException {
 
         double al, al2, g, g2, x, y;
 
@@ -132,8 +130,7 @@ public class WorldVanDerGrintenI extends MapProjection {
      * {@code ptDst}.
      */
     @Override
-    protected Point2D inverseTransformNormalized(double x, double y, Point2D ptDst)
-            throws ProjectionException {
+    protected Point2D inverseTransformNormalized(double x, double y, Point2D ptDst) throws ProjectionException {
 
         double t, c0, c1, c2, c3, r2, r, ay, lambda, phi;
 
@@ -181,37 +178,34 @@ public class WorldVanDerGrintenI extends MapProjection {
         private static final long serialVersionUID = -4432651736803211463L;
 
         /** The parameters group. */
-        static final ParameterDescriptorGroup PARAMETERS =
-                createDescriptorGroup(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.OGC, "World_Van_der_Grinten_I"),
-                            new NamedIdentifier(Citations.GEOTOOLS, "World_Van_der_Grinten_I"),
-                            new NamedIdentifier(Citations.ESRI, "World_Van_der_Grinten_I"),
-                            new NamedIdentifier(Citations.GEOTIFF, "World_Van_der_Grinten_I"),
-                            new NamedIdentifier(Citations.OGC, "Van_der_Grinten_I"),
-                            new NamedIdentifier(Citations.GEOTOOLS, "Van_der_Grinten_I"),
-                            new NamedIdentifier(Citations.GEOTIFF, "Van_der_Grinten_I"),
-                            new NamedIdentifier(Citations.ESRI, "Van_der_Grinten_I"),
-                            new NamedIdentifier(Citations.OGC, "CT_VanDerGrinten"),
-                            new NamedIdentifier(Citations.GEOTOOLS, "CT_VanDerGrinten"),
-                            new NamedIdentifier(Citations.GEOTIFF, "CT_VanDerGrinten"),
-                            new NamedIdentifier(Citations.ESRI, "CT_VanDerGrinten"),
-                            new NamedIdentifier(Citations.EPSG, "54029"),
-                            new NamedIdentifier(Citations.ESRI, "54029"),
-                            new NamedIdentifier(Citations.OGC, "Van der Grinten WGS84"),
-                            new NamedIdentifier(Citations.GEOTOOLS, "Van der Grinten WGS84"),
-                            new NamedIdentifier(Citations.GEOTIFF, "Van der Grinten WGS84"),
-                            new NamedIdentifier(Citations.ESRI, "Van der Grinten WGS84"),
-                            new NamedIdentifier(Citations.EPSG, "Van der Grinten WGS84"),
-                            new NamedIdentifier(Citations.OGC, "Van der Grinten"),
-                            new NamedIdentifier(Citations.GEOTOOLS, "Van der Grinten"),
-                            new NamedIdentifier(Citations.GEOTIFF, "Van der Grinten"),
-                            new NamedIdentifier(Citations.ESRI, "Van der Grinten"),
-                            new NamedIdentifier(Citations.EPSG, "Van der Grinten")
-                        },
-                        new ParameterDescriptor[] {
-                            SEMI_MAJOR, SEMI_MINOR, CENTRAL_MERIDIAN, FALSE_EASTING, FALSE_NORTHING
-                        });
+        static final ParameterDescriptorGroup PARAMETERS = createDescriptorGroup(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.OGC, "World_Van_der_Grinten_I"),
+                    new NamedIdentifier(Citations.GEOTOOLS, "World_Van_der_Grinten_I"),
+                    new NamedIdentifier(Citations.ESRI, "World_Van_der_Grinten_I"),
+                    new NamedIdentifier(Citations.GEOTIFF, "World_Van_der_Grinten_I"),
+                    new NamedIdentifier(Citations.OGC, "Van_der_Grinten_I"),
+                    new NamedIdentifier(Citations.GEOTOOLS, "Van_der_Grinten_I"),
+                    new NamedIdentifier(Citations.GEOTIFF, "Van_der_Grinten_I"),
+                    new NamedIdentifier(Citations.ESRI, "Van_der_Grinten_I"),
+                    new NamedIdentifier(Citations.OGC, "CT_VanDerGrinten"),
+                    new NamedIdentifier(Citations.GEOTOOLS, "CT_VanDerGrinten"),
+                    new NamedIdentifier(Citations.GEOTIFF, "CT_VanDerGrinten"),
+                    new NamedIdentifier(Citations.ESRI, "CT_VanDerGrinten"),
+                    new NamedIdentifier(Citations.EPSG, "54029"),
+                    new NamedIdentifier(Citations.ESRI, "54029"),
+                    new NamedIdentifier(Citations.OGC, "Van der Grinten WGS84"),
+                    new NamedIdentifier(Citations.GEOTOOLS, "Van der Grinten WGS84"),
+                    new NamedIdentifier(Citations.GEOTIFF, "Van der Grinten WGS84"),
+                    new NamedIdentifier(Citations.ESRI, "Van der Grinten WGS84"),
+                    new NamedIdentifier(Citations.EPSG, "Van der Grinten WGS84"),
+                    new NamedIdentifier(Citations.OGC, "Van der Grinten"),
+                    new NamedIdentifier(Citations.GEOTOOLS, "Van der Grinten"),
+                    new NamedIdentifier(Citations.GEOTIFF, "Van der Grinten"),
+                    new NamedIdentifier(Citations.ESRI, "Van der Grinten"),
+                    new NamedIdentifier(Citations.EPSG, "Van der Grinten")
+                },
+                new ParameterDescriptor[] {SEMI_MAJOR, SEMI_MINOR, CENTRAL_MERIDIAN, FALSE_EASTING, FALSE_NORTHING});
 
         /** Constructs a new provider. */
         public Provider() {

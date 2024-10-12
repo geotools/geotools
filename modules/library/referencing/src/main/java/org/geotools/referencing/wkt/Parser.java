@@ -204,8 +204,7 @@ public class Parser extends MathTransformParser {
      * @return The coordinate reference system.
      * @throws ParseException if the string can't be parsed.
      */
-    public CoordinateReferenceSystem parseCoordinateReferenceSystem(final String text)
-            throws ParseException {
+    public CoordinateReferenceSystem parseCoordinateReferenceSystem(final String text) throws ParseException {
         final Element element = getTree(text, new ParsePosition(0));
         final CoordinateReferenceSystem crs = parseCoordinateReferenceSystem(element);
         element.close();
@@ -218,8 +217,7 @@ public class Parser extends MathTransformParser {
      * @return element The next element as a {@link CoordinateReferenceSystem} object.
      * @throws ParseException if the next element can't be parsed.
      */
-    private CoordinateReferenceSystem parseCoordinateReferenceSystem(final Element element)
-            throws ParseException {
+    private CoordinateReferenceSystem parseCoordinateReferenceSystem(final Element element) throws ParseException {
         final Object key = element.peek();
         if (key instanceof Element) {
             final String keyword = ((Element) key).keyword.trim().toUpperCase(symbols.locale);
@@ -262,8 +260,7 @@ public class Parser extends MathTransformParser {
                 if ("SPHEROID".equals(keyword)) return r = parseSpheroid(element);
                 if ("VERT_DATUM".equals(keyword)) return r = parseVertDatum(element);
                 if ("LOCAL_DATUM".equals(keyword)) return r = parseLocalDatum(element);
-                if ("DATUM".equals(keyword))
-                    return r = parseDatum(element, DefaultPrimeMeridian.GREENWICH);
+                if ("DATUM".equals(keyword)) return r = parseDatum(element, DefaultPrimeMeridian.GREENWICH);
                 r = parseMathTransform(element, false);
                 if (r != null) {
                     return r;
@@ -338,8 +335,7 @@ public class Parser extends MathTransformParser {
      * @return A properties map with the parent name and the optional autority code.
      * @throws ParseException if the "AUTHORITY" can't be parsed.
      */
-    private Map<String, Object> parseAuthority(final Element parent, final String name)
-            throws ParseException {
+    private Map<String, Object> parseAuthority(final Element parent, final String name) throws ParseException {
         final boolean isRoot = parent.isRoot();
         final Element element = parent.pullOptionalElement("AUTHORITY");
         Map<String, Object> properties;
@@ -388,8 +384,7 @@ public class Parser extends MathTransformParser {
      * @todo Authority code is currently ignored. We may consider to create a subclass of {@link
      *     Unit} which implements {@link IdentifiedObject} in a future version.
      */
-    private <T extends Quantity<T>> Unit<T> parseUnit(final Element parent, final Unit<T> unit)
-            throws ParseException {
+    private <T extends Quantity<T>> Unit<T> parseUnit(final Element parent, final Unit<T> unit) throws ParseException {
         final Element element = parent.pullElement("UNIT");
         final String name = element.pullString("name");
         final double factor = element.pullDouble("factor");
@@ -422,8 +417,7 @@ public class Parser extends MathTransformParser {
      *     axis was not required and there is no axis object.
      * @throws ParseException if the "AXIS" element can't be parsed.
      */
-    private CoordinateSystemAxis parseAxis(
-            final Element parent, final Unit<?> unit, final boolean required)
+    private CoordinateSystemAxis parseAxis(final Element parent, final Unit<?> unit, final boolean required)
             throws ParseException {
         final Element element;
         if (required) {
@@ -447,8 +441,7 @@ public class Parser extends MathTransformParser {
         element.close();
 
         if (direction == null) {
-            throw element.parseFailed(
-                    null, MessageFormat.format(ErrorKeys.UNKNOW_TYPE_$1, orientation));
+            throw element.parseFailed(null, MessageFormat.format(ErrorKeys.UNKNOW_TYPE_$1, orientation));
         }
         try {
             return createAxis(properties, name, direction, unit);
@@ -470,13 +463,9 @@ public class Parser extends MathTransformParser {
      * @throws FactoryException if the axis can't be created.
      */
     private CoordinateSystemAxis createAxis(
-            Map<String, ?> properties,
-            final String abbreviation,
-            final AxisDirection direction,
-            final Unit<?> unit)
+            Map<String, ?> properties, final String abbreviation, final AxisDirection direction, final Unit<?> unit)
             throws FactoryException {
-        final CoordinateSystemAxis candidate =
-                DefaultCoordinateSystemAxis.getPredefined(abbreviation, direction);
+        final CoordinateSystemAxis candidate = DefaultCoordinateSystemAxis.getPredefined(abbreviation, direction);
         if (candidate != null && unit.equals(candidate.getUnit())) {
             return candidate;
         }
@@ -502,8 +491,7 @@ public class Parser extends MathTransformParser {
      * @return The "PRIMEM" element as a {@link PrimeMeridian} object.
      * @throws ParseException if the "PRIMEM" element can't be parsed.
      */
-    private PrimeMeridian parsePrimem(final Element parent, final Unit<Angle> angularUnit)
-            throws ParseException {
+    private PrimeMeridian parsePrimem(final Element parent, final Unit<Angle> angularUnit) throws ParseException {
         final Element element = parent.pullElement("PRIMEM");
         final String name = element.pullString("name");
         final double longitude = element.pullDouble("longitude");
@@ -579,8 +567,7 @@ public class Parser extends MathTransformParser {
             inverseFlattening = Double.POSITIVE_INFINITY;
         }
         try {
-            return datumFactory.createFlattenedSphere(
-                    properties, semiMajorAxis, inverseFlattening, SI.METRE);
+            return datumFactory.createFlattenedSphere(properties, semiMajorAxis, inverseFlattening, SI.METRE);
         } catch (FactoryException exception) {
             throw element.parseFailed(exception, null);
         }
@@ -656,8 +643,7 @@ public class Parser extends MathTransformParser {
             }
         } catch (ParameterNotFoundException exception) {
             final Object arg0 = exception.getParameterName();
-            throw param.parseFailed(
-                    exception, MessageFormat.format(ErrorKeys.UNEXPECTED_PARAMETER_$1, arg0));
+            throw param.parseFailed(exception, MessageFormat.format(ErrorKeys.UNEXPECTED_PARAMETER_$1, arg0));
         }
         return parameters;
     }
@@ -678,8 +664,7 @@ public class Parser extends MathTransformParser {
      * @return The "DATUM" element as a {@link GeodeticDatum} object.
      * @throws ParseException if the "DATUM" element can't be parsed.
      */
-    private GeodeticDatum parseDatum(final Element parent, final PrimeMeridian meridian)
-            throws ParseException {
+    private GeodeticDatum parseDatum(final Element parent, final PrimeMeridian meridian) throws ParseException {
         Element element = parent.pullElement("DATUM");
         String name = element.pullString("name");
         Ellipsoid ellipsoid = parseSpheroid(element);
@@ -730,8 +715,7 @@ public class Parser extends MathTransformParser {
         final int datum = element.pullInteger("datum");
         final Map<String, ?> properties = parseAuthority(element, name);
         element.close();
-        final VerticalDatumType type =
-                DefaultVerticalDatum.getVerticalDatumTypeFromLegacyCode(datum);
+        final VerticalDatumType type = DefaultVerticalDatum.getVerticalDatumTypeFromLegacyCode(datum);
         if (type == null) {
             throw element.parseFailed(null, MessageFormat.format(ErrorKeys.UNKNOW_TYPE_$1, datum));
         }
@@ -810,10 +794,7 @@ public class Parser extends MathTransformParser {
                 && properties.get("identifiers").toString().equalsIgnoreCase(WILDCARD_CODE)) {
             return CartesianAuthorityFactory.GENERIC_2D;
         } else {
-            cs =
-                    new AbstractCS(
-                            singletonMap("name", name),
-                            list.toArray(new CoordinateSystemAxis[list.size()]));
+            cs = new AbstractCS(singletonMap("name", name), list.toArray(new CoordinateSystemAxis[list.size()]));
         }
         try {
             return crsFactory.createEngineeringCRS(properties, datum, cs);
@@ -859,9 +840,7 @@ public class Parser extends MathTransformParser {
             }
             element.close();
             return crsFactory.createGeocentricCRS(
-                    properties,
-                    datum,
-                    csFactory.createCartesianCS(properties, axis0, axis1, axis2));
+                    properties, datum, csFactory.createCartesianCS(properties, axis0, axis1, axis2));
         } catch (FactoryException exception) {
             throw element.parseFailed(exception, null);
         }
@@ -899,9 +878,7 @@ public class Parser extends MathTransformParser {
                 axis = createAxis(null, "Z", AxisDirection.UP, linearUnit);
             }
             return crsFactory.createVerticalCRS(
-                    properties,
-                    datum,
-                    csFactory.createVerticalCS(singletonMap("name", name), axis));
+                    properties, datum, csFactory.createVerticalCS(singletonMap("name", name), axis));
         } catch (FactoryException exception) {
             throw element.parseFailed(exception, null);
         }
@@ -981,8 +958,7 @@ public class Parser extends MathTransformParser {
         Unit<Length> linearUnit = parseUnit(element, SI.METRE);
         Unit<Angle> angularUnit =
                 geoCRS.getCoordinateSystem().getAxis(0).getUnit().asType(Angle.class);
-        ParameterValueGroup projection =
-                parseProjection(element, ellipsoid, linearUnit, angularUnit);
+        ParameterValueGroup projection = parseProjection(element, ellipsoid, linearUnit, angularUnit);
         CoordinateSystemAxis axis0 = parseAxis(element, linearUnit, false);
         CoordinateSystemAxis axis1;
         try {
@@ -993,15 +969,11 @@ public class Parser extends MathTransformParser {
                 axis0 = createAxis(null, "X", AxisDirection.EAST, linearUnit);
                 axis1 = createAxis(null, "Y", AxisDirection.NORTH, linearUnit);
             }
-            element.pullOptionalElement(
-                    "EXTENSION"); // application specific extensions can be ignored
+            element.pullOptionalElement("EXTENSION"); // application specific extensions can be ignored
             element.close();
             final Conversion conversion = new DefiningConversion(name, projection);
             return crsFactory.createProjectedCRS(
-                    properties,
-                    geoCRS,
-                    conversion,
-                    csFactory.createCartesianCS(properties, axis0, axis1));
+                    properties, geoCRS, conversion, csFactory.createCartesianCS(properties, axis0, axis1));
         } catch (FactoryException exception) {
             throw element.parseFailed(exception, null);
         }
@@ -1075,18 +1047,14 @@ public class Parser extends MathTransformParser {
                 final String number = String.valueOf(i);
                 buffer.setLength(start);
                 buffer.append(number);
-                axis[i] =
-                        csFactory.createCoordinateSystemAxis(
-                                singletonMap(IdentifiedObject.NAME_KEY, buffer.toString()),
-                                number,
-                                AxisDirection.OTHER,
-                                AbstractUnit.ONE);
+                axis[i] = csFactory.createCoordinateSystemAxis(
+                        singletonMap(IdentifiedObject.NAME_KEY, buffer.toString()),
+                        number,
+                        AxisDirection.OTHER,
+                        AbstractUnit.ONE);
             }
-            final Conversion conversion =
-                    new DefiningConversion(
-                            singletonMap(IdentifiedObject.NAME_KEY, method.getName().getCode()),
-                            method,
-                            toBase.inverse());
+            final Conversion conversion = new DefiningConversion(
+                    singletonMap(IdentifiedObject.NAME_KEY, method.getName().getCode()), method, toBase.inverse());
             final CoordinateSystem cs = new AbstractCS(properties, axis);
             return crsFactory.createDerivedCRS(properties, base, conversion, cs);
         } catch (FactoryException | NoninvertibleTransformException exception) {
@@ -1107,8 +1075,7 @@ public class Parser extends MathTransformParser {
         }
         element = element.trim().toUpperCase(Locale.US);
         final Class<?> type = getTypeMap().get(element);
-        assert type == null || type.equals(MathTransform.class) || element.equals(getNameOf(type))
-                : type;
+        assert type == null || type.equals(MathTransform.class) || element.equals(getNameOf(type)) : type;
         return type;
     }
 

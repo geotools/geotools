@@ -56,8 +56,7 @@ public class DefaultRenderingExecutorMultiTest extends RenderingExecutorTestBase
         createSubmitObjects();
         listener.setExpected(WaitingRenderingExecutorListener.Type.STARTED);
         executor.submit(mapContent, renderer, graphics, listener);
-        boolean gotEvent =
-                listener.await(WaitingRenderingExecutorListener.Type.STARTED, WAIT_TIMEOUT);
+        boolean gotEvent = listener.await(WaitingRenderingExecutorListener.Type.STARTED, WAIT_TIMEOUT);
         assertTrue(gotEvent);
     }
 
@@ -66,8 +65,7 @@ public class DefaultRenderingExecutorMultiTest extends RenderingExecutorTestBase
         createSubmitObjects();
         listener.setExpected(WaitingRenderingExecutorListener.Type.COMPLETED);
         executor.submit(mapContent, renderer, graphics, listener);
-        boolean gotEvent =
-                listener.await(WaitingRenderingExecutorListener.Type.COMPLETED, WAIT_TIMEOUT);
+        boolean gotEvent = listener.await(WaitingRenderingExecutorListener.Type.COMPLETED, WAIT_TIMEOUT);
         assertTrue(gotEvent);
     }
 
@@ -87,10 +85,7 @@ public class DefaultRenderingExecutorMultiTest extends RenderingExecutorTestBase
         assertTrue(listener.await(WaitingRenderingExecutorListener.Type.STARTED, WAIT_TIMEOUT));
 
         executor.cancel(id);
-        boolean gotFailed =
-                listener.await(WaitingRenderingExecutorListener.Type.FAILED, WAIT_TIMEOUT);
-        assertTrue(
-                gotFailed
-                        || listener.eventReceived(WaitingRenderingExecutorListener.Type.COMPLETED));
+        boolean gotFailed = listener.await(WaitingRenderingExecutorListener.Type.FAILED, WAIT_TIMEOUT);
+        assertTrue(gotFailed || listener.eventReceived(WaitingRenderingExecutorListener.Type.COMPLETED));
     }
 }

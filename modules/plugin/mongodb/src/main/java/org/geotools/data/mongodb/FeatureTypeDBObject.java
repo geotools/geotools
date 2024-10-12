@@ -102,8 +102,9 @@ public class FeatureTypeDBObject {
                 adDBO.put(KEY_minOccurs, ad.getMinOccurs());
                 adDBO.put(KEY_maxOccurs, ad.getMaxOccurs());
             }
-            Class<?> binding =
-                    ad instanceof GeometryDescriptor ? Geometry.class : ad.getType().getBinding();
+            Class<?> binding = ad instanceof GeometryDescriptor
+                    ? Geometry.class
+                    : ad.getType().getBinding();
             adDBO.put(KEY_type, new BasicDBObject(KEY_binding, binding.getName()));
             Map<String, String> adUserData = typeCheck(ad.getUserData());
             if (!adUserData.isEmpty()) {
@@ -148,8 +149,7 @@ public class FeatureTypeDBObject {
                 try {
                     atBuilder.binding(Class.forName(bindingName));
                 } catch (ClassNotFoundException ex) {
-                    throw new RuntimeException(
-                            "Unable to generate Class instance for binding " + bindingName);
+                    throw new RuntimeException("Unable to generate Class instance for binding " + bindingName);
                 }
                 BasicDBObject adUserDataDBO = extractDBObject(adDBO, KEY_userData, false);
                 if (adUserDataDBO != null) {
@@ -159,8 +159,7 @@ public class FeatureTypeDBObject {
                 }
                 if (gdLocalName.equals(adLocalName)) {
                     atBuilder.crs(crs);
-                    ftBuilder.add(
-                            atBuilder.buildDescriptor(adLocalName, atBuilder.buildGeometryType()));
+                    ftBuilder.add(atBuilder.buildDescriptor(adLocalName, atBuilder.buildGeometryType()));
                 } else {
                     Integer min = extractInteger(adDBO, KEY_minOccurs, false);
                     if (min != null) {
@@ -205,8 +204,7 @@ public class FeatureTypeDBObject {
         return typeChecked;
     }
 
-    private static <T> T extractAndVerifyType(
-            Class<T> type, DBObject dbo, String key, boolean required) {
+    private static <T> T extractAndVerifyType(Class<T> type, DBObject dbo, String key, boolean required) {
         Object o = dbo.get(key);
         if (type.isInstance(o)) {
             return type.cast(o);
@@ -296,8 +294,7 @@ public class FeatureTypeDBObject {
             return null;
         }
         DBObject crsDBO = new BasicDBObject(KEY_type, VALUE_name);
-        crsDBO.put(
-                KEY_properties, new BasicDBObject(KEY_name, PREFIX_URN_OGC + "EPSG:" + epsgCode));
+        crsDBO.put(KEY_properties, new BasicDBObject(KEY_name, PREFIX_URN_OGC + "EPSG:" + epsgCode));
         return crsDBO;
     }
 }

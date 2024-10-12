@@ -30,12 +30,8 @@ import org.geotools.filter.capability.FunctionNameImpl;
  */
 public class OrFunction extends FunctionExpressionImpl {
 
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "Or",
-                    Boolean.class,
-                    parameter("left", Boolean.class),
-                    parameter("right", Boolean.class));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "Or", Boolean.class, parameter("left", Boolean.class), parameter("right", Boolean.class));
 
     /** Creates a new instance of AndFunction */
     public OrFunction() {

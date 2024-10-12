@@ -26,12 +26,11 @@ import org.json.simple.JSONObject;
 
 /** Evaluate to TRUE if a JSONObject contains a given key value or FALSE if it does not. */
 public class HasFunction extends FunctionExpressionImpl {
-    public static final FunctionName NAME =
-            new FunctionNameImpl(
-                    "has",
-                    parameter("value", String.class),
-                    parameter("object", JSONObject.class),
-                    parameter("fallback", Object.class));
+    public static final FunctionName NAME = new FunctionNameImpl(
+            "has",
+            parameter("value", String.class),
+            parameter("object", JSONObject.class),
+            parameter("fallback", Object.class));
 
     public HasFunction() {
         super(NAME);

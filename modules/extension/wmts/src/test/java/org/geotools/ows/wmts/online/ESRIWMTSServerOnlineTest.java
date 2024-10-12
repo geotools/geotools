@@ -71,8 +71,7 @@ public class ESRIWMTSServerOnlineTest extends OnlineTestCase {
 
         TileMatrixSet matrixSet = capabilities.getMatrixSet("default028mm");
         WMTSTileService service =
-                new WMTSTileService(
-                        test.toExternalForm(), WMTSServiceType.KVP, wmtsLayer, null, matrixSet);
+                new WMTSTileService(test.toExternalForm(), WMTSServiceType.KVP, wmtsLayer, null, matrixSet);
 
         GetTileRequest request = wmts.createGetTileRequest();
         request.setLayer(wmtsLayer);

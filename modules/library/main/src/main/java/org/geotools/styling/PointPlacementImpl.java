@@ -36,47 +36,45 @@ import org.geotools.util.factory.GeoTools;
  * @version $Id$
  */
 public class PointPlacementImpl implements PointPlacement, Cloneable {
-    public static final AnchorPoint DEFAULT_ANCHOR_POINT =
-            new AnchorPoint() {
-                private void cannotModifyConstant() {
-                    throw new UnsupportedOperationException(
-                            "Constant AnchorPoint may not be modified");
-                }
+    public static final AnchorPoint DEFAULT_ANCHOR_POINT = new AnchorPoint() {
+        private void cannotModifyConstant() {
+            throw new UnsupportedOperationException("Constant AnchorPoint may not be modified");
+        }
 
-                @Override
-                public void setAnchorPointX(Expression x) {
-                    cannotModifyConstant();
-                }
+        @Override
+        public void setAnchorPointX(Expression x) {
+            cannotModifyConstant();
+        }
 
-                @Override
-                public void setAnchorPointY(Expression y) {
-                    cannotModifyConstant();
-                }
+        @Override
+        public void setAnchorPointY(Expression y) {
+            cannotModifyConstant();
+        }
 
-                /**
-                 * calls the visit method of a StyleVisitor
-                 *
-                 * @param visitor the style visitor
-                 */
-                @Override
-                public void accept(StyleVisitor visitor) {}
+        /**
+         * calls the visit method of a StyleVisitor
+         *
+         * @param visitor the style visitor
+         */
+        @Override
+        public void accept(StyleVisitor visitor) {}
 
-                @Override
-                public Object accept(TraversingStyleVisitor visitor, Object data) {
-                    cannotModifyConstant();
-                    return null;
-                }
+        @Override
+        public Object accept(TraversingStyleVisitor visitor, Object data) {
+            cannotModifyConstant();
+            return null;
+        }
 
-                @Override
-                public Expression getAnchorPointX() {
-                    return ConstantExpression.constant(0.0);
-                }
+        @Override
+        public Expression getAnchorPointX() {
+            return ConstantExpression.constant(0.0);
+        }
 
-                @Override
-                public Expression getAnchorPointY() {
-                    return ConstantExpression.constant(0.5);
-                }
-            };
+        @Override
+        public Expression getAnchorPointY() {
+            return ConstantExpression.constant(0.5);
+        }
+    };
     /** The logger for the default core module. */
     private static final java.util.logging.Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(PointPlacementImpl.class);
@@ -243,8 +241,7 @@ public class PointPlacementImpl implements PointPlacement, Cloneable {
         } else if (placement instanceof PointPlacementImpl) {
             return (PointPlacementImpl) placement;
         } else if (placement instanceof org.geotools.api.style.PointPlacement) {
-            org.geotools.api.style.PointPlacement pointPlacement =
-                    (org.geotools.api.style.PointPlacement) placement;
+            org.geotools.api.style.PointPlacement pointPlacement = (org.geotools.api.style.PointPlacement) placement;
             PointPlacementImpl copy = new PointPlacementImpl();
             copy.setAnchorPoint(AnchorPointImpl.cast(pointPlacement.getAnchorPoint()));
             copy.setDisplacement(DisplacementImpl.cast(pointPlacement.getDisplacement()));

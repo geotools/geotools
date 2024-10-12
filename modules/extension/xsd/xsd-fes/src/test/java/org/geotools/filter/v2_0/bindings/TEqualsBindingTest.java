@@ -27,38 +27,35 @@ public class TEqualsBindingTest extends FESTestSupport {
 
     @Test
     public void testParse() throws Exception {
-        String xml =
-                "<fes:Filter "
-                        + "   xmlns:fes='http://www.opengis.net/fes/2.0' "
-                        + "   xmlns:gml='http://www.opengis.net/gml/3.2' "
-                        + "   xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' "
-                        + "   xsi:schemaLocation='http://www.opengis.net/fes/2.0 http://schemas.opengis.net/filter/2.0/filterAll.xsd"
-                        + " http://www.opengis.net/gml/3.2 http://schemas.opengis.net/gml/3.2.1/gml.xsd'>"
-                        + "   <fes:TEquals> "
-                        + "      <fes:ValueReference>timeInstanceAttribute</fes:ValueReference> "
-                        + "   <gml:TimePeriod gml:id='TP1'> "
-                        + "      <gml:begin> "
-                        + "        <gml:TimeInstant gml:id='TI1'> "
-                        + "          <gml:timePosition>2005-05-17T08:00:00Z</gml:timePosition> "
-                        + "        </gml:TimeInstant> "
-                        + "      </gml:begin> "
-                        + "      <gml:end> "
-                        + "        <gml:TimeInstant gml:id='TI2'> "
-                        + "          <gml:timePosition>2005-05-23T11:00:00Z</gml:timePosition> "
-                        + "        </gml:TimeInstant> "
-                        + "      </gml:end> "
-                        + "    </gml:TimePeriod> "
-                        + "   </fes:TEquals> "
-                        + "</fes:Filter>";
+        String xml = "<fes:Filter "
+                + "   xmlns:fes='http://www.opengis.net/fes/2.0' "
+                + "   xmlns:gml='http://www.opengis.net/gml/3.2' "
+                + "   xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' "
+                + "   xsi:schemaLocation='http://www.opengis.net/fes/2.0 http://schemas.opengis.net/filter/2.0/filterAll.xsd"
+                + " http://www.opengis.net/gml/3.2 http://schemas.opengis.net/gml/3.2.1/gml.xsd'>"
+                + "   <fes:TEquals> "
+                + "      <fes:ValueReference>timeInstanceAttribute</fes:ValueReference> "
+                + "   <gml:TimePeriod gml:id='TP1'> "
+                + "      <gml:begin> "
+                + "        <gml:TimeInstant gml:id='TI1'> "
+                + "          <gml:timePosition>2005-05-17T08:00:00Z</gml:timePosition> "
+                + "        </gml:TimeInstant> "
+                + "      </gml:begin> "
+                + "      <gml:end> "
+                + "        <gml:TimeInstant gml:id='TI2'> "
+                + "          <gml:timePosition>2005-05-23T11:00:00Z</gml:timePosition> "
+                + "        </gml:TimeInstant> "
+                + "      </gml:end> "
+                + "    </gml:TimePeriod> "
+                + "   </fes:TEquals> "
+                + "</fes:Filter>";
         buildDocument(xml);
 
         TEquals equals = (TEquals) parse();
         assertNotNull(equals);
 
         assertTrue(equals.getExpression1() instanceof PropertyName);
-        assertEquals(
-                "timeInstanceAttribute",
-                ((PropertyName) equals.getExpression1()).getPropertyName());
+        assertEquals("timeInstanceAttribute", ((PropertyName) equals.getExpression1()).getPropertyName());
 
         assertTrue(equals.getExpression2() instanceof Literal);
         assertTrue(equals.getExpression2().evaluate(null) instanceof Period);
@@ -78,30 +75,28 @@ public class TEqualsBindingTest extends FESTestSupport {
         Document encodedDoc = encoder.encodeAsDOM(filter, FES.Filter);
         XPath xpath = XPathFactory.newInstance().newXPath();
         defaultNamespaceContext(xpath);
-        String matchAction =
-                xpath.evaluate("/fes:Filter/fes:PropertyIsEqualTo/@matchAction", encodedDoc);
+        String matchAction = xpath.evaluate("/fes:Filter/fes:PropertyIsEqualTo/@matchAction", encodedDoc);
         assertEquals("Any", matchAction);
     }
 
     @SuppressWarnings("unchecked") // Java 8 vs Java 11 differences
     private void defaultNamespaceContext(XPath xpath) {
-        xpath.setNamespaceContext(
-                new NamespaceContext() {
-                    @Override
-                    public Iterator getPrefixes(String namespaceURI) {
-                        return null;
-                    }
+        xpath.setNamespaceContext(new NamespaceContext() {
+            @Override
+            public Iterator getPrefixes(String namespaceURI) {
+                return null;
+            }
 
-                    @Override
-                    public String getPrefix(String namespaceURI) {
-                        return null;
-                    }
+            @Override
+            public String getPrefix(String namespaceURI) {
+                return null;
+            }
 
-                    @Override
-                    public String getNamespaceURI(String prefix) {
-                        if ("fes".equals(prefix)) return "http://www.opengis.net/fes/2.0";
-                        return null;
-                    }
-                });
+            @Override
+            public String getNamespaceURI(String prefix) {
+                if ("fes".equals(prefix)) return "http://www.opengis.net/fes/2.0";
+                return null;
+            }
+        });
     }
 }

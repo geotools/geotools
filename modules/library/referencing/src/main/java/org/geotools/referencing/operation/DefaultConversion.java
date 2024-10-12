@@ -128,8 +128,7 @@ public class DefaultConversion extends DefaultOperation implements Conversion {
         Class<? extends CoordinateOperation> type = getType(definition);
         final OperationMethod method = definition.getMethod();
         if (method instanceof MathTransformProvider) {
-            final Class<? extends Operation> candidate =
-                    ((MathTransformProvider) method).getOperationType();
+            final Class<? extends Operation> candidate = ((MathTransformProvider) method).getOperationType();
             if (candidate != null) {
                 if (type.isAssignableFrom(candidate)) {
                     type = candidate;

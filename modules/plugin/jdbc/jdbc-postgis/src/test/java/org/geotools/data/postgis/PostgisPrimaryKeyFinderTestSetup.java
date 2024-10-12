@@ -26,16 +26,15 @@ public class PostgisPrimaryKeyFinderTestSetup extends JDBCPrimaryKeyFinderTestSe
 
     @Override
     protected void createMetadataTable() throws Exception {
-        run(
-                "CREATE TABLE gt_pk_metadata ( "
-                        + "table_schema VARCHAR(32), "
-                        + "table_name VARCHAR(32) NOT NULL, "
-                        + "pk_column VARCHAR(32) NOT NULL, "
-                        + "pk_column_idx INTEGER, "
-                        + "pk_policy VARCHAR(32), "
-                        + "pk_sequence VARCHAR(64),"
-                        + "unique (table_schema, table_name, pk_column),"
-                        + "check (pk_policy in ('sequence', 'assigned', 'autoincrement')))");
+        run("CREATE TABLE gt_pk_metadata ( "
+                + "table_schema VARCHAR(32), "
+                + "table_name VARCHAR(32) NOT NULL, "
+                + "pk_column VARCHAR(32) NOT NULL, "
+                + "pk_column_idx INTEGER, "
+                + "pk_policy VARCHAR(32), "
+                + "pk_sequence VARCHAR(64),"
+                + "unique (table_schema, table_name, pk_column),"
+                + "check (pk_policy in ('sequence', 'assigned', 'autoincrement')))");
     }
 
     @Override
@@ -51,19 +50,14 @@ public class PostgisPrimaryKeyFinderTestSetup extends JDBCPrimaryKeyFinderTestSe
         run("SELECT AddGeometryColumn('seqtable', 'geom', -1, 'GEOMETRY', 2)");
         run("CREATE SEQUENCE pksequence START WITH 1");
 
-        run(
-                "INSERT INTO \"seqtable\" (\"key\", \"name\",\"geom\" ) VALUES ("
-                        + "(SELECT NEXTVAL('PKSEQUENCE')),'one',NULL)");
-        run(
-                "INSERT INTO \"seqtable\" (\"key\", \"name\",\"geom\" ) VALUES ("
-                        + "(SELECT NEXTVAL('PKSEQUENCE')),'two',NULL)");
-        run(
-                "INSERT INTO \"seqtable\" (\"key\", \"name\",\"geom\" ) VALUES ("
-                        + "(SELECT NEXTVAL('PKSEQUENCE')),'three',NULL)");
+        run("INSERT INTO \"seqtable\" (\"key\", \"name\",\"geom\" ) VALUES ("
+                + "(SELECT NEXTVAL('PKSEQUENCE')),'one',NULL)");
+        run("INSERT INTO \"seqtable\" (\"key\", \"name\",\"geom\" ) VALUES ("
+                + "(SELECT NEXTVAL('PKSEQUENCE')),'two',NULL)");
+        run("INSERT INTO \"seqtable\" (\"key\", \"name\",\"geom\" ) VALUES ("
+                + "(SELECT NEXTVAL('PKSEQUENCE')),'three',NULL)");
 
-        run(
-                "INSERT INTO gt_pk_metadata VALUES"
-                        + "(NULL, 'seqtable', 'key', 0, 'sequence', 'PKSEQUENCE')");
+        run("INSERT INTO gt_pk_metadata VALUES" + "(NULL, 'seqtable', 'key', 0, 'sequence', 'PKSEQUENCE')");
     }
 
     @Override
@@ -74,9 +68,7 @@ public class PostgisPrimaryKeyFinderTestSetup extends JDBCPrimaryKeyFinderTestSe
 
     @Override
     protected void createPlainTable() throws Exception {
-        run(
-                "CREATE TABLE \"plaintable\" ( \"key1\" int, \"key2\" int, "
-                        + "\"name\" VARCHAR(256))");
+        run("CREATE TABLE \"plaintable\" ( \"key1\" int, \"key2\" int, " + "\"name\" VARCHAR(256))");
         run("SELECT AddGeometryColumn('plaintable', 'geom', -1, 'GEOMETRY', 2)");
 
         run("INSERT INTO \"plaintable\" VALUES (1, 2, 'one', NULL)");
@@ -92,9 +84,7 @@ public class PostgisPrimaryKeyFinderTestSetup extends JDBCPrimaryKeyFinderTestSe
     @Override
     protected void createAssignedSinglePkView() throws Exception {
         run("CREATE VIEW \"assignedsinglepk\" AS SELECT * FROM \"plaintable\"");
-        run(
-                "INSERT INTO gt_pk_metadata VALUES"
-                        + "(NULL, 'assignedsinglepk', 'key1', 0, 'assigned', NULL)");
+        run("INSERT INTO gt_pk_metadata VALUES" + "(NULL, 'assignedsinglepk', 'key1', 0, 'assigned', NULL)");
     }
 
     @Override
@@ -105,12 +95,8 @@ public class PostgisPrimaryKeyFinderTestSetup extends JDBCPrimaryKeyFinderTestSe
     @Override
     protected void createAssignedMultiPkView() throws Exception {
         run("CREATE VIEW \"assignedmultipk\" AS SELECT * FROM \"plaintable\"");
-        run(
-                "INSERT INTO gt_pk_metadata VALUES"
-                        + "(NULL, 'assignedmultipk', 'key1', 0, 'assigned', NULL)");
-        run(
-                "INSERT INTO gt_pk_metadata VALUES"
-                        + "(NULL, 'assignedmultipk', 'key2', 1, 'assigned', NULL)");
+        run("INSERT INTO gt_pk_metadata VALUES" + "(NULL, 'assignedmultipk', 'key1', 0, 'assigned', NULL)");
+        run("INSERT INTO gt_pk_metadata VALUES" + "(NULL, 'assignedmultipk', 'key2', 1, 'assigned', NULL)");
     }
 
     @Override

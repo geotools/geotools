@@ -70,20 +70,15 @@ public class MapLayerTable extends JPanel {
     private static final String HIDE_ALL_LAYERS = LocaleUtils.getValue(CLASS_NAME, "HideAllLayers");
 
     private static final String SELECT_LAYER = LocaleUtils.getValue(CLASS_NAME, "SelectLayer");
-    private static final String SELECT_ALL_LAYERS =
-            LocaleUtils.getValue(CLASS_NAME, "SelectAllLayers");
-    private static final String DESELECT_ALL_LAYERS =
-            LocaleUtils.getValue(CLASS_NAME, "DeselectAllLayers");
+    private static final String SELECT_ALL_LAYERS = LocaleUtils.getValue(CLASS_NAME, "SelectAllLayers");
+    private static final String DESELECT_ALL_LAYERS = LocaleUtils.getValue(CLASS_NAME, "DeselectAllLayers");
 
     private static final String RENAME_LAYER = LocaleUtils.getValue(CLASS_NAME, "RenameLayer");
-    private static final String RENAME_LAYER_MESSAGE =
-            LocaleUtils.getValue(CLASS_NAME, "RenameLayer_Message");
+    private static final String RENAME_LAYER_MESSAGE = LocaleUtils.getValue(CLASS_NAME, "RenameLayer_Message");
 
     private static final String REMOVE_LAYER = LocaleUtils.getValue(CLASS_NAME, "RemoveLayer");
-    private static final String REMOVE_LAYER_MESSAGE =
-            LocaleUtils.getValue(CLASS_NAME, "RemoveLayer_ConfirmMessage");
-    private static final String REMOVE_LAYER_TITLE =
-            LocaleUtils.getValue(CLASS_NAME, "RemoveLayer_ConfirmTitle");
+    private static final String REMOVE_LAYER_MESSAGE = LocaleUtils.getValue(CLASS_NAME, "RemoveLayer_ConfirmMessage");
+    private static final String REMOVE_LAYER_TITLE = LocaleUtils.getValue(CLASS_NAME, "RemoveLayer_ConfirmTitle");
 
     private static final String STYLE_LAYER = LocaleUtils.getValue(CLASS_NAME, "StyleLayer");
 
@@ -202,80 +197,74 @@ public class MapLayerTable extends JPanel {
      */
     private void initComponents() {
         listModel = new DnDListModel<>();
-        list =
-                new DnDList<Layer>(listModel) {
-                    private static final long serialVersionUID = 1289744440656016412L;
-                    /*
-                     * We override setToolTipText to provide tool tips
-                     * for the control labels displayed for each list item
-                     */
-                    @Override
-                    public String getToolTipText(MouseEvent e) {
-                        int item = list.locationToIndex(e.getPoint());
+        list = new DnDList<Layer>(listModel) {
+            private static final long serialVersionUID = 1289744440656016412L;
+            /*
+             * We override setToolTipText to provide tool tips
+             * for the control labels displayed for each list item
+             */
+            @Override
+            public String getToolTipText(MouseEvent e) {
+                int item = list.locationToIndex(e.getPoint());
 
-                        if (item >= 0) {
-                            Rectangle r = list.getCellBounds(item, item);
-                            if (r.contains(e.getPoint())) {
-                                Point p = new Point(e.getPoint().x, e.getPoint().y - r.y);
+                if (item >= 0) {
+                    Rectangle r = list.getCellBounds(item, item);
+                    if (r.contains(e.getPoint())) {
+                        Point p = new Point(e.getPoint().x, e.getPoint().y - r.y);
 
-                                if (MapLayerTableCellRenderer.hitSelectionLabel(p)) {
-                                    return SELECT_LAYER;
+                        if (MapLayerTableCellRenderer.hitSelectionLabel(p)) {
+                            return SELECT_LAYER;
 
-                                } else if (MapLayerTableCellRenderer.hitVisibilityLabel(p)) {
-                                    return SHOW_HIDE_LAYER;
+                        } else if (MapLayerTableCellRenderer.hitVisibilityLabel(p)) {
+                            return SHOW_HIDE_LAYER;
 
-                                } else if (MapLayerTableCellRenderer.hitStyleLabel(p)) {
-                                    return STYLE_LAYER;
+                        } else if (MapLayerTableCellRenderer.hitStyleLabel(p)) {
+                            return STYLE_LAYER;
 
-                                } else if (MapLayerTableCellRenderer.hitRemoveLabel(p)) {
-                                    return REMOVE_LAYER;
+                        } else if (MapLayerTableCellRenderer.hitRemoveLabel(p)) {
+                            return REMOVE_LAYER;
 
-                                } else if (MapLayerTableCellRenderer.hitNameLabel(p)) {
-                                    return RENAME_LAYER;
-                                }
-                            }
+                        } else if (MapLayerTableCellRenderer.hitNameLabel(p)) {
+                            return RENAME_LAYER;
                         }
-
-                        return null;
                     }
-                };
+                }
+
+                return null;
+            }
+        };
 
         // Listen for drag-reordering of the list contents which
         // will be received via the contentsChanged method
-        listModel.addListDataListener(
-                new ListDataListener() {
+        listModel.addListDataListener(new ListDataListener() {
 
-                    @Override
-                    public void intervalAdded(ListDataEvent e) {}
+            @Override
+            public void intervalAdded(ListDataEvent e) {}
 
-                    @Override
-                    public void intervalRemoved(ListDataEvent e) {}
+            @Override
+            public void intervalRemoved(ListDataEvent e) {}
 
-                    @Override
-                    public void contentsChanged(ListDataEvent e) {
-                        onReorderLayers(e);
-                    }
-                });
+            @Override
+            public void contentsChanged(ListDataEvent e) {
+                onReorderLayers(e);
+            }
+        });
 
         list.setCellRenderer(new MapLayerTableCellRenderer());
         list.setFixedCellHeight(MapLayerTableCellRenderer.getCellHeight());
 
-        list.addMouseListener(
-                new MouseAdapter() {
-                    @Override
-                    public void mouseClicked(MouseEvent e) {
-                        long clickTime = System.currentTimeMillis();
-                        boolean doubleClick = clickTime - lastClickTime < DOUBLE_CLICK_TIME;
-                        lastClickTime = clickTime;
-                        onLayerItemClicked(e, doubleClick);
-                    }
-                });
+        list.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                long clickTime = System.currentTimeMillis();
+                boolean doubleClick = clickTime - lastClickTime < DOUBLE_CLICK_TIME;
+                lastClickTime = clickTime;
+                onLayerItemClicked(e, doubleClick);
+            }
+        });
 
-        scrollPane =
-                new JScrollPane(
-                        list,
-                        JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-                        JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+        scrollPane = new JScrollPane(
+                list, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 
         scrollPane.setBorder(BorderFactory.createTitledBorder(LIST_TITLE));
 
@@ -380,12 +369,8 @@ public class MapLayerTable extends JPanel {
      */
     private void doRemoveLayer(Layer layer) {
         if (confirmRemove) {
-            int confirm =
-                    JOptionPane.showConfirmDialog(
-                            null,
-                            REMOVE_LAYER_MESSAGE,
-                            REMOVE_LAYER_TITLE,
-                            JOptionPane.YES_NO_OPTION);
+            int confirm = JOptionPane.showConfirmDialog(
+                    null, REMOVE_LAYER_MESSAGE, REMOVE_LAYER_TITLE, JOptionPane.YES_NO_OPTION);
 
             if (confirm != JOptionPane.YES_OPTION) {
                 return;

@@ -48,17 +48,13 @@ public class Strategy2_0Test {
         WFSRequest wfsReq = wfsClient.createDescribeFeatureTypeRequest();
         wfsReq.setTypeName(new QName("http://www.openplans.org/topp", "states", "prefix"));
         String url = wfsReq.getStrategy().buildUrlGET(wfsReq).toString();
-        assertTrue(
-                URLDecoder.decode(url, StandardCharsets.UTF_8.toString())
-                        .contains("NAMESPACE=xmlns(prefix="));
+        assertTrue(URLDecoder.decode(url, StandardCharsets.UTF_8.toString()).contains("NAMESPACE=xmlns(prefix="));
         assertTrue(url.contains("TYPENAME"));
         WFSClient clientV2 = newClient("GeoServer_2.2.x/2.0.0/GetCapabilities.xml");
         WFSRequest wfsReqV2 = clientV2.createDescribeFeatureTypeRequest();
         wfsReqV2.setTypeName(new QName("http://www.openplans.org/topp", "states", "prefix"));
         String urlV2 = wfsReqV2.getStrategy().buildUrlGET(wfsReqV2).toString();
-        assertTrue(
-                URLDecoder.decode(urlV2, StandardCharsets.UTF_8.toString())
-                        .contains("NAMESPACES=xmlns(prefix,"));
+        assertTrue(URLDecoder.decode(urlV2, StandardCharsets.UTF_8.toString()).contains("NAMESPACES=xmlns(prefix,"));
         assertTrue(urlV2.contains("TYPENAMES"));
     }
 }

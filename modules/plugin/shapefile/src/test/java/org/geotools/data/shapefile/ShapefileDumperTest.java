@@ -126,8 +126,7 @@ public class ShapefileDumperTest {
         SimpleFeatureCollection actual = getFeaturesFromShapefile(LONGNAMES);
         assertEquals(2, actual.size());
         assertFieldsNotEmpty(actual);
-        checkTypeStructure(
-                actual.getSchema(), MultiPolygon.class, "FID", "VERYLONGNA", "VERYLONGN0");
+        checkTypeStructure(actual.getSchema(), MultiPolygon.class, "FID", "VERYLONGNA", "VERYLONGN0");
         assertCst(LONGNAMES, "ISO-8859-1");
     }
 
@@ -170,8 +169,7 @@ public class ShapefileDumperTest {
         assertCst(BASIC_POLYGONS, "ISO-8859-15");
     }
 
-    private SimpleFeatureCollection testBasicPolygonCollection(int expectedSize, String typeName)
-            throws IOException {
+    private SimpleFeatureCollection testBasicPolygonCollection(int expectedSize, String typeName) throws IOException {
         SimpleFeatureCollection fc = getFeaturesFromShapefile(typeName);
         assertEquals(expectedSize, fc.size());
         assertFieldsNotEmpty(fc);
@@ -229,27 +227,21 @@ public class ShapefileDumperTest {
         // features with null geometries  will be wrote to AllTypesWithNull_NULL file
         testMultipleTypes(ALL_TYPES_WITH_NULL, ALL_TYPES_WITH_NULL);
         // check that NULL geometries where wrote to the correct file
-        SimpleFeatureCollection nullGeometries =
-                getFeaturesFromShapefile(ALL_TYPES_WITH_NULL + "_NULL");
+        SimpleFeatureCollection nullGeometries = getFeaturesFromShapefile(ALL_TYPES_WITH_NULL + "_NULL");
         assertEquals(2, nullGeometries.size());
         checkTypeStructure(nullGeometries.getSchema(), Point.class, "name");
         assertCst(ALL_TYPES_WITH_NULL + "_NULL", "ISO-8859-1");
         // check that name attribute was correctly handled
-        getFeaturesSortedById(nullGeometries)
-                .forEach(
-                        feature -> {
-                            assertThat(feature.getAttribute("name"), notNullValue());
-                            assertThat(
-                                    feature.getAttribute("name"),
-                                    CoreMatchers.anyOf(is("f007"), is("f008")));
-                            assertThat(feature.getAttribute("geom"), nullValue());
-                        });
+        getFeaturesSortedById(nullGeometries).forEach(feature -> {
+            assertThat(feature.getAttribute("name"), notNullValue());
+            assertThat(feature.getAttribute("name"), CoreMatchers.anyOf(is("f007"), is("f008")));
+            assertThat(feature.getAttribute("geom"), nullValue());
+        });
     }
 
     @Test
     public void testEmptyCollectionAllowNoDump() throws Exception {
-        SimpleFeatureCollection fc =
-                getFeaturesFromProperties(BASIC_POLYGONS).subCollection(Filter.EXCLUDE);
+        SimpleFeatureCollection fc = getFeaturesFromProperties(BASIC_POLYGONS).subCollection(Filter.EXCLUDE);
         ShapefileDumper dumper = new ShapefileDumper(dumperFolder);
         dumper.setEmptyShapefileAllowed(false);
         assertFalse(dumper.dump(fc));
@@ -258,8 +250,7 @@ public class ShapefileDumperTest {
 
     @Test
     public void testEmptyCollection() throws Exception {
-        SimpleFeatureCollection fc =
-                getFeaturesFromProperties(BASIC_POLYGONS).subCollection(Filter.EXCLUDE);
+        SimpleFeatureCollection fc = getFeaturesFromProperties(BASIC_POLYGONS).subCollection(Filter.EXCLUDE);
         ShapefileDumper dumper = new ShapefileDumper(dumperFolder);
         assertFalse(dumper.dump(fc));
 
@@ -271,8 +262,7 @@ public class ShapefileDumperTest {
 
     @Test
     public void testEmptyMultipleTypes() throws Exception {
-        SimpleFeatureCollection fc =
-                getFeaturesFromProperties(ALL_TYPES).subCollection(Filter.EXCLUDE);
+        SimpleFeatureCollection fc = getFeaturesFromProperties(ALL_TYPES).subCollection(Filter.EXCLUDE);
         ShapefileDumper dumper = new ShapefileDumper(dumperFolder);
         assertFalse(dumper.dump(fc));
 
@@ -283,8 +273,7 @@ public class ShapefileDumperTest {
 
     @Test
     public void testEmptyMultipleTypesAllowNoDump() throws Exception {
-        SimpleFeatureCollection fc =
-                getFeaturesFromProperties(ALL_TYPES).subCollection(Filter.EXCLUDE);
+        SimpleFeatureCollection fc = getFeaturesFromProperties(ALL_TYPES).subCollection(Filter.EXCLUDE);
         ShapefileDumper dumper = new ShapefileDumper(dumperFolder);
         dumper.setEmptyShapefileAllowed(false);
         assertFalse(dumper.dump(fc));
@@ -344,22 +333,20 @@ public class ShapefileDumperTest {
     private SimpleFeatureCollection getFeaturesFromShapefile(String typeName) throws IOException {
         File shp = new File(dumperFolder, typeName + ".shp");
         if (!shp.exists()) {
-            fail(
-                    "Could not find expected shapefile "
-                            + shp.getPath()
-                            + ", available files are: "
-                            + Arrays.asList(dumperFolder.listFiles()));
+            fail("Could not find expected shapefile "
+                    + shp.getPath()
+                    + ", available files are: "
+                    + Arrays.asList(dumperFolder.listFiles()));
         }
         // check all the sidecar files are there
         final String[] extensions = {".shx", ".dbf", ".prj", ".cst"};
         for (String extension : extensions) {
             File f = new File(dumperFolder, typeName + extension);
             if (!f.exists()) {
-                fail(
-                        "Could not find expected shapefile sidecar "
-                                + f.getPath()
-                                + ", available files are: "
-                                + Arrays.asList(dumperFolder.listFiles()));
+                fail("Could not find expected shapefile sidecar "
+                        + f.getPath()
+                        + ", available files are: "
+                        + Arrays.asList(dumperFolder.listFiles()));
             }
         }
 
@@ -403,13 +390,11 @@ public class ShapefileDumperTest {
             }
         }
         // sort the features by their ID
-        Collections.sort(
-                features,
-                (feature1, feature2) -> {
-                    assertThat(feature1.getID(), notNullValue());
-                    assertThat(feature2.getID(), notNullValue());
-                    return feature1.getID().compareTo(feature2.getID());
-                });
+        Collections.sort(features, (feature1, feature2) -> {
+            assertThat(feature1.getID(), notNullValue());
+            assertThat(feature2.getID(), notNullValue());
+            return feature1.getID().compareTo(feature2.getID());
+        });
         return features;
     }
 
@@ -423,7 +408,9 @@ public class ShapefileDumperTest {
                         assertFalse("Empty geometry", ((Geometry) attrValue).isEmpty());
                     else
                         assertNotEquals(
-                                "Empty value for attribute", "", attrValue.toString().trim());
+                                "Empty value for attribute",
+                                "",
+                                attrValue.toString().trim());
                 }
             }
         }
@@ -491,8 +478,7 @@ public class ShapefileDumperTest {
         assertEquals(3, dumperFolder.listFiles(f -> f.getName().endsWith("shp")).length);
 
         // curveProperty
-        SimpleFeatureCollection curves =
-                getFeaturesFromShapefile(PRIMITIVE_GEO_FEATURE + "curveProperty");
+        SimpleFeatureCollection curves = getFeaturesFromShapefile(PRIMITIVE_GEO_FEATURE + "curveProperty");
         assertEquals(1, curves.size());
         checkTypeStructure(curves.getSchema(), MultiLineString.class, alphanumericAttributes);
         SimpleFeature firstCurve = DataUtilities.first(curves);
@@ -504,8 +490,7 @@ public class ShapefileDumperTest {
                 firstCurve.getDefaultGeometry());
 
         // surfaceProperty
-        SimpleFeatureCollection surfaces =
-                getFeaturesFromShapefile(PRIMITIVE_GEO_FEATURE + "surfaceProperty");
+        SimpleFeatureCollection surfaces = getFeaturesFromShapefile(PRIMITIVE_GEO_FEATURE + "surfaceProperty");
         assertEquals(1, surfaces.size());
         checkTypeStructure(surfaces.getSchema(), MultiPolygon.class, alphanumericAttributes);
         SimpleFeature firstSurface = DataUtilities.first(surfaces);
@@ -513,22 +498,18 @@ public class ShapefileDumperTest {
         assertEquals(18.92, (Double) firstSurface.getAttribute("decimalPro"), 0.01);
         assertEquals(Boolean.TRUE, firstSurface.getAttribute("booleanPro"));
         assertEquals(
-                new WKTReader()
-                        .read(
-                                "MULTIPOLYGON(((45.174 30.899,45.891 30.466,45.652 30.466,45.174 30.899)))"),
+                new WKTReader().read("MULTIPOLYGON(((45.174 30.899,45.891 30.466,45.652 30.466,45.174 30.899)))"),
                 firstSurface.getDefaultGeometry());
 
         // pointProperty
-        SimpleFeatureCollection points =
-                getFeaturesFromShapefile(PRIMITIVE_GEO_FEATURE + "pointProperty");
+        SimpleFeatureCollection points = getFeaturesFromShapefile(PRIMITIVE_GEO_FEATURE + "pointProperty");
         assertEquals(3, points.size());
         checkTypeStructure(points.getSchema(), Point.class, alphanumericAttributes);
         SimpleFeature firstPoint = DataUtilities.first(points);
         assertEquals("name-f001", firstPoint.getAttribute("name"));
         assertEquals(5.03, (Double) firstPoint.getAttribute("decimalPro"), 0.01);
         assertEquals(Boolean.TRUE, firstPoint.getAttribute("booleanPro"));
-        assertEquals(
-                new WKTReader().read("POINT(39.73245 2.00342)"), firstPoint.getDefaultGeometry());
+        assertEquals(new WKTReader().read("POINT(39.73245 2.00342)"), firstPoint.getDefaultGeometry());
     }
 
     @Test
@@ -539,8 +520,7 @@ public class ShapefileDumperTest {
         dumper.dump(fc);
 
         // centroid (almost all features, f004 and f005 are missing)
-        SimpleFeatureCollection centroids =
-                getFeaturesFromShapefile(ALL_TYPES_MULTI_COLUMN + "centroid");
+        SimpleFeatureCollection centroids = getFeaturesFromShapefile(ALL_TYPES_MULTI_COLUMN + "centroid");
         assertEquals(4, centroids.size());
         assertEquals(Set.of("f001", "f002", "f003", "f006"), getNames(centroids));
         checkTypeStructure(centroids.getSchema(), Point.class, "name");
@@ -549,8 +529,7 @@ public class ShapefileDumperTest {
         assertEquals(new WKTReader().read("POINT(3 62)"), firstCentroid.getDefaultGeometry());
 
         // geomPolygon
-        SimpleFeatureCollection geomPolygons =
-                getFeaturesFromShapefile(ALL_TYPES_MULTI_COLUMN + "geomPolygon");
+        SimpleFeatureCollection geomPolygons = getFeaturesFromShapefile(ALL_TYPES_MULTI_COLUMN + "geomPolygon");
         assertEquals(2, geomPolygons.size());
         assertEquals(Set.of("f001", "f002"), getNames(geomPolygons));
         checkTypeStructure(geomPolygons.getSchema(), MultiPolygon.class, "name");
@@ -561,30 +540,24 @@ public class ShapefileDumperTest {
                 firstPolygon.getDefaultGeometry());
 
         // geomLine
-        SimpleFeatureCollection geomLines =
-                getFeaturesFromShapefile(ALL_TYPES_MULTI_COLUMN + "geomLine");
+        SimpleFeatureCollection geomLines = getFeaturesFromShapefile(ALL_TYPES_MULTI_COLUMN + "geomLine");
         assertEquals(2, geomLines.size());
         assertEquals(Set.of("f003", "f004"), getNames(geomLines));
         checkTypeStructure(geomLines.getSchema(), MultiLineString.class, "name");
         SimpleFeature firstLine = DataUtilities.first(geomLines);
         assertEquals("f003", firstLine.getAttribute("name"));
-        assertEquals(
-                new WKTReader().read("MULTILINESTRING((0 0,1 2,3 4))"),
-                firstLine.getDefaultGeometry());
+        assertEquals(new WKTReader().read("MULTILINESTRING((0 0,1 2,3 4))"), firstLine.getDefaultGeometry());
 
         // geomMPoint
-        SimpleFeatureCollection geomMPoints =
-                getFeaturesFromShapefile(ALL_TYPES_MULTI_COLUMN + "geomMPoint");
+        SimpleFeatureCollection geomMPoints = getFeaturesFromShapefile(ALL_TYPES_MULTI_COLUMN + "geomMPoint");
         assertEquals(1, geomMPoints.size());
         checkTypeStructure(geomMPoints.getSchema(), MultiPoint.class, "name");
         SimpleFeature firstMPoint = DataUtilities.first(geomMPoints);
         assertEquals("f006", firstMPoint.getAttribute("name"));
-        assertEquals(
-                new WKTReader().read("MULTIPOINT(0 0, 1 1)"), firstMPoint.getDefaultGeometry());
+        assertEquals(new WKTReader().read("MULTIPOINT(0 0, 1 1)"), firstMPoint.getDefaultGeometry());
 
         // the feature with two null geometries
-        SimpleFeatureCollection geomNull =
-                getFeaturesFromShapefile(ALL_TYPES_MULTI_COLUMN + "geom_NULL");
+        SimpleFeatureCollection geomNull = getFeaturesFromShapefile(ALL_TYPES_MULTI_COLUMN + "geom_NULL");
         assertEquals(1, geomNull.size());
         checkTypeStructure(geomNull.getSchema(), Point.class, "name");
         SimpleFeature firstNull = DataUtilities.first(geomNull);

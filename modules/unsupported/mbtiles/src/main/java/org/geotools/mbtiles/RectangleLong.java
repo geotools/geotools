@@ -83,16 +83,7 @@ class RectangleLong {
 
     @Override
     public String toString() {
-        return "RectangleLong{"
-                + "minX="
-                + minX
-                + ", maxX="
-                + maxX
-                + ", minY="
-                + minY
-                + ", maxY="
-                + maxY
-                + '}';
+        return "RectangleLong{" + "minX=" + minX + ", maxX=" + maxX + ", minY=" + minY + ", maxY=" + maxY + '}';
     }
 
     @Override

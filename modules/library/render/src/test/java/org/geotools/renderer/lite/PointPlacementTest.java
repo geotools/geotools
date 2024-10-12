@@ -40,10 +40,8 @@ public class PointPlacementTest {
         bounds = new ReferencedEnvelope(0, 10, 0, 10, DefaultGeographicCRS.WGS84);
 
         // load font
-        Font f =
-                Font.createFont(
-                        Font.TRUETYPE_FONT,
-                        TestData.getResource(this, "recreate.ttf").openStream());
+        Font f = Font.createFont(
+                Font.TRUETYPE_FONT, TestData.getResource(this, "recreate.ttf").openStream());
         FontCache.getDefaultInstance().registerFont(f);
 
         //        System.setProperty("org.geotools.test.interactive", "true");

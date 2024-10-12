@@ -39,18 +39,9 @@ public class MultiplyProcessTest {
         Map<String, Object> properties = new HashMap<>();
         CoverageUtilities.setNoDataProperty(properties, new NoDataContainer(2));
         GridCoverage2D cov =
-                covFactory.create(
-                        "test",
-                        grid,
-                        new ReferencedEnvelope(0, 10, 0, 10, DefaultGeographicCRS.WGS84));
-        GridCoverage2D coverageNoData =
-                covFactory.create(
-                        "nodata",
-                        cov.getRenderedImage(),
-                        cov.getEnvelope(),
-                        cov.getSampleDimensions(),
-                        null,
-                        properties);
+                covFactory.create("test", grid, new ReferencedEnvelope(0, 10, 0, 10, DefaultGeographicCRS.WGS84));
+        GridCoverage2D coverageNoData = covFactory.create(
+                "nodata", cov.getRenderedImage(), cov.getEnvelope(), cov.getSampleDimensions(), null, properties);
 
         MultiplyCoveragesProcess p = new MultiplyCoveragesProcess();
         GridCoverage2D norm = p.execute(cov, cov, null);

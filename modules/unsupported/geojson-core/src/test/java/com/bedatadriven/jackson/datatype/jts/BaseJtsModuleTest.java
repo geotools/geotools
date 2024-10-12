@@ -47,11 +47,7 @@ public abstract class BaseJtsModuleTest<T extends Geometry> {
     public void setup() {
         mapper = new ObjectMapper();
         mapper.registerModule(
-                new JtsModule(
-                        new GeometryFactory(),
-                        getMaxDecimals(),
-                        getMinDecimals(),
-                        RoundingMode.HALF_UP));
+                new JtsModule(new GeometryFactory(), getMaxDecimals(), getMinDecimals(), RoundingMode.HALF_UP));
         writer = mapper.writer();
         geometry = createGeometry();
         geometryAsGeoJson = createGeometryAsGeoJson();

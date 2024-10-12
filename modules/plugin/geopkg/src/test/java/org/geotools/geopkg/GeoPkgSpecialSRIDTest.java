@@ -74,13 +74,12 @@ public class GeoPkgSpecialSRIDTest {
         SimpleFeatureType roadType = tb.buildFeatureType();
         GeometryFactory gf = new GeometryFactory();
         SimpleFeature[] roadFeatures = new SimpleFeature[3];
-        roadFeatures[0] =
-                SimpleFeatureBuilder.build(
-                        roadType,
-                        new Object[] {
-                            Integer.valueOf(1), line(gf, new int[] {1, 1, 2, 2, 4, 2, 5, 1}), "r1",
-                        },
-                        "road.rd1");
+        roadFeatures[0] = SimpleFeatureBuilder.build(
+                roadType,
+                new Object[] {
+                    Integer.valueOf(1), line(gf, new int[] {1, 1, 2, 2, 4, 2, 5, 1}), "r1",
+                },
+                "road.rd1");
 
         Map<String, File> params = Collections.singletonMap("database", GENERIC_CRS_GPKG);
         JDBCDataStore store = new GeoPkgDataStoreFactory().createDataStore(params);

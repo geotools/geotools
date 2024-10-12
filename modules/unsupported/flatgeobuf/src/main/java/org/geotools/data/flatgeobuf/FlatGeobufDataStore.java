@@ -115,8 +115,7 @@ public class FlatGeobufDataStore extends ContentDataStore {
             }
             ftb.setCRS(crs);
             ftb.add("geom", GeometryConversions.getGeometryClass(headerMeta.geometryType));
-            for (ColumnMeta columnMeta : headerMeta.columns)
-                ftb.add(columnMeta.name, columnMeta.getBinding());
+            for (ColumnMeta columnMeta : headerMeta.columns) ftb.add(columnMeta.name, columnMeta.getBinding());
             SimpleFeatureType featureType = ftb.buildFeatureType();
             return featureType;
         } else if (phantomFeatureType != null) {
@@ -141,8 +140,7 @@ public class FlatGeobufDataStore extends ContentDataStore {
     }
 
     @Override
-    protected ContentFeatureSource createFeatureSource(ContentEntry contentEntry)
-            throws IOException {
+    protected ContentFeatureSource createFeatureSource(ContentEntry contentEntry) throws IOException {
         if (file != null && !file.exists()) {
             return new FlatGeobufFeatureStore(contentEntry, Query.ALL);
         } else {
@@ -158,8 +156,7 @@ public class FlatGeobufDataStore extends ContentDataStore {
     @Override
     public void removeSchema(String typeName) throws IOException {
         if (!file.exists()) {
-            throw new IOException(
-                    "Can't delete " + file.getAbsolutePath() + " because it doesn't exist!");
+            throw new IOException("Can't delete " + file.getAbsolutePath() + " because it doesn't exist!");
         }
         file.delete();
     }

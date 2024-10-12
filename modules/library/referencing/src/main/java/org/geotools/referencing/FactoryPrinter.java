@@ -65,8 +65,7 @@ final class FactoryPrinter implements Comparator<Class<?>> {
      * @param locale The locale for the list, or {@code null}.
      * @throws IOException if an error occurs while writing to {@code out}.
      */
-    public void list(final FactoryRegistry registry, final Writer out, final Locale locale)
-            throws IOException {
+    public void list(final FactoryRegistry registry, final Writer out, final Locale locale) throws IOException {
         /*
          * Gets the categories in some sorted order.
          */
@@ -99,7 +98,8 @@ final class FactoryPrinter implements Comparator<Class<?>> {
             /*
              * Writes the authorities in a single cell. Same for vendors and implementations.
              */
-            final Iterator<?> providers = registry.getFactories(category, null, null).iterator();
+            final Iterator<?> providers =
+                    registry.getFactories(category, null, null).iterator();
             while (providers.hasNext()) {
                 if (implementations.length() != 0) {
                     table.write('\n');
@@ -114,10 +114,9 @@ final class FactoryPrinter implements Comparator<Class<?>> {
                     final Citation authority = ((AuthorityFactory) provider).getAuthority();
                     final Iterator<? extends Identifier> identifiers =
                             authority.getIdentifiers().iterator();
-                    final String identifier =
-                            identifiers.hasNext()
-                                    ? identifiers.next().getCode().toString()
-                                    : authority.getTitle().toString(locale);
+                    final String identifier = identifiers.hasNext()
+                            ? identifiers.next().getCode().toString()
+                            : authority.getTitle().toString(locale);
                     table.write(identifier);
                 }
             }

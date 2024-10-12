@@ -26,14 +26,13 @@ import org.geotools.filter.capability.FunctionNameImpl;
 
 public class FilterFunction_strReplace extends FunctionExpressionImpl {
 
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "strReplace",
-                    parameter("string", String.class),
-                    parameter("string", String.class),
-                    parameter("search", String.class),
-                    parameter("replace", String.class),
-                    parameter("all", Boolean.class));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "strReplace",
+            parameter("string", String.class),
+            parameter("string", String.class),
+            parameter("search", String.class),
+            parameter("replace", String.class),
+            parameter("all", Boolean.class));
 
     public FilterFunction_strReplace() {
         super(NAME);

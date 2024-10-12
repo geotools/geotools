@@ -34,8 +34,7 @@ import org.geotools.util.Range;
  */
 public class MultiRange<T extends Comparable<? super T>> {
 
-    static final class RangeComparator<T extends Comparable<? super T>>
-            implements Comparator<Range<T>> {
+    static final class RangeComparator<T extends Comparable<? super T>> implements Comparator<Range<T>> {
 
         @Override
         public int compare(Range<T> o1, Range<T> o2) {
@@ -146,13 +145,9 @@ public class MultiRange<T extends Comparable<? super T>> {
     }
 
     private boolean contiguous(Range r1, Range<T> r2) {
-        if (r1.getMinValue() != null
-                && r2.getMaxValue() != null
-                && (r1.isMinIncluded() || r2.isMaxIncluded())) {
+        if (r1.getMinValue() != null && r2.getMaxValue() != null && (r1.isMinIncluded() || r2.isMaxIncluded())) {
             return r1.getMinValue().equals(r2.getMaxValue());
-        } else if (r1.getMaxValue() != null
-                && r2.getMinValue() != null
-                && (r1.isMaxIncluded() || r2.isMinIncluded())) {
+        } else if (r1.getMaxValue() != null && r2.getMinValue() != null && (r1.isMaxIncluded() || r2.isMinIncluded())) {
             return r1.getMaxValue().equals(r2.getMinValue());
         } else {
             return false;
@@ -193,13 +188,12 @@ public class MultiRange<T extends Comparable<? super T>> {
                 // no exclusions, this range is isolated
                 filters.add(toFilter(ff, variable, range));
             } else {
-                Range<T> union =
-                        new Range<>(
-                                range.getElementClass(),
-                                range.getMinValue(),
-                                range.isMinIncluded(),
-                                curr.getMaxValue(),
-                                curr.isMaxIncluded());
+                Range<T> union = new Range<>(
+                        range.getElementClass(),
+                        range.getMinValue(),
+                        range.isMinIncluded(),
+                        curr.getMaxValue(),
+                        curr.isMaxIncluded());
                 Filter filter = toFilter(ff, variable, union);
                 if (exclusions.isEmpty()) {
                     filters.add(filter);
@@ -238,8 +232,7 @@ public class MultiRange<T extends Comparable<? super T>> {
             if (range.getMinValue().equals(range.getMaxValue())) {
                 return ff.equals(variable, ff.literal(range.getMinValue()));
             }
-            return ff.between(
-                    variable, ff.literal(range.getMinValue()), ff.literal(range.getMaxValue()));
+            return ff.between(variable, ff.literal(range.getMinValue()), ff.literal(range.getMaxValue()));
         } else if (range.getMinValue() == null) {
             return toLessFilter(ff, variable, range);
         } else if (range.getMaxValue() == null) {

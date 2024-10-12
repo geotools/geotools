@@ -291,8 +291,7 @@ public class HanaWKBParser {
                 data.order(ByteOrder.LITTLE_ENDIAN);
                 break;
             default:
-                throw new HanaWKBParserException(
-                        MessageFormat.format("Invalid BOM value {0}", order));
+                throw new HanaWKBParserException(MessageFormat.format("Invalid BOM value {0}", order));
         }
     }
 }

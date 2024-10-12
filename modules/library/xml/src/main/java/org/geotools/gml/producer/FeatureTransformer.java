@@ -106,8 +106,7 @@ import org.xml.sax.helpers.NamespaceSupport;
  */
 public class FeatureTransformer extends TransformerBase {
     /** The logger for the filter module. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(FeatureTransformer.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(FeatureTransformer.class);
 
     private Set<String> gmlAtts;
 
@@ -280,12 +279,7 @@ public class FeatureTransformer extends TransformerBase {
     @Override
     public org.geotools.xml.transform.Translator createTranslator(ContentHandler handler) {
         FeatureTranslator t =
-                createTranslator(
-                        handler,
-                        collectionPrefix,
-                        collectionNamespace,
-                        featureTypeNamespaces,
-                        schemaLocation);
+                createTranslator(handler, collectionPrefix, collectionNamespace, featureTypeNamespaces, schemaLocation);
         java.util.Enumeration prefixes = nsLookup.getPrefixes();
 
         // setGmlPrefixing(true);
@@ -314,8 +308,7 @@ public class FeatureTransformer extends TransformerBase {
             String ns,
             FeatureTypeNamespaces featureTypeNamespaces,
             SchemaLocationSupport schemaLocationSupport) {
-        return new FeatureTranslator(
-                handler, prefix, ns, featureTypeNamespaces, schemaLocationSupport);
+        return new FeatureTranslator(handler, prefix, ns, featureTypeNamespaces, schemaLocationSupport);
     }
 
     public static class FeatureTypeNamespaces {
@@ -349,17 +342,12 @@ public class FeatureTransformer extends TransformerBase {
 
         @Override
         public String toString() {
-            return "FeatureTypeNamespaces[Default: "
-                    + defaultPrefix
-                    + ", lookUp: "
-                    + lookup.keySet()
-                    + "]";
+            return "FeatureTypeNamespaces[Default: " + defaultPrefix + ", lookUp: " + lookup.keySet() + "]";
         }
     }
 
     /** Outputs gml without any fancy indents or newlines. */
-    public class FeatureTranslator extends TranslatorSupport
-            implements FeatureCollectionIteration.Handler {
+    public class FeatureTranslator extends TranslatorSupport implements FeatureCollectionIteration.Handler {
         String fc = "FeatureCollection";
         protected GeometryTransformer.GeometryTranslator geometryTranslator;
         String memberString;
@@ -410,9 +398,7 @@ public class FeatureTransformer extends TransformerBase {
             this.types = types;
             this.handler = handler;
             getNamespaceSupport()
-                    .declarePrefix(
-                            geometryTranslator.getDefaultPrefix(),
-                            geometryTranslator.getDefaultNamespace());
+                    .declarePrefix(geometryTranslator.getDefaultPrefix(), geometryTranslator.getDefaultNamespace());
             memberString = geometryTranslator.getDefaultPrefix() + ":featureMember";
         }
 
@@ -425,12 +411,8 @@ public class FeatureTransformer extends TransformerBase {
         }
 
         protected GeometryTranslator createGeometryTranslator(
-                ContentHandler handler,
-                int numDecimals,
-                boolean padWithZeros,
-                boolean forceDecimalEncoding) {
-            return new GeometryTransformer.GeometryTranslator(
-                    handler, numDecimals, padWithZeros, forceDecimalEncoding);
+                ContentHandler handler, int numDecimals, boolean padWithZeros, boolean forceDecimalEncoding) {
+            return new GeometryTransformer.GeometryTranslator(handler, numDecimals, padWithZeros, forceDecimalEncoding);
         }
         /** */
         protected GeometryTranslator createGeometryTranslator(
@@ -486,51 +468,46 @@ public class FeatureTransformer extends TransformerBase {
         }
 
         void setNumDecimals(int numDecimals) {
-            geometryTranslator =
-                    createGeometryTranslator(
-                            handler,
-                            numDecimals,
-                            geometryTranslator.getPadWithZeros(),
-                            geometryTranslator.getForceDecimalEncoding());
+            geometryTranslator = createGeometryTranslator(
+                    handler,
+                    numDecimals,
+                    geometryTranslator.getPadWithZeros(),
+                    geometryTranslator.getForceDecimalEncoding());
         }
 
         void setPadWithZeros(boolean padWithZeros) {
-            geometryTranslator =
-                    createGeometryTranslator(
-                            handler,
-                            geometryTranslator.getNumDecimals(),
-                            padWithZeros,
-                            geometryTranslator.getForceDecimalEncoding());
+            geometryTranslator = createGeometryTranslator(
+                    handler,
+                    geometryTranslator.getNumDecimals(),
+                    padWithZeros,
+                    geometryTranslator.getForceDecimalEncoding());
         }
 
         void setForceDecimalEncoding(boolean forceDecimalEncoding) {
-            geometryTranslator =
-                    createGeometryTranslator(
-                            handler,
-                            geometryTranslator.getNumDecimals(),
-                            geometryTranslator.getPadWithZeros(),
-                            forceDecimalEncoding);
+            geometryTranslator = createGeometryTranslator(
+                    handler,
+                    geometryTranslator.getNumDecimals(),
+                    geometryTranslator.getPadWithZeros(),
+                    forceDecimalEncoding);
         }
 
         void setUseDummyZ(boolean useDummyZ) {
-            geometryTranslator =
-                    createGeometryTranslator(
-                            handler,
-                            geometryTranslator.getNumDecimals(),
-                            geometryTranslator.getPadWithZeros(),
-                            geometryTranslator.getForceDecimalEncoding(),
-                            useDummyZ);
+            geometryTranslator = createGeometryTranslator(
+                    handler,
+                    geometryTranslator.getNumDecimals(),
+                    geometryTranslator.getPadWithZeros(),
+                    geometryTranslator.getForceDecimalEncoding(),
+                    useDummyZ);
         }
 
         /** If set to 3 the real z value from the coordinates will be used */
         void setDimension(int dimension) {
-            geometryTranslator =
-                    createGeometryTranslator(
-                            handler,
-                            geometryTranslator.getNumDecimals(),
-                            geometryTranslator.getPadWithZeros(),
-                            geometryTranslator.getForceDecimalEncoding(),
-                            dimension);
+            geometryTranslator = createGeometryTranslator(
+                    handler,
+                    geometryTranslator.getNumDecimals(),
+                    geometryTranslator.getPadWithZeros(),
+                    geometryTranslator.getForceDecimalEncoding(),
+                    dimension);
         }
 
         public void setLockId(String lockId) {
@@ -642,8 +619,7 @@ public class FeatureTransformer extends TransformerBase {
             }
         }
 
-        public void handleFeatureReader(FeatureReader<SimpleFeatureType, SimpleFeature> reader)
-                throws IOException {
+        public void handleFeatureReader(FeatureReader<SimpleFeatureType, SimpleFeature> reader) throws IOException {
             try {
                 while (reader.hasNext() && running) {
                     SimpleFeature f = reader.next();
@@ -671,8 +647,7 @@ public class FeatureTransformer extends TransformerBase {
 
         public void startFeatureCollection() {
             try {
-                String element =
-                        (getDefaultPrefix() == null) ? fc : (getDefaultPrefix() + ":" + fc);
+                String element = (getDefaultPrefix() == null) ? fc : (getDefaultPrefix() + ":" + fc);
                 AttributesImpl atts = new AttributesImpl();
 
                 if (lockId != null) {
@@ -715,10 +690,9 @@ public class FeatureTransformer extends TransformerBase {
 
                 Envelope env = null;
                 if (bounds != null) {
-                    env =
-                            new Envelope(
-                                    new Coordinate(bounds.getMinX(), bounds.getMinY()),
-                                    new Coordinate(bounds.getMaxX(), bounds.getMaxY()));
+                    env = new Envelope(
+                            new Coordinate(bounds.getMinX(), bounds.getMinY()),
+                            new Coordinate(bounds.getMaxX(), bounds.getMaxY()));
                 }
                 geometryTranslator.encode(env, srsName);
                 contentHandler.endElement("", "", boundedBy);
@@ -830,8 +804,7 @@ public class FeatureTransformer extends TransformerBase {
                             if (dimension == 0) {
                                 // lets look at the CRS
                                 GeometryDescriptor geometryType = (GeometryDescriptor) descriptor;
-                                CoordinateReferenceSystem crs =
-                                        geometryType.getCoordinateReferenceSystem();
+                                CoordinateReferenceSystem crs = geometryType.getCoordinateReferenceSystem();
                                 if (crs == null) {
                                     // I won't even bother people with a warning
                                     // (until DataStore quality has improved
@@ -862,15 +835,13 @@ public class FeatureTransformer extends TransformerBase {
                 // REVISIT: xsi:nillable is the proper xml way to handle nulls,
                 // but OGC people are fine with just leaving it out.
             } catch (Exception e) {
-                throw new IllegalStateException(
-                        "Could not transform '" + descriptor.getName() + "': " + e, e);
+                throw new IllegalStateException("Could not transform '" + descriptor.getName() + "': " + e, e);
             }
         }
 
         private String getDateString(Object value) {
             String text = null;
-            if (value instanceof java.sql.Date)
-                text = DateUtil.serializeSqlDate((java.sql.Date) value);
+            if (value instanceof java.sql.Date) text = DateUtil.serializeSqlDate((java.sql.Date) value);
             else if (value instanceof java.sql.Time) {
                 // is date time formatting activated?
                 if (isDateTimeFormattingEnabled()) {
@@ -883,9 +854,7 @@ public class FeatureTransformer extends TransformerBase {
                 // is date time formatting activated?
                 if (isDateTimeFormattingEnabled()) {
                     final Date dateValue = (Date) value;
-                    text =
-                            DatatypeConverterImpl.getInstance()
-                                    .printDateTime(dateToCalendar(dateValue));
+                    text = DatatypeConverterImpl.getInstance().printDateTime(dateToCalendar(dateValue));
                 } else {
                     text = DateUtil.serializeDateTime((Date) value);
                 }
@@ -953,10 +922,7 @@ public class FeatureTransformer extends TransformerBase {
 
                 if (currentPrefix == null) {
                     throw new IllegalStateException(
-                            "FeatureType namespace/prefix unknown for "
-                                    + name
-                                    + "look up in: "
-                                    + types);
+                            "FeatureType namespace/prefix unknown for " + name + "look up in: " + types);
                 } else if (currentPrefix.length() > 0) {
                     name = currentPrefix + ":" + name;
                 }
@@ -975,8 +941,7 @@ public class FeatureTransformer extends TransformerBase {
                     }
                 }
             } catch (Exception e) {
-                throw new IllegalStateException(
-                        "Could not transform " + f.getIdentifier() + " :" + e, e);
+                throw new IllegalStateException("Could not transform " + f.getIdentifier() + " :" + e, e);
             }
         }
 

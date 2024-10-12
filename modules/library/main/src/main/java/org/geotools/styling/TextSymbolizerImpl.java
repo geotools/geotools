@@ -67,8 +67,7 @@ public class TextSymbolizerImpl extends AbstractSymbolizer implements TextSymbol
         this(factory, null, null, null);
     }
 
-    protected TextSymbolizerImpl(
-            FilterFactory factory, Description desc, String name, Unit<Length> uom) {
+    protected TextSymbolizerImpl(FilterFactory factory, Description desc, String name, Unit<Length> uom) {
         super(name, desc, (Expression) null, uom);
         this.filterFactory = factory;
         fill = new FillImpl(factory);
@@ -306,8 +305,7 @@ public class TextSymbolizerImpl extends AbstractSymbolizer implements TextSymbol
         } else if (symbolizer instanceof TextSymbolizerImpl) {
             return (TextSymbolizerImpl) symbolizer;
         } else {
-            org.geotools.api.style.TextSymbolizer textSymbolizer =
-                    (org.geotools.api.style.TextSymbolizer) symbolizer;
+            org.geotools.api.style.TextSymbolizer textSymbolizer = (org.geotools.api.style.TextSymbolizer) symbolizer;
             TextSymbolizerImpl copy = new TextSymbolizerImpl();
             copy.setDescription(textSymbolizer.getDescription());
             copy.setFill(textSymbolizer.getFill());
@@ -323,8 +321,7 @@ public class TextSymbolizerImpl extends AbstractSymbolizer implements TextSymbol
             copy.setOtherText(textSymbolizer.getOtherText());
             copy.setFeatureDescription(textSymbolizer.getFeatureDescription());
             copy.setSnippet(textSymbolizer.getSnippet());
-            if (textSymbolizer.getOptions() != null)
-                copy.getOptions().putAll(textSymbolizer.getOptions());
+            if (textSymbolizer.getOptions() != null) copy.getOptions().putAll(textSymbolizer.getOptions());
 
             return copy;
         }

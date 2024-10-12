@@ -39,8 +39,7 @@ public class FilteringFeatureWriter implements FeatureWriter<SimpleFeatureType, 
     SimpleFeature next = null; // next feature as peeked by hasNext()
     SimpleFeature current = null; // holds current Feature returned to user
 
-    public FilteringFeatureWriter(
-            FeatureWriter<SimpleFeatureType, SimpleFeature> writer, Filter filter) {
+    public FilteringFeatureWriter(FeatureWriter<SimpleFeatureType, SimpleFeature> writer, Filter filter) {
         this.writer = writer;
         this.filter = filter;
     }

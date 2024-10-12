@@ -64,7 +64,8 @@ public class OGCFilterTest {
         Assert.assertEquals(1, doc.getElementsByTagName("ogc:PropertyName").getLength());
         Assert.assertEquals(1, doc.getElementsByTagName("ogc:Literal").getLength());
 
-        Element propertyName = (Element) doc.getElementsByTagName("ogc:PropertyName").item(0);
+        Element propertyName =
+                (Element) doc.getElementsByTagName("ogc:PropertyName").item(0);
         Element literal = (Element) doc.getElementsByTagName("ogc:Literal").item(0);
 
         Assert.assertEquals("testString", propertyName.getFirstChild().getNodeValue());
@@ -102,16 +103,15 @@ public class OGCFilterTest {
     @Test
     public void testDWithinParse() throws Exception {
 
-        String xml =
-                "<Filter>"
-                        + "<DWithin>"
-                        + "<PropertyName>the_geom</PropertyName>"
-                        + "<Point>"
-                        + "<coordinates>-74.817265,40.5296504</coordinates>"
-                        + "</Point>"
-                        + "<Distance units=\"km\">200</Distance>"
-                        + "</DWithin>"
-                        + "</Filter>";
+        String xml = "<Filter>"
+                + "<DWithin>"
+                + "<PropertyName>the_geom</PropertyName>"
+                + "<Point>"
+                + "<coordinates>-74.817265,40.5296504</coordinates>"
+                + "</Point>"
+                + "<Distance units=\"km\">200</Distance>"
+                + "</DWithin>"
+                + "</Filter>";
 
         OGCConfiguration configuration = new OGCConfiguration();
 
@@ -144,16 +144,15 @@ public class OGCFilterTest {
     @Test
     public void testDWithinWithoutUnitsParse() throws Exception {
 
-        String xml =
-                "<Filter>"
-                        + "<DWithin>"
-                        + "<PropertyName>the_geom</PropertyName>"
-                        + "<Point>"
-                        + "<coordinates>-74.817265,40.5296504</coordinates>"
-                        + "</Point>"
-                        + "<Distance>200</Distance>"
-                        + "</DWithin>"
-                        + "</Filter>";
+        String xml = "<Filter>"
+                + "<DWithin>"
+                + "<PropertyName>the_geom</PropertyName>"
+                + "<Point>"
+                + "<coordinates>-74.817265,40.5296504</coordinates>"
+                + "</Point>"
+                + "<Distance>200</Distance>"
+                + "</DWithin>"
+                + "</Filter>";
 
         OGCConfiguration configuration = new OGCConfiguration();
 
@@ -172,15 +171,14 @@ public class OGCFilterTest {
 
     @Test
     public void testBBOXValidateWithoutPropertyName() throws Exception {
-        String xml =
-                "<ogc:Filter xmlns:ogc='http://www.opengis.net/ogc'>"
-                        + "<ogc:BBOX>"
-                        + "<gml:Envelope xmlns:gml='http://www.opengis.net/gml'>"
-                        + "<gml:lowerCorner>36.986771000000005 -91.516129</gml:lowerCorner>"
-                        + "<gml:upperCorner>42.50936100000001 -87.507889</gml:upperCorner>"
-                        + "</gml:Envelope>"
-                        + "</ogc:BBOX>"
-                        + "</ogc:Filter>";
+        String xml = "<ogc:Filter xmlns:ogc='http://www.opengis.net/ogc'>"
+                + "<ogc:BBOX>"
+                + "<gml:Envelope xmlns:gml='http://www.opengis.net/gml'>"
+                + "<gml:lowerCorner>36.986771000000005 -91.516129</gml:lowerCorner>"
+                + "<gml:upperCorner>42.50936100000001 -87.507889</gml:upperCorner>"
+                + "</gml:Envelope>"
+                + "</ogc:BBOX>"
+                + "</ogc:Filter>";
 
         Parser p = new Parser(new OGCConfiguration());
         p.validate(new StringReader(xml));

@@ -107,47 +107,37 @@ public class FeatureJSONExtendedTest extends GeoJSONTestSupport {
     }
 
     String featureText(int val, boolean excludeString, boolean valIsNull) {
-        String text =
-                "{"
-                        + "  'type': 'Feature',"
-                        + "  'geometry': {"
-                        + "     'type': 'Point',"
-                        + "     'coordinates': ["
-                        + (val + 0.1)
-                        + ","
-                        + (val + 0.1)
-                        + "]"
-                        + "   }, "
-                        + "'  properties': {"
-                        + "     'int': "
-                        + val
-                        + ","
-                        + "     'double': "
-                        + (val + 0.1)
-                        + ",";
+        String text = "{"
+                + "  'type': 'Feature',"
+                + "  'geometry': {"
+                + "     'type': 'Point',"
+                + "     'coordinates': ["
+                + (val + 0.1)
+                + ","
+                + (val + 0.1)
+                + "]"
+                + "   }, "
+                + "'  properties': {"
+                + "     'int': "
+                + val
+                + ","
+                + "     'double': "
+                + (val + 0.1)
+                + ",";
 
         if (valIsNull) {
             text += "     'string': null,";
         } else if (!excludeString) {
             text += "     'string': '" + toString(val) + "',";
         }
-        text +=
-                "     'date': '"
-                        + toDateString(val)
-                        + "'"
-                        + "   },"
-                        + "   'id':'feature."
-                        + val
-                        + "'"
-                        + "}";
+        text += "     'date': '" + toDateString(val) + "'" + "   }," + "   'id':'feature." + val + "'" + "}";
 
         return text;
     }
 
     String toDateString(int val) {
         return String.format(
-                "%s-%s-%sT%s:%s:%s.000+0000",
-                pad(2000 + val), pad(val), pad(val), pad(val), pad(val), pad(val));
+                "%s-%s-%sT%s:%s:%s.000+0000", pad(2000 + val), pad(val), pad(val), pad(val), pad(val), pad(val));
     }
 
     Date toDate(int val) {

@@ -142,15 +142,12 @@ public class IndexManagerTest extends TestCaseSupport {
         final int threadCount = Math.min(8, 2 * Runtime.getRuntime().availableProcessors());
         final int taskCount = 2 * threadCount;
         final boolean force = false;
-        List<Boolean> builds =
-                buildSpatialIndexConcurrently(indexManager, threadCount, taskCount, force);
+        List<Boolean> builds = buildSpatialIndexConcurrently(indexManager, threadCount, taskCount, force);
 
         long buildCount = builds.stream().filter(Boolean::booleanValue).count();
 
         String msg =
-                String.format(
-                        "Expected only 1 true result from %d concurrent createSpatialIndex calls",
-                        taskCount);
+                String.format("Expected only 1 true result from %d concurrent createSpatialIndex calls", taskCount);
         assertEquals(msg, 1, buildCount);
     }
 
@@ -159,38 +156,32 @@ public class IndexManagerTest extends TestCaseSupport {
         deleteQixFile();
         final AtomicInteger concurrentBuilds = new AtomicInteger();
         final AtomicInteger maxConcurrentBuilds = new AtomicInteger();
-        IndexManager indexManager =
-                new IndexManager(shpFiles, mockDataStore) {
-                    @Override
-                    protected void doCreateSpatialIndex() throws Exception {
-                        int concurrency = concurrentBuilds.incrementAndGet();
-                        super.doCreateSpatialIndex();
-                        concurrentBuilds.decrementAndGet();
-                        maxConcurrentBuilds.set(Math.max(maxConcurrentBuilds.get(), concurrency));
-                    }
-                };
+        IndexManager indexManager = new IndexManager(shpFiles, mockDataStore) {
+            @Override
+            protected void doCreateSpatialIndex() throws Exception {
+                int concurrency = concurrentBuilds.incrementAndGet();
+                super.doCreateSpatialIndex();
+                concurrentBuilds.decrementAndGet();
+                maxConcurrentBuilds.set(Math.max(maxConcurrentBuilds.get(), concurrency));
+            }
+        };
 
         final int threadCount = Math.min(8, 2 * Runtime.getRuntime().availableProcessors());
         final int taskCount = 2 * threadCount;
         final boolean force = true;
-        List<Boolean> builds =
-                buildSpatialIndexConcurrently(indexManager, threadCount, taskCount, force);
+        List<Boolean> builds = buildSpatialIndexConcurrently(indexManager, threadCount, taskCount, force);
 
         long buildCount = builds.stream().filter(Boolean::booleanValue).count();
 
-        String msg =
-                String.format(
-                        "Expected only %d true results from %d concurrent createSpatialIndex calls with force == true",
-                        taskCount, taskCount);
+        String msg = String.format(
+                "Expected only %d true results from %d concurrent createSpatialIndex calls with force == true",
+                taskCount, taskCount);
         assertEquals(msg, taskCount, buildCount);
         assertEquals(1, maxConcurrentBuilds.get());
     }
 
     private List<Boolean> buildSpatialIndexConcurrently(
-            IndexManager indexManager,
-            final int threadCount,
-            final int taskCount,
-            final boolean force)
+            IndexManager indexManager, final int threadCount, final int taskCount, final boolean force)
             throws Exception {
 
         final ExecutorService executor = Executors.newFixedThreadPool(threadCount);

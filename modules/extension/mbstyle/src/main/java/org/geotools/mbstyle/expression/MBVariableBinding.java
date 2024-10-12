@@ -52,8 +52,7 @@ public class MBVariableBinding extends MBExpression {
             case "var":
                 return variableBindingVar();
             default:
-                throw new MBFormatException(
-                        name + " is an unsupported variable binding expression");
+                throw new MBFormatException(name + " is an unsupported variable binding expression");
         }
     }
 }

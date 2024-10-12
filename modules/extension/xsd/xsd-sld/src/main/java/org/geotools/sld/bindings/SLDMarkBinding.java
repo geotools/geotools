@@ -65,10 +65,7 @@ public class SLDMarkBinding extends AbstractComplexBinding {
     protected StyleFactory styleFactory;
     ResourceLocator resourceLocator;
 
-    public SLDMarkBinding(
-            StyleFactory styleFactory,
-            FilterFactory filterFactory,
-            ResourceLocator resourceLocator) {
+    public SLDMarkBinding(StyleFactory styleFactory, FilterFactory filterFactory, ResourceLocator resourceLocator) {
         this.styleFactory = styleFactory;
         this.filterFactory = filterFactory;
         this.resourceLocator = resourceLocator;

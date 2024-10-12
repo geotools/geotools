@@ -27,8 +27,7 @@ import org.geotools.util.Utilities;
  *
  * @author Mehdi Sidhoum (Geomatys)
  */
-public class DefaultTemporalCoordinate extends DefaultTemporalPosition
-        implements TemporalCoordinate {
+public class DefaultTemporalCoordinate extends DefaultTemporalPosition implements TemporalCoordinate {
 
     /**
      * This is the distance from the scale origin expressed as a multiple of the standard interval
@@ -37,9 +36,7 @@ public class DefaultTemporalCoordinate extends DefaultTemporalPosition
     private Number coordinateValue;
 
     public DefaultTemporalCoordinate(
-            TemporalReferenceSystem frame,
-            IndeterminateValue indeterminatePosition,
-            Number coordinateValue) {
+            TemporalReferenceSystem frame, IndeterminateValue indeterminatePosition, Number coordinateValue) {
         super(frame, indeterminatePosition);
         this.coordinateValue = coordinateValue;
     }

@@ -73,8 +73,7 @@ public final class DCT extends XSD {
     /** @generated */
     public static final QName available = new QName("http://purl.org/dc/terms/", "available");
     /** @generated */
-    public static final QName bibliographicCitation =
-            new QName("http://purl.org/dc/terms/", "bibliographicCitation");
+    public static final QName bibliographicCitation = new QName("http://purl.org/dc/terms/", "bibliographicCitation");
     /** @generated */
     public static final QName conformsTo = new QName("http://purl.org/dc/terms/", "conformsTo");
     /** @generated */
@@ -82,14 +81,11 @@ public final class DCT extends XSD {
     /** @generated */
     public static final QName dateAccepted = new QName("http://purl.org/dc/terms/", "dateAccepted");
     /** @generated */
-    public static final QName dateCopyrighted =
-            new QName("http://purl.org/dc/terms/", "dateCopyrighted");
+    public static final QName dateCopyrighted = new QName("http://purl.org/dc/terms/", "dateCopyrighted");
     /** @generated */
-    public static final QName dateSubmitted =
-            new QName("http://purl.org/dc/terms/", "dateSubmitted");
+    public static final QName dateSubmitted = new QName("http://purl.org/dc/terms/", "dateSubmitted");
     /** @generated */
-    public static final QName educationLevel =
-            new QName("http://purl.org/dc/terms/", "educationLevel");
+    public static final QName educationLevel = new QName("http://purl.org/dc/terms/", "educationLevel");
     /** @generated */
     public static final QName extent = new QName("http://purl.org/dc/terms/", "extent");
     /** @generated */
@@ -103,8 +99,7 @@ public final class DCT extends XSD {
     /** @generated */
     public static final QName isPartOf = new QName("http://purl.org/dc/terms/", "isPartOf");
     /** @generated */
-    public static final QName isReferencedBy =
-            new QName("http://purl.org/dc/terms/", "isReferencedBy");
+    public static final QName isReferencedBy = new QName("http://purl.org/dc/terms/", "isReferencedBy");
     /** @generated */
     public static final QName isReplacedBy = new QName("http://purl.org/dc/terms/", "isReplacedBy");
     /** @generated */
@@ -134,8 +129,7 @@ public final class DCT extends XSD {
     /** @generated */
     public static final QName spatial = new QName("http://purl.org/dc/terms/", "spatial");
     /** @generated */
-    public static final QName tableOfContents =
-            new QName("http://purl.org/dc/terms/", "tableOfContents");
+    public static final QName tableOfContents = new QName("http://purl.org/dc/terms/", "tableOfContents");
     /** @generated */
     public static final QName temporal = new QName("http://purl.org/dc/terms/", "temporal");
     /** @generated */

@@ -35,8 +35,7 @@ import org.geotools.referencing.CRS;
  */
 public class WMTSLayer extends Layer {
 
-    public static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(WMTSLayer.class);
+    public static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(WMTSLayer.class);
 
     Map<String, TileMatrixSetLink> limits = new HashMap<>();
 

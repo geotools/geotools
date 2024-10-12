@@ -43,15 +43,13 @@ public class PostgisSimplifiedGeometryTestSetup extends JDBCGeometryTestSetup {
 
         // polygons
         run("CREATE TABLE simplify_polygon(id serial, geom geometry(POLYGON, 4326))");
-        run(
-                "INSERT INTO simplify_polygon(geom) values(ST_GeomFromText('POLYGON((-120.0 40.0,"
-                        + "-130.0 40.0, -130.0 50.0, -130.0 40.0, -120.0 40.0))', 4326))");
+        run("INSERT INTO simplify_polygon(geom) values(ST_GeomFromText('POLYGON((-120.0 40.0,"
+                + "-130.0 40.0, -130.0 50.0, -130.0 40.0, -120.0 40.0))', 4326))");
 
         // generic collection, already identified as potentially non straight, won't use TWKB
         run("CREATE TABLE simplify_collection(id serial, geom geometry(GEOMETRYCOLLECTION, 4326))");
-        run(
-                "INSERT INTO simplify_collection(geom) VALUES(ST_GeomFromText('GEOMETRYCOLLECTION("
-                        + "POINT(-120.0 40.0),LINESTRING(-120.0 40.0,-130.0 50.0,-140.0 50.0))',4326))");
+        run("INSERT INTO simplify_collection(geom) VALUES(ST_GeomFromText('GEOMETRYCOLLECTION("
+                + "POINT(-120.0 40.0),LINESTRING(-120.0 40.0,-130.0 50.0,-140.0 50.0))',4326))");
 
         // an actual curve
         run("CREATE TABLE simplify_curve (id serial, geom geometry(CIRCULARSTRING, 4326))");

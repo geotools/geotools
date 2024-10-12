@@ -70,8 +70,7 @@ public class OracleDateConverterFactory implements ConverterFactory {
         if (!(Date.class.isAssignableFrom(target))) return null;
 
         // can only deal with oracle specific date classes
-        if (!(ORA_TIMESTAMP.isAssignableFrom(source)) && !(ORA_DATE.isAssignableFrom(source)))
-            return null;
+        if (!(ORA_TIMESTAMP.isAssignableFrom(source)) && !(ORA_DATE.isAssignableFrom(source))) return null;
 
         // converter is thread safe, so cache and return just one
         return converter;
@@ -82,12 +81,10 @@ public class OracleDateConverterFactory implements ConverterFactory {
         @Override
         public <T> T convert(Object source, Class<T> target) throws Exception {
             if (ORA_TIMESTAMP.isInstance(source)) {
-                if (java.sql.Date.class.isAssignableFrom(target))
-                    return target.cast(ORA_TS_DVALUE.invoke(source));
+                if (java.sql.Date.class.isAssignableFrom(target)) return target.cast(ORA_TS_DVALUE.invoke(source));
                 else return target.cast(ORA_TS_TSVALUE.invoke(source));
             } else {
-                if (java.sql.Date.class.isAssignableFrom(target))
-                    return target.cast(ORA_DATE_DVALUE.invoke(source));
+                if (java.sql.Date.class.isAssignableFrom(target)) return target.cast(ORA_DATE_DVALUE.invoke(source));
                 else return target.cast(ORA_DATE_TSVALUE.invoke(source));
             }
         }

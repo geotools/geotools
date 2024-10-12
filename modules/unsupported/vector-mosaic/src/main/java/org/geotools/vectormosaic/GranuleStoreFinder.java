@@ -33,8 +33,7 @@ public abstract class GranuleStoreFinder {
      * @param granule the granule
      * @param isSampleForSchema true if the granule is a sample for schema
      */
-    public abstract Optional<DataStore> findDataStore(
-            VectorMosaicGranule granule, boolean isSampleForSchema);
+    public abstract Optional<DataStore> findDataStore(VectorMosaicGranule granule, boolean isSampleForSchema);
 
     /**
      * Converts properties to a Map of key/value pairs
@@ -58,8 +57,7 @@ public abstract class GranuleStoreFinder {
      */
     protected DataStoreFactorySpi getSPI(String preferredSPI) {
         DataStoreFactorySpi dataStoreFactorySpi = null;
-        for (Iterator<DataStoreFactorySpi> it = DataStoreFinder.getAvailableDataStores();
-                it.hasNext(); ) {
+        for (Iterator<DataStoreFactorySpi> it = DataStoreFinder.getAvailableDataStores(); it.hasNext(); ) {
             DataStoreFactorySpi spi = it.next();
             if (spi.getClass().getTypeName().equals(preferredSPI)) {
                 dataStoreFactorySpi = spi;

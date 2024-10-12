@@ -32,12 +32,11 @@ import org.locationtech.jts.linearref.LocationIndexedLine;
  */
 public class SnapFunction implements Function {
 
-    static FunctionName NAME =
-            new FunctionNameImpl(
-                    "snap",
-                    Point.class,
-                    FunctionNameImpl.parameter("point", Point.class),
-                    FunctionNameImpl.parameter("line", Geometry.class));
+    static FunctionName NAME = new FunctionNameImpl(
+            "snap",
+            Point.class,
+            FunctionNameImpl.parameter("point", Point.class),
+            FunctionNameImpl.parameter("line", Geometry.class));
 
     private final List<Expression> parameters;
 

@@ -54,8 +54,7 @@ public class FlatGeobufFeatureSource extends ContentFeatureSource {
     }
 
     @Override
-    protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query)
-            throws IOException {
+    protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query) throws IOException {
         return new FlatGeobufFeatureReader(getState(), query, getDataStore().getHeaderMeta());
     }
 
@@ -80,8 +79,7 @@ public class FlatGeobufFeatureSource extends ContentFeatureSource {
         if (query.getFilter() == Filter.INCLUDE) {
             return result;
         } else if (query.getFilter() instanceof BBOX) {
-            ReferencedEnvelope bbox =
-                    ReferencedEnvelope.reference(((BBOX) query.getFilter()).getBounds());
+            ReferencedEnvelope bbox = ReferencedEnvelope.reference(((BBOX) query.getFilter()).getBounds());
             if (bbox.contains(env)) {
                 return result;
             }
@@ -141,13 +139,12 @@ public class FlatGeobufFeatureSource extends ContentFeatureSource {
                 URL url = getDataStore().getURL();
                 try (InputStream is = url.openStream()) {
                     FlatGeobufFeatureReader.skipNBytes(is, headerMeta.offset);
-                    PackedRTree.SearchResult result =
-                            PackedRTree.search(
-                                    is,
-                                    headerMeta.offset,
-                                    (int) headerMeta.featuresCount,
-                                    headerMeta.indexNodeSize,
-                                    ReferencedEnvelope.reference(bounds));
+                    PackedRTree.SearchResult result = PackedRTree.search(
+                            is,
+                            headerMeta.offset,
+                            (int) headerMeta.featuresCount,
+                            headerMeta.indexNodeSize,
+                            ReferencedEnvelope.reference(bounds));
                     return result.hits.size();
                 }
             }

@@ -69,8 +69,7 @@ public class AffineTransform2D extends XAffineTransform
      *
      * @since 2.5
      */
-    public AffineTransform2D(
-            double m00, double m10, double m01, double m11, double m02, double m12) {
+    public AffineTransform2D(double m00, double m10, double m01, double m11, double m02, double m12) {
         super(m00, m10, m01, m11, m02, m12);
     }
 
@@ -115,8 +114,7 @@ public class AffineTransform2D extends XAffineTransform
             final int dimension = ptDst.getDimension();
             if (dimension != 2) {
                 throw new MismatchedDimensionException(
-                        MessageFormat.format(
-                                ErrorKeys.MISMATCHED_DIMENSION_$3, "ptDst", dimension, 2));
+                        MessageFormat.format(ErrorKeys.MISMATCHED_DIMENSION_$3, "ptDst", dimension, 2));
             }
         }
         final double[] array = ptSrc.getCoordinate();
@@ -180,8 +178,7 @@ public class AffineTransform2D extends XAffineTransform
                         inverse.inverse = this;
                     }
                 } catch (java.awt.geom.NoninvertibleTransformException exception) {
-                    throw new NoninvertibleTransformException(
-                            exception.getLocalizedMessage(), exception);
+                    throw new NoninvertibleTransformException(exception.getLocalizedMessage(), exception);
                 }
         }
         return inverse;
@@ -219,9 +216,8 @@ public class AffineTransform2D extends XAffineTransform
     public String toWKT() {
         int indentation = 2;
         try {
-            indentation =
-                    Preferences.userNodeForPackage(org.geotools.referencing.wkt.Formattable.class)
-                            .getInt("Indentation", indentation);
+            indentation = Preferences.userNodeForPackage(org.geotools.referencing.wkt.Formattable.class)
+                    .getInt("Indentation", indentation);
         } catch (SecurityException ignore) {
             // Ignore. Will fallback on the default indentation.
         }

@@ -131,8 +131,7 @@ public class AutoCRSFactory extends DirectAuthorityFactory implements CRSAuthori
      * factory}.
      */
     @Override
-    public Set<String> getAuthorityCodes(final Class<? extends IdentifiedObject> type)
-            throws FactoryException {
+    public Set<String> getAuthorityCodes(final Class<? extends IdentifiedObject> type) throws FactoryException {
         if (type.isAssignableFrom(ProjectedCRS.class)) {
             final Set<String> set = new LinkedHashSet<>();
             for (Integer code : factlets.keySet()) {
@@ -165,8 +164,7 @@ public class AutoCRSFactory extends DirectAuthorityFactory implements CRSAuthori
      * delegates to <code>{@linkplain #createProjectedCRS createProjectedCRS}(code)</code>.
      */
     @Override
-    public CoordinateReferenceSystem createCoordinateReferenceSystem(final String code)
-            throws FactoryException {
+    public CoordinateReferenceSystem createCoordinateReferenceSystem(final String code) throws FactoryException {
         return createProjectedCRS(code);
     }
 

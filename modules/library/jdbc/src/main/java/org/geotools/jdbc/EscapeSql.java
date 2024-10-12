@@ -33,8 +33,7 @@ public class EscapeSql {
 
     private static final Pattern BACKSLASH_PATTERN = Pattern.compile("\\\\");
 
-    public static String escapeLiteral(
-            String literal, boolean escapeBackslash, boolean escapeDoubleQuote) {
+    public static String escapeLiteral(String literal, boolean escapeBackslash, boolean escapeDoubleQuote) {
         // ' --> ''
         String escaped = SINGLE_QUOTE_PATTERN.matcher(literal).replaceAll("''");
         if (escapeBackslash) {

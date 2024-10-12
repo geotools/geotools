@@ -26,14 +26,13 @@ import org.geotools.filter.capability.FunctionNameImpl;
 
 public class FilterFunction_in3 extends FunctionExpressionImpl {
 
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "in3",
-                    Boolean.class,
-                    parameter("value", Object.class),
-                    parameter("in1", Object.class),
-                    parameter("in2", Object.class),
-                    parameter("in3", Object.class));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "in3",
+            Boolean.class,
+            parameter("value", Object.class),
+            parameter("in1", Object.class),
+            parameter("in2", Object.class),
+            parameter("in3", Object.class));
 
     public FilterFunction_in3() {
         super(NAME);

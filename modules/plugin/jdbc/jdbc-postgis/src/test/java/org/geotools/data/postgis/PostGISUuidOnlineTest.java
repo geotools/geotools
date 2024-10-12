@@ -39,10 +39,8 @@ public class PostGISUuidOnlineTest extends JDBCUuidOnlineTest {
         GeometryFactory gf = new GeometryFactory();
         Point p = gf.createPoint(new Coordinate(138.6, -34.93));
 
-        SimpleFeature feature1 =
-                SimpleFeatureBuilder.build(type, new Object[] {p}, uuid1.toString());
-        feature1.getUserData()
-                .put(Hints.USE_PROVIDED_FID, false); // false, so that a UUID will be generated
+        SimpleFeature feature1 = SimpleFeatureBuilder.build(type, new Object[] {p}, uuid1.toString());
+        feature1.getUserData().put(Hints.USE_PROVIDED_FID, false); // false, so that a UUID will be generated
         // feature1.getUserData().put(Hints.PROVIDED_FID, uuid1);
 
         return DataUtilities.collection(feature1);
@@ -51,8 +49,7 @@ public class PostGISUuidOnlineTest extends JDBCUuidOnlineTest {
     @Override
     public void testUUIDAsPrimaryKey() throws Exception {
         try (Transaction transaction = new DefaultTransaction()) {
-            SimpleFeatureStore featureStore =
-                    (SimpleFeatureStore) dataStore.getFeatureSource(tname("uuidt"));
+            SimpleFeatureStore featureStore = (SimpleFeatureStore) dataStore.getFeatureSource(tname("uuidt"));
             featureStore.setTransaction(transaction);
 
             featureStore.addFeatures(createFeatureCollection());

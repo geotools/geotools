@@ -54,8 +54,7 @@ public abstract class BaseGDALGridFormat extends AbstractGridFormat implements F
         String name;
     }
 
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(BaseGDALGridFormat.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(BaseGDALGridFormat.class);
 
     /** The inner {@code ImageReaderSpi} */
     private final ImageReaderSpi spi;
@@ -80,20 +79,12 @@ public abstract class BaseGDALGridFormat extends AbstractGridFormat implements F
      * use multithreading when leveraging on a JAI ImageRead operation. This will be achieved with
      * the use of the ImageReadMT operation of the ImageIO-Ext.
      */
-    public static final DefaultParameterDescriptor<Boolean> USE_MULTITHREADING =
-            new DefaultParameterDescriptor<>(
-                    USE_MT,
-                    Boolean.class,
-                    new Boolean[] {Boolean.TRUE, Boolean.FALSE},
-                    Boolean.FALSE);
+    public static final DefaultParameterDescriptor<Boolean> USE_MULTITHREADING = new DefaultParameterDescriptor<>(
+            USE_MT, Boolean.class, new Boolean[] {Boolean.TRUE, Boolean.FALSE}, Boolean.FALSE);
 
     /** Base Parameter Descriptor */
     protected static final GeneralParameterDescriptor[] PARAM_DESCRIPTOR = {
-        READ_GRIDGEOMETRY2D,
-        USE_JAI_IMAGEREAD,
-        USE_MULTITHREADING,
-        SUGGESTED_TILE_SIZE,
-        FOOTPRINT_BEHAVIOR
+        READ_GRIDGEOMETRY2D, USE_JAI_IMAGEREAD, USE_MULTITHREADING, SUGGESTED_TILE_SIZE, FOOTPRINT_BEHAVIOR
     };
 
     /** Each plugin needs to implement this method defining format specific properties */
@@ -107,8 +98,7 @@ public abstract class BaseGDALGridFormat extends AbstractGridFormat implements F
      */
     @Override
     public GridCoverageWriter getWriter(Object destination) {
-        throw new UnsupportedOperationException(
-                "This plugin does not support writing at this time.");
+        throw new UnsupportedOperationException("This plugin does not support writing at this time.");
     }
 
     /**
@@ -129,8 +119,7 @@ public abstract class BaseGDALGridFormat extends AbstractGridFormat implements F
      */
     @Override
     public GridCoverageWriter getWriter(Object destination, Hints hints) {
-        throw new UnsupportedOperationException(
-                "This plugin does not support writing at this time.");
+        throw new UnsupportedOperationException("This plugin does not support writing at this time.");
     }
 
     /** @see org.geotools.data.coverage.grid.AbstractGridFormat#accepts(java.lang.Object input) */

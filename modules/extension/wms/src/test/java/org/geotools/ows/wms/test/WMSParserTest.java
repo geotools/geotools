@@ -58,7 +58,8 @@ public class WMSParserTest {
                         "Don't know how to handle a get request over " + url.toExternalForm());
             }
         }
-    };
+    }
+    ;
 
     @Test
     public void testWMS111EntityResolver() throws Exception {
@@ -66,18 +67,11 @@ public class WMSParserTest {
         hints.put(XMLHandlerHints.ENTITY_RESOLVER, PreventLocalEntityResolver.INSTANCE);
 
         WebMapServer wms =
-                new WebMapServer(
-                        new URL("http://test.org"),
-                        new CapsMockClient("1.1.1Capabilities.xml"),
-                        hints);
+                new WebMapServer(new URL("http://test.org"), new CapsMockClient("1.1.1Capabilities.xml"), hints);
         assertEquals("1.1.1", wms.getCapabilities().getVersion());
 
         try {
-            wms =
-                    new WebMapServer(
-                            new URL("http://test.org"),
-                            new CapsMockClient("1.1.1Capabilities-xxe.xml"),
-                            hints);
+            wms = new WebMapServer(new URL("http://test.org"), new CapsMockClient("1.1.1Capabilities-xxe.xml"), hints);
             fail("Should have failed with a XML parsing error");
         } catch (ServiceException e) {
             assertTrue(e.getMessage().contains("Error while parsing XML"));
@@ -90,21 +84,14 @@ public class WMSParserTest {
         hints.put(DocumentFactory.VALIDATION_HINT, Boolean.TRUE);
 
         WebMapServer wms =
-                new WebMapServer(
-                        new URL("http://test.org"),
-                        new CapsMockClient("1.3.0Capabilities.xml"),
-                        hints);
+                new WebMapServer(new URL("http://test.org"), new CapsMockClient("1.3.0Capabilities.xml"), hints);
         assertEquals("1.3.0", wms.getCapabilities().getVersion());
         assertEquals(Boolean.TRUE, wms.getHints().get(DocumentFactory.VALIDATION_HINT));
 
         hints = new HashMap<>();
         hints.put(DocumentFactory.VALIDATION_HINT, Boolean.FALSE);
 
-        wms =
-                new WebMapServer(
-                        new URL("http://test.org"),
-                        new CapsMockClient("1.3.0Capabilities.xml"),
-                        hints);
+        wms = new WebMapServer(new URL("http://test.org"), new CapsMockClient("1.3.0Capabilities.xml"), hints);
 
         assertEquals("1.3.0", wms.getCapabilities().getVersion());
         assertEquals(Boolean.FALSE, wms.getHints().get(DocumentFactory.VALIDATION_HINT));
@@ -116,17 +103,10 @@ public class WMSParserTest {
         hints.put(XMLHandlerHints.ENTITY_RESOLVER, PreventLocalEntityResolver.INSTANCE);
 
         WebMapServer wms =
-                new WebMapServer(
-                        new URL("http://test.org"),
-                        new CapsMockClient("1.3.0Capabilities.xml"),
-                        hints);
+                new WebMapServer(new URL("http://test.org"), new CapsMockClient("1.3.0Capabilities.xml"), hints);
         assertEquals("1.3.0", wms.getCapabilities().getVersion());
         try {
-            wms =
-                    new WebMapServer(
-                            new URL("http://test.org"),
-                            new CapsMockClient("1.3.0Capabilities-xxe.xml"),
-                            hints);
+            wms = new WebMapServer(new URL("http://test.org"), new CapsMockClient("1.3.0Capabilities-xxe.xml"), hints);
             fail("Should have failed with a XML parsing error");
         } catch (ServiceException e) {
             assertTrue(e.getMessage().contains("Error while parsing XML"));

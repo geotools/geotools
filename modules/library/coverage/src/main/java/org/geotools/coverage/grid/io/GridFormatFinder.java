@@ -81,8 +81,7 @@ public final class GridFormatFinder {
     private static FactoryRegistry getServiceRegistry() {
         assert Thread.holdsLock(GridFormatFinder.class);
         if (registry == null) {
-            registry =
-                    new FactoryCreator(Arrays.asList(new Class<?>[] {GridFormatFactorySpi.class}));
+            registry = new FactoryCreator(Arrays.asList(new Class<?>[] {GridFormatFactorySpi.class}));
         }
         return registry;
     }

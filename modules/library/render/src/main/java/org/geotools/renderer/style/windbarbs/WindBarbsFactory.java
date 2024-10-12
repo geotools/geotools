@@ -55,16 +55,14 @@ public class WindBarbsFactory implements MarkFactory {
             new AffineTransform2D(AffineTransform.getScaleInstance(-1, 1));
 
     /** The loggermodule. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(WindBarbsFactory.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(WindBarbsFactory.class);
 
     public static final String WINDBARBS_PREFIX = "windbarbs://";
 
     private static final String DEFAULT_NAME = "default";
 
     private static Pattern SPEED_PATTERN =
-            Pattern.compile(
-                    "(.*?)\\((.{1,})\\)(.*)"); // Pattern.compile("(.*?)(\\d+\\.?\\d*)(.*)");
+            Pattern.compile("(.*?)\\((.{1,})\\)(.*)"); // Pattern.compile("(.*?)(\\d+\\.?\\d*)(.*)");
 
     private static Pattern WINDBARB_SET_PATTERN = Pattern.compile("(.*?)://(.*)\\((.*)");
 
@@ -74,9 +72,7 @@ public class WindBarbsFactory implements MarkFactory {
 
     static {
         CACHE = new SoftValueHashMap<>(1); // make room for the default definition
-        CACHE.put(
-                WindBarb.DEFAULT_WINDBARB_DEFINITION,
-                createWindBarbs(WindBarb.DEFAULT_WINDBARB_DEFINITION));
+        CACHE.put(WindBarb.DEFAULT_WINDBARB_DEFINITION, createWindBarbs(WindBarb.DEFAULT_WINDBARB_DEFINITION));
     }
 
     /**
@@ -149,10 +145,7 @@ public class WindBarbsFactory implements MarkFactory {
                 windBarbName = matcher.group(2);
             } catch (Exception e) {
                 if (LOGGER.isLoggable(Level.INFO)) {
-                    LOGGER.log(
-                            Level.INFO,
-                            "Unable to parse windbarb set from string: " + wellKnownName,
-                            e);
+                    LOGGER.log(Level.INFO, "Unable to parse windbarb set from string: " + wellKnownName, e);
                 }
 
                 return null;
@@ -264,8 +257,7 @@ public class WindBarbsFactory implements MarkFactory {
     private static Map<Integer, Shape> createWindBarbs(WindBarbDefinition definition) {
         final Map<Integer, Shape> windBarbsMapping = new HashMap<>();
         for (int i = 0; i <= NUMBER_OF_ITEMS_IN_CACHE; i++) {
-            windBarbsMapping.put(
-                    i, new WindBarb(definition, i * 5).build()); // pass over the knots definition
+            windBarbsMapping.put(i, new WindBarb(definition, i * 5).build()); // pass over the knots definition
         }
 
         // no module x----- symbol
@@ -274,8 +266,7 @@ public class WindBarbsFactory implements MarkFactory {
     }
 
     /** */
-    private Shape getWindBarb(
-            String windBarbName, double speed, String units, Map<String, String> params) {
+    private Shape getWindBarb(String windBarbName, double speed, String units, Map<String, String> params) {
         // speed
         try {
             double knots = SpeedConverter.toKnots(speed, units);
@@ -295,8 +286,7 @@ public class WindBarbsFactory implements MarkFactory {
         return getWindBarb(windBarbName, speed, units, null);
     }
 
-    private Shape getWindBarbForKnots(
-            final String windBarbName, final double knots, Map<String, String> params) {
+    private Shape getWindBarbForKnots(final String windBarbName, final double knots, Map<String, String> params) {
         // No module is signaled by NaN
         // checking the barbs using our own limits
         int index = -1; // no wind module is -1
@@ -336,8 +326,7 @@ public class WindBarbsFactory implements MarkFactory {
                 // flip shape on Y axis
                 return SOUTHERN_EMISPHERE_FLIP.createTransformedShape(shp);
             }
-            if (params.containsKey("hemisphere")
-                    && params.get("hemisphere").equalsIgnoreCase("s")) {
+            if (params.containsKey("hemisphere") && params.get("hemisphere").equalsIgnoreCase("s")) {
                 // flip shape on Y axis
                 return SOUTHERN_EMISPHERE_FLIP.createTransformedShape(shp);
             }
@@ -370,10 +359,7 @@ public class WindBarbsFactory implements MarkFactory {
             // check and parse
             if (temp == null || temp.length() <= 0) {
                 if (LOGGER.isLoggable(Level.INFO)) {
-                    LOGGER.info(
-                            "Wrong vectorLength provided: "
-                                    + temp
-                                    + " resorting to default wind barb definition");
+                    LOGGER.info("Wrong vectorLength provided: " + temp + " resorting to default wind barb definition");
                 }
                 return retValue; // default
             }
@@ -381,19 +367,13 @@ public class WindBarbsFactory implements MarkFactory {
                 vectorLength = Integer.parseInt(temp);
             } catch (Exception e) {
                 if (LOGGER.isLoggable(Level.INFO)) {
-                    LOGGER.info(
-                            "Wrong vectorLength provided: "
-                                    + temp
-                                    + " resorting to default wind barb definition");
+                    LOGGER.info("Wrong vectorLength provided: " + temp + " resorting to default wind barb definition");
                 }
                 return retValue; // default
             }
             if (vectorLength <= 0) {
                 if (LOGGER.isLoggable(Level.INFO)) {
-                    LOGGER.info(
-                            "Wrong vectorLength provided: "
-                                    + temp
-                                    + " resorting to default wind barb definition");
+                    LOGGER.info("Wrong vectorLength provided: " + temp + " resorting to default wind barb definition");
                 }
                 return retValue; // default
             }
@@ -413,9 +393,7 @@ public class WindBarbsFactory implements MarkFactory {
             if (temp == null || temp.length() <= 0) {
                 if (LOGGER.isLoggable(Level.INFO)) {
                     LOGGER.info(
-                            "Wrong basePennantLength provided: "
-                                    + temp
-                                    + " resorting to default wind barb definition");
+                            "Wrong basePennantLength provided: " + temp + " resorting to default wind barb definition");
                 }
                 return retValue; // default
             }
@@ -424,18 +402,14 @@ public class WindBarbsFactory implements MarkFactory {
             } catch (Exception e) {
                 if (LOGGER.isLoggable(Level.INFO)) {
                     LOGGER.info(
-                            "Wrong basePennantLength provided: "
-                                    + temp
-                                    + " resorting to default wind barb definition");
+                            "Wrong basePennantLength provided: " + temp + " resorting to default wind barb definition");
                 }
                 return retValue; // default
             }
             if (basePennantLength <= 0 || basePennantLength >= vectorLength) {
                 if (LOGGER.isLoggable(Level.INFO)) {
                     LOGGER.info(
-                            "Wrong basePennantLength provided: "
-                                    + temp
-                                    + " resorting to default wind barb definition");
+                            "Wrong basePennantLength provided: " + temp + " resorting to default wind barb definition");
                 }
                 return retValue; // default
             }
@@ -455,9 +429,7 @@ public class WindBarbsFactory implements MarkFactory {
             if (temp == null || temp.length() <= 0) {
                 if (LOGGER.isLoggable(Level.INFO)) {
                     LOGGER.info(
-                            "Wrong elementsSpacing provided: "
-                                    + temp
-                                    + " resorting to default wind barb definition");
+                            "Wrong elementsSpacing provided: " + temp + " resorting to default wind barb definition");
                 }
                 return retValue; // default
             }
@@ -466,9 +438,7 @@ public class WindBarbsFactory implements MarkFactory {
             } catch (Exception e) {
                 if (LOGGER.isLoggable(Level.INFO)) {
                     LOGGER.info(
-                            "Wrong elementsSpacing provided: "
-                                    + temp
-                                    + " resorting to default wind barb definition");
+                            "Wrong elementsSpacing provided: " + temp + " resorting to default wind barb definition");
                 }
                 return retValue; // default
             }
@@ -477,9 +447,7 @@ public class WindBarbsFactory implements MarkFactory {
                     || elementsSpacing + basePennantLength >= vectorLength) {
                 if (LOGGER.isLoggable(Level.INFO)) {
                     LOGGER.info(
-                            "Wrong elementsSpacing provided: "
-                                    + temp
-                                    + " resorting to default wind barb definition");
+                            "Wrong elementsSpacing provided: " + temp + " resorting to default wind barb definition");
                 }
                 return retValue; // default
             }
@@ -499,9 +467,7 @@ public class WindBarbsFactory implements MarkFactory {
             if (temp == null || temp.length() <= 0) {
                 if (LOGGER.isLoggable(Level.INFO)) {
                     LOGGER.info(
-                            "Wrong longBarbLength provided: "
-                                    + temp
-                                    + " resorting to default wind barb definition");
+                            "Wrong longBarbLength provided: " + temp + " resorting to default wind barb definition");
                 }
                 return retValue; // default
             }
@@ -510,18 +476,14 @@ public class WindBarbsFactory implements MarkFactory {
             } catch (Exception e) {
                 if (LOGGER.isLoggable(Level.INFO)) {
                     LOGGER.info(
-                            "Wrong longBarbLength provided: "
-                                    + temp
-                                    + " resorting to default wind barb definition");
+                            "Wrong longBarbLength provided: " + temp + " resorting to default wind barb definition");
                 }
                 return retValue; // default
             }
             if (longBarbLength <= 0) {
                 if (LOGGER.isLoggable(Level.INFO)) {
                     LOGGER.info(
-                            "Wrong longBarbLength provided: "
-                                    + temp
-                                    + " resorting to default wind barb definition");
+                            "Wrong longBarbLength provided: " + temp + " resorting to default wind barb definition");
                 }
                 return retValue; // default
             }
@@ -541,9 +503,7 @@ public class WindBarbsFactory implements MarkFactory {
             if (temp == null || temp.length() <= 0) {
                 if (LOGGER.isLoggable(Level.INFO)) {
                     LOGGER.info(
-                            "Wrong zeroWindRadius provided: "
-                                    + temp
-                                    + " resorting to default wind barb definition");
+                            "Wrong zeroWindRadius provided: " + temp + " resorting to default wind barb definition");
                 }
                 return retValue; // default
             }
@@ -552,25 +512,20 @@ public class WindBarbsFactory implements MarkFactory {
             } catch (Exception e) {
                 if (LOGGER.isLoggable(Level.INFO)) {
                     LOGGER.info(
-                            "Wrong zeroWindRadius provided: "
-                                    + temp
-                                    + " resorting to default wind barb definition");
+                            "Wrong zeroWindRadius provided: " + temp + " resorting to default wind barb definition");
                 }
                 return retValue; // default
             }
             if (zeroWindRadius <= 0) {
                 if (LOGGER.isLoggable(Level.INFO)) {
                     LOGGER.info(
-                            "Wrong zeroWindRadius provided: "
-                                    + temp
-                                    + " resorting to default wind barb definition");
+                            "Wrong zeroWindRadius provided: " + temp + " resorting to default wind barb definition");
                 }
                 return retValue; // default
             }
         }
 
         // new definition
-        return new WindBarbDefinition(
-                vectorLength, basePennantLength, elementsSpacing, longBarbLength, zeroWindRadius);
+        return new WindBarbDefinition(vectorLength, basePennantLength, elementsSpacing, longBarbLength, zeroWindRadius);
     }
 }

@@ -34,8 +34,7 @@ import org.geotools.util.factory.Hints;
  */
 public final class JP2MrSIDFormat extends BaseGDALGridFormat implements Format {
     /** Logger. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(JP2MrSIDFormat.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(JP2MrSIDFormat.class);
 
     /** Creates an instance and sets the metadata. */
     public JP2MrSIDFormat() {

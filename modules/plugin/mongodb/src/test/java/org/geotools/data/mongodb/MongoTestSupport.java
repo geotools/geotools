@@ -53,8 +53,7 @@ public abstract class MongoTestSupport extends OnlineTestCase {
     }
 
     DB doConnect() throws Exception {
-        MongoClientURI clientURI =
-                new MongoClientURI(fixture.getProperty(MongoDataStoreFactory.DATASTORE_URI.key));
+        MongoClientURI clientURI = new MongoClientURI(fixture.getProperty(MongoDataStoreFactory.DATASTORE_URI.key));
         client = new MongoClient(clientURI);
         return client.getDB(clientURI.getDatabase());
     }
@@ -74,12 +73,8 @@ public abstract class MongoTestSupport extends OnlineTestCase {
     @Override
     protected Properties createExampleFixture() {
         Properties fixture = new Properties();
-        fixture.put(
-                MongoDataStoreFactory.DATASTORE_URI.key,
-                "mongodb://geotools:geotools@localhost:27017/geotools");
-        fixture.put(
-                MongoDataStoreFactory.SCHEMASTORE_URI.key,
-                "mongodb://geotools:geotools@localhost:27017/geotools");
+        fixture.put(MongoDataStoreFactory.DATASTORE_URI.key, "mongodb://geotools:geotools@localhost:27017/geotools");
+        fixture.put(MongoDataStoreFactory.SCHEMASTORE_URI.key, "mongodb://geotools:geotools@localhost:27017/geotools");
 
         return fixture;
     }

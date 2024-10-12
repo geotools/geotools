@@ -32,21 +32,11 @@ import org.geotools.util.factory.GeoTools;
  */
 public class JNDIDataSourceFactory extends AbstractDataSourceFactorySpi {
 
-    public static final Param DSTYPE =
-            new Param(
-                    "dstype",
-                    String.class,
-                    "Must be JNDI",
-                    false,
-                    null,
-                    Collections.singletonMap(Parameter.LEVEL, "program"));
+    public static final Param DSTYPE = new Param(
+            "dstype", String.class, "Must be JNDI", false, null, Collections.singletonMap(Parameter.LEVEL, "program"));
 
     public static final Param JNDI_REFNAME =
-            new Param(
-                    "jdniReferenceName",
-                    String.class,
-                    "The path where the connection pool must be located",
-                    true);
+            new Param("jdniReferenceName", String.class, "The path where the connection pool must be located", true);
 
     private static final Param[] PARAMS = {DSTYPE, JNDI_REFNAME};
 

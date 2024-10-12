@@ -46,8 +46,7 @@ class ElasticFeatureReaderScroll implements FeatureReader<SimpleFeatureType, Sim
 
     private final Set<String> scrollIds;
 
-    public ElasticFeatureReaderScroll(
-            ContentState contentState, ElasticResponse searchResponse, int maxFeatures) {
+    public ElasticFeatureReaderScroll(ContentState contentState, ElasticResponse searchResponse, int maxFeatures) {
         this.contentState = contentState;
         this.maxFeatures = maxFeatures;
         this.numFeatures = 0;
@@ -70,8 +69,7 @@ class ElasticFeatureReaderScroll implements FeatureReader<SimpleFeatureType, Sim
             final int n = maxFeatures - numFeatures;
             hits = searchResponse.getResults().getHits().subList(0, n);
         }
-        delegate =
-                new ElasticFeatureReader(contentState, hits, searchResponse.getAggregations(), 0);
+        delegate = new ElasticFeatureReader(contentState, hits, searchResponse.getAggregations(), 0);
         nextScrollId = searchResponse.getScrollId();
         lastScroll = numHits == 0 || numFeatures + hits.size() >= maxFeatures;
         LOGGER.fine("Scoll numHits=" + hits.size() + " (total=" + numFeatures + hits.size());

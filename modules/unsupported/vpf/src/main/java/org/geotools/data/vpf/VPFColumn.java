@@ -90,13 +90,12 @@ public class VPFColumn {
         this.thematicIdx = thematicIdx;
         this.narrTable = narrTable;
         // VPFLogger.log("buildDescriptor: " + name);
-        descriptor =
-                new AttributeTypeBuilder()
-                        .length(getColumnSize())
-                        .description(colDesc)
-                        .binding(getColumnClass())
-                        .nillable(true)
-                        .buildDescriptor(name);
+        descriptor = new AttributeTypeBuilder()
+                .length(getColumnSize())
+                .description(colDesc)
+                .binding(getColumnClass())
+                .nillable(true)
+                .buildDescriptor(name);
         descriptor.getUserData().put("column", this);
     }
 

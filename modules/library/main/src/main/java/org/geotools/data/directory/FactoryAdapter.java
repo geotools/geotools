@@ -54,13 +54,9 @@ class FactoryAdapter {
     public DataStore getStore(File curr, URI namespaceURI) throws IOException {
         Map<String, Serializable> params = new HashMap<>();
         if (nsParam != null) {
-            if (String.class.isAssignableFrom(nsParam.type))
-                params.put(nsParam.key, namespaceURI.toString());
-            else if (URI.class.isAssignableFrom(nsParam.type))
-                params.put(nsParam.key, namespaceURI);
-            else
-                throw new RuntimeException(
-                        "Don't know how to handle namespace param: " + nsParam.key);
+            if (String.class.isAssignableFrom(nsParam.type)) params.put(nsParam.key, namespaceURI.toString());
+            else if (URI.class.isAssignableFrom(nsParam.type)) params.put(nsParam.key, namespaceURI);
+            else throw new RuntimeException("Don't know how to handle namespace param: " + nsParam.key);
         }
 
         if (File.class.isAssignableFrom(fileParam.type)) params.put(fileParam.key, curr);

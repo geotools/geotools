@@ -30,10 +30,7 @@ public class FilterFunction_acos extends FunctionExpressionImpl {
 
     // public static FunctionName NAME = new FunctionNameImpl("acos","value");
     public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "acos",
-                    parameter("arc cosine", Double.class),
-                    parameter("value", Double.class));
+            new FunctionNameImpl("acos", parameter("arc cosine", Double.class), parameter("value", Double.class));
 
     public FilterFunction_acos() {
         super("acos");

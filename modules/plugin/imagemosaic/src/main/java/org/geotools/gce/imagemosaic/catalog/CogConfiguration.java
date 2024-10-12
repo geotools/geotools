@@ -37,10 +37,10 @@ public class CogConfiguration implements SourceSPIProviderFactory {
 
     private static final ImageReaderSpi COG_IMAGE_READER_SPI = new CogImageReaderSpi();
 
-    private static final ImageInputStreamSpi COG_IMAGE_INPUT_STREAM_SPI =
-            new CogImageInputStreamSpi();
+    private static final ImageInputStreamSpi COG_IMAGE_INPUT_STREAM_SPI = new CogImageInputStreamSpi();
 
-    public CogConfiguration() {};
+    public CogConfiguration() {}
+    ;
 
     public CogConfiguration(final CogConfiguration that) {
         Utilities.ensureNonNull("CogConfiguration", that);
@@ -128,12 +128,8 @@ public class CogConfiguration implements SourceSPIProviderFactory {
 
     @Override
     public SourceSPIProvider getSourceSPIProvider(Object sourceUrl) {
-        SourceSPIProvider readerInputObject =
-                new CogSourceSPIProvider(
-                        createUri(sourceUrl.toString()),
-                        COG_IMAGE_READER_SPI,
-                        COG_IMAGE_INPUT_STREAM_SPI,
-                        getRangeReader());
+        SourceSPIProvider readerInputObject = new CogSourceSPIProvider(
+                createUri(sourceUrl.toString()), COG_IMAGE_READER_SPI, COG_IMAGE_INPUT_STREAM_SPI, getRangeReader());
         return readerInputObject;
     }
 }

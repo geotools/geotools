@@ -85,8 +85,8 @@ public abstract class BasicSQLDialect extends SQLDialect {
      * cannot be encoded in WKB and several databases fail to handle them property. Common treatment
      * is to equate them to NULL
      */
-    public abstract void encodeGeometryValue(
-            Geometry value, int dimension, int srid, StringBuffer sql) throws IOException;
+    public abstract void encodeGeometryValue(Geometry value, int dimension, int srid, StringBuffer sql)
+            throws IOException;
 
     /**
      * Creates the filter encoder to be used by the datastore when encoding query predicates.
@@ -111,8 +111,7 @@ public abstract class BasicSQLDialect extends SQLDialect {
      * @param cx The database connection
      * @param featureType The feature type the select is executing against.
      */
-    public void onSelect(Statement select, Connection cx, SimpleFeatureType featureType)
-            throws SQLException {}
+    public void onSelect(Statement select, Connection cx, SimpleFeatureType featureType) throws SQLException {}
 
     /**
      * Callback invoked before a DELETE statement is executed against the database.
@@ -125,8 +124,7 @@ public abstract class BasicSQLDialect extends SQLDialect {
      * @param cx The database connection
      * @param featureType The feature type the delete is executing against.
      */
-    public void onDelete(Statement delete, Connection cx, SimpleFeatureType featureType)
-            throws SQLException {}
+    public void onDelete(Statement delete, Connection cx, SimpleFeatureType featureType) throws SQLException {}
 
     /**
      * Callback invoked before an INSERT statement is executed against the database.
@@ -139,8 +137,7 @@ public abstract class BasicSQLDialect extends SQLDialect {
      * @param cx The database connection
      * @param featureType The feature type the insert is executing against.
      */
-    public void onInsert(Statement insert, Connection cx, SimpleFeatureType featureType)
-            throws SQLException {}
+    public void onInsert(Statement insert, Connection cx, SimpleFeatureType featureType) throws SQLException {}
 
     /**
      * Callback invoked before an UPDATE statement is executed against the database.
@@ -153,6 +150,5 @@ public abstract class BasicSQLDialect extends SQLDialect {
      * @param cx The database connection
      * @param featureType The feature type the update is executing against.
      */
-    public void onUpdate(Statement update, Connection cx, SimpleFeatureType featureType)
-            throws SQLException {}
+    public void onUpdate(Statement update, Connection cx, SimpleFeatureType featureType) throws SQLException {}
 }

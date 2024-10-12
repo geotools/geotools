@@ -58,21 +58,13 @@ public class LRSSegmentProcess implements VectorProcess {
     public FeatureCollection<? extends FeatureType, ? extends Feature> execute(
             @DescribeParameter(name = "features", description = "Input feature collection")
                     FeatureCollection<? extends FeatureType, ? extends Feature> featureCollection,
-            @DescribeParameter(
-                            name = "from_measure_attb",
-                            description = "Attribute providing start measure of feature")
+            @DescribeParameter(name = "from_measure_attb", description = "Attribute providing start measure of feature")
                     String fromMeasureAttb,
-            @DescribeParameter(
-                            name = "to_measure_attb",
-                            description = "Attribute providing end measure of feature")
+            @DescribeParameter(name = "to_measure_attb", description = "Attribute providing end measure of feature")
                     String toMeasureAttb,
-            @DescribeParameter(
-                            name = "from_measure",
-                            description = "Measure for start of segment to extract")
+            @DescribeParameter(name = "from_measure", description = "Measure for start of segment to extract")
                     Double fromMeasure,
-            @DescribeParameter(
-                            name = "to_measure",
-                            description = "Measure for end of segment to extract")
+            @DescribeParameter(name = "to_measure", description = "Measure for end of segment to extract")
                     Double toMeasure)
             throws ProcessException {
         DefaultFeatureCollection results = new DefaultFeatureCollection();
@@ -81,13 +73,10 @@ public class LRSSegmentProcess implements VectorProcess {
                 LOGGER.info("No features provided in request");
                 return results;
             }
-            if (fromMeasureAttb == null
-                    || featureCollection.getSchema().getDescriptor(fromMeasureAttb) == null) {
-                throw new ProcessException(
-                        "The from_measure_attb parameter was not provided or not defined in schema");
+            if (fromMeasureAttb == null || featureCollection.getSchema().getDescriptor(fromMeasureAttb) == null) {
+                throw new ProcessException("The from_measure_attb parameter was not provided or not defined in schema");
             }
-            if (toMeasureAttb == null
-                    || featureCollection.getSchema().getDescriptor(toMeasureAttb) == null) {
+            if (toMeasureAttb == null || featureCollection.getSchema().getDescriptor(toMeasureAttb) == null) {
                 throw new ProcessException("The to_measure_attb parameter was not provided");
             }
             if (fromMeasure == null) {
@@ -104,31 +93,22 @@ public class LRSSegmentProcess implements VectorProcess {
             Feature firstFeature = null;
             LineMerger lineMerger = new LineMerger();
             if (toMeasure.doubleValue() > fromMeasure.doubleValue()) {
-                try (FeatureIterator<? extends Feature> featureIterator =
-                        featureCollection.features()) {
+                try (FeatureIterator<? extends Feature> featureIterator = featureCollection.features()) {
                     while (featureIterator.hasNext()) {
                         Feature feature = featureIterator.next();
                         if (firstFeature == null) firstFeature = feature;
                         if (processFeature(
-                                fromMeasureAttb,
-                                toMeasureAttb,
-                                fromMeasure,
-                                toMeasure,
-                                lineMerger,
-                                feature)) {
+                                fromMeasureAttb, toMeasureAttb, fromMeasure, toMeasure, lineMerger, feature)) {
                             continue;
                         }
                     }
                 }
                 @SuppressWarnings("unchecked")
                 List<LineString> merged = (List<LineString>) lineMerger.getMergedLineStrings();
-                results.add(
-                        createTargetFeature(
-                                firstFeature,
-                                (SimpleFeatureType) firstFeature.getType(),
-                                new MultiLineString(
-                                        merged.toArray(new LineString[merged.size()]),
-                                        geometryFactory)));
+                results.add(createTargetFeature(
+                        firstFeature,
+                        (SimpleFeatureType) firstFeature.getType(),
+                        new MultiLineString(merged.toArray(new LineString[merged.size()]), geometryFactory)));
             }
 
             return results;
@@ -147,75 +127,49 @@ public class LRSSegmentProcess implements VectorProcess {
             Double toMeasure,
             LineMerger lineMerger,
             Feature feature) {
-        Double featureFromMeasure = (Double) feature.getProperty(fromMeasureAttb).getValue();
+        Double featureFromMeasure =
+                (Double) feature.getProperty(fromMeasureAttb).getValue();
         Double featureToMeasure = (Double) feature.getProperty(toMeasureAttb).getValue();
 
         if (fromMeasure < featureToMeasure && toMeasure > featureFromMeasure) {
             try {
                 if (fromMeasure <= featureFromMeasure && toMeasure >= featureToMeasure) {
-                    lineMerger.add((Geometry) feature.getDefaultGeometryProperty().getValue());
+                    lineMerger.add(
+                            (Geometry) feature.getDefaultGeometryProperty().getValue());
                 } else if (fromMeasure > featureFromMeasure && toMeasure < featureToMeasure) {
-                    LengthIndexedLine lengthIndexedLine =
-                            new LengthIndexedLine(
-                                    (Geometry) feature.getDefaultGeometryProperty().getValue());
+                    LengthIndexedLine lengthIndexedLine = new LengthIndexedLine(
+                            (Geometry) feature.getDefaultGeometryProperty().getValue());
                     double featureLength = featureToMeasure - featureFromMeasure;
                     double startOffset = fromMeasure - featureFromMeasure;
                     double stopOffset = toMeasure - featureFromMeasure;
                     double calcLength =
-                            ((Geometry) feature.getDefaultGeometryProperty().getValue())
-                                    .getLength();
+                            ((Geometry) feature.getDefaultGeometryProperty().getValue()).getLength();
                     if (calcLength == 0 || featureLength == 0) return true;
-                    Geometry extracted =
-                            lengthIndexedLine.extractLine(
-                                    startOffset * calcLength / featureLength,
-                                    stopOffset * calcLength / featureLength);
+                    Geometry extracted = lengthIndexedLine.extractLine(
+                            startOffset * calcLength / featureLength, stopOffset * calcLength / featureLength);
                     if (!extracted.isEmpty()) lineMerger.add(extracted);
                 } else if (fromMeasure > featureFromMeasure) {
-                    LengthIndexedLine lengthIndexedLine =
-                            new LengthIndexedLine(
-                                    (Geometry) feature.getDefaultGeometryProperty().getValue());
+                    LengthIndexedLine lengthIndexedLine = new LengthIndexedLine(
+                            (Geometry) feature.getDefaultGeometryProperty().getValue());
                     double featureLength = featureToMeasure - featureFromMeasure;
                     double startOffset = fromMeasure - featureFromMeasure;
                     double calcLength =
-                            ((Geometry) feature.getDefaultGeometryProperty().getValue())
-                                    .getLength();
+                            ((Geometry) feature.getDefaultGeometryProperty().getValue()).getLength();
                     if (calcLength == 0 || featureLength == 0) return true;
                     Geometry extracted =
-                            lengthIndexedLine.extractLine(
-                                    startOffset * calcLength / featureLength, calcLength);
+                            lengthIndexedLine.extractLine(startOffset * calcLength / featureLength, calcLength);
                     if (!extracted.isEmpty()) lineMerger.add(extracted);
                 } else {
-                    LengthIndexedLine lengthIndexedLine =
-                            new LengthIndexedLine(
-                                    (Geometry) feature.getDefaultGeometryProperty().getValue());
+                    LengthIndexedLine lengthIndexedLine = new LengthIndexedLine(
+                            (Geometry) feature.getDefaultGeometryProperty().getValue());
                     double featureLength = featureToMeasure - featureFromMeasure;
                     double stopOffset = toMeasure - featureFromMeasure;
                     double calcLength =
-                            ((Geometry) feature.getDefaultGeometryProperty().getValue())
-                                    .getLength();
+                            ((Geometry) feature.getDefaultGeometryProperty().getValue()).getLength();
                     if (calcLength == 0 || featureLength == 0) return true;
-                    Geometry extracted =
-                            lengthIndexedLine.extractLine(
-                                    0, stopOffset * calcLength / featureLength);
+                    Geometry extracted = lengthIndexedLine.extractLine(0, stopOffset * calcLength / featureLength);
                     if (extracted.isEmpty() || extracted.getLength() == 0.0) {
-                        LOGGER.info(
-                                "Empty segment: featureFromMeasure="
-                                        + featureFromMeasure
-                                        + " featureToMeasure:"
-                                        + featureToMeasure
-                                        + " toMeasure:"
-                                        + toMeasure
-                                        + " fromMeasure:"
-                                        + fromMeasure);
-                    } else {
-                        lineMerger.add(extracted);
-                    }
-                }
-            } catch (Exception e) {
-                LOGGER.warning(
-                        "Error merging line strings: "
-                                + e
-                                + " featureFromMeasure="
+                        LOGGER.info("Empty segment: featureFromMeasure="
                                 + featureFromMeasure
                                 + " featureToMeasure:"
                                 + featureToMeasure
@@ -223,6 +177,21 @@ public class LRSSegmentProcess implements VectorProcess {
                                 + toMeasure
                                 + " fromMeasure:"
                                 + fromMeasure);
+                    } else {
+                        lineMerger.add(extracted);
+                    }
+                }
+            } catch (Exception e) {
+                LOGGER.warning("Error merging line strings: "
+                        + e
+                        + " featureFromMeasure="
+                        + featureFromMeasure
+                        + " featureToMeasure:"
+                        + featureToMeasure
+                        + " toMeasure:"
+                        + toMeasure
+                        + " fromMeasure:"
+                        + fromMeasure);
             }
         }
         return false;
@@ -243,7 +212,8 @@ public class LRSSegmentProcess implements VectorProcess {
             AttributeDescriptor geomAttbType = targetFeatureType.getGeometryDescriptor();
             Object[] attributes = new Object[targetFeatureType.getAttributeCount()];
             for (int i = 0; i < attributes.length; i++) {
-                AttributeDescriptor attbType = targetFeatureType.getAttributeDescriptors().get(i);
+                AttributeDescriptor attbType =
+                        targetFeatureType.getAttributeDescriptors().get(i);
                 if (attbType.equals(geomAttbType)) {
                     attributes[i] = multiLineString;
                 } else {

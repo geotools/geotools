@@ -43,14 +43,13 @@ public class GeobufFeatureStore extends ContentFeatureStore {
         this.dimension = dimension;
     }
 
-    GeobufFeatureSource delegate =
-            new GeobufFeatureSource(entry, query, precision, dimension) {
-                @Override
-                public void setTransaction(Transaction transaction) {
-                    super.setTransaction(transaction);
-                    GeobufFeatureStore.this.setTransaction(transaction);
-                }
-            };
+    GeobufFeatureSource delegate = new GeobufFeatureSource(entry, query, precision, dimension) {
+        @Override
+        public void setTransaction(Transaction transaction) {
+            super.setTransaction(transaction);
+            GeobufFeatureStore.this.setTransaction(transaction);
+        }
+    };
 
     @Override
     public void setTransaction(Transaction transaction) {
@@ -66,8 +65,7 @@ public class GeobufFeatureStore extends ContentFeatureStore {
     }
 
     @Override
-    protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query)
-            throws IOException {
+    protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query) throws IOException {
         return delegate.getReaderInternal(query);
     }
 

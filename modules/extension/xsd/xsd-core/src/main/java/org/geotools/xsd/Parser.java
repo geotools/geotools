@@ -73,8 +73,7 @@ public class Parser {
     private static final String SAX_PROPERTY_PREFIX = "http://xml.org/sax/properties/";
 
     private static final String JAXP_PROPERTY_PREFIX = "http://www.oracle.com/xml/jaxp/properties/";
-    private static final String JDK_ENTITY_EXPANSION_LIMIT =
-            JAXP_PROPERTY_PREFIX + "entityExpansionLimit";
+    private static final String JDK_ENTITY_EXPANSION_LIMIT = JAXP_PROPERTY_PREFIX + "entityExpansionLimit";
     private static final Integer DEFAULT_ENTITY_EXPANSION_LIMIT = 100;
 
     /** sax handler which maintains the element stack */
@@ -120,8 +119,7 @@ public class Parser {
      *
      * @return The object representation of the root element of the document.
      */
-    public Object parse(InputStream input)
-            throws IOException, SAXException, ParserConfigurationException {
+    public Object parse(InputStream input) throws IOException, SAXException, ParserConfigurationException {
         return parse(new InputSource(input));
     }
 
@@ -133,8 +131,7 @@ public class Parser {
      *
      * @return The object representation of the root element of the document.
      */
-    public Object parse(Reader reader)
-            throws IOException, SAXException, ParserConfigurationException {
+    public Object parse(Reader reader) throws IOException, SAXException, ParserConfigurationException {
         return parse(new InputSource(reader));
     }
 
@@ -163,9 +160,7 @@ public class Parser {
 
         tx.transform(source, result);
 
-        return parse(
-                new ByteArrayInputStream(
-                        ((ByteArrayOutputStream) result.getOutputStream()).toByteArray()));
+        return parse(new ByteArrayInputStream(((ByteArrayOutputStream) result.getOutputStream()).toByteArray()));
     }
 
     /**
@@ -176,8 +171,7 @@ public class Parser {
      *
      * @return The object representation of the root element of the document.
      */
-    public Object parse(InputSource source)
-            throws IOException, SAXException, ParserConfigurationException {
+    public Object parse(InputSource source) throws IOException, SAXException, ParserConfigurationException {
         parser = parser();
 
         parser.parse(source, handler);
@@ -345,8 +339,7 @@ public class Parser {
      * <p>This method does not do any of the work done by {@link #parse(InputSource)}, it only
      * validates.
      */
-    public void validate(InputStream in)
-            throws IOException, SAXException, ParserConfigurationException {
+    public void validate(InputStream in) throws IOException, SAXException, ParserConfigurationException {
         validate(new InputSource(in));
     }
 
@@ -360,8 +353,7 @@ public class Parser {
      * <p>This method does not do any of the work done by {@link #parse(InputSource)}, it only
      * validates.
      */
-    public void validate(Reader reader)
-            throws IOException, SAXException, ParserConfigurationException {
+    public void validate(Reader reader) throws IOException, SAXException, ParserConfigurationException {
         validate(new InputSource(reader));
     }
 
@@ -375,8 +367,7 @@ public class Parser {
      * <p>This method does not do any of the work done by {@link #parse(InputSource)}, it only
      * validates.
      */
-    public void validate(InputSource source)
-            throws IOException, SAXException, ParserConfigurationException {
+    public void validate(InputSource source) throws IOException, SAXException, ParserConfigurationException {
         SAXParser parser = parser(true);
         parser.parse(source, handler.getValidator());
     }
@@ -441,8 +432,7 @@ public class Parser {
         if (validate) {
             pFactory.setFeature("http://xml.org/sax/features/validation", true);
             pFactory.setFeature("http://apache.org/xml/features/validation/schema", true);
-            pFactory.setFeature(
-                    "http://apache.org/xml/features/validation/schema-full-checking", true);
+            pFactory.setFeature("http://apache.org/xml/features/validation/schema-full-checking", true);
         }
 
         SAXParser parser = pFactory.newSAXParser();
@@ -469,8 +459,7 @@ public class Parser {
 
         // set the property to map namespaces to schema locations
         parser.setProperty(
-                "http://apache.org/xml/properties/schema/external-schemaLocation",
-                schemaLocation.toString());
+                "http://apache.org/xml/properties/schema/external-schemaLocation", schemaLocation.toString());
         // add the handler as a LexicalHandler too.
         parser.setProperty(SAX_PROPERTY_PREFIX + LEXICAL_HANDLER_PROPERTY, handler);
         // set Entity expansion limit
@@ -485,15 +474,12 @@ public class Parser {
         try {
             parser.setProperty(
                     JDK_ENTITY_EXPANSION_LIMIT,
-                    entityExpansionLimit != null
-                            ? entityExpansionLimit
-                            : DEFAULT_ENTITY_EXPANSION_LIMIT);
+                    entityExpansionLimit != null ? entityExpansionLimit : DEFAULT_ENTITY_EXPANSION_LIMIT);
         } catch (SAXNotRecognizedException ex) {
-            LOGGER.warning(
-                    "Sax parser property '"
-                            + JDK_ENTITY_EXPANSION_LIMIT
-                            + "' not recognized.  "
-                            + "Xerces version is incompatible.");
+            LOGGER.warning("Sax parser property '"
+                    + JDK_ENTITY_EXPANSION_LIMIT
+                    + "' not recognized.  "
+                    + "Xerces version is incompatible.");
         }
     }
 

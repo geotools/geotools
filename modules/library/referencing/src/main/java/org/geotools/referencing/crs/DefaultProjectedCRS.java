@@ -100,10 +100,7 @@ public class DefaultProjectedCRS extends AbstractDerivedCRS implements Projected
      * @since 2.5
      */
     public DefaultProjectedCRS(
-            final String name,
-            final GeographicCRS base,
-            final MathTransform baseToDerived,
-            final CartesianCS derivedCS)
+            final String name, final GeographicCRS base, final MathTransform baseToDerived, final CartesianCS derivedCS)
             throws MismatchedDimensionException {
         this(Collections.singletonMap(NAME_KEY, name), base, baseToDerived, derivedCS);
     }
@@ -260,11 +257,11 @@ public class DefaultProjectedCRS extends AbstractDerivedCRS implements Projected
         final Unit<Angle> angularUnit = formatter.getAngularUnit();
         final Unit<Length> axisUnit = ellipsoid.getAxisUnit();
         formatter.setLinearUnit(unit);
-        formatter.setAngularUnit(
-                DefaultGeographicCRS.getAngularUnit(baseCRS.getCoordinateSystem()));
+        formatter.setAngularUnit(DefaultGeographicCRS.getAngularUnit(baseCRS.getCoordinateSystem()));
         formatter.append(baseCRS);
         formatter.append(conversionFromBase.getMethod());
-        for (final GeneralParameterValue param : conversionFromBase.getParameterValues().values()) {
+        for (final GeneralParameterValue param :
+                conversionFromBase.getParameterValues().values()) {
             final GeneralParameterDescriptor desc = param.getDescriptor();
             String name;
             if (nameMatches(desc, name = SEMI_MAJOR) || nameMatches(desc, name = SEMI_MINOR)) {
@@ -275,11 +272,10 @@ public class DefaultProjectedCRS extends AbstractDerivedCRS implements Projected
                  */
                 if (param instanceof ParameterValue) {
                     final double value = ((ParameterValue<?>) param).doubleValue(axisUnit);
-                    final double expected =
-                            (name == SEMI_MINOR)
-                                    ? // using '==' is okay here.
-                                    ellipsoid.getSemiMinorAxis()
-                                    : ellipsoid.getSemiMajorAxis();
+                    final double expected = (name == SEMI_MINOR)
+                            ? // using '==' is okay here.
+                            ellipsoid.getSemiMinorAxis()
+                            : ellipsoid.getSemiMajorAxis();
                     if (value == expected) {
                         continue;
                     }

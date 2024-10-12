@@ -133,8 +133,7 @@ public class InputDescriptionTypeBinding extends AbstractComplexEMFBinding {
     protected void setProperty(EObject eObject, String property, Object value, boolean lax) {
         if (DataDescriptionType.class.isAssignableFrom(value.getClass())) {
             Entry entry =
-                    FeatureMapUtil.createEntry(
-                            Wps20Package.Literals.INPUT_DESCRIPTION_TYPE__DATA_DESCRIPTION, value);
+                    FeatureMapUtil.createEntry(Wps20Package.Literals.INPUT_DESCRIPTION_TYPE__DATA_DESCRIPTION, value);
             super.setProperty(eObject, "dataDescriptionGroup", entry, lax);
         }
         super.setProperty(eObject, property, value, lax);

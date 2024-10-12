@@ -29,8 +29,7 @@ import org.locationtech.jts.geom.Geometry;
 /** A function returning the bounds of a feature (including all geometries) */
 public class BoundedByFunction extends FunctionImpl {
 
-    public static FunctionName NAME =
-            new FunctionNameImpl("boundedBy", parameter("result", Geometry.class));
+    public static FunctionName NAME = new FunctionNameImpl("boundedBy", parameter("result", Geometry.class));
 
     public BoundedByFunction() {
         this.functionName = NAME;

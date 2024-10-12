@@ -41,18 +41,14 @@ import org.geotools.filter.capability.FunctionNameImpl;
  */
 public class Collection_MinFunction extends FunctionExpressionImpl {
     /** The logger for the filter module. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(Collection_MinFunction.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(Collection_MinFunction.class);
 
     SimpleFeatureCollection previousFeatureCollection = null;
     Object min = null;
 
     // public static FunctionName NAME = new FunctionNameImpl("Collection_Min","expression");
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "Collection_Min",
-                    parameter("min", Comparable.class),
-                    parameter("expression", Comparable.class));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "Collection_Min", parameter("min", Comparable.class), parameter("expression", Comparable.class));
 
     /** Creates a new instance of Collection_MinFunction */
     public Collection_MinFunction() {
@@ -85,9 +81,8 @@ public class Collection_MinFunction extends FunctionExpressionImpl {
     public void setParameters(List<Expression> args) {
         // if we see "featureMembers/*/ATTRIBUTE" change to "ATTRIBUTE"
         org.geotools.api.filter.expression.Expression expr = args.get(0);
-        expr =
-                (org.geotools.api.filter.expression.Expression)
-                        expr.accept(new CollectionFeatureMemberFilterVisitor(), null);
+        expr = (org.geotools.api.filter.expression.Expression)
+                expr.accept(new CollectionFeatureMemberFilterVisitor(), null);
         args.set(0, expr);
         super.setParameters(args);
     }

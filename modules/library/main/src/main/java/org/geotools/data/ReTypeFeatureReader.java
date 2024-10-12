@@ -54,8 +54,7 @@ import org.geotools.util.Classes;
  *
  * @author Jody Garnett (Refractions Research)
  */
-public class ReTypeFeatureReader
-        implements DelegatingFeatureReader<SimpleFeatureType, SimpleFeature> {
+public class ReTypeFeatureReader implements DelegatingFeatureReader<SimpleFeatureType, SimpleFeature> {
 
     /** The original reader we are grabbing content from */
     FeatureReader<SimpleFeatureType, SimpleFeature> reader;
@@ -77,8 +76,7 @@ public class ReTypeFeatureReader
      * @param reader Original FeatureReader
      * @param featureType Target FeatureType
      */
-    public ReTypeFeatureReader(
-            FeatureReader<SimpleFeatureType, SimpleFeature> reader, SimpleFeatureType featureType) {
+    public ReTypeFeatureReader(FeatureReader<SimpleFeatureType, SimpleFeature> reader, SimpleFeatureType featureType) {
         this(reader, featureType, true);
     }
 
@@ -91,9 +89,7 @@ public class ReTypeFeatureReader
      * @since 2.3
      */
     public ReTypeFeatureReader(
-            FeatureReader<SimpleFeatureType, SimpleFeature> reader,
-            SimpleFeatureType featureType,
-            boolean clone) {
+            FeatureReader<SimpleFeatureType, SimpleFeature> reader, SimpleFeatureType featureType, boolean clone) {
         this.reader = reader;
         this.featureType = featureType;
         this.clone = clone;
@@ -117,11 +113,9 @@ public class ReTypeFeatureReader
      * @return Mapping from originoal to target FeatureType
      * @throws IllegalArgumentException if unable to provide a mapping
      */
-    protected AttributeDescriptor[] typeAttributes(
-            SimpleFeatureType target, SimpleFeatureType origional) {
+    protected AttributeDescriptor[] typeAttributes(SimpleFeatureType target, SimpleFeatureType origional) {
         if (FeatureTypes.equalsExact(origional, target)) {
-            throw new IllegalArgumentException(
-                    "FeatureReader allready produces contents with the correct schema");
+            throw new IllegalArgumentException("FeatureReader allready produces contents with the correct schema");
         }
 
         if (target.getAttributeCount() > origional.getAttributeCount()) {
@@ -142,13 +136,12 @@ public class ReTypeFeatureReader
             Class<?> targetBinding = attrib.getType().getBinding();
             Class<?> checkBinding = check.getType().getBinding();
             if (!targetBinding.isAssignableFrom(checkBinding)) {
-                throw new IllegalArgumentException(
-                        "Unable to retype FeatureReader for "
-                                + xpath
-                                + " as "
-                                + Classes.getShortName(checkBinding)
-                                + " cannot be assigned to "
-                                + Classes.getShortName(targetBinding));
+                throw new IllegalArgumentException("Unable to retype FeatureReader for "
+                        + xpath
+                        + " as "
+                        + Classes.getShortName(checkBinding)
+                        + " cannot be assigned to "
+                        + Classes.getShortName(targetBinding));
             }
         }
 
@@ -163,8 +156,7 @@ public class ReTypeFeatureReader
 
     /** @see FeatureReader#next() */
     @Override
-    public SimpleFeature next()
-            throws IOException, IllegalAttributeException, NoSuchElementException {
+    public SimpleFeature next() throws IOException, IllegalAttributeException, NoSuchElementException {
         if (reader == null) {
             throw new IOException("FeatureReader has been closed");
         }

@@ -191,13 +191,11 @@ public class GraphicBuilder extends AbstractStyleBuilder<org.geotools.api.style.
                 Symbol symbol = (Symbol) graphicalSymbol;
                 Builder<? extends Symbol> builder;
                 if (symbol instanceof Mark) {
-                    builder =
-                            (Builder<? extends Symbol>) new MarkBuilder(this).reset((Mark) symbol);
+                    builder = (Builder<? extends Symbol>) new MarkBuilder(this).reset((Mark) symbol);
                 } else if (symbol instanceof ExternalGraphic) {
                     builder = new ExternalGraphicBuilder(this).reset((ExternalGraphic) symbol);
                 } else {
-                    throw new IllegalArgumentException(
-                            "Unrecognized symbol type: " + symbol.getClass());
+                    throw new IllegalArgumentException("Unrecognized symbol type: " + symbol.getClass());
                 }
                 if (builder != null) {
                     symbols.add(builder);

@@ -48,8 +48,6 @@ public class FilterAttributeExtractorTest {
         Set<String> attributeTypesDescriptorsNames = new HashSet<>();
         attributeTypesDescriptorsNames.add("type");
         // checking that there is the there is a "type" AttributeDescriptor
-        Assert.assertEquals(
-                attributeTypesDescriptorsNames,
-                fae.visit(new AttributeExpressionImpl("type"), feature));
+        Assert.assertEquals(attributeTypesDescriptorsNames, fae.visit(new AttributeExpressionImpl("type"), feature));
     }
 }

@@ -43,8 +43,7 @@ import org.junit.Test;
  */
 public class DbaseFileTest extends TestCaseSupport {
 
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(DbaseFileTest.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(DbaseFileTest.class);
 
     static final String TEST_FILE = "shapes/statepop.dbf";
 
@@ -80,15 +79,13 @@ public class DbaseFileTest extends TestCaseSupport {
         Object[] attrs = new Object[dbf.getHeader().getNumFields()];
         dbf.readEntry(attrs);
         assertEquals("Value of Column 0 is wrong", "Illinois", attrs[0]);
-        assertEquals(
-                "Value of Column 4 is wrong", 143986.61, ((Double) attrs[4]).doubleValue(), 0.001);
+        assertEquals("Value of Column 4 is wrong", 143986.61, ((Double) attrs[4]).doubleValue(), 0.001);
     }
 
     @Test
     public void testRowVsEntry() throws Exception {
         Object[] attrs = new Object[dbf.getHeader().getNumFields()];
-        try (DbaseFileReader dbf2 =
-                new DbaseFileReader(shpFiles, false, ShapefileDataStore.DEFAULT_STRING_CHARSET)) {
+        try (DbaseFileReader dbf2 = new DbaseFileReader(shpFiles, false, ShapefileDataStore.DEFAULT_STRING_CHARSET)) {
             while (dbf.hasNext()) {
                 dbf.readEntry(attrs);
                 DbaseFileReader.Row r = dbf2.readRow();
@@ -160,18 +157,14 @@ public class DbaseFileTest extends TestCaseSupport {
         File f = new File(System.getProperty("java.io.tmpdir"), "scratchDBF.dbf");
         f.deleteOnExit();
         try (FileOutputStream fout = new FileOutputStream(f);
-                DbaseFileWriter dbf =
-                        new DbaseFileWriter(
-                                header, fout.getChannel(), Charset.defaultCharset()); ) {
+                DbaseFileWriter dbf = new DbaseFileWriter(header, fout.getChannel(), Charset.defaultCharset()); ) {
 
             for (int i = 0; i < header.getNumRecords(); i++) {
                 dbf.write(new Object[6]);
             }
         }
         ShpFiles tempShpFiles = new ShpFiles(f);
-        try (DbaseFileReader r =
-                new DbaseFileReader(
-                        tempShpFiles, false, ShapefileDataStore.DEFAULT_STRING_CHARSET)) {
+        try (DbaseFileReader r = new DbaseFileReader(tempShpFiles, false, ShapefileDataStore.DEFAULT_STRING_CHARSET)) {
             int cnt = 0;
             while (r.hasNext()) {
                 cnt++;
@@ -187,8 +180,7 @@ public class DbaseFileTest extends TestCaseSupport {
     @Test
     public void testFieldFormatter() throws Exception {
         DbaseFileWriter.FieldFormatter formatter =
-                new DbaseFileWriter.FieldFormatter(
-                        StandardCharsets.UTF_8, TimeZone.getDefault(), false);
+                new DbaseFileWriter.FieldFormatter(StandardCharsets.UTF_8, TimeZone.getDefault(), false);
 
         int sizeInBytes = 8;
 
@@ -216,8 +208,7 @@ public class DbaseFileTest extends TestCaseSupport {
     @Test
     public void testUTF8Chars() throws Exception {
         DbaseFileWriter.FieldFormatter formatter =
-                new DbaseFileWriter.FieldFormatter(
-                        StandardCharsets.UTF_8, TimeZone.getDefault(), false);
+                new DbaseFileWriter.FieldFormatter(StandardCharsets.UTF_8, TimeZone.getDefault(), false);
 
         int sizeInBytes = 4;
 
@@ -247,15 +238,13 @@ public class DbaseFileTest extends TestCaseSupport {
         // formatter.setFieldString will truncate input to the desired size. But it should do this
         // in a reasonably performant manner.
         DbaseFileWriter.FieldFormatter formatter =
-                new DbaseFileWriter.FieldFormatter(
-                        StandardCharsets.UTF_8, TimeZone.getDefault(), false);
+                new DbaseFileWriter.FieldFormatter(StandardCharsets.UTF_8, TimeZone.getDefault(), false);
 
         // build up a very large input string. The test string is also formed so that the 8th char
         // is also multibyte
-        String test =
-                IntStream.range(0, 100000)
-                        .mapToObj(i -> "\u0412A cat\u0412jumped over the dog")
-                        .collect(Collectors.joining(","));
+        String test = IntStream.range(0, 100000)
+                .mapToObj(i -> "\u0412A cat\u0412jumped over the dog")
+                .collect(Collectors.joining(","));
 
         String formattedString = formatter.getFieldString(8, test);
         assertEquals("\u0412A cat ", formattedString);

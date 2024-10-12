@@ -75,8 +75,7 @@ public interface CRSFactory extends ObjectFactory {
      * @return The coordinate reference system for the given properties.
      * @throws FactoryException if the object creation failed.
      */
-    EngineeringCRS createEngineeringCRS(
-            Map<String, ?> properties, EngineeringDatum datum, CoordinateSystem cs)
+    EngineeringCRS createEngineeringCRS(Map<String, ?> properties, EngineeringDatum datum, CoordinateSystem cs)
             throws FactoryException;
 
     /**
@@ -89,8 +88,7 @@ public interface CRSFactory extends ObjectFactory {
      * @return The coordinate reference system for the given properties.
      * @throws FactoryException if the object creation failed.
      */
-    ImageCRS createImageCRS(Map<String, ?> properties, ImageDatum datum, AffineCS cs)
-            throws FactoryException;
+    ImageCRS createImageCRS(Map<String, ?> properties, ImageDatum datum, AffineCS cs) throws FactoryException;
 
     /**
      * Creates a temporal coordinate reference system.
@@ -102,8 +100,7 @@ public interface CRSFactory extends ObjectFactory {
      * @return The coordinate reference system for the given properties.
      * @throws FactoryException if the object creation failed.
      */
-    TemporalCRS createTemporalCRS(Map<String, ?> properties, TemporalDatum datum, TimeCS cs)
-            throws FactoryException;
+    TemporalCRS createTemporalCRS(Map<String, ?> properties, TemporalDatum datum, TimeCS cs) throws FactoryException;
 
     /**
      * Creates a vertical coordinate reference system.
@@ -129,8 +126,8 @@ public interface CRSFactory extends ObjectFactory {
      * @return The coordinate reference system for the given properties.
      * @throws FactoryException if the object creation failed.
      */
-    GeocentricCRS createGeocentricCRS(
-            Map<String, ?> properties, GeodeticDatum datum, CartesianCS cs) throws FactoryException;
+    GeocentricCRS createGeocentricCRS(Map<String, ?> properties, GeodeticDatum datum, CartesianCS cs)
+            throws FactoryException;
 
     /**
      * Creates a geocentric coordinate reference system from a {@linkplain SphericalCS spherical
@@ -143,8 +140,8 @@ public interface CRSFactory extends ObjectFactory {
      * @return The coordinate reference system for the given properties.
      * @throws FactoryException if the object creation failed.
      */
-    GeocentricCRS createGeocentricCRS(
-            Map<String, ?> properties, GeodeticDatum datum, SphericalCS cs) throws FactoryException;
+    GeocentricCRS createGeocentricCRS(Map<String, ?> properties, GeodeticDatum datum, SphericalCS cs)
+            throws FactoryException;
 
     /**
      * Creates a geographic coordinate reference system. It could be
@@ -157,8 +154,7 @@ public interface CRSFactory extends ObjectFactory {
      * @return The coordinate reference system for the given properties.
      * @throws FactoryException if the object creation failed.
      */
-    GeographicCRS createGeographicCRS(
-            Map<String, ?> properties, GeodeticDatum datum, EllipsoidalCS cs)
+    GeographicCRS createGeographicCRS(Map<String, ?> properties, GeodeticDatum datum, EllipsoidalCS cs)
             throws FactoryException;
 
     /**
@@ -245,10 +241,7 @@ public interface CRSFactory extends ObjectFactory {
      * @since GeoAPI 2.1
      */
     ProjectedCRS createProjectedCRS(
-            Map<String, ?> properties,
-            GeographicCRS baseCRS,
-            Conversion conversionFromBase,
-            CartesianCS derivedCS)
+            Map<String, ?> properties, GeographicCRS baseCRS, Conversion conversionFromBase, CartesianCS derivedCS)
             throws FactoryException;
 
     /**

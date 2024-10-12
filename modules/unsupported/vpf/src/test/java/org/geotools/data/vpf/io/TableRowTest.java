@@ -71,12 +71,9 @@ public class TableRowTest implements DataTypesDefinition {
      */
     @org.junit.Test
     public void testGet1195259493() {
-        Assert.assertSame(
-                "Checking method get field by name.", TEST_FIELDS[0], varTableRow.get("first"));
-        Assert.assertSame(
-                "Checking method get field by name.", TEST_FIELDS[1], varTableRow.get("second"));
-        Assert.assertSame(
-                "Checking method get field by name.", TEST_FIELDS[2], varTableRow.get("third"));
+        Assert.assertSame("Checking method get field by name.", TEST_FIELDS[0], varTableRow.get("first"));
+        Assert.assertSame("Checking method get field by name.", TEST_FIELDS[1], varTableRow.get("second"));
+        Assert.assertSame("Checking method get field by name.", TEST_FIELDS[2], varTableRow.get("third"));
     } // end of testGet1195259493(java.lang.String)
 
     /**
@@ -85,11 +82,8 @@ public class TableRowTest implements DataTypesDefinition {
      */
     @org.junit.Test
     public void testGet104431() {
-        Assert.assertSame(
-                "Checking method get field by index.", TEST_FIELDS[0], varTableRow.get(0));
-        Assert.assertSame(
-                "Checking method get field by index.", TEST_FIELDS[1], varTableRow.get(1));
-        Assert.assertSame(
-                "Checking method get field by index.", TEST_FIELDS[2], varTableRow.get(2));
+        Assert.assertSame("Checking method get field by index.", TEST_FIELDS[0], varTableRow.get(0));
+        Assert.assertSame("Checking method get field by index.", TEST_FIELDS[1], varTableRow.get(1));
+        Assert.assertSame("Checking method get field by index.", TEST_FIELDS[2], varTableRow.get(2));
     } // end of testGet104431(int)
 } // end of TableRowTest

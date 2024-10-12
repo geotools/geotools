@@ -72,8 +72,7 @@ public class LikeToRegexConverter {
                 chr = pattern.charAt(i);
             }
 
-            if (pattern.regionMatches(
-                    false, i, wildcardMulti, 0, wildcardMulti.length())) { // replace
+            if (pattern.regionMatches(false, i, wildcardMulti, 0, wildcardMulti.length())) { // replace
                 // with
                 // java
                 // wildcard

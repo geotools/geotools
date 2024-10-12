@@ -58,83 +58,76 @@ public class OffsetCurveBuilderTest {
 
     static final double EPS = 2e-1;
 
-    static final boolean INTERACTIVE =
-            true; // Boolean.getBoolean("org.geotools.image.test.interactive");
+    static final boolean INTERACTIVE = true; // Boolean.getBoolean("org.geotools.image.test.interactive");
 
-    static final boolean INTERACTIVE_ON_SUCCESS =
-            Boolean.getBoolean("org.geotools.image.test.interactive.on.success");
+    static final boolean INTERACTIVE_ON_SUCCESS = Boolean.getBoolean("org.geotools.image.test.interactive.on.success");
 
     Geometry curve;
 
     Geometry offsetCurve;
 
     @Rule
-    public TestWatcher interactiveReporter =
-            new TestWatcher() {
+    public TestWatcher interactiveReporter = new TestWatcher() {
 
-                @Override
-                protected void succeeded(org.junit.runner.Description description) {
-                    if (curve != null && INTERACTIVE_ON_SUCCESS) {
-                        displayCurves(false);
-                    }
-                };
+        @Override
+        protected void succeeded(org.junit.runner.Description description) {
+            if (curve != null && INTERACTIVE_ON_SUCCESS) {
+                displayCurves(false);
+            }
+        }
+        ;
 
-                @Override
-                protected void failed(Throwable e, org.junit.runner.Description description) {
-                    if (curve != null && INTERACTIVE) {
-                        displayCurves(true);
-                    }
-                }
+        @Override
+        protected void failed(Throwable e, org.junit.runner.Description description) {
+            if (curve != null && INTERACTIVE) {
+                displayCurves(true);
+            }
+        }
 
-                private void displayCurves(boolean failed) {
-                    BufferedImage image = drawCurves();
-                    ImageDisplay dialog = new ImageDisplay(image, failed ? "Failure" : "Success");
-                    dialog.setModal(true);
-                    dialog.setVisible(true);
-                }
+        private void displayCurves(boolean failed) {
+            BufferedImage image = drawCurves();
+            ImageDisplay dialog = new ImageDisplay(image, failed ? "Failure" : "Success");
+            dialog.setModal(true);
+            dialog.setVisible(true);
+        }
 
-                private BufferedImage drawCurves() {
-                    final int SIZE = 400;
-                    BufferedImage bi = new BufferedImage(SIZE, SIZE, BufferedImage.TYPE_3BYTE_BGR);
-                    Envelope envelope = curve.getEnvelopeInternal();
-                    if (offsetCurve != null) {
-                        envelope.expandToInclude(offsetCurve.getEnvelopeInternal());
-                    }
-                    if (envelope.getWidth() == 0) {
-                        envelope.expandBy(envelope.getHeight(), 0);
-                    }
-                    if (envelope.getHeight() == 0) {
-                        envelope.expandBy(0, envelope.getWidth());
-                    }
-                    envelope.expandBy(envelope.getWidth() * 0.1, envelope.getHeight() * 0.1);
+        private BufferedImage drawCurves() {
+            final int SIZE = 400;
+            BufferedImage bi = new BufferedImage(SIZE, SIZE, BufferedImage.TYPE_3BYTE_BGR);
+            Envelope envelope = curve.getEnvelopeInternal();
+            if (offsetCurve != null) {
+                envelope.expandToInclude(offsetCurve.getEnvelopeInternal());
+            }
+            if (envelope.getWidth() == 0) {
+                envelope.expandBy(envelope.getHeight(), 0);
+            }
+            if (envelope.getHeight() == 0) {
+                envelope.expandBy(0, envelope.getWidth());
+            }
+            envelope.expandBy(envelope.getWidth() * 0.1, envelope.getHeight() * 0.1);
 
-                    double scale = SIZE / Math.max(envelope.getWidth(), envelope.getHeight());
+            double scale = SIZE / Math.max(envelope.getWidth(), envelope.getHeight());
 
-                    double tx = -envelope.getMinX() * scale;
-                    double ty = envelope.getMinY() * scale + SIZE;
+            double tx = -envelope.getMinX() * scale;
+            double ty = envelope.getMinY() * scale + SIZE;
 
-                    AffineTransform at = new AffineTransform(scale, 0.0d, 0.0d, -scale, tx, ty);
-                    Graphics2D graphics = bi.createGraphics();
-                    graphics.setColor(Color.WHITE);
-                    graphics.fillRect(0, 0, SIZE, SIZE);
-                    graphics.setColor(Color.BLACK);
-                    graphics.setStroke(new BasicStroke(4));
-                    graphics.draw(new LiteShape(curve, at, false));
-                    graphics.setColor(Color.RED);
-                    graphics.setStroke(
-                            new BasicStroke(
-                                    4,
-                                    BasicStroke.CAP_SQUARE,
-                                    BasicStroke.JOIN_ROUND,
-                                    1,
-                                    new float[] {8, 8},
-                                    0));
-                    graphics.draw(new LiteShape(offsetCurve, at, false));
-                    graphics.dispose();
+            AffineTransform at = new AffineTransform(scale, 0.0d, 0.0d, -scale, tx, ty);
+            Graphics2D graphics = bi.createGraphics();
+            graphics.setColor(Color.WHITE);
+            graphics.fillRect(0, 0, SIZE, SIZE);
+            graphics.setColor(Color.BLACK);
+            graphics.setStroke(new BasicStroke(4));
+            graphics.draw(new LiteShape(curve, at, false));
+            graphics.setColor(Color.RED);
+            graphics.setStroke(
+                    new BasicStroke(4, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_ROUND, 1, new float[] {8, 8}, 0));
+            graphics.draw(new LiteShape(offsetCurve, at, false));
+            graphics.dispose();
 
-                    return bi;
-                };
-            };
+            return bi;
+        }
+        ;
+    };
 
     @SuppressWarnings("deprecation")
     class ImageDisplay extends JDialog {
@@ -147,18 +140,12 @@ public class OffsetCurveBuilderTest {
             this.setContentPane(content);
             this.setTitle(title);
             final JLabel topLabel =
-                    new JLabel(
-                            "<html><body>"
-                                    + "The curve (black) and its offset (red) "
-                                    + "</html></body>");
+                    new JLabel("<html><body>" + "The curve (black) and its offset (red) " + "</html></body>");
             topLabel.setBorder(new EmptyBorder(4, 4, 4, 4));
             content.add(topLabel, BorderLayout.NORTH);
 
-            javax.media.jai.widget.ScrollingImagePanel imageViewer =
-                    new javax.media.jai.widget.ScrollingImagePanel(
-                            image,
-                            Math.min(400, image.getWidth()) + 100,
-                            Math.min(400, image.getHeight()) + 100);
+            javax.media.jai.widget.ScrollingImagePanel imageViewer = new javax.media.jai.widget.ScrollingImagePanel(
+                    image, Math.min(400, image.getWidth()) + 100, Math.min(400, image.getHeight()) + 100);
             content.add(imageViewer);
 
             JButton close = new JButton("Close");
@@ -221,10 +208,8 @@ public class OffsetCurveBuilderTest {
             double angle = toRadians(i);
             ordinates[2] = 10 * cos(angle);
             ordinates[3] = 10 * sin(angle);
-            curve =
-                    new GeometryFactory()
-                            .createLineString(
-                                    new PackedCoordinateSequenceFactory().create(ordinates, 2, 0));
+            curve = new GeometryFactory()
+                    .createLineString(new PackedCoordinateSequenceFactory().create(ordinates, 2, 0));
             simpleOffsetTest(curve, offset);
         }
     }
@@ -273,10 +258,7 @@ public class OffsetCurveBuilderTest {
         ordinates[3] = 0;
         ordinates[4] = 10 * cos(angle);
         ordinates[5] = 10 * sin(angle);
-        curve =
-                new GeometryFactory()
-                        .createLineString(
-                                new PackedCoordinateSequenceFactory().create(ordinates, 2, 0));
+        curve = new GeometryFactory().createLineString(new PackedCoordinateSequenceFactory().create(ordinates, 2, 0));
         simpleOffsetTest(curve, offset);
     }
 
@@ -306,9 +288,8 @@ public class OffsetCurveBuilderTest {
         // this one "fails", but the output cannot be really called wrong anymore, if we are trying
         // to
         // offset a road at least
-        Geometry expected =
-                geometry(
-                        "LINESTRING (0 1.5, 5 1.5, 5.260472266500395 1.477211629518312, 5.513030214988503 1.4095389311788626, 5.75 1.299038105676658, 5.964181414529809 1.149066664678467, 6.149066664678467 0.9641814145298091, 6.299038105676658 0.7500000000000002, 6.409538931178862 0.5130302149885032, 6.477211629518312 0.2604722665003956, 6.5 0.0000000000000001, 6.5 -8.5, 5.5 -8.5, 5.5 0.0000000000000001, 5.522788370481688 0.2604722665003956, 5.590461068821138 0.5130302149885032, 5.700961894323342 0.7499999999999998, 5.850933335321533 0.9641814145298091, 6.035818585470191 1.149066664678467, 6.25 1.299038105676658, 6.486969785011497 1.4095389311788624, 6.739527733499605 1.477211629518312, 7 1.5, 10 1.5)");
+        Geometry expected = geometry(
+                "LINESTRING (0 1.5, 5 1.5, 5.260472266500395 1.477211629518312, 5.513030214988503 1.4095389311788626, 5.75 1.299038105676658, 5.964181414529809 1.149066664678467, 6.149066664678467 0.9641814145298091, 6.299038105676658 0.7500000000000002, 6.409538931178862 0.5130302149885032, 6.477211629518312 0.2604722665003956, 6.5 0.0000000000000001, 6.5 -8.5, 5.5 -8.5, 5.5 0.0000000000000001, 5.522788370481688 0.2604722665003956, 5.590461068821138 0.5130302149885032, 5.700961894323342 0.7499999999999998, 5.850933335321533 0.9641814145298091, 6.035818585470191 1.149066664678467, 6.25 1.299038105676658, 6.486969785011497 1.4095389311788624, 6.739527733499605 1.477211629518312, 7 1.5, 10 1.5)");
         assertTrue(expected.equalsExact(offset, 0.1));
     }
 
@@ -326,9 +307,8 @@ public class OffsetCurveBuilderTest {
         // the offset line intersects the original one, because it's also self intersecting, so we
         // cannot have this test
         // assertEquals(2, offset.distance(geom), EPS);
-        Geometry expected =
-                geometry(
-                        "LINESTRING (0 2, 10 2, 10.34729635533386 1.969615506024416, 10.684040286651337 1.8793852415718169, 11 1.7320508075688774, 11.28557521937308 1.532088886237956, 11.532088886237956 1.2855752193730787, 11.732050807568877 1.0000000000000002, 11.879385241571816 0.6840402866513376, 11.969615506024416 0.3472963553338608, 12 0.0000000000000001, 12 -10, 11.969615506024416 -10.34729635533386, 11.879385241571818 -10.684040286651337, 11.732050807568877 -11, 11.532088886237956 -11.28557521937308, 11.28557521937308 -11.532088886237956, 11 -11.732050807568877, 10.684040286651339 -11.879385241571816, 10.34729635533386 -11.969615506024416, 10 -12, 2.9999999999999996 -12, 2.6527036446661394 -11.969615506024416, 2.3159597133486622 -11.879385241571816, 2 -11.732050807568877, 1.714424780626921 -11.532088886237956, 1.467911113762044 -11.28557521937308, 1.2679491924311228 -11, 1.1206147584281831 -10.684040286651337, 1.030384493975584 -10.34729635533386, 1 -10, 1 3)");
+        Geometry expected = geometry(
+                "LINESTRING (0 2, 10 2, 10.34729635533386 1.969615506024416, 10.684040286651337 1.8793852415718169, 11 1.7320508075688774, 11.28557521937308 1.532088886237956, 11.532088886237956 1.2855752193730787, 11.732050807568877 1.0000000000000002, 11.879385241571816 0.6840402866513376, 11.969615506024416 0.3472963553338608, 12 0.0000000000000001, 12 -10, 11.969615506024416 -10.34729635533386, 11.879385241571818 -10.684040286651337, 11.732050807568877 -11, 11.532088886237956 -11.28557521937308, 11.28557521937308 -11.532088886237956, 11 -11.732050807568877, 10.684040286651339 -11.879385241571816, 10.34729635533386 -11.969615506024416, 10 -12, 2.9999999999999996 -12, 2.6527036446661394 -11.969615506024416, 2.3159597133486622 -11.879385241571816, 2 -11.732050807568877, 1.714424780626921 -11.532088886237956, 1.467911113762044 -11.28557521937308, 1.2679491924311228 -11, 1.1206147584281831 -10.684040286651337, 1.030384493975584 -10.34729635533386, 1 -10, 1 3)");
         assertTrue(expected.equalsExact(offset, 0.1));
     }
 
@@ -381,8 +361,7 @@ public class OffsetCurveBuilderTest {
         simpleOffsetTest(wkt, -100);
     }
 
-    private Geometry simpleOffsetTest(String wkt, final double offsetDistance)
-            throws ParseException {
+    private Geometry simpleOffsetTest(String wkt, final double offsetDistance) throws ParseException {
         Geometry geom = geometry(wkt);
         return simpleOffsetTest(geom, offsetDistance);
     }
@@ -392,32 +371,26 @@ public class OffsetCurveBuilderTest {
         assertTrue(offset.isValid());
         assertTrue(offset.getLength() > 0);
         assertEquals(abs(offsetDistance), offset.distance(geom), EPS * abs(offsetDistance));
-        offset.apply(
-                (GeometryComponentFilter)
-                        geom1 -> {
-                            if (geom1 instanceof LineString) {
-                                LineString ls = (LineString) geom1;
-                                CoordinateSequence cs = ls.getCoordinateSequence();
-                                if (cs.size() < 2) {
-                                    return;
-                                }
-                                double px = cs.getOrdinate(0, 0);
-                                double py = cs.getOrdinate(0, 1);
-                                for (int i = 1; i < cs.size(); i++) {
-                                    double cx = cs.getOrdinate(i, 0);
-                                    double cy = cs.getOrdinate(i, 1);
-                                    if (cx == px && cy == py) {
-                                        fail(
-                                                "Found two subsequent ordinates with the same value: "
-                                                        + cx
-                                                        + ", "
-                                                        + py);
-                                    }
-                                    px = cx;
-                                    py = cy;
-                                }
-                            }
-                        });
+        offset.apply((GeometryComponentFilter) geom1 -> {
+            if (geom1 instanceof LineString) {
+                LineString ls = (LineString) geom1;
+                CoordinateSequence cs = ls.getCoordinateSequence();
+                if (cs.size() < 2) {
+                    return;
+                }
+                double px = cs.getOrdinate(0, 0);
+                double py = cs.getOrdinate(0, 1);
+                for (int i = 1; i < cs.size(); i++) {
+                    double cx = cs.getOrdinate(i, 0);
+                    double cy = cs.getOrdinate(i, 1);
+                    if (cx == px && cy == py) {
+                        fail("Found two subsequent ordinates with the same value: " + cx + ", " + py);
+                    }
+                    px = cx;
+                    py = cy;
+                }
+            }
+        });
         return offset;
     }
 
@@ -425,38 +398,36 @@ public class OffsetCurveBuilderTest {
         // simple utility to take a random WKT and make it into something looking like test data
         // (simplify large coordinates, excess precision)
         final double tolerance = 1;
-        String wkt =
-                "LINESTRING (809 2365, 796 2165, 820 2146, 863 2159, 904 2174, 930 2174, 939 2157, 931 1895)";
+        String wkt = "LINESTRING (809 2365, 796 2165, 820 2146, 863 2159, 904 2174, 930 2174, 939 2157, 931 1895)";
         Geometry geom = new WKTReader().read(wkt);
         Envelope envelope = geom.getEnvelopeInternal();
         final double minx = envelope.getMinX();
         final double miny = envelope.getMinY();
-        geom.apply(
-                new CoordinateSequenceFilter() {
+        geom.apply(new CoordinateSequenceFilter() {
 
-                    @Override
-                    public boolean isGeometryChanged() {
-                        return true;
-                    }
+            @Override
+            public boolean isGeometryChanged() {
+                return true;
+            }
 
-                    @Override
-                    public boolean isDone() {
-                        // TODO Auto-generated method stub
-                        return false;
-                    }
+            @Override
+            public boolean isDone() {
+                // TODO Auto-generated method stub
+                return false;
+            }
 
-                    @Override
-                    public void filter(CoordinateSequence seq, int i) {
-                        double x = seq.getOrdinate(i, 0);
-                        double y = seq.getOrdinate(i, 1);
-                        x -= minx;
-                        y -= miny;
-                        x = Math.round(x / tolerance) * tolerance;
-                        y = Math.round(y / tolerance) * tolerance;
-                        seq.setOrdinate(i, 0, x);
-                        seq.setOrdinate(i, 1, y);
-                    }
-                });
+            @Override
+            public void filter(CoordinateSequence seq, int i) {
+                double x = seq.getOrdinate(i, 0);
+                double y = seq.getOrdinate(i, 1);
+                x -= minx;
+                y -= miny;
+                x = Math.round(x / tolerance) * tolerance;
+                y = Math.round(y / tolerance) * tolerance;
+                seq.setOrdinate(i, 0, x);
+                seq.setOrdinate(i, 1, y);
+            }
+        });
 
         // System.out.println(geom.toText());
     }

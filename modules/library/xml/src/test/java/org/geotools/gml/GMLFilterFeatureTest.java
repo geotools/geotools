@@ -58,8 +58,7 @@ import org.xml.sax.helpers.XMLFilterImpl;
 public class GMLFilterFeatureTest {
 
     @Test
-    public void test()
-            throws TransformerException, SAXException, IOException, ParserConfigurationException {
+    public void test() throws TransformerException, SAXException, IOException, ParserConfigurationException {
 
         final String gml = createTestGMLInput();
         // System.out.format("%s\n", gml);

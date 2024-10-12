@@ -120,11 +120,8 @@ public class CurveTypeBinding extends AbstractComplexBinding implements Comparab
                     curved = ls;
                 }
             }
-            CurvedGeometryFactory factory =
-                    GML3ParsingUtils.getCurvedGeometryFactory(
-                            arcParameters,
-                            gf,
-                            curved != null ? curved.getCoordinateSequence() : null);
+            CurvedGeometryFactory factory = GML3ParsingUtils.getCurvedGeometryFactory(
+                    arcParameters, gf, curved != null ? curved.getCoordinateSequence() : null);
             return factory.createCurvedGeometry(Arrays.asList(segments));
         }
     }

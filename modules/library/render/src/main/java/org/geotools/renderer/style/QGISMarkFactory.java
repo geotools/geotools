@@ -45,8 +45,7 @@ public class QGISMarkFactory implements MarkFactory {
     private static final String PREFIX = "qgis://";
 
     /** The logger for the rendering module. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(QGISMarkFactory.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(QGISMarkFactory.class);
 
     /** Tall star for QGIS compatibility */
     private static Shape star = star();
@@ -120,8 +119,7 @@ public class QGISMarkFactory implements MarkFactory {
     }
 
     @Override
-    public Shape getShape(Graphics2D graphics, Expression symbolUrl, Feature feature)
-            throws Exception {
+    public Shape getShape(Graphics2D graphics, Expression symbolUrl, Feature feature) throws Exception {
         // cannot handle a null url
         if (symbolUrl == null) return null;
 
@@ -161,8 +159,7 @@ public class QGISMarkFactory implements MarkFactory {
             return star;
         }
 
-        if (wellKnownName.equalsIgnoreCase(PREFIX + "cross2")
-                || wellKnownName.equalsIgnoreCase("cross2")) {
+        if (wellKnownName.equalsIgnoreCase(PREFIX + "cross2") || wellKnownName.equalsIgnoreCase("cross2")) {
             LOGGER.finer("returning qgis cross2");
 
             return ShapeMarkFactory.shapes.get("times");
@@ -175,42 +172,36 @@ public class QGISMarkFactory implements MarkFactory {
             return arrow;
         }
 
-        if (wellKnownName.equalsIgnoreCase(PREFIX + "diamond")
-                || wellKnownName.equalsIgnoreCase("diamond")) {
+        if (wellKnownName.equalsIgnoreCase(PREFIX + "diamond") || wellKnownName.equalsIgnoreCase("diamond")) {
             LOGGER.finer("returning qgis diamond");
 
             return diamond;
         }
 
-        if (wellKnownName.equalsIgnoreCase(PREFIX + "pentagon")
-                || wellKnownName.equalsIgnoreCase("pentagon")) {
+        if (wellKnownName.equalsIgnoreCase(PREFIX + "pentagon") || wellKnownName.equalsIgnoreCase("pentagon")) {
             LOGGER.finer("returning qgis pentagon");
 
             return pentagon;
         }
 
-        if (wellKnownName.equalsIgnoreCase(PREFIX + "rectangle")
-                || wellKnownName.equalsIgnoreCase("rectangle")) {
+        if (wellKnownName.equalsIgnoreCase(PREFIX + "rectangle") || wellKnownName.equalsIgnoreCase("rectangle")) {
             LOGGER.finer("returning qgis rectangle");
 
             return WellKnownMarkFactory.square;
         }
 
-        if (wellKnownName.equalsIgnoreCase(PREFIX + "regular_star")
-                || wellKnownName.equalsIgnoreCase("regular_star")) {
+        if (wellKnownName.equalsIgnoreCase(PREFIX + "regular_star") || wellKnownName.equalsIgnoreCase("regular_star")) {
             LOGGER.finer("returning qgis regular_star");
             return WellKnownMarkFactory.star;
         }
 
-        if (wellKnownName.equalsIgnoreCase(PREFIX + "line")
-                || wellKnownName.equalsIgnoreCase("line")) {
+        if (wellKnownName.equalsIgnoreCase(PREFIX + "line") || wellKnownName.equalsIgnoreCase("line")) {
             LOGGER.finer("returning qgis line");
 
             return ShapeMarkFactory.shapes.get("vertline");
         }
 
-        if (wellKnownName.equalsIgnoreCase(PREFIX + "arrowhead")
-                || wellKnownName.equalsIgnoreCase("arrowhead")) {
+        if (wellKnownName.equalsIgnoreCase(PREFIX + "arrowhead") || wellKnownName.equalsIgnoreCase("arrowhead")) {
             LOGGER.finer("returning qgis arrowhead");
 
             return arrowhead;
@@ -223,8 +214,7 @@ public class QGISMarkFactory implements MarkFactory {
             return filled_arrowhead;
         }
 
-        if (wellKnownName.equalsIgnoreCase(PREFIX + "crossfill")
-                || wellKnownName.equalsIgnoreCase("crossfill")) {
+        if (wellKnownName.equalsIgnoreCase(PREFIX + "crossfill") || wellKnownName.equalsIgnoreCase("crossfill")) {
             LOGGER.finer("returning qgis filled cross");
 
             return crossFill;
@@ -237,15 +227,13 @@ public class QGISMarkFactory implements MarkFactory {
             return diagonalHalfSquare;
         }
 
-        if (wellKnownName.equalsIgnoreCase(PREFIX + "HalfSquare")
-                || wellKnownName.equalsIgnoreCase("HalfSquare")) {
+        if (wellKnownName.equalsIgnoreCase(PREFIX + "HalfSquare") || wellKnownName.equalsIgnoreCase("HalfSquare")) {
             LOGGER.finer("returning qgis half square");
 
             return halfSquare;
         }
 
-        if (wellKnownName.equalsIgnoreCase(PREFIX + "hexagon")
-                || wellKnownName.equalsIgnoreCase("hexagon")) {
+        if (wellKnownName.equalsIgnoreCase(PREFIX + "hexagon") || wellKnownName.equalsIgnoreCase("hexagon")) {
             LOGGER.finer("returning qgis hexagon");
 
             return hexagon;
@@ -272,15 +260,13 @@ public class QGISMarkFactory implements MarkFactory {
             return quarterCricle;
         }
 
-        if (wellKnownName.equalsIgnoreCase(PREFIX + "semicircle")
-                || wellKnownName.equalsIgnoreCase("semicircle")) {
+        if (wellKnownName.equalsIgnoreCase(PREFIX + "semicircle") || wellKnownName.equalsIgnoreCase("semicircle")) {
             LOGGER.finer("returning qgis semicircle");
 
             return semiCircle;
         }
 
-        if (wellKnownName.equalsIgnoreCase(PREFIX + "thirdcircle")
-                || wellKnownName.equalsIgnoreCase("thirdcircle")) {
+        if (wellKnownName.equalsIgnoreCase(PREFIX + "thirdcircle") || wellKnownName.equalsIgnoreCase("thirdcircle")) {
             LOGGER.finer("returning qgis thirdcircle");
 
             return thirdCircle;
@@ -474,8 +460,7 @@ public class QGISMarkFactory implements MarkFactory {
 
     private static Shape semiCircle() {
         // Top half
-        Arc2D.Double d =
-                new Arc2D.Double(new Rectangle2D.Double(-.5, -.5, 1., 1.), 180., 180., Arc2D.PIE);
+        Arc2D.Double d = new Arc2D.Double(new Rectangle2D.Double(-.5, -.5, 1., 1.), 180., 180., Arc2D.PIE);
 
         ExplicitBoundsShape shape = new ExplicitBoundsShape(d);
         shape.setBounds(new Rectangle2D.Double(-.5, .5, 1., 1.));
@@ -485,8 +470,7 @@ public class QGISMarkFactory implements MarkFactory {
 
     private static Shape thirdCircle() {
         // Top-left third
-        Arc2D.Double d =
-                new Arc2D.Double(new Rectangle2D.Double(-.5, -.5, 1., 1.), 150., 120., Arc2D.PIE);
+        Arc2D.Double d = new Arc2D.Double(new Rectangle2D.Double(-.5, -.5, 1., 1.), 150., 120., Arc2D.PIE);
 
         ExplicitBoundsShape shape = new ExplicitBoundsShape(d);
         shape.setBounds(new Rectangle2D.Double(-.5, .5, 1., 1.));

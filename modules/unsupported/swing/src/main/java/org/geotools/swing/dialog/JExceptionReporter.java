@@ -127,10 +127,9 @@ public class JExceptionReporter {
         @Override
         public JPanel createControlPanel() {
             JPanel panel = new JPanel();
-            panel.setBorder(
-                    BorderFactory.createCompoundBorder(
-                            BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK),
-                            BorderFactory.createEmptyBorder(MARGIN, MARGIN, MARGIN, MARGIN)));
+            panel.setBorder(BorderFactory.createCompoundBorder(
+                    BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK),
+                    BorderFactory.createEmptyBorder(MARGIN, MARGIN, MARGIN, MARGIN)));
 
             String text = String.format("<html>%s</html>", message);
             int w = DEFAULT_WIDTH - 2 * MARGIN;

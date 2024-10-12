@@ -72,9 +72,7 @@ public class OracleFilterToSqlTest {
     public void testBboxFilter() throws Exception {
         BBOX bbox = ff.bbox("GEOM", -180, -90, 180, 90, "EPSG:4326");
         String encoded = encoder.encodeToString(bbox);
-        assertEquals(
-                "WHERE SDO_RELATE(\"GEOM\", ?, 'mask=anyinteract querytype=WINDOW') = 'TRUE' ",
-                encoded);
+        assertEquals("WHERE SDO_RELATE(\"GEOM\", ?, 'mask=anyinteract querytype=WINDOW') = 'TRUE' ", encoded);
     }
 
     @Test
@@ -82,114 +80,71 @@ public class OracleFilterToSqlTest {
         BBOX bbox = ff.bbox("GEOM", -180, -90, 180, 90, "EPSG:4326");
         encoder.setLooseBBOXEnabled(true);
         String encoded = encoder.encodeToString(bbox);
-        assertEquals(
-                "WHERE SDO_FILTER(\"GEOM\", ?, 'mask=anyinteract querytype=WINDOW') = 'TRUE' ",
-                encoded);
+        assertEquals("WHERE SDO_FILTER(\"GEOM\", ?, 'mask=anyinteract querytype=WINDOW') = 'TRUE' ", encoded);
     }
 
     @Test
     public void testContainsFilter() throws Exception {
-        Contains contains =
-                ff.contains(
-                        ff.property("SHAPE"),
-                        ff.literal(gf.createPoint(new Coordinate(10.0, -10.0))));
+        Contains contains = ff.contains(ff.property("SHAPE"), ff.literal(gf.createPoint(new Coordinate(10.0, -10.0))));
         String encoded = encoder.encodeToString(contains);
-        assertEquals(
-                "WHERE SDO_RELATE(\"SHAPE\", ?, 'mask=contains querytype=WINDOW') = 'TRUE' ",
-                encoded);
+        assertEquals("WHERE SDO_RELATE(\"SHAPE\", ?, 'mask=contains querytype=WINDOW') = 'TRUE' ", encoded);
     }
 
     @Test
     public void testCrossesFilter() throws Exception {
-        Crosses crosses =
-                ff.crosses(
-                        ff.property("GEOM"),
-                        ff.literal(
-                                gf.createLineString(
-                                        new Coordinate[] {
-                                            new Coordinate(-10.0d, -10.0d), new Coordinate(10d, 10d)
-                                        })));
+        Crosses crosses = ff.crosses(ff.property("GEOM"), ff.literal(gf.createLineString(new Coordinate[] {
+            new Coordinate(-10.0d, -10.0d), new Coordinate(10d, 10d)
+        })));
         String encoded = encoder.encodeToString(crosses);
-        assertEquals(
-                "WHERE SDO_RELATE(\"GEOM\", ?, 'mask=overlapbdydisjoint querytype=WINDOW') = 'TRUE' ",
-                encoded);
+        assertEquals("WHERE SDO_RELATE(\"GEOM\", ?, 'mask=overlapbdydisjoint querytype=WINDOW') = 'TRUE' ", encoded);
     }
 
     @Test
     public void testIntersectsFilter() throws Exception {
-        Intersects intersects =
-                ff.intersects(
-                        ff.property("GEOM"),
-                        ff.literal(
-                                gf.createLineString(
-                                        new Coordinate[] {
-                                            new Coordinate(-10.0d, -10.0d), new Coordinate(10d, 10d)
-                                        })));
+        Intersects intersects = ff.intersects(ff.property("GEOM"), ff.literal(gf.createLineString(new Coordinate[] {
+            new Coordinate(-10.0d, -10.0d), new Coordinate(10d, 10d)
+        })));
         String encoded = encoder.encodeToString(intersects);
-        assertEquals(
-                "WHERE SDO_RELATE(\"GEOM\", ?, 'mask=anyinteract querytype=WINDOW') = 'TRUE' ",
-                encoded);
+        assertEquals("WHERE SDO_RELATE(\"GEOM\", ?, 'mask=anyinteract querytype=WINDOW') = 'TRUE' ", encoded);
     }
 
     @Test
     public void testOverlapsFilter() throws Exception {
-        Overlaps overlaps =
-                ff.overlaps(
-                        ff.property("GEOM"),
-                        ff.literal(
-                                gf.createLineString(
-                                        new Coordinate[] {
-                                            new Coordinate(-10.0d, -10.0d), new Coordinate(10d, 10d)
-                                        })));
+        Overlaps overlaps = ff.overlaps(ff.property("GEOM"), ff.literal(gf.createLineString(new Coordinate[] {
+            new Coordinate(-10.0d, -10.0d), new Coordinate(10d, 10d)
+        })));
         String encoded = encoder.encodeToString(overlaps);
-        assertEquals(
-                "WHERE SDO_RELATE(\"GEOM\", ?, 'mask=overlapbdyintersect querytype=WINDOW') = 'TRUE' ",
-                encoded);
+        assertEquals("WHERE SDO_RELATE(\"GEOM\", ?, 'mask=overlapbdyintersect querytype=WINDOW') = 'TRUE' ", encoded);
     }
 
     @Test
     public void testDWithinFilterWithUnit() throws Exception {
         Coordinate coordinate = new Coordinate();
-        DWithin dwithin =
-                ff.dwithin(
-                        ff.property("GEOM"),
-                        ff.literal(gf.createPoint(coordinate)),
-                        10.0,
-                        "kilometers");
+        DWithin dwithin = ff.dwithin(ff.property("GEOM"), ff.literal(gf.createPoint(coordinate)), 10.0, "kilometers");
         String encoded = encoder.encodeToString(dwithin);
-        assertEquals(
-                "WHERE SDO_WITHIN_DISTANCE(\"GEOM\",?,'distance=10.0 unit=km') = 'TRUE' ", encoded);
+        assertEquals("WHERE SDO_WITHIN_DISTANCE(\"GEOM\",?,'distance=10.0 unit=km') = 'TRUE' ", encoded);
     }
 
     @Test
     public void testDWithinFilterWithUnitEscaping() throws Exception {
         Coordinate coordinate = new Coordinate();
-        DWithin dwithin =
-                ff.dwithin(
-                        ff.property("GEOM"), ff.literal(gf.createPoint(coordinate)), 10.0, "'FOO");
+        DWithin dwithin = ff.dwithin(ff.property("GEOM"), ff.literal(gf.createPoint(coordinate)), 10.0, "'FOO");
         String encoded = encoder.encodeToString(dwithin);
-        assertEquals(
-                "WHERE SDO_WITHIN_DISTANCE(\"GEOM\",?,'distance=10.0 unit=''FOO') = 'TRUE' ",
-                encoded);
+        assertEquals("WHERE SDO_WITHIN_DISTANCE(\"GEOM\",?,'distance=10.0 unit=''FOO') = 'TRUE' ", encoded);
     }
 
     @Test
     public void testDWithinFilterWithoutUnit() throws Exception {
         Coordinate coordinate = new Coordinate();
-        DWithin dwithin =
-                ff.dwithin(ff.property("GEOM"), ff.literal(gf.createPoint(coordinate)), 10.0, null);
+        DWithin dwithin = ff.dwithin(ff.property("GEOM"), ff.literal(gf.createPoint(coordinate)), 10.0, null);
         String encoded = encoder.encodeToString(dwithin);
         assertEquals("WHERE SDO_WITHIN_DISTANCE(\"GEOM\",?,'distance=10.0') = 'TRUE' ", encoded);
     }
 
     @Test
     public void testJsonArrayContainsString() throws Exception {
-        Function function =
-                ff.function(
-                        "jsonArrayContains",
-                        ff.property("operations"),
-                        ff.literal("/operations"),
-                        ff.literal("OP1"));
+        Function function = ff.function(
+                "jsonArrayContains", ff.property("operations"), ff.literal("/operations"), ff.literal("OP1"));
         Filter filter = ff.equals(function, ff.literal(true));
         String encoded = encoder.encodeToString(filter);
         assertEquals("WHERE json_exists(operations, '$.operations?(@ == \"OP1\")')", encoded);
@@ -198,11 +153,7 @@ public class OracleFilterToSqlTest {
     @Test
     public void testJsonArrayContainsNumber() throws Exception {
         Function function =
-                ff.function(
-                        "jsonArrayContains",
-                        ff.property("operations"),
-                        ff.literal("/operations"),
-                        ff.literal(1));
+                ff.function("jsonArrayContains", ff.property("operations"), ff.literal("/operations"), ff.literal(1));
         Filter filter = ff.equals(function, ff.literal(true));
         String encoded = encoder.encodeToString(filter);
         assertEquals("WHERE json_exists(operations, '$.operations?(@ == \"1\")')", encoded);
@@ -210,26 +161,17 @@ public class OracleFilterToSqlTest {
 
     @Test
     public void testJsonArrayContainsNestedObject() throws Exception {
-        Function function =
-                ff.function(
-                        "jsonArrayContains",
-                        ff.property("operations"),
-                        ff.literal("/operations/parameters"),
-                        ff.literal(1));
+        Function function = ff.function(
+                "jsonArrayContains", ff.property("operations"), ff.literal("/operations/parameters"), ff.literal(1));
         Filter filter = ff.equals(function, ff.literal(true));
         String encoded = encoder.encodeToString(filter);
-        assertEquals(
-                "WHERE json_exists(operations, '$.operations.parameters?(@ == \"1\")')", encoded);
+        assertEquals("WHERE json_exists(operations, '$.operations.parameters?(@ == \"1\")')", encoded);
     }
 
     @Test
     public void testFunctionJsonArrayContainsEscapingPointer() throws Exception {
         Function function =
-                ff.function(
-                        "jsonArrayContains",
-                        ff.property("operations"),
-                        ff.literal("/'FOO"),
-                        ff.literal(1));
+                ff.function("jsonArrayContains", ff.property("operations"), ff.literal("/'FOO"), ff.literal(1));
         Filter filter = ff.equals(function, ff.literal(true));
         String encoded = encoder.encodeToString(filter);
         assertEquals("WHERE json_exists(operations, '$.''FOO?(@ == \"1\")')", encoded);
@@ -237,26 +179,19 @@ public class OracleFilterToSqlTest {
 
     @Test
     public void testFunctionJsonArrayContainsEscapingExpected() throws Exception {
-        Function function =
-                ff.function(
-                        "jsonArrayContains",
-                        ff.property("operations"),
-                        ff.literal("/operations/parameters"),
-                        ff.literal("'FOO"));
+        Function function = ff.function(
+                "jsonArrayContains",
+                ff.property("operations"),
+                ff.literal("/operations/parameters"),
+                ff.literal("'FOO"));
         Filter filter = ff.equals(function, ff.literal(true));
         String encoded = encoder.encodeToString(filter);
-        assertEquals(
-                "WHERE json_exists(operations, '$.operations.parameters?(@ == \"''FOO\")')",
-                encoded);
+        assertEquals("WHERE json_exists(operations, '$.operations.parameters?(@ == \"''FOO\")')", encoded);
     }
 
     @Test
     public void testFunctionJsonPointer() throws Exception {
-        Function function =
-                ff.function(
-                        "jsonPointer",
-                        ff.property("operations"),
-                        ff.literal("/operations/parameters"));
+        Function function = ff.function("jsonPointer", ff.property("operations"), ff.literal("/operations/parameters"));
         String encoded = encoder.encodeToString(function);
         assertEquals("JSON_VALUE(operations, '$.operations.parameters')", encoded);
     }
@@ -264,10 +199,7 @@ public class OracleFilterToSqlTest {
     @Test
     public void testFunctionJsonPointerWithArray() throws Exception {
         Function function =
-                ff.function(
-                        "jsonPointer",
-                        ff.property("operations"),
-                        ff.literal("/operations/parameters/0"));
+                ff.function("jsonPointer", ff.property("operations"), ff.literal("/operations/parameters/0"));
         String encoded = encoder.encodeToString(function);
         assertEquals("JSON_VALUE(operations, '$.operations.parameters[0]')", encoded);
     }
@@ -296,14 +228,9 @@ public class OracleFilterToSqlTest {
     public void testLiteralGeomPoint() throws IOException, FilterToSQLException {
         encoder.setPrepareEnabled(false);
         encoder.setFeatureType(
-                buildSimpleFeatureType(
-                        "testPolyLiteral",
-                        Arrays.asList("testGeometry"),
-                        Arrays.asList(Polygon.class)));
+                buildSimpleFeatureType("testPolyLiteral", Arrays.asList("testGeometry"), Arrays.asList(Polygon.class)));
         Intersects filter =
-                ff.intersects(
-                        ff.property("testGeometry"),
-                        ff.literal(gf.createPoint(new Coordinate(2, 2))));
+                ff.intersects(ff.property("testGeometry"), ff.literal(gf.createPoint(new Coordinate(2, 2))));
         String result = encoder.encodeToString(filter);
         assertEquals(
                 "WHERE SDO_RELATE(\"testGeometry\", MDSYS.SDO_GEOMETRY(2001,4326,MDSYS.SDO_POINT_TYPE(2.0,2.0,NULL),NULL,NULL), 'mask=anyinteract querytype=WINDOW') = 'TRUE' ",
@@ -314,21 +241,13 @@ public class OracleFilterToSqlTest {
     public void testLiteralGeomLine() throws IOException, FilterToSQLException {
         encoder.setPrepareEnabled(false);
         encoder.setFeatureType(
-                buildSimpleFeatureType(
-                        "testLineLiteral",
-                        Arrays.asList("testGeometry"),
-                        Arrays.asList(Polygon.class)));
-        Intersects filter =
-                ff.intersects(
-                        ff.property("testGeometry"),
-                        ff.literal(
-                                gf.createLineString(
-                                        new Coordinate[] {
-                                            new Coordinate(-10.0d, -10.0d),
-                                            new Coordinate(-5.0d, -5.0d),
-                                            new Coordinate(5.0d, 5.0d),
-                                            new Coordinate(10d, 10d)
-                                        })));
+                buildSimpleFeatureType("testLineLiteral", Arrays.asList("testGeometry"), Arrays.asList(Polygon.class)));
+        Intersects filter = ff.intersects(ff.property("testGeometry"), ff.literal(gf.createLineString(new Coordinate[] {
+            new Coordinate(-10.0d, -10.0d),
+            new Coordinate(-5.0d, -5.0d),
+            new Coordinate(5.0d, 5.0d),
+            new Coordinate(10d, 10d)
+        })));
         String result = encoder.encodeToString(filter);
         assertEquals(
                 "WHERE SDO_RELATE(\"testGeometry\", MDSYS.SDO_GEOMETRY(2002,4326,NULL,MDSYS.SDO_ELEM_INFO_ARRAY(1,2,1),MDSYS.SDO_ORDINATE_ARRAY(-10.0,-10.0,-5.0,-5.0,5.0,5.0,10.0,10.0)), 'mask=anyinteract querytype=WINDOW') = 'TRUE' ",
@@ -339,31 +258,22 @@ public class OracleFilterToSqlTest {
     public void testLiteralGeomPolygon() throws IOException, FilterToSQLException {
         encoder.setPrepareEnabled(false);
         encoder.setFeatureType(
-                buildSimpleFeatureType(
-                        "testPolyLiteral",
-                        Arrays.asList("testGeometry"),
-                        Arrays.asList(Polygon.class)));
-        Intersects filter =
-                ff.intersects(
-                        ff.property("testGeometry"),
-                        ff.literal(
-                                gf.createPolygon(
-                                        gf.createLinearRing(
-                                                new Coordinate[] {
-                                                    new Coordinate(0, 0),
-                                                    new Coordinate(0, 2),
-                                                    new Coordinate(2, 2),
-                                                    new Coordinate(2, 0),
-                                                    new Coordinate(0, 0)
-                                                }))));
+                buildSimpleFeatureType("testPolyLiteral", Arrays.asList("testGeometry"), Arrays.asList(Polygon.class)));
+        Intersects filter = ff.intersects(
+                ff.property("testGeometry"), ff.literal(gf.createPolygon(gf.createLinearRing(new Coordinate[] {
+                    new Coordinate(0, 0),
+                    new Coordinate(0, 2),
+                    new Coordinate(2, 2),
+                    new Coordinate(2, 0),
+                    new Coordinate(0, 0)
+                }))));
         String result = encoder.encodeToString(filter);
         assertEquals(
                 "WHERE SDO_RELATE(\"testGeometry\", MDSYS.SDO_GEOMETRY(2003,4326,NULL,MDSYS.SDO_ELEM_INFO_ARRAY(1,1003,3),MDSYS.SDO_ORDINATE_ARRAY(0.0,0.0,2.0,2.0)), 'mask=anyinteract querytype=WINDOW') = 'TRUE' ",
                 result);
     }
 
-    private SimpleFeatureType buildSimpleFeatureType(
-            String name, List<String> fields, List<Class<?>> bindings) {
+    private SimpleFeatureType buildSimpleFeatureType(String name, List<String> fields, List<Class<?>> bindings) {
         assumeTrue(fields.size() == bindings.size());
         SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
         for (int i = 0; i < fields.size(); i++) {

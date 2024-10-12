@@ -45,11 +45,7 @@ public class XmlComplexFeatureParserTest {
      * @return A FileInputStream of the file you requested.
      */
     private FileInputStream getResourceAsFileInputStream(String resourceName) {
-        final URL url =
-                getClass()
-                        .getResource(
-                                "/org/geotools/data/wfs/internal/parsers/test-data/"
-                                        + resourceName);
+        final URL url = getClass().getResource("/org/geotools/data/wfs/internal/parsers/test-data/" + resourceName);
 
         try {
             return new FileInputStream(new File(url.getPath().replaceAll("%20", " ")));
@@ -166,11 +162,9 @@ public class XmlComplexFeatureParserTest {
     }
 
     @Test
-    public void parse_xlinkRefersToTargetInAnotherFeatureAbove_linkedElementGetsSet()
-            throws IOException {
+    public void parse_xlinkRefersToTargetInAnotherFeatureAbove_linkedElementGetsSet() throws IOException {
         // Arrange
-        XmlComplexFeatureParser mineParser =
-                getParser("wfs_response_xlink_target_in_another_feature_above.xml");
+        XmlComplexFeatureParser mineParser = getParser("wfs_response_xlink_target_in_another_feature_above.xml");
 
         // Act
         Property mineNamePropertyType1 = mineParser.parse().getProperty("MineNamePropertyType");
@@ -181,11 +175,9 @@ public class XmlComplexFeatureParserTest {
     }
 
     @Test
-    public void parse_xlinkRefersToTargetInAnotherFeatureBelow_linkedElementGetsSet()
-            throws IOException {
+    public void parse_xlinkRefersToTargetInAnotherFeatureBelow_linkedElementGetsSet() throws IOException {
         // Arrange
-        XmlComplexFeatureParser mineParser =
-                getParser("wfs_response_xlink_target_in_another_feature_below.xml");
+        XmlComplexFeatureParser mineParser = getParser("wfs_response_xlink_target_in_another_feature_below.xml");
 
         // Act
         Property mineNamePropertyType1 = mineParser.parse().getProperty("mineName");
@@ -201,24 +193,19 @@ public class XmlComplexFeatureParserTest {
         SchemaResolver appSchemaResolver = new SchemaResolver();
         EmfComplexFeatureReader reader = EmfComplexFeatureReader.newInstance();
         reader.setResolver(appSchemaResolver);
-        FeatureTypeRegistry typeRegistry =
-                new FeatureTypeRegistry(
-                        new ComplexFeatureTypeFactoryImpl(),
-                        new GmlFeatureTypeRegistryConfiguration(null));
-        typeRegistry.addSchemas(
-                reader.parse(new URL("http://www.geosciml.org/geosciml/2.0/xsd/geosciml.xsd")));
+        FeatureTypeRegistry typeRegistry = new FeatureTypeRegistry(
+                new ComplexFeatureTypeFactoryImpl(), new GmlFeatureTypeRegistryConfiguration(null));
+        typeRegistry.addSchemas(reader.parse(new URL("http://www.geosciml.org/geosciml/2.0/xsd/geosciml.xsd")));
         AttributeDescriptor descriptor =
-                typeRegistry.getDescriptor(
-                        new NameImpl("urn:cgi:xmlns:CGI:GeoSciML:2.0", ":", "Borehole"), null);
+                typeRegistry.getDescriptor(new NameImpl("urn:cgi:xmlns:CGI:GeoSciML:2.0", ":", "Borehole"), null);
         FeatureType featureType = (FeatureType) descriptor.getType();
         // System.out.println(featureType);
 
         // Arrange
-        XmlComplexFeatureParser boreholeParser =
-                new XmlComplexFeatureParser(
-                        getResourceAsFileInputStream("wfs_response_borehole.xml"),
-                        featureType,
-                        new QName("urn:cgi:xmlns:CGI:GeoSciML:2.0", "Borehole", "gsml"));
+        XmlComplexFeatureParser boreholeParser = new XmlComplexFeatureParser(
+                getResourceAsFileInputStream("wfs_response_borehole.xml"),
+                featureType,
+                new QName("urn:cgi:xmlns:CGI:GeoSciML:2.0", "Borehole", "gsml"));
 
         // Act
         Feature feature = boreholeParser.parse();
@@ -230,8 +217,7 @@ public class XmlComplexFeatureParserTest {
                 "AttributeImpl:name<CodeType>=[AttributeImpl:simpleContent<string>=http://nvclwebservices.vm.csiro.au/resource/feature/CSIRO/borehole/rd001]",
                 names[0].toString());
         Assert.assertEquals(
-                "AttributeImpl:name<CodeType>=[AttributeImpl:simpleContent<string>=rd001]",
-                names[1].toString());
+                "AttributeImpl:name<CodeType>=[AttributeImpl:simpleContent<string>=rd001]", names[1].toString());
         Assert.assertEquals(
                 "ComplexAttributeImpl:collarLocation<BoreholeCollarPropertyType>=[FeatureImpl:BoreholeCollar<BoreholeCollarType id=gsml.borehole.collar.rd001>=[FeatureImpl:BoreholeCollar<BoreholeCollarType id=gsml.borehole.collar.rd001>=[ComplexAttributeImpl:elevation<DirectPositionType>=[AttributeImpl:simpleContent<doubleList>=0.0]]]]",
                 feature.getProperty("collarLocation").toString());

@@ -44,9 +44,7 @@ public class EpsgUnitFormatTest {
      */
     @Test
     public void testGTDefinedFormats() throws IOException {
-        UnitFormatTest.doTestFormatForGTDefinedUnits(
-                NonSI.DEGREE_ANGLE, epsgUnitFormatter, "degree");
-        UnitFormatTest.doTestFormatForGTDefinedUnits(
-                Units.SEXAGESIMAL_DMS, epsgUnitFormatter, "D.MS");
+        UnitFormatTest.doTestFormatForGTDefinedUnits(NonSI.DEGREE_ANGLE, epsgUnitFormatter, "degree");
+        UnitFormatTest.doTestFormatForGTDefinedUnits(Units.SEXAGESIMAL_DMS, epsgUnitFormatter, "D.MS");
     }
 }

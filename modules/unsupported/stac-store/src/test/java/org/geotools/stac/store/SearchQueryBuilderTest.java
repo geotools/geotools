@@ -91,8 +91,7 @@ public class SearchQueryBuilderTest extends AbstractSTACStoreTest {
     public void testSpatioTemporal() throws Exception {
         Query q = new Query(schema.getTypeName());
         q.setFilter(
-                ECQL.toFilter(
-                        "BBOX(geometry, -180, -90, 180, 90, 'CRS:84') and datetime BEFORE 2006-11-30T01:30:00Z"));
+                ECQL.toFilter("BBOX(geometry, -180, -90, 180, 90, 'CRS:84') and datetime BEFORE 2006-11-30T01:30:00Z"));
 
         Pair<SearchQuery, Filter> pair = builder.toSearchQuery(q, true);
         assertEquals(Filter.INCLUDE, pair.getValue());
@@ -107,9 +106,8 @@ public class SearchQueryBuilderTest extends AbstractSTACStoreTest {
     @Test
     public void testMixed() throws Exception {
         Query q = new Query(schema.getTypeName());
-        q.setFilter(
-                ECQL.toFilter(
-                        "BBOX(geometry, -180, -90, 180, 90, 'CRS:84') and datetime BEFORE 2006-11-30T01:30:00Z and foo > 10"));
+        q.setFilter(ECQL.toFilter(
+                "BBOX(geometry, -180, -90, 180, 90, 'CRS:84') and datetime BEFORE 2006-11-30T01:30:00Z and foo > 10"));
         q.setPropertyNames("geometry", "datetime");
 
         Pair<SearchQuery, Filter> pair = builder.toSearchQuery(q, true);
@@ -119,14 +117,7 @@ public class SearchQueryBuilderTest extends AbstractSTACStoreTest {
         assertArrayEquals(new double[] {-180, -90, 180, 90}, sq.getBbox(), 0d);
         assertEquals(
                 Arrays.asList(
-                        "geometry",
-                        "properties.datetime",
-                        "type",
-                        "id",
-                        "-bbox",
-                        "-properties",
-                        "-assets",
-                        "-links"),
+                        "geometry", "properties.datetime", "type", "id", "-bbox", "-properties", "-assets", "-links"),
                 sq.getFields());
         assertEquals(ECQL.toFilter("foo > 10"), sq.getFilter());
         assertEquals("../2006-11-30T01:30:00Z", sq.getDatetime());

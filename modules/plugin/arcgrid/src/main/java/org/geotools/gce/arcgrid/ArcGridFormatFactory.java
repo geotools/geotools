@@ -33,8 +33,7 @@ import org.geotools.coverage.grid.io.GridFormatFactorySpi;
  */
 public final class ArcGridFormatFactory implements GridFormatFactorySpi {
     /** Logger. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(ArcGridFormatFactory.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(ArcGridFormatFactory.class);
 
     /**
      * Tells me if the coverage plugin to access Ascii grids is available or not.
@@ -54,8 +53,7 @@ public final class ArcGridFormatFactory implements GridFormatFactorySpi {
             Class.forName("it.geosolutions.imageio.plugins.arcgrid.AsciiGridsImageMetadata");
             if (LOGGER.isLoggable(Level.FINE)) LOGGER.fine("ArcGridFormatFactory is available.");
         } catch (ClassNotFoundException cnf) {
-            if (LOGGER.isLoggable(Level.FINE))
-                LOGGER.fine("ArcGridFormatFactory is not available.");
+            if (LOGGER.isLoggable(Level.FINE)) LOGGER.fine("ArcGridFormatFactory is not available.");
             available = false;
         }
 

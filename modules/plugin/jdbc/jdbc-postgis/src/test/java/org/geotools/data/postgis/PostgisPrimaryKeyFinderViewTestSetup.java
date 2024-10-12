@@ -27,16 +27,15 @@ public class PostgisPrimaryKeyFinderViewTestSetup extends JDBCPrimaryKeyFinderVi
 
     @Override
     protected void createMetadataTable() throws Exception {
-        run(
-                "CREATE TABLE tbl_gt_pk_metadata ( "
-                        + "table_schema VARCHAR(32), "
-                        + "table_name VARCHAR(32) NOT NULL, "
-                        + "pk_column VARCHAR(32) NOT NULL, "
-                        + "pk_column_idx INTEGER, "
-                        + "pk_policy VARCHAR(32), "
-                        + "pk_sequence VARCHAR(64),"
-                        + "unique (table_schema, table_name, pk_column),"
-                        + "check (pk_policy in ('sequence', 'assigned', 'autoincrement')))");
+        run("CREATE TABLE tbl_gt_pk_metadata ( "
+                + "table_schema VARCHAR(32), "
+                + "table_name VARCHAR(32) NOT NULL, "
+                + "pk_column VARCHAR(32) NOT NULL, "
+                + "pk_column_idx INTEGER, "
+                + "pk_policy VARCHAR(32), "
+                + "pk_sequence VARCHAR(64),"
+                + "unique (table_schema, table_name, pk_column),"
+                + "check (pk_policy in ('sequence', 'assigned', 'autoincrement')))");
     }
 
     @Override
@@ -50,18 +49,13 @@ public class PostgisPrimaryKeyFinderViewTestSetup extends JDBCPrimaryKeyFinderVi
         run("SELECT AddGeometryColumn('seqtable', 'geom', -1, 'GEOMETRY', 2)");
         run("CREATE SEQUENCE pksequence START WITH 1");
 
-        run(
-                "INSERT INTO \"seqtable\" (\"key\", \"name\",\"geom\" ) VALUES ("
-                        + "(SELECT NEXTVAL('PKSEQUENCE')),'one',NULL)");
-        run(
-                "INSERT INTO \"seqtable\" (\"key\", \"name\",\"geom\" ) VALUES ("
-                        + "(SELECT NEXTVAL('PKSEQUENCE')),'two',NULL)");
-        run(
-                "INSERT INTO \"seqtable\" (\"key\", \"name\",\"geom\" ) VALUES ("
-                        + "(SELECT NEXTVAL('PKSEQUENCE')),'three',NULL)");
+        run("INSERT INTO \"seqtable\" (\"key\", \"name\",\"geom\" ) VALUES ("
+                + "(SELECT NEXTVAL('PKSEQUENCE')),'one',NULL)");
+        run("INSERT INTO \"seqtable\" (\"key\", \"name\",\"geom\" ) VALUES ("
+                + "(SELECT NEXTVAL('PKSEQUENCE')),'two',NULL)");
+        run("INSERT INTO \"seqtable\" (\"key\", \"name\",\"geom\" ) VALUES ("
+                + "(SELECT NEXTVAL('PKSEQUENCE')),'three',NULL)");
 
-        run(
-                "INSERT INTO tbl_gt_pk_metadata VALUES"
-                        + "(NULL, 'seqtable', 'key', 0, 'sequence', 'PKSEQUENCE')");
+        run("INSERT INTO tbl_gt_pk_metadata VALUES" + "(NULL, 'seqtable', 'key', 0, 'sequence', 'PKSEQUENCE')");
     }
 }

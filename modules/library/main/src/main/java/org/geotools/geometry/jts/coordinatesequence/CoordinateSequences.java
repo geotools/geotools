@@ -88,9 +88,8 @@ public class CoordinateSequences extends org.locationtech.jts.geom.CoordinateSeq
          * can happen if the ring does not contain 3 distinct points (including the case where the
          * input array has fewer than 4 elements), or it contains coincident line segments.
          */
-        if (equals2D(ring, iPrev, hiIndex)
-                || equals2D(ring, iNext, hiIndex)
-                || equals2D(ring, iPrev, iNext)) return false;
+        if (equals2D(ring, iPrev, hiIndex) || equals2D(ring, iNext, hiIndex) || equals2D(ring, iPrev, iNext))
+            return false;
 
         int disc = computeOrientation(ring, iPrev, hiIndex, iNext);
 
@@ -113,8 +112,7 @@ public class CoordinateSequences extends org.locationtech.jts.geom.CoordinateSeq
     }
 
     private static boolean equals2D(CoordinateSequence cs, int i, int j) {
-        return cs.getOrdinate(i, 0) == cs.getOrdinate(j, 0)
-                && cs.getOrdinate(i, 1) == cs.getOrdinate(j, 1);
+        return cs.getOrdinate(i, 0) == cs.getOrdinate(j, 0) && cs.getOrdinate(i, 1) == cs.getOrdinate(j, 1);
     }
 
     public static int computeOrientation(CoordinateSequence cs, int p1, int p2, int q) {
@@ -147,8 +145,7 @@ public class CoordinateSequences extends org.locationtech.jts.geom.CoordinateSeq
             return ((CurvedGeometry<?>) g).getCoordinatesDimension();
         }
         if (g instanceof Point) return coordinateDimension(((Point) g).getCoordinateSequence());
-        if (g instanceof LineString)
-            return coordinateDimension(((LineString) g).getCoordinateSequence());
+        if (g instanceof LineString) return coordinateDimension(((LineString) g).getCoordinateSequence());
         if (g instanceof Polygon)
             return coordinateDimension(((Polygon) g).getExteriorRing().getCoordinateSequence());
 

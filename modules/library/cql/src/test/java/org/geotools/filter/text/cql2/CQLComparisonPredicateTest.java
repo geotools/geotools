@@ -140,8 +140,7 @@ public class CQLComparisonPredicateTest {
 
         Filter actual = parseFilter(prop + " < 100");
 
-        Assert.assertTrue(
-                "PropertyIsLessThan filter was expected", actual instanceof PropertyIsLessThan);
+        Assert.assertTrue("PropertyIsLessThan filter was expected", actual instanceof PropertyIsLessThan);
 
         PropertyIsLessThan lessFilter = (PropertyIsLessThan) actual;
         Expression property = lessFilter.getExpression1();
@@ -204,8 +203,7 @@ public class CQLComparisonPredicateTest {
 
         PropertyIsEqualTo eqFilter = (PropertyIsEqualTo) filter;
         Assert.assertEquals("attr", ((PropertyName) eqFilter.getExpression1()).getPropertyName());
-        Assert.assertEquals(
-                Long.parseLong(expectedValue), ((Literal) eqFilter.getExpression2()).getValue());
+        Assert.assertEquals(Long.parseLong(expectedValue), ((Literal) eqFilter.getExpression2()).getValue());
     }
 
     @Test

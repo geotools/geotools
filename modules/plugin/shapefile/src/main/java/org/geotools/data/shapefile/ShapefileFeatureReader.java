@@ -56,7 +56,8 @@ class ShapefileFeatureReader implements FeatureReader<SimpleFeatureType, SimpleF
                 @Override
                 public String toString() {
                     return "SKIP";
-                };
+                }
+                ;
             };
 
     SimpleFeatureType schema;
@@ -86,10 +87,7 @@ class ShapefileFeatureReader implements FeatureReader<SimpleFeatureType, SimpleF
     Filter filter;
 
     public ShapefileFeatureReader(
-            SimpleFeatureType schema,
-            ShapefileReader shp,
-            DbaseFileReader dbf,
-            IndexedFidReader fidReader)
+            SimpleFeatureType schema, ShapefileReader shp, DbaseFileReader dbf, IndexedFidReader fidReader)
             throws IOException {
         this.schema = schema;
         this.shp = shp;
@@ -117,10 +115,7 @@ class ShapefileFeatureReader implements FeatureReader<SimpleFeatureType, SimpleF
                     Map<Object, Object> userData = att.getUserData();
                     if (userData.get(ShapefileDataStore.ORIGINAL_FIELD_NAME) != null) {
                         attName = (String) userData.get(ShapefileDataStore.ORIGINAL_FIELD_NAME);
-                        count =
-                                (Integer)
-                                        userData.get(
-                                                ShapefileDataStore.ORIGINAL_FIELD_DUPLICITY_COUNT);
+                        count = (Integer) userData.get(ShapefileDataStore.ORIGINAL_FIELD_DUPLICITY_COUNT);
                     }
 
                     boolean found = false;
@@ -132,8 +127,7 @@ class ShapefileFeatureReader implements FeatureReader<SimpleFeatureType, SimpleF
                         }
                     }
                     if (!found) {
-                        throw new IOException(
-                                "Could not find attribute " + attName + " (mul count: " + count);
+                        throw new IOException("Could not find attribute " + attName + " (mul count: " + count);
                     }
                 }
             }
@@ -146,8 +140,7 @@ class ShapefileFeatureReader implements FeatureReader<SimpleFeatureType, SimpleF
     }
 
     @Override
-    public SimpleFeature next()
-            throws IOException, IllegalArgumentException, NoSuchElementException {
+    public SimpleFeature next() throws IOException, IllegalArgumentException, NoSuchElementException {
         if (hasNext()) {
             SimpleFeature result = nextFeature;
             nextFeature = null;
@@ -194,8 +187,7 @@ class ShapefileFeatureReader implements FeatureReader<SimpleFeatureType, SimpleF
                 }
 
                 final int number = record != null ? record.number : 0;
-                final Envelope envelope =
-                        record != null ? record.envelope() : geometry.getEnvelopeInternal();
+                final Envelope envelope = record != null ? record.envelope() : geometry.getEnvelopeInternal();
                 nextFeature = buildFeature(number, geometry, row, envelope);
             } else {
                 if (dbf != null) {
@@ -246,8 +238,7 @@ class ShapefileFeatureReader implements FeatureReader<SimpleFeatureType, SimpleF
         return geometry;
     }
 
-    SimpleFeature buildFeature(int number, Geometry geometry, Row row, Envelope envelope)
-            throws IOException {
+    SimpleFeature buildFeature(int number, Geometry geometry, Row row, Envelope envelope) throws IOException {
         if (dbfindexes != null) {
             for (int dbfindex : dbfindexes) {
                 if (dbfindex == -1) {

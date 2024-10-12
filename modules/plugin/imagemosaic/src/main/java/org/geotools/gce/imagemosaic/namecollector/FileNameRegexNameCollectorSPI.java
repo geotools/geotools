@@ -41,8 +41,7 @@ public class FileNameRegexNameCollectorSPI implements CoverageNameCollectorSPI {
             return new FileNameRegexBasedCoverageNameCollector(regex);
         }
         throw new IllegalArgumentException(
-                "FileNameRegexNameCollectorSPI should have "
-                        + "a defined REGEX property in the map");
+                "FileNameRegexNameCollectorSPI should have " + "a defined REGEX property in the map");
     }
 
     /**

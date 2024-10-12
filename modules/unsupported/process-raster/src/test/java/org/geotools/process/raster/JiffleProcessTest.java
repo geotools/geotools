@@ -44,8 +44,7 @@ import org.junit.Test;
 
 public class JiffleProcessTest {
 
-    private static final GridCoverageFactory covFactory =
-            CoverageFactoryFinder.getGridCoverageFactory(null);
+    private static final GridCoverageFactory covFactory = CoverageFactoryFinder.getGridCoverageFactory(null);
     private static final float[][] ONE_DIAGONAL = {
         {1, 0, 0},
         {0, 1, 0},
@@ -60,9 +59,7 @@ public class JiffleProcessTest {
 
     private GridCoverage2D buildCoverage(float[][] data) {
         return buildCoverage(
-                data,
-                new ReferencedEnvelope(
-                        0, data[0].length, 0, data.length, DefaultEngineeringCRS.CARTESIAN_2D));
+                data, new ReferencedEnvelope(0, data[0].length, 0, data.length, DefaultEngineeringCRS.CARTESIAN_2D));
     }
 
     private GridCoverage2D buildCoverage(float[][] data, ReferencedEnvelope envelope) {
@@ -94,21 +91,19 @@ public class JiffleProcessTest {
 
     @Test
     public void testCopyCustomInput() {
-        assertCopy(
-                inputs -> {
-                    inputs.put(JiffleProcess.IN_SOURCE_NAME, "abc");
-                    inputs.put(JiffleProcess.IN_SCRIPT, "dest = abc;");
-                });
+        assertCopy(inputs -> {
+            inputs.put(JiffleProcess.IN_SOURCE_NAME, "abc");
+            inputs.put(JiffleProcess.IN_SCRIPT, "dest = abc;");
+        });
     }
 
     @Test
     public void testCopyCustomInOut() {
-        assertCopy(
-                inputs -> {
-                    inputs.put(JiffleProcess.IN_DEST_NAME, "result");
-                    inputs.put(JiffleProcess.IN_SOURCE_NAME, "abc");
-                    inputs.put(JiffleProcess.IN_SCRIPT, "result = abc;");
-                });
+        assertCopy(inputs -> {
+            inputs.put(JiffleProcess.IN_DEST_NAME, "result");
+            inputs.put(JiffleProcess.IN_SOURCE_NAME, "abc");
+            inputs.put(JiffleProcess.IN_SCRIPT, "result = abc;");
+        });
     }
 
     private void assertCopy(Consumer<Map<String, Object>> inputsCustomizer) {
@@ -187,9 +182,7 @@ public class JiffleProcessTest {
 
         // this test is a bit unfortunate, in that we cannot do a straight comparison of values
         // computed, but the StreamingRenderer has produced a BufferedImage in output, only colors
-        File expected =
-                new File(
-                        "src/test/resources/org/geotools/process/raster/test-data/ndvi-expected.png");
+        File expected = new File("src/test/resources/org/geotools/process/raster/test-data/ndvi-expected.png");
         ImageAssert.assertEquals(expected, bi, 0);
     }
 
@@ -213,8 +206,7 @@ public class JiffleProcessTest {
                 (RenderingTransformation) style.featureTypeStyles().get(0).getTransformation();
 
         // check the bands have been passed down to the reader
-        GeneralParameterValue[] params =
-                tx.customizeReadParams(reader, new GeneralParameterValue[0]);
+        GeneralParameterValue[] params = tx.customizeReadParams(reader, new GeneralParameterValue[0]);
         assertEquals(1, params.length);
         assertArrayEquals(new int[] {3, 7}, (int[]) ((ParameterValue) params[0]).getValue());
 
@@ -252,8 +244,7 @@ public class JiffleProcessTest {
                 (RenderingTransformation) style.featureTypeStyles().get(0).getTransformation();
 
         // check the bands will not be passed to the reader
-        GeneralParameterValue[] params =
-                tx.customizeReadParams(reader, new GeneralParameterValue[0]);
+        GeneralParameterValue[] params = tx.customizeReadParams(reader, new GeneralParameterValue[0]);
         assertEquals(0, params.length);
 
         // perform calculation
@@ -329,8 +320,7 @@ public class JiffleProcessTest {
     @Test
     public void testDynamicBandsCount() {
         GridCoverage2D coverage =
-                checkMultibandIndexExpressions(
-                        inputs -> inputs.put(JiffleProcess.OUTPUT_BAND_COUNT, 3));
+                checkMultibandIndexExpressions(inputs -> inputs.put(JiffleProcess.OUTPUT_BAND_COUNT, 3));
 
         // check band names
         GridSampleDimension[] sampleDimensions = coverage.getSampleDimensions();
@@ -342,8 +332,7 @@ public class JiffleProcessTest {
     @Test
     public void testDynamicBandsNames() {
         GridCoverage2D coverage =
-                checkMultibandIndexExpressions(
-                        inputs -> inputs.put(JiffleProcess.OUTPUT_BAND_NAMES, "o1,o2,o3"));
+                checkMultibandIndexExpressions(inputs -> inputs.put(JiffleProcess.OUTPUT_BAND_NAMES, "o1,o2,o3"));
 
         // check band names
         GridSampleDimension[] sampleDimensions = coverage.getSampleDimensions();
@@ -354,12 +343,10 @@ public class JiffleProcessTest {
 
     @Test
     public void testDynamicBandsCountNames() {
-        GridCoverage2D coverage =
-                checkMultibandIndexExpressions(
-                        inputs -> {
-                            inputs.put(JiffleProcess.OUTPUT_BAND_COUNT, 3);
-                            inputs.put(JiffleProcess.OUTPUT_BAND_NAMES, "o1,o2");
-                        });
+        GridCoverage2D coverage = checkMultibandIndexExpressions(inputs -> {
+            inputs.put(JiffleProcess.OUTPUT_BAND_COUNT, 3);
+            inputs.put(JiffleProcess.OUTPUT_BAND_NAMES, "o1,o2");
+        });
 
         // check band names
         GridSampleDimension[] sampleDimensions = coverage.getSampleDimensions();
@@ -368,8 +355,7 @@ public class JiffleProcessTest {
         assertEquals("jiffle3", sampleDimensions[2].getDescription().toString());
     }
 
-    private GridCoverage2D checkMultibandIndexExpressions(
-            Consumer<Map<String, Object>> paramProvider) {
+    private GridCoverage2D checkMultibandIndexExpressions(Consumer<Map<String, Object>> paramProvider) {
         GridCoverage2D c1 = buildCoverage(ONE_DIAGONAL);
         GridCoverage2D c2 = buildCoverage(TWO_SOLID);
 
@@ -377,10 +363,7 @@ public class JiffleProcessTest {
         Map<String, Object> inputs = new HashMap<>();
         inputs.put(JiffleProcess.IN_SOURCE_NAME, new String[] {"a", "b"});
         inputs.put(JiffleProcess.IN_COVERAGE, new GridCoverage2D[] {c1, c2});
-        String script =
-                "dest[x() % 2 == 0 ? 0 : 1] = a;\n"
-                        + "dest[x() % 2 == 0 ? 1 : 0] = b;\n"
-                        + "dest[2] = b - a;";
+        String script = "dest[x() % 2 == 0 ? 0 : 1] = a;\n" + "dest[x() % 2 == 0 ? 1 : 0] = b;\n" + "dest[2] = b - a;";
         inputs.put(JiffleProcess.IN_SCRIPT, script);
         paramProvider.accept(inputs);
         Map<String, Object> output = jiffle.execute(inputs, null);
@@ -423,10 +406,7 @@ public class JiffleProcessTest {
         Map<String, Object> inputs = new HashMap<>();
         inputs.put(JiffleProcess.IN_SOURCE_NAME, new String[] {"a", "b"});
         inputs.put(JiffleProcess.IN_COVERAGE, new GridCoverage2D[] {c1, c2});
-        String script =
-                "dest[x() % 2 == 0 ? 0 : 1] = a;\n"
-                        + "dest[x() % 2 == 0 ? 1 : 0] = b;\n"
-                        + "dest[2] = b - a;";
+        String script = "dest[x() % 2 == 0 ? 0 : 1] = a;\n" + "dest[x() % 2 == 0 ? 1 : 0] = b;\n" + "dest[2] = b - a;";
         inputs.put(JiffleProcess.IN_SCRIPT, script);
         // band count mandatory, but we're feeding in the wrong value
         inputs.put(JiffleProcess.OUTPUT_BAND_COUNT, 2);
@@ -451,10 +431,7 @@ public class JiffleProcessTest {
         Map<String, Object> inputs = new HashMap<>();
         inputs.put(JiffleProcess.IN_COVERAGE, new GridCoverage2D[] {coverage});
         String script =
-                "maxBand = src->bands - 1;\n"
-                        + "foreach (b in 0:maxBand) {\n"
-                        + "dest[b] = src[b] * 2\n;"
-                        + "}";
+                "maxBand = src->bands - 1;\n" + "foreach (b in 0:maxBand) {\n" + "dest[b] = src[b] * 2\n;" + "}";
         inputs.put(JiffleProcess.IN_SCRIPT, script);
         inputs.put(JiffleProcess.OUTPUT_BAND_COUNT, 13);
         Map<String, Object> output = jiffle.execute(inputs, null);

@@ -170,8 +170,7 @@ public class VPFLibrary extends ContentDataStore {
      * @param namespace the namespace to create features with.
      * @throws SchemaException For problems making one of the feature classes as a FeatureType.
      */
-    public VPFLibrary(SimpleFeature libraryFeature, File dir, URI namespace)
-            throws IOException, SchemaException {
+    public VPFLibrary(SimpleFeature libraryFeature, File dir, URI namespace) throws IOException, SchemaException {
         // read libraries info
         String vpfTableName = new File(dir, LIBRARY_HEADER_TABLE).toString();
         VPFFile lhtFile = VPFFileFactory.getInstance().getFile(vpfTableName);
@@ -330,13 +329,7 @@ public class VPFLibrary extends ContentDataStore {
     @Override
     public String toString() {
         return String.format(
-                "{"
-                        + "library: \"%s\","
-                        + "xmin: %f,"
-                        + "xmax: %f,"
-                        + "ymin: %f,"
-                        + "ymax: %f"
-                        + "}",
+                "{" + "library: \"%s\"," + "xmin: %f," + "xmax: %f," + "ymin: %f," + "ymax: %f" + "}",
                 libraryName, getXmin(), getXmax(), getYmin(), getYmax());
     }
     /** A map containing the tiles used by this library */

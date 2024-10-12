@@ -81,14 +81,13 @@ public class HsqlDialectEpsgMediatorTest {
 
     @Test
     public void testFindWSG84() throws FactoryException {
-        String wkt =
-                "GEOGCS[\"WGS 84\",\n"
-                        + "  DATUM[\"World Geodetic System 1984\",\n"
-                        + "    SPHEROID[\"WGS 84\", 6378137.0, 298.257223563]],\n"
-                        + "  PRIMEM[\"Greenwich\", 0.0],\n"
-                        + "  UNIT[\"degree\", 0.017453292519943295],\n"
-                        + "  AXIS[\"Geodetic latitude\", NORTH],\n"
-                        + "  AXIS[\"Geodetic longitude\", EAST]]";
+        String wkt = "GEOGCS[\"WGS 84\",\n"
+                + "  DATUM[\"World Geodetic System 1984\",\n"
+                + "    SPHEROID[\"WGS 84\", 6378137.0, 298.257223563]],\n"
+                + "  PRIMEM[\"Greenwich\", 0.0],\n"
+                + "  UNIT[\"degree\", 0.017453292519943295],\n"
+                + "  AXIS[\"Geodetic latitude\", NORTH],\n"
+                + "  AXIS[\"Geodetic longitude\", EAST]]";
 
         CoordinateReferenceSystem crs = CRS.parseWKT(wkt);
         finder.setFullScanAllowed(false);
@@ -107,8 +106,7 @@ public class HsqlDialectEpsgMediatorTest {
         Assert.assertTrue(
                 "Should found an object equals (ignoring metadata) to the requested one.",
                 CRS.equalsIgnoreMetadata(crs, find));
-        ReferenceIdentifier found =
-                AbstractIdentifiedObject.getIdentifier(find, factory.getAuthority());
+        ReferenceIdentifier found = AbstractIdentifiedObject.getIdentifier(find, factory.getAuthority());
         // assertEquals("4326",found.getCode());
         Assert.assertNotNull(found);
 
@@ -117,10 +115,7 @@ public class HsqlDialectEpsgMediatorTest {
         // this is broken because, as we know from above, it is ambiguous, so it may not be
         // EPSG:4326 in the cache at all!
         // assertEquals("The CRS should still in the cache.","EPSG:4326", id);
-        Assert.assertEquals(
-                "The CRS should still in the cache.",
-                found.getCodeSpace() + ':' + found.getCode(),
-                id);
+        Assert.assertEquals("The CRS should still in the cache.", found.getCodeSpace() + ':' + found.getCode(), id);
     }
 
     @Test
@@ -133,24 +128,23 @@ public class HsqlDialectEpsgMediatorTest {
          * EPSG database, in order to force a full scan (otherwise the EPSG database would
          * find it by name, but we want to test the scan).
          */
-        String wkt =
-                "PROJCS[\"Beijing 1954\",\n"
-                        + "   GEOGCS[\"Beijing 1954\",\n"
-                        + "     DATUM[\"Beijing 1954\",\n"
-                        + "       SPHEROID[\"Krassowsky 1940\", 6378245.0, 298.3]],\n"
-                        + "     PRIMEM[\"Greenwich\", 0.0],\n"
-                        + "     UNIT[\"degree\", 0.017453292519943295],\n"
-                        + "     AXIS[\"Geodetic latitude\", NORTH],\n"
-                        + "     AXIS[\"Geodetic longitude\", EAST]],\n"
-                        + "   PROJECTION[\"Transverse Mercator\"],\n"
-                        + "   PARAMETER[\"central_meridian\", 135.0],\n"
-                        + "   PARAMETER[\"latitude_of_origin\", 0.0],\n"
-                        + "   PARAMETER[\"scale_factor\", 1.0],\n"
-                        + "   PARAMETER[\"false_easting\", 500000.0],\n"
-                        + "   PARAMETER[\"false_northing\", 0.0],\n"
-                        + "   UNIT[\"m\", 1.0],\n"
-                        + "   AXIS[\"Northing\", NORTH],\n"
-                        + "   AXIS[\"Easting\", EAST]]";
+        String wkt = "PROJCS[\"Beijing 1954\",\n"
+                + "   GEOGCS[\"Beijing 1954\",\n"
+                + "     DATUM[\"Beijing 1954\",\n"
+                + "       SPHEROID[\"Krassowsky 1940\", 6378245.0, 298.3]],\n"
+                + "     PRIMEM[\"Greenwich\", 0.0],\n"
+                + "     UNIT[\"degree\", 0.017453292519943295],\n"
+                + "     AXIS[\"Geodetic latitude\", NORTH],\n"
+                + "     AXIS[\"Geodetic longitude\", EAST]],\n"
+                + "   PROJECTION[\"Transverse Mercator\"],\n"
+                + "   PARAMETER[\"central_meridian\", 135.0],\n"
+                + "   PARAMETER[\"latitude_of_origin\", 0.0],\n"
+                + "   PARAMETER[\"scale_factor\", 1.0],\n"
+                + "   PARAMETER[\"false_easting\", 500000.0],\n"
+                + "   PARAMETER[\"false_northing\", 0.0],\n"
+                + "   UNIT[\"m\", 1.0],\n"
+                + "   AXIS[\"Northing\", NORTH],\n"
+                + "   AXIS[\"Easting\", EAST]]";
         CoordinateReferenceSystem crs = CRS.parseWKT(wkt);
 
         finder.setFullScanAllowed(false);
@@ -166,7 +160,8 @@ public class HsqlDialectEpsgMediatorTest {
 
         Assert.assertEquals(
                 "2442",
-                AbstractIdentifiedObject.getIdentifier(find, factory.getAuthority()).getCode());
+                AbstractIdentifiedObject.getIdentifier(find, factory.getAuthority())
+                        .getCode());
         finder.setFullScanAllowed(false);
         String id = finder.findIdentifier(crs);
         Assert.assertEquals("The CRS should still in the cache.", "EPSG:2442", id);

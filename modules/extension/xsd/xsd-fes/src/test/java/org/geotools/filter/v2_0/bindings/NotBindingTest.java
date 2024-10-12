@@ -28,32 +28,29 @@ public class NotBindingTest {
         Document encodedDoc = encoder.encodeAsDOM(filter, FES.Filter);
         XPath xpath = XPathFactory.newInstance().newXPath();
         defaultNamespaceContext(xpath);
-        String prop =
-                xpath.evaluate(
-                        "/fes:Filter/fes:Not/fes:PropertyIsNull/fes:ValueReference", encodedDoc);
+        String prop = xpath.evaluate("/fes:Filter/fes:Not/fes:PropertyIsNull/fes:ValueReference", encodedDoc);
         assertEquals("prop", prop);
     }
 
     @SuppressWarnings("unchecked") // Java 8 vs Java 11 differences
     private void defaultNamespaceContext(XPath xpath) {
-        xpath.setNamespaceContext(
-                new NamespaceContext() {
-                    @Override
-                    @SuppressWarnings("unchecked") // Java 8 vs Java 11 differences
-                    public Iterator getPrefixes(String namespaceURI) {
-                        return null;
-                    }
+        xpath.setNamespaceContext(new NamespaceContext() {
+            @Override
+            @SuppressWarnings("unchecked") // Java 8 vs Java 11 differences
+            public Iterator getPrefixes(String namespaceURI) {
+                return null;
+            }
 
-                    @Override
-                    public String getPrefix(String namespaceURI) {
-                        return null;
-                    }
+            @Override
+            public String getPrefix(String namespaceURI) {
+                return null;
+            }
 
-                    @Override
-                    public String getNamespaceURI(String prefix) {
-                        if ("fes".equals(prefix)) return "http://www.opengis.net/fes/2.0";
-                        return null;
-                    }
-                });
+            @Override
+            public String getNamespaceURI(String prefix) {
+                if ("fes".equals(prefix)) return "http://www.opengis.net/fes/2.0";
+                return null;
+            }
+        });
     }
 }

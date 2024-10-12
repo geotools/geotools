@@ -24,8 +24,7 @@ public class TileURLBuilderTest {
 
     @Test
     public void testTileURLBuilder() throws Exception {
-        TileURLBuilder builder =
-                new TileURLBuilder("http://dummy.net/wmts/{TileMatrix}/{TileCol}/{TileRow}");
+        TileURLBuilder builder = new TileURLBuilder("http://dummy.net/wmts/{TileMatrix}/{TileCol}/{TileRow}");
         String result = builder.createURL("matrix", 54, 78);
         Assert.assertEquals("http://dummy.net/wmts/matrix/54/78", result);
     }

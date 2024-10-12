@@ -78,17 +78,16 @@ final class CommonsLogger extends LoggerAdapter {
     public boolean isLoggable(final Level level) {
         final int n = level.intValue();
         switch (n / 100) {
-            default:
-                {
-                    switch (n) { // Special cases (should not occur often).
-                        case Integer.MIN_VALUE:
-                            return true; // ALL
-                        case Integer.MAX_VALUE:
-                            return false; // OFF
-                        default:
-                            return n >= 0 && logger.isFatalEnabled();
-                    }
+            default: {
+                switch (n) { // Special cases (should not occur often).
+                    case Integer.MIN_VALUE:
+                        return true; // ALL
+                    case Integer.MAX_VALUE:
+                        return false; // OFF
+                    default:
+                        return n >= 0 && logger.isFatalEnabled();
                 }
+            }
             case 11: // FATAL
                 return logger.isFatalEnabled();
             case 10: // SEVERE
@@ -128,15 +127,14 @@ final class CommonsLogger extends LoggerAdapter {
     public void log(final Level level, final String message, final Throwable thrown) {
         final int n = level.intValue();
         switch (n / 100) {
-            default:
-                {
-                    // MAX_VALUE is a special value for Level.OFF. Otherwise and
-                    // if positive, log to fatal since we are greater than SEVERE.
-                    if (n != Integer.MAX_VALUE || n >= 0) {
-                        logger.fatal(message, thrown);
-                    }
-                    break;
+            default: {
+                // MAX_VALUE is a special value for Level.OFF. Otherwise and
+                // if positive, log to fatal since we are greater than SEVERE.
+                if (n != Integer.MAX_VALUE || n >= 0) {
+                    logger.fatal(message, thrown);
                 }
+                break;
+            }
             case 11:
                 logger.fatal(message, thrown);
                 break; // FATAL

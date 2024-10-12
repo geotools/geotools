@@ -200,9 +200,7 @@ public class SqlServerBinaryReader {
         Collection<Geometry> points = new ArrayList<>();
         for (int i = shapeIndex; i < binary.getShapes().length; i++) {
             if (binary.getShape(i).getParentOffset() == shapeIndex) {
-                points.add(
-                        gf.createPoint(
-                                binary.getSequence(binary.getShape(i).getFigureOffset())[0]));
+                points.add(gf.createPoint(binary.getSequence(binary.getShape(i).getFigureOffset())[0]));
             }
         }
         return gf.createMultiPoint(points.toArray(new Point[points.size()]));
@@ -270,15 +268,11 @@ public class SqlServerBinaryReader {
             Figure figure = figures[i];
             int figurePointOffset = figure.getPointOffset();
             int nextPointOffset =
-                    figures.length >= i + 2
-                            ? figures[i + 1].getPointOffset()
-                            : binary.getCoordinates().length;
-            Coordinate[] coordinates =
-                    Arrays.copyOfRange(binary.getCoordinates(), figurePointOffset, nextPointOffset);
+                    figures.length >= i + 2 ? figures[i + 1].getPointOffset() : binary.getCoordinates().length;
+            Coordinate[] coordinates = Arrays.copyOfRange(binary.getCoordinates(), figurePointOffset, nextPointOffset);
             int attribute = figure.getAttribute();
             if (binary.getVersion() == 1) {
-                if ((attribute == 0 || attribute == 2)
-                        && !coordinates[0].equals(coordinates[coordinates.length - 1])) {
+                if ((attribute == 0 || attribute == 2) && !coordinates[0].equals(coordinates[coordinates.length - 1])) {
                     coordinates = Arrays.copyOf(coordinates, coordinates.length + 1);
                     coordinates[coordinates.length - 1] = coordinates[0];
                 }
@@ -298,11 +292,8 @@ public class SqlServerBinaryReader {
                                 if (c < coordinates.length - 1) {
                                     sequenceCoordinates.add(coordinates[c]);
                                 }
-                                CoordinateSequence cs =
-                                        csFactory.create(
-                                                sequenceCoordinates.toArray(
-                                                        new Coordinate
-                                                                [sequenceCoordinates.size()]));
+                                CoordinateSequence cs = csFactory.create(
+                                        sequenceCoordinates.toArray(new Coordinate[sequenceCoordinates.size()]));
                                 figureSequences.add(cs);
                             }
                             sequenceCoordinates = new ArrayList<>();
@@ -316,14 +307,11 @@ public class SqlServerBinaryReader {
                     }
                     if (sequenceCoordinates != null) {
                         sequenceCoordinates.add(coordinates[coordinates.length - 1]);
-                        CoordinateSequence cs =
-                                csFactory.create(
-                                        sequenceCoordinates.toArray(
-                                                new Coordinate[sequenceCoordinates.size()]));
+                        CoordinateSequence cs = csFactory.create(
+                                sequenceCoordinates.toArray(new Coordinate[sequenceCoordinates.size()]));
                         figureSequences.add(cs);
                     }
-                    sequences[i] =
-                            figureSequences.toArray(new CoordinateSequence[figureSequences.size()]);
+                    sequences[i] = figureSequences.toArray(new CoordinateSequence[figureSequences.size()]);
                     figure.setSequenceTypes(sequenceTypes);
                 } else {
                     sequences[i] = new CoordinateSequence[1];
@@ -340,8 +328,7 @@ public class SqlServerBinaryReader {
         binary.setSrid(dis.readInt());
         byte version = dis.readByte();
         if (!(version == 1 | version == 2)) {
-            throw new SqlServerBinaryParseException(
-                    "Unsupported version (only supports version 1 and 2): " + version);
+            throw new SqlServerBinaryParseException("Unsupported version (only supports version 1 and 2): " + version);
         }
         binary.setVersion(version);
         binary.setSerializationProperties(dis.readByte());

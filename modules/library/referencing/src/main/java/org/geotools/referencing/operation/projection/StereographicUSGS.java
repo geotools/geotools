@@ -79,8 +79,7 @@ class StereographicUSGS extends Stereographic {
      * @param parameters The group of parameter values.
      * @throws ParameterNotFoundException if a required parameter was not found.
      */
-    protected StereographicUSGS(final ParameterValueGroup parameters)
-            throws ParameterNotFoundException {
+    protected StereographicUSGS(final ParameterValueGroup parameters) throws ParameterNotFoundException {
         this(parameters, Provider.PARAMETERS);
     }
 
@@ -91,8 +90,7 @@ class StereographicUSGS extends Stereographic {
      * @param descriptor The expected parameter descriptor.
      * @throws ParameterNotFoundException if a required parameter was not found.
      */
-    StereographicUSGS(
-            final ParameterValueGroup parameters, final ParameterDescriptorGroup descriptor)
+    StereographicUSGS(final ParameterValueGroup parameters, final ParameterDescriptorGroup descriptor)
             throws ParameterNotFoundException {
         super(parameters, descriptor);
         if (abs(latitudeOfOrigin) < EPSILON) { // Equatorial
@@ -118,8 +116,7 @@ class StereographicUSGS extends Stereographic {
      * radians) and stores the result in {@code ptDst} (linear distance on a unit sphere).
      */
     @Override
-    protected Point2D transformNormalized(double x, double y, Point2D ptDst)
-            throws ProjectionException {
+    protected Point2D transformNormalized(double x, double y, Point2D ptDst) throws ProjectionException {
         final double chi = 2.0 * atan(ssfn(y, sin(y))) - PI / 2;
         final double sinChi = sin(chi);
         final double cosChi = cos(chi);
@@ -140,8 +137,7 @@ class StereographicUSGS extends Stereographic {
      * {@code ptDst}.
      */
     @Override
-    protected Point2D inverseTransformNormalized(double x, double y, Point2D ptDst)
-            throws ProjectionException {
+    protected Point2D inverseTransformNormalized(double x, double y, Point2D ptDst) throws ProjectionException {
         final double rho = hypot(x, y);
         final double ce = 2.0 * atan2(rho * cosChi1, k0);
         final double cosce = cos(ce);
@@ -181,8 +177,7 @@ class StereographicUSGS extends Stereographic {
     /** Maximal error (in metres) tolerated for assertions, if enabled. */
     @Override
     protected double getToleranceForAssertions(final double longitude, final double latitude) {
-        final double delta =
-                abs(longitude - centralMeridian) / 2 + abs(latitude - latitudeOfOrigin);
+        final double delta = abs(longitude - centralMeridian) / 2 + abs(latitude - latitudeOfOrigin);
         if (delta > 40) {
             return 0.5;
         }
@@ -235,8 +230,7 @@ class StereographicUSGS extends Stereographic {
          * radians) and stores the result in {@code ptDst} (linear distance on a unit sphere).
          */
         @Override
-        protected Point2D transformNormalized(double x, double y, Point2D ptDst)
-                throws ProjectionException {
+        protected Point2D transformNormalized(double x, double y, Point2D ptDst) throws ProjectionException {
             // Compute using ellipsoidal formulas, for comparaison later.
             assert (ptDst = super.transformNormalized(x, y, ptDst)) != null;
 
@@ -264,8 +258,7 @@ class StereographicUSGS extends Stereographic {
          * {@code ptDst}.
          */
         @Override
-        protected Point2D inverseTransformNormalized(double x, double y, Point2D ptDst)
-                throws ProjectionException {
+        protected Point2D inverseTransformNormalized(double x, double y, Point2D ptDst) throws ProjectionException {
             // Compute using ellipsoidal formulas, for comparaison later.
             assert (ptDst = super.inverseTransformNormalized(x, y, ptDst)) != null;
 

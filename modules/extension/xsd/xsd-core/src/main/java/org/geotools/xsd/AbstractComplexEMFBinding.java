@@ -135,8 +135,7 @@ public abstract class AbstractComplexEMFBinding extends AbstractComplexBinding {
 
             // check for a complex type with simpleContent, in this case use
             // the string value (if any) to set the value property
-            if (instance.getElementDeclaration().getTypeDefinition().getBaseType()
-                    instanceof XSDTypeDefinition) {
+            if (instance.getElementDeclaration().getTypeDefinition().getBaseType() instanceof XSDTypeDefinition) {
                 if ((value != null) && EMFUtils.has(eObject, "value")) {
                     setProperty(eObject, "value", value, false);
                 }
@@ -226,10 +225,7 @@ public abstract class AbstractComplexEMFBinding extends AbstractComplexBinding {
                         // try to convert based on method return type
                         // JD: this is a hack
                         try {
-                            String methodName =
-                                    "get"
-                                            + property.substring(0, 1).toUpperCase()
-                                            + property.substring(1);
+                            String methodName = "get" + property.substring(0, 1).toUpperCase() + property.substring(1);
                             Method g = eObject.getClass().getMethod(methodName, null);
                             if (g == null) {
                                 throw e;
@@ -280,8 +276,7 @@ public abstract class AbstractComplexEMFBinding extends AbstractComplexBinding {
     }
 
     /** Helper method to convert a value, throwing an exception when it cant be converted. */
-    private Object convert(Object value, Class<?> target, RuntimeException toThrow)
-            throws RuntimeException {
+    private Object convert(Object value, Class<?> target, RuntimeException toThrow) throws RuntimeException {
         Object converted = value;
         if ((converted != null) && !converted.getClass().isAssignableFrom(target)) {
             // TODO: log this

@@ -69,21 +69,11 @@ public class WfsQueryTypeTest extends WFSTestSupport {
 
         assertThat(doc, hasXPath("//wfs:Query", notNullValue(String.class)));
         assertThat(doc, hasXPath("//wfs:Query/fes:SortBy", notNullValue(String.class)));
+        assertThat(doc, hasXPath("//wfs:Query/fes:SortBy/fes:SortProperty", notNullValue(String.class)));
         assertThat(
                 doc,
-                hasXPath("//wfs:Query/fes:SortBy/fes:SortProperty", notNullValue(String.class)));
-        assertThat(
-                doc,
-                hasXPath(
-                        "//wfs:Query/fes:SortBy/fes:SortProperty/fes:ValueReference",
-                        notNullValue(String.class)));
-        assertThat(
-                doc,
-                hasXPath(
-                        "//wfs:Query/fes:SortBy/fes:SortProperty/fes:ValueReference",
-                        equalTo("myProperty")));
-        assertThat(
-                doc,
-                hasXPath("//wfs:Query/fes:SortBy/fes:SortProperty/fes:SortOrder", equalTo("ASC")));
+                hasXPath("//wfs:Query/fes:SortBy/fes:SortProperty/fes:ValueReference", notNullValue(String.class)));
+        assertThat(doc, hasXPath("//wfs:Query/fes:SortBy/fes:SortProperty/fes:ValueReference", equalTo("myProperty")));
+        assertThat(doc, hasXPath("//wfs:Query/fes:SortBy/fes:SortProperty/fes:SortOrder", equalTo("ASC")));
     }
 }

@@ -102,28 +102,23 @@ class GridGeometryReducer {
                 GridEnvelope2D reducedRange = new GridEnvelope2D(gridRange);
                 switch (curr) {
                     case TOP:
-                        reducedRange.setBounds(
-                                bounds.x, bounds.y + step, bounds.width, bounds.height - step);
+                        reducedRange.setBounds(bounds.x, bounds.y + step, bounds.width, bounds.height - step);
                         break;
                     case RIGHT:
-                        reducedRange.setBounds(
-                                bounds.x, bounds.y, bounds.width - step, bounds.height);
+                        reducedRange.setBounds(bounds.x, bounds.y, bounds.width - step, bounds.height);
                         break;
                     case BOTTOM:
-                        reducedRange.setBounds(
-                                bounds.x, bounds.y, bounds.width, bounds.height - step);
+                        reducedRange.setBounds(bounds.x, bounds.y, bounds.width, bounds.height - step);
                         break;
                     case LEFT:
-                        reducedRange.setBounds(
-                                bounds.x + step, bounds.y, bounds.width - step, bounds.height);
+                        reducedRange.setBounds(bounds.x + step, bounds.y, bounds.width - step, bounds.height);
                         break;
                     default:
                         throw new RuntimeException("Unexpected side " + side);
                 }
 
                 GridGeometry2D reducedGeometry =
-                        new GridGeometry2D(
-                                reducedRange, gg.getGridToCRS(), gg.getCoordinateReferenceSystem());
+                        new GridGeometry2D(reducedRange, gg.getGridToCRS(), gg.getCoordinateReferenceSystem());
 
                 // see if we actually reduced the grid geometry on the side we needed it to
                 Bounds reducedEnvelope = reducedGeometry.getEnvelope();
@@ -161,11 +156,10 @@ class GridGeometryReducer {
         }
 
         // if we got here, we could not perform the reduction, might not be fatal, so let's just log
-        LOGGER.warning(
-                "Could not reduce the grid geometry inside the valid area bounds: "
-                        + validArea
-                        + "\nGrid geometry is"
-                        + gg);
+        LOGGER.warning("Could not reduce the grid geometry inside the valid area bounds: "
+                + validArea
+                + "\nGrid geometry is"
+                + gg);
         return gg;
     }
 

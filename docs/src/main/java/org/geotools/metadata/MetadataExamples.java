@@ -208,8 +208,7 @@ public class MetadataExamples {
 
     private void exampleResourceInternationalString() {
         // exampleResourceInternationalString start
-        ResourceInternationalString greeting =
-                new ResourceInternationalString("message.properties", "greeting");
+        ResourceInternationalString greeting = new ResourceInternationalString("message.properties", "greeting");
 
         System.out.println(greeting); // will output best match to current Locale
         System.out.println(greeting.toString(Locale.CANADA_FRENCH)); // should output best match

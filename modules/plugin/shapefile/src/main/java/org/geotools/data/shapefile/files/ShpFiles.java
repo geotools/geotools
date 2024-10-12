@@ -151,8 +151,7 @@ public class ShpFiles {
         String base = baseName(url);
         if (base == null) {
             throw new IllegalArgumentException(
-                    url.getPath()
-                            + " is not one of the files types that is known to be associated with a shapefile");
+                    url.getPath() + " is not one of the files types that is known to be associated with a shapefile");
         }
 
         String urlString = url.toExternalForm();
@@ -162,8 +161,7 @@ public class ShpFiles {
         boolean isGz = urlString.toLowerCase().endsWith(".gz");
         for (ShpFileType type : ShpFileType.values()) {
 
-            String extensionWithPeriod =
-                    isGz ? type.gzExtensionWithPeriod : type.extensionWithPeriod;
+            String extensionWithPeriod = isGz ? type.gzExtensionWithPeriod : type.extensionWithPeriod;
             if (upperCase) {
                 extensionWithPeriod = extensionWithPeriod.toUpperCase();
             } else {
@@ -209,11 +207,8 @@ public class ShpFiles {
             // doesn't exist
             return null;
         }
-        File[] files =
-                directory.listFiles(
-                        (dir, name) ->
-                                file.getName().equalsIgnoreCase(name)
-                                        || (file.getName() + ".gz").equalsIgnoreCase(name));
+        File[] files = directory.listFiles((dir, name) ->
+                file.getName().equalsIgnoreCase(name) || (file.getName() + ".gz").equalsIgnoreCase(name));
         if (files != null && files.length > 0) {
             try {
                 return files[0].toURI().toURL();
@@ -421,16 +416,12 @@ public class ShpFiles {
         }
         LOGGER.fine(() -> "Read lock: " + url + " by " + requestor.id());
         Collection<ShpFilesLocker> threadLockers = getCurrentThreadLockers();
-        ShpFilesLocker requestedLocker =
-                threadLockers.stream()
-                        .filter(l -> l.compare(url, requestor))
-                        .findAny()
-                        .orElseThrow(
-                                () ->
-                                        new IllegalArgumentException(
-                                                "Expected requestor "
-                                                        + requestor
-                                                        + " to have locked the url but it does not hold the lock for the URL"));
+        ShpFilesLocker requestedLocker = threadLockers.stream()
+                .filter(l -> l.compare(url, requestor))
+                .findAny()
+                .orElseThrow(() -> new IllegalArgumentException("Expected requestor "
+                        + requestor
+                        + " to have locked the url but it does not hold the lock for the URL"));
 
         threadLockers.remove(requestedLocker);
         if (threadLockers.isEmpty()) lockers.remove(Thread.currentThread());
@@ -556,16 +547,12 @@ public class ShpFiles {
         }
         LOGGER.fine(() -> "Write lock: " + url + " by " + requestor.id());
         Collection<ShpFilesLocker> threadLockers = getCurrentThreadLockers();
-        ShpFilesLocker requestedLocker =
-                threadLockers.stream()
-                        .filter(l -> l.compare(url, requestor))
-                        .findAny()
-                        .orElseThrow(
-                                () ->
-                                        new IllegalArgumentException(
-                                                "Expected requestor "
-                                                        + requestor
-                                                        + " to have locked the url but it does not hold the lock for the URL"));
+        ShpFilesLocker requestedLocker = threadLockers.stream()
+                .filter(l -> l.compare(url, requestor))
+                .findAny()
+                .orElseThrow(() -> new IllegalArgumentException("Expected requestor "
+                        + requestor
+                        + " to have locked the url but it does not hold the lock for the URL"));
         threadLockers.remove(requestedLocker);
 
         if (threadLockers.isEmpty()) {
@@ -626,7 +613,8 @@ public class ShpFiles {
         if (!isLocal() || isGz()) {
             return false;
         }
-        return URLs.urlToFile(urls.get(SHP)).canWrite() && URLs.urlToFile(urls.get(DBF)).canWrite();
+        return URLs.urlToFile(urls.get(SHP)).canWrite()
+                && URLs.urlToFile(urls.get(DBF)).canWrite();
     }
 
     /**
@@ -664,28 +652,26 @@ public class ShpFiles {
      * @return an input stream
      * @throws IOException if a problem occurred opening the stream.
      */
-    public InputStream getInputStream(ShpFileType type, final FileReader requestor)
-            throws IOException {
+    public InputStream getInputStream(ShpFileType type, final FileReader requestor) throws IOException {
         final URL url = acquireRead(type, requestor);
 
         try {
-            FilterInputStream input =
-                    new FilterInputStream(url.openStream()) {
+            FilterInputStream input = new FilterInputStream(url.openStream()) {
 
-                        private volatile boolean closed = false;
+                private volatile boolean closed = false;
 
-                        @Override
-                        public void close() throws IOException {
-                            try {
-                                super.close();
-                            } finally {
-                                if (!closed) {
-                                    closed = true;
-                                    unlockRead(url, requestor);
-                                }
-                            }
+                @Override
+                public void close() throws IOException {
+                    try {
+                        super.close();
+                    } finally {
+                        if (!closed) {
+                            closed = true;
+                            unlockRead(url, requestor);
                         }
-                    };
+                    }
+                }
+            };
             return input;
         } catch (Throwable e) {
             unlockRead(url, requestor);
@@ -711,8 +697,7 @@ public class ShpFiles {
      * @throws IOException if a problem occurred opening the stream.
      */
     @SuppressWarnings("PMD.CloseResource") // resource is returned
-    public OutputStream getOutputStream(ShpFileType type, final FileWriter requestor)
-            throws IOException {
+    public OutputStream getOutputStream(ShpFileType type, final FileWriter requestor) throws IOException {
         final URL url = acquireWrite(type, requestor);
         OutputStream out = null;
         try {
@@ -726,23 +711,22 @@ public class ShpFiles {
                 out = connection.getOutputStream();
             }
 
-            FilterOutputStream output =
-                    new FilterOutputStream(out) {
+            FilterOutputStream output = new FilterOutputStream(out) {
 
-                        private volatile boolean closed = false;
+                private volatile boolean closed = false;
 
-                        @Override
-                        public void close() throws IOException {
-                            try {
-                                super.close();
-                            } finally {
-                                if (!closed) {
-                                    closed = true;
-                                    unlockWrite(url, requestor);
-                                }
-                            }
+                @Override
+                public void close() throws IOException {
+                    try {
+                        super.close();
+                    } finally {
+                        if (!closed) {
+                            closed = true;
+                            unlockWrite(url, requestor);
                         }
-                    };
+                    }
+                }
+            };
 
             return output;
         } catch (Throwable e) {
@@ -773,8 +757,7 @@ public class ShpFiles {
      * @param requestor the object requesting the channel
      */
     @SuppressWarnings("PMD.CloseResource") // cannot close RAF/IS locally, the channel refers to it
-    public ReadableByteChannel getReadChannel(ShpFileType type, FileReader requestor)
-            throws IOException {
+    public ReadableByteChannel getReadChannel(ShpFileType type, FileReader requestor) throws IOException {
         URL url = acquireRead(type, requestor);
         ReadableByteChannel channel = null;
         try {
@@ -789,9 +772,7 @@ public class ShpFiles {
                 if (isGz()) {
                     in = new GZIPInputStream(in);
                 }
-                channel =
-                        new ReadableByteChannelDecorator(
-                                Channels.newChannel(in), this, url, requestor);
+                channel = new ReadableByteChannelDecorator(Channels.newChannel(in), this, url, requestor);
             }
         } catch (Throwable e) {
             unlockRead(url, requestor);
@@ -822,8 +803,7 @@ public class ShpFiles {
      * @throws IOException if there is an error opening the stream
      */
     @SuppressWarnings("PMD.CloseResource") // closeable resource are returned
-    public WritableByteChannel getWriteChannel(ShpFileType type, FileWriter requestor)
-            throws IOException {
+    public WritableByteChannel getWriteChannel(ShpFileType type, FileWriter requestor) throws IOException {
 
         URL url = acquireWrite(type, requestor);
 
@@ -841,9 +821,7 @@ public class ShpFiles {
 
             } else {
                 OutputStream out = url.openConnection().getOutputStream();
-                channel =
-                        new WritableByteChannelDecorator(
-                                Channels.newChannel(out), this, url, requestor);
+                channel = new WritableByteChannelDecorator(Channels.newChannel(out), this, url, requestor);
             }
 
             return channel;
@@ -907,8 +885,7 @@ public class ShpFiles {
      * Internal method that the file channel decorators will call to allow reuse of the memory
      * mapped buffers
      */
-    MappedByteBuffer map(FileChannel wrapped, URL url, MapMode mode, long position, long size)
-            throws IOException {
+    MappedByteBuffer map(FileChannel wrapped, URL url, MapMode mode, long position, long size) throws IOException {
         if (memoryMapCacheEnabled) {
             return mapCache.map(wrapped, url, mode, position, size);
         } else {
@@ -944,8 +921,7 @@ public class ShpFiles {
      */
     public boolean exists(ShpFileType fileType) throws IllegalArgumentException {
         if (!isLocal()) {
-            throw new IllegalArgumentException(
-                    "This method only makes sense if the files are local");
+            throw new IllegalArgumentException("This method only makes sense if the files are local");
         }
         URL url = urls.get(fileType);
         if (url == null) {

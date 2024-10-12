@@ -30,8 +30,7 @@ import org.geotools.api.util.InternationalString;
  * @author Simone Giannecchini, GeoSolutions SAS
  * @since 2.8
  */
-public class DefaultProgressListener extends NullProgressListener
-        implements org.geotools.api.util.ProgressListener {
+public class DefaultProgressListener extends NullProgressListener implements org.geotools.api.util.ProgressListener {
 
     @Override
     public String toString() {
@@ -55,13 +54,7 @@ public class DefaultProgressListener extends NullProgressListener
     public static class Warning {
         @Override
         public String toString() {
-            return "Warning [margin="
-                    + margin
-                    + ", source="
-                    + source
-                    + ", warning="
-                    + warning
-                    + "]";
+            return "Warning [margin=" + margin + ", source=" + source + ", warning=" + warning + "]";
         }
 
         public String getSource() {

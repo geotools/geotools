@@ -59,17 +59,16 @@ public class BreadthFirstTopologicalIterator extends AbstractGraphIterator {
         m_queue = buildQueue(graph);
 
         // initialize nodes
-        graph.visitNodes(
-                component -> {
-                    Node node = (Node) component;
+        graph.visitNodes(component -> {
+            Node node = (Node) component;
 
-                    // reset counter to zero
-                    node.setCount(0);
+            // reset counter to zero
+            node.setCount(0);
 
-                    if (node.getDegree() < 2) m_queue.add(node);
+            if (node.getDegree() < 2) m_queue.add(node);
 
-                    return (0);
-                });
+            return (0);
+        });
     }
 
     /**

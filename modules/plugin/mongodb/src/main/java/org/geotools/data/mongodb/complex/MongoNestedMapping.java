@@ -94,11 +94,9 @@ public class MongoNestedMapping extends NestedAttributeMapping {
             Integer resolveTimeOut)
             throws IOException {
         if (!(foreignKeyValue instanceof CollectionLinkFunction.LinkCollection)) {
-            throw new RuntimeException(
-                    "MongoDB nesting only supports foreign keys of 'CollectionLink' type.");
+            throw new RuntimeException("MongoDB nesting only supports foreign keys of 'CollectionLink' type.");
         }
-        CollectionLinkFunction.LinkCollection linkCollection =
-                (CollectionLinkFunction.LinkCollection) foreignKeyValue;
+        CollectionLinkFunction.LinkCollection linkCollection = (CollectionLinkFunction.LinkCollection) foreignKeyValue;
         String collectionPath = linkCollection.getCollectionPath();
         if (feature instanceof MongoCollectionFeature) {
             String parentPath = ((MongoCollectionFeature) feature).getCollectionPath();
@@ -121,8 +119,7 @@ public class MongoNestedMapping extends NestedAttributeMapping {
                 while (iterator.hasNext()) {
                     Feature nestedFeature = iterator.next();
                     String parentPath =
-                            MongoComplexUtilities.resolvePath(
-                                    (Feature) feature, linkCollection.getCollectionPath());
+                            MongoComplexUtilities.resolvePath((Feature) feature, linkCollection.getCollectionPath());
                     MongoComplexUtilities.setParentPath(nestedFeature, parentPath);
                     matchingFeatures.add(nestedFeature);
                 }
@@ -131,25 +128,22 @@ public class MongoNestedMapping extends NestedAttributeMapping {
         return matchingFeatures;
     }
 
-    private MappingFeatureSource buildMappingFeatureSource(
-            Object feature, List<SimpleFeature> features) throws IOException {
-        MappingFeatureSource originalFeatureSource =
-                (MappingFeatureSource) getMappingSource(feature);
+    private MappingFeatureSource buildMappingFeatureSource(Object feature, List<SimpleFeature> features)
+            throws IOException {
+        MappingFeatureSource originalFeatureSource = (MappingFeatureSource) getMappingSource(feature);
         FeatureTypeMapping mapping = originalFeatureSource.getMapping();
         AppSchemaDataAccess dataAccess = (AppSchemaDataAccess) originalFeatureSource.getDataStore();
         MemoryFeatureCollection collection = new MemoryFeatureCollection(null);
         collection.addAll(features);
         @SuppressWarnings("unchecked")
-        MongoStaticFeatureSource<?, ?> staticSource =
-                new MongoStaticFeatureSource(collection, mapping.getSource());
-        FeatureTypeMapping staticMapping =
-                new FeatureTypeMapping(
-                        staticSource,
-                        mapping.getTargetFeature(),
-                        mapping.getDefaultGeometryXPath(),
-                        mapping.getAttributeMappings(),
-                        mapping.getNamespaces(),
-                        mapping.isDenormalised());
+        MongoStaticFeatureSource<?, ?> staticSource = new MongoStaticFeatureSource(collection, mapping.getSource());
+        FeatureTypeMapping staticMapping = new FeatureTypeMapping(
+                staticSource,
+                mapping.getTargetFeature(),
+                mapping.getDefaultGeometryXPath(),
+                mapping.getAttributeMappings(),
+                mapping.getNamespaces(),
+                mapping.isDenormalised());
         return new MappingFeatureSource(dataAccess, staticMapping);
     }
 
@@ -166,16 +160,13 @@ public class MongoNestedMapping extends NestedAttributeMapping {
         if (extracted instanceof MongoFeature) {
             MongoFeature mongoFeature = (MongoFeature) extracted;
             DBObject mongoObject = mongoFeature.getMongoObject();
-            Supplier<GeometryCoordinateSequenceTransformer> transformer =
-                    getTransformer(f, mongoFeature);
+            Supplier<GeometryCoordinateSequenceTransformer> transformer = getTransformer(f, mongoFeature);
 
-            return getSubCollection(
-                    mongoObject, collectionPath, Collections.emptyMap(), transformer);
+            return getSubCollection(mongoObject, collectionPath, Collections.emptyMap(), transformer);
         } else if (extracted instanceof MongoCollectionFeature) {
             MongoCollectionFeature collectionFeature = (MongoCollectionFeature) extracted;
             MongoFeature mongoFeature = collectionFeature.getMongoFeature();
-            Supplier<GeometryCoordinateSequenceTransformer> transformer =
-                    getTransformer(f, mongoFeature);
+            Supplier<GeometryCoordinateSequenceTransformer> transformer = getTransformer(f, mongoFeature);
 
             return getSubCollection(
                     mongoFeature.getMongoObject(),
@@ -191,9 +182,7 @@ public class MongoNestedMapping extends NestedAttributeMapping {
             String collectionPath,
             Map<String, Integer> collectionsIndexes,
             Supplier<GeometryCoordinateSequenceTransformer> transformer) {
-        Object value =
-                MongoComplexUtilities.getValue(
-                        mongoObject, collectionsIndexes, collectionPath, transformer);
+        Object value = MongoComplexUtilities.getValue(mongoObject, collectionsIndexes, collectionPath, transformer);
         if (value == null) {
             return Collections.emptyList();
         }
@@ -209,8 +198,7 @@ public class MongoNestedMapping extends NestedAttributeMapping {
         private final FeatureCollection<T, F> features;
         private final FeatureSource<T, F> originalFeatureSource;
 
-        public MongoStaticFeatureSource(
-                FeatureCollection<T, F> features, FeatureSource<T, F> originalFeatureSource) {
+        public MongoStaticFeatureSource(FeatureCollection<T, F> features, FeatureSource<T, F> originalFeatureSource) {
             this.features = features;
             this.originalFeatureSource = originalFeatureSource;
         }

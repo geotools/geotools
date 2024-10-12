@@ -36,8 +36,7 @@ import org.xml.sax.SAXNotSupportedException;
  */
 public abstract class XMLElementHandler implements Serializable {
     /** the logger -- should be used for debugging (assuming there are bugs LOL) */
-    protected static final Logger logger =
-            org.geotools.util.logging.Logging.getLogger(XMLElementHandler.class);
+    protected static final Logger logger = org.geotools.util.logging.Logging.getLogger(XMLElementHandler.class);
 
     /** Creates a new XSIElementHandler object. Intended to limit creation to the sub-packages */
     protected XMLElementHandler() {
@@ -73,8 +72,7 @@ public abstract class XMLElementHandler implements Serializable {
      *
      * @see SchemaContentHandler#startElement
      */
-    public abstract void startElement(URI namespaceURI, String localName, Attributes attr)
-            throws SAXException;
+    public abstract void startElement(URI namespaceURI, String localName, Attributes attr) throws SAXException;
 
     /**
      * This will find an appropriate XMLElementHandler for the specified child if appropriate. This
@@ -84,8 +82,8 @@ public abstract class XMLElementHandler implements Serializable {
      *
      * @return XMLElementHandler, or null
      */
-    public abstract XMLElementHandler getHandler(
-            URI namespaceURI, String localName, Map<String, Object> hints) throws SAXException;
+    public abstract XMLElementHandler getHandler(URI namespaceURI, String localName, Map<String, Object> hints)
+            throws SAXException;
 
     /**
      * This method will get the value of the element depending on it's type.

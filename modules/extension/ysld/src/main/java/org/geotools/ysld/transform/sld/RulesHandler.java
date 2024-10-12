@@ -27,8 +27,7 @@ public class RulesHandler extends SldTransformHandler {
     String maxScale;
 
     @Override
-    public void element(XMLStreamReader xml, SldTransformContext context)
-            throws XMLStreamException, IOException {
+    public void element(XMLStreamReader xml, SldTransformContext context) throws XMLStreamException, IOException {
         String name = xml.getLocalName();
         if ("Rule".equals(name)) {
             context.mapping();
@@ -58,8 +57,7 @@ public class RulesHandler extends SldTransformHandler {
     }
 
     @Override
-    public void endElement(XMLStreamReader xml, SldTransformContext context)
-            throws XMLStreamException, IOException {
+    public void endElement(XMLStreamReader xml, SldTransformContext context) throws XMLStreamException, IOException {
         String name = xml.getLocalName();
 
         if ("Rule".equals(name)) {

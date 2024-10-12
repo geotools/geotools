@@ -116,8 +116,7 @@ public class DatatypeConverterImpl implements DatatypeConverterInterface {
                 }
                 break;
             case 0:
-                throw new IllegalArgumentException(
-                        "Default prefix must be indicated by not using a colon: " + arg0);
+                throw new IllegalArgumentException("Default prefix must be indicated by not using a colon: " + arg0);
             default:
                 String prefix = arg0.substring(0, offset);
                 localName = arg0.substring(offset + 1);
@@ -155,10 +154,7 @@ public class DatatypeConverterImpl implements DatatypeConverterInterface {
         Calendar cal = (Calendar) format.parseObject(arg0, pos, lenient);
         if (cal == null) {
             throw new IllegalArgumentException(
-                    "Failed to parse dateTime "
-                            + arg0
-                            + " at:"
-                            + arg0.substring(pos.getErrorIndex()));
+                    "Failed to parse dateTime " + arg0 + " at:" + arg0.substring(pos.getErrorIndex()));
         }
         return cal;
     }
@@ -188,15 +184,11 @@ public class DatatypeConverterImpl implements DatatypeConverterInterface {
     public long parseUnsignedInt(String arg0) {
         long l = Long.parseLong(arg0);
         if (l < 0) {
-            throw new IllegalArgumentException(
-                    "Failed to parse UnsignedInt " + arg0 + ": result is negative");
+            throw new IllegalArgumentException("Failed to parse UnsignedInt " + arg0 + ": result is negative");
         }
         if (l > MAX_UNSIGNED_INT) {
             throw new IllegalArgumentException(
-                    "Failed to parse UnsignedInt "
-                            + arg0
-                            + ": result exceeds maximum value "
-                            + MAX_UNSIGNED_INT);
+                    "Failed to parse UnsignedInt " + arg0 + ": result exceeds maximum value " + MAX_UNSIGNED_INT);
         }
         return l;
     }
@@ -207,15 +199,11 @@ public class DatatypeConverterImpl implements DatatypeConverterInterface {
     public int parseUnsignedShort(String arg0) {
         int i = Integer.parseInt(arg0);
         if (i < 0) {
-            throw new IllegalArgumentException(
-                    "Failed to parse UnsignedShort " + arg0 + ": result is negative");
+            throw new IllegalArgumentException("Failed to parse UnsignedShort " + arg0 + ": result is negative");
         }
         if (i > MAX_UNSIGNED_SHORT) {
             throw new IllegalArgumentException(
-                    "Failed to parse UnsignedShort "
-                            + arg0
-                            + ": result exceeds maximum value "
-                            + MAX_UNSIGNED_SHORT);
+                    "Failed to parse UnsignedShort " + arg0 + ": result exceeds maximum value " + MAX_UNSIGNED_SHORT);
         }
         return i;
     }
@@ -307,8 +295,7 @@ public class DatatypeConverterImpl implements DatatypeConverterInterface {
     public String printQName(QName arg0, NamespaceContext arg1) {
         String prefix = arg1.getPrefix(arg0.getNamespaceURI());
         if (prefix == null) {
-            throw new IllegalArgumentException(
-                    "The namespace URI " + arg0.getNamespaceURI() + " is not bound.");
+            throw new IllegalArgumentException("The namespace URI " + arg0.getNamespaceURI() + " is not bound.");
         } else if (XMLConstants.DEFAULT_NS_PREFIX.equals(prefix)) {
             return arg0.getLocalPart();
         } else {

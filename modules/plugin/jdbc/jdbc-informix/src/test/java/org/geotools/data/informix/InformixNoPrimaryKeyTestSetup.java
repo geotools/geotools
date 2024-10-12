@@ -28,10 +28,9 @@ public class InformixNoPrimaryKeyTestSetup extends JDBCNoPrimaryKeyTestSetup {
     protected void createLakeTable() throws Exception {
         run("CREATE TABLE lake(id integer, " + "geom ST_POLYGON, name varchar(255) );");
 
-        run(
-                "INSERT INTO lake (id,geom,name) VALUES ( 0,"
-                        + "ST_GeomFromText('POLYGON((12 6, 14 8, 16 6, 16 4, 14 4, 12 6))',0)::ST_Polygon,"
-                        + "'muddy')");
+        run("INSERT INTO lake (id,geom,name) VALUES ( 0,"
+                + "ST_GeomFromText('POLYGON((12 6, 14 8, 16 6, 16 4, 14 4, 12 6))',0)::ST_Polygon,"
+                + "'muddy')");
     }
 
     @Override

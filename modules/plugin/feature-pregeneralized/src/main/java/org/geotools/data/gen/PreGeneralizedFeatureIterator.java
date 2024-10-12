@@ -70,11 +70,6 @@ public class PreGeneralizedFeatureIterator implements SimpleFeatureIterator {
         SimpleFeature f = backendIterator.next();
         if (f == null) return null;
         return new PreGeneralizedSimpleFeature(
-                featureTyp,
-                returnedFeatureType,
-                indexMapping,
-                f,
-                geomPropertyName,
-                backendGeomPropertyName);
+                featureTyp, returnedFeatureType, indexMapping, f, geomPropertyName, backendGeomPropertyName);
     }
 }

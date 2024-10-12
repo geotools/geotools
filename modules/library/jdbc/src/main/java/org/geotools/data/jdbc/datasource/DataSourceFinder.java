@@ -45,8 +45,7 @@ import org.geotools.util.factory.FactoryRegistry;
  */
 public final class DataSourceFinder {
     /** The logger for the filter module. */
-    protected static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(DataSourceFinder.class);
+    protected static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(DataSourceFinder.class);
 
     /** The service registry for this manager. Will be initialized only when first needed. */
     private static volatile FactoryRegistry registry;
@@ -108,10 +107,7 @@ public final class DataSourceFinder {
                 }
             } catch (Throwable t) {
                 /** The logger for the filter module. */
-                LOGGER.log(
-                        Level.WARNING,
-                        "Could not test  " + uw + " for unwrapping abilities agaist " + conn,
-                        t);
+                LOGGER.log(Level.WARNING, "Could not test  " + uw + " for unwrapping abilities agaist " + conn, t);
                 // Protect against DataStores that don't carefully
                 // code canProcess
 
@@ -142,10 +138,7 @@ public final class DataSourceFinder {
                 }
             } catch (Throwable t) {
                 /** The logger for the filter module. */
-                LOGGER.log(
-                        Level.WARNING,
-                        "Could not test  " + uw + " for unwrapping abilities agaist " + st,
-                        t);
+                LOGGER.log(Level.WARNING, "Could not test  " + uw + " for unwrapping abilities agaist " + st, t);
                 // Protect against DataStores that don't carefully
                 // code canProcess
 
@@ -169,9 +162,7 @@ public final class DataSourceFinder {
         // results are collected into HashSet (even though iterator is returned)
         // to find broken implementations early rather than later caller code
         Set<DataSourceFactorySpi> availableDS =
-                factories
-                        .filter(dsFactory -> dsFactory.isAvailable())
-                        .collect(Collectors.toCollection(HashSet::new));
+                factories.filter(dsFactory -> dsFactory.isAvailable()).collect(Collectors.toCollection(HashSet::new));
         return availableDS.iterator();
     }
 
@@ -192,10 +183,7 @@ public final class DataSourceFinder {
     private static FactoryRegistry getServiceRegistry() {
         assert Thread.holdsLock(DataSourceFinder.class);
         if (registry == null) {
-            registry =
-                    new FactoryCreator(
-                            Arrays.asList(
-                                    new Class<?>[] {DataSourceFactorySpi.class, UnWrapper.class}));
+            registry = new FactoryCreator(Arrays.asList(new Class<?>[] {DataSourceFactorySpi.class, UnWrapper.class}));
         }
         return registry;
     }

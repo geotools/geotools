@@ -71,39 +71,36 @@ public class GeoTiffCRSFactoryDeadlockTest {
     }
 
     Future getAuthorityFactory(ExecutorService executorService) {
-        return executorService.submit(
-                () -> {
-                    CRSAuthorityFactory factory = CRS.getAuthorityFactory(true);
-                    assertNotNull(factory);
-                });
+        return executorService.submit(() -> {
+            CRSAuthorityFactory factory = CRS.getAuthorityFactory(true);
+            assertNotNull(factory);
+        });
     }
 
     Future getUnit(ExecutorService executorService, final boolean[] exceptionOccurred) {
-        return executorService.submit(
-                () -> {
-                    Hints hints = new Hints();
-                    hints.add(new Hints(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, true));
-                    AllAuthoritiesFactory factory = new AllAuthoritiesFactory(hints);
-                    Unit<?> unit = null;
-                    try {
-                        unit = factory.createUnit("EPSG:9102");
-                    } catch (FactoryException e) {
-                        exceptionOccurred[0] = true;
-                    }
-                    assertNotNull(unit);
-                });
+        return executorService.submit(() -> {
+            Hints hints = new Hints();
+            hints.add(new Hints(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, true));
+            AllAuthoritiesFactory factory = new AllAuthoritiesFactory(hints);
+            Unit<?> unit = null;
+            try {
+                unit = factory.createUnit("EPSG:9102");
+            } catch (FactoryException e) {
+                exceptionOccurred[0] = true;
+            }
+            assertNotNull(unit);
+        });
     }
 
     Future getCRS(ExecutorService executorService, final boolean[] exceptionOccurred) {
-        return executorService.submit(
-                () -> {
-                    CoordinateReferenceSystem crs = null;
-                    try {
-                        crs = CRS.decode("EPSG:4326", true);
-                    } catch (FactoryException e) {
-                        exceptionOccurred[0] = true;
-                    }
-                    assertNotNull(crs);
-                });
+        return executorService.submit(() -> {
+            CoordinateReferenceSystem crs = null;
+            try {
+                crs = CRS.decode("EPSG:4326", true);
+            } catch (FactoryException e) {
+                exceptionOccurred[0] = true;
+            }
+            assertNotNull(crs);
+        });
     }
 }

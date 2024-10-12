@@ -91,8 +91,7 @@ public abstract class AbstractEpsgMediator extends AbstractAuthorityMediator {
                 this.datasource = lookupDataSource(hints);
             } catch (FactoryException lookupFailed) {
                 throw (NullPointerException)
-                        new NullPointerException("DataSource not provided:" + lookupFailed)
-                                .initCause(lookupFailed);
+                        new NullPointerException("DataSource not provided:" + lookupFailed).initCause(lookupFailed);
             }
         }
         hints.put(Hints.EPSG_DATA_SOURCE, this.datasource);

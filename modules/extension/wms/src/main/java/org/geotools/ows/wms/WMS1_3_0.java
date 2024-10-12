@@ -80,8 +80,7 @@ public class WMS1_3_0 extends WMS1_1_1 {
 
     public static class GetFeatureInfoRequest extends WMS1_1_1.GetFeatureInfoRequest {
 
-        public GetFeatureInfoRequest(
-                URL onlineResource, org.geotools.ows.wms.request.GetMapRequest request) {
+        public GetFeatureInfoRequest(URL onlineResource, org.geotools.ows.wms.request.GetMapRequest request) {
             super(onlineResource, request);
         }
 

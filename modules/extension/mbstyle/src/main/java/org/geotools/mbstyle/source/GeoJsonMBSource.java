@@ -106,7 +106,8 @@ public class GeoJsonMBSource extends MBSource {
      * @return Number for the cluster max zoom
      */
     public Number getClusterMaxZoom() {
-        return parser.optional(Number.class, json, "clusterMaxZoom", getMaxZoom().intValue() - 1);
+        return parser.optional(
+                Number.class, json, "clusterMaxZoom", getMaxZoom().intValue() - 1);
     }
 
     @Override

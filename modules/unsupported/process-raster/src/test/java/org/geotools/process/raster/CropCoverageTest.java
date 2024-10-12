@@ -71,8 +71,7 @@ public class CropCoverageTest {
     public void testROI() throws Exception {
         CropCoverage cc = new CropCoverage();
         // a small triangle
-        Geometry roi =
-                new WKTReader().read("POLYGON((8.91 47.10, 8.92 47.10, 8.92 47.11, 8.91 47.10))");
+        Geometry roi = new WKTReader().read("POLYGON((8.91 47.10, 8.92 47.10, 8.92 47.11, 8.91 47.10))");
         GridCoverage2D result = cc.execute(gray, roi, null);
         RenderedImage ri = result.getRenderedImage();
         assertThat(ri.getProperty("ROI"), instanceOf(ROI.class));

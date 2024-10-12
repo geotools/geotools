@@ -49,8 +49,7 @@ public class FilterFunction_octagonalEnvelopeTest {
             while (iter.hasNext()) {
                 SimpleFeature feature = iter.next();
                 Geometry geom = (Geometry) feature.getDefaultGeometry();
-                Geometry octagonalEnvelope =
-                        new OctagonalEnvelope(geom).toGeometry(geom.getFactory());
+                Geometry octagonalEnvelope = new OctagonalEnvelope(geom).toGeometry(geom.getFactory());
                 Object value = exp.evaluate(feature);
                 assertTrue(value instanceof Polygon);
                 assertTrue(octagonalEnvelope.equalsExact((Geometry) value, 0.1));

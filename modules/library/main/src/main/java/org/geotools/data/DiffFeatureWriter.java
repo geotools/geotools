@@ -56,8 +56,7 @@ public abstract class DiffFeatureWriter implements FeatureWriter<SimpleFeatureTy
     }
 
     /** DiffFeatureWriter construction. */
-    public DiffFeatureWriter(
-            FeatureReader<SimpleFeatureType, SimpleFeature> reader, Diff diff, Filter filter) {
+    public DiffFeatureWriter(FeatureReader<SimpleFeatureType, SimpleFeature> reader, Diff diff, Filter filter) {
         this.reader = new DiffFeatureReader<>(reader, diff, filter);
         this.diff = diff;
     }
@@ -102,9 +101,7 @@ public abstract class DiffFeatureWriter implements FeatureWriter<SimpleFeatureTy
             try {
                 live = null;
                 next = null;
-                current =
-                        SimpleFeatureBuilder.build(
-                                type, new Object[type.getAttributeCount()], "new" + diff.nextFID);
+                current = SimpleFeatureBuilder.build(type, new Object[type.getAttributeCount()], "new" + diff.nextFID);
                 diff.nextFID++;
                 return current;
             } catch (IllegalAttributeException e) {
@@ -119,9 +116,7 @@ public abstract class DiffFeatureWriter implements FeatureWriter<SimpleFeatureTy
         if (live != null) {
             // mark live as removed
             diff.remove(live.getID());
-            fireNotification(
-                    FeatureEvent.Type.REMOVED.getType(),
-                    ReferencedEnvelope.reference(live.getBounds()));
+            fireNotification(FeatureEvent.Type.REMOVED.getType(), ReferencedEnvelope.reference(live.getBounds()));
             live = null;
             current = null;
         } else if (current != null) {
@@ -158,16 +153,12 @@ public abstract class DiffFeatureWriter implements FeatureWriter<SimpleFeatureTy
                 if (current.getUserData().containsKey(Hints.PROVIDED_FID)) {
                     fid = (String) current.getUserData().get(Hints.PROVIDED_FID);
                     Map<Object, Object> userData = current.getUserData();
-                    current =
-                            SimpleFeatureBuilder.build(
-                                    current.getFeatureType(), current.getAttributes(), fid);
+                    current = SimpleFeatureBuilder.build(current.getFeatureType(), current.getAttributes(), fid);
                     current.getUserData().putAll(userData);
                 }
             }
             diff.add(fid, current);
-            fireNotification(
-                    FeatureEvent.Type.ADDED.getType(),
-                    ReferencedEnvelope.reference(current.getBounds()));
+            fireNotification(FeatureEvent.Type.ADDED.getType(), ReferencedEnvelope.reference(current.getBounds()));
             current = null;
         } else {
             throw new IOException("No feature available to write");

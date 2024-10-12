@@ -25,8 +25,7 @@ import java.util.Properties;
  *
  * @author Richard Gould
  */
-public abstract class AbstractDescribeLayerRequest extends AbstractWMSRequest
-        implements DescribeLayerRequest {
+public abstract class AbstractDescribeLayerRequest extends AbstractWMSRequest implements DescribeLayerRequest {
 
     /**
      * Constructs a basic DescribeLayerRequest, without versioning info.

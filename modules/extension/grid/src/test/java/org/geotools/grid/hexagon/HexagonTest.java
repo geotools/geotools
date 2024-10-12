@@ -44,8 +44,7 @@ public class HexagonTest extends HexagonTestBase {
     public void getVerticesFlat() {
         double minx = 1.0;
         double miny = -1.0;
-        PolygonElement hexagon =
-                new HexagonImpl(minx, miny, SIDE_LEN, HexagonOrientation.FLAT, null);
+        PolygonElement hexagon = new HexagonImpl(minx, miny, SIDE_LEN, HexagonOrientation.FLAT, null);
 
         assertVertices(hexagon, minx, miny, SIDE_LEN, HexagonOrientation.FLAT);
     }
@@ -73,8 +72,7 @@ public class HexagonTest extends HexagonTestBase {
     public void getVerticesAngled() {
         double minx = 1.0;
         double miny = -1.0;
-        PolygonElement hexagon =
-                new HexagonImpl(minx, miny, SIDE_LEN, HexagonOrientation.ANGLED, null);
+        PolygonElement hexagon = new HexagonImpl(minx, miny, SIDE_LEN, HexagonOrientation.ANGLED, null);
 
         assertVertices(hexagon, minx, miny, SIDE_LEN, HexagonOrientation.ANGLED);
     }
@@ -90,8 +88,7 @@ public class HexagonTest extends HexagonTestBase {
 
     @Test
     public void getCenterAngled() {
-        PolygonElement hexagon =
-                new HexagonImpl(0.0, 0.0, SIDE_LEN, HexagonOrientation.ANGLED, null);
+        PolygonElement hexagon = new HexagonImpl(0.0, 0.0, SIDE_LEN, HexagonOrientation.ANGLED, null);
         Coordinate expected = new Coordinate(0.5 * Math.sqrt(3.0) * SIDE_LEN, SIDE_LEN);
         Coordinate result = hexagon.getCenter();
 
@@ -111,8 +108,7 @@ public class HexagonTest extends HexagonTestBase {
 
     @Test
     public void getBoundsAngled() {
-        PolygonElement hexagon =
-                new HexagonImpl(0.0, 0.0, SIDE_LEN, HexagonOrientation.ANGLED, null);
+        PolygonElement hexagon = new HexagonImpl(0.0, 0.0, SIDE_LEN, HexagonOrientation.ANGLED, null);
 
         Envelope expected = new Envelope(0.0, Math.sqrt(3.0) * SIDE_LEN, 0.0, 2.0 * SIDE_LEN);
 

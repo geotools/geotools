@@ -41,8 +41,7 @@ public class AppSchemaConfiguration extends Configuration {
      * @param namespace the namespace URI
      * @param schemaLocation URL giving canonical schema location
      */
-    public AppSchemaConfiguration(
-            String namespace, String schemaLocation, SchemaResolver resolver) {
+    public AppSchemaConfiguration(String namespace, String schemaLocation, SchemaResolver resolver) {
         super(new AppSchemaXSD(namespace, schemaLocation, resolver));
         originalSchemaLocation = schemaLocation;
         ((AppSchemaXSD) getXSD()).setConfiguration(this);

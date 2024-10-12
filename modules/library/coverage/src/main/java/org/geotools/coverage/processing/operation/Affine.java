@@ -59,8 +59,7 @@ public class Affine extends BaseScaleOperationJAI {
     }
 
     @Override
-    protected RenderedImage createRenderedImage(
-            ParameterBlockJAI parameters, RenderingHints hints) {
+    protected RenderedImage createRenderedImage(ParameterBlockJAI parameters, RenderingHints hints) {
         final RenderedImage source = (RenderedImage) parameters.getSource(0);
         if (hints == null) {
             hints = GeoTools.getDefaultHints().clone();
@@ -113,17 +112,15 @@ public class Affine extends BaseScaleOperationJAI {
         worker.setRenderingHints(hints);
         worker.setROI(roi);
         worker.setNoData(nodata);
-        worker.affine(
-                (AffineTransform) parameters.getObjectParameter("transform"),
-                interpolation,
-                (double[]) parameters.getObjectParameter("backgroundValues"));
+        worker.affine((AffineTransform) parameters.getObjectParameter("transform"), interpolation, (double[])
+                parameters.getObjectParameter("backgroundValues"));
         return worker.getRenderedImage();
     }
 
     @Override
-    protected void handleJAIEXTParams(
-            ParameterBlockJAI parameters, ParameterValueGroup parameters2) {
-        GridCoverage2D source = (GridCoverage2D) parameters2.parameter("source0").getValue();
+    protected void handleJAIEXTParams(ParameterBlockJAI parameters, ParameterValueGroup parameters2) {
+        GridCoverage2D source =
+                (GridCoverage2D) parameters2.parameter("source0").getValue();
         handleROINoDataInternal(parameters, source, AFFINE, 3, 6);
     }
 
@@ -145,8 +142,7 @@ public class Affine extends BaseScaleOperationJAI {
 
         // Setting NoData property if needed
         double[] background = (double[]) parameters.parameters.getObjectParameter(2);
-        if (parameters.parameters.getNumParameters() > 3
-                && parameters.parameters.getObjectParameter(6) != null) {
+        if (parameters.parameters.getNumParameters() > 3 && parameters.parameters.getObjectParameter(6) != null) {
             CoverageUtilities.setNoDataProperty(properties, background);
         }
 
@@ -158,8 +154,7 @@ public class Affine extends BaseScaleOperationJAI {
                     || operationName.equalsIgnoreCase(SCALE)
                     || operationName.equalsIgnoreCase(TRANSLATE)) {
                 propertyGenerator =
-                        getOperationDescriptor(operationName)
-                                .getPropertyGenerators(RenderedRegistryMode.MODE_NAME)[0];
+                        getOperationDescriptor(operationName).getPropertyGenerators(RenderedRegistryMode.MODE_NAME)[0];
             }
             if (propertyGenerator != null) {
                 Object roiProp = propertyGenerator.getProperty(ROI, data);

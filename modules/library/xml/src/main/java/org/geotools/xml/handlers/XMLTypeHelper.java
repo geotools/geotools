@@ -40,8 +40,7 @@ public class XMLTypeHelper {
             Element[] children = complexType.getChildElements();
             if (children == null || children.length == 0) return null;
             for (Element element : children) {
-                if (localName.equals(element.getName())
-                        && namespaceURI.equals(element.getNamespace())) return element;
+                if (localName.equals(element.getName()) && namespaceURI.equals(element.getNamespace())) return element;
             }
             if (complexType.getParent() != null) {
                 Type parent = complexType.getParent();

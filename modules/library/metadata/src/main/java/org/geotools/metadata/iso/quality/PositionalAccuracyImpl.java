@@ -67,12 +67,9 @@ public class PositionalAccuracyImpl extends ElementImpl implements PositionalAcc
     static {
         // TODO: localize.
         final InternationalString desc = new SimpleInternationalString("Transformation accuracy");
-        final InternationalString eval =
-                new SimpleInternationalString("Is a datum shift method applied?");
-        final ConformanceResultImpl pass =
-                new ConformanceResultImpl(Citations.GEOTOOLS, eval, true);
-        final ConformanceResultImpl fail =
-                new ConformanceResultImpl(Citations.GEOTOOLS, eval, false);
+        final InternationalString eval = new SimpleInternationalString("Is a datum shift method applied?");
+        final ConformanceResultImpl pass = new ConformanceResultImpl(Citations.GEOTOOLS, eval, true);
+        final ConformanceResultImpl fail = new ConformanceResultImpl(Citations.GEOTOOLS, eval, false);
         pass.freeze();
         fail.freeze();
         final PositionalAccuracyImpl APPLIED, OMITTED;

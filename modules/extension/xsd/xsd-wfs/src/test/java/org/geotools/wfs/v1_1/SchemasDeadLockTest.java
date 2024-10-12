@@ -37,8 +37,7 @@ import org.junit.Test;
  * time on a Ryzen 1700x (8 phsycal cores, the loads actually run in parallel)
  */
 public class SchemasDeadLockTest {
-    protected static Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(SchemasDeadLockTest.class);
+    protected static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(SchemasDeadLockTest.class);
 
     @Test
     public void testParse() throws Exception {

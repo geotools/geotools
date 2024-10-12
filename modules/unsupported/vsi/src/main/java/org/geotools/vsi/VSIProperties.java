@@ -36,8 +36,7 @@ public final class VSIProperties extends Properties {
      */
     public static final String LOCATION_PROPERTY = "vsi.properties.location";
 
-    private final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(VSIFormatFactory.class);
+    private final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(VSIFormatFactory.class);
 
     /** Constructor which parses vsi.properties initially by default */
     public VSIProperties() throws IOException {
@@ -61,14 +60,10 @@ public final class VSIProperties extends Properties {
             load(inStream);
         } catch (FileNotFoundException ex) {
             throw new FileNotFoundException(
-                    "The system property 'vsi.properties.location' is set but "
-                            + location
-                            + " does not exist.");
+                    "The system property 'vsi.properties.location' is set but " + location + " does not exist.");
         } catch (IOException ex) {
             throw new IOException(
-                    "The system property 'vsi.properties.location' is set but "
-                            + location
-                            + " could not be read.");
+                    "The system property 'vsi.properties.location' is set but " + location + " could not be read.");
         }
     }
 

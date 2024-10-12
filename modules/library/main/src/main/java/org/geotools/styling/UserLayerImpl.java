@@ -177,7 +177,6 @@ public class UserLayerImpl extends StyledLayerImpl implements UserLayer {
 
     @Override
     public int hashCode() {
-        return Objects.hash(
-                inlineFeatureDatastore, inlineFeatureType, remoteOWS, styles, constraints);
+        return Objects.hash(inlineFeatureDatastore, inlineFeatureType, remoteOWS, styles, constraints);
     }
 }

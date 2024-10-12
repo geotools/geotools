@@ -107,8 +107,7 @@ public class MultiCurveTypeBinding extends AbstractComplexBinding {
                     curves.add((LineString) mline.getGeometryN(0));
                 } else {
                     // TODO: perhaps log this instead?
-                    throw new IllegalArgumentException(
-                            "Unable to handle curve member with multiple segments");
+                    throw new IllegalArgumentException("Unable to handle curve member with multiple segments");
                 }
             }
         }

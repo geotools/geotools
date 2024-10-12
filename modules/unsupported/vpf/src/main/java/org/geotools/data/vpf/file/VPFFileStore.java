@@ -133,8 +133,7 @@ public class VPFFileStore extends ContentDataStore {
                 VPFFile file = findFile(pathName);
                 result = file.getFeatureType();
             } catch (SchemaException exc) {
-                throw new IOException(
-                        "Schema error in path: " + pathName + "\n" + exc.getMessage());
+                throw new IOException("Schema error in path: " + pathName + "\n" + exc.getMessage());
             }
 
             files.put(pathName, result);

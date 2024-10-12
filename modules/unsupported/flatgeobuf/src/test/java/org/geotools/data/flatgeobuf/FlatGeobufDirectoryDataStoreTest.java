@@ -53,7 +53,8 @@ import org.locationtech.jts.geom.GeometryFactory;
 
 public class FlatGeobufDirectoryDataStoreTest {
 
-    @Rule public TemporaryFolder temporaryFolder = new TemporaryFolder();
+    @Rule
+    public TemporaryFolder temporaryFolder = new TemporaryFolder();
 
     @Test
     public void dataStore() throws Exception {
@@ -66,9 +67,7 @@ public class FlatGeobufDirectoryDataStoreTest {
         for (String name : fgbNames) {
             File file = URLs.urlToFile(TestData.url(FlatGeobufDataStore.class, name + ".fgb"));
             Files.copy(
-                    file.toPath(),
-                    new File(directory, file.getName()).toPath(),
-                    StandardCopyOption.REPLACE_EXISTING);
+                    file.toPath(), new File(directory, file.getName()).toPath(), StandardCopyOption.REPLACE_EXISTING);
         }
 
         // Get a DataStore
@@ -94,29 +93,18 @@ public class FlatGeobufDirectoryDataStoreTest {
         }
 
         // Write a new Layer
-        SimpleFeatureType featureType =
-                DataUtilities.createType("locations", "geom:Point,name:String,id:int");
+        SimpleFeatureType featureType = DataUtilities.createType("locations", "geom:Point,name:String,id:int");
         store.createSchema(featureType);
         SimpleFeatureStore featureStore = (SimpleFeatureStore) store.getFeatureSource("locations");
         GeometryFactory gf = JTSFactoryFinder.getGeometryFactory();
-        SimpleFeature feature1 =
-                SimpleFeatureBuilder.build(
-                        featureType,
-                        new Object[] {
-                            gf.createPoint(new Coordinate(-8.349609375, 14.349547837185362)),
-                            "ABC",
-                            1
-                        },
-                        "location.1");
-        SimpleFeature feature2 =
-                SimpleFeatureBuilder.build(
-                        featureType,
-                        new Object[] {
-                            gf.createPoint(new Coordinate(-18.349609375, 24.349547837185362)),
-                            "DEF",
-                            2
-                        },
-                        "location.2");
+        SimpleFeature feature1 = SimpleFeatureBuilder.build(
+                featureType,
+                new Object[] {gf.createPoint(new Coordinate(-8.349609375, 14.349547837185362)), "ABC", 1},
+                "location.1");
+        SimpleFeature feature2 = SimpleFeatureBuilder.build(
+                featureType,
+                new Object[] {gf.createPoint(new Coordinate(-18.349609375, 24.349547837185362)), "DEF", 2},
+                "location.2");
         SimpleFeatureCollection collection = DataUtilities.collection(feature1, feature2);
         featureStore.addFeatures(collection);
         // no count in header, but we can count features one by one
@@ -127,8 +115,10 @@ public class FlatGeobufDirectoryDataStoreTest {
     @Test
     public void removeSchema() throws Exception {
         File dir = temporaryFolder.newFolder("layers");
-        File file1 = Files.createFile(Paths.get(dir.getAbsolutePath(), "points.fgb")).toFile();
-        File file2 = Files.createFile(Paths.get(dir.getAbsolutePath(), "lines.fgb")).toFile();
+        File file1 =
+                Files.createFile(Paths.get(dir.getAbsolutePath(), "points.fgb")).toFile();
+        File file2 =
+                Files.createFile(Paths.get(dir.getAbsolutePath(), "lines.fgb")).toFile();
         Map<String, Serializable> params = new HashMap<>();
         URL url = dir.toURI().toURL();
         params.put("url", url);

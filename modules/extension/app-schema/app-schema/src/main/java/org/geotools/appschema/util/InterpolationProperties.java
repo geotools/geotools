@@ -44,8 +44,7 @@ import java.util.regex.Pattern;
  */
 public class InterpolationProperties {
 
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(InterpolationProperties.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(InterpolationProperties.class);
 
     /** Pattern to match a property to be substituted. Note the reluctant quantifier. */
     private static final Pattern PROPERTY_INTERPOLATION_PATTERN = Pattern.compile("\\$\\{(.+?)\\}");
@@ -131,8 +130,7 @@ public class InterpolationProperties {
             String propertyName = matcher.group(1);
             String propertyValue = (String) theProperties.get(propertyName);
             if (propertyValue == null) {
-                throw new RuntimeException(
-                        "Interpolation failed for missing property " + propertyName);
+                throw new RuntimeException("Interpolation failed for missing property " + propertyName);
             } else {
                 result = result.replace(matcher.group(), propertyValue).trim();
                 matcher.reset(result);
@@ -169,18 +167,14 @@ public class InterpolationProperties {
         String propertiesFileName = System.getProperty(propertiesName);
         if (propertiesFileName == null) {
             String propertiesResourceName = "/" + propertiesName;
-            try (InputStream stream =
-                    InterpolationProperties.class.getResourceAsStream(propertiesResourceName)) {
+            try (InputStream stream = InterpolationProperties.class.getResourceAsStream(propertiesResourceName)) {
                 if (stream != null) {
-                    LOGGER.info(
-                            "Loading properties from classpath resource " + propertiesResourceName);
+                    LOGGER.info("Loading properties from classpath resource " + propertiesResourceName);
                     properties.load(new BufferedInputStream(stream));
                 }
             } catch (Exception e) {
                 throw new RuntimeException(
-                        "Error loading properties from classpath resource "
-                                + propertiesResourceName,
-                        e);
+                        "Error loading properties from classpath resource " + propertiesResourceName, e);
             }
         } else {
             File propertiesFile = new File(propertiesFileName).getAbsoluteFile();
@@ -194,13 +188,11 @@ public class InterpolationProperties {
                                 + propertiesFile.toString(),
                         e);
             }
-            try (InputStream stream =
-                    new BufferedInputStream(new FileInputStream(propertiesFile))) {
+            try (InputStream stream = new BufferedInputStream(new FileInputStream(propertiesFile))) {
                 LOGGER.info("Loading properties file " + propertiesFile.toString());
                 properties.load(stream);
             } catch (Exception e) {
-                throw new RuntimeException(
-                        "Error loading properties file " + propertiesFile.toString(), e);
+                throw new RuntimeException("Error loading properties file " + propertiesFile.toString(), e);
             }
         }
         properties.putAll(System.getProperties());

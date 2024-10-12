@@ -105,14 +105,12 @@ public class DefaultRenderingExecutorTest extends RenderingExecutorTestBase {
                 // which simulate the actual behaviour if the map has multiple layers, only
                 // one of which fails.
                 if (mockFail) {
-                    listeners.forEach(
-                            listener ->
-                                    listener.errorOccurred(
-                                            new RuntimeException(
-                                                    "Simulated layer rendering failure")));
+                    listeners.forEach(listener ->
+                            listener.errorOccurred(new RuntimeException("Simulated layer rendering failure")));
                 }
             }
-        };
+        }
+        ;
 
         FailableMockRenderer failableRenderer = new FailableMockRenderer(mapContent);
         this.renderer = failableRenderer;

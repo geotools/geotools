@@ -95,16 +95,14 @@ public class QuantileFunctionTest extends FunctionTestSupport {
     public void testSingleBin() throws Exception {
 
         // create a feature collection with five features values 1-5
-        SimpleFeatureType dataType =
-                DataUtilities.createType("classification.test1", "id:0,value:int");
+        SimpleFeatureType dataType = DataUtilities.createType("classification.test1", "id:0,value:int");
         int[] iVal = {1, 2, 3, 4, 5};
         SimpleFeature[] myfeatures = new SimpleFeature[iVal.length];
         for (int i = 0; i < iVal.length; i++) {
-            myfeatures[i] =
-                    SimpleFeatureBuilder.build(
-                            dataType,
-                            new Object[] {Integer.valueOf(i + 1), Integer.valueOf(iVal[i])},
-                            "classification.test1" + (i + 1));
+            myfeatures[i] = SimpleFeatureBuilder.build(
+                    dataType,
+                    new Object[] {Integer.valueOf(i + 1), Integer.valueOf(iVal[i])},
+                    "classification.test1" + (i + 1));
         }
         SimpleFeatureCollection myFeatureCollection = DataUtilities.collection(myfeatures);
 
@@ -134,16 +132,14 @@ public class QuantileFunctionTest extends FunctionTestSupport {
     @Test
     public void test2() throws Exception {
         // create a feature collection with five features values 1-5
-        SimpleFeatureType dataType =
-                DataUtilities.createType("classification.test1", "id:0,value:int");
+        SimpleFeatureType dataType = DataUtilities.createType("classification.test1", "id:0,value:int");
         int[] iVal = {1, 2, 3, 4, 5, 6};
         SimpleFeature[] myfeatures = new SimpleFeature[iVal.length];
         for (int i = 0; i < iVal.length; i++) {
-            myfeatures[i] =
-                    SimpleFeatureBuilder.build(
-                            dataType,
-                            new Object[] {Integer.valueOf(i + 1), Integer.valueOf(iVal[i])},
-                            "classification.t" + (i + 1));
+            myfeatures[i] = SimpleFeatureBuilder.build(
+                    dataType,
+                    new Object[] {Integer.valueOf(i + 1), Integer.valueOf(iVal[i])},
+                    "classification.t" + (i + 1));
         }
         SimpleFeatureCollection myFeatureCollection = DataUtilities.collection(myfeatures);
 
@@ -172,8 +168,7 @@ public class QuantileFunctionTest extends FunctionTestSupport {
     @Ignore
     public void testNullNaNHandling() throws Exception {
         // create a feature collection
-        SimpleFeatureType ft =
-                DataUtilities.createType("classification.nullnan", "id:0,foo:int,bar:double");
+        SimpleFeatureType ft = DataUtilities.createType("classification.nullnan", "id:0,foo:int,bar:double");
         Integer[] iVal = {
             Integer.valueOf(0),
             Integer.valueOf(0),
@@ -200,13 +195,12 @@ public class QuantileFunctionTest extends FunctionTestSupport {
         SimpleFeature[] testFeatures = new SimpleFeature[iVal.length];
 
         for (int i = 0; i < iVal.length; i++) {
-            testFeatures[i] =
-                    SimpleFeatureBuilder.build(
-                            ft,
-                            new Object[] {
-                                Integer.valueOf(i + 1), iVal[i], dVal[i],
-                            },
-                            "nantest.t" + (i + 1));
+            testFeatures[i] = SimpleFeatureBuilder.build(
+                    ft,
+                    new Object[] {
+                        Integer.valueOf(i + 1), iVal[i], dVal[i],
+                    },
+                    "nantest.t" + (i + 1));
         }
         SimpleFeatureCollection thisFC = DataUtilities.collection(testFeatures);
 
@@ -258,16 +252,12 @@ public class QuantileFunctionTest extends FunctionTestSupport {
 
     @Test
     public void testEvaluateNotNumericalWithPercentages() throws SchemaException {
-        SimpleFeatureType dataType =
-                DataUtilities.createType("classification.test1", "id:0,value:String");
+        SimpleFeatureType dataType = DataUtilities.createType("classification.test1", "id:0,value:String");
         String[] sVal = {"a", "b", "c", "d", "e", "f"};
         SimpleFeature[] myfeatures = new SimpleFeature[sVal.length];
         for (int i = 0; i < sVal.length; i++) {
-            myfeatures[i] =
-                    SimpleFeatureBuilder.build(
-                            dataType,
-                            new Object[] {Integer.valueOf(i + 1), sVal[i]},
-                            "classification.test1" + (i + 1));
+            myfeatures[i] = SimpleFeatureBuilder.build(
+                    dataType, new Object[] {Integer.valueOf(i + 1), sVal[i]}, "classification.test1" + (i + 1));
         }
 
         SimpleFeatureCollection myFeatureCollection = DataUtilities.collection(myfeatures);
@@ -286,16 +276,14 @@ public class QuantileFunctionTest extends FunctionTestSupport {
     @Test
     public void testPercentagesConsistencyWithUnevenDistributedValues() throws SchemaException {
 
-        SimpleFeatureType dataType =
-                DataUtilities.createType("classification.test1", "id:0,value:int");
+        SimpleFeatureType dataType = DataUtilities.createType("classification.test1", "id:0,value:int");
         int[] iVal = {1, 1, 2, 3, 4, 5};
         SimpleFeature[] myfeatures = new SimpleFeature[iVal.length];
         for (int i = 0; i < iVal.length; i++) {
-            myfeatures[i] =
-                    SimpleFeatureBuilder.build(
-                            dataType,
-                            new Object[] {Integer.valueOf(i + 1), Integer.valueOf(iVal[i])},
-                            "classification.test1" + (i + 1));
+            myfeatures[i] = SimpleFeatureBuilder.build(
+                    dataType,
+                    new Object[] {Integer.valueOf(i + 1), Integer.valueOf(iVal[i])},
+                    "classification.test1" + (i + 1));
         }
 
         SimpleFeatureCollection myFeatureCollection = DataUtilities.collection(myfeatures);

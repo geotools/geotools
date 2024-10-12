@@ -119,13 +119,10 @@ public class ImageMosaicEgrTest {
         // create the base mosaic we are going to use
         File mosaicSource = TestData.file(this, "rgba");
         FileUtils.copyDirectory(mosaicSource, testAlphaMosaic);
-        Arrays.stream(
-                        testAlphaMosaic.listFiles(
-                                f -> {
-                                    String name = f.getName();
-                                    return name.startsWith("rgba")
-                                            || name.equals("sample_image.dat");
-                                }))
+        Arrays.stream(testAlphaMosaic.listFiles(f -> {
+                    String name = f.getName();
+                    return name.startsWith("rgba") || name.equals("sample_image.dat");
+                }))
                 .forEach(f -> f.delete());
         testAlphaMosaicUrl = URLs.fileToUrl(testAlphaMosaic);
     }
@@ -144,12 +141,10 @@ public class ImageMosaicEgrTest {
         testAlphaHeteroMosaicUrl = URLs.fileToUrl(testAlphaHeteroMosaic);
     }
 
-    private GeneralParameterValue[] getFootprintReadParams(
-            GridCoverage2DReader reader, SimpleEntry... entries) {
+    private GeneralParameterValue[] getFootprintReadParams(GridCoverage2DReader reader, SimpleEntry... entries) {
         // activate footprint management
         List<GeneralParameterValue> params = new ArrayList<>();
-        ParameterValue<String> footprintManagement =
-                AbstractGridFormat.FOOTPRINT_BEHAVIOR.createValue();
+        ParameterValue<String> footprintManagement = AbstractGridFormat.FOOTPRINT_BEHAVIOR.createValue();
         footprintManagement.setValue(FootprintBehavior.Transparent.name());
         params.add(footprintManagement);
 
@@ -171,11 +166,8 @@ public class ImageMosaicEgrTest {
 
         // makes the output image small
         if (!foundGridGeometry) {
-            ParameterValue<GridGeometry2D> geom =
-                    AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
-            geom.setValue(
-                    new GridGeometry2D(
-                            new GridEnvelope2D(0, 0, 300, 300), reader.getOriginalEnvelope()));
+            ParameterValue<GridGeometry2D> geom = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
+            geom.setValue(new GridGeometry2D(new GridEnvelope2D(0, 0, 300, 300), reader.getOriginalEnvelope()));
             params.add(geom);
         }
 
@@ -183,26 +175,22 @@ public class ImageMosaicEgrTest {
         return result;
     }
 
-    private void createRasterFootprintsProperties(File testMosaicRaster)
-            throws FileNotFoundException, IOException {
+    private void createRasterFootprintsProperties(File testMosaicRaster) throws FileNotFoundException, IOException {
         Properties p = new Properties();
         // Setting Raster property
         p.put(MultiLevelROIProviderFactory.SOURCE_PROPERTY, "raster");
-        try (FileOutputStream fos =
-                new FileOutputStream(new File(testMosaicRaster, "footprints.properties"))) {
+        try (FileOutputStream fos = new FileOutputStream(new File(testMosaicRaster, "footprints.properties"))) {
             p.store(fos, null);
         }
     }
 
-    private void createVectorFootprintsProperties(File testMosaicRaster)
-            throws FileNotFoundException, IOException {
+    private void createVectorFootprintsProperties(File testMosaicRaster) throws FileNotFoundException, IOException {
         Properties p = new Properties();
         // Setting to use a sidecar wkt
         p.put(MultiLevelROIProviderFactory.SOURCE_PROPERTY, "sidecar");
         // the vector is not an exact match, that would result in black artifacts
         p.put("footprint_inset", "0.01");
-        try (FileOutputStream fos =
-                new FileOutputStream(new File(testMosaicRaster, "footprints.properties"))) {
+        try (FileOutputStream fos = new FileOutputStream(new File(testMosaicRaster, "footprints.properties"))) {
             p.store(fos, null);
         }
     }
@@ -210,18 +198,14 @@ public class ImageMosaicEgrTest {
     @Test
     public void testAllImagesRaster() throws Exception {
         createRasterFootprintsProperties(testMosaic);
-        File sample =
-                new File(
-                        "src/test/resources/org/geotools/gce/imagemosaic/test-data/egr-all-desc-raster.png");
+        File sample = new File("src/test/resources/org/geotools/gce/imagemosaic/test-data/egr-all-desc-raster.png");
         testAllImages(sample);
     }
 
     @Test
     public void testAllImagesVector() throws Exception {
         createVectorFootprintsProperties(testMosaic);
-        File sample =
-                new File(
-                        "src/test/resources/org/geotools/gce/imagemosaic/test-data/egr-all-desc-vector.png");
+        File sample = new File("src/test/resources/org/geotools/gce/imagemosaic/test-data/egr-all-desc-vector.png");
         testAllImages(sample);
     }
 
@@ -232,46 +216,24 @@ public class ImageMosaicEgrTest {
         GeneralParameterValue[] readParams =
                 getFootprintReadParams(reader, new SimpleEntry<>(ImageMosaicFormat.SORT_BY, "z D"));
         testOutputCoverage(
-                reader,
-                readParams,
-                expectedOutput,
-                "3_mid.tiff",
-                "2_right.tiff",
-                "1_left.tiff",
-                "0_large.tiff");
+                reader, readParams, expectedOutput, "3_mid.tiff", "2_right.tiff", "1_left.tiff", "0_large.tiff");
 
         // test with EGR, should be the same, all features are essential
-        readParams =
-                getFootprintReadParams(
-                        reader,
-                        new SimpleEntry<>(ImageMosaicFormat.SORT_BY, "z D"),
-                        new SimpleEntry<>(
-                                ImageMosaicFormat.EXCESS_GRANULE_REMOVAL, ExcessGranulePolicy.ROI));
-        testOutputCoverage(
+        readParams = getFootprintReadParams(
                 reader,
-                readParams,
-                expectedOutput,
-                "3_mid.tiff",
-                "2_right.tiff",
-                "1_left.tiff",
-                "0_large.tiff");
+                new SimpleEntry<>(ImageMosaicFormat.SORT_BY, "z D"),
+                new SimpleEntry<>(ImageMosaicFormat.EXCESS_GRANULE_REMOVAL, ExcessGranulePolicy.ROI));
+        testOutputCoverage(
+                reader, readParams, expectedOutput, "3_mid.tiff", "2_right.tiff", "1_left.tiff", "0_large.tiff");
 
         // test with EGR and MT
-        readParams =
-                getFootprintReadParams(
-                        reader,
-                        new SimpleEntry<>(ImageMosaicFormat.SORT_BY, "z D"),
-                        new SimpleEntry<>(
-                                ImageMosaicFormat.EXCESS_GRANULE_REMOVAL, ExcessGranulePolicy.ROI),
-                        new SimpleEntry<>(ImageMosaicFormat.ALLOW_MULTITHREADING, true));
-        testOutputCoverage(
+        readParams = getFootprintReadParams(
                 reader,
-                readParams,
-                expectedOutput,
-                "3_mid.tiff",
-                "2_right.tiff",
-                "1_left.tiff",
-                "0_large.tiff");
+                new SimpleEntry<>(ImageMosaicFormat.SORT_BY, "z D"),
+                new SimpleEntry<>(ImageMosaicFormat.EXCESS_GRANULE_REMOVAL, ExcessGranulePolicy.ROI),
+                new SimpleEntry<>(ImageMosaicFormat.ALLOW_MULTITHREADING, true));
+        testOutputCoverage(
+                reader, readParams, expectedOutput, "3_mid.tiff", "2_right.tiff", "1_left.tiff", "0_large.tiff");
         reader.dispose();
     }
 
@@ -279,8 +241,7 @@ public class ImageMosaicEgrTest {
     public void testRedCoversAllRaster() throws Exception {
         createRasterFootprintsProperties(testMosaic);
         File sample =
-                new File(
-                        "src/test/resources/org/geotools/gce/imagemosaic/test-data/egr-red-covers-all-raster.png");
+                new File("src/test/resources/org/geotools/gce/imagemosaic/test-data/egr-red-covers-all-raster.png");
         testRedCoversAll(sample);
     }
 
@@ -288,8 +249,7 @@ public class ImageMosaicEgrTest {
     public void testRedCoversAllVector() throws Exception {
         createVectorFootprintsProperties(testMosaic);
         File sample =
-                new File(
-                        "src/test/resources/org/geotools/gce/imagemosaic/test-data/egr-red-covers-all-vector.png");
+                new File("src/test/resources/org/geotools/gce/imagemosaic/test-data/egr-red-covers-all-vector.png");
         testRedCoversAll(sample);
     }
 
@@ -300,31 +260,21 @@ public class ImageMosaicEgrTest {
         GeneralParameterValue[] readParams =
                 getFootprintReadParams(reader, new SimpleEntry<>(ImageMosaicFormat.SORT_BY, "z A"));
         testOutputCoverage(
-                reader,
-                readParams,
-                expectedOutput,
-                "0_large.tiff",
-                "1_left.tiff",
-                "2_right.tiff",
-                "3_mid.tiff");
+                reader, readParams, expectedOutput, "0_large.tiff", "1_left.tiff", "2_right.tiff", "3_mid.tiff");
 
         // test with EGR, should be the same, all features are essential
-        readParams =
-                getFootprintReadParams(
-                        reader,
-                        new SimpleEntry<>(ImageMosaicFormat.SORT_BY, "z A"),
-                        new SimpleEntry<>(
-                                ImageMosaicFormat.EXCESS_GRANULE_REMOVAL, ExcessGranulePolicy.ROI));
+        readParams = getFootprintReadParams(
+                reader,
+                new SimpleEntry<>(ImageMosaicFormat.SORT_BY, "z A"),
+                new SimpleEntry<>(ImageMosaicFormat.EXCESS_GRANULE_REMOVAL, ExcessGranulePolicy.ROI));
         testOutputCoverage(reader, readParams, expectedOutput, "0_large.tiff");
 
         // test with EGR and MT
-        readParams =
-                getFootprintReadParams(
-                        reader,
-                        new SimpleEntry<>(ImageMosaicFormat.SORT_BY, "z A"),
-                        new SimpleEntry<>(
-                                ImageMosaicFormat.EXCESS_GRANULE_REMOVAL, ExcessGranulePolicy.ROI),
-                        new SimpleEntry<>(ImageMosaicFormat.ALLOW_MULTITHREADING, true));
+        readParams = getFootprintReadParams(
+                reader,
+                new SimpleEntry<>(ImageMosaicFormat.SORT_BY, "z A"),
+                new SimpleEntry<>(ImageMosaicFormat.EXCESS_GRANULE_REMOVAL, ExcessGranulePolicy.ROI),
+                new SimpleEntry<>(ImageMosaicFormat.ALLOW_MULTITHREADING, true));
         testOutputCoverage(reader, readParams, expectedOutput, "0_large.tiff");
         reader.dispose();
     }
@@ -333,8 +283,7 @@ public class ImageMosaicEgrTest {
     public void testLeftRightOnTopRaster() throws Exception {
         createRasterFootprintsProperties(testMosaic);
         File sample =
-                new File(
-                        "src/test/resources/org/geotools/gce/imagemosaic/test-data/egr-left-right-top-raster.png");
+                new File("src/test/resources/org/geotools/gce/imagemosaic/test-data/egr-left-right-top-raster.png");
         testLeftRightOnTop(sample);
     }
 
@@ -342,8 +291,7 @@ public class ImageMosaicEgrTest {
     public void testLeftRightOnTopVector() throws Exception {
         createVectorFootprintsProperties(testMosaic);
         File sample =
-                new File(
-                        "src/test/resources/org/geotools/gce/imagemosaic/test-data/egr-left-right-top-vector.png");
+                new File("src/test/resources/org/geotools/gce/imagemosaic/test-data/egr-left-right-top-vector.png");
         testLeftRightOnTop(sample);
     }
 
@@ -354,33 +302,27 @@ public class ImageMosaicEgrTest {
         Filter filter = ECQL.toFilter("z <> 0");
 
         // test with no EGR
-        GeneralParameterValue[] readParams =
-                getFootprintReadParams(
-                        reader,
-                        new SimpleEntry<>(ImageMosaicFormat.SORT_BY, "z A"),
-                        new SimpleEntry<>(ImageMosaicFormat.FILTER, filter));
-        testOutputCoverage(
-                reader, readParams, expectedOutput, "1_left.tiff", "2_right.tiff", "3_mid.tiff");
+        GeneralParameterValue[] readParams = getFootprintReadParams(
+                reader,
+                new SimpleEntry<>(ImageMosaicFormat.SORT_BY, "z A"),
+                new SimpleEntry<>(ImageMosaicFormat.FILTER, filter));
+        testOutputCoverage(reader, readParams, expectedOutput, "1_left.tiff", "2_right.tiff", "3_mid.tiff");
 
         // test with EGR, should be the same, all features are essential
-        readParams =
-                getFootprintReadParams(
-                        reader,
-                        new SimpleEntry<>(ImageMosaicFormat.SORT_BY, "z A"),
-                        new SimpleEntry<>(ImageMosaicFormat.FILTER, filter),
-                        new SimpleEntry<>(
-                                ImageMosaicFormat.EXCESS_GRANULE_REMOVAL, ExcessGranulePolicy.ROI));
+        readParams = getFootprintReadParams(
+                reader,
+                new SimpleEntry<>(ImageMosaicFormat.SORT_BY, "z A"),
+                new SimpleEntry<>(ImageMosaicFormat.FILTER, filter),
+                new SimpleEntry<>(ImageMosaicFormat.EXCESS_GRANULE_REMOVAL, ExcessGranulePolicy.ROI));
         testOutputCoverage(reader, readParams, expectedOutput, "1_left.tiff", "2_right.tiff");
 
         // test with EGR and MT
-        readParams =
-                getFootprintReadParams(
-                        reader,
-                        new SimpleEntry<>(ImageMosaicFormat.SORT_BY, "z A"),
-                        new SimpleEntry<>(ImageMosaicFormat.FILTER, filter),
-                        new SimpleEntry<>(
-                                ImageMosaicFormat.EXCESS_GRANULE_REMOVAL, ExcessGranulePolicy.ROI),
-                        new SimpleEntry<>(ImageMosaicFormat.ALLOW_MULTITHREADING, true));
+        readParams = getFootprintReadParams(
+                reader,
+                new SimpleEntry<>(ImageMosaicFormat.SORT_BY, "z A"),
+                new SimpleEntry<>(ImageMosaicFormat.FILTER, filter),
+                new SimpleEntry<>(ImageMosaicFormat.EXCESS_GRANULE_REMOVAL, ExcessGranulePolicy.ROI),
+                new SimpleEntry<>(ImageMosaicFormat.ALLOW_MULTITHREADING, true));
         testOutputCoverage(reader, readParams, expectedOutput, "1_left.tiff", "2_right.tiff");
         reader.dispose();
     }
@@ -388,18 +330,14 @@ public class ImageMosaicEgrTest {
     @Test
     public void testSingleRaster() throws Exception {
         createRasterFootprintsProperties(testMosaic);
-        File sample =
-                new File(
-                        "src/test/resources/org/geotools/gce/imagemosaic/test-data/egr-red-rect.png");
+        File sample = new File("src/test/resources/org/geotools/gce/imagemosaic/test-data/egr-red-rect.png");
         checkSingle(sample);
     }
 
     @Test
     public void testSingleVector() throws Exception {
         createVectorFootprintsProperties(testMosaic);
-        File sample =
-                new File(
-                        "src/test/resources/org/geotools/gce/imagemosaic/test-data/egr-red-rect.png");
+        File sample = new File("src/test/resources/org/geotools/gce/imagemosaic/test-data/egr-red-rect.png");
         checkSingle(sample);
     }
 
@@ -407,48 +345,38 @@ public class ImageMosaicEgrTest {
         ImageMosaicReader reader = new ImageMosaicReader(testMosaicUrl, hints);
 
         // read a small grid geometry that will only catch one feature
-        GridGeometry2D readGeometry =
-                new GridGeometry2D(
-                        new GridEnvelope2D(0, 0, 300, 300),
-                        new ReferencedEnvelope(
-                                -0.667, -0.640, 0.386, 0.412, DefaultGeographicCRS.WGS84));
+        GridGeometry2D readGeometry = new GridGeometry2D(
+                new GridEnvelope2D(0, 0, 300, 300),
+                new ReferencedEnvelope(-0.667, -0.640, 0.386, 0.412, DefaultGeographicCRS.WGS84));
 
         // test with no EGR
-        GeneralParameterValue[] readParams =
-                getFootprintReadParams(
-                        reader,
-                        new SimpleEntry<>(ImageMosaicFormat.READ_GRIDGEOMETRY2D, readGeometry),
-                        new SimpleEntry<>(ImageMosaicFormat.SORT_BY, "z D"));
+        GeneralParameterValue[] readParams = getFootprintReadParams(
+                reader,
+                new SimpleEntry<>(ImageMosaicFormat.READ_GRIDGEOMETRY2D, readGeometry),
+                new SimpleEntry<>(ImageMosaicFormat.SORT_BY, "z D"));
         testOutputCoverage(reader, readParams, expectedOutput);
 
         // test with EGR, should be the same, all features are essential
-        readParams =
-                getFootprintReadParams(
-                        reader,
-                        new SimpleEntry<>(ImageMosaicFormat.READ_GRIDGEOMETRY2D, readGeometry),
-                        new SimpleEntry<>(ImageMosaicFormat.SORT_BY, "z D"),
-                        new SimpleEntry<>(
-                                ImageMosaicFormat.EXCESS_GRANULE_REMOVAL, ExcessGranulePolicy.ROI));
+        readParams = getFootprintReadParams(
+                reader,
+                new SimpleEntry<>(ImageMosaicFormat.READ_GRIDGEOMETRY2D, readGeometry),
+                new SimpleEntry<>(ImageMosaicFormat.SORT_BY, "z D"),
+                new SimpleEntry<>(ImageMosaicFormat.EXCESS_GRANULE_REMOVAL, ExcessGranulePolicy.ROI));
         testOutputCoverage(reader, readParams, expectedOutput, "0_large.tiff");
 
         // test with EGR and MT
-        readParams =
-                getFootprintReadParams(
-                        reader,
-                        new SimpleEntry<>(ImageMosaicFormat.READ_GRIDGEOMETRY2D, readGeometry),
-                        new SimpleEntry<>(ImageMosaicFormat.SORT_BY, "z D"),
-                        new SimpleEntry<>(
-                                ImageMosaicFormat.EXCESS_GRANULE_REMOVAL, ExcessGranulePolicy.ROI),
-                        new SimpleEntry<>(ImageMosaicFormat.ALLOW_MULTITHREADING, true));
+        readParams = getFootprintReadParams(
+                reader,
+                new SimpleEntry<>(ImageMosaicFormat.READ_GRIDGEOMETRY2D, readGeometry),
+                new SimpleEntry<>(ImageMosaicFormat.SORT_BY, "z D"),
+                new SimpleEntry<>(ImageMosaicFormat.EXCESS_GRANULE_REMOVAL, ExcessGranulePolicy.ROI),
+                new SimpleEntry<>(ImageMosaicFormat.ALLOW_MULTITHREADING, true));
         testOutputCoverage(reader, readParams, expectedOutput, "0_large.tiff");
         reader.dispose();
     }
 
     private void testOutputCoverage(
-            ImageMosaicReader reader,
-            GeneralParameterValue[] readParams,
-            File expectedOutput,
-            String... expectedImages)
+            ImageMosaicReader reader, GeneralParameterValue[] readParams, File expectedOutput, String... expectedImages)
             throws IOException {
         GridCoverage2D coverage = reader.read(readParams);
         assertSourceFileNames(coverage, expectedImages);
@@ -463,8 +391,7 @@ public class ImageMosaicEgrTest {
             for (String name : names) {
                 actualNames.add(new File(name).getName());
             }
-            LinkedHashSet<String> expectedNames =
-                    new LinkedHashSet<>(Arrays.asList(expectedNamesArray));
+            LinkedHashSet<String> expectedNames = new LinkedHashSet<>(Arrays.asList(expectedNamesArray));
             assertEquals(expectedNames, actualNames);
         }
     }
@@ -475,18 +402,15 @@ public class ImageMosaicEgrTest {
 
         // EGR does not really work when all images are in different CRSs, as it operates
         // at the single uniform CRS sub-mosaic level, but we check the output is still fine
-        GeneralParameterValue[] readParams =
-                getFootprintReadParams(
-                        reader,
-                        new SimpleEntry<>(ImageMosaicFormat.SORT_BY, "z D"),
-                        new SimpleEntry<>(
-                                ImageMosaicFormat.EXCESS_GRANULE_REMOVAL, ExcessGranulePolicy.ROI),
-                        new SimpleEntry<>(ImageMosaicFormat.FOOTPRINT_BEHAVIOR, "Transparent"));
+        GeneralParameterValue[] readParams = getFootprintReadParams(
+                reader,
+                new SimpleEntry<>(ImageMosaicFormat.SORT_BY, "z D"),
+                new SimpleEntry<>(ImageMosaicFormat.EXCESS_GRANULE_REMOVAL, ExcessGranulePolicy.ROI),
+                new SimpleEntry<>(ImageMosaicFormat.FOOTPRINT_BEHAVIOR, "Transparent"));
         GridCoverage2D coverage = reader.read(readParams);
         // there is a bit of black-ish border as the images have been painted with antialiasing
         File expectedOutput =
-                new File(
-                        "src/test/resources/org/geotools/gce/imagemosaic/test-data/egr-alpha-hetero.png");
+                new File("src/test/resources/org/geotools/gce/imagemosaic/test-data/egr-alpha-hetero.png");
         ImageAssert.assertEquals(expectedOutput, coverage.getRenderedImage(), 300);
     }
 
@@ -496,20 +420,17 @@ public class ImageMosaicEgrTest {
 
         // EGR does not really work when all images are in different CRSs, as it operates
         // at the single uniform CRS sub-mosaic level, but we check the output is still fine
-        GeneralParameterValue[] readParams =
-                getFootprintReadParams(
-                        reader,
-                        new SimpleEntry<>(ImageMosaicFormat.SORT_BY, "z D"),
-                        new SimpleEntry<>(
-                                ImageMosaicFormat.EXCESS_GRANULE_REMOVAL, ExcessGranulePolicy.ROI),
-                        new SimpleEntry<>(ImageMosaicFormat.FOOTPRINT_BEHAVIOR, "Transparent"),
-                        new SimpleEntry<>(ImageMosaicFormat.FADING, true));
+        GeneralParameterValue[] readParams = getFootprintReadParams(
+                reader,
+                new SimpleEntry<>(ImageMosaicFormat.SORT_BY, "z D"),
+                new SimpleEntry<>(ImageMosaicFormat.EXCESS_GRANULE_REMOVAL, ExcessGranulePolicy.ROI),
+                new SimpleEntry<>(ImageMosaicFormat.FOOTPRINT_BEHAVIOR, "Transparent"),
+                new SimpleEntry<>(ImageMosaicFormat.FADING, true));
         GridCoverage2D coverage = reader.read(readParams);
         // in fading mode images are blent toghether rather than mosaicked. Just checking
         // that handling alpha as a ROI does not cause issues
         File expectedOutput =
-                new File(
-                        "src/test/resources/org/geotools/gce/imagemosaic/test-data/egr-alpha-hetero-fade.png");
+                new File("src/test/resources/org/geotools/gce/imagemosaic/test-data/egr-alpha-hetero-fade.png");
         ImageAssert.assertEquals(expectedOutput, coverage.getRenderedImage(), 300);
     }
 
@@ -518,28 +439,19 @@ public class ImageMosaicEgrTest {
         ImageMosaicReader reader = new ImageMosaicReader(testAlphaMosaicUrl, hints);
 
         // in this overlap only a single image will be used
-        GridGeometry2D geom =
-                new GridGeometry2D(
-                        new GridEnvelope2D(0, 0, 300, 300),
-                        new ReferencedEnvelope(
-                                -1380000,
-                                -1026000,
-                                1866000,
-                                2200000,
-                                reader.getCoordinateReferenceSystem()));
+        GridGeometry2D geom = new GridGeometry2D(
+                new GridEnvelope2D(0, 0, 300, 300),
+                new ReferencedEnvelope(-1380000, -1026000, 1866000, 2200000, reader.getCoordinateReferenceSystem()));
 
-        GeneralParameterValue[] readParams =
-                getFootprintReadParams(
-                        reader,
-                        new SimpleEntry<>(
-                                ImageMosaicFormat.EXCESS_GRANULE_REMOVAL, ExcessGranulePolicy.ROI),
-                        new SimpleEntry<>(ImageMosaicFormat.FOOTPRINT_BEHAVIOR, "Transparent"),
-                        new SimpleEntry<>(ImageMosaicFormat.SORT_BY, "location A"),
-                        new SimpleEntry<>(AbstractGridFormat.READ_GRIDGEOMETRY2D, geom));
+        GeneralParameterValue[] readParams = getFootprintReadParams(
+                reader,
+                new SimpleEntry<>(ImageMosaicFormat.EXCESS_GRANULE_REMOVAL, ExcessGranulePolicy.ROI),
+                new SimpleEntry<>(ImageMosaicFormat.FOOTPRINT_BEHAVIOR, "Transparent"),
+                new SimpleEntry<>(ImageMosaicFormat.SORT_BY, "location A"),
+                new SimpleEntry<>(AbstractGridFormat.READ_GRIDGEOMETRY2D, geom));
         GridCoverage2D coverage = reader.read(readParams);
         // there is a bit of black-ish border as the images have been painted with antialiasing
-        File expectedOutput =
-                new File("src/test/resources/org/geotools/gce/imagemosaic/test-data/egr-alpha.png");
+        File expectedOutput = new File("src/test/resources/org/geotools/gce/imagemosaic/test-data/egr-alpha.png");
         ImageAssert.assertEquals(expectedOutput, coverage.getRenderedImage(), 300);
         assertSourceFileNames(coverage, "passA2006128193711.png");
     }

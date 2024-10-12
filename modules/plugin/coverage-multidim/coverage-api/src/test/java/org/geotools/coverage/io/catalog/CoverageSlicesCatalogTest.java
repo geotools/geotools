@@ -34,8 +34,7 @@ public class CoverageSlicesCatalogTest {
         testTypeNames("one", "one");
     }
 
-    private static void testTypeNames(String typeNames, String... expectedNames)
-            throws IOException {
+    private static void testTypeNames(String typeNames, String... expectedNames) throws IOException {
         // make sure getTypeNames is never called if we provide a list of values
         DataStore mockStore = Mockito.mock(DataStore.class);
         DefaultRepository repository = new DefaultRepository();
@@ -47,8 +46,7 @@ public class CoverageSlicesCatalogTest {
         CoverageSlicesCatalog catalog = new CoverageSlicesCatalog(config, repository);
 
         Mockito.verify(mockStore, Mockito.never()).getTypeNames();
-        assertThat(
-                Arrays.asList(catalog.getTypeNames()), Matchers.containsInAnyOrder(expectedNames));
+        assertThat(Arrays.asList(catalog.getTypeNames()), Matchers.containsInAnyOrder(expectedNames));
     }
 
     @Test

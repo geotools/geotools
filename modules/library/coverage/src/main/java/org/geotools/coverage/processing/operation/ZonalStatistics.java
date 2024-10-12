@@ -106,20 +106,14 @@ public class ZonalStatistics extends BaseStatisticsOperationJAI {
             //
             // ///////////////////////////////////////////////////////////////////
             // XXX make it robust
-            final GridCoverage2D source =
-                    (GridCoverage2D)
-                            parameters
-                                    .parameter(operation.getSourceNames()[PRIMARY_SOURCE_INDEX])
-                                    .getValue();
-            final AffineTransform gridToWorldTransformCorrected =
-                    new AffineTransform(
-                            (AffineTransform)
-                                    source.getGridGeometry()
-                                            .getGridToCRS2D(PixelOrientation.UPPER_LEFT));
+            final GridCoverage2D source = (GridCoverage2D) parameters
+                    .parameter(operation.getSourceNames()[PRIMARY_SOURCE_INDEX])
+                    .getValue();
+            final AffineTransform gridToWorldTransformCorrected = new AffineTransform(
+                    (AffineTransform) source.getGridGeometry().getGridToCRS2D(PixelOrientation.UPPER_LEFT));
             final MathTransform worldToGridTransform;
             try {
-                worldToGridTransform =
-                        ProjectiveTransform.create(gridToWorldTransformCorrected.createInverse());
+                worldToGridTransform = ProjectiveTransform.create(gridToWorldTransformCorrected.createInverse());
             } catch (NoninvertibleTransformException e) {
                 // //
                 //
@@ -181,8 +175,7 @@ public class ZonalStatistics extends BaseStatisticsOperationJAI {
                     Geometry geometry = (Geometry) zone.getDefaultGeometry();
 
                     // first off, cut the geometry around the coverage bounds if necessary
-                    ReferencedEnvelope geometryEnvelope =
-                            new ReferencedEnvelope(geometry.getEnvelopeInternal(), crs);
+                    ReferencedEnvelope geometryEnvelope = new ReferencedEnvelope(geometry.getEnvelopeInternal(), crs);
 
                     if (!coverageEnvelope.intersects((Envelope) geometryEnvelope)) {
                         // no intersection, no stats
@@ -190,10 +183,8 @@ public class ZonalStatistics extends BaseStatisticsOperationJAI {
                     } else if (!coverageEnvelope.contains((Envelope) geometryEnvelope)) {
                         // the geometry goes outside of the coverage envelope, that makes
                         // the stats fail for some reason
-                        geometry =
-                                JTS.toGeometry((Envelope) coverageEnvelope).intersection(geometry);
-                        geometryEnvelope =
-                                new ReferencedEnvelope(geometry.getEnvelopeInternal(), crs);
+                        geometry = JTS.toGeometry((Envelope) coverageEnvelope).intersection(geometry);
+                        geometryEnvelope = new ReferencedEnvelope(geometry.getEnvelopeInternal(), crs);
                     }
 
                     // transform the geometry to raster space so that we can use it as a ROI source
@@ -202,8 +193,7 @@ public class ZonalStatistics extends BaseStatisticsOperationJAI {
                     // simplify the geometry so that it's as precise as the coverage, excess
                     // coordinates
                     // just make it slower to determine the point in polygon relationship
-                    Geometry simplifiedGeometry =
-                            DouglasPeuckerSimplifier.simplify(rasterSpaceGeometry, 1);
+                    Geometry simplifiedGeometry = DouglasPeuckerSimplifier.simplify(rasterSpaceGeometry, 1);
 
                     // translation of the selected geometry of 0.5, from the pixel center to the
                     // corners.
@@ -224,13 +214,10 @@ public class ZonalStatistics extends BaseStatisticsOperationJAI {
                 // Selection of the polygon associated with the ROI
                 final Polygon roiInput = (Polygon) o;
                 // If the input ROI intersects the coverage, then it is added to the list
-                if (new ReferencedEnvelope(
-                                roiInput.getEnvelopeInternal(),
-                                source.getCoordinateReferenceSystem2D())
+                if (new ReferencedEnvelope(roiInput.getEnvelopeInternal(), source.getCoordinateReferenceSystem2D())
                         .intersects((Envelope) new ReferencedEnvelope(envelope))) {
 
-                    final java.awt.Polygon shapePolygon =
-                            convertPolygon(roiInput, worldToGridTransform);
+                    final java.awt.Polygon shapePolygon = convertPolygon(roiInput, worldToGridTransform);
 
                     outputList.add(new ROIShape(shapePolygon));
                 }
@@ -249,8 +236,7 @@ public class ZonalStatistics extends BaseStatisticsOperationJAI {
 
             if (mask != null) {
                 // first off, cut the geometry around the coverage bounds if necessary
-                ReferencedEnvelope maskEnvelope =
-                        new ReferencedEnvelope(mask.getEnvelopeInternal(), crs);
+                ReferencedEnvelope maskEnvelope = new ReferencedEnvelope(mask.getEnvelopeInternal(), crs);
 
                 // Check if the mask envelop intersects the coverage Envelope
                 if (coverageEnvelope.intersects((Envelope) maskEnvelope)) {
@@ -268,8 +254,7 @@ public class ZonalStatistics extends BaseStatisticsOperationJAI {
                     // simplify the geometry so that it's as precise as the coverage, excess
                     // coordinates
                     // just make it slower to determine the point in polygon relationship
-                    Geometry simplifiedMaskGeometry =
-                            DouglasPeuckerSimplifier.simplify(maskSpaceGeometry, 1);
+                    Geometry simplifiedMaskGeometry = DouglasPeuckerSimplifier.simplify(maskSpaceGeometry, 1);
 
                     // translation of the selected geometry of 0.5, from the pixel center to the
                     // corners.
@@ -324,8 +309,7 @@ public class ZonalStatistics extends BaseStatisticsOperationJAI {
             // Addition of the ROI property and NoData property
             GridCoverage2D source = sources[0];
             CoverageUtilities.setROIProperty(synthProp, CoverageUtilities.getROIProperty(source));
-            CoverageUtilities.setNoDataProperty(
-                    synthProp, CoverageUtilities.getNoDataProperty(source));
+            CoverageUtilities.setNoDataProperty(synthProp, CoverageUtilities.getNoDataProperty(source));
 
             Object results = result.getProperty(GT_SYNTHETIC_PROPERTY_ZONALSTATS);
 

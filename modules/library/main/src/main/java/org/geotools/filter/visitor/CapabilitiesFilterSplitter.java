@@ -138,8 +138,7 @@ import org.geotools.filter.IllegalFilterException;
 @SuppressWarnings("unchecked")
 public class CapabilitiesFilterSplitter implements FilterVisitor, ExpressionVisitor {
 
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(CapabilitiesFilterSplitter.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(CapabilitiesFilterSplitter.class);
 
     /**
      * The stack holding the bits of the filter that are not processable by something with the given
@@ -846,10 +845,7 @@ public class CapabilitiesFilterSplitter implements FilterVisitor, ExpressionVisi
         // JD: use an expression to get at the attribute type intead of accessing directly
         if (parent != null && expression.evaluate(parent) == null) {
             throw new IllegalArgumentException(
-                    "Property '"
-                            + expression.getPropertyName()
-                            + "' could not be found in "
-                            + parent.getName());
+                    "Property '" + expression.getPropertyName() + "' could not be found in " + parent.getName());
         }
         if (transactionAccessor != null) {
             Filter updateFilter = transactionAccessor.getUpdateFilter(expression.getPropertyName());

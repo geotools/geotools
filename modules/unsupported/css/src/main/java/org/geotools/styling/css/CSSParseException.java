@@ -39,20 +39,17 @@ public class CSSParseException extends IllegalArgumentException {
 
     private static String buildMessage(List<ParseError> errors) {
         if (errors == null || errors.isEmpty()) {
-            throw new IllegalArgumentException(
-                    "Cannot build a CSSParseException without a list of errors");
+            throw new IllegalArgumentException("Cannot build a CSSParseException without a list of errors");
         }
 
         StringBuilder sb = new StringBuilder();
         for (ParseError pe : errors) {
             Position pos = pe.getInputBuffer().getPosition(pe.getStartIndex());
-            String message =
-                    pe.getErrorMessage() != null
-                            ? pe.getErrorMessage()
-                            : pe instanceof InvalidInputError
-                                    ? new DefaultInvalidInputErrorFormatter()
-                                            .format((InvalidInputError) pe)
-                                    : pe.getClass().getSimpleName();
+            String message = pe.getErrorMessage() != null
+                    ? pe.getErrorMessage()
+                    : pe instanceof InvalidInputError
+                            ? new DefaultInvalidInputErrorFormatter().format((InvalidInputError) pe)
+                            : pe.getClass().getSimpleName();
             sb.append(message)
                     .append(" (line ")
                     .append(pos.line)

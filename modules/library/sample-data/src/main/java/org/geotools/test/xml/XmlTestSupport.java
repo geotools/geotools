@@ -85,8 +85,7 @@ public abstract class XmlTestSupport {
      * @return an XPath Matcher
      */
     protected EvaluateXPathMatcher hasXPath(String xPath, Matcher<String> valueMatcher) {
-        EvaluateXPathMatcher evaluateXPathMatcher =
-                EvaluateXPathMatcher.hasXPath(xPath, valueMatcher);
+        EvaluateXPathMatcher evaluateXPathMatcher = EvaluateXPathMatcher.hasXPath(xPath, valueMatcher);
         return evaluateXPathMatcher.withNamespaceContext(getNamespaces());
     }
 

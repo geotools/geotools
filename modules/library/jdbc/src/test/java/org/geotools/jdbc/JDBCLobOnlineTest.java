@@ -64,10 +64,8 @@ public abstract class JDBCLobOnlineTest extends JDBCTestSupport {
             assertTrue(fi.hasNext());
             SimpleFeature f = fi.next();
 
-            assertArrayEquals(
-                    new byte[] {1, 2, 3, 4, 5}, (byte[]) f.getAttribute(aname(BLOB_FIELD)));
-            assertArrayEquals(
-                    new byte[] {6, 7, 8, 9, 10}, (byte[]) f.getAttribute(aname(RAW_FIELD)));
+            assertArrayEquals(new byte[] {1, 2, 3, 4, 5}, (byte[]) f.getAttribute(aname(BLOB_FIELD)));
+            assertArrayEquals(new byte[] {6, 7, 8, 9, 10}, (byte[]) f.getAttribute(aname(RAW_FIELD)));
             assertEquals("small clob", f.getAttribute(aname(CLOB_FIELD)));
         }
     }
@@ -76,11 +74,8 @@ public abstract class JDBCLobOnlineTest extends JDBCTestSupport {
     public void testWrite() throws Exception {
         SimpleFeatureStore fs = (SimpleFeatureStore) dataStore.getFeatureSource(tname(TESTLOB));
 
-        SimpleFeature sf =
-                SimpleFeatureBuilder.build(
-                        lobSchema,
-                        new Object[] {new byte[] {6, 7, 8}, "newclob", new byte[] {11, 12, 13}},
-                        null);
+        SimpleFeature sf = SimpleFeatureBuilder.build(
+                lobSchema, new Object[] {new byte[] {6, 7, 8}, "newclob", new byte[] {11, 12, 13}}, null);
         List<FeatureId> fids = fs.addFeatures(DataUtilities.collection(sf));
 
         Filter filter = ff.id(new HashSet<Identifier>(fids));

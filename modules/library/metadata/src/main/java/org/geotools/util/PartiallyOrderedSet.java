@@ -92,10 +92,8 @@ public class PartiallyOrderedSet<E> extends AbstractSet<E> {
         boolean sourceNew = source.outgoings.add(target);
         boolean targetNew = target.ingoings.add(source);
         if (sourceNew != targetNew) {
-            String message =
-                    MessageFormat.format(
-                            "Inconsistent edge encountered from [source: {0}] to [target: {1}]:",
-                            source, target);
+            String message = MessageFormat.format(
+                    "Inconsistent edge encountered from [source: {0}] to [target: {1}]:", source, target);
             throw new IllegalStateException(message);
         }
         return targetNew;
@@ -119,10 +117,8 @@ public class PartiallyOrderedSet<E> extends AbstractSet<E> {
         boolean sourceExisted = source.outgoings.remove(target);
         boolean targetExisted = target.ingoings.remove(source);
         if (sourceExisted != targetExisted) {
-            String message =
-                    MessageFormat.format(
-                            "Inconsistent edge encountered from [source: {0}] to [target: {1}]:",
-                            source, target);
+            String message = MessageFormat.format(
+                    "Inconsistent edge encountered from [source: {0}] to [target: {1}]:", source, target);
             throw new IllegalStateException(message);
         }
         return targetExisted;
@@ -215,9 +211,7 @@ public class PartiallyOrderedSet<E> extends AbstractSet<E> {
 
         private void maybeThrowLoopException() {
             if (throwOnCycle) {
-                String message =
-                        "Some of the partial order relationship form a loop: "
-                                + residualInDegrees.keySet();
+                String message = "Some of the partial order relationship form a loop: " + residualInDegrees.keySet();
                 throw new IllegalStateException(message);
             }
         }

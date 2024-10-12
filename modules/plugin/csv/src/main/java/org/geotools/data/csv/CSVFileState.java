@@ -49,7 +49,8 @@ public class CSVFileState {
 
     private static CoordinateReferenceSystem DEFAULT_CRS() throws FactoryException {
         return CRS.decode("EPSG:4326");
-    };
+    }
+    ;
 
     private final File file;
 
@@ -145,14 +146,14 @@ public class CSVFileState {
             reader = new StringReader(dataInput);
         }
 
-        final CSVParser parser =
-                new CSVParserBuilder()
-                        .withSeparator(separator)
-                        .withEscapeChar(escapechar)
-                        .withQuoteChar(quotechar)
-                        .withIgnoreLeadingWhiteSpace(true)
-                        .build();
-        final CSVReader csvReader = new CSVReaderBuilder(reader).withCSVParser(parser).build();
+        final CSVParser parser = new CSVParserBuilder()
+                .withSeparator(separator)
+                .withEscapeChar(escapechar)
+                .withQuoteChar(quotechar)
+                .withIgnoreLeadingWhiteSpace(true)
+                .build();
+        final CSVReader csvReader =
+                new CSVReaderBuilder(reader).withCSVParser(parser).build();
 
         String[] tnames;
         if ((tnames = csvReader.readNext()) == null) {

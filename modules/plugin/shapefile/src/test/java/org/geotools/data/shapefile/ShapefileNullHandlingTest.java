@@ -38,12 +38,10 @@ public class ShapefileNullHandlingTest extends TestCaseSupport {
         features = new SimpleFeature[4];
         features[0] = SimpleFeatureBuilder.build(schema, new Object[] {null, "zero"}, "1");
         features[1] =
-                SimpleFeatureBuilder.build(
-                        schema, new Object[] {gf.createPoint(new Coordinate(0, 10)), "one"}, "2");
+                SimpleFeatureBuilder.build(schema, new Object[] {gf.createPoint(new Coordinate(0, 10)), "one"}, "2");
         features[2] = SimpleFeatureBuilder.build(schema, new Object[] {null, "two"}, "3");
         features[3] =
-                SimpleFeatureBuilder.build(
-                        schema, new Object[] {gf.createPoint(new Coordinate(10, 10)), null}, "4");
+                SimpleFeatureBuilder.build(schema, new Object[] {gf.createPoint(new Coordinate(10, 10)), null}, "4");
 
         collection = DataUtilities.collection(features);
     }

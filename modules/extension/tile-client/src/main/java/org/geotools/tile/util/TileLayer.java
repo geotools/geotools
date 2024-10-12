@@ -99,8 +99,7 @@ public class TileLayer extends DirectLayer {
             ReferencedEnvelope viewportExtent,
             AffineTransform worldToImageTransform) {
 
-        g2d.setRenderingHint(
-                RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 
         double[] points = new double[4];
 
@@ -109,9 +108,7 @@ public class TileLayer extends DirectLayer {
 
             ReferencedEnvelope tileEnvViewport;
             try {
-                tileEnvViewport =
-                        nativeTileEnvelope.transform(
-                                viewportExtent.getCoordinateReferenceSystem(), true);
+                tileEnvViewport = nativeTileEnvelope.transform(viewportExtent.getCoordinateReferenceSystem(), true);
             } catch (TransformException | FactoryException e) {
                 throw new RuntimeException(e);
             }
@@ -149,14 +146,8 @@ public class TileLayer extends DirectLayer {
         int scale = 0;
 
         try {
-            scale =
-                    (int)
-                            Math.round(
-                                    RendererUtilities.calculateScale(
-                                            extent,
-                                            screenArea.width,
-                                            screenArea.height,
-                                            this.resolution));
+            scale = (int) Math.round(
+                    RendererUtilities.calculateScale(extent, screenArea.width, screenArea.height, this.resolution));
         } catch (FactoryException | TransformException ex) {
             throw new RuntimeException("Failed to calculate scale", ex);
         }

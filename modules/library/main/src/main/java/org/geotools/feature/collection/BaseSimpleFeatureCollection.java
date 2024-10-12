@@ -24,8 +24,7 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.store.EmptyFeatureCollection;
 
-public abstract class BaseSimpleFeatureCollection
-        extends BaseFeatureCollection<SimpleFeatureType, SimpleFeature>
+public abstract class BaseSimpleFeatureCollection extends BaseFeatureCollection<SimpleFeatureType, SimpleFeature>
         implements SimpleFeatureCollection {
 
     protected BaseSimpleFeatureCollection(SimpleFeatureType schema) {

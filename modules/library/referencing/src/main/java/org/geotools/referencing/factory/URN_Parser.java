@@ -53,8 +53,7 @@ final class URN_Parser extends URI_Parser {
      * @param version the version of the resource or null if none
      * @param code the resource code
      */
-    protected URN_Parser(
-            String urn, URI_Type type, String authority, Version version, String code) {
+    protected URN_Parser(String urn, URI_Type type, String authority, Version version, String code) {
         super(urn, type, authority, version, code);
     }
 
@@ -86,20 +85,17 @@ final class URN_Parser extends URI_Parser {
                             String urnAuthority;
                             String urnCode;
                             if (versionEnd != lastEnd && versionEnd != -1) {
-                                urnVersion =
-                                        (lastEnd <= nameEnd)
-                                                ? null
-                                                : new Version(
-                                                        code.substring(nameEnd + 1, versionEnd));
+                                urnVersion = (lastEnd <= nameEnd)
+                                        ? null
+                                        : new Version(code.substring(nameEnd + 1, versionEnd));
                                 urnAuthority = code.substring(typeEnd + 1, nameEnd);
                                 urnCode = code.substring(versionEnd + 1).trim();
                                 urnCode = urnCode.replaceAll(String.valueOf(URN_SEPARATOR), ",");
                             } else {
                                 urnVersion =
-                                        (lastEnd <= nameEnd)
-                                                ? null
-                                                : new Version(code.substring(nameEnd + 1, lastEnd));
-                                urnAuthority = code.substring(typeEnd + 1, nameEnd).trim();
+                                        (lastEnd <= nameEnd) ? null : new Version(code.substring(nameEnd + 1, lastEnd));
+                                urnAuthority =
+                                        code.substring(typeEnd + 1, nameEnd).trim();
                                 urnCode = code.substring(lastEnd + 1).trim();
                             }
                             // handle empty version

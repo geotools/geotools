@@ -52,9 +52,7 @@ public class MBTilesDataStore extends ContentDataStore {
             crs = CRS.decode("EPSG:3857", true);
         } catch (FactoryException e) {
             LOGGER.log(
-                    Level.WARNING,
-                    "Could not initialize web mercator, geometry fields will use an engineering CRS",
-                    e);
+                    Level.WARNING, "Could not initialize web mercator, geometry fields will use an engineering CRS", e);
             crs = DefaultEngineeringCRS.GENERIC_2D;
         }
         DEFAULT_CRS = crs;
@@ -74,8 +72,7 @@ public class MBTilesDataStore extends ContentDataStore {
         this.mbtiles = mbtiles;
         MBTilesMetadata metadata = mbtiles.loadMetaData();
         if (!MBTilesMetadata.t_format.PBF.equals(metadata.getFormat())) {
-            throw new DataSourceException(
-                    "Expected 'PBF' as the format, but found " + metadata.getFormat());
+            throw new DataSourceException("Expected 'PBF' as the format, but found " + metadata.getFormat());
         }
         if (metadata.getJson() == null) {
             throw new DataSourceException(
@@ -115,10 +112,9 @@ public class MBTilesDataStore extends ContentDataStore {
             geometryName = geometryName + i;
         }
         if (attributeNames.contains(geometryName)) {
-            throw new RuntimeException(
-                    "Unexpected, could not find a unique geometry name after appending the first "
-                            + MAX_ATTEMPTS
-                            + " integers to 'the_geom'");
+            throw new RuntimeException("Unexpected, could not find a unique geometry name after appending the first "
+                    + MAX_ATTEMPTS
+                    + " integers to 'the_geom'");
         }
         return geometryName;
     }

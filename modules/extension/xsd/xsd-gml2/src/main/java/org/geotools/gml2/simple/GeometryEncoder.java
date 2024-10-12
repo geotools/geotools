@@ -56,8 +56,7 @@ public abstract class GeometryEncoder<T extends Geometry> extends ObjectEncoder<
      * @param gmlId If not null, some implementation will use to as the gml:id (and to build ids for
      *     the nested features)
      */
-    public void encode(T geometry, AttributesImpl atts, GMLWriter handler, String gmlId)
-            throws Exception {
+    public void encode(T geometry, AttributesImpl atts, GMLWriter handler, String gmlId) throws Exception {
         encode(geometry, atts, handler);
     }
 

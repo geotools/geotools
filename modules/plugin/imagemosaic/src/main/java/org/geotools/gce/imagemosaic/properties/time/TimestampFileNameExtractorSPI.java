@@ -109,8 +109,7 @@ public class TimestampFileNameExtractorSPI implements PropertiesCollectorSPI {
                             properties.load(new StringReader(prop));
                             properties.setProperty(REGEX, regex);
                         } catch (IOException e1) {
-                            throw new IllegalArgumentException(
-                                    "Unable to parse the specified regex: " + value, e1);
+                            throw new IllegalArgumentException("Unable to parse the specified regex: " + value, e1);
                         }
                     }
                 }
@@ -142,8 +141,7 @@ public class TimestampFileNameExtractorSPI implements PropertiesCollectorSPI {
 
         if (regex != null) {
             regex = regex.trim();
-            return new TimestampFileNameExtractor(
-                    this, propertyNames, regex, format, fullPath, useHighTime);
+            return new TimestampFileNameExtractor(this, propertyNames, regex, format, fullPath, useHighTime);
         }
 
         return null;

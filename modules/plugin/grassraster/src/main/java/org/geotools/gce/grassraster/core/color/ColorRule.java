@@ -174,18 +174,16 @@ public class ColorRule {
         String[] rgba1 = col1.split(","); // $NON-NLS-1$
         String[] rgba2 = col2.split(","); // $NON-NLS-1$
 
-        Color color1 =
-                new Color(
-                        Integer.parseInt(rgba1[0]),
-                        Integer.parseInt(rgba1[1]),
-                        Integer.parseInt(rgba1[2]),
-                        Integer.parseInt(rgba1[3]));
-        Color color2 =
-                new Color(
-                        Integer.parseInt(rgba2[0]),
-                        Integer.parseInt(rgba2[1]),
-                        Integer.parseInt(rgba2[2]),
-                        Integer.parseInt(rgba2[3]));
+        Color color1 = new Color(
+                Integer.parseInt(rgba1[0]),
+                Integer.parseInt(rgba1[1]),
+                Integer.parseInt(rgba1[2]),
+                Integer.parseInt(rgba1[3]));
+        Color color2 = new Color(
+                Integer.parseInt(rgba2[0]),
+                Integer.parseInt(rgba2[1]),
+                Integer.parseInt(rgba2[2]),
+                Integer.parseInt(rgba2[3]));
 
         colors.add(color1);
         colors.add(color2);

@@ -51,8 +51,7 @@ public class ImageAssert {
      * Checks the image in the reference file and the actual image are equals from a human
      * perception p.o.v
      */
-    public static void assertEquals(File expectedFile, RenderedImage actualImage, int threshold)
-            throws IOException {
+    public static void assertEquals(File expectedFile, RenderedImage actualImage, int threshold) throws IOException {
         if (SKIP) {
             return;
         }
@@ -60,10 +59,8 @@ public class ImageAssert {
     }
 
     /** Checks the expected image and the actual image are equals from a human perception p.o.v */
-    public static void assertEquals(
-            RenderedImage expectedImage, RenderedImage actualImage, int threshold) {
-        ImageComparator comparator =
-                new ImageComparator(Mode.IgnoreAntialiasing, expectedImage, actualImage);
+    public static void assertEquals(RenderedImage expectedImage, RenderedImage actualImage, int threshold) {
+        ImageComparator comparator = new ImageComparator(Mode.IgnoreAntialiasing, expectedImage, actualImage);
         if (comparator.getMismatchCount() > threshold) {
             if (INTERACTIVE) {
                 CompareImageDialog.show(expectedImage, actualImage, false);
@@ -78,40 +75,30 @@ public class ImageAssert {
     }
 
     /** Checks the expected image and the actual image are equals from a human perception p.o.v */
-    public static void assertEquals(
-            File expectedImage, RenderedImage actualImage, int threshold, Mode mode)
+    public static void assertEquals(File expectedImage, RenderedImage actualImage, int threshold, Mode mode)
             throws IOException {
         assertImagesResemble(expectedImage, actualImage, mode, threshold, true);
     }
 
     private static void assertImagesResemble(
-            File expectedFile,
-            RenderedImage actualImage,
-            Mode mode,
-            int threshold,
-            boolean actualReferenceFile)
+            File expectedFile, RenderedImage actualImage, Mode mode, int threshold, boolean actualReferenceFile)
             throws IOException {
         // do we have the reference image at all?
         if (!expectedFile.exists()) {
 
             // see what the user thinks of the image
             boolean useAsReference =
-                    actualReferenceFile
-                            && INTERACTIVE
-                            && ReferenceImageDialog.show(realignImage(actualImage));
+                    actualReferenceFile && INTERACTIVE && ReferenceImageDialog.show(realignImage(actualImage));
             if (useAsReference) {
                 try {
                     File parent = expectedFile.getParentFile();
                     if (!parent.exists() && !parent.mkdirs()) {
                         throw new AssertionError(
-                                "Could not create directory that will contain :"
-                                        + expectedFile.getParent());
+                                "Could not create directory that will contain :" + expectedFile.getParent());
                     }
-                    new ImageWorker(actualImage)
-                            .writePNG(expectedFile, "FILTERED", 0.9f, false, false);
+                    new ImageWorker(actualImage).writePNG(expectedFile, "FILTERED", 0.9f, false, false);
                 } catch (IOException e) {
-                    throw (Error)
-                            new AssertionError("Failed to write the image to disk").initCause(e);
+                    throw (Error) new AssertionError("Failed to write the image to disk").initCause(e);
                 }
             } else {
                 throw new AssertionError(
@@ -126,11 +113,8 @@ public class ImageAssert {
                 // check with the user
                 boolean overwrite = false;
                 if (INTERACTIVE) {
-                    overwrite =
-                            CompareImageDialog.show(
-                                    realignImage(expectedImage),
-                                    realignImage(actualImage),
-                                    actualReferenceFile);
+                    overwrite = CompareImageDialog.show(
+                            realignImage(expectedImage), realignImage(actualImage), actualReferenceFile);
                 } else {
                     String message =
                             "Images are different, add -Dorg.geotools.image.test.interactive=true to show a dialog comparing them (requires GUI support)";
@@ -168,17 +152,15 @@ public class ImageAssert {
                                         + "\nYou can add -Dorg.geotools.image.test.interactive=true to show a dialog comparing them (requires GUI support)");
                 }
             } else {
-                LOGGER.fine(
-                        "Images are not visibly different, found "
-                                + comparator.getMismatchCount()
-                                + " different pixels, against a threshold of "
-                                + threshold);
+                LOGGER.fine("Images are not visibly different, found "
+                        + comparator.getMismatchCount()
+                        + " different pixels, against a threshold of "
+                        + threshold);
             }
         }
     }
 
-    private static File writeActualImage(File expectedFile, RenderedImage actualImage)
-            throws IOException {
+    private static File writeActualImage(File expectedFile, RenderedImage actualImage) throws IOException {
         File failureDir = new File("./target/image-compare-fails");
 
         if (!failureDir.exists()) {

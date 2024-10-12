@@ -39,8 +39,7 @@ import org.geotools.util.factory.Hints;
 public class ReadParamsController {
 
     /** Logger. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(ReadParamsController.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(ReadParamsController.class);
 
     /**
      * This method is responsible for evaluating possible subsampling factors once the best
@@ -110,14 +109,11 @@ public class ReadParamsController {
             // raster dimensions. The solution is to have the rater
             // dimensions on each level and to confront raster dimensions,
             // which means working
-            rasterWidth =
-                    (int) Math.round(spatialDomainManager.coverageBBox.getSpan(0) / selectedRes[0]);
-            rasterHeight =
-                    (int) Math.round(spatialDomainManager.coverageBBox.getSpan(1) / selectedRes[1]);
+            rasterWidth = (int) Math.round(spatialDomainManager.coverageBBox.getSpan(0) / selectedRes[0]);
+            rasterHeight = (int) Math.round(spatialDomainManager.coverageBBox.getSpan(1) / selectedRes[1]);
         }
         // /////////////////////////////////////////////////////////////////////
-        ImageUtilities.setSubsamplingFactors(
-                readParameters, requestedRes, selectedRes, rasterWidth, rasterHeight);
+        ImageUtilities.setSubsamplingFactors(readParameters, requestedRes, selectedRes, rasterWidth, rasterHeight);
     }
 
     /**
@@ -168,19 +164,17 @@ public class ReadParamsController {
 
         if (!overviewPolicy.equals(OverviewPolicy.IGNORE)) {
             imageChoice =
-                    overviewController.pickOverviewLevel(
-                            overviewPolicy, requestedResolution, virtualNativeResolution);
+                    overviewController.pickOverviewLevel(overviewPolicy, requestedResolution, virtualNativeResolution);
             if (virtualNativeResolution != null
                     && !Double.isNaN(virtualNativeResolution[0])
                     && !Double.isNaN(virtualNativeResolution[1])) {
                 if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.fine(
-                            "Specified Resolution is: resX="
-                                    + virtualNativeResolution[0]
-                                    + " ; resY="
-                                    + virtualNativeResolution[1]
-                                    + " . Choosing imageIndex = "
-                                    + imageChoice);
+                    LOGGER.fine("Specified Resolution is: resX="
+                            + virtualNativeResolution[0]
+                            + " ; resY="
+                            + virtualNativeResolution[1]
+                            + " . Choosing imageIndex = "
+                            + imageChoice);
                 }
             }
         }

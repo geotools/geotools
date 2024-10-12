@@ -234,8 +234,7 @@ public class CitationImpl extends MetadataEntity implements Citation {
      */
     @Override
     public Collection<ResponsibleParty> getCitedResponsibleParties() {
-        return (citedResponsibleParties =
-                nonNullCollection(citedResponsibleParties, ResponsibleParty.class));
+        return (citedResponsibleParties = nonNullCollection(citedResponsibleParties, ResponsibleParty.class));
     }
 
     /**
@@ -243,8 +242,7 @@ public class CitationImpl extends MetadataEntity implements Citation {
      * for the resource. Returns an empty string if there is none.
      */
     public void setCitedResponsibleParties(final Collection<? extends ResponsibleParty> newValues) {
-        citedResponsibleParties =
-                copyCollection(newValues, citedResponsibleParties, ResponsibleParty.class);
+        citedResponsibleParties = copyCollection(newValues, citedResponsibleParties, ResponsibleParty.class);
     }
 
     /** Returns the mode in which the resource is represented, or an empty string if none. */

@@ -106,8 +106,7 @@ public class AttributeGroupHandler extends XSIElementHandler {
                 if (anyAttribute == null) {
                     anyAttribute = sth;
                 } else {
-                    throw new SAXNotRecognizedException(
-                            LOCALNAME + " may only have one child declaration.");
+                    throw new SAXNotRecognizedException(LOCALNAME + " may only have one child declaration.");
                 }
 
                 return sth;
@@ -208,9 +207,7 @@ public class AttributeGroupHandler extends XSIElementHandler {
             attributes = ag.getAttributes();
         }
 
-        cache =
-                new AttributeGroupGT(
-                        id, name1, parent.getTargetNamespace(), attributes, anyAttributeNamespace);
+        cache = new AttributeGroupGT(id, name1, parent.getTargetNamespace(), attributes, anyAttributeNamespace);
 
         return cache;
     }

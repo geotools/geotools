@@ -94,10 +94,8 @@ class ShapefileIndexerBoundsHelper {
     static BoundsReader createBoundsReader(final ShapefileReader reader, final IndexFile shpIndex) {
         final int numRecs = shpIndex.getRecordCount();
         final ShapeType shapeType = reader.getHeader().getShapeType();
-        final boolean pointBounds =
-                shapeType == POINT || shapeType == POINTM || shapeType == POINTZ;
-        final int fileRecCountThreshold =
-                (pointBounds ? 2 : 1) * FALLBACK_TO_FILE_REC_COUNT_THRESHOLD;
+        final boolean pointBounds = shapeType == POINT || shapeType == POINTM || shapeType == POINTZ;
+        final int fileRecCountThreshold = (pointBounds ? 2 : 1) * FALLBACK_TO_FILE_REC_COUNT_THRESHOLD;
 
         if (numRecs <= fileRecCountThreshold) {
             return new HeapBoundsReader(numRecs, pointBounds);
@@ -322,10 +320,8 @@ class ShapefileIndexerBoundsHelper {
             final FileStore fileStore = Files.getFileStore(path);
             final long usableSpace = fileStore.getUsableSpace();
             if (usableSpace < fileSize) {
-                throw new FileSystemException(
-                        String.format(
-                                "Not enough disk space. Required %,d bytes, available: %,d ",
-                                fileSize, usableSpace));
+                throw new FileSystemException(String.format(
+                        "Not enough disk space. Required %,d bytes, available: %,d ", fileSize, usableSpace));
             }
         }
     }

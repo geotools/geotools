@@ -58,9 +58,7 @@ public abstract class MongoFeatureSourceTest extends MongoTestSupport {
 
         Query q = new Query("ft1", f);
         assertEquals(1, source.getCount(q));
-        assertEquals(
-                new ReferencedEnvelope(1d, 1d, 1d, 1d, DefaultGeographicCRS.WGS84),
-                source.getBounds(q));
+        assertEquals(new ReferencedEnvelope(1d, 1d, 1d, 1d, DefaultGeographicCRS.WGS84), source.getBounds(q));
 
         SimpleFeatureCollection features = source.getFeatures(q);
         try (SimpleFeatureIterator it = features.features()) {
@@ -71,16 +69,13 @@ public abstract class MongoFeatureSourceTest extends MongoTestSupport {
 
     public void testEqualToFilter() throws Exception {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory();
-        PropertyIsEqualTo f =
-                ff.equals(ff.property("properties.stringProperty"), ff.literal("two"));
+        PropertyIsEqualTo f = ff.equals(ff.property("properties.stringProperty"), ff.literal("two"));
 
         SimpleFeatureSource source = dataStore.getFeatureSource("ft1");
         Query q = new Query("ft1", f);
 
         assertEquals(1, source.getCount(q));
-        assertEquals(
-                new ReferencedEnvelope(2d, 2d, 2d, 2d, DefaultGeographicCRS.WGS84),
-                source.getBounds(q));
+        assertEquals(new ReferencedEnvelope(2d, 2d, 2d, 2d, DefaultGeographicCRS.WGS84), source.getBounds(q));
 
         SimpleFeatureCollection features = source.getFeatures(q);
         try (SimpleFeatureIterator it = features.features()) {
@@ -97,9 +92,7 @@ public abstract class MongoFeatureSourceTest extends MongoTestSupport {
         Query q = new Query("ft1", f);
 
         assertEquals(1, source.getCount(q));
-        assertEquals(
-                new ReferencedEnvelope(1d, 1d, 1d, 1d, DefaultGeographicCRS.WGS84),
-                source.getBounds(q));
+        assertEquals(new ReferencedEnvelope(1d, 1d, 1d, 1d, DefaultGeographicCRS.WGS84), source.getBounds(q));
 
         SimpleFeatureCollection features = source.getFeatures(q);
         try (SimpleFeatureIterator it = features.features()) {
@@ -122,25 +115,19 @@ public abstract class MongoFeatureSourceTest extends MongoTestSupport {
         // wrapping the property name in a function that is not declared as
         // supported in the filter capabilities (i.e. Concatenate) will make the
         // filter a post-filter
-        PropertyIsLike f =
-                ff.like(
-                        ff.function(
-                                "Concatenate",
-                                ff.property("properties.stringProperty"),
-                                ff.literal("test")),
-                        "on%",
-                        "%",
-                        "_",
-                        "\\");
+        PropertyIsLike f = ff.like(
+                ff.function("Concatenate", ff.property("properties.stringProperty"), ff.literal("test")),
+                "on%",
+                "%",
+                "_",
+                "\\");
 
         SimpleFeatureSource source = dataStore.getFeatureSource("ft1");
         Query q = new Query("ft1", f, new String[] {"geometry"});
 
         // filter should match just one feature
         assertEquals(1, source.getFeatures(q).size());
-        assertEquals(
-                new ReferencedEnvelope(1d, 1d, 1d, 1d, DefaultGeographicCRS.WGS84),
-                source.getBounds(q));
+        assertEquals(new ReferencedEnvelope(1d, 1d, 1d, 1d, DefaultGeographicCRS.WGS84), source.getBounds(q));
 
         SimpleFeatureCollection features = source.getFeatures(q);
         try (SimpleFeatureIterator it = features.features()) {
@@ -156,17 +143,13 @@ public abstract class MongoFeatureSourceTest extends MongoTestSupport {
     public void testDateGreaterComparison() throws Exception {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         PropertyIsGreaterThan gt =
-                ff.greater(
-                        ff.property("properties.dateProperty"),
-                        ff.literal("2015-01-01T11:30:00.000Z"));
+                ff.greater(ff.property("properties.dateProperty"), ff.literal("2015-01-01T11:30:00.000Z"));
 
         SimpleFeatureSource source = dataStore.getFeatureSource("ft1");
         Query q = new Query("ft1", gt);
 
         assertEquals(2, source.getCount(q));
-        assertEquals(
-                new ReferencedEnvelope(1d, 2d, 1d, 2d, DefaultGeographicCRS.WGS84),
-                source.getBounds(q));
+        assertEquals(new ReferencedEnvelope(1d, 2d, 1d, 2d, DefaultGeographicCRS.WGS84), source.getBounds(q));
 
         SimpleFeatureCollection features = source.getFeatures(q);
         try (SimpleFeatureIterator it = features.features()) {
@@ -175,26 +158,20 @@ public abstract class MongoFeatureSourceTest extends MongoTestSupport {
         }
 
         // test again passing Date object as literal
-        gt =
-                ff.greater(
-                        ff.property("properties.dateProperty"),
-                        ff.literal(MongoTestSetup.parseDate("2015-01-01T11:30:00.000Z")));
+        gt = ff.greater(
+                ff.property("properties.dateProperty"),
+                ff.literal(MongoTestSetup.parseDate("2015-01-01T11:30:00.000Z")));
         q = new Query("ft1", gt);
 
         assertEquals(2, source.getCount(q));
-        assertEquals(
-                new ReferencedEnvelope(1d, 2d, 1d, 2d, DefaultGeographicCRS.WGS84),
-                source.getBounds(q));
+        assertEquals(new ReferencedEnvelope(1d, 2d, 1d, 2d, DefaultGeographicCRS.WGS84), source.getBounds(q));
         try (SimpleFeatureIterator it = source.getFeatures(q).features()) {
             assertTrue(it.hasNext());
             assertFeature(it.next(), 1);
         }
 
         // test no-match filter
-        gt =
-                ff.greater(
-                        ff.property("properties.dateProperty"),
-                        ff.literal("2015-01-01T22:30:00.000Z"));
+        gt = ff.greater(ff.property("properties.dateProperty"), ff.literal("2015-01-01T22:30:00.000Z"));
         q = new Query("ft1", gt);
 
         // no feature should match
@@ -203,18 +180,13 @@ public abstract class MongoFeatureSourceTest extends MongoTestSupport {
 
     public void testDateLessComparison() throws Exception {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory();
-        PropertyIsLessThan lt =
-                ff.less(
-                        ff.property("properties.dateProperty"),
-                        ff.literal("2015-01-01T16:00:00.000Z"));
+        PropertyIsLessThan lt = ff.less(ff.property("properties.dateProperty"), ff.literal("2015-01-01T16:00:00.000Z"));
 
         SimpleFeatureSource source = dataStore.getFeatureSource("ft1");
         Query q = new Query("ft1", lt);
 
         assertEquals(1, source.getCount(q));
-        assertEquals(
-                new ReferencedEnvelope(0d, 0d, 0d, 0d, DefaultGeographicCRS.WGS84),
-                source.getBounds(q));
+        assertEquals(new ReferencedEnvelope(0d, 0d, 0d, 0d, DefaultGeographicCRS.WGS84), source.getBounds(q));
 
         SimpleFeatureCollection features = source.getFeatures(q);
         try (SimpleFeatureIterator it = features.features()) {
@@ -223,10 +195,7 @@ public abstract class MongoFeatureSourceTest extends MongoTestSupport {
         }
 
         // test no-match filter
-        lt =
-                ff.less(
-                        ff.property("properties.dateProperty"),
-                        ff.literal("2015-01-01T00:00:00.000Z"));
+        lt = ff.less(ff.property("properties.dateProperty"), ff.literal("2015-01-01T00:00:00.000Z"));
         q = new Query("ft1", lt);
 
         // no feature should match
@@ -235,19 +204,16 @@ public abstract class MongoFeatureSourceTest extends MongoTestSupport {
 
     public void testDateBetweenComparison() throws Exception {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory();
-        PropertyIsBetween lt =
-                ff.between(
-                        ff.property("properties.dateProperty"),
-                        ff.literal("2014-12-31T23:59:00.000Z"),
-                        ff.literal("2015-01-01T00:01:00.000Z"));
+        PropertyIsBetween lt = ff.between(
+                ff.property("properties.dateProperty"),
+                ff.literal("2014-12-31T23:59:00.000Z"),
+                ff.literal("2015-01-01T00:01:00.000Z"));
 
         SimpleFeatureSource source = dataStore.getFeatureSource("ft1");
         Query q = new Query("ft1", lt);
 
         assertEquals(1, source.getCount(q));
-        assertEquals(
-                new ReferencedEnvelope(0d, 0d, 0d, 0d, DefaultGeographicCRS.WGS84),
-                source.getBounds(q));
+        assertEquals(new ReferencedEnvelope(0d, 0d, 0d, 0d, DefaultGeographicCRS.WGS84), source.getBounds(q));
 
         SimpleFeatureCollection features = source.getFeatures(q);
         try (SimpleFeatureIterator it = features.features()) {
@@ -256,11 +222,10 @@ public abstract class MongoFeatureSourceTest extends MongoTestSupport {
         }
 
         // test no-match filter
-        lt =
-                ff.between(
-                        ff.property("properties.dateProperty"),
-                        ff.literal("2014-12-31T23:59:00.000Z"),
-                        ff.literal("2014-12-31T23:59:59.000Z"));
+        lt = ff.between(
+                ff.property("properties.dateProperty"),
+                ff.literal("2014-12-31T23:59:00.000Z"),
+                ff.literal("2014-12-31T23:59:59.000Z"));
         q = new Query("ft1", lt);
 
         // no feature should match
@@ -277,20 +242,16 @@ public abstract class MongoFeatureSourceTest extends MongoTestSupport {
 
     public void testOrPostFilter() throws Exception {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory();
-        PropertyIsLike f1 =
-                ff.like(ff.property("properties.stringProperty"), "on%", "%", "_", "\\");
-        PropertyIsLike f2 =
-                ff.like(ff.property("properties.stringProperty"), "no%", "%", "_", "\\");
+        PropertyIsLike f1 = ff.like(ff.property("properties.stringProperty"), "on%", "%", "_", "\\");
+        PropertyIsLike f2 = ff.like(ff.property("properties.stringProperty"), "no%", "%", "_", "\\");
         Or or = ff.or(f1, f2);
         checkBinaryLogicOperatorFilterSplitting(or);
     }
 
     public void testAndPostFilter() throws Exception {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory();
-        PropertyIsLike f1 =
-                ff.like(ff.property("properties.stringProperty"), "on%", "%", "_", "\\");
-        PropertyIsLike f2 =
-                ff.like(ff.property("properties.stringProperty"), "no%", "%", "_", "\\");
+        PropertyIsLike f1 = ff.like(ff.property("properties.stringProperty"), "on%", "%", "_", "\\");
+        PropertyIsLike f2 = ff.like(ff.property("properties.stringProperty"), "no%", "%", "_", "\\");
         And and = ff.and(f1, f2);
         checkBinaryLogicOperatorFilterSplitting(and);
     }
@@ -405,8 +366,7 @@ public abstract class MongoFeatureSourceTest extends MongoTestSupport {
         }
     }
 
-    private void checkBinaryLogicOperatorFilterSplitting(BinaryLogicOperator filter)
-            throws Exception {
+    private void checkBinaryLogicOperatorFilterSplitting(BinaryLogicOperator filter) throws Exception {
         SimpleFeatureSource source = dataStore.getFeatureSource("ft1");
         assertTrue(source instanceof MongoFeatureStore);
         MongoFeatureStore mongoStore = (MongoFeatureStore) source;

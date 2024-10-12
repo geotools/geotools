@@ -40,15 +40,11 @@ import org.geotools.process.factory.DescribeResult;
         description = "Returns the unique values of a given attribute in a feature collection.")
 public class UniqueProcess implements VectorProcess {
 
-    @DescribeResult(
-            name = "result",
-            description = "Feature collection with an attribute containing the unique values")
+    @DescribeResult(name = "result", description = "Feature collection with an attribute containing the unique values")
     public SimpleFeatureCollection execute(
             @DescribeParameter(name = "features", description = "Input feature collection")
                     SimpleFeatureCollection features,
-            @DescribeParameter(
-                            name = "attribute",
-                            description = "Attribute whose unique values are extracted")
+            @DescribeParameter(name = "attribute", description = "Attribute whose unique values are extracted")
                     String attribute,
             ProgressListener progressListener)
             throws Exception {

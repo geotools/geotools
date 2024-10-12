@@ -56,10 +56,8 @@ public class OverlapBehaviorImpl extends ConstantExpression implements OverlapBe
             new OverlapBehaviorImpl(OverlapBehavior.LATEST_ON_TOP_RESCTRICTION);
     public static final OverlapBehaviorImpl EARLIEST_ON_TOP =
             new OverlapBehaviorImpl(OverlapBehavior.EARLIEST_ON_TOP_RESCTRICTION);
-    public static final OverlapBehaviorImpl AVERAGE =
-            new OverlapBehaviorImpl(OverlapBehavior.AVERAGE_RESCTRICTION);
-    public static final OverlapBehaviorImpl RANDOM =
-            new OverlapBehaviorImpl(OverlapBehavior.RANDOM_RESCTRICTION);
+    public static final OverlapBehaviorImpl AVERAGE = new OverlapBehaviorImpl(OverlapBehavior.AVERAGE_RESCTRICTION);
+    public static final OverlapBehaviorImpl RANDOM = new OverlapBehaviorImpl(OverlapBehavior.RANDOM_RESCTRICTION);
 
     private OverlapBehaviorImpl(String value) {
         super(value);

@@ -200,8 +200,7 @@ public class StyleParseTests {
         assertEquals(Alignment.AUTO, l.getTextPitchAlignment());
         assertEquals(Alignment.AUTO, l.getTextRotationAlignment());
         assertEquals("", l.getTextField());
-        assertEquals(
-                Arrays.asList("Open Sans Regular", "Arial Unicode MS Regular"), l.getTextFont());
+        assertEquals(Arrays.asList("Open Sans Regular", "Arial Unicode MS Regular"), l.getTextFont());
         assertEquals(16.0, l.getTextSize().doubleValue(), .00001);
         assertEquals(10.0, l.getTextMaxWidth().doubleValue(), .00001);
         assertEquals(1.2, l.getTextLineHeight().doubleValue(), .00001);
@@ -271,10 +270,8 @@ public class StyleParseTests {
         assertEquals(4.0, l.getLineOffset().doubleValue(), .00001);
         // line-gap-width can be either an integer or double.
         assertNotNull(l.lineTranslateDisplacement());
-        Number dispX =
-                l.lineTranslateDisplacement().getDisplacementX().evaluate(null, Number.class);
-        Number dispY =
-                l.lineTranslateDisplacement().getDisplacementY().evaluate(null, Number.class);
+        Number dispX = l.lineTranslateDisplacement().getDisplacementX().evaluate(null, Number.class);
+        Number dispY = l.lineTranslateDisplacement().getDisplacementY().evaluate(null, Number.class);
         assertEquals(3, dispX.intValue());
         assertEquals(3, dispY.intValue());
         // line-width can be either an integer or double.

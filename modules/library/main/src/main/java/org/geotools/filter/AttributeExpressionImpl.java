@@ -41,8 +41,7 @@ import org.xml.sax.helpers.NamespaceSupport;
 public class AttributeExpressionImpl extends DefaultExpression implements PropertyName {
 
     /** The logger for the default core module. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(AttributeExpressionImpl.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(AttributeExpressionImpl.class);
 
     /** Holds all sub filters of this filter. */
     protected String attPath;
@@ -140,8 +139,7 @@ public class AttributeExpressionImpl extends DefaultExpression implements Proper
      * @param attPath the xpath to the attribute.
      * @throws IllegalFilterException If the attribute path is not in the schema.
      */
-    protected AttributeExpressionImpl(SimpleFeatureType schema, String attPath)
-            throws IllegalFilterException {
+    protected AttributeExpressionImpl(SimpleFeatureType schema, String attPath) throws IllegalFilterException {
         this.schema = schema;
         setPropertyName(attPath);
     }
@@ -158,8 +156,7 @@ public class AttributeExpressionImpl extends DefaultExpression implements Proper
 
     public void setPropertyName(String attPath) {
         LOGGER.entering("ExpressionAttribute", "setAttributePath", attPath);
-        if (LOGGER.isLoggable(Level.FINEST))
-            LOGGER.finest("schema: " + schema + "\n\nattribute: " + attPath);
+        if (LOGGER.isLoggable(Level.FINEST)) LOGGER.finest("schema: " + schema + "\n\nattribute: " + attPath);
 
         if (schema != null) {
             if (schema.getDescriptor(attPath) != null) {
@@ -167,11 +164,7 @@ public class AttributeExpressionImpl extends DefaultExpression implements Proper
             } else {
 
                 throw new IllegalFilterException(
-                        "Attribute: "
-                                + attPath
-                                + " is not in stated schema "
-                                + schema.getTypeName()
-                                + ".");
+                        "Attribute: " + attPath + " is not in stated schema " + schema.getTypeName() + ".");
             }
         } else {
             this.attPath = attPath;
@@ -215,8 +208,7 @@ public class AttributeExpressionImpl extends DefaultExpression implements Proper
             if (namespaceSupport != null && hints == null) {
                 hints = new Hints(PropertyAccessorFactory.NAMESPACE_CONTEXT, namespaceSupport);
             }
-            List<PropertyAccessor> accessors =
-                    PropertyAccessors.findPropertyAccessors(obj, attPath, target, hints);
+            List<PropertyAccessor> accessors = PropertyAccessors.findPropertyAccessors(obj, attPath, target, hints);
             List<Exception> exceptions = null;
             if (accessors != null) {
                 for (PropertyAccessor propertyAccessor : accessors) {
@@ -239,12 +231,11 @@ public class AttributeExpressionImpl extends DefaultExpression implements Proper
                 if (lenient) return null;
                 else {
                     IllegalArgumentException exception =
-                            new IllegalArgumentException(
-                                    "Could not find working property accessor for attribute ("
-                                            + attPath
-                                            + ") in object ("
-                                            + obj
-                                            + ")");
+                            new IllegalArgumentException("Could not find working property accessor for attribute ("
+                                    + attPath
+                                    + ") in object ("
+                                    + obj
+                                    + ")");
                     if (exceptions != null) {
                         exceptions.forEach(e -> exception.addSuppressed(exception));
                     }
@@ -287,40 +278,25 @@ public class AttributeExpressionImpl extends DefaultExpression implements Proper
         if (obj.getClass() == this.getClass()) {
             AttributeExpressionImpl expAttr = (AttributeExpressionImpl) obj;
 
-            boolean isEqual =
-                    (Filters.getExpressionType(expAttr) == Filters.getExpressionType(this));
+            boolean isEqual = (Filters.getExpressionType(expAttr) == Filters.getExpressionType(this));
+            if (LOGGER.isLoggable(Level.FINEST))
+                LOGGER.finest("expression type match:"
+                        + isEqual
+                        + "; in:"
+                        + Filters.getExpressionType(expAttr)
+                        + "; out:"
+                        + Filters.getExpressionType(this));
+            isEqual = (expAttr.attPath != null)
+                    ? (isEqual && expAttr.attPath.equals(this.attPath))
+                    : (isEqual && (this.attPath == null));
             if (LOGGER.isLoggable(Level.FINEST))
                 LOGGER.finest(
-                        "expression type match:"
-                                + isEqual
-                                + "; in:"
-                                + Filters.getExpressionType(expAttr)
-                                + "; out:"
-                                + Filters.getExpressionType(this));
-            isEqual =
-                    (expAttr.attPath != null)
-                            ? (isEqual && expAttr.attPath.equals(this.attPath))
-                            : (isEqual && (this.attPath == null));
+                        "attribute match:" + isEqual + "; in:" + expAttr.getPropertyName() + "; out:" + this.attPath);
+            isEqual = (expAttr.schema != null)
+                    ? (isEqual && expAttr.schema.equals(this.schema))
+                    : (isEqual && (this.schema == null));
             if (LOGGER.isLoggable(Level.FINEST))
-                LOGGER.finest(
-                        "attribute match:"
-                                + isEqual
-                                + "; in:"
-                                + expAttr.getPropertyName()
-                                + "; out:"
-                                + this.attPath);
-            isEqual =
-                    (expAttr.schema != null)
-                            ? (isEqual && expAttr.schema.equals(this.schema))
-                            : (isEqual && (this.schema == null));
-            if (LOGGER.isLoggable(Level.FINEST))
-                LOGGER.finest(
-                        "schema match:"
-                                + isEqual
-                                + "; in:"
-                                + expAttr.schema
-                                + "; out:"
-                                + this.schema);
+                LOGGER.finest("schema match:" + isEqual + "; in:" + expAttr.schema + "; out:" + this.schema);
 
             return isEqual;
         } else {

@@ -27,8 +27,7 @@ import org.geotools.api.filter.Filter;
 public class TransformFeatureLocking extends TransformFeatureStore implements SimpleFeatureLocking {
     private final SimpleFeatureLocking locking;
 
-    public TransformFeatureLocking(
-            SimpleFeatureLocking locking, Name name, List<Definition> definitions)
+    public TransformFeatureLocking(SimpleFeatureLocking locking, Name name, List<Definition> definitions)
             throws IOException {
         super(locking, name, definitions);
         this.locking = locking;

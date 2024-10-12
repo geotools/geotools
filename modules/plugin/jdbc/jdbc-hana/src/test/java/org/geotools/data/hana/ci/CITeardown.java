@@ -51,8 +51,7 @@ public final class CITeardown extends CIBase {
     private ArrayList<String> getSchemas(Connection conn, String schemaBase) throws SQLException {
         schemaBase = schemaBase.replace("_", "__") + "%";
         try (PreparedStatement ps =
-                conn.prepareStatement(
-                        "SELECT SCHEMA_NAME FROM SYS.SCHEMAS WHERE SCHEMA_NAME LIKE ? ESCAPE '_'")) {
+                conn.prepareStatement("SELECT SCHEMA_NAME FROM SYS.SCHEMAS WHERE SCHEMA_NAME LIKE ? ESCAPE '_'")) {
             ps.setString(1, schemaBase);
             try (ResultSet rs = ps.executeQuery()) {
                 ArrayList<String> ret = new ArrayList<>();

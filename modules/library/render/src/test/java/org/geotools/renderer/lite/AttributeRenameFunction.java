@@ -28,15 +28,13 @@ import org.geotools.filter.visitor.DuplicatingFilterVisitor;
  *
  * @author Andrea Aime - GeoSolutions
  */
-public class AttributeRenameFunction extends FunctionExpressionImpl
-        implements RenderingTransformation {
+public class AttributeRenameFunction extends FunctionExpressionImpl implements RenderingTransformation {
 
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "AttributeRename",
-                    parameter("sourceAttribute", String.class),
-                    parameter("targetAttribute", String.class),
-                    parameter("optimizeQuery", boolean.class, 0, 1));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "AttributeRename",
+            parameter("sourceAttribute", String.class),
+            parameter("targetAttribute", String.class),
+            parameter("optimizeQuery", boolean.class, 0, 1));
 
     public AttributeRenameFunction() {
         super(NAME);
@@ -68,7 +66,8 @@ public class AttributeRenameFunction extends FunctionExpressionImpl
             fc.accepts(
                     feature -> {
                         fb.init((SimpleFeature) feature);
-                        SimpleFeature f = fb.buildFeature(feature.getIdentifier().getID());
+                        SimpleFeature f =
+                                fb.buildFeature(feature.getIdentifier().getID());
                         features.add(f);
                     },
                     null);
@@ -84,18 +83,14 @@ public class AttributeRenameFunction extends FunctionExpressionImpl
             T result = getExpression(expressionIdx).evaluate(object, targetClass);
             if (result == null && mandatory) {
                 throw new IllegalArgumentException(
-                        "Could not find function argument #"
-                                + expressionIdx
-                                + ", but it's mandatory");
+                        "Could not find function argument #" + expressionIdx + ", but it's mandatory");
             }
             return result;
         } catch (Exception e) {
             // probably a type error
             if (mandatory) {
                 throw new IllegalArgumentException(
-                        "Could not find function argument #"
-                                + expressionIdx
-                                + ", but it's mandatory");
+                        "Could not find function argument #" + expressionIdx + ", but it's mandatory");
             } else {
                 return null;
             }
@@ -122,26 +117,19 @@ public class AttributeRenameFunction extends FunctionExpressionImpl
                 q.setPropertyNames(names);
             }
             if (q.getFilter() != null) {
-                Filter renamed =
-                        (Filter)
-                                q.getFilter()
-                                        .accept(
-                                                new DuplicatingFilterVisitor() {
-                                                    @Override
-                                                    public Object visit(
-                                                            PropertyName expression,
-                                                            Object extraData) {
-                                                        if (expression
-                                                                .getPropertyName()
-                                                                .equals(target)) {
-                                                            return ff.property(source);
-                                                        } else {
-                                                            return super.visit(
-                                                                    expression, extraData);
-                                                        }
-                                                    }
-                                                },
-                                                null);
+                Filter renamed = (Filter) q.getFilter()
+                        .accept(
+                                new DuplicatingFilterVisitor() {
+                                    @Override
+                                    public Object visit(PropertyName expression, Object extraData) {
+                                        if (expression.getPropertyName().equals(target)) {
+                                            return ff.property(source);
+                                        } else {
+                                            return super.visit(expression, extraData);
+                                        }
+                                    }
+                                },
+                                null);
                 q.setFilter(renamed);
             }
 

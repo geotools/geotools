@@ -91,8 +91,7 @@ public abstract class WFSStrategy extends Specification {
      * @param typeName the feature type name for which to return the supported output formats
      * @return the output formats the server supports for the given type name and operation
      */
-    public abstract Set<String> getServerSupportedOutputFormats(
-            final QName typeName, final WFSOperationType operation);
+    public abstract Set<String> getServerSupportedOutputFormats(final QName typeName, final WFSOperationType operation);
 
     /**
      * @return the list of output formats supported by the client for the given operation, in
@@ -132,8 +131,7 @@ public abstract class WFSStrategy extends Specification {
      * @param method the HTTP method to check if the server supports for the given operation
      * @return {@code true} if the operation/method is supported as stated in the WFS capabilities
      */
-    public abstract boolean supportsOperation(
-            final WFSOperationType operation, final HttpMethod method);
+    public abstract boolean supportsOperation(final WFSOperationType operation, final HttpMethod method);
 
     public abstract boolean supports(ResultType resultType);
 
@@ -185,14 +183,13 @@ public abstract class WFSStrategy extends Specification {
     public abstract Configuration getWfsConfiguration();
 
     public String newRequestHandle(WFSOperationType operation) {
-        StringBuilder handle =
-                new StringBuilder("GeoTools ")
-                        .append(GeoTools.getVersion())
-                        .append("(")
-                        .append(GeoTools.getBuildRevision())
-                        .append(") WFS ")
-                        .append(getVersion())
-                        .append(" DataStore @");
+        StringBuilder handle = new StringBuilder("GeoTools ")
+                .append(GeoTools.getVersion())
+                .append("(")
+                .append(GeoTools.getBuildRevision())
+                .append(") WFS ")
+                .append(getVersion())
+                .append(" DataStore @");
         try {
             handle.append(InetAddress.getLocalHost().getHostName());
         } catch (Exception ignore) {

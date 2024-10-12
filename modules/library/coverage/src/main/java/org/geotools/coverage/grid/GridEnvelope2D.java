@@ -95,8 +95,7 @@ public class GridEnvelope2D extends Rectangle implements GridEnvelope, Cloneable
      *     convention (no offset will be added).
      * @throws IllegalArgumentException If {@code anchor} is not valid.
      */
-    public GridEnvelope2D(final Rectangle envelope, final PixelInCell anchor)
-            throws IllegalArgumentException {
+    public GridEnvelope2D(final Rectangle envelope, final PixelInCell anchor) throws IllegalArgumentException {
         this(envelope, anchor, false);
     }
 
@@ -128,8 +127,7 @@ public class GridEnvelope2D extends Rectangle implements GridEnvelope, Cloneable
      *     convention (no offset will be added).
      * @throws IllegalArgumentException If {@code anchor} is not valid.
      */
-    public GridEnvelope2D(final ReferencedEnvelope envelope, final PixelInCell anchor)
-            throws IllegalArgumentException {
+    public GridEnvelope2D(final ReferencedEnvelope envelope, final PixelInCell anchor) throws IllegalArgumentException {
         this(envelope, anchor, false);
     }
 
@@ -176,8 +174,7 @@ public class GridEnvelope2D extends Rectangle implements GridEnvelope, Cloneable
      *     always inclusive.
      * @throws IllegalArgumentException If {@code anchor} is not valid.
      */
-    public GridEnvelope2D(
-            final Rectangle envelope, final PixelInCell anchor, final boolean isHighIncluded)
+    public GridEnvelope2D(final Rectangle envelope, final PixelInCell anchor, final boolean isHighIncluded)
             throws IllegalArgumentException {
         final double offset = PixelTranslation.getPixelTranslation(anchor) + 0.5;
         final int DIMENSION = 2;
@@ -247,10 +244,7 @@ public class GridEnvelope2D extends Rectangle implements GridEnvelope, Cloneable
      *     always inclusive.
      * @throws IllegalArgumentException If {@code anchor} is not valid.
      */
-    public GridEnvelope2D(
-            final ReferencedEnvelope envelope,
-            final PixelInCell anchor,
-            final boolean isHighIncluded)
+    public GridEnvelope2D(final ReferencedEnvelope envelope, final PixelInCell anchor, final boolean isHighIncluded)
             throws IllegalArgumentException {
         final double offset = PixelTranslation.getPixelTranslation(anchor) + 0.5;
         final int dimension = envelope.getDimension();

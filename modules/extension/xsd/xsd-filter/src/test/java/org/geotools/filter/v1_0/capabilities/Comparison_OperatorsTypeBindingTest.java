@@ -29,7 +29,8 @@ import org.w3c.dom.Document;
 public class Comparison_OperatorsTypeBindingTest extends FilterCapabilitiesTestSupport {
     @Test
     public void testType() {
-        assertEquals(ComparisonOperators.class, binding(OGC.Comparison_OperatorsType).getType());
+        assertEquals(
+                ComparisonOperators.class, binding(OGC.Comparison_OperatorsType).getType());
     }
 
     @Test
@@ -73,22 +74,20 @@ public class Comparison_OperatorsTypeBindingTest extends FilterCapabilitiesTestS
 
     @Test
     public void testEncode() throws Exception {
-        Document dom =
-                encode(
-                        FilterMockData.comparison(),
-                        new QName(OGC.NAMESPACE, "Comparison_Operators"),
-                        OGC.Comparison_OperatorsType);
+        Document dom = encode(
+                FilterMockData.comparison(),
+                new QName(OGC.NAMESPACE, "Comparison_Operators"),
+                OGC.Comparison_OperatorsType);
 
         assertNotNull(getElementByQName(dom, OGC.Simple_Comparisons));
         assertNotNull(getElementByQName(dom, OGC.Like));
         assertNotNull(getElementByQName(dom, OGC.Between));
         assertNotNull(getElementByQName(dom, OGC.NullCheck));
 
-        dom =
-                encode(
-                        FilterMockData.comparison(false),
-                        new QName(OGC.NAMESPACE, "Comparison_Operators"),
-                        OGC.Comparison_OperatorsType);
+        dom = encode(
+                FilterMockData.comparison(false),
+                new QName(OGC.NAMESPACE, "Comparison_Operators"),
+                OGC.Comparison_OperatorsType);
         assertNull(getElementByQName(dom, OGC.Simple_Arithmetic));
         assertNotNull(getElementByQName(dom, OGC.Like));
         assertNotNull(getElementByQName(dom, OGC.Between));

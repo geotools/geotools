@@ -82,8 +82,7 @@ public class MLEnvelopeTypeBinding extends AbstractComplexBinding {
 
         for (Object headerElement : headerElements) {
             Map headerObject = (Map) headerElement;
-            headers[i++] =
-                    new Header((String) headerObject.get("name"), (String) headerObject.get(null));
+            headers[i++] = new Header((String) headerObject.get("name"), (String) headerObject.get(null));
         }
 
         return new Envelope(from, to, date, subject, headers);

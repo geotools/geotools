@@ -88,9 +88,7 @@ public class WFSParsingTest {
     public void testParseGetCapabilities() throws Exception {
         Parser parser = new Parser(configuration);
         WFSCapabilitiesType caps =
-                (WFSCapabilitiesType)
-                        parser.parse(
-                                getClass().getResourceAsStream("geoserver-GetCapabilities.xml"));
+                (WFSCapabilitiesType) parser.parse(getClass().getResourceAsStream("geoserver-GetCapabilities.xml"));
 
         assertNotNull(caps);
         assertEquals("1.1.0", caps.getVersion());
@@ -108,8 +106,7 @@ public class WFSParsingTest {
     public void testParseGetCapabilitiesDeegree() throws Exception {
         Parser parser = new Parser(configuration);
         WFSCapabilitiesType caps =
-                (WFSCapabilitiesType)
-                        parser.parse(getClass().getResourceAsStream("deegree-GetCapabilities.xml"));
+                (WFSCapabilitiesType) parser.parse(getClass().getResourceAsStream("deegree-GetCapabilities.xml"));
 
         assertNotNull(caps);
         assertEquals("1.1.0", caps.getVersion());
@@ -178,9 +175,11 @@ public class WFSParsingTest {
         assertEquals(1, dcp.getHTTP().getPost().size());
 
         assertEquals(
-                "http://localhost:8080/geoserver/wfs", dcp.getHTTP().getGet().get(0).getHref());
+                "http://localhost:8080/geoserver/wfs",
+                dcp.getHTTP().getGet().get(0).getHref());
         assertEquals(
-                "http://localhost:8080/geoserver/wfs", dcp.getHTTP().getPost().get(0).getHref());
+                "http://localhost:8080/geoserver/wfs",
+                dcp.getHTTP().getPost().get(0).getHref());
 
         assertEquals("DescribeFeatureType", om.getOperation().get(1).getName());
         assertEquals(1, om.getOperation().get(1).getDCP().size());
@@ -214,7 +213,8 @@ public class WFSParsingTest {
         assertEquals(
                 "AggregateGeoFeature",
                 ((FeatureTypeType) ftl.getFeatureType().get(0)).getName().getLocalPart());
-        assertEquals("sf", ((FeatureTypeType) ftl.getFeatureType().get(0)).getName().getPrefix());
+        assertEquals(
+                "sf", ((FeatureTypeType) ftl.getFeatureType().get(0)).getName().getPrefix());
         assertEquals(
                 "http://cite.opengeospatial.org/gmlsf",
                 ((FeatureTypeType) ftl.getFeatureType().get(0)).getName().getNamespaceURI());
@@ -277,21 +277,14 @@ public class WFSParsingTest {
 
             // http://cite.opengeospatial.org/gmlsf
             // http://localhost:8080/geoserver/wfs?service=WFS&amp;version=1.1.0&amp;request=DescribeFeatureType&amp;typeName=sf:PrimitiveGeoFeature
-            String schemaLocation =
-                    doc.getDocumentElement()
-                            .getAttributeNS(
-                                    "http://www.w3.org/2001/XMLSchema-instance", "schemaLocation");
+            String schemaLocation = doc.getDocumentElement()
+                    .getAttributeNS("http://www.w3.org/2001/XMLSchema-instance", "schemaLocation");
             String absolutePath = URLs.fileToUrl(tmp).toExternalForm();
 
-            schemaLocation =
-                    schemaLocation.replaceAll(
-                            "http://cite.opengeospatial.org/gmlsf .*",
-                            "http://cite.opengeospatial.org/gmlsf " + absolutePath);
+            schemaLocation = schemaLocation.replaceAll(
+                    "http://cite.opengeospatial.org/gmlsf .*", "http://cite.opengeospatial.org/gmlsf " + absolutePath);
             doc.getDocumentElement()
-                    .setAttributeNS(
-                            "http://www.w3.org/2001/XMLSchema-instance",
-                            "schemaLocation",
-                            schemaLocation);
+                    .setAttributeNS("http://www.w3.org/2001/XMLSchema-instance", "schemaLocation", schemaLocation);
 
             tmp = File.createTempFile("geoserver-GetFeature", "xml");
             tmp.deleteOnExit();
@@ -309,8 +302,7 @@ public class WFSParsingTest {
             List featureCollections = fc.getFeature();
             assertEquals(1, featureCollections.size());
 
-            SimpleFeatureCollection featureCollection =
-                    (SimpleFeatureCollection) featureCollections.get(0);
+            SimpleFeatureCollection featureCollection = (SimpleFeatureCollection) featureCollections.get(0);
             assertEquals(5, featureCollection.size());
             assertNotNull(featureCollection.getBounds().getCoordinateReferenceSystem());
 
@@ -333,8 +325,7 @@ public class WFSParsingTest {
                 assertTrue(intProperty.getClass().getName(), intProperty instanceof BigInteger);
 
                 assertEquals(BigInteger.valueOf(155), intProperty);
-                assertEquals(
-                        new URI("http://www.opengeospatial.org/"), f.getAttribute("uriProperty"));
+                assertEquals(new URI("http://www.opengeospatial.org/"), f.getAttribute("uriProperty"));
                 assertEquals(Float.valueOf(12765.0f), f.getAttribute("measurand"));
                 assertTrue(f.getAttribute("dateProperty") instanceof Date);
                 assertEquals(BigDecimal.valueOf(5.03), f.getAttribute("decimalProperty"));
@@ -370,8 +361,7 @@ public class WFSParsingTest {
     }
 
     @Test
-    public void testParseTransactionResponse()
-            throws IOException, SAXException, ParserConfigurationException {
+    public void testParseTransactionResponse() throws IOException, SAXException, ParserConfigurationException {
         Parser parser = new Parser(configuration);
         Object parsed = parser.parse(getClass().getResourceAsStream("transactionResponse.xml"));
 

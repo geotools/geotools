@@ -58,8 +58,7 @@ import org.w3c.dom.NodeList;
  */
 public final class FilterDOMParser {
     /** The logger for the filter module. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(FilterDOMParser.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(FilterDOMParser.class);
 
     /** Factory to create filters. */
     private static final FilterFactory FILTER_FACT = CommonFactoryFinder.getFilterFactory(null);
@@ -80,12 +79,9 @@ public final class FilterDOMParser {
         comparisons.put("PropertyIsEqualTo", Integer.valueOf(FilterType.COMPARE_EQUALS));
         comparisons.put("PropertyIsNotEqualTo", Integer.valueOf(FilterType.COMPARE_NOT_EQUALS));
         comparisons.put("PropertyIsGreaterThan", Integer.valueOf(FilterType.COMPARE_GREATER_THAN));
-        comparisons.put(
-                "PropertyIsGreaterThanOrEqualTo",
-                Integer.valueOf(FilterType.COMPARE_GREATER_THAN_EQUAL));
+        comparisons.put("PropertyIsGreaterThanOrEqualTo", Integer.valueOf(FilterType.COMPARE_GREATER_THAN_EQUAL));
         comparisons.put("PropertyIsLessThan", Integer.valueOf(FilterType.COMPARE_LESS_THAN));
-        comparisons.put(
-                "PropertyIsLessThanOrEqualTo", Integer.valueOf(FilterType.COMPARE_LESS_THAN_EQUAL));
+        comparisons.put("PropertyIsLessThanOrEqualTo", Integer.valueOf(FilterType.COMPARE_LESS_THAN_EQUAL));
         comparisons.put("PropertyIsLike", Integer.valueOf(AbstractFilter.LIKE));
         comparisons.put("PropertyIsNull", Integer.valueOf(AbstractFilter.NULL));
         comparisons.put("PropertyIsBetween", Integer.valueOf(FilterType.BETWEEN));
@@ -210,8 +206,7 @@ public final class FilterDOMParser {
                             "Filter negation can be " + "applied to one and only one child filter");
                 return FILTER_FACT.not(children.get(0));
             } else {
-                throw new RuntimeException(
-                        "Logical filter, but not And, Or, Not? " + "This should not happen");
+                throw new RuntimeException("Logical filter, but not And, Or, Not? " + "This should not happen");
             }
         } catch (IllegalFilterException ife) {
             LOGGER.warning("Unable to build filter: " + ife);
@@ -298,8 +293,7 @@ public final class FilterDOMParser {
         return FILTER_FACT.id(ids);
     }
 
-    private static PropertyIsLike parseLikeFilter(
-            ExpressionDOMParser expressionDOMParser, Node child) {
+    private static PropertyIsLike parseLikeFilter(ExpressionDOMParser expressionDOMParser, Node child) {
         String wildcard = null;
         String single = null;
         String escape = null;
@@ -356,46 +350,35 @@ public final class FilterDOMParser {
 
         if (!((wildcard == null) || (single == null) || (escape == null) || (pattern == null))) {
             // LikeFilter lfilter = FILTER_FACT.createLikeFilter();
-            LOGGER.finer(
-                    "Building like filter "
-                            + value.toString()
-                            + "\n"
-                            + pattern
-                            + " "
-                            + wildcard
-                            + " "
-                            + single
-                            + " "
-                            + escape);
+            LOGGER.finer("Building like filter "
+                    + value.toString()
+                    + "\n"
+                    + pattern
+                    + " "
+                    + wildcard
+                    + " "
+                    + single
+                    + " "
+                    + escape);
             // lfilter.setValue(value);
             // lfilter.setPattern(pattern, wildcard, single, escape);
 
             return FILTER_FACT.like(value, pattern, wildcard, single, escape);
         }
 
-        LOGGER.finer(
-                "Problem building like filter\n"
-                        + pattern
-                        + " "
-                        + wildcard
-                        + " "
-                        + single
-                        + " "
-                        + escape);
+        LOGGER.finer("Problem building like filter\n" + pattern + " " + wildcard + " " + single + " " + escape);
 
         return null;
     }
 
-    private static PropertyIsBetween parseBetweenFilter(
-            ExpressionDOMParser expressionDOMParser, Node child) {
+    private static PropertyIsBetween parseBetweenFilter(ExpressionDOMParser expressionDOMParser, Node child) {
         // BetweenFilter bfilter = FILTER_FACT.createBetweenFilter();
 
         NodeList kids = child.getChildNodes();
 
         if (kids.getLength() < NUM_BETWEEN_CHILDREN) {
             throw new IllegalFilterException(
-                    "wrong number of children in Between filter: expected 3 got "
-                            + kids.getLength());
+                    "wrong number of children in Between filter: expected 3 got " + kids.getLength());
         }
 
         Node value = child.getFirstChild();
@@ -494,8 +477,7 @@ public final class FilterDOMParser {
 
             LOGGER.finest("add right value -> " + value + "<-");
 
-            String valueName =
-                    (value.getLocalName() != null) ? value.getLocalName() : value.getNodeName();
+            String valueName = (value.getLocalName() != null) ? value.getLocalName() : value.getNodeName();
             if (valueName.indexOf(':') != -1) {
                 // the DOM parser was not properly set to handle namespaces...
                 valueName = valueName.substring(valueName.indexOf(':') + 1);
@@ -505,8 +487,7 @@ public final class FilterDOMParser {
             // ruin the DOM hierarchy
             Node nextNode = value.getNextSibling();
             Expression right;
-            if (!(valueName.equalsIgnoreCase("Literal")
-                    || valueName.equalsIgnoreCase("propertyname"))) {
+            if (!(valueName.equalsIgnoreCase("Literal") || valueName.equalsIgnoreCase("propertyname"))) {
                 Element literal = value.getOwnerDocument().createElement("literal");
 
                 literal.appendChild(value);
@@ -576,8 +557,7 @@ public final class FilterDOMParser {
         return FILTER_FACT.bbox(left, bbox);
     }
 
-    private static Beyond parseBeyondFilter(
-            Expression left, Node nextNode, Expression right, String units) {
+    private static Beyond parseBeyondFilter(Expression left, Node nextNode, Expression right, String units) {
         double distance;
         String nodeName;
         Node value;
@@ -594,8 +574,7 @@ public final class FilterDOMParser {
         }
         if (!"Distance".equals(nodeName)) {
             throw new IllegalFilterException(
-                    "Parsing Beyond, was expecting to find Distance but found "
-                            + value.getLocalName());
+                    "Parsing Beyond, was expecting to find Distance but found " + value.getLocalName());
         }
         distance = Double.parseDouble(value.getTextContent());
         if (value.getAttributes().getNamedItem("units") != null)
@@ -603,8 +582,7 @@ public final class FilterDOMParser {
         return FILTER_FACT.beyond(left, right, distance, units);
     }
 
-    private static DWithin parseWithinFilter(
-            Expression left, Node nextNode, Expression right, String units) {
+    private static DWithin parseWithinFilter(Expression left, Node nextNode, Expression right, String units) {
         double distance;
         String nodeName;
         Node value;
@@ -622,8 +600,7 @@ public final class FilterDOMParser {
         }
         if (!"Distance".equals(nodeName)) {
             throw new IllegalFilterException(
-                    "Parsing DWithin, was expecting to find Distance but found "
-                            + value.getLocalName());
+                    "Parsing DWithin, was expecting to find Distance but found " + value.getLocalName());
         }
         distance = Double.parseDouble(value.getTextContent());
         if (value.getAttributes().getNamedItem("units") != null)

@@ -66,40 +66,32 @@ public final class SLD extends XSD {
     public static final QName DescribeLayerResponseType =
             new QName("http://www.opengis.net/sld", "DescribeLayerResponseType");
     /** @generated */
-    public static final QName ElevationType =
-            new QName("http://www.opengis.net/sld", "ElevationType");
+    public static final QName ElevationType = new QName("http://www.opengis.net/sld", "ElevationType");
     /** @generated */
-    public static final QName ExceptionsType =
-            new QName("http://www.opengis.net/sld", "ExceptionsType");
+    public static final QName ExceptionsType = new QName("http://www.opengis.net/sld", "ExceptionsType");
     /** @generated */
     public static final QName GetMapType = new QName("http://www.opengis.net/sld", "GetMapType");
     /** @generated */
-    public static final QName IntervalType =
-            new QName("http://www.opengis.net/sld", "IntervalType");
+    public static final QName IntervalType = new QName("http://www.opengis.net/sld", "IntervalType");
     /** @generated */
-    public static final QName LayerDescriptionType =
-            new QName("http://www.opengis.net/sld", "LayerDescriptionType");
+    public static final QName LayerDescriptionType = new QName("http://www.opengis.net/sld", "LayerDescriptionType");
     /** @generated */
     public static final QName OutputType = new QName("http://www.opengis.net/sld", "OutputType");
     /** @generated */
     public static final QName owsTypeType = new QName("http://www.opengis.net/sld", "owsTypeType");
     /** @generated */
-    public static final QName TypeNameType =
-            new QName("http://www.opengis.net/sld", "TypeNameType");
+    public static final QName TypeNameType = new QName("http://www.opengis.net/sld", "TypeNameType");
     /** @generated */
-    public static final QName _CoverageConstraint =
-            new QName("http://www.opengis.net/sld", "_CoverageConstraint");
+    public static final QName _CoverageConstraint = new QName("http://www.opengis.net/sld", "_CoverageConstraint");
     /** @generated */
-    public static final QName _CoverageExtent =
-            new QName("http://www.opengis.net/sld", "_CoverageExtent");
+    public static final QName _CoverageExtent = new QName("http://www.opengis.net/sld", "_CoverageExtent");
     /** @generated */
     public static final QName _Extent = new QName("http://www.opengis.net/sld", "_Extent");
     /** @generated */
     public static final QName _FeatureTypeConstraint =
             new QName("http://www.opengis.net/sld", "_FeatureTypeConstraint");
     /** @generated */
-    public static final QName _InlineFeature =
-            new QName("http://www.opengis.net/sld", "_InlineFeature");
+    public static final QName _InlineFeature = new QName("http://www.opengis.net/sld", "_InlineFeature");
     /** @generated */
     public static final QName _LayerCoverageConstraints =
             new QName("http://www.opengis.net/sld", "_LayerCoverageConstraints");
@@ -124,32 +116,25 @@ public final class SLD extends XSD {
     /** @generated */
     public static final QName _UserStyle = new QName("http://www.opengis.net/sld", "_UserStyle");
     /** @generated */
-    public static final QName _UseSLDLibrary =
-            new QName("http://www.opengis.net/sld", "_UseSLDLibrary");
+    public static final QName _UseSLDLibrary = new QName("http://www.opengis.net/sld", "_UseSLDLibrary");
     /** @generated */
-    public static final QName OutputType_Size =
-            new QName("http://www.opengis.net/sld", "OutputType_Size");
+    public static final QName OutputType_Size = new QName("http://www.opengis.net/sld", "OutputType_Size");
 
     /* Elements */
     /** @generated */
-    public static final QName CoverageConstraint =
-            new QName("http://www.opengis.net/sld", "CoverageConstraint");
+    public static final QName CoverageConstraint = new QName("http://www.opengis.net/sld", "CoverageConstraint");
     /** @generated */
-    public static final QName CoverageExtent =
-            new QName("http://www.opengis.net/sld", "CoverageExtent");
+    public static final QName CoverageExtent = new QName("http://www.opengis.net/sld", "CoverageExtent");
     /** @generated */
-    public static final QName DescribeLayerResponse =
-            new QName("http://www.opengis.net/sld", "DescribeLayerResponse");
+    public static final QName DescribeLayerResponse = new QName("http://www.opengis.net/sld", "DescribeLayerResponse");
     /** @generated */
     public static final QName Extent = new QName("http://www.opengis.net/sld", "Extent");
     /** @generated */
-    public static final QName FeatureTypeConstraint =
-            new QName("http://www.opengis.net/sld", "FeatureTypeConstraint");
+    public static final QName FeatureTypeConstraint = new QName("http://www.opengis.net/sld", "FeatureTypeConstraint");
     /** @generated */
     public static final QName GetMap = new QName("http://www.opengis.net/sld", "GetMap");
     /** @generated */
-    public static final QName InlineFeature =
-            new QName("http://www.opengis.net/sld", "InlineFeature");
+    public static final QName InlineFeature = new QName("http://www.opengis.net/sld", "InlineFeature");
     /** @generated */
     public static final QName IsDefault = new QName("http://www.opengis.net/sld", "IsDefault");
     /** @generated */
@@ -169,8 +154,7 @@ public final class SLD extends XSD {
     /** @generated */
     public static final QName Service = new QName("http://www.opengis.net/sld", "Service");
     /** @generated */
-    public static final QName StyledLayerDescriptor =
-            new QName("http://www.opengis.net/sld", "StyledLayerDescriptor");
+    public static final QName StyledLayerDescriptor = new QName("http://www.opengis.net/sld", "StyledLayerDescriptor");
     /** @generated */
     public static final QName TimePeriod = new QName("http://www.opengis.net/sld", "TimePeriod");
     /** @generated */
@@ -178,8 +162,7 @@ public final class SLD extends XSD {
     /** @generated */
     public static final QName UserStyle = new QName("http://www.opengis.net/sld", "UserStyle");
     /** @generated */
-    public static final QName UseSLDLibrary =
-            new QName("http://www.opengis.net/sld", "UseSLDLibrary");
+    public static final QName UseSLDLibrary = new QName("http://www.opengis.net/sld", "UseSLDLibrary");
     /** @generated */
     public static final QName Value = new QName("http://www.opengis.net/sld", "Value");
     /** @generated */

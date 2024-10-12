@@ -47,8 +47,7 @@ import org.junit.runner.RunWith;
  * @version $Id$
  */
 @RunWith(GraphicsTestRunner.class)
-public class AbstractSimpleDialogTest
-        extends GraphicsTestBase<DialogFixture, Dialog, DialogDriver> {
+public class AbstractSimpleDialogTest extends GraphicsTestBase<DialogFixture, Dialog, DialogDriver> {
 
     private static final String TITLE = "Foo Dialog";
 
@@ -62,14 +61,13 @@ public class AbstractSimpleDialogTest
 
     @Test(expected = IllegalStateException.class)
     public void forgettingToCallInitComponentsCausesException() {
-        GuiActionRunner.execute(
-                new GuiTask() {
-                    @Override
-                    protected void executeInEDT() throws Throwable {
-                        MockDialog dialog = new MockDialog(TITLE);
-                        dialog.setVisible(true);
-                    }
-                });
+        GuiActionRunner.execute(new GuiTask() {
+            @Override
+            protected void executeInEDT() throws Throwable {
+                MockDialog dialog = new MockDialog(TITLE);
+                dialog.setVisible(true);
+            }
+        });
     }
 
     @Test
@@ -127,31 +125,27 @@ public class AbstractSimpleDialogTest
     }
 
     private void createWindowFixture() {
-        dialog =
-                GuiActionRunner.execute(
-                        new GuiQuery<MockDialog>() {
-                            @Override
-                            protected MockDialog executeInEDT() throws Throwable {
-                                MockDialog dialog = new MockDialog(TITLE);
-                                dialog.initComponents();
-                                return dialog;
-                            }
-                        });
+        dialog = GuiActionRunner.execute(new GuiQuery<MockDialog>() {
+            @Override
+            protected MockDialog executeInEDT() throws Throwable {
+                MockDialog dialog = new MockDialog(TITLE);
+                dialog.initComponents();
+                return dialog;
+            }
+        });
 
         windowFixture = new DialogFixture(dialog);
     }
 
     private void createWindowFixture(final boolean modal, final boolean resizable) {
-        dialog =
-                GuiActionRunner.execute(
-                        new GuiQuery<MockDialog>() {
-                            @Override
-                            protected MockDialog executeInEDT() throws Throwable {
-                                MockDialog dialog = new MockDialog(TITLE, modal, resizable);
-                                dialog.initComponents();
-                                return dialog;
-                            }
-                        });
+        dialog = GuiActionRunner.execute(new GuiQuery<MockDialog>() {
+            @Override
+            protected MockDialog executeInEDT() throws Throwable {
+                MockDialog dialog = new MockDialog(TITLE, modal, resizable);
+                dialog.initComponents();
+                return dialog;
+            }
+        });
 
         windowFixture = new DialogFixture(dialog);
     }

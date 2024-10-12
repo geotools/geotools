@@ -38,10 +38,8 @@ public class RetypeFeatureReaderTest {
     public void testRetypeUserData() throws Exception {
         // create base and derived feature type
         SimpleFeatureType featureType =
-                DataUtilities.createType(
-                        "feature", "id:string,name:String,geometry:Point:srid=4326");
-        SimpleFeatureType targetType =
-                SimpleFeatureTypeBuilder.retype(featureType, "id", "geometry");
+                DataUtilities.createType("feature", "id:string,name:String,geometry:Point:srid=4326");
+        SimpleFeatureType targetType = SimpleFeatureTypeBuilder.retype(featureType, "id", "geometry");
         // create a feature collection wit a single feature
         SimpleFeature feature = DataUtilities.createFeature(featureType, "1|foobar|POINT(1 2)");
         feature.getUserData().put(UD_KEY, UD_VALUE);

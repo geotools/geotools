@@ -41,8 +41,7 @@ public class HandlerFactoryImpl implements HandlerFactory {
     }
 
     @Override
-    public ElementHandler createElementHandler(
-            XSDElementDeclaration element, Handler parent, ParserHandler parser) {
+    public ElementHandler createElementHandler(XSDElementDeclaration element, Handler parent, ParserHandler parser) {
         return new ElementHandlerImpl(element, parent, parser);
     }
 }

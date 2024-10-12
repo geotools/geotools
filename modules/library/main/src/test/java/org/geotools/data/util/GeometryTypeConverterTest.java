@@ -37,19 +37,17 @@ public class GeometryTypeConverterTest {
     WKTReader wktReader = new WKTReader();
 
     protected Converter getConverter(Geometry source, Class<?> target) {
-        Assert.assertNotNull(
-                "Cannot get ConverterFactory for Geometry -> Geometry conversion", factories);
+        Assert.assertNotNull("Cannot get ConverterFactory for Geometry -> Geometry conversion", factories);
         if (factories == null) return null;
         for (ConverterFactory factory : factories) {
             Converter candidate = factory.createConverter(source.getClass(), target, null);
             if (candidate != null) return candidate;
         }
-        Assert.fail(
-                "Cannot get ConverterFactory for "
-                        + source.getClass().getName()
-                        + " -> "
-                        + target.getName()
-                        + " conversion");
+        Assert.fail("Cannot get ConverterFactory for "
+                + source.getClass().getName()
+                + " -> "
+                + target.getName()
+                + " conversion");
         return null;
     }
 
@@ -73,9 +71,7 @@ public class GeometryTypeConverterTest {
         for (String test : tests) {
             String[] parts = test.split(":");
             Assert.assertEquals(
-                    "Test rows should have the form \"source:target:expected:description\"",
-                    4,
-                    parts.length);
+                    "Test rows should have the form \"source:target:expected:description\"", 4, parts.length);
 
             Geometry source = wktReader.read(parts[0]);
             source.setSRID(4326);

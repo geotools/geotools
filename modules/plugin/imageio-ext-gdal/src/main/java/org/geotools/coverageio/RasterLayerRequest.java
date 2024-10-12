@@ -72,8 +72,7 @@ class RasterLayerRequest {
     static boolean useDestinationRegion = /*Boolean.getBoolean("org.geotools.destination")*/ true;
 
     /** Logger. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(RasterLayerRequest.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(RasterLayerRequest.class);
 
     private ReadType readType = ReadType.UNSPECIFIED;
 
@@ -306,8 +305,7 @@ class RasterLayerRequest {
         if ((suggestedTileSize != null) && (suggestedTileSize.trim().length() > 0)) {
 
             if (suggestedTileSize.contains(BaseGDALGridFormat.TILE_SIZE_SEPARATOR)) {
-                final String[] tilesSize =
-                        suggestedTileSize.split(BaseGDALGridFormat.TILE_SIZE_SEPARATOR);
+                final String[] tilesSize = suggestedTileSize.split(BaseGDALGridFormat.TILE_SIZE_SEPARATOR);
                 if (tilesSize.length == 2) {
                     try {
                         // Getting suggested tile size
@@ -322,10 +320,7 @@ class RasterLayerRequest {
                         // reset previously set layout
                         layout = null;
                         if (LOGGER.isLoggable(Level.WARNING)) {
-                            LOGGER.log(
-                                    Level.WARNING,
-                                    "Unable to parse " + "suggested tile size parameter",
-                                    nfe);
+                            LOGGER.log(Level.WARNING, "Unable to parse " + "suggested tile size parameter", nfe);
                         }
                     }
                 }
@@ -542,8 +537,7 @@ class RasterLayerRequest {
                 // ////////////////////////////////////////////////////////////
                 adjustRequestedBBox();
                 if (requestedBBox == null || requestedBBox.isEmpty()) {
-                    if (LOGGER.isLoggable(Level.FINE))
-                        LOGGER.log(Level.FINE, "RequestedBBox empty or null");
+                    if (LOGGER.isLoggable(Level.FINE)) LOGGER.log(Level.FINE, "RequestedBBox empty or null");
                     // this means that we do not have anything to load at all!
                     emptyRequest = true;
                     return;
@@ -557,9 +551,7 @@ class RasterLayerRequest {
                 coverageRequestedRasterArea.setRect(getCropRegion());
                 if (coverageRequestedRasterArea.isEmpty()) {
                     if (LOGGER.isLoggable(Level.FINE))
-                        LOGGER.log(
-                                Level.FINE,
-                                "Requested envelope too small resulting in empty cropped raster region");
+                        LOGGER.log(Level.FINE, "Requested envelope too small resulting in empty cropped raster region");
                     // TODO: Future versions may define a 1x1 rectangle starting
                     // from the lower coordinate
                     emptyRequest = true;
@@ -567,19 +559,15 @@ class RasterLayerRequest {
                 }
                 if (!coverageRequestedRasterArea.intersects(coverageRasterArea))
                     throw new DataSourceException("The crop region is invalid.");
-                XRectangle2D.intersect(
-                        coverageRequestedRasterArea,
-                        coverageRasterArea,
-                        coverageRequestedRasterArea);
+                XRectangle2D.intersect(coverageRequestedRasterArea, coverageRasterArea, coverageRequestedRasterArea);
 
                 if (LOGGER.isLoggable(Level.FINE)) {
-                    String message =
-                            "Adjusted Requested Envelope = "
-                                    + requestedBBox.toString()
-                                    + "\nRequested raster dimension = "
-                                    + requestedRasterArea.toString()
-                                    + "\nCorresponding raster source region = "
-                                    + coverageRequestedRasterArea.toString();
+                    String message = "Adjusted Requested Envelope = "
+                            + requestedBBox.toString()
+                            + "\nRequested raster dimension = "
+                            + requestedRasterArea.toString()
+                            + "\nCorresponding raster source region = "
+                            + coverageRequestedRasterArea.toString();
                     LOGGER.log(Level.FINE, message);
                 }
                 return;
@@ -598,9 +586,8 @@ class RasterLayerRequest {
     /** Initialize the 2D properties (CRS and Envelope) of this coverage */
     private void prepareCoverageSpatialElements() throws FactoryException, TransformException {
         // basic initialization
-        coverageGeographicBBox =
-                GridCoverageUtilities.getReferencedEnvelopeFromGeographicBoundingBox(
-                        new GeographicBoundingBoxImpl(coverageEnvelope));
+        coverageGeographicBBox = GridCoverageUtilities.getReferencedEnvelopeFromGeographicBoundingBox(
+                new GeographicBoundingBoxImpl(coverageEnvelope));
         coverageRequestedRasterArea = new Rectangle();
 
         // //
@@ -622,10 +609,8 @@ class RasterLayerRequest {
 
         // compute the approximated full resolution in wgs84
         final GridToEnvelopeMapper geMapper =
-                new GridToEnvelopeMapper(
-                        new GridEnvelope2D(coverageRasterArea), coverageGeographicBBox);
-        approximateCoverageWGS84FullResolution =
-                CoverageUtilities.getResolution(geMapper.createAffineTransform());
+                new GridToEnvelopeMapper(new GridEnvelope2D(coverageRasterArea), coverageGeographicBBox);
+        approximateCoverageWGS84FullResolution = CoverageUtilities.getResolution(geMapper.createAffineTransform());
     }
 
     /**
@@ -653,25 +638,19 @@ class RasterLayerRequest {
                     final double xRatio = fullResolution[0] / requestedRes[0];
                     final double yRatio = fullResolution[1] / requestedRes[1];
                     imageReadParam.setDestinationRegion(
-                            new Rectangle(
-                                    0,
-                                    0,
-                                    (int) Math.floor(coverageRequestedRasterArea.width * xRatio),
-                                    (int) Math.floor(coverageRequestedRasterArea.height * yRatio)));
+                            new Rectangle(0, 0, (int) Math.floor(coverageRequestedRasterArea.width * xRatio), (int)
+                                    Math.floor(coverageRequestedRasterArea.height * yRatio)));
                 } else {
                     int subSamplingFactorX = (int) Math.floor(requestedRes[0] / fullResolution[0]);
                     subSamplingFactorX = (subSamplingFactorX == 0) ? 1 : subSamplingFactorX;
-                    while (((w / subSamplingFactorX) <= 0) && (subSamplingFactorX >= 0))
-                        subSamplingFactorX--;
+                    while (((w / subSamplingFactorX) <= 0) && (subSamplingFactorX >= 0)) subSamplingFactorX--;
                     subSamplingFactorX = (subSamplingFactorX == 0) ? 1 : subSamplingFactorX;
 
                     int subSamplingFactorY = (int) Math.floor(requestedRes[1] / fullResolution[1]);
                     subSamplingFactorY = (subSamplingFactorY == 0) ? 1 : subSamplingFactorY;
-                    while (((h / subSamplingFactorY) <= 0) && (subSamplingFactorY >= 0))
-                        subSamplingFactorY--;
+                    while (((h / subSamplingFactorY) <= 0) && (subSamplingFactorY >= 0)) subSamplingFactorY--;
                     subSamplingFactorY = (subSamplingFactorY == 0) ? 1 : subSamplingFactorY;
-                    imageReadParam.setSourceSubsampling(
-                            subSamplingFactorX, subSamplingFactorY, 0, 0);
+                    imageReadParam.setSourceSubsampling(subSamplingFactorX, subSamplingFactorY, 0, 0);
                 }
             }
         }
@@ -685,15 +664,13 @@ class RasterLayerRequest {
      * @return the original grid to world transformation
      */
     public MathTransform getOriginalGridToWorld(final PixelInCell pixInCell) {
-        return PixelTranslation.translate(
-                coverageGridToWorld2D, PixelInCell.CELL_CENTER, pixInCell);
+        return PixelTranslation.translate(coverageGridToWorld2D, PixelInCell.CELL_CENTER, pixInCell);
     }
 
     /** Returns the intersection between the base envelope and the requested envelope. */
     private void adjustRequestedBBox() throws TransformException, FactoryException {
 
-        final CoordinateReferenceSystem requestedBBoxCRS2D =
-                requestedBBox.getCoordinateReferenceSystem();
+        final CoordinateReferenceSystem requestedBBoxCRS2D = requestedBBox.getCoordinateReferenceSystem();
         try {
             ////
             //
@@ -707,13 +684,12 @@ class RasterLayerRequest {
             } else
                 // we do not need to do anything, but we do this in order to aboid problems with the
                 // envelope checks
-                requestedBBox =
-                        new ReferencedEnvelope(
-                                requestedBBox.getMinX(),
-                                requestedBBox.getMaxX(),
-                                requestedBBox.getMinY(),
-                                requestedBBox.getMaxY(),
-                                coverageCRS2D);
+                requestedBBox = new ReferencedEnvelope(
+                        requestedBBox.getMinX(),
+                        requestedBBox.getMaxX(),
+                        requestedBBox.getMinY(),
+                        requestedBBox.getMaxY(),
+                        coverageCRS2D);
 
             ////
             //
@@ -728,15 +704,12 @@ class RasterLayerRequest {
             }
             // XXX Optimize when referenced envelope has intersection method that actually retains
             // the CRS, this is the JTS one
-            requestedBBox =
-                    new ReferencedEnvelope(
-                            ((ReferencedEnvelope) requestedBBox).intersection(coverageBBox),
-                            coverageCRS2D);
+            requestedBBox = new ReferencedEnvelope(
+                    ((ReferencedEnvelope) requestedBBox).intersection(coverageBBox), coverageCRS2D);
             // compute approximate full resolution
             // compute the approximated full resolution in wgs84
             final GridToEnvelopeMapper geMapper =
-                    new GridToEnvelopeMapper(
-                            new GridEnvelope2D(requestedRasterArea), requestedBBox);
+                    new GridToEnvelopeMapper(new GridEnvelope2D(requestedRasterArea), requestedBBox);
             requestedResolution = CoverageUtilities.getResolution(geMapper.createAffineTransform());
 
             return;
@@ -753,11 +726,9 @@ class RasterLayerRequest {
         //
         // //
         // convert to WGS84
-        final GeographicBoundingBoxImpl geographicRequestedBBox =
-                new GeographicBoundingBoxImpl(requestedBBox);
+        final GeographicBoundingBoxImpl geographicRequestedBBox = new GeographicBoundingBoxImpl(requestedBBox);
         ReferencedEnvelope approximateWGS84requestedBBox =
-                GridCoverageUtilities.getReferencedEnvelopeFromGeographicBoundingBox(
-                        geographicRequestedBBox);
+                GridCoverageUtilities.getReferencedEnvelopeFromGeographicBoundingBox(geographicRequestedBBox);
 
         // checking the intersection in wgs84 with the geographicbbox for this coverage
         if (!approximateWGS84requestedBBox.intersects((BoundingBox) coverageGeographicBBox)) {
@@ -767,19 +738,15 @@ class RasterLayerRequest {
         // compute approximate full resolution
         // compute the approximated full resolution in wgs84
         final GridToEnvelopeMapper geMapper =
-                new GridToEnvelopeMapper(
-                        new GridEnvelope2D(requestedRasterArea), approximateWGS84requestedBBox);
-        approximateWGS84RequestedResolution =
-                CoverageUtilities.getResolution(geMapper.createAffineTransform());
+                new GridToEnvelopeMapper(new GridEnvelope2D(requestedRasterArea), approximateWGS84requestedBBox);
+        approximateWGS84RequestedResolution = CoverageUtilities.getResolution(geMapper.createAffineTransform());
 
         // intersect with the coverage native WGS84 bbox
         // note that for the moment we got to use general envelope since there is no intersection
         // othrewise
         // TODO fix then we'll have intersection in ReferencedEnvelope
-        approximateWGS84requestedBBox =
-                new ReferencedEnvelope(
-                        approximateWGS84requestedBBox.intersection(coverageGeographicBBox),
-                        DefaultGeographicCRS.WGS84);
+        approximateWGS84requestedBBox = new ReferencedEnvelope(
+                approximateWGS84requestedBBox.intersection(coverageGeographicBBox), DefaultGeographicCRS.WGS84);
         final GeneralBounds approximateRequestedBBoInNativeCRS =
                 CRS.transform(approximateWGS84requestedBBox, coverageCRS2D);
         approximateRequestedBBoInNativeCRS.setCoordinateReferenceSystem(coverageCRS2D);

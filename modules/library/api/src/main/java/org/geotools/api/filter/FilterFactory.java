@@ -161,8 +161,7 @@ public interface FilterFactory {
     PropertyIsBetween between(Expression expr, Expression lower, Expression upper);
 
     /** A compact way of encoding a range check. */
-    PropertyIsBetween between(
-            Expression expr, Expression lower, Expression upper, MatchAction matchAction);
+    PropertyIsBetween between(Expression expr, Expression lower, Expression upper, MatchAction matchAction);
 
     /**
      * Compares that two sub-expressions are equal to each other.
@@ -175,8 +174,7 @@ public interface FilterFactory {
     PropertyIsEqualTo equal(Expression expr1, Expression expr2, boolean matchCase);
 
     /** Compares that two sub-expressions are equal to eacher other */
-    PropertyIsEqualTo equal(
-            Expression expr1, Expression expr2, boolean matchCase, MatchAction matchAction);
+    PropertyIsEqualTo equal(Expression expr1, Expression expr2, boolean matchCase, MatchAction matchAction);
 
     /** Checks that the first sub-expression is not equal to the second subexpression. */
     PropertyIsNotEqualTo notEqual(Expression expr1, Expression expr2);
@@ -200,8 +198,7 @@ public interface FilterFactory {
      * @param matchAction action for multi-valued properties
      * @return evaluates to true of expr1 not equal to expr2
      */
-    PropertyIsNotEqualTo notEqual(
-            Expression expr1, Expression expr2, boolean matchCase, MatchAction matchAction);
+    PropertyIsNotEqualTo notEqual(Expression expr1, Expression expr2, boolean matchCase, MatchAction matchAction);
 
     /** Checks that the first sub-expression is greater than the second subexpression. */
     PropertyIsGreaterThan greater(Expression expr1, Expression expr2);
@@ -224,15 +221,13 @@ public interface FilterFactory {
      * @param matchCase true if the comparison should be case insensitive
      * @return evaluates to true of expr1 is greater than expr2
      */
-    PropertyIsGreaterThan greater(
-            Expression expr1, Expression expr2, boolean matchCase, MatchAction matchAction);
+    PropertyIsGreaterThan greater(Expression expr1, Expression expr2, boolean matchCase, MatchAction matchAction);
 
     /** Checks that the first sub-expression is greater or equal to the second subexpression. */
     PropertyIsGreaterThanOrEqualTo greaterOrEqual(Expression expr1, Expression expr2);
 
     /** Checks that the first sub-expression is greater or equal to the second subexpression. */
-    PropertyIsGreaterThanOrEqualTo greaterOrEqual(
-            Expression expr1, Expression expr2, boolean matchCase);
+    PropertyIsGreaterThanOrEqualTo greaterOrEqual(Expression expr1, Expression expr2, boolean matchCase);
 
     /** Checks that the first sub-expression is greater or equal to the second subexpression. */
     PropertyIsGreaterThanOrEqualTo greaterOrEqual(
@@ -243,8 +238,7 @@ public interface FilterFactory {
 
     PropertyIsLessThan less(Expression expr1, Expression expr2, boolean matchCase);
 
-    PropertyIsLessThan less(
-            Expression expr1, Expression expr2, boolean matchCase, MatchAction matchAction);
+    PropertyIsLessThan less(Expression expr1, Expression expr2, boolean matchCase, MatchAction matchAction);
 
     /** Checks that its first sub-expression is less than or equal to its second subexpression. */
     PropertyIsLessThanOrEqualTo lessOrEqual(Expression expr1, Expression expr2);
@@ -258,17 +252,11 @@ public interface FilterFactory {
     PropertyIsLike like(Expression expr, String pattern);
 
     /** Character string comparison operator with pattern matching and specified wildcards. */
-    PropertyIsLike like(
-            Expression expr, String pattern, String wildcard, String singleChar, String escape);
+    PropertyIsLike like(Expression expr, String pattern, String wildcard, String singleChar, String escape);
 
     /** Character string comparison operator with pattern matching and specified wildcards. */
     PropertyIsLike like(
-            Expression expr,
-            String pattern,
-            String wildcard,
-            String singleChar,
-            String escape,
-            boolean matchCase);
+            Expression expr, String pattern, String wildcard, String singleChar, String escape, boolean matchCase);
 
     /** Character string comparison operator with pattern matching and specified wildcards. */
     PropertyIsLike like(
@@ -349,12 +337,7 @@ public interface FilterFactory {
      * Check if all of a feature's geometry is more distant than the given distance from this
      * object's geometry.
      */
-    Beyond beyond(
-            String propertyName,
-            Geometry geometry,
-            double distance,
-            String units,
-            MatchAction matchAction);
+    Beyond beyond(String propertyName, Geometry geometry, double distance, String units, MatchAction matchAction);
 
     /** Checks if the the first geometric operand contains the second. */
     Contains contains(String propertyName, Geometry geometry);
@@ -384,12 +367,7 @@ public interface FilterFactory {
      * Checks if any part of the first geometry lies within the given distance of the second
      * geometry.
      */
-    DWithin dwithin(
-            String propertyName,
-            Geometry geometry,
-            double distance,
-            String units,
-            MatchAction matchAction);
+    DWithin dwithin(String propertyName, Geometry geometry, double distance, String units, MatchAction matchAction);
 
     /** Checks if the geometry of the two operands are equal. */
     Equals equals(String propertyName, Geometry geometry);
@@ -623,8 +601,7 @@ public interface FilterFactory {
             ComparisonOperators comparison, ArithmeticOperators arithmetic, boolean logical);
 
     /** spatial capabilities */
-    SpatialCapabilities spatialCapabilities(
-            GeometryOperand[] geometryOperands, SpatialOperators spatial);
+    SpatialCapabilities spatialCapabilities(GeometryOperand[] geometryOperands, SpatialOperators spatial);
 
     /** id capabilities */
     IdCapabilities idCapabilities(boolean eid, boolean fid);
@@ -634,10 +611,7 @@ public interface FilterFactory {
 
     /** filter capabilities */
     FilterCapabilities capabilities(
-            String version,
-            ScalarCapabilities scalar,
-            SpatialCapabilities spatial,
-            IdCapabilities id);
+            String version, ScalarCapabilities scalar, SpatialCapabilities spatial, IdCapabilities id);
 
     /** filter capabilities */
     FilterCapabilities capabilities(
@@ -798,12 +772,7 @@ public interface FilterFactory {
      * Check if all of a geometry is more distant than the given distance from this object's
      * geometry.
      */
-    Beyond beyond(
-            Expression geometry1,
-            Expression geometry2,
-            double distance,
-            String units,
-            MatchAction matchAction);
+    Beyond beyond(Expression geometry1, Expression geometry2, double distance, String units, MatchAction matchAction);
 
     /** Checks if the the first geometric operand contains the second. */
     Contains contains(Expression geometry1, Expression geometry2);
@@ -833,12 +802,7 @@ public interface FilterFactory {
      * Checks if any part of the first geometry lies within the given distance of the second
      * geometry.
      */
-    DWithin dwithin(
-            Expression geometry1,
-            Expression geometry2,
-            double distance,
-            String units,
-            MatchAction matchAction);
+    DWithin dwithin(Expression geometry1, Expression geometry2, double distance, String units, MatchAction matchAction);
 
     /**
      * Checks if the geometry of the two operands are equal.
@@ -903,7 +867,6 @@ public interface FilterFactory {
      * @return the build native filter
      */
     default NativeFilter nativeFilter(String nativeFilter) {
-        throw new UnsupportedOperationException(
-                "Native filter building is not supported by this filter factory.");
+        throw new UnsupportedOperationException("Native filter building is not supported by this filter factory.");
     }
 }

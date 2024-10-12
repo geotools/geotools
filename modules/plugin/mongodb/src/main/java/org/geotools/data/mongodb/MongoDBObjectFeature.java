@@ -51,8 +51,7 @@ public class MongoDBObjectFeature implements SimpleFeature {
 
     private Map<Object, Object> userData;
 
-    public MongoDBObjectFeature(
-            DBObject dbo, SimpleFeatureType featureType, CollectionMapper mapper) {
+    public MongoDBObjectFeature(DBObject dbo, SimpleFeatureType featureType, CollectionMapper mapper) {
         this.featureDBO = dbo;
         this.featureType = featureType;
         this.mapper = mapper;
@@ -106,8 +105,7 @@ public class MongoDBObjectFeature implements SimpleFeature {
 
     @Override
     public void setDefaultGeometry(Object geometry) {
-        MongoUtil.setDBOValue(
-                featureDBO, mapper.getGeometryPath(), mapper.toObject((Geometry) geometry));
+        MongoUtil.setDBOValue(featureDBO, mapper.getGeometryPath(), mapper.toObject((Geometry) geometry));
     }
 
     @Override
@@ -150,8 +148,7 @@ public class MongoDBObjectFeature implements SimpleFeature {
 
     private void doSetAttribute(AttributeDescriptor d, Object o) {
         if (d instanceof GeometryDescriptor) {
-            MongoUtil.setDBOValue(
-                    featureDBO, mapper.getGeometryPath(), mapper.toObject((Geometry) o));
+            MongoUtil.setDBOValue(featureDBO, mapper.getGeometryPath(), mapper.toObject((Geometry) o));
         } else {
             MongoUtil.setDBOValue(
                     featureDBO,
@@ -209,8 +206,7 @@ public class MongoDBObjectFeature implements SimpleFeature {
         GeometryAttribute geometryAttribute = null;
         if (geometryDescriptor != null) {
             Object defaultGeometry = getDefaultGeometry();
-            geometryAttribute =
-                    new GeometryAttributeImpl(defaultGeometry, geometryDescriptor, null);
+            geometryAttribute = new GeometryAttributeImpl(defaultGeometry, geometryDescriptor, null);
         }
         return geometryAttribute;
     }
@@ -258,8 +254,7 @@ public class MongoDBObjectFeature implements SimpleFeature {
 
     @Override
     public AttributeDescriptor getDescriptor() {
-        return new AttributeDescriptorImpl(
-                featureType, featureType.getName(), 0, Integer.MAX_VALUE, true, null);
+        return new AttributeDescriptorImpl(featureType, featureType.getName(), 0, Integer.MAX_VALUE, true, null);
     }
 
     @Override

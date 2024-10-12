@@ -34,8 +34,7 @@ import org.geotools.coverage.grid.io.GridFormatFactorySpi;
  */
 public final class EsriHdrFormatFactory implements GridFormatFactorySpi {
     /** Logger. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(EsriHdrFormatFactory.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(EsriHdrFormatFactory.class);
 
     /**
      * Tells me if the coverage plugin to access EHdr is available or not.
@@ -57,8 +56,7 @@ public final class EsriHdrFormatFactory implements GridFormatFactorySpi {
                 else LOGGER.fine("EsriHdrFormatFactory is not available.");
             }
         } catch (ClassNotFoundException cnf) {
-            if (LOGGER.isLoggable(Level.FINE))
-                LOGGER.fine("EsriHdrFormatFactory is not available.");
+            if (LOGGER.isLoggable(Level.FINE)) LOGGER.fine("EsriHdrFormatFactory is not available.");
 
             available = false;
         }

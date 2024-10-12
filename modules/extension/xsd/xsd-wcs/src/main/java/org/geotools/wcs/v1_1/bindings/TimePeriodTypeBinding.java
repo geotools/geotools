@@ -85,8 +85,10 @@ public class TimePeriodTypeBinding extends AbstractComplexBinding {
      */
     @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-        Instant begining = new DefaultInstant((Position) node.getChild("BeginPosition").getValue());
-        Instant ending = new DefaultInstant((Position) node.getChild("EndPosition").getValue());
+        Instant begining =
+                new DefaultInstant((Position) node.getChild("BeginPosition").getValue());
+        Instant ending =
+                new DefaultInstant((Position) node.getChild("EndPosition").getValue());
 
         Period timePeriod = new DefaultPeriod(begining, ending);
 

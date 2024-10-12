@@ -90,8 +90,7 @@ public class WPSFactory extends SingleProcessFactory {
     }
 
     @Override
-    public Map<String, Parameter<?>> getResultInfo(Map<String, Object> parameters)
-            throws IllegalArgumentException {
+    public Map<String, Parameter<?>> getResultInfo(Map<String, Object> parameters) throws IllegalArgumentException {
         return Collections.unmodifiableMap(resultInfo);
     }
 

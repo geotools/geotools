@@ -188,8 +188,7 @@ public class DimensionFilter {
      * @param upper The upper dimension, exclusive. Must not be greater than <code>
      *     transform.{@linkplain MathTransform#getSourceDimensions getSourceDimensions()}</code>.
      */
-    public void addSourceDimensionRange(final int lower, final int upper)
-            throws IllegalArgumentException {
+    public void addSourceDimensionRange(final int lower, final int upper) throws IllegalArgumentException {
         sourceDimensions = add(sourceDimensions, lower, upper);
     }
 
@@ -245,8 +244,7 @@ public class DimensionFilter {
      * @param upper The upper dimension, exclusive. Must not be greater than <code>
      *     transform.{@linkplain MathTransform#getTargetDimensions getTargetDimensions()}</code>.
      */
-    public void addTargetDimensionRange(final int lower, final int upper)
-            throws IllegalArgumentException {
+    public void addTargetDimensionRange(final int lower, final int upper) throws IllegalArgumentException {
         targetDimensions = add(targetDimensions, lower, upper);
     }
 
@@ -352,8 +350,7 @@ public class DimensionFilter {
         assert XArray.isStrictlySorted(sourceDimensions);
         if (upper > dimSource) {
             throw new IllegalArgumentException(
-                    MessageFormat.format(
-                            ErrorKeys.ILLEGAL_ARGUMENT_$2, "sourceDimensions", upper - 1));
+                    MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "sourceDimensions", upper - 1));
         }
         /*
          * Check for easiest cases: same transform, identity transform or concatenated transforms.
@@ -429,12 +426,10 @@ public class DimensionFilter {
              * current implementation: our pass through transform doesn't accept arbitrary index
              * for modified ordinates.
              */
-            if (containsAll(sourceDimensions, lower, subLower)
-                    && containsAll(sourceDimensions, subUpper, upper)) {
+            if (containsAll(sourceDimensions, lower, subLower) && containsAll(sourceDimensions, subUpper, upper)) {
                 final int firstAffectedOrdinate = Math.max(0, subLower - lower);
                 final int numTrailingOrdinates = Math.max(0, upper - subUpper);
-                return factory.createPassThroughTransform(
-                        firstAffectedOrdinate, subTransform, numTrailingOrdinates);
+                return factory.createPassThroughTransform(firstAffectedOrdinate, subTransform, numTrailingOrdinates);
             }
             // TODO: handle more general case here...
             targetDimensions = null; // Clear before to fallback on the LinearTransform case.
@@ -449,8 +444,7 @@ public class DimensionFilter {
             int nRows = 0;
             boolean hasLastRow = false;
             final Matrix matrix = ((LinearTransform) transform).getMatrix();
-            assert dimSource + 1 == matrix.getNumCol() && dimTarget + 1 == matrix.getNumRow()
-                    : matrix;
+            assert dimSource + 1 == matrix.getNumCol() && dimTarget + 1 == matrix.getNumRow() : matrix;
             double[][] rows = new double[dimTarget + 1][];
             reduce:
             for (int j = 0; j < rows.length; j++) {
@@ -652,8 +646,7 @@ public class DimensionFilter {
      * @param sequence The {@link #sourceDimensions} or {@link #targetDimensions} sequence to
      *     update.
      */
-    private static int[] add(int[] sequence, final int[] dimensions)
-            throws IllegalArgumentException {
+    private static int[] add(int[] sequence, final int[] dimensions) throws IllegalArgumentException {
         if (dimensions.length != 0) {
             ensureValidSeries(dimensions);
             if (sequence == null) {
@@ -677,11 +670,9 @@ public class DimensionFilter {
      *     update.
      * @throws IllegalArgumentException if {@code lower} is not smaller than {@code upper}.
      */
-    private static int[] add(int[] sequence, int lower, final int upper)
-            throws IllegalArgumentException {
+    private static int[] add(int[] sequence, int lower, final int upper) throws IllegalArgumentException {
         if (lower < 0 || lower >= upper) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "lower", lower));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "lower", lower));
         }
         if (sequence == null) {
             sequence = series(lower, upper);
@@ -717,8 +708,7 @@ public class DimensionFilter {
             final int value = dimensions[i];
             if (value <= last) {
                 throw new IllegalArgumentException(
-                        MessageFormat.format(
-                                ErrorKeys.ILLEGAL_ARGUMENT_$2, "dimensions[" + i + ']', value));
+                        MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "dimensions[" + i + ']', value));
             }
             last = value;
         }

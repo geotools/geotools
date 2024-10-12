@@ -80,23 +80,17 @@ public class RestWMTSOnlineTest extends OnlineTestCase {
 
     private WMTSTileService createRESTService() throws Exception {
         try {
-            URL capaResource =
-                    getClass().getClassLoader().getResource("test-data/zamg.getcapa.xml");
+            URL capaResource = getClass().getClassLoader().getResource("test-data/zamg.getcapa.xml");
             assertNotNull("Can't find REST getCapa file", capaResource);
             File capaFile = new File(capaResource.toURI());
             WMTSCapabilities capa = WMTSTileFactory4326Test.createCapabilities(capaFile);
 
-            String baseURL =
-                    "http://wmsx.zamg.ac.at/mapcacheStatmap/wmts/1.0.0/WMTSCapabilities.xml";
+            String baseURL = "http://wmsx.zamg.ac.at/mapcacheStatmap/wmts/1.0.0/WMTSCapabilities.xml";
 
             assertNotNull("Can't find layer grey", capa.getLayer("grey"));
 
             return new WMTSTileService(
-                    baseURL,
-                    WMTSServiceType.REST,
-                    capa.getLayer("grey"),
-                    null,
-                    capa.getMatrixSet("statmap"));
+                    baseURL, WMTSServiceType.REST, capa.getLayer("grey"), null, capa.getMatrixSet("statmap"));
 
         } catch (URISyntaxException ex) {
             fail(ex.getMessage());
@@ -112,14 +106,12 @@ public class RestWMTSOnlineTest extends OnlineTestCase {
     }
 
     @Test
-    public void testIssueGetTileRequestREST()
-            throws ServiceException, IOException, FactoryException {
+    public void testIssueGetTileRequestREST() throws ServiceException, IOException, FactoryException {
         WebMapTileServer wmts = new WebMapTileServer(restWMTS);
         issueGetTileRequest(wmts);
     }
 
-    public void issueGetTileRequest(WebMapTileServer wmts)
-            throws ServiceException, FactoryException {
+    public void issueGetTileRequest(WebMapTileServer wmts) throws ServiceException, FactoryException {
 
         WMTSCapabilities capabilities = wmts.getCapabilities();
 
@@ -166,17 +158,13 @@ public class RestWMTSOnlineTest extends OnlineTestCase {
     @Test
     public void testCRS() throws NoSuchAuthorityCodeException, FactoryException {
         CoordinateReferenceSystem crs = service.getProjectedTileCrs();
-        assertEquals(
-                "Mismatching CRS in " + service.getName(), expectedCrs.getName(), crs.getName());
+        assertEquals("Mismatching CRS in " + service.getName(), expectedCrs.getName(), crs.getName());
     }
 
     @Test
     public void testGetCoordinateReferenceSystem() throws FactoryException {
 
-        assertEquals(
-                "wrong CRS",
-                "EPSG:4326",
-                CRS.lookupIdentifier(restMapLayer.getCoordinateReferenceSystem(), true));
+        assertEquals("wrong CRS", "EPSG:4326", CRS.lookupIdentifier(restMapLayer.getCoordinateReferenceSystem(), true));
     }
 
     @Test
@@ -195,8 +183,7 @@ public class RestWMTSOnlineTest extends OnlineTestCase {
 
     @Test
     public void testFindTilesInExtent() {
-        ReferencedEnvelope env =
-                new ReferencedEnvelope(-80, 80, -180.0, 180.0, DefaultGeographicCRS.WGS84);
+        ReferencedEnvelope env = new ReferencedEnvelope(-80, 80, -180.0, 180.0, DefaultGeographicCRS.WGS84);
         int million = (int) 1e6;
         int[] scales = {100 * million, 25 * million, 10 * million, million, 500000};
         for (int scale : scales) {

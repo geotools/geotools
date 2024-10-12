@@ -35,8 +35,7 @@ public class CSVFeatureStore extends ContentFeatureStore {
     private CSVStrategy csvStrategy;
     private CSVFileState csvFileState;
 
-    public CSVFeatureStore(
-            CSVStrategy csvStrategy, CSVFileState csvFileState, ContentEntry entry, Query query) {
+    public CSVFeatureStore(CSVStrategy csvStrategy, CSVFileState csvFileState, ContentEntry entry, Query query) {
         super(entry, query);
 
         this.csvStrategy = csvStrategy;
@@ -48,8 +47,8 @@ public class CSVFeatureStore extends ContentFeatureStore {
     // CSVFeatureStore implementations
     //
     @Override
-    protected FeatureWriter<SimpleFeatureType, SimpleFeature> getWriterInternal(
-            Query query, int flags) throws IOException {
+    protected FeatureWriter<SimpleFeatureType, SimpleFeature> getWriterInternal(Query query, int flags)
+            throws IOException {
         return new CSVFeatureWriter(this.csvFileState, this.csvStrategy, query);
     }
     // getWriter end
@@ -59,15 +58,13 @@ public class CSVFeatureStore extends ContentFeatureStore {
      * Delegate used for FeatureSource methods (We do this because Java cannot inherit from both
      * ContentFeatureStore and CSVFeatureSource at the same time
      */
-    CSVFeatureSource delegate =
-            new CSVFeatureSource(entry, query) {
-                @Override
-                public void setTransaction(Transaction transaction) {
-                    super.setTransaction(transaction);
-                    CSVFeatureStore.this.setTransaction(
-                            transaction); // Keep these two implementations on the same transaction
-                }
-            };
+    CSVFeatureSource delegate = new CSVFeatureSource(entry, query) {
+        @Override
+        public void setTransaction(Transaction transaction) {
+            super.setTransaction(transaction);
+            CSVFeatureStore.this.setTransaction(transaction); // Keep these two implementations on the same transaction
+        }
+    };
 
     @Override
     public void setTransaction(Transaction transaction) {
@@ -99,8 +96,7 @@ public class CSVFeatureStore extends ContentFeatureStore {
     }
 
     @Override
-    protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query)
-            throws IOException {
+    protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query) throws IOException {
         return delegate.getReaderInternal(query);
     }
     // internal end

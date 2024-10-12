@@ -25,18 +25,12 @@ public class NullHandlingVisitorTest {
 
     @Test
     public void testBetween() {
-        PropertyIsBetween between =
-                ff.between(ff.property("a"), ff.property("b"), ff.property("c"));
+        PropertyIsBetween between = ff.between(ff.property("a"), ff.property("b"), ff.property("c"));
         NullHandlingVisitor visitor = new NullHandlingVisitor();
         Filter result = (Filter) between.accept(visitor, null);
         assertTrue(result instanceof And);
         Filter expected =
-                ff.and(
-                        Arrays.asList(
-                                between,
-                                propertyNotNull("a"),
-                                propertyNotNull("b"),
-                                propertyNotNull("c")));
+                ff.and(Arrays.asList(between, propertyNotNull("a"), propertyNotNull("b"), propertyNotNull("c")));
         assertEquals(expected, result);
 
         between = ff.between(ff.property("a"), ff.property("b"), ff.literal(10));
@@ -108,20 +102,17 @@ public class NullHandlingVisitorTest {
         tb.setName("test");
         SimpleFeatureType schema = tb.buildFeatureType();
 
-        PropertyIsBetween between =
-                ff.between(ff.property("a"), ff.property("b"), ff.property("c"));
+        PropertyIsBetween between = ff.between(ff.property("a"), ff.property("b"), ff.property("c"));
         NullHandlingVisitor visitor = new NullHandlingVisitor(schema);
         Filter result = (Filter) between.accept(visitor, null);
         assertTrue(result instanceof And);
-        Filter expected =
-                ff.and(Arrays.asList(between, propertyNotNull("a"), propertyNotNull("c")));
+        Filter expected = ff.and(Arrays.asList(between, propertyNotNull("a"), propertyNotNull("c")));
         assertEquals(expected, result);
     }
 
     @Test
     public void testSimplifyRedundant() {
-        PropertyIsBetween between =
-                ff.between(ff.property("a"), ff.property("b"), ff.property("c"));
+        PropertyIsBetween between = ff.between(ff.property("a"), ff.property("b"), ff.property("c"));
         PropertyIsEqualTo equal = ff.equal(ff.property("a"), ff.property("b"), false);
         And and = ff.and(between, equal);
 
@@ -131,13 +122,7 @@ public class NullHandlingVisitorTest {
         Filter simplified = (Filter) nhResult.accept(simplifier, null);
         assertTrue(simplified instanceof And);
         Filter expected =
-                ff.and(
-                        Arrays.asList(
-                                between,
-                                equal,
-                                propertyNotNull("a"),
-                                propertyNotNull("b"),
-                                propertyNotNull("c")));
+                ff.and(Arrays.asList(between, equal, propertyNotNull("a"), propertyNotNull("b"), propertyNotNull("c")));
         assertEquals(expected, simplified);
     }
 
@@ -148,12 +133,10 @@ public class NullHandlingVisitorTest {
     @Test
     public void testRepeatedOr() {
         PropertyName p = ff.property("prop");
-        Or orFilter =
-                ff.or(
-                        Arrays.asList(
-                                ff.equal(p, ff.literal("zero"), true),
-                                ff.equal(p, ff.literal("one"), true),
-                                ff.equal(p, ff.literal("two"), true)));
+        Or orFilter = ff.or(Arrays.asList(
+                ff.equal(p, ff.literal("zero"), true),
+                ff.equal(p, ff.literal("one"), true),
+                ff.equal(p, ff.literal("two"), true)));
 
         NullHandlingVisitor nh = new NullHandlingVisitor();
         Filter nhResult = (Filter) orFilter.accept(nh, null);
@@ -166,32 +149,22 @@ public class NullHandlingVisitorTest {
         PropertyName spp = ff.property("sp");
         PropertyName ipp = ff.property("ip");
         PropertyName dpp = ff.property("dp");
-        Or orFilter =
-                ff.or(
-                        Arrays.asList(
-                                ff.equal(spp, ff.literal("zero"), true),
-                                ff.equal(ipp, ff.literal(1), true),
-                                ff.equal(dpp, ff.literal(0d), true),
-                                ff.equal(spp, ff.literal("two"), true),
-                                ff.equal(ipp, ff.literal(2), true)));
+        Or orFilter = ff.or(Arrays.asList(
+                ff.equal(spp, ff.literal("zero"), true),
+                ff.equal(ipp, ff.literal(1), true),
+                ff.equal(dpp, ff.literal(0d), true),
+                ff.equal(spp, ff.literal("two"), true),
+                ff.equal(ipp, ff.literal(2), true)));
         NullHandlingVisitor nh = new NullHandlingVisitor();
         Filter nhResult = (Filter) orFilter.accept(nh, null);
-        Filter expected =
-                ff.or(
-                        Arrays.asList(
-                                ff.and(
-                                        ff.or(
-                                                ff.equal(spp, ff.literal("zero"), true),
-                                                ff.equal(spp, ff.literal("two"), true)),
-                                        ff.not(ff.isNull(spp))),
-                                ff.and(
-                                        ff.or(
-                                                ff.equal(ipp, ff.literal(1), true),
-                                                ff.equal(ipp, ff.literal(2), true)),
-                                        ff.not(ff.isNull(ipp))),
-                                ff.and(
-                                        ff.equal(dpp, ff.literal(0d), true),
-                                        ff.not(ff.isNull(dpp)))));
+        Filter expected = ff.or(Arrays.asList(
+                ff.and(
+                        ff.or(ff.equal(spp, ff.literal("zero"), true), ff.equal(spp, ff.literal("two"), true)),
+                        ff.not(ff.isNull(spp))),
+                ff.and(
+                        ff.or(ff.equal(ipp, ff.literal(1), true), ff.equal(ipp, ff.literal(2), true)),
+                        ff.not(ff.isNull(ipp))),
+                ff.and(ff.equal(dpp, ff.literal(0d), true), ff.not(ff.isNull(dpp)))));
         assertEquals(expected, nhResult);
     }
 }

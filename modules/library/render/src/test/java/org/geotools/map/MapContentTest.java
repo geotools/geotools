@@ -159,8 +159,7 @@ public class MapContentTest {
 
         Layer layerWithCRS = new MockLayer(WORLD);
         mapContent.addLayer(layerWithCRS);
-        assertEquals(
-                WORLD.getCoordinateReferenceSystem(), mapContent.getCoordinateReferenceSystem());
+        assertEquals(WORLD.getCoordinateReferenceSystem(), mapContent.getCoordinateReferenceSystem());
     }
 
     @Test
@@ -188,8 +187,7 @@ public class MapContentTest {
 
         assertTrue(viewport.isEditable());
         assertEquals(crs, mapContent.getCoordinateReferenceSystem());
-        assertNotEquals(
-                WORLD.getCoordinateReferenceSystem(), mapContent.getCoordinateReferenceSystem());
+        assertNotEquals(WORLD.getCoordinateReferenceSystem(), mapContent.getCoordinateReferenceSystem());
     }
 
     @Test

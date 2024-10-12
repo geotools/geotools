@@ -88,13 +88,8 @@ public class TransparencyFillDescriptor extends OperationDescriptorImpl {
     }
 
     public static RenderedOp create(
-            RenderedImage source0,
-            FillType type,
-            RenderingHints hints,
-            Number noData,
-            Integer width) {
-        ParameterBlockJAI pb =
-                new ParameterBlockJAI("TransparencyFill", RenderedRegistryMode.MODE_NAME);
+            RenderedImage source0, FillType type, RenderingHints hints, Number noData, Integer width) {
+        ParameterBlockJAI pb = new ParameterBlockJAI("TransparencyFill", RenderedRegistryMode.MODE_NAME);
 
         pb.setSource("source0", source0);
         pb.setParameter("type", type);

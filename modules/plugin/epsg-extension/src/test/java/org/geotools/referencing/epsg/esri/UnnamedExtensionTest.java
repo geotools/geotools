@@ -60,11 +60,8 @@ public class UnnamedExtensionTest {
     @Before
     public void setUp() throws Exception {
 
-        factory =
-                (UnnamedExtension)
-                        ReferencingFactoryFinder.getCRSAuthorityFactory(
-                                "EPSG",
-                                new Hints(Hints.CRS_AUTHORITY_FACTORY, UnnamedExtension.class));
+        factory = (UnnamedExtension) ReferencingFactoryFinder.getCRSAuthorityFactory(
+                "EPSG", new Hints(Hints.CRS_AUTHORITY_FACTORY, UnnamedExtension.class));
     }
 
     /** Tests the authority code. */

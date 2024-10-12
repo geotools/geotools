@@ -72,23 +72,19 @@ import org.geotools.util.factory.FactoryRegistryException;
  * @author Martin Desruisseaux (IRD)
  */
 public class ManyAuthoritiesFactory extends AuthorityFactoryAdapter
-        implements CRSAuthorityFactory,
-                CSAuthorityFactory,
-                DatumAuthorityFactory,
-                CoordinateOperationAuthorityFactory {
+        implements CRSAuthorityFactory, CSAuthorityFactory, DatumAuthorityFactory, CoordinateOperationAuthorityFactory {
     /**
      * The types to be recognized for the {@code factories} argument in constructors. Must be
      * consistent with the types expected by the {@link
      * AllAuthoritiesFactory#fromFactoryRegistry(String, Class)} method.
      */
     @SuppressWarnings({"unchecked", "PMD.UseShortArrayInitializer"})
-    private static final Class<? extends AuthorityFactory>[] FACTORY_TYPES =
-            new Class[] {
-                CRSAuthorityFactory.class,
-                DatumAuthorityFactory.class,
-                CSAuthorityFactory.class,
-                CoordinateOperationAuthorityFactory.class
-            };
+    private static final Class<? extends AuthorityFactory>[] FACTORY_TYPES = new Class[] {
+        CRSAuthorityFactory.class,
+        DatumAuthorityFactory.class,
+        CSAuthorityFactory.class,
+        CoordinateOperationAuthorityFactory.class
+    };
 
     /**
      * The types created by {@link #FACTORY_TYPES}. For each type {@code OBJECT_TYPES[i]}, the
@@ -96,11 +92,7 @@ public class ManyAuthoritiesFactory extends AuthorityFactoryAdapter
      */
     @SuppressWarnings({"unchecked", "PMD.UseShortArrayInitializer"})
     private static final Class<? extends IdentifiedObject>[] OBJECT_TYPES =
-            new Class[] {
-                CoordinateReferenceSystem.class,
-                Datum.class,
-                CoordinateSystem.class,
-                CoordinateOperation.class
+            new Class[] {CoordinateReferenceSystem.class, Datum.class, CoordinateSystem.class, CoordinateOperation.class
             };
 
     /**
@@ -181,9 +173,7 @@ public class ManyAuthoritiesFactory extends AuthorityFactoryAdapter
 
             for (Identifier identifier : authority.getIdentifiers()) {
                 Citation singularCitation =
-                        multipleIdentifiers
-                                ? createSingularCitation(authority, identifier)
-                                : authority;
+                        multipleIdentifiers ? createSingularCitation(authority, identifier) : authority;
 
                 int authorityIndex;
                 for (authorityIndex = 0; authorityIndex < authorityCount; authorityIndex++) {
@@ -392,9 +382,7 @@ public class ManyAuthoritiesFactory extends AuthorityFactoryAdapter
      * given type. The factories are added to the specified set.
      */
     final void fromFactoryRegistry(
-            final String authority,
-            final Class<? extends AuthorityFactory> type,
-            final Set<AuthorityFactory> addTo) {
+            final String authority, final Class<? extends AuthorityFactory> type, final Set<AuthorityFactory> addTo) {
         for (int i = 0; i < OBJECT_TYPES.length; i++) {
             if (OBJECT_TYPES[i].isAssignableFrom(type)) {
                 final AuthorityFactory factory;
@@ -444,9 +432,7 @@ public class ManyAuthoritiesFactory extends AuthorityFactoryAdapter
         FactoryRegistryException cause = null;
         final Collection<AuthorityFactory> factories = getFactories();
         final char separator = getSeparator(code);
-        for (int split = code.lastIndexOf(separator);
-                split >= 0;
-                split = code.lastIndexOf(separator, split - 1)) {
+        for (int split = code.lastIndexOf(separator); split >= 0; split = code.lastIndexOf(separator, split - 1)) {
             if (!canSeparateAt(code, split)) {
                 continue;
             }
@@ -507,8 +493,7 @@ public class ManyAuthoritiesFactory extends AuthorityFactoryAdapter
         } else {
             message = MessageFormat.format(ErrorKeys.UNKNOW_AUTHORITY_$1, authority);
         }
-        final NoSuchAuthorityCodeException exception =
-                new NoSuchAuthorityCodeException(message, authority, code);
+        final NoSuchAuthorityCodeException exception = new NoSuchAuthorityCodeException(message, authority, code);
         exception.initCause(cause);
         return exception;
     }
@@ -530,8 +515,7 @@ public class ManyAuthoritiesFactory extends AuthorityFactoryAdapter
      * @throws NoSuchAuthorityCodeException if no authority name has been found.
      */
     @Override
-    protected AuthorityFactory getAuthorityFactory(final String code)
-            throws NoSuchAuthorityCodeException {
+    protected AuthorityFactory getAuthorityFactory(final String code) throws NoSuchAuthorityCodeException {
         return getAuthorityFactory(AuthorityFactory.class, code);
     }
 
@@ -543,8 +527,7 @@ public class ManyAuthoritiesFactory extends AuthorityFactoryAdapter
      * @throws NoSuchAuthorityCodeException if no authority name has been found.
      */
     @Override
-    protected DatumAuthorityFactory getDatumAuthorityFactory(final String code)
-            throws NoSuchAuthorityCodeException {
+    protected DatumAuthorityFactory getDatumAuthorityFactory(final String code) throws NoSuchAuthorityCodeException {
         return getAuthorityFactory(DatumAuthorityFactory.class, code);
     }
 
@@ -556,8 +539,7 @@ public class ManyAuthoritiesFactory extends AuthorityFactoryAdapter
      * @throws NoSuchAuthorityCodeException if no authority name has been found.
      */
     @Override
-    protected CSAuthorityFactory getCSAuthorityFactory(final String code)
-            throws NoSuchAuthorityCodeException {
+    protected CSAuthorityFactory getCSAuthorityFactory(final String code) throws NoSuchAuthorityCodeException {
         return getAuthorityFactory(CSAuthorityFactory.class, code);
     }
 
@@ -569,8 +551,7 @@ public class ManyAuthoritiesFactory extends AuthorityFactoryAdapter
      * @throws NoSuchAuthorityCodeException if no authority name has been found.
      */
     @Override
-    protected CRSAuthorityFactory getCRSAuthorityFactory(final String code)
-            throws NoSuchAuthorityCodeException {
+    protected CRSAuthorityFactory getCRSAuthorityFactory(final String code) throws NoSuchAuthorityCodeException {
         return getAuthorityFactory(CRSAuthorityFactory.class, code);
     }
 
@@ -582,8 +563,8 @@ public class ManyAuthoritiesFactory extends AuthorityFactoryAdapter
      * @throws NoSuchAuthorityCodeException if no authority name has been found.
      */
     @Override
-    protected CoordinateOperationAuthorityFactory getCoordinateOperationAuthorityFactory(
-            final String code) throws NoSuchAuthorityCodeException {
+    protected CoordinateOperationAuthorityFactory getCoordinateOperationAuthorityFactory(final String code)
+            throws NoSuchAuthorityCodeException {
         return getAuthorityFactory(CoordinateOperationAuthorityFactory.class, code);
     }
 
@@ -597,8 +578,7 @@ public class ManyAuthoritiesFactory extends AuthorityFactoryAdapter
      * @throws FactoryException if access to the underlying database failed.
      */
     @Override
-    public Set<String> getAuthorityCodes(final Class<? extends IdentifiedObject> type)
-            throws FactoryException {
+    public Set<String> getAuthorityCodes(final Class<? extends IdentifiedObject> type) throws FactoryException {
         if (Boolean.TRUE.equals(inProgress.get())) {
             /*
              * 'getAuthorityCodes' is invoking itself (indirectly). Returns an empty set in order
@@ -674,8 +654,7 @@ public class ManyAuthoritiesFactory extends AuthorityFactoryAdapter
                         candidate = candidate.trim();
                         if (candidate.length() < codeBase
                                 || Character.isLetterOrDigit(candidate.charAt(codeBase - 1))
-                                || !authority.equalsIgnoreCase(
-                                        candidate.substring(0, codeBase - 1))) {
+                                || !authority.equalsIgnoreCase(candidate.substring(0, codeBase - 1))) {
                             // Prepend the authority code if it was not already presents.
                             code.setLength(codeBase);
                             code.append(candidate);
@@ -811,9 +790,7 @@ public class ManyAuthoritiesFactory extends AuthorityFactoryAdapter
     /** A {@link IdentifiedObjectFinder} which tests every factories. */
     static class Finder extends IdentifiedObjectFinder {
         /** Creates a finder for the specified type. */
-        protected Finder(
-                final ManyAuthoritiesFactory factory,
-                final Class<? extends IdentifiedObject> type) {
+        protected Finder(final ManyAuthoritiesFactory factory, final Class<? extends IdentifiedObject> type) {
             super(factory, type);
         }
 
@@ -823,17 +800,15 @@ public class ManyAuthoritiesFactory extends AuthorityFactoryAdapter
         }
 
         /** Returns the next finder in the specified set of factories, or {@code null} if none. */
-        final IdentifiedObjectFinder next(final Iterator<AuthorityFactory> it)
-                throws FactoryException {
+        final IdentifiedObjectFinder next(final Iterator<AuthorityFactory> it) throws FactoryException {
             while (it.hasNext()) {
                 final AuthorityFactory factory = it.next();
                 if (exclude(factory)) {
                     continue;
                 }
                 if (factory instanceof AbstractAuthorityFactory) {
-                    final IdentifiedObjectFinder finder =
-                            ((AbstractAuthorityFactory) factory)
-                                    .getIdentifiedObjectFinder(getProxy().getType());
+                    final IdentifiedObjectFinder finder = ((AbstractAuthorityFactory) factory)
+                            .getIdentifiedObjectFinder(getProxy().getType());
                     if (finder != null) {
                         finder.setFullScanAllowed(isFullScanAllowed());
                         return finder;

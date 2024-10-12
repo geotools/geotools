@@ -95,10 +95,7 @@ public class FilterExamples {
         // id start
         FilterFactory ff = CommonFactoryFinder.getFilterFactory();
 
-        Filter filter =
-                ff.id(
-                        ff.featureId("CITY.98734597823459687235"),
-                        ff.featureId("CITY.98734592345235823474"));
+        Filter filter = ff.id(ff.featureId("CITY.98734597823459687235"), ff.featureId("CITY.98734592345235823474"));
         // id end
     }
 
@@ -114,20 +111,13 @@ public class FilterExamples {
         filter = ff.id(ff.resourceId("CITY.98734597823459687235", "A457", new Version()));
 
         // grab the one before that
-        filter =
-                ff.id(
-                        ff.resourceId(
-                                "CITY.98734597823459687235", "A457", new Version(Action.PREVIOUS)));
+        filter = ff.id(ff.resourceId("CITY.98734597823459687235", "A457", new Version(Action.PREVIOUS)));
 
         // grab the one after that
-        filter =
-                ff.id(ff.resourceId("CITY.98734597823459687235", "A457", new Version(Action.NEXT)));
+        filter = ff.id(ff.resourceId("CITY.98734597823459687235", "A457", new Version(Action.NEXT)));
 
         // grab the first one
-        filter =
-                ff.id(
-                        ff.resourceId(
-                                "CITY.98734597823459687235", "A457", new Version(Action.FIRST)));
+        filter = ff.id(ff.resourceId("CITY.98734597823459687235", "A457", new Version(Action.FIRST)));
 
         // grab the first one (ie index = 1 )
         filter = ff.id(ff.resourceId("CITY.98734597823459687235", "A457", new Version(1)));
@@ -138,20 +128,10 @@ public class FilterExamples {
         // Grab the entry close to Jan 1985
         DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT);
         df.setTimeZone(TimeZone.getTimeZone("GMT"));
-        filter =
-                ff.id(
-                        ff.resourceId(
-                                "CITY.98734597823459687235",
-                                "A457",
-                                new Version(df.parse("1985-1-1"))));
+        filter = ff.id(ff.resourceId("CITY.98734597823459687235", "A457", new Version(df.parse("1985-1-1"))));
 
         // Grab all the entries in the 1990s
-        filter =
-                ff.id(
-                        ff.resourceId(
-                                "CITY.98734597823459687235",
-                                df.parse("1990-1-1"),
-                                df.parse("2000-1-1")));
+        filter = ff.id(ff.resourceId("CITY.98734597823459687235", df.parse("1990-1-1"), df.parse("2000-1-1")));
 
         // rid end
     }
@@ -179,15 +159,13 @@ public class FilterExamples {
         filter = ff.not(ff.like(ff.property("code"), "230%"));
 
         // you can also combine filters to narrow the results returned
-        filter =
-                ff.and(
-                        ff.greater(ff.property("rainfall"), ff.literal(70)),
-                        ff.equal(ff.property("land_use"), ff.literal("urban"), false));
+        filter = ff.and(
+                ff.greater(ff.property("rainfall"), ff.literal(70)),
+                ff.equal(ff.property("land_use"), ff.literal("urban"), false));
 
-        filter =
-                ff.or(
-                        ff.equal(ff.property("code"), ff.literal("approved")),
-                        ff.greater(ff.property("funding"), ff.literal(23000)));
+        filter = ff.or(
+                ff.equal(ff.property("code"), ff.literal("approved")),
+                ff.greater(ff.property("funding"), ff.literal(23000)));
 
         // logical end
     }
@@ -275,8 +253,7 @@ public class FilterExamples {
 
         // bbox start
         FilterFactory ff = CommonFactoryFinder.getFilterFactory();
-        ReferencedEnvelope bbox =
-                new ReferencedEnvelope(x1, x2, y1, y2, DefaultGeographicCRS.WGS84);
+        ReferencedEnvelope bbox = new ReferencedEnvelope(x1, x2, y1, y2, DefaultGeographicCRS.WGS84);
         Filter filter = ff.bbox(ff.property("the_geom"), bbox);
         // bbox end
     }

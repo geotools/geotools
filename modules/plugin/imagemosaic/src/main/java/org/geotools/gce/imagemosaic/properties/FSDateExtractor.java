@@ -45,8 +45,7 @@ class FSDateExtractor extends PropertiesCollector {
     @Override
     public PropertiesCollector collect(final File file) {
         try {
-            BasicFileAttributes attributes =
-                    Files.readAttributes(file.toPath(), BasicFileAttributes.class);
+            BasicFileAttributes attributes = Files.readAttributes(file.toPath(), BasicFileAttributes.class);
             date = new Date(attributes.creationTime().to(TimeUnit.MILLISECONDS));
         } catch (IOException e) {
             if (LOGGER.isLoggable(Level.FINE)) {
@@ -67,16 +66,14 @@ class FSDateExtractor extends PropertiesCollector {
                 date = new Date(lastModified);
             } else {
                 date = new Date();
-                warningMessage =
-                        "Unable to extract the last modified date from the provided url " + url;
+                warningMessage = "Unable to extract the last modified date from the provided url " + url;
             }
 
         } catch (IOException ioe) {
-            warningMessage =
-                    "Unable to extract the last modified date from the provided url "
-                            + url
-                            + " due to "
-                            + ioe.getLocalizedMessage();
+            warningMessage = "Unable to extract the last modified date from the provided url "
+                    + url
+                    + " due to "
+                    + ioe.getLocalizedMessage();
         }
         if (warningMessage != null && LOGGER.isLoggable(Level.FINE)) {
             LOGGER.fine(warningMessage);

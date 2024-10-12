@@ -78,8 +78,7 @@ public class PropertyDataStore extends ContentDataStore {
         String typeName = featureType.getTypeName();
         File file = new File(dir, typeName + ".properties");
         if (file.exists()) {
-            throw new FileNotFoundException(
-                    "Unable to create a new property file: file exists " + file);
+            throw new FileNotFoundException("Unable to create a new property file: file exists " + file);
         }
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
             writer.write("_=");
@@ -158,8 +157,7 @@ public class PropertyDataStore extends ContentDataStore {
         }
         File file = new File(dir, typeName);
         if (!file.exists()) {
-            throw new IOException(
-                    "Can't delete " + file.getAbsolutePath() + " because it doesn't exist!");
+            throw new IOException("Can't delete " + file.getAbsolutePath() + " because it doesn't exist!");
         }
         file.delete();
     }

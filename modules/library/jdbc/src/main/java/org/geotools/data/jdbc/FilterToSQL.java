@@ -515,8 +515,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
             literal += multi;
         }
 
-        String pattern =
-                LikeFilterImpl.convertToSQL92(esc, multi, single, matchCase, literal, false);
+        String pattern = LikeFilterImpl.convertToSQL92(esc, multi, single, matchCase, literal, false);
 
         try {
             if (!matchCase) {
@@ -563,9 +562,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
                 if (isEnumerated(expr)) {
                     // skip enum remapping
                     writeEncodedField(
-                            Integer.class,
-                            (PropertyName) expr,
-                            (AttributeDescriptor) expr.evaluate(featureType));
+                            Integer.class, (PropertyName) expr, (AttributeDescriptor) expr.evaluate(featureType));
                 } else {
                     expr.accept(this, extraData);
                 }
@@ -620,7 +617,8 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
         }
 
         try {
-            Iterator<Map.Entry<Object, List<Literal>>> iterator = grouped.entrySet().iterator();
+            Iterator<Map.Entry<Object, List<Literal>>> iterator =
+                    grouped.entrySet().iterator();
 
             // ok, we can output at least one "in" statement
             if (grouped.size() > 1) {
@@ -889,16 +887,12 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
                 writeBinaryExpressionMember(right, rightContext);
             } else {
                 // wrap both sides in "lower"
-                FunctionImpl f =
-                        new FunctionImpl() {
-                            {
-                                functionName =
-                                        new FunctionNameImpl(
-                                                "lower",
-                                                parameter("lowercase", String.class),
-                                                parameter("string", String.class));
-                            }
-                        };
+                FunctionImpl f = new FunctionImpl() {
+                    {
+                        functionName = new FunctionNameImpl(
+                                "lower", parameter("lowercase", String.class), parameter("string", String.class));
+                    }
+                };
                 f.setName("lower");
 
                 f.setParameters(Arrays.asList(left));
@@ -914,8 +908,8 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
         }
     }
 
-    private void encodeEnumeratedComparison(
-            Expression right, Expression left, String type, boolean matchCase) throws IOException {
+    private void encodeEnumeratedComparison(Expression right, Expression left, String type, boolean matchCase)
+            throws IOException {
         EnumMapper mapper = getEnumMapper(right);
         if (mapper != null) {
             PropertyName rightName = (PropertyName) right;
@@ -927,10 +921,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
                 } else {
                     out.write(String.valueOf(code));
                     out.write(" " + type + " ");
-                    writeEncodedField(
-                            Integer.class,
-                            rightName,
-                            (AttributeDescriptor) right.evaluate(featureType));
+                    writeEncodedField(Integer.class, rightName, (AttributeDescriptor) right.evaluate(featureType));
                 }
             } else {
                 out.write("CASE ");
@@ -939,15 +930,13 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
                     writeBinaryExpressionMember(left, Integer.class);
                     out.write(")");
                 }
-                for (Map.Entry<String, Integer> entry : mapper.getStringToInteger().entrySet()) {
+                for (Map.Entry<String, Integer> entry :
+                        mapper.getStringToInteger().entrySet()) {
                     out.write("WHEN '" + entry.getKey() + "' THEN " + entry.getValue() + "\n");
                 }
                 out.write("END");
                 out.write(" " + type + " ");
-                writeEncodedField(
-                        Integer.class,
-                        rightName,
-                        (AttributeDescriptor) right.evaluate(featureType));
+                writeEncodedField(Integer.class, rightName, (AttributeDescriptor) right.evaluate(featureType));
             }
         } else {
             mapper = getEnumMapper(left);
@@ -959,16 +948,12 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
                 if (code == null) {
                     out.write("FALSE");
                 } else {
-                    writeEncodedField(
-                            Integer.class,
-                            leftName,
-                            (AttributeDescriptor) left.evaluate(featureType));
+                    writeEncodedField(Integer.class, leftName, (AttributeDescriptor) left.evaluate(featureType));
                     out.write(" " + type + " ");
                     out.write(String.valueOf(code));
                 }
             } else {
-                writeEncodedField(
-                        Integer.class, leftName, (AttributeDescriptor) left.evaluate(featureType));
+                writeEncodedField(Integer.class, leftName, (AttributeDescriptor) left.evaluate(featureType));
                 out.write(" " + type + " ");
                 out.write("CASE ");
                 if (!matchCase) {
@@ -976,7 +961,8 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
                     writeBinaryExpressionMember(right, Integer.class);
                     out.write(")");
                 }
-                for (Map.Entry<String, Integer> entry : mapper.getStringToInteger().entrySet()) {
+                for (Map.Entry<String, Integer> entry :
+                        mapper.getStringToInteger().entrySet()) {
                     out.write("WHEN '" + entry.getKey() + "' THEN " + entry.getValue() + "\n");
                 }
                 out.write("END");
@@ -1104,10 +1090,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
         try {
             if (isEnumerated(expr)) {
                 // skip enum remapping
-                writeEncodedField(
-                        Integer.class,
-                        (PropertyName) expr,
-                        (AttributeDescriptor) expr.evaluate(featureType));
+                writeEncodedField(Integer.class, (PropertyName) expr, (AttributeDescriptor) expr.evaluate(featureType));
             } else {
                 expr.accept(this, extraData);
             }
@@ -1239,10 +1222,9 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
         // basic checks
         if (filter == null) throw new NullPointerException("Filter to be encoded cannot be null");
         if (!(filter instanceof BinarySpatialOperator))
-            throw new IllegalArgumentException(
-                    "This filter is not a binary spatial operator, "
-                            + "can't do SDO relate against it: "
-                            + filter.getClass());
+            throw new IllegalArgumentException("This filter is not a binary spatial operator, "
+                    + "can't do SDO relate against it: "
+                    + filter.getClass());
 
         // extract the property name and the geometry literal
         BinarySpatialOperator op = filter;
@@ -1266,10 +1248,8 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
                 AttributeDescriptor descriptor = (AttributeDescriptor) e1.evaluate(featureType);
                 if (descriptor instanceof GeometryDescriptor) {
                     currentGeometry = (GeometryDescriptor) descriptor;
-                    currentSRID =
-                            (Integer) descriptor.getUserData().get(JDBCDataStore.JDBC_NATIVE_SRID);
-                    currentDimension =
-                            (Integer) descriptor.getUserData().get(Hints.COORDINATE_DIMENSION);
+                    currentSRID = (Integer) descriptor.getUserData().get(JDBCDataStore.JDBC_NATIVE_SRID);
+                    currentDimension = (Integer) descriptor.getUserData().get(Hints.COORDINATE_DIMENSION);
                 }
             }
         }
@@ -1277,11 +1257,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
         if (e1 instanceof PropertyName && e2 instanceof Literal) {
             // call the "regular" method
             return visitBinarySpatialOperator(
-                    filter,
-                    (PropertyName) e1,
-                    (Literal) e2,
-                    filter.getExpression1() instanceof Literal,
-                    extraData);
+                    filter, (PropertyName) e1, (Literal) e2, filter.getExpression1() instanceof Literal, extraData);
         } else {
             // call the join version
             return visitBinarySpatialOperator(filter, e1, e2, extraData);
@@ -1290,13 +1266,8 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
 
     /** Handles the common case of a PropertyName,Literal geometry binary spatial operator. */
     protected Object visitBinarySpatialOperator(
-            BinarySpatialOperator filter,
-            PropertyName property,
-            Literal geometry,
-            boolean swapped,
-            Object extraData) {
-        throw new RuntimeException(
-                "Subclasses must implement this method in order to handle geometries");
+            BinarySpatialOperator filter, PropertyName property, Literal geometry, boolean swapped, Object extraData) {
+        throw new RuntimeException("Subclasses must implement this method in order to handle geometries");
     }
 
     /**
@@ -1306,8 +1277,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      */
     protected Object visitBinarySpatialOperator(
             BinarySpatialOperator filter, Expression e1, Expression e2, Object extraData) {
-        throw new RuntimeException(
-                "Subclasses must implement this method in order to handle geometries");
+        throw new RuntimeException("Subclasses must implement this method in order to handle geometries");
     }
 
     protected Object visitBinaryTemporalOperator(BinaryTemporalOperator filter, Object extraData) {
@@ -1326,11 +1296,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
         if (e1 instanceof PropertyName && e2 instanceof Literal) {
             // call the "regular" method
             return visitBinaryTemporalOperator(
-                    filter,
-                    (PropertyName) e1,
-                    (Literal) e2,
-                    filter.getExpression1() instanceof Literal,
-                    extraData);
+                    filter, (PropertyName) e1, (Literal) e2, filter.getExpression1() instanceof Literal, extraData);
         } else {
             // call the join version
             return visitBinaryTemporalOperator(filter, e1, e2, extraData);
@@ -1344,11 +1310,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      * this base class.
      */
     protected Object visitBinaryTemporalOperator(
-            BinaryTemporalOperator filter,
-            PropertyName property,
-            Literal temporal,
-            boolean swapped,
-            Object extraData) {
+            BinaryTemporalOperator filter, PropertyName property, Literal temporal, boolean swapped, Object extraData) {
 
         Class typeContext = null;
         AttributeDescriptor attType = (AttributeDescriptor) property.evaluate(featureType);
@@ -1377,12 +1339,10 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
         }
 
         // ensure the time period is the correct argument
-        if ((filter instanceof Begins || filter instanceof Ends || filter instanceof During)
-                && swapped) {
+        if ((filter instanceof Begins || filter instanceof Ends || filter instanceof During) && swapped) {
             throw new IllegalArgumentException("Time period must be second argument of Filter");
         }
-        if ((filter instanceof BegunBy || filter instanceof EndedBy || filter instanceof TContains)
-                && !swapped) {
+        if ((filter instanceof BegunBy || filter instanceof EndedBy || filter instanceof TContains) && !swapped) {
             throw new IllegalArgumentException("Time period must be first argument of Filter");
         }
 
@@ -1552,7 +1512,8 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
             // backmapped to an integer when possible, to allow index usage
             if (mapper != null) {
                 out.write("\n ");
-                for (Map.Entry<Integer, String> entry : mapper.getIntegerToString().entrySet()) {
+                for (Map.Entry<Integer, String> entry :
+                        mapper.getIntegerToString().entrySet()) {
                     out.write("WHEN " + entry.getKey() + " THEN '" + entry.getValue() + "'\n");
                 }
                 out.write("END");
@@ -1564,8 +1525,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
         return extraData;
     }
 
-    private void writeEncodedField(
-            Class<?> target, PropertyName expression, AttributeDescriptor attribute)
+    private void writeEncodedField(Class<?> target, PropertyName expression, AttributeDescriptor attribute)
             throws IOException {
         String encodedField;
         if (attribute != null) {
@@ -1620,8 +1580,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
                 // call this method for backwards compatibility with subclasses
                 visitLiteralGeometry(filterFactory.literal(literal));
             } else if (literal instanceof Envelope) {
-                visitLiteralGeometry(
-                        filterFactory.literal(BBOXImpl.boundingPolygon((Envelope) literal)));
+                visitLiteralGeometry(filterFactory.literal(BBOXImpl.boundingPolygon((Envelope) literal)));
             } else {
                 // write out the literal allowing subclasses to override this
                 // behaviour (for writing out dates and the like using the BDMS custom functions)
@@ -1684,9 +1643,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
         if (evaluated != null && evaluated.getClass().isArray()) {
             return null;
         }
-        return (Number)
-                Converters.convert(
-                        evaluated, target, new Hints(ConverterFactory.SAFE_CONVERSION, true));
+        return (Number) Converters.convert(evaluated, target, new Hints(ConverterFactory.SAFE_CONVERSION, true));
     }
 
     /**
@@ -1746,14 +1703,12 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      * specific database implementation
      */
     protected void visitLiteralGeometry(Literal expression) throws IOException {
-        throw new RuntimeException(
-                "Subclasses must implement this method in order to handle geometries");
+        throw new RuntimeException("Subclasses must implement this method in order to handle geometries");
     }
 
     protected void visitLiteralTimePeriod(Period expression) {
-        throw new RuntimeException(
-                "Time periods not supported, subclasses must implement this "
-                        + "method to support encoding timeperiods");
+        throw new RuntimeException("Time periods not supported, subclasses must implement this "
+                + "method to support encoding timeperiods");
     }
 
     @Override
@@ -1783,8 +1738,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      * @param operator The operator of the expression.
      * @throws RuntimeException for io problems
      */
-    protected Object visit(BinaryExpression expression, String operator, Object extraData)
-            throws RuntimeException {
+    protected Object visit(BinaryExpression expression, String operator, Object extraData) throws RuntimeException {
         LOGGER.finer("exporting Expression Math");
 
         try {
@@ -1797,8 +1751,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
         return extraData;
     }
 
-    private void encodeBinaryExpressionChild(Expression expression, Object extraData)
-            throws IOException {
+    private void encodeBinaryExpressionChild(Expression expression, Object extraData) throws IOException {
         boolean needsParens = expression instanceof BinaryExpression;
         if (needsParens) out.write("(");
         expression.accept(this, extraData);
@@ -1832,16 +1785,14 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
                 // write the arguments
                 out.write("(");
                 List<Parameter<?>> arguments = function.getFunctionName().getArguments();
-                Parameter<?> lastArgument =
-                        arguments.isEmpty() ? null : arguments.get(arguments.size() - 1);
+                Parameter<?> lastArgument = arguments.isEmpty() ? null : arguments.get(arguments.size() - 1);
                 for (int i = 0; i < parameters.size(); i++) {
                     Expression e = parameters.get(i);
 
                     Object context;
                     // the last argument can be multi-valued
                     if (arguments.size() <= i
-                            && (lastArgument.getMaxOccurs() > 0
-                                    || lastArgument.getMaxOccurs() == -1)) {
+                            && (lastArgument.getMaxOccurs() > 0 || lastArgument.getMaxOccurs() == -1)) {
                         context = lastArgument.getType();
                     } else {
                         context = arguments.get(i).getType();
@@ -1866,8 +1817,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
     }
 
     /** Encodes a "in" function (as recognized by {@link InFunction#isInFunction(Expression)} */
-    protected void visitInFunction(
-            Function function, boolean encodeAsExpression, boolean negate, Object extraData) {
+    protected void visitInFunction(Function function, boolean encodeAsExpression, boolean negate, Object extraData) {
         try {
             if (encodeAsExpression) {
                 out.write("(");
@@ -1877,14 +1827,13 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
             // reference,
             // otherwise null context will be used
             List<Expression> parameters = function.getParameters();
-            Class context =
-                    function.getParameters().stream()
-                            .filter(p -> p instanceof PropertyName)
-                            .map(p -> p.evaluate(featureType))
-                            .filter(o -> o instanceof AttributeDescriptor)
-                            .map(o -> ((AttributeDescriptor) o).getType().getBinding())
-                            .findFirst()
-                            .orElse(null);
+            Class context = function.getParameters().stream()
+                    .filter(p -> p instanceof PropertyName)
+                    .map(p -> p.evaluate(featureType))
+                    .filter(o -> o instanceof AttributeDescriptor)
+                    .map(o -> ((AttributeDescriptor) o).getType().getBinding())
+                    .findFirst()
+                    .orElse(null);
 
             // encode the attribute being tested, as is
             function.getParameters().get(0).accept(this, context);
@@ -1923,12 +1872,11 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
         final List<Expression> params = function.getParameters();
         if (params == null || params.size() <= idx) {
             if (mandatory) {
-                throw new IllegalArgumentException(
-                        "Missing parameter number "
-                                + (idx + 1)
-                                + " for function "
-                                + function.getName()
-                                + ", cannot encode in SQL");
+                throw new IllegalArgumentException("Missing parameter number "
+                        + (idx + 1)
+                        + " for function "
+                        + function.getName()
+                        + ", cannot encode in SQL");
             } else {
                 return null;
             }
@@ -2087,7 +2035,8 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
 
         public static DefaultFieldEncoder DEFAULT_FIELD_ENCODER = new DefaultFieldEncoder();
 
-        private DefaultFieldEncoder() {};
+        private DefaultFieldEncoder() {}
+        ;
 
         @Override
         public String encode(String s) {
@@ -2122,8 +2071,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
             out.write("(" + filter.getNative() + ")");
         } catch (Exception exception) {
             throw new RuntimeException(
-                    String.format("Error encoding native filter '%s'.", filter.getNative()),
-                    exception);
+                    String.format("Error encoding native filter '%s'.", filter.getNative()), exception);
         }
         return data;
     }

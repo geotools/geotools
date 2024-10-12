@@ -24,8 +24,7 @@ public final class ErrorKeys {
     private ErrorKeys() {}
 
     public static String SOURCE_CANT_BE_NULL_$1 = "The source for node {0} cannot be null.";
-    public static String TOO_MANY_SOURCES_$1 =
-            "The maximum number of sources for this node {0} has been overcome.";
+    public static String TOO_MANY_SOURCES_$1 = "The maximum number of sources for this node {0} has been overcome.";
     public static String INVALID_NUMBER_OF_SOURCES_$1 = "Invalid number of sources= \"{0}\". ";
     public static String CYCLE_DETECTED = "Cycle detected in this graph of operations.";
     public static String UNSUPPORTED_OPERATION_$1 = "Operation {0} is not supported.";
@@ -41,10 +40,8 @@ public final class ErrorKeys {
     public static String RANGE_OVERLAP_$4 = "Ranges [{0}..{1}] and [{2}..{3}] overlap.";
     public static String MISMATCHED_DIMENSION_$2 = "Mismatched object dimension: {0}D and {1}D.";
     public static String BAD_RANGE_$2 = "Range [{0} .. {1}] is not valid.";
-    public static String TRANSFORM_EVALUATION_$1 =
-            "The transform can't be evaluated at the specified point {0}";
+    public static String TRANSFORM_EVALUATION_$1 = "The transform can't be evaluated at the specified point {0}";
     public static String UNSUPPORTED_METHOD_$1 = "ContrastMethod {0} is not supported.";
-    public static String UNSUPPORTED_ALGORITHM_$1 =
-            "ContrastMethod Algorithm {0} is not supported.";
+    public static String UNSUPPORTED_ALGORITHM_$1 = "ContrastMethod Algorithm {0} is not supported.";
     public static String ILLEGAL_ARGUMENT_PARAMETERS_$2 = "Missing Parameters: Require {0},{1} ";
 }

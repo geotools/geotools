@@ -30,8 +30,7 @@ public class FilterFunction_log extends FunctionExpressionImpl {
 
     // public static FunctionName NAME = new FunctionNameImpl("log","value");
     public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "log", parameter("logarithm", Double.class), parameter("value", Number.class));
+            new FunctionNameImpl("log", parameter("logarithm", Double.class), parameter("value", Number.class));
 
     public FilterFunction_log() {
         super("log"); // logarithm

@@ -183,11 +183,7 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
      * @throws MismatchedDimensionException if the CRS dimension is not valid.
      */
     public ReferencedEnvelope(
-            final double x1,
-            final double x2,
-            final double y1,
-            final double y2,
-            final CoordinateReferenceSystem crs)
+            final double x1, final double x2, final double y1, final double y2, final CoordinateReferenceSystem crs)
             throws MismatchedDimensionException {
         super(x1, x2, y1, y2);
         this.crs = crs;
@@ -208,12 +204,7 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
      */
     public ReferencedEnvelope(final Rectangle2D rectangle, final CoordinateReferenceSystem crs)
             throws MismatchedDimensionException {
-        this(
-                rectangle.getMinX(),
-                rectangle.getMaxX(),
-                rectangle.getMinY(),
-                rectangle.getMaxY(),
-                crs);
+        this(rectangle.getMinX(), rectangle.getMaxX(), rectangle.getMinY(), rectangle.getMaxY(), crs);
     }
 
     /**
@@ -223,8 +214,7 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
      * @throws MismatchedDimensionException if the CRS dimension is not valid.
      * @since 2.3
      */
-    public ReferencedEnvelope(final ReferencedEnvelope envelope)
-            throws MismatchedDimensionException {
+    public ReferencedEnvelope(final ReferencedEnvelope envelope) throws MismatchedDimensionException {
         super(envelope);
         crs = envelope.getCoordinateReferenceSystem();
         checkCoordinateReferenceSystemDimension();
@@ -242,12 +232,7 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
      * @since 2.4
      */
     public ReferencedEnvelope(final BoundingBox bbox) throws MismatchedDimensionException {
-        this(
-                bbox.getMinX(),
-                bbox.getMaxX(),
-                bbox.getMinY(),
-                bbox.getMaxY(),
-                bbox.getCoordinateReferenceSystem());
+        this(bbox.getMinX(), bbox.getMaxX(), bbox.getMinY(), bbox.getMaxY(), bbox.getCoordinateReferenceSystem());
     }
 
     /**
@@ -262,11 +247,7 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
      * @since 2.4
      */
     public ReferencedEnvelope(final Bounds bounds) throws MismatchedDimensionException {
-        super(
-                bounds.getMinimum(0),
-                bounds.getMaximum(0),
-                bounds.getMinimum(1),
-                bounds.getMaximum(1));
+        super(bounds.getMinimum(0), bounds.getMaximum(0), bounds.getMinimum(1), bounds.getMaximum(1));
         this.crs = bounds.getCoordinateReferenceSystem();
         checkCoordinateReferenceSystemDimension();
     }
@@ -287,11 +268,7 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
 
     /** Sets this envelope to the specified bounding box. */
     public void init(BoundingBox bounds) {
-        super.init(
-                bounds.getMinimum(0),
-                bounds.getMaximum(0),
-                bounds.getMinimum(1),
-                bounds.getMaximum(1));
+        super.init(bounds.getMinimum(0), bounds.getMaximum(0), bounds.getMinimum(1), bounds.getMaximum(1));
         this.crs = bounds.getCoordinateReferenceSystem();
     }
 
@@ -320,12 +297,11 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
                 // check dimensions and choose ReferencedEnvelope or ReferencedEnvelope3D
                 // or the factory method ReferencedEnvelope.reference( CoordinateReferenceSystem )
                 final Object arg0 = crs.getName().getCode();
-                throw new MismatchedDimensionException(
-                        MessageFormat.format(
-                                ErrorKeys.MISMATCHED_DIMENSION_$3,
-                                arg0,
-                                Integer.valueOf(dimension),
-                                Integer.valueOf(expected)));
+                throw new MismatchedDimensionException(MessageFormat.format(
+                        ErrorKeys.MISMATCHED_DIMENSION_$3,
+                        arg0,
+                        Integer.valueOf(dimension),
+                        Integer.valueOf(expected)));
             }
         }
     }
@@ -336,14 +312,12 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
      * @param bbox The other bounding box to test for compatibility.
      * @throws MismatchedReferenceSystemException if the CRS are incompatible.
      */
-    protected void ensureCompatibleReferenceSystem(final BoundingBox bbox)
-            throws MismatchedReferenceSystemException {
+    protected void ensureCompatibleReferenceSystem(final BoundingBox bbox) throws MismatchedReferenceSystemException {
         if (crs != null) {
             final CoordinateReferenceSystem other = bbox.getCoordinateReferenceSystem();
             if (other != null) {
                 if (!CRS.isEquivalent(crs, other)) {
-                    throw new MismatchedReferenceSystemException(
-                            ErrorKeys.MISMATCHED_COORDINATE_REFERENCE_SYSTEM);
+                    throw new MismatchedReferenceSystemException(ErrorKeys.MISMATCHED_COORDINATE_REFERENCE_SYSTEM);
                 }
             }
         }
@@ -359,8 +333,7 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
             final CoordinateReferenceSystem other = location.getCoordinateReferenceSystem();
             if (other != null) {
                 if (!CRS.isEquivalent(crs, other)) {
-                    throw new MismatchedReferenceSystemException(
-                            ErrorKeys.MISMATCHED_COORDINATE_REFERENCE_SYSTEM);
+                    throw new MismatchedReferenceSystemException(ErrorKeys.MISMATCHED_COORDINATE_REFERENCE_SYSTEM);
                 }
             }
         }
@@ -656,8 +629,7 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
      * @since 2.4
      */
     @Override
-    public BoundingBox toBounds(final CoordinateReferenceSystem targetCRS)
-            throws TransformException {
+    public BoundingBox toBounds(final CoordinateReferenceSystem targetCRS) throws TransformException {
         try {
             return transform(targetCRS, true);
         } catch (FactoryException e) {
@@ -702,9 +674,7 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
      * @since 2.3
      */
     public ReferencedEnvelope transform(
-            final CoordinateReferenceSystem targetCRS,
-            final boolean lenient,
-            final int numPointsForTransformation)
+            final CoordinateReferenceSystem targetCRS, final boolean lenient, final int numPointsForTransformation)
             throws TransformException, FactoryException {
         if (crs == null) {
             if (isEmpty()) {
@@ -719,15 +689,12 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
         }
         if (!this.isEmpty() && this.getWidth() == 0 && this.getHeight() == 0) {
             // single point envelope, no need to perform complex operations
-            CoordinateOperationFactory coordinateOperationFactory =
-                    CRS.getCoordinateOperationFactory(lenient);
+            CoordinateOperationFactory coordinateOperationFactory = CRS.getCoordinateOperationFactory(lenient);
 
-            final CoordinateOperation operation =
-                    coordinateOperationFactory.createOperation(crs, targetCRS);
+            final CoordinateOperation operation = coordinateOperationFactory.createOperation(crs, targetCRS);
             double[] position = {getMinX(), getMinY()};
             operation.getMathTransform().transform(position, 0, position, 0, 1);
-            return new ReferencedEnvelope(
-                    position[0], position[0], position[1], position[1], targetCRS);
+            return new ReferencedEnvelope(position[0], position[0], position[1], position[1], targetCRS);
         }
         if (getDimension() != targetCRS.getCoordinateSystem().getDimension()) {
             if (lenient) {
@@ -735,7 +702,8 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
             } else {
                 final Object arg0 = crs.getName().getCode();
                 final Object arg1 = Integer.valueOf(getDimension());
-                final Object arg2 = Integer.valueOf(targetCRS.getCoordinateSystem().getDimension());
+                final Object arg2 =
+                        Integer.valueOf(targetCRS.getCoordinateSystem().getDimension());
                 throw new MismatchedDimensionException(
                         MessageFormat.format(ErrorKeys.MISMATCHED_DIMENSION_$3, arg0, arg1, arg2));
             }
@@ -744,11 +712,9 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
          * Gets a first estimation using an algorithm capable to take singularity in account
          * (North pole, South pole, 180ï¿½ longitude). We will expand this initial box later.
          */
-        CoordinateOperationFactory coordinateOperationFactory =
-                CRS.getCoordinateOperationFactory(lenient);
+        CoordinateOperationFactory coordinateOperationFactory = CRS.getCoordinateOperationFactory(lenient);
 
-        final CoordinateOperation operation =
-                coordinateOperationFactory.createOperation(crs, targetCRS);
+        final CoordinateOperation operation = coordinateOperationFactory.createOperation(crs, targetCRS);
         final GeneralBounds transformed = CRS.transform(operation, this);
         transformed.setCoordinateReferenceSystem(targetCRS);
 
@@ -780,9 +746,7 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
     public boolean equals(final Object object) {
         if (super.equals(object)) {
             final CoordinateReferenceSystem otherCRS =
-                    (object instanceof ReferencedEnvelope)
-                            ? ((ReferencedEnvelope) object).crs
-                            : null;
+                    (object instanceof ReferencedEnvelope) ? ((ReferencedEnvelope) object).crs : null;
 
             return CRS.equalsIgnoreMetadata(crs, otherCRS);
         }
@@ -974,8 +938,7 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
         if (bounds.getDimension() >= 3) {
             // emptiness test is inside reference-method
             return new ReferencedEnvelope3D(
-                    (ReferencedEnvelope3D) reference(bounds),
-                    bounds.getCoordinateReferenceSystem());
+                    (ReferencedEnvelope3D) reference(bounds), bounds.getCoordinateReferenceSystem());
         }
 
         return new ReferencedEnvelope(reference(bounds), bounds.getCoordinateReferenceSystem());
@@ -1050,11 +1013,7 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
             return new ReferencedEnvelope(crs);
         }
         return new ReferencedEnvelope(
-                rectangle.getMinX(),
-                rectangle.getMaxX(),
-                rectangle.getMinY(),
-                rectangle.getMaxY(),
-                crs);
+                rectangle.getMinX(), rectangle.getMaxX(), rectangle.getMinY(), rectangle.getMaxY(), crs);
     }
 
     /**
@@ -1104,13 +1063,7 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
                 return new ReferencedEnvelope3D(crs);
             } else {
                 return new ReferencedEnvelope3D(
-                        env.getMinX(),
-                        env.getMaxX(),
-                        env.getMinY(),
-                        env.getMaxY(),
-                        Double.NaN,
-                        Double.NaN,
-                        crs);
+                        env.getMinX(), env.getMaxX(), env.getMinY(), env.getMaxY(), Double.NaN, Double.NaN, crs);
             }
         }
 
@@ -1197,14 +1150,9 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
             // but for geographic crs the above means the original envelope
             // wrapped the dateline, while we cannot expressed the same in JTS,
             // we'll at least convert it to a whole world envelope
-            if (env.getCoordinateReferenceSystem() instanceof GeographicCRS
-                    && env.getMinimum(1) <= env.getMaximum(1)) {
+            if (env.getCoordinateReferenceSystem() instanceof GeographicCRS && env.getMinimum(1) <= env.getMaximum(1)) {
                 return new ReferencedEnvelope(
-                        -180.0,
-                        180.0,
-                        env.getMinimum(1),
-                        env.getMaximum(1),
-                        env.getCoordinateReferenceSystem());
+                        -180.0, 180.0, env.getMinimum(1), env.getMaximum(1), env.getCoordinateReferenceSystem());
             }
             return new ReferencedEnvelope(env.getCoordinateReferenceSystem());
         }

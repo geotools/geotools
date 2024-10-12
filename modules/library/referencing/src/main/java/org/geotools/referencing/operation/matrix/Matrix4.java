@@ -59,15 +59,12 @@ public class Matrix4 extends GeneralMatrix implements XMatrix {
             double m31,
             double m32,
             double m33) {
-        super(
-                SIZE,
-                SIZE,
-                new double[] {
-                    m00, m01, m02, m03,
-                    m10, m11, m12, m13,
-                    m20, m21, m22, m23,
-                    m30, m31, m32, m33
-                });
+        super(SIZE, SIZE, new double[] {
+            m00, m01, m02, m03,
+            m10, m11, m12, m13,
+            m20, m21, m22, m23,
+            m30, m31, m32, m33
+        });
     }
 
     /**

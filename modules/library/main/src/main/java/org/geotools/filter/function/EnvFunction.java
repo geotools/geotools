@@ -148,7 +148,8 @@ public class EnvFunction extends FunctionExpressionImpl {
         public Map<String, Object> getTable() {
             return super.get();
         }
-    };
+    }
+    ;
 
     private static final LocalLookup localLookup = new LocalLookup();
 
@@ -157,8 +158,7 @@ public class EnvFunction extends FunctionExpressionImpl {
 
     // public static FunctionName NAME = new FunctionNameImpl("env","variable");
     public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "env", parameter("value", Object.class), parameter("variable", String.class));
+            new FunctionNameImpl("env", parameter("value", Object.class), parameter("variable", String.class));
 
     /** Create a new instance of this function. */
     public EnvFunction() {
@@ -304,10 +304,8 @@ public class EnvFunction extends FunctionExpressionImpl {
         final int argCount = NAME.getArgumentCount();
         final int paramsSize = params.size();
         if (paramsSize < argCount || paramsSize > argCount + 1) {
-            throw new IllegalArgumentException(
-                    String.format(
-                            "Function %s expected %d or %d arguments but got %d",
-                            name, argCount, argCount + 1, paramsSize));
+            throw new IllegalArgumentException(String.format(
+                    "Function %s expected %d or %d arguments but got %d", name, argCount, argCount + 1, paramsSize));
         }
         this.params = new ArrayList<>(params);
     }

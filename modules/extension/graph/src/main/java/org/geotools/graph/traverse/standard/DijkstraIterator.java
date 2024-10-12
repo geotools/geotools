@@ -123,22 +123,21 @@ public class DijkstraIterator extends SourceGraphIterator {
         queue = new PriorityQueue<>(graph.getNodes().size(), comparator);
 
         // place nodes into priority queue
-        graph.visitNodes(
-                component -> {
-                    // create a Dijkstra node with infinite cost
-                    DijkstraNode dn = new DijkstraNode((Node) component, Double.MAX_VALUE);
+        graph.visitNodes(component -> {
+            // create a Dijkstra node with infinite cost
+            DijkstraNode dn = new DijkstraNode((Node) component, Double.MAX_VALUE);
 
-                    // create the mapping
-                    nodemap.put(component, dn);
+            // create the mapping
+            nodemap.put(component, dn);
 
-                    // source component gets a cost of 0
-                    if (component == getSource()) dn.cost = 0d;
+            // source component gets a cost of 0
+            if (component == getSource()) dn.cost = 0d;
 
-                    // place into priority queue
-                    queue.add(dn);
+            // place into priority queue
+            queue.add(dn);
 
-                    return 0;
-                });
+            return 0;
+        });
     }
 
     /**

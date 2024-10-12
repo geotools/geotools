@@ -63,9 +63,7 @@ class MBTilesTileLocation {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         MBTilesTileLocation that = (MBTilesTileLocation) o;
-        return zoomLevel == that.zoomLevel
-                && tileColumn == that.tileColumn
-                && tileRow == that.tileRow;
+        return zoomLevel == that.zoomLevel && tileColumn == that.tileColumn && tileRow == that.tileRow;
     }
 
     @Override

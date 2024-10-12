@@ -254,8 +254,7 @@ public class FunctionNameImpl extends OperatorImpl implements FunctionName {
      * @param description human readable description
      * @return parameter description
      */
-    public static <T> Parameter<T> parameter(
-            String name, Class<T> type, String title, String description) {
+    public static <T> Parameter<T> parameter(String name, Class<T> type, String title, String description) {
         return new org.geotools.api.data.Parameter<>(name, type, title, description);
     }
 }

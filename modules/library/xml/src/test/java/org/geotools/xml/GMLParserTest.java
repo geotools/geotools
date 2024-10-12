@@ -253,8 +253,7 @@ public class GMLParserTest {
             TestData.copy(this, "xml/wfs/WFS-basic.xsd");
 
             GMLFeatureCollection doc =
-                    (GMLFeatureCollection)
-                            DocumentFactory.getInstance(f.toURI(), null, Level.WARNING);
+                    (GMLFeatureCollection) DocumentFactory.getInstance(f.toURI(), null, Level.WARNING);
             Assert.assertNotNull("Document missing", doc);
 
             Schema s = SchemaFactory.getInstance(new URI("http://www.openplans.org/topp"));
@@ -291,8 +290,7 @@ public class GMLParserTest {
             TestData.copy(this, "xml/wfs/WFS-basic.xsd");
 
             GMLFeatureCollection doc =
-                    (GMLFeatureCollection)
-                            DocumentFactory.getInstance(f.toURI(), null, Level.WARNING);
+                    (GMLFeatureCollection) DocumentFactory.getInstance(f.toURI(), null, Level.WARNING);
             Assert.assertNotNull("Document missing", doc);
 
             Schema s = SchemaFactory.getInstance(new URI("http://www.openplans.org/topp"));

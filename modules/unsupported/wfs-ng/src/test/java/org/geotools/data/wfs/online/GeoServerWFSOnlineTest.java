@@ -48,26 +48,24 @@ import org.junit.Test;
 public class GeoServerWFSOnlineTest extends OnlineTestSupport {
 
     /** All states with LAND_KM between 100,000 and 150,000 */
-    TreeSet<String> expected =
-            new TreeSet<>(
-                    Arrays.asList(
-                            "states.1",
-                            "states.7",
-                            "states.9",
-                            "states.13",
-                            "states.14",
-                            "states.17",
-                            "states.18",
-                            "states.19",
-                            "states.21",
-                            "states.22",
-                            "states.23",
-                            "states.24",
-                            "states.30",
-                            "states.36",
-                            "states.39",
-                            "states.40",
-                            "states.48"));
+    TreeSet<String> expected = new TreeSet<>(Arrays.asList(
+            "states.1",
+            "states.7",
+            "states.9",
+            "states.13",
+            "states.14",
+            "states.17",
+            "states.18",
+            "states.19",
+            "states.21",
+            "states.22",
+            "states.23",
+            "states.24",
+            "states.30",
+            "states.36",
+            "states.39",
+            "states.40",
+            "states.48"));
 
     @Test
     public void testGeoServerWFSFilter_V1_get() throws IOException, NoSuchElementException {
@@ -104,8 +102,7 @@ public class GeoServerWFSOnlineTest extends OnlineTestSupport {
         Properties fixture = getFixture();
 
         String getCapabilities =
-                fixture.getProperty(
-                                WFSDataStoreFactory.URL.key, "http://localhost:8080/geoserver/wfs?")
+                fixture.getProperty(WFSDataStoreFactory.URL.key, "http://localhost:8080/geoserver/wfs?")
                         + "REQUEST=GetCapabilities&SERVICE=WFS&VERSION="
                         + version;
 
@@ -129,8 +126,7 @@ public class GeoServerWFSOnlineTest extends OnlineTestSupport {
         SimpleFeatureSource source = data.getFeatureSource(typeName);
 
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints());
-        Filter filter =
-                ff.between(ff.property("LAND_KM"), ff.literal(100_000), ff.literal(150_000));
+        Filter filter = ff.between(ff.property("LAND_KM"), ff.literal(100_000), ff.literal(150_000));
 
         Query query = new Query();
         query.setTypeName(typeName);
@@ -149,15 +145,10 @@ public class GeoServerWFSOnlineTest extends OnlineTestSupport {
 
         // and now a non-encodable filter too, to check how it interacts with paging
         // (only 2 features match the filter)
-        PropertyIsEqualTo functionFilter =
-                ff.equal(
-                        ff.function(
-                                "strSubstring",
-                                ff.property("STATE_NAME"),
-                                ff.literal(0),
-                                ff.literal(1)),
-                        ff.literal("A"),
-                        true);
+        PropertyIsEqualTo functionFilter = ff.equal(
+                ff.function("strSubstring", ff.property("STATE_NAME"), ff.literal(0), ff.literal(1)),
+                ff.literal("A"),
+                true);
         query.setFilter(ff.and(filter, functionFilter));
         features = source.getFeatures(query);
         assertEquals(2, features.size());
@@ -171,17 +162,14 @@ public class GeoServerWFSOnlineTest extends OnlineTestSupport {
         SimpleFeatureType schema = features.getSchema();
         assertEquals(1, schema.getAttributeCount());
         assertEquals("STATE_ABBR", schema.getDescriptor(0).getLocalName());
-        Set<String> names =
-                DataUtilities.list(features).stream()
-                        .map(f -> (String) f.getAttribute("STATE_ABBR"))
-                        .collect(Collectors.toSet());
+        Set<String> names = DataUtilities.list(features).stream()
+                .map(f -> (String) f.getAttribute("STATE_ABBR"))
+                .collect(Collectors.toSet());
         assertEquals(new TreeSet<>(Arrays.asList("AR", "AL")), names);
     }
 
     private static Set<String> collectIds(SimpleFeatureCollection features) {
-        return DataUtilities.list(features).stream()
-                .map(f -> f.getID())
-                .collect(Collectors.toSet());
+        return DataUtilities.list(features).stream().map(f -> f.getID()).collect(Collectors.toSet());
     }
 
     @Override

@@ -93,28 +93,19 @@ public class URLCheckersTest {
         // the registry cannot have multiple instances of the same class. Curly brace trick here,
         // creating anonymous inner classes for each checker, so that they can all be added at
         // the same time
-        MockURLChecker fileChecker =
-                new MockURLChecker("enabled", true, s -> s.matches("file:///data/.*")) {};
+        MockURLChecker fileChecker = new MockURLChecker("enabled", true, s -> s.matches("file:///data/.*")) {};
         MockURLChecker gtChecker =
-                new MockURLChecker(
-                        "enabled", true, s -> s.matches("https?://www.geotools.org/.*")) {};
+                new MockURLChecker("enabled", true, s -> s.matches("https?://www.geotools.org/.*")) {};
         MockURLChecker gsChecker =
-                new MockURLChecker(
-                        "enabled", true, s -> s.matches("https?://www.geoserver.org/.*")) {};
+                new MockURLChecker("enabled", true, s -> s.matches("https?://www.geoserver.org/.*")) {};
 
         MockURLChecker apiChecker =
-                new MockURLChecker(
-                        "enabled",
-                        true,
-                        s -> s.matches("^https?://localhost:8080/geoserver/ows\\?.*$")) {};
+                new MockURLChecker("enabled", true, s -> s.matches("^https?://localhost:8080/geoserver/ows\\?.*$")) {};
 
-        MockURLChecker owsChecker =
-                new MockURLChecker(
-                        "enabled",
-                        true,
-                        s ->
-                                s.matches(
-                                        "^https?://localhost:8080/geoserver/(\\w+/)?ows((\\?\\!\\\\.\\\\./).)*(\\\\?.*)?$")) {};
+        MockURLChecker owsChecker = new MockURLChecker(
+                "enabled",
+                true,
+                s -> s.matches("^https?://localhost:8080/geoserver/(\\w+/)?ows((\\?\\!\\\\.\\\\./).)*(\\\\?.*)?$")) {};
 
         URLCheckers.register(fileChecker);
         URLCheckers.register(gtChecker);
@@ -129,9 +120,7 @@ public class URLCheckersTest {
         assertThrows(
                 URLCheckerException.class,
                 () -> URLCheckers.confirm("http://localhost/geoserver/styles/grass_mark.png"));
-        assertThrows(
-                URLCheckerException.class,
-                () -> URLCheckers.confirm("http://localhost:8080/geoserver/ows/.."));
+        assertThrows(URLCheckerException.class, () -> URLCheckers.confirm("http://localhost:8080/geoserver/ows/.."));
 
         // valid references
         URLCheckers.confirm("https://www.geoserver.org/logo.png");
@@ -139,8 +128,7 @@ public class URLCheckersTest {
         URLCheckers.confirm("file:///data/dem.tif");
         URLCheckers.confirm("http://localhost:8080/geoserver/ows?");
         URLCheckers.confirm("http://localhost:8080/geoserver/styles/../ows?");
-        URLCheckers.confirm(
-                "http://localhost:8080/geoserver/ows?SERVICE=WMS&REQUEST=GetCapabilities&VERSION=1.3.0");
+        URLCheckers.confirm("http://localhost:8080/geoserver/ows?SERVICE=WMS&REQUEST=GetCapabilities&VERSION=1.3.0");
         URLCheckers.confirm(
                 "https://localhost:8080/geoserver/ne/ows?SERVICE=WFS&REQUEST=GetCapabilities&VERSION=1.1.0");
 
@@ -195,19 +183,13 @@ public class URLCheckersTest {
                 String.join(File.separator, "", "base", "folder", "file"),
                 URLCheckers.normalize("/base/folder/./file"));
 
-        assertEquals(
-                String.join(File.separator, "", "file"),
-                URLCheckers.normalize("/base/folder/../../file"));
+        assertEquals(String.join(File.separator, "", "file"), URLCheckers.normalize("/base/folder/../../file"));
 
         assertEquals("file", URLCheckers.normalize("folder/../file"));
 
-        assertEquals(
-                String.join(File.separator, "..", "file"),
-                URLCheckers.normalize("folder/../../file"));
+        assertEquals(String.join(File.separator, "..", "file"), URLCheckers.normalize("folder/../../file"));
 
-        assertEquals(
-                "http://example.net/api?ignore=..",
-                URLCheckers.normalize("http://example.net/api?ignore=.."));
+        assertEquals("http://example.net/api?ignore=..", URLCheckers.normalize("http://example.net/api?ignore=.."));
 
         assertEquals("C:\\directory\\file", URLCheckers.normalize("C:\\directory\\file"));
     }

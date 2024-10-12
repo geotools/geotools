@@ -23,12 +23,8 @@ public class GeoPkgDateTestSetup extends JDBCDateTestSetup {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         Date parsedDate = dateFormat.parse(localStr);
 
-        Date gmt =
-                new Date(
-                        parsedDate.getTime()
-                                - Calendar.getInstance()
-                                        .getTimeZone()
-                                        .getOffset(parsedDate.getTime()));
+        Date gmt = new Date(
+                parsedDate.getTime() - Calendar.getInstance().getTimeZone().getOffset(parsedDate.getTime()));
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
         var gmt2 = sdf.format(gmt);
@@ -38,34 +34,30 @@ public class GeoPkgDateTestSetup extends JDBCDateTestSetup {
         //  (this is consistent with the DataTime handling).
         run("CREATE TABLE dates (id INTEGER PRIMARY KEY, d DATE, dt DATETIME, t TIME)");
 
-        run(
-                "INSERT INTO dates VALUES (1,"
-                        + "DATE('2009-06-28','localtime'), "
-                        + "'"
-                        + gmt2
-                        + "',"
-                        + "'"
-                        + ("15:12:41")
-                        + "')");
+        run("INSERT INTO dates VALUES (1,"
+                + "DATE('2009-06-28','localtime'), "
+                + "'"
+                + gmt2
+                + "',"
+                + "'"
+                + ("15:12:41")
+                + "')");
 
-        run(
-                "INSERT INTO dates VALUES (2,"
-                        + "DATE('2009-01-15','localtime'), "
-                        + "'2009-01-15T13:10:12Z',"
-                        + "'"
-                        + ("13:10:12")
-                        + "')");
+        run("INSERT INTO dates VALUES (2,"
+                + "DATE('2009-01-15','localtime'), "
+                + "'2009-01-15T13:10:12Z',"
+                + "'"
+                + ("13:10:12")
+                + "')");
 
-        run(
-                "INSERT INTO dates VALUES (3,"
-                        + "DATE('2009-09-29','localtime'), "
-                        + "'2009-09-29T17:54:23Z',"
-                        + "'"
-                        + ("17:54:23")
-                        + "')");
-        String sql =
-                "INSERT INTO gpkg_contents (table_name, data_type, identifier, srs_id) VALUES "
-                        + "('dates', 'features', 'dates', 4326)";
+        run("INSERT INTO dates VALUES (3,"
+                + "DATE('2009-09-29','localtime'), "
+                + "'2009-09-29T17:54:23Z',"
+                + "'"
+                + ("17:54:23")
+                + "')");
+        String sql = "INSERT INTO gpkg_contents (table_name, data_type, identifier, srs_id) VALUES "
+                + "('dates', 'features', 'dates', 4326)";
         run(sql);
     }
 

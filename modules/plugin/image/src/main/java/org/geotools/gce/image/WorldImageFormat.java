@@ -104,20 +104,14 @@ public final class WorldImageFormat extends AbstractGridFormat implements Format
     }
 
     /** Logger. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(WorldImageFormat.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(WorldImageFormat.class);
 
     /**
      * Format writing parameter. When writing a world image we need to provide an output format in
      * which we want to encode the image itself. PNG is default output format.
      */
-    public static final ParameterDescriptor<String> FORMAT =
-            DefaultParameterDescriptor.create(
-                    "Format",
-                    "Indicates the output format for this image",
-                    String.class,
-                    "png",
-                    true);
+    public static final ParameterDescriptor<String> FORMAT = DefaultParameterDescriptor.create(
+            "Format", "Indicates the output format for this image", String.class, "png", true);
 
     /** WorldImageFormat */
     public WorldImageFormat() {
@@ -137,18 +131,13 @@ public final class WorldImageFormat extends AbstractGridFormat implements Format
 
         // reading parameters
         readParameters =
-                new ParameterGroup(
-                        new DefaultParameterDescriptorGroup(
-                                mInfo,
-                                new GeneralParameterDescriptor[] {
-                                    READ_GRIDGEOMETRY2D,
-                                }));
+                new ParameterGroup(new DefaultParameterDescriptorGroup(mInfo, new GeneralParameterDescriptor[] {
+                    READ_GRIDGEOMETRY2D,
+                }));
 
         // writing parameters
-        writeParameters =
-                new ParameterGroup(
-                        new DefaultParameterDescriptorGroup(
-                                mInfo, new GeneralParameterDescriptor[] {FORMAT}));
+        writeParameters = new ParameterGroup(
+                new DefaultParameterDescriptorGroup(mInfo, new GeneralParameterDescriptor[] {FORMAT}));
     }
 
     /**
@@ -201,15 +190,15 @@ public final class WorldImageFormat extends AbstractGridFormat implements Format
         if (input instanceof URL) {
             final URL url = (URL) input;
             final String protocol = url.getProtocol();
-            if (protocol.equalsIgnoreCase("file")) pathname = URLs.urlToFile(url).getPath();
+            if (protocol.equalsIgnoreCase("file"))
+                pathname = URLs.urlToFile(url).getPath();
             else {
                 if (protocol.equalsIgnoreCase("http")) {
                     final String query;
                     try {
                         query = java.net.URLDecoder.decode(url.getQuery().intern(), "UTF-8");
                     } catch (UnsupportedEncodingException e) {
-                        if (LOGGER.isLoggable(Level.FINE))
-                            LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
+                        if (LOGGER.isLoggable(Level.FINE)) LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
                         return false;
                     }
 
@@ -297,8 +286,7 @@ public final class WorldImageFormat extends AbstractGridFormat implements Format
         try {
             return new WorldImageReader(source, hints);
         } catch (DataSourceException e) {
-            if (LOGGER.isLoggable(Level.WARNING))
-                LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
+            if (LOGGER.isLoggable(Level.WARNING)) LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
             return null;
         }
     }

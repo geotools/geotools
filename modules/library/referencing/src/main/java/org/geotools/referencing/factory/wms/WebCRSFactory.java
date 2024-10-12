@@ -93,8 +93,7 @@ public class WebCRSFactory extends DirectAuthorityFactory implements CRSAuthorit
      * @param ellipsoid The ellipsoid.
      * @throws FactoryException if factories failed to creates the CRS.
      */
-    private void add(final int code, final String name, final Ellipsoid ellipsoid)
-            throws FactoryException {
+    private void add(final int code, final String name, final Ellipsoid ellipsoid) throws FactoryException {
         assert Thread.holdsLock(this);
         final Map<String, Object> properties = new HashMap<>();
         final Citation authority = getAuthority();
@@ -102,20 +101,13 @@ public class WebCRSFactory extends DirectAuthorityFactory implements CRSAuthorit
         properties.put(IdentifiedObject.NAME_KEY, name);
         properties.put(Identifier.AUTHORITY_KEY, authority);
         final GeodeticDatum datum =
-                factories
-                        .getDatumFactory()
-                        .createGeodeticDatum(properties, ellipsoid, DefaultPrimeMeridian.GREENWICH);
+                factories.getDatumFactory().createGeodeticDatum(properties, ellipsoid, DefaultPrimeMeridian.GREENWICH);
 
-        properties.put(
-                IdentifiedObject.IDENTIFIERS_KEY,
-                new NamedIdentifier[] {
-                    new NamedIdentifier(authority, text),
-                    new NamedIdentifier(authority, PREFIX + text)
-                });
+        properties.put(IdentifiedObject.IDENTIFIERS_KEY, new NamedIdentifier[] {
+            new NamedIdentifier(authority, text), new NamedIdentifier(authority, PREFIX + text)
+        });
         final CoordinateReferenceSystem crs =
-                factories
-                        .getCRSFactory()
-                        .createGeographicCRS(properties, datum, DefaultEllipsoidalCS.GEODETIC_2D);
+                factories.getCRSFactory().createGeographicCRS(properties, datum, DefaultEllipsoidalCS.GEODETIC_2D);
         if (crsMap.put(code, crs) != null) {
             throw new IllegalArgumentException(text);
         }
@@ -139,12 +131,10 @@ public class WebCRSFactory extends DirectAuthorityFactory implements CRSAuthorit
      * factory}.
      */
     @Override
-    public Set<String> getAuthorityCodes(final Class<? extends IdentifiedObject> type)
-            throws FactoryException {
+    public Set<String> getAuthorityCodes(final Class<? extends IdentifiedObject> type) throws FactoryException {
         ensureInitialized();
         final Set<String> set = new LinkedHashSet<>();
-        for (Map.Entry<Integer, CoordinateReferenceSystem> integerCoordinateReferenceSystemEntry :
-                crsMap.entrySet()) {
+        for (Map.Entry<Integer, CoordinateReferenceSystem> integerCoordinateReferenceSystemEntry : crsMap.entrySet()) {
             final Map.Entry entry = (Map.Entry) integerCoordinateReferenceSystemEntry;
             final CoordinateReferenceSystem crs = (CoordinateReferenceSystem) entry.getValue();
             if (type.isAssignableFrom(crs.getClass())) {
@@ -172,8 +162,7 @@ public class WebCRSFactory extends DirectAuthorityFactory implements CRSAuthorit
 
     /** Creates a coordinate reference system from the specified code. */
     @Override
-    public CoordinateReferenceSystem createCoordinateReferenceSystem(final String code)
-            throws FactoryException {
+    public CoordinateReferenceSystem createCoordinateReferenceSystem(final String code) throws FactoryException {
         String c = trimAuthority(code).toUpperCase();
         if (c.startsWith(PREFIX)) {
             c = c.substring(PREFIX.length());
@@ -183,8 +172,7 @@ public class WebCRSFactory extends DirectAuthorityFactory implements CRSAuthorit
             i = Integer.parseInt(c);
         } catch (NumberFormatException exception) {
             // If a number can't be parsed, then this is an invalid authority code.
-            NoSuchAuthorityCodeException e =
-                    noSuchAuthorityCode(CoordinateReferenceSystem.class, code);
+            NoSuchAuthorityCodeException e = noSuchAuthorityCode(CoordinateReferenceSystem.class, code);
             e.initCause(exception);
             throw e;
         }

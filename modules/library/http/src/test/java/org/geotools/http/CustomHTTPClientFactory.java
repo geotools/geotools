@@ -27,8 +27,7 @@ public class CustomHTTPClientFactory extends AbstractHTTPClientFactory {
         }
 
         @Override
-        public HTTPResponse post(URL url, InputStream content, String contentType)
-                throws IOException {
+        public HTTPResponse post(URL url, InputStream content, String contentType) throws IOException {
             return null;
         }
     }

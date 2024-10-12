@@ -48,8 +48,7 @@ import org.xml.sax.helpers.NamespaceSupport;
  */
 public class XPathUtil {
 
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(XPathUtil.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(XPathUtil.class);
 
     public static class StepList extends CheckedArrayList<Step> {
         private static final long serialVersionUID = -5612786286175355862L;
@@ -107,8 +106,7 @@ public class XPathUtil {
             if (fromIndex < 0) throw new IndexOutOfBoundsException("fromIndex = " + fromIndex);
             if (toIndex > size()) throw new IndexOutOfBoundsException("toIndex = " + toIndex);
             if (fromIndex > toIndex)
-                throw new IllegalArgumentException(
-                        "fromIndex(" + fromIndex + ") > toIndex(" + toIndex + ")");
+                throw new IllegalArgumentException("fromIndex(" + fromIndex + ") > toIndex(" + toIndex + ")");
             StepList subList = new StepList();
             for (int i = fromIndex; i < toIndex; i++) {
                 subList.add(this.get(i));
@@ -266,8 +264,7 @@ public class XPathUtil {
             if (other == this) {
                 return true;
             }
-            return attributeName.equals(other.attributeName)
-                    && isXmlAttribute == other.isXmlAttribute;
+            return attributeName.equals(other.attributeName) && isXmlAttribute == other.isXmlAttribute;
         }
 
         public int getIndex() {
@@ -384,8 +381,7 @@ public class XPathUtil {
      * @return A list of unique of steps in an xpath expression.
      * @throws IllegalArgumentException if <code>root</code> is undefined.
      */
-    public static StepList rootElementSteps(
-            final AttributeDescriptor rootElement, final NamespaceSupport namespaces)
+    public static StepList rootElementSteps(final AttributeDescriptor rootElement, final NamespaceSupport namespaces)
             throws IllegalArgumentException {
 
         if (rootElement == null) {
@@ -410,9 +406,7 @@ public class XPathUtil {
      *     valid XPath expression against <code>type</code>.
      */
     public static StepList steps(
-            final AttributeDescriptor root,
-            final String xpathExpression,
-            final NamespaceSupport namespaces)
+            final AttributeDescriptor root, final String xpathExpression, final NamespaceSupport namespaces)
             throws IllegalArgumentException {
 
         if (root == null) {
@@ -540,27 +534,21 @@ public class XPathUtil {
             localName = prefixedName;
             final Name rootName = root.getName();
             // don't use default namespace for client properties (xml attribute), and FEATURE_LINK
-            final String defaultNamespace =
-                    (isXmlAttribute
-                                    || localName.equals(
-                                            ComplexFeatureConstants.FEATURE_CHAINING_LINK_NAME
-                                                    .getLocalPart())
-                                    || rootName.getNamespaceURI() == null)
-                            ? XMLConstants.NULL_NS_URI
-                            : namespaces.getURI("") == null
-                                    ? rootName.getNamespaceURI()
-                                    : namespaces.getURI("");
+            final String defaultNamespace = (isXmlAttribute
+                            || localName.equals(ComplexFeatureConstants.FEATURE_CHAINING_LINK_NAME.getLocalPart())
+                            || rootName.getNamespaceURI() == null)
+                    ? XMLConstants.NULL_NS_URI
+                    : namespaces.getURI("") == null ? rootName.getNamespaceURI() : namespaces.getURI("");
             namespaceUri = defaultNamespace;
             if (XMLConstants.NULL_NS_URI.equals(defaultNamespace)) {
                 prefix = XMLConstants.DEFAULT_NS_PREFIX;
             } else {
                 if (!localName.equals(rootName.getLocalPart())) {
-                    LOGGER.fine(
-                            "Using root's namespace "
-                                    + defaultNamespace
-                                    + " for step named '"
-                                    + localName
-                                    + "', as no prefix was stated");
+                    LOGGER.fine("Using root's namespace "
+                            + defaultNamespace
+                            + " for step named '"
+                            + localName
+                            + "', as no prefix was stated");
                 }
                 prefix = namespaces.getPrefix(defaultNamespace);
 

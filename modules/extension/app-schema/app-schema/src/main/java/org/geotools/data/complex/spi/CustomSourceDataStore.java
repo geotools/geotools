@@ -80,13 +80,9 @@ public interface CustomSourceDataStore {
      * @return a custom iterator or NULL
      */
     DataAccessMappingFeatureIterator buildIterator(
-            AppSchemaDataAccess store,
-            FeatureTypeMapping featureTypeMapping,
-            Query query,
-            Transaction transaction);
+            AppSchemaDataAccess store, FeatureTypeMapping featureTypeMapping, Query query, Transaction transaction);
 
-    default List<PropertyName> getSurrogatePropertyNames(
-            List<PropertyName> requested, FeatureTypeMapping mapping) {
+    default List<PropertyName> getSurrogatePropertyNames(List<PropertyName> requested, FeatureTypeMapping mapping) {
         return Collections.emptyList();
     }
 
@@ -96,8 +92,7 @@ public interface CustomSourceDataStore {
      * @return the list of found custom data store extensions
      */
     static List<CustomSourceDataStore> loadExtensions() {
-        ServiceLoader<CustomSourceDataStore> loader =
-                ServiceLoader.load(CustomSourceDataStore.class);
+        ServiceLoader<CustomSourceDataStore> loader = ServiceLoader.load(CustomSourceDataStore.class);
         loader.reload();
         // get the custom data store extensions from the loader
         List<CustomSourceDataStore> extensions = new ArrayList<>();

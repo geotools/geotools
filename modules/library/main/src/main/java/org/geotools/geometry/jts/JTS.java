@@ -92,8 +92,7 @@ public final class JTS {
     /** A pool of direct positions for use in {@link #orthodromicDistance}. */
     private static final GeneralPosition[] POSITIONS = new GeneralPosition[4];
 
-    public static final AffineTransformation Y_INVERSION =
-            new AffineTransformation(1, 0, 0, 0, -1, 0);
+    public static final AffineTransformation Y_INVERSION = new AffineTransformation(1, 0, 0, 0, -1, 0);
 
     static {
         for (int i = 0; i < POSITIONS.length; i++) {
@@ -108,8 +107,7 @@ public final class JTS {
      * <p>Note: We would like to use {@link org.geotools.util.CanonicalSet}, but we can't because
      * {@link GeodeticCalculator} keep a reference to the CRS which is used as the key.
      */
-    private static final Map<CoordinateReferenceSystem, GeodeticCalculator> CALCULATORS =
-            new HashMap<>();
+    private static final Map<CoordinateReferenceSystem, GeodeticCalculator> CALCULATORS = new HashMap<>();
 
     /** Do not allow instantiation of this class. */
     private JTS() {}
@@ -121,11 +119,9 @@ public final class JTS {
      * @param object User argument.
      * @throws IllegalArgumentException if {@code object} is null.
      */
-    private static void ensureNonNull(final String name, final Object object)
-            throws IllegalArgumentException {
+    private static void ensureNonNull(final String name, final Object object) throws IllegalArgumentException {
         if (object == null) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, name));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, name));
         }
     }
 
@@ -141,8 +137,7 @@ public final class JTS {
      * @return The transformed Envelope
      * @throws TransformException if at least one coordinate can't be transformed.
      */
-    public static Envelope transform(final Envelope envelope, final MathTransform transform)
-            throws TransformException {
+    public static Envelope transform(final Envelope envelope, final MathTransform transform) throws TransformException {
         return transform(envelope, null, transform, 5);
     }
 
@@ -171,19 +166,14 @@ public final class JTS {
      * @throws TransformException if a coordinate can't be transformed.
      */
     public static Envelope transform(
-            final Envelope sourceEnvelope,
-            Envelope targetEnvelope,
-            final MathTransform transform,
-            int npoints)
+            final Envelope sourceEnvelope, Envelope targetEnvelope, final MathTransform transform, int npoints)
             throws TransformException {
         ensureNonNull("sourceEnvelope", sourceEnvelope);
         ensureNonNull("transform", transform);
 
-        if (transform.getSourceDimensions() != transform.getTargetDimensions()
-                || transform.getSourceDimensions() < 2) {
+        if (transform.getSourceDimensions() != transform.getTargetDimensions() || transform.getSourceDimensions() < 2) {
             final Object arg0 = Classes.getShortClassName(transform);
-            throw new MismatchedDimensionException(
-                    MessageFormat.format(ErrorKeys.BAD_TRANSFORM_$1, arg0));
+            throw new MismatchedDimensionException(MessageFormat.format(ErrorKeys.BAD_TRANSFORM_$1, arg0));
         }
 
         npoints++; // for the starting point.
@@ -237,10 +227,7 @@ public final class JTS {
      */
     // JTS.transformUp(this, targetCRS, numPointsForTransformation );
     public static ReferencedEnvelope3D transformTo3D(
-            final ReferencedEnvelope sourceEnvelope,
-            CoordinateReferenceSystem targetCRS,
-            boolean lenient,
-            int npoints)
+            final ReferencedEnvelope sourceEnvelope, CoordinateReferenceSystem targetCRS, boolean lenient, int npoints)
             throws TransformException, OperationNotFoundException, FactoryException {
         final double xmin = sourceEnvelope.getMinX();
         final double xmax = sourceEnvelope.getMaxX();
@@ -254,15 +241,12 @@ public final class JTS {
          * Gets a first estimation using an algorithm capable to take singularity in account
          * (North pole, South pole, 180ï¿½ longitude). We will expand this initial box later.
          */
-        CoordinateOperationFactory coordinateOperationFactory =
-                CRS.getCoordinateOperationFactory(lenient);
-        CoordinateOperation operation1 =
-                coordinateOperationFactory.createOperation(
-                        sourceEnvelope.getCoordinateReferenceSystem(), DefaultGeographicCRS.WGS84);
+        CoordinateOperationFactory coordinateOperationFactory = CRS.getCoordinateOperationFactory(lenient);
+        CoordinateOperation operation1 = coordinateOperationFactory.createOperation(
+                sourceEnvelope.getCoordinateReferenceSystem(), DefaultGeographicCRS.WGS84);
         MathTransform transform1 = operation1.getMathTransform();
         final CoordinateOperation operation2 =
-                coordinateOperationFactory.createOperation(
-                        DefaultGeographicCRS.WGS84_3D, targetCRS);
+                coordinateOperationFactory.createOperation(DefaultGeographicCRS.WGS84_3D, targetCRS);
         MathTransform transform2 = operation2.getMathTransform();
 
         for (int t = 0; t < npoints; t++) {
@@ -296,10 +280,7 @@ public final class JTS {
      * @return ReferencedEnvelope matching provided 2D TargetCRS
      */
     public static ReferencedEnvelope transformTo2D(
-            final ReferencedEnvelope sourceEnvelope,
-            CoordinateReferenceSystem targetCRS,
-            boolean lenient,
-            int npoints)
+            final ReferencedEnvelope sourceEnvelope, CoordinateReferenceSystem targetCRS, boolean lenient, int npoints)
             throws TransformException, OperationNotFoundException, FactoryException {
         final double xmin = sourceEnvelope.getMinX();
         final double xmax = sourceEnvelope.getMaxX();
@@ -321,12 +302,10 @@ public final class JTS {
          * Gets a first estimation using an algorithm capable to take singularity in account
          * (North pole, South pole, 180ï¿½ longitude). We will expand this initial box later.
          */
-        CoordinateOperationFactory coordinateOperationFactory =
-                CRS.getCoordinateOperationFactory(lenient);
+        CoordinateOperationFactory coordinateOperationFactory = CRS.getCoordinateOperationFactory(lenient);
         CoordinateReferenceSystem sourceCRS = sourceEnvelope.getCoordinateReferenceSystem();
         CoordinateOperation operation1 =
-                coordinateOperationFactory.createOperation(
-                        sourceCRS, DefaultGeographicCRS.WGS84_3D);
+                coordinateOperationFactory.createOperation(sourceCRS, DefaultGeographicCRS.WGS84_3D);
         MathTransform transform1 = operation1.getMathTransform();
         final CoordinateOperation operation2 =
                 coordinateOperationFactory.createOperation(DefaultGeographicCRS.WGS84, targetCRS);
@@ -374,9 +353,7 @@ public final class JTS {
      * @return Position in target CRS as calculated by transform2
      */
     private static Position transformTo3D(
-            GeneralPosition srcPosition,
-            MathTransform transformToWGS84,
-            MathTransform transformFromWGS84_3D)
+            GeneralPosition srcPosition, MathTransform transformToWGS84, MathTransform transformFromWGS84_3D)
             throws TransformException {
         Position world2D = transformToWGS84.transform(srcPosition, null);
 
@@ -399,13 +376,10 @@ public final class JTS {
      * @return Position in target CRS as calculated by transform2
      */
     private static Position transformTo2D(
-            GeneralPosition srcPosition,
-            MathTransform transformToWGS84_3D,
-            MathTransform transformFromWGS84)
+            GeneralPosition srcPosition, MathTransform transformToWGS84_3D, MathTransform transformFromWGS84)
             throws TransformException {
         if (Double.isNaN(srcPosition.getOrdinate(2))) {
-            srcPosition.setOrdinate(
-                    2, 0.0); // lazy add 3rd ordinate if not provided to prevent failure
+            srcPosition.setOrdinate(2, 0.0); // lazy add 3rd ordinate if not provided to prevent failure
         }
         Position world3D = transformToWGS84_3D.transform(srcPosition, null);
 
@@ -429,8 +403,7 @@ public final class JTS {
      */
     public static Geometry transform(final Geometry geom, final MathTransform transform)
             throws MismatchedDimensionException, TransformException {
-        final GeometryCoordinateSequenceTransformer transformer =
-                new GeometryCoordinateSequenceTransformer();
+        final GeometryCoordinateSequenceTransformer transformer = new GeometryCoordinateSequenceTransformer();
         transformer.setMathTransform(transform);
 
         return transformer.transform(geom);
@@ -445,8 +418,7 @@ public final class JTS {
      * @return the destination coordinate if not null or a new Coordinate.
      * @throws TransformException if the coordinate can't be transformed.
      */
-    public static Coordinate transform(
-            final Coordinate source, Coordinate dest, final MathTransform transform)
+    public static Coordinate transform(final Coordinate source, Coordinate dest, final MathTransform transform)
             throws TransformException {
         ensureNonNull("source", source);
         ensureNonNull("transform", transform);
@@ -489,8 +461,7 @@ public final class JTS {
      * @return The envelope transformed to be in {@link DefaultGeographicCRS#WGS84}.
      * @throws TransformException If at least one coordinate can't be transformed.
      */
-    public static Envelope toGeographic(
-            final Envelope envelope, final CoordinateReferenceSystem crs)
+    public static Envelope toGeographic(final Envelope envelope, final CoordinateReferenceSystem crs)
             throws TransformException {
         if (CRS.equalsIgnoreMetadata(crs, DefaultGeographicCRS.WGS84)) {
             if (envelope instanceof ReferencedEnvelope) {
@@ -512,8 +483,7 @@ public final class JTS {
      * @param envelope The envelope to transform
      * @return The envelope transformed to be in WGS84 CRS
      */
-    public static ReferencedEnvelope toGeographic(final ReferencedEnvelope envelope)
-            throws TransformException {
+    public static ReferencedEnvelope toGeographic(final ReferencedEnvelope envelope) throws TransformException {
         try {
             return envelope.transform(DefaultGeographicCRS.WGS84, true);
         } catch (FactoryException exception) {
@@ -600,8 +570,7 @@ public final class JTS {
      *     a {@linkplain org.geotools.api.referencing.crs.GeographicCRS geographic CRS}.
      */
     public static synchronized double orthodromicDistance(
-            final Coordinate p1, final Coordinate p2, final CoordinateReferenceSystem crs)
-            throws TransformException {
+            final Coordinate p1, final Coordinate p2, final CoordinateReferenceSystem crs) throws TransformException {
         ensureNonNull("p1", p1);
         ensureNonNull("p2", p2);
         ensureNonNull("crs", crs);
@@ -619,8 +588,8 @@ public final class JTS {
         }
         assert crs.equals(gc.getCoordinateReferenceSystem()) : crs;
 
-        final GeneralPosition pos =
-                POSITIONS[Math.min(POSITIONS.length - 1, crs.getCoordinateSystem().getDimension())];
+        final GeneralPosition pos = POSITIONS[
+                Math.min(POSITIONS.length - 1, crs.getCoordinateSystem().getDimension())];
         pos.setCoordinateReferenceSystem(crs);
         copy(p1, pos.ordinates);
         gc.setStartingPosition(pos);
@@ -635,8 +604,7 @@ public final class JTS {
      *
      * @return DirectPosition
      */
-    public static Position toDirectPosition(
-            final Coordinate point, final CoordinateReferenceSystem crs) {
+    public static Position toDirectPosition(final Coordinate point, final CoordinateReferenceSystem crs) {
         // GeneralDirectPosition directPosition = new GeneralDirectPosition(crs);
         // copy( point, directPosition.ordinates );
         // return directPosition;
@@ -741,8 +709,7 @@ public final class JTS {
         ensureNonNull("shape", shape);
         ensureNonNull("factory", factory);
 
-        final PathIterator iterator =
-                shape.getPathIterator(null, ShapeUtilities.getFlatness(shape));
+        final PathIterator iterator = shape.getPathIterator(null, ShapeUtilities.getFlatness(shape));
         final double[] buffer = new double[6];
         final List<Coordinate> coords = new ArrayList<>();
         final List<LineString> lines = new ArrayList<>();
@@ -753,40 +720,33 @@ public final class JTS {
                      * Close the polygon: the last point is equal to the first point, and a LinearRing is
                      * created.
                      */
-                case PathIterator.SEG_CLOSE:
-                    {
-                        if (!coords.isEmpty()) {
-                            coords.add(coords.get(0));
-                            lines.add(
-                                    factory.createLinearRing(
-                                            coords.toArray(new Coordinate[coords.size()])));
-                            coords.clear();
-                        }
-                        break;
+                case PathIterator.SEG_CLOSE: {
+                    if (!coords.isEmpty()) {
+                        coords.add(coords.get(0));
+                        lines.add(factory.createLinearRing(coords.toArray(new Coordinate[coords.size()])));
+                        coords.clear();
                     }
+                    break;
+                }
 
                     /*
                      * General case: A LineString is created from previous points, and a new LineString
                      * begin for next points.
                      */
-                case PathIterator.SEG_MOVETO:
-                    {
-                        if (!coords.isEmpty()) {
-                            lines.add(
-                                    factory.createLineString(
-                                            coords.toArray(new Coordinate[coords.size()])));
-                            coords.clear();
-                        }
-
-                        // Fall through
+                case PathIterator.SEG_MOVETO: {
+                    if (!coords.isEmpty()) {
+                        lines.add(factory.createLineString(coords.toArray(new Coordinate[coords.size()])));
+                        coords.clear();
                     }
 
-                case PathIterator.SEG_LINETO:
-                    {
-                        coords.add(new Coordinate(buffer[0], buffer[1]));
+                    // Fall through
+                }
 
-                        break;
-                    }
+                case PathIterator.SEG_LINETO: {
+                    coords.add(new Coordinate(buffer[0], buffer[1]));
+
+                    break;
+                }
 
                 default:
                     throw new IllegalPathStateException();
@@ -872,17 +832,15 @@ public final class JTS {
         if (factory == null) {
             factory = new GeometryFactory();
         }
-        Polygon polygon =
-                factory.createPolygon(
-                        factory.createLinearRing(
-                                new Coordinate[] {
-                                    new Coordinate(envelope.getMinX(), envelope.getMinY()),
-                                    new Coordinate(envelope.getMaxX(), envelope.getMinY()),
-                                    new Coordinate(envelope.getMaxX(), envelope.getMaxY()),
-                                    new Coordinate(envelope.getMinX(), envelope.getMaxY()),
-                                    new Coordinate(envelope.getMinX(), envelope.getMinY())
-                                }),
-                        null);
+        Polygon polygon = factory.createPolygon(
+                factory.createLinearRing(new Coordinate[] {
+                    new Coordinate(envelope.getMinX(), envelope.getMinY()),
+                    new Coordinate(envelope.getMaxX(), envelope.getMinY()),
+                    new Coordinate(envelope.getMaxX(), envelope.getMaxY()),
+                    new Coordinate(envelope.getMinX(), envelope.getMaxY()),
+                    new Coordinate(envelope.getMinX(), envelope.getMinY())
+                }),
+                null);
         if (envelope instanceof ReferencedEnvelope) {
             ReferencedEnvelope refEnv = (ReferencedEnvelope) envelope;
             setCRS(polygon, refEnv.getCoordinateReferenceSystem());
@@ -993,8 +951,7 @@ public final class JTS {
      * @return The geometry transformed to be in {@link DefaultGeographicCRS#WGS84}.
      * @throws TransformException If at least one coordinate can't be transformed.
      */
-    public static Geometry toGeographic(Geometry geom, final CoordinateReferenceSystem crs)
-            throws TransformException {
+    public static Geometry toGeographic(Geometry geom, final CoordinateReferenceSystem crs) throws TransformException {
         if (crs == null) {
             return geom;
         }
@@ -1005,8 +962,7 @@ public final class JTS {
                 setCRS(geometry, crs);
                 return geometry; // The extra Z values will be ignored
             } catch (FactoryException exception) {
-                throw new TransformException(
-                        MessageFormat.format(ErrorKeys.CANT_REPROJECT_$1, crs));
+                throw new TransformException(MessageFormat.format(ErrorKeys.CANT_REPROJECT_$1, crs));
             }
         } else if (CRS.equalsIgnoreMetadata(crs, DefaultGeographicCRS.WGS84)) {
             return geom;
@@ -1017,8 +973,7 @@ public final class JTS {
                 setCRS(geometry, crs);
                 return geometry;
             } catch (FactoryException exception) {
-                throw new TransformException(
-                        MessageFormat.format(ErrorKeys.CANT_REPROJECT_$1, crs));
+                throw new TransformException(MessageFormat.format(ErrorKeys.CANT_REPROJECT_$1, crs));
             }
         }
     }
@@ -1052,17 +1007,15 @@ public final class JTS {
         ensureNonNull("bbox", bbox);
         ensureNonNull("factory", factory);
 
-        Polygon polygon =
-                factory.createPolygon(
-                        factory.createLinearRing(
-                                new Coordinate[] {
-                                    new Coordinate(bbox.getMinX(), bbox.getMinY()),
-                                    new Coordinate(bbox.getMaxX(), bbox.getMinY()),
-                                    new Coordinate(bbox.getMaxX(), bbox.getMaxY()),
-                                    new Coordinate(bbox.getMinX(), bbox.getMaxY()),
-                                    new Coordinate(bbox.getMinX(), bbox.getMinY())
-                                }),
-                        null);
+        Polygon polygon = factory.createPolygon(
+                factory.createLinearRing(new Coordinate[] {
+                    new Coordinate(bbox.getMinX(), bbox.getMinY()),
+                    new Coordinate(bbox.getMaxX(), bbox.getMinY()),
+                    new Coordinate(bbox.getMaxX(), bbox.getMaxY()),
+                    new Coordinate(bbox.getMinX(), bbox.getMaxY()),
+                    new Coordinate(bbox.getMinX(), bbox.getMinY())
+                }),
+                null);
         setCRS(polygon, bbox.getCoordinateReferenceSystem());
         return polygon;
     }
@@ -1084,10 +1037,8 @@ public final class JTS {
 
         // check if unbounded, many projected systems are, in this case no check
         // is needed
-        boolean xUnbounded =
-                Double.isInfinite(x.getMinimumValue()) && Double.isInfinite(x.getMaximumValue());
-        boolean yUnbounded =
-                Double.isInfinite(y.getMinimumValue()) && Double.isInfinite(y.getMaximumValue());
+        boolean xUnbounded = Double.isInfinite(x.getMinimumValue()) && Double.isInfinite(x.getMaximumValue());
+        boolean yUnbounded = Double.isInfinite(y.getMinimumValue()) && Double.isInfinite(y.getMaximumValue());
 
         if (xUnbounded && yUnbounded) {
             return;
@@ -1097,28 +1048,14 @@ public final class JTS {
         Coordinate[] c = geom.getCoordinates();
 
         for (Coordinate coordinate : c) {
-            if (!xUnbounded
-                    && ((coordinate.x < x.getMinimumValue())
-                            || (coordinate.x > x.getMaximumValue()))) {
+            if (!xUnbounded && ((coordinate.x < x.getMinimumValue()) || (coordinate.x > x.getMaximumValue()))) {
                 throw new PointOutsideEnvelopeException(
-                        coordinate.x
-                                + " outside of ("
-                                + x.getMinimumValue()
-                                + ","
-                                + x.getMaximumValue()
-                                + ")");
+                        coordinate.x + " outside of (" + x.getMinimumValue() + "," + x.getMaximumValue() + ")");
             }
 
-            if (!yUnbounded
-                    && ((coordinate.y < y.getMinimumValue())
-                            || (coordinate.y > y.getMaximumValue()))) {
+            if (!yUnbounded && ((coordinate.y < y.getMinimumValue()) || (coordinate.y > y.getMaximumValue()))) {
                 throw new PointOutsideEnvelopeException(
-                        coordinate.y
-                                + " outside of ("
-                                + y.getMinimumValue()
-                                + ","
-                                + y.getMaximumValue()
-                                + ")");
+                        coordinate.y + " outside of (" + y.getMinimumValue() + "," + y.getMaximumValue() + ")");
             }
         }
     }
@@ -1177,10 +1114,7 @@ public final class JTS {
     }
 
     private static Geometry smooth(
-            final Geometry geom,
-            final double fit,
-            final GeometryFactory factory,
-            GeometrySmoother smoother) {
+            final Geometry geom, final double fit, final GeometryFactory factory, GeometrySmoother smoother) {
 
         switch (Geometries.get(geom)) {
             case POINT:
@@ -1205,8 +1139,7 @@ public final class JTS {
                 return smoothGeometryCollection(factory, smoother, geom, fit);
 
             default:
-                throw new UnsupportedOperationException(
-                        "No smoothing method available for " + geom.getGeometryType());
+                throw new UnsupportedOperationException("No smoothing method available for " + geom.getGeometryType());
         }
     }
 
@@ -1231,8 +1164,7 @@ public final class JTS {
         LineString[] smoothed = new LineString[N];
 
         for (int i = 0; i < N; i++) {
-            smoothed[i] =
-                    (LineString) smoothLineString(factory, smoother, geom.getGeometryN(i), fit);
+            smoothed[i] = (LineString) smoothLineString(factory, smoother, geom.getGeometryN(i), fit);
         }
 
         return factory.createMultiLineString(smoothed);
@@ -1279,8 +1211,7 @@ public final class JTS {
      * @param size the number of coordinates in the sequence
      * @param dimension the dimension of the coordinates in the sequence
      */
-    public static CoordinateSequence createCS(
-            CoordinateSequenceFactory csFactory, int size, int dimension) {
+    public static CoordinateSequence createCS(CoordinateSequenceFactory csFactory, int size, int dimension) {
         // the coordinates don't have measures
         return createCS(csFactory, size, dimension, 0);
     }
@@ -1314,10 +1245,7 @@ public final class JTS {
         if (cs.getDimension() != dimension) {
             // illegal state error, try and fix
             throw new IllegalStateException(
-                    "Unable to use"
-                            + csFactory
-                            + " to produce CoordinateSequence with dimension "
-                            + dimension);
+                    "Unable to use" + csFactory + " to produce CoordinateSequence with dimension " + dimension);
         }
         return cs;
     }
@@ -1506,8 +1434,7 @@ public final class JTS {
         }
 
         throw new IllegalArgumentException(
-                "This method can work on LineString, Polygon and Multipolygon: "
-                        + geometry.getClass());
+                "This method can work on LineString, Polygon and Multipolygon: " + geometry.getClass());
     }
 
     /**
@@ -1517,32 +1444,27 @@ public final class JTS {
     public static List<Polygon> makeValid(Polygon polygon, boolean removeHoles) {
         // add all segments into the polygonizer
         final Polygonizer p = new Polygonizer();
-        polygon.apply(
-                new CoordinateSequenceFilter() {
+        polygon.apply(new CoordinateSequenceFilter() {
 
-                    @Override
-                    public boolean isGeometryChanged() {
-                        return false;
-                    }
+            @Override
+            public boolean isGeometryChanged() {
+                return false;
+            }
 
-                    @Override
-                    public boolean isDone() {
-                        return false;
-                    }
+            @Override
+            public boolean isDone() {
+                return false;
+            }
 
-                    @Override
-                    public void filter(CoordinateSequence seq, int i) {
-                        if (i == 0) {
-                            return;
-                        }
-                        p.add(
-                                new GeometryFactory()
-                                        .createLineString(
-                                                new Coordinate[] {
-                                                    seq.getCoordinate(i - 1), seq.getCoordinate(i)
-                                                }));
-                    }
-                });
+            @Override
+            public void filter(CoordinateSequence seq, int i) {
+                if (i == 0) {
+                    return;
+                }
+                p.add(new GeometryFactory()
+                        .createLineString(new Coordinate[] {seq.getCoordinate(i - 1), seq.getCoordinate(i)}));
+            }
+        });
 
         @SuppressWarnings("unchecked")
         List<Polygon> result = new ArrayList<>(p.getPolygons());
@@ -1584,8 +1506,7 @@ public final class JTS {
         if (rectangle == null) {
             return null;
         }
-        return new Envelope(
-                rectangle.getMinX(), rectangle.getMaxX(), rectangle.getMinY(), rectangle.getMaxY());
+        return new Envelope(rectangle.getMinX(), rectangle.getMaxX(), rectangle.getMinY(), rectangle.getMaxY());
     }
 
     /**
@@ -1647,13 +1568,11 @@ public final class JTS {
      *     CRSs are equal according to CRS#equalsIgnoreMetadata
      */
     public static boolean equals(BoundingBox a, BoundingBox b, double tolerance) {
-        boolean flatEqual =
-                Math.abs(a.getMinX() - b.getMinX()) <= tolerance
-                        && Math.abs(a.getMinY() - b.getMinY()) <= tolerance
-                        && Math.abs(a.getMaxX() - b.getMaxX()) <= tolerance
-                        && Math.abs(a.getMaxY() - b.getMaxY()) <= tolerance
-                        && CRS.equalsIgnoreMetadata(
-                                a.getCoordinateReferenceSystem(), b.getCoordinateReferenceSystem());
+        boolean flatEqual = Math.abs(a.getMinX() - b.getMinX()) <= tolerance
+                && Math.abs(a.getMinY() - b.getMinY()) <= tolerance
+                && Math.abs(a.getMaxX() - b.getMaxX()) <= tolerance
+                && Math.abs(a.getMaxY() - b.getMaxY()) <= tolerance
+                && CRS.equalsIgnoreMetadata(a.getCoordinateReferenceSystem(), b.getCoordinateReferenceSystem());
         if (!flatEqual) return false;
 
         if (a instanceof BoundingBox3D && b instanceof BoundingBox3D) {

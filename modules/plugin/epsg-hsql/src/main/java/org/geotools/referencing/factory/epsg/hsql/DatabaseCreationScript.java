@@ -45,8 +45,7 @@ public class DatabaseCreationScript {
 
         /** The files we're interested into */
         File directory = new File(inputDirectory);
-        File propertyFile =
-                new File(directory, ThreadedHsqlEpsgFactory.DATABASE_NAME + ".properties");
+        File propertyFile = new File(directory, ThreadedHsqlEpsgFactory.DATABASE_NAME + ".properties");
         File databaseFile = new File(directory, ThreadedHsqlEpsgFactory.DATABASE_NAME + ".data");
         File backupFile = new File(directory, ThreadedHsqlEpsgFactory.DATABASE_NAME + ".backup");
         File scriptFile = new File(directory, ThreadedHsqlEpsgFactory.DATABASE_NAME + ".script");
@@ -90,17 +89,13 @@ public class DatabaseCreationScript {
             // read and execute the scripts that make up the database
             executeScript(new File(directory, "EPSG_Tables.sql"), statement);
             executeScript(new File(directory, "EPSG_Data.sql"), statement);
-            statement.execute(
-                    "UPDATE EPSG_DATUM SET REALIZATION_EPOCH = NULL WHERE REALIZATION_EPOCH = ''");
+            statement.execute("UPDATE EPSG_DATUM SET REALIZATION_EPOCH = NULL WHERE REALIZATION_EPOCH = ''");
             statement.execute("ALTER TABLE EPSG_DATUM ALTER COLUMN REALIZATION_EPOCH DATE");
             executeScript(new File(directory, "EPSG_FKeys.sql"), statement);
             executeScript(new File(directory, "EPSG_Indexes.sql"), statement);
             statement.execute("SHUTDOWN COMPACT");
         } catch (IOException exception) {
-            SQLException e =
-                    new SQLException(
-                            "Error occurred while executing "
-                                    + "the EPSG database creation scripts");
+            SQLException e = new SQLException("Error occurred while executing " + "the EPSG database creation scripts");
             e.initCause(exception);
             throw e;
         }
@@ -148,12 +143,10 @@ public class DatabaseCreationScript {
         backupFile.delete();
         scriptFile.delete();
 
-        System.out.println(
-                "Done. The zipped database file is available at " + zipFile.getAbsolutePath());
+        System.out.println("Done. The zipped database file is available at " + zipFile.getAbsolutePath());
     }
 
-    static void executeScript(File scriptFile, Statement statement)
-            throws IOException, SQLException {
+    static void executeScript(File scriptFile, Statement statement) throws IOException, SQLException {
         System.out.println("Executing script " + scriptFile.getPath());
         SqlScriptReader reader = null;
         try {

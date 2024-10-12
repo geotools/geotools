@@ -354,16 +354,13 @@ public final class Utilities {
             return false;
         }
         if (object1 instanceof Object[]) {
-            return (object2 instanceof Object[])
-                    && Arrays.deepEquals((Object[]) object1, (Object[]) object2);
+            return (object2 instanceof Object[]) && Arrays.deepEquals((Object[]) object1, (Object[]) object2);
         }
         if (object1 instanceof double[]) {
-            return (object2 instanceof double[])
-                    && Arrays.equals((double[]) object1, (double[]) object2);
+            return (object2 instanceof double[]) && Arrays.equals((double[]) object1, (double[]) object2);
         }
         if (object1 instanceof float[]) {
-            return (object2 instanceof float[])
-                    && Arrays.equals((float[]) object1, (float[]) object2);
+            return (object2 instanceof float[]) && Arrays.equals((float[]) object1, (float[]) object2);
         }
         if (object1 instanceof long[]) {
             return (object2 instanceof long[]) && Arrays.equals((long[]) object1, (long[]) object2);
@@ -372,8 +369,7 @@ public final class Utilities {
             return (object2 instanceof int[]) && Arrays.equals((int[]) object1, (int[]) object2);
         }
         if (object1 instanceof short[]) {
-            return (object2 instanceof short[])
-                    && Arrays.equals((short[]) object1, (short[]) object2);
+            return (object2 instanceof short[]) && Arrays.equals((short[]) object1, (short[]) object2);
         }
         if (object1 instanceof byte[]) {
             return (object2 instanceof byte[]) && Arrays.equals((byte[]) object1, (byte[]) object2);
@@ -382,8 +378,7 @@ public final class Utilities {
             return (object2 instanceof char[]) && Arrays.equals((char[]) object1, (char[]) object2);
         }
         if (object1 instanceof boolean[]) {
-            return (object2 instanceof boolean[])
-                    && Arrays.equals((boolean[]) object1, (boolean[]) object2);
+            return (object2 instanceof boolean[]) && Arrays.equals((boolean[]) object1, (boolean[]) object2);
         }
         return object1.equals(object2);
     }
@@ -654,8 +649,7 @@ public final class Utilities {
      * @param object User argument.
      * @throws NullPointerException if {@code object} is null.
      */
-    public static void ensureNonNull(final String name, final Object object)
-            throws NullPointerException {
+    public static void ensureNonNull(final String name, final Object object) throws NullPointerException {
         if (object == null) {
             throw new NullPointerException(MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, name));
         }
@@ -669,11 +663,9 @@ public final class Utilities {
      * @param object argument
      * @throws IllegalArgumentException if {@code object} is null.
      */
-    public static void ensureArgumentNonNull(final String name, final Object object)
-            throws IllegalArgumentException {
+    public static void ensureArgumentNonNull(final String name, final Object object) throws IllegalArgumentException {
         if (object == null) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, name));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, name));
         }
     }
 
@@ -731,11 +723,8 @@ public final class Utilities {
      * @param <U> the type of {@code supertype}
      * @return a stream over {@code type} cast to a subclass of {@code supertype} or empty
      */
-    public static <T, U> Stream<Class<? extends U>> streamIfSubtype(
-            Class<T> type, Class<U> supertype) {
-        return supertype.isAssignableFrom(type)
-                ? Stream.of(type.asSubclass(supertype))
-                : Stream.empty();
+    public static <T, U> Stream<Class<? extends U>> streamIfSubtype(Class<T> type, Class<U> supertype) {
+        return supertype.isAssignableFrom(type) ? Stream.of(type.asSubclass(supertype)) : Stream.empty();
     }
 
     /**
@@ -760,9 +749,7 @@ public final class Utilities {
      */
     public static <T> Collector<T, ?, Map<String, T>> toInstanceByClassNameMap() {
         return Collectors.toMap(
-                element -> element.getClass().getName(),
-                Function.identity(),
-                (first, second) -> second);
+                element -> element.getClass().getName(), Function.identity(), (first, second) -> second);
     }
 
     /**
@@ -774,13 +761,10 @@ public final class Utilities {
      * @throws java.io.IOException if the given {@code fileName} is found to be vulnerable to zip
      *     slip with respect to the {@code destinationDir}
      */
-    public static final void assertNotZipSlipVulnarable(File file, Path destinationDir)
-            throws IOException {
+    public static final void assertNotZipSlipVulnarable(File file, Path destinationDir) throws IOException {
 
         if (!file.toPath().normalize().startsWith(destinationDir)) {
-            throw new IOException(
-                    String.format(
-                            "Bad zip entry: ZipSlip extracting %s to %s", file, destinationDir));
+            throw new IOException(String.format("Bad zip entry: ZipSlip extracting %s to %s", file, destinationDir));
         }
     }
 }

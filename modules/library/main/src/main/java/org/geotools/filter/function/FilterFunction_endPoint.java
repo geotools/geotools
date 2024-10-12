@@ -30,8 +30,7 @@ import org.locationtech.jts.geom.Point;
 public class FilterFunction_endPoint extends FunctionExpressionImpl {
 
     public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "endPoint", Point.class, parameter("linestring", LineString.class));
+            new FunctionNameImpl("endPoint", Point.class, parameter("linestring", LineString.class));
 
     public FilterFunction_endPoint() {
         super(NAME);

@@ -24,12 +24,7 @@ import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 public class GeometryDescriptorImpl extends AttributeDescriptorImpl implements GeometryDescriptor {
 
     public GeometryDescriptorImpl(
-            GeometryType type,
-            Name name,
-            int min,
-            int max,
-            boolean isNillable,
-            Object defaultValue) {
+            GeometryType type, Name name, int min, int max, boolean isNillable, Object defaultValue) {
         super(type, name, min, max, isNillable, defaultValue);
     }
 

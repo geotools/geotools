@@ -45,6 +45,5 @@ public interface Process {
      * @param monitor listener for handling the progress of the process
      * @return Map of results, (@see ProcessFactory for details), or null if canceled
      */
-    public Map<String, Object> execute(Map<String, Object> input, ProgressListener monitor)
-            throws ProcessException;
+    public Map<String, Object> execute(Map<String, Object> input, ProgressListener monitor) throws ProcessException;
 }

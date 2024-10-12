@@ -69,17 +69,13 @@ public class BandMergeProcess implements RasterProcess {
                             min = 1,
                             collectionType = GridCoverage2D.class)
                     Collection<GridCoverage2D> coverages,
-            @DescribeParameter(name = "roi", description = "Geometry to use as ROI", min = 0)
-                    Geometry roi,
+            @DescribeParameter(name = "roi", description = "Geometry to use as ROI", min = 0) Geometry roi,
             @DescribeParameter(
                             name = "transformChoice",
                             description = "Choice on which Coverage G2W transform to use",
                             min = 0)
                     String transformChoice,
-            @DescribeParameter(
-                            name = "index",
-                            description = "Index used by the transformChoice parameter",
-                            min = 0)
+            @DescribeParameter(name = "index", description = "Index used by the transformChoice parameter", min = 0)
                     Integer index)
             throws ProcessException {
         // //
@@ -110,8 +106,7 @@ public class BandMergeProcess implements RasterProcess {
                 CoordinateReferenceSystem geoCRS = (CoordinateReferenceSystem) crsGeo;
                 GridCoverage2D cov = coverages.iterator().next();
                 // CRS Check
-                BaseCoverageAlgebraProcess.checkCompatibleCRS(
-                        geoCRS, cov.getCoordinateReferenceSystem());
+                BaseCoverageAlgebraProcess.checkCompatibleCRS(geoCRS, cov.getCoordinateReferenceSystem());
                 // Setting of the ROI if present
                 param.parameter(BandMerge.GEOMETRY).setValue(geo);
             } else {

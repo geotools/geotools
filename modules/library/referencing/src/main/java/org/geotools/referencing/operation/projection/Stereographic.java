@@ -215,26 +215,24 @@ public abstract class Stereographic extends MapProjection {
         private static final long serialVersionUID = 1243300263948365065L;
 
         /** The localized name for stereographic projection. */
-        static final InternationalString NAME =
-                Vocabulary.formatInternational(VocabularyKeys.STEREOGRAPHIC_PROJECTION);
+        static final InternationalString NAME = Vocabulary.formatInternational(VocabularyKeys.STEREOGRAPHIC_PROJECTION);
 
         /** The parameters group. */
-        static final ParameterDescriptorGroup PARAMETERS =
-                createDescriptorGroup(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.ESRI, "Stereographic"),
-                            new NamedIdentifier(Citations.GEOTIFF, "CT_Stereographic"),
-                            new NamedIdentifier(Citations.GEOTOOLS, NAME)
-                        },
-                        new ParameterDescriptor[] {
-                            SEMI_MAJOR,
-                            SEMI_MINOR,
-                            CENTRAL_MERIDIAN,
-                            LATITUDE_OF_ORIGIN,
-                            SCALE_FACTOR,
-                            FALSE_EASTING,
-                            FALSE_NORTHING
-                        });
+        static final ParameterDescriptorGroup PARAMETERS = createDescriptorGroup(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.ESRI, "Stereographic"),
+                    new NamedIdentifier(Citations.GEOTIFF, "CT_Stereographic"),
+                    new NamedIdentifier(Citations.GEOTOOLS, NAME)
+                },
+                new ParameterDescriptor[] {
+                    SEMI_MAJOR,
+                    SEMI_MINOR,
+                    CENTRAL_MERIDIAN,
+                    LATITUDE_OF_ORIGIN,
+                    SCALE_FACTOR,
+                    FALSE_EASTING,
+                    FALSE_NORTHING
+                });
 
         /** Constructs a new provider with default parameters for EPSG stereographic oblique. */
         public Provider() {
@@ -268,8 +266,7 @@ public abstract class Stereographic extends MapProjection {
         protected MathTransform createMathTransform(final ParameterValueGroup parameters)
                 throws ParameterNotFoundException {
             // Values here are in radians (the standard units for the map projection package)
-            final double latitudeOfOrigin =
-                    abs(AbstractProvider.doubleValue(LATITUDE_OF_ORIGIN, parameters));
+            final double latitudeOfOrigin = abs(AbstractProvider.doubleValue(LATITUDE_OF_ORIGIN, parameters));
             final boolean isSpherical = isSpherical(parameters);
             final ParameterDescriptorGroup descriptor = getParameters();
             // Polar case.

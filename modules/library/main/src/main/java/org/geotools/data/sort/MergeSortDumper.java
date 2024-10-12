@@ -60,8 +60,7 @@ class MergeSortDumper {
                     return false;
                 }
                 Class<?> binding = ad.getType().getBinding();
-                if (!Comparable.class.isAssignableFrom(binding)
-                        || Geometry.class.isAssignableFrom(binding)) {
+                if (!Comparable.class.isAssignableFrom(binding) || Geometry.class.isAssignableFrom(binding)) {
                     return false;
                 }
             }
@@ -70,8 +69,7 @@ class MergeSortDumper {
         return true;
     }
 
-    static SimpleFeatureReader getDelegateReader(SimpleFeatureReader reader, Query query)
-            throws IOException {
+    static SimpleFeatureReader getDelegateReader(SimpleFeatureReader reader, Query query) throws IOException {
         int maxFeatures = getMaxFeatures(query);
 
         return getDelegateReader(reader, query.getSortBy(), maxFeatures);
@@ -92,13 +90,12 @@ class MergeSortDumper {
         return maxFeatures;
     }
 
-    static SimpleFeatureReader getDelegateReader(
-            SimpleFeatureReader reader, SortBy[] sortBy, int maxFeatures) throws IOException {
+    static SimpleFeatureReader getDelegateReader(SimpleFeatureReader reader, SortBy[] sortBy, int maxFeatures)
+            throws IOException {
         if (maxFeatures < 0) {
             maxFeatures = getMaxFeatures(Query.ALL);
         }
-        Comparator<SimpleFeature> comparator =
-                SortedFeatureReader.getComparator(sortBy, reader.getFeatureType());
+        Comparator<SimpleFeature> comparator = SortedFeatureReader.getComparator(sortBy, reader.getFeatureType());
 
         // easy case, no sorting needed
         if (comparator == null) {
@@ -108,12 +105,11 @@ class MergeSortDumper {
         // double check
         SimpleFeatureType schema = reader.getFeatureType();
         if (!canSort(schema, sortBy)) {
-            throw new IllegalArgumentException(
-                    "The specified reader cannot be sorted, either the "
-                            + "sorting properties are not comparable or the attributes are not serializable: "
-                            + reader.getFeatureType().getTypeName()
-                            + "\n "
-                            + Arrays.toString(sortBy));
+            throw new IllegalArgumentException("The specified reader cannot be sorted, either the "
+                    + "sorting properties are not comparable or the attributes are not serializable: "
+                    + reader.getFeatureType().getTypeName()
+                    + "\n "
+                    + Arrays.toString(sortBy));
         }
 
         int count = 0;
@@ -177,8 +173,7 @@ class MergeSortDumper {
     }
 
     /** Writes the feature attributes to a binary file */
-    static FeatureBlockReader storeToFile(SimpleFeatureIO io, List<SimpleFeature> features)
-            throws IOException {
+    static FeatureBlockReader storeToFile(SimpleFeatureIO io, List<SimpleFeature> features) throws IOException {
         long start = io.getOffset();
 
         // write each attribute in the random access file

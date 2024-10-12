@@ -74,8 +74,7 @@ public class Mercator2SP extends Mercator {
          * @param parameters The parameter values in standard units.
          * @throws ParameterNotFoundException if a mandatory parameter is missing.
          */
-        protected Spherical(final ParameterValueGroup parameters)
-                throws ParameterNotFoundException {
+        protected Spherical(final ParameterValueGroup parameters) throws ParameterNotFoundException {
             super(parameters);
         }
 
@@ -108,31 +107,29 @@ public class Mercator2SP extends Mercator {
         private static final long serialVersionUID = 6356028352681135786L;
 
         /** The parameters group. */
-        static final ParameterDescriptorGroup PARAMETERS =
-                createDescriptorGroup(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.OGC, "Mercator_2SP"),
-                            new NamedIdentifier(Citations.EPSG, "Mercator (2SP)"),
-                            new NamedIdentifier(Citations.EPSG, "Mercator (variant B)"),
-                            new NamedIdentifier(Citations.EPSG, "Mercator (variant C)"),
-                            new NamedIdentifier(Citations.EPSG, "1044"),
-                            new NamedIdentifier(Citations.EPSG, "9805"),
-                            new NamedIdentifier(Citations.GEOTIFF, "CT_Mercator"),
-                            new NamedIdentifier(Citations.ESRI, "Mercator"),
-                            new NamedIdentifier(
-                                    Citations.GEOTOOLS,
-                                    Vocabulary.formatInternational(
-                                            VocabularyKeys.CYLINDRICAL_MERCATOR_PROJECTION))
-                        },
-                        new ParameterDescriptor[] {
-                            SEMI_MAJOR,
-                            SEMI_MINOR,
-                            STANDARD_PARALLEL_1,
-                            LATITUDE_OF_ORIGIN,
-                            CENTRAL_MERIDIAN,
-                            FALSE_EASTING,
-                            FALSE_NORTHING
-                        });
+        static final ParameterDescriptorGroup PARAMETERS = createDescriptorGroup(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.OGC, "Mercator_2SP"),
+                    new NamedIdentifier(Citations.EPSG, "Mercator (2SP)"),
+                    new NamedIdentifier(Citations.EPSG, "Mercator (variant B)"),
+                    new NamedIdentifier(Citations.EPSG, "Mercator (variant C)"),
+                    new NamedIdentifier(Citations.EPSG, "1044"),
+                    new NamedIdentifier(Citations.EPSG, "9805"),
+                    new NamedIdentifier(Citations.GEOTIFF, "CT_Mercator"),
+                    new NamedIdentifier(Citations.ESRI, "Mercator"),
+                    new NamedIdentifier(
+                            Citations.GEOTOOLS,
+                            Vocabulary.formatInternational(VocabularyKeys.CYLINDRICAL_MERCATOR_PROJECTION))
+                },
+                new ParameterDescriptor[] {
+                    SEMI_MAJOR,
+                    SEMI_MINOR,
+                    STANDARD_PARALLEL_1,
+                    LATITUDE_OF_ORIGIN,
+                    CENTRAL_MERIDIAN,
+                    FALSE_EASTING,
+                    FALSE_NORTHING
+                });
 
         /** Constructs a new provider. */
         public Provider() {

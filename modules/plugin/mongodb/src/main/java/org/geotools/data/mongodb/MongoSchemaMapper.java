@@ -44,9 +44,7 @@ public class MongoSchemaMapper extends AbstractCollectionMapper {
     @Override
     public String getPropertyPath(String property) {
         AttributeDescriptor descriptor = schema.getDescriptor(property);
-        return descriptor == null
-                ? null
-                : (String) descriptor.getUserData().get(MongoDataStore.KEY_mapping);
+        return descriptor == null ? null : (String) descriptor.getUserData().get(MongoDataStore.KEY_mapping);
     }
 
     @Override

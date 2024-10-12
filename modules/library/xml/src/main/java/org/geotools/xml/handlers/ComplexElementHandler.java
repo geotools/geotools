@@ -103,8 +103,7 @@ public class ComplexElementHandler extends XMLElementHandler {
                     throw new SAXException("This type may not have mixed content");
                 }
 
-                throw new SAXException(
-                        "The " + type.getName() + " type may not have mixed content");
+                throw new SAXException("The " + type.getName() + " type may not have mixed content");
             }
         }
     }
@@ -119,8 +118,7 @@ public class ComplexElementHandler extends XMLElementHandler {
             hints = new HashMap<>();
             hints.put(ElementHandlerFactory.KEY, ehf);
         } else {
-            if (!hints.containsKey(ElementHandlerFactory.KEY))
-                hints.put(ElementHandlerFactory.KEY, ehf);
+            if (!hints.containsKey(ElementHandlerFactory.KEY)) hints.put(ElementHandlerFactory.KEY, ehf);
         }
 
         if (elements == null) {
@@ -142,12 +140,11 @@ public class ComplexElementHandler extends XMLElementHandler {
         }
 
         // validate the complex element ... throws an exception when it's been bad
-        boolean validate =
-                hints == null
-                        || !hints.containsKey(DocumentFactory.VALIDATION_HINT)
-                        || hints.get(DocumentFactory.VALIDATION_HINT) == null
-                        || !(hints.get(DocumentFactory.VALIDATION_HINT) instanceof Boolean)
-                        || ((Boolean) hints.get(DocumentFactory.VALIDATION_HINT)).booleanValue();
+        boolean validate = hints == null
+                || !hints.containsKey(DocumentFactory.VALIDATION_HINT)
+                || hints.get(DocumentFactory.VALIDATION_HINT) == null
+                || !(hints.get(DocumentFactory.VALIDATION_HINT) instanceof Boolean)
+                || ((Boolean) hints.get(DocumentFactory.VALIDATION_HINT)).booleanValue();
         if (validate) validateElementOrder();
 
         ElementValue[] vals = new ElementValue[elements.size() + (type.isMixed() ? 1 : 0)];
@@ -234,10 +231,7 @@ public class ComplexElementHandler extends XMLElementHandler {
             buf.append("Invalid Element ordering for ");
             buf.append(elem.getNamespace() + ":" + elem.getName());
             buf.append(" (type = " + type.getName() + ") ");
-            buf.append(
-                    ". There were "
-                            + (elements.size() - i)
-                            + "elements which were unaccounted for");
+            buf.append(". There were " + (elements.size() - i) + "elements which were unaccounted for");
             throw new SAXException(buf.toString());
         }
     }
@@ -293,7 +287,9 @@ public class ComplexElementHandler extends XMLElementHandler {
             c = false;
 
             for (int i = 0; i < elems.length; i++) {
-                if (elems[i].getType().getName().equalsIgnoreCase(elements.get(head).getName())) {
+                if (elems[i].getType()
+                        .getName()
+                        .equalsIgnoreCase(elements.get(head).getName())) {
                     r[i]++;
                     head++;
                     i = elems.length;
@@ -344,8 +340,7 @@ public class ComplexElementHandler extends XMLElementHandler {
             t2 = valid(eg[i], t);
             if (t2[1] == 0 && t2[0] == t) { // nothing, next
                 // move along
-                if (t2[0] > end && count >= eg[i].getMinOccurs() && count <= eg[i].getMaxOccurs())
-                    end = t2[0];
+                if (t2[0] > end && count >= eg[i].getMinOccurs() && count <= eg[i].getMaxOccurs()) end = t2[0];
                 count = 0;
                 i++;
                 t = index;
@@ -399,16 +394,13 @@ public class ComplexElementHandler extends XMLElementHandler {
             return new int[] {index, 0};
         }
 
-        if (r == null && (indexHandler == null || indexHandler.getElement() == null))
-            return new int[] {index, 0};
+        if (r == null && (indexHandler == null || indexHandler.getElement() == null)) return new int[] {index, 0};
 
         if (r == null && indexHandler.getElement() == element) r = new int[] {index + 1, 1};
 
         if (r == null && element.getName() == null) return new int[] {index, 0};
 
-        if (r == null
-                && (element.getName() != null
-                        && element.getName().equalsIgnoreCase(indexHandler.getName())))
+        if (r == null && (element.getName() != null && element.getName().equalsIgnoreCase(indexHandler.getName())))
             r = new int[] {index + 1, 1};
         if (r == null && element.getName() != null) {
             Element e = indexHandler.getElement();
@@ -500,8 +492,8 @@ public class ComplexElementHandler extends XMLElementHandler {
      * @return XMLElementHandler
      */
     @Override
-    public XMLElementHandler getHandler(
-            URI namespaceURI, String localName, Map<String, Object> hints) throws SAXException {
+    public XMLElementHandler getHandler(URI namespaceURI, String localName, Map<String, Object> hints)
+            throws SAXException {
         if (elements == null) {
             elements = new LinkedList<>();
         }
@@ -539,14 +531,13 @@ public class ComplexElementHandler extends XMLElementHandler {
             }
         }
 
-        throw new SAXException(
-                "Could not find element handler for "
-                        + namespaceURI
-                        + " : "
-                        + localName
-                        + " as a child of "
-                        + type.getName()
-                        + ".");
+        throw new SAXException("Could not find element handler for "
+                + namespaceURI
+                + " : "
+                + localName
+                + " as a child of "
+                + type.getName()
+                + ".");
     }
 
     /**

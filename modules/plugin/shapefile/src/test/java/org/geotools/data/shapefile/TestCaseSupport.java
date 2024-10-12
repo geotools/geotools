@@ -175,37 +175,44 @@ public class TestCaseSupport {
         assertTrue(TestData.copy(TestCaseSupport.class, sibling(name, "dbf")).canRead());
         assertTrue(TestData.copy(TestCaseSupport.class, sibling(name, "shp")).canRead());
         try {
-            assertTrue(TestData.copy(TestCaseSupport.class, sibling(name, "shx")).canRead());
+            assertTrue(
+                    TestData.copy(TestCaseSupport.class, sibling(name, "shx")).canRead());
         } catch (FileNotFoundException e) {
             // Ignore: this file is optional.
         }
         try {
-            assertTrue(TestData.copy(TestCaseSupport.class, sibling(name, "prj")).canRead());
+            assertTrue(
+                    TestData.copy(TestCaseSupport.class, sibling(name, "prj")).canRead());
         } catch (FileNotFoundException e) {
             // Ignore: this file is optional.
         }
         try {
-            assertTrue(TestData.copy(TestCaseSupport.class, sibling(name, "fix")).canRead());
+            assertTrue(
+                    TestData.copy(TestCaseSupport.class, sibling(name, "fix")).canRead());
         } catch (FileNotFoundException e) {
             // Ignore: this file is optional.
         }
         try {
-            assertTrue(TestData.copy(TestCaseSupport.class, sibling(name, "qix")).canRead());
+            assertTrue(
+                    TestData.copy(TestCaseSupport.class, sibling(name, "qix")).canRead());
         } catch (FileNotFoundException e) {
             // Ignore: this file is optional.
         }
         try {
-            assertTrue(TestData.copy(TestCaseSupport.class, sibling(name, "grx")).canRead());
+            assertTrue(
+                    TestData.copy(TestCaseSupport.class, sibling(name, "grx")).canRead());
         } catch (FileNotFoundException e) {
             // Ignore: this file is optional.
         }
         try {
-            assertTrue(TestData.copy(TestCaseSupport.class, sibling(name, "shp.xml")).canRead());
+            assertTrue(TestData.copy(TestCaseSupport.class, sibling(name, "shp.xml"))
+                    .canRead());
         } catch (FileNotFoundException e) {
             // Ignore: this file is optional.
         }
         try {
-            assertTrue(TestData.copy(TestCaseSupport.class, sibling(name, "cpg")).canRead());
+            assertTrue(
+                    TestData.copy(TestCaseSupport.class, sibling(name, "cpg")).canRead());
         } catch (FileNotFoundException e) {
             // Ignore: this file is optional.
         }

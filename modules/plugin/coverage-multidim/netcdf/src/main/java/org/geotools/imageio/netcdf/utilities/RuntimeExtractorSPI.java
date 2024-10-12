@@ -27,16 +27,14 @@ import org.geotools.gce.imagemosaic.properties.PropertiesCollectorSPI;
  *
  * @author Romagnoli Daniele, GeoSolutions SAS
  */
-public class RuntimeExtractorSPI extends DefaultPropertiesCollectorSPI
-        implements PropertiesCollectorSPI {
+public class RuntimeExtractorSPI extends DefaultPropertiesCollectorSPI implements PropertiesCollectorSPI {
 
     public RuntimeExtractorSPI() {
         super("RuntimeExtractorSPI");
     }
 
     @Override
-    protected PropertiesCollector createInternal(
-            PropertiesCollectorSPI spi, List<String> propertyNames, String type) {
+    protected PropertiesCollector createInternal(PropertiesCollectorSPI spi, List<String> propertyNames, String type) {
 
         return new RuntimeExtractor(spi, propertyNames, type);
     }

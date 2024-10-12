@@ -24,16 +24,11 @@ import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 
 public class InArrayFunction extends FunctionExpressionImpl {
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "inArray",
-                    parameter(
-                            "inArray",
-                            Boolean.class,
-                            "InArray",
-                            "Returns true if any array value matches candidate."),
-                    parameter("candidate", Object.class, "Candidate", "value to match with array"),
-                    parameter("array", Object[].class, "Array", "array of values"));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "inArray",
+            parameter("inArray", Boolean.class, "InArray", "Returns true if any array value matches candidate."),
+            parameter("candidate", Object.class, "Candidate", "value to match with array"),
+            parameter("array", Object[].class, "Array", "array of values"));
 
     public InArrayFunction() {
         super(NAME);

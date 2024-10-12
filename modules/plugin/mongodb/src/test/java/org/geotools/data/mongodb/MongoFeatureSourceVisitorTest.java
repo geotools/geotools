@@ -82,10 +82,7 @@ public class MongoFeatureSourceVisitorTest extends MongoTestSupport {
 
         dataStore.getFeatureSource("ft1").accepts(Query.ALL, v, null);
 
-        Date minDate =
-                Date.from(
-                        Instant.from(
-                                DateTimeFormatter.ISO_DATE_TIME.parse("2015-01-01T00:00:00Z")));
+        Date minDate = Date.from(Instant.from(DateTimeFormatter.ISO_DATE_TIME.parse("2015-01-01T00:00:00Z")));
         assertEquals(minDate, v.getResult().getValue());
 
         assertFalse(visited);
@@ -126,10 +123,7 @@ public class MongoFeatureSourceVisitorTest extends MongoTestSupport {
 
         dataStore.getFeatureSource("ft1").accepts(Query.ALL, v, null);
 
-        Date minDate =
-                Date.from(
-                        Instant.from(
-                                DateTimeFormatter.ISO_DATE_TIME.parse("2015-01-01T21:30:00Z")));
+        Date minDate = Date.from(Instant.from(DateTimeFormatter.ISO_DATE_TIME.parse("2015-01-01T21:30:00Z")));
         assertEquals(minDate, v.getResult().getValue());
 
         assertFalse(visited);

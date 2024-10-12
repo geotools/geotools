@@ -156,8 +156,7 @@ public final class TestData extends org.geotools.test.TestData {
      * See the other copy, this one accepts a target directory name inside "test-data" (useful for
      * test with directory containing spaces)
      */
-    public static File copy(final Object caller, final String name, String directoryName)
-            throws IOException {
+    public static File copy(final Object caller, final String name, String directoryName) throws IOException {
         File path = new File(name);
         File directory = new File(file(caller, null), path.getParent());
         if (directoryName != null) {

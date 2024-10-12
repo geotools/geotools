@@ -185,10 +185,8 @@ public class GeoJSONWriteTest {
 
             SimpleFeatureType type = store.getSchema("locations");
             SimpleFeatureStore auto = (SimpleFeatureStore) store.getFeatureSource("locations");
-            SimpleFeatureStore featureStore1 =
-                    (SimpleFeatureStore) store.getFeatureSource("locations");
-            SimpleFeatureStore featureStore2 =
-                    (SimpleFeatureStore) store.getFeatureSource("locations");
+            SimpleFeatureStore featureStore1 = (SimpleFeatureStore) store.getFeatureSource("locations");
+            SimpleFeatureStore featureStore2 = (SimpleFeatureStore) store.getFeatureSource("locations");
 
             featureStore1.setTransaction(t1);
             featureStore2.setTransaction(t2);
@@ -209,7 +207,10 @@ public class GeoJSONWriteTest {
             featureStore1.removeFeatures(filter1); // removes "Trento" from fs1
 
             // Tests after removal only featureStore1 is affected
-            assertEquals("auto after featureStore1 removes fid1", 9, auto.getFeatures().size());
+            assertEquals(
+                    "auto after featureStore1 removes fid1",
+                    9,
+                    auto.getFeatures().size());
             assertEquals(
                     "featureStore1 after featureStore1 removes fid1",
                     8,
@@ -224,11 +225,8 @@ public class GeoJSONWriteTest {
             GeometryFactory geometryFactory = JTSFactoryFinder.getGeometryFactory();
             Point point = geometryFactory.createPoint(new Coordinate(-122.681944, 45.52));
 
-            SimpleFeature feature =
-                    SimpleFeatureBuilder.build(
-                            type,
-                            new Object[] {point, 45.52, -122.681944, "Portland", 800, 2014},
-                            "feature-10");
+            SimpleFeature feature = SimpleFeatureBuilder.build(
+                    type, new Object[] {point, 45.52, -122.681944, "Portland", 800, 2014}, "feature-10");
 
             SimpleFeatureCollection collection = DataUtilities.collection(feature);
 
@@ -252,10 +250,7 @@ public class GeoJSONWriteTest {
             t1.commit();
             // Tests after first commit
             int size = auto.getFeatures().size();
-            assertEquals(
-                    "auto after featureStore1 commits removal of fid1 (featureStore2 has added fid5)",
-                    9,
-                    size);
+            assertEquals("auto after featureStore1 commits removal of fid1 (featureStore2 has added fid5)", 9, size);
 
             assertEquals(
                     "featureStore1 after commiting removal of fid1 (featureStore2 has added fid5)",
@@ -307,9 +302,11 @@ public class GeoJSONWriteTest {
             }
 
             // Test the contents have been removed
-            SimpleFeatureStore featureStore =
-                    (SimpleFeatureStore) store.getFeatureSource("locations");
-            assertEquals("featureStore should be empty", 0, featureStore.getFeatures().size());
+            SimpleFeatureStore featureStore = (SimpleFeatureStore) store.getFeatureSource("locations");
+            assertEquals(
+                    "featureStore should be empty",
+                    0,
+                    featureStore.getFeatures().size());
             // Make sure the file is empty
             assertEquals("file should have no content", "", checkFileContents(file));
             t.commit();
@@ -337,11 +334,8 @@ public class GeoJSONWriteTest {
         GeometryFactory gf = JTSFactoryFinder.getGeometryFactory();
         Point portland = gf.createPoint(new Coordinate(45.52, -122.681944));
 
-        SimpleFeature f =
-                SimpleFeatureBuilder.build(
-                        type,
-                        new Object[] {portland, 45.52, -122.681944, "Portland", 800, 2014},
-                        "locations.1");
+        SimpleFeature f = SimpleFeatureBuilder.build(
+                type, new Object[] {portland, 45.52, -122.681944, "Portland", 800, 2014}, "locations.1");
 
         collection.add(f);
 
@@ -373,10 +367,9 @@ public class GeoJSONWriteTest {
                 "featureStore should only have the one feature we created",
                 1,
                 featureStore.getFeatures().size());
-        String contents =
-                "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"properties\""
-                        + ":{\"LAT\":45.52,\"LON\":-122.681944,\"CITY\":\"Portland\",\"NUMBER\":800,\"YEAR\":2014},"
-                        + "\"geometry\":{\"type\":\"Point\",\"coordinates\":[45.52,-122.681944]},\"id\":\"locations.0\"}]}";
+        String contents = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"properties\""
+                + ":{\"LAT\":45.52,\"LON\":-122.681944,\"CITY\":\"Portland\",\"NUMBER\":800,\"YEAR\":2014},"
+                + "\"geometry\":{\"type\":\"Point\",\"coordinates\":[45.52,-122.681944]},\"id\":\"locations.0\"}]}";
         assertEquals(
                 "Ensure the file has only the one feature we created",
                 contents.trim(),
@@ -408,8 +401,7 @@ public class GeoJSONWriteTest {
         try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
                         store.getFeatureReader(query, Transaction.AUTO_COMMIT);
                 FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
-                        duplicate.getFeatureWriterAppend(
-                                duplicate.getTypeNames()[0], Transaction.AUTO_COMMIT)) {
+                        duplicate.getFeatureWriterAppend(duplicate.getTypeNames()[0], Transaction.AUTO_COMMIT)) {
             while (reader.hasNext()) {
                 feature = reader.next();
                 newFeature = writer.next();
@@ -478,10 +470,7 @@ public class GeoJSONWriteTest {
         }
 
         try (BufferedReader r = new BufferedReader(new FileReader(out))) {
-            assertTrue(
-                    "missing bbox",
-                    r.readLine()
-                            .endsWith("\"bbox\":[-124.731422,24.955967,-66.969849,49.371735]}"));
+            assertTrue("missing bbox", r.readLine().endsWith("\"bbox\":[-124.731422,24.955967,-66.969849,49.371735]}"));
         }
     }
 

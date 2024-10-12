@@ -151,8 +151,7 @@ public class TileMatrixBinding extends DescriptionTypeBinding {
         ((TileMatrixType) value).setIdentifier((CodeType) node.getChildValue("Identifier"));
         ((TileMatrixType) value).setMatrixHeight((BigInteger) node.getChildValue("MatrixHeight"));
         ((TileMatrixType) value).setMatrixWidth((BigInteger) node.getChildValue("MatrixWidth"));
-        ((TileMatrixType) value)
-                .setScaleDenominator((double) node.getChildValue("ScaleDenominator"));
+        ((TileMatrixType) value).setScaleDenominator((double) node.getChildValue("ScaleDenominator"));
         ((TileMatrixType) value).setTileHeight((BigInteger) node.getChildValue("TileHeight"));
         ((TileMatrixType) value).setTileWidth((BigInteger) node.getChildValue("TileWidth"));
         @SuppressWarnings("unchecked")

@@ -57,8 +57,7 @@ public class PostgisNGDataStoreFactoryOnlineTest extends JDBCTestSupport {
         checkCreateConnection(factory, "postgis");
     }
 
-    private void checkCreateConnection(PostgisNGDataStoreFactory factory, String dbtype)
-            throws IOException {
+    private void checkCreateConnection(PostgisNGDataStoreFactory factory, String dbtype) throws IOException {
         Properties db = getFixture();
 
         Map<String, Object> params = new HashMap<>();

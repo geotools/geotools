@@ -12,8 +12,7 @@ public class FeatureReaderIteratorTest {
 
     @Test
     public void testCloseOnException() {
-        try (FeatureReaderIterator<SimpleFeature> it =
-                new FeatureReaderIterator<>(new BreakingFeatureReader())) {
+        try (FeatureReaderIterator<SimpleFeature> it = new FeatureReaderIterator<>(new BreakingFeatureReader())) {
             Assert.assertFalse(it.hasNext());
             // the reader is really closed or not?
             Assert.assertNull(it.reader);
@@ -38,8 +37,7 @@ public class FeatureReaderIteratorTest {
         }
 
         @Override
-        public SimpleFeature next()
-                throws IOException, IllegalArgumentException, NoSuchElementException {
+        public SimpleFeature next() throws IOException, IllegalArgumentException, NoSuchElementException {
             return null;
         }
     }

@@ -222,8 +222,7 @@ public class ContactImpl extends MetadataEntity implements Contact {
             }
 
             if (contactInfo.getContactInstructions() != null) {
-                setContactInstructions(
-                        new SimpleInternationalString(contactInfo.getContactInstructions()));
+                setContactInstructions(new SimpleInternationalString(contactInfo.getContactInstructions()));
             }
 
             if (contactInfo.getHoursOfService() != null) {

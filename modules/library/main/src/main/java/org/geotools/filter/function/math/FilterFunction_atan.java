@@ -30,8 +30,7 @@ public class FilterFunction_atan extends FunctionExpressionImpl {
 
     // public static FunctionName NAME = new FunctionNameImpl("atan","value");
     public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "atan", parameter("arc tan", Double.class), parameter("value", Double.class));
+            new FunctionNameImpl("atan", parameter("arc tan", Double.class), parameter("value", Double.class));
 
     public FilterFunction_atan() {
         super("atan");

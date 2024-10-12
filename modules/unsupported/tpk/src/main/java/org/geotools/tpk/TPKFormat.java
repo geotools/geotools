@@ -123,11 +123,8 @@ public class TPKFormat extends AbstractGridFormat {
         mInfo = info;
 
         // reading parameters
-        readParameters =
-                new ParameterGroup(
-                        new DefaultParameterDescriptorGroup(
-                                mInfo,
-                                new GeneralParameterDescriptor[] {READ_GRIDGEOMETRY2D /*,
+        readParameters = new ParameterGroup(new DefaultParameterDescriptorGroup(
+                mInfo, new GeneralParameterDescriptor[] {READ_GRIDGEOMETRY2D /*,
                        INPUT_TRANSPARENT_COLOR,
                 OUTPUT_TRANSPARENT_COLOR,
                 USE_JAI_IMAGEREAD,

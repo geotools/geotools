@@ -94,8 +94,7 @@ public abstract class AbstractGridFormat implements Format {
      * best matching resolution level and (soon) the best matching area.
      */
     public static final DefaultParameterDescriptor<GridGeometry2D> READ_GRIDGEOMETRY2D =
-            new DefaultParameterDescriptor<>(
-                    "ReadGridGeometry2D", GridGeometry2D.class, null, null);
+            new DefaultParameterDescriptor<>("ReadGridGeometry2D", GridGeometry2D.class, null, null);
 
     /**
      * This {@link GeneralParameterValue} can be provided to the {@link GridCoverageReader}s through
@@ -112,8 +111,7 @@ public abstract class AbstractGridFormat implements Format {
      * compression, tiling, etc.GridGeometry2D
      */
     public static final DefaultParameterDescriptor<GeoToolsWriteParams> GEOTOOLS_WRITE_PARAMS =
-            new DefaultParameterDescriptor<>(
-                    "WriteParameters", GeoToolsWriteParams.class, null, null);
+            new DefaultParameterDescriptor<>("WriteParameters", GeoToolsWriteParams.class, null, null);
 
     /**
      * This {@code GeneralParameterValue} can be provided to the {@link GridCoverageReader}s through
@@ -122,29 +120,24 @@ public abstract class AbstractGridFormat implements Format {
      * Deferred Execution Model, Tile Caching,...), or the direct {@code ImageReader}'s read
      * methods.
      */
-    public static final DefaultParameterDescriptor<Boolean> USE_JAI_IMAGEREAD =
-            new DefaultParameterDescriptor<>(
-                    Hints.USE_JAI_IMAGEREAD.toString(),
-                    Boolean.class,
-                    new Boolean[] {Boolean.TRUE, Boolean.FALSE},
-                    Boolean.TRUE);
+    public static final DefaultParameterDescriptor<Boolean> USE_JAI_IMAGEREAD = new DefaultParameterDescriptor<>(
+            Hints.USE_JAI_IMAGEREAD.toString(),
+            Boolean.class,
+            new Boolean[] {Boolean.TRUE, Boolean.FALSE},
+            Boolean.TRUE);
 
     /**
      * This {@link GeneralParameterValue} can be provided to the {@link GridCoverageReader}s through
      * the {@code GridCoverageReader#read(GeneralParameterValue[])} method in order to specify the
      * policy a reader should adopt when choosing the right overview during a read operation.
      */
-    public static final DefaultParameterDescriptor<OverviewPolicy> OVERVIEW_POLICY =
-            new DefaultParameterDescriptor<>(
-                    Hints.OVERVIEW_POLICY.toString(),
-                    OverviewPolicy.class,
-                    new OverviewPolicy[] {
-                        OverviewPolicy.IGNORE,
-                        OverviewPolicy.NEAREST,
-                        OverviewPolicy.QUALITY,
-                        OverviewPolicy.SPEED
-                    },
-                    OverviewPolicy.QUALITY);
+    public static final DefaultParameterDescriptor<OverviewPolicy> OVERVIEW_POLICY = new DefaultParameterDescriptor<>(
+            Hints.OVERVIEW_POLICY.toString(),
+            OverviewPolicy.class,
+            new OverviewPolicy[] {
+                OverviewPolicy.IGNORE, OverviewPolicy.NEAREST, OverviewPolicy.QUALITY, OverviewPolicy.SPEED
+            },
+            OverviewPolicy.QUALITY);
 
     /**
      * This {@link GeneralParameterValue} can be provided to the {@link GridCoverageReader}s through
@@ -152,12 +145,11 @@ public abstract class AbstractGridFormat implements Format {
      * policy a reader should adopt when setting read parameters when evaluating a needed
      * resolution.
      */
-    public static final ParameterDescriptor<DecimationPolicy> DECIMATION_POLICY =
-            new DefaultParameterDescriptor<>(
-                    Hints.DECIMATION_POLICY.toString(),
-                    DecimationPolicy.class,
-                    new DecimationPolicy[] {DecimationPolicy.ALLOW, DecimationPolicy.DISALLOW},
-                    DecimationPolicy.ALLOW);
+    public static final ParameterDescriptor<DecimationPolicy> DECIMATION_POLICY = new DefaultParameterDescriptor<>(
+            Hints.DECIMATION_POLICY.toString(),
+            DecimationPolicy.class,
+            new DecimationPolicy[] {DecimationPolicy.ALLOW, DecimationPolicy.DISALLOW},
+            DecimationPolicy.ALLOW);
 
     /** The {@code String} representing the parameter to customize tile sizes */
     private static final String SUGGESTED_TILESIZE = "SUGGESTED_TILE_SIZE";
@@ -196,13 +188,11 @@ public abstract class AbstractGridFormat implements Format {
 
     /** Optional Time value for this mosaic. */
     public static final ParameterDescriptor<List> TIME =
-            DefaultParameterDescriptor.create(
-                    "TIME", "A list of time objects", List.class, null, false);
+            DefaultParameterDescriptor.create("TIME", "A list of time objects", List.class, null, false);
 
     /** Optional Elevation value for this mosaic. */
     public static final ParameterDescriptor<List> ELEVATION =
-            DefaultParameterDescriptor.create(
-                    "ELEVATION", "An elevation value", List.class, null, false);
+            DefaultParameterDescriptor.create("ELEVATION", "An elevation value", List.class, null, false);
 
     static final Interpolation DEFAULT_INTERPOLATION = new InterpolationNearest();
 
@@ -210,16 +200,11 @@ public abstract class AbstractGridFormat implements Format {
      * Control the interpolation to be used in the eventual image processing done while reading data
      */
     public static final ParameterDescriptor<Interpolation> INTERPOLATION =
-            new DefaultParameterDescriptor<>(
-                    "Interpolation", Interpolation.class, null, DEFAULT_INTERPOLATION);
+            new DefaultParameterDescriptor<>("Interpolation", Interpolation.class, null, DEFAULT_INTERPOLATION);
 
     /** Control the footprint management. */
-    public static final ParameterDescriptor<String> FOOTPRINT_BEHAVIOR =
-            new DefaultParameterDescriptor<>(
-                    "FootprintBehavior",
-                    String.class,
-                    FootprintBehavior.valuesAsStrings(),
-                    FootprintBehavior.None.name());
+    public static final ParameterDescriptor<String> FOOTPRINT_BEHAVIOR = new DefaultParameterDescriptor<>(
+            "FootprintBehavior", String.class, FootprintBehavior.valuesAsStrings(), FootprintBehavior.None.name());
 
     /** Default value of the rescaling behavior, in case it's not specified */
     private static boolean RESCALE_DEFAULT =
@@ -230,12 +215,8 @@ public abstract class AbstractGridFormat implements Format {
      * the {@link GridCoverageReader#read(GeneralParameterValue[])} method in order to specify the
      * whether eventual value rescaling should be performed, or the original pixel value preserved
      */
-    public static final DefaultParameterDescriptor<Boolean> RESCALE_PIXELS =
-            new DefaultParameterDescriptor<>(
-                    "RescalePixels",
-                    Boolean.class,
-                    new Boolean[] {Boolean.TRUE, Boolean.FALSE},
-                    RESCALE_DEFAULT);
+    public static final DefaultParameterDescriptor<Boolean> RESCALE_PIXELS = new DefaultParameterDescriptor<>(
+            "RescalePixels", Boolean.class, new Boolean[] {Boolean.TRUE, Boolean.FALSE}, RESCALE_DEFAULT);
 
     /** @see org.geotools.api.coverage.grid.Format#getName() */
     @Override
@@ -341,8 +322,7 @@ public abstract class AbstractGridFormat implements Format {
     @Override
     public ParameterValueGroup getReadParameters() {
         if (this.readParameters == null)
-            throw new UnsupportedOperationException(
-                    "This format does not support usage of read parameters.");
+            throw new UnsupportedOperationException("This format does not support usage of read parameters.");
         return this.readParameters.clone();
     }
 
@@ -354,8 +334,7 @@ public abstract class AbstractGridFormat implements Format {
     @Override
     public ParameterValueGroup getWriteParameters() {
         if (this.writeParameters == null)
-            throw new UnsupportedOperationException(
-                    "This format does not support usage of write parameters.");
+            throw new UnsupportedOperationException("This format does not support usage of write parameters.");
         return this.writeParameters.clone();
     }
 

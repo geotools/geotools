@@ -86,11 +86,7 @@ public class GML2ParsingUtils {
      * @return A feature type.
      */
     public static SimpleFeature parseFeature(
-            ElementInstance instance,
-            Node node,
-            Object value,
-            FeatureTypeCache ftCache,
-            BindingWalkerFactory bwFactory)
+            ElementInstance instance, Node node, Object value, FeatureTypeCache ftCache, BindingWalkerFactory bwFactory)
             throws Exception {
         // get the definition of the element
         XSDElementDeclaration decl = instance.getElementDeclaration();
@@ -110,8 +106,7 @@ public class GML2ParsingUtils {
                 sfType = (SimpleFeatureType) fType;
             } else {
                 // TODO: support parsing of non-simple GML features
-                throw new UnsupportedOperationException(
-                        "Parsing of non-simple GML features not yet supported.");
+                throw new UnsupportedOperationException("Parsing of non-simple GML features not yet supported.");
             }
 
             if (sfType == null) {
@@ -130,18 +125,14 @@ public class GML2ParsingUtils {
             }
         } else {
             // first look in cache
-            fType =
-                    ftCache.get(
-                            new NameImpl(
-                                    node.getComponent().getNamespace(),
-                                    node.getComponent().getName()));
+            fType = ftCache.get(new NameImpl(
+                    node.getComponent().getNamespace(), node.getComponent().getName()));
 
             if (fType == null || fType instanceof SimpleFeatureType) {
                 sfType = (SimpleFeatureType) fType;
             } else {
                 // TODO: support parsing of non-simple GML features
-                throw new UnsupportedOperationException(
-                        "Parsing of non-simple GML features not yet supported.");
+                throw new UnsupportedOperationException("Parsing of non-simple GML features not yet supported.");
             }
 
             if (sfType == null) {
@@ -227,8 +218,8 @@ public class GML2ParsingUtils {
      * @param bwFactory The binding walker factory.
      * @return The corresponding geotools feature type.
      */
-    public static SimpleFeatureType featureType(
-            XSDElementDeclaration element, BindingWalkerFactory bwFactory) throws Exception {
+    public static SimpleFeatureType featureType(XSDElementDeclaration element, BindingWalkerFactory bwFactory)
+            throws Exception {
         return featureType(element, bwFactory, null);
     }
 
@@ -241,9 +232,7 @@ public class GML2ParsingUtils {
      * @return The corresponding geotools feature type.
      */
     public static SimpleFeatureType featureType(
-            XSDElementDeclaration element,
-            BindingWalkerFactory bwFactory,
-            CoordinateReferenceSystem crs)
+            XSDElementDeclaration element, BindingWalkerFactory bwFactory, CoordinateReferenceSystem crs)
             throws Exception {
         SimpleFeatureTypeBuilder ftBuilder = new SimpleFeatureTypeBuilder();
         ftBuilder.setName(element.getName());
@@ -268,10 +257,7 @@ public class GML2ParsingUtils {
 
             if (bindings.isEmpty()) {
                 // could not find a binding, use the defaults
-                LOGGER.fine(
-                        "Could not find binding for "
-                                + property.getQName()
-                                + ", using XSAnyTypeBinding.");
+                LOGGER.fine("Could not find binding for " + property.getQName() + ", using XSAnyTypeBinding.");
                 bindings.add(new XSAnyTypeBinding());
             }
 
@@ -322,8 +308,7 @@ public class GML2ParsingUtils {
         return ftBuilder.buildFeatureType();
     }
 
-    public static SimpleFeature feature(SimpleFeatureType fType, String fid, Node node)
-            throws Exception {
+    public static SimpleFeature feature(SimpleFeatureType fType, String fid, Node node) throws Exception {
         SimpleFeatureBuilder b = new SimpleFeatureBuilder(fType);
 
         int attributeCount = fType.getAttributeCount();
@@ -416,8 +401,7 @@ public class GML2ParsingUtils {
         return members;
     }
 
-    static GeometryCollection GeometryCollectionType_parse(
-            Node node, Class clazz, GeometryFactory gFactory) {
+    static GeometryCollection GeometryCollectionType_parse(Node node, Class clazz, GeometryFactory gFactory) {
         // round up children that are geometries, since this type is often
         // extended by multi geometries, dont reference members by element name
         List<Geometry> geoms = new ArrayList<>();

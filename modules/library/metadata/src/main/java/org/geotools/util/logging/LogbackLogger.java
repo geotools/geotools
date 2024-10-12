@@ -222,12 +222,11 @@ public class LogbackLogger extends LoggerAdapter {
     public void log(final Level level, final String message, final Throwable thrown) {
         final int n = level.intValue();
         switch (n / 100) {
-            default:
-                {
-                    if (n < 0 || n == Integer.MAX_VALUE) break;
-                    // MAX_VALUE is a special value for Level.OFF. Otherwise and
-                    // if positive, fallthrough since we are greater than SEVERE.
-                }
+            default: {
+                if (n < 0 || n == Integer.MAX_VALUE) break;
+                // MAX_VALUE is a special value for Level.OFF. Otherwise and
+                // if positive, fallthrough since we are greater than SEVERE.
+            }
             case 11:
                 logger.error(FATAL, message, thrown);
                 break;

@@ -54,19 +54,12 @@ public class ArcStringTypeBindingTest extends GML32TestSupport {
 
     @Test
     public void testEncodeSimple() throws Exception {
-        LineString curve =
-                new CurvedGeometryFactory(0.1)
-                        .createCurvedGeometry(
-                                new LiteCoordinateSequence(
-                                        new double[] {1, 1, 2, 2, 3, 1, 5, 5, 7, 3}));
+        LineString curve = new CurvedGeometryFactory(0.1)
+                .createCurvedGeometry(new LiteCoordinateSequence(new double[] {1, 1, 2, 2, 3, 1, 5, 5, 7, 3}));
         Document dom = encode(curve, GML.curveProperty);
 
         String basePath = "/gml:curveProperty/gml:Curve/gml:segments/gml:ArcString";
-        assertThat(
-                dom,
-                hasXPath(
-                        "count(" + basePath + "[@interpolation='circularArc3Points'])",
-                        equalTo("1")));
+        assertThat(dom, hasXPath("count(" + basePath + "[@interpolation='circularArc3Points'])", equalTo("1")));
         assertThat(dom, hasXPath(basePath + "/gml:posList", equalTo("1 1 2 2 3 1 5 5 7 3")));
     }
 
@@ -74,9 +67,7 @@ public class ArcStringTypeBindingTest extends GML32TestSupport {
     public void testEncodeCompound() throws Exception {
         // create a compound curve
         CurvedGeometryFactory factory = new CurvedGeometryFactory(0.1);
-        LineString curve =
-                factory.createCurvedGeometry(
-                        new LiteCoordinateSequence(1, 1, 2, 2, 3, 1, 5, 5, 7, 3));
+        LineString curve = factory.createCurvedGeometry(new LiteCoordinateSequence(1, 1, 2, 2, 3, 1, 5, 5, 7, 3));
         LineString straight = factory.createLineString(new LiteCoordinateSequence(7, 3, 10, 15));
         LineString compound = factory.createCurvedGeometry(curve, straight);
 
@@ -85,17 +76,12 @@ public class ArcStringTypeBindingTest extends GML32TestSupport {
 
         // the curve portion
         String basePath1 = "/gml:curveProperty/gml:Curve/gml:segments/gml:ArcString";
-        assertThat(
-                dom,
-                hasXPath(
-                        "count(" + basePath1 + "[@interpolation='circularArc3Points'])",
-                        equalTo("1")));
+        assertThat(dom, hasXPath("count(" + basePath1 + "[@interpolation='circularArc3Points'])", equalTo("1")));
         assertThat(dom, hasXPath(basePath1 + "/gml:posList", equalTo("1 1 2 2 3 1 5 5 7 3")));
 
         // the straight portion
         String basePath2 = "/gml:curveProperty/gml:Curve/gml:segments/gml:LineStringSegment";
-        assertThat(
-                dom, hasXPath("count(" + basePath2 + "[@interpolation='linear'])", equalTo("1")));
+        assertThat(dom, hasXPath("count(" + basePath2 + "[@interpolation='linear'])", equalTo("1")));
         assertThat(dom, hasXPath(basePath2 + "/gml:posList", equalTo("7 3 10 15")));
     }
 }

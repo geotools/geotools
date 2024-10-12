@@ -93,8 +93,7 @@ public class XSPositiveIntegerBinding implements SimpleBinding {
         Number number = (Number) value;
 
         if (number.longValue() < 1) {
-            throw new IllegalArgumentException(
-                    "positiveInteger value '" + number + "' must be positive.");
+            throw new IllegalArgumentException("positiveInteger value '" + number + "' must be positive.");
         }
 
         return BigInteger.valueOf(number.longValue());
@@ -112,8 +111,7 @@ public class XSPositiveIntegerBinding implements SimpleBinding {
         Number number = (Number) object;
 
         if (number.longValue() == 0) {
-            throw new IllegalArgumentException(
-                    "positiveInteger value '" + number + "' must be positive.");
+            throw new IllegalArgumentException("positiveInteger value '" + number + "' must be positive.");
         }
 
         return value;

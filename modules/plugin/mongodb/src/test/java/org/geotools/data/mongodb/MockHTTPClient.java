@@ -44,8 +44,7 @@ public class MockHTTPClient implements HTTPClient {
     }
 
     @Override
-    public HTTPResponse post(URL url, InputStream postContent, String postContentType)
-            throws IOException {
+    public HTTPResponse post(URL url, InputStream postContent, String postContentType) throws IOException {
         // TODO Auto-generated method stub
         return null;
     }

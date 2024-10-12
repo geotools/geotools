@@ -77,15 +77,14 @@ public class WFS_2_0_0_ParsingTest {
 
     @Test
     public void testParseEmptyGetCapabilities() throws Exception {
-        String xml =
-                "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
-                        + "<WFS_Capabilities "
-                        + "  version=\"2.0.0\" "
-                        + "  xmlns=\"http://www.opengis.net/wfs/2.0\""
-                        + "  xmlns:fes=\"http://www.opengis.net/fes/2.0\""
-                        + "  xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\""
-                        + "  xsi:schemaLocation=\"http://www.opengis.net/wfs/2.0 http://schemas.opengis.net/wfs/2.0/wfs.xsd\">"
-                        + "</WFS_Capabilities>";
+        String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+                + "<WFS_Capabilities "
+                + "  version=\"2.0.0\" "
+                + "  xmlns=\"http://www.opengis.net/wfs/2.0\""
+                + "  xmlns:fes=\"http://www.opengis.net/fes/2.0\""
+                + "  xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\""
+                + "  xsi:schemaLocation=\"http://www.opengis.net/wfs/2.0 http://schemas.opengis.net/wfs/2.0/wfs.xsd\">"
+                + "</WFS_Capabilities>";
 
         configuration = new org.geotools.wfs.v2_0.WFSCapabilitiesConfiguration();
 
@@ -104,8 +103,7 @@ public class WFS_2_0_0_ParsingTest {
         configuration = new org.geotools.wfs.v2_0.WFSCapabilitiesConfiguration();
 
         Parser parser = new Parser(configuration);
-        Object parsed =
-                parser.parse(getClass().getResourceAsStream("geoserver-GetCapabilities_2_0_0.xml"));
+        Object parsed = parser.parse(getClass().getResourceAsStream("geoserver-GetCapabilities_2_0_0.xml"));
 
         Assert.assertNotNull(parsed);
         Assert.assertTrue(parsed.getClass().getName(), parsed instanceof WFSCapabilitiesType);
@@ -126,8 +124,7 @@ public class WFS_2_0_0_ParsingTest {
         configuration = new org.geotools.wfs.v2_0.WFSCapabilitiesConfiguration();
 
         Parser parser = new Parser(configuration);
-        Object parsed =
-                parser.parse(getClass().getResourceAsStream("fmi-GetCapabilities_2_0_0.xml"));
+        Object parsed = parser.parse(getClass().getResourceAsStream("fmi-GetCapabilities_2_0_0.xml"));
 
         Assert.assertNotNull(parsed);
         Assert.assertTrue(parsed.getClass().getName(), parsed instanceof WFSCapabilitiesType);
@@ -145,8 +142,7 @@ public class WFS_2_0_0_ParsingTest {
         configuration = new org.geotools.wfs.v2_0.WFSCapabilitiesConfiguration();
 
         Parser parser = new Parser(configuration);
-        Object parsed =
-                parser.parse(getClass().getResourceAsStream("cuzk-GetCapabilities_2_0_0.xml"));
+        Object parsed = parser.parse(getClass().getResourceAsStream("cuzk-GetCapabilities_2_0_0.xml"));
 
         Assert.assertNotNull(parsed);
         Assert.assertTrue(parsed.getClass().getName(), parsed instanceof WFSCapabilitiesType);
@@ -253,28 +249,19 @@ public class WFS_2_0_0_ParsingTest {
         Assert.assertNotNull(fc.getSpatialCapabilities().getSpatialOperators());
         Assert.assertNotNull(fc.getSpatialCapabilities().getSpatialOperators().getOperators());
         Assert.assertEquals(
-                11, fc.getSpatialCapabilities().getSpatialOperators().getOperators().size());
+                11,
+                fc.getSpatialCapabilities().getSpatialOperators().getOperators().size());
 
-        Assert.assertNotNull(
-                fc.getSpatialCapabilities().getSpatialOperators().getOperator("Disjoint"));
-        Assert.assertNotNull(
-                fc.getSpatialCapabilities().getSpatialOperators().getOperator("Equals"));
-        Assert.assertNotNull(
-                fc.getSpatialCapabilities().getSpatialOperators().getOperator("DWithin"));
-        Assert.assertNotNull(
-                fc.getSpatialCapabilities().getSpatialOperators().getOperator("Beyond"));
-        Assert.assertNotNull(
-                fc.getSpatialCapabilities().getSpatialOperators().getOperator("Intersect"));
-        Assert.assertNotNull(
-                fc.getSpatialCapabilities().getSpatialOperators().getOperator("Touches"));
-        Assert.assertNotNull(
-                fc.getSpatialCapabilities().getSpatialOperators().getOperator("Crosses"));
-        Assert.assertNotNull(
-                fc.getSpatialCapabilities().getSpatialOperators().getOperator("Within"));
-        Assert.assertNotNull(
-                fc.getSpatialCapabilities().getSpatialOperators().getOperator("Contains"));
-        Assert.assertNotNull(
-                fc.getSpatialCapabilities().getSpatialOperators().getOperator("Overlaps"));
+        Assert.assertNotNull(fc.getSpatialCapabilities().getSpatialOperators().getOperator("Disjoint"));
+        Assert.assertNotNull(fc.getSpatialCapabilities().getSpatialOperators().getOperator("Equals"));
+        Assert.assertNotNull(fc.getSpatialCapabilities().getSpatialOperators().getOperator("DWithin"));
+        Assert.assertNotNull(fc.getSpatialCapabilities().getSpatialOperators().getOperator("Beyond"));
+        Assert.assertNotNull(fc.getSpatialCapabilities().getSpatialOperators().getOperator("Intersect"));
+        Assert.assertNotNull(fc.getSpatialCapabilities().getSpatialOperators().getOperator("Touches"));
+        Assert.assertNotNull(fc.getSpatialCapabilities().getSpatialOperators().getOperator("Crosses"));
+        Assert.assertNotNull(fc.getSpatialCapabilities().getSpatialOperators().getOperator("Within"));
+        Assert.assertNotNull(fc.getSpatialCapabilities().getSpatialOperators().getOperator("Contains"));
+        Assert.assertNotNull(fc.getSpatialCapabilities().getSpatialOperators().getOperator("Overlaps"));
         Assert.assertNotNull(fc.getSpatialCapabilities().getSpatialOperators().getOperator("BBOX"));
 
         Assert.assertNotNull(fc.getScalarCapabilities());
@@ -282,8 +269,7 @@ public class WFS_2_0_0_ParsingTest {
         Assert.assertNotNull(fc.getScalarCapabilities().getArithmeticOperators());
         Assert.assertNotNull(fc.getScalarCapabilities().getComparisonOperators());
 
-        Assert.assertTrue(
-                fc.getScalarCapabilities().getArithmeticOperators().hasSimpleArithmetic());
+        Assert.assertTrue(fc.getScalarCapabilities().getArithmeticOperators().hasSimpleArithmetic());
         Assert.assertNotNull(fc.getScalarCapabilities().getArithmeticOperators().getFunctions());
         Assert.assertEquals(
                 7,
@@ -299,12 +285,9 @@ public class WFS_2_0_0_ParsingTest {
         Assert.assertEquals(3, operators.size()); // "Simple_Comparisons" is commented out on
         // purpose
 
-        Assert.assertNotNull(
-                fc.getScalarCapabilities().getComparisonOperators().getOperator("Between"));
-        Assert.assertNotNull(
-                fc.getScalarCapabilities().getComparisonOperators().getOperator("Like"));
-        Assert.assertNotNull(
-                fc.getScalarCapabilities().getComparisonOperators().getOperator("NullCheck"));
+        Assert.assertNotNull(fc.getScalarCapabilities().getComparisonOperators().getOperator("Between"));
+        Assert.assertNotNull(fc.getScalarCapabilities().getComparisonOperators().getOperator("Like"));
+        Assert.assertNotNull(fc.getScalarCapabilities().getComparisonOperators().getOperator("NullCheck"));
     }
 
     @Test
@@ -346,21 +329,14 @@ public class WFS_2_0_0_ParsingTest {
 
             // http://cite.opengeospatial.org/gmlsf
             // http://localhost:8080/geoserver/wfs?service=WFS&amp;version=1.1.0&amp;request=DescribeFeatureType&amp;typeName=sf:PrimitiveGeoFeature
-            String schemaLocation =
-                    doc.getDocumentElement()
-                            .getAttributeNS(
-                                    "http://www.w3.org/2001/XMLSchema-instance", "schemaLocation");
+            String schemaLocation = doc.getDocumentElement()
+                    .getAttributeNS("http://www.w3.org/2001/XMLSchema-instance", "schemaLocation");
             String absolutePath = URLs.fileToUrl(tmp).toExternalForm();
 
-            schemaLocation =
-                    schemaLocation.replaceAll(
-                            "http://cite.opengeospatial.org/gmlsf .*",
-                            "http://cite.opengeospatial.org/gmlsf " + absolutePath);
+            schemaLocation = schemaLocation.replaceAll(
+                    "http://cite.opengeospatial.org/gmlsf .*", "http://cite.opengeospatial.org/gmlsf " + absolutePath);
             doc.getDocumentElement()
-                    .setAttributeNS(
-                            "http://www.w3.org/2001/XMLSchema-instance",
-                            "schemaLocation",
-                            schemaLocation);
+                    .setAttributeNS("http://www.w3.org/2001/XMLSchema-instance", "schemaLocation", schemaLocation);
 
             tmp = File.createTempFile("geoserver-GetFeature", "xml");
             tmp.deleteOnExit();
@@ -378,8 +354,7 @@ public class WFS_2_0_0_ParsingTest {
             List featureCollections = fc.getMember();
             Assert.assertEquals(1, featureCollections.size());
 
-            SimpleFeatureCollection featureCollection =
-                    (SimpleFeatureCollection) featureCollections.get(0);
+            SimpleFeatureCollection featureCollection = (SimpleFeatureCollection) featureCollections.get(0);
             Assert.assertEquals(5, featureCollection.size());
 
             try (SimpleFeatureIterator features = featureCollection.features()) {
@@ -398,12 +373,10 @@ public class WFS_2_0_0_ParsingTest {
 
                 Object intProperty = f.getAttribute("intProperty");
                 Assert.assertNotNull(intProperty);
-                Assert.assertTrue(
-                        intProperty.getClass().getName(), intProperty instanceof BigInteger);
+                Assert.assertTrue(intProperty.getClass().getName(), intProperty instanceof BigInteger);
 
                 Assert.assertEquals(BigInteger.valueOf(155), intProperty);
-                Assert.assertEquals(
-                        new URI("http://www.opengeospatial.org/"), f.getAttribute("uriProperty"));
+                Assert.assertEquals(new URI("http://www.opengeospatial.org/"), f.getAttribute("uriProperty"));
                 Assert.assertEquals(Float.valueOf(12765.0f), f.getAttribute("measurand"));
                 Assert.assertTrue(f.getAttribute("dateProperty") instanceof Date);
                 Assert.assertEquals(BigDecimal.valueOf(5.03), f.getAttribute("decimalProperty"));

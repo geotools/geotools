@@ -36,8 +36,7 @@ public class RenamingGranuleStore extends RenamingGranuleSource implements Granu
     @Override
     public void addGranules(SimpleFeatureCollection granules) {
         try {
-            ReTypingFeatureCollection backMapped =
-                    new ReTypingFeatureCollection(granules, delegate.getSchema());
+            ReTypingFeatureCollection backMapped = new ReTypingFeatureCollection(granules, delegate.getSchema());
             store.addGranules(backMapped);
         } catch (IOException e) {
             throw new RuntimeException(e);

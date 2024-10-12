@@ -57,8 +57,7 @@ import org.geotools.util.factory.Hints;
  */
 class RasterManager {
     /** Logger. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(RasterManager.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(RasterManager.class);
 
     final SoftValueHashMap<String, Granule> granulesCache = new SoftValueHashMap<>();
 
@@ -78,10 +77,7 @@ class RasterManager {
         int imageChoice;
 
         public OverviewLevel(
-                final double scaleFactor,
-                final double resolutionX,
-                final double resolutionY,
-                int imageChoice) {
+                final double scaleFactor, final double resolutionX, final double resolutionY, int imageChoice) {
             this.scaleFactor = scaleFactor;
             this.resolutionX = resolutionX;
             this.resolutionY = resolutionY;
@@ -123,12 +119,11 @@ class RasterManager {
             resolutionsLevels.add(new OverviewLevel(1, highestRes[0], highestRes[1], 0));
             if (numberOfOverviews > 0) {
                 for (int i = 0; i < overviewsResolution.length; i++)
-                    resolutionsLevels.add(
-                            new OverviewLevel(
-                                    overviewsResolution[i][0] / highestRes[0],
-                                    overviewsResolution[i][0],
-                                    overviewsResolution[i][1],
-                                    i + 1));
+                    resolutionsLevels.add(new OverviewLevel(
+                            overviewsResolution[i][0] / highestRes[0],
+                            overviewsResolution[i][0],
+                            overviewsResolution[i][1],
+                            i + 1));
                 Collections.sort(resolutionsLevels);
             }
         }
@@ -164,8 +159,7 @@ class RasterManager {
                 requestedScaleFactorY = reqy / max.resolutionY;
             } else return 0;
             final int leastReduceAxis = requestedScaleFactorX <= requestedScaleFactorY ? 0 : 1;
-            final double requestedScaleFactor =
-                    leastReduceAxis == 0 ? requestedScaleFactorX : requestedScaleFactorY;
+            final double requestedScaleFactor = leastReduceAxis == 0 ? requestedScaleFactorX : requestedScaleFactorY;
 
             // are we looking for a resolution even higher than the native one?
             if (requestedScaleFactor <= 1) return max.imageChoice;
@@ -193,8 +187,8 @@ class RasterManager {
                 if (curr.scaleFactor > requestedScaleFactor || i == size - 1) {
                     if (policy == OverviewPolicy.QUALITY) return prev.imageChoice;
                     else if (policy == OverviewPolicy.SPEED) return curr.imageChoice;
-                    else if (requestedScaleFactor - prev.scaleFactor
-                            < curr.scaleFactor - requestedScaleFactor) return prev.imageChoice;
+                    else if (requestedScaleFactor - prev.scaleFactor < curr.scaleFactor - requestedScaleFactor)
+                        return prev.imageChoice;
                     else return curr.imageChoice;
                 }
                 prev = curr;
@@ -217,9 +211,7 @@ class RasterManager {
          * setReadParams method instead in order to transparently look for overviews.
          */
         void performDecimation(
-                final int imageIndex,
-                final ImageReadParam readParameters,
-                final RasterLayerRequest request) {
+                final int imageIndex, final ImageReadParam readParameters, final RasterLayerRequest request) {
 
             // the read parameters cannot be null
             Utilities.ensureNonNull("readParameters", readParameters);
@@ -252,19 +244,10 @@ class RasterManager {
                 // raster dimensions. The solution is to have the rater dimensions on each level and
                 // to confront raster dimensions,
                 // which means working
-                rasterWidth =
-                        (int)
-                                Math.round(
-                                        spatialDomainManager.coverageBBox.getSpan(0)
-                                                / selectedRes[0]);
-                rasterHeight =
-                        (int)
-                                Math.round(
-                                        spatialDomainManager.coverageBBox.getSpan(1)
-                                                / selectedRes[1]);
+                rasterWidth = (int) Math.round(spatialDomainManager.coverageBBox.getSpan(0) / selectedRes[0]);
+                rasterHeight = (int) Math.round(spatialDomainManager.coverageBBox.getSpan(1) / selectedRes[1]);
             }
-            ImageUtilities.setSubsamplingFactors(
-                    readParameters, requestedRes, selectedRes, rasterWidth, rasterHeight);
+            ImageUtilities.setSubsamplingFactors(readParameters, requestedRes, selectedRes, rasterWidth, rasterHeight);
         }
     }
 
@@ -310,9 +293,8 @@ class RasterManager {
             //
             // basic initialization
             //
-            coverageGeographicBBox =
-                    ImageUtilities.getReferencedEnvelopeFromGeographicBoundingBox(
-                            new GeographicBoundingBoxImpl(coverageEnvelope));
+            coverageGeographicBBox = ImageUtilities.getReferencedEnvelopeFromGeographicBoundingBox(
+                    new GeographicBoundingBoxImpl(coverageEnvelope));
             coverageGeographicCRS2D = coverageGeographicBBox.getCoordinateReferenceSystem();
 
             //
@@ -340,8 +322,7 @@ class RasterManager {
             this.coverageCRS = RasterManager.this.getCoverageCRS();
             this.coverageGridToWorld2D = (MathTransform2D) RasterManager.this.getRaster2Model();
             this.coverageFullResolution = new double[2];
-            final OverviewLevel highestLevel =
-                    RasterManager.this.overviewsController.resolutionsLevels.get(0);
+            final OverviewLevel highestLevel = RasterManager.this.overviewsController.resolutionsLevels.get(0);
             coverageFullResolution[0] = highestLevel.resolutionX;
             coverageFullResolution[1] = highestLevel.resolutionY;
         }
@@ -433,14 +414,12 @@ class RasterManager {
         return overviewPolicy;
     }
 
-    public Collection<GridCoverage2D> read(final GeneralParameterValue[] params)
-            throws IOException {
+    public Collection<GridCoverage2D> read(final GeneralParameterValue[] params) throws IOException {
 
         // create a request
         final RasterLayerRequest request = new RasterLayerRequest(params, this);
         if (request.isEmpty()) {
-            if (LOGGER.isLoggable(Level.FINE))
-                LOGGER.log(Level.FINE, "Request is empty: " + request.toString());
+            if (LOGGER.isLoggable(Level.FINE)) LOGGER.log(Level.FINE, "Request is empty: " + request.toString());
             return Collections.emptyList();
         }
 

@@ -57,10 +57,8 @@ public class EsriUnitFormatTest {
      */
     @Test
     public void testGTDefinedFormats() throws IOException {
-        UnitFormatTest.doTestFormatForGTDefinedUnits(
-                NonSI.DEGREE_ANGLE, esriUnitFormatter, "Degree");
+        UnitFormatTest.doTestFormatForGTDefinedUnits(NonSI.DEGREE_ANGLE, esriUnitFormatter, "Degree");
         UnitFormatTest.doTestFormatForGTDefinedUnits(SI.METRE, esriUnitFormatter, "Meter");
-        UnitFormatTest.doTestFormatForGTDefinedUnits(
-                Units.SEXAGESIMAL_DMS, esriUnitFormatter, "D.MS");
+        UnitFormatTest.doTestFormatForGTDefinedUnits(Units.SEXAGESIMAL_DMS, esriUnitFormatter, "D.MS");
     }
 }

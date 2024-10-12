@@ -72,14 +72,13 @@ class IndexManager {
     ShapefileDataStore store;
 
     /** Used to lock the files when doing accesses to check indexes and the like */
-    FileWriter writer =
-            new FileWriter() {
+    FileWriter writer = new FileWriter() {
 
-                @Override
-                public String id() {
-                    return "ShapefileDataStore-" + store.getTypeName().getLocalPart();
-                }
-            };
+        @Override
+        public String id() {
+            return "ShapefileDataStore-" + store.getTypeName().getLocalPart();
+        }
+    };
 
     static {
         int max = -1;
@@ -184,8 +183,7 @@ class IndexManager {
                     try {
                         read.close();
                     } catch (IOException e) {
-                        ShapefileDataStoreFactory.LOGGER.log(
-                                Level.WARNING, "could not close stream", e);
+                        ShapefileDataStoreFactory.LOGGER.log(Level.WARNING, "could not close stream", e);
                     }
                 }
             }
@@ -272,10 +270,7 @@ class IndexManager {
                 long recno = reader.findFid(fid);
                 if (recno == -1) {
                     if (LOGGER.isLoggable(Level.FINEST)) {
-                        LOGGER.finest(
-                                "fid "
-                                        + fid
-                                        + " not found in index, continuing with next queried fid...");
+                        LOGGER.finest("fid " + fid + " not found in index, continuing with next queried fid...");
                     }
                     continue;
                 }
@@ -284,13 +279,12 @@ class IndexManager {
                     data.addValue(Integer.valueOf((int) recno + 1));
                     data.addValue(Long.valueOf(shx.getOffsetInBytes((int) recno)));
                     if (LOGGER.isLoggable(Level.FINEST)) {
-                        LOGGER.finest(
-                                "fid "
-                                        + fid
-                                        + " found for record #"
-                                        + data.getValue(0)
-                                        + " at index file offset "
-                                        + data.getValue(1));
+                        LOGGER.finest("fid "
+                                + fid
+                                + " found for record #"
+                                + data.getValue(0)
+                                + " at index file offset "
+                                + data.getValue(1));
                     }
                     records.add(data);
                 } catch (Exception e) {
@@ -318,9 +312,7 @@ class IndexManager {
             try {
                 File treeFile = URLs.urlToFile(treeURL);
 
-                if (treeFile != null
-                        && treeFile.exists()
-                        && treeFile.length() < 1024 * maxQixCacheSize) {
+                if (treeFile != null && treeFile.exists() && treeFile.length() < 1024 * maxQixCacheSize) {
                     canCache = true;
                 }
             } finally {
@@ -330,9 +322,7 @@ class IndexManager {
             if (canCache) {
                 try (QuadTree quadTree = openQuadTree()) {
                     if (quadTree != null) {
-                        LOGGER.warning(
-                                "Experimental: loading in memory the quadtree for "
-                                        + shpFiles.get(SHP));
+                        LOGGER.warning("Experimental: loading in memory the quadtree for " + shpFiles.get(SHP));
                         cachedTree = new CachedQuadTree(quadTree);
                         quadTree.close();
                     }

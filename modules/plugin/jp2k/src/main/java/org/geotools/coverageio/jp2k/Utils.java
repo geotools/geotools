@@ -74,8 +74,7 @@ class Utils {
                 sourceURL = URLs.fileToUrl(tempFile);
                 source = tempFile;
             }
-        } else if (source instanceof AccessibleStream
-                && ((AccessibleStream) source).getTarget() instanceof File) {
+        } else if (source instanceof AccessibleStream && ((AccessibleStream) source).getTarget() instanceof File) {
             final File inputFile = (File) ((AccessibleStream) source).getTarget();
             source = inputFile;
         }
@@ -105,8 +104,7 @@ class Utils {
         // get a reader
         //		inStream.mark();
         try {
-            if (inStream instanceof AccessibleStream
-                    && ((AccessibleStream) inStream).getTarget() instanceof File) {
+            if (inStream instanceof AccessibleStream && ((AccessibleStream) inStream).getTarget() instanceof File) {
                 final File file = (File) ((AccessibleStream) inStream).getTarget();
                 if (FILEFILTER.accept(file))
                     return JP2KFormatFactory.getCachedSpi().createReaderInstance();
@@ -164,17 +162,16 @@ class Utils {
     }
 
     private static IOFileFilter createFilter() {
-        IOFileFilter fileFilter =
-                Utils.includeFilters(
-                        FileFilterUtils.suffixFileFilter("jp2"),
-                        FileFilterUtils.suffixFileFilter("JP2"),
-                        FileFilterUtils.suffixFileFilter("j2c"),
-                        FileFilterUtils.suffixFileFilter("J2C"),
-                        FileFilterUtils.suffixFileFilter("jpx"),
-                        FileFilterUtils.suffixFileFilter("JPX"),
-                        FileFilterUtils.suffixFileFilter("jp2k"),
-                        FileFilterUtils.suffixFileFilter("JP2K"),
-                        FileFilterUtils.nameFileFilter("jpeg2000"));
+        IOFileFilter fileFilter = Utils.includeFilters(
+                FileFilterUtils.suffixFileFilter("jp2"),
+                FileFilterUtils.suffixFileFilter("JP2"),
+                FileFilterUtils.suffixFileFilter("j2c"),
+                FileFilterUtils.suffixFileFilter("J2C"),
+                FileFilterUtils.suffixFileFilter("jpx"),
+                FileFilterUtils.suffixFileFilter("JPX"),
+                FileFilterUtils.suffixFileFilter("jp2k"),
+                FileFilterUtils.suffixFileFilter("JP2K"),
+                FileFilterUtils.nameFileFilter("jpeg2000"));
         return fileFilter;
     }
 

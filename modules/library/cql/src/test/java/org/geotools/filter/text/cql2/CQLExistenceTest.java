@@ -96,7 +96,6 @@ public class CQLExistenceTest {
 
         Assert.assertEquals(expected, eqToResultFilter);
 
-        Assert.assertNotNull(
-                "implementation of function was expected", eqToResultFilter.getExpression1());
+        Assert.assertNotNull("implementation of function was expected", eqToResultFilter.getExpression1());
     }
 }

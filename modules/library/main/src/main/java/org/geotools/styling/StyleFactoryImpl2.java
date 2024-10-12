@@ -215,8 +215,7 @@ public class StyleFactoryImpl2 {
         return fill;
     }
 
-    public FontImpl font(
-            List<Expression> family, Expression style, Expression weight, Expression size) {
+    public FontImpl font(List<Expression> family, Expression style, Expression weight, Expression size) {
         FontImpl font = new FontImpl();
         font.getFamily().addAll(family);
         font.setStyle(style);
@@ -380,9 +379,7 @@ public class StyleFactoryImpl2 {
     }
 
     public MarkImpl mark(
-            Expression wellKnownName,
-            org.geotools.api.style.Fill fill,
-            org.geotools.api.style.Stroke stroke) {
+            Expression wellKnownName, org.geotools.api.style.Fill fill, org.geotools.api.style.Stroke stroke) {
 
         MarkImpl mark = new MarkImpl(filterFactory, null);
         mark.setWellKnownName(wellKnownName);
@@ -393,9 +390,7 @@ public class StyleFactoryImpl2 {
     }
 
     public MarkImpl mark(
-            ExternalMark externalMark,
-            org.geotools.api.style.Fill fill,
-            org.geotools.api.style.Stroke stroke) {
+            ExternalMark externalMark, org.geotools.api.style.Fill fill, org.geotools.api.style.Stroke stroke) {
         MarkImpl mark = new MarkImpl();
         mark.setExternalMark(externalMark);
         mark.setFill(fill);
@@ -404,8 +399,7 @@ public class StyleFactoryImpl2 {
         return mark;
     }
 
-    public PointPlacement pointPlacement(
-            AnchorPoint anchor, Displacement displacement, Expression rotation) {
+    public PointPlacement pointPlacement(AnchorPoint anchor, Displacement displacement, Expression rotation) {
         PointPlacementImpl pointPlacment = new PointPlacementImpl(filterFactory);
         pointPlacment.setAnchorPoint(anchor);
         pointPlacment.setDisplacement(displacement);
@@ -415,11 +409,7 @@ public class StyleFactoryImpl2 {
 
     @SuppressWarnings("unchecked")
     public PointSymbolizer pointSymbolizer(
-            String name,
-            Expression geometry,
-            Description description,
-            Unit<?> unit,
-            Graphic graphic) {
+            String name, Expression geometry, Description description, Unit<?> unit, Graphic graphic) {
         PointSymbolizerImpl copy = new PointSymbolizerImpl();
         copy.setDescription(description);
         copy.setGeometryPropertyName(((PropertyName) geometry).getPropertyName());
@@ -548,16 +538,14 @@ public class StyleFactoryImpl2 {
         return rule;
     }
 
-    public SelectedChannelType selectedChannelType(
-            Expression channelName, ContrastEnhancement contrastEnhancement) {
+    public SelectedChannelType selectedChannelType(Expression channelName, ContrastEnhancement contrastEnhancement) {
         SelectedChannelTypeImpl selectedChannelType = new SelectedChannelTypeImpl(filterFactory);
         selectedChannelType.setChannelName(channelName);
         selectedChannelType.setContrastEnhancement(contrastEnhancement);
         return selectedChannelType;
     }
 
-    public SelectedChannelType selectedChannelType(
-            String channelName, ContrastEnhancement contrastEnhancement) {
+    public SelectedChannelType selectedChannelType(String channelName, ContrastEnhancement contrastEnhancement) {
         SelectedChannelTypeImpl selectedChannelType = new SelectedChannelTypeImpl(filterFactory);
         selectedChannelType.setChannelName(channelName);
         selectedChannelType.setContrastEnhancement(contrastEnhancement);

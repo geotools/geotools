@@ -33,8 +33,7 @@ import org.geotools.util.logging.Logging;
 class StringFileNameExtractor extends RegExPropertiesCollector {
     private static final Logger LOGGER = Logging.getLogger(StringFileNameExtractor.class);
 
-    public StringFileNameExtractor(
-            PropertiesCollectorSPI spi, List<String> propertyNames, String regex) {
+    public StringFileNameExtractor(PropertiesCollectorSPI spi, List<String> propertyNames, String regex) {
         super(spi, propertyNames, regex, false);
     }
 
@@ -46,8 +45,7 @@ class StringFileNameExtractor extends RegExPropertiesCollector {
 
         // set the properties, only if we have matches!
         if (matches.isEmpty()) {
-            if (LOGGER.isLoggable(Level.FINE))
-                LOGGER.fine("No matches found for this property extractor:");
+            if (LOGGER.isLoggable(Level.FINE)) LOGGER.fine("No matches found for this property extractor:");
         }
         int index = 0;
         for (String propertyName : getPropertyNames()) {

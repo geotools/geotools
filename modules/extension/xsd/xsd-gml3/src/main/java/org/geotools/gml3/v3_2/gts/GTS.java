@@ -77,8 +77,7 @@ public final class GTS extends GML.DelegatingXSD {
 
     /* Elements */
     /** @generated */
-    public static final QName TM_PeriodDuration =
-            new QName("http://www.isotc211.org/2005/gts", "TM_PeriodDuration");
+    public static final QName TM_PeriodDuration = new QName("http://www.isotc211.org/2005/gts", "TM_PeriodDuration");
 
     /* Attributes */
 

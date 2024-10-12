@@ -56,8 +56,7 @@ public class TransformFeatureLockingTest extends AbstractTransformTest {
                 CQL.toFilter("name = 'Delaware'"));
     }
 
-    private void performLockingTest(
-            SimpleFeatureLocking fl1, SimpleFeatureLocking fl2, Filter filter)
+    private void performLockingTest(SimpleFeatureLocking fl1, SimpleFeatureLocking fl2, Filter filter)
             throws CQLException, IOException {
         final FeatureLock lock1 = new FeatureLock("lock", 10 * 60 * 1000);
         final FeatureLock lock2 = new FeatureLock("lock", 10 * 60 * 1000);

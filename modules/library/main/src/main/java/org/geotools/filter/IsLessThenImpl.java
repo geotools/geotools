@@ -30,16 +30,12 @@ public class IsLessThenImpl extends MultiCompareFilterImpl implements PropertyIs
         super(expression1, expression2, matchCase);
     }
 
-    protected IsLessThenImpl(
-            Expression expression1, Expression expression2, MatchAction matchAction) {
+    protected IsLessThenImpl(Expression expression1, Expression expression2, MatchAction matchAction) {
         this(expression1, expression2, false, matchAction);
     }
 
     protected IsLessThenImpl(
-            Expression expression1,
-            Expression expression2,
-            boolean matchCase,
-            MatchAction matchAction) {
+            Expression expression1, Expression expression2, boolean matchCase, MatchAction matchAction) {
         super(expression1, expression2, matchCase, matchAction);
     }
 

@@ -103,10 +103,8 @@ public class PropSelectionTest extends AppSchemaTestSupport {
     @Test
     public void testPropertyNameSelection() throws IOException {
 
-        PropertyName propertyName1 =
-                ff.property("gsml:specification/gsml:GeologicUnit/gml:description");
-        PropertyName propertyName2 =
-                ff.property("gsml:specification/gsml:GeologicUnit/gsml:occurrence");
+        PropertyName propertyName1 = ff.property("gsml:specification/gsml:GeologicUnit/gml:description");
+        PropertyName propertyName2 = ff.property("gsml:specification/gsml:GeologicUnit/gsml:occurrence");
 
         List<PropertyName> properties = new ArrayList<>();
         properties.add(propertyName1);

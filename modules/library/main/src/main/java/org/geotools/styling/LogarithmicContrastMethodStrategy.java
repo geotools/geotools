@@ -45,10 +45,9 @@ public class LogarithmicContrastMethodStrategy extends AbstractContrastMethodStr
     @Override
     public void addParameter(String key, Expression value) {
         if (!PARAM_NAMES.contains(key)) {
-            LOGGER.log(
-                    Level.WARNING,
-                    "Adding unexpected parameter {0} to {1} Contrast Enhancer",
-                    new Object[] {key, method.name()});
+            LOGGER.log(Level.WARNING, "Adding unexpected parameter {0} to {1} Contrast Enhancer", new Object[] {
+                key, method.name()
+            });
         }
         super.addParameter(key, value);
     }

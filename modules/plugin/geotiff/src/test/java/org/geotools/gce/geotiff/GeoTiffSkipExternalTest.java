@@ -73,8 +73,7 @@ public class GeoTiffSkipExternalTest extends org.junit.Assert {
 
         final File prj = TestData.file(GeoTiffSkipExternalTest.class, "override/sample.prj");
         try (FileInputStream fis = new FileInputStream(prj)) {
-            CoordinateReferenceSystem crs_ =
-                    new PrjFileReader(fis.getChannel()).getCoordinateReferenceSystem();
+            CoordinateReferenceSystem crs_ = new PrjFileReader(fis.getChannel()).getCoordinateReferenceSystem();
 
             // Check External PRJ isn't found due to SKIP external files flag
             assertFalse(CRS.equalsIgnoreMetadata(crs, crs_));

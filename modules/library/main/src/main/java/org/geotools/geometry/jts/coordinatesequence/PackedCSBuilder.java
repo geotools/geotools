@@ -86,8 +86,7 @@ public abstract class PackedCSBuilder implements CSBuilder {
          *     double, int, int)
          */
         @Override
-        public void setOrdinate(
-                CoordinateSequence sequence, double value, int ordinateIndex, int coordinateIndex) {
+        public void setOrdinate(CoordinateSequence sequence, double value, int ordinateIndex, int coordinateIndex) {
             PackedCoordinateSequence pcs = (PackedCoordinateSequence) sequence;
             pcs.setOrdinate(coordinateIndex, ordinateIndex, value);
         }
@@ -129,8 +128,7 @@ public abstract class PackedCSBuilder implements CSBuilder {
          *     double, int, int)
          */
         @Override
-        public void setOrdinate(
-                CoordinateSequence sequence, double value, int ordinateIndex, int coordinateIndex) {
+        public void setOrdinate(CoordinateSequence sequence, double value, int ordinateIndex, int coordinateIndex) {
             PackedCoordinateSequence pcs = (PackedCoordinateSequence) sequence;
             pcs.setOrdinate(coordinateIndex, ordinateIndex, value);
         }

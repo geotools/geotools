@@ -87,8 +87,7 @@ public class AbstractSingleCRS extends AbstractCRS implements SingleCRS {
      * @param datum The datum.
      * @param cs The coordinate system.
      */
-    public AbstractSingleCRS(
-            final Map<String, ?> properties, final Datum datum, final CoordinateSystem cs) {
+    public AbstractSingleCRS(final Map<String, ?> properties, final Datum datum, final CoordinateSystem cs) {
         super(properties, cs);
         this.datum = datum;
         ensureNonNull("datum", datum);

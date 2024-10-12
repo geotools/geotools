@@ -120,9 +120,7 @@ public class WarpTest extends GridProcessingTestBase {
 
         // Doing a first scale.
         final ImageLayout2 layout = new ImageLayout2(0, 0, (int) (w / 2.0), (int) (h / 2.0));
-        GridCoverage2D scaled =
-                (GridCoverage2D)
-                        processor.doOperation(param, new Hints(JAI.KEY_IMAGE_LAYOUT, layout));
+        GridCoverage2D scaled = (GridCoverage2D) processor.doOperation(param, new Hints(JAI.KEY_IMAGE_LAYOUT, layout));
         assertEnvelopeEquals(coverage, scaled);
         RenderedImage scaledImage = scaled.getRenderedImage();
         assertEquals(w / 2.0, scaledImage.getWidth(), EPS);

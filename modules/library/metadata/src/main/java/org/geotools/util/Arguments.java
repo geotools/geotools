@@ -128,8 +128,7 @@ public class Arguments {
                     return new Locale(s[0], s[1], s[2]);
                 default:
                     illegalArgument(
-                            new IllegalArgumentException(
-                                    MessageFormat.format(ErrorKeys.BAD_LOCALE_$1, locale)));
+                            new IllegalArgumentException(MessageFormat.format(ErrorKeys.BAD_LOCALE_$1, locale)));
             }
         }
         return Locale.getDefault();
@@ -178,10 +177,8 @@ public class Arguments {
                         }
                         split = 0;
                     }
-                    illegalArgument(
-                            new IllegalArgumentException(
-                                    MessageFormat.format(
-                                            ErrorKeys.MISSING_PARAMETER_VALUE_$1, arg)));
+                    illegalArgument(new IllegalArgumentException(
+                            MessageFormat.format(ErrorKeys.MISSING_PARAMETER_VALUE_$1, arg)));
                     return null;
                 }
             }
@@ -200,9 +197,7 @@ public class Arguments {
     public String getRequiredString(final String name) {
         final String value = getOptionalString(name);
         if (value == null) {
-            illegalArgument(
-                    new IllegalArgumentException(
-                            MessageFormat.format(ErrorKeys.MISSING_PARAMETER_$1, name)));
+            illegalArgument(new IllegalArgumentException(MessageFormat.format(ErrorKeys.MISSING_PARAMETER_$1, name)));
         }
         return value;
     }
@@ -405,8 +400,7 @@ public class Arguments {
             if (arg != null) {
                 if (count >= max) {
                     illegalArgument(
-                            new IllegalArgumentException(
-                                    MessageFormat.format(ErrorKeys.UNEXPECTED_PARAMETER_$1, arg)));
+                            new IllegalArgumentException(MessageFormat.format(ErrorKeys.UNEXPECTED_PARAMETER_$1, arg)));
                 }
                 left[count++] = arg;
             }
@@ -434,10 +428,8 @@ public class Arguments {
                 argument = argument.trim();
                 if (argument.length() != 0) {
                     if (argument.charAt(0) == forbiddenPrefix) {
-                        illegalArgument(
-                                new IllegalArgumentException(
-                                        MessageFormat.format(
-                                                ErrorKeys.UNKNOW_PARAMETER_$1, argument)));
+                        illegalArgument(new IllegalArgumentException(
+                                MessageFormat.format(ErrorKeys.UNKNOW_PARAMETER_$1, argument)));
                     }
                 }
             }

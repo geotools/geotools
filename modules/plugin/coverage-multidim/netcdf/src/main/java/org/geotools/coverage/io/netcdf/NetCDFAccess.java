@@ -57,8 +57,7 @@ import org.geotools.util.logging.Logging;
  *
  * @author Romagnoli Daniele, GeoSolutions SAS
  */
-public class NetCDFAccess extends DefaultFileCoverageAccess
-        implements CoverageAccess, FileSetManager {
+public class NetCDFAccess extends DefaultFileCoverageAccess implements CoverageAccess, FileSetManager {
 
     private static final Logger LOGGER = Logging.getLogger(NetCDFAccess.class);
     private Exception tracer;
@@ -163,19 +162,14 @@ public class NetCDFAccess extends DefaultFileCoverageAccess
     }
 
     @Override
-    public boolean delete(Name name, Map<String, Serializable> params, Hints hints)
-            throws IOException {
+    public boolean delete(Name name, Map<String, Serializable> params, Hints hints) throws IOException {
         // Right now, simply delete the name
         return names.remove(name);
     }
 
     @Override
     public CoverageSource access(
-            Name name,
-            Map<String, Serializable> params,
-            AccessType accessType,
-            Hints hints,
-            ProgressListener listener)
+            Name name, Map<String, Serializable> params, AccessType accessType, Hints hints, ProgressListener listener)
             throws IOException {
         if (listener == null) {
             listener = new NullProgressListener();
@@ -233,14 +227,10 @@ public class NetCDFAccess extends DefaultFileCoverageAccess
     @SuppressWarnings("deprecation") // finalize is deprecated in Java 9
     protected void finalize() throws Throwable {
         if (reader != null) {
-            LOGGER.warning(
-                    "There is code leaving netcdf readers open, this might cause "
-                            + "issues with file deletion on Windows!");
+            LOGGER.warning("There is code leaving netcdf readers open, this might cause "
+                    + "issues with file deletion on Windows!");
             if (NetCDFUtilities.TRACE_ENABLED) {
-                LOGGER.log(
-                        Level.WARNING,
-                        "The unclosed reader originated on this stack trace",
-                        tracer);
+                LOGGER.log(Level.WARNING, "The unclosed reader originated on this stack trace", tracer);
             }
             dispose();
         }

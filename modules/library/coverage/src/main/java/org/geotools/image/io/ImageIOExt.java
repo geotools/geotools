@@ -215,9 +215,7 @@ public class ImageIOExt {
         Iterator<ImageInputStreamSpi> iter;
         // Ensure category is present
         try {
-            iter =
-                    IIORegistry.getDefaultInstance()
-                            .getServiceProviders(ImageInputStreamSpi.class, true);
+            iter = IIORegistry.getDefaultInstance().getServiceProviders(ImageInputStreamSpi.class, true);
         } catch (IllegalArgumentException e) {
             return null;
         }
@@ -232,8 +230,7 @@ public class ImageIOExt {
                 // Stream creation check
                 if (streamCreationCheck) {
                     try (ImageInputStream stream =
-                            spi.createInputStreamInstance(
-                                    input, usecache, ImageIO.getCacheDirectory())) {
+                            spi.createInputStreamInstance(input, usecache, ImageIO.getCacheDirectory())) {
                         break;
                     } catch (IOException e) {
                         return null;
@@ -315,9 +312,8 @@ public class ImageIOExt {
             // work around PNG with transparent RGB color if needed
             // we can remove it once we run on JDK 11, see
             // https://bugs.openjdk.java.net/browse/JDK-6788458
-            boolean isJdkPNGReader =
-                    "com.sun.imageio.plugins.png.PNGImageReader"
-                            .equals(reader.getClass().getName());
+            boolean isJdkPNGReader = "com.sun.imageio.plugins.png.PNGImageReader"
+                    .equals(reader.getClass().getName());
             // if it's the JDK PNG reader, we cannot skip the metadata, the tRNS section will be in
             // there
             reader.setInput(stream, true, !isJdkPNGReader);

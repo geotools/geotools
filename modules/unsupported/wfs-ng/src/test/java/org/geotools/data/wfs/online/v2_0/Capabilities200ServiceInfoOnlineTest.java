@@ -42,8 +42,7 @@ public class Capabilities200ServiceInfoOnlineTest {
             Parser parser = new Parser(configuration);
             WFSCapabilitiesType type = (WFSCapabilitiesType) parser.parse(getCapsUrl.openStream());
             featureType =
-                    new Capabilities200ServiceInfo(
-                            "http://schemas.opengis.net/wfs/2.0/wfs.xsd", getCapsUrl, type);
+                    new Capabilities200ServiceInfo("http://schemas.opengis.net/wfs/2.0/wfs.xsd", getCapsUrl, type);
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }

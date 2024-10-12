@@ -171,8 +171,7 @@ class ShapefileFeatureSource extends ContentFeatureSource {
         // Fill in geometries rather than XPath
         @SuppressWarnings("unchecked")
         Object geom(Expression expr, Object data) {
-            String propertyName =
-                    expr instanceof PropertyName ? ((PropertyName) expr).getPropertyName() : null;
+            String propertyName = expr instanceof PropertyName ? ((PropertyName) expr).getPropertyName() : null;
             if (propertyName != null && propertyName.trim().isEmpty()) {
                 if (data != null && data != attributeNames) {
                     this.attributeNames = (Set<String>) data;
@@ -267,8 +266,7 @@ class ShapefileFeatureSource extends ContentFeatureSource {
 
             // no Index file so use the number of shapefile records
             int count = -1;
-            try (ShapefileReader reader =
-                    getDataStore().shpManager.openShapeReader(new GeometryFactory(), false)) {
+            try (ShapefileReader reader = getDataStore().shpManager.openShapeReader(new GeometryFactory(), false)) {
                 count = reader.getCount(count);
             } catch (IOException e) {
                 throw e;
@@ -281,8 +279,7 @@ class ShapefileFeatureSource extends ContentFeatureSource {
     }
 
     @Override
-    protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query q)
-            throws IOException {
+    protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query q) throws IOException {
         SimpleFeatureType resultSchema = getResultSchema(q);
         SimpleFeatureType readSchema = getReadSchema(q);
         GeometryFactory geometryFactory = getGeometryFactory(q);
@@ -301,9 +298,7 @@ class ShapefileFeatureSource extends ContentFeatureSource {
         IndexManager indexManager = getDataStore().indexManager;
         @SuppressWarnings("PMD.CloseResource") // eventually gets returned and managed in the reader
         CloseableIterator<Data> goodRecs = null;
-        if (getDataStore().isFidIndexed()
-                && filter instanceof Id
-                && indexManager.hasFidIndex(false)) {
+        if (getDataStore().isFidIndexed() && filter instanceof Id && indexManager.hasFidIndex(false)) {
             Id fidFilter = (Id) filter;
             if (indexManager.isIndexStale(ShpFileType.FIX)) {
                 indexManager.createFidIndex();
@@ -317,8 +312,7 @@ class ShapefileFeatureSource extends ContentFeatureSource {
                 && !Double.isInfinite(bbox.getWidth())
                 && !Double.isInfinite(bbox.getHeight())) {
             try {
-                if (indexManager.isSpatialIndexAvailable()
-                        || getDataStore().isIndexCreationEnabled()) {
+                if (indexManager.isSpatialIndexAvailable() || getDataStore().isIndexCreationEnabled()) {
                     goodRecs = indexManager.querySpatialIndex(bbox);
                 }
             } catch (TreeException e) {
@@ -327,11 +321,7 @@ class ShapefileFeatureSource extends ContentFeatureSource {
         }
         // do we have anything to read at all? If not don't bother opening all the files
         if (goodRecs != null && !goodRecs.hasNext()) {
-            LOGGER.log(
-                    Level.FINE,
-                    "Empty results for "
-                            + resultSchema.getName().getLocalPart()
-                            + ", skipping read");
+            LOGGER.log(Level.FINE, "Empty results for " + resultSchema.getName().getLocalPart() + ", skipping read");
             goodRecs.close();
             return new EmptyFeatureReader<>(resultSchema);
         }
@@ -347,13 +337,11 @@ class ShapefileFeatureSource extends ContentFeatureSource {
         ShapefileSetManager shpManager = getDataStore().shpManager;
         @SuppressWarnings("PMD.CloseResource") // managed as a field of the return value
         ShapefileReader shapeReader = null;
-        final boolean shpFileMayExist =
-                !shpManager.shpFiles.isLocal() || shpManager.shpFiles.exists(ShpFileType.SHP);
+        final boolean shpFileMayExist = !shpManager.shpFiles.isLocal() || shpManager.shpFiles.exists(ShpFileType.SHP);
         if (shpFileMayExist) {
             try {
                 @SuppressWarnings("PMD.CloseResource") // managed as a field of the return value
-                final ShapefileReader sr =
-                        shpManager.openShapeReader(geometryFactory, goodRecs != null);
+                final ShapefileReader sr = shpManager.openShapeReader(geometryFactory, goodRecs != null);
                 shapeReader = sr;
             } catch (final FileNotFoundException e) {
                 final String format = "Ignoring missing shp-file and moving on: %s";
@@ -365,17 +353,14 @@ class ShapefileFeatureSource extends ContentFeatureSource {
         @SuppressWarnings("PMD.CloseResource") // managed as a field of the return value
         DbaseFileReader dbfReader = null;
         List<AttributeDescriptor> attributes = readSchema.getAttributeDescriptors();
-        if (attributes.isEmpty()
-                || (attributes.size() == 1 && readSchema.getGeometryDescriptor() != null)) {
+        if (attributes.isEmpty() || (attributes.size() == 1 && readSchema.getGeometryDescriptor() != null)) {
             LOGGER.fine("The DBF file won't be opened since no attributes will be read from it");
         } else {
             dbfReader = shpManager.openDbfReader(goodRecs != null);
         }
         ShapefileFeatureReader reader;
         if (goodRecs != null) {
-            reader =
-                    new IndexedShapefileFeatureReader(
-                            readSchema, shapeReader, dbfReader, fidReader, goodRecs);
+            reader = new IndexedShapefileFeatureReader(readSchema, shapeReader, dbfReader, fidReader, goodRecs);
         } else {
             reader = new ShapefileFeatureReader(readSchema, shapeReader, dbfReader, fidReader);
         }
@@ -474,9 +459,7 @@ class ShapefileFeatureSource extends ContentFeatureSource {
 
         SimpleFeatureType parent = null;
         final GeometryDescriptor geomDescriptor =
-                types.get(0) instanceof GeometryDescriptor
-                        ? (GeometryDescriptor) types.get(0)
-                        : null;
+                types.get(0) instanceof GeometryDescriptor ? (GeometryDescriptor) types.get(0) : null;
         if (geomDescriptor != null) {
             Class<?> geomBinding = geomDescriptor.getType().getBinding();
 
@@ -484,8 +467,7 @@ class ShapefileFeatureSource extends ContentFeatureSource {
                 parent = BasicFeatureTypes.POINT;
             } else if ((geomBinding == Polygon.class) || (geomBinding == MultiPolygon.class)) {
                 parent = BasicFeatureTypes.POLYGON;
-            } else if ((geomBinding == LineString.class)
-                    || (geomBinding == MultiLineString.class)) {
+            } else if ((geomBinding == LineString.class) || (geomBinding == MultiLineString.class)) {
                 parent = BasicFeatureTypes.LINE;
             }
         }
@@ -535,9 +517,7 @@ class ShapefileFeatureSource extends ContentFeatureSource {
                 }
             } catch (FactoryException fe) {
                 if (LOGGER.isLoggable(Level.FINER)) {
-                    LOGGER.log(
-                            Level.FINER,
-                            "Ignoring invalid prj file and moving on: " + fe.getMessage());
+                    LOGGER.log(Level.FINER, "Ignoring invalid prj file and moving on: " + fe.getMessage());
                 }
                 crs = null;
             }
@@ -551,9 +531,7 @@ class ShapefileFeatureSource extends ContentFeatureSource {
                 build.setBinding(geometryClass);
 
                 GeometryType geometryType = build.buildGeometryType();
-                attributes.add(
-                        build.buildDescriptor(
-                                BasicFeatureTypes.GEOMETRY_ATTRIBUTE_NAME, geometryType));
+                attributes.add(build.buildDescriptor(BasicFeatureTypes.GEOMETRY_ATTRIBUTE_NAME, geometryType));
                 usedNames.add(BasicFeatureTypes.GEOMETRY_ATTRIBUTE_NAME);
             }
 

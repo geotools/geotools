@@ -54,26 +54,20 @@ class ShapefileFeatureStore extends ContentFeatureStore {
     }
 
     @Override
-    protected FeatureWriter<SimpleFeatureType, SimpleFeature> getWriterInternal(
-            Query query, int flags) throws IOException {
+    protected FeatureWriter<SimpleFeatureType, SimpleFeature> getWriterInternal(Query query, int flags)
+            throws IOException {
         if (flags == 0) {
             throw new IllegalArgumentException("no write flags set");
         }
 
         @SuppressWarnings("PMD.CloseResource") // managed as part of the writer
-        ShapefileFeatureReader reader =
-                (ShapefileFeatureReader) delegate.getReaderInternal(Query.ALL);
+        ShapefileFeatureReader reader = (ShapefileFeatureReader) delegate.getReaderInternal(Query.ALL);
         ShapefileFeatureWriter writer;
         ShapefileDataStore ds = getDataStore();
-        if (ds.indexManager.hasFidIndex(false)
-                || ds.isFidIndexed() && ds.indexManager.hasFidIndex(true)) {
-            writer =
-                    new IndexedShapefileFeatureWriter(
-                            ds.indexManager, reader, ds.getCharset(), ds.getTimeZone());
+        if (ds.indexManager.hasFidIndex(false) || ds.isFidIndexed() && ds.indexManager.hasFidIndex(true)) {
+            writer = new IndexedShapefileFeatureWriter(ds.indexManager, reader, ds.getCharset(), ds.getTimeZone());
         } else {
-            writer =
-                    new ShapefileFeatureWriter(
-                            delegate.shpFiles, reader, ds.getCharset(), ds.getTimeZone());
+            writer = new ShapefileFeatureWriter(delegate.shpFiles, reader, ds.getCharset(), ds.getTimeZone());
         }
         writer.setMaxShpSize(getDataStore().getMaxShpSize());
         writer.setMaxDbfSize(getDataStore().getMaxDbfSize());
@@ -132,8 +126,7 @@ class ShapefileFeatureStore extends ContentFeatureStore {
     }
 
     @Override
-    protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query)
-            throws IOException {
+    protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query) throws IOException {
         return delegate.getReaderInternal(query);
     }
 

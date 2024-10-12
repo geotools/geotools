@@ -425,15 +425,8 @@ public class AttributeTypeBuilder {
             restrictions().add(optionsRestriction);
         }
 
-        AttributeType type =
-                factory.createAttributeType(
-                        name(),
-                        binding,
-                        isIdentifiable,
-                        isAbstract,
-                        restrictions(),
-                        superType,
-                        description());
+        AttributeType type = factory.createAttributeType(
+                name(), binding, isIdentifiable, isAbstract, restrictions(), superType, description());
         resetTypeState();
 
         return type;
@@ -445,16 +438,8 @@ public class AttributeTypeBuilder {
      * <p>This method resets all state after the attribute is built.
      */
     public GeometryType buildGeometryType() {
-        GeometryType type =
-                factory.createGeometryType(
-                        name(),
-                        binding,
-                        crs,
-                        isIdentifiable,
-                        isAbstract,
-                        restrictions(),
-                        superType,
-                        description());
+        GeometryType type = factory.createGeometryType(
+                name(), binding, crs, isIdentifiable, isAbstract, restrictions(), superType, description());
 
         resetTypeState();
 
@@ -465,9 +450,7 @@ public class AttributeTypeBuilder {
         if (name == null) {
             name = Classes.getShortName(binding);
         }
-        return separator == null
-                ? new NameImpl(namespaceURI, name)
-                : new NameImpl(namespaceURI, separator, name);
+        return separator == null ? new NameImpl(namespaceURI, name) : new NameImpl(namespaceURI, separator, name);
     }
 
     private InternationalString description() {
@@ -527,8 +510,7 @@ public class AttributeTypeBuilder {
 
         // build the descriptor
         AttributeDescriptor descriptor =
-                factory.createAttributeDescriptor(
-                        type, name, minOccurs(), maxOccurs(), isNillable, defaultValue());
+                factory.createAttributeDescriptor(type, name, minOccurs(), maxOccurs(), isNillable, defaultValue());
 
         // set the user data
         descriptor.getUserData().putAll(userData);
@@ -538,8 +520,7 @@ public class AttributeTypeBuilder {
 
     public GeometryDescriptor buildDescriptor(Name name, GeometryType type) {
         GeometryDescriptor descriptor =
-                factory.createGeometryDescriptor(
-                        type, name, minOccurs(), maxOccurs(), isNillable, defaultValue());
+                factory.createGeometryDescriptor(type, name, minOccurs(), maxOccurs(), isNillable, defaultValue());
 
         // set the user data
         descriptor.getUserData().putAll(userData);

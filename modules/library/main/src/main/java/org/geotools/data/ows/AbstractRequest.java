@@ -87,8 +87,7 @@ public abstract class AbstractRequest implements Request {
             // Doing this preserves all of the query parameters while
             // enforcing the mandatory ones
             if (onlineResource.getQuery() != null) {
-                StringTokenizer tokenizer =
-                        new StringTokenizer(onlineResource.getQuery(), "&"); // $NON-NLS-1$
+                StringTokenizer tokenizer = new StringTokenizer(onlineResource.getQuery(), "&"); // $NON-NLS-1$
 
                 while (tokenizer.hasMoreTokens()) {
                     String token = tokenizer.nextToken();

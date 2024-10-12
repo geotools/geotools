@@ -42,13 +42,12 @@ import org.geotools.filter.capability.FunctionNameImpl;
  */
 public class EqualIntervalFunction extends ClassificationFunction {
 
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "EqualInterval",
-                    RangedClassifier.class,
-                    parameter("value", Double.class),
-                    parameter("classes", Integer.class),
-                    parameter("percentages", Boolean.class, 0, 1));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "EqualInterval",
+            RangedClassifier.class,
+            parameter("value", Double.class),
+            parameter("classes", Integer.class),
+            parameter("percentages", Boolean.class, 0, 1));
 
     public EqualIntervalFunction() {
         super(NAME);
@@ -77,72 +76,50 @@ public class EqualIntervalFunction extends ClassificationFunction {
             }
             if ((globalMin instanceof Number) && (globalMax instanceof Number)) {
                 result = calculateNumerical(classNum, globalMin, globalMax);
-                if (percentages)
-                    result.setPercentages(
-                            getNumericalPercentages(classNum, result, featureCollection));
+                if (percentages) result.setPercentages(getNumericalPercentages(classNum, result, featureCollection));
             } else {
                 result = calculateNonNumerical(classNum, featureCollection);
-                if (percentages)
-                    result.setPercentages(
-                            getNotNumericalPercentages(classNum, featureCollection.size()));
+                if (percentages) result.setPercentages(getNotNumericalPercentages(classNum, featureCollection.size()));
             }
 
             return result;
         } catch (IllegalFilterException | IOException e) { // accepts exploded
-            LOGGER.log(
-                    Level.SEVERE,
-                    "EqualIntervalFunction calculate(SimpleFeatureCollection) failed",
-                    e);
+            LOGGER.log(Level.SEVERE, "EqualIntervalFunction calculate(SimpleFeatureCollection) failed", e);
             return null;
         } // getResult().getValue() exploded
     }
 
     @SuppressWarnings("unchecked") // assumes it can use random comparables with numbers
-    private RangedClassifier calculateNumerical(
-            int classNum, Comparable globalMin, Comparable globalMax) {
+    private RangedClassifier calculateNumerical(int classNum, Comparable globalMin, Comparable globalMax) {
         // handle constant value case
         if (globalMax.equals(globalMin)) {
             return new RangedClassifier(new Comparable[] {globalMin}, new Comparable[] {globalMax});
         }
 
-        double slotWidth =
-                (((Number) globalMax).doubleValue() - ((Number) globalMin).doubleValue())
-                        / classNum;
+        double slotWidth = (((Number) globalMax).doubleValue() - ((Number) globalMin).doubleValue()) / classNum;
         // size arrays
         Comparable[] localMin = new Comparable[classNum];
         Comparable[] localMax = new Comparable[classNum];
         for (int i = 0; i < classNum; i++) {
             // calculate the min + max values
             localMin[i] = Double.valueOf(((Number) globalMin).doubleValue() + (i * slotWidth));
-            localMax[i] =
-                    Double.valueOf(
-                            ((Number) globalMax).doubleValue() - ((classNum - i - 1) * slotWidth));
+            localMax[i] = Double.valueOf(((Number) globalMax).doubleValue() - ((classNum - i - 1) * slotWidth));
             // determine number of decimal places to allow
             int decPlaces = decimalPlaces(slotWidth);
             // clean up truncation error
             if (decPlaces > -1) {
-                localMin[i] =
-                        Double.valueOf(round(((Number) localMin[i]).doubleValue(), decPlaces));
-                localMax[i] =
-                        Double.valueOf(round(((Number) localMax[i]).doubleValue(), decPlaces));
+                localMin[i] = Double.valueOf(round(((Number) localMin[i]).doubleValue(), decPlaces));
+                localMax[i] = Double.valueOf(round(((Number) localMax[i]).doubleValue(), decPlaces));
             }
 
             if (i == 0) {
                 // ensure first min is less than or equal to globalMin
                 if (localMin[i].compareTo(Double.valueOf(((Number) globalMin).doubleValue())) < 0)
-                    localMin[i] =
-                            Double.valueOf(
-                                    fixRound(
-                                            ((Number) localMin[i]).doubleValue(),
-                                            decPlaces,
-                                            false));
+                    localMin[i] = Double.valueOf(fixRound(((Number) localMin[i]).doubleValue(), decPlaces, false));
             } else if (i == classNum - 1) {
                 // ensure last max is greater than or equal to globalMax
                 if (localMax[i].compareTo(Double.valueOf(((Number) globalMax).doubleValue())) > 0)
-                    localMax[i] =
-                            Double.valueOf(
-                                    fixRound(
-                                            ((Number) localMax[i]).doubleValue(), decPlaces, true));
+                    localMax[i] = Double.valueOf(fixRound(((Number) localMax[i]).doubleValue(), decPlaces, true));
             }
             // synchronize min with previous max
             if ((i != 0) && (!localMin[i].equals(localMax[i - 1]))) {
@@ -153,8 +130,8 @@ public class EqualIntervalFunction extends ClassificationFunction {
     }
 
     @SuppressWarnings("unchecked")
-    private RangedClassifier calculateNonNumerical(
-            int classNum, FeatureCollection<?, ?> featureCollection) throws IOException {
+    private RangedClassifier calculateNonNumerical(int classNum, FeatureCollection<?, ?> featureCollection)
+            throws IOException {
         // obtain of list of unique values, so we can enumerate
         UniqueVisitor uniqueVisit = new UniqueVisitor(getParameters().get(0));
         featureCollection.accepts(uniqueVisit, new NullProgressListener());
@@ -188,8 +165,7 @@ public class EqualIntervalFunction extends ClassificationFunction {
         for (int binIndex = 0; binIndex < classNum; binIndex++) {
             // store min
             if (binIndex < localMin.length)
-                localMin[binIndex] =
-                        (itemIndex < values.length ? values[itemIndex] : values[values.length - 1]);
+                localMin[binIndex] = (itemIndex < values.length ? values[itemIndex] : values[values.length - 1]);
             else
                 localMin[localMin.length - 1] =
                         (itemIndex < values.length ? values[itemIndex] : values[values.length - 1]);
@@ -197,26 +173,17 @@ public class EqualIntervalFunction extends ClassificationFunction {
             // store max
             if (binIndex == classNum - 1) {
                 if (binIndex < localMax.length)
-                    localMax[binIndex] =
-                            (itemIndex < values.length
-                                    ? values[itemIndex]
-                                    : values[values.length - 1]);
+                    localMax[binIndex] = (itemIndex < values.length ? values[itemIndex] : values[values.length - 1]);
                 else
                     localMax[localMax.length - 1] =
-                            (itemIndex < values.length
-                                    ? values[itemIndex]
-                                    : values[values.length - 1]);
+                            (itemIndex < values.length ? values[itemIndex] : values[values.length - 1]);
             } else {
                 if (binIndex < localMax.length)
                     localMax[binIndex] =
-                            (itemIndex + 1 < values.length
-                                    ? values[itemIndex + 1]
-                                    : values[values.length - 1]);
+                            (itemIndex + 1 < values.length ? values[itemIndex + 1] : values[values.length - 1]);
                 else
                     localMax[localMax.length - 1] =
-                            (itemIndex + 1 < values.length
-                                    ? values[itemIndex + 1]
-                                    : values[values.length - 1]);
+                            (itemIndex + 1 < values.length ? values[itemIndex + 1] : values[values.length - 1]);
             }
             if (lastBigBin == binIndex) binPop--; // decrease the number of items in a bin for the
             // next iteration
@@ -246,8 +213,7 @@ public class EqualIntervalFunction extends ClassificationFunction {
         return percentages;
     }
 
-    private double[] getNumericalPercentages(
-            int classNum, RangedClassifier classifier, FeatureCollection collection)
+    private double[] getNumericalPercentages(int classNum, RangedClassifier classifier, FeatureCollection collection)
             throws IOException {
 
         double max = ((Number) classifier.getMax(classifier.getSize() - 1)).doubleValue();

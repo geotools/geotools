@@ -33,8 +33,7 @@ public class JsonSelectAllFunction extends FunctionExpressionImpl implements Pro
 
     private static final NamespaceSupport NAMESPACE_SUPPORT = new NamespaceSupport();
 
-    public static FunctionName DEFINITION =
-            new FunctionNameImpl("jsonSelectAll", parameter("path", String.class));
+    public static FunctionName DEFINITION = new FunctionNameImpl("jsonSelectAll", parameter("path", String.class));
 
     public JsonSelectAllFunction() {
         super(DEFINITION);

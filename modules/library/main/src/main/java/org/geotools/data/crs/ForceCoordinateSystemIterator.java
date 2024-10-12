@@ -55,8 +55,7 @@ import org.geotools.feature.simple.SimpleFeatureBuilder;
  * @author $Author: jive $ (last modification)
  * @version $Id$
  */
-public class ForceCoordinateSystemIterator
-        implements SimpleFeatureIterator, Iterator<SimpleFeature> {
+public class ForceCoordinateSystemIterator implements SimpleFeatureIterator, Iterator<SimpleFeature> {
     protected FeatureIterator<SimpleFeature> reader;
     protected SimpleFeatureBuilder builder;
 
@@ -68,15 +67,12 @@ public class ForceCoordinateSystemIterator
 
     /** Builds a new ForceCoordinateSystemFeatureReader */
     public ForceCoordinateSystemIterator(
-            FeatureIterator<SimpleFeature> reader,
-            SimpleFeatureType type,
-            CoordinateReferenceSystem cs)
+            FeatureIterator<SimpleFeature> reader, SimpleFeatureType type, CoordinateReferenceSystem cs)
             throws SchemaException {
         if (cs == null) {
             throw new NullPointerException("CoordinateSystem required");
         }
-        CoordinateReferenceSystem originalCs =
-                type.getGeometryDescriptor().getCoordinateReferenceSystem();
+        CoordinateReferenceSystem originalCs = type.getGeometryDescriptor().getCoordinateReferenceSystem();
 
         if (!cs.equals(originalCs)) {
             type = FeatureTypes.transform(type, cs);
@@ -107,8 +103,7 @@ public class ForceCoordinateSystemIterator
         try {
             return SimpleFeatureBuilder.retype(next, builder);
         } catch (IllegalAttributeException eep) {
-            throw (IllegalStateException)
-                    new IllegalStateException(eep.getMessage()).initCause(eep);
+            throw (IllegalStateException) new IllegalStateException(eep.getMessage()).initCause(eep);
         }
     }
 

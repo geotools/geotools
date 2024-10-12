@@ -35,8 +35,8 @@ public class CurvedLabelTest extends RendererBaseTest {
         RendererBaseTest.setupVeraFonts();
 
         // load the data, in this case a set of different linestring
-        File property =
-                new File(TestData.getResource(this, "curvedLabelsMultiLine.properties").toURI());
+        File property = new File(
+                TestData.getResource(this, "curvedLabelsMultiLine.properties").toURI());
         PropertyDataStore dataStore = new PropertyDataStore(property.getParentFile());
         SimpleFeatureSource featureSource = dataStore.getFeatureSource("curvedLabelsMultiLine");
         // expand the bands so we can view all the labels
@@ -61,8 +61,7 @@ public class CurvedLabelTest extends RendererBaseTest {
         mapContent.dispose();
 
         File reference =
-                new File(
-                        "./src/test/resources/org/geotools/renderer/lite/test-data/curvedLabelsMultiLine.png");
+                new File("./src/test/resources/org/geotools/renderer/lite/test-data/curvedLabelsMultiLine.png");
         ImageAssert.assertEquals(reference, image, 1000);
     }
 }

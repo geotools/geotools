@@ -37,13 +37,8 @@ public class WMSChooser {
 
         Object[] message = {"Choose a WMS Server", combo};
         do {
-            int done =
-                    JOptionPane.showConfirmDialog(
-                            null,
-                            message,
-                            "Web Map Server",
-                            JOptionPane.OK_CANCEL_OPTION,
-                            JOptionPane.QUESTION_MESSAGE);
+            int done = JOptionPane.showConfirmDialog(
+                    null, message, "Web Map Server", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
             if (done == JOptionPane.CANCEL_OPTION) {
                 return null;
             }
@@ -58,17 +53,12 @@ public class WMSChooser {
 
     private static List<String> defaultServers() {
         List<String> servers = new ArrayList<>();
-        servers.add(
-                "http://wms.jpl.nasa.gov/wms.cgi?Service=WMS&Version=1.1.1&Request=GetCapabilities");
+        servers.add("http://wms.jpl.nasa.gov/wms.cgi?Service=WMS&Version=1.1.1&Request=GetCapabilities");
         servers.add("http://localhost:8080/geoserver/wms?service=WMS&request=GetCapabilities");
-        servers.add(
-                "http://www2.dmsolutions.ca/cgi-bin/mswms_gmap?Service=WMS&VERSION=1.1.0&REQUEST=GetCapabilities");
-        servers.add(
-                "http://giswebservices.massgis.state.ma.us/geoserver/wms?service=WMS&request=GetCapabilities");
-        servers.add(
-                "http://wms.cits.rncan.gc.ca/cgi-bin/cubeserv.cgi?VERSION=1.1.0&REQUEST=GetCapabilities");
-        servers.add(
-                "http://atlas.gc.ca/cgi-bin/atlaswms_en?VERSION=1.1.1&Request=GetCapabilities&Service=WMS");
+        servers.add("http://www2.dmsolutions.ca/cgi-bin/mswms_gmap?Service=WMS&VERSION=1.1.0&REQUEST=GetCapabilities");
+        servers.add("http://giswebservices.massgis.state.ma.us/geoserver/wms?service=WMS&request=GetCapabilities");
+        servers.add("http://wms.cits.rncan.gc.ca/cgi-bin/cubeserv.cgi?VERSION=1.1.0&REQUEST=GetCapabilities");
+        servers.add("http://atlas.gc.ca/cgi-bin/atlaswms_en?VERSION=1.1.1&Request=GetCapabilities&Service=WMS");
         return servers;
     }
 }

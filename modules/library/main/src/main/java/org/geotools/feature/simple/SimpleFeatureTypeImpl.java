@@ -55,14 +55,7 @@ public class SimpleFeatureTypeImpl extends FeatureTypeImpl implements SimpleFeat
             InternationalString description) {
         // Note intentional circumvention of generics type checking;
         // this is only valid if schema is not modified.
-        super(
-                name,
-                (List) schema,
-                defaultGeometry,
-                isAbstract,
-                restrictions,
-                superType,
-                description);
+        super(name, (List) schema, defaultGeometry, isAbstract, restrictions, superType, description);
         index = buildIndex(this);
         descriptors = buildDescriptorIndex(this);
     }

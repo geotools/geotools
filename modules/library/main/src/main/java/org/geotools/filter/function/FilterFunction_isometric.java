@@ -38,15 +38,10 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.Polygon;
 
-public class FilterFunction_isometric extends FunctionExpressionImpl
-        implements GeometryTransformation {
+public class FilterFunction_isometric extends FunctionExpressionImpl implements GeometryTransformation {
 
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "isometric",
-                    Geometry.class,
-                    parameter("geometry", Geometry.class),
-                    parameter("extrusion", Double.class));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "isometric", Geometry.class, parameter("geometry", Geometry.class), parameter("extrusion", Double.class));
 
     public FilterFunction_isometric() {
         super(NAME);

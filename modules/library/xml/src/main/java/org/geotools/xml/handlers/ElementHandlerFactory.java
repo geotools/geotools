@@ -146,8 +146,7 @@ public class ElementHandlerFactory {
      *
      * @see ElementHandlerFactory#createElementHandler(Element)
      */
-    public XMLElementHandler createElementHandler(URI namespaceURI, String localName)
-            throws SAXException {
+    public XMLElementHandler createElementHandler(URI namespaceURI, String localName) throws SAXException {
 
         if (localName == null) {
             return null;
@@ -157,8 +156,7 @@ public class ElementHandlerFactory {
             namespaceURI = defaultNS;
         }
 
-        logger.finest(
-                "Trying to create an element handler for " + localName + " :: " + namespaceURI);
+        logger.finest("Trying to create an element handler for " + localName + " :: " + namespaceURI);
 
         Schema s = targSchemas.get(namespaceURI);
 

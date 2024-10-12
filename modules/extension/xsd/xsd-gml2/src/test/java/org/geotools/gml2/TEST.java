@@ -26,8 +26,7 @@ public final class TEST extends XSD {
 
     // types
     public static QName TestFeatureType = new QName(NAMESPACE, "TestFeatureType");
-    public static QName TestFeatureCollectionType =
-            new QName(NAMESPACE, "TestFeatureCollectionType");
+    public static QName TestFeatureCollectionType = new QName(NAMESPACE, "TestFeatureCollectionType");
 
     // elements
     public static QName TestFeature = new QName(NAMESPACE, "TestFeature");

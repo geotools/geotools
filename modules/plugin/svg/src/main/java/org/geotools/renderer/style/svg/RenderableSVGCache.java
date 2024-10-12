@@ -48,8 +48,7 @@ public class RenderableSVGCache {
     private static final Pattern PARAMETER_PATTERN = Pattern.compile("param\\((.+)\\).*");
 
     /** Parsed SVG glyphs cache */
-    static Map<String, RenderableSVG> glyphCache =
-            Collections.synchronizedMap(new SoftValueHashMap<>());
+    static Map<String, RenderableSVG> glyphCache = Collections.synchronizedMap(new SoftValueHashMap<>());
 
     /** The possible mime types for SVG */
     static final Set<String> formats = new HashSet<>();
@@ -66,16 +65,14 @@ public class RenderableSVGCache {
 
     public RenderableSVGCache(Map<Key, Object> hints) {}
 
-    public RenderableSVG getRenderableSVG(Feature feature, Expression url, String format)
-            throws Exception {
+    public RenderableSVG getRenderableSVG(Feature feature, Expression url, String format) throws Exception {
         // check we do support the declared format
         if (format == null || !formats.contains(format.toLowerCase())) return null;
 
         // grab the url
         String svgfile = url.evaluate(feature, String.class);
         if (svgfile == null) {
-            throw new IllegalArgumentException(
-                    "The specified expression could not be turned into an URL");
+            throw new IllegalArgumentException("The specified expression could not be turned into an URL");
         } else {
             // just for validation parse the URL
             if (Converters.convert(svgfile, URL.class) == null) {

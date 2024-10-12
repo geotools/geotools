@@ -49,8 +49,7 @@ public class CSVWriteStrategyTest {
         assertEquals(3, featureType.getAttributeCount());
 
         SimpleFeature feature =
-                SimpleFeatureBuilder.build(
-                        featureType, new Object[] {"Trento", 140, 2002}, "TEST-fid1");
+                SimpleFeatureBuilder.build(featureType, new Object[] {"Trento", 140, 2002}, "TEST-fid1");
         String[] csvRecord = {"Trento", "140", "2002"};
         SimpleFeature parsed = strategy.decode("fid1", csvRecord);
         assertEquals(feature, parsed);
@@ -85,8 +84,7 @@ public class CSVWriteStrategyTest {
         }
 
         SimpleFeature feature =
-                SimpleFeatureBuilder.build(
-                        featureType, new Object[] {trento, "Trento", 140, 2002}, "TEST-fid1");
+                SimpleFeatureBuilder.build(featureType, new Object[] {trento, "Trento", 140, 2002}, "TEST-fid1");
         String[] csvRecord = {"46.066667", "11.116667", "Trento", "140", "2002"};
         SimpleFeature parsed = strategy.decode("fid1", csvRecord);
         assertEquals(feature, parsed);
@@ -112,8 +110,7 @@ public class CSVWriteStrategyTest {
             trento = gf.createPoint(new Coordinate(11.116667, 46.066667));
         }
         SimpleFeature feature =
-                SimpleFeatureBuilder.build(
-                        featureType, new Object[] {trento, "Trento", 140, 2002}, "TEST-fid1");
+                SimpleFeatureBuilder.build(featureType, new Object[] {trento, "Trento", 140, 2002}, "TEST-fid1");
         String[] csvRecord = {"46.066667", "11.116667", "Trento", "140", "2002"};
         SimpleFeature parsed = strategy.decode("fid1", csvRecord);
         assertEquals(feature, parsed);
@@ -140,8 +137,7 @@ public class CSVWriteStrategyTest {
         WKTReader2 wktReader = new WKTReader2();
         Geometry geom = wktReader.read("POINT (1 1)");
         SimpleFeature feature =
-                SimpleFeatureBuilder.build(
-                        featureType, new Object[] {geom, "Trento", 140, 2002}, "TEST-fid1");
+                SimpleFeatureBuilder.build(featureType, new Object[] {geom, "Trento", 140, 2002}, "TEST-fid1");
         String[] csvRecord = {"POINT (1 1)", "Trento", "140", "2002"};
         SimpleFeature parsed = strategy.decode("fid1", csvRecord);
         assertEquals(feature, parsed);

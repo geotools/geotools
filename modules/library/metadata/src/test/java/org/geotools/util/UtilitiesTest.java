@@ -163,8 +163,7 @@ public final class UtilitiesTest {
      */
     @Test(expected = IOException.class)
     public void testAssertNotZipSlipVulnarableVulnerable2() throws IOException {
-        Utilities.assertNotZipSlipVulnarable(
-                new File("./target/../../testfile"), Paths.get("./target"));
+        Utilities.assertNotZipSlipVulnarable(new File("./target/../../testfile"), Paths.get("./target"));
     }
 
     /**
@@ -173,8 +172,7 @@ public final class UtilitiesTest {
      */
     @Test(expected = IOException.class)
     public void testAssertNotZipSlipVulnarableVulnerable3() throws IOException {
-        Utilities.assertNotZipSlipVulnarable(
-                new File("../target/../testfile"), Paths.get("../target"));
+        Utilities.assertNotZipSlipVulnarable(new File("../target/../testfile"), Paths.get("../target"));
     }
 
     /**
@@ -186,9 +184,7 @@ public final class UtilitiesTest {
         try {
             Utilities.assertNotZipSlipVulnarable(new File("/../testfile"), Paths.get("/"));
         } catch (IOException io) {
-            fail(
-                    "zip slip check should not have failed for this case: "
-                            + io.getLocalizedMessage());
+            fail("zip slip check should not have failed for this case: " + io.getLocalizedMessage());
         }
     }
 
@@ -199,12 +195,9 @@ public final class UtilitiesTest {
     @Test
     public void testAssertNotZipSlipVulnarableNotVulnerable2() throws IOException {
         try {
-            Utilities.assertNotZipSlipVulnarable(
-                    new File("../target/testfile"), Paths.get("../target"));
+            Utilities.assertNotZipSlipVulnarable(new File("../target/testfile"), Paths.get("../target"));
         } catch (IOException io) {
-            fail(
-                    "zip slip check should not have failed for this case: "
-                            + io.getLocalizedMessage());
+            fail("zip slip check should not have failed for this case: " + io.getLocalizedMessage());
         }
     }
 }

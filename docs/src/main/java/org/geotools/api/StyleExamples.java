@@ -67,8 +67,7 @@ public class StyleExamples {
 
         // define a point symbolizer of a small circle
         Graphic circle = sf.graphic(symbols, opacity, size, rotation, anchor, displacement);
-        PointSymbolizer pointSymbolizer =
-                sf.pointSymbolizer("point", ff.property("the_geom"), null, null, circle);
+        PointSymbolizer pointSymbolizer = sf.pointSymbolizer("point", ff.property("the_geom"), null, null, circle);
         // styleFactoryExample end
     }
 }

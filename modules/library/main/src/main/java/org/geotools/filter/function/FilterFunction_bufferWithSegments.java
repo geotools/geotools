@@ -27,13 +27,12 @@ import org.locationtech.jts.geom.Geometry;
 
 public class FilterFunction_bufferWithSegments extends FunctionExpressionImpl {
 
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "bufferWithSegments",
-                    parameter("buffer", Geometry.class),
-                    parameter("geometry", Geometry.class),
-                    parameter("distance", Number.class),
-                    parameter("numberOfSegments", Number.class));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "bufferWithSegments",
+            parameter("buffer", Geometry.class),
+            parameter("geometry", Geometry.class),
+            parameter("distance", Number.class),
+            parameter("numberOfSegments", Number.class));
 
     public FilterFunction_bufferWithSegments() {
         super("bufferWithSegments");

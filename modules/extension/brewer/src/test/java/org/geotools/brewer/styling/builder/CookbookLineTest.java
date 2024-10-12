@@ -83,7 +83,8 @@ public class CookbookLineTest extends AbstractStyleTest {
 
     @Test
     public void testDashed() {
-        Style style = new StrokeBuilder().color(Color.BLUE).width(3).dashArray(5, 2).buildStyle();
+        Style style =
+                new StrokeBuilder().color(Color.BLUE).width(3).dashArray(5, 2).buildStyle();
         // print(style);
 
         // round up the basic elements and check its simple
@@ -166,8 +167,12 @@ public class CookbookLineTest extends AbstractStyleTest {
 
     @Test
     public void testSpacedGraphics() {
-        MarkBuilder mb =
-                new StrokeBuilder().dashArray(4, 6).graphicStroke().size(4).mark().name("circle");
+        MarkBuilder mb = new StrokeBuilder()
+                .dashArray(4, 6)
+                .graphicStroke()
+                .size(4)
+                .mark()
+                .name("circle");
         mb.stroke().colorHex("#333333").width(1);
         mb.fill().colorHex("#666666");
         Style style = mb.buildStyle();
@@ -262,13 +267,12 @@ public class CookbookLineTest extends AbstractStyleTest {
     public void testLineOptimizedLabels() {
         RuleBuilder rb = new RuleBuilder();
         rb.line().stroke().color(Color.RED);
-        TextSymbolizerBuilder tsb =
-                rb.text()
-                        .label("name")
-                        .option("followLine", true)
-                        .option("maxAngleDelta", 90)
-                        .option("maxDisplacement", 400)
-                        .option("repeat", 150);
+        TextSymbolizerBuilder tsb = rb.text()
+                .label("name")
+                .option("followLine", true)
+                .option("maxAngleDelta", 90)
+                .option("maxDisplacement", 400)
+                .option("repeat", 150);
         tsb.linePlacement();
         tsb.fill().color(Color.BLACK);
         Style style = rb.buildStyle();
@@ -293,9 +297,24 @@ public class CookbookLineTest extends AbstractStyleTest {
     @Test
     public void testAttributeBased() {
         FeatureTypeStyleBuilder fts = new FeatureTypeStyleBuilder();
-        fts.rule().filter("type = 'local-road'").line().stroke().colorHex("#009933").width(2);
-        fts.rule().filter("type = 'secondary'").line().stroke().colorHex("#0055CC").width(3);
-        fts.rule().filter("type = 'highway'").line().stroke().colorHex("#FF0000").width(6);
+        fts.rule()
+                .filter("type = 'local-road'")
+                .line()
+                .stroke()
+                .colorHex("#009933")
+                .width(2);
+        fts.rule()
+                .filter("type = 'secondary'")
+                .line()
+                .stroke()
+                .colorHex("#0055CC")
+                .width(3);
+        fts.rule()
+                .filter("type = 'highway'")
+                .line()
+                .stroke()
+                .colorHex("#FF0000")
+                .width(6);
         Style style = fts.buildStyle();
         // print(style);
 
@@ -332,27 +351,26 @@ public class CookbookLineTest extends AbstractStyleTest {
     @Test
     public void testAttributeBasedRecode() {
         // this is a case showing that recode/categorize is not always the most compact solution...
-        Function width =
-                ff.function(
-                        "recode",
-                        ff.property("type"),
-                        ff.literal("local-road"),
-                        ff.literal(2),
-                        ff.literal("secondary"),
-                        ff.literal(3),
-                        ff.literal("highway"),
-                        ff.literal(6));
-        Function color =
-                ff.function(
-                        "recode",
-                        ff.property("type"),
-                        ff.literal("local-road"),
-                        ff.literal("#009933"),
-                        ff.literal("secondary"),
-                        ff.literal("#0055CC2"),
-                        ff.literal("highway"),
-                        ff.literal("#FF0000"));
-        Style style = new LineSymbolizerBuilder().stroke().color(color).width(width).buildStyle();
+        Function width = ff.function(
+                "recode",
+                ff.property("type"),
+                ff.literal("local-road"),
+                ff.literal(2),
+                ff.literal("secondary"),
+                ff.literal(3),
+                ff.literal("highway"),
+                ff.literal(6));
+        Function color = ff.function(
+                "recode",
+                ff.property("type"),
+                ff.literal("local-road"),
+                ff.literal("#009933"),
+                ff.literal("secondary"),
+                ff.literal("#0055CC2"),
+                ff.literal("highway"),
+                ff.literal("#FF0000"));
+        Style style =
+                new LineSymbolizerBuilder().stroke().color(color).width(width).buildStyle();
         // print(style);
 
         StyleCollector collector = new StyleCollector();
@@ -368,7 +386,13 @@ public class CookbookLineTest extends AbstractStyleTest {
     @Test
     public void testZoomBasedLine() {
         FeatureTypeStyleBuilder fts = new FeatureTypeStyleBuilder();
-        fts.rule().name("Large").max(180000000).line().stroke().colorHex("#009933").width(6);
+        fts.rule()
+                .name("Large")
+                .max(180000000)
+                .line()
+                .stroke()
+                .colorHex("#009933")
+                .width(6);
         fts.rule()
                 .name("Medium")
                 .min(180000000)
@@ -377,7 +401,13 @@ public class CookbookLineTest extends AbstractStyleTest {
                 .stroke()
                 .colorHex("#009933")
                 .width(4);
-        fts.rule().name("Small").min(360000000).line().stroke().colorHex("#009933").width(2);
+        fts.rule()
+                .name("Small")
+                .min(360000000)
+                .line()
+                .stroke()
+                .colorHex("#009933")
+                .width(2);
         Style style = fts.buildStyle();
         // print(style);
 
@@ -390,12 +420,10 @@ public class CookbookLineTest extends AbstractStyleTest {
         // check rules and styles
         checkScaleBasedRule(collector.rules.get(0), "Large", 0, 180000000, 6);
         checkScaleBasedRule(collector.rules.get(1), "Medium", 180000000, 360000000, 4);
-        checkScaleBasedRule(
-                collector.rules.get(2), "Small", 360000000, Double.POSITIVE_INFINITY, 2);
+        checkScaleBasedRule(collector.rules.get(2), "Small", 360000000, Double.POSITIVE_INFINITY, 2);
     }
 
-    private void checkScaleBasedRule(
-            Rule rule, String name, double minDenominator, double maxDenominator, int size) {
+    private void checkScaleBasedRule(Rule rule, String name, double minDenominator, double maxDenominator, int size) {
         assertEquals(name, rule.getName());
         assertEquals(minDenominator, rule.getMinScaleDenominator(), 0.0);
         assertEquals(maxDenominator, rule.getMaxScaleDenominator(), 0.0);
@@ -406,13 +434,12 @@ public class CookbookLineTest extends AbstractStyleTest {
 
     @Test
     public void testUomLine() {
-        Style style =
-                new LineSymbolizerBuilder()
-                        .uom(SI.METRE)
-                        .stroke()
-                        .width(50)
-                        .colorHex("#009933")
-                        .buildStyle();
+        Style style = new LineSymbolizerBuilder()
+                .uom(SI.METRE)
+                .stroke()
+                .width(50)
+                .colorHex("#009933")
+                .buildStyle();
         // print(style);
 
         StyleCollector collector = new StyleCollector();

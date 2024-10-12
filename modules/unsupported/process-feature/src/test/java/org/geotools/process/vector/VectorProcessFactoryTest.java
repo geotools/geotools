@@ -32,18 +32,17 @@ public class VectorProcessFactoryTest {
     public void testAddCustomProcess() {
         assertNull(Processors.createProcess(new NameImpl("vec", "Custom")));
 
-        FactoryIteratorProvider p =
-                new FactoryIteratorProvider() {
-                    @Override
-                    public <T> Iterator<T> iterator(Class<T> category) {
-                        if (category == VectorProcess.class) {
-                            @SuppressWarnings("unchecked")
-                            T t = (T) new CustomProcess();
-                            return Arrays.asList(t).iterator();
-                        }
-                        return null;
-                    }
-                };
+        FactoryIteratorProvider p = new FactoryIteratorProvider() {
+            @Override
+            public <T> Iterator<T> iterator(Class<T> category) {
+                if (category == VectorProcess.class) {
+                    @SuppressWarnings("unchecked")
+                    T t = (T) new CustomProcess();
+                    return Arrays.asList(t).iterator();
+                }
+                return null;
+            }
+        };
         GeoTools.addFactoryIteratorProvider(p);
         try {
             Processors.reset();

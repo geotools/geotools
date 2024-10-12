@@ -75,12 +75,8 @@ public class FeatureTypeTest extends DataTestCase {
         // URI("http://www.opengis.net/gml"),"Feature"));
         // assertTrue("extends gml feature", FeatureTypes.isDecendedFrom(abstractType2, new
         // URI("http://www.opengis.net/gml"),"Feature"));
-        assertTrue(
-                "abstractType2 --|> abstractType",
-                FeatureTypes.isDecendedFrom(abstractType2, abstractType));
-        assertFalse(
-                "abstractType2 !--|> abstractType",
-                FeatureTypes.isDecendedFrom(abstractType, abstractType2));
+        assertTrue("abstractType2 --|> abstractType", FeatureTypes.isDecendedFrom(abstractType2, abstractType));
+        assertFalse("abstractType2 !--|> abstractType", FeatureTypes.isDecendedFrom(abstractType, abstractType2));
 
         try {
             SimpleFeatureBuilder.build(abstractType, new Object[0], null);
@@ -164,9 +160,7 @@ public class FeatureTypeTest extends DataTestCase {
                 FeatureTypes.getAncestors(BasicFeatureTypes.FEATURE));
 
         assertEquals(
-                "Ancestors of A, nearest first",
-                List.of(BasicFeatureTypes.FEATURE),
-                FeatureTypes.getAncestors(typeA));
+                "Ancestors of A, nearest first", List.of(BasicFeatureTypes.FEATURE), FeatureTypes.getAncestors(typeA));
 
         assertEquals(
                 "Ancestors of B, nearest first",
@@ -245,15 +239,12 @@ public class FeatureTypeTest extends DataTestCase {
             int length2 = Array.getLength(value);
             assertEquals(message, length1, length2);
             for (int i = 0; i < length1; i++) {
-                assertDuplicate(
-                        message + "[" + i + "]", Array.get(expected, i), Array.get(value, i));
+                assertDuplicate(message + "[" + i + "]", Array.get(expected, i), Array.get(value, i));
             }
             // assertNotSame( message, expected, value );
         } else if (expected instanceof SimpleFeature) {
             assertDuplicate(
-                    message,
-                    ((SimpleFeature) expected).getAttributes(),
-                    ((SimpleFeature) value).getAttributes());
+                    message, ((SimpleFeature) expected).getAttributes(), ((SimpleFeature) value).getAttributes());
         } else {
             assertEquals(message, expected, value);
         }

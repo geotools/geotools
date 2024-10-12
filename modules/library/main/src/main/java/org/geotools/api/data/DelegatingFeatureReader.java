@@ -25,8 +25,7 @@ import org.geotools.api.feature.type.FeatureType;
  * @author Justin Deoliveira, OpenGEO
  * @since 2.5
  */
-public interface DelegatingFeatureReader<T extends FeatureType, F extends Feature>
-        extends FeatureReader<T, F> {
+public interface DelegatingFeatureReader<T extends FeatureType, F extends Feature> extends FeatureReader<T, F> {
 
     /** @return The delegate feature reader. */
     FeatureReader<T, F> getDelegate();

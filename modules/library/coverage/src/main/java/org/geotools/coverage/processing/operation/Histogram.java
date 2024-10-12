@@ -122,8 +122,7 @@ public class Histogram extends BaseStatisticsOperationJAI {
 
             if (JAIExt.isJAIExtOperation(STATS)) {
                 // get the properties
-                Statistics[][] results =
-                        ((Statistics[][]) result.getProperty(Statistics.STATS_PROPERTY));
+                Statistics[][] results = ((Statistics[][]) result.getProperty(Statistics.STATS_PROPERTY));
                 // Extracting the bins
                 int numBands = result.getNumBands();
                 int[][] bins = new int[numBands][];
@@ -143,16 +142,14 @@ public class Histogram extends BaseStatisticsOperationJAI {
                 double[] highValues = (double[]) parameterBlock.getObjectParameter(8);
                 int[] numBins = (int[]) parameterBlock.getObjectParameter(9);
 
-                HistogramWrapper wrapper =
-                        new HistogramWrapper(numBins, lowValues, highValues, bins);
+                HistogramWrapper wrapper = new HistogramWrapper(numBins, lowValues, highValues, bins);
 
                 // return the map
                 synthProp.put(GT_SYNTHETIC_PROPERTY_HISTOGRAM, wrapper);
             } else {
 
                 final javax.media.jai.Histogram hist =
-                        (javax.media.jai.Histogram)
-                                result.getProperty(GT_SYNTHETIC_PROPERTY_HISTOGRAM);
+                        (javax.media.jai.Histogram) result.getProperty(GT_SYNTHETIC_PROPERTY_HISTOGRAM);
 
                 // return the map
                 synthProp.put(GT_SYNTHETIC_PROPERTY_HISTOGRAM, hist);
@@ -160,8 +157,7 @@ public class Histogram extends BaseStatisticsOperationJAI {
             // Addition of the ROI property and NoData property
             GridCoverage2D source = sources[0];
             CoverageUtilities.setROIProperty(synthProp, CoverageUtilities.getROIProperty(source));
-            CoverageUtilities.setNoDataProperty(
-                    synthProp, CoverageUtilities.getNoDataProperty(source));
+            CoverageUtilities.setNoDataProperty(synthProp, CoverageUtilities.getNoDataProperty(source));
             return Collections.unmodifiableMap(synthProp);
         }
         return super.getProperties(data, crs, name, toCRS, sources, parameters);
@@ -180,10 +176,10 @@ public class Histogram extends BaseStatisticsOperationJAI {
     }
 
     @Override
-    protected void handleJAIEXTParams(
-            ParameterBlockJAI parameters, ParameterValueGroup parameters2) {
+    protected void handleJAIEXTParams(ParameterBlockJAI parameters, ParameterValueGroup parameters2) {
         if (JAIExt.isJAIExtOperation(STATS)) {
-            GridCoverage2D source = (GridCoverage2D) parameters2.parameter("source0").getValue();
+            GridCoverage2D source =
+                    (GridCoverage2D) parameters2.parameter("source0").getValue();
             // Handle ROI and NoData
             handleROINoDataInternal(parameters, source, STATS, 2, 3);
             // Setting the Statistic operation

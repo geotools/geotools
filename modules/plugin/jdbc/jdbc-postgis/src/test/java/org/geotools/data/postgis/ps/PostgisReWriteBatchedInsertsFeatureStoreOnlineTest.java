@@ -19,8 +19,7 @@ package org.geotools.data.postgis.ps;
 import java.util.Map;
 import org.geotools.data.postgis.PostgisNGDataStoreFactory;
 
-public class PostgisReWriteBatchedInsertsFeatureStoreOnlineTest
-        extends PostgisFeatureStoreOnlineTest {
+public class PostgisReWriteBatchedInsertsFeatureStoreOnlineTest extends PostgisFeatureStoreOnlineTest {
 
     @Override
     protected Map<String, Object> createDataStoreFactoryParams() throws Exception {

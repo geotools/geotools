@@ -100,8 +100,7 @@ public class ImageGeometry implements GridGeometry, Serializable, Cloneable {
         }
         if (object != null && object.getClass().equals(getClass())) {
             final ImageGeometry that = (ImageGeometry) object;
-            return Utilities.equals(gridRange, that.gridRange)
-                    && Utilities.equals(gridToCRS, that.gridToCRS);
+            return Utilities.equals(gridRange, that.gridRange) && Utilities.equals(gridToCRS, that.gridToCRS);
         }
         return false;
     }

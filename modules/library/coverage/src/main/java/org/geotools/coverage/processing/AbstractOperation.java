@@ -40,7 +40,8 @@ import org.geotools.util.factory.Hints;
  */
 public abstract class AbstractOperation implements Operation, Serializable {
     /** Serial number for interoperability with different versions. */
-    private static final long serialVersionUID = -1441856042779942954L;;
+    private static final long serialVersionUID = -1441856042779942954L;
+    ;
 
     /** The parameters descriptor. */
     protected final ParameterDescriptorGroup descriptor;

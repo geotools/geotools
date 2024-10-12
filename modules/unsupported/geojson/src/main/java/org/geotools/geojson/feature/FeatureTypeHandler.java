@@ -151,17 +151,15 @@ public class FeatureTypeHandler extends DelegatingHandler<SimpleFeatureType>
                     }
                 } else if (knownType != newType) {
                     if (Number.class.isAssignableFrom(knownType) && newType == Double.class
-                            || (Number.class.isAssignableFrom(newType)
-                                    && knownType == Double.class)) {
+                            || (Number.class.isAssignableFrom(newType) && knownType == Double.class)) {
                         propertyTypes.put(currentProp, Double.class);
                     } else {
-                        throw new IllegalStateException(
-                                "Found conflicting types "
-                                        + knownType.getSimpleName()
-                                        + " and "
-                                        + newType.getSimpleName()
-                                        + " for property "
-                                        + currentProp);
+                        throw new IllegalStateException("Found conflicting types "
+                                + knownType.getSimpleName()
+                                + " and "
+                                + newType.getSimpleName()
+                                + " for property "
+                                + currentProp);
                     }
                 }
             }

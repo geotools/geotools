@@ -40,13 +40,11 @@ import org.locationtech.jts.geom.Polygon;
  */
 public class SubHandlerMulti extends SubHandler {
     /** The logger for the GML module. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(SubHandlerMulti.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(SubHandlerMulti.class);
 
     /** Remembers the list of all possible sub (base) types for this multi type. */
     private static final Collection<String> BASE_GEOMETRY_TYPES =
-            new ArrayList<>(
-                    java.util.Arrays.asList(new String[] {"Point", "LineString", "Polygon"}));
+            new ArrayList<>(java.util.Arrays.asList(new String[] {"Point", "LineString", "Polygon"}));
 
     /** Geometry factory to return the multi type. */
     private GeometryFactory geometryFactory = new GeometryFactory();
@@ -147,8 +145,7 @@ public class SubHandlerMulti extends SubHandler {
             return multiPoint;
         } else if (internalType.equals("LineString")) {
             LineString[] lineStringArray = geometryFactory.toLineStringArray(geometries);
-            MultiLineString multiLineString =
-                    geometryFactory.createMultiLineString(lineStringArray);
+            MultiLineString multiLineString = geometryFactory.createMultiLineString(lineStringArray);
             multiLineString.setUserData(getSRS());
             multiLineString.setSRID(getSRID());
             LOGGER.fine("created " + multiLineString);

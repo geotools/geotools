@@ -23,8 +23,7 @@ import java.net.URL;
  *
  * @author Richard Gould
  */
-public abstract class AbstractGetLegendGraphicRequest extends AbstractWMSRequest
-        implements GetLegendGraphicRequest {
+public abstract class AbstractGetLegendGraphicRequest extends AbstractWMSRequest implements GetLegendGraphicRequest {
 
     /** @param onlineResource */
     public AbstractGetLegendGraphicRequest(URL onlineResource) {

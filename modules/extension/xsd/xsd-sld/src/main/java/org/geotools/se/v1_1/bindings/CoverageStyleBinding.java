@@ -93,11 +93,10 @@ public class CoverageStyleBinding extends FeatureTypeStyleBinding {
         if (node.hasChild("CoverageName")) {
             QName name = (QName) node.getChildValue("CoverageName");
             fts.featureTypeNames()
-                    .add(
-                            new NameImpl(
-                                    name.getPrefix() != null
-                                            ? name.getPrefix() + ":" + name.getLocalPart()
-                                            : name.getLocalPart()));
+                    .add(new NameImpl(
+                            name.getPrefix() != null
+                                    ? name.getPrefix() + ":" + name.getLocalPart()
+                                    : name.getLocalPart()));
         }
 
         return fts;

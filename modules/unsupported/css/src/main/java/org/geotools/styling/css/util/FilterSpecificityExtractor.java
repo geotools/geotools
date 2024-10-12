@@ -54,7 +54,8 @@ public class FilterSpecificityExtractor extends DefaultFilterVisitor {
             properties.add(expression.getParameters().get(0));
         }
         return super.visit(expression, data);
-    };
+    }
+    ;
 
     public int getSpecificityScore() {
         return properties.size();

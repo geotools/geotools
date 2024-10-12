@@ -38,8 +38,7 @@ import org.locationtech.jts.geom.Polygon;
  *
  * @author Jesse
  */
-public class ChoiceGeometryTypeImpl extends ChoiceAttributeTypeImpl
-        implements ChoiceGeometryType, GeometryType {
+public class ChoiceGeometryTypeImpl extends ChoiceAttributeTypeImpl implements ChoiceGeometryType, GeometryType {
 
     private CoordinateReferenceSystem crs;
 
@@ -71,9 +70,7 @@ public class ChoiceGeometryTypeImpl extends ChoiceAttributeTypeImpl
         }
         if (getBinding() == GeometryCollection.class && obj instanceof Geometry) {
             return fac.createGeometryCollection(
-                    new org.locationtech.jts.geom.Geometry[] {
-                        (org.locationtech.jts.geom.Geometry) obj
-                    });
+                    new org.locationtech.jts.geom.Geometry[] {(org.locationtech.jts.geom.Geometry) obj});
         }
         return obj;
     }

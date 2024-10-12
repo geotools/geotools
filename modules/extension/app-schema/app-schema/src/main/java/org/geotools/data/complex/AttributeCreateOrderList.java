@@ -105,8 +105,7 @@ public class AttributeCreateOrderList {
         @Override
         public AttributeMapping next() {
             if (!isHasNextBeenCalled) {
-                throw new IllegalStateException(
-                        "next method called without hasNext being called first.");
+                throw new IllegalStateException("next method called without hasNext being called first.");
             }
             isHasNextBeenCalled = false;
             AttributeMapping next = currentListIterator.next();
@@ -128,10 +127,9 @@ public class AttributeCreateOrderList {
 
         private void getNextList() {
             if (returnedUnprocessedNodes.isEmpty()) {
-                throw new IllegalStateException(
-                        "Please check your mapping file. No attribute found for parentLabel: '"
-                                + unprocessedTreeNodes.toString()
-                                + "' or root label has no matching children.");
+                throw new IllegalStateException("Please check your mapping file. No attribute found for parentLabel: '"
+                        + unprocessedTreeNodes.toString()
+                        + "' or root label has no matching children.");
             }
             Iterator<String> it = returnedUnprocessedNodes.iterator();
             boolean listFound = false;

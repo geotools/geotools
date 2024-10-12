@@ -45,8 +45,7 @@ import si.uom.SI;
 
 public class ParsingTest {
 
-    private static final boolean DISABLE =
-            "true".equalsIgnoreCase(System.getProperty("disableTest", "true"));
+    private static final boolean DISABLE = "true".equalsIgnoreCase(System.getProperty("disableTest", "true"));
 
     private static final boolean ONLINE = false; // to do check -o maven option?
 
@@ -68,9 +67,7 @@ public class ParsingTest {
 
         URL url;
         if (ONLINE) {
-            url =
-                    new URL(
-                            "http://schemas.opengis.net/wps/1.0.0/examples/40_wpsDescribeProcess_response.xml");
+            url = new URL("http://schemas.opengis.net/wps/1.0.0/examples/40_wpsDescribeProcess_response.xml");
         } else {
             url = TestData.url(this, "referenceProcessDescriptions.xml");
         }
@@ -144,8 +141,7 @@ public class ParsingTest {
     }
 
     @Test
-    public void testExeResponseLiteralDataType()
-            throws IOException, SAXException, ParserConfigurationException {
+    public void testExeResponseLiteralDataType() throws IOException, SAXException, ParserConfigurationException {
         if (DISABLE) {
             return;
         }

@@ -128,8 +128,7 @@ public class DefaultTemporalReferenceSystemTest {
         Collection<TemporalExtent> collection = new ArrayList<>();
         collection.add(temporalExt);
         domainOfValidity.setTemporalElements(collection);
-        ((DefaultTemporalReferenceSystem) temporalReferenceSystem1)
-                .setDomainOfValidity(domainOfValidity);
+        ((DefaultTemporalReferenceSystem) temporalReferenceSystem1).setDomainOfValidity(domainOfValidity);
         assertNotEquals(temporalReferenceSystem1.getDomainOfValidity(), result);
     }
 

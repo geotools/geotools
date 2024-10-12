@@ -130,8 +130,7 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
 
         AttributeMapping mapping = fMapping.getAttributeMapping(this.nestedTargetXPath);
         if (mapping == null) {
-            throw new IllegalArgumentException(
-                    "Mapping is missing for: '" + this.nestedTargetXPath + "'!");
+            throw new IllegalArgumentException("Mapping is missing for: '" + this.nestedTargetXPath + "'!");
         }
         Expression nestedSourceExpression = mapping.getSourceExpression();
 
@@ -189,8 +188,7 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
         FeatureCollection collection = fSource.getFeatures(query);
 
         if (!(collection instanceof MappingFeatureCollection)) {
-            throw new IOException(
-                    "Internal error: Mapping feature Collection expected but found " + collection);
+            throw new IOException("Internal error: Mapping feature Collection expected but found " + collection);
         }
 
         MappingFeatureCollection mfc = ((MappingFeatureCollection) collection);
@@ -203,19 +201,15 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
 
         if (!(featureIterator instanceof DataAccessMappingFeatureIterator)) {
             throw new IOException(
-                    "Internal error: Data Access Mapping feature Iterator expected but found "
-                            + featureIterator);
+                    "Internal error: Data Access Mapping feature Iterator expected but found " + featureIterator);
         }
 
-        DataAccessMappingFeatureIterator daFeatureIterator =
-                (DataAccessMappingFeatureIterator) featureIterator;
+        DataAccessMappingFeatureIterator daFeatureIterator = (DataAccessMappingFeatureIterator) featureIterator;
 
         List<Expression> foreignIds = new ArrayList<>();
         for (int i = 0; i < query.getQueryJoins().size(); i++) {
             for (int j = 0; j < query.getQueryJoins().get(i).getIds().size(); j++) {
-                foreignIds.add(
-                        filterFac.property(
-                                JoiningJDBCFeatureSource.FOREIGN_ID + "_" + i + "_" + j));
+                foreignIds.add(filterFac.property(JoiningJDBCFeatureSource.FOREIGN_ID + "_" + i + "_" + j));
             }
         }
 
@@ -225,8 +219,7 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
         instance.nestedSourceExpressions.put(featureTypeName, nestedSourceExpression);
 
         for (Instance.Skip toSkip : instance.skipped) {
-            while (daFeatureIterator.hasNext()
-                    && daFeatureIterator.checkForeignIdValues(toSkip.idValues)) {
+            while (daFeatureIterator.hasNext() && daFeatureIterator.checkForeignIdValues(toSkip.idValues)) {
                 daFeatureIterator.skip();
             }
         }
@@ -238,11 +231,9 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
      * Open an instance (cursor) for a specific caller. An instance holds a cursor and any
      * additional information to move through the features.
      */
-    public void open(Object caller, Query baseTableQuery, FeatureTypeMapping mapping)
-            throws IOException {
+    public void open(Object caller, Query baseTableQuery, FeatureTypeMapping mapping) throws IOException {
         if (instances.get(caller) != null) {
-            throw new IllegalArgumentException(
-                    "Trying to open Joining Nested Attribute Mapping that is already open!");
+            throw new IllegalArgumentException("Trying to open Joining Nested Attribute Mapping that is already open!");
         } else {
             Instance instance = new Instance();
             instance.baseTableQuery = baseTableQuery;
@@ -268,8 +259,7 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
             instance.featureIterators.clear();
             instances.remove(caller);
         } else {
-            throw new IllegalArgumentException(
-                    "Trying to close Joining Nested Attribute Mapping hasn't been opened!");
+            throw new IllegalArgumentException("Trying to close Joining Nested Attribute Mapping hasn't been opened!");
         }
     }
 
@@ -292,8 +282,7 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
         if (isSameSource()) {
             // if linkField is null, this method shouldn't be called because the mapping
             // should use the same table, and handles it differently
-            throw new UnsupportedOperationException(
-                    "Link field is missing from feature chaining mapping!");
+            throw new UnsupportedOperationException("Link field is missing from feature chaining mapping!");
         }
 
         @SuppressWarnings("PMD.CloseResource") // not managed here
@@ -304,8 +293,7 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
 
         Instance instance = instances.get(caller);
         if (instance == null) {
-            throw new IllegalArgumentException(
-                    "Trying to read Joining Nested Attribute Mapping that is not open.");
+            throw new IllegalArgumentException("Trying to read Joining Nested Attribute Mapping that is not open.");
         }
 
         Object featureTypeName = getNestedFeatureType(feature);
@@ -314,25 +302,22 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
                     "Internal error: Feature type name expected but found " + featureTypeName);
         }
         @SuppressWarnings("PMD.CloseResource") // not managed here (field, closed later)
-        DataAccessMappingFeatureIterator featureIterator =
-                instance.featureIterators.get(featureTypeName);
+        DataAccessMappingFeatureIterator featureIterator = instance.featureIterators.get(featureTypeName);
         if (featureIterator == null) {
-            featureIterator =
-                    initSourceFeatures(
-                            instance,
-                            (Name) featureTypeName,
-                            reprojection,
-                            selectedProperties,
-                            includeMandatory,
-                            0,
-                            null,
-                            transaction);
+            featureIterator = initSourceFeatures(
+                    instance,
+                    (Name) featureTypeName,
+                    reprojection,
+                    selectedProperties,
+                    includeMandatory,
+                    0,
+                    null,
+                    transaction);
         }
         Expression nestedSourceExpression = instance.nestedSourceExpressions.get(featureTypeName);
         if (nestedSourceExpression == null) {
             throw new IllegalArgumentException(
-                    "Internal error: nested source expression expected but found "
-                            + featureTypeName);
+                    "Internal error: nested source expression expected but found " + featureTypeName);
         }
 
         ArrayList<Feature> matchingFeatures = new ArrayList<>();
@@ -353,8 +338,7 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
             @SuppressWarnings("PMD.CloseResource") // not managed here, field, closed later
             DataAccessMappingFeatureIterator fIt = instance.featureIterators.get(name);
             if (fIt != featureIterator) {
-                skipFeatures(
-                        fIt, instance.nestedSourceExpressions.get(name), foreignKeyValue, idValues);
+                skipFeatures(fIt, instance.nestedSourceExpressions.get(name), foreignKeyValue, idValues);
             }
         }
         instance.skipped.add(new Instance.Skip(idValues));
@@ -385,8 +369,7 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
         if (isSameSource()) {
             // if linkField is null, this method shouldn't be called because the mapping
             // should use the same table, and handles it differently
-            throw new UnsupportedOperationException(
-                    "Link field is missing from feature chaining mapping!");
+            throw new UnsupportedOperationException("Link field is missing from feature chaining mapping!");
         }
 
         @SuppressWarnings("PMD.CloseResource") // not managed here
@@ -397,8 +380,7 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
 
         Instance instance = instances.get(caller);
         if (instance == null) {
-            throw new IllegalArgumentException(
-                    "Trying to read Joining Nested Attribute Mapping that is not open.");
+            throw new IllegalArgumentException("Trying to read Joining Nested Attribute Mapping that is not open.");
         }
 
         Object featureTypeName = getNestedFeatureType(feature);
@@ -406,25 +388,22 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
             throw new IllegalArgumentException("Something is wrong!!");
         }
         @SuppressWarnings("PMD.CloseResource") // not managed here, closed later
-        DataAccessMappingFeatureIterator featureIterator =
-                instance.featureIterators.get(featureTypeName);
+        DataAccessMappingFeatureIterator featureIterator = instance.featureIterators.get(featureTypeName);
         if (featureIterator == null) {
-            featureIterator =
-                    initSourceFeatures(
-                            instance,
-                            (Name) featureTypeName,
-                            reprojection,
-                            selectedProperties,
-                            includeMandatory,
-                            resolveDepth,
-                            resolveTimeOut,
-                            transaction);
+            featureIterator = initSourceFeatures(
+                    instance,
+                    (Name) featureTypeName,
+                    reprojection,
+                    selectedProperties,
+                    includeMandatory,
+                    resolveDepth,
+                    resolveTimeOut,
+                    transaction);
         }
         Expression nestedSourceExpression = instance.nestedSourceExpressions.get(featureTypeName);
         if (nestedSourceExpression == null) {
             throw new IllegalArgumentException(
-                    "Internal error: nested source expression expected but found "
-                            + featureTypeName);
+                    "Internal error: nested source expression expected but found " + featureTypeName);
         }
 
         ArrayList<Feature> matchingFeatures = new ArrayList<>();
@@ -445,8 +424,7 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
             @SuppressWarnings("PMD.CloseResource") // not managed here, field, closed later
             DataAccessMappingFeatureIterator fIt = instance.featureIterators.get(name);
             if (fIt != featureIterator) {
-                skipFeatures(
-                        fIt, instance.nestedSourceExpressions.get(name), foreignKeyValue, idValues);
+                skipFeatures(fIt, instance.nestedSourceExpressions.get(name), foreignKeyValue, idValues);
             }
         }
         instance.skipped.add(new Instance.Skip(idValues));
@@ -474,12 +452,10 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
      * If we have decided not to build the parent feature, we need to skip all rows that were
      * returned to build it
      */
-    public void skip(Object caller, Object foreignKeyValue, List<Object> idValues)
-            throws IOException {
+    public void skip(Object caller, Object foreignKeyValue, List<Object> idValues) throws IOException {
         Instance instance = instances.get(caller);
         if (instance == null) {
-            throw new IllegalArgumentException(
-                    "Trying to read Joining Nested Attribute Mapping that is not open.");
+            throw new IllegalArgumentException("Trying to read Joining Nested Attribute Mapping that is not open.");
         }
 
         // skip all

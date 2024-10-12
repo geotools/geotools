@@ -115,8 +115,7 @@ public abstract class LambertConformal extends MapProjection {
      * @param parameters The parameter values in standard units.
      * @throws ParameterNotFoundException if a mandatory parameter is missing.
      */
-    protected LambertConformal(final ParameterValueGroup parameters)
-            throws ParameterNotFoundException {
+    protected LambertConformal(final ParameterValueGroup parameters) throws ParameterNotFoundException {
         this(parameters, false);
     }
 
@@ -127,8 +126,7 @@ public abstract class LambertConformal extends MapProjection {
      * @param belgium {@code true} for the Belgium 2SP case.
      * @throws ParameterNotFoundException if a mandatory parameter is missing.
      */
-    LambertConformal(final ParameterValueGroup parameters, final boolean belgium)
-            throws ParameterNotFoundException {
+    LambertConformal(final ParameterValueGroup parameters, final boolean belgium) throws ParameterNotFoundException {
         // Fetch parameters
         super(parameters);
         final Collection<GeneralParameterDescriptor> expected =
@@ -155,17 +153,14 @@ public abstract class LambertConformal extends MapProjection {
         if (abs(phi1 + phi2) < EPSILON) {
             final Object arg0 = new Latitude(toDegrees(phi1));
             final Object arg1 = new Latitude(toDegrees(phi2));
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.ANTIPODE_LATITUDES_$2, arg0, arg1));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.ANTIPODE_LATITUDES_$2, arg0, arg1));
         }
         final double cosphi1 = cos(phi1);
         final double sinphi1 = sin(phi1);
         final boolean secant = abs(phi1 - phi2) > EPSILON; // Should be 'true' for 2SP case.
         if (isSpherical) {
             if (secant) {
-                n =
-                        log(cosphi1 / cos(phi2))
-                                / log(tan(PI / 4 + 0.5 * phi2) / tan(PI / 4 + 0.5 * phi1));
+                n = log(cosphi1 / cos(phi2)) / log(tan(PI / 4 + 0.5 * phi2) / tan(PI / 4 + 0.5 * phi1));
             } else {
                 n = sinphi1;
             }
@@ -211,8 +206,7 @@ public abstract class LambertConformal extends MapProjection {
      * radians) and stores the result in {@code ptDst} (linear distance on a unit sphere).
      */
     @Override
-    protected Point2D transformNormalized(double x, double y, Point2D ptDst)
-            throws ProjectionException {
+    protected Point2D transformNormalized(double x, double y, Point2D ptDst) throws ProjectionException {
         double rho;
         // Snyder p. 108
         if (abs(abs(y) - PI / 2) < EPSILON) {
@@ -244,8 +238,7 @@ public abstract class LambertConformal extends MapProjection {
      * {@code ptDst}.
      */
     @Override
-    protected Point2D inverseTransformNormalized(double x, double y, Point2D ptDst)
-            throws ProjectionException {
+    protected Point2D inverseTransformNormalized(double x, double y, Point2D ptDst) throws ProjectionException {
         double theta;
         y = rho0 - y;
         double rho = hypot(x, y); // Zero when the latitude is 90 degrees.

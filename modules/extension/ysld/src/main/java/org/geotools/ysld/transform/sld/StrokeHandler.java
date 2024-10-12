@@ -25,8 +25,7 @@ import javax.xml.stream.XMLStreamReader;
 public class StrokeHandler extends SldTransformHandler {
 
     @Override
-    public void element(XMLStreamReader xml, SldTransformContext context)
-            throws XMLStreamException, IOException {
+    public void element(XMLStreamReader xml, SldTransformContext context) throws XMLStreamException, IOException {
         String name = xml.getLocalName();
         if ("CssParameter".equals(name) || "SvgParameter".equals(name)) {
             context.push(new ParameterHandler().rename("stroke", "stroke-color"));
@@ -38,8 +37,7 @@ public class StrokeHandler extends SldTransformHandler {
     }
 
     @Override
-    public void endElement(XMLStreamReader xml, SldTransformContext context)
-            throws XMLStreamException, IOException {
+    public void endElement(XMLStreamReader xml, SldTransformContext context) throws XMLStreamException, IOException {
         String name = xml.getLocalName();
         if ("Stroke".equals(name)) {
             context.pop();

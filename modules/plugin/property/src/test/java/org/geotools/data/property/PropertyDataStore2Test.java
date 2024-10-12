@@ -161,8 +161,7 @@ public class PropertyDataStore2Test {
                 geom = (Geometry) val;
 
                 Object userData = geom.getUserData();
-                Assert.assertTrue(
-                        userData != null && userData instanceof CoordinateReferenceSystem);
+                Assert.assertTrue(userData != null && userData instanceof CoordinateReferenceSystem);
                 // ensure the same CRS is passed on to userData for encoding
                 Assert.assertEquals(userData, geomType.getCoordinateReferenceSystem());
             }
@@ -175,8 +174,7 @@ public class PropertyDataStore2Test {
         Query q = new Query("road3", Filter.INCLUDE);
         Assert.assertEquals(2, fs.getCount(q));
         ReferencedEnvelope bounds =
-                new ReferencedEnvelope3D(
-                        0, 30, 0, 30, 0, 20, fs.getSchema().getCoordinateReferenceSystem());
+                new ReferencedEnvelope3D(0, 30, 0, 30, 0, 20, fs.getSchema().getCoordinateReferenceSystem());
         Assert.assertEquals(bounds, fs.getBounds());
         Assert.assertEquals(bounds, fs.getBounds(q));
 

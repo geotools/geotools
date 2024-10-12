@@ -120,8 +120,7 @@ public final class AxisDirection extends CodeList<AxisDirection> {
      * @since GeoAPI 2.0
      */
     @UML(identifier = "southSouthWest", obligation = CONDITIONAL, specification = ISO_19111)
-    public static final AxisDirection SOUTH_SOUTH_WEST =
-            new AxisDirection("SOUTH_SOUTH_WEST", NORTH_NORTH_EAST);
+    public static final AxisDirection SOUTH_SOUTH_WEST = new AxisDirection("SOUTH_SOUTH_WEST", NORTH_NORTH_EAST);
 
     /**
      * Axis positive direction is approximately south-west.
@@ -137,8 +136,7 @@ public final class AxisDirection extends CodeList<AxisDirection> {
      * @since GeoAPI 2.0
      */
     @UML(identifier = "westSouthWest", obligation = CONDITIONAL, specification = ISO_19111)
-    public static final AxisDirection WEST_SOUTH_WEST =
-            new AxisDirection("WEST_SOUTH_WEST", EAST_NORTH_EAST);
+    public static final AxisDirection WEST_SOUTH_WEST = new AxisDirection("WEST_SOUTH_WEST", EAST_NORTH_EAST);
 
     /**
      * Axis positive direction is 3&pi;/2 radians clockwise from north. This is usually used for
@@ -153,8 +151,7 @@ public final class AxisDirection extends CodeList<AxisDirection> {
      * @since GeoAPI 2.0
      */
     @UML(identifier = "westNorthWest", obligation = CONDITIONAL, specification = ISO_19111)
-    public static final AxisDirection WEST_NORTH_WEST =
-            new AxisDirection("WEST_NORTH_WEST", EAST_SOUTH_EAST);
+    public static final AxisDirection WEST_NORTH_WEST = new AxisDirection("WEST_NORTH_WEST", EAST_SOUTH_EAST);
 
     /**
      * Axis positive direction is approximately north-west.
@@ -170,8 +167,7 @@ public final class AxisDirection extends CodeList<AxisDirection> {
      * @since GeoAPI 2.0
      */
     @UML(identifier = "northNorthWest", obligation = CONDITIONAL, specification = ISO_19111)
-    public static final AxisDirection NORTH_NORTH_WEST =
-            new AxisDirection("NORTH_NORTH_WEST", SOUTH_SOUTH_EAST);
+    public static final AxisDirection NORTH_NORTH_WEST = new AxisDirection("NORTH_NORTH_WEST", SOUTH_SOUTH_EAST);
 
     /**
      * Axis positive direction is up relative to gravity. This is used for {@linkplain
@@ -243,8 +239,7 @@ public final class AxisDirection extends CodeList<AxisDirection> {
      * @since GeoAPI 2.0
      */
     @UML(identifier = "columnNegative", obligation = CONDITIONAL, specification = ISO_19111)
-    public static final AxisDirection COLUMN_NEGATIVE =
-            new AxisDirection("COLUMN_NEGATIVE", COLUMN_POSITIVE);
+    public static final AxisDirection COLUMN_NEGATIVE = new AxisDirection("COLUMN_NEGATIVE", COLUMN_POSITIVE);
 
     /**
      * Axis positive direction is towards higher pixel row.
@@ -260,8 +255,7 @@ public final class AxisDirection extends CodeList<AxisDirection> {
      * @since GeoAPI 2.0
      */
     @UML(identifier = "rowNegative", obligation = CONDITIONAL, specification = ISO_19111)
-    public static final AxisDirection ROW_NEGATIVE =
-            new AxisDirection("ROW_NEGATIVE", ROW_POSITIVE);
+    public static final AxisDirection ROW_NEGATIVE = new AxisDirection("ROW_NEGATIVE", ROW_POSITIVE);
 
     /**
      * Axis positive direction is right in display.
@@ -277,8 +271,7 @@ public final class AxisDirection extends CodeList<AxisDirection> {
      * @since GeoAPI 2.0
      */
     @UML(identifier = "displayLeft", obligation = CONDITIONAL, specification = ISO_19111)
-    public static final AxisDirection DISPLAY_LEFT =
-            new AxisDirection("DISPLAY_LEFT", DISPLAY_RIGHT);
+    public static final AxisDirection DISPLAY_LEFT = new AxisDirection("DISPLAY_LEFT", DISPLAY_RIGHT);
 
     /**
      * Axis positive direction is towards top of approximately vertical display surface.

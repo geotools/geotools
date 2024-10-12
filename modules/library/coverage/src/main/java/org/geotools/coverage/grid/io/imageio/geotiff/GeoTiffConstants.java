@@ -119,8 +119,7 @@ public final class GeoTiffConstants {
 
     public static final int UNDEFINED = 0;
 
-    public static TIFFTag NODATA_TAG =
-            new TIFFTag("GDAL_NODATA", GeoTiffConstants.TIFFTAG_NODATA, TIFFTag.TIFF_ASCII);
+    public static TIFFTag NODATA_TAG = new TIFFTag("GDAL_NODATA", GeoTiffConstants.TIFFTAG_NODATA, TIFFTag.TIFF_ASCII);
 
     public static boolean isNumeric(String number) {
         boolean isValid = false;

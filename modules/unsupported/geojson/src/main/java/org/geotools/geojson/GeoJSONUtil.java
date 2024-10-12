@@ -49,8 +49,7 @@ public class GeoJSONUtil {
 
     public static final TimeZone TIME_ZONE = TimeZone.getTimeZone("GMT");
 
-    public static final FastDateFormat dateFormatter =
-            FastDateFormat.getInstance(DATE_FORMAT, TIME_ZONE);
+    public static final FastDateFormat dateFormatter = FastDateFormat.getInstance(DATE_FORMAT, TIME_ZONE);
 
     //
     // io
@@ -226,11 +225,8 @@ public class GeoJSONUtil {
     //
     @SuppressWarnings("unchecked")
     public static <T> T trace(T handler, Class<T> clazz) {
-        return (T)
-                Proxy.newProxyInstance(
-                        handler.getClass().getClassLoader(),
-                        new Class[] {clazz},
-                        new TracingHandler(handler));
+        return (T) Proxy.newProxyInstance(
+                handler.getClass().getClassLoader(), new Class[] {clazz}, new TracingHandler(handler));
     }
 
     public static boolean addOrdinate(List<Object> ordinates, Object value) {
@@ -245,8 +241,7 @@ public class GeoJSONUtil {
         Coordinate c = new Coordinate();
         if (ordinates.size() <= 1) {
             throw new ParseException(
-                    ParseException.ERROR_UNEXPECTED_EXCEPTION,
-                    "Too few ordinates to create coordinate");
+                    ParseException.ERROR_UNEXPECTED_EXCEPTION, "Too few ordinates to create coordinate");
         }
         if (ordinates.size() > 1) {
             c.x = ((Number) ordinates.get(0)).doubleValue();
@@ -263,16 +258,13 @@ public class GeoJSONUtil {
     }
 
     @SuppressWarnings("unchecked")
-    public static <T> T parse(IContentHandler<T> handler, Object input, boolean trace)
-            throws IOException {
+    public static <T> T parse(IContentHandler<T> handler, Object input, boolean trace) throws IOException {
         try (Reader reader = toReader(input)) {
             if (trace) {
-                handler =
-                        (IContentHandler<T>)
-                                Proxy.newProxyInstance(
-                                        handler.getClass().getClassLoader(),
-                                        new Class[] {IContentHandler.class},
-                                        new TracingHandler(handler));
+                handler = (IContentHandler<T>) Proxy.newProxyInstance(
+                        handler.getClass().getClassLoader(),
+                        new Class[] {IContentHandler.class},
+                        new TracingHandler(handler));
             }
 
             JSONParser parser = new JSONParser();

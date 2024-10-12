@@ -47,44 +47,35 @@ import org.geotools.filter.function.FilterFunction_if_then_else;
  */
 public class ExpressionTypeVisitor implements ExpressionVisitor {
 
-    static final Map<Class<?>, List<Class<?>>> PROMOTIONS =
-            Map.ofEntries(
-                    entry(
+    static final Map<Class<?>, List<Class<?>>> PROMOTIONS = Map.ofEntries(
+            entry(
+                    Byte.class,
+                    List.of(
                             Byte.class,
-                            List.of(
-                                    Byte.class,
-                                    Short.class,
-                                    Integer.class,
-                                    Long.class,
-                                    Float.class,
-                                    Double.class,
-                                    BigInteger.class,
-                                    BigDecimal.class)),
-                    entry(
                             Short.class,
-                            List.of(
-                                    Short.class,
-                                    Integer.class,
-                                    Long.class,
-                                    Float.class,
-                                    Double.class,
-                                    BigInteger.class,
-                                    BigDecimal.class)),
-                    entry(
                             Integer.class,
-                            List.of(
-                                    Integer.class,
-                                    Long.class,
-                                    Float.class,
-                                    Double.class,
-                                    BigInteger.class,
-                                    BigDecimal.class)),
-                    entry(
                             Long.class,
-                            List.of(Long.class, Double.class, BigInteger.class, BigDecimal.class)),
-                    entry(Float.class, List.of(Float.class, Double.class, BigDecimal.class)),
-                    entry(Double.class, List.of(Double.class, BigDecimal.class)),
-                    entry(BigInteger.class, List.of(BigInteger.class, BigDecimal.class)));
+                            Float.class,
+                            Double.class,
+                            BigInteger.class,
+                            BigDecimal.class)),
+            entry(
+                    Short.class,
+                    List.of(
+                            Short.class,
+                            Integer.class,
+                            Long.class,
+                            Float.class,
+                            Double.class,
+                            BigInteger.class,
+                            BigDecimal.class)),
+            entry(
+                    Integer.class,
+                    List.of(Integer.class, Long.class, Float.class, Double.class, BigInteger.class, BigDecimal.class)),
+            entry(Long.class, List.of(Long.class, Double.class, BigInteger.class, BigDecimal.class)),
+            entry(Float.class, List.of(Float.class, Double.class, BigDecimal.class)),
+            entry(Double.class, List.of(Double.class, BigDecimal.class)),
+            entry(BigInteger.class, List.of(BigInteger.class, BigDecimal.class)));
 
     FeatureType featureType;
 

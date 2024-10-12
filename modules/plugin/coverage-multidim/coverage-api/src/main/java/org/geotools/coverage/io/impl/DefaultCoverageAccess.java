@@ -71,38 +71,30 @@ public class DefaultCoverageAccess implements CoverageAccess {
 
     @Override
     public CoverageSource access(
-            Name name,
-            Map<String, Serializable> params,
-            AccessType accessType,
-            Hints hints,
-            ProgressListener listener)
+            Name name, Map<String, Serializable> params, AccessType accessType, Hints hints, ProgressListener listener)
             throws IOException {
         throw new UnsupportedOperationException("Operation not implemented");
     }
 
     @Override
-    public boolean canCreate(
-            Name name, Map<String, Serializable> params, Hints hints, ProgressListener listener)
+    public boolean canCreate(Name name, Map<String, Serializable> params, Hints hints, ProgressListener listener)
             throws IOException {
         return false;
     }
 
     @Override
-    public boolean canDelete(Name name, Map<String, Serializable> params, Hints hints)
-            throws IOException {
+    public boolean canDelete(Name name, Map<String, Serializable> params, Hints hints) throws IOException {
         return false;
     }
 
     @Override
-    public CoverageStore create(
-            Name name, Map<String, Serializable> params, Hints hints, ProgressListener listener)
+    public CoverageStore create(Name name, Map<String, Serializable> params, Hints hints, ProgressListener listener)
             throws IOException {
         throw new UnsupportedOperationException("Operation not implemented");
     }
 
     @Override
-    public boolean delete(Name name, Map<String, Serializable> params, Hints hints)
-            throws IOException {
+    public boolean delete(Name name, Map<String, Serializable> params, Hints hints) throws IOException {
         return false;
     }
 

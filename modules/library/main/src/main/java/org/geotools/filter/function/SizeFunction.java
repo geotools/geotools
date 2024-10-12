@@ -30,11 +30,10 @@ import org.geotools.filter.capability.FunctionNameImpl;
  */
 public class SizeFunction extends FunctionExpressionImpl {
 
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "size",
-                    parameter("result", Integer.class, "Result", "Size of collection"),
-                    parameter("source", Collection.class, "Source", "Collection"));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "size",
+            parameter("result", Integer.class, "Result", "Size of collection"),
+            parameter("source", Collection.class, "Source", "Collection"));
 
     public SizeFunction() {
         super(NAME);

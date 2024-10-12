@@ -47,10 +47,7 @@ public class PostgisFeatureTypeMapper extends AbstractFeatureTypeMapper {
 
     @Override
     protected void remapGeometryAttribute(
-            SimpleFeatureTypeBuilder tb,
-            Definition definition,
-            AttributeDescriptor descriptor,
-            AttributeType type) {
+            SimpleFeatureTypeBuilder tb, Definition definition, AttributeDescriptor descriptor, AttributeType type) {
         Map<Object, Object> userData = descriptor.getUserData();
         if (userData != null && !userData.isEmpty()) {
             Set<Object> keys = userData.keySet();

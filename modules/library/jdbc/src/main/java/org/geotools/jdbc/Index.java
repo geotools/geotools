@@ -46,8 +46,7 @@ public class Index {
         this.unique = unique;
     }
 
-    public Index(
-            String typeName, String indexName, boolean unique, Hints hints, String... attributes) {
+    public Index(String typeName, String indexName, boolean unique, Hints hints, String... attributes) {
         super();
         this.typeName = typeName;
         this.indexName = indexName;

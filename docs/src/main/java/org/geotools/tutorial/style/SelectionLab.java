@@ -148,17 +148,13 @@ public class SelectionLab {
          * we can just create our tool as an anonymous sub-class
          * of CursorTool.
          */
-        btn.addActionListener(
-                e ->
-                        mapFrame.getMapPane()
-                                .setCursorTool(
-                                        new CursorTool() {
+        btn.addActionListener(e -> mapFrame.getMapPane().setCursorTool(new CursorTool() {
 
-                                            @Override
-                                            public void onMouseClicked(MapMouseEvent ev) {
-                                                selectFeatures(ev);
-                                            }
-                                        }));
+            @Override
+            public void onMouseClicked(MapMouseEvent ev) {
+                selectFeatures(ev);
+            }
+        }));
 
         /** Finally, we display the map frame. When it is closed this application will exit. */
         mapFrame.setSize(600, 600);
@@ -190,8 +186,7 @@ public class SelectionLab {
         AffineTransform screenToWorld = mapFrame.getMapPane().getScreenToWorldTransform();
         Rectangle2D worldRect = screenToWorld.createTransformedShape(screenRect).getBounds2D();
         ReferencedEnvelope bbox =
-                new ReferencedEnvelope(
-                        worldRect, mapFrame.getMapContent().getCoordinateReferenceSystem());
+                new ReferencedEnvelope(worldRect, mapFrame.getMapContent().getCoordinateReferenceSystem());
 
         /*
          * Create a Filter to select features that intersect with
@@ -338,8 +333,7 @@ public class SelectionLab {
         if (Polygon.class.isAssignableFrom(clazz) || MultiPolygon.class.isAssignableFrom(clazz)) {
             geometryType = GeomType.POLYGON;
 
-        } else if (LineString.class.isAssignableFrom(clazz)
-                || MultiLineString.class.isAssignableFrom(clazz)) {
+        } else if (LineString.class.isAssignableFrom(clazz) || MultiLineString.class.isAssignableFrom(clazz)) {
 
             geometryType = GeomType.LINE;
 

@@ -71,8 +71,7 @@ public class SLDInlineFeatureParser {
                     "SLD InlineFeature Parser - couldnt determine a FeatureType.  See help for whats supported."); // shouldnt get here
 
         makeFeatures(root, isFeatureCollection);
-        if (features.isEmpty())
-            throw new Exception("SLD InlineFeature Parser - didnt find any features!");
+        if (features.isEmpty()) throw new Exception("SLD InlineFeature Parser - didnt find any features!");
 
         buildStore();
     }
@@ -114,8 +113,7 @@ public class SLDInlineFeatureParser {
                 child = descend(child);
             }
             if (child == null)
-                throw new Exception(
-                        "SLD inlineFeature Parser - couldnt extract a feature from the dom.");
+                throw new Exception("SLD inlineFeature Parser - couldnt extract a feature from the dom.");
 
             SimpleFeature f = parseFeature(child, featureType);
             features.add(f);
@@ -149,8 +147,7 @@ public class SLDInlineFeatureParser {
      *
      * @param feature - points to the actual feature ie. "<Person>"
      */
-    private SimpleFeature parseFeature(Node feature, SimpleFeatureType featureType)
-            throws Exception {
+    private SimpleFeature parseFeature(Node feature, SimpleFeatureType featureType) throws Exception {
         Object[] nullAtts = new Object[featureType.getAttributeCount()]; // initialized to nulls
         SimpleFeature f = SimpleFeatureBuilder.build(featureType, nullAtts, null);
 
@@ -190,8 +187,7 @@ public class SLDInlineFeatureParser {
                 continue;
             }
             if (child.getNodeType() == Node.TEXT_NODE) {
-                strVal.append(
-                        child.getNodeValue()); // might get here multiple times -- see sax spec
+                strVal.append(child.getNodeValue()); // might get here multiple times -- see sax spec
             }
             // we have a nested element!  Assume its a geometry
             if (child.getNodeType() == Node.ELEMENT_NODE) {
@@ -223,8 +219,7 @@ public class SLDInlineFeatureParser {
                 parseSRS(srsName.getNodeValue());
             }
         }
-        ExpressionDOMParser parser =
-                new ExpressionDOMParser(CommonFactoryFinder.getFilterFactory(null));
+        ExpressionDOMParser parser = new ExpressionDOMParser(CommonFactoryFinder.getFilterFactory(null));
         return parser.gml(root);
     }
 
@@ -275,8 +270,7 @@ public class SLDInlineFeatureParser {
             }
         }
         if (foundFC > 1)
-            throw new Exception(
-                    "SLD - UserLayer, inline feature parser - found >1 FeatureCollection.  Not supported");
+            throw new Exception("SLD - UserLayer, inline feature parser - found >1 FeatureCollection.  Not supported");
         if ((foundFC > 0) && (foundFeature > 0))
             throw new Exception(
                     "SLD - UserLayer, inline feature parser - found  SimpleFeatureCollection and featureMembers.  Not supported");
@@ -304,10 +298,9 @@ public class SLDInlineFeatureParser {
                         "SLD - UserLayer, inline feature parser - found a node of type FeatureCollection.  Expected a featureMember - dont support nested collections.");
 
             } else if (!childName.equalsIgnoreCase("boundedBy")) {
-                throw new Exception(
-                        "SLD - UserLayer, inline feature parser - found a node of type '"
-                                + child.getLocalName()
-                                + "' and dont understand it.  Expected a featureMember.");
+                throw new Exception("SLD - UserLayer, inline feature parser - found a node of type '"
+                        + child.getLocalName()
+                        + "' and dont understand it.  Expected a featureMember.");
             }
         }
 

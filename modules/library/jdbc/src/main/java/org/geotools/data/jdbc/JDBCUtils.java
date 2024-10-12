@@ -37,8 +37,7 @@ import org.geotools.api.data.Transaction;
  */
 public class JDBCUtils {
 
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(JDBCUtils.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(JDBCUtils.class);
 
     /** Non Constructable. */
     private JDBCUtils() {
@@ -119,9 +118,8 @@ public class JDBCUtils {
                 try {
                     transaction.rollback();
                 } catch (IOException e) {
-                    String msg =
-                            "Error rolling back transaction in response"
-                                    + "to connection error. We are in an inconsistent state";
+                    String msg = "Error rolling back transaction in response"
+                            + "to connection error. We are in an inconsistent state";
                     LOGGER.log(Level.SEVERE, msg, e);
 
                     // TODO: this is a bad place to be should we completely gut the transaction

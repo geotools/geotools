@@ -37,9 +37,8 @@ public abstract class FeatureCollectionWrapperTestSupport {
 
     @Before
     public void setUp() throws Exception {
-        crs =
-                CRS.parseWKT(
-                        "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\",\"8901\"]],UNIT[\"degree\",0.01745329251994328,AUTHORITY[\"EPSG\",\"9122\"]],AUTHORITY[\"EPSG\",\"4326\"]]");
+        crs = CRS.parseWKT(
+                "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\",\"8901\"]],UNIT[\"degree\",0.01745329251994328,AUTHORITY[\"EPSG\",\"9122\"]],AUTHORITY[\"EPSG\",\"4326\"]]");
         SimpleFeatureTypeBuilder typeBuilder = new SimpleFeatureTypeBuilder();
 
         typeBuilder.setName("test");
@@ -67,11 +66,8 @@ public abstract class FeatureCollectionWrapperTestSupport {
             builder.add(point);
             builder.add(Integer.valueOf(i));
 
-            LineString line =
-                    gf.createLineString(
-                            new Coordinate[] {
-                                new Coordinate(x + i, y + i), new Coordinate(x + i + 1, y + i + 1)
-                            });
+            LineString line = gf.createLineString(
+                    new Coordinate[] {new Coordinate(x + i, y + i), new Coordinate(x + i + 1, y + i + 1)});
             line.setUserData(crs);
             builder.add(line);
             builder.featureUserData(TEST_KEY, TEST_VALUE);

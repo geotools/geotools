@@ -23,8 +23,7 @@ import org.geotools.api.filter.Filter;
 import org.geotools.data.FilteringFeatureReader;
 
 /** Filter simple reader content as it is being read. */
-public class FilteringSimpleFeatureReader
-        extends FilteringFeatureReader<SimpleFeatureType, SimpleFeature>
+public class FilteringSimpleFeatureReader extends FilteringFeatureReader<SimpleFeatureType, SimpleFeature>
         implements SimpleFeatureReader {
 
     public FilteringSimpleFeatureReader(SimpleFeatureReader featureReader, Filter filter) {

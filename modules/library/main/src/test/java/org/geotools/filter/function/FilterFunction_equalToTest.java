@@ -60,24 +60,22 @@ public class FilterFunction_equalToTest {
     @Test
     public void testAnyMatch() throws Exception {
         FilterFactoryImpl ff = new FilterFactoryImpl();
-        Function func =
-                ff.function(
-                        "equalTo",
-                        ff.literal(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8)),
-                        ff.literal(Arrays.asList(1, 2, 3)),
-                        ff.literal("ANY"));
+        Function func = ff.function(
+                "equalTo",
+                ff.literal(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8)),
+                ff.literal(Arrays.asList(1, 2, 3)),
+                ff.literal("ANY"));
         assertTrue((Boolean) func.evaluate(new Object()));
     }
 
     @Test
     public void testAnyMatchArrays() throws Exception {
         FilterFactoryImpl ff = new FilterFactoryImpl();
-        Function func =
-                ff.function(
-                        "equalTo",
-                        ff.literal(new Integer[] {1, 2, 3, 4, 5, 6, 7, 8}),
-                        ff.literal(new Integer[] {1, 2, 3}),
-                        ff.literal("ANY"));
+        Function func = ff.function(
+                "equalTo",
+                ff.literal(new Integer[] {1, 2, 3, 4, 5, 6, 7, 8}),
+                ff.literal(new Integer[] {1, 2, 3}),
+                ff.literal("ANY"));
         assertTrue((Boolean) func.evaluate(new Object()));
     }
 
@@ -85,90 +83,69 @@ public class FilterFunction_equalToTest {
     public void testAnyMatchArrayAndProperty() throws Exception {
         FilterFactoryImpl ff = new FilterFactoryImpl();
         Function func =
-                ff.function(
-                        "equalTo",
-                        ff.property("value"),
-                        ff.literal(new Integer[] {1, 2, 3}),
-                        ff.literal("ANY"));
+                ff.function("equalTo", ff.property("value"), ff.literal(new Integer[] {1, 2, 3}), ff.literal("ANY"));
         assertTrue((Boolean) func.evaluate(feature(new Integer[] {1, 2, 3, 4, 5, 6, 7, 8})));
     }
 
     @Test
     public void testAnyMatchPrimitiveArrays() throws Exception {
         FilterFactoryImpl ff = new FilterFactoryImpl();
-        Function func =
-                ff.function(
-                        "equalTo",
-                        ff.literal(new int[] {1, 2, 3, 4, 5, 6, 7, 8}),
-                        ff.literal(new int[] {1, 2, 3}),
-                        ff.literal("ANY"));
+        Function func = ff.function(
+                "equalTo",
+                ff.literal(new int[] {1, 2, 3, 4, 5, 6, 7, 8}),
+                ff.literal(new int[] {1, 2, 3}),
+                ff.literal("ANY"));
         assertTrue((Boolean) func.evaluate(new Object()));
     }
 
     @Test
     public void testAnyDoesNotMatch() throws Exception {
         FilterFactoryImpl ff = new FilterFactoryImpl();
-        Function func =
-                ff.function(
-                        "equalTo",
-                        ff.literal(Arrays.asList(4, 5, 6, 7, 8)),
-                        ff.literal(Arrays.asList(1, 2, 3)),
-                        ff.literal("ANY"));
+        Function func = ff.function(
+                "equalTo",
+                ff.literal(Arrays.asList(4, 5, 6, 7, 8)),
+                ff.literal(Arrays.asList(1, 2, 3)),
+                ff.literal("ANY"));
         assertFalse((Boolean) func.evaluate(new Object()));
     }
 
     @Test
     public void testAllMatch() throws Exception {
         FilterFactoryImpl ff = new FilterFactoryImpl();
-        Function func =
-                ff.function(
-                        "equalTo",
-                        ff.literal(Arrays.asList(1, 1, 1)),
-                        ff.literal(Arrays.asList(1)),
-                        ff.literal("ALL"));
+        Function func = ff.function(
+                "equalTo", ff.literal(Arrays.asList(1, 1, 1)), ff.literal(Arrays.asList(1)), ff.literal("ALL"));
         assertTrue((Boolean) func.evaluate(new Object()));
     }
 
     @Test
     public void testAllDoesNotMatch() throws Exception {
         FilterFactoryImpl ff = new FilterFactoryImpl();
-        Function func =
-                ff.function(
-                        "equalTo",
-                        ff.literal(Arrays.asList(1, 1, 3)),
-                        ff.literal(Arrays.asList(1)),
-                        ff.literal("ALL"));
+        Function func = ff.function(
+                "equalTo", ff.literal(Arrays.asList(1, 1, 3)), ff.literal(Arrays.asList(1)), ff.literal("ALL"));
         assertFalse((Boolean) func.evaluate(new Object()));
     }
 
     @Test
     public void testOneMatch() throws Exception {
         FilterFactoryImpl ff = new FilterFactoryImpl();
-        Function func =
-                ff.function(
-                        "equalTo",
-                        ff.literal(Arrays.asList(1, 2, 3)),
-                        ff.literal(Arrays.asList(1, 4, 5)),
-                        ff.literal("ONE"));
+        Function func = ff.function(
+                "equalTo", ff.literal(Arrays.asList(1, 2, 3)), ff.literal(Arrays.asList(1, 4, 5)), ff.literal("ONE"));
         assertTrue((Boolean) func.evaluate(new Object()));
     }
 
     @Test
     public void testOneDoesNotMatch() throws Exception {
         FilterFactoryImpl ff = new FilterFactoryImpl();
-        Function func =
-                ff.function(
-                        "equalTo",
-                        ff.literal(Arrays.asList(1, 2, 3)),
-                        ff.literal(Arrays.asList(1, 2)),
-                        ff.literal("ONE"));
+        Function func = ff.function(
+                "equalTo", ff.literal(Arrays.asList(1, 2, 3)), ff.literal(Arrays.asList(1, 2)), ff.literal("ONE"));
         assertFalse((Boolean) func.evaluate(new Object()));
     }
 
     protected SimpleFeature feature(Object value) throws Exception {
         String typeSpec;
         if (value.getClass().isArray()) {
-            typeSpec = "geom:Point,value:[L" + value.getClass().getComponentType().getName() + ";";
+            typeSpec =
+                    "geom:Point,value:[L" + value.getClass().getComponentType().getName() + ";";
         } else {
             typeSpec = "geom:Point,value:" + value.getClass().getSimpleName();
         }

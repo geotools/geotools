@@ -49,33 +49,26 @@ public class UnitFormatterTest {
     public void unitsOnlyInOld() throws Exception {
         SimpleUnitFormat simpleUnitFormat = SimpleUnitFormat.getInstance();
 
-        List<Map.Entry<Unit<?>, String>> unitToName =
-                toSortedList1(getUnitToNameMap(simpleUnitFormat));
+        List<Map.Entry<Unit<?>, String>> unitToName = toSortedList1(getUnitToNameMap(simpleUnitFormat));
         @SuppressWarnings("deprecation")
         List<Map.Entry<Unit<?>, String>> unitToSymbol = toSortedList1(formatter.unitToName);
 
-        List<Map.Entry<Unit<?>, String>> unitsOnlyInOld =
-                unitToName.stream()
-                        .filter(entry -> !unitToSymbol.contains(entry))
-                        .collect(Collectors.toList());
-        List<Map.Entry<Unit<?>, String>> indriyaBug =
-                asList(
-                        entry(ASTRONOMICAL_UNIT, "UA"),
-                        entry(ELECTRICAL_HORSEPOWER, "hp(E)"),
-                        entry(Units.MONTH, "mo"),
-                        entry(SI.REVOLUTION, "rev"),
-                        entry(REVOLUTION_PER_MINUTE, "rpm"),
-                        entry(Units.GRAM.prefix(MICRO), "µg"),
-                        entry(Units.LITRE.prefix(MICRO), "µl"),
-                        entry(Units.CELSIUS.prefix(MICRO), "µ℃"));
-        List<Map.Entry<Unit<?>, String>> unitsOnlyInOldWithoutBugs =
-                new ArrayList<>(unitsOnlyInOld);
+        List<Map.Entry<Unit<?>, String>> unitsOnlyInOld = unitToName.stream()
+                .filter(entry -> !unitToSymbol.contains(entry))
+                .collect(Collectors.toList());
+        List<Map.Entry<Unit<?>, String>> indriyaBug = asList(
+                entry(ASTRONOMICAL_UNIT, "UA"),
+                entry(ELECTRICAL_HORSEPOWER, "hp(E)"),
+                entry(Units.MONTH, "mo"),
+                entry(SI.REVOLUTION, "rev"),
+                entry(REVOLUTION_PER_MINUTE, "rpm"),
+                entry(Units.GRAM.prefix(MICRO), "µg"),
+                entry(Units.LITRE.prefix(MICRO), "µl"),
+                entry(Units.CELSIUS.prefix(MICRO), "µ℃"));
+        List<Map.Entry<Unit<?>, String>> unitsOnlyInOldWithoutBugs = new ArrayList<>(unitsOnlyInOld);
         unitsOnlyInOldWithoutBugs.removeAll(indriyaBug);
         assertEquals(
-                unitsOnlyInOldWithoutBugs.size()
-                        + " units only in old: "
-                        + unitsOnlyInOldWithoutBugs
-                        + "\n",
+                unitsOnlyInOldWithoutBugs.size() + " units only in old: " + unitsOnlyInOldWithoutBugs + "\n",
                 indriyaBug,
                 unitsOnlyInOld);
     }
@@ -84,29 +77,22 @@ public class UnitFormatterTest {
     public void unitsOnlyInNew() throws Exception {
         SimpleUnitFormat simpleUnitFormat = SimpleUnitFormat.getInstance();
 
-        List<Map.Entry<Unit<?>, String>> unitToNameMap =
-                toSortedList1(getUnitToNameMap(simpleUnitFormat));
+        List<Map.Entry<Unit<?>, String>> unitToNameMap = toSortedList1(getUnitToNameMap(simpleUnitFormat));
         @SuppressWarnings("deprecation")
         List<Map.Entry<Unit<?>, String>> unitToSymbol = toSortedList1(formatter.unitToName);
 
-        List<Map.Entry<Unit<?>, String>> unitsOnlyInNew =
-                unitToSymbol.stream()
-                        .filter(entry -> !unitToNameMap.contains(entry))
-                        .collect(Collectors.toList());
+        List<Map.Entry<Unit<?>, String>> unitsOnlyInNew = unitToSymbol.stream()
+                .filter(entry -> !unitToNameMap.contains(entry))
+                .collect(Collectors.toList());
         // only one kind of µ is added for those special-cased units in indriya:
-        List<Map.Entry<? extends Unit<?>, String>> indriyaBug =
-                asList(
-                        entry(Units.GRAM.prefix(MICRO), "μg"),
-                        entry(Units.LITRE.prefix(MICRO), "μl"),
-                        entry(Units.CELSIUS.prefix(MICRO), "μ℃"));
-        List<Map.Entry<Unit<?>, String>> unitsOnlyInNewWithoutBugs =
-                new ArrayList<>(unitsOnlyInNew);
+        List<Map.Entry<? extends Unit<?>, String>> indriyaBug = asList(
+                entry(Units.GRAM.prefix(MICRO), "μg"),
+                entry(Units.LITRE.prefix(MICRO), "μl"),
+                entry(Units.CELSIUS.prefix(MICRO), "μ℃"));
+        List<Map.Entry<Unit<?>, String>> unitsOnlyInNewWithoutBugs = new ArrayList<>(unitsOnlyInNew);
         unitsOnlyInNewWithoutBugs.removeAll(indriyaBug);
         assertEquals(
-                unitsOnlyInNewWithoutBugs.size()
-                        + " units only in new: "
-                        + unitsOnlyInNewWithoutBugs
-                        + "\n",
+                unitsOnlyInNewWithoutBugs.size() + " units only in new: " + unitsOnlyInNewWithoutBugs + "\n",
                 indriyaBug,
                 unitsOnlyInNew);
     }
@@ -115,61 +101,50 @@ public class UnitFormatterTest {
     public void namesOnlyInOld() throws Exception {
         SimpleUnitFormat simpleUnitFormat = SimpleUnitFormat.getInstance();
 
-        List<Map.Entry<String, Unit<?>>> nameToUnitMap =
-                toSortedList2(getNameToUnitMap(simpleUnitFormat));
+        List<Map.Entry<String, Unit<?>>> nameToUnitMap = toSortedList2(getNameToUnitMap(simpleUnitFormat));
         @SuppressWarnings("deprecation")
         List<Map.Entry<String, Unit<?>>> symbolToUnit = toSortedList2(formatter.nameToUnit);
 
-        List<Map.Entry<String, Unit<?>>> unitsOnlyInOld =
-                nameToUnitMap.stream()
-                        .filter(entry -> !symbolToUnit.contains(entry))
-                        .collect(Collectors.toList());
-        List<Map.Entry<String, Unit<?>>> indriyaBug =
-                asList(
-                        entry("hp(E)", ELECTRICAL_HORSEPOWER),
-                        entry("month", MONTH),
-                        entry("mo", MONTH),
-                        entry("mon", MONTH),
-                        entry("m2", SQUARE_METRE),
-                        entry("rpm", REVOLUTION_PER_MINUTE),
-                        entry("m3", CUBIC_METRE));
+        List<Map.Entry<String, Unit<?>>> unitsOnlyInOld = nameToUnitMap.stream()
+                .filter(entry -> !symbolToUnit.contains(entry))
+                .collect(Collectors.toList());
+        List<Map.Entry<String, Unit<?>>> indriyaBug = asList(
+                entry("hp(E)", ELECTRICAL_HORSEPOWER),
+                entry("month", MONTH),
+                entry("mo", MONTH),
+                entry("mon", MONTH),
+                entry("m2", SQUARE_METRE),
+                entry("rpm", REVOLUTION_PER_MINUTE),
+                entry("m3", CUBIC_METRE));
         List<Map.Entry<String, Unit<?>>> unitsOnlyInNewWithoutBug = new ArrayList<>(unitsOnlyInOld);
         unitsOnlyInNewWithoutBug.removeAll(indriyaBug);
 
         assertEquals(
-                unitsOnlyInOld.size() + " names only in old: " + unitsOnlyInOld + "\n",
-                indriyaBug,
-                unitsOnlyInOld);
+                unitsOnlyInOld.size() + " names only in old: " + unitsOnlyInOld + "\n", indriyaBug, unitsOnlyInOld);
     }
 
     @Test
     public void namesOnlyInNew() throws Exception {
         SimpleUnitFormat simpleUnitFormat = SimpleUnitFormat.getInstance();
 
-        List<Map.Entry<String, Unit<?>>> nameToUnitMap =
-                toSortedList2(getNameToUnitMap(simpleUnitFormat));
+        List<Map.Entry<String, Unit<?>>> nameToUnitMap = toSortedList2(getNameToUnitMap(simpleUnitFormat));
         @SuppressWarnings("deprecation")
         List<Map.Entry<String, Unit<?>>> symbolToUnit = toSortedList2(formatter.nameToUnit);
 
-        List<Map.Entry<String, Unit<?>>> unitsOnlyInNew =
-                symbolToUnit.stream()
-                        .filter(entry -> !nameToUnitMap.contains(entry))
-                        .collect(Collectors.toList());
+        List<Map.Entry<String, Unit<?>>> unitsOnlyInNew = symbolToUnit.stream()
+                .filter(entry -> !nameToUnitMap.contains(entry))
+                .collect(Collectors.toList());
         // only one kind of µ is added for those special-cased units in indriya:
-        List<Map.Entry<String, Unit<?>>> indriyaBug =
-                asList(
-                        entry("μg", Units.GRAM.prefix(MICRO)),
-                        entry("μl", Units.LITRE.prefix(MICRO)),
-                        entry("μ°C", Units.CELSIUS.prefix(MICRO)),
-                        entry("μ℃", Units.CELSIUS.prefix(MICRO)),
-                        entry("μOhm", Units.OHM.prefix(MICRO)));
+        List<Map.Entry<String, Unit<?>>> indriyaBug = asList(
+                entry("μg", Units.GRAM.prefix(MICRO)),
+                entry("μl", Units.LITRE.prefix(MICRO)),
+                entry("μ°C", Units.CELSIUS.prefix(MICRO)),
+                entry("μ℃", Units.CELSIUS.prefix(MICRO)),
+                entry("μOhm", Units.OHM.prefix(MICRO)));
         List<Map.Entry<String, Unit<?>>> unitsOnlyInNewWithoutBug = new ArrayList<>(unitsOnlyInNew);
         unitsOnlyInNewWithoutBug.removeAll(indriyaBug);
         assertEquals(
-                unitsOnlyInNewWithoutBug.size()
-                        + " names only in new: "
-                        + unitsOnlyInNewWithoutBug
-                        + "\n",
+                unitsOnlyInNewWithoutBug.size() + " names only in new: " + unitsOnlyInNewWithoutBug + "\n",
                 indriyaBug,
                 unitsOnlyInNew);
     }
@@ -194,25 +169,25 @@ public class UnitFormatterTest {
 
     private static List<Map.Entry<Unit<?>, String>> toSortedList1(Map<Unit<?>, String> map) {
         return map.entrySet().stream()
-                .sorted(Comparator.nullsFirst(Comparator.comparing(x -> x.getKey().toString())))
+                .sorted(Comparator.nullsFirst(
+                        Comparator.comparing(x -> x.getKey().toString())))
                 .collect(Collectors.toList());
     }
 
     private static List<Map.Entry<String, Unit<?>>> toSortedList2(Map<String, Unit<?>> map) {
         return map.entrySet().stream()
-                .sorted(Comparator.nullsFirst(Comparator.comparing(x -> x.getValue().toString())))
+                .sorted(Comparator.nullsFirst(
+                        Comparator.comparing(x -> x.getValue().toString())))
                 .collect(Collectors.toList());
     }
 
-    private static final BaseUnitFormatter formatter =
-            new BaseUnitFormatter(
-                    Stream.of(
-                                    UnitDefinitions.DIMENSIONLESS,
-                                    UnitDefinitions.SI_BASE,
-                                    UnitDefinitions.CONSTANTS,
-                                    UnitDefinitions.SI_DERIVED,
-                                    UnitDefinitions.NON_SI,
-                                    UnitDefinitions.US_CUSTOMARY)
-                            .flatMap(Collection::stream)
-                            .collect(Collectors.toList()));
+    private static final BaseUnitFormatter formatter = new BaseUnitFormatter(Stream.of(
+                    UnitDefinitions.DIMENSIONLESS,
+                    UnitDefinitions.SI_BASE,
+                    UnitDefinitions.CONSTANTS,
+                    UnitDefinitions.SI_DERIVED,
+                    UnitDefinitions.NON_SI,
+                    UnitDefinitions.US_CUSTOMARY)
+            .flatMap(Collection::stream)
+            .collect(Collectors.toList()));
 }

@@ -57,8 +57,7 @@ public class PostGIS3DOnlineTest extends JDBC3DOnlineTest {
         checkGeometryDimension(q, fs, c -> Double.isNaN(c.getZ()));
     }
 
-    private void checkGeometryDimension(
-            Query q, ContentFeatureSource fs, Predicate<Coordinate> testCondition)
+    private void checkGeometryDimension(Query q, ContentFeatureSource fs, Predicate<Coordinate> testCondition)
             throws IOException {
         SimpleFeatureCollection fc = fs.getFeatures(q);
         try (FeatureIterator<SimpleFeature> fi = fc.features()) {

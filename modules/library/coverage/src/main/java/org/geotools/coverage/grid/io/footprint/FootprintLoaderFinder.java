@@ -57,9 +57,7 @@ public final class FootprintLoaderFinder {
     public static synchronized Set<FootprintLoaderSpi> getAvailableLoaders() {
         // get all FootprintLoaderSpi implementations
         scanForPlugins();
-        return getServiceRegistry()
-                .getFactories(FootprintLoaderSpi.class, true)
-                .collect(toUnmodifiableSet());
+        return getServiceRegistry().getFactories(FootprintLoaderSpi.class, true).collect(toUnmodifiableSet());
     }
 
     /**

@@ -117,8 +117,7 @@ public class SoftValueHashMap<K, V> extends AbstractMap<K, V> {
     /** Ensures that the specified value is non-null. */
     private static void ensureNotNull(final Object value) throws IllegalArgumentException {
         if (value == null) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "value"));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "value"));
         }
     }
 
@@ -227,15 +226,10 @@ public class SoftValueHashMap<K, V> extends AbstractMap<K, V> {
             final K toRemove = hardCache.poll();
             final Object value = hash.get(replaceNull(toRemove));
             final V v = (V) value;
-            if (v
-                    instanceof
-                    Reference) // check if v is already a Reference: it can happen in concurrent
+            if (v instanceof Reference) // check if v is already a Reference: it can happen in concurrent
                 // environments
                 hash.put((K) replaceNull(toRemove), v);
-            else
-                hash.put(
-                        (K) replaceNull(toRemove),
-                        new Reference<>(hash, (K) replaceNull(toRemove), v, cleaner));
+            else hash.put((K) replaceNull(toRemove), new Reference<>(hash, (K) replaceNull(toRemove), v, cleaner));
         }
     }
 
@@ -464,17 +458,11 @@ public class SoftValueHashMap<K, V> extends AbstractMap<K, V> {
                 Object value = candidate.getValue();
                 if (value instanceof Reference) {
                     value = ((Reference<K, V>) value).get();
-                    entry =
-                            new MapEntry<>(
-                                    (K) SoftValueHashMap.resolveNull(candidate.getKey()),
-                                    (V) value);
+                    entry = new MapEntry<>((K) SoftValueHashMap.resolveNull(candidate.getKey()), (V) value);
                     return true;
                 }
                 if (value != null) {
-                    entry =
-                            new MapEntry<>(
-                                    (K) SoftValueHashMap.resolveNull(candidate.getKey()),
-                                    (V) value);
+                    entry = new MapEntry<>((K) SoftValueHashMap.resolveNull(candidate.getKey()), (V) value);
                     return true;
                 }
             }
@@ -529,8 +517,7 @@ public class SoftValueHashMap<K, V> extends AbstractMap<K, V> {
         private ValueCleaner cleaner;
 
         /** Creates a soft reference for the specified key-value pair. */
-        Reference(
-                final Map<K, Object> hash, final K key, final V value, final ValueCleaner cleaner) {
+        Reference(final Map<K, Object> hash, final K key, final V value, final ValueCleaner cleaner) {
             super(value, WeakCollectionCleaner.DEFAULT.referenceQueue);
             this.hash = hash;
             this.key = key;
@@ -569,10 +556,7 @@ public class SoftValueHashMap<K, V> extends AbstractMap<K, V> {
                         cleaner.clean(replaceNull(key), value);
                     } catch (Throwable t) {
                         // never let a bad implementation break soft reference cleaning
-                        LOGGER.log(
-                                Level.SEVERE,
-                                "Exception occurred while cleaning soft referenced object",
-                                t);
+                        LOGGER.log(Level.SEVERE, "Exception occurred while cleaning soft referenced object", t);
                     }
                 }
             }

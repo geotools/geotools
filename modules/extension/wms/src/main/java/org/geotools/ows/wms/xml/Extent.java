@@ -59,15 +59,9 @@ public class Extent {
     /** A CDATA section in the XML; this is actually a structured string. */
     protected String value;
 
-    public Extent(
-            String name,
-            String defaultValue,
-            Boolean multipleValues,
-            Boolean nearestValue,
-            String value) {
+    public Extent(String name, String defaultValue, Boolean multipleValues, Boolean nearestValue, String value) {
         if (name == null || name.length() == 0) {
-            throw new IllegalArgumentException(
-                    "Error creating Dimension: parameter name must not be null!");
+            throw new IllegalArgumentException("Error creating Dimension: parameter name must not be null!");
         }
         this.name = name;
         this.defaultValue = defaultValue;

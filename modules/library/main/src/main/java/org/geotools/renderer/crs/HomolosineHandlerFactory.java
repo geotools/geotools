@@ -39,17 +39,13 @@ public class HomolosineHandlerFactory implements ProjectionHandlerFactory {
 
     @Override
     public ProjectionHandler getHandler(
-            ReferencedEnvelope renderingEnvelope,
-            CoordinateReferenceSystem sourceCrs,
-            boolean wrap,
-            int maxWraps)
+            ReferencedEnvelope renderingEnvelope, CoordinateReferenceSystem sourceCrs, boolean wrap, int maxWraps)
             throws FactoryException {
         if (renderingEnvelope == null) {
             return null;
         }
 
-        MapProjection mapProjection =
-                CRS.getMapProjection(renderingEnvelope.getCoordinateReferenceSystem());
+        MapProjection mapProjection = CRS.getMapProjection(renderingEnvelope.getCoordinateReferenceSystem());
         if (mapProjection instanceof Homolosine) {
             final double[] MASK_COORDS = {
                 // north side

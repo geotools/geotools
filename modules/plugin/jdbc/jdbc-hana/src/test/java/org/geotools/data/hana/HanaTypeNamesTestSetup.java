@@ -36,9 +36,7 @@ public class HanaTypeNamesTestSetup extends JDBCTypeNamesTestSetup {
             HanaTestUtil htu = new HanaTestUtil(conn, fixture);
             htu.createTestSchema();
 
-            String[][] cols = {
-                {"id", "INT"}, {"name", "VARCHAR(255)"}, {"geom", "ST_Geometry(1000004326)"}
-            };
+            String[][] cols = {{"id", "INT"}, {"name", "VARCHAR(255)"}, {"geom", "ST_Geometry(1000004326)"}};
             htu.createRegisteredTestTable(TABLE, cols);
             htu.createTestView(VIEW, TABLE, "id", "geom");
         }

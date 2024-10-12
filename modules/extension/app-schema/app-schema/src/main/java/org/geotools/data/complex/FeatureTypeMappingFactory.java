@@ -44,29 +44,18 @@ public class FeatureTypeMappingFactory {
             boolean isDenormalised) {
         FeatureTypeMapping featureTypeMapping;
         if (isXmlDataStore) {
-            featureTypeMapping =
-                    new XmlFeatureTypeMapping(source, target, mappings, namespaces, itemXpath);
+            featureTypeMapping = new XmlFeatureTypeMapping(source, target, mappings, namespaces, itemXpath);
         } else {
-            featureTypeMapping =
-                    new FeatureTypeMapping(
-                            source,
-                            indexSource,
-                            target,
-                            defaultGeometryXPath,
-                            mappings,
-                            namespaces,
-                            isDenormalised);
+            featureTypeMapping = new FeatureTypeMapping(
+                    source, indexSource, target, defaultGeometryXPath, mappings, namespaces, isDenormalised);
         }
-        featureTypeMapping
-                .getAttributeMappings()
-                .forEach(
-                        attributeMapping -> {
-                            MultipleValue multipleValue = attributeMapping.getMultipleValue();
-                            if (multipleValue != null) {
-                                multipleValue.setFeatureTypeMapping(featureTypeMapping);
-                                multipleValue.setAttributeMapping(attributeMapping);
-                            }
-                        });
+        featureTypeMapping.getAttributeMappings().forEach(attributeMapping -> {
+            MultipleValue multipleValue = attributeMapping.getMultipleValue();
+            if (multipleValue != null) {
+                multipleValue.setFeatureTypeMapping(featureTypeMapping);
+                multipleValue.setAttributeMapping(attributeMapping);
+            }
+        });
         return featureTypeMapping;
     }
 
@@ -81,17 +70,16 @@ public class FeatureTypeMappingFactory {
             boolean isXmlDataStore,
             boolean isDenormalised,
             String sourceDatastoreId) {
-        FeatureTypeMapping featureTypeMapping =
-                getInstance(
-                        source,
-                        indexSource,
-                        target,
-                        defaultGeometryXPath,
-                        mappings,
-                        namespaces,
-                        itemXpath,
-                        isXmlDataStore,
-                        isDenormalised);
+        FeatureTypeMapping featureTypeMapping = getInstance(
+                source,
+                indexSource,
+                target,
+                defaultGeometryXPath,
+                mappings,
+                namespaces,
+                itemXpath,
+                isXmlDataStore,
+                isDenormalised);
         featureTypeMapping.setSourceDatastoreId(sourceDatastoreId);
         return featureTypeMapping;
     }

@@ -27,9 +27,7 @@ public class ProcessTutorial extends StaticMethodsProcessFactory<ProcessTutorial
     // constructor end
 
     // octagonalEnvelope start
-    @DescribeProcess(
-            title = "Octagonal Envelope",
-            description = "Get the octagonal envelope of this Geometry.")
+    @DescribeProcess(title = "Octagonal Envelope", description = "Get the octagonal envelope of this Geometry.")
     @DescribeResult(description = "octagonal of geom")
     public static Geometry octagonalEnvelope(@DescribeParameter(name = "geom") Geometry geom) {
         return new OctagonalEnvelope(geom).toGeometry(geom.getFactory());

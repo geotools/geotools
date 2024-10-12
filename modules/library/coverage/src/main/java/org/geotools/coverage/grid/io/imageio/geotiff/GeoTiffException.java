@@ -97,7 +97,8 @@ public final class GeoTiffException extends IOException {
      */
     public GeoKeyEntry[] getGeoKeys() {
         return metadata != null
-                ? metadata.getGeoKeys().toArray(new GeoKeyEntry[metadata.getGeoKeys().size()])
+                ? metadata.getGeoKeys()
+                        .toArray(new GeoKeyEntry[metadata.getGeoKeys().size()])
                 : null;
     }
 
@@ -117,14 +118,13 @@ public final class GeoTiffException extends IOException {
         if (metadata != null) {
             final PixelScale modelPixelScales = metadata.getModelPixelScales();
             if (modelPixelScales != null) {
-                message.println(
-                        "["
-                                + modelPixelScales.getScaleX()
-                                + ","
-                                + modelPixelScales.getScaleY()
-                                + ","
-                                + modelPixelScales.getScaleZ()
-                                + "]");
+                message.println("["
+                        + modelPixelScales.getScaleX()
+                        + ","
+                        + modelPixelScales.getScaleY()
+                        + ","
+                        + modelPixelScales.getScaleZ()
+                        + "]");
             } else {
                 message.println("NOT AVAILABLE");
             }
@@ -174,19 +174,14 @@ public final class GeoTiffException extends IOException {
             int i = 1;
             for (GeoKeyEntry geokey : metadata.getGeoKeys()) {
                 message.print("GeoKey #" + i + ": ");
-                message.println(
-                        "Key = "
-                                + geokey.getKeyID()
-                                + ", Value = "
-                                + metadata.getGeoKey(geokey.getKeyID()));
+                message.println("Key = " + geokey.getKeyID() + ", Value = " + metadata.getGeoKey(geokey.getKeyID()));
                 i++;
             }
         }
 
         // print out the localized message
         Throwable t = getCause();
-        if (t != null)
-            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", t);
+        if (t != null) java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", t);
 
         // close and return
         message.close();

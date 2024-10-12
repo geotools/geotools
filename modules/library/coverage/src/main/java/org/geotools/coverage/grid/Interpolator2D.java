@@ -151,12 +151,11 @@ public final class Interpolator2D extends GridCoverage2D {
     public static GridCoverage2D create(final GridCoverage2D coverage) {
         // No need to synchronize: not a big deal if two arrays are created.
         if (DEFAULTS == null) {
-            DEFAULTS =
-                    new Interpolation[] {
-                        Interpolation.getInstance(Interpolation.INTERP_BICUBIC),
-                        Interpolation.getInstance(Interpolation.INTERP_BILINEAR),
-                        Interpolation.getInstance(Interpolation.INTERP_NEAREST)
-                    };
+            DEFAULTS = new Interpolation[] {
+                Interpolation.getInstance(Interpolation.INTERP_BICUBIC),
+                Interpolation.getInstance(Interpolation.INTERP_BILINEAR),
+                Interpolation.getInstance(Interpolation.INTERP_NEAREST)
+            };
         }
         return create(coverage, DEFAULTS);
     }
@@ -167,8 +166,7 @@ public final class Interpolator2D extends GridCoverage2D {
      * @param coverage The coverage to interpolate.
      * @param interpolation The interpolation to use.
      */
-    public static GridCoverage2D create(
-            final GridCoverage2D coverage, final Interpolation interpolation) {
+    public static GridCoverage2D create(final GridCoverage2D coverage, final Interpolation interpolation) {
         return create(coverage, new Interpolation[] {interpolation});
     }
 
@@ -180,8 +178,7 @@ public final class Interpolator2D extends GridCoverage2D {
      * @param coverage The coverage to interpolate.
      * @param interpolations The interpolation to use and its fallback (if any).
      */
-    public static GridCoverage2D create(
-            GridCoverage2D coverage, final Interpolation[] interpolations) {
+    public static GridCoverage2D create(GridCoverage2D coverage, final Interpolation[] interpolations) {
         return create(coverage, interpolations, null);
     }
 
@@ -194,9 +191,7 @@ public final class Interpolator2D extends GridCoverage2D {
      * @param interpolations The interpolation to use and its fallback (if any).
      */
     public static GridCoverage2D create(
-            GridCoverage2D coverage,
-            final Interpolation[] interpolations,
-            final BorderExtender be) {
+            GridCoverage2D coverage, final Interpolation[] interpolations, final BorderExtender be) {
         while (coverage instanceof Interpolator2D) {
             coverage = ((Interpolator2D) coverage).source;
         }
@@ -221,10 +216,7 @@ public final class Interpolator2D extends GridCoverage2D {
      * @param be the {@link BorderExtender} instance to use for this operation.
      */
     private Interpolator2D(
-            final GridCoverage2D coverage,
-            final Interpolation[] interpolations,
-            final int index,
-            BorderExtender be) {
+            final GridCoverage2D coverage, final Interpolation[] interpolations, final int index, BorderExtender be) {
         super(null, coverage);
         this.source = coverage;
         this.interpolation = interpolations[index];
@@ -253,8 +245,7 @@ public final class Interpolator2D extends GridCoverage2D {
             this.toGrid = fallback.toGrid;
         } else
             try {
-                final MathTransform2D transform =
-                        gridGeometry.getGridToCRS2D(PixelOrientation.UPPER_LEFT);
+                final MathTransform2D transform = gridGeometry.getGridToCRS2D(PixelOrientation.UPPER_LEFT);
                 toGrid = transform.inverse();
             } catch (NoninvertibleTransformException exception) {
                 throw new IllegalArgumentException(exception);
@@ -460,8 +451,7 @@ public final class Interpolator2D extends GridCoverage2D {
          */
         bounds.x = ix - left;
         bounds.y = iy - top;
-        final RectIter iter =
-                RectIterFactory.create(image.getExtendedData(bounds, this.borderExtender), bounds);
+        final RectIter iter = RectIterFactory.create(image.getExtendedData(bounds, this.borderExtender), bounds);
         boolean[][] gaps = hasNoData ? new boolean[samples.length][samples[0].length] : null;
         for (; band < bandUp; band++) {
             iter.startLines();
@@ -521,8 +511,7 @@ public final class Interpolator2D extends GridCoverage2D {
      * @param bandUp The last band's index+1 to interpolate.
      * @return {@code null} if point is outside grid coverage.
      */
-    private synchronized float[] interpolate(
-            final double x, final double y, float[] dest, int band, final int bandUp) {
+    private synchronized float[] interpolate(final double x, final double y, float[] dest, int band, final int bandUp) {
         final double x0 = Math.floor(x);
         final double y0 = Math.floor(y);
         final int ix = (int) x0;
@@ -558,8 +547,7 @@ public final class Interpolator2D extends GridCoverage2D {
          */
         bounds.x = ix - left;
         bounds.y = iy - top;
-        final RectIter iter =
-                RectIterFactory.create(image.getExtendedData(bounds, this.borderExtender), bounds);
+        final RectIter iter = RectIterFactory.create(image.getExtendedData(bounds, this.borderExtender), bounds);
         boolean[][] gaps = hasNoData ? new boolean[samples.length][samples[0].length] : null;
         for (; band < bandUp; band++) {
             iter.startLines();
@@ -619,8 +607,7 @@ public final class Interpolator2D extends GridCoverage2D {
      * @param bandUp The last band's index+1 to interpolate.
      * @return {@code null} if point is outside grid coverage.
      */
-    private synchronized int[] interpolate(
-            final double x, final double y, int[] dest, int band, final int bandUp) {
+    private synchronized int[] interpolate(final double x, final double y, int[] dest, int band, final int bandUp) {
         final double x0 = Math.floor(x);
         final double y0 = Math.floor(y);
         final int ix = (int) x0;
@@ -655,8 +642,7 @@ public final class Interpolator2D extends GridCoverage2D {
          */
         bounds.x = ix - left;
         bounds.y = iy - top;
-        final RectIter iter =
-                RectIterFactory.create(image.getExtendedData(bounds, this.borderExtender), bounds);
+        final RectIter iter = RectIterFactory.create(image.getExtendedData(bounds, this.borderExtender), bounds);
         boolean[][] gaps = hasNoData ? new boolean[samples.length][samples[0].length] : null;
         for (; band < bandUp; band++) {
             iter.startLines();

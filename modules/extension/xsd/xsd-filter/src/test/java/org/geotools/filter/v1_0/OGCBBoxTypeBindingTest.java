@@ -48,11 +48,7 @@ public class OGCBBoxTypeBindingTest extends FilterTestSupport {
         BBOX box = (BBOX) parse();
 
         assertEquals("foo", ((PropertyName) box.getExpression1()).getPropertyName());
-        assertTrue(
-                JTS.equals(
-                        new ReferencedEnvelope(0, 1, 0, 1, CRS.decode("EPSG:4326")),
-                        box.getBounds(),
-                        1e-6));
+        assertTrue(JTS.equals(new ReferencedEnvelope(0, 1, 0, 1, CRS.decode("EPSG:4326")), box.getBounds(), 1e-6));
     }
 
     @Test
@@ -64,6 +60,8 @@ public class OGCBBoxTypeBindingTest extends FilterTestSupport {
                 doc.getElementsByTagNameNS(OGC.NAMESPACE, OGC.PropertyName.getLocalPart())
                         .getLength());
         assertEquals(
-                1, doc.getElementsByTagNameNS(GML.NAMESPACE, GML.Box.getLocalPart()).getLength());
+                1,
+                doc.getElementsByTagNameNS(GML.NAMESPACE, GML.Box.getLocalPart())
+                        .getLength());
     }
 }

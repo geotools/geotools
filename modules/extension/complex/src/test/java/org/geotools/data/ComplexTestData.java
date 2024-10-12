@@ -146,8 +146,7 @@ public abstract class ComplexTestData {
      * </code>
      * </pre>
      */
-    public static FeatureType createExample01MultiValuedComplexProperty(
-            FeatureTypeFactory typeFactory) {
+    public static FeatureType createExample01MultiValuedComplexProperty(FeatureTypeFactory typeFactory) {
 
         TypeBuilder builder = new TypeBuilder(typeFactory);
         builder.setNamespaceURI(NSURI);

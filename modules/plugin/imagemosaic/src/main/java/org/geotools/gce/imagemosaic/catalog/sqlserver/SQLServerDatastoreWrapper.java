@@ -41,16 +41,15 @@ public class SQLServerDatastoreWrapper extends DataStoreWrapper {
 
     public static final String DEFAULT_METADATA_TABLE = "mosaic_geometry_metadata";
     private static final String METADATA_TABLE_PROPERTY = "geometryMetadataTable";
-    private static final String CREATE_METADATA_TABLE =
-            "CREATE TABLE %s(\n"
-                    + "   F_TABLE_SCHEMA VARCHAR(128),\n"
-                    + "   F_TABLE_NAME VARCHAR(128) NOT NULL,\n"
-                    + "   F_GEOMETRY_COLUMN VARCHAR(128) NOT NULL,\n"
-                    + "   COORD_DIMENSION INTEGER,\n"
-                    + "   SRID INTEGER NOT NULL,\n"
-                    + "   TYPE VARCHAR(30) NOT NULL,\n"
-                    + "   UNIQUE(F_TABLE_SCHEMA, F_TABLE_NAME, F_GEOMETRY_COLUMN),\n"
-                    + "   CHECK(TYPE IN ('POINT','LINE', 'POLYGON', 'COLLECTION', 'MULTIPOINT', 'MULTILINE', 'MULTIPOLYGON', 'GEOMETRY') ))";
+    private static final String CREATE_METADATA_TABLE = "CREATE TABLE %s(\n"
+            + "   F_TABLE_SCHEMA VARCHAR(128),\n"
+            + "   F_TABLE_NAME VARCHAR(128) NOT NULL,\n"
+            + "   F_GEOMETRY_COLUMN VARCHAR(128) NOT NULL,\n"
+            + "   COORD_DIMENSION INTEGER,\n"
+            + "   SRID INTEGER NOT NULL,\n"
+            + "   TYPE VARCHAR(30) NOT NULL,\n"
+            + "   UNIQUE(F_TABLE_SCHEMA, F_TABLE_NAME, F_GEOMETRY_COLUMN),\n"
+            + "   CHECK(TYPE IN ('POINT','LINE', 'POLYGON', 'COLLECTION', 'MULTIPOINT', 'MULTILINE', 'MULTIPOLYGON', 'GEOMETRY') ))";
 
     public SQLServerDatastoreWrapper(DataStore datastore, String location) {
         super(datastore, location);
@@ -86,8 +85,7 @@ public class SQLServerDatastoreWrapper extends DataStoreWrapper {
 
                     // check if it's already there
                     try (ResultSet res =
-                            metaData.getTables(
-                                    null, databaseSchema, metadataTable, new String[] {"TABLE"})) {
+                            metaData.getTables(null, databaseSchema, metadataTable, new String[] {"TABLE"})) {
                         createMetadataTable = !res.next();
                     }
                     // it not create
@@ -119,21 +117,19 @@ public class SQLServerDatastoreWrapper extends DataStoreWrapper {
     }
 
     @Override
-    protected FeatureTypeMapper getFeatureTypeMapper(SimpleFeatureType featureType)
-            throws Exception {
+    protected FeatureTypeMapper getFeatureTypeMapper(SimpleFeatureType featureType) throws Exception {
         return new SQLServerTypeMapper(featureType);
     }
 
     @Override
-    protected SimpleFeatureSource transformFeatureStore(
-            SimpleFeatureStore store, FeatureTypeMapper mapper) throws IOException {
+    protected SimpleFeatureSource transformFeatureStore(SimpleFeatureStore store, FeatureTypeMapper mapper)
+            throws IOException {
         SimpleFeatureSource transformedSource = mapper.getSimpleFeatureSource();
         if (transformedSource != null) {
             return transformedSource;
         } else {
             transformedSource =
-                    new SQLServerTransformFeatureStore(
-                            store, mapper.getName(), mapper.getDefinitions(), datastore);
+                    new SQLServerTransformFeatureStore(store, mapper.getName(), mapper.getDefinitions(), datastore);
             ((SQLServerTypeMapper) mapper).setSimpleFeatureSource(transformedSource);
             return transformedSource;
         }

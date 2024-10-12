@@ -109,17 +109,13 @@ public class PreGeneralizedFeatureSource implements SimpleFeatureSource {
     }
 
     private SimpleFeatureSource getBaseFeatureSource() throws IOException {
-        DataStore ds =
-                repository.dataStore(
-                        new NameImpl(info.getDataSourceNameSpace(), info.getDataSourceName()));
-        if (ds == null)
-            dsNotFoundException(info.getDataSourceNameSpace(), info.getDataSourceName());
+        DataStore ds = repository.dataStore(new NameImpl(info.getDataSourceNameSpace(), info.getDataSourceName()));
+        if (ds == null) dsNotFoundException(info.getDataSourceNameSpace(), info.getDataSourceName());
         return ds.getFeatureSource(info.getBaseFeatureName());
     }
 
     private int[] calculateIndexMapping(
-            SimpleFeatureType backendType, String geomProperyName, String backendGeomPropertyName)
-            throws IOException {
+            SimpleFeatureType backendType, String geomProperyName, String backendGeomPropertyName) throws IOException {
         int[] mapping = new int[getSchema().getAttributeCount()];
         outer:
         for (int i = 0; i < mapping.length; i++) {
@@ -131,8 +127,7 @@ public class PreGeneralizedFeatureSource implements SimpleFeatureSource {
                     continue outer;
                 }
             }
-            throw new IOException(
-                    "No attribute " + attrName + " found in " + backendType.getTypeName());
+            throw new IOException("No attribute " + attrName + " found in " + backendType.getTypeName());
         }
         return mapping;
     }
@@ -218,8 +213,8 @@ public class PreGeneralizedFeatureSource implements SimpleFeatureSource {
         return SimpleFeatureTypeBuilder.retype(schema, query.getPropertyNames());
     }
 
-    public FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader(
-            Query query, Transaction transaction) throws IOException {
+    public FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader(Query query, Transaction transaction)
+            throws IOException {
 
         SimpleFeatureSource fs = getFeatureSourceFor(query);
         DataAccess<SimpleFeatureType, SimpleFeature> access = fs.getDataStore();
@@ -249,11 +244,10 @@ public class PreGeneralizedFeatureSource implements SimpleFeatureSource {
             ri = new DefaultResourceInfo(); // copy from basefeature
             ri.setBounds(getBaseFeatureSource().getBounds());
             if (getBaseFeatureSource().getSchema().getGeometryDescriptor() != null)
-                ri.setCRS(
-                        getBaseFeatureSource()
-                                .getSchema()
-                                .getGeometryDescriptor()
-                                .getCoordinateReferenceSystem());
+                ri.setCRS(getBaseFeatureSource()
+                        .getSchema()
+                        .getGeometryDescriptor()
+                        .getCoordinateReferenceSystem());
             ri.setDescription(getBaseFeatureSource().getInfo().getDescription());
 
             // TODO, causes URI Exception
@@ -276,7 +270,9 @@ public class PreGeneralizedFeatureSource implements SimpleFeatureSource {
     @Override
     public Name getName() {
         return new NameImpl(
-                dataStore.getNamespace() == null ? null : dataStore.getNamespace().toString(),
+                dataStore.getNamespace() == null
+                        ? null
+                        : dataStore.getNamespace().toString(),
                 info.getFeatureName());
     }
 
@@ -289,57 +285,50 @@ public class PreGeneralizedFeatureSource implements SimpleFeatureSource {
     @Override
     public QueryCapabilities getQueryCapabilities() {
         if (queryCapabilities != null) return queryCapabilities;
-        queryCapabilities =
-                new QueryCapabilities() {
+        queryCapabilities = new QueryCapabilities() {
 
-                    @Override
-                    public boolean isOffsetSupported() {
-                        try {
-                            if (!getBaseFeatureSource().getQueryCapabilities().isOffsetSupported())
-                                return false;
-                            for (Generalization di : info.getGeneralizations()) {
-                                SimpleFeatureSource fs = getFeatureSourceFor(di);
-                                if (!fs.getQueryCapabilities().isOffsetSupported()) return false;
-                            }
-                            return true;
-                        } catch (IOException ex) {
-                            throw new RuntimeException(ex);
-                        }
+            @Override
+            public boolean isOffsetSupported() {
+                try {
+                    if (!getBaseFeatureSource().getQueryCapabilities().isOffsetSupported()) return false;
+                    for (Generalization di : info.getGeneralizations()) {
+                        SimpleFeatureSource fs = getFeatureSourceFor(di);
+                        if (!fs.getQueryCapabilities().isOffsetSupported()) return false;
                     }
+                    return true;
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
 
-                    @Override
-                    public boolean isReliableFIDSupported() {
-                        try {
-                            if (!getBaseFeatureSource()
-                                    .getQueryCapabilities()
-                                    .isReliableFIDSupported()) return false;
-                            for (Generalization di : info.getGeneralizations()) {
-                                SimpleFeatureSource fs = getFeatureSourceFor(di);
-                                if (!fs.getQueryCapabilities().isReliableFIDSupported())
-                                    return false;
-                            }
-                            return true;
-                        } catch (IOException ex) {
-                            throw new RuntimeException(ex);
-                        }
+            @Override
+            public boolean isReliableFIDSupported() {
+                try {
+                    if (!getBaseFeatureSource().getQueryCapabilities().isReliableFIDSupported()) return false;
+                    for (Generalization di : info.getGeneralizations()) {
+                        SimpleFeatureSource fs = getFeatureSourceFor(di);
+                        if (!fs.getQueryCapabilities().isReliableFIDSupported()) return false;
                     }
+                    return true;
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
 
-                    @Override
-                    public boolean supportsSorting(SortBy[] arg0) {
-                        try {
-                            if (!getBaseFeatureSource()
-                                    .getQueryCapabilities()
-                                    .supportsSorting(arg0)) return false;
-                            for (Generalization di : info.getGeneralizations()) {
-                                SimpleFeatureSource fs = getFeatureSourceFor(di);
-                                if (!fs.getQueryCapabilities().supportsSorting(arg0)) return false;
-                            }
-                            return true;
-                        } catch (IOException ex) {
-                            throw new RuntimeException(ex);
-                        }
+            @Override
+            public boolean supportsSorting(SortBy[] arg0) {
+                try {
+                    if (!getBaseFeatureSource().getQueryCapabilities().supportsSorting(arg0)) return false;
+                    for (Generalization di : info.getGeneralizations()) {
+                        SimpleFeatureSource fs = getFeatureSourceFor(di);
+                        if (!fs.getQueryCapabilities().supportsSorting(arg0)) return false;
                     }
-                };
+                    return true;
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        };
         return queryCapabilities;
     }
 
@@ -363,8 +352,7 @@ public class PreGeneralizedFeatureSource implements SimpleFeatureSource {
                         // datasource
                         if (di.getFeatureName().equals(baseType.getName().getLocalPart())) { // same
                             // feature
-                            if (di.getGeomPropertyName()
-                                    .equals(descr.getName().getLocalPart())) // is
+                            if (di.getGeomPropertyName().equals(descr.getName().getLocalPart())) // is
                                 // gneralized
                                 // geom
                                 continue outer;
@@ -373,22 +361,20 @@ public class PreGeneralizedFeatureSource implements SimpleFeatureSource {
                 }
                 attrDescrs.add(descr);
             }
-            GeometryDescriptor geomDescr =
-                    (GeometryDescriptor) baseType.getDescriptor(info.getGeomPropertyName());
+            GeometryDescriptor geomDescr = (GeometryDescriptor) baseType.getDescriptor(info.getGeomPropertyName());
 
-            featureTyp =
-                    new SimpleFeatureTypeImpl(
-                            new NameImpl(
-                                    dataStore.getNamespace() == null
-                                            ? null
-                                            : dataStore.getNamespace().toString(),
-                                    info.getFeatureName()),
-                            attrDescrs,
-                            geomDescr,
-                            false,
-                            null,
-                            null,
-                            baseType.getDescription());
+            featureTyp = new SimpleFeatureTypeImpl(
+                    new NameImpl(
+                            dataStore.getNamespace() == null
+                                    ? null
+                                    : dataStore.getNamespace().toString(),
+                            info.getFeatureName()),
+                    attrDescrs,
+                    geomDescr,
+                    false,
+                    null,
+                    null,
+                    baseType.getDescription());
 
         } catch (IOException ex) {
             throw new RuntimeException(ex);
@@ -441,16 +427,12 @@ public class PreGeneralizedFeatureSource implements SimpleFeatureSource {
     private SimpleFeatureSource getFeatureSourceFor(Generalization di) throws IOException {
         if (di == null) return getBaseFeatureSource();
 
-        DataStore ds =
-                repository.dataStore(
-                        new NameImpl(di.getDataSourceNameSpace(), di.getDataSourceName()));
+        DataStore ds = repository.dataStore(new NameImpl(di.getDataSourceNameSpace(), di.getDataSourceName()));
         if (ds == null) dsNotFoundException(di.getDataSourceNameSpace(), di.getDataSourceName());
         SimpleFeatureSource fs = ds.getFeatureSource(di.getFeatureName());
 
         // calculate indexMapping
-        int[] mapping =
-                calculateIndexMapping(
-                        fs.getSchema(), info.getGeomPropertyName(), di.getGeomPropertyName());
+        int[] mapping = calculateIndexMapping(fs.getSchema(), info.getGeomPropertyName(), di.getGeomPropertyName());
         indexMapping.put(di.getDistance(), mapping);
 
         return fs;
@@ -520,19 +502,18 @@ public class PreGeneralizedFeatureSource implements SimpleFeatureSource {
         if (originalPropNames == Query.ALL_NAMES) {
             newPropNames = new String[getSchema().getAttributeCount()];
             for (int i = 0; i < newPropNames.length; i++) {
-                AttributeDescriptor attrDescr = getSchema().getAttributeDescriptors().get(i);
-                newPropNames[i] =
-                        attrDescr.getLocalName().equals(baseGeomPropertyName)
-                                ? backendGeomPropertyName
-                                : attrDescr.getLocalName();
+                AttributeDescriptor attrDescr =
+                        getSchema().getAttributeDescriptors().get(i);
+                newPropNames[i] = attrDescr.getLocalName().equals(baseGeomPropertyName)
+                        ? backendGeomPropertyName
+                        : attrDescr.getLocalName();
             }
         } else {
             newPropNames = new String[originalPropNames.length];
             for (int i = 0; i < newPropNames.length; i++) {
-                newPropNames[i] =
-                        originalPropNames[i].equals(baseGeomPropertyName)
-                                ? backendGeomPropertyName
-                                : originalPropNames[i];
+                newPropNames[i] = originalPropNames[i].equals(baseGeomPropertyName)
+                        ? backendGeomPropertyName
+                        : originalPropNames[i];
             }
         }
 

@@ -185,8 +185,7 @@ public class GeometryCoordinateSequenceTransformer {
     }
 
     /** @throws TransformException */
-    public LineString transformLineString(LineString ls, GeometryFactory gf)
-            throws TransformException {
+    public LineString transformLineString(LineString ls, GeometryFactory gf) throws TransformException {
         if (ls instanceof CurvedGeometry<?> && curveCompatible) {
             return transformCurvedLineString((CurvedGeometry) ls, gf);
         } else {
@@ -202,12 +201,10 @@ public class GeometryCoordinateSequenceTransformer {
         AffineTransform2D at = (AffineTransform2D) mt;
         // return true if we are scaling by the same amount, and the rotational
         // elements are equal in absolute value
-        return at.getScaleX() == at.getScaleY()
-                && Math.abs(at.getShearX()) == Math.abs(at.getShearY());
+        return at.getScaleX() == at.getScaleY() && Math.abs(at.getShearX()) == Math.abs(at.getShearY());
     }
 
-    private LineString transformStraightLineString(LineString ls, GeometryFactory gf)
-            throws TransformException {
+    private LineString transformStraightLineString(LineString ls, GeometryFactory gf) throws TransformException {
         // if required, init csTransformer using geometry's CSFactory
         init(gf);
 
@@ -257,8 +254,7 @@ public class GeometryCoordinateSequenceTransformer {
     }
 
     /** @param cs a CoordinateSequence */
-    private CoordinateSequence projectCoordinateSequence(CoordinateSequence cs)
-            throws TransformException {
+    private CoordinateSequence projectCoordinateSequence(CoordinateSequence cs) throws TransformException {
         return csTransformer.transform(cs, transform);
     }
 

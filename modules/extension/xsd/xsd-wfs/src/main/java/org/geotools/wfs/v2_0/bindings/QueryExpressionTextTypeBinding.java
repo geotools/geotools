@@ -99,8 +99,7 @@ public class QueryExpressionTextTypeBinding extends AbstractComplexEMFBinding {
             dbf.setNamespaceAware(true);
 
             ConvertToDomHandler h =
-                    new ConvertToDomHandler(
-                            dbf.newDocumentBuilder().newDocument(), namespaceContext);
+                    new ConvertToDomHandler(dbf.newDocumentBuilder().newDocument(), namespaceContext);
 
             SAXParser saxp = SAXParserFactory.newInstance().newSAXParser();
             saxp.parse(new InputSource(new StringReader(qe.getValue())), h);

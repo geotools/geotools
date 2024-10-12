@@ -28,7 +28,8 @@ import org.w3c.dom.Document;
 public class GMLMultiLineStringPropertyTypeBinding2Test extends GMLTestSupport {
     @Test
     public void testType() {
-        assertEquals(MultiLineString.class, binding(GML.MultiLineStringPropertyType).getType());
+        assertEquals(
+                MultiLineString.class, binding(GML.MultiLineStringPropertyType).getType());
     }
 
     @Test

@@ -99,11 +99,8 @@ public class RingTypeBinding extends AbstractComplexBinding implements Comparabl
                 }
                 components.add(ls);
             }
-            CurvedGeometryFactory factory =
-                    GML3ParsingUtils.getCurvedGeometryFactory(
-                            arcParameters,
-                            gf,
-                            curved != null ? curved.getCoordinateSequence() : null);
+            CurvedGeometryFactory factory = GML3ParsingUtils.getCurvedGeometryFactory(
+                    arcParameters, gf, curved != null ? curved.getCoordinateSequence() : null);
             return factory.createCurvedGeometry(components);
         }
     }

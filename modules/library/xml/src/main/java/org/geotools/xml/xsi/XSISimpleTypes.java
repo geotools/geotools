@@ -210,8 +210,7 @@ public class XSISimpleTypes {
          *     java.lang.Object, java.util.Map)
          */
         @Override
-        public boolean canCreateAttributes(
-                Attribute attribute, Object value, Map<java.lang.String, Object> hints) {
+        public boolean canCreateAttributes(Attribute attribute, Object value, Map<java.lang.String, Object> hints) {
             // TODO ensure equals works here
             return (value != null)
                     && value.getClass().equals(getInstanceType())
@@ -224,8 +223,7 @@ public class XSISimpleTypes {
          *     java.lang.Object, java.util.Map)
          */
         @Override
-        public boolean canEncode(
-                Element element, Object value, Map<java.lang.String, Object> hints) {
+        public boolean canEncode(Element element, Object value, Map<java.lang.String, Object> hints) {
             // TODO ensure equals works here
             return (value != null)
                     && value.getClass().equals(getInstanceType())
@@ -238,8 +236,7 @@ public class XSISimpleTypes {
          *     java.lang.Object, java.util.Map)
          */
         @Override
-        public AttributeValue toAttribute(
-                Attribute attribute, Object value, Map<java.lang.String, Object> hints) {
+        public AttributeValue toAttribute(Attribute attribute, Object value, Map<java.lang.String, Object> hints) {
             return new AttributeValueGT(attribute, value.toString());
         }
 
@@ -248,11 +245,7 @@ public class XSISimpleTypes {
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
         @Override
-        public void encode(
-                Element element,
-                Object value,
-                PrintHandler output,
-                Map<java.lang.String, Object> hints)
+        public void encode(Element element, Object value, PrintHandler output, Map<java.lang.String, Object> hints)
                 throws IOException {
             if (element == null) {
                 output.startElement(getNamespace(), getName(), null);
@@ -343,13 +336,8 @@ public class XSISimpleTypes {
          */
         @Override
         public Object getValue(
-                Element element,
-                ElementValue[] value,
-                Attributes attrsgetValue,
-                Map<java.lang.String, Object> hints) {
-            if ((value.length >= 1)
-                    && (value[0].getValue() != null)
-                    && (!"".equals(value[0].getValue()))) {
+                Element element, ElementValue[] value, Attributes attrsgetValue, Map<java.lang.String, Object> hints) {
+            if ((value.length >= 1) && (value[0].getValue() != null) && (!"".equals(value[0].getValue()))) {
                 return java.lang.Integer.valueOf((java.lang.String) value[0].getValue());
             }
 
@@ -393,13 +381,8 @@ public class XSISimpleTypes {
          */
         @Override
         public Object getValue(
-                Element element,
-                ElementValue[] value,
-                Attributes attrs,
-                Map<java.lang.String, Object> hints) {
-            if ((value.length == 1)
-                    && (value[0].getValue() != null)
-                    && (!"".equals(value[0].getValue()))) {
+                Element element, ElementValue[] value, Attributes attrs, Map<java.lang.String, Object> hints) {
+            if ((value.length == 1) && (value[0].getValue() != null) && (!"".equals(value[0].getValue()))) {
                 return java.lang.Double.valueOf((java.lang.String) value[0].getValue());
             }
 
@@ -438,15 +421,9 @@ public class XSISimpleTypes {
          */
         @Override
         public Object getValue(
-                Element element,
-                ElementValue[] value,
-                Attributes attrs,
-                Map<java.lang.String, Object> hints) {
-            if ((value.length == 1)
-                    && (value[0].getValue() != null)
-                    && (!"".equals(value[0].getValue()))) {
-                java.lang.Integer i =
-                        java.lang.Integer.valueOf((java.lang.String) value[0].getValue());
+                Element element, ElementValue[] value, Attributes attrs, Map<java.lang.String, Object> hints) {
+            if ((value.length == 1) && (value[0].getValue() != null) && (!"".equals(value[0].getValue()))) {
+                java.lang.Integer i = java.lang.Integer.valueOf((java.lang.String) value[0].getValue());
 
                 return (i.intValue() < 0) ? i : null;
             }
@@ -489,15 +466,9 @@ public class XSISimpleTypes {
          */
         @Override
         public Object getValue(
-                Element element,
-                ElementValue[] value,
-                Attributes attrs,
-                Map<java.lang.String, Object> hints) {
-            if ((value.length == 1)
-                    && (value[0].getValue() != null)
-                    && (!"".equals(value[0].getValue()))) {
-                java.lang.Integer i =
-                        java.lang.Integer.valueOf((java.lang.String) value[0].getValue());
+                Element element, ElementValue[] value, Attributes attrs, Map<java.lang.String, Object> hints) {
+            if ((value.length == 1) && (value[0].getValue() != null) && (!"".equals(value[0].getValue()))) {
+                java.lang.Integer i = java.lang.Integer.valueOf((java.lang.String) value[0].getValue());
 
                 return (i.intValue() >= 0) ? i : null;
             }
@@ -534,15 +505,9 @@ public class XSISimpleTypes {
         /** @see schema.Type#getValue(java.lang.Object, org.xml.sax.Attributes) */
         @Override
         public Object getValue(
-                Element element,
-                ElementValue[] value,
-                Attributes attrs,
-                Map<java.lang.String, Object> hints) {
-            if ((value.length == 1)
-                    && (value[0].getValue() != null)
-                    && (!"".equals(value[0].getValue()))) {
-                java.lang.Integer i =
-                        java.lang.Integer.valueOf((java.lang.String) value[0].getValue());
+                Element element, ElementValue[] value, Attributes attrs, Map<java.lang.String, Object> hints) {
+            if ((value.length == 1) && (value[0].getValue() != null) && (!"".equals(value[0].getValue()))) {
+                java.lang.Integer i = java.lang.Integer.valueOf((java.lang.String) value[0].getValue());
 
                 return (i.intValue() > 0) ? i : null;
             }
@@ -579,15 +544,9 @@ public class XSISimpleTypes {
         /** @see schema.Type#getValue(java.lang.Object, org.xml.sax.Attributes) */
         @Override
         public Object getValue(
-                Element element,
-                ElementValue[] value,
-                Attributes attrs,
-                Map<java.lang.String, Object> hints) {
-            if ((value.length == 1)
-                    && (value[0].getValue() != null)
-                    && (!"".equals(value[0].getValue()))) {
-                java.lang.Integer i =
-                        java.lang.Integer.valueOf((java.lang.String) value[0].getValue());
+                Element element, ElementValue[] value, Attributes attrs, Map<java.lang.String, Object> hints) {
+            if ((value.length == 1) && (value[0].getValue() != null) && (!"".equals(value[0].getValue()))) {
+                java.lang.Integer i = java.lang.Integer.valueOf((java.lang.String) value[0].getValue());
 
                 return (i.intValue() <= 0) ? i : null;
             }
@@ -624,13 +583,8 @@ public class XSISimpleTypes {
         /** @see schema.Type#getValue(java.lang.Object, org.xml.sax.Attributes) */
         @Override
         public Object getValue(
-                Element element,
-                ElementValue[] value,
-                Attributes attrs,
-                Map<java.lang.String, Object> hints) {
-            if ((value.length == 1)
-                    && (value[0].getValue() != null)
-                    && (!"".equals(value[0].getValue()))) {
+                Element element, ElementValue[] value, Attributes attrs, Map<java.lang.String, Object> hints) {
+            if ((value.length == 1) && (value[0].getValue() != null) && (!"".equals(value[0].getValue()))) {
                 java.lang.Long i = java.lang.Long.valueOf((java.lang.String) value[0].getValue());
 
                 return i;
@@ -668,15 +622,9 @@ public class XSISimpleTypes {
         /** @see schema.Type#getValue(java.lang.Object, org.xml.sax.Attributes) */
         @Override
         public Object getValue(
-                Element element,
-                ElementValue[] value,
-                Attributes attrs,
-                Map<java.lang.String, Object> hints) {
-            if ((value.length == 1)
-                    && (value[0].getValue() != null)
-                    && (!"".equals(value[0].getValue()))) {
-                java.lang.Integer i =
-                        java.lang.Integer.valueOf((java.lang.String) value[0].getValue());
+                Element element, ElementValue[] value, Attributes attrs, Map<java.lang.String, Object> hints) {
+            if ((value.length == 1) && (value[0].getValue() != null) && (!"".equals(value[0].getValue()))) {
+                java.lang.Integer i = java.lang.Integer.valueOf((java.lang.String) value[0].getValue());
 
                 return i;
             }
@@ -713,13 +661,8 @@ public class XSISimpleTypes {
         /** @see schema.Type#getValue(java.lang.Object, org.xml.sax.Attributes) */
         @Override
         public Object getValue(
-                Element element,
-                ElementValue[] value,
-                Attributes attrs,
-                Map<java.lang.String, Object> hints) {
-            if ((value.length == 1)
-                    && (value[0].getValue() != null)
-                    && (!"".equals(value[0].getValue()))) {
+                Element element, ElementValue[] value, Attributes attrs, Map<java.lang.String, Object> hints) {
+            if ((value.length == 1) && (value[0].getValue() != null) && (!"".equals(value[0].getValue()))) {
                 java.lang.Short i = java.lang.Short.valueOf((java.lang.String) value[0].getValue());
 
                 return i;
@@ -757,13 +700,8 @@ public class XSISimpleTypes {
         /** @see schema.Type#getValue(java.lang.Object, org.xml.sax.Attributes) */
         @Override
         public Object getValue(
-                Element element,
-                ElementValue[] value,
-                Attributes attrs,
-                Map<java.lang.String, Object> hints) {
-            if ((value.length == 1)
-                    && (value[0].getValue() != null)
-                    && (!"".equals(value[0].getValue()))) {
+                Element element, ElementValue[] value, Attributes attrs, Map<java.lang.String, Object> hints) {
+            if ((value.length == 1) && (value[0].getValue() != null) && (!"".equals(value[0].getValue()))) {
                 java.lang.Byte i = java.lang.Byte.valueOf((java.lang.String) value[0].getValue());
 
                 return i;
@@ -801,13 +739,8 @@ public class XSISimpleTypes {
         /** @see schema.Type#getValue(java.lang.Object, org.xml.sax.Attributes) */
         @Override
         public Object getValue(
-                Element element,
-                ElementValue[] value,
-                Attributes attrs,
-                Map<java.lang.String, Object> hints) {
-            if ((value.length == 1)
-                    && (value[0].getValue() != null)
-                    && (!"".equals(value[0].getValue()))) {
+                Element element, ElementValue[] value, Attributes attrs, Map<java.lang.String, Object> hints) {
+            if ((value.length == 1) && (value[0].getValue() != null) && (!"".equals(value[0].getValue()))) {
                 java.lang.Long i = java.lang.Long.valueOf((java.lang.String) value[0].getValue());
 
                 return i;
@@ -845,13 +778,8 @@ public class XSISimpleTypes {
         /** @see schema.Type#getValue(java.lang.Object, org.xml.sax.Attributes) */
         @Override
         public Object getValue(
-                Element element,
-                ElementValue[] value,
-                Attributes attrs,
-                Map<java.lang.String, Object> hints) {
-            if ((value.length == 1)
-                    && (value[0].getValue() != null)
-                    && (!"".equals(value[0].getValue()))) {
+                Element element, ElementValue[] value, Attributes attrs, Map<java.lang.String, Object> hints) {
+            if ((value.length == 1) && (value[0].getValue() != null) && (!"".equals(value[0].getValue()))) {
                 java.lang.Short i = java.lang.Short.valueOf((java.lang.String) value[0].getValue());
 
                 return i;
@@ -889,15 +817,9 @@ public class XSISimpleTypes {
         /** @see schema.Type#getValue(java.lang.Object, org.xml.sax.Attributes) */
         @Override
         public Object getValue(
-                Element element,
-                ElementValue[] value,
-                Attributes attrs,
-                Map<java.lang.String, Object> hints) {
-            if ((value.length == 1)
-                    && (value[0].getValue() != null)
-                    && (!"".equals(value[0].getValue()))) {
-                java.lang.Integer i =
-                        java.lang.Integer.valueOf((java.lang.String) value[0].getValue());
+                Element element, ElementValue[] value, Attributes attrs, Map<java.lang.String, Object> hints) {
+            if ((value.length == 1) && (value[0].getValue() != null) && (!"".equals(value[0].getValue()))) {
+                java.lang.Integer i = java.lang.Integer.valueOf((java.lang.String) value[0].getValue());
 
                 return i;
             }
@@ -934,13 +856,8 @@ public class XSISimpleTypes {
         /** @see schema.Type#getValue(java.lang.Object, org.xml.sax.Attributes) */
         @Override
         public Object getValue(
-                Element element,
-                ElementValue[] value,
-                Attributes attrs,
-                Map<java.lang.String, Object> hints) {
-            if ((value.length == 1)
-                    && (value[0].getValue() != null)
-                    && (!"".equals(value[0].getValue()))) {
+                Element element, ElementValue[] value, Attributes attrs, Map<java.lang.String, Object> hints) {
+            if ((value.length == 1) && (value[0].getValue() != null) && (!"".equals(value[0].getValue()))) {
                 java.lang.Byte i = java.lang.Byte.valueOf((java.lang.String) value[0].getValue());
 
                 return i;
@@ -978,13 +895,8 @@ public class XSISimpleTypes {
         /** @see schema.Type#getValue(java.lang.Object, org.xml.sax.Attributes) */
         @Override
         public Object getValue(
-                Element element,
-                ElementValue[] value,
-                Attributes attrs,
-                Map<java.lang.String, Object> hints) {
-            if ((value.length == 1)
-                    && (value[0].getValue() != null)
-                    && (!"".equals(value[0].getValue()))) {
+                Element element, ElementValue[] value, Attributes attrs, Map<java.lang.String, Object> hints) {
+            if ((value.length == 1) && (value[0].getValue() != null) && (!"".equals(value[0].getValue()))) {
                 java.lang.Float i = java.lang.Float.valueOf((java.lang.String) value[0].getValue());
 
                 return i;
@@ -1022,15 +934,9 @@ public class XSISimpleTypes {
         /** @see schema.Type#getValue(java.lang.Object, org.xml.sax.Attributes) */
         @Override
         public Object getValue(
-                Element element,
-                ElementValue[] value,
-                Attributes attrs,
-                Map<java.lang.String, Object> hints) {
-            if ((value.length == 1)
-                    && (value[0].getValue() != null)
-                    && (!"".equals(value[0].getValue()))) {
-                java.lang.Double i =
-                        java.lang.Double.valueOf((java.lang.String) value[0].getValue());
+                Element element, ElementValue[] value, Attributes attrs, Map<java.lang.String, Object> hints) {
+            if ((value.length == 1) && (value[0].getValue() != null) && (!"".equals(value[0].getValue()))) {
+                java.lang.Double i = java.lang.Double.valueOf((java.lang.String) value[0].getValue());
 
                 return i;
             }
@@ -1067,14 +973,9 @@ public class XSISimpleTypes {
         /** @see schema.Type#getValue(java.lang.Object, org.xml.sax.Attributes) */
         @Override
         public Object getValue(
-                Element element,
-                ElementValue[] value,
-                Attributes attrs,
-                Map<java.lang.String, Object> hints)
+                Element element, ElementValue[] value, Attributes attrs, Map<java.lang.String, Object> hints)
                 throws SAXException {
-            if ((value.length == 1)
-                    && (value[0].getValue() != null)
-                    && (!"".equals(value[0].getValue()))) {
+            if ((value.length == 1) && (value[0].getValue() != null) && (!"".equals(value[0].getValue()))) {
                 java.lang.String svalue = (java.lang.String) value[0].getValue();
                 java.sql.Date parsed = Converters.convert(svalue, java.sql.Date.class);
                 if (null == parsed) {
@@ -1087,11 +988,7 @@ public class XSISimpleTypes {
         }
 
         @Override
-        public void encode(
-                Element element,
-                Object value,
-                PrintHandler output,
-                Map<java.lang.String, Object> hints)
+        public void encode(Element element, Object value, PrintHandler output, Map<java.lang.String, Object> hints)
                 throws IOException {
             if (value instanceof java.sql.Date) {
                 value = Converters.convert(value, java.lang.String.class);
@@ -1133,14 +1030,9 @@ public class XSISimpleTypes {
         /** @see schema.Type#getValue(java.lang.Object, org.xml.sax.Attributes) */
         @Override
         public Object getValue(
-                Element element,
-                ElementValue[] value,
-                Attributes attrs,
-                Map<java.lang.String, Object> hints)
+                Element element, ElementValue[] value, Attributes attrs, Map<java.lang.String, Object> hints)
                 throws SAXException {
-            if ((value.length == 1)
-                    && (value[0].getValue() != null)
-                    && (!"".equals(value[0].getValue()))) {
+            if ((value.length == 1) && (value[0].getValue() != null) && (!"".equals(value[0].getValue()))) {
                 java.lang.String svalue = (java.lang.String) value[0].getValue();
                 Timestamp parsed = Converters.convert(svalue, java.sql.Timestamp.class);
                 if (null == parsed) {
@@ -1159,11 +1051,7 @@ public class XSISimpleTypes {
         }
 
         @Override
-        public void encode(
-                Element element,
-                Object value,
-                PrintHandler output,
-                Map<java.lang.String, Object> hints)
+        public void encode(Element element, Object value, PrintHandler output, Map<java.lang.String, Object> hints)
                 throws IOException {
             if (value instanceof java.util.Date) {
                 value = Converters.convert(value, java.lang.String.class);
@@ -1194,14 +1082,9 @@ public class XSISimpleTypes {
         /** @see schema.Type#getValue(java.lang.Object, org.xml.sax.Attributes) */
         @Override
         public Object getValue(
-                Element element,
-                ElementValue[] value,
-                Attributes attrs,
-                Map<java.lang.String, Object> hints)
+                Element element, ElementValue[] value, Attributes attrs, Map<java.lang.String, Object> hints)
                 throws SAXException {
-            if ((value.length == 1)
-                    && (value[0].getValue() != null)
-                    && (!"".equals(value[0].getValue()))) {
+            if ((value.length == 1) && (value[0].getValue() != null) && (!"".equals(value[0].getValue()))) {
                 int month;
                 int day;
                 int hour;
@@ -1316,10 +1199,7 @@ public class XSISimpleTypes {
         /** @see schema.Type#getValue(java.lang.Object, org.xml.sax.Attributes) */
         @Override
         public Object getValue(
-                Element element,
-                ElementValue[] value,
-                Attributes attrs,
-                Map<java.lang.String, Object> hints) {
+                Element element, ElementValue[] value, Attributes attrs, Map<java.lang.String, Object> hints) {
             if ((value.length == 1) && (value[0].getValue() != null)) {
                 java.lang.String svalue = (java.lang.String) value[0].getValue();
                 svalue = svalue.split("\\D*")[0]; // get digits;
@@ -1363,10 +1243,7 @@ public class XSISimpleTypes {
         /** @see schema.Type#getValue(java.lang.Object, org.xml.sax.Attributes) */
         @Override
         public Object getValue(
-                Element element,
-                ElementValue[] value,
-                Attributes attrs,
-                Map<java.lang.String, Object> hints) {
+                Element element, ElementValue[] value, Attributes attrs, Map<java.lang.String, Object> hints) {
             if ((value.length == 1) && (value[0].getValue() != null)) {
                 java.lang.String svalue = (java.lang.String) value[0].getValue();
                 svalue = svalue.split("\\D*")[0]; // get digits;
@@ -1410,10 +1287,7 @@ public class XSISimpleTypes {
         /** @see schema.Type#getValue(java.lang.Object, org.xml.sax.Attributes) */
         @Override
         public Object getValue(
-                Element element,
-                ElementValue[] value,
-                Attributes attrs,
-                Map<java.lang.String, Object> hints) {
+                Element element, ElementValue[] value, Attributes attrs, Map<java.lang.String, Object> hints) {
             if ((value.length == 1) && (value[0].getValue() != null)) {
                 java.lang.String svalue = (java.lang.String) value[0].getValue();
                 java.lang.String[] t = svalue.split("\\D*"); // get digits;
@@ -1458,10 +1332,7 @@ public class XSISimpleTypes {
         /** @see schema.Type#getValue(java.lang.Object, org.xml.sax.Attributes) */
         @Override
         public Object getValue(
-                Element element,
-                ElementValue[] value,
-                Attributes attrs,
-                Map<java.lang.String, Object> hints) {
+                Element element, ElementValue[] value, Attributes attrs, Map<java.lang.String, Object> hints) {
             if ((value.length == 1) && (value[0].getValue() != null)) {
                 java.lang.String svalue = (java.lang.String) value[0].getValue();
                 java.lang.String[] t = svalue.split("\\D*"); // get digits;
@@ -1505,10 +1376,7 @@ public class XSISimpleTypes {
         /** @see schema.Type#getValue(java.lang.Object, org.xml.sax.Attributes) */
         @Override
         public Object getValue(
-                Element element,
-                ElementValue[] value,
-                Attributes attrs,
-                Map<java.lang.String, Object> hints) {
+                Element element, ElementValue[] value, Attributes attrs, Map<java.lang.String, Object> hints) {
             if ((value.length == 1) && (value[0].getValue() != null)) {
                 java.lang.String svalue = (java.lang.String) value[0].getValue();
                 java.lang.String[] t = svalue.split("\\D*"); // get digits;
@@ -1553,14 +1421,9 @@ public class XSISimpleTypes {
         /** @see schema.Type#getValue(java.lang.Object, org.xml.sax.Attributes) */
         @Override
         public Object getValue(
-                Element element,
-                ElementValue[] value,
-                Attributes attrs,
-                Map<java.lang.String, Object> hints)
+                Element element, ElementValue[] value, Attributes attrs, Map<java.lang.String, Object> hints)
                 throws SAXException {
-            if ((value.length == 1)
-                    && (value[0].getValue() != null)
-                    && (!"".equals(value[0].getValue()))) {
+            if ((value.length == 1) && (value[0].getValue() != null) && (!"".equals(value[0].getValue()))) {
                 java.lang.String svalue = (java.lang.String) value[0].getValue();
                 java.sql.Time parsed = Converters.convert(svalue, java.sql.Time.class);
                 if (null == parsed) {
@@ -1601,10 +1464,7 @@ public class XSISimpleTypes {
         /** @see schema.Type#getValue(java.lang.Object, org.xml.sax.Attributes) */
         @Override
         public Object getValue(
-                Element element,
-                ElementValue[] value,
-                Attributes attrs,
-                Map<java.lang.String, Object> hints) {
+                Element element, ElementValue[] value, Attributes attrs, Map<java.lang.String, Object> hints) {
             if ((value.length == 1) && (value[0].getValue() != null)) {
                 java.lang.String i = (java.lang.String) value[0].getValue();
 
@@ -1643,10 +1503,7 @@ public class XSISimpleTypes {
         /** @see schema.Type#getValue(java.lang.Object, org.xml.sax.Attributes) */
         @Override
         public Object getValue(
-                Element element,
-                ElementValue[] value,
-                Attributes attrs,
-                Map<java.lang.String, Object> hints) {
+                Element element, ElementValue[] value, Attributes attrs, Map<java.lang.String, Object> hints) {
             if ((value.length == 1) && (value[0].getValue() != null)) {
                 java.lang.String i = (java.lang.String) value[0].getValue();
 
@@ -1685,10 +1542,7 @@ public class XSISimpleTypes {
         /** @see schema.Type#getValue(java.lang.Object, org.xml.sax.Attributes) */
         @Override
         public Object getValue(
-                Element element,
-                ElementValue[] value,
-                Attributes attrs,
-                Map<java.lang.String, Object> hints) {
+                Element element, ElementValue[] value, Attributes attrs, Map<java.lang.String, Object> hints) {
             if ((value.length == 1) && (value[0].getValue() != null)) {
                 java.lang.String[] i = ((java.lang.String) value[0].getValue()).split("\\s");
 
@@ -1727,10 +1581,7 @@ public class XSISimpleTypes {
         /** @see schema.Type#getValue(java.lang.Object, org.xml.sax.Attributes) */
         @Override
         public Object getValue(
-                Element element,
-                ElementValue[] value,
-                Attributes attrs,
-                Map<java.lang.String, Object> hints) {
+                Element element, ElementValue[] value, Attributes attrs, Map<java.lang.String, Object> hints) {
             if ((value.length == 1) && (value[0].getValue() != null)) {
                 java.lang.String i = ((java.lang.String) value[0].getValue());
 
@@ -1769,10 +1620,7 @@ public class XSISimpleTypes {
         /** @see schema.Type#getValue(java.lang.Object, org.xml.sax.Attributes) */
         @Override
         public Object getValue(
-                Element element,
-                ElementValue[] value,
-                Attributes attrs,
-                Map<java.lang.String, Object> hints) {
+                Element element, ElementValue[] value, Attributes attrs, Map<java.lang.String, Object> hints) {
             if ((value.length == 1) && (value[0].getValue() != null)) {
                 java.lang.String[] i = ((java.lang.String) value[0].getValue()).split("\\s");
 
@@ -1811,10 +1659,7 @@ public class XSISimpleTypes {
         /** @see schema.Type#getValue(java.lang.Object, org.xml.sax.Attributes) */
         @Override
         public Object getValue(
-                Element element,
-                ElementValue[] value,
-                Attributes attrs,
-                Map<java.lang.String, Object> hints) {
+                Element element, ElementValue[] value, Attributes attrs, Map<java.lang.String, Object> hints) {
             if ((value.length == 1) && (value[0].getValue() != null)) {
                 java.lang.String i = ((java.lang.String) value[0].getValue());
 
@@ -1853,10 +1698,7 @@ public class XSISimpleTypes {
         /** @see schema.Type#getValue(java.lang.Object, org.xml.sax.Attributes) */
         @Override
         public Object getValue(
-                Element element,
-                ElementValue[] value,
-                Attributes attrs,
-                Map<java.lang.String, Object> hints) {
+                Element element, ElementValue[] value, Attributes attrs, Map<java.lang.String, Object> hints) {
             if ((value.length == 1) && (value[0].getValue() != null)) {
                 java.lang.String[] i = ((java.lang.String) value[0].getValue()).split("\\s");
 
@@ -1895,10 +1737,7 @@ public class XSISimpleTypes {
         /** @see schema.Type#getValue(java.lang.Object, org.xml.sax.Attributes) */
         @Override
         public Object getValue(
-                Element element,
-                ElementValue[] value,
-                Attributes attrs,
-                Map<java.lang.String, Object> hints) {
+                Element element, ElementValue[] value, Attributes attrs, Map<java.lang.String, Object> hints) {
             if ((value.length == 1) && (value[0].getValue() != null)) {
                 java.lang.String i = ((java.lang.String) value[0].getValue());
 
@@ -1937,10 +1776,7 @@ public class XSISimpleTypes {
         /** @see schema.Type#getValue(java.lang.Object, org.xml.sax.Attributes) */
         @Override
         public Object getValue(
-                Element element,
-                ElementValue[] value,
-                Attributes attrs,
-                Map<java.lang.String, Object> hints) {
+                Element element, ElementValue[] value, Attributes attrs, Map<java.lang.String, Object> hints) {
             if ((value.length == 1) && (value[0].getValue() != null)) {
                 java.lang.String i = ((java.lang.String) value[0].getValue());
 
@@ -1979,13 +1815,9 @@ public class XSISimpleTypes {
         /** @see schema.Type#getValue(java.lang.Object, org.xml.sax.Attributes) */
         @Override
         public Object getValue(
-                Element element,
-                ElementValue[] value,
-                Attributes attrs,
-                Map<java.lang.String, Object> hints) {
+                Element element, ElementValue[] value, Attributes attrs, Map<java.lang.String, Object> hints) {
             if ((value.length == 1) && (value[0].getValue() != null)) {
-                java.lang.String i =
-                        ((java.lang.String) value[0].getValue()).replaceAll("\\s", " ");
+                java.lang.String i = ((java.lang.String) value[0].getValue()).replaceAll("\\s", " ");
 
                 return i;
             }
@@ -2022,13 +1854,9 @@ public class XSISimpleTypes {
         /** @see schema.Type#getValue(java.lang.Object, org.xml.sax.Attributes) */
         @Override
         public Object getValue(
-                Element element,
-                ElementValue[] value,
-                Attributes attrs,
-                Map<java.lang.String, Object> hints) {
+                Element element, ElementValue[] value, Attributes attrs, Map<java.lang.String, Object> hints) {
             if ((value.length == 1) && (value[0].getValue() != null)) {
-                java.lang.String i =
-                        ((java.lang.String) value[0].getValue()).replaceAll("\\s", " ");
+                java.lang.String i = ((java.lang.String) value[0].getValue()).replaceAll("\\s", " ");
 
                 return i;
             }
@@ -2065,10 +1893,7 @@ public class XSISimpleTypes {
         /** @see schema.Type#getValue(java.lang.Object, org.xml.sax.Attributes) */
         @Override
         public Object getValue(
-                Element element,
-                ElementValue[] value,
-                Attributes attrs,
-                Map<java.lang.String, Object> hints) {
+                Element element, ElementValue[] value, Attributes attrs, Map<java.lang.String, Object> hints) {
             if ((value.length == 1) && (value[0].getValue() != null)) {
                 java.lang.String i = ((java.lang.String) value[0].getValue());
 
@@ -2107,10 +1932,7 @@ public class XSISimpleTypes {
         /** @see schema.Type#getValue(java.lang.Object, org.xml.sax.Attributes) */
         @Override
         public Object getValue(
-                Element element,
-                ElementValue[] value,
-                Attributes attrs,
-                Map<java.lang.String, Object> hints) {
+                Element element, ElementValue[] value, Attributes attrs, Map<java.lang.String, Object> hints) {
             if ((value.length == 1) && (value[0].getValue() != null)) {
                 java.lang.String i = ((java.lang.String) value[0].getValue());
 
@@ -2149,10 +1971,7 @@ public class XSISimpleTypes {
         /** @see schema.Type#getValue(java.lang.Object, org.xml.sax.Attributes) */
         @Override
         public Object getValue(
-                Element element,
-                ElementValue[] value,
-                Attributes attrs,
-                Map<java.lang.String, Object> hints) {
+                Element element, ElementValue[] value, Attributes attrs, Map<java.lang.String, Object> hints) {
             if ((value.length == 1) && (value[0].getValue() != null)) {
                 java.lang.String i = ((java.lang.String) value[0].getValue());
 
@@ -2191,16 +2010,11 @@ public class XSISimpleTypes {
         /** @see schema.Type#getValue(java.lang.Object, org.xml.sax.Attributes) */
         @Override
         public Object getValue(
-                Element element,
-                ElementValue[] value,
-                Attributes attrs,
-                Map<java.lang.String, Object> hints) {
+                Element element, ElementValue[] value, Attributes attrs, Map<java.lang.String, Object> hints) {
             if ((value.length == 1) && (value[0].getValue() != null)) {
                 java.lang.String booleanValue = (java.lang.String) value[0].getValue();
                 java.lang.Boolean parsedValue =
-                        "1".equals(booleanValue)
-                                ? java.lang.Boolean.TRUE
-                                : java.lang.Boolean.valueOf(booleanValue);
+                        "1".equals(booleanValue) ? java.lang.Boolean.TRUE : java.lang.Boolean.valueOf(booleanValue);
                 return parsedValue;
             }
 
@@ -2236,10 +2050,7 @@ public class XSISimpleTypes {
         /** @see schema.Type#getValue(java.lang.Object, org.xml.sax.Attributes) */
         @Override
         public Object getValue(
-                Element element,
-                ElementValue[] value,
-                Attributes attrs,
-                Map<java.lang.String, Object> hints)
+                Element element, ElementValue[] value, Attributes attrs, Map<java.lang.String, Object> hints)
                 throws SAXException {
             if ((value.length == 1) && (value[0].getValue() != null)) {
                 try {
@@ -2283,10 +2094,7 @@ public class XSISimpleTypes {
         /** @see schema.Type#getValue(java.lang.Object, org.xml.sax.Attributes) */
         @Override
         public Object getValue(
-                Element element,
-                ElementValue[] value,
-                Attributes attrs,
-                Map<java.lang.String, Object> hints) {
+                Element element, ElementValue[] value, Attributes attrs, Map<java.lang.String, Object> hints) {
             if ((value.length == 1) && (value[0].getValue() != null)) {
                 java.lang.String i = ((java.lang.String) value[0].getValue());
 
@@ -2325,10 +2133,7 @@ public class XSISimpleTypes {
         /** @see schema.Type#getValue(java.lang.Object, org.xml.sax.Attributes) */
         @Override
         public Object getValue(
-                Element element,
-                ElementValue[] value,
-                Attributes attrs,
-                Map<java.lang.String, Object> hints) {
+                Element element, ElementValue[] value, Attributes attrs, Map<java.lang.String, Object> hints) {
             if ((value.length == 1) && (value[0].getValue() != null)) {
                 java.lang.String i = ((java.lang.String) value[0].getValue());
 
@@ -2367,10 +2172,7 @@ public class XSISimpleTypes {
         /** @see schema.Type#getValue(java.lang.Object, org.xml.sax.Attributes) */
         @Override
         public Object getValue(
-                Element element,
-                ElementValue[] value,
-                Attributes attrs,
-                Map<java.lang.String, Object> hints) {
+                Element element, ElementValue[] value, Attributes attrs, Map<java.lang.String, Object> hints) {
             if ((value.length == 1) && (value[0].getValue() != null)) {
                 Locale i = new Locale((java.lang.String) value[0].getValue());
 
@@ -2495,10 +2297,7 @@ public class XSISimpleTypes {
          */
         @Override
         public Object getValue(
-                Element element,
-                ElementValue[] value,
-                Attributes attrs,
-                Map<java.lang.String, Object> hints)
+                Element element, ElementValue[] value, Attributes attrs, Map<java.lang.String, Object> hints)
                 throws OperationNotSupportedException {
             if (element == null || element.getType() == null || value == null)
                 throw new OperationNotSupportedException();

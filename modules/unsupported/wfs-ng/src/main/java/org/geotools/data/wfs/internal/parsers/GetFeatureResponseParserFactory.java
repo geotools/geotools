@@ -41,45 +41,41 @@ import org.geotools.xsd.Configuration;
  */
 public class GetFeatureResponseParserFactory extends AbstractGetFeatureResponseParserFactory {
 
-    static final List<String> SUPPORTED_FORMATS =
-            Collections.unmodifiableList(
-                    Arrays.asList( //
-                            "text/xml; subtype=gml/3.1.1", //
-                            "text/xml;subtype=gml/3.1.1", //
-                            "text/xml; subtype=gml/3.1.1; charset=UTF-8",
-                            "text/xml; subtype=gml/3.1.1/profiles/gmlsf/0", //
-                            "text/xml;subtype=gml/3.1.1/profiles/gmlsf/0", //
-                            "text/xml; subType=gml/3.1.1/profiles/gmlsf/1.0.0/0", //
-                            "application/gml+xml; subtype=gml/3.1.1", //
-                            "application/gml+xml;subtype=gml/3.1.1", //
-                            "application/gml+xml; subtype=gml/3.1.1/profiles/gmlsf/0", //
-                            "application/gml+xml;subtype=gml/3.1.1/profiles/gmlsf/0", //
-                            "GML3", //
-                            "GML3L0", //
-                            "text/xml", // oddly, GeoServer returns plain 'text/xml' instead of the
-                            // Proper
-                            // subtype when resultType=hits. Guess we should make this something
-                            // the specific strategy can handle?
-                            "text/xml; charset=UTF-8",
-                            "text/gml; subtype=gml/3.1.1", // the incorrectly advertised GeoServer
-                            // format
-                            "GML2", //
-                            "text/xml; subtype=gml/2.1.2", //
-                            "application/xml", //
-                            "text/xml; subtype=gml/3.2", //
-                            "application/gml+xml; version=3.2", //
-                            "gml32" //
-                            ));
+    static final List<String> SUPPORTED_FORMATS = Collections.unmodifiableList(Arrays.asList( //
+            "text/xml; subtype=gml/3.1.1", //
+            "text/xml;subtype=gml/3.1.1", //
+            "text/xml; subtype=gml/3.1.1; charset=UTF-8",
+            "text/xml; subtype=gml/3.1.1/profiles/gmlsf/0", //
+            "text/xml;subtype=gml/3.1.1/profiles/gmlsf/0", //
+            "text/xml; subType=gml/3.1.1/profiles/gmlsf/1.0.0/0", //
+            "application/gml+xml; subtype=gml/3.1.1", //
+            "application/gml+xml;subtype=gml/3.1.1", //
+            "application/gml+xml; subtype=gml/3.1.1/profiles/gmlsf/0", //
+            "application/gml+xml;subtype=gml/3.1.1/profiles/gmlsf/0", //
+            "GML3", //
+            "GML3L0", //
+            "text/xml", // oddly, GeoServer returns plain 'text/xml' instead of the
+            // Proper
+            // subtype when resultType=hits. Guess we should make this something
+            // the specific strategy can handle?
+            "text/xml; charset=UTF-8",
+            "text/gml; subtype=gml/3.1.1", // the incorrectly advertised GeoServer
+            // format
+            "GML2", //
+            "text/xml; subtype=gml/2.1.2", //
+            "application/xml", //
+            "text/xml; subtype=gml/3.2", //
+            "application/gml+xml; version=3.2", //
+            "gml32" //
+            ));
 
-    static final List<String> SUPPORTED_VERSIONS =
-            Collections.unmodifiableList(
-                    Arrays.asList(
-                            Versions.v2_0_0.toString()
-                            // , Versions.v1_0_0.toString() --disabled for now, so the old factory
-                            // is definitely picked
-                            // , Versions.v1_1_0.toString() --disabled for now, so the old factory
-                            // is definitely picked
-                            ));
+    static final List<String> SUPPORTED_VERSIONS = Collections.unmodifiableList(Arrays.asList(
+            Versions.v2_0_0.toString()
+            // , Versions.v1_0_0.toString() --disabled for now, so the old factory
+            // is definitely picked
+            // , Versions.v1_1_0.toString() --disabled for now, so the old factory
+            // is definitely picked
+            ));
 
     @Override
     public boolean canProcess(final WFSRequest request, final String contentType) {
@@ -93,8 +89,7 @@ public class GetFeatureResponseParserFactory extends AbstractGetFeatureResponseP
     }
 
     @Override
-    protected GetParser<SimpleFeature> parser(GetFeatureRequest request, InputStream in)
-            throws IOException {
+    protected GetParser<SimpleFeature> parser(GetFeatureRequest request, InputStream in) throws IOException {
 
         FeatureType queryType = getRequestedType(request);
 
@@ -108,11 +103,7 @@ public class GetFeatureResponseParserFactory extends AbstractGetFeatureResponseP
         }
         if (request.getHTTPClient() != null) {
             return new PullParserFeatureReader(
-                    config,
-                    in,
-                    queryType,
-                    request.getStrategy().getConfig().getAxisOrder(),
-                    request.getHTTPClient());
+                    config, in, queryType, request.getStrategy().getConfig().getAxisOrder(), request.getHTTPClient());
         } else {
             return new PullParserFeatureReader(
                     config, in, queryType, request.getStrategy().getConfig().getAxisOrder());

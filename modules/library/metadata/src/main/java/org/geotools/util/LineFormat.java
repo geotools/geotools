@@ -140,8 +140,7 @@ public class LineFormat extends Format {
         this.format = new Format[] {format};
         if (format == null) {
             final Integer one = 1;
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.NULL_FORMAT_$2, one, one));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.NULL_FORMAT_$2, one, one));
         }
     }
 
@@ -225,8 +224,7 @@ public class LineFormat extends Format {
              * qui apparaîtra éventuellement en HTML afin de pouvoir souligner la partie fautive.
              */
             position.setIndex(lower);
-            final Object datum =
-                    format[Math.min(count, format.length - 1)].parseObject(line, position);
+            final Object datum = format[Math.min(count, format.length - 1)].parseObject(line, position);
             final int next = position.getIndex();
             if (datum == null || next <= lower) {
                 final int error = position.getErrorIndex();
@@ -286,14 +284,12 @@ public class LineFormat extends Format {
      * @param value The new value.
      * @throws ArrayIndexOutOfBoundsException If the index is outside the expected range.
      */
-    public void setValue(final int index, final Object value)
-            throws ArrayIndexOutOfBoundsException {
+    public void setValue(final int index, final Object value) throws ArrayIndexOutOfBoundsException {
         if (index > count) {
             throw new ArrayIndexOutOfBoundsException(index);
         }
         if (value == null) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "value"));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "value"));
         }
         if (index == count) {
             if (index == data.length) {
@@ -344,9 +340,7 @@ public class LineFormat extends Format {
             }
         }
         ParseException exception =
-                new ParseException(
-                        MessageFormat.format(ErrorKeys.UNPARSABLE_NUMBER_$1, data[index]),
-                        limits[index]);
+                new ParseException(MessageFormat.format(ErrorKeys.UNPARSABLE_NUMBER_$1, data[index]), limits[index]);
         if (error != null) {
             exception.initCause(error);
         }
@@ -520,10 +514,10 @@ public class LineFormat extends Format {
         if (count != expected) {
             final int lower = limits[Math.min(count, expected)];
             final int upper = limits[Math.min(count, expected + 1)];
-            final String key =
-                    count < expected ? ErrorKeys.LINE_TOO_SHORT_$2 : ErrorKeys.LINE_TOO_LONG_$3;
+            final String key = count < expected ? ErrorKeys.LINE_TOO_SHORT_$2 : ErrorKeys.LINE_TOO_LONG_$3;
             throw new ParseException(
-                    MessageFormat.format(key, count, expected, line.substring(lower, upper).trim()),
+                    MessageFormat.format(
+                            key, count, expected, line.substring(lower, upper).trim()),
                     lower);
         }
     }
@@ -536,9 +530,7 @@ public class LineFormat extends Format {
      */
     private ParseException notAnInteger(final int i) {
         return new ParseException(
-                MessageFormat.format(
-                        ErrorKeys.NOT_AN_INTEGER_$1, line.substring(limits[i], limits[i + 1])),
-                limits[i]);
+                MessageFormat.format(ErrorKeys.NOT_AN_INTEGER_$1, line.substring(limits[i], limits[i + 1])), limits[i]);
     }
 
     /**
@@ -574,8 +566,7 @@ public class LineFormat extends Format {
      * @since 2.4
      */
     @Override
-    public StringBuffer format(
-            final Object values, final StringBuffer toAppendTo, final FieldPosition position) {
+    public StringBuffer format(final Object values, final StringBuffer toAppendTo, final FieldPosition position) {
         setValues(values);
         return toString(toAppendTo);
     }

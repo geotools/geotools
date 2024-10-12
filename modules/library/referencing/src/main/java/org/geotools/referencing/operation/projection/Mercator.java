@@ -101,8 +101,7 @@ public abstract class Mercator extends MapProjection {
              * 'scaleFactor' to 1. We still use the '*=' operator rather than '=' in case a
              * user implementation still provides a scale factor for its custom projections.
              */
-            standardParallel =
-                    abs(doubleValue(expected, AbstractProvider.STANDARD_PARALLEL_1, parameters));
+            standardParallel = abs(doubleValue(expected, AbstractProvider.STANDARD_PARALLEL_1, parameters));
             ensureLatitudeInRange(AbstractProvider.STANDARD_PARALLEL_1, standardParallel, false);
             if (isSpherical) {
                 scaleFactor *= cos(standardParallel);
@@ -142,8 +141,7 @@ public abstract class Mercator extends MapProjection {
      * radians) and stores the result in {@code ptDst} (linear distance on a unit sphere).
      */
     @Override
-    protected Point2D transformNormalized(double x, double y, final Point2D ptDst)
-            throws ProjectionException {
+    protected Point2D transformNormalized(double x, double y, final Point2D ptDst) throws ProjectionException {
         if (abs(y) > (PI / 2 - EPSILON)) {
             throw new ProjectionException(y);
         }
@@ -161,8 +159,7 @@ public abstract class Mercator extends MapProjection {
      * {@code ptDst}.
      */
     @Override
-    protected Point2D inverseTransformNormalized(double x, double y, final Point2D ptDst)
-            throws ProjectionException {
+    protected Point2D inverseTransformNormalized(double x, double y, final Point2D ptDst) throws ProjectionException {
         y = exp(-y);
         y = cphi2(y);
 
@@ -190,8 +187,7 @@ public abstract class Mercator extends MapProjection {
          * @param parameters The parameter values in standard units.
          * @throws ParameterNotFoundException if a mandatory parameter is missing.
          */
-        protected Spherical(final ParameterValueGroup parameters)
-                throws ParameterNotFoundException {
+        protected Spherical(final ParameterValueGroup parameters) throws ParameterNotFoundException {
             super(parameters);
             ensureSpherical();
         }
@@ -201,8 +197,7 @@ public abstract class Mercator extends MapProjection {
          * radians) and stores the result in {@code ptDst} (linear distance on a unit sphere).
          */
         @Override
-        protected Point2D transformNormalized(double x, double y, Point2D ptDst)
-                throws ProjectionException {
+        protected Point2D transformNormalized(double x, double y, Point2D ptDst) throws ProjectionException {
             if (abs(y) > (PI / 2 - EPSILON)) {
                 throw new ProjectionException(y);
             }
@@ -224,8 +219,7 @@ public abstract class Mercator extends MapProjection {
          * {@code ptDst} using equations for a sphere.
          */
         @Override
-        protected Point2D inverseTransformNormalized(double x, double y, Point2D ptDst)
-                throws ProjectionException {
+        protected Point2D inverseTransformNormalized(double x, double y, Point2D ptDst) throws ProjectionException {
             // Computes using ellipsoidal formulas, for comparaison later.
             assert (ptDst = super.inverseTransformNormalized(x, y, ptDst)) != null;
 

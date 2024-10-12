@@ -45,7 +45,8 @@ public class CurveTest {
 
     @Test
     public void testCurvePolygons() throws Exception {
-        File property = new File(TestData.getResource(this, "curvepolygons.properties").toURI());
+        File property =
+                new File(TestData.getResource(this, "curvepolygons.properties").toURI());
         PropertyDataStore ds = new PropertyDataStore(property.getParentFile());
         SimpleFeatureSource fs = ds.getFeatureSource("curvepolygons");
         ReferencedEnvelope bounds = fs.getBounds();
@@ -62,17 +63,15 @@ public class CurveTest {
         hints.add(new RenderingHints(KEY_STROKE_CONTROL, VALUE_STROKE_PURE));
         renderer.setJava2DHints(hints);
 
-        BufferedImage image =
-                RendererBaseTest.showRender("Curved polygons", renderer, TIME, bounds);
-        File reference =
-                new File(
-                        "./src/test/resources/org/geotools/renderer/lite/test-data/curvedPolygons.png");
+        BufferedImage image = RendererBaseTest.showRender("Curved polygons", renderer, TIME, bounds);
+        File reference = new File("./src/test/resources/org/geotools/renderer/lite/test-data/curvedPolygons.png");
         ImageAssert.assertEquals(reference, image, 100);
     }
 
     @Test
     public void testCurveLines() throws Exception {
-        File property = new File(TestData.getResource(this, "curvelines.properties").toURI());
+        File property =
+                new File(TestData.getResource(this, "curvelines.properties").toURI());
         PropertyDataStore ds = new PropertyDataStore(property.getParentFile());
         SimpleFeatureSource fs = ds.getFeatureSource("curvelines");
         ReferencedEnvelope bounds = fs.getBounds();
@@ -90,9 +89,7 @@ public class CurveTest {
         renderer.setJava2DHints(hints);
 
         BufferedImage image = RendererBaseTest.showRender("Curved lines", renderer, TIME, bounds);
-        File reference =
-                new File(
-                        "./src/test/resources/org/geotools/renderer/lite/test-data/curvedLines.png");
+        File reference = new File("./src/test/resources/org/geotools/renderer/lite/test-data/curvedLines.png");
         ImageAssert.assertEquals(reference, image, 100);
     }
 }

@@ -73,8 +73,7 @@ public class DefaultGeometryTest extends AbstractStationsTest {
                 ComplexFeatureConstants.DEFAULT_GEOMETRY_LOCAL_NAME,
                 ftWithDefaultGeom.getGeometryDescriptor().getLocalName());
 
-        FeatureTypeMapping mappingDefaultGeom =
-                stationsDataAccess.getMappingByName(STATION_FEATURE);
+        FeatureTypeMapping mappingDefaultGeom = stationsDataAccess.getMappingByName(STATION_FEATURE);
         assertNotNull(mappingDefaultGeom);
         assertNotNull(mappingDefaultGeom.getDefaultGeometryXPath());
         assertEquals("st:location/st:position", mappingDefaultGeom.getDefaultGeometryXPath());
@@ -121,8 +120,7 @@ public class DefaultGeometryTest extends AbstractStationsTest {
      */
     @Test
     public void testDefaultGeometryOverride() throws IOException {
-        FeatureTypeMapping mappingWithGeom =
-                stationsDataAccess.getMappingByName(STATION_WITH_GEOM_FEATURE);
+        FeatureTypeMapping mappingWithGeom = stationsDataAccess.getMappingByName(STATION_WITH_GEOM_FEATURE);
         assertNotNull(mappingWithGeom);
         // no default geometry configured
         assertNull(mappingWithGeom.getDefaultGeometryXPath());
@@ -141,11 +139,9 @@ public class DefaultGeometryTest extends AbstractStationsTest {
                 mappingWithGeom.getTargetFeature().getName(),
                 mappingDefaultGeomOverride.getTargetFeature().getName());
         assertNotNull(mappingDefaultGeomOverride);
-        assertEquals(
-                "st:location/st:position", mappingDefaultGeomOverride.getDefaultGeometryXPath());
+        assertEquals("st:location/st:position", mappingDefaultGeomOverride.getDefaultGeometryXPath());
 
-        FeatureType ftDefaultGeomOverride =
-                stationsDataAccess.getSchema(STATION_DEFAULT_GEOM_OVERRIDE_MAPPING);
+        FeatureType ftDefaultGeomOverride = stationsDataAccess.getSchema(STATION_DEFAULT_GEOM_OVERRIDE_MAPPING);
         assertEquals(ftWithGeom.getName(), ftDefaultGeomOverride.getName());
         assertNotNull(ftDefaultGeomOverride.getGeometryDescriptor());
         // the direct child geometry property is automatically picked as default geometry
@@ -159,8 +155,7 @@ public class DefaultGeometryTest extends AbstractStationsTest {
      */
     @Test
     public void testDefaultGeometryInsideChainedFeatureType() throws IOException {
-        FeatureTypeMapping mappingChained =
-                stationsDataAccess.getMappingByName(STATION_WITH_MEASUREMENTS_FEATURE);
+        FeatureTypeMapping mappingChained = stationsDataAccess.getMappingByName(STATION_WITH_MEASUREMENTS_FEATURE);
         assertNotNull(mappingChained);
         assertEquals(
                 "st:measurements/ms:Measurement/ms:sampledArea/ms:SampledArea/ms:geometry",
@@ -213,10 +208,9 @@ public class DefaultGeometryTest extends AbstractStationsTest {
                             + "\"http://www.stations.org/1.0:Station\" at x-path \"st:location/st:name\"",
                     iae.getMessage());
         } catch (Exception e) {
-            fail(
-                    "Expected IllegalArgumentException to be thrown, but "
-                            + e.getClass().getName()
-                            + " was thrown instead");
+            fail("Expected IllegalArgumentException to be thrown, but "
+                    + e.getClass().getName()
+                    + " was thrown instead");
         }
     }
 
@@ -239,10 +233,9 @@ public class DefaultGeometryTest extends AbstractStationsTest {
                             + "\"http://www.stations.org/1.0:Station\" at x-path \"st:location/st:notThere\"",
                     iae.getMessage());
         } catch (Exception e) {
-            fail(
-                    "Expected IllegalArgumentException to be thrown, but "
-                            + e.getClass().getName()
-                            + " was thrown instead");
+            fail("Expected IllegalArgumentException to be thrown, but "
+                    + e.getClass().getName()
+                    + " was thrown instead");
         }
     }
 
@@ -261,14 +254,10 @@ public class DefaultGeometryTest extends AbstractStationsTest {
                 it.next();
             } catch (Exception ex) {
                 assertNotNull(ex.getCause());
-                assertTrue(
-                        "Expected RuntimeException to be thrown",
-                        ex.getCause() instanceof RuntimeException);
+                assertTrue("Expected RuntimeException to be thrown", ex.getCause() instanceof RuntimeException);
                 // check error message
                 RuntimeException re = (RuntimeException) ex.getCause();
-                assertEquals(
-                        "Error setting default geometry value: multiple values were found",
-                        re.getMessage());
+                assertEquals("Error setting default geometry value: multiple values were found", re.getMessage());
             }
         }
     }
@@ -276,8 +265,7 @@ public class DefaultGeometryTest extends AbstractStationsTest {
     /** Tests GML encoding of client properties doesn't affect parent containers. */
     @Test
     public void testGMLEncodingProperties() throws IOException {
-        FeatureSource fs =
-                stationsDataAccess.getFeatureSource(STATION_WITH_MEASUREMENTS_CODE_FEATURE);
+        FeatureSource fs = stationsDataAccess.getFeatureSource(STATION_WITH_MEASUREMENTS_CODE_FEATURE);
         GMLConfiguration gml31Config = new GMLConfiguration();
         Encoder encoder = new Encoder(gml31Config);
         // filter for station with id "st.1"
@@ -290,23 +278,18 @@ public class DefaultGeometryTest extends AbstractStationsTest {
             Document dom = encoder.encodeAsDOM(station1, GML.featureMember);
 
             List<Element> measurements =
-                    getElementsFromDocumentUsingXpath(
-                            dom, "//st:StationWithMeasurementCode/st:measurements");
+                    getElementsFromDocumentUsingXpath(dom, "//st:StationWithMeasurementCode/st:measurements");
             assertFalse(measurements.isEmpty());
             assertFalse(measurements.get(0).hasAttribute("codename"));
 
-            measurements =
-                    getElementsFromDocumentUsingXpath(
-                            dom,
-                            "//st:StationWithMeasurementCode/st:measurements/ms:MeasurementCode");
+            measurements = getElementsFromDocumentUsingXpath(
+                    dom, "//st:StationWithMeasurementCode/st:measurements/ms:MeasurementCode");
             assertFalse(measurements.isEmpty());
             assertTrue(measurements.get(0).hasAttribute("codename"));
             assertFalse(measurements.get(0).hasAttribute("code"));
 
-            List<Element> names =
-                    getElementsFromDocumentUsingXpath(
-                            dom,
-                            "//st:StationWithMeasurementCode/st:measurements/ms:MeasurementCode/ms:name");
+            List<Element> names = getElementsFromDocumentUsingXpath(
+                    dom, "//st:StationWithMeasurementCode/st:measurements/ms:MeasurementCode/ms:name");
             assertFalse(names.isEmpty());
             assertTrue(names.get(0).hasAttribute("code"));
 

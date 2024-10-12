@@ -28,12 +28,8 @@ import org.locationtech.jts.geom.Geometry;
 
 public class FilterFunction_setCRS extends FunctionExpressionImpl {
 
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "setCRS",
-                    Geometry.class,
-                    parameter("geometry", Geometry.class),
-                    parameter("CRS", String.class));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "setCRS", Geometry.class, parameter("geometry", Geometry.class), parameter("CRS", String.class));
 
     public FilterFunction_setCRS() {
         super(NAME);
@@ -48,8 +44,7 @@ public class FilterFunction_setCRS extends FunctionExpressionImpl {
             geom = getExpression(0).evaluate(feature, Geometry.class);
         } catch (Exception e) // probably a type error
         {
-            throw new IllegalArgumentException(
-                    "Expected argument of type Geometry for argument #0");
+            throw new IllegalArgumentException("Expected argument of type Geometry for argument #0");
         }
 
         try { // try to parse the SRS

@@ -71,8 +71,7 @@ public class DirectionTypeBinding extends AbstractSimpleBinding {
     public Object parse(InstanceComponent instance, Object value) throws Exception {
         String val = (String) value;
         if (!"toUpper".equalsIgnoreCase(val) && !"toLower".equalsIgnoreCase(val)) {
-            throw new IllegalStateException(
-                    val + " not supported, must be one of 'toUpper', 'toLower'");
+            throw new IllegalStateException(val + " not supported, must be one of 'toUpper', 'toLower'");
         }
         return val;
     }

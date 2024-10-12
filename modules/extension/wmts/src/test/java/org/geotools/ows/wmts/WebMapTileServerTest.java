@@ -64,9 +64,7 @@ public class WebMapTileServerTest {
 
         WMTSCapabilities caps = createCapabilities("nasa.getcapa.xml");
         WebMapTileServer wmts =
-                new WebMapTileServer(
-                        new URL("https://gibs.earthdata.nasa.gov/wmts/epsg4326/best/wmts.cgi"),
-                        caps);
+                new WebMapTileServer(new URL("https://gibs.earthdata.nasa.gov/wmts/epsg4326/best/wmts.cgi"), caps);
 
         Layer layer = caps.getLayer("AMSRE_Surface_Rain_Rate_Night");
         // urn:ogc:def:crs:OGC:1.3:CRS84
@@ -95,8 +93,7 @@ public class WebMapTileServerTest {
     public void chGetEnvelopeTest() throws Exception {
         WMTSCapabilities caps = createCapabilities("admin_ch.getcapa.xml");
         WebMapTileServer wmts =
-                new WebMapTileServer(
-                        new URL("http://wmts.geo.admin.ch/1.0.0/WMTSCapabilities.xml"), caps);
+                new WebMapTileServer(new URL("http://wmts.geo.admin.ch/1.0.0/WMTSCapabilities.xml"), caps);
 
         Layer layer = caps.getLayer("ch.are.alpenkonvention");
         // <ows:SupportedCRS>urn:ogc:def:crs:EPSG:2056</ows:SupportedCRS>
@@ -125,10 +122,9 @@ public class WebMapTileServerTest {
     @Test
     public void testMapRequestCRS() throws Exception {
 
-        WebMapTileServer server =
-                createServer(
-                        new URL("https://geodata.nationaalgeoregister.nl/tiles/service/wmts"),
-                        "geodata.nationaalgeoregister.nl.xml");
+        WebMapTileServer server = createServer(
+                new URL("https://geodata.nationaalgeoregister.nl/tiles/service/wmts"),
+                "geodata.nationaalgeoregister.nl.xml");
         WMTSLayer layer = server.getCapabilities().getLayer("brtachtergrondkaartwater");
         ReferencedEnvelope bbox = new ReferencedEnvelope(51, 53, 4, 6, CRS.decode("EPSG:4326"));
 
@@ -144,12 +140,11 @@ public class WebMapTileServerTest {
         assertFalse(receivedTiles.isEmpty());
         for (Tile t : receivedTiles) {
 
-            String recvdTileCRS =
-                    t.getExtent()
-                            .getCoordinateReferenceSystem()
-                            .getIdentifiers()
-                            .toArray()[0]
-                            .toString();
+            String recvdTileCRS = t.getExtent()
+                    .getCoordinateReferenceSystem()
+                    .getIdentifiers()
+                    .toArray()[0]
+                    .toString();
 
             assertEquals("EPSG:25831", recvdTileCRS);
         }
@@ -165,12 +160,11 @@ public class WebMapTileServerTest {
         Set<Tile> receivedTiles2 = tileRequest2.getTiles();
         assertFalse(receivedTiles2.isEmpty());
         for (Tile t : receivedTiles2) {
-            String recvdTileCRS =
-                    t.getExtent()
-                            .getCoordinateReferenceSystem()
-                            .getIdentifiers()
-                            .toArray()[0]
-                            .toString();
+            String recvdTileCRS = t.getExtent()
+                    .getCoordinateReferenceSystem()
+                    .getIdentifiers()
+                    .toArray()[0]
+                    .toString();
 
             assertEquals("EPSG:3857", recvdTileCRS);
         }
@@ -185,12 +179,11 @@ public class WebMapTileServerTest {
         Set<Tile> receivedTiles3 = tileRequest3.getTiles();
         assertFalse(receivedTiles3.isEmpty());
         for (Tile t : receivedTiles3) {
-            String recvdTileCRS =
-                    t.getExtent()
-                            .getCoordinateReferenceSystem()
-                            .getIdentifiers()
-                            .toArray()[0]
-                            .toString();
+            String recvdTileCRS = t.getExtent()
+                    .getCoordinateReferenceSystem()
+                    .getIdentifiers()
+                    .toArray()[0]
+                    .toString();
 
             assertEquals("EPSG:3857", recvdTileCRS);
         }
@@ -203,11 +196,10 @@ public class WebMapTileServerTest {
      */
     @Test
     public void testGEOT6741() throws Exception {
-        WebMapTileServer server =
-                createServer(
-                        new URL(
-                                "https://data.linz.govt.nz/services%3Bkey%3De501b3b9aa96472a85fe188cc8919487/wmts/1.0.0/layer/50767/WMTSCapabilities.xml"),
-                        "linz.xml");
+        WebMapTileServer server = createServer(
+                new URL(
+                        "https://data.linz.govt.nz/services%3Bkey%3De501b3b9aa96472a85fe188cc8919487/wmts/1.0.0/layer/50767/WMTSCapabilities.xml"),
+                "linz.xml");
 
         GetTileRequest tileRequest = server.createGetTileRequest();
         WMTSLayer layer = server.getCapabilities().getLayer("layer-50767");
@@ -222,9 +214,7 @@ public class WebMapTileServerTest {
     @Test
     public void testGEOT6742() throws Exception {
         WebMapTileServer server =
-                createServer(
-                        new URL("http://tileservice.charts.noaa.gov/tiles/wmts"),
-                        "noaa-tileserver.xml");
+                createServer(new URL("http://tileservice.charts.noaa.gov/tiles/wmts"), "noaa-tileserver.xml");
         GetTileRequest tileRequest = server.createGetTileRequest();
         WMTSLayer layer = server.getCapabilities().getLayer("83637_2");
         tileRequest.setLayer(layer);
@@ -252,8 +242,7 @@ public class WebMapTileServerTest {
         }
 
         @Override
-        public HTTPResponse post(URL url, InputStream content, String contentType)
-                throws IOException {
+        public HTTPResponse post(URL url, InputStream content, String contentType) throws IOException {
             throw new RuntimeException("This method should not have been called.");
         }
     }
@@ -261,11 +250,8 @@ public class WebMapTileServerTest {
     @Test
     public void testHttpHeadersPassedThrough() throws Exception {
 
-        WebMapTileServer server =
-                new WebMapTileServer(
-                        new URL("http://dummy.net/"),
-                        new CheckHeadersHttpClient(),
-                        createCapabilities("getcapa_kvp.xml"));
+        WebMapTileServer server = new WebMapTileServer(
+                new URL("http://dummy.net/"), new CheckHeadersHttpClient(), createCapabilities("getcapa_kvp.xml"));
         GetTileRequest request = server.createGetTileRequest();
         request.getHeaders().put("Authorization", "dummy");
 
@@ -286,15 +272,12 @@ public class WebMapTileServerTest {
      */
     @Test
     public void testLayerWithoutDefaultStyle() throws Exception {
-        URL capUrl =
-                new URL(
-                        "https://sgx.geodatenzentrum.de/wmts_topplus_open/1.0.0/WMTSCapabilities.xml");
+        URL capUrl = new URL("https://sgx.geodatenzentrum.de/wmts_topplus_open/1.0.0/WMTSCapabilities.xml");
         WebMapTileServer tileServer = createServer(capUrl, "sgx_geodatenzentrum_de.getcapa.xml");
         Assert.assertEquals(WMTSServiceType.REST, tileServer.getType());
 
         WMTSLayer layer = tileServer.getCapabilities().getLayer("web_light");
-        TileMatrixSet matrixSet =
-                tileServer.getCapabilities().getMatrixSet("EU_EPSG_25832_TOPPLUS");
+        TileMatrixSet matrixSet = tileServer.getCapabilities().getMatrixSet("EU_EPSG_25832_TOPPLUS");
 
         GetTileRequest tileRequest = tileServer.createGetTileRequest();
         tileRequest.setLayer(layer);
@@ -310,8 +293,7 @@ public class WebMapTileServerTest {
         double tileMinY = 5714183.162769842;
         double tileMaxY = 5753318.921251852;
 
-        ReferencedEnvelope requestBbox =
-                new ReferencedEnvelope(tileMinX, tileMaxX, tileMinY, tileMaxY, requestCrs);
+        ReferencedEnvelope requestBbox = new ReferencedEnvelope(tileMinX, tileMaxX, tileMinY, tileMaxY, requestCrs);
         tileRequest.setRequestedBBox(requestBbox);
 
         Iterator<Tile> tiles = tileRequest.getTiles().iterator();
@@ -325,8 +307,7 @@ public class WebMapTileServerTest {
     }
 
     @Test
-    public void testGetTile()
-            throws ServiceException, IOException, NoSuchAuthorityCodeException, FactoryException {
+    public void testGetTile() throws ServiceException, IOException, NoSuchAuthorityCodeException, FactoryException {
         URL url = new URL("https://sgx.geodatenzentrum.de/wmts_basemapde_schummerung");
         WebMapTileServer wmts = new WebMapTileServer(url);
         WMTSCapabilities capabilities = wmts.getCapabilities();
@@ -367,8 +348,7 @@ public class WebMapTileServerTest {
 
         Properties props = new Properties();
         final URL serverUrl = new URL("http://localhost:8080/geoserver/gwc/service/wmts");
-        GetSingleTileRequest request =
-                new WMTSSpecification.GetKVPTileRequest(serverUrl, props, httpClient);
+        GetSingleTileRequest request = new WMTSSpecification.GetKVPTileRequest(serverUrl, props, httpClient);
 
         WebMapTileServer server = new WebMapTileServer(serverUrl, httpClient, capabilities);
         request.setLayer(server.getCapabilities().getLayer("spearfish"));
@@ -422,13 +402,11 @@ public class WebMapTileServerTest {
                 new MockHttpResponse(TestData.file(null, "world.png"), "image/png"));
 
         Properties props = new Properties();
-        GetSingleTileRequest request =
-                new WMTSSpecification.GetRestTileRequest(
-                        capabilities.getService().getOnlineResource(), props, httpClient);
+        GetSingleTileRequest request = new WMTSSpecification.GetRestTileRequest(
+                capabilities.getService().getOnlineResource(), props, httpClient);
 
         WebMapTileServer server =
-                new WebMapTileServer(
-                        new URL("https://maps1.wien.gv.at/basemap"), httpClient, capabilities);
+                new WebMapTileServer(new URL("https://maps1.wien.gv.at/basemap"), httpClient, capabilities);
         request.setLayer(server.getCapabilities().getLayer("bmapoverlay"));
         request.setStyle("normal");
         request.setFormat("image/png");
@@ -447,18 +425,15 @@ public class WebMapTileServerTest {
         WMTSCapabilities capabilities = createCapabilities("basemapGetCapa.xml");
         MockHttpClient httpClient = new MockHttpClient();
         httpClient.expectGet(
-                new URL(
-                        "https://maps.wien.gv.at/basemap/bmapoverlay/style%3D%20auto/%20%22%3C%3E%23%25%7C/2/1/2.png"),
+                new URL("https://maps.wien.gv.at/basemap/bmapoverlay/style%3D%20auto/%20%22%3C%3E%23%25%7C/2/1/2.png"),
                 new MockHttpResponse(TestData.file(null, "world.png"), "image/png"));
 
         Properties props = new Properties();
-        GetSingleTileRequest request =
-                new WMTSSpecification.GetRestTileRequest(
-                        capabilities.getService().getOnlineResource(), props, httpClient);
+        GetSingleTileRequest request = new WMTSSpecification.GetRestTileRequest(
+                capabilities.getService().getOnlineResource(), props, httpClient);
 
         WebMapTileServer server =
-                new WebMapTileServer(
-                        new URL("https://maps1.wien.gv.at/basemap"), httpClient, capabilities);
+                new WebMapTileServer(new URL("https://maps1.wien.gv.at/basemap"), httpClient, capabilities);
         request.setLayer(server.getCapabilities().getLayer("bmapoverlay"));
         request.setStyle("style= auto");
         request.setFormat("image/png");
@@ -483,8 +458,7 @@ public class WebMapTileServerTest {
 
         Properties props = new Properties();
         final URL serverUrl = new URL("http://localhost:8080/geoserver/gwc/service/wmts");
-        GetSingleTileRequest request =
-                new WMTSSpecification.GetKVPTileRequest(serverUrl, props, httpClient);
+        GetSingleTileRequest request = new WMTSSpecification.GetKVPTileRequest(serverUrl, props, httpClient);
 
         WebMapTileServer server = new WebMapTileServer(serverUrl, httpClient, capabilities);
         // Set up the request so that there are special characters in every field

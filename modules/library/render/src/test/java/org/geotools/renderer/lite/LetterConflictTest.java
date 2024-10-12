@@ -57,8 +57,7 @@ public class LetterConflictTest {
      *
      * <p>Build with mvn -P image.interactive
      */
-    static final boolean IMAGE_INTERACTIVE =
-            Boolean.getBoolean("org.geotools.image.test.interactive");
+    static final boolean IMAGE_INTERACTIVE = Boolean.getBoolean("org.geotools.image.test.interactive");
 
     /**
      * Forces the image comparison / output tests to be skipped.
@@ -85,8 +84,8 @@ public class LetterConflictTest {
     @Before
     public void setUp() throws Exception {
 
-        File property_line =
-                new File(TestData.getResource(this, "letterConflict1.properties").toURI());
+        File property_line = new File(
+                TestData.getResource(this, "letterConflict1.properties").toURI());
         PropertyDataStore ds_line = new PropertyDataStore(property_line.getParentFile());
 
         fs_line1 = ds_line.getFeatureSource("letterConflict1");
@@ -252,9 +251,7 @@ public class LetterConflictTest {
             LOGGER.fine("time true " + ta / 10000000);
             mc.dispose();
 
-            Assert.assertTrue(
-                    "More labels in image2 than image1",
-                    countDarkPixels(image2) >= countDarkPixels(image1));
+            Assert.assertTrue("More labels in image2 than image1", countDarkPixels(image2) >= countDarkPixels(image1));
 
             writeImage("letterConflictEnabledPerfFalse", image1);
             writeImage("letterConflictEnabledPerfTrue", image2);
@@ -299,8 +296,7 @@ public class LetterConflictTest {
      *
      * @param testName test name used as window name
      */
-    static void showImage(String testName, long timeOut, final BufferedImage image)
-            throws InterruptedException {
+    static void showImage(String testName, long timeOut, final BufferedImage image) throws InterruptedException {
         boolean HEADLESS = Boolean.getBoolean("java.awt.headless");
 
         if (HEADLESS || IMAGE_SKIP) {
@@ -310,29 +306,26 @@ public class LetterConflictTest {
         if (IMAGE_INTERACTIVE && TestData.isInteractiveTest()) {
             try {
                 Frame frame = new Frame(testName);
-                frame.addWindowListener(
-                        new WindowAdapter() {
-                            @Override
-                            public void windowClosing(WindowEvent e) {
-                                e.getWindow().dispose();
-                            }
-                        });
+                frame.addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosing(WindowEvent e) {
+                        e.getWindow().dispose();
+                    }
+                });
 
-                Panel p =
-                        new Panel() {
-                            /** <code>serialVersionUID</code> field */
-                            private static final long serialVersionUID = 1L;
+                Panel p = new Panel() {
+                    /** <code>serialVersionUID</code> field */
+                    private static final long serialVersionUID = 1L;
 
-                            {
-                                setPreferredSize(
-                                        new Dimension(image.getWidth(), image.getHeight()));
-                            }
+                    {
+                        setPreferredSize(new Dimension(image.getWidth(), image.getHeight()));
+                    }
 
-                            @Override
-                            public void paint(Graphics g) {
-                                g.drawImage(image, 0, 0, this);
-                            }
-                        };
+                    @Override
+                    public void paint(Graphics g) {
+                        g.drawImage(image, 0, 0, this);
+                    }
+                };
 
                 frame.add(p);
                 frame.pack();

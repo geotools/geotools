@@ -142,8 +142,7 @@ public class StyleFactoryImpl extends AbstractStyleFactory implements StyleFacto
     }
 
     @Override
-    public PolygonSymbolizer createPolygonSymbolizer(
-            Stroke stroke, Fill fill, String geometryPropertyName) {
+    public PolygonSymbolizer createPolygonSymbolizer(Stroke stroke, Fill fill, String geometryPropertyName) {
         PolygonSymbolizer pSymb = (PolygonSymbolizer) new PolygonSymbolizerImpl();
         pSymb.setGeometryPropertyName(geometryPropertyName);
         pSymb.setStroke(stroke);
@@ -227,8 +226,7 @@ public class StyleFactoryImpl extends AbstractStyleFactory implements StyleFacto
     }
 
     @Override
-    public FeatureTypeConstraint createFeatureTypeConstraint(
-            String featureTypeName, Filter filter, Extent[] extents) {
+    public FeatureTypeConstraint createFeatureTypeConstraint(String featureTypeName, Filter filter, Extent[] extents) {
         FeatureTypeConstraint constraint = new FeatureTypeConstraintImpl();
         constraint.setFeatureTypeName(featureTypeName);
         constraint.setFilter(filter);
@@ -238,8 +236,7 @@ public class StyleFactoryImpl extends AbstractStyleFactory implements StyleFacto
     }
 
     @Override
-    public LayerFeatureConstraints createLayerFeatureConstraints(
-            FeatureTypeConstraint[] featureTypeConstraints) {
+    public LayerFeatureConstraints createLayerFeatureConstraints(FeatureTypeConstraint[] featureTypeConstraints) {
         LayerFeatureConstraints constraints = new LayerFeatureConstraintsImpl();
         constraints.setFeatureTypeConstraints(featureTypeConstraints);
 
@@ -271,9 +268,7 @@ public class StyleFactoryImpl extends AbstractStyleFactory implements StyleFacto
             double maxScale,
             double minScale) {
 
-        Rule r =
-                new RuleImpl(
-                        symbolizers, desc, legend, name, filter, isElseFilter, maxScale, minScale);
+        Rule r = new RuleImpl(symbolizers, desc, legend, name, filter, isElseFilter, maxScale, minScale);
 
         return r;
     }
@@ -383,8 +378,7 @@ public class StyleFactoryImpl extends AbstractStyleFactory implements StyleFacto
     }
 
     @Override
-    public Fill createFill(
-            Expression color, Expression backgroundColor, Expression opacity, Graphic graphicFill) {
+    public Fill createFill(Expression color, Expression backgroundColor, Expression opacity, Graphic graphicFill) {
         Fill fill = new FillImpl(filterFactory);
 
         if (color == null) {
@@ -415,12 +409,7 @@ public class StyleFactoryImpl extends AbstractStyleFactory implements StyleFacto
     }
 
     @Override
-    public Mark createMark(
-            Expression wellKnownName,
-            Stroke stroke,
-            Fill fill,
-            Expression size,
-            Expression rotation) {
+    public Mark createMark(Expression wellKnownName, Stroke stroke, Fill fill, Expression size, Expression rotation) {
         Mark mark = new MarkImpl(filterFactory, null);
 
         if (wellKnownName == null) {
@@ -436,13 +425,12 @@ public class StyleFactoryImpl extends AbstractStyleFactory implements StyleFacto
 
     @Override
     public Mark getSquareMark() {
-        Mark mark =
-                createMark(
-                        filterFactory.literal("Square"),
-                        getDefaultStroke(),
-                        getDefaultFill(),
-                        filterFactory.literal(6),
-                        filterFactory.literal(0));
+        Mark mark = createMark(
+                filterFactory.literal("Square"),
+                getDefaultStroke(),
+                getDefaultFill(),
+                filterFactory.literal(6),
+                filterFactory.literal(0));
 
         return mark;
     }
@@ -563,11 +551,7 @@ public class StyleFactoryImpl extends AbstractStyleFactory implements StyleFacto
     }
 
     @Override
-    public Font createFont(
-            Expression fontFamily,
-            Expression fontStyle,
-            Expression fontWeight,
-            Expression fontSize) {
+    public Font createFont(Expression fontFamily, Expression fontStyle, Expression fontWeight, Expression fontSize) {
         Font font = (Font) new FontImpl();
 
         if (fontFamily == null) {
@@ -685,10 +669,7 @@ public class StyleFactoryImpl extends AbstractStyleFactory implements StyleFacto
     @Override
     public Stroke getDefaultStroke() {
         try {
-            Stroke stroke =
-                    createStroke(
-                            filterFactory.literal("#000000"),
-                            filterFactory.literal(Integer.valueOf(1)));
+            Stroke stroke = createStroke(filterFactory.literal("#000000"), filterFactory.literal(Integer.valueOf(1)));
 
             stroke.setDashOffset(filterFactory.literal(Integer.valueOf(0)));
             stroke.setDashArray(StrokeImpl.DEFAULT.getDashArray());
@@ -742,8 +723,7 @@ public class StyleFactoryImpl extends AbstractStyleFactory implements StyleFacto
     @Override
     public Graphic createDefaultGraphic() {
         Graphic graphic = new GraphicImpl(filterFactory);
-        graphic.graphicalSymbols()
-                .add(createMark()); // a default graphic is assumed to have a single Mark
+        graphic.graphicalSymbols().add(createMark()); // a default graphic is assumed to have a single Mark
         graphic.setSize(Expression.NIL);
         graphic.setOpacity(filterFactory.literal(1.0));
         graphic.setRotation(filterFactory.literal(0.0));
@@ -824,8 +804,7 @@ public class StyleFactoryImpl extends AbstractStyleFactory implements StyleFacto
 
     @Override
     public RasterSymbolizer getDefaultRasterSymbolizer() {
-        return createRasterSymbolizer(
-                null, filterFactory.literal(1.0), null, null, null, null, null, null);
+        return createRasterSymbolizer(null, filterFactory.literal(1.0), null, null, null, null, null, null);
     }
 
     @Override
@@ -867,8 +846,7 @@ public class StyleFactoryImpl extends AbstractStyleFactory implements StyleFacto
     }
 
     @Override
-    public SelectedChannelType createSelectedChannelType(
-            Expression name, ContrastEnhancement enhancement) {
+    public SelectedChannelType createSelectedChannelType(Expression name, ContrastEnhancement enhancement) {
         SelectedChannelType sct = (SelectedChannelType) new SelectedChannelTypeImpl(filterFactory);
         sct.setChannelName(name);
         sct.setContrastEnhancement(enhancement);
@@ -877,8 +855,7 @@ public class StyleFactoryImpl extends AbstractStyleFactory implements StyleFacto
     }
 
     @Override
-    public SelectedChannelType createSelectedChannelType(
-            String name, ContrastEnhancement enhancement) {
+    public SelectedChannelType createSelectedChannelType(String name, ContrastEnhancement enhancement) {
         Expression nameExp = filterFactory.literal(name);
         return createSelectedChannelType(nameExp, enhancement);
     }
@@ -999,8 +976,7 @@ public class StyleFactoryImpl extends AbstractStyleFactory implements StyleFacto
             Set<Name> featureTypeNames,
             Set<SemanticType> types,
             List<org.geotools.api.style.Rule> rules) {
-        return delegate.featureTypeStyle(
-                name, description, definedFor, featureTypeNames, types, rules);
+        return delegate.featureTypeStyle(name, description, definedFor, featureTypeNames, types, rules);
     }
 
     @Override
@@ -1009,8 +985,7 @@ public class StyleFactoryImpl extends AbstractStyleFactory implements StyleFacto
     }
 
     @Override
-    public Font font(
-            List<Expression> family, Expression style, Expression weight, Expression size) {
+    public Font font(List<Expression> family, Expression style, Expression weight, Expression size) {
         return delegate.font(family, style, weight, size);
     }
 
@@ -1057,8 +1032,7 @@ public class StyleFactoryImpl extends AbstractStyleFactory implements StyleFacto
             Displacement displacement,
             Expression initialGap,
             Expression gap) {
-        return delegate.graphicStroke(
-                symbols, opacity, size, rotation, anchorPoint, displacement, initialGap, gap);
+        return delegate.graphicStroke(symbols, opacity, size, rotation, anchorPoint, displacement, initialGap, gap);
     }
 
     @Override
@@ -1089,10 +1063,7 @@ public class StyleFactoryImpl extends AbstractStyleFactory implements StyleFacto
     }
 
     @Override
-    public Mark mark(
-            Expression wellKnownName,
-            org.geotools.api.style.Fill fill,
-            org.geotools.api.style.Stroke stroke) {
+    public Mark mark(Expression wellKnownName, org.geotools.api.style.Fill fill, org.geotools.api.style.Stroke stroke) {
         return delegate.mark(wellKnownName, fill, stroke);
     }
 
@@ -1132,8 +1103,7 @@ public class StyleFactoryImpl extends AbstractStyleFactory implements StyleFacto
             org.geotools.api.style.Fill fill,
             org.geotools.api.style.Displacement displacement,
             Expression offset) {
-        return delegate.polygonSymbolizer(
-                name, geometry, description, unit, stroke, fill, displacement, offset);
+        return delegate.polygonSymbolizer(name, geometry, description, unit, stroke, fill, displacement, offset);
     }
 
     @Override
@@ -1171,8 +1141,7 @@ public class StyleFactoryImpl extends AbstractStyleFactory implements StyleFacto
             Unit<?> unit,
             String extensionName,
             Map<String, Expression> parameters) {
-        return delegate.extensionSymbolizer(
-                name, propertyName, description, unit, extensionName, parameters);
+        return delegate.extensionSymbolizer(name, propertyName, description, unit, extensionName, parameters);
     }
 
     @Override
@@ -1189,8 +1158,7 @@ public class StyleFactoryImpl extends AbstractStyleFactory implements StyleFacto
 
     @Override
     public SelectedChannelType selectedChannelType(
-            Expression channelName,
-            org.geotools.api.style.ContrastEnhancement contrastEnhancement) {
+            Expression channelName, org.geotools.api.style.ContrastEnhancement contrastEnhancement) {
         return delegate.selectedChannelType(channelName, contrastEnhancement);
     }
 
@@ -1264,13 +1232,11 @@ public class StyleFactoryImpl extends AbstractStyleFactory implements StyleFacto
             org.geotools.api.style.LabelPlacement placement,
             org.geotools.api.style.Halo halo,
             org.geotools.api.style.Fill fill) {
-        return delegate.textSymbolizer(
-                name, geometry, description, unit, label, font, placement, halo, fill);
+        return delegate.textSymbolizer(name, geometry, description, unit, label, font, placement, halo, fill);
     }
 
     @Override
-    public org.geotools.api.style.ContrastEnhancement contrastEnhancement(
-            Expression gamma, String method) {
+    public org.geotools.api.style.ContrastEnhancement contrastEnhancement(Expression gamma, String method) {
 
         ContrastMethod meth = ContrastMethod.NONE;
         if (ContrastMethod.NORMALIZE.matches(method)) {

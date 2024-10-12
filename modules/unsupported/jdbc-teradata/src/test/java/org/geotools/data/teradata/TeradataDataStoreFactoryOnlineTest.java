@@ -46,8 +46,7 @@ public class TeradataDataStoreFactoryOnlineTest extends JDBCTestSupport {
         checkCreateConnection(factory, factory.getDatabaseID());
     }
 
-    private void checkCreateConnection(TeradataDataStoreFactory factory, String dbtype)
-            throws IOException {
+    private void checkCreateConnection(TeradataDataStoreFactory factory, String dbtype) throws IOException {
         Properties db = getFixture();
 
         Map<String, Object> params = new HashMap<>();

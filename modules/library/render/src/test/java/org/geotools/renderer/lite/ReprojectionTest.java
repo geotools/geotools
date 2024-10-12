@@ -74,11 +74,9 @@ public class ReprojectionTest {
         return fc;
     }
 
-    private SimpleFeature createLine(double x1, double y1, double x2, double y2)
-            throws IllegalAttributeException {
+    private SimpleFeature createLine(double x1, double y1, double x2, double y2) throws IllegalAttributeException {
         Coordinate[] coords = {new Coordinate(x1, y1), new Coordinate(x2, y2)};
-        return SimpleFeatureBuilder.build(
-                pointFeautureType, new Object[] {gf.createLineString(coords)}, null);
+        return SimpleFeatureBuilder.build(pointFeautureType, new Object[] {gf.createLineString(coords)}, null);
     }
 
     private Style createLineStyle() {
@@ -95,9 +93,7 @@ public class ReprojectionTest {
         // build projected envelope to work with (small one around the area of
         // validity of utm zone 1, which being a Gauss projection is a vertical
         // slice parallel to the central meridian, -177°)
-        ReferencedEnvelope reWgs =
-                new ReferencedEnvelope(
-                        new Envelope(-180, -170, 20, 40), DefaultGeographicCRS.WGS84);
+        ReferencedEnvelope reWgs = new ReferencedEnvelope(new Envelope(-180, -170, 20, 40), DefaultGeographicCRS.WGS84);
         CoordinateReferenceSystem utm1N = CRS.decode("EPSG:32601");
         // System.out.println(CRS.getGeographicBoundingBox(utm1N));
         ReferencedEnvelope reUtm = reWgs.transform(utm1N, true);
@@ -107,18 +103,16 @@ public class ReprojectionTest {
         // setup the renderer and listen for errors
         StreamingRenderer sr = new StreamingRenderer();
         sr.setMapContent(MapContent);
-        sr.addRenderListener(
-                new RenderListener() {
-                    @Override
-                    public void featureRenderer(SimpleFeature feature) {}
+        sr.addRenderListener(new RenderListener() {
+            @Override
+            public void featureRenderer(SimpleFeature feature) {}
 
-                    @Override
-                    public void errorOccurred(Exception e) {
-                        java.util.logging.Logger.getGlobal()
-                                .log(java.util.logging.Level.INFO, "", e);
-                        errors++;
-                    }
-                });
+            @Override
+            public void errorOccurred(Exception e) {
+                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
+                errors++;
+            }
+        });
         errors = 0;
         sr.paint((Graphics2D) image.getGraphics(), new Rectangle(200, 200), reUtm);
         MapContent.dispose();

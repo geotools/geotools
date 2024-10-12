@@ -49,19 +49,15 @@ import org.junit.Test;
 
 public class StyleGeneratorTest extends DataTestCase {
 
-    public void checkFilteredResultNotEmpty(
-            List<Rule> rules, SimpleFeatureSource fs, String attribName) throws IOException {
+    public void checkFilteredResultNotEmpty(List<Rule> rules, SimpleFeatureSource fs, String attribName)
+            throws IOException {
         for (Rule rule : rules) {
             Filter filter = rule.getFilter();
             SimpleFeatureCollection filteredCollection = fs.getFeatures(filter);
             assertTrue(filteredCollection.size() > 0);
 
             String filterInfo =
-                    "Filter \""
-                            + filter.toString()
-                            + "\" contains "
-                            + filteredCollection.size()
-                            + " element(s) (";
+                    "Filter \"" + filter.toString() + "\" contains " + filteredCollection.size() + " element(s) (";
             try (SimpleFeatureIterator it = filteredCollection.features()) {
 
                 while (it.hasNext()) {
@@ -114,16 +110,15 @@ public class StyleGeneratorTest extends DataTestCase {
         Color[] colors = brewer.getPalette(paletteName).getColors(2);
 
         // get the fts
-        FeatureTypeStyle fts =
-                StyleGenerator.createFeatureTypeStyle(
-                        classifier,
-                        expr2,
-                        colors,
-                        "myfts",
-                        roadFeatures[0].getFeatureType().getGeometryDescriptor(),
-                        StyleGenerator.ELSEMODE_IGNORE,
-                        0.5,
-                        null);
+        FeatureTypeStyle fts = StyleGenerator.createFeatureTypeStyle(
+                classifier,
+                expr2,
+                colors,
+                "myfts",
+                roadFeatures[0].getFeatureType().getGeometryDescriptor(),
+                StyleGenerator.ELSEMODE_IGNORE,
+                0.5,
+                null);
         assertNotNull(fts);
 
         // test each filter
@@ -158,9 +153,8 @@ public class StyleGeneratorTest extends DataTestCase {
         // assign each of the features to one of the bins
         try {
             fc.accepts(
-                    feature ->
-                            binValues2[0].add(
-                                    ((SimpleFeature) feature).getAttribute(attribName).toString()),
+                    feature -> binValues2[0].add(
+                            ((SimpleFeature) feature).getAttribute(attribName).toString()),
                     null);
         } catch (IOException e) {
             fail(e.getMessage());
@@ -171,16 +165,15 @@ public class StyleGeneratorTest extends DataTestCase {
         Color[] colors = brewer.getPalette(paletteName).getColors(binValues2.length);
 
         // get the fts
-        FeatureTypeStyle fts =
-                StyleGenerator.createFeatureTypeStyle(
-                        classifier,
-                        expr,
-                        colors,
-                        "myfts",
-                        riverFeatures[0].getFeatureType().getGeometryDescriptor(),
-                        StyleGenerator.ELSEMODE_IGNORE,
-                        0.5,
-                        null);
+        FeatureTypeStyle fts = StyleGenerator.createFeatureTypeStyle(
+                classifier,
+                expr,
+                colors,
+                "myfts",
+                riverFeatures[0].getFeatureType().getGeometryDescriptor(),
+                StyleGenerator.ELSEMODE_IGNORE,
+                0.5,
+                null);
         assertNotNull(fts);
 
         // test each filter

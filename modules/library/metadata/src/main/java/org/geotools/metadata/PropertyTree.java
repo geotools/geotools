@@ -85,8 +85,7 @@ final class PropertyTree {
     /** Creates a tree for the specified metadata. */
     public MutableTreeNode asTree(final Object metadata) {
         final String name = Classes.getShortName(standard.getInterface(metadata.getClass()));
-        final DefaultMutableTreeNode root =
-                OptionalDependencies.createTreeNode(localize(name), metadata, true);
+        final DefaultMutableTreeNode root = OptionalDependencies.createTreeNode(localize(name), metadata, true);
         append(root, metadata);
         return root;
     }
@@ -149,8 +148,7 @@ final class PropertyTree {
             final Object value = entry.getValue();
             if (!PropertyAccessor.isEmpty(value)) {
                 final String name = localize((String) entry.getKey());
-                final DefaultMutableTreeNode child =
-                        OptionalDependencies.createTreeNode(name, value, true);
+                final DefaultMutableTreeNode child = OptionalDependencies.createTreeNode(name, value, true);
                 append(child, value);
                 branch.add(child);
             }
@@ -249,10 +247,7 @@ final class PropertyTree {
 
     /** Append a string representation of the specified node to the specified buffer. */
     private static void toString(
-            final TreeNode node,
-            final StringBuilder buffer,
-            final int indent,
-            final String lineSeparator) {
+            final TreeNode node, final StringBuilder buffer, final int indent, final String lineSeparator) {
         final int count = node.getChildCount();
         if (count == 0) {
             if (node.isLeaf()) {

@@ -37,18 +37,15 @@ public class IntersectsImpl extends AbstractPreparedGeometryFilter implements In
         switch (literals) {
             case BOTH:
                 return cacheValue;
-            case RIGHT:
-                {
-                    return rightPreppedGeom.intersects(left);
-                }
-            case LEFT:
-                {
-                    return leftPreppedGeom.intersects(right);
-                }
-            default:
-                {
-                    return basicEvaluate(left, right);
-                }
+            case RIGHT: {
+                return rightPreppedGeom.intersects(left);
+            }
+            case LEFT: {
+                return leftPreppedGeom.intersects(right);
+            }
+            default: {
+                return basicEvaluate(left, right);
+            }
         }
     }
 

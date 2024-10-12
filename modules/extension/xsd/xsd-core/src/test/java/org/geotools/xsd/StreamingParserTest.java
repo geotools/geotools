@@ -30,12 +30,10 @@ public class StreamingParserTest {
 
     @Test
     public void testParseXXE() throws Exception {
-        String xml =
-                "<!DOCTYPE foo [<!ENTITY xxe SYSTEM \"file:///\" >]>"
-                        + "<mails><mail><body>&xxe;</body></mail></mails>";
+        String xml = "<!DOCTYPE foo [<!ENTITY xxe SYSTEM \"file:///\" >]>"
+                + "<mails><mail><body>&xxe;</body></mail></mails>";
         ByteArrayInputStream in = new ByteArrayInputStream(xml.getBytes());
-        StreamingParser parser =
-                new StreamingParser(new MLConfiguration(), in, new QName(ML.NAMESPACE, "mail"));
+        StreamingParser parser = new StreamingParser(new MLConfiguration(), in, new QName(ML.NAMESPACE, "mail"));
         parser.setEntityResolver(PreventLocalEntityResolver.INSTANCE);
         // StreamingParser returns null if the parsing fails
         assertNull(parser.parse());
@@ -44,8 +42,7 @@ public class StreamingParserTest {
     @Test
     public void testParseWithJavaMethod() throws Exception {
         ByteArrayInputStream in = new ByteArrayInputStream("<mails></mails>".getBytes());
-        StreamingParser parser =
-                new StreamingParser(new MLConfiguration(), in, "java.lang.Thread.sleep(30000)");
+        StreamingParser parser = new StreamingParser(new MLConfiguration(), in, "java.lang.Thread.sleep(30000)");
         // StreamingParser returns null if the parsing fails
         long start = System.currentTimeMillis();
         assertNull(parser.parse());

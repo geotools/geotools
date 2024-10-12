@@ -47,10 +47,7 @@ class IndexedShapefileFeatureWriter extends ShapefileFeatureWriter implements Fi
     private IndexManager indexes;
 
     public IndexedShapefileFeatureWriter(
-            IndexManager indexes,
-            ShapefileFeatureReader featureReader,
-            Charset charset,
-            TimeZone timeZone)
+            IndexManager indexes, ShapefileFeatureReader featureReader, Charset charset, TimeZone timeZone)
             throws IOException {
         super(indexes.shpFiles, featureReader, charset, timeZone);
         this.indexes = indexes;
@@ -123,8 +120,7 @@ class IndexedShapefileFeatureWriter extends ShapefileFeatureWriter implements Fi
         try {
             fidWriter.close();
         } catch (Throwable e) {
-            ShapefileDataStoreFactory.LOGGER.log(
-                    Level.WARNING, "Error creating Feature ID index", e);
+            ShapefileDataStoreFactory.LOGGER.log(Level.WARNING, "Error creating Feature ID index", e);
         }
     }
 

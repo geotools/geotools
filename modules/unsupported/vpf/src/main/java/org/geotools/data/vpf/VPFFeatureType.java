@@ -104,7 +104,8 @@ public class VPFFeatureType implements SimpleFeatureType {
         // This block helps us give tables a distinguishing suffix
         try {
             int index = mainTableFileName.lastIndexOf(".") + 1;
-            String dimensionality = mainTableFileName.substring(index, index + 1).toLowerCase();
+            String dimensionality =
+                    mainTableFileName.substring(index, index + 1).toLowerCase();
             if (dimensionality.equals("a")) {
                 tempTypeName = tempTypeName.concat(" Area");
             } else if (dimensionality.equals("l")) {

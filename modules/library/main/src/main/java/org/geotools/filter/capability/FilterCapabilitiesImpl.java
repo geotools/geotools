@@ -44,10 +44,7 @@ public class FilterCapabilitiesImpl implements FilterCapabilities {
     }
 
     public FilterCapabilitiesImpl(
-            String version,
-            ScalarCapabilities scalar,
-            SpatialCapabilities spatial,
-            IdCapabilities id) {
+            String version, ScalarCapabilities scalar, SpatialCapabilities spatial, IdCapabilities id) {
         this.version = version;
         this.id = toIdCapabilitiesImpl(id);
         this.scalar = toScalarCapabilitiesImpl(scalar);
@@ -70,10 +67,7 @@ public class FilterCapabilitiesImpl implements FilterCapabilities {
 
     public FilterCapabilitiesImpl(FilterCapabilities copy) {
         this.version = copy.getVersion();
-        this.id =
-                copy.getIdCapabilities() == null
-                        ? null
-                        : new IdCapabilitiesImpl(copy.getIdCapabilities());
+        this.id = copy.getIdCapabilities() == null ? null : new IdCapabilitiesImpl(copy.getIdCapabilities());
         this.scalar = toScalarCapabilitiesImpl(copy.getScalarCapabilities());
         this.spatial = toSpatialCapabiltiesImpl(copy.getSpatialCapabilities());
         this.temporal = toTemporalCapabilitiesImpl(copy.getTemporalCapabilities());
@@ -99,8 +93,7 @@ public class FilterCapabilitiesImpl implements FilterCapabilities {
         return new IdCapabilitiesImpl(idCapabilities);
     }
 
-    private static SpatialCapabiltiesImpl toSpatialCapabiltiesImpl(
-            SpatialCapabilities spatialCapabilities) {
+    private static SpatialCapabiltiesImpl toSpatialCapabiltiesImpl(SpatialCapabilities spatialCapabilities) {
         if (spatialCapabilities == null) {
             return new SpatialCapabiltiesImpl();
         }
@@ -110,8 +103,7 @@ public class FilterCapabilitiesImpl implements FilterCapabilities {
         return new SpatialCapabiltiesImpl(spatialCapabilities);
     }
 
-    private static TemporalCapabilitiesImpl toTemporalCapabilitiesImpl(
-            TemporalCapabilities temporalCapabilities) {
+    private static TemporalCapabilitiesImpl toTemporalCapabilitiesImpl(TemporalCapabilities temporalCapabilities) {
         if (temporalCapabilities == null) {
             return new TemporalCapabilitiesImpl();
         }

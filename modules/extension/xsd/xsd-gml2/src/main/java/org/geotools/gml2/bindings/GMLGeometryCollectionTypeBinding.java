@@ -93,8 +93,7 @@ public class GMLGeometryCollectionTypeBinding extends AbstractComplexBinding {
      */
     @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-        return GML2ParsingUtils.GeometryCollectionType_parse(
-                node, GeometryCollection.class, gFactory);
+        return GML2ParsingUtils.GeometryCollectionType_parse(node, GeometryCollection.class, gFactory);
     }
 
     @Override

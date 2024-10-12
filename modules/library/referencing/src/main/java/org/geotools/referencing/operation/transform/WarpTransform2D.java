@@ -68,8 +68,7 @@ import org.geotools.util.XArray;
  * @see javax.media.jai.WarpOpImage
  * @see javax.media.jai.operator.WarpDescriptor
  */
-public class WarpTransform2D extends AbstractMathTransform
-        implements MathTransform2D, Serializable {
+public class WarpTransform2D extends AbstractMathTransform implements MathTransform2D, Serializable {
     /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = -7949539694656719923L;
 
@@ -144,15 +143,7 @@ public class WarpTransform2D extends AbstractMathTransform
      * @param degree The desired degree of the warp polynomials.
      */
     public WarpTransform2D(final Point2D[] srcCoords, final Point2D[] dstCoords, final int degree) {
-        this(
-                null,
-                srcCoords,
-                0,
-                null,
-                dstCoords,
-                0,
-                Math.min(srcCoords.length, dstCoords.length),
-                degree);
+        this(null, srcCoords, 0, null, dstCoords, 0, Math.min(srcCoords.length, dstCoords.length), degree);
     }
 
     /**
@@ -229,9 +220,7 @@ public class WarpTransform2D extends AbstractMathTransform
             final int dstOffset,
             final int numCoords,
             final int degree) {
-        this(
-                srcBounds, srcCoords, srcOffset, dstBounds, dstCoords, dstOffset, numCoords, degree,
-                true);
+        this(srcBounds, srcCoords, srcOffset, dstBounds, dstCoords, dstOffset, numCoords, degree, true);
     }
 
     /**
@@ -298,32 +287,30 @@ public class WarpTransform2D extends AbstractMathTransform
          *       destination). We have to interchange source and destination arrays for the
          *       direct transform.
          */
-        warp =
+        warp = WarpPolynomial.createWarp(
+                dstCoords,
+                dstOffset,
+                srcCoords,
+                srcOffset,
+                numCoords,
+                1 / preScaleX,
+                1 / preScaleY,
+                postScaleX,
+                postScaleY,
+                degree);
+        inverse = new WarpTransform2D(
                 WarpPolynomial.createWarp(
-                        dstCoords,
-                        dstOffset,
                         srcCoords,
                         srcOffset,
+                        dstCoords,
+                        dstOffset,
                         numCoords,
-                        1 / preScaleX,
-                        1 / preScaleY,
-                        postScaleX,
-                        postScaleY,
-                        degree);
-        inverse =
-                new WarpTransform2D(
-                        WarpPolynomial.createWarp(
-                                srcCoords,
-                                srcOffset,
-                                dstCoords,
-                                dstOffset,
-                                numCoords,
-                                1 / postScaleX,
-                                1 / postScaleY,
-                                preScaleX,
-                                preScaleY,
-                                degree),
-                        this);
+                        1 / postScaleX,
+                        1 / postScaleY,
+                        preScaleX,
+                        preScaleY,
+                        degree),
+                this);
     }
 
     /**
@@ -446,20 +433,14 @@ public class WarpTransform2D extends AbstractMathTransform
             final WarpPolynomial poly = (WarpPolynomial) warp;
             final ParameterValue[] p = new ParameterValue[7];
             int c = 0;
-            p[c++] =
-                    new Parameter<>(
-                            WarpTransform2DProvider.DEGREE, Integer.valueOf(poly.getDegree()));
+            p[c++] = new Parameter<>(WarpTransform2DProvider.DEGREE, Integer.valueOf(poly.getDegree()));
             p[c++] = new Parameter(WarpTransform2DProvider.X_COEFFS, poly.getXCoeffs());
             p[c++] = new Parameter(WarpTransform2DProvider.Y_COEFFS, poly.getYCoeffs());
             float s;
-            if ((s = poly.getPreScaleX()) != 1)
-                p[c++] = new Parameter<>(WarpTransform2DProvider.PRE_SCALE_X, s);
-            if ((s = poly.getPreScaleY()) != 1)
-                p[c++] = new Parameter<>(WarpTransform2DProvider.PRE_SCALE_Y, s);
-            if ((s = poly.getPostScaleX()) != 1)
-                p[c++] = new Parameter<>(WarpTransform2DProvider.POST_SCALE_X, s);
-            if ((s = poly.getPostScaleY()) != 1)
-                p[c++] = new Parameter<>(WarpTransform2DProvider.POST_SCALE_Y, s);
+            if ((s = poly.getPreScaleX()) != 1) p[c++] = new Parameter<>(WarpTransform2DProvider.PRE_SCALE_X, s);
+            if ((s = poly.getPreScaleY()) != 1) p[c++] = new Parameter<>(WarpTransform2DProvider.PRE_SCALE_Y, s);
+            if ((s = poly.getPostScaleX()) != 1) p[c++] = new Parameter<>(WarpTransform2DProvider.POST_SCALE_X, s);
+            if ((s = poly.getPostScaleY()) != 1) p[c++] = new Parameter<>(WarpTransform2DProvider.POST_SCALE_Y, s);
             return new ParameterGroup(getParameterDescriptors(), XArray.resize(p, c));
         } else {
             return super.getParameterValues();
@@ -524,8 +505,7 @@ public class WarpTransform2D extends AbstractMathTransform
      * "real world" coordinates).
      */
     @Override
-    public void transform(
-            final float[] srcPts, int srcOff, final float[] dstPts, int dstOff, int numPts) {
+    public void transform(final float[] srcPts, int srcOff, final float[] dstPts, int dstOff, int numPts) {
         final int postIncrement;
         if (srcPts == dstPts && srcOff < dstOff) {
             srcOff += (numPts - 1) * 2;
@@ -550,8 +530,7 @@ public class WarpTransform2D extends AbstractMathTransform
      * "real world" coordinates).
      */
     @Override
-    public void transform(
-            final double[] srcPts, int srcOff, final double[] dstPts, int dstOff, int numPts) {
+    public void transform(final double[] srcPts, int srcOff, final double[] dstPts, int dstOff, int numPts) {
         final int postIncrement;
         if (srcPts == dstPts && srcOff < dstOff) {
             srcOff += (numPts - 1) * 2;

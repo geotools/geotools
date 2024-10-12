@@ -289,11 +289,7 @@ public class SunRelativePosition {
         double sin2m = Math.sin(2 * m);
 
         double etime =
-                y * sin2l0
-                        - 2 * e * sin1m
-                        + 4 * e * y * sin1m * cos2l0
-                        - 0.5 * y * y * sin4l0
-                        - 1.25 * e * e * sin2m;
+                y * sin2l0 - 2 * e * sin1m + 4 * e * y * sin1m * cos2l0 - 0.5 * y * y * sin4l0 - 1.25 * e * e * sin2m;
 
         return Math.toDegrees(etime) * 4.0;
     }
@@ -315,8 +311,7 @@ public class SunRelativePosition {
         final double refractionCorrection; // In minute of degrees
         final double te = Math.tan(Math.toRadians(exoatmElevation));
         if (exoatmElevation > 5.0) {
-            refractionCorrection =
-                    58.1 / te - 0.07 / (te * te * te) + 0.000086 / (te * te * te * te * te);
+            refractionCorrection = 58.1 / te - 0.07 / (te * te * te) + 0.000086 / (te * te * te * te * te);
         } else {
             if (exoatmElevation > -0.575) {
                 refractionCorrection = getRefractionCorrectedElevation(exoatmElevation);
@@ -366,8 +361,7 @@ public class SunRelativePosition {
         double solarDec = sunDeclination(time);
         double eqTime = equationOfTime(time);
         this.noonTime =
-                Math.round(solarNoonTime(longitude, eqTime) * (60 * 1000))
-                        + (this.time / DAY_MILLIS) * DAY_MILLIS;
+                Math.round(solarNoonTime(longitude, eqTime) * (60 * 1000)) + (this.time / DAY_MILLIS) * DAY_MILLIS;
 
         // Formula below use longitude in degrees. Steps are:
         //   1) Extract the time part of the date, in minutes.
@@ -384,11 +378,8 @@ public class SunRelativePosition {
         latitude = Math.toRadians(latitude);
         solarDec = Math.toRadians(solarDec);
 
-        double csz =
-                Math.sin(latitude) * Math.sin(solarDec)
-                        + Math.cos(latitude)
-                                * Math.cos(solarDec)
-                                * Math.cos(Math.toRadians(trueSolarTime / 4 - 180));
+        double csz = Math.sin(latitude) * Math.sin(solarDec)
+                + Math.cos(latitude) * Math.cos(solarDec) * Math.cos(Math.toRadians(trueSolarTime / 4 - 180));
         if (csz > +1) csz = +1;
         if (csz < -1) csz = -1;
 
@@ -574,8 +565,7 @@ public class SunRelativePosition {
      */
     @SuppressWarnings("PMD.SystemPrintln")
     public static void main(final String... args) throws ParseException {
-        final DateFormat format =
-                DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
+        final DateFormat format = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
         format.setTimeZone(TimeZone.getTimeZone("UTC"));
         double longitude = 0;
         double latitude = 0;

@@ -73,8 +73,7 @@ public class UnionFeatureCollection implements VectorProcess {
 
         SimpleFeatureType schema;
 
-        public UnitedFeatureCollection(
-                SimpleFeatureCollection delegate, SimpleFeatureCollection features)
+        public UnitedFeatureCollection(SimpleFeatureCollection delegate, SimpleFeatureCollection features)
                 throws ClassNotFoundException {
             super(delegate);
             this.features = features;
@@ -82,8 +81,7 @@ public class UnionFeatureCollection implements VectorProcess {
             // Create schema containing the attributes from both the feature collections
             SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
             for (AttributeDescriptor descriptor : delegate.getSchema().getAttributeDescriptors()) {
-                if (sameNames(features.getSchema(), descriptor)
-                        && !sameTypes(features.getSchema(), descriptor)) {
+                if (sameNames(features.getSchema(), descriptor) && !sameTypes(features.getSchema(), descriptor)) {
                     AttributeTypeBuilder builder = new AttributeTypeBuilder();
                     builder.setName(descriptor.getLocalName());
                     builder.setNillable(descriptor.isNillable());
@@ -92,11 +90,7 @@ public class UnionFeatureCollection implements VectorProcess {
                     builder.setMaxOccurs(descriptor.getMaxOccurs());
                     builder.setDefaultValue(descriptor.getDefaultValue());
                     builder.setCRS(
-                            this.delegate
-                                    .features()
-                                    .next()
-                                    .getFeatureType()
-                                    .getCoordinateReferenceSystem());
+                            this.delegate.features().next().getFeatureType().getCoordinateReferenceSystem());
                     AttributeDescriptor attributeDescriptor =
                             builder.buildDescriptor(descriptor.getName(), builder.buildType());
                     tb.add(attributeDescriptor);
@@ -105,8 +99,7 @@ public class UnionFeatureCollection implements VectorProcess {
                 }
             }
             for (AttributeDescriptor descriptor : features.getSchema().getAttributeDescriptors()) {
-                if (!sameNames(delegate.getSchema(), descriptor)
-                        && !sameTypes(delegate.getSchema(), descriptor)) {
+                if (!sameNames(delegate.getSchema(), descriptor) && !sameTypes(delegate.getSchema(), descriptor)) {
                     tb.add(descriptor);
                 }
             }
@@ -119,8 +112,7 @@ public class UnionFeatureCollection implements VectorProcess {
 
         @Override
         public SimpleFeatureIterator features() {
-            return new UnitedFeatureIterator(
-                    delegate.features(), delegate, features.features(), features, getSchema());
+            return new UnitedFeatureIterator(delegate.features(), delegate, features.features(), features, getSchema());
         }
 
         @Override

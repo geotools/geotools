@@ -81,26 +81,23 @@ public class ZoomInToolTest extends CursorToolTestBase {
     public void drawBoxToZoom() throws Exception {
         mapPane.setCursorTool(tool);
 
-        Rectangle dragBoxRect =
-                new Rectangle(
-                        SCREEN.width / 4, SCREEN.height / 4,
-                        SCREEN.width / 2, SCREEN.height / 2);
+        Rectangle dragBoxRect = new Rectangle(
+                SCREEN.width / 4, SCREEN.height / 4,
+                SCREEN.width / 2, SCREEN.height / 2);
 
         AffineTransform startTransform = mapPane.getScreenToWorldTransform();
-        Rectangle2D expectedRect = startTransform.createTransformedShape(dragBoxRect).getBounds2D();
+        Rectangle2D expectedRect =
+                startTransform.createTransformedShape(dragBoxRect).getBounds2D();
 
         ReferencedEnvelope expectedEnv =
-                new ReferencedEnvelope(
-                        expectedRect, mapPane.getDisplayArea().getCoordinateReferenceSystem());
+                new ReferencedEnvelope(expectedRect, mapPane.getDisplayArea().getCoordinateReferenceSystem());
 
         Point screenPos = mapPaneFixture.target().getLocationOnScreen();
 
         Point mouseStartPos = new Point(screenPos.x + dragBoxRect.x, screenPos.y + dragBoxRect.y);
 
         Point mouseEndPos =
-                new Point(
-                        screenPos.x + (int) dragBoxRect.getMaxX(),
-                        screenPos.y + (int) dragBoxRect.getMaxY());
+                new Point(screenPos.x + (int) dragBoxRect.getMaxX(), screenPos.y + (int) dragBoxRect.getMaxY());
 
         listener.setExpected(MapPaneEvent.Type.DISPLAY_AREA_CHANGED);
 

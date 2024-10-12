@@ -78,18 +78,17 @@ public abstract class GenericName implements org.geotools.api.util.GenericName, 
     @Override
     public NameSpace scope() {
         if (namespace == null) {
-            namespace =
-                    new NameSpace() {
-                        @Override
-                        public boolean isGlobal() {
-                            return false;
-                        }
+            namespace = new NameSpace() {
+                @Override
+                public boolean isGlobal() {
+                    return false;
+                }
 
-                        @Override
-                        public org.geotools.api.util.GenericName name() {
-                            return getInternalScope();
-                        }
-                    };
+                @Override
+                public org.geotools.api.util.GenericName name() {
+                    return getInternalScope();
+                }
+            };
         }
         return namespace;
     }
@@ -205,8 +204,7 @@ public abstract class GenericName implements org.geotools.api.util.GenericName, 
      * @version $Id$
      * @author Martin Desruisseaux (IRD)
      */
-    private static final class International extends AbstractInternationalString
-            implements Serializable {
+    private static final class International extends AbstractInternationalString implements Serializable {
         /** Serial number for interoperability with different versions. */
         private static final long serialVersionUID = -4234089612436334148L;
 
@@ -250,8 +248,7 @@ public abstract class GenericName implements org.geotools.api.util.GenericName, 
         public boolean equals(final Object object) {
             if (object != null && object.getClass().equals(getClass())) {
                 final International that = (International) object;
-                return Utilities.equals(this.parsedNames, that.parsedNames)
-                        && this.separator == that.separator;
+                return Utilities.equals(this.parsedNames, that.parsedNames) && this.separator == that.separator;
             }
             return false;
         }

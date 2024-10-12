@@ -121,7 +121,8 @@ public class ScaleTest extends GridProcessingTestBase {
             Viewer.show(scaled);
         } else {
             // Force computation
-            assertNotNull(PlanarImage.wrapRenderedImage(coverage.getRenderedImage()).getTiles());
+            assertNotNull(
+                    PlanarImage.wrapRenderedImage(coverage.getRenderedImage()).getTiles());
             assertNotNull(PlanarImage.wrapRenderedImage(scaledImage).getTiles());
         }
 

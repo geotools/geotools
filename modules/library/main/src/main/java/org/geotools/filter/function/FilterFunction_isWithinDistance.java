@@ -27,13 +27,12 @@ import org.locationtech.jts.geom.Geometry;
 
 public class FilterFunction_isWithinDistance extends FunctionExpressionImpl {
 
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "isWithinDistance",
-                    Boolean.class,
-                    parameter("geometry1", Geometry.class),
-                    parameter("geometry2", Geometry.class),
-                    parameter("distance", Double.class));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "isWithinDistance",
+            Boolean.class,
+            parameter("geometry1", Geometry.class),
+            parameter("geometry2", Geometry.class),
+            parameter("distance", Double.class));
 
     public FilterFunction_isWithinDistance() {
         super(NAME);

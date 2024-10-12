@@ -67,17 +67,14 @@ public class AbstractPostPreProcessFilterSplittingVisitorTests {
     @Before
     public void setUp() throws Exception {}
 
-    protected PostPreProcessFilterSplittingVisitor newVisitor(FilterCapabilities supportedCaps)
-            throws SchemaException {
+    protected PostPreProcessFilterSplittingVisitor newVisitor(FilterCapabilities supportedCaps) throws SchemaException {
         return new PostPreProcessFilterSplittingVisitor(
                 supportedCaps,
-                DataUtilities.createType(
-                        typeName, geomAtt + ":Point," + nameAtt + ":String," + numAtt + ":int"),
+                DataUtilities.createType(typeName, geomAtt + ":Point," + nameAtt + ":String," + numAtt + ":int"),
                 accessor);
     }
 
-    protected PropertyIsEqualTo createPropertyIsEqualToFilter(String attr, String value)
-            throws IllegalFilterException {
+    protected PropertyIsEqualTo createPropertyIsEqualToFilter(String attr, String value) throws IllegalFilterException {
         return ff.equals(ff.property(attr), ff.literal(value));
     }
 
@@ -94,8 +91,7 @@ public class AbstractPostPreProcessFilterSplittingVisitorTests {
      *     FilterType used in filter
      * @param attToEdit the attribute in filter that is queried. If null then edit test is not ran.
      */
-    protected void runTest(Filter filter, FilterCapabilities supportedCaps, String attToEdit)
-            throws SchemaException {
+    protected void runTest(Filter filter, FilterCapabilities supportedCaps, String attToEdit) throws SchemaException {
         // initialize fields that might be previously modified in current test
         PostPreProcessFilterSplittingVisitor visitor = newVisitor(new FilterCapabilities());
         if (accessor != null) accessor.setUpdate("", null);

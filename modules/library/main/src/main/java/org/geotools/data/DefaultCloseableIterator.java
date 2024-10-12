@@ -91,10 +91,9 @@ public class DefaultCloseableIterator<T> implements CloseableIterator<T> {
             try {
                 close();
             } finally {
-                LOGGER.warning(
-                        "CloseableIterator need to be closed by the client. "
-                                + "There is code not closing it."
-                                + "\nAuto closing at finalize().");
+                LOGGER.warning("CloseableIterator need to be closed by the client. "
+                        + "There is code not closing it."
+                        + "\nAuto closing at finalize().");
             }
         }
     }

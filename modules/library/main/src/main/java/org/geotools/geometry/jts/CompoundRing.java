@@ -39,8 +39,7 @@ import org.locationtech.jts.geom.PrecisionModel;
  *
  * @author Andrea Aime - GeoSolutions
  */
-public class CompoundRing extends LinearRing
-        implements CompoundCurvedGeometry<LinearRing>, CurvedRing {
+public class CompoundRing extends LinearRing implements CompoundCurvedGeometry<LinearRing>, CurvedRing {
 
     private static final long serialVersionUID = -5796254063449438787L;
 

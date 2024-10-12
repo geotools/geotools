@@ -25,8 +25,7 @@ public class RountTripLocalUomTest extends SETestSupport {
 
     @Test
     public void testRoundTripPolygon() throws Exception {
-        PolygonSymbolizer sym =
-                (PolygonSymbolizer) parse("example-polygonsymbolizer-local-uom.xml");
+        PolygonSymbolizer sym = (PolygonSymbolizer) parse("example-polygonsymbolizer-local-uom.xml");
         assertEquals(SI.METRE, sym.getUnitOfMeasure());
         assertEquals("2m", sym.getStroke().getWidth().evaluate(null, String.class));
         encode(sym, SE.PolygonSymbolizer);

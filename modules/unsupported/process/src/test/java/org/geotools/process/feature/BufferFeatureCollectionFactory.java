@@ -30,12 +30,8 @@ import org.geotools.text.Text;
 public class BufferFeatureCollectionFactory extends FeatureToFeatureProcessFactory {
 
     /** Buffer amount */
-    public static final Parameter<Double> BUFFER =
-            new Parameter<>(
-                    "buffer",
-                    Double.class,
-                    Text.text("Buffer Amount"),
-                    Text.text("Amount to buffer each feature by"));
+    public static final Parameter<Double> BUFFER = new Parameter<>(
+            "buffer", Double.class, Text.text("Buffer Amount"), Text.text("Amount to buffer each feature by"));
 
     @Override
     public InternationalString getTitle() {

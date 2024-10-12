@@ -45,8 +45,6 @@ public class PostgisGeographyOnlineTest extends JDBCGeographyOnlineTest {
 
         // extra check, pg specific: the native typename is actually geography
         SimpleFeatureType ft = dataStore.getFeatureSource(tname("geopoint")).getSchema();
-        assertEquals(
-                "geography",
-                ft.getGeometryDescriptor().getUserData().get(JDBCDataStore.JDBC_NATIVE_TYPENAME));
+        assertEquals("geography", ft.getGeometryDescriptor().getUserData().get(JDBCDataStore.JDBC_NATIVE_TYPENAME));
     }
 }

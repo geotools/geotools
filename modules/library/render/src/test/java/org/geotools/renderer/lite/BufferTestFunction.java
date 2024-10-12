@@ -23,8 +23,7 @@ import org.locationtech.jts.geom.Polygon;
  */
 public class BufferTestFunction extends FunctionExpressionImpl {
 
-    public static FunctionName NAME =
-            new FunctionNameImpl("BufferTest", parameter("distance", Double.class));
+    public static FunctionName NAME = new FunctionNameImpl("BufferTest", parameter("distance", Double.class));
 
     public BufferTestFunction() {
         super(NAME);

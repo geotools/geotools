@@ -92,12 +92,9 @@ public class ImagePyramidReaderTest extends AbstractPyramidTest {
 
             // now make sure we can actually rebuild the mosaic
             final AbstractGridFormat format = new ImagePyramidFormat();
-            final Hints hints =
-                    new Hints(
-                            Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, DefaultGeographicCRS.WGS84);
+            final Hints hints = new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, DefaultGeographicCRS.WGS84);
             assertTrue(format.accepts(targetDir, hints));
-            final ImagePyramidReader reader =
-                    (ImagePyramidReader) format.getReader(targetDir, hints);
+            final ImagePyramidReader reader = (ImagePyramidReader) format.getReader(targetDir, hints);
             assertNotNull(reader);
         } finally {
             // cleanup
@@ -126,8 +123,7 @@ public class ImagePyramidReaderTest extends AbstractPyramidTest {
     }
 
     /** */
-    private void buildPyramid(final URL testFile, String targetName)
-            throws IOException, FileNotFoundException {
+    private void buildPyramid(final URL testFile, String targetName) throws IOException, FileNotFoundException {
         File sourceDir = URLs.urlToFile(testFile).getParentFile();
         File targetDir = File.createTempFile(targetName, "tst", TestData.file(this, "."));
         targetDir.delete();
@@ -144,12 +140,9 @@ public class ImagePyramidReaderTest extends AbstractPyramidTest {
 
             // now make sure we can actually rebuild the mosaic
             final AbstractGridFormat format = new ImagePyramidFormat();
-            final Hints hints =
-                    new Hints(
-                            Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, DefaultGeographicCRS.WGS84);
+            final Hints hints = new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, DefaultGeographicCRS.WGS84);
             assertTrue(format.accepts(targetDir, hints));
-            final ImagePyramidReader reader =
-                    (ImagePyramidReader) format.getReader(targetDir, hints);
+            final ImagePyramidReader reader = (ImagePyramidReader) format.getReader(targetDir, hints);
             assertNotNull(reader);
         } finally {
             // cleanup
@@ -250,8 +243,7 @@ public class ImagePyramidReaderTest extends AbstractPyramidTest {
         //
         // Get the resource.
         //
-        final String testFile =
-                TestData.file(this, "goodpyramid/" + TEST_FILE).getCanonicalPath(); //
+        final String testFile = TestData.file(this, "goodpyramid/" + TEST_FILE).getCanonicalPath(); //
         assertNotNull(testFile);
 
         //
@@ -276,8 +268,7 @@ public class ImagePyramidReaderTest extends AbstractPyramidTest {
     }
 
     @Test
-    public void testForErrors()
-            throws IOException, MismatchedDimensionException, NoSuchAuthorityCodeException {
+    public void testForErrors() throws IOException, MismatchedDimensionException, NoSuchAuthorityCodeException {
         //
         // Get the resource.
         //
@@ -289,9 +280,7 @@ public class ImagePyramidReaderTest extends AbstractPyramidTest {
         //
         ImagePyramidReader reader = null;
         try {
-            reader =
-                    new ImagePyramidReader(
-                            null, new Hints(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.FALSE));
+            reader = new ImagePyramidReader(null, new Hints(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.FALSE));
         } catch (DataSourceException e) {
 
         }
@@ -301,19 +290,16 @@ public class ImagePyramidReaderTest extends AbstractPyramidTest {
         // Illegal arguments
         //
         try {
-            reader =
-                    new ImagePyramidReader(
-                            new FileInputStream(testFile),
-                            new Hints(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.FALSE));
+            reader = new ImagePyramidReader(
+                    new FileInputStream(testFile), new Hints(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.FALSE));
         } catch (DataSourceException e) {
 
         }
         assertNull(reader);
         try {
-            reader =
-                    new ImagePyramidReader(
-                            ImageIO.createImageInputStream(testFile),
-                            new Hints(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.FALSE));
+            reader = new ImagePyramidReader(
+                    ImageIO.createImageInputStream(testFile),
+                    new Hints(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.FALSE));
         } catch (DataSourceException e) {
 
         }
@@ -321,8 +307,7 @@ public class ImagePyramidReaderTest extends AbstractPyramidTest {
     }
 
     @Test
-    public void testComplete()
-            throws IOException, MismatchedDimensionException, NoSuchAuthorityCodeException {
+    public void testComplete() throws IOException, MismatchedDimensionException, NoSuchAuthorityCodeException {
 
         //
         // Get the resource.
@@ -334,15 +319,13 @@ public class ImagePyramidReaderTest extends AbstractPyramidTest {
         // Get a reader
         //
         final ImagePyramidReader reader =
-                new ImagePyramidReader(
-                        testFile, new Hints(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.FALSE));
+                new ImagePyramidReader(testFile, new Hints(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.FALSE));
         assertNotNull(reader);
 
         //
         // alpha on output
         //
-        final ParameterValue<Color> transp =
-                ImageMosaicFormat.INPUT_TRANSPARENT_COLOR.createValue();
+        final ParameterValue<Color> transp = ImageMosaicFormat.INPUT_TRANSPARENT_COLOR.createValue();
         transp.setValue(Color.black);
 
         //
@@ -369,21 +352,18 @@ public class ImagePyramidReaderTest extends AbstractPyramidTest {
         final URL testFile = TestData.getResource(this, "goodpyramid/" + TEST_FILE);
         assertNotNull(testFile);
         final ImagePyramidReader reader =
-                new ImagePyramidReader(
-                        testFile, new Hints(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.FALSE));
+                new ImagePyramidReader(testFile, new Hints(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.FALSE));
         assertNotNull(reader);
 
         // prepare a request that crosses the bounds for a really minimal part
         GeneralBounds ge = reader.getOriginalEnvelope();
-        ReferencedEnvelope requestedEnvelope =
-                new ReferencedEnvelope(
-                        ge.getMinimum(0) - 5,
-                        ge.getMinimum(0),
-                        ge.getMinimum(1),
-                        ge.getMaximum(1),
-                        ge.getCoordinateReferenceSystem());
-        final Parameter<GridGeometry2D> readGG =
-                new Parameter<>(AbstractGridFormat.READ_GRIDGEOMETRY2D);
+        ReferencedEnvelope requestedEnvelope = new ReferencedEnvelope(
+                ge.getMinimum(0) - 5,
+                ge.getMinimum(0),
+                ge.getMinimum(1),
+                ge.getMaximum(1),
+                ge.getCoordinateReferenceSystem());
+        final Parameter<GridGeometry2D> readGG = new Parameter<>(AbstractGridFormat.READ_GRIDGEOMETRY2D);
         readGG.setValue(new GridGeometry2D(new GridEnvelope2D(0, 0, 400, 400), requestedEnvelope));
 
         // make sure we get back a null, not an exception
@@ -399,8 +379,7 @@ public class ImagePyramidReaderTest extends AbstractPyramidTest {
      * <p>Size of the original mosaic is 250,250.
      */
     @Test
-    public void testCropHighestLevel()
-            throws IOException, MismatchedDimensionException, NoSuchAuthorityCodeException {
+    public void testCropHighestLevel() throws IOException, MismatchedDimensionException, NoSuchAuthorityCodeException {
         //
         // Get the resource.
         //
@@ -415,23 +394,19 @@ public class ImagePyramidReaderTest extends AbstractPyramidTest {
         //
         // crop
         //
-        final ParameterValue<GridGeometry2D> gg =
-                ImageMosaicFormat.READ_GRIDGEOMETRY2D.createValue();
+        final ParameterValue<GridGeometry2D> gg = ImageMosaicFormat.READ_GRIDGEOMETRY2D.createValue();
         final GeneralBounds oldEnvelop = reader.getOriginalEnvelope();
-        final GeneralBounds cropEnvelope =
-                new GeneralBounds(
-                        new double[] {
-                            oldEnvelop.getLowerCorner().getOrdinate(0),
-                            oldEnvelop.getLowerCorner().getOrdinate(1)
-                        },
-                        new double[] {
-                            oldEnvelop.getLowerCorner().getOrdinate(0) + oldEnvelop.getSpan(0) / 2,
-                            oldEnvelop.getLowerCorner().getOrdinate(1) + oldEnvelop.getSpan(1) / 2
-                        });
+        final GeneralBounds cropEnvelope = new GeneralBounds(
+                new double[] {
+                    oldEnvelop.getLowerCorner().getOrdinate(0),
+                    oldEnvelop.getLowerCorner().getOrdinate(1)
+                },
+                new double[] {
+                    oldEnvelop.getLowerCorner().getOrdinate(0) + oldEnvelop.getSpan(0) / 2,
+                    oldEnvelop.getLowerCorner().getOrdinate(1) + oldEnvelop.getSpan(1) / 2
+                });
         cropEnvelope.setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);
-        gg.setValue(
-                new GridGeometry2D(
-                        new GridEnvelope2D(new Rectangle(0, 0, 125, 125)), cropEnvelope));
+        gg.setValue(new GridGeometry2D(new GridEnvelope2D(new Rectangle(0, 0, 125, 125)), cropEnvelope));
 
         //
         // Show the coverage
@@ -456,8 +431,7 @@ public class ImagePyramidReaderTest extends AbstractPyramidTest {
      * <p>Size of the original mosaic is 250,250.
      */
     @Test
-    public void testCropLevel1()
-            throws IOException, MismatchedDimensionException, NoSuchAuthorityCodeException {
+    public void testCropLevel1() throws IOException, MismatchedDimensionException, NoSuchAuthorityCodeException {
 
         //
         // Get the resource.
@@ -474,23 +448,19 @@ public class ImagePyramidReaderTest extends AbstractPyramidTest {
         //
         // crop
         //
-        final ParameterValue<GridGeometry2D> gg =
-                ImageMosaicFormat.READ_GRIDGEOMETRY2D.createValue();
+        final ParameterValue<GridGeometry2D> gg = ImageMosaicFormat.READ_GRIDGEOMETRY2D.createValue();
         final GeneralBounds oldEnvelop = reader.getOriginalEnvelope();
-        final GeneralBounds cropEnvelope =
-                new GeneralBounds(
-                        new double[] {
-                            oldEnvelop.getLowerCorner().getOrdinate(0),
-                            oldEnvelop.getLowerCorner().getOrdinate(1)
-                        },
-                        new double[] {
-                            oldEnvelop.getLowerCorner().getOrdinate(0) + oldEnvelop.getSpan(0) / 2,
-                            oldEnvelop.getLowerCorner().getOrdinate(1) + oldEnvelop.getSpan(1) / 2
-                        });
+        final GeneralBounds cropEnvelope = new GeneralBounds(
+                new double[] {
+                    oldEnvelop.getLowerCorner().getOrdinate(0),
+                    oldEnvelop.getLowerCorner().getOrdinate(1)
+                },
+                new double[] {
+                    oldEnvelop.getLowerCorner().getOrdinate(0) + oldEnvelop.getSpan(0) / 2,
+                    oldEnvelop.getLowerCorner().getOrdinate(1) + oldEnvelop.getSpan(1) / 2
+                });
         cropEnvelope.setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);
-        gg.setValue(
-                new GridGeometry2D(
-                        new GridEnvelope2D(new Rectangle(0, 0, 125, 125)), cropEnvelope));
+        gg.setValue(new GridGeometry2D(new GridEnvelope2D(new Rectangle(0, 0, 125, 125)), cropEnvelope));
 
         //
         // Show the coverage
@@ -511,8 +481,7 @@ public class ImagePyramidReaderTest extends AbstractPyramidTest {
      * <p>Size of the original mosaic is 250,250.
      */
     @Test
-    public void testCropLevel2()
-            throws IOException, MismatchedDimensionException, NoSuchAuthorityCodeException {
+    public void testCropLevel2() throws IOException, MismatchedDimensionException, NoSuchAuthorityCodeException {
 
         // /////////////////////////////////////////////////////////////////
         //
@@ -532,22 +501,19 @@ public class ImagePyramidReaderTest extends AbstractPyramidTest {
         //
         // crop
         //
-        final ParameterValue<GridGeometry2D> gg =
-                ImageMosaicFormat.READ_GRIDGEOMETRY2D.createValue();
+        final ParameterValue<GridGeometry2D> gg = ImageMosaicFormat.READ_GRIDGEOMETRY2D.createValue();
         final GeneralBounds oldEnvelop = reader.getOriginalEnvelope();
-        final GeneralBounds cropEnvelope =
-                new GeneralBounds(
-                        new double[] {
-                            oldEnvelop.getLowerCorner().getOrdinate(0),
-                            oldEnvelop.getLowerCorner().getOrdinate(1)
-                        },
-                        new double[] {
-                            oldEnvelop.getLowerCorner().getOrdinate(0) + oldEnvelop.getSpan(0) / 2,
-                            oldEnvelop.getLowerCorner().getOrdinate(1) + oldEnvelop.getSpan(1) / 2
-                        });
+        final GeneralBounds cropEnvelope = new GeneralBounds(
+                new double[] {
+                    oldEnvelop.getLowerCorner().getOrdinate(0),
+                    oldEnvelop.getLowerCorner().getOrdinate(1)
+                },
+                new double[] {
+                    oldEnvelop.getLowerCorner().getOrdinate(0) + oldEnvelop.getSpan(0) / 2,
+                    oldEnvelop.getLowerCorner().getOrdinate(1) + oldEnvelop.getSpan(1) / 2
+                });
         cropEnvelope.setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);
-        gg.setValue(
-                new GridGeometry2D(new GridEnvelope2D(new Rectangle(0, 0, 62, 62)), cropEnvelope));
+        gg.setValue(new GridGeometry2D(new GridEnvelope2D(new Rectangle(0, 0, 62, 62)), cropEnvelope));
 
         //
         // Show the coverage
@@ -567,8 +533,7 @@ public class ImagePyramidReaderTest extends AbstractPyramidTest {
      * <p>Size of the original mosaic is 250,250.
      */
     @Test
-    public void testCropLevel3()
-            throws IOException, MismatchedDimensionException, NoSuchAuthorityCodeException {
+    public void testCropLevel3() throws IOException, MismatchedDimensionException, NoSuchAuthorityCodeException {
 
         // Get the resource.
         //
@@ -584,22 +549,19 @@ public class ImagePyramidReaderTest extends AbstractPyramidTest {
         //
         // crop
         //
-        final ParameterValue<GridGeometry2D> gg =
-                ImageMosaicFormat.READ_GRIDGEOMETRY2D.createValue();
+        final ParameterValue<GridGeometry2D> gg = ImageMosaicFormat.READ_GRIDGEOMETRY2D.createValue();
         final GeneralBounds oldEnvelop = reader.getOriginalEnvelope();
-        final GeneralBounds cropEnvelope =
-                new GeneralBounds(
-                        new double[] {
-                            oldEnvelop.getLowerCorner().getOrdinate(0),
-                            oldEnvelop.getLowerCorner().getOrdinate(1)
-                        },
-                        new double[] {
-                            oldEnvelop.getLowerCorner().getOrdinate(0) + oldEnvelop.getSpan(0) / 2,
-                            oldEnvelop.getLowerCorner().getOrdinate(1) + oldEnvelop.getSpan(1) / 2
-                        });
+        final GeneralBounds cropEnvelope = new GeneralBounds(
+                new double[] {
+                    oldEnvelop.getLowerCorner().getOrdinate(0),
+                    oldEnvelop.getLowerCorner().getOrdinate(1)
+                },
+                new double[] {
+                    oldEnvelop.getLowerCorner().getOrdinate(0) + oldEnvelop.getSpan(0) / 2,
+                    oldEnvelop.getLowerCorner().getOrdinate(1) + oldEnvelop.getSpan(1) / 2
+                });
         cropEnvelope.setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);
-        gg.setValue(
-                new GridGeometry2D(new GridEnvelope2D(new Rectangle(0, 0, 25, 25)), cropEnvelope));
+        gg.setValue(new GridGeometry2D(new GridEnvelope2D(new Rectangle(0, 0, 25, 25)), cropEnvelope));
 
         //
         // Show the coverage
@@ -622,8 +584,7 @@ public class ImagePyramidReaderTest extends AbstractPyramidTest {
         final URL sourceDir = TestData.getResource(this, "badpyramid1");
         // now make sure we can actually rebuild the mosaic
         final AbstractGridFormat format = new ImagePyramidFormat();
-        final Hints hints =
-                new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, DefaultGeographicCRS.WGS84);
+        final Hints hints = new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, DefaultGeographicCRS.WGS84);
         assertFalse(format.accepts(sourceDir, hints));
         final ImagePyramidReader reader = (ImagePyramidReader) format.getReader(sourceDir, hints);
         assertNull(reader);
@@ -635,8 +596,7 @@ public class ImagePyramidReaderTest extends AbstractPyramidTest {
         final URL sourceDir = TestData.getResource(this, "badpyramid2");
         // now make sure we can actually rebuild the mosaic
         final AbstractGridFormat format = new ImagePyramidFormat();
-        final Hints hints =
-                new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, DefaultGeographicCRS.WGS84);
+        final Hints hints = new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, DefaultGeographicCRS.WGS84);
         assertFalse(format.accepts(sourceDir, hints));
         final ImagePyramidReader reader = (ImagePyramidReader) format.getReader(sourceDir, hints);
         assertNull(reader);
@@ -670,8 +630,7 @@ public class ImagePyramidReaderTest extends AbstractPyramidTest {
         //
         // alpha on output
         //
-        final ParameterValue<Color> transp =
-                ImageMosaicFormat.INPUT_TRANSPARENT_COLOR.createValue();
+        final ParameterValue<Color> transp = ImageMosaicFormat.INPUT_TRANSPARENT_COLOR.createValue();
         transp.setValue(Color.black);
 
         //
@@ -687,8 +646,7 @@ public class ImagePyramidReaderTest extends AbstractPyramidTest {
         else PlanarImage.wrapRenderedImage(coverage.getRenderedImage()).getTiles();
 
         // limit yourself to reading just a bit of it
-        final ParameterValue<GridGeometry2D> gg =
-                AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
+        final ParameterValue<GridGeometry2D> gg = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
         final GeneralBounds envelope = reader.getOriginalEnvelope();
         final Dimension dim = new Dimension();
         dim.setSize(
@@ -708,17 +666,12 @@ public class ImagePyramidReaderTest extends AbstractPyramidTest {
 
         // specify time
         final ParameterValue<List> time = ImageMosaicFormat.TIME.createValue();
-        time.setValue(
-                List.of(
-                        new DateRange(
-                                formatD.parse("2004-01-01T00:00:00.000Z"),
-                                formatD.parse("2004-07-01T00:00:00.000Z"))));
+        time.setValue(List.of(
+                new DateRange(formatD.parse("2004-01-01T00:00:00.000Z"), formatD.parse("2004-07-01T00:00:00.000Z"))));
 
         // Testing output coverage for level 0
         TestUtils.checkCoverage(
-                reader.getImageMosaicReaderForLevel(0),
-                new GeneralParameterValue[] {gg, useJai, time},
-                "time test");
+                reader.getImageMosaicReaderForLevel(0), new GeneralParameterValue[] {gg, useJai, time}, "time test");
     }
 
     /**
@@ -746,9 +699,7 @@ public class ImagePyramidReaderTest extends AbstractPyramidTest {
         assertEquals("true", reader.getMetadataValue(coverageName, "HAS_TIME_DOMAIN"));
         final String timeMetadata = reader.getMetadataValue(coverageName, "TIME_DOMAIN");
         assertNotNull(timeMetadata);
-        assertEquals(
-                timeMetadata.split(",")[0],
-                reader.getMetadataValue(coverageName, "TIME_DOMAIN_MINIMUM"));
+        assertEquals(timeMetadata.split(",")[0], reader.getMetadataValue(coverageName, "TIME_DOMAIN_MINIMUM"));
         assertEquals(
                 timeMetadata.split(",")[timeMetadata.split(",").length - 1],
                 reader.getMetadataValue(coverageName, "TIME_DOMAIN_MAXIMUM"));
@@ -756,8 +707,7 @@ public class ImagePyramidReaderTest extends AbstractPyramidTest {
         //
         // alpha on output
         //
-        final ParameterValue<Color> transp =
-                ImageMosaicFormat.INPUT_TRANSPARENT_COLOR.createValue();
+        final ParameterValue<Color> transp = ImageMosaicFormat.INPUT_TRANSPARENT_COLOR.createValue();
         transp.setValue(Color.black);
 
         //
@@ -773,8 +723,7 @@ public class ImagePyramidReaderTest extends AbstractPyramidTest {
         else PlanarImage.wrapRenderedImage(coverage.getRenderedImage()).getTiles();
 
         // limit yourself to reading just a bit of it
-        final ParameterValue<GridGeometry2D> gg =
-                AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
+        final ParameterValue<GridGeometry2D> gg = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
         final GeneralBounds envelope = reader.getOriginalEnvelope();
         final Dimension dim = new Dimension();
         dim.setSize(
@@ -794,16 +743,11 @@ public class ImagePyramidReaderTest extends AbstractPyramidTest {
 
         // specify time
         final ParameterValue<List> time = ImageMosaicFormat.TIME.createValue();
-        time.setValue(
-                List.of(
-                        new DateRange(
-                                formatD.parse("2004-01-01T00:00:00.000Z"),
-                                formatD.parse("2004-07-01T00:00:00.000Z"))));
+        time.setValue(List.of(
+                new DateRange(formatD.parse("2004-01-01T00:00:00.000Z"), formatD.parse("2004-07-01T00:00:00.000Z"))));
         // Testing output coverage for level 0
         TestUtils.checkCoverage(
-                reader.getImageMosaicReaderForLevel(0),
-                new GeneralParameterValue[] {gg, useJai, time},
-                "time test");
+                reader.getImageMosaicReaderForLevel(0), new GeneralParameterValue[] {gg, useJai, time}, "time test");
     }
 
     /** */
@@ -818,8 +762,7 @@ public class ImagePyramidReaderTest extends AbstractPyramidTest {
         final URL testFile = TestData.getResource(this, "multipyramid");
         File mosaicFolder = URLs.urlToFile(testFile);
         assertNotNull(testFile);
-        File[] pyramidLevels =
-                mosaicFolder.listFiles((FileFilter) FileFilterUtils.directoryFileFilter());
+        File[] pyramidLevels = mosaicFolder.listFiles((FileFilter) FileFilterUtils.directoryFileFilter());
         for (File pyramidLevel : pyramidLevels) {
             cleanFiles(pyramidLevel);
         }
@@ -829,8 +772,7 @@ public class ImagePyramidReaderTest extends AbstractPyramidTest {
         // Get the reader
         //
         final ImagePyramidReader reader =
-                new ImagePyramidReader(
-                        testFile, new Hints(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.FALSE));
+                new ImagePyramidReader(testFile, new Hints(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.FALSE));
         assertNotNull(reader);
         assertEquals(2, reader.getGridCoverageCount());
 

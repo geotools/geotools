@@ -61,16 +61,14 @@ public class FlatGeobufFeatureWriter implements FeatureWriter<SimpleFeatureType,
         String typeName = query.getTypeName();
         DataStore dataStore = state.getEntry().getDataStore();
         if (dataStore instanceof FlatGeobufDirectoryDataStore) {
-            this.flatGeobufDataStore =
-                    ((FlatGeobufDirectoryDataStore) dataStore).getDataStore(typeName);
+            this.flatGeobufDataStore = ((FlatGeobufDirectoryDataStore) dataStore).getDataStore(typeName);
             this.file = flatGeobufDataStore.getFile();
         } else {
             this.flatGeobufDataStore = (FlatGeobufDataStore) dataStore;
             this.file = flatGeobufDataStore.getFile();
         }
         File directory = file.getParentFile();
-        this.temp =
-                File.createTempFile(typeName + System.currentTimeMillis(), "flatgeobuf", directory);
+        this.temp = File.createTempFile(typeName + System.currentTimeMillis(), "flatgeobuf", directory);
         this.outputStream = new FileOutputStream(this.temp);
         this.builder = FlatBuffers.newBuilder(4096);
         this.writer = new FlatGeobufWriter(this.outputStream, this.builder);

@@ -62,10 +62,9 @@ public class ScrollWheelTool extends AbstractZoomTool {
         }
         double newScale = scale * actualZoom;
 
-        Position2D corner =
-                new Position2D(
-                        mapPos.getX() - 0.5d * paneArea.getWidth() / newScale,
-                        mapPos.getY() + 0.5d * paneArea.getHeight() / newScale);
+        Position2D corner = new Position2D(
+                mapPos.getX() - 0.5d * paneArea.getWidth() / newScale,
+                mapPos.getY() + 0.5d * paneArea.getHeight() / newScale);
 
         // I would prefer to offset the new map based on the cursor but this matches
         // the current zoom in/out tools.

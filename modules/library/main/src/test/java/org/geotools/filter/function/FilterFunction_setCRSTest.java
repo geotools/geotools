@@ -38,9 +38,7 @@ public class FilterFunction_setCRSTest {
 
     @Test
     public void setCRSWkt() {
-        Function f =
-                ff.function(
-                        "setCRS", ff.literal(g), ff.literal(DefaultGeographicCRS.WGS84.toWKT()));
+        Function f = ff.function("setCRS", ff.literal(g), ff.literal(DefaultGeographicCRS.WGS84.toWKT()));
         Geometry sg = (Geometry) f.evaluate(null);
         assertTrue(CRS.equalsIgnoreMetadata(DefaultGeographicCRS.WGS84, sg.getUserData()));
     }

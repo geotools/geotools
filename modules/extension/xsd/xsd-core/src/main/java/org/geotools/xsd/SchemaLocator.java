@@ -41,8 +41,7 @@ import org.eclipse.xsd.util.XSDSchemaLocator;
  */
 public class SchemaLocator implements XSDSchemaLocator {
     /** logging instance */
-    protected static Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(SchemaLocator.class);
+    protected static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(SchemaLocator.class);
 
     /** The xsd instance. */
     protected XSD xsd;
@@ -62,10 +61,7 @@ public class SchemaLocator implements XSDSchemaLocator {
      * @return true if it can handle, otherwise false.
      */
     public boolean canHandle(
-            XSDSchema schema,
-            String namespaceURI,
-            String rawSchemaLocationURI,
-            String resolvedSchemaLocationURI) {
+            XSDSchema schema, String namespaceURI, String rawSchemaLocationURI, String resolvedSchemaLocationURI) {
         return xsd.getNamespaceURI().equals(namespaceURI);
     }
 
@@ -78,10 +74,7 @@ public class SchemaLocator implements XSDSchemaLocator {
      */
     @Override
     public XSDSchema locateSchema(
-            XSDSchema schema,
-            String namespaceURI,
-            String rawSchemaLocationURI,
-            String resolvedSchemaLocationURI) {
+            XSDSchema schema, String namespaceURI, String rawSchemaLocationURI, String resolvedSchemaLocationURI) {
         if (canHandle(schema, namespaceURI, rawSchemaLocationURI, resolvedSchemaLocationURI)) {
             try {
                 return xsd.getSchema();

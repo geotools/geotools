@@ -53,8 +53,7 @@ public class SumAreaVisitor extends SumVisitor {
         super.visit(feature);
     }
 
-    public SumAreaVisitor(int attributeTypeIndex, SimpleFeatureType type)
-            throws IllegalFilterException {
+    public SumAreaVisitor(int attributeTypeIndex, SimpleFeatureType type) throws IllegalFilterException {
 
         this(factory.property(type.getDescriptor(attributeTypeIndex).getLocalName()));
     }
@@ -66,15 +65,13 @@ public class SumAreaVisitor extends SumVisitor {
     @Override
     public Optional<List<Class>> getResultType(List<Class> inputTypes) {
         if (inputTypes == null || inputTypes.size() != 1)
-            throw new IllegalArgumentException(
-                    "Expecting a single type in input, not " + inputTypes);
+            throw new IllegalArgumentException("Expecting a single type in input, not " + inputTypes);
 
         Class type = inputTypes.get(0);
         if (Geometry.class.isAssignableFrom(type)) {
             return Optional.of(Collections.singletonList(Double.class));
         }
-        throw new IllegalArgumentException(
-                "The input type for sum must be geometric, instead this was found: " + type);
+        throw new IllegalArgumentException("The input type for sum must be geometric, instead this was found: " + type);
     }
 
     static class SumAreaStrategy implements SumStrategy {

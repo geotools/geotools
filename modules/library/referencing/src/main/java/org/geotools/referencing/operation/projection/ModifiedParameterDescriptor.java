@@ -49,8 +49,7 @@ final class ModifiedParameterDescriptor extends DefaultParameterDescriptor<Doubl
     /**
      * Creates a parameter descriptor wrapping the specified one with the specified default value.
      */
-    public ModifiedParameterDescriptor(
-            final ParameterDescriptor<Double> original, final double defaultValue) {
+    public ModifiedParameterDescriptor(final ParameterDescriptor<Double> original, final double defaultValue) {
         super(original);
         this.original = original;
         this.defaultValue = defaultValue;
@@ -69,8 +68,7 @@ final class ModifiedParameterDescriptor extends DefaultParameterDescriptor<Doubl
      * is that this method is slower than {@code set.contains(descriptor)}, so it should be invoked
      * only if the former fails.
      */
-    public static boolean contains(
-            final Collection<GeneralParameterDescriptor> set, ParameterDescriptor descriptor) {
+    public static boolean contains(final Collection<GeneralParameterDescriptor> set, ParameterDescriptor descriptor) {
         if (descriptor instanceof ModifiedParameterDescriptor) {
             descriptor = ((ModifiedParameterDescriptor) descriptor).original;
         }

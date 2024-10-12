@@ -81,8 +81,7 @@ public class RootHandler extends XSIElementHandler {
      *     org.xml.sax.Attributes)
      */
     @Override
-    public void startElement(String namespaceURI, String localName, Attributes attr)
-            throws SAXException {
+    public void startElement(String namespaceURI, String localName, Attributes attr) throws SAXException {
         throw new SAXNotSupportedException("Should never have elements at the root level");
     }
 

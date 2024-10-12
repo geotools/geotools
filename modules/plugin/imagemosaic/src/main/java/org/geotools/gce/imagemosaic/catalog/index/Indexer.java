@@ -139,7 +139,8 @@ public class Indexer {
 
     protected ParametersType parameters;
 
-    @XmlTransient private File indexerFile;
+    @XmlTransient
+    private File indexerFile;
 
     /**
      * Gets the value of the schemas property.
@@ -556,14 +557,7 @@ public class Indexer {
         @XmlAccessorType(XmlAccessType.FIELD)
         @XmlType(
                 name = "",
-                propOrder = {
-                    "schema",
-                    "origName",
-                    "domains",
-                    "name",
-                    "nameCollector",
-                    "parameters"
-                })
+                propOrder = {"schema", "origName", "domains", "name", "nameCollector", "parameters"})
         public static class Coverage {
 
             @XmlElement(required = true)
@@ -791,8 +785,7 @@ public class Indexer {
     public static class MultipleBandsDimensions {
 
         @XmlElement(required = true)
-        protected List<Indexer.MultipleBandsDimensions.MultipleBandsDimension>
-                multipleBandsDimension;
+        protected List<Indexer.MultipleBandsDimensions.MultipleBandsDimension> multipleBandsDimension;
 
         /**
          * Gets the value of the multipleBandsDimension property.
@@ -811,8 +804,7 @@ public class Indexer {
          * <p>Objects of the following type(s) are allowed in the list {@link
          * Indexer.MultipleBandsDimensions.MultipleBandsDimension }
          */
-        public List<Indexer.MultipleBandsDimensions.MultipleBandsDimension>
-                getMultipleBandsDimension() {
+        public List<Indexer.MultipleBandsDimensions.MultipleBandsDimension> getMultipleBandsDimension() {
             if (multipleBandsDimension == null) {
                 multipleBandsDimension = new ArrayList<>();
             }

@@ -37,8 +37,7 @@ public class VPFLibFeatureSource extends VPFFeatureSource {
     }
 
     @Override
-    protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query)
-            throws IOException {
+    protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query) throws IOException {
 
         VPFLibrary vpf = (VPFLibrary) this.getDataStore();
         VPFFeatureType featureType = vpf.getFeatureType(this.entry);

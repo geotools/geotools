@@ -165,8 +165,7 @@ public class SpatialRequestHelper {
         this.alternativeProperties = alternativeProperties;
     }
 
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(SpatialRequestHelper.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(SpatialRequestHelper.class);
 
     /** The {@link BoundingBox} requested */
     private ReferencedEnvelope requestedBBox;
@@ -236,16 +235,13 @@ public class SpatialRequestHelper {
             //
             // In case we have nothing to look at we should get the whole coverage
             //
-            requestedBBox =
-                    new ReferencedEnvelope(coverageProperties.bbox, coverageProperties.crs2D);
+            requestedBBox = new ReferencedEnvelope(coverageProperties.bbox, coverageProperties.crs2D);
             requestedRasterArea = (Rectangle) coverageProperties.rasterArea.clone();
             computedResolution = coverageProperties.fullResolution.clone();
-            coverageProperties.computedBBox =
-                    new ReferencedEnvelope(coverageProperties.bbox, coverageProperties.crs2D);
+            coverageProperties.computedBBox = new ReferencedEnvelope(coverageProperties.bbox, coverageProperties.crs2D);
             computedRasterArea = (Rectangle) coverageProperties.rasterArea.clone();
             // TODO harmonize the various types of transformations
-            computedGridToWorld =
-                    requestedGridToWorld = (AffineTransform) coverageProperties.gridToWorld2D;
+            computedGridToWorld = requestedGridToWorld = (AffineTransform) coverageProperties.gridToWorld2D;
             // account for an empty coverage --> set request empty
             if (requestedBBox.isEmpty()) emptyRequest = true;
             return;
@@ -291,18 +287,17 @@ public class SpatialRequestHelper {
         }
 
         if (LOGGER.isLoggable(Level.FINER)) {
-            StringBuilder sb =
-                    new StringBuilder("Adjusted Requested Envelope = ")
-                            .append(requestedBBox.toString())
-                            .append("\n")
-                            .append("Requested raster dimension = ")
-                            .append(requestedRasterArea.toString())
-                            .append("\n")
-                            .append("Corresponding raster source region = ")
-                            .append(computedRasterArea.toString())
-                            .append("\n")
-                            .append("Corresponding source Envelope = ")
-                            .append(coverageProperties.computedBBox.toString());
+            StringBuilder sb = new StringBuilder("Adjusted Requested Envelope = ")
+                    .append(requestedBBox.toString())
+                    .append("\n")
+                    .append("Requested raster dimension = ")
+                    .append(requestedRasterArea.toString())
+                    .append("\n")
+                    .append("Corresponding raster source region = ")
+                    .append(computedRasterArea.toString())
+                    .append("\n")
+                    .append("Corresponding source Envelope = ")
+                    .append(coverageProperties.computedBBox.toString());
             LOGGER.log(Level.FINER, sb.toString());
         }
 
@@ -322,12 +317,10 @@ public class SpatialRequestHelper {
         CoordinateReferenceSystem referenceCRS = getReferenceCRS(false);
         if (!CRS.equalsIgnoreMetadata(requestCRS, referenceCRS)) {
             try {
-                destinationToSourceTransform =
-                        CRS.findMathTransform(requestCRS, referenceCRS, true);
+                destinationToSourceTransform = CRS.findMathTransform(requestCRS, referenceCRS, true);
                 if (isSupportingAlternativeCRSOutput) {
                     MathTransform2D alternativeTransform =
-                            (MathTransform2D)
-                                    CRS.findMathTransform(requestCRS, getReferenceCRS(true), true);
+                            (MathTransform2D) CRS.findMathTransform(requestCRS, getReferenceCRS(true), true);
                     alternativeProperties.setGridToWorld2D(alternativeTransform);
                     alternativeProperties.setReprojectionNeeded(
                             alternativeTransform != null && !alternativeTransform.isIdentity());
@@ -360,22 +353,17 @@ public class SpatialRequestHelper {
                     // we should not have any problems with regards to BBOX reprojection
                     // update the requested grid to world transformation by pre concatenating the
                     // destination to source transform
-                    AffineTransform mutableTransform =
-                            (AffineTransform) requestedGridToWorld.clone();
+                    AffineTransform mutableTransform = (AffineTransform) requestedGridToWorld.clone();
                     mutableTransform.preConcatenate((AffineTransform) destinationToSourceTransform);
 
                     // update the requested envelope
                     try {
-                        final MathTransform tempTransform =
-                                PixelTranslation.translate(
-                                        ProjectiveTransform.create(mutableTransform),
-                                        PixelInCell.CELL_CENTER,
-                                        PixelInCell.CELL_CORNER);
-                        requestedBBox =
-                                new ReferencedEnvelope(
-                                        CRS.transform(
-                                                tempTransform,
-                                                new GeneralBounds(requestedRasterArea)));
+                        final MathTransform tempTransform = PixelTranslation.translate(
+                                ProjectiveTransform.create(mutableTransform),
+                                PixelInCell.CELL_CENTER,
+                                PixelInCell.CELL_CORNER);
+                        requestedBBox = new ReferencedEnvelope(
+                                CRS.transform(tempTransform, new GeneralBounds(requestedRasterArea)));
 
                     } catch (Exception e) {
                         throw new DataSourceException("Unable to inspect request CRS", e);
@@ -397,8 +385,7 @@ public class SpatialRequestHelper {
 
         // we have nothing to crop
         if (emptyRequest || getComputedBBox() == null) {
-            throw new IllegalStateException(
-                    "IllegalState, unable to compute raster area for null bbox");
+            throw new IllegalStateException("IllegalState, unable to compute raster area for null bbox");
         }
 
         try {
@@ -410,25 +397,20 @@ public class SpatialRequestHelper {
             // invert the requested grid to world keeping into account the fact that it is related
             // to cell center
             // while the raster is related to cell corner
-            MathTransform2D requestedWorldToGrid =
-                    (MathTransform2D)
-                            PixelTranslation.translate(
-                                            ProjectiveTransform.create(requestedGridToWorld),
-                                            PixelInCell.CELL_CENTER,
-                                            PixelInCell.CELL_CORNER)
-                                    .inverse();
+            MathTransform2D requestedWorldToGrid = (MathTransform2D) PixelTranslation.translate(
+                            ProjectiveTransform.create(requestedGridToWorld),
+                            PixelInCell.CELL_CENTER,
+                            PixelInCell.CELL_CORNER)
+                    .inverse();
             if (!isNeedsReprojection(true)) {
 
                 // now get the requested bbox which have been already adjusted and project it back
                 // to raster space
-                computedRasterArea =
-                        new GeneralGridEnvelope(
-                                        CRS.transform(
-                                                requestedWorldToGrid,
-                                                new GeneralBounds(getComputedBBox(true))),
-                                        PixelInCell.CELL_CORNER,
-                                        false)
-                                .toRectangle();
+                computedRasterArea = new GeneralGridEnvelope(
+                                CRS.transform(requestedWorldToGrid, new GeneralBounds(getComputedBBox(true))),
+                                PixelInCell.CELL_CORNER,
+                                false)
+                        .toRectangle();
 
             } else {
                 //
@@ -437,8 +419,7 @@ public class SpatialRequestHelper {
                 // the same raster area somehow
                 //
                 Rectangle computedRasterArea =
-                        computeRasterArea(
-                                (ReferencedEnvelope) getComputedBBox(true), requestedWorldToGrid);
+                        computeRasterArea((ReferencedEnvelope) getComputedBBox(true), requestedWorldToGrid);
                 this.computedRasterArea = computedRasterArea;
             }
         } catch (Exception e) {
@@ -455,8 +436,7 @@ public class SpatialRequestHelper {
         }
     }
 
-    private Rectangle computeRasterArea(
-            ReferencedEnvelope computedBBox, MathTransform2D requestedWorldToGrid)
+    private Rectangle computeRasterArea(ReferencedEnvelope computedBBox, MathTransform2D requestedWorldToGrid)
             throws TransformException, FactoryException {
         final ReferencedEnvelope cropBBOXInRequestCRS =
                 Utils.reprojectEnvelope(computedBBox, requestCRS, requestedBBox);
@@ -464,12 +444,9 @@ public class SpatialRequestHelper {
         cropBBOXInRequestCRS.intersection(requestedBBox);
 
         // now go back to raster space
-        Rectangle computedRasterArea =
-                new GeneralGridEnvelope(
-                                CRS.transform(requestedWorldToGrid, cropBBOXInRequestCRS),
-                                PixelInCell.CELL_CORNER,
-                                false)
-                        .toRectangle();
+        Rectangle computedRasterArea = new GeneralGridEnvelope(
+                        CRS.transform(requestedWorldToGrid, cropBBOXInRequestCRS), PixelInCell.CELL_CORNER, false)
+                .toRectangle();
         // intersect with the original requested raster space to be sure that we stay within
         // the requested raster area
         XRectangle2D.intersect(computedRasterArea, requestedRasterArea, computedRasterArea);
@@ -500,44 +477,34 @@ public class SpatialRequestHelper {
             ReferencedEnvelope computedBBOX = (ReferencedEnvelope) getComputedBBox(true);
             if (isNeedsReprojection(true)) {
                 final GridToEnvelopeMapper geMapper =
-                        new GridToEnvelopeMapper(
-                                new GridEnvelope2D(computedRasterArea), computedBBOX);
+                        new GridToEnvelopeMapper(new GridEnvelope2D(computedRasterArea), computedBBOX);
                 computedGridToWorld = geMapper.createAffineTransform();
                 if (accurateResolution) {
                     gridGeometry = requestedGridGeometry;
                 } else {
-                    gridGeometry =
-                            new GridGeometry2D(
-                                    new GridEnvelope2D(computedRasterArea), computedBBOX);
+                    gridGeometry = new GridGeometry2D(new GridEnvelope2D(computedRasterArea), computedBBOX);
                 }
             } else {
                 gridGeometry = requestedGridGeometry;
                 computedGridToWorld = requestedGridToWorld;
             }
 
-            ReadResolutionCalculator calculator =
-                    new ReadResolutionCalculator(
-                            gridGeometry,
-                            coverageProperties.crs2D,
-                            coverageProperties.fullResolution);
+            ReadResolutionCalculator calculator = new ReadResolutionCalculator(
+                    gridGeometry, coverageProperties.crs2D, coverageProperties.fullResolution);
             calculator.setAccurateResolution(accurateResolution);
-            computedResolution =
-                    calculator.computeRequestedResolution(
-                            ReferencedEnvelope.reference(computedBBOX));
+            computedResolution = calculator.computeRequestedResolution(ReferencedEnvelope.reference(computedBBOX));
 
             // leave
             return;
         } catch (Throwable e) {
-            if (LOGGER.isLoggable(Level.INFO))
-                LOGGER.log(Level.INFO, "Unable to compute requested resolution", e);
+            if (LOGGER.isLoggable(Level.INFO)) LOGGER.log(Level.INFO, "Unable to compute requested resolution", e);
         }
 
         //
         // use the coverage resolution since we cannot compute the requested one, this can be
         // problematic but at least keep us going
         //
-        LOGGER.log(
-                Level.WARNING, "Unable to compute requested resolution, using highest available");
+        LOGGER.log(Level.WARNING, "Unable to compute requested resolution, using highest available");
         computedResolution = coverageProperties.fullResolution;
     }
 
@@ -554,10 +521,7 @@ public class SpatialRequestHelper {
             if (isNeedsReprojection()) {
                 try {
                     computedBBox =
-                            Utils.reprojectEnvelope(
-                                    requestedBBox,
-                                    coverageProperties.crs2D,
-                                    coverageProperties.bbox);
+                            Utils.reprojectEnvelope(requestedBBox, coverageProperties.crs2D, coverageProperties.bbox);
                 } catch (FactoryException e) {
                     throw new DataSourceException(e);
                 }
@@ -574,13 +538,12 @@ public class SpatialRequestHelper {
             // intersect the requested area with the bounds of this layer in native crs
             if (!computedBBox.intersects((BoundingBox) coverageProperties.bbox)) {
                 if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.fine(
-                            new StringBuilder("The computed CropBoundingBox ")
-                                    .append(coverageProperties.computedBBox)
-                                    .append(" Doesn't intersect the coverage BoundingBox ")
-                                    .append(coverageProperties.bbox)
-                                    .append(" resulting in an empty request")
-                                    .toString());
+                    LOGGER.fine(new StringBuilder("The computed CropBoundingBox ")
+                            .append(coverageProperties.computedBBox)
+                            .append(" Doesn't intersect the coverage BoundingBox ")
+                            .append(coverageProperties.bbox)
+                            .append(" resulting in an empty request")
+                            .toString());
                 }
                 coverageProperties.computedBBox = null;
                 emptyRequest = true;
@@ -589,10 +552,8 @@ public class SpatialRequestHelper {
 
             // TODO XXX Optimize when referenced envelope has intersection method that actually
             // retains the CRS, this is the JTS one
-            computedBBox =
-                    new ReferencedEnvelope(
-                            computedBBox.intersection(coverageProperties.bbox),
-                            coverageProperties.crs2D);
+            computedBBox = new ReferencedEnvelope(
+                    computedBBox.intersection(coverageProperties.bbox), coverageProperties.crs2D);
             if (computedBBox.isEmpty()) {
                 // this means that we do not have anything to load at all!
                 emptyRequest = true;
@@ -607,8 +568,7 @@ public class SpatialRequestHelper {
 
         try {
             // can we proceed? Do we have geo stuff to do all these operations?
-            if (coverageProperties.geographicCRS != null
-                    && coverageProperties.geographicBBox != null) {
+            if (coverageProperties.geographicCRS != null && coverageProperties.geographicBBox != null) {
 
                 //
                 // If we can not reproject the requested envelope to the native CRS,
@@ -622,16 +582,14 @@ public class SpatialRequestHelper {
                     // try to convert the requested bbox to the coverage geocrs
                     requestedBBOXInCoverageGeographicCRS =
                             CRS.transform(requestedBBox, coverageProperties.geographicCRS);
-                    requestedBBOXInCoverageGeographicCRS.setCoordinateReferenceSystem(
-                            coverageProperties.geographicCRS);
+                    requestedBBOXInCoverageGeographicCRS.setCoordinateReferenceSystem(coverageProperties.geographicCRS);
                 }
                 if (requestedBBOXInCoverageGeographicCRS == null) {
                     requestedBBOXInCoverageGeographicCRS = new GeneralBounds(requestCRS);
                 }
 
                 // STEP 2 intersection with the geographic bbox for this coverage
-                if (!requestedBBOXInCoverageGeographicCRS.intersects(
-                        coverageProperties.geographicBBox, true)) {
+                if (!requestedBBOXInCoverageGeographicCRS.intersects(coverageProperties.geographicBBox, true)) {
                     coverageProperties.computedBBox = null;
                     emptyRequest = true;
                     return;
@@ -640,18 +598,14 @@ public class SpatialRequestHelper {
                 // note that for the moment we got to use general envelope since there is no
                 // intersection otherwise
                 requestedBBOXInCoverageGeographicCRS.intersect(coverageProperties.geographicBBox);
-                requestedBBOXInCoverageGeographicCRS.setCoordinateReferenceSystem(
-                        coverageProperties.geographicCRS);
+                requestedBBOXInCoverageGeographicCRS.setCoordinateReferenceSystem(coverageProperties.geographicCRS);
 
                 // now go back to the coverage native CRS in order to compute an approximate
                 // requested resolution
                 approximateRequestedBBoInNativeCRS =
-                        CRS.transform(
-                                requestedBBOXInCoverageGeographicCRS, coverageProperties.crs2D);
-                approximateRequestedBBoInNativeCRS.setCoordinateReferenceSystem(
-                        coverageProperties.crs2D);
-                coverageProperties.computedBBox =
-                        new ReferencedEnvelope(approximateRequestedBBoInNativeCRS);
+                        CRS.transform(requestedBBOXInCoverageGeographicCRS, coverageProperties.crs2D);
+                approximateRequestedBBoInNativeCRS.setCoordinateReferenceSystem(coverageProperties.crs2D);
+                coverageProperties.computedBBox = new ReferencedEnvelope(approximateRequestedBBoInNativeCRS);
                 return;
             }
 
@@ -698,8 +652,7 @@ public class SpatialRequestHelper {
     }
 
     public Rectangle getComputedRasterArea() {
-        return (Rectangle)
-                (computedRasterArea != null ? computedRasterArea.clone() : computedRasterArea);
+        return (Rectangle) (computedRasterArea != null ? computedRasterArea.clone() : computedRasterArea);
     }
 
     public BoundingBox getComputedBBox() {

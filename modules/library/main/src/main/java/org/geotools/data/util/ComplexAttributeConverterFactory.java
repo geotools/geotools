@@ -45,8 +45,7 @@ public class ComplexAttributeConverterFactory implements ConverterFactory {
                 @Override
                 public <T> T convert(Object source, Class<T> target) throws Exception {
                     if (source instanceof ComplexAttribute) {
-                        Collection<? extends Property> valueMap =
-                                ((ComplexAttribute) source).getValue();
+                        Collection<? extends Property> valueMap = ((ComplexAttribute) source).getValue();
                         if (valueMap.isEmpty() || valueMap.size() > 1) {
                             return null;
                         } else {

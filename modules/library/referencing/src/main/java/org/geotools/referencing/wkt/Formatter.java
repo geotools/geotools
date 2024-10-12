@@ -87,8 +87,7 @@ public class Formatter {
      * ANSI X3.64 codes for syntax coloring. Used only if syntax coloring has been explicitly
      * enabled.
      */
-    private static final String
-            NUMBER_COLOR = X364.YELLOW, // Floating point numbers only, not integers.
+    private static final String NUMBER_COLOR = X364.YELLOW, // Floating point numbers only, not integers.
             INTEGER_COLOR = X364.YELLOW,
             UNIT_COLOR = X364.YELLOW,
             AXIS_COLOR = X364.CYAN,
@@ -135,10 +134,9 @@ public class Formatter {
 
     public void setAuthority(Citation authority) {
         this.authority = authority;
-        this.unitFormatter =
-                CRS.equalsIgnoreMetadata(Citations.ESRI, authority)
-                        ? EsriUnitFormat.getInstance()
-                        : EpsgUnitFormat.getInstance();
+        this.unitFormatter = CRS.equalsIgnoreMetadata(Citations.ESRI, authority)
+                ? EsriUnitFormat.getInstance()
+                : EpsgUnitFormat.getInstance();
     }
 
     /** The object to use for formatting numbers. */
@@ -222,13 +220,11 @@ public class Formatter {
         this.symbols = symbols;
         this.indentation = indentation;
         if (symbols == null) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "symbols"));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "symbols"));
         }
         if (indentation < 0) {
             throw new IllegalArgumentException(
-                    MessageFormat.format(
-                            ErrorKeys.ILLEGAL_ARGUMENT_$2, "indentation", indentation));
+                    MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "indentation", indentation));
         }
         numberFormat = (NumberFormat) symbols.numberFormat.clone();
         buffer = new StringBuffer();
@@ -301,8 +297,7 @@ public class Formatter {
         } while (Character.isWhitespace(c) || c == symbols.space);
         buffer.append(symbols.separator).append(symbols.space);
         if (newLine && indentation != 0) {
-            buffer.append(System.getProperty("line.separator", "\n"))
-                    .append(Utilities.spaces(margin));
+            buffer.append(System.getProperty("line.separator", "\n")).append(Utilities.spaces(margin));
             lineChanged = true;
         }
     }
@@ -327,8 +322,7 @@ public class Formatter {
         appendSeparator(true);
         int base = buffer.length();
         buffer.append(symbols.open);
-        final IdentifiedObject info =
-                (formattable instanceof IdentifiedObject) ? (IdentifiedObject) formattable : null;
+        final IdentifiedObject info = (formattable instanceof IdentifiedObject) ? (IdentifiedObject) formattable : null;
         if (info != null) {
             final String c = getNameColor(info);
             if (c != null) {
@@ -765,8 +759,7 @@ public class Formatter {
      */
     public void setLinearUnit(final Unit<Length> unit) {
         if (unit != null && !SI.METRE.isCompatible(unit)) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.NON_LINEAR_UNIT_$1, unit));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.NON_LINEAR_UNIT_$1, unit));
         }
         linearUnit = unit;
     }
@@ -789,8 +782,7 @@ public class Formatter {
      */
     public void setAngularUnit(final Unit<Angle> unit) {
         if (unit != null && (!SI.RADIAN.isCompatible(unit) || AbstractUnit.ONE.equals(unit))) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.NON_ANGULAR_UNIT_$1, unit));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.NON_ANGULAR_UNIT_$1, unit));
         }
         angularUnit = unit;
     }

@@ -48,13 +48,11 @@ public class XmlConverterFactory implements ConverterFactory {
         // make sure either source or target is String in order not to step over
         // TemporalConverterFactory
         if (String.class.equals(target)) {
-            if (java.util.Date.class.isAssignableFrom(source)
-                    || Calendar.class.isAssignableFrom(source)) {
+            if (java.util.Date.class.isAssignableFrom(source) || Calendar.class.isAssignableFrom(source)) {
                 return new XmlConverter();
             }
         } else if (String.class.equals(source)) {
-            if (java.util.Date.class.isAssignableFrom(target)
-                    || Calendar.class.isAssignableFrom(target)) {
+            if (java.util.Date.class.isAssignableFrom(target) || Calendar.class.isAssignableFrom(target)) {
                 return new XmlConverter();
             }
         }
@@ -79,8 +77,7 @@ public class XmlConverterFactory implements ConverterFactory {
             // JD: this is a bit of a hack but delegate to the
             // commons converter in case we are executing first.
             try {
-                Converter converter =
-                        new CommonsConverterFactory().createConverter(String.class, target, null);
+                Converter converter = new CommonsConverterFactory().createConverter(String.class, target, null);
 
                 if (converter != null) {
                     Object converted = null;

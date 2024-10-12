@@ -36,8 +36,7 @@ public class AutoClustUtils {
     /** Creates a new instance of AutoClustUtils */
     public AutoClustUtils() {}
 
-    public static List<Graph> findConnectedComponents(
-            final Collection<Node> nodes, final Collection<Edge> edges) {
+    public static List<Graph> findConnectedComponents(final Collection<Node> nodes, final Collection<Edge> edges) {
         List<Graph> components = new ArrayList<>();
         List<Node> nodesVisited = new ArrayList<>();
 
@@ -66,9 +65,7 @@ public class AutoClustUtils {
             componentNodes.add(node);
             //            LOGGER.finer("Adding " + node + " to component");
             List<Edge> adjacentEdges =
-                    findAdjacentEdges(
-                            node,
-                            edges); // yes, I know node.getEdges() should do this, but this method
+                    findAdjacentEdges(node, edges); // yes, I know node.getEdges() should do this, but this method
             // could be out of data by the time I use this in AutoClust
             componentEdges.addAll(adjacentEdges);
             //            LOGGER.finer("Adding " + adjacentEdges + " to component");
@@ -81,10 +78,7 @@ public class AutoClustUtils {
                 //                LOGGER.finer("its other node is " + additionalNode);
                 if (additionalNode == null) {
                     throw new RuntimeException(
-                            "I tried to get the other node of this edge "
-                                    + next
-                                    + " but it doesn't have "
-                                    + node);
+                            "I tried to get the other node of this edge " + next + " but it doesn't have " + node);
                 }
                 expandComponent(additionalNode, edges, componentNodes, componentEdges);
             }

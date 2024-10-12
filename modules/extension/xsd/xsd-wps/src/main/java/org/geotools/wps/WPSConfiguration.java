@@ -70,76 +70,41 @@ public class WPSConfiguration extends Configuration {
         bindings.put(WPS.CRSsType, new ComplexEMFBinding(Wps10Factory.eINSTANCE, WPS.CRSsType));
         bindings.put(
                 WPS.DataInputsType,
-                new ComplexEMFBinding(
-                        Wps10Factory.eINSTANCE, WPS.DataInputsType, DataInputsType1.class));
+                new ComplexEMFBinding(Wps10Factory.eINSTANCE, WPS.DataInputsType, DataInputsType1.class));
         bindings.put(WPS.DataType, new ComplexEMFBinding(Wps10Factory.eINSTANCE, WPS.DataType));
-        bindings.put(
-                WPS.DescriptionType,
-                new ComplexEMFBinding(Wps10Factory.eINSTANCE, WPS.DescriptionType));
+        bindings.put(WPS.DescriptionType, new ComplexEMFBinding(Wps10Factory.eINSTANCE, WPS.DescriptionType));
         bindings.put(
                 WPS.DocumentOutputDefinitionType,
                 new ComplexEMFBinding(Wps10Factory.eINSTANCE, WPS.DocumentOutputDefinitionType));
         bindings.put(
                 WPS.ExecuteResponse_ProcessOutputs,
                 new ComplexEMFBinding(
-                        Wps10Factory.eINSTANCE,
-                        WPS.ExecuteResponse_ProcessOutputs,
-                        ProcessOutputsType1.class));
-        bindings.put(
-                WPS.InputDescriptionType,
-                new ComplexEMFBinding(Wps10Factory.eINSTANCE, WPS.InputDescriptionType));
+                        Wps10Factory.eINSTANCE, WPS.ExecuteResponse_ProcessOutputs, ProcessOutputsType1.class));
+        bindings.put(WPS.InputDescriptionType, new ComplexEMFBinding(Wps10Factory.eINSTANCE, WPS.InputDescriptionType));
         bindings.put(WPS.InputType, new ComplexEMFBinding(Wps10Factory.eINSTANCE, WPS.InputType));
+        bindings.put(WPS.LanguagesType, new ComplexEMFBinding(Wps10Factory.eINSTANCE, WPS.LanguagesType));
         bindings.put(
-                WPS.LanguagesType,
-                new ComplexEMFBinding(Wps10Factory.eINSTANCE, WPS.LanguagesType));
+                WPS.LiteralDataType, new SimpleContentComplexEMFBinding(Wps10Factory.eINSTANCE, WPS.LiteralDataType));
+        bindings.put(WPS.LiteralInputType, new ComplexEMFBinding(Wps10Factory.eINSTANCE, WPS.LiteralInputType));
+        bindings.put(WPS.LiteralOutputType, new ComplexEMFBinding(Wps10Factory.eINSTANCE, WPS.LiteralOutputType));
+        bindings.put(WPS.OutputDataType, new ComplexEMFBinding(Wps10Factory.eINSTANCE, WPS.OutputDataType));
         bindings.put(
-                WPS.LiteralDataType,
-                new SimpleContentComplexEMFBinding(Wps10Factory.eINSTANCE, WPS.LiteralDataType));
+                WPS.OutputDefinitionsType, new ComplexEMFBinding(Wps10Factory.eINSTANCE, WPS.OutputDefinitionsType));
+        bindings.put(WPS.OutputDefinitionType, new ComplexEMFBinding(Wps10Factory.eINSTANCE, WPS.OutputDefinitionType));
         bindings.put(
-                WPS.LiteralInputType,
-                new ComplexEMFBinding(Wps10Factory.eINSTANCE, WPS.LiteralInputType));
+                WPS.OutputDescriptionType, new ComplexEMFBinding(Wps10Factory.eINSTANCE, WPS.OutputDescriptionType));
+        bindings.put(WPS.OutputReferenceType, new ComplexEMFBinding(Wps10Factory.eINSTANCE, WPS.OutputReferenceType));
+        bindings.put(WPS.ProcessBriefType, new ComplexEMFBinding(Wps10Factory.eINSTANCE, WPS.ProcessBriefType));
         bindings.put(
-                WPS.LiteralOutputType,
-                new ComplexEMFBinding(Wps10Factory.eINSTANCE, WPS.LiteralOutputType));
-        bindings.put(
-                WPS.OutputDataType,
-                new ComplexEMFBinding(Wps10Factory.eINSTANCE, WPS.OutputDataType));
-        bindings.put(
-                WPS.OutputDefinitionsType,
-                new ComplexEMFBinding(Wps10Factory.eINSTANCE, WPS.OutputDefinitionsType));
-        bindings.put(
-                WPS.OutputDefinitionType,
-                new ComplexEMFBinding(Wps10Factory.eINSTANCE, WPS.OutputDefinitionType));
-        bindings.put(
-                WPS.OutputDescriptionType,
-                new ComplexEMFBinding(Wps10Factory.eINSTANCE, WPS.OutputDescriptionType));
-        bindings.put(
-                WPS.OutputReferenceType,
-                new ComplexEMFBinding(Wps10Factory.eINSTANCE, WPS.OutputReferenceType));
-        bindings.put(
-                WPS.ProcessBriefType,
-                new ComplexEMFBinding(Wps10Factory.eINSTANCE, WPS.ProcessBriefType));
-        bindings.put(
-                WPS.ProcessDescriptionType,
-                new ComplexEMFBinding(Wps10Factory.eINSTANCE, WPS.ProcessDescriptionType));
-        bindings.put(
-                WPS.ProcessFailedType,
-                new ComplexEMFBinding(Wps10Factory.eINSTANCE, WPS.ProcessFailedType));
+                WPS.ProcessDescriptionType, new ComplexEMFBinding(Wps10Factory.eINSTANCE, WPS.ProcessDescriptionType));
+        bindings.put(WPS.ProcessFailedType, new ComplexEMFBinding(Wps10Factory.eINSTANCE, WPS.ProcessFailedType));
         bindings.put(
                 WPS.ProcessStartedType,
                 new SimpleContentComplexEMFBinding(Wps10Factory.eINSTANCE, WPS.ProcessStartedType));
-        bindings.put(
-                WPS.RequestBaseType,
-                new ComplexEMFBinding(Wps10Factory.eINSTANCE, WPS.RequestBaseType));
-        bindings.put(
-                WPS.ResponseBaseType,
-                new ComplexEMFBinding(Wps10Factory.eINSTANCE, WPS.ResponseBaseType));
-        bindings.put(
-                WPS.ResponseDocumentType,
-                new ComplexEMFBinding(Wps10Factory.eINSTANCE, WPS.ResponseDocumentType));
-        bindings.put(
-                WPS.ResponseFormType,
-                new ComplexEMFBinding(Wps10Factory.eINSTANCE, WPS.ResponseFormType));
+        bindings.put(WPS.RequestBaseType, new ComplexEMFBinding(Wps10Factory.eINSTANCE, WPS.RequestBaseType));
+        bindings.put(WPS.ResponseBaseType, new ComplexEMFBinding(Wps10Factory.eINSTANCE, WPS.ResponseBaseType));
+        bindings.put(WPS.ResponseDocumentType, new ComplexEMFBinding(Wps10Factory.eINSTANCE, WPS.ResponseDocumentType));
+        bindings.put(WPS.ResponseFormType, new ComplexEMFBinding(Wps10Factory.eINSTANCE, WPS.ResponseFormType));
         bindings.put(WPS.StatusType, new ComplexEMFBinding(Wps10Factory.eINSTANCE, WPS.StatusType));
         bindings.put(
                 WPS.SupportedComplexDataInputType,
@@ -147,65 +112,42 @@ public class WPSConfiguration extends Configuration {
         bindings.put(
                 WPS.SupportedComplexDataType,
                 new ComplexEMFBinding(Wps10Factory.eINSTANCE, WPS.SupportedComplexDataType));
-        bindings.put(
-                WPS.SupportedCRSsType,
-                new ComplexEMFBinding(Wps10Factory.eINSTANCE, WPS.SupportedCRSsType));
-        bindings.put(
-                WPS.SupportedUOMsType,
-                new ComplexEMFBinding(Wps10Factory.eINSTANCE, WPS.SupportedUOMsType));
+        bindings.put(WPS.SupportedCRSsType, new ComplexEMFBinding(Wps10Factory.eINSTANCE, WPS.SupportedCRSsType));
+        bindings.put(WPS.SupportedUOMsType, new ComplexEMFBinding(Wps10Factory.eINSTANCE, WPS.SupportedUOMsType));
         bindings.put(WPS.UOMsType, new ComplexEMFBinding(Wps10Factory.eINSTANCE, WPS.UOMsType));
-        bindings.put(
-                WPS.ValuesReferenceType,
-                new ComplexEMFBinding(Wps10Factory.eINSTANCE, WPS.ValuesReferenceType));
-        bindings.put(
-                WPS.WPSCapabilitiesType,
-                new ComplexEMFBinding(Wps10Factory.eINSTANCE, WPS.WPSCapabilitiesType));
-        bindings.put(
-                WPS._DescribeProcess,
-                new ComplexEMFBinding(Wps10Factory.eINSTANCE, WPS._DescribeProcess));
+        bindings.put(WPS.ValuesReferenceType, new ComplexEMFBinding(Wps10Factory.eINSTANCE, WPS.ValuesReferenceType));
+        bindings.put(WPS.WPSCapabilitiesType, new ComplexEMFBinding(Wps10Factory.eINSTANCE, WPS.WPSCapabilitiesType));
+        bindings.put(WPS._DescribeProcess, new ComplexEMFBinding(Wps10Factory.eINSTANCE, WPS._DescribeProcess));
         bindings.put(WPS._Execute, new ComplexEMFBinding(Wps10Factory.eINSTANCE, WPS._Execute));
-        bindings.put(
-                WPS._ExecuteResponse,
-                new ComplexEMFBinding(Wps10Factory.eINSTANCE, WPS._ExecuteResponse));
-        bindings.put(
-                WPS._GetCapabilities,
-                new ComplexEMFBinding(Wps10Factory.eINSTANCE, WPS._GetCapabilities));
+        bindings.put(WPS._ExecuteResponse, new ComplexEMFBinding(Wps10Factory.eINSTANCE, WPS._ExecuteResponse));
+        bindings.put(WPS._GetCapabilities, new ComplexEMFBinding(Wps10Factory.eINSTANCE, WPS._GetCapabilities));
         bindings.put(WPS._Languages, LanguagesBinding.class);
         // bindings.put(WPS._Languages, new ComplexEMFBinding(Wps10Factory.eINSTANCE,WPS._Languages,
         // LanguagesType1.class ));
         bindings.put(
                 WPS._Languages_Default,
-                new ComplexEMFBinding(
-                        Wps10Factory.eINSTANCE, WPS._Languages_Default, DefaultType2.class));
-        bindings.put(
-                WPS._ProcessDescriptions,
-                new ComplexEMFBinding(Wps10Factory.eINSTANCE, WPS._ProcessDescriptions));
-        bindings.put(
-                WPS._ProcessOfferings,
-                new ComplexEMFBinding(Wps10Factory.eINSTANCE, WPS._ProcessOfferings));
+                new ComplexEMFBinding(Wps10Factory.eINSTANCE, WPS._Languages_Default, DefaultType2.class));
+        bindings.put(WPS._ProcessDescriptions, new ComplexEMFBinding(Wps10Factory.eINSTANCE, WPS._ProcessDescriptions));
+        bindings.put(WPS._ProcessOfferings, new ComplexEMFBinding(Wps10Factory.eINSTANCE, WPS._ProcessOfferings));
         bindings.put(WPS._WSDL, new ComplexEMFBinding(Wps10Factory.eINSTANCE, WPS._WSDL));
         bindings.put(
                 WPS.InputReferenceType_Header,
                 new ComplexEMFBinding(Wps10Factory.eINSTANCE, WPS.InputReferenceType_Header));
         bindings.put(
                 WPS.InputReferenceType_BodyReference,
-                new ComplexEMFBinding(
-                        Wps10Factory.eINSTANCE, WPS.InputReferenceType_BodyReference));
+                new ComplexEMFBinding(Wps10Factory.eINSTANCE, WPS.InputReferenceType_BodyReference));
         bindings.put(
                 WPS.ProcessDescriptionType_DataInputs,
-                new ComplexEMFBinding(
-                        Wps10Factory.eINSTANCE, WPS.ProcessDescriptionType_DataInputs));
+                new ComplexEMFBinding(Wps10Factory.eINSTANCE, WPS.ProcessDescriptionType_DataInputs));
         bindings.put(
                 WPS.ProcessDescriptionType_ProcessOutputs,
-                new ComplexEMFBinding(
-                        Wps10Factory.eINSTANCE, WPS.ProcessDescriptionType_ProcessOutputs));
+                new ComplexEMFBinding(Wps10Factory.eINSTANCE, WPS.ProcessDescriptionType_ProcessOutputs));
         bindings.put(
                 WPS.SupportedCRSsType_Default,
                 new ComplexEMFBinding(Wps10Factory.eINSTANCE, WPS.SupportedCRSsType_Default));
         bindings.put(
                 WPS.SupportedUOMsType_Default,
-                new ComplexEMFBinding(
-                        Wps10Factory.eINSTANCE, WPS.SupportedUOMsType_Default, DefaultType1.class));
+                new ComplexEMFBinding(Wps10Factory.eINSTANCE, WPS.SupportedUOMsType_Default, DefaultType1.class));
     }
 
     @Override

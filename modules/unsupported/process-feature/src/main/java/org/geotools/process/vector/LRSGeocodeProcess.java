@@ -40,9 +40,7 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.linearref.LengthIndexedLine;
 
-@DescribeProcess(
-        title = "Geocode point in LRS",
-        description = "Extracts points at a given measure from LRS features")
+@DescribeProcess(title = "Geocode point in LRS", description = "Extracts points at a given measure from LRS features")
 public class LRSGeocodeProcess implements VectorProcess {
     private static final Logger LOGGER = Logging.getLogger(LRSGeocodeProcess.class);
 
@@ -58,17 +56,11 @@ public class LRSGeocodeProcess implements VectorProcess {
     public FeatureCollection<? extends FeatureType, ? extends Feature> execute(
             @DescribeParameter(name = "features", description = "Input feature collection")
                     FeatureCollection<? extends FeatureType, ? extends Feature> featureCollection,
-            @DescribeParameter(
-                            name = "from_measure_attb",
-                            description = "Attribute providing start measure of feature")
+            @DescribeParameter(name = "from_measure_attb", description = "Attribute providing start measure of feature")
                     String fromMeasureAttb,
-            @DescribeParameter(
-                            name = "to_measure_attb",
-                            description = "Attribute providing end measure of feature")
+            @DescribeParameter(name = "to_measure_attb", description = "Attribute providing end measure of feature")
                     String toMeasureAttb,
-            @DescribeParameter(
-                            name = "measure",
-                            description = "Measure of the point along the feature to be computed")
+            @DescribeParameter(name = "measure", description = "Measure of the point along the feature to be computed")
                     Double measure)
             throws ProcessException {
         DefaultFeatureCollection results = new DefaultFeatureCollection();
@@ -77,30 +69,25 @@ public class LRSGeocodeProcess implements VectorProcess {
                 LOGGER.info("No features provided in request");
                 return results;
             }
-            if (fromMeasureAttb == null
-                    || featureCollection.getSchema().getDescriptor(fromMeasureAttb) == null) {
-                throw new ProcessException(
-                        "The from_measure_attb parameter was not provided or not defined in schema");
+            if (fromMeasureAttb == null || featureCollection.getSchema().getDescriptor(fromMeasureAttb) == null) {
+                throw new ProcessException("The from_measure_attb parameter was not provided or not defined in schema");
             }
-            if (toMeasureAttb == null
-                    || featureCollection.getSchema().getDescriptor(toMeasureAttb) == null) {
+            if (toMeasureAttb == null || featureCollection.getSchema().getDescriptor(toMeasureAttb) == null) {
                 throw new ProcessException("The to_measure_attb parameter was not provided");
             }
             if (measure == null) {
                 throw new ProcessException("The measure parameter was not provided");
             }
-            SimpleFeatureType targetFeatureType =
-                    createTargetFeatureType(featureCollection.getSchema());
+            SimpleFeatureType targetFeatureType = createTargetFeatureType(featureCollection.getSchema());
 
-            try (FeatureIterator<? extends Feature> featureIterator =
-                    featureCollection.features()) {
+            try (FeatureIterator<? extends Feature> featureIterator = featureCollection.features()) {
                 Feature feature = featureIterator.next();
                 Double featureFromMeasure =
                         (Double) feature.getProperty(fromMeasureAttb).getValue();
-                Double featureToMeasure = (Double) feature.getProperty(toMeasureAttb).getValue();
-                LengthIndexedLine lengthIndexedLine =
-                        new LengthIndexedLine(
-                                (Geometry) feature.getDefaultGeometryProperty().getValue());
+                Double featureToMeasure =
+                        (Double) feature.getProperty(toMeasureAttb).getValue();
+                LengthIndexedLine lengthIndexedLine = new LengthIndexedLine(
+                        (Geometry) feature.getDefaultGeometryProperty().getValue());
                 double featureLength = featureToMeasure - featureFromMeasure;
                 double startOffset = measure - featureFromMeasure;
                 double calcLength =
@@ -113,8 +100,7 @@ public class LRSGeocodeProcess implements VectorProcess {
                     LOGGER.info("Requested feature has zero length");
                     return results;
                 }
-                Coordinate point =
-                        lengthIndexedLine.extractPoint(startOffset * calcLength / featureLength);
+                Coordinate point = lengthIndexedLine.extractPoint(startOffset * calcLength / featureLength);
                 results.add(createTargetFeature(feature, targetFeatureType, point));
             }
             return results;
@@ -133,8 +119,7 @@ public class LRSGeocodeProcess implements VectorProcess {
      * @return the modified feature type
      * @throws ProcessException errror
      */
-    private SimpleFeatureType createTargetFeatureType(FeatureType sourceFeatureType)
-            throws ProcessException {
+    private SimpleFeatureType createTargetFeatureType(FeatureType sourceFeatureType) throws ProcessException {
         try {
             SimpleFeatureTypeBuilder typeBuilder = new SimpleFeatureTypeBuilder();
             typeBuilder.setName(sourceFeatureType.getName().getLocalPart());
@@ -165,13 +150,13 @@ public class LRSGeocodeProcess implements VectorProcess {
      * @throws ProcessException error
      */
     private SimpleFeature createTargetFeature(
-            Feature feature, SimpleFeatureType targetFeatureType, Coordinate geocodePoint)
-            throws ProcessException {
+            Feature feature, SimpleFeatureType targetFeatureType, Coordinate geocodePoint) throws ProcessException {
         try {
             AttributeDescriptor geomAttbType = targetFeatureType.getGeometryDescriptor();
             Object[] attributes = new Object[targetFeatureType.getAttributeCount()];
             for (int i = 0; i < attributes.length; i++) {
-                AttributeDescriptor attbType = targetFeatureType.getAttributeDescriptors().get(i);
+                AttributeDescriptor attbType =
+                        targetFeatureType.getAttributeDescriptors().get(i);
                 if (attbType.equals(geomAttbType)) {
                     Point point = geometryFactory.createPoint(geocodePoint);
                     point.setSRID(4326);

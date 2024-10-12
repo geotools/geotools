@@ -33,36 +33,28 @@ public abstract class IndexesTest {
 
     protected Filter partialIndexedFilter() {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory();
-        Filter filter =
-                ff.and(totallyIndexedFilter(), ff.like(ff.property(attLocationName), "*fer*"));
+        Filter filter = ff.and(totallyIndexedFilter(), ff.like(ff.property(attLocationName), "*fer*"));
         return filter;
     }
 
     protected Filter totallyIndexedFilter() {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         Filter filter =
-                ff.or(
-                        ff.equals(ff.property(attId), ff.literal("st.1")),
-                        ff.like(ff.property(attName), "*fer*"));
+                ff.or(ff.equals(ff.property(attId), ff.literal("st.1")), ff.like(ff.property(attName), "*fer*"));
         return filter;
     }
 
     protected Filter totallyIndexedFilter2() {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         Filter filter =
-                ff.or(
-                        ff.equals(ff.property(attName), ff.literal("fer")),
-                        ff.like(ff.property(attName), "*mariela*"));
+                ff.or(ff.equals(ff.property(attName), ff.literal("fer")), ff.like(ff.property(attName), "*mariela*"));
         return filter;
     }
 
     protected Filter partialIndexedFilter_2idxfilterResults() {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory();
-        List<Filter> filters =
-                Arrays.asList(
-                        totallyIndexedFilter(),
-                        ff.like(ff.property(attLocationName), "*fer*"),
-                        totallyIndexedFilter2());
+        List<Filter> filters = Arrays.asList(
+                totallyIndexedFilter(), ff.like(ff.property(attLocationName), "*fer*"), totallyIndexedFilter2());
         Filter filter = ff.and(filters);
         return filter;
     }

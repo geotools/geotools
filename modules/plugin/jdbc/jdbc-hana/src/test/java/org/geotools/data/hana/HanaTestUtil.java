@@ -41,8 +41,7 @@ public class HanaTestUtil {
         return tableName + "_" + columnName + SEQUENCE_SUFFIX;
     }
 
-    public static String nextSequenceValSql(
-            String schemaName, String tableName, String columnName) {
+    public static String nextSequenceValSql(String schemaName, String tableName, String columnName) {
         String sequenceName = getSequenceName(tableName, columnName);
         StringBuilder sb = new StringBuilder();
         encodeIdentifiers(sb, schemaName, sequenceName);
@@ -97,8 +96,7 @@ public class HanaTestUtil {
 
     public boolean srsExists(int srid) throws SQLException {
         try (PreparedStatement ps =
-                conn.prepareStatement(
-                        "SELECT COUNT(*) FROM PUBLIC.ST_SPATIAL_REFERENCE_SYSTEMS WHERE SRS_ID = ?")) {
+                conn.prepareStatement("SELECT COUNT(*) FROM PUBLIC.ST_SPATIAL_REFERENCE_SYSTEMS WHERE SRS_ID = ?")) {
             ps.setInt(1, srid);
             try (ResultSet rs = ps.executeQuery()) {
                 if (!rs.next()) {
@@ -123,8 +121,7 @@ public class HanaTestUtil {
             return true;
         }
         try (PreparedStatement ps =
-                conn.prepareStatement(
-                        "SELECT COUNT(*) FROM PUBLIC.SCHEMAS WHERE SCHEMA_NAME = ?")) {
+                conn.prepareStatement("SELECT COUNT(*) FROM PUBLIC.SCHEMAS WHERE SCHEMA_NAME = ?")) {
             ps.setString(1, schemaName);
             try (ResultSet rs = ps.executeQuery()) {
                 if (!rs.next()) {
@@ -168,10 +165,9 @@ public class HanaTestUtil {
     }
 
     public boolean tableExists(String schemaName, String tableName) throws SQLException {
-        String sql =
-                (schemaName == null)
-                        ? "SELECT COUNT(*) FROM PUBLIC.TABLES WHERE SCHEMA_NAME = CURRENT_SCHEMA AND TABLE_NAME = ?"
-                        : "SELECT COUNT(*) FROM PUBLIC.TABLES WHERE SCHEMA_NAME = ? AND TABLE_NAME = ?";
+        String sql = (schemaName == null)
+                ? "SELECT COUNT(*) FROM PUBLIC.TABLES WHERE SCHEMA_NAME = CURRENT_SCHEMA AND TABLE_NAME = ?"
+                : "SELECT COUNT(*) FROM PUBLIC.TABLES WHERE SCHEMA_NAME = ? AND TABLE_NAME = ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             if (schemaName == null) {
                 ps.setString(1, tableName);
@@ -189,8 +185,7 @@ public class HanaTestUtil {
         }
     }
 
-    public void createRegisteredTable(String schemaName, String tableName, String[]... cols)
-            throws SQLException {
+    public void createRegisteredTable(String schemaName, String tableName, String[]... cols) throws SQLException {
         createTable(schemaName, tableName, cols);
         createSequencesForTable(schemaName, tableName);
     }
@@ -199,8 +194,7 @@ public class HanaTestUtil {
         createRegisteredTable(getTestSchema(), tableName, cols);
     }
 
-    public void createTable(String schemaName, String tableName, String[]... cols)
-            throws SQLException {
+    public void createTable(String schemaName, String tableName, String[]... cols) throws SQLException {
         StringBuilder sql = new StringBuilder();
         sql.append("CREATE COLUMN TABLE ");
         encodeIdentifiers(sql, schemaName, tableName);
@@ -225,14 +219,12 @@ public class HanaTestUtil {
         createTable(getTestSchema(), tableName, cols);
     }
 
-    public List<String> getPrimaryKeyColumnsOfTable(String schemaName, String tableName)
-            throws SQLException {
+    public List<String> getPrimaryKeyColumnsOfTable(String schemaName, String tableName) throws SQLException {
         schemaName = resolveSchema(schemaName);
         return getPrimaryKeys(schemaName, tableName);
     }
 
-    public void addPrimaryKey(String schemaName, String tableName, String... fields)
-            throws SQLException {
+    public void addPrimaryKey(String schemaName, String tableName, String... fields) throws SQLException {
         StringBuilder sql = new StringBuilder();
         sql.append("ALTER TABLE ");
         encodeIdentifiers(sql, schemaName, tableName);
@@ -247,8 +239,7 @@ public class HanaTestUtil {
         execute(sql.toString());
     }
 
-    public void addUniqueIndex(
-            String schemaName, String tableName, String indexName, String... fields)
+    public void addUniqueIndex(String schemaName, String tableName, String indexName, String... fields)
             throws SQLException {
         StringBuilder sql = new StringBuilder();
         sql.append("CREATE UNIQUE INDEX ");
@@ -321,8 +312,7 @@ public class HanaTestUtil {
         }
     }
 
-    public List<String> getSequencesOfTable(String schemaName, String tableName)
-            throws SQLException {
+    public List<String> getSequencesOfTable(String schemaName, String tableName) throws SQLException {
         List<String> pks = getPrimaryKeyColumnsOfTable(schemaName, tableName);
         ArrayList<String> ret = new ArrayList<>();
         for (String pk : pks) {
@@ -332,10 +322,9 @@ public class HanaTestUtil {
     }
 
     public boolean viewExists(String schemaName, String viewName) throws SQLException {
-        String sql =
-                (schemaName == null)
-                        ? "SELECT COUNT(*) FROM PUBLIC.VIEWS WHERE SCHEMA_NAME = CURRENT_SCHEMA AND VIEW_NAME = ?"
-                        : "SELECT COUNT(*) FROM PUBLIC.VIEWS WHERE SCHEMA_NAME = ? AND VIEW_NAME = ?";
+        String sql = (schemaName == null)
+                ? "SELECT COUNT(*) FROM PUBLIC.VIEWS WHERE SCHEMA_NAME = CURRENT_SCHEMA AND VIEW_NAME = ?"
+                : "SELECT COUNT(*) FROM PUBLIC.VIEWS WHERE SCHEMA_NAME = ? AND VIEW_NAME = ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             if (schemaName == null) {
                 ps.setString(1, viewName);
@@ -353,8 +342,7 @@ public class HanaTestUtil {
         }
     }
 
-    public void createView(
-            String schemaName, String viewName, String sourceTableName, String... selectedFields)
+    public void createView(String schemaName, String viewName, String sourceTableName, String... selectedFields)
             throws SQLException {
         StringBuilder sql = new StringBuilder();
         sql.append("CREATE VIEW ");
@@ -375,8 +363,7 @@ public class HanaTestUtil {
         execute(sql.toString());
     }
 
-    public void createTestView(String viewName, String sourceTableName, String... selectedFields)
-            throws SQLException {
+    public void createTestView(String viewName, String sourceTableName, String... selectedFields) throws SQLException {
         createView(getTestSchema(), viewName, sourceTableName, selectedFields);
     }
 
@@ -395,10 +382,9 @@ public class HanaTestUtil {
     }
 
     public boolean sequenceExists(String schemaName, String sequenceName) throws SQLException {
-        String sql =
-                (schemaName == null)
-                        ? "SELECT COUNT(*) FROM PUBLIC.SEQUENCES WHERE SCHEMA_NAME = CURRENT_SCHEMA AND SEQUENCE_NAME = ?"
-                        : "SELECT COUNT(*) FROM PUBLIC.SEQUENCES WHERE SCHEMA_NAME = ? AND SEQUENCE_NAME = ?";
+        String sql = (schemaName == null)
+                ? "SELECT COUNT(*) FROM PUBLIC.SEQUENCES WHERE SCHEMA_NAME = CURRENT_SCHEMA AND SEQUENCE_NAME = ?"
+                : "SELECT COUNT(*) FROM PUBLIC.SEQUENCES WHERE SCHEMA_NAME = ? AND SEQUENCE_NAME = ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             if (schemaName == null) {
                 ps.setString(1, sequenceName);
@@ -416,8 +402,7 @@ public class HanaTestUtil {
         }
     }
 
-    public void createSequence(String schemaName, String sequenceName, int startValue)
-            throws SQLException {
+    public void createSequence(String schemaName, String sequenceName, int startValue) throws SQLException {
         StringBuilder sql = new StringBuilder();
         sql.append("CREATE SEQUENCE ");
         encodeIdentifiers(sql, schemaName, sequenceName);
@@ -426,12 +411,8 @@ public class HanaTestUtil {
         execute(sql.toString());
     }
 
-    public void skipSequenceValueFor(String schemaName, String tableName, String columnName)
-            throws SQLException {
-        execute(
-                "SELECT "
-                        + HanaTestUtil.nextSequenceValSql(schemaName, tableName, columnName)
-                        + " FROM DUMMY");
+    public void skipSequenceValueFor(String schemaName, String tableName, String columnName) throws SQLException {
+        execute("SELECT " + HanaTestUtil.nextSequenceValSql(schemaName, tableName, columnName) + " FROM DUMMY");
     }
 
     public void dropSequence(String schemaName, String sequenceName) throws SQLException {
@@ -444,8 +425,7 @@ public class HanaTestUtil {
         execute(sql.toString());
     }
 
-    public void insertIntoTable(String schemaName, String tableName, Object... values)
-            throws SQLException {
+    public void insertIntoTable(String schemaName, String tableName, Object... values) throws SQLException {
         StringBuilder sql = new StringBuilder();
         sql.append("INSERT INTO ");
         encodeIdentifiers(sql, schemaName, tableName);
@@ -464,8 +444,8 @@ public class HanaTestUtil {
         insertIntoTable(getTestSchema(), tableName, values);
     }
 
-    public void insertFieldsIntoTable(
-            String schemaName, String tableName, Object... fieldsAndValues) throws SQLException {
+    public void insertFieldsIntoTable(String schemaName, String tableName, Object... fieldsAndValues)
+            throws SQLException {
         int numFields = fieldsAndValues.length / 2;
         StringBuilder sql = new StringBuilder();
         sql.append("INSERT INTO ");
@@ -489,8 +469,7 @@ public class HanaTestUtil {
         execute(sql.toString());
     }
 
-    public Object nextSequenceValueForColumn(
-            String schemaName, String tableName, String columnName) {
+    public Object nextSequenceValueForColumn(String schemaName, String tableName, String columnName) {
         String sequenceName = getSequenceName(tableName, columnName);
         return new NextSequenceValue(schemaName, sequenceName);
     }

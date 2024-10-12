@@ -82,8 +82,7 @@ public abstract class TransformerBase {
 
         if (indentation > -1) {
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-            transformer.setOutputProperty(
-                    "{http://xml.apache.org/xslt}indent-amount", Integer.toString(indentation));
+            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", Integer.toString(indentation));
         } else {
             transformer.setOutputProperty(OutputKeys.INDENT, "no");
         }
@@ -136,8 +135,7 @@ public abstract class TransformerBase {
      * Create a Transformation task. This is a Runnable task which supports aborting any processing.
      * It will not start until the run method is called.
      */
-    public Task createTransformTask(Object object, StreamResult result)
-            throws TransformerException {
+    public Task createTransformTask(Object object, StreamResult result) throws TransformerException {
 
         return new Task(object, result);
     }
@@ -363,8 +361,7 @@ public abstract class TransformerBase {
         }
 
         @Override
-        public void endElement(String namespaceURI, String localName, String qName)
-                throws SAXException {
+        public void endElement(String namespaceURI, String localName, String qName) throws SAXException {
             original.endElement(namespaceURI, localName, qName);
             level--;
 
@@ -424,8 +421,7 @@ public abstract class TransformerBase {
         }
 
         @Override
-        public void startElement(
-                String namespaceURI, String localName, String qName, Attributes atts)
+        public void startElement(String namespaceURI, String localName, String qName, Attributes atts)
                 throws SAXException {
             if (namespaceDecls != null) {
 
@@ -440,8 +436,7 @@ public abstract class TransformerBase {
                 }
 
                 for (int i = 0, ii = atts.getLength(); i < ii; i++) {
-                    namespaceDecls.addAttribute(
-                            null, null, atts.getQName(i), atts.getType(i), atts.getValue(i));
+                    namespaceDecls.addAttribute(null, null, atts.getQName(i), atts.getType(i), atts.getValue(i));
                 }
 
                 atts = namespaceDecls;
@@ -656,8 +651,7 @@ public abstract class TransformerBase {
                     throw new NullPointerException("Attempted to start XML tag with null element");
                 }
                 if (attributes == null) {
-                    throw new NullPointerException(
-                            "Attempted to start XML tag with null attributes");
+                    throw new NullPointerException("Attempted to start XML tag with null attributes");
                 }
                 pending.add(new Start(element, attributes));
             }
@@ -749,10 +743,7 @@ public abstract class TransformerBase {
         }
 
         public TranslatorSupport(
-                ContentHandler contentHandler,
-                String prefix,
-                String nsURI,
-                SchemaLocationSupport schemaLocation) {
+                ContentHandler contentHandler, String prefix, String nsURI, SchemaLocationSupport schemaLocation) {
             this(contentHandler, prefix, nsURI);
             this.schemaLocation = schemaLocation;
         }
@@ -811,14 +802,12 @@ public abstract class TransformerBase {
          * @throws IllegalStateException if no mark is set
          */
         protected void commit() {
-            if (backend != bufferedBackend)
-                throw new IllegalStateException("Can't commit without a mark");
+            if (backend != bufferedBackend) throw new IllegalStateException("Can't commit without a mark");
             for (Action a : pending) {
                 try {
                     a.commit();
                 } catch (Exception e) {
-                    String message =
-                            "Error while committing XML elements; specific element was: " + a;
+                    String message = "Error while committing XML elements; specific element was: " + a;
                     throw new RuntimeException(message, e);
                 }
             }
@@ -1075,8 +1064,7 @@ public abstract class TransformerBase {
         }
 
         @Override
-        public void setFeature(String name, boolean value)
-                throws SAXNotRecognizedException, SAXNotSupportedException {
+        public void setFeature(String name, boolean value) throws SAXNotRecognizedException, SAXNotSupportedException {
             // no-op. The base XMLFilterImpl will throw an exception, so we must override this as
             // Transformer implementations such as Saxonica's Saxon expect to at least switch on
             // http://xml.org/sax/features/namespaces
@@ -1093,12 +1081,7 @@ public abstract class TransformerBase {
 
                 if (translator.getDefaultNamespace() != null) {
                     // declare the default mapping
-                    atts.addAttribute(
-                            XMLNS_NAMESPACE,
-                            null,
-                            "xmlns",
-                            "CDATA",
-                            translator.getDefaultNamespace());
+                    atts.addAttribute(XMLNS_NAMESPACE, null, "xmlns", "CDATA", translator.getDefaultNamespace());
 
                     // if prefix non-null, declare the mapping
                     if (translator.getDefaultPrefix() != null) {
@@ -1145,17 +1128,8 @@ public abstract class TransformerBase {
 
                 if ((schemaLocSup != null) && !schemaLocSup.getSchemaLocation().equals("")) {
                     atts.addAttribute(
-                            XMLNS_NAMESPACE,
-                            null,
-                            "xmlns:xsi",
-                            "CDATA",
-                            "http://www.w3.org/2001/XMLSchema-instance");
-                    atts.addAttribute(
-                            null,
-                            null,
-                            "xsi:schemaLocation",
-                            null,
-                            schemaLocSup.getSchemaLocation());
+                            XMLNS_NAMESPACE, null, "xmlns:xsi", "CDATA", "http://www.w3.org/2001/XMLSchema-instance");
+                    atts.addAttribute(null, null, "xsi:schemaLocation", null, schemaLocSup.getSchemaLocation());
                 }
             } else {
                 translator = base.createTranslator(handler);

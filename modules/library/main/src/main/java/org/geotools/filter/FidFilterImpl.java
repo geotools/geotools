@@ -47,8 +47,7 @@ import org.geotools.filter.identity.FeatureIdImpl;
  */
 public class FidFilterImpl extends AbstractFilter implements Id {
     /** Logger for the default core module. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(FidFilterImpl.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(FidFilterImpl.class);
 
     /** List of the Identifer. */
     private Set<Identifier> fids = new LinkedHashSet<>();
@@ -60,8 +59,7 @@ public class FidFilterImpl extends AbstractFilter implements Id {
         // check these are really identifiers
         for (Object next : fids) {
             if (!(next instanceof Identifier))
-                throw new ClassCastException(
-                        "Fids must implement Identifier, " + next.getClass() + " does not");
+                throw new ClassCastException("Fids must implement Identifier, " + next.getClass() + " does not");
         }
         this.fids = new LinkedHashSet<>(fids);
         for (Identifier identifier : this.fids) {

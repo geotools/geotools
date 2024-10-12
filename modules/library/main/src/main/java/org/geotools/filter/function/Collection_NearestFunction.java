@@ -42,18 +42,14 @@ import org.geotools.filter.capability.FunctionNameImpl;
 public class Collection_NearestFunction extends FunctionImpl {
 
     /** The logger for the filter module. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(Collection_NearestFunction.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(Collection_NearestFunction.class);
 
     SimpleFeatureCollection previousFeatureCollection = null;
 
     Object match = null;
 
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "Collection_Nearest",
-                    parameter("expression", Expression.class),
-                    parameter("value", Comparable.class));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "Collection_Nearest", parameter("expression", Expression.class), parameter("value", Comparable.class));
 
     /** Creates a new instance of Collection_MaxFunction */
     public Collection_NearestFunction() {

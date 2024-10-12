@@ -64,7 +64,6 @@ public class AppSchemaFeatureTypeRegistry extends FeatureTypeRegistry {
     public AppSchemaFeatureTypeRegistry(NamespaceSupport namespaces) {
         super(
                 new ComplexFeatureTypeFactoryImpl(),
-                new GmlFeatureTypeRegistryConfiguration(
-                        namespaces == null ? null : namespaces.getURI("gml")));
+                new GmlFeatureTypeRegistryConfiguration(namespaces == null ? null : namespaces.getURI("gml")));
     }
 }

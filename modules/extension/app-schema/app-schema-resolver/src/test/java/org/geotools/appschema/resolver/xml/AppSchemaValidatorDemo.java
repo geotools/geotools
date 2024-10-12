@@ -57,9 +57,8 @@ public class AppSchemaValidatorDemo {
     @SuppressWarnings("PMD.SystemPrintln")
     public static void main(String[] args) throws IOException {
         // download and cache schemas using app-schema-cache discovered from resource path
-        SchemaCache cache =
-                SchemaCache.buildAutomaticallyConfiguredUsingFileUrl(
-                        AppSchemaValidatorDemo.class.getResource(RESOURCE));
+        SchemaCache cache = SchemaCache.buildAutomaticallyConfiguredUsingFileUrl(
+                AppSchemaValidatorDemo.class.getResource(RESOURCE));
         // no classpath resolution of schemas; cached downloads only
         SchemaResolver resolver = new SchemaResolver(null, false, cache);
         AppSchemaValidator validator = AppSchemaValidator.buildValidator(resolver);

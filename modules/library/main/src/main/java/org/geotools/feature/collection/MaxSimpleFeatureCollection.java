@@ -43,8 +43,7 @@ public class MaxSimpleFeatureCollection extends DecoratingSimpleFeatureCollectio
     long start;
     long max;
 
-    public MaxSimpleFeatureCollection(
-            FeatureCollection<SimpleFeatureType, SimpleFeature> delegate, long max) {
+    public MaxSimpleFeatureCollection(FeatureCollection<SimpleFeatureType, SimpleFeature> delegate, long max) {
         this(DataUtilities.simple(delegate), 0, max);
     }
 

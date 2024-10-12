@@ -60,17 +60,13 @@ public class HanaJoinTestSetup extends JDBCJoinTestSetup {
                     TABLE1,
                     0,
                     "zero",
-                    htu.geometry(
-                            "POLYGON ((-0.1 -0.1, -0.1 0.1, 0.1 0.1, 0.1 -0.1, -0.1 -0.1))",
-                            1000004326),
+                    htu.geometry("POLYGON ((-0.1 -0.1, -0.1 0.1, 0.1 0.1, 0.1 -0.1, -0.1 -0.1))", 1000004326),
                     0);
             htu.insertIntoTestTable(
                     TABLE1,
                     1,
                     "one",
-                    htu.geometry(
-                            "POLYGON ((-1.1 -1.1, -1.1 1.1, 1.1 1.1, 1.1 -1.1, -1.1 -1.1))",
-                            1000004326),
+                    htu.geometry("POLYGON ((-1.1 -1.1, -1.1 1.1, 1.1 1.1, 1.1 -1.1, -1.1 -1.1))", 1000004326),
                     1);
             htu.insertIntoTestTable(
                     TABLE1,

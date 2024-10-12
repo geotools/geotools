@@ -29,13 +29,12 @@ public class BasicGraphableTest {
     @Before
     public void setUp() throws Exception {
 
-        m_graphable =
-                new BasicGraphable() {
-                    @Override
-                    public Iterator<? extends Graphable> getRelated() {
-                        return null;
-                    }
-                };
+        m_graphable = new BasicGraphable() {
+            @Override
+            public Iterator<? extends Graphable> getRelated() {
+                return null;
+            }
+        };
     }
 
     /**

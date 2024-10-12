@@ -43,10 +43,9 @@ public class ExpressionTypeVisitorTest {
 
     @Before
     public void setup() throws Exception {
-        ft =
-                DataUtilities.createType(
-                        "test",
-                        "theGeom:LineString,b:java.lang.Byte,s:java.lang.Short,i:java.lang.Integer,l:java.lang.Long,d:java.lang.Double,label:String");
+        ft = DataUtilities.createType(
+                "test",
+                "theGeom:LineString,b:java.lang.Byte,s:java.lang.Short,i:java.lang.Integer,l:java.lang.Long,d:java.lang.Double,label:String");
         visitor = new ExpressionTypeVisitor(ft);
     }
 
@@ -70,8 +69,7 @@ public class ExpressionTypeVisitorTest {
 
     @Test
     public void testIfThenElse() { // special case within function
-        Function func =
-                ff.function(("if_then_else"), ff.literal(true), ff.literal(10), ff.literal(20));
+        Function func = ff.function(("if_then_else"), ff.literal(true), ff.literal(10), ff.literal(20));
         assertEquals(Integer.class, func.accept(visitor, null));
     }
 

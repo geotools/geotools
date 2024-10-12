@@ -74,8 +74,7 @@ class UomRescaleHelper {
             String value = unscaled.evaluate(null, String.class);
             if (value == null) {
                 throw new IllegalArgumentException(
-                        "Invalid empty measure '', "
-                                + "was expecting a number, eventually followed by px, m or ft");
+                        "Invalid empty measure '', " + "was expecting a number, eventually followed by px, m or ft");
             }
             if (value.endsWith("px")) {
                 // no rescale needed for this one
@@ -94,10 +93,9 @@ class UomRescaleHelper {
                     double rescaled = rescale(measure, uom);
                     return ff.literal(rescaled);
                 } else {
-                    throw new IllegalArgumentException(
-                            "Invalid measure '"
-                                    + value
-                                    + "', was expecting a number, eventually followed by px, m or ft");
+                    throw new IllegalArgumentException("Invalid measure '"
+                            + value
+                            + "', was expecting a number, eventually followed by px, m or ft");
                 }
             }
         } else {

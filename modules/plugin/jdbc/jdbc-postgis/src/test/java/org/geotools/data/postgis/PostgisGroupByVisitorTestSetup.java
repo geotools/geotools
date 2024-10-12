@@ -32,20 +32,19 @@ public class PostgisGroupByVisitorTestSetup extends JDBCGroupByVisitorTestSetup 
         run(
                 "CREATE TABLE BUILDINGS_GROUP_BY_TESTS (id int4 PRIMARY KEY, building_id text, "
                         + "building_type text, energy_type text, fuel_consumption numeric, energy_consumption numeric, last_update timestamp, last_update_date date);");
-        run(
-                "INSERT INTO BUILDINGS_GROUP_BY_TESTS VALUES "
-                        + "(1, 'SCHOOL_A', 'SCHOOL', 'FLOWING_WATER', NULL, 50.0, '2016-06-03 12:00:00', '2016-06-03'),"
-                        + "(2, 'SCHOOL_A', 'SCHOOL', 'NUCLEAR', NULL, 10.0, '2016-06-03 16:00:00', '2016-06-03'),"
-                        + "(3, 'SCHOOL_A', 'SCHOOL', 'WIND', NULL, 20.0, '2016-06-03 20:00:00', '2016-06-03'),"
-                        + "(4, 'SCHOOL_B', 'SCHOOL', 'SOLAR', NULL, 30.0, '2016-06-05 12:00:00', '2016-06-05'),"
-                        + "(5, 'SCHOOL_B', 'SCHOOL', 'FUEL', NULL, 60.0, '2016-06-06 12:00:00', '2016-06-06'),"
-                        + "(6, 'SCHOOL_B', 'SCHOOL', 'NUCLEAR', NULL, 10.0, '2016-06-06 14:00:00', '2016-06-06'),"
-                        + "(7, 'FABRIC_A', 'FABRIC', 'FLOWING_WATER', NULL, 500.0, '2016-06-07 12:00:00', '2016-06-07'),"
-                        + "(8, 'FABRIC_A', 'FABRIC', 'NUCLEAR', NULL, 150.0, '2016-06-07 18:00:00', '2016-06-07'),"
-                        + "(9, 'FABRIC_B', 'FABRIC', 'WIND', NULL, 20.0, '2016-06-07 20:00:00', '2016-06-07'),"
-                        + "(10, 'FABRIC_B', 'FABRIC', 'SOLAR', NULL, 30.0, '2016-06-15 12:00:00', '2016-06-15'),"
-                        + "(11, 'HOUSE_A', 'HOUSE', 'FUEL', NULL, 6.0, '2016-06-15 19:00:00', '2016-06-15'),"
-                        + "(12, 'HOUSE_B', 'HOUSE', 'NUCLEAR', NULL, 4.0, '2016-06-15 20:00:00', '2016-06-15');");
+        run("INSERT INTO BUILDINGS_GROUP_BY_TESTS VALUES "
+                + "(1, 'SCHOOL_A', 'SCHOOL', 'FLOWING_WATER', NULL, 50.0, '2016-06-03 12:00:00', '2016-06-03'),"
+                + "(2, 'SCHOOL_A', 'SCHOOL', 'NUCLEAR', NULL, 10.0, '2016-06-03 16:00:00', '2016-06-03'),"
+                + "(3, 'SCHOOL_A', 'SCHOOL', 'WIND', NULL, 20.0, '2016-06-03 20:00:00', '2016-06-03'),"
+                + "(4, 'SCHOOL_B', 'SCHOOL', 'SOLAR', NULL, 30.0, '2016-06-05 12:00:00', '2016-06-05'),"
+                + "(5, 'SCHOOL_B', 'SCHOOL', 'FUEL', NULL, 60.0, '2016-06-06 12:00:00', '2016-06-06'),"
+                + "(6, 'SCHOOL_B', 'SCHOOL', 'NUCLEAR', NULL, 10.0, '2016-06-06 14:00:00', '2016-06-06'),"
+                + "(7, 'FABRIC_A', 'FABRIC', 'FLOWING_WATER', NULL, 500.0, '2016-06-07 12:00:00', '2016-06-07'),"
+                + "(8, 'FABRIC_A', 'FABRIC', 'NUCLEAR', NULL, 150.0, '2016-06-07 18:00:00', '2016-06-07'),"
+                + "(9, 'FABRIC_B', 'FABRIC', 'WIND', NULL, 20.0, '2016-06-07 20:00:00', '2016-06-07'),"
+                + "(10, 'FABRIC_B', 'FABRIC', 'SOLAR', NULL, 30.0, '2016-06-15 12:00:00', '2016-06-15'),"
+                + "(11, 'HOUSE_A', 'HOUSE', 'FUEL', NULL, 6.0, '2016-06-15 19:00:00', '2016-06-15'),"
+                + "(12, 'HOUSE_B', 'HOUSE', 'NUCLEAR', NULL, 4.0, '2016-06-15 20:00:00', '2016-06-15');");
     }
 
     @Override
@@ -57,27 +56,17 @@ public class PostgisGroupByVisitorTestSetup extends JDBCGroupByVisitorTestSetup 
                         + "\"intProperty\" int," //
                         + "\"doubleProperty\" double precision, " //
                         + "\"stringProperty\" varchar)");
-        run(
-                "CREATE INDEX FT1_GROUP_BY_GEOMETRY_INDEX ON \"ft1_group_by\" USING GIST (\"geometry\") ");
+        run("CREATE INDEX FT1_GROUP_BY_GEOMETRY_INDEX ON \"ft1_group_by\" USING GIST (\"geometry\") ");
 
-        run(
-                "INSERT INTO \"ft1_group_by\" VALUES(0, ST_GeometryFromText('POINT(0 0)', 4326), 0, 0.0, 'aa')");
-        run(
-                "INSERT INTO \"ft1_group_by\" VALUES(1, ST_GeometryFromText('POINT(0 0)', 4326), 1, 1.0, 'ba')");
-        run(
-                "INSERT INTO \"ft1_group_by\" VALUES(2, ST_GeometryFromText('POINT(0 0)', 4326), 2, 2.0, 'ca')");
-        run(
-                "INSERT INTO \"ft1_group_by\" VALUES(3, ST_GeometryFromText('POINT(1 1)', 4326), 10, 10.0, 'ab')");
-        run(
-                "INSERT INTO \"ft1_group_by\" VALUES(4, ST_GeometryFromText('POINT(1 1)', 4326), 11, 11.0, 'bb')");
-        run(
-                "INSERT INTO \"ft1_group_by\" VALUES(5, ST_GeometryFromText('POINT(1 1)', 4326), 12, 12.0, 'cb')");
-        run(
-                "INSERT INTO \"ft1_group_by\" VALUES(6, ST_GeometryFromText('POINT(2 2)', 4326), 20, 20.0, 'ac')");
-        run(
-                "INSERT INTO \"ft1_group_by\" VALUES(7, ST_GeometryFromText('POINT(2 2)', 4326), 21, 21.0, 'bc')");
-        run(
-                "INSERT INTO \"ft1_group_by\" VALUES(8, ST_GeometryFromText('POINT(2 2)', 4326), 22, 22.0, 'cc')");
+        run("INSERT INTO \"ft1_group_by\" VALUES(0, ST_GeometryFromText('POINT(0 0)', 4326), 0, 0.0, 'aa')");
+        run("INSERT INTO \"ft1_group_by\" VALUES(1, ST_GeometryFromText('POINT(0 0)', 4326), 1, 1.0, 'ba')");
+        run("INSERT INTO \"ft1_group_by\" VALUES(2, ST_GeometryFromText('POINT(0 0)', 4326), 2, 2.0, 'ca')");
+        run("INSERT INTO \"ft1_group_by\" VALUES(3, ST_GeometryFromText('POINT(1 1)', 4326), 10, 10.0, 'ab')");
+        run("INSERT INTO \"ft1_group_by\" VALUES(4, ST_GeometryFromText('POINT(1 1)', 4326), 11, 11.0, 'bb')");
+        run("INSERT INTO \"ft1_group_by\" VALUES(5, ST_GeometryFromText('POINT(1 1)', 4326), 12, 12.0, 'cb')");
+        run("INSERT INTO \"ft1_group_by\" VALUES(6, ST_GeometryFromText('POINT(2 2)', 4326), 20, 20.0, 'ac')");
+        run("INSERT INTO \"ft1_group_by\" VALUES(7, ST_GeometryFromText('POINT(2 2)', 4326), 21, 21.0, 'bc')");
+        run("INSERT INTO \"ft1_group_by\" VALUES(8, ST_GeometryFromText('POINT(2 2)', 4326), 22, 22.0, 'cc')");
     }
 
     @Override

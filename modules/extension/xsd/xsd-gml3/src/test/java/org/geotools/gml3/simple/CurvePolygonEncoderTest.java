@@ -31,10 +31,7 @@ public class CurvePolygonEncoderTest extends GeometryEncoderTestSupport {
     public void testCircle() throws Exception {
         PolygonEncoder encoder = new PolygonEncoder(gtEncoder, "gml", GML.NAMESPACE);
         Polygon geometry =
-                (Polygon)
-                        new WKTReader2()
-                                .read(
-                                        "CURVEPOLYGON(CIRCULARSTRING(-10 0, -8 2, -6 0, -8 -2, -10 0))");
+                (Polygon) new WKTReader2().read("CURVEPOLYGON(CIRCULARSTRING(-10 0, -8 2, -6 0, -8 -2, -10 0))");
         Document doc = encode(encoder, geometry);
         // XMLTestSupport.print(doc);
 
@@ -44,9 +41,7 @@ public class CurvePolygonEncoderTest extends GeometryEncoderTestSupport {
         String ext1 = "//gml:Polygon/gml:exterior/gml:Ring/gml:curveMember[1]";
         assertThat(
                 doc,
-                hasXPath(
-                        ext1 + "/gml:Curve/gml:segments/gml:ArcString/@interpolation",
-                        equalTo("circularArc3Points")));
+                hasXPath(ext1 + "/gml:Curve/gml:segments/gml:ArcString/@interpolation", equalTo("circularArc3Points")));
         assertThat(
                 doc,
                 hasXPath(
@@ -57,11 +52,10 @@ public class CurvePolygonEncoderTest extends GeometryEncoderTestSupport {
     @Test
     public void testDonut() throws Exception {
         PolygonEncoder encoder = new PolygonEncoder(gtEncoder, "gml", GML.NAMESPACE);
-        Polygon geometry =
-                (Polygon)
-                        new WKTReader2()
-                                .read(
-                                        "CURVEPOLYGON(CIRCULARSTRING(-7 -8, -5 -6, -3 -8, -5 -10, -7 -8),CIRCULARSTRING(-6 -8, -5 -7, -4 -8, -5 -9, -6 -8))");
+        Polygon geometry = (Polygon)
+                new WKTReader2()
+                        .read(
+                                "CURVEPOLYGON(CIRCULARSTRING(-7 -8, -5 -6, -3 -8, -5 -10, -7 -8),CIRCULARSTRING(-6 -8, -5 -7, -4 -8, -5 -9, -6 -8))");
         Document doc = encode(encoder, geometry);
         // XMLTestSupport.print(doc);
 
@@ -71,9 +65,7 @@ public class CurvePolygonEncoderTest extends GeometryEncoderTestSupport {
         String ext1 = "//gml:Polygon/gml:exterior/gml:Ring/gml:curveMember[1]";
         assertThat(
                 doc,
-                hasXPath(
-                        ext1 + "/gml:Curve/gml:segments/gml:ArcString/@interpolation",
-                        equalTo("circularArc3Points")));
+                hasXPath(ext1 + "/gml:Curve/gml:segments/gml:ArcString/@interpolation", equalTo("circularArc3Points")));
         assertThat(
                 doc,
                 hasXPath(
@@ -83,9 +75,7 @@ public class CurvePolygonEncoderTest extends GeometryEncoderTestSupport {
         String int1 = "//gml:Polygon/gml:interior/gml:Ring/gml:curveMember[1]";
         assertThat(
                 doc,
-                hasXPath(
-                        int1 + "/gml:Curve/gml:segments/gml:ArcString/@interpolation",
-                        equalTo("circularArc3Points")));
+                hasXPath(int1 + "/gml:Curve/gml:segments/gml:ArcString/@interpolation", equalTo("circularArc3Points")));
         assertThat(
                 doc,
                 hasXPath(
@@ -96,12 +86,9 @@ public class CurvePolygonEncoderTest extends GeometryEncoderTestSupport {
     @Test
     public void testComplex() throws Exception {
         PolygonEncoder encoder = new PolygonEncoder(gtEncoder, "gml", GML.NAMESPACE);
-        Polygon geometry =
-                (Polygon)
-                        new WKTReader2()
-                                .read(
-                                        "CURVEPOLYGON(COMPOUNDCURVE(CIRCULARSTRING(0 0, 2 0, 2 1, 2 3, 4 3),(4 3, 4 5, 1 4, 0 0)), "
-                                                + "CIRCULARSTRING(1.7 1, 1.4 0.4, 1.6 0.4, 1.6 0.5, 1.7 1) )");
+        Polygon geometry = (Polygon) new WKTReader2()
+                .read("CURVEPOLYGON(COMPOUNDCURVE(CIRCULARSTRING(0 0, 2 0, 2 1, 2 3, 4 3),(4 3, 4 5, 1 4, 0 0)), "
+                        + "CIRCULARSTRING(1.7 1, 1.4 0.4, 1.6 0.4, 1.6 0.5, 1.7 1) )");
         Document doc = encode(encoder, geometry);
         // XMLTestSupport.print(doc);
 
@@ -111,23 +98,17 @@ public class CurvePolygonEncoderTest extends GeometryEncoderTestSupport {
         String ext1 = "//gml:Polygon/gml:exterior/gml:Ring/gml:curveMember[1]";
         assertThat(
                 doc,
-                hasXPath(
-                        ext1 + "/gml:Curve/gml:segments/gml:ArcString/@interpolation",
-                        equalTo("circularArc3Points")));
+                hasXPath(ext1 + "/gml:Curve/gml:segments/gml:ArcString/@interpolation", equalTo("circularArc3Points")));
         assertThat(
                 doc,
-                hasXPath(
-                        ext1 + "/gml:Curve/gml:segments/gml:ArcString/gml:posList",
-                        equalTo("0 0 2 0 2 1 2 3 4 3")));
+                hasXPath(ext1 + "/gml:Curve/gml:segments/gml:ArcString/gml:posList", equalTo("0 0 2 0 2 1 2 3 4 3")));
         String ext2 = "//gml:Polygon/gml:exterior/gml:Ring/gml:curveMember[2]";
         assertThat(doc, hasXPath(ext2 + "/gml:LineString/gml:posList", equalTo("4 3 4 5 1 4 0 0")));
 
         String int1 = "//gml:Polygon/gml:interior/gml:Ring/gml:curveMember[1]";
         assertThat(
                 doc,
-                hasXPath(
-                        int1 + "/gml:Curve/gml:segments/gml:ArcString/@interpolation",
-                        equalTo("circularArc3Points")));
+                hasXPath(int1 + "/gml:Curve/gml:segments/gml:ArcString/@interpolation", equalTo("circularArc3Points")));
         assertThat(
                 doc,
                 hasXPath(

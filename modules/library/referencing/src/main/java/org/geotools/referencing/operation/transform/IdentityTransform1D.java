@@ -44,15 +44,13 @@ final class IdentityTransform1D extends LinearTransform1D {
 
     /** Transforms a list of coordinate point ordinal values. */
     @Override
-    public void transform(
-            final float[] srcPts, int srcOff, final float[] dstPts, int dstOff, int numPts) {
+    public void transform(final float[] srcPts, int srcOff, final float[] dstPts, int dstOff, int numPts) {
         System.arraycopy(srcPts, srcOff, dstPts, dstOff, numPts);
     }
 
     /** Transforms a list of coordinate point ordinal values. */
     @Override
-    public void transform(
-            final double[] srcPts, int srcOff, final double[] dstPts, int dstOff, int numPts) {
+    public void transform(final double[] srcPts, int srcOff, final double[] dstPts, int dstOff, int numPts) {
         System.arraycopy(srcPts, srcOff, dstPts, dstOff, numPts);
     }
 }

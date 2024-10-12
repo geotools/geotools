@@ -109,9 +109,9 @@ public class DivideByConst extends OperationJAI {
     }
 
     @Override
-    protected void handleJAIEXTParams(
-            ParameterBlockJAI parameters, ParameterValueGroup parameters2) {
-        GridCoverage2D source = (GridCoverage2D) parameters2.parameter("source0").getValue();
+    protected void handleJAIEXTParams(ParameterBlockJAI parameters, ParameterValueGroup parameters2) {
+        GridCoverage2D source =
+                (GridCoverage2D) parameters2.parameter("source0").getValue();
         if (JAIExt.isJAIExtOperation(OPERATION_CONST)) {
             parameters.set(Operator.DIVIDE, 1);
         }
@@ -126,7 +126,6 @@ public class DivideByConst extends OperationJAI {
             MathTransform gridToCRS,
             GridCoverage2D[] sources,
             Parameters parameters) {
-        return handleROINoDataProperties(
-                null, parameters.parameters, sources[0], OPERATION_CONST, 2, 3, 4);
+        return handleROINoDataProperties(null, parameters.parameters, sources[0], OPERATION_CONST, 2, 3, 4);
     }
 }

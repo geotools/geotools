@@ -82,10 +82,7 @@ public class ExplicitBoundsShape implements Shape {
     public Rectangle getBounds() {
         if (bounds != null)
             return new Rectangle(
-                    (int) bounds.getMinX(),
-                    (int) bounds.getMinY(),
-                    (int) bounds.getWidth(),
-                    (int) bounds.getHeight());
+                    (int) bounds.getMinX(), (int) bounds.getMinY(), (int) bounds.getWidth(), (int) bounds.getHeight());
         return shape.getBounds();
     }
 

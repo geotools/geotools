@@ -41,24 +41,19 @@ public class PolarStereographicHandlerFactory implements ProjectionHandlerFactor
 
     @Override
     public ProjectionHandler getHandler(
-            ReferencedEnvelope renderingEnvelope,
-            CoordinateReferenceSystem sourceCrs,
-            boolean wrap,
-            int maxWraps)
+            ReferencedEnvelope renderingEnvelope, CoordinateReferenceSystem sourceCrs, boolean wrap, int maxWraps)
             throws FactoryException {
         if (renderingEnvelope == null) return null;
-        MapProjection mapProjection =
-                CRS.getMapProjection(renderingEnvelope.getCoordinateReferenceSystem());
+        MapProjection mapProjection = CRS.getMapProjection(renderingEnvelope.getCoordinateReferenceSystem());
         if (!(mapProjection instanceof PolarStereographic)) return null;
 
         final boolean north;
         // variant B uses standard_parallel
         ParameterValue<?> stdParallel = null;
         try {
-            stdParallel =
-                    mapProjection
-                            .getParameterValues()
-                            .parameter(AbstractProvider.STANDARD_PARALLEL_1.getName().getCode());
+            stdParallel = mapProjection
+                    .getParameterValues()
+                    .parameter(AbstractProvider.STANDARD_PARALLEL_1.getName().getCode());
         } catch (ParameterNotFoundException e) {
             // ignore
         }
@@ -68,10 +63,9 @@ public class PolarStereographicHandlerFactory implements ProjectionHandlerFactor
             // variant A uses latitude of origin
             ParameterValue<?> latOrigin = null;
             try {
-                latOrigin =
-                        mapProjection
-                                .getParameterValues()
-                                .parameter(AbstractProvider.LATITUDE_OF_ORIGIN.getName().getCode());
+                latOrigin = mapProjection
+                        .getParameterValues()
+                        .parameter(AbstractProvider.LATITUDE_OF_ORIGIN.getName().getCode());
             } catch (ParameterNotFoundException e) {
                 // ignore
             }
@@ -85,26 +79,15 @@ public class PolarStereographicHandlerFactory implements ProjectionHandlerFactor
         ReferencedEnvelope validArea;
         if (north) {
             validArea =
-                    new ReferencedEnvelope(
-                            -Integer.MAX_VALUE,
-                            Integer.MAX_VALUE,
-                            -0,
-                            90,
-                            DefaultGeographicCRS.WGS84);
+                    new ReferencedEnvelope(-Integer.MAX_VALUE, Integer.MAX_VALUE, -0, 90, DefaultGeographicCRS.WGS84);
         } else {
             validArea =
-                    new ReferencedEnvelope(
-                            -Integer.MAX_VALUE,
-                            Integer.MAX_VALUE,
-                            -90,
-                            0,
-                            DefaultGeographicCRS.WGS84);
+                    new ReferencedEnvelope(-Integer.MAX_VALUE, Integer.MAX_VALUE, -90, 0, DefaultGeographicCRS.WGS84);
         }
 
         return new ProjectionHandler(sourceCrs, validArea, renderingEnvelope) {
             @Override
-            public List<ReferencedEnvelope> getQueryEnvelopes()
-                    throws TransformException, FactoryException {
+            public List<ReferencedEnvelope> getQueryEnvelopes() throws TransformException, FactoryException {
                 // check if we are crossing the antimeridian and are fully below the pole,
                 // in this case we'd end up reading the full globe when we'd have to just
                 // read two portions near the dateline
@@ -113,20 +96,18 @@ public class PolarStereographicHandlerFactory implements ProjectionHandlerFactor
                         && renderingEnvelope.getMaxY() < 0
                         && renderingEnvelope.getMinX() < 0
                         && renderingEnvelope.getMaxX() > 0) {
-                    ReferencedEnvelope e1 =
-                            new ReferencedEnvelope(
-                                    renderingEnvelope.getMinX(),
-                                    -1e-6,
-                                    renderingEnvelope.getMinY(),
-                                    renderingEnvelope.getMaxY(),
-                                    renderingEnvelope.getCoordinateReferenceSystem());
-                    ReferencedEnvelope e2 =
-                            new ReferencedEnvelope(
-                                    1e-6,
-                                    renderingEnvelope.getMaxX(),
-                                    renderingEnvelope.getMinY(),
-                                    renderingEnvelope.getMaxY(),
-                                    renderingEnvelope.getCoordinateReferenceSystem());
+                    ReferencedEnvelope e1 = new ReferencedEnvelope(
+                            renderingEnvelope.getMinX(),
+                            -1e-6,
+                            renderingEnvelope.getMinY(),
+                            renderingEnvelope.getMaxY(),
+                            renderingEnvelope.getCoordinateReferenceSystem());
+                    ReferencedEnvelope e2 = new ReferencedEnvelope(
+                            1e-6,
+                            renderingEnvelope.getMaxX(),
+                            renderingEnvelope.getMinY(),
+                            renderingEnvelope.getMaxY(),
+                            renderingEnvelope.getCoordinateReferenceSystem());
                     envelopes = new ArrayList<>();
                     envelopes.add(e1);
                     envelopes.add(e2);
@@ -135,20 +116,18 @@ public class PolarStereographicHandlerFactory implements ProjectionHandlerFactor
                         && renderingEnvelope.getMinY() > 0
                         && renderingEnvelope.getMinX() < 0
                         && renderingEnvelope.getMaxX() > 0) {
-                    ReferencedEnvelope e1 =
-                            new ReferencedEnvelope(
-                                    renderingEnvelope.getMinX(),
-                                    -1e-6,
-                                    renderingEnvelope.getMinY(),
-                                    renderingEnvelope.getMaxY(),
-                                    renderingEnvelope.getCoordinateReferenceSystem());
-                    ReferencedEnvelope e2 =
-                            new ReferencedEnvelope(
-                                    1e-6,
-                                    renderingEnvelope.getMaxX(),
-                                    renderingEnvelope.getMinY(),
-                                    renderingEnvelope.getMaxY(),
-                                    renderingEnvelope.getCoordinateReferenceSystem());
+                    ReferencedEnvelope e1 = new ReferencedEnvelope(
+                            renderingEnvelope.getMinX(),
+                            -1e-6,
+                            renderingEnvelope.getMinY(),
+                            renderingEnvelope.getMaxY(),
+                            renderingEnvelope.getCoordinateReferenceSystem());
+                    ReferencedEnvelope e2 = new ReferencedEnvelope(
+                            1e-6,
+                            renderingEnvelope.getMaxX(),
+                            renderingEnvelope.getMinY(),
+                            renderingEnvelope.getMaxY(),
+                            renderingEnvelope.getCoordinateReferenceSystem());
                     envelopes = new ArrayList<>();
                     envelopes.add(e1);
                     envelopes.add(e2);

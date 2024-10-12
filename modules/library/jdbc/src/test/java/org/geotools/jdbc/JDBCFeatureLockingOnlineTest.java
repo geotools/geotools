@@ -63,8 +63,7 @@ public abstract class JDBCFeatureLockingOnlineTest extends JDBCTestSupport {
 
             // grabbing a reader should be no problem
             Query query = new Query(tname("ft1"));
-            try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                    dataStore.getFeatureReader(query, tx)) {
+            try (FeatureReader<SimpleFeatureType, SimpleFeature> reader = dataStore.getFeatureReader(query, tx)) {
 
                 int count = 0;
                 while (reader.hasNext()) {

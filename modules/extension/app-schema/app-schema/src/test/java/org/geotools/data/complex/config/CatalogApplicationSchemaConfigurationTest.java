@@ -42,15 +42,10 @@ public class CatalogApplicationSchemaConfigurationTest extends AppSchemaTestSupp
         URL catalogLocation = getClass().getResource(schemaBase + "mappedPolygons.oasis.xml");
         String namespace = "http://www.cgi-iugs.org/xml/GeoSciML/2";
         String schemaLocation = "http://schemas.opengis.net/GeoSciML/geosciml.xsd";
-        Configuration config =
-                new AppSchemaConfiguration(
-                        namespace,
-                        schemaLocation,
-                        new SchemaResolver(SchemaCatalog.build(catalogLocation)));
+        Configuration config = new AppSchemaConfiguration(
+                namespace, schemaLocation, new SchemaResolver(SchemaCatalog.build(catalogLocation)));
         String resolvedSchemaLocation = config.getXSD().getSchemaLocation();
         assertTrue(resolvedSchemaLocation.startsWith("file:/"));
-        assertTrue(
-                resolvedSchemaLocation.endsWith(
-                        schemaBase + "commonSchemas_new/GeoSciML/geosciml.xsd"));
+        assertTrue(resolvedSchemaLocation.endsWith(schemaBase + "commonSchemas_new/GeoSciML/geosciml.xsd"));
     }
 }

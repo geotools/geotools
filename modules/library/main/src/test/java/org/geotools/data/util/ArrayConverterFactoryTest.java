@@ -56,8 +56,7 @@ public class ArrayConverterFactoryTest {
     @Test
     public void testSingleToArray() throws Exception {
         String single = "text";
-        Converter converter =
-                factory.createConverter(single.getClass(), String[].class, new Hints());
+        Converter converter = factory.createConverter(single.getClass(), String[].class, new Hints());
         assertEquals(1, converter.convert(single, String[].class).length);
         assertEquals("text", converter.convert(single, String[].class)[0]);
     }
@@ -65,16 +64,14 @@ public class ArrayConverterFactoryTest {
     @Test
     public void testSingleToArrayWrongType() throws Exception {
         String single = "1";
-        Converter converter =
-                factory.createConverter(single.getClass(), Integer[].class, new Hints());
+        Converter converter = factory.createConverter(single.getClass(), Integer[].class, new Hints());
         assertNull(converter);
     }
 
     @Test
     public void testArrayToArray() throws Exception {
         String[] array = {"1", "2", "3"};
-        Converter converter =
-                factory.createConverter(array.getClass(), Integer[].class, new Hints());
+        Converter converter = factory.createConverter(array.getClass(), Integer[].class, new Hints());
         Integer[] converted = converter.convert(array, Integer[].class);
         assertEquals(3, converted.length);
         assertEquals((Integer) 1, converted[0]);
@@ -85,8 +82,7 @@ public class ArrayConverterFactoryTest {
     @Test
     public void testArrayToArrayWithNulls() throws Exception {
         String[] array = {"1", "2", null, "3"};
-        Converter converter =
-                factory.createConverter(array.getClass(), Integer[].class, new Hints());
+        Converter converter = factory.createConverter(array.getClass(), Integer[].class, new Hints());
         Integer[] converted = converter.convert(array, Integer[].class);
         assertEquals(4, converted.length);
         assertEquals((Integer) 1, converted[0]);
@@ -98,8 +94,7 @@ public class ArrayConverterFactoryTest {
     @Test
     public void testArrayToArrayWithConversionErrors() throws Exception {
         String[] array = {"1", "2", "a", "3"};
-        Converter converter =
-                factory.createConverter(array.getClass(), Integer[].class, new Hints());
+        Converter converter = factory.createConverter(array.getClass(), Integer[].class, new Hints());
         Integer[] converted = converter.convert(array, Integer[].class);
         assertNull(converted);
     }
@@ -107,8 +102,7 @@ public class ArrayConverterFactoryTest {
     @Test
     public void testArrayToArrayPrimitive() throws Exception {
         String[] array = {"1", "2", "3"};
-        Converter converter =
-                factory.createConverter(array.getClass(), Integer[].class, new Hints());
+        Converter converter = factory.createConverter(array.getClass(), Integer[].class, new Hints());
         int[] converted = converter.convert(array, int[].class);
         assertEquals(3, converted.length);
         assertEquals(1, converted[0]);

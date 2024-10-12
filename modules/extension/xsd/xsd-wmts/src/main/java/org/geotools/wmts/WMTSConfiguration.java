@@ -81,24 +81,18 @@ public class WMTSConfiguration extends Configuration {
     @Override
     protected final void registerBindings(MutablePicoContainer container) {
         // Types
-        container.registerComponentImplementation(
-                WMTS.AcceptedFormatsType, AcceptedFormatsTypeBinding.class);
+        container.registerComponentImplementation(WMTS.AcceptedFormatsType, AcceptedFormatsTypeBinding.class);
         container.registerComponentImplementation(WMTS.ContentsType, ContentsTypeBinding.class);
-        container.registerComponentImplementation(
-                WMTS.GetCapabilitiesValueType, GetCapabilitiesValueTypeBinding.class);
-        container.registerComponentImplementation(
-                WMTS.GetFeatureInfoValueType, GetFeatureInfoValueTypeBinding.class);
-        container.registerComponentImplementation(
-                WMTS.GetTileValueType, GetTileValueTypeBinding.class);
+        container.registerComponentImplementation(WMTS.GetCapabilitiesValueType, GetCapabilitiesValueTypeBinding.class);
+        container.registerComponentImplementation(WMTS.GetFeatureInfoValueType, GetFeatureInfoValueTypeBinding.class);
+        container.registerComponentImplementation(WMTS.GetTileValueType, GetTileValueTypeBinding.class);
         container.registerComponentImplementation(WMTS.LayerType, LayerTypeBinding.class);
         // container.registerComponentImplementation(WMTS.Layer, LayerBinding.class);
         // container.registerComponentImplementation(
         //     OWS.DatasetDescriptionSummary, LayerTypeBinding.class);
-        container.registerComponentImplementation(
-                WMTS.RequestServiceType, RequestServiceTypeBinding.class);
+        container.registerComponentImplementation(WMTS.RequestServiceType, RequestServiceTypeBinding.class);
         container.registerComponentImplementation(WMTS.SectionsType, SectionsTypeBinding.class);
-        container.registerComponentImplementation(
-                WMTS.URLTemplateType, URLTemplateTypeBinding.class);
+        container.registerComponentImplementation(WMTS.URLTemplateType, URLTemplateTypeBinding.class);
         container.registerComponentImplementation(WMTS.VersionType, VersionTypeBinding.class);
 
         // Elements
@@ -108,21 +102,14 @@ public class WMTSConfiguration extends Configuration {
         container.registerComponentImplementation(WMTS._Capabilities, CapabilitiesBinding.class);
         container.registerComponentImplementation(WMTS.Dimension, DimensionBinding.class);
         container.registerComponentImplementation(WMTS._Dimension, DimensionBinding.class);
-        container.registerComponentImplementation(
-                WMTS.DimensionNameValue, DimensionNameValueBinding.class);
-        container.registerComponentImplementation(
-                WMTS._DimensionNameValue, DimensionNameValueBinding.class);
-        container.registerComponentImplementation(
-                WMTS.FeatureInfoResponse, FeatureInfoResponseBinding.class);
-        container.registerComponentImplementation(
-                WMTS._FeatureInfoResponse, FeatureInfoResponseBinding.class);
-        container.registerComponentImplementation(
-                WMTS.GetCapabilities, GetCapabilitiesBinding.class);
-        container.registerComponentImplementation(
-                WMTS._GetCapabilities, GetCapabilitiesBinding.class);
+        container.registerComponentImplementation(WMTS.DimensionNameValue, DimensionNameValueBinding.class);
+        container.registerComponentImplementation(WMTS._DimensionNameValue, DimensionNameValueBinding.class);
+        container.registerComponentImplementation(WMTS.FeatureInfoResponse, FeatureInfoResponseBinding.class);
+        container.registerComponentImplementation(WMTS._FeatureInfoResponse, FeatureInfoResponseBinding.class);
+        container.registerComponentImplementation(WMTS.GetCapabilities, GetCapabilitiesBinding.class);
+        container.registerComponentImplementation(WMTS._GetCapabilities, GetCapabilitiesBinding.class);
         container.registerComponentImplementation(WMTS.GetFeatureInfo, GetFeatureInfoBinding.class);
-        container.registerComponentImplementation(
-                WMTS._GetFeatureInfo, GetFeatureInfoBinding.class);
+        container.registerComponentImplementation(WMTS._GetFeatureInfo, GetFeatureInfoBinding.class);
         container.registerComponentImplementation(WMTS.GetTile, GetTileBinding.class);
         container.registerComponentImplementation(WMTS._GetTile, GetTileBinding.class);
         container.registerComponentImplementation(WMTS.Layer, LayerTypeBinding.class);
@@ -138,20 +125,14 @@ public class WMTSConfiguration extends Configuration {
         container.registerComponentImplementation(WMTS._Themes, ThemesBinding.class);
         container.registerComponentImplementation(WMTS.TileMatrix, TileMatrixBinding.class);
         container.registerComponentImplementation(WMTS._TileMatrix, TileMatrixBinding.class);
-        container.registerComponentImplementation(
-                WMTS.TileMatrixLimits, TileMatrixLimitsBinding.class);
-        container.registerComponentImplementation(
-                WMTS._TileMatrixLimits, TileMatrixLimitsBinding.class);
+        container.registerComponentImplementation(WMTS.TileMatrixLimits, TileMatrixLimitsBinding.class);
+        container.registerComponentImplementation(WMTS._TileMatrixLimits, TileMatrixLimitsBinding.class);
         container.registerComponentImplementation(WMTS.TileMatrixSet, TileMatrixSetBinding.class);
         container.registerComponentImplementation(WMTS._TileMatrixSet, TileMatrixSetBinding.class);
-        container.registerComponentImplementation(
-                WMTS.TileMatrixSetLimits, TileMatrixSetLimitsBinding.class);
-        container.registerComponentImplementation(
-                WMTS._TileMatrixSetLimits, TileMatrixSetLimitsBinding.class);
-        container.registerComponentImplementation(
-                WMTS.TileMatrixSetLink, TileMatrixSetLinkBinding.class);
-        container.registerComponentImplementation(
-                WMTS._TileMatrixSetLink, TileMatrixSetLinkBinding.class);
+        container.registerComponentImplementation(WMTS.TileMatrixSetLimits, TileMatrixSetLimitsBinding.class);
+        container.registerComponentImplementation(WMTS._TileMatrixSetLimits, TileMatrixSetLimitsBinding.class);
+        container.registerComponentImplementation(WMTS.TileMatrixSetLink, TileMatrixSetLinkBinding.class);
+        container.registerComponentImplementation(WMTS._TileMatrixSetLink, TileMatrixSetLinkBinding.class);
         /*container.registerComponentImplementation(WMTS.Format, MimeTypeBinding.class);
         container.registerComponentImplementation(WMTS.InfoFormat, MimeTypeBinding.class);*/
     }

@@ -86,11 +86,7 @@ public abstract class AbstractStyleFactory implements StyleFactory {
     //    public abstract PointPlacement createPointPlacement();
     @Override
     public abstract Mark createMark(
-            Expression wellKnownName,
-            Stroke stroke,
-            Fill fill,
-            Expression size,
-            Expression rotation);
+            Expression wellKnownName, Stroke stroke, Fill fill, Expression size, Expression rotation);
 
     /**
      * Convinence method for obtaining a mark of a fixed shape
@@ -160,8 +156,7 @@ public abstract class AbstractStyleFactory implements StyleFactory {
     public abstract LineSymbolizer createLineSymbolizer();
 
     @Override
-    public abstract PointSymbolizer createPointSymbolizer(
-            Graphic graphic, String geometryPropertyName);
+    public abstract PointSymbolizer createPointSymbolizer(Graphic graphic, String geometryPropertyName);
 
     @Override
     public abstract Style createStyle();
@@ -250,17 +245,13 @@ public abstract class AbstractStyleFactory implements StyleFactory {
 
     @Override
     public abstract Font createFont(
-            Expression fontFamily,
-            Expression fontStyle,
-            Expression fontWeight,
-            Expression fontSize);
+            Expression fontFamily, Expression fontStyle, Expression fontWeight, Expression fontSize);
 
     @Override
     public abstract Mark createMark();
 
     @Override
-    public abstract PolygonSymbolizer createPolygonSymbolizer(
-            Stroke stroke, Fill fill, String geometryPropertyName);
+    public abstract PolygonSymbolizer createPolygonSymbolizer(Stroke stroke, Fill fill, String geometryPropertyName);
 
     @Override
     public abstract RasterSymbolizer createRasterSymbolizer(
@@ -277,12 +268,10 @@ public abstract class AbstractStyleFactory implements StyleFactory {
     public abstract RasterSymbolizer getDefaultRasterSymbolizer();
 
     @Override
-    public abstract SelectedChannelType createSelectedChannelType(
-            Expression name, Expression enhancement);
+    public abstract SelectedChannelType createSelectedChannelType(Expression name, Expression enhancement);
 
     @Override
-    public abstract SelectedChannelType createSelectedChannelType(
-            String name, ContrastEnhancement enhancement);
+    public abstract SelectedChannelType createSelectedChannelType(String name, ContrastEnhancement enhancement);
 
     @Override
     public abstract ColorMap createColorMap();

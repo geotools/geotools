@@ -55,10 +55,8 @@ public final class AllAuthoritiesFactoryTest {
     /** Tests the {@link AllAuthoritiesFactory#createCoordinateReferenceSystem} method. */
     @Test
     public void testCreateCRS() throws FactoryException {
-        final CRSAuthorityFactory auto =
-                ReferencingFactoryFinder.getCRSAuthorityFactory("AUTO", null);
-        final CRSAuthorityFactory crs =
-                ReferencingFactoryFinder.getCRSAuthorityFactory("CRS", null);
+        final CRSAuthorityFactory auto = ReferencingFactoryFinder.getCRSAuthorityFactory("AUTO", null);
+        final CRSAuthorityFactory crs = ReferencingFactoryFinder.getCRSAuthorityFactory("CRS", null);
         final CRSAuthorityFactory all = AllAuthoritiesFactory.DEFAULT;
 
         CoordinateReferenceSystem actual = all.createCoordinateReferenceSystem("CRS:84");
@@ -100,8 +98,7 @@ public final class AllAuthoritiesFactoryTest {
      */
     @Test
     public void testHttp() throws FactoryException {
-        final CRSAuthorityFactory crs =
-                ReferencingFactoryFinder.getCRSAuthorityFactory("CRS", null);
+        final CRSAuthorityFactory crs = ReferencingFactoryFinder.getCRSAuthorityFactory("CRS", null);
         final CRSAuthorityFactory all = AllAuthoritiesFactory.DEFAULT;
 
         CoordinateReferenceSystem actual =
@@ -134,11 +131,9 @@ public final class AllAuthoritiesFactoryTest {
     @Test
     public void testFind() throws FactoryException {
         final AbstractAuthorityFactory all = AllAuthoritiesFactory.DEFAULT;
-        final IdentifiedObjectFinder finder =
-                all.getIdentifiedObjectFinder(CoordinateReferenceSystem.class);
+        final IdentifiedObjectFinder finder = all.getIdentifiedObjectFinder(CoordinateReferenceSystem.class);
         finder.setFullScanAllowed(false);
-        assertNull(
-                "Should not find the CRS without a scan.", finder.find(DefaultGeographicCRS.WGS84));
+        assertNull("Should not find the CRS without a scan.", finder.find(DefaultGeographicCRS.WGS84));
 
         finder.setFullScanAllowed(true);
         final IdentifiedObject find = finder.find(DefaultGeographicCRS.WGS84);

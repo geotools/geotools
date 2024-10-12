@@ -116,17 +116,15 @@ public class DuplicatingStyleVisitorTest {
         oldStyle.featureTypeStyles()
                 .get(0)
                 .semanticTypeIdentifiers()
-                .addAll(
-                        Arrays.asList(
-                                SemanticType.valueOf("simple"),
-                                SemanticType.valueOf("generic:geometry")));
+                .addAll(Arrays.asList(SemanticType.valueOf("simple"), SemanticType.valueOf("generic:geometry")));
         // duplicate it
         oldStyle.accept(visitor);
         Style newStyle = (Style) visitor.getCopy();
 
         // compare it
         Assert.assertNotNull(newStyle);
-        assertEquals(2, newStyle.featureTypeStyles().get(0).semanticTypeIdentifiers().size());
+        assertEquals(
+                2, newStyle.featureTypeStyles().get(0).semanticTypeIdentifiers().size());
     }
 
     @Test
@@ -205,8 +203,7 @@ public class DuplicatingStyleVisitorTest {
     public void testRule() throws Exception {
         Symbolizer symb1 = sf.createLineSymbolizer(sf.getDefaultStroke(), "geometry");
 
-        Symbolizer symb2 =
-                sf.createPolygonSymbolizer(sf.getDefaultStroke(), sf.getDefaultFill(), "shape");
+        Symbolizer symb2 = sf.createPolygonSymbolizer(sf.getDefaultStroke(), sf.getDefaultFill(), "shape");
 
         Rule rule = sf.createRule();
         rule.symbolizers().addAll(Arrays.asList(symb1, symb2));
@@ -392,12 +389,7 @@ public class DuplicatingStyleVisitorTest {
         assertCopy(font, clone);
         assertEqualsContract(font, clone);
 
-        Font other =
-                sf.createFont(
-                        ff.literal("other"),
-                        ff.literal("normal"),
-                        ff.literal("BOLD"),
-                        ff.literal(12));
+        Font other = sf.createFont(ff.literal("other"), ff.literal("normal"), ff.literal("BOLD"), ff.literal(12));
 
         assertEqualsContract(clone, other, font);
     }
@@ -552,21 +544,20 @@ public class DuplicatingStyleVisitorTest {
 
     @Test
     public void testExternalGraphicWithInlineContent() {
-        Icon icon =
-                new Icon() {
-                    @Override
-                    public void paintIcon(Component c, Graphics g, int x, int y) {}
+        Icon icon = new Icon() {
+            @Override
+            public void paintIcon(Component c, Graphics g, int x, int y) {}
 
-                    @Override
-                    public int getIconWidth() {
-                        return 16;
-                    }
+            @Override
+            public int getIconWidth() {
+                return 16;
+            }
 
-                    @Override
-                    public int getIconHeight() {
-                        return 16;
-                    }
-                };
+            @Override
+            public int getIconHeight() {
+                return 16;
+            }
+        };
 
         ExternalGraphic exGraphic = sf.createExternalGraphic(icon, "image/png");
         ExternalGraphic clone = visitor.copy(exGraphic);
@@ -700,8 +691,7 @@ public class DuplicatingStyleVisitorTest {
                 "Gamma value incorrest after duplication",
                 ((Literal) ce.getGammaValue()).getValue(),
                 ((Literal) ce2.getGammaValue()).getValue());
-        assertEquals(
-                "ContrastMethod must be equal after duplication ", ce.getMethod(), ce2.getMethod());
+        assertEquals("ContrastMethod must be equal after duplication ", ce.getMethod(), ce2.getMethod());
     }
 
     @Test
@@ -717,22 +707,10 @@ public class DuplicatingStyleVisitorTest {
 
         ColorMapEntry cme2 = (ColorMapEntry) visitor.getCopy();
 
-        assertEquals(
-                "Colormaps LABEL must be equal after duplication ",
-                cme.getLabel(),
-                cme2.getLabel());
-        assertEquals(
-                "Colormaps QUANTITY must be equal after duplication ",
-                cme.getQuantity(),
-                cme2.getQuantity());
-        assertEquals(
-                "Colormaps COLOR must be equal after duplication ",
-                cme.getColor(),
-                cme2.getColor());
-        assertEquals(
-                "Colormaps OPACITY must be equal after duplication ",
-                cme.getOpacity(),
-                cme2.getOpacity());
+        assertEquals("Colormaps LABEL must be equal after duplication ", cme.getLabel(), cme2.getLabel());
+        assertEquals("Colormaps QUANTITY must be equal after duplication ", cme.getQuantity(), cme2.getQuantity());
+        assertEquals("Colormaps COLOR must be equal after duplication ", cme.getColor(), cme2.getColor());
+        assertEquals("Colormaps OPACITY must be equal after duplication ", cme.getOpacity(), cme2.getOpacity());
     }
 
     @Test
@@ -749,10 +727,7 @@ public class DuplicatingStyleVisitorTest {
         pointSymb.accept(visitor);
         PointSymbolizer copy = (PointSymbolizer) visitor.getCopy();
 
-        assertEquals(
-                "Any Expression set as Geometry must be correctly replicated",
-                geomFunc,
-                copy.getGeometry());
+        assertEquals("Any Expression set as Geometry must be correctly replicated", geomFunc, copy.getGeometry());
     }
 
     @Test
@@ -769,10 +744,7 @@ public class DuplicatingStyleVisitorTest {
         RasterSymbolizer copy = (RasterSymbolizer) visitor.getCopy();
 
         // compare it
-        assertEquals(
-                "Any Expression set as Geometry must be correctly replicated",
-                geomFunc,
-                copy.getGeometry());
+        assertEquals("Any Expression set as Geometry must be correctly replicated", geomFunc, copy.getGeometry());
     }
 
     @Test
@@ -786,10 +758,7 @@ public class DuplicatingStyleVisitorTest {
         LineSymbolizer copy = (LineSymbolizer) visitor.copy(lineSymb);
 
         // compare it
-        assertEquals(
-                "Any Expression set as Geometry must be correctly replicated",
-                geomFunc,
-                copy.getGeometry());
+        assertEquals("Any Expression set as Geometry must be correctly replicated", geomFunc, copy.getGeometry());
     }
 
     @Test
@@ -803,10 +772,7 @@ public class DuplicatingStyleVisitorTest {
         PolygonSymbolizer copy = (PolygonSymbolizer) visitor.copy(symb);
 
         // compare it
-        assertEquals(
-                "Any Expression set as Geometry must be correctly replicated",
-                geomFunc,
-                copy.getGeometry());
+        assertEquals("Any Expression set as Geometry must be correctly replicated", geomFunc, copy.getGeometry());
     }
 
     @Test
@@ -820,10 +786,7 @@ public class DuplicatingStyleVisitorTest {
         TextSymbolizer copy = (TextSymbolizer) visitor.copy(symb);
 
         // compare it
-        assertEquals(
-                "Any Expression set as Geometry must be correctly replicated",
-                geomFunc,
-                copy.getGeometry());
+        assertEquals("Any Expression set as Geometry must be correctly replicated", geomFunc, copy.getGeometry());
     }
 
     /**
@@ -853,10 +816,7 @@ public class DuplicatingStyleVisitorTest {
         TextSymbolizer copy = (TextSymbolizer) visitor.copy(symb);
 
         // compare it
-        assertEquals(
-                "Graphic of TextSymbolizer2 has not been correctly duplicated",
-                gr,
-                copy.getGraphic());
+        assertEquals("Graphic of TextSymbolizer2 has not been correctly duplicated", gr, copy.getGraphic());
         assertEquals(
                 "Graphic of TextSymbolizer2 has not been correctly duplicated",
                 gr.getOpacity(),
@@ -865,10 +825,7 @@ public class DuplicatingStyleVisitorTest {
                 "Graphic of TextSymbolizer2 has not been correctly duplicated",
                 gr.getSize(),
                 copy.getGraphic().getSize());
-        assertEquals(
-                "Snippet of TextSymbolizer2 has not been correctly duplicated",
-                snippet,
-                copy.getSnippet());
+        assertEquals("Snippet of TextSymbolizer2 has not been correctly duplicated", snippet, copy.getSnippet());
         assertEquals(
                 "FeatureDescription of TextSymbolizer2 has not been correctly duplicated",
                 fD,
@@ -906,10 +863,8 @@ public class DuplicatingStyleVisitorTest {
     public void testSelectedChannelTypeDuplication() throws Exception {
         final String b1 = "b1";
 
-        SelectedChannelType sct =
-                sf.createSelectedChannelType(
-                        ff.function("env", ff.literal(b1), ff.literal("1")),
-                        sf.createContrastEnhancement());
+        SelectedChannelType sct = sf.createSelectedChannelType(
+                ff.function("env", ff.literal(b1), ff.literal("1")), sf.createContrastEnhancement());
         sct.accept(visitor);
         SelectedChannelType clone = (SelectedChannelType) visitor.getCopy();
 

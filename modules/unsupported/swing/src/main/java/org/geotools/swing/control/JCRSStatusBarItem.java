@@ -73,14 +73,13 @@ public class JCRSStatusBarItem extends StatusBarItem {
         }
         displayCRS(crs);
 
-        mapPane.addMapPaneListener(
-                new MapPaneAdapter() {
-                    @Override
-                    public void onDisplayAreaChanged(MapPaneEvent ev) {
-                        ReferencedEnvelope env = (ReferencedEnvelope) ev.getData();
-                        displayCRS(env.getCoordinateReferenceSystem());
-                    }
-                });
+        mapPane.addMapPaneListener(new MapPaneAdapter() {
+            @Override
+            public void onDisplayAreaChanged(MapPaneEvent ev) {
+                ReferencedEnvelope env = (ReferencedEnvelope) ev.getData();
+                displayCRS(env.getCoordinateReferenceSystem());
+            }
+        });
 
         final JPopupMenu menu = new JCRSPopupMenu(mapPane);
         btn.addActionListener(e -> menu.show(btn, 0, 0));

@@ -99,8 +99,7 @@ public class MultiGeometryTypeBinding extends AbstractComplexBinding {
             if (geometryClass == null) {
                 geometryClass = clazz;
             } else {
-                if (!clazz.isAssignableFrom(geometryClass)
-                        && !geometryClass.isAssignableFrom(clazz)) {
+                if (!clazz.isAssignableFrom(geometryClass) && !geometryClass.isAssignableFrom(clazz)) {
                     geometryClass = null;
                     break;
                 }
@@ -110,25 +109,21 @@ public class MultiGeometryTypeBinding extends AbstractComplexBinding {
         if (geometryClass != null) {
             if (geometryClass == Point.class) {
                 // create a multi point
-                return geometryFactory.createMultiPoint(
-                        geometries.toArray(new Point[geometries.size()]));
+                return geometryFactory.createMultiPoint(geometries.toArray(new Point[geometries.size()]));
             }
 
             if ((geometryClass == LineString.class) || (geometryClass == LinearRing.class)) {
                 // create a multi line string
-                return geometryFactory.createMultiLineString(
-                        geometries.toArray(new LineString[geometries.size()]));
+                return geometryFactory.createMultiLineString(geometries.toArray(new LineString[geometries.size()]));
             }
 
             if (geometryClass == Polygon.class) {
                 // create a multi polygon
-                return geometryFactory.createMultiPolygon(
-                        geometries.toArray(new Polygon[geometries.size()]));
+                return geometryFactory.createMultiPolygon(geometries.toArray(new Polygon[geometries.size()]));
             }
         }
 
-        return geometryFactory.createGeometryCollection(
-                geometries.toArray(new Geometry[geometries.size()]));
+        return geometryFactory.createGeometryCollection(geometries.toArray(new Geometry[geometries.size()]));
     }
 
     @Override

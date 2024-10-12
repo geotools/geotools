@@ -48,12 +48,10 @@ public class ImageGraphicFactory implements ExternalGraphicFactory, GraphicCache
     private static final Logger LOGGER = Logging.getLogger(ImageGraphicFactory.class);
 
     /** Current way to load images */
-    static Map<URL, BufferedImage> imageCache =
-            Collections.synchronizedMap(new SoftValueHashMap<>());
+    static Map<URL, BufferedImage> imageCache = Collections.synchronizedMap(new SoftValueHashMap<>());
 
     /** Holds the of graphic formats supported by the current jdk */
-    static Set<String> supportedGraphicFormats =
-            new HashSet<>(Arrays.asList(ImageIO.getReaderMIMETypes()));
+    static Set<String> supportedGraphicFormats = new HashSet<>(Arrays.asList(ImageIO.getReaderMIMETypes()));
 
     @Override
     public Icon getIcon(Feature feature, Expression url, String format, int size) {
@@ -63,8 +61,7 @@ public class ImageGraphicFactory implements ExternalGraphicFactory, GraphicCache
         // evaluate the location as a URL
         URL location = url.evaluate(feature, URL.class);
         if (location == null)
-            throw new IllegalArgumentException(
-                    "The provided expression cannot be evaluated to a URL");
+            throw new IllegalArgumentException("The provided expression cannot be evaluated to a URL");
 
         // validate the icon can actually be fetched, it may go to a random
         // local filesystem location, or a remote server

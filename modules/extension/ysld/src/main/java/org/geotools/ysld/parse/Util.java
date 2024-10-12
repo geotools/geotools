@@ -141,14 +141,11 @@ public class Util {
         try {
             t = Tuple.of(2).parse(value);
         } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException(
-                    String.format("Bad anchor: '%s', must be of form (<x>,<y>)", value), e);
+            throw new IllegalArgumentException(String.format("Bad anchor: '%s', must be of form (<x>,<y>)", value), e);
         }
 
-        Expression x =
-                t.at(0) != null ? expression(t.strAt(0), factory) : factory.filter.literal(0);
-        Expression y =
-                t.at(1) != null ? expression(t.strAt(1), factory) : factory.filter.literal(0);
+        Expression x = t.at(0) != null ? expression(t.strAt(0), factory) : factory.filter.literal(0);
+        Expression y = t.at(1) != null ? expression(t.strAt(1), factory) : factory.filter.literal(0);
         return factory.style.createAnchorPoint(x, y);
     }
 
@@ -162,20 +159,15 @@ public class Util {
                     String.format("Bad displacement: '%s', must be of form (<x>,<y>)", value), e);
         }
 
-        Expression x =
-                t.at(0) != null ? expression(t.strAt(0), factory) : factory.filter.literal(0);
-        Expression y =
-                t.at(1) != null ? expression(t.strAt(1), factory) : factory.filter.literal(0);
+        Expression x = t.at(0) != null ? expression(t.strAt(0), factory) : factory.filter.literal(0);
+        Expression y = t.at(1) != null ? expression(t.strAt(1), factory) : factory.filter.literal(0);
         return factory.style.createDisplacement(x, y);
     }
 
-    static final Pattern HEX_PATTERN =
-            Pattern.compile("\\s*(?:(?:0x)|#)?([A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})\\s*");
+    static final Pattern HEX_PATTERN = Pattern.compile("\\s*(?:(?:0x)|#)?([A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})\\s*");
 
-    static final Pattern RGB_PATTERN =
-            Pattern.compile(
-                    "\\s*rgb\\s*\\(\\s*(\\d{1,3})\\s*,\\s*(\\d{1,3})\\s*,\\s*(\\d{1,3})\\s*\\)\\s*",
-                    Pattern.CASE_INSENSITIVE);
+    static final Pattern RGB_PATTERN = Pattern.compile(
+            "\\s*rgb\\s*\\(\\s*(\\d{1,3})\\s*,\\s*(\\d{1,3})\\s*,\\s*(\\d{1,3})\\s*\\)\\s*", Pattern.CASE_INSENSITIVE);
 
     /** Parses a color from string representation. */
     public static Expression color(Object value, Factory factory) {
@@ -219,10 +211,7 @@ public class Util {
     }
 
     static Color parseColorAsRGB(Matcher m) {
-        return new Color(
-                Integer.parseInt(m.group(1)),
-                Integer.parseInt(m.group(2)),
-                Integer.parseInt(m.group(3)));
+        return new Color(Integer.parseInt(m.group(1)), Integer.parseInt(m.group(2)), Integer.parseInt(m.group(3)));
     }
 
     /** Parses a float array from a space delimited list. */
@@ -275,8 +264,7 @@ public class Util {
                     "Should not use EPSG code to refer to WGS84 zoom levels as it causes ambiguities");
         }
         if (name.equalsIgnoreCase("EPSG:3857") || name.equalsIgnoreCase("EPSG:900913")) {
-            throw new IllegalArgumentException(
-                    "Should not use EPSG code to refer to WebMercator zoom levels");
+            throw new IllegalArgumentException("Should not use EPSG code to refer to WebMercator zoom levels");
         }
         for (ZoomContextFinder finder : zCtxtFinders) {
             org.geotools.styling.zoom.ZoomContext found = finder.get(name);

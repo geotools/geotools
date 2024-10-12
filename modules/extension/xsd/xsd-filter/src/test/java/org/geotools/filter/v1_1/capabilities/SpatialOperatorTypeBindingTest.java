@@ -66,11 +66,10 @@ public class SpatialOperatorTypeBindingTest extends OGCTestSupport {
 
     @Test
     public void testEncode() throws Exception {
-        Document dom =
-                encode(
-                        FilterMockData.spatialOperator("Intersect"),
-                        new QName(OGC.NAMESPACE, "SpatialOperator"),
-                        OGC.SpatialOperatorType);
+        Document dom = encode(
+                FilterMockData.spatialOperator("Intersect"),
+                new QName(OGC.NAMESPACE, "SpatialOperator"),
+                OGC.SpatialOperatorType);
         assertEquals("Intersect", dom.getDocumentElement().getAttribute("name"));
     }
 }

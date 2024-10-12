@@ -26,12 +26,11 @@ import org.geotools.filter.capability.FunctionNameImpl;
 
 public class FilterFunction_strSubstringStart extends FunctionExpressionImpl {
 
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "strSubstringStart",
-                    parameter("substring", String.class),
-                    parameter("string", String.class),
-                    parameter("beginIndex", Integer.class));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "strSubstringStart",
+            parameter("substring", String.class),
+            parameter("string", String.class),
+            parameter("beginIndex", Integer.class));
 
     public FilterFunction_strSubstringStart() {
         super("strSubstringStart");

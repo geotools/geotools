@@ -65,8 +65,7 @@ public class BackgroundMBLayer extends MBLayer {
      * @return The color with which the background will be drawn.
      */
     public Color getBackgroundColor() {
-        return parse.convertToColor(
-                parse.optional(String.class, paint, "background-color", "#000000"));
+        return parse.convertToColor(parse.optional(String.class, paint, "background-color", "#000000"));
     }
 
     /**
@@ -143,16 +142,13 @@ public class BackgroundMBLayer extends MBLayer {
     }
 
     public Fill getFill(MBStyle styleContext) {
-        return getFill(
-                styleContext, new MBStyleTransformer(new MBObjectParser(BackgroundMBLayer.class)));
+        return getFill(styleContext, new MBStyleTransformer(new MBObjectParser(BackgroundMBLayer.class)));
     }
 
     private Fill getFill(MBStyle styleContext, MBStyleTransformer transformer) {
         if (hasBackgroundPattern()) {
-            ExternalGraphic eg =
-                    transformer.createExternalGraphicForSprite(backgroundPattern(), styleContext);
-            GraphicFill gf =
-                    sf.graphicFill(Arrays.asList(eg), backgroundOpacity(), null, null, null, null);
+            ExternalGraphic eg = transformer.createExternalGraphicForSprite(backgroundPattern(), styleContext);
+            GraphicFill gf = sf.graphicFill(Arrays.asList(eg), backgroundOpacity(), null, null, null, null);
             return sf.fill(gf, backgroundColor(), backgroundOpacity());
         } else {
             return sf.fill(null, backgroundColor(), backgroundOpacity());

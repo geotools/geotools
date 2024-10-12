@@ -247,8 +247,7 @@ public final class GrassBinaryImageMetadata extends IIOMetadata {
 
     @Override
     public IIOMetadataFormat getMetadataFormat(String formatName) {
-        if (formatName.equals(nativeMetadataFormatName))
-            return new GrassBinaryImageMetadataFormat();
+        if (formatName.equals(nativeMetadataFormatName)) return new GrassBinaryImageMetadataFormat();
 
         throw new IllegalArgumentException("Not a recognized format!");
     }

@@ -92,8 +92,7 @@ public class WarpBuilder {
      * @param domain domain to check
      */
     public boolean isValidDomain(Rectangle2D.Double domain) {
-        return isValidDomain(
-                domain.getMinX(), domain.getMaxX(), domain.getMinY(), domain.getMaxY());
+        return isValidDomain(domain.getMinX(), domain.getMaxX(), domain.getMinY(), domain.getMaxY());
     }
 
     private boolean isValidDomain(double minx, double maxx, double miny, double maxy) {
@@ -134,22 +133,14 @@ public class WarpBuilder {
          */
         int[] rowCols;
         try {
-            rowCols =
-                    computeOptimalDepths(
-                            mt,
-                            minx,
-                            maxx,
-                            miny,
-                            maxy,
-                            0,
-                            0,
-                            (minx1, maxx1, miny1, maxy1, rowDepth, colDepth) -> {
-                                if (rowDepth + colDepth > 20) {
-                                    // this would take 2^(20) points, way too much already
-                                    throw new ExcessiveDepthException(
-                                            "Warp grid getting too large to fit in memory, bailing out");
-                                }
-                            });
+            rowCols = computeOptimalDepths(
+                    mt, minx, maxx, miny, maxy, 0, 0, (minx1, maxx1, miny1, maxy1, rowDepth, colDepth) -> {
+                        if (rowDepth + colDepth > 20) {
+                            // this would take 2^(20) points, way too much already
+                            throw new ExcessiveDepthException(
+                                    "Warp grid getting too large to fit in memory, bailing out");
+                        }
+                    });
         } catch (Exception e) {
             return null;
         }
@@ -191,34 +182,18 @@ public class WarpBuilder {
          */
         int[] rowCols;
         try {
-            rowCols =
-                    computeOptimalDepths(
-                            mt,
-                            minx,
-                            maxx,
-                            miny,
-                            maxy,
-                            0,
-                            0,
-                            new DomainValidator() {
-                                @Override
-                                public void validateDomain(
-                                        double minx,
-                                        double maxx,
-                                        double miny,
-                                        double maxy,
-                                        int rowDepth,
-                                        int colDepth) {
-                                    if (maxx - minx < 4 || maxy - miny < 4) {
-                                        throw new ExcessiveDepthException(
-                                                "Warp grid getting as dense as the original data");
-                                    } else if (rowDepth + colDepth > 20) {
-                                        // this would take 2^(20) points, way too much already
-                                        throw new ExcessiveDepthException(
-                                                "Warp grid getting too large to fit in memory, bailing out");
-                                    }
-                                }
-                            });
+            rowCols = computeOptimalDepths(mt, minx, maxx, miny, maxy, 0, 0, new DomainValidator() {
+                @Override
+                public void validateDomain(
+                        double minx, double maxx, double miny, double maxy, int rowDepth, int colDepth) {
+                    if (maxx - minx < 4 || maxy - miny < 4) {
+                        throw new ExcessiveDepthException("Warp grid getting as dense as the original data");
+                    } else if (rowDepth + colDepth > 20) {
+                        // this would take 2^(20) points, way too much already
+                        throw new ExcessiveDepthException("Warp grid getting too large to fit in memory, bailing out");
+                    }
+                }
+            });
         } catch (Exception e) {
             return new WarpAdapter(null, mt);
         }
@@ -325,18 +300,14 @@ public class WarpBuilder {
                 dumpPropertyFile(warpPositions, "transformed");
             }
 
-            LOGGER.log(
-                    Level.FINE,
-                    "Optimizing the warp into an grid warp {0} x {1}",
-                    new Object[] {rows, cols});
+            LOGGER.log(Level.FINE, "Optimizing the warp into an grid warp {0} x {1}", new Object[] {rows, cols});
 
             return new WarpGrid((int) minx, stepx, cols, (int) miny, stepy, rows, warpPositions);
         }
     }
 
     interface DomainValidator {
-        public void validateDomain(
-                double minx, double maxx, double miny, double maxy, int rowDepth, int colDepth);
+        public void validateDomain(double minx, double maxx, double miny, double maxy, int rowDepth, int colDepth);
     }
 
     /**
@@ -360,13 +331,11 @@ public class WarpBuilder {
         final double midy = (miny + maxy) / 2;
 
         // test tolerance along the y axis
-        boolean withinTolVertical =
-                isWithinTolerance(mt, minx, miny, minx, midy, minx, maxy)
-                        && isWithinTolerance(mt, maxx, miny, maxx, midy, maxx, maxy);
+        boolean withinTolVertical = isWithinTolerance(mt, minx, miny, minx, midy, minx, maxy)
+                && isWithinTolerance(mt, maxx, miny, maxx, midy, maxx, maxy);
         // test tolerance along the x axis
-        boolean withinTolHorizontal =
-                isWithinTolerance(mt, minx, miny, midx, miny, maxx, miny)
-                        && isWithinTolerance(mt, minx, maxy, midx, maxy, maxx, maxy);
+        boolean withinTolHorizontal = isWithinTolerance(mt, minx, miny, midx, miny, maxx, miny)
+                && isWithinTolerance(mt, minx, maxy, midx, maxy, maxx, maxy);
         // if needed, check tolerance along the diagonal as well
         if (withinTolVertical && withinTolHorizontal) {
             if (!isWithinTolerance(mt, minx, miny, midx, midy, maxx, maxy)
@@ -382,32 +351,22 @@ public class WarpBuilder {
             // quad split
             rowDepth++;
             colDepth++;
-            int[] d1 =
-                    computeOptimalDepths(mt, minx, midx, miny, midy, rowDepth, colDepth, validator);
-            int[] d2 =
-                    computeOptimalDepths(mt, minx, midx, midy, maxy, rowDepth, colDepth, validator);
-            int[] d3 =
-                    computeOptimalDepths(mt, midx, maxx, miny, midy, rowDepth, colDepth, validator);
-            int[] d4 =
-                    computeOptimalDepths(mt, midx, maxx, midy, maxy, rowDepth, colDepth, validator);
-            return new int[] {
-                max(max(d1[0], d2[0]), max(d3[0], d4[0])), max(max(d1[1], d2[1]), max(d3[1], d4[1]))
-            };
+            int[] d1 = computeOptimalDepths(mt, minx, midx, miny, midy, rowDepth, colDepth, validator);
+            int[] d2 = computeOptimalDepths(mt, minx, midx, midy, maxy, rowDepth, colDepth, validator);
+            int[] d3 = computeOptimalDepths(mt, midx, maxx, miny, midy, rowDepth, colDepth, validator);
+            int[] d4 = computeOptimalDepths(mt, midx, maxx, midy, maxy, rowDepth, colDepth, validator);
+            return new int[] {max(max(d1[0], d2[0]), max(d3[0], d4[0])), max(max(d1[1], d2[1]), max(d3[1], d4[1]))};
         } else if (!withinTolHorizontal) {
             // slice in two at midx (creating two more colums)
             colDepth++;
-            int[] d1 =
-                    computeOptimalDepths(mt, minx, midx, miny, maxy, rowDepth, colDepth, validator);
-            int[] d2 =
-                    computeOptimalDepths(mt, midx, maxx, miny, maxy, rowDepth, colDepth, validator);
+            int[] d1 = computeOptimalDepths(mt, minx, midx, miny, maxy, rowDepth, colDepth, validator);
+            int[] d2 = computeOptimalDepths(mt, midx, maxx, miny, maxy, rowDepth, colDepth, validator);
             return new int[] {max(d1[0], d2[0]), max(d1[1], d2[1])};
         } else if (!withinTolVertical) {
             // slice in two at midy (creating two rows)
             rowDepth++;
-            int[] d1 =
-                    computeOptimalDepths(mt, minx, maxx, miny, midy, rowDepth, colDepth, validator);
-            int[] d2 =
-                    computeOptimalDepths(mt, minx, maxx, midy, maxy, rowDepth, colDepth, validator);
+            int[] d1 = computeOptimalDepths(mt, minx, maxx, miny, midy, rowDepth, colDepth, validator);
+            int[] d2 = computeOptimalDepths(mt, minx, maxx, midy, maxy, rowDepth, colDepth, validator);
             return new int[] {max(d1[0], d2[0]), max(d1[1], d2[1])};
         }
 
@@ -415,8 +374,7 @@ public class WarpBuilder {
     }
 
     /** Checks if the point predicted by a WarpGrid between the specified points */
-    boolean isWithinTolerance(
-            MathTransform2D mt, double x1, double y1, double x2, double y2, double x3, double y3)
+    boolean isWithinTolerance(MathTransform2D mt, double x1, double y1, double x2, double y2, double x3, double y3)
             throws TransformException {
         // transform the points (use two extra points at quarter distance to avoid being
         // fooled by symmetrical projections
@@ -512,8 +470,7 @@ public class WarpBuilder {
                 writer.write("_=geom:Point:srid=32632");
                 writer.newLine();
                 for (int i = 0; i < points.length; i += 2) {
-                    writer.write(
-                            "p." + (i / 2) + "=POINT(" + points[i] + " " + points[i + 1] + ")");
+                    writer.write("p." + (i / 2) + "=POINT(" + points[i] + " " + points[i + 1] + ")");
                     writer.newLine();
                 }
                 LOGGER.info(name + " dumped as " + output.getName());

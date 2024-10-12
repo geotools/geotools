@@ -70,8 +70,7 @@ public class CRSHandlingTest {
         URL resource = TestData.getResource(CSVWriteTest.class, "coastal2.csv");
         URL resourcep = TestData.getResource(CSVWriteTest.class, "coastal2.prj");
         Files.copy(resource.openStream(), statesfile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-        Files.copy(
-                resourcep.openStream(), statesfilep.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(resourcep.openStream(), statesfilep.toPath(), StandardCopyOption.REPLACE_EXISTING);
         Map<String, Object> params = new HashMap<>();
         params.put(CSVDataStoreFactory.FILE_PARAM.key, statesfile.toString());
         params.put(CSVDataStoreFactory.STRATEGYP.key, CSVDataStoreFactory.WKT_STRATEGY);
@@ -81,8 +80,7 @@ public class CRSHandlingTest {
 
     @Test
     public void testPrjFileRead()
-            throws FileNotFoundException, IOException, NoSuchAuthorityCodeException,
-                    FactoryException {
+            throws FileNotFoundException, IOException, NoSuchAuthorityCodeException, FactoryException {
         File f = TestData.file(this, "coastal2.csv");
         Map<String, Object> params = new HashMap<>();
         params.put(CSVDataStoreFactory.FILE_PARAM.key, f.toString());
@@ -91,8 +89,7 @@ public class CRSHandlingTest {
 
         DataStore store = DataStoreFinder.getDataStore(params);
         String name = store.getTypeNames()[0];
-        CoordinateReferenceSystem crs =
-                store.getFeatureSource(name).getSchema().getCoordinateReferenceSystem();
+        CoordinateReferenceSystem crs = store.getFeatureSource(name).getSchema().getCoordinateReferenceSystem();
         CoordinateReferenceSystem expected = CRS.decode("EPSG:27700");
         assertEquals(
                 expected.getIdentifiers().iterator().next().getCode(),

@@ -68,7 +68,6 @@ public class NamespaceAwareAttributeRenameVisitor extends DuplicatingFilterVisit
         if (expression.getPropertyName().equals(sourceProperty)) {
             return getFactory(extraData).property(targetProperty, expression.getNamespaceContext());
         }
-        return getFactory(extraData)
-                .property(expression.getPropertyName(), expression.getNamespaceContext());
+        return getFactory(extraData).property(expression.getPropertyName(), expression.getNamespaceContext());
     }
 }

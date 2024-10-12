@@ -27,10 +27,7 @@ import org.geotools.filter.capability.FunctionNameImpl;
 public class FilterFunction_roundDouble extends FunctionExpressionImpl {
 
     public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "roundDouble",
-                    parameter("rounded", Double.class),
-                    parameter("number", Number.class));
+            new FunctionNameImpl("roundDouble", parameter("rounded", Double.class), parameter("number", Number.class));
 
     public FilterFunction_roundDouble() {
         super(NAME);

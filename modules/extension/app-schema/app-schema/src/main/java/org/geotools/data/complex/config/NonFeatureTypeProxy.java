@@ -69,8 +69,7 @@ public class NonFeatureTypeProxy extends ComplexTypeProxy implements FeatureType
         // create a new descriptor with the wrapped type and set it to the mapping
         ComplexFeatureTypeFactoryImpl typeFactory = new ComplexFeatureTypeFactoryImpl();
         AttributeDescriptor descriptor =
-                typeFactory.createAttributeDescriptor(
-                        this, name, minOccurs, maxOccurs, nillable, defaultValue);
+                typeFactory.createAttributeDescriptor(this, name, minOccurs, maxOccurs, nillable, defaultValue);
         descriptor.getUserData().putAll(originalTarget.getUserData());
         mapping.setTargetFeature(descriptor);
         // smuggle FEATURE_LINK descriptor
@@ -81,9 +80,7 @@ public class NonFeatureTypeProxy extends ComplexTypeProxy implements FeatureType
     }
 
     public NonFeatureTypeProxy(
-            final AttributeType type,
-            final FeatureTypeMapping mapping,
-            Collection<PropertyDescriptor> schema) {
+            final AttributeType type, final FeatureTypeMapping mapping, Collection<PropertyDescriptor> schema) {
         super(type.getName(), null);
 
         subject = type;
@@ -98,8 +95,7 @@ public class NonFeatureTypeProxy extends ComplexTypeProxy implements FeatureType
         // create a new descriptor with the wrapped type and set it to the mapping
         ComplexFeatureTypeFactoryImpl typeFactory = new ComplexFeatureTypeFactoryImpl();
         AttributeDescriptor descriptor =
-                typeFactory.createAttributeDescriptor(
-                        this, name, minOccurs, maxOccurs, nillable, defaultValue);
+                typeFactory.createAttributeDescriptor(this, name, minOccurs, maxOccurs, nillable, defaultValue);
         descriptor.getUserData().putAll(originalTarget.getUserData());
         mapping.setTargetFeature(descriptor);
         // smuggle FEATURE_LINK descriptor

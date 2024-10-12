@@ -53,9 +53,7 @@ class SearchGetBuilder {
         URIBuilder builder = new URIBuilder(base);
         if (search.getBbox() != null) {
             String spec =
-                    DoubleStream.of(search.getBbox())
-                            .mapToObj(String::valueOf)
-                            .collect(COMMA_JOINER);
+                    DoubleStream.of(search.getBbox()).mapToObj(String::valueOf).collect(COMMA_JOINER);
             builder.addParameter("bbox", spec);
         }
         if (search.getCollections() != null) {
@@ -65,8 +63,7 @@ class SearchGetBuilder {
         if (search.getDatetime() != null) builder.addParameter("datetime", search.getDatetime());
         if (search.getIntersects() != null) {
             try {
-                builder.addParameter(
-                        "intersects", OBJECT_MAPPER.writeValueAsString(search.getIntersects()));
+                builder.addParameter("intersects", OBJECT_MAPPER.writeValueAsString(search.getIntersects()));
             } catch (JsonProcessingException e) {
                 throw new RuntimeException(e);
             }
@@ -90,10 +87,9 @@ class SearchGetBuilder {
             builder.addParameter("fields", spec);
         }
         if (search.getSortBy() != null) {
-            String spec =
-                    search.getSortBy().stream()
-                            .map(sb -> getSortSpecification(sb))
-                            .collect(COMMA_JOINER);
+            String spec = search.getSortBy().stream()
+                    .map(sb -> getSortSpecification(sb))
+                    .collect(COMMA_JOINER);
             builder.addParameter("sortby", spec);
         }
         return builder.build().toURL();

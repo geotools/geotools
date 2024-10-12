@@ -61,8 +61,7 @@ public class MaxVisitorTest {
     @Test
     public void resetCallWillNullify() throws Exception {
         final MemoryFeatureCollection collection = new MemoryFeatureCollection(SCHEMA);
-        collection.add(
-                SimpleFeatureBuilder.build(SCHEMA, new Object[] {0, Integer.MIN_VALUE - 1}, "1"));
+        collection.add(SimpleFeatureBuilder.build(SCHEMA, new Object[] {0, Integer.MIN_VALUE - 1}, "1"));
 
         final MaxVisitor visitor = new MaxVisitor("ALong");
         collection.accepts(visitor, null);

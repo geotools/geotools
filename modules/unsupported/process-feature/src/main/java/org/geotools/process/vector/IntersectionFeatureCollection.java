@@ -66,8 +66,7 @@ import org.locationtech.jts.geom.Polygon;
  */
 @DescribeProcess(
         title = "Intersection of Feature Collections",
-        description =
-                "Spatial intersection of two feature collections, including combining attributes from both.")
+        description = "Spatial intersection of two feature collections, including combining attributes from both.")
 public class IntersectionFeatureCollection implements VectorProcess {
     private static final Logger logger =
             Logger.getLogger("org.geotools.process.feature.gs.IntersectionFeatureCollection");
@@ -83,13 +82,9 @@ public class IntersectionFeatureCollection implements VectorProcess {
 
     @DescribeResult(description = "Output feature collection")
     public SimpleFeatureCollection execute(
-            @DescribeParameter(
-                            name = "first feature collection",
-                            description = "First feature collection")
+            @DescribeParameter(name = "first feature collection", description = "First feature collection")
                     SimpleFeatureCollection firstFeatures,
-            @DescribeParameter(
-                            name = "second feature collection",
-                            description = "Second feature collection")
+            @DescribeParameter(name = "second feature collection", description = "Second feature collection")
                     SimpleFeatureCollection secondFeatures,
             @DescribeParameter(
                             name = "first attributes to retain",
@@ -119,8 +114,7 @@ public class IntersectionFeatureCollection implements VectorProcess {
             @DescribeParameter(
                             name = "areasEnabled",
                             min = 0,
-                            description =
-                                    "Indicates whether to output feature areas (attributes areaA and areaB)")
+                            description = "Indicates whether to output feature areas (attributes areaA and areaB)")
                     Boolean areasEnabled) {
         // assign defaults
         logger.fine("INTERSECTION FEATURE COLLECTION WPS STARTED");
@@ -147,13 +141,8 @@ public class IntersectionFeatureCollection implements VectorProcess {
                     "In case of opMode or areaMode are true, the features in the first and second collection must be polygonal");
         }
         if (!isGeometryTypeIn(
-                firstGeomType,
-                MultiPolygon.class,
-                Polygon.class,
-                MultiLineString.class,
-                LineString.class)) {
-            throw new IllegalArgumentException(
-                    "First feature collection must be polygonal or linear");
+                firstGeomType, MultiPolygon.class, Polygon.class, MultiLineString.class, LineString.class)) {
+            throw new IllegalArgumentException("First feature collection must be polygonal or linear");
         }
 
         return new IntersectedFeatureCollection(
@@ -238,10 +227,8 @@ public class IntersectionFeatureCollection implements VectorProcess {
             CoordinateReferenceSystem secondCRS,
             boolean divideFirst) {
         // basic checks
-        if (firstCRS == null || secondCRS == null)
-            throw new IllegalArgumentException("CRS cannot be set to null");
-        if (!Polygon.class.isAssignableFrom(first.getClass())
-                && !MultiPolygon.class.isAssignableFrom(first.getClass()))
+        if (firstCRS == null || secondCRS == null) throw new IllegalArgumentException("CRS cannot be set to null");
+        if (!Polygon.class.isAssignableFrom(first.getClass()) && !MultiPolygon.class.isAssignableFrom(first.getClass()))
             throw new IllegalArgumentException("first geometry must be poligonal");
         if (!Polygon.class.isAssignableFrom(second.getClass())
                 && !MultiPolygon.class.isAssignableFrom(second.getClass()))
@@ -249,8 +236,7 @@ public class IntersectionFeatureCollection implements VectorProcess {
         try {
             Geometry firstTargetGeometry = reprojectAndDensify(first, firstCRS, null);
             Geometry secondTargetGeometry = reprojectAndDensify(second, firstCRS, null);
-            double numeratorArea =
-                    (firstTargetGeometry.intersection(secondTargetGeometry)).getArea();
+            double numeratorArea = (firstTargetGeometry.intersection(secondTargetGeometry)).getArea();
             if (divideFirst) {
                 double denom = firstTargetGeometry.getArea();
                 if (denom != 0) return numeratorArea / denom;
@@ -266,9 +252,7 @@ public class IntersectionFeatureCollection implements VectorProcess {
     }
 
     static Geometry reprojectAndDensify(
-            Geometry first,
-            CoordinateReferenceSystem sourceCRS,
-            CoordinateReferenceSystem targetCRS)
+            Geometry first, CoordinateReferenceSystem sourceCRS, CoordinateReferenceSystem targetCRS)
             throws FactoryException, TransformException {
         if (targetCRS == null) {
             targetCRS = CRS.parseWKT(ECKERT_IV_WKT);
@@ -278,10 +262,11 @@ public class IntersectionFeatureCollection implements VectorProcess {
         return geometry;
     }
 
-    static AttributeDescriptor getIntersectionType(
-            SimpleFeatureCollection first, SimpleFeatureCollection second) {
-        Class firstGeomType = first.getSchema().getGeometryDescriptor().getType().getBinding();
-        Class secondGeomType = second.getSchema().getGeometryDescriptor().getType().getBinding();
+    static AttributeDescriptor getIntersectionType(SimpleFeatureCollection first, SimpleFeatureCollection second) {
+        Class firstGeomType =
+                first.getSchema().getGeometryDescriptor().getType().getBinding();
+        Class secondGeomType =
+                second.getSchema().getGeometryDescriptor().getType().getBinding();
 
         // figure out the output geometry type
         Class binding;
@@ -389,9 +374,7 @@ public class IntersectionFeatureCollection implements VectorProcess {
         }
 
         private void collectAttributes(
-                SimpleFeatureType schema,
-                List<String> retainedAttributes,
-                SimpleFeatureTypeBuilder tb) {
+                SimpleFeatureType schema, List<String> retainedAttributes, SimpleFeatureTypeBuilder tb) {
             for (AttributeDescriptor descriptor : schema.getAttributeDescriptors()) {
                 // check whether descriptor has been selected in the attribute list
                 boolean isInRetainList = true;
@@ -413,10 +396,8 @@ public class IntersectionFeatureCollection implements VectorProcess {
                 builder.setMaxOccurs(descriptor.getMaxOccurs());
                 builder.setDefaultValue(descriptor.getDefaultValue());
                 builder.setCRS(schema.getCoordinateReferenceSystem());
-                AttributeDescriptor intersectionDescriptor =
-                        builder.buildDescriptor(
-                                schema.getName().getLocalPart() + "_" + descriptor.getName(),
-                                descriptor.getType());
+                AttributeDescriptor intersectionDescriptor = builder.buildDescriptor(
+                        schema.getName().getLocalPart() + "_" + descriptor.getName(), descriptor.getType());
                 tb.add(intersectionDescriptor);
                 tb.addBinding(descriptor.getType());
             }
@@ -541,31 +522,24 @@ public class IntersectionFeatureCollection implements VectorProcess {
                 //               logger.info("qui dopo check if (complete)");
                 // logger.finer("control HAS NEXT");
                 for (Object attribute : first.getAttributes()) {
-                    if (attribute instanceof Geometry
-                            && attribute.equals(first.getDefaultGeometry())) {
+                    if (attribute instanceof Geometry && attribute.equals(first.getDefaultGeometry())) {
                         Geometry currentGeom = (Geometry) attribute;
 
                         if (intersectedGeometries == null && !added) {
-                            intersectedGeometries =
-                                    filteredCollection(currentGeom, subFeatureCollection);
+                            intersectedGeometries = filteredCollection(currentGeom, subFeatureCollection);
                             iterator = intersectedGeometries.features();
                         }
                         try {
                             while (iterator.hasNext()) {
                                 added = false;
                                 SimpleFeature second = iterator.next();
-                                if (currentGeom
-                                        .getEnvelope()
-                                        .intersects(((Geometry) second.getDefaultGeometry()))) {
+                                if (currentGeom.getEnvelope().intersects(((Geometry) second.getDefaultGeometry()))) {
                                     // compute geometry
                                     if (intersectionMode == IntersectionMode.INTERSECTION) {
-                                        attribute =
-                                                currentGeom.intersection(
-                                                        (Geometry) second.getDefaultGeometry());
+                                        attribute = currentGeom.intersection((Geometry) second.getDefaultGeometry());
 
-                                        GeometryFilterImpl filter =
-                                                new GeometryFilterImpl(
-                                                        geomType.getType().getBinding());
+                                        GeometryFilterImpl filter = new GeometryFilterImpl(
+                                                geomType.getType().getBinding());
                                         ((Geometry) attribute).apply(filter);
                                         attribute = filter.getGeometry();
                                     } else if (intersectionMode == IntersectionMode.FIRST) {
@@ -614,8 +588,7 @@ public class IntersectionFeatureCollection implements VectorProcess {
             return next != null;
         }
 
-        private void addAttributeValues(
-                SimpleFeature feature, List<String> retained, SimpleFeatureBuilder fb) {
+        private void addAttributeValues(SimpleFeature feature, List<String> retained, SimpleFeatureBuilder fb) {
             Iterator<AttributeDescriptor> firstIterator =
                     feature.getType().getAttributeDescriptors().iterator();
             while (firstIterator.hasNext()) {
@@ -629,20 +602,15 @@ public class IntersectionFeatureCollection implements VectorProcess {
         }
 
         private void addAreas(Geometry currentGeom, SimpleFeature second) {
-            CoordinateReferenceSystem firstCRS =
-                    firstFeatures.getSchema().getCoordinateReferenceSystem();
-            CoordinateReferenceSystem secondCRS =
-                    secondFeatures.getSchema().getCoordinateReferenceSystem();
+            CoordinateReferenceSystem firstCRS = firstFeatures.getSchema().getCoordinateReferenceSystem();
+            CoordinateReferenceSystem secondCRS = secondFeatures.getSchema().getCoordinateReferenceSystem();
 
             try {
-                double areaA =
-                        IntersectionFeatureCollection.reprojectAndDensify(
-                                        currentGeom, firstCRS, null)
-                                .getArea();
-                double areaB =
-                        IntersectionFeatureCollection.reprojectAndDensify(
-                                        (Geometry) second.getDefaultGeometry(), secondCRS, null)
-                                .getArea();
+                double areaA = IntersectionFeatureCollection.reprojectAndDensify(currentGeom, firstCRS, null)
+                        .getArea();
+                double areaB = IntersectionFeatureCollection.reprojectAndDensify(
+                                (Geometry) second.getDefaultGeometry(), secondCRS, null)
+                        .getArea();
                 fb.set("areaA", areaA);
                 fb.set("areaB", areaB);
             } catch (Exception e) {
@@ -653,27 +621,15 @@ public class IntersectionFeatureCollection implements VectorProcess {
         }
 
         private void addPercentages(Geometry currentGeom, SimpleFeature second) {
-            CoordinateReferenceSystem firstCRS =
-                    firstFeatures.getSchema().getCoordinateReferenceSystem();
+            CoordinateReferenceSystem firstCRS = firstFeatures.getSchema().getCoordinateReferenceSystem();
 
-            CoordinateReferenceSystem secondCRS =
-                    secondFeatures.getSchema().getCoordinateReferenceSystem();
+            CoordinateReferenceSystem secondCRS = secondFeatures.getSchema().getCoordinateReferenceSystem();
 
-            double percentageA =
-                    IntersectionFeatureCollection.getIntersectionArea(
-                            currentGeom,
-                            firstCRS,
-                            (Geometry) second.getDefaultGeometry(),
-                            secondCRS,
-                            true);
+            double percentageA = IntersectionFeatureCollection.getIntersectionArea(
+                    currentGeom, firstCRS, (Geometry) second.getDefaultGeometry(), secondCRS, true);
 
-            double percentageB =
-                    IntersectionFeatureCollection.getIntersectionArea(
-                            currentGeom,
-                            firstCRS,
-                            (Geometry) second.getDefaultGeometry(),
-                            secondCRS,
-                            false);
+            double percentageB = IntersectionFeatureCollection.getIntersectionArea(
+                    currentGeom, firstCRS, (Geometry) second.getDefaultGeometry(), secondCRS, false);
 
             fb.set("percentageA", percentageA);
 
@@ -694,8 +650,7 @@ public class IntersectionFeatureCollection implements VectorProcess {
         private SimpleFeatureCollection filteredCollection(
                 Geometry currentGeom, SimpleFeatureCollection subFeatureCollection) {
             FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
-            Filter intersectFilter =
-                    ff.intersects(ff.property(dataGeomName), ff.literal(currentGeom));
+            Filter intersectFilter = ff.intersects(ff.property(dataGeomName), ff.literal(currentGeom));
             SimpleFeatureCollection subFeatureCollectionIntersection =
                     this.subFeatureCollection.subCollection(intersectFilter);
             if (subFeatureCollectionIntersection.size() == 0) {

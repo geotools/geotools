@@ -56,13 +56,8 @@ public class GeoJSONDataStoreTest {
         SimpleFeatureSource source = ds.getFeatureSource(ds.getNames().get(0));
 
         assertEquals(51, source.getCount(query)); // includes DC
-        ReferencedEnvelope expected =
-                new ReferencedEnvelope(
-                        -171.79111060289117,
-                        -66.96466,
-                        18.916190000000142,
-                        71.35776357694175,
-                        DefaultGeographicCRS.WGS84);
+        ReferencedEnvelope expected = new ReferencedEnvelope(
+                -171.79111060289117, -66.96466, 18.916190000000142, 71.35776357694175, DefaultGeographicCRS.WGS84);
         ReferencedEnvelope obs = source.getBounds();
         assertNotNull(obs);
         assertEquals(expected.getMinX(), obs.getMinX(), 0.00001);
@@ -76,8 +71,7 @@ public class GeoJSONDataStoreTest {
     public void testReader() throws IOException {
         String type = ds.getNames().get(0).getLocalPart();
         Query query = new Query(type);
-        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                ds.getFeatureReader(query, null)) {
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader = ds.getFeatureReader(query, null)) {
             SimpleFeatureType schema = reader.getFeatureType();
             assertNotNull(schema);
         }
@@ -91,8 +85,7 @@ public class GeoJSONDataStoreTest {
         String type = fds.getNames().get(0).getLocalPart();
         Query query = new Query(type);
         Class<?> lastGeometryBinding = null;
-        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                fds.getFeatureReader(query, null)) {
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader = fds.getFeatureReader(query, null)) {
             SimpleFeatureType schema = reader.getFeatureType();
             assertNotNull(schema);
             int count = 0;
@@ -117,8 +110,7 @@ public class GeoJSONDataStoreTest {
         String type = fds.getNames().get(0).getLocalPart();
         Query query = new Query(type);
 
-        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                fds.getFeatureReader(query, null)) {
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader = fds.getFeatureReader(query, null)) {
             SimpleFeatureType schema = reader.getFeatureType();
             // System.out.println(schema);
             assertEquals(Point.class, schema.getGeometryDescriptor().getType().getBinding());
@@ -140,8 +132,7 @@ public class GeoJSONDataStoreTest {
         String type = fds.getNames().get(0).getLocalPart();
         Query query = new Query(type);
 
-        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                fds.getFeatureReader(query, null)) {
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader = fds.getFeatureReader(query, null)) {
             while (reader.hasNext()) {
                 SimpleFeature sf = reader.next();
                 assertThat(sf.getID(), startsWith("location_with_id.f"));
@@ -176,8 +167,7 @@ public class GeoJSONDataStoreTest {
 
         GeoJSONDataStore fds = new GeoJSONDataStore(url);
         String type = fds.getNames().get(0).getLocalPart();
-        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                fds.getFeatureReader(new Query(type), null)) {
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader = fds.getFeatureReader(new Query(type), null)) {
             // No Feature to read, also no NullPointer exception
             assertFalse(reader.hasNext());
             SimpleFeatureType schema = reader.getFeatureType();

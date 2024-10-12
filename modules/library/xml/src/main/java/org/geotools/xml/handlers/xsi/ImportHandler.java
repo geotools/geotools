@@ -53,8 +53,7 @@ public class ImportHandler extends XSIElementHandler {
     @Override
     @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
-        return (LOCALNAME.hashCode() * ((schemaLocation == null) ? 1 : schemaLocation.hashCode()))
-                + hashCodeOffset;
+        return (LOCALNAME.hashCode() * ((schemaLocation == null) ? 1 : schemaLocation.hashCode())) + hashCodeOffset;
     }
 
     /** @see org.geotools.xml.XSIElementHandler#getHandler(java.lang.String, java.lang.String) */
@@ -68,8 +67,7 @@ public class ImportHandler extends XSIElementHandler {
      *     org.xml.sax.Attributes)
      */
     @Override
-    public void startElement(String namespaceURI, String localName, Attributes atts)
-            throws SAXException {
+    public void startElement(String namespaceURI, String localName, Attributes atts) throws SAXException {
         String sl = atts.getValue("", "schemaLocation");
 
         if (sl == null) {
@@ -96,8 +94,7 @@ public class ImportHandler extends XSIElementHandler {
         }
 
         if (namespaceURI.equalsIgnoreCase(namespace1)) {
-            throw new SAXException(
-                    "You may not import a namespace with the same name as the current namespace");
+            throw new SAXException("You may not import a namespace with the same name as the current namespace");
         }
     }
 

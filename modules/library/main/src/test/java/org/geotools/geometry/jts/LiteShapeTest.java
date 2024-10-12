@@ -84,13 +84,11 @@ public class LiteShapeTest {
     public void testPolygonShape() throws TransformException, FactoryException {
         GeometryFactory geomFac = new GeometryFactory();
         Polygon polygon = makeSamplePolygon(geomFac, 0, 0);
-        LiteShape2 lineShape =
-                new LiteShape2(
-                        polygon,
-                        ProjectiveTransform.create(new AffineTransform()),
-                        new Decimator(
-                                ProjectiveTransform.create(new AffineTransform()), new Rectangle()),
-                        false);
+        LiteShape2 lineShape = new LiteShape2(
+                polygon,
+                ProjectiveTransform.create(new AffineTransform()),
+                new Decimator(ProjectiveTransform.create(new AffineTransform()), new Rectangle()),
+                false);
 
         Assert.assertFalse(lineShape.contains(0, 0));
         Assert.assertTrue(lineShape.contains(100, 100));
@@ -123,10 +121,7 @@ public class LiteShapeTest {
         LineString ls = geomFac.createLineString(cs);
         LineString copy = (LineString) ls.copy();
         new LiteShape2(
-                ls,
-                ProjectiveTransform.create(AffineTransform.getScaleInstance(10, 10)),
-                new Decimator(4, 4),
-                true);
+                ls, ProjectiveTransform.create(AffineTransform.getScaleInstance(10, 10)), new Decimator(4, 4), true);
         Assert.assertTrue(ls.equalsExact(copy));
 
         new LiteShape2(
@@ -138,8 +133,7 @@ public class LiteShapeTest {
         Assert.assertFalse(ls.equalsExact(copy));
     }
 
-    private LineString makeSampleLineString(
-            final GeometryFactory geomFac, double xoff, double yoff) {
+    private LineString makeSampleLineString(final GeometryFactory geomFac, double xoff, double yoff) {
         Coordinate[] linestringCoordinates = new Coordinate[8];
         linestringCoordinates[0] = new Coordinate(50.0d + xoff, 50.0d + yoff);
         linestringCoordinates[1] = new Coordinate(60.0d + xoff, 50.0d + yoff);

@@ -39,8 +39,7 @@ import org.geotools.util.URLs;
  * @author Jesse
  */
 public class IndexedFidReader implements FIDReader, FileReader, AutoCloseable {
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(IndexedFidReader.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(IndexedFidReader.class);
     private ReadableByteChannel readChannel;
     private ByteBuffer buffer;
     private long count;
@@ -108,8 +107,7 @@ public class IndexedFidReader implements FIDReader, FileReader, AutoCloseable {
             byte version = buffer.get();
 
             if (version != 1) {
-                throw new IOException(
-                        "File is not of a compatible version for this reader or file is corrupt.");
+                throw new IOException("File is not of a compatible version for this reader or file is corrupt.");
             }
 
             this.count = buffer.getLong();
@@ -235,8 +233,7 @@ public class IndexedFidReader implements FIDReader, FileReader, AutoCloseable {
     public void goTo(long recno) throws IOException {
         assert recno < count;
         if (readChannel instanceof FileChannel) {
-            long newPosition =
-                    IndexedFidWriter.HEADER_SIZE + (recno * IndexedFidWriter.RECORD_SIZE);
+            long newPosition = IndexedFidWriter.HEADER_SIZE + (recno * IndexedFidWriter.RECORD_SIZE);
             if (newPosition >= bufferStart + buffer.limit() || newPosition < bufferStart) {
                 FileChannel fc = (FileChannel) readChannel;
                 fc.position(newPosition);
@@ -289,8 +286,7 @@ public class IndexedFidReader implements FIDReader, FileReader, AutoCloseable {
     @Override
     public String next() throws IOException {
         if (!hasNext()) {
-            throw new NoSuchElementException(
-                    "FID index could not be read; the index may be invalid");
+            throw new NoSuchElementException("FID index could not be read; the index may be invalid");
         }
 
         currentId = buffer.getLong();
@@ -310,8 +306,7 @@ public class IndexedFidReader implements FIDReader, FileReader, AutoCloseable {
      */
     public int currentSHXIndex() {
         if (currentShxIndex == -1) {
-            throw new NoSuchElementException(
-                    "Next must be called before there exists a current element.");
+            throw new NoSuchElementException("Next must be called before there exists a current element.");
         }
 
         return currentShxIndex;

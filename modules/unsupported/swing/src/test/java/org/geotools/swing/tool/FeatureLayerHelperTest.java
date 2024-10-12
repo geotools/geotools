@@ -85,10 +85,7 @@ public class FeatureLayerHelperTest {
 
         ReferencedEnvelope bounds = layer.getBounds();
         Position2D pos =
-                new Position2D(
-                        bounds.getCoordinateReferenceSystem(),
-                        bounds.getMinX() - 1,
-                        bounds.getMinY() - 1);
+                new Position2D(bounds.getCoordinateReferenceSystem(), bounds.getMinX() - 1, bounds.getMinY() - 1);
 
         InfoToolResult info = helper.getInfo(pos);
         assertNotNull(info);
@@ -143,7 +140,9 @@ public class FeatureLayerHelperTest {
 
             if (value instanceof Geometry) {
                 assertEquals(
-                        "Attribute " + e.getKey(), e.getValue(), value.getClass().getSimpleName());
+                        "Attribute " + e.getKey(),
+                        e.getValue(),
+                        value.getClass().getSimpleName());
             } else {
                 assertEquals("Attribute " + e.getKey(), e.getValue(), value);
             }

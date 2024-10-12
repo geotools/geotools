@@ -26,8 +26,8 @@ import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Polygon;
 
 @SuppressWarnings("ComparableType")
-public class SurfaceArrayPropertyTypeBinding
-        extends org.geotools.gml3.bindings.SurfaceArrayPropertyTypeBinding implements Comparable {
+public class SurfaceArrayPropertyTypeBinding extends org.geotools.gml3.bindings.SurfaceArrayPropertyTypeBinding
+        implements Comparable {
 
     protected GeometryFactory gf;
 

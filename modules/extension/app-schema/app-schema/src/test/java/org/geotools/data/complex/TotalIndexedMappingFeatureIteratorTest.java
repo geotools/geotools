@@ -42,18 +42,13 @@ public class TotalIndexedMappingFeatureIteratorTest extends IndexesTest {
 
     @Test
     public void testTotalInstance() throws IOException {
-        try (TestFeatureSource fsource =
-                new TestFeatureSource(
-                        "/test-data/index/",
-                        "stationsIndexed.xml",
-                        "http://www.stations.org/1.0",
-                        "stationsIndexed")) {
+        try (TestFeatureSource fsource = new TestFeatureSource(
+                "/test-data/index/", "stationsIndexed.xml", "http://www.stations.org/1.0", "stationsIndexed")) {
             FeatureCollection<FeatureType, Feature> fcoll =
                     fsource.getMappedSource().getFeatures(this.totalIndexedFilterCase());
             try (FeatureIterator<Feature> iterator = fcoll.features()) {
                 assertTrue(iterator instanceof TotalIndexedMappingFeatureIterator);
-                List<Feature> features =
-                        FeatureStreams.toFeatureStream(fcoll).collect(Collectors.toList());
+                List<Feature> features = FeatureStreams.toFeatureStream(fcoll).collect(Collectors.toList());
                 assertEquals(features.size(), 4);
                 assertTrue(checkExists(features, "st.1"));
                 assertTrue(checkExists(features, "st.2"));
@@ -65,19 +60,14 @@ public class TotalIndexedMappingFeatureIteratorTest extends IndexesTest {
 
     @Test
     public void testGetFid() throws IOException {
-        try (TestFeatureSource fsource =
-                new TestFeatureSource(
-                        "/test-data/index/",
-                        "stationsIndexed.xml",
-                        "http://www.stations.org/1.0",
-                        "stationsIndexed")) {
+        try (TestFeatureSource fsource = new TestFeatureSource(
+                "/test-data/index/", "stationsIndexed.xml", "http://www.stations.org/1.0", "stationsIndexed")) {
             FeatureCollection<FeatureType, Feature> fcoll =
                     fsource.getMappedSource().getFeatures(this.totalIndexedFilterCase());
             try (FeatureIterator<Feature> iterator = fcoll.features()) {
                 assertTrue(iterator instanceof TotalIndexedMappingFeatureIterator);
                 @SuppressWarnings("PMD.CloseResource") // just a cast, try above does close
-                TotalIndexedMappingFeatureIterator titer =
-                        (TotalIndexedMappingFeatureIterator) iterator;
+                TotalIndexedMappingFeatureIterator titer = (TotalIndexedMappingFeatureIterator) iterator;
                 assertEquals("ID", titer.getFidAttrMap().getIndexField());
             }
         }
@@ -86,14 +76,13 @@ public class TotalIndexedMappingFeatureIteratorTest extends IndexesTest {
     /** Should returns 1, 2, 10, 12(11 on index) */
     private Filter totalIndexedFilterCase() {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory();
-        List<Filter> filters =
-                Arrays.asList(
-                        ff.or(
-                                ff.equals(ff.property(this.attName), ff.literal("station11")),
-                                ff.equals(ff.property(this.attId), ff.literal("st.1"))),
-                        ff.or(
-                                ff.equals(ff.property(this.attName), ff.literal("station10")),
-                                ff.equals(ff.property(this.attId), ff.literal("st.2"))));
+        List<Filter> filters = Arrays.asList(
+                ff.or(
+                        ff.equals(ff.property(this.attName), ff.literal("station11")),
+                        ff.equals(ff.property(this.attId), ff.literal("st.1"))),
+                ff.or(
+                        ff.equals(ff.property(this.attName), ff.literal("station10")),
+                        ff.equals(ff.property(this.attId), ff.literal("st.2"))));
         Filter filter = ff.or(filters);
         return filter;
     }

@@ -73,11 +73,7 @@ public abstract class WebMercatorTileService extends TileService {
     @Override
     public ReferencedEnvelope getBounds() {
         return new ReferencedEnvelope(
-                MIN_LONGITUDE,
-                MAX_LONGITUDE,
-                MIN_LATITUDE,
-                MAX_LATITUDE,
-                DefaultGeographicCRS.WGS84);
+                MIN_LONGITUDE, MAX_LONGITUDE, MIN_LATITUDE, MAX_LATITUDE, DefaultGeographicCRS.WGS84);
     }
 
     @Override

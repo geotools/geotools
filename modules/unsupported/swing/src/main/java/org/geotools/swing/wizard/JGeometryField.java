@@ -41,20 +41,16 @@ public class JGeometryField extends ParamField {
     @Override
     public JComponent doLayout() {
         text = new JTextArea(40, 3);
-        text.addKeyListener(
-                new KeyAdapter() {
-                    @Override
-                    public void keyReleased(KeyEvent e) {
-                        validate();
-                    }
-                });
+        text.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                validate();
+            }
+        });
         text.setWrapStyleWord(true);
 
         JScrollPane scroll =
-                new JScrollPane(
-                        text,
-                        JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
-                        JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+                new JScrollPane(text, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         scroll.setPreferredSize(new Dimension(400, 80));
         return scroll;
     }
@@ -81,8 +77,7 @@ public class JGeometryField extends ParamField {
      */
     int getD() {
         try {
-            CoordinateReferenceSystem crs =
-                    (CoordinateReferenceSystem) parameter.metadata.get(Parameter.CRS);
+            CoordinateReferenceSystem crs = (CoordinateReferenceSystem) parameter.metadata.get(Parameter.CRS);
             if (crs == null) {
                 return 2;
             } else {

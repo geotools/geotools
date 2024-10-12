@@ -39,18 +39,10 @@ public class PostgisGeometryOnlineTest extends JDBCGeometryOnlineTest {
     public void testDimensionFromFirstGeometry() throws Exception {
         try (Connection cx = dataStore.getDataSource().getConnection()) {
             PostGISDialect dialect = ((PostGISDialect) dataStore.getSQLDialect());
-            assertEquals(
-                    (Integer) 0,
-                    dialect.getDimensionFromFirstGeo("public", "dim_point", "geom", cx));
-            assertEquals(
-                    (Integer) 1,
-                    dialect.getDimensionFromFirstGeo("public", "dim_line", "geom", cx));
-            assertEquals(
-                    (Integer) 2,
-                    dialect.getDimensionFromFirstGeo("public", "dim_polygon", "geom", cx));
-            assertEquals(
-                    (Integer) 1,
-                    dialect.getDimensionFromFirstGeo("public", "dim_collection", "geom", cx));
+            assertEquals((Integer) 0, dialect.getDimensionFromFirstGeo("public", "dim_point", "geom", cx));
+            assertEquals((Integer) 1, dialect.getDimensionFromFirstGeo("public", "dim_line", "geom", cx));
+            assertEquals((Integer) 2, dialect.getDimensionFromFirstGeo("public", "dim_polygon", "geom", cx));
+            assertEquals((Integer) 1, dialect.getDimensionFromFirstGeo("public", "dim_collection", "geom", cx));
         }
     }
 }

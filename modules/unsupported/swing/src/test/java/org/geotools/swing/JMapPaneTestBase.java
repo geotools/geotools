@@ -61,11 +61,7 @@ public abstract class JMapPaneTestBase {
      */
     protected ReferencedEnvelope createMatchedBounds(Rectangle screenRect) {
         return new ReferencedEnvelope(
-                0,
-                (double) screenRect.width / screenRect.height,
-                0,
-                1.0,
-                DefaultEngineeringCRS.CARTESIAN_2D);
+                0, (double) screenRect.width / screenRect.height, 0, 1.0, DefaultEngineeringCRS.CARTESIAN_2D);
     }
 
     /**
@@ -116,8 +112,7 @@ public abstract class JMapPaneTestBase {
         final SimpleFeatureType TYPE = typeBuilder.buildFeatureType();
 
         SimpleFeature feature =
-                SimpleFeatureBuilder.build(
-                        TYPE, new Object[] {JTS.toGeometry(env), "a rectangle"}, null);
+                SimpleFeatureBuilder.build(TYPE, new Object[] {JTS.toGeometry(env), "a rectangle"}, null);
 
         SimpleFeatureCollection fc = new ListFeatureCollection(TYPE, Arrays.asList(feature));
         return fc;

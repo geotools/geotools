@@ -55,10 +55,7 @@ public class Coordinates {
      * @return sublist of sequence (start,end] as provided by factory
      */
     public static CoordinateSequence subList(
-            CoordinateSequenceFactory factory,
-            CoordinateSequence sequence,
-            int fromIndex,
-            int toIndex) {
+            CoordinateSequenceFactory factory, CoordinateSequence sequence, int fromIndex, int toIndex) {
         if ((fromIndex == 0) && (toIndex == sequence.size())) {
             return sequence; // same list so just return it
         }
@@ -104,8 +101,7 @@ public class Coordinates {
             //			try
             //			{
             for (int i = 0; i < access.getDimension(); i++) {
-                subCoordArray[i] =
-                        new OrdinateList(coordArray[i], 0, 1, fromIndex, toIndex).toDoubleArray();
+                subCoordArray[i] = new OrdinateList(coordArray[i], 0, 1, fromIndex, toIndex).toDoubleArray();
             }
 
             //			}
@@ -125,9 +121,7 @@ public class Coordinates {
             //				System.out.println("");
             //			}
             for (int i = 0; i < access.getNumAttributes(); i++) {
-                subAttributeArray[i] =
-                        new AttributeList(attributeArray[i], 0, 1, fromIndex, toIndex)
-                                .toObjectArray();
+                subAttributeArray[i] = new AttributeList(attributeArray[i], 0, 1, fromIndex, toIndex).toObjectArray();
             }
 
             /*
@@ -160,8 +154,7 @@ public class Coordinates {
             System.out.println("");
             */
 
-            CoordinateAccess c =
-                    ((CoordinateAccessFactory) factory).create(subCoordArray, subAttributeArray);
+            CoordinateAccess c = ((CoordinateAccessFactory) factory).create(subCoordArray, subAttributeArray);
 
             return c;
         }
@@ -174,8 +167,7 @@ public class Coordinates {
     }
 
     /** Reverse provided coordinate sequence (used to correct CW vs CCW order). */
-    public static CoordinateSequence reverse(
-            CoordinateSequenceFactory factory, CoordinateSequence sequence) {
+    public static CoordinateSequence reverse(CoordinateSequenceFactory factory, CoordinateSequence sequence) {
         if (sequence instanceof CoordinateAccess) {
             CoordinateAccess access = (CoordinateAccess) sequence;
             double[][] coordArray = access.toOrdinateArrays();
@@ -185,19 +177,15 @@ public class Coordinates {
             Object[][] subAttributeArray = new Object[access.getNumAttributes()][];
 
             for (int i = 0; i < access.getDimension(); i++) {
-                subCoordArray[i] =
-                        new OrdinateList(coordArray[i], 0, 1, access.size() - 1, -1)
-                                .toDoubleArray();
+                subCoordArray[i] = new OrdinateList(coordArray[i], 0, 1, access.size() - 1, -1).toDoubleArray();
             }
 
             for (int i = 0; i < access.getNumAttributes(); i++) {
                 subAttributeArray[i] =
-                        new AttributeList(attributeArray[i], 0, 1, access.size() - 1, -1)
-                                .toObjectArray();
+                        new AttributeList(attributeArray[i], 0, 1, access.size() - 1, -1).toObjectArray();
             }
 
-            CoordinateAccess c =
-                    ((CoordinateAccessFactory) factory).create(subCoordArray, subAttributeArray);
+            CoordinateAccess c = ((CoordinateAccessFactory) factory).create(subCoordArray, subAttributeArray);
 
             return c;
         } else // else CoordinateSequence
@@ -216,8 +204,7 @@ public class Coordinates {
         return buf.toString();
     }
 
-    public static void append(
-            StringBuffer buf, CoordinateSequence cs, int coordinate, NumberFormat nf) {
+    public static void append(StringBuffer buf, CoordinateSequence cs, int coordinate, NumberFormat nf) {
         if (cs instanceof CoordinateAccess) {
             CoordinateAccess ca = (CoordinateAccess) cs;
             append(buf, ca, coordinate, LEN(ca), nf);
@@ -226,8 +213,7 @@ public class Coordinates {
         }
     }
 
-    public static void append(
-            StringBuffer buf, CoordinateSequence cs, int coordinate, int LEN, NumberFormat nf) {
+    public static void append(StringBuffer buf, CoordinateSequence cs, int coordinate, int LEN, NumberFormat nf) {
         Coordinate c = cs.getCoordinate(coordinate);
         buf.append(nf.format(c.x));
         buf.append(" ");
@@ -239,8 +225,7 @@ public class Coordinates {
         }
     }
 
-    public static void append(
-            StringBuffer buf, CoordinateAccess ca, int coordinate, int LEN, NumberFormat nf) {
+    public static void append(StringBuffer buf, CoordinateAccess ca, int coordinate, int LEN, NumberFormat nf) {
         buf.append(nf.format(ca.getOrdinate(coordinate, 0)));
 
         for (int i = 1; i < LEN; i++) {

@@ -255,8 +255,7 @@ public class GeneralGridCoordinates implements GridCoordinates, Serializable {
          * @throws UnsupportedOperationException always thrown.
          */
         @Override
-        public void setCoordinateValue(final int dimension, final int value)
-                throws UnsupportedOperationException {
+        public void setCoordinateValue(final int dimension, final int value) throws UnsupportedOperationException {
             throw new UnsupportedOperationException();
         }
 

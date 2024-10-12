@@ -74,14 +74,11 @@ public final class OptionalDependencies {
         if (!noNamedTreeNode)
             try {
                 if (treeNodeConstructor == null) {
-                    treeNodeConstructor =
-                            Class.forName("org.geotools.gui.swing.tree.NamedTreeNode")
-                                    .getConstructor(
-                                            new Class[] {String.class, Object.class, Boolean.TYPE});
+                    treeNodeConstructor = Class.forName("org.geotools.gui.swing.tree.NamedTreeNode")
+                            .getConstructor(new Class[] {String.class, Object.class, Boolean.TYPE});
                 }
                 return (DefaultMutableTreeNode)
-                        treeNodeConstructor.newInstance(
-                                new Object[] {name, object, Boolean.valueOf(allowsChildren)});
+                        treeNodeConstructor.newInstance(new Object[] {name, object, Boolean.valueOf(allowsChildren)});
             } catch (Exception e) {
                 /*
                  * There is a large amount of checked and unchecked exceptions that the above code
@@ -138,8 +135,7 @@ public final class OptionalDependencies {
         if (node == null) {
             return null;
         }
-        final DefaultMutableTreeNode target =
-                new DefaultMutableTreeNode(node.toString(), node.getAllowsChildren());
+        final DefaultMutableTreeNode target = new DefaultMutableTreeNode(node.toString(), node.getAllowsChildren());
         final Enumeration children = node.children();
         if (children != null) {
             while (children.hasMoreElements()) {
@@ -201,8 +197,7 @@ public final class OptionalDependencies {
      * @throws IOException if an error occured while writting in the given buffer.
      * @since 2.5
      */
-    public static void format(final TreeModel tree, final Appendable buffer, String lineSeparator)
-            throws IOException {
+    public static void format(final TreeModel tree, final Appendable buffer, String lineSeparator) throws IOException {
         final Object root = tree.getRoot();
         if (root != null) {
             if (lineSeparator == null) {
@@ -225,8 +220,7 @@ public final class OptionalDependencies {
      * @throws IOException if an error occured while writting in the given buffer.
      * @since 2.5
      */
-    public static void format(final TreeNode node, final Appendable buffer, String lineSeparator)
-            throws IOException {
+    public static void format(final TreeNode node, final Appendable buffer, String lineSeparator) throws IOException {
         format(new DefaultTreeModel(node, true), buffer, lineSeparator);
     }
 

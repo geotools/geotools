@@ -53,8 +53,7 @@ public class MarkAlongLine implements Stroke {
     public static final String VENDOR_OPTION_SCALE_LIMIT = "markAlongLineScaleLimit";
     public static final String VENDOR_OPTION_SIMPLICATION_FACTOR = "markAlongLineSimplify";
 
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(MarkAlongLine.class.getName());
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(MarkAlongLine.class.getName());
 
     // if two connecting line segments angle is beyond 180 (+/-) tolarance
     // consider it a proper turn
@@ -104,10 +103,7 @@ public class MarkAlongLine implements Stroke {
      * @param scaleImit the scaleImit to set
      */
     public void setScaleImit(float scaleImit) {
-        if (scaleImit < 0
-                || scaleImit > 1
-                || Float.isInfinite(scaleImit)
-                || Float.isNaN(scaleImit)) {
+        if (scaleImit < 0 || scaleImit > 1 || Float.isInfinite(scaleImit) || Float.isNaN(scaleImit)) {
             LOGGER.severe("Invalid Scale limit " + scaleImit + ", should be between 0 and 1");
         }
         this.scaleImit = scaleImit;
@@ -133,14 +129,10 @@ public class MarkAlongLine implements Stroke {
                 || simplicationFactor > 1
                 || Float.isInfinite(simplicationFactor)
                 || Float.isNaN(simplicationFactor)) {
-            LOGGER.severe(
-                    "Invalid Simplification Factor "
-                            + simplicationFactor
-                            + ", should be between 0 and 1");
+            LOGGER.severe("Invalid Simplification Factor " + simplicationFactor + ", should be between 0 and 1");
         }
         this.simplicationFactor = simplicationFactor;
-        if (LOGGER.isLoggable(Level.FINE))
-            LOGGER.fine("Simplication factor set to " + this.simplicationFactor);
+        if (LOGGER.isLoggable(Level.FINE)) LOGGER.fine("Simplication factor set to " + this.simplicationFactor);
     }
 
     @Override
@@ -186,19 +178,15 @@ public class MarkAlongLine implements Stroke {
                         newshape.moveTo(coords[0], coords[1]);
                         break;
                     case PathIterator.SEG_LINETO:
-                        if (LOGGER.isLoggable(Level.FINER))
-                            LOGGER.finer("------------------------------------");
-                        nextLineSegment =
-                                new LineSegment(
-                                        new Coordinate(prevcoords[0], prevcoords[1]),
-                                        new Coordinate(coords[0], coords[1]));
+                        if (LOGGER.isLoggable(Level.FINER)) LOGGER.finer("------------------------------------");
+                        nextLineSegment = new LineSegment(
+                                new Coordinate(prevcoords[0], prevcoords[1]), new Coordinate(coords[0], coords[1]));
                         if (previousLineSegment != null)
                             if (LOGGER.isLoggable(Level.FINER))
-                                LOGGER.finer(
-                                        "Segments "
-                                                + previousLineSegment.toString()
-                                                + " --> "
-                                                + nextLineSegment.toString());
+                                LOGGER.finer("Segments "
+                                        + previousLineSegment.toString()
+                                        + " --> "
+                                        + nextLineSegment.toString());
 
                         // do they touch
                         if (previousLineSegment == null) segmentsTouch = false;
@@ -208,8 +196,7 @@ public class MarkAlongLine implements Stroke {
                         // this will not occur on first segment
                         // or if the segments dont touch
                         if (previousDrapeMe != null && segmentsTouch) {
-                            if (previousDrapeMe.getLeftOver() != null
-                                    && previousDrapeMe.isClipped()) {
+                            if (previousDrapeMe.getLeftOver() != null && previousDrapeMe.isClipped()) {
                                 connectPrevious = true;
                                 // project last coods to on to next segment to see if there is bad
                                 // overlap
@@ -220,26 +207,15 @@ public class MarkAlongLine implements Stroke {
                                 // if its below 1,means the point lies around the next segment
                                 // also check the the angle between connecting segments
                                 // and if the point ended up inside the turn
-                                projFactor =
-                                        (float)
-                                                nextLineSegment.projectionFactor(
-                                                        lastShapeEndedAtCoordinate);
-                                Coordinate pointOnLine =
-                                        nextLineSegment.project(lastShapeEndedAtCoordinate);
-                                turnAngle =
-                                        angleBetweenSegments(previousLineSegment, nextLineSegment);
+                                projFactor = (float) nextLineSegment.projectionFactor(lastShapeEndedAtCoordinate);
+                                Coordinate pointOnLine = nextLineSegment.project(lastShapeEndedAtCoordinate);
+                                turnAngle = angleBetweenSegments(previousLineSegment, nextLineSegment);
                                 insideTurn =
-                                        isInsideTurn(
-                                                previousLineSegment,
-                                                nextLineSegment,
-                                                lastShapeEndedAtCoordinate);
+                                        isInsideTurn(previousLineSegment, nextLineSegment, lastShapeEndedAtCoordinate);
                                 isLinear = (Math.abs(turnAngle - 180) < LINEAR_ANGLE_TOLERANCE);
                                 if (LOGGER.isLoggable(Level.FINER)) {
                                     LOGGER.finer(
-                                            "projection factor "
-                                                    + projFactor
-                                                    + " winding rule:"
-                                                    + i.getWindingRule());
+                                            "projection factor " + projFactor + " winding rule:" + i.getWindingRule());
                                     LOGGER.finer("segments turning to " + turnAngle);
                                     LOGGER.finer("is inside the turn " + insideTurn);
                                     LOGGER.finer("is linear " + isLinear);
@@ -253,30 +229,27 @@ public class MarkAlongLine implements Stroke {
                                         // draw line on to next segment to avoid sloppy connections
                                         newshape.lineTo(pointOnLine.x, pointOnLine.y);
                                         Coordinate c = new Coordinate(prevcoords[0], prevcoords[1]);
-                                        LOGGER.finer(
-                                                "Draw line " + new LineSegment(c, pointOnLine));
+                                        LOGGER.finer("Draw line " + new LineSegment(c, pointOnLine));
                                     }
 
                                     // update prev coordinates
                                     prevcoords[0] = (float) pointOnLine.x;
                                     prevcoords[1] = (float) pointOnLine.y;
                                     // re-int next segment
-                                    nextLineSegment =
-                                            new LineSegment(
-                                                    new Coordinate(prevcoords[0], prevcoords[1]),
-                                                    new Coordinate(coords[0], coords[1]));
+                                    nextLineSegment = new LineSegment(
+                                            new Coordinate(prevcoords[0], prevcoords[1]),
+                                            new Coordinate(coords[0], coords[1]));
                                     // previousDrapeMe=null;
                                 }
                             }
                         }
                         // get shape for drapping over passed segment
                         // the shape might include left over part for previous segment
-                        drapeMe =
-                                getShapeForSegment(
-                                        nextLineSegment, // the segment to drape on
-                                        previousDrapeMe // last drapped shape..which might have left
-                                        // over
-                                        );
+                        drapeMe = getShapeForSegment(
+                                nextLineSegment, // the segment to drape on
+                                previousDrapeMe // last drapped shape..which might have left
+                                // over
+                                );
 
                         if (drapeMe == null) {
                             // reset
@@ -285,32 +258,24 @@ public class MarkAlongLine implements Stroke {
                             lastShapeEndedAtCoordinate = null;
                             previousLineSegment = null;
                             break;
-                        } else if ((boolean)
-                                drapeMe.getHints().getOrDefault(MarkAlongLiteShape.SKIP_ME, false))
-                            break;
+                        } else if ((boolean) drapeMe.getHints().getOrDefault(MarkAlongLiteShape.SKIP_ME, false)) break;
                         if (previousLineSegment != null && !connectPrevious) {
-                            LOGGER.finer(
-                                    "connect previous "
-                                            + connectPrevious
-                                            + ": segments touch:"
-                                            + segmentsTouch);
+                            LOGGER.finer("connect previous " + connectPrevious + ": segments touch:" + segmentsTouch);
                         }
 
                         // finally draw
-                        previousDrapeMe =
-                                drape(
-                                        newshape,
-                                        drapeMe,
-                                        nextLineSegment.p0,
-                                        nextLineSegment.angle(),
-                                        lastShapeEndedAtCoordinate,
-                                        connectPrevious);
+                        previousDrapeMe = drape(
+                                newshape,
+                                drapeMe,
+                                nextLineSegment.p0,
+                                nextLineSegment.angle(),
+                                lastShapeEndedAtCoordinate,
+                                connectPrevious);
 
                         // remember where the shape left off after being affine transformed
-                        lastShapeEndedAtCoordinate =
-                                new Coordinate(
-                                        previousDrapeMe.getEndofShapeCoords()[0],
-                                        previousDrapeMe.getEndofShapeCoords()[1]);
+                        lastShapeEndedAtCoordinate = new Coordinate(
+                                previousDrapeMe.getEndofShapeCoords()[0],
+                                previousDrapeMe.getEndofShapeCoords()[1]);
                         // drop the flag
                         connectPrevious = false;
                         break;
@@ -318,8 +283,7 @@ public class MarkAlongLine implements Stroke {
                         newshape.quadTo(coords[0], coords[1], coords[2], coords[3]);
                         break;
                     case PathIterator.SEG_CUBICTO:
-                        newshape.curveTo(
-                                coords[0], coords[1], coords[2], coords[3], coords[4], coords[5]);
+                        newshape.curveTo(coords[0], coords[1], coords[2], coords[3], coords[4], coords[5]);
                         break;
                     case PathIterator.SEG_CLOSE:
                         newshape.closePath();
@@ -343,12 +307,7 @@ public class MarkAlongLine implements Stroke {
 
         // Finally, stroke the perturbed shape and return the result
         if (LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.fine(
-                    "Created "
-                            + segments
-                            + " in "
-                            + (new Date().getTime() - time)
-                            + " milliseconds");
+            LOGGER.fine("Created " + segments + " in " + (new Date().getTime() - time) + " milliseconds");
         }
         return delegate.createStrokedShape(newshape);
     }
@@ -362,12 +321,7 @@ public class MarkAlongLine implements Stroke {
             ArrayList<LiteShape2> polygons = new ArrayList<>();
 
             for (int i = 0; i < multiPolygon.getNumGeometries(); i++) {
-                polygons.add(
-                        new LiteShape2(
-                                multiPolygon.getGeometryN(i),
-                                liteShape.getMathTransform(),
-                                null,
-                                false));
+                polygons.add(new LiteShape2(multiPolygon.getGeometryN(i), liteShape.getMathTransform(), null, false));
             }
 
             return polygons;
@@ -409,14 +363,12 @@ public class MarkAlongLine implements Stroke {
         return clone;
     }
 
-    private MarkAlongLiteShape getShapeForSegment(
-            LineSegment segmentToDrapOver, MarkAlongLiteShape previousDrapeMe) {
+    private MarkAlongLiteShape getShapeForSegment(LineSegment segmentToDrapOver, MarkAlongLiteShape previousDrapeMe) {
         double length = segmentToDrapOver.getLength();
         return getExtendedTransformedShape(length, previousDrapeMe);
     }
 
-    private MarkAlongLiteShape getExtendedTransformedShape(
-            double length, MarkAlongLiteShape previousDrapeMe) {
+    private MarkAlongLiteShape getExtendedTransformedShape(double length, MarkAlongLiteShape previousDrapeMe) {
         // e.g repetition = 2.5 means drape the shape completey twice and once half
         float repetition = (float) (length / this.wktShape.getBounds2D().getWidth());
         MarkAlongLiteShape repeatedShape = this.getClone(null); // first shape
@@ -436,10 +388,9 @@ public class MarkAlongLine implements Stroke {
             // translate along x according to the width and repetition number
             // first time use width of final shape, it might have previous part of shape also
             // else increment starting from previous translation + original size of shape
-            translateX =
-                    (i == 1)
-                            ? repeatedShape.getBounds().getWidth()
-                            : translateX + this.wktShape.getBounds2D().getWidth();
+            translateX = (i == 1)
+                    ? repeatedShape.getBounds().getWidth()
+                    : translateX + this.wktShape.getBounds2D().getWidth();
             at.setToTranslation(translateX, 0);
             geom = repeatedShape.getGeometry();
             cloneGeom = this.getClone(null).getGeometry();
@@ -459,16 +410,14 @@ public class MarkAlongLine implements Stroke {
             MarkAlongLiteShape markAlongLiteShape, double length, double minScaleLimit) {
 
         double scaleX = length / markAlongLiteShape.getBounds().width;
-        if (LOGGER.isLoggable(Level.FINE))
-            LOGGER.fine("Final Shape needs " + scaleX + " Scale X for Width Correction");
+        if (LOGGER.isLoggable(Level.FINE)) LOGGER.fine("Final Shape needs " + scaleX + " Scale X for Width Correction");
         if (Double.isInfinite(scaleX)) return null;
         AffineTransformation at = new AffineTransformation();
         at.setToScale(scaleX, 1d);
 
         // resize if scale limit is below the limit
         // scaleX will never be above 1
-        if (scaleX >= minScaleLimit)
-            markAlongLiteShape.setGeometry(at.transform(markAlongLiteShape.getGeometry()));
+        if (scaleX >= minScaleLimit) markAlongLiteShape.setGeometry(at.transform(markAlongLiteShape.getGeometry()));
         else {
             // resize envlope to meet line length
             Geometry env = markAlongLiteShape.getGeometry().getEnvelope();
@@ -526,10 +475,7 @@ public class MarkAlongLine implements Stroke {
                     if (skipSegment) {
                         newshape.moveTo(previousShapeEndCoordinate.x, previousShapeEndCoordinate.y);
                         newshape.quadTo(
-                                previousShapeEndCoordinate.x,
-                                previousShapeEndCoordinate.y,
-                                coords[0],
-                                coords[1]);
+                                previousShapeEndCoordinate.x, previousShapeEndCoordinate.y, coords[0], coords[1]);
                         skipSegment = false;
                     } else newshape.moveTo(coords[0], coords[1]);
                     break;
@@ -540,8 +486,7 @@ public class MarkAlongLine implements Stroke {
                     newshape.quadTo(coords[0], coords[1], coords[2], coords[3]);
                     break;
                 case PathIterator.SEG_CUBICTO:
-                    newshape.curveTo(
-                            coords[0], coords[1], coords[2], coords[3], coords[4], coords[5]);
+                    newshape.curveTo(coords[0], coords[1], coords[2], coords[3], coords[4], coords[5]);
                     break;
                 case PathIterator.SEG_CLOSE:
                     newshape.closePath();

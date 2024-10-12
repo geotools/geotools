@@ -57,19 +57,14 @@ public class GMLParsingTest {
         schema.deleteOnExit();
         FileUtils.copyURLToFile(getClass().getResource("test.xsd"), schema);
 
-        Document dom =
-                DocumentBuilderFactory.newInstance()
-                        .newDocumentBuilder()
-                        .parse(getClass().getResourceAsStream("test.xml"));
+        Document dom = DocumentBuilderFactory.newInstance()
+                .newDocumentBuilder()
+                .parse(getClass().getResourceAsStream("test.xml"));
         URL schemaURL = URLs.fileToUrl(schema.getAbsoluteFile());
         dom.getDocumentElement()
-                .setAttribute(
-                        "xsi:schemaLocation",
-                        "http://www.geotools.org/test " + schemaURL.getFile());
+                .setAttribute("xsi:schemaLocation", "http://www.geotools.org/test " + schemaURL.getFile());
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        TransformerFactory.newInstance()
-                .newTransformer()
-                .transform(new DOMSource(dom), new StreamResult(out));
+        TransformerFactory.newInstance().newTransformer().transform(new DOMSource(dom), new StreamResult(out));
 
         GMLConfiguration config = new GMLConfiguration();
         Parser p = new Parser(config);
@@ -103,14 +98,13 @@ public class GMLParsingTest {
      */
     private static CoordinateReferenceSystem parsePointSrsname(String srsName) {
         Parser parser = new Parser(new GMLConfiguration());
-        String text =
-                "<gml:Point " //
-                        + "xmlns:gml=\"http://www.opengis.net/gml/3.2\" " //
-                        + "srsName=\""
-                        + srsName
-                        + "\">" //
-                        + "<gml:pos>1 2</gml:pos>" //
-                        + "</gml:Point>";
+        String text = "<gml:Point " //
+                + "xmlns:gml=\"http://www.opengis.net/gml/3.2\" " //
+                + "srsName=\""
+                + srsName
+                + "\">" //
+                + "<gml:pos>1 2</gml:pos>" //
+                + "</gml:Point>";
         try {
             Point point = (Point) parser.parse(new StringReader(text));
             return (CoordinateReferenceSystem) point.getUserData();
@@ -128,36 +122,29 @@ public class GMLParsingTest {
     /** Test parsing of an srsName in OGC HTTP URL format. */
     @Test
     public void testParseOgcHttpUrlSrsname() throws Exception {
-        Assert.assertEquals(
-                CRS.decode("EPSG:4326"),
-                parsePointSrsname("http://www.opengis.net/gml/srs/epsg.xml#4326"));
+        Assert.assertEquals(CRS.decode("EPSG:4326"), parsePointSrsname("http://www.opengis.net/gml/srs/epsg.xml#4326"));
     }
 
     /** Test parsing of an srsName in OGC URN Experimental format. */
     @Test
     public void testParseOgcUrnExperimentalSrsname() throws Exception {
-        Assert.assertEquals(
-                CRS.decode("EPSG:4326"), parsePointSrsname("urn:x-ogc:def:crs:EPSG::4326"));
+        Assert.assertEquals(CRS.decode("EPSG:4326"), parsePointSrsname("urn:x-ogc:def:crs:EPSG::4326"));
     }
 
     /** Test parsing of an srsName in OGC URN format. */
     @Test
     public void testParseOgcUrnSrsname() throws Exception {
-        Assert.assertEquals(
-                CRS.decode("EPSG:4326"), parsePointSrsname("urn:ogc:def:crs:EPSG::4326"));
+        Assert.assertEquals(CRS.decode("EPSG:4326"), parsePointSrsname("urn:ogc:def:crs:EPSG::4326"));
     }
 
     /** Test parsing of an srsName in OGC HTTP URI format. */
     @Test
     public void testParseOgcHttpUriSrsname() throws Exception {
-        Assert.assertEquals(
-                CRS.decode("EPSG:4326"),
-                parsePointSrsname("http://www.opengis.net/def/crs/EPSG/0/4326"));
+        Assert.assertEquals(CRS.decode("EPSG:4326"), parsePointSrsname("http://www.opengis.net/def/crs/EPSG/0/4326"));
     }
 
     @Test
-    public void testCoordinateList()
-            throws IOException, SAXException, ParserConfigurationException {
+    public void testCoordinateList() throws IOException, SAXException, ParserConfigurationException {
         GMLConfiguration gml = new GMLConfiguration(true);
         Parser p = new Parser(gml);
         Object multiSurface = p.parse(getClass().getResourceAsStream("surfacePatches.xml"));
@@ -169,8 +156,7 @@ public class GMLParsingTest {
     }
 
     @Test
-    public void testSurfacememberPatches()
-            throws IOException, SAXException, ParserConfigurationException {
+    public void testSurfacememberPatches() throws IOException, SAXException, ParserConfigurationException {
         GMLConfiguration gml = new GMLConfiguration(true);
         Parser p = new Parser(gml);
         Object multiSurface = p.parse(getClass().getResourceAsStream("surfacememberPatches.xml"));
@@ -182,8 +168,7 @@ public class GMLParsingTest {
     }
 
     @Test
-    public void testNestedInteriors()
-            throws IOException, SAXException, ParserConfigurationException {
+    public void testNestedInteriors() throws IOException, SAXException, ParserConfigurationException {
         GMLConfiguration gml = new GMLConfiguration(true);
         Parser p = new Parser(gml);
         Object multiSurface = p.parse(getClass().getResourceAsStream("nestedInteriors.xml"));

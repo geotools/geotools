@@ -42,8 +42,7 @@ final class ReadFidsIterable implements Iterable<SimpleFeature> {
                 long delta = featureOffsets[i] - pos;
                 FlatGeobufFeatureReader.skipNBytes(data, delta);
                 int featureSize = data.readInt();
-                SimpleFeature feature =
-                        FeatureConversions.deserialize(data, fb, headerMeta, fids[i], featureSize);
+                SimpleFeature feature = FeatureConversions.deserialize(data, fb, headerMeta, fids[i], featureSize);
                 pos += delta + 4 + featureSize;
                 i++;
                 return feature;
@@ -59,11 +58,7 @@ final class ReadFidsIterable implements Iterable<SimpleFeature> {
     private final HeaderMeta headerMeta;
     private final LittleEndianDataInputStream data;
 
-    ReadFidsIterable(
-            SimpleFeatureBuilder fb,
-            long[] fids,
-            HeaderMeta headerMeta,
-            LittleEndianDataInputStream data)
+    ReadFidsIterable(SimpleFeatureBuilder fb, long[] fids, HeaderMeta headerMeta, LittleEndianDataInputStream data)
             throws IOException {
         this.fb = fb;
         this.fids = fids;

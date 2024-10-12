@@ -54,9 +54,7 @@ public abstract class RangeValidator<T extends Comparable<T>> extends TupleValid
         @Override
         protected String validate(String value, ScalarEvent evt, YsldValidateContext context) {
             try {
-                if (value != null
-                        && !value.isEmpty()
-                        && !(isMin ? "min" : "max").equalsIgnoreCase(value)) {
+                if (value != null && !value.isEmpty() && !(isMin ? "min" : "max").equalsIgnoreCase(value)) {
                     T parsed = parse(value);
                     validateParsed(parsed, evt, context);
                     if (isMin) {

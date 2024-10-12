@@ -317,8 +317,7 @@ public abstract class ContentDataStore implements DataStore {
      *
      * @see DataStore#getFeatureSource(String)
      */
-    public ContentFeatureSource getFeatureSource(String typeName, Transaction tx)
-            throws IOException {
+    public ContentFeatureSource getFeatureSource(String typeName, Transaction tx) throws IOException {
         return getFeatureSource(new NameImpl(null, typeName), tx);
     }
 
@@ -357,8 +356,8 @@ public abstract class ContentDataStore implements DataStore {
      * delegates to {@link FeatureCollection} and wraps an iterator in a {@link FeatureReader}.
      */
     @Override
-    public FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader(
-            Query query, Transaction tx) throws IOException {
+    public FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader(Query query, Transaction tx)
+            throws IOException {
 
         if (query.getTypeName() == null) {
             throw new IllegalArgumentException("Query does not specify type.");
@@ -389,8 +388,7 @@ public abstract class ContentDataStore implements DataStore {
      * @param tx A transaction handle.
      * @throws IOException If the feature source is not a store.
      */
-    protected final ContentFeatureStore ensureFeatureStore(String typeName, Transaction tx)
-            throws IOException {
+    protected final ContentFeatureStore ensureFeatureStore(String typeName, Transaction tx) throws IOException {
 
         ContentFeatureSource featureSource = getFeatureSource(typeName, tx);
         if (!(featureSource instanceof ContentFeatureStore)) {
@@ -406,8 +404,8 @@ public abstract class ContentDataStore implements DataStore {
      * <p>This method is convenience for <code>getFeatureWriter(typeName,Filter.INCLUDE,tx)</code>.
      */
     @Override
-    public final FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(
-            String typeName, Transaction tx) throws IOException {
+    public final FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(String typeName, Transaction tx)
+            throws IOException {
 
         return getFeatureWriter(typeName, Filter.INCLUDE, tx);
     }
@@ -419,12 +417,11 @@ public abstract class ContentDataStore implements DataStore {
      * delegates to {@link FeatureCollection} and wraps an iterator in a {@link FeatureWriter}.
      */
     @Override
-    public final FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriterAppend(
-            String typeName, Transaction tx) throws IOException {
+    public final FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriterAppend(String typeName, Transaction tx)
+            throws IOException {
 
         ContentFeatureStore featureStore = ensureFeatureStore(typeName, tx);
-        FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
-                featureStore.getWriter(Filter.INCLUDE, WRITER_ADD);
+        FeatureWriter<SimpleFeatureType, SimpleFeature> writer = featureStore.getWriter(Filter.INCLUDE, WRITER_ADD);
 
         // ensure we are at the "end" as we are being asked to return this in "append" mode
         while (writer.hasNext()) {
@@ -439,8 +436,7 @@ public abstract class ContentDataStore implements DataStore {
     }
 
     @Override
-    public final void updateSchema(String typeName, SimpleFeatureType featureType)
-            throws IOException {
+    public final void updateSchema(String typeName, SimpleFeatureType featureType) throws IOException {
         throw new UnsupportedOperationException();
     }
 
@@ -519,8 +515,7 @@ public abstract class ContentDataStore implements DataStore {
                 // do namespace-less matching if necessary
                 if (!found
                         && (tn.equals(name)
-                                || (unqualifiedSearch
-                                        && tn.getLocalPart().equals(name.getLocalPart())))) {
+                                || (unqualifiedSearch && tn.getLocalPart().equals(name.getLocalPart())))) {
                     name = tn;
                     found = true;
                 }
@@ -579,8 +574,7 @@ public abstract class ContentDataStore implements DataStore {
      * @param entry The entry.
      * @return An new instance of {@link ContentFeatureSource} for the entry.
      */
-    protected abstract ContentFeatureSource createFeatureSource(ContentEntry entry)
-            throws IOException;
+    protected abstract ContentFeatureSource createFeatureSource(ContentEntry entry) throws IOException;
 
     /**
      * Instantiates a new transaction state object.

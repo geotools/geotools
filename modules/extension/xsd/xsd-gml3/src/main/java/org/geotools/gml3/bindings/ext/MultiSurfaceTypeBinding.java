@@ -28,8 +28,7 @@ import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Polygon;
 
 @SuppressWarnings("ComparableType")
-public class MultiSurfaceTypeBinding extends org.geotools.gml3.bindings.MultiSurfaceTypeBinding
-        implements Comparable {
+public class MultiSurfaceTypeBinding extends org.geotools.gml3.bindings.MultiSurfaceTypeBinding implements Comparable {
 
     public MultiSurfaceTypeBinding(GeometryFactory gf) {
         super(gf);

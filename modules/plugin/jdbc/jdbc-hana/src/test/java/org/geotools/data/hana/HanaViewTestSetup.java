@@ -45,11 +45,7 @@ public class HanaViewTestSetup extends JDBCViewTestSetup {
             htu.createTestTable(TABLE, cols);
 
             htu.insertIntoTestTable(
-                    TABLE,
-                    0,
-                    0,
-                    htu.geometry("POLYGON((12 6, 14 8, 16 6, 16 4, 14 4, 12 6))", 1000004326),
-                    "muddy");
+                    TABLE, 0, 0, htu.geometry("POLYGON((12 6, 14 8, 16 6, 16 4, 14 4, 12 6))", 1000004326), "muddy");
         }
     }
 

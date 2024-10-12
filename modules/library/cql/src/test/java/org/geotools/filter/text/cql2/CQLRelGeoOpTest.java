@@ -67,21 +67,16 @@ public class CQLRelGeoOpTest {
     public void dwithin() throws CQLException {
 
         // DWITHIN
-        Filter resultFilter =
-                CompilerUtil.parseFilter(
-                        language, "DWITHIN(ATTR1, POINT(1 2), 10, " + "kilometers)");
+        Filter resultFilter = CompilerUtil.parseFilter(language, "DWITHIN(ATTR1, POINT(1 2), 10, " + "kilometers)");
 
         Assert.assertTrue(resultFilter instanceof DistanceBufferOperator);
 
         // test compound attribute gmd:aa:bb.gmd:cc.gmd:dd
         final String prop = "gmd:aa:bb.gmd:cc.gmd:dd";
         final String propExpected = "gmd:aa:bb/gmd:cc/gmd:dd";
-        resultFilter =
-                CompilerUtil.parseFilter(
-                        language, "DWITHIN(" + prop + ", POINT(1 2), 10, kilometers) ");
+        resultFilter = CompilerUtil.parseFilter(language, "DWITHIN(" + prop + ", POINT(1 2), 10, kilometers) ");
 
-        Assert.assertTrue(
-                "DistanceBufferOperator filter was expected", resultFilter instanceof DWithin);
+        Assert.assertTrue("DistanceBufferOperator filter was expected", resultFilter instanceof DWithin);
 
         DistanceBufferOperator filter = (DWithin) resultFilter;
         Expression property = filter.getExpression1();
@@ -92,9 +87,7 @@ public class CQLRelGeoOpTest {
     @Test
     public void beyon() throws CQLException {
         // Beyond
-        Filter resultFilter =
-                CompilerUtil.parseFilter(
-                        language, "BEYOND(ATTR1, POINT(1.0 2.0), 10.0, kilometers)");
+        Filter resultFilter = CompilerUtil.parseFilter(language, "BEYOND(ATTR1, POINT(1.0 2.0), 10.0, kilometers)");
         Assert.assertTrue(resultFilter instanceof Beyond);
         Beyond beyondFilter = (Beyond) resultFilter;
 

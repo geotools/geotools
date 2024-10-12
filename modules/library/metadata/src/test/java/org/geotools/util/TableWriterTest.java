@@ -33,28 +33,22 @@ public final class TableWriterTest {
     /** Format a very simple table as shown in the example. */
     @Test
     public void testExample() throws IOException {
-        String expectedTable =
-                "Prénom      Nom    "
-                        + LINE_SEPARATOR
-                        + "-------------------"
-                        + LINE_SEPARATOR
-                        + "Idéphonse   Laporte"
-                        + LINE_SEPARATOR
-                        + "Sarah       Coursi "
-                        + LINE_SEPARATOR
-                        + "Yvan        Dubois "
-                        + LINE_SEPARATOR;
+        String expectedTable = "Prénom      Nom    "
+                + LINE_SEPARATOR
+                + "-------------------"
+                + LINE_SEPARATOR
+                + "Idéphonse   Laporte"
+                + LINE_SEPARATOR
+                + "Sarah       Coursi "
+                + LINE_SEPARATOR
+                + "Yvan        Dubois "
+                + LINE_SEPARATOR;
 
         StringWriter writer = new StringWriter();
         TableWriter out = new TableWriter(writer, 3);
         out.write("Prénom\tNom" + LINE_SEPARATOR);
         out.nextLine('-');
-        out.write(
-                "Idéphonse\tLaporte"
-                        + LINE_SEPARATOR
-                        + "Sarah\tCoursi"
-                        + LINE_SEPARATOR
-                        + "Yvan\tDubois");
+        out.write("Idéphonse\tLaporte" + LINE_SEPARATOR + "Sarah\tCoursi" + LINE_SEPARATOR + "Yvan\tDubois");
         out.flush();
         out.close();
 
@@ -81,8 +75,7 @@ public final class TableWriterTest {
             table.write("2.345");
 
             assertEquals(
-                    "Source Point: 1.234" + LINE_SEPARATOR + "Target Point: 2.345" + LINE_SEPARATOR,
-                    table.toString());
+                    "Source Point: 1.234" + LINE_SEPARATOR + "Target Point: 2.345" + LINE_SEPARATOR, table.toString());
         }
     }
 }

@@ -24,8 +24,7 @@ import org.geotools.api.data.FeatureReader;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 
-public class JDBCClosingFeatureReader
-        implements DelegatingFeatureReader<SimpleFeatureType, SimpleFeature> {
+public class JDBCClosingFeatureReader implements DelegatingFeatureReader<SimpleFeatureType, SimpleFeature> {
 
     FeatureReader<SimpleFeatureType, SimpleFeature> reader;
 
@@ -49,8 +48,7 @@ public class JDBCClosingFeatureReader
     }
 
     @Override
-    public SimpleFeature next()
-            throws IOException, IllegalArgumentException, NoSuchElementException {
+    public SimpleFeature next() throws IOException, IllegalArgumentException, NoSuchElementException {
         return reader.next();
     }
 

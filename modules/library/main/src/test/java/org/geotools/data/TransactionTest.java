@@ -90,8 +90,7 @@ public class TransactionTest {
         // store.getCount(Query.ALL));
     }
 
-    private void count(SimpleFeatureStore store, int expected)
-            throws IOException, IllegalAttributeException {
+    private void count(SimpleFeatureStore store, int expected) throws IOException, IllegalAttributeException {
         int i = 0;
         try (SimpleFeatureIterator reader = store.getFeatures().features()) {
             while (reader.hasNext()) {

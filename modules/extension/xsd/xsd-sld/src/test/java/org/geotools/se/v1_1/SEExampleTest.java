@@ -255,26 +255,22 @@ public class SEExampleTest extends SETestSupport {
         </PointSymbolizer>
         */
 
-        SEConfiguration se =
-                new SEConfiguration() {
-                    @Override
-                    protected void configureContext(MutablePicoContainer container) {
+        SEConfiguration se = new SEConfiguration() {
+            @Override
+            protected void configureContext(MutablePicoContainer container) {
 
-                        super.configureContext(container);
+                super.configureContext(container);
 
-                        DefaultResourceLocator locator =
-                                (DefaultResourceLocator)
-                                        container.getComponentInstance(ResourceLocator.class);
-                        try {
-                            locator.setSourceUrl(new URL("http://my.test.host/"));
-                        } catch (MalformedURLException e) {
-                        }
-                    }
-                };
+                DefaultResourceLocator locator =
+                        (DefaultResourceLocator) container.getComponentInstance(ResourceLocator.class);
+                try {
+                    locator.setSourceUrl(new URL("http://my.test.host/"));
+                } catch (MalformedURLException e) {
+                }
+            }
+        };
         Parser p = new Parser(se);
-        PointSymbolizer sym =
-                (PointSymbolizer)
-                        p.parse(getClass().getResourceAsStream("example-pointsymbolizer6.xml"));
+        PointSymbolizer sym = (PointSymbolizer) p.parse(getClass().getResourceAsStream("example-pointsymbolizer6.xml"));
         assertEquals("MyPointSymbolizer", sym.getName());
         assertEquals("Example Pointsymbolizer", sym.getDescription().getTitle().toString());
         assertEquals(
@@ -363,7 +359,8 @@ public class SEExampleTest extends SETestSupport {
         </PolygonSymbolizer>*/
         PolygonSymbolizer sym = (PolygonSymbolizer) parse("example-polygonsymbolizer.xml");
         assertEquals("MyPolygonSymbolizer", sym.getName());
-        assertEquals("Example PolygonSymbolizer", sym.getDescription().getTitle().toString());
+        assertEquals(
+                "Example PolygonSymbolizer", sym.getDescription().getTitle().toString());
         assertEquals(
                 "This is just a simple example of a polygon symbolizer.",
                 sym.getDescription().getAbstract().toString());
@@ -485,8 +482,7 @@ public class SEExampleTest extends SETestSupport {
 
         c = map.getColorMapEntry(19).getColor().evaluate(null, Color.class);
         assertEquals(Color.WHITE, c);
-        assertEquals(
-                13000d, map.getColorMapEntry(19).getQuantity().evaluate(null, Double.class), 0d);
+        assertEquals(13000d, map.getColorMapEntry(19).getQuantity().evaluate(null, Double.class), 0d);
     }
 
     @Test
@@ -541,10 +537,7 @@ public class SEExampleTest extends SETestSupport {
         assertEquals("1", ch[0].getChannelName().evaluate(null, String.class));
         assertEquals(ContrastMethod.HISTOGRAM, ch[0].getContrastEnhancement().getMethod());
         assertEquals("2", ch[1].getChannelName().evaluate(null, String.class));
-        assertEquals(
-                2.5,
-                ch[1].getContrastEnhancement().getGammaValue().evaluate(null, Double.class),
-                0d);
+        assertEquals(2.5, ch[1].getContrastEnhancement().getGammaValue().evaluate(null, Double.class), 0d);
         assertEquals("3", ch[2].getChannelName().evaluate(null, String.class));
         assertEquals(ContrastMethod.NORMALIZE, ch[2].getContrastEnhancement().getMethod());
 
@@ -558,8 +551,7 @@ public class SEExampleTest extends SETestSupport {
         c = map.getColorMapEntry(1).getColor().evaluate(null, Color.class);
         assertEquals(Color.WHITE, c);
 
-        assertEquals(
-                1.0, sym.getContrastEnhancement().getGammaValue().evaluate(null, Double.class), 0d);
+        assertEquals(1.0, sym.getContrastEnhancement().getGammaValue().evaluate(null, Double.class), 0d);
     }
 
     /** Test the Expression parser for SelectChannel */
@@ -581,10 +573,7 @@ public class SEExampleTest extends SETestSupport {
 
         assertEquals(ContrastMethod.HISTOGRAM, ch[0].getContrastEnhancement().getMethod());
         assertEquals("2", ch[1].getChannelName().evaluate(null, String.class));
-        assertEquals(
-                2.5,
-                ch[1].getContrastEnhancement().getGammaValue().evaluate(null, Double.class),
-                0d);
+        assertEquals(2.5, ch[1].getContrastEnhancement().getGammaValue().evaluate(null, Double.class), 0d);
         assertEquals("3", ch[2].getChannelName().evaluate(null, String.class));
         assertEquals(ContrastMethod.NORMALIZE, ch[2].getContrastEnhancement().getMethod());
 
@@ -598,8 +587,7 @@ public class SEExampleTest extends SETestSupport {
         c = map.getColorMapEntry(1).getColor().evaluate(null, Color.class);
         assertEquals(Color.WHITE, c);
 
-        assertEquals(
-                1.0, sym.getContrastEnhancement().getGammaValue().evaluate(null, Double.class), 0d);
+        assertEquals(1.0, sym.getContrastEnhancement().getGammaValue().evaluate(null, Double.class), 0d);
     }
 
     @Test
@@ -677,10 +665,7 @@ public class SEExampleTest extends SETestSupport {
         RasterSymbolizer sym = (RasterSymbolizer) rule.symbolizers().get(0);
         assertEquals(
                 "Band.band1",
-                sym.getChannelSelection()
-                        .getGrayChannel()
-                        .getChannelName()
-                        .evaluate(null, String.class));
+                sym.getChannelSelection().getGrayChannel().getChannelName().evaluate(null, String.class));
     }
 
     @Test
@@ -704,9 +689,7 @@ public class SEExampleTest extends SETestSupport {
         assertThat(eg1.getURI(), containsString("transport/amenity=parking.svg?fill=%2300eb00"));
         ExternalGraphic eg2 = (ExternalGraphic) symbols.get(1);
         assertThat(eg2.getURI(), containsString("transport/amenity=parking.svg"));
-        assertThat(
-                eg2.getURI(),
-                not((containsString("transport/amenity=parking.svg?fill=%2300eb00"))));
+        assertThat(eg2.getURI(), not((containsString("transport/amenity=parking.svg?fill=%2300eb00"))));
         Mark mark = (Mark) symbols.get(2);
         assertEquals("square", mark.getWellKnownName().evaluate(null, String.class));
     }

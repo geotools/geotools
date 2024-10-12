@@ -189,11 +189,7 @@ public class SequenceHandler extends ElementGroupingHandler {
         cache.minOccurs = minOccurs;
         cache.maxOccurs = maxOccurs;
 
-        logger.finest(
-                id
-                        + " :: This Sequence has "
-                        + ((children == null) ? 0 : children.size())
-                        + " children");
+        logger.finest(id + " :: This Sequence has " + ((children == null) ? 0 : children.size()) + " children");
 
         if (children != null) {
             cache.children = new ElementGrouping[children.size()];

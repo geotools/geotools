@@ -26,11 +26,8 @@ import org.geotools.filter.capability.FunctionNameImpl;
 
 public class FilterFunction_strToUpperCase extends FunctionExpressionImpl {
 
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "strToUpperCase",
-                    parameter("uppercase", String.class),
-                    parameter("string", String.class));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "strToUpperCase", parameter("uppercase", String.class), parameter("string", String.class));
 
     public FilterFunction_strToUpperCase() {
         super(NAME);

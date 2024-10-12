@@ -39,8 +39,7 @@ import org.geotools.util.factory.GeoTools;
 public class MarkImpl implements Mark, Cloneable, Symbol {
 
     /** The logger for the default core module. */
-    private static final java.util.logging.Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(MarkImpl.class);
+    private static final java.util.logging.Logger LOGGER = org.geotools.util.logging.Logging.getLogger(MarkImpl.class);
 
     private final FilterFactory filterFactory;
     private FillImpl fill;
@@ -77,8 +76,7 @@ public class MarkImpl implements Mark, Cloneable, Symbol {
     }
 
     /** Convenience method for logging a message with an exception. */
-    private static void severe(
-            final String method, final String message, final Exception exception) {
+    private static void severe(final String method, final String message, final Exception exception) {
         final java.util.logging.LogRecord record =
                 new java.util.logging.LogRecord(java.util.logging.Level.SEVERE, message);
         record.setSourceMethodName(method);

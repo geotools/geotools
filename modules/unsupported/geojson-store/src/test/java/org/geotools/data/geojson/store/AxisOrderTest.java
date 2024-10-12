@@ -60,9 +60,7 @@ public class AxisOrderTest {
         Map<String, Object> params = new HashMap<>();
         params.put(ShapefileDataStoreFactory.URLP.key, states);
         try {
-            params.put(
-                    ShapefileDataStoreFactory.NAMESPACEP.key,
-                    new URI("http://localhost/geotools.xsd"));
+            params.put(ShapefileDataStoreFactory.NAMESPACEP.key, new URI("http://localhost/geotools.xsd"));
         } catch (URISyntaxException e) {
             LOGGER.log(Level.SEVERE, "", e);
         }
@@ -172,8 +170,7 @@ public class AxisOrderTest {
             fail("Can't write to GeoJSONDatastore " + file2);
         }
 
-        SimpleFeatureStore featureStored =
-                (SimpleFeatureStore) duplicate.getFeatureSource(typeName);
+        SimpleFeatureStore featureStored = (SimpleFeatureStore) duplicate.getFeatureSource(typeName);
 
         try (SimpleFeatureIterator dups = featureStored.getFeatures().features()) {
             Point expected = gf.createPoint(new Coordinate(15.457678, 47.0850875));

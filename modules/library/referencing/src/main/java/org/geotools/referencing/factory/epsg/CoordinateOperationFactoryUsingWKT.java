@@ -163,24 +163,18 @@ public class CoordinateOperationFactoryUsingWKT extends DeferredAuthorityFactory
         try {
             URL url = getDefinitionsURL();
             if (url == null) {
-                throw new FactoryNotFoundException(
-                        MessageFormat.format(ErrorKeys.FILE_DOES_NOT_EXIST_$1, FILENAME));
+                throw new FactoryNotFoundException(MessageFormat.format(ErrorKeys.FILE_DOES_NOT_EXIST_$1, FILENAME));
             }
-            final Iterator<? extends Identifier> ids = getAuthority().getIdentifiers().iterator();
+            final Iterator<? extends Identifier> ids =
+                    getAuthority().getIdentifiers().iterator();
             final String authority = ids.hasNext() ? ids.next().getCode() : "EPSG";
             final LogRecord record =
-                    Loggings.format(
-                            Level.CONFIG,
-                            LoggingKeys.USING_FILE_AS_FACTORY_$2,
-                            url.getPath(),
-                            authority);
+                    Loggings.format(Level.CONFIG, LoggingKeys.USING_FILE_AS_FACTORY_$2, url.getPath(), authority);
             record.setLoggerName(LOGGER.getName());
             LOGGER.log(record);
-            return new PropertyCoordinateOperationAuthorityFactory(
-                    factories, this.getAuthority(), url);
+            return new PropertyCoordinateOperationAuthorityFactory(factories, this.getAuthority(), url);
         } catch (IOException exception) {
-            throw new FactoryException(
-                    MessageFormat.format(ErrorKeys.CANT_READ_$1, FILENAME), exception);
+            throw new FactoryException(MessageFormat.format(ErrorKeys.CANT_READ_$1, FILENAME), exception);
         }
     }
 
@@ -229,11 +223,9 @@ public class CoordinateOperationFactoryUsingWKT extends DeferredAuthorityFactory
      * @throws FactoryException if the object creation failed for some other reason.
      */
     @Override
-    public Set<CoordinateOperation> createFromCoordinateReferenceSystemCodes(
-            String sourceCRS, String targetCRS)
+    public Set<CoordinateOperation> createFromCoordinateReferenceSystemCodes(String sourceCRS, String targetCRS)
             throws NoSuchAuthorityCodeException, FactoryException {
-        Set<CoordinateOperation> coordops =
-                super.createFromCoordinateReferenceSystemCodes(sourceCRS, targetCRS);
+        Set<CoordinateOperation> coordops = super.createFromCoordinateReferenceSystemCodes(sourceCRS, targetCRS);
         if (coordops.isEmpty()) {
             // If not found, delegate to the fallback factory.
             CoordinateOperationAuthorityFactory fallback = getFallbackAuthorityFactory();

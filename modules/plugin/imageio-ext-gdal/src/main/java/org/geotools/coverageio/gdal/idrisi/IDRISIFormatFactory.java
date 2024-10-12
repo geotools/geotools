@@ -34,8 +34,7 @@ import org.geotools.coverage.grid.io.GridFormatFactorySpi;
  */
 public final class IDRISIFormatFactory implements GridFormatFactorySpi {
     /** Logger. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(IDRISIFormatFactory.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(IDRISIFormatFactory.class);
 
     /**
      * Tells me if the coverage plugin to access EHdr is available or not.
@@ -49,8 +48,7 @@ public final class IDRISIFormatFactory implements GridFormatFactorySpi {
         // if these classes are here, then the runtime environment has
         // access to JAI and the JAI ImageI/O toolbox.
         try {
-            Class.forName(
-                    "it.geosolutions.imageio.plugins.arcbinarygrid.ArcBinaryGridImageReaderSpi");
+            Class.forName("it.geosolutions.imageio.plugins.arcbinarygrid.ArcBinaryGridImageReaderSpi");
             available = new IDRISIImageReaderSpi().isAvailable();
 
             if (LOGGER.isLoggable(Level.FINE)) {

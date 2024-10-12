@@ -36,7 +36,8 @@ public class TransformerTest extends AbstractTransformTest {
         assertNotNull(transformedQuery);
         assertNotNull(transformedQuery.getSortBy());
         assertEquals(1, transformedQuery.getSortBy().length);
-        assertEquals("state_name", transformedQuery.getSortBy()[0].getPropertyName().toString());
+        assertEquals(
+                "state_name", transformedQuery.getSortBy()[0].getPropertyName().toString());
     }
 
     @Test

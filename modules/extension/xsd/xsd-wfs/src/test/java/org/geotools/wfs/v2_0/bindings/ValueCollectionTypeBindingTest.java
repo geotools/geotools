@@ -90,8 +90,7 @@ public class ValueCollectionTypeBindingTest extends WFSTestSupport {
 
         ValueCollectionType vc = Wfs20Factory.eINSTANCE.createValueCollectionType();
         PropertyValueCollection valueCollection =
-                new PropertyValueCollection(
-                        features, featureType.getDescriptor("geom"), filterFac.property("geom"));
+                new PropertyValueCollection(features, featureType.getDescriptor("geom"), filterFac.property("geom"));
         vc.getMember().add(valueCollection);
 
         Document doc = encode(vc, WFS.ValueCollection);
@@ -106,11 +105,8 @@ public class ValueCollectionTypeBindingTest extends WFSTestSupport {
 
         vc = Wfs20Factory.eINSTANCE.createValueCollectionType();
         vc.getMember()
-                .add(
-                        new PropertyValueCollection(
-                                features,
-                                featureType.getDescriptor("str"),
-                                filterFac.property("str")));
+                .add(new PropertyValueCollection(
+                        features, featureType.getDescriptor("str"), filterFac.property("str")));
 
         doc = encode(vc, WFS.ValueCollection);
         assertEquals("wfs:ValueCollection", doc.getDocumentElement().getNodeName());
@@ -126,11 +122,8 @@ public class ValueCollectionTypeBindingTest extends WFSTestSupport {
 
         vc = Wfs20Factory.eINSTANCE.createValueCollectionType();
         vc.getMember()
-                .add(
-                        new PropertyValueCollection(
-                                features,
-                                featureType.getDescriptor("date"),
-                                filterFac.property("date")));
+                .add(new PropertyValueCollection(
+                        features, featureType.getDescriptor("date"), filterFac.property("date")));
 
         doc = encode(vc, WFS.ValueCollection);
         assertEquals("wfs:ValueCollection", doc.getDocumentElement().getNodeName());

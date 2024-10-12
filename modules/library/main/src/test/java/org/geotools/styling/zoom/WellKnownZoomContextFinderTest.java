@@ -54,8 +54,7 @@ public class WellKnownZoomContextFinderTest {
         ZoomContext context = WellKnownZoomContextFinder.getInstance().get("DEFAULT");
 
         for (int i = 0; i < WGS84_SCALE_DENOMS.length; i++) {
-            assertThat(
-                    context.getScaleDenominator(i), mCloseTo(WGS84_SCALE_DENOMS[i], 0.00000001d));
+            assertThat(context.getScaleDenominator(i), mCloseTo(WGS84_SCALE_DENOMS[i], 0.00000001d));
         }
     }
 

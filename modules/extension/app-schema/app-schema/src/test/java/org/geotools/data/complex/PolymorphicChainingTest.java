@@ -78,8 +78,7 @@ public class PolymorphicChainingTest extends AppSchemaTestSupport {
     public void testSimpleFilter() throws Exception {
         Expression property = ff.property("ex:seqId");
         Filter filter = ff.equals(property, ff.literal(101));
-        FeatureCollection<FeatureType, Feature> filteredResults =
-                artifactSource.getFeatures(filter);
+        FeatureCollection<FeatureType, Feature> filteredResults = artifactSource.getFeatures(filter);
         List<Feature> retVal = getFeatures(filteredResults);
         assertEquals(1, retVal.size());
 
@@ -92,8 +91,7 @@ public class PolymorphicChainingTest extends AppSchemaTestSupport {
     public void testMultiMappedFilter() throws Exception {
         Expression property = ff.property("ex:attributes/ex:Attribute/ex:key", namespaces);
         Filter filter = ff.equals(property, ff.literal("stringKey1"));
-        FeatureCollection<FeatureType, Feature> filteredResults =
-                artifactSource.getFeatures(filter);
+        FeatureCollection<FeatureType, Feature> filteredResults = artifactSource.getFeatures(filter);
         List<Feature> retVal = getFeatures(filteredResults);
         assertEquals(0, retVal.size());
 

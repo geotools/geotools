@@ -29,8 +29,7 @@ public class SMIL20SchemaLocationResolver implements XSDSchemaLocationResolver {
      * @generated modifiable
      */
     @Override
-    public String resolveSchemaLocation(
-            XSDSchema xsdSchema, String namespaceURI, String schemaLocationURI) {
+    public String resolveSchemaLocation(XSDSchema xsdSchema, String namespaceURI, String schemaLocationURI) {
         if (schemaLocationURI == null) {
             return null;
         }

@@ -45,19 +45,12 @@ public class DiffWriterTest {
 
         Diff diff = new Diff();
         diff.add("1", SimpleFeatureBuilder.build(type, new Object[] {"diff1", geom}, "1"));
-        diff.modify(
-                "original",
-                SimpleFeatureBuilder.build(type, new Object[] {"diff2", geom}, "original"));
-        reader =
-                new TestReader(
-                        type,
-                        SimpleFeatureBuilder.build(
-                                type, new Object[] {"original", geom}, "original"));
-        writer =
-                new DiffFeatureWriter(reader, diff) {
-                    @Override
-                    protected void fireNotification(int eventType, ReferencedEnvelope bounds) {}
-                };
+        diff.modify("original", SimpleFeatureBuilder.build(type, new Object[] {"diff2", geom}, "original"));
+        reader = new TestReader(type, SimpleFeatureBuilder.build(type, new Object[] {"original", geom}, "original"));
+        writer = new DiffFeatureWriter(reader, diff) {
+            @Override
+            protected void fireNotification(int eventType, ReferencedEnvelope bounds) {}
+        };
     }
 
     @After
@@ -77,13 +70,16 @@ public class DiffWriterTest {
     @Test
     public void testHasNext() throws Exception {
         Assert.assertTrue(writer.hasNext());
-        Assert.assertEquals(2, writer.diff.getAdded().size() + writer.diff.getModified().size());
+        Assert.assertEquals(
+                2, writer.diff.getAdded().size() + writer.diff.getModified().size());
         writer.next();
         Assert.assertTrue(writer.hasNext());
-        Assert.assertEquals(2, writer.diff.getAdded().size() + writer.diff.getModified().size());
+        Assert.assertEquals(
+                2, writer.diff.getAdded().size() + writer.diff.getModified().size());
         writer.next();
         Assert.assertFalse(writer.hasNext());
-        Assert.assertEquals(2, writer.diff.getAdded().size() + writer.diff.getModified().size());
+        Assert.assertEquals(
+                2, writer.diff.getAdded().size() + writer.diff.getModified().size());
     }
 
     @Test

@@ -88,19 +88,15 @@ public class PostGISTestSetup extends JDBCTestSetup {
                         + "\"intProperty\" int," //
                         + "\"doubleProperty\" double precision, " //
                         + "\"stringProperty\" varchar)");
-        run(
-                "INSERT INTO GEOMETRY_COLUMNS VALUES('', 'public', 'ft1', 'geometry', 2, '4326', 'POINT')");
+        run("INSERT INTO GEOMETRY_COLUMNS VALUES('', 'public', 'ft1', 'geometry', 2, '4326', 'POINT')");
         if (isVersion2()) {
             run("ALTER TABLE \"ft1\" ALTER COLUMN  \"geometry\" TYPE geometry(Point,4326);");
         }
         run("CREATE INDEX FT1_GEOMETRY_INDEX ON \"ft1\" USING GIST (\"geometry\") ");
 
-        run(
-                "INSERT INTO \"ft1\" VALUES(0, ST_GeometryFromText('POINT(0 0)', 4326), 0, 0.0, 'zero')");
-        run(
-                "INSERT INTO \"ft1\" VALUES(1, ST_GeometryFromText('POINT(1 1)', 4326), 1, 1.1, 'one')");
-        run(
-                "INSERT INTO \"ft1\" VALUES(2, ST_GeometryFromText('POINT(2 2)', 4326), 2, 2.2, 'two')");
+        run("INSERT INTO \"ft1\" VALUES(0, ST_GeometryFromText('POINT(0 0)', 4326), 0, 0.0, 'zero')");
+        run("INSERT INTO \"ft1\" VALUES(1, ST_GeometryFromText('POINT(1 1)', 4326), 1, 1.1, 'one')");
+        run("INSERT INTO \"ft1\" VALUES(2, ST_GeometryFromText('POINT(2 2)', 4326), 2, 2.2, 'two')");
         // advance the sequence to 2
         run("SELECT nextval(pg_get_serial_sequence('ft1','id'))");
         run("SELECT nextval(pg_get_serial_sequence('ft1','id'))");
@@ -115,8 +111,7 @@ public class PostGISTestSetup extends JDBCTestSetup {
                         + "\"intProperty\" int," //
                         + "\"doubleProperty\" double precision, " //
                         + "\"stringProperty\" varchar)");
-        run(
-                "INSERT INTO \"ft3\" VALUES(0, ST_GeometryFromText('POINT(0 0)', 4326), 0, 0.0, 'zero')");
+        run("INSERT INTO \"ft3\" VALUES(0, ST_GeometryFromText('POINT(0 0)', 4326), 0, 0.0, 'zero')");
 
         // ft4: like the others but with more equal values
         run(
@@ -126,24 +121,17 @@ public class PostGISTestSetup extends JDBCTestSetup {
                         + "\"intProperty\" int," //
                         + "\"doubleProperty\" double precision, " //
                         + "\"stringProperty\" varchar)");
-        run(
-                "INSERT INTO \"ft4\" VALUES(0, ST_GeometryFromText('POINT(0 0)', 4326), 0, 0.0, 'zero')");
+        run("INSERT INTO \"ft4\" VALUES(0, ST_GeometryFromText('POINT(0 0)', 4326), 0, 0.0, 'zero')");
 
-        run(
-                "INSERT INTO \"ft4\" VALUES(1, ST_GeometryFromText('POINT(1 1)', 4326), 1, 1.1, 'one')");
+        run("INSERT INTO \"ft4\" VALUES(1, ST_GeometryFromText('POINT(1 1)', 4326), 1, 1.1, 'one')");
 
-        run(
-                "INSERT INTO \"ft4\" VALUES(2, ST_GeometryFromText('POINT(2 2)', 4326), 1, 1.1, 'one_2')");
+        run("INSERT INTO \"ft4\" VALUES(2, ST_GeometryFromText('POINT(2 2)', 4326), 1, 1.1, 'one_2')");
 
-        run(
-                "INSERT INTO \"ft4\" VALUES(3, ST_GeometryFromText('POINT(3 3)', 4326), 1, 1.1, 'one_2')");
+        run("INSERT INTO \"ft4\" VALUES(3, ST_GeometryFromText('POINT(3 3)', 4326), 1, 1.1, 'one_2')");
 
-        run(
-                "INSERT INTO \"ft4\" VALUES(4, ST_GeometryFromText('POINT(4 4)', 4326), 2, 2.2, 'two')");
-        run(
-                "INSERT INTO \"ft4\" VALUES(5, ST_GeometryFromText('POINT(5 5)', 4326), 2, 2.2, 'two_2')");
-        run(
-                "INSERT INTO \"ft4\" VALUES(6, ST_GeometryFromText('POINT(6 6)', 4326), 3, 3.3, 'three')");
+        run("INSERT INTO \"ft4\" VALUES(4, ST_GeometryFromText('POINT(4 4)', 4326), 2, 2.2, 'two')");
+        run("INSERT INTO \"ft4\" VALUES(5, ST_GeometryFromText('POINT(5 5)', 4326), 2, 2.2, 'two_2')");
+        run("INSERT INTO \"ft4\" VALUES(6, ST_GeometryFromText('POINT(6 6)', 4326), 3, 3.3, 'three')");
     }
 
     @Override

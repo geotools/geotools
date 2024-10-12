@@ -62,8 +62,7 @@ public final class MathTransformBuilderTest {
      * @param seed for random generating.
      * @param includeAccuracy set true to generate points with accuracy.
      */
-    private List<MappedPosition> generateCoords(
-            int numberOfVertices, long seed, boolean includeAccuracy) {
+    private List<MappedPosition> generateCoords(int numberOfVertices, long seed, boolean includeAccuracy) {
         CoordinateReferenceSystem crs = DefaultEngineeringCRS.CARTESIAN_2D;
         return generateCoordsWithCRS(numberOfVertices, crs, seed, includeAccuracy);
     }
@@ -77,10 +76,7 @@ public final class MathTransformBuilderTest {
      * @param includeAccuracy set true to generate points with accuracy.
      */
     private List<MappedPosition> generateCoordsWithCRS(
-            int numberOfVertices,
-            CoordinateReferenceSystem crs,
-            long seed,
-            boolean includeAccuracy) {
+            int numberOfVertices, CoordinateReferenceSystem crs, long seed, boolean includeAccuracy) {
         List<MappedPosition> vert = new ArrayList<>();
         Random randomCoord = new Random(seed);
         for (int i = 0; i < numberOfVertices; i++) {
@@ -88,8 +84,7 @@ public final class MathTransformBuilderTest {
             double ys = randomCoord.nextDouble() * 1000;
             double xd = randomCoord.nextDouble() * 1000;
             double yd = randomCoord.nextDouble() * 1000;
-            MappedPosition p =
-                    new MappedPosition(new Position2D(crs, xs, ys), new Position2D(crs, xd, yd));
+            MappedPosition p = new MappedPosition(new Position2D(crs, xs, ys), new Position2D(crs, xd, yd));
             if (includeAccuracy) {
                 p.setAccuracy(randomCoord.nextDouble());
             }
@@ -104,8 +99,7 @@ public final class MathTransformBuilderTest {
      * @param mt mathTransform that will be tested
      * @param pts MappedPositions of source and target values.
      */
-    private void transformTest(MathTransform mt, List<MappedPosition> pts)
-            throws FactoryException, TransformException {
+    private void transformTest(MathTransform mt, List<MappedPosition> pts) throws FactoryException, TransformException {
         double[] points = new double[pts.size() * 2];
         double[] ptCalculated = new double[pts.size() * 2];
         for (int i = 0; i < pts.size(); i++) {
@@ -115,8 +109,7 @@ public final class MathTransformBuilderTest {
         mt.transform(points, 0, ptCalculated, 0, pts.size());
         for (int i = 0; i < pts.size(); i++) {
             assertEquals(pts.get(i).getTarget().getCoordinate()[0], ptCalculated[2 * i], 0.001);
-            assertEquals(
-                    pts.get(i).getTarget().getCoordinate()[1], ptCalculated[(2 * i) + 1], 0.001);
+            assertEquals(pts.get(i).getTarget().getCoordinate()[1], ptCalculated[(2 * i) + 1], 0.001);
         }
     }
 
@@ -182,8 +175,7 @@ public final class MathTransformBuilderTest {
             List<MappedPosition> pts = generateCoords(3, 1245);
             AdvancedAffineBuilder aab = new AdvancedAffineBuilder(pts);
             aab.setConstrain(AdvancedAffineBuilder.SXY, 0);
-            AffineToGeometric a2g =
-                    new AffineToGeometric((AffineTransform2D) aab.getMathTransform());
+            AffineToGeometric a2g = new AffineToGeometric((AffineTransform2D) aab.getMathTransform());
             Assert.assertEquals(a2g.getSkew(), 0, 0.000000001);
         } catch (Exception e) {
             fail(e.getMessage());

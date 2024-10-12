@@ -43,9 +43,7 @@ public class ExtensionHandler extends XSIElementHandler {
     @Override
     @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
-        return LOCALNAME.hashCode()
-                * ((base == null) ? 1 : base.hashCode())
-                * ((child == null) ? 1 : child.hashCode());
+        return LOCALNAME.hashCode() * ((base == null) ? 1 : base.hashCode()) * ((child == null) ? 1 : child.hashCode());
     }
 
     /** @see org.geotools.xml.XSIElementHandler#getHandler(java.lang.String, java.lang.String) */
@@ -64,10 +62,7 @@ public class ExtensionHandler extends XSIElementHandler {
                     child = ah;
                 } else {
                     throw new SAXNotRecognizedException(
-                            getLocalName()
-                                    + " may only have one '"
-                                    + AllHandler.LOCALNAME
-                                    + "' declaration.");
+                            getLocalName() + " may only have one '" + AllHandler.LOCALNAME + "' declaration.");
                 }
 
                 return ah;
@@ -103,10 +98,7 @@ public class ExtensionHandler extends XSIElementHandler {
                     child = ah;
                 } else {
                     throw new SAXNotRecognizedException(
-                            getLocalName()
-                                    + " may only have one '"
-                                    + ChoiceHandler.LOCALNAME
-                                    + "' declaration.");
+                            getLocalName() + " may only have one '" + ChoiceHandler.LOCALNAME + "' declaration.");
                 }
 
                 return ah;
@@ -120,10 +112,7 @@ public class ExtensionHandler extends XSIElementHandler {
                     child = ah;
                 } else {
                     throw new SAXNotRecognizedException(
-                            getLocalName()
-                                    + " may only have one '"
-                                    + GroupHandler.LOCALNAME
-                                    + "' declaration.");
+                            getLocalName() + " may only have one '" + GroupHandler.LOCALNAME + "' declaration.");
                 }
                 return ah;
             }
@@ -136,10 +125,7 @@ public class ExtensionHandler extends XSIElementHandler {
                     child = ah;
                 } else {
                     throw new SAXNotRecognizedException(
-                            getLocalName()
-                                    + " may only have one '"
-                                    + SequenceHandler.LOCALNAME
-                                    + "' declaration.");
+                            getLocalName() + " may only have one '" + SequenceHandler.LOCALNAME + "' declaration.");
                 }
 
                 return ah;

@@ -32,8 +32,7 @@ public class FilterFunction_minimumRectangle extends FunctionExpressionImpl {
 
     /** The FunctionName */
     public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "minrectangle", Geometry.class, parameter("geometry", Geometry.class));
+            new FunctionNameImpl("minrectangle", Geometry.class, parameter("geometry", Geometry.class));
 
     /** Create a new FilterFunction_minimumRectangle instance */
     public FilterFunction_minimumRectangle() {

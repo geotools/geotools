@@ -32,24 +32,14 @@ public class StringInFunctionTest {
     public void test() throws Exception {
         StringInFunction f = new StringInFunction();
 
-        List<Expression> params =
-                Arrays.asList(
-                        ff.literal("foo"),
-                        ff.literal(true),
-                        ff.literal("foo"),
-                        ff.literal("bar"),
-                        ff.literal("baz"));
+        List<Expression> params = Arrays.asList(
+                ff.literal("foo"), ff.literal(true), ff.literal("foo"), ff.literal("bar"), ff.literal("baz"));
         f.setParameters(params);
 
         Assert.assertEquals(Boolean.TRUE, f.evaluate(null));
 
-        params =
-                Arrays.asList(
-                        ff.literal("foo"),
-                        ff.literal(true),
-                        ff.literal("FOO"),
-                        ff.literal("bar"),
-                        ff.literal("baz"));
+        params = Arrays.asList(
+                ff.literal("foo"), ff.literal(true), ff.literal("FOO"), ff.literal("bar"), ff.literal("baz"));
         f.setParameters(params);
         Assert.assertEquals(Boolean.FALSE, f.evaluate(null));
     }

@@ -28,8 +28,7 @@ public class CRSEvaluatorTest {
 
     @BeforeClass
     public static void beforeClass() throws Exception {
-        PropertyDataStore pds =
-                new PropertyDataStore(new File("./src/test/resources/org/geotools/data/transform"));
+        PropertyDataStore pds = new PropertyDataStore(new File("./src/test/resources/org/geotools/data/transform"));
         STATES_SCHEMA = pds.getFeatureSource("states").getSchema();
         pds.dispose();
 

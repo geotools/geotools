@@ -35,8 +35,7 @@ import javax.swing.SwingUtilities;
 public class ImageMosaicEventHandlers {
 
     /** Default Logger * */
-    static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(ImageMosaicEventHandlers.class);
+    static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(ImageMosaicEventHandlers.class);
 
     /** List containing all the objects that want to be notified during processing. */
     protected List<ProcessingEventListener> notificationListeners = new CopyOnWriteArrayList<>();
@@ -170,8 +169,7 @@ public class ImageMosaicEventHandlers {
 
         private Exception exception;
 
-        public ExceptionEvent(
-                Object source, String message, double percentage, Exception exception) {
+        public ExceptionEvent(Object source, String message, double percentage, Exception exception) {
             super(source, message, percentage);
             this.exception = exception;
         }
@@ -227,11 +225,8 @@ public class ImageMosaicEventHandlers {
         @Override
         public void run() {
             if (event instanceof ExceptionEvent)
-                for (Object o : listeners)
-                    ((ProcessingEventListener) o).exceptionOccurred((ExceptionEvent) this.event);
-            else
-                for (Object listener : listeners)
-                    ((ProcessingEventListener) listener).getNotification(this.event);
+                for (Object o : listeners) ((ProcessingEventListener) o).exceptionOccurred((ExceptionEvent) this.event);
+            else for (Object listener : listeners) ((ProcessingEventListener) listener).getNotification(this.event);
         }
     }
 
@@ -262,8 +257,7 @@ public class ImageMosaicEventHandlers {
         synchronized (notificationListeners) {
             final StringBuilder message = buildMessage(inMessage);
             final ProcessingEvent evt = new ProcessingEvent(this, message.toString(), percentage);
-            ProgressEventDispatchThreadEventLauncher eventLauncher =
-                    new ProgressEventDispatchThreadEventLauncher();
+            ProgressEventDispatchThreadEventLauncher eventLauncher = new ProgressEventDispatchThreadEventLauncher();
             eventLauncher.setEvent(evt, this.notificationListeners.toArray());
             sendEvent(eventLauncher);
         }
@@ -277,11 +271,7 @@ public class ImageMosaicEventHandlers {
      * @param percentage The percentage for the process.
      */
     protected void fireFileEvent(
-            Level level,
-            final File file,
-            final boolean ingested,
-            final String inMessage,
-            final double percentage) {
+            Level level, final File file, final boolean ingested, final String inMessage, final double percentage) {
         if (LOGGER.isLoggable(level)) {
             LOGGER.log(level, inMessage);
         }
@@ -289,8 +279,7 @@ public class ImageMosaicEventHandlers {
             final StringBuilder message = buildMessage(inMessage);
             final FileProcessingEvent evt =
                     new FileProcessingEvent(this, file, ingested, message.toString(), percentage);
-            ProgressEventDispatchThreadEventLauncher eventLauncher =
-                    new ProgressEventDispatchThreadEventLauncher();
+            ProgressEventDispatchThreadEventLauncher eventLauncher = new ProgressEventDispatchThreadEventLauncher();
             eventLauncher.setEvent(evt, this.notificationListeners.toArray());
             sendEvent(eventLauncher);
         }
@@ -312,20 +301,14 @@ public class ImageMosaicEventHandlers {
      * @param percentage The percentage for the process.
      */
     protected void fireUrlEvent(
-            Level level,
-            final URL url,
-            final boolean ingested,
-            final String inMessage,
-            final double percentage) {
+            Level level, final URL url, final boolean ingested, final String inMessage, final double percentage) {
         if (LOGGER.isLoggable(level)) {
             LOGGER.log(level, inMessage);
         }
         synchronized (notificationListeners) {
             final StringBuilder message = buildMessage(inMessage);
-            final URLProcessingEvent evt =
-                    new URLProcessingEvent(this, url, ingested, message.toString(), percentage);
-            ProgressEventDispatchThreadEventLauncher eventLauncher =
-                    new ProgressEventDispatchThreadEventLauncher();
+            final URLProcessingEvent evt = new URLProcessingEvent(this, url, ingested, message.toString(), percentage);
+            ProgressEventDispatchThreadEventLauncher eventLauncher = new ProgressEventDispatchThreadEventLauncher();
             eventLauncher.setEvent(evt, this.notificationListeners.toArray());
             sendEvent(eventLauncher);
         }
@@ -339,20 +322,14 @@ public class ImageMosaicEventHandlers {
      * @param percentage The percentage for the process.
      */
     protected void fireURIEvent(
-            Level level,
-            final URI uri,
-            final boolean ingested,
-            final String inMessage,
-            final double percentage) {
+            Level level, final URI uri, final boolean ingested, final String inMessage, final double percentage) {
         if (LOGGER.isLoggable(level)) {
             LOGGER.log(level, inMessage);
         }
         synchronized (notificationListeners) {
             final StringBuilder message = buildMessage(inMessage);
-            final URIProcessingEvent evt =
-                    new URIProcessingEvent(this, uri, ingested, message.toString(), percentage);
-            ProgressEventDispatchThreadEventLauncher eventLauncher =
-                    new ProgressEventDispatchThreadEventLauncher();
+            final URIProcessingEvent evt = new URIProcessingEvent(this, uri, ingested, message.toString(), percentage);
+            ProgressEventDispatchThreadEventLauncher eventLauncher = new ProgressEventDispatchThreadEventLauncher();
             eventLauncher.setEvent(evt, this.notificationListeners.toArray());
             sendEvent(eventLauncher);
         }
@@ -383,8 +360,7 @@ public class ImageMosaicEventHandlers {
         synchronized (notificationListeners) {
             buildMessage(string);
             final ExceptionEvent evt = new ExceptionEvent(this, string, percentage, ex);
-            ProgressEventDispatchThreadEventLauncher eventLauncher =
-                    new ProgressEventDispatchThreadEventLauncher();
+            ProgressEventDispatchThreadEventLauncher eventLauncher = new ProgressEventDispatchThreadEventLauncher();
             eventLauncher.setEvent(evt, this.notificationListeners.toArray());
             sendEvent(eventLauncher);
         }
@@ -394,8 +370,7 @@ public class ImageMosaicEventHandlers {
     protected void fireCompleted() {
         synchronized (notificationListeners) {
             final ProcessingEvent evt = new CompletionEvent(this);
-            ProgressEventDispatchThreadEventLauncher eventLauncher =
-                    new ProgressEventDispatchThreadEventLauncher();
+            ProgressEventDispatchThreadEventLauncher eventLauncher = new ProgressEventDispatchThreadEventLauncher();
             eventLauncher.setEvent(evt, this.notificationListeners.toArray());
             sendEvent(eventLauncher);
         }

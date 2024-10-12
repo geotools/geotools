@@ -83,8 +83,7 @@ public class OracleGeometryOnlineTest extends JDBCGeometryOnlineTest {
         builder.add(gf.createPolygon(null, null));
         f = builder.buildFeature(null);
         list.add(f);
-        FeatureCollection<SimpleFeatureType, SimpleFeature> collection =
-                DataUtilities.collection(list);
+        FeatureCollection<SimpleFeatureType, SimpleFeature> collection = DataUtilities.collection(list);
         SimpleFeatureStore store = (SimpleFeatureStore) source;
 
         try (Transaction transaction = new DefaultTransaction("create")) {
@@ -113,8 +112,7 @@ public class OracleGeometryOnlineTest extends JDBCGeometryOnlineTest {
     public void testGeometryMetadataTable() throws Exception {
         testSetup.setupGeometryColumns(dataStore);
 
-        GeometryDescriptor gd =
-                dataStore.getFeatureSource("GTMETA").getSchema().getGeometryDescriptor();
+        GeometryDescriptor gd = dataStore.getFeatureSource("GTMETA").getSchema().getGeometryDescriptor();
         assertEquals(Point.class, gd.getType().getBinding());
         assertEquals(4269, (int) CRS.lookupEpsgCode(gd.getCoordinateReferenceSystem(), false));
     }

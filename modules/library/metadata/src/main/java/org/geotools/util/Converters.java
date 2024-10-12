@@ -51,12 +51,9 @@ public final class Converters {
     private static FactoryRegistry getServiceRegistry() {
         assert Thread.holdsLock(Converters.class);
         if (registry == null) {
-            registry =
-                    new FactoryCreator(
-                            Arrays.asList(
-                                    new Class<?>[] {
-                                        ConverterFactory.class,
-                                    }));
+            registry = new FactoryCreator(Arrays.asList(new Class<?>[] {
+                ConverterFactory.class,
+            }));
         }
         return registry;
     }
@@ -76,8 +73,7 @@ public final class Converters {
      */
     public static synchronized Set<ConverterFactory> getConverterFactories(Hints hints) {
         hints = GeoTools.addDefaultHints(hints);
-        return new LazySet<>(
-                getServiceRegistry().getFactories(ConverterFactory.class, null, hints));
+        return new LazySet<>(getServiceRegistry().getFactories(ConverterFactory.class, null, hints));
     }
 
     /**
@@ -137,9 +133,7 @@ public final class Converters {
 
         // handle case of source being an instance of target up front
         final Class<?> sourceClass = source.getClass();
-        if (sourceClass == target
-                || sourceClass.equals(target)
-                || target.isAssignableFrom(sourceClass)) {
+        if (sourceClass == target || sourceClass.equals(target) || target.isAssignableFrom(sourceClass)) {
             return target.cast(source);
         }
 
@@ -182,8 +176,7 @@ public final class Converters {
      */
     static ConverterFactory[] factories() {
         if (factories == null) {
-            Collection<ConverterFactory> factoryCollection =
-                    getConverterFactories(GeoTools.getDefaultHints());
+            Collection<ConverterFactory> factoryCollection = getConverterFactories(GeoTools.getDefaultHints());
             factories = factoryCollection.toArray(new ConverterFactory[factoryCollection.size()]);
         }
         return factories;

@@ -44,21 +44,14 @@ public class OGCConfiguration extends Configuration {
     @Override
     protected final void registerBindings(MutablePicoContainer container) {
         // Types
-        container.registerComponentImplementation(
-                OGC.Arithmetic_OperatorsType, Arithmetic_OperatorsTypeBinding.class);
-        container.registerComponentImplementation(
-                OGC.Comparison_OperatorsType, Comparison_OperatorsTypeBinding.class);
-        container.registerComponentImplementation(
-                OGC.Function_NamesType, Function_NamesTypeBinding.class);
-        container.registerComponentImplementation(
-                OGC.Function_NameType, Function_NameTypeBinding.class);
+        container.registerComponentImplementation(OGC.Arithmetic_OperatorsType, Arithmetic_OperatorsTypeBinding.class);
+        container.registerComponentImplementation(OGC.Comparison_OperatorsType, Comparison_OperatorsTypeBinding.class);
+        container.registerComponentImplementation(OGC.Function_NamesType, Function_NamesTypeBinding.class);
+        container.registerComponentImplementation(OGC.Function_NameType, Function_NameTypeBinding.class);
         container.registerComponentImplementation(OGC.FunctionsType, FunctionsTypeBinding.class);
-        container.registerComponentImplementation(
-                OGC.Scalar_CapabilitiesType, Scalar_CapabilitiesTypeBinding.class);
-        container.registerComponentImplementation(
-                OGC.Spatial_CapabilitiesType, Spatial_CapabilitiesTypeBinding.class);
-        container.registerComponentImplementation(
-                OGC.Spatial_OperatorsType, Spatial_OperatorsTypeBinding.class);
+        container.registerComponentImplementation(OGC.Scalar_CapabilitiesType, Scalar_CapabilitiesTypeBinding.class);
+        container.registerComponentImplementation(OGC.Spatial_CapabilitiesType, Spatial_CapabilitiesTypeBinding.class);
+        container.registerComponentImplementation(OGC.Spatial_OperatorsType, Spatial_OperatorsTypeBinding.class);
         // container.registerComponentImplementation(OGC._BBOX,_BBOXBinding.class);
         // container.registerComponentImplementation(OGC._Between,_BetweenBinding.class);
         // container.registerComponentImplementation(OGC._Beyond,_BeyondBinding.class);
@@ -67,8 +60,7 @@ public class OGCConfiguration extends Configuration {
         // container.registerComponentImplementation(OGC._Disjoint,_DisjointBinding.class);
         // container.registerComponentImplementation(OGC._DWithin,_DWithinBinding.class);
         // container.registerComponentImplementation(OGC._Equals,_EqualsBinding.class);
-        container.registerComponentImplementation(
-                OGC._Filter_Capabilities, _Filter_CapabilitiesBinding.class);
+        container.registerComponentImplementation(OGC._Filter_Capabilities, _Filter_CapabilitiesBinding.class);
 
         // container.registerComponentImplementation(OGC._Intersect,_IntersectBinding.class);
         // container.registerComponentImplementation(OGC._Like,_LikeBinding.class);

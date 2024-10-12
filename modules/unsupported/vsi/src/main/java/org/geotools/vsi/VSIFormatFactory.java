@@ -21,11 +21,9 @@ import java.util.logging.Logger;
 import org.geotools.coverage.grid.io.GridFormatFactorySpi;
 import org.geotools.coverageio.BaseGridFormatFactorySPI;
 
-public final class VSIFormatFactory extends BaseGridFormatFactorySPI
-        implements GridFormatFactorySpi {
+public final class VSIFormatFactory extends BaseGridFormatFactorySPI implements GridFormatFactorySpi {
 
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(VSIFormatFactory.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(VSIFormatFactory.class);
 
     /**
      * Return true if all necessary dependencies are met in order to use this resource type

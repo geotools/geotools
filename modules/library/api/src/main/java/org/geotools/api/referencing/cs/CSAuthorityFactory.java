@@ -44,8 +44,7 @@ public interface CSAuthorityFactory extends AuthorityFactory {
      * @throws NoSuchAuthorityCodeException if the specified {@code code} was not found.
      * @throws FactoryException if the object creation failed for some other reason.
      */
-    CoordinateSystem createCoordinateSystem(String code)
-            throws NoSuchAuthorityCodeException, FactoryException;
+    CoordinateSystem createCoordinateSystem(String code) throws NoSuchAuthorityCodeException, FactoryException;
 
     /**
      * Creates a cartesian coordinate system from a code.
@@ -55,8 +54,7 @@ public interface CSAuthorityFactory extends AuthorityFactory {
      * @throws NoSuchAuthorityCodeException if the specified {@code code} was not found.
      * @throws FactoryException if the object creation failed for some other reason.
      */
-    CartesianCS createCartesianCS(String code)
-            throws NoSuchAuthorityCodeException, FactoryException;
+    CartesianCS createCartesianCS(String code) throws NoSuchAuthorityCodeException, FactoryException;
 
     /**
      * Creates a polar coordinate system from a code.
@@ -76,8 +74,7 @@ public interface CSAuthorityFactory extends AuthorityFactory {
      * @throws NoSuchAuthorityCodeException if the specified {@code code} was not found.
      * @throws FactoryException if the object creation failed for some other reason.
      */
-    CylindricalCS createCylindricalCS(String code)
-            throws NoSuchAuthorityCodeException, FactoryException;
+    CylindricalCS createCylindricalCS(String code) throws NoSuchAuthorityCodeException, FactoryException;
 
     /**
      * Creates a spherical coordinate system from a code.
@@ -87,8 +84,7 @@ public interface CSAuthorityFactory extends AuthorityFactory {
      * @throws NoSuchAuthorityCodeException if the specified {@code code} was not found.
      * @throws FactoryException if the object creation failed for some other reason.
      */
-    SphericalCS createSphericalCS(String code)
-            throws NoSuchAuthorityCodeException, FactoryException;
+    SphericalCS createSphericalCS(String code) throws NoSuchAuthorityCodeException, FactoryException;
 
     /**
      * Creates an ellipsoidal coordinate system from a code.
@@ -98,8 +94,7 @@ public interface CSAuthorityFactory extends AuthorityFactory {
      * @throws NoSuchAuthorityCodeException if the specified {@code code} was not found.
      * @throws FactoryException if the object creation failed for some other reason.
      */
-    EllipsoidalCS createEllipsoidalCS(String code)
-            throws NoSuchAuthorityCodeException, FactoryException;
+    EllipsoidalCS createEllipsoidalCS(String code) throws NoSuchAuthorityCodeException, FactoryException;
 
     /**
      * Creates a vertical coordinate system from a code.
@@ -129,8 +124,7 @@ public interface CSAuthorityFactory extends AuthorityFactory {
      * @throws NoSuchAuthorityCodeException if the specified {@code code} was not found.
      * @throws FactoryException if the object creation failed for some other reason.
      */
-    CoordinateSystemAxis createCoordinateSystemAxis(String code)
-            throws NoSuchAuthorityCodeException, FactoryException;
+    CoordinateSystemAxis createCoordinateSystemAxis(String code) throws NoSuchAuthorityCodeException, FactoryException;
 
     /**
      * Returns an {@linkplain Unit unit} from a code.

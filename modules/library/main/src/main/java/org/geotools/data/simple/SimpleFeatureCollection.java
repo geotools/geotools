@@ -63,8 +63,7 @@ import org.geotools.feature.FeatureCollection;
  *
  * <p>
  */
-public interface SimpleFeatureCollection
-        extends FeatureCollection<SimpleFeatureType, SimpleFeature> {
+public interface SimpleFeatureCollection extends FeatureCollection<SimpleFeatureType, SimpleFeature> {
     /**
      * Obtain a SimpleFeatureIterator of the Features within this SimpleFeatureCollection.
      *

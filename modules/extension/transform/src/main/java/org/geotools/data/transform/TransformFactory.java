@@ -44,13 +44,9 @@ public class TransformFactory {
      * @returns A transformed SimpleFeatureStore in case at least one of the definitions was
      *     invertible, a transformed SimpleFeatureSource otherwise
      */
-    public static SimpleFeatureSource transform(
-            SimpleFeatureSource source, String name, List<Definition> definitions)
+    public static SimpleFeatureSource transform(SimpleFeatureSource source, String name, List<Definition> definitions)
             throws IOException {
-        return transform(
-                source,
-                new NameImpl(source.getSchema().getName().getNamespaceURI(), name),
-                definitions);
+        return transform(source, new NameImpl(source.getSchema().getName().getNamespaceURI(), name), definitions);
     }
 
     /**
@@ -60,13 +56,11 @@ public class TransformFactory {
      * @returns A transformed SimpleFeatureStore in case at least one of the definitions was
      *     invertible, a transformed SimpleFeatureSource otherwise
      */
-    public static SimpleFeatureSource transform(
-            SimpleFeatureSource source, Name name, List<Definition> definitions)
+    public static SimpleFeatureSource transform(SimpleFeatureSource source, Name name, List<Definition> definitions)
             throws IOException {
         if (source instanceof SimpleFeatureLocking) {
             try {
-                return new TransformFeatureLocking(
-                        (SimpleFeatureLocking) source, name, definitions);
+                return new TransformFeatureLocking((SimpleFeatureLocking) source, name, definitions);
             } catch (IllegalArgumentException e) {
                 LOGGER.log(
                         Level.FINEST,

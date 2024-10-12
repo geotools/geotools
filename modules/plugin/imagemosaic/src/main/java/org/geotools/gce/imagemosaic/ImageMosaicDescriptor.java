@@ -48,8 +48,7 @@ public class ImageMosaicDescriptor {
         return catalog;
     }
 
-    public ImageMosaicDescriptor(
-            final MosaicConfigurationBean configurationBean, final GranuleCatalog catalog) {
+    public ImageMosaicDescriptor(final MosaicConfigurationBean configurationBean, final GranuleCatalog catalog) {
         this.configuration = new MosaicConfigurationBean(configurationBean);
         this.catalog = catalog;
     }

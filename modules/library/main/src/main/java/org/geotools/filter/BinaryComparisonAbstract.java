@@ -51,8 +51,7 @@ public abstract class BinaryComparisonAbstract extends AbstractFilter implements
         this(expression1, expression2, true);
     }
     /** Immutable constructor for use by FilterFactory */
-    protected BinaryComparisonAbstract(
-            Expression expression1, Expression expression2, boolean matchingCase) {
+    protected BinaryComparisonAbstract(Expression expression1, Expression expression2, boolean matchingCase) {
         this.expression1 = expression1;
         this.expression2 = expression2;
         this.matchingCase = matchingCase;

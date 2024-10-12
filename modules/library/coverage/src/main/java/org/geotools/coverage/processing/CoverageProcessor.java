@@ -96,8 +96,7 @@ public class CoverageProcessor {
      */
     private static CoverageProcessor DEFAULT;
 
-    private static final SoftValueHashMap<Hints, CoverageProcessor> processorsPool =
-            new SoftValueHashMap<>();
+    private static final SoftValueHashMap<Hints, CoverageProcessor> processorsPool = new SoftValueHashMap<>();
 
     /**
      * Cacheable instance of the {@link CoverageProcessor}. It prevents users to add operations
@@ -132,12 +131,11 @@ public class CoverageProcessor {
                 cache.setMemoryCapacity(targetCapacity);
             }
         }
-        LOGGER.config(
-                "Java Advanced Imaging: "
-                        + JAI.getBuildVersion()
-                        + ", TileCache capacity="
-                        + (float) (cache.getMemoryCapacity() / (1024 * 1024))
-                        + " Mb");
+        LOGGER.config("Java Advanced Imaging: "
+                + JAI.getBuildVersion()
+                + ", TileCache capacity="
+                + (float) (cache.getMemoryCapacity() / (1024 * 1024))
+                + " Mb");
         /*
          * Verifies that the tile cache has some reasonable value. A lot of users seem to
          * misunderstand the memory setting in Java and set wrong values. If the user set
@@ -146,10 +144,7 @@ public class CoverageProcessor {
          */
         if (cache.getMemoryCapacity() + (4 * 1024 * 1024) >= maxMemory) {
             final LogRecord record =
-                    Loggings.format(
-                            Level.SEVERE,
-                            LoggingKeys.EXCESSIVE_TILE_CACHE_$1,
-                            maxMemory / (1024 * 1024.0));
+                    Loggings.format(Level.SEVERE, LoggingKeys.EXCESSIVE_TILE_CACHE_$1, maxMemory / (1024 * 1024.0));
             record.setLoggerName(LOGGER.getName());
             LOGGER.log(record);
         }
@@ -163,8 +158,7 @@ public class CoverageProcessor {
      * objects, the operation name are actually case-insensitive because of the comparator used in
      * the sorted map.
      */
-    private final Map<String, Operation> operations =
-            Collections.synchronizedMap(new TreeMap<>(COMPARATOR));
+    private final Map<String, Operation> operations = Collections.synchronizedMap(new TreeMap<>(COMPARATOR));
 
     /**
      * The rendering hints for JAI operations (never {@code null}). This field is usually given as
@@ -289,28 +283,21 @@ public class CoverageProcessor {
      * @param operationName the operation name.
      * @param fromCache {@code true} if the result has been fetch from the cache.
      */
-    final void log(
-            final Coverage source,
-            final Coverage result,
-            final String operationName,
-            final boolean fromCache) {
+    final void log(final Coverage source, final Coverage result, final String operationName, final boolean fromCache) {
         if (source != result) {
             String interp = "Nearest";
             if (result instanceof Interpolator2D) {
-                interp =
-                        ImageUtilities.getInterpolationName(
-                                ((Interpolator2D) result).getInterpolation());
+                interp = ImageUtilities.getInterpolationName(((Interpolator2D) result).getInterpolation());
             }
             final Locale locale = getLocale();
-            final LogRecord record =
-                    Loggings.getResources(locale)
-                            .getLogRecord(
-                                    OPERATION,
-                                    LoggingKeys.APPLIED_OPERATION_$4,
-                                    getName((source != null) ? source : result, locale),
-                                    operationName,
-                                    interp,
-                                    Integer.valueOf(fromCache ? 1 : 0));
+            final LogRecord record = Loggings.getResources(locale)
+                    .getLogRecord(
+                            OPERATION,
+                            LoggingKeys.APPLIED_OPERATION_$4,
+                            getName((source != null) ? source : result, locale),
+                            operationName,
+                            interp,
+                            Integer.valueOf(fromCache ? 1 : 0));
             // Note: DefaultProcessor is the class that will use this method.
             record.setSourceClassName("org.geotools.coverage.processing.DefaultProcessor");
             record.setSourceMethodName("doOperation");
@@ -378,8 +365,7 @@ public class CoverageProcessor {
      * @throws IOException if an error occured will writing to the stream.
      * @throws OperationNotFoundException if an operation named in {@code names} was not found.
      */
-    public void printOperations(final Writer out, final String[] names)
-            throws OperationNotFoundException, IOException {
+    public void printOperations(final Writer out, final String[] names) throws OperationNotFoundException, IOException {
         final CoverageParameterWriter writer = new CoverageParameterWriter(out);
         final String lineSeparator = System.getProperty("line.separator", "\n");
         if (names != null) {
@@ -444,8 +430,7 @@ public class CoverageProcessor {
         if (old != null && !old.equals(operation)) {
             operations.put(old.getName().trim(), old);
             throw new IllegalStateException(
-                    MessageFormat.format(
-                            ErrorKeys.OPERATION_ALREADY_BOUND_$1, operation.getName()));
+                    MessageFormat.format(ErrorKeys.OPERATION_ALREADY_BOUND_$1, operation.getName()));
         }
     }
 
@@ -480,8 +465,7 @@ public class CoverageProcessor {
             if (operation != null) {
                 return operation;
             }
-            throw new OperationNotFoundException(
-                    MessageFormat.format(ErrorKeys.OPERATION_NOT_FOUND_$1, name));
+            throw new OperationNotFoundException(MessageFormat.format(ErrorKeys.OPERATION_NOT_FOUND_$1, name));
         }
     }
 
@@ -547,9 +531,8 @@ public class CoverageProcessor {
         try {
             op = (AbstractOperation) operation;
         } catch (ClassCastException cause) {
-            final OperationNotFoundException exception =
-                    new OperationNotFoundException(
-                            MessageFormat.format(ErrorKeys.OPERATION_NOT_FOUND_$1, operationName));
+            final OperationNotFoundException exception = new OperationNotFoundException(
+                    MessageFormat.format(ErrorKeys.OPERATION_NOT_FOUND_$1, operationName));
             exception.initCause(cause);
             throw exception;
         }
@@ -560,9 +543,7 @@ public class CoverageProcessor {
 
         // processwith local hints
         Coverage coverage = op.doOperation(parameters, localMergeHints);
-        if (interpolations != null
-                && (coverage instanceof GridCoverage2D)
-                && !(coverage instanceof Interpolator2D)) {
+        if (interpolations != null && (coverage instanceof GridCoverage2D) && !(coverage instanceof Interpolator2D)) {
             coverage = Interpolator2D.create((GridCoverage2D) coverage, interpolations);
         }
         log(source, coverage, operationName, false);
@@ -580,8 +561,7 @@ public class CoverageProcessor {
      * @return The result as a coverage.
      * @throws OperationNotFoundException if there is no operation for the parameter group name.
      */
-    public Coverage doOperation(final ParameterValueGroup parameters)
-            throws OperationNotFoundException {
+    public Coverage doOperation(final ParameterValueGroup parameters) throws OperationNotFoundException {
         return doOperation(parameters, null);
     }
 
@@ -596,7 +576,8 @@ public class CoverageProcessor {
     public void scanForPlugins() {
         synchronized (operations) {
             registry.getFactories(Operation.class, null, null)
-                    .filter(operation -> !operations.containsKey(operation.getName().trim()))
+                    .filter(operation ->
+                            !operations.containsKey(operation.getName().trim()))
                     .forEach(this::addOperation0);
         }
     }
@@ -656,10 +637,7 @@ public class CoverageProcessor {
                 param = parameters.getObjectParameter(paramName);
             } catch (IllegalArgumentException e) {
                 if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.fine(
-                            "Required parameter is unavailable: "
-                                    + paramName
-                                    + ". Returning null ");
+                    LOGGER.fine("Required parameter is unavailable: " + paramName + ". Returning null ");
                 }
             }
         }

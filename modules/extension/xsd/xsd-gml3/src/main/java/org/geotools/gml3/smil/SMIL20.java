@@ -44,52 +44,43 @@ public final class SMIL20 extends XSD {
             new QName("http://www.w3.org/2001/SMIL20/", "animateMotionPrototype");
 
     /** @generated */
-    public static final QName ANIMATEPROTOTYPE =
-            new QName("http://www.w3.org/2001/SMIL20/", "animatePrototype");
+    public static final QName ANIMATEPROTOTYPE = new QName("http://www.w3.org/2001/SMIL20/", "animatePrototype");
 
     /** @generated */
-    public static final QName FILLDEFAULTTYPE =
-            new QName("http://www.w3.org/2001/SMIL20/", "fillDefaultType");
+    public static final QName FILLDEFAULTTYPE = new QName("http://www.w3.org/2001/SMIL20/", "fillDefaultType");
 
     /** @generated */
-    public static final QName FILLTIMINGATTRSTYPE =
-            new QName("http://www.w3.org/2001/SMIL20/", "fillTimingAttrsType");
+    public static final QName FILLTIMINGATTRSTYPE = new QName("http://www.w3.org/2001/SMIL20/", "fillTimingAttrsType");
 
     /** @generated */
     public static final QName NONNEGATIVEDECIMALTYPE =
             new QName("http://www.w3.org/2001/SMIL20/", "nonNegativeDecimalType");
 
     /** @generated */
-    public static final QName RESTARTDEFAULTTYPE =
-            new QName("http://www.w3.org/2001/SMIL20/", "restartDefaultType");
+    public static final QName RESTARTDEFAULTTYPE = new QName("http://www.w3.org/2001/SMIL20/", "restartDefaultType");
 
     /** @generated */
-    public static final QName RESTARTTIMINGTYPE =
-            new QName("http://www.w3.org/2001/SMIL20/", "restartTimingType");
+    public static final QName RESTARTTIMINGTYPE = new QName("http://www.w3.org/2001/SMIL20/", "restartTimingType");
 
     /** @generated */
-    public static final QName SETPROTOTYPE =
-            new QName("http://www.w3.org/2001/SMIL20/", "setPrototype");
+    public static final QName SETPROTOTYPE = new QName("http://www.w3.org/2001/SMIL20/", "setPrototype");
 
     /** @generated */
     public static final QName SYNCBEHAVIORDEFAULTTYPE =
             new QName("http://www.w3.org/2001/SMIL20/", "syncBehaviorDefaultType");
 
     /** @generated */
-    public static final QName SYNCBEHAVIORTYPE =
-            new QName("http://www.w3.org/2001/SMIL20/", "syncBehaviorType");
+    public static final QName SYNCBEHAVIORTYPE = new QName("http://www.w3.org/2001/SMIL20/", "syncBehaviorType");
 
     /* Elements */
     /** @generated */
     public static final QName ANIMATE = new QName("http://www.w3.org/2001/SMIL20/", "animate");
 
     /** @generated */
-    public static final QName ANIMATECOLOR =
-            new QName("http://www.w3.org/2001/SMIL20/", "animateColor");
+    public static final QName ANIMATECOLOR = new QName("http://www.w3.org/2001/SMIL20/", "animateColor");
 
     /** @generated */
-    public static final QName ANIMATEMOTION =
-            new QName("http://www.w3.org/2001/SMIL20/", "animateMotion");
+    public static final QName ANIMATEMOTION = new QName("http://www.w3.org/2001/SMIL20/", "animateMotion");
 
     /** @generated */
     public static final QName SET = new QName("http://www.w3.org/2001/SMIL20/", "set");

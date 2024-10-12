@@ -52,8 +52,7 @@ public class InterpolationConfiguration extends Configuration {
                 new ComplexEMFBinding(Wcs20Factory.eINSTANCE, Interpolation.InterpolationType));
         bindings.put(
                 Interpolation.InterpolationMethodType,
-                new ComplexEMFBinding(
-                        Wcs20Factory.eINSTANCE, Interpolation.InterpolationMethodType));
+                new ComplexEMFBinding(Wcs20Factory.eINSTANCE, Interpolation.InterpolationMethodType));
         bindings.put(
                 Interpolation.InterpolationAxesType,
                 new ComplexEMFBinding(Wcs20Factory.eINSTANCE, Interpolation.InterpolationAxesType));

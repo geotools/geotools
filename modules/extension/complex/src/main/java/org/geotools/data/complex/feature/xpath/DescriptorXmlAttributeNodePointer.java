@@ -44,8 +44,7 @@ public class DescriptorXmlAttributeNodePointer extends NodePointer {
     /** The underlying descriptor */
     PropertyDescriptor descriptor;
 
-    protected DescriptorXmlAttributeNodePointer(
-            NodePointer parent, PropertyDescriptor descriptor, Name name) {
+    protected DescriptorXmlAttributeNodePointer(NodePointer parent, PropertyDescriptor descriptor, Name name) {
         super(parent);
         this.name = name;
         this.descriptor = descriptor;
@@ -96,10 +95,9 @@ public class DescriptorXmlAttributeNodePointer extends NodePointer {
         while (it.hasNext()) {
             XSDAttributeDeclaration attDecl = ((XSDAttributeDeclaration) it.next());
             if (attDecl.getURI()
-                    .equals(
-                            (name.getNamespaceURI() == null ? "" : name.getNamespaceURI())
-                                    + "#"
-                                    + name.getLocalPart())) {
+                    .equals((name.getNamespaceURI() == null ? "" : name.getNamespaceURI())
+                            + "#"
+                            + name.getLocalPart())) {
                 return name;
             }
         }

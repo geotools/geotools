@@ -90,9 +90,7 @@ Tips and Tricks for working with Eclipse
    **Other** and choosing UTF-8 from the list.
 
 .. image:: /images/eclipseUTF8.png
-
-2. Install the `Google Java format plugin <https://github.com/google/google-java-format>`_ and enable the AOSP settings:
-   
-3. GeoTools has defined templates you can import:
+ 
+2. GeoTools has defined templates you can import:
    
    * ``build/eclipse/codetemplates.xml``

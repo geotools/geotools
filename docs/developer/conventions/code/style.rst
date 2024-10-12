@@ -3,18 +3,15 @@ Coding Style
 
 Coding conventions describe the coding styles developers should use when writing code.
 
-We follow the `Google formatting conventions <https://google.github.io/styleguide/javaguide.html>`__, 
-with the AOSP variant (4 spaces indent instead of 2).
+We apply the Palantir formatter, a variant of the `Google formatting conventions <https://google.github.io/styleguide/javaguide.html>`__, 
+that enforces 120 columns, 4 spaces indent, stream and lambda friendly formatting.
 
 Use of Formatting Tools
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-The Google formatter plugin is embedded in the build and will reformat the code at each build, matching the coding conventions. Please always build before committing!.
+The Palantir formatter plugin is embedded in the build and will reformat the code at each build, matching the coding conventions. Please always build before committing!.
 
-The `google-java-format <https://github.com/google/google-java-format>`__ project also offers plugins for various IDEs, if your IDE is not supported, please just build once on the command line before committing.
-
-Also you could use a `modified version <https://github.com/fernandor777/google-java-format/releases/download/1.7-gsgt/google-java-format-eclipse-plugin-1.6.0.jar>`__ 
-with 4 spaces indent by default, putting the jar file on Eclipse dropins folder.
+The `palantir-java-format <https://github.com/palantir/palantir-java-format/tree/develop>`__ project also offers plugins for IntelliJ and Eclipse, if your IDE is not supported, please just build once on the command line before committing.
 
 But what about the header?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^

@@ -4,7 +4,7 @@ Automatic Quality Assurance checks
 The GeoTools jenkins `build.geoserver.org <https://build.geoserver.org/>`_ and GitHub workflow apply a handful of tools
 to statically check code quality and fail the build in case of rule violation:
 
-* `Google Java style guidelines <https://google.github.io/styleguide/javaguide.html>`_
+* `Palantir Java formattng <https://github.com/palantir/palantir-java-format>`_
 * `POM formatting <https://github.com/Ekryd/sortpom>`_
 * `PMD <https://pmd.github.io/>`_
 * `Error Prone <https://errorprone.info/>`_
@@ -27,8 +27,8 @@ Formatting
 ^^^^^^^^^^
 
 Source code is automatically formatted during a Maven build using the `Spotless <https://github.com/diffplug/spotless/tree/main/plugin-maven>`_
-Maven plugin. In particular, the `Google Java style guidelines <https://google.github.io/styleguide/javaguide.html>`_
-are automatically enforced, in their AOSP variant (using 4 spaces for indent, instead of 2).
+Maven plugin. In particular, the `Palantir Java formatter <https://github.com/palantir/palantir-java-format>`_
+is automatically enforced (4 spaces indent, 120 columns, streams and lambda friendly).
 Plugins that enforce the same formatting are available for the major IDEs.
 
 POM files are automatically formatted during a Maven build using the `sortpom <https://github.com/Ekryd/sortpom>`_
@@ -143,7 +143,7 @@ or if it's a general one that should be ignored, the ``${geotoolsBaseDir}/spotbu
 Checkstyle
 ^^^^^^^^^^
 
-Google Format is already in use to keep the code formatted, so Checkstyle is used mainly to verify javadocs errors
+Palantir Java Format is already in use to keep the code formatted, so Checkstyle is used mainly to verify javadocs errors
 and presence of copyright headers, which none of the other tools can cover.
 
 Any failure to comply with the rules will show up as a compiler error in the build output, e.g.::

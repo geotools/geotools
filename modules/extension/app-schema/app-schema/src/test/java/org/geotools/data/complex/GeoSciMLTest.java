@@ -238,19 +238,16 @@ public class GeoSciMLTest extends AppSchemaTestSupport {
         try (final Stream<Feature> featureStream = toFeatureStream(features)) {
             Optional<Feature> first = featureStream.findFirst();
             @SuppressWarnings("unchecked")
-            Optional<Map<String, String>> mapOpt =
-                    first.map(Feature::getDescriptor)
-                            .map(AttributeDescriptor::getType)
-                            .map(AttributeType::getUserData)
-                            .map(m -> m.get(Types.DECLARED_NAMESPACES_MAP))
-                            .filter(v -> v instanceof Map)
-                            .map(x -> (Map<String, String>) x);
+            Optional<Map<String, String>> mapOpt = first.map(Feature::getDescriptor)
+                    .map(AttributeDescriptor::getType)
+                    .map(AttributeType::getUserData)
+                    .map(m -> m.get(Types.DECLARED_NAMESPACES_MAP))
+                    .filter(v -> v instanceof Map)
+                    .map(x -> (Map<String, String>) x);
             assertTrue(mapOpt.isPresent());
             final Map<String, String> namespacesMap = mapOpt.get();
             assertEquals(3, namespacesMap.keySet().size());
-            assertTrue(
-                    getExpectedNamespaces().stream()
-                            .allMatch(ns -> namespacesMap.containsValue(ns)));
+            assertTrue(getExpectedNamespaces().stream().allMatch(ns -> namespacesMap.containsValue(ns)));
         }
     }
 

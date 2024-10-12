@@ -53,10 +53,8 @@ public class WMS1_0_0 extends WMSSpecification {
 
     static {
         exceptionMimeTypes.put("WMS_XML", "application/vnd.ogc.se_xml");
-        exceptionMimeTypes.put(
-                "INIMAGE", "application/vnd.ogc.se_inimage"); // $NON-NLS-1$ //$NON-NLS-2$
-        exceptionMimeTypes.put(
-                "BLANK", "application/vnd.ogc.se_blank"); // $NON-NLS-1$ //$NON-NLS-2$
+        exceptionMimeTypes.put("INIMAGE", "application/vnd.ogc.se_inimage"); // $NON-NLS-1$ //$NON-NLS-2$
+        exceptionMimeTypes.put("BLANK", "application/vnd.ogc.se_blank"); // $NON-NLS-1$ //$NON-NLS-2$
     }
 
     static {
@@ -64,8 +62,7 @@ public class WMS1_0_0 extends WMSSpecification {
         formatMimeTypes.put("PNG", "image/png"); // $NON-NLS-1$ //$NON-NLS-2$
         formatMimeTypes.put("JPEG", "image/jpeg"); // $NON-NLS-1$ //$NON-NLS-2$
         formatMimeTypes.put("BMP", "image/bmp"); // $NON-NLS-1$ //$NON-NLS-2$
-        formatMimeTypes.put(
-                "WebCGM", "image/cgm;Version=4;ProfileId=WebCGM"); // $NON-NLS-1$ //$NON-NLS-2$
+        formatMimeTypes.put("WebCGM", "image/cgm;Version=4;ProfileId=WebCGM"); // $NON-NLS-1$ //$NON-NLS-2$
         formatMimeTypes.put("SVG", "image/svg+xml"); // $NON-NLS-1$ //$NON-NLS-2$
         formatMimeTypes.put("GML.1", "text/xml"); // $NON-NLS-1$ //$NON-NLS-2$
         formatMimeTypes.put("GML.2", "text/xml"); // $NON-NLS-1$ //$NON-NLS-2$
@@ -73,8 +70,7 @@ public class WMS1_0_0 extends WMSSpecification {
         formatMimeTypes.put("WBMP", "image/vnd.wap.wbmp"); // $NON-NLS-1$ //$NON-NLS-2$
         formatMimeTypes.put("WMS_XML", "application/vnd.ogc.wms_xml"); // $NON-NLS-1$ //$NON-NLS-2$
         formatMimeTypes.put("MIME", "mime"); // $NON-NLS-1$ //$NON-NLS-2$
-        formatMimeTypes.put(
-                "INIMAGE", "application/vnd.ogc.se_inimage"); // $NON-NLS-1$ //$NON-NLS-2$
+        formatMimeTypes.put("INIMAGE", "application/vnd.ogc.se_inimage"); // $NON-NLS-1$ //$NON-NLS-2$
         formatMimeTypes.put("TIFF", "image/tiff"); // $NON-NLS-1$ //$NON-NLS-2$
         formatMimeTypes.put("GeoTIFF", "image/tiff"); // $NON-NLS-1$ //$NON-NLS-2$
         formatMimeTypes.put("PPM", "image/x-portable-pixmap"); // $NON-NLS-1$ //$NON-NLS-2$
@@ -225,8 +221,7 @@ public class WMS1_0_0 extends WMSSpecification {
         }
 
         @Override
-        public Response createResponse(HTTPResponse httpResponse)
-                throws ServiceException, IOException {
+        public Response createResponse(HTTPResponse httpResponse) throws ServiceException, IOException {
             return new WMSGetCapabilitiesResponse(httpResponse, hints);
         }
     }
@@ -289,8 +284,7 @@ public class WMS1_0_0 extends WMSSpecification {
         }
 
         @Override
-        public Response createResponse(HTTPResponse httpResponse)
-                throws ServiceException, IOException {
+        public Response createResponse(HTTPResponse httpResponse) throws ServiceException, IOException {
             return new GetMapResponse(httpResponse);
         }
     }
@@ -298,8 +292,7 @@ public class WMS1_0_0 extends WMSSpecification {
     /** A GetFeatureInfoRequest for a 1.0.0 server */
     public static class GetFeatureInfoRequest extends AbstractGetFeatureInfoRequest {
         /** */
-        public GetFeatureInfoRequest(
-                URL onlineResource, org.geotools.ows.wms.request.GetMapRequest request) {
+        public GetFeatureInfoRequest(URL onlineResource, org.geotools.ows.wms.request.GetMapRequest request) {
             super(onlineResource, request);
         }
 
@@ -314,8 +307,7 @@ public class WMS1_0_0 extends WMSSpecification {
         }
 
         @Override
-        public Response createResponse(HTTPResponse httpResponse)
-                throws ServiceException, IOException {
+        public Response createResponse(HTTPResponse httpResponse) throws ServiceException, IOException {
             return new GetFeatureInfoResponse(httpResponse);
         }
     }
@@ -342,8 +334,7 @@ public class WMS1_0_0 extends WMSSpecification {
      * @see WMSSpecification#createDescribeLayerRequest(java.net.URL)
      */
     @Override
-    public DescribeLayerRequest createDescribeLayerRequest(URL onlineResource)
-            throws UnsupportedOperationException {
+    public DescribeLayerRequest createDescribeLayerRequest(URL onlineResource) throws UnsupportedOperationException {
         throw new UnsupportedOperationException("WMS 1.0.0 does not support DescribeLayer");
     }
 
@@ -360,8 +351,7 @@ public class WMS1_0_0 extends WMSSpecification {
 
     /** @see WMSSpecification#createGetStylesRequest(java.net.URL) */
     @Override
-    public GetStylesRequest createGetStylesRequest(URL onlineResource)
-            throws UnsupportedOperationException {
+    public GetStylesRequest createGetStylesRequest(URL onlineResource) throws UnsupportedOperationException {
         return new InternalGetStylesRequest(onlineResource);
     }
 
@@ -381,8 +371,7 @@ public class WMS1_0_0 extends WMSSpecification {
         }
 
         @Override
-        public Response createResponse(HTTPResponse httpResponse)
-                throws ServiceException, IOException {
+        public Response createResponse(HTTPResponse httpResponse) throws ServiceException, IOException {
             return new GetStylesResponse(httpResponse);
         }
     }
@@ -393,8 +382,7 @@ public class WMS1_0_0 extends WMSSpecification {
      * @see WMSSpecification#createPutStylesRequest(java.net.URL)
      */
     @Override
-    public PutStylesRequest createPutStylesRequest(URL onlineResource)
-            throws UnsupportedOperationException {
+    public PutStylesRequest createPutStylesRequest(URL onlineResource) throws UnsupportedOperationException {
         throw new UnsupportedOperationException("WMS 1.0.0 does not support PutStyles");
     }
 }

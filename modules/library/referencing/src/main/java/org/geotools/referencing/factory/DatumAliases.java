@@ -225,8 +225,7 @@ public class DatumAliases extends ReferencingFactory implements DatumFactory {
      */
     private void reload() throws IOException {
         assert Thread.holdsLock(this);
-        final LogRecord record =
-                Loggings.format(Level.FINE, LoggingKeys.LOADING_DATUM_ALIASES_$1, aliasURL);
+        final LogRecord record = Loggings.format(Level.FINE, LoggingKeys.LOADING_DATUM_ALIASES_$1, aliasURL);
         record.setLoggerName(LOGGER.getName());
         LOGGER.log(record);
         try (BufferedReader in = new BufferedReader(new InputStreamReader(aliasURL.openStream()))) {
@@ -289,8 +288,7 @@ public class DatumAliases extends ReferencingFactory implements DatumFactory {
                                     aliasMap.put(key, previous);
                                 } else if (!Arrays.equals(previous, names)) {
                                     // TODO: localize
-                                    LOGGER.warning(
-                                            "Inconsistent aliases for datum \"" + name + "\".");
+                                    LOGGER.warning("Inconsistent aliases for datum \"" + name + "\".");
                                 }
                             }
                         }
@@ -482,12 +480,9 @@ public class DatumAliases extends ReferencingFactory implements DatumFactory {
      */
     @Override
     public synchronized GeodeticDatum createGeodeticDatum(
-            final Map<String, ?> properties,
-            final Ellipsoid ellipsoid,
-            final PrimeMeridian primeMeridian)
+            final Map<String, ?> properties, final Ellipsoid ellipsoid, final PrimeMeridian primeMeridian)
             throws FactoryException {
-        return getDatumFactory()
-                .createGeodeticDatum(addAliases(properties), ellipsoid, primeMeridian);
+        return getDatumFactory().createGeodeticDatum(addAliases(properties), ellipsoid, primeMeridian);
     }
 
     /**
@@ -499,8 +494,7 @@ public class DatumAliases extends ReferencingFactory implements DatumFactory {
      * @throws FactoryException if the object creation failed.
      */
     @Override
-    public synchronized ImageDatum createImageDatum(
-            final Map<String, ?> properties, final PixelInCell pixelInCell)
+    public synchronized ImageDatum createImageDatum(final Map<String, ?> properties, final PixelInCell pixelInCell)
             throws FactoryException {
         return getDatumFactory().createImageDatum(addAliases(properties), pixelInCell);
     }
@@ -513,8 +507,8 @@ public class DatumAliases extends ReferencingFactory implements DatumFactory {
      * @throws FactoryException if the object creation failed.
      */
     @Override
-    public synchronized TemporalDatum createTemporalDatum(
-            final Map<String, ?> properties, final Date origin) throws FactoryException {
+    public synchronized TemporalDatum createTemporalDatum(final Map<String, ?> properties, final Date origin)
+            throws FactoryException {
         return getDatumFactory().createTemporalDatum(addAliases(properties), origin);
     }
 
@@ -526,8 +520,8 @@ public class DatumAliases extends ReferencingFactory implements DatumFactory {
      * @throws FactoryException if the object creation failed.
      */
     @Override
-    public synchronized VerticalDatum createVerticalDatum(
-            final Map<String, ?> properties, final VerticalDatumType type) throws FactoryException {
+    public synchronized VerticalDatum createVerticalDatum(final Map<String, ?> properties, final VerticalDatumType type)
+            throws FactoryException {
         return getDatumFactory().createVerticalDatum(addAliases(properties), type);
     }
 
@@ -547,8 +541,7 @@ public class DatumAliases extends ReferencingFactory implements DatumFactory {
             final double semiMinorAxis,
             final Unit<Length> unit)
             throws FactoryException {
-        return getDatumFactory()
-                .createEllipsoid(addAliases(properties), semiMajorAxis, semiMinorAxis, unit);
+        return getDatumFactory().createEllipsoid(addAliases(properties), semiMajorAxis, semiMinorAxis, unit);
     }
 
     /**
@@ -567,9 +560,7 @@ public class DatumAliases extends ReferencingFactory implements DatumFactory {
             final double inverseFlattening,
             final Unit<Length> unit)
             throws FactoryException {
-        return getDatumFactory()
-                .createFlattenedSphere(
-                        addAliases(properties), semiMajorAxis, inverseFlattening, unit);
+        return getDatumFactory().createFlattenedSphere(addAliases(properties), semiMajorAxis, inverseFlattening, unit);
     }
 
     /**
@@ -584,8 +575,7 @@ public class DatumAliases extends ReferencingFactory implements DatumFactory {
     public synchronized PrimeMeridian createPrimeMeridian(
             final Map<String, ?> properties, final double longitude, final Unit<Angle> angularUnit)
             throws FactoryException {
-        return getDatumFactory()
-                .createPrimeMeridian(addAliases(properties), longitude, angularUnit);
+        return getDatumFactory().createPrimeMeridian(addAliases(properties), longitude, angularUnit);
     }
 
     /**

@@ -55,74 +55,59 @@ public class H2GISDataStoreFactory extends JDBCDataStoreFactory {
             new Param("Associations", Boolean.class, "Associations", false, Boolean.FALSE);
 
     /** optional user parameter */
-    public static final Param USER =
-            new Param(
-                    JDBCDataStoreFactory.USER.key,
-                    JDBCDataStoreFactory.USER.type,
-                    JDBCDataStoreFactory.USER.description,
-                    false,
-                    JDBCDataStoreFactory.USER.sample);
+    public static final Param USER = new Param(
+            JDBCDataStoreFactory.USER.key,
+            JDBCDataStoreFactory.USER.type,
+            JDBCDataStoreFactory.USER.description,
+            false,
+            JDBCDataStoreFactory.USER.sample);
 
     /** optional host parameter */
-    public static final Param HOST =
-            new Param(
-                    JDBCDataStoreFactory.HOST.key,
-                    JDBCDataStoreFactory.HOST.type,
-                    JDBCDataStoreFactory.HOST.description,
-                    false,
-                    JDBCDataStoreFactory.HOST.sample);
+    public static final Param HOST = new Param(
+            JDBCDataStoreFactory.HOST.key,
+            JDBCDataStoreFactory.HOST.type,
+            JDBCDataStoreFactory.HOST.description,
+            false,
+            JDBCDataStoreFactory.HOST.sample);
 
     /** optional port parameter */
-    public static final Param PORT =
-            new Param(
-                    JDBCDataStoreFactory.PORT.key,
-                    JDBCDataStoreFactory.PORT.type,
-                    JDBCDataStoreFactory.PORT.description,
-                    false,
-                    9902);
+    public static final Param PORT = new Param(
+            JDBCDataStoreFactory.PORT.key,
+            JDBCDataStoreFactory.PORT.type,
+            JDBCDataStoreFactory.PORT.description,
+            false,
+            9902);
 
     /**
      * optional parameter to access the same database without having to start the server manually
      */
-    public static final Param AUTO_SERVER =
-            new Param(
-                    "autoserver",
-                    Boolean.class,
-                    "Activate AUTO_SERVER mode to share the database access",
-                    false,
-                    true);
+    public static final Param AUTO_SERVER = new Param(
+            "autoserver", Boolean.class, "Activate AUTO_SERVER mode to share the database access", false, true);
 
     /** parameter that enables estimated extends instead of exact ones */
-    public static final Param ESTIMATED_EXTENTS =
-            new Param(
-                    "Estimated extends",
-                    Boolean.class,
-                    "Use the spatial index information to quickly get an estimate of the data bounds",
-                    false,
-                    Boolean.TRUE);
+    public static final Param ESTIMATED_EXTENTS = new Param(
+            "Estimated extends",
+            Boolean.class,
+            "Use the spatial index information to quickly get an estimate of the data bounds",
+            false,
+            Boolean.TRUE);
 
     /** Wheter a prepared statements based dialect should be used, or not */
     public static final Param PREPARED_STATEMENTS =
-            new Param(
-                    "preparedStatements",
-                    Boolean.class,
-                    "Use prepared statements",
-                    false,
-                    Boolean.FALSE);
+            new Param("preparedStatements", Boolean.class, "Use prepared statements", false, Boolean.FALSE);
 
     /** Enables direct encoding of selected filter functions in sql */
-    public static final Param ENCODE_FUNCTIONS =
-            new Param(
-                    "encode functions",
-                    Boolean.class,
-                    "set to true to have a set of filter functions be translated directly in SQL. "
-                            + "Due to differences in the type systems the result might not be the same as evaluating "
-                            + "them in memory, including the SQL failing with errors while the in memory version works fine. "
-                            + "However this allows to push more of the filter into the database, increasing performance."
-                            + "the H2GIS table.",
-                    false,
-                    Boolean.TRUE,
-                    new KVP(Param.LEVEL, "advanced"));
+    public static final Param ENCODE_FUNCTIONS = new Param(
+            "encode functions",
+            Boolean.class,
+            "set to true to have a set of filter functions be translated directly in SQL. "
+                    + "Due to differences in the type systems the result might not be the same as evaluating "
+                    + "them in memory, including the SQL failing with errors while the in memory version works fine. "
+                    + "However this allows to push more of the filter into the database, increasing performance."
+                    + "the H2GIS table.",
+            false,
+            Boolean.TRUE,
+            new KVP(Param.LEVEL, "advanced"));
 
     /** base location to store h2 database files */
     private File baseDirectory = null;
@@ -230,8 +215,7 @@ public class H2GISDataStoreFactory extends JDBCDataStoreFactory {
     }
 
     @Override
-    protected DataSource createDataSource(Map<String, ?> params, SQLDialect dialect)
-            throws IOException {
+    protected DataSource createDataSource(Map<String, ?> params, SQLDialect dialect) throws IOException {
         BasicDataSource dataSource = new BasicDataSource();
         String jdbcURl = getJDBCUrl(params);
         dataSource.setUrl(jdbcURl);
@@ -261,8 +245,7 @@ public class H2GISDataStoreFactory extends JDBCDataStoreFactory {
     }
 
     @Override
-    protected JDBCDataStore createDataStoreInternal(JDBCDataStore dataStore, Map<String, ?> params)
-            throws IOException {
+    protected JDBCDataStore createDataStoreInternal(JDBCDataStore dataStore, Map<String, ?> params) throws IOException {
         // setup loose bbox
         SQLDialect genericDialect = dataStore.getSQLDialect();
         H2GISDialect dialect;

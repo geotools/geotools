@@ -59,8 +59,7 @@ public class CachingDataStoreGranuleCatalog extends DelegatingGranuleCatalog {
     private static final Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(CachingDataStoreGranuleCatalog.class);
 
-    private final SoftValueHashMap<String, GranuleDescriptor> descriptorsCache =
-            new SoftValueHashMap<>();
+    private final SoftValueHashMap<String, GranuleDescriptor> descriptorsCache = new SoftValueHashMap<>();
 
     /** */
     public CachingDataStoreGranuleCatalog(GranuleCatalog adaptee) {
@@ -74,8 +73,7 @@ public class CachingDataStoreGranuleCatalog extends DelegatingGranuleCatalog {
 
     @Override
     public SimpleFeatureCollection getGranules(Query q, Transaction t) throws IOException {
-        boolean decorateWithBounds =
-                Boolean.TRUE.equals(q.getHints().get(GranuleSource.NATIVE_BOUNDS));
+        boolean decorateWithBounds = Boolean.TRUE.equals(q.getHints().get(GranuleSource.NATIVE_BOUNDS));
         if (decorateWithBounds) {
             // delegate down a version that won't decorate with bounds, we want to use the local
             // granule descriptor cache
@@ -85,16 +83,14 @@ public class CachingDataStoreGranuleCatalog extends DelegatingGranuleCatalog {
             SimpleFeatureCollection granules = adaptee.getGranules(q, t);
 
             CatalogConfigurationBean configuration = adaptee.getConfigurations().getByTypeQuery(q);
-            return new BoundsFeatureCollection(
-                    granules, (sf) -> getGranuleDescriptor(configuration, sf));
+            return new BoundsFeatureCollection(granules, (sf) -> getGranuleDescriptor(configuration, sf));
         } else {
             return adaptee.getGranules(q, t);
         }
     }
 
     @Override
-    public void getGranuleDescriptors(final Query q, final GranuleCatalogVisitor visitor)
-            throws IOException {
+    public void getGranuleDescriptors(final Query q, final GranuleCatalogVisitor visitor) throws IOException {
 
         final SimpleFeatureCollection features = adaptee.getGranules(q);
         if (features == null) {
@@ -109,20 +105,14 @@ public class CachingDataStoreGranuleCatalog extends DelegatingGranuleCatalog {
         final Utils.BBOXFilterExtractor bboxExtractor = new Utils.BBOXFilterExtractor();
         q.getFilter().accept(bboxExtractor, null);
         ReferencedEnvelope requestedBBox = bboxExtractor.getBBox();
-        final Geometry intersectionGeometry =
-                requestedBBox != null ? JTS.toGeometry(requestedBBox) : null;
+        final Geometry intersectionGeometry = requestedBBox != null ? JTS.toGeometry(requestedBBox) : null;
 
         // visiting the features from the underlying store
         CatalogConfigurationBean configuration = adaptee.getConfigurations().getByTypeQuery(q);
         try (SimpleFeatureIterator fi = features.features()) {
             Object executor = q.getHints().get(Hints.EXECUTOR_SERVICE);
             if (executor instanceof ExecutorService) {
-                parallelGranuleVisit(
-                        configuration,
-                        visitor,
-                        intersectionGeometry,
-                        fi,
-                        (ExecutorService) executor);
+                parallelGranuleVisit(configuration, visitor, intersectionGeometry, fi, (ExecutorService) executor);
             } else {
                 sequentialGranuleVisit(configuration, visitor, intersectionGeometry, fi);
             }
@@ -186,33 +176,25 @@ public class CachingDataStoreGranuleCatalog extends DelegatingGranuleCatalog {
         }
     }
 
-    private void visitGranule(
-            GranuleCatalogVisitor visitor,
-            Geometry intersectionGeometry,
-            GranuleDescriptor granule) {
+    private void visitGranule(GranuleCatalogVisitor visitor, Geometry intersectionGeometry, GranuleDescriptor granule) {
         if (granule != null) {
             if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.fine("Visiting granule " + granule.getGranuleUrl().toString());
             }
             // check ROI inclusion
             final Geometry footprint = granule.getFootprint();
-            if (intersectionGeometry == null
-                    || footprint == null
-                    || polygonOverlap(footprint, intersectionGeometry)) {
+            if (intersectionGeometry == null || footprint == null || polygonOverlap(footprint, intersectionGeometry)) {
                 visitor.visit(granule, granule.getOriginator());
             } else {
                 if (LOGGER.isLoggable(Level.FINE)) {
                     LOGGER.fine(
-                            "Skipping granule "
-                                    + granule
-                                    + "\n since its ROI does not intersect the requested area");
+                            "Skipping granule " + granule + "\n since its ROI does not intersect the requested area");
                 }
             }
         }
     }
 
-    protected GranuleDescriptor getGranuleDescriptor(
-            CatalogConfigurationBean configuration, SimpleFeature sf) {
+    protected GranuleDescriptor getGranuleDescriptor(CatalogConfigurationBean configuration, SimpleFeature sf) {
         // caching by combination of feature id and coverage name
         String featureId = sf.getID();
         String key = configuration.getName() + "/" + featureId;
@@ -230,18 +212,17 @@ public class CachingDataStoreGranuleCatalog extends DelegatingGranuleCatalog {
                     }
                     // caching only if the footprint is either absent or present and
                     // NON-empty
-                    granule =
-                            new GranuleDescriptor(
-                                    sf,
-                                    configuration.suggestedFormat(),
-                                    configuration.suggestedSPI(),
-                                    configuration.suggestedIsSPI(),
-                                    configuration.getPathType(),
-                                    configuration.getLocationAttribute(),
-                                    adaptee.getParentLocation(),
-                                    footprint,
-                                    configuration.isHeterogeneous(),
-                                    adaptee.getHints());
+                    granule = new GranuleDescriptor(
+                            sf,
+                            configuration.suggestedFormat(),
+                            configuration.suggestedSPI(),
+                            configuration.suggestedIsSPI(),
+                            configuration.getPathType(),
+                            configuration.getLocationAttribute(),
+                            adaptee.getParentLocation(),
+                            footprint,
+                            configuration.isHeterogeneous(),
+                            adaptee.getHints());
                     descriptorsCache.put(key, granule);
                 }
             } catch (Exception e) {

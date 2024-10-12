@@ -110,12 +110,10 @@ import org.geotools.util.factory.Hints;
  *     jar:file:foo.jar/bar.properties like URLs
  * @since 2.3
  */
-public final class ImagePyramidReader extends AbstractGridCoverage2DReader
-        implements GridCoverageReader {
+public final class ImagePyramidReader extends AbstractGridCoverage2DReader implements GridCoverageReader {
 
     /** Logger. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(ImagePyramidReader.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(ImagePyramidReader.class);
 
     /** The input properties file to read the pyramid information from. */
     private URL sourceURL;
@@ -147,8 +145,7 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader
 
         // Check source
         if (source == null) {
-            throw new DataSourceException(
-                    "ImagePyramidReader:null source set to read this coverage.");
+            throw new DataSourceException("ImagePyramidReader:null source set to read this coverage.");
         }
         this.source = source;
         this.sourceURL = Utils.checkSource(source, uHints);
@@ -160,13 +157,11 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader
         // get the crs if able to
         final URL prjURL = URLs.changeUrlExt(sourceURL, "prj");
 
-        try (PrjFileReader crsReader =
-                new PrjFileReader(Channels.newChannel(prjURL.openStream()))) {
+        try (PrjFileReader crsReader = new PrjFileReader(Channels.newChannel(prjURL.openStream()))) {
             final Object tempCRS = hints.get(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM);
             if (tempCRS != null) {
                 this.crs = (CoordinateReferenceSystem) tempCRS;
-                LOGGER.log(
-                        Level.WARNING, "Using forced coordinate reference system " + crs.toWKT());
+                LOGGER.log(Level.WARNING, "Using forced coordinate reference system " + crs.toWKT());
             } else {
                 final CoordinateReferenceSystem tempcrs = crsReader.getCoordinateReferenceSystem();
                 if (tempcrs == null) {
@@ -174,8 +169,7 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader
                     crs = AbstractGridFormat.getDefaultCRS();
                     LOGGER.log(
                             Level.WARNING,
-                            "Unable to find a CRS for this coverage, using a default one: "
-                                    + crs.toWKT());
+                            "Unable to find a CRS for this coverage, using a default one: " + crs.toWKT());
                 } else crs = tempcrs;
             }
         } catch (FactoryException e) {
@@ -232,13 +226,10 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader
             }
 
             // original gridrange (estimated)
-            originalGridRange =
-                    new GridEnvelope2D(
-                            new Rectangle(
-                                    (int) Math.round(originalEnvelope.getSpan(0) / highestRes[0]),
-                                    (int) Math.round(originalEnvelope.getSpan(1) / highestRes[1])));
-            final GridToEnvelopeMapper geMapper =
-                    new GridToEnvelopeMapper(originalGridRange, originalEnvelope);
+            originalGridRange = new GridEnvelope2D(
+                    new Rectangle((int) Math.round(originalEnvelope.getSpan(0) / highestRes[0]), (int)
+                            Math.round(originalEnvelope.getSpan(1) / highestRes[1])));
+            final GridToEnvelopeMapper geMapper = new GridToEnvelopeMapper(originalGridRange, originalEnvelope);
             geMapper.setPixelAnchor(PixelInCell.CELL_CORNER);
             raster2Model = geMapper.createTransform();
 
@@ -270,8 +261,7 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader
 
     @Override
     public GridEnvelope getOriginalGridRange(String coverageName) {
-        return getFirstLevelReader(coverageName, false)
-                .getOriginalGridRange(getReaderCoverageName(coverageName));
+        return getFirstLevelReader(coverageName, false).getOriginalGridRange(getReaderCoverageName(coverageName));
     }
 
     @Override
@@ -282,8 +272,7 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader
 
     @Override
     public GeneralBounds getOriginalEnvelope(String coverageName) {
-        return getFirstLevelReader(coverageName, false)
-                .getOriginalEnvelope(getReaderCoverageName(coverageName));
+        return getFirstLevelReader(coverageName, false).getOriginalEnvelope(getReaderCoverageName(coverageName));
     }
 
     @Override
@@ -294,31 +283,26 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader
 
     @Override
     public Set<ParameterDescriptor<List>> getDynamicParameters(String coverageName) {
-        return getFirstLevelReader(coverageName, false)
-                .getDynamicParameters(getReaderCoverageName(coverageName));
+        return getFirstLevelReader(coverageName, false).getDynamicParameters(getReaderCoverageName(coverageName));
     }
 
     @Override
     public DatasetLayout getDatasetLayout(String coverageName) {
-        return getFirstLevelReader(coverageName, false)
-                .getDatasetLayout(getReaderCoverageName(coverageName));
+        return getFirstLevelReader(coverageName, false).getDatasetLayout(getReaderCoverageName(coverageName));
     }
 
     @Override
     public ImageLayout getImageLayout(String coverageName) throws IOException {
-        return getFirstLevelReader(coverageName, false)
-                .getImageLayout(getReaderCoverageName(coverageName));
+        return getFirstLevelReader(coverageName, false).getImageLayout(getReaderCoverageName(coverageName));
     }
 
     @Override
     public double[][] getResolutionLevels(String coverageName) throws IOException {
-        return getFirstLevelReader(coverageName, false)
-                .getResolutionLevels(getReaderCoverageName(coverageName));
+        return getFirstLevelReader(coverageName, false).getResolutionLevels(getReaderCoverageName(coverageName));
     }
 
     @Override
-    public GridCoverage2D read(final String coverageName, GeneralParameterValue[] params)
-            throws IOException {
+    public GridCoverage2D read(final String coverageName, GeneralParameterValue[] params) throws IOException {
 
         GeneralBounds requestedEnvelope = null;
         Rectangle dim = null;
@@ -493,8 +477,7 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader
     }
 
     /** Retrieve time domains metadata values for the requested ImageMosaicReader */
-    private String getTimeDomain(
-            final String coverageName, ImageMosaicReader reader, final String name) {
+    private String getTimeDomain(final String coverageName, ImageMosaicReader reader, final String name) {
         if (hasTimeDomain(coverageName, reader) && reader != null) {
             return reader.getMetadataValue(getReaderCoverageName(coverageName), name);
         }
@@ -508,8 +491,7 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader
      */
     private boolean hasTimeDomain(final String coverageName, ImageMosaicReader reader) {
         if (reader != null) {
-            String strHasTimeDomain =
-                    reader.getMetadataValue(getReaderCoverageName(coverageName), HAS_TIME_DOMAIN);
+            String strHasTimeDomain = reader.getMetadataValue(getReaderCoverageName(coverageName), HAS_TIME_DOMAIN);
             return Boolean.parseBoolean(strHasTimeDomain);
         }
         return false;
@@ -529,8 +511,7 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader
      *
      * @return ImageMosaicReader for level
      */
-    public ImageMosaicReader getImageMosaicReaderForLevel(String coverageName, Integer imageChoice)
-            throws IOException {
+    public ImageMosaicReader getImageMosaicReaderForLevel(String coverageName, Integer imageChoice) throws IOException {
         return imageLevelsMapper.getReader(imageChoice, coverageName, sourceURL, hints);
     }
 

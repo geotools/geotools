@@ -27,13 +27,12 @@ import org.locationtech.jts.geom.Geometry;
 
 public class FilterFunction_equalsExactTolerance extends FunctionExpressionImpl {
 
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "equalsExactTolerance",
-                    Boolean.class,
-                    parameter("geometry1", Geometry.class),
-                    parameter("geometry2", Geometry.class),
-                    parameter("tolarance", Double.class));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "equalsExactTolerance",
+            Boolean.class,
+            parameter("geometry1", Geometry.class),
+            parameter("geometry2", Geometry.class),
+            parameter("tolarance", Double.class));
 
     public FilterFunction_equalsExactTolerance() {
         super(NAME);

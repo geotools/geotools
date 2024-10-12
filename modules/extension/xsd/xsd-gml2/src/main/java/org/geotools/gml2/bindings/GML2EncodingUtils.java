@@ -70,13 +70,11 @@ public class GML2EncodingUtils {
             return null;
         }
 
-        for (org.geotools.api.referencing.ReferenceIdentifier referenceIdentifier :
-                crs.getIdentifiers()) {
+        for (org.geotools.api.referencing.ReferenceIdentifier referenceIdentifier : crs.getIdentifiers()) {
             Identifier id = (Identifier) referenceIdentifier;
 
             // return "EPSG:" + id.getCode();
-            if ((id.getAuthority() != null)
-                    && id.getAuthority().getTitle().equals(Citations.EPSG.getTitle())) {
+            if ((id.getAuthority() != null) && id.getAuthority().getTitle().equals(Citations.EPSG.getTitle())) {
                 return id.getCode();
             }
         }
@@ -95,8 +93,7 @@ public class GML2EncodingUtils {
      * <p>The axis order of the crs determines which form of uri is used.
      */
     public static String toURI(CoordinateReferenceSystem crs, boolean forceOldStyle) {
-        return toURI(
-                crs, forceOldStyle ? SrsSyntax.OGC_HTTP_URL : SrsSyntax.OGC_URN_EXPERIMENTAL, true);
+        return toURI(crs, forceOldStyle ? SrsSyntax.OGC_HTTP_URL : SrsSyntax.OGC_URN_EXPERIMENTAL, true);
     }
 
     /**
@@ -107,8 +104,7 @@ public class GML2EncodingUtils {
      * @param switchCode If true, the authority and code will be switched to HTTP URI automatically
      *     if the CRS axis order is east/north or inapplicable
      */
-    public static String toURI(
-            CoordinateReferenceSystem crs, SrsSyntax srsSyntax, boolean switchCode) {
+    public static String toURI(CoordinateReferenceSystem crs, SrsSyntax srsSyntax, boolean switchCode) {
         if (crs == null) {
             return null;
         }
@@ -118,8 +114,7 @@ public class GML2EncodingUtils {
         for (ReferenceIdentifier referenceIdentifier : crs.getIdentifiers()) {
             Identifier id = (Identifier) referenceIdentifier;
 
-            if ((id.getAuthority() != null)
-                    && id.getAuthority().getTitle().equals(Citations.EPSG.getTitle())) {
+            if ((id.getAuthority() != null) && id.getAuthority().getTitle().equals(Citations.EPSG.getTitle())) {
                 code = id.getCode();
                 break;
             }
@@ -239,8 +234,7 @@ public class GML2EncodingUtils {
         e.setMetadata(g, "gml:description", description);
     }
 
-    public static Element AbstractFeatureType_encode(
-            Object object, Document document, Element value) {
+    public static Element AbstractFeatureType_encode(Object object, Document document, Element value) {
         Feature feature = (Feature) object;
         FeatureType featureType = feature.getType();
 
@@ -260,8 +254,7 @@ public class GML2EncodingUtils {
             Set<String> toFilter,
             Configuration configuration) {
 
-        return e.AbstractFeatureType_getProperties(
-                object, element, schemaIndex, toFilter, configuration);
+        return e.AbstractFeatureType_getProperties(object, element, schemaIndex, toFilter, configuration);
     }
 
     public static XSDTypeDefinition createXmlTypeFromFeatureType(

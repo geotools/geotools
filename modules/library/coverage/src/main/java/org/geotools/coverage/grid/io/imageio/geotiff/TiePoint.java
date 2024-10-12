@@ -86,8 +86,7 @@ public final class TiePoint {
     }
 
     public double getValueAt(int index) {
-        if (index < 0 || index > 5)
-            throw new IllegalArgumentException("Provided index should be between 0 and 5");
+        if (index < 0 || index > 5) throw new IllegalArgumentException("Provided index should be between 0 and 5");
         return values[index];
     }
 

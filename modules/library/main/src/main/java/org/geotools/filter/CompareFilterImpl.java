@@ -42,12 +42,10 @@ import org.geotools.util.Converters;
  */
 public abstract class CompareFilterImpl extends BinaryComparisonAbstract {
     /** The logger for the default core module. */
-    static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(CompareFilterImpl.class);
+    static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(CompareFilterImpl.class);
 
     protected CompareFilterImpl(
-            org.geotools.api.filter.expression.Expression e1,
-            org.geotools.api.filter.expression.Expression e2) {
+            org.geotools.api.filter.expression.Expression e1, org.geotools.api.filter.expression.Expression e2) {
         this(e1, e2, true);
     }
 

@@ -157,21 +157,18 @@ public class GraphTestUtil {
         return (new Object[] {first, n1, node2id, edge2id});
     }
 
-    public static Node[] buildSingleBifurcation(
-            final GraphBuilder builder, int nnodes, final int bifurcation) {
+    public static Node[] buildSingleBifurcation(final GraphBuilder builder, int nnodes, final int bifurcation) {
         Node[] ends = buildNoBifurcations(builder, nnodes - 1);
         final Node n = builder.buildNode();
         final List<Graphable> bif = new ArrayList<>();
 
-        builder.getGraph()
-                .visitNodes(
-                        component -> {
-                            if (component.getID() == bifurcation) {
-                                bif.add(component);
-                            }
+        builder.getGraph().visitNodes(component -> {
+            if (component.getID() == bifurcation) {
+                bif.add(component);
+            }
 
-                            return (0);
-                        });
+            return (0);
+        });
 
         Edge e = builder.buildEdge(n, (Node) bif.get(0));
         builder.addNode(n);

@@ -53,8 +53,7 @@ import org.geotools.util.factory.Hints;
  */
 public class CoverageIO {
     /** The {@link Logger}. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(CoverageIO.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(CoverageIO.class);
 
     /** The service registry for this manager. Will be initialized only when first needed. */
     private static volatile FactoryRegistry REGISTRY;
@@ -84,10 +83,7 @@ public class CoverageIO {
             try {
                 canProcess = driver.canAccess(DriverCapabilities.CONNECT, params);
             } catch (Throwable t) {
-                LOGGER.log(
-                        Level.WARNING,
-                        "Error asking " + driver.getTitle() + " if it can process request",
-                        t);
+                LOGGER.log(Level.WARNING, "Error asking " + driver.getTitle() + " if it can process request", t);
                 // Protect against DataStores that don't carefully code
                 // canProcess
                 continue;
@@ -97,10 +93,7 @@ public class CoverageIO {
                 try {
                     isAvailable = driver.isAvailable();
                 } catch (Throwable t) {
-                    LOGGER.log(
-                            Level.WARNING,
-                            "Error when checking if " + driver.getTitle() + " is available",
-                            t);
+                    LOGGER.log(Level.WARNING, "Error when checking if " + driver.getTitle() + " is available", t);
                     // Protect against Drivers that don't carefully code
                     // isAvailable
                     continue;
@@ -109,10 +102,7 @@ public class CoverageIO {
                     try {
                         if (driver.canAccess(DriverCapabilities.CONNECT, params)) return true;
                     } catch (Exception couldNotConnect) {
-                        LOGGER.log(
-                                Level.WARNING,
-                                driver.getTitle() + " could not connect",
-                                couldNotConnect);
+                        LOGGER.log(Level.WARNING, driver.getTitle() + " could not connect", couldNotConnect);
                     }
                 }
             }
@@ -120,8 +110,7 @@ public class CoverageIO {
         return false;
     }
 
-    public static CoverageAccess connect(
-            Map<String, Serializable> params, Hints hints, final ProgressListener listener)
+    public static CoverageAccess connect(Map<String, Serializable> params, Hints hints, final ProgressListener listener)
             throws IOException {
         for (Driver driver : getAvailableDrivers()) {
 
@@ -129,10 +118,7 @@ public class CoverageIO {
             try {
                 canProcess = driver.canAccess(DriverCapabilities.CONNECT, params);
             } catch (Throwable t) {
-                LOGGER.log(
-                        Level.WARNING,
-                        "Error asking " + driver.getTitle() + " if it can process request",
-                        t);
+                LOGGER.log(Level.WARNING, "Error asking " + driver.getTitle() + " if it can process request", t);
                 // Protect against DataStores that don't carefully code
                 // canProcess
                 continue;
@@ -142,10 +128,7 @@ public class CoverageIO {
                 try {
                     isAvailable = driver.isAvailable();
                 } catch (Throwable t) {
-                    LOGGER.log(
-                            Level.WARNING,
-                            "Error when checking if " + driver.getTitle() + " is available",
-                            t);
+                    LOGGER.log(Level.WARNING, "Error when checking if " + driver.getTitle() + " is available", t);
                     // Protect against Drivers that don't carefully code
                     // isAvailable
                     continue;
@@ -154,10 +137,7 @@ public class CoverageIO {
                     try {
                         return driver.access(DriverCapabilities.CONNECT, params, hints, listener);
                     } catch (IOException couldNotConnect) {
-                        LOGGER.log(
-                                Level.WARNING,
-                                driver.getTitle() + " could not connect",
-                                couldNotConnect);
+                        LOGGER.log(Level.WARNING, driver.getTitle() + " could not connect", couldNotConnect);
                     }
                 }
             }
@@ -246,8 +226,7 @@ public class CoverageIO {
             // check if we can accept it
             Map<String, Serializable> params = new HashMap<>();
             params.put("url", url);
-            if (spi.isAvailable() && spi.canAccess(DriverCapabilities.CONNECT, params))
-                drivers.add(spi);
+            if (spi.isAvailable() && spi.canAccess(DriverCapabilities.CONNECT, params)) drivers.add(spi);
         }
 
         return Collections.unmodifiableSet(drivers);

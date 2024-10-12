@@ -36,21 +36,19 @@ public class OracleDatastoreWrapper extends DataStoreWrapper {
     }
 
     @Override
-    protected FeatureTypeMapper getFeatureTypeMapper(SimpleFeatureType featureType)
-            throws Exception {
+    protected FeatureTypeMapper getFeatureTypeMapper(SimpleFeatureType featureType) throws Exception {
         return new OracleFeatureTypeMapper(featureType);
     }
 
     @Override
-    protected SimpleFeatureSource transformFeatureStore(
-            SimpleFeatureStore store, FeatureTypeMapper mapper) throws IOException {
+    protected SimpleFeatureSource transformFeatureStore(SimpleFeatureStore store, FeatureTypeMapper mapper)
+            throws IOException {
         SimpleFeatureSource transformedSource = mapper.getSimpleFeatureSource();
         if (transformedSource != null) {
             return transformedSource;
         } else {
             transformedSource =
-                    new OracleTransformFeatureStore(
-                            store, mapper.getName(), mapper.getDefinitions(), datastore);
+                    new OracleTransformFeatureStore(store, mapper.getName(), mapper.getDefinitions(), datastore);
             ((OracleFeatureTypeMapper) mapper).setSimpleFeatureSource(transformedSource);
             return transformedSource;
         }

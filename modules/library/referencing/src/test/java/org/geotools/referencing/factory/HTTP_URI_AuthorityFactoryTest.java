@@ -97,8 +97,7 @@ public class HTTP_URI_AuthorityFactoryTest {
             } catch (FactoryNotFoundException e) {
                 // success
             }
-            CoordinateReferenceSystem crs =
-                    CRS.decode("http://www.opengis.net/def/crs/CRS/0/84", true);
+            CoordinateReferenceSystem crs = CRS.decode("http://www.opengis.net/def/crs/CRS/0/84", true);
             assertTrue(CRS.equalsIgnoreMetadata(DefaultGeographicCRS.WGS84, crs));
             crs = CRS.decode("http://www.opengis.net/def/crs/CRS/0/84");
             assertTrue(CRS.equalsIgnoreMetadata(DefaultGeographicCRS.WGS84, crs));
@@ -110,18 +109,15 @@ public class HTTP_URI_AuthorityFactoryTest {
 
     @Test
     public void testDecode() throws NoSuchAuthorityCodeException, FactoryException {
-        assertTrue(
-                CRS.equalsIgnoreMetadata(
-                        DefaultGeographicCRS.WGS84,
-                        CRS.decode("http://www.opengis.net/def/crs/CRS/0/84")));
+        assertTrue(CRS.equalsIgnoreMetadata(
+                DefaultGeographicCRS.WGS84, CRS.decode("http://www.opengis.net/def/crs/CRS/0/84")));
     }
 
     @Test
     public void testOGCAPI() throws FactoryException {
         CRSAuthorityFactory factory =
                 ReferencingFactoryFinder.getCRSAuthorityFactory("http://www.opengis.net/def", null);
-        GeographicCRS crs =
-                factory.createGeographicCRS("http://www.opengis.net/def/crs/OGC/1.3/CRS84");
+        GeographicCRS crs = factory.createGeographicCRS("http://www.opengis.net/def/crs/OGC/1.3/CRS84");
         assertTrue(CRS.equalsIgnoreMetadata(crs, DefaultGeographicCRS.WGS84));
     }
 }

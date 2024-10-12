@@ -305,8 +305,7 @@ public class JWizard extends JDialog {
     }
 
     /** The controller listens to everything and updates the buttons */
-    public class Controller
-            implements ActionListener, KeyListener, DocumentListener, ListSelectionListener {
+    public class Controller implements ActionListener, KeyListener, DocumentListener, ListSelectionListener {
         public boolean listen = true;
 
         @Override

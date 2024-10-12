@@ -56,8 +56,7 @@ public class GenerateSVG {
      * @throws IOException Should anything go wrong whilst writing to 'out'
      * @throws ParserConfigurationException If critical XML tools are missing from the classpath
      */
-    public static void exportSVG(
-            MapContent map, ReferencedEnvelope env, OutputStream out, Dimension canvasSize)
+    public static void exportSVG(MapContent map, ReferencedEnvelope env, OutputStream out, Dimension canvasSize)
             throws IOException, ParserConfigurationException {
         if (canvasSize == null) {
             canvasSize = new Dimension(300, 300); // default of 300x300

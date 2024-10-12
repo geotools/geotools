@@ -61,8 +61,7 @@ public class GraphicLegendBuilder extends AbstractStyleBuilder<GraphicLegend> {
             list.add(symbol.build());
         }
         GraphicLegend graphic =
-                sf.graphicLegend(
-                        list, opacity, size, rotation, anchorPoint.build(), displacement.build());
+                sf.graphicLegend(list, opacity, size, rotation, anchorPoint.build(), displacement.build());
         return graphic;
     }
 
@@ -145,8 +144,7 @@ public class GraphicLegendBuilder extends AbstractStyleBuilder<GraphicLegend> {
             } else if ((symbol instanceof ExternalGraphic)) {
                 builder = new ExternalGraphicBuilder(this).reset((ExternalGraphic) symbol);
             } else {
-                throw new IllegalArgumentException(
-                        "Unrecognized symbol type: " + symbol.getClass());
+                throw new IllegalArgumentException("Unrecognized symbol type: " + symbol.getClass());
             }
 
             symbols.add(builder);

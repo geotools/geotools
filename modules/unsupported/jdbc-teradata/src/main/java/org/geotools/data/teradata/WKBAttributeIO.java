@@ -91,8 +91,7 @@ public class WKBAttributeIO {
         try {
             return read(rs, rs.findColumn(columnName));
         } catch (SQLException e) {
-            throw new IllegalArgumentException(
-                    "columnName " + e + " is not a column in result set");
+            throw new IllegalArgumentException("columnName " + e + " is not a column in result set");
         }
     }
 

@@ -122,8 +122,7 @@ public class MBObjectStops {
      * @return Split layer based on zoom-level stops
      */
     @SuppressWarnings("PMD.ForLoopCanBeForeach")
-    List<MBLayer> getLayerStyleForStops(MBLayer layer, List<Double> layerStops)
-            throws ParseException {
+    List<MBLayer> getLayerStyleForStops(MBLayer layer, List<Double> layerStops) throws ParseException {
         List<MBLayer> layers = new ArrayList<>();
 
         for (int i = 0; i < layerStops.size(); i++) {
@@ -316,8 +315,7 @@ public class MBObjectStops {
                     for (Object value : stops) {
                         JSONArray stop = (JSONArray) value;
                         if (stop.get(0) instanceof JSONObject) {
-                            double zoomValue =
-                                    ((Number) ((JSONObject) stop.get(0)).get("zoom")).doubleValue();
+                            double zoomValue = ((Number) ((JSONObject) stop.get(0)).get("zoom")).doubleValue();
                             if (zoomEquals(zoomValue, range[0])) {
                                 objectsToEdit.add((JSONArray) value);
                             } else {
@@ -387,12 +385,9 @@ public class MBObjectStops {
                         if (stop.get(0) instanceof Number) {
                             layerZoomLevels.add(((Number) stop.get(0)).doubleValue());
                         } else if (stop.get(0) instanceof JSONObject) {
-                            layerZoomLevels.add(
-                                    ((Number) ((JSONObject) stop.get(0)).get("zoom"))
-                                            .doubleValue());
+                            layerZoomLevels.add(((Number) ((JSONObject) stop.get(0)).get("zoom")).doubleValue());
                         } else {
-                            throw new MBFormatException(
-                                    "The \"property\" field missing for stops or invalid zoom.");
+                            throw new MBFormatException("The \"property\" field missing for stops or invalid zoom.");
                         }
                     }
                 }

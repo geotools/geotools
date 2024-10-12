@@ -56,8 +56,7 @@ public class GranuleStoreFinderImpl extends GranuleStoreFinder {
 
     @Override
     @SuppressWarnings("unchecked")
-    public Optional<DataStore> findDataStore(
-            VectorMosaicGranule granule, boolean isSampleForSchema) {
+    public Optional<DataStore> findDataStore(VectorMosaicGranule granule, boolean isSampleForSchema) {
         DataStore dataStore = null;
         try {
             if (granule.getStoreName() != null) {
@@ -73,10 +72,9 @@ public class GranuleStoreFinderImpl extends GranuleStoreFinder {
                 } else {
                     dataStore = DataStoreFinder.getDataStore(params);
                 }
-                LOGGER.log(
-                        Level.FINE,
-                        "Found and set datastore for granule {0} with params {1}",
-                        new Object[] {granule.getName(), granule.getConnProperties()});
+                LOGGER.log(Level.FINE, "Found and set datastore for granule {0} with params {1}", new Object[] {
+                    granule.getName(), granule.getConnProperties()
+                });
                 if (!isSampleForSchema && granuleTracker != null) {
                     granuleTracker.add(granule.getParams());
                 }

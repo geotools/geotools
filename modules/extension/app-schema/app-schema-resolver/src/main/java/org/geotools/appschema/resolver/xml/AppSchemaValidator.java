@@ -48,8 +48,7 @@ public class AppSchemaValidator {
      * Pattern matching a string that starts with an XML declaration with an encoding, with a single
      * group that contains the encoding.
      */
-    private static final Pattern XML_ENCODING_PATTERN =
-            Pattern.compile("<\\?xml.*?encoding=[\"'](.+?)[\"'].*?\\?>.*");
+    private static final Pattern XML_ENCODING_PATTERN = Pattern.compile("<\\?xml.*?encoding=[\"'](.+?)[\"'].*?\\?>.*");
 
     /** The resolver used to find XML schemas. */
     private final SchemaResolver resolver;
@@ -119,8 +118,7 @@ public class AppSchemaValidator {
             SAXParser parser = parserFactory.newSAXParser();
             // Validation is against XML Schema
             parser.setProperty(
-                    "http://java.sun.com/xml/jaxp/properties/schemaLanguage",
-                    "http://www.w3.org/2001/XMLSchema");
+                    "http://java.sun.com/xml/jaxp/properties/schemaLanguage", "http://www.w3.org/2001/XMLSchema");
             xmlReader = parser.getXMLReader();
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -291,12 +289,11 @@ public class AppSchemaValidator {
          * @see org.xml.sax.EntityResolver#resolveEntity(java.lang.String, java.lang.String)
          */
         @Override
-        public InputSource resolveEntity(String publicId, String systemId)
-                throws SAXException, IOException {
-            throw new UnsupportedOperationException(
-                    "Misconfigured parser: EntityResolver2 interface must be used "
-                            + "so that relative URLs are resolved correctly");
-        };
+        public InputSource resolveEntity(String publicId, String systemId) throws SAXException, IOException {
+            throw new UnsupportedOperationException("Misconfigured parser: EntityResolver2 interface must be used "
+                    + "so that relative URLs are resolved correctly");
+        }
+        ;
 
         /**
          * Always returns null to indicate that there is no external subset.
@@ -321,8 +318,7 @@ public class AppSchemaValidator {
          *     java.lang.String, java.lang.String)
          */
         @Override
-        public InputSource resolveEntity(
-                String name, String publicId, String baseURI, String systemId)
+        public InputSource resolveEntity(String name, String publicId, String baseURI, String systemId)
                 throws SAXException, IOException {
             return new InputSource(resolver.resolve(systemId, baseURI));
         }

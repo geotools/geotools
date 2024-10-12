@@ -188,8 +188,7 @@ final class FilterToCQL2 implements FilterVisitor {
     }
 
     /** Check if this is an encoding of CQL2 geospatial operation */
-    private boolean isFunctionTrue(
-            PropertyIsEqualTo filter, String operation, int numberOfArguments) {
+    private boolean isFunctionTrue(PropertyIsEqualTo filter, String operation, int numberOfArguments) {
         if (filter.getExpression1() instanceof Function) {
             Function function = (Function) filter.getExpression1();
             List<Expression> parameters = function.getParameters();
@@ -328,20 +327,17 @@ final class FilterToCQL2 implements FilterVisitor {
 
     @Override
     public Object visit(Contains filter, Object extraData) {
-        return FilterToTextUtil.buildBinarySpatialOperator(
-                "S_CONTAINS", filter, extraData, expressionVisitor);
+        return FilterToTextUtil.buildBinarySpatialOperator("S_CONTAINS", filter, extraData, expressionVisitor);
     }
 
     @Override
     public Object visit(Crosses filter, Object extraData) {
-        return FilterToTextUtil.buildBinarySpatialOperator(
-                "S_CROSSES", filter, extraData, expressionVisitor);
+        return FilterToTextUtil.buildBinarySpatialOperator("S_CROSSES", filter, extraData, expressionVisitor);
     }
 
     @Override
     public Object visit(Disjoint filter, Object extraData) {
-        return FilterToTextUtil.buildBinarySpatialOperator(
-                "S_DISJOINT", filter, extraData, expressionVisitor);
+        return FilterToTextUtil.buildBinarySpatialOperator("S_DISJOINT", filter, extraData, expressionVisitor);
     }
 
     @Override
@@ -351,32 +347,27 @@ final class FilterToCQL2 implements FilterVisitor {
 
     @Override
     public Object visit(Equals filter, Object extraData) {
-        return FilterToTextUtil.buildBinarySpatialOperator(
-                "S_EQUALS", filter, extraData, expressionVisitor);
+        return FilterToTextUtil.buildBinarySpatialOperator("S_EQUALS", filter, extraData, expressionVisitor);
     }
 
     @Override
     public Object visit(Intersects filter, Object extraData) {
-        return FilterToTextUtil.buildBinarySpatialOperator(
-                "S_INTERSECTS", filter, extraData, expressionVisitor);
+        return FilterToTextUtil.buildBinarySpatialOperator("S_INTERSECTS", filter, extraData, expressionVisitor);
     }
 
     @Override
     public Object visit(Overlaps filter, Object extraData) {
-        return FilterToTextUtil.buildBinarySpatialOperator(
-                "S_OVERLAPS", filter, extraData, expressionVisitor);
+        return FilterToTextUtil.buildBinarySpatialOperator("S_OVERLAPS", filter, extraData, expressionVisitor);
     }
 
     @Override
     public Object visit(Touches filter, Object extraData) {
-        return FilterToTextUtil.buildBinarySpatialOperator(
-                "S_TOUCHES", filter, extraData, expressionVisitor);
+        return FilterToTextUtil.buildBinarySpatialOperator("S_TOUCHES", filter, extraData, expressionVisitor);
     }
 
     @Override
     public Object visit(Within filter, Object extraData) {
-        return FilterToTextUtil.buildBinarySpatialOperator(
-                "S_WITHIN", filter, extraData, expressionVisitor);
+        return FilterToTextUtil.buildBinarySpatialOperator("S_WITHIN", filter, extraData, expressionVisitor);
     }
 
     @Override
@@ -389,8 +380,7 @@ final class FilterToCQL2 implements FilterVisitor {
         return buildBinaryTemporalOperator(before, extraData, "T_BEFORE");
     }
 
-    private Object buildBinaryTemporalOperator(
-            BinaryTemporalOperator op, Object extraData, String opName) {
+    private Object buildBinaryTemporalOperator(BinaryTemporalOperator op, Object extraData, String opName) {
         StringBuilder output = FilterToTextUtil.asStringBuilder(extraData);
 
         output.append(opName).append("(");
@@ -427,8 +417,7 @@ final class FilterToCQL2 implements FilterVisitor {
      * @return UnsupportedOperationException
      */
     private static UnsupportedOperationException unsupported(final String filterName) {
-        return new UnsupportedOperationException(
-                "The" + filterName + " has not an CQL2 expression");
+        return new UnsupportedOperationException("The" + filterName + " has not an CQL2 expression");
     }
 
     @Override

@@ -74,8 +74,7 @@ public class DefaultVerticalDatum extends AbstractDatum implements VerticalDatum
      * normal to the ellipsoid used in the definition of horizontal datum.
      */
     public static final DefaultVerticalDatum ELLIPSOIDAL =
-            new DefaultVerticalDatum(
-                    name(VocabularyKeys.ELLIPSOIDAL), VerticalDatumType.ELLIPSOIDAL);
+            new DefaultVerticalDatum(name(VocabularyKeys.ELLIPSOIDAL), VerticalDatumType.ELLIPSOIDAL);
 
     /**
      * Constructs a vertical datum from a name.

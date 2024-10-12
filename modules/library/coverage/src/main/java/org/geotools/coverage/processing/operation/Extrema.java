@@ -134,8 +134,7 @@ public class Extrema extends BaseStatisticsOperationJAI {
 
             if (JAIExt.isJAIExtOperation(STATS)) {
                 // get the properties
-                Statistics[][] results =
-                        ((Statistics[][]) result.getProperty(Statistics.STATS_PROPERTY));
+                Statistics[][] results = ((Statistics[][]) result.getProperty(Statistics.STATS_PROPERTY));
                 // Extracting the bins
                 int numBands = result.getNumBands();
                 double[] maximums = new double[numBands];
@@ -153,16 +152,12 @@ public class Extrema extends BaseStatisticsOperationJAI {
                 synthProp.put(GT_SYNTHETIC_PROPERTY_MAXIMUM, maximums);
             } else {
                 // get the properties
-                final double[] maximums =
-                        (double[]) result.getProperty(GT_SYNTHETIC_PROPERTY_MAXIMUM);
-                final double[] minimums =
-                        (double[]) result.getProperty(GT_SYNTHETIC_PROPERTY_MINIMUM);
+                final double[] maximums = (double[]) result.getProperty(GT_SYNTHETIC_PROPERTY_MAXIMUM);
+                final double[] minimums = (double[]) result.getProperty(GT_SYNTHETIC_PROPERTY_MINIMUM);
                 Object property = result.getProperty(GT_SYNTHETIC_PROPERTY_MIN_LOCATIONS);
-                if ((property instanceof List[]))
-                    synthProp.put(GT_SYNTHETIC_PROPERTY_MIN_LOCATIONS, property);
+                if ((property instanceof List[])) synthProp.put(GT_SYNTHETIC_PROPERTY_MIN_LOCATIONS, property);
                 property = result.getProperty(GT_SYNTHETIC_PROPERTY_MAX_LOCATIONS);
-                if ((property instanceof List[]))
-                    synthProp.put(GT_SYNTHETIC_PROPERTY_MAX_LOCATIONS, property);
+                if ((property instanceof List[])) synthProp.put(GT_SYNTHETIC_PROPERTY_MAX_LOCATIONS, property);
 
                 // return the map
                 synthProp.put(GT_SYNTHETIC_PROPERTY_MINIMUM, minimums);
@@ -171,18 +166,17 @@ public class Extrema extends BaseStatisticsOperationJAI {
             // Addition of the ROI property and NoData property
             GridCoverage2D source = sources[0];
             CoverageUtilities.setROIProperty(synthProp, CoverageUtilities.getROIProperty(source));
-            CoverageUtilities.setNoDataProperty(
-                    synthProp, CoverageUtilities.getNoDataProperty(source));
+            CoverageUtilities.setNoDataProperty(synthProp, CoverageUtilities.getNoDataProperty(source));
             return Collections.unmodifiableMap(synthProp);
         }
         return super.getProperties(data, crs, name, toCRS, sources, parameters);
     }
 
     @Override
-    protected void handleJAIEXTParams(
-            ParameterBlockJAI parameters, ParameterValueGroup parameters2) {
+    protected void handleJAIEXTParams(ParameterBlockJAI parameters, ParameterValueGroup parameters2) {
         if (JAIExt.isJAIExtOperation(STATS)) {
-            GridCoverage2D source = (GridCoverage2D) parameters2.parameter("source0").getValue();
+            GridCoverage2D source =
+                    (GridCoverage2D) parameters2.parameter("source0").getValue();
             // Handle ROI and NoData
             handleROINoDataInternal(parameters, source, STATS, 2, 3);
             // Setting the Statistic operation

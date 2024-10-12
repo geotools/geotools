@@ -20,9 +20,7 @@ public class PostgisPrimaryKeyTestSetup extends JDBCPrimaryKeyTestSetup {
 
     @Override
     protected void createMultiColumnPrimaryKeyTable() throws Exception {
-        run(
-                "CREATE TABLE \"multi\" ( \"key1\" int NOT NULL, \"key2\" VARCHAR NOT NULL, "
-                        + "\"name\" VARCHAR)");
+        run("CREATE TABLE \"multi\" ( \"key1\" int NOT NULL, \"key2\" VARCHAR NOT NULL, " + "\"name\" VARCHAR)");
         run("SELECT AddGeometryColumn('multi', 'geom', -1, 'GEOMETRY', 2)");
         run("ALTER TABLE \"multi\" ADD PRIMARY KEY (\"key1\",\"key2\")");
 
@@ -47,15 +45,12 @@ public class PostgisPrimaryKeyTestSetup extends JDBCPrimaryKeyTestSetup {
         run("SELECT AddGeometryColumn('seq', 'geom', -1, 'GEOMETRY', 2)");
         run("CREATE SEQUENCE SEQ_KEY_SEQUENCE START WITH 1 OWNED BY \"seq\".\"key\"");
 
-        run(
-                "INSERT INTO \"seq\" (\"key\", \"name\",\"geom\" ) VALUES ("
-                        + "(SELECT NEXTVAL('SEQ_KEY_SEQUENCE')),'one',NULL)");
-        run(
-                "INSERT INTO \"seq\" (\"key\", \"name\",\"geom\" ) VALUES ("
-                        + "(SELECT NEXTVAL('SEQ_KEY_SEQUENCE')),'two',NULL)");
-        run(
-                "INSERT INTO \"seq\" (\"key\", \"name\",\"geom\" ) VALUES ("
-                        + "(SELECT NEXTVAL('SEQ_KEY_SEQUENCE')),'three',NULL)");
+        run("INSERT INTO \"seq\" (\"key\", \"name\",\"geom\" ) VALUES ("
+                + "(SELECT NEXTVAL('SEQ_KEY_SEQUENCE')),'one',NULL)");
+        run("INSERT INTO \"seq\" (\"key\", \"name\",\"geom\" ) VALUES ("
+                + "(SELECT NEXTVAL('SEQ_KEY_SEQUENCE')),'two',NULL)");
+        run("INSERT INTO \"seq\" (\"key\", \"name\",\"geom\" ) VALUES ("
+                + "(SELECT NEXTVAL('SEQ_KEY_SEQUENCE')),'three',NULL)");
     }
 
     @Override

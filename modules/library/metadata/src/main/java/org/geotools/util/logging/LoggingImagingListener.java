@@ -30,8 +30,7 @@ import javax.media.jai.util.ImagingListener;
  */
 final class LoggingImagingListener implements ImagingListener {
     @Override
-    public boolean errorOccurred(
-            String message, Throwable thrown, Object where, boolean isRetryable)
+    public boolean errorOccurred(String message, Throwable thrown, Object where, boolean isRetryable)
             throws RuntimeException {
         Logger log;
         if (where == null) {

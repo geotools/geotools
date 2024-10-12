@@ -52,8 +52,7 @@ public class AssetsMappingReader implements SimpleFeatureReader {
 
     @Override
     @SuppressWarnings("unchecked")
-    public SimpleFeature next()
-            throws IOException, IllegalAttributeException, NoSuchElementException {
+    public SimpleFeature next() throws IOException, IllegalAttributeException, NoSuchElementException {
         SimpleFeature f = delegate.next();
         Object atts = f.getUserData().get(GeoJSONReader.TOP_LEVEL_ATTRIBUTES);
         if (atts instanceof Map) {

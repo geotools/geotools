@@ -67,8 +67,7 @@ public class GridReaderLayer extends RasterLayer {
      *
      * @param reader a reader with the new layer that will be added.
      */
-    public GridReaderLayer(
-            GridCoverage2DReader reader, Style style, GeneralParameterValue[] params) {
+    public GridReaderLayer(GridCoverage2DReader reader, Style style, GeneralParameterValue[] params) {
         this(reader, style, null, params);
     }
 
@@ -79,11 +78,7 @@ public class GridReaderLayer extends RasterLayer {
      * @param params GeneralParameterValue[] that describe how the {@link
      *     AbstractGridCoverage2DReader} shall read the images
      */
-    public GridReaderLayer(
-            GridCoverage2DReader reader,
-            Style style,
-            String title,
-            GeneralParameterValue[] params) {
+    public GridReaderLayer(GridCoverage2DReader reader, Style style, String title, GeneralParameterValue[] params) {
         super(style, title);
         this.reader = reader;
         this.params = params;

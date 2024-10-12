@@ -31,13 +31,12 @@ import org.geotools.filter.capability.FunctionNameImpl;
  */
 public class MixFunction extends FunctionImpl {
 
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "mix",
-                    parameter("result", Color.class),
-                    parameter("color1", Color.class),
-                    parameter("color2", Color.class),
-                    parameter("weight", Double.class));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "mix",
+            parameter("result", Color.class),
+            parameter("color1", Color.class),
+            parameter("color2", Color.class),
+            parameter("weight", Double.class));
 
     public MixFunction() {
         this.functionName = NAME;

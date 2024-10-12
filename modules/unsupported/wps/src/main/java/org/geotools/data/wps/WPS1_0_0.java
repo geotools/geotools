@@ -92,8 +92,7 @@ public class WPS1_0_0 extends WPSSpecification {
     }
 
     @Override
-    public ExecuteProcessRequest createExecuteProcessRequest(URL onlineResource)
-            throws UnsupportedOperationException {
+    public ExecuteProcessRequest createExecuteProcessRequest(URL onlineResource) throws UnsupportedOperationException {
         return new InternalExecuteProcessRequest(onlineResource, null);
     }
 
@@ -122,8 +121,7 @@ public class WPS1_0_0 extends WPSSpecification {
     }
 
     @Override
-    public ResponseFormType createResponseForm(
-            ResponseDocumentType responseDoc, OutputDefinitionType rawOutput) {
+    public ResponseFormType createResponseForm(ResponseDocumentType responseDoc, OutputDefinitionType rawOutput) {
         ResponseFormType responseForm = wpsFactory.createResponseFormType();
 
         if (responseDoc != null) {
@@ -201,8 +199,7 @@ public class WPS1_0_0 extends WPSSpecification {
         }
 
         @Override
-        public Response createResponse(HTTPResponse httpResponse)
-                throws ServiceException, IOException {
+        public Response createResponse(HTTPResponse httpResponse) throws ServiceException, IOException {
             return new WPSGetCapabilitiesResponse(httpResponse, hints);
         }
     }
@@ -220,8 +217,7 @@ public class WPS1_0_0 extends WPSSpecification {
         }
 
         @Override
-        public Response createResponse(HTTPResponse httpResponse)
-                throws ServiceException, IOException {
+        public Response createResponse(HTTPResponse httpResponse) throws ServiceException, IOException {
             return new DescribeProcessResponse(httpResponse);
         }
     }
@@ -239,8 +235,7 @@ public class WPS1_0_0 extends WPSSpecification {
         }
 
         @Override
-        public Response createResponse(HTTPResponse httpResponse)
-                throws ServiceException, IOException {
+        public Response createResponse(HTTPResponse httpResponse) throws ServiceException, IOException {
             return new ExecuteProcessResponse(
                     httpResponse, responseForm != null && responseForm.getRawDataOutput() != null);
         }

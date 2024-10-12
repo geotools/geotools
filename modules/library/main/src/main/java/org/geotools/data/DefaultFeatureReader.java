@@ -45,8 +45,7 @@ public class DefaultFeatureReader implements FeatureReader<SimpleFeatureType, Si
      * @param schema FeatureType to use, <code>null</code> if not provided
      * @throws SchemaException If Schema could not be obtained
      */
-    public DefaultFeatureReader(AttributeReader attributeReader, SimpleFeatureType schema)
-            throws SchemaException {
+    public DefaultFeatureReader(AttributeReader attributeReader, SimpleFeatureType schema) throws SchemaException {
         this.attributeReader = attributeReader;
 
         if (schema == null) {
@@ -62,8 +61,7 @@ public class DefaultFeatureReader implements FeatureReader<SimpleFeatureType, Si
     }
 
     @Override
-    public SimpleFeature next()
-            throws IOException, IllegalAttributeException, NoSuchElementException {
+    public SimpleFeature next() throws IOException, IllegalAttributeException, NoSuchElementException {
         SimpleFeature f = null;
 
         if (attributeReader.hasNext()) {
@@ -84,8 +82,7 @@ public class DefaultFeatureReader implements FeatureReader<SimpleFeatureType, Si
         return builder.buildFeatureType();
     }
 
-    protected SimpleFeature readFeature(AttributeReader atts)
-            throws IllegalAttributeException, IOException {
+    protected SimpleFeature readFeature(AttributeReader atts) throws IllegalAttributeException, IOException {
         for (int i = 0, ii = atts.getAttributeCount(); i < ii; i++) {
             attributes[i] = atts.read(i);
         }

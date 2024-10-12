@@ -46,12 +46,7 @@ public class LineSymbolizerImpl extends AbstractSymbolizer implements LineSymbol
     }
 
     protected LineSymbolizerImpl(
-            Stroke stroke,
-            Expression offset,
-            Unit<Length> uom,
-            String geom,
-            String name,
-            Description desc) {
+            Stroke stroke, Expression offset, Unit<Length> uom, String geom, String name, Description desc) {
         super(name, desc, geom, uom);
     }
 
@@ -170,8 +165,7 @@ public class LineSymbolizerImpl extends AbstractSymbolizer implements LineSymbol
         if (symbolizer instanceof LineSymbolizerImpl) {
             return (LineSymbolizerImpl) symbolizer;
         } else if (symbolizer instanceof org.geotools.api.style.LineSymbolizer) {
-            org.geotools.api.style.LineSymbolizer lineSymbolizer =
-                    (org.geotools.api.style.LineSymbolizer) symbolizer;
+            org.geotools.api.style.LineSymbolizer lineSymbolizer = (org.geotools.api.style.LineSymbolizer) symbolizer;
             LineSymbolizerImpl copy = new LineSymbolizerImpl();
             copy.setDescription(lineSymbolizer.getDescription());
             copy.setGeometryPropertyName(lineSymbolizer.getGeometryPropertyName());

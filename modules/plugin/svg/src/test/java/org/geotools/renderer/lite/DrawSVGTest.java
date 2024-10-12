@@ -53,19 +53,18 @@ import org.w3c.dom.Document;
 public class DrawSVGTest {
     private static final Logger LOGGER = Logging.getLogger(DrawSVGTest.class);
 
-    final RenderListener listener =
-            new RenderListener() {
-                @Override
-                public void featureRenderer(SimpleFeature feature) {
-                    LOGGER.config(feature.toString());
-                }
+    final RenderListener listener = new RenderListener() {
+        @Override
+        public void featureRenderer(SimpleFeature feature) {
+            LOGGER.config(feature.toString());
+        }
 
-                @Override
-                public void errorOccurred(Exception e) {
-                    LOGGER.severe(e.toString());
-                    fail(e.getMessage());
-                }
-            };
+        @Override
+        public void errorOccurred(Exception e) {
+            LOGGER.severe(e.toString());
+            fail(e.getMessage());
+        }
+    };
 
     SimpleFeatureSource squareFS;
 
@@ -87,7 +86,8 @@ public class DrawSVGTest {
 
     @Before
     public void setUp() throws Exception {
-        File property = new File(TestData.getResource(this, "square2.properties").toURI());
+        File property =
+                new File(TestData.getResource(this, "square2.properties").toURI());
         PropertyDataStore ds = new PropertyDataStore(property.getParentFile());
         squareFS = ds.getFeatureSource("square2");
         lineFS = ds.getFeatureSource("line");
@@ -135,8 +135,7 @@ public class DrawSVGTest {
         setupSinglePointRenderer("convenience.sld");
     }
 
-    private void setupPointRenderer(String pointStyle)
-            throws IOException, ParserConfigurationException {
+    private void setupPointRenderer(String pointStyle) throws IOException, ParserConfigurationException {
         Style pStyle = RendererBaseTest.loadStyle(this, pointStyle);
         Style lStyle = RendererBaseTest.loadStyle(this, "lineGray.sld");
 
@@ -179,8 +178,7 @@ public class DrawSVGTest {
         mc.dispose();
     }
 
-    private void setupSinglePointRenderer(String pointStyle)
-            throws IOException, ParserConfigurationException {
+    private void setupSinglePointRenderer(String pointStyle) throws IOException, ParserConfigurationException {
         Style pStyle = RendererBaseTest.loadStyle(this, pointStyle);
 
         MapContent mc = new MapContent();
@@ -224,8 +222,7 @@ public class DrawSVGTest {
         mc.dispose();
     }
 
-    private void setupLineRenderer(String lineStyle)
-            throws IOException, ParserConfigurationException {
+    private void setupLineRenderer(String lineStyle) throws IOException, ParserConfigurationException {
         Style lStyle = RendererBaseTest.loadStyle(this, lineStyle);
         Style baseStyle = RendererBaseTest.loadStyle(this, "lineGray.sld");
 

@@ -133,8 +133,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
      * the current transaction.
      */
     public void setExposePrimaryKeyColumns(boolean exposePrimaryKeyColumns) {
-        ((JDBCState) entry.getState(transaction))
-                .setExposePrimaryKeyColumns(exposePrimaryKeyColumns);
+        ((JDBCState) entry.getState(transaction)).setExposePrimaryKeyColumns(exposePrimaryKeyColumns);
     }
 
     /**
@@ -266,10 +265,9 @@ public class JDBCFeatureSource extends ContentFeatureSource {
 
                 // if still not found, ignore the column we don't know about
                 if (binding == null) {
-                    storeLogger.warning(
-                            "Could not find mapping for '"
-                                    + name
-                                    + "', ignoring the column and setting the feature type read only");
+                    storeLogger.warning("Could not find mapping for '"
+                            + name
+                            + "', ignoring the column and setting the feature type read only");
                     readOnly = true;
                     continue;
                 }
@@ -308,11 +306,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
                             crs = dialect.createCRS(srid, cx);
                             if (crs == null) {
                                 storeLogger.warning(
-                                        "Couldn't determine CRS of table "
-                                                + tableName
-                                                + " with srid: "
-                                                + srid
-                                                + ".");
+                                        "Couldn't determine CRS of table " + tableName + " with srid: " + srid + ".");
                             }
                         } else {
                             storeLogger.info("No srid returned of database table:" + tableName);
@@ -328,13 +322,10 @@ public class JDBCFeatureSource extends ContentFeatureSource {
                         if (virtualTable != null) {
                             dimension = virtualTable.getDimension(name);
                         } else {
-                            dimension =
-                                    dialect.getGeometryDimension(
-                                            databaseSchema, tableName, name, cx);
+                            dimension = dialect.getGeometryDimension(databaseSchema, tableName, name, cx);
                         }
                     } catch (Exception e) {
-                        String msg =
-                                "Error occured determing dimension for " + tableName + "." + name;
+                        String msg = "Error occured determing dimension for " + tableName + "." + name;
                         storeLogger.log(Level.WARNING, msg, e);
                     }
 
@@ -439,8 +430,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
                 // grab a reader
                 Query preQuery = new Query(query);
                 query.setFilter(preFilter);
-                try (FeatureReader<SimpleFeatureType, SimpleFeature> preReader =
-                        getReader(preQuery)) {
+                try (FeatureReader<SimpleFeatureType, SimpleFeature> preReader = getReader(preQuery)) {
                     // wrap with post filter
                     try (FilteringFeatureReader<SimpleFeatureType, SimpleFeature> reader =
                             new FilteringFeatureReader<>(preReader, postFilter)) {
@@ -470,8 +460,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
                         if (query.getStartIndex() > count) count = 0;
                         else count -= query.getStartIndex();
                     }
-                    if (query.getMaxFeatures() > 0 && count > query.getMaxFeatures())
-                        count = query.getMaxFeatures();
+                    if (query.getMaxFeatures() > 0 && count > query.getMaxFeatures()) count = query.getMaxFeatures();
                 }
                 return count;
             } finally {
@@ -493,9 +482,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
 
             if ((postFilter != null) && (postFilter != Filter.INCLUDE)
                     || (query.getMaxFeatures() < Integer.MAX_VALUE && !canLimit(query))
-                    || (query.getStartIndex() != null
-                            && query.getStartIndex() > 0
-                            && !canOffset(query))) {
+                    || (query.getStartIndex() != null && query.getStartIndex() > 0 && !canOffset(query))) {
                 // calculate manually, don't use datastore optimization
                 getDataStore().getLogger().fine("Calculating bounds manually");
 
@@ -569,8 +556,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
 
     @Override
     @SuppressWarnings("PMD.CloseResource") // the cx is passed to the reader which will close it
-    protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query)
-            throws IOException {
+    protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query) throws IOException {
         // split the filter
         Filter[] split = splitFilter(query.getFilter());
         Filter preFilter = split[0];
@@ -588,8 +574,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
 
         // Build the feature type returned by this query. Also build an eventual extra feature type
         // containing the attributes we might need in order to evaluate the post filter
-        SimpleFeatureType[] types =
-                buildQueryAndReturnFeatureTypes(getSchema(), query.getPropertyNames(), postFilter);
+        SimpleFeatureType[] types = buildQueryAndReturnFeatureTypes(getSchema(), query.getPropertyNames(), postFilter);
         SimpleFeatureType querySchema = types[0];
         SimpleFeatureType returnedSchema = types[1];
 
@@ -623,8 +608,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
                 JoinInfo join = JoinInfo.create(preQuery, this);
 
                 if (dialect instanceof PreparedStatementSQLDialect) {
-                    PreparedStatement ps =
-                            getDataStore().selectJoinSQLPS(querySchema, join, preQuery, cx);
+                    PreparedStatement ps = getDataStore().selectJoinSQLPS(querySchema, join, preQuery, cx);
                     reader = new JDBCJoiningFeatureReader(ps, cx, this, querySchema, join, query);
                 } else {
                     // build up a statement for the content
@@ -683,8 +667,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
         if (propertyNames == Query.ALL_NAMES) {
             return new SimpleFeatureType[] {featureType, featureType};
         } else {
-            SimpleFeatureType returnedSchema =
-                    SimpleFeatureTypeBuilder.retype(featureType, propertyNames);
+            SimpleFeatureType returnedSchema = SimpleFeatureTypeBuilder.retype(featureType, propertyNames);
             SimpleFeatureType querySchema = returnedSchema;
 
             if (filter != null && !filter.equals(Filter.INCLUDE)) {
@@ -695,11 +678,9 @@ public class JDBCFeatureSource extends ContentFeatureSource {
                 if (extraAttributes != null && extraAttributes.length > 0) {
                     List<String> allAttributes = new ArrayList<>(Arrays.asList(propertyNames));
                     for (String extraAttribute : extraAttributes) {
-                        if (!allAttributes.contains(extraAttribute))
-                            allAttributes.add(extraAttribute);
+                        if (!allAttributes.contains(extraAttribute)) allAttributes.add(extraAttribute);
                     }
-                    String[] allAttributeArray =
-                            allAttributes.toArray(new String[allAttributes.size()]);
+                    String[] allAttributeArray = allAttributes.toArray(new String[allAttributes.size()]);
                     querySchema = SimpleFeatureTypeBuilder.retype(getSchema(), allAttributeArray);
                 }
             }
@@ -747,8 +728,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
             return false; // optimization restricted to column evaulation
         }
         Class binding = descriptor.getType().getBinding();
-        if (Geometry.class.isAssignableFrom(binding)
-                || !(Comparable.class.isAssignableFrom(binding))) {
+        if (Geometry.class.isAssignableFrom(binding) || !(Comparable.class.isAssignableFrom(binding))) {
             // we may roll out KNN support in the dialect for geometries, but for the moment, we say
             // we can't
             return false;
@@ -780,8 +760,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
     }
 
     /** Computes the column metadata from a plain database table */
-    List<ColumnMetadata> getColumnMetadata(
-            Connection cx, String databaseSchema, String tableName, SQLDialect dialect)
+    List<ColumnMetadata> getColumnMetadata(Connection cx, String databaseSchema, String tableName, SQLDialect dialect)
             throws SQLException {
         List<ColumnMetadata> result = new ArrayList<>();
 
@@ -810,12 +789,11 @@ public class JDBCFeatureSource extends ContentFeatureSource {
          * "YES" means the column might allow NULL values. An empty string means nobody knows.
          * </UL>
          */
-        ResultSet columns =
-                metaData.getColumns(
-                        cx.getCatalog(),
-                        getDataStore().escapeNamePattern(metaData, databaseSchema),
-                        getDataStore().escapeNamePattern(metaData, tableName),
-                        "%");
+        ResultSet columns = metaData.getColumns(
+                cx.getCatalog(),
+                getDataStore().escapeNamePattern(metaData, databaseSchema),
+                getDataStore().escapeNamePattern(metaData, tableName),
+                "%");
         try {
             if (getDataStore().getFetchSize() > 0) {
                 columns.setFetchSize(getDataStore().getFetchSize());
@@ -846,8 +824,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
 
     /** Computes the column metadata by running the virtual table query */
     static List<ColumnMetadata> getColumnMetadata(
-            Connection cx, VirtualTable vtable, SQLDialect dialect, JDBCDataStore store)
-            throws SQLException {
+            Connection cx, VirtualTable vtable, SQLDialect dialect, JDBCDataStore store) throws SQLException {
         List<ColumnMetadata> result = new ArrayList<>();
 
         Statement st = null;

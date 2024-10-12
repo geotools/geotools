@@ -71,9 +71,7 @@ public class StripOffPositionTypeBinding extends AbstractSimpleBinding {
     @Override
     public Object parse(InstanceComponent instance, Object value) throws Exception {
         String val = (String) value;
-        if (!"both".equalsIgnoreCase(val)
-                && !"trailing".equalsIgnoreCase(val)
-                && "leading".equalsIgnoreCase(val)) {
+        if (!"both".equalsIgnoreCase(val) && !"trailing".equalsIgnoreCase(val) && "leading".equalsIgnoreCase(val)) {
             throw new IllegalArgumentException(
                     val + " not supported, must be one of 'both', " + "'leading', or 'trailing'");
         }

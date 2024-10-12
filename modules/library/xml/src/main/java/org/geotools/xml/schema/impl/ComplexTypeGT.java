@@ -216,8 +216,7 @@ public class ComplexTypeGT implements ComplexType {
      *     org.geotools.xml.schema.ElementValue[], org.xml.sax.Attributes, java.util.Map)
      */
     @Override
-    public Object getValue(
-            Element element, ElementValue[] value, Attributes attrs1, Map<String, Object> hints)
+    public Object getValue(Element element, ElementValue[] value, Attributes attrs1, Map<String, Object> hints)
             throws OperationNotSupportedException, SAXException {
         throw new OperationNotSupportedException();
     }
@@ -270,8 +269,7 @@ public class ComplexTypeGT implements ComplexType {
      *     org.geotools.xml.PrintHandler, java.util.Map)
      */
     @Override
-    public void encode(
-            Element element, Object value, PrintHandler output, Map<String, Object> hints)
+    public void encode(Element element, Object value, PrintHandler output, Map<String, Object> hints)
             throws OperationNotSupportedException {
         throw new OperationNotSupportedException();
     }

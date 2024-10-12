@@ -64,13 +64,9 @@ public final class StationsSetup {
         context.put("SOLR_URL", solrUrl);
         context.put("CORE_NAME", getUrlBasePathLastElement(solrUrl));
         // add the stations schema
-        copyResource(
-                "/solr/complex/stations.xsd",
-                new File(testDirectory, "stations.xsd"),
-                Collections.emptyMap());
+        copyResource("/solr/complex/stations.xsd", new File(testDirectory, "stations.xsd"), Collections.emptyMap());
         // add the mappings file, replacing the ${SOLR_URL} placeholder
-        copyResource(
-                "/solr/complex/mappings.xml", new File(testDirectory, "mappings.xml"), context);
+        copyResource("/solr/complex/mappings.xml", new File(testDirectory, "mappings.xml"), context);
     }
 
     /** Helper method that creates the stations index Apache Solr index schema. */
@@ -79,35 +75,30 @@ public final class StationsSetup {
         TestsSolrUtils.createGeometryFieldType(client);
         // get the index schema specification
         SchemaField.SchemaFields schemaFields =
-                parseXmlResource(
-                        "/solr/complex/stations_schema.xml", SchemaField.SchemaFields.class);
+                parseXmlResource("/solr/complex/stations_schema.xml", SchemaField.SchemaFields.class);
         for (SchemaField schemaField : schemaFields.getFields()) {
             // create the field on the target Apache Solr index schema
-            TestsSolrUtils.createField(
-                    client, schemaField.getName(), schemaField.getType(), schemaField.getMulti());
+            TestsSolrUtils.createField(client, schemaField.getName(), schemaField.getType(), schemaField.getMulti());
         }
     }
 
     /** Helper method that index the stations data in Apache Solr. */
     private static void indexStationsData(HttpSolrClient client) {
         // parse the stations data
-        Station.Stations stations =
-                parseXmlResource("/solr/complex/stations_data.xml", Station.Stations.class);
+        Station.Stations stations = parseXmlResource("/solr/complex/stations_data.xml", Station.Stations.class);
         for (Station station : stations.getStations()) {
             try {
                 // index the station data in Apache Solr
                 client.add(station.toSolrDoc());
             } catch (Exception exception) {
-                throw new RuntimeException(
-                        "Error indexing station data in apache Solr.", exception);
+                throw new RuntimeException("Error indexing station data in apache Solr.", exception);
             }
         }
         // force Apache solr to index any pending document
         try {
             client.commit();
         } catch (Exception exception) {
-            throw new RuntimeException(
-                    "Error when forcing Apache Solr to index any pending document.", exception);
+            throw new RuntimeException("Error when forcing Apache Solr to index any pending document.", exception);
         }
     }
 
@@ -122,8 +113,7 @@ public final class StationsSetup {
             Unmarshaller unmarshaller = context.createUnmarshaller();
             return (T) unmarshaller.unmarshal(input);
         } catch (Exception exception) {
-            throw new RuntimeException(
-                    String.format("Error parsing resource '%s'.", resource), exception);
+            throw new RuntimeException(String.format("Error parsing resource '%s'.", resource), exception);
         }
     }
 
@@ -131,8 +121,7 @@ public final class StationsSetup {
      * Helper method that coies a resource content to provided destination, if a context is provided
      * placeholders in the resource content will be resolved against it.
      */
-    private static void copyResource(
-            String resource, File destination, Map<String, String> context) {
+    private static void copyResource(String resource, File destination, Map<String, String> context) {
         try (InputStream input = StationsSetup.class.getResourceAsStream(resource);
                 OutputStream output = new FileOutputStream(destination)) {
             if (context.isEmpty()) {

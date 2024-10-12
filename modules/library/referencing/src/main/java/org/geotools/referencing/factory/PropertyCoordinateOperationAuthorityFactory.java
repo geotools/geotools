@@ -123,9 +123,7 @@ public class PropertyCoordinateOperationAuthorityFactory extends DirectAuthority
      * @throws IOException if the definitions can't be read.
      */
     public PropertyCoordinateOperationAuthorityFactory(
-            final ReferencingFactoryContainer factories,
-            final Citation authority,
-            final URL definitions)
+            final ReferencingFactoryContainer factories, final Citation authority, final URL definitions)
             throws IOException {
         // Set priority low
         super(factories, MINIMUM_PRIORITY + 10);
@@ -154,8 +152,7 @@ public class PropertyCoordinateOperationAuthorityFactory extends DirectAuthority
         String[] crsPair = trimAuthority(code).split(",");
         if (crsPair.length == 2) {
             Set<CoordinateOperation> coordopset =
-                    createFromCoordinateReferenceSystemCodes(
-                            trimAuthority(crsPair[0]), trimAuthority(crsPair[1]));
+                    createFromCoordinateReferenceSystemCodes(trimAuthority(crsPair[0]), trimAuthority(crsPair[1]));
             if (!coordopset.isEmpty()) {
                 return coordopset.iterator().next();
             }
@@ -176,14 +173,12 @@ public class PropertyCoordinateOperationAuthorityFactory extends DirectAuthority
      * @throws FactoryException if the object creation failed for some other reason.
      */
     @Override
-    public Set<CoordinateOperation> createFromCoordinateReferenceSystemCodes(
-            String sourceCRS, String targetCRS)
+    public Set<CoordinateOperation> createFromCoordinateReferenceSystemCodes(String sourceCRS, String targetCRS)
             throws NoSuchAuthorityCodeException, FactoryException {
 
         Set<CoordinateOperation> coordops = new HashSet<>(1);
 
-        CoordinateOperation coordop =
-                createFromCoordinateReferenceSystemCodes(sourceCRS, targetCRS, false);
+        CoordinateOperation coordop = createFromCoordinateReferenceSystemCodes(sourceCRS, targetCRS, false);
         if (coordop == null) {
             // Not found. Try to create from the inverse.
             coordop = createFromCoordinateReferenceSystemCodes(targetCRS, sourceCRS, true);
@@ -209,8 +204,7 @@ public class PropertyCoordinateOperationAuthorityFactory extends DirectAuthority
      * @throws NoSuchAuthorityCodeException if a specified code was not found.
      * @throws FactoryException if the object creation failed for some other reason.
      */
-    CoordinateOperation createFromCoordinateReferenceSystemCodes(
-            String sourceCRS, String targetCRS, boolean inverse)
+    CoordinateOperation createFromCoordinateReferenceSystemCodes(String sourceCRS, String targetCRS, boolean inverse)
             throws NoSuchAuthorityCodeException, FactoryException {
 
         // Get WKT definition from properties
@@ -241,27 +235,24 @@ public class PropertyCoordinateOperationAuthorityFactory extends DirectAuthority
         // Need to create a derived MathTransform that will handle axis order and units
         // as defined in CRS. Had to cast to DefaultMathTransformFactory because
         // createBaseToDerived is not defined in MathTransformFactory interface (GeoAPI).
-        DefaultMathTransformFactory mtf =
-                (DefaultMathTransformFactory) factories.getMathTransformFactory();
+        DefaultMathTransformFactory mtf = (DefaultMathTransformFactory) factories.getMathTransformFactory();
         MathTransform mt2 = mtf.createBaseToDerived(source, mt, target.getCoordinateSystem());
 
         // Extract name from the transform, if possible, or use class name.
         String methodName;
         try {
             if (mt instanceof AbstractMathTransform) {
-                methodName =
-                        ((AbstractMathTransform) mt)
-                                .getParameterValues()
-                                .getDescriptor()
-                                .getName()
-                                .getCode();
+                methodName = ((AbstractMathTransform) mt)
+                        .getParameterValues()
+                        .getDescriptor()
+                        .getName()
+                        .getCode();
             } else if (mt instanceof AffineTransform2D) {
-                methodName =
-                        ((AffineTransform2D) mt)
-                                .getParameterValues()
-                                .getDescriptor()
-                                .getName()
-                                .getCode();
+                methodName = ((AffineTransform2D) mt)
+                        .getParameterValues()
+                        .getDescriptor()
+                        .getName()
+                        .getCode();
             } else {
                 methodName = mt.getClass().getSimpleName();
             }
@@ -273,27 +264,18 @@ public class PropertyCoordinateOperationAuthorityFactory extends DirectAuthority
 
         // Create the OperationMethod
         OperationMethod method =
-                new DefaultOperationMethod(
-                        props, mt2.getSourceDimensions(), mt2.getTargetDimensions(), null);
+                new DefaultOperationMethod(props, mt2.getSourceDimensions(), mt2.getTargetDimensions(), null);
 
         // Finally create CoordinateOperation
         CoordinateOperation coordop = null;
         if (!inverse) { // Direct operation
             props.put("name", sourceCRS + " \u21E8 " + targetCRS);
-            coordop =
-                    DefaultOperation.create(
-                            props, source, target, mt2, method, CoordinateOperation.class);
+            coordop = DefaultOperation.create(props, source, target, mt2, method, CoordinateOperation.class);
         } else { // Inverse operation
             try {
                 props.put("name", targetCRS + " \u21E8 " + sourceCRS);
-                coordop =
-                        DefaultOperation.create(
-                                props,
-                                target,
-                                source,
-                                mt2.inverse(),
-                                method,
-                                CoordinateOperation.class);
+                coordop = DefaultOperation.create(
+                        props, target, source, mt2.inverse(), method, CoordinateOperation.class);
             } catch (NoninvertibleTransformException e) {
                 return null;
             }
@@ -329,8 +311,7 @@ public class PropertyCoordinateOperationAuthorityFactory extends DirectAuthority
      * @throws FactoryException if the query failed for some other reason.
      */
     @Override
-    public InternationalString getDescriptionText(String code)
-            throws NoSuchAuthorityCodeException, FactoryException {
+    public InternationalString getDescriptionText(String code) throws NoSuchAuthorityCodeException, FactoryException {
 
         final String wkt = definitions.getProperty(trimAuthority(code));
 

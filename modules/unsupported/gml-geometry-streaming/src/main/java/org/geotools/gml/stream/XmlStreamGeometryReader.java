@@ -77,12 +77,8 @@ public class XmlStreamGeometryReader {
      * @param reader the reader providing the data to parse
      * @param geometryFactory a specific {@link GeometryFactory} to use for constructing geometries
      */
-    public XmlStreamGeometryReader(
-            final XMLStreamReader reader, final GeometryFactory geometryFactory) {
-        this(
-                reader,
-                geometryFactory,
-                new CurvedGeometryFactory(geometryFactory, DEFAULT_CURVE_TOLERANCE));
+    public XmlStreamGeometryReader(final XMLStreamReader reader, final GeometryFactory geometryFactory) {
+        this(reader, geometryFactory, new CurvedGeometryFactory(geometryFactory, DEFAULT_CURVE_TOLERANCE));
     }
 
     /**
@@ -148,10 +144,9 @@ public class XmlStreamGeometryReader {
             // the StAX parser is configured with appropriate limits if you really need DTD support.
 
             if (Boolean.TRUE.equals(reader.getProperty(XMLInputFactory.SUPPORT_DTD))) {
-                throw new IllegalStateException(
-                        "XMLStreamReader allows DTDs but "
-                                + this.getClass().getSimpleName()
-                                + " is not configured to allow unsafe XML");
+                throw new IllegalStateException("XMLStreamReader allows DTDs but "
+                        + this.getClass().getSimpleName()
+                        + " is not configured to allow unsafe XML");
             }
         }
     }
@@ -181,9 +176,7 @@ public class XmlStreamGeometryReader {
             this.gmlNamespace = GML.NAMESPACE_3_2;
         } else {
             throw new IllegalStateException(
-                    "Expected a geometry element in the GML namespace but found \""
-                            + reader.getName()
-                            + "\"");
+                    "Expected a geometry element in the GML namespace but found \"" + reader.getName() + "\"");
         }
 
         final String startingGeometryTagName = reader.getLocalName();
@@ -212,8 +205,7 @@ public class XmlStreamGeometryReader {
         } else if (GML.MultiPolygon.equals(startingGeometryTagName)) {
             geom = parseMultiPolygon(dimension, crs);
         } else {
-            throw new IllegalStateException(
-                    "Unrecognized geometry element " + startingGeometryTagName);
+            throw new IllegalStateException("Unrecognized geometry element " + startingGeometryTagName);
         }
 
         reader.require(END_ELEMENT, this.gmlNamespace, startingGeometryTagName);
@@ -230,8 +222,7 @@ public class XmlStreamGeometryReader {
 
         while (true) {
             reader.nextTag();
-            if (END_ELEMENT == reader.getEventType()
-                    && GML.MultiCurve.equals(reader.getLocalName())) {
+            if (END_ELEMENT == reader.getEventType() && GML.MultiCurve.equals(reader.getLocalName())) {
                 // we're done
                 break;
             }
@@ -242,13 +233,11 @@ public class XmlStreamGeometryReader {
             if (GML.LineString.equals(startingGeometryTagName)) {
                 lines.add(parseLineString(dimension, crs));
             } else if (GML.CompositeCurve.equals(startingGeometryTagName)) {
-                throw new UnsupportedOperationException(
-                        GML.CompositeCurve + " is not supported yet");
+                throw new UnsupportedOperationException(GML.CompositeCurve + " is not supported yet");
             } else if (GML.Curve.equals(startingGeometryTagName)) {
                 lines.add(parseCurve(dimension, crs));
             } else if (GML.OrientableCurve.equals(startingGeometryTagName)) {
-                throw new UnsupportedOperationException(
-                        GML.OrientableCurve + " is not supported yet");
+                throw new UnsupportedOperationException(GML.OrientableCurve + " is not supported yet");
             }
 
             reader.nextTag();
@@ -279,8 +268,7 @@ public class XmlStreamGeometryReader {
         if (GML.pointMembers.equals(memberTag)) {
             while (true) {
                 reader.nextTag();
-                if (END_ELEMENT == reader.getEventType()
-                        && GML.pointMembers.equals(reader.getLocalName())) {
+                if (END_ELEMENT == reader.getEventType() && GML.pointMembers.equals(reader.getLocalName())) {
                     // we're done
                     break;
                 }
@@ -298,8 +286,7 @@ public class XmlStreamGeometryReader {
                 reader.nextTag();
                 reader.require(END_ELEMENT, this.gmlNamespace, GML.pointMember);
                 reader.nextTag();
-                if (END_ELEMENT == reader.getEventType()
-                        && GML.MultiPoint.equals(reader.getLocalName())) {
+                if (END_ELEMENT == reader.getEventType() && GML.MultiPoint.equals(reader.getLocalName())) {
                     // we're done
                     break;
                 }
@@ -327,8 +314,7 @@ public class XmlStreamGeometryReader {
 
         while (true) {
             reader.nextTag();
-            if (END_ELEMENT == reader.getEventType()
-                    && GML.MultiLineString.equals(reader.getLocalName())) {
+            if (END_ELEMENT == reader.getEventType() && GML.MultiLineString.equals(reader.getLocalName())) {
                 // we're done
                 break;
             }
@@ -367,8 +353,7 @@ public class XmlStreamGeometryReader {
         if (GML.surfaceMembers.equals(memberTag)) {
             while (true) {
                 reader.nextTag();
-                if (END_ELEMENT == reader.getEventType()
-                        && GML.surfaceMembers.equals(reader.getLocalName())) {
+                if (END_ELEMENT == reader.getEventType() && GML.surfaceMembers.equals(reader.getLocalName())) {
                     // we're done
                     break;
                 }
@@ -380,12 +365,10 @@ public class XmlStreamGeometryReader {
                         break;
                     case GML.Surface:
                         MultiPolygon mp = parseSurface(dimension, crs);
-                        for (int i = 0; i < mp.getNumGeometries(); i++)
-                            polygons.add((Polygon) mp.getGeometryN(i));
+                        for (int i = 0; i < mp.getNumGeometries(); i++) polygons.add((Polygon) mp.getGeometryN(i));
                         break;
                     default:
-                        throw new IllegalStateException(
-                                "Unknown polygon boundary element: " + reader.getLocalName());
+                        throw new IllegalStateException("Unknown polygon boundary element: " + reader.getLocalName());
                 }
             }
             reader.nextTag();
@@ -399,19 +382,16 @@ public class XmlStreamGeometryReader {
                         break;
                     case GML.Surface:
                         MultiPolygon mp = parseSurface(dimension, crs);
-                        for (int i = 0; i < mp.getNumGeometries(); i++)
-                            polygons.add((Polygon) mp.getGeometryN(i));
+                        for (int i = 0; i < mp.getNumGeometries(); i++) polygons.add((Polygon) mp.getGeometryN(i));
                         break;
                     default:
-                        throw new IllegalStateException(
-                                "Unknown polygon boundary element: " + reader.getLocalName());
+                        throw new IllegalStateException("Unknown polygon boundary element: " + reader.getLocalName());
                 }
 
                 reader.nextTag();
                 reader.require(END_ELEMENT, this.gmlNamespace, GML.surfaceMember);
                 reader.nextTag();
-                if (END_ELEMENT == reader.getEventType()
-                        && GML.MultiSurface.equals(reader.getLocalName())) {
+                if (END_ELEMENT == reader.getEventType() && GML.MultiSurface.equals(reader.getLocalName())) {
                     // we're done
                     break;
                 }
@@ -438,8 +418,7 @@ public class XmlStreamGeometryReader {
             reader.nextTag();
             reader.require(END_ELEMENT, this.gmlNamespace, GML.polygonMember);
             reader.nextTag();
-            if (END_ELEMENT == reader.getEventType()
-                    && GML.MultiPolygon.equals(reader.getLocalName())) {
+            if (END_ELEMENT == reader.getEventType() && GML.MultiPolygon.equals(reader.getLocalName())) {
                 // we're done
                 break;
             }
@@ -667,8 +646,7 @@ public class XmlStreamGeometryReader {
             }
         }
         // createCurvedGeometry() will create a CompoundRing which extends LinearRing
-        LinearRing linearRing =
-                (LinearRing) this.curvedGeometryFactory.createCurvedGeometry(components);
+        LinearRing linearRing = (LinearRing) this.curvedGeometryFactory.createCurvedGeometry(components);
         linearRing.setUserData(crs);
         return linearRing;
     }
@@ -697,8 +675,7 @@ public class XmlStreamGeometryReader {
         return parseLineString(dimension, crs, false);
     }
 
-    private LineString parseLineString(
-            int dimension, CoordinateReferenceSystem crs, final boolean isSegment)
+    private LineString parseLineString(int dimension, CoordinateReferenceSystem crs, final boolean isSegment)
             throws XMLStreamException, IOException, NoSuchAuthorityCodeException, FactoryException {
 
         final String lineStringElement = isSegment ? GML.LineStringSegment : GML.LineString;
@@ -759,8 +736,7 @@ public class XmlStreamGeometryReader {
 
             lineCoords = coords.toArray(new Coordinate[0]);
         } else {
-            throw new IllegalStateException(
-                    "Expected posList or pos inside LinearRing: " + tagName);
+            throw new IllegalStateException("Expected posList or pos inside LinearRing: " + tagName);
         }
         reader.require(END_ELEMENT, this.gmlNamespace, lineElementName);
         return lineCoords;
@@ -787,14 +763,12 @@ public class XmlStreamGeometryReader {
             } else if (GML.Arc.equals(name)) {
                 lines.add(parseArc(dimension, crs));
             } else {
-                throw new UnsupportedOperationException(
-                        "Curve segment " + name + " is not supported yet");
+                throw new UnsupportedOperationException("Curve segment " + name + " is not supported yet");
             }
 
             reader.nextTag();
 
-            if (END_ELEMENT == reader.getEventType()
-                    && GML.segments.equals(reader.getLocalName())) {
+            if (END_ELEMENT == reader.getEventType() && GML.segments.equals(reader.getLocalName())) {
                 // we're done
                 break;
             }
@@ -818,9 +792,8 @@ public class XmlStreamGeometryReader {
 
         reader.require(END_ELEMENT, this.gmlNamespace, GML.Arc);
 
-        LineString geom =
-                curvedGeometryFactory.createCircularString(
-                        curvedGeometryFactory.getCoordinateSequenceFactory().create(coordinates));
+        LineString geom = curvedGeometryFactory.createCircularString(
+                curvedGeometryFactory.getCoordinateSequenceFactory().create(coordinates));
         geom.setUserData(crs);
         return geom;
     }
@@ -934,13 +907,7 @@ public class XmlStreamGeometryReader {
 
         String rawTextValue = reader.getElementText();
         Coordinate[] coords =
-                toCoordList(
-                        rawTextValue,
-                        decimalSeparator,
-                        coordSeparator,
-                        tupleSeparator,
-                        dimension,
-                        crs);
+                toCoordList(rawTextValue, decimalSeparator, coordSeparator, tupleSeparator, dimension, crs);
 
         reader.require(END_ELEMENT, this.gmlNamespace, GML.coordinates);
         return coords;
@@ -959,8 +926,7 @@ public class XmlStreamGeometryReader {
         return invert;
     }
 
-    private Coordinate[] toCoordList(
-            String rawTextValue, final int dimension, CoordinateReferenceSystem crs) {
+    private Coordinate[] toCoordList(String rawTextValue, final int dimension, CoordinateReferenceSystem crs) {
         rawTextValue = rawTextValue.trim();
         rawTextValue = rawTextValue.replaceAll("\n", " ");
         rawTextValue = rawTextValue.replaceAll("\r", " ");
@@ -968,10 +934,7 @@ public class XmlStreamGeometryReader {
         final int ordinatesLength = split.length;
         if (ordinatesLength % dimension != 0) {
             throw new IllegalArgumentException(
-                    "Number of ordinates ("
-                            + ordinatesLength
-                            + ") does not match crs dimension: "
-                            + dimension);
+                    "Number of ordinates (" + ordinatesLength + ") does not match crs dimension: " + dimension);
         }
         boolean invertXY = this.checkInvertAxisNeededCache(crs);
         final int nCoords = ordinatesLength / dimension;

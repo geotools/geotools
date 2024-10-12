@@ -93,12 +93,8 @@ public class ProcessRunPage extends JPage {
         JLabel description = new JLabel("Your process results are below:");
         page.add(description);
         for (Entry<String, Object> entry : resultMap.entrySet()) {
-            Parameter<?> parameter =
-                    new Parameter<>(
-                            entry.getKey(),
-                            entry.getValue().getClass(),
-                            Text.text("Result"),
-                            Text.text("Result of process"));
+            Parameter<?> parameter = new Parameter<>(
+                    entry.getKey(), entry.getValue().getClass(), Text.text("Result"), Text.text("Result of process"));
             JLabel label = new JLabel(entry.getKey());
             page.add(label);
 

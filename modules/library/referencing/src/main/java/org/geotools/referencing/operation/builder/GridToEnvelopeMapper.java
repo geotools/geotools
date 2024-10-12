@@ -163,11 +163,9 @@ public class GridToEnvelopeMapper {
     }
 
     /** Makes sure that an argument is non-null. */
-    private static void ensureNonNull(final String name, final Object object)
-            throws IllegalArgumentException {
+    private static void ensureNonNull(final String name, final Object object) throws IllegalArgumentException {
         if (object == null) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, name));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, name));
         }
     }
 
@@ -240,8 +238,7 @@ public class GridToEnvelopeMapper {
      */
     public GridEnvelope getGridRange() throws IllegalStateException {
         if (gridRange == null) {
-            throw new IllegalStateException(
-                    MessageFormat.format(ErrorKeys.MISSING_PARAMETER_VALUE_$1, "gridRange"));
+            throw new IllegalStateException(MessageFormat.format(ErrorKeys.MISSING_PARAMETER_VALUE_$1, "gridRange"));
         }
         return gridRange;
     }
@@ -269,8 +266,7 @@ public class GridToEnvelopeMapper {
      */
     public Bounds getEnvelope() throws IllegalStateException {
         if (envelope == null) {
-            throw new IllegalStateException(
-                    MessageFormat.format(ErrorKeys.MISSING_PARAMETER_VALUE_$1, "envelope"));
+            throw new IllegalStateException(MessageFormat.format(ErrorKeys.MISSING_PARAMETER_VALUE_$1, "envelope"));
         }
         return envelope;
     }
@@ -377,9 +373,7 @@ public class GridToEnvelopeMapper {
                     for (int i = 0; i < dimension; i++) {
                         final AxisDirection direction = cs.getAxis(i).getDirection();
                         final AxisDirection absolute = direction.absolute();
-                        reverseAxis[i] =
-                                direction != AxisDirection.OTHER
-                                        && direction.equals(absolute.opposite());
+                        reverseAxis[i] = direction != AxisDirection.OTHER && direction.equals(absolute.opposite());
                     }
                     if (dimension >= 2) {
                         final int i = getSwapXY() ? 0 : 1;

@@ -41,11 +41,7 @@ public interface MultiLevelROI {
      * @return a {@link ROI} object
      */
     public ROI getTransformedROI(
-            AffineTransform at,
-            int imageIndex,
-            Rectangle imgBounds,
-            ImageReadParam params,
-            ReadType readType);
+            AffineTransform at, int imageIndex, Rectangle imgBounds, ImageReadParam params, ReadType readType);
 
     /**
      * Checks if the provided {@link MultiLevelROI} object is empty or not

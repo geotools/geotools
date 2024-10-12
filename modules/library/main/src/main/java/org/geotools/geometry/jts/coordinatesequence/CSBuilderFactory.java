@@ -47,8 +47,7 @@ public class CSBuilderFactory {
     /** @param builderClass */
     public static void setDefaultBuilderClass(Class<? extends CSBuilder> builderClass) {
         if (!CSBuilder.class.isAssignableFrom(builderClass))
-            throw new RuntimeException(
-                    builderClass.getName() + " does not implement the CSBuilder interface");
+            throw new RuntimeException(builderClass.getName() + " does not implement the CSBuilder interface");
         defaultBuilderClass = builderClass;
     }
 }

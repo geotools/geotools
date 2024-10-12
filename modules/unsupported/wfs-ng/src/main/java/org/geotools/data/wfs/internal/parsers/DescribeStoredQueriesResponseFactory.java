@@ -53,8 +53,7 @@ public class DescribeStoredQueriesResponseFactory implements WFSResponseFactory 
     }
 
     @Override
-    public WFSResponse createResponse(WFSRequest request, HTTPResponse response)
-            throws IOException {
+    public WFSResponse createResponse(WFSRequest request, HTTPResponse response) throws IOException {
         try {
             return new DescribeStoredQueriesResponse(request, response);
         } catch (ServiceException e) {

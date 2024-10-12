@@ -54,8 +54,7 @@ public abstract class PropertyTypeImpl implements PropertyType {
                 // FIXME: This should be optional as the superType may have the required
                 // information?
                 throw new NullPointerException(
-                        "Binding to a Java class, did you mean to bind to "
-                                + superType.getBinding());
+                        "Binding to a Java class, did you mean to bind to " + superType.getBinding());
             }
             throw new NullPointerException("Binding to a Java class is required");
         }

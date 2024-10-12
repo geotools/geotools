@@ -111,7 +111,8 @@ public class VisualTransformerTest {
 
     @Before
     public void setUp() throws Exception {
-        File property = new File(TestData.getResource(this, "testpoints.properties").toURI());
+        File property =
+                new File(TestData.getResource(this, "testpoints.properties").toURI());
         PropertyDataStore ds = new PropertyDataStore(property.getParentFile());
         pointFS = ds.getFeatureSource("testpoints");
         gridFS = ds.getFeatureSource("testgrid");
@@ -123,11 +124,9 @@ public class VisualTransformerTest {
         bounds = new ReferencedEnvelope(0, 10, 0, 10, CRS.decode("EPSG:4326"));
 
         FontCache.getDefaultInstance()
-                .registerFont(
-                        Font.createFont(
-                                Font.TRUETYPE_FONT,
-                                TestData.getResource(LabelShieldTest.class, "Vera.ttf")
-                                        .openStream()));
+                .registerFont(Font.createFont(
+                        Font.TRUETYPE_FONT,
+                        TestData.getResource(LabelShieldTest.class, "Vera.ttf").openStream()));
 
         // UNCOMMENT THE BELOW LINE TO DISPLAY VISUAL TESTS
         // System.setProperty("org.geotools.test.interactive", "true");
@@ -152,13 +151,8 @@ public class VisualTransformerTest {
         EnvFunction.setGlobalValue("wms_bbox", mc.getViewport().getBounds());
         renderer.setMapContent(mc);
         renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
-        BufferedImage image =
-                MapboxTestUtils.showRender(
-                        "Background Test",
-                        renderer,
-                        DISPLAY_TIME,
-                        new ReferencedEnvelope[] {bounds},
-                        null);
+        BufferedImage image = MapboxTestUtils.showRender(
+                "Background Test", renderer, DISPLAY_TIME, new ReferencedEnvelope[] {bounds}, null);
         ImageAssert.assertEquals(file("background"), image, 50);
         mc.dispose();
     }
@@ -185,13 +179,8 @@ public class VisualTransformerTest {
         StreamingRenderer renderer = new StreamingRenderer();
         renderer.setMapContent(mc);
         renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
-        BufferedImage image =
-                MapboxTestUtils.showRender(
-                        "Background Test",
-                        renderer,
-                        DISPLAY_TIME,
-                        new ReferencedEnvelope[] {bounds},
-                        null);
+        BufferedImage image = MapboxTestUtils.showRender(
+                "Background Test", renderer, DISPLAY_TIME, new ReferencedEnvelope[] {bounds}, null);
         ImageAssert.assertEquals(file("background-sprite"), image, 50);
         mc.dispose();
     }
@@ -215,13 +204,8 @@ public class VisualTransformerTest {
         StreamingRenderer renderer = new StreamingRenderer();
         renderer.setMapContent(mc);
         renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
-        BufferedImage image =
-                MapboxTestUtils.showRender(
-                        "Fill Test",
-                        renderer,
-                        DISPLAY_TIME,
-                        new ReferencedEnvelope[] {bounds},
-                        null);
+        BufferedImage image = MapboxTestUtils.showRender(
+                "Fill Test", renderer, DISPLAY_TIME, new ReferencedEnvelope[] {bounds}, null);
         ImageAssert.assertEquals(file("fill"), image, 50);
         mc.dispose();
     }
@@ -244,13 +228,8 @@ public class VisualTransformerTest {
         StreamingRenderer renderer = new StreamingRenderer();
         renderer.setMapContent(mc);
         renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
-        BufferedImage image =
-                MapboxTestUtils.showRender(
-                        "Fill Test",
-                        renderer,
-                        DISPLAY_TIME,
-                        new ReferencedEnvelope[] {bounds},
-                        null);
+        BufferedImage image = MapboxTestUtils.showRender(
+                "Fill Test", renderer, DISPLAY_TIME, new ReferencedEnvelope[] {bounds}, null);
         ImageAssert.assertEquals(file("fill-test-all"), image, 50);
         mc.dispose();
     }
@@ -277,13 +256,8 @@ public class VisualTransformerTest {
         StreamingRenderer renderer = new StreamingRenderer();
         renderer.setMapContent(mc);
         renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
-        BufferedImage image =
-                MapboxTestUtils.showRender(
-                        "Fill Test",
-                        renderer,
-                        DISPLAY_TIME,
-                        new ReferencedEnvelope[] {bounds},
-                        null);
+        BufferedImage image = MapboxTestUtils.showRender(
+                "Fill Test", renderer, DISPLAY_TIME, new ReferencedEnvelope[] {bounds}, null);
         ImageAssert.assertEquals(file("fill-sprite-tokenized"), image, 50);
         mc.dispose();
     }
@@ -309,13 +283,8 @@ public class VisualTransformerTest {
         StreamingRenderer renderer = new StreamingRenderer();
         renderer.setMapContent(mc);
         renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
-        BufferedImage image =
-                MapboxTestUtils.showRender(
-                        "Fill Test",
-                        renderer,
-                        DISPLAY_TIME,
-                        new ReferencedEnvelope[] {bounds},
-                        null);
+        BufferedImage image = MapboxTestUtils.showRender(
+                "Fill Test", renderer, DISPLAY_TIME, new ReferencedEnvelope[] {bounds}, null);
         ImageAssert.assertEquals(file("fill-sprite"), image, 50);
         mc.dispose();
     }
@@ -341,13 +310,8 @@ public class VisualTransformerTest {
         StreamingRenderer renderer = new StreamingRenderer();
         renderer.setMapContent(mc);
         renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
-        BufferedImage image =
-                MapboxTestUtils.showRender(
-                        "Fill Test",
-                        renderer,
-                        DISPLAY_TIME,
-                        new ReferencedEnvelope[] {bounds},
-                        null);
+        BufferedImage image = MapboxTestUtils.showRender(
+                "Fill Test", renderer, DISPLAY_TIME, new ReferencedEnvelope[] {bounds}, null);
         ImageAssert.assertEquals(file("fill-sprite-function"), image, 50);
         mc.dispose();
     }
@@ -370,13 +334,8 @@ public class VisualTransformerTest {
         StreamingRenderer renderer = new StreamingRenderer();
         renderer.setMapContent(mc);
         renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
-        BufferedImage image =
-                MapboxTestUtils.showRender(
-                        "Symbol Sprite Test",
-                        renderer,
-                        DISPLAY_TIME,
-                        new ReferencedEnvelope[] {bounds},
-                        null);
+        BufferedImage image = MapboxTestUtils.showRender(
+                "Symbol Sprite Test", renderer, DISPLAY_TIME, new ReferencedEnvelope[] {bounds}, null);
         ImageAssert.assertEquals(file("symbol-sprite"), image, 50);
         mc.dispose();
     }
@@ -402,13 +361,8 @@ public class VisualTransformerTest {
         StreamingRenderer renderer = new StreamingRenderer();
         renderer.setMapContent(mc);
         renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
-        BufferedImage image =
-                MapboxTestUtils.showRender(
-                        "Symbol Sprite Icon Size Test",
-                        renderer,
-                        DISPLAY_TIME,
-                        new ReferencedEnvelope[] {bounds},
-                        null);
+        BufferedImage image = MapboxTestUtils.showRender(
+                "Symbol Sprite Icon Size Test", renderer, DISPLAY_TIME, new ReferencedEnvelope[] {bounds}, null);
         ImageAssert.assertEquals(file("symbol-sprite-icon-size"), image, 50);
         mc.dispose();
     }
@@ -417,8 +371,7 @@ public class VisualTransformerTest {
     @Test
     public void mbSymbolLayerTextVisualTest() throws Exception {
         JSONObject jsonObject = MapboxTestUtils.parseTestStyle("symbolTextTest.json");
-        testVisualizeStyleWithPointFeatures(
-                jsonObject, "Symbol Text Test", "symbol-text", true, 300, 300);
+        testVisualizeStyleWithPointFeatures(jsonObject, "Symbol Text Test", "symbol-text", true, 300, 300);
     }
 
     /** Test visualization of a GeoTools style from an MB Symbol Layer */
@@ -433,8 +386,7 @@ public class VisualTransformerTest {
     @Test
     public void mbSymbolLayerHaloTextVisualTest() throws Exception {
         JSONObject jsonObject = MapboxTestUtils.parseTestStyle("symbolTextHaloTest.json");
-        testVisualizeStyleWithPointFeatures(
-                jsonObject, "Symbol Text Halo Test", "symbol-halo-text", true, 300, 300);
+        testVisualizeStyleWithPointFeatures(jsonObject, "Symbol Text Halo Test", "symbol-halo-text", true, 300, 300);
     }
 
     /** Test visualization of a GeoTools style from an MB Symbol Layer */
@@ -450,18 +402,15 @@ public class VisualTransformerTest {
     @Test
     public void mbSymbolLayerTextTransformVisualTest() throws Exception {
         // Read file to JSONObject
-        JSONObject jsonObject =
-                MapboxTestUtils.parseTestStyle("symbolTextTransformFunctionTest.json");
-        testVisualizeStyleWithLineFeatures(
-                jsonObject, "Symbol Text Transform", "symbol-text-transform", false);
+        JSONObject jsonObject = MapboxTestUtils.parseTestStyle("symbolTextTransformFunctionTest.json");
+        testVisualizeStyleWithLineFeatures(jsonObject, "Symbol Text Transform", "symbol-text-transform", false);
     }
 
     /** Test visualization of a GeoTools style from an MB Symbol Layer */
     @Test
     public void mbSymbolLayerIconLinePlacementVisualTest() throws Exception {
         // Read file to JSONObject
-        JSONObject jsonObject =
-                MapboxTestUtils.parseTestStyle("symbolStyleSimpleIconLinePlacementTest.json");
+        JSONObject jsonObject = MapboxTestUtils.parseTestStyle("symbolStyleSimpleIconLinePlacementTest.json");
         testVisualizeStyleWithLineFeatures(
                 jsonObject, "Symbol Icon Line Placement", "symbol-icon-line-placement", true);
     }
@@ -470,30 +419,18 @@ public class VisualTransformerTest {
     @Test
     public void mbSymbolLayerIconAndTextLinePlacementVisualTest() throws Exception {
         // Read file to JSONObject
-        JSONObject jsonObject =
-                MapboxTestUtils.parseTestStyle(
-                        "symbolStyleSimpleIconAndTextLinePlacementTest.json");
+        JSONObject jsonObject = MapboxTestUtils.parseTestStyle("symbolStyleSimpleIconAndTextLinePlacementTest.json");
         testVisualizeStyleWithLineFeatures(
-                jsonObject,
-                "Symbol Text+Icon Line Placement",
-                "symbol-text-icon-line-placement",
-                true);
+                jsonObject, "Symbol Text+Icon Line Placement", "symbol-text-icon-line-placement", true);
     }
 
     /** Test visualization of a GeoTools style from an MB Symbol Layer */
     @Test
     public void mbSymbolLayerIconAndTextPointPlacementVisualTest() throws Exception {
         // Read file to JSONObject
-        JSONObject jsonObject =
-                MapboxTestUtils.parseTestStyle(
-                        "symbolStyleSimpleIconAndTextPointPlacementTest.json");
+        JSONObject jsonObject = MapboxTestUtils.parseTestStyle("symbolStyleSimpleIconAndTextPointPlacementTest.json");
         testVisualizeStyleWithPointFeatures(
-                jsonObject,
-                "Symbol Text+Icon Point Placement",
-                "symbol-text-icon-point-placement",
-                true,
-                300,
-                300);
+                jsonObject, "Symbol Text+Icon Point Placement", "symbol-text-icon-point-placement", true, 300, 300);
     }
 
     /** Test visualization of a GeoTools style from an MB Circle Layer */
@@ -501,8 +438,7 @@ public class VisualTransformerTest {
     public void mbCircleLayerVisualTest() throws Exception {
         // Read file to JSONObject
         JSONObject jsonObject = MapboxTestUtils.parseTestStyle("circleStyleTest.json");
-        testVisualizeStyleWithPointFeatures(
-                jsonObject, "Circle Style Test", "circle-style-test", true, 300, 300);
+        testVisualizeStyleWithPointFeatures(jsonObject, "Circle Style Test", "circle-style-test", true, 300, 300);
     }
 
     /** Test visualization of a GeoTools style from an MB Circle Layer using defaults */
@@ -511,12 +447,7 @@ public class VisualTransformerTest {
         // Read file to JSONObject
         JSONObject jsonObject = MapboxTestUtils.parseTestStyle("circleStyleTestDefaults.json");
         testVisualizeStyleWithPointFeatures(
-                jsonObject,
-                "Circle Style Test Defaults",
-                "circle-style-test-defaults",
-                true,
-                300,
-                300);
+                jsonObject, "Circle Style Test Defaults", "circle-style-test-defaults", true, 300, 300);
     }
 
     /** Test visualization of a GeoTools style from an MB Circle Layer with opacity and overlaps */
@@ -525,12 +456,7 @@ public class VisualTransformerTest {
         // Read file to JSONObject
         JSONObject jsonObject = MapboxTestUtils.parseTestStyle("circleStyleTestOverlap.json");
         testVisualizeStyleWithPointFeatures(
-                jsonObject,
-                "Circle Style Test Overlap",
-                "circle-style-test-overlap",
-                true,
-                300,
-                300);
+                jsonObject, "Circle Style Test Overlap", "circle-style-test-overlap", true, 300, 300);
     }
 
     /**
@@ -553,13 +479,8 @@ public class VisualTransformerTest {
         StreamingRenderer renderer = new StreamingRenderer();
         renderer.setMapContent(mc);
         renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
-        BufferedImage image =
-                MapboxTestUtils.showRender(
-                        "Symbol Mark Test",
-                        renderer,
-                        DISPLAY_TIME,
-                        new ReferencedEnvelope[] {bounds},
-                        null);
+        BufferedImage image = MapboxTestUtils.showRender(
+                "Symbol Mark Test", renderer, DISPLAY_TIME, new ReferencedEnvelope[] {bounds}, null);
 
         ImageAssert.assertEquals(file("symbol-mark-test"), image, 50);
         mc.dispose();
@@ -585,13 +506,8 @@ public class VisualTransformerTest {
         StreamingRenderer renderer = new StreamingRenderer();
         renderer.setMapContent(mc);
         renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
-        BufferedImage image =
-                MapboxTestUtils.showRender(
-                        "Symbol QGIS Mark Test",
-                        renderer,
-                        DISPLAY_TIME,
-                        new ReferencedEnvelope[] {bounds},
-                        null);
+        BufferedImage image = MapboxTestUtils.showRender(
+                "Symbol QGIS Mark Test", renderer, DISPLAY_TIME, new ReferencedEnvelope[] {bounds}, null);
         ImageAssert.assertEquals(file("symbol-qgis-mark-test"), image, 50);
         mc.dispose();
     }
@@ -626,13 +542,8 @@ public class VisualTransformerTest {
         StreamingRenderer renderer = new StreamingRenderer();
         renderer.setMapContent(mc);
         renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
-        BufferedImage image =
-                MapboxTestUtils.showRender(
-                        "Line Style",
-                        renderer,
-                        DISPLAY_TIME,
-                        new ReferencedEnvelope[] {bounds},
-                        null);
+        BufferedImage image = MapboxTestUtils.showRender(
+                "Line Style", renderer, DISPLAY_TIME, new ReferencedEnvelope[] {bounds}, null);
         ImageAssert.assertEquals(file("line-style-all-props"), image, 5000);
         mc.dispose();
     }
@@ -656,13 +567,8 @@ public class VisualTransformerTest {
         StreamingRenderer renderer = new StreamingRenderer();
         renderer.setMapContent(mc);
         renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
-        BufferedImage image =
-                MapboxTestUtils.showRender(
-                        "Line Style",
-                        renderer,
-                        DISPLAY_TIME,
-                        new ReferencedEnvelope[] {bounds},
-                        null);
+        BufferedImage image = MapboxTestUtils.showRender(
+                "Line Style", renderer, DISPLAY_TIME, new ReferencedEnvelope[] {bounds}, null);
         ImageAssert.assertEquals(file("symbol-text-keep-upright"), image, 5000);
         mc.dispose();
     }
@@ -670,8 +576,7 @@ public class VisualTransformerTest {
     @Test
     public void mbLineLayerSpriteTest() throws Exception {
         JSONObject jsonObject = MapboxTestUtils.parseTestStyle("lineStyleSpriteTest.json");
-        testVisualizeStyleWithLineFeatures(
-                jsonObject, "Line Style w Sprite", "line-style-sprite", true);
+        testVisualizeStyleWithLineFeatures(jsonObject, "Line Style w Sprite", "line-style-sprite", true);
     }
 
     /** Test specifying displacement as an array function. */
@@ -769,24 +674,14 @@ public class VisualTransformerTest {
         StreamingRenderer renderer = new StreamingRenderer();
         renderer.setMapContent(mc);
         renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
-        BufferedImage image =
-                MapboxTestUtils.showRender(
-                        renderTitle,
-                        renderer,
-                        DISPLAY_TIME,
-                        new ReferencedEnvelope[] {bounds},
-                        null,
-                        width,
-                        height);
+        BufferedImage image = MapboxTestUtils.showRender(
+                renderTitle, renderer, DISPLAY_TIME, new ReferencedEnvelope[] {bounds}, null, width, height);
         ImageAssert.assertEquals(file(renderComparisonFileName), image, 1400);
         mc.dispose();
     }
 
     protected void testVisualizeStyleWithLineFeatures(
-            JSONObject jsonStyle,
-            String renderTitle,
-            String renderComparisonFileName,
-            boolean showLines)
+            JSONObject jsonStyle, String renderTitle, String renderComparisonFileName, boolean showLines)
             throws Exception {
         // Read file to JSONObject
 
@@ -805,22 +700,15 @@ public class VisualTransformerTest {
         StreamingRenderer renderer = new StreamingRenderer();
         renderer.setMapContent(mc);
         renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
-        BufferedImage image =
-                MapboxTestUtils.showRender(
-                        renderTitle,
-                        renderer,
-                        DISPLAY_TIME,
-                        new ReferencedEnvelope[] {bounds},
-                        null);
+        BufferedImage image = MapboxTestUtils.showRender(
+                renderTitle, renderer, DISPLAY_TIME, new ReferencedEnvelope[] {bounds}, null);
         ImageAssert.assertEquals(file(renderComparisonFileName), image, 3000);
         mc.dispose();
     }
 
     public Style defaultLineStyle() {
         Rule rule = styleFactory.createRule();
-        Stroke stroke =
-                styleFactory.createStroke(
-                        filterFactory.literal(Color.BLACK), filterFactory.literal(1));
+        Stroke stroke = styleFactory.createStroke(filterFactory.literal(Color.BLACK), filterFactory.literal(1));
         rule.symbolizers().add(styleFactory.createLineSymbolizer(stroke, null));
         FeatureTypeStyle fts = styleFactory.createFeatureTypeStyle(rule);
         Style lineStyle = styleFactory.createStyle();
@@ -832,9 +720,7 @@ public class VisualTransformerTest {
 
         Graphic gr = styleFactory.createDefaultGraphic();
         Mark mark = styleFactory.getCircleMark();
-        mark.setStroke(
-                styleFactory.createStroke(
-                        filterFactory.literal(Color.BLACK), filterFactory.literal(1)));
+        mark.setStroke(styleFactory.createStroke(filterFactory.literal(Color.BLACK), filterFactory.literal(1)));
         mark.setFill(styleFactory.createFill(filterFactory.literal(Color.BLACK)));
 
         gr.graphicalSymbols().clear();
@@ -854,16 +740,11 @@ public class VisualTransformerTest {
     public Style defaultPolyStyle() {
 
         // create a partially opaque outline stroke
-        Stroke stroke =
-                styleFactory.createStroke(
-                        filterFactory.literal(Color.BLACK),
-                        filterFactory.literal(1),
-                        filterFactory.literal(1));
+        Stroke stroke = styleFactory.createStroke(
+                filterFactory.literal(Color.BLACK), filterFactory.literal(1), filterFactory.literal(1));
 
         // create a partial opaque fill
-        Fill fill =
-                styleFactory.createFill(
-                        filterFactory.literal(Color.BLACK), filterFactory.literal(1));
+        Fill fill = styleFactory.createFill(filterFactory.literal(Color.BLACK), filterFactory.literal(1));
 
         /*
          * Setting the geometryPropertyName arg to null signals that we want to draw the default geometry of features
@@ -883,9 +764,6 @@ public class VisualTransformerTest {
         // The first time you run a new test, the reference image must be generated. To do so, run
         // the test with
         // -Dorg.geotools.image.test.interactive=true</code>
-        return new File(
-                "src/test/resources/org/geotools/mbstyle/transform/test-data/rendered/"
-                        + name
-                        + ".png");
+        return new File("src/test/resources/org/geotools/mbstyle/transform/test-data/rendered/" + name + ".png");
     }
 }

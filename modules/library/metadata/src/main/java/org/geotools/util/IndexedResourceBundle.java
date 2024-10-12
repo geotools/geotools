@@ -195,8 +195,7 @@ public class IndexedResourceBundle extends ResourceBundle {
                  * into an error record. Note that the message must be logged outside
                  * the synchronized block, otherwise there is dead locks!
                  */
-                record =
-                        new LogRecord(Level.FINER, "Loaded resources for {0} from bundle \"{1}\".");
+                record = new LogRecord(Level.FINER, "Loaded resources for {0} from bundle \"{1}\".");
                 record.setSourceClassName(getClass().getName());
                 record.setSourceMethodName((key != null) ? "getObject" : "getKeys");
                 /*
@@ -245,9 +244,8 @@ public class IndexedResourceBundle extends ResourceBundle {
             final Logger logger = Logging.getLogger(IndexedResourceBundle.class);
             record.setLoggerName(logger.getName());
             logger.log(record);
-            final MissingResourceException error =
-                    new MissingResourceException(
-                            exception.getLocalizedMessage(), getClass().getName(), key);
+            final MissingResourceException error = new MissingResourceException(
+                    exception.getLocalizedMessage(), getClass().getName(), key);
             error.initCause(exception);
             throw error;
         }
@@ -484,8 +482,7 @@ public class IndexedResourceBundle extends ResourceBundle {
      * @see #getString(int,Object,Object,Object)
      * @see MessageFormat
      */
-    public final String getString(final int key, final Object arg0)
-            throws MissingResourceException {
+    public final String getString(final int key, final Object arg0) throws MissingResourceException {
         final String pattern = getString(key);
         final Object[] arguments = toArray(arg0);
         synchronized (this) {
@@ -516,8 +513,7 @@ public class IndexedResourceBundle extends ResourceBundle {
      * @return The formatted string for the given key.
      * @throws MissingResourceException If no object for the given key can be found.
      */
-    public final String getString(final int key, final Object arg0, final Object arg1)
-            throws MissingResourceException {
+    public final String getString(final int key, final Object arg0, final Object arg1) throws MissingResourceException {
         return getString(key, new Object[] {arg0, arg1});
     }
 
@@ -532,8 +528,7 @@ public class IndexedResourceBundle extends ResourceBundle {
      * @return The formatted string for the given key.
      * @throws MissingResourceException If no object for the given key can be found.
      */
-    public final String getString(
-            final int key, final Object arg0, final Object arg1, final Object arg2)
+    public final String getString(final int key, final Object arg0, final Object arg1, final Object arg2)
             throws MissingResourceException {
         return getString(key, new Object[] {arg0, arg1, arg2});
     }
@@ -551,11 +546,7 @@ public class IndexedResourceBundle extends ResourceBundle {
      * @throws MissingResourceException If no object for the given key can be found.
      */
     public final String getString(
-            final int key,
-            final Object arg0,
-            final Object arg1,
-            final Object arg2,
-            final Object arg3)
+            final int key, final Object arg0, final Object arg1, final Object arg2, final Object arg3)
             throws MissingResourceException {
         return getString(key, new Object[] {arg0, arg1, arg2, arg3});
     }
@@ -621,8 +612,7 @@ public class IndexedResourceBundle extends ResourceBundle {
      * @param arg1 The second parameter.
      * @return The log record.
      */
-    public LogRecord getLogRecord(
-            final Level level, final int key, final Object arg0, final Object arg1) {
+    public LogRecord getLogRecord(final Level level, final int key, final Object arg0, final Object arg1) {
         return getLogRecord(level, key, new Object[] {arg0, arg1});
     }
 
@@ -637,11 +627,7 @@ public class IndexedResourceBundle extends ResourceBundle {
      * @return The log record.
      */
     public LogRecord getLogRecord(
-            final Level level,
-            final int key,
-            final Object arg0,
-            final Object arg1,
-            final Object arg2) {
+            final Level level, final int key, final Object arg0, final Object arg1, final Object arg2) {
         return getLogRecord(level, key, new Object[] {arg0, arg1, arg2});
     }
 

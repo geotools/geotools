@@ -85,10 +85,9 @@ public final class Parameters {
     private static final double EPS = 1E-8;
 
     /** An empty parameter group. This group contains no parameters. */
-    public static ParameterDescriptorGroup EMPTY_GROUP =
-            new DefaultParameterDescriptorGroup(
-                    "empty", // TODO: localize
-                    new GeneralParameterDescriptor[0]);
+    public static ParameterDescriptorGroup EMPTY_GROUP = new DefaultParameterDescriptorGroup(
+            "empty", // TODO: localize
+            new GeneralParameterDescriptor[0]);
 
     /** Do not allows instantiation of this utility class. */
     private Parameters() {}
@@ -114,8 +113,7 @@ public final class Parameters {
             // the later case we could have (to be strict) to return a <? extends T> type.
             if (!type.equals(actual)) {
                 final Object arg0 = descriptor.getName().getCode();
-                throw new ClassCastException(
-                        MessageFormat.format(ErrorKeys.BAD_PARAMETER_TYPE_$2, arg0, actual));
+                throw new ClassCastException(MessageFormat.format(ErrorKeys.BAD_PARAMETER_TYPE_$2, arg0, actual));
             }
         }
         return (ParameterDescriptor) descriptor;
@@ -141,8 +139,7 @@ public final class Parameters {
             final Class<?> actual = descriptor.getValueClass();
             if (!type.equals(actual)) { // Same comment than cast(ParameterDescriptor)...
                 final Object arg0 = descriptor.getName().getCode();
-                throw new ClassCastException(
-                        MessageFormat.format(ErrorKeys.BAD_PARAMETER_TYPE_$2, arg0, actual));
+                throw new ClassCastException(MessageFormat.format(ErrorKeys.BAD_PARAMETER_TYPE_$2, arg0, actual));
             }
         }
         return (ParameterValue) value;
@@ -210,8 +207,7 @@ public final class Parameters {
      * @return true if parameter is valid.
      * @see Parameter#ensureValidValue
      */
-    private static boolean isValidValue(
-            final Object value, final ParameterDescriptor<?> descriptor) {
+    private static boolean isValidValue(final Object value, final ParameterDescriptor<?> descriptor) {
         final Set<?> validValues = descriptor.getValidValues();
         if (validValues != null && !validValues.contains(value)) {
             return false;
@@ -256,8 +252,7 @@ public final class Parameters {
      * @param maxDepth The maximal depth while descending down the parameter tree.
      * @return The set (possibly empty) of parameters with the given name.
      */
-    public static List<Object> search(
-            final GeneralParameterValue param, final String name, int maxDepth) {
+    public static List<Object> search(final GeneralParameterValue param, final String name, int maxDepth) {
         final List<Object> list = new ArrayList<>();
         search(param, name, maxDepth, list);
         return list;
@@ -265,10 +260,7 @@ public final class Parameters {
 
     /** Implementation of the search algorithm. The result is stored in the supplied set. */
     private static void search(
-            final GeneralParameterValue param,
-            final String name,
-            final int maxDepth,
-            final Collection<Object> list) {
+            final GeneralParameterValue param, final String name, final int maxDepth, final Collection<Object> list) {
         if (maxDepth >= 0) {
             if (AbstractIdentifiedObject.nameMatches(param.getDescriptor(), name)) {
                 list.add(param);

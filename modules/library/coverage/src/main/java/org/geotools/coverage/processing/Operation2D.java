@@ -72,8 +72,7 @@ public abstract class Operation2D extends AbstractOperation {
         properties.put(IdentifiedObject.NAME_KEY, new NamedIdentifier(Citations.OGC, "Source"));
         properties.put(IdentifiedObject.ALIAS_KEY, new NamedIdentifier(Citations.JAI, "source0"));
         SOURCE_0 =
-                new DefaultParameterDescriptor<>(
-                        properties, GridCoverage2D.class, null, null, null, null, null, true);
+                new DefaultParameterDescriptor<>(properties, GridCoverage2D.class, null, null, null, null, null, true);
     }
 
     /**
@@ -103,9 +102,7 @@ public abstract class Operation2D extends AbstractOperation {
      * @since 2.4
      */
     protected void extractSources(
-            final ParameterValueGroup parameters,
-            final String[] sourceNames,
-            final GridCoverage2D[] sources)
+            final ParameterValueGroup parameters, final String[] sourceNames, final GridCoverage2D[] sources)
             throws ParameterNotFoundException, InvalidParameterValueException {
         Utilities.ensureNonNull("parameters", parameters);
         Utilities.ensureNonNull("sourceNames", sourceNames);
@@ -122,9 +119,7 @@ public abstract class Operation2D extends AbstractOperation {
             if (!(candidate instanceof GridCoverage2D)) {
                 throw new InvalidParameterValueException(
                         MessageFormat.format(
-                                ErrorKeys.ILLEGAL_CLASS_$2,
-                                Classes.getClass(candidate),
-                                GridCoverage2D.class),
+                                ErrorKeys.ILLEGAL_CLASS_$2, Classes.getClass(candidate), GridCoverage2D.class),
                         sourceNames[i],
                         candidate);
             }

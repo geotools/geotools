@@ -204,8 +204,7 @@ public final class EarthGravitationalModel extends VerticalTransform {
                 throw new FileNotFoundException(filename);
             }
             try (LineNumberReader in =
-                    new LineNumberReader(
-                            new InputStreamReader(stream, StandardCharsets.ISO_8859_1))) {
+                    new LineNumberReader(new InputStreamReader(stream, StandardCharsets.ISO_8859_1))) {
                 String line;
                 while ((line = in.readLine()) != null) {
                     final StringTokenizer tokens = new StringTokenizer(line);
@@ -235,11 +234,8 @@ public final class EarthGravitationalModel extends VerticalTransform {
                          */
                         final Object arg1 = in.getLineNumber();
                         final IOException exception =
-                                new IOException(
-                                        MessageFormat.format(
-                                                ErrorKeys.BAD_LINE_IN_FILE_$2, filename, arg1));
-                        exception.initCause(
-                                cause); // TODO: Inline when we will be allowed to target Java 6.
+                                new IOException(MessageFormat.format(ErrorKeys.BAD_LINE_IN_FILE_$2, filename, arg1));
+                        exception.initCause(cause); // TODO: Inline when we will be allowed to target Java 6.
                         throw exception;
                     }
                 }
@@ -265,11 +261,7 @@ public final class EarthGravitationalModel extends VerticalTransform {
             for (int i = 2; i < c2n.length; i++) {
                 sign *= -1;
                 esqi *= esq;
-                c2n[i] =
-                        sign
-                                * (3 * esqi)
-                                / ((2 * i + 1) * (2 * i + 3))
-                                * (1 - i + (5 * i * c2 / esq));
+                c2n[i] = sign * (3 * esqi) / ((2 * i + 1) * (2 * i + 3)) * (1 - i + (5 * i * c2 / esq));
             }
             /* all nmax */ cnmGeopCoef[3] += c2n[1] / SQRT_05;
             /* all nmax */ cnmGeopCoef[10] += c2n[2] / 3;
@@ -292,8 +284,7 @@ public final class EarthGravitationalModel extends VerticalTransform {
                 final int n = 2 * j + 1;
                 final int ji = (j - i) * (j + i);
                 aClenshaw[ll] = Math.sqrt(n * (2 * j - 1) / (double) (ji));
-                bClenshaw[ll] =
-                        Math.sqrt(n * (j + i - 1) * (j - i - 1) / (double) (ji * (2 * j - 3)));
+                bClenshaw[ll] = Math.sqrt(n * (j + i - 1) * (j - i - 1) / (double) (ji * (2 * j - 3)));
             }
         }
     }
@@ -364,8 +355,7 @@ public final class EarthGravitationalModel extends VerticalTransform {
     @Override
     public ParameterValueGroup getParameterValues() {
         return new ParameterGroup(
-                getParameterDescriptors(),
-                new ParameterValue[] {new Parameter<>(Provider.ORDER, nmax)});
+                getParameterDescriptors(), new ParameterValue[] {new Parameter<>(Provider.ORDER, nmax)});
     }
 
     /**
@@ -379,28 +369,23 @@ public final class EarthGravitationalModel extends VerticalTransform {
          * The operation parameter descriptor for the maximum degree and order. The default value is
          * 180.
          */
-        public static final ParameterDescriptor<Integer> ORDER =
-                DefaultParameterDescriptor.create(
-                        Collections.singletonMap(
-                                NAME_KEY,
-                                new NamedIdentifier(
-                                        Citations.GEOTOOLS,
-                                        Vocabulary.formatInternational(VocabularyKeys.ORDER))),
-                        DEFAULT_ORDER,
-                        2,
-                        180,
-                        false);
+        public static final ParameterDescriptor<Integer> ORDER = DefaultParameterDescriptor.create(
+                Collections.singletonMap(
+                        NAME_KEY,
+                        new NamedIdentifier(Citations.GEOTOOLS, Vocabulary.formatInternational(VocabularyKeys.ORDER))),
+                DEFAULT_ORDER,
+                2,
+                180,
+                false);
 
         /** The parameters group. */
-        static final ParameterDescriptorGroup PARAMETERS =
-                createDescriptorGroup(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(
-                                    Citations.GEOTOOLS,
-                                    Vocabulary.formatInternational(
-                                            VocabularyKeys.EARTH_GRAVITATIONAL_MODEL))
-                        },
-                        new ParameterDescriptor[] {ORDER});
+        static final ParameterDescriptorGroup PARAMETERS = createDescriptorGroup(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(
+                            Citations.GEOTOOLS,
+                            Vocabulary.formatInternational(VocabularyKeys.EARTH_GRAVITATIONAL_MODEL))
+                },
+                new ParameterDescriptor[] {ORDER});
 
         /** Constructs a math transform provider. */
         public Provider() {
@@ -433,8 +418,7 @@ public final class EarthGravitationalModel extends VerticalTransform {
             try {
                 mt.load(filename);
             } catch (IOException e) {
-                throw new FactoryException(
-                        MessageFormat.format(ErrorKeys.CANT_READ_$1, filename), e);
+                throw new FactoryException(MessageFormat.format(ErrorKeys.CANT_READ_$1, filename), e);
             }
             return mt;
         }

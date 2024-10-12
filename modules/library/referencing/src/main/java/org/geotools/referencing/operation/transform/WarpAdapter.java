@@ -81,8 +81,7 @@ final class WarpAdapter extends Warp {
 
         final int xmax = xmin + width;
         final int ymax = ymin + height;
-        final int count =
-                ((width + (periodX - 1)) / periodX) * ((height + (periodY - 1)) / periodY);
+        final int count = ((width + (periodX - 1)) / periodX) * ((height + (periodY - 1)) / periodY);
         if (destRect == null) {
             destRect = new float[2 * count];
         }
@@ -90,18 +89,8 @@ final class WarpAdapter extends Warp {
         // potentially, we'll make it throw lots of TransformExceptions, without reporting or using
         // the stack trace. Avoid the overhead of filling them.
         final float[] finalDestRect = destRect;
-        return TransformException.runWithoutStackTraces(
-                () ->
-                        warpSparseRectInternal(
-                                xmin,
-                                ymin,
-                                periodX,
-                                periodY,
-                                finalDestRect,
-                                ymax,
-                                xmax,
-                                finalDestRect,
-                                count));
+        return TransformException.runWithoutStackTraces(() ->
+                warpSparseRectInternal(xmin, ymin, periodX, periodY, finalDestRect, ymax, xmax, finalDestRect, count));
     }
 
     private float[] warpSparseRectInternal(
@@ -196,8 +185,7 @@ final class WarpAdapter extends Warp {
             result = inverse.inverse().transform(result, result);
         } catch (TransformException exception) {
             throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.BAD_PARAMETER_$2, "sourcePt", sourcePt),
-                    exception);
+                    MessageFormat.format(ErrorKeys.BAD_PARAMETER_$2, "sourcePt", sourcePt), exception);
         }
         result.setLocation(result.getX() - 0.5, result.getY() - 0.5);
         return result;

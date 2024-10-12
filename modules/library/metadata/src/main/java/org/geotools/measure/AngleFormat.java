@@ -395,9 +395,7 @@ public class AngleFormat extends Format {
         Logger logger = Logger.getLogger(AngleFormat.class.getName());
         logger.log(
                 Level.WARNING,
-                String.format(
-                        "Can't round the value %s to the given precision %d",
-                        String.valueOf(value), precision));
+                String.format("Can't round the value %s to the given precision %d", String.valueOf(value), precision));
 
         return value;
     }
@@ -528,9 +526,7 @@ public class AngleFormat extends Format {
                          * code se répète, en mémorisant cette information comme largeur
                          * de ce champ.
                          */
-                        setSuffix(
-                                field - 1,
-                                (i > startPrefix) ? pattern.substring(startPrefix, i) : null);
+                        setSuffix(field - 1, (i > startPrefix) ? pattern.substring(startPrefix, i) : null);
                         int w = 1;
                         while (++i < length && pattern.charAt(i) == c) w++;
                         setWidth(field, w);
@@ -541,25 +537,21 @@ public class AngleFormat extends Format {
                          * d'occurences du caractères pour obtenir la précision.
                          */
                         switch (i - startPrefix) {
-                            case 0:
-                                {
-                                    decimalSeparator = false;
+                            case 0: {
+                                decimalSeparator = false;
+                                break;
+                            }
+                            case 1: {
+                                if (pattern.charAt(startPrefix) == '.') {
+                                    decimalSeparator = true;
                                     break;
                                 }
-                            case 1:
-                                {
-                                    if (pattern.charAt(startPrefix) == '.') {
-                                        decimalSeparator = true;
-                                        break;
-                                    }
-                                    // fall through
-                                }
-                            default:
-                                {
-                                    throw new IllegalArgumentException(
-                                            MessageFormat.format(
-                                                    ErrorKeys.ILLEGAL_ANGLE_PATTERN_$1, pattern));
-                                }
+                                // fall through
+                            }
+                            default: {
+                                throw new IllegalArgumentException(
+                                        MessageFormat.format(ErrorKeys.ILLEGAL_ANGLE_PATTERN_$1, pattern));
+                            }
                         }
                         int w = 1;
                         while (++i < length && pattern.charAt(i) == c) w++;
@@ -643,13 +635,10 @@ public class AngleFormat extends Format {
      *     {@link #SECONDS_FIELD} or {@link #HEMISPHERE_FIELD}.
      * @return The string buffer passed in as {@code toAppendTo}, with formatted text appended.
      */
-    public synchronized StringBuffer format(
-            final double angle, StringBuffer toAppendTo, final FieldPosition pos) {
+    public synchronized StringBuffer format(final double angle, StringBuffer toAppendTo, final FieldPosition pos) {
         if (Double.isNaN(angle) || Double.isInfinite(angle)) {
             return numberFormat.format(
-                    angle,
-                    toAppendTo,
-                    (pos != null) ? pos : new FieldPosition(DecimalFormat.INTEGER_FIELD));
+                    angle, toAppendTo, (pos != null) ? pos : new FieldPosition(DecimalFormat.INTEGER_FIELD));
         }
         double degrees = angle;
         /*
@@ -667,8 +656,7 @@ public class AngleFormat extends Format {
             degrees = tmp;
             if (minutes < 0 || minutes > 60) {
                 // Erreur d'arrondissement (parce que l'angle est trop élevé)
-                throw new IllegalArgumentException(
-                        MessageFormat.format(ErrorKeys.ANGLE_OVERFLOW_$1, angle));
+                throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.ANGLE_OVERFLOW_$1, angle));
             }
             if (width2 != 0) {
                 tmp = (int) minutes; // Arrondie vers 0 même si négatif.
@@ -676,8 +664,7 @@ public class AngleFormat extends Format {
                 minutes = tmp;
                 if (secondes < 0 || secondes > 60) {
                     // Erreur d'arrondissement (parce que l'angle est trop élevé)
-                    throw new IllegalArgumentException(
-                            MessageFormat.format(ErrorKeys.ANGLE_OVERFLOW_$1, angle));
+                    throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.ANGLE_OVERFLOW_$1, angle));
                 }
                 tmp = (int) (secondes / 60);
                 secondes -= 60 * tmp;
@@ -726,32 +713,13 @@ public class AngleFormat extends Format {
         }
 
         toAppendTo =
-                formatField(
-                        degrees,
-                        toAppendTo,
-                        field == DEGREES_FIELD ? pos : null,
-                        width0,
-                        width1 == 0,
-                        suffix0);
+                formatField(degrees, toAppendTo, field == DEGREES_FIELD ? pos : null, width0, width1 == 0, suffix0);
         if (!Double.isNaN(minutes)) {
             toAppendTo =
-                    formatField(
-                            minutes,
-                            toAppendTo,
-                            field == MINUTES_FIELD ? pos : null,
-                            width1,
-                            width2 == 0,
-                            suffix1);
+                    formatField(minutes, toAppendTo, field == MINUTES_FIELD ? pos : null, width1, width2 == 0, suffix1);
         }
         if (!Double.isNaN(secondes)) {
-            toAppendTo =
-                    formatField(
-                            secondes,
-                            toAppendTo,
-                            field == SECONDS_FIELD ? pos : null,
-                            width2,
-                            true,
-                            suffix2);
+            toAppendTo = formatField(secondes, toAppendTo, field == SECONDS_FIELD ? pos : null, width2, true, suffix2);
         }
         return toAppendTo;
     }
@@ -831,8 +799,7 @@ public class AngleFormat extends Format {
      *     {@link Number}.
      */
     @Override
-    public synchronized StringBuffer format(
-            final Object obj, StringBuffer toAppendTo, final FieldPosition pos)
+    public synchronized StringBuffer format(final Object obj, StringBuffer toAppendTo, final FieldPosition pos)
             throws IllegalArgumentException {
         if (obj instanceof Latitude) {
             return format(((Latitude) obj).degrees(), toAppendTo, pos, NORTH, SOUTH);
@@ -875,13 +842,12 @@ public class AngleFormat extends Format {
                 return format(number, toAppendTo, pos, NORTH, SOUTH);
             case LONGITUDE:
                 return format(number, toAppendTo, pos, EAST, WEST);
-            case ALTITUDE:
-                {
-                    numberFormat.setMinimumIntegerDigits(1);
-                    numberFormat.setMinimumFractionDigits(0);
-                    numberFormat.setMaximumFractionDigits(2);
-                    return numberFormat.format(number, toAppendTo, (pos != null) ? pos : dummy);
-                }
+            case ALTITUDE: {
+                numberFormat.setMinimumIntegerDigits(1);
+                numberFormat.setMinimumFractionDigits(0);
+                numberFormat.setMaximumFractionDigits(2);
+                return numberFormat.format(number, toAppendTo, (pos != null) ? pos : dummy);
+            }
         }
     }
 
@@ -901,11 +867,7 @@ public class AngleFormat extends Format {
      * @return Le buffer {@code toAppendTo} par commodité.
      */
     private StringBuffer format(
-            final double angle,
-            StringBuffer toAppendTo,
-            final FieldPosition pos,
-            final char north,
-            final char south) {
+            final double angle, StringBuffer toAppendTo, final FieldPosition pos, final char north, final char south) {
         toAppendTo = format(Math.abs(angle), toAppendTo, pos);
         final int start = toAppendTo.length();
         toAppendTo.append(angle < 0 ? south : north);
@@ -1019,8 +981,7 @@ public class AngleFormat extends Format {
      * @return L'angle lu.
      */
     @SuppressWarnings("fallthrough")
-    private synchronized Angle parse(
-            final String source, final ParsePosition pos, final boolean spaceAsSeparator) {
+    private synchronized Angle parse(final String source, final ParsePosition pos, final boolean spaceAsSeparator) {
         double degrees = Double.NaN;
         double minutes = Double.NaN;
         double secondes = Double.NaN;
@@ -1076,11 +1037,10 @@ public class AngleFormat extends Format {
                      * retourné dans le buffer pour un éventuel traitement par le prochain appel
                      * à la méthode 'parse' et on n'ira pas plus loin dans l'analyse de la chaîne.
                      */
-                case PREFIX_FIELD:
-                    {
-                        pos.setIndex(indexEndField);
-                        break BigBoss;
-                    }
+                case PREFIX_FIELD: {
+                    pos.setIndex(indexEndField);
+                    break BigBoss;
+                }
                     /* ----------------------------------------------
                      * ANALYSE DU SYMBOLE SUIVANT LES PRÉSUMÉS DEGRÉS
                      * ----------------------------------------------
@@ -1088,12 +1048,11 @@ public class AngleFormat extends Format {
                      * la correction dans les variables 'degrés' et 'secondes' et on considère
                      * que la lecture est terminée.
                      */
-                case SECONDS_FIELD:
-                    {
-                        secondes = degrees;
-                        degrees = Double.NaN;
-                        break BigBoss;
-                    }
+                case SECONDS_FIELD: {
+                    secondes = degrees;
+                    degrees = Double.NaN;
+                    break BigBoss;
+                }
                     /* ----------------------------------------------
                      * ANALYSE DU SYMBOLE SUIVANT LES PRÉSUMÉS DEGRÉS
                      * ----------------------------------------------
@@ -1101,12 +1060,11 @@ public class AngleFormat extends Format {
                      * Si oui, on fera comme si le symbole des degrés avait été là. Sinon,
                      * on considèrera que la lecture est terminée.
                      */
-                default:
-                    {
-                        if (width1 == 0) break BigBoss;
-                        if (!spaceAsSeparator) break BigBoss;
-                        // fall through
-                    }
+                default: {
+                    if (width1 == 0) break BigBoss;
+                    if (!spaceAsSeparator) break BigBoss;
+                    // fall through
+                }
                     /* ----------------------------------------------
                      * ANALYSE DU SYMBOLE SUIVANT LES PRÉSUMÉS DEGRÉS
                      * ----------------------------------------------
@@ -1114,89 +1072,82 @@ public class AngleFormat extends Format {
                      * suivit des minutes. On procèdera donc à la lecture du prochain nombre, puis
                      * à l'analyse du symbole qui le suit.
                      */
-                case DEGREES_FIELD:
-                    {
-                        final int indexStartField = index = pos.getIndex();
-                        while (index < length && Character.isSpaceChar(source.charAt(index))) {
-                            index++;
-                        }
-                        if (!spaceAsSeparator && index != indexStartField) {
-                            break BigBoss;
-                        }
-                        pos.setIndex(index);
-                        fieldObject = numberFormat.parse(source, pos);
-                        if (fieldObject == null) {
-                            pos.setIndex(indexStartField);
-                            break BigBoss;
-                        }
-                        indexEndField = pos.getIndex();
-                        minutes = fieldObject.doubleValue();
-                        switch (skipSuffix(
-                                source, pos, (width1 != 0) ? MINUTES_FIELD : PREFIX_FIELD)) {
-                                /* ------------------------------------------------
-                                 * ANALYSE DU SYMBOLE SUIVANT LES PRÉSUMÉES MINUTES
-                                 * ------------------------------------------------
-                                 * Le symbole trouvé est bel et bien celui des minutes.
-                                 * On continuera le bloc pour tenter de lire les secondes.
-                                 */
-                            case MINUTES_FIELD:
-                                {
-                                    break; // continue outer switch
-                                }
-                                /* ------------------------------------------------
-                                 * ANALYSE DU SYMBOLE SUIVANT LES PRÉSUMÉES MINUTES
-                                 * ------------------------------------------------
-                                 * Un symbole des secondes a été trouvé au lieu du symbole des minutes
-                                 * attendu. On fera la modification dans les variables 'secondes' et
-                                 * 'minutes' et on considèrera la lecture terminée.
-                                 */
-                            case SECONDS_FIELD:
-                                {
-                                    secondes = minutes;
-                                    minutes = Double.NaN;
-                                    break BigBoss;
-                                }
-                                /* ------------------------------------------------
-                                 * ANALYSE DU SYMBOLE SUIVANT LES PRÉSUMÉES MINUTES
-                                 * ------------------------------------------------
-                                 * Aucun symbole n'a été trouvé. Les minutes étaient-elles attendues?
-                                 * Si oui, on les acceptera et on tentera de lire les secondes. Si non,
-                                 * on retourne le texte lu dans le buffer et on termine la lecture.
-                                 */
-                            default:
-                                {
-                                    if (width1 != 0) break; // Continue outer switch
-                                    // fall through
-                                }
-                                /* ------------------------------------------------
-                                 * ANALYSE DU SYMBOLE SUIVANT LES PRÉSUMÉES MINUTES
-                                 * ------------------------------------------------
-                                 * Au lieu des minutes, le symbole lu est celui des degrés. On considère
-                                 * qu'il appartient au prochain angle. On retournera donc le texte lu dans
-                                 * le buffer et on terminera la lecture.
-                                 */
-                            case DEGREES_FIELD:
-                                {
-                                    pos.setIndex(indexStartField);
-                                    minutes = Double.NaN;
-                                    break BigBoss;
-                                }
-                                /* ------------------------------------------------
-                                 * ANALYSE DU SYMBOLE SUIVANT LES PRÉSUMÉES MINUTES
-                                 * ------------------------------------------------
-                                 * Après les minutes (qu'on accepte), on a trouvé le préfix du prochain
-                                 * angle à lire. On retourne ce préfix dans le buffer et on considère la
-                                 * lecture terminée.
-                                 */
-                            case PREFIX_FIELD:
-                                {
-                                    pos.setIndex(indexEndField);
-                                    break BigBoss;
-                                }
-                        }
-                        swapDM = false;
-                        // fall through
+                case DEGREES_FIELD: {
+                    final int indexStartField = index = pos.getIndex();
+                    while (index < length && Character.isSpaceChar(source.charAt(index))) {
+                        index++;
                     }
+                    if (!spaceAsSeparator && index != indexStartField) {
+                        break BigBoss;
+                    }
+                    pos.setIndex(index);
+                    fieldObject = numberFormat.parse(source, pos);
+                    if (fieldObject == null) {
+                        pos.setIndex(indexStartField);
+                        break BigBoss;
+                    }
+                    indexEndField = pos.getIndex();
+                    minutes = fieldObject.doubleValue();
+                    switch (skipSuffix(source, pos, (width1 != 0) ? MINUTES_FIELD : PREFIX_FIELD)) {
+                            /* ------------------------------------------------
+                             * ANALYSE DU SYMBOLE SUIVANT LES PRÉSUMÉES MINUTES
+                             * ------------------------------------------------
+                             * Le symbole trouvé est bel et bien celui des minutes.
+                             * On continuera le bloc pour tenter de lire les secondes.
+                             */
+                        case MINUTES_FIELD: {
+                            break; // continue outer switch
+                        }
+                            /* ------------------------------------------------
+                             * ANALYSE DU SYMBOLE SUIVANT LES PRÉSUMÉES MINUTES
+                             * ------------------------------------------------
+                             * Un symbole des secondes a été trouvé au lieu du symbole des minutes
+                             * attendu. On fera la modification dans les variables 'secondes' et
+                             * 'minutes' et on considèrera la lecture terminée.
+                             */
+                        case SECONDS_FIELD: {
+                            secondes = minutes;
+                            minutes = Double.NaN;
+                            break BigBoss;
+                        }
+                            /* ------------------------------------------------
+                             * ANALYSE DU SYMBOLE SUIVANT LES PRÉSUMÉES MINUTES
+                             * ------------------------------------------------
+                             * Aucun symbole n'a été trouvé. Les minutes étaient-elles attendues?
+                             * Si oui, on les acceptera et on tentera de lire les secondes. Si non,
+                             * on retourne le texte lu dans le buffer et on termine la lecture.
+                             */
+                        default: {
+                            if (width1 != 0) break; // Continue outer switch
+                            // fall through
+                        }
+                            /* ------------------------------------------------
+                             * ANALYSE DU SYMBOLE SUIVANT LES PRÉSUMÉES MINUTES
+                             * ------------------------------------------------
+                             * Au lieu des minutes, le symbole lu est celui des degrés. On considère
+                             * qu'il appartient au prochain angle. On retournera donc le texte lu dans
+                             * le buffer et on terminera la lecture.
+                             */
+                        case DEGREES_FIELD: {
+                            pos.setIndex(indexStartField);
+                            minutes = Double.NaN;
+                            break BigBoss;
+                        }
+                            /* ------------------------------------------------
+                             * ANALYSE DU SYMBOLE SUIVANT LES PRÉSUMÉES MINUTES
+                             * ------------------------------------------------
+                             * Après les minutes (qu'on accepte), on a trouvé le préfix du prochain
+                             * angle à lire. On retourne ce préfix dans le buffer et on considère la
+                             * lecture terminée.
+                             */
+                        case PREFIX_FIELD: {
+                            pos.setIndex(indexEndField);
+                            break BigBoss;
+                        }
+                    }
+                    swapDM = false;
+                    // fall through
+                }
                     /* ----------------------------------------------
                      * ANALYSE DU SYMBOLE SUIVANT LES PRÉSUMÉS DEGRÉS
                      * ----------------------------------------------
@@ -1205,78 +1156,72 @@ public class AngleFormat extends Format {
                      * minutes sont peut-être suivies des secondes. On tentera donc de lire le
                      * prochain nombre.
                      */
-                case MINUTES_FIELD:
-                    {
-                        if (swapDM) {
-                            minutes = degrees;
-                            degrees = Double.NaN;
-                        }
-                        final int indexStartField = index = pos.getIndex();
-                        while (index < length && Character.isSpaceChar(source.charAt(index))) {
-                            index++;
-                        }
-                        if (!spaceAsSeparator && index != indexStartField) {
-                            break BigBoss;
-                        }
-                        pos.setIndex(index);
-                        fieldObject = numberFormat.parse(source, pos);
-                        if (fieldObject == null) {
-                            pos.setIndex(indexStartField);
-                            break;
-                        }
-                        indexEndField = pos.getIndex();
-                        secondes = fieldObject.doubleValue();
-                        switch (skipSuffix(
-                                source, pos, (width2 != 0) ? MINUTES_FIELD : PREFIX_FIELD)) {
-                                /* -------------------------------------------------
-                                 * ANALYSE DU SYMBOLE SUIVANT LES PRÉSUMÉES SECONDES
-                                 * -------------------------------------------------
-                                 * Un symbole des secondes explicite a été trouvée.
-                                 * La lecture est donc terminée.
-                                 */
-                            case SECONDS_FIELD:
-                                {
-                                    break;
-                                }
-                                /* -------------------------------------------------
-                                 * ANALYSE DU SYMBOLE SUIVANT LES PRÉSUMÉES SECONDES
-                                 * -------------------------------------------------
-                                 * Aucun symbole n'a été trouvée. Attendait-on des secondes? Si oui, les
-                                 * secondes seront acceptées. Sinon, elles seront retournées au buffer.
-                                 */
-                            default:
-                                {
-                                    if (width2 != 0) break;
-                                    // fall through
-                                }
-                                /* -------------------------------------------------
-                                 * ANALYSE DU SYMBOLE SUIVANT LES PRÉSUMÉES SECONDES
-                                 * -------------------------------------------------
-                                 * Au lieu des degrés, on a trouvé un symbole des minutes ou des
-                                 * secondes. On renvoie donc le nombre et son symbole dans le buffer.
-                                 */
-                            case MINUTES_FIELD:
-                            case DEGREES_FIELD:
-                                {
-                                    pos.setIndex(indexStartField);
-                                    secondes = Double.NaN;
-                                    break;
-                                }
-                                /* -------------------------------------------------
-                                 * ANALYSE DU SYMBOLE SUIVANT LES PRÉSUMÉES SECONDES
-                                 * -------------------------------------------------
-                                 * Après les secondes (qu'on accepte), on a trouvé le préfix du prochain
-                                 * angle à lire. On retourne ce préfix dans le buffer et on considère la
-                                 * lecture terminée.
-                                 */
-                            case PREFIX_FIELD:
-                                {
-                                    pos.setIndex(indexEndField);
-                                    break BigBoss;
-                                }
-                        }
+                case MINUTES_FIELD: {
+                    if (swapDM) {
+                        minutes = degrees;
+                        degrees = Double.NaN;
+                    }
+                    final int indexStartField = index = pos.getIndex();
+                    while (index < length && Character.isSpaceChar(source.charAt(index))) {
+                        index++;
+                    }
+                    if (!spaceAsSeparator && index != indexStartField) {
+                        break BigBoss;
+                    }
+                    pos.setIndex(index);
+                    fieldObject = numberFormat.parse(source, pos);
+                    if (fieldObject == null) {
+                        pos.setIndex(indexStartField);
                         break;
                     }
+                    indexEndField = pos.getIndex();
+                    secondes = fieldObject.doubleValue();
+                    switch (skipSuffix(source, pos, (width2 != 0) ? MINUTES_FIELD : PREFIX_FIELD)) {
+                            /* -------------------------------------------------
+                             * ANALYSE DU SYMBOLE SUIVANT LES PRÉSUMÉES SECONDES
+                             * -------------------------------------------------
+                             * Un symbole des secondes explicite a été trouvée.
+                             * La lecture est donc terminée.
+                             */
+                        case SECONDS_FIELD: {
+                            break;
+                        }
+                            /* -------------------------------------------------
+                             * ANALYSE DU SYMBOLE SUIVANT LES PRÉSUMÉES SECONDES
+                             * -------------------------------------------------
+                             * Aucun symbole n'a été trouvée. Attendait-on des secondes? Si oui, les
+                             * secondes seront acceptées. Sinon, elles seront retournées au buffer.
+                             */
+                        default: {
+                            if (width2 != 0) break;
+                            // fall through
+                        }
+                            /* -------------------------------------------------
+                             * ANALYSE DU SYMBOLE SUIVANT LES PRÉSUMÉES SECONDES
+                             * -------------------------------------------------
+                             * Au lieu des degrés, on a trouvé un symbole des minutes ou des
+                             * secondes. On renvoie donc le nombre et son symbole dans le buffer.
+                             */
+                        case MINUTES_FIELD:
+                        case DEGREES_FIELD: {
+                            pos.setIndex(indexStartField);
+                            secondes = Double.NaN;
+                            break;
+                        }
+                            /* -------------------------------------------------
+                             * ANALYSE DU SYMBOLE SUIVANT LES PRÉSUMÉES SECONDES
+                             * -------------------------------------------------
+                             * Après les secondes (qu'on accepte), on a trouvé le préfix du prochain
+                             * angle à lire. On retourne ce préfix dans le buffer et on considère la
+                             * lecture terminée.
+                             */
+                        case PREFIX_FIELD: {
+                            pos.setIndex(indexEndField);
+                            break BigBoss;
+                        }
+                    }
+                    break;
+                }
             }
         }
         ////////////////////////////////////////////////////////////////////
@@ -1394,8 +1339,7 @@ public class AngleFormat extends Format {
         for (int index = origin; index < length; index++) {
             if (!Character.isWhitespace(source.charAt(index))) {
                 index = Math.max(origin, pos.getErrorIndex());
-                throw new ParseException(
-                        "Cannot parse '" + source + "', error at index " + index + ".", index);
+                throw new ParseException("Cannot parse '" + source + "', error at index " + index + ".", index);
             }
         }
         return angle;
@@ -1470,8 +1414,7 @@ public class AngleFormat extends Format {
                     && Objects.equals(suffix1, cast.suffix1)
                     && Objects.equals(suffix2, cast.suffix2)
                     && Objects.equals(
-                            numberFormat.getDecimalFormatSymbols(),
-                            cast.numberFormat.getDecimalFormatSymbols());
+                            numberFormat.getDecimalFormatSymbols(), cast.numberFormat.getDecimalFormatSymbols());
         } else {
             return false;
         }

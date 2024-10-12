@@ -68,8 +68,7 @@ public class DocumentFactory {
      * setting is used to alivate XXE attacks, preventing both {@link #VALIDATION_HINT} and {@link
      * XMLHandlerHints#ENTITY_RESOLVER} from being effective.
      */
-    public static final String DISABLE_EXTERNAL_ENTITIES =
-            "DocumentFactory_DISABLE_EXTERNAL_ENTITIES";
+    public static final String DISABLE_EXTERNAL_ENTITIES = "DocumentFactory_DISABLE_EXTERNAL_ENTITIES";
 
     /**
      * calls getInstance(URI,Level) with Level.WARNING
@@ -78,8 +77,7 @@ public class DocumentFactory {
      * @return Object
      * @see DocumentFactory#getInstance(URI, Map, Level)
      */
-    public static Object getInstance(URI desiredDocument, Map<String, Object> hints)
-            throws SAXException {
+    public static Object getInstance(URI desiredDocument, Map<String, Object> hints) throws SAXException {
         return getInstance(desiredDocument, hints, Level.WARNING);
     }
 
@@ -92,8 +90,7 @@ public class DocumentFactory {
      * @return Object
      * @see DocumentFactory#getInstance(URI, Map, Level, boolean)
      */
-    public static Object getInstance(URI desiredDocument, Map<String, Object> hints, Level level)
-            throws SAXException {
+    public static Object getInstance(URI desiredDocument, Map<String, Object> hints, Level level) throws SAXException {
         SAXParser parser = getParser(hints);
 
         XMLSAXHandler xmlContentHandler = new XMLSAXHandler(desiredDocument, hints);
@@ -117,8 +114,7 @@ public class DocumentFactory {
      * @return Object
      * @see DocumentFactory#getInstance(InputStream, Map, Level, boolean)
      */
-    public static Object getInstance(InputStream is, Map<String, Object> hints, Level level)
-            throws SAXException {
+    public static Object getInstance(InputStream is, Map<String, Object> hints, Level level) throws SAXException {
         SAXParser parser = getParser(hints);
 
         XMLSAXHandler xmlContentHandler = new XMLSAXHandler(hints);

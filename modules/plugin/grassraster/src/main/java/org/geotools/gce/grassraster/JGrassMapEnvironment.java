@@ -152,60 +152,23 @@ public class JGrassMapEnvironment {
         mapName = CELL.getName();
         MAPSET = CELL.getParentFile().getParentFile();
         LOCATION = MAPSET.getParentFile();
-        String permanentFolderPath =
-                LOCATION.getAbsolutePath() + File.separator + JGrassConstants.PERMANENT_MAPSET;
+        String permanentFolderPath = LOCATION.getAbsolutePath() + File.separator + JGrassConstants.PERMANENT_MAPSET;
         PERMANENT_MAPSET = new File(permanentFolderPath);
-        DEFAULT_WIND =
-                new File(permanentFolderPath + File.separator + JGrassConstants.DEFAULT_WIND);
+        DEFAULT_WIND = new File(permanentFolderPath + File.separator + JGrassConstants.DEFAULT_WIND);
         PROJ_INFO = new File(permanentFolderPath + File.separator + JGrassConstants.PROJ_INFO);
         PROJ_WKT = new File(permanentFolderPath + File.separator + JGrassConstants.PROJ_WKT);
         PROJ_UNITS = new File(permanentFolderPath + File.separator + JGrassConstants.PROJ_UNITS);
 
         String mapsetPath = MAPSET.getAbsolutePath();
         WIND = new File(mapsetPath + File.separator + JGrassConstants.WIND);
-        FCELL =
-                new File(
-                        mapsetPath
-                                + File.separator
-                                + JGrassConstants.FCELL
-                                + File.separator
-                                + mapName);
-        CELLHD =
-                new File(
-                        mapsetPath
-                                + File.separator
-                                + JGrassConstants.CELLHD
-                                + File.separator
-                                + mapName);
-        CATS =
-                new File(
-                        mapsetPath
-                                + File.separator
-                                + JGrassConstants.CATS
-                                + File.separator
-                                + mapName);
-        COLR =
-                new File(
-                        mapsetPath
-                                + File.separator
-                                + JGrassConstants.COLR
-                                + File.separator
-                                + mapName);
-        HIST =
-                new File(
-                        mapsetPath
-                                + File.separator
-                                + JGrassConstants.HIST
-                                + File.separator
-                                + mapName);
+        FCELL = new File(mapsetPath + File.separator + JGrassConstants.FCELL + File.separator + mapName);
+        CELLHD = new File(mapsetPath + File.separator + JGrassConstants.CELLHD + File.separator + mapName);
+        CATS = new File(mapsetPath + File.separator + JGrassConstants.CATS + File.separator + mapName);
+        COLR = new File(mapsetPath + File.separator + JGrassConstants.COLR + File.separator + mapName);
+        HIST = new File(mapsetPath + File.separator + JGrassConstants.HIST + File.separator + mapName);
 
         String cellMiscPath =
-                mapsetPath
-                        + File.separator
-                        + JGrassConstants.CELL_MISC
-                        + File.separator
-                        + mapName
-                        + File.separator;
+                mapsetPath + File.separator + JGrassConstants.CELL_MISC + File.separator + mapName + File.separator;
         CELLMISC_NULL = new File(cellMiscPath + JGrassConstants.CELLMISC_NULL);
         CELLMISC_FORMAT = new File(cellMiscPath + JGrassConstants.CELLMISC_FORMAT);
         CELLMISC_QUANT = new File(cellMiscPath + JGrassConstants.CELLMISC_QUANT);
@@ -222,13 +185,7 @@ public class JGrassMapEnvironment {
      * @param mapName name of the GRASS raster map
      */
     public JGrassMapEnvironment(File mapsetFile, String mapName) {
-        this(
-                new File(
-                        mapsetFile.getAbsolutePath()
-                                + File.separator
-                                + JGrassConstants.CELL
-                                + File.separator
-                                + mapName));
+        this(new File(mapsetFile.getAbsolutePath() + File.separator + JGrassConstants.CELL + File.separator + mapName));
     }
 
     /**
@@ -241,72 +198,34 @@ public class JGrassMapEnvironment {
      * @param reclassedMap the name of the reclassed map
      */
     public void setReclassed(String reclassedMapset, String reclassedMap) {
-        String reclassedCell =
-                LOCATION.getAbsolutePath()
-                        + File.separator
-                        + reclassedMapset
-                        + File.separator
-                        + JGrassConstants.CELL
-                        + File.separator
-                        + reclassedMap;
+        String reclassedCell = LOCATION.getAbsolutePath()
+                + File.separator
+                + reclassedMapset
+                + File.separator
+                + JGrassConstants.CELL
+                + File.separator
+                + reclassedMap;
         CELL = new File(reclassedCell);
         mapName = CELL.getName();
         MAPSET = CELL.getParentFile().getParentFile();
         LOCATION = MAPSET.getParentFile();
-        String permanentFolderPath =
-                LOCATION.getAbsolutePath() + File.separator + JGrassConstants.PERMANENT_MAPSET;
+        String permanentFolderPath = LOCATION.getAbsolutePath() + File.separator + JGrassConstants.PERMANENT_MAPSET;
         PERMANENT_MAPSET = new File(permanentFolderPath);
-        DEFAULT_WIND =
-                new File(permanentFolderPath + File.separator + JGrassConstants.DEFAULT_WIND);
+        DEFAULT_WIND = new File(permanentFolderPath + File.separator + JGrassConstants.DEFAULT_WIND);
         PROJ_INFO = new File(permanentFolderPath + File.separator + JGrassConstants.PROJ_INFO);
         PROJ_WKT = new File(permanentFolderPath + File.separator + JGrassConstants.PROJ_WKT);
         PROJ_UNITS = new File(permanentFolderPath + File.separator + JGrassConstants.PROJ_UNITS);
 
         String mapsetPath = MAPSET.getAbsolutePath();
         WIND = new File(mapsetPath + File.separator + JGrassConstants.WIND);
-        FCELL =
-                new File(
-                        mapsetPath
-                                + File.separator
-                                + JGrassConstants.FCELL
-                                + File.separator
-                                + mapName);
-        CELLHD =
-                new File(
-                        mapsetPath
-                                + File.separator
-                                + JGrassConstants.CELLHD
-                                + File.separator
-                                + mapName);
-        CATS =
-                new File(
-                        mapsetPath
-                                + File.separator
-                                + JGrassConstants.CATS
-                                + File.separator
-                                + mapName);
-        COLR =
-                new File(
-                        mapsetPath
-                                + File.separator
-                                + JGrassConstants.COLR
-                                + File.separator
-                                + mapName);
-        HIST =
-                new File(
-                        mapsetPath
-                                + File.separator
-                                + JGrassConstants.HIST
-                                + File.separator
-                                + mapName);
+        FCELL = new File(mapsetPath + File.separator + JGrassConstants.FCELL + File.separator + mapName);
+        CELLHD = new File(mapsetPath + File.separator + JGrassConstants.CELLHD + File.separator + mapName);
+        CATS = new File(mapsetPath + File.separator + JGrassConstants.CATS + File.separator + mapName);
+        COLR = new File(mapsetPath + File.separator + JGrassConstants.COLR + File.separator + mapName);
+        HIST = new File(mapsetPath + File.separator + JGrassConstants.HIST + File.separator + mapName);
 
         String cellMiscPath =
-                mapsetPath
-                        + File.separator
-                        + JGrassConstants.CELL_MISC
-                        + File.separator
-                        + mapName
-                        + File.separator;
+                mapsetPath + File.separator + JGrassConstants.CELL_MISC + File.separator + mapName + File.separator;
         CELLMISC_NULL = new File(cellMiscPath + JGrassConstants.CELLMISC_NULL);
         CELLMISC_FORMAT = new File(cellMiscPath + JGrassConstants.CELLMISC_FORMAT);
         CELLMISC_QUANT = new File(cellMiscPath + JGrassConstants.CELLMISC_QUANT);
@@ -716,8 +635,7 @@ public class JGrassMapEnvironment {
      */
     public String getLegendString() throws IOException {
         checkReader();
-        String legendString =
-                coverageMetadataMap.get(GrassBinaryImageMetadata.COLOR_RULES_DESCRIPTOR);
+        String legendString = coverageMetadataMap.get(GrassBinaryImageMetadata.COLOR_RULES_DESCRIPTOR);
         return legendString;
     }
 
@@ -728,8 +646,7 @@ public class JGrassMapEnvironment {
      */
     public String getCategoriesString() throws IOException {
         checkReader();
-        String categoriesString =
-                coverageMetadataMap.get(GrassBinaryImageMetadata.CATEGORIES_DESCRIPTOR);
+        String categoriesString = coverageMetadataMap.get(GrassBinaryImageMetadata.CATEGORIES_DESCRIPTOR);
         return categoriesString;
     }
 
@@ -789,8 +706,7 @@ public class JGrassMapEnvironment {
         if (coverageReader == null) {
             coverageReader = new GrassBinaryImageReader(new GrassBinaryImageReaderSpi());
             coverageReader.setInput(getCELL());
-            coverageMetadataMap =
-                    ((GrassBinaryImageMetadata) coverageReader.getImageMetadata(0)).toHashMap();
+            coverageMetadataMap = ((GrassBinaryImageMetadata) coverageReader.getImageMetadata(0)).toHashMap();
         }
     }
 

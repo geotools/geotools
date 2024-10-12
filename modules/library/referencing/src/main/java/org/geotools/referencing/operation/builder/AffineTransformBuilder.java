@@ -65,8 +65,7 @@ public class AffineTransformBuilder extends ProjectiveTransformBuilder {
      * @param vectors list of {@linkplain MappedPosition MappedPosition}
      */
     public AffineTransformBuilder(List<MappedPosition> vectors)
-            throws IllegalArgumentException, MismatchedDimensionException,
-                    MismatchedReferenceSystemException {
+            throws IllegalArgumentException, MismatchedDimensionException, MismatchedReferenceSystemException {
         super.setMappedPositions(vectors);
     }
 
@@ -115,29 +114,20 @@ public class AffineTransformBuilder extends ProjectiveTransformBuilder {
 
         // Creates X matrix
         for (int j = 0; j < (numRow / 2); j++) {
-            A.setRow(
-                    j,
-                    new double[] {
-                        getSourcePoints()[j].getCoordinate()[0],
-                        getSourcePoints()[j].getCoordinate()[1],
-                        1,
-                        0,
-                        0,
-                        0
-                    });
+            A.setRow(j, new double[] {
+                getSourcePoints()[j].getCoordinate()[0], getSourcePoints()[j].getCoordinate()[1], 1, 0, 0, 0
+            });
         }
 
         for (int j = numRow / 2; j < numRow; j++) {
-            A.setRow(
-                    j,
-                    new double[] {
-                        0,
-                        0,
-                        0,
-                        getSourcePoints()[j - (numRow / 2)].getCoordinate()[0],
-                        getSourcePoints()[j - (numRow / 2)].getCoordinate()[1],
-                        1
-                    });
+            A.setRow(j, new double[] {
+                0,
+                0,
+                0,
+                getSourcePoints()[j - (numRow / 2)].getCoordinate()[0],
+                getSourcePoints()[j - (numRow / 2)].getCoordinate()[1],
+                1
+            });
         }
     }
 }

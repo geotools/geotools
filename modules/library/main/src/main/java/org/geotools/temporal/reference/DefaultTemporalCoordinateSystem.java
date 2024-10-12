@@ -42,10 +42,7 @@ public class DefaultTemporalCoordinateSystem extends DefaultTemporalReferenceSys
     private InternationalString interval;
 
     public DefaultTemporalCoordinateSystem(
-            ReferenceIdentifier name,
-            Extent domainOfValidity,
-            Date origin,
-            InternationalString interval) {
+            ReferenceIdentifier name, Extent domainOfValidity, Date origin, InternationalString interval) {
         super(name, domainOfValidity);
         this.origin = origin;
         this.interval = interval;
@@ -114,8 +111,7 @@ public class DefaultTemporalCoordinateSystem extends DefaultTemporalReferenceSys
                 return null;
             }
         } else {
-            throw new IllegalArgumentException(
-                    "The TemporalCoordinate argument must be a TemporalCoordinate ! ");
+            throw new IllegalArgumentException("The TemporalCoordinate argument must be a TemporalCoordinate ! ");
         }
     }
 
@@ -160,11 +156,9 @@ public class DefaultTemporalCoordinateSystem extends DefaultTemporalReferenceSys
         }
         if (object instanceof DefaultTemporalCoordinateSystem && super.equals(object)) {
             if (object instanceof DefaultTemporalCoordinateSystem) {
-                final DefaultTemporalCoordinateSystem that =
-                        (DefaultTemporalCoordinateSystem) object;
+                final DefaultTemporalCoordinateSystem that = (DefaultTemporalCoordinateSystem) object;
 
-                return Utilities.equals(this.interval, that.interval)
-                        && Utilities.equals(this.origin, that.origin);
+                return Utilities.equals(this.interval, that.interval) && Utilities.equals(this.origin, that.origin);
             }
         }
         return false;

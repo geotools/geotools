@@ -81,12 +81,8 @@ class VectorLayerMetadata {
      */
     public LinkedHashMap<String, Class> getFieldBindings() {
         return fields.entrySet().stream()
-                .collect(
-                        Collectors.toMap(
-                                e -> e.getKey(),
-                                e -> toBinding(e.getValue()),
-                                (v1, v2) -> v1,
-                                LinkedHashMap::new));
+                .collect(Collectors.toMap(
+                        e -> e.getKey(), e -> toBinding(e.getValue()), (v1, v2) -> v1, LinkedHashMap::new));
     }
 
     /** Tolerant type mapper, maps Number to Double, Doolean to boolean, any other name to String */

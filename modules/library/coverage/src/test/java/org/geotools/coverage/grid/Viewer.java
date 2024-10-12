@@ -267,8 +267,7 @@ public class Viewer extends JPanel {
             out.println(" inclusive)");
             out.println("and [options] includes:");
             out.println();
-            out.println(
-                    "  -operation=[s]  An operation name to apply (e.g. \"GradientMagniture\").");
+            out.println("  -operation=[s]  An operation name to apply (e.g. \"GradientMagniture\").");
             out.println("                  For a list of available operations, run the following:");
             out.println("                  java org.geotools.coverage.processing.DefaultProcessor");
             out.println("  -palette        Dumps RGB codes to standard output.");

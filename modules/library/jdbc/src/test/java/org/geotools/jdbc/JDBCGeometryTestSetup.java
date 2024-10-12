@@ -57,18 +57,17 @@ public abstract class JDBCGeometryTestSetup extends JDBCDelegatingTestSetup {
 
     /** The list of geometry classes the datastore will be tested against. */
     protected List<Class> getGeometryClasses() {
-        return Arrays.asList(
-                new Class[] {
-                    Point.class,
-                    LineString.class,
-                    LinearRing.class,
-                    Polygon.class,
-                    MultiPoint.class,
-                    MultiLineString.class,
-                    MultiPolygon.class,
-                    Geometry.class,
-                    GeometryCollection.class
-                });
+        return Arrays.asList(new Class[] {
+            Point.class,
+            LineString.class,
+            LinearRing.class,
+            Polygon.class,
+            MultiPoint.class,
+            MultiLineString.class,
+            MultiPolygon.class,
+            Geometry.class,
+            GeometryCollection.class
+        });
     }
 
     /**

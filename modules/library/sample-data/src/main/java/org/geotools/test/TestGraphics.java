@@ -349,31 +349,20 @@ public class TestGraphics extends Graphics2D {
     }
 
     @Override
-    public boolean drawImage(
-            Image img, int x, int y, int width, int height, ImageObserver observer) {
+    public boolean drawImage(Image img, int x, int y, int width, int height, ImageObserver observer) {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean drawImage(Image img, int x, int y, int width, int height, Color bgcolor, ImageObserver observer) {
         // TODO Auto-generated method stub
         return false;
     }
 
     @Override
     public boolean drawImage(
-            Image img, int x, int y, int width, int height, Color bgcolor, ImageObserver observer) {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public boolean drawImage(
-            Image img,
-            int dx1,
-            int dy1,
-            int dx2,
-            int dy2,
-            int sx1,
-            int sy1,
-            int sx2,
-            int sy2,
-            ImageObserver observer) {
+            Image img, int dx1, int dy1, int dx2, int dy2, int sx1, int sy1, int sx2, int sy2, ImageObserver observer) {
         // TODO Auto-generated method stub
         return false;
     }

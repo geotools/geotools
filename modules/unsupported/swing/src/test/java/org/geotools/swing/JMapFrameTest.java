@@ -98,14 +98,12 @@ public class JMapFrameTest extends GraphicsTestBase<FrameFixture, Frame, FrameDr
         showWithStaticMethod(mapContent);
 
         // map pane displayed
-        JPanelFixture mapPane =
-                windowFixture.panel(
-                        new GenericTypeMatcher<JPanel>(JPanel.class) {
-                            @Override
-                            protected boolean isMatching(JPanel component) {
-                                return component instanceof JMapPane;
-                            }
-                        });
+        JPanelFixture mapPane = windowFixture.panel(new GenericTypeMatcher<JPanel>(JPanel.class) {
+            @Override
+            protected boolean isMatching(JPanel component) {
+                return component instanceof JMapPane;
+            }
+        });
 
         mapPane.requireVisible();
 
@@ -113,14 +111,12 @@ public class JMapFrameTest extends GraphicsTestBase<FrameFixture, Frame, FrameDr
         windowFixture.toolBar().requireEnabled().requireVisible();
 
         // status bar displayed
-        JPanelFixture statusBar =
-                windowFixture.panel(
-                        new GenericTypeMatcher<JPanel>(JPanel.class) {
-                            @Override
-                            protected boolean isMatching(JPanel component) {
-                                return component instanceof JMapStatusBar;
-                            }
-                        });
+        JPanelFixture statusBar = windowFixture.panel(new GenericTypeMatcher<JPanel>(JPanel.class) {
+            @Override
+            protected boolean isMatching(JPanel component) {
+                return component instanceof JMapStatusBar;
+            }
+        });
 
         statusBar.requireVisible();
     }
@@ -147,8 +143,7 @@ public class JMapFrameTest extends GraphicsTestBase<FrameFixture, Frame, FrameDr
 
     @Test
     public void toolbarButton_ZoomOut() throws Exception {
-        assertToolbarButtonLoadsCorrectTool(
-                JMapFrame.TOOLBAR_ZOOMOUT_BUTTON_NAME, ZoomOutTool.class);
+        assertToolbarButtonLoadsCorrectTool(JMapFrame.TOOLBAR_ZOOMOUT_BUTTON_NAME, ZoomOutTool.class);
     }
 
     @Test
@@ -164,8 +159,8 @@ public class JMapFrameTest extends GraphicsTestBase<FrameFixture, Frame, FrameDr
         assertTrue(mapContent.getViewport().getBounds().covers(WORLD));
     }
 
-    private void assertToolbarButtonLoadsCorrectTool(
-            String btnName, Class<? extends CursorTool> expectedToolClass) throws Exception {
+    private void assertToolbarButtonLoadsCorrectTool(String btnName, Class<? extends CursorTool> expectedToolClass)
+            throws Exception {
 
         showWithStaticMethod(mapContent);
 
@@ -174,7 +169,8 @@ public class JMapFrameTest extends GraphicsTestBase<FrameFixture, Frame, FrameDr
         button.click();
         windowFixture.robot().waitForIdle();
 
-        CursorTool cursorTool = ((JMapFrame) windowFixture.target()).getMapPane().getCursorTool();
+        CursorTool cursorTool =
+                ((JMapFrame) windowFixture.target()).getMapPane().getCursorTool();
         if (expectedToolClass == null) {
             assertNull(cursorTool);
         } else {

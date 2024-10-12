@@ -62,117 +62,58 @@ public class CSWConfiguration extends Configuration {
     @Override
     protected void registerBindings(Map<QName, Object> bindings) {
         // generated code, see the main method
-        bindings.put(
-                CSW.AbstractQueryType,
-                new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.AbstractQueryType));
-        bindings.put(
-                CSW.AbstractRecordType,
-                new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.AbstractRecordType));
-        bindings.put(
-                CSW.AcknowledgementType,
-                new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.AcknowledgementType));
-        bindings.put(
-                CSW.BriefRecordType,
-                new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.BriefRecordType));
-        bindings.put(
-                CSW.CapabilitiesType,
-                new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.CapabilitiesType));
-        bindings.put(
-                CSW.ConceptualSchemeType,
-                new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.ConceptualSchemeType));
-        bindings.put(
-                CSW.DCMIRecordType,
-                new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.DCMIRecordType));
+        bindings.put(CSW.AbstractQueryType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.AbstractQueryType));
+        bindings.put(CSW.AbstractRecordType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.AbstractRecordType));
+        bindings.put(CSW.AcknowledgementType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.AcknowledgementType));
+        bindings.put(CSW.BriefRecordType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.BriefRecordType));
+        bindings.put(CSW.CapabilitiesType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.CapabilitiesType));
+        bindings.put(CSW.ConceptualSchemeType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.ConceptualSchemeType));
+        bindings.put(CSW.DCMIRecordType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.DCMIRecordType));
         bindings.put(CSW.DeleteType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.DeleteType));
         bindings.put(
                 CSW.DescribeRecordResponseType,
                 new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.DescribeRecordResponseType));
+        bindings.put(CSW.DescribeRecordType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.DescribeRecordType));
         bindings.put(
-                CSW.DescribeRecordType,
-                new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.DescribeRecordType));
-        bindings.put(
-                CSW.DistributedSearchType,
-                new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.DistributedSearchType));
-        bindings.put(
-                CSW.DomainValuesType,
-                new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.DomainValuesType));
-        bindings.put(
-                CSW.EchoedRequestType,
-                new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.EchoedRequestType));
+                CSW.DistributedSearchType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.DistributedSearchType));
+        bindings.put(CSW.DomainValuesType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.DomainValuesType));
+        bindings.put(CSW.EchoedRequestType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.EchoedRequestType));
         bindings.put(CSW.ElementSetNameType, new ElementSetNameTypeBinding());
-        bindings.put(
-                CSW.ElementSetType,
-                new EnumSimpleBinding(ElementSetType.class, CSW.ElementSetType));
+        bindings.put(CSW.ElementSetType, new EnumSimpleBinding(ElementSetType.class, CSW.ElementSetType));
         bindings.put(CSW.EmptyType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.EmptyType));
+        bindings.put(CSW.GetCapabilitiesType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.GetCapabilitiesType));
         bindings.put(
-                CSW.GetCapabilitiesType,
-                new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.GetCapabilitiesType));
-        bindings.put(
-                CSW.GetDomainResponseType,
-                new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.GetDomainResponseType));
-        bindings.put(
-                CSW.GetDomainType,
-                new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.GetDomainType));
+                CSW.GetDomainResponseType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.GetDomainResponseType));
+        bindings.put(CSW.GetDomainType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.GetDomainType));
         bindings.put(
                 CSW.GetRecordByIdResponseType,
                 new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.GetRecordByIdResponseType));
+        bindings.put(CSW.GetRecordByIdType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.GetRecordByIdType));
         bindings.put(
-                CSW.GetRecordByIdType,
-                new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.GetRecordByIdType));
-        bindings.put(
-                CSW.GetRecordsResponseType,
-                new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.GetRecordsResponseType));
-        bindings.put(
-                CSW.GetRecordsType,
-                new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.GetRecordsType));
-        bindings.put(
-                CSW.HarvestResponseType,
-                new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.HarvestResponseType));
-        bindings.put(
-                CSW.HarvestType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.HarvestType));
-        bindings.put(
-                CSW.InsertResultType,
-                new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.InsertResultType));
+                CSW.GetRecordsResponseType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.GetRecordsResponseType));
+        bindings.put(CSW.GetRecordsType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.GetRecordsType));
+        bindings.put(CSW.HarvestResponseType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.HarvestResponseType));
+        bindings.put(CSW.HarvestType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.HarvestType));
+        bindings.put(CSW.InsertResultType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.InsertResultType));
         bindings.put(CSW.InsertType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.InsertType));
-        bindings.put(
-                CSW.ListOfValuesType,
-                new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.ListOfValuesType));
-        bindings.put(
-                CSW.QueryConstraintType,
-                new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.QueryConstraintType));
+        bindings.put(CSW.ListOfValuesType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.ListOfValuesType));
+        bindings.put(CSW.QueryConstraintType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.QueryConstraintType));
         bindings.put(CSW.QueryType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.QueryType));
-        bindings.put(
-                CSW.RangeOfValuesType,
-                new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.RangeOfValuesType));
-        bindings.put(
-                CSW.RecordPropertyType,
-                new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.RecordPropertyType));
+        bindings.put(CSW.RangeOfValuesType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.RangeOfValuesType));
+        bindings.put(CSW.RecordPropertyType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.RecordPropertyType));
         bindings.put(CSW.RecordType, new RecordBinding());
-        bindings.put(
-                CSW.RequestBaseType,
-                new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.RequestBaseType));
-        bindings.put(
-                CSW.RequestStatusType,
-                new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.RequestStatusType));
+        bindings.put(CSW.RequestBaseType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.RequestBaseType));
+        bindings.put(CSW.RequestStatusType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.RequestStatusType));
         bindings.put(CSW.ResultType, new EnumSimpleBinding(ResultType.class, CSW.ResultType));
-        bindings.put(
-                CSW.SchemaComponentType,
-                new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.SchemaComponentType));
-        bindings.put(
-                CSW.SearchResultsType,
-                new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.SearchResultsType));
-        bindings.put(
-                CSW.SummaryRecordType,
-                new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.SummaryRecordType));
+        bindings.put(CSW.SchemaComponentType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.SchemaComponentType));
+        bindings.put(CSW.SearchResultsType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.SearchResultsType));
+        bindings.put(CSW.SummaryRecordType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.SummaryRecordType));
         bindings.put(
                 CSW.TransactionResponseType,
                 new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.TransactionResponseType));
         bindings.put(
-                CSW.TransactionSummaryType,
-                new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.TransactionSummaryType));
-        bindings.put(
-                CSW.TransactionType,
-                new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.TransactionType));
+                CSW.TransactionSummaryType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.TransactionSummaryType));
+        bindings.put(CSW.TransactionType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.TransactionType));
         bindings.put(CSW.TypeNameListType, new TypeNameListTypeBinding());
         /**
          * bindings.put(CSW.UpdateType, new ComplexEMFBinding(Csw20Factory.eINSTANCE,
@@ -227,12 +168,11 @@ public class CSWConfiguration extends Configuration {
         for (Field f : CSW.class.getFields()) {
             if ((f.getModifiers() & (Modifier.STATIC | Modifier.FINAL)) != 0
                     && f.getType().equals(QName.class)) {
-                System.out.println(
-                        "bindings.put(CSW."
-                                + f.getName()
-                                + ", new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW."
-                                + f.getName()
-                                + "));");
+                System.out.println("bindings.put(CSW."
+                        + f.getName()
+                        + ", new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW."
+                        + f.getName()
+                        + "));");
             }
         }
     }

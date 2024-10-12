@@ -68,8 +68,7 @@ public class StyleTransformFunctionTest {
 
     @Test
     public void testFillLayerWithFunctionsZoomAndProperty() throws IOException, ParseException {
-        JSONObject styleJson =
-                MapboxTestUtils.parseTestStyle("fillStyleFunctionTestZoomAndProperty.json");
+        JSONObject styleJson = MapboxTestUtils.parseTestStyle("fillStyleFunctionTestZoomAndProperty.json");
 
         // Parse to MBStyle
         MBStyle mbStyle = new MBStyle(styleJson);

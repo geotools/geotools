@@ -93,12 +93,10 @@ public class DefaultDriver implements Driver {
     }
 
     @Override
-    public boolean canAccess(
-            final DriverCapabilities operation, final Map<String, Serializable> params) {
+    public boolean canAccess(final DriverCapabilities operation, final Map<String, Serializable> params) {
 
         if (!getDriverCapabilities().contains(operation))
-            throw new UnsupportedOperationException(
-                    "Operation " + operation + " is not supported by this driver");
+            throw new UnsupportedOperationException("Operation " + operation + " is not supported by this driver");
         switch (operation) {
             case CONNECT:
                 return canConnect(params);
@@ -120,8 +118,7 @@ public class DefaultDriver implements Driver {
             throws IOException {
 
         if (!getDriverCapabilities().contains(operation)) {
-            throw new UnsupportedOperationException(
-                    "Operation " + operation + " is not supported by this driver");
+            throw new UnsupportedOperationException("Operation " + operation + " is not supported by this driver");
         }
         switch (operation) {
             case CONNECT:
@@ -191,15 +188,13 @@ public class DefaultDriver implements Driver {
         return false;
     }
 
-    protected CoverageAccess connect(
-            Map<String, Serializable> params, Hints hints, ProgressListener listener)
+    protected CoverageAccess connect(Map<String, Serializable> params, Hints hints, ProgressListener listener)
             throws IOException {
 
         throw new UnsupportedOperationException("Operation not currently implemented");
     }
 
-    protected CoverageAccess create(
-            Map<String, Serializable> params, Hints hints, ProgressListener listener)
+    protected CoverageAccess create(Map<String, Serializable> params, Hints hints, ProgressListener listener)
             throws IOException {
         throw new UnsupportedOperationException("Operation not currently implemented");
     }
@@ -216,8 +211,7 @@ public class DefaultDriver implements Driver {
         return Collections.emptyMap();
     }
 
-    protected CoverageAccess delete(
-            Map<String, Serializable> params, Hints hints, ProgressListener listener)
+    protected CoverageAccess delete(Map<String, Serializable> params, Hints hints, ProgressListener listener)
             throws IOException {
         throw new UnsupportedOperationException("Operation not currently implemented");
     }

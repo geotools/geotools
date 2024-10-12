@@ -62,8 +62,7 @@ import org.geotools.util.factory.Hints;
  * @author Simone Giannecchini, GeoSolutions
  * @see ColorMapTransform
  */
-class ColorMapNode extends StyleVisitorCoverageProcessingNodeAdapter
-        implements StyleVisitor, CoverageProcessingNode {
+class ColorMapNode extends StyleVisitorCoverageProcessingNodeAdapter implements StyleVisitor, CoverageProcessingNode {
 
     public static int TYPE_NONE = -1;
     /*
@@ -148,8 +147,7 @@ class ColorMapNode extends StyleVisitorCoverageProcessingNodeAdapter
                 if (!cm.hasAlpha() && cm.getNumColorComponents() != 2) {
                     // let's check, it might
                     throw new IllegalArgumentException(
-                            MessageFormat.format(
-                                    ErrorKeys.BAD_BAND_NUMBER_$1, Integer.valueOf(numSD)));
+                            MessageFormat.format(ErrorKeys.BAD_BAND_NUMBER_$1, Integer.valueOf(numSD)));
                 }
             }
             // /////////////////////////////////////////////////////////////////////
@@ -205,8 +203,7 @@ class ColorMapNode extends StyleVisitorCoverageProcessingNodeAdapter
     }
 
     /** */
-    private static double[] preparaNoDataValues(final GridSampleDimension candidateSD)
-            throws IllegalStateException {
+    private static double[] preparaNoDataValues(final GridSampleDimension candidateSD) throws IllegalStateException {
         double[] candidateNoDataValues = candidateSD.getNoDataValues();
         // if no nodata categories are ready we'll add a fictitious one
         // @todo TODO make this code configurable
@@ -247,8 +244,7 @@ class ColorMapNode extends StyleVisitorCoverageProcessingNodeAdapter
                 1,
                 hints,
                 SimpleInternationalString.wrap("ColorMapNode"),
-                SimpleInternationalString.wrap(
-                        "Node which applies a ColorMapTransform following SLD 1.0 spec."));
+                SimpleInternationalString.wrap("Node which applies a ColorMapTransform following SLD 1.0 spec."));
     }
 
     /**
@@ -263,7 +259,8 @@ class ColorMapNode extends StyleVisitorCoverageProcessingNodeAdapter
         //
         ///////////////////////////////////////////////////////////////////
         final CoverageProcessingNode sourceNode = getSource(0);
-        GridCoverageRendererUtilities.ensureSourceNotNull(sourceNode, this.getName().toString());
+        GridCoverageRendererUtilities.ensureSourceNotNull(
+                sourceNode, this.getName().toString());
         final GridCoverage2D sourceCoverage = (GridCoverage2D) sourceNode.getOutput();
         GridCoverageRendererUtilities.ensureSourceNotNull(
                 sourceCoverage, this.getName().toString());
@@ -288,8 +285,7 @@ class ColorMapNode extends StyleVisitorCoverageProcessingNodeAdapter
             w.setNoData(noDataProperty != null ? noDataProperty.getAsRange() : null);
             w.classify(colorMapTransform, null);
             final RenderedOp classified =
-                    w
-                            .getRenderedOperation(); // JAI.create(RasterClassifierOpImage.OPERATION_NAME,pbj);
+                    w.getRenderedOperation(); // JAI.create(RasterClassifierOpImage.OPERATION_NAME,pbj);
 
             ////
             //
@@ -301,10 +297,8 @@ class ColorMapNode extends StyleVisitorCoverageProcessingNodeAdapter
             assert outputChannels == 1 || outputChannels == 3 || outputChannels == 4;
             final GridSampleDimension[] sd = new GridSampleDimension[numBands];
             for (int i = 0; i < numBands; i++)
-                sd[i] =
-                        new GridSampleDimension(
-                                TypeMap.getColorInterpretation(classified.getColorModel(), i)
-                                        .name());
+                sd[i] = new GridSampleDimension(TypeMap.getColorInterpretation(classified.getColorModel(), i)
+                        .name());
 
             ////
             //

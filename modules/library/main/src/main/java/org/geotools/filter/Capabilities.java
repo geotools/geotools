@@ -166,15 +166,9 @@ public class Capabilities {
 
     static {
         logicalNames = new HashMap<>();
-        logicalNames.put(
-                And.class,
-                "And"); // not an operator name, see scalarCapabilities.hasLogicalOperators()
-        logicalNames.put(
-                Or.class,
-                "Or"); // not an operator name, see scalarCapabilities.hasLogicalOperators()
-        logicalNames.put(
-                Not.class,
-                "Not"); // not an operator name, see scalarCapabilities.hasLogicalOperators()
+        logicalNames.put(And.class, "And"); // not an operator name, see scalarCapabilities.hasLogicalOperators()
+        logicalNames.put(Or.class, "Or"); // not an operator name, see scalarCapabilities.hasLogicalOperators()
+        logicalNames.put(Not.class, "Not"); // not an operator name, see scalarCapabilities.hasLogicalOperators()
     }
 
     private static Map<Class<?>, String> filterNames;
@@ -210,8 +204,7 @@ public class Capabilities {
         exprNames.put(Function.class, "Function");
     }
 
-    private static final OperatorNameFilterVisitor operationNameVisitor =
-            new OperatorNameFilterVisitor();
+    private static final OperatorNameFilterVisitor operationNameVisitor = new OperatorNameFilterVisitor();
 
     /** Support for logical types AND, OR and NOT */
     public static Capabilities LOGICAL;
@@ -231,8 +224,7 @@ public class Capabilities {
         SIMPLE_COMPARISONS = new Capabilities();
         SIMPLE_COMPARISONS.addType(PropertyIsEqualTo.class); // COMPARE_EQUALS|
         SIMPLE_COMPARISONS.addType(PropertyIsGreaterThan.class); // COMPARE_GREATER_THAN
-        SIMPLE_COMPARISONS.addType(
-                PropertyIsGreaterThanOrEqualTo.class); // COMPARE_GREATER_THAN_EQUAL
+        SIMPLE_COMPARISONS.addType(PropertyIsGreaterThanOrEqualTo.class); // COMPARE_GREATER_THAN_EQUAL
         SIMPLE_COMPARISONS.addType(PropertyIsLessThan.class); // COMPARE_LESS_THAN
         SIMPLE_COMPARISONS.addType(PropertyIsLessThanOrEqualTo.class); // COMPARE_LESS_THAN_EQUAL
         SIMPLE_COMPARISONS.addType(PropertyIsNotEqualTo.class); // COMPARE_NOT_EQUALS;
@@ -318,8 +310,7 @@ public class Capabilities {
         if (name == null) {
             return;
         } else if (spatialNames.containsValue(name)) {
-            SpatialOperatorsImpl operators =
-                    contents.getSpatialCapabilities().getSpatialOperators();
+            SpatialOperatorsImpl operators = contents.getSpatialCapabilities().getSpatialOperators();
             if (operators.getOperator(name) == null) {
                 SpatialOperatorImpl operator = new SpatialOperatorImpl(name);
                 // default JTS?
@@ -336,15 +327,13 @@ public class Capabilities {
                 operators.getOperators().add(operator);
             }
         } else if (scalarNames.containsValue(name)) {
-            ComparisonOperatorsImpl operators =
-                    contents.getScalarCapabilities().getComparisonOperators();
+            ComparisonOperatorsImpl operators = contents.getScalarCapabilities().getComparisonOperators();
             if (operators.getOperator(name) == null) {
                 OperatorImpl operator = new OperatorImpl(name);
                 operators.getOperators().add(operator);
             }
         } else if (arithmaticNames.containsValue(name)) {
-            ArithmeticOperatorsImpl operators =
-                    contents.getScalarCapabilities().getArithmeticOperators();
+            ArithmeticOperatorsImpl operators = contents.getScalarCapabilities().getArithmeticOperators();
             operators.setSimpleArithmetic(true);
         } else if (logicalNames.containsValue(name)) {
             contents.getScalarCapabilities().setLogicalOperators(true);

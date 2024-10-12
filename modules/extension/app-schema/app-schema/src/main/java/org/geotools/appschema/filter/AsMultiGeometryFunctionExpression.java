@@ -49,11 +49,8 @@ import org.locationtech.jts.geom.Polygon;
  */
 public class AsMultiGeometryFunctionExpression extends FunctionExpressionImpl {
 
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "asMultiGeometry",
-                    parameter("multi-geometry", Geometry.class),
-                    parameter("geometry", Geometry.class));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "asMultiGeometry", parameter("multi-geometry", Geometry.class), parameter("geometry", Geometry.class));
 
     public AsMultiGeometryFunctionExpression() {
         super(NAME);
@@ -76,8 +73,7 @@ public class AsMultiGeometryFunctionExpression extends FunctionExpressionImpl {
 
                 return wrap((Geometry) value);
             } else {
-                throw new IllegalArgumentException(
-                        "function argument did not evaluate to " + Geometry.class);
+                throw new IllegalArgumentException("function argument did not evaluate to " + Geometry.class);
             }
         }
 
@@ -88,8 +84,7 @@ public class AsMultiGeometryFunctionExpression extends FunctionExpressionImpl {
         if (geometry instanceof Point) {
             return geometry.getFactory().createMultiPoint(new Point[] {(Point) geometry});
         } else if (geometry instanceof LineString) {
-            return geometry.getFactory()
-                    .createMultiLineString(new LineString[] {(LineString) geometry});
+            return geometry.getFactory().createMultiLineString(new LineString[] {(LineString) geometry});
         } else if (geometry instanceof Polygon) {
             return geometry.getFactory().createMultiPolygon(new Polygon[] {(Polygon) geometry});
         }

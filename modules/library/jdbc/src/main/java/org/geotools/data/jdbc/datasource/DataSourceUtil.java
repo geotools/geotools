@@ -43,8 +43,7 @@ public class DataSourceUtil {
     public static ManageableDataSource buildDefaultDataSource(
             String url, String driverName, String username, String password, String validationQuery)
             throws DataSourceException {
-        return buildDefaultDataSource(
-                url, driverName, username, password, 10, 1, validationQuery, false, 0);
+        return buildDefaultDataSource(url, driverName, username, password, 10, 1, validationQuery, false, 0);
     }
 
     /**

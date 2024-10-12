@@ -89,8 +89,7 @@ public class Vocabulary extends IndexedResourceBundle {
      * @todo Current implementation just invokes {@link #format}. Need to format only when {@code
      *     toString(Locale)} is invoked.
      */
-    public static InternationalString formatInternational(
-            final int key, final Object arg0, final Object arg1) {
+    public static InternationalString formatInternational(final int key, final Object arg0, final Object arg1) {
         return new org.geotools.util.SimpleInternationalString(format(key, arg0, arg1));
     }
 
@@ -146,8 +145,7 @@ public class Vocabulary extends IndexedResourceBundle {
      * @return The formatted string for the given key.
      * @throws MissingResourceException If no object for the given key can be found.
      */
-    public static String format(final int key, final Object arg0, final Object arg1)
-            throws MissingResourceException {
+    public static String format(final int key, final Object arg0, final Object arg1) throws MissingResourceException {
         return getResources(null).getString(key, arg0, arg1);
     }
 
@@ -162,8 +160,7 @@ public class Vocabulary extends IndexedResourceBundle {
      * @return The formatted string for the given key.
      * @throws MissingResourceException If no object for the given key can be found.
      */
-    public static String format(
-            final int key, final Object arg0, final Object arg1, final Object arg2)
+    public static String format(final int key, final Object arg0, final Object arg1, final Object arg2)
             throws MissingResourceException {
         return getResources(null).getString(key, arg0, arg1, arg2);
     }

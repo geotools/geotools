@@ -21,8 +21,7 @@ import org.geotools.api.filter.PropertyIsGreaterThanOrEqualTo;
 import org.geotools.api.filter.expression.Expression;
 
 /** @author jdeolive */
-public class IsGreaterThanOrEqualToImpl extends MultiCompareFilterImpl
-        implements PropertyIsGreaterThanOrEqualTo {
+public class IsGreaterThanOrEqualToImpl extends MultiCompareFilterImpl implements PropertyIsGreaterThanOrEqualTo {
 
     protected IsGreaterThanOrEqualToImpl(Expression expression1, Expression expression2) {
         this(expression1, expression2, false);
@@ -32,13 +31,11 @@ public class IsGreaterThanOrEqualToImpl extends MultiCompareFilterImpl
         super(expr1, expr2, matchCase);
     }
 
-    protected IsGreaterThanOrEqualToImpl(
-            Expression expression1, Expression expression2, MatchAction matchAction) {
+    protected IsGreaterThanOrEqualToImpl(Expression expression1, Expression expression2, MatchAction matchAction) {
         this(expression1, expression2, false, matchAction);
     }
 
-    public IsGreaterThanOrEqualToImpl(
-            Expression expr1, Expression expr2, boolean matchCase, MatchAction matchAction) {
+    public IsGreaterThanOrEqualToImpl(Expression expr1, Expression expr2, boolean matchCase, MatchAction matchAction) {
         super(expr1, expr2, matchCase, matchAction);
     }
 

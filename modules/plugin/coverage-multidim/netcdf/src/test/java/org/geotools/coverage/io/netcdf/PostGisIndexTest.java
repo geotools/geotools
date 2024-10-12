@@ -78,8 +78,7 @@ public final class PostGisIndexTest extends OnlineTestCase {
     public void setUpInternal() throws Exception {
         String netcdfPropertiesPath =
                 TestData.file(this, "netcdf.projections.properties").getCanonicalPath();
-        System.setProperty(
-                NetCDFCRSAuthorityFactory.SYSTEM_DEFAULT_USER_PROJ_FILE, netcdfPropertiesPath);
+        System.setProperty(NetCDFCRSAuthorityFactory.SYSTEM_DEFAULT_USER_PROJ_FILE, netcdfPropertiesPath);
         Hints.putSystemDefault(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.TRUE);
     }
 
@@ -207,8 +206,7 @@ public final class PostGisIndexTest extends OnlineTestCase {
         }
     }
 
-    private File createDatastoreProperties(File dir, Map<String, String> override)
-            throws IOException {
+    private File createDatastoreProperties(File dir, Map<String, String> override) throws IOException {
         File outFile = new File(dir, "mddatastore.properties");
         try (FileWriter out = new FileWriter(outFile)) {
             // Preparing custom multidim datastore properties
@@ -268,8 +266,7 @@ public final class PostGisIndexTest extends OnlineTestCase {
             final String[] typeNames = cs.getTypeNames();
             for (String typeName : typeNames) {
 
-                final List<CoverageSlice> granules =
-                        cs.getGranules(new Query(typeName, Filter.INCLUDE));
+                final List<CoverageSlice> granules = cs.getGranules(new Query(typeName, Filter.INCLUDE));
                 checkGranules(granules);
             }
             // dipose reader and read it again once the catalog has been created
@@ -278,8 +275,7 @@ public final class PostGisIndexTest extends OnlineTestCase {
             cs = reader.getCatalog();
             String typeName = cs.getTypeNames()[0];
             assertNotNull(cs);
-            final List<CoverageSlice> granules =
-                    cs.getGranules(new Query(typeName, Filter.INCLUDE));
+            final List<CoverageSlice> granules = cs.getGranules(new Query(typeName, Filter.INCLUDE));
             checkGranules(granules);
 
         } finally {
@@ -305,10 +301,9 @@ public final class PostGisIndexTest extends OnlineTestCase {
         FileUtils.copyFileToDirectory(nc1, mosaic);
 
         // The indexer
-        String indexer =
-                "TimeAttribute=time\n"
-                        + "Schema=the_geom:Polygon,location:String,imageindex:Integer,time:java.util.Date\n"
-                        + "AuxiliaryDatastoreFile=mddatastore.properties";
+        String indexer = "TimeAttribute=time\n"
+                + "Schema=the_geom:Polygon,location:String,imageindex:Integer,time:java.util.Date\n"
+                + "AuxiliaryDatastoreFile=mddatastore.properties";
         FileUtils.writeStringToFile(new File(mosaic, "indexer.properties"), indexer, "UTF-8");
 
         // using an H2 based datastore for imageMosaic index
@@ -339,16 +334,12 @@ public final class PostGisIndexTest extends OnlineTestCase {
                 SimpleFeature f = it.next();
                 assertEquals("polyphemus_20130301_test.nc", f.getAttribute("location"));
                 assertEquals(0, f.getAttribute("imageindex"));
-                assertEquals(
-                        "2013-03-01T00:00:00.000Z",
-                        ConvertersHack.convert(f.getAttribute("time"), String.class));
+                assertEquals("2013-03-01T00:00:00.000Z", ConvertersHack.convert(f.getAttribute("time"), String.class));
                 assertTrue(it.hasNext());
                 f = it.next();
                 assertEquals("polyphemus_20130301_test.nc", f.getAttribute("location"));
                 assertEquals(1, f.getAttribute("imageindex"));
-                assertEquals(
-                        "2013-03-01T01:00:00.000Z",
-                        ConvertersHack.convert(f.getAttribute("time"), String.class));
+                assertEquals("2013-03-01T01:00:00.000Z", ConvertersHack.convert(f.getAttribute("time"), String.class));
             }
 
             // close the reader and re-open it
@@ -405,8 +396,7 @@ public final class PostGisIndexTest extends OnlineTestCase {
 
             for (File f : files) {
                 cleanupFolders(f);
-                if (f.getName().equalsIgnoreCase(GOME_DIR)
-                        || f.getName().equalsIgnoreCase(UTM_DIR)) {
+                if (f.getName().equalsIgnoreCase(GOME_DIR) || f.getName().equalsIgnoreCase(UTM_DIR)) {
 
                     f.delete();
                 }
@@ -426,18 +416,15 @@ public final class PostGisIndexTest extends OnlineTestCase {
     private void removeTables(String[] tables, String database) throws Exception {
         // delete tables
         Class.forName("org.postgresql.Driver");
-        try (Connection connection =
-                        DriverManager.getConnection(
-                                "jdbc:postgresql://"
-                                        + fixture.getProperty("host")
-                                        + ":"
-                                        + fixture.getProperty("port")
-                                        + "/"
-                                        + (database != null
-                                                ? database
-                                                : fixture.getProperty("database")),
-                                fixture.getProperty("user"),
-                                fixture.getProperty("passwd"));
+        try (Connection connection = DriverManager.getConnection(
+                        "jdbc:postgresql://"
+                                + fixture.getProperty("host")
+                                + ":"
+                                + fixture.getProperty("port")
+                                + "/"
+                                + (database != null ? database : fixture.getProperty("database")),
+                        fixture.getProperty("user"),
+                        fixture.getProperty("passwd"));
                 Statement st = connection.createStatement()) {
             for (String table : tables) {
                 st.execute("DROP TABLE IF EXISTS \"" + table + "\"");

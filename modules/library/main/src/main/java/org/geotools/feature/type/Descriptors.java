@@ -38,8 +38,7 @@ import org.geotools.feature.NameImpl;
  * @since 2.5
  */
 public class Descriptors {
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(Descriptors.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(Descriptors.class);
 
     /**
      * Wraps a list of {@link AttributeType} in {@link AttributeDescriptor}.
@@ -359,8 +358,7 @@ public class Descriptors {
         Iterator i = schema.iterator();
         Iterator j = restrict.iterator();
         while (i.hasNext() && j.hasNext()) {
-            restriction.add(
-                    restrict((AttributeDescriptor) i.next(), (AttributeDescriptor) j.next()));
+            restriction.add(restrict((AttributeDescriptor) i.next(), (AttributeDescriptor) j.next()));
         }
         return restriction;
     }

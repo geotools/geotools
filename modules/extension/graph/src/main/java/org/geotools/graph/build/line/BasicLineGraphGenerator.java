@@ -269,9 +269,7 @@ public class BasicLineGraphGenerator implements LineGraphGenerator {
         Coordinate closestCoordinate = null;
         @SuppressWarnings("unchecked")
         List<Coordinate> list =
-                (List<Coordinate>)
-                        spatialIndex.query(
-                                new Interval(inCoord.y - tolerance, inCoord.y + tolerance));
+                (List<Coordinate>) spatialIndex.query(new Interval(inCoord.y - tolerance, inCoord.y + tolerance));
         for (Coordinate c : list) {
             double distance = inCoord.distance(c);
             if (distance < closestDistance) {

@@ -75,15 +75,13 @@ class EmfAppSchemaParser {
      *     used.
      */
     public static SimpleFeatureType parse(
-            Configuration configuration, final QName featureName, CoordinateReferenceSystem crs)
-            throws IOException {
+            Configuration configuration, final QName featureName, CoordinateReferenceSystem crs) throws IOException {
         XSDElementDeclaration elementDecl = parseFeatureType(featureName, configuration);
         return parse(configuration, elementDecl, crs);
     }
 
     /** Use the provided schemaLocation with a GML3 ApplicationSchemaConfiguration */
-    public static SimpleFeatureType parse(
-            URL schemaLocation, QName featureName, CoordinateReferenceSystem crs)
+    public static SimpleFeatureType parse(URL schemaLocation, QName featureName, CoordinateReferenceSystem crs)
             throws IOException {
         // use GML3 application Schema by default
         String namespaceURI = featureName.getNamespaceURI();
@@ -96,9 +94,7 @@ class EmfAppSchemaParser {
 
     /** Parse the provided element declaration into a SimpleFeatureType. */
     public static SimpleFeatureType parse(
-            Configuration configuration,
-            XSDElementDeclaration elementDecl,
-            CoordinateReferenceSystem crs)
+            Configuration configuration, XSDElementDeclaration elementDecl, CoordinateReferenceSystem crs)
             throws IOException {
 
         Map<QName, Object> bindings = configuration.setupBindings();
@@ -159,8 +155,8 @@ class EmfAppSchemaParser {
         }
     }
 
-    private static XSDElementDeclaration parseFeatureType(
-            final QName featureTypeName, Configuration configuration) throws DataSourceException {
+    private static XSDElementDeclaration parseFeatureType(final QName featureTypeName, Configuration configuration)
+            throws DataSourceException {
 
         SchemaIndex schemaIndex;
         try {
@@ -169,8 +165,7 @@ class EmfAppSchemaParser {
             throw new DataSourceException("Error parsing feature type for " + featureTypeName, e);
         }
 
-        XSDElementDeclaration elementDeclaration =
-                schemaIndex.getElementDeclaration(featureTypeName);
+        XSDElementDeclaration elementDeclaration = schemaIndex.getElementDeclaration(featureTypeName);
         schemaIndex.destroy();
         return elementDeclaration;
     }

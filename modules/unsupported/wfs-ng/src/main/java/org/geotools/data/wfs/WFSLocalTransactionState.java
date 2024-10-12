@@ -53,11 +53,10 @@ class WFSLocalTransactionState extends DiffTransactionState {
     @Override
     public synchronized void commit() throws IOException {
         if (MODULE.isLoggable(Level.FINER)) {
-            MODULE.finer(
-                    getClass().getSimpleName()
-                            + "::commit(): doing nothing, letting "
-                            + WFSRemoteTransactionState.class.getSimpleName()
-                            + " do the job for the whole DataStore");
+            MODULE.finer(getClass().getSimpleName()
+                    + "::commit(): doing nothing, letting "
+                    + WFSRemoteTransactionState.class.getSimpleName()
+                    + " do the job for the whole DataStore");
         }
     }
 }

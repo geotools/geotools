@@ -69,9 +69,7 @@ public class IndexedFilterDetectorVisitor extends DefaultFilterVisitor {
             parentLogicOperator = filter;
             // get the full indexed subfilter(s)
             indexedFilters =
-                    filter.getChildren().stream()
-                            .filter(c -> isFullyIndexed(c))
-                            .collect(Collectors.toList());
+                    filter.getChildren().stream().filter(c -> isFullyIndexed(c)).collect(Collectors.toList());
         }
     }
 
@@ -81,8 +79,7 @@ public class IndexedFilterDetectorVisitor extends DefaultFilterVisitor {
      * @param filter unrolled filter
      */
     protected boolean isFullyIndexed(Filter filter) {
-        return IndexQueryUtils.checkAllPropertiesIndexed(
-                IndexQueryUtils.getAttributesOnFilter(filter), mapping);
+        return IndexQueryUtils.checkAllPropertiesIndexed(IndexQueryUtils.getAttributesOnFilter(filter), mapping);
     }
 
     public BinaryLogicOperator getParentLogicOperator() {

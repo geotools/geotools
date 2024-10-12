@@ -48,16 +48,14 @@ public class DefaultAuthorityFactoryTest {
     @Test
     public void testMissingVersion() throws Exception {
         DefaultAuthorityFactory factory = new DefaultAuthorityFactory(false);
-        CoordinateReferenceSystem crs =
-                factory.createCoordinateReferenceSystem("urn:ogc:def:crs:EPSG:2.0:99999");
+        CoordinateReferenceSystem crs = factory.createCoordinateReferenceSystem("urn:ogc:def:crs:EPSG:2.0:99999");
         Assert.assertEquals("First", crs.getName().getCode());
     }
 
     @Test
     public void testVersionBeforePriority() throws Exception {
         DefaultAuthorityFactory factory = new DefaultAuthorityFactory(false);
-        CoordinateReferenceSystem crs =
-                factory.createCoordinateReferenceSystem("urn:ogc:def:crs:EPSG:3.0:99999");
+        CoordinateReferenceSystem crs = factory.createCoordinateReferenceSystem("urn:ogc:def:crs:EPSG:3.0:99999");
         Assert.assertEquals("Third", crs.getName().getCode());
     }
 

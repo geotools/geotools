@@ -34,15 +34,12 @@ public class ExtendedImagingParameterDescriptors extends ImagingParameterDescrip
 
     private ReferenceIdentifier operationName;
 
-    public ExtendedImagingParameterDescriptors(
-            String operationName, RegistryElementDescriptor operation) {
+    public ExtendedImagingParameterDescriptors(String operationName, RegistryElementDescriptor operation) {
         this(operationName, operation, null);
     }
 
     ExtendedImagingParameterDescriptors(
-            String operationName,
-            RegistryElementDescriptor operation,
-            Collection<ParameterDescriptor> extension) {
+            String operationName, RegistryElementDescriptor operation, Collection<ParameterDescriptor> extension) {
         super(operation, extension);
         this.operationName = new NamedIdentifier(Citations.JAI, operationName);
     }

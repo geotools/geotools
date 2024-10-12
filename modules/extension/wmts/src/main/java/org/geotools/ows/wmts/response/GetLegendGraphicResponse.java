@@ -30,8 +30,7 @@ import org.geotools.ows.ServiceException;
  */
 public class GetLegendGraphicResponse extends Response {
 
-    public GetLegendGraphicResponse(HTTPResponse httpResponse)
-            throws ServiceException, IOException {
+    public GetLegendGraphicResponse(HTTPResponse httpResponse) throws ServiceException, IOException {
         super(httpResponse);
 
         String contentType = getContentType();

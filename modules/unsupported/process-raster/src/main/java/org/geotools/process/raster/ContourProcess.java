@@ -69,19 +69,14 @@ import org.locationtech.jts.geom.util.AffineTransformation;
  */
 @DescribeProcess(
         title = "Contour",
-        description =
-                "Computes contour lines at specified intervals or levels for the values in a raster.")
+        description = "Computes contour lines at specified intervals or levels for the values in a raster.")
 public class ContourProcess implements RasterProcess {
 
-    private static final InternationalString NO_DATA =
-            Vocabulary.formatInternational(VocabularyKeys.NODATA);
+    private static final InternationalString NO_DATA = Vocabulary.formatInternational(VocabularyKeys.NODATA);
 
     static {
         Registry.registerRIF(
-                JAI.getDefaultInstance(),
-                new ContourDescriptor(),
-                new ContourRIF(),
-                Registry.JAI_TOOLS_PRODUCT);
+                JAI.getDefaultInstance(), new ContourDescriptor(), new ContourRIF(), Registry.JAI_TOOLS_PRODUCT);
     }
 
     /**
@@ -115,30 +110,23 @@ public class ContourProcess implements RasterProcess {
             ProgressListener progressListener)
             throws ProcessException {
         ContourProcess process = new ContourProcess();
-        return process.execute(
-                gc2d, band, levels, interval, simplify, smooth, roi, progressListener);
+        return process.execute(gc2d, band, levels, interval, simplify, smooth, roi, progressListener);
     }
 
-    @DescribeResult(
-            name = "result",
-            description = "Contour line features.  Contour level is in value attribute.")
+    @DescribeResult(name = "result", description = "Contour line features.  Contour level is in value attribute.")
     public SimpleFeatureCollection execute(
             @DescribeParameter(name = "data", description = "Input raster") GridCoverage2D gc2d,
             @DescribeParameter(
                             name = "band",
-                            description =
-                                    "Band number (zero base) to use for values to be contoured",
+                            description = "Band number (zero base) to use for values to be contoured",
                             min = 0,
                             max = 1)
                     Integer band,
-            @DescribeParameter(
-                            name = "levels",
-                            description = "Values of levels at which to generate contours")
+            @DescribeParameter(name = "levels", description = "Values of levels at which to generate contours")
                     double[] levels,
             @DescribeParameter(
                             name = "interval",
-                            description =
-                                    "Interval between contour values (ignored if levels parameter is supplied)",
+                            description = "Interval between contour values (ignored if levels parameter is supplied)",
                             min = 0,
                             minValue = 0)
                     Double interval,
@@ -149,14 +137,12 @@ public class ContourProcess implements RasterProcess {
                     Boolean simplify,
             @DescribeParameter(
                             name = "smooth",
-                            description =
-                                    "Indicates whether contour lines are smoothed using Bezier smoothing",
+                            description = "Indicates whether contour lines are smoothed using Bezier smoothing",
                             min = 0)
                     Boolean smooth,
             @DescribeParameter(
                             name = "roi",
-                            description =
-                                    "Geometry delineating the region of interest (in raster coordinate system)",
+                            description = "Geometry delineating the region of interest (in raster coordinate system)",
                             min = 0)
                     Geometry roi,
             ProgressListener progressListener)
@@ -179,13 +165,11 @@ public class ContourProcess implements RasterProcess {
         //
         // GRID TO WORLD preparation
         //
-        final AffineTransform mt2D =
-                (AffineTransform) gc2d.getGridGeometry().getGridToCRS2D(PixelOrientation.CENTER);
+        final AffineTransform mt2D = (AffineTransform) gc2d.getGridGeometry().getGridToCRS2D(PixelOrientation.CENTER);
 
         // get the list of nodata, if any
         List<Object> noDataList = new ArrayList<>();
-        NoDataContainer noDataProperty =
-                org.geotools.coverage.util.CoverageUtilities.getNoDataProperty(gc2d);
+        NoDataContainer noDataProperty = org.geotools.coverage.util.CoverageUtilities.getNoDataProperty(gc2d);
         if (noDataProperty != null) {
             noDataList.add(noDataProperty.getAsSingleValue());
         }
@@ -207,12 +191,11 @@ public class ContourProcess implements RasterProcess {
                             if (catRange.getMinimum() == catRange.getMaximum()) {
                                 noDataList.add(catRange.getMinimum());
                             } else {
-                                Range<Double> noData =
-                                        new Range<>(
-                                                catRange.getMinimum(),
-                                                catRange.isMinIncluded(),
-                                                catRange.getMaximum(),
-                                                catRange.isMaxIncluded());
+                                Range<Double> noData = new Range<>(
+                                        catRange.getMinimum(),
+                                        catRange.isMinIncluded(),
+                                        catRange.getMaximum(),
+                                        catRange.isMaxIncluded());
                                 noDataList.add(noData);
                             }
                         }
@@ -262,19 +245,17 @@ public class ContourProcess implements RasterProcess {
                 (Collection<LineString>) dest.getProperty(ContourDescriptor.CONTOUR_PROPERTY_NAME);
 
         // wrap as a feature collection and return
-        final SimpleFeatureType schema =
-                CoverageUtilities.createFeatureType(gc2d, LineString.class);
+        final SimpleFeatureType schema = CoverageUtilities.createFeatureType(gc2d, LineString.class);
         final SimpleFeatureBuilder builder = new SimpleFeatureBuilder(schema);
         int i = 0;
         final ListFeatureCollection featureCollection = new ListFeatureCollection(schema);
-        final AffineTransformation jtsTransformation =
-                new AffineTransformation(
-                        mt2D.getScaleX(),
-                        mt2D.getShearX(),
-                        mt2D.getTranslateX(),
-                        mt2D.getShearY(),
-                        mt2D.getScaleY(),
-                        mt2D.getTranslateY());
+        final AffineTransformation jtsTransformation = new AffineTransformation(
+                mt2D.getScaleX(),
+                mt2D.getShearX(),
+                mt2D.getTranslateX(),
+                mt2D.getShearY(),
+                mt2D.getScaleY(),
+                mt2D.getTranslateY());
         for (LineString line : prop) {
 
             if (!line.isValid()) {

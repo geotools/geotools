@@ -43,10 +43,7 @@ abstract class ImageMosaicSourceElement<T> {
 
     /** Have the provided eventHandler firing an event related to the harvesting of this element */
     abstract void fireHarvestingEvent(
-            ImageMosaicEventHandlers eventHandler,
-            int elementIndex,
-            int numElements,
-            String message);
+            ImageMosaicEventHandlers eventHandler, int elementIndex, int numElements, String message);
 
     /** a {@link File} ImageMosaic source element */
     static class FileElement extends ImageMosaicSourceElement<File> {
@@ -74,18 +71,13 @@ abstract class ImageMosaicSourceElement<T> {
 
         @Override
         void fireHarvestingEvent(
-                ImageMosaicEventHandlers eventHandler,
-                int elementIndex,
-                int numElements,
-                String message) {
-            eventHandler.fireFileEvent(
-                    Level.FINE, file, true, message, ((elementIndex + 1) * 99.0) / numElements);
+                ImageMosaicEventHandlers eventHandler, int elementIndex, int numElements, String message) {
+            eventHandler.fireFileEvent(Level.FINE, file, true, message, ((elementIndex + 1) * 99.0) / numElements);
         }
 
         /** Prepare the location on top of the configuration and file to be processed. */
         private static String prepareLocation(
-                CatalogBuilderConfiguration runConfiguration, final File fileBeingProcessed)
-                throws IOException {
+                CatalogBuilderConfiguration runConfiguration, final File fileBeingProcessed) throws IOException {
             // absolute
             String pathType = runConfiguration.getParameter(Utils.Prop.PATH_TYPE);
             String absolutePath = runConfiguration.getParameter(Utils.Prop.ABSOLUTE_PATH);
@@ -111,8 +103,7 @@ abstract class ImageMosaicSourceElement<T> {
          * @param pathSeparator directory separator. The platform default is not assumed so that we
          *     can test Unix behaviour when running on Windows (for example)
          */
-        private static String getRelativePath(
-                String targetPath, String basePath, String pathSeparator) {
+        private static String getRelativePath(String targetPath, String basePath, String pathSeparator) {
 
             // Normalize the paths
             String normalizedTargetPath = FilenameUtils.normalizeNoEndSeparator(targetPath);
@@ -128,8 +119,7 @@ abstract class ImageMosaicSourceElement<T> {
                 normalizedBasePath = FilenameUtils.separatorsToWindows(normalizedBasePath);
 
             } else {
-                throw new IllegalArgumentException(
-                        "Unrecognised dir separator '" + pathSeparator + "'");
+                throw new IllegalArgumentException("Unrecognised dir separator '" + pathSeparator + "'");
             }
 
             String[] base = normalizedBasePath.split(Pattern.quote(pathSeparator));
@@ -151,12 +141,11 @@ abstract class ImageMosaicSourceElement<T> {
                 // No single common path element. This most
                 // likely indicates differing drive letters, like C: and D:.
                 // These paths cannot be relativized.
-                throw new RuntimeException(
-                        "No common path element found for '"
-                                + normalizedTargetPath
-                                + "' and '"
-                                + normalizedBasePath
-                                + "'");
+                throw new RuntimeException("No common path element found for '"
+                        + normalizedTargetPath
+                        + "' and '"
+                        + normalizedBasePath
+                        + "'");
             }
 
             // The number of directories we have to backtrack depends on whether the base is a file
@@ -185,8 +174,7 @@ abstract class ImageMosaicSourceElement<T> {
             StringBuilder relative = new StringBuilder();
 
             if (base.length != commonIndex) {
-                int numDirsUp =
-                        baseIsFile ? base.length - commonIndex - 1 : base.length - commonIndex;
+                int numDirsUp = baseIsFile ? base.length - commonIndex - 1 : base.length - commonIndex;
 
                 for (int i = 0; i < numDirsUp; i++) {
                     relative.append(".." + pathSeparator);
@@ -223,12 +211,8 @@ abstract class ImageMosaicSourceElement<T> {
 
         @Override
         void fireHarvestingEvent(
-                ImageMosaicEventHandlers eventHandler,
-                int elementIndex,
-                int numElements,
-                String message) {
-            eventHandler.fireUrlEvent(
-                    Level.FINE, url, true, message, ((elementIndex + 1) * 99.0) / numElements);
+                ImageMosaicEventHandlers eventHandler, int elementIndex, int numElements, String message) {
+            eventHandler.fireUrlEvent(Level.FINE, url, true, message, ((elementIndex + 1) * 99.0) / numElements);
         }
     }
 
@@ -258,12 +242,8 @@ abstract class ImageMosaicSourceElement<T> {
 
         @Override
         void fireHarvestingEvent(
-                ImageMosaicEventHandlers eventHandler,
-                int elementIndex,
-                int numElements,
-                String message) {
-            eventHandler.fireURIEvent(
-                    Level.FINE, uri, true, message, ((elementIndex + 1) * 99.0) / numElements);
+                ImageMosaicEventHandlers eventHandler, int elementIndex, int numElements, String message) {
+            eventHandler.fireURIEvent(Level.FINE, uri, true, message, ((elementIndex + 1) * 99.0) / numElements);
         }
     }
 }

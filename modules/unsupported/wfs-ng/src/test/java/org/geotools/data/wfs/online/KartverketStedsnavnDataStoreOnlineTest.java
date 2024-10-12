@@ -58,19 +58,15 @@ import org.locationtech.jts.geom.Polygon;
 /** @author Roar Brænden */
 public class KartverketStedsnavnDataStoreOnlineTest extends AbstractWfsDataStoreOnlineTest {
 
-    static final String SERVER_URL =
-            "https://wfs.geonorge.no/skwms1/wfs.stedsnavn?request=GetCapabilities&service=WFS";
+    static final String SERVER_URL = "https://wfs.geonorge.no/skwms1/wfs.stedsnavn?request=GetCapabilities&service=WFS";
 
     static final String NAME = "Sted";
 
-    static final TestDataType KARTVERKET_STEDSNAVN =
-            new TestDataType(
-                    "KartverketNo",
-                    new QName(
-                            "http://skjema.geonorge.no/SOSI/produktspesifikasjon/StedsnavnForVanligBruk/20181115",
-                            "sted"),
-                    "app_" + NAME,
-                    "urn:ogc:def:crs:EPSG::4258");
+    static final TestDataType KARTVERKET_STEDSNAVN = new TestDataType(
+            "KartverketNo",
+            new QName("http://skjema.geonorge.no/SOSI/produktspesifikasjon/StedsnavnForVanligBruk/20181115", "sted"),
+            "app_" + NAME,
+            "urn:ogc:def:crs:EPSG::4258");
 
     static final String defaultGeometryName = "område";
 
@@ -134,8 +130,7 @@ public class KartverketStedsnavnDataStoreOnlineTest extends AbstractWfsDataStore
         params.put(WFSDataStoreFactory.URL.key, new URL(SERVER_URL));
 
         WFSDataAccessFactory dataStoreFactory = new WFSDataAccessFactory();
-        WFSContentDataAccess dataAccess =
-                (WFSContentDataAccess) dataStoreFactory.createDataStore(params);
+        WFSContentDataAccess dataAccess = (WFSContentDataAccess) dataStoreFactory.createDataStore(params);
         Name featureName = null;
         for (Name nextName : dataAccess.getNames()) {
             if (NAME.equals(nextName.getLocalPart())) {
@@ -166,8 +161,7 @@ public class KartverketStedsnavnDataStoreOnlineTest extends AbstractWfsDataStore
                         .getAbsolutePath()); // Must be specified when Schema is http
 
         WFSDataAccessFactory dataStoreFactory = new WFSDataAccessFactory();
-        WFSContentDataAccess dataAccess =
-                (WFSContentDataAccess) dataStoreFactory.createDataStore(params);
+        WFSContentDataAccess dataAccess = (WFSContentDataAccess) dataStoreFactory.createDataStore(params);
         Name featureName = null;
         for (Name nextName : dataAccess.getNames()) {
             if (NAME.equals(nextName.getLocalPart())) {
@@ -187,8 +181,7 @@ public class KartverketStedsnavnDataStoreOnlineTest extends AbstractWfsDataStore
             Feature feature = iterator.next();
             for (Property prop : feature.getProperties()) {
                 final String name = prop.getName().getLocalPart();
-                Assert.assertTrue(
-                        "Schema doesn't contain property: " + name, properties.contains(name));
+                Assert.assertTrue("Schema doesn't contain property: " + name, properties.contains(name));
             }
         }
     }
@@ -211,8 +204,7 @@ public class KartverketStedsnavnDataStoreOnlineTest extends AbstractWfsDataStore
                 TestData.file(WFSTestData.class, "KartverketNo")
                         .getAbsolutePath()); // Must be specified when Schema is http
 
-        WFSContentDataAccess dataAccess =
-                (WFSContentDataAccess) new WFSDataAccessFactory().createDataStore(params);
+        WFSContentDataAccess dataAccess = (WFSContentDataAccess) new WFSDataAccessFactory().createDataStore(params);
         Name featureName = null;
         for (Name nextName : dataAccess.getNames()) {
             if (NAME.equals(nextName.getLocalPart())) {
@@ -231,8 +223,6 @@ public class KartverketStedsnavnDataStoreOnlineTest extends AbstractWfsDataStore
                 stedsnr.add((Number) feature.getProperty("stedsnummer").getValue());
             }
         }
-        assertTrue(
-                "Should contain Blistein with id=6948 (BigInteger)",
-                stedsnr.contains(BigInteger.valueOf(6948)));
+        assertTrue("Should contain Blistein with id=6948 (BigInteger)", stedsnr.contains(BigInteger.valueOf(6948)));
     }
 }

@@ -46,8 +46,7 @@ public class VPFFeatureReader implements FeatureReader<SimpleFeatureType, Simple
         this.featureType = type;
     }
 
-    public VPFFeatureReader(ContentState contentState, VPFFeatureType featureType)
-            throws IOException {
+    public VPFFeatureReader(ContentState contentState, VPFFeatureType featureType) throws IOException {
         this.state = contentState;
         this.featureType = featureType;
     }
@@ -84,8 +83,7 @@ public class VPFFeatureReader implements FeatureReader<SimpleFeatureType, Simple
      * @see org.geotools.api.data.FeatureReader#next()
      */
     @Override
-    public synchronized SimpleFeature next()
-            throws IOException, IllegalAttributeException, NoSuchElementException {
+    public synchronized SimpleFeature next() throws IOException, IllegalAttributeException, NoSuchElementException {
         readNext();
         return currentFeature;
     }

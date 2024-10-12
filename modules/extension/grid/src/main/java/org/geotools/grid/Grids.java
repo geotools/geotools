@@ -63,10 +63,7 @@ public class Grids {
         }
 
         return Oblongs.createGrid(
-                bounds,
-                sideLen,
-                sideLen,
-                new DefaultGridFeatureBuilder(bounds.getCoordinateReferenceSystem()));
+                bounds, sideLen, sideLen, new DefaultGridFeatureBuilder(bounds.getCoordinateReferenceSystem()));
     }
 
     /**
@@ -142,10 +139,7 @@ public class Grids {
      *     and the {@code GridFeatureBuilder} are both non-null but different
      */
     public static SimpleFeatureSource createSquareGrid(
-            ReferencedEnvelope bounds,
-            double sideLen,
-            double vertexSpacing,
-            GridFeatureBuilder builder) {
+            ReferencedEnvelope bounds, double sideLen, double vertexSpacing, GridFeatureBuilder builder) {
 
         return Oblongs.createGrid(bounds, sideLen, sideLen, vertexSpacing, builder);
     }
@@ -174,8 +168,7 @@ public class Grids {
      * @return the vector grid
      * @throws IllegalArgumentException if bounds is null or empty; or if sideLen is {@code <=} 0
      */
-    public static SimpleFeatureSource createHexagonalGrid(
-            ReferencedEnvelope bounds, double sideLen) {
+    public static SimpleFeatureSource createHexagonalGrid(ReferencedEnvelope bounds, double sideLen) {
 
         if (bounds == null) {
             throw new IllegalArgumentException("bounds should not be null");
@@ -274,17 +267,13 @@ public class Grids {
      *     and the {@code GridFeatureBuilder} are both non-null but different
      */
     public static SimpleFeatureSource createHexagonalGrid(
-            ReferencedEnvelope bounds,
-            double sideLen,
-            double vertexSpacing,
-            GridFeatureBuilder builder) {
+            ReferencedEnvelope bounds, double sideLen, double vertexSpacing, GridFeatureBuilder builder) {
 
         if (bounds == null) {
             throw new IllegalArgumentException("bounds should not be null");
         }
 
-        return Hexagons.createGrid(
-                bounds, sideLen, vertexSpacing, HexagonOrientation.FLAT, builder);
+        return Hexagons.createGrid(bounds, sideLen, vertexSpacing, HexagonOrientation.FLAT, builder);
     }
 
     /**
@@ -315,10 +304,7 @@ public class Grids {
         }
 
         return Ovals.createGrid(
-                bounds,
-                sideLen,
-                sideLen,
-                new DefaultGridFeatureBuilder(bounds.getCoordinateReferenceSystem()));
+                bounds, sideLen, sideLen, new DefaultGridFeatureBuilder(bounds.getCoordinateReferenceSystem()));
     }
 
     /**

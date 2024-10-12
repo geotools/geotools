@@ -67,8 +67,7 @@ public class UnknownFormat extends AbstractGridFormat implements Format {
     /** @see AbstractGridFormat#getDefaultImageIOWriteParameters() */
     @Override
     public GeoToolsWriteParams getDefaultImageIOWriteParameters() {
-        throw new UnsupportedOperationException(
-                "Trying to get a writing parameters from an unknown format.");
+        throw new UnsupportedOperationException("Trying to get a writing parameters from an unknown format.");
     }
     /** @see AbstractGridFormat#accepts(Object) */
     @Override
@@ -82,8 +81,7 @@ public class UnknownFormat extends AbstractGridFormat implements Format {
      */
     @Override
     public ParameterValueGroup getReadParameters() {
-        throw new UnsupportedOperationException(
-                "Trying to get a reading parameters from an unknown format.");
+        throw new UnsupportedOperationException("Trying to get a reading parameters from an unknown format.");
     }
 
     /*
@@ -92,8 +90,7 @@ public class UnknownFormat extends AbstractGridFormat implements Format {
      */
     @Override
     public ParameterValueGroup getWriteParameters() {
-        throw new UnsupportedOperationException(
-                "Trying to get a writing parameters from an unknown format.");
+        throw new UnsupportedOperationException("Trying to get a writing parameters from an unknown format.");
     }
 
     @Override

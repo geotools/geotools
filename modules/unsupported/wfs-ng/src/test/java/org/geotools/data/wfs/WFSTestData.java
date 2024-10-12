@@ -53,11 +53,7 @@ public class WFSTestData {
          * @param featureTypeName the name as stated in the capabilities
          * @param crs the default feature type CRS as stated in the capabilities
          */
-        public TestDataType(
-                final String folder,
-                final QName qName,
-                final String featureTypeName,
-                final String crs) {
+        public TestDataType(final String folder, final QName qName, final String featureTypeName, final String crs) {
 
             TYPENAME = qName;
             FEATURETYPENAME = featureTypeName;
@@ -68,105 +64,71 @@ public class WFSTestData {
         }
     }
 
-    public static final TestDataType GEOS_ARCHSITES_11 =
-            new TestDataType(
-                    "GeoServer_2.0/1.1.0",
-                    new QName("http://www.openplans.org/spearfish", "archsites"),
-                    "sf_archsites",
-                    "EPSG:26713");
+    public static final TestDataType GEOS_ARCHSITES_11 = new TestDataType(
+            "GeoServer_2.0/1.1.0",
+            new QName("http://www.openplans.org/spearfish", "archsites"),
+            "sf_archsites",
+            "EPSG:26713");
 
-    public static final TestDataType GEOS_POI_11 =
-            new TestDataType(
-                    "GeoServer_2.0/1.1.0",
-                    new QName("http://www.census.gov", "poi"),
-                    "tiger_poi",
-                    "EPSG:4326");
+    public static final TestDataType GEOS_POI_11 = new TestDataType(
+            "GeoServer_2.0/1.1.0", new QName("http://www.census.gov", "poi"), "tiger_poi", "EPSG:4326");
 
-    public static final TestDataType GEOS_POI_10 =
-            new TestDataType(
-                    "GeoServer_1.7.x/1.0.0",
-                    new QName("http://www.census.gov", "poi"),
-                    "tiger_poi",
-                    "EPSG:4326");
+    public static final TestDataType GEOS_POI_10 = new TestDataType(
+            "GeoServer_1.7.x/1.0.0", new QName("http://www.census.gov", "poi"), "tiger_poi", "EPSG:4326");
 
-    public static final TestDataType GEOS_ROADS_20 =
-            new TestDataType(
-                    "GeoServer_2.2.x/2.0.0",
-                    new QName("http://www.openplans.org/spearfish", "roads"),
-                    "sf_roads",
-                    "EPSG:26713");
+    public static final TestDataType GEOS_ROADS_20 = new TestDataType(
+            "GeoServer_2.2.x/2.0.0",
+            new QName("http://www.openplans.org/spearfish", "roads"),
+            "sf_roads",
+            "EPSG:26713");
 
-    public static final TestDataType GEOS_ROADS_11 =
-            new TestDataType(
-                    "GeoServer_2.0/1.1.0",
-                    new QName("http://www.openplans.org/spearfish", "roads"),
-                    "sf_roads",
-                    "EPSG:26713");
+    public static final TestDataType GEOS_ROADS_11 = new TestDataType(
+            "GeoServer_2.0/1.1.0", new QName("http://www.openplans.org/spearfish", "roads"), "sf_roads", "EPSG:26713");
 
-    public static final TestDataType GEOS_ROADS_10 =
-            new TestDataType(
-                    "GeoServer_1.7.x/1.0.0",
-                    new QName("http://www.openplans.org/spearfish", "roads"),
-                    "sf_roads",
-                    "EPSG:26713");
+    public static final TestDataType GEOS_ROADS_10 = new TestDataType(
+            "GeoServer_1.7.x/1.0.0",
+            new QName("http://www.openplans.org/spearfish", "roads"),
+            "sf_roads",
+            "EPSG:26713");
 
-    public static final TestDataType GEOS_STATES_11 =
-            new TestDataType(
-                    "GeoServer_2.0/1.1.0",
-                    new QName("http://www.openplans.org/topp", "states"),
-                    "topp_states",
-                    "EPSG:4326");
+    public static final TestDataType GEOS_STATES_11 = new TestDataType(
+            "GeoServer_2.0/1.1.0", new QName("http://www.openplans.org/topp", "states"), "topp_states", "EPSG:4326");
 
-    public static final TestDataType GEOS_STATES_10 =
-            new TestDataType(
-                    "GeoServer_1.7.x/1.0.0",
-                    new QName("http://www.openplans.org/topp", "states"),
-                    "topp_states",
-                    "EPSG:4326");
+    public static final TestDataType GEOS_STATES_10 = new TestDataType(
+            "GeoServer_1.7.x/1.0.0", new QName("http://www.openplans.org/topp", "states"), "topp_states", "EPSG:4326");
 
-    public static final TestDataType GEOS_TASMANIA_CITIES_11 =
-            new TestDataType(
-                    "GeoServer_2.0/1.1.0",
-                    new QName("http://www.openplans.org/topp", "tasmania_cities"),
-                    "topp:tasmania_cities",
-                    "EPSG:4326");
+    public static final TestDataType GEOS_TASMANIA_CITIES_11 = new TestDataType(
+            "GeoServer_2.0/1.1.0",
+            new QName("http://www.openplans.org/topp", "tasmania_cities"),
+            "topp:tasmania_cities",
+            "EPSG:4326");
 
-    public static final TestDataType GEOS_TIGER_ROADS_11 =
-            new TestDataType(
-                    "GeoServer_2.0/1.1.0",
-                    new QName("http://www.census.gov", "tiger_roads"),
-                    "tiger:tiger_roads",
-                    "EPSG:4326");
+    public static final TestDataType GEOS_TIGER_ROADS_11 = new TestDataType(
+            "GeoServer_2.0/1.1.0", new QName("http://www.census.gov", "tiger_roads"), "tiger:tiger_roads", "EPSG:4326");
 
-    public static final TestDataType CUBEWERX_GOVUNITCE =
-            new TestDataType(
-                    "CubeWerx_nsdi/1.1.0",
-                    new QName("http://www.fgdc.gov/framework/073004/gubs", "GovernmentalUnitCE"),
-                    "gubs_GovernmentalUnitCE",
-                    "EPSG:4269");
+    public static final TestDataType CUBEWERX_GOVUNITCE = new TestDataType(
+            "CubeWerx_nsdi/1.1.0",
+            new QName("http://www.fgdc.gov/framework/073004/gubs", "GovernmentalUnitCE"),
+            "gubs_GovernmentalUnitCE",
+            "EPSG:4269");
 
-    public static final TestDataType CUBEWERX_ROADSEG =
-            new TestDataType(
-                    "CubeWerx_nsdi/1.1.0",
-                    new QName("http://www.fgdc.gov/framework/073004/transportation", "RoadSeg"),
-                    "trans_RoadSeg",
-                    "EPSG:4269");
+    public static final TestDataType CUBEWERX_ROADSEG = new TestDataType(
+            "CubeWerx_nsdi/1.1.0",
+            new QName("http://www.fgdc.gov/framework/073004/transportation", "RoadSeg"),
+            "trans_RoadSeg",
+            "EPSG:4269");
 
-    public static final TestDataType IONIC_STATISTICAL_UNIT =
-            new TestDataType(
-                    "Ionic_unknown/1.1.0",
-                    new QName("http://www.fgdc.gov/fgdc/gubs", "StatisticalUnit"),
-                    "gubs_StatisticalUnit",
-                    "EPSG:4269");
+    public static final TestDataType IONIC_STATISTICAL_UNIT = new TestDataType(
+            "Ionic_unknown/1.1.0",
+            new QName("http://www.fgdc.gov/fgdc/gubs", "StatisticalUnit"),
+            "gubs_StatisticalUnit",
+            "EPSG:4269");
 
-    public static final TestDataType ARCGIS_CURVE =
-            new TestDataType(
-                    "ArcGIS/1.1.0",
-                    new QName(
-                            "https://www.arcgis.com/services/lineTestWFS/FeatureServer/WFSServer",
-                            "lineTest"),
-                    "lineTestWFS",
-                    "EPSG:27700");
+    public static final TestDataType ARCGIS_CURVE = new TestDataType(
+            "ArcGIS/1.1.0",
+            new QName("https://www.arcgis.com/services/lineTestWFS/FeatureServer/WFSServer", "lineTest"),
+            "lineTestWFS",
+            "EPSG:27700");
 
     public static URL url(String resource) {
         URL url = WFSTestData.class.getResource("test-data/" + resource);
@@ -203,9 +165,7 @@ public class WFSTestData {
                 this.preferredMethod = PreferredHttpMethod.AUTO;
             } else {
                 this.preferredMethod =
-                        protocol.booleanValue()
-                                ? PreferredHttpMethod.HTTP_POST
-                                : PreferredHttpMethod.HTTP_GET;
+                        protocol.booleanValue() ? PreferredHttpMethod.HTTP_POST : PreferredHttpMethod.HTTP_GET;
             }
         }
 

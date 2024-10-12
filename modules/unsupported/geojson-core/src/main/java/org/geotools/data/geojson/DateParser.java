@@ -44,14 +44,13 @@ class DateParser {
     static final Logger LOGGER = Logging.getLogger(DateParser.class);
 
     private static final String FULL_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSSX";
-    static final List<FastDateFormat> DEFAULT_FAST_DATE_FORMATS =
-            Arrays.asList(
-                    FastDateFormat.getInstance(FULL_PATTERN, DEFAULT_TIME_ZONE),
-                    FastDateFormat.getInstance("yyyy-MM-dd'T'HH:mm:ss.SSS", DEFAULT_TIME_ZONE),
-                    FastDateFormat.getInstance("yyyy-MM-dd'T'HH:mm:ssX", DEFAULT_TIME_ZONE),
-                    FastDateFormat.getInstance("yyyy-MM-dd'T'HH:mm:ss", DEFAULT_TIME_ZONE),
-                    FastDateFormat.getInstance("yyyy-MM-ddX", DEFAULT_TIME_ZONE),
-                    FastDateFormat.getInstance("yyyy-MM-dd", DEFAULT_TIME_ZONE));
+    static final List<FastDateFormat> DEFAULT_FAST_DATE_FORMATS = Arrays.asList(
+            FastDateFormat.getInstance(FULL_PATTERN, DEFAULT_TIME_ZONE),
+            FastDateFormat.getInstance("yyyy-MM-dd'T'HH:mm:ss.SSS", DEFAULT_TIME_ZONE),
+            FastDateFormat.getInstance("yyyy-MM-dd'T'HH:mm:ssX", DEFAULT_TIME_ZONE),
+            FastDateFormat.getInstance("yyyy-MM-dd'T'HH:mm:ss", DEFAULT_TIME_ZONE),
+            FastDateFormat.getInstance("yyyy-MM-ddX", DEFAULT_TIME_ZONE),
+            FastDateFormat.getInstance("yyyy-MM-dd", DEFAULT_TIME_ZONE));
 
     List<FastDateFormat> formats = DEFAULT_FAST_DATE_FORMATS;
 
@@ -60,10 +59,9 @@ class DateParser {
      * local timezone will be used in that case.
      */
     public void setTimeZone(TimeZone tz) {
-        this.formats =
-                formats.stream()
-                        .map(f -> FastDateFormat.getInstance(f.getPattern(), tz))
-                        .collect(Collectors.toList());
+        this.formats = formats.stream()
+                .map(f -> FastDateFormat.getInstance(f.getPattern(), tz))
+                .collect(Collectors.toList());
     }
 
     /** Returns the timezone used to format dates. Defaults to GMT. */
@@ -79,10 +77,9 @@ class DateParser {
     public void setDatePattern(String... pattern) {
         if (pattern == null || pattern.length == 0)
             throw new IllegalArgumentException("Date patterns must be non null, and non empty");
-        this.formats =
-                Arrays.stream(pattern)
-                        .map(p -> FastDateFormat.getInstance(p, getTimeZone()))
-                        .collect(Collectors.toList());
+        this.formats = Arrays.stream(pattern)
+                .map(p -> FastDateFormat.getInstance(p, getTimeZone()))
+                .collect(Collectors.toList());
     }
 
     /** Returns the date formatter pattern. Defaults to DEFAULT_DATE_FORMAT */
@@ -115,15 +112,11 @@ class DateParser {
                 // looking like a date, without consuming it fully
                 ParsePosition pp = new ParsePosition(0);
                 Date result = format.parse(text, pp);
-                if (result == null || pp.getErrorIndex() > -1 || pp.getIndex() < text.length())
-                    continue;
+                if (result == null || pp.getErrorIndex() > -1 || pp.getIndex() < text.length()) continue;
                 return result;
             } catch (NumberFormatException e) {
                 if (LOGGER.isLoggable(Level.FINEST))
-                    LOGGER.log(
-                            Level.FINEST,
-                            "Failed to parse " + text + " using " + format.getPattern(),
-                            e);
+                    LOGGER.log(Level.FINEST, "Failed to parse " + text + " using " + format.getPattern(), e);
             }
         }
         return null;

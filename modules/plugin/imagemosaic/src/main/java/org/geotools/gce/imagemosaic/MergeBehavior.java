@@ -51,24 +51,11 @@ public enum MergeBehavior {
             // checks
             if (sources.length == 1) {
                 return FLAT.process(
-                        sources,
-                        backgroundValues,
-                        inputThreshold,
-                        sourceAlpha,
-                        sourceROI,
-                        mosaicType,
-                        hints);
+                        sources, backgroundValues, inputThreshold, sourceAlpha, sourceROI, mosaicType, hints);
             }
 
             // put in the same envelope
-            sources =
-                    harmonizeSources(
-                            sources,
-                            backgroundValues,
-                            inputThreshold,
-                            sourceAlpha,
-                            sourceROI,
-                            hints);
+            sources = harmonizeSources(sources, backgroundValues, inputThreshold, sourceAlpha, sourceROI, hints);
 
             // Step 3, band merge the images
             // loop on sources
@@ -112,24 +99,11 @@ public enum MergeBehavior {
             // checks
             if (sources.length == 1) {
                 return FLAT.process(
-                        sources,
-                        backgroundValues,
-                        inputThreshold,
-                        sourceAlpha,
-                        sourceROI,
-                        mosaicType,
-                        localHints);
+                        sources, backgroundValues, inputThreshold, sourceAlpha, sourceROI, mosaicType, localHints);
             }
 
             // put in the same envelope
-            sources =
-                    harmonizeSources(
-                            sources,
-                            backgroundValues,
-                            inputThreshold,
-                            sourceAlpha,
-                            sourceROI,
-                            localHints);
+            sources = harmonizeSources(sources, backgroundValues, inputThreshold, sourceAlpha, sourceROI, localHints);
 
             return new ImageWorker(localHints).setImage(sources[0]).max(sources).getRenderedImage();
         }
@@ -148,24 +122,11 @@ public enum MergeBehavior {
             // checks
             if (sources.length == 1) {
                 return FLAT.process(
-                        sources,
-                        backgroundValues,
-                        inputThreshold,
-                        sourceAlpha,
-                        sourceROI,
-                        mosaicType,
-                        localHints);
+                        sources, backgroundValues, inputThreshold, sourceAlpha, sourceROI, mosaicType, localHints);
             }
 
             // put in the same envelope
-            sources =
-                    harmonizeSources(
-                            sources,
-                            backgroundValues,
-                            inputThreshold,
-                            sourceAlpha,
-                            sourceROI,
-                            localHints);
+            sources = harmonizeSources(sources, backgroundValues, inputThreshold, sourceAlpha, sourceROI, localHints);
 
             return new ImageWorker(localHints).setImage(sources[0]).min(sources).getRenderedImage();
         }
@@ -185,7 +146,8 @@ public enum MergeBehavior {
         RenderedImage[] result = Arrays.copyOf(sources, sources.length);
 
         // Check if the images don't share the same bounds
-        Rectangle union = new Rectangle(PlanarImage.wrapRenderedImage(sources[0]).getBounds());
+        Rectangle union =
+                new Rectangle(PlanarImage.wrapRenderedImage(sources[0]).getBounds());
         boolean performMosaic = false;
         for (int i = 1; i < sources.length; i++) {
             Rectangle currentExtent = PlanarImage.wrapRenderedImage(sources[i]).getBounds();
@@ -198,9 +160,7 @@ public enum MergeBehavior {
 
         // different extents found, use mosaic to extend each one of them to the union of the bounds
         // shared image layout for all images
-        final ImageLayout layout =
-                (ImageLayout)
-                        (hints != null ? hints.get(JAI.KEY_IMAGE_LAYOUT) : new ImageLayout2());
+        final ImageLayout layout = (ImageLayout) (hints != null ? hints.get(JAI.KEY_IMAGE_LAYOUT) : new ImageLayout2());
         layout.setWidth(union.width).setHeight(union.height).setMinX(union.x).setMinY(union.y);
 
         final RenderingHints localHints;
@@ -214,20 +174,18 @@ public enum MergeBehavior {
         // extend each one using mosaic
         for (int i = 0; i < sources.length; i++) {
 
-            PlanarImage[] sourceAlphas =
-                    sourceAlpha == null ? null : new PlanarImage[] {sourceAlpha[i]};
+            PlanarImage[] sourceAlphas = sourceAlpha == null ? null : new PlanarImage[] {sourceAlpha[i]};
             ROI[] sourceROIs = sourceROI == null ? null : new ROI[] {sourceROI[i]};
             ImageWorker worker = new ImageWorker(localHints);
             worker.setBackground(backgroundValues);
-            result[i] =
-                    worker.mosaic(
-                                    new RenderedImage[] {sources[i]},
-                                    MosaicDescriptor.MOSAIC_TYPE_OVERLAY,
-                                    sourceAlphas,
-                                    sourceROIs,
-                                    inputThreshold,
-                                    null)
-                            .getRenderedImage();
+            result[i] = worker.mosaic(
+                            new RenderedImage[] {sources[i]},
+                            MosaicDescriptor.MOSAIC_TYPE_OVERLAY,
+                            sourceAlphas,
+                            sourceROIs,
+                            inputThreshold,
+                            null)
+                    .getRenderedImage();
         }
         return result;
     }

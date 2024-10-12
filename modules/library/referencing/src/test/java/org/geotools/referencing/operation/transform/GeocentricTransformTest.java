@@ -69,26 +69,10 @@ public final class GeocentricTransformTest extends TransformTestBase {
         /*
          * Test the ellipsoidal model.
          */
-        assertEquals(
-                "Nautical mile at equator",
-                1842.78,
-                e.orthodromicDistance(0, 00 - hm, 0, 00 + hm),
-                0.2);
-        assertEquals(
-                "Nautical mile at North pole",
-                1861.67,
-                e.orthodromicDistance(0, 90 - 2 * hm, 0, 90),
-                0.2);
-        assertEquals(
-                "Nautical mile at South pole",
-                1861.67,
-                e.orthodromicDistance(0, 2 * hm - 90, 0, -90),
-                0.2);
-        assertEquals(
-                "International nautical mile",
-                1852.00,
-                e.orthodromicDistance(0, 45 - hm, 0, 45 + hm),
-                0.2);
+        assertEquals("Nautical mile at equator", 1842.78, e.orthodromicDistance(0, 00 - hm, 0, 00 + hm), 0.2);
+        assertEquals("Nautical mile at North pole", 1861.67, e.orthodromicDistance(0, 90 - 2 * hm, 0, 90), 0.2);
+        assertEquals("Nautical mile at South pole", 1861.67, e.orthodromicDistance(0, 2 * hm - 90, 0, -90), 0.2);
+        assertEquals("International nautical mile", 1852.00, e.orthodromicDistance(0, 45 - hm, 0, 45 + hm), 0.2);
         for (double i = 0.01; i < 180; i += 1) {
             final double base = 180 * random.nextDouble() - 90;
             assertEquals(
@@ -103,8 +87,7 @@ public final class GeocentricTransformTest extends TransformTestBase {
          */
         final double radius = e.getSemiMajorAxis();
         final double circumference = (radius * 1.00000001) * (2 * Math.PI);
-        final DefaultEllipsoid s =
-                DefaultEllipsoid.createEllipsoid("Sphere", radius, radius, e.getAxisUnit());
+        final DefaultEllipsoid s = DefaultEllipsoid.createEllipsoid("Sphere", radius, radius, e.getAxisUnit());
         assertNotEquals("Spheroid class", DefaultEllipsoid.class, s.getClass());
         for (double i = 0; i <= 180; i += 1) {
             final double base = 360 * random.nextDouble() - 180;
@@ -218,11 +201,9 @@ public final class GeocentricTransformTest extends TransformTestBase {
         final double[] array2 = new double[array0.length];
         transform.transform(array0, 0, array1, 0, array0.length / dimension);
         transform.inverse().transform(array1, 0, array2, 0, array1.length / dimension);
-        assertPointsEqual(
-                "transform(Geographic --> Geocentric --> Geographic)",
-                array0,
-                array2,
-                new double[] {0.1 / 3600, 0.1 / 3600, 0.01});
+        assertPointsEqual("transform(Geographic --> Geocentric --> Geographic)", array0, array2, new double[] {
+            0.1 / 3600, 0.1 / 3600, 0.01
+        });
         /*
          * Compare the distances between "special" points with expected distances.
          * This test the ellipsoid orthodromic distance computation as well.
@@ -248,23 +229,17 @@ public final class GeocentricTransformTest extends TransformTestBase {
              */
             try {
                 final double altitude = Math.max(array0[base + 2], array0[base + 5]);
-                final DefaultEllipsoid ellip =
-                        DefaultEllipsoid.createFlattenedSphere(
-                                "Temporary",
-                                ellipsoid.getSemiMajorAxis() + altitude,
-                                ellipsoid.getInverseFlattening(),
-                                ellipsoid.getAxisUnit());
-                double orthodromic =
-                        ellip.orthodromicDistance(
-                                array0[base + 0], array0[base + 1],
-                                array0[base + 3], array0[base + 4]);
+                final DefaultEllipsoid ellip = DefaultEllipsoid.createFlattenedSphere(
+                        "Temporary",
+                        ellipsoid.getSemiMajorAxis() + altitude,
+                        ellipsoid.getInverseFlattening(),
+                        ellipsoid.getAxisUnit());
+                double orthodromic = ellip.orthodromicDistance(
+                        array0[base + 0], array0[base + 1],
+                        array0[base + 3], array0[base + 4]);
                 orthodromic = Math.hypot(orthodromic, array0[base + 2] - array0[base + 5]);
                 if (i < orthodromicDistance.length) {
-                    assertEquals(
-                            "Orthodromic distance[" + i + ']',
-                            orthodromicDistance[i],
-                            orthodromic,
-                            0.1);
+                    assertEquals("Orthodromic distance[" + i + ']', orthodromicDistance[i], orthodromic, 0.1);
                 }
                 assertTrue("Distance consistency[" + i + ']', cartesian <= orthodromic);
             } catch (ArithmeticException exception) {

@@ -45,10 +45,7 @@ public class ExtendedDataTypeBindingTest extends KMLTestSupport {
 
     @Test
     public void testParseUntyped() throws Exception {
-        String xml =
-                "<ExtendedData>"
-                        + "<Data name=\"foo\"><value>bar</value></Data>"
-                        + "</ExtendedData>";
+        String xml = "<ExtendedData>" + "<Data name=\"foo\"><value>bar</value></Data>" + "</ExtendedData>";
         buildDocument(xml);
         Map<String, Object> document = parseExtendedData();
         @SuppressWarnings("unchecked")
@@ -59,12 +56,11 @@ public class ExtendedDataTypeBindingTest extends KMLTestSupport {
     @SuppressWarnings("unchecked")
     @Test
     public void testParseTyped() throws Exception {
-        String xml =
-                "<ExtendedData>"
-                        + "<SchemaData schemaUrl=\"#foo\">"
-                        + "<SimpleData name=\"quux\">morx</SimpleData>"
-                        + "</SchemaData>"
-                        + "</ExtendedData>";
+        String xml = "<ExtendedData>"
+                + "<SchemaData schemaUrl=\"#foo\">"
+                + "<SimpleData name=\"quux\">morx</SimpleData>"
+                + "</SchemaData>"
+                + "</ExtendedData>";
         buildDocument(xml);
         Map<String, Object> document = parseExtendedData();
         Map<String, Object> typed = (Map<String, Object>) document.get("typed");
@@ -77,15 +73,14 @@ public class ExtendedDataTypeBindingTest extends KMLTestSupport {
     @SuppressWarnings("unchecked")
     @Test
     public void testParseMultipleTypes() throws Exception {
-        String xml =
-                "<ExtendedData>"
-                        + "<SchemaData schemaUrl=\"#foo1\">"
-                        + "<SimpleData name=\"quux\">morx</SimpleData>"
-                        + "</SchemaData>"
-                        + "<SchemaData schemaUrl=\"#foo2\">"
-                        + "<SimpleData name=\"fleem\">zul</SimpleData>"
-                        + "</SchemaData>"
-                        + "</ExtendedData>";
+        String xml = "<ExtendedData>"
+                + "<SchemaData schemaUrl=\"#foo1\">"
+                + "<SimpleData name=\"quux\">morx</SimpleData>"
+                + "</SchemaData>"
+                + "<SchemaData schemaUrl=\"#foo2\">"
+                + "<SimpleData name=\"fleem\">zul</SimpleData>"
+                + "</SchemaData>"
+                + "</ExtendedData>";
         buildDocument(xml);
         Map<String, Object> document = parseExtendedData();
         Map<String, Object> typed = (Map<String, Object>) document.get("typed");

@@ -89,30 +89,28 @@ public class DialogUtilsTest extends GraphicsTestBase {
         final int labelWidth = 300;
         final Dimension dim = DialogUtils.getHtmlLabelTextExtent(sb.toString(), labelWidth, true);
 
-        JFrame frame =
-                GuiActionRunner.execute(
-                        new GuiQuery<JFrame>() {
-                            @Override
-                            protected JFrame executeInEDT() throws Throwable {
-                                JFrame frame = new JFrame();
+        JFrame frame = GuiActionRunner.execute(new GuiQuery<JFrame>() {
+            @Override
+            protected JFrame executeInEDT() throws Throwable {
+                JFrame frame = new JFrame();
 
-                                /**
-                                 * mbedward: I tried overriding the label's paintComponent method to
-                                 * disable text anti-aliasing in order to make searching for the red
-                                 * and blue dots easier, but the rendering hint did not seem to
-                                 * affect HTML rendering. So instead, the findColorInRange method is
-                                 * used to allow for the fuzz of colour values.
-                                 */
-                                JLabel label = new JLabel(sb.toString());
-                                label.setName("TheLabel");
+                /**
+                 * mbedward: I tried overriding the label's paintComponent method to
+                 * disable text anti-aliasing in order to make searching for the red
+                 * and blue dots easier, but the rendering hint did not seem to
+                 * affect HTML rendering. So instead, the findColorInRange method is
+                 * used to allow for the fuzz of colour values.
+                 */
+                JLabel label = new JLabel(sb.toString());
+                label.setName("TheLabel");
 
-                                label.setPreferredSize(dim);
-                                frame.add(label);
+                label.setPreferredSize(dim);
+                frame.add(label);
 
-                                frame.pack();
-                                return frame;
-                            }
-                        });
+                frame.pack();
+                return frame;
+            }
+        });
 
         FrameFixture fixture = new FrameFixture(frame);
         fixture.show();
@@ -138,16 +136,13 @@ public class DialogUtilsTest extends GraphicsTestBase {
         // Search for the blue-ish end dot
         lower = new int[] {0, 0, 200};
         upper = new int[] {80, 80, 255};
-        bounds =
-                new Rectangle(
-                        img.getMinX(), img.getMinY() + img.getHeight() - 20, img.getWidth(), 20);
+        bounds = new Rectangle(img.getMinX(), img.getMinY() + img.getHeight() - 20, img.getWidth(), 20);
         assertTrue(findColorInRange(img, bounds, lower, upper));
 
         fixture.cleanUp();
     }
 
-    private boolean findColorInRange(
-            BufferedImage img, Rectangle bounds, int[] lowerRGB, int[] upperRGB) {
+    private boolean findColorInRange(BufferedImage img, Rectangle bounds, int[] lowerRGB, int[] upperRGB) {
 
         final ColorModel cm = img.getColorModel();
         boolean found = false;

@@ -43,12 +43,8 @@ import org.geotools.text.Text;
  */
 public abstract class AbstractFeatureCollectionProcessFactory extends SingleProcessFactory {
     /** Features for operation */
-    public static final Parameter<FeatureCollection> FEATURES =
-            new Parameter<>(
-                    "features",
-                    FeatureCollection.class,
-                    Text.text("Features"),
-                    Text.text("Features to process"));
+    public static final Parameter<FeatureCollection> FEATURES = new Parameter<>(
+            "features", FeatureCollection.class, Text.text("Features"), Text.text("Features to process"));
 
     /** Adds the {@link #FEATURES} parameter and then delegates to {@link #addParameters(Map)}. */
     @Override

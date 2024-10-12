@@ -66,10 +66,7 @@ public class GetCapabilitiesResponse extends org.geotools.data.ows.GetCapabiliti
             }
 
             List<Configuration> tryConfigs =
-                    Arrays.asList(
-                            WFS_2_0_CONFIGURATION,
-                            WFS_1_1_CONFIGURATION,
-                            WFS_1_0_CAPABILITIES_CONFIGURATION);
+                    Arrays.asList(WFS_2_0_CONFIGURATION, WFS_1_1_CONFIGURATION, WFS_1_0_CAPABILITIES_CONFIGURATION);
 
             final String versionAtt = rawDocument.getDocumentElement().getAttribute("version");
             Version version = null;
@@ -109,8 +106,7 @@ public class GetCapabilitiesResponse extends org.geotools.data.ows.GetCapabiliti
         }
     }
 
-    private EObject parseCapabilities(final Document document, final Configuration wfsConfig)
-            throws IOException {
+    private EObject parseCapabilities(final Document document, final Configuration wfsConfig) throws IOException {
 
         DOMParser parser = new DOMParser(wfsConfig, document);
         final Object parsed;
@@ -122,8 +118,7 @@ public class GetCapabilitiesResponse extends org.geotools.data.ows.GetCapabiliti
         if (parsed == null) {
             throw new DataSourceException("WFS capabilities was not parsed");
         }
-        if (!(parsed instanceof WFSCapabilitiesType)
-                && !(parsed instanceof net.opengis.wfs20.WFSCapabilitiesType)) {
+        if (!(parsed instanceof WFSCapabilitiesType) && !(parsed instanceof net.opengis.wfs20.WFSCapabilitiesType)) {
             throw new DataSourceException("Expected WFS Capabilities, got " + parsed);
         }
         EObject object = (EObject) parsed;

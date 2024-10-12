@@ -74,14 +74,12 @@ public class FeatureReaderIterator<F extends Feature> implements Iterator<F>, Cl
             return reader.next();
         } catch (IOException io) {
             close();
-            NoSuchElementException problem =
-                    new NoSuchElementException("Could not obtain the next feature:" + io);
+            NoSuchElementException problem = new NoSuchElementException("Could not obtain the next feature:" + io);
             problem.initCause(io);
             throw problem;
         } catch (org.geotools.api.feature.IllegalAttributeException create) {
             close();
-            NoSuchElementException problem =
-                    new NoSuchElementException("Could not create the next feature:" + create);
+            NoSuchElementException problem = new NoSuchElementException("Could not create the next feature:" + create);
             problem.initCause(create);
             throw problem;
         }

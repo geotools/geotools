@@ -172,12 +172,7 @@ public class ScreenMap {
      * is designed to actually fill the pixel
      */
     public Geometry getSimplifiedShape(
-            double minx,
-            double miny,
-            double maxx,
-            double maxy,
-            GeometryFactory geometryFactory,
-            Class geometryType) {
+            double minx, double miny, double maxx, double maxy, GeometryFactory geometryFactory, Class geometryType) {
         CoordinateSequenceFactory csf = geometryFactory.getCoordinateSequenceFactory();
         double midx = (minx + maxx) / 2;
         double midy = (miny + maxy) / 2;
@@ -185,8 +180,7 @@ public class ScreenMap {
         double x1 = midx + spanX / 2;
         double y0 = midy - spanY / 2;
         double y1 = midy + spanY / 2;
-        if (Point.class.isAssignableFrom(geometryType)
-                || MultiPoint.class.isAssignableFrom(geometryType)) {
+        if (Point.class.isAssignableFrom(geometryType) || MultiPoint.class.isAssignableFrom(geometryType)) {
             CoordinateSequence cs = JTS.createCS(csf, 1, 2);
             cs.setOrdinate(0, 0, midx);
             cs.setOrdinate(0, 1, midy);
@@ -194,8 +188,7 @@ public class ScreenMap {
                 // people should not call this method for a point, but... whatever
                 return geometryFactory.createPoint(cs);
             } else {
-                return geometryFactory.createMultiPoint(
-                        new Point[] {geometryFactory.createPoint(cs)});
+                return geometryFactory.createMultiPoint(new Point[] {geometryFactory.createPoint(cs)});
             }
         } else if (LineString.class.isAssignableFrom(geometryType)
                 || MultiLineString.class.isAssignableFrom(geometryType)) {
@@ -205,8 +198,7 @@ public class ScreenMap {
             cs.setOrdinate(1, 0, x1);
             cs.setOrdinate(1, 1, y1);
             if (MultiLineString.class.isAssignableFrom(geometryType)) {
-                return geometryFactory.createMultiLineString(
-                        new LineString[] {geometryFactory.createLineString(cs)});
+                return geometryFactory.createMultiLineString(new LineString[] {geometryFactory.createLineString(cs)});
             } else {
                 return geometryFactory.createLineString(cs);
             }
@@ -224,8 +216,7 @@ public class ScreenMap {
             cs.setOrdinate(4, 1, y0);
             LinearRing ring = geometryFactory.createLinearRing(cs);
             if (MultiPolygon.class.isAssignableFrom(geometryType)) {
-                return geometryFactory.createMultiPolygon(
-                        new Polygon[] {geometryFactory.createPolygon(ring, null)});
+                return geometryFactory.createMultiPolygon(new Polygon[] {geometryFactory.createPolygon(ring, null)});
             } else {
                 return geometryFactory.createPolygon(ring, null);
             }
@@ -254,10 +245,7 @@ public class ScreenMap {
             // if it's outside of the screenmap we cannot say whether it's busy or not, and
             // we cannot skip it because rendering or geometry transformation might put the geometry
             // right in the map
-            if ((x - minx) < 0
-                    || (x - minx) > width - 1
-                    || (y - miny) < 0
-                    || (y - miny) > height - 1) return false;
+            if ((x - minx) < 0 || (x - minx) > width - 1 || (y - miny) < 0 || (y - miny) > height - 1) return false;
             int bit = bit(x - minx, y - miny);
             int index = bit / 32;
             int offset = bit % 32;
@@ -279,10 +267,7 @@ public class ScreenMap {
             // if it's outside of the screenmap we cannot say whether it's busy or not, and
             // we cannot skip it because rendering or geometry transformation might put the geometry
             // right in the map
-            if ((x - minx) < 0
-                    || (x - minx) > width - 1
-                    || (y - miny) < 0
-                    || (y - miny) > height - 1) return false;
+            if ((x - minx) < 0 || (x - minx) > width - 1 || (y - miny) < 0 || (y - miny) > height - 1) return false;
             int bit = bit(x - minx, y - miny);
             int index = bit / 32;
             int offset = bit % 32;
@@ -297,10 +282,7 @@ public class ScreenMap {
         }
 
         public void set(int x, int y, boolean value) {
-            if ((x - minx) < 0
-                    || (x - minx) > width - 1
-                    || (y - miny) < 0
-                    || (y - miny) > height - 1) return;
+            if ((x - minx) < 0 || (x - minx) > width - 1 || (y - miny) < 0 || (y - miny) > height - 1) return;
             int bit = bit(x - minx, y - miny);
             int index = bit / 32;
             int offset = bit % 32;

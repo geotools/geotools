@@ -48,8 +48,7 @@ public class GeoServerPre200Strategy extends StrictWFS_1_x_Strategy {
                 return "text/xml; subtype=gml/3.1.1";
             }
             throw new IllegalArgumentException(
-                    "Server does not support 'text/gml; subtype=gml/3.1.1' output format: "
-                            + supportedOutputFormats);
+                    "Server does not support 'text/gml; subtype=gml/3.1.1' output format: " + supportedOutputFormats);
         }
     }
 

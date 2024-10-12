@@ -48,8 +48,7 @@ public class TPKZoomLevelV1 implements TPKZoomLevel {
 
     // if tile data offset is less than this value then tile does not exist!
     static int MINIMUM_DATA_OFFSET =
-            DATA_HEADER_LENGTH
-                    + BUNDLE_DIMENSION * BUNDLE_DIMENSION * DATA_LENGTH_LENGTH; // (65596)
+            DATA_HEADER_LENGTH + BUNDLE_DIMENSION * BUNDLE_DIMENSION * DATA_LENGTH_LENGTH; // (65596)
 
     // injected via constructor
     private ZipFile theTPK;
@@ -205,8 +204,7 @@ public class TPKZoomLevelV1 implements TPKZoomLevel {
      * @param row_start -- hex string yields the "base" row number for this bundle
      * @param col_start -- hex string yields the "base" column number for this bundle
      */
-    private void parseBundle(
-            String bundleName, String indexName, String row_start, String col_start) {
+    private void parseBundle(String bundleName, String indexName, String row_start, String col_start) {
 
         // get the starting row and column number for this bundle/index pair
         long baseRow = Long.parseLong(row_start, HEXADECIMAL);
@@ -215,14 +213,8 @@ public class TPKZoomLevelV1 implements TPKZoomLevel {
         // as long as row and column are in allowable range ...
         if (baseRow <= max_row_column && baseColumn <= max_row_column) {
 
-            TPKBundle bundle =
-                    new TPKBundle(
-                            bundleName,
-                            indexName,
-                            baseColumn,
-                            baseRow,
-                            this::TPKSupplier,
-                            this::zipEntryMapSupplier);
+            TPKBundle bundle = new TPKBundle(
+                    bundleName, indexName, baseColumn, baseRow, this::TPKSupplier, this::zipEntryMapSupplier);
 
             long indexReadOffset = INDEX_HEADER_LENGTH; // skip first 16 bytes of index
             for (int col = 0; col < BUNDLE_DIMENSION; col++) { // 128 columns of 128 rows
@@ -296,8 +288,10 @@ public class TPKZoomLevelV1 implements TPKZoomLevel {
                     final long c = col;
                     final long r = row;
                     TPKBundle saveBundle = bundle;
-                    bundle =
-                            bundles.stream().filter(b -> b.inBundle(c, r)).findFirst().orElse(null);
+                    bundle = bundles.stream()
+                            .filter(b -> b.inBundle(c, r))
+                            .findFirst()
+                            .orElse(null);
                     if (bundle == null) {
                         bundle = saveBundle;
                         continue;
@@ -307,10 +301,8 @@ public class TPKZoomLevelV1 implements TPKZoomLevel {
 
                 // calculate the index position we need to read
                 long bundleRow = (max_row_column - row) - bundle.baseRow;
-                long indexReadOffset =
-                        INDEX_HEADER_LENGTH
-                                + (((col - bundle.baseColumn) * BUNDLE_DIMENSION) + bundleRow)
-                                        * INDEX_ENTRY_LENGTH;
+                long indexReadOffset = INDEX_HEADER_LENGTH
+                        + (((col - bundle.baseColumn) * BUNDLE_DIMENSION) + bundleRow) * INDEX_ENTRY_LENGTH;
 
                 // read the tile index and get the offset to the tile data
                 long tileDataOffset = getTileDataOffset(bundle, indexReadOffset);

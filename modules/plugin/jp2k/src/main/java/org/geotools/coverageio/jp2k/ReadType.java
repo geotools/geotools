@@ -63,8 +63,7 @@ enum ReadType {
                 reader = spi.createReaderInstance();
                 if (reader == null) {
                     if (LOGGER.isLoggable(Level.WARNING))
-                        LOGGER.warning(
-                                "Unable to get reader for file " + rasterFile.getAbsolutePath());
+                        LOGGER.warning("Unable to get reader for file " + rasterFile.getAbsolutePath());
                     return null;
                 }
 
@@ -82,10 +81,7 @@ enum ReadType {
             } catch (IOException e) {
                 if (LOGGER.isLoggable(Level.WARNING))
                     LOGGER.log(
-                            Level.WARNING,
-                            "Unable to compute source area for file "
-                                    + rasterFile.getAbsolutePath(),
-                            e);
+                            Level.WARNING, "Unable to compute source area for file " + rasterFile.getAbsolutePath(), e);
                 return null;
             } finally {
                 // close everything
@@ -124,8 +120,7 @@ enum ReadType {
                 reader = spi.createReaderInstance();
                 if (reader == null) {
                     if (LOGGER.isLoggable(Level.WARNING))
-                        LOGGER.warning(
-                                "Unable to get reader for file " + rasterFile.getAbsolutePath());
+                        LOGGER.warning("Unable to get reader for file " + rasterFile.getAbsolutePath());
                     return null;
                 }
 
@@ -138,10 +133,7 @@ enum ReadType {
             } catch (IOException e) {
                 if (LOGGER.isLoggable(Level.WARNING))
                     LOGGER.log(
-                            Level.WARNING,
-                            "Unable to compute source area for file "
-                                    + rasterFile.getAbsolutePath(),
-                            e);
+                            Level.WARNING, "Unable to compute source area for file " + rasterFile.getAbsolutePath(), e);
                 return null;
             } finally {
                 // close everything
@@ -172,11 +164,7 @@ enum ReadType {
                 // build a proper layout
                 final ImageLayout layout = new ImageLayout();
                 layout.setTileWidth(tileDimension.width).setTileHeight(tileDimension.height);
-                raster =
-                        JAI.create(
-                                "ImageRead",
-                                pbjImageRead,
-                                new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout));
+                raster = JAI.create("ImageRead", pbjImageRead, new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout));
             } else raster = JAI.create("ImageRead", pbjImageRead);
             // force rendering (a-la JAI)
             if (raster != null) raster.getWidth();
@@ -206,8 +194,7 @@ enum ReadType {
                 reader = spi.createReaderInstance();
                 if (reader == null) {
                     if (LOGGER.isLoggable(Level.WARNING))
-                        LOGGER.warning(
-                                "Unable to get reader for file " + rasterFile.getAbsolutePath());
+                        LOGGER.warning("Unable to get reader for file " + rasterFile.getAbsolutePath());
                     return null;
                 }
 
@@ -220,10 +207,7 @@ enum ReadType {
             } catch (IOException e) {
                 if (LOGGER.isLoggable(Level.WARNING))
                     LOGGER.log(
-                            Level.WARNING,
-                            "Unable to compute source area for file "
-                                    + rasterFile.getAbsolutePath(),
-                            e);
+                            Level.WARNING, "Unable to compute source area for file " + rasterFile.getAbsolutePath(), e);
                 return null;
             } finally {
                 // close everything
@@ -254,11 +238,7 @@ enum ReadType {
                 // build a proper layout
                 final ImageLayout layout = new ImageLayout();
                 layout.setTileWidth(tileDimension.width).setTileHeight(tileDimension.height);
-                raster =
-                        JAI.create(
-                                "ImageReadMT",
-                                pbjImageRead,
-                                new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout));
+                raster = JAI.create("ImageReadMT", pbjImageRead, new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout));
             } else raster = JAI.create("ImageReadMT", pbjImageRead);
             // force rendering (a-la JAI)
             if (raster != null) raster.getWidth();
@@ -277,14 +257,12 @@ enum ReadType {
                 final Dimension tileDimension,
                 final ImageReaderSpi spi)
                 throws IOException {
-            throw new UnsupportedOperationException(
-                    MessageFormat.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "read"));
+            throw new UnsupportedOperationException(MessageFormat.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "read"));
         }
     };
 
     /** Logger. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(ReadType.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(ReadType.class);
 
     /**
      * Default {@link ReadType} enumeration.

@@ -80,12 +80,10 @@ public abstract class BaseCoverageProcessingNode implements CoverageProcessingNo
     }
 
     /** Detects cycle in out graph */
-    private static final CoverageProcessingCycleDetector cycleDetector =
-            new CoverageProcessingCycleDetector();
+    private static final CoverageProcessingCycleDetector cycleDetector = new CoverageProcessingCycleDetector();
 
     /** Logger for this class. */
-    private static final Logger LOGGER =
-            Logger.getLogger(BaseCoverageProcessingNode.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(BaseCoverageProcessingNode.class.getName());
 
     /**
      * {@link List} of sources for this {@link CoverageProcessingNode} .
@@ -152,8 +150,7 @@ public abstract class BaseCoverageProcessingNode implements CoverageProcessingNo
      *
      * @uml.property name="name"
      */
-    private InternationalString name =
-            Vocabulary.formatInternational(VocabularyKeys.BASE_COVERAGE_PROCESSING);
+    private InternationalString name = Vocabulary.formatInternational(VocabularyKeys.BASE_COVERAGE_PROCESSING);
 
     /**
      * Internationalized description for this {@link CoverageProcessingNode} .
@@ -172,8 +169,7 @@ public abstract class BaseCoverageProcessingNode implements CoverageProcessingNo
      *
      * @param maxSources maximum number of sources allowed for this node.
      */
-    public BaseCoverageProcessingNode(
-            int maxSources, InternationalString name, InternationalString description) {
+    public BaseCoverageProcessingNode(int maxSources, InternationalString name, InternationalString description) {
         this(maxSources, null, name, description);
     }
 
@@ -185,10 +181,7 @@ public abstract class BaseCoverageProcessingNode implements CoverageProcessingNo
      *     can be <code>null</code>.
      */
     public BaseCoverageProcessingNode(
-            int maxSources,
-            Hints hints,
-            InternationalString name,
-            InternationalString description) {
+            int maxSources, Hints hints, InternationalString name, InternationalString description) {
         ensureNotNull(name, "CoverageProcessingNode name ");
         ensureNotNull(description, "CoverageProcessingNode descripion ");
         maximumNumberOfSources = maxSources;
@@ -211,9 +204,7 @@ public abstract class BaseCoverageProcessingNode implements CoverageProcessingNo
         //
         // /////////////////////////////////////////////////////////////////////
         if (disposed) {
-            error =
-                    new CoverageProcessingException(
-                            "Trying to process a disposed CoverageProcessingNode.");
+            error = new CoverageProcessingException("Trying to process a disposed CoverageProcessingNode.");
             return;
         }
 
@@ -228,13 +219,11 @@ public abstract class BaseCoverageProcessingNode implements CoverageProcessingNo
                 // executes this node
                 final GridCoverage result = execute();
                 if (result == null)
-                    error =
-                            new CoverageProcessingException(
-                                    "Something bad occurred while trying to execute this node.");
+                    error = new CoverageProcessingException(
+                            "Something bad occurred while trying to execute this node.");
                 if (!(result instanceof GridCoverage2D))
-                    error =
-                            new CoverageProcessingException(
-                                    "Something bad occurred while trying to execute this node.");
+                    error = new CoverageProcessingException(
+                            "Something bad occurred while trying to execute this node.");
                 if (error == null) output = (GridCoverage2D) result;
             } catch (Throwable t) {
                 // something bad happened
@@ -370,17 +359,14 @@ public abstract class BaseCoverageProcessingNode implements CoverageProcessingNo
     }
 
     private void detectCycle() throws IllegalStateException {
-        if (cycleDetector.detectCycle(this))
-            throw new IllegalStateException(ErrorKeys.CYCLE_DETECTED);
+        if (cycleDetector.detectCycle(this)) throw new IllegalStateException(ErrorKeys.CYCLE_DETECTED);
     }
 
     private void checkNumSources(final int sourcesToAdd) {
         if (maximumNumberOfSources != -1)
             if (this.sources.size() + sourcesToAdd > maximumNumberOfSources)
                 throw new IllegalStateException(
-                        MessageFormat.format(
-                                ErrorKeys.TOO_MANY_SOURCES_$1,
-                                Integer.valueOf(maximumNumberOfSources)));
+                        MessageFormat.format(ErrorKeys.TOO_MANY_SOURCES_$1, Integer.valueOf(maximumNumberOfSources)));
     }
 
     /*
@@ -552,8 +538,7 @@ public abstract class BaseCoverageProcessingNode implements CoverageProcessingNo
      */
     protected static void ensureSourceNotNull(final Object source, final String name) {
         if (source == null)
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.SOURCE_CANT_BE_NULL_$1, name));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.SOURCE_CANT_BE_NULL_$1, name));
     }
 
     /**
@@ -564,9 +549,7 @@ public abstract class BaseCoverageProcessingNode implements CoverageProcessingNo
      * @param name the operation we are trying to run.
      */
     protected static void ensureNotNull(final Object source, final String name) {
-        if (source == null)
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, name));
+        if (source == null) throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, name));
     }
 
     /*
@@ -588,7 +571,9 @@ public abstract class BaseCoverageProcessingNode implements CoverageProcessingNo
     public String toString() {
         final StringBuffer buffer = new StringBuffer();
         buffer.append("Node Name:").append(this.getName().toString()).append("\n");
-        buffer.append("Node Description:").append(this.getDescription().toString()).append("\n");
+        buffer.append("Node Description:")
+                .append(this.getDescription().toString())
+                .append("\n");
         // if(executed&&error==null)
         // buffer.append("Node executed fine with
         // output:\n\t").append(this.getOutput().toString()).append("\n");

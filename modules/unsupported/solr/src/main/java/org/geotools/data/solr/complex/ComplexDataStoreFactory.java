@@ -76,11 +76,9 @@ public final class ComplexDataStoreFactory implements CustomSourceDataStore {
 
     @Override
     public void configXmlDigesterAttributesMappings(Digester digester) {
-        String rootPath =
-                "AppSchemaDataAccess/typeMappings/FeatureTypeMapping/attributeMappings/AttributeMapping";
+        String rootPath = "AppSchemaDataAccess/typeMappings/FeatureTypeMapping/attributeMappings/AttributeMapping";
         String multipleValuePath = rootPath + "/solrMultipleValue";
-        digester.addObjectCreate(
-                multipleValuePath, XMLConfigDigester.CONFIG_NS_URI, SolrMultipleValue.class);
+        digester.addObjectCreate(multipleValuePath, XMLConfigDigester.CONFIG_NS_URI, SolrMultipleValue.class);
         digester.addCallMethod(multipleValuePath, "setExpression", 1);
         digester.addCallParam(multipleValuePath, 0);
         digester.addSetNext(multipleValuePath, "setMultipleValue");
@@ -88,10 +86,7 @@ public final class ComplexDataStoreFactory implements CustomSourceDataStore {
 
     @Override
     public DataAccessMappingFeatureIterator buildIterator(
-            AppSchemaDataAccess store,
-            FeatureTypeMapping featureTypeMapping,
-            Query query,
-            Transaction transaction) {
+            AppSchemaDataAccess store, FeatureTypeMapping featureTypeMapping, Query query, Transaction transaction) {
         if (!(featureTypeMapping.getSource() instanceof SolrFeatureSource)) {
             // not an Apache Solr feature type mapping
             return null;
@@ -100,8 +95,7 @@ public final class ComplexDataStoreFactory implements CustomSourceDataStore {
         query.setSortBy(sortByFeatureTypeIds(featureTypeMapping));
         try {
             // build the iterator using the adapted query
-            return new DataAccessMappingFeatureIterator(
-                    store, featureTypeMapping, query, false, true);
+            return new DataAccessMappingFeatureIterator(store, featureTypeMapping, query, false, true);
         } catch (Exception exception) {
             throw new RuntimeException(
                     String.format(
@@ -134,8 +128,7 @@ public final class ComplexDataStoreFactory implements CustomSourceDataStore {
             }
         }
         // build the Apache Solr store
-        return new SolrDataStore(
-                complexDataStoreConfig.getUrl(), new SingleLayerMapper(), indexesConfig);
+        return new SolrDataStore(complexDataStoreConfig.getUrl(), new SingleLayerMapper(), indexesConfig);
     }
 
     /**
@@ -195,8 +188,7 @@ public final class ComplexDataStoreFactory implements CustomSourceDataStore {
             }
             // solr multiple values expressions
             if (attributeMapping.getMultipleValue() instanceof SolrMultipleValue) {
-                SolrMultipleValue multipleValue =
-                        (SolrMultipleValue) attributeMapping.getMultipleValue();
+                SolrMultipleValue multipleValue = (SolrMultipleValue) attributeMapping.getMultipleValue();
                 attributes.addAll(extractAttributesNames(multipleValue.getExpression()));
             }
         }
@@ -253,8 +245,7 @@ public final class ComplexDataStoreFactory implements CustomSourceDataStore {
      */
     private SortBy[] sortByFeatureTypeIds(FeatureTypeMapping featureTypeMapping) {
         ArrayList<SortBy> sortByExpressions = new ArrayList<>();
-        for (org.geotools.data.complex.AttributeMapping mapping :
-                featureTypeMapping.getAttributeMappings()) {
+        for (org.geotools.data.complex.AttributeMapping mapping : featureTypeMapping.getAttributeMappings()) {
             if (mapping.getIdentifierExpression() != null
                     && !mapping.getIdentifierExpression().equals(Expression.NIL)) {
                 // we have an identifier expression
@@ -291,8 +282,7 @@ public final class ComplexDataStoreFactory implements CustomSourceDataStore {
         try {
             return AppSchemaDataAccessConfigurator.parseOgcCqlExpression(expression, filterFactory);
         } catch (Exception exception) {
-            throw new RuntimeException(
-                    String.format("Error parsing expression '%s'.", expression), exception);
+            throw new RuntimeException(String.format("Error parsing expression '%s'.", expression), exception);
         }
     }
 

@@ -324,8 +324,7 @@ public class FilterCompliancePreProcessor implements FilterVisitor {
                     for (Filter child : filter.getChildren()) {
                         extraData = child.accept(this, extraData);
                     }
-                    Data mediumFilter =
-                            createMediumLevelLogicFilter(FilterType.LOGIC_AND, startSize);
+                    Data mediumFilter = createMediumLevelLogicFilter(FilterType.LOGIC_AND, startSize);
                     current.push(mediumFilter);
                     break;
 
@@ -363,8 +362,7 @@ public class FilterCompliancePreProcessor implements FilterVisitor {
                     for (Filter child : filter.getChildren()) {
                         extraData = child.accept(this, extraData);
                     }
-                    Data mediumFilter =
-                            createMediumLevelLogicFilter(FilterType.LOGIC_OR, startSize);
+                    Data mediumFilter = createMediumLevelLogicFilter(FilterType.LOGIC_OR, startSize);
                     current.push(mediumFilter);
                     break;
 
@@ -403,8 +401,7 @@ public class FilterCompliancePreProcessor implements FilterVisitor {
                     child = filter.getFilter();
                     extraData = child.accept(this, extraData);
 
-                    Data mediumFilter =
-                            createMediumLevelLogicFilter(FilterType.LOGIC_NOT, startSize);
+                    Data mediumFilter = createMediumLevelLogicFilter(FilterType.LOGIC_NOT, startSize);
                     current.push(mediumFilter);
                     break;
 
@@ -427,31 +424,28 @@ public class FilterCompliancePreProcessor implements FilterVisitor {
             throw new UnsupportedFilterException("Exception creating filter", e);
         }
         return extraData;
-    };
+    }
+    ;
 
-    private Data createMediumLevelLogicFilter(short filterType, int startOfFilterStack)
-            throws IllegalFilterException {
+    private Data createMediumLevelLogicFilter(short filterType, int startOfFilterStack) throws IllegalFilterException {
         Data resultingFilter;
 
         switch (filterType) {
-            case FilterType.LOGIC_AND:
-                {
-                    Set<String> fids = andFids(startOfFilterStack);
-                    resultingFilter = buildFilter(filterType, startOfFilterStack);
-                    resultingFilter.fids.addAll(fids);
+            case FilterType.LOGIC_AND: {
+                Set<String> fids = andFids(startOfFilterStack);
+                resultingFilter = buildFilter(filterType, startOfFilterStack);
+                resultingFilter.fids.addAll(fids);
 
-                    if (resultingFilter.filter != Filter.EXCLUDE && !fids.isEmpty())
-                        requiresPostProcessing = true;
-                    break;
-                }
+                if (resultingFilter.filter != Filter.EXCLUDE && !fids.isEmpty()) requiresPostProcessing = true;
+                break;
+            }
 
-            case FilterType.LOGIC_OR:
-                {
-                    Set<String> fids = orFids(startOfFilterStack);
-                    resultingFilter = buildFilter(filterType, startOfFilterStack);
-                    resultingFilter.fids.addAll(fids);
-                    break;
-                }
+            case FilterType.LOGIC_OR: {
+                Set<String> fids = orFids(startOfFilterStack);
+                resultingFilter = buildFilter(filterType, startOfFilterStack);
+                resultingFilter.fids.addAll(fids);
+                break;
+            }
 
             case FilterType.LOGIC_NOT:
                 resultingFilter = buildFilter(filterType, startOfFilterStack);
@@ -540,8 +534,7 @@ public class FilterCompliancePreProcessor implements FilterVisitor {
      * @param filterType LOGIC_NOT, LOGIC_AND or LOGIC_OR
      * @return Data Stack data representing the genrated filter
      */
-    private Data buildFilter(short filterType, int startOfFilterStack)
-            throws IllegalFilterException {
+    private Data buildFilter(short filterType, int startOfFilterStack) throws IllegalFilterException {
         if (current.isEmpty()) {
             return Data.ALL;
         }
@@ -670,8 +663,7 @@ public class FilterCompliancePreProcessor implements FilterVisitor {
         }
     }
 
-    private Data createHighLevelLogicFilter(short filterType, int startOfFilterStack)
-            throws IllegalFilterException {
+    private Data createHighLevelLogicFilter(short filterType, int startOfFilterStack) throws IllegalFilterException {
         if (hasFidFilter(startOfFilterStack)) {
             Set<String> fids;
 
@@ -684,22 +676,21 @@ public class FilterCompliancePreProcessor implements FilterVisitor {
 
                     return filter;
 
-                case FilterType.LOGIC_OR:
-                    {
-                        if (hasNonFidFilter(startOfFilterStack)) {
-                            throw new UnsupportedFilterException(
-                                    "Maximum compliance does not allow Logic filters to contain FidFilters");
-                        }
-
-                        fids = orFids(startOfFilterStack);
-
-                        pop(startOfFilterStack);
-
-                        Data data = new Data();
-                        data.fids.addAll(fids);
-
-                        return data;
+                case FilterType.LOGIC_OR: {
+                    if (hasNonFidFilter(startOfFilterStack)) {
+                        throw new UnsupportedFilterException(
+                                "Maximum compliance does not allow Logic filters to contain FidFilters");
                     }
+
+                    fids = orFids(startOfFilterStack);
+
+                    pop(startOfFilterStack);
+
+                    Data data = new Data();
+                    data.fids.addAll(fids);
+
+                    return data;
+                }
 
                 case FilterType.LOGIC_NOT:
                     return buildFilter(filterType, startOfFilterStack);
@@ -745,7 +736,8 @@ public class FilterCompliancePreProcessor implements FilterVisitor {
     public Object visit(PropertyIsNull filter, Object extraData) {
         current.push(new Data(filter));
         return extraData;
-    };
+    }
+    ;
 
     // NilFilter
     @Override

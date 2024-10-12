@@ -242,9 +242,7 @@ public class XmlSimpleFeatureParser implements GetParser<SimpleFeature> {
                 String namespace = parser.getNamespaceURI();
                 String name = parser.getLocalName();
                 if (featureNamespace.equals(namespace) && featureName.equals(name)) {
-                    String featureId =
-                            parser.getAttributeValue(
-                                    GML.id.getNamespaceURI(), GML.id.getLocalPart());
+                    String featureId = parser.getAttributeValue(GML.id.getNamespaceURI(), GML.id.getLocalPart());
 
                     if (featureId == null) {
                         featureId = parser.getAttributeValue(null, "fid");

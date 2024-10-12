@@ -108,8 +108,7 @@ public class JCRSChooser {
      * @return a {@code CoordinateReferenceSystem} object or {@code null} if the user cancelled the
      *     dialog
      */
-    public static CoordinateReferenceSystem showDialog(
-            final String title, final String initialCode) {
+    public static CoordinateReferenceSystem showDialog(final String title, final String initialCode) {
 
         return showDialog(title, initialCode, null);
     }
@@ -139,19 +138,18 @@ public class JCRSChooser {
 
             final Thread currentThread = Thread.currentThread();
 
-            SwingUtilities.invokeLater(
-                    () -> {
-                        try {
-                            CoordinateReferenceSystem crs = doShow(title, initialCode, authority);
-                            if (crs == null) {
-                                currentThread.interrupt();
-                            } else {
-                                sq.put(crs);
-                            }
-                        } catch (InterruptedException ex) {
-                            throw new RuntimeException(ex);
-                        }
-                    });
+            SwingUtilities.invokeLater(() -> {
+                try {
+                    CoordinateReferenceSystem crs = doShow(title, initialCode, authority);
+                    if (crs == null) {
+                        currentThread.interrupt();
+                    } else {
+                        sq.put(crs);
+                    }
+                } catch (InterruptedException ex) {
+                    throw new RuntimeException(ex);
+                }
+            });
 
             try {
                 selected = sq.take();
@@ -172,8 +170,7 @@ public class JCRSChooser {
      * @return the selected coordinate reference system or {@code null} if the dialog is cancelled
      *     by the user
      */
-    private static CoordinateReferenceSystem doShow(
-            String title, String initialCode, String authority) {
+    private static CoordinateReferenceSystem doShow(String title, String initialCode, String authority) {
 
         CRSDialog dialog = new CRSDialog(title, initialCode, authority);
         DialogUtils.showCentred(dialog);
@@ -226,50 +223,45 @@ public class JCRSChooser {
 
             final JTextField filterFld = new JTextField();
             filterFld.setPreferredSize(new Dimension(CONTROL_WIDTH, 20));
-            filterFld
-                    .getDocument()
-                    .addDocumentListener(
-                            new DocumentListener() {
+            filterFld.getDocument().addDocumentListener(new DocumentListener() {
 
-                                @Override
-                                public void insertUpdate(DocumentEvent e) {
-                                    model.setFilter(filterFld.getText());
-                                }
+                @Override
+                public void insertUpdate(DocumentEvent e) {
+                    model.setFilter(filterFld.getText());
+                }
 
-                                @Override
-                                public void removeUpdate(DocumentEvent e) {
-                                    model.setFilter(filterFld.getText());
-                                }
+                @Override
+                public void removeUpdate(DocumentEvent e) {
+                    model.setFilter(filterFld.getText());
+                }
 
-                                @Override
-                                public void changedUpdate(DocumentEvent e) {
-                                    model.setFilter(filterFld.getText());
-                                }
-                            });
+                @Override
+                public void changedUpdate(DocumentEvent e) {
+                    model.setFilter(filterFld.getText());
+                }
+            });
 
             panel.add(filterFld, "wrap");
 
             listBox = new JList<>(model);
-            listBox.addMouseListener(
-                    new MouseAdapter() {
+            listBox.addMouseListener(new MouseAdapter() {
 
-                        @Override
-                        public void mouseClicked(MouseEvent e) {
-                            if (e.getClickCount() == 2) {
-                                selectCRS(listBox.getSelectedIndex());
-                            }
-                        }
-                    });
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    if (e.getClickCount() == 2) {
+                        selectCRS(listBox.getSelectedIndex());
+                    }
+                }
+            });
 
             listBox.addListSelectionListener(e -> setOKButtonState());
 
-            model.addListDataListener(
-                    new CRSListModelListener() {
-                        @Override
-                        public void process() {
-                            setOKButtonState();
-                        }
-                    });
+            model.addListDataListener(new CRSListModelListener() {
+                @Override
+                public void process() {
+                    setOKButtonState();
+                }
+            });
 
             JScrollPane listPane = new JScrollPane(listBox);
             listPane.setPreferredSize(new Dimension(CONTROL_WIDTH, 300));
@@ -352,10 +344,7 @@ public class JCRSChooser {
                 crs = CRS.decode(DEFAULT_AUTHORITY + ":" + code, true);
 
             } catch (Exception ex) {
-                LOGGER.log(
-                        Level.SEVERE,
-                        "Failed to get coordinate reference system for code {0}",
-                        code);
+                LOGGER.log(Level.SEVERE, "Failed to get coordinate reference system for code {0}", code);
 
             } finally {
                 closeDialog();

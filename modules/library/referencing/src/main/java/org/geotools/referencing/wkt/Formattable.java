@@ -153,8 +153,7 @@ public class Formattable {
      *     different unit for each axis), or because only some specific implementations can be
      *     formatted as WKT.
      */
-    public String toWKT(final Citation authority, final int indentation)
-            throws UnformattableObjectException {
+    public String toWKT(final Citation authority, final int indentation) throws UnformattableObjectException {
         return toWKT(authority, indentation, true);
     }
 
@@ -165,13 +164,10 @@ public class Formattable {
     private String toWKT(final Citation authority, final int indentation, final boolean strict)
             throws UnformattableObjectException {
         if (authority == null) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "authority"));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "authority"));
         }
         Formatter formatter = FORMATTER.get();
-        if (formatter == null
-                || formatter.indentation != indentation
-                || formatter.getAuthority() != authority) {
+        if (formatter == null || formatter.indentation != indentation || formatter.getAuthority() != authority) {
             formatter = new Formatter(Symbols.DEFAULT, indentation);
             formatter.setAuthority(authority);
             FORMATTER.set(formatter);

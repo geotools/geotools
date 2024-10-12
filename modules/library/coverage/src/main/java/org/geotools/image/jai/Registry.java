@@ -123,12 +123,11 @@ public final class Registry {
                         product,
                         allowed ? nativeFactory : javaFactory,
                         allowed ? javaFactory : nativeFactory);
-                final LogRecord record =
-                        Loggings.format(
-                                Level.CONFIG,
-                                LoggingKeys.NATIVE_ACCELERATION_STATE_$2,
-                                operation,
-                                Integer.valueOf(allowed ? 1 : 0));
+                final LogRecord record = Loggings.format(
+                        Level.CONFIG,
+                        LoggingKeys.NATIVE_ACCELERATION_STATE_$2,
+                        operation,
+                        Integer.valueOf(allowed ? 1 : 0));
                 log("setNativeAccelerationAllowed", record);
             }
         }
@@ -167,8 +166,7 @@ public final class Registry {
             registry.registerFactory(RenderedRegistryMode.MODE_NAME, name, GEOTOOLS_PRODUCT, crif);
             return true;
         } catch (IllegalArgumentException exception) {
-            final LogRecord record =
-                    Loggings.format(Level.SEVERE, LoggingKeys.CANT_REGISTER_JAI_OPERATION_$1, name);
+            final LogRecord record = Loggings.format(Level.SEVERE, LoggingKeys.CANT_REGISTER_JAI_OPERATION_$1, name);
             // Note: GridSampleDimension is the public class that use this
             // transcoder.
             record.setSourceClassName(GridSampleDimension.class.getName());
@@ -187,10 +185,7 @@ public final class Registry {
      *     operation was already available in the registry
      */
     public static boolean registerRIF(
-            final JAI jai,
-            OperationDescriptor descriptor,
-            RenderedImageFactory rif,
-            String productName) {
+            final JAI jai, OperationDescriptor descriptor, RenderedImageFactory rif, String productName) {
         final OperationRegistry registry = jai.getOperationRegistry();
         try {
             // see if the operation is already registered, avoid registering it twice

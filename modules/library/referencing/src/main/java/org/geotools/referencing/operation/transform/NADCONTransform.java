@@ -110,8 +110,7 @@ import org.geotools.util.Arguments;
  * @author Rueben Schulz
  * @todo the transform code does not deal with the case where grids cross +- 180 degrees.
  */
-public class NADCONTransform extends AbstractMathTransform
-        implements MathTransform2D, Serializable {
+public class NADCONTransform extends AbstractMathTransform implements MathTransform2D, Serializable {
     /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = -4707304160205218546L;
 
@@ -217,8 +216,7 @@ public class NADCONTransform extends AbstractMathTransform
         long_diff_file.setValue(longGridName);
 
         return new ParameterGroup(
-                getParameterDescriptors(),
-                new GeneralParameterValue[] {lat_diff_file, long_diff_file});
+                getParameterDescriptors(), new GeneralParameterValue[] {lat_diff_file, long_diff_file});
     }
 
     /**
@@ -260,14 +258,11 @@ public class NADCONTransform extends AbstractMathTransform
      * @throws TransformException if the input point is outside the area covered by this grid.
      */
     @Override
-    public void transform(
-            final double[] srcPts, int srcOff, final double[] dstPts, int dstOff, int numPts)
+    public void transform(final double[] srcPts, int srcOff, final double[] dstPts, int dstOff, int numPts)
             throws TransformException {
         int step = 0;
 
-        if ((srcPts == dstPts)
-                && (srcOff < dstOff)
-                && ((srcOff + (numPts * getSourceDimensions())) > dstOff)) {
+        if ((srcPts == dstPts) && (srcOff < dstOff) && ((srcOff + (numPts * getSourceDimensions())) > dstOff)) {
             step = -getSourceDimensions();
             srcOff -= ((numPts - 1) * step);
             dstOff -= ((numPts - 1) * step);
@@ -278,22 +273,20 @@ public class NADCONTransform extends AbstractMathTransform
             double y = srcPts[srcOff++];
 
             // check bounding box
-            if (((x < grid.getMinX()) || (x > grid.getMaxX()))
-                    || ((y < grid.getMinY()) || (y > grid.getMaxY()))) {
-                throw new TransformException(
-                        "Point ("
-                                + x
-                                + " "
-                                + y
-                                + ") is not outside of (("
-                                + grid.getMinX()
-                                + " "
-                                + grid.getMinY()
-                                + ")("
-                                + grid.getMaxX()
-                                + " "
-                                + grid.getMaxY()
-                                + "))");
+            if (((x < grid.getMinX()) || (x > grid.getMaxX())) || ((y < grid.getMinY()) || (y > grid.getMaxY()))) {
+                throw new TransformException("Point ("
+                        + x
+                        + " "
+                        + y
+                        + ") is not outside of (("
+                        + grid.getMinX()
+                        + " "
+                        + grid.getMinY()
+                        + ")("
+                        + grid.getMaxX()
+                        + " "
+                        + grid.getMaxY()
+                        + "))");
             }
 
             // find the grid the point is in (index is 0 based)
@@ -326,14 +319,11 @@ public class NADCONTransform extends AbstractMathTransform
      * @param numPts the number of point objects to be transformed.
      * @throws TransformException if the input point is outside the area covered by this grid.
      */
-    public void inverseTransform(
-            final double[] srcPts, int srcOff, final double[] dstPts, int dstOff, int numPts)
+    public void inverseTransform(final double[] srcPts, int srcOff, final double[] dstPts, int dstOff, int numPts)
             throws TransformException {
         int step = 0;
 
-        if ((srcPts == dstPts)
-                && (srcOff < dstOff)
-                && ((srcOff + (numPts * getSourceDimensions())) > dstOff)) {
+        if ((srcPts == dstPts) && (srcOff < dstOff) && ((srcOff + (numPts * getSourceDimensions())) > dstOff)) {
             step = -getSourceDimensions();
             srcOff -= ((numPts - 1) * step);
             dstOff -= ((numPts - 1) * step);
@@ -441,9 +431,8 @@ public class NADCONTransform extends AbstractMathTransform
             return;
         } else {
             final String location = prefs.get(GRID_LOCATION, DEFAULT_GRID_LOCATION);
-            out.println(
-                    "Usage: java org.geotools.referencing.operation.transform.NADCONTransform "
-                            + "<defalult grid file location (path)>");
+            out.println("Usage: java org.geotools.referencing.operation.transform.NADCONTransform "
+                    + "<defalult grid file location (path)>");
             out.print("Grid location: \"");
             out.print(location);
             out.println('"');
@@ -458,8 +447,7 @@ public class NADCONTransform extends AbstractMathTransform
      * @version $Id$
      * @author Rueben Schulz
      */
-    private final class Inverse extends AbstractMathTransform.Inverse
-            implements MathTransform2D, Serializable {
+    private final class Inverse extends AbstractMathTransform.Inverse implements MathTransform2D, Serializable {
         /** Serial number for interoperability with different versions. */
         private static final long serialVersionUID = -4707304160205218546L;
 
@@ -485,11 +473,7 @@ public class NADCONTransform extends AbstractMathTransform
          */
         @Override
         public void transform(
-                final double[] source,
-                final int srcOffset,
-                final double[] dest,
-                final int dstOffset,
-                final int length)
+                final double[] source, final int srcOffset, final double[] dest, final int dstOffset, final int length)
                 throws TransformException {
             NADCONTransform.this.inverseTransform(source, srcOffset, dest, dstOffset, length);
         }
@@ -531,21 +515,18 @@ public class NADCONTransform extends AbstractMathTransform
          * The default value is "conus.los".
          */
         public static final ParameterDescriptor<URI> LONG_DIFF_FILE =
-                new DefaultParameterDescriptor<>(
-                        "Longitude difference file", URI.class, null, null);
+                new DefaultParameterDescriptor<>("Longitude difference file", URI.class, null, null);
 
         /** The parameters group. */
-        static final ParameterDescriptorGroup PARAMETERS =
-                createDescriptorGroup(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.OGC, "NADCON"),
-                            new NamedIdentifier(Citations.EPSG, "NADCON"),
-                            new NamedIdentifier(Citations.EPSG, "9613"),
-                            new NamedIdentifier(
-                                    Citations.GEOTOOLS,
-                                    Vocabulary.formatInternational(VocabularyKeys.NADCON_TRANSFORM))
-                        },
-                        new ParameterDescriptor[] {LAT_DIFF_FILE, LONG_DIFF_FILE});
+        static final ParameterDescriptorGroup PARAMETERS = createDescriptorGroup(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.OGC, "NADCON"),
+                    new NamedIdentifier(Citations.EPSG, "NADCON"),
+                    new NamedIdentifier(Citations.EPSG, "9613"),
+                    new NamedIdentifier(
+                            Citations.GEOTOOLS, Vocabulary.formatInternational(VocabularyKeys.NADCON_TRANSFORM))
+                },
+                new ParameterDescriptor[] {LAT_DIFF_FILE, LONG_DIFF_FILE});
 
         /** Constructs a provider. */
         public Provider() {

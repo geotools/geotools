@@ -45,12 +45,10 @@ public class MBArrayStop {
 
     public MBArrayStop(JSONArray array) {
         if (array.size() != 2) {
-            throw new MBFormatException(
-                    "Exception parsing function stop: stop must be an array with length 2.");
+            throw new MBFormatException("Exception parsing function stop: stop must be an array with length 2.");
         }
         if (!(array.get(1) instanceof JSONArray)) {
-            throw new MBFormatException(
-                    "Exception parsing array function stop: stop value must be an array.");
+            throw new MBFormatException("Exception parsing array function stop: stop value must be an array.");
         }
         this.json = array;
         this.stopValueArray = ((JSONArray) json.get(1));
@@ -91,11 +89,10 @@ public class MBArrayStop {
      */
     public Object getStopValue(int idx) {
         if (stopValueArray.size() <= idx) {
-            throw new MBFormatException(
-                    "Exception parsing array function stop: stop value requested at index "
-                            + idx
-                            + ", but stop value array length is "
-                            + stopValueArray.size());
+            throw new MBFormatException("Exception parsing array function stop: stop value requested at index "
+                    + idx
+                    + ", but stop value array length is "
+                    + stopValueArray.size());
         }
         return stopValueArray.get(idx);
     }
@@ -112,11 +109,10 @@ public class MBArrayStop {
      */
     public JSONArray reducedToIndex(int idx) {
         if (stopValueArray.size() <= idx) {
-            throw new MBFormatException(
-                    "Exception parsing array function stop: stop value requested at index "
-                            + idx
-                            + ", but stop value array length is "
-                            + stopValueArray.size());
+            throw new MBFormatException("Exception parsing array function stop: stop value requested at index "
+                    + idx
+                    + ", but stop value array length is "
+                    + stopValueArray.size());
         }
         @SuppressWarnings("unchecked")
         List<Object> newStopJson = new JSONArray();

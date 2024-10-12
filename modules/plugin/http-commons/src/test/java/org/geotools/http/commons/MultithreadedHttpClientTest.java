@@ -69,14 +69,11 @@ public class MultithreadedHttpClientTest {
         URL proxy = new URL("http://localhost:" + wireMockProxyRule.port());
         System.setProperty(SYS_PROP_KEY_HOST, proxy.getHost());
         System.setProperty(SYS_PROP_KEY_PORT, Integer.toString(proxy.getPort()));
-        wireMockProxyRule.addStubMapping(
-                stubFor(
-                        get(urlEqualTo("/fred"))
-                                .willReturn(
-                                        aResponse()
-                                                .withStatus(200)
-                                                .withHeader("Content-Type", "text/xml")
-                                                .withBody("<response>Some content</response>"))));
+        wireMockProxyRule.addStubMapping(stubFor(get(urlEqualTo("/fred"))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "text/xml")
+                        .withBody("<response>Some content</response>"))));
         try (MultithreadedHttpClient sut = new MultithreadedHttpClient()) {
             sut.get(new URL("http://geotools.org/fred"));
         }
@@ -86,15 +83,12 @@ public class MultithreadedHttpClientTest {
 
     @Test
     public void testWithBasicAuthProvided() throws Exception {
-        wireMockRule.addStubMapping(
-                stubFor(
-                        get(urlEqualTo("/testba"))
-                                .withBasicAuth("flup", "top")
-                                .willReturn(
-                                        aResponse()
-                                                .withStatus(200)
-                                                .withHeader("Content-Type", "text/xml")
-                                                .withBody("<ok>authorized</ok>"))));
+        wireMockRule.addStubMapping(stubFor(get(urlEqualTo("/testba"))
+                .withBasicAuth("flup", "top")
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "text/xml")
+                        .withBody("<ok>authorized</ok>"))));
 
         try (MultithreadedHttpClient toTest = new MultithreadedHttpClient()) {
             toTest.setUser("flup");
@@ -114,28 +108,22 @@ public class MultithreadedHttpClientTest {
 
         URL testURL = new URL("http://localhost:" + wireMockRule.port() + "/test");
 
-        wireMockProxyRule.addStubMapping(
-                stubFor(
-                        get(urlEqualTo("/fred"))
-                                .willReturn(
-                                        aResponse()
-                                                .withStatus(200)
-                                                .withHeader("Content-Type", "text/xml")
-                                                .withBody("<response>Some content</response>"))));
+        wireMockProxyRule.addStubMapping(stubFor(get(urlEqualTo("/fred"))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "text/xml")
+                        .withBody("<response>Some content</response>"))));
         try (MultithreadedHttpClient sut = new MultithreadedHttpClient()) {
             sut.get(new URL("http://geotools.org/fred"));
         }
         // check we intercepted the request with our "proxy"
         wireMockProxyRule.verify(getRequestedFor(urlEqualTo("/fred")));
 
-        wireMockRule.addStubMapping(
-                stubFor(
-                        get(urlEqualTo("/test"))
-                                .willReturn(
-                                        aResponse()
-                                                .withStatus(200)
-                                                .withHeader("Content-Type", "text/xml")
-                                                .withBody("<response>Some content</response>"))));
+        wireMockRule.addStubMapping(stubFor(get(urlEqualTo("/test"))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "text/xml")
+                        .withBody("<response>Some content</response>"))));
         System.setProperty(SYS_PROP_KEY_NONPROXYHOSTS, "\"localhost|www.geotools.org\"");
         try (MultithreadedHttpClient sut = new MultithreadedHttpClient()) {
             sut.get(testURL);
@@ -185,24 +173,16 @@ public class MultithreadedHttpClientTest {
     public void testBasicHeaderGET() throws IOException {
         String longPassword = String.join("", Collections.nCopies(10, "0123456789"));
         String userName = "user";
-        wireMockRule.addStubMapping(
-                stubFor(
-                        get(urlEqualTo("/test"))
-                                .willReturn(
-                                        aResponse()
-                                                .withStatus(401)
-                                                .withHeader(
-                                                        "WWW-Authenticate",
-                                                        "Basic realm=\"User Visible Realm\""))));
-        wireMockRule.addStubMapping(
-                stubFor(
-                        get(urlEqualTo("/test"))
-                                .withBasicAuth(userName, longPassword)
-                                .willReturn(
-                                        aResponse()
-                                                .withStatus(200)
-                                                .withHeader("Content-Type", "text/xml")
-                                                .withBody("<response>Some content</response>"))));
+        wireMockRule.addStubMapping(stubFor(get(urlEqualTo("/test"))
+                .willReturn(aResponse()
+                        .withStatus(401)
+                        .withHeader("WWW-Authenticate", "Basic realm=\"User Visible Realm\""))));
+        wireMockRule.addStubMapping(stubFor(get(urlEqualTo("/test"))
+                .withBasicAuth(userName, longPassword)
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "text/xml")
+                        .withBody("<response>Some content</response>"))));
         try (MultithreadedHttpClient client = new MultithreadedHttpClient()) {
             client.setUser(userName);
             client.setPassword(longPassword);
@@ -210,9 +190,8 @@ public class MultithreadedHttpClientTest {
 
             String encodedCredentials =
                     "dXNlcjowMTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTIzNDU2Nzg5";
-            wireMockRule.verify(
-                    getRequestedFor(urlEqualTo("/test"))
-                            .withHeader("Authorization", equalTo("Basic " + encodedCredentials)));
+            wireMockRule.verify(getRequestedFor(urlEqualTo("/test"))
+                    .withHeader("Authorization", equalTo("Basic " + encodedCredentials)));
         }
     }
 
@@ -220,24 +199,16 @@ public class MultithreadedHttpClientTest {
     public void testBasicHeaderPOST() throws IOException {
         String longPassword = String.join("", Collections.nCopies(10, "0123456789"));
         String userName = "user";
-        wireMockRule.addStubMapping(
-                stubFor(
-                        post(urlEqualTo("/test"))
-                                .willReturn(
-                                        aResponse()
-                                                .withStatus(401)
-                                                .withHeader(
-                                                        "WWW-Authenticate",
-                                                        "Basic realm=\"User Visible Realm\""))));
-        wireMockRule.addStubMapping(
-                stubFor(
-                        post(urlEqualTo("/test"))
-                                .withBasicAuth(userName, longPassword)
-                                .willReturn(
-                                        aResponse()
-                                                .withStatus(200)
-                                                .withHeader("Content-Type", "text/xml")
-                                                .withBody("<response>Some content</response>"))));
+        wireMockRule.addStubMapping(stubFor(post(urlEqualTo("/test"))
+                .willReturn(aResponse()
+                        .withStatus(401)
+                        .withHeader("WWW-Authenticate", "Basic realm=\"User Visible Realm\""))));
+        wireMockRule.addStubMapping(stubFor(post(urlEqualTo("/test"))
+                .withBasicAuth(userName, longPassword)
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "text/xml")
+                        .withBody("<response>Some content</response>"))));
         try (MultithreadedHttpClient client = new MultithreadedHttpClient()) {
             client.setUser(userName);
             client.setPassword(longPassword);
@@ -249,29 +220,24 @@ public class MultithreadedHttpClientTest {
 
             String encodedCredentials =
                     "dXNlcjowMTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTIzNDU2Nzg5";
-            wireMockRule.verify(
-                    postRequestedFor(urlEqualTo("/test"))
-                            .withHeader("Authorization", equalTo("Basic " + encodedCredentials)));
+            wireMockRule.verify(postRequestedFor(urlEqualTo("/test"))
+                    .withHeader("Authorization", equalTo("Basic " + encodedCredentials)));
         }
     }
 
     @Test
     public void testUserAgentInRequests() throws Exception {
-        wireMockRule.addStubMapping(
-                stubFor(
-                        get(urlEqualTo("/agent"))
-                                .withHeader("User-Agent", new ContainsPattern("GeoTools"))
-                                .willReturn(
-                                        aResponse()
-                                                .withStatus(200)
-                                                .withHeader("Content-Type", "plain/text")
-                                                .withBody("OK"))));
+        wireMockRule.addStubMapping(stubFor(get(urlEqualTo("/agent"))
+                .withHeader("User-Agent", new ContainsPattern("GeoTools"))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "plain/text")
+                        .withBody("OK"))));
 
         HTTPResponse response = null;
         try (MultithreadedHttpClient client = new MultithreadedHttpClient()) {
             response = client.get(new URL("http://localhost:" + wireMockRule.port() + "/agent"));
-            String result =
-                    IOUtils.toString(response.getResponseStream(), response.getResponseCharset());
+            String result = IOUtils.toString(response.getResponseStream(), response.getResponseCharset());
             Assert.assertEquals("OK", result);
 
             wireMockRule.verify(getRequestedFor(urlEqualTo("/agent")));
@@ -292,11 +258,10 @@ public class MultithreadedHttpClientTest {
         String headerValue;
         URL url = new URL("http://localhost:" + wireMockRule.port() + "/test");
         UrlPattern urlPattern = urlEqualTo("/test");
-        ResponseDefinitionBuilder responseBldr =
-                aResponse()
-                        .withStatus(200)
-                        .withHeader("Content-Type", "text/xml")
-                        .withBody("<response>Some content</response>");
+        ResponseDefinitionBuilder responseBldr = aResponse()
+                .withStatus(200)
+                .withHeader("Content-Type", "text/xml")
+                .withBody("<response>Some content</response>");
         ByteArrayInputStream postBody = new ByteArrayInputStream("GeoTools".getBytes());
         HTTPResponse response = null;
 
@@ -305,9 +270,7 @@ public class MultithreadedHttpClientTest {
         headerValue = "Bearer " + System.currentTimeMillis();
         try (MultithreadedHttpClient client = new MultithreadedHttpClient()) {
             response = client.get(url, singletonMap("Authorization", headerValue));
-            wireMockRule.verify(
-                    getRequestedFor(urlEqualTo("/test"))
-                            .withHeader("Authorization", equalTo(headerValue)));
+            wireMockRule.verify(getRequestedFor(urlEqualTo("/test")).withHeader("Authorization", equalTo(headerValue)));
         } finally {
             if (response != null) {
                 response.dispose();
@@ -319,15 +282,9 @@ public class MultithreadedHttpClientTest {
         wireMockRule.addStubMapping(stubFor(post(urlPattern).willReturn(responseBldr)));
         headerValue = "Bearer " + System.currentTimeMillis() + 1;
         try (MultithreadedHttpClient client = new MultithreadedHttpClient()) {
-            response =
-                    client.post(
-                            url,
-                            postBody,
-                            "text/plain",
-                            singletonMap("Authorization", headerValue));
+            response = client.post(url, postBody, "text/plain", singletonMap("Authorization", headerValue));
             wireMockRule.verify(
-                    postRequestedFor(urlEqualTo("/test"))
-                            .withHeader("Authorization", equalTo(headerValue)));
+                    postRequestedFor(urlEqualTo("/test")).withHeader("Authorization", equalTo(headerValue)));
         } finally {
             if (response != null) {
                 response.dispose();

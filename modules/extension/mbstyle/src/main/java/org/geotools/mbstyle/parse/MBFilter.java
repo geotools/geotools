@@ -144,10 +144,7 @@ public class MBFilter {
     }
 
     public MBFilter(JSONArray json, MBObjectParser parse, SemanticType semanticType) {
-        this.parse =
-                parse == null
-                        ? new MBObjectParser(MBFilter.class)
-                        : new MBObjectParser(MBFilter.class, parse);
+        this.parse = parse == null ? new MBObjectParser(MBFilter.class) : new MBObjectParser(MBFilter.class, parse);
         this.ff = this.parse.getFilterFactory();
         this.json = json;
         this.semanticType = semanticType;
@@ -194,10 +191,7 @@ public class MBFilter {
             throw new MBFormatException("MBFilter expected");
         }
         String operator = parse.get(array, 0);
-        if (("==".equals(operator)
-                        || "!=".equals(operator)
-                        || "in".equals(operator)
-                        || "!in".equals(operator))
+        if (("==".equals(operator) || "!=".equals(operator) || "in".equals(operator) || "!in".equals(operator))
                 && parse.isString(array, 1)
                 && "$type".equals(parse.get(array, 1))) {
             return semanticTypeByGeometryType(array, operator);
@@ -259,8 +253,7 @@ public class MBFilter {
                     semanticTypes.add(semanticType);
                 } else {
                     throw new MBFormatException(
-                            "[\"in\",\"$type\", ...] limited to Point, LineString, Polygon: "
-                                    + type);
+                            "[\"in\",\"$type\", ...] limited to Point, LineString, Polygon: " + type);
                 }
             }
             if ("==".equals(operator) && types.size() != 1) {
@@ -278,8 +271,7 @@ public class MBFilter {
                     semanticTypes.remove(semanticType);
                 } else {
                     throw new MBFormatException(
-                            "[\"!in\",\"$type\", ...] limited to Point, LineString, Polygon: "
-                                    + type);
+                            "[\"!in\",\"$type\", ...] limited to Point, LineString, Polygon: " + type);
                 }
             }
             if ("!=".equals(operator) && types.size() != 1) {
@@ -304,8 +296,7 @@ public class MBFilter {
                         ff.equals(dimension, ff.literal(2)),
                         ff.not(ff.equals(ff.function("isCoverage"), ff.literal(true))));
             default:
-                throw new MBFormatException(
-                        "MBStyle restricted to testing Point, LineString, Polygon: " + jsonText);
+                throw new MBFormatException("MBStyle restricted to testing Point, LineString, Polygon: " + jsonText);
         }
     }
 
@@ -343,10 +334,7 @@ public class MBFilter {
         //
         // TYPE
         //
-        if (("==".equals(operator)
-                        || "!=".equals(operator)
-                        || "in".equals(operator)
-                        || "!in".equals(operator))
+        if (("==".equals(operator) || "!=".equals(operator) || "in".equals(operator) || "!in".equals(operator))
                 && parse.isString(json, 1)
                 && "$type".equals(parse.get(json, 1))) {
             return filterByGeometryType(json, operator);
@@ -419,11 +407,10 @@ public class MBFilter {
             Expression within = MBExpression.transformExpression(json);
             return ff.equals(within, ff.literal(true));
         } else {
-            throw new MBFormatException(
-                    "Data expression or filter \""
-                            + operator
-                            + "\" invalid. It may be misspelled or not supported by this implementation:"
-                            + json);
+            throw new MBFormatException("Data expression or filter \""
+                    + operator
+                    + "\" invalid. It may be misspelled or not supported by this implementation:"
+                    + json);
         }
     }
 
@@ -438,8 +425,7 @@ public class MBFilter {
                     none.add(ff.not(filter));
                 }
             } else {
-                throw new MBFormatException(
-                        "None filter does not support: \"" + json.get(i) + "\"");
+                throw new MBFormatException("None filter does not support: \"" + json.get(i) + "\"");
             }
         }
         return ff.and(none);
@@ -515,8 +501,7 @@ public class MBFilter {
                 typeFilter = translateType((String) type);
             }
             if (typeFilter == null) {
-                throw new MBFormatException(
-                        "\"$type\" limited to Point, LineString, Polygon: " + type);
+                throw new MBFormatException("\"$type\" limited to Point, LineString, Polygon: " + type);
             }
             typeFilters.add(typeFilter);
         }
@@ -609,12 +594,9 @@ public class MBFilter {
         return ff.greater(expression1, expression2);
     }
 
-    private void throwUnexpectedArgumentCount(String expression, int argCount)
-            throws MBFormatException {
+    private void throwUnexpectedArgumentCount(String expression, int argCount) throws MBFormatException {
         throw new MBFormatException(
-                String.format(
-                        "Expression \"%s\" should have exactly %d argument(s)",
-                        expression, argCount));
+                String.format("Expression \"%s\" should have exactly %d argument(s)", expression, argCount));
     }
 
     /**

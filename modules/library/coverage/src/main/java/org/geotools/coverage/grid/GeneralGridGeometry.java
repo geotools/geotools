@@ -222,9 +222,7 @@ public class GeneralGridGeometry implements GridGeometry, Serializable {
      * @since 2.2
      */
     public GeneralGridGeometry(
-            final GridEnvelope gridRange,
-            final MathTransform gridToCRS,
-            final CoordinateReferenceSystem crs)
+            final GridEnvelope gridRange, final MathTransform gridToCRS, final CoordinateReferenceSystem crs)
             throws MismatchedDimensionException, IllegalArgumentException {
         this(gridRange, PixelInCell.CELL_CENTER, gridToCRS, crs);
     }
@@ -344,8 +342,7 @@ public class GeneralGridGeometry implements GridGeometry, Serializable {
             transformed = org.geotools.referencing.CRS.transform(cornerToCRS.inverse(), envelope);
         } catch (TransformException exception) {
             throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.BAD_TRANSFORM_$1, Classes.getClass(gridToCRS)),
-                    exception);
+                    MessageFormat.format(ErrorKeys.BAD_TRANSFORM_$1, Classes.getClass(gridToCRS)), exception);
         }
 
         // making this inclusive may cause problems when we use for warping of something since we
@@ -378,14 +375,12 @@ public class GeneralGridGeometry implements GridGeometry, Serializable {
                 final double yScale = transformed.getSpan(1) / gridRange.getSpan(1);
                 final double xTrans = transformed.getMinimum(0) - xScale * gridRange.getLow(0);
                 final double yTrans = transformed.getMinimum(1) - yScale * gridRange.getLow(1);
-                final AffineTransform newTr =
-                        new AffineTransform(xScale, 0, 0, yScale, xTrans, yTrans);
+                final AffineTransform newTr = new AffineTransform(xScale, 0, 0, yScale, xTrans, yTrans);
                 newTr.preConcatenate((AffineTransform) this.cornerToCRS);
                 this.cornerToCRS = ProjectiveTransform.create(newTr);
 
                 this.gridToCRS =
-                        PixelTranslation.translate(
-                                cornerToCRS, PixelInCell.CELL_CORNER, PixelInCell.CELL_CENTER);
+                        PixelTranslation.translate(cornerToCRS, PixelInCell.CELL_CORNER, PixelInCell.CELL_CENTER);
 
                 // Now 'assertsEnabled' is set to the correct value
                 if (assertsEnabled) {
@@ -393,15 +388,11 @@ public class GeneralGridGeometry implements GridGeometry, Serializable {
                         final MathTransform tr = cornerToCRS;
                         if (!(tr instanceof AffineTransform)) return;
                         final AffineTransform transform = (AffineTransform) tr;
-                        final double scale =
-                                Math.min(
-                                        XAffineTransform.getScaleX0(transform),
-                                        XAffineTransform.getScaleY0(transform));
+                        final double scale = Math.min(
+                                XAffineTransform.getScaleX0(transform), XAffineTransform.getScaleY0(transform));
                         final GeneralBounds tempEnvelope = CRS.transform(tr, toEnvelope(gridRange));
-                        tempEnvelope.setCoordinateReferenceSystem(
-                                envelope.getCoordinateReferenceSystem());
-                        if (LOGGER.isLoggable(Level.FINE)
-                                && !tempEnvelope.equals(envelope, scale * 1E-3, true)) {
+                        tempEnvelope.setCoordinateReferenceSystem(envelope.getCoordinateReferenceSystem());
+                        if (LOGGER.isLoggable(Level.FINE) && !tempEnvelope.equals(envelope, scale * 1E-3, true)) {
                             LOGGER.log(
                                     Level.FINE,
                                     "Unable to preserve the envelope for this GridGeometry, expected "
@@ -435,8 +426,7 @@ public class GeneralGridGeometry implements GridGeometry, Serializable {
      *     domain of the grid range.
      * @since 2.5
      */
-    public GeneralGridGeometry(
-            final PixelInCell anchor, final MathTransform gridToCRS, final Bounds envelope)
+    public GeneralGridGeometry(final PixelInCell anchor, final MathTransform gridToCRS, final Bounds envelope)
             throws MismatchedDimensionException, IllegalArgumentException {
         this(anchor, gridToCRS, envelope, false, false);
     }
@@ -521,8 +511,7 @@ public class GeneralGridGeometry implements GridGeometry, Serializable {
      * @see GridGeometry2D#getCoordinateReferenceSystem2D
      * @since 2.2
      */
-    public CoordinateReferenceSystem getCoordinateReferenceSystem()
-            throws InvalidGridGeometryException {
+    public CoordinateReferenceSystem getCoordinateReferenceSystem() throws InvalidGridGeometryException {
         if (envelope != null) {
             final CoordinateReferenceSystem crs = envelope.getCoordinateReferenceSystem();
             if (crs != null) {
@@ -552,9 +541,7 @@ public class GeneralGridGeometry implements GridGeometry, Serializable {
         }
         assert !isDefined(ENVELOPE_BITMASK);
         throw new InvalidGridGeometryException(
-                gridToCRS == null
-                        ? ErrorKeys.UNSPECIFIED_TRANSFORM
-                        : ErrorKeys.UNSPECIFIED_IMAGE_SIZE);
+                gridToCRS == null ? ErrorKeys.UNSPECIFIED_TRANSFORM : ErrorKeys.UNSPECIFIED_IMAGE_SIZE);
     }
 
     /**
@@ -618,8 +605,7 @@ public class GeneralGridGeometry implements GridGeometry, Serializable {
      * @see GridGeometry2D#getGridToCRS(org.geotools.api.referencing.datum.PixelInCell)
      * @since 2.3
      */
-    public MathTransform getGridToCRS(final PixelInCell anchor)
-            throws InvalidGridGeometryException {
+    public MathTransform getGridToCRS(final PixelInCell anchor) throws InvalidGridGeometryException {
         if (gridToCRS == null) {
             throw new InvalidGridGeometryException(ErrorKeys.UNSPECIFIED_TRANSFORM);
         }
@@ -629,8 +615,7 @@ public class GeneralGridGeometry implements GridGeometry, Serializable {
         if (PixelInCell.CELL_CORNER.equals(anchor)) {
             synchronized (this) {
                 if (cornerToCRS == null) {
-                    cornerToCRS =
-                            PixelTranslation.translate(gridToCRS, PixelInCell.CELL_CENTER, anchor);
+                    cornerToCRS = PixelTranslation.translate(gridToCRS, PixelInCell.CELL_CENTER, anchor);
                 }
             }
             assert !cornerToCRS.equals(gridToCRS) : cornerToCRS;
@@ -652,13 +637,10 @@ public class GeneralGridGeometry implements GridGeometry, Serializable {
      * @see javax.media.jai.ImageLayout#isValid
      */
     public boolean isDefined(final int bitmask) throws IllegalArgumentException {
-        if ((bitmask & ~(CRS_BITMASK | ENVELOPE_BITMASK | GRID_RANGE_BITMASK | GRID_TO_CRS_BITMASK))
-                != 0) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "bitmask", bitmask));
+        if ((bitmask & ~(CRS_BITMASK | ENVELOPE_BITMASK | GRID_RANGE_BITMASK | GRID_TO_CRS_BITMASK)) != 0) {
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "bitmask", bitmask));
         }
-        return ((bitmask & CRS_BITMASK) == 0
-                        || (envelope != null && envelope.getCoordinateReferenceSystem() != null))
+        return ((bitmask & CRS_BITMASK) == 0 || (envelope != null && envelope.getCoordinateReferenceSystem() != null))
                 && ((bitmask & ENVELOPE_BITMASK) == 0 || (envelope != null && !envelope.isNull()))
                 && ((bitmask & GRID_RANGE_BITMASK) == 0 || (gridRange != null))
                 && ((bitmask & GRID_TO_CRS_BITMASK) == 0 || (gridToCRS != null));
@@ -717,11 +699,9 @@ public class GeneralGridGeometry implements GridGeometry, Serializable {
      * @param object User argument.
      * @throws IllegalArgumentException if {@code object} is null.
      */
-    static void ensureNonNull(final String name, final Object object)
-            throws IllegalArgumentException {
+    static void ensureNonNull(final String name, final Object object) throws IllegalArgumentException {
         if (object == null) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, name));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, name));
         }
     }
 }

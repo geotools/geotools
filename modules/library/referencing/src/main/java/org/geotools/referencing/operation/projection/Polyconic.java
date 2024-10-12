@@ -147,8 +147,7 @@ public class Polyconic {
          * radians) and stores the result in {@code ptDst} (linear distance on a unit sphere).
          */
         @Override
-        protected Point2D transformNormalized(double lam, double phi, final Point2D ptDst)
-                throws ProjectionException {
+        protected Point2D transformNormalized(double lam, double phi, final Point2D ptDst) throws ProjectionException {
             double ms, sp, cp, x, y;
 
             if (abs(phi) <= EPSILON) {
@@ -189,8 +188,7 @@ public class Polyconic {
                 for (; i <= MAXIMUM_ITERATIONS; i++) {
                     final double sp = sin(phi);
                     final double cp = cos(phi);
-                    if (abs(cp) < ITERATION_TOLERANCE)
-                        throw new ProjectionException(ErrorKeys.NO_CONVERGENCE);
+                    if (abs(cp) < ITERATION_TOLERANCE) throw new ProjectionException(ErrorKeys.NO_CONVERGENCE);
 
                     final double s2ph = sp * cp;
                     double mlp = sqrt(1. - excentricitySquared * sp * sp);
@@ -198,12 +196,11 @@ public class Polyconic {
                     final double ml = mlfn(phi, sp, cp);
                     final double mlb = ml * ml + r;
                     mlp = (1. - excentricitySquared) / (mlp * mlp * mlp);
-                    final double dPhi =
-                            (ml + ml + c * mlb - 2. * y * (c * ml + 1.))
-                                    / (excentricitySquared * s2ph * (mlb - 2. * y * ml) / c
-                                            + 2. * (y - ml) * (c * mlp - 1. / s2ph)
-                                            - mlp
-                                            - mlp);
+                    final double dPhi = (ml + ml + c * mlb - 2. * y * (c * ml + 1.))
+                            / (excentricitySquared * s2ph * (mlb - 2. * y * ml) / c
+                                    + 2. * (y - ml) * (c * mlp - 1. / s2ph)
+                                    - mlp
+                                    - mlp);
                     if (abs(dPhi) <= ITERATION_TOLERANCE) break;
 
                     phi += dPhi;
@@ -236,8 +233,7 @@ public class Polyconic {
         }
 
         @Override
-        protected Point2D inverseTransformNormalized(double x, double y, Point2D ptDst)
-                throws ProjectionException {
+        protected Point2D inverseTransformNormalized(double x, double y, Point2D ptDst) throws ProjectionException {
             double lam, phi;
             if (abs(y = latitudeOfOrigin + y) <= EPSILON) {
                 lam = x;
@@ -248,9 +244,7 @@ public class Polyconic {
                 int i = MAXIMUM_ITERATIONS;
                 while (true) {
                     double tp = tan(phi);
-                    double dphi =
-                            (y * (phi * tp + 1.) - phi - .5 * (phi * phi + B) * tp)
-                                    / ((phi - y) / tp - 1.);
+                    double dphi = (y * (phi * tp + 1.) - phi - .5 * (phi * phi + B) * tp) / ((phi - y) / tp - 1.);
                     phi -= dphi;
                     if (!(abs(dphi) > ITERATION_TOLERANCE)) break;
                     --i;
@@ -268,8 +262,7 @@ public class Polyconic {
         }
 
         @Override
-        protected Point2D transformNormalized(double lam, double phi, Point2D ptDst)
-                throws ProjectionException {
+        protected Point2D transformNormalized(double lam, double phi, Point2D ptDst) throws ProjectionException {
             double x, y;
             if (abs(phi) <= EPSILON) {
                 x = lam;
@@ -310,27 +303,24 @@ public class Polyconic {
         private static final long serialVersionUID = 3082828148070128422L;
 
         /** The parameters group. */
-        static final ParameterDescriptorGroup PARAMETERS =
-                createDescriptorGroup(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.OGC, "Polyconic"),
-                            new NamedIdentifier(Citations.EPSG, "American Polyconic"),
-                            new NamedIdentifier(Citations.EPSG, "9818"),
-                            new NamedIdentifier(Citations.GEOTIFF, "Polyconic"),
-                            new NamedIdentifier(
-                                    Citations.GEOTOOLS,
-                                    Vocabulary.formatInternational(
-                                            VocabularyKeys.POLYCONIC_PROJECTION))
-                        },
-                        new ParameterDescriptor[] {
-                            SEMI_MAJOR,
-                            SEMI_MINOR,
-                            LATITUDE_OF_ORIGIN,
-                            CENTRAL_MERIDIAN,
-                            SCALE_FACTOR,
-                            FALSE_EASTING,
-                            FALSE_NORTHING
-                        });
+        static final ParameterDescriptorGroup PARAMETERS = createDescriptorGroup(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.OGC, "Polyconic"),
+                    new NamedIdentifier(Citations.EPSG, "American Polyconic"),
+                    new NamedIdentifier(Citations.EPSG, "9818"),
+                    new NamedIdentifier(Citations.GEOTIFF, "Polyconic"),
+                    new NamedIdentifier(
+                            Citations.GEOTOOLS, Vocabulary.formatInternational(VocabularyKeys.POLYCONIC_PROJECTION))
+                },
+                new ParameterDescriptor[] {
+                    SEMI_MAJOR,
+                    SEMI_MINOR,
+                    LATITUDE_OF_ORIGIN,
+                    CENTRAL_MERIDIAN,
+                    SCALE_FACTOR,
+                    FALSE_EASTING,
+                    FALSE_NORTHING
+                });
 
         /** Constructs a new provider. */
         public Provider() {

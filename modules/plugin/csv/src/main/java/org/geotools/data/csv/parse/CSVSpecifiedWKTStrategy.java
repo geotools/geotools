@@ -77,13 +77,12 @@ public class CSVSpecifiedWKTStrategy extends CSVStrategy {
             }
         }
         // Write out header, producing an empty file of the correct type
-        try (CSVWriter writer =
-                new CSVWriter(
-                        new FileWriter(this.csvFileState.getFile()),
-                        getSeparator(),
-                        getQuotechar(),
-                        getEscapechar(),
-                        getLineSeparator())) {
+        try (CSVWriter writer = new CSVWriter(
+                new FileWriter(this.csvFileState.getFile()),
+                getSeparator(),
+                getQuotechar(),
+                getEscapechar(),
+                getLineSeparator())) {
             writer.writeNext(header.toArray(new String[header.size()]), isQuoteAllFields());
         }
     }

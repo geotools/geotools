@@ -89,18 +89,13 @@ final class ColorModelFactory {
      * ColorModelKey}" instead. However, since this constructor is private, user doesn't need to
      * know that.
      */
-    private ColorModelFactory(
-            final Category[] categories,
-            final int type,
-            final int visibleBand,
-            final int numBands) {
+    private ColorModelFactory(final Category[] categories, final int type, final int visibleBand, final int numBands) {
         this.categories = categories;
         this.visibleBand = visibleBand;
         this.numBands = numBands;
         this.type = type;
         if (visibleBand < 0 || visibleBand >= numBands) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.BAD_BAND_NUMBER_$1, visibleBand));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.BAD_BAND_NUMBER_$1, visibleBand));
         }
     }
 
@@ -121,10 +116,7 @@ final class ColorModelFactory {
      *     with values in the <code>{@linkplain CategoryList#getRange}</code> range.
      */
     public static ColorModel getColorModel(
-            final Category[] categories,
-            final int type,
-            final int visibleBand,
-            final int numBands) {
+            final Category[] categories, final int type, final int visibleBand, final int numBands) {
         synchronized (colors) {
             ColorModelFactory key = new ColorModelFactory(categories, type, visibleBand, numBands);
             ColorModel model = colors.get(key);

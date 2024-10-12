@@ -31,8 +31,7 @@ import org.w3c.dom.Element;
 public abstract class AbstractComplexBinding implements ComplexBinding {
     /** Does nothing, subclasses should override this method. */
     @Override
-    public void initializeChildContext(
-            ElementInstance childInstance, Node node, MutablePicoContainer context) {
+    public void initializeChildContext(ElementInstance childInstance, Node node, MutablePicoContainer context) {
         // does nothing, subclasses should override
     }
 
@@ -91,8 +90,7 @@ public abstract class AbstractComplexBinding implements ComplexBinding {
      * in which the contents are not specifically specified by the schema.
      */
     @Override
-    public List<Object[]> getProperties(Object object, XSDElementDeclaration element)
-            throws Exception {
+    public List<Object[]> getProperties(Object object, XSDElementDeclaration element) throws Exception {
         // do nothing, subclasses should override
         return null;
     }

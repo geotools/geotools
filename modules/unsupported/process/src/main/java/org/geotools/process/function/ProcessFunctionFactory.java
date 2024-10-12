@@ -48,22 +48,21 @@ public class ProcessFunctionFactory implements FunctionFactory {
     public static final String PRIMARY_OUTPUT = "PRIMARY";
 
     /** Compares process factories by their title */
-    static final Comparator<ProcessFactory> FACTORY_COMPARATOR =
-            (pf1, pf2) -> {
-                if (pf1.getTitle() == null) {
-                    if (pf2.getTitle() == null) {
-                        return 0;
-                    } else {
-                        return -1;
-                    }
-                } else {
-                    if (pf2.getTitle() == null) {
-                        return 1;
-                    } else {
-                        return pf1.getTitle().compareTo(pf2.getTitle());
-                    }
-                }
-            };
+    static final Comparator<ProcessFactory> FACTORY_COMPARATOR = (pf1, pf2) -> {
+        if (pf1.getTitle() == null) {
+            if (pf2.getTitle() == null) {
+                return 0;
+            } else {
+                return -1;
+            }
+        } else {
+            if (pf2.getTitle() == null) {
+                return 1;
+            } else {
+                return pf1.getTitle().compareTo(pf2.getTitle());
+            }
+        }
+    };
 
     /** Maps from function to process name */
     HashMap<Name, FunctionName> processToFunction;
@@ -128,21 +127,17 @@ public class ProcessFunctionFactory implements FunctionFactory {
                 }
                 for (Name processName : factory.getNames()) {
                     try {
-                        Map<String, Parameter<?>> resultInfo =
-                                factory.getResultInfo(processName, null);
+                        Map<String, Parameter<?>> resultInfo = factory.getResultInfo(processName, null);
                         Parameter<?> result = getPrimary(resultInfo);
                         // check there is a single output
                         if (result != null) {
-                            Map<String, Parameter<?>> parameterInfo =
-                                    factory.getParameterInfo(processName);
+                            Map<String, Parameter<?>> parameterInfo = factory.getParameterInfo(processName);
                             List<String> argumentNames = new ArrayList<>(parameterInfo.keySet());
-                            List<org.geotools.api.parameter.Parameter<?>> args =
-                                    new ArrayList<>(argumentNames.size());
+                            List<org.geotools.api.parameter.Parameter<?>> args = new ArrayList<>(argumentNames.size());
                             for (String argumentName : argumentNames) {
                                 args.add(parameterInfo.get(argumentName));
                             }
-                            FunctionName functionName =
-                                    new FunctionNameImpl(processName, result, args);
+                            FunctionName functionName = new FunctionNameImpl(processName, result, args);
                             functionNames.add(functionName);
                             processToFunction.put(processName, functionName);
                         }

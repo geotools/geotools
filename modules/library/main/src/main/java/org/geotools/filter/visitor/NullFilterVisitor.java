@@ -105,23 +105,22 @@ import org.geotools.api.filter.temporal.TOverlaps;
  * @author Jody Garnett (Refractions Research)
  */
 public abstract class NullFilterVisitor implements FilterVisitor, ExpressionVisitor {
-    public static NullFilterVisitor NULL_VISITOR =
-            new NullFilterVisitor() {
-                @Override
-                public Object visit(And filter, Object data) {
-                    return data;
-                }
+    public static NullFilterVisitor NULL_VISITOR = new NullFilterVisitor() {
+        @Override
+        public Object visit(And filter, Object data) {
+            return data;
+        }
 
-                @Override
-                public Object visit(Or filter, Object data) {
-                    return data;
-                }
+        @Override
+        public Object visit(Or filter, Object data) {
+            return data;
+        }
 
-                @Override
-                public Object visit(Not filter, Object data) {
-                    return data;
-                }
-            };
+        @Override
+        public Object visit(Not filter, Object data) {
+            return data;
+        }
+    };
 
     public NullFilterVisitor() {}
 

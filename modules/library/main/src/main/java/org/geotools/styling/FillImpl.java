@@ -34,64 +34,62 @@ import org.geotools.util.factory.GeoTools;
  * @author James Macgill, CCG
  */
 public class FillImpl implements Fill, Cloneable {
-    public static final Fill DEFAULT =
-            new ConstantFill() {
-                private void cannotModifyConstant() {
-                    throw new UnsupportedOperationException("Constant Stroke may not be modified");
-                }
+    public static final Fill DEFAULT = new ConstantFill() {
+        private void cannotModifyConstant() {
+            throw new UnsupportedOperationException("Constant Stroke may not be modified");
+        }
 
-                final Expression COLOR = ConstantExpression.color(new Color(128, 128, 128));
-                final Expression BGCOLOR = ConstantExpression.color(new Color(255, 255, 255, 0));
-                final Expression OPACITY = ConstantExpression.ONE;
+        final Expression COLOR = ConstantExpression.color(new Color(128, 128, 128));
+        final Expression BGCOLOR = ConstantExpression.color(new Color(255, 255, 255, 0));
+        final Expression OPACITY = ConstantExpression.ONE;
 
-                @Override
-                public Expression getColor() {
-                    return COLOR;
-                }
+        @Override
+        public Expression getColor() {
+            return COLOR;
+        }
 
-                @Override
-                public Expression getOpacity() {
-                    return OPACITY;
-                }
+        @Override
+        public Expression getOpacity() {
+            return OPACITY;
+        }
 
-                @Override
-                public Graphic getGraphicFill() {
-                    return null;
-                }
+        @Override
+        public Graphic getGraphicFill() {
+            return null;
+        }
 
-                @Override
-                public Object accept(TraversingStyleVisitor visitor, Object extraData) {
-                    cannotModifyConstant();
-                    return null;
-                }
-            };
-    public static final Fill NULL =
-            new ConstantFill() {
-                private void cannotModifyConstant() {
-                    throw new UnsupportedOperationException("Constant Stroke may not be modified");
-                }
+        @Override
+        public Object accept(TraversingStyleVisitor visitor, Object extraData) {
+            cannotModifyConstant();
+            return null;
+        }
+    };
+    public static final Fill NULL = new ConstantFill() {
+        private void cannotModifyConstant() {
+            throw new UnsupportedOperationException("Constant Stroke may not be modified");
+        }
 
-                @Override
-                public Expression getColor() {
-                    return ConstantExpression.NULL;
-                }
+        @Override
+        public Expression getColor() {
+            return ConstantExpression.NULL;
+        }
 
-                @Override
-                public Expression getOpacity() {
-                    return ConstantExpression.NULL;
-                }
+        @Override
+        public Expression getOpacity() {
+            return ConstantExpression.NULL;
+        }
 
-                @Override
-                public Graphic getGraphicFill() {
-                    return GraphicImpl.NULL;
-                }
+        @Override
+        public Graphic getGraphicFill() {
+            return GraphicImpl.NULL;
+        }
 
-                @Override
-                public Object accept(TraversingStyleVisitor visitor, Object extraData) {
-                    cannotModifyConstant();
-                    return null;
-                }
-            };
+        @Override
+        public Object accept(TraversingStyleVisitor visitor, Object extraData) {
+            cannotModifyConstant();
+            return null;
+        }
+    };
     private FilterFactory filterFactory;
     private Expression color = null;
     private Expression opacity = null;

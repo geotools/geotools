@@ -181,10 +181,8 @@ public class GeometryProcessFactoryTest {
         Assert.assertEquals(1, output.size());
         // there is no output annotation, check there is consistency between what is declared
         // and what is returned
-        Geometry result =
-                (Geometry)
-                        output.get(
-                                factory.getResultInfo(hullName, null).keySet().iterator().next());
+        Geometry result = (Geometry) output.get(
+                factory.getResultInfo(hullName, null).keySet().iterator().next());
         Assert.assertTrue(result.equals(geom.convexHull()));
     }
 }

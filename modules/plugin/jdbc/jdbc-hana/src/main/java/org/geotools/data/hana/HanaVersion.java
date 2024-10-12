@@ -85,8 +85,7 @@ class HanaVersion implements Comparable<HanaVersion> {
 
         if (this.version != that.version) return Integer.compare(this.version, that.version);
         if (this.revision != that.revision) return Integer.compare(this.revision, that.revision);
-        if (this.patchLevel != that.patchLevel)
-            return Integer.compare(this.patchLevel, that.patchLevel);
+        if (this.patchLevel != that.patchLevel) return Integer.compare(this.patchLevel, that.patchLevel);
 
         return 0;
     }

@@ -80,8 +80,7 @@ public class NestedAttributeExpression extends AttributeExpressionImpl {
         return getValues(((Feature) object), rootMapping, fullSteps);
     }
 
-    private List<Object> getValues(
-            Feature feature, NestedAttributeMapping nestedMapping, StepList steps) {
+    private List<Object> getValues(Feature feature, NestedAttributeMapping nestedMapping, StepList steps) {
         List<Object> values = new ArrayList<>();
         FeatureTypeMapping nextFMapping;
         try {
@@ -95,9 +94,7 @@ public class NestedAttributeExpression extends AttributeExpressionImpl {
                 return values;
             }
             throw new UnsupportedOperationException(
-                    "FeatureTypeMapping not found for "
-                            + attPath
-                            + ". Please revise PropertyName in your filter!");
+                    "FeatureTypeMapping not found for " + attPath + ". Please revise PropertyName in your filter!");
         }
         List<Feature> nestedFeatures = new ArrayList<>();
         if (nestedMapping.isSameSource()) {
@@ -111,10 +108,7 @@ public class NestedAttributeExpression extends AttributeExpressionImpl {
                 nestedFeatures = getNestedFeatures(feature, nestedMapping, nextFMapping);
             } catch (IOException e) {
                 throw new RuntimeException(
-                        "Failed evaluating filter expression: '"
-                                + attPath
-                                + "'. Caused by: "
-                                + e.getMessage());
+                        "Failed evaluating filter expression: '" + attPath + "'. Caused by: " + e.getMessage());
             } catch (IllegalArgumentException e) {
                 // might be a polymorphic case where it's looking for an attribute
                 // from another type
@@ -183,8 +177,7 @@ public class NestedAttributeExpression extends AttributeExpressionImpl {
                 }
                 boolean isXlinkHref = isClientProperty && isXlinkHref(steps);
 
-                List<AttributeMapping> attMappings =
-                        nextFMapping.getAttributeMappingsIgnoreIndex(newSteps);
+                List<AttributeMapping> attMappings = nextFMapping.getAttributeMappingsIgnoreIndex(newSteps);
                 for (AttributeMapping attMapping : attMappings) {
                     if (isClientProperty) {
                         if (!(isXlinkHref && attMapping instanceof NestedAttributeMapping)) {
@@ -249,8 +242,7 @@ public class NestedAttributeExpression extends AttributeExpressionImpl {
      * @return list of nested features
      */
     private List<Feature> getNestedFeatures(
-            Feature root, NestedAttributeMapping nestedMapping, FeatureTypeMapping fMapping)
-            throws IOException {
+            Feature root, NestedAttributeMapping nestedMapping, FeatureTypeMapping fMapping) throws IOException {
         Object fTypeName = nestedMapping.getNestedFeatureType(root);
         if (fTypeName == null || !(fTypeName instanceof Name)) {
             return null;
@@ -351,8 +343,7 @@ public class NestedAttributeExpression extends AttributeExpressionImpl {
     public Object accept(ExpressionVisitor visitor, Object extraData) {
         // Workaround for GEOT-4981: NestedAttributeExpresionImpl is incompatible with
         // DuplicatingFilterVisitor
-        if (visitor instanceof DuplicatingFilterVisitor
-                && !(visitor instanceof NamespaceAwareAttributeRenameVisitor)) {
+        if (visitor instanceof DuplicatingFilterVisitor && !(visitor instanceof NamespaceAwareAttributeRenameVisitor)) {
             return new NestedAttributeExpression(fullSteps, rootMapping);
         }
         return visitor.visit(this, extraData);

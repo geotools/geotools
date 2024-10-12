@@ -194,8 +194,7 @@ public class SLDStyleFactoryTest {
         // make sure the style has been recognized as dynamic
         SymbolizerKey key = new SymbolizerKey(symb, range);
         Assert.assertTrue(sld.dynamicSymbolizers.containsKey(key));
-        Shape expected =
-                new TTFMarkFactory().getShape(null, ff.literal("ttf://Serif#0xF054"), feature);
+        Shape expected = new TTFMarkFactory().getShape(null, ff.literal("ttf://Serif#0xF054"), feature);
 
         // no general path equality implemented, we have to check manually
         PathIterator piExpected = expected.getPathIterator(new AffineTransform());
@@ -228,8 +227,7 @@ public class SLDStyleFactoryTest {
         Assert.assertTrue(sld.dynamicSymbolizers.containsKey(key));
 
         BufferedImage img = gs.getImage();
-        BufferedImage expected =
-                ImageIO.read(StreamingRenderer.class.getResource("test-data/draw.png"));
+        BufferedImage expected = ImageIO.read(StreamingRenderer.class.getResource("test-data/draw.png"));
         Assert.assertEquals(expected.getHeight(), img.getHeight());
         Assert.assertEquals(expected.getWidth(), img.getWidth());
         // the two images are equal, but they have different color models due to the
@@ -249,8 +247,7 @@ public class SLDStyleFactoryTest {
         SymbolizerKey key = new SymbolizerKey(symb, range);
         Assert.assertTrue(sld.dynamicSymbolizers.containsKey(key));
 
-        BufferedImage expected =
-                ImageIO.read(StreamingRenderer.class.getResource("test-data/draw.png"));
+        BufferedImage expected = ImageIO.read(StreamingRenderer.class.getResource("test-data/draw.png"));
         Assert.assertEquals(expected.getHeight(), gs.getImage().getHeight());
         Assert.assertEquals(expected.getWidth(), gs.getImage().getWidth());
     }
@@ -282,8 +279,7 @@ public class SLDStyleFactoryTest {
         Assert.assertTrue(sld.dynamicSymbolizers.containsKey(key));
 
         BufferedImage img = gs.getImage();
-        BufferedImage expected =
-                ImageIO.read(StreamingRenderer.class.getResource("test-data/draw.png"));
+        BufferedImage expected = ImageIO.read(StreamingRenderer.class.getResource("test-data/draw.png"));
         Assert.assertEquals(expected.getHeight(), img.getHeight());
         Assert.assertEquals(expected.getWidth(), img.getWidth());
         // the two images are equal, but they have different color models due to the
@@ -324,8 +320,7 @@ public class SLDStyleFactoryTest {
         PointSymbolizer symb = sf.createPointSymbolizer();
         ExternalGraphic eg = sf.createExternalGraphic(url + "iAmNotThere.png", "image/png");
         symb.getGraphic().graphicalSymbols().add(eg);
-        symb.getOptions()
-                .put(org.geotools.api.style.PointSymbolizer.FALLBACK_ON_DEFAULT_MARK, "false");
+        symb.getOptions().put(org.geotools.api.style.PointSymbolizer.FALLBACK_ON_DEFAULT_MARK, "false");
 
         // fallback has been disabled
         Assert.assertNull(sld.createPointStyle(feature, symb, range));
@@ -336,9 +331,7 @@ public class SLDStyleFactoryTest {
         URL url = StreamingRenderer.class.getResource("test-data/");
         PolygonSymbolizer symb = sf.createPolygonSymbolizer();
         ExternalGraphic eg = sf.createExternalGraphic(url + "icon64.png", "image/png");
-        Graphic g =
-                sf.createGraphic(
-                        new ExternalGraphic[] {eg}, null, null, null, ff.literal(20), null);
+        Graphic g = sf.createGraphic(new ExternalGraphic[] {eg}, null, null, null, ff.literal(20), null);
         Fill fill = sf.createFill(null, null, null, g);
         symb.setFill(fill);
 
@@ -380,8 +373,7 @@ public class SLDStyleFactoryTest {
         Style2D s = sld.createLineStyle(feature, symb, range);
         Assert.assertNotNull(s);
 
-        DynamicLineStyle2D s2 =
-                (DynamicLineStyle2D) sld.createDynamicLineStyle(feature, symb, range);
+        DynamicLineStyle2D s2 = (DynamicLineStyle2D) sld.createDynamicLineStyle(feature, symb, range);
         Assert.assertNotNull(s2);
         Assert.assertEquals(Color.BLUE, s2.getContour());
         Assert.assertNotNull(s2.getStroke());
@@ -406,16 +398,13 @@ public class SLDStyleFactoryTest {
         TextSymbolizer ts = sf.createTextSymbolizer();
         ts.setFill(sf.createFill(null));
         Font font =
-                sf.createFont(
-                        ff.literal("notExistingFont"),
-                        ff.literal("italic"),
-                        ff.literal("bold"),
-                        ff.literal(20));
+                sf.createFont(ff.literal("notExistingFont"), ff.literal("italic"), ff.literal("bold"), ff.literal(20));
         ts.setFont(font);
 
         TextStyle2D tsd = (TextStyle2D) sld.createTextStyle(feature, ts, range);
         Assert.assertEquals(20, tsd.getFont().getSize());
-        Assert.assertEquals(java.awt.Font.ITALIC | java.awt.Font.BOLD, tsd.getFont().getStyle());
+        Assert.assertEquals(
+                java.awt.Font.ITALIC | java.awt.Font.BOLD, tsd.getFont().getStyle());
         Assert.assertEquals("Serif", tsd.getFont().getName());
 
         Assert.assertEquals(0.0, tsd.getAnchorX(), 0.0);
@@ -466,8 +455,7 @@ public class SLDStyleFactoryTest {
     @Test
     public void testFallbackGraphicMark() throws Exception {
         PointSymbolizer symb = sf.createPointSymbolizer();
-        ExternalGraphic eg =
-                sf.createExternalGraphic("http://foo.com/invalid_or_missing_image_url", null);
+        ExternalGraphic eg = sf.createExternalGraphic("http://foo.com/invalid_or_missing_image_url", null);
         symb.getGraphic().graphicalSymbols().add(eg);
 
         Style2D icon = sld.createPointStyle(feature, symb, range);
@@ -481,10 +469,7 @@ public class SLDStyleFactoryTest {
 
     @Test
     public void testSortByTwoPropertiesAscending() throws Exception {
-        checkSortByParsing(
-                "cat ,    name",
-                ff.sort("cat", SortOrder.ASCENDING),
-                ff.sort("name", SortOrder.ASCENDING));
+        checkSortByParsing("cat ,    name", ff.sort("cat", SortOrder.ASCENDING), ff.sort("name", SortOrder.ASCENDING));
     }
 
     @Test
@@ -512,12 +497,7 @@ public class SLDStyleFactoryTest {
     public void testKerningOnByDefault() throws Exception {
         TextSymbolizer ts = sf.createTextSymbolizer();
         ts.setFill(sf.createFill(null));
-        Font font =
-                sf.createFont(
-                        ff.literal("Serif"),
-                        ff.literal("italic"),
-                        ff.literal("bold"),
-                        ff.literal(20));
+        Font font = sf.createFont(ff.literal("Serif"), ff.literal("italic"), ff.literal("bold"), ff.literal(20));
         ts.setFont(font);
 
         TextStyle2D tsd = (TextStyle2D) sld.createTextStyle(feature, ts, range);
@@ -531,12 +511,7 @@ public class SLDStyleFactoryTest {
     public void testKerningOffByDefault() throws Exception {
         TextSymbolizer ts = sf.createTextSymbolizer();
         ts.setFill(sf.createFill(null));
-        Font font =
-                sf.createFont(
-                        ff.literal("Serif"),
-                        ff.literal("italic"),
-                        ff.literal("bold"),
-                        ff.literal(20));
+        Font font = sf.createFont(ff.literal("Serif"), ff.literal("italic"), ff.literal("bold"), ff.literal(20));
         ts.setFont(font);
         ts.getOptions().put(org.geotools.api.style.TextSymbolizer.KERNING_KEY, "false");
 
@@ -585,10 +560,7 @@ public class SLDStyleFactoryTest {
             features.add(fb.buildFeature(null));
         }
         StyleBuilder sb = new StyleBuilder();
-        Mark mark =
-                sb.createMark(
-                        "wkt://LINESTRING(0 0, ${sin(Nagib) * 20000} ${cos(Nagib) * 20000} )",
-                        Color.red);
+        Mark mark = sb.createMark("wkt://LINESTRING(0 0, ${sin(Nagib) * 20000} ${cos(Nagib) * 20000} )", Color.red);
         Graphic graphic = sb.createGraphic(null, mark, null);
         graphic.setSize(ff.literal("40px"));
         Fill fill = sf.createFill(null, null, null, graphic);
@@ -601,20 +573,19 @@ public class SLDStyleFactoryTest {
         MapContent content = new MapContent();
         content.addLayer(layer);
         StreamingRenderer renderer = new StreamingRenderer();
-        renderer.addRenderListener(
-                new RenderListener() {
+        renderer.addRenderListener(new RenderListener() {
 
-                    @Override
-                    public void featureRenderer(SimpleFeature feature) {
-                        // TODO Auto-generated method stub
+            @Override
+            public void featureRenderer(SimpleFeature feature) {
+                // TODO Auto-generated method stub
 
-                    }
+            }
 
-                    @Override
-                    public void errorOccurred(Exception e) {
-                        Assert.fail("an error occured");
-                    }
-                });
+            @Override
+            public void errorOccurred(Exception e) {
+                Assert.fail("an error occured");
+            }
+        });
         renderer.setMapContent(content);
         BufferedImage img = new BufferedImage(100, 100, BufferedImage.TYPE_INT_ARGB);
         Rectangle paintArea = new Rectangle(0, 0, 100, 100);
@@ -651,13 +622,10 @@ public class SLDStyleFactoryTest {
 
         Hints hints = new Hints(map);
 
-        List<MarkFactory> factories =
-                IteratorUtils.toList(DynamicSymbolFactoryFinder.getMarkFactories(hints));
+        List<MarkFactory> factories = IteratorUtils.toList(DynamicSymbolFactoryFinder.getMarkFactories(hints));
         assertEquals(2, factories.size());
         List<String> result =
-                factories.stream()
-                        .map(mf -> mf.getClass().getSimpleName())
-                        .collect(Collectors.toList());
+                factories.stream().map(mf -> mf.getClass().getSimpleName()).collect(Collectors.toList());
         assertEquals(list, result);
     }
 }

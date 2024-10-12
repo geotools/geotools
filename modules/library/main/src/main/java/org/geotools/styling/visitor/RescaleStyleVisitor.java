@@ -125,9 +125,7 @@ public class RescaleStyleVisitor extends DuplicatingStyleVisitor {
         Expression rescaleToExpression = rescale(ff.literal(1));
         // How to test, if it is a measure with a unit or not?
         String data = ((Literal) rescaleToExpression).getValue().toString();
-        boolean evaluate =
-                rescaleToExpression instanceof Literal
-                        && Character.isDigit(data.charAt(data.length() - 1));
+        boolean evaluate = rescaleToExpression instanceof Literal && Character.isDigit(data.charAt(data.length() - 1));
 
         List<Expression> rescaled = new ArrayList<>(expressions.size());
         for (Expression expression : expressions) {
@@ -241,8 +239,7 @@ public class RescaleStyleVisitor extends DuplicatingStyleVisitor {
                 LinePlacement linePlacement = (LinePlacement) placement;
                 linePlacement.setGap(rescale(linePlacement.getGap()));
                 linePlacement.setInitialGap(rescale(linePlacement.getInitialGap()));
-                linePlacement.setPerpendicularOffset(
-                        rescale(linePlacement.getPerpendicularOffset()));
+                linePlacement.setPerpendicularOffset(rescale(linePlacement.getPerpendicularOffset()));
             }
             copy.setLabelPlacement(placement);
 
@@ -273,8 +270,7 @@ public class RescaleStyleVisitor extends DuplicatingStyleVisitor {
                     options,
                     org.geotools.api.style.TextSymbolizer.AUTO_WRAP_KEY,
                     org.geotools.api.style.TextSymbolizer.DEFAULT_AUTO_WRAP);
-            rescaleArrayOption(
-                    options, org.geotools.api.style.TextSymbolizer.GRAPHIC_MARGIN_KEY, 0);
+            rescaleArrayOption(options, org.geotools.api.style.TextSymbolizer.GRAPHIC_MARGIN_KEY, 0);
         } finally {
             this.defaultUnit = null;
         }
@@ -319,10 +315,7 @@ public class RescaleStyleVisitor extends DuplicatingStyleVisitor {
             super.visit(sym);
 
             PolygonSymbolizer copy = (PolygonSymbolizer) pages.peek();
-            rescaleArrayOption(
-                    copy.getOptions(),
-                    org.geotools.api.style.PolygonSymbolizer.GRAPHIC_MARGIN_KEY,
-                    0);
+            rescaleArrayOption(copy.getOptions(), org.geotools.api.style.PolygonSymbolizer.GRAPHIC_MARGIN_KEY, 0);
         } finally {
             this.defaultUnit = null;
         }
@@ -347,22 +340,20 @@ public class RescaleStyleVisitor extends DuplicatingStyleVisitor {
         } else if (defaultValue != 0) {
             options.put(key, String.valueOf(defaultValue * scaleFactor));
         }
-    };
+    }
+    ;
 
     /** Rescales the specified vendor option */
     protected void rescaleOption(Map<String, String> options, String key, int defaultValue) {
         double scaleFactor = scale.evaluate(null, Double.class);
         if (options.get(key) != null) {
-            int rescaled =
-                    (int)
-                            Math.round(
-                                    Converters.convert(options.get(key), Double.class)
-                                            * scaleFactor);
+            int rescaled = (int) Math.round(Converters.convert(options.get(key), Double.class) * scaleFactor);
             options.put(key, String.valueOf(rescaled));
         } else if (defaultValue != 0) {
             options.put(key, String.valueOf((int) Math.round(defaultValue * scaleFactor)));
         }
-    };
+    }
+    ;
 
     /** Rescales the specified vendor option */
     protected void rescaleArrayOption(Map<String, String> options, String key, int defaultValue) {
@@ -380,5 +371,6 @@ public class RescaleStyleVisitor extends DuplicatingStyleVisitor {
         } else if (defaultValue != 0) {
             options.put(key, String.valueOf((int) Math.round(defaultValue * scaleFactor)));
         }
-    };
+    }
+    ;
 }

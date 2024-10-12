@@ -57,16 +57,11 @@ public class WMTSCoverage {
         WMTSCoverageReader reader = new WMTSCoverageReader(wmts, layer);
 
         ReferencedEnvelope envelope =
-                new ReferencedEnvelope(
-                        17.0697, 18.1937, 79.3052, 79.4667, DefaultGeographicCRS.WGS84);
+                new ReferencedEnvelope(17.0697, 18.1937, 79.3052, 79.4667, DefaultGeographicCRS.WGS84);
 
         CoordinateReferenceSystem upsCrs = CRS.decode("EPSG:32661");
-        ReferencedEnvelope upsExtent =
-                new ReferencedEnvelope(
-                        JTS.transform(
-                                envelope,
-                                CRS.findMathTransform(DefaultGeographicCRS.WGS84, upsCrs)),
-                        upsCrs);
+        ReferencedEnvelope upsExtent = new ReferencedEnvelope(
+                JTS.transform(envelope, CRS.findMathTransform(DefaultGeographicCRS.WGS84, upsCrs)), upsCrs);
 
         System.out.println(upsExtent);
 
@@ -75,8 +70,7 @@ public class WMTSCoverage {
 
         Parameter<GridGeometry2D> readGG =
                 (Parameter<GridGeometry2D>) AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
-        readGG.setValue(
-                new GridGeometry2D(new GridEnvelope2D(new Rectangle(width, height)), upsExtent));
+        readGG.setValue(new GridGeometry2D(new GridEnvelope2D(new Rectangle(width, height)), upsExtent));
 
         GeneralParameterValue[] parameters = new GeneralParameterValue[] {readGG};
         GridCoverage2D coverage = reader.read(parameters);

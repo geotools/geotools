@@ -162,11 +162,7 @@ public interface GTRenderer {
      * @param mapArea the map's visible area (viewport) in map coordinates.
      * @param worldToScreen A transform which converts World coordinates to Screen coordinates.
      */
-    public void paint(
-            Graphics2D graphics,
-            Rectangle paintArea,
-            Envelope mapArea,
-            AffineTransform worldToScreen);
+    public void paint(Graphics2D graphics, Rectangle paintArea, Envelope mapArea, AffineTransform worldToScreen);
 
     /**
      * Renders features based on the map layers and their styles as specified in the map context
@@ -182,8 +178,5 @@ public interface GTRenderer {
      * @param worldToScreen A transform which converts World coordinates to Screen coordinates.
      */
     public void paint(
-            Graphics2D graphics,
-            Rectangle paintArea,
-            ReferencedEnvelope mapArea,
-            AffineTransform worldToScreen);
+            Graphics2D graphics, Rectangle paintArea, ReferencedEnvelope mapArea, AffineTransform worldToScreen);
 }

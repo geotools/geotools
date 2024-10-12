@@ -85,11 +85,9 @@ public class ExpressionExtractor {
                 // skip the next character
                 i++;
             } else if (curr == '$') {
-                if (last || next != '{')
-                    throw new IllegalArgumentException("Unescaped $ at position " + (i + 1));
+                if (last || next != '{') throw new IllegalArgumentException("Unescaped $ at position " + (i + 1));
                 if (inCqlExpression)
-                    throw new IllegalArgumentException(
-                            "Already found a ${ sequence before the one at " + (i + 1));
+                    throw new IllegalArgumentException("Already found a ${ sequence before the one at " + (i + 1));
 
                 // if we extracted a literal in between two expressions, add it to the result
                 if (sb.length() > 0) {
@@ -102,12 +100,10 @@ public class ExpressionExtractor {
                 i++;
             } else if (curr == '}') {
                 if (!inCqlExpression)
-                    throw new IllegalArgumentException(
-                            "Already found a ${ sequence before the one at " + (i + 1));
+                    throw new IllegalArgumentException("Already found a ${ sequence before the one at " + (i + 1));
 
                 if (sb.length() == 0)
-                    throw new IllegalArgumentException(
-                            "Invalid empty cql expression ${} at " + (i - 1));
+                    throw new IllegalArgumentException("Invalid empty cql expression ${} at " + (i - 1));
 
                 try {
                     result.add(ECQL.toExpression(sb.toString()));
@@ -133,8 +129,7 @@ public class ExpressionExtractor {
     /** Given an expression list will create an expression concatenating them. */
     static Expression catenateExpressions(List<Expression> expressions) {
         if (expressions == null || expressions.isEmpty())
-            throw new IllegalArgumentException(
-                    "You should provide at least one expression in the list");
+            throw new IllegalArgumentException("You should provide at least one expression in the list");
 
         if (expressions.size() == 1) {
             return expressions.get(0);

@@ -29,8 +29,7 @@ import org.geotools.filter.FunctionImpl;
  *
  * @since 9.0
  */
-public abstract class InternalVolatileFunction extends FunctionImpl
-        implements InternalFunction, VolatileFunction {
+public abstract class InternalVolatileFunction extends FunctionImpl implements InternalFunction, VolatileFunction {
 
     public InternalVolatileFunction() {
         this("InternalFunctionImpl");

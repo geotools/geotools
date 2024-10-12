@@ -73,8 +73,7 @@ class FootprintUtils {
 
     private FootprintUtils() {}
 
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(FootprintUtils.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(FootprintUtils.class);
 
     /**
      * Given a footprint summary file (.fpt), populate the provided footprints <ID-Geometry> pairs
@@ -88,8 +87,7 @@ class FootprintUtils {
         Utilities.ensureNonNull("footprintSummaryFile", footprintSummaryFile);
         if (!footprintSummaryFile.exists() || !footprintSummaryFile.canRead()) {
             throw new IllegalArgumentException(
-                    "Unable to access to the provided footprint file "
-                            + footprintSummaryFile.getAbsolutePath());
+                    "Unable to access to the provided footprint file " + footprintSummaryFile.getAbsolutePath());
         }
         Utilities.ensureNonNull("footprintsID_GeometryMap", footprintsIDGeometryMap);
 
@@ -119,14 +117,12 @@ class FootprintUtils {
      * @param footprintsMap the map containing <.ID,Geometry> pairs
      * @return the related {@link Geometry} if found, or null otherwise.
      */
-    static Geometry lookupFootprintGeometry(
-            final String featureID, final Map<String, Geometry> footprintsMap) {
+    static Geometry lookupFootprintGeometry(final String featureID, final Map<String, Geometry> footprintsMap) {
         Utilities.ensureNonNull("featureID", featureID);
         Utilities.ensureNonNull("footprintsMap", footprintsMap);
 
         if (footprintsMap != null && !footprintsMap.isEmpty()) {
-            final String id =
-                    featureID.substring(featureID.lastIndexOf(".") + 1, featureID.length());
+            final String id = featureID.substring(featureID.lastIndexOf(".") + 1, featureID.length());
             return footprintsMap.containsKey(id) ? footprintsMap.get(id) : null;
         }
         return null;
@@ -134,8 +130,7 @@ class FootprintUtils {
 
     /** Init the provided footprint map containing <String(location), Geometry(footprint)> pairs. */
     static void initFootprintsLocationGeometryMap(
-            final ShapefileDataStore footprintStore, final Map<String, Geometry> footprintsMap)
-            throws IOException {
+            final ShapefileDataStore footprintStore, final Map<String, Geometry> footprintsMap) throws IOException {
         Utilities.ensureNonNull("footprintStore", footprintStore);
         Utilities.ensureNonNull("footprintsMap", footprintsMap);
 
@@ -145,10 +140,8 @@ class FootprintUtils {
                     "Problems when opening the footprint, no typenames for the schema are defined");
 
         final String typeName = typeNames[0];
-        final FeatureSource<SimpleFeatureType, SimpleFeature> featureSource =
-                footprintStore.getFeatureSource(typeName);
-        final FeatureCollection<SimpleFeatureType, SimpleFeature> features =
-                featureSource.getFeatures();
+        final FeatureSource<SimpleFeatureType, SimpleFeature> featureSource = footprintStore.getFeatureSource(typeName);
+        final FeatureCollection<SimpleFeatureType, SimpleFeature> features = featureSource.getFeatures();
         if (features == null) {
             if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.fine("No features found in the footprint");
@@ -234,10 +227,8 @@ class FootprintUtils {
             }
             final String typeName = typeNames[0];
 
-            final FeatureSource<SimpleFeatureType, SimpleFeature> featureSource =
-                    store.getFeatureSource(typeName);
-            final FeatureCollection<SimpleFeatureType, SimpleFeature> features =
-                    featureSource.getFeatures();
+            final FeatureSource<SimpleFeatureType, SimpleFeature> featureSource = store.getFeatureSource(typeName);
+            final FeatureCollection<SimpleFeatureType, SimpleFeature> features = featureSource.getFeatures();
 
             if (features == null) {
                 if (LOGGER.isLoggable(Level.FINE)) {
@@ -266,12 +257,8 @@ class FootprintUtils {
 
                             // Build a featureID=Geometry pair and write it in
                             // the Footprint summary file
-                            final String idGeometryPair =
-                                    FootprintUtils.buildIDGeometryPair(
-                                            footprintsLocationGeometryMap,
-                                            feature.getID(),
-                                            locationKey,
-                                            geometryWriter);
+                            final String idGeometryPair = FootprintUtils.buildIDGeometryPair(
+                                    footprintsLocationGeometryMap, feature.getID(), locationKey, geometryWriter);
                             writer.write(idGeometryPair);
                         }
                     }
@@ -281,14 +268,12 @@ class FootprintUtils {
             }
         } catch (Throwable e) {
             // ignore exception
-            if (LOGGER.isLoggable(Level.FINEST))
-                LOGGER.log(Level.FINEST, e.getLocalizedMessage(), e);
+            if (LOGGER.isLoggable(Level.FINEST)) LOGGER.log(Level.FINEST, e.getLocalizedMessage(), e);
         } finally {
             try {
                 store.dispose();
             } catch (Throwable e) {
-                if (LOGGER.isLoggable(Level.FINEST))
-                    LOGGER.log(Level.FINEST, e.getLocalizedMessage(), e);
+                if (LOGGER.isLoggable(Level.FINEST)) LOGGER.log(Level.FINEST, e.getLocalizedMessage(), e);
             }
         }
     }

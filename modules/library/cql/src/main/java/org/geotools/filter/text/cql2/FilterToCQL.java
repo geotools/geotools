@@ -302,8 +302,7 @@ class FilterToCQL implements FilterVisitor {
 
     @Override
     public Object visit(AnyInteracts anyInteracts, Object extraData) {
-        throw new UnsupportedOperationException(
-                "Temporal filter AnyInteracts has not a CQL expression");
+        throw new UnsupportedOperationException("Temporal filter AnyInteracts has not a CQL expression");
     }
 
     @Override
@@ -343,8 +342,7 @@ class FilterToCQL implements FilterVisitor {
 
     @Override
     public Object visit(TContains contains, Object extraData) {
-        throw new UnsupportedOperationException(
-                "Temporal filter TContains has not a CQL expression");
+        throw new UnsupportedOperationException("Temporal filter TContains has not a CQL expression");
     }
 
     @Override
@@ -354,7 +352,6 @@ class FilterToCQL implements FilterVisitor {
 
     @Override
     public Object visit(TOverlaps contains, Object extraData) {
-        throw new UnsupportedOperationException(
-                "Temporal filter TOverlaps has not a CQL expression");
+        throw new UnsupportedOperationException("Temporal filter TOverlaps has not a CQL expression");
     }
 }

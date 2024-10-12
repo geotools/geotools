@@ -131,12 +131,11 @@ class WFSRemoteTransactionState implements State {
                     insertedFids);
 
             if (requestedInsertFids.size() != insertedFids.size()) {
-                throw new IllegalStateException(
-                        "Asked to add "
-                                + requestedInsertFids.size()
-                                + " Features but got "
-                                + insertedFids.size()
-                                + " insert results");
+                throw new IllegalStateException("Asked to add "
+                        + requestedInsertFids.size()
+                        + " Features but got "
+                        + insertedFids.size()
+                        + " insert results");
             }
 
             for (int i = 0; i < requestedInsertFids.size(); i++) {
@@ -150,12 +149,11 @@ class WFSRemoteTransactionState implements State {
         }
     }
 
-    private List<MutableFeatureId> applyDiff(
-            final Name localTypeName, TransactionRequest transactionRequest) throws IOException {
+    private List<MutableFeatureId> applyDiff(final Name localTypeName, TransactionRequest transactionRequest)
+            throws IOException {
 
         final WFSContentState localState = localStates.get(localTypeName);
-        final WFSLocalTransactionState localTransactionState =
-                localState.getLocalTransactionState();
+        final WFSLocalTransactionState localTransactionState = localState.getLocalTransactionState();
         final WFSDiff diff = localTransactionState.getDiff();
 
         List<MutableFeatureId> addedFeatureIds = new LinkedList<>();
@@ -228,8 +226,7 @@ class WFSRemoteTransactionState implements State {
         return addedFeatureIds;
     }
 
-    private void applySingleUpdate(
-            QName remoteTypeName, SimpleFeature feature, TransactionRequest transactionRequest)
+    private void applySingleUpdate(QName remoteTypeName, SimpleFeature feature, TransactionRequest transactionRequest)
             throws IOException {
 
         // so bad, this is going to update a lot of unnecessary properties. We'd need to make
@@ -242,23 +239,20 @@ class WFSRemoteTransactionState implements State {
         List<Object> newValues = new ArrayList<>();
 
         for (Property p : properties) {
-            QName attName = new QName(remoteTypeName.getNamespaceURI(), p.getName().getLocalPart());
+            QName attName =
+                    new QName(remoteTypeName.getNamespaceURI(), p.getName().getLocalPart());
             Object attValue = p.getValue();
             propertyNames.add(attName);
             newValues.add(attValue);
         }
 
-        Filter updateFilter =
-                dataStore.getFilterFactory().id(Collections.singleton(feature.getIdentifier()));
+        Filter updateFilter = dataStore.getFilterFactory().id(Collections.singleton(feature.getIdentifier()));
 
-        Update update =
-                transactionRequest.createUpdate(
-                        remoteTypeName, propertyNames, newValues, updateFilter);
+        Update update = transactionRequest.createUpdate(remoteTypeName, propertyNames, newValues, updateFilter);
         transactionRequest.add(update);
     }
 
-    private void applyBatchUpdates(
-            QName remoteTypeName, WFSDiff diff, TransactionRequest transactionRequest) {
+    private void applyBatchUpdates(QName remoteTypeName, WFSDiff diff, TransactionRequest transactionRequest) {
 
         List<BatchUpdate> batchUpdates = diff.getBatchUpdates();
 
@@ -266,15 +260,12 @@ class WFSRemoteTransactionState implements State {
 
             List<QName> propertyNames = new ArrayList<>(batch.properties.length);
             for (Name attName : batch.properties) {
-                propertyNames.add(
-                        new QName(remoteTypeName.getNamespaceURI(), attName.getLocalPart()));
+                propertyNames.add(new QName(remoteTypeName.getNamespaceURI(), attName.getLocalPart()));
             }
             List<Object> newValues = Arrays.asList(batch.values);
             Filter updateFilter = batch.filter;
 
-            Update update =
-                    transactionRequest.createUpdate(
-                            remoteTypeName, propertyNames, newValues, updateFilter);
+            Update update = transactionRequest.createUpdate(remoteTypeName, propertyNames, newValues, updateFilter);
 
             transactionRequest.add(update);
         }

@@ -161,8 +161,7 @@ public class GeneralPosition extends AbstractPosition implements Serializable, C
      * @throws MismatchedDimensionException if the specified CRS doesn't have the expected number of
      *     dimensions.
      */
-    public void setCoordinateReferenceSystem(final CoordinateReferenceSystem crs)
-            throws MismatchedDimensionException {
+    public void setCoordinateReferenceSystem(final CoordinateReferenceSystem crs) throws MismatchedDimensionException {
         checkCoordinateReferenceSystemDimension(crs, getDimension());
         this.crs = crs;
     }
@@ -239,8 +238,7 @@ public class GeneralPosition extends AbstractPosition implements Serializable, C
      * @param position The new position for this point.
      * @throws MismatchedDimensionException if this point doesn't have the expected dimension.
      */
-    public final void setLocation(final GeneralPosition position)
-            throws MismatchedDimensionException {
+    public final void setLocation(final GeneralPosition position) throws MismatchedDimensionException {
         ensureDimensionMatch("position", position.ordinates.length, ordinates.length);
         setCoordinateReferenceSystem(position.crs);
         System.arraycopy(position.ordinates, 0, ordinates, 0, ordinates.length);
@@ -271,8 +269,7 @@ public class GeneralPosition extends AbstractPosition implements Serializable, C
      */
     public Point2D toPoint2D() throws IllegalStateException {
         if (ordinates.length != 2) {
-            throw new IllegalStateException(
-                    MessageFormat.format(ErrorKeys.NOT_TWO_DIMENSIONAL_$1, ordinates.length));
+            throw new IllegalStateException(MessageFormat.format(ErrorKeys.NOT_TWO_DIMENSIONAL_$1, ordinates.length));
         }
         return new Point2D.Double(ordinates[0], ordinates[1]);
     }

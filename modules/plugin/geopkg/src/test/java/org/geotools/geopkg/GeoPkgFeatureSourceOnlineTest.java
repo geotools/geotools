@@ -57,8 +57,7 @@ public class GeoPkgFeatureSourceOnlineTest extends JDBCFeatureSourceOnlineTest {
         FilterFactory ff = (FilterFactory) dataStore.getFilterFactory();
         //        PropertyIsLike caseSensitiveLike =
         //                ff.like(ff.property(aname("stringProperty")), "Z*", "*", "?", "\\", true);
-        PropertyIsLike caseInsensitiveLike =
-                ff.like(ff.property(aname("stringProperty")), "Z*", "*", "?", "\\", false);
+        PropertyIsLike caseInsensitiveLike = ff.like(ff.property(aname("stringProperty")), "Z*", "*", "?", "\\", false);
         PropertyIsLike caseInsensitiveLike2 =
                 ff.like(ff.property(aname("stringProperty")), "z*", "*", "?", "\\", false);
         // SQLLITE LIKE is always case insensitive

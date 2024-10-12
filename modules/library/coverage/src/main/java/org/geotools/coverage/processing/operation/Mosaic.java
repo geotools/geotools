@@ -135,69 +135,64 @@ public class Mosaic extends OperationJAI {
     public static final String ALPHA_NAME = "alphas";
 
     /** The parameter descriptor for the Sources. */
-    public static final ParameterDescriptor<Collection> SOURCES =
-            new DefaultParameterDescriptor<>(
-                    Citations.JAI,
-                    SOURCES_NAME,
-                    Collection.class, // Value class (mandatory)
-                    null, // Array of valid values
-                    null, // Default value
-                    null, // Minimal value
-                    null, // Maximal value
-                    null, // Unit of measure
-                    true);
+    public static final ParameterDescriptor<Collection> SOURCES = new DefaultParameterDescriptor<>(
+            Citations.JAI,
+            SOURCES_NAME,
+            Collection.class, // Value class (mandatory)
+            null, // Array of valid values
+            null, // Default value
+            null, // Minimal value
+            null, // Maximal value
+            null, // Unit of measure
+            true);
 
     /** The parameter descriptor for the GridGeometry to use. */
-    public static final ParameterDescriptor<GridGeometry> GG =
-            new DefaultParameterDescriptor<>(
-                    Citations.JAI,
-                    GEOMETRY,
-                    GridGeometry.class, // Value class (mandatory)
-                    null, // Array of valid values
-                    null, // Default value
-                    null, // Minimal value
-                    null, // Maximal value
-                    null, // Unit of measure
-                    false);
+    public static final ParameterDescriptor<GridGeometry> GG = new DefaultParameterDescriptor<>(
+            Citations.JAI,
+            GEOMETRY,
+            GridGeometry.class, // Value class (mandatory)
+            null, // Array of valid values
+            null, // Default value
+            null, // Minimal value
+            null, // Maximal value
+            null, // Unit of measure
+            false);
 
     /** The parameter descriptor for the GridGeometry choosing policy. */
-    public static final ParameterDescriptor<String> GEOMETRY_POLICY =
-            new DefaultParameterDescriptor<>(
-                    Citations.JAI,
-                    POLICY,
-                    String.class, // Value class (mandatory)
-                    null, // Array of valid values
-                    null, // Default value
-                    null, // Minimal value
-                    null, // Maximal value
-                    null, // Unit of measure
-                    false);
+    public static final ParameterDescriptor<String> GEOMETRY_POLICY = new DefaultParameterDescriptor<>(
+            Citations.JAI,
+            POLICY,
+            String.class, // Value class (mandatory)
+            null, // Array of valid values
+            null, // Default value
+            null, // Minimal value
+            null, // Maximal value
+            null, // Unit of measure
+            false);
 
     /** The parameter descriptor for the Transformation Choice. */
-    public static final ParameterDescriptor<double[]> OUTPUT_NODATA =
-            new DefaultParameterDescriptor<>(
-                    Citations.JAI,
-                    OUTNODATA_NAME,
-                    double[].class, // Value class (mandatory)
-                    null, // Array of valid values
-                    null, // Default value
-                    null, // Minimal value
-                    null, // Maximal value
-                    null, // Unit of measure
-                    false);
+    public static final ParameterDescriptor<double[]> OUTPUT_NODATA = new DefaultParameterDescriptor<>(
+            Citations.JAI,
+            OUTNODATA_NAME,
+            double[].class, // Value class (mandatory)
+            null, // Array of valid values
+            null, // Default value
+            null, // Minimal value
+            null, // Maximal value
+            null, // Unit of measure
+            false);
 
     /** The parameter descriptor for the Alpha band. */
-    public static final ParameterDescriptor<Collection> ALPHA =
-            new DefaultParameterDescriptor<>(
-                    Citations.JAI,
-                    ALPHA_NAME,
-                    Collection.class, // Value class (mandatory)
-                    null, // Array of valid values
-                    null, // Default value
-                    null, // Minimal value
-                    null, // Maximal value
-                    null, // Unit of measure
-                    false);
+    public static final ParameterDescriptor<Collection> ALPHA = new DefaultParameterDescriptor<>(
+            Citations.JAI,
+            ALPHA_NAME,
+            Collection.class, // Value class (mandatory)
+            null, // Array of valid values
+            null, // Default value
+            null, // Minimal value
+            null, // Maximal value
+            null, // Unit of measure
+            false);
 
     private static Set<ParameterDescriptor> REPLACED_DESCRIPTORS;
 
@@ -454,16 +449,11 @@ public class Mosaic extends OperationJAI {
                     hasNoDataProp |= noDataProperty != null;
                 } else {
                     // New GridGeometry
-                    GridGeometry2D newGG =
-                            new GridGeometry2D(
-                                    PixelInCell.CELL_CORNER,
-                                    g2w,
-                                    inputGG.getEnvelope(),
-                                    GeoTools.getDefaultHints());
+                    GridGeometry2D newGG = new GridGeometry2D(
+                            PixelInCell.CELL_CORNER, g2w, inputGG.getEnvelope(), GeoTools.getDefaultHints());
                     try {
                         // Transformation of the input envelope in the Raster Space
-                        GeneralBounds transformed =
-                                CRS.transform(g2w.inverse(), inputGG.getEnvelope());
+                        GeneralBounds transformed = CRS.transform(g2w.inverse(), inputGG.getEnvelope());
                         // Rounding of the bounds
                         Rectangle rect = transformed.toRectangle2D().getBounds();
                         // Creation of a new GridEnvelope to set for the new GridGeometry
@@ -485,27 +475,16 @@ public class Mosaic extends OperationJAI {
                     if (newGG.equals(coverage.getGridGeometry())) {
                         rasters[i] = coverage.getRenderedImage();
                         if (hasAlpha && alphas[i] != null) {
-                            alphaArray[i] =
-                                    PlanarImage.wrapRenderedImage(alphas[i].getRenderedImage());
+                            alphaArray[i] = PlanarImage.wrapRenderedImage(alphas[i].getRenderedImage());
                         }
                     } else {
-                        rasters[i] =
-                                GridCoverage2DRIA.create(
-                                        coverage,
-                                        newGG,
-                                        fillValue,
-                                        hints,
-                                        CoverageUtilities.getROIProperty(coverage));
+                        rasters[i] = GridCoverage2DRIA.create(
+                                coverage, newGG, fillValue, hints, CoverageUtilities.getROIProperty(coverage));
                         // Resample also the alpha band
                         if (hasAlpha && alphas[i] != null) {
                             checkAlpha(coverage, alphas[i]);
-                            RenderedImage al =
-                                    GridCoverage2DRIA.create(
-                                            alphas[i],
-                                            newGG,
-                                            new double[1],
-                                            hints,
-                                            CoverageUtilities.getROIProperty(coverage));
+                            RenderedImage al = GridCoverage2DRIA.create(
+                                    alphas[i], newGG, new double[1], hints, CoverageUtilities.getROIProperty(coverage));
                             alphaArray[i] = PlanarImage.wrapRenderedImage(al);
                         }
                     }
@@ -554,8 +533,7 @@ public class Mosaic extends OperationJAI {
          * This method creates a new {@link GridGeometry2D} object based on that of the {@link
          * GridCoverage2D} defined by the index.
          */
-        private static GridGeometry2D extractFinalGridGeometry(
-                GridCoverage2D[] sources, int index) {
+        private static GridGeometry2D extractFinalGridGeometry(GridCoverage2D[] sources, int index) {
             // Select the GridGeometry of the first coverage
             GridGeometry2D gg = sources[index].getGridGeometry();
             MathTransform g2w = gg.getGridToCRS2D(PixelOrientation.UPPER_LEFT);
@@ -567,9 +545,7 @@ public class Mosaic extends OperationJAI {
             }
 
             // Creation of a final GridGeometry containing the final Bounding Box
-            GridGeometry2D finalGG =
-                    new GridGeometry2D(
-                            PixelInCell.CELL_CORNER, g2w, bbox, GeoTools.getDefaultHints());
+            GridGeometry2D finalGG = new GridGeometry2D(PixelInCell.CELL_CORNER, g2w, bbox, GeoTools.getDefaultHints());
             return finalGG;
         }
     }
@@ -577,8 +553,7 @@ public class Mosaic extends OperationJAI {
     public Mosaic() {
         super(
                 getOperationDescriptor("Mosaic"),
-                new ImagingParameterDescriptors(
-                        getOperationDescriptor("Mosaic"), REPLACED_DESCRIPTORS));
+                new ImagingParameterDescriptors(getOperationDescriptor("Mosaic"), REPLACED_DESCRIPTORS));
     }
 
     @Override
@@ -619,8 +594,7 @@ public class Mosaic extends OperationJAI {
      * Prepares the parameters to store in the {@link ParameterBlockJAI} object and resample the
      * input {@link GridCoverage2D}.
      */
-    private Params prepareParameters(
-            final ParameterValueGroup parameters, GridCoverage2D[] sources, Hints hints) {
+    private Params prepareParameters(final ParameterValueGroup parameters, GridCoverage2D[] sources, Hints hints) {
         final ImagingParameters copy = (ImagingParameters) descriptor.createValue();
         final ParameterBlockJAI block = (ParameterBlockJAI) copy.parameters;
 
@@ -657,8 +631,7 @@ public class Mosaic extends OperationJAI {
         }
 
         // Resample to the defined GridGeometry
-        ResampledRasters rr =
-                policy.resampleGridGeometry(sources, alphaCovs, gg, parameters, hints);
+        ResampledRasters rr = policy.resampleGridGeometry(sources, alphaCovs, gg, parameters, hints);
         // Get the resampled RenderedImages
         RenderedImage[] rasters = rr.getRasters();
         // Get returnedROIs
@@ -721,9 +694,8 @@ public class Mosaic extends OperationJAI {
         }
 
         // Setting of the Threshold to use
-        double threshold =
-                CoverageUtilities.getMosaicThreshold(
-                        rasters[PRIMARY_SOURCE_INDEX].getSampleModel().getDataType());
+        double threshold = CoverageUtilities.getMosaicThreshold(
+                rasters[PRIMARY_SOURCE_INDEX].getSampleModel().getDataType());
         // Setting of the Threshold object to use for the mosaic
         block.set(new double[][] {{threshold}}, THRESHOLD_PARAM);
 
@@ -765,8 +737,7 @@ public class Mosaic extends OperationJAI {
      * @see #doOperation
      * @see JAI#createNS
      */
-    private GridCoverage2D deriveGridCoverage(
-            final GridCoverage2D[] sources, final Params parameters) {
+    private GridCoverage2D deriveGridCoverage(final GridCoverage2D[] sources, final Params parameters) {
         GridCoverage2D primarySource = sources[PRIMARY_SOURCE_INDEX];
 
         /*
@@ -787,8 +758,7 @@ public class Mosaic extends OperationJAI {
         }
 
         // Layout associated to the input RenderingHints
-        ImageLayout layoutOld =
-                (hints != null) ? (ImageLayout) hints.get(JAI.KEY_IMAGE_LAYOUT) : null;
+        ImageLayout layoutOld = (hints != null) ? (ImageLayout) hints.get(JAI.KEY_IMAGE_LAYOUT) : null;
         ImageLayout layout = null;
         // Check on the ImageLayout
         if (layoutOld != null) {
@@ -830,16 +800,14 @@ public class Mosaic extends OperationJAI {
         final CoordinateReferenceSystem crs = primarySource.getCoordinateReferenceSystem();
         final MathTransform toCRS = parameters.finalGeometry.getGridToCRS();
         final RenderedImage data = createRenderedImage(parameters.parameters, hints);
-        final Map<String, ?> properties =
-                getProperties(data, crs, name, toCRS, sources, parameters);
+        final Map<String, ?> properties = getProperties(data, crs, name, toCRS, sources, parameters);
         return getFactory(parameters.hints)
                 .create(
                         name, // The grid coverage name
                         data, // The underlying data
                         crs, // The coordinate system (may not be 2D).
                         toCRS, // The grid transform (may not be 2D).
-                        getOutputSampleDimensions(
-                                primarySource.getSampleDimensions(), data), // The sample dimensions
+                        getOutputSampleDimensions(primarySource.getSampleDimensions(), data), // The sample dimensions
                         sources, // The source grid coverages.
                         properties); // Properties
     }
@@ -849,11 +817,11 @@ public class Mosaic extends OperationJAI {
      * management)
      */
     @Override
-    protected RenderedImage createRenderedImage(
-            final ParameterBlockJAI parameters, RenderingHints hints) {
+    protected RenderedImage createRenderedImage(final ParameterBlockJAI parameters, RenderingHints hints) {
         parameters.getSources();
-        RenderedImage[] images =
-                parameters.getSources().toArray(new RenderedImage[parameters.getSources().size()]);
+        RenderedImage[] images = parameters
+                .getSources()
+                .toArray(new RenderedImage[parameters.getSources().size()]);
         MosaicType type = getParameter(parameters, 0);
         PlanarImage[] alphas = getParameter(parameters, ALPHA_PARAM);
         ROI[] rois = getParameter(parameters, ROI_PARAM);
@@ -967,14 +935,8 @@ public class Mosaic extends OperationJAI {
                 } else if (rois[i] == null) {
                     // no ROI, the image is full
                     RenderedImage ri = sources[i].getRenderedImage();
-                    finalROI =
-                            finalROI.add(
-                                    new ROIShape(
-                                            new Rectangle2D.Double(
-                                                    ri.getMinX(),
-                                                    ri.getMinY(),
-                                                    ri.getWidth(),
-                                                    ri.getHeight())));
+                    finalROI = finalROI.add(new ROIShape(
+                            new Rectangle2D.Double(ri.getMinX(), ri.getMinY(), ri.getWidth(), ri.getHeight())));
                 } else {
                     finalROI = finalROI.add(rois[i]);
                 }
@@ -992,9 +954,7 @@ public class Mosaic extends OperationJAI {
 
     @Override
     protected void extractSources(
-            final ParameterValueGroup parameters,
-            final Collection<GridCoverage2D> sources,
-            final String[] sourceNames)
+            final ParameterValueGroup parameters, final Collection<GridCoverage2D> sources, final String[] sourceNames)
             throws ParameterNotFoundException, InvalidParameterValueException {
         Utilities.ensureNonNull("parameters", parameters);
         Utilities.ensureNonNull("sources", sources);
@@ -1006,9 +966,7 @@ public class Mosaic extends OperationJAI {
                 || ((Collection) srcCoverages).isEmpty()
                 || !(((Collection) srcCoverages).iterator().next() instanceof GridCoverage2D)) {
             throw new InvalidParameterValueException(
-                    MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$1, "sources"),
-                    "sources",
-                    srcCoverages);
+                    MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$1, "sources"), "sources", srcCoverages);
         }
         // Collection of the sources to use
         @SuppressWarnings("unchecked")
@@ -1039,10 +997,7 @@ public class Mosaic extends OperationJAI {
         public final Hints hints;
 
         /** Constructs a new instance of this class with the specified values. */
-        Params(
-                final ParameterBlockJAI parameters,
-                final Hints hints,
-                final GridGeometry2D finalGeometry) {
+        Params(final ParameterBlockJAI parameters, final Hints hints, final GridGeometry2D finalGeometry) {
             this.parameters = parameters;
             this.hints = hints;
             this.finalGeometry = finalGeometry;

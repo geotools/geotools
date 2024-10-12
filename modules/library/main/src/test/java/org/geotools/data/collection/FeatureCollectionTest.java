@@ -86,8 +86,7 @@ public abstract class FeatureCollectionTest {
      *
      * @return a new feature collection
      */
-    protected abstract SimpleFeatureCollection newCollection(
-            SimpleFeatureType schema, List<SimpleFeature> list);
+    protected abstract SimpleFeatureCollection newCollection(SimpleFeatureType schema, List<SimpleFeature> list);
 
     public Collection randomPiece(Collection original) {
         LinkedList next = new LinkedList();

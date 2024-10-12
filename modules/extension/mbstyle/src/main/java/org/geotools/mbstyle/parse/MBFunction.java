@@ -131,10 +131,9 @@ public class MBFunction {
             case "categorical":
                 return FunctionType.CATEGORICAL;
             default:
-                throw new MBFormatException(
-                        "Function type \""
-                                + type
-                                + "\" invalid - expected identity, exponential, interval, categorical");
+                throw new MBFormatException("Function type \""
+                        + type
+                        + "\" invalid - expected identity, exponential, interval, categorical");
         }
     }
 
@@ -339,9 +338,7 @@ public class MBFunction {
             throw new IllegalStateException("Reduce zoom and property function prior to use.");
         } else if (category.contains(FunctionCategory.ZOOM)) {
             return ff.function(
-                    "zoomLevel",
-                    ff.function("env", ff.literal("wms_scale_denominator")),
-                    ff.literal("EPSG:3857"));
+                    "zoomLevel", ff.function("env", ff.literal("wms_scale_denominator")), ff.literal("EPSG:3857"));
         } else {
             return ff.property(getProperty());
         }
@@ -414,20 +411,13 @@ public class MBFunction {
      *     MBFunction.FunctionType#CATEGORICAL} function)
      */
     private Expression colorGenerateCategorize(Expression expression) {
-        return generateCategorize(
-                expression,
-                (value, stop) -> {
-                    Expression color = parse.color((String) value);
-                    if (color == null) {
-                        throw new MBFormatException(
-                                "Could not convert stop "
-                                        + stop
-                                        + " color "
-                                        + value
-                                        + " into a color");
-                    }
-                    return color;
-                });
+        return generateCategorize(expression, (value, stop) -> {
+            Expression color = parse.color((String) value);
+            if (color == null) {
+                throw new MBFormatException("Could not convert stop " + stop + " color " + value + " into a color");
+            }
+            return color;
+        });
     }
     /**
      * Use Recode function to implement {@link FunctionType#CATEGORICAL}.
@@ -446,14 +436,12 @@ public class MBFunction {
             Object value = entry.get(1);
             Expression color = parse.color((String) value); // handles web colors
             if (color == null) {
-                throw new MBFormatException(
-                        "Could not convert stop " + stop + " color " + value + " into a color");
+                throw new MBFormatException("Could not convert stop " + stop + " color " + value + " into a color");
             }
             parameters.add(ff.literal(stop));
             parameters.add(color);
         }
-        return withFallback(
-                ff.function("Recode", parameters.toArray(new Expression[parameters.size()])));
+        return withFallback(ff.function("Recode", parameters.toArray(new Expression[parameters.size()])));
     }
 
     /**
@@ -472,15 +460,13 @@ public class MBFunction {
             Object value = entry.get(1);
             Expression color = parse.color((String) value); // handles web colors
             if (color == null) {
-                throw new MBFormatException(
-                        "Could not convert stop " + stop + " color " + value + " into a color");
+                throw new MBFormatException("Could not convert stop " + stop + " color " + value + " into a color");
             }
             parameters.add(ff.literal(stop));
             parameters.add(color);
         }
         parameters.add(ff.literal("color"));
-        return withFallback(
-                ff.function("Interpolate", parameters.toArray(new Expression[parameters.size()])));
+        return withFallback(ff.function("Interpolate", parameters.toArray(new Expression[parameters.size()])));
     }
 
     /**
@@ -500,14 +486,12 @@ public class MBFunction {
             Object value = entry.get(1);
             Expression color = parse.color((String) value);
             if (color == null) {
-                throw new MBFormatException(
-                        "Could not convert stop " + stop + " color " + value + " into a color");
+                throw new MBFormatException("Could not convert stop " + stop + " color " + value + " into a color");
             }
             parameters.add(ff.literal(stop));
             parameters.add(color);
         }
-        return withFallback(
-                ff.function("Exponential", parameters.toArray(new Expression[parameters.size()])));
+        return withFallback(ff.function("Exponential", parameters.toArray(new Expression[parameters.size()])));
     }
 
     //
@@ -532,20 +516,13 @@ public class MBFunction {
     }
 
     private Expression fontGenerateCategorize(Expression expression) {
-        return generateCategorize(
-                expression,
-                (value, stop) -> {
-                    Expression font = parse.ff.literal(((JSONArray) value).get(0));
-                    if (font == null) {
-                        throw new MBFormatException(
-                                "Could not convert stop "
-                                        + stop
-                                        + " font "
-                                        + value
-                                        + " into a font");
-                    }
-                    return font;
-                });
+        return generateCategorize(expression, (value, stop) -> {
+            Expression font = parse.ff.literal(((JSONArray) value).get(0));
+            if (font == null) {
+                throw new MBFormatException("Could not convert stop " + stop + " font " + value + " into a font");
+            }
+            return font;
+        });
     }
     //
     // Numeric
@@ -614,15 +591,13 @@ public class MBFunction {
             Object stop = entry.get(0);
             Object value = entry.get(1);
             if (!(value instanceof Number)) {
-                throw new MBFormatException(
-                        "Could not convert stop " + stop + " color " + value + " into a numeric");
+                throw new MBFormatException("Could not convert stop " + stop + " color " + value + " into a numeric");
             }
             parameters.add(ff.literal(stop));
             parameters.add(ff.literal(value));
         }
         parameters.add(ff.literal("numeric"));
-        return withFallback(
-                ff.function("Interpolate", parameters.toArray(new Expression[parameters.size()])));
+        return withFallback(ff.function("Interpolate", parameters.toArray(new Expression[parameters.size()])));
     }
 
     /**
@@ -649,14 +624,12 @@ public class MBFunction {
             Object stop = entry.get(0);
             Object value = entry.get(1);
             if (!(value instanceof Number)) {
-                throw new MBFormatException(
-                        "Could not convert stop " + stop + " color " + value + " into a numeric");
+                throw new MBFormatException("Could not convert stop " + stop + " color " + value + " into a numeric");
             }
             parameters.add(ff.literal(stop));
             parameters.add(ff.literal(value));
         }
-        return withFallback(
-                ff.function("Exponential", parameters.toArray(new Expression[parameters.size()])));
+        return withFallback(ff.function("Exponential", parameters.toArray(new Expression[parameters.size()])));
     }
 
     //
@@ -743,14 +716,11 @@ public class MBFunction {
      *     MBFunction.FunctionType#INTERVAL} function)
      */
     private Expression generateCategorize(
-            Expression expression,
-            java.util.function.BiFunction<Object, Object, Expression> parseValue) {
+            Expression expression, java.util.function.BiFunction<Object, Object, Expression> parseValue) {
 
         JSONArray stopsJson = getStops();
-        List<Expression> parameters =
-                new ArrayList<>(
-                        stopsJson.size() * 2
-                                + 3); // each stop is 2, plus property name, leading interval value,
+        List<Expression> parameters = new ArrayList<>(
+                stopsJson.size() * 2 + 3); // each stop is 2, plus property name, leading interval value,
         // and "succeeding"
         parameters.add(expression);
         for (int i = 0; i < stopsJson.size(); i++) {
@@ -780,8 +750,7 @@ public class MBFunction {
         }
         parameters.add(ff.literal("succeeding"));
 
-        Function categorizeFunction =
-                ff.function("Categorize", parameters.toArray(new Expression[parameters.size()]));
+        Function categorizeFunction = ff.function("Categorize", parameters.toArray(new Expression[parameters.size()]));
         return withFallback(categorizeFunction);
     }
 
@@ -806,8 +775,7 @@ public class MBFunction {
             parameters.add(ff.literal(stop));
             parameters.add(ff.literal(value));
         }
-        Function recodeFn =
-                ff.function("Recode", parameters.toArray(new Expression[parameters.size()]));
+        Function recodeFn = ff.function("Recode", parameters.toArray(new Expression[parameters.size()]));
         return withFallback(recodeFn);
     }
 
@@ -867,8 +835,7 @@ public class MBFunction {
             parameters.add(parse.constant(value, enumeration));
         }
 
-        return withFallback(
-                ff.function("Recode", parameters.toArray(new Expression[parameters.size()])));
+        return withFallback(ff.function("Recode", parameters.toArray(new Expression[parameters.size()])));
     }
 
     /**
@@ -884,10 +851,8 @@ public class MBFunction {
      * @return The expression for the output of this function (as a {@link
      *     MBFunction.FunctionType#INTERVAL} function)
      */
-    private Expression enumGenerateCategorize(
-            Expression input, Class<? extends Enum<?>> enumeration) {
-        return withFallback(
-                generateCategorize(input, (value, stop) -> parse.constant(value, enumeration)));
+    private Expression enumGenerateCategorize(Expression input, Class<? extends Enum<?>> enumeration) {
+        return withFallback(generateCategorize(input, (value, stop) -> parse.constant(value, enumeration)));
     }
 
     /**
@@ -900,8 +865,7 @@ public class MBFunction {
      * @return The expression for the output of this function (as a {@link
      *     MBFunction.FunctionType#IDENTITY} function)
      */
-    private Expression enumGenerateIdentity(
-            Expression input, Class<? extends Enum<?>> enumeration) {
+    private Expression enumGenerateIdentity(Expression input, Class<? extends Enum<?>> enumeration) {
         // this is an interesting challenge, we need to generate a recode mapping
         // mapbox constants defined by the enum, to appropriate geotools literals
         List<Expression> parameters = new ArrayList<>();
@@ -911,8 +875,7 @@ public class MBFunction {
             parameters.add(ff.literal(value));
             parameters.add(parse.constant(value, enumeration));
         }
-        return withFallback(
-                ff.function("Recode", parameters.toArray(new Expression[parameters.size()])));
+        return withFallback(ff.function("Recode", parameters.toArray(new Expression[parameters.size()])));
     }
 
     /**
@@ -1022,8 +985,7 @@ public class MBFunction {
             if (o instanceof JSONArray) {
                 parsedStops.add(new MBArrayStop((JSONArray) o));
             } else {
-                throw new MBFormatException(
-                        "Exception handling array function: encountered non-array stop value.");
+                throw new MBFormatException("Exception handling array function: encountered non-array stop value.");
             }
         }
 

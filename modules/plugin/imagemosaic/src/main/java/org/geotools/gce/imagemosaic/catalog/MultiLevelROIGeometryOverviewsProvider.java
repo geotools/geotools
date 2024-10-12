@@ -120,8 +120,7 @@ public class MultiLevelROIGeometryOverviewsProvider implements MultiLevelROIProv
                 // No number of overviews have been provided.
                 // Getting a reader to retrieve that number.
                 File file = new File(path);
-                AbstractGridFormat format =
-                        GridFormatFinder.findFormat(file, Utils.EXCLUDE_MOSAIC_HINTS);
+                AbstractGridFormat format = GridFormatFinder.findFormat(file, Utils.EXCLUDE_MOSAIC_HINTS);
                 reader = format.getReader(file);
                 DatasetLayout layout = reader.getDatasetLayout();
                 int extOv = layout.getNumExternalOverviews();
@@ -136,8 +135,7 @@ public class MultiLevelROIGeometryOverviewsProvider implements MultiLevelROIProv
                 Geometry overviewFootprint = loadFootprint(pathOverview, true);
                 footprintOverviews.add(overviewFootprint);
             }
-            return new MultiLevelROIGeometryOverviews(
-                    footprint, footprintOverviews, overviewsRoiInRasterSpace, hints);
+            return new MultiLevelROIGeometryOverviews(footprint, footprintOverviews, overviewsRoiInRasterSpace, hints);
         } catch (Exception e) {
             throw new IOException("Exception occurred while loading footprints ", e);
         } finally {
@@ -182,8 +180,7 @@ public class MultiLevelROIGeometryOverviewsProvider implements MultiLevelROIProv
         return footprintProvider.getFootprint(baseFullName);
     }
 
-    private List<File> loadFootprintFiles(String baseFullName, boolean isOverview)
-            throws IOException {
+    private List<File> loadFootprintFiles(String baseFullName, boolean isOverview) throws IOException {
         FootprintLoader loader = isOverview ? footprintLoader : overviewsFootprintLoader;
         if (loader != null) {
             return loader.getFootprintFiles(baseFullName);

@@ -111,10 +111,8 @@ public class OperationFactoryTest {
 
         crsAuthFactory = ReferencingFactoryFinder.getCRSAuthorityFactory("EPSG", null);
         opFactory = ReferencingFactoryFinder.getCoordinateOperationFactory(null);
-        CoordinateReferenceSystem sourceCRS =
-                crsAuthFactory.createCoordinateReferenceSystem("4230");
-        CoordinateReferenceSystem targetCRS =
-                crsAuthFactory.createCoordinateReferenceSystem("4326");
+        CoordinateReferenceSystem sourceCRS = crsAuthFactory.createCoordinateReferenceSystem("4230");
+        CoordinateReferenceSystem targetCRS = crsAuthFactory.createCoordinateReferenceSystem("4326");
         CoordinateOperation operation = opFactory.createOperation(sourceCRS, targetCRS);
 
         Assert.assertSame(sourceCRS, operation.getSourceCRS());
@@ -129,8 +127,7 @@ public class OperationFactoryTest {
                                 .getImplementationHints()
                                 .get(Hints.COORDINATE_OPERATION_FACTORY)
                         instanceof AuthorityBackedFactory);
-        Assert.assertEquals(
-                "1612", getIdentifier(operation)); // See comment in DefaultDataSourceTest.
+        Assert.assertEquals("1612", getIdentifier(operation)); // See comment in DefaultDataSourceTest.
         Assert.assertEquals(1.0, AbstractCoordinateOperation.getAccuracy(operation), 1E-6);
         Assert.assertTrue(operation instanceof Transformation);
         /*
@@ -158,8 +155,7 @@ public class OperationFactoryTest {
                         (op instanceof Conversion));
             }
         }
-        Assert.assertEquals(
-                "The coordinate operation should contains exactly 1 transformation", 1, count);
+        Assert.assertEquals("The coordinate operation should contains exactly 1 transformation", 1, count);
         Assert.assertTrue(AbstractCoordinateOperation.getAccuracy(operation) <= 25);
     }
 
@@ -171,56 +167,49 @@ public class OperationFactoryTest {
      */
     @Test
     public void testTransformedDirectPosition() throws Exception {
-        CoordinateReferenceSystem requestedCRS =
-                CRS.parseWKT(
-                        "PROJCS[\"WGS84 / Google Mercator\","
-                                + "  GEOGCS[\"WGS 84\", "
-                                + "   DATUM[\"World Geodetic System 1984\", "
-                                + "     SPHEROID[\"WGS 84\", 6378137.0, 298.257223563, AUTHORITY[\"EPSG\",\"7030\"]],"
-                                + "     AUTHORITY[\"EPSG\",\"6326\"]], "
-                                + "   PRIMEM[\"Greenwich\", 0.0, AUTHORITY[\"EPSG\",\"8901\"]],"
-                                + "   UNIT[\"degree\", 0.017453292519943295],"
-                                + "   AXIS[\"Longitude\", EAST], "
-                                + "   AXIS[\"Latitude\", NORTH], "
-                                + "   AUTHORITY[\"EPSG\",\"4326\"]],"
-                                + " PROJECTION[\"Mercator_1SP\"], "
-                                + " PARAMETER[\"semi_minor\", 6378137.0], "
-                                + " PARAMETER[\"latitude_of_origin\", 0.0],"
-                                + " PARAMETER[\"central_meridian\", 0.0],"
-                                + " PARAMETER[\"scale_factor\", 1.0], "
-                                + " PARAMETER[\"false_easting\", 0.0], "
-                                + " PARAMETER[\"false_northing\", 0.0],"
-                                + " UNIT[\"m\", 1.0], "
-                                + " AXIS[\"x\", EAST], "
-                                + " AXIS[\"y\", NORTH], "
-                                + " AUTHORITY[\"EPSG\",\"900913\"]]");
-        CoordinateReferenceSystem targetCRS =
-                CRS.parseWKT(
-                        "PROJCS[\"Lisboa_Hayford_Gauss_IGeoE\", "
-                                + "  GEOGCS[\"GCS_Datum_Lisboa_Hayford\", "
-                                + "    DATUM[\"D_Datum_Lisboa_Hayford\", "
-                                + "      SPHEROID[\"International_1924\", 6378388.0, 297.0], "
-                                + "      TOWGS84[-288.885, -91.744, 126.244, -1.691, 0.41, -0.211, -4.598]],"
-                                + "    PRIMEM[\"Greenwich\", 0.0], "
-                                + "    UNIT[\"degree\", 0.017453292519943295],"
-                                + "    AXIS[\"Longitude\", EAST], "
-                                + "    AXIS[\"Latitude\", NORTH]], "
-                                + "  PROJECTION[\"Transverse_Mercator\"], "
-                                + "  PARAMETER[\"central_meridian\", -8.131906111111114], "
-                                + "  PARAMETER[\"latitude_of_origin\", 39.666666666666664],"
-                                + "  PARAMETER[\"scale_factor\", 1.0], "
-                                + "  PARAMETER[\"false_easting\", 200000.0], "
-                                + "  PARAMETER[\"false_northing\", 300000.0],"
-                                + "  UNIT[\"m\", 1.0], "
-                                + "  AXIS[\"x\", EAST], "
-                                + "  AXIS[\"y\", NORTH]]");
+        CoordinateReferenceSystem requestedCRS = CRS.parseWKT("PROJCS[\"WGS84 / Google Mercator\","
+                + "  GEOGCS[\"WGS 84\", "
+                + "   DATUM[\"World Geodetic System 1984\", "
+                + "     SPHEROID[\"WGS 84\", 6378137.0, 298.257223563, AUTHORITY[\"EPSG\",\"7030\"]],"
+                + "     AUTHORITY[\"EPSG\",\"6326\"]], "
+                + "   PRIMEM[\"Greenwich\", 0.0, AUTHORITY[\"EPSG\",\"8901\"]],"
+                + "   UNIT[\"degree\", 0.017453292519943295],"
+                + "   AXIS[\"Longitude\", EAST], "
+                + "   AXIS[\"Latitude\", NORTH], "
+                + "   AUTHORITY[\"EPSG\",\"4326\"]],"
+                + " PROJECTION[\"Mercator_1SP\"], "
+                + " PARAMETER[\"semi_minor\", 6378137.0], "
+                + " PARAMETER[\"latitude_of_origin\", 0.0],"
+                + " PARAMETER[\"central_meridian\", 0.0],"
+                + " PARAMETER[\"scale_factor\", 1.0], "
+                + " PARAMETER[\"false_easting\", 0.0], "
+                + " PARAMETER[\"false_northing\", 0.0],"
+                + " UNIT[\"m\", 1.0], "
+                + " AXIS[\"x\", EAST], "
+                + " AXIS[\"y\", NORTH], "
+                + " AUTHORITY[\"EPSG\",\"900913\"]]");
+        CoordinateReferenceSystem targetCRS = CRS.parseWKT("PROJCS[\"Lisboa_Hayford_Gauss_IGeoE\", "
+                + "  GEOGCS[\"GCS_Datum_Lisboa_Hayford\", "
+                + "    DATUM[\"D_Datum_Lisboa_Hayford\", "
+                + "      SPHEROID[\"International_1924\", 6378388.0, 297.0], "
+                + "      TOWGS84[-288.885, -91.744, 126.244, -1.691, 0.41, -0.211, -4.598]],"
+                + "    PRIMEM[\"Greenwich\", 0.0], "
+                + "    UNIT[\"degree\", 0.017453292519943295],"
+                + "    AXIS[\"Longitude\", EAST], "
+                + "    AXIS[\"Latitude\", NORTH]], "
+                + "  PROJECTION[\"Transverse_Mercator\"], "
+                + "  PARAMETER[\"central_meridian\", -8.131906111111114], "
+                + "  PARAMETER[\"latitude_of_origin\", 39.666666666666664],"
+                + "  PARAMETER[\"scale_factor\", 1.0], "
+                + "  PARAMETER[\"false_easting\", 200000.0], "
+                + "  PARAMETER[\"false_northing\", 300000.0],"
+                + "  UNIT[\"m\", 1.0], "
+                + "  AXIS[\"x\", EAST], "
+                + "  AXIS[\"y\", NORTH]]");
 
         Position position = new Position2D(requestedCRS, -886885.0962724264, 4468200.416916506);
         final TransformedPosition arbitraryToInternal =
-                new TransformedPosition(
-                        requestedCRS,
-                        targetCRS,
-                        new Hints(Hints.LENIENT_DATUM_SHIFT, Boolean.TRUE));
+                new TransformedPosition(requestedCRS, targetCRS, new Hints(Hints.LENIENT_DATUM_SHIFT, Boolean.TRUE));
         arbitraryToInternal.transform(position);
 
         Position expected = new Position2D(targetCRS, 214741.10238960697, 26957.60506898933);
@@ -245,8 +234,7 @@ public class OperationFactoryTest {
 
         Set<CoordinateOperation> operations = findOperations(source, target);
         int size = operations.size();
-        Assert.assertTrue(
-                size >= min); // at least min operations should be registered in the database for
+        Assert.assertTrue(size >= min); // at least min operations should be registered in the database for
         // this CRS pair
         assertOperationContained(operations, expectedText);
     }
@@ -279,8 +267,7 @@ public class OperationFactoryTest {
 
         Set<CoordinateOperation> operations = findOperations(source, target);
         int size = operations.size();
-        Assert.assertTrue(
-                size >= min); // at least min operations should be registered in the database for
+        Assert.assertTrue(size >= min); // at least min operations should be registered in the database for
         // this CRS pair
         assertOperationContained(operations, expectedText);
     }
@@ -298,8 +285,7 @@ public class OperationFactoryTest {
 
         Set<CoordinateOperation> operations = findOperations(source, target);
         int size = operations.size();
-        Assert.assertTrue(
-                size >= min); // at least min operations should be registered in the database for
+        Assert.assertTrue(size >= min); // at least min operations should be registered in the database for
         // this CRS pair
         assertOperationContained(operations, expectedText);
     }
@@ -317,8 +303,7 @@ public class OperationFactoryTest {
 
         Set<CoordinateOperation> operations = findOperations(source, target);
         int size = operations.size();
-        Assert.assertTrue(
-                size >= min); // at least min operations should be registered in the database for
+        Assert.assertTrue(size >= min); // at least min operations should be registered in the database for
         // this CRS pair
         assertOperationContained(operations, expectedText);
     }
@@ -369,10 +354,8 @@ public class OperationFactoryTest {
      */
     public Set<CoordinateOperation> findOperations(String source, String target)
             throws NoSuchAuthorityCodeException, FactoryException {
-        CoordinateReferenceSystem sourceCRS =
-                crsAuthFactory.createCoordinateReferenceSystem(source);
-        CoordinateReferenceSystem targetCRS =
-                crsAuthFactory.createCoordinateReferenceSystem(target);
+        CoordinateReferenceSystem sourceCRS = crsAuthFactory.createCoordinateReferenceSystem(source);
+        CoordinateReferenceSystem targetCRS = crsAuthFactory.createCoordinateReferenceSystem(target);
         // direct order
         Set<CoordinateOperation> operations = opFactory.findOperations(sourceCRS, targetCRS);
         assertOperations(sourceCRS, targetCRS, operations);
@@ -393,9 +376,7 @@ public class OperationFactoryTest {
      * Ensures the operation math transform passes TransformTestBase.assertInterfaced assertion.
      */
     public static void assertOperation(
-            CoordinateOperation operation,
-            CoordinateReferenceSystem sourceCRS,
-            CoordinateReferenceSystem targetCRS) {
+            CoordinateOperation operation, CoordinateReferenceSystem sourceCRS, CoordinateReferenceSystem targetCRS) {
         Assert.assertSame(sourceCRS, operation.getSourceCRS());
         Assert.assertSame(targetCRS, operation.getTargetCRS());
         TransformTestBase.assertInterfaced(operation.getMathTransform());
@@ -411,15 +392,11 @@ public class OperationFactoryTest {
     public void testCreateOperationCompound2CompoundVertical() throws Exception {
 
         CRSFactory crsFactory = ReferencingFactoryFinder.getCRSFactory(null);
-        final CRSAuthorityFactory crsAuthFactory =
-                ReferencingFactoryFinder.getCRSAuthorityFactory("EPSG", null);
-        final CoordinateOperationFactory opFactory =
-                ReferencingFactoryFinder.getCoordinateOperationFactory(null);
+        final CRSAuthorityFactory crsAuthFactory = ReferencingFactoryFinder.getCRSAuthorityFactory("EPSG", null);
+        final CoordinateOperationFactory opFactory = ReferencingFactoryFinder.getCoordinateOperationFactory(null);
 
-        CoordinateReferenceSystem sourceCRS =
-                crsAuthFactory.createCoordinateReferenceSystem("EPSG:5555");
-        CoordinateReferenceSystem targetCRS =
-                crsAuthFactory.createCoordinateReferenceSystem("EPSG:5554");
+        CoordinateReferenceSystem sourceCRS = crsAuthFactory.createCoordinateReferenceSystem("EPSG:5555");
+        CoordinateReferenceSystem targetCRS = crsAuthFactory.createCoordinateReferenceSystem("EPSG:5554");
         // direct order
         CoordinateOperation operation = opFactory.createOperation(sourceCRS, targetCRS);
         assertOperation(operation, sourceCRS, targetCRS);
@@ -428,14 +405,11 @@ public class OperationFactoryTest {
         operation = opFactory.createOperation(targetCRS, sourceCRS);
         assertOperation(operation, targetCRS, sourceCRS);
 
-        CoordinateReferenceSystem sourceHorizontalCRS =
-                crsAuthFactory.createCoordinateReferenceSystem("EPSG:25831");
-        CoordinateReferenceSystem sourceVerticalCRS =
-                crsAuthFactory.createCoordinateReferenceSystem("EPSG:5783");
+        CoordinateReferenceSystem sourceHorizontalCRS = crsAuthFactory.createCoordinateReferenceSystem("EPSG:25831");
+        CoordinateReferenceSystem sourceVerticalCRS = crsAuthFactory.createCoordinateReferenceSystem("EPSG:5783");
         Map<String, Object> properties = new HashMap<>();
         properties.put(
-                IdentifiedObject.NAME_KEY,
-                new NamedIdentifier(Citations.fromName("TEST"), "Compound 28530+5783"));
+                IdentifiedObject.NAME_KEY, new NamedIdentifier(Citations.fromName("TEST"), "Compound 28530+5783"));
         CoordinateReferenceSystem[] elements = {sourceHorizontalCRS, sourceVerticalCRS};
         sourceCRS = crsFactory.createCompoundCRS(properties, elements);
 
@@ -449,13 +423,10 @@ public class OperationFactoryTest {
     }
 
     @Test
-    public void testGetSpecificTransform()
-            throws FactoryException, TransformException, ParseException {
+    public void testGetSpecificTransform() throws FactoryException, TransformException, ParseException {
 
-        CoordinateReferenceSystem sourceCRS =
-                crsAuthFactory.createCoordinateReferenceSystem("EPSG:21036");
-        CoordinateReferenceSystem targetCRS =
-                crsAuthFactory.createCoordinateReferenceSystem("EPSG:32736");
+        CoordinateReferenceSystem sourceCRS = crsAuthFactory.createCoordinateReferenceSystem("EPSG:21036");
+        CoordinateReferenceSystem targetCRS = crsAuthFactory.createCoordinateReferenceSystem("EPSG:32736");
 
         MathTransform crsTransform = CRS.findMathTransform(sourceCRS, targetCRS, "EPSG:1285");
         // in an ideal world we would examine the transform to see what the TOWGS parameter is but
@@ -483,12 +454,9 @@ public class OperationFactoryTest {
     @Test
     public void testGetTransforms() throws FactoryException, TransformException, ParseException {
 
-        CoordinateReferenceSystem sourceCRS =
-                crsAuthFactory.createCoordinateReferenceSystem("EPSG:21036");
-        CoordinateReferenceSystem targetCRS =
-                crsAuthFactory.createCoordinateReferenceSystem("EPSG:32736");
-        Map<String, AbstractCoordinateOperation> transforms =
-                CRS.getTransforms(sourceCRS, targetCRS);
+        CoordinateReferenceSystem sourceCRS = crsAuthFactory.createCoordinateReferenceSystem("EPSG:21036");
+        CoordinateReferenceSystem targetCRS = crsAuthFactory.createCoordinateReferenceSystem("EPSG:32736");
+        Map<String, AbstractCoordinateOperation> transforms = CRS.getTransforms(sourceCRS, targetCRS);
         String[] expected = {"EPSG:3998", "EPSG:1284", "EPSG:1122", "EPSG:1285"};
         Set<String> keys = transforms.keySet();
 
@@ -500,14 +468,7 @@ public class OperationFactoryTest {
         sourceCRS = crsAuthFactory.createCoordinateReferenceSystem("EPSG:27700");
         targetCRS = crsAuthFactory.createCoordinateReferenceSystem("EPSG:4326");
         transforms = CRS.getTransforms(sourceCRS, targetCRS);
-        String[] expected2 = {
-            "EPSG:1195",
-            "EPSG:1314",
-            "EPSG:5622",
-            "EPSG:1197",
-            "EPSG:1196",
-            "EPSG:1199",
-            "EPSG:1198"
+        String[] expected2 = {"EPSG:1195", "EPSG:1314", "EPSG:5622", "EPSG:1197", "EPSG:1196", "EPSG:1199", "EPSG:1198"
         };
         keys = transforms.keySet();
 

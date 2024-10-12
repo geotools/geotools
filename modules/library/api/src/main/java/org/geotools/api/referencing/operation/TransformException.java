@@ -28,13 +28,12 @@ public class TransformException extends Exception {
     /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = -8923944544398567533L;
 
-    static final ThreadLocal<Boolean> FILL_STACK_TRACE =
-            new ThreadLocal<>() {
-                @Override
-                protected Boolean initialValue() {
-                    return Boolean.TRUE;
-                }
-            };
+    static final ThreadLocal<Boolean> FILL_STACK_TRACE = new ThreadLocal<>() {
+        @Override
+        protected Boolean initialValue() {
+            return Boolean.TRUE;
+        }
+    };
 
     /**
      * The last transform that either transformed successfuly all coordinates, or filled the

@@ -69,9 +69,7 @@ public class DefaultGeodeticDatum extends AbstractDatum implements GeodeticDatum
         final Map<String, Object> properties = new HashMap<>(4);
         properties.put(NAME_KEY, identifiers[0]);
         properties.put(ALIAS_KEY, identifiers);
-        WGS84 =
-                new DefaultGeodeticDatum(
-                        properties, DefaultEllipsoid.WGS84, DefaultPrimeMeridian.GREENWICH);
+        WGS84 = new DefaultGeodeticDatum(properties, DefaultEllipsoid.WGS84, DefaultPrimeMeridian.GREENWICH);
     }
 
     /**
@@ -101,10 +99,7 @@ public class DefaultGeodeticDatum extends AbstractDatum implements GeodeticDatum
         super(datum);
         ellipsoid = datum.getEllipsoid();
         primeMeridian = datum.getPrimeMeridian();
-        bursaWolf =
-                (datum instanceof DefaultGeodeticDatum)
-                        ? ((DefaultGeodeticDatum) datum).bursaWolf
-                        : null;
+        bursaWolf = (datum instanceof DefaultGeodeticDatum) ? ((DefaultGeodeticDatum) datum).bursaWolf : null;
     }
 
     /**
@@ -114,8 +109,7 @@ public class DefaultGeodeticDatum extends AbstractDatum implements GeodeticDatum
      * @param ellipsoid The ellipsoid.
      * @param primeMeridian The prime meridian.
      */
-    public DefaultGeodeticDatum(
-            final String name, final Ellipsoid ellipsoid, final PrimeMeridian primeMeridian) {
+    public DefaultGeodeticDatum(final String name, final Ellipsoid ellipsoid, final PrimeMeridian primeMeridian) {
         this(Collections.singletonMap(NAME_KEY, name), ellipsoid, primeMeridian);
     }
 
@@ -144,9 +138,7 @@ public class DefaultGeodeticDatum extends AbstractDatum implements GeodeticDatum
      * @param primeMeridian The prime meridian.
      */
     public DefaultGeodeticDatum(
-            final Map<String, ?> properties,
-            final Ellipsoid ellipsoid,
-            final PrimeMeridian primeMeridian) {
+            final Map<String, ?> properties, final Ellipsoid ellipsoid, final PrimeMeridian primeMeridian) {
         super(properties);
         this.ellipsoid = ellipsoid;
         this.primeMeridian = primeMeridian;
@@ -226,8 +218,7 @@ public class DefaultGeodeticDatum extends AbstractDatum implements GeodeticDatum
      * @return An affine transform from {@code source} to {@code target}, or {@code null} if none.
      * @see BursaWolfParameters#getAffineTransform
      */
-    public static Matrix getAffineTransform(
-            final GeodeticDatum source, final GeodeticDatum target) {
+    public static Matrix getAffineTransform(final GeodeticDatum source, final GeodeticDatum target) {
         return getAffineTransform(source, target, null);
     }
 
@@ -382,13 +373,8 @@ public class DefaultGeodeticDatum extends AbstractDatum implements GeodeticDatum
     @Override
     @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
-        int code =
-                (int) serialVersionUID
-                        ^ 37
-                                * (super.hashCode()
-                                        ^ 37
-                                                * (ellipsoid.hashCode()
-                                                        ^ 37 * (primeMeridian.hashCode())));
+        int code = (int) serialVersionUID
+                ^ 37 * (super.hashCode() ^ 37 * (ellipsoid.hashCode() ^ 37 * (primeMeridian.hashCode())));
         return code;
     }
 

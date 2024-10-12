@@ -73,14 +73,12 @@ public class BatikXMLReader implements XMLReader {
     }
 
     @Override
-    public boolean getFeature(String name)
-            throws SAXNotRecognizedException, SAXNotSupportedException {
+    public boolean getFeature(String name) throws SAXNotRecognizedException, SAXNotSupportedException {
         return reader.getFeature(name);
     }
 
     @Override
-    public Object getProperty(String name)
-            throws SAXNotRecognizedException, SAXNotSupportedException {
+    public Object getProperty(String name) throws SAXNotRecognizedException, SAXNotSupportedException {
         return reader.getProperty(name);
     }
 
@@ -115,14 +113,12 @@ public class BatikXMLReader implements XMLReader {
     }
 
     @Override
-    public void setFeature(String name, boolean value)
-            throws SAXNotRecognizedException, SAXNotSupportedException {
+    public void setFeature(String name, boolean value) throws SAXNotRecognizedException, SAXNotSupportedException {
         reader.setFeature(name, value);
     }
 
     @Override
-    public void setProperty(String name, Object value)
-            throws SAXNotRecognizedException, SAXNotSupportedException {
+    public void setProperty(String name, Object value) throws SAXNotRecognizedException, SAXNotSupportedException {
         reader.setProperty(name, value);
     }
 }

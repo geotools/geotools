@@ -78,16 +78,16 @@ public abstract class JDBCDataStoreOnlineTest extends JDBCTestSupport {
         assertNotNull(ft1.getDescriptor(aname("doubleProperty")));
         assertNotNull(ft1.getDescriptor(aname("stringProperty")));
 
-        assertTrue(
-                Geometry.class.isAssignableFrom(
-                        ft1.getDescriptor(aname("geometry")).getType().getBinding()));
-        assertTrue(
-                Number.class.isAssignableFrom(
-                        ft1.getDescriptor(aname("intProperty")).getType().getBinding()));
+        assertTrue(Geometry.class.isAssignableFrom(
+                ft1.getDescriptor(aname("geometry")).getType().getBinding()));
+        assertTrue(Number.class.isAssignableFrom(
+                ft1.getDescriptor(aname("intProperty")).getType().getBinding()));
         assertEquals(
-                Double.class, ft1.getDescriptor(aname("doubleProperty")).getType().getBinding());
+                Double.class,
+                ft1.getDescriptor(aname("doubleProperty")).getType().getBinding());
         assertEquals(
-                String.class, ft1.getDescriptor(aname("stringProperty")).getType().getBinding());
+                String.class,
+                ft1.getDescriptor(aname("stringProperty")).getType().getBinding());
     }
 
     @Test
@@ -302,13 +302,7 @@ public abstract class JDBCDataStoreOnlineTest extends JDBCTestSupport {
 
         // create index
         String indexName = "ft1_str_index";
-        Index stringIndex =
-                new Index(
-                        ft1TypeName,
-                        indexName,
-                        false,
-                        aname("stringProperty"),
-                        aname("intProperty"));
+        Index stringIndex = new Index(ft1TypeName, indexName, false, aname("stringProperty"), aname("intProperty"));
         dataStore.createIndex(stringIndex);
 
         // check the index has been created
@@ -370,7 +364,9 @@ public abstract class JDBCDataStoreOnlineTest extends JDBCTestSupport {
         }
 
         // clear out the feature type cache
-        dataStore.getEntry(new NameImpl(dataStore.getNamespaceURI(), tname("ft2"))).dispose();
+        dataStore
+                .getEntry(new NameImpl(dataStore.getNamespaceURI(), tname("ft2")))
+                .dispose();
         ft2 = dataStore.getSchema(tname("ft2"));
         assertTrue(CRS.equalsIgnoreMetadata(getUTMCRS(), ft2.getCoordinateReferenceSystem()));
     }
@@ -452,28 +448,22 @@ public abstract class JDBCDataStoreOnlineTest extends JDBCTestSupport {
         try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
                 dataStore.getFeatureReader(query, Transaction.AUTO_COMMIT)) {
 
-            assertFeatureReader(
-                    0,
-                    3,
-                    reader,
-                    new SimpleFeatureAssertion() {
-                        @Override
-                        public int toIndex(SimpleFeature feature) {
-                            return ((Number) feature.getAttribute(aname("intProperty"))).intValue();
-                        }
+            assertFeatureReader(0, 3, reader, new SimpleFeatureAssertion() {
+                @Override
+                public int toIndex(SimpleFeature feature) {
+                    return ((Number) feature.getAttribute(aname("intProperty"))).intValue();
+                }
 
-                        @Override
-                        public void check(int index, SimpleFeature feature) {
-                            assertEquals(4, feature.getAttributeCount());
-                            Point p = gf.createPoint(new Coordinate(index, index));
-                            assertTrue(
-                                    p.equalsExact(
-                                            (Geometry) feature.getAttribute(aname("geometry"))));
+                @Override
+                public void check(int index, SimpleFeature feature) {
+                    assertEquals(4, feature.getAttributeCount());
+                    Point p = gf.createPoint(new Coordinate(index, index));
+                    assertTrue(p.equalsExact((Geometry) feature.getAttribute(aname("geometry"))));
 
-                            Number ip = (Number) feature.getAttribute(aname("intProperty"));
-                            assertEquals(index, ip.intValue());
-                        }
-                    });
+                    Number ip = (Number) feature.getAttribute(aname("intProperty"));
+                    assertEquals(index, ip.intValue());
+                }
+            });
         }
 
         query.setPropertyNames(aname("intProperty"));
@@ -532,7 +522,8 @@ public abstract class JDBCDataStoreOnlineTest extends JDBCTestSupport {
         FilterFactory ff = dataStore.getFilterFactory();
 
         Filter f = ff.equals(ff.property(aname("intProperty")), ff.literal(100));
-        SimpleFeatureCollection features = dataStore.getFeatureSource(tname("ft1")).getFeatures(f);
+        SimpleFeatureCollection features =
+                dataStore.getFeatureSource(tname("ft1")).getFeatures(f);
         assertEquals(0, features.size());
 
         f = ff.equals(ff.property(aname("intProperty")), ff.literal(1));
@@ -562,7 +553,8 @@ public abstract class JDBCDataStoreOnlineTest extends JDBCTestSupport {
             }
         }
 
-        SimpleFeatureCollection features = dataStore.getFeatureSource(tname("ft1")).getFeatures();
+        SimpleFeatureCollection features =
+                dataStore.getFeatureSource(tname("ft1")).getFeatures();
         assertEquals(6, features.size());
     }
 

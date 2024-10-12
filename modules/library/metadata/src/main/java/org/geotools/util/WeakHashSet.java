@@ -218,8 +218,7 @@ public class WeakHashSet<E> extends AbstractSet<E> implements CheckedCollection<
         final Logger logger = Logging.getLogger(WeakHashSet.class);
         final Level level = Level.FINEST;
         if (logger.isLoggable(level)) {
-            final LogRecord record =
-                    new LogRecord(level, "Rehash from " + oldTable.length + " to " + table.length);
+            final LogRecord record = new LogRecord(level, "Rehash from " + oldTable.length + " to " + table.length);
             record.setSourceMethodName(augmentation ? "unique" : "remove");
             record.setSourceClassName(WeakHashSet.class.getName());
             record.setLoggerName(logger.getName());

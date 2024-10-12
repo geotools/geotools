@@ -61,18 +61,11 @@ public class AreaGridProcess implements RasterProcess {
     public GridCoverage2D execute(
             @DescribeParameter(
                             name = "envelope",
-                            description =
-                                    "Bounding box for the computed raster, in WGS84 geographic coordinates.")
+                            description = "Bounding box for the computed raster, in WGS84 geographic coordinates.")
                     ReferencedEnvelope bounds,
-            @DescribeParameter(
-                            name = "width",
-                            description = "Width of the output raster in pixels",
-                            minValue = 1)
+            @DescribeParameter(name = "width", description = "Width of the output raster in pixels", minValue = 1)
                     int width,
-            @DescribeParameter(
-                            name = "height",
-                            description = "Height of the output raster in pixels",
-                            minValue = 1)
+            @DescribeParameter(name = "height", description = "Height of the output raster in pixels", minValue = 1)
                     int height)
             throws ProcessException {
 
@@ -88,8 +81,7 @@ public class AreaGridProcess implements RasterProcess {
         try {
             Polygon polygon = null;
 
-            CoordinateReferenceSystem sourceCRS =
-                    org.geotools.referencing.crs.DefaultGeographicCRS.WGS84;
+            CoordinateReferenceSystem sourceCRS = org.geotools.referencing.crs.DefaultGeographicCRS.WGS84;
             CoordinateReferenceSystem targetCRS = CRS.parseWKT(targetCRSWKT);
             MathTransform transform = CRS.findMathTransform(sourceCRS, targetCRS);
             double pX = bounds.getMinX();

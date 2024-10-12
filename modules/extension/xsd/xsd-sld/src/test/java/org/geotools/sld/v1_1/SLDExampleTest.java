@@ -98,7 +98,8 @@ public class SLDExampleTest {
         Assert.assertEquals(1, s.featureTypeStyles().size());
         FeatureTypeStyle fts = s.featureTypeStyles().get(0);
 
-        Assert.assertEquals("Foundation", fts.featureTypeNames().iterator().next().getLocalPart());
+        Assert.assertEquals(
+                "Foundation", fts.featureTypeNames().iterator().next().getLocalPart());
         Assert.assertEquals(1, fts.rules().size());
 
         Rule r = fts.rules().get(0);
@@ -112,15 +113,13 @@ public class SLDExampleTest {
     public void testParseGraphicFill() throws Exception {
         StyledLayerDescriptor sld = (StyledLayerDescriptor) parse("../graphicFill.xml");
         NamedLayer layer = (NamedLayer) sld.getStyledLayers()[0];
-        PolygonSymbolizer ps =
-                (PolygonSymbolizer)
-                        layer.getStyles()[0]
-                                .featureTypeStyles()
-                                .get(0)
-                                .rules()
-                                .get(0)
-                                .symbolizers()
-                                .get(0);
+        PolygonSymbolizer ps = (PolygonSymbolizer) layer.getStyles()[0]
+                .featureTypeStyles()
+                .get(0)
+                .rules()
+                .get(0)
+                .symbolizers()
+                .get(0);
         Graphic graphicFill = ps.getFill().getGraphicFill();
         Assert.assertNotNull(graphicFill);
         ExternalGraphic eg = (ExternalGraphic) graphicFill.graphicalSymbols().get(0);
@@ -154,35 +153,30 @@ public class SLDExampleTest {
 
         try (InputStream location = getClass().getResourceAsStream(file)) {
             parser.parse(location);
-            Assert.fail(
-                    "parsing should fail with a FileNotFoundException because the parser try to "
-                            + "access a file that doesn't exist");
+            Assert.fail("parsing should fail with a FileNotFoundException because the parser try to "
+                    + "access a file that doesn't exist");
         } catch (FileNotFoundException e) {
         }
 
         // set an entity resolver to prevent access to the local file system
-        parser.setEntityResolver(
-                new EntityResolver2() {
-                    @Override
-                    public InputSource resolveEntity(String publicId, String systemId)
-                            throws SAXException, IOException {
-                        return new InputSource();
-                    }
+        parser.setEntityResolver(new EntityResolver2() {
+            @Override
+            public InputSource resolveEntity(String publicId, String systemId) throws SAXException, IOException {
+                return new InputSource();
+            }
 
-                    @Override
-                    public InputSource getExternalSubset(String name, String baseURI)
-                            throws SAXException, IOException {
-                        // TODO Auto-generated method stub
-                        return null;
-                    }
+            @Override
+            public InputSource getExternalSubset(String name, String baseURI) throws SAXException, IOException {
+                // TODO Auto-generated method stub
+                return null;
+            }
 
-                    @Override
-                    public InputSource resolveEntity(
-                            String name, String publicId, String baseURI, String systemId)
-                            throws SAXException, IOException {
-                        return new InputSource();
-                    }
-                });
+            @Override
+            public InputSource resolveEntity(String name, String publicId, String baseURI, String systemId)
+                    throws SAXException, IOException {
+                return new InputSource();
+            }
+        });
 
         try (InputStream location = getClass().getResourceAsStream(file)) {
             parser.parse(location);
@@ -280,7 +274,6 @@ public class SLDExampleTest {
         Assert.assertNotNull(graphic);
         GraphicalSymbol firstSymbol = graphic.graphicalSymbols().get(0);
         assertTrue(firstSymbol instanceof Mark);
-        Assert.assertEquals(
-                "square", ((Mark) firstSymbol).getWellKnownName().evaluate(null, String.class));
+        Assert.assertEquals("square", ((Mark) firstSymbol).getWellKnownName().evaluate(null, String.class));
     }
 }

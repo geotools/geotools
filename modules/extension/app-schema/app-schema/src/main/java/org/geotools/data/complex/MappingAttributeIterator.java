@@ -69,33 +69,30 @@ public class MappingAttributeIterator extends DataAccessMappingFeatureIterator {
             StepList xpath = att.getTargetXPath();
             if (XPath.equals(elementName, xpath)) {
                 if (rootMapping != null) {
-                    throw new RuntimeException(
-                            "Duplicate AttributeMapping for: '"
-                                    + elementName
-                                    + "' is found in FeatureTypeMapping '"
-                                    + elementName
-                                    + "'!");
+                    throw new RuntimeException("Duplicate AttributeMapping for: '"
+                            + elementName
+                            + "' is found in FeatureTypeMapping '"
+                            + elementName
+                            + "'!");
                 }
                 rootMapping = att;
             } else if (!XPath.equals(ComplexFeatureConstants.FEATURE_CHAINING_LINK_NAME, xpath)) {
                 // log warning
-                String msg =
-                        "AttributeMapping for: '"
-                                + xpath
-                                + "' found in FeatureTypeMapping '"
-                                + elementName
-                                + "' ! This will be ignored as it doesn't belong to the type.";
+                String msg = "AttributeMapping for: '"
+                        + xpath
+                        + "' found in FeatureTypeMapping '"
+                        + elementName
+                        + "' ! This will be ignored as it doesn't belong to the type.";
                 LOGGER.warning(msg);
             }
         }
         if (rootMapping == null) {
             // not found, throw exception
-            throw new RuntimeException(
-                    "AttributeMapping for: '"
-                            + elementName
-                            + "' is missing in FeatureTypeMapping '"
-                            + elementName
-                            + "'!");
+            throw new RuntimeException("AttributeMapping for: '"
+                    + elementName
+                    + "' is missing in FeatureTypeMapping '"
+                    + elementName
+                    + "'!");
         }
     }
 }

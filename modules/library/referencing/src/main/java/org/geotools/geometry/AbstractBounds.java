@@ -47,16 +47,15 @@ public abstract class AbstractBounds implements Bounds {
      * @return Their common CRS, or {@code null} if none.
      * @throws MismatchedReferenceSystemException if the two positions don't use the same CRS.
      */
-    static CoordinateReferenceSystem getCoordinateReferenceSystem(
-            final Position minDP, final Position maxDP) throws MismatchedReferenceSystemException {
+    static CoordinateReferenceSystem getCoordinateReferenceSystem(final Position minDP, final Position maxDP)
+            throws MismatchedReferenceSystemException {
         final CoordinateReferenceSystem crs1 = minDP.getCoordinateReferenceSystem();
         final CoordinateReferenceSystem crs2 = maxDP.getCoordinateReferenceSystem();
         if (crs1 == null) {
             return crs2;
         } else {
             if (crs2 != null && !crs1.equals(crs2)) {
-                throw new MismatchedReferenceSystemException(
-                        ErrorKeys.MISMATCHED_COORDINATE_REFERENCE_SYSTEM);
+                throw new MismatchedReferenceSystemException(ErrorKeys.MISMATCHED_COORDINATE_REFERENCE_SYSTEM);
             }
             return crs1;
         }
@@ -166,8 +165,7 @@ public abstract class AbstractBounds implements Bounds {
                         return false;
                     }
                 }
-                if (Utilities.equals(
-                        this.getCoordinateReferenceSystem(), that.getCoordinateReferenceSystem())) {
+                if (Utilities.equals(this.getCoordinateReferenceSystem(), that.getCoordinateReferenceSystem())) {
                     assert hashCode() == that.hashCode() : this;
                     return true;
                 }

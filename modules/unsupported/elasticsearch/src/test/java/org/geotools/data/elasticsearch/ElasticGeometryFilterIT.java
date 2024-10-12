@@ -65,11 +65,7 @@ public class ElasticGeometryFilterIT extends ElasticTestSupport {
         FilterFactory ff = (FilterFactory) dataStore.getFilterFactory();
         GeometryFactory gf = new GeometryFactory();
         PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
-        Polygon ls =
-                gf.createPolygon(
-                        sf.create(
-                                new double[] {-180, -90, 180, -90, 180, 90, -180, 90, -180, -90},
-                                2));
+        Polygon ls = gf.createPolygon(sf.create(new double[] {-180, -90, 180, -90, 180, 90, -180, 90, -180, -90}, 2));
         Within f = ff.within(ff.property("geo"), ff.literal(ls));
         SimpleFeatureCollection features = featureSource.getFeatures(f);
         assertEquals(11, features.size());
@@ -79,8 +75,7 @@ public class ElasticGeometryFilterIT extends ElasticTestSupport {
     public void testBBOXAndEqualsFilter() throws Exception {
         init();
         FilterFactory ff = dataStore.getFilterFactory();
-        PropertyIsEqualTo property =
-                ff.equals(ff.property("standard_ss"), ff.literal("IEEE 802.11b"));
+        PropertyIsEqualTo property = ff.equals(ff.property("standard_ss"), ff.literal("IEEE 802.11b"));
         BBOX bbox = ff.bbox("geo", -180, -180, 180, 180, "EPSG:" + SOURCE_SRID);
         And filter = ff.and(property, bbox);
         SimpleFeatureCollection features = featureSource.getFeatures(filter);
@@ -187,8 +182,7 @@ public class ElasticGeometryFilterIT extends ElasticTestSupport {
         FilterFactory ff = (FilterFactory) dataStore.getFilterFactory();
         GeometryFactory gf = new GeometryFactory();
         PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
-        Polygon ls =
-                gf.createPolygon(sf.create(new double[] {5.5, 6, 7, 6, 7, 7, 5.5, 7, 5.5, 6}, 2));
+        Polygon ls = gf.createPolygon(sf.create(new double[] {5.5, 6, 7, 6, 7, 7, 5.5, 7, 5.5, 6}, 2));
         Overlaps f = ff.overlaps(ff.property("geo3"), ff.literal(ls));
         SimpleFeatureCollection features = featureSource.getFeatures(f);
         assertEquals(1, features.size());

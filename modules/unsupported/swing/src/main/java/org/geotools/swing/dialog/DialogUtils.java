@@ -153,8 +153,7 @@ public class DialogUtils {
             result[0] = doGetHtmlTextExtent(labelText, fixedDimSize, width);
         } else {
             try {
-                SwingUtilities.invokeAndWait(
-                        () -> result[0] = doGetHtmlTextExtent(labelText, fixedDimSize, width));
+                SwingUtilities.invokeAndWait(() -> result[0] = doGetHtmlTextExtent(labelText, fixedDimSize, width));
 
             } catch (Exception ex) {
                 // Either an InterruptedException or an InvocationTargetException
@@ -177,8 +176,7 @@ public class DialogUtils {
      * @param width {@code true} if the fixed dimension is width; {@code false} for height
      * @return the rendered label text extent
      */
-    private static Dimension doGetHtmlTextExtent(
-            String labelText, int fixedDimSize, boolean width) {
+    private static Dimension doGetHtmlTextExtent(String labelText, int fixedDimSize, boolean width) {
         final JLabel label = new JLabel();
         if (labelText.startsWith("<html>")) {
             label.setText(labelText);

@@ -108,8 +108,7 @@ public class DefaultCSBuilder implements CSBuilder {
      *     double, int, int)
      */
     @Override
-    public void setOrdinate(
-            CoordinateSequence sequence, double value, int ordinateIndex, int coordinateIndex) {
+    public void setOrdinate(CoordinateSequence sequence, double value, int ordinateIndex, int coordinateIndex) {
         Coordinate c = sequence.getCoordinate(coordinateIndex);
         switch (ordinateIndex) {
             case 0:

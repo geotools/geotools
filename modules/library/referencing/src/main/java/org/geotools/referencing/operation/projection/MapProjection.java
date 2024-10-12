@@ -88,8 +88,7 @@ import tech.units.indriya.AbstractUnit;
  *     HREF="http://atlas.gc.ca/site/english/learningresources/carto_corner/map_projections.html">Map
  *     projections on the atlas of Canada</A>
  */
-public abstract class MapProjection extends AbstractMathTransform
-        implements MathTransform2D, Serializable {
+public abstract class MapProjection extends AbstractMathTransform implements MathTransform2D, Serializable {
 
     /**
      * A global variable use to disable the reciprocal distance checks made when assertions are
@@ -332,8 +331,7 @@ public abstract class MapProjection extends AbstractMathTransform
      * @see #set
      */
     boolean isExpectedParameter(
-            final Collection<GeneralParameterDescriptor> expected,
-            final ParameterDescriptor param) {
+            final Collection<GeneralParameterDescriptor> expected, final ParameterDescriptor param) {
         return expected.contains(param);
     }
 
@@ -468,15 +466,11 @@ public abstract class MapProjection extends AbstractMathTransform
      * @return {@code true} if the coordinates are not in the geographic range, in which case a
      *     warning has been logged.
      */
-    private static boolean verifyGeographicRanges(
-            final AbstractMathTransform tr, final double x, final double y) {
+    private static boolean verifyGeographicRanges(final AbstractMathTransform tr, final double x, final double y) {
         // Note: the following tests should not fails for NaN values.
         final boolean xOut =
-                (x < (Longitude.MIN_VALUE - ANGLE_TOLERANCE)
-                        || x > (Longitude.MAX_VALUE + ANGLE_TOLERANCE));
-        final boolean yOut =
-                (y < (Latitude.MIN_VALUE - ANGLE_TOLERANCE)
-                        || y > (Latitude.MAX_VALUE + ANGLE_TOLERANCE));
+                (x < (Longitude.MIN_VALUE - ANGLE_TOLERANCE) || x > (Longitude.MAX_VALUE + ANGLE_TOLERANCE));
+        final boolean yOut = (y < (Latitude.MIN_VALUE - ANGLE_TOLERANCE) || y > (Latitude.MAX_VALUE + ANGLE_TOLERANCE));
         if (!xOut && !yOut) {
             return false;
         }
@@ -696,12 +690,7 @@ public abstract class MapProjection extends AbstractMathTransform
                     final Object arg2 = new Latitude(latitude - toDegrees(latitudeOfOrigin));
                     final Object arg3 = getName();
                     throw new ProjectionException(
-                            MessageFormat.format(
-                                    ErrorKeys.PROJECTION_CHECK_FAILED_$4,
-                                    distance,
-                                    arg1,
-                                    arg2,
-                                    arg3));
+                            MessageFormat.format(ErrorKeys.PROJECTION_CHECK_FAILED_$4, distance, arg1, arg2, arg3));
                 }
             } catch (ProjectionException exception) {
                 throw exception;
@@ -720,8 +709,7 @@ public abstract class MapProjection extends AbstractMathTransform
      * @param expected The (easting,northing) computed by ellipsoidal formulas.
      * @param tolerance The tolerance (optional).
      */
-    static boolean checkTransform(
-            final double x, final double y, final Point2D expected, final double tolerance) {
+    static boolean checkTransform(final double x, final double y, final Point2D expected, final double tolerance) {
         if (SKIP_SANITY_CHECKS) {
             return true;
         }
@@ -748,10 +736,7 @@ public abstract class MapProjection extends AbstractMathTransform
      * @param tolerance The tolerance (optional).
      */
     static boolean checkInverseTransform(
-            final double longitude,
-            final double latitude,
-            final Point2D expected,
-            final double tolerance) {
+            final double longitude, final double latitude, final Point2D expected, final double tolerance) {
         compare("latitude", expected.getY(), latitude, tolerance);
         if (abs(PI / 2 - abs(latitude)) > EPSILON) {
             compare("longitude", expected.getX(), longitude, tolerance);
@@ -779,8 +764,7 @@ public abstract class MapProjection extends AbstractMathTransform
                 actual = toDegrees(actual);
                 expected = toDegrees(expected);
             }
-            throw new AssertionError(
-                    MessageFormat.format(ErrorKeys.TEST_FAILURE_$3, variable, expected, actual));
+            throw new AssertionError(MessageFormat.format(ErrorKeys.TEST_FAILURE_$3, variable, expected, actual));
         }
     }
 
@@ -884,20 +868,14 @@ public abstract class MapProjection extends AbstractMathTransform
          * box from 30° to +180° would become 30° to -180°, which is probably not what the user
          * wanted.
          */
-        ptDst =
-                transformNormalized(
-                        centralMeridian != 0
-                                ? rollLongitude(toRadians(x) - centralMeridian)
-                                : toRadians(x),
-                        toRadians(y),
-                        ptDst);
-        ptDst.setLocation(
-                globalScale * ptDst.getX() + falseEasting,
-                globalScale * ptDst.getY() + falseNorthing);
+        ptDst = transformNormalized(
+                centralMeridian != 0 ? rollLongitude(toRadians(x) - centralMeridian) : toRadians(x),
+                toRadians(y),
+                ptDst);
+        ptDst.setLocation(globalScale * ptDst.getX() + falseEasting, globalScale * ptDst.getY() + falseNorthing);
 
         if (invertible) {
-            assert checkReciprocal(
-                    ptDst, (ptSrc != ptDst) ? ptSrc : new Point2D.Double(x, y), true);
+            assert checkReciprocal(ptDst, (ptSrc != ptDst) ? ptSrc : new Point2D.Double(x, y), true);
         }
         return ptDst;
     }
@@ -912,16 +890,14 @@ public abstract class MapProjection extends AbstractMathTransform
      *     exception may be about an arbitrary point.
      */
     @Override
-    public final void transform(
-            final double[] srcPts, int srcOff, final double[] dstPts, int dstOff, int numPts)
+    public final void transform(final double[] srcPts, int srcOff, final double[] dstPts, int dstOff, int numPts)
             throws ProjectionException {
         /*
          * Vérifie s'il faudra parcourir le tableau en sens inverse.
          * Ce sera le cas si les tableaux source et destination se
          * chevauchent et que la destination est après la source.
          */
-        final boolean reverse =
-                (srcPts == dstPts && srcOff < dstOff && srcOff + (2 * numPts) > dstOff);
+        final boolean reverse = (srcPts == dstPts && srcOff < dstOff && srcOff + (2 * numPts) > dstOff);
         if (reverse) {
             srcOff += 2 * numPts;
             dstOff += 2 * numPts;
@@ -962,11 +938,9 @@ public abstract class MapProjection extends AbstractMathTransform
      *     exception may be about an arbitrary point.
      */
     @Override
-    public final void transform(
-            final float[] srcPts, int srcOff, final float[] dstPts, int dstOff, int numPts)
+    public final void transform(final float[] srcPts, int srcOff, final float[] dstPts, int dstOff, int numPts)
             throws ProjectionException {
-        final boolean reverse =
-                (srcPts == dstPts && srcOff < dstOff && srcOff + (2 * numPts) > dstOff);
+        final boolean reverse = (srcPts == dstPts && srcOff < dstOff && srcOff + (2 * numPts) > dstOff);
         if (reverse) {
             srcOff += 2 * numPts;
             dstOff += 2 * numPts;
@@ -1034,15 +1008,11 @@ public abstract class MapProjection extends AbstractMathTransform
          * @throws ProjectionException if the point can't be transformed.
          */
         @Override
-        public final Point2D transform(final Point2D ptSrc, Point2D ptDst)
-                throws ProjectionException {
+        public final Point2D transform(final Point2D ptSrc, Point2D ptDst) throws ProjectionException {
             final double x0 = ptSrc.getX();
             final double y0 = ptSrc.getY();
-            ptDst =
-                    inverseTransformNormalized(
-                            (x0 - falseEasting) / globalScale,
-                            (y0 - falseNorthing) / globalScale,
-                            ptDst);
+            ptDst = inverseTransformNormalized(
+                    (x0 - falseEasting) / globalScale, (y0 - falseNorthing) / globalScale, ptDst);
             /*
              * Makes sure that the longitude after conversion stay within +/- PI radians. As a
              * special case, we do not check the range if no rotation were applied on the longitude.
@@ -1053,10 +1023,7 @@ public abstract class MapProjection extends AbstractMathTransform
              * wanted.
              */
             final double x =
-                    toDegrees(
-                            centralMeridian != 0
-                                    ? rollLongitude(ptDst.getX() + centralMeridian)
-                                    : ptDst.getX());
+                    toDegrees(centralMeridian != 0 ? rollLongitude(ptDst.getX() + centralMeridian) : ptDst.getX());
             final double y = toDegrees(ptDst.getY());
             ptDst.setLocation(x, y);
             if (verifyCoordinateRanges()) {
@@ -1064,8 +1031,7 @@ public abstract class MapProjection extends AbstractMathTransform
                     warningLogged();
                 }
             }
-            assert checkReciprocal(
-                    ptDst, (ptSrc != ptDst) ? ptSrc : new Point2D.Double(x0, y0), false);
+            assert checkReciprocal(ptDst, (ptSrc != ptDst) ? ptSrc : new Point2D.Double(x0, y0), false);
             return ptDst;
         }
 
@@ -1079,16 +1045,14 @@ public abstract class MapProjection extends AbstractMathTransform
          *     transformed, then this exception may be about an arbitrary point.
          */
         @Override
-        public final void transform(
-                final double[] src, int srcOffset, final double[] dest, int dstOffset, int numPts)
+        public final void transform(final double[] src, int srcOffset, final double[] dest, int dstOffset, int numPts)
                 throws TransformException {
             /*
              * Vérifie s'il faudra parcourir le tableau en sens inverse.
              * Ce sera le cas si les tableaux source et destination se
              * chevauchent et que la destination est après la source.
              */
-            final boolean reverse =
-                    (src == dest && srcOffset < dstOffset && srcOffset + (2 * numPts) > dstOffset);
+            final boolean reverse = (src == dest && srcOffset < dstOffset && srcOffset + (2 * numPts) > dstOffset);
             if (reverse) {
                 srcOffset += 2 * numPts;
                 dstOffset += 2 * numPts;
@@ -1129,11 +1093,9 @@ public abstract class MapProjection extends AbstractMathTransform
          *     transformed, then this exception may be about an arbitrary point.
          */
         @Override
-        public final void transform(
-                final float[] src, int srcOffset, final float[] dest, int dstOffset, int numPts)
+        public final void transform(final float[] src, int srcOffset, final float[] dest, int dstOffset, int numPts)
                 throws ProjectionException {
-            final boolean reverse =
-                    (src == dest && srcOffset < dstOffset && srcOffset + (2 * numPts) > dstOffset);
+            final boolean reverse = (src == dest && srcOffset < dstOffset && srcOffset + (2 * numPts) > dstOffset);
             if (reverse) {
                 srcOffset += 2 * numPts;
                 dstOffset += 2 * numPts;
@@ -1198,8 +1160,7 @@ public abstract class MapProjection extends AbstractMathTransform
      * @return The tolerance level for assertions, in meters.
      */
     protected double getToleranceForAssertions(final double longitude, final double latitude) {
-        final double delta =
-                abs(longitude - centralMeridian) / 2 + abs(latitude - latitudeOfOrigin);
+        final double delta = abs(longitude - centralMeridian) / 2 + abs(latitude - latitudeOfOrigin);
         if (delta > 40) {
             // When far from the valid area, use a larger tolerance.
             return 1;
@@ -1306,8 +1267,7 @@ public abstract class MapProjection extends AbstractMathTransform
         double phi = (PI / 2) - 2.0 * atan(ts);
         for (int i = 0; i < MAXIMUM_ITERATIONS; i++) {
             final double con = excentricity * sin(phi);
-            final double dphi =
-                    (PI / 2) - 2.0 * atan(ts * pow((1 - con) / (1 + con), eccnth)) - phi;
+            final double dphi = (PI / 2) - 2.0 * atan(ts * pow((1 - con) / (1 + con), eccnth)) - phi;
             phi += dphi;
             if (abs(dphi) <= ITERATION_TOLERANCE) {
                 return phi;
@@ -1413,17 +1373,16 @@ public abstract class MapProjection extends AbstractMathTransform
          *
          * @todo Would like to start range from 0 <u>exclusive</u>.
          */
-        public static final ParameterDescriptor<Double> SEMI_MAJOR =
-                createDescriptor(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.OGC, "semi_major"),
-                            new NamedIdentifier(Citations.EPSG, "semi-major axis")
-                            // EPSG does not specifically define the above parameter
-                        },
-                        Double.NaN,
-                        0,
-                        Double.POSITIVE_INFINITY,
-                        SI.METRE);
+        public static final ParameterDescriptor<Double> SEMI_MAJOR = createDescriptor(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.OGC, "semi_major"),
+                    new NamedIdentifier(Citations.EPSG, "semi-major axis")
+                    // EPSG does not specifically define the above parameter
+                },
+                Double.NaN,
+                0,
+                Double.POSITIVE_INFINITY,
+                SI.METRE);
 
         /**
          * The operation parameter descriptor for the {@linkplain #semiMinor semi minor} parameter
@@ -1431,138 +1390,129 @@ public abstract class MapProjection extends AbstractMathTransform
          *
          * @todo Would like to start range from 0 <u>exclusive</u>.
          */
-        public static final ParameterDescriptor<Double> SEMI_MINOR =
-                createDescriptor(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.OGC, "semi_minor"),
-                            new NamedIdentifier(Citations.EPSG, "semi-minor axis")
-                            // EPSG does not specifically define the above parameter
-                        },
-                        Double.NaN,
-                        0,
-                        Double.POSITIVE_INFINITY,
-                        SI.METRE);
+        public static final ParameterDescriptor<Double> SEMI_MINOR = createDescriptor(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.OGC, "semi_minor"),
+                    new NamedIdentifier(Citations.EPSG, "semi-minor axis")
+                    // EPSG does not specifically define the above parameter
+                },
+                Double.NaN,
+                0,
+                Double.POSITIVE_INFINITY,
+                SI.METRE);
 
         /**
          * The operation parameter descriptor for the {@linkplain #centralMeridian central meridian}
          * parameter value. Valid values range is from -180 to 180°. Default value is 0.
          */
-        public static final ParameterDescriptor<Double> CENTRAL_MERIDIAN =
-                createDescriptor(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.OGC, "central_meridian"),
-                            new NamedIdentifier(Citations.EPSG, "Longitude of natural origin"),
-                            new NamedIdentifier(Citations.EPSG, "Longitude of false origin"),
-                            new NamedIdentifier(Citations.EPSG, "Longitude of origin"),
-                            new NamedIdentifier(Citations.ESRI, "Longitude_Of_Center"),
-                            new NamedIdentifier(Citations.ESRI, "longitude_of_center"),
-                            new NamedIdentifier(Citations.ESRI, "Longitude_Of_Origin"),
-                            new NamedIdentifier(Citations.ESRI, "longitude_of_origin"),
-                            new NamedIdentifier(Citations.GEOTIFF, "NatOriginLong")
-                            // ESRI uses "Longitude_Of_Origin" in orthographic (not to
-                            // be confused with "Longitude_Of_Center" in oblique mercator).
-                        },
-                        0,
-                        -180,
-                        180,
-                        NonSI.DEGREE_ANGLE);
+        public static final ParameterDescriptor<Double> CENTRAL_MERIDIAN = createDescriptor(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.OGC, "central_meridian"),
+                    new NamedIdentifier(Citations.EPSG, "Longitude of natural origin"),
+                    new NamedIdentifier(Citations.EPSG, "Longitude of false origin"),
+                    new NamedIdentifier(Citations.EPSG, "Longitude of origin"),
+                    new NamedIdentifier(Citations.ESRI, "Longitude_Of_Center"),
+                    new NamedIdentifier(Citations.ESRI, "longitude_of_center"),
+                    new NamedIdentifier(Citations.ESRI, "Longitude_Of_Origin"),
+                    new NamedIdentifier(Citations.ESRI, "longitude_of_origin"),
+                    new NamedIdentifier(Citations.GEOTIFF, "NatOriginLong")
+                    // ESRI uses "Longitude_Of_Origin" in orthographic (not to
+                    // be confused with "Longitude_Of_Center" in oblique mercator).
+                },
+                0,
+                -180,
+                180,
+                NonSI.DEGREE_ANGLE);
 
         /**
          * The operation parameter descriptor for the {@linkplain #latitudeOfOrigin latitude of
          * origin} parameter value. Valid values range is from -90 to 90°. Default value is 0.
          */
-        public static final ParameterDescriptor<Double> LATITUDE_OF_ORIGIN =
-                createDescriptor(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.OGC, "latitude_of_origin"),
-                            new NamedIdentifier(Citations.EPSG, "Latitude of false origin"),
-                            new NamedIdentifier(Citations.EPSG, "Latitude of natural origin"),
-                            new NamedIdentifier(Citations.ESRI, "Latitude_Of_Origin"),
-                            new NamedIdentifier(Citations.ESRI, "latitude_of_origin"),
-                            new NamedIdentifier(Citations.ESRI, "Latitude_Of_Center"),
-                            new NamedIdentifier(Citations.ESRI, "latitude_of_center"),
-                            new NamedIdentifier(Citations.GEOTIFF, "NatOriginLat")
-                            // ESRI uses "Latitude_Of_Center" in orthographic.
-                        },
-                        0,
-                        -90,
-                        90,
-                        NonSI.DEGREE_ANGLE);
+        public static final ParameterDescriptor<Double> LATITUDE_OF_ORIGIN = createDescriptor(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.OGC, "latitude_of_origin"),
+                    new NamedIdentifier(Citations.EPSG, "Latitude of false origin"),
+                    new NamedIdentifier(Citations.EPSG, "Latitude of natural origin"),
+                    new NamedIdentifier(Citations.ESRI, "Latitude_Of_Origin"),
+                    new NamedIdentifier(Citations.ESRI, "latitude_of_origin"),
+                    new NamedIdentifier(Citations.ESRI, "Latitude_Of_Center"),
+                    new NamedIdentifier(Citations.ESRI, "latitude_of_center"),
+                    new NamedIdentifier(Citations.GEOTIFF, "NatOriginLat")
+                    // ESRI uses "Latitude_Of_Center" in orthographic.
+                },
+                0,
+                -90,
+                90,
+                NonSI.DEGREE_ANGLE);
 
         /**
          * The operation parameter descriptor for the longitude of center parameter value. Valid
          * values range is from -180 to 180°. Default value is 0.
          */
-        public static final ParameterDescriptor<Double> LONGITUDE_OF_CENTRE =
-                createDescriptor(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.OGC, "longitude_of_center"),
-                            new NamedIdentifier(Citations.OGC, "longitude_of_origin"),
-                            new NamedIdentifier(Citations.EPSG, "Longitude of natural origin"),
-                            new NamedIdentifier(Citations.EPSG, "Spherical longitude of origin"),
-                            new NamedIdentifier(Citations.ESRI, "Central_Meridian"),
-                            new NamedIdentifier(Citations.GEOTIFF, "ProjCenterLong")
-                        },
-                        0,
-                        -180,
-                        180,
-                        NonSI.DEGREE_ANGLE);
+        public static final ParameterDescriptor<Double> LONGITUDE_OF_CENTRE = createDescriptor(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.OGC, "longitude_of_center"),
+                    new NamedIdentifier(Citations.OGC, "longitude_of_origin"),
+                    new NamedIdentifier(Citations.EPSG, "Longitude of natural origin"),
+                    new NamedIdentifier(Citations.EPSG, "Spherical longitude of origin"),
+                    new NamedIdentifier(Citations.ESRI, "Central_Meridian"),
+                    new NamedIdentifier(Citations.GEOTIFF, "ProjCenterLong")
+                },
+                0,
+                -180,
+                180,
+                NonSI.DEGREE_ANGLE);
 
         /**
          * The operation parameter descriptor for the latitude of center parameter value. Valid
          * values range is from -90 to 90°. Default value is 0.
          */
-        public static final ParameterDescriptor<Double> LATITUDE_OF_CENTRE =
-                createDescriptor(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.OGC, "latitude_of_center"),
-                            new NamedIdentifier(Citations.OGC, "latitude_of_origin"),
-                            new NamedIdentifier(Citations.EPSG, "Latitude of natural origin"),
-                            new NamedIdentifier(Citations.EPSG, "Spherical latitude of origin"),
-                            new NamedIdentifier(Citations.ESRI, "Latitude_Of_Origin"),
-                            new NamedIdentifier(Citations.GEOTIFF, "ProjCenterLat")
-                        },
-                        0,
-                        -90,
-                        90,
-                        NonSI.DEGREE_ANGLE);
+        public static final ParameterDescriptor<Double> LATITUDE_OF_CENTRE = createDescriptor(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.OGC, "latitude_of_center"),
+                    new NamedIdentifier(Citations.OGC, "latitude_of_origin"),
+                    new NamedIdentifier(Citations.EPSG, "Latitude of natural origin"),
+                    new NamedIdentifier(Citations.EPSG, "Spherical latitude of origin"),
+                    new NamedIdentifier(Citations.ESRI, "Latitude_Of_Origin"),
+                    new NamedIdentifier(Citations.GEOTIFF, "ProjCenterLat")
+                },
+                0,
+                -90,
+                90,
+                NonSI.DEGREE_ANGLE);
 
         /**
          * The operation parameter descriptor for the standard parallel 1 parameter value. Valid
          * values range is from -90 to 90°. Default value is 0.
          */
-        public static final ParameterDescriptor<Double> STANDARD_PARALLEL_1 =
-                createDescriptor(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.OGC, "standard_parallel_1"),
-                            new NamedIdentifier(
-                                    Citations.EPSG, "Latitude of 1st standard parallel"),
-                            new NamedIdentifier(Citations.ESRI, "Standard_Parallel_1"),
-                            new NamedIdentifier(Citations.ESRI, "standard_parallel_1"),
-                            new NamedIdentifier(Citations.GEOTIFF, "StdParallel1")
-                        },
-                        0,
-                        -90,
-                        90,
-                        NonSI.DEGREE_ANGLE);
+        public static final ParameterDescriptor<Double> STANDARD_PARALLEL_1 = createDescriptor(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.OGC, "standard_parallel_1"),
+                    new NamedIdentifier(Citations.EPSG, "Latitude of 1st standard parallel"),
+                    new NamedIdentifier(Citations.ESRI, "Standard_Parallel_1"),
+                    new NamedIdentifier(Citations.ESRI, "standard_parallel_1"),
+                    new NamedIdentifier(Citations.GEOTIFF, "StdParallel1")
+                },
+                0,
+                -90,
+                90,
+                NonSI.DEGREE_ANGLE);
 
         /**
          * The operation parameter descriptor for the standard parallel 2 parameter value. Valid
          * values range is from -90 to 90°. Default value is 0.
          */
-        public static final ParameterDescriptor<Double> STANDARD_PARALLEL_2 =
-                createOptionalDescriptor(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.OGC, "standard_parallel_2"),
-                            new NamedIdentifier(
-                                    Citations.EPSG, "Latitude of 2nd standard parallel"),
-                            new NamedIdentifier(Citations.ESRI, "Standard_Parallel_2"),
-                            new NamedIdentifier(Citations.ESRI, "standard_parallel_2"),
-                            new NamedIdentifier(Citations.GEOTIFF, "StdParallel2")
-                        },
-                        -90,
-                        90,
-                        NonSI.DEGREE_ANGLE);
+        public static final ParameterDescriptor<Double> STANDARD_PARALLEL_2 = createOptionalDescriptor(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.OGC, "standard_parallel_2"),
+                    new NamedIdentifier(Citations.EPSG, "Latitude of 2nd standard parallel"),
+                    new NamedIdentifier(Citations.ESRI, "Standard_Parallel_2"),
+                    new NamedIdentifier(Citations.ESRI, "standard_parallel_2"),
+                    new NamedIdentifier(Citations.GEOTIFF, "StdParallel2")
+                },
+                -90,
+                90,
+                NonSI.DEGREE_ANGLE);
 
         /**
          * The operation parameter descriptor for the {@link #scaleFactor scaleFactor} parameter
@@ -1570,60 +1520,57 @@ public abstract class MapProjection extends AbstractMathTransform
          *
          * @todo Would like to start range from 0 <u>exclusive</u>.
          */
-        public static final ParameterDescriptor<Double> SCALE_FACTOR =
-                createDescriptor(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.OGC, "scale_factor"),
-                            new NamedIdentifier(Citations.EPSG, "Scale factor at natural origin"),
-                            new NamedIdentifier(Citations.EPSG, "Scale factor on initial line"),
-                            new NamedIdentifier(Citations.GEOTIFF, "ScaleAtNatOrigin"),
-                            new NamedIdentifier(Citations.GEOTIFF, "ScaleAtCenter"),
-                            new NamedIdentifier(Citations.ESRI, "Scale_Factor"),
-                            new NamedIdentifier(Citations.ESRI, "scale_factor"),
-                        },
-                        1,
-                        0,
-                        Double.POSITIVE_INFINITY,
-                        AbstractUnit.ONE);
+        public static final ParameterDescriptor<Double> SCALE_FACTOR = createDescriptor(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.OGC, "scale_factor"),
+                    new NamedIdentifier(Citations.EPSG, "Scale factor at natural origin"),
+                    new NamedIdentifier(Citations.EPSG, "Scale factor on initial line"),
+                    new NamedIdentifier(Citations.GEOTIFF, "ScaleAtNatOrigin"),
+                    new NamedIdentifier(Citations.GEOTIFF, "ScaleAtCenter"),
+                    new NamedIdentifier(Citations.ESRI, "Scale_Factor"),
+                    new NamedIdentifier(Citations.ESRI, "scale_factor"),
+                },
+                1,
+                0,
+                Double.POSITIVE_INFINITY,
+                AbstractUnit.ONE);
 
         /**
          * The operation parameter descriptor for the {@link #falseEasting falseEasting} parameter
          * value. Valid values range is unrestricted. Default value is 0.
          */
-        public static final ParameterDescriptor<Double> FALSE_EASTING =
-                createDescriptor(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.OGC, "false_easting"),
-                            new NamedIdentifier(Citations.EPSG, "False easting"),
-                            new NamedIdentifier(Citations.EPSG, "Easting at false origin"),
-                            new NamedIdentifier(Citations.EPSG, "Easting at projection centre"),
-                            new NamedIdentifier(Citations.GEOTIFF, "FalseEasting"),
-                            new NamedIdentifier(Citations.ESRI, "False_Easting")
-                        },
-                        0,
-                        Double.NEGATIVE_INFINITY,
-                        Double.POSITIVE_INFINITY,
-                        SI.METRE);
+        public static final ParameterDescriptor<Double> FALSE_EASTING = createDescriptor(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.OGC, "false_easting"),
+                    new NamedIdentifier(Citations.EPSG, "False easting"),
+                    new NamedIdentifier(Citations.EPSG, "Easting at false origin"),
+                    new NamedIdentifier(Citations.EPSG, "Easting at projection centre"),
+                    new NamedIdentifier(Citations.GEOTIFF, "FalseEasting"),
+                    new NamedIdentifier(Citations.ESRI, "False_Easting")
+                },
+                0,
+                Double.NEGATIVE_INFINITY,
+                Double.POSITIVE_INFINITY,
+                SI.METRE);
 
         /**
          * The operation parameter descriptor for the {@link #falseNorthing falseNorthing} parameter
          * value. Valid values range is unrestricted. Default value is 0.
          */
-        public static final ParameterDescriptor<Double> FALSE_NORTHING =
-                createDescriptor(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.OGC, "false_northing"),
-                            new NamedIdentifier(Citations.EPSG, "False northing"),
-                            new NamedIdentifier(Citations.EPSG, "Northing at false origin"),
-                            new NamedIdentifier(Citations.EPSG, "Northing at projection centre"),
-                            new NamedIdentifier(Citations.GEOTIFF, "FalseNorthing"),
-                            new NamedIdentifier(Citations.ESRI, "False_Northing"),
-                            new NamedIdentifier(Citations.ESRI, "false_northing")
-                        },
-                        0,
-                        Double.NEGATIVE_INFINITY,
-                        Double.POSITIVE_INFINITY,
-                        SI.METRE);
+        public static final ParameterDescriptor<Double> FALSE_NORTHING = createDescriptor(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.OGC, "false_northing"),
+                    new NamedIdentifier(Citations.EPSG, "False northing"),
+                    new NamedIdentifier(Citations.EPSG, "Northing at false origin"),
+                    new NamedIdentifier(Citations.EPSG, "Northing at projection centre"),
+                    new NamedIdentifier(Citations.GEOTIFF, "FalseNorthing"),
+                    new NamedIdentifier(Citations.ESRI, "False_Northing"),
+                    new NamedIdentifier(Citations.ESRI, "false_northing")
+                },
+                0,
+                Double.NEGATIVE_INFINITY,
+                Double.POSITIVE_INFINITY,
+                SI.METRE);
 
         /**
          * Constructs a math transform provider from a set of parameters. The provider {@linkplain
@@ -1668,8 +1615,7 @@ public abstract class MapProjection extends AbstractMathTransform
          * @return The requested parameter value.
          * @throws ParameterNotFoundException if the parameter is not found.
          */
-        protected static double doubleValue(
-                final ParameterDescriptor param, final ParameterValueGroup group)
+        protected static double doubleValue(final ParameterDescriptor param, final ParameterValueGroup group)
                 throws ParameterNotFoundException {
             double v = MathTransformProvider.doubleValue(param, group);
             if (NonSI.DEGREE_ANGLE.equals(param.getUnit())) {

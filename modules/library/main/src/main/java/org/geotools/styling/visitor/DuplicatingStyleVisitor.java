@@ -128,9 +128,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
      * @param filterCloner Copies filters during style duplication
      */
     public DuplicatingStyleVisitor(
-            StyleFactory styleFactory,
-            FilterFactory filterFactory,
-            DuplicatingFilterVisitor filterCloner) {
+            StyleFactory styleFactory, FilterFactory filterFactory, DuplicatingFilterVisitor filterCloner) {
         this.copyFilter = filterCloner;
         this.sf = styleFactory;
         this.ff = filterFactory;
@@ -278,11 +276,10 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
             filterCopy = copy(filter);
         }
 
-        List<Symbolizer> symsCopy =
-                rule.symbolizers().stream()
-                        .map(s -> copy(s))
-                        .filter(s -> s != null)
-                        .collect(Collectors.toList());
+        List<Symbolizer> symsCopy = rule.symbolizers().stream()
+                .map(s -> copy(s))
+                .filter(s -> s != null)
+                .collect(Collectors.toList());
 
         GraphicLegend legendCopy = (GraphicLegend) copy((Graphic) rule.getLegend());
 
@@ -310,16 +307,14 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
 
         FeatureTypeStyle copy = (FeatureTypeStyle) new FeatureTypeStyleImpl(fts);
 
-        List<Rule> rulesCopy =
-                fts.rules().stream()
-                        .filter(r -> r != null)
-                        .map(
-                                r -> {
-                                    r.accept(this);
-                                    return !pages.isEmpty() ? (Rule) pages.pop() : null;
-                                })
-                        .filter(r -> r != null)
-                        .collect(Collectors.toList());
+        List<Rule> rulesCopy = fts.rules().stream()
+                .filter(r -> r != null)
+                .map(r -> {
+                    r.accept(this);
+                    return !pages.isEmpty() ? (Rule) pages.pop() : null;
+                })
+                .filter(r -> r != null)
+                .collect(Collectors.toList());
 
         //
         //        copy = sf.createFeatureTypeStyle();
@@ -342,8 +337,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         copy.getOptions().putAll(fts.getOptions());
 
         if (STRICT && !copy.equals(fts)) {
-            throw new IllegalStateException(
-                    "Was unable to duplicate provided FeatureTypeStyle:" + fts);
+            throw new IllegalStateException("Was unable to duplicate provided FeatureTypeStyle:" + fts);
         }
 
         pages.push(copy);
@@ -486,8 +480,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         } else if (other.getInlineContent() != null) {
             return sf.externalMark(other.getInlineContent());
         } else {
-            return sf.externalMark(
-                    other.getOnlineResource(), other.getFormat(), other.getMarkIndex());
+            return sf.externalMark(other.getOnlineResource(), other.getFormat(), other.getMarkIndex());
         }
     }
 
@@ -544,8 +537,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
     protected SelectedChannelType copy(SelectedChannelType selectedChannelType) {
         if (selectedChannelType == null) return null;
         ContrastEnhancement enhancement = copy(selectedChannelType.getContrastEnhancement());
-        Expression name =
-                (Expression) selectedChannelType.getChannelName().accept(copyFilter, null);
+        Expression name = (Expression) selectedChannelType.getChannelName().accept(copyFilter, null);
         SelectedChannelType copy = sf.createSelectedChannelType(name, enhancement);
 
         return copy;
@@ -715,8 +707,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         copy.setPerpendicularOffset(line.getPerpendicularOffset());
 
         if (STRICT && !copy.equals(line)) {
-            throw new IllegalStateException(
-                    "Was unable to duplicate provided LineSymbolizer:" + line);
+            throw new IllegalStateException("Was unable to duplicate provided LineSymbolizer:" + line);
         }
         pages.push(copy);
     }
@@ -733,8 +724,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         copy.getOptions().putAll(poly.getOptions());
 
         if (STRICT && !copy.equals(poly)) {
-            throw new IllegalStateException(
-                    "Was unable to duplicate provided PolygonSymbolizer:" + poly);
+            throw new IllegalStateException("Was unable to duplicate provided PolygonSymbolizer:" + poly);
         }
         pages.push(copy);
     }
@@ -767,8 +757,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         }
 
         if (STRICT && !copy.equals(text)) {
-            throw new IllegalStateException(
-                    "Was unable to duplicate provided TextSymbolizer:" + text);
+            throw new IllegalStateException("Was unable to duplicate provided TextSymbolizer:" + text);
         }
         pages.push(copy);
     }
@@ -870,8 +859,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         copy.setCustomProperties(copy(exgr.getCustomProperties()));
 
         if (STRICT && !copy.equals(exgr)) {
-            throw new IllegalStateException(
-                    "Was unable to duplicate provided ExternalGraphic:" + exgr);
+            throw new IllegalStateException("Was unable to duplicate provided ExternalGraphic:" + exgr);
         }
         pages.push(copy);
     }
@@ -884,8 +872,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         copy.setRotation(copy(pp.getRotation()));
 
         if (STRICT && !copy.equals(pp)) {
-            throw new IllegalStateException(
-                    "Was unable to duplicate provided PointPlacement:" + pp);
+            throw new IllegalStateException("Was unable to duplicate provided PointPlacement:" + pp);
         }
         pages.push(copy);
     }
@@ -950,8 +937,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         FeatureTypeConstraint copy = sf.createFeatureTypeConstraint(typeName, filter, extents);
 
         if (STRICT && !copy.equals(ftc)) {
-            throw new IllegalStateException(
-                    "Was unable to duplicate provided FeatureTypeConstraint:" + ftc);
+            throw new IllegalStateException("Was unable to duplicate provided FeatureTypeConstraint:" + ftc);
         }
         pages.push(copy);
     }
@@ -997,8 +983,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
             }
         }
         if (STRICT && !copy.equals(colorMap)) {
-            throw new IllegalStateException(
-                    "Was unable to duplicate provided ColorMap:" + colorMap);
+            throw new IllegalStateException("Was unable to duplicate provided ColorMap:" + colorMap);
         }
         pages.push(copy);
     }
@@ -1012,8 +997,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         copy.setQuantity(copy(colorMapEntry.getQuantity()));
 
         if (STRICT && !copy.equals(colorMapEntry)) {
-            throw new IllegalStateException(
-                    "Was unable to duplicate provided ColorMapEntry:" + colorMapEntry);
+            throw new IllegalStateException("Was unable to duplicate provided ColorMapEntry:" + colorMapEntry);
         }
         pages.push(copy);
     }
@@ -1041,8 +1025,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         final ImageOutline copy = sf.createImageOutline(copySymb);
         copy.setSymbolizer(copySymb);
         if (STRICT && !copy.equals(outline)) {
-            throw new IllegalStateException(
-                    "Was unable to duplicate provided ImageOutline:" + outline);
+            throw new IllegalStateException("Was unable to duplicate provided ImageOutline:" + outline);
         }
         pages.push(copy);
     }
@@ -1065,19 +1048,16 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         } else if (behavior.equalsIgnoreCase(OverlapBehavior.RANDOM_RESCTRICTION)) {
             pages.push(OverlapBehavior.RANDOM_RESCTRICTION);
         } else {
-            throw new IllegalStateException(
-                    "Was unable to duplicate provided OverlapBehavior:" + ob);
+            throw new IllegalStateException("Was unable to duplicate provided OverlapBehavior:" + ob);
         }
     }
 
     @Override
     public void visit(SelectedChannelType sct) {
         final SelectedChannelType copy =
-                sf.createSelectedChannelType(
-                        sct.getChannelName(), copy(sct.getContrastEnhancement()));
+                sf.createSelectedChannelType(sct.getChannelName(), copy(sct.getContrastEnhancement()));
         if (STRICT && !copy.equals(sct)) {
-            throw new IllegalStateException(
-                    "Was unable to duplicate provided SelectedChannelType:" + sct);
+            throw new IllegalStateException("Was unable to duplicate provided SelectedChannelType:" + sct);
         }
         pages.push(copy);
     }

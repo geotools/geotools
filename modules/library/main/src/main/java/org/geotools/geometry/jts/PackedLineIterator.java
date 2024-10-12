@@ -69,23 +69,14 @@ public final class PackedLineIterator extends AbstractLiteIterator {
      * @param ls The line string the iterator will use
      * @param at The affine transform applied to coordinates during iteration
      */
-    public PackedLineIterator(
-            LineString ls, AffineTransform at, boolean generalize, float maxDistance) {
+    public PackedLineIterator(LineString ls, AffineTransform at, boolean generalize, float maxDistance) {
         if (at == null) {
             at = new AffineTransform();
         }
 
         this.at = at;
-        xScale =
-                (float)
-                        Math.sqrt(
-                                (at.getScaleX() * at.getScaleX())
-                                        + (at.getShearX() * at.getShearX()));
-        yScale =
-                (float)
-                        Math.sqrt(
-                                (at.getScaleY() * at.getScaleY())
-                                        + (at.getShearY() * at.getShearY()));
+        xScale = (float) Math.sqrt((at.getScaleX() * at.getScaleX()) + (at.getShearX() * at.getShearX()));
+        yScale = (float) Math.sqrt((at.getScaleY() * at.getScaleY()) + (at.getShearY() * at.getShearY()));
 
         coordinates = (Double) ls.getCoordinateSequence();
         coordinateCount = coordinates.size();
@@ -233,8 +224,7 @@ public final class PackedLineIterator extends AbstractLiteIterator {
      */
     @Override
     public void next() {
-        if (((currentCoord == (coordinateCount - 1)) && !isClosed)
-                || ((currentCoord == coordinateCount) && isClosed)) {
+        if (((currentCoord == (coordinateCount - 1)) && !isClosed) || ((currentCoord == coordinateCount) && isClosed)) {
             done = true;
         } else {
             if (generalize) {

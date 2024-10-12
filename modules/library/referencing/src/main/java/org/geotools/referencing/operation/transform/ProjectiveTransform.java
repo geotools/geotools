@@ -89,8 +89,7 @@ import si.uom.NonSI;
  * @see <A HREF="http://mathworld.wolfram.com/AffineTransformation.html">Affine transformation on
  *     MathWorld</A>
  */
-public class ProjectiveTransform extends AbstractMathTransform
-        implements LinearTransform, Serializable {
+public class ProjectiveTransform extends AbstractMathTransform implements LinearTransform, Serializable {
     /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = -2104496465933824935L;
 
@@ -220,8 +219,7 @@ public class ProjectiveTransform extends AbstractMathTransform
      * @throws IndexOutOfBoundsException if a value of {@code toKeep} is lower than 0 or not smaller
      *     than {@code sourceDim}.
      */
-    public static Matrix createSelectMatrix(final int sourceDim, final int[] toKeep)
-            throws IndexOutOfBoundsException {
+    public static Matrix createSelectMatrix(final int sourceDim, final int[] toKeep) throws IndexOutOfBoundsException {
         final int targetDim = toKeep.length;
         final XMatrix matrix = MatrixFactory.create(targetDim + 1, sourceDim + 1);
         matrix.setZero();
@@ -281,8 +279,7 @@ public class ProjectiveTransform extends AbstractMathTransform
      * @param numPts The number of points to be transformed
      */
     @Override
-    public void transform(
-            float[] srcPts, int srcOff, final float[] dstPts, int dstOff, int numPts) {
+    public void transform(float[] srcPts, int srcOff, final float[] dstPts, int dstOff, int numPts) {
         final int inputDimension = numCol - 1; // The last ordinate will be assumed equals to 1.
         final int outputDimension = numRow - 1;
         final double[] buffer = new double[numRow];
@@ -338,8 +335,7 @@ public class ProjectiveTransform extends AbstractMathTransform
      * @param numPts The number of points to be transformed
      */
     @Override
-    public void transform(
-            double[] srcPts, int srcOff, final double[] dstPts, int dstOff, int numPts) {
+    public void transform(double[] srcPts, int srcOff, final double[] dstPts, int dstOff, int numPts) {
         final int inputDimension = numCol - 1; // The last ordinate will be assumed equals to 1.
         final int outputDimension = numRow - 1;
         final double[] buffer = new double[numRow];
@@ -478,11 +474,8 @@ public class ProjectiveTransform extends AbstractMathTransform
                 final XMatrix matrix = getGeneralMatrix();
                 try {
                     matrix.invert();
-                } catch (SingularMatrixException
-                        | IllegalArgumentException
-                        | MatrixDimensionException exception) {
-                    throw new NoninvertibleTransformException(
-                            ErrorKeys.NONINVERTIBLE_TRANSFORM, exception);
+                } catch (SingularMatrixException | IllegalArgumentException | MatrixDimensionException exception) {
+                    throw new NoninvertibleTransformException(ErrorKeys.NONINVERTIBLE_TRANSFORM, exception);
                 }
                 inverse = createInverse(matrix);
                 inverse.inverse = this;
@@ -521,9 +514,7 @@ public class ProjectiveTransform extends AbstractMathTransform
         }
         if (super.equals(object)) {
             final ProjectiveTransform that = (ProjectiveTransform) object;
-            return this.numRow == that.numRow
-                    && this.numCol == that.numCol
-                    && Arrays.equals(this.elt, that.elt);
+            return this.numRow == that.numRow && this.numCol == that.numCol && Arrays.equals(this.elt, that.elt);
         }
         return false;
     }
@@ -558,17 +549,12 @@ public class ProjectiveTransform extends AbstractMathTransform
             final Map<String, Object> properties = new HashMap<>(4, 0.8f);
             properties.put(NAME_KEY, name);
             properties.put(IDENTIFIERS_KEY, name);
-            properties.put(
-                    ALIAS_KEY,
-                    new NamedIdentifier[] {
-                        name,
-                        new NamedIdentifier(
-                                Citations.EPSG, "Affine general parametric transformation"),
-                        new NamedIdentifier(Citations.EPSG, "9624"),
-                        new NamedIdentifier(
-                                Citations.GEOTOOLS,
-                                Vocabulary.formatInternational(VocabularyKeys.AFFINE_TRANSFORM))
-                    });
+            properties.put(ALIAS_KEY, new NamedIdentifier[] {
+                name,
+                new NamedIdentifier(Citations.EPSG, "Affine general parametric transformation"),
+                new NamedIdentifier(Citations.EPSG, "9624"),
+                new NamedIdentifier(Citations.GEOTOOLS, Vocabulary.formatInternational(VocabularyKeys.AFFINE_TRANSFORM))
+            });
             PARAMETERS = new MatrixParameterDescriptors(properties);
         }
 
@@ -601,11 +587,9 @@ public class ProjectiveTransform extends AbstractMathTransform
         @Override
         protected MathTransform createMathTransform(final ParameterValueGroup values)
                 throws ParameterNotFoundException {
-            final MathTransform transform =
-                    create(((MatrixParameterDescriptors) getParameters()).getMatrix(values));
+            final MathTransform transform = create(((MatrixParameterDescriptors) getParameters()).getMatrix(values));
             return new Delegate(
-                    transform,
-                    getProvider(transform.getSourceDimensions(), transform.getTargetDimensions()));
+                    transform, getProvider(transform.getSourceDimensions(), transform.getTargetDimensions()));
         }
 
         /**
@@ -616,15 +600,13 @@ public class ProjectiveTransform extends AbstractMathTransform
          * @param targetDimensions The number of target dimensions.
          * @return The provider for transforms of the given source and target dimensions.
          */
-        public static ProviderAffine getProvider(
-                final int sourceDimensions, final int targetDimensions) {
+        public static ProviderAffine getProvider(final int sourceDimensions, final int targetDimensions) {
             if (sourceDimensions == targetDimensions) {
                 final int i = sourceDimensions - 1;
                 if (i >= 0 && i < methods.length) {
                     ProviderAffine method = methods[i];
                     if (method == null) {
-                        methods[i] =
-                                method = new ProviderAffine(sourceDimensions, targetDimensions);
+                        methods[i] = method = new ProviderAffine(sourceDimensions, targetDimensions);
                     }
                     return method;
                 }
@@ -644,24 +626,20 @@ public class ProjectiveTransform extends AbstractMathTransform
         private static final long serialVersionUID = -2104496465933824935L;
 
         /** The longitude offset. */
-        public static final ParameterDescriptor OFFSET =
-                createDescriptor(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.EPSG, "Longitude offset")
-                        },
-                        Double.NaN,
-                        -180,
-                        +180,
-                        NonSI.DEGREE_ANGLE);
+        public static final ParameterDescriptor OFFSET = createDescriptor(
+                new NamedIdentifier[] {new NamedIdentifier(Citations.EPSG, "Longitude offset")},
+                Double.NaN,
+                -180,
+                +180,
+                NonSI.DEGREE_ANGLE);
 
         /** The parameters group. */
-        static final ParameterDescriptorGroup PARAMETERS =
-                createDescriptorGroup(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.EPSG, "Longitude rotation"),
-                            new NamedIdentifier(Citations.EPSG, "9601")
-                        },
-                        new ParameterDescriptor[] {OFFSET});
+        static final ParameterDescriptorGroup PARAMETERS = createDescriptorGroup(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.EPSG, "Longitude rotation"),
+                    new NamedIdentifier(Citations.EPSG, "9601")
+                },
+                new ParameterDescriptor[] {OFFSET});
 
         /** Constructs a provider with default parameters. */
         public ProviderLongitudeRotation() {

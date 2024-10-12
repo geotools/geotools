@@ -34,8 +34,7 @@ import org.geotools.filter.capability.FunctionNameImpl;
 public class GrayscaleFunction extends FunctionImpl {
 
     public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "grayscale", parameter("result", Color.class), parameter("color", Color.class));
+            new FunctionNameImpl("grayscale", parameter("result", Color.class), parameter("color", Color.class));
 
     public GrayscaleFunction() {
         this.functionName = NAME;
@@ -61,8 +60,7 @@ public class GrayscaleFunction extends FunctionImpl {
         List<org.geotools.api.filter.expression.Expression> params = getParameters();
         if (params != null) {
             org.geotools.api.filter.expression.Expression exp;
-            for (Iterator<org.geotools.api.filter.expression.Expression> it = params.iterator();
-                    it.hasNext(); ) {
+            for (Iterator<org.geotools.api.filter.expression.Expression> it = params.iterator(); it.hasNext(); ) {
                 exp = it.next();
                 sb.append("[");
                 sb.append(exp);

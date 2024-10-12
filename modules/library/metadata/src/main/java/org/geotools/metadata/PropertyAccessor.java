@@ -200,8 +200,7 @@ final class PropertyAccessor {
             final Integer old = mapping.put(lower, index);
             if (old != null && !old.equals(index)) {
                 throw new IllegalArgumentException(
-                        MessageFormat.format(
-                                ErrorKeys.PARAMETER_NAME_CLASH_$4, name, index, lower, old));
+                        MessageFormat.format(ErrorKeys.PARAMETER_NAME_CLASH_$4, name, index, lower, old));
             }
         }
     }
@@ -256,9 +255,7 @@ final class PropertyAccessor {
      * itself recursively for scanning parent interfaces.
      */
     private static void getInterfaces(
-            final Class<?> type,
-            final String interfacePackage,
-            final Collection<Class<?>> interfaces) {
+            final Class<?> type, final String interfacePackage, final Collection<Class<?>> interfaces) {
         for (final Class<?> candidate : type.getInterfaces()) {
             if (candidate.getName().startsWith(interfacePackage)) {
                 interfaces.add(candidate);
@@ -285,8 +282,7 @@ final class PropertyAccessor {
                         // Ignores deprecated methods.
                         continue;
                     }
-                    if (!candidate.getReturnType().equals(Void.TYPE)
-                            && candidate.getParameterTypes().length == 0) {
+                    if (!candidate.getReturnType().equals(Void.TYPE) && candidate.getParameterTypes().length == 0) {
                         /*
                          * We do not require a name starting with "get" or "is" prefix because some
                          * methods do not begin with such prefix, as in "ConformanceResult.pass()".
@@ -369,8 +365,7 @@ final class PropertyAccessor {
         if (index != null) {
             return index;
         }
-        throw new IllegalArgumentException(
-                MessageFormat.format(ErrorKeys.UNKNOW_PARAMETER_NAME_$1, key));
+        throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.UNKNOW_PARAMETER_NAME_$1, key));
     }
 
     /**
@@ -427,10 +422,7 @@ final class PropertyAccessor {
 
     /** Returns {@code true} if the property at the given index is writable. */
     final boolean isWritable(final int index) {
-        return (index >= 0)
-                && (index < getters.length)
-                && (setters != null)
-                && (setters[index] != null);
+        return (index >= 0) && (index < getters.length) && (setters != null) && (setters[index] != null);
     }
 
     /** Returns the value for the specified metadata, or {@code null} if none. */
@@ -491,8 +483,7 @@ final class PropertyAccessor {
         } else {
             key = String.valueOf(index);
         }
-        throw new IllegalArgumentException(
-                MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$1, key));
+        throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$1, key));
     }
 
     /**
@@ -505,11 +496,7 @@ final class PropertyAccessor {
      * @throws ClassCastException if at least one element of the {@code arguments} array is not of
      *     the expected type.
      */
-    private static void set(
-            final Method getter,
-            final Method setter,
-            final Object metadata,
-            final Object... arguments)
+    private static void set(final Method getter, final Method setter, final Object metadata, final Object... arguments)
             throws ClassCastException {
         final Class<?>[] paramTypes = setter.getParameterTypes();
         for (int i = 0; i < paramTypes.length; i++) {
@@ -601,12 +588,8 @@ final class PropertyAccessor {
              * since we get here because the argument was not of the expected type.
              */
             if (parsed == null) {
-                final ClassCastException e =
-                        new ClassCastException(
-                                MessageFormat.format(
-                                        ErrorKeys.ILLEGAL_CLASS_$2,
-                                        argument.getClass(),
-                                        elementType));
+                final ClassCastException e = new ClassCastException(
+                        MessageFormat.format(ErrorKeys.ILLEGAL_CLASS_$2, argument.getClass(), elementType));
                 e.initCause(failure);
                 throw e;
             }
@@ -664,8 +647,7 @@ final class PropertyAccessor {
      * @param metadata2 The second metadata object to compare.
      * @param skipNulls If {@code true}, only non-null values will be compared.
      */
-    public boolean shallowEquals(
-            final Object metadata1, final Object metadata2, final boolean skipNulls) {
+    public boolean shallowEquals(final Object metadata1, final Object metadata2, final boolean skipNulls) {
         assert type.isInstance(metadata1) : metadata1;
         assert type.isInstance(metadata2) : metadata2;
         for (final Method method : getters) {

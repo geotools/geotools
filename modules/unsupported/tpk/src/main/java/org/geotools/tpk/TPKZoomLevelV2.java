@@ -203,13 +203,7 @@ public class TPKZoomLevelV2 implements TPKZoomLevel {
         if (baseRow <= max_row_column && baseColumn <= max_row_column) {
 
             TPKBundle bundle =
-                    new TPKBundle(
-                            bundleName,
-                            null,
-                            baseColumn,
-                            baseRow,
-                            this::TPKSupplier,
-                            this::zipEntryMapSupplier);
+                    new TPKBundle(bundleName, null, baseColumn, baseRow, this::TPKSupplier, this::zipEntryMapSupplier);
 
             long indexReadOffset = DATA_HEADER_LENGTH; // skip first 64 bytes of index
             for (int row = 0; row < BUNDLE_DIMENSION; row++) { // 128 columns of 128 rows
@@ -280,8 +274,10 @@ public class TPKZoomLevelV2 implements TPKZoomLevel {
                     final long c = col;
                     final long r = row;
                     TPKBundle saveBundle = bundle;
-                    bundle =
-                            bundles.stream().filter(b -> b.inBundle(c, r)).findFirst().orElse(null);
+                    bundle = bundles.stream()
+                            .filter(b -> b.inBundle(c, r))
+                            .findFirst()
+                            .orElse(null);
                     if (bundle == null) {
                         bundle = saveBundle;
                         continue;
@@ -291,10 +287,8 @@ public class TPKZoomLevelV2 implements TPKZoomLevel {
 
                 // calculate position of the tile index
                 long bundleRow = (max_row_column - row) - bundle.baseRow;
-                long indexReadOffset =
-                        DATA_HEADER_LENGTH
-                                + ((bundleRow * BUNDLE_DIMENSION) + (col - bundle.baseColumn))
-                                        * INDEX_ENTRY_LENGTH;
+                long indexReadOffset = DATA_HEADER_LENGTH
+                        + ((bundleRow * BUNDLE_DIMENSION) + (col - bundle.baseColumn)) * INDEX_ENTRY_LENGTH;
 
                 // read the tile index and get the offset to the tile data
                 TPKTile.TileInfo ti = getTileInfo(bundle, indexReadOffset);
@@ -338,18 +332,14 @@ public class TPKZoomLevelV2 implements TPKZoomLevel {
         byte[] tileIndex = bundle.bundleData.read(indexReadOffset, INDEX_ENTRY_LENGTH);
 
         // convert 5-byte little-endian value into a long
-        long dataOffset =
-                (long) (tileIndex[0] & 0xff)
-                        + ((long) (tileIndex[1] & 0xff) << 8)
-                        + ((long) (tileIndex[2] & 0xff) << 16)
-                        + ((long) (tileIndex[3] & 0xff) << 24)
-                        + ((long) (tileIndex[4] & 0xff) << 32);
+        long dataOffset = (long) (tileIndex[0] & 0xff)
+                + ((long) (tileIndex[1] & 0xff) << 8)
+                + ((long) (tileIndex[2] & 0xff) << 16)
+                + ((long) (tileIndex[3] & 0xff) << 24)
+                + ((long) (tileIndex[4] & 0xff) << 32);
 
         // convert 3-byte little-endian value into an int
-        int dataLength =
-                (tileIndex[5] & 0xff)
-                        + ((tileIndex[6] & 0xff) << 8)
-                        + ((tileIndex[7] & 0xff) << 16);
+        int dataLength = (tileIndex[5] & 0xff) + ((tileIndex[6] & 0xff) << 8) + ((tileIndex[7] & 0xff) << 16);
 
         return new TPKTile.TileInfo(dataLength, dataOffset);
     }

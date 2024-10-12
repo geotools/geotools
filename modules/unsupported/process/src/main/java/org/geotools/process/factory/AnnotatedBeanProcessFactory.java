@@ -72,8 +72,7 @@ import org.geotools.util.factory.FactoryRegistry;
 public class AnnotatedBeanProcessFactory extends AnnotationDrivenProcessFactory {
     Map<String, Class<?>> classMap;
 
-    public AnnotatedBeanProcessFactory(
-            InternationalString title, String namespace, Class<?>... beanClasses) {
+    public AnnotatedBeanProcessFactory(InternationalString title, String namespace, Class<?>... beanClasses) {
         super(title, namespace);
         classMap = classMap(beanClasses);
     }
@@ -143,9 +142,7 @@ public class AnnotatedBeanProcessFactory extends AnnotationDrivenProcessFactory 
                     if (hasProcessAnnotations(m)) {
                         if (selection != null) {
                             throw new IllegalArgumentException(
-                                    "Invalid process bean "
-                                            + className
-                                            + ", has two annotated execute methods");
+                                    "Invalid process bean " + className + ", has two annotated execute methods");
                         } else {
                             selection = m;
                         }
@@ -230,18 +227,15 @@ public class AnnotatedBeanProcessFactory extends AnnotationDrivenProcessFactory 
 
         public Class<T> getBeanClass() {
             @SuppressWarnings("unchecked")
-            Class<T> result =
-                    (Class<T>)
-                            streamCategories().findFirst().orElseThrow(NoSuchElementException::new);
+            Class<T> result = (Class<T>) streamCategories().findFirst().orElseThrow(NoSuchElementException::new);
             return result;
         }
 
         public Class<? extends T>[] lookupBeanClasses() {
             @SuppressWarnings("unchecked")
-            Class<? extends T>[] classes =
-                    getFactories(getBeanClass(), null, null)
-                            .map(Object::getClass)
-                            .toArray(Class[]::new);
+            Class<? extends T>[] classes = getFactories(getBeanClass(), null, null)
+                    .map(Object::getClass)
+                    .toArray(Class[]::new);
             return classes;
         }
     }

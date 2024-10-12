@@ -48,8 +48,7 @@ public interface CoordinateOperationFactory extends ObjectFactory {
      *     {@code targetCRS}.
      * @throws FactoryException if the operation creation failed for some other reason.
      */
-    CoordinateOperation createOperation(
-            CoordinateReferenceSystem sourceCRS, CoordinateReferenceSystem targetCRS)
+    CoordinateOperation createOperation(CoordinateReferenceSystem sourceCRS, CoordinateReferenceSystem targetCRS)
             throws OperationNotFoundException, FactoryException;
 
     /**
@@ -82,9 +81,7 @@ public interface CoordinateOperationFactory extends ObjectFactory {
      * @throws FactoryException if the operation creation failed for some other reason.
      */
     CoordinateOperation createOperation(
-            CoordinateReferenceSystem sourceCRS,
-            CoordinateReferenceSystem targetCRS,
-            OperationMethod method)
+            CoordinateReferenceSystem sourceCRS, CoordinateReferenceSystem targetCRS, OperationMethod method)
             throws OperationNotFoundException, FactoryException;
 
     /**
@@ -96,8 +93,8 @@ public interface CoordinateOperationFactory extends ObjectFactory {
      * @return The concatenated operation.
      * @throws FactoryException if the object creation failed.
      */
-    CoordinateOperation createConcatenatedOperation(
-            Map<String, ?> properties, CoordinateOperation... operations) throws FactoryException;
+    CoordinateOperation createConcatenatedOperation(Map<String, ?> properties, CoordinateOperation... operations)
+            throws FactoryException;
 
     /**
      * Constructs a defining conversion from a set of properties. Defining conversions have no
@@ -150,8 +147,7 @@ public interface CoordinateOperationFactory extends ObjectFactory {
      * @since GeoAPI 2.1
      */
     Conversion createDefiningConversion(
-            Map<String, ?> properties, OperationMethod method, ParameterValueGroup parameters)
-            throws FactoryException;
+            Map<String, ?> properties, OperationMethod method, ParameterValueGroup parameters) throws FactoryException;
 
     /**
      * Returns all the available operations for conversion or transformation between two coordinate
@@ -162,7 +158,6 @@ public interface CoordinateOperationFactory extends ObjectFactory {
      * @return A set of coordinate operations from {@code sourceCRS} to {@code targetCRS}.
      * @throws FactoryException if there was a failure retrieving or creating the operations.
      */
-    Set<CoordinateOperation> findOperations(
-            CoordinateReferenceSystem sourceCRS, CoordinateReferenceSystem targetCRS)
+    Set<CoordinateOperation> findOperations(CoordinateReferenceSystem sourceCRS, CoordinateReferenceSystem targetCRS)
             throws FactoryException;
 }

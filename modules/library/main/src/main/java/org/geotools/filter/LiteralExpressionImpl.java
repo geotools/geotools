@@ -180,11 +180,9 @@ public class LiteralExpressionImpl extends DefaultExpression implements Literal 
 
             // do the conversion dance
             int expressionType = getExpressionType(this);
-            if (expressionType == ExpressionType.LITERAL_GEOMETRY
-                    && this.literal instanceof Geometry) {
+            if (expressionType == ExpressionType.LITERAL_GEOMETRY && this.literal instanceof Geometry) {
                 return ((Geometry) this.literal).equalsExact(expLit.evaluate(null, Geometry.class));
-            } else if (expressionType == ExpressionType.LITERAL_GEOMETRY
-                    && this.literal instanceof Envelope) {
+            } else if (expressionType == ExpressionType.LITERAL_GEOMETRY && this.literal instanceof Envelope) {
                 return this.literal.equals(expLit.evaluate(null, Envelope.class));
             } else if (expressionType == ExpressionType.LITERAL_INTEGER) {
                 return this.literal.equals(expLit.evaluate(null, Integer.class));

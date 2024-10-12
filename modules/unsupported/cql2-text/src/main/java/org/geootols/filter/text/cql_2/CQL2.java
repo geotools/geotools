@@ -57,8 +57,7 @@ public class CQL2 {
      *     is null the method finds the default implementation.
      * @return a {@link Filter} equivalent to the constraint specified in <code>Predicate</code>.
      */
-    public static Filter toFilter(final String cql2Predicate, final FilterFactory filterFactory)
-            throws CQLException {
+    public static Filter toFilter(final String cql2Predicate, final FilterFactory filterFactory) throws CQLException {
 
         CQL2CompilerFactory compilerFactory = new CQL2CompilerFactory();
         Filter result = CompilerUtil.parseFilter(cql2Predicate, compilerFactory, filterFactory);
@@ -87,13 +86,12 @@ public class CQL2 {
      * @return a {@link Filter} equivalent to the constraint specified in <code>cql2Expression
      *     </code>.
      */
-    public static Expression toExpression(
-            final String cql2Expression, final FilterFactory filterFactory) throws CQLException {
+    public static Expression toExpression(final String cql2Expression, final FilterFactory filterFactory)
+            throws CQLException {
 
         CQL2CompilerFactory compilerFactory = new CQL2CompilerFactory();
 
-        Expression expression =
-                CompilerUtil.parseExpression(cql2Expression, compilerFactory, filterFactory);
+        Expression expression = CompilerUtil.parseExpression(cql2Expression, compilerFactory, filterFactory);
 
         return expression;
     }

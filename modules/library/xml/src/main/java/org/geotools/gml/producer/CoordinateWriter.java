@@ -78,15 +78,11 @@ public class CoordinateWriter {
     }
 
     public CoordinateWriter(
-            int numDecimals,
-            boolean padWithZeros,
-            boolean forceDecimalEncoding,
-            boolean isDummyZEnabled) {
+            int numDecimals, boolean padWithZeros, boolean forceDecimalEncoding, boolean isDummyZEnabled) {
         this(numDecimals, padWithZeros, forceDecimalEncoding, " ", ",", isDummyZEnabled);
     }
 
-    public CoordinateWriter(
-            int numDecimals, String tupleDelim, String coordDelim, boolean useDummyZ) {
+    public CoordinateWriter(int numDecimals, String tupleDelim, String coordDelim, boolean useDummyZ) {
         this(numDecimals, false, true, tupleDelim, coordDelim, useDummyZ);
     }
 
@@ -94,12 +90,7 @@ public class CoordinateWriter {
         this(numDecimals, padWithZeros, forceDecimalEncoding, false);
     }
 
-    public CoordinateWriter(
-            int numDecimals,
-            String tupleDelim,
-            String coordDelim,
-            boolean useDummyZ,
-            double zValue) {
+    public CoordinateWriter(int numDecimals, String tupleDelim, String coordDelim, boolean useDummyZ, double zValue) {
         this(numDecimals, false, true, tupleDelim, coordDelim, useDummyZ, zValue);
     }
 
@@ -109,21 +100,12 @@ public class CoordinateWriter {
 
     // TODO: check gml spec - can it be strings?  Or just chars?
     public CoordinateWriter(
-            int numDecimals,
-            boolean padWithZeros,
-            boolean forceDecimalEncoding,
-            String tupleDelim,
-            String coordDelim) {
+            int numDecimals, boolean padWithZeros, boolean forceDecimalEncoding, String tupleDelim, String coordDelim) {
         this(numDecimals, padWithZeros, forceDecimalEncoding, tupleDelim, coordDelim, false);
     }
 
     public CoordinateWriter(
-            int numDecimals,
-            String tupleDelim,
-            String coordDelim,
-            boolean useZ,
-            double z,
-            int dimension) {
+            int numDecimals, String tupleDelim, String coordDelim, boolean useZ, double z, int dimension) {
         this(numDecimals, false, true, tupleDelim, coordDelim, useZ, z, dimension);
     }
 
@@ -145,23 +127,11 @@ public class CoordinateWriter {
             String coordDelim,
             boolean useDummyZ,
             double zValue) {
-        this(
-                numDecimals,
-                padWithZeros,
-                forceDecimalEncoding,
-                tupleDelim,
-                coordDelim,
-                useDummyZ,
-                0,
-                2);
+        this(numDecimals, padWithZeros, forceDecimalEncoding, tupleDelim, coordDelim, useDummyZ, 0, 2);
     }
 
     public CoordinateWriter(
-            int numDecimals,
-            boolean padWithZeros,
-            boolean forceDecimalEncoding,
-            boolean useDummyZ,
-            int dimension) {
+            int numDecimals, boolean padWithZeros, boolean forceDecimalEncoding, boolean useDummyZ, int dimension) {
         this(numDecimals, padWithZeros, forceDecimalEncoding, " ", ",", useDummyZ, 0, dimension);
     }
 
@@ -198,8 +168,7 @@ public class CoordinateWriter {
             throw new IllegalArgumentException("Tuple delimeter cannot be null or zero length");
         }
         if ((coordDelim != null) && coordDelim.length() == 0) {
-            throw new IllegalArgumentException(
-                    "Coordinate delimeter cannot be null or zero length");
+            throw new IllegalArgumentException("Coordinate delimeter cannot be null or zero length");
         }
         D = dimension;
 
@@ -292,10 +261,9 @@ public class CoordinateWriter {
             // format y into buffer
             coordFormatter.format(y, coordBuff);
 
-            boolean zAvailable =
-                    coordSeqDimension > 2
-                            && !Double.isNaN(c.getOrdinate(i, 2))
-                            && !Double.isInfinite(c.getOrdinate(i, 2));
+            boolean zAvailable = coordSeqDimension > 2
+                    && !Double.isNaN(c.getOrdinate(i, 2))
+                    && !Double.isInfinite(c.getOrdinate(i, 2));
             if (D == 3 || zAvailable || useDummyZ) {
                 z = zAvailable ? c.getOrdinate(i, 2) : dummyZ;
                 coordBuff.append(coordinateDelimiter);

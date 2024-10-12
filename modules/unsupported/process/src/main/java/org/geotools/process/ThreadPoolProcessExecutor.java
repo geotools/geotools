@@ -25,13 +25,7 @@ import java.util.concurrent.TimeUnit;
 public class ThreadPoolProcessExecutor extends ThreadPoolExecutor implements ProcessExecutor {
 
     public ThreadPoolProcessExecutor(int nThreads, ThreadFactory threadFactory) {
-        super(
-                nThreads,
-                nThreads,
-                0L,
-                TimeUnit.MILLISECONDS,
-                new LinkedBlockingQueue<>(),
-                threadFactory);
+        super(nThreads, nThreads, 0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>(), threadFactory);
     }
 
     @Override

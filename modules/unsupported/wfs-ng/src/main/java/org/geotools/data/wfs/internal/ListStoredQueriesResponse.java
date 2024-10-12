@@ -79,8 +79,8 @@ public class ListStoredQueriesResponse extends WFSResponse {
         }
     }
 
-    private ListStoredQueriesResponseType parseStoredQueries(
-            Document document, Configuration wfsConfig) throws DataSourceException {
+    private ListStoredQueriesResponseType parseStoredQueries(Document document, Configuration wfsConfig)
+            throws DataSourceException {
         DOMParser parser = new DOMParser(wfsConfig, document);
         final Object parsed;
         try {

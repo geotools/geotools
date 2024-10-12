@@ -45,12 +45,11 @@ public class CSSFunction extends FunctionImpl {
 
     static {
         Parameter<Color> color = new Parameter<>("color", Color.class, 1, 1);
-        Parameter<Double> string =
-                new Parameter<>(
-                        "string",
-                        Double.class,
-                        Text.text("String"),
-                        Text.text("Color definition provided as hex, rgb, or css color name."));
+        Parameter<Double> string = new Parameter<>(
+                "string",
+                Double.class,
+                Text.text("String"),
+                Text.text("Color definition provided as hex, rgb, or css color name."));
         NAME = new FunctionNameImpl("css", color, string);
     }
 

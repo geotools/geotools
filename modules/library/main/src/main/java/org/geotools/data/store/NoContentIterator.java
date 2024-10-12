@@ -54,8 +54,7 @@ public class NoContentIterator implements Iterator<SimpleFeature> {
             //
             throw new NoSuchElementException();
         }
-        NoSuchElementException cantFind =
-                new NoSuchElementException("Could not aquire feature:" + origionalProblem);
+        NoSuchElementException cantFind = new NoSuchElementException("Could not aquire feature:" + origionalProblem);
         cantFind.initCause(origionalProblem);
         origionalProblem = null;
         throw cantFind;

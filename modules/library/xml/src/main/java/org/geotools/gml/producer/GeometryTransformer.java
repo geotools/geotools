@@ -79,8 +79,7 @@ public class GeometryTransformer extends TransformerBase {
     /** @TODO remove constant from GometryTraslator contructor call */
     @Override
     public org.geotools.xml.transform.Translator createTranslator(ContentHandler handler) {
-        return new GeometryTranslator(
-                handler, numDecimals, padWithZeros, forceDecimalEncoding, useDummyZ);
+        return new GeometryTranslator(handler, numDecimals, padWithZeros, forceDecimalEncoding, useDummyZ);
     }
 
     public static class GeometryTranslator extends TranslatorSupport {
@@ -100,30 +99,21 @@ public class GeometryTransformer extends TransformerBase {
             this(handler, "gml", GMLUtils.GML_URL, numDecimals, false, false);
         }
 
-        public GeometryTranslator(
-                ContentHandler handler, String prefix, String nsUri, int numDecimals) {
+        public GeometryTranslator(ContentHandler handler, String prefix, String nsUri, int numDecimals) {
             this(handler, prefix, nsUri, numDecimals, false, false);
         }
 
-        public GeometryTranslator(
-                ContentHandler handler, int numDecimals, boolean isDummyZEnabled) {
+        public GeometryTranslator(ContentHandler handler, int numDecimals, boolean isDummyZEnabled) {
             this(handler, numDecimals, false, false, isDummyZEnabled);
         }
 
         public GeometryTranslator(
-                ContentHandler handler,
-                int numDecimals,
-                boolean padWithZeros,
-                boolean forceDecimalEncoding) {
+                ContentHandler handler, int numDecimals, boolean padWithZeros, boolean forceDecimalEncoding) {
             this(handler, "gml", GMLUtils.GML_URL, numDecimals, padWithZeros, forceDecimalEncoding);
         }
 
         public GeometryTranslator(
-                ContentHandler handler,
-                String prefix,
-                String nsUri,
-                int numDecimals,
-                boolean isDummyZEnabled) {
+                ContentHandler handler, String prefix, String nsUri, int numDecimals, boolean isDummyZEnabled) {
             this(handler, prefix, nsUri, numDecimals, false, false, isDummyZEnabled);
         }
 
@@ -135,8 +125,7 @@ public class GeometryTransformer extends TransformerBase {
                 boolean padWithZeros,
                 boolean forceDecimalEncoding) {
             this(handler, prefix, nsUri);
-            coordWriter =
-                    new CoordinateWriter(numDecimals, padWithZeros, forceDecimalEncoding, false);
+            coordWriter = new CoordinateWriter(numDecimals, padWithZeros, forceDecimalEncoding, false);
             coordWriter.setPrefix(prefix);
             coordWriter.setNamespaceUri(nsUri);
         }
@@ -147,14 +136,7 @@ public class GeometryTransformer extends TransformerBase {
                 boolean padWithZeros,
                 boolean forceDecimalEncoding,
                 boolean isDummyZEnabled) {
-            this(
-                    handler,
-                    "gml",
-                    GMLUtils.GML_URL,
-                    numDecimals,
-                    padWithZeros,
-                    forceDecimalEncoding,
-                    isDummyZEnabled);
+            this(handler, "gml", GMLUtils.GML_URL, numDecimals, padWithZeros, forceDecimalEncoding, isDummyZEnabled);
         }
 
         public GeometryTranslator(
@@ -166,9 +148,7 @@ public class GeometryTransformer extends TransformerBase {
                 boolean forceDecimalEncoding,
                 boolean isDummyZEnabled) {
             this(handler, prefix, nsUri);
-            coordWriter =
-                    new CoordinateWriter(
-                            numDecimals, padWithZeros, forceDecimalEncoding, isDummyZEnabled);
+            coordWriter = new CoordinateWriter(numDecimals, padWithZeros, forceDecimalEncoding, isDummyZEnabled);
             coordWriter.setPrefix(prefix);
             coordWriter.setNamespaceUri(nsUri);
         }
@@ -190,12 +170,7 @@ public class GeometryTransformer extends TransformerBase {
                 int dimension) {
             this(handler, prefix, nsUri);
             coordWriter =
-                    new CoordinateWriter(
-                            numDecimals,
-                            padWithZeros,
-                            forceDecimalEncoding,
-                            isDummyZEnabled,
-                            dimension);
+                    new CoordinateWriter(numDecimals, padWithZeros, forceDecimalEncoding, isDummyZEnabled, dimension);
             coordWriter.setPrefix(prefix);
             coordWriter.setNamespaceUri(nsUri);
         }
@@ -300,8 +275,7 @@ public class GeometryTransformer extends TransformerBase {
             // see if we have a EPSG CRS attached to the geometry
             if (geometry.getUserData() instanceof CoordinateReferenceSystem) {
                 try {
-                    CoordinateReferenceSystem crs =
-                            (CoordinateReferenceSystem) geometry.getUserData();
+                    CoordinateReferenceSystem crs = (CoordinateReferenceSystem) geometry.getUserData();
                     Integer code = CRS.lookupEpsgCode(crs, false);
                     if (code != null) {
                         if (AxisOrder.NORTH_EAST.equals(CRS.getAxisOrder(crs))) {

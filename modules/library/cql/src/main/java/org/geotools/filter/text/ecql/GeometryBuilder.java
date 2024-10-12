@@ -117,8 +117,7 @@ abstract class GeometryBuilder {
      * @param geometryNode geometry required
      * @return a list of indeed geometries
      */
-    protected List<Geometry> popGeometry(final int geometryNode)
-            throws org.geotools.filter.text.cql2.CQLException {
+    protected List<Geometry> popGeometry(final int geometryNode) throws org.geotools.filter.text.cql2.CQLException {
 
         List<Geometry> geomList = new LinkedList<>();
         while (!getResultStack().empty()) {

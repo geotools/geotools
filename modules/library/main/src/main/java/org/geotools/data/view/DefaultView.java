@@ -63,8 +63,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 public class DefaultView implements SimpleFeatureSource {
 
     /** Shared package logger */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(DefaultView.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(DefaultView.class);
 
     /** SimpleFeatureSource being served up */
     protected SimpleFeatureSource source;
@@ -105,9 +104,7 @@ public class DefaultView implements SimpleFeatureSource {
         } else if (query.getCoordinateSystem() != null) {
             cs = query.getCoordinateSystem();
         }
-        schema =
-                DataUtilities.createSubType(
-                        origionalType, query.getPropertyNames(), cs, query.getTypeName(), null);
+        schema = DataUtilities.createSubType(origionalType, query.getPropertyNames(), cs, query.getTypeName(), null);
     }
 
     /**
@@ -126,8 +123,7 @@ public class DefaultView implements SimpleFeatureSource {
      * comparison the constructors for this class have package visibiliy. TODO: revisit this - I am
      * not sure I want write access to views (especially if they do reprojection).
      */
-    public static SimpleFeatureSource create(SimpleFeatureSource source, Query query)
-            throws SchemaException {
+    public static SimpleFeatureSource create(SimpleFeatureSource source, Query query) throws SchemaException {
         return new DefaultView(source, query);
     }
 
@@ -182,8 +178,7 @@ public class DefaultView implements SimpleFeatureSource {
             return Query;
         } catch (Exception ex) {
             throw new DataSourceException(
-                    "Could not restrict the query to the definition criteria: " + ex.getMessage(),
-                    ex);
+                    "Could not restrict the query to the definition criteria: " + ex.getMessage(), ex);
         }
     }
 
@@ -216,10 +211,7 @@ public class DefaultView implements SimpleFeatureSource {
                 if (schema.getDescriptor(queriedAtt) != null) {
                     allowedAtts.add(queriedAtt);
                 } else {
-                    LOGGER.info(
-                            "queried a not allowed property: "
-                                    + queriedAtt
-                                    + ". Ommitting it from query");
+                    LOGGER.info("queried a not allowed property: " + queriedAtt + ". Ommitting it from query");
                 }
             }
 
@@ -325,8 +317,7 @@ public class DefaultView implements SimpleFeatureSource {
                 // mergedQuery.setCoordinateSystem(cCs);
                 // mergedQuery.setCoordinateSystemReproject(cCsr);
                 try {
-                    if (cCs != null)
-                        results = new ForceCoordinateSystemFeatureResults(results, cCs);
+                    if (cCs != null) results = new ForceCoordinateSystemFeatureResults(results, cCs);
                     results = new ReprojectFeatureResults(source.getFeatures(mergedQuery), cCsr);
 
                     results = new ForceCoordinateSystemFeatureResults(results, qCs);
@@ -344,18 +335,14 @@ public class DefaultView implements SimpleFeatureSource {
                 CoordinateReferenceSystem forcedCS = qCs != null ? qCs : cCs;
                 CoordinateReferenceSystem reprojectCS = qCsr != null ? qCsr : cCsr;
 
-                if (forcedCS != null)
-                    results = new ForceCoordinateSystemFeatureResults(results, forcedCS);
-                if (reprojectCS != null)
-                    results = new ReprojectFeatureResults(results, reprojectCS);
+                if (forcedCS != null) results = new ForceCoordinateSystemFeatureResults(results, forcedCS);
+                if (reprojectCS != null) results = new ReprojectFeatureResults(results, reprojectCS);
             }
         } catch (IOException e) {
             throw e;
         } catch (Exception e) {
             throw new DataSourceException(
-                    "A problem occurred while handling forced "
-                            + "coordinate systems and reprojection",
-                    e);
+                    "A problem occurred while handling forced " + "coordinate systems and reprojection", e);
         }
 
         return results;

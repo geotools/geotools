@@ -136,8 +136,7 @@ public class GetFeatureRequest extends WFSRequest {
                 }
             }
         } else {
-            LOGGER.log(
-                    Level.FINE, "GML2EncodingUtils couldn't handle the coordinate system: " + crs);
+            LOGGER.log(Level.FINE, "GML2EncodingUtils couldn't handle the coordinate system: " + crs);
         }
     }
 

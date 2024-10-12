@@ -59,8 +59,7 @@ public class SqlScriptReader {
     }
 
     public String next() throws IOException {
-        if (fetched)
-            throw new IOException("hasNext was not called, or was called and it returned false");
+        if (fetched) throw new IOException("hasNext was not called, or was called and it returned false");
 
         fetched = true;
         return builder.toString();

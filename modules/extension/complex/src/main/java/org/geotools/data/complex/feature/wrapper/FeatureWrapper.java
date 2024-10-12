@@ -59,16 +59,15 @@ public abstract class FeatureWrapper {
      *     returned).
      * @return An object of T which is the wrapped feature.
      */
-    public static <T extends FeatureWrapper> T wrap(
-            ComplexAttribute complexAttribute, Class<T> clazz) throws InvalidClassException {
+    public static <T extends FeatureWrapper> T wrap(ComplexAttribute complexAttribute, Class<T> clazz)
+            throws InvalidClassException {
         try {
             // Create a new instance of the class:
             T wrapper;
             try {
                 wrapper = clazz.getDeclaredConstructor().newInstance();
             } catch (Exception e) {
-                throw new InvalidClassException(
-                        String.format("Unable instantiate class of type '%s'.", clazz));
+                throw new InvalidClassException(String.format("Unable instantiate class of type '%s'.", clazz));
             }
 
             wrapper.setUnderlyingComplexAttribute(complexAttribute);
@@ -91,14 +90,8 @@ public abstract class FeatureWrapper {
                     Class<?> fieldType = field.getType();
 
                     String path = xsdMapping.path();
-                    String namespace =
-                            xsdMapping.namespace().equals("")
-                                    ? defaultNamespace
-                                    : xsdMapping.namespace();
-                    String separator =
-                            xsdMapping.separator().equals("")
-                                    ? defaultSeparator
-                                    : xsdMapping.separator();
+                    String namespace = xsdMapping.namespace().equals("") ? defaultNamespace : xsdMapping.namespace();
+                    String separator = xsdMapping.separator().equals("") ? defaultSeparator : xsdMapping.separator();
 
                     Name xsdName = new NameImpl(namespace, separator, xsdMapping.local());
 
@@ -110,12 +103,11 @@ public abstract class FeatureWrapper {
 
                         for (String step : steps) {
                             if (targetAttribute == null) {
-                                throw new InvalidClassException(
-                                        String.format(
-                                                "Unable to wrap attribute in class '%s'. "
-                                                        + "Reference to %s could not be found in "
-                                                        + "the attribute.",
-                                                clazz, xsdMapping.local()));
+                                throw new InvalidClassException(String.format(
+                                        "Unable to wrap attribute in class '%s'. "
+                                                + "Reference to %s could not be found in "
+                                                + "the attribute.",
+                                        clazz, xsdMapping.local()));
                             }
 
                             // Dig through the attribute to get to the end node.
@@ -138,10 +130,9 @@ public abstract class FeatureWrapper {
                         if (featureWrapperAttribute == null) {
                             // What's wrong is that MineName is not being added
                             // to MineNamePropertyType
-                            throw new InvalidClassException(
-                                    String.format(
-                                            "Unable to wrap attribute in class '%s'. '%s' doesn't have required property '%s'.",
-                                            clazz.getName(), targetAttribute.getName(), xsdName));
+                            throw new InvalidClassException(String.format(
+                                    "Unable to wrap attribute in class '%s'. '%s' doesn't have required property '%s'.",
+                                    clazz.getName(), targetAttribute.getName(), xsdName));
                         }
 
                         // We get the name of its type and then use that name to
@@ -153,16 +144,14 @@ public abstract class FeatureWrapper {
                         if (nestedComplexAttribute == null) {
                             // What's wrong is that MineName's properties are
                             // missing the mine type
-                            throw new InvalidClassException(
-                                    String.format(
-                                            "Unable to wrap attribute in class '%s'. '%s' doesn't have required property '%s'.",
-                                            clazz.getName(), xsdName, typeName));
+                            throw new InvalidClassException(String.format(
+                                    "Unable to wrap attribute in class '%s'. '%s' doesn't have required property '%s'.",
+                                    clazz.getName(), xsdName, typeName));
                         }
 
                         // Look for this field in the complexAttribute:
                         @SuppressWarnings("unchecked")
-                        FeatureWrapper property =
-                                wrap(nestedComplexAttribute, (Class<FeatureWrapper>) fieldType);
+                        FeatureWrapper property = wrap(nestedComplexAttribute, (Class<FeatureWrapper>) fieldType);
                         field.set(wrapper, property);
                     } else if (ArrayList.class.isAssignableFrom(fieldType)) {
                         // Collections aren't too dissimilar, you just have to
@@ -174,17 +163,14 @@ public abstract class FeatureWrapper {
                         // Collection<MineNamePropertyType> and giving me
                         // MineNamePropertyType.
                         Class<?> collectionType =
-                                (Class<?>)
-                                        ((ParameterizedType) field.getGenericType())
-                                                .getActualTypeArguments()[0];
+                                (Class<?>) ((ParameterizedType) field.getGenericType()).getActualTypeArguments()[0];
 
                         ArrayList<Object> collection = new ArrayList<>();
                         if (FeatureWrapper.class.isAssignableFrom(collectionType)) {
                             // The collection is complex.
                             for (Property property : targetAttribute.getProperties(xsdName)) {
                                 @SuppressWarnings("unchecked")
-                                Class<FeatureWrapper> fwClass =
-                                        (Class<FeatureWrapper>) collectionType;
+                                Class<FeatureWrapper> fwClass = (Class<FeatureWrapper>) collectionType;
                                 collection.add(wrap((ComplexAttribute) property, fwClass));
                             }
                         } else {
@@ -199,10 +185,9 @@ public abstract class FeatureWrapper {
                         Property property = targetAttribute.getProperty(xsdName);
 
                         if (property == null) {
-                            throw new InvalidClassException(
-                                    String.format(
-                                            "Unable to wrap attribute in class '%s'. %s could not be found in the attribute.",
-                                            clazz, xsdName));
+                            throw new InvalidClassException(String.format(
+                                    "Unable to wrap attribute in class '%s'. %s could not be found in the attribute.",
+                                    clazz, xsdName));
                         }
 
                         field.set(wrapper, property.getValue());
@@ -212,10 +197,9 @@ public abstract class FeatureWrapper {
 
             return wrapper;
         } catch (IllegalAccessException iae) {
-            throw new InvalidClassException(
-                    String.format(
-                            "Unable to wrap attribute in class '%s'. Exception of type: '%s' was thrown with message: '%s'",
-                            clazz, iae.getClass(), iae.getMessage()));
+            throw new InvalidClassException(String.format(
+                    "Unable to wrap attribute in class '%s'. Exception of type: '%s' was thrown with message: '%s'",
+                    clazz, iae.getClass(), iae.getMessage()));
         }
     }
 }

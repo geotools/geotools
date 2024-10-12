@@ -85,14 +85,10 @@ public final class DirectCreationTest {
      *     dimension of <code>actual</code>, then the last tolerance value will be reused for all
      *     extra dimensions.
      */
-    private static void assertPositionEquals(
-            final Position expected, final Position actual, final double[] tolerance) {
+    private static void assertPositionEquals(final Position expected, final Position actual, final double[] tolerance) {
         final int dimension = actual.getDimension();
         final int lastToleranceIndex = tolerance.length - 1;
-        assertEquals(
-                "The coordinate point doesn't have the expected dimension",
-                expected.getDimension(),
-                dimension);
+        assertEquals("The coordinate point doesn't have the expected dimension", expected.getDimension(), dimension);
         for (int i = 0; i < dimension; i++) {
             assertEquals(
                     "Mismatch for ordinate " + i + " (zero-based):",
@@ -115,8 +111,7 @@ public final class DirectCreationTest {
      * Helper method to test transform from a source to a target point. Coordinate points are (x,y)
      * or (long, lat)
      */
-    private static void doTransform(
-            Position source, Position target, MathTransform transform, final double[] tolerance)
+    private static void doTransform(Position source, Position target, MathTransform transform, final double[] tolerance)
             throws TransformException {
         Position calculated = transform.transform(source, null);
         assertPositionEquals(target, calculated, tolerance);
@@ -201,9 +196,7 @@ public final class DirectCreationTest {
         params.parameter("false_northing").setValue(0.0);
         transform = mtFactory.createParameterizedTransform(params);
         doTransform(
-                new Position2D(-123.1, 49.2166666666),
-                new Position2D(-13688089.02443480, 6304639.84599441),
-                transform);
+                new Position2D(-123.1, 49.2166666666), new Position2D(-13688089.02443480, 6304639.84599441), transform);
 
         // ellipsoidal with latitude of origin not zero, (simone)
         params.parameter("semi_major").setValue(6378137.0);
@@ -245,10 +238,7 @@ public final class DirectCreationTest {
         params.parameter("false_easting").setValue(-500000.0);
         params.parameter("false_northing").setValue(-1000000.0);
         transform = mtFactory.createParameterizedTransform(params);
-        doTransform(
-                new Position2D(-123.1, 49.2166666666),
-                new Position2D(2663494.1734, 2152319.9230),
-                transform);
+        doTransform(new Position2D(-123.1, 49.2166666666), new Position2D(2663494.1734, 2152319.9230), transform);
     }
 
     /** Some tests for the Oblique Mercator Projection. */
@@ -313,10 +303,7 @@ public final class DirectCreationTest {
         params.parameter("false_easting").setValue(250000.0);
         params.parameter("false_northing").setValue(150000.0);
         MathTransform transform = mtFactory.createParameterizedTransform(params);
-        doTransform(
-                new Position2D(-76.943683333, 17.932166666),
-                new Position2D(255966.58, 142493.51),
-                transform);
+        doTransform(new Position2D(-76.943683333, 17.932166666), new Position2D(255966.58, 142493.51), transform);
 
         // Spherical (me)
         params.parameter("semi_major").setValue(6370997.0);
@@ -328,9 +315,7 @@ public final class DirectCreationTest {
         params.parameter("false_northing").setValue(1000000.0);
         transform = mtFactory.createParameterizedTransform(params);
         doTransform(
-                new Position2D(151.283333333, -33.916666666),
-                new Position2D(4232963.1816, 2287639.9866),
-                transform);
+                new Position2D(151.283333333, -33.916666666), new Position2D(4232963.1816, 2287639.9866), transform);
 
         ///////////////////////////////////////
         // Lambert_Conformal_Conic_2SP tests //
@@ -349,8 +334,7 @@ public final class DirectCreationTest {
         params.parameter("false_easting").setValue(609601.218); // metres
         params.parameter("false_northing").setValue(0.0);
         transform = mtFactory.createParameterizedTransform(params);
-        doTransform(
-                new Position2D(-96.0, 28.5), new Position2D(903277.7965, 77650.94219), transform);
+        doTransform(new Position2D(-96.0, 28.5), new Position2D(903277.7965, 77650.94219), transform);
 
         // Spherical (me)
         params.parameter("semi_major").setValue(6370997.0);
@@ -363,9 +347,7 @@ public final class DirectCreationTest {
         params.parameter("false_northing").setValue(0.0);
         transform = mtFactory.createParameterizedTransform(params);
         doTransform(
-                new Position2D(139.733333333, 35.6833333333),
-                new Position2D(-6789805.6471, 7107623.6859),
-                transform);
+                new Position2D(139.733333333, 35.6833333333), new Position2D(-6789805.6471, 7107623.6859), transform);
 
         // 1SP where SP != lat of origin (me)
         params.parameter("semi_major").setValue(6378137.0);
@@ -377,10 +359,7 @@ public final class DirectCreationTest {
         params.parameter("false_easting").setValue(100000.0);
         params.parameter("false_northing").setValue(0.0);
         transform = mtFactory.createParameterizedTransform(params);
-        doTransform(
-                new Position2D(18.45, -33.9166666666),
-                new Position2D(1803288.3324, 1616657.7846),
-                transform);
+        doTransform(new Position2D(18.45, -33.9166666666), new Position2D(1803288.3324, 1616657.7846), transform);
 
         ///////////////////////////////////////////////
         // Lambert_Conformal_Conic_2SP_Belgium test  //
@@ -399,10 +378,7 @@ public final class DirectCreationTest {
         params.parameter("false_easting").setValue(150000.01);
         params.parameter("false_northing").setValue(5400088.44);
         transform = mtFactory.createParameterizedTransform(params);
-        doTransform(
-                new Position2D(5.807370277, 50.6795725),
-                new Position2D(251763.20, 153034.13),
-                transform);
+        doTransform(new Position2D(5.807370277, 50.6795725), new Position2D(251763.20, 153034.13), transform);
     }
 
     /** Some tests for Krovak Projection. */
@@ -425,10 +401,7 @@ public final class DirectCreationTest {
         params.parameter("pseudo_standard_parallel_1").setValue(78.5);
         params.parameter("scale_factor").setValue(0.9999);
         MathTransform transform = mtFactory.createParameterizedTransform(params);
-        doTransform(
-                new Position2D(14.370530947, 50.071153856),
-                new Position2D(-746742.6075, -1044389.4516),
-                transform);
+        doTransform(new Position2D(14.370530947, 50.071153856), new Position2D(-746742.6075, -1044389.4516), transform);
     }
 
     /** Some tests for Stereographic projection. */
@@ -473,20 +446,8 @@ public final class DirectCreationTest {
         transform = mtFactory.createParameterizedTransform(params);
         final double[] tolerance = {0.1, 0.1};
         doTransform(new Position2D(10, -85), new Position2D(94393.99, 535334.89), transform);
-        doTransform(
-                new Position2D(-75, -80),
-                new Position2D(-1052066.625, 281900.375),
-                transform,
-                tolerance);
-        doTransform(
-                new Position2D(-75, -70),
-                new Position2D(-2119718.750, 567976.875),
-                transform,
-                tolerance);
-        doTransform(
-                new Position2D(-75, -60),
-                new Position2D(-3219560.250, 862678.563),
-                transform,
-                tolerance);
+        doTransform(new Position2D(-75, -80), new Position2D(-1052066.625, 281900.375), transform, tolerance);
+        doTransform(new Position2D(-75, -70), new Position2D(-2119718.750, 567976.875), transform, tolerance);
+        doTransform(new Position2D(-75, -60), new Position2D(-3219560.250, 862678.563), transform, tolerance);
     }
 }

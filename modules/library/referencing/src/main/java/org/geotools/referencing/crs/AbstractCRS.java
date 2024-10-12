@@ -43,8 +43,7 @@ import org.geotools.util.UnsupportedImplementationException;
  * @see AbstractCS
  * @see org.geotools.referencing.datum.AbstractDatum
  */
-public abstract class AbstractCRS extends AbstractReferenceSystem
-        implements CoordinateReferenceSystem {
+public abstract class AbstractCRS extends AbstractReferenceSystem implements CoordinateReferenceSystem {
     /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = -7433284548909530047L;
 

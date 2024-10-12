@@ -66,8 +66,7 @@ public class GridsSquareTest extends TestBase {
     @Test
     public void createDensifiedGrid() throws Exception {
         final int vertexDensity = 10;
-        SimpleFeatureSource gridSource =
-                Grids.createSquareGrid(bounds, sideLen, sideLen / vertexDensity);
+        SimpleFeatureSource gridSource = Grids.createSquareGrid(bounds, sideLen, sideLen / vertexDensity);
         assertGridSizeAndIds(gridSource);
 
         try (SimpleFeatureIterator iter = gridSource.getFeatures().features()) {
@@ -101,16 +100,14 @@ public class GridsSquareTest extends TestBase {
             throw new IllegalStateException("Error in test code");
         }
 
-        GridFeatureBuilder builder =
-                new GridFeatureBuilder(createFeatureType(builderCRS)) {
-                    @Override
-                    public void setAttributes(GridElement el, Map<String, Object> attributes) {
-                        throw new UnsupportedOperationException("Should not be called");
-                    }
-                };
+        GridFeatureBuilder builder = new GridFeatureBuilder(createFeatureType(builderCRS)) {
+            @Override
+            public void setAttributes(GridElement el, Map<String, Object> attributes) {
+                throw new UnsupportedOperationException("Should not be called");
+            }
+        };
 
-        Grids.createSquareGrid(
-                new ReferencedEnvelope(150, 151, -33, -34, boundsCRS), sideLen, sideLen, builder);
+        Grids.createSquareGrid(new ReferencedEnvelope(150, 151, -33, -34, boundsCRS), sideLen, sideLen, builder);
     }
 
     private void assertGridSizeAndIds(SimpleFeatureSource gridSource) throws Exception {

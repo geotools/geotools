@@ -115,8 +115,7 @@ public abstract class ModifiableMetadata extends AbstractMetadata implements Clo
      *     corresponding to the {@code get} methods found in the implemented interface, or if this
      *     instance is not modifiable for some other reason.
      */
-    protected ModifiableMetadata(final Object source)
-            throws ClassCastException, UnmodifiableMetadataException {
+    protected ModifiableMetadata(final Object source) throws ClassCastException, UnmodifiableMetadataException {
         super(source);
     }
 
@@ -415,8 +414,7 @@ public abstract class ModifiableMetadata extends AbstractMetadata implements Clo
      * @param elementType The element type (used only if {@code c} is null).
      * @return {@code c}, or a new collection if {@code c} is null.
      */
-    protected final <E> Collection<E> nonNullCollection(
-            final Collection<E> c, final Class<E> elementType) {
+    protected final <E> Collection<E> nonNullCollection(final Collection<E> c, final Class<E> elementType) {
         if (c != null) {
             return c;
         }

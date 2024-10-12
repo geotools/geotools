@@ -48,8 +48,7 @@ public class HTTPClientFinderTest {
         final int CONN_POOL = 3;
         Hints.putSystemDefault(Hints.HTTP_CLIENT_FACTORY, MultithreadedHttpClientFactory.class);
         try {
-            HTTPClient client =
-                    HTTPClientFinder.createClient(new Hints(Hints.HTTP_LOGGING, "True"));
+            HTTPClient client = HTTPClientFinder.createClient(new Hints(Hints.HTTP_LOGGING, "True"));
             Assert.assertTrue(client instanceof HTTPConnectionPooling);
             ((HTTPConnectionPooling) client).setMaxConnections(CONN_POOL);
             Assert.assertEquals(CONN_POOL, ((HTTPConnectionPooling) client).getMaxConnections());

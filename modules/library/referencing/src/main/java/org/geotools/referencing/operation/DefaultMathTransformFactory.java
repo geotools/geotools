@@ -95,8 +95,7 @@ import org.geotools.util.factory.Hints;
  * @since 2.1
  * @author Martin Desruisseaux (IRD)
  */
-public class DefaultMathTransformFactory extends ReferencingFactory
-        implements MathTransformFactory {
+public class DefaultMathTransformFactory extends ReferencingFactory implements MathTransformFactory {
     /**
      * The hints to provide to math transform providers. Null for now, but may be non-null in some
      * future version.
@@ -170,11 +169,8 @@ public class DefaultMathTransformFactory extends ReferencingFactory
      */
     @Override
     public Set<OperationMethod> getAvailableMethods(final Class<? extends Operation> type) {
-        return new LazySet<>(
-                registry.getFactories(
-                        MathTransformProvider.class,
-                        (type != null) ? new MethodFilter(type) : null,
-                        HINTS));
+        return new LazySet<>(registry.getFactories(
+                MathTransformProvider.class, (type != null) ? new MethodFilter(type) : null, HINTS));
     }
 
     /** A filter for the set of available operations. */
@@ -244,8 +240,7 @@ public class DefaultMathTransformFactory extends ReferencingFactory
      * @throws NoSuchIdentifierException if there is no provider registered for the specified
      *     method.
      */
-    private MathTransformProvider getProvider(final String method)
-            throws NoSuchIdentifierException {
+    private MathTransformProvider getProvider(final String method) throws NoSuchIdentifierException {
         /*
          * Copies the 'lastProvider' reference in order to avoid synchronization. This is safe
          * because copy of object references are atomic operations.  Note that this is not the
@@ -257,18 +252,11 @@ public class DefaultMathTransformFactory extends ReferencingFactory
             return provider;
         }
 
-        provider =
-                registry.getFactories(MathTransformProvider.class, null, HINTS)
-                        .filter(prov -> prov.nameMatches(method))
-                        .findAny()
-                        .orElseThrow(
-                                () ->
-                                        new NoSuchIdentifierException(
-                                                MessageFormat.format(
-                                                        ErrorKeys
-                                                                .NO_TRANSFORM_FOR_CLASSIFICATION_$1,
-                                                        method),
-                                                method));
+        provider = registry.getFactories(MathTransformProvider.class, null, HINTS)
+                .filter(prov -> prov.nameMatches(method))
+                .findAny()
+                .orElseThrow(() -> new NoSuchIdentifierException(
+                        MessageFormat.format(ErrorKeys.NO_TRANSFORM_FOR_CLASSIFICATION_$1, method), method));
 
         return lastProvider = provider;
     }
@@ -293,8 +281,7 @@ public class DefaultMathTransformFactory extends ReferencingFactory
      * @see org.geotools.referencing.operation.transform.AbstractMathTransform#getParameterValues
      */
     @Override
-    public ParameterValueGroup getDefaultParameters(final String method)
-            throws NoSuchIdentifierException {
+    public ParameterValueGroup getDefaultParameters(final String method) throws NoSuchIdentifierException {
         return getProvider(method).getParameters().createValue();
     }
 
@@ -329,10 +316,8 @@ public class DefaultMathTransformFactory extends ReferencingFactory
         final Ellipsoid ellipsoid = CRSUtilities.getHeadGeoEllipsoid(baseCRS);
         if (ellipsoid != null) {
             final Unit<Length> axisUnit = ellipsoid.getAxisUnit();
-            Parameters.ensureSet(
-                    parameters, "semi_major", ellipsoid.getSemiMajorAxis(), axisUnit, false);
-            Parameters.ensureSet(
-                    parameters, "semi_minor", ellipsoid.getSemiMinorAxis(), axisUnit, false);
+            Parameters.ensureSet(parameters, "semi_major", ellipsoid.getSemiMajorAxis(), axisUnit, false);
+            Parameters.ensureSet(parameters, "semi_minor", ellipsoid.getSemiMinorAxis(), axisUnit, false);
         }
         MathTransform baseToDerived = createParameterizedTransform(parameters);
         final OperationMethod method = lastMethod.get();
@@ -357,9 +342,7 @@ public class DefaultMathTransformFactory extends ReferencingFactory
      * @since 2.5
      */
     public MathTransform createBaseToDerived(
-            final CoordinateReferenceSystem baseCRS,
-            final MathTransform projection,
-            final CoordinateSystem derivedCS)
+            final CoordinateReferenceSystem baseCRS, final MathTransform projection, final CoordinateSystem derivedCS)
             throws FactoryException {
         /*
          * Computes matrix for swapping axis and performing units conversion.
@@ -454,8 +437,7 @@ public class DefaultMathTransformFactory extends ReferencingFactory
                 throw new FactoryException(exception);
             }
             if (transform instanceof MathTransformProvider.Delegate) {
-                final MathTransformProvider.Delegate delegate =
-                        (MathTransformProvider.Delegate) transform;
+                final MathTransformProvider.Delegate delegate = (MathTransformProvider.Delegate) transform;
                 method = delegate.method;
                 transform = delegate.transform;
             }
@@ -498,8 +480,7 @@ public class DefaultMathTransformFactory extends ReferencingFactory
      * @throws FactoryException if the object creation failed.
      */
     @Override
-    public MathTransform createConcatenatedTransform(
-            final MathTransform transform1, final MathTransform transform2)
+    public MathTransform createConcatenatedTransform(final MathTransform transform1, final MathTransform transform2)
             throws FactoryException {
         MathTransform tr;
         try {
@@ -533,15 +514,11 @@ public class DefaultMathTransformFactory extends ReferencingFactory
      */
     @Override
     public MathTransform createPassThroughTransform(
-            final int firstAffectedOrdinate,
-            final MathTransform subTransform,
-            final int numTrailingOrdinates)
+            final int firstAffectedOrdinate, final MathTransform subTransform, final int numTrailingOrdinates)
             throws FactoryException {
         MathTransform tr;
         try {
-            tr =
-                    PassThroughTransform.create(
-                            firstAffectedOrdinate, subTransform, numTrailingOrdinates);
+            tr = PassThroughTransform.create(firstAffectedOrdinate, subTransform, numTrailingOrdinates);
         } catch (IllegalArgumentException exception) {
             throw new FactoryException(exception);
         }

@@ -114,8 +114,7 @@ public class BasicEdge extends BasicGraphable implements Edge {
     /** @see Edge#compareNodes(Edge) */
     @Override
     public int compareNodes(Edge other) {
-        if (m_nodeA.equals(other.getNodeA()) && m_nodeB.equals(other.getNodeB()))
-            return (EQUAL_NODE_ORIENTATION);
+        if (m_nodeA.equals(other.getNodeA()) && m_nodeB.equals(other.getNodeB())) return (EQUAL_NODE_ORIENTATION);
 
         if ((m_nodeA.equals(other.getNodeA()) && m_nodeB.equals(other.getNodeB()))
                 || (m_nodeA.equals(other.getNodeB()) && m_nodeB.equals(other.getNodeA())))

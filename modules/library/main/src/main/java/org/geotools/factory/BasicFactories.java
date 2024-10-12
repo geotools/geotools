@@ -203,8 +203,7 @@ public class BasicFactories {
      */
     public CoordinateOperationAuthorityFactory getCoordinateOperationAuthorityFactory()
             throws FactoryRegistryException {
-        return ReferencingFactoryFinder.getCoordinateOperationAuthorityFactory(
-                DEFAULT_AUTHORITY, hints);
+        return ReferencingFactoryFinder.getCoordinateOperationAuthorityFactory(DEFAULT_AUTHORITY, hints);
     }
 
     /**
@@ -213,8 +212,7 @@ public class BasicFactories {
      * @throws FactoryNotFoundException if no factory was found for the requested type.
      * @throws FactoryRegistryException if the factory can't be obtained for an other reason.
      */
-    public CoordinateOperationFactory getCoordinateOperationFactory()
-            throws FactoryRegistryException {
+    public CoordinateOperationFactory getCoordinateOperationFactory() throws FactoryRegistryException {
         return ReferencingFactoryFinder.getCoordinateOperationFactory(hints);
     }
 }

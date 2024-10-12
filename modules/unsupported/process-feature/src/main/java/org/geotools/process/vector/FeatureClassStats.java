@@ -60,8 +60,7 @@ import org.jaitools.numeric.StreamingSampleStats;
  */
 @DescribeProcess(
         title = "featureClassStats",
-        description =
-                "Calculates statistics from feature" + " values classified into bins/classes.")
+        description = "Calculates statistics from feature" + " values classified into bins/classes.")
 public class FeatureClassStats implements VectorProcess {
 
     static Logger LOG = Logging.getLogger(FeatureClassStats.class);
@@ -72,18 +71,13 @@ public class FeatureClassStats implements VectorProcess {
     public Results execute(
             @DescribeParameter(name = "features", description = "The feature collection to analyze")
                     FeatureCollection features,
-            @DescribeParameter(name = "attribute", description = "The feature attribute to analyze")
-                    String attribute,
+            @DescribeParameter(name = "attribute", description = "The feature attribute to analyze") String attribute,
             @DescribeParameter(
                             name = "stats",
                             description = "The statistics to calculate for each class",
                             collectionType = Statistic.class)
                     Set<Statistic> stats,
-            @DescribeParameter(
-                            name = "classes",
-                            description = "The number of breaks/classes",
-                            min = 0)
-                    Integer classes,
+            @DescribeParameter(name = "classes", description = "The number of breaks/classes", min = 0) Integer classes,
             @DescribeParameter(name = "method", description = "The classification method", min = 0)
                     ClassificationMethod method,
             @DescribeParameter(
@@ -98,12 +92,10 @@ public class FeatureClassStats implements VectorProcess {
         // initial checks/defaults
         //
         if (features == null) {
-            throw new ProcessException(
-                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "features"));
+            throw new ProcessException(MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "features"));
         }
         if (attribute == null) {
-            throw new ProcessException(
-                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "attribute"));
+            throw new ProcessException(MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "attribute"));
         }
         PropertyDescriptor property = features.getSchema().getDescriptor(attribute);
         if (property == null) {
@@ -118,8 +110,7 @@ public class FeatureClassStats implements VectorProcess {
         }
 
         if (classes < 1) {
-            throw new ProcessException(
-                    MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "classes", classes));
+            throw new ProcessException(MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "classes", classes));
         }
 
         // other defaults
@@ -145,8 +136,7 @@ public class FeatureClassStats implements VectorProcess {
             default:
                 throw new ProcessException("Unknown method: " + method);
         }
-        cf.setParameters(
-                Arrays.asList(filterFactory.property(attribute), filterFactory.literal(classes)));
+        cf.setParameters(Arrays.asList(filterFactory.property(attribute), filterFactory.literal(classes)));
 
         // compute the breaks
         RangedClassifier rc = (RangedClassifier) cf.evaluate(features);
@@ -155,12 +145,7 @@ public class FeatureClassStats implements VectorProcess {
         List<Range<Double>> ranges = new ArrayList<>();
         StreamingSampleStats[] sampleStats = new StreamingSampleStats[rc.getSize()];
         for (int i = 0; i < rc.getSize(); i++) {
-            ranges.add(
-                    Range.create(
-                            (Double) rc.getMin(i),
-                            true,
-                            (Double) rc.getMax(i),
-                            i == rc.getSize() - 1));
+            ranges.add(Range.create((Double) rc.getMin(i), true, (Double) rc.getMax(i), i == rc.getSize() - 1));
 
             StreamingSampleStats s = new StreamingSampleStats(Range.Type.INCLUDE);
             s.setStatistics(stats.toArray(new Statistic[stats.size()]));
@@ -184,11 +169,8 @@ public class FeatureClassStats implements VectorProcess {
                 // convert to double
                 Double dubVal = Converters.convert(val, Double.class);
                 if (dubVal == null) {
-                    LOG.warning(
-                            String.format(
-                                    "Unable to convert value %s (attribute '%s') to Double, "
-                                            + "skipping",
-                                    val, attribute));
+                    LOG.warning(String.format(
+                            "Unable to convert value %s (attribute '%s') to Double, " + "skipping", val, attribute));
                     continue;
                 }
 

@@ -150,17 +150,13 @@ public class GeoPackageTest {
     void assertDefaultSpatialReferencesExist() throws Exception {
         try (Connection cx = geopkg.getDataSource().getConnection();
                 Statement st = cx.createStatement(); ) {
-            try (ResultSet rs =
-                    st.executeQuery("SELECT srs_id FROM gpkg_spatial_ref_sys WHERE srs_id = -1")) {
+            try (ResultSet rs = st.executeQuery("SELECT srs_id FROM gpkg_spatial_ref_sys WHERE srs_id = -1")) {
                 assertEquals(rs.getInt(1), -1);
             }
-            try (ResultSet rs =
-                    st.executeQuery("SELECT srs_id FROM gpkg_spatial_ref_sys WHERE srs_id = 0")) {
+            try (ResultSet rs = st.executeQuery("SELECT srs_id FROM gpkg_spatial_ref_sys WHERE srs_id = 0")) {
                 assertEquals(rs.getInt(1), 0);
             }
-            try (ResultSet rs =
-                    st.executeQuery(
-                            "SELECT srs_id FROM gpkg_spatial_ref_sys WHERE srs_id = 4326")) {
+            try (ResultSet rs = st.executeQuery("SELECT srs_id FROM gpkg_spatial_ref_sys WHERE srs_id = 4326")) {
                 assertEquals(rs.getInt(1), 4326);
             }
         }
@@ -197,10 +193,7 @@ public class GeoPackageTest {
         try (Connection cx = geopkg.getDataSource().getConnection();
                 Statement st = cx.createStatement();
                 ResultSet rs =
-                        st.executeQuery(
-                                String.format(
-                                        "SELECT last_change FROM %s;",
-                                        GeoPackage.GEOPACKAGE_CONTENTS))) {
+                        st.executeQuery(String.format("SELECT last_change FROM %s;", GeoPackage.GEOPACKAGE_CONTENTS))) {
 
             if (rs.next()) {
                 final String dateString = rs.getString(1);
@@ -208,12 +201,8 @@ public class GeoPackageTest {
                 Date parsedDate = sdf.parse(dateString);
                 // assert the parsed time is between the start and end time
                 c.setTime(parsedDate);
-                assertTrue(
-                        "Start time should be less than or equal to last_change time",
-                        startTime.compareTo(c) <= 0);
-                assertTrue(
-                        "End time should be greater than or equal to last_change time",
-                        endTime.compareTo(c) >= 0);
+                assertTrue("Start time should be less than or equal to last_change time", startTime.compareTo(c) <= 0);
+                assertTrue("End time should be greater than or equal to last_change time", endTime.compareTo(c) >= 0);
             }
         }
     }
@@ -222,8 +211,7 @@ public class GeoPackageTest {
         boolean exists = false;
         try (Connection cx = geopkg.getDataSource().getConnection()) {
             String sql = String.format("SELECT * FROM %s WHERE table_name = ?", table);
-            SqlUtil.PreparedStatementBuilder psb =
-                    SqlUtil.prepare(cx, sql).set(entry.getTableName());
+            SqlUtil.PreparedStatementBuilder psb = SqlUtil.prepare(cx, sql).set(entry.getTableName());
             try (PreparedStatement ps = psb.log(Level.FINE).statement()) {
                 try (ResultSet rs = ps.executeQuery()) {
                     while (rs.next()) {
@@ -248,9 +236,7 @@ public class GeoPackageTest {
 
         try (Connection cx = geopkg.getDataSource().getConnection()) {
             geopkg.addGeoPackageContentsEntry(entry, cx);
-            String sql =
-                    String.format(
-                            "SELECT srs_name FROM %s WHERE srs_id = ?", GeoPackage.SPATIAL_REF_SYS);
+            String sql = String.format("SELECT srs_name FROM %s WHERE srs_id = ?", GeoPackage.SPATIAL_REF_SYS);
             SqlUtil.PreparedStatementBuilder psb = SqlUtil.prepare(cx, sql).set(2000);
             try (PreparedStatement ps = psb.log(Level.FINE).statement()) {
                 try (ResultSet rs = ps.executeQuery()) {
@@ -279,9 +265,7 @@ public class GeoPackageTest {
             // Now lets ensure we can access SRID:84 from the SQLDialect
             SQLDialect dialect = citiesGpkg.dataStore().dialect;
             try (Connection conn = citiesGpkg.connPool.getConnection()) {
-                assertTrue(
-                        CRS.equalsIgnoreMetadata(
-                                dialect.createCRS(84, conn), CRS.decode("EPSG:4326", true)));
+                assertTrue(CRS.equalsIgnoreMetadata(dialect.createCRS(84, conn), CRS.decode("EPSG:4326", true)));
             }
         }
     }
@@ -383,9 +367,7 @@ public class GeoPackageTest {
     @Test
     public void test3DGeometry() throws Exception {
         // create feature with 3d geometry
-        Point geom =
-                new GeometryFactory(new PrecisionModel(), 4326)
-                        .createPoint(new Coordinate(5, 3, 8));
+        Point geom = new GeometryFactory(new PrecisionModel(), 4326).createPoint(new Coordinate(5, 3, 8));
         SimpleFeatureTypeBuilder tBuilder = new SimpleFeatureTypeBuilder();
         tBuilder.setName("mytype");
         tBuilder.add("name", String.class);
@@ -430,29 +412,34 @@ public class GeoPackageTest {
             geopkg.add(entry, shp.getFeatureSource(), null);
             while (re.hasNext()) {
                 SimpleFeature f = re.next();
-                try (ResultSet rs =
-                        st.executeQuery(
-                                (String.format(
-                                        "SELECT ST_MinX(the_geom), ST_MinY(the_geom), ST_MaxX(the_geom), ST_MaxY(the_geom), ST_IsEmpty(the_geom) FROM bugsites WHERE ID="
-                                                + f.getProperty("ID").getValue())))) {
+                try (ResultSet rs = st.executeQuery((String.format(
+                        "SELECT ST_MinX(the_geom), ST_MinY(the_geom), ST_MaxX(the_geom), ST_MaxY(the_geom), ST_IsEmpty(the_geom) FROM bugsites WHERE ID="
+                                + f.getProperty("ID").getValue())))) {
                     assertEquals(
                             rs.getDouble(1),
-                            ((Geometry) f.getDefaultGeometry()).getEnvelopeInternal().getMinX(),
+                            ((Geometry) f.getDefaultGeometry())
+                                    .getEnvelopeInternal()
+                                    .getMinX(),
                             0.0001);
                     assertEquals(
                             rs.getDouble(2),
-                            ((Geometry) f.getDefaultGeometry()).getEnvelopeInternal().getMinY(),
+                            ((Geometry) f.getDefaultGeometry())
+                                    .getEnvelopeInternal()
+                                    .getMinY(),
                             0.0001);
                     assertEquals(
                             rs.getDouble(3),
-                            ((Geometry) f.getDefaultGeometry()).getEnvelopeInternal().getMaxX(),
+                            ((Geometry) f.getDefaultGeometry())
+                                    .getEnvelopeInternal()
+                                    .getMaxX(),
                             0.0001);
                     assertEquals(
                             rs.getDouble(4),
-                            ((Geometry) f.getDefaultGeometry()).getEnvelopeInternal().getMaxY(),
+                            ((Geometry) f.getDefaultGeometry())
+                                    .getEnvelopeInternal()
+                                    .getMaxY(),
                             0.0001);
-                    assertEquals(
-                            rs.getDouble(5) == 1, ((Geometry) f.getDefaultGeometry()).isEmpty());
+                    assertEquals(rs.getDouble(5) == 1, ((Geometry) f.getDefaultGeometry()).isEmpty());
                 }
             }
         } catch (Exception e) {
@@ -477,8 +464,7 @@ public class GeoPackageTest {
     @Test
     public void testDoubleFloatPrecision() throws Exception {
         double pi = 3.1415926535897932;
-        SimpleFeatureType featureType =
-                createFeatureTypeWithAttribute("double-pi", "pie", Double.class);
+        SimpleFeatureType featureType = createFeatureTypeWithAttribute("double-pi", "pie", Double.class);
         SimpleFeatureBuilder featureBuilder = new SimpleFeatureBuilder(featureType);
         SimpleFeature simpleFeature = createSimpleFeatureWithValue(featureBuilder, pi);
         SimpleFeatureCollection collection = DataUtilities.collection(simpleFeature);
@@ -497,8 +483,7 @@ public class GeoPackageTest {
     @Test
     public void testSingleFloatPrecision() throws Exception {
         float pi = 3.14159265f;
-        SimpleFeatureType featureType =
-                createFeatureTypeWithAttribute("single-pi", "pie", Float.class);
+        SimpleFeatureType featureType = createFeatureTypeWithAttribute("single-pi", "pie", Float.class);
         SimpleFeatureBuilder featureBuilder = new SimpleFeatureBuilder(featureType);
         SimpleFeature simpleFeature = createSimpleFeatureWithValue(featureBuilder, pi);
         SimpleFeatureCollection collection = DataUtilities.collection(simpleFeature);
@@ -524,8 +509,7 @@ public class GeoPackageTest {
         return builder.buildFeatureType();
     }
 
-    private SimpleFeature createSimpleFeatureWithValue(
-            SimpleFeatureBuilder featureBuilder, Object value) {
+    private SimpleFeature createSimpleFeatureWithValue(SimpleFeatureBuilder featureBuilder, Object value) {
         featureBuilder.add(createGeometry());
         featureBuilder.add(value);
         return featureBuilder.buildFeature(null);
@@ -545,29 +529,34 @@ public class GeoPackageTest {
 
             while (re.hasNext()) {
                 SimpleFeature f = re.next();
-                try (ResultSet rs =
-                        st.executeQuery(
-                                (String.format(
-                                        "SELECT ST_MinX(the_geom), ST_MinY(the_geom), ST_MaxX(the_geom), ST_MaxY(the_geom), ST_IsEmpty(the_geom) FROM bugsites WHERE ID="
-                                                + f.getProperty("ID").getValue())))) {
+                try (ResultSet rs = st.executeQuery((String.format(
+                        "SELECT ST_MinX(the_geom), ST_MinY(the_geom), ST_MaxX(the_geom), ST_MaxY(the_geom), ST_IsEmpty(the_geom) FROM bugsites WHERE ID="
+                                + f.getProperty("ID").getValue())))) {
                     assertEquals(
                             rs.getDouble(1),
-                            ((Geometry) f.getDefaultGeometry()).getEnvelopeInternal().getMinX(),
+                            ((Geometry) f.getDefaultGeometry())
+                                    .getEnvelopeInternal()
+                                    .getMinX(),
                             0.0001);
                     assertEquals(
                             rs.getDouble(2),
-                            ((Geometry) f.getDefaultGeometry()).getEnvelopeInternal().getMinY(),
+                            ((Geometry) f.getDefaultGeometry())
+                                    .getEnvelopeInternal()
+                                    .getMinY(),
                             0.0001);
                     assertEquals(
                             rs.getDouble(3),
-                            ((Geometry) f.getDefaultGeometry()).getEnvelopeInternal().getMaxX(),
+                            ((Geometry) f.getDefaultGeometry())
+                                    .getEnvelopeInternal()
+                                    .getMaxX(),
                             0.0001);
                     assertEquals(
                             rs.getDouble(4),
-                            ((Geometry) f.getDefaultGeometry()).getEnvelopeInternal().getMaxY(),
+                            ((Geometry) f.getDefaultGeometry())
+                                    .getEnvelopeInternal()
+                                    .getMaxY(),
                             0.0001);
-                    assertEquals(
-                            rs.getDouble(5) == 1, ((Geometry) f.getDefaultGeometry()).isEmpty());
+                    assertEquals(rs.getDouble(5) == 1, ((Geometry) f.getDefaultGeometry()).isEmpty());
                 }
             }
         } catch (Exception e) {
@@ -590,42 +579,22 @@ public class GeoPackageTest {
 
         var schema = builder.buildFeatureType();
 
-        schema.getDescriptor("int1")
-                .getUserData()
-                .put(JDBC_NATIVE_TYPENAME, JDBCType.SMALLINT.getName());
-        schema.getDescriptor("int1")
-                .getUserData()
-                .put(JDBC_NATIVE_TYPE, JDBCType.SMALLINT.getVendorTypeNumber());
+        schema.getDescriptor("int1").getUserData().put(JDBC_NATIVE_TYPENAME, JDBCType.SMALLINT.getName());
+        schema.getDescriptor("int1").getUserData().put(JDBC_NATIVE_TYPE, JDBCType.SMALLINT.getVendorTypeNumber());
 
         schema.getDescriptor("int1").getUserData().put("test-case-key", "test-case-value");
 
-        schema.getDescriptor("int2")
-                .getUserData()
-                .put(JDBC_NATIVE_TYPENAME, JDBCType.TINYINT.getName());
-        schema.getDescriptor("int2")
-                .getUserData()
-                .put(JDBC_NATIVE_TYPE, JDBCType.TINYINT.getVendorTypeNumber());
+        schema.getDescriptor("int2").getUserData().put(JDBC_NATIVE_TYPENAME, JDBCType.TINYINT.getName());
+        schema.getDescriptor("int2").getUserData().put(JDBC_NATIVE_TYPE, JDBCType.TINYINT.getVendorTypeNumber());
 
-        schema.getDescriptor("string1")
-                .getUserData()
-                .put(JDBC_NATIVE_TYPENAME, JDBCType.VARCHAR.getName());
-        schema.getDescriptor("string1")
-                .getUserData()
-                .put(JDBC_NATIVE_TYPE, JDBCType.VARCHAR.getVendorTypeNumber());
+        schema.getDescriptor("string1").getUserData().put(JDBC_NATIVE_TYPENAME, JDBCType.VARCHAR.getName());
+        schema.getDescriptor("string1").getUserData().put(JDBC_NATIVE_TYPE, JDBCType.VARCHAR.getVendorTypeNumber());
 
-        schema.getDescriptor("float1")
-                .getUserData()
-                .put(JDBC_NATIVE_TYPENAME, JDBCType.FLOAT.getName());
-        schema.getDescriptor("float1")
-                .getUserData()
-                .put(JDBC_NATIVE_TYPE, JDBCType.FLOAT.getVendorTypeNumber());
+        schema.getDescriptor("float1").getUserData().put(JDBC_NATIVE_TYPENAME, JDBCType.FLOAT.getName());
+        schema.getDescriptor("float1").getUserData().put(JDBC_NATIVE_TYPE, JDBCType.FLOAT.getVendorTypeNumber());
 
-        schema.getDescriptor("float2")
-                .getUserData()
-                .put(JDBC_NATIVE_TYPENAME, JDBCType.DOUBLE.getName());
-        schema.getDescriptor("float2")
-                .getUserData()
-                .put(JDBC_NATIVE_TYPE, JDBCType.DOUBLE.getVendorTypeNumber());
+        schema.getDescriptor("float2").getUserData().put(JDBC_NATIVE_TYPENAME, JDBCType.DOUBLE.getName());
+        schema.getDescriptor("float2").getUserData().put(JDBC_NATIVE_TYPE, JDBCType.DOUBLE.getVendorTypeNumber());
 
         return schema;
     }
@@ -642,8 +611,7 @@ public class GeoPackageTest {
         assertEquals(1, schema2.getDescriptor("int1").getUserData().size());
         // verify other user-data items are still there
         assertEquals(
-                "test-case-value",
-                schema2.getDescriptor("int1").getUserData().get("test-case-key"));
+                "test-case-value", schema2.getDescriptor("int1").getUserData().get("test-case-key"));
 
         assertEquals(0, schema2.getDescriptor("int2").getUserData().size());
         assertEquals(0, schema2.getDescriptor("float1").getUserData().size());
@@ -668,22 +636,13 @@ public class GeoPackageTest {
         // check that the created metadata column have the CORRECT geopackage type names (not the
         // ones from JDBC
         // or put in the attribute descriptors userdata).
-        assertEquals(
-                "TEXT",
-                createdType.getDescriptor("string1").getUserData().get(JDBC_NATIVE_TYPENAME));
-        assertEquals(
-                "FLOAT",
-                createdType.getDescriptor("float1").getUserData().get(JDBC_NATIVE_TYPENAME));
-        assertEquals(
-                "DOUBLE",
-                createdType.getDescriptor("float2").getUserData().get(JDBC_NATIVE_TYPENAME));
+        assertEquals("TEXT", createdType.getDescriptor("string1").getUserData().get(JDBC_NATIVE_TYPENAME));
+        assertEquals("FLOAT", createdType.getDescriptor("float1").getUserData().get(JDBC_NATIVE_TYPENAME));
+        assertEquals("DOUBLE", createdType.getDescriptor("float2").getUserData().get(JDBC_NATIVE_TYPENAME));
 
         assertEquals(
-                "MEDIUMINT",
-                createdType.getDescriptor("int1").getUserData().get(JDBC_NATIVE_TYPENAME));
-        assertEquals(
-                "TINYINT",
-                createdType.getDescriptor("int2").getUserData().get(JDBC_NATIVE_TYPENAME));
+                "MEDIUMINT", createdType.getDescriptor("int1").getUserData().get(JDBC_NATIVE_TYPENAME));
+        assertEquals("TINYINT", createdType.getDescriptor("int2").getUserData().get(JDBC_NATIVE_TYPENAME));
     }
 
     @Test
@@ -758,8 +717,7 @@ public class GeoPackageTest {
 
         assertTrue(geopkg.hasSpatialIndex(entry));
 
-        Set<Identifier> ids =
-                geopkg.searchSpatialIndex(entry, 590230.0, 4915038.0, 590234.0, 4915040.0);
+        Set<Identifier> ids = geopkg.searchSpatialIndex(entry, 590230.0, 4915038.0, 590234.0, 4915040.0);
         try (SimpleFeatureReader sfr = geopkg.reader(entry, ff.id(ids), null)) {
             assertTrue(sfr.hasNext());
             assertEquals("bugsites.1", sfr.next().getID().toString());
@@ -793,18 +751,10 @@ public class GeoPackageTest {
     @Test
     public void testSpatialIndexWithSpecificTypeName() throws Exception {
         List<String> featureTypeNamesToTest =
-                Arrays.asList(
-                        "select",
-                        "all",
-                        "and",
-                        "join",
-                        "else",
-                        "with whitespaces and",
-                        "a-few-dashes");
+                Arrays.asList("select", "all", "and", "join", "else", "with whitespaces and", "a-few-dashes");
 
         for (String typeName : featureTypeNamesToTest) {
-            SimpleFeatureBuilder featureBuilder =
-                    new SimpleFeatureBuilder(createFeatureType(typeName));
+            SimpleFeatureBuilder featureBuilder = new SimpleFeatureBuilder(createFeatureType(typeName));
             SimpleFeature simpleFeature = createSimpleFeature(featureBuilder);
             SimpleFeatureCollection collection = DataUtilities.collection(simpleFeature);
             FeatureEntry entry = new FeatureEntry();
@@ -817,11 +767,9 @@ public class GeoPackageTest {
     }
 
     private Geometry createGeometry() {
-        return new GeometryFactory()
-                .createLineString(
-                        new Coordinate[] {
-                            new Coordinate(0.1, 0.1), new Coordinate(0.2, 0.2),
-                        });
+        return new GeometryFactory().createLineString(new Coordinate[] {
+            new Coordinate(0.1, 0.1), new Coordinate(0.2, 0.2),
+        });
     }
 
     private SimpleFeature createSimpleFeature(SimpleFeatureBuilder featureBuilder) {
@@ -883,9 +831,7 @@ public class GeoPackageTest {
         assertContentEntry(e);
 
         try (Connection cx = geopkg.getDataSource().getConnection();
-                PreparedStatement ps =
-                        cx.prepareStatement(
-                                "SELECT * from gpkg_tile_matrix_set WHERE table_name = ?")) {
+                PreparedStatement ps = cx.prepareStatement("SELECT * from gpkg_tile_matrix_set WHERE table_name = ?")) {
             ps.setString(1, e.getTableName());
             try (ResultSet rs = ps.executeQuery()) {
                 rs.next();
@@ -933,8 +879,7 @@ public class GeoPackageTest {
      * [1]: http://www.geopackage.org/spec/#tile_matrix
      */
     public void testTopLeftTile() throws IOException, FactoryException {
-        File sourceFile =
-                GeoPackageFormat.getFileFromSource(getClass().getResource("Blue_Marble.gpkg"));
+        File sourceFile = GeoPackageFormat.getFileFromSource(getClass().getResource("Blue_Marble.gpkg"));
         try (GeoPackage geopkg = new GeoPackage(sourceFile)) {
             List<TileEntry> tiles = geopkg.tiles();
 
@@ -942,19 +887,15 @@ public class GeoPackageTest {
             Tile topLeftTile = geopkg.reader(tiles.get(0), 0, 0, 0, 0, 0, 0).next();
 
             BufferedImage tileImg = ImageIO.read(new ByteArrayInputStream(topLeftTile.getData()));
-            ImageAssert.assertEquals(
-                    URLs.urlToFile(getClass().getResource("bluemarble_0_0_0.jpeg")), tileImg, 250);
+            ImageAssert.assertEquals(URLs.urlToFile(getClass().getResource("bluemarble_0_0_0.jpeg")), tileImg, 250);
 
             // Render the GeoPackage at zoom level 0
-            GeoPackageReader reader =
-                    new GeoPackageReader(getClass().getResource("Blue_Marble.gpkg"), null);
+            GeoPackageReader reader = new GeoPackageReader(getClass().getResource("Blue_Marble.gpkg"), null);
 
             GeneralParameterValue[] parameters = new GeneralParameterValue[1];
-            GridGeometry2D gg =
-                    new GridGeometry2D(
-                            new GridEnvelope2D(new Rectangle(1536, 768)),
-                            new ReferencedEnvelope(
-                                    -180, 180, -90, 90, CRS.decode("EPSG:4326", true)));
+            GridGeometry2D gg = new GridGeometry2D(
+                    new GridEnvelope2D(new Rectangle(1536, 768)),
+                    new ReferencedEnvelope(-180, 180, -90, 90, CRS.decode("EPSG:4326", true)));
             parameters[0] = new Parameter<>(AbstractGridFormat.READ_GRIDGEOMETRY2D, gg);
             GridCoverage2D gc = reader.read("bluemarble_tif_tiles", parameters);
             BufferedImage img = ((PlanarImage) gc.getRenderedImage()).getAsBufferedImage();
@@ -970,10 +911,7 @@ public class GeoPackageTest {
                     null);
 
             // ImageIO.write(topLeftImg, "JPEG", new File("bluemarbletopleft.jpeg"));
-            ImageAssert.assertEquals(
-                    URLs.urlToFile(getClass().getResource("bluemarble_0_0_0.jpeg")),
-                    topLeftImg,
-                    250);
+            ImageAssert.assertEquals(URLs.urlToFile(getClass().getResource("bluemarble_0_0_0.jpeg")), topLeftImg, 250);
         }
     }
 
@@ -990,8 +928,7 @@ public class GeoPackageTest {
 
     void assertContentEntry(Entry entry) throws Exception {
         try (Connection cx = geopkg.getDataSource().getConnection();
-                PreparedStatement ps =
-                        cx.prepareStatement("SELECT * FROM gpkg_contents WHERE table_name = ?")) {
+                PreparedStatement ps = cx.prepareStatement("SELECT * FROM gpkg_contents WHERE table_name = ?")) {
             ps.setString(1, entry.getTableName());
 
             try (ResultSet rs = ps.executeQuery()) {
@@ -1014,17 +951,14 @@ public class GeoPackageTest {
 
         try (Connection cx = geopkg.getDataSource().getConnection();
                 PreparedStatement ps =
-                        cx.prepareStatement(
-                                "SELECT * FROM gpkg_geometry_columns WHERE table_name = ?")) {
+                        cx.prepareStatement("SELECT * FROM gpkg_geometry_columns WHERE table_name = ?")) {
             ps.setString(1, entry.getTableName());
 
             try (ResultSet rs = ps.executeQuery()) {
                 assertTrue(rs.next());
 
                 assertEquals(entry.getGeometryColumn(), rs.getString("column_name"));
-                assertEquals(
-                        entry.getGeometryType(),
-                        Geometries.getForName(rs.getString("geometry_type_name")));
+                assertEquals(entry.getGeometryType(), Geometries.getForName(rs.getString("geometry_type_name")));
                 assertEquals(entry.getSrid().intValue(), rs.getInt("srs_id"));
                 assertEquals(entry.isZ(), rs.getBoolean("z"));
                 assertEquals(entry.isM(), rs.getBoolean("m"));
@@ -1037,8 +971,7 @@ public class GeoPackageTest {
 
         try (Connection cx = geopkg.getDataSource().getConnection()) {
             try (PreparedStatement ps =
-                    cx.prepareStatement(
-                            "SELECT count(*) from gpkg_tile_matrix WHERE table_name = ?")) {
+                    cx.prepareStatement("SELECT count(*) from gpkg_tile_matrix WHERE table_name = ?")) {
                 ps.setString(1, entry.getTableName());
                 try (ResultSet rs = ps.executeQuery()) {
 
@@ -1048,8 +981,7 @@ public class GeoPackageTest {
             }
 
             try (PreparedStatement ps =
-                    cx.prepareStatement(
-                            "SELECT * from gpkg_tile_matrix_set WHERE table_name = ?")) {
+                    cx.prepareStatement("SELECT * from gpkg_tile_matrix_set WHERE table_name = ?")) {
                 ps.setString(1, entry.getTableName());
 
                 try (ResultSet rs = ps.executeQuery()) {
@@ -1067,8 +999,7 @@ public class GeoPackageTest {
 
             // index
             try (PreparedStatement ps =
-                    cx.prepareStatement(
-                            "SELECT * from sqlite_master WHERE type='index' and name = ?")) {
+                    cx.prepareStatement("SELECT * from sqlite_master WHERE type='index' and name = ?")) {
                 ps.setString(1, entry.getTableName() + "_zyx_idx");
                 try (ResultSet rs = ps.executeQuery()) {
                     assertTrue(rs.next());
@@ -1080,9 +1011,7 @@ public class GeoPackageTest {
     void assertSimilar(SimpleFeature expected, SimpleFeature actual) {
         assertNotNull(actual);
 
-        assertTrue(
-                ((Geometry) expected.getDefaultGeometry())
-                        .equals(((Geometry) actual.getDefaultGeometry())));
+        assertTrue(((Geometry) expected.getDefaultGeometry()).equals(((Geometry) actual.getDefaultGeometry())));
         for (AttributeDescriptor d : expected.getType().getAttributeDescriptors()) {
             Object e = expected.getAttribute(d.getLocalName());
             Object a = actual.getAttribute(d.getLocalName());
@@ -1106,8 +1035,7 @@ public class GeoPackageTest {
                 String wkt = CRS.decode("EPSG:26713", true).toWKT();
                 FileUtils.writeStringToFile(new File(d, "bugsites.prj"), wkt, "UTF-8");
             } else {
-                FileUtils.copyURLToFile(
-                        TestData.url("shapes/bugsites." + ext), new File(d, "bugsites." + ext));
+                FileUtils.copyURLToFile(TestData.url("shapes/bugsites." + ext), new File(d, "bugsites." + ext));
             }
         }
 
@@ -1125,9 +1053,7 @@ public class GeoPackageTest {
                 String wkt = CRS.decode("EPSG:4326", true).toWKT();
                 FileUtils.writeStringToFile(new File(d, "BooleanTest.prj"), wkt, "UTF-8");
             } else {
-                FileUtils.copyURLToFile(
-                        TestData.url("shapes/BooleanTest." + ext),
-                        new File(d, "BooleanTest." + ext));
+                FileUtils.copyURLToFile(TestData.url("shapes/BooleanTest." + ext), new File(d, "BooleanTest." + ext));
             }
         }
 
@@ -1158,10 +1084,9 @@ public class GeoPackageTest {
     public void testIntegerTypes() throws Exception {
         // all types work in creation
         String typeName = "numericTypes";
-        final SimpleFeatureType numericType =
-                DataUtilities.createType(
-                        typeName,
-                        "n_byte:java.lang.Byte,n_short:java.lang.Short,n_int:java.lang.Integer,n_long:java.lang.Long");
+        final SimpleFeatureType numericType = DataUtilities.createType(
+                typeName,
+                "n_byte:java.lang.Byte,n_short:java.lang.Short,n_int:java.lang.Integer,n_long:java.lang.Long");
         JDBCDataStore store = geopkg.dataStore();
         store.createSchema(numericType);
         SimpleFeatureType createdType = store.getSchema(typeName);
@@ -1196,12 +1121,11 @@ public class GeoPackageTest {
         assertEquals(Collections.emptyList(), ext.getMetadatas());
 
         // add metadata
-        GeoPkgMetadata metadata =
-                new GeoPkgMetadata(
-                        GeoPkgMetadata.Scope.Dataset,
-                        "http://geotools.org/geopackage",
-                        "application/json",
-                        "{ \"metadata\" : \"on\"");
+        GeoPkgMetadata metadata = new GeoPkgMetadata(
+                GeoPkgMetadata.Scope.Dataset,
+                "http://geotools.org/geopackage",
+                "application/json",
+                "{ \"metadata\" : \"on\"");
         ext.addMetadata(metadata);
         assertNotNull(metadata.getId());
 
@@ -1228,31 +1152,22 @@ public class GeoPackageTest {
 
         // grab the metadata extension and add a couple of metadata entries
         GeoPkgMetadataExtension ext = geopkg.getExtension(GeoPkgMetadataExtension.class);
-        GeoPkgMetadata metadata =
-                new GeoPkgMetadata(
-                        GeoPkgMetadata.Scope.Dataset,
-                        "http://geotools.org/geopackage",
-                        "application/json",
-                        "{ \"metadata\" : \"on\"");
+        GeoPkgMetadata metadata = new GeoPkgMetadata(
+                GeoPkgMetadata.Scope.Dataset,
+                "http://geotools.org/geopackage",
+                "application/json",
+                "{ \"metadata\" : \"on\"");
         ext.addMetadata(metadata);
-        GeoPkgMetadata parentMetadata =
-                new GeoPkgMetadata(
-                        GeoPkgMetadata.Scope.Dataset,
-                        "http://geotools.org/geopackage",
-                        "application/json",
-                        "{ \"metadata\" : \"theBoss\"");
+        GeoPkgMetadata parentMetadata = new GeoPkgMetadata(
+                GeoPkgMetadata.Scope.Dataset,
+                "http://geotools.org/geopackage",
+                "application/json",
+                "{ \"metadata\" : \"theBoss\"");
         ext.addMetadata(parentMetadata);
 
         // create references
-        GeoPkgMetadataReference reference =
-                new GeoPkgMetadataReference(
-                        GeoPkgMetadataReference.Scope.Table,
-                        "bugsites",
-                        null,
-                        null,
-                        new Date(),
-                        metadata,
-                        parentMetadata);
+        GeoPkgMetadataReference reference = new GeoPkgMetadataReference(
+                GeoPkgMetadataReference.Scope.Table, "bugsites", null, null, new Date(), metadata, parentMetadata);
         ext.addReference(reference);
         List<GeoPkgMetadataReference> references = ext.getReferences(metadata);
         assertEquals(1, references.size());
@@ -1296,14 +1211,11 @@ public class GeoPackageTest {
         FeatureEntry featureEntry = new FeatureEntry();
         featureEntry.setTableName(name);
         featureEntry.setDataType(Entry.DataType.Feature);
-        featureEntry.setBounds(
-                new ReferencedEnvelope(-180, 180, -90, 90, CRS.decode("EPSG:2000", true)));
+        featureEntry.setBounds(new ReferencedEnvelope(-180, 180, -90, 90, CRS.decode("EPSG:2000", true)));
         featureEntry.setSrid(2000);
 
-        SimpleFeatureType schema =
-                DataUtilities.createType(name + "_schema", "the_geom:Geometry,name:String");
-        SimpleFeature feature =
-                SimpleFeatureBuilder.build(schema, new Object[] {null, name}, name + ".1");
+        SimpleFeatureType schema = DataUtilities.createType(name + "_schema", "the_geom:Geometry,name:String");
+        SimpleFeature feature = SimpleFeatureBuilder.build(schema, new Object[] {null, name}, name + ".1");
         MemoryFeatureCollection features = new MemoryFeatureCollection(schema);
         features.add(feature);
 
@@ -1336,34 +1248,29 @@ public class GeoPackageTest {
     public void testForceXYAlreadyXY() throws Exception {
 
         // standard EPSG:4326 in EAST_NORTH format (XY)
-        String wkt_xy =
-                "GEOGCS[\"WGS 84\", \n"
-                        + "  DATUM[\"World Geodetic System 1984\", \n"
-                        + "    SPHEROID[\"WGS 84\", 6378137.0, 298.257223563, AUTHORITY[\"EPSG\",\"7030\"]], \n"
-                        + "    AUTHORITY[\"EPSG\",\"6326\"]], \n"
-                        + "  PRIMEM[\"Greenwich\", 0.0, AUTHORITY[\"EPSG\",\"8901\"]], \n"
-                        + "  UNIT[\"degree\", 0.017453292519943295], \n"
-                        + "  AXIS[\"Geodetic latitude\", EAST], \n"
-                        + "  AXIS[\"Geodetic longitude\", NORTH], \n"
-                        + "  AUTHORITY[\"EPSG\",\"4326\"]]";
+        String wkt_xy = "GEOGCS[\"WGS 84\", \n"
+                + "  DATUM[\"World Geodetic System 1984\", \n"
+                + "    SPHEROID[\"WGS 84\", 6378137.0, 298.257223563, AUTHORITY[\"EPSG\",\"7030\"]], \n"
+                + "    AUTHORITY[\"EPSG\",\"6326\"]], \n"
+                + "  PRIMEM[\"Greenwich\", 0.0, AUTHORITY[\"EPSG\",\"8901\"]], \n"
+                + "  UNIT[\"degree\", 0.017453292519943295], \n"
+                + "  AXIS[\"Geodetic latitude\", EAST], \n"
+                + "  AXIS[\"Geodetic longitude\", NORTH], \n"
+                + "  AUTHORITY[\"EPSG\",\"4326\"]]";
 
         CoordinateReferenceSystem crs_yx = CRS.parseWKT(wkt_xy);
         assertEquals(CRS.getAxisOrder(crs_yx), CRS.AxisOrder.EAST_NORTH);
 
         SimpleFeatureType simpleFeatureTypeXY =
                 DataUtilities.createType("testcase", "id:String,pointProperty:Point:srid=4326");
-        simpleFeatureTypeXY =
-                DataUtilities.createSubType(simpleFeatureTypeXY, null, crs_yx); // set CRS
+        simpleFeatureTypeXY = DataUtilities.createSubType(simpleFeatureTypeXY, null, crs_yx); // set CRS
 
-        SimpleFeature sfXY =
-                DataUtilities.createFeature(simpleFeatureTypeXY, "fid1=test|POINT(0 1)");
+        SimpleFeature sfXY = DataUtilities.createFeature(simpleFeatureTypeXY, "fid1=test|POINT(0 1)");
         SimpleFeatureCollection fcXY = DataUtilities.collection(sfXY);
 
         SimpleFeatureCollection fcXY2 = GeoPackage.forceXY(fcXY);
 
-        assertEquals(
-                CRS.getAxisOrder(fcXY2.getSchema().getCoordinateReferenceSystem()),
-                CRS.AxisOrder.EAST_NORTH);
+        assertEquals(CRS.getAxisOrder(fcXY2.getSchema().getCoordinateReferenceSystem()), CRS.AxisOrder.EAST_NORTH);
         assertSame(fcXY2, fcXY);
     }
 
@@ -1372,34 +1279,29 @@ public class GeoPackageTest {
     public void testForceXYSimpleFlip() throws Exception {
         // create a FeatureCollection that is advertised as YX
         // standard EPSG:4326 in NORTH_EAST format (YX)
-        String wkt_yx =
-                "GEOGCS[\"WGS 84\", \n"
-                        + "  DATUM[\"World Geodetic System 1984\", \n"
-                        + "    SPHEROID[\"WGS 84\", 6378137.0, 298.257223563, AUTHORITY[\"EPSG\",\"7030\"]], \n"
-                        + "    AUTHORITY[\"EPSG\",\"6326\"]], \n"
-                        + "  PRIMEM[\"Greenwich\", 0.0, AUTHORITY[\"EPSG\",\"8901\"]], \n"
-                        + "  UNIT[\"degree\", 0.017453292519943295], \n"
-                        + "  AXIS[\"Geodetic longitude\", NORTH], \n"
-                        + "  AXIS[\"Geodetic latitude\", EAST], \n"
-                        + "  AUTHORITY[\"EPSG\",\"4326\"]]";
+        String wkt_yx = "GEOGCS[\"WGS 84\", \n"
+                + "  DATUM[\"World Geodetic System 1984\", \n"
+                + "    SPHEROID[\"WGS 84\", 6378137.0, 298.257223563, AUTHORITY[\"EPSG\",\"7030\"]], \n"
+                + "    AUTHORITY[\"EPSG\",\"6326\"]], \n"
+                + "  PRIMEM[\"Greenwich\", 0.0, AUTHORITY[\"EPSG\",\"8901\"]], \n"
+                + "  UNIT[\"degree\", 0.017453292519943295], \n"
+                + "  AXIS[\"Geodetic longitude\", NORTH], \n"
+                + "  AXIS[\"Geodetic latitude\", EAST], \n"
+                + "  AUTHORITY[\"EPSG\",\"4326\"]]";
         CoordinateReferenceSystem crs_yx = CRS.parseWKT(wkt_yx);
         assertEquals(CRS.getAxisOrder(crs_yx), CRS.AxisOrder.NORTH_EAST);
 
         SimpleFeatureType simpleFeatureTypeYX =
                 DataUtilities.createType("testcase", "id:String,pointProperty:Point:srid=4326");
-        simpleFeatureTypeYX =
-                DataUtilities.createSubType(simpleFeatureTypeYX, null, crs_yx); // set CRS
+        simpleFeatureTypeYX = DataUtilities.createSubType(simpleFeatureTypeYX, null, crs_yx); // set CRS
 
-        SimpleFeature sfYX =
-                DataUtilities.createFeature(simpleFeatureTypeYX, "fid1=test|POINT(0 1)");
+        SimpleFeature sfYX = DataUtilities.createFeature(simpleFeatureTypeYX, "fid1=test|POINT(0 1)");
         SimpleFeatureCollection fcYX = DataUtilities.collection(sfYX);
 
         // xform
         SimpleFeatureCollection fcXY = GeoPackage.forceXY(fcYX);
 
-        assertEquals(
-                CRS.getAxisOrder(fcXY.getSchema().getCoordinateReferenceSystem()),
-                CRS.AxisOrder.EAST_NORTH);
+        assertEquals(CRS.getAxisOrder(fcXY.getSchema().getCoordinateReferenceSystem()), CRS.AxisOrder.EAST_NORTH);
 
         SimpleFeature sfXY = fcXY.features().next();
 
@@ -1414,8 +1316,7 @@ public class GeoPackageTest {
     @Test
     public void testTimestamp() throws Exception {
         Timestamp timestamp = new Timestamp(new Date().getTime());
-        SimpleFeatureType featureType =
-                createFeatureTypeWithAttribute("timestamp", "timestamp", Timestamp.class);
+        SimpleFeatureType featureType = createFeatureTypeWithAttribute("timestamp", "timestamp", Timestamp.class);
         SimpleFeatureBuilder featureBuilder = new SimpleFeatureBuilder(featureType);
         SimpleFeature simpleFeature = createSimpleFeatureWithValue(featureBuilder, timestamp);
         SimpleFeatureCollection collection = DataUtilities.collection(simpleFeature);

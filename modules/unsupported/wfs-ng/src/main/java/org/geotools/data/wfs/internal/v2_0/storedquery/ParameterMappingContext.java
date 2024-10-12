@@ -40,8 +40,7 @@ public class ParameterMappingContext {
     // Cached
     private Envelope bbox;
 
-    public ParameterMappingContext(
-            Filter filter, Map<String, String> viewParams, FeatureTypeInfo featureTypeInfo) {
+    public ParameterMappingContext(Filter filter, Map<String, String> viewParams, FeatureTypeInfo featureTypeInfo) {
         this.filter = filter;
         if (viewParams == null) {
             viewParams = Collections.emptyMap();

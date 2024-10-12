@@ -263,8 +263,7 @@ public class Query {
      * @param propNames an array of the properties to fetch.
      * @param handle the name to associate with this query.
      */
-    public Query(
-            String typeName, Filter filter, int maxFeatures, String[] propNames, String handle) {
+    public Query(String typeName, Filter filter, int maxFeatures, String[] propNames, String handle) {
         this(typeName, null, filter, maxFeatures, propNames, handle);
     }
 
@@ -277,12 +276,7 @@ public class Query {
      * @param properties a list of the properties to fetch.
      * @param handle the name to associate with this query.
      */
-    public Query(
-            String typeName,
-            Filter filter,
-            int maxFeatures,
-            List<PropertyName> properties,
-            String handle) {
+    public Query(String typeName, Filter filter, int maxFeatures, List<PropertyName> properties, String handle) {
         this(typeName, null, filter, maxFeatures, properties, handle);
     }
 
@@ -296,13 +290,7 @@ public class Query {
      * @param propNames an array of the properties to fetch.
      * @param handle the name to associate with the query.
      */
-    public Query(
-            String typeName,
-            URI namespace,
-            Filter filter,
-            int maxFeatures,
-            String[] propNames,
-            String handle) {
+    public Query(String typeName, URI namespace, Filter filter, int maxFeatures, String[] propNames, String handle) {
         this.typeName = typeName;
         this.filter = filter;
         this.namespace = namespace;
@@ -552,8 +540,7 @@ public class Query {
      */
     public void setStartIndex(Integer startIndex) {
         if (startIndex != null && startIndex.intValue() < 0) {
-            throw new IllegalArgumentException(
-                    "startIndex shall be a positive integer: " + startIndex);
+            throw new IllegalArgumentException("startIndex shall be a positive integer: " + startIndex);
         }
         this.startIndex = startIndex;
     }
@@ -909,13 +896,10 @@ public class Query {
                         : getCoordinateSystem().equals(other.getCoordinateSystem()))
                 && ((getCoordinateSystemReproject() == null)
                         ? (other.getCoordinateSystemReproject() == null)
-                        : getCoordinateSystemReproject()
-                                .equals(other.getCoordinateSystemReproject()))
+                        : getCoordinateSystemReproject().equals(other.getCoordinateSystemReproject()))
                 && isSortEquals(other)
                 && Objects.equals(getStartIndex(), other.getStartIndex())
-                && (getHints() == null
-                        ? (other.getHints() == null)
-                        : getHints().equals(other.getHints()));
+                && (getHints() == null ? (other.getHints() == null) : getHints().equals(other.getHints()));
     }
 
     /** Compares the sortby by their effect (null and empty arrays are considered the same) */

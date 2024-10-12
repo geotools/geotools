@@ -58,14 +58,10 @@ public final class SeaWater {
         -28.263737E+0, 6.793952E-2, -9.095290E-3, 1.001685E-4, -1.120083E-6, 6.536332E-9
     };
 
-    private static final double[] EOS80_B = {
-        8.24493E-1, -4.0899E-3, 7.6438E-5, -8.2467E-7, 5.3875E-9
-    };
+    private static final double[] EOS80_B = {8.24493E-1, -4.0899E-3, 7.6438E-5, -8.2467E-7, 5.3875E-9};
     private static final double[] EOS80_C = {-5.72466E-3, 1.0227E-4, -1.6546E-6};
     private static final double EOS80_D = 4.8314E-4;
-    private static final double[] EOS80_E = {
-        -1930.06E+0, 148.4206E+0, -2.327105E+0, 1.360477E-2, -5.155288E-5
-    };
+    private static final double[] EOS80_E = {-1930.06E+0, 148.4206E+0, -2.327105E+0, 1.360477E-2, -5.155288E-5};
     private static final double[] EOS80_F = {54.6746E+0, -6.03459E-1, 1.09987E-2, -6.1670E-5};
     private static final double[] EOS80_G = {7.944E-2, 1.6483E-2, -5.3009E-4};
     private static final double[] EOS80_H = {-1.194975E-1, 1.43713E-3, 1.16092E-4, -5.77905E-7};
@@ -82,8 +78,7 @@ public final class SeaWater {
      * densité "vrai".
      */
     private static final double[]
-            EOS80_At =
-                    {999.842594, 6.793952E-2, -9.095290E-3, 1.001685E-4, -1.120083E-6, 6.536332E-9},
+            EOS80_At = {999.842594, 6.793952E-2, -9.095290E-3, 1.001685E-4, -1.120083E-6, 6.536332E-9},
             EOS80_Et = {19652.21, 148.4206, -2.327105, 1.360477E-2, -5.155288E-5},
             EOS80_Ht = {3.239908, 1.43713E-3, 1.16092E-4, -5.77905E-7},
             EOS80_Kt = {8.50935E-5, -6.12293E-6, 5.2787E-8};
@@ -92,9 +87,7 @@ public final class SeaWater {
     private static final double[] PSS78_A = {0.0080, -0.1692, 25.3851, 14.0941, -7.0261, 2.7081};
 
     private static final double[] PSS78_B = {0.0005, -0.0056, -0.0066, -0.0375, 0.0636, -0.0144};
-    private static final double[] PSS78_C = {
-        0.6766097, 2.00564E-2, 1.104259E-4, -6.9698E-7, 1.0031E-9
-    };
+    private static final double[] PSS78_C = {0.6766097, 2.00564E-2, 1.104259E-4, -6.9698E-7, 1.0031E-9};
     private static final double[] PSS78_D = {3.426E-2, 4.464E-4, 4.215E-1, -3.107E-3};
     private static final double[] PSS78_E = {2.070E-5, -6.370E-10, 3.989E-15};
     private static final double[] PSS78_G = {-0.1692, 50.7702, 42.2823, -28.1044, 13.5405};
@@ -114,19 +107,11 @@ public final class SeaWater {
     private static final double[] HEAT_AA = {-7.643575, 0.1072763, -1.38385E-3};
 
     private static final double[] HEAT_BB = {0.1770383, -4.07718E-3, 5.148E-5};
-    private static final double[] HEAT_CC = {
-        4217.4, -3.720283, 0.1412855, -2.654387E-3, 2.093236E-5
-    };
-    private static final double[] HEAT_A = {
-        -4.9592E-1, 1.45747E-2, -3.13885E-4, 2.0357E-6, 1.7168E-8
-    };
-    private static final double[] HEAT_B = {
-        2.4931E-4, -1.08645E-5, 2.87533E-7, -4.0027E-9, 2.2956E-11
-    };
+    private static final double[] HEAT_CC = {4217.4, -3.720283, 0.1412855, -2.654387E-3, 2.093236E-5};
+    private static final double[] HEAT_A = {-4.9592E-1, 1.45747E-2, -3.13885E-4, 2.0357E-6, 1.7168E-8};
+    private static final double[] HEAT_B = {2.4931E-4, -1.08645E-5, 2.87533E-7, -4.0027E-9, 2.2956E-11};
     private static final double[] HEAT_C = {-5.422E-8, 2.6380E-9, -6.5637E-11, 6.136E-13};
-    private static final double[] HEAT_D = {
-        4.9247E-3, -1.28315E-4, 9.802E-7, 2.5941E-8, -2.9179E-10
-    };
+    private static final double[] HEAT_D = {4.9247E-3, -1.28315E-4, 9.802E-7, 2.5941E-8, -2.9179E-10};
     private static final double[] HEAT_E = {-1.2331E-4, -1.517E-6, 3.122E-8};
     private static final double[] HEAT_F = {-2.9558E-6, 1.17054E-7, -2.3905E-9, 1.8448E-11};
     private static final double HEAT_G = 9.971E-8;
@@ -158,22 +143,14 @@ public final class SeaWater {
      */
     private static final double[] SOUND_A0 = {1.389, -1.262E-2, 7.164E-5, 2.006E-6, -3.21E-8};
 
-    private static final double[] SOUND_A1 = {
-        9.4742E-5, -1.2580E-5, -6.4885E-8, 1.0507E-8, -2.0122E-10
-    };
+    private static final double[] SOUND_A1 = {9.4742E-5, -1.2580E-5, -6.4885E-8, 1.0507E-8, -2.0122E-10};
     private static final double[] SOUND_A2 = {-3.9064E-7, 9.1041E-9, -1.6002E-10, 7.988E-12};
     private static final double[] SOUND_A3 = {1.100E-10, 6.649E-12, -3.389E-13};
     private static final double[] SOUND_B0 = {-1.922E-2, -4.42E-5};
     private static final double[] SOUND_B1 = {7.3637E-5, 1.7945E-7};
-    private static final double[] SOUND_C0 = {
-        1402.388, 5.03711, -5.80852E-2, 3.3420E-4, -1.47800E-6, 3.1464E-9
-    };
-    private static final double[] SOUND_C1 = {
-        0.153563, 6.8982E-4, -8.1788E-6, 1.3621E-7, -6.1185E-10
-    };
-    private static final double[] SOUND_C2 = {
-        3.1260E-5, -1.7107E-6, 2.5974E-8, -2.5335E-10, 1.0405E-12
-    };
+    private static final double[] SOUND_C0 = {1402.388, 5.03711, -5.80852E-2, 3.3420E-4, -1.47800E-6, 3.1464E-9};
+    private static final double[] SOUND_C1 = {0.153563, 6.8982E-4, -8.1788E-6, 1.3621E-7, -6.1185E-10};
+    private static final double[] SOUND_C2 = {3.1260E-5, -1.7107E-6, 2.5974E-8, -2.5335E-10, 1.0405E-12};
     private static final double[] SOUND_C3 = {-9.7729E-9, 3.8504E-10, -2.3643E-12};
     private static final double SOUND_D0 = 1.727E-3;
     private static final double SOUND_D1 = -7.9836E-6;
@@ -183,8 +160,7 @@ public final class SeaWater {
      *
      * @see #saturationO2
      */
-    private static final double[]
-            O2_AT = {-135.29996, 1.572288E+5, -6.637149E+7, 1.243678E+10, -8.621061E+11},
+    private static final double[] O2_AT = {-135.29996, 1.572288E+5, -6.637149E+7, 1.243678E+10, -8.621061E+11},
             O2_AS = {0.020573, -12.142, 2363, 1};
 
     /** Do not allow instantiation of this class. */
@@ -206,18 +182,15 @@ public final class SeaWater {
 
         // Sea water density at atmospheric pressure
         final double SR = Math.sqrt(S);
-        final double RHO_S_T_0 =
-                (EOS80_D * S + polynome(T, EOS80_C) * SR + polynome(T, EOS80_B)) * S + RHO_0_T_0;
+        final double RHO_S_T_0 = (EOS80_D * S + polynome(T, EOS80_C) * SR + polynome(T, EOS80_B)) * S + RHO_0_T_0;
 
         // Compression terms
-        final double K_S_T_0 =
-                (polynome(T, EOS80_F) + polynome(T, EOS80_G) * SR) * S + polynome(T, EOS80_Et);
-        final double K_S_T_P =
-                K_S_T_0
-                        + ((EOS80_J * SR + polynome(T, EOS80_I)) * S
-                                        + polynome(T, EOS80_Ht)
-                                        + (polynome(T, EOS80_Kt) + polynome(T, EOS80_M) * S) * P)
-                                * P;
+        final double K_S_T_0 = (polynome(T, EOS80_F) + polynome(T, EOS80_G) * SR) * S + polynome(T, EOS80_Et);
+        final double K_S_T_P = K_S_T_0
+                + ((EOS80_J * SR + polynome(T, EOS80_I)) * S
+                                + polynome(T, EOS80_Ht)
+                                + (polynome(T, EOS80_Kt) + polynome(T, EOS80_M) * S) * P)
+                        * P;
         return RHO_S_T_0 / (1.0 - P / K_S_T_P);
     }
 
@@ -235,9 +208,7 @@ public final class SeaWater {
         P /= 10.0;
         // Sea water density at atmospheric pressure
         final double SR = Math.sqrt(S);
-        final double RHO =
-                (EOS80_D * S + polynome(T, EOS80_C) * SR + polynome(T, EOS80_B)) * S
-                        + polynome(T, EOS80_A);
+        final double RHO = (EOS80_D * S + polynome(T, EOS80_C) * SR + polynome(T, EOS80_B)) * S + polynome(T, EOS80_A);
 
         // Specific volume at atmospheric pressure
         final double V_35_0_0 = 1.0 / RHO_35_0_0;
@@ -246,18 +217,15 @@ public final class SeaWater {
             return RHO + DR_35_0_0;
         }
         // Compression terms, DK = K(S,T,P) - K(35,0,P)
-        final double K0 =
-                (polynome(T, EOS80_F) + polynome(T, EOS80_G) * SR) * S + polynome(T, EOS80_E);
-        final double DK =
-                K0
-                        + (((EOS80_J * SR + polynome(T, EOS80_I)) * S + polynome(T, EOS80_H))
-                                        + (polynome(T, EOS80_K) + polynome(T, EOS80_M) * S) * P)
-                                * P;
+        final double K0 = (polynome(T, EOS80_F) + polynome(T, EOS80_G) * SR) * S + polynome(T, EOS80_E);
+        final double DK = K0
+                + (((EOS80_J * SR + polynome(T, EOS80_I)) * S + polynome(T, EOS80_H))
+                                + (polynome(T, EOS80_K) + polynome(T, EOS80_M) * S) * P)
+                        * P;
 
         final double K_35_0_P = polynome(P, EOS80_N);
         final double V_S_T_0 = SVAN_S_T_0 + V_35_0_0;
-        final double SVANS =
-                SVAN_S_T_0 * (1.0 - P / K_35_0_P) + V_S_T_0 * P * DK / (K_35_0_P * (K_35_0_P + DK));
+        final double SVANS = SVAN_S_T_0 * (1.0 - P / K_35_0_P) + V_S_T_0 * P * DK / (K_35_0_P * (K_35_0_P + DK));
 
         // Compute density anomaly
         final double V_35_0_P = V_35_0_0 * (1.0 - P / K_35_0_P);
@@ -280,9 +248,7 @@ public final class SeaWater {
         P /= 10.0;
         // Sea water density at atmospheric pressure
         final double SR = Math.sqrt(S);
-        final double RHO =
-                (EOS80_D * S + polynome(T, EOS80_C) * SR + polynome(T, EOS80_B)) * S
-                        + polynome(T, EOS80_A);
+        final double RHO = (EOS80_D * S + polynome(T, EOS80_C) * SR + polynome(T, EOS80_B)) * S + polynome(T, EOS80_A);
 
         // Specific volume at atmospheric pressure
         final double V_35_0_0 = 1.0 / RHO_35_0_0;
@@ -291,18 +257,15 @@ public final class SeaWater {
             return SVAN_S_T_0 + V_35_0_0;
         }
         // Compression terms, DK = K(S,T,P) - K(35,0,P)
-        final double K0 =
-                (polynome(T, EOS80_F) + polynome(T, EOS80_G) * SR) * S + polynome(T, EOS80_E);
-        final double DK =
-                K0
-                        + (((EOS80_J * SR + polynome(T, EOS80_I)) * S + polynome(T, EOS80_H))
-                                        + (polynome(T, EOS80_K) + polynome(T, EOS80_M) * S) * P)
-                                * P;
+        final double K0 = (polynome(T, EOS80_F) + polynome(T, EOS80_G) * SR) * S + polynome(T, EOS80_E);
+        final double DK = K0
+                + (((EOS80_J * SR + polynome(T, EOS80_I)) * S + polynome(T, EOS80_H))
+                                + (polynome(T, EOS80_K) + polynome(T, EOS80_M) * S) * P)
+                        * P;
 
         final double K_35_0_P = polynome(P, EOS80_N);
         final double V_S_T_0 = SVAN_S_T_0 + V_35_0_0;
-        return (SVAN_S_T_0 + V_35_0_0) * (1.0 - P / K_35_0_P)
-                + V_S_T_0 * P * DK / (K_35_0_P * (K_35_0_P + DK));
+        return (SVAN_S_T_0 + V_35_0_0) * (1.0 - P / K_35_0_P) + V_S_T_0 * P * DK / (K_35_0_P * (K_35_0_P + DK));
     }
 
     /**
@@ -321,9 +284,7 @@ public final class SeaWater {
         P /= 10.0;
         // Sea water density at atmospheric pressure
         final double SR = Math.sqrt(S);
-        final double RHO =
-                (EOS80_D * S + polynome(T, EOS80_C) * SR + polynome(T, EOS80_B)) * S
-                        + polynome(T, EOS80_A);
+        final double RHO = (EOS80_D * S + polynome(T, EOS80_C) * SR + polynome(T, EOS80_B)) * S + polynome(T, EOS80_A);
 
         // Specific volume at atmospheric pressure
         final double V_35_0_0 = 1.0 / RHO_35_0_0;
@@ -332,18 +293,15 @@ public final class SeaWater {
             return SVAN_S_T_0;
         }
         // Compression terms, DK = K(S,T,P) - K(35,0,P)
-        final double K0 =
-                (polynome(T, EOS80_F) + polynome(T, EOS80_G) * SR) * S + polynome(T, EOS80_E);
-        final double DK =
-                K0
-                        + (((EOS80_J * SR + polynome(T, EOS80_I)) * S + polynome(T, EOS80_H))
-                                        + (polynome(T, EOS80_K) + polynome(T, EOS80_M) * S) * P)
-                                * P;
+        final double K0 = (polynome(T, EOS80_F) + polynome(T, EOS80_G) * SR) * S + polynome(T, EOS80_E);
+        final double DK = K0
+                + (((EOS80_J * SR + polynome(T, EOS80_I)) * S + polynome(T, EOS80_H))
+                                + (polynome(T, EOS80_K) + polynome(T, EOS80_M) * S) * P)
+                        * P;
 
         final double K_35_0_P = polynome(P, EOS80_N);
         final double V_S_T_0 = SVAN_S_T_0 + V_35_0_0;
-        return (SVAN_S_T_0 * (1.0 - P / K_35_0_P)
-                + V_S_T_0 * P * DK / (K_35_0_P * (K_35_0_P + DK)));
+        return (SVAN_S_T_0 * (1.0 - P / K_35_0_P) + V_S_T_0 * P * DK / (K_35_0_P * (K_35_0_P + DK)));
     }
 
     /** Practical salinity scale 1978 definition with temperature correction, XR = SQRT( Rt ) */
@@ -370,10 +328,8 @@ public final class SeaWater {
     public static double salinity(double C, final double T, final double P) {
         C /= STANDARD_CONDUCTIVITY;
         if (!(C < 5E-4)) { // use '!' in order to accept NaN
-            double xr1 =
-                    (PSS78_D[1] * T + PSS78_D[0]) * T + 1.0 + (PSS78_D[3] * T + PSS78_D[2]) * C;
-            final double XR =
-                    Math.sqrt(C / (polynome(T, PSS78_C) * (1.0 + polynome(P, PSS78_E) * P / xr1)));
+            double xr1 = (PSS78_D[1] * T + PSS78_D[0]) * T + 1.0 + (PSS78_D[3] * T + PSS78_D[2]) * C;
+            final double XR = Math.sqrt(C / (polynome(T, PSS78_C) * (1.0 + polynome(P, PSS78_E) * P / xr1)));
             final double S = sal(XR, T - 15.0); // Do not use an 'assert' statement invoking 'cond'.
             if (!(S >= 42)) return S; // use '!' to accept NaN
             /*
@@ -383,8 +339,7 @@ public final class SeaWater {
              * entre 42 et 50.
              */
             double r1 = PSS78_CR[0] + PSS78_CR[1] * C + PSS78_CR[2] * T;
-            return 35 * C
-                    + C * (C - 1) * (polynome(C, PSS78_AR) + T * (polynome(T, PSS78_AT) + C * r1));
+            return 35 * C + C * (C - 1) * (polynome(C, PSS78_AR) + T * (polynome(T, PSS78_AT) + C * r1));
             // TODO: VERIFIER CE QUE DEVIENT LA PRESSION ET IMPLEMENTER L'EQUATION D'ETAT.
         } else {
             return 0; // Zero conductivity trap
@@ -436,9 +391,7 @@ public final class SeaWater {
         return (polynome(T, HEAT_CC)
                 + (polynome(T, HEAT_BB) * SR + polynome(T, HEAT_AA)) * S
                 + (((polynome(T, HEAT_C) * P + polynome(T, HEAT_B)) * P + polynome(T, HEAT_A)) * P)
-                + ((((HEAT_J * SR + polynome(T, HEAT_H)) * S * P
-                                                + (HEAT_G * SR + polynome(T, HEAT_F)) * S)
-                                        * P
+                + ((((HEAT_J * SR + polynome(T, HEAT_H)) * S * P + (HEAT_G * SR + polynome(T, HEAT_F)) * S) * P
                                 + (polynome(T, HEAT_E) * SR + polynome(T, HEAT_D)) * S)
                         * P));
     }
@@ -493,15 +446,11 @@ public final class SeaWater {
      */
     public static double soundVelocity(final double S, final double T, final double P) {
         // S^0 terms
-        final double CW =
-                ((polynome(T, SOUND_C3) * P + polynome(T, SOUND_C2)) * P + polynome(T, SOUND_C1))
-                                * P
-                        + polynome(T, SOUND_C0);
+        final double CW = ((polynome(T, SOUND_C3) * P + polynome(T, SOUND_C2)) * P + polynome(T, SOUND_C1)) * P
+                + polynome(T, SOUND_C0);
         // S^1 terms
-        final double A =
-                ((polynome(T, SOUND_A3) * P + polynome(T, SOUND_A2)) * P + polynome(T, SOUND_A1))
-                                * P
-                        + polynome(T, SOUND_A0);
+        final double A = ((polynome(T, SOUND_A3) * P + polynome(T, SOUND_A2)) * P + polynome(T, SOUND_A1)) * P
+                + polynome(T, SOUND_A0);
         // S^3/2 terms
         final double B = polynome(T, SOUND_B0) + polynome(T, SOUND_B1) * P;
 

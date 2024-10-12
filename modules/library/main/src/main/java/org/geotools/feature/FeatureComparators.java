@@ -25,13 +25,12 @@ import org.geotools.api.feature.simple.SimpleFeature;
  */
 public final class FeatureComparators {
     /** A utility comparator for comparison by id. */
-    public static final java.util.Comparator BY_ID =
-            (o1, o2) -> {
-                SimpleFeature f1 = (SimpleFeature) o1;
-                SimpleFeature f2 = (SimpleFeature) o2;
+    public static final java.util.Comparator BY_ID = (o1, o2) -> {
+        SimpleFeature f1 = (SimpleFeature) o1;
+        SimpleFeature f2 = (SimpleFeature) o2;
 
-                return f1.getID().compareTo(f2.getID());
-            };
+        return f1.getID().compareTo(f2.getID());
+    };
 
     /** Private constructor so default constructor is not available for this utility class. */
     private FeatureComparators() {}

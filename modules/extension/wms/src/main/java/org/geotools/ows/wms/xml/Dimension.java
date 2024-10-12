@@ -52,12 +52,10 @@ public class Dimension {
 
     public Dimension(String name, String units, String unitSymbol) {
         if (name == null || name.length() == 0) {
-            throw new IllegalArgumentException(
-                    "Error creating Extent: parameter name must not be null!");
+            throw new IllegalArgumentException("Error creating Extent: parameter name must not be null!");
         }
         if (units == null || units.length() == 0) {
-            throw new IllegalArgumentException(
-                    "Error creating Extent: parameter units must not be null!");
+            throw new IllegalArgumentException("Error creating Extent: parameter units must not be null!");
         }
 
         this.name = name;
@@ -67,12 +65,10 @@ public class Dimension {
 
     public Dimension(String name, String units) {
         if (name == null || name.length() == 0) {
-            throw new IllegalArgumentException(
-                    "Error creating Extent: parameter name must not be null!");
+            throw new IllegalArgumentException("Error creating Extent: parameter name must not be null!");
         }
         if (units == null || units.length() == 0) {
-            throw new IllegalArgumentException(
-                    "Error creating Extent: parameter units must not be null!");
+            throw new IllegalArgumentException("Error creating Extent: parameter units must not be null!");
         }
 
         this.name = name;

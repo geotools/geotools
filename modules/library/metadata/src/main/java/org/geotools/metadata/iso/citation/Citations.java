@@ -319,11 +319,8 @@ public final class Citations {
          */
         final Collection<ResponsibleParty> parties = c.getCitedResponsibleParties();
         parties.add(ResponsiblePartyImpl.OGC);
-        parties.add(
-                ResponsiblePartyImpl.OGC(
-                        Role.PUBLISHER,
-                        OnLineFunction.DOWNLOAD,
-                        "http://www.opengis.org/docs/01-068r3.pdf"));
+        parties.add(ResponsiblePartyImpl.OGC(
+                Role.PUBLISHER, OnLineFunction.DOWNLOAD, "http://www.opengis.org/docs/01-068r3.pdf"));
         c.getPresentationForm().add(PresentationForm.DOCUMENT_DIGITAL); // See comment in WMS.
         c.freeze();
         AUTO = c;
@@ -538,13 +535,11 @@ public final class Citations {
                 return true;
             }
             final String asLocalized = candidate.toString();
-            if (!Objects.equals(asLocalized, asString)
-                    && asLocalized.trim().equalsIgnoreCase(title)) {
+            if (!Objects.equals(asLocalized, asString) && asLocalized.trim().equalsIgnoreCase(title)) {
                 return true;
             }
             if (iterator == null) {
-                final Collection<? extends InternationalString> titles =
-                        citation.getAlternateTitles();
+                final Collection<? extends InternationalString> titles = citation.getAlternateTitles();
                 if (titles == null) {
                     break;
                 }

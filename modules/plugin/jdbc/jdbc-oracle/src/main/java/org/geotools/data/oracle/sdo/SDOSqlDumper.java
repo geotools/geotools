@@ -36,8 +36,7 @@ import org.locationtech.jts.geom.Polygon;
  * prepared statement based dialects and for debugging purposes
  */
 public class SDOSqlDumper {
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(SDOSqlDumper.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(SDOSqlDumper.class);
 
     /**
      * Converts JTS Geometry to a String version of a SDO Geometry. This should move to a utility
@@ -65,8 +64,8 @@ public class SDOSqlDumper {
         } else if (MultiPolygon.class.isAssignableFrom(geometry.getClass())) {
             return toSDOGeom((MultiPolygon) geometry, srid);
         } else {
-            LOGGER.warning(
-                    "Got a literal geometry that I can't handle: " + geometry.getClass().getName());
+            LOGGER.warning("Got a literal geometry that I can't handle: "
+                    + geometry.getClass().getName());
 
             return "";
         }
@@ -97,12 +96,11 @@ public class SDOSqlDumper {
      */
     private static String toSDOGeom(LineString line, int srid) {
         if (SDO.D(line) > 2) {
-            LOGGER.warning(
-                    ""
-                            + SDO.D(line)
-                            + " dimensioned geometry provided."
-                            + " This encoder only supports 2D linestring geometries. The query will be constructed as"
-                            + " a 2D query.");
+            LOGGER.warning(""
+                    + SDO.D(line)
+                    + " dimensioned geometry provided."
+                    + " This encoder only supports 2D linestring geometries. The query will be constructed as"
+                    + " a 2D query.");
         }
 
         StringBuilder buffer = new StringBuilder("MDSYS.SDO_GEOMETRY(");
@@ -149,12 +147,11 @@ public class SDOSqlDumper {
      */
     private static String toSDOGeom(Point point, int srid) {
         if (SDO.D(point) > 2) {
-            LOGGER.warning(
-                    ""
-                            + SDO.D(point)
-                            + " dimensioned geometry provided."
-                            + " This encoder only supports 2D point geometries. The query will be constructed as"
-                            + " a 2D query.");
+            LOGGER.warning(""
+                    + SDO.D(point)
+                    + " dimensioned geometry provided."
+                    + " This encoder only supports 2D point geometries. The query will be constructed as"
+                    + " a 2D query.");
         }
 
         StringBuilder buffer = new StringBuilder("MDSYS.SDO_GEOMETRY(");
@@ -192,12 +189,11 @@ public class SDOSqlDumper {
         StringBuilder buffer = new StringBuilder();
 
         if (SDO.D(polygon) > 2) {
-            LOGGER.warning(
-                    ""
-                            + SDO.D(polygon)
-                            + " dimensioned geometry provided."
-                            + " This encoder only supports 2D polygon geometries. The query will be constructed as"
-                            + " a 2D query.");
+            LOGGER.warning(""
+                    + SDO.D(polygon)
+                    + " dimensioned geometry provided."
+                    + " This encoder only supports 2D polygon geometries. The query will be constructed as"
+                    + " a 2D query.");
         }
 
         if (polygon.getExteriorRing() != null) {
@@ -248,14 +244,11 @@ public class SDOSqlDumper {
             buffer.append("))");
         } else {
             LOGGER.warning(
-                    "No Exterior ring on polygon.  "
-                            + "This encode only supports Polygons with exterior rings.");
+                    "No Exterior ring on polygon.  " + "This encode only supports Polygons with exterior rings.");
         }
 
         if (polygon.getNumInteriorRing() > 0) {
-            LOGGER.warning(
-                    "Polygon contains Interior Rings. "
-                            + "These rings will not be included in the query.");
+            LOGGER.warning("Polygon contains Interior Rings. " + "These rings will not be included in the query.");
         }
 
         return buffer.toString();

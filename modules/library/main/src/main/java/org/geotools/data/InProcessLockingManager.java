@@ -83,8 +83,7 @@ public class InProcessLockingManager implements LockingManager {
                     // lock already held by this transacstion
                     // we could just consider returning here
                     //
-                    throw new FeatureLockException(
-                            "Transaction Lock is already held by this Transaction", featureID);
+                    throw new FeatureLockException("Transaction Lock is already held by this Transaction", featureID);
                 } else {
                     // we should wait till it is available and then grab
                     // the lock
@@ -96,15 +95,12 @@ public class InProcessLockingManager implements LockingManager {
                         lock = getLock(typeName, featureID);
                     } catch (InterruptedException interupted) {
                         throw new FeatureLockException(
-                                "Interupted while waiting for Transaction Lock",
-                                featureID,
-                                interupted);
+                                "Interupted while waiting for Transaction Lock", featureID, interupted);
                     }
                 }
             } else if (lock instanceof MemoryLock) {
                 MemoryLock mlock = (MemoryLock) lock;
-                throw new FeatureLockException(
-                        "Feature Lock is held by Authorization " + mlock.authID, featureID);
+                throw new FeatureLockException("Feature Lock is held by Authorization " + mlock.authID, featureID);
             } else {
                 throw new FeatureLockException("Lock is already held " + lock, featureID);
             }
@@ -163,8 +159,7 @@ public class InProcessLockingManager implements LockingManager {
         if (featureLock == FeatureLock.TRANSACTION) {
             // we need a Transacstion Lock
             if (transaction == Transaction.AUTO_COMMIT) {
-                throw new FeatureLockException(
-                        "We cannot issue a Transaction lock against AUTO_COMMIT");
+                throw new FeatureLockException("We cannot issue a Transaction lock against AUTO_COMMIT");
             }
 
             TransactionLock lock = (TransactionLock) transaction.getState(this);
@@ -243,16 +238,14 @@ public class InProcessLockingManager implements LockingManager {
      * @param transaction Provides Authorization
      * @throws FeatureLockException If transaction does not have sufficient authroization
      */
-    public void assertAccess(String typeName, String featureID, Transaction transaction)
-            throws FeatureLockException {
+    public void assertAccess(String typeName, String featureID, Transaction transaction) throws FeatureLockException {
         Lock lock = getLock(typeName, featureID);
 
         // LOGGER.info("asserting access on lock for " + typeName + ", fid: "
         //  + featureID + ", transaction: " + transaction + ", lock " + lock);
 
         if ((lock != null) && !lock.isAuthorized(transaction)) {
-            throw new FeatureLockException(
-                    "Transaction does not have authorization for " + typeName + ":" + featureID);
+            throw new FeatureLockException("Transaction does not have authorization for " + typeName + ":" + featureID);
         }
     }
 
@@ -264,8 +257,7 @@ public class InProcessLockingManager implements LockingManager {
      * @return FeatureWriter with lock checking
      */
     public FeatureWriter<SimpleFeatureType, SimpleFeature> checkedWriter(
-            final FeatureWriter<SimpleFeatureType, SimpleFeature> writer,
-            final Transaction transaction) {
+            final FeatureWriter<SimpleFeatureType, SimpleFeature> writer, final Transaction transaction) {
         SimpleFeatureType featureType = writer.getFeatureType();
         final String typeName = featureType.getTypeName();
 
@@ -331,8 +323,7 @@ public class InProcessLockingManager implements LockingManager {
      */
     @Override
     public synchronized void unLockFeatureID(
-            String typeName, String featureID, Transaction transaction, FeatureLock featureLock)
-            throws IOException {
+            String typeName, String featureID, Transaction transaction, FeatureLock featureLock) throws IOException {
         assertAccess(typeName, featureID, transaction);
         locks(typeName).remove(featureID);
     }
@@ -355,8 +346,7 @@ public class InProcessLockingManager implements LockingManager {
         }
 
         if ((transaction == null) || (transaction == Transaction.AUTO_COMMIT)) {
-            throw new IllegalArgumentException(
-                    "Tansaction required (with authorization for " + authID + ")");
+            throw new IllegalArgumentException("Tansaction required (with authorization for " + authID + ")");
         }
 
         Lock lock;
@@ -401,8 +391,7 @@ public class InProcessLockingManager implements LockingManager {
         }
 
         if ((transaction == null) || (transaction == Transaction.AUTO_COMMIT)) {
-            throw new IllegalArgumentException(
-                    "Tansaction required (with authorization for " + authID + ")");
+            throw new IllegalArgumentException("Tansaction required (with authorization for " + authID + ")");
         }
 
         Lock lock;

@@ -50,8 +50,9 @@ public class WMSUtils {
 
         List<Layer> namedLayersList = new ArrayList<>();
 
-        Layer[] layers =
-                capabilities.getLayerList().toArray(new Layer[capabilities.getLayerList().size()]);
+        Layer[] layers = capabilities
+                .getLayerList()
+                .toArray(new Layer[capabilities.getLayerList().size()]);
 
         for (Layer layer : layers) {
             if ((layer.getName() != null) && (layer.getName().length() != 0)) {
@@ -84,8 +85,9 @@ public class WMSUtils {
     public static Set getSRSs(WMSCapabilities capabilities) {
         Set<String> srss = new TreeSet<>();
 
-        Layer[] layers =
-                capabilities.getLayerList().toArray(new Layer[capabilities.getLayerList().size()]);
+        Layer[] layers = capabilities
+                .getLayerList()
+                .toArray(new Layer[capabilities.getLayerList().size()]);
 
         for (Layer layer : layers) {
             if (layer.getSrs() != null) {

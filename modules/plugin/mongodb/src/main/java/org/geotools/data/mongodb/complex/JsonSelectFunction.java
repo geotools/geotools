@@ -36,8 +36,7 @@ public final class JsonSelectFunction extends FunctionExpressionImpl implements 
 
     private static final NamespaceSupport NAMESPACE_SUPPORT = new NamespaceSupport();
 
-    private static final FunctionName DEFINITION =
-            new FunctionNameImpl("jsonSelect", parameter("path", String.class));
+    private static final FunctionName DEFINITION = new FunctionNameImpl("jsonSelect", parameter("path", String.class));
 
     public JsonSelectFunction() {
         super(DEFINITION);

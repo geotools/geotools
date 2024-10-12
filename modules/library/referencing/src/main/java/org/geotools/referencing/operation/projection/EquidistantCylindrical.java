@@ -78,8 +78,7 @@ public class EquidistantCylindrical extends MapProjection {
      * @param parameters The parameter values in standard units.
      * @throws ParameterNotFoundException if a mandatory parameter is missing.
      */
-    protected EquidistantCylindrical(final ParameterValueGroup parameters)
-            throws ParameterNotFoundException {
+    protected EquidistantCylindrical(final ParameterValueGroup parameters) throws ParameterNotFoundException {
         // Fetch parameters
         super(parameters);
         final Collection<GeneralParameterDescriptor> expected =
@@ -122,8 +121,7 @@ public class EquidistantCylindrical extends MapProjection {
      * @param y The latitude of the coordinate, in <strong>radians</strong>.
      */
     @Override
-    protected Point2D transformNormalized(double x, double y, final Point2D ptDst)
-            throws ProjectionException {
+    protected Point2D transformNormalized(double x, double y, final Point2D ptDst) throws ProjectionException {
         x *= cosStandardParallel;
         if (ptDst != null) {
             ptDst.setLocation(x, y);
@@ -137,8 +135,7 @@ public class EquidistantCylindrical extends MapProjection {
      * {@code ptDst}.
      */
     @Override
-    protected Point2D inverseTransformNormalized(double x, double y, final Point2D ptDst)
-            throws ProjectionException {
+    protected Point2D inverseTransformNormalized(double x, double y, final Point2D ptDst) throws ProjectionException {
         x /= cosStandardParallel;
         if (ptDst != null) {
             ptDst.setLocation(x, y);
@@ -194,28 +191,25 @@ public class EquidistantCylindrical extends MapProjection {
          * The parameters group. Note the EPSG includes a "Latitude of natural origin" parameter
          * instead of "standard_parallel_1". I have sided with ESRI and Snyder in this case.
          */
-        static final ParameterDescriptorGroup PARAMETERS =
-                createDescriptorGroup(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.OGC, "Equidistant_Cylindrical"),
-                            new NamedIdentifier(Citations.EPSG, "Equidistant Cylindrical"),
-                            new NamedIdentifier(
-                                    Citations.ESRI, "Equidistant_Cylindrical_Ellipsoidal"),
-                            new NamedIdentifier(Citations.EPSG, "9823"),
-                            new NamedIdentifier(
-                                    Citations.GEOTOOLS,
-                                    Vocabulary.formatInternational(
-                                            VocabularyKeys.EQUIDISTANT_CYLINDRICAL_PROJECTION))
-                        },
-                        new ParameterDescriptor[] {
-                            SEMI_MAJOR,
-                            SEMI_MINOR,
-                            CENTRAL_MERIDIAN,
-                            LATITUDE_OF_ORIGIN,
-                            STANDARD_PARALLEL_1,
-                            FALSE_EASTING,
-                            FALSE_NORTHING
-                        });
+        static final ParameterDescriptorGroup PARAMETERS = createDescriptorGroup(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.OGC, "Equidistant_Cylindrical"),
+                    new NamedIdentifier(Citations.EPSG, "Equidistant Cylindrical"),
+                    new NamedIdentifier(Citations.ESRI, "Equidistant_Cylindrical_Ellipsoidal"),
+                    new NamedIdentifier(Citations.EPSG, "9823"),
+                    new NamedIdentifier(
+                            Citations.GEOTOOLS,
+                            Vocabulary.formatInternational(VocabularyKeys.EQUIDISTANT_CYLINDRICAL_PROJECTION))
+                },
+                new ParameterDescriptor[] {
+                    SEMI_MAJOR,
+                    SEMI_MINOR,
+                    CENTRAL_MERIDIAN,
+                    LATITUDE_OF_ORIGIN,
+                    STANDARD_PARALLEL_1,
+                    FALSE_EASTING,
+                    FALSE_NORTHING
+                });
 
         /** Constructs a new provider. */
         public Provider() {
@@ -267,27 +261,24 @@ public class EquidistantCylindrical extends MapProjection {
          * The parameters group. Note the EPSG includes a "Latitude of natural origin" parameter
          * instead of "standard_parallel_1". I have sided with ESRI and Snyder in this case.
          */
-        static final ParameterDescriptorGroup PARAMETERS =
-                createDescriptorGroup(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(
-                                    Citations.EPSG, "Equidistant Cylindrical (Spherical)"),
-                            new NamedIdentifier(Citations.EPSG, "Equirectangular"),
-                            new NamedIdentifier(Citations.ESRI, "Equidistant_Cylindrical"),
-                            new NamedIdentifier(
-                                    Citations.GEOTOOLS,
-                                    Vocabulary.formatInternational(
-                                            VocabularyKeys.EQUIDISTANT_CYLINDRICAL_PROJECTION))
-                        },
-                        new ParameterDescriptor[] {
-                            SEMI_MAJOR,
-                            SEMI_MINOR,
-                            CENTRAL_MERIDIAN,
-                            LATITUDE_OF_ORIGIN,
-                            STANDARD_PARALLEL_1,
-                            FALSE_EASTING,
-                            FALSE_NORTHING
-                        });
+        static final ParameterDescriptorGroup PARAMETERS = createDescriptorGroup(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.EPSG, "Equidistant Cylindrical (Spherical)"),
+                    new NamedIdentifier(Citations.EPSG, "Equirectangular"),
+                    new NamedIdentifier(Citations.ESRI, "Equidistant_Cylindrical"),
+                    new NamedIdentifier(
+                            Citations.GEOTOOLS,
+                            Vocabulary.formatInternational(VocabularyKeys.EQUIDISTANT_CYLINDRICAL_PROJECTION))
+                },
+                new ParameterDescriptor[] {
+                    SEMI_MAJOR,
+                    SEMI_MINOR,
+                    CENTRAL_MERIDIAN,
+                    LATITUDE_OF_ORIGIN,
+                    STANDARD_PARALLEL_1,
+                    FALSE_EASTING,
+                    FALSE_NORTHING
+                });
 
         /** Constructs a new provider. */
         public SphericalProvider() {

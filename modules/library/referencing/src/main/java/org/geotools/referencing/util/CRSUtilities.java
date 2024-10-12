@@ -94,8 +94,7 @@ public final class CRSUtilities {
      * @param axis The axis to look for.
      * @return The dimension number of the specified axis, or {@code -1} if none.
      */
-    public static int dimensionColinearWith(
-            final CoordinateSystem cs, final CoordinateSystemAxis axis) {
+    public static int dimensionColinearWith(final CoordinateSystem cs, final CoordinateSystemAxis axis) {
         int candidate = -1;
         final int dimension = cs.getDimension();
         final AxisDirection direction = axis.getDirection().absolute();
@@ -138,8 +137,7 @@ public final class CRSUtilities {
     /** Returns the components of the specified CRS, or {@code null} if none. */
     private static List<CoordinateReferenceSystem> getComponents(CoordinateReferenceSystem crs) {
         if (crs instanceof CompoundCRS) {
-            final List<CoordinateReferenceSystem> components =
-                    ((CompoundCRS) crs).getCoordinateReferenceSystems();
+            final List<CoordinateReferenceSystem> components = ((CompoundCRS) crs).getCoordinateReferenceSystems();
             if (!components.isEmpty()) {
                 return components;
             }
@@ -159,8 +157,7 @@ public final class CRSUtilities {
      * @throws IllegalArgumentException if the {@code type} is not legal.
      */
     public static int getDimensionOf(
-            final CoordinateReferenceSystem crs,
-            final Class<? extends CoordinateReferenceSystem> type)
+            final CoordinateReferenceSystem crs, final Class<? extends CoordinateReferenceSystem> type)
             throws IllegalArgumentException {
         if (type.isAssignableFrom(crs.getClass())) {
             return 0;
@@ -188,13 +185,11 @@ public final class CRSUtilities {
      * @return The sub-coordinate system, or {@code null} if {@code crs} can't be decomposed for
      *     dimensions in the range {@code [lower..upper]}.
      */
-    public static CoordinateReferenceSystem getSubCRS(
-            CoordinateReferenceSystem crs, int lower, int upper) {
+    public static CoordinateReferenceSystem getSubCRS(CoordinateReferenceSystem crs, int lower, int upper) {
         int dimension = crs.getCoordinateSystem().getDimension();
         if (lower < 0 || lower > upper || upper > dimension) {
             final Object arg0 = lower < 0 ? lower : upper;
-            throw new IndexOutOfBoundsException(
-                    MessageFormat.format(ErrorKeys.INDEX_OUT_OF_BOUNDS_$1, arg0));
+            throw new IndexOutOfBoundsException(MessageFormat.format(ErrorKeys.INDEX_OUT_OF_BOUNDS_$1, arg0));
         }
         while (lower != 0 || upper != dimension) {
             final List<CoordinateReferenceSystem> c = getComponents(crs);
@@ -227,8 +222,7 @@ public final class CRSUtilities {
      *     this exception class since this method is usually invoked in the context of a
      *     transformation process.
      */
-    public static CoordinateReferenceSystem getCRS2D(CoordinateReferenceSystem crs)
-            throws TransformException {
+    public static CoordinateReferenceSystem getCRS2D(CoordinateReferenceSystem crs) throws TransformException {
         if (crs != null) {
             while (crs.getCoordinateSystem().getDimension() != 2) {
                 final List<CoordinateReferenceSystem> c = getComponents(crs);
@@ -342,19 +336,14 @@ public final class CRSUtilities {
         }
         GeodeticDatum geoDatum = (GeodeticDatum) datum;
         if (geoDatum.getPrimeMeridian().getGreenwichLongitude() != 0) {
-            geoDatum =
-                    new DefaultGeodeticDatum(
-                            geoDatum.getName().getCode(),
-                            geoDatum.getEllipsoid(),
-                            DefaultPrimeMeridian.GREENWICH);
+            geoDatum = new DefaultGeodeticDatum(
+                    geoDatum.getName().getCode(), geoDatum.getEllipsoid(), DefaultPrimeMeridian.GREENWICH);
         } else if (crs instanceof GeographicCRS) {
-            if (CRS.equalsIgnoreMetadata(
-                    DefaultEllipsoidalCS.GEODETIC_2D, crs.getCoordinateSystem())) {
+            if (CRS.equalsIgnoreMetadata(DefaultEllipsoidalCS.GEODETIC_2D, crs.getCoordinateSystem())) {
                 return (GeographicCRS) crs;
             }
         }
-        return new DefaultGeographicCRS(
-                crs.getName().getCode(), geoDatum, DefaultEllipsoidalCS.GEODETIC_2D);
+        return new DefaultGeographicCRS(crs.getName().getCode(), geoDatum, DefaultEllipsoidalCS.GEODETIC_2D);
     }
 
     /**
@@ -369,8 +358,7 @@ public final class CRSUtilities {
      * @throws TransformException if the transformation failed.
      * @since 2.3
      */
-    public static Position deltaTransform(
-            final MathTransform transform, final Position origin, final Position source)
+    public static Position deltaTransform(final MathTransform transform, final Position origin, final Position source)
             throws TransformException {
         final int sourceDim = transform.getSourceDimensions();
         final int targetDim = transform.getTargetDimensions();
@@ -404,10 +392,7 @@ public final class CRSUtilities {
      * @see AffineTransform#deltaTransform(Point2D,Point2D)
      */
     public static Point2D deltaTransform(
-            final MathTransform2D transform,
-            final Point2D origin,
-            final Point2D source,
-            Point2D dest)
+            final MathTransform2D transform, final Point2D origin, final Point2D source, Point2D dest)
             throws TransformException {
         if (transform instanceof AffineTransform) {
             return ((AffineTransform) transform).deltaTransform(source, dest);
@@ -447,15 +432,12 @@ public final class CRSUtilities {
         final CoordinateReferenceSystem crs2D = CRS.getHorizontalCRS(crs);
         if (crs2D == null) {
             final Object arg0 = crs.getName();
-            exception =
-                    new UnsupportedOperationException(
-                            MessageFormat.format(ErrorKeys.CANT_SEPARATE_CRS_$1, arg0));
+            exception = new UnsupportedOperationException(MessageFormat.format(ErrorKeys.CANT_SEPARATE_CRS_$1, arg0));
         } else
             try {
                 if (!CRS.equalsIgnoreMetadata(DefaultGeographicCRS.WGS84, crs2D)) {
-                    final CoordinateOperation op =
-                            ReferencingFactoryFinder.getCoordinateOperationFactory(null)
-                                    .createOperation(crs2D, DefaultGeographicCRS.WGS84);
+                    final CoordinateOperation op = ReferencingFactoryFinder.getCoordinateOperationFactory(null)
+                            .createOperation(crs2D, DefaultGeographicCRS.WGS84);
                     bounds = CRS.transform(op, bounds, null);
                 }
                 final AngleFormat fmt = new AngleFormat("DD°MM.m'");

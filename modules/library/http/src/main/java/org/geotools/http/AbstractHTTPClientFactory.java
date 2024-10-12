@@ -42,12 +42,8 @@ public abstract class AbstractHTTPClientFactory implements HTTPClientFactory {
     public final boolean canProcess(Hints hints, List<Class<? extends HTTPBehavior>> behaviors) {
 
         Object val = hints.get(Hints.HTTP_CLIENT);
-        return clientClasses().stream()
-                .filter(cls -> matchClientHint(cls, val))
-                .anyMatch(
-                        cls ->
-                                behaviors.stream()
-                                        .allMatch(behavior -> behavior.isAssignableFrom(cls)));
+        return clientClasses().stream().filter(cls -> matchClientHint(cls, val)).anyMatch(cls -> behaviors.stream()
+                .allMatch(behavior -> behavior.isAssignableFrom(cls)));
     }
 
     private static boolean matchClientHint(Class<?> cls, Object val) {
@@ -79,21 +75,18 @@ public abstract class AbstractHTTPClientFactory implements HTTPClientFactory {
     public abstract HTTPClient createClient(List<Class<? extends HTTPBehavior>> behaviors);
 
     @Override
-    public final HTTPClient createClient(
-            Hints hints, List<Class<? extends HTTPBehavior>> behaviors) {
+    public final HTTPClient createClient(Hints hints, List<Class<? extends HTTPBehavior>> behaviors) {
         HTTPClient client = createClient(behaviors);
-        Set<Class<? extends HTTPBehavior>> missingBehaviors =
-                behaviors.stream()
-                        .filter(behavior -> !behavior.isInstance(client))
-                        .collect(Collectors.toSet());
+        Set<Class<? extends HTTPBehavior>> missingBehaviors = behaviors.stream()
+                .filter(behavior -> !behavior.isInstance(client))
+                .collect(Collectors.toSet());
         if (!missingBehaviors.isEmpty()) {
-            throw new RuntimeException(
-                    String.format(
-                            "HTTP client %s doesn't support behaviors: %s",
-                            client.getClass().getName(),
-                            missingBehaviors.stream()
-                                    .map(behavior -> behavior.getSimpleName())
-                                    .collect(Collectors.joining(", "))));
+            throw new RuntimeException(String.format(
+                    "HTTP client %s doesn't support behaviors: %s",
+                    client.getClass().getName(),
+                    missingBehaviors.stream()
+                            .map(behavior -> behavior.getSimpleName())
+                            .collect(Collectors.joining(", "))));
         }
         if (hints.containsKey(Hints.HTTP_LOGGING)) {
             return applyLogging(client, hints);

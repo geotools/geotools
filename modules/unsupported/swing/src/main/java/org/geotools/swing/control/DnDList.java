@@ -44,8 +44,7 @@ import javax.swing.JList;
  * @since 2.6
  * @version $Id$
  */
-public class DnDList<T> extends JList<T>
-        implements DragGestureListener, DragSourceListener, DropTargetListener {
+public class DnDList<T> extends JList<T> implements DragGestureListener, DragSourceListener, DropTargetListener {
     private static final long serialVersionUID = 3310751294076288683L;
 
     private DragSource src;

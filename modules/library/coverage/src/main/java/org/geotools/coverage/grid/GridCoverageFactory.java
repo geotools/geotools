@@ -154,8 +154,7 @@ public class GridCoverageFactory extends AbstractFactory {
                 return DefaultEngineeringCRS.CARTESIAN_3D;
             default:
                 throw new IllegalArgumentException(
-                        MessageFormat.format(
-                                ErrorKeys.ILLEGAL_ARGUMENT_$2, "dimension", dimension));
+                        MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "dimension", dimension));
         }
     }
 
@@ -195,17 +194,16 @@ public class GridCoverageFactory extends AbstractFactory {
         final double xTrans = -at.getTranslateX() / xScale;
         final double yTrans = -at.getTranslateY() / yScale;
         final GridEnvelope range = gridGeometry.getGridRange();
-        final PlanarImage image =
-                new ImageWorker()
-                        .function(
-                                function,
-                                range.getSpan(0),
-                                range.getSpan(1),
-                                (float) xScale,
-                                (float) yScale,
-                                (float) xTrans,
-                                (float) yTrans)
-                        .getPlanarImage();
+        final PlanarImage image = new ImageWorker()
+                .function(
+                        function,
+                        range.getSpan(0),
+                        range.getSpan(1),
+                        (float) xScale,
+                        (float) yScale,
+                        (float) xTrans,
+                        (float) yTrans)
+                .getPlanarImage();
         return create(name, image, gridGeometry, bands, null, properties);
     }
 
@@ -220,8 +218,7 @@ public class GridCoverageFactory extends AbstractFactory {
      * @return The new grid coverage.
      * @since 2.2
      */
-    public GridCoverage2D create(
-            final CharSequence name, final float[][] matrix, final Bounds envelope) {
+    public GridCoverage2D create(final CharSequence name, final float[][] matrix, final Bounds envelope) {
         int width = 0;
         int height = matrix.length;
         for (final float[] row : matrix) {
@@ -233,8 +230,7 @@ public class GridCoverageFactory extends AbstractFactory {
         }
         // Need to use JAI raster factory, since WritableRaster
         // does not supports TYPE_FLOAT as of J2SE 1.5.0_06.
-        final WritableRaster raster =
-                RasterFactory.createBandedRaster(DataBuffer.TYPE_FLOAT, width, height, 1, null);
+        final WritableRaster raster = RasterFactory.createBandedRaster(DataBuffer.TYPE_FLOAT, width, height, 1, null);
         for (int j = 0; j < height; j++) {
             int i = 0;
             final float[] row = matrix[j];
@@ -261,8 +257,7 @@ public class GridCoverageFactory extends AbstractFactory {
      * @param envelope The envelope.
      * @return The new grid coverage.
      */
-    public GridCoverage2D create(
-            final CharSequence name, final WritableRaster raster, final Bounds envelope) {
+    public GridCoverage2D create(final CharSequence name, final WritableRaster raster, final Bounds envelope) {
         return create(name, raster, envelope, null, null, null, null, null);
     }
 
@@ -308,8 +303,7 @@ public class GridCoverageFactory extends AbstractFactory {
             final Color[][] colors,
             final RenderingHints hints) {
         final GridSampleDimension[] bands =
-                RenderedSampleDimension.create(
-                        name, raster, minValues, maxValues, units, colors, hints);
+                RenderedSampleDimension.create(name, raster, minValues, maxValues, units, colors, hints);
         final ColorModel model =
                 bands[0].getColorModel(0, bands.length, raster.getSampleModel().getDataType());
         final RenderedImage image = new BufferedImage(model, raster, false, null);
@@ -355,8 +349,7 @@ public class GridCoverageFactory extends AbstractFactory {
             final Color[][] colors,
             final RenderingHints hints) {
         final GridSampleDimension[] bands =
-                RenderedSampleDimension.create(
-                        name, raster, minValues, maxValues, units, colors, hints);
+                RenderedSampleDimension.create(name, raster, minValues, maxValues, units, colors, hints);
         final ColorModel model =
                 bands[0].getColorModel(0, bands.length, raster.getDataBuffer().getDataType());
         final RenderedImage image = new BufferedImage(model, raster, false, null);
@@ -385,10 +378,7 @@ public class GridCoverageFactory extends AbstractFactory {
      * @since 2.2
      */
     public GridCoverage2D create(
-            final CharSequence name,
-            final WritableRaster raster,
-            final Bounds envelope,
-            GridSampleDimension[] bands) {
+            final CharSequence name, final WritableRaster raster, final Bounds envelope, GridSampleDimension[] bands) {
         if (bands == null) {
             bands = RenderedSampleDimension.create(name, raster, null, null, null, null, null);
         }
@@ -445,8 +435,7 @@ public class GridCoverageFactory extends AbstractFactory {
      * @return The new grid coverage.
      * @since 2.2
      */
-    public GridCoverage2D create(
-            final CharSequence name, final RenderedImage image, final Bounds envelope) {
+    public GridCoverage2D create(final CharSequence name, final RenderedImage image, final Bounds envelope) {
         return create(name, image, envelope, null, null, null);
     }
 
@@ -502,9 +491,7 @@ public class GridCoverageFactory extends AbstractFactory {
             e.setCoordinateReferenceSystem(getDefaultCRS(e.getDimension()));
             envelope = e;
         }
-        final GridGeometry2D gm =
-                new GridGeometry2D(
-                        new GeneralGridEnvelope(image, envelope.getDimension()), envelope);
+        final GridGeometry2D gm = new GridGeometry2D(new GeneralGridEnvelope(image, envelope.getDimension()), envelope);
         return create(name, image, gm, bands, sources, properties);
     }
 
@@ -533,11 +520,8 @@ public class GridCoverageFactory extends AbstractFactory {
             final GridSampleDimension[] bands,
             final GridCoverage[] sources,
             final Map<?, ?> properties) {
-        final GridGeometry2D gm =
-                new GridGeometry2D(
-                        new GeneralGridEnvelope(image, crs.getCoordinateSystem().getDimension()),
-                        gridToCRS,
-                        crs);
+        final GridGeometry2D gm = new GridGeometry2D(
+                new GeneralGridEnvelope(image, crs.getCoordinateSystem().getDimension()), gridToCRS, crs);
         return create(name, image, gm, bands, sources, properties);
     }
 
@@ -581,15 +565,8 @@ public class GridCoverageFactory extends AbstractFactory {
             final int dimension = gridGeometry.getDimension();
             gridGeometry = new GridGeometry2D(gridGeometry, getDefaultCRS(dimension));
         }
-        final GridCoverage2D coverage =
-                new GridCoverage2D(
-                        name,
-                        PlanarImage.wrapRenderedImage(image),
-                        gridGeometry,
-                        bands,
-                        sources,
-                        properties,
-                        userHints);
+        final GridCoverage2D coverage = new GridCoverage2D(
+                name, PlanarImage.wrapRenderedImage(image), gridGeometry, bands, sources, properties, userHints);
         coverage.tileEncoding = (String) hints.get(Hints.TILE_ENCODING);
         return coverage;
     }

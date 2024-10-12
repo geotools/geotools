@@ -59,8 +59,7 @@ class RenderingProcessFunction extends ProcessFunction implements RenderingTrans
         try {
             return process.invertQuery(inputs, targetQuery, gridGeometry);
         } catch (ProcessException e) {
-            throw new RuntimeException(
-                    "Failed to invert the query, error is: " + e.getMessage(), e);
+            throw new RuntimeException("Failed to invert the query, error is: " + e.getMessage(), e);
         }
     }
 
@@ -73,14 +72,12 @@ class RenderingProcessFunction extends ProcessFunction implements RenderingTrans
         try {
             return process.invertGridGeometry(inputs, targetQuery, targetGridGeometry);
         } catch (ProcessException e) {
-            throw new RuntimeException(
-                    "Failed to invert the grid geometry, error is: " + e.getMessage(), e);
+            throw new RuntimeException("Failed to invert the grid geometry, error is: " + e.getMessage(), e);
         }
     }
 
     @Override
-    public GeneralParameterValue[] customizeReadParams(
-            GridCoverageReader reader, GeneralParameterValue[] params) {
+    public GeneralParameterValue[] customizeReadParams(GridCoverageReader reader, GeneralParameterValue[] params) {
         RenderingProcess process = (RenderingProcess) this.process;
         // evaluate input expressions
         // at this point do not have an object to evaluate them against
@@ -88,8 +85,7 @@ class RenderingProcessFunction extends ProcessFunction implements RenderingTrans
         try {
             return process.customizeReadParams(inputs, reader, params);
         } catch (ProcessException e) {
-            throw new RuntimeException(
-                    "Failed to customize the reader parameters, error is: " + e.getMessage(), e);
+            throw new RuntimeException("Failed to customize the reader parameters, error is: " + e.getMessage(), e);
         }
     }
 }

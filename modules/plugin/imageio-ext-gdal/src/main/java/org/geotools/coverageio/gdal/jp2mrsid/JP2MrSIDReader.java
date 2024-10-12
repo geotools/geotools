@@ -31,8 +31,7 @@ import org.geotools.util.factory.Hints;
  * @author Simone Giannecchini (simboss), GeoSolutions
  * @since 2.5.x
  */
-public final class JP2MrSIDReader extends BaseGDALGridCoverage2DReader
-        implements GridCoverageReader {
+public final class JP2MrSIDReader extends BaseGDALGridCoverage2DReader implements GridCoverageReader {
     private static final String worldFileExt = ".j2w";
 
     /**

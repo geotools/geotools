@@ -75,13 +75,12 @@ public class PullParserFeatureReader implements GetParser<SimpleFeature> {
         this.featureType = featureType;
         this.axisOrder = axisOrder;
 
-        this.parser =
-                new PullParser(
-                        wfsConfiguration,
-                        getFeatureResponseStream,
-                        new QName(
-                                featureType.getName().getNamespaceURI(),
-                                featureType.getName().getLocalPart()));
+        this.parser = new PullParser(
+                wfsConfiguration,
+                getFeatureResponseStream,
+                new QName(
+                        featureType.getName().getNamespaceURI(),
+                        featureType.getName().getLocalPart()));
         transformer = new GeometryCoordinateSequenceTransformer();
         transformer.setMathTransform(new AffineTransform2D(0, 1, 1, 0, 0, 0));
     }
@@ -147,10 +146,7 @@ public class PullParserFeatureReader implements GetParser<SimpleFeature> {
         }
         if (!(parsed instanceof SimpleFeature)) {
             throw new IOException(
-                    "Couldn't parse SimpleFeature of type "
-                            + featureType
-                            + " from xml.\n"
-                            + entriesInMap(parsed));
+                    "Couldn't parse SimpleFeature of type " + featureType + " from xml.\n" + entriesInMap(parsed));
         }
         SimpleFeature feature = (SimpleFeature) parsed;
         if (feature.getDefaultGeometry() != null) {

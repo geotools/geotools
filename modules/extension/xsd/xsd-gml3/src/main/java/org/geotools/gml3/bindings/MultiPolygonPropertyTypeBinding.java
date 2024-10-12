@@ -51,8 +51,7 @@ import org.locationtech.jts.geom.MultiPolygon;
  */
 public class MultiPolygonPropertyTypeBinding extends GeometryPropertyTypeBindingBase {
 
-    public MultiPolygonPropertyTypeBinding(
-            GML3EncodingUtils encodingUtils, XSDIdRegistry idRegistry) {
+    public MultiPolygonPropertyTypeBinding(GML3EncodingUtils encodingUtils, XSDIdRegistry idRegistry) {
         super(encodingUtils, idRegistry);
     }
 

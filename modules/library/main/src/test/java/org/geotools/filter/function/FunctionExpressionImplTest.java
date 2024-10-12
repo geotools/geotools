@@ -12,11 +12,8 @@ public class FunctionExpressionImplTest {
 
     @Test
     public void testVariableArgCount() {
-        FunctionName name =
-                new FunctionNameImpl(
-                        "test",
-                        parameter("result", Double.class),
-                        parameter("double", Double.class, 2, Integer.MAX_VALUE));
+        FunctionName name = new FunctionNameImpl(
+                "test", parameter("result", Double.class), parameter("double", Double.class, 2, Integer.MAX_VALUE));
 
         FunctionExpressionImpl f = new FunctionExpressionImpl(name) {};
 
@@ -25,11 +22,8 @@ public class FunctionExpressionImplTest {
 
     @Test
     public void testHigherCardinality() {
-        FunctionName name =
-                new FunctionNameImpl(
-                        "test",
-                        parameter("result", Double.class),
-                        parameter("double", Double.class, 2, 2));
+        FunctionName name = new FunctionNameImpl(
+                "test", parameter("result", Double.class), parameter("double", Double.class, 2, 2));
 
         FunctionExpressionImpl f = new FunctionExpressionImpl(name) {};
 
@@ -38,12 +32,11 @@ public class FunctionExpressionImplTest {
 
     @Test
     public void testSimpleArguments() {
-        FunctionName name =
-                new FunctionNameImpl(
-                        "test",
-                        parameter("result", Double.class),
-                        parameter("one", Double.class),
-                        parameter("two", Double.class));
+        FunctionName name = new FunctionNameImpl(
+                "test",
+                parameter("result", Double.class),
+                parameter("one", Double.class),
+                parameter("two", Double.class));
 
         FunctionExpressionImpl f = new FunctionExpressionImpl(name) {};
 

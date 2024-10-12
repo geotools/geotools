@@ -137,14 +137,7 @@ final class Resampler2D extends GridCoverage2D {
             final GridSampleDimension[] sampleDimensions,
             final Map<String, Object> properties,
             final Hints hints) {
-        super(
-                source.getName(),
-                image,
-                geometry,
-                sampleDimensions,
-                new GridCoverage2D[] {source},
-                properties,
-                hints);
+        super(source.getName(), image, geometry, sampleDimensions, new GridCoverage2D[] {source}, properties, hints);
     }
 
     /**
@@ -193,8 +186,7 @@ final class Resampler2D extends GridCoverage2D {
          * The resampling may have been performed on the geophysics view.
          * Try to restore the original view.
          */
-        GridCoverage2D coverage =
-                new Resampler2D(source, image, geometry, sampleDimensions, properties, hints);
+        GridCoverage2D coverage = new Resampler2D(source, image, geometry, sampleDimensions, properties, hints);
         return coverage;
     }
 
@@ -276,14 +268,11 @@ final class Resampler2D extends GridCoverage2D {
             // in case the targetCRS is set we should check that it is compatible
             // with the targetGG crs, otherwise we throw an exception
             if (targetGG != null && targetGG.isDefined(GridGeometry2D.CRS_BITMASK)) {
-                final CoordinateReferenceSystem targetGGCRS =
-                        targetGG.getCoordinateReferenceSystem();
+                final CoordinateReferenceSystem targetGGCRS = targetGG.getCoordinateReferenceSystem();
                 if (!CRS.equalsIgnoreMetadata(targetCRS, targetGGCRS)
                         && !CRS.findMathTransform(targetCRS, targetGGCRS).isIdentity()) {
-                    throw new IllegalArgumentException(
-                            MessageFormat.format(
-                                    ErrorKeys.ILLEGAL_ARGUMENT_$1,
-                                    "TargetCRS must be compatible with TargetGG CRS"));
+                    throw new IllegalArgumentException(MessageFormat.format(
+                            ErrorKeys.ILLEGAL_ARGUMENT_$1, "TargetCRS must be compatible with TargetGG CRS"));
                 }
             }
         }
@@ -304,9 +293,7 @@ final class Resampler2D extends GridCoverage2D {
             hints.put(JAI.KEY_INTERPOLATION, interpolation);
         }
         if (hints != null && !hints.containsKey(JAI.KEY_BORDER_EXTENDER)) {
-            hints.put(
-                    JAI.KEY_BORDER_EXTENDER,
-                    BorderExtender.createInstance(BorderExtender.BORDER_COPY));
+            hints.put(JAI.KEY_BORDER_EXTENDER, BorderExtender.createInstance(BorderExtender.BORDER_COPY));
         }
 
         /*
@@ -349,8 +336,7 @@ final class Resampler2D extends GridCoverage2D {
                             gridToCRS = sourceGG.getGridToCRS(CORNER);
                             break;
                     }
-                    targetGG =
-                            new GridGeometry2D(PixelInCell.CELL_CENTER, gridToCRS, envelope, null);
+                    targetGG = new GridGeometry2D(PixelInCell.CELL_CENTER, gridToCRS, envelope, null);
                     automaticGG = false;
                 } else {
                     targetGG = null;
@@ -370,8 +356,7 @@ final class Resampler2D extends GridCoverage2D {
         }
         final GridGeometry2D sourceGG = sourceCoverage.getGridGeometry();
         final CoordinateReferenceSystem compatibleSourceCRS =
-                compatibleSourceCRS(
-                        sourceCoverage.getCoordinateReferenceSystem2D(), sourceCRS, targetCRS);
+                compatibleSourceCRS(sourceCoverage.getCoordinateReferenceSystem2D(), sourceCRS, targetCRS);
         /*
          * The projection are usually applied on floating-point values, in order
          * to gets maximal precision and to handle correctly the special case of
@@ -406,8 +391,7 @@ final class Resampler2D extends GridCoverage2D {
         ////                                                                                ////
         ////////////////////////////////////////////////////////////////////////////////////////
 
-        final CoordinateOperationFactory factory =
-                ReferencingFactoryFinder.getCoordinateOperationFactory(hints);
+        final CoordinateOperationFactory factory = ReferencingFactoryFinder.getCoordinateOperationFactory(hints);
         final MathTransformFactory mtFactory;
         if (factory instanceof AbstractCoordinateOperationFactory) {
             mtFactory = ((AbstractCoordinateOperationFactory) factory).getMathTransformFactory();
@@ -455,11 +439,10 @@ final class Resampler2D extends GridCoverage2D {
                     Bounds gridRange;
                     gridRange = toEnvelope(sourceGG.getGridRange());
                     gridRange = CRS.transform(allSteps.inverse(), gridRange);
-                    targetGG =
-                            new GridGeometry2D(
-                                    new GeneralGridEnvelope(gridRange, PixelInCell.CELL_CORNER),
-                                    targetGG.getGridToCRS(PixelInCell.CELL_CENTER),
-                                    targetCRS);
+                    targetGG = new GridGeometry2D(
+                            new GeneralGridEnvelope(gridRange, PixelInCell.CELL_CORNER),
+                            targetGG.getGridToCRS(PixelInCell.CELL_CENTER),
+                            targetCRS);
                 }
             }
         } else {
@@ -469,11 +452,8 @@ final class Resampler2D extends GridCoverage2D {
             final CoordinateOperation operation = factory.createOperation(sourceCRS, targetCRS);
             final boolean force2D = (sourceCRS != compatibleSourceCRS);
             step2 = factory.createOperation(targetCRS, compatibleSourceCRS).getMathTransform();
-            step3 =
-                    (force2D ? sourceGG.getGridToCRS2D(CORNER) : sourceGG.getGridToCRS(CORNER))
-                            .inverse();
-            final Bounds sourceEnvelope =
-                    sourceCoverage.getEnvelope(); // Don't force this one to 2D.
+            step3 = (force2D ? sourceGG.getGridToCRS2D(CORNER) : sourceGG.getGridToCRS(CORNER)).inverse();
+            final Bounds sourceEnvelope = sourceCoverage.getEnvelope(); // Don't force this one to 2D.
             final GeneralBounds targetEnvelope = CRS.transform(operation, sourceEnvelope);
             targetEnvelope.setCoordinateReferenceSystem(targetCRS);
             // 'targetCRS' may be different than the one set by CRS.transform(...).
@@ -495,9 +475,7 @@ final class Resampler2D extends GridCoverage2D {
              */
             if (targetGG == null) {
                 final GridEnvelope targetGR =
-                        force2D
-                                ? new GridEnvelope2D(sourceGG.getGridRange2D())
-                                : sourceGG.getGridRange();
+                        force2D ? new GridEnvelope2D(sourceGG.getGridRange2D()) : sourceGG.getGridRange();
                 targetGG = new GridGeometry2D(targetGR, targetEnvelope);
                 step1 = targetGG.getGridToCRS(CORNER);
             } else if (!targetGG.isDefined(GridGeometry2D.GRID_TO_CRS_BITMASK)) {
@@ -508,19 +486,15 @@ final class Resampler2D extends GridCoverage2D {
                 if (!targetGG.isDefined(GridGeometry2D.GRID_RANGE_BITMASK)) {
                     GeneralBounds gridRange = CRS.transform(step1.inverse(), targetEnvelope);
                     // According OpenGIS specification, GridGeometry maps pixel's center.
-                    targetGG =
-                            new GridGeometry2D(
-                                    new GeneralGridEnvelope(gridRange, PixelInCell.CELL_CENTER),
-                                    step1,
-                                    targetCRS);
+                    targetGG = new GridGeometry2D(
+                            new GeneralGridEnvelope(gridRange, PixelInCell.CELL_CENTER), step1, targetCRS);
                 }
             }
             /*
              * Computes the final transform.
              */
             allSteps =
-                    mtFactory.createConcatenatedTransform(
-                            mtFactory.createConcatenatedTransform(step1, step2), step3);
+                    mtFactory.createConcatenatedTransform(mtFactory.createConcatenatedTransform(step1, step2), step3);
         }
         final MathTransform allSteps2D = toMathTransform2D(allSteps, mtFactory, targetGG);
         if (!(allSteps2D instanceof MathTransform2D)) {
@@ -541,12 +515,9 @@ final class Resampler2D extends GridCoverage2D {
         RenderingHints targetHints = ImageUtilities.getRenderingHints(sourceImage);
         if (targetHints == null) {
             targetHints =
-                    new RenderingHints(
-                            JAI.KEY_INTERPOLATION,
-                            Interpolation.getInstance(Interpolation.INTERP_NEAREST));
+                    new RenderingHints(JAI.KEY_INTERPOLATION, Interpolation.getInstance(Interpolation.INTERP_NEAREST));
         } else {
-            targetHints.put(
-                    JAI.KEY_INTERPOLATION, Interpolation.getInstance(Interpolation.INTERP_NEAREST));
+            targetHints.put(JAI.KEY_INTERPOLATION, Interpolation.getInstance(Interpolation.INTERP_NEAREST));
         }
         targetHints.put(JAI.KEY_REPLACE_INDEX_COLOR_MODEL, false);
         targetHints.put(JAI.KEY_TRANSFORM_ON_COLORMAP, false);
@@ -572,8 +543,7 @@ final class Resampler2D extends GridCoverage2D {
             layout.setHeight(targetBB.height);
         }
         if (isBoundsUndefined(layout, true)) {
-            Dimension size =
-                    new Dimension(layout.getWidth(sourceImage), layout.getHeight(sourceImage));
+            Dimension size = new Dimension(layout.getWidth(sourceImage), layout.getHeight(sourceImage));
             size = ImageUtilities.toTileSize(size);
             layout.setTileGridXOffset(layout.getMinX(sourceImage));
             layout.setTileGridYOffset(layout.getMinY(sourceImage));
@@ -584,9 +554,7 @@ final class Resampler2D extends GridCoverage2D {
          * Creates the background values array.
          */
         final double[] background =
-                backgroundValues != null
-                        ? backgroundValues
-                        : CoverageUtilities.getBackgroundValues(sourceCoverage);
+                backgroundValues != null ? backgroundValues : CoverageUtilities.getBackgroundValues(sourceCoverage);
 
         /*
          * We need to correctly manage the Hints to control the replacement of IndexColorModel.
@@ -638,8 +606,7 @@ final class Resampler2D extends GridCoverage2D {
                  */
 
                 sourceImage = PlanarImage.wrapRenderedImage(sourceCoverage.getRenderedImage());
-                return create(
-                        sourceCoverage, sourceImage, targetGG, null, null, hints, sourceProps);
+                return create(sourceCoverage, sourceImage, targetGG, null, null, hints, sourceProps);
             }
             if (sourceBB.contains(targetBB)) {
                 w.crop(
@@ -698,8 +665,7 @@ final class Resampler2D extends GridCoverage2D {
                      * using heuristic rules. Only the constructor with a MathTransform argument
                      * is fully accurate.
                      */
-                    return create(
-                            sourceCoverage, sourceImage, targetGG, null, null, hints, sourceProps);
+                    return create(sourceCoverage, sourceImage, targetGG, null, null, hints, sourceProps);
                 }
                 // More general approach: apply the affine transform.
                 final AffineTransform affine = (AffineTransform) allSteps.inverse();
@@ -726,31 +692,23 @@ final class Resampler2D extends GridCoverage2D {
                 if (!JAIExt.isJAIExtOperation("Warp")) {
                     switch (sourceImage.getSampleModel().getTransferType()) {
                         case DataBuffer.TYPE_DOUBLE:
-                        case DataBuffer.TYPE_FLOAT:
-                            {
-                                Bounds source = CRS.transform(sourceGG.getEnvelope(), targetCRS);
-                                Bounds target = CRS.transform(targetGG.getEnvelope(), targetCRS);
-                                source = targetGG.reduce(source);
-                                target = targetGG.reduce(target);
-                                if (!(new GeneralBounds(source).contains(target, true))) {
-                                    if (interpolation != null
-                                            && !(interpolation instanceof InterpolationNearest)) {
-                                        hints.add(ImageUtilities.NN_INTERPOLATION_HINT);
-                                        return reproject(
-                                                sourceCoverage,
-                                                targetCRS,
-                                                targetGG,
-                                                null,
-                                                hints,
-                                                background);
-                                    } else {
-                                        // If we were already using nearest-neighbor interpolation,
-                                        // force usage of WarpAdapter2D instead of WarpAffine.
-                                        // The price will be a slower reprojection.
-                                        forceAdapter = true;
-                                    }
+                        case DataBuffer.TYPE_FLOAT: {
+                            Bounds source = CRS.transform(sourceGG.getEnvelope(), targetCRS);
+                            Bounds target = CRS.transform(targetGG.getEnvelope(), targetCRS);
+                            source = targetGG.reduce(source);
+                            target = targetGG.reduce(target);
+                            if (!(new GeneralBounds(source).contains(target, true))) {
+                                if (interpolation != null && !(interpolation instanceof InterpolationNearest)) {
+                                    hints.add(ImageUtilities.NN_INTERPOLATION_HINT);
+                                    return reproject(sourceCoverage, targetCRS, targetGG, null, hints, background);
+                                } else {
+                                    // If we were already using nearest-neighbor interpolation,
+                                    // force usage of WarpAdapter2D instead of WarpAffine.
+                                    // The price will be a slower reprojection.
+                                    forceAdapter = true;
                                 }
                             }
+                        }
                     }
                 }
                 // -------- End of JAI bug workaround --------
@@ -773,8 +731,7 @@ final class Resampler2D extends GridCoverage2D {
                 CoverageUtilities.setNoDataProperty(sourceProps, newNoData);
             }
         }
-        final RenderedOp targetImage =
-                w.getRenderedOperation(); // getJAI(hints).createNS(operation, paramBlk,
+        final RenderedOp targetImage = w.getRenderedOperation(); // getJAI(hints).createNS(operation, paramBlk,
         // targetHints);
         for (Map.Entry<String, Object> entry : imageProperties.entrySet()) {
             targetImage.setProperty(entry.getKey(), entry.getValue());
@@ -797,16 +754,13 @@ final class Resampler2D extends GridCoverage2D {
         upper[targetGG.gridDimensionY] = targetImage.getMaxY();
         final GridEnvelope actualGR = new GeneralGridEnvelope(lower, upper);
         if (!targetGR.equals(actualGR)) {
-            targetGG =
-                    new GridGeometry2D(
-                            actualGR, targetGG.getGridToCRS(PixelInCell.CELL_CENTER), targetCRS);
+            targetGG = new GridGeometry2D(actualGR, targetGG.getGridToCRS(PixelInCell.CELL_CENTER), targetCRS);
             if (!automaticGR) {
-                log(
-                        Loggings.getResources(locale)
-                                .getLogRecord(
-                                        Level.FINE,
-                                        LoggingKeys.ADJUSTED_GRID_GEOMETRY_$1,
-                                        sourceCoverage.getName().toString(locale)));
+                log(Loggings.getResources(locale)
+                        .getLogRecord(
+                                Level.FINE,
+                                LoggingKeys.ADJUSTED_GRID_GEOMETRY_$1,
+                                sourceCoverage.getName().toString(locale)));
             }
         }
         /*
@@ -817,46 +771,35 @@ final class Resampler2D extends GridCoverage2D {
          *     is "Warp" with "Nearest" interpolation on geophysics pixels values. Background
          *     value is 255.
          */
-        targetCoverage =
-                create(sourceCoverage, targetImage, targetGG, operation, warp, hints, sourceProps);
-        assert CRS.equalsIgnoreMetadata(targetCoverage.getCoordinateReferenceSystem(), targetCRS)
-                : targetGG;
-        assert targetCoverage.getGridGeometry().getGridRange2D().equals(targetImage.getBounds())
-                : targetGG;
+        targetCoverage = create(sourceCoverage, targetImage, targetGG, operation, warp, hints, sourceProps);
+        assert CRS.equalsIgnoreMetadata(targetCoverage.getCoordinateReferenceSystem(), targetCRS) : targetGG;
+        assert targetCoverage.getGridGeometry().getGridRange2D().equals(targetImage.getBounds()) : targetGG;
         if (CoverageProcessor.LOGGER.isLoggable(LOGGING_LEVEL)) {
-            Object bgParameter =
-                    (background != null)
-                            ? background.length == 1
-                                    ? (Double.isNaN(background[0])
-                                            ? "NaN"
-                                            : Double.valueOf(background[0]))
-                                    : XArray.toString(background, locale)
-                            : "No background used";
-            log(
-                    Loggings.getResources(locale)
-                            .getLogRecord(
-                                    LOGGING_LEVEL,
-                                    LoggingKeys.APPLIED_RESAMPLE_$11,
-                                    new Object[] {
-                                        /*  {0} */ sourceCoverage.getName().toString(locale),
-                                        /*  {1} */ sourceCoverage
-                                                .getCoordinateReferenceSystem()
-                                                .getName()
-                                                .getCode(),
-                                        /*  {2} */ sourceImage.getWidth(),
-                                        /*  {3} */ sourceImage.getHeight(),
-                                        /*  {4} */ targetCoverage
-                                                .getCoordinateReferenceSystem()
-                                                .getName()
-                                                .getCode(),
-                                        /*  {5} */ targetImage.getWidth(),
-                                        /*  {6} */ targetImage.getHeight(),
-                                        /*  {7} */ targetImage.getOperationName(),
-                                        /*  {8} */ Integer.valueOf(1),
-                                        /*  {9} */ ImageUtilities.getInterpolationName(
-                                                interpolation),
-                                        /* {10} */ bgParameter
-                                    }));
+            Object bgParameter = (background != null)
+                    ? background.length == 1
+                            ? (Double.isNaN(background[0]) ? "NaN" : Double.valueOf(background[0]))
+                            : XArray.toString(background, locale)
+                    : "No background used";
+            log(Loggings.getResources(locale)
+                    .getLogRecord(LOGGING_LEVEL, LoggingKeys.APPLIED_RESAMPLE_$11, new Object[] {
+                        /*  {0} */ sourceCoverage.getName().toString(locale),
+                        /*  {1} */ sourceCoverage
+                                .getCoordinateReferenceSystem()
+                                .getName()
+                                .getCode(),
+                        /*  {2} */ sourceImage.getWidth(),
+                        /*  {3} */ sourceImage.getHeight(),
+                        /*  {4} */ targetCoverage
+                                .getCoordinateReferenceSystem()
+                                .getName()
+                                .getCode(),
+                        /*  {5} */ targetImage.getWidth(),
+                        /*  {6} */ targetImage.getHeight(),
+                        /*  {7} */ targetImage.getOperationName(),
+                        /*  {8} */ Integer.valueOf(1),
+                        /*  {9} */ ImageUtilities.getInterpolationName(interpolation),
+                        /* {10} */ bgParameter
+                    }));
         }
 
         return targetCoverage;
@@ -886,8 +829,7 @@ final class Resampler2D extends GridCoverage2D {
         }
         while (!equivalent(coverage.getGridGeometry(), targetGG)
                 || (!CRS.equalsIgnoreMetadata(targetCRS, coverage.getCoordinateReferenceSystem())
-                        && !CRS.equalsIgnoreMetadata(
-                                targetCRS, coverage.getCoordinateReferenceSystem2D()))) {
+                        && !CRS.equalsIgnoreMetadata(targetCRS, coverage.getCoordinateReferenceSystem2D()))) {
             if (!(coverage instanceof Resampler2D)) {
                 return null;
             }
@@ -908,17 +850,12 @@ final class Resampler2D extends GridCoverage2D {
     private static boolean isBoundsUndefined(final ImageLayout layout, final boolean tile) {
         final int mask;
         if (tile) {
-            mask =
-                    ImageLayout.TILE_GRID_X_OFFSET_MASK
-                            | ImageLayout.TILE_WIDTH_MASK
-                            | ImageLayout.TILE_GRID_Y_OFFSET_MASK
-                            | ImageLayout.TILE_HEIGHT_MASK;
+            mask = ImageLayout.TILE_GRID_X_OFFSET_MASK
+                    | ImageLayout.TILE_WIDTH_MASK
+                    | ImageLayout.TILE_GRID_Y_OFFSET_MASK
+                    | ImageLayout.TILE_HEIGHT_MASK;
         } else {
-            mask =
-                    ImageLayout.MIN_X_MASK
-                            | ImageLayout.WIDTH_MASK
-                            | ImageLayout.MIN_Y_MASK
-                            | ImageLayout.HEIGHT_MASK;
+            mask = ImageLayout.MIN_X_MASK | ImageLayout.WIDTH_MASK | ImageLayout.MIN_Y_MASK | ImageLayout.HEIGHT_MASK;
         }
         return (layout.getValidMask() & mask) == 0;
     }
@@ -975,9 +912,7 @@ final class Resampler2D extends GridCoverage2D {
      * @throws FactoryException If {@code transform} is not separable.
      */
     private static MathTransform2D toMathTransform2D(
-            final MathTransform transform,
-            final MathTransformFactory mtFactory,
-            final GridGeometry2D sourceGG)
+            final MathTransform transform, final MathTransformFactory mtFactory, final GridGeometry2D sourceGG)
             throws FactoryException {
         final DimensionFilter filter = new DimensionFilter(mtFactory);
         filter.addSourceDimension(sourceGG.axisDimensionX);
@@ -1004,8 +939,7 @@ final class Resampler2D extends GridCoverage2D {
      * @param targetGG The target geometry. May be {@code null}, which is considered as equivalent.
      * @return {@code true} if the two geometries are equal, ignoring unspecified fields.
      */
-    private static boolean equivalent(
-            final GridGeometry2D sourceGG, final GridGeometry2D targetGG) {
+    private static boolean equivalent(final GridGeometry2D sourceGG, final GridGeometry2D targetGG) {
         if (targetGG == null || targetGG.equals(sourceGG)) {
             return true;
         }
@@ -1087,17 +1021,9 @@ final class Resampler2D extends GridCoverage2D {
                 final double translateX = sourceBB.x - actualBB.x;
                 final double translateY = sourceBB.y - actualBB.y;
                 final double factor = (double) step / (double) EMPIRICAL_ADJUSTMENT_STEPS;
-                final AffineTransform2D adjustment =
-                        new AffineTransform2D(
-                                1 - scaleX * factor,
-                                0,
-                                0,
-                                1 - scaleY * factor,
-                                translateX * factor,
-                                translateY * factor);
-                transform =
-                        (MathTransform2D)
-                                mtFactory.createConcatenatedTransform(allSteps2D, adjustment);
+                final AffineTransform2D adjustment = new AffineTransform2D(
+                        1 - scaleX * factor, 0, 0, 1 - scaleY * factor, translateX * factor, translateY * factor);
+                transform = (MathTransform2D) mtFactory.createConcatenatedTransform(allSteps2D, adjustment);
             }
             /*
              * Creates the warp object, trying to optimize to WarpAffine if possible. The transform

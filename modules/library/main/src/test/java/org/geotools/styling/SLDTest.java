@@ -90,13 +90,10 @@ public class SLDTest {
         RasterSymbolizer rs = sb.createRasterSymbolizer();
         Style s = sb.createStyle(rs);
 
-        SelectedChannelType red =
-                sf.createSelectedChannelType("red", sf.createContrastEnhancement(ff.literal(0.2)));
+        SelectedChannelType red = sf.createSelectedChannelType("red", sf.createContrastEnhancement(ff.literal(0.2)));
         SelectedChannelType green =
-                sf.createSelectedChannelType(
-                        "green", sf.createContrastEnhancement(ff.literal(0.4)));
-        SelectedChannelType blue =
-                sf.createSelectedChannelType("blue", sf.createContrastEnhancement(ff.literal(0.7)));
+                sf.createSelectedChannelType("green", sf.createContrastEnhancement(ff.literal(0.4)));
+        SelectedChannelType blue = sf.createSelectedChannelType("blue", sf.createContrastEnhancement(ff.literal(0.7)));
 
         SLD.setChannelSelection(s, new SelectedChannelType[] {red, green, blue}, null);
 

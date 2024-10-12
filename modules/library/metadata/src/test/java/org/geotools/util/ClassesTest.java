@@ -82,24 +82,19 @@ public final class ClassesTest {
      * @throws NoSuchMethodException Should never occur.
      */
     @Test
-    public void testBoundOfParameterizedAttribute()
-            throws NoSuchFieldException, NoSuchMethodException {
+    public void testBoundOfParameterizedAttribute() throws NoSuchFieldException, NoSuchMethodException {
         final Class<?>[] g = null;
         final Class<?>[] s = {Set.class};
         final Class<ClassesTest> c = ClassesTest.class;
         assertNull(Classes.boundOfParameterizedAttribute(c.getMethod("getter0", g)));
         assertNull(Classes.boundOfParameterizedAttribute(c.getMethod("setter0", s)));
         assertEquals(Long.class, Classes.boundOfParameterizedAttribute(c.getField("attrib2")));
-        assertEquals(
-                Integer.class, Classes.boundOfParameterizedAttribute(c.getMethod("getter1", g)));
+        assertEquals(Integer.class, Classes.boundOfParameterizedAttribute(c.getMethod("getter1", g)));
         assertEquals(Byte.class, Classes.boundOfParameterizedAttribute(c.getMethod("getter2", g)));
-        assertEquals(
-                Object.class, Classes.boundOfParameterizedAttribute(c.getMethod("getter3", g)));
-        assertEquals(
-                String.class, Classes.boundOfParameterizedAttribute(c.getMethod("setter1", s)));
+        assertEquals(Object.class, Classes.boundOfParameterizedAttribute(c.getMethod("getter3", g)));
+        assertEquals(String.class, Classes.boundOfParameterizedAttribute(c.getMethod("setter1", s)));
         assertEquals(Short.class, Classes.boundOfParameterizedAttribute(c.getMethod("setter2", s)));
-        assertEquals(
-                Object.class, Classes.boundOfParameterizedAttribute(c.getMethod("setter3", s)));
+        assertEquals(Object.class, Classes.boundOfParameterizedAttribute(c.getMethod("setter3", s)));
     }
 
     public Set<? extends Long> attrib2 = null;

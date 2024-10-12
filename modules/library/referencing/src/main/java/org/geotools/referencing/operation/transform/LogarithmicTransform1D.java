@@ -50,8 +50,7 @@ import tech.units.indriya.AbstractUnit;
  * @see ExponentialTransform1D
  * @see LinearTransform1D
  */
-public class LogarithmicTransform1D extends AbstractMathTransform
-        implements MathTransform1D, Serializable {
+public class LogarithmicTransform1D extends AbstractMathTransform implements MathTransform1D, Serializable {
     /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = 1535101265352133948L;
 
@@ -139,12 +138,9 @@ public class LogarithmicTransform1D extends AbstractMathTransform
      */
     @Override
     public ParameterValueGroup getParameterValues() {
-        return new org.geotools.parameter.ParameterGroup(
-                getParameterDescriptors(),
-                new ParameterValue[] {
-                    new FloatParameter(Provider.BASE, base),
-                    new FloatParameter(Provider.OFFSET, offset)
-                });
+        return new org.geotools.parameter.ParameterGroup(getParameterDescriptors(), new ParameterValue[] {
+            new FloatParameter(Provider.BASE, base), new FloatParameter(Provider.OFFSET, offset)
+        });
     }
 
     /** Gets the dimension of input points, which is 1. */
@@ -182,8 +178,7 @@ public class LogarithmicTransform1D extends AbstractMathTransform
 
     /** Transforms a list of coordinate point ordinal values. */
     @Override
-    public void transform(
-            final float[] srcPts, int srcOff, final float[] dstPts, int dstOff, int numPts) {
+    public void transform(final float[] srcPts, int srcOff, final float[] dstPts, int dstOff, int numPts) {
         if (srcPts != dstPts || srcOff >= dstOff) {
             while (--numPts >= 0) {
                 dstPts[dstOff++] = (float) (Math.log(srcPts[srcOff++]) / lnBase + offset);
@@ -199,8 +194,7 @@ public class LogarithmicTransform1D extends AbstractMathTransform
 
     /** Transforms a list of coordinate point ordinal values. */
     @Override
-    public void transform(
-            final double[] srcPts, int srcOff, final double[] dstPts, int dstOff, int numPts) {
+    public void transform(final double[] srcPts, int srcOff, final double[] dstPts, int dstOff, int numPts) {
         if (srcPts != dstPts || srcOff >= dstOff) {
             while (--numPts >= 0) {
                 dstPts[dstOff++] = Math.log(srcPts[srcOff++]) / lnBase + offset;
@@ -239,8 +233,7 @@ public class LogarithmicTransform1D extends AbstractMathTransform
 
         /** {@inheritDoc} */
         @Override
-        public void transform(
-                final float[] srcPts, int srcOff, final float[] dstPts, int dstOff, int numPts) {
+        public void transform(final float[] srcPts, int srcOff, final float[] dstPts, int dstOff, int numPts) {
             if (srcPts != dstPts || srcOff >= dstOff) {
                 while (--numPts >= 0) {
                     dstPts[dstOff++] = (float) (Math.log10(srcPts[srcOff++]) + offset);
@@ -256,8 +249,7 @@ public class LogarithmicTransform1D extends AbstractMathTransform
 
         /** {@inheritDoc} */
         @Override
-        public void transform(
-                final double[] srcPts, int srcOff, final double[] dstPts, int dstOff, int numPts) {
+        public void transform(final double[] srcPts, int srcOff, final double[] dstPts, int dstOff, int numPts) {
             if (srcPts != dstPts || srcOff >= dstOff) {
                 while (--numPts >= 0) {
                     dstPts[dstOff++] = Math.log10(srcPts[srcOff++]) + offset;
@@ -346,30 +338,21 @@ public class LogarithmicTransform1D extends AbstractMathTransform
          * values range from 0 to infinity. The default value is 10.
          */
         public static final ParameterDescriptor<Double> BASE =
-                DefaultParameterDescriptor.create(
-                        "base", 10, 0, Double.POSITIVE_INFINITY, AbstractUnit.ONE);
+                DefaultParameterDescriptor.create("base", 10, 0, Double.POSITIVE_INFINITY, AbstractUnit.ONE);
 
         /**
          * The operation parameter descriptor for the {@link #offset offset} parameter value. Valid
          * values range is unrestricted. The default value is 0.
          */
-        public static final ParameterDescriptor<Double> OFFSET =
-                DefaultParameterDescriptor.create(
-                        "offset",
-                        0,
-                        Double.NEGATIVE_INFINITY,
-                        Double.POSITIVE_INFINITY,
-                        AbstractUnit.ONE);
+        public static final ParameterDescriptor<Double> OFFSET = DefaultParameterDescriptor.create(
+                "offset", 0, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, AbstractUnit.ONE);
 
         /** The parameters group. */
-        static final ParameterDescriptorGroup PARAMETERS =
-                createDescriptorGroup(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(
-                                    Citations.GEOTOOLS,
-                                    Vocabulary.formatInternational(VocabularyKeys.LOGARITHMIC))
-                        },
-                        new ParameterDescriptor[] {BASE, OFFSET});
+        static final ParameterDescriptorGroup PARAMETERS = createDescriptorGroup(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.GEOTOOLS, Vocabulary.formatInternational(VocabularyKeys.LOGARITHMIC))
+                },
+                new ParameterDescriptor[] {BASE, OFFSET});
 
         /** Create a provider for logarithmic transforms. */
         public Provider() {

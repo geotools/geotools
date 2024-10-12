@@ -29,16 +29,14 @@ import org.locationtech.jts.geom.CoordinateSequence;
 import org.locationtech.jts.geom.CoordinateSequenceFilter;
 import org.locationtech.jts.geom.Geometry;
 
-public class FilterFunction_offset extends FunctionExpressionImpl
-        implements GeometryTransformation {
+public class FilterFunction_offset extends FunctionExpressionImpl implements GeometryTransformation {
 
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "offset",
-                    Geometry.class,
-                    parameter("geometry", Geometry.class),
-                    parameter("offsetX", Double.class),
-                    parameter("offsetY", Double.class));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "offset",
+            Geometry.class,
+            parameter("geometry", Geometry.class),
+            parameter("offsetX", Double.class),
+            parameter("offsetY", Double.class));
 
     public FilterFunction_offset() {
         super(NAME);

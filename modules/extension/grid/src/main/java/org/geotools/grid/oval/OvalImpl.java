@@ -41,8 +41,7 @@ public class OvalImpl implements Oval {
      * @param height span in the Y direction
      * @param crs coordinate reference system (may be {@code null})
      */
-    public OvalImpl(
-            double minX, double minY, double width, double height, CoordinateReferenceSystem crs) {
+    public OvalImpl(double minX, double minY, double width, double height, CoordinateReferenceSystem crs) {
         if (width <= 0 || height <= 0) {
             throw new IllegalArgumentException("width and height must both be positive");
         }

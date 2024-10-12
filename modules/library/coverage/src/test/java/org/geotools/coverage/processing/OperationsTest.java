@@ -75,18 +75,14 @@ public final class OperationsTest extends GridProcessingTestBase {
         double[] constants = {18};
         GridCoverage sourceCoverage = SST;
         GridCoverage targetCoverage = (GridCoverage) processor.subtract(sourceCoverage, constants);
-        RenderedImage sourceImage =
-                sourceCoverage.getRenderableImage(0, 1).createDefaultRendering();
-        RenderedImage targetImage =
-                targetCoverage.getRenderableImage(0, 1).createDefaultRendering();
+        RenderedImage sourceImage = sourceCoverage.getRenderableImage(0, 1).createDefaultRendering();
+        RenderedImage targetImage = targetCoverage.getRenderableImage(0, 1).createDefaultRendering();
         Raster sourceRaster = sourceImage.getData();
         Raster targetRaster = targetImage.getData();
         assertNotSame(sourceCoverage, targetCoverage);
         assertNotSame(sourceImage, targetImage);
         assertNotSame(sourceRaster, targetRaster);
-        assertSame(
-                sourceCoverage.getCoordinateReferenceSystem(),
-                targetCoverage.getCoordinateReferenceSystem());
+        assertSame(sourceCoverage.getCoordinateReferenceSystem(), targetCoverage.getCoordinateReferenceSystem());
         assertEquals(sourceCoverage.getEnvelope(), targetCoverage.getEnvelope());
         assertEquals(sourceCoverage.getGridGeometry(), targetCoverage.getGridGeometry());
         assertEquals(sourceRaster.getMinX(), targetRaster.getMinX());
@@ -95,9 +91,7 @@ public final class OperationsTest extends GridProcessingTestBase {
         assertEquals(sourceRaster.getHeight(), targetRaster.getHeight());
         assertEquals(0, sourceRaster.getMinX());
         assertEquals(0, sourceRaster.getMinY());
-        assertEquals(
-                JAIExt.getOperationName("SubtractConst"),
-                ((OperationNode) targetImage).getOperationName());
+        assertEquals(JAIExt.getOperationName("SubtractConst"), ((OperationNode) targetImage).getOperationName());
 
         final boolean medialib = TestData.isMediaLibAvailable();
         float difference;

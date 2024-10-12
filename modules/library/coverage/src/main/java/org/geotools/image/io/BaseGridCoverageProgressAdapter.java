@@ -44,8 +44,7 @@ public abstract class BaseGridCoverageProgressAdapter {
                     MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "numImages", numImages));
         this.numImages = numImages;
         if (monitor == null)
-            throw new NullPointerException(
-                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "monitor"));
+            throw new NullPointerException(MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "monitor"));
         this.monitor = monitor;
         init();
     }

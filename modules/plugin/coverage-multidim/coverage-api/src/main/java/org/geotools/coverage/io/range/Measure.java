@@ -35,8 +35,7 @@ import javax.measure.UnitConverter;
  * @param <V>
  * @param <Q>
  */
-public abstract class Measure<V extends Number, Q extends Quantity<Q>>
-        implements Comparable<Measure<V, Q>> {
+public abstract class Measure<V extends Number, Q extends Quantity<Q>> implements Comparable<Measure<V, Q>> {
     /** value of this measure */
     abstract V getValue();
 

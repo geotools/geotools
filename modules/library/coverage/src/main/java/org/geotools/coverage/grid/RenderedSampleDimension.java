@@ -63,8 +63,7 @@ final class RenderedSampleDimension extends GridSampleDimension {
      * @param image The image to be wrapped by {@link GridCoverage}.
      * @param bandNumber The band number.
      */
-    private RenderedSampleDimension(
-            final GridSampleDimension band, final RenderedImage image, final int bandNumber) {
+    private RenderedSampleDimension(final GridSampleDimension band, final RenderedImage image, final int bandNumber) {
         super(band);
         final SampleModel model = image.getSampleModel();
         this.band = bandNumber;
@@ -91,20 +90,12 @@ final class RenderedSampleDimension extends GridSampleDimension {
             final GridSampleDimension[] dst) {
         final int numBands = image.getSampleModel().getNumBands();
         if (src != null && src.length != numBands) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(
-                            ErrorKeys.NUMBER_OF_BANDS_MISMATCH_$3,
-                            numBands,
-                            src.length,
-                            "SampleDimension"));
+            throw new IllegalArgumentException(MessageFormat.format(
+                    ErrorKeys.NUMBER_OF_BANDS_MISMATCH_$3, numBands, src.length, "SampleDimension"));
         }
         if (dst.length != numBands) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(
-                            ErrorKeys.NUMBER_OF_BANDS_MISMATCH_$3,
-                            numBands,
-                            dst.length,
-                            "SampleDimension"));
+            throw new IllegalArgumentException(MessageFormat.format(
+                    ErrorKeys.NUMBER_OF_BANDS_MISMATCH_$3, numBands, dst.length, "SampleDimension"));
         }
         /*
          * Now, we know that the number of bands and the array length are consistent.
@@ -199,21 +190,15 @@ final class RenderedSampleDimension extends GridSampleDimension {
         final int numBands = dst.length;
         if (min != null && min.length != numBands) {
             throw new IllegalArgumentException(
-                    MessageFormat.format(
-                            ErrorKeys.NUMBER_OF_BANDS_MISMATCH_$3, numBands, min.length, "min[i]"));
+                    MessageFormat.format(ErrorKeys.NUMBER_OF_BANDS_MISMATCH_$3, numBands, min.length, "min[i]"));
         }
         if (max != null && max.length != numBands) {
             throw new IllegalArgumentException(
-                    MessageFormat.format(
-                            ErrorKeys.NUMBER_OF_BANDS_MISMATCH_$3, numBands, max.length, "max[i]"));
+                    MessageFormat.format(ErrorKeys.NUMBER_OF_BANDS_MISMATCH_$3, numBands, max.length, "max[i]"));
         }
         if (colors != null && colors.length != numBands) {
             throw new IllegalArgumentException(
-                    MessageFormat.format(
-                            ErrorKeys.NUMBER_OF_BANDS_MISMATCH_$3,
-                            numBands,
-                            colors.length,
-                            "colors[i]"));
+                    MessageFormat.format(ErrorKeys.NUMBER_OF_BANDS_MISMATCH_$3, numBands, colors.length, "colors[i]"));
         }
         /*
          * Arguments are know to be valids. We now need to compute two ranges:

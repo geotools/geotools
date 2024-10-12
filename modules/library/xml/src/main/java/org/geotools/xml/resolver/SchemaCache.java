@@ -49,8 +49,7 @@ import org.geotools.util.URLs;
  */
 public class SchemaCache {
 
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(SchemaCache.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(SchemaCache.class);
 
     /** The default block read size used when downloading a file. */
     private static final int DEFAULT_DOWNLOAD_BLOCK_SIZE = 4096;
@@ -65,9 +64,7 @@ public class SchemaCache {
      * Subdirectories used to recognise a GeoServer data directory if automatic configuration is
      * enabled.
      */
-    private static final String[] GEOSERVER_DATA_DIRECTORY_SUBDIRECTORIES = {
-        "styles", "workspaces"
-    };
+    private static final String[] GEOSERVER_DATA_DIRECTORY_SUBDIRECTORIES = {"styles", "workspaces"};
 
     /**
      * Name of the subdirectory of a GeoServer data directory (or other directory) used for the
@@ -102,11 +99,9 @@ public class SchemaCache {
     static {
         if (System.getProperty("schema.cache.download.timeout") != null) {
             try {
-                downloadTimeout =
-                        Integer.parseInt(System.getProperty("schema.cache.download.timeout"));
+                downloadTimeout = Integer.parseInt(System.getProperty("schema.cache.download.timeout"));
             } catch (NumberFormatException e) {
-                LOGGER.warning(
-                        "schema.cache.download.timeout has a wrong format: should be a number");
+                LOGGER.warning("schema.cache.download.timeout has a wrong format: should be a number");
             }
         }
     }
@@ -240,10 +235,7 @@ public class SchemaCache {
                 httpResponse = httpClient.get(url);
             } catch (IOException e) {
                 // don't throw an exception if status code >= 400
-                LOGGER.warning(
-                        String.format(
-                                "Unexpected response \"%s\" while downloading %s",
-                                e.getCause(), url));
+                LOGGER.warning(String.format("Unexpected response \"%s\" while downloading %s", e.getCause(), url));
                 return null;
             }
             if (httpResponse == null) {
@@ -351,14 +343,12 @@ public class SchemaCache {
         File file = URLs.urlToFile(url);
         while (true) {
             if (file == null) {
-                LOGGER.warning(
-                        "Automatic app-schema-cache directory build failed, "
-                                + "Geoserver root folder or app-schema-cache folder not found");
+                LOGGER.warning("Automatic app-schema-cache directory build failed, "
+                        + "Geoserver root folder or app-schema-cache folder not found");
                 return null;
             }
             if (isSuitableDirectoryToContainCache(file)) {
-                return new SchemaCache(
-                        new File(file, CACHE_DIRECTORY_NAME), true, DEFAULT_KEEP_QUERY);
+                return new SchemaCache(new File(file, CACHE_DIRECTORY_NAME), true, DEFAULT_KEEP_QUERY);
             }
             file = file.getParentFile();
         }
@@ -378,20 +368,16 @@ public class SchemaCache {
         File cacheDirectory = new File(directory);
         if (cacheDirectory.exists() && cacheDirectory.isFile()) {
             // there is nothing we can do, let's abort the instantiation
-            throw new RuntimeException(
-                    String.format(
-                            "Provided schema cache directory '%s' already exists but it's a file.",
-                            cacheDirectory.getAbsolutePath()));
+            throw new RuntimeException(String.format(
+                    "Provided schema cache directory '%s' already exists but it's a file.",
+                    cacheDirectory.getAbsolutePath()));
         }
         if (!cacheDirectory.exists()) {
             // create the schema cache directory
             cacheDirectory.mkdir();
         }
         // looks like we are fine
-        LOGGER.fine(
-                String.format(
-                        "Using provided schema cache directory '%s'.",
-                        cacheDirectory.getAbsolutePath()));
+        LOGGER.fine(String.format("Using provided schema cache directory '%s'.", cacheDirectory.getAbsolutePath()));
         return new SchemaCache(cacheDirectory, true, DEFAULT_KEEP_QUERY);
     }
 

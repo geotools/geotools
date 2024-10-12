@@ -168,18 +168,14 @@ public class JMapPane extends AbstractMapPane {
     protected void drawLayers(boolean createNewImage) {
         drawingLock.lock();
         try {
-            if (mapContent != null
-                    && !mapContent.getViewport().isEmpty()
-                    && acceptRepaintRequests.get()) {
+            if (mapContent != null && !mapContent.getViewport().isEmpty() && acceptRepaintRequests.get()) {
 
                 Rectangle r = getVisibleRect();
                 if (baseImage == null || createNewImage) {
-                    baseImage =
-                            GraphicsEnvironment.getLocalGraphicsEnvironment()
-                                    .getDefaultScreenDevice()
-                                    .getDefaultConfiguration()
-                                    .createCompatibleImage(
-                                            r.width, r.height, Transparency.TRANSLUCENT);
+                    baseImage = GraphicsEnvironment.getLocalGraphicsEnvironment()
+                            .getDefaultScreenDevice()
+                            .getDefaultConfiguration()
+                            .createCompatibleImage(r.width, r.height, Transparency.TRANSLUCENT);
 
                     if (baseImageGraphics != null) {
                         baseImageGraphics.dispose();
@@ -196,8 +192,7 @@ public class JMapPane extends AbstractMapPane {
                 }
 
                 if (mapContent != null && !mapContent.layers().isEmpty()) {
-                    getRenderingExecutor()
-                            .submit(mapContent, getRenderer(), baseImageGraphics, this);
+                    getRenderingExecutor().submit(mapContent, getRenderer(), baseImageGraphics, this);
                 }
             }
         } finally {

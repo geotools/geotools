@@ -72,8 +72,7 @@ class JDBCQueryCapabilities extends QueryCapabilities {
      * @return true if propertyName refers to one of the FeatureType attributes
      */
     protected boolean supportsPropertySorting(PropertyName propertyName, SortOrder sortOrder) {
-        AttributeDescriptor descriptor =
-                (AttributeDescriptor) propertyName.evaluate(source.getSchema());
+        AttributeDescriptor descriptor = (AttributeDescriptor) propertyName.evaluate(source.getSchema());
         if (descriptor == null) {
             String attName = propertyName.getPropertyName();
             descriptor = source.getSchema().getDescriptor(attName);

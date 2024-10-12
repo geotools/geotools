@@ -71,12 +71,10 @@ public class URLs {
      */
     public static URL extendUrl(URL base, String extension) throws MalformedURLException {
         if (base == null) {
-            throw new NullPointerException(
-                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "base"));
+            throw new NullPointerException(MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "base"));
         }
         if (extension == null) {
-            throw new NullPointerException(
-                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "extension"));
+            throw new NullPointerException(MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "extension"));
         }
         String a = base.toString();
         if (!a.endsWith("/")) {

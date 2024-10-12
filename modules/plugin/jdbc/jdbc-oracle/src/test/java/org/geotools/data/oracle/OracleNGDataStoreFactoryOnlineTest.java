@@ -133,8 +133,7 @@ public class OracleNGDataStoreFactoryOnlineTest extends JDBCTestSupport {
         }
     }
 
-    private void checkCreateConnection(OracleNGDataStoreFactory factory, String dbtype)
-            throws IOException {
+    private void checkCreateConnection(OracleNGDataStoreFactory factory, String dbtype) throws IOException {
         Properties db = FixtureUtilities.loadFixture("oracle");
         Map<String, Object> params = new HashMap<>();
         params.put(HOST.key, db.getProperty(HOST.key));

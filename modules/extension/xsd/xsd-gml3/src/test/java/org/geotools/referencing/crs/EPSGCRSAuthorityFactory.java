@@ -50,8 +50,7 @@ import org.geotools.util.factory.AbstractFactory;
  */
 public class EPSGCRSAuthorityFactory extends AbstractFactory implements CRSAuthorityFactory {
 
-    private static final String EXCEPTION_MESSAGE =
-            "Factory disabled for gt-xsd-gml3 testing (see GEOT-3112)";
+    private static final String EXCEPTION_MESSAGE = "Factory disabled for gt-xsd-gml3 testing (see GEOT-3112)";
 
     public EPSGCRSAuthorityFactory() {
         super(MINIMUM_PRIORITY);
@@ -65,20 +64,17 @@ public class EPSGCRSAuthorityFactory extends AbstractFactory implements CRSAutho
     }
 
     @Override
-    public Set<String> getAuthorityCodes(Class<? extends IdentifiedObject> type)
-            throws FactoryException {
+    public Set<String> getAuthorityCodes(Class<? extends IdentifiedObject> type) throws FactoryException {
         throw new FactoryException(EXCEPTION_MESSAGE);
     }
 
     @Override
-    public InternationalString getDescriptionText(String code)
-            throws NoSuchAuthorityCodeException, FactoryException {
+    public InternationalString getDescriptionText(String code) throws NoSuchAuthorityCodeException, FactoryException {
         throw new FactoryException(EXCEPTION_MESSAGE);
     }
 
     @Override
-    public IdentifiedObject createObject(String code)
-            throws NoSuchAuthorityCodeException, FactoryException {
+    public IdentifiedObject createObject(String code) throws NoSuchAuthorityCodeException, FactoryException {
         throw new FactoryException(EXCEPTION_MESSAGE);
     }
 
@@ -94,56 +90,47 @@ public class EPSGCRSAuthorityFactory extends AbstractFactory implements CRSAutho
     }
 
     @Override
-    public CompoundCRS createCompoundCRS(String code)
-            throws NoSuchAuthorityCodeException, FactoryException {
+    public CompoundCRS createCompoundCRS(String code) throws NoSuchAuthorityCodeException, FactoryException {
         throw new FactoryException(EXCEPTION_MESSAGE);
     }
 
     @Override
-    public DerivedCRS createDerivedCRS(String code)
-            throws NoSuchAuthorityCodeException, FactoryException {
+    public DerivedCRS createDerivedCRS(String code) throws NoSuchAuthorityCodeException, FactoryException {
         throw new FactoryException(EXCEPTION_MESSAGE);
     }
 
     @Override
-    public EngineeringCRS createEngineeringCRS(String code)
-            throws NoSuchAuthorityCodeException, FactoryException {
+    public EngineeringCRS createEngineeringCRS(String code) throws NoSuchAuthorityCodeException, FactoryException {
         throw new FactoryException(EXCEPTION_MESSAGE);
     }
 
     @Override
-    public GeographicCRS createGeographicCRS(String code)
-            throws NoSuchAuthorityCodeException, FactoryException {
+    public GeographicCRS createGeographicCRS(String code) throws NoSuchAuthorityCodeException, FactoryException {
         throw new FactoryException(EXCEPTION_MESSAGE);
     }
 
     @Override
-    public GeocentricCRS createGeocentricCRS(String code)
-            throws NoSuchAuthorityCodeException, FactoryException {
+    public GeocentricCRS createGeocentricCRS(String code) throws NoSuchAuthorityCodeException, FactoryException {
         throw new FactoryException(EXCEPTION_MESSAGE);
     }
 
     @Override
-    public ImageCRS createImageCRS(String code)
-            throws NoSuchAuthorityCodeException, FactoryException {
+    public ImageCRS createImageCRS(String code) throws NoSuchAuthorityCodeException, FactoryException {
         throw new FactoryException(EXCEPTION_MESSAGE);
     }
 
     @Override
-    public ProjectedCRS createProjectedCRS(String code)
-            throws NoSuchAuthorityCodeException, FactoryException {
+    public ProjectedCRS createProjectedCRS(String code) throws NoSuchAuthorityCodeException, FactoryException {
         throw new FactoryException(EXCEPTION_MESSAGE);
     }
 
     @Override
-    public TemporalCRS createTemporalCRS(String code)
-            throws NoSuchAuthorityCodeException, FactoryException {
+    public TemporalCRS createTemporalCRS(String code) throws NoSuchAuthorityCodeException, FactoryException {
         throw new FactoryException(EXCEPTION_MESSAGE);
     }
 
     @Override
-    public VerticalCRS createVerticalCRS(String code)
-            throws NoSuchAuthorityCodeException, FactoryException {
+    public VerticalCRS createVerticalCRS(String code) throws NoSuchAuthorityCodeException, FactoryException {
         throw new FactoryException(EXCEPTION_MESSAGE);
     }
 }

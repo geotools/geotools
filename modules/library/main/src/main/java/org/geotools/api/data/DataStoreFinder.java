@@ -43,8 +43,7 @@ import org.geotools.util.factory.FactoryRegistry;
  */
 public final class DataStoreFinder {
     /** The logger for the filter module. */
-    protected static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(DataStoreFinder.class);
+    protected static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(DataStoreFinder.class);
 
     /** The service registry for this manager. Will be initialized only when first needed. */
     private static volatile FactoryRegistry registry;
@@ -65,8 +64,7 @@ public final class DataStoreFinder {
      */
     public static synchronized DataStore getDataStore(Map<String, ?> params) throws IOException {
         Iterator<DataStoreFactorySpi> ps = getAvailableDataStores();
-        DataAccess<? extends FeatureType, ? extends Feature> dataStore =
-                DataAccessFinder.getDataStore(params, ps);
+        DataAccess<? extends FeatureType, ? extends Feature> dataStore = DataAccessFinder.getDataStore(params, ps);
         return (DataStore) dataStore;
     }
 
@@ -101,8 +99,7 @@ public final class DataStoreFinder {
     private static FactoryRegistry getServiceRegistry() {
         assert Thread.holdsLock(DataStoreFinder.class);
         if (registry == null) {
-            registry =
-                    new FactoryCreator(Arrays.asList(new Class<?>[] {DataStoreFactorySpi.class}));
+            registry = new FactoryCreator(Arrays.asList(new Class<?>[] {DataStoreFactorySpi.class}));
         }
         return registry;
     }

@@ -103,9 +103,8 @@ class TemporalConverterFactoryHack implements ConverterFactory {
                     public <T> T convert(Object source, Class<T> target) throws Exception {
                         if (source instanceof XMLGregorianCalendar) {
                             XMLGregorianCalendar xmlc = (XMLGregorianCalendar) source;
-                            Date date =
-                                    xmlc.toGregorianCalendar(GMT, Locale.getDefault(), null)
-                                            .getTime();
+                            Date date = xmlc.toGregorianCalendar(GMT, Locale.getDefault(), null)
+                                    .getTime();
                             return target.cast(df.format(date));
                         }
                         return null;

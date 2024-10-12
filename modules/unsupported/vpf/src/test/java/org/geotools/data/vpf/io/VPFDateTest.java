@@ -59,8 +59,7 @@ public class VPFDateTest {
     @Test
     public void testGetDate() {
         Assert.assertNotNull(
-                "Check if it is possible to parse date, corretness is "
-                        + "checked in getCalendar method",
+                "Check if it is possible to parse date, corretness is " + "checked in getCalendar method",
                 varVPFDate.getDate());
     } // end of testGetDate()
 
@@ -68,8 +67,7 @@ public class VPFDateTest {
     public void testGetCalendar() {
         Calendar cal = varVPFDate.getCalendar();
         Assert.assertEquals("Checking year", 2003, cal.get(Calendar.YEAR));
-        Assert.assertEquals(
-                "Checking month (Calendar numvers months from 0)", 1, cal.get(Calendar.MONTH) + 1);
+        Assert.assertEquals("Checking month (Calendar numvers months from 0)", 1, cal.get(Calendar.MONTH) + 1);
         Assert.assertEquals("Checking day of month", 29, cal.get(Calendar.DAY_OF_MONTH));
         Assert.assertEquals("Checking hour", 16, cal.get(Calendar.HOUR_OF_DAY));
         Assert.assertEquals("Checking minute", 10, cal.get(Calendar.MINUTE));

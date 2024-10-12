@@ -79,8 +79,8 @@ public abstract class AbstractGetFeatureResponseParserFactory extends AbstractWF
     }
 
     @Override
-    protected WFSResponse createResponseImpl(
-            WFSRequest request, HTTPResponse response, InputStream in) throws IOException {
+    protected WFSResponse createResponseImpl(WFSRequest request, HTTPResponse response, InputStream in)
+            throws IOException {
         GetParser<SimpleFeature> parser = parser((GetFeatureRequest) request, in);
         try {
             return new GetFeatureResponse(request, response, parser);
@@ -108,8 +108,7 @@ public abstract class AbstractGetFeatureResponseParserFactory extends AbstractWF
         return queryType;
     }
 
-    protected abstract GetParser<SimpleFeature> parser(GetFeatureRequest request, InputStream in)
-            throws IOException;
+    protected abstract GetParser<SimpleFeature> parser(GetFeatureRequest request, InputStream in) throws IOException;
 
     protected abstract List<String> getSupportedVersions();
 }

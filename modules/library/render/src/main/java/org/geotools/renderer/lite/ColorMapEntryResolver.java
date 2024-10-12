@@ -54,8 +54,7 @@ class ColorMapEntryResolver extends DuplicatingStyleVisitor {
         copy.setQuantity(copyCqlExpression(colorMapEntry.getQuantity()));
 
         if (STRICT && !copy.equals(colorMapEntry)) {
-            throw new IllegalStateException(
-                    "Was unable to duplicate provided ColorMapEntry:" + colorMapEntry);
+            throw new IllegalStateException("Was unable to duplicate provided ColorMapEntry:" + colorMapEntry);
         }
         pages.push(copy);
     }

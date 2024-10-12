@@ -94,9 +94,7 @@ public class JSimpleStyleDialog extends JDialog {
      *
      * @todo these must be defined somewhere else ?
      */
-    private static final String[] WELL_KNOWN_SYMBOL_NAMES = {
-        "Circle", "Square", "Cross", "X", "Triangle", "Star"
-    };
+    private static final String[] WELL_KNOWN_SYMBOL_NAMES = {"Circle", "Square", "Cross", "X", "Triangle", "Star"};
 
     public static final Color DEFAULT_LINE_COLOR = Color.BLACK;
     public static final Color DEFAULT_FILL_COLOR = Color.WHITE;
@@ -229,8 +227,7 @@ public class JSimpleStyleDialog extends JDialog {
      * @param initialStyle an optional Style object to initialize the dialog (may be {@code null})
      * @return a new Style instance or null if the user cancels the dialog
      */
-    public static Style showDialog(
-            Component parent, SimpleFeatureType featureType, Style initialStyle) {
+    public static Style showDialog(Component parent, SimpleFeatureType featureType, Style initialStyle) {
 
         Style style = null;
         JSimpleStyleDialog dialog = null;
@@ -253,36 +250,33 @@ public class JSimpleStyleDialog extends JDialog {
             switch (dialog.getGeomType()) {
                 case POLYGON:
                 case MULTIPOLYGON:
-                    style =
-                            SLD.createPolygonStyle(
-                                    dialog.getLineColor(),
-                                    dialog.getFillColor(),
-                                    dialog.getOpacity(),
-                                    dialog.getLabelField(),
-                                    dialog.getLabelFont());
+                    style = SLD.createPolygonStyle(
+                            dialog.getLineColor(),
+                            dialog.getFillColor(),
+                            dialog.getOpacity(),
+                            dialog.getLabelField(),
+                            dialog.getLabelFont());
                     break;
 
                 case LINESTRING:
                 case MULTILINESTRING:
-                    style =
-                            SLD.createLineStyle(
-                                    dialog.getLineColor(),
-                                    dialog.getLineWidth(),
-                                    dialog.getLabelField(),
-                                    dialog.getLabelFont());
+                    style = SLD.createLineStyle(
+                            dialog.getLineColor(),
+                            dialog.getLineWidth(),
+                            dialog.getLabelField(),
+                            dialog.getLabelFont());
                     break;
 
                 case POINT:
                 case MULTIPOINT:
-                    style =
-                            SLD.createPointStyle(
-                                    dialog.getPointSymbolName(),
-                                    dialog.getLineColor(),
-                                    dialog.getFillColor(),
-                                    dialog.getOpacity(),
-                                    dialog.getPointSize(),
-                                    dialog.getLabelField(),
-                                    dialog.getLabelFont());
+                    style = SLD.createPointStyle(
+                            dialog.getPointSymbolName(),
+                            dialog.getLineColor(),
+                            dialog.getFillColor(),
+                            dialog.getOpacity(),
+                            dialog.getPointSize(),
+                            dialog.getLabelField(),
+                            dialog.getLabelFont());
                     break;
             }
         }
@@ -511,8 +505,7 @@ public class JSimpleStyleDialog extends JDialog {
         fillOpacitySlider = new JSlider(0, 100, 100);
         fillOpacitySlider.setPaintLabels(true);
         fillOpacitySlider.setMajorTickSpacing(20);
-        fillOpacitySlider.addChangeListener(
-                e -> opacity = (float) fillOpacitySlider.getValue() / 100);
+        fillOpacitySlider.addChangeListener(e -> opacity = (float) fillOpacitySlider.getValue() / 100);
         panel.add(fillOpacitySlider, "span, wrap");
         controls.put(fillOpacitySlider, ControlCategory.FILL);
 
@@ -541,10 +534,7 @@ public class JSimpleStyleDialog extends JDialog {
 
         pointSymbolCBox = new JComboBox<>(WELL_KNOWN_SYMBOL_NAMES);
         pointSymbolCBox.addActionListener(
-                e ->
-                        pointSymbolName =
-                                WELL_KNOWN_SYMBOL_NAMES[pointSymbolCBox.getSelectedIndex()]
-                                        .toString());
+                e -> pointSymbolName = WELL_KNOWN_SYMBOL_NAMES[pointSymbolCBox.getSelectedIndex()].toString());
         panel.add(pointSymbolCBox, "wrap");
         controls.put(pointSymbolCBox, ControlCategory.POINT);
 
@@ -563,12 +553,11 @@ public class JSimpleStyleDialog extends JDialog {
                 e -> labelField = labelCBox.getModel().getSelectedItem().toString());
 
         final JCheckBox checkBox = new JCheckBox();
-        checkBox.addActionListener(
-                e -> {
-                    labelFeatures = checkBox.isSelected();
-                    labelCBox.setEnabled(labelFeatures);
-                    fontBtn.setEnabled(labelFeatures);
-                });
+        checkBox.addActionListener(e -> {
+            labelFeatures = checkBox.isSelected();
+            labelCBox.setEnabled(labelFeatures);
+            fontBtn.setEnabled(labelFeatures);
+        });
         panel.add(checkBox, "gapbefore indent, span, split 3");
 
         label = new JLabel("Field");
@@ -582,19 +571,17 @@ public class JSimpleStyleDialog extends JDialog {
          * Apply and Cancel buttons
          */
         btn = new JButton("Apply");
-        btn.addActionListener(
-                e -> {
-                    completed = true;
-                    setVisible(false);
-                });
+        btn.addActionListener(e -> {
+            completed = true;
+            setVisible(false);
+        });
         panel.add(btn, "span, split 2, align right");
 
         btn = new JButton("Cancel");
-        btn.addActionListener(
-                e -> {
-                    geomType = null;
-                    setVisible(false);
-                });
+        btn.addActionListener(e -> {
+            geomType = null;
+            setVisible(false);
+        });
         panel.add(btn);
 
         getContentPane().add(panel);
@@ -606,7 +593,8 @@ public class JSimpleStyleDialog extends JDialog {
 
         GeometryDescriptor desc = schema.getGeometryDescriptor();
         @SuppressWarnings("unchecked")
-        Class<? extends Geometry> clazz = (Class<? extends Geometry>) desc.getType().getBinding();
+        Class<? extends Geometry> clazz =
+                (Class<? extends Geometry>) desc.getType().getBinding();
         geomType = Geometries.getForBinding(clazz);
 
         String labelText = schema.getTypeName();
@@ -641,9 +629,7 @@ public class JSimpleStyleDialog extends JDialog {
                     break;
 
                 case FILL:
-                    c.setEnabled(
-                            geomType != Geometries.LINESTRING
-                                    && geomType != Geometries.MULTILINESTRING);
+                    c.setEnabled(geomType != Geometries.LINESTRING && geomType != Geometries.MULTILINESTRING);
                     break;
 
                 case POINT:
@@ -708,7 +694,8 @@ public class JSimpleStyleDialog extends JDialog {
                  * right sort of symbolizer
                  */
                 for (int ifts = 0;
-                        featureTypeStyle == null && ifts < style.featureTypeStyles().size();
+                        featureTypeStyle == null
+                                && ifts < style.featureTypeStyles().size();
                         ifts++) {
                     FeatureTypeStyle fts = style.featureTypeStyles().get(ifts);
                     for (int irule = 0;

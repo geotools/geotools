@@ -81,8 +81,7 @@ public class RecodeFunction implements Function {
 
         // check inputs
         if ((parameters.size() % 2 != 1) && (!parameters.isEmpty())) {
-            throw new IllegalArgumentException(
-                    "There must be an equal number of lookup data and return values");
+            throw new IllegalArgumentException("There must be an equal number of lookup data and return values");
         }
 
         // see if the table is full of attribute independent expressions
@@ -152,9 +151,7 @@ public class RecodeFunction implements Function {
                     }
                 }
 
-                if (fastLookup != null
-                        && lookup.getClass() == lastKeyType
-                        && context == lastContextType) {
+                if (fastLookup != null && lookup.getClass() == lastKeyType && context == lastContextType) {
                     @SuppressWarnings("unchecked")
                     T result = (T) fastLookup.get(lookup);
                     return result;
@@ -195,8 +192,7 @@ public class RecodeFunction implements Function {
         List<org.geotools.api.filter.expression.Expression> params = getParameters();
         if (params != null) {
             org.geotools.api.filter.expression.Expression exp;
-            for (Iterator<org.geotools.api.filter.expression.Expression> it = params.iterator();
-                    it.hasNext(); ) {
+            for (Iterator<org.geotools.api.filter.expression.Expression> it = params.iterator(); it.hasNext(); ) {
                 exp = it.next();
                 sb.append("[");
                 sb.append(exp);
@@ -225,7 +221,6 @@ public class RecodeFunction implements Function {
 
     @Override
     public int hashCode() {
-        return Objects.hash(
-                parameters, staticTable, fastLookup, lastKeyType, lastContextType, fallback);
+        return Objects.hash(parameters, staticTable, fastLookup, lastKeyType, lastContextType, fallback);
     }
 }

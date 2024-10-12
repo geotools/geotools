@@ -66,20 +66,16 @@ public class DB23DTestSetup extends JDBC3DTestSetup {
         String tableName = "line3d";
         String tableNameQuoted = "\"" + tableName + "\"";
         try (Connection con = getDataSource().getConnection()) {
-            con.prepareStatement(
-                            "CREATE SEQUENCE "
-                                    + getSquenceNameQuoted()
-                                    + " AS INTEGER  start with 0")
+            con.prepareStatement("CREATE SEQUENCE " + getSquenceNameQuoted() + " AS INTEGER  start with 0")
                     .execute();
-            con.prepareStatement(
-                            "CREATE TABLE "
-                                    + DB2TestUtil.SCHEMA_QUOTED
-                                    + "."
-                                    + tableNameQuoted
-                                    + "(\"fid\" int  not null, "
-                                    + "\"id\" int,"
-                                    + "\"geom\" db2gse.st_linestring , "
-                                    + " \"name\" varchar(255), PRIMARY KEY (\"fid\") )")
+            con.prepareStatement("CREATE TABLE "
+                            + DB2TestUtil.SCHEMA_QUOTED
+                            + "."
+                            + tableNameQuoted
+                            + "(\"fid\" int  not null, "
+                            + "\"id\" int,"
+                            + "\"geom\" db2gse.st_linestring , "
+                            + " \"name\" varchar(255), PRIMARY KEY (\"fid\") )")
                     .execute();
 
             //        con.prepareStatement("CREATE TABLE
@@ -90,31 +86,29 @@ public class DB23DTestSetup extends JDBC3DTestSetup {
             //            + " \"name\" varchar(255), PRIMARY KEY (\"fid\") )").execute();
             DB2Util.executeRegister(DB2TestUtil.SCHEMA, tableName, "geom", SRSNAME, con);
             // insert data
-            con.prepareStatement(
-                            "INSERT INTO "
-                                    + DB2TestUtil.SCHEMA_QUOTED
-                                    + "."
-                                    + tableNameQuoted
-                                    + ""
-                                    + "(\"fid\",\"id\",\"name\",\"geom\") VALUES ( next value for "
-                                    + getSquenceNameQuoted()
-                                    + ",0,'l1', "
-                                    + "db2gse.ST_LineFromText('LINESTRING Z( 1 1 0, 2 2 0, 4 2 1, 5 1 1)',"
-                                    + SRID
-                                    + "))")
+            con.prepareStatement("INSERT INTO "
+                            + DB2TestUtil.SCHEMA_QUOTED
+                            + "."
+                            + tableNameQuoted
+                            + ""
+                            + "(\"fid\",\"id\",\"name\",\"geom\") VALUES ( next value for "
+                            + getSquenceNameQuoted()
+                            + ",0,'l1', "
+                            + "db2gse.ST_LineFromText('LINESTRING Z( 1 1 0, 2 2 0, 4 2 1, 5 1 1)',"
+                            + SRID
+                            + "))")
                     .execute();
-            con.prepareStatement(
-                            "INSERT INTO "
-                                    + DB2TestUtil.SCHEMA_QUOTED
-                                    + "."
-                                    + tableNameQuoted
-                                    + "(\"fid\",\"id\",\"name\",\"geom\") "
-                                    + "VALUES ( next value for "
-                                    + getSquenceNameQuoted()
-                                    + ",1,'l2', "
-                                    + "db2gse.ST_LineFromText('LINESTRING Z( 3 0 1 , 3 2 2 , 3 3 3 , 3 4 5 )',"
-                                    + SRID
-                                    + "))")
+            con.prepareStatement("INSERT INTO "
+                            + DB2TestUtil.SCHEMA_QUOTED
+                            + "."
+                            + tableNameQuoted
+                            + "(\"fid\",\"id\",\"name\",\"geom\") "
+                            + "VALUES ( next value for "
+                            + getSquenceNameQuoted()
+                            + ",1,'l2', "
+                            + "db2gse.ST_LineFromText('LINESTRING Z( 3 0 1 , 3 2 2 , 3 3 3 , 3 4 5 )',"
+                            + SRID
+                            + "))")
                     .execute();
         }
     }
@@ -125,37 +119,34 @@ public class DB23DTestSetup extends JDBC3DTestSetup {
         String tableName = "point3d";
         String tableNameQuoted = "\"" + tableName + "\"";
         try (Connection con = getDataSource().getConnection()) {
-            con.prepareStatement(
-                            "CREATE TABLE "
-                                    + DB2TestUtil.SCHEMA_QUOTED
-                                    + "."
-                                    + tableNameQuoted
-                                    + "(\"fid\" int  generated always as identity (start with 0, increment by 1) , "
-                                    + "\"id\" int,"
-                                    + "\"geom\" db2gse.st_point , "
-                                    + " \"name\" varchar(255), PRIMARY KEY (\"fid\") )")
+            con.prepareStatement("CREATE TABLE "
+                            + DB2TestUtil.SCHEMA_QUOTED
+                            + "."
+                            + tableNameQuoted
+                            + "(\"fid\" int  generated always as identity (start with 0, increment by 1) , "
+                            + "\"id\" int,"
+                            + "\"geom\" db2gse.st_point , "
+                            + " \"name\" varchar(255), PRIMARY KEY (\"fid\") )")
                     .execute();
             DB2Util.executeRegister(DB2TestUtil.SCHEMA, tableName, "geom", SRSNAME, con);
             // insert data
-            con.prepareStatement(
-                            "INSERT INTO "
-                                    + DB2TestUtil.SCHEMA_QUOTED
-                                    + "."
-                                    + tableNameQuoted
-                                    + "(\"id\",\"name\",\"geom\") VALUES ( 0, 'p1',"
-                                    + "db2gse.ST_PointFromText('POINT Z(1 1 1)',"
-                                    + SRID
-                                    + "))")
+            con.prepareStatement("INSERT INTO "
+                            + DB2TestUtil.SCHEMA_QUOTED
+                            + "."
+                            + tableNameQuoted
+                            + "(\"id\",\"name\",\"geom\") VALUES ( 0, 'p1',"
+                            + "db2gse.ST_PointFromText('POINT Z(1 1 1)',"
+                            + SRID
+                            + "))")
                     .execute();
-            con.prepareStatement(
-                            "INSERT INTO "
-                                    + DB2TestUtil.SCHEMA_QUOTED
-                                    + "."
-                                    + tableNameQuoted
-                                    + "(\"id\",\"name\",\"geom\") VALUES ( 1, 'p2',"
-                                    + "db2gse.ST_PointFromText('POINT Z(3 0 1)',"
-                                    + SRID
-                                    + "))")
+            con.prepareStatement("INSERT INTO "
+                            + DB2TestUtil.SCHEMA_QUOTED
+                            + "."
+                            + tableNameQuoted
+                            + "(\"id\",\"name\",\"geom\") VALUES ( 1, 'p2',"
+                            + "db2gse.ST_PointFromText('POINT Z(3 0 1)',"
+                            + SRID
+                            + "))")
                     .execute();
         }
     }

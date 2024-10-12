@@ -106,8 +106,7 @@ public final class GeoKeyEntry implements Comparable<GeoKeyEntry> {
 
     private static void ensureNotNegative(final String argument, final int value) {
         if (value < 0)
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, argument, value));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, argument, value));
     }
 
     public int getKeyID() {

@@ -36,10 +36,7 @@ public class WritableByteChannelDecorator implements WritableByteChannel {
     private boolean closed;
 
     public WritableByteChannelDecorator(
-            WritableByteChannel newChannel,
-            ShpFiles shapefileFiles,
-            URL url,
-            FileWriter requestor) {
+            WritableByteChannel newChannel, ShpFiles shapefileFiles, URL url, FileWriter requestor) {
         this.wrapped = newChannel;
         this.shapefileFiles = shapefileFiles;
         this.url = url;

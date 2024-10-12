@@ -48,9 +48,7 @@ public class RestrictionHandler extends XSIElementHandler {
     @Override
     @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
-        return LOCALNAME.hashCode()
-                * ((id == null) ? 1 : id.hashCode())
-                * ((base == null) ? 1 : base.hashCode());
+        return LOCALNAME.hashCode() * ((id == null) ? 1 : id.hashCode()) * ((base == null) ? 1 : base.hashCode());
     }
 
     /** @see org.geotools.xml.XSIElementHandler#getHandler(java.lang.String, java.lang.String) */
@@ -67,10 +65,7 @@ public class RestrictionHandler extends XSIElementHandler {
                     child = sch;
                 } else {
                     throw new SAXNotRecognizedException(
-                            getLocalName()
-                                    + " may only have one '"
-                                    + SimpleTypeHandler.LOCALNAME
-                                    + "' declaration.");
+                            getLocalName() + " may only have one '" + SimpleTypeHandler.LOCALNAME + "' declaration.");
                 }
 
                 return sch;
@@ -216,10 +211,7 @@ public class RestrictionHandler extends XSIElementHandler {
                     child = sch;
                 } else {
                     throw new SAXNotRecognizedException(
-                            getLocalName()
-                                    + " may only have one '"
-                                    + AllHandler.LOCALNAME
-                                    + "' declaration.");
+                            getLocalName() + " may only have one '" + AllHandler.LOCALNAME + "' declaration.");
                 }
 
                 return sch;
@@ -233,10 +225,7 @@ public class RestrictionHandler extends XSIElementHandler {
                     child = sch;
                 } else {
                     throw new SAXNotRecognizedException(
-                            getLocalName()
-                                    + " may only have one '"
-                                    + ChoiceHandler.LOCALNAME
-                                    + "' declaration.");
+                            getLocalName() + " may only have one '" + ChoiceHandler.LOCALNAME + "' declaration.");
                 }
 
                 return sch;
@@ -250,10 +239,7 @@ public class RestrictionHandler extends XSIElementHandler {
                     child = sch;
                 } else {
                     throw new SAXNotRecognizedException(
-                            getLocalName()
-                                    + " may only have one '"
-                                    + GroupHandler.LOCALNAME
-                                    + "' declaration.");
+                            getLocalName() + " may only have one '" + GroupHandler.LOCALNAME + "' declaration.");
                 }
 
                 return sch;
@@ -267,10 +253,7 @@ public class RestrictionHandler extends XSIElementHandler {
                     child = sch;
                 } else {
                     throw new SAXNotRecognizedException(
-                            getLocalName()
-                                    + " may only have one '"
-                                    + SequenceHandler.LOCALNAME
-                                    + "' declaration.");
+                            getLocalName() + " may only have one '" + SequenceHandler.LOCALNAME + "' declaration.");
                 }
 
                 return sch;
@@ -308,10 +291,7 @@ public class RestrictionHandler extends XSIElementHandler {
                     anyAttribute = sch;
                 } else {
                     throw new SAXNotRecognizedException(
-                            getLocalName()
-                                    + " may only have one '"
-                                    + AnyAttributeHandler.LOCALNAME
-                                    + "' declaration.");
+                            getLocalName() + " may only have one '" + AnyAttributeHandler.LOCALNAME + "' declaration.");
                 }
 
                 return sch;

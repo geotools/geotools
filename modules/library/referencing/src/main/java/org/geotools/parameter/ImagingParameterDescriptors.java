@@ -151,14 +151,8 @@ public class ImagingParameterDescriptors extends DefaultParameterDescriptorGroup
      * @since 2.4
      */
     public ImagingParameterDescriptors(
-            final RegistryElementDescriptor operation,
-            final Collection<ParameterDescriptor> extension) {
-        this(
-                properties(operation),
-                operation,
-                RenderedRegistryMode.MODE_NAME,
-                DEFAULT_SOURCE_TYPE_MAP,
-                extension);
+            final RegistryElementDescriptor operation, final Collection<ParameterDescriptor> extension) {
+        this(properties(operation), operation, RenderedRegistryMode.MODE_NAME, DEFAULT_SOURCE_TYPE_MAP, extension);
     }
 
     /**
@@ -202,8 +196,7 @@ public class ImagingParameterDescriptors extends DefaultParameterDescriptorGroup
      * @param properties Set of properties. Should contains at least {@code "name"}.
      * @param descriptor The JAI descriptor.
      */
-    public ImagingParameterDescriptors(
-            final Map<String, ?> properties, final ParameterListDescriptor descriptor) {
+    public ImagingParameterDescriptors(final Map<String, ?> properties, final ParameterListDescriptor descriptor) {
         this(properties, descriptor, null, null, null, null);
     }
 
@@ -219,11 +212,7 @@ public class ImagingParameterDescriptors extends DefaultParameterDescriptorGroup
             final String registryMode,
             final Map<Class<?>, Class<?>> sourceTypeMap,
             final Collection<ParameterDescriptor> extension) {
-        super(
-                properties,
-                1,
-                1,
-                asDescriptors(descriptor, operation, registryMode, sourceTypeMap, extension));
+        super(properties, 1, 1, asDescriptors(descriptor, operation, registryMode, sourceTypeMap, extension));
         this.descriptor = descriptor;
         this.operation = operation;
         this.registryMode = registryMode;
@@ -305,8 +294,7 @@ public class ImagingParameterDescriptors extends DefaultParameterDescriptorGroup
                  * with a missleading "null source" message.
                  */
                 throw new IllegalArgumentException(
-                        MessageFormat.format(
-                                ErrorKeys.NO_SUCH_AUTHORITY_CODE_$2, "AUTHORITIES", vendor));
+                        MessageFormat.format(ErrorKeys.NO_SUCH_AUTHORITY_CODE_$2, "AUTHORITIES", vendor));
             }
             /*
              * If we are able to construct an URI, replaces the contact info for the first (and only
@@ -317,8 +305,7 @@ public class ImagingParameterDescriptors extends DefaultParameterDescriptorGroup
              * can be used to contact the individual or organisation - it is information about an
              * image operation, and I'm not sure that anyone wants to phone to an image operation).
              */
-            final InternationalString description =
-                    new ImagingParameterDescription(op, "Description", null);
+            final InternationalString description = new ImagingParameterDescription(op, "Description", null);
             try {
                 final URI uri = new URI(bundle.getString("DocURL"));
                 final OnLineResourceImpl resource = new OnLineResourceImpl(uri);
@@ -350,14 +337,12 @@ public class ImagingParameterDescriptors extends DefaultParameterDescriptorGroup
              * the end result is fully-qualified name like "JAI:Add" and one alias like
              * "com.sun.media.jai.Add".
              */
-            final GenericName alias =
-                    NameFactory.create(
-                            new InternationalString[] {
-                                new ImagingParameterDescription(op, "Vendor", null), // Scope name
-                                new ImagingParameterDescription(
-                                        op, "LocalName", "Vendor") // Local name
-                            },
-                            '.');
+            final GenericName alias = NameFactory.create(
+                    new InternationalString[] {
+                        new ImagingParameterDescription(op, "Vendor", null), // Scope name
+                        new ImagingParameterDescription(op, "LocalName", "Vendor") // Local name
+                    },
+                    '.');
             properties.put(ALIAS_KEY, alias);
             properties.put(REMARKS_KEY, description);
             properties.put(ReferenceIdentifier.VERSION_KEY, bundle.getString("Version"));
@@ -433,16 +418,15 @@ public class ImagingParameterDescriptors extends DefaultParameterDescriptorGroup
                     }
                 }
                 properties.put(NAME_KEY, name);
-                desc[i] =
-                        new DefaultParameterDescriptor(
-                                properties,
-                                type,
-                                null, // validValues
-                                null, // defaultValue
-                                null, // minimum
-                                null, // maximum
-                                null, // unit
-                                true); // required
+                desc[i] = new DefaultParameterDescriptor(
+                        properties,
+                        type,
+                        null, // validValues
+                        null, // defaultValue
+                        null, // minimum
+                        null, // maximum
+                        null, // unit
+                        true); // required
             }
         } else {
             numSources = 0;
@@ -457,7 +441,8 @@ public class ImagingParameterDescriptors extends DefaultParameterDescriptorGroup
         final Object[] defaults = descriptor.getParamDefaults();
         for (int i = 0; i < numParameters; i++) {
             final String name = names[i];
-            final ParameterDescriptor replacement = replacements.remove(name.trim().toLowerCase());
+            final ParameterDescriptor replacement =
+                    replacements.remove(name.trim().toLowerCase());
             if (replacement != null) {
                 desc[i + numSources] = replacement;
                 continue;
@@ -496,8 +481,7 @@ public class ImagingParameterDescriptors extends DefaultParameterDescriptorGroup
                 }
             }
             desc[i + numSources] =
-                    new DefaultParameterDescriptor(
-                            properties, type, validValues, defaultValue, min, max, null, true);
+                    new DefaultParameterDescriptor(properties, type, validValues, defaultValue, min, max, null, true);
         }
         /*
          * Appends the remaining extra descriptors. Note that some descriptor may

@@ -122,8 +122,7 @@ public class Console extends AbstractConsole {
     private final String numberSeparator;
 
     /** The coordinate operation factory to use. */
-    private final CoordinateOperationFactory factory =
-            ReferencingFactoryFinder.getCoordinateOperationFactory(null);
+    private final CoordinateOperationFactory factory = ReferencingFactoryFinder.getCoordinateOperationFactory(null);
 
     /** The source and target CRS, or {@code null} if not yet determined. */
     private CoordinateReferenceSystem sourceCRS, targetCRS;
@@ -303,8 +302,7 @@ public class Console extends AbstractConsole {
                         throw unexpectedArgument("stacktrace");
                     }
                     if (lastError != null) {
-                        java.util.logging.Logger.getGlobal()
-                                .log(java.util.logging.Level.INFO, "", lastError);
+                        java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", lastError);
                     }
                     return;
                 }
@@ -361,16 +359,12 @@ public class Console extends AbstractConsole {
                     // -------------------------------
                     if (key1.equalsIgnoreCase("crs")) {
                         if (key0.equalsIgnoreCase("source")) {
-                            sourceCRS =
-                                    (CoordinateReferenceSystem)
-                                            parseObject(value, CoordinateReferenceSystem.class);
+                            sourceCRS = (CoordinateReferenceSystem) parseObject(value, CoordinateReferenceSystem.class);
                             transform = null;
                             return;
                         }
                         if (key0.equalsIgnoreCase("target")) {
-                            targetCRS =
-                                    (CoordinateReferenceSystem)
-                                            parseObject(value, CoordinateReferenceSystem.class);
+                            targetCRS = (CoordinateReferenceSystem) parseObject(value, CoordinateReferenceSystem.class);
                             transform = null;
                             return;
                         }
@@ -397,8 +391,7 @@ public class Console extends AbstractConsole {
                 }
             }
         }
-        throw new ParseException(
-                MessageFormat.format(ErrorKeys.ILLEGAL_INSTRUCTION_$1, instruction), 0);
+        throw new ParseException(MessageFormat.format(ErrorKeys.ILLEGAL_INSTRUCTION_$1, instruction), 0);
     }
 
     /** Executes the "{@code print crs}" instruction. */
@@ -552,14 +545,12 @@ public class Console extends AbstractConsole {
             if (crs instanceof AbstractCRS)
                 try {
                     final Measure distance =
-                            ((AbstractCRS) crs)
-                                    .distance(position1.getCoordinate(), position2.getCoordinate());
+                            ((AbstractCRS) crs).distance(position1.getCoordinate(), position2.getCoordinate());
                     table.setAlignment(TableWriter.ALIGN_RIGHT);
                     table.write(numberFormat.format(distance.doubleValue()));
                     table.write("  ");
                     table.nextColumn();
-                    table.write(
-                            String.valueOf(UnitFormat.getInstance().format(distance.getUnit())));
+                    table.write(String.valueOf(UnitFormat.getInstance().format(distance.getUnit())));
                     table.setAlignment(TableWriter.ALIGN_LEFT);
                     return;
                 } catch (UnsupportedOperationException ignore) {
@@ -601,8 +592,7 @@ public class Console extends AbstractConsole {
             // Use '!' for catching NaN.
             if (!(Math.abs(transformedSource.getOrdinate(i) - targetPosition.getOrdinate(i))
                     <= tolerance[Math.min(i, tolerance.length - 1)])) {
-                throw new TransformException(
-                        "Expected " + targetPosition + " but got " + transformedSource);
+                throw new TransformException("Expected " + targetPosition + " but got " + transformedSource);
             }
         }
     }
@@ -649,8 +639,7 @@ public class Console extends AbstractConsole {
             final Number result = numberFormat.parse(token, position);
             if (position.getIndex() != token.length()) {
                 throw new ParseException(
-                        MessageFormat.format(ErrorKeys.UNPARSABLE_NUMBER_$1, token),
-                        position.getErrorIndex());
+                        MessageFormat.format(ErrorKeys.UNPARSABLE_NUMBER_$1, token), position.getErrorIndex());
             }
             values[i] = result.doubleValue();
         }
@@ -675,8 +664,7 @@ public class Console extends AbstractConsole {
      */
     private static ParseException unexpectedArgument(final String instruction) {
         return new ParseException(
-                MessageFormat.format(ErrorKeys.UNEXPECTED_ARGUMENT_FOR_INSTRUCTION_$1, instruction),
-                0);
+                MessageFormat.format(ErrorKeys.UNEXPECTED_ARGUMENT_FOR_INSTRUCTION_$1, instruction), 0);
     }
 
     /**

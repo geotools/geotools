@@ -132,8 +132,7 @@ public class NTv2GridShiftFactory extends ReferencingFactory implements Buffered
                 File file = URLs.urlToFile(url);
 
                 if (!file.exists() || !file.canRead()) {
-                    throw new IOException(
-                            MessageFormat.format(ErrorKeys.FILE_DOES_NOT_EXIST_$1, file));
+                    throw new IOException(MessageFormat.format(ErrorKeys.FILE_DOES_NOT_EXIST_$1, file));
                 }
 
                 try (RandomAccessFile raf = new RandomAccessFile(file, "r")) {

@@ -75,15 +75,13 @@ public abstract class MongoDataStoreTest extends MongoTestSupport {
         assertNotNull(schema);
 
         assertNotNull(schema.getDescriptor("geometry"));
-        assertTrue(
-                Geometry.class.isAssignableFrom(
-                        schema.getDescriptor("geometry").getType().getBinding()));
+        assertTrue(Geometry.class.isAssignableFrom(
+                schema.getDescriptor("geometry").getType().getBinding()));
     }
 
     public void testGetFeatureReader() throws Exception {
         try (SimpleFeatureReader reader =
-                (SimpleFeatureReader)
-                        dataStore.getFeatureReader(new Query("ft1"), Transaction.AUTO_COMMIT)) {
+                (SimpleFeatureReader) dataStore.getFeatureReader(new Query("ft1"), Transaction.AUTO_COMMIT)) {
             for (int i = 0; i < 3; i++) {
                 assertTrue(reader.hasNext());
                 SimpleFeature f = reader.next();
@@ -114,9 +112,7 @@ public abstract class MongoDataStoreTest extends MongoTestSupport {
             f.setAttribute("properties.intProperty", 3);
             f.setAttribute("properties.doubleProperty", 3.3);
             f.setAttribute("properties.stringProperty", "three");
-            f.setAttribute(
-                    "properties.dateProperty",
-                    MongoTestSetup.parseDate("2015-01-24T14:28:16.000+01:00"));
+            f.setAttribute("properties.dateProperty", MongoTestSetup.parseDate("2015-01-24T14:28:16.000+01:00"));
             w.write();
         }
     }
@@ -155,8 +151,9 @@ public abstract class MongoDataStoreTest extends MongoTestSupport {
 
     public void testRebuildSchemaWithId() throws Exception {
         try {
-            dataStore.setSchemaInitParams(
-                    MongoSchemaInitParams.builder().ids("58e5889ce4b02461ad5af082").build());
+            dataStore.setSchemaInitParams(MongoSchemaInitParams.builder()
+                    .ids("58e5889ce4b02461ad5af082")
+                    .build());
             clearSchemaStore(dataStore);
             dataStore.cleanEntries();
             SimpleFeatureType schema = dataStore.getSchema("ft1");
@@ -172,7 +169,8 @@ public abstract class MongoDataStoreTest extends MongoTestSupport {
 
     public void testRebuildSchemaWithMax() throws Exception {
         try {
-            dataStore.setSchemaInitParams(MongoSchemaInitParams.builder().maxObjects(3).build());
+            dataStore.setSchemaInitParams(
+                    MongoSchemaInitParams.builder().maxObjects(3).build());
             clearSchemaStore(dataStore);
             dataStore.cleanEntries();
             SimpleFeatureType schema = dataStore.getSchema("ft1");
@@ -188,7 +186,8 @@ public abstract class MongoDataStoreTest extends MongoTestSupport {
 
     public void testRebuildSchemaWithAllItems() throws Exception {
         try {
-            dataStore.setSchemaInitParams(MongoSchemaInitParams.builder().maxObjects(-1).build());
+            dataStore.setSchemaInitParams(
+                    MongoSchemaInitParams.builder().maxObjects(-1).build());
             clearSchemaStore(dataStore);
             dataStore.cleanEntries();
             SimpleFeatureType schema = dataStore.getSchema("ft1");
@@ -412,7 +411,6 @@ public abstract class MongoDataStoreTest extends MongoTestSupport {
             new Coordinate(1.0, 1.0),
         };
         Polygon polygon = new GeometryFactory().createPolygon(coordinates);
-        return ff.intersects(
-                ff.function(jsonSelectName, ff.literal("geometry")), ff.literal(polygon));
+        return ff.intersects(ff.function(jsonSelectName, ff.literal("geometry")), ff.literal(polygon));
     }
 }

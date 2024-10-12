@@ -47,8 +47,7 @@ import org.geotools.util.logging.Logging;
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
-public class GrowableInternationalString extends AbstractInternationalString
-        implements Serializable {
+public class GrowableInternationalString extends AbstractInternationalString implements Serializable {
     /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = 5760033376627376937L;
 
@@ -101,10 +100,9 @@ public class GrowableInternationalString extends AbstractInternationalString
         boolean isGrowable = internationalString instanceof GrowableInternationalString;
         String defaultValue = null;
         if (!isGrowable) defaultValue = internationalString.toString();
-        Set<Locale> locales =
-                isGrowable
-                        ? ((GrowableInternationalString) internationalString).getLocales()
-                        : Stream.of(Locale.getAvailableLocales()).collect(Collectors.toSet());
+        Set<Locale> locales = isGrowable
+                ? ((GrowableInternationalString) internationalString).getLocales()
+                : Stream.of(Locale.getAvailableLocales()).collect(Collectors.toSet());
         for (Locale locale : locales) {
             String value = internationalString.toString(locale);
             if (value != null && !value.equals(defaultValue)) localMap.put(locale, value);
@@ -120,21 +118,18 @@ public class GrowableInternationalString extends AbstractInternationalString
      * @throws IllegalArgumentException if a different string value was already set for the given
      *     locale.
      */
-    public synchronized void add(final Locale locale, final String string)
-            throws IllegalArgumentException {
+    public synchronized void add(final Locale locale, final String string) throws IllegalArgumentException {
         if (string != null) {
             switch (localMap.size()) {
-                case 0:
-                    {
-                        localMap = Collections.singletonMap(locale, string);
-                        defaultValue = null; // Will be recomputed when first needed.
-                        return;
-                    }
-                case 1:
-                    {
-                        localMap = new LinkedHashMap<>(localMap);
-                        break;
-                    }
+                case 0: {
+                    localMap = Collections.singletonMap(locale, string);
+                    defaultValue = null; // Will be recomputed when first needed.
+                    return;
+                }
+                case 1: {
+                    localMap = new LinkedHashMap<>(localMap);
+                    break;
+                }
             }
             String old = localMap.get(locale);
 
@@ -176,8 +171,7 @@ public class GrowableInternationalString extends AbstractInternationalString
      * @throws IllegalArgumentException if the locale after the prefix is an illegal code, or a
      *     different string value was already set for the given locale.
      */
-    public boolean add(final String prefix, final String key, final String string)
-            throws IllegalArgumentException {
+    public boolean add(final String prefix, final String key, final String string) throws IllegalArgumentException {
         if (!key.startsWith(prefix)) {
             return false;
         }
@@ -186,14 +180,9 @@ public class GrowableInternationalString extends AbstractInternationalString
         final String[] parts = {"", "", ""};
         for (int i = 0; /*break condition inside*/ ; i++) {
             if (position == length) {
-                final Locale locale =
-                        (i == 0)
-                                ? null
-                                : unique(
-                                        new Locale(
-                                                parts[0] /* language */,
-                                                parts[1] /* country  */,
-                                                parts[2] /* variant  */));
+                final Locale locale = (i == 0)
+                        ? null
+                        : unique(new Locale(parts[0] /* language */, parts[1] /* country  */, parts[2] /* variant  */));
                 add(locale, string);
                 return true;
             }
@@ -211,8 +200,7 @@ public class GrowableInternationalString extends AbstractInternationalString
             parts[i] = key.substring(position, position = next);
         }
         throw new IllegalArgumentException(
-                MessageFormat.format(
-                        ErrorKeys.ILLEGAL_ARGUMENT_$2, "locale", key.substring(prefix.length())));
+                MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "locale", key.substring(prefix.length())));
     }
 
     /**

@@ -92,16 +92,14 @@ public abstract class AbstractPosition implements Position {
      * @param expected the dimension expected.
      * @throws MismatchedDimensionException if the CRS dimension is not valid.
      */
-    public static void checkCoordinateReferenceSystemDimension(
-            final CoordinateReferenceSystem crs, final int expected)
+    public static void checkCoordinateReferenceSystemDimension(final CoordinateReferenceSystem crs, final int expected)
             throws MismatchedDimensionException {
         if (crs != null) {
             final int dimension = crs.getCoordinateSystem().getDimension();
             if (dimension != expected) {
                 final Object arg0 = crs.getName().getCode();
                 throw new MismatchedDimensionException(
-                        MessageFormat.format(
-                                ErrorKeys.MISMATCHED_DIMENSION_$3, arg0, dimension, expected));
+                        MessageFormat.format(ErrorKeys.MISMATCHED_DIMENSION_$3, arg0, dimension, expected));
             }
         }
     }
@@ -115,13 +113,11 @@ public abstract class AbstractPosition implements Position {
      * @param expectedDimension The Expected dimension for the object.
      * @throws MismatchedDimensionException if the object doesn't have the expected dimension.
      */
-    static void ensureDimensionMatch(
-            final String name, final int dimension, final int expectedDimension)
+    static void ensureDimensionMatch(final String name, final int dimension, final int expectedDimension)
             throws MismatchedDimensionException {
         if (dimension != expectedDimension) {
             throw new MismatchedDimensionException(
-                    MessageFormat.format(
-                            ErrorKeys.MISMATCHED_DIMENSION_$3, name, dimension, expectedDimension));
+                    MessageFormat.format(ErrorKeys.MISMATCHED_DIMENSION_$3, name, dimension, expectedDimension));
         }
     }
 
@@ -138,8 +134,7 @@ public abstract class AbstractPosition implements Position {
 
     /** Formats the specified position. */
     static String toString(final Position position) {
-        final StringBuilder buffer =
-                new StringBuilder(Classes.getShortClassName(position)).append('[');
+        final StringBuilder buffer = new StringBuilder(Classes.getShortClassName(position)).append('[');
         final int dimension = position.getDimension();
         for (int i = 0; i < dimension; i++) {
             if (i != 0) {
@@ -194,8 +189,7 @@ public abstract class AbstractPosition implements Position {
                         return false;
                     }
                 }
-                if (Utilities.equals(
-                        this.getCoordinateReferenceSystem(), that.getCoordinateReferenceSystem())) {
+                if (Utilities.equals(this.getCoordinateReferenceSystem(), that.getCoordinateReferenceSystem())) {
                     assert hashCode() == that.hashCode() : this;
                     return true;
                 }

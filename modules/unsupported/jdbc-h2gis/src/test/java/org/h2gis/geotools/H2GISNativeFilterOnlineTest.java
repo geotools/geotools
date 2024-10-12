@@ -28,7 +28,6 @@ public final class H2GISNativeFilterOnlineTest extends JDBCNativeFilterOnlineTes
 
     @Override
     protected NativeFilter getNativeFilter() {
-        return filterFactory.nativeFilter(
-                "(\"type\" = 'temperature' OR \"type\" = 'wind') AND \"value\" > 15");
+        return filterFactory.nativeFilter("(\"type\" = 'temperature' OR \"type\" = 'wind') AND \"value\" > 15");
     }
 }

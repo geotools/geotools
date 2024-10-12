@@ -46,27 +46,12 @@ public class AttributeTest {
 
         GeometryFactory gf = new GeometryFactory(new PrecisionModel());
         SimpleFeature[] f = new SimpleFeature[3];
-        f[0] =
-                SimpleFeatureBuilder.build(
-                        schema,
-                        new Object[] {
-                            Integer.valueOf(12), gf.createGeometryCollection(null), "first"
-                        },
-                        null);
-        f[1] =
-                SimpleFeatureBuilder.build(
-                        schema,
-                        new Object[] {
-                            Integer.valueOf(3), gf.createGeometryCollection(null), "second"
-                        },
-                        null);
-        f[2] =
-                SimpleFeatureBuilder.build(
-                        schema,
-                        new Object[] {
-                            Integer.valueOf(15), gf.createGeometryCollection(null), "third"
-                        },
-                        null);
+        f[0] = SimpleFeatureBuilder.build(
+                schema, new Object[] {Integer.valueOf(12), gf.createGeometryCollection(null), "first"}, null);
+        f[1] = SimpleFeatureBuilder.build(
+                schema, new Object[] {Integer.valueOf(3), gf.createGeometryCollection(null), "second"}, null);
+        f[2] = SimpleFeatureBuilder.build(
+                schema, new Object[] {Integer.valueOf(15), gf.createGeometryCollection(null), "third"}, null);
 
         return f;
     }

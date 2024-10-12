@@ -100,8 +100,7 @@ public class Definition {
      * @param crs The coordinate reference system of the property, to be used only for geometry
      *     properties
      */
-    public Definition(
-            String name, Expression source, Class binding, CoordinateReferenceSystem crs) {
+    public Definition(String name, Expression source, Class binding, CoordinateReferenceSystem crs) {
         this(name, source, binding, crs, null);
     }
 
@@ -247,8 +246,7 @@ public class Definition {
                 AttributeDescriptor descriptor = originalSchema.getDescriptor(pn.getPropertyName());
 
                 if (descriptor == null) {
-                    throw new IllegalArgumentException(
-                            "Original feature type does not have a property named " + name);
+                    throw new IllegalArgumentException("Original feature type does not have a property named " + name);
                 } else {
                     ab.init(descriptor);
                     ab.setName(name);
@@ -300,8 +298,7 @@ public class Definition {
     }
 
     private CoordinateReferenceSystem evaluateCRS(SimpleFeatureType originalSchema) {
-        return (CoordinateReferenceSystem)
-                expression.accept(new CRSEvaluator(originalSchema), null);
+        return (CoordinateReferenceSystem) expression.accept(new CRSEvaluator(originalSchema), null);
     }
 
     @Override

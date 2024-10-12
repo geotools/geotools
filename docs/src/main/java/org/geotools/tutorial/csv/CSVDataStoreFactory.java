@@ -73,13 +73,7 @@ public class CSVDataStoreFactory implements DataStoreFactorySpi {
     // getParametersInfo start
     /** Parameter description of information required to connect */
     public static final Param FILE_PARAM =
-            new Param(
-                    "file",
-                    File.class,
-                    "Comma seperated value file",
-                    true,
-                    null,
-                    new KVP(Param.EXT, "csv"));
+            new Param("file", File.class, "Comma seperated value file", true, null, new KVP(Param.EXT, "csv"));
 
     public Param[] getParametersInfo() {
         return new Param[] {FILE_PARAM};

@@ -78,8 +78,7 @@ public class PropertyValueCollection extends AbstractCollection<Attribute> {
 
     PropertyName propertyName;
 
-    public PropertyValueCollection(
-            FeatureCollection delegate, AttributeDescriptor descriptor, PropertyName propName) {
+    public PropertyValueCollection(FeatureCollection delegate, AttributeDescriptor descriptor, PropertyName propName) {
         this.delegate = delegate;
         this.descriptor = descriptor;
         this.typeMappingProfiles.add(XS.getInstance().getTypeMappingProfile());
@@ -124,8 +123,7 @@ public class PropertyValueCollection extends AbstractCollection<Attribute> {
                 while (it.hasNext()) {
                     Feature f = it.next();
                     value = propertyName.evaluate(f);
-                    if (value != null
-                            && !(value instanceof Collection && ((Collection) value).isEmpty())) {
+                    if (value != null && !(value instanceof Collection && ((Collection) value).isEmpty())) {
                         next = f;
                         break;
                     }
@@ -158,8 +156,7 @@ public class PropertyValueCollection extends AbstractCollection<Attribute> {
             // create a new descriptor based on the xml type
             AttributeType xmlType = findType(descriptor.getType().getBinding());
             if (xmlType == null) {
-                throw new RuntimeException(
-                        "Unable to map attribute " + descriptor.getName() + " to xml type");
+                throw new RuntimeException("Unable to map attribute " + descriptor.getName() + " to xml type");
             }
 
             // because simple features don't carry around their namespace, create a descriptor name
@@ -168,25 +165,20 @@ public class PropertyValueCollection extends AbstractCollection<Attribute> {
             if (descriptor == ID_DESCRIPTOR) {
                 name = GML_IDENTIFIER;
             } else {
-                name =
-                        new NameImpl(
-                                next.getType().getName().getNamespaceURI(),
-                                descriptor.getLocalName());
+                name = new NameImpl(next.getType().getName().getNamespaceURI(), descriptor.getLocalName());
             }
-            AttributeDescriptor newDescriptor =
-                    typeFactory.createAttributeDescriptor(
-                            xmlType,
-                            name,
-                            descriptor.getMinOccurs(),
-                            descriptor.getMaxOccurs(),
-                            descriptor.isNillable(),
-                            descriptor.getDefaultValue());
+            AttributeDescriptor newDescriptor = typeFactory.createAttributeDescriptor(
+                    xmlType,
+                    name,
+                    descriptor.getMinOccurs(),
+                    descriptor.getMaxOccurs(),
+                    descriptor.isNillable(),
+                    descriptor.getDefaultValue());
 
             Attribute result;
             if (value instanceof ComplexAttribute) {
-                result =
-                        factory.createComplexAttribute(
-                                Collections.singletonList((Property) value), newDescriptor, null);
+                result = factory.createComplexAttribute(
+                        Collections.singletonList((Property) value), newDescriptor, null);
             } else {
                 value = value instanceof Attribute ? ((Attribute) value).getValue() : value;
                 result = factory.createAttribute(value, newDescriptor, null);

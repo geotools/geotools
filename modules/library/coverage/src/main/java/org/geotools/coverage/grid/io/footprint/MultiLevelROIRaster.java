@@ -64,8 +64,7 @@ public class MultiLevelROIRaster implements MultiLevelROI {
     /** {@link MaskOverviewProvider} instance used for handling internal/External Masks */
     private MaskOverviewProvider maskOvrProvider;
 
-    public MultiLevelROIRaster(DatasetLayout layout, File file, SimpleFeature sf)
-            throws IOException {
+    public MultiLevelROIRaster(DatasetLayout layout, File file, SimpleFeature sf) throws IOException {
         // Initialization
         this.file = file;
         // Getting Feature Geometry
@@ -82,11 +81,7 @@ public class MultiLevelROIRaster implements MultiLevelROI {
     // if delayed read we should not close immediately
     @SuppressWarnings({"PMD.CloseResource", "PMD.UseTryWithResources"})
     public ROI getTransformedROI(
-            AffineTransform at,
-            int imageIndex,
-            Rectangle imgBounds,
-            ImageReadParam params,
-            ReadType readType) {
+            AffineTransform at, int imageIndex, Rectangle imgBounds, ImageReadParam params, ReadType readType) {
         // Getting MaskInfo
         MaskInfo info = maskOvrProvider.getMaskInfo(imageIndex, imgBounds, params);
         // Define which File must be used for reading mask info
@@ -105,9 +100,8 @@ public class MultiLevelROIRaster implements MultiLevelROI {
         ImageReader reader = null;
         try {
             // Getting input Stream
-            inStream =
-                    info.streamSpi.createInputStreamInstance(
-                            granuleUrl, ImageIO.getUseCache(), ImageIO.getCacheDirectory());
+            inStream = info.streamSpi.createInputStreamInstance(
+                    granuleUrl, ImageIO.getUseCache(), ImageIO.getCacheDirectory());
             // Getting Reader
             reader = info.readerSpi.createReaderInstance();
             // Setting input
@@ -120,18 +114,8 @@ public class MultiLevelROIRaster implements MultiLevelROI {
             } else {
                 // read data
                 inStream.seek(0);
-                raster =
-                        ImageReadDescriptor.create(
-                                inStream,
-                                index,
-                                false,
-                                false,
-                                false,
-                                null,
-                                null,
-                                info.readParameters,
-                                reader,
-                                null);
+                raster = ImageReadDescriptor.create(
+                        inStream, index, false, false, false, null, null, info.readParameters, reader, null);
             }
             return MaskOverviewProvider.scaleROI(raster, imgBounds);
         } catch (IOException e) {

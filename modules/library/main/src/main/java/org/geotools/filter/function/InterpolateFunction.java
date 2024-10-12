@@ -237,33 +237,26 @@ public class InterpolateFunction implements Function {
     static {
         Parameter<Object> lookup = new Parameter<>("lookup", Object.class, 1, 1);
         Parameter<Object> table = new Parameter<>("data value pairs", Object.class, 4, -1);
-        Parameter<String> mode =
-                new Parameter<>(
-                        "mode",
-                        String.class,
-                        Text.text("mode"),
-                        Text.text("linear, cosine or cubic"),
-                        true,
-                        1,
-                        1,
-                        MODE_LINEAR,
-                        new KVP(
-                                Parameter.OPTIONS,
-                                Arrays.asList(
-                                        new String[] {MODE_LINEAR, MODE_COSINE, MODE_CUBIC})));
-        Parameter<String> method =
-                new Parameter<>(
-                        "method",
-                        String.class,
-                        Text.text("method"),
-                        Text.text("numeric or color"),
-                        false,
-                        0,
-                        1,
-                        METHOD_NUMERIC,
-                        new KVP(
-                                Parameter.OPTIONS,
-                                Arrays.asList(new String[] {METHOD_NUMERIC, METHOD_COLOR})));
+        Parameter<String> mode = new Parameter<>(
+                "mode",
+                String.class,
+                Text.text("mode"),
+                Text.text("linear, cosine or cubic"),
+                true,
+                1,
+                1,
+                MODE_LINEAR,
+                new KVP(Parameter.OPTIONS, Arrays.asList(new String[] {MODE_LINEAR, MODE_COSINE, MODE_CUBIC})));
+        Parameter<String> method = new Parameter<>(
+                "method",
+                String.class,
+                Text.text("method"),
+                Text.text("numeric or color"),
+                false,
+                0,
+                1,
+                METHOD_NUMERIC,
+                new KVP(Parameter.OPTIONS, Arrays.asList(new String[] {METHOD_NUMERIC, METHOD_COLOR})));
         NAME = new FunctionNameImpl("Interpolate", lookup, table, mode, method);
     }
 
@@ -332,8 +325,7 @@ public class InterpolateFunction implements Function {
         // Rasterdata, and then the input object is considered to be a number. While the lookup
         // could dynamically evaluate to "Rasterdata" in a non-raster context (feature input),
         // the input object would not be a number and the following cast would fail.
-        if (lookup instanceof Literal
-                && RASTER_DATA.equalsIgnoreCase(lookup.evaluate(object, String.class))) {
+        if (lookup instanceof Literal && RASTER_DATA.equalsIgnoreCase(lookup.evaluate(object, String.class))) {
             lookupValue = ((Number) object).doubleValue();
         } else {
             lookupValue = lookup.evaluate(object, Double.class);
@@ -410,42 +402,12 @@ public class InterpolateFunction implements Function {
         if (method == Method.COLOR) {
             Color color1 = interpPoints.get(segment).getColor(object);
             Color color0 = interpPoints.get(segment - 1).getColor(object);
-            int r =
-                    (int)
-                            clamp(
-                                    Math.round(
-                                            doLinear(
-                                                    lookupValue,
-                                                    data0,
-                                                    data1,
-                                                    color0.getRed(),
-                                                    color1.getRed())),
-                                    0,
-                                    255);
-            int g =
-                    (int)
-                            clamp(
-                                    Math.round(
-                                            doLinear(
-                                                    lookupValue,
-                                                    data0,
-                                                    data1,
-                                                    color0.getGreen(),
-                                                    color1.getGreen())),
-                                    0,
-                                    255);
-            int b =
-                    (int)
-                            clamp(
-                                    Math.round(
-                                            doLinear(
-                                                    lookupValue,
-                                                    data0,
-                                                    data1,
-                                                    color0.getBlue(),
-                                                    color1.getBlue())),
-                                    0,
-                                    255);
+            int r = (int)
+                    clamp(Math.round(doLinear(lookupValue, data0, data1, color0.getRed(), color1.getRed())), 0, 255);
+            int g = (int) clamp(
+                    Math.round(doLinear(lookupValue, data0, data1, color0.getGreen(), color1.getGreen())), 0, 255);
+            int b = (int)
+                    clamp(Math.round(doLinear(lookupValue, data0, data1, color0.getBlue(), color1.getBlue())), 0, 255);
             return Converters.convert(new Color(r, g, b), context);
         } else { // assume numeric
             Double value1 = interpPoints.get(segment).getValue(object);
@@ -467,42 +429,12 @@ public class InterpolateFunction implements Function {
         if (method == Method.COLOR) {
             Color color1 = interpPoints.get(segment).getColor(object);
             Color color0 = interpPoints.get(segment - 1).getColor(object);
-            int r =
-                    (int)
-                            clamp(
-                                    Math.round(
-                                            doCosine(
-                                                    lookupValue,
-                                                    data0,
-                                                    data1,
-                                                    color0.getRed(),
-                                                    color1.getRed())),
-                                    0,
-                                    255);
-            int g =
-                    (int)
-                            clamp(
-                                    Math.round(
-                                            doCosine(
-                                                    lookupValue,
-                                                    data0,
-                                                    data1,
-                                                    color0.getGreen(),
-                                                    color1.getGreen())),
-                                    0,
-                                    255);
-            int b =
-                    (int)
-                            clamp(
-                                    Math.round(
-                                            doCosine(
-                                                    lookupValue,
-                                                    data0,
-                                                    data1,
-                                                    color0.getBlue(),
-                                                    color1.getBlue())),
-                                    0,
-                                    255);
+            int r = (int)
+                    clamp(Math.round(doCosine(lookupValue, data0, data1, color0.getRed(), color1.getRed())), 0, 255);
+            int g = (int) clamp(
+                    Math.round(doCosine(lookupValue, data0, data1, color0.getGreen(), color1.getGreen())), 0, 255);
+            int b = (int)
+                    clamp(Math.round(doCosine(lookupValue, data0, data1, color0.getBlue(), color1.getBlue())), 0, 255);
             return Converters.convert(new Color(r, g, b), context);
 
         } else { // assume numeric
@@ -514,8 +446,7 @@ public class InterpolateFunction implements Function {
         }
     }
 
-    private <T> T cubicInterpolate(
-            final Double lookupValue, final Object object, int segment, Class<T> context) {
+    private <T> T cubicInterpolate(final Double lookupValue, final Object object, int segment, Class<T> context) {
         if (segment < 1 || segment >= interpPoints.size()) {
             throw new IllegalArgumentException("segment index outside valid range");
         }
@@ -625,9 +556,8 @@ public class InterpolateFunction implements Function {
         if (mode == Mode.CUBIC) {
             if (interpPoints.size() < 3) {
                 if (LOGGER.isLoggable(Level.INFO)) {
-                    LOGGER.info(
-                            "Cubic interpolation requested but not enough"
-                                    + "points supplied. Falling back to linear interpolation");
+                    LOGGER.info("Cubic interpolation requested but not enough"
+                            + "points supplied. Falling back to linear interpolation");
                 }
                 mode = Mode.LINEAR;
             }
@@ -639,15 +569,13 @@ public class InterpolateFunction implements Function {
             if (method == Method.COLOR) {
                 Color color = value.evaluate(null, Color.class);
                 if (color == null) {
-                    throw new IllegalArgumentException(
-                            "Could not convert value " + value + " to a color");
+                    throw new IllegalArgumentException("Could not convert value " + value + " to a color");
                 }
                 return new ConstantColorPoint(data.evaluate(null, Double.class), color);
             } else {
                 Double numeric = value.evaluate(null, Double.class);
                 if (numeric == null) {
-                    throw new IllegalArgumentException(
-                            "Could not convert value " + value + " to a number");
+                    throw new IllegalArgumentException("Could not convert value " + value + " to a number");
                 }
                 return new ConstantNumericPoint(data.evaluate(null, Double.class), numeric);
             }
@@ -712,8 +640,7 @@ public class InterpolateFunction implements Function {
                         method = Method.NUMERIC;
                         specified = true;
 
-                    } else if (value.equalsIgnoreCase(METHOD_COLOR)
-                            || value.equalsIgnoreCase(METHOD_COLOUR)) {
+                    } else if (value.equalsIgnoreCase(METHOD_COLOR) || value.equalsIgnoreCase(METHOD_COLOUR)) {
                         method = Method.COLOR;
                         specified = true;
                     }
@@ -816,11 +743,10 @@ public class InterpolateFunction implements Function {
         double m1 = 0.5 * ((yi[2] - yi[1]) / span12 + (yi[1] - yi[0]) / span01);
         double m2 = 0.5 * ((yi[3] - yi[2]) / span23 + (yi[2] - yi[1]) / span12);
 
-        double y =
-                (2 * t3 - 3 * t2 + 1) * yi[1]
-                        + (t3 - 2 * t2 + t) * span12 * m1
-                        + (-2 * t3 + 3 * t2) * yi[2]
-                        + (t3 - t2) * span12 * m2;
+        double y = (2 * t3 - 3 * t2 + 1) * yi[1]
+                + (t3 - 2 * t2 + t) * span12 * m1
+                + (-2 * t3 + 3 * t2) * yi[2]
+                + (t3 - t2) * span12 * m2;
 
         return y;
     }
@@ -868,8 +794,7 @@ public class InterpolateFunction implements Function {
         List<org.geotools.api.filter.expression.Expression> params = getParameters();
         if (params != null) {
             org.geotools.api.filter.expression.Expression exp;
-            for (Iterator<org.geotools.api.filter.expression.Expression> it = params.iterator();
-                    it.hasNext(); ) {
+            for (Iterator<org.geotools.api.filter.expression.Expression> it = params.iterator(); it.hasNext(); ) {
                 exp = it.next();
                 sb.append("[");
                 sb.append(exp);
@@ -899,7 +824,6 @@ public class InterpolateFunction implements Function {
 
     @Override
     public int hashCode() {
-        return Objects.hash(
-                mode, modeSpecified, method, methodSpecified, interpPoints, parameters, fallback);
+        return Objects.hash(mode, modeSpecified, method, methodSpecified, interpPoints, parameters, fallback);
     }
 }

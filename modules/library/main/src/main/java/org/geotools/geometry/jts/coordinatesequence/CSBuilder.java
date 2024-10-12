@@ -45,8 +45,7 @@ public interface CSBuilder {
      * Utility method that allows to set an ordinate in an already built coordinate sequence Needed
      * because the CoordinateSequence interface does not expose it
      */
-    public void setOrdinate(
-            CoordinateSequence sequence, double value, int ordinateIndex, int coordinateIndex);
+    public void setOrdinate(CoordinateSequence sequence, double value, int ordinateIndex, int coordinateIndex);
 
     /** Gets an ordinate in the specified coordinate */
     public double getOrdinate(int ordinateIndex, int coordinateIndex);

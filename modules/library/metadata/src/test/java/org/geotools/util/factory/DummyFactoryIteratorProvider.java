@@ -47,13 +47,11 @@ public final class DummyFactoryIteratorProvider implements FactoryIteratorProvid
         assertEquals(DummyFactory.class, category);
         final DummyFactory[] factories;
         if (firstHalf) {
-            factories =
-                    new DummyFactory[] {
-                        new DummyFactory.Example1(), new DummyFactory.Example2(),
-                    };
+            factories = new DummyFactory[] {
+                new DummyFactory.Example1(), new DummyFactory.Example2(),
+            };
         } else {
-            factories =
-                    new DummyFactory[] {new DummyFactory.Example3(), new DummyFactory.Example4()};
+            factories = new DummyFactory[] {new DummyFactory.Example3(), new DummyFactory.Example4()};
         }
         return (Iterator) Arrays.asList(factories).iterator();
     }

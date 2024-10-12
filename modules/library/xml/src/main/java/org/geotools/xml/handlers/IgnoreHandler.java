@@ -58,8 +58,7 @@ public class IgnoreHandler extends XMLElementHandler {
 
     /** @see schema.XSIElementHandler#getHandler(java.lang.String, java.lang.String) */
     @Override
-    public XMLElementHandler getHandler(
-            URI namespaceURI, String localName, Map<String, Object> hints) {
+    public XMLElementHandler getHandler(URI namespaceURI, String localName, Map<String, Object> hints) {
         return this;
     }
 

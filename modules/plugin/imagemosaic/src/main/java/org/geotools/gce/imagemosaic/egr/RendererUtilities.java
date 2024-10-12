@@ -34,8 +34,7 @@ import org.locationtech.jts.geom.Envelope;
  */
 public final class RendererUtilities {
 
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(RendererUtilities.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(RendererUtilities.class);
 
     /**
      * Helper class for building affine transforms. We use one instance per thread, in order to
@@ -52,7 +51,8 @@ public final class RendererUtilities {
             };
 
     /** Utilities classes should not be instantiated. */
-    private RendererUtilities() {};
+    private RendererUtilities() {}
+    ;
 
     /**
      * Sets up the affine transform
@@ -65,8 +65,7 @@ public final class RendererUtilities {
      * @param paintArea the size of the rendering output area
      * @return a transform that maps from real world coordinates to the screen
      */
-    public static AffineTransform worldToScreenTransform(
-            ReferencedEnvelope mapExtent, Rectangle paintArea) {
+    public static AffineTransform worldToScreenTransform(ReferencedEnvelope mapExtent, Rectangle paintArea) {
 
         // //
         //

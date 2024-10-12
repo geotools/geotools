@@ -80,15 +80,13 @@ public class ShapefileDataStore extends ContentDataStore implements FileDataStor
     public static final Charset DEFAULT_STRING_CHARSET =
             (Charset) ShapefileDataStoreFactory.DBFCHARSET.getDefaultValue();
 
-    public static final TimeZone DEFAULT_TIMEZONE =
-            (TimeZone) ShapefileDataStoreFactory.DBFTIMEZONE.getDefaultValue();
+    public static final TimeZone DEFAULT_TIMEZONE = (TimeZone) ShapefileDataStoreFactory.DBFTIMEZONE.getDefaultValue();
 
     /**
      * When true, the stack trace that got a lock that wasn't released is recorded and then printed
      * out when warning the user about this.
      */
-    protected static final Boolean TRACE_ENABLED =
-            "true".equalsIgnoreCase(System.getProperty("gt2.shapefile.trace"));
+    protected static final Boolean TRACE_ENABLED = "true".equalsIgnoreCase(System.getProperty("gt2.shapefile.trace"));
 
     /** The stack trace used to track code that grabs the data store without disposing it */
     Exception trace;
@@ -245,8 +243,7 @@ public class ShapefileDataStore extends ContentDataStore implements FileDataStor
 
     @Override
     public FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader() throws IOException {
-        return super.getFeatureReader(
-                new Query(getTypeName().getLocalPart()), Transaction.AUTO_COMMIT);
+        return super.getFeatureReader(new Query(getTypeName().getLocalPart()), Transaction.AUTO_COMMIT);
     }
 
     public long getCount(Query query) throws IOException {
@@ -263,14 +260,12 @@ public class ShapefileDataStore extends ContentDataStore implements FileDataStor
     @Override
     public void createSchema(SimpleFeatureType featureType) throws IOException {
         if (!shpFiles.isLocal() || shpFiles.isGz()) {
-            throw new IOException(
-                    "Cannot create FeatureType on remote or in-classpath or gzipped shapefile");
+            throw new IOException("Cannot create FeatureType on remote or in-classpath or gzipped shapefile");
         }
 
         shpFiles.delete();
 
-        CoordinateReferenceSystem crs =
-                featureType.getGeometryDescriptor().getCoordinateReferenceSystem();
+        CoordinateReferenceSystem crs = featureType.getGeometryDescriptor().getCoordinateReferenceSystem();
         final Class<?> geomType = featureType.getGeometryDescriptor().getType().getBinding();
         final ShapeType shapeType;
 
@@ -278,15 +273,12 @@ public class ShapefileDataStore extends ContentDataStore implements FileDataStor
             shapeType = ShapeType.POINT;
         } else if (MultiPoint.class.isAssignableFrom(geomType)) {
             shapeType = ShapeType.MULTIPOINT;
-        } else if (LineString.class.isAssignableFrom(geomType)
-                || MultiLineString.class.isAssignableFrom(geomType)) {
+        } else if (LineString.class.isAssignableFrom(geomType) || MultiLineString.class.isAssignableFrom(geomType)) {
             shapeType = ShapeType.ARC;
-        } else if (Polygon.class.isAssignableFrom(geomType)
-                || MultiPolygon.class.isAssignableFrom(geomType)) {
+        } else if (Polygon.class.isAssignableFrom(geomType) || MultiPolygon.class.isAssignableFrom(geomType)) {
             shapeType = ShapeType.POLYGON;
         } else {
-            throw new DataSourceException(
-                    "Cannot create a shapefile whose geometry type is " + geomType);
+            throw new DataSourceException("Cannot create a shapefile whose geometry type is " + geomType);
         }
 
         StorageFile shpStoragefile = shpFiles.getStorageFile(SHP);
@@ -318,8 +310,7 @@ public class ShapefileDataStore extends ContentDataStore implements FileDataStor
         } else {
             LOGGER.fine("PRJ file not generated for null CoordinateReferenceSystem");
         }
-        StorageFile.replaceOriginals(
-                shpStoragefile, shxStoragefile, dbfStoragefile, prjStoragefile);
+        StorageFile.replaceOriginals(shpStoragefile, shxStoragefile, dbfStoragefile, prjStoragefile);
     }
 
     /** Turns the CRS into a single line WKT, more compatible with ESRI software */
@@ -341,8 +332,8 @@ public class ShapefileDataStore extends ContentDataStore implements FileDataStor
      * Attempt to create a DbaseFileHeader for the FeatureType. Note, we cannot set the number of
      * records until the write has completed.
      */
-    protected static DbaseFileHeader createDbaseHeader(
-            SimpleFeatureType featureType, Charset charset) throws IOException, DbaseFileException {
+    protected static DbaseFileHeader createDbaseHeader(SimpleFeatureType featureType, Charset charset)
+            throws IOException, DbaseFileException {
 
         DbaseFileHeader header = new DbaseFileHeader(charset);
 
@@ -380,13 +371,11 @@ public class ShapefileDataStore extends ContentDataStore implements FileDataStor
             } else if (java.util.Date.class.isAssignableFrom(colType)
                     && Boolean.getBoolean("org.geotools.shapefile.datetime")) {
                 header.addColumn(colName, '@', fieldLen, 0);
-            } else if (java.util.Date.class.isAssignableFrom(colType)
-                    || Calendar.class.isAssignableFrom(colType)) {
+            } else if (java.util.Date.class.isAssignableFrom(colType) || Calendar.class.isAssignableFrom(colType)) {
                 header.addColumn(colName, 'D', fieldLen, 0);
             } else if (colType == Boolean.class) {
                 header.addColumn(colName, 'L', 1, 0);
-            } else if (CharSequence.class.isAssignableFrom(colType)
-                    || colType == java.util.UUID.class) {
+            } else if (CharSequence.class.isAssignableFrom(colType) || colType == java.util.UUID.class) {
                 // Possible fix for GEOT-42 : ArcExplorer doesn't like 0 length
                 // ensure that maxLength is at least 1
                 header.addColumn(colName, 'C', Math.min(254, fieldLen), 0);
@@ -441,9 +430,7 @@ public class ShapefileDataStore extends ContentDataStore implements FileDataStor
         super.finalize();
         if (shpFiles != null && trace != null) {
             LOGGER.log(
-                    Level.SEVERE,
-                    "Undisposed of shapefile, you should call dispose() on all shapefile stores",
-                    trace);
+                    Level.SEVERE, "Undisposed of shapefile, you should call dispose() on all shapefile stores", trace);
         }
         dispose();
     }
@@ -488,8 +475,8 @@ public class ShapefileDataStore extends ContentDataStore implements FileDataStor
     }
 
     @Override
-    public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(
-            Filter filter, Transaction transaction) throws IOException {
+    public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(Filter filter, Transaction transaction)
+            throws IOException {
         return getFeatureWriter(getTypeName().getLocalPart(), filter, transaction);
     }
 
@@ -500,8 +487,8 @@ public class ShapefileDataStore extends ContentDataStore implements FileDataStor
     }
 
     @Override
-    public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriterAppend(
-            Transaction transaction) throws IOException {
+    public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriterAppend(Transaction transaction)
+            throws IOException {
         return getFeatureWriterAppend(getTypeName().getLocalPart(), transaction);
     }
 

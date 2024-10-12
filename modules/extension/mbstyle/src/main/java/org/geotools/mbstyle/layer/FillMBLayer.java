@@ -157,8 +157,7 @@ public class FillMBLayer extends MBLayer {
      */
     public Color getFillOutlineColor() {
         if (paint.get("fill-outline-color") != null) {
-            return parse.convertToColor(
-                    parse.optional(String.class, paint, "fill-outline-color", "#000000"));
+            return parse.convertToColor(parse.optional(String.class, paint, "fill-outline-color", "#000000"));
         } else {
             return getFillColor();
         }
@@ -211,8 +210,7 @@ public class FillMBLayer extends MBLayer {
      * @return The geometry displacement
      */
     public Displacement fillTranslateDisplacement() {
-        return parse.displacement(
-                paint, "fill-translate", sf.displacement(ff.literal(0), ff.literal(0)));
+        return parse.displacement(paint, "fill-translate", sf.displacement(ff.literal(0), ff.literal(0)));
     }
 
     /**
@@ -268,15 +266,8 @@ public class FillMBLayer extends MBLayer {
     public List<FeatureTypeStyle> transformInternal(MBStyle styleContext) {
         MBStyleTransformer transformer = new MBStyleTransformer(parse);
         // use factory to avoid defaults values
-        org.geotools.api.style.Stroke stroke =
-                sf.stroke(
-                        fillOutlineColor(),
-                        fillOpacity(),
-                        ff.literal(1),
-                        ff.literal("miter"),
-                        ff.literal("butt"),
-                        null,
-                        null);
+        org.geotools.api.style.Stroke stroke = sf.stroke(
+                fillOutlineColor(), fillOpacity(), ff.literal(1), ff.literal("miter"), ff.literal("butt"), null, null);
 
         // from fill pattern or fill color
         Fill fill;
@@ -294,55 +285,37 @@ public class FillMBLayer extends MBLayer {
                 }
             }
 
-            ExternalGraphic eg =
-                    transformer.createExternalGraphicForSprite(fillPatternExpr, styleContext);
+            ExternalGraphic eg = transformer.createExternalGraphicForSprite(fillPatternExpr, styleContext);
             GraphicFill gf =
-                    sf.graphicFill(
-                            Arrays.asList(eg),
-                            fillOpacity(),
-                            null,
-                            null,
-                            null,
-                            fillTranslateDisplacement());
+                    sf.graphicFill(Arrays.asList(eg), fillOpacity(), null, null, null, fillTranslateDisplacement());
             stroke.setOpacity(ff.literal(0));
             fill = sf.fill(gf, null, null);
         } else {
             fill = sf.fill(null, fillColor(), fillOpacity());
         }
 
-        PolygonSymbolizer symbolizer =
-                sf.polygonSymbolizer(
-                        getId(),
-                        ff.property((String) null),
-                        sf.description(Text.text("fill"), null),
-                        Units.PIXEL,
-                        stroke,
-                        fill,
-                        fillTranslateDisplacement(),
-                        ff.literal(0));
+        PolygonSymbolizer symbolizer = sf.polygonSymbolizer(
+                getId(),
+                ff.property((String) null),
+                sf.description(Text.text("fill"), null),
+                Units.PIXEL,
+                stroke,
+                fill,
+                fillTranslateDisplacement(),
+                ff.literal(0));
 
         MBFilter filter = getFilter();
 
         Rule rule =
-                sf.rule(
-                        getId(),
-                        null,
-                        null,
-                        0.0,
-                        Double.POSITIVE_INFINITY,
-                        Arrays.asList(symbolizer),
-                        filter.filter());
+                sf.rule(getId(), null, null, 0.0, Double.POSITIVE_INFINITY, Arrays.asList(symbolizer), filter.filter());
 
-        return Collections.singletonList(
-                sf.featureTypeStyle(
-                        getId(),
-                        sf.description(
-                                Text.text("MBStyle " + getId()),
-                                Text.text("Generated for " + getSourceLayer())),
-                        null, // (unused)
-                        Collections.emptySet(),
-                        filter.semanticTypeIdentifiers(),
-                        Arrays.asList(rule)));
+        return Collections.singletonList(sf.featureTypeStyle(
+                getId(),
+                sf.description(Text.text("MBStyle " + getId()), Text.text("Generated for " + getSourceLayer())),
+                null, // (unused)
+                Collections.emptySet(),
+                filter.semanticTypeIdentifiers(),
+                Arrays.asList(rule)));
     }
 
     /**

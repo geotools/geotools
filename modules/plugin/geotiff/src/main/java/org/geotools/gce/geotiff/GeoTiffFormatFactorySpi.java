@@ -70,8 +70,7 @@ public class GeoTiffFormatFactorySpi implements GridFormatFactorySpi {
     @Override
     public AbstractGridFormat createFormat() {
         if (!isAvailable()) {
-            throw new UnsupportedOperationException(
-                    "The GeoTiff plugin requires the JAI and JAI ImageI/O libraries!");
+            throw new UnsupportedOperationException("The GeoTiff plugin requires the JAI and JAI ImageI/O libraries!");
         }
 
         return new GeoTiffFormat();

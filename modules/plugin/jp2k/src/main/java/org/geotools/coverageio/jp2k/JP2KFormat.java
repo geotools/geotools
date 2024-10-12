@@ -51,8 +51,7 @@ public final class JP2KFormat extends AbstractGridFormat implements Format {
     private ImageReaderSpi spi = null;
 
     /** Logger. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(JP2KFormat.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(JP2KFormat.class);
 
     /** The {@code String} representing the parameter to customize multithreading use */
     private static final String USE_MT = "USE_MULTITHREADING";
@@ -63,12 +62,8 @@ public final class JP2KFormat extends AbstractGridFormat implements Format {
      * use multithreading when leveraging on a JAI ImageRead operation. This will be achieved with
      * the use of the ImageReadMT operation of the ImageIO-Ext.
      */
-    public static final DefaultParameterDescriptor<Boolean> USE_MULTITHREADING =
-            new DefaultParameterDescriptor<>(
-                    USE_MT,
-                    Boolean.class,
-                    new Boolean[] {Boolean.TRUE, Boolean.FALSE},
-                    Boolean.FALSE);
+    public static final DefaultParameterDescriptor<Boolean> USE_MULTITHREADING = new DefaultParameterDescriptor<>(
+            USE_MT, Boolean.class, new Boolean[] {Boolean.TRUE, Boolean.FALSE}, Boolean.FALSE);
 
     /** Creates an instance and sets the metadata. */
     public JP2KFormat() {
@@ -91,16 +86,13 @@ public final class JP2KFormat extends AbstractGridFormat implements Format {
         // writing parameters
         writeParameters = null;
         readParameters =
-                new ParameterGroup(
-                        new DefaultParameterDescriptorGroup(
-                                mInfo,
-                                new GeneralParameterDescriptor[] {
-                                    READ_GRIDGEOMETRY2D,
-                                    INPUT_TRANSPARENT_COLOR,
-                                    USE_JAI_IMAGEREAD,
-                                    USE_MULTITHREADING,
-                                    SUGGESTED_TILE_SIZE,
-                                }));
+                new ParameterGroup(new DefaultParameterDescriptorGroup(mInfo, new GeneralParameterDescriptor[] {
+                    READ_GRIDGEOMETRY2D,
+                    INPUT_TRANSPARENT_COLOR,
+                    USE_JAI_IMAGEREAD,
+                    USE_MULTITHREADING,
+                    SUGGESTED_TILE_SIZE,
+                }));
     }
 
     /** @see org.geotools.data.coverage.grid.AbstractGridFormat#getReader(Object, Hints) */
@@ -109,8 +101,7 @@ public final class JP2KFormat extends AbstractGridFormat implements Format {
         try {
             return new JP2KReader(source, hints);
         } catch (MismatchedDimensionException | IOException e) {
-            if (LOGGER.isLoggable(Level.WARNING))
-                LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
+            if (LOGGER.isLoggable(Level.WARNING)) LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
             return null;
         }
     }
@@ -129,8 +120,7 @@ public final class JP2KFormat extends AbstractGridFormat implements Format {
      */
     @Override
     public GridCoverageWriter getWriter(Object destination) {
-        throw new UnsupportedOperationException(
-                "This plugin does not support writing at this time.");
+        throw new UnsupportedOperationException("This plugin does not support writing at this time.");
     }
 
     /**
@@ -151,8 +141,7 @@ public final class JP2KFormat extends AbstractGridFormat implements Format {
      */
     @Override
     public GridCoverageWriter getWriter(Object destination, Hints hints) {
-        throw new UnsupportedOperationException(
-                "This plugin does not support writing at this time.");
+        throw new UnsupportedOperationException("This plugin does not support writing at this time.");
     }
 
     /** @see org.geotools.data.coverage.grid.AbstractGridFormat#accepts(java.lang.Object input) */

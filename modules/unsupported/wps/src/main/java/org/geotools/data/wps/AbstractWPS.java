@@ -49,8 +49,7 @@ import org.geotools.ows.ServiceException;
  */
 public abstract class AbstractWPS<C extends WPSCapabilitiesType, R extends Object> {
 
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(AbstractWPS.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(AbstractWPS.class);
     protected HTTPClient httpClient;
     protected final URL serverURL;
     protected C capabilities;
@@ -119,11 +118,10 @@ public abstract class AbstractWPS<C extends WPSCapabilitiesType, R extends Objec
 
         if (specification == null) {
             specification = specs[specs.length - 1];
-            LOGGER.warning(
-                    "Unable to choose a specification based on cached capabilities. "
-                            + "Arbitrarily choosing spec '"
-                            + specification.getVersion()
-                            + "'.");
+            LOGGER.warning("Unable to choose a specification based on cached capabilities. "
+                    + "Arbitrarily choosing spec '"
+                    + specification.getVersion()
+                    + "'.");
         }
     }
 
@@ -227,8 +225,7 @@ public abstract class AbstractWPS<C extends WPSCapabilitiesType, R extends Objec
             Specification tempSpecification = specs[test];
             String clientVersion = tempSpecification.getVersion();
 
-            GetCapabilitiesRequest request =
-                    tempSpecification.createGetCapabilitiesRequest(serverURL);
+            GetCapabilitiesRequest request = tempSpecification.createGetCapabilitiesRequest(serverURL);
 
             // Grab document
             C tempCapabilities;

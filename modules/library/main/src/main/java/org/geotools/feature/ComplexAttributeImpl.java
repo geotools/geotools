@@ -32,8 +32,7 @@ import org.geotools.feature.type.AttributeDescriptorImpl;
 
 public class ComplexAttributeImpl extends AttributeImpl implements ComplexAttribute {
 
-    public ComplexAttributeImpl(
-            Collection<Property> properties, AttributeDescriptor descriptor, Identifier id) {
+    public ComplexAttributeImpl(Collection<Property> properties, AttributeDescriptor descriptor, Identifier id) {
         super(cloneProperties(properties), descriptor, id);
     }
 

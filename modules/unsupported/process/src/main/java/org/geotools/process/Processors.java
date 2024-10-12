@@ -83,8 +83,7 @@ public class Processors extends FactoryFinder {
      * @return Set of ProcessFactory
      */
     public static Set<ProcessFactory> getProcessFactories() {
-        Stream<ProcessFactory> serviceProviders =
-                getServiceRegistry().getFactories(ProcessFactory.class, null, null);
+        Stream<ProcessFactory> serviceProviders = getServiceRegistry().getFactories(ProcessFactory.class, null, null);
         return new LazySet<>(serviceProviders);
     }
 
@@ -152,8 +151,7 @@ public class Processors extends FactoryFinder {
      * @param name Name of the Process
      * @return Description of the parameters required
      */
-    public static synchronized Map<String, Parameter<?>> getResultInfo(
-            Name name, Map<String, Object> parameters) {
+    public static synchronized Map<String, Parameter<?>> getResultInfo(Name name, Map<String, Object> parameters) {
         ProcessFactory factory = createProcessFactory(name);
         if (factory == null) return null;
 
@@ -161,8 +159,7 @@ public class Processors extends FactoryFinder {
     }
 
     /** Used to wrap a Process up as a Callable for use with an existing ExecutorService */
-    public static Callable<Map<String, Object>> createCallable(
-            final Process process, final Map<String, Object> input) {
+    public static Callable<Map<String, Object>> createCallable(final Process process, final Map<String, Object> input) {
         return () -> process.execute(input, new CallableProgressListener());
     }
 

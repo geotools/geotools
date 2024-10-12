@@ -105,12 +105,11 @@ public class BasicGraphTraversal implements GraphTraversal {
     @Override
     public void init() {
         // initialize the nodes of the graph
-        m_graph.visitNodes(
-                component -> {
-                    component.setVisited(false);
-                    component.setCount(0);
-                    return (0);
-                });
+        m_graph.visitNodes(component -> {
+            component.setVisited(false);
+            component.setCount(0);
+            return (0);
+        });
     }
 
     /**

@@ -58,21 +58,16 @@ public class AppSchemaDataAccessFactory implements DataAccessFactory {
 
     public static final String DBTYPE_STRING = "app-schema";
 
-    public static final DataAccessFactory.Param DBTYPE =
-            new DataAccessFactory.Param(
-                    "dbtype",
-                    String.class,
-                    "Fixed value '" + DBTYPE_STRING + "'",
-                    true,
-                    DBTYPE_STRING,
-                    Collections.singletonMap(Parameter.LEVEL, "program"));
+    public static final DataAccessFactory.Param DBTYPE = new DataAccessFactory.Param(
+            "dbtype",
+            String.class,
+            "Fixed value '" + DBTYPE_STRING + "'",
+            true,
+            DBTYPE_STRING,
+            Collections.singletonMap(Parameter.LEVEL, "program"));
 
-    public static final DataAccessFactory.Param URL =
-            new DataAccessFactory.Param(
-                    "url",
-                    URL.class,
-                    "URL to an application schema datastore XML configuration file",
-                    true);
+    public static final DataAccessFactory.Param URL = new DataAccessFactory.Param(
+            "url", URL.class, "URL to an application schema datastore XML configuration file", true);
 
     // marks whether data store is based on an XML include, need to handle duplicates
     public static final String IS_INCLUDE = "isInclude";
@@ -80,12 +75,10 @@ public class AppSchemaDataAccessFactory implements DataAccessFactory {
     public AppSchemaDataAccessFactory() {}
 
     @Override
-    public DataAccess<FeatureType, Feature> createDataStore(Map<String, ?> params)
-            throws IOException {
+    public DataAccess<FeatureType, Feature> createDataStore(Map<String, ?> params) throws IOException {
         final Set<AppSchemaDataAccess> registeredAppSchemaStores = new HashSet<>();
         try {
-            return createDataStore(
-                    params, false, new DataAccessMap(), registeredAppSchemaStores, null);
+            return createDataStore(params, false, new DataAccessMap(), registeredAppSchemaStores, null);
         } catch (Exception ex) {
             // dispose every already registered included datasource
             for (AppSchemaDataAccess appSchemaDataAccess : registeredAppSchemaStores) {
@@ -133,8 +126,7 @@ public class AppSchemaDataAccessFactory implements DataAccessFactory {
         boolean isInclude = Boolean.TRUE.equals(params.get(IS_INCLUDE));
 
         Set<FeatureTypeMapping> mappings =
-                AppSchemaDataAccessConfigurator.buildMappings(
-                        config, sourceDataStoreMap, isInclude);
+                AppSchemaDataAccessConfigurator.buildMappings(config, sourceDataStoreMap, isInclude);
 
         AppSchemaDataAccess dataStore = new AppSchemaDataAccess(mappings, hidden);
         dataStore.url = configFileUrl;
@@ -161,14 +153,11 @@ public class AppSchemaDataAccessFactory implements DataAccessFactory {
         if (index <= 0) {
             // we can't handle this situation let's raise an exception
             throw new RuntimeException(
-                    String.format(
-                            "Can't build include types '%s' URL using parent '%s' URL.",
-                            include, url));
+                    String.format("Can't build include types '%s' URL using parent '%s' URL.", include, url));
         }
         // build the include types URL
         url = url.substring(0, index + 1) + include;
-        LOGGER.fine(
-                String.format("Using URL '%s' to retrieve include types with '%s'.", url, include));
+        LOGGER.fine(String.format("Using URL '%s' to retrieve include types with '%s'.", url, include));
         return url;
     }
 

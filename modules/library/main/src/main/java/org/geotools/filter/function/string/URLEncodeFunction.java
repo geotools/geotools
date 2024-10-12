@@ -41,12 +41,11 @@ import org.geotools.filter.capability.FunctionNameImpl;
 public class URLEncodeFunction extends FunctionExpressionImpl {
 
     /** The FunctionName */
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "strURLEncode",
-                    String.class,
-                    parameter("encodeable", String.class),
-                    parameter("formUrlEncode", Boolean.class, 0, 1));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "strURLEncode",
+            String.class,
+            parameter("encodeable", String.class),
+            parameter("formUrlEncode", Boolean.class, 0, 1));
 
     /** Create a new FilterFunction_strURLEncode instance */
     public URLEncodeFunction() {
@@ -92,8 +91,7 @@ public class URLEncodeFunction extends FunctionExpressionImpl {
             return encoded;
         } catch (UnsupportedEncodingException e) {
             throw new IllegalArgumentException(
-                    "Filter Function problem for function strURLEncode argument #0 - "
-                            + e.getMessage());
+                    "Filter Function problem for function strURLEncode argument #0 - " + e.getMessage());
         }
     }
 }

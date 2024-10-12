@@ -230,8 +230,7 @@ public final class MarchingSquaresVectorizer {
         /** Reports that the scan area fully contains invalid pixels */
         boolean fullyInvalid = false;
 
-        private void isFullyInvalid(
-                List<Polygon> geometriesList, RenderedImage inputRI, RenderingHints localHints)
+        private void isFullyInvalid(List<Polygon> geometriesList, RenderedImage inputRI, RenderingHints localHints)
                 throws Exception {
             if (geometriesList.isEmpty()) {
                 // Must be a fully "invalid-Pixels" image, or an error occurred
@@ -468,8 +467,7 @@ public final class MarchingSquaresVectorizer {
             iter = RandomIterFactory.create(inputRI, null);
 
             if (inGeodata != null) {
-                HashMap<String, Double> regionMap =
-                        CoverageUtilities.getRegionParamsFromGridCoverage(inGeodata);
+                HashMap<String, Double> regionMap = CoverageUtilities.getRegionParamsFromGridCoverage(inGeodata);
                 imageProperties.init(regionMap, inputRI);
                 xRes = regionMap.get(CoverageUtilities.XRES);
                 yRes = regionMap.get(CoverageUtilities.YRES);
@@ -555,8 +553,7 @@ public final class MarchingSquaresVectorizer {
             } else {
                 // do we have transparency combination matrix
 
-                final double fillValue =
-                        (tr == Transparency.OPAQUE) ? (1.0 / numBands) : (1.0 / (numBands - 1));
+                final double fillValue = (tr == Transparency.OPAQUE) ? (1.0 / numBands) : (1.0 / (numBands - 1));
                 final double[][] matrix = new double[1][numBands + 1];
                 for (int i = 0; i < numBands; i++) {
                     matrix[0][i] = fillValue;
@@ -573,8 +570,7 @@ public final class MarchingSquaresVectorizer {
         final ImageLayout layout2 = (ImageLayout) localHints.get(JAI.KEY_IMAGE_LAYOUT);
         layout2.setColorModel(ColorUtilities.GRAY_CM);
         layout2.setSampleModel(
-                ColorUtilities.GRAY_CM.createCompatibleSampleModel(
-                        inputRI.getTileWidth(), inputRI.getTileHeight()));
+                ColorUtilities.GRAY_CM.createCompatibleSampleModel(inputRI.getTileWidth(), inputRI.getTileHeight()));
 
         return inputRI;
     }
@@ -673,11 +669,9 @@ public final class MarchingSquaresVectorizer {
             final double tolerance = Math.max(xRes, yRes) * simplifierFactor;
 
             // Avoid simplification on small polygons
-            simplifiedFootprintGeometry =
-                    (area > MIN_AREA_TO_BE_SIMPLIFIED)
-                            ? TopologyPreservingSimplifier.simplify(
-                                    finalSimplifiedFootprint, tolerance)
-                            : finalSimplifiedFootprint;
+            simplifiedFootprintGeometry = (area > MIN_AREA_TO_BE_SIMPLIFIED)
+                    ? TopologyPreservingSimplifier.simplify(finalSimplifiedFootprint, tolerance)
+                    : finalSimplifiedFootprint;
 
             if (simplifiedFootprintGeometry == null) {
                 throw new IllegalStateException("No simplified Footprint can be computed");
@@ -707,10 +701,7 @@ public final class MarchingSquaresVectorizer {
     }
 
     private void identifyGeometries(
-            final RandomIter iter,
-            final int sampleDataType,
-            final List<Polygon> geometriesList,
-            ScanInfo scanInfo)
+            final RandomIter iter, final int sampleDataType, final List<Polygon> geometriesList, ScanInfo scanInfo)
             throws TransformException {
 
         // Preliminar check
@@ -738,15 +729,13 @@ public final class MarchingSquaresVectorizer {
             if (sampleDataType == DataBuffer.TYPE_DOUBLE) {
                 for (int tileY = minTileY; tileY <= maxTileY; tileY++) {
                     for (int tileX = minTileX; tileX <= maxTileX; tileX++) {
-                        identifyGeometryDouble(
-                                iter, geometriesList, scanInfo, awtPolygon, tileY, tileX);
+                        identifyGeometryDouble(iter, geometriesList, scanInfo, awtPolygon, tileY, tileX);
                     }
                 }
             } else if (sampleDataType == DataBuffer.TYPE_BYTE) {
                 for (int tileY = minTileY; tileY <= maxTileY; tileY++) {
                     for (int tileX = minTileX; tileX <= maxTileX; tileX++) {
-                        identifyGeometryByte(
-                                iter, geometriesList, scanInfo, awtPolygon, tileY, tileX);
+                        identifyGeometryByte(iter, geometriesList, scanInfo, awtPolygon, tileY, tileX);
                     }
                 }
             }
@@ -761,13 +750,7 @@ public final class MarchingSquaresVectorizer {
             scanInfo.takeFirst = true;
 
             Polygon polygon =
-                    identifyPerimeter(
-                            iter,
-                            scanInfo.refColumn,
-                            scanInfo.refRow,
-                            awtPolygon,
-                            sampleDataType,
-                            scanInfo);
+                    identifyPerimeter(iter, scanInfo.refColumn, scanInfo.refRow, awtPolygon, sampleDataType, scanInfo);
             geometriesList.add(polygon);
         }
     }
@@ -797,13 +780,7 @@ public final class MarchingSquaresVectorizer {
                         if (!bitSet.get(col - minX, row - minY)) {
                             if (value == I_VALUE) {
                                 Polygon polygon =
-                                        identifyPerimeter(
-                                                iter,
-                                                col,
-                                                row,
-                                                awtPolygon,
-                                                DataBuffer.TYPE_BYTE,
-                                                scanInfo);
+                                        identifyPerimeter(iter, col, row, awtPolygon, DataBuffer.TYPE_BYTE, scanInfo);
                                 if (polygon != null) {
                                     if (removeCollinear) {
                                         if (LOGGER.isLoggable(Level.FINE)) {
@@ -854,13 +831,7 @@ public final class MarchingSquaresVectorizer {
                         if (!bitSet.get(col - minX, row - minY) && !Double.isNaN(value)) {
                             if (areEqual(value, D_VALUE)) {
                                 Polygon polygon =
-                                        identifyPerimeter(
-                                                iter,
-                                                col,
-                                                row,
-                                                awtPolygon,
-                                                DataBuffer.TYPE_DOUBLE,
-                                                scanInfo);
+                                        identifyPerimeter(iter, col, row, awtPolygon, DataBuffer.TYPE_DOUBLE, scanInfo);
                                 if (polygon != null) {
                                     if (removeCollinear) {
                                         if (LOGGER.isLoggable(Level.FINE)) {
@@ -898,39 +869,30 @@ public final class MarchingSquaresVectorizer {
         worker.setRenderingHints(localHints);
         if (dataType != DataBuffer.TYPE_BYTE) {
             if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.fine(
-                        "Rescaling dynamic to fit BYTE datatype from "
-                                + ImageUtilities.getDatabufferTypeName(dataType));
+                LOGGER.fine("Rescaling dynamic to fit BYTE datatype from "
+                        + ImageUtilities.getDatabufferTypeName(dataType));
             }
 
             switch (dataType) {
                 case DataBuffer.TYPE_USHORT:
-                    inputRI =
-                            worker.lookup(
-                                            createLookupTableUShort(
-                                                    exclusionLuminanceRanges, dataType))
-                                    .getRenderedImage();
+                    inputRI = worker.lookup(createLookupTableUShort(exclusionLuminanceRanges, dataType))
+                            .getRenderedImage();
                     break;
                 case DataBuffer.TYPE_SHORT:
                     scale = MAX_8BIT_VALUE / Short.MAX_VALUE;
                     offset = MAX_8BIT_VALUE * Short.MIN_VALUE / (Short.MIN_VALUE - Short.MAX_VALUE);
                     worker.rescale(new double[] {scale}, new double[] {offset});
                     imagesStack.push(worker.getRenderedImage());
-                    inputRI =
-                            worker.lookup(createLookupTableByte(exclusionLuminanceRanges, dataType))
-                                    .getRenderedImage();
+                    inputRI = worker.lookup(createLookupTableByte(exclusionLuminanceRanges, dataType))
+                            .getRenderedImage();
                     break;
                 case DataBuffer.TYPE_INT:
                     scale = MAX_8BIT_VALUE / Integer.MAX_VALUE;
-                    offset =
-                            MAX_8BIT_VALUE
-                                    * Integer.MIN_VALUE
-                                    / (Integer.MIN_VALUE - Integer.MAX_VALUE);
+                    offset = MAX_8BIT_VALUE * Integer.MIN_VALUE / (Integer.MIN_VALUE - Integer.MAX_VALUE);
                     worker.rescale(new double[] {scale}, new double[] {offset});
                     imagesStack.push(worker.getRenderedImage());
-                    inputRI =
-                            worker.lookup(createLookupTableByte(exclusionLuminanceRanges, dataType))
-                                    .getRenderedImage();
+                    inputRI = worker.lookup(createLookupTableByte(exclusionLuminanceRanges, dataType))
+                            .getRenderedImage();
                     break;
                 default:
                     throw new UnsupportedOperationException("Wrong data type:" + dataType);
@@ -938,16 +900,14 @@ public final class MarchingSquaresVectorizer {
 
             assert inputRI.getSampleModel().getDataType() == DataBuffer.TYPE_BYTE;
         } else {
-            inputRI =
-                    worker.lookup(createLookupTableByte(exclusionLuminanceRanges, dataType))
-                            .getRenderedImage();
+            inputRI = worker.lookup(createLookupTableByte(exclusionLuminanceRanges, dataType))
+                    .getRenderedImage();
         }
         return inputRI;
     }
 
     /** Check if the image is fully covered by only valid values */
-    private boolean checkFullyCovered(
-            RandomIter iter, final int refValue, final List<Polygon> geometriesList) {
+    private boolean checkFullyCovered(RandomIter iter, final int refValue, final List<Polygon> geometriesList) {
         int[] yvals = {imageProperties.minY, imageProperties.maxY};
         for (int y : yvals) {
             for (int x = imageProperties.minX; x <= imageProperties.maxX; x++) {
@@ -974,8 +934,7 @@ public final class MarchingSquaresVectorizer {
     }
 
     /** Check if the image is fully covered by only valid values */
-    private boolean checkFullyCovered(
-            RandomIter iter, double refValue, List<Polygon> geometriesList) {
+    private boolean checkFullyCovered(RandomIter iter, double refValue, List<Polygon> geometriesList) {
         for (int y = imageProperties.minY;
                 y <= imageProperties.maxY;
                 y += (imageProperties.maxY - imageProperties.minY)) {
@@ -1037,10 +996,8 @@ public final class MarchingSquaresVectorizer {
 
         int initialValue = value(iter, initialX, initialY, sampleDataType, false);
         if (initialValue == 0) {
-            throw new IllegalArgumentException(
-                    String.format(
-                            "Supplied initial coordinates (%d, %d) do not lie on a perimeter.",
-                            initialX, initialY));
+            throw new IllegalArgumentException(String.format(
+                    "Supplied initial coordinates (%d, %d) do not lie on a perimeter.", initialX, initialY));
         }
         if (initialValue == 15) {
             // not a border pixel
@@ -1152,8 +1109,7 @@ public final class MarchingSquaresVectorizer {
             awtPolygon.addPoint(x, y);
         } while ((x != initialX) || (y != initialY));
 
-        double polygonArea =
-                getPolygonArea(awtPolygon.xpoints, awtPolygon.ypoints, awtPolygon.npoints - 1);
+        double polygonArea = getPolygonArea(awtPolygon.xpoints, awtPolygon.ypoints, awtPolygon.npoints - 1);
         if (polygonArea < thresholdArea) {
             if (!scanInfo.firstFound) {
                 // Taking note that at least a polygon have
@@ -1173,8 +1129,7 @@ public final class MarchingSquaresVectorizer {
 
         coordinateList.add(startCoordinate);
 
-        Coordinate[] coordinateArray =
-                coordinateList.toArray(new Coordinate[coordinateList.size()]);
+        Coordinate[] coordinateArray = coordinateList.toArray(new Coordinate[coordinateList.size()]);
 
         LinearRing linearRing = GF.createLinearRing(coordinateArray);
         Polygon polygon = GF.createPolygon(linearRing, null);
@@ -1192,8 +1147,7 @@ public final class MarchingSquaresVectorizer {
                 && (value(iter, x + 1, y + 1, sampleDataType, false) == 1);
     }
 
-    private int value(
-            RandomIter iter, int x, int y, final int dataType, final boolean forceSetting) {
+    private int value(RandomIter iter, int x, int y, final int dataType, final boolean forceSetting) {
         int sum = 0;
 
         if (isSet(iter, x - 1, y - 1, dataType, forceSetting)) // UL
@@ -1222,13 +1176,11 @@ public final class MarchingSquaresVectorizer {
         return sum;
     }
 
-    private boolean isSet(
-            RandomIter iter, int x, int y, final int dataType, final boolean forceSetting) {
-        boolean isOutsideGrid =
-                (x < imageProperties.minX)
-                        || (x > imageProperties.maxX)
-                        || (y < imageProperties.minY)
-                        || (y > imageProperties.maxY);
+    private boolean isSet(RandomIter iter, int x, int y, final int dataType, final boolean forceSetting) {
+        boolean isOutsideGrid = (x < imageProperties.minX)
+                || (x > imageProperties.maxX)
+                || (y < imageProperties.minY)
+                || (y > imageProperties.maxY);
         if (isOutsideGrid) {
             return false;
         }
@@ -1278,14 +1230,13 @@ public final class MarchingSquaresVectorizer {
 
     public static class ImageAnalysisResultThdLocal {
 
-        private static final InheritableThreadLocal<Exception> tl =
-                new InheritableThreadLocal<Exception>() {
-                    @Override
-                    protected Exception initialValue() {
+        private static final InheritableThreadLocal<Exception> tl = new InheritableThreadLocal<Exception>() {
+            @Override
+            protected Exception initialValue() {
 
-                        return null;
-                    }
-                };
+                return null;
+            }
+        };
 
         public static Exception get() {
             return tl.get();
@@ -1373,8 +1324,7 @@ public final class MarchingSquaresVectorizer {
         return LookupTableFactory.create(b, dataType);
     }
 
-    private LookupTable createLookupTableUShort(
-            List<Range<Integer>> exclusionValues, int dataType) {
+    private LookupTable createLookupTableUShort(List<Range<Integer>> exclusionValues, int dataType) {
         final byte[] bUShort = new byte[65536];
         Arrays.fill(bUShort, (byte) 0);
         for (Range<Integer> exclusionValue : exclusionValues) {

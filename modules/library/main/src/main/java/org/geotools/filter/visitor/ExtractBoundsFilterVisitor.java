@@ -108,8 +108,7 @@ import org.locationtech.jts.geom.Geometry;
 public class ExtractBoundsFilterVisitor extends NullFilterVisitor {
     public static NullFilterVisitor BOUNDS_VISITOR = new ExtractBoundsFilterVisitor();
 
-    private static Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(ExtractBoundsFilterVisitor.class);
+    private static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(ExtractBoundsFilterVisitor.class);
 
     /**
      * This FilterVisitor is stateless - use ExtractBoundsFilterVisitor.BOUNDS_VISITOR.
@@ -149,10 +148,7 @@ public class ExtractBoundsFilterVisitor extends NullFilterVisitor {
 
     protected Envelope infinity() {
         return new Envelope(
-                Double.NEGATIVE_INFINITY,
-                Double.POSITIVE_INFINITY,
-                Double.NEGATIVE_INFINITY,
-                Double.POSITIVE_INFINITY);
+                Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
     }
 
     @Override
@@ -274,12 +270,10 @@ public class ExtractBoundsFilterVisitor extends NullFilterVisitor {
         // expand it by the distance.
         // We ignore the unit of measure for the moment
         Literal geometry = null;
-        if (filter.getExpression1() instanceof PropertyName
-                && filter.getExpression2() instanceof Literal) {
+        if (filter.getExpression1() instanceof PropertyName && filter.getExpression2() instanceof Literal) {
             geometry = (Literal) filter.getExpression2();
         }
-        if (filter.getExpression2() instanceof PropertyName
-                && filter.getExpression1() instanceof Literal) {
+        if (filter.getExpression2() instanceof PropertyName && filter.getExpression1() instanceof Literal) {
             geometry = (Literal) filter.getExpression2();
         }
 

@@ -149,10 +149,8 @@ public class GeoTiffWriteParams extends GeoToolsWriteParams {
      * @see #getColorConverter
      * @see #getPhotometricInterpretation
      */
-    public void setColorConverter(
-            TIFFColorConverter colorConverter, int photometricInterpretation) {
-        ((TIFFImageWriteParam) adaptee)
-                .setColorConverter(colorConverter, photometricInterpretation);
+    public void setColorConverter(TIFFColorConverter colorConverter, int photometricInterpretation) {
+        ((TIFFImageWriteParam) adaptee).setColorConverter(colorConverter, photometricInterpretation);
     }
 
     /**

@@ -103,9 +103,7 @@ public final class ComplexFeaturesTest extends OnlineTestCase {
             // just log the exception and move on
             LOGGER.log(
                     Level.WARNING,
-                    String.format(
-                            "Error removing tests root directory '%s'.",
-                            TESTS_ROOT_DIR.getAbsolutePath()),
+                    String.format("Error removing tests root directory '%s'.", TESTS_ROOT_DIR.getAbsolutePath()),
                     exception);
         }
     }
@@ -116,15 +114,13 @@ public final class ComplexFeaturesTest extends OnlineTestCase {
      */
     public void testRetrievingStationsComplexFeatures() throws Exception {
         // gets the complex features source and read all the features
-        FeatureSource<FeatureType, Feature> source =
-                appSchemaDataStore.getFeatureSource(MAPPED_TYPE_NAME);
+        FeatureSource<FeatureType, Feature> source = appSchemaDataStore.getFeatureSource(MAPPED_TYPE_NAME);
         List<Feature> features = iteratorToList(source.getFeatures().features());
         // check that we got the expected number of features
         assertEquals(2, features.size());
         // check that we have the expected features
         GeometryFactory geometryFactory = new GeometryFactory();
-        checkFeatureExists(
-                features, "7", "Bologna", geometryFactory.createPoint(new Coordinate(11.34, 44.5)));
+        checkFeatureExists(features, "7", "Bologna", geometryFactory.createPoint(new Coordinate(11.34, 44.5)));
         checkFeatureExists(
                 features,
                 "13",
@@ -138,8 +134,7 @@ public final class ComplexFeaturesTest extends OnlineTestCase {
      * Helper method that checks if a feature exists in the provided features list, if the feature
      * is found its attributes are compared for equality with the provided ones.
      */
-    private Feature checkFeatureExists(
-            List<Feature> features, String id, String name, Point position, String... tags) {
+    private Feature checkFeatureExists(List<Feature> features, String id, String name, Point position, String... tags) {
         for (Feature feature : features) {
             if (feature.getIdentifier().getID().equals(id)) {
                 // check the station name

@@ -177,22 +177,17 @@ public class GeneralMatrix implements XMatrix, Serializable {
      * @param transform The matrix to copy.
      */
     public GeneralMatrix(final AffineTransform transform) {
-        mat =
-                new DMatrixRMaj(
-                        3,
-                        3,
-                        true,
-                        new double[] {
-                            transform.getScaleX(),
-                            transform.getShearX(),
-                            transform.getTranslateX(),
-                            transform.getShearY(),
-                            transform.getScaleY(),
-                            transform.getTranslateY(),
-                            0,
-                            0,
-                            1
-                        });
+        mat = new DMatrixRMaj(3, 3, true, new double[] {
+            transform.getScaleX(),
+            transform.getShearX(),
+            transform.getTranslateX(),
+            transform.getShearY(),
+            transform.getScaleY(),
+            transform.getTranslateY(),
+            0,
+            0,
+            1
+        });
         assert isAffine() : this;
     }
 
@@ -317,8 +312,7 @@ public class GeneralMatrix implements XMatrix, Serializable {
                     if (hasFound) {
                         // TODO: Use the localized version of 'getName' in GeoAPI 2.1
                         throw new IllegalArgumentException(
-                                MessageFormat.format(
-                                        ErrorKeys.COLINEAR_AXIS_$2, srcAxe.name(), dstAxe.name()));
+                                MessageFormat.format(ErrorKeys.COLINEAR_AXIS_$2, srcAxe.name(), dstAxe.name()));
                     }
                     hasFound = true;
                     /*
@@ -330,10 +324,7 @@ public class GeneralMatrix implements XMatrix, Serializable {
                     double scale = (normal) ? +1 : -1;
                     double translate = 0;
                     if (validRegions) {
-                        translate =
-                                (normal)
-                                        ? dstRegion.getMinimum(dstIndex)
-                                        : dstRegion.getMaximum(dstIndex);
+                        translate = (normal) ? dstRegion.getMinimum(dstIndex) : dstRegion.getMaximum(dstIndex);
                         scale *= dstRegion.getSpan(dstIndex) / srcRegion.getSpan(srcIndex);
                         translate -= srcRegion.getMinimum(srcIndex) * scale;
                     }
@@ -344,8 +335,7 @@ public class GeneralMatrix implements XMatrix, Serializable {
             if (!hasFound) {
                 // TODO: Use the localized version of 'getName' in GeoAPI 2.1
                 throw new IllegalArgumentException(
-                        MessageFormat.format(
-                                ErrorKeys.NO_SOURCE_AXIS_$1, dstAxis[dstIndex].name()));
+                        MessageFormat.format(ErrorKeys.NO_SOURCE_AXIS_$1, dstAxis[dstIndex].name()));
             }
         }
         setElement(dstAxis.length, srcAxis.length, 1);
@@ -381,8 +371,7 @@ public class GeneralMatrix implements XMatrix, Serializable {
      * @param dimension The expected dimension for the object.
      * @throws MismatchedDimensionException if the envelope doesn't have the expected dimension.
      */
-    private static void ensureDimensionMatch(
-            final String name, final Bounds envelope, final int dimension)
+    private static void ensureDimensionMatch(final String name, final Bounds envelope, final int dimension)
             throws MismatchedDimensionException {
         final int dim = envelope.getDimension();
         if (dimension != dim) {
@@ -536,15 +525,14 @@ public class GeneralMatrix implements XMatrix, Serializable {
     @Override
     public void setColumn(int column, double... values) {
         if (values.length != mat.getNumCols()) {
-            throw new IllegalArgumentException(
-                    "Call setRow received an array of length "
-                            + values.length
-                            + ".  "
-                            + "The dimensions of the matrix is "
-                            + mat.getNumRows()
-                            + " by "
-                            + mat.getNumCols()
-                            + ".");
+            throw new IllegalArgumentException("Call setRow received an array of length "
+                    + values.length
+                    + ".  "
+                    + "The dimensions of the matrix is "
+                    + mat.getNumRows()
+                    + " by "
+                    + mat.getNumCols()
+                    + ".");
         }
         for (int i = 0; i < values.length; i++) {
             mat.set(i, column, values[i]);
@@ -554,15 +542,14 @@ public class GeneralMatrix implements XMatrix, Serializable {
     @Override
     public void setRow(int row, double... values) {
         if (values.length != mat.getNumCols()) {
-            throw new IllegalArgumentException(
-                    "Call setRow received an array of length "
-                            + values.length
-                            + ".  "
-                            + "The dimensions of the matrix is "
-                            + mat.getNumRows()
-                            + " by "
-                            + mat.getNumCols()
-                            + ".");
+            throw new IllegalArgumentException("Call setRow received an array of length "
+                    + values.length
+                    + ".  "
+                    + "The dimensions of the matrix is "
+                    + mat.getNumRows()
+                    + " by "
+                    + mat.getNumCols()
+                    + ".");
         }
 
         for (int i = 0; i < values.length; i++) {
@@ -714,8 +701,7 @@ public class GeneralMatrix implements XMatrix, Serializable {
     public final AffineTransform toAffineTransform2D() throws IllegalStateException {
         int check;
         if ((check = getNumRow()) != 3 || (check = getNumCol()) != 3) {
-            throw new IllegalStateException(
-                    MessageFormat.format(ErrorKeys.NOT_TWO_DIMENSIONAL_$1, check - 1));
+            throw new IllegalStateException(MessageFormat.format(ErrorKeys.NOT_TWO_DIMENSIONAL_$1, check - 1));
         }
         if (isAffine()) {
             return new AffineTransform(
@@ -752,8 +738,7 @@ public class GeneralMatrix implements XMatrix, Serializable {
      * @throws IOException if an error occured while reading the stream.
      * @since 2.2
      */
-    public static GeneralMatrix load(final BufferedReader in, final Locale locale)
-            throws IOException {
+    public static GeneralMatrix load(final BufferedReader in, final Locale locale) throws IOException {
         final LineFormat parser = new LineFormat(locale);
         double[] data = null;
         double[] row = null;
@@ -837,17 +822,10 @@ public class GeneralMatrix implements XMatrix, Serializable {
 
     /** Extract a subMatrix to the provided target */
     public void copySubMatrix(
-            int rowSource,
-            int colSource,
-            int numRows,
-            int numCol,
-            int rowDest,
-            int colDest,
-            GeneralMatrix target) {
+            int rowSource, int colSource, int numRows, int numCol, int rowDest, int colDest, GeneralMatrix target) {
         int rowLimit = rowSource + numRows;
         int colLimit = colSource + numCol;
-        CommonOps_DDRM.extract(
-                mat, rowSource, rowLimit, colSource, colLimit, target.mat, rowDest, colDest);
+        CommonOps_DDRM.extract(mat, rowSource, rowLimit, colSource, colLimit, target.mat, rowDest, colDest);
     }
 
     /** Extract col to provided array. */

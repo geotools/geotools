@@ -65,7 +65,8 @@ abstract class IndexColorOperation extends Operation2D {
      */
     @Override
     public Coverage doOperation(final ParameterValueGroup parameters, final Hints hints) {
-        final GridCoverage2D source = (GridCoverage2D) parameters.parameter("Source").getValue();
+        final GridCoverage2D source =
+                (GridCoverage2D) parameters.parameter("Source").getValue();
         final GridCoverage2D visual = source;
         final RenderedImage image = visual.getRenderedImage();
         final GridSampleDimension[] bands = visual.getSampleDimensions();
@@ -78,15 +79,11 @@ abstract class IndexColorOperation extends Operation2D {
              * transformColormap(...) method, which needs to be defined by subclasses.
              */
             GridSampleDimension band = bands[i];
-            final ColorModel candidate =
-                    (i == visibleBand) ? image.getColorModel() : band.getColorModel();
+            final ColorModel candidate = (i == visibleBand) ? image.getColorModel() : band.getColorModel();
             if (!(candidate instanceof IndexColorModel)) {
                 // Current implementation supports only sources that use an index color model.
-                throw new IllegalArgumentException(
-                        MessageFormat.format(
-                                ErrorKeys.ILLEGAL_CLASS_$2,
-                                Classes.getClass(candidate),
-                                IndexColorModel.class));
+                throw new IllegalArgumentException(MessageFormat.format(
+                        ErrorKeys.ILLEGAL_CLASS_$2, Classes.getClass(candidate), IndexColorModel.class));
             }
             final IndexColorModel colors = (IndexColorModel) candidate;
             final int mapSize = colors.getMapSize();
@@ -128,18 +125,16 @@ abstract class IndexColorOperation extends Operation2D {
          * unmodified (except for the ColorModel given in the layout in this case).
          */
         final ImageLayout layout = new ImageLayout().setColorModel(model);
-        final RenderedImage newImage =
-                new NullOpImage(image, layout, null, OpImage.OP_COMPUTE_BOUND);
-        final GridCoverage2D target =
-                CoverageFactoryFinder.getGridCoverageFactory(GeoTools.getDefaultHints())
-                        .create(
-                                visual.getName(),
-                                newImage,
-                                visual.getCoordinateReferenceSystem2D(),
-                                visual.getGridGeometry().getGridToCRS(),
-                                bands,
-                                new GridCoverage[] {visual},
-                                null);
+        final RenderedImage newImage = new NullOpImage(image, layout, null, OpImage.OP_COMPUTE_BOUND);
+        final GridCoverage2D target = CoverageFactoryFinder.getGridCoverageFactory(GeoTools.getDefaultHints())
+                .create(
+                        visual.getName(),
+                        newImage,
+                        visual.getCoordinateReferenceSystem2D(),
+                        visual.getGridGeometry().getGridToCRS(),
+                        bands,
+                        new GridCoverage[] {visual},
+                        null);
 
         return target;
     }

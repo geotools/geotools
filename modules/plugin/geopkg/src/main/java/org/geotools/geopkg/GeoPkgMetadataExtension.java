@@ -111,10 +111,8 @@ public class GeoPkgMetadataExtension extends GeoPkgExtension {
 
     /** Adds a metadata entry in the GeoPacakge */
     public void addMetadata(GeoPkgMetadata metadata) throws SQLException {
-        String sql =
-                String.format(
-                        "INSERT INTO %s(md_scope, md_standard_uri, mime_type, metadata) VALUES(?, ?, ?, ?)",
-                        METADATA);
+        String sql = String.format(
+                "INSERT INTO %s(md_scope, md_standard_uri, mime_type, metadata) VALUES(?, ?, ?, ?)", METADATA);
         try (Connection cx = getConnection();
                 PreparedStatement ps = cx.prepareStatement(sql)) {
             ps.setString(1, metadata.getScope().getSqlValue());
@@ -129,15 +127,14 @@ public class GeoPkgMetadataExtension extends GeoPkgExtension {
 
     /** Updates metadata entry in the GeoPackage */
     public void updateMetadata(GeoPkgMetadata metadata) throws SQLException {
-        String sql =
-                String.format(
-                        "UPDATE %s "
-                                + "set md_scope = ?, "
-                                + "md_standard_uri = ?, "
-                                + "mime_type = ?, "
-                                + "metadata = ? "
-                                + "WHERE id = ?",
-                        METADATA);
+        String sql = String.format(
+                "UPDATE %s "
+                        + "set md_scope = ?, "
+                        + "md_standard_uri = ?, "
+                        + "mime_type = ?, "
+                        + "metadata = ? "
+                        + "WHERE id = ?",
+                METADATA);
         try (Connection cx = getConnection();
                 PreparedStatement ps = cx.prepareStatement(sql)) {
             ps.setString(1, metadata.getScope().getSqlValue());
@@ -171,10 +168,9 @@ public class GeoPkgMetadataExtension extends GeoPkgExtension {
     private GeoPkgMetadata.Scope getMetadataScope(ResultSet rs) throws SQLException {
         String scope = rs.getString("md_scope");
         if (scope != null) {
-            Optional<GeoPkgMetadata.Scope> enumValue =
-                    Arrays.stream(GeoPkgMetadata.Scope.values())
-                            .filter(s -> scope.equals(s.getSqlValue()))
-                            .findFirst();
+            Optional<GeoPkgMetadata.Scope> enumValue = Arrays.stream(GeoPkgMetadata.Scope.values())
+                    .filter(s -> scope.equals(s.getSqlValue()))
+                    .findFirst();
             if (enumValue.isPresent()) return enumValue.get();
         }
 
@@ -186,8 +182,7 @@ public class GeoPkgMetadataExtension extends GeoPkgExtension {
         return GeoPkgMetadata.Scope.Dataset;
     }
 
-    public List<GeoPkgMetadataReference> getReferences(GeoPkgMetadata metadata)
-            throws SQLException {
+    public List<GeoPkgMetadataReference> getReferences(GeoPkgMetadata metadata) throws SQLException {
         try (Connection cx = getConnection()) {
             if (!isRegistered(cx)) {
                 return null;
@@ -208,8 +203,7 @@ public class GeoPkgMetadataExtension extends GeoPkgExtension {
         }
     }
 
-    private GeoPkgMetadataReference mapReference(ResultSet rs, GeoPkgMetadata metadata)
-            throws SQLException {
+    private GeoPkgMetadataReference mapReference(ResultSet rs, GeoPkgMetadata metadata) throws SQLException {
         Long rowId = rs.getLong("row_id_value");
         if (rs.wasNull()) rowId = null;
         return new GeoPkgMetadataReference(
@@ -233,10 +227,9 @@ public class GeoPkgMetadataExtension extends GeoPkgExtension {
 
     private GeoPkgMetadataReference.Scope getReferenceScope(String scope) throws SQLException {
         if (scope != null) {
-            Optional<GeoPkgMetadataReference.Scope> enumValue =
-                    Arrays.stream(GeoPkgMetadataReference.Scope.values())
-                            .filter(s -> scope.equals(s.getSqlValue()))
-                            .findFirst();
+            Optional<GeoPkgMetadataReference.Scope> enumValue = Arrays.stream(GeoPkgMetadataReference.Scope.values())
+                    .filter(s -> scope.equals(s.getSqlValue()))
+                    .findFirst();
             if (enumValue.isPresent()) return enumValue.get();
         }
 
@@ -255,12 +248,11 @@ public class GeoPkgMetadataExtension extends GeoPkgExtension {
      * @throws SQLException
      */
     public void addReference(GeoPkgMetadataReference reference) throws SQLException {
-        String sql =
-                String.format(
-                        "INSERT INTO %s(reference_scope, table_name, column_name, row_id_value, "
-                                + "timestamp, md_file_id, md_parent_id) "
-                                + "VALUES(?, ?, ?, ?, ?, ?, ?)",
-                        METADATA_REFERENCE);
+        String sql = String.format(
+                "INSERT INTO %s(reference_scope, table_name, column_name, row_id_value, "
+                        + "timestamp, md_file_id, md_parent_id) "
+                        + "VALUES(?, ?, ?, ?, ?, ?, ?)",
+                METADATA_REFERENCE);
         try (Connection cx = getConnection();
                 PreparedStatement ps = cx.prepareStatement(sql)) {
             ps.setString(1, reference.getScope().getSqlValue());
@@ -288,17 +280,16 @@ public class GeoPkgMetadataExtension extends GeoPkgExtension {
      * @throws SQLException
      */
     public void updateReference(GeoPkgMetadataReference reference) throws SQLException {
-        String sql =
-                String.format(
-                        "UPDATE %s set reference_scope = ?, "
-                                + "table_name = ?, "
-                                + "column_name = ?, "
-                                + "row_id_value = ?, "
-                                + "timestamp = ?, "
-                                + "md_file_id = ?,"
-                                + "md_parent_id = ? "
-                                + "where rowid = ?",
-                        METADATA_REFERENCE);
+        String sql = String.format(
+                "UPDATE %s set reference_scope = ?, "
+                        + "table_name = ?, "
+                        + "column_name = ?, "
+                        + "row_id_value = ?, "
+                        + "timestamp = ?, "
+                        + "md_file_id = ?,"
+                        + "md_parent_id = ? "
+                        + "where rowid = ?",
+                METADATA_REFERENCE);
         try (Connection cx = getConnection();
                 PreparedStatement ps = cx.prepareStatement(sql)) {
             ps.setString(1, reference.getScope().getSqlValue());

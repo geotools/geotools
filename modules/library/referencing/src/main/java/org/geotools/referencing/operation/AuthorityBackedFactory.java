@@ -73,8 +73,7 @@ import org.geotools.util.factory.OptionalFactory;
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
-public class AuthorityBackedFactory extends DefaultCoordinateOperationFactory
-        implements OptionalFactory {
+public class AuthorityBackedFactory extends DefaultCoordinateOperationFactory implements OptionalFactory {
     /** The priority level for this factory. */
     static final int PRIORITY = DefaultCoordinateOperationFactory.PRIORITY + 10;
 
@@ -125,8 +124,7 @@ public class AuthorityBackedFactory extends DefaultCoordinateOperationFactory
         if (!userHints.isEmpty()) {
             noForce(userHints);
             authorityFactory =
-                    ReferencingFactoryFinder.getCoordinateOperationAuthorityFactory(
-                            DEFAULT_AUTHORITY, userHints);
+                    ReferencingFactoryFinder.getCoordinateOperationAuthorityFactory(DEFAULT_AUTHORITY, userHints);
         }
     }
 
@@ -165,8 +163,7 @@ public class AuthorityBackedFactory extends DefaultCoordinateOperationFactory
             final Hints hints = new Hints();
             noForce(hints);
             authorityFactory =
-                    ReferencingFactoryFinder.getCoordinateOperationAuthorityFactory(
-                            DEFAULT_AUTHORITY, hints);
+                    ReferencingFactoryFinder.getCoordinateOperationAuthorityFactory(DEFAULT_AUTHORITY, hints);
         }
         return authorityFactory;
     }
@@ -309,9 +306,7 @@ public class AuthorityBackedFactory extends DefaultCoordinateOperationFactory
      */
     @Override
     protected Set<CoordinateOperation> findFromDatabase(
-            final CoordinateReferenceSystem sourceCRS,
-            final CoordinateReferenceSystem targetCRS,
-            int limit) {
+            final CoordinateReferenceSystem sourceCRS, final CoordinateReferenceSystem targetCRS, int limit) {
         HashSet<CoordinateOperation> result = new HashSet<>();
         /*
          * Safety check against recursivity: returns null if the given source and target CRS
@@ -354,9 +349,7 @@ public class AuthorityBackedFactory extends DefaultCoordinateOperationFactory
         final boolean inverse;
         Set<CoordinateOperation> operations = null;
         try {
-            operations =
-                    authorityFactory.createFromCoordinateReferenceSystemCodes(
-                            sourceCode, targetCode);
+            operations = authorityFactory.createFromCoordinateReferenceSystemCodes(sourceCode, targetCode);
             inverse = (operations == null || operations.isEmpty());
             if (inverse) {
                 /*
@@ -365,9 +358,7 @@ public class AuthorityBackedFactory extends DefaultCoordinateOperationFactory
                  * projected to a geographic CRS. The EPSG database usually contains transformation
                  * paths for geographic to projected CRS only.
                  */
-                operations =
-                        authorityFactory.createFromCoordinateReferenceSystemCodes(
-                                targetCode, sourceCode);
+                operations = authorityFactory.createFromCoordinateReferenceSystemCodes(targetCode, sourceCode);
             }
         } catch (NoSuchAuthorityCodeException exception) {
             /*
@@ -454,8 +445,7 @@ public class AuthorityBackedFactory extends DefaultCoordinateOperationFactory
                 } else {
                     final CoordinateOperation last = op[op.length - 1];
                     op[0] = transform(sourceCRS, prepend, first, null, first.getTargetCRS());
-                    op[op.length - 1] =
-                            transform(last.getSourceCRS(), null, last, append, targetCRS);
+                    op[op.length - 1] = transform(last.getSourceCRS(), null, last, append, targetCRS);
                 }
                 return createConcatenatedOperation(properties, op);
             }
@@ -472,8 +462,7 @@ public class AuthorityBackedFactory extends DefaultCoordinateOperationFactory
             transform = mtFactory.createConcatenatedTransform(transform, append);
         }
         assert !transform.equals(operation.getMathTransform()) : transform;
-        final Class<? extends CoordinateOperation> type =
-                AbstractCoordinateOperation.getType(operation);
+        final Class<? extends CoordinateOperation> type = AbstractCoordinateOperation.getType(operation);
         OperationMethod method = null;
         if (operation instanceof Operation) {
             method = ((Operation) operation).getMethod();
@@ -494,13 +483,11 @@ public class AuthorityBackedFactory extends DefaultCoordinateOperationFactory
         log(exception, factory, Level.WARNING);
     }
     /** Logs a warning when an object can't be created from the specified factory. */
-    private static void log(
-            final Exception exception, final AuthorityFactory factory, Level level) {
-        final LogRecord record =
-                Loggings.format(
-                        level,
-                        LoggingKeys.CANT_CREATE_COORDINATE_OPERATION_$1,
-                        factory.getAuthority().getTitle());
+    private static void log(final Exception exception, final AuthorityFactory factory, Level level) {
+        final LogRecord record = Loggings.format(
+                level,
+                LoggingKeys.CANT_CREATE_COORDINATE_OPERATION_$1,
+                factory.getAuthority().getTitle());
         record.setSourceClassName(AuthorityBackedFactory.class.getName());
         record.setSourceMethodName("createFromDatabase");
         record.setThrown(exception);

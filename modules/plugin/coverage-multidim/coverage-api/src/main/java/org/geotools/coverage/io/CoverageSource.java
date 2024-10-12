@@ -78,8 +78,7 @@ public interface CoverageSource {
          * coverage is unrectified this transformation maybe a georeferencing transformation of
          * simply the identity in case we do not have means to georeference the mentioned coverage.
          */
-        public abstract MathTransform2D getGridToWorldTransform(final ProgressListener listener)
-                throws IOException;
+        public abstract MathTransform2D getGridToWorldTransform(final ProgressListener listener) throws IOException;
 
         /**
          * The first {@link Rectangle} should describe the overall bidimensional raster range for
@@ -142,8 +141,8 @@ public interface CoverageSource {
          * @return a {@link Set} of {@link DateRange}s elements.
          * @todo allow transfinite sets!
          */
-        public abstract Set<Object> getElements(
-                final boolean overall, final ProgressListener listener) throws IOException;
+        public abstract Set<Object> getElements(final boolean overall, final ProgressListener listener)
+                throws IOException;
 
         public abstract String getName();
 
@@ -205,8 +204,7 @@ public interface CoverageSource {
      *
      * @param request the input {@link DefaultCoverageRequest}.
      */
-    public CoverageResponse read(final CoverageReadRequest request, final ProgressListener listener)
-            throws IOException;
+    public CoverageResponse read(final CoverageReadRequest request, final ProgressListener listener) throws IOException;
 
     /**
      * Retrieves a {@link RangeType} instance which can be used to describe the codomain for the
@@ -255,8 +253,7 @@ public interface CoverageSource {
 
     public List<AdditionalDomain> getAdditionalDomains() throws IOException;
 
-    public List<? extends RasterLayout> getOverviewsLayouts(final ProgressListener listener)
-            throws IOException;
+    public List<? extends RasterLayout> getOverviewsLayouts(final ProgressListener listener) throws IOException;
 
     public int getOverviewsNumber(final ProgressListener listener) throws IOException;
 

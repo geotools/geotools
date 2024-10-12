@@ -40,8 +40,7 @@ public class SingleFeatureTypeAttributeIterator implements NodeIterator {
      *
      * @param pointer The pointer to the feature.
      */
-    public SingleFeatureTypeAttributeIterator(
-            NodePointer pointer, ComplexType featureType, Name name) {
+    public SingleFeatureTypeAttributeIterator(NodePointer pointer, ComplexType featureType, Name name) {
         this.pointer = pointer;
         this.name = name;
         this.featureType = featureType;

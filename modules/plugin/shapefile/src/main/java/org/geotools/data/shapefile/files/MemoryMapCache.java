@@ -43,11 +43,9 @@ class MemoryMapCache {
 
     static final Logger LOGGER = Logging.getLogger(MemoryMapCache.class);
 
-    SoftValueHashMap<MappingKey, MappedByteBuffer> buffers =
-            new SoftValueHashMap<>(0, new BufferCleaner());
+    SoftValueHashMap<MappingKey, MappedByteBuffer> buffers = new SoftValueHashMap<>(0, new BufferCleaner());
 
-    MappedByteBuffer map(FileChannel wrapped, URL url, MapMode mode, long position, long size)
-            throws IOException {
+    MappedByteBuffer map(FileChannel wrapped, URL url, MapMode mode, long position, long size) throws IOException {
         if (mode != MapMode.READ_ONLY) {
             return wrapped.map(mode, position, size);
         }
@@ -98,10 +96,7 @@ class MemoryMapCache {
                 }
             }
         } catch (Throwable t) {
-            LOGGER.log(
-                    Level.WARNING,
-                    "An error occurred while trying to clean the memory map cache",
-                    t);
+            LOGGER.log(Level.WARNING, "An error occurred while trying to clean the memory map cache", t);
         }
     }
 

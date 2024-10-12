@@ -36,18 +36,16 @@ import org.geotools.filter.capability.FunctionNameImpl;
  */
 public class DateDifferenceFunction extends FunctionExpressionImpl {
 
-    static final Set<String> SUPPORTED_TIME_UNITS =
-            new HashSet<>(Arrays.asList("s", "m", "h", "d"));
+    static final Set<String> SUPPORTED_TIME_UNITS = new HashSet<>(Arrays.asList("s", "m", "h", "d"));
     static final String SUPPORTED_TIME_UNITS_STRING =
             SUPPORTED_TIME_UNITS.stream().collect(joining(","));
 
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "dateDifference",
-                    parameter("result", Long.class),
-                    parameter("a", Date.class),
-                    parameter("b", Date.class),
-                    parameter("timeUnits", String.class, 0, 1));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "dateDifference",
+            parameter("result", Long.class),
+            parameter("a", Date.class),
+            parameter("b", Date.class),
+            parameter("timeUnits", String.class, 0, 1));
 
     public DateDifferenceFunction() {
         super(NAME);
@@ -80,13 +78,11 @@ public class DateDifferenceFunction extends FunctionExpressionImpl {
                 timeUnit = getExpression(2).evaluate(null, TimeUnit.class);
                 if (timeUnit == null) {
                     throw new IllegalArgumentException(
-                            "The specified timeUnit should be one of "
-                                    + SUPPORTED_TIME_UNITS_STRING);
+                            "The specified timeUnit should be one of " + SUPPORTED_TIME_UNITS_STRING);
                 }
             } catch (Exception e) {
                 throw new IllegalArgumentException(
-                        "Unable to parse the specified timeUnit which should be one of "
-                                + SUPPORTED_TIME_UNITS_STRING,
+                        "Unable to parse the specified timeUnit which should be one of " + SUPPORTED_TIME_UNITS_STRING,
                         e);
             }
         }

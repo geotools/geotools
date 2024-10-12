@@ -57,8 +57,7 @@ public class LongitudeFirstFactoryOverrideTest {
 
         CRS.reset("all");
 
-        ReferencingFactoryFinder.addAuthorityFactory(
-                new FactoryUsingWKT(null, AbstractFactory.MAXIMUM_PRIORITY));
+        ReferencingFactoryFinder.addAuthorityFactory(new FactoryUsingWKT(null, AbstractFactory.MAXIMUM_PRIORITY));
 
         ReferencingFactoryFinder.addAuthorityFactory(
                 new CoordinateOperationFactoryUsingWKT(null, AbstractFactory.MAXIMUM_PRIORITY));
@@ -109,8 +108,7 @@ public class LongitudeFirstFactoryOverrideTest {
         // Test CRSs
         CoordinateReferenceSystem source = CRS.decode("EPSG:3003");
         CoordinateReferenceSystem target = CRS.decode("EPSG:4326");
-        CoordinateOperation co =
-                CRS.getCoordinateOperationFactory(true).createOperation(source, target);
+        CoordinateOperation co = CRS.getCoordinateOperationFactory(true).createOperation(source, target);
         ConcatenatedOperation cco = (ConcatenatedOperation) co;
         // the EPSG one only has two steps, the non EPSG one 4
         assertEquals(2, cco.getOperations().size());
@@ -122,26 +120,24 @@ public class LongitudeFirstFactoryOverrideTest {
         // Getting a transformation from a EPSG code to the WGS84 constant, should still
         // pick up the transformation override
         CoordinateOperation operation =
-                CRS.getCoordinateOperationFactory(true)
-                        .createOperation(crs5681, DefaultGeographicCRS.WGS84);
+                CRS.getCoordinateOperationFactory(true).createOperation(crs5681, DefaultGeographicCRS.WGS84);
 
-        String expected =
-                "CONCAT_MT[PARAM_MT[\"Ellipsoid_To_Geocentric\", \n"
-                        + "    PARAMETER[\"dim\", 2], \n"
-                        + "    PARAMETER[\"semi_major\", 6377397.155], \n"
-                        + "    PARAMETER[\"semi_minor\", 6356078.962818189]], \n"
-                        + "  PARAM_MT[\"Coordinate Frame Rotation (geog2D domain)\", \n"
-                        + "    PARAMETER[\"dx\", 584.9636], \n"
-                        + "    PARAMETER[\"dy\", 107.7175], \n"
-                        + "    PARAMETER[\"dz\", 413.8067], \n"
-                        + "    PARAMETER[\"ex\", -1.1155], \n"
-                        + "    PARAMETER[\"ey\", -0.2824], \n"
-                        + "    PARAMETER[\"ez\", 3.1384], \n"
-                        + "    PARAMETER[\"ppm\", 7.99220000002876]], \n"
-                        + "  PARAM_MT[\"Geocentric_To_Ellipsoid\", \n"
-                        + "    PARAMETER[\"dim\", 2], \n"
-                        + "    PARAMETER[\"semi_major\", 6378137.0], \n"
-                        + "    PARAMETER[\"semi_minor\", 6356752.314245179]]]";
+        String expected = "CONCAT_MT[PARAM_MT[\"Ellipsoid_To_Geocentric\", \n"
+                + "    PARAMETER[\"dim\", 2], \n"
+                + "    PARAMETER[\"semi_major\", 6377397.155], \n"
+                + "    PARAMETER[\"semi_minor\", 6356078.962818189]], \n"
+                + "  PARAM_MT[\"Coordinate Frame Rotation (geog2D domain)\", \n"
+                + "    PARAMETER[\"dx\", 584.9636], \n"
+                + "    PARAMETER[\"dy\", 107.7175], \n"
+                + "    PARAMETER[\"dz\", 413.8067], \n"
+                + "    PARAMETER[\"ex\", -1.1155], \n"
+                + "    PARAMETER[\"ey\", -0.2824], \n"
+                + "    PARAMETER[\"ez\", 3.1384], \n"
+                + "    PARAMETER[\"ppm\", 7.99220000002876]], \n"
+                + "  PARAM_MT[\"Geocentric_To_Ellipsoid\", \n"
+                + "    PARAMETER[\"dim\", 2], \n"
+                + "    PARAMETER[\"semi_major\", 6378137.0], \n"
+                + "    PARAMETER[\"semi_minor\", 6356752.314245179]]]";
         assertEquals(normalize(expected), normalize(operation.getMathTransform().toWKT()));
     }
 

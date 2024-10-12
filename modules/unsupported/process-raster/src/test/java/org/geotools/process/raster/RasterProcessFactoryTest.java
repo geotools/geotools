@@ -34,8 +34,7 @@ public class RasterProcessFactoryTest {
 
     @Test
     public void testRangeLookup() {
-        Map<String, Parameter<?>> params =
-                factory.getParameterInfo(new NameImpl("ras", "RangeLookup"));
+        Map<String, Parameter<?>> params = factory.getParameterInfo(new NameImpl("ras", "RangeLookup"));
         Parameter<?> ranges = params.get("ranges");
         assertEquals("ranges", ranges.getName());
         assertEquals(0, ranges.getMinOccurs());
@@ -47,18 +46,17 @@ public class RasterProcessFactoryTest {
     public void testAddCustomProcess() {
         assertNull(Processors.createProcess(new NameImpl("ras", "Custom")));
 
-        FactoryIteratorProvider p =
-                new FactoryIteratorProvider() {
-                    @Override
-                    public <T> Iterator<T> iterator(Class<T> category) {
-                        if (category == RasterProcess.class) {
-                            @SuppressWarnings("unchecked")
-                            T customProcess = (T) new CustomProcess();
-                            return Arrays.asList(customProcess).iterator();
-                        }
-                        return null;
-                    }
-                };
+        FactoryIteratorProvider p = new FactoryIteratorProvider() {
+            @Override
+            public <T> Iterator<T> iterator(Class<T> category) {
+                if (category == RasterProcess.class) {
+                    @SuppressWarnings("unchecked")
+                    T customProcess = (T) new CustomProcess();
+                    return Arrays.asList(customProcess).iterator();
+                }
+                return null;
+            }
+        };
         GeoTools.addFactoryIteratorProvider(p);
         try {
             Processors.reset();

@@ -63,8 +63,7 @@ public class WMSComplexTypesTest {
         Assert.assertNull(capabilities.getService().getOnlineResource());
 
         Assert.assertEquals(
-                capabilities.getRequest().getGetCapabilities().getFormats().get(0),
-                "application/vnd.ogc.wms_xml");
+                capabilities.getRequest().getGetCapabilities().getFormats().get(0), "application/vnd.ogc.wms_xml");
 
         Layer topLayer = capabilities.getLayerList().get(0);
         Assert.assertNotNull(topLayer);
@@ -135,8 +134,7 @@ public class WMSComplexTypesTest {
         Assert.assertNotNull(attribution);
         LogoURL logoURL = attribution.getLogoURL();
         Assert.assertEquals(
-                logoURL.getOnlineResource().toString(),
-                "http://www.osgeo.org/sites/all/themes/osgeo/logo.png");
+                logoURL.getOnlineResource().toString(), "http://www.osgeo.org/sites/all/themes/osgeo/logo.png");
         Assert.assertNull(logoURL.getFormat());
         Assert.assertEquals(logoURL.getHeight(), 100);
         Assert.assertEquals(logoURL.getHeight(), 100);

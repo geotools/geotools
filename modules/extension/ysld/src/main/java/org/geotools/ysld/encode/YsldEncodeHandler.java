@@ -54,10 +54,7 @@ public abstract class YsldEncodeHandler<T> implements Iterator<Object> {
 
     @SuppressWarnings("unchecked")
     YsldEncodeHandler(T obj) {
-        this.it =
-                obj != null
-                        ? Collections.singleton(obj).iterator()
-                        : (Iterator<T>) Collections.emptyIterator();
+        this.it = obj != null ? Collections.singleton(obj).iterator() : (Iterator<T>) Collections.emptyIterator();
     }
 
     @Override
@@ -222,7 +219,8 @@ public abstract class YsldEncodeHandler<T> implements Iterator<Object> {
         for (Expression subExpr : subExpressions) {
             if (!isNull(subExpr)) {
                 if (subExpr instanceof Literal) {
-                    builder.append(escapeForEmbededCQL(((Literal) subExpr).getValue().toString()));
+                    builder.append(
+                            escapeForEmbededCQL(((Literal) subExpr).getValue().toString()));
                 } else {
                     builder.append("${")
                             .append(escapeForEmbededCQL(ECQL.toCQL(subExpr)))

@@ -41,10 +41,7 @@ import org.geotools.util.factory.Hints;
  * @author Martin Desruisseaux
  */
 public class HTTP_AuthorityFactory extends AuthorityFactoryAdapter
-        implements CRSAuthorityFactory,
-                CSAuthorityFactory,
-                DatumAuthorityFactory,
-                CoordinateOperationAuthorityFactory {
+        implements CRSAuthorityFactory, CSAuthorityFactory, DatumAuthorityFactory, CoordinateOperationAuthorityFactory {
     /** The base URL, which is {@value}. */
     public static final String BASE_URL = "http://www.opengis.net/gml/srs/";
 

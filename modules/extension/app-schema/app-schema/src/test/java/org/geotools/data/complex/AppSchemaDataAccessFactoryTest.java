@@ -202,8 +202,7 @@ public class AppSchemaDataAccessFactoryTest extends AppSchemaTestSupport {
             factory = new AppSchemaDataAccessFactory();
             params = new HashMap<>();
             params.put("dbtype", "app-schema");
-            URL resource =
-                    getClass().getResource("/test-data/creation_failure/roadsegments_bad.xml");
+            URL resource = getClass().getResource("/test-data/creation_failure/roadsegments_bad.xml");
             if (resource == null) {
                 fail("Can't find resouce /test-data/creation_failure/roadsegments_bad.xml");
             }
@@ -214,8 +213,7 @@ public class AppSchemaDataAccessFactoryTest extends AppSchemaTestSupport {
             try {
                 ds = factory.createDataStore(params);
                 assertNotNull(ds);
-                FeatureSource<FeatureType, Feature> mappedSource =
-                        ds.getFeatureSource(mappedTypeName);
+                FeatureSource<FeatureType, Feature> mappedSource = ds.getFeatureSource(mappedTypeName);
                 assertNull(mappedSource);
             } catch (Exception ex) {
                 exceptionCatched = true;

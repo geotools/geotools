@@ -72,7 +72,6 @@ class ToNumberFunction extends FunctionExpressionImpl {
                 return evaluation;
             }
         }
-        throw new IllegalArgumentException(
-                "No arguments provided can be converted to a Number value");
+        throw new IllegalArgumentException("No arguments provided can be converted to a Number value");
     }
 }

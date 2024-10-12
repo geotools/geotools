@@ -62,11 +62,7 @@ public abstract class PreparedStatementSQLDialect extends SQLDialect {
      * @param sql The prepared sql statement buffer.
      */
     public void prepareGeometryValue(
-            Class<? extends Geometry> gClass,
-            int dimension,
-            int srid,
-            Class binding,
-            StringBuffer sql) {
+            Class<? extends Geometry> gClass, int dimension, int srid, Class binding, StringBuffer sql) {
         sql.append("?");
     }
 
@@ -83,8 +79,7 @@ public abstract class PreparedStatementSQLDialect extends SQLDialect {
      * @param binding The class of the geometry.
      * @param sql The prepared sql statement buffer.
      */
-    public final void prepareGeometryValue(
-            Geometry g, int dimension, int srid, Class binding, StringBuffer sql) {
+    public final void prepareGeometryValue(Geometry g, int dimension, int srid, Class binding, StringBuffer sql) {
         prepareGeometryValue(g == null ? null : g.getClass(), dimension, srid, binding, sql);
     }
 
@@ -108,8 +103,7 @@ public abstract class PreparedStatementSQLDialect extends SQLDialect {
      * @param column the column index where the geometry is to be set
      */
     public abstract void setGeometryValue(
-            Geometry g, int dimension, int srid, Class binding, PreparedStatement ps, int column)
-            throws SQLException;
+            Geometry g, int dimension, int srid, Class binding, PreparedStatement ps, int column) throws SQLException;
 
     /**
      * Sets a value in a prepared statement, for "basic types" (non-geometry).
@@ -126,12 +120,7 @@ public abstract class PreparedStatementSQLDialect extends SQLDialect {
      * @param cx The database connection.
      */
     public void setValue(
-            Object value,
-            Class<?> binding,
-            AttributeDescriptor att,
-            PreparedStatement ps,
-            int column,
-            Connection cx)
+            Object value, Class<?> binding, AttributeDescriptor att, PreparedStatement ps, int column, Connection cx)
             throws SQLException {
 
         // get the sql type
@@ -211,17 +200,14 @@ public abstract class PreparedStatementSQLDialect extends SQLDialect {
      * @param i The column the value maps to.
      * @param cx The database connection.
      */
-    public void setArrayValue(
-            Object value, AttributeDescriptor att, PreparedStatement ps, int i, Connection cx)
+    public void setArrayValue(Object value, AttributeDescriptor att, PreparedStatement ps, int i, Connection cx)
             throws SQLException {
         if (value == null) {
             ps.setNull(i, Types.ARRAY);
         } else {
             String typeName = getArrayComponentTypeName(att);
             Class<?> componentType =
-                    typeName != null
-                            ? dataStore.getSqlTypeNameToClassMappings().get(typeName)
-                            : String.class;
+                    typeName != null ? dataStore.getSqlTypeNameToClassMappings().get(typeName) : String.class;
             Array array = convertToArray(value, typeName, componentType, cx);
             ps.setArray(i, array);
         }
@@ -238,18 +224,16 @@ public abstract class PreparedStatementSQLDialect extends SQLDialect {
     protected String getArrayComponentTypeName(AttributeDescriptor att) throws SQLException {
         Map<String, Class<?>> mappings = dataStore.getSqlTypeNameToClassMappings();
         Class<?> componentType = att.getType().getBinding().getComponentType();
-        List<String> sqlTypeNames =
-                mappings.entrySet().stream()
-                        .filter(e -> e.getValue().equals(componentType))
-                        .map(e -> e.getKey())
-                        .collect(Collectors.toList());
+        List<String> sqlTypeNames = mappings.entrySet().stream()
+                .filter(e -> e.getValue().equals(componentType))
+                .map(e -> e.getKey())
+                .collect(Collectors.toList());
         if (sqlTypeNames.isEmpty()) {
             throw new SQLException("Failed to find a SQL type for " + componentType);
         } else if (sqlTypeNames.size() > 1) {
-            throw new SQLException(
-                    String.format(
-                            "Found multiple SQL type candidates %s for the Java type %s",
-                            sqlTypeNames, componentType.getName()));
+            throw new SQLException(String.format(
+                    "Found multiple SQL type candidates %s for the Java type %s",
+                    sqlTypeNames, componentType.getName()));
         }
         return sqlTypeNames.get(0);
     }
@@ -262,8 +246,7 @@ public abstract class PreparedStatementSQLDialect extends SQLDialect {
      * @param connection The connection used to create an {@link Array}
      * @return The converted array
      */
-    protected Array convertToArray(
-            Object value, String componentTypeName, Class componentType, Connection connection)
+    protected Array convertToArray(Object value, String componentTypeName, Class componentType, Connection connection)
             throws SQLException {
         int length = getLength(value);
         Object[] elements = new Object[length];
@@ -291,8 +274,7 @@ public abstract class PreparedStatementSQLDialect extends SQLDialect {
     protected Object convertArrayElement(Object value, Class<?> target) throws SQLException {
         Object converted = Converters.convert(value, target);
         if (converted == null) {
-            String message =
-                    format("Failed to convert array element %s to target type %s", value, target);
+            String message = format("Failed to convert array element %s to target type %s", value, target);
             throw new SQLException(message);
         }
         return converted;
@@ -311,9 +293,7 @@ public abstract class PreparedStatementSQLDialect extends SQLDialect {
             if (converted != null) {
                 value = converted;
             } else {
-                dataStore
-                        .getLogger()
-                        .warning("Unable to convert " + value + " to " + binding.getName());
+                dataStore.getLogger().warning("Unable to convert " + value + " to " + binding.getName());
             }
         }
         return binding.cast(value);
@@ -337,8 +317,7 @@ public abstract class PreparedStatementSQLDialect extends SQLDialect {
      * @param cx The database connection
      * @param featureType The feature type the select is executing against.
      */
-    public void onSelect(PreparedStatement select, Connection cx, SimpleFeatureType featureType)
-            throws SQLException {}
+    public void onSelect(PreparedStatement select, Connection cx, SimpleFeatureType featureType) throws SQLException {}
 
     /**
      * Callback invoked before a DELETE statement is executed against the database.
@@ -351,8 +330,7 @@ public abstract class PreparedStatementSQLDialect extends SQLDialect {
      * @param cx The database connection
      * @param featureType The feature type the delete is executing against.
      */
-    public void onDelete(PreparedStatement delete, Connection cx, SimpleFeatureType featureType)
-            throws SQLException {}
+    public void onDelete(PreparedStatement delete, Connection cx, SimpleFeatureType featureType) throws SQLException {}
 
     /**
      * Callback invoked before an INSERT statement is executed against the database.
@@ -365,8 +343,7 @@ public abstract class PreparedStatementSQLDialect extends SQLDialect {
      * @param cx The database connection
      * @param featureType The feature type the insert is executing against.
      */
-    public void onInsert(PreparedStatement insert, Connection cx, SimpleFeatureType featureType)
-            throws SQLException {}
+    public void onInsert(PreparedStatement insert, Connection cx, SimpleFeatureType featureType) throws SQLException {}
 
     /**
      * Callback invoked before an UPDATE statement is executed against the database.
@@ -379,6 +356,5 @@ public abstract class PreparedStatementSQLDialect extends SQLDialect {
      * @param cx The database connection
      * @param featureType The feature type the update is executing against.
      */
-    public void onUpdate(PreparedStatement update, Connection cx, SimpleFeatureType featureType)
-            throws SQLException {}
+    public void onUpdate(PreparedStatement update, Connection cx, SimpleFeatureType featureType) throws SQLException {}
 }

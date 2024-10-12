@@ -114,8 +114,7 @@ public abstract class MathTransformBuilder {
     private final List<MappedPosition> positions = new ArrayList<>();
 
     /** An unmodifiable view of mapped positions to be returned by {@link #getMappedPositions}. */
-    private final List<MappedPosition> unmodifiablePositions =
-            Collections.unmodifiableList(positions);
+    private final List<MappedPosition> unmodifiablePositions = Collections.unmodifiableList(positions);
 
     /** Coordinate Reference System of the source and target points, or {@code null} if unknown. */
     private CoordinateReferenceSystem sourceCRS, targetCRS;
@@ -185,12 +184,9 @@ public abstract class MathTransformBuilder {
      * @throws MismatchedReferenceSystemException if CRS is not the same for all points.
      */
     public void setMappedPositions(final List<MappedPosition> positions)
-            throws IllegalArgumentException, MismatchedDimensionException,
-                    MismatchedReferenceSystemException {
-        final CoordinateReferenceSystem source =
-                ensureValid(getPoints(positions, false), "sourcePoints");
-        final CoordinateReferenceSystem target =
-                ensureValid(getPoints(positions, true), "targetPoints");
+            throws IllegalArgumentException, MismatchedDimensionException, MismatchedReferenceSystemException {
+        final CoordinateReferenceSystem source = ensureValid(getPoints(positions, false), "sourcePoints");
+        final CoordinateReferenceSystem target = ensureValid(getPoints(positions, true), "targetPoints");
         /*
          * Now stores the informations. Note that we set the source and target CRS
          * only after 'ensureValid' succeed for both CRS.
@@ -227,8 +223,7 @@ public abstract class MathTransformBuilder {
      *     target points.
      * @throws IllegalArgumentException if the array doesn't have the expected number of points.
      */
-    private void setPoints(final Position[] points, final boolean target)
-            throws IllegalArgumentException {
+    private void setPoints(final Position[] points, final boolean target) throws IllegalArgumentException {
         transform = null;
         final boolean add = positions.isEmpty();
         if (!add && points.length != positions.size()) {
@@ -273,8 +268,7 @@ public abstract class MathTransformBuilder {
      * @throws MismatchedReferenceSystemException if CRS is not the same for all points.
      */
     public void setSourcePoints(final Position... points)
-            throws IllegalArgumentException, MismatchedDimensionException,
-                    MismatchedReferenceSystemException {
+            throws IllegalArgumentException, MismatchedDimensionException, MismatchedReferenceSystemException {
         // Set the points only after we checked them.
         sourceCRS = ensureValid(points, "sourcePoints");
         setPoints(points, false);
@@ -301,8 +295,7 @@ public abstract class MathTransformBuilder {
      * @throws MismatchedReferenceSystemException if CRS is not the same for all points.
      */
     public void setTargetPoints(final Position... points)
-            throws IllegalArgumentException, MismatchedDimensionException,
-                    MismatchedReferenceSystemException {
+            throws IllegalArgumentException, MismatchedDimensionException, MismatchedReferenceSystemException {
         // Set the points only after we checked them.
         targetCRS = ensureValid(points, "targetPoints");
         setPoints(points, true);
@@ -426,8 +419,7 @@ public abstract class MathTransformBuilder {
      */
     private EngineeringCRS createEngineeringCRS(final boolean target) throws FactoryException {
         final Map<String, Object> properties = new HashMap<>(4);
-        properties.put(
-                CoordinateReferenceSystem.NAME_KEY, Vocabulary.format(VocabularyKeys.UNKNOWN));
+        properties.put(CoordinateReferenceSystem.NAME_KEY, Vocabulary.format(VocabularyKeys.UNKNOWN));
         final GeographicExtent validArea = getValidArea(target);
         if (validArea != null) {
             final ExtentImpl extent = new ExtentImpl();
@@ -450,8 +442,7 @@ public abstract class MathTransformBuilder {
                     throw new FactoryException(ErrorKeys.UNSPECIFIED_CRS);
             }
         }
-        return crsFactory.createEngineeringCRS(
-                properties, datumFactory.createEngineeringDatum(properties), cs);
+        return crsFactory.createEngineeringCRS(properties, datumFactory.createEngineeringDatum(properties), cs);
     }
 
     /**
@@ -533,8 +524,7 @@ public abstract class MathTransformBuilder {
      * specified. This method will then ensure that the two CRS are compatibles.
      */
     private static CoordinateReferenceSystem getCoordinateReferenceSystem(
-            final Position point, CoordinateReferenceSystem previousCRS)
-            throws MismatchedReferenceSystemException {
+            final Position point, CoordinateReferenceSystem previousCRS) throws MismatchedReferenceSystemException {
         final CoordinateReferenceSystem candidate = point.getCoordinateReferenceSystem();
         if (candidate != null) {
             if (previousCRS == null) {
@@ -545,8 +535,7 @@ public abstract class MathTransformBuilder {
              * are not identical, we have no easy way to choose which CRS is the "main" one.
              */
             if (!previousCRS.equals(candidate)) {
-                throw new MismatchedReferenceSystemException(
-                        ErrorKeys.MISMATCHED_COORDINATE_REFERENCE_SYSTEM);
+                throw new MismatchedReferenceSystemException(ErrorKeys.MISMATCHED_COORDINATE_REFERENCE_SYSTEM);
             }
         }
         return previousCRS;
@@ -573,13 +562,11 @@ public abstract class MathTransformBuilder {
      * @return The CRS used for the specified points, or {@code null} if unknown.
      */
     private CoordinateReferenceSystem ensureValid(final Position[] points, final String label)
-            throws IllegalArgumentException, MismatchedDimensionException,
-                    MismatchedReferenceSystemException {
+            throws IllegalArgumentException, MismatchedDimensionException, MismatchedReferenceSystemException {
         final int necessaryNumber = getMinimumPointCount();
         if (points.length < necessaryNumber) {
             throw new IllegalArgumentException(
-                    MessageFormat.format(
-                            ErrorKeys.INSUFFICIENT_POINTS_$2, points.length, necessaryNumber));
+                    MessageFormat.format(ErrorKeys.INSUFFICIENT_POINTS_$2, points.length, necessaryNumber));
         }
         CoordinateReferenceSystem crs = null;
         final int dimension = getDimension();
@@ -587,12 +574,8 @@ public abstract class MathTransformBuilder {
             final Position point = points[i];
             final int pointDim = point.getDimension();
             if (pointDim != dimension) {
-                throw new MismatchedDimensionException(
-                        MessageFormat.format(
-                                ErrorKeys.MISMATCHED_DIMENSION_$3,
-                                label + '[' + i + ']',
-                                pointDim,
-                                dimension));
+                throw new MismatchedDimensionException(MessageFormat.format(
+                        ErrorKeys.MISMATCHED_DIMENSION_$3, label + '[' + i + ']', pointDim, dimension));
             }
             crs = getCoordinateReferenceSystem(point, crs);
         }
@@ -608,8 +591,7 @@ public abstract class MathTransformBuilder {
     }
 
     /** Used for assertions only. */
-    private boolean ensureValid(
-            final Position[] points, final String label, final CoordinateReferenceSystem expected) {
+    private boolean ensureValid(final Position[] points, final String label, final CoordinateReferenceSystem expected) {
         final CoordinateReferenceSystem actual = ensureValid(points, label);
         return actual == null || actual == expected;
     }
@@ -722,20 +704,14 @@ public abstract class MathTransformBuilder {
                 final PositionalAccuracyImpl accuracy = new PositionalAccuracyImpl(result);
                 accuracy.setEvaluationMethodType(EvaluationMethodType.DIRECT_INTERNAL);
                 accuracy.setEvaluationMethodDescription(description);
-                properties.put(
-                        Transformation.COORDINATE_OPERATION_ACCURACY_KEY, accuracy.unmodifiable());
+                properties.put(Transformation.COORDINATE_OPERATION_ACCURACY_KEY, accuracy.unmodifiable());
             }
             /*
              * Now creates the transformation.
              */
             final MathTransform transform = getMathTransform();
-            transformation =
-                    new DefaultTransformation(
-                            properties,
-                            sourceCRS,
-                            targetCRS,
-                            transform,
-                            new DefaultOperationMethod(transform));
+            transformation = new DefaultTransformation(
+                    properties, sourceCRS, targetCRS, transform, new DefaultOperationMethod(transform));
         }
         return transformation;
     }

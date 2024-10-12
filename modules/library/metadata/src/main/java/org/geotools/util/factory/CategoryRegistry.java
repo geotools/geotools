@@ -57,22 +57,17 @@ class CategoryRegistry {
      * @param categories The categories to register; must not be {@code null} but can contain {@code
      *     null}.
      */
-    public CategoryRegistry(
-            final FactoryRegistry factoryRegistry, final Iterable<Class<?>> categories) {
+    public CategoryRegistry(final FactoryRegistry factoryRegistry, final Iterable<Class<?>> categories) {
         ensureArgumentNonNull("factoryRegistry", factoryRegistry);
         ensureArgumentNonNull("categories", categories);
         // use an unmodifiable map to guarantee immutability
-        this.categories =
-                stream(categories)
-                        .collect(
-                                collectingAndThen(
-                                        toMap(
-                                                category -> category,
-                                                category ->
-                                                        new InstanceRegistry<>(
-                                                                factoryRegistry, category),
-                                                (firstRegistry, secondRegistry) -> secondRegistry),
-                                        Collections::unmodifiableMap));
+        this.categories = stream(categories)
+                .collect(collectingAndThen(
+                        toMap(
+                                category -> category,
+                                category -> new InstanceRegistry<>(factoryRegistry, category),
+                                (firstRegistry, secondRegistry) -> secondRegistry),
+                        Collections::unmodifiableMap));
     }
 
     /**
@@ -273,9 +268,7 @@ class CategoryRegistry {
                 ((RegistrableFactory) instance).onRegistration(factoryRegistry, category);
             }
             if (REGISTERABLE_SERVICE != null && REGISTERABLE_SERVICE.isInstance(instance)) {
-                LOGGER.warning(
-                        "Migrate instances from RegisterableService to RegistrableFactory: "
-                                + instance);
+                LOGGER.warning("Migrate instances from RegisterableService to RegistrableFactory: " + instance);
             }
         }
 

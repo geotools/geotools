@@ -40,8 +40,7 @@ public class BingTileUtilTest {
 
         Assert.assertArrayEquals(new int[] {4255, 2742}, pixelXY);
 
-        double[] calculatedCoords =
-                BingTileUtil.pixelXYToLonLat(pixelXY[0], pixelXY[1], levelOfDetail);
+        double[] calculatedCoords = BingTileUtil.pixelXYToLonLat(pixelXY[0], pixelXY[1], levelOfDetail);
 
         double delta = 0.000001;
         Assert.assertEquals(calculatedCoords[0], 6.9873046875, delta);
@@ -83,8 +82,7 @@ public class BingTileUtilTest {
         double[] coords = {7, 51};
         int levelOfDetail = 8;
 
-        ReferencedEnvelope env =
-                BingTileUtil.getTileBoundingBox(coords[0], coords[1], levelOfDetail);
+        ReferencedEnvelope env = BingTileUtil.getTileBoundingBox(coords[0], coords[1], levelOfDetail);
 
         double delta = 0.000001;
         Assert.assertEquals(5.625, env.getMinX(), delta);

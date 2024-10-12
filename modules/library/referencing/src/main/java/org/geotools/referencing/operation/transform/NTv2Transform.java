@@ -195,8 +195,7 @@ public class NTv2Transform extends AbstractMathTransform implements MathTransfor
      * @param numPts the number of point objects to be transformed.
      * @throws TransformException if an IO error occurs reading the grid file.
      */
-    public void inverseTransform(
-            double[] srcPts, int srcOff, double[] dstPts, int dstOff, int numPts)
+    public void inverseTransform(double[] srcPts, int srcOff, double[] dstPts, int dstOff, int numPts)
             throws TransformException {
         bidirectionalTransform(srcPts, srcOff, dstPts, dstOff, numPts, false);
     }
@@ -224,8 +223,7 @@ public class NTv2Transform extends AbstractMathTransform implements MathTransfor
             try {
                 gridShift = FACTORY.createNTv2Grid(gridLocation);
             } catch (FactoryException e) {
-                throw new TransformException(
-                        "NTv2 Grid " + gridLocation + " Could not be created", e);
+                throw new TransformException("NTv2 Grid " + gridLocation + " Could not be created", e);
             }
         }
 
@@ -293,8 +291,7 @@ public class NTv2Transform extends AbstractMathTransform implements MathTransfor
      * @version $Id$
      * @author Oscar Fonts
      */
-    private final class Inverse extends AbstractMathTransform.Inverse
-            implements MathTransform2D, Serializable {
+    private final class Inverse extends AbstractMathTransform.Inverse implements MathTransform2D, Serializable {
         /** Serial number for interoperability with different versions. */
         private static final long serialVersionUID = -4707304160205218546L;
 
@@ -320,11 +317,7 @@ public class NTv2Transform extends AbstractMathTransform implements MathTransfor
          */
         @Override
         public void transform(
-                final double[] source,
-                final int srcOffset,
-                final double[] dest,
-                final int dstOffset,
-                final int length)
+                final double[] source, final int srcOffset, final double[] dest, final int dstOffset, final int length)
                 throws TransformException {
             NTv2Transform.this.inverseTransform(source, srcOffset, dest, dstOffset, length);
         }
@@ -355,28 +348,24 @@ public class NTv2Transform extends AbstractMathTransform implements MathTransfor
          * The operation parameter descriptor for the "Latitude and longitude difference file"
          * parameter value. The default value is "".
          */
-        public static final DefaultParameterDescriptor<URI> FILE =
-                new DefaultParameterDescriptor<>(
-                        toMap(
-                                new NamedIdentifier(
-                                        Citations.EPSG, "Latitude and longitude difference file"),
-                                new NamedIdentifier(Citations.EPSG, "8656")),
-                        URI.class,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        true);
+        public static final DefaultParameterDescriptor<URI> FILE = new DefaultParameterDescriptor<>(
+                toMap(
+                        new NamedIdentifier(Citations.EPSG, "Latitude and longitude difference file"),
+                        new NamedIdentifier(Citations.EPSG, "8656")),
+                URI.class,
+                null,
+                null,
+                null,
+                null,
+                null,
+                true);
 
         /** The parameters group. */
-        static final ParameterDescriptorGroup PARAMETERS =
-                createDescriptorGroup(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.EPSG, "NTv2"),
-                            new NamedIdentifier(Citations.EPSG, "9615")
-                        },
-                        new ParameterDescriptor[] {FILE});
+        static final ParameterDescriptorGroup PARAMETERS = createDescriptorGroup(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.EPSG, "NTv2"), new NamedIdentifier(Citations.EPSG, "9615")
+                },
+                new ParameterDescriptor[] {FILE});
 
         /** Constructs a provider. */
         public Provider() {

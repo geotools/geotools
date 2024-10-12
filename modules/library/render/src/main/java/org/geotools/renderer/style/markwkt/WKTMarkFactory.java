@@ -50,8 +50,7 @@ import org.geotools.util.SoftValueHashMap;
 public class WKTMarkFactory implements MarkFactory {
 
     /** The logger for the rendering module. */
-    protected static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(WKTMarkFactory.class);
+    protected static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(WKTMarkFactory.class);
 
     public static final String WKT_PREFIX = "wkt://";
 
@@ -62,8 +61,7 @@ public class WKTMarkFactory implements MarkFactory {
     protected static URL ROOT_DIRECTORY = null;
 
     // Cache used to store libraries of WKT geometries
-    protected static final SoftValueHashMap<String, Map<String, String>> CACHE =
-            new SoftValueHashMap<>();
+    protected static final SoftValueHashMap<String, Map<String, String>> CACHE = new SoftValueHashMap<>();
 
     /*
      * Clears cache. While the cache uses {@link
@@ -133,8 +131,7 @@ public class WKTMarkFactory implements MarkFactory {
      *     org.geotools.api.filter.expression.Expression, org.geotools.api.feature.Feature)
      */
     @Override
-    public Shape getShape(Graphics2D graphics, Expression symbolUrl, Feature feature)
-            throws Exception {
+    public Shape getShape(Graphics2D graphics, Expression symbolUrl, Feature feature) throws Exception {
 
         // cannot handle a null url
         if (symbolUrl == null) {
@@ -156,8 +153,7 @@ public class WKTMarkFactory implements MarkFactory {
 
         // See if it is a WKT library reference
         if (wellKnown.startsWith(WKTLIB_PREFIX)) {
-            String[] urlComponents =
-                    wellKnown.substring(WKTLIB_PREFIX.length()).split(WKT_SEPARATOR);
+            String[] urlComponents = wellKnown.substring(WKTLIB_PREFIX.length()).split(WKT_SEPARATOR);
             synchronized (this) {
                 wkt = this.getFromCache(urlComponents[0], urlComponents[1]);
                 if (wkt == null) {
@@ -190,10 +186,7 @@ public class WKTMarkFactory implements MarkFactory {
         try {
             libUrl = new URL(ROOT_DIRECTORY.toString() + "/" + libFile);
         } catch (MalformedURLException e) {
-            LOGGER.log(
-                    Level.WARNING,
-                    "Could not parse WKT library URL: " + ROOT_DIRECTORY + "/" + libFile,
-                    e);
+            LOGGER.log(Level.WARNING, "Could not parse WKT library URL: " + ROOT_DIRECTORY + "/" + libFile, e);
             return properties;
         }
 

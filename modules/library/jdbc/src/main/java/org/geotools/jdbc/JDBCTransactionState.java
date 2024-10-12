@@ -50,8 +50,7 @@ final class JDBCTransactionState implements State {
     @Override
     public void setTransaction(Transaction tx) {
         if (tx != null && this.tx != null) {
-            throw new IllegalStateException(
-                    "New transaction set without " + "closing old transaction first.");
+            throw new IllegalStateException("New transaction set without " + "closing old transaction first.");
         }
 
         if (tx == null) {
@@ -60,11 +59,7 @@ final class JDBCTransactionState implements State {
                     dataStore.closeSafe(cx);
                 }
             } else {
-                dataStore
-                        .getLogger()
-                        .warning(
-                                "Transaction is attempting to "
-                                        + "close an already closed connection");
+                dataStore.getLogger().warning("Transaction is attempting to " + "close an already closed connection");
             }
             cx = null;
         }

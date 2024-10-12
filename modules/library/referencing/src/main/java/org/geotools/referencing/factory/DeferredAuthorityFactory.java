@@ -43,8 +43,7 @@ import org.geotools.util.factory.OptionalFactory;
  * @todo Extends {@link BufferedAuthorityFactory} for now in order to improve the trunk stability
  *     during GEOT-1286 development, but we may revisit that after GEOT-1286 completion.
  */
-public abstract class DeferredAuthorityFactory extends BufferedAuthorityFactory
-        implements OptionalFactory {
+public abstract class DeferredAuthorityFactory extends BufferedAuthorityFactory implements OptionalFactory {
     /** The timer for {@linkplain AbstractAuthorityFactory#dispose disposing} backing stores. */
     private static volatile Timer TIMER = new Timer("GT authority factory disposer", true);
 
@@ -86,8 +85,7 @@ public abstract class DeferredAuthorityFactory extends BufferedAuthorityFactory
      * @see #createBackingStore
      * @since 2.2
      */
-    protected DeferredAuthorityFactory(
-            final Hints userHints, final int priority, final int maxStrongReferences) {
+    protected DeferredAuthorityFactory(final Hints userHints, final int priority, final int maxStrongReferences) {
         super(priority, maxStrongReferences);
     }
 
@@ -213,8 +211,7 @@ public abstract class DeferredAuthorityFactory extends BufferedAuthorityFactory
             }
         } catch (FactoryException exception) {
             backingStore = null;
-            final LogRecord record =
-                    Loggings.format(Level.WARNING, LoggingKeys.CANT_DISPOSE_BACKING_STORE);
+            final LogRecord record = Loggings.format(Level.WARNING, LoggingKeys.CANT_DISPOSE_BACKING_STORE);
             record.setSourceMethodName("run");
             record.setSourceClassName(Disposer.class.getName());
             record.setThrown(exception);

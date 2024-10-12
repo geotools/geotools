@@ -58,14 +58,13 @@ class CategoryList extends AbstractList<Category> implements Serializable {
      * Compares {@link Category} objects according their {@link Category#minimum} value. This is
      * used for sorting the {@link #categories} array at construction time.
      */
-    static Comparator<Category> COMPARATOR =
-            new Comparator<Category>() {
+    static Comparator<Category> COMPARATOR = new Comparator<Category>() {
 
-                @Override
-                public int compare(Category c1, Category c2) {
-                    return CategoryList.compare(c1.minimum, c2.minimum);
-                }
-            };
+        @Override
+        public int compare(Category c1, Category c2) {
+            return CategoryList.compare(c1.minimum, c2.minimum);
+        }
+    };
 
     /**
      * The range of values in this category list. This is the union of the range of values of every
@@ -145,8 +144,7 @@ class CategoryList extends AbstractList<Category> implements Serializable {
      * @throws IllegalArgumentException if two or more categories have overlapping sample value
      *     range.
      */
-    public CategoryList(final Category[] categories, final Unit<?> units)
-            throws IllegalArgumentException {
+    public CategoryList(final Category[] categories, final Unit<?> units) throws IllegalArgumentException {
         this(categories, units, false);
     }
 
@@ -163,8 +161,7 @@ class CategoryList extends AbstractList<Category> implements Serializable {
      * @throws IllegalArgumentException if two or more categories have overlapping sample value
      *     range.
      */
-    CategoryList(Category[] categories, Unit<?> units, boolean searchNearest)
-            throws IllegalArgumentException {
+    CategoryList(Category[] categories, Unit<?> units, boolean searchNearest) throws IllegalArgumentException {
         this.categories = categories = categories.clone();
         Arrays.sort(categories, COMPARATOR);
         assert isSorted(categories);
@@ -197,8 +194,7 @@ class CategoryList extends AbstractList<Category> implements Serializable {
                             }
                         }
                     }
-                    throw new IllegalArgumentException(
-                            MessageFormat.format(ErrorKeys.RANGE_OVERLAP_$4, (Object) args));
+                    throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.RANGE_OVERLAP_$4, (Object) args));
                 }
                 // Checks if there is a gap between this category and the previous one.
                 if (!Double.isNaN(minimum) && minimum != previous.getRange().getMaximum(false)) {
@@ -464,11 +460,7 @@ class CategoryList extends AbstractList<Category> implements Serializable {
      * @param buffer The buffer where to format.
      * @return The buffer {@code buffer} for convenience.
      */
-    StringBuffer format(
-            final double value,
-            final boolean writeUnits,
-            final Locale locale,
-            StringBuffer buffer) {
+    StringBuffer format(final double value, final boolean writeUnits, final Locale locale, StringBuffer buffer) {
         return buffer.append(value);
     }
 
@@ -523,8 +515,7 @@ class CategoryList extends AbstractList<Category> implements Serializable {
      * @return The requested color model, suitable for {@link java.awt.image.RenderedImage} objects
      *     with values in the <code>{@link #getRange}</code> range.
      */
-    public final ColorModel getColorModel(
-            final int visibleBand, final int numBands, final int type) {
+    public final ColorModel getColorModel(final int visibleBand, final int numBands, final int type) {
         return ColorModelFactory.getColorModel(categories, type, visibleBand, numBands);
     }
 
@@ -603,8 +594,7 @@ class CategoryList extends AbstractList<Category> implements Serializable {
         if (Double.isNaN(value)) {
             Category category = last;
             if (!(value >= category.minimum && value <= category.maximum)
-                    && Double.doubleToRawLongBits(value)
-                            != Double.doubleToRawLongBits(category.minimum)) {
+                    && Double.doubleToRawLongBits(value) != Double.doubleToRawLongBits(category.minimum)) {
                 category = getCategory(value);
                 if (category == null) {
                     return Vocabulary.getResources(locale).getString(VocabularyKeys.UNTITLED);
@@ -698,17 +688,7 @@ class CategoryList extends AbstractList<Category> implements Serializable {
 
     @Override
     public int hashCode() {
-        int result =
-                Objects.hash(
-                        super.hashCode(),
-                        range,
-                        main,
-                        nodata,
-                        overflowFallback,
-                        last,
-                        hasGaps,
-                        name,
-                        unit);
+        int result = Objects.hash(super.hashCode(), range, main, nodata, overflowFallback, last, hasGaps, name, unit);
         result = 31 * result + Arrays.hashCode(minimums);
         result = 31 * result + Arrays.hashCode(categories);
         return result;

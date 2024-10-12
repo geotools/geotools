@@ -49,8 +49,7 @@ public class HeatmapProcessTest {
     @Test
     public void testSimpleSurface() {
 
-        ReferencedEnvelope bounds =
-                new ReferencedEnvelope(0, 10, 0, 10, DefaultGeographicCRS.WGS84);
+        ReferencedEnvelope bounds = new ReferencedEnvelope(0, 10, 0, 10, DefaultGeographicCRS.WGS84);
         Coordinate[] data = {
             new Coordinate(4, 4),
             new Coordinate(4, 6),
@@ -63,17 +62,16 @@ public class HeatmapProcessTest {
         ProgressListener monitor = null;
 
         HeatmapProcess process = new HeatmapProcess();
-        GridCoverage2D cov =
-                process.execute(
-                        fc, // data
-                        20, // radius
-                        null, // weightAttr
-                        1, // pixelsPerCell
-                        bounds, // outputEnv
-                        100, // outputWidth
-                        100, // outputHeight
-                        monitor // monitor)
-                        );
+        GridCoverage2D cov = process.execute(
+                fc, // data
+                20, // radius
+                null, // weightAttr
+                1, // pixelsPerCell
+                bounds, // outputEnv
+                100, // outputWidth
+                100, // outputHeight
+                monitor // monitor)
+                );
 
         // following tests are checking for an appropriate shape for the surface
 

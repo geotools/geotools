@@ -129,9 +129,7 @@ public class BursaWolfParameters extends Formattable implements Cloneable, Seria
          */
         final double S = 1 + ppm / 1E+6;
         final double RS = (Math.PI / (180 * 3600)) * S;
-        return new Matrix4(
-                S, -ez * RS, +ey * RS, dx, +ez * RS, S, -ex * RS, dy, -ey * RS, +ex * RS, S, dz, 0,
-                0, 0, 1);
+        return new Matrix4(S, -ez * RS, +ey * RS, dx, +ez * RS, S, -ex * RS, dy, -ey * RS, +ex * RS, S, dz, 0, 0, 0, 1);
     }
 
     /**
@@ -145,8 +143,7 @@ public class BursaWolfParameters extends Formattable implements Cloneable, Seria
      * @throws IllegalArgumentException if the specified matrix doesn't meet the conditions.
      * @since 2.2
      */
-    public void setAffineTransform(final Matrix matrix, final double eps)
-            throws IllegalArgumentException {
+    public void setAffineTransform(final Matrix matrix, final double eps) throws IllegalArgumentException {
         if (matrix.getNumCol() != 4 || matrix.getNumRow() != 4) {
             // TODO: localize. Same message than Matrix4
             throw new IllegalArgumentException("Illegal matrix size.");
@@ -160,8 +157,7 @@ public class BursaWolfParameters extends Formattable implements Cloneable, Seria
         dx = matrix.getElement(0, 3);
         dy = matrix.getElement(1, 3);
         dz = matrix.getElement(2, 3);
-        final double S =
-                (matrix.getElement(0, 0) + matrix.getElement(1, 1) + matrix.getElement(2, 2)) / 3;
+        final double S = (matrix.getElement(0, 0) + matrix.getElement(1, 1) + matrix.getElement(2, 2)) / 3;
         final double RS = (Math.PI / (180 * 3600)) * S;
         ppm = (S - 1) * 1E+6;
         for (int j = 0; j < 2; j++) {

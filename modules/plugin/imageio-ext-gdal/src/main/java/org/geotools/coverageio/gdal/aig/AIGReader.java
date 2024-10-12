@@ -36,8 +36,7 @@ import org.geotools.util.factory.Hints;
 public final class AIGReader extends BaseGDALGridCoverage2DReader implements GridCoverageReader {
     /** Logger. */
     @SuppressWarnings("unused")
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(AIGReader.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(AIGReader.class);
 
     /**
      * Creates a new instance of a {@link AIGReader}. I assume nothing about file extension.

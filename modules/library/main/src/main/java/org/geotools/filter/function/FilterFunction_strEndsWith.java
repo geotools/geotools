@@ -26,12 +26,11 @@ import org.geotools.filter.capability.FunctionNameImpl;
 
 public class FilterFunction_strEndsWith extends FunctionExpressionImpl {
 
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "strEndsWith",
-                    parameter("endsWith", Boolean.class),
-                    parameter("String", String.class),
-                    parameter("postfix", String.class));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "strEndsWith",
+            parameter("endsWith", Boolean.class),
+            parameter("String", String.class),
+            parameter("postfix", String.class));
 
     public FilterFunction_strEndsWith() {
         super(NAME);

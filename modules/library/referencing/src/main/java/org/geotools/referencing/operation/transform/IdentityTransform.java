@@ -38,8 +38,7 @@ import org.geotools.referencing.operation.matrix.MatrixFactory;
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
-public class IdentityTransform extends AbstractMathTransform
-        implements LinearTransform, Serializable {
+public class IdentityTransform extends AbstractMathTransform implements LinearTransform, Serializable {
     /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = -5339040282922138164L;
 
@@ -173,15 +172,13 @@ public class IdentityTransform extends AbstractMathTransform
 
     /** Transforms an array of floating point coordinates by this transform. */
     @Override
-    public void transform(
-            final float[] srcPts, int srcOff, final float[] dstPts, int dstOff, int numPts) {
+    public void transform(final float[] srcPts, int srcOff, final float[] dstPts, int dstOff, int numPts) {
         System.arraycopy(srcPts, srcOff, dstPts, dstOff, numPts * dimension);
     }
 
     /** Transforms an array of floating point coordinates by this transform. */
     @Override
-    public void transform(
-            final double[] srcPts, int srcOff, final double[] dstPts, int dstOff, int numPts) {
+    public void transform(final double[] srcPts, int srcOff, final double[] dstPts, int dstOff, int numPts) {
         System.arraycopy(srcPts, srcOff, dstPts, dstOff, numPts * dimension);
     }
 

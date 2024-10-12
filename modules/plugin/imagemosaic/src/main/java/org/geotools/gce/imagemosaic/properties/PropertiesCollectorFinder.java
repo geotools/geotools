@@ -58,9 +58,7 @@ public final class PropertiesCollectorFinder {
     private static FactoryRegistry getServiceRegistry() {
         assert Thread.holdsLock(PropertiesCollectorFinder.class);
         if (registry == null) {
-            registry =
-                    new FactoryCreator(
-                            Arrays.asList(new Class<?>[] {PropertiesCollectorSPI.class}));
+            registry = new FactoryCreator(Arrays.asList(new Class<?>[] {PropertiesCollectorSPI.class}));
         }
         return registry;
     }

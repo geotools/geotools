@@ -60,13 +60,10 @@ public final class Units {
      * database (code 9107).
      */
     public static final Unit<Angle> DEGREE_MINUTE_SECOND =
-            NonSI.DEGREE_ANGLE
-                    .transform(SexagesimalConverter.INTEGER.inverse())
-                    .asType(Angle.class);
+            NonSI.DEGREE_ANGLE.transform(SexagesimalConverter.INTEGER.inverse()).asType(Angle.class);
 
     public static final Unit<Angle> GRADE = USCustomary.GRADE;
-    public static final Unit<Angle> MICRORADIAN =
-            MetricPrefix.MICRO(tech.units.indriya.unit.Units.RADIAN);
+    public static final Unit<Angle> MICRORADIAN = MetricPrefix.MICRO(tech.units.indriya.unit.Units.RADIAN);
     public static final Unit<Angle> MINUTE_ANGLE = NonSI.MINUTE_ANGLE;
     public static final Unit<Angle> RADIAN = tech.units.indriya.unit.Units.RADIAN;
 
@@ -80,10 +77,9 @@ public final class Units {
      * as much as possible. Unfortunatly, this pseudo-unit is extensively used in the EPSG database
      * (code 9110).
      */
-    public static final Unit<Angle> SEXAGESIMAL_DMS =
-            NonSI.DEGREE_ANGLE
-                    .transform(SexagesimalConverter.FRACTIONAL.inverse())
-                    .asType(Angle.class);
+    public static final Unit<Angle> SEXAGESIMAL_DMS = NonSI.DEGREE_ANGLE
+            .transform(SexagesimalConverter.FRACTIONAL.inverse())
+            .asType(Angle.class);
 
     public static final Unit<Angle> SECOND_ANGLE = NonSI.SECOND_ANGLE;
 
@@ -101,8 +97,7 @@ public final class Units {
     public static final Unit<Length> KILOMETER = MetricPrefix.KILO(METRE);
     public static final Unit<Length> NAUTICAL_MILE = USCustomary.NAUTICAL_MILE;
     static final Unit<Length> FOOT_GOLD_COAST =
-            new TransformedUnit<>(
-                    "Foot_Gold_Coast", SI.METRE, MultiplyConverter.of(0.3047997101815088));
+            new TransformedUnit<>("Foot_Gold_Coast", SI.METRE, MultiplyConverter.of(0.3047997101815088));
 
     /** Length of <code>1/72</code> of a {@link USCustomary#INCH} */
     public static final Unit<Length> PIXEL = USCustomary.INCH.divide(72);
@@ -171,18 +166,14 @@ public final class Units {
             return true;
         }
         if (unit1 != null) {
-            if (unit1 instanceof TransformedUnit<?>
-                    && unit2 != null
-                    && unit2 instanceof TransformedUnit<?>) {
+            if (unit1 instanceof TransformedUnit<?> && unit2 != null && unit2 instanceof TransformedUnit<?>) {
                 TransformedUnit<?> tunit1 = (TransformedUnit<?>) unit1;
                 TransformedUnit<?> tunit2 = (TransformedUnit<?>) unit2;
                 if (unit1.getSystemUnit().equals(unit2.getSystemUnit())) {
                     try {
-                        float factor =
-                                (float)
-                                        tunit1.getSystemConverter()
-                                                .concatenate(tunit2.getSystemConverter().inverse())
-                                                .convert(1.0f);
+                        float factor = (float) tunit1.getSystemConverter()
+                                .concatenate(tunit2.getSystemConverter().inverse())
+                                .convert(1.0f);
                         // NOTE: Matching old JSR-275 library practice, converting to float to
                         // compare factors to provide some tolerance
                         if (factor == 1.0f) {

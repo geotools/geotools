@@ -41,8 +41,7 @@ public class OptionalComponentParameter extends BasicComponentParameter {
      * always resolve to <code>null</code>.
      */
     @Override
-    public boolean isResolvable(
-            PicoContainer container, ComponentAdapter adapter, Class expectedType) {
+    public boolean isResolvable(PicoContainer container, ComponentAdapter adapter, Class expectedType) {
         return true;
     }
 }

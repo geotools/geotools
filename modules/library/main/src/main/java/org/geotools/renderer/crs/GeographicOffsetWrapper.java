@@ -48,8 +48,7 @@ class GeographicOffsetWrapper implements MathTransform {
     }
 
     @Override
-    public Position transform(Position ptSrc, Position ptDst)
-            throws MismatchedDimensionException, TransformException {
+    public Position transform(Position ptSrc, Position ptDst) throws MismatchedDimensionException, TransformException {
         return delegate.transform(ptSrc, ptDst);
     }
 
@@ -200,8 +199,7 @@ class GeographicOffsetWrapper implements MathTransform {
     }
 
     @Override
-    public Matrix derivative(Position point)
-            throws MismatchedDimensionException, TransformException {
+    public Matrix derivative(Position point) throws MismatchedDimensionException, TransformException {
         return delegate.derivative(point);
     }
 

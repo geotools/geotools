@@ -81,10 +81,7 @@ public class WMTSHelper {
                                 .append(separator)
                                 .append(key)
                                 .append("=")
-                                .append(
-                                        valString.startsWith("{")
-                                                ? valString
-                                                : URLEncoder.encode(valString, "UTF-8"));
+                                .append(valString.startsWith("{") ? valString : URLEncoder.encode(valString, "UTF-8"));
                         separator = "&";
                     }
                 }

@@ -95,24 +95,20 @@ public class FootprintExtractionProcess implements RasterProcess {
      */
     @DescribeResult(name = "result", description = "The compute footprint geometry")
     public SimpleFeatureCollection execute(
-            @DescribeParameter(name = "data", description = "Source raster")
-                    GridCoverage2D coverage,
+            @DescribeParameter(name = "data", description = "Source raster") GridCoverage2D coverage,
             @DescribeParameter(
                             name = "exclusionRanges",
-                            description =
-                                    "the ranges of luminance values to be excluded by the computation.",
+                            description = "the ranges of luminance values to be excluded by the computation.",
                             min = 0)
                     List<Range<Integer>> exclusionRanges,
             @DescribeParameter(
                             name = "thresholdArea",
-                            description =
-                                    "Indicates the minimum area of a polygon to be included in the final result",
+                            description = "Indicates the minimum area of a polygon to be included in the final result",
                             min = 0)
                     Double thresholdArea,
             @DescribeParameter(
                             name = "computeSimplifiedFootprint",
-                            description =
-                                    "Indicates whether the simplified footprint should be computed",
+                            description = "Indicates whether the simplified footprint should be computed",
                             min = 0)
                     Boolean computeSimplifiedFootprint,
             @DescribeParameter(
@@ -123,14 +119,12 @@ public class FootprintExtractionProcess implements RasterProcess {
                     Double simplifierFactor,
             @DescribeParameter(
                             name = "removeCollinear",
-                            description =
-                                    "Indicates whether remove collinear point should be applied",
+                            description = "Indicates whether remove collinear point should be applied",
                             min = 0)
                     Boolean removeCollinear,
             @DescribeParameter(
                             name = "forceValid",
-                            description =
-                                    "Indicates whether polygon should be forced to be valid, also removing holes",
+                            description = "Indicates whether polygon should be forced to be valid, also removing holes",
                             min = 0)
                     Boolean forceValid,
             @DescribeParameter(
@@ -178,14 +172,8 @@ public class FootprintExtractionProcess implements RasterProcess {
             thresholdArea = MarchingSquaresVectorizer.DEFAULT_THRESHOLD_AREA;
         }
 
-        MarchingSquaresVectorizer vectorizer =
-                new MarchingSquaresVectorizer(
-                        coverage,
-                        null,
-                        thresholdArea,
-                        simplifierFactor,
-                        imageLoadingType,
-                        exclusionRanges);
+        MarchingSquaresVectorizer vectorizer = new MarchingSquaresVectorizer(
+                coverage, null, thresholdArea, simplifierFactor, imageLoadingType, exclusionRanges);
         vectorizer.setComputeSimplifiedFootprint(computeSimplifiedFootprint);
         vectorizer.setForceValid(forceValid);
         vectorizer.setRemoveCollinear(removeCollinear);
@@ -195,8 +183,7 @@ public class FootprintExtractionProcess implements RasterProcess {
             Geometry geometry = vectorizer.getFootprint();
 
             // wrap as a feature collection and return
-            final SimpleFeatureType featureType =
-                    CoverageUtilities.createFeatureType(coverage, Geometry.class);
+            final SimpleFeatureType featureType = CoverageUtilities.createFeatureType(coverage, Geometry.class);
             final SimpleFeatureBuilder builder = new SimpleFeatureBuilder(featureType);
             int i = 0;
             final ListFeatureCollection featureCollection = new ListFeatureCollection(featureType);

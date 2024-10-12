@@ -86,9 +86,7 @@ public class WFSDiff extends Diff {
             if (removed) {
                 // will cause an extra update to be sent after the batch modifications
                 MODULE.finer(
-                        "Removing "
-                                + fid
-                                + " from list of batch modified features as it's being modified directly");
+                        "Removing " + fid + " from list of batch modified features as it's being modified directly");
             }
         }
         super.modify(fid, f);
@@ -103,8 +101,7 @@ public class WFSDiff extends Diff {
             throws IOException {
 
         ReferencedEnvelope bounds =
-                new ReferencedEnvelope(
-                        contentState.getFeatureType().getCoordinateReferenceSystem());
+                new ReferencedEnvelope(contentState.getFeatureType().getCoordinateReferenceSystem());
 
         synchronized (batchModified) {
             while (oldFeatures.hasNext()) {

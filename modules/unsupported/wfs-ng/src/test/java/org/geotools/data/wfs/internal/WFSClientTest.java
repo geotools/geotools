@@ -78,8 +78,7 @@ public class WFSClientTest {
     @After
     public void tearDown() throws Exception {}
 
-    private WFSClient testInit(String resource, String expectedVersion)
-            throws IOException, ServiceException {
+    private WFSClient testInit(String resource, String expectedVersion) throws IOException, ServiceException {
 
         WFSClient client = newClient(resource);
         WFSGetCapabilities capabilities = client.getCapabilities();
@@ -197,14 +196,11 @@ public class WFSClientTest {
                 "http://schemas.opengis.net/wfs/1.0.0/WFS-transaction.xsd",
                 info.getSchema().toString());
         assertEquals("http://localhost:8080/geoserver/wfs?", info.getSource().toString());
-        assertTrue(
-                info.getDescription().contains("This is a description of your Web Feature Server.")
-                        && info.getDescription()
-                                .contains(
-                                        "The GeoServer is a full transactional Web Feature Server, you may wish to limit GeoServer to a Basic service")
-                        && info.getDescription()
-                                .contains(
-                                        "level to prevent modificaiton of your geographic data."));
+        assertTrue(info.getDescription().contains("This is a description of your Web Feature Server.")
+                && info.getDescription()
+                        .contains(
+                                "The GeoServer is a full transactional Web Feature Server, you may wish to limit GeoServer to a Basic service")
+                && info.getDescription().contains("level to prevent modificaiton of your geographic data."));
     }
 
     @Test
@@ -297,15 +293,10 @@ public class WFSClientTest {
         verify(mockHttpClient, times(1)).post(any(), any(), any(), eq(headers));
     }
 
-    private static QName STED_REMOTE_NAME =
-            new QName(
-                    "http://skjema.geonorge.no/SOSI/produktspesifikasjon/StedsnavnForVanligBruk/20181115",
-                    "Sted",
-                    "app");
+    private static QName STED_REMOTE_NAME = new QName(
+            "http://skjema.geonorge.no/SOSI/produktspesifikasjon/StedsnavnForVanligBruk/20181115", "Sted", "app");
     private static Name STED_LOCAL_NAME =
-            new NameImpl(
-                    "http://skjema.geonorge.no/SOSI/produktspesifikasjon/StedsnavnForVanligBruk/20181115",
-                    "Sted");
+            new NameImpl("http://skjema.geonorge.no/SOSI/produktspesifikasjon/StedsnavnForVanligBruk/20181115", "Sted");
 
     @Test
     public void testIssueGetFeatureRequest() throws Exception {
@@ -330,15 +321,14 @@ public class WFSClientTest {
         }
 
         GetFeatureRequest complexRequest = client.createGetFeatureRequest();
-        FeatureType complexType =
-                new FeatureTypeImpl(
-                        STED_LOCAL_NAME,
-                        Collections.emptyList(),
-                        null,
-                        false,
-                        Collections.emptyList(),
-                        FakeTypes.ANYTYPE_TYPE,
-                        null);
+        FeatureType complexType = new FeatureTypeImpl(
+                STED_LOCAL_NAME,
+                Collections.emptyList(),
+                null,
+                false,
+                Collections.emptyList(),
+                FakeTypes.ANYTYPE_TYPE,
+                null);
 
         complexRequest.setTypeName(STED_REMOTE_NAME);
         complexRequest.setFullType(complexType);
@@ -353,8 +343,7 @@ public class WFSClientTest {
         }
     }
 
-    private void testGetRemoteTypeNames(String capabilitiesLocation, int typeCount)
-            throws Exception {
+    private void testGetRemoteTypeNames(String capabilitiesLocation, int typeCount) throws Exception {
 
         WFSClient client = newClient(capabilitiesLocation);
         Set<QName> remoteTypeNames = client.getRemoteTypeNames();
@@ -367,18 +356,15 @@ public class WFSClientTest {
 
         TestHttpClient mockHttp = new TestHttpClient();
         mockHttp.expectGet(
-                new URL(
-                        "https://wfs.geonorge.no/skwms1/wfs.stedsnavn?REQUEST=GetCapabilities&SERVICE=WFS"),
+                new URL("https://wfs.geonorge.no/skwms1/wfs.stedsnavn?REQUEST=GetCapabilities&SERVICE=WFS"),
                 new MockHttpResponse(
-                        TestData.file(TestHttpClient.class, "KartverketNo/GetCapabilities.xml"),
-                        "text/xml"));
+                        TestData.file(TestHttpClient.class, "KartverketNo/GetCapabilities.xml"), "text/xml"));
 
         mockHttp.expectGet(
                 new URL(
                         "https://wfs.geonorge.no/skwms1/wfs.stedsnavn?REQUEST=GetFeature&RESULTTYPE=RESULTS&OUTPUTFORMAT=application%2Fgml%2Bxml%3B+version%3D3.2&VERSION=2.0.0&TYPENAMES=app%3ASted&SERVICE=WFS"),
                 new MockHttpResponse(
-                        TestData.file(TestHttpClient.class, "KartverketNo/GetFeature_sted.xml"),
-                        "text/xml"));
+                        TestData.file(TestHttpClient.class, "KartverketNo/GetFeature_sted.xml"), "text/xml"));
 
         TestWFSClient client = new TestWFSClient(capabilities, mockHttp);
         client.setProtocol(false); // Http GET method

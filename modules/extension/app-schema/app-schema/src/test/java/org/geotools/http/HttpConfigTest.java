@@ -49,8 +49,7 @@ public final class HttpConfigTest {
 
     private static final HttpStaticServer HTTP_SERVER = new HttpStaticServer();
 
-    private static final File APP_SCHEMA_CACHE_DIR =
-            new File(FileUtils.getTempDirectory(), "app-schema-cache");
+    private static final File APP_SCHEMA_CACHE_DIR = new File(FileUtils.getTempDirectory(), "app-schema-cache");
     private static final boolean LINUX_GITHUB_BUILD = Boolean.getBoolean("linux-github-build");
 
     @BeforeClass
@@ -63,15 +62,11 @@ public final class HttpConfigTest {
         System.setProperty(SchemaCache.PROVIDED_CACHE_LOCATION_KEY, APP_SCHEMA_CACHE_DIR.getPath());
         // start HTTP static server and load the necessary resources
         HTTP_SERVER.start();
+        HTTP_SERVER.putResource("measurements_http_includes.xml", "/test-data/http/measurements_http_includes.xml");
         HTTP_SERVER.putResource(
-                "measurements_http_includes.xml", "/test-data/http/measurements_http_includes.xml");
-        HTTP_SERVER.putResource(
-                "measurements_relative_includes.xml",
-                "/test-data/http/measurements_relative_includes.xml");
-        HTTP_SERVER.putResource(
-                "stations_http_includes.xml", "/test-data/http/stations_http_includes.xml");
-        HTTP_SERVER.putResource(
-                "stations_relative_includes.xml", "/test-data/http/stations_relative_includes.xml");
+                "measurements_relative_includes.xml", "/test-data/http/measurements_relative_includes.xml");
+        HTTP_SERVER.putResource("stations_http_includes.xml", "/test-data/http/stations_http_includes.xml");
+        HTTP_SERVER.putResource("stations_relative_includes.xml", "/test-data/http/stations_relative_includes.xml");
         HTTP_SERVER.putResource("stations.xsd", "/test-data/http/stations.xsd");
     }
 
@@ -149,9 +144,7 @@ public final class HttpConfigTest {
             return (AppSchemaDataAccess) dataAccess;
         } catch (Exception exception) {
             throw new RuntimeException(
-                    String.format(
-                            "Error build App-Schema data store for mappings '%s'.", mappingsName),
-                    exception);
+                    String.format("Error build App-Schema data store for mappings '%s'.", mappingsName), exception);
         }
     }
 }

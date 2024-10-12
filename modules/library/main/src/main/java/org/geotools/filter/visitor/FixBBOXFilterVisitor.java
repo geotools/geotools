@@ -73,9 +73,7 @@ public class FixBBOXFilterVisitor extends DuplicatingFilterVisitor {
             Geometry geometry = (Geometry) le.getValue();
             bbox = geometry.getEnvelopeInternal();
             crs = (CoordinateReferenceSystem) geometry.getUserData();
-        } else if (le != null
-                && le.getValue() != null
-                && le.getValue() instanceof ReferencedEnvelope) {
+        } else if (le != null && le.getValue() != null && le.getValue() instanceof ReferencedEnvelope) {
             bbox = (Envelope) le.getValue();
             crs = ((ReferencedEnvelope) le.getValue()).getCoordinateReferenceSystem();
         }
@@ -109,9 +107,7 @@ public class FixBBOXFilterVisitor extends DuplicatingFilterVisitor {
         if (clipped) {
             // the bbox was clipped!
             FilterFactory ff = getFactory(extraData);
-            return ff.bbox(
-                    filter.getExpression1(),
-                    ff.literal(new ReferencedEnvelope(minx, maxx, miny, maxy, crs)));
+            return ff.bbox(filter.getExpression1(), ff.literal(new ReferencedEnvelope(minx, maxx, miny, maxy, crs)));
         } else {
             return super.visit(filter, extraData); // allow super class to make a direct copy
         }

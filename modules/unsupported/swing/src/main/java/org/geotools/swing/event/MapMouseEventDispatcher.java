@@ -32,8 +32,7 @@ import java.awt.event.MouseWheelListener;
  * @since 8.0
  * @version $Id$
  */
-public interface MapMouseEventDispatcher
-        extends MouseListener, MouseMotionListener, MouseWheelListener {
+public interface MapMouseEventDispatcher extends MouseListener, MouseMotionListener, MouseWheelListener {
 
     /**
      * Adds a listener for map pane mouse events.

@@ -68,10 +68,7 @@ public class SnapProcess implements VectorProcess {
         outputInfo.put(
                 "result",
                 new Parameter(
-                        "result",
-                        FeatureCollection.class,
-                        Text.text("Result"),
-                        Text.text("The nearest feature")));
+                        "result", FeatureCollection.class, Text.text("Result"), Text.text("The nearest feature")));
         return outputInfo;
     }
 
@@ -84,15 +81,11 @@ public class SnapProcess implements VectorProcess {
      * @return the snapped to feature
      * @throws ProcessException error
      */
-    @DescribeResult(
-            name = "result",
-            description = "Nearest feature, with added attributes for distance and bearing.")
+    @DescribeResult(name = "result", description = "Nearest feature, with added attributes for distance and bearing.")
     public FeatureCollection execute(
             @DescribeParameter(name = "features", description = "Input feature collection")
                     FeatureCollection featureCollection,
-            @DescribeParameter(
-                            name = "point",
-                            description = "Point geometry to test against for nearest feature")
+            @DescribeParameter(name = "point", description = "Point geometry to test against for nearest feature")
                     Point point,
             @DescribeParameter(
                             name = "crs",
@@ -132,9 +125,8 @@ public class SnapProcess implements VectorProcess {
                 while (featureIterator.hasNext()) {
                     SimpleFeature f = (SimpleFeature) featureIterator.next();
                     if (f.getDefaultGeometryProperty().getValue() == null) continue;
-                    DistanceOp op =
-                            new DistanceOp(
-                                    point, (Geometry) f.getDefaultGeometryProperty().getValue());
+                    DistanceOp op = new DistanceOp(
+                            point, (Geometry) f.getDefaultGeometryProperty().getValue());
                     Coordinate[] co = op.nearestPoints();
                     double[] co0 = {
                         co[0].x, co[0].y,
@@ -159,13 +151,12 @@ public class SnapProcess implements VectorProcess {
             }
             if (nearestFeature != null) {
                 nearestDistance = unitConvert.convert(nearestDistance);
-                results.add(
-                        createTargetFeature(
-                                nearestFeature,
-                                (SimpleFeatureType) targetFeatureType,
-                                nearestPoint,
-                                nearestDistance,
-                                nearestBearing));
+                results.add(createTargetFeature(
+                        nearestFeature,
+                        (SimpleFeatureType) targetFeatureType,
+                        nearestPoint,
+                        nearestDistance,
+                        nearestBearing));
             }
             return results;
         } catch (ProcessException e) {
@@ -183,8 +174,7 @@ public class SnapProcess implements VectorProcess {
      * @return the modified feature type
      * @throws ProcessException errror
      */
-    private SimpleFeatureType createTargetFeatureType(FeatureType sourceFeatureType)
-            throws ProcessException {
+    private SimpleFeatureType createTargetFeatureType(FeatureType sourceFeatureType) throws ProcessException {
         try {
             SimpleFeatureTypeBuilder typeBuilder = new SimpleFeatureTypeBuilder();
             typeBuilder.setName(sourceFeatureType.getName().getLocalPart());
@@ -197,16 +187,8 @@ public class SnapProcess implements VectorProcess {
                     typeBuilder.add((AttributeDescriptor) attbType);
                 }
             }
-            typeBuilder
-                    .minOccurs(1)
-                    .maxOccurs(1)
-                    .nillable(false)
-                    .add("nearest_distance", Double.class);
-            typeBuilder
-                    .minOccurs(1)
-                    .maxOccurs(1)
-                    .nillable(false)
-                    .add("nearest_bearing", Double.class);
+            typeBuilder.minOccurs(1).maxOccurs(1).nillable(false).add("nearest_distance", Double.class);
+            typeBuilder.minOccurs(1).maxOccurs(1).nillable(false).add("nearest_bearing", Double.class);
             typeBuilder.setDefaultGeometry(
                     sourceFeatureType.getGeometryDescriptor().getLocalName());
             return typeBuilder.buildFeatureType();
@@ -235,17 +217,14 @@ public class SnapProcess implements VectorProcess {
             throws ProcessException {
         try {
             AttributeDescriptor geomAttbType = targetFeatureType.getGeometryDescriptor();
-            AttributeDescriptor distanceAttbType =
-                    targetFeatureType.getDescriptor("nearest_distance");
-            AttributeDescriptor bearingAttbType =
-                    targetFeatureType.getDescriptor("nearest_bearing");
+            AttributeDescriptor distanceAttbType = targetFeatureType.getDescriptor("nearest_distance");
+            AttributeDescriptor bearingAttbType = targetFeatureType.getDescriptor("nearest_bearing");
             Object[] attributes = new Object[targetFeatureType.getAttributeCount()];
             for (int i = 0; i < attributes.length; i++) {
-                AttributeDescriptor attbType = targetFeatureType.getAttributeDescriptors().get(i);
+                AttributeDescriptor attbType =
+                        targetFeatureType.getAttributeDescriptors().get(i);
                 if (attbType.equals(geomAttbType)) {
-                    attributes[i] =
-                            geometryFactory.createPoint(
-                                    new Coordinate(nearestPoint[0], nearestPoint[1]));
+                    attributes[i] = geometryFactory.createPoint(new Coordinate(nearestPoint[0], nearestPoint[1]));
                 } else if (attbType.equals(distanceAttbType)) {
                     attributes[i] = nearestDistance;
                 } else if (attbType.equals(bearingAttbType)) {
@@ -270,11 +249,8 @@ public class SnapProcess implements VectorProcess {
      */
     private double calcBearing(Coordinate[] coords) {
         double y = Math.sin(coords[1].x - coords[0].x) * Math.cos(coords[1].y);
-        double x =
-                Math.cos(coords[0].y) * Math.sin(coords[1].y)
-                        - Math.sin(coords[0].y)
-                                * Math.cos(coords[1].y)
-                                * Math.cos(coords[1].x - coords[0].x);
+        double x = Math.cos(coords[0].y) * Math.sin(coords[1].y)
+                - Math.sin(coords[0].y) * Math.cos(coords[1].y) * Math.cos(coords[1].x - coords[0].x);
         double brng = ((Math.atan2(y, x) * 180.0 / Math.PI) + 360) % 360;
         return brng;
     }

@@ -43,33 +43,30 @@ public class MapPropertyAccessorFactory implements PropertyAccessorFactory {
      *     for the specified type.
      */
     @Override
-    public PropertyAccessor createPropertyAccessor(
-            Class type, String xpath, Class target, Hints hints) {
+    public PropertyAccessor createPropertyAccessor(Class type, String xpath, Class target, Hints hints) {
         if (Map.class.isAssignableFrom(type)) {
             return MAP_ACCESSOR;
         }
         return null;
     }
 
-    private static PropertyAccessor MAP_ACCESSOR =
-            new PropertyAccessor() {
+    private static PropertyAccessor MAP_ACCESSOR = new PropertyAccessor() {
 
-                @Override
-                public boolean canHandle(Object object, String xpath, Class target) {
-                    return object instanceof Map;
-                }
+        @Override
+        public boolean canHandle(Object object, String xpath, Class target) {
+            return object instanceof Map;
+        }
 
-                @Override
-                @SuppressWarnings("unchecked")
-                public <T> T get(Object object, String xpath, Class<T> target)
-                        throws IllegalArgumentException {
-                    return (T) JXPathUtils.newSafeContext(object, true).getValue(xpath);
-                }
+        @Override
+        @SuppressWarnings("unchecked")
+        public <T> T get(Object object, String xpath, Class<T> target) throws IllegalArgumentException {
+            return (T) JXPathUtils.newSafeContext(object, true).getValue(xpath);
+        }
 
-                @Override
-                public void set(Object object, String xpath, Object value, Class target)
-                        throws IllegalAttributeException, IllegalArgumentException {
-                    throw new IllegalAttributeException("not implemented");
-                }
-            };
+        @Override
+        public void set(Object object, String xpath, Object value, Class target)
+                throws IllegalAttributeException, IllegalArgumentException {
+            throw new IllegalAttributeException("not implemented");
+        }
+    };
 }

@@ -48,8 +48,7 @@ import org.geotools.util.UnmodifiableArrayList;
  * @see ParameterGroup
  * @see DefaultParameterDescriptor
  */
-public class DefaultParameterDescriptorGroup extends AbstractParameterDescriptor
-        implements ParameterDescriptorGroup {
+public class DefaultParameterDescriptorGroup extends AbstractParameterDescriptor implements ParameterDescriptorGroup {
     /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = -4613190550542423839L;
 
@@ -86,8 +85,7 @@ public class DefaultParameterDescriptorGroup extends AbstractParameterDescriptor
      * @param name The parameter group name.
      * @param parameters The {@linkplain #descriptors() parameter descriptors} for this group.
      */
-    public DefaultParameterDescriptorGroup(
-            final String name, final GeneralParameterDescriptor... parameters) {
+    public DefaultParameterDescriptorGroup(final String name, final GeneralParameterDescriptor... parameters) {
         this(Collections.singletonMap(NAME_KEY, name), parameters);
     }
 
@@ -102,9 +100,7 @@ public class DefaultParameterDescriptorGroup extends AbstractParameterDescriptor
      * @since 2.2
      */
     public DefaultParameterDescriptorGroup(
-            final Citation authority,
-            final String name,
-            final GeneralParameterDescriptor... parameters) {
+            final Citation authority, final String name, final GeneralParameterDescriptor... parameters) {
         this(Collections.singletonMap(NAME_KEY, new NamedIdentifier(authority, name)), parameters);
     }
 
@@ -157,9 +153,7 @@ public class DefaultParameterDescriptorGroup extends AbstractParameterDescriptor
                     if (nameMatches(parameters[j], name)) {
                         final Object arg0 = parameters[j].getName().getCode();
                         throw new InvalidParameterNameException(
-                                MessageFormat.format(
-                                        ErrorKeys.PARAMETER_NAME_CLASH_$4, arg0, j, name, i),
-                                name);
+                                MessageFormat.format(ErrorKeys.PARAMETER_NAME_CLASH_$4, arg0, j, name, i), name);
                     }
                 }
             }
@@ -278,8 +272,7 @@ public class DefaultParameterDescriptorGroup extends AbstractParameterDescriptor
             }
             parameters = subgroups.remove(0).descriptors();
         }
-        throw new ParameterNotFoundException(
-                MessageFormat.format(ErrorKeys.MISSING_PARAMETER_$1, name), name);
+        throw new ParameterNotFoundException(MessageFormat.format(ErrorKeys.MISSING_PARAMETER_$1, name), name);
     }
 
     /**

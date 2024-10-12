@@ -53,8 +53,7 @@ public class MappingFeatureCollection implements FeatureCollection<FeatureType, 
 
     private Filter unrolledFilter = null;
 
-    public MappingFeatureCollection(
-            AppSchemaDataAccess store, FeatureTypeMapping mapping, Query query) {
+    public MappingFeatureCollection(AppSchemaDataAccess store, FeatureTypeMapping mapping, Query query) {
         this.store = store;
         this.mapping = mapping;
         this.query = query;
@@ -186,8 +185,7 @@ public class MappingFeatureCollection implements FeatureCollection<FeatureType, 
      */
     public FeatureIterator<Feature> features(Transaction transaction) {
         try {
-            return MappingFeatureIteratorFactory.getInstance(
-                    store, mapping, query, unrolledFilter, transaction);
+            return MappingFeatureIteratorFactory.getInstance(store, mapping, query, unrolledFilter, transaction);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -210,10 +208,9 @@ public class MappingFeatureCollection implements FeatureCollection<FeatureType, 
             Feature feature;
             while (features.hasNext()) {
                 feature = features.next();
-                final Geometry geometry =
-                        feature.getDefaultGeometryProperty() != null
-                                ? ((Geometry) feature.getDefaultGeometryProperty().getValue())
-                                : null;
+                final Geometry geometry = feature.getDefaultGeometryProperty() != null
+                        ? ((Geometry) feature.getDefaultGeometryProperty().getValue())
+                        : null;
                 if (geometry != null) {
                     internal = geometry.getEnvelopeInternal();
                     newBBox.expandToInclude(internal);

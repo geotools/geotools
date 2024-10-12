@@ -317,7 +317,6 @@ public abstract class AdaptorFeatureCollection implements SimpleFeatureCollectio
     /** Subclasses need to override this. */
     @Override
     public ReferencedEnvelope getBounds() {
-        throw new UnsupportedOperationException(
-                "Subclasses " + getClass().getSimpleName() + " should override");
+        throw new UnsupportedOperationException("Subclasses " + getClass().getSimpleName() + " should override");
     }
 }

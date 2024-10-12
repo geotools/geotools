@@ -41,32 +41,19 @@ public class MBTilesDataStoreFactory implements DataStoreFactorySpi {
     private static final String MBTILES_DBTYPE = "mbtiles";
 
     /** parameter for database type */
-    public static final Param DBTYPE =
-            new Param(
-                    "dbtype",
-                    String.class,
-                    "Type",
-                    true,
-                    MBTILES_DBTYPE,
-                    Collections.singletonMap(Parameter.LEVEL, "program"));
+    public static final Param DBTYPE = new Param(
+            "dbtype", String.class, "Type", true, MBTILES_DBTYPE, Collections.singletonMap(Parameter.LEVEL, "program"));
 
     /** optional user parameter */
-    public static final Param USER =
-            new Param(
-                    JDBCDataStoreFactory.USER.key,
-                    JDBCDataStoreFactory.USER.type,
-                    JDBCDataStoreFactory.USER.description,
-                    false,
-                    JDBCDataStoreFactory.USER.sample);
+    public static final Param USER = new Param(
+            JDBCDataStoreFactory.USER.key,
+            JDBCDataStoreFactory.USER.type,
+            JDBCDataStoreFactory.USER.description,
+            false,
+            JDBCDataStoreFactory.USER.sample);
 
     public static final Param DATABASE =
-            new Param(
-                    "database",
-                    File.class,
-                    "Database",
-                    true,
-                    null,
-                    Collections.singletonMap(Param.EXT, "mbtiles"));
+            new Param("database", File.class, "Database", true, null, Collections.singletonMap(Param.EXT, "mbtiles"));
 
     @Override
     public String getDisplayName() {
@@ -127,8 +114,7 @@ public class MBTilesDataStoreFactory implements DataStoreFactorySpi {
      * Same as the GeoPackage data store, if you modify this, probably want to check if
      * modifications make sense there too
      */
-    protected DataSource createDataSource(Map<String, ?> params, boolean readOnly)
-            throws IOException {
+    protected DataSource createDataSource(Map<String, ?> params, boolean readOnly) throws IOException {
         SQLiteConfig config = new SQLiteConfig();
         config.setSharedCache(true);
         config.enableLoadExtension(true);

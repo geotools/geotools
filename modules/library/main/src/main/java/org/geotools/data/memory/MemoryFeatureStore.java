@@ -41,8 +41,8 @@ public class MemoryFeatureStore extends ContentFeatureStore {
     }
 
     @Override
-    protected FeatureWriter<SimpleFeatureType, SimpleFeature> getWriterInternal(
-            Query query, int flags) throws IOException {
+    protected FeatureWriter<SimpleFeatureType, SimpleFeature> getWriterInternal(Query query, int flags)
+            throws IOException {
         // TODO Auto-generated method stub
         return new MemoryFeatureWriter(getState(), query);
     }
@@ -51,15 +51,14 @@ public class MemoryFeatureStore extends ContentFeatureStore {
      * Delegate used for FeatureSource methods (We do this because Java cannot inherit from both
      * ContentFeatureStore and CSVFeatureSource at the same time
      */
-    MemoryFeatureSource delegate =
-            new MemoryFeatureSource(entry, query) {
-                @Override
-                public void setTransaction(Transaction transaction) {
-                    super.setTransaction(transaction);
-                    MemoryFeatureStore.this.setTransaction(
-                            transaction); // Keep these two implementations on the same transaction
-                }
-            };
+    MemoryFeatureSource delegate = new MemoryFeatureSource(entry, query) {
+        @Override
+        public void setTransaction(Transaction transaction) {
+            super.setTransaction(transaction);
+            MemoryFeatureStore.this.setTransaction(
+                    transaction); // Keep these two implementations on the same transaction
+        }
+    };
 
     @Override
     public void setTransaction(Transaction transaction) {
@@ -89,8 +88,7 @@ public class MemoryFeatureStore extends ContentFeatureStore {
     }
 
     @Override
-    protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query)
-            throws IOException {
+    protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query) throws IOException {
         return delegate.getReaderInternal(query);
     }
 

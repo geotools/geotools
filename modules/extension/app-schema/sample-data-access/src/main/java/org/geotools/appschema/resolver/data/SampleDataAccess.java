@@ -62,13 +62,12 @@ public class SampleDataAccess implements DataAccess<FeatureType, Feature> {
         if (typeName.equals(SampleDataAccessData.MAPPEDFEATURE_TYPE_NAME)) {
             return new SampleDataAccessFeatureSource();
         } else if (typeName.equals(SampleDataAccessData.GEOLOGICUNIT_TYPE_NAME)) {
-            throw new IllegalArgumentException(
-                    "Although this DataAccess claims to provide "
-                            + SampleDataAccessData.GEOLOGICUNIT_TYPE_NAME
-                            + ", it does so only so that schema references"
-                            + " are resolved when this type is nested inside "
-                            + SampleDataAccessData.MAPPEDFEATURE_TYPE_NAME
-                            + ". Direct access to the former feature type is not supported.");
+            throw new IllegalArgumentException("Although this DataAccess claims to provide "
+                    + SampleDataAccessData.GEOLOGICUNIT_TYPE_NAME
+                    + ", it does so only so that schema references"
+                    + " are resolved when this type is nested inside "
+                    + SampleDataAccessData.MAPPEDFEATURE_TYPE_NAME
+                    + ". Direct access to the former feature type is not supported.");
         } else {
             throw new RuntimeException("Unrecognised feature type " + typeName.toString());
         }
@@ -92,9 +91,7 @@ public class SampleDataAccess implements DataAccess<FeatureType, Feature> {
      */
     @Override
     public List<Name> getNames() throws IOException {
-        return List.of(
-                SampleDataAccessData.MAPPEDFEATURE_TYPE_NAME,
-                SampleDataAccessData.GEOLOGICUNIT_TYPE_NAME);
+        return List.of(SampleDataAccessData.MAPPEDFEATURE_TYPE_NAME, SampleDataAccessData.GEOLOGICUNIT_TYPE_NAME);
     }
 
     /**

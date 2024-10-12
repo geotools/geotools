@@ -41,8 +41,7 @@ public class URLCheckers {
     protected static final Logger LOGGER = Logging.getLogger(URLCheckers.class);
 
     /** Regular expression to find escaped periods/slashes in the URI before the query/fragment. */
-    private static final Pattern ILLEGAL_ESCAPES =
-            Pattern.compile("^[^?#]*%2[ef].*$", Pattern.CASE_INSENSITIVE);
+    private static final Pattern ILLEGAL_ESCAPES = Pattern.compile("^[^?#]*%2[ef].*$", Pattern.CASE_INSENSITIVE);
 
     /** The service registry for {@link URLCheckers}. Will be initialized only when first needed. */
     private static FactoryRegistry registry;
@@ -142,15 +141,14 @@ public class URLCheckers {
                 if (normal.getScheme().equalsIgnoreCase("file") && normal.getHost() == null) {
                     // Standardize on empty hostname representation supported by RFC 8089
                     // Although file:/path is valid normalize as file:///path representation
-                    normal =
-                            new URI(
-                                    normal.getScheme(),
-                                    normal.getUserInfo(),
-                                    "",
-                                    normal.getPort(),
-                                    normal.getPath(),
-                                    normal.getQuery(),
-                                    normal.getFragment());
+                    normal = new URI(
+                            normal.getScheme(),
+                            normal.getUserInfo(),
+                            "",
+                            normal.getPort(),
+                            normal.getPath(),
+                            normal.getQuery(),
+                            normal.getFragment());
                 }
                 return normal.toString();
             } catch (URISyntaxException e) {
@@ -208,7 +206,6 @@ public class URLCheckers {
             if (urlChecker.confirm(normalized)) return;
         }
         // no URLChecker evaluated the passed URL/URI/Path
-        throw new URLCheckerException(
-                "Evaluation Failure: '" + location + "' was not accepted by external URL checks");
+        throw new URLCheckerException("Evaluation Failure: '" + location + "' was not accepted by external URL checks");
     }
 }

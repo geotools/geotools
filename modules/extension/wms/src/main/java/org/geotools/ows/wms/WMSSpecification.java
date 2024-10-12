@@ -42,8 +42,7 @@ public abstract class WMSSpecification extends Specification {
      * @param getMapRequest a previously configured GetMapRequest
      * @return a GetFeatureInfoRequest that can be configured and used
      */
-    public abstract GetFeatureInfoRequest createGetFeatureInfoRequest(
-            URL onlineResource, GetMapRequest getMapRequest);
+    public abstract GetFeatureInfoRequest createGetFeatureInfoRequest(URL onlineResource, GetMapRequest getMapRequest);
 
     /**
      * Creates a DescribeLayer request which can be used to retrieve information about specific
@@ -77,8 +76,7 @@ public abstract class WMSSpecification extends Specification {
      * @throws UnsupportedOperationException if the version of the specification doesn't support
      *     this request
      */
-    public abstract GetStylesRequest createGetStylesRequest(URL onlineResource)
-            throws UnsupportedOperationException;
+    public abstract GetStylesRequest createGetStylesRequest(URL onlineResource) throws UnsupportedOperationException;
 
     /**
      * Creates a PutStyles request which can be configured and the passed to the WMS to store styles
@@ -89,6 +87,5 @@ public abstract class WMSSpecification extends Specification {
      * @throws UnsupportedOperationException if the version of the specification doesn't support
      *     this request
      */
-    public abstract PutStylesRequest createPutStylesRequest(URL onlineResource)
-            throws UnsupportedOperationException;
+    public abstract PutStylesRequest createPutStylesRequest(URL onlineResource) throws UnsupportedOperationException;
 }

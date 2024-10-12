@@ -94,8 +94,7 @@ public class FeatureLayer extends StyleLayer {
     @Override
     protected synchronized void connectDataListener(boolean listen) {
         if (sourceListener == null) {
-            sourceListener =
-                    featureEvent -> fireMapLayerListenerLayerChanged(MapLayerEvent.DATA_CHANGED);
+            sourceListener = featureEvent -> fireMapLayerListenerLayerChanged(MapLayerEvent.DATA_CHANGED);
         }
         if (listen) {
             featureSource.addFeatureListener(sourceListener);
@@ -189,29 +188,16 @@ public class FeatureLayer extends StyleLayer {
 
                 if (boundsCrs == null && schemaCrs != null) {
                     LOGGER.warning(
-                            "Bounds crs not defined; assuming bounds from schema are correct for "
-                                    + featureSource);
-                    bounds =
-                            new ReferencedEnvelope(
-                                    bounds.getMinX(),
-                                    bounds.getMaxX(),
-                                    bounds.getMinY(),
-                                    bounds.getMaxY(),
-                                    schemaCrs);
+                            "Bounds crs not defined; assuming bounds from schema are correct for " + featureSource);
+                    bounds = new ReferencedEnvelope(
+                            bounds.getMinX(), bounds.getMaxX(), bounds.getMinY(), bounds.getMaxY(), schemaCrs);
                 }
-                if (boundsCrs != null
-                        && schemaCrs != null
-                        && !CRS.equalsIgnoreMetadata(boundsCrs, schemaCrs)) {
+                if (boundsCrs != null && schemaCrs != null && !CRS.equalsIgnoreMetadata(boundsCrs, schemaCrs)) {
                     LOGGER.warning(
                             "Bounds crs and schema crs are not consistent; forcing the use of the schema crs so they are consistent");
                     // bounds = bounds.transform(schemaCrs, true );
-                    bounds =
-                            new ReferencedEnvelope(
-                                    bounds.getMinX(),
-                                    bounds.getMaxX(),
-                                    bounds.getMinY(),
-                                    bounds.getMaxY(),
-                                    schemaCrs);
+                    bounds = new ReferencedEnvelope(
+                            bounds.getMinX(), bounds.getMaxX(), bounds.getMinY(), bounds.getMaxY(), schemaCrs);
                 }
                 return bounds;
             }

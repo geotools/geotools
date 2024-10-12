@@ -39,8 +39,7 @@ import javax.imageio.stream.ImageInputStream;
 public class S3ImageInputStreamImplSpi extends ImageInputStreamSpi {
 
     /** Logger. */
-    private static final Logger LOGGER =
-            Logger.getLogger("it.geosolutions.imageio.stream.input.s3");
+    private static final Logger LOGGER = Logger.getLogger("it.geosolutions.imageio.stream.input.s3");
 
     private static final String vendorName = "GeoSolutions";
 
@@ -68,8 +67,7 @@ public class S3ImageInputStreamImplSpi extends ImageInputStreamSpi {
     public void onRegistration(ServiceRegistry registry, Class<?> category) {
         super.onRegistration(registry, category);
         Class<ImageInputStreamSpi> targetClass = ImageInputStreamSpi.class;
-        for (Iterator<? extends ImageInputStreamSpi> i =
-                        registry.getServiceProviders(targetClass, true);
+        for (Iterator<? extends ImageInputStreamSpi> i = registry.getServiceProviders(targetClass, true);
                 i.hasNext(); ) {
             ImageInputStreamSpi other = i.next();
 
@@ -89,13 +87,9 @@ public class S3ImageInputStreamImplSpi extends ImageInputStreamSpi {
      * @throws IllegalArgumentException if input is not an instance of the correct class or is null.
      */
     @Override
-    public ImageInputStream createInputStreamInstance(
-            Object input, boolean useCache, File cacheDir) {
+    public ImageInputStream createInputStreamInstance(Object input, boolean useCache, File cacheDir) {
         if (LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.fine(
-                    "S3ImageInputStreamImplSpi.createInputStreamInstance("
-                            + input.getClass()
-                            + ")");
+            LOGGER.fine("S3ImageInputStreamImplSpi.createInputStreamInstance(" + input.getClass() + ")");
         }
         if (input instanceof S3ImageInputStreamImpl) {
             try {

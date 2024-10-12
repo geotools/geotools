@@ -75,19 +75,16 @@ public final class FeatureUtilities {
     public static final FilterFactory DEFAULT_FILTER_FACTORY =
             CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints());
     public static final PropertyName GRID_PROPERTY_NAME = DEFAULT_FILTER_FACTORY.property("grid");
-    public static final PropertyName PARAMS_PROPERTY_NAME =
-            DEFAULT_FILTER_FACTORY.property("params");
+    public static final PropertyName PARAMS_PROPERTY_NAME = DEFAULT_FILTER_FACTORY.property("params");
 
-    static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(FeatureUtilities.class);
+    static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(FeatureUtilities.class);
 
     /** Do not allows instantiation of this class. */
     private FeatureUtilities() {}
 
     private static FeatureTypeFactory getTypeFactory() {
         if (typeFactory == null)
-            typeFactory =
-                    new FeatureTypeFactoryImpl(); // CommonFactoryFinder.getFeatureTypeFactory(null);
+            typeFactory = new FeatureTypeFactoryImpl(); // CommonFactoryFinder.getFeatureTypeFactory(null);
         return typeFactory;
     }
 
@@ -175,8 +172,8 @@ public final class FeatureUtilities {
         if (featureType.getAttributeCount() != 2) return false;
 
         AttributeDescriptor polyDescriptor = featureType.getDescriptor("geom");
-        if (polyDescriptor == null || !Polygon.class.equals(polyDescriptor.getType().getBinding()))
-            return false;
+        if (polyDescriptor == null
+                || !Polygon.class.equals(polyDescriptor.getType().getBinding())) return false;
 
         AttributeDescriptor gridDescriptor = featureType.getDescriptor("grid");
         if (gridDescriptor == null
@@ -204,8 +201,7 @@ public final class FeatureUtilities {
                 CRS.getHorizontalCRS(gridCoverageReader.getCoordinateReferenceSystem());
         if (sourceCrs == null) {
             final Object arg0 = gridCoverageReader.getCoordinateReferenceSystem();
-            throw new UnsupportedOperationException(
-                    MessageFormat.format(ErrorKeys.CANT_SEPARATE_CRS_$1, arg0));
+            throw new UnsupportedOperationException(MessageFormat.format(ErrorKeys.CANT_SEPARATE_CRS_$1, arg0));
         }
 
         final Coordinate[] coord = new Coordinate[5];
@@ -245,18 +241,17 @@ public final class FeatureUtilities {
         if (featureType.getAttributeCount() != 3) return false;
 
         AttributeDescriptor polyDescriptor = featureType.getDescriptor("geom");
-        if (polyDescriptor == null || !Polygon.class.equals(polyDescriptor.getType().getBinding()))
-            return false;
+        if (polyDescriptor == null
+                || !Polygon.class.equals(polyDescriptor.getType().getBinding())) return false;
 
         AttributeDescriptor gridDescriptor = featureType.getDescriptor("grid");
         if (gridDescriptor == null
-                || !GridCoverage2DReader.class.equals(gridDescriptor.getType().getBinding()))
-            return false;
+                || !GridCoverage2DReader.class.equals(gridDescriptor.getType().getBinding())) return false;
 
         AttributeDescriptor paramDescriptor = featureType.getDescriptor("params");
         if (paramDescriptor == null
-                || !GeneralParameterValue[].class.equals(paramDescriptor.getType().getBinding()))
-            return false;
+                || !GeneralParameterValue[]
+                        .class.equals(paramDescriptor.getType().getBinding())) return false;
 
         return true;
     }
@@ -270,8 +265,8 @@ public final class FeatureUtilities {
      * @return an AWT {@link java.awt.Polygon}.
      * @throws TransformException in case the provided {@link MathTransform} chokes.
      */
-    public static java.awt.Polygon convertPolygon(
-            final Polygon roiInput, MathTransform worldToGridTransform) throws TransformException {
+    public static java.awt.Polygon convertPolygon(final Polygon roiInput, MathTransform worldToGridTransform)
+            throws TransformException {
         return convertPolygonToPointArray(roiInput, worldToGridTransform, null);
     }
 

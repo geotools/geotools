@@ -67,15 +67,13 @@ import org.locationtech.jts.geom.Polygon;
  * usage, as this transformation only sets up a filter against the associated {@link
  * GranuleSource}).
  */
-public class FootprintsTransformation extends FunctionImpl
-        implements CoverageReadingTransformation {
+public class FootprintsTransformation extends FunctionImpl implements CoverageReadingTransformation {
 
     private static final String FOOTPRINTS = "footprints";
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "footprints",
-                    parameter("result", SimpleFeatureCollection.class),
-                    parameter("coverage", String.class, 0, 1));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "footprints",
+            parameter("result", SimpleFeatureCollection.class),
+            parameter("coverage", String.class, 0, 1));
 
     public FootprintsTransformation() {
         this.functionName = NAME;
@@ -101,8 +99,7 @@ public class FootprintsTransformation extends FunctionImpl
 
     private SimpleFeatureCollection readStructured(ReaderAndParams rap) {
         try {
-            StructuredGridCoverage2DReader reader =
-                    (StructuredGridCoverage2DReader) rap.getReader();
+            StructuredGridCoverage2DReader reader = (StructuredGridCoverage2DReader) rap.getReader();
 
             String coverage = Converters.convert(getParameterValue(rap, 0), String.class);
             if (coverage == null) coverage = reader.getGridCoverageNames()[0];
@@ -115,9 +112,7 @@ public class FootprintsTransformation extends FunctionImpl
     }
 
     private Query buildQuery(
-            String coverage,
-            StructuredGridCoverage2DReader reader,
-            GeneralParameterValue[] readParameters)
+            String coverage, StructuredGridCoverage2DReader reader, GeneralParameterValue[] readParameters)
             throws IOException {
         Query query = new Query(coverage);
 
@@ -136,9 +131,7 @@ public class FootprintsTransformation extends FunctionImpl
     }
 
     private Filter buildFilter(
-            String coverage,
-            StructuredGridCoverage2DReader reader,
-            GeneralParameterValue[] readParameters)
+            String coverage, StructuredGridCoverage2DReader reader, GeneralParameterValue[] readParameters)
             throws IOException {
         FilterFactory ff = FeatureUtilities.DEFAULT_FILTER_FACTORY;
         List<Filter> filters = new ArrayList<>();
@@ -147,11 +140,7 @@ public class FootprintsTransformation extends FunctionImpl
         if (filter != null) filters.add(filter);
 
         // bbox
-        GridGeometry2D gg =
-                getParameter(
-                        AbstractGridFormat.READ_GRIDGEOMETRY2D,
-                        GridGeometry2D.class,
-                        readParameters);
+        GridGeometry2D gg = getParameter(AbstractGridFormat.READ_GRIDGEOMETRY2D, GridGeometry2D.class, readParameters);
         if (gg != null) {
             filters.add(ff.bbox(ff.property(""), gg.getEnvelope2D()));
         }
@@ -164,11 +153,9 @@ public class FootprintsTransformation extends FunctionImpl
         if (time != null && timeDescriptor != null) filters.add(buildFilter(timeDescriptor, time));
 
         // elevation
-        DimensionDescriptor elevationDescriptor =
-                getDimension(dimensions, DimensionDescriptor.ELEVATION);
+        DimensionDescriptor elevationDescriptor = getDimension(dimensions, DimensionDescriptor.ELEVATION);
         List elevation = getParameter(ELEVATION, List.class, readParameters);
-        if (elevation != null && elevationDescriptor != null)
-            filters.add(buildFilter(elevationDescriptor, elevation));
+        if (elevation != null && elevationDescriptor != null) filters.add(buildFilter(elevationDescriptor, elevation));
 
         // custom dimensions
         getCustomDimensions(reader, dimensions, readParameters)
@@ -192,20 +179,17 @@ public class FootprintsTransformation extends FunctionImpl
      * </ul>
      */
     private Map<DimensionDescriptor, List> getCustomDimensions(
-            GridCoverage2DReader reader,
-            List<DimensionDescriptor> dimensions,
-            GeneralParameterValue[] readParameters)
+            GridCoverage2DReader reader, List<DimensionDescriptor> dimensions, GeneralParameterValue[] readParameters)
             throws IOException {
         Set<ParameterDescriptor<List>> descriptors = reader.getDynamicParameters();
         Map<DimensionDescriptor, List> result = new HashMap<>();
-        descriptors.forEach(
-                pd -> {
-                    DimensionDescriptor dd = getDimension(dimensions, pd.getName().getCode());
-                    if (dd != null) {
-                        List value = getParameter(pd, List.class, readParameters);
-                        if (value != null) result.put(dd, value);
-                    }
-                });
+        descriptors.forEach(pd -> {
+            DimensionDescriptor dd = getDimension(dimensions, pd.getName().getCode());
+            if (dd != null) {
+                List value = getParameter(pd, List.class, readParameters);
+                if (value != null) result.put(dd, value);
+            }
+        });
         return result;
     }
 
@@ -217,12 +201,10 @@ public class FootprintsTransformation extends FunctionImpl
     }
 
     private Filter buildFilter(DimensionDescriptor dd, List values) {
-        return new DomainFilterBuilder(dd.getName(), dd.getStartAttribute(), dd.getEndAttribute())
-                .createFilter(values);
+        return new DomainFilterBuilder(dd.getName(), dd.getStartAttribute(), dd.getEndAttribute()).createFilter(values);
     }
 
-    private <T> T getParameter(
-            ParameterDescriptor pd, Class<T> clazz, GeneralParameterValue[] readParameters) {
+    private <T> T getParameter(ParameterDescriptor pd, Class<T> clazz, GeneralParameterValue[] readParameters) {
         return Arrays.stream(readParameters)
                 .filter(p -> pd.getName().equals(p.getDescriptor().getName()))
                 .filter(p -> p instanceof ParameterValue)
@@ -234,8 +216,7 @@ public class FootprintsTransformation extends FunctionImpl
     }
 
     /** Not a structured reader... we'll return the footprint of the reader */
-    private SimpleFeatureCollection readSimple(
-            GridCoverage2DReader reader, GeneralParameterValue[] readParameters) {
+    private SimpleFeatureCollection readSimple(GridCoverage2DReader reader, GeneralParameterValue[] readParameters) {
         ReferencedEnvelope bbox = ReferencedEnvelope.reference(reader.getOriginalEnvelope());
         Polygon polygon = JTS.toGeometry(bbox);
 
@@ -244,8 +225,7 @@ public class FootprintsTransformation extends FunctionImpl
         tb.setName(FOOTPRINTS);
         SimpleFeatureType schema = tb.buildFeatureType();
 
-        SimpleFeature feature =
-                SimpleFeatureBuilder.build(schema, new Object[] {polygon}, FOOTPRINTS + ".1");
+        SimpleFeature feature = SimpleFeatureBuilder.build(schema, new Object[] {polygon}, FOOTPRINTS + ".1");
 
         return DataUtilities.collection(feature);
     }

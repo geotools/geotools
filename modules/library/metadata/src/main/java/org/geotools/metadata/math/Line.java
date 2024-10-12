@@ -157,11 +157,7 @@ public class Line implements Cloneable, Serializable {
         final int N = x.length;
         if (N != y.length) {
             throw new IllegalArgumentException(
-                    "Vector x (length "
-                            + N
-                            + ") and Vector y (length:"
-                            + y.length
-                            + ") are not the same length");
+                    "Vector x (length " + N + ") and Vector y (length:" + y.length + ") are not the same length");
         }
         int count = 0;
         double mean_x = 0;

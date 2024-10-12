@@ -34,16 +34,14 @@ public final class PresentationForm extends CodeList<PresentationForm> {
 
     /** Digital representation of a primarily textual item (can contain illustrations also). */
     @UML(identifier = "documentDigital", obligation = CONDITIONAL, specification = ISO_19115)
-    public static final PresentationForm DOCUMENT_DIGITAL =
-            new PresentationForm("DOCUMENT_DIGITAL");
+    public static final PresentationForm DOCUMENT_DIGITAL = new PresentationForm("DOCUMENT_DIGITAL");
 
     /**
      * Representation of a primarily textual item (can contain illustrations also) on paper,
      * photographic material, or other media.
      */
     @UML(identifier = "documentHardcopy", obligation = CONDITIONAL, specification = ISO_19115)
-    public static final PresentationForm DOCUMENT_HARDCOPY =
-            new PresentationForm("DOCUMENT_HARDCOPY");
+    public static final PresentationForm DOCUMENT_HARDCOPY = new PresentationForm("DOCUMENT_HARDCOPY");
 
     /**
      * Likeness of natural or man-made features, objects, and activities acquired through the
@@ -87,8 +85,7 @@ public final class PresentationForm extends CodeList<PresentationForm> {
 
     /** Vertical cross-section printed on paper, etc. */
     @UML(identifier = "profileHardcopy", obligation = CONDITIONAL, specification = ISO_19115)
-    public static final PresentationForm PROFILE_HARDCOPY =
-            new PresentationForm("PROFILE_HARDCOPY");
+    public static final PresentationForm PROFILE_HARDCOPY = new PresentationForm("PROFILE_HARDCOPY");
 
     /**
      * Digital representation of facts or figures systematically displayed, especially in columns.

@@ -56,8 +56,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
  * @author Oliver Gottwald
  * @author Jody
  */
-public class ListFeatureCollection extends AbstractFeatureCollection
-        implements Collection<SimpleFeature> {
+public class ListFeatureCollection extends AbstractFeatureCollection implements Collection<SimpleFeature> {
     /** wrapped list of features containing the contents */
     protected List<SimpleFeature> list;
 
@@ -147,8 +146,7 @@ public class ListFeatureCollection extends AbstractFeatureCollection
     }
     /** Calculate bounds from features */
     protected ReferencedEnvelope calculateBounds() {
-        ReferencedEnvelope extent =
-                ReferencedEnvelope.create(getSchema().getCoordinateReferenceSystem());
+        ReferencedEnvelope extent = ReferencedEnvelope.create(getSchema().getCoordinateReferenceSystem());
         for (SimpleFeature feature : list) {
             if (feature == null) {
                 continue;

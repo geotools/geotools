@@ -59,22 +59,18 @@ public class AStarIteratorTest {
 
         final AStarIterator iterator = createIterator(ends[0], ends[ends.length - 1]);
 
-        BasicGraphTraversal traversal =
-                new BasicGraphTraversal(builder().getGraph(), walker, iterator);
+        BasicGraphTraversal traversal = new BasicGraphTraversal(builder().getGraph(), walker, iterator);
         traversal.init();
         traversal.traverse();
 
-        GraphVisitor visitor =
-                component -> {
-                    Assert.assertTrue(component.isVisited());
-                    if (component.getID() == 0)
-                        Assert.assertNull(iterator.getParent((Node) component));
-                    else
-                        Assert.assertEquals(
-                                component.getID(),
-                                iterator.getParent((Node) component).getID() + 1);
-                    return 0;
-                };
+        GraphVisitor visitor = component -> {
+            Assert.assertTrue(component.isVisited());
+            if (component.getID() == 0) Assert.assertNull(iterator.getParent((Node) component));
+            else
+                Assert.assertEquals(
+                        component.getID(), iterator.getParent((Node) component).getID() + 1);
+            return 0;
+        };
         builder().getGraph().visitNodes(visitor);
 
         Assert.assertEquals(walker.getCount(), nnodes);
@@ -95,57 +91,49 @@ public class AStarIteratorTest {
         Node[] ends = GraphTestUtil.buildNoBifurcations(builder(), nnodes);
         final int suspend = 50;
 
-        CountingWalker walker =
-                new CountingWalker() {
-                    int m_mode = 0;
+        CountingWalker walker = new CountingWalker() {
+            int m_mode = 0;
 
-                    @Override
-                    public int visit(Graphable element, GraphTraversal traversal) {
-                        super.visit(element, traversal);
-                        if (m_mode == 0) {
-                            if (element.getID() == suspend) {
-                                m_mode++;
-                                return (GraphTraversal.SUSPEND);
-                            }
-                        } else if (m_mode == 1) {
-                            Assert.assertEquals(element.getID(), suspend + 1);
-                            m_mode++;
-                        }
-                        return (GraphTraversal.CONTINUE);
+            @Override
+            public int visit(Graphable element, GraphTraversal traversal) {
+                super.visit(element, traversal);
+                if (m_mode == 0) {
+                    if (element.getID() == suspend) {
+                        m_mode++;
+                        return (GraphTraversal.SUSPEND);
                     }
-                };
+                } else if (m_mode == 1) {
+                    Assert.assertEquals(element.getID(), suspend + 1);
+                    m_mode++;
+                }
+                return (GraphTraversal.CONTINUE);
+            }
+        };
 
         final AStarIterator iterator = createIterator(ends[0], ends[ends.length - 1]);
 
-        BasicGraphTraversal traversal =
-                new BasicGraphTraversal(builder().getGraph(), walker, iterator);
+        BasicGraphTraversal traversal = new BasicGraphTraversal(builder().getGraph(), walker, iterator);
         traversal.init();
         traversal.traverse();
 
-        GraphVisitor visitor =
-                component -> {
-                    if (component.getID() <= suspend) Assert.assertTrue(component.isVisited());
-                    else Assert.assertFalse(component.isVisited());
-                    return 0;
-                };
+        GraphVisitor visitor = component -> {
+            if (component.getID() <= suspend) Assert.assertTrue(component.isVisited());
+            else Assert.assertFalse(component.isVisited());
+            return 0;
+        };
         builder().getGraph().visitNodes(visitor);
         Assert.assertEquals(walker.getCount(), nnodes - suspend + 1);
 
         // resume
         traversal.traverse();
 
-        visitor =
-                component -> {
-                    Assert.assertTrue(component.isVisited());
-                    if (component.getID() == 0)
-                        Assert.assertNull(iterator.getParent((Node) component));
-                    else
-                        Assert.assertEquals(
-                                iterator.getParent((Node) component).getID(),
-                                component.getID() - 1);
+        visitor = component -> {
+            Assert.assertTrue(component.isVisited());
+            if (component.getID() == 0) Assert.assertNull(iterator.getParent((Node) component));
+            else Assert.assertEquals(iterator.getParent((Node) component).getID(), component.getID() - 1);
 
-                    return 0;
-                };
+            return 0;
+        };
         builder().getGraph().visitNodes(visitor);
         Assert.assertEquals(walker.getCount(), nnodes);
     }
@@ -158,10 +146,7 @@ public class AStarIteratorTest {
      * node or depth difference between target node and current node otherwise.
      */
     @Test
-    @SuppressWarnings({
-        "unchecked",
-        "PMD.AvoidUsingHardCodedIP"
-    }) // refusing to clean up this unholy mess
+    @SuppressWarnings({"unchecked", "PMD.AvoidUsingHardCodedIP"}) // refusing to clean up this unholy mess
     public void test_3() {
         int k = 4;
         Object[] obj = GraphTestUtil.buildPerfectBinaryTree(builder(), k);
@@ -201,12 +186,9 @@ public class AStarIteratorTest {
         }
         Factory f = new Factory();
 
-        AStarShortestPathFinder walker =
-                new AStarShortestPathFinder(
-                        builder().getGraph(),
-                        root,
-                        ((Node) map.get("0.1.0.1")),
-                        f.createFunctions(((Node) map.get("0.1.0.1"))));
+        AStarShortestPathFinder walker = new AStarShortestPathFinder(
+                builder().getGraph(), root, ((Node) map.get("0.1.0.1")), f.createFunctions(((Node)
+                        map.get("0.1.0.1"))));
 
         walker.calculate();
         MyVisitor visitor = new MyVisitor();
@@ -249,30 +231,27 @@ public class AStarIteratorTest {
 
         final AStarIterator iterator = createIterator(ends[0], ends[ends.length - 1]);
 
-        BasicGraphTraversal traversal =
-                new BasicGraphTraversal(builder().getGraph(), walker, iterator);
+        BasicGraphTraversal traversal = new BasicGraphTraversal(builder().getGraph(), walker, iterator);
         traversal.init();
         traversal.traverse();
 
-        GraphVisitor visitor =
-                component -> {
-                    Iterator related = iterator.getRelated(component);
-                    int count = 0;
-                    int expectedCount = 2;
-                    if (component.getID() == 0 || component.getID() == nnodes - 1) {
-                        expectedCount = 1;
-                    }
-                    while (related.hasNext()) {
-                        Graphable relatedComponent = (Graphable) related.next();
-                        Assert.assertTrue(
-                                component.getID() == relatedComponent.getID() - 1
-                                        || component.getID() == relatedComponent.getID() + 1);
-                        count++;
-                    }
-                    Assert.assertEquals(expectedCount, count);
+        GraphVisitor visitor = component -> {
+            Iterator related = iterator.getRelated(component);
+            int count = 0;
+            int expectedCount = 2;
+            if (component.getID() == 0 || component.getID() == nnodes - 1) {
+                expectedCount = 1;
+            }
+            while (related.hasNext()) {
+                Graphable relatedComponent = (Graphable) related.next();
+                Assert.assertTrue(component.getID() == relatedComponent.getID() - 1
+                        || component.getID() == relatedComponent.getID() + 1);
+                count++;
+            }
+            Assert.assertEquals(expectedCount, count);
 
-                    return 0;
-                };
+            return 0;
+        };
         builder().getGraph().visitNodes(visitor);
 
         Assert.assertEquals(walker.getCount(), nnodes);
@@ -299,23 +278,22 @@ public class AStarIteratorTest {
         traversal.init();
         traversal.traverse();
 
-        GraphVisitor visitor =
-                component -> {
-                    Iterator related = iterator.getRelated(component);
-                    int count = 0;
-                    int expectedCount = 1;
-                    if (component.getID() == nnodes - 1) {
-                        expectedCount = 0;
-                    }
-                    while (related.hasNext()) {
-                        Graphable relatedComponent = (Graphable) related.next();
-                        Assert.assertEquals(component.getID(), relatedComponent.getID() - 1);
-                        count++;
-                    }
-                    Assert.assertEquals(expectedCount, count);
+        GraphVisitor visitor = component -> {
+            Iterator related = iterator.getRelated(component);
+            int count = 0;
+            int expectedCount = 1;
+            if (component.getID() == nnodes - 1) {
+                expectedCount = 0;
+            }
+            while (related.hasNext()) {
+                Graphable relatedComponent = (Graphable) related.next();
+                Assert.assertEquals(component.getID(), relatedComponent.getID() - 1);
+                count++;
+            }
+            Assert.assertEquals(expectedCount, count);
 
-                    return 0;
-                };
+            return 0;
+        };
         directedBuilder().getGraph().visitNodes(visitor);
 
         Assert.assertEquals(walker.getCount(), nnodes);
@@ -350,19 +328,17 @@ public class AStarIteratorTest {
     }
 
     protected AStarIterator createIterator(Node source, Node target) {
-        return (new AStarIterator(
-                source,
-                new AStarIterator.AStarFunctions(target) {
+        return (new AStarIterator(source, new AStarIterator.AStarFunctions(target) {
 
-                    @Override
-                    public double cost(AStarNode n1, AStarNode n2) {
-                        return 1;
-                    }
+            @Override
+            public double cost(AStarNode n1, AStarNode n2) {
+                return 1;
+            }
 
-                    @Override
-                    public double h(Node n) {
-                        return (getDest().getID() - n.getID());
-                    }
-                }));
+            @Override
+            public double h(Node n) {
+                return (getDest().getID() - n.getID());
+            }
+        }));
     }
 }

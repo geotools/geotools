@@ -46,10 +46,7 @@ final class ColorUtils {
 
     /** Puts back the four color components into a integer representation */
     public static int color(int red, int green, int blue, int alpha) {
-        return ((alpha & 0xFF) << 24)
-                | ((red & 0xFF) << 16)
-                | ((green & 0xFF) << 8)
-                | ((blue & 0xFF) << 0);
+        return ((alpha & 0xFF) << 24) | ((red & 0xFF) << 16) | ((green & 0xFF) << 8) | ((blue & 0xFF) << 0);
     }
 
     /** Bit shifts a color component, loosing the less significant bits */

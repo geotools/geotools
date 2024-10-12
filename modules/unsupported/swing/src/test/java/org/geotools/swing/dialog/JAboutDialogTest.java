@@ -121,23 +121,19 @@ public class JAboutDialogTest extends GraphicsTestBase<DialogFixture, Dialog, Di
         createAndShow(true);
         assertTextDisplayContains(
                 JAboutDialog.Category.ALL,
-                new String[] {
-                    APP_INFO, GeoTools.getEnvironmentInfo(), GeoTools.getGeoToolsJarInfo()
-                });
+                new String[] {APP_INFO, GeoTools.getEnvironmentInfo(), GeoTools.getGeoToolsJarInfo()});
     }
 
     @Test
     public void copyToClipboard() throws Exception {
         createAndShow(true);
 
-        JButtonFixture button =
-                windowFixture.button(
-                        new GenericTypeMatcher<JButton>(JButton.class) {
-                            @Override
-                            protected boolean isMatching(JButton component) {
-                                return "Copy to clipboard".equals(component.getText());
-                            }
-                        });
+        JButtonFixture button = windowFixture.button(new GenericTypeMatcher<JButton>(JButton.class) {
+            @Override
+            protected boolean isMatching(JButton component) {
+                return "Copy to clipboard".equals(component.getText());
+            }
+        });
 
         assertNotNull(button);
 
@@ -155,34 +151,31 @@ public class JAboutDialogTest extends GraphicsTestBase<DialogFixture, Dialog, Di
 
     private void createAndShow(final boolean showAppInfo) {
         this.showAppInfo = showAppInfo;
-        JAboutDialog dialog =
-                GuiActionRunner.execute(
-                        new GuiQuery<JAboutDialog>() {
-                            @Override
-                            protected JAboutDialog executeInEDT() throws Throwable {
-                                JAboutDialog dialog;
-                                if (showAppInfo) {
-                                    dialog = new JAboutDialog(DIALOG_TITLE, APP_INFO);
-                                } else {
-                                    dialog = new JAboutDialog(DIALOG_TITLE);
-                                }
-                                return dialog;
-                            }
-                        });
+        JAboutDialog dialog = GuiActionRunner.execute(new GuiQuery<JAboutDialog>() {
+            @Override
+            protected JAboutDialog executeInEDT() throws Throwable {
+                JAboutDialog dialog;
+                if (showAppInfo) {
+                    dialog = new JAboutDialog(DIALOG_TITLE, APP_INFO);
+                } else {
+                    dialog = new JAboutDialog(DIALOG_TITLE);
+                }
+                return dialog;
+            }
+        });
 
         windowFixture = new DialogFixture(dialog);
         windowFixture.show();
     }
 
     private JTextComponentFixture getDialogTextArea() {
-        return windowFixture.textBox(
-                new GenericTypeMatcher<JTextArea>(JTextArea.class, true) {
+        return windowFixture.textBox(new GenericTypeMatcher<JTextArea>(JTextArea.class, true) {
 
-                    @Override
-                    protected boolean isMatching(JTextArea component) {
-                        return true;
-                    }
-                });
+            @Override
+            protected boolean isMatching(JTextArea component) {
+                return true;
+            }
+        });
     }
 
     private void assertCategories() {
@@ -193,8 +186,7 @@ public class JAboutDialogTest extends GraphicsTestBase<DialogFixture, Dialog, Di
 
         for (JAboutDialog.Category cat : JAboutDialog.Category.values()) {
             boolean b =
-                    listItems.contains(cat.toString())
-                            || (cat == JAboutDialog.Category.APPLICATION && !showAppInfo);
+                    listItems.contains(cat.toString()) || (cat == JAboutDialog.Category.APPLICATION && !showAppInfo);
             assertTrue("List is missing " + cat.toString(), b);
         }
     }

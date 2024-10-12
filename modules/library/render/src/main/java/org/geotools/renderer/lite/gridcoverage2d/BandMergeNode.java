@@ -105,8 +105,7 @@ class BandMergeNode extends BaseCoverageProcessingNode implements CoverageProces
                 3,
                 hints,
                 SimpleInternationalString.wrap("BandMergeNode"),
-                SimpleInternationalString.wrap(
-                        "Node which applies a BandMergeNode following SLD 1.0 spec."));
+                SimpleInternationalString.wrap("Node which applies a BandMergeNode following SLD 1.0 spec."));
     }
 
     @Override
@@ -139,8 +138,7 @@ class BandMergeNode extends BaseCoverageProcessingNode implements CoverageProces
             // //
             if (size != 3 && size != 1) {
                 throw new IllegalArgumentException(
-                        MessageFormat.format(
-                                ErrorKeys.INVALID_NUMBER_OF_SOURCES_$1, Integer.valueOf(size)));
+                        MessageFormat.format(ErrorKeys.INVALID_NUMBER_OF_SOURCES_$1, Integer.valueOf(size)));
             }
 
             // /////////////////////////////////////////////////////////////////////
@@ -162,8 +160,7 @@ class BandMergeNode extends BaseCoverageProcessingNode implements CoverageProces
                 //
                 // //
                 final CoverageProcessingNode currentSourceNode = it.next();
-                final GridCoverage2D currentSourceCoverage =
-                        (GridCoverage2D) currentSourceNode.getOutput();
+                final GridCoverage2D currentSourceCoverage = (GridCoverage2D) currentSourceNode.getOutput();
                 sourceGridCoverages.add(currentSourceCoverage);
                 final GridGeometry2D gg = currentSourceCoverage.getGridGeometry();
                 if (gridGeometry == null) {
@@ -171,28 +168,24 @@ class BandMergeNode extends BaseCoverageProcessingNode implements CoverageProces
                     gridGeometry = gg;
 
                     // color model
-                    final ColorSpace colorSpace =
-                            (size == 1 && hasAlpha)
-                                    ? ColorSpace.getInstance(ColorSpace.CS_GRAY)
-                                    : ColorSpace.getInstance(ColorSpace.CS_LINEAR_RGB);
-                    final int transparency =
-                            hasAlpha ? Transparency.TRANSLUCENT : Transparency.OPAQUE;
-                    final ComponentColorModel cm =
-                            new ComponentColorModel(
-                                    colorSpace,
-                                    hasAlpha,
-                                    false,
-                                    transparency,
-                                    currentSourceCoverage
-                                            .getRenderedImage()
-                                            .getSampleModel()
-                                            .getDataType());
+                    final ColorSpace colorSpace = (size == 1 && hasAlpha)
+                            ? ColorSpace.getInstance(ColorSpace.CS_GRAY)
+                            : ColorSpace.getInstance(ColorSpace.CS_LINEAR_RGB);
+                    final int transparency = hasAlpha ? Transparency.TRANSLUCENT : Transparency.OPAQUE;
+                    final ComponentColorModel cm = new ComponentColorModel(
+                            colorSpace,
+                            hasAlpha,
+                            false,
+                            transparency,
+                            currentSourceCoverage
+                                    .getRenderedImage()
+                                    .getSampleModel()
+                                    .getDataType());
                     layout = new ImageLayout();
                     layout.setColorModel(cm);
                 } else if (!gg.equals(gridGeometry))
                     throw new IllegalArgumentException(
-                            MessageFormat.format(
-                                    ErrorKeys.MUST_SHARE_GRIDGEOMETRY_$1, "BandMerge"));
+                            MessageFormat.format(ErrorKeys.MUST_SHARE_GRIDGEOMETRY_$1, "BandMerge"));
 
                 // //
                 //
@@ -204,8 +197,7 @@ class BandMergeNode extends BaseCoverageProcessingNode implements CoverageProces
                     op = currentSourceCoverage.getRenderedImage();
                     w.setImage(op);
                     w.setROI(CoverageUtilities.getROIProperty(currentSourceCoverage));
-                    NoDataContainer container =
-                            CoverageUtilities.getNoDataProperty(currentSourceCoverage);
+                    NoDataContainer container = CoverageUtilities.getNoDataProperty(currentSourceCoverage);
                     w.setNoData(container != null ? container.getAsRange() : null);
                 } else {
                     w.setRenderingHints(hints);
@@ -222,8 +214,7 @@ class BandMergeNode extends BaseCoverageProcessingNode implements CoverageProces
                     }
 
                     w.setROI(roi);
-                    NoDataContainer container =
-                            CoverageUtilities.getNoDataProperty(currentSourceCoverage);
+                    NoDataContainer container = CoverageUtilities.getNoDataProperty(currentSourceCoverage);
                     w.addBand(
                             currentSourceCoverage.getRenderedImage(),
                             false,
@@ -256,9 +247,8 @@ class BandMergeNode extends BaseCoverageProcessingNode implements CoverageProces
             final GridSampleDimension[] sd =
                     new GridSampleDimension[op.getSampleModel().getNumBands()];
             for (int i = 0; i < sd.length; i++)
-                sd[i] =
-                        new GridSampleDimension(
-                                TypeMap.getColorInterpretation(op.getColorModel(), i).name());
+                sd[i] = new GridSampleDimension(
+                        TypeMap.getColorInterpretation(op.getColorModel(), i).name());
 
             // Defining NoData and ROI properties
             Map<String, Object> properties = new HashMap<>();
@@ -270,12 +260,10 @@ class BandMergeNode extends BaseCoverageProcessingNode implements CoverageProces
                             op,
                             gridGeometry,
                             sd,
-                            sourceGridCoverages.toArray(
-                                    new GridCoverage[sourceGridCoverages.size()]),
+                            sourceGridCoverages.toArray(new GridCoverage[sourceGridCoverages.size()]),
                             properties);
         }
-        throw new IllegalStateException(
-                MessageFormat.format(ErrorKeys.SOURCE_CANT_BE_NULL_$1, "BandMergeNode"));
+        throw new IllegalStateException(MessageFormat.format(ErrorKeys.SOURCE_CANT_BE_NULL_$1, "BandMergeNode"));
     }
 
     /** If specified, the result of the bandMerge will contain the alpha channel. */

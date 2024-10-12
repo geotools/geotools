@@ -168,8 +168,7 @@ public class OperationJAI extends Operation2D {
      * @param operation The JAI operation descriptor.
      * @param descriptor The OGC parameters descriptor.
      */
-    protected OperationJAI(
-            final OperationDescriptor operation, final ParameterDescriptorGroup descriptor) {
+    protected OperationJAI(final OperationDescriptor operation, final ParameterDescriptorGroup descriptor) {
         super(descriptor);
         this.operation = operation;
         Utilities.ensureNonNull("operation", operation);
@@ -197,22 +196,18 @@ public class OperationJAI extends Operation2D {
      * @throws OperationNotFoundException if no JAI descriptor was found for the given name.
      * @since 2.4
      */
-    protected static OperationDescriptor getOperationDescriptor(final String name)
-            throws OperationNotFoundException {
+    protected static OperationDescriptor getOperationDescriptor(final String name) throws OperationNotFoundException {
         final OperationRegistry registry = JAI.getDefaultInstance().getOperationRegistry();
-        OperationDescriptor operation =
-                (OperationDescriptor) registry.getDescriptor(RENDERED_MODE, name);
+        OperationDescriptor operation = (OperationDescriptor) registry.getDescriptor(RENDERED_MODE, name);
         if (operation != null) {
             return operation;
         }
 
-        throw new OperationNotFoundException(
-                MessageFormat.format(ErrorKeys.OPERATION_NOT_FOUND_$1, name));
+        throw new OperationNotFoundException(MessageFormat.format(ErrorKeys.OPERATION_NOT_FOUND_$1, name));
     }
 
     /** Ensures that the specified class is assignable to {@link RenderedImage}. */
-    private static final void ensureRenderedImage(final Class<?> classe)
-            throws IllegalArgumentException {
+    private static final void ensureRenderedImage(final Class<?> classe) throws IllegalArgumentException {
         if (!RenderedImage.class.isAssignableFrom(classe)) {
             // TODO: provide localized message
             throw new IllegalArgumentException(classe.getName());
@@ -325,14 +320,14 @@ public class OperationJAI extends Operation2D {
      * @throws InvalidGridGeometryException if the CRS can't be separated.
      */
     private static CoordinateReferenceSystem getSubCRS(
-            final CoordinateReferenceSystem crs, final int lower, final int upper)
-            throws InvalidGridGeometryException {
+            final CoordinateReferenceSystem crs, final int lower, final int upper) throws InvalidGridGeometryException {
         if (lower == upper) {
             return null;
         }
         final CoordinateReferenceSystem candidate = CRSUtilities.getSubCRS(crs, lower, upper);
         if (candidate == null) {
-            throw new InvalidGridGeometryException("Unsupported CRS: " + crs.getName().getCode());
+            throw new InvalidGridGeometryException(
+                    "Unsupported CRS: " + crs.getName().getCode());
         }
         return candidate;
     }
@@ -341,8 +336,7 @@ public class OperationJAI extends Operation2D {
      * Ensures that the source and target dimensions are the same. This method is for internal use
      * by {@link #resampleToCommonGeometry}.
      */
-    private static void ensureStableDimensions(final DimensionFilter filter)
-            throws InvalidGridGeometryException {
+    private static void ensureStableDimensions(final DimensionFilter filter) throws InvalidGridGeometryException {
         final int[] source = filter.getSourceDimensions();
         Arrays.sort(source);
         final int[] target = filter.getTargetDimensions();
@@ -415,7 +409,8 @@ public class OperationJAI extends Operation2D {
                 crs2D = CRSUtilities.getCRS2D(crs2D);
             } catch (TransformException exception) {
                 // TODO: localize
-                throw new CannotReprojectException("Unsupported CRS: " + crs2D.getName().getCode());
+                throw new CannotReprojectException(
+                        "Unsupported CRS: " + crs2D.getName().getCode());
             }
         if (gridToCrs2D == null) {
             gridToCrs2D = primarySource.getGridGeometry().getGridToCRS2D();
@@ -465,16 +460,14 @@ public class OperationJAI extends Operation2D {
                     targetCRS = components[0];
                 } else
                     try {
-                        targetCRS =
-                                ReferencingFactoryFinder.getCRSFactory(hints)
-                                        .createCompoundCRS(
-                                                Collections.singletonMap(
-                                                        IdentifiedObject.NAME_KEY,
-                                                        crs2D.getName().getCode()),
-                                                components);
+                        targetCRS = ReferencingFactoryFinder.getCRSFactory(hints)
+                                .createCompoundCRS(
+                                        Collections.singletonMap(
+                                                IdentifiedObject.NAME_KEY,
+                                                crs2D.getName().getCode()),
+                                        components);
                     } catch (FactoryException exception) {
-                        throw new CannotReprojectException(
-                                exception.getLocalizedMessage(), exception);
+                        throw new CannotReprojectException(exception.getLocalizedMessage(), exception);
                     }
             }
             /*
@@ -500,8 +493,7 @@ public class OperationJAI extends Operation2D {
                     // TODO: localize
                     throw new InvalidGridGeometryException("Unsupported math transform.");
                 }
-                final MathTransformFactory factory =
-                        ReferencingFactoryFinder.getMathTransformFactory(hints);
+                final MathTransformFactory factory = ReferencingFactoryFinder.getMathTransformFactory(hints);
                 final DimensionFilter filter = new DimensionFilter(factory);
                 toTarget = gridToCrs2D;
                 try {
@@ -553,8 +545,7 @@ public class OperationJAI extends Operation2D {
      * @see #deriveSampleDimension
      * @see JAI#createNS
      */
-    protected GridCoverage2D deriveGridCoverage(
-            final GridCoverage2D[] sources, final Parameters parameters) {
+    protected GridCoverage2D deriveGridCoverage(final GridCoverage2D[] sources, final Parameters parameters) {
         GridCoverage2D primarySource = sources[PRIMARY_SOURCE_INDEX];
         /*
          * Gets the target SampleDimensions. If they are identical to the SampleDimensions of
@@ -588,13 +579,11 @@ public class OperationJAI extends Operation2D {
         ImageLayout layout = (hints != null) ? (ImageLayout) hints.get(JAI.KEY_IMAGE_LAYOUT) : null;
         if (layout == null || !layout.isValid(ImageLayout.COLOR_MODEL_MASK)) {
             if (sampleDims != null && sampleDims.length != 0) {
-                int visibleBand =
-                        CoverageUtilities.getVisibleBand(primarySource.getRenderedImage());
+                int visibleBand = CoverageUtilities.getVisibleBand(primarySource.getRenderedImage());
                 if (visibleBand >= sampleDims.length) {
                     visibleBand = 0;
                 }
-                final ColorModel colors =
-                        sampleDims[visibleBand].getColorModel(visibleBand, sampleDims.length);
+                final ColorModel colors = sampleDims[visibleBand].getColorModel(visibleBand, sampleDims.length);
                 if (colors != null) {
                     if (layout == null) {
                         layout = new ImageLayout();
@@ -912,9 +901,7 @@ public class OperationJAI extends Operation2D {
      * @return A name for the target grid coverage.
      */
     protected InternationalString deriveName(
-            final GridCoverage2D[] sources,
-            final int primarySourceIndex,
-            final Parameters parameters) {
+            final GridCoverage2D[] sources, final int primarySourceIndex, final Parameters parameters) {
         final InternationalString[] names;
         if (primarySourceIndex >= 0) {
             names = new InternationalString[] {sources[primarySourceIndex].getName()};
@@ -979,8 +966,7 @@ public class OperationJAI extends Operation2D {
      * @param hints The rendering hints to be given to JAI.
      * @return The result of JAI operation using the given parameters and hints.
      */
-    protected RenderedImage createRenderedImage(
-            final ParameterBlockJAI parameters, final RenderingHints hints) {
+    protected RenderedImage createRenderedImage(final ParameterBlockJAI parameters, final RenderingHints hints) {
         return getJAI(hints).createNS(operation.getName(), parameters, hints);
     }
 
@@ -1093,8 +1079,7 @@ public class OperationJAI extends Operation2D {
      *     operation
      * @param parameters2 {@link ParameterValueGroup} instance containing input operation parameters
      */
-    protected void handleJAIEXTParams(
-            ParameterBlockJAI parameters, ParameterValueGroup parameters2) {}
+    protected void handleJAIEXTParams(ParameterBlockJAI parameters, ParameterValueGroup parameters2) {}
 
     /**
      * This method can be used for creating a property Map to set to the new coverage generated by
@@ -1186,9 +1171,7 @@ public class OperationJAI extends Operation2D {
      * List.
      */
     protected void extractSources(
-            final ParameterValueGroup parameters,
-            final Collection<GridCoverage2D> sources,
-            final String[] sourceNames)
+            final ParameterValueGroup parameters, final Collection<GridCoverage2D> sources, final String[] sourceNames)
             throws ParameterNotFoundException, InvalidParameterValueException {
         Utilities.ensureNonNull("parameters", parameters);
         Utilities.ensureNonNull("sources", sources);

@@ -188,8 +188,7 @@ public class FeatureTypeMapping {
      *
      * @return list of matching attribute mappings
      */
-    public List<AttributeMapping> getAttributeMappingsByExpression(
-            final Expression sourceExpression) {
+    public List<AttributeMapping> getAttributeMappingsByExpression(final Expression sourceExpression) {
         AttributeMapping attMapping;
         List<AttributeMapping> mappings = new ArrayList<>();
         for (AttributeMapping attributeMapping : attributeMappings) {
@@ -227,8 +226,7 @@ public class FeatureTypeMapping {
      */
     public AttributeMapping getAttributeMapping(final String xpathExpression) {
         AttributeMapping attMapping;
-        StepList stepList =
-                XPath.steps(this.getTargetFeature(), xpathExpression, this.getNamespaces());
+        StepList stepList = XPath.steps(this.getTargetFeature(), xpathExpression, this.getNamespaces());
         for (AttributeMapping attributeMapping : attributeMappings) {
             attMapping = attributeMapping;
             if (stepList.equals(attMapping.getTargetXPath())) {
@@ -295,8 +293,7 @@ public class FeatureTypeMapping {
      * <code>gml:name[1]</code>, <code>gml:name[2]</code> and <code>gml:name[3]</code>, but
      * propertyName is just <code>gml:name</code>, all three mappings apply.
      */
-    public List<Expression> findMappingsFor(
-            final StepList propertyName, boolean includeNestedMappings) {
+    public List<Expression> findMappingsFor(final StepList propertyName, boolean includeNestedMappings) {
         // collect all the mappings for the given property
         List<AttributeMapping> candidates;
 
@@ -311,9 +308,7 @@ public class FeatureTypeMapping {
                 candidates.add(mapping);
             }
         }
-        if (candidates.isEmpty()
-                && propertyName.toString().equals("@gml:id")
-                && getFeatureIdExpression() != null) {
+        if (candidates.isEmpty() && propertyName.toString().equals("@gml:id") && getFeatureIdExpression() != null) {
             Expression idExpression = getFeatureIdExpression();
             candidates.add(new AttributeMapping(idExpression, idExpression, propertyName));
         }
@@ -338,8 +333,7 @@ public class FeatureTypeMapping {
                 }
 
                 candidates = getAttributeMappingsIgnoreIndex(parentPath);
-                expressions =
-                        getClientPropertyExpressions(candidates, clientPropertyName, parentPath);
+                expressions = getClientPropertyExpressions(candidates, clientPropertyName, parentPath);
                 if (expressions.isEmpty()) {
                     // this might be a wrapper mapping for another complex mapping
                     // look for the client properties there
@@ -358,9 +352,7 @@ public class FeatureTypeMapping {
 
     @SuppressWarnings("PMD.UnusedPrivateMethod")
     private List<Expression> getClientPropertyExpressions(
-            final List<AttributeMapping> attributeMappings,
-            final Name clientPropertyName,
-            StepList parentPath) {
+            final List<AttributeMapping> attributeMappings, final Name clientPropertyName, StepList parentPath) {
         List<Expression> clientPropertyExpressions = new ArrayList<>(attributeMappings.size());
 
         AttributeMapping attMapping;
@@ -368,8 +360,7 @@ public class FeatureTypeMapping {
         Expression propertyExpression;
         for (AttributeMapping attributeMapping : attributeMappings) {
             attMapping = attributeMapping;
-            if (attMapping instanceof JoiningNestedAttributeMapping
-                    && !Types.equals(clientPropertyName, XLINK.HREF)) {
+            if (attMapping instanceof JoiningNestedAttributeMapping && !Types.equals(clientPropertyName, XLINK.HREF)) {
                 // if it's joining for simple content feature chaining it has to be empty
                 // so it will be added to the post filter... unless this is feature chaining by
                 // reference
@@ -405,7 +396,8 @@ public class FeatureTypeMapping {
                 && isDenormalised == that.isDenormalised
                 && ((mappingName != null && Objects.equals(mappingName, that.mappingName))
                         || Objects.equals(
-                                getTargetFeature().getName(), that.getTargetFeature().getName()));
+                                getTargetFeature().getName(),
+                                that.getTargetFeature().getName()));
     }
 
     @Override
@@ -425,8 +417,7 @@ public class FeatureTypeMapping {
     }
 
     /** Extracts the source Expressions from a list of {@link AttributeMapping}s */
-    private List<Expression> getExpressions(
-            List<AttributeMapping> attributeMappings, boolean includeNestedMappings) {
+    private List<Expression> getExpressions(List<AttributeMapping> attributeMappings, boolean includeNestedMappings) {
         List<Expression> expressions = new ArrayList<>(attributeMappings.size());
         AttributeMapping mapping;
         Expression sourceExpression;

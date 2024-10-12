@@ -90,7 +90,8 @@ public abstract class JDBCViewOnlineTest extends JDBCTestSupport {
 
     @Test
     public void testReadFeatures() throws Exception {
-        SimpleFeatureCollection fc = dataStore.getFeatureSource(tname(LAKESVIEW)).getFeatures();
+        SimpleFeatureCollection fc =
+                dataStore.getFeatureSource(tname(LAKESVIEW)).getFeatures();
         assertEquals(1, fc.size());
         try (SimpleFeatureIterator fr = fc.features()) {
             assertTrue(fr.hasNext());
@@ -102,7 +103,8 @@ public abstract class JDBCViewOnlineTest extends JDBCTestSupport {
     @Test
     public void testGetBounds() throws Exception {
         // GEOT-2067 Make sure it's possible to compute bounds out of a view
-        ReferencedEnvelope reference = dataStore.getFeatureSource(tname(LAKESVIEW)).getBounds();
+        ReferencedEnvelope reference =
+                dataStore.getFeatureSource(tname(LAKESVIEW)).getBounds();
         assertEquals(12.0, reference.getMinX(), 0.0);
         assertEquals(16.0, reference.getMaxX(), 0.0);
         assertEquals(4.0, reference.getMinY(), 0.0);

@@ -112,13 +112,12 @@ public class Multiply extends BaseMathOperationJAI {
     }
 
     @Override
-    protected void handleJAIEXTParams(
-            ParameterBlockJAI parameters, ParameterValueGroup parameters2) {
+    protected void handleJAIEXTParams(ParameterBlockJAI parameters, ParameterValueGroup parameters2) {
         if (JAIExt.isJAIExtOperation("algebric")) {
             parameters.set(Operator.MULTIPLY, 0);
             @SuppressWarnings("unchecked")
-            Collection<GridCoverage2D> sources =
-                    (Collection<GridCoverage2D>) parameters2.parameter("sources").getValue();
+            Collection<GridCoverage2D> sources = (Collection<GridCoverage2D>)
+                    parameters2.parameter("sources").getValue();
             for (GridCoverage2D source : sources) {
                 handleROINoDataInternal(parameters, source, "algebric", 1, 2);
             }
@@ -127,9 +126,7 @@ public class Multiply extends BaseMathOperationJAI {
 
     @Override
     protected void extractSources(
-            ParameterValueGroup parameters,
-            Collection<GridCoverage2D> sources,
-            String[] sourceNames)
+            ParameterValueGroup parameters, Collection<GridCoverage2D> sources, String[] sourceNames)
             throws ParameterNotFoundException, InvalidParameterValueException {
         try {
             @SuppressWarnings("unchecked")
@@ -153,7 +150,6 @@ public class Multiply extends BaseMathOperationJAI {
             MathTransform gridToCRS,
             GridCoverage2D[] sources,
             Parameters parameters) {
-        return handleROINoDataProperties(
-                null, parameters.parameters, sources[0], "algebric", 1, 2, 3);
+        return handleROINoDataProperties(null, parameters.parameters, sources[0], "algebric", 1, 2, 3);
     }
 }

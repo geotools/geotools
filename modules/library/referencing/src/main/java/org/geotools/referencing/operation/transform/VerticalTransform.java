@@ -54,13 +54,11 @@ public abstract class VerticalTransform extends AbstractMathTransform {
      * @return The value to add in order to get the height above the geoid (in metres).
      * @throws TransformException if the offset can't be computed for the specified coordinates.
      */
-    protected abstract double heightOffset(double longitude, double latitude, double height)
-            throws TransformException;
+    protected abstract double heightOffset(double longitude, double latitude, double height) throws TransformException;
 
     /** Transforms a list of coordinate point ordinal values. */
     @Override
-    public void transform(
-            final float[] srcPts, int srcOff, final float[] dstPts, int dstOff, int numPts)
+    public void transform(final float[] srcPts, int srcOff, final float[] dstPts, int dstOff, int numPts)
             throws TransformException {
         final int step;
         if (srcPts == dstPts && srcOff < dstOff) {
@@ -82,8 +80,7 @@ public abstract class VerticalTransform extends AbstractMathTransform {
 
     /** Transforms a list of coordinate point ordinal values. */
     @Override
-    public void transform(
-            final double[] srcPts, int srcOff, final double[] dstPts, int dstOff, int numPts)
+    public void transform(final double[] srcPts, int srcOff, final double[] dstPts, int dstOff, int numPts)
             throws TransformException {
         final int step;
         if (srcPts == dstPts && srcOff < dstOff) {

@@ -187,8 +187,7 @@ public abstract class BaseFeatureCollection<T extends FeatureType, F extends Fea
 
     @Override
     public void accepts(
-            org.geotools.api.feature.FeatureVisitor visitor,
-            org.geotools.api.util.ProgressListener progress)
+            org.geotools.api.feature.FeatureVisitor visitor, org.geotools.api.util.ProgressListener progress)
             throws IOException {
         DataUtilities.visit(this, visitor, progress);
     }
@@ -224,15 +223,12 @@ public abstract class BaseFeatureCollection<T extends FeatureType, F extends Fea
             // go for the most efficient way if possible, otherwise rely on pure in memory
             // sorting...
             SimpleFeatureCollection simple =
-                    DataUtilities.simple(
-                            (FeatureCollection<SimpleFeatureType, SimpleFeature>) this);
-            return (FeatureCollection<T, F>)
-                    new SortedSimpleFeatureCollection(simple, new SortBy[] {order});
+                    DataUtilities.simple((FeatureCollection<SimpleFeatureType, SimpleFeature>) this);
+            return (FeatureCollection<T, F>) new SortedSimpleFeatureCollection(simple, new SortBy[] {order});
         } else {
             // hmm... we don't even have a basic non simple collection... need to implement one
             // before going here
-            throw new UnsupportedOperationException(
-                    "Cannot sort on complex features at the moment");
+            throw new UnsupportedOperationException("Cannot sort on complex features at the moment");
         }
     }
 

@@ -26,8 +26,7 @@ import org.geotools.xsd.impl.Handler;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
-public class ParameterParserDelegate extends CopyingHandler
-        implements ParserDelegate, ParserDelegate2 {
+public class ParameterParserDelegate extends CopyingHandler implements ParserDelegate, ParserDelegate2 {
 
     static QName Parameter = new QName(WFS.NAMESPACE, "Parameter");
 
@@ -38,8 +37,7 @@ public class ParameterParserDelegate extends CopyingHandler
     }
 
     @Override
-    public boolean canHandle(
-            QName elementName, Attributes attributes, Handler handler, Handler parent) {
+    public boolean canHandle(QName elementName, Attributes attributes, Handler handler, Handler parent) {
         if (Parameter.equals(elementName)) {
             return parent != null && "StoredQuery".equals(parent.getComponent().getName());
         }
@@ -47,8 +45,7 @@ public class ParameterParserDelegate extends CopyingHandler
     }
 
     @Override
-    public void startElement(String uri, String localName, String qName, Attributes attributes)
-            throws SAXException {
+    public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
         if (Parameter.getLocalPart().equals(localName)) {
             result = Wfs20Factory.eINSTANCE.createParameterType();
             result.setName(attributes.getValue("name"));

@@ -94,16 +94,14 @@ public class GridsOvalTest extends TestBase {
             throw new IllegalStateException("Error in test code");
         }
 
-        GridFeatureBuilder builder =
-                new GridFeatureBuilder(createFeatureType(builderCRS)) {
-                    @Override
-                    public void setAttributes(GridElement el, Map<String, Object> attributes) {
-                        throw new UnsupportedOperationException("Should not be called");
-                    }
-                };
+        GridFeatureBuilder builder = new GridFeatureBuilder(createFeatureType(builderCRS)) {
+            @Override
+            public void setAttributes(GridElement el, Map<String, Object> attributes) {
+                throw new UnsupportedOperationException("Should not be called");
+            }
+        };
 
-        Grids.createOvalGrid(
-                new ReferencedEnvelope(150, 151, -33, -34, boundsCRS), sideLen, builder);
+        Grids.createOvalGrid(new ReferencedEnvelope(150, 151, -33, -34, boundsCRS), sideLen, builder);
     }
 
     private void assertGridSizeAndIds(SimpleFeatureSource gridSource) throws Exception {

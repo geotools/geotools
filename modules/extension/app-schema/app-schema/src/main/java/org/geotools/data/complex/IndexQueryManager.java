@@ -76,12 +76,12 @@ public class IndexQueryManager {
                 (int) filterAttributes.stream().filter(attr -> hasIndex(attr)).count();
         // Sort match:
         List<String> sortAttributes = IndexQueryUtils.getAttributesOnSort(query);
-        int sortMatchCount = (int) sortAttributes.stream().filter(attr -> hasIndex(attr)).count();
+        int sortMatchCount =
+                (int) sortAttributes.stream().filter(attr -> hasIndex(attr)).count();
         // Query mode rules:
         if (filterAttributes.size() == filterMatchCount && sortAttributes.size() == sortMatchCount)
             return QueryIndexCoverage.ALL;
-        if (filterMatchCount > 0 && sortAttributes.size() == sortMatchCount)
-            return QueryIndexCoverage.PARTIAL;
+        if (filterMatchCount > 0 && sortAttributes.size() == sortMatchCount) return QueryIndexCoverage.PARTIAL;
         return QueryIndexCoverage.NONE;
     }
 
@@ -135,8 +135,7 @@ public class IndexQueryManager {
             return indexFilter;
         }
 
-        private BinaryLogicOperator createLogicOperator(
-                BinaryLogicOperator originalOperator, List<Filter> filters) {
+        private BinaryLogicOperator createLogicOperator(BinaryLogicOperator originalOperator, List<Filter> filters) {
             if (originalOperator instanceof Or) {
                 return ff.or(filters);
             } else {
@@ -146,22 +145,18 @@ public class IndexQueryManager {
 
         private List<Filter> duplicateFilters(List<Filter> filterList) {
             Filters filtersUtil = new Filters();
-            return filterList.stream()
-                    .map(f -> filtersUtil.duplicate(f))
-                    .collect(Collectors.toList());
+            return filterList.stream().map(f -> filtersUtil.duplicate(f)).collect(Collectors.toList());
         }
 
         public Query getIndexQuery() {
             return indexQuery;
         }
 
-        public Query buildCombinedQuery(
-                FeatureCollection<? extends FeatureType, ? extends Feature> featureCollection) {
-            List<String> ids =
-                    FeatureStreams.toFeatureStream(featureCollection)
-                            .map(Feature::getIdentifier)
-                            .map(FeatureId::getID)
-                            .collect(Collectors.toList());
+        public Query buildCombinedQuery(FeatureCollection<? extends FeatureType, ? extends Feature> featureCollection) {
+            List<String> ids = FeatureStreams.toFeatureStream(featureCollection)
+                    .map(Feature::getIdentifier)
+                    .map(FeatureId::getID)
+                    .collect(Collectors.toList());
             Filter filter1 = buildCombinedFilter(ids);
             Query query1 = new Query(query);
             query1.setFilter(filter1);
@@ -180,8 +175,7 @@ public class IndexQueryManager {
             Filter idsIn = IndexQueryUtils.buildIdInExpression(ids, mapping);
             // build new and/or operator
             IndexCombinedFilterTransformerVisitor visitor =
-                    new IndexCombinedFilterTransformerVisitor(
-                            indexedParentLogicOperator, indexedFilters, idsIn);
+                    new IndexCombinedFilterTransformerVisitor(indexedParentLogicOperator, indexedFilters, idsIn);
             Filter resultFilter = (Filter) query.getFilter().accept(visitor, ff);
             return resultFilter;
         }

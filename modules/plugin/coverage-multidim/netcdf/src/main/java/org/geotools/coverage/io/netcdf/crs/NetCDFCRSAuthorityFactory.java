@@ -64,8 +64,7 @@ public class NetCDFCRSAuthorityFactory extends FactoryUsingWKT implements CRSAut
                 if (url != null) {
                     return url;
                 } else {
-                    LOGGER.log(
-                            Level.SEVERE, "Had troubles converting " + cust_proj_file + " to URL");
+                    LOGGER.log(Level.SEVERE, "Had troubles converting " + cust_proj_file + " to URL");
                 }
             }
         } else {

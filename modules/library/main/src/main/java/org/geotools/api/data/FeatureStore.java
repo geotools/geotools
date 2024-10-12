@@ -57,8 +57,7 @@ import org.geotools.feature.FeatureCollection;
  * @author Chris Holmes, TOPP
  * @version $Id$
  */
-public interface FeatureStore<T extends FeatureType, F extends Feature>
-        extends FeatureSource<T, F> {
+public interface FeatureStore<T extends FeatureType, F extends Feature> extends FeatureSource<T, F> {
     /**
      * Adds all features from the feature collection.
      *
@@ -90,8 +89,7 @@ public interface FeatureStore<T extends FeatureType, F extends Feature>
      *     types do not match the attribute types; if modification is not supported; or if there
      *     errors accessing the data source
      */
-    void modifyFeatures(Name[] attributeNames, Object[] attributeValues, Filter filter)
-            throws IOException;
+    void modifyFeatures(Name[] attributeNames, Object[] attributeValues, Filter filter) throws IOException;
 
     /**
      * Modifies an attribute with the supplied value in all features selected by the given filter.
@@ -102,8 +100,7 @@ public interface FeatureStore<T extends FeatureType, F extends Feature>
      * @throws IOException if modification is not supported; if the value type does not match the
      *     attribute type; or if there errors accessing the data source
      */
-    void modifyFeatures(Name attributeName, Object attributeValue, Filter filter)
-            throws IOException;
+    void modifyFeatures(Name attributeName, Object attributeValue, Filter filter) throws IOException;
 
     /**
      * Deletes any existing features in the data source and then inserts new features provided by

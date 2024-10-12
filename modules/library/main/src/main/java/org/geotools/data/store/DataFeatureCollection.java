@@ -119,7 +119,8 @@ public abstract class DataFeatureCollection implements SimpleFeatureCollection {
     @Override
     public abstract ReferencedEnvelope getBounds();
 
-    public abstract int getCount() throws IOException;;
+    public abstract int getCount() throws IOException;
+    ;
 
     // public abstract SimpleFeatureCollection collection() throws IOException;
 
@@ -222,8 +223,7 @@ public abstract class DataFeatureCollection implements SimpleFeatureCollection {
     protected void closeIterator(Iterator<SimpleFeature> close) throws IOException {
         if (close instanceof FeatureReaderIterator) {
             @SuppressWarnings("PMD.CloseResource")
-            FeatureReaderIterator<SimpleFeature> iterator =
-                    (FeatureReaderIterator<SimpleFeature>) close;
+            FeatureReaderIterator<SimpleFeature> iterator = (FeatureReaderIterator<SimpleFeature>) close;
             iterator.close(); // only needs package visability
         } else if (close instanceof FeatureWriterIterator) {
             FeatureWriterIterator iterator = (FeatureWriterIterator) close;
@@ -243,8 +243,7 @@ public abstract class DataFeatureCollection implements SimpleFeatureCollection {
             return getCount();
         } catch (IOException e) {
             if (LOGGER.isLoggable(Level.FINE))
-                LOGGER.log(
-                        Level.FINE, "IOException while calculating size() of FeatureCollection", e);
+                LOGGER.log(Level.FINE, "IOException while calculating size() of FeatureCollection", e);
             return 0;
         }
     }
@@ -405,8 +404,7 @@ public abstract class DataFeatureCollection implements SimpleFeatureCollection {
 
     @Override
     public void accepts(
-            org.geotools.api.feature.FeatureVisitor visitor,
-            org.geotools.api.util.ProgressListener progress)
+            org.geotools.api.feature.FeatureVisitor visitor, org.geotools.api.util.ProgressListener progress)
             throws IOException {
         DataUtilities.visit(this, visitor, progress);
     }

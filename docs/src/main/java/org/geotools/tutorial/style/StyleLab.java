@@ -149,12 +149,10 @@ public class StyleLab {
         SimpleFeatureType schema = (SimpleFeatureType) featureSource.getSchema();
         Class geomType = schema.getGeometryDescriptor().getType().getBinding();
 
-        if (Polygon.class.isAssignableFrom(geomType)
-                || MultiPolygon.class.isAssignableFrom(geomType)) {
+        if (Polygon.class.isAssignableFrom(geomType) || MultiPolygon.class.isAssignableFrom(geomType)) {
             return createPolygonStyle();
 
-        } else if (LineString.class.isAssignableFrom(geomType)
-                || MultiLineString.class.isAssignableFrom(geomType)) {
+        } else if (LineString.class.isAssignableFrom(geomType) || MultiLineString.class.isAssignableFrom(geomType)) {
             return createLineStyle();
 
         } else {
@@ -168,16 +166,11 @@ public class StyleLab {
     private Style createPolygonStyle() {
 
         // create a partially opaque outline stroke
-        Stroke stroke =
-                styleFactory.createStroke(
-                        filterFactory.literal(Color.BLUE),
-                        filterFactory.literal(1),
-                        filterFactory.literal(0.5));
+        Stroke stroke = styleFactory.createStroke(
+                filterFactory.literal(Color.BLUE), filterFactory.literal(1), filterFactory.literal(0.5));
 
         // create a partial opaque fill
-        Fill fill =
-                styleFactory.createFill(
-                        filterFactory.literal(Color.CYAN), filterFactory.literal(0.5));
+        Fill fill = styleFactory.createFill(filterFactory.literal(Color.CYAN), filterFactory.literal(0.5));
 
         /*
          * Setting the geometryPropertyName arg to null signals that we want to
@@ -196,9 +189,7 @@ public class StyleLab {
 
     /** Create a Style to draw line features as thin blue lines */
     private Style createLineStyle() {
-        Stroke stroke =
-                styleFactory.createStroke(
-                        filterFactory.literal(Color.BLUE), filterFactory.literal(1));
+        Stroke stroke = styleFactory.createStroke(filterFactory.literal(Color.BLUE), filterFactory.literal(1));
 
         /*
          * Setting the geometryPropertyName arg to null signals that we want to
@@ -221,9 +212,7 @@ public class StyleLab {
 
         Mark mark = styleFactory.getCircleMark();
 
-        mark.setStroke(
-                styleFactory.createStroke(
-                        filterFactory.literal(Color.BLUE), filterFactory.literal(1)));
+        mark.setStroke(styleFactory.createStroke(filterFactory.literal(Color.BLUE), filterFactory.literal(1)));
 
         mark.setFill(styleFactory.createFill(filterFactory.literal(Color.CYAN)));
 

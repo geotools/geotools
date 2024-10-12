@@ -62,12 +62,7 @@ public class LineStringGraphGenerator extends BasicLineGraphGenerator {
         }
 
         // parent class expects a line segment
-        Edge e =
-                (Edge)
-                        super.add(
-                                new LineSegment(
-                                        ls.getCoordinateN(0),
-                                        ls.getCoordinateN(ls.getNumPoints() - 1)));
+        Edge e = (Edge) super.add(new LineSegment(ls.getCoordinateN(0), ls.getCoordinateN(ls.getNumPoints() - 1)));
         // check if the LineSegment has been changed
         if (useTolerance()) {
             LineSegment lineSegment = (LineSegment) e.getObject();
@@ -80,8 +75,7 @@ public class LineStringGraphGenerator extends BasicLineGraphGenerator {
             } else if (!ls.getCoordinateN(ls.getNumPoints() - 1).equals(lineSegment.p1)) {
                 nCoordinateList.add(lineSegment.p1);
             }
-            Coordinate[] newCoordinates =
-                    nCoordinateList.toArray(new Coordinate[nCoordinateList.size()]);
+            Coordinate[] newCoordinates = nCoordinateList.toArray(new Coordinate[nCoordinateList.size()]);
             ls = gf.createLineString(newCoordinates);
         }
         // over write object to be the linestring
@@ -104,8 +98,7 @@ public class LineStringGraphGenerator extends BasicLineGraphGenerator {
         LineString ls = (LineString) obj;
 
         // parent ecpexts a line segment
-        return (super.remove(
-                new LineSegment(ls.getCoordinateN(0), ls.getCoordinateN(ls.getNumPoints() - 1))));
+        return (super.remove(new LineSegment(ls.getCoordinateN(0), ls.getCoordinateN(ls.getNumPoints() - 1))));
     }
 
     @Override
@@ -113,8 +106,7 @@ public class LineStringGraphGenerator extends BasicLineGraphGenerator {
         LineString ls = (LineString) obj;
 
         // parent ecpexts a line segment
-        return (super.get(
-                new LineSegment(ls.getCoordinateN(0), ls.getCoordinateN(ls.getNumPoints() - 1))));
+        return (super.get(new LineSegment(ls.getCoordinateN(0), ls.getCoordinateN(ls.getNumPoints() - 1))));
     }
 
     @Override

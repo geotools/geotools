@@ -37,16 +37,14 @@ public final class EvaluationMethodType extends CodeList<EvaluationMethodType> {
      * dataset, where all data required is internal to the dataset being evaluated.
      */
     @UML(identifier = "directInternal", obligation = CONDITIONAL, specification = ISO_19115)
-    public static final EvaluationMethodType DIRECT_INTERNAL =
-            new EvaluationMethodType("DIRECT_INTERNAL");
+    public static final EvaluationMethodType DIRECT_INTERNAL = new EvaluationMethodType("DIRECT_INTERNAL");
 
     /**
      * Method of evaluating the quality of a dataset based on inspection of items within the
      * dataset, where reference data external to the dataset being evaluated is required.
      */
     @UML(identifier = "directExternal", obligation = CONDITIONAL, specification = ISO_19115)
-    public static final EvaluationMethodType DIRECT_EXTERNAL =
-            new EvaluationMethodType("DIRECT_EXTERNAL");
+    public static final EvaluationMethodType DIRECT_EXTERNAL = new EvaluationMethodType("DIRECT_EXTERNAL");
 
     /** Method of evaluating the quality of a dataset based on external knowledge. */
     @UML(identifier = "indirect", obligation = CONDITIONAL, specification = ISO_19115)

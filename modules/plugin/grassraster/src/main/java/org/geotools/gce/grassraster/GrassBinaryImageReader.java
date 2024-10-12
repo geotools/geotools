@@ -175,8 +175,7 @@ public class GrassBinaryImageReader extends ImageReader {
     }
 
     @Override
-    public synchronized Iterator<ImageTypeSpecifier> getImageTypes(final int imageIndex)
-            throws IOException {
+    public synchronized Iterator<ImageTypeSpecifier> getImageTypes(final int imageIndex) throws IOException {
         ensureOpen();
         csm = rasterHandler.getSampleModel();
         ccmdl = PlanarImage.createColorModel(csm);
@@ -295,8 +294,7 @@ public class GrassBinaryImageReader extends ImageReader {
     public Raster readRaster(final int imageIndex, ImageReadParam param) throws IOException {
         ensureOpen();
         try {
-            return rasterHandler.readRaster(
-                    param, useSubSamplingAsRequestedRowcols, castDoubleToFloating, monitor);
+            return rasterHandler.readRaster(param, useSubSamplingAsRequestedRowcols, castDoubleToFloating, monitor);
         } catch (DataFormatException e) {
             throw new IOException(e.getLocalizedMessage());
         }

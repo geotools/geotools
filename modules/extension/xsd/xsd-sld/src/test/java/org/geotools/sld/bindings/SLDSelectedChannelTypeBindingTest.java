@@ -63,8 +63,7 @@ public class SLDSelectedChannelTypeBindingTest extends SLDTestSupport {
         name.appendChild(expression);
         Element envName = document.createElementNS(OGC.NAMESPACE, OGC.Literal.getLocalPart());
         envName.appendChild(document.createTextNode(b1));
-        Element envDefaultValue =
-                document.createElementNS(OGC.NAMESPACE, OGC.Literal.getLocalPart());
+        Element envDefaultValue = document.createElementNS(OGC.NAMESPACE, OGC.Literal.getLocalPart());
         envDefaultValue.appendChild(document.createTextNode("1"));
         expression.appendChild(envName);
         expression.appendChild(envDefaultValue);

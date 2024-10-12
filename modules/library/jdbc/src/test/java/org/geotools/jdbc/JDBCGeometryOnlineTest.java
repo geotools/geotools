@@ -105,8 +105,7 @@ public abstract class JDBCGeometryOnlineTest extends JDBCTestSupport {
         sfb.set(aname("name"), "the name");
         sfb.set(aname("geom"), reader.read("MultiSurface (((1 0, 2 0, 2 1, 1 1, 1 0)))"));
 
-        ContentFeatureStore store =
-                (ContentFeatureStore) dataStore.getFeatureSource(featureTypeName);
+        ContentFeatureStore store = (ContentFeatureStore) dataStore.getFeatureSource(featureTypeName);
         store.addFeatures(DataUtilities.collection(sfb.buildFeature("1")));
     }
 

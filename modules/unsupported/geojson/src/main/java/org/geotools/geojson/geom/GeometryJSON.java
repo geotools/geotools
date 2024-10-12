@@ -537,8 +537,7 @@ public class GeometryJSON {
      * @param gcol The geometry collection.
      * @param output The output stream.
      */
-    public void writeGeometryCollection(GeometryCollection gcol, OutputStream output)
-            throws IOException {
+    public void writeGeometryCollection(GeometryCollection gcol, OutputStream output) throws IOException {
         writeGeometryCollection(gcol, (Object) output);
     }
 
@@ -629,14 +628,10 @@ public class GeometryJSON {
 
     List<CoordinateSequenceEncoder> toList(Polygon poly) {
         ArrayList<CoordinateSequenceEncoder> list = new ArrayList<>();
-        list.add(
-                new CoordinateSequenceEncoder(
-                        poly.getExteriorRing().getCoordinateSequence(), scale));
+        list.add(new CoordinateSequenceEncoder(poly.getExteriorRing().getCoordinateSequence(), scale));
 
         for (int i = 0; i < poly.getNumInteriorRing(); i++) {
-            list.add(
-                    new CoordinateSequenceEncoder(
-                            poly.getInteriorRingN(i).getCoordinateSequence(), scale));
+            list.add(new CoordinateSequenceEncoder(poly.getInteriorRingN(i).getCoordinateSequence(), scale));
         }
 
         return list;
@@ -649,9 +644,7 @@ public class GeometryJSON {
             if (g instanceof Polygon) {
                 list.add(toList((Polygon) g));
             } else if (g instanceof LineString) {
-                list.add(
-                        new CoordinateSequenceEncoder(
-                                ((LineString) g).getCoordinateSequence(), scale));
+                list.add(new CoordinateSequenceEncoder(((LineString) g).getCoordinateSequence(), scale));
             } else if (g instanceof Point) {
                 list.add(new CoordinateSequenceEncoder(((Point) g).getCoordinateSequence(), scale));
             }

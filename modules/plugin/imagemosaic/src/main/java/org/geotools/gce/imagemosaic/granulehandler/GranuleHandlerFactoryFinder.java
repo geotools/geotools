@@ -44,9 +44,7 @@ public class GranuleHandlerFactoryFinder {
      */
     private static FactoryRegistry getServiceRegistry() {
         if (registry == null) {
-            registry =
-                    new FactoryCreator(
-                            Arrays.asList(new Class<?>[] {GranuleHandlerFactorySPI.class}));
+            registry = new FactoryCreator(Arrays.asList(new Class<?>[] {GranuleHandlerFactorySPI.class}));
         }
         return registry;
     }

@@ -79,18 +79,19 @@ public class STACClientPlanetaryOnlineTest extends AbstractSTACClientOnlineTest 
         assertThat(names, CoreMatchers.hasItems("landsat-8-c2-l2", "sentinel-2-l2a"));
 
         // check basics of one collection
-        Collection s2 =
-                collections.stream()
-                        .filter(c -> "sentinel-2-l2a".equals(c.getId()))
-                        .findFirst()
-                        .get();
+        Collection s2 = collections.stream()
+                .filter(c -> "sentinel-2-l2a".equals(c.getId()))
+                .findFirst()
+                .get();
         assertThat(
                 s2.getDescription(),
                 Matchers.startsWith(
                         "The [Sentinel-2](https://sentinel.esa.int/web/sentinel/missions/sentinel-2) program"));
         assertEquals("Sentinel-2 Level-2A", s2.getTitle());
         CollectionExtent extent = s2.getExtent();
-        assertEquals(Arrays.asList(-180d, -90d, 180d, 90d), extent.getSpatial().getBbox().get(0));
+        assertEquals(
+                Arrays.asList(-180d, -90d, 180d, 90d),
+                extent.getSpatial().getBbox().get(0));
         List<Date> interval = extent.getTemporal().getInterval().get(0);
         assertNotNull(interval.get(0));
         assertNull(interval.get(1));
@@ -113,21 +114,17 @@ public class STACClientPlanetaryOnlineTest extends AbstractSTACClientOnlineTest 
         assertThat(feature.getAttribute("datetime"), instanceOf(Date.class));
 
         // test the extra properties outside the properties node
-        Map<String, Object> top =
-                (Map<String, Object>) feature.getUserData().get(GeoJSONReader.TOP_LEVEL_ATTRIBUTES);
+        Map<String, Object> top = (Map<String, Object>) feature.getUserData().get(GeoJSONReader.TOP_LEVEL_ATTRIBUTES);
 
         // check the links
         ArrayNode links = (ArrayNode) top.get("links");
         assertNotNull(links);
-        String license =
-                StreamSupport.stream(links.spliterator(), false)
-                        .filter(l -> "license".equals(l.get("rel").textValue()))
-                        .map(l -> l.get("href").textValue())
-                        .findFirst()
-                        .orElseThrow(() -> new AssertionError("Could not find the license rel"));
-        assertEquals(
-                "https://sentinel.esa.int/documents/247904/690755/Sentinel_Data_Legal_Notice",
-                license);
+        String license = StreamSupport.stream(links.spliterator(), false)
+                .filter(l -> "license".equals(l.get("rel").textValue()))
+                .map(l -> l.get("href").textValue())
+                .findFirst()
+                .orElseThrow(() -> new AssertionError("Could not find the license rel"));
+        assertEquals("https://sentinel.esa.int/documents/247904/690755/Sentinel_Data_Legal_Notice", license);
 
         // check  assets
         ObjectNode assets = (ObjectNode) top.get("assets");
@@ -160,8 +157,7 @@ public class STACClientPlanetaryOnlineTest extends AbstractSTACClientOnlineTest 
 
         // test the extra properties outside the properties node
         Map<String, JsonNode> top =
-                (Map<String, JsonNode>)
-                        feature.getUserData().get(GeoJSONReader.TOP_LEVEL_ATTRIBUTES);
+                (Map<String, JsonNode>) feature.getUserData().get(GeoJSONReader.TOP_LEVEL_ATTRIBUTES);
 
         // check  assets
         ObjectNode assets = (ObjectNode) top.get("assets");

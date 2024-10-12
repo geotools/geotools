@@ -32,9 +32,8 @@ public class LineFillerTest {
 
     @Test
     public void testSlash() throws Exception {
-        ParallelLinesFiller filler =
-                ParallelLinesFiller.fromStipple(
-                        new ShapeMarkFactory().getShape(null, ff.literal("shape://slash"), null));
+        ParallelLinesFiller filler = ParallelLinesFiller.fromStipple(
+                new ShapeMarkFactory().getShape(null, ff.literal("shape://slash"), null));
         assertNotNull(filler);
         assertEquals(1, filler.lines.size());
         assertEquals(1, filler.xStep, 0d);
@@ -43,9 +42,8 @@ public class LineFillerTest {
 
     @Test
     public void testTimes() throws Exception {
-        ParallelLinesFiller filler =
-                ParallelLinesFiller.fromStipple(
-                        new ShapeMarkFactory().getShape(null, ff.literal("shape://times"), null));
+        ParallelLinesFiller filler = ParallelLinesFiller.fromStipple(
+                new ShapeMarkFactory().getShape(null, ff.literal("shape://times"), null));
         assertNotNull(filler);
         assertEquals(2, filler.lines.size());
         assertEquals(1, filler.xStep, 0d);
@@ -54,9 +52,8 @@ public class LineFillerTest {
 
     @Test
     public void testPlus() throws Exception {
-        ParallelLinesFiller filler =
-                ParallelLinesFiller.fromStipple(
-                        new ShapeMarkFactory().getShape(null, ff.literal("shape://plus"), null));
+        ParallelLinesFiller filler = ParallelLinesFiller.fromStipple(
+                new ShapeMarkFactory().getShape(null, ff.literal("shape://plus"), null));
         assertNotNull(filler);
         assertEquals(2, filler.lines.size());
         assertEquals(1, filler.xStep, 0d);
@@ -65,17 +62,15 @@ public class LineFillerTest {
 
     @Test
     public void testOArrow() throws Exception {
-        ParallelLinesFiller filler =
-                ParallelLinesFiller.fromStipple(
-                        new ShapeMarkFactory().getShape(null, ff.literal("shape://oarrow"), null));
+        ParallelLinesFiller filler = ParallelLinesFiller.fromStipple(
+                new ShapeMarkFactory().getShape(null, ff.literal("shape://oarrow"), null));
         assertNull(filler);
     }
 
     @Test
     public void testCircle() throws Exception {
         ParallelLinesFiller filler =
-                ParallelLinesFiller.fromStipple(
-                        new WellKnownMarkFactory().getShape(null, ff.literal("circle"), null));
+                ParallelLinesFiller.fromStipple(new WellKnownMarkFactory().getShape(null, ff.literal("circle"), null));
         assertNull(filler);
     }
 }

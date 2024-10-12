@@ -39,16 +39,15 @@ public class S3GeoTiffReaderTest {
     @Test
     @Ignore
     public void testGeotiffReader() throws IOException, URISyntaxException {
-        S3GeoTiffReader reader =
-                new S3GeoTiffReader(
-                        new S3ImageInputStreamImpl("s3://geoserver-ec-s3/salinity.tif"));
+        S3GeoTiffReader reader = new S3GeoTiffReader(new S3ImageInputStreamImpl("s3://geoserver-ec-s3/salinity.tif"));
         GridCoverage2D coverage2D = reader.read(new GeneralParameterValue[0]);
         File expectedFile = getSalinityTestFile();
         ImageAssert.assertEquals(expectedFile, coverage2D.getRenderedImage(), 15);
     }
 
     private File getSalinityTestFile() throws URISyntaxException {
-        return new File(this.getClass().getClassLoader().getResource("salinity.tif").toURI());
+        return new File(
+                this.getClass().getClassLoader().getResource("salinity.tif").toURI());
     }
 
     /**
@@ -59,8 +58,7 @@ public class S3GeoTiffReaderTest {
     @Test
     @Ignore
     public void testBufferingOutputStream() throws IOException, URISyntaxException {
-        try (S3ImageInputStreamImpl in =
-                new S3ImageInputStreamImpl("s3://geoserver-ec-s3/salinity.tif")) {
+        try (S3ImageInputStreamImpl in = new S3ImageInputStreamImpl("s3://geoserver-ec-s3/salinity.tif")) {
             try (FileImageInputStream fileIn = new FileImageInputStream(getSalinityTestFile())) {
                 long readRemaining = fileIn.length();
                 while (readRemaining > 0) {
@@ -91,16 +89,14 @@ public class S3GeoTiffReaderTest {
     @Test
     @Ignore
     public void testImageInputStream() throws IOException, URISyntaxException {
-        try (S3ImageInputStreamImpl in =
-                        new S3ImageInputStreamImpl("s3://geoserver-ec-s3/salinity.tif");
+        try (S3ImageInputStreamImpl in = new S3ImageInputStreamImpl("s3://geoserver-ec-s3/salinity.tif");
                 FileImageInputStream fileIn = new FileImageInputStream(getSalinityTestFile())) {
             int fileResult;
             int s3Result;
             while ((fileResult = fileIn.read()) > -1) {
                 s3Result = in.read();
                 assertEquals(
-                        "S3 result must equal file result at stream position: "
-                                + (fileIn.getStreamPosition() - 1),
+                        "S3 result must equal file result at stream position: " + (fileIn.getStreamPosition() - 1),
                         fileResult,
                         s3Result);
             }
@@ -110,11 +106,9 @@ public class S3GeoTiffReaderTest {
     @Test
     @Ignore
     public void testAnonymousS3() throws IOException {
-        S3GeoTiffReader reader =
-                new S3GeoTiffReader(
-                        new S3ImageInputStreamImpl(
-                                "s3://landsat-pds/L8/001/002/LC80010022016230LGN00/LC80010022016230LGN00_B1.TIF"
-                                        + "?useAnon=true&awsRegion=US_WEST_2"));
+        S3GeoTiffReader reader = new S3GeoTiffReader(new S3ImageInputStreamImpl(
+                "s3://landsat-pds/L8/001/002/LC80010022016230LGN00/LC80010022016230LGN00_B1.TIF"
+                        + "?useAnon=true&awsRegion=US_WEST_2"));
         reader.read(new GeneralParameterValue[0]);
     }
 }

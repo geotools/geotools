@@ -84,8 +84,7 @@ final class PropertyMap extends AbstractMap<String, Object> {
      * @throws ClassCastException if the given value is not of the expected type.
      */
     @Override
-    public Object put(final String key, final Object value)
-            throws IllegalArgumentException, ClassCastException {
+    public Object put(final String key, final Object value) throws IllegalArgumentException, ClassCastException {
         return accessor.set(accessor.requiredIndexOf(key), metadata, value);
     }
 
@@ -149,8 +148,7 @@ final class PropertyMap extends AbstractMap<String, Object> {
 
         /** Compares the specified entry with this one for equality. */
         public boolean equals(final Map.Entry<?, ?> entry) {
-            return Utilities.equals(getKey(), entry.getKey())
-                    && Utilities.equals(getValue(), entry.getValue());
+            return Utilities.equals(getKey(), entry.getKey()) && Utilities.equals(getValue(), entry.getValue());
         }
 
         /**

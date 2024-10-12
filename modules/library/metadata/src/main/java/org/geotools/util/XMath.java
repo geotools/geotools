@@ -144,8 +144,7 @@ public final class XMath {
      * @return One of previous or next representable number as a {@code double}.
      * @throws IllegalArgumentException if {@code type} is not one of supported types.
      */
-    public static double rool(final Class type, double value, int amount)
-            throws IllegalArgumentException {
+    public static double rool(final Class type, double value, int amount) throws IllegalArgumentException {
         if (Double.class.equals(type)) {
             if (amount < 0) {
                 do {
@@ -174,7 +173,6 @@ public final class XMath {
         if (Classes.isInteger(type)) {
             return value + amount;
         }
-        throw new IllegalArgumentException(
-                MessageFormat.format(ErrorKeys.UNSUPPORTED_DATA_TYPE_$1, type));
+        throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.UNSUPPORTED_DATA_TYPE_$1, type));
     }
 }

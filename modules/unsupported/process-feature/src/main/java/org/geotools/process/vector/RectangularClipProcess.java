@@ -34,17 +34,14 @@ import org.geotools.referencing.CRS;
  *
  * @author Andrea Aime - OpenGeo
  */
-@DescribeProcess(
-        title = "Rectangular Clip",
-        description = "Clips (crops) features to the specified rectangular extent")
+@DescribeProcess(title = "Rectangular Clip", description = "Clips (crops) features to the specified rectangular extent")
 public class RectangularClipProcess implements VectorProcess {
 
     @DescribeResult(name = "result", description = "Clipped feature collection")
     public SimpleFeatureCollection execute(
             @DescribeParameter(name = "features", description = "Input feature collection")
                     SimpleFeatureCollection features,
-            @DescribeParameter(name = "clip", description = "Bounds of clipping rectangle")
-                    ReferencedEnvelope clip,
+            @DescribeParameter(name = "clip", description = "Bounds of clipping rectangle") ReferencedEnvelope clip,
             @DescribeParameter(
                             name = "preserveZ",
                             min = 0,

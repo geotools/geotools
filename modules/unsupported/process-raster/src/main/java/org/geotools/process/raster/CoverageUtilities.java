@@ -95,9 +95,7 @@ public class CoverageUtilities {
         Geometry rasterSpaceGeometry;
         try {
             rasterSpaceGeometry = JTS.transform(roi, new AffineTransform2D(mt2d.createInverse()));
-        } catch (MismatchedDimensionException
-                | NoninvertibleTransformException
-                | TransformException e) {
+        } catch (MismatchedDimensionException | NoninvertibleTransformException | TransformException e) {
             throw new ProcessException(e);
         }
         // System.out.println(rasterSpaceGeometry);
@@ -191,11 +189,8 @@ public class CoverageUtilities {
     }
 
     public static RangeLookupTable getRangeLookupTable(
-            final List<Range> classificationRanges,
-            final int[] outputPixelValues,
-            final Number noDataValue) {
-        return getRangeLookupTable(
-                classificationRanges, outputPixelValues, noDataValue, noDataValue.getClass());
+            final List<Range> classificationRanges, final int[] outputPixelValues, final Number noDataValue) {
+        return getRangeLookupTable(classificationRanges, outputPixelValues, noDataValue, noDataValue.getClass());
     }
 
     @SuppressWarnings("unchecked")
@@ -206,8 +201,7 @@ public class CoverageUtilities {
             final Class<? extends Number> clazz) {
         final RangeLookupTable.Builder rltBuilder = new RangeLookupTable.Builder();
         final int size = classificationRanges.size();
-        final boolean useCustomOutputPixelValues =
-                outputPixelValues != null && outputPixelValues.length == size;
+        final boolean useCustomOutputPixelValues = outputPixelValues != null && outputPixelValues.length == size;
 
         Class<? extends Number> widestClass = noDataValue.getClass();
 
@@ -225,9 +219,7 @@ public class CoverageUtilities {
         }
 
         // Add the largest range that contains the no data value
-        rltBuilder.add(
-                new Range(getClassMinimum(widestClass), true, getClassMaximum(widestClass), true),
-                noDataValue);
+        rltBuilder.add(new Range(getClassMinimum(widestClass), true, getClassMaximum(widestClass), true), noDataValue);
 
         return rltBuilder.build();
     }
@@ -241,11 +233,9 @@ public class CoverageUtilities {
         final it.geosolutions.jaiext.rlookup.RangeLookupTable.Builder rltBuilder =
                 new it.geosolutions.jaiext.rlookup.RangeLookupTable.Builder();
         final int size = classificationRanges.size();
-        final boolean useCustomOutputPixelValues =
-                outputPixelValues != null && outputPixelValues.length == size;
+        final boolean useCustomOutputPixelValues = outputPixelValues != null && outputPixelValues.length == size;
 
-        Class<? extends Number> noDataClass =
-                it.geosolutions.jaiext.range.Range.DataType.classFromType(transferType);
+        Class<? extends Number> noDataClass = it.geosolutions.jaiext.range.Range.DataType.classFromType(transferType);
 
         Class<? extends Number> widestClass = noDataClass;
         for (int i = 0; i < size; i++) {
@@ -255,29 +245,26 @@ public class CoverageUtilities {
             if (widestClass != rangeClass) {
                 widestClass = ClassChanger.getWidestClass(widestClass, rangeClass);
             }
-            int rangeType =
-                    it.geosolutions.jaiext.range.Range.DataType.dataTypeFromClass(rangeClass);
+            int rangeType = it.geosolutions.jaiext.range.Range.DataType.dataTypeFromClass(rangeClass);
 
             final int reference = useCustomOutputPixelValues ? outputPixelValues[i] : i + 1;
-            it.geosolutions.jaiext.range.Range rangeJaiext =
-                    RangeFactory.convert(
-                            RangeFactory.create(
-                                    range.getMin().doubleValue(),
-                                    range.isMinIncluded(),
-                                    range.getMax().doubleValue(),
-                                    range.isMaxIncluded()),
-                            rangeType);
+            it.geosolutions.jaiext.range.Range rangeJaiext = RangeFactory.convert(
+                    RangeFactory.create(
+                            range.getMin().doubleValue(),
+                            range.isMinIncluded(),
+                            range.getMax().doubleValue(),
+                            range.isMaxIncluded()),
+                    rangeType);
             rltBuilder.add(rangeJaiext, convert(reference, noDataClass));
         }
 
         // Add the largest range that contains the no data value
         int rangeType = it.geosolutions.jaiext.range.Range.DataType.dataTypeFromClass(widestClass);
-        it.geosolutions.jaiext.range.Range rangeJaiext =
-                RangeFactory.convert(
-                        RangeFactory.create(
-                                getClassMinimum(widestClass).doubleValue(),
-                                getClassMaximum(widestClass).doubleValue()),
-                        rangeType);
+        it.geosolutions.jaiext.range.Range rangeJaiext = RangeFactory.convert(
+                RangeFactory.create(
+                        getClassMinimum(widestClass).doubleValue(),
+                        getClassMaximum(widestClass).doubleValue()),
+                rangeType);
         rltBuilder.add(rangeJaiext, noDataValue);
 
         return rltBuilder.build();
@@ -300,8 +287,7 @@ public class CoverageUtilities {
             return Byte.MIN_VALUE;
         }
 
-        throw new UnsupportedOperationException(
-                "Class " + numberClass + " can't be used in a value Range");
+        throw new UnsupportedOperationException("Class " + numberClass + " can't be used in a value Range");
     }
 
     private static Number getClassMaximum(Class<? extends Number> numberClass) {
@@ -321,8 +307,7 @@ public class CoverageUtilities {
             return Byte.MAX_VALUE;
         }
 
-        throw new UnsupportedOperationException(
-                "Class " + numberClass + " can't be used in a value Range");
+        throw new UnsupportedOperationException("Class " + numberClass + " can't be used in a value Range");
     }
 
     public static Number convert(Number val, Class<? extends Number> type) {
@@ -354,8 +339,7 @@ public class CoverageUtilities {
             }
             return Short.valueOf(val.shortValue());
         } else {
-            throw new UnsupportedOperationException(
-                    "Class " + type + " can't be used in a value Range");
+            throw new UnsupportedOperationException("Class " + type + " can't be used in a value Range");
         }
     }
 
@@ -366,8 +350,7 @@ public class CoverageUtilities {
      * @return the {@link HashMap map} of parameters. ( {@link #NORTH} and the other static vars can
      *     be used to retrieve them.
      */
-    public static HashMap<String, Double> getRegionParamsFromGridCoverage(
-            GridCoverage2D gridCoverage) {
+    public static HashMap<String, Double> getRegionParamsFromGridCoverage(GridCoverage2D gridCoverage) {
         HashMap<String, Double> envelopeParams = new HashMap<>();
 
         Bounds envelope = gridCoverage.getEnvelope();

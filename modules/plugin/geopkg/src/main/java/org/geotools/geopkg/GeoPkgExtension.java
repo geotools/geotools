@@ -80,8 +80,7 @@ public class GeoPkgExtension {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
             Association that = (Association) o;
-            return Objects.equals(tableName, that.tableName)
-                    && Objects.equals(columnName, that.columnName);
+            return Objects.equals(tableName, that.tableName) && Objects.equals(columnName, that.columnName);
         }
 
         @Override
@@ -146,10 +145,7 @@ public class GeoPkgExtension {
     }
 
     protected boolean isRegistered(Connection cx) throws SQLException {
-        String sql =
-                format(
-                        "SELECT * " + " FROM %s" + " WHERE extension_name = ? LIMIT 1",
-                        GeoPackage.EXTENSIONS);
+        String sql = format("SELECT * " + " FROM %s" + " WHERE extension_name = ? LIMIT 1", GeoPackage.EXTENSIONS);
 
         try (PreparedStatement ps = cx.prepareStatement(sql)) {
             ps.setString(1, name);
@@ -166,12 +162,9 @@ public class GeoPkgExtension {
     public List<Association> getAssociations() throws IOException {
         try {
             try (Connection cx = getConnection()) {
-                String sql =
-                        format(
-                                "SELECT table_name, column_name "
-                                        + " FROM %s"
-                                        + " WHERE extension_name = ?",
-                                GeoPackage.EXTENSIONS);
+                String sql = format(
+                        "SELECT table_name, column_name " + " FROM %s" + " WHERE extension_name = ?",
+                        GeoPackage.EXTENSIONS);
 
                 try (PreparedStatement ps = cx.prepareStatement(sql)) {
                     ps.setString(1, name);

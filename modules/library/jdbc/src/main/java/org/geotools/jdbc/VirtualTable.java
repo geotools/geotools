@@ -54,8 +54,7 @@ import org.locationtech.jts.geom.Geometry;
  */
 public class VirtualTable implements Serializable {
 
-    private static final Hints.Key KEEP_WHERE_CLAUSE_PLACE_HOLDER_KEY =
-            new Hints.Key(Boolean.class);
+    private static final Hints.Key KEEP_WHERE_CLAUSE_PLACE_HOLDER_KEY = new Hints.Key(Boolean.class);
 
     public static String WHERE_CLAUSE_PLACE_HOLDER = ":where_clause:";
     public static int WHERE_CLAUSE_PLACE_HOLDER_LENGTH = 14;
@@ -88,8 +87,7 @@ public class VirtualTable implements Serializable {
      */
     public static Hints setKeepWhereClausePlaceHolderHint(Query query) {
         Filter filter = query.getFilter();
-        return setKeepWhereClausePlaceHolderHint(
-                query.getHints(), filter != null && filter != Filter.INCLUDE);
+        return setKeepWhereClausePlaceHolderHint(query.getHints(), filter != null && filter != Filter.INCLUDE);
     }
 
     /**
@@ -101,8 +99,7 @@ public class VirtualTable implements Serializable {
      * @return a query hints map that will contain an entry specifying if the the where clause place
      *     holder should be keep or not
      */
-    public static Hints setKeepWhereClausePlaceHolderHint(
-            Hints hints, boolean keepWhereClausePlaceHolder) {
+    public static Hints setKeepWhereClausePlaceHolderHint(Hints hints, boolean keepWhereClausePlaceHolder) {
         if (hints == null) {
             // create the hints map
             hints = new Hints();
@@ -192,10 +189,9 @@ public class VirtualTable implements Serializable {
 
         // grab the parameter values
         @SuppressWarnings("unchecked")
-        Map<String, String> values =
-                Optional.ofNullable(hints)
-                        .map(h -> (Map<String, String>) hints.get(Hints.VIRTUAL_TABLE_PARAMETERS))
-                        .orElse(Collections.emptyMap());
+        Map<String, String> values = Optional.ofNullable(hints)
+                .map(h -> (Map<String, String>) hints.get(Hints.VIRTUAL_TABLE_PARAMETERS))
+                .orElse(Collections.emptyMap());
 
         // perform the expansion, checking for validity and applying default values as needed
         for (VirtualTableParameter param : parameters.values()) {
@@ -219,8 +215,7 @@ public class VirtualTable implements Serializable {
                     } catch (IllegalArgumentException e) {
                         // fully log the exception, but only rethrow a more generic description as
                         // the message could be exposed to attackers
-                        LOGGER.log(
-                                Level.SEVERE, "Invalid value for parameter " + param.getName(), e);
+                        LOGGER.log(Level.SEVERE, "Invalid value for parameter " + param.getName(), e);
                         throw new SQLException("Invalid value for parameter " + param.getName());
                     }
                 }
@@ -236,8 +231,7 @@ public class VirtualTable implements Serializable {
      * Adds geometry metadata to the virtual table. This is important to get the datastore working,
      * often that is not the case if the right native srid is not in place
      */
-    public void addGeometryMetadatata(
-            String geometry, Class<? extends Geometry> binding, int nativeSrid) {
+    public void addGeometryMetadatata(String geometry, Class<? extends Geometry> binding, int nativeSrid) {
         geometryTypes.put(geometry, binding);
         nativeSrids.put(geometry, nativeSrid);
     }
@@ -388,8 +382,7 @@ public class VirtualTable implements Serializable {
         }
         if (whereClauseIndex != sql.lastIndexOf(WHERE_CLAUSE_PLACE_HOLDER)) {
             // only a single where clause place holder is supported
-            throw new RuntimeException(
-                    String.format("SQL contains multiple where clause placeholders: %s.", sql));
+            throw new RuntimeException(String.format("SQL contains multiple where clause placeholders: %s.", sql));
         }
         // remove the where clause place holder
         return sql.replace(WHERE_CLAUSE_PLACE_HOLDER, "");

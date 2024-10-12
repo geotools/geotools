@@ -201,11 +201,10 @@ public class GeometryCollector {
         } else {
             coordinates += g.getNumPoints();
             if (maxCoordinates > 0 && coordinates > maxCoordinates) {
-                throw new IllegalStateException(
-                        "Max number of collected ordinates has been exceeded. Current count is "
-                                + coordinates
-                                + ", max count is "
-                                + maxCoordinates);
+                throw new IllegalStateException("Max number of collected ordinates has been exceeded. Current count is "
+                        + coordinates
+                        + ", max count is "
+                        + maxCoordinates);
             }
 
             // apply the geometry factory if possible (this ensures the proper coordinate sequence

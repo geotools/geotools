@@ -144,8 +144,7 @@ public class MeteosatSG extends MapProjection {
      * @param y The latitude of the coordinate, in <strong>radians</strong>.
      */
     @Override
-    protected Point2D transformNormalized(double x, double y, Point2D ptDst)
-            throws ProjectionException {
+    protected Point2D transformNormalized(double x, double y, Point2D ptDst) throws ProjectionException {
 
         /* x - lon, y -lat */
 
@@ -191,10 +190,7 @@ public class MeteosatSG extends MapProjection {
         /* If the dot product is positive the point is visible otherwise it */
         /* is invisible. */
 
-        double dotprod =
-                r1 * (rl * cos_c_lat * cos_x_SUB_LON)
-                        - r2 * r2
-                        - r3 * r3 * (pow((R_EQ / R_POL), 2));
+        double dotprod = r1 * (rl * cos_c_lat * cos_x_SUB_LON) - r2 * r2 - r3 * r3 * (pow((R_EQ / R_POL), 2));
 
         if (dotprod <= 0) {
             /*
@@ -249,8 +245,7 @@ public class MeteosatSG extends MapProjection {
      * "normalized" pixels) and stores the result in {@code ptDst}.
      */
     @Override
-    protected Point2D inverseTransformNormalized(double x, double y, Point2D ptDst)
-            throws ProjectionException {
+    protected Point2D inverseTransformNormalized(double x, double y, Point2D ptDst) throws ProjectionException {
 
         // x- column, y -row
         double s1 = 0.0, s2 = 0.0, s3 = 0.0, sn = 0.0;
@@ -286,9 +281,7 @@ public class MeteosatSG extends MapProjection {
         /* located in space, otherwise all is fine and the pixel is located on the */
         /* Earth surface. */
 
-        double sa =
-                pow(SAT_HEIGHT * cos_x1 * cos_y1, 2)
-                        - (cos_y1 * cos_y1 + 1.006803 * sin_y1 * sin_y1) * 1737121856.;
+        double sa = pow(SAT_HEIGHT * cos_x1 * cos_y1, 2) - (cos_y1 * cos_y1 + 1.006803 * sin_y1 * sin_y1) * 1737121856.;
 
         /* produce @TODO error values */
         if (sa <= 0.0) {
@@ -312,10 +305,8 @@ public class MeteosatSG extends MapProjection {
         /* now calculate the rest of the formulas using equations on */
         /* page 25, Ref. [1] */
 
-        double sd =
-                sqrt(
-                        pow((SAT_HEIGHT * cos_x1 * cos_y1), 2)
-                                - (cos_y1 * cos_y1 + 1.006803 * sin_y1 * sin_y1) * 1737121856.);
+        double sd = sqrt(
+                pow((SAT_HEIGHT * cos_x1 * cos_y1), 2) - (cos_y1 * cos_y1 + 1.006803 * sin_y1 * sin_y1) * 1737121856.);
         sn = (SAT_HEIGHT * cos_x1 * cos_y1 - sd) / (cos_y1 * cos_y1 + 1.006803 * sin_y1 * sin_y1);
 
         s1 = SAT_HEIGHT - sn * cos_x1 * cos_y1;
@@ -345,8 +336,7 @@ public class MeteosatSG extends MapProjection {
          * Relaxed tolerance - pixel resolution of sub-satellite point is
          * 3 kilometers.
          */
-        final double delta =
-                abs(longitude - centralMeridian) / 2 + abs(latitude - latitudeOfOrigin);
+        final double delta = abs(longitude - centralMeridian) / 2 + abs(latitude - latitudeOfOrigin);
         if (delta > 40) {
             // When far from the valid area, use a larger tolerance.
             return 3;
@@ -385,20 +375,19 @@ public class MeteosatSG extends MapProjection {
         private static final long serialVersionUID = -2722451724278085168L;
 
         /** The parameters group. */
-        static final ParameterDescriptorGroup PARAMETERS =
-                createDescriptorGroup(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.AUTO, "MeteosatSG"),
-                        },
-                        new ParameterDescriptor[] {
-                            SEMI_MAJOR,
-                            SEMI_MINOR,
-                            CENTRAL_MERIDIAN,
-                            LATITUDE_OF_ORIGIN,
-                            SCALE_FACTOR,
-                            FALSE_EASTING,
-                            FALSE_NORTHING
-                        });
+        static final ParameterDescriptorGroup PARAMETERS = createDescriptorGroup(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.AUTO, "MeteosatSG"),
+                },
+                new ParameterDescriptor[] {
+                    SEMI_MAJOR,
+                    SEMI_MINOR,
+                    CENTRAL_MERIDIAN,
+                    LATITUDE_OF_ORIGIN,
+                    SCALE_FACTOR,
+                    FALSE_EASTING,
+                    FALSE_NORTHING
+                });
 
         /** Constructs a new provider. */
         public Provider() {

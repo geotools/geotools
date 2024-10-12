@@ -107,8 +107,7 @@ public final class AuthorityCodes extends AbstractSet<String> implements Seriali
      * @param type The type to query.
      * @param factory The factory originator.
      */
-    public AuthorityCodes(
-            final TableInfo table, final Class<?> type, final DirectEpsgFactory factory) {
+    public AuthorityCodes(final TableInfo table, final Class<?> type, final DirectEpsgFactory factory) {
         this.factory = factory;
         final StringBuilder buffer = new StringBuilder("SELECT ");
         buffer.append(table.codeColumn);
@@ -147,8 +146,7 @@ public final class AuthorityCodes extends AbstractSet<String> implements Seriali
     }
 
     @SuppressWarnings("PMD.CloseResource")
-    protected PreparedStatement validateStatement(PreparedStatement stmt, String sql)
-            throws SQLException {
+    protected PreparedStatement validateStatement(PreparedStatement stmt, String sql) throws SQLException {
         Connection conn = null;
         if (stmt != null) {
             try {
@@ -346,8 +344,7 @@ public final class AuthorityCodes extends AbstractSet<String> implements Seriali
     }
 
     /** Invoked when an exception occured. This method just log a warning. */
-    static void unexpectedException(
-            final Class<?> classe, final String method, final SQLException exception) {
+    static void unexpectedException(final Class<?> classe, final String method, final SQLException exception) {
         Logging.unexpectedException(classe, method, exception);
     }
 

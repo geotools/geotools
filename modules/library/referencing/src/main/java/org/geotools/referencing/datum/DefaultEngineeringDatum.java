@@ -47,8 +47,7 @@ public class DefaultEngineeringDatum extends AbstractDatum implements Engineerin
      * @see org.geotools.referencing.crs.DefaultEngineeringCRS#CARTESIAN_2D
      * @see org.geotools.referencing.crs.DefaultEngineeringCRS#CARTESIAN_3D
      */
-    public static final DefaultEngineeringDatum UNKNOWN =
-            new DefaultEngineeringDatum(name(VocabularyKeys.UNKNOWN));
+    public static final DefaultEngineeringDatum UNKNOWN = new DefaultEngineeringDatum(name(VocabularyKeys.UNKNOWN));
 
     /**
      * Constructs a new datum with the same values than the specified one. This copy constructor

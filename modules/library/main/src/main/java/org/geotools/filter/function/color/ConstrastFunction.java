@@ -33,14 +33,13 @@ import org.geotools.filter.capability.FunctionNameImpl;
  */
 public class ConstrastFunction extends FunctionImpl {
 
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "contrast",
-                    parameter("result", Color.class),
-                    parameter("reference", Color.class),
-                    parameter("color1", Color.class, 0, 1),
-                    parameter("color2", Color.class, 0, 1),
-                    parameter("threshold", Double.class, 0, 1));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "contrast",
+            parameter("result", Color.class),
+            parameter("reference", Color.class),
+            parameter("color1", Color.class, 0, 1),
+            parameter("color2", Color.class, 0, 1),
+            parameter("threshold", Double.class, 0, 1));
 
     public ConstrastFunction() {
         this.functionName = NAME;
@@ -94,8 +93,7 @@ public class ConstrastFunction extends FunctionImpl {
         List<org.geotools.api.filter.expression.Expression> params = getParameters();
         if (params != null) {
             org.geotools.api.filter.expression.Expression exp;
-            for (Iterator<org.geotools.api.filter.expression.Expression> it = params.iterator();
-                    it.hasNext(); ) {
+            for (Iterator<org.geotools.api.filter.expression.Expression> it = params.iterator(); it.hasNext(); ) {
                 exp = it.next();
                 sb.append("[");
                 sb.append(exp);

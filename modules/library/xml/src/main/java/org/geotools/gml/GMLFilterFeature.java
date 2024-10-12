@@ -46,8 +46,7 @@ public class GMLFilterFeature extends XMLFilterImpl implements GMLHandlerJTS {
     // Static Globals to handle some expected elements
 
     /** The logger for the GML module. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(GMLFilterFeature.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(GMLFilterFeature.class);
 
     /** GML namespace string. */
 
@@ -149,8 +148,7 @@ public class GMLFilterFeature extends XMLFilterImpl implements GMLHandlerJTS {
      * @task HACK:The method for determining if something is a feature or not is too crude.
      */
     @Override
-    public void startElement(String namespaceURI, String localName, String qName, Attributes atts)
-            throws SAXException {
+    public void startElement(String namespaceURI, String localName, String qName, Attributes atts) throws SAXException {
         characters.setLength(0);
 
         if (localName.endsWith("Collection")) {
@@ -261,8 +259,7 @@ public class GMLFilterFeature extends XMLFilterImpl implements GMLHandlerJTS {
      * @throws SAXException Parsing error occurred while reading coordinates.
      */
     @Override
-    public void endElement(String namespaceURI, String localName, String qName)
-            throws SAXException {
+    public void endElement(String namespaceURI, String localName, String qName) throws SAXException {
         handleCharacters();
         if (isFeatureMember(localName)) {
             SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();

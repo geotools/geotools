@@ -29,11 +29,7 @@ import org.geotools.gce.imagemosaic.RasterManager;
 public class ReprojectingSubmosaicProducerFactory implements SubmosaicProducerFactory {
     @Override
     public List<SubmosaicProducer> createProducers(
-            RasterLayerRequest request,
-            RasterManager rasterManager,
-            RasterLayerResponse response,
-            boolean dryRun) {
-        return Collections.singletonList(
-                new ReprojectingSubmosaicProducer(request, response, rasterManager, dryRun));
+            RasterLayerRequest request, RasterManager rasterManager, RasterLayerResponse response, boolean dryRun) {
+        return Collections.singletonList(new ReprojectingSubmosaicProducer(request, response, rasterManager, dryRun));
     }
 }

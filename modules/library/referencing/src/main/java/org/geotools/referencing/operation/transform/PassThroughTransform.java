@@ -79,22 +79,14 @@ public class PassThroughTransform extends AbstractMathTransform implements Seria
      *     dimTarget-numTrailingOrdinates} exclusive.
      */
     protected PassThroughTransform(
-            final int firstAffectedOrdinate,
-            final MathTransform subTransform,
-            final int numTrailingOrdinates) {
+            final int firstAffectedOrdinate, final MathTransform subTransform, final int numTrailingOrdinates) {
         if (firstAffectedOrdinate < 0) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(
-                            ErrorKeys.ILLEGAL_ARGUMENT_$2,
-                            "firstAffectedOrdinate",
-                            firstAffectedOrdinate));
+            throw new IllegalArgumentException(MessageFormat.format(
+                    ErrorKeys.ILLEGAL_ARGUMENT_$2, "firstAffectedOrdinate", firstAffectedOrdinate));
         }
         if (numTrailingOrdinates < 0) {
             throw new IllegalArgumentException(
-                    MessageFormat.format(
-                            ErrorKeys.ILLEGAL_ARGUMENT_$2,
-                            "numTrailingOrdinates",
-                            numTrailingOrdinates));
+                    MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "numTrailingOrdinates", numTrailingOrdinates));
         }
         if (subTransform instanceof PassThroughTransform) {
             final PassThroughTransform passThrough = (PassThroughTransform) subTransform;
@@ -127,22 +119,14 @@ public class PassThroughTransform extends AbstractMathTransform implements Seria
      *     </pre>
      */
     public static MathTransform create(
-            final int firstAffectedOrdinate,
-            final MathTransform subTransform,
-            final int numTrailingOrdinates) {
+            final int firstAffectedOrdinate, final MathTransform subTransform, final int numTrailingOrdinates) {
         if (firstAffectedOrdinate < 0) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(
-                            ErrorKeys.ILLEGAL_ARGUMENT_$2,
-                            "firstAffectedOrdinate",
-                            firstAffectedOrdinate));
+            throw new IllegalArgumentException(MessageFormat.format(
+                    ErrorKeys.ILLEGAL_ARGUMENT_$2, "firstAffectedOrdinate", firstAffectedOrdinate));
         }
         if (numTrailingOrdinates < 0) {
             throw new IllegalArgumentException(
-                    MessageFormat.format(
-                            ErrorKeys.ILLEGAL_ARGUMENT_$2,
-                            "numTrailingOrdinates",
-                            numTrailingOrdinates));
+                    MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "numTrailingOrdinates", numTrailingOrdinates));
         }
         if (firstAffectedOrdinate == 0 && numTrailingOrdinates == 0) {
             return subTransform;
@@ -153,8 +137,7 @@ public class PassThroughTransform extends AbstractMathTransform implements Seria
         if (subTransform.isIdentity()) {
             final int dimension = subTransform.getSourceDimensions();
             if (dimension == subTransform.getTargetDimensions()) {
-                return IdentityTransform.create(
-                        firstAffectedOrdinate + dimension + numTrailingOrdinates);
+                return IdentityTransform.create(firstAffectedOrdinate + dimension + numTrailingOrdinates);
             }
         }
         /*
@@ -164,9 +147,7 @@ public class PassThroughTransform extends AbstractMathTransform implements Seria
          */
         if (subTransform instanceof LinearTransform) {
             GeneralMatrix matrix = toGMatrix(((LinearTransform) subTransform).getMatrix());
-            matrix =
-                    PassThroughTransform.expand(
-                            matrix, firstAffectedOrdinate, numTrailingOrdinates, 1);
+            matrix = PassThroughTransform.expand(matrix, firstAffectedOrdinate, numTrailingOrdinates, 1);
             return ProjectiveTransform.create(matrix);
         }
         /*
@@ -221,8 +202,7 @@ public class PassThroughTransform extends AbstractMathTransform implements Seria
 
     /** Transforms a list of coordinate point ordinal values. */
     @Override
-    public void transform(
-            final float[] srcPts, int srcOff, final float[] dstPts, int dstOff, int numPts)
+    public void transform(final float[] srcPts, int srcOff, final float[] dstPts, int dstOff, int numPts)
             throws TransformException {
         final int subDimSource = subTransform.getSourceDimensions();
         final int subDimTarget = subTransform.getTargetDimensions();
@@ -238,18 +218,8 @@ public class PassThroughTransform extends AbstractMathTransform implements Seria
         }
         while (--numPts >= 0) {
             System.arraycopy(srcPts, srcOff, dstPts, dstOff, firstAffectedOrdinate);
-            subTransform.transform(
-                    srcPts,
-                    srcOff += firstAffectedOrdinate,
-                    dstPts,
-                    dstOff += firstAffectedOrdinate,
-                    1);
-            System.arraycopy(
-                    srcPts,
-                    srcOff += subDimSource,
-                    dstPts,
-                    dstOff += subDimTarget,
-                    numTrailingOrdinates);
+            subTransform.transform(srcPts, srcOff += firstAffectedOrdinate, dstPts, dstOff += firstAffectedOrdinate, 1);
+            System.arraycopy(srcPts, srcOff += subDimSource, dstPts, dstOff += subDimTarget, numTrailingOrdinates);
             srcOff += srcStep;
             dstOff += dstStep;
         }
@@ -257,8 +227,7 @@ public class PassThroughTransform extends AbstractMathTransform implements Seria
 
     /** Transforms a list of coordinate point ordinal values. */
     @Override
-    public void transform(
-            final double[] srcPts, int srcOff, final double[] dstPts, int dstOff, int numPts)
+    public void transform(final double[] srcPts, int srcOff, final double[] dstPts, int dstOff, int numPts)
             throws TransformException {
         final int subDimSource = subTransform.getSourceDimensions();
         final int subDimTarget = subTransform.getTargetDimensions();
@@ -274,18 +243,8 @@ public class PassThroughTransform extends AbstractMathTransform implements Seria
         }
         while (--numPts >= 0) {
             System.arraycopy(srcPts, srcOff, dstPts, dstOff, firstAffectedOrdinate);
-            subTransform.transform(
-                    srcPts,
-                    srcOff += firstAffectedOrdinate,
-                    dstPts,
-                    dstOff += firstAffectedOrdinate,
-                    1);
-            System.arraycopy(
-                    srcPts,
-                    srcOff += subDimSource,
-                    dstPts,
-                    dstOff += subDimTarget,
-                    numTrailingOrdinates);
+            subTransform.transform(srcPts, srcOff += firstAffectedOrdinate, dstPts, dstOff += firstAffectedOrdinate, 1);
+            System.arraycopy(srcPts, srcOff += subDimSource, dstPts, dstOff += subDimTarget, numTrailingOrdinates);
             srcOff += srcStep;
             dstOff += dstStep;
         }
@@ -299,21 +258,13 @@ public class PassThroughTransform extends AbstractMathTransform implements Seria
         final int pointDim = point.getDimension();
         if (pointDim != transDim + nSkipped) {
             throw new MismatchedDimensionException(
-                    MessageFormat.format(
-                            ErrorKeys.MISMATCHED_DIMENSION_$3,
-                            "point",
-                            pointDim,
-                            transDim + nSkipped));
+                    MessageFormat.format(ErrorKeys.MISMATCHED_DIMENSION_$3, "point", pointDim, transDim + nSkipped));
         }
         final GeneralPosition subPoint = new GeneralPosition(transDim);
         for (int i = 0; i < transDim; i++) {
             subPoint.ordinates[i] = point.getOrdinate(i + firstAffectedOrdinate);
         }
-        return expand(
-                toGMatrix(subTransform.derivative(subPoint)),
-                firstAffectedOrdinate,
-                numTrailingOrdinates,
-                0);
+        return expand(toGMatrix(subTransform.derivative(subPoint)), firstAffectedOrdinate, numTrailingOrdinates, 0);
     }
 
     /**
@@ -335,8 +286,7 @@ public class PassThroughTransform extends AbstractMathTransform implements Seria
         final int nSkipped = firstAffectedOrdinate + numTrailingOrdinates;
         final int numRow = subMatrix.getNumRow() - affine;
         final int numCol = subMatrix.getNumCol() - affine;
-        final GeneralMatrix matrix =
-                new GeneralMatrix(numRow + nSkipped + affine, numCol + nSkipped + affine);
+        final GeneralMatrix matrix = new GeneralMatrix(numRow + nSkipped + affine, numCol + nSkipped + affine);
         matrix.setZero();
 
         //  Set UL part to 1:   [ 1  0             ]
@@ -352,8 +302,7 @@ public class PassThroughTransform extends AbstractMathTransform implements Seria
         //                      [ 0  0  ?  ?  ?  0 ]
         //                      [ 0  0  ?  ?  ?  0 ]
         //                      [                  ]
-        subMatrix.copySubMatrix(
-                0, 0, numRow, numCol, firstAffectedOrdinate, firstAffectedOrdinate, matrix);
+        subMatrix.copySubMatrix(0, 0, numRow, numCol, firstAffectedOrdinate, firstAffectedOrdinate, matrix);
 
         //  Set LR part to 1:   [ 1  0  0  0  0  0 ]
         //                      [ 0  1  0  0  0  0 ]
@@ -367,14 +316,11 @@ public class PassThroughTransform extends AbstractMathTransform implements Seria
         }
         if (affine != 0) {
             // Copy the translation terms in the last column.
-            subMatrix.copySubMatrix(
-                    0, numCol, numRow, affine, firstAffectedOrdinate, numCol + nSkipped, matrix);
+            subMatrix.copySubMatrix(0, numCol, numRow, affine, firstAffectedOrdinate, numCol + nSkipped, matrix);
             // Copy the last row as a safety, but it should contains only 0.
-            subMatrix.copySubMatrix(
-                    numRow, 0, affine, numCol, numRow + nSkipped, firstAffectedOrdinate, matrix);
+            subMatrix.copySubMatrix(numRow, 0, affine, numCol, numRow + nSkipped, firstAffectedOrdinate, matrix);
             // Copy the lower right corner, which should contains only 1.
-            subMatrix.copySubMatrix(
-                    numRow, numCol, affine, affine, numRow + nSkipped, numCol + nSkipped, matrix);
+            subMatrix.copySubMatrix(numRow, numCol, affine, affine, numRow + nSkipped, numCol + nSkipped, matrix);
         }
         return matrix;
     }
@@ -383,9 +329,7 @@ public class PassThroughTransform extends AbstractMathTransform implements Seria
     @Override
     public synchronized MathTransform inverse() throws NoninvertibleTransformException {
         if (inverse == null) {
-            inverse =
-                    new PassThroughTransform(
-                            firstAffectedOrdinate, subTransform.inverse(), numTrailingOrdinates);
+            inverse = new PassThroughTransform(firstAffectedOrdinate, subTransform.inverse(), numTrailingOrdinates);
             inverse.inverse = this;
         }
         return inverse;

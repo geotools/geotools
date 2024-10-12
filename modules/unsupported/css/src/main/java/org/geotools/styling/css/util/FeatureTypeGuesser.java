@@ -41,17 +41,15 @@ public class FeatureTypeGuesser {
     public void addRule(CssRule rule) {
         // apply duck typing on the selector
         if (rule.getSelector() != null) {
-            rule.getSelector()
-                    .accept(
-                            new AbstractSelectorVisitor() {
-                                @Override
-                                public Object visit(Data data) {
-                                    if (data.filter != null) {
-                                        data.filter.accept(new FilterTypeVisitor(aggregator), null);
-                                    }
-                                    return null;
-                                }
-                            });
+            rule.getSelector().accept(new AbstractSelectorVisitor() {
+                @Override
+                public Object visit(Data data) {
+                    if (data.filter != null) {
+                        data.filter.accept(new FilterTypeVisitor(aggregator), null);
+                    }
+                    return null;
+                }
+            });
         }
 
         // maybe we could apply duck typing to the

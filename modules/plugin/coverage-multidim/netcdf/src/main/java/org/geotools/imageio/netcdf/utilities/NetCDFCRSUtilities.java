@@ -64,8 +64,7 @@ import ucar.nc2.dataset.VariableDS;
 /** Utility class to build {@link CoordinateReferenceSystem} objects. */
 public class NetCDFCRSUtilities {
 
-    private static final java.util.logging.Logger LOGGER =
-            Logger.getLogger(NetCDFCRSUtilities.class.toString());
+    private static final java.util.logging.Logger LOGGER = Logger.getLogger(NetCDFCRSUtilities.class.toString());
 
     public static final ReferencingFactoryContainer FACTORY_CONTAINER =
             ReferencingFactoryContainer.instance(GeoTools.getDefaultHints());
@@ -125,8 +124,7 @@ public class NetCDFCRSUtilities {
     /**
      * this flag states if an automatic conversion from km to m should happen with axis/coordinates
      */
-    public static final String CONVERT_AXIS_KM_KEY =
-            "org.geotools.coverage.io.netcdf.convertAxis.km";
+    public static final String CONVERT_AXIS_KM_KEY = "org.geotools.coverage.io.netcdf.convertAxis.km";
 
     private static boolean convertAxisKm;
 
@@ -233,8 +231,7 @@ public class NetCDFCRSUtilities {
 
                 String v_crsName = "Unknown";
                 String v_datumType = null;
-                String v_datumName =
-                        new Identification("Mean Sea Level", null, null, "EPSG:5100").getName();
+                String v_datumName = new Identification("Mean Sea Level", null, null, "EPSG:5100").getName();
 
                 if (axisType == AxisType.RadialAzimuth
                         || axisType == AxisType.GeoZ
@@ -242,14 +239,10 @@ public class NetCDFCRSUtilities {
                 else if (axisType == AxisType.Height) {
                     if (!zAxis.getShortName().equalsIgnoreCase("height")) {
                         v_datumType = "depth";
-                        v_crsName =
-                                new Identification("mean sea level depth", null, null, "EPSG:5715")
-                                        .getName();
+                        v_crsName = new Identification("mean sea level depth", null, null, "EPSG:5715").getName();
                     } else {
                         v_datumType = "geoidal";
-                        v_crsName =
-                                new Identification("mean sea level height", null, null, "EPSG:5714")
-                                        .getName();
+                        v_crsName = new Identification("mean sea level height", null, null, "EPSG:5714").getName();
                     }
                 } else if (axisType == AxisType.Pressure) {
                     v_datumType = "barometric";
@@ -272,7 +265,8 @@ public class NetCDFCRSUtilities {
                     }
                     final int offset = units.lastIndexOf('_');
                     if (offset >= 0) {
-                        final String unitsDirection = units.substring(offset + 1).trim();
+                        final String unitsDirection =
+                                units.substring(offset + 1).trim();
                         final String opposite = OPPOSITES.get(axisType);
                         if (unitsDirection.equalsIgnoreCase(opposite)) {
                             // TODO WARNING: INCONSISTENT AXIS ORIENTATION
@@ -284,33 +278,23 @@ public class NetCDFCRSUtilities {
                     }
                 }
                 final Map<String, String> csMap = Collections.singletonMap("name", "vertical_CS");
-                VerticalCS verticalCS =
-                        NetCDFCRSUtilities.FACTORY_CONTAINER
-                                .getCSFactory()
-                                .createVerticalCS(
-                                        csMap,
-                                        getAxis(
-                                                zAxis.getShortName(),
-                                                getDirection(direction),
-                                                units));
+                VerticalCS verticalCS = NetCDFCRSUtilities.FACTORY_CONTAINER
+                        .getCSFactory()
+                        .createVerticalCS(csMap, getAxis(zAxis.getShortName(), getDirection(direction), units));
 
                 // Creating the Vertical Datum
                 final Map<String, String> datumMap = Collections.singletonMap("name", v_datumName);
-                final VerticalDatum verticalDatum =
-                        NetCDFCRSUtilities.FACTORY_CONTAINER
-                                .getDatumFactory()
-                                .createVerticalDatum(
-                                        datumMap, VerticalDatumType.valueOf(v_datumType));
+                final VerticalDatum verticalDatum = NetCDFCRSUtilities.FACTORY_CONTAINER
+                        .getDatumFactory()
+                        .createVerticalDatum(datumMap, VerticalDatumType.valueOf(v_datumType));
 
                 final Map<String, String> crsMap = Collections.singletonMap("name", v_crsName);
-                verticalCRS =
-                        NetCDFCRSUtilities.FACTORY_CONTAINER
-                                .getCRSFactory()
-                                .createVerticalCRS(crsMap, verticalDatum, verticalCS);
+                verticalCRS = NetCDFCRSUtilities.FACTORY_CONTAINER
+                        .getCRSFactory()
+                        .createVerticalCRS(crsMap, verticalDatum, verticalCS);
             }
         } catch (FactoryException e) {
-            if (LOGGER.isLoggable(Level.FINE))
-                LOGGER.log(Level.FINE, "Unable to parse vertical CRS", e);
+            if (LOGGER.isLoggable(Level.FINE)) LOGGER.log(Level.FINE, "Unable to parse vertical CRS", e);
             verticalCRS = null;
         }
         return verticalCRS;
@@ -339,7 +323,8 @@ public class NetCDFCRSUtilities {
                     }
                     final int offset = units.lastIndexOf('_');
                     if (offset >= 0) {
-                        final String unitsDirection = units.substring(offset + 1).trim();
+                        final String unitsDirection =
+                                units.substring(offset + 1).trim();
                         final String opposite = OPPOSITES.get(type);
                         if (unitsDirection.equalsIgnoreCase(opposite)) {
                             // TODO WARNING: INCONSISTENT AXIS ORIENTATION
@@ -371,14 +356,11 @@ public class NetCDFCRSUtilities {
                         origin = NetCDFTimeUtilities.checkDateDigits(origin);
 
                         try {
-                            epoch =
-                                    (Date)
-                                            NetCDFUtilities.getAxisFormat(type, origin)
-                                                    .parseObject(origin);
+                            epoch = (Date)
+                                    NetCDFUtilities.getAxisFormat(type, origin).parseObject(origin);
                             GregorianCalendar cal = new GregorianCalendar();
                             cal.setTime(epoch);
-                            DefaultInstant instant =
-                                    new DefaultInstant(new DefaultPosition(cal.getTime()));
+                            DefaultInstant instant = new DefaultInstant(new DefaultPosition(cal.getTime()));
                             t_originDate = instant.getPosition().getDateTime().toString();
                         } catch (ParseException e) {
                             throw new IllegalArgumentException(e);
@@ -391,35 +373,29 @@ public class NetCDFCRSUtilities {
 
                 String t_csName = "time_CS";
                 final Map<String, String> csMap = Collections.singletonMap("name", t_csName);
-                final TimeCS timeCS =
-                        NetCDFCRSUtilities.FACTORY_CONTAINER
-                                .getCSFactory()
-                                .createTimeCS(
-                                        csMap, getAxis(axisName, getDirection(direction), units));
+                final TimeCS timeCS = NetCDFCRSUtilities.FACTORY_CONTAINER
+                        .getCSFactory()
+                        .createTimeCS(csMap, getAxis(axisName, getDirection(direction), units));
 
                 // Creating the Temporal Datum
                 if (t_datumName == null) {
                     t_datumName = "Unknown";
                 }
                 final Map<String, String> datumMap = Collections.singletonMap("name", t_datumName);
-                final Position timeOrigin =
-                        new DefaultPosition(new SimpleInternationalString(t_originDate));
-                final TemporalDatum temporalDatum =
-                        NetCDFCRSUtilities.FACTORY_CONTAINER
-                                .getDatumFactory()
-                                .createTemporalDatum(datumMap, timeOrigin.getDate());
+                final Position timeOrigin = new DefaultPosition(new SimpleInternationalString(t_originDate));
+                final TemporalDatum temporalDatum = NetCDFCRSUtilities.FACTORY_CONTAINER
+                        .getDatumFactory()
+                        .createTemporalDatum(datumMap, timeOrigin.getDate());
 
                 // Finally creating the Temporal CoordinateReferenceSystem
                 String crsName = "time_CRS";
                 final Map<String, String> crsMap = Collections.singletonMap("name", crsName);
-                temporalCRS =
-                        NetCDFCRSUtilities.FACTORY_CONTAINER
-                                .getCRSFactory()
-                                .createTemporalCRS(crsMap, temporalDatum, timeCS);
+                temporalCRS = NetCDFCRSUtilities.FACTORY_CONTAINER
+                        .getCRSFactory()
+                        .createTemporalCRS(crsMap, temporalDatum, timeCS);
             }
         } catch (FactoryException | ParseException e) {
-            if (LOGGER.isLoggable(Level.FINE))
-                LOGGER.log(Level.FINE, "Unable to parse temporal CRS", e);
+            if (LOGGER.isLoggable(Level.FINE)) LOGGER.log(Level.FINE, "Unable to parse temporal CRS", e);
             temporalCRS = null;
         }
         return temporalCRS;
@@ -429,9 +405,7 @@ public class NetCDFCRSUtilities {
         final List<ucar.nc2.dataset.CoordinateSystem> systems = variableDS.getCoordinateSystems();
         if (systems.isEmpty()) {
             throw new RuntimeException(
-                    "Coordinate system for Variable "
-                            + variableDS.getFullName()
-                            + " haven't been found");
+                    "Coordinate system for Variable " + variableDS.getFullName() + " haven't been found");
         }
         return systems.get(0);
     }
@@ -456,14 +430,12 @@ public class NetCDFCRSUtilities {
      * @param unitName the unit of measure string.
      * @return a proper {@link CoordinateSystemAxis} instance or {@code null} if unable to build it.
      */
-    static CoordinateSystemAxis getAxis(
-            final String axisName, final AxisDirection direction, final String unitName)
+    static CoordinateSystemAxis getAxis(final String axisName, final AxisDirection direction, final String unitName)
             throws FactoryException {
         if (axisName == null) {
             return null;
         }
-        final DefaultCoordinateSystemAxis axisFound =
-                DefaultCoordinateSystemAxis.getPredefined(axisName, direction);
+        final DefaultCoordinateSystemAxis axisFound = DefaultCoordinateSystemAxis.getPredefined(axisName, direction);
         if (axisFound != null) {
             return axisFound;
         }
@@ -476,9 +448,7 @@ public class NetCDFCRSUtilities {
         final Unit<?> unit = getUnit(unitName);
         final Map<String, String> map = Collections.singletonMap("name", axisName);
         try {
-            return FACTORY_CONTAINER
-                    .getCSFactory()
-                    .createCoordinateSystemAxis(map, axisName, direction, unit);
+            return FACTORY_CONTAINER.getCSFactory().createCoordinateSystemAxis(map, axisName, direction, unit);
         } catch (FactoryException e) {
             throw new FactoryException(e.getLocalizedMessage());
         }

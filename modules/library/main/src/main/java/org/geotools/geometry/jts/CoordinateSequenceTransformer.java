@@ -36,6 +36,5 @@ public interface CoordinateSequenceTransformer {
      * @param transform The transformation to apply.
      * @throws TransformException if at least one coordinate can't be transformed.
      */
-    public CoordinateSequence transform(CoordinateSequence sequence, MathTransform transform)
-            throws TransformException;
+    public CoordinateSequence transform(CoordinateSequence sequence, MathTransform transform) throws TransformException;
 }

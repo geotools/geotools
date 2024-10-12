@@ -71,8 +71,7 @@ import org.locationtech.jts.geom.Geometry;
  * @author $Author: jive $ (last modification)
  * @version $Id$
  */
-public class ReprojectFeatureReader
-        implements DelegatingFeatureReader<SimpleFeatureType, SimpleFeature> {
+public class ReprojectFeatureReader implements DelegatingFeatureReader<SimpleFeatureType, SimpleFeature> {
 
     FeatureReader<SimpleFeatureType, SimpleFeature> reader;
     SimpleFeatureType originalType;
@@ -94,9 +93,7 @@ public class ReprojectFeatureReader
      *     provided schema coordinate reference system
      */
     public ReprojectFeatureReader(
-            FeatureReader<SimpleFeatureType, SimpleFeature> reader,
-            SimpleFeatureType schema,
-            MathTransform transform) {
+            FeatureReader<SimpleFeatureType, SimpleFeature> reader, SimpleFeatureType schema, MathTransform transform) {
         this.reader = reader;
         this.schema = schema;
         this.transformer = new GeometryCoordinateSequenceTransformer();
@@ -110,10 +107,8 @@ public class ReprojectFeatureReader
      * @param cs Target coordinate reference system; will be used to create the target FeatureType
      *     and MathTransforms used to transform the data
      */
-    public ReprojectFeatureReader(
-            FeatureReader<SimpleFeatureType, SimpleFeature> reader, CoordinateReferenceSystem cs)
-            throws SchemaException, OperationNotFoundException, NoSuchElementException,
-                    FactoryException {
+    public ReprojectFeatureReader(FeatureReader<SimpleFeatureType, SimpleFeature> reader, CoordinateReferenceSystem cs)
+            throws SchemaException, OperationNotFoundException, NoSuchElementException, FactoryException {
         this(reader, FeatureTypes.transform(reader.getFeatureType(), cs, false, true));
     }
 
@@ -124,10 +119,8 @@ public class ReprojectFeatureReader
      * @param schema Target schema; will be used to create the target MathTransforms used to
      *     transform the data
      */
-    public ReprojectFeatureReader(
-            FeatureReader<SimpleFeatureType, SimpleFeature> reader, SimpleFeatureType schema)
-            throws SchemaException, OperationNotFoundException, NoSuchElementException,
-                    FactoryException {
+    public ReprojectFeatureReader(FeatureReader<SimpleFeatureType, SimpleFeature> reader, SimpleFeatureType schema)
+            throws SchemaException, OperationNotFoundException, NoSuchElementException, FactoryException {
         this.originalType = reader.getFeatureType();
         this.schema = schema;
         this.reader = reader;
@@ -137,11 +130,9 @@ public class ReprojectFeatureReader
                 GeometryDescriptor descr = (GeometryDescriptor) originalType.getDescriptor(i);
                 CoordinateReferenceSystem original = descr.getCoordinateReferenceSystem();
                 CoordinateReferenceSystem target =
-                        ((GeometryDescriptor) schema.getDescriptor(descr.getName()))
-                                .getCoordinateReferenceSystem();
+                        ((GeometryDescriptor) schema.getDescriptor(descr.getName())).getCoordinateReferenceSystem();
                 if (!CRS.equalsIgnoreMetadata(original, target)) {
-                    GeometryCoordinateSequenceTransformer transformer =
-                            new GeometryCoordinateSequenceTransformer();
+                    GeometryCoordinateSequenceTransformer transformer = new GeometryCoordinateSequenceTransformer();
                     transformer.setMathTransform(CRS.findMathTransform(original, target, true));
                     transformers.put(originalType.getDescriptor(i).getName(), transformer);
                 }
@@ -149,8 +140,7 @@ public class ReprojectFeatureReader
         }
 
         if (transformers.isEmpty()) {
-            throw new IllegalArgumentException(
-                    "Nothing to be reprojected! (check before using wrapper)");
+            throw new IllegalArgumentException("Nothing to be reprojected! (check before using wrapper)");
         }
     }
 
@@ -191,8 +181,7 @@ public class ReprojectFeatureReader
      * @see FeatureReader#next()
      */
     @Override
-    public SimpleFeature next()
-            throws IOException, IllegalAttributeException, NoSuchElementException {
+    public SimpleFeature next() throws IOException, IllegalAttributeException, NoSuchElementException {
         if (reader == null) {
             throw new IllegalStateException("Reader has already been closed");
         }
@@ -202,23 +191,19 @@ public class ReprojectFeatureReader
 
         try {
             for (int i = 0; i < schema.getDescriptors().size(); i++) {
-                if (schema.getDescriptor(i) instanceof GeometryDescriptor
-                        && attributes[i] instanceof Geometry) {
+                if (schema.getDescriptor(i) instanceof GeometryDescriptor && attributes[i] instanceof Geometry) {
                     GeometryDescriptor descr = (GeometryDescriptor) originalType.getDescriptor(i);
-                    GeometryCoordinateSequenceTransformer transformer =
-                            getTransformer(descr.getName());
+                    GeometryCoordinateSequenceTransformer transformer = getTransformer(descr.getName());
                     if (transformer != null) {
                         attributes[i] = transformer.transform((Geometry) attributes[i]);
                         JTS.setCRS(
                                 (Geometry) attributes[i],
-                                ((GeometryDescriptor) schema.getDescriptor(i))
-                                        .getCoordinateReferenceSystem());
+                                ((GeometryDescriptor) schema.getDescriptor(i)).getCoordinateReferenceSystem());
                     }
                 }
             }
         } catch (TransformException e) {
-            throw new DataSourceException(
-                    "A transformation exception occurred while reprojecting data on the fly", e);
+            throw new DataSourceException("A transformation exception occurred while reprojecting data on the fly", e);
         }
         // building the new reprojected feature
         SimpleFeature reprojected = SimpleFeatureBuilder.build(schema, attributes, next.getID());

@@ -200,8 +200,7 @@ public class Circle {
      * @param y3 y coordinate of point 3
      * @return an ordered list of Coordinates representing a series of chords approximating the arc.
      */
-    public static Coordinate[] linearizeArc(
-            double x1, double y1, double x2, double y2, double x3, double y3) {
+    public static Coordinate[] linearizeArc(double x1, double y1, double x2, double y2, double x3, double y3) {
         Coordinate p1 = new Coordinate(x1, y1);
         Coordinate p2 = new Coordinate(x2, y2);
         Coordinate p3 = new Coordinate(x3, y3);
@@ -223,8 +222,7 @@ public class Circle {
      * @param y3 y coordinate of point 3
      * @return an ordered list of Coordinates representing a series of chords approximating the arc.
      */
-    public static Coordinate[] linearizeCircle(
-            double x1, double y1, double x2, double y2, double x3, double y3) {
+    public static Coordinate[] linearizeCircle(double x1, double y1, double x2, double y2, double x3, double y3) {
         Coordinate p1 = new Coordinate(x1, y1);
         Coordinate p2 = new Coordinate(x2, y2);
         Coordinate p3 = new Coordinate(x3, y3);
@@ -245,8 +243,7 @@ public class Circle {
      * @return an ordered list of Coordinates representing a series of chords approximating the
      *     circle.
      */
-    public static Coordinate[] linearizeCircle(
-            Coordinate p1, Coordinate p2, Coordinate p3, double tolerance) {
+    public static Coordinate[] linearizeCircle(Coordinate p1, Coordinate p2, Coordinate p3, double tolerance) {
         Circle c = new Circle(p1, p2, p3);
         return c.linearizeArc(p1, p2, p1, tolerance);
     }
@@ -263,22 +260,18 @@ public class Circle {
      *     circle
      * @return an ordered list of Coordinates representing a series of chords approximating the arc.
      */
-    public Coordinate[] linearizeArc(
-            Coordinate p1, Coordinate p2, Coordinate p3, double tolerence) {
+    public Coordinate[] linearizeArc(Coordinate p1, Coordinate p2, Coordinate p3, double tolerence) {
         Arc arc = createArc(p1, p2, p3);
         List<Coordinate> result = linearizeInternal(null, arc, tolerence);
         return result.toArray(new Coordinate[result.size()]);
     }
 
-    private List<Coordinate> linearizeInternal(
-            List<Coordinate> coordinates, Arc arc, double tolerence) {
+    private List<Coordinate> linearizeInternal(List<Coordinate> coordinates, Arc arc, double tolerence) {
         if (coordinates == null) {
             coordinates = new ArrayList<>();
         }
         double arcHt = arc.getArcHeight();
-        if (Double.compare(arcHt, tolerence) <= 0
-                || Double.isNaN(arcHt)
-                || Double.isInfinite(arcHt)) {
+        if (Double.compare(arcHt, tolerence) <= 0 || Double.isNaN(arcHt) || Double.isInfinite(arcHt)) {
             int lastIndex = coordinates.size() - 1;
             Coordinate lastCoord = lastIndex >= 0 ? coordinates.get(lastIndex) : null;
 
@@ -451,9 +444,8 @@ public class Circle {
                 double midPtAngle = getAngle(midPt);
 
                 // determine the direction
-                double ccDegrees =
-                        Circle.subtractAngles(this.p1Angle, midPtAngle)
-                                + Circle.subtractAngles(midPtAngle, this.p2Angle);
+                double ccDegrees = Circle.subtractAngles(this.p1Angle, midPtAngle)
+                        + Circle.subtractAngles(midPtAngle, this.p2Angle);
 
                 if (ccDegrees < TWO_PI) {
                     this.clockwise = false;

@@ -52,8 +52,7 @@ public enum PathType {
             try {
                 URL rasterURL = URLs.extendUrl(new URL(parentLocation), location);
                 if (!Utils.checkURLReadable(rasterURL)) {
-                    if (LOGGER.isLoggable(Level.INFO))
-                        LOGGER.info("Unable to read image for file " + rasterURL);
+                    if (LOGGER.isLoggable(Level.INFO)) LOGGER.info("Unable to read image for file " + rasterURL);
 
                     return null;
                 }
@@ -85,8 +84,7 @@ public enum PathType {
                 if (!Utils.checkFileReadable(rasterFile)) {
                     URL rasterURL = new URL(location);
                     if (!Utils.checkURLReadable(rasterURL)) {
-                        if (LOGGER.isLoggable(Level.INFO))
-                            LOGGER.info("Unable to read image for file " + rasterURL);
+                        if (LOGGER.isLoggable(Level.INFO)) LOGGER.info("Unable to read image for file " + rasterURL);
 
                         return null;
                     }
@@ -121,8 +119,7 @@ public enum PathType {
     };
 
     /** Logger. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(PathType.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(PathType.class);
 
     /**
      * Resolve a path for a granuleDescriptor given the parent location and location itself.

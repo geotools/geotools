@@ -40,8 +40,7 @@ public class MosaicElement {
 
     PAMDataset pamDataset;
 
-    public MosaicElement(
-            PlanarImage alphaChannel, ROI roi, RenderedImage source, PAMDataset pamDataset) {
+    public MosaicElement(PlanarImage alphaChannel, ROI roi, RenderedImage source, PAMDataset pamDataset) {
         this.alphaChannel = alphaChannel;
         this.roi = roi;
         this.source = source;

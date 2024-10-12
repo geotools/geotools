@@ -44,8 +44,7 @@ public class GridCoverageReaderProgressAdapter extends BaseGridCoverageProgressA
 
     @Override
     public void warningOccurred(ImageReader source, String warning) {
-        monitor.warningOccurred(
-                source.getInput().toString(), "Warning writing image:" + lastImageIndex, warning);
+        monitor.warningOccurred(source.getInput().toString(), "Warning writing image:" + lastImageIndex, warning);
     }
 
     @Override

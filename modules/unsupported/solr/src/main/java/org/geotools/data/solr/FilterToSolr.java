@@ -291,8 +291,7 @@ public class FilterToSolr implements FilterVisitor {
 
     @Override
     public Object visit(PropertyIsGreaterThan filter, Object extraData) {
-        Expression[] expr =
-                binaryFilterVisitorNormalizer(filter.getExpression1(), filter.getExpression2());
+        Expression[] expr = binaryFilterVisitorNormalizer(filter.getExpression1(), filter.getExpression2());
         StringWriter output = asStringWriter(extraData);
         ExpressionToSolr visitor = new ExpressionToSolr();
         PropertyName propertyName = (PropertyName) expr[0];
@@ -305,8 +304,7 @@ public class FilterToSolr implements FilterVisitor {
 
     @Override
     public Object visit(PropertyIsGreaterThanOrEqualTo filter, Object extraData) {
-        Expression[] expr =
-                binaryFilterVisitorNormalizer(filter.getExpression1(), filter.getExpression2());
+        Expression[] expr = binaryFilterVisitorNormalizer(filter.getExpression1(), filter.getExpression2());
         StringWriter output = asStringWriter(extraData);
         ExpressionToSolr visitor = new ExpressionToSolr();
         PropertyName propertyName = (PropertyName) expr[0];
@@ -319,8 +317,7 @@ public class FilterToSolr implements FilterVisitor {
 
     @Override
     public Object visit(PropertyIsLessThan filter, Object extraData) {
-        Expression[] expr =
-                binaryFilterVisitorNormalizer(filter.getExpression1(), filter.getExpression2());
+        Expression[] expr = binaryFilterVisitorNormalizer(filter.getExpression1(), filter.getExpression2());
         checkExpressionIsProperty(filter.getExpression1());
         StringWriter output = asStringWriter(extraData);
         ExpressionToSolr visitor = new ExpressionToSolr();
@@ -334,8 +331,7 @@ public class FilterToSolr implements FilterVisitor {
 
     @Override
     public Object visit(PropertyIsLessThanOrEqualTo filter, Object extraData) {
-        Expression[] expr =
-                binaryFilterVisitorNormalizer(filter.getExpression1(), filter.getExpression2());
+        Expression[] expr = binaryFilterVisitorNormalizer(filter.getExpression1(), filter.getExpression2());
         StringWriter output = asStringWriter(extraData);
         ExpressionToSolr visitor = new ExpressionToSolr();
         PropertyName propertyName = (PropertyName) expr[0];
@@ -541,8 +537,7 @@ public class FilterToSolr implements FilterVisitor {
      */
     protected static String escapeSpecialCharacters(String searchPhrase, String... otherEscapes) {
         for (String luceneSpecialCharacter : LUCENE_SPECIAL_CHARACTERS) {
-            searchPhrase =
-                    searchPhrase.replace(luceneSpecialCharacter, "\\" + luceneSpecialCharacter);
+            searchPhrase = searchPhrase.replace(luceneSpecialCharacter, "\\" + luceneSpecialCharacter);
         }
         for (String e : otherEscapes) {
             searchPhrase = searchPhrase.replace(e, "\\" + e);
@@ -578,8 +573,7 @@ public class FilterToSolr implements FilterVisitor {
         if (filter instanceof PropertyIsNotEqualTo) {
             output.append("-");
         }
-        Expression[] expr =
-                binaryFilterVisitorNormalizer(filter.getExpression1(), filter.getExpression2());
+        Expression[] expr = binaryFilterVisitorNormalizer(filter.getExpression1(), filter.getExpression2());
         ExpressionToSolr visitor = new ExpressionToSolr();
         expr[0].accept(visitor, output);
         output.append(":");
@@ -598,10 +592,7 @@ public class FilterToSolr implements FilterVisitor {
      */
 
     private Object buildBinaryLogicalOperator(
-            final String operator,
-            FilterVisitor visitor,
-            BinaryLogicOperator filter,
-            Object extraData) {
+            final String operator, FilterVisitor visitor, BinaryLogicOperator filter, Object extraData) {
         StringWriter output = asStringWriter(extraData);
         List<Filter> children = filter.getChildren();
         if (children != null) {
@@ -709,8 +700,7 @@ public class FilterToSolr implements FilterVisitor {
         if (filter instanceof BBOX) visitor.setSpatialStrategy(SolrSpatialStrategy.BBOX);
         AttributeDescriptor spatialAtt = (AttributeDescriptor) e1.evaluate(featureType);
         if (spatialAtt != null && spatialAtt instanceof GeometryDescriptor) {
-            visitor.setSpatialStrategy(
-                    SolrSpatialStrategy.createStrategy((GeometryDescriptor) spatialAtt));
+            visitor.setSpatialStrategy(SolrSpatialStrategy.createStrategy((GeometryDescriptor) spatialAtt));
         } else {
             LOGGER.warning("Spatial field: " + e1.toString() + " resolved to null or non-spatial");
         }
@@ -779,8 +769,7 @@ public class FilterToSolr implements FilterVisitor {
             e1 = expr2;
             e2 = expr1;
         } else {
-            throw new UnsupportedOperationException(
-                    "Expressions must be one PropertyName and one Literal");
+            throw new UnsupportedOperationException("Expressions must be one PropertyName and one Literal");
         }
         return new Expression[] {e1, e2};
     }

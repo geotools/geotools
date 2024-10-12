@@ -51,16 +51,14 @@ public abstract class FeatureToFeatureProcess extends AbstractFeatureCollectionP
         }
 
         // read the parameters, features and buffer amount
-        FeatureCollection features =
-                (FeatureCollection) input.get(FeatureToFeatureProcessFactory.FEATURES.key);
+        FeatureCollection features = (FeatureCollection) input.get(FeatureToFeatureProcessFactory.FEATURES.key);
 
         // start progress
         float scale = 100f / features.size();
         monitor.started();
 
         // create the result feature collection
-        SimpleFeatureType targetSchema =
-                getTargetSchema((SimpleFeatureType) features.getSchema(), input);
+        SimpleFeatureType targetSchema = getTargetSchema((SimpleFeatureType) features.getSchema(), input);
         DefaultFeatureCollection result = new DefaultFeatureCollection(null, targetSchema);
 
         SimpleFeatureBuilder fb = new SimpleFeatureBuilder(result.getSchema());
@@ -95,8 +93,7 @@ public abstract class FeatureToFeatureProcess extends AbstractFeatureCollectionP
      * if the number of attributes changes it's better to roll your own class instead of using this
      * one)
      */
-    protected SimpleFeatureType getTargetSchema(
-            SimpleFeatureType sourceSchema, Map<String, Object> input) {
+    protected SimpleFeatureType getTargetSchema(SimpleFeatureType sourceSchema, Map<String, Object> input) {
         return sourceSchema;
     }
 }

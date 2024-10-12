@@ -137,63 +137,61 @@ public abstract class SQLDialect {
     protected static final Logger LOGGER = Logging.getLogger(SQLDialect.class);
 
     /** The basic filter capabilities all databases should have */
-    public static FilterCapabilities BASE_DBMS_CAPABILITIES =
-            new FilterCapabilities() {
-                {
-                    addAll(FilterCapabilities.LOGICAL_OPENGIS);
-                    addAll(FilterCapabilities.SIMPLE_COMPARISONS_OPENGIS);
-                    addAll(InFunction.getInCapabilities());
+    public static FilterCapabilities BASE_DBMS_CAPABILITIES = new FilterCapabilities() {
+        {
+            addAll(FilterCapabilities.LOGICAL_OPENGIS);
+            addAll(FilterCapabilities.SIMPLE_COMPARISONS_OPENGIS);
+            addAll(InFunction.getInCapabilities());
 
-                    // simple arithmetic
-                    addType(Add.class);
-                    addType(Subtract.class);
-                    addType(Multiply.class);
-                    addType(Divide.class);
+            // simple arithmetic
+            addType(Add.class);
+            addType(Subtract.class);
+            addType(Multiply.class);
+            addType(Divide.class);
 
-                    // properties and literals
-                    addType(PropertyName.class);
-                    addType(Literal.class);
+            // properties and literals
+            addType(PropertyName.class);
+            addType(Literal.class);
 
-                    // simple comparisons
-                    addType(PropertyIsNull.class);
-                    addType(PropertyIsBetween.class);
-                    addType(Id.class);
-                    addType(IncludeFilter.class);
-                    addType(ExcludeFilter.class);
-                    addType(PropertyIsLike.class);
+            // simple comparisons
+            addType(PropertyIsNull.class);
+            addType(PropertyIsBetween.class);
+            addType(Id.class);
+            addType(IncludeFilter.class);
+            addType(ExcludeFilter.class);
+            addType(PropertyIsLike.class);
 
-                    // native filter support
-                    addType(NativeFilter.class);
-                }
-            };
+            // native filter support
+            addType(NativeFilter.class);
+        }
+    };
 
     /**
      * Sentinel value used to mark that the unwrapper lookup happened already, and an unwrapper was
      * not found
      */
-    protected static final UnWrapper UNWRAPPER_NOT_FOUND =
-            new UnWrapper() {
+    protected static final UnWrapper UNWRAPPER_NOT_FOUND = new UnWrapper() {
 
-                @Override
-                public Statement unwrap(Statement statement) {
-                    throw new UnsupportedOperationException();
-                }
+        @Override
+        public Statement unwrap(Statement statement) {
+            throw new UnsupportedOperationException();
+        }
 
-                @Override
-                public Connection unwrap(Connection conn) {
-                    throw new UnsupportedOperationException();
-                }
+        @Override
+        public Connection unwrap(Connection conn) {
+            throw new UnsupportedOperationException();
+        }
 
-                @Override
-                public boolean canUnwrap(Statement st) {
-                    return false;
-                }
+        @Override
+        public boolean canUnwrap(Statement st) {
+            return false;
+        }
 
-                @Override
-                public boolean canUnwrap(Connection conn) {
-                    return false;
-                }
-            };
+        @Override
+        public boolean canUnwrap(Connection conn) {
+            return false;
+        }
+    };
 
     /**
      * Map of {@code UnWrapper} objects keyed by the class of {@code Connection} it is an unwrapper
@@ -246,8 +244,7 @@ public abstract class SQLDialect {
      * @param cx Database connection.
      *
      */
-    public boolean includeTable(String schemaName, String tableName, Connection cx)
-            throws SQLException {
+    public boolean includeTable(String schemaName, String tableName, Connection cx) throws SQLException {
         return true;
     }
 
@@ -311,8 +308,8 @@ public abstract class SQLDialect {
      * @param metadata The column metadata object that collections mapping information.
      * @param cx The database connection, not to be closed.
      */
-    public void handleUserDefinedType(
-            ResultSet columnMetaData, ColumnMetadata metadata, Connection cx) throws SQLException {}
+    public void handleUserDefinedType(ResultSet columnMetaData, ColumnMetadata metadata, Connection cx)
+            throws SQLException {}
 
     /**
      * Registers the sql type to java type mappings that the dialect uses when reading and writing
@@ -431,8 +428,7 @@ public abstract class SQLDialect {
      *
      * Subclasses should extend (not override) to provide additional functions.
      */
-    public void registerAggregateFunctions(
-            Map<Class<? extends FeatureVisitor>, String> aggregates) {
+    public void registerAggregateFunctions(Map<Class<? extends FeatureVisitor>, String> aggregates) {
         // register the well known functions, from the SQL standard
         aggregates.put(UniqueVisitor.class, "distinct");
         aggregates.put(CountVisitor.class, "count");
@@ -622,8 +618,7 @@ public abstract class SQLDialect {
      * @param columnName The column name, never <code>null</code>
      * @param cx The database connection.
      */
-    public Integer getGeometrySRID(
-            String schemaName, String tableName, String columnName, Connection cx)
+    public Integer getGeometrySRID(String schemaName, String tableName, String columnName, Connection cx)
             throws SQLException {
         return null;
     }
@@ -643,8 +638,7 @@ public abstract class SQLDialect {
      * @param columnName The column name, never <code>null</code>
      * @param cx The database connection.
      */
-    public int getGeometryDimension(
-            String schemaName, String tableName, String columnName, Connection cx)
+    public int getGeometryDimension(String schemaName, String tableName, String columnName, Connection cx)
             throws SQLException {
         return 2;
     }
@@ -671,8 +665,7 @@ public abstract class SQLDialect {
             return CRS.decode("EPSG:" + srid, forceLongitudeFirst);
         } catch (Exception e) {
             if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.log(
-                        Level.FINE, "Could not decode EPSG:" + srid + " using the EPSG plugins.");
+                LOGGER.log(Level.FINE, "Could not decode EPSG:" + srid + " using the EPSG plugins.");
             }
             return null;
         }
@@ -690,8 +683,7 @@ public abstract class SQLDialect {
      *     computed. Mind, it may be retyped and thus contain less geometry columns than the table
      * @return a list of referenced envelopes (some of which may be null or empty)
      */
-    public List<ReferencedEnvelope> getOptimizedBounds(
-            String schema, SimpleFeatureType featureType, Connection cx)
+    public List<ReferencedEnvelope> getOptimizedBounds(String schema, SimpleFeatureType featureType, Connection cx)
             throws SQLException, IOException {
         return null;
     }
@@ -702,8 +694,7 @@ public abstract class SQLDialect {
      * <p>This method must also be sure to properly encode the name of the column with the {@link
      * #encodeColumnName(String, StringBuffer)} function.
      */
-    public abstract void encodeGeometryEnvelope(
-            String tableName, String geometryColumn, StringBuffer sql);
+    public abstract void encodeGeometryEnvelope(String tableName, String geometryColumn, StringBuffer sql);
 
     /**
      * Decodes the result of a spatial extent function in a SELECT statement.
@@ -742,8 +733,7 @@ public abstract class SQLDialect {
      *   </code>
      * </pre>
      */
-    public void encodeGeometryColumn(
-            GeometryDescriptor gatt, String prefix, int srid, Hints hints, StringBuffer sql) {
+    public void encodeGeometryColumn(GeometryDescriptor gatt, String prefix, int srid, Hints hints, StringBuffer sql) {
         encodeColumnName(prefix, gatt.getLocalName(), sql);
     }
 
@@ -917,8 +907,7 @@ public abstract class SQLDialect {
      * @param schemaName The name of the database scheam containing the table containing the column
      * @param cx The database connection.
      */
-    public void postCreateAttribute(
-            AttributeDescriptor att, String tableName, String schemaName, Connection cx)
+    public void postCreateAttribute(AttributeDescriptor att, String tableName, String schemaName, Connection cx)
             throws SQLException {}
 
     /**
@@ -932,10 +921,7 @@ public abstract class SQLDialect {
      * @param cx The database connection.
      */
     public void postCreateFeatureType(
-            SimpleFeatureType featureType,
-            DatabaseMetaData metadata,
-            String schemaName,
-            Connection cx)
+            SimpleFeatureType featureType, DatabaseMetaData metadata, String schemaName, Connection cx)
             throws SQLException {}
 
     /**
@@ -947,8 +933,7 @@ public abstract class SQLDialect {
      * @param featureType The featureType/table being dropped.
      * @param cx The database connection.
      */
-    public void preDropTable(String schemaName, SimpleFeatureType featureType, Connection cx)
-            throws SQLException {}
+    public void preDropTable(String schemaName, SimpleFeatureType featureType, Connection cx) throws SQLException {}
 
     /**
      * Callback which executes after a table has been dropped.
@@ -959,8 +944,7 @@ public abstract class SQLDialect {
      * @param featureType The featureType/table being dropped.
      * @param cx The database connection.
      */
-    public void postDropTable(String schemaName, SimpleFeatureType featureType, Connection cx)
-            throws SQLException {}
+    public void postDropTable(String schemaName, SimpleFeatureType featureType, Connection cx) throws SQLException {}
 
     /**
      * Controls whether keys are looked up post or pre insert.
@@ -1006,8 +990,7 @@ public abstract class SQLDialect {
      * @param cx The database connection.
      * @return The next value of the column, or <code>null</code>.
      */
-    public Object getNextAutoGeneratedValue(
-            String schemaName, String tableName, String columnName, Connection cx)
+    public Object getNextAutoGeneratedValue(String schemaName, String tableName, String columnName, Connection cx)
             throws SQLException {
         return null;
     }
@@ -1033,8 +1016,7 @@ public abstract class SQLDialect {
      * @return The previous value of the column, or <code>null</code>.
      */
     public Object getLastAutoGeneratedValue(
-            String schemaName, String tableName, String columnName, Connection cx, Statement st)
-            throws SQLException {
+            String schemaName, String tableName, String columnName, Connection cx, Statement st) throws SQLException {
         return getLastAutoGeneratedValue(schemaName, tableName, columnName, cx);
     }
 
@@ -1057,8 +1039,7 @@ public abstract class SQLDialect {
      * @param cx The database connection.
      * @return The previous value of the column, or <code>null</code>.
      */
-    public Object getLastAutoGeneratedValue(
-            String schemaName, String tableName, String columnName, Connection cx)
+    public Object getLastAutoGeneratedValue(String schemaName, String tableName, String columnName, Connection cx)
             throws SQLException {
         return null;
     }
@@ -1078,8 +1059,7 @@ public abstract class SQLDialect {
      * @param columnName The column name.
      * @param cx The database connection.
      */
-    public String getSequenceForColumn(
-            String schemaName, String tableName, String columnName, Connection cx)
+    public String getSequenceForColumn(String schemaName, String tableName, String columnName, Connection cx)
             throws SQLException {
         return null;
     }
@@ -1102,8 +1082,7 @@ public abstract class SQLDialect {
      * @param cx The database connection.
      * @return The next value of the sequence, or <code>null</code>.
      */
-    public Object getNextSequenceValue(String schemaName, String sequenceName, Connection cx)
-            throws SQLException {
+    public Object getNextSequenceValue(String schemaName, String sequenceName, Connection cx) throws SQLException {
         return null;
     }
 
@@ -1141,8 +1120,7 @@ public abstract class SQLDialect {
      * simply appending some extra directive to the query, or wrapping it into a bigger one.
      */
     public void applyLimitOffset(StringBuffer sql, int limit, int offset) {
-        throw new UnsupportedOperationException(
-                "Ovveride this method when isLimitOffsetSupported returns true");
+        throw new UnsupportedOperationException("Ovveride this method when isLimitOffsetSupported returns true");
     }
 
     /**
@@ -1198,8 +1176,7 @@ public abstract class SQLDialect {
      *
      * <p>Subclasses can override to handle special indexes (like spatial ones) and/or the hints
      */
-    public void createIndex(
-            Connection cx, SimpleFeatureType schema, String databaseSchema, Index index)
+    public void createIndex(Connection cx, SimpleFeatureType schema, String databaseSchema, Index index)
             throws SQLException {
         StringBuffer sql = new StringBuffer();
         sql.append("CREATE ");
@@ -1238,8 +1215,7 @@ public abstract class SQLDialect {
     }
 
     /** Drop the index. Subclasses can override to handle extra syntax or db specific situations */
-    public void dropIndex(
-            Connection cx, SimpleFeatureType schema, String databaseSchema, String indexName)
+    public void dropIndex(Connection cx, SimpleFeatureType schema, String databaseSchema, String indexName)
             throws SQLException {
         StringBuffer sql = new StringBuffer();
         sql.append("DROP INDEX ");
@@ -1266,8 +1242,7 @@ public abstract class SQLDialect {
      * Returns the list of indexes for a certain table. Subclasses can override to add support for
      * db specific hints
      */
-    public List<Index> getIndexes(Connection cx, String databaseSchema, String typeName)
-            throws SQLException {
+    public List<Index> getIndexes(Connection cx, String databaseSchema, String typeName) throws SQLException {
         DatabaseMetaData md = cx.getMetaData();
         ResultSet indexInfo = null;
         try {
@@ -1325,8 +1300,7 @@ public abstract class SQLDialect {
      */
     public Filter[] splitFilter(Filter filter, SimpleFeatureType schema) {
         PostPreProcessFilterSplittingVisitor splitter =
-                new PostPreProcessFilterSplittingVisitor(
-                        dataStore.getFilterCapabilities(), schema, null);
+                new PostPreProcessFilterSplittingVisitor(dataStore.getFilterCapabilities(), schema, null);
         filter.accept(splitter, null);
 
         Filter[] split = new Filter[2];
@@ -1345,8 +1319,7 @@ public abstract class SQLDialect {
      * Reads a primary key column value. By default uses {@link ResultSet#getString(int)},
      * subclasses can use a more efficient way should they wish to
      */
-    public String getPkColumnValue(ResultSet rs, PrimaryKeyColumn pkey, int columnIdx)
-            throws SQLException {
+    public String getPkColumnValue(ResultSet rs, PrimaryKeyColumn pkey, int columnIdx) throws SQLException {
         return rs.getString(columnIdx);
     }
 
@@ -1362,8 +1335,7 @@ public abstract class SQLDialect {
      * Returns the list of aggregation output types for the given visitor and feature type (or an
      * empty Optional if could not determine it)
      */
-    protected Optional<List<Class>> getResultTypes(
-            FeatureVisitor visitor, SimpleFeatureType featureType) {
+    protected Optional<List<Class>> getResultTypes(FeatureVisitor visitor, SimpleFeatureType featureType) {
         if (!(visitor instanceof FeatureAttributeVisitor)) {
             return Optional.empty();
         }
@@ -1399,8 +1371,7 @@ public abstract class SQLDialect {
      * @param featureType
      * @return
      */
-    public Function<Object, Object> getAggregateConverter(
-            FeatureVisitor visitor, SimpleFeatureType featureType) {
+    public Function<Object, Object> getAggregateConverter(FeatureVisitor visitor, SimpleFeatureType featureType) {
         return Function.identity();
     }
 
@@ -1456,8 +1427,7 @@ public abstract class SQLDialect {
 
     /** Obtains the native connection object given a database connection. */
     @SuppressWarnings("PMD.CloseResource")
-    protected <T extends Connection> T unwrapConnection(Connection cx, Class<T> clazz)
-            throws SQLException {
+    protected <T extends Connection> T unwrapConnection(Connection cx, Class<T> clazz) throws SQLException {
         if (clazz.isInstance(cx)) {
             return clazz.cast(cx);
         }
@@ -1496,8 +1466,7 @@ public abstract class SQLDialect {
                 LOGGER.log(Level.FINER, "Failed to unwrap connection using Java facilities", t);
             }
         } catch (IOException e) {
-            throw new SQLException(
-                    "Could not obtain " + clazz.getName() + " from " + cx.getClass(), e);
+            throw new SQLException("Could not obtain " + clazz.getName() + " from " + cx.getClass(), e);
         }
         throw new SQLException("Could not obtain " + clazz.getName() + " from " + cx.getClass());
     }

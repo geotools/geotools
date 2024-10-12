@@ -49,15 +49,13 @@ final class ConstantTransform1D extends LinearTransform1D {
 
     /** Transforms a list of coordinate point ordinal values. */
     @Override
-    public void transform(
-            final float[] srcPts, int srcOff, final float[] dstPts, int dstOff, int numPts) {
+    public void transform(final float[] srcPts, int srcOff, final float[] dstPts, int dstOff, int numPts) {
         Arrays.fill(dstPts, dstOff, dstOff + numPts, (float) offset);
     }
 
     /** Transforms a list of coordinate point ordinal values. */
     @Override
-    public void transform(
-            final double[] srcPts, int srcOff, final double[] dstPts, int dstOff, int numPts) {
+    public void transform(final double[] srcPts, int srcOff, final double[] dstPts, int dstOff, int numPts) {
         Arrays.fill(dstPts, dstOff, dstOff + numPts, offset);
     }
 }

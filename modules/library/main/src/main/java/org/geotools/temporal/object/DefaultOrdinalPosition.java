@@ -34,9 +34,7 @@ public class DefaultOrdinalPosition extends DefaultTemporalPosition implements O
     private OrdinalEra ordinalPosition;
 
     public DefaultOrdinalPosition(
-            TemporalReferenceSystem frame,
-            IndeterminateValue indeterminatePosition,
-            OrdinalEra ordinalPosition) {
+            TemporalReferenceSystem frame, IndeterminateValue indeterminatePosition, OrdinalEra ordinalPosition) {
         super(frame, indeterminatePosition);
         this.ordinalPosition = ordinalPosition;
     }

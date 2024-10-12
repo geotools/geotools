@@ -124,8 +124,7 @@ public abstract class AbstractConsole implements Runnable {
      * @throws ParseException if parsing the specified WKT failed.
      * @throws FactoryException if the object is not of the expected type.
      */
-    public Object parseObject(final String text, final Class type)
-            throws ParseException, FactoryException {
+    public Object parseObject(final String text, final Class type) throws ParseException, FactoryException {
         if (parser instanceof Preprocessor) {
             final Preprocessor parser = (Preprocessor) this.parser;
             parser.offset = (line != null) ? Math.max(0, line.indexOf(text)) : 0;

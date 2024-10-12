@@ -123,8 +123,7 @@ public class ShadedReliefImpl implements ShadedRelief {
         if (obj instanceof ShadedReliefImpl) {
             ShadedReliefImpl other = (ShadedReliefImpl) obj;
 
-            return Utilities.equals(reliefFactor, other.reliefFactor)
-                    && Utilities.equals(brightness, other.brightness);
+            return Utilities.equals(reliefFactor, other.reliefFactor) && Utilities.equals(brightness, other.brightness);
         }
 
         return false;

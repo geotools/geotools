@@ -81,8 +81,7 @@ public class EmfAppSchemaParser {
             final Configuration wfsConfiguration,
             final Map<QName, Class<?>> mappedBindings)
             throws IOException {
-        return parseSimpleFeatureType(
-                wfsConfiguration, featureName, schemaLocation, crs, mappedBindings);
+        return parseSimpleFeatureType(wfsConfiguration, featureName, schemaLocation, crs, mappedBindings);
     }
 
     /**
@@ -112,8 +111,7 @@ public class EmfAppSchemaParser {
             final CoordinateReferenceSystem crs,
             final Map<QName, Class<?>> mappedBindings)
             throws IOException {
-        final SimpleFeatureType realType =
-                parse(wfsConfiguration, featureName, schemaLocation, crs, mappedBindings);
+        final SimpleFeatureType realType = parse(wfsConfiguration, featureName, schemaLocation, crs, mappedBindings);
         SimpleFeatureType subsetType = toSimpleFeatureType(realType);
         return subsetType;
     }
@@ -122,24 +120,20 @@ public class EmfAppSchemaParser {
      * Go through FeatureType description and convert to a SimpleFeatureType. Also ignores
      * AbstractFeatureType contributions such as name etc...
      */
-    public static SimpleFeatureType toSimpleFeatureType(final FeatureType realType)
-            throws DataSourceException {
+    public static SimpleFeatureType toSimpleFeatureType(final FeatureType realType) throws DataSourceException {
         Collection<PropertyDescriptor> descriptors = realType.getDescriptors();
         List<PropertyDescriptor> attributes = new ArrayList<>(descriptors);
         List<String> simpleProperties = new ArrayList<>();
 
         // HACK HACK!! the parser sets no namespace to the properties so we're
         // doing a hardcode property name black list
-        final Set<String> ignoreList =
-                new HashSet<>(
-                        Arrays.asList(
-                                new String[] {
-                                    GML.location.getLocalPart(),
-                                    GML.metaDataProperty.getLocalPart(),
-                                    GML.description.getLocalPart(),
-                                    GML.name.getLocalPart(),
-                                    GML.boundedBy.getLocalPart()
-                                }));
+        final Set<String> ignoreList = new HashSet<>(Arrays.asList(new String[] {
+            GML.location.getLocalPart(),
+            GML.metaDataProperty.getLocalPart(),
+            GML.description.getLocalPart(),
+            GML.name.getLocalPart(),
+            GML.boundedBy.getLocalPart()
+        }));
 
         if (attributes.size() > ignoreList.size()) {
             Set<String> firstAtts = new HashSet<>();
@@ -156,14 +150,9 @@ public class EmfAppSchemaParser {
             Class<?> binding = descriptor.getType().getBinding();
             int maxOccurs = descriptor.getMaxOccurs();
             Name name = descriptor.getName();
-            if (GML.NAMESPACE.equals(name.getNamespaceURI())
-                    || maxOccurs > 1
-                    || Object.class.equals(binding)) {
+            if (GML.NAMESPACE.equals(name.getNamespaceURI()) || maxOccurs > 1 || Object.class.equals(binding)) {
                 LOGGER.fine(
-                        "Ignoring multivalued or complex property "
-                                + name
-                                + " on feature type "
-                                + realType.getName());
+                        "Ignoring multivalued or complex property " + name + " on feature type " + realType.getName());
                 continue;
             }
 
@@ -207,8 +196,7 @@ public class EmfAppSchemaParser {
             final CoordinateReferenceSystem crs,
             final Map<QName, Class<?>> mappedBindings)
             throws IOException {
-        ApplicationSchemaConfiguration configuration =
-                getConfiguration(featureName, schemaLocation);
+        ApplicationSchemaConfiguration configuration = getConfiguration(featureName, schemaLocation);
         XSDElementDeclaration elementDecl = parseFeatureType(featureName, configuration);
 
         Map<QName, Object> bindings = wfsConfiguration.setupBindings();
@@ -266,11 +254,7 @@ public class EmfAppSchemaParser {
             if (e instanceof IOException) {
                 throw (IOException) e;
             }
-            String msg =
-                    "Error parsing feature type for "
-                            + featureName
-                            + " from "
-                            + schemaLocation.toExternalForm();
+            String msg = "Error parsing feature type for " + featureName + " from " + schemaLocation.toExternalForm();
             throw (IOException) new IOException(msg).initCause(e);
         } finally {
             configuration.getXSD().dispose();
@@ -279,8 +263,7 @@ public class EmfAppSchemaParser {
 
     /** TODO: add connectionfactory parameter to handle authentication, gzip, etc */
     private static XSDElementDeclaration parseFeatureType(
-            final QName featureTypeName, ApplicationSchemaConfiguration configuration)
-            throws DataSourceException {
+            final QName featureTypeName, ApplicationSchemaConfiguration configuration) throws DataSourceException {
         SchemaIndex schemaIndex;
         try {
             schemaIndex = Schemas.findSchemas(configuration);
@@ -288,8 +271,7 @@ public class EmfAppSchemaParser {
             throw new DataSourceException("Error parsing feature type for " + featureTypeName, e);
         }
 
-        XSDElementDeclaration elementDeclaration =
-                schemaIndex.getElementDeclaration(featureTypeName);
+        XSDElementDeclaration elementDeclaration = schemaIndex.getElementDeclaration(featureTypeName);
         schemaIndex.destroy();
         if (elementDeclaration == null) {
             throw new DataSourceException("No XSDElementDeclaration found for " + featureTypeName);
@@ -309,10 +291,7 @@ public class EmfAppSchemaParser {
     }
 
     public static SimpleFeatureType parseSimpleFeatureType(
-            Configuration configuration,
-            QName featureTypeName,
-            URL schemaLocation,
-            CoordinateReferenceSystem crs)
+            Configuration configuration, QName featureTypeName, URL schemaLocation, CoordinateReferenceSystem crs)
             throws IOException {
         return parseSimpleFeatureType(configuration, featureTypeName, schemaLocation, crs, null);
     }

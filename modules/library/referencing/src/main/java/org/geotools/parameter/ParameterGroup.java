@@ -59,10 +59,8 @@ public class ParameterGroup extends AbstractParameter implements ParameterValueG
     private static final long serialVersionUID = -1985309386356545126L;
 
     /** An empty parameter value group. This group contains no parameter value. */
-    public static ParameterValueGroup EMPTY =
-            new ParameterGroup(
-                    Collections.singletonMap(ParameterDescriptorGroup.NAME_KEY, "Void"),
-                    new ParameterValue[0]);
+    public static ParameterValueGroup EMPTY = new ParameterGroup(
+            Collections.singletonMap(ParameterDescriptorGroup.NAME_KEY, "Void"), new ParameterValue[0]);
 
     /**
      * The {@linkplain #values() parameter values} for this group. Note: consider as final. This
@@ -113,8 +111,7 @@ public class ParameterGroup extends AbstractParameter implements ParameterValueG
      *     occurences doesn't matches the number declared in the {@linkplain
      *     ParameterDescriptorGroup descriptor}.
      */
-    public ParameterGroup(
-            final ParameterDescriptorGroup descriptor, final GeneralParameterValue... values) {
+    public ParameterGroup(final ParameterDescriptorGroup descriptor, final GeneralParameterValue... values) {
         super(descriptor);
         ensureNonNull("values", values);
         this.values = new ArrayList<>(values.length);
@@ -167,8 +164,7 @@ public class ParameterGroup extends AbstractParameter implements ParameterValueG
         ensureValidOccurs(values, occurences);
         final Set<GeneralParameterDescriptor> descriptors = occurences.keySet();
         return new DefaultParameterDescriptorGroup(
-                properties,
-                descriptors.toArray(new GeneralParameterDescriptor[descriptors.size()]));
+                properties, descriptors.toArray(new GeneralParameterDescriptor[descriptors.size()]));
     }
 
     /**
@@ -183,8 +179,7 @@ public class ParameterGroup extends AbstractParameter implements ParameterValueG
      *     ParameterDescriptorGroup descriptor}.
      */
     private static void ensureValidOccurs(
-            final GeneralParameterValue[] values,
-            final Map<GeneralParameterDescriptor, int[]> occurences) {
+            final GeneralParameterValue[] values, final Map<GeneralParameterDescriptor, int[]> occurences) {
         /*
          * Count the parameters occurences.
          */
@@ -195,8 +190,7 @@ public class ParameterGroup extends AbstractParameter implements ParameterValueG
             if (count == null) {
                 final String name = getName(descriptor);
                 throw new InvalidParameterTypeException(
-                        MessageFormat.format(ErrorKeys.ILLEGAL_DESCRIPTOR_FOR_PARAMETER_$1, name),
-                        name);
+                        MessageFormat.format(ErrorKeys.ILLEGAL_DESCRIPTOR_FOR_PARAMETER_$1, name), name);
             }
             count[0]++;
         }
@@ -211,9 +205,7 @@ public class ParameterGroup extends AbstractParameter implements ParameterValueG
             if (!(count >= min && count <= max)) {
                 final String name = getName(descriptor);
                 throw new InvalidParameterCardinalityException(
-                        MessageFormat.format(
-                                ErrorKeys.ILLEGAL_OCCURS_FOR_PARAMETER_$4, name, count, min, max),
-                        name);
+                        MessageFormat.format(ErrorKeys.ILLEGAL_OCCURS_FOR_PARAMETER_$4, name, count, min, max), name);
             }
         }
     }
@@ -303,8 +295,7 @@ public class ParameterGroup extends AbstractParameter implements ParameterValueG
                 }
             }
         }
-        throw new ParameterNotFoundException(
-                MessageFormat.format(ErrorKeys.MISSING_PARAMETER_$1, name), name);
+        throw new ParameterNotFoundException(MessageFormat.format(ErrorKeys.MISSING_PARAMETER_$1, name), name);
     }
 
     /**
@@ -337,11 +328,9 @@ public class ParameterGroup extends AbstractParameter implements ParameterValueG
          * it is simply an optional group not yet defined), then returns an empty list.
          */
         if (groups.isEmpty()) {
-            final GeneralParameterDescriptor check =
-                    ((ParameterDescriptorGroup) descriptor).descriptor(name);
+            final GeneralParameterDescriptor check = ((ParameterDescriptorGroup) descriptor).descriptor(name);
             if (!(check instanceof ParameterDescriptorGroup)) {
-                throw new ParameterNotFoundException(
-                        MessageFormat.format(ErrorKeys.MISSING_PARAMETER_$1, name), name);
+                throw new ParameterNotFoundException(MessageFormat.format(ErrorKeys.MISSING_PARAMETER_$1, name), name);
             }
         }
         return groups;
@@ -364,11 +353,9 @@ public class ParameterGroup extends AbstractParameter implements ParameterValueG
     @Override
     public ParameterValueGroup addGroup(String name)
             throws ParameterNotFoundException, InvalidParameterCardinalityException {
-        final GeneralParameterDescriptor check =
-                ((ParameterDescriptorGroup) descriptor).descriptor(name);
+        final GeneralParameterDescriptor check = ((ParameterDescriptorGroup) descriptor).descriptor(name);
         if (!(check instanceof ParameterDescriptorGroup)) {
-            throw new ParameterNotFoundException(
-                    MessageFormat.format(ErrorKeys.MISSING_PARAMETER_$1, name), name);
+            throw new ParameterNotFoundException(MessageFormat.format(ErrorKeys.MISSING_PARAMETER_$1, name), name);
         }
         int count = 0;
         for (final GeneralParameterValue value : values) {

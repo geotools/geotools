@@ -116,21 +116,17 @@ import org.locationtech.jts.geom.Geometry;
  */
 @DescribeProcess(
         title = "Heatmap",
-        description =
-                "Computes a heatmap surface over a set of data points and outputs as a single-band raster.")
+        description = "Computes a heatmap surface over a set of data points and outputs as a single-band raster.")
 public class HeatmapProcess implements VectorProcess {
 
     @DescribeResult(name = "result", description = "Output raster")
     public GridCoverage2D execute(
 
             // process data
-            @DescribeParameter(name = "data", description = "Input features")
-                    SimpleFeatureCollection obsFeatures,
+            @DescribeParameter(name = "data", description = "Input features") SimpleFeatureCollection obsFeatures,
 
             // process parameters
-            @DescribeParameter(
-                            name = "radiusPixels",
-                            description = "Radius of the density kernel in pixels")
+            @DescribeParameter(name = "radiusPixels", description = "Radius of the density kernel in pixels")
                     Integer argRadiusPixels,
             @DescribeParameter(
                             name = "weightAttr",
@@ -140,8 +136,7 @@ public class HeatmapProcess implements VectorProcess {
                     String valueAttr,
             @DescribeParameter(
                             name = "pixelsPerCell",
-                            description =
-                                    "Resolution at which to compute the heatmap (in pixels). Default = 1",
+                            description = "Resolution at which to compute the heatmap (in pixels). Default = 1",
                             defaultValue = "1",
                             min = 0,
                             max = 1)
@@ -150,13 +145,9 @@ public class HeatmapProcess implements VectorProcess {
             // output image parameters
             @DescribeParameter(name = "outputBBOX", description = "Bounding box of the output")
                     ReferencedEnvelope argOutputEnv,
-            @DescribeParameter(
-                            name = "outputWidth",
-                            description = "Width of output raster in pixels")
+            @DescribeParameter(name = "outputWidth", description = "Width of output raster in pixels")
                     Integer argOutputWidth,
-            @DescribeParameter(
-                            name = "outputHeight",
-                            description = "Height of output raster in pixels")
+            @DescribeParameter(name = "outputHeight", description = "Height of output raster in pixels")
                     Integer argOutputHeight,
             ProgressListener monitor)
             throws ProcessException {
@@ -198,8 +189,7 @@ public class HeatmapProcess implements VectorProcess {
         }
 
         /** -------------- Extract the input observation points ----------- */
-        HeatmapSurface heatMap =
-                new HeatmapSurface(radiusCells, argOutputEnv, gridWidth, gridHeight);
+        HeatmapSurface heatMap = new HeatmapSurface(radiusCells, argOutputEnv, gridWidth, gridHeight);
         try {
             extractPoints(obsFeatures, valueAttr, trans, heatMap);
         } catch (CQLException e) {
@@ -219,8 +209,7 @@ public class HeatmapProcess implements VectorProcess {
         if (pixelsPerCell > 1) outGrid = upsample(heatMapGrid, -999, outputWidth, outputHeight);
 
         // convert to the GridCoverage2D required for output
-        GridCoverageFactory gcf =
-                CoverageFactoryFinder.getGridCoverageFactory(GeoTools.getDefaultHints());
+        GridCoverageFactory gcf = CoverageFactoryFinder.getGridCoverageFactory(GeoTools.getDefaultHints());
         GridCoverage2D gridCov = gcf.create("Process Results", outGrid, argOutputEnv);
 
         // System.out.println("**************  Heatmap computed in " + sw.getTimeString());
@@ -276,19 +265,12 @@ public class HeatmapProcess implements VectorProcess {
      * @return The transformed query
      */
     public Query invertQuery(
-            @DescribeParameter(
-                            name = "radiusPixels",
-                            description = "Radius to use for the kernel",
-                            min = 0,
-                            max = 1)
+            @DescribeParameter(name = "radiusPixels", description = "Radius to use for the kernel", min = 0, max = 1)
                     Integer argRadiusPixels,
             // output image parameters
-            @DescribeParameter(
-                            name = "outputBBOX",
-                            description = "Georeferenced bounding box of the output")
+            @DescribeParameter(name = "outputBBOX", description = "Georeferenced bounding box of the output")
                     ReferencedEnvelope argOutputEnv,
-            @DescribeParameter(name = "outputWidth", description = "Width of the output raster")
-                    Integer argOutputWidth,
+            @DescribeParameter(name = "outputWidth", description = "Width of the output raster") Integer argOutputWidth,
             @DescribeParameter(name = "outputHeight", description = "Height of the output raster")
                     Integer argOutputHeight,
             Query targetQuery,
@@ -299,8 +281,7 @@ public class HeatmapProcess implements VectorProcess {
 
         int radiusPixels = argRadiusPixels > 0 ? argRadiusPixels : 0;
         // input parameters are required, so should be non-null
-        double queryBuffer =
-                radiusPixels / pixelSize(argOutputEnv, argOutputWidth, argOutputHeight);
+        double queryBuffer = radiusPixels / pixelSize(argOutputEnv, argOutputWidth, argOutputHeight);
         /*
          * if (argQueryBuffer != null) { queryBuffer = argQueryBuffer; }
          */
@@ -327,10 +308,7 @@ public class HeatmapProcess implements VectorProcess {
     }
 
     protected Filter expandBBox(Filter filter, double distance) {
-        return (Filter)
-                filter.accept(
-                        new BBOXExpandingFilterVisitor(distance, distance, distance, distance),
-                        null);
+        return (Filter) filter.accept(new BBOXExpandingFilterVisitor(distance, distance, distance, distance), null);
     }
 
     /**
@@ -343,10 +321,7 @@ public class HeatmapProcess implements VectorProcess {
      * @throws CQLException if attrName can't be parsed
      */
     protected void extractPoints(
-            SimpleFeatureCollection obsPoints,
-            String attrName,
-            MathTransform trans,
-            HeatmapSurface heatMap)
+            SimpleFeatureCollection obsPoints, String attrName, MathTransform trans, HeatmapSurface heatMap)
             throws CQLException {
         Expression attrExpr = null;
         if (attrName != null) {

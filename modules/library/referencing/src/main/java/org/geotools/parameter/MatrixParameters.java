@@ -158,10 +158,8 @@ public class MatrixParameters extends ParameterGroup implements ParameterDescrip
      * @throws ParameterNotFoundException if there is no parameter for the given name.
      */
     @Override
-    public GeneralParameterDescriptor descriptor(final String name)
-            throws ParameterNotFoundException {
-        return ((MatrixParameterDescriptors) descriptor)
-                .descriptor(name, numRow.intValue(), numCol.intValue());
+    public GeneralParameterDescriptor descriptor(final String name) throws ParameterNotFoundException {
+        return ((MatrixParameterDescriptors) descriptor).descriptor(name, numRow.intValue(), numCol.intValue());
     }
 
     /**
@@ -180,8 +178,7 @@ public class MatrixParameters extends ParameterGroup implements ParameterDescrip
     public ParameterValue<?> parameter(String name) throws ParameterNotFoundException {
         ensureNonNull("name", name);
         name = name.trim();
-        final MatrixParameterDescriptors descriptor =
-                ((MatrixParameterDescriptors) this.descriptor);
+        final MatrixParameterDescriptors descriptor = ((MatrixParameterDescriptors) this.descriptor);
         final String prefix = descriptor.prefix;
         RuntimeException cause = null;
         if (name.regionMatches(true, 0, prefix, 0, prefix.length())) {
@@ -221,8 +218,7 @@ public class MatrixParameters extends ParameterGroup implements ParameterDescrip
      * @return The parameter value for the specified matrix element (never {@code null}).
      * @throws IndexOutOfBoundsException if {@code row} or {@code column} is out of bounds.
      */
-    public final ParameterValue<Double> parameter(final int row, final int column)
-            throws IndexOutOfBoundsException {
+    public final ParameterValue<Double> parameter(final int row, final int column) throws IndexOutOfBoundsException {
         return parameter(row, column, numRow.intValue(), numCol.intValue());
     }
 
@@ -237,8 +233,7 @@ public class MatrixParameters extends ParameterGroup implements ParameterDescrip
      * @throws IndexOutOfBoundsException if {@code row} or {@code column} is out of bounds.
      */
     @SuppressWarnings("unchecked") // Because of array creation
-    private ParameterValue<Double> parameter(
-            final int row, final int column, final int numRow, final int numCol)
+    private ParameterValue<Double> parameter(final int row, final int column, final int numRow, final int numCol)
             throws IndexOutOfBoundsException {
         MatrixParameterDescriptors.checkIndice("row", row, numRow);
         MatrixParameterDescriptors.checkIndice("column", column, numCol);
@@ -257,11 +252,8 @@ public class MatrixParameters extends ParameterGroup implements ParameterDescrip
         }
         ParameterValue<Double> param = rowValues[column];
         if (param == null) {
-            rowValues[column] =
-                    param =
-                            new FloatParameter(
-                                    ((MatrixParameterDescriptors) descriptor)
-                                            .descriptor(row, column, numRow, numCol));
+            rowValues[column] = param = new FloatParameter(
+                    ((MatrixParameterDescriptors) descriptor).descriptor(row, column, numRow, numCol));
         }
         return param;
     }
@@ -272,8 +264,7 @@ public class MatrixParameters extends ParameterGroup implements ParameterDescrip
      */
     @Override
     public List<GeneralParameterDescriptor> descriptors() {
-        return ((MatrixParameterDescriptors) descriptor)
-                .descriptors(numRow.intValue(), numCol.intValue());
+        return ((MatrixParameterDescriptors) descriptor).descriptors(numRow.intValue(), numCol.intValue());
     }
 
     /**
@@ -351,8 +342,7 @@ public class MatrixParameters extends ParameterGroup implements ParameterDescrip
      */
     @SuppressWarnings("unchecked") // Because of array creation
     public void setMatrix(final Matrix matrix) {
-        final MatrixParameterDescriptors matrixDescriptor =
-                ((MatrixParameterDescriptors) this.descriptor);
+        final MatrixParameterDescriptors matrixDescriptor = ((MatrixParameterDescriptors) this.descriptor);
         final int numRow = matrix.getNumRow();
         final int numCol = matrix.getNumCol();
         this.numRow.setValue(numRow);
@@ -395,9 +385,7 @@ public class MatrixParameters extends ParameterGroup implements ParameterDescrip
             final int numCol = this.numCol.intValue();
             for (int j = 0; j < numRow; j++) {
                 for (int i = 0; i < numCol; i++) {
-                    if (!Utilities.equals(
-                            this.parameter(j, i, numRow, numCol),
-                            that.parameter(j, i, numRow, numCol))) {
+                    if (!Utilities.equals(this.parameter(j, i, numRow, numCol), that.parameter(j, i, numRow, numCol))) {
                         return false;
                     }
                 }

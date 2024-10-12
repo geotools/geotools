@@ -63,18 +63,9 @@ public class MeasurementRange<T extends Number & Comparable<? super T>> extends 
      * @since 2.5
      */
     public static MeasurementRange<Float> create(
-            float minimum,
-            boolean isMinIncluded,
-            float maximum,
-            boolean isMaxIncluded,
-            Unit<?> units) {
+            float minimum, boolean isMinIncluded, float maximum, boolean isMaxIncluded, Unit<?> units) {
         return new MeasurementRange<>(
-                Float.class,
-                Float.valueOf(minimum),
-                isMinIncluded,
-                Float.valueOf(maximum),
-                isMaxIncluded,
-                units);
+                Float.class, Float.valueOf(minimum), isMinIncluded, Float.valueOf(maximum), isMaxIncluded, units);
     }
 
     /**
@@ -100,18 +91,9 @@ public class MeasurementRange<T extends Number & Comparable<? super T>> extends 
      * @return The measurement range.
      */
     public static MeasurementRange<Double> create(
-            double minimum,
-            boolean isMinIncluded,
-            double maximum,
-            boolean isMaxIncluded,
-            Unit<?> units) {
+            double minimum, boolean isMinIncluded, double maximum, boolean isMaxIncluded, Unit<?> units) {
         return new MeasurementRange<>(
-                Double.class,
-                Double.valueOf(minimum),
-                isMinIncluded,
-                Double.valueOf(maximum),
-                isMaxIncluded,
-                units);
+                Double.class, Double.valueOf(minimum), isMinIncluded, Double.valueOf(maximum), isMaxIncluded, units);
     }
 
     /**
@@ -165,12 +147,8 @@ public class MeasurementRange<T extends Number & Comparable<? super T>> extends 
     /** Creates a new range using the same element class than this range. */
     @Override
     MeasurementRange<T> create(
-            final T minValue,
-            final boolean isMinIncluded,
-            final T maxValue,
-            final boolean isMaxIncluded) {
-        return new MeasurementRange<>(
-                elementClass, minValue, isMinIncluded, maxValue, isMaxIncluded, units);
+            final T minValue, final boolean isMinIncluded, final T maxValue, final boolean isMaxIncluded) {
+        return new MeasurementRange<>(elementClass, minValue, isMinIncluded, maxValue, isMaxIncluded, units);
     }
 
     /**
@@ -221,8 +199,7 @@ public class MeasurementRange<T extends Number & Comparable<? super T>> extends 
      */
     @Override
     <N extends Number & Comparable<? super N>> MeasurementRange<N> convertAndCast(
-            final Range<? extends Number> range, final Class<N> type)
-            throws IllegalArgumentException {
+            final Range<? extends Number> range, final Class<N> type) throws IllegalArgumentException {
         if (range instanceof MeasurementRange) {
             final MeasurementRange<?> casted = (MeasurementRange<?>) range;
             return casted.convertAndCast(type, units);

@@ -118,8 +118,7 @@ public class DefaultCompoundCRS extends AbstractCRS implements CompoundCRS {
         ensureNonNull("crs", crs);
         if (crs.length < 2) {
             throw new IllegalArgumentException(
-                    MessageFormat.format(
-                            ErrorKeys.MISSING_PARAMETER_$1, "crs[" + crs.length + ']'));
+                    MessageFormat.format(ErrorKeys.MISSING_PARAMETER_$1, "crs[" + crs.length + ']'));
         }
         final CoordinateSystem[] cs = new CoordinateSystem[crs.length];
         for (int i = 0; i < crs.length; i++) {
@@ -138,14 +137,11 @@ public class DefaultCompoundCRS extends AbstractCRS implements CompoundCRS {
      * <p><strong>WARNING:</strong> this method is invoked by constructors <em>before</em> the
      * {@linkplain #crs} field is set. Do not use this field.
      */
-    private List<? extends CoordinateReferenceSystem> copy(
-            List<? extends CoordinateReferenceSystem> crs) {
+    private List<? extends CoordinateReferenceSystem> copy(List<? extends CoordinateReferenceSystem> crs) {
         if (computeSingleCRS(crs)) {
             crs = singles; // Shares the same list.
         } else {
-            crs =
-                    UnmodifiableArrayList.wrap(
-                            crs.toArray(new CoordinateReferenceSystem[crs.size()]));
+            crs = UnmodifiableArrayList.wrap(crs.toArray(new CoordinateReferenceSystem[crs.size()]));
         }
         return crs;
     }
@@ -185,8 +181,7 @@ public class DefaultCompoundCRS extends AbstractCRS implements CompoundCRS {
         if (crs instanceof DefaultCompoundCRS) {
             singles = ((DefaultCompoundCRS) crs).getSingleCRS();
         } else if (crs instanceof CompoundCRS) {
-            final List<CoordinateReferenceSystem> elements =
-                    ((CompoundCRS) crs).getCoordinateReferenceSystems();
+            final List<CoordinateReferenceSystem> elements = ((CompoundCRS) crs).getCoordinateReferenceSystems();
             singles = new ArrayList<>(elements.size());
             getSingleCRS(elements, singles);
         } else {

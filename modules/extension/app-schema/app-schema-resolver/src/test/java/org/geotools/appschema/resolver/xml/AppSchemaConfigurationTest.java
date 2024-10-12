@@ -48,8 +48,7 @@ import org.junit.Test;
  */
 public class AppSchemaConfigurationTest {
 
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(AppSchemaConfigurationTest.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(AppSchemaConfigurationTest.class);
 
     /**
      * Set this to true if you want to see all the resolved locations. (Most useful when manually
@@ -91,13 +90,10 @@ public class AppSchemaConfigurationTest {
     /** Test we can {@link Schemas#findSchemas(Configuration)} with a catalog plus classpath. */
     @Test
     public void catalog() throws Exception {
-        Configuration configuration =
-                new AppSchemaConfiguration(
-                        "http://schemas.example.org/catalog-test",
-                        "http://schemas.example.org/catalog-test/catalog-test.xsd",
-                        new SchemaResolver(
-                                SchemaCatalog.build(
-                                        getClass().getResource("/test-data/catalog.xml"))));
+        Configuration configuration = new AppSchemaConfiguration(
+                "http://schemas.example.org/catalog-test",
+                "http://schemas.example.org/catalog-test/catalog-test.xsd",
+                new SchemaResolver(SchemaCatalog.build(getClass().getResource("/test-data/catalog.xml"))));
         SchemaIndex schemaIndex = null;
         try {
             schemaIndex = Schemas.findSchemas(configuration);
@@ -113,12 +109,10 @@ public class AppSchemaConfigurationTest {
             Assert.assertTrue(schemaLocation.startsWith("file:"));
             Assert.assertTrue(URLs.urlToFile(new URL(schemaLocation)).exists());
             Assert.assertNotNull(
-                    schemaIndex.getElementDeclaration(
-                            new QName("http://schemas.example.org/demo", "GeologicUnit")));
+                    schemaIndex.getElementDeclaration(new QName("http://schemas.example.org/demo", "GeologicUnit")));
             // test that relative include can be resolved
-            Assert.assertNotNull(
-                    schemaIndex.getElementDeclaration(
-                            new QName("http://schemas.example.org/demo", "InnerGeologicUnit")));
+            Assert.assertNotNull(schemaIndex.getElementDeclaration(
+                    new QName("http://schemas.example.org/demo", "InnerGeologicUnit")));
         } finally {
             if (schemaIndex != null) {
                 schemaIndex.destroy();
@@ -129,11 +123,10 @@ public class AppSchemaConfigurationTest {
     /** Test we can {@link Schemas#findSchemas(Configuration)} with classpath only. */
     @Test
     public void classpath() {
-        Configuration configuration =
-                new AppSchemaConfiguration(
-                        "urn:cgi:xmlns:CGI:GeoSciML:2.0",
-                        "http://www.geosciml.org/geosciml/2.0/xsd/geosciml.xsd",
-                        new SchemaResolver());
+        Configuration configuration = new AppSchemaConfiguration(
+                "urn:cgi:xmlns:CGI:GeoSciML:2.0",
+                "http://www.geosciml.org/geosciml/2.0/xsd/geosciml.xsd",
+                new SchemaResolver());
         SchemaIndex schemaIndex = null;
         try {
             schemaIndex = Schemas.findSchemas(configuration);
@@ -159,16 +152,12 @@ public class AppSchemaConfigurationTest {
     public void cache() throws Exception {
         // intentionally use a non-canonical cache path to ensure these handled correctly
         File cacheDirectory =
-                new File(
-                        URLs.urlToFile(
-                                AppSchemaConfigurationTest.class.getResource("/test-data/cache")),
-                        "../cache");
+                new File(URLs.urlToFile(AppSchemaConfigurationTest.class.getResource("/test-data/cache")), "../cache");
         SchemaResolver resolver = new SchemaResolver(new SchemaCache(cacheDirectory, false));
-        Configuration configuration =
-                new AppSchemaConfiguration(
-                        "http://schemas.example.org/cache-test",
-                        "http://schemas.example.org/cache-test/cache-test.xsd",
-                        resolver);
+        Configuration configuration = new AppSchemaConfiguration(
+                "http://schemas.example.org/cache-test",
+                "http://schemas.example.org/cache-test/cache-test.xsd",
+                resolver);
         SchemaIndex schemaIndex = null;
         try {
             schemaIndex = Schemas.findSchemas(configuration);
@@ -184,15 +173,13 @@ public class AppSchemaConfigurationTest {
             Assert.assertTrue(schemaLocation.startsWith("file:"));
             Assert.assertTrue(URLs.urlToFile(new URL(schemaLocation)).exists());
             Assert.assertNotNull(
-                    schemaIndex.getElementDeclaration(
-                            new QName("http://schemas.example.org/demo", "GeologicUnit")));
+                    schemaIndex.getElementDeclaration(new QName("http://schemas.example.org/demo", "GeologicUnit")));
             // test that cache path is not canonical
             Assert.assertNotEquals(
                     cacheDirectory.toString(), cacheDirectory.getCanonicalFile().toString());
             // test that relative include can be resolved despite non-canonical cache path
-            Assert.assertNotNull(
-                    schemaIndex.getElementDeclaration(
-                            new QName("http://schemas.example.org/demo", "InnerGeologicUnit")));
+            Assert.assertNotNull(schemaIndex.getElementDeclaration(
+                    new QName("http://schemas.example.org/demo", "InnerGeologicUnit")));
         } finally {
             if (schemaIndex != null) {
                 schemaIndex.destroy();
@@ -207,17 +194,14 @@ public class AppSchemaConfigurationTest {
      */
     @Test
     public void catalogCache() throws Exception {
-        File cacheDirectory =
-                URLs.urlToFile(AppSchemaConfigurationTest.class.getResource("/test-data/cache"));
-        SchemaResolver resolver =
-                new SchemaResolver(
-                        SchemaCatalog.build(getClass().getResource("/test-data/catalog.xml")),
-                        new SchemaCache(cacheDirectory, false));
-        Configuration configuration =
-                new AppSchemaConfiguration(
-                        "http://schemas.example.org/catalog-test",
-                        "http://schemas.example.org/catalog-test/catalog-cache-test.xsd",
-                        resolver);
+        File cacheDirectory = URLs.urlToFile(AppSchemaConfigurationTest.class.getResource("/test-data/cache"));
+        SchemaResolver resolver = new SchemaResolver(
+                SchemaCatalog.build(getClass().getResource("/test-data/catalog.xml")),
+                new SchemaCache(cacheDirectory, false));
+        Configuration configuration = new AppSchemaConfiguration(
+                "http://schemas.example.org/catalog-test",
+                "http://schemas.example.org/catalog-test/catalog-cache-test.xsd",
+                resolver);
         SchemaIndex schemaIndex = null;
         try {
             schemaIndex = Schemas.findSchemas(configuration);
@@ -233,12 +217,10 @@ public class AppSchemaConfigurationTest {
             Assert.assertTrue(schemaLocation.startsWith("file:"));
             Assert.assertTrue(URLs.urlToFile(new URL(schemaLocation)).exists());
             Assert.assertNotNull(
-                    schemaIndex.getElementDeclaration(
-                            new QName("http://schemas.example.org/demo", "GeologicUnit")));
+                    schemaIndex.getElementDeclaration(new QName("http://schemas.example.org/demo", "GeologicUnit")));
             // test that relative include can be resolved
-            Assert.assertNotNull(
-                    schemaIndex.getElementDeclaration(
-                            new QName("http://schemas.example.org/demo", "InnerGeologicUnit")));
+            Assert.assertNotNull(schemaIndex.getElementDeclaration(
+                    new QName("http://schemas.example.org/demo", "InnerGeologicUnit")));
         } finally {
             if (schemaIndex != null) {
                 schemaIndex.destroy();
@@ -249,17 +231,13 @@ public class AppSchemaConfigurationTest {
     /** Test we can resolve GML 3.2 schema on the classpath. */
     @Test
     public void classpathGml32() {
-        Configuration configuration =
-                new AppSchemaConfiguration(
-                        "http://www.opengis.net/gml/3.2",
-                        "http://schemas.opengis.net/gml/3.2.1/gml.xsd",
-                        new SchemaResolver());
+        Configuration configuration = new AppSchemaConfiguration(
+                "http://www.opengis.net/gml/3.2", "http://schemas.opengis.net/gml/3.2.1/gml.xsd", new SchemaResolver());
         SchemaIndex schemaIndex = null;
         try {
             schemaIndex = Schemas.findSchemas(configuration);
             Assert.assertNotNull(
-                    schemaIndex.getElementDeclaration(
-                            new QName("http://www.opengis.net/gml/3.2", "AbstractFeature")));
+                    schemaIndex.getElementDeclaration(new QName("http://www.opengis.net/gml/3.2", "AbstractFeature")));
         } finally {
             if (schemaIndex != null) {
                 schemaIndex.destroy();

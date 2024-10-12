@@ -34,16 +34,12 @@ public class ContourProcess implements VectorProcess {
     public SimpleFeatureCollection execute(
             @DescribeParameter(name = "features", description = "Input point feature collection")
                     FeatureCollection features,
-            @DescribeParameter(name = "propertyName", description = "PropertyName to be contoured")
-                    String propertyName,
-            @DescribeParameter(
-                            name = "levels",
-                            description = "Values of levels at which to generate contours")
+            @DescribeParameter(name = "propertyName", description = "PropertyName to be contoured") String propertyName,
+            @DescribeParameter(name = "levels", description = "Values of levels at which to generate contours")
                     double[] levels,
             @DescribeParameter(
                             name = "interval",
-                            description =
-                                    "Interval between contour values (ignored if levels parameter is supplied)",
+                            description = "Interval between contour values (ignored if levels parameter is supplied)",
                             min = 0,
                             minValue = 0)
                     Double interval,
@@ -56,8 +52,7 @@ public class ContourProcess implements VectorProcess {
                     Boolean simplify,
             @DescribeParameter(
                             name = "smooth",
-                            description =
-                                    "Indicates whether contour lines are smoothed using Bezier smoothing",
+                            description = "Indicates whether contour lines are smoothed using Bezier smoothing",
                             min = 0)
                     Boolean smooth,
             // @DescribeParameter(name = "roi", description = "Geometry delineating the region of

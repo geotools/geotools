@@ -208,11 +208,13 @@ public abstract class TestCaseSupport {
     protected void copy(final String name, String[] requiredExtensions, String[] optionalExtensions)
             throws IOException {
         for (String requiredExtension : requiredExtensions) {
-            Assert.assertTrue(TestData.copy(this, sibling(name, requiredExtension)).canRead());
+            Assert.assertTrue(
+                    TestData.copy(this, sibling(name, requiredExtension)).canRead());
         }
         for (String optionalExtension : optionalExtensions) {
             try {
-                Assert.assertTrue(TestData.copy(this, sibling(name, optionalExtension)).canRead());
+                Assert.assertTrue(
+                        TestData.copy(this, sibling(name, optionalExtension)).canRead());
             } catch (FileNotFoundException e) {
                 // Ignore: this file is optional.
             }
@@ -221,12 +223,9 @@ public abstract class TestCaseSupport {
 
     /** Returns the absolute path of a test file, given its location in the test data set */
     protected String getAbsolutePath(String testData) throws IOException {
-        if (testData.endsWith(".shp"))
-            copy(testData, new String[] {"shp", "dbf", "shx"}, new String[] {"prj"});
-        else if (testData.endsWith(".MIF"))
-            copy(testData, new String[] {"MIF", "MID"}, new String[0]);
-        else if (testData.endsWith(".tab"))
-            copy(testData, new String[] {"tab", "dat", "id", "map"}, new String[0]);
+        if (testData.endsWith(".shp")) copy(testData, new String[] {"shp", "dbf", "shx"}, new String[] {"prj"});
+        else if (testData.endsWith(".MIF")) copy(testData, new String[] {"MIF", "MID"}, new String[0]);
+        else if (testData.endsWith(".tab")) copy(testData, new String[] {"tab", "dat", "id", "map"}, new String[0]);
         File f = URLs.urlToFile(TestData.url(this, testData));
         return f.getAbsolutePath();
     }

@@ -64,30 +64,16 @@ public class ElementEncoder {
      * @param document The document used to create the encoded element.
      * @return The encoded value as an element.
      */
-    public Element encode(
-            Object value,
-            XSDElementDeclaration element,
-            Document document,
-            XSDTypeDefinition container) {
-        ElementEncodeExecutor executor =
-                new ElementEncodeExecutor(
-                        value,
-                        element,
-                        document,
-                        logger,
-                        (NamespaceSupport)
-                                context.getComponentInstanceOfType(NamespaceSupport.class));
+    public Element encode(Object value, XSDElementDeclaration element, Document document, XSDTypeDefinition container) {
+        ElementEncodeExecutor executor = new ElementEncodeExecutor(value, element, document, logger, (NamespaceSupport)
+                context.getComponentInstanceOfType(NamespaceSupport.class));
         BindingVisitorDispatch.walk(value, bindingWalker, element, executor, container, context);
         return executor.getEncodedElement();
     }
 
     public Attr encode(
-            Object value,
-            XSDAttributeDeclaration attribute,
-            Document document,
-            XSDTypeDefinition container) {
-        AttributeEncodeExecutor executor =
-                new AttributeEncodeExecutor(value, attribute, document, logger);
+            Object value, XSDAttributeDeclaration attribute, Document document, XSDTypeDefinition container) {
+        AttributeEncodeExecutor executor = new AttributeEncodeExecutor(value, attribute, document, logger);
         BindingVisitorDispatch.walk(value, bindingWalker, attribute, executor, container, context);
         return executor.getEncodedAttribute();
     }

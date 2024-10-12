@@ -40,11 +40,9 @@ import org.geotools.util.logging.Logging;
  */
 public class HTTPURIHandler extends URIHandlerImpl {
 
-    static final int DEFAULT_CONNECTION_TIMEOUT =
-            Integer.getInteger("org.geotools.xsd.http.connectionTimeout", 10000);
+    static final int DEFAULT_CONNECTION_TIMEOUT = Integer.getInteger("org.geotools.xsd.http.connectionTimeout", 10000);
 
-    static final int DEFAULT_READ_TIMEOUT =
-            Integer.getInteger("org.geotools.xsd.http.readTimeout", 10000);
+    static final int DEFAULT_READ_TIMEOUT = Integer.getInteger("org.geotools.xsd.http.readTimeout", 10000);
 
     static final Logger LOGGER = Logging.getLogger(HTTPURIHandler.class);
 
@@ -74,9 +72,7 @@ public class HTTPURIHandler extends URIHandlerImpl {
             InputStream result = httpConnection.getInputStream();
             Map<Object, Object> response = getResponse(options);
             if (response != null) {
-                response.put(
-                        URIConverter.RESPONSE_TIME_STAMP_PROPERTY,
-                        httpConnection.getLastModified());
+                response.put(URIConverter.RESPONSE_TIME_STAMP_PROPERTY, httpConnection.getLastModified());
             }
             return result;
         } catch (RuntimeException exception) {

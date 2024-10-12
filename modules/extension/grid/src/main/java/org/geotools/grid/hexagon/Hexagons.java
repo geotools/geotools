@@ -78,11 +78,7 @@ public class Hexagons {
      *     is {@code null}
      */
     public static Hexagon create(
-            double minX,
-            double minY,
-            double sideLen,
-            HexagonOrientation orientation,
-            CoordinateReferenceSystem crs) {
+            double minX, double minY, double sideLen, HexagonOrientation orientation, CoordinateReferenceSystem crs) {
         return new HexagonImpl(minX, minY, sideLen, orientation, crs);
     }
 
@@ -100,10 +96,7 @@ public class Hexagons {
      *     GridFeatureBuilder} are both non-null but different
      */
     public static SimpleFeatureSource createGrid(
-            ReferencedEnvelope bounds,
-            double sideLen,
-            HexagonOrientation orientation,
-            GridFeatureBuilder gridBuilder) {
+            ReferencedEnvelope bounds, double sideLen, HexagonOrientation orientation, GridFeatureBuilder gridBuilder) {
 
         return createGrid(bounds, sideLen, -1, orientation, gridBuilder);
     }
@@ -144,13 +137,9 @@ public class Hexagons {
         }
 
         CoordinateReferenceSystem boundsCRS = bounds.getCoordinateReferenceSystem();
-        CoordinateReferenceSystem builderCRS =
-                gridFeatureBuilder.getType().getCoordinateReferenceSystem();
-        if (boundsCRS != null
-                && builderCRS != null
-                && !CRS.equalsIgnoreMetadata(boundsCRS, builderCRS)) {
-            throw new IllegalArgumentException(
-                    "Different CRS set for bounds and the feature builder");
+        CoordinateReferenceSystem builderCRS = gridFeatureBuilder.getType().getCoordinateReferenceSystem();
+        if (boundsCRS != null && builderCRS != null && !CRS.equalsIgnoreMetadata(boundsCRS, builderCRS)) {
+            throw new IllegalArgumentException("Different CRS set for bounds and the feature builder");
         }
 
         final ListFeatureCollection fc = new ListFeatureCollection(gridFeatureBuilder.getType());

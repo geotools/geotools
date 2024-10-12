@@ -60,10 +60,7 @@ public class ArcTypeBinding extends AbstractComplexBinding {
     CoordinateSequenceFactory csFactory;
     ArcParameters arcParameters;
 
-    public ArcTypeBinding(
-            GeometryFactory gFactory,
-            CoordinateSequenceFactory csFactory,
-            ArcParameters arcParameters) {
+    public ArcTypeBinding(GeometryFactory gFactory, CoordinateSequenceFactory csFactory, ArcParameters arcParameters) {
         this.gFactory = gFactory;
         this.csFactory = csFactory;
         this.arcParameters = arcParameters;
@@ -106,15 +103,13 @@ public class ArcTypeBinding extends AbstractComplexBinding {
         CoordinateSequence cs = arcLineString.getCoordinateSequence();
         if (cs.size() < 3) {
             // maybe log this instead and return null
-            throw new RuntimeException(
-                    "Number of coordinates in an arc string must be at least 3, "
-                            + cs.size()
-                            + " were specified: "
-                            + arcLineString);
+            throw new RuntimeException("Number of coordinates in an arc string must be at least 3, "
+                    + cs.size()
+                    + " were specified: "
+                    + arcLineString);
         }
 
-        CurvedGeometryFactory factory =
-                GML3ParsingUtils.getCurvedGeometryFactory(arcParameters, gFactory, cs);
+        CurvedGeometryFactory factory = GML3ParsingUtils.getCurvedGeometryFactory(arcParameters, gFactory, cs);
 
         return factory.createCurvedGeometry(cs);
     }

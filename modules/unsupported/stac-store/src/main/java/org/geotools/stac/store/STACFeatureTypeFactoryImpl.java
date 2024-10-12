@@ -61,8 +61,7 @@ class STACFeatureTypeFactoryImpl extends FeatureTypeFactoryImpl {
 
         @Override
         public AttributeDescriptor getDescriptor(String name) {
-            if (name.startsWith(STACFeatureSource.ASSETS + "/"))
-                return super.getDescriptor(STACFeatureSource.ASSETS);
+            if (name.startsWith(STACFeatureSource.ASSETS + "/")) return super.getDescriptor(STACFeatureSource.ASSETS);
             return super.getDescriptor(name);
         }
     }

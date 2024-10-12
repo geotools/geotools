@@ -106,9 +106,9 @@ public class MultiplyConst extends OperationJAI {
     }
 
     @Override
-    protected void handleJAIEXTParams(
-            ParameterBlockJAI parameters, ParameterValueGroup parameters2) {
-        GridCoverage2D source = (GridCoverage2D) parameters2.parameter("source0").getValue();
+    protected void handleJAIEXTParams(ParameterBlockJAI parameters, ParameterValueGroup parameters2) {
+        GridCoverage2D source =
+                (GridCoverage2D) parameters2.parameter("source0").getValue();
         if (JAIExt.isJAIExtOperation("operationConst")) {
             parameters.set(Operator.MULTIPLY, 1);
         }
@@ -123,7 +123,6 @@ public class MultiplyConst extends OperationJAI {
             MathTransform gridToCRS,
             GridCoverage2D[] sources,
             Parameters parameters) {
-        return handleROINoDataProperties(
-                null, parameters.parameters, sources[0], "operationConst", 2, 3, 4);
+        return handleROINoDataProperties(null, parameters.parameters, sources[0], "operationConst", 2, 3, 4);
     }
 }

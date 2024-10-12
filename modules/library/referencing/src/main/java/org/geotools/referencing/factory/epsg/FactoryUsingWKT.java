@@ -175,17 +175,16 @@ public class FactoryUsingWKT extends DeferredAuthorityFactory implements CRSAuth
                 case 1:
                     authority = authorities[0];
                     break;
-                default:
-                    {
-                        final CitationImpl c = new CitationImpl(authorities[0]);
-                        final Collection<Identifier> identifiers = c.getIdentifiers();
-                        for (int i = 1; i < authorities.length; i++) {
-                            identifiers.addAll(authorities[i].getIdentifiers());
-                        }
-                        c.freeze();
-                        authority = c;
-                        break;
+                default: {
+                    final CitationImpl c = new CitationImpl(authorities[0]);
+                    final Collection<Identifier> identifiers = c.getIdentifiers();
+                    for (int i = 1; i < authorities.length; i++) {
+                        identifiers.addAll(authorities[i].getIdentifiers());
                     }
+                    c.freeze();
+                    authority = c;
+                    break;
+                }
             }
         }
         return authority;
@@ -250,38 +249,30 @@ public class FactoryUsingWKT extends DeferredAuthorityFactory implements CRSAuth
         try {
             URL url = getDefinitionsURL();
             if (url == null) {
-                throw new FactoryNotFoundException(
-                        MessageFormat.format(ErrorKeys.FILE_DOES_NOT_EXIST_$1, FILENAME));
+                throw new FactoryNotFoundException(MessageFormat.format(ErrorKeys.FILE_DOES_NOT_EXIST_$1, FILENAME));
             }
-            final Iterator<? extends Identifier> ids = getAuthority().getIdentifiers().iterator();
+            final Iterator<? extends Identifier> ids =
+                    getAuthority().getIdentifiers().iterator();
             final String authority = ids.hasNext() ? ids.next().getCode() : "EPSG";
             final LogRecord record =
-                    Loggings.format(
-                            Level.CONFIG,
-                            LoggingKeys.USING_FILE_AS_FACTORY_$2,
-                            url.getPath(),
-                            authority);
+                    Loggings.format(Level.CONFIG, LoggingKeys.USING_FILE_AS_FACTORY_$2, url.getPath(), authority);
             record.setLoggerName(LOGGER.getName());
             LOGGER.log(record);
             return new PropertyAuthorityFactory(factories, getAuthorities(), url);
         } catch (IOException exception) {
-            throw new FactoryException(
-                    MessageFormat.format(ErrorKeys.CANT_READ_$1, FILENAME), exception);
+            throw new FactoryException(MessageFormat.format(ErrorKeys.CANT_READ_$1, FILENAME), exception);
         }
     }
 
     /** Returns a factory of the given type. */
     private static final <T extends AbstractAuthorityFactory> T getFactory(final Class<T> type) {
         return type.cast(
-                ReferencingFactoryFinder.getCRSAuthorityFactory(
-                        "EPSG", new Hints(Hints.CRS_AUTHORITY_FACTORY, type)));
+                ReferencingFactoryFinder.getCRSAuthorityFactory("EPSG", new Hints(Hints.CRS_AUTHORITY_FACTORY, type)));
     }
 
-    protected static final <T extends AbstractAuthorityFactory> T getFactory(
-            String authority, final Class<T> type) {
-        return type.cast(
-                ReferencingFactoryFinder.getCRSAuthorityFactory(
-                        authority, new Hints(Hints.CRS_AUTHORITY_FACTORY, type)));
+    protected static final <T extends AbstractAuthorityFactory> T getFactory(String authority, final Class<T> type) {
+        return type.cast(ReferencingFactoryFinder.getCRSAuthorityFactory(
+                authority, new Hints(Hints.CRS_AUTHORITY_FACTORY, type)));
     }
 
     /**
@@ -401,8 +392,7 @@ public class FactoryUsingWKT extends DeferredAuthorityFactory implements CRSAuth
     }
 
     /** Implementation of the {@link #main} method, shared by subclasses. */
-    protected static void main(String[] args, final Class<? extends FactoryUsingWKT> type)
-            throws FactoryException {
+    protected static void main(String[] args, final Class<? extends FactoryUsingWKT> type) throws FactoryException {
         final Arguments arguments = new Arguments(args);
         Locale.setDefault(arguments.locale);
         final boolean duplicated = arguments.getFlag("-duplicated");

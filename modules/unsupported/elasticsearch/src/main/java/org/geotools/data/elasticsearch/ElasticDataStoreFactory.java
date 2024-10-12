@@ -53,8 +53,7 @@ public class ElasticDataStoreFactory implements DataStoreFactorySpi {
      * System property name for flag indicating whether to force use of authenticated GeoServer user
      * when submitting requests.
      */
-    private static final String FORCE_RUNAS_PROPERTY =
-            "org.geoserver.elasticsearch.xpack.force-runas";
+    private static final String FORCE_RUNAS_PROPERTY = "org.geoserver.elasticsearch.xpack.force-runas";
 
     /** Counter of HTTP threads we generate */
     static final AtomicInteger httpThreads = new AtomicInteger(1);
@@ -64,142 +63,110 @@ public class ElasticDataStoreFactory implements DataStoreFactorySpi {
     public static final String DESCRIPTION = "Elasticsearch Index";
 
     /** Cluster hostnames. * */
-    public static final Param HOSTNAME =
-            new Param(
-                    "elasticsearch_host",
-                    String.class,
-                    "Host(s) with optional HTTP scheme and port.",
-                    true,
-                    "localhost");
+    public static final Param HOSTNAME = new Param(
+            "elasticsearch_host", String.class, "Host(s) with optional HTTP scheme and port.", true, "localhost");
 
     /** Cluster client port. * */
-    public static final Param HOSTPORT =
-            new Param(
-                    "elasticsearch_port",
-                    Integer.class,
-                    "Default HTTP port. Ignored if the host includes the port.",
-                    true,
-                    9200);
+    public static final Param HOSTPORT = new Param(
+            "elasticsearch_port",
+            Integer.class,
+            "Default HTTP port. Ignored if the host includes the port.",
+            true,
+            9200);
 
     /** Index name. * */
     public static final Param INDEX_NAME =
             new Param("index_name", String.class, "Index defining type (supports wildcard)", true);
 
     /** Username. */
-    public static final Param USER =
-            new Param("user", String.class, "Elasticsearch user", isForceRunas());
+    public static final Param USER = new Param("user", String.class, "Elasticsearch user", isForceRunas());
 
     /** Password. */
-    public static final Param PASSWD =
-            new Param(
-                    "passwd",
-                    String.class,
-                    "Elasticsearch password",
-                    isForceRunas(),
-                    null,
-                    Collections.singletonMap(Parameter.IS_PASSWORD, Boolean.TRUE));
+    public static final Param PASSWD = new Param(
+            "passwd",
+            String.class,
+            "Elasticsearch password",
+            isForceRunas(),
+            null,
+            Collections.singletonMap(Parameter.IS_PASSWORD, Boolean.TRUE));
 
-    public static final Param RUNAS_GEOSERVER_USER =
-            new Param(
-                    "runas_geoserver_user",
-                    Boolean.class,
-                    "Flag indicating whether to submit document search requests on behalf of the authenticated GeoServer user",
-                    false,
-                    isForceRunas());
+    public static final Param RUNAS_GEOSERVER_USER = new Param(
+            "runas_geoserver_user",
+            Boolean.class,
+            "Flag indicating whether to submit document search requests on behalf of the authenticated GeoServer user",
+            false,
+            isForceRunas());
 
     /** Username. */
-    public static final Param PROXY_USER =
-            new Param(
-                    "proxy_user",
-                    String.class,
-                    "Elasticsearch user for document search requests. If not provided the default user is used for all requests.",
-                    isForceRunas());
+    public static final Param PROXY_USER = new Param(
+            "proxy_user",
+            String.class,
+            "Elasticsearch user for document search requests. If not provided the default user is used for all requests.",
+            isForceRunas());
 
     /** Password. */
-    public static final Param PROXY_PASSWD =
-            new Param(
-                    "proxy_passwd",
-                    String.class,
-                    "Elasticsearch proxy user password.",
-                    isForceRunas(),
-                    null,
-                    Collections.singletonMap(Parameter.IS_PASSWORD, Boolean.TRUE));
+    public static final Param PROXY_PASSWD = new Param(
+            "proxy_passwd",
+            String.class,
+            "Elasticsearch proxy user password.",
+            isForceRunas(),
+            null,
+            Collections.singletonMap(Parameter.IS_PASSWORD, Boolean.TRUE));
 
-    public static final Param SSL_REJECT_UNAUTHORIZED =
-            new Param(
-                    "ssl_reject_unauthorized",
-                    Boolean.class,
-                    "Whether to validate the server certificate during the SSL handshake for https connections",
-                    false,
-                    true);
+    public static final Param SSL_REJECT_UNAUTHORIZED = new Param(
+            "ssl_reject_unauthorized",
+            Boolean.class,
+            "Whether to validate the server certificate during the SSL handshake for https connections",
+            false,
+            true);
 
     public static final Param SOURCE_FILTERING_ENABLED =
-            new Param(
-                    "source_filtering_enabled",
-                    Boolean.class,
-                    "Enable source field filtering",
-                    false,
-                    false);
+            new Param("source_filtering_enabled", Boolean.class, "Enable source field filtering", false, false);
 
-    public static final Param SCROLL_ENABLED =
-            new Param(
-                    "scroll_enabled",
-                    Boolean.class,
-                    "Use scan search type instead of dfs_query_then_fetch",
-                    false,
-                    false);
+    public static final Param SCROLL_ENABLED = new Param(
+            "scroll_enabled", Boolean.class, "Use scan search type instead of dfs_query_then_fetch", false, false);
 
     public static final Param SCROLL_SIZE =
-            new Param(
-                    "scroll_size",
-                    Long.class,
-                    "Scroll size (ignored if scroll_enabled=false)",
-                    false,
-                    20);
+            new Param("scroll_size", Long.class, "Scroll size (ignored if scroll_enabled=false)", false, 20);
 
-    public static final Param SCROLL_TIME_SECONDS =
-            new Param(
-                    "scroll_time",
-                    Integer.class,
-                    "Time to keep the scroll open in seconds (ignored if scroll_enabled=false)",
-                    false,
-                    120);
+    public static final Param SCROLL_TIME_SECONDS = new Param(
+            "scroll_time",
+            Integer.class,
+            "Time to keep the scroll open in seconds (ignored if scroll_enabled=false)",
+            false,
+            120);
 
     public static final Param DEFAULT_MAX_FEATURES =
             new Param("default_max_features", Integer.class, "Default max features", false, 100);
 
-    public static final Param ARRAY_ENCODING =
-            new Param(
-                    "array_encoding",
-                    String.class,
-                    "Array encoding strategy. Allowed values are \"JSON\" (keep arrays) "
-                            + " and \"CSV\" (URL encode and join array elements).",
-                    false,
-                    "JSON");
+    public static final Param ARRAY_ENCODING = new Param(
+            "array_encoding",
+            String.class,
+            "Array encoding strategy. Allowed values are \"JSON\" (keep arrays) "
+                    + " and \"CSV\" (URL encode and join array elements).",
+            false,
+            "JSON");
 
-    public static final Param GRID_SIZE =
-            new Param(
-                    "grid_size",
-                    Long.class,
-                    "Hint for Geohash grid size (nrow*ncol)",
-                    false,
-                    65536L); // number of pixels in a 256*256 tile
+    public static final Param GRID_SIZE = new Param(
+            "grid_size",
+            Long.class,
+            "Hint for Geohash grid size (nrow*ncol)",
+            false,
+            65536L); // number of pixels in a 256*256 tile
 
-    public static final Param GRID_THRESHOLD =
-            new Param(
-                    "grid_threshold",
-                    Double.class,
-                    "Geohash grid aggregation precision will be the minimum necessary to satisfy actual_grid_size/grid_size>grid_threshold",
-                    false,
-                    0.05);
+    public static final Param GRID_THRESHOLD = new Param(
+            "grid_threshold",
+            Double.class,
+            "Geohash grid aggregation precision will be the minimum necessary to satisfy actual_grid_size/grid_size>grid_threshold",
+            false,
+            0.05);
 
-    public static final Param RESPONSE_BUFFER_LIMIT =
-            new Param(
-                    "response_buffer_limit",
-                    Integer.class,
-                    "Maximum number of bytes to buffer in memory when reading responses from Elasticsearch",
-                    false,
-                    104857600);
+    public static final Param RESPONSE_BUFFER_LIMIT = new Param(
+            "response_buffer_limit",
+            Integer.class,
+            "Maximum number of bytes to buffer in memory when reading responses from Elasticsearch",
+            false,
+            104857600);
 
     public static final Param[] PARAMS = {
         HOSTNAME,
@@ -275,41 +242,37 @@ public class ElasticDataStoreFactory implements DataStoreFactorySpi {
         final RestClient client = createRestClient(params, user, passwd);
 
         @SuppressWarnings("PMD.CloseResource") // returned as part of the store, managed there
-        final RestClient proxyClient =
-                proxyUser != null ? createRestClient(params, proxyUser, proxyPasswd) : null;
+        final RestClient proxyClient = proxyUser != null ? createRestClient(params, proxyUser, proxyPasswd) : null;
 
         return createDataStore(client, proxyClient, params);
     }
 
-    public DataStore createDataStore(
-            RestClient client, RestClient proxyClient, Map<String, ?> params) throws IOException {
+    public DataStore createDataStore(RestClient client, RestClient proxyClient, Map<String, ?> params)
+            throws IOException {
         final String indexName = (String) INDEX_NAME.lookUp(params);
         final String arrayEncoding = getValue(ARRAY_ENCODING, params);
         final boolean runAsGeoServerUser = getValue(RUNAS_GEOSERVER_USER, params);
         final int responseBufferLimit = getValue(RESPONSE_BUFFER_LIMIT, params);
         if (isForceRunas() && !runAsGeoServerUser) {
-            throw new IllegalArgumentException(
-                    RUNAS_GEOSERVER_USER.key
-                            + " is disabled but "
-                            + FORCE_RUNAS_PROPERTY
-                            + " is set. "
-                            + "Enable "
-                            + RUNAS_GEOSERVER_USER.key
-                            + " or unset "
-                            + FORCE_RUNAS_PROPERTY
-                            + " in the system environment.");
+            throw new IllegalArgumentException(RUNAS_GEOSERVER_USER.key
+                    + " is disabled but "
+                    + FORCE_RUNAS_PROPERTY
+                    + " is set. "
+                    + "Enable "
+                    + RUNAS_GEOSERVER_USER.key
+                    + " or unset "
+                    + FORCE_RUNAS_PROPERTY
+                    + " in the system environment.");
         }
 
         final ElasticDataStore dataStore =
-                new ElasticDataStore(
-                        client, proxyClient, indexName, runAsGeoServerUser, responseBufferLimit);
+                new ElasticDataStore(client, proxyClient, indexName, runAsGeoServerUser, responseBufferLimit);
         dataStore.setDefaultMaxFeatures(getValue(DEFAULT_MAX_FEATURES, params));
         dataStore.setSourceFilteringEnabled(getValue(SOURCE_FILTERING_ENABLED, params));
         dataStore.setScrollEnabled(getValue(SCROLL_ENABLED, params));
         dataStore.setScrollSize(((Number) getValue(SCROLL_SIZE, params)).longValue());
         dataStore.setScrollTime(getValue(SCROLL_TIME_SECONDS, params));
-        dataStore.setArrayEncoding(
-                ElasticDataStore.ArrayEncoding.valueOf(arrayEncoding.toUpperCase()));
+        dataStore.setArrayEncoding(ElasticDataStore.ArrayEncoding.valueOf(arrayEncoding.toUpperCase()));
         dataStore.setGridSize((Long) GRID_SIZE.lookUp(params));
         dataStore.setGridThreshold((Double) GRID_THRESHOLD.lookUp(params));
         return dataStore;
@@ -319,32 +282,24 @@ public class ElasticDataStoreFactory implements DataStoreFactorySpi {
         return createRestClient(params, null, null);
     }
 
-    private RestClient createRestClient(Map<String, ?> params, String user, String password)
-            throws IOException {
+    private RestClient createRestClient(Map<String, ?> params, String user, String password) throws IOException {
         final String hostName = getValue(HOSTNAME, params);
         final String[] hosts = hostName.split(",");
         final Integer defaultPort = getValue(HOSTPORT, params);
         final Boolean sslRejectUnauthorized = getValue(SSL_REJECT_UNAUTHORIZED, params);
         final String adminUser = getValue(USER, params);
-        final String type =
-                user == null || adminUser == null || user.equals(adminUser)
-                        ? "ADMIN"
-                        : "PROXY_USER";
+        final String type = user == null || adminUser == null || user.equals(adminUser) ? "ADMIN" : "PROXY_USER";
 
-        final Pattern pattern =
-                Pattern.compile("(?<scheme>https?)?(://)?(?<host>[^:]+):?(?<port>\\d+)?");
+        final Pattern pattern = Pattern.compile("(?<scheme>https?)?(://)?(?<host>[^:]+):?(?<port>\\d+)?");
         final HttpHost[] httpHosts = new HttpHost[hosts.length];
         final AuthScope[] auths = new AuthScope[hosts.length];
         for (int index = 0; index < hosts.length; index++) {
             final Matcher matcher = pattern.matcher(hosts[index].trim());
             if (matcher.find()) {
-                final String scheme =
-                        matcher.group("scheme") != null ? matcher.group("scheme") : "http";
+                final String scheme = matcher.group("scheme") != null ? matcher.group("scheme") : "http";
                 final String host = matcher.group("host");
                 final Integer port =
-                        matcher.group("port") != null
-                                ? Integer.valueOf(matcher.group("port"))
-                                : defaultPort;
+                        matcher.group("port") != null ? Integer.valueOf(matcher.group("port")) : defaultPort;
                 httpHosts[index] = new HttpHost(host, port, scheme);
                 auths[index] = new AuthScope(host, port);
             } else {
@@ -355,64 +310,48 @@ public class ElasticDataStoreFactory implements DataStoreFactorySpi {
         final RestClientBuilder builder = createClientBuilder(httpHosts);
 
         if (user != null) {
-            builder.setRequestConfigCallback(
-                    (b) -> {
-                        LOGGER.finest(String.format("Calling %s setRequestConfigCallback", type));
-                        return b.setAuthenticationEnabled(true);
-                    });
+            builder.setRequestConfigCallback((b) -> {
+                LOGGER.finest(String.format("Calling %s setRequestConfigCallback", type));
+                return b.setAuthenticationEnabled(true);
+            });
         }
 
-        builder.setHttpClientConfigCallback(
-                (httpClientBuilder) -> {
-                    LOGGER.finest(String.format("Calling %s customizeHttpClient", type));
+        builder.setHttpClientConfigCallback((httpClientBuilder) -> {
+            LOGGER.finest(String.format("Calling %s customizeHttpClient", type));
 
-                    httpClientBuilder.setThreadFactory(
-                            (run) -> {
-                                final Thread thread = new Thread(run);
-                                thread.setDaemon(true);
-                                thread.setName(
-                                        String.format(
-                                                "esrest-asynchttp-%s-%d",
-                                                type, httpThreads.getAndIncrement()));
-                                return thread;
-                            });
+            httpClientBuilder.setThreadFactory((run) -> {
+                final Thread thread = new Thread(run);
+                thread.setDaemon(true);
+                thread.setName(String.format("esrest-asynchttp-%s-%d", type, httpThreads.getAndIncrement()));
+                return thread;
+            });
 
-                    httpClientBuilder.useSystemProperties();
+            httpClientBuilder.useSystemProperties();
 
-                    if (!sslRejectUnauthorized) {
-                        httpClientBuilder.setSSLHostnameVerifier((host, session) -> true);
-                        try {
-                            httpClientBuilder.setSSLContext(
-                                    SSLContextBuilder.create()
-                                            .loadTrustMaterial((chain, authType) -> true)
-                                            .build());
-                        } catch (KeyManagementException
-                                | NoSuchAlgorithmException
-                                | KeyStoreException e) {
-                            throw new UncheckedIOException(
-                                    new IOException("Unable to create SSLContext", e));
-                        }
-                    }
+            if (!sslRejectUnauthorized) {
+                httpClientBuilder.setSSLHostnameVerifier((host, session) -> true);
+                try {
+                    httpClientBuilder.setSSLContext(SSLContextBuilder.create()
+                            .loadTrustMaterial((chain, authType) -> true)
+                            .build());
+                } catch (KeyManagementException | NoSuchAlgorithmException | KeyStoreException e) {
+                    throw new UncheckedIOException(new IOException("Unable to create SSLContext", e));
+                }
+            }
 
-                    if (user != null) {
-                        final CredentialsProvider credentialsProvider =
-                                new BasicCredentialsProvider();
-                        final Credentials credentials =
-                                new org.apache.http.auth.UsernamePasswordCredentials(
-                                        user, password);
-                        for (AuthScope scope : auths) {
-                            credentialsProvider.setCredentials(scope, credentials);
-                        }
+            if (user != null) {
+                final CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
+                final Credentials credentials = new org.apache.http.auth.UsernamePasswordCredentials(user, password);
+                for (AuthScope scope : auths) {
+                    credentialsProvider.setCredentials(scope, credentials);
+                }
 
-                        httpClientBuilder.setDefaultCredentialsProvider(credentialsProvider);
-                    }
-                    return httpClientBuilder;
-                });
+                httpClientBuilder.setDefaultCredentialsProvider(credentialsProvider);
+            }
+            return httpClientBuilder;
+        });
 
-        LOGGER.fine(
-                String.format(
-                        "Building a %s RestClient for %s @ %s:%d",
-                        type, user, hostName, defaultPort));
+        LOGGER.fine(String.format("Building a %s RestClient for %s @ %s:%d", type, user, hostName, defaultPort));
         return builder.build();
     }
 

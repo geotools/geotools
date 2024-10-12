@@ -78,10 +78,7 @@ public final class FilterToTextUtil {
 
     /** builds: left predicate AND right predicate */
     public static Object buildBinaryLogicalOperator(
-            final String operator,
-            FilterVisitor visitor,
-            BinaryLogicOperator filter,
-            Object extraData) {
+            final String operator, FilterVisitor visitor, BinaryLogicOperator filter, Object extraData) {
 
         LOGGER.finer("exporting binary logic filter");
 
@@ -136,8 +133,7 @@ public final class FilterToTextUtil {
      * @param operator an operator
      * @return SringBuffer
      */
-    public static Object buildComparison(
-            BinaryComparisonOperator filter, Object extraData, String operator) {
+    public static Object buildComparison(BinaryComparisonOperator filter, Object extraData, String operator) {
 
         StringBuilder output = asStringBuilder(extraData);
 
@@ -208,10 +204,7 @@ public final class FilterToTextUtil {
     }
 
     public static Object buildDistanceBufferOperation(
-            String geoOperation,
-            DistanceBufferOperator filter,
-            Object extraData,
-            ExpressionToText visitor) {
+            String geoOperation, DistanceBufferOperator filter, Object extraData, ExpressionToText visitor) {
         LOGGER.finer("exporting " + geoOperation);
         StringBuilder output = asStringBuilder(extraData);
 
@@ -262,10 +255,7 @@ public final class FilterToTextUtil {
     }
 
     public static Object buildBinarySpatialOperator(
-            String spatialOperator,
-            BinarySpatialOperator filter,
-            Object extraData,
-            ExpressionToText visitor) {
+            String spatialOperator, BinarySpatialOperator filter, Object extraData, ExpressionToText visitor) {
         LOGGER.finer("exporting " + spatialOperator);
         StringBuilder output = asStringBuilder(extraData);
 

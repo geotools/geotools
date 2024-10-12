@@ -136,8 +136,8 @@ public interface DataStore extends DataAccess<SimpleFeatureType, SimpleFeature> 
      * @throws IOException if data access errors occur
      * @return an instance of {@code FeatureReader}
      */
-    FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader(
-            Query query, Transaction transaction) throws IOException;
+    FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader(Query query, Transaction transaction)
+            throws IOException;
 
     /**
      * Gets a {@code FeatureWriter} to modify features in this {@code DataStore}. {@code
@@ -167,8 +167,8 @@ public interface DataStore extends DataAccess<SimpleFeatureType, SimpleFeature> 
      * @throws IOException if data access errors occur
      * @see #getFeatureWriterAppend(String, Transaction)
      */
-    FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(
-            String typeName, Transaction transaction) throws IOException;
+    FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(String typeName, Transaction transaction)
+            throws IOException;
 
     /**
      * Gets a {@code FeatureWriter} that can add new features to the {@code DataStore}.
@@ -181,8 +181,8 @@ public interface DataStore extends DataAccess<SimpleFeatureType, SimpleFeature> 
      * @return an instance of {@code FeatureWriter} that can only be used to append new features
      * @throws IOException if data access errors occur
      */
-    FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriterAppend(
-            String typeName, Transaction transaction) throws IOException;
+    FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriterAppend(String typeName, Transaction transaction)
+            throws IOException;
 
     /**
      * Retrieve a per featureID based locking service from this {@code DataStore}.

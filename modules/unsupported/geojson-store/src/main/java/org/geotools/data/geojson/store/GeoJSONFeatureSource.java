@@ -70,8 +70,7 @@ public class GeoJSONFeatureSource extends ContentFeatureSource {
                 try (FeatureIterator<SimpleFeature> itr = reader.getIterator()) {
                     while (itr.hasNext()) {
                         SimpleFeature f = itr.next();
-                        env.expandToInclude(
-                                ((Geometry) f.getDefaultGeometry()).getEnvelopeInternal());
+                        env.expandToInclude(((Geometry) f.getDefaultGeometry()).getEnvelopeInternal());
                     }
                 }
             }
@@ -98,8 +97,7 @@ public class GeoJSONFeatureSource extends ContentFeatureSource {
     }
 
     @Override
-    protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query)
-            throws IOException {
+    protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query) throws IOException {
         return new GeoJSONFeatureReader(getState(), query);
     }
 
@@ -126,15 +124,14 @@ public class GeoJSONFeatureSource extends ContentFeatureSource {
                     schema = getDataStore().getCurrentSchema();
                     if (schema == null) {
                         FeatureTypeFactory featureTypeFactory = new FeatureTypeFactoryImpl();
-                        schema =
-                                featureTypeFactory.createSimpleFeatureType(
-                                        new NameImpl(super.entry.getTypeName()),
-                                        Collections.emptyList(),
-                                        null,
-                                        false,
-                                        Collections.emptyList(),
-                                        null,
-                                        null);
+                        schema = featureTypeFactory.createSimpleFeatureType(
+                                new NameImpl(super.entry.getTypeName()),
+                                Collections.emptyList(),
+                                null,
+                                false,
+                                Collections.emptyList(),
+                                null,
+                                null);
                     }
                 }
             }

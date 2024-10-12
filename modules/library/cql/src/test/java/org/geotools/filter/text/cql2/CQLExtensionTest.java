@@ -129,13 +129,7 @@ public class CQLExtensionTest {
 
         // "attr1 > 5; attr2 between 1 and 7; attr3 = 'text;with;delimiter
         final String filterListStr =
-                "attr1 > 5"
-                        + DELIMITER
-                        + "attr2 between 1 and 7"
-                        + DELIMITER
-                        + "attr3 = '"
-                        + valueWithDelimiter
-                        + "'";
+                "attr1 > 5" + DELIMITER + "attr2 between 1 and 7" + DELIMITER + "attr3 = '" + valueWithDelimiter + "'";
 
         List<Filter> filters = CQL.toFilterList(filterListStr);
         Assert.assertNotNull(filters);
@@ -165,13 +159,7 @@ public class CQLExtensionTest {
 
         // "attr1 > 5;INCLUDE;attr3 = 'text;with;delimiter'"
         String filterListStr =
-                "attr1 > 5"
-                        + DELIMITER
-                        + "INCLUDE"
-                        + DELIMITER
-                        + " attr3 = '"
-                        + valueWithDelimiter
-                        + "'";
+                "attr1 > 5" + DELIMITER + "INCLUDE" + DELIMITER + " attr3 = '" + valueWithDelimiter + "'";
         List<Filter> filters = CQL.toFilterList(filterListStr);
         Assert.assertNotNull(filters);
         Assert.assertEquals(3, filters.size());
@@ -187,14 +175,7 @@ public class CQLExtensionTest {
         Assert.assertEquals("attr3", ((PropertyName) equals.getExpression1()).getPropertyName());
         Assert.assertEquals(valueWithDelimiter, ((Literal) equals.getExpression2()).getValue());
 
-        filterListStr =
-                "EXCLUDE"
-                        + DELIMITER
-                        + "INCLUDE"
-                        + DELIMITER
-                        + "attr3 = '"
-                        + valueWithDelimiter
-                        + "'";
+        filterListStr = "EXCLUDE" + DELIMITER + "INCLUDE" + DELIMITER + "attr3 = '" + valueWithDelimiter + "'";
 
         filters = CQL.toFilterList(filterListStr);
         Assert.assertTrue(filters.get(0) instanceof ExcludeFilter);
@@ -325,9 +306,8 @@ public class CQLExtensionTest {
     @Test
     public void testFunctionCompositionComplexCase() throws Exception {
 
-        Expression result =
-                CQL.toExpression(
-                        "strConcat( strConcat(QS, strConcat('/', RT)), strConcat(strConcat('/', NUMB), strConcat('/', BSUFF)) )");
+        Expression result = CQL.toExpression(
+                "strConcat( strConcat(QS, strConcat('/', RT)), strConcat(strConcat('/', NUMB), strConcat('/', BSUFF)) )");
 
         assertFunctionCompositionComplex(result);
     }
@@ -336,10 +316,9 @@ public class CQLExtensionTest {
     public void testFunctionCompositionComplexCaseInFilter() throws Exception {
 
         final String propName = "A";
-        Filter result =
-                CQL.toFilter(
-                        propName
-                                + " = strConcat( strConcat(QS, strConcat('/', RT)), strConcat(strConcat('/', NUMB), strConcat('/', BSUFF)) )");
+        Filter result = CQL.toFilter(
+                propName
+                        + " = strConcat( strConcat(QS, strConcat('/', RT)), strConcat(strConcat('/', NUMB), strConcat('/', BSUFF)) )");
 
         Assert.assertTrue(result instanceof PropertyIsEqualTo);
         PropertyIsEqualTo eq = (PropertyIsEqualTo) result;
@@ -422,8 +401,7 @@ public class CQLExtensionTest {
 
         Assert.assertTrue("Functions", result instanceof PropertyIsEqualTo);
         Assert.assertTrue(
-                "Attribute is expecteced",
-                ((PropertyIsEqualTo) result).getExpression1() instanceof PropertyName);
+                "Attribute is expecteced", ((PropertyIsEqualTo) result).getExpression1() instanceof PropertyName);
         Assert.assertTrue(
                 "Attribute is expecteced",
                 ((PropertyIsEqualTo) result).getExpression2() instanceof FilterFunction_strConcat);
@@ -454,22 +432,18 @@ public class CQLExtensionTest {
     public void relateFunction() throws CQLException {
 
         Filter resultFilter =
-                ECQL.toFilter(
-                        "ATTR = relatePattern(the_geom, 'LINESTRING (27.3 37, 27.3 37.6)', '**1****') ");
+                ECQL.toFilter("ATTR = relatePattern(the_geom, 'LINESTRING (27.3 37, 27.3 37.6)', '**1****') ");
 
         Assert.assertTrue(resultFilter instanceof PropertyIsEqualTo);
 
         // relate function in an equal predicate
-        resultFilter =
-                ECQL.toFilter(
-                        "relatePattern(the_geom, 'LINESTRING (27.3 37, 27.3 37.6)', '**1****') = TRUE");
+        resultFilter = ECQL.toFilter("relatePattern(the_geom, 'LINESTRING (27.3 37, 27.3 37.6)', '**1****') = TRUE");
 
         Assert.assertTrue(resultFilter instanceof PropertyIsEqualTo);
 
         // relate function to expression
         Expression resultExpression =
-                ECQL.toExpression(
-                        "relatePattern(the_geom, 'LINESTRING (27.3 37, 27.3 37.6)', '**1****') ");
+                ECQL.toExpression("relatePattern(the_geom, 'LINESTRING (27.3 37, 27.3 37.6)', '**1****') ");
 
         Assert.assertTrue(resultExpression instanceof FilterFunction_relatePattern);
     }

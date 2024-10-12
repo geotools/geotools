@@ -340,20 +340,16 @@ public class OptDirectedEdgeTest {
         itr = m_edge.getRelated();
 
         de = (OptDirectedEdge) itr.next();
-        Assert.assertTrue(
-                de == m_inEdge || de == m_outEdge || de == m_inoutEdge || de == m_outinEdge);
+        Assert.assertTrue(de == m_inEdge || de == m_outEdge || de == m_inoutEdge || de == m_outinEdge);
 
         de = (OptDirectedEdge) itr.next();
-        Assert.assertTrue(
-                de == m_inEdge || de == m_outEdge || de == m_inoutEdge || de == m_outinEdge);
+        Assert.assertTrue(de == m_inEdge || de == m_outEdge || de == m_inoutEdge || de == m_outinEdge);
 
         de = (OptDirectedEdge) itr.next();
-        Assert.assertTrue(
-                de == m_inEdge || de == m_outEdge || de == m_inoutEdge || de == m_outinEdge);
+        Assert.assertTrue(de == m_inEdge || de == m_outEdge || de == m_inoutEdge || de == m_outinEdge);
 
         de = (OptDirectedEdge) itr.next();
-        Assert.assertTrue(
-                de == m_inEdge || de == m_outEdge || de == m_inoutEdge || de == m_outinEdge);
+        Assert.assertTrue(de == m_inEdge || de == m_outEdge || de == m_inoutEdge || de == m_outinEdge);
 
         Assert.assertFalse(itr.hasNext());
     }

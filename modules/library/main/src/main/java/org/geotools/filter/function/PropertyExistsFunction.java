@@ -36,11 +36,8 @@ import org.geotools.filter.capability.FunctionNameImpl;
 public class PropertyExistsFunction extends FunctionExpressionImpl {
 
     // public static FunctionName NAME = new FunctionNameImpl("PropertyExists","propertyName");
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "PropertyExists",
-                    parameter("exists", Boolean.class),
-                    parameter("propertyName", Object.class));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "PropertyExists", parameter("exists", Boolean.class), parameter("propertyName", Object.class));
 
     public PropertyExistsFunction() {
         super(NAME);

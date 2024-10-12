@@ -83,8 +83,7 @@ public class FeatureImpl extends ComplexAttributeImpl implements Feature {
     @Override
     public BoundingBox getBounds() {
 
-        ReferencedEnvelope bounds =
-                new ReferencedEnvelope(getType().getCoordinateReferenceSystem());
+        ReferencedEnvelope bounds = new ReferencedEnvelope(getType().getCoordinateReferenceSystem());
         for (Property property : getValue()) {
             if (property instanceof GeometryAttribute) {
                 bounds.include(((GeometryAttribute) property).getBounds());

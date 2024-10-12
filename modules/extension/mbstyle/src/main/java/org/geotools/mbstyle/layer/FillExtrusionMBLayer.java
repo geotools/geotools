@@ -253,12 +253,8 @@ public class FillExtrusionMBLayer extends MBLayer {
 
         if (getFillExtrusionPattern() != null) {
             // Fill graphic (with external graphics)
-            ExternalGraphic eg =
-                    transformer.createExternalGraphicForSprite(
-                            getFillExtrusionPattern(), styleContext);
-            GraphicFill gf =
-                    sf.graphicFill(
-                            Arrays.asList(eg), fillExtrusionOpacity(), null, null, null, null);
+            ExternalGraphic eg = transformer.createExternalGraphicForSprite(getFillExtrusionPattern(), styleContext);
+            GraphicFill gf = sf.graphicFill(Arrays.asList(eg), fillExtrusionOpacity(), null, null, null, null);
             fill = sf.fill(gf, null, null);
         } else {
             fill = sf.fill(null, fillExtrusionColor(), fillExtrusionOpacity());
@@ -271,11 +267,7 @@ public class FillExtrusionMBLayer extends MBLayer {
 
         shadowSymbolizer.setName("shadow");
         shadowSymbolizer.setGeometry(
-                ff.function(
-                        "offset",
-                        ff.property((String) null),
-                        ff.literal(0.005),
-                        ff.literal(-0.005)));
+                ff.function("offset", ff.property((String) null), ff.literal(0.005), ff.literal(-0.005)));
         shadowSymbolizer.setDescription(sf.description(Text.text("fill"), null));
         shadowSymbolizer.setUnitOfMeasure(Units.PIXEL);
         shadowSymbolizer.setStroke(null);
@@ -285,10 +277,7 @@ public class FillExtrusionMBLayer extends MBLayer {
 
         sidesSymbolizer.setName("sides");
         sidesSymbolizer.setGeometry(
-                ff.function(
-                        "isometric",
-                        ff.property((String) null),
-                        ff.literal(fillExtrusionHeight())));
+                ff.function("isometric", ff.property((String) null), ff.literal(fillExtrusionHeight())));
         sidesSymbolizer.setDescription(sf.description(Text.text("fill"), null));
         sidesSymbolizer.setUnitOfMeasure(Units.PIXEL);
         sidesSymbolizer.setStroke(null);
@@ -297,12 +286,11 @@ public class FillExtrusionMBLayer extends MBLayer {
         sidesSymbolizer.setPerpendicularOffset(ff.literal(0));
 
         roofSymbolizer.setName("roof");
-        roofSymbolizer.setGeometry(
-                ff.function(
-                        "offset",
-                        ff.property((String) null),
-                        ff.literal(fillExtrusionBase()),
-                        ff.literal(fillExtrusionHeight())));
+        roofSymbolizer.setGeometry(ff.function(
+                "offset",
+                ff.property((String) null),
+                ff.literal(fillExtrusionBase()),
+                ff.literal(fillExtrusionHeight())));
         roofSymbolizer.setDescription(sf.description(Text.text("fill"), null));
         roofSymbolizer.setUnitOfMeasure(Units.PIXEL);
         roofSymbolizer.setStroke(null);
@@ -343,69 +331,39 @@ public class FillExtrusionMBLayer extends MBLayer {
         MBFilter filter = getFilter();
 
         // Each symbolizer needs a rule.
-        Rule shadowRule =
-                sf.rule(
-                        getId(),
-                        null,
-                        null,
-                        0.0,
-                        Double.POSITIVE_INFINITY,
-                        Arrays.asList(shadowSymbolizer),
-                        filter.filter());
+        Rule shadowRule = sf.rule(
+                getId(), null, null, 0.0, Double.POSITIVE_INFINITY, Arrays.asList(shadowSymbolizer), filter.filter());
 
-        Rule sidesRule =
-                sf.rule(
-                        getId(),
-                        null,
-                        null,
-                        0.0,
-                        Double.POSITIVE_INFINITY,
-                        Arrays.asList(sidesSymbolizer),
-                        filter.filter());
+        Rule sidesRule = sf.rule(
+                getId(), null, null, 0.0, Double.POSITIVE_INFINITY, Arrays.asList(sidesSymbolizer), filter.filter());
 
-        Rule roofRule =
-                sf.rule(
-                        getId(),
-                        null,
-                        null,
-                        0.0,
-                        Double.POSITIVE_INFINITY,
-                        Arrays.asList(roofSymbolizer),
-                        filter.filter());
+        Rule roofRule = sf.rule(
+                getId(), null, null, 0.0, Double.POSITIVE_INFINITY, Arrays.asList(roofSymbolizer), filter.filter());
 
         // Finally we create the FeatureTypeStyles for the extrusion.
-        FeatureTypeStyle shadow =
-                sf.featureTypeStyle(
-                        getId(),
-                        sf.description(
-                                Text.text("MBStyle " + getId()),
-                                Text.text("Generated for " + getSourceLayer())),
-                        null, // (unused)
-                        Collections.emptySet(),
-                        filter.semanticTypeIdentifiers(),
-                        Arrays.asList(shadowRule));
+        FeatureTypeStyle shadow = sf.featureTypeStyle(
+                getId(),
+                sf.description(Text.text("MBStyle " + getId()), Text.text("Generated for " + getSourceLayer())),
+                null, // (unused)
+                Collections.emptySet(),
+                filter.semanticTypeIdentifiers(),
+                Arrays.asList(shadowRule));
 
-        FeatureTypeStyle sides =
-                sf.featureTypeStyle(
-                        getId(),
-                        sf.description(
-                                Text.text("MBStyle " + getId()),
-                                Text.text("Generated for " + getSourceLayer())),
-                        null, // (unused)
-                        Collections.emptySet(),
-                        filter.semanticTypeIdentifiers(),
-                        Arrays.asList(sidesRule));
+        FeatureTypeStyle sides = sf.featureTypeStyle(
+                getId(),
+                sf.description(Text.text("MBStyle " + getId()), Text.text("Generated for " + getSourceLayer())),
+                null, // (unused)
+                Collections.emptySet(),
+                filter.semanticTypeIdentifiers(),
+                Arrays.asList(sidesRule));
 
-        FeatureTypeStyle roof =
-                sf.featureTypeStyle(
-                        getId(),
-                        sf.description(
-                                Text.text("MBStyle " + getId()),
-                                Text.text("Generated for " + getSourceLayer())),
-                        null, // (unused)
-                        Collections.emptySet(),
-                        filter.semanticTypeIdentifiers(),
-                        Arrays.asList(roofRule));
+        FeatureTypeStyle roof = sf.featureTypeStyle(
+                getId(),
+                sf.description(Text.text("MBStyle " + getId()), Text.text("Generated for " + getSourceLayer())),
+                null, // (unused)
+                Collections.emptySet(),
+                filter.semanticTypeIdentifiers(),
+                Arrays.asList(roofRule));
 
         fillExtrusion.add(shadow);
         fillExtrusion.add(sides);

@@ -51,9 +51,7 @@ public class ProjectionException extends TransformException {
      * pole.
      */
     ProjectionException(final double latitude) {
-        super(
-                MessageFormat.format(
-                        ErrorKeys.POLE_PROJECTION_$1, new Latitude(Math.toDegrees(latitude))));
+        super(MessageFormat.format(ErrorKeys.POLE_PROJECTION_$1, new Latitude(Math.toDegrees(latitude))));
     }
 
     /** Constructs a new exception with the specified detail message. */

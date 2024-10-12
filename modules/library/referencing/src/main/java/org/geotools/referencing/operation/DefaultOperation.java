@@ -123,8 +123,7 @@ public class DefaultOperation extends DefaultSingleOperation implements Operatio
             Class<? extends CoordinateOperation> type) {
         if (method != null) {
             if (method instanceof MathTransformProvider) {
-                final Class<? extends Operation> candidate =
-                        ((MathTransformProvider) method).getOperationType();
+                final Class<? extends Operation> candidate = ((MathTransformProvider) method).getOperationType();
                 if (candidate != null) {
                     if (type.isAssignableFrom(candidate)) {
                         type = candidate.asSubclass(type);
@@ -133,28 +132,22 @@ public class DefaultOperation extends DefaultSingleOperation implements Operatio
             }
             if (type != null) {
                 if (Transformation.class.isAssignableFrom(type)) {
-                    return new DefaultTransformation(
-                            properties, sourceCRS, targetCRS, transform, method);
+                    return new DefaultTransformation(properties, sourceCRS, targetCRS, transform, method);
                 }
                 if (ConicProjection.class.isAssignableFrom(type)) {
-                    return new DefaultConicProjection(
-                            properties, sourceCRS, targetCRS, transform, method);
+                    return new DefaultConicProjection(properties, sourceCRS, targetCRS, transform, method);
                 }
                 if (CylindricalProjection.class.isAssignableFrom(type)) {
-                    return new DefaultCylindricalProjection(
-                            properties, sourceCRS, targetCRS, transform, method);
+                    return new DefaultCylindricalProjection(properties, sourceCRS, targetCRS, transform, method);
                 }
                 if (PlanarProjection.class.isAssignableFrom(type)) {
-                    return new DefaultPlanarProjection(
-                            properties, sourceCRS, targetCRS, transform, method);
+                    return new DefaultPlanarProjection(properties, sourceCRS, targetCRS, transform, method);
                 }
                 if (Projection.class.isAssignableFrom(type)) {
-                    return new DefaultProjection(
-                            properties, sourceCRS, targetCRS, transform, method);
+                    return new DefaultProjection(properties, sourceCRS, targetCRS, transform, method);
                 }
                 if (Conversion.class.isAssignableFrom(type)) {
-                    return new DefaultConversion(
-                            properties, sourceCRS, targetCRS, transform, method);
+                    return new DefaultConversion(properties, sourceCRS, targetCRS, transform, method);
                 }
             }
             return new DefaultOperation(properties, sourceCRS, targetCRS, transform, method);
@@ -197,10 +190,8 @@ public class DefaultOperation extends DefaultSingleOperation implements Operatio
         while (mt != null) {
             if (mt instanceof ConcatenatedTransform) {
                 final ConcatenatedTransform ct = (ConcatenatedTransform) mt;
-                final ParameterValueGroup param1 =
-                        getParameterValues(ct.transform1, descriptor, false);
-                final ParameterValueGroup param2 =
-                        getParameterValues(ct.transform2, descriptor, false);
+                final ParameterValueGroup param1 = getParameterValues(ct.transform1, descriptor, false);
+                final ParameterValueGroup param2 = getParameterValues(ct.transform2, descriptor, false);
                 if (param1 == null && param2 != null) return param2;
                 if (param2 == null && param1 != null) return param1;
                 required = true;

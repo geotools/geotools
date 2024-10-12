@@ -212,10 +212,8 @@ public class CommandLine {
      * @return The value for the given string to parse.
      * @throws UnsupportedOperationException if the value can't be parsed.
      */
-    protected <T> T parse(final Class<T> type, final String value)
-            throws UnsupportedOperationException {
-        throw new UnsupportedOperationException(
-                MessageFormat.format(ErrorKeys.UNKNOW_TYPE_$1, type));
+    protected <T> T parse(final Class<T> type, final String value) throws UnsupportedOperationException {
+        throw new UnsupportedOperationException(MessageFormat.format(ErrorKeys.UNKNOW_TYPE_$1, type));
     }
 
     /**
@@ -226,9 +224,7 @@ public class CommandLine {
      * @param optional The set where to put optional arguments.
      */
     private void getArguments(
-            final Class<?> classe,
-            final Map<String, String> mandatory,
-            final Map<String, String> optional) {
+            final Class<?> classe, final Map<String, String> mandatory, final Map<String, String> optional) {
         final Class<?> parent = classe.getSuperclass();
         if (!CommandLine.class.equals(parent)) {
             getArguments(parent, mandatory, optional);
@@ -269,12 +265,8 @@ public class CommandLine {
         final Map<String, String> mandatory = new TreeMap<>();
         final Map<String, String> optional = new TreeMap<>();
         optional.put("help", "Print this summary.");
-        optional.put(
-                "locale=S",
-                "Set the locale for string, number and date formatting. Examples: \"fr\", \"fr_CA\".");
-        optional.put(
-                "encoding=S",
-                "Set the input and output encoding. Examples: \"UTF-8\", \"ISO-8859-1\".");
+        optional.put("locale=S", "Set the locale for string, number and date formatting. Examples: \"fr\", \"fr_CA\".");
+        optional.put("encoding=S", "Set the input and output encoding. Examples: \"UTF-8\", \"ISO-8859-1\".");
         getArguments(getClass(), mandatory, optional);
         if (!mandatory.isEmpty()) {
             out.println("Mandatory arguments:");

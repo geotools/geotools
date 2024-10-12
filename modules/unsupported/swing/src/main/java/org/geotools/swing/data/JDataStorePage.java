@@ -97,10 +97,7 @@ public class JDataStorePage extends JPage {
 
         for (Param param : format.getParametersInfo()) {
             if (level != null) {
-                String check =
-                        param.metadata == null
-                                ? "user"
-                                : (String) param.metadata.get(Parameter.LEVEL);
+                String check = param.metadata == null ? "user" : (String) param.metadata.get(Parameter.LEVEL);
 
                 if (check == null) {
                     check = "user";

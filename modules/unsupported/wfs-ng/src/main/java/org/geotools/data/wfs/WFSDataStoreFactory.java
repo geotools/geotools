@@ -87,8 +87,7 @@ public class WFSDataStoreFactory extends WFSDataAccessFactory implements DataSto
             String password = config.getPassword();
             if (((user == null) && (password != null))
                     || ((config.getPassword() == null) && (config.getUser() != null))) {
-                throw new IOException(
-                        "Cannot define only one of USERNAME or PASSWORD, must define both or neither");
+                throw new IOException("Cannot define only one of USERNAME or PASSWORD, must define both or neither");
             }
         }
 
@@ -113,8 +112,7 @@ public class WFSDataStoreFactory extends WFSDataAccessFactory implements DataSto
         WFSDataStore dataStore = new WFSDataStore(wfsClient);
         // factories
         dataStore.setFilterFactory(CommonFactoryFinder.getFilterFactory(null));
-        dataStore.setGeometryFactory(
-                new GeometryFactory(PackedCoordinateSequenceFactory.DOUBLE_FACTORY));
+        dataStore.setGeometryFactory(new GeometryFactory(PackedCoordinateSequenceFactory.DOUBLE_FACTORY));
         dataStore.setFeatureTypeFactory(new FeatureTypeFactoryImpl());
         dataStore.setFeatureFactory(CommonFactoryFinder.getFeatureFactory(null));
         dataStore.setDataStoreFactory(this);
@@ -220,10 +218,7 @@ public class WFSDataStoreFactory extends WFSDataAccessFactory implements DataSto
         }
 
         String queryString = host.getQuery();
-        queryString =
-                queryString == null || "".equals(queryString.trim())
-                        ? ""
-                        : queryString.toUpperCase();
+        queryString = queryString == null || "".equals(queryString.trim()) ? "" : queryString.toUpperCase();
 
         final Version defaultVersion = Versions.highest();
 

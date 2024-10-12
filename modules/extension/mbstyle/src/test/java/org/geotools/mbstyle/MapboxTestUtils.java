@@ -64,11 +64,7 @@ public class MapboxTestUtils {
     }
 
     public static BufferedImage showRender(
-            String testName,
-            GTRenderer renderer,
-            long timeOut,
-            ReferencedEnvelope[] bounds,
-            RenderListener listener)
+            String testName, GTRenderer renderer, long timeOut, ReferencedEnvelope[] bounds, RenderListener listener)
             throws Exception {
         return showRender(testName, renderer, timeOut, bounds, listener, 300, 300);
     }

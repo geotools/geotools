@@ -41,43 +41,20 @@ public class AffineProcess implements RasterProcess {
 
     @DescribeResult(name = "result", description = "Raster transformed by an Affine transformation")
     public GridCoverage2D execute(
-            @DescribeParameter(name = "coverage", description = "Input raster", min = 1)
-                    GridCoverage2D coverage,
-            @DescribeParameter(
-                            name = "scalex",
-                            description = "Scale parameter for the X direction",
-                            min = 0)
+            @DescribeParameter(name = "coverage", description = "Input raster", min = 1) GridCoverage2D coverage,
+            @DescribeParameter(name = "scalex", description = "Scale parameter for the X direction", min = 0)
                     Double scaleX,
-            @DescribeParameter(
-                            name = "scaley",
-                            description = "Scale parameter for the Y direction",
-                            min = 0)
+            @DescribeParameter(name = "scaley", description = "Scale parameter for the Y direction", min = 0)
                     Double scaleY,
-            @DescribeParameter(
-                            name = "shearx",
-                            description = "Shear parameter for the X direction",
-                            min = 0)
+            @DescribeParameter(name = "shearx", description = "Shear parameter for the X direction", min = 0)
                     Double shearX,
-            @DescribeParameter(
-                            name = "sheary",
-                            description = "Shear parameter for the Y direction",
-                            min = 0)
+            @DescribeParameter(name = "sheary", description = "Shear parameter for the Y direction", min = 0)
                     Double shearY,
-            @DescribeParameter(
-                            name = "translatex",
-                            description = "Offset parameter for the X direction",
-                            min = 0)
+            @DescribeParameter(name = "translatex", description = "Offset parameter for the X direction", min = 0)
                     Double translateX,
-            @DescribeParameter(
-                            name = "translatey",
-                            description = "Offset parameter for the Y direction",
-                            min = 0)
+            @DescribeParameter(name = "translatey", description = "Offset parameter for the Y direction", min = 0)
                     Double translateY,
-            @DescribeParameter(
-                            name = "nodata",
-                            description = "Output coverage nodata values",
-                            min = 0)
-                    double[] nodata,
+            @DescribeParameter(name = "nodata", description = "Output coverage nodata values", min = 0) double[] nodata,
             @DescribeParameter(
                             name = "interpolation",
                             description =
@@ -97,8 +74,7 @@ public class AffineProcess implements RasterProcess {
         double yShear = shearY != null ? shearY : 0;
         double xTrans = translateX != null ? translateX : 0;
         double yTrans = translateY != null ? translateY : 0;
-        AffineTransform transform =
-                new AffineTransform(xScale, yShear, xShear, yScale, xTrans, yTrans);
+        AffineTransform transform = new AffineTransform(xScale, yShear, xShear, yScale, xTrans, yTrans);
 
         // //
         //

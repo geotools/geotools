@@ -9,8 +9,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 
 public class GeoJSONTestSupport {
-    public static void assertEqualsIgnoreWhitespace(
-            String message, String expected, String actual) {
+    public static void assertEqualsIgnoreWhitespace(String message, String expected, String actual) {
         expected = removeWhitespace(expected);
         actual = removeWhitespace(actual);
         assertEquals(message, expected, actual);

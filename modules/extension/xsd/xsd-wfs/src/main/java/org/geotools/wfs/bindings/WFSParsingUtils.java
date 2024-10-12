@@ -45,12 +45,10 @@ import org.geotools.xsd.Node;
 
 public class WFSParsingUtils {
 
-    public static EObject FeatureCollectionType_parse(
-            EObject fct, ElementInstance instance, Node node) {
+    public static EObject FeatureCollectionType_parse(EObject fct, ElementInstance instance, Node node) {
 
         // gml:featureMembers
-        SimpleFeatureCollection fc =
-                (SimpleFeatureCollection) node.getChildValue(FeatureCollection.class);
+        SimpleFeatureCollection fc = (SimpleFeatureCollection) node.getChildValue(FeatureCollection.class);
         if (fc == null) {
             fc = new DefaultFeatureCollection(null, null);
         }
@@ -165,8 +163,7 @@ public class WFSParsingUtils {
      * Aggregates multiple envelopes into one, eventually returning a WGS84 one in case the
      * coordinate reference systems of the various envelopes differs
      */
-    private static ReferencedEnvelope aggregateEnvelopes(
-            List<FeatureCollection> features, FeatureCollection first) {
+    private static ReferencedEnvelope aggregateEnvelopes(List<FeatureCollection> features, FeatureCollection first) {
         ReferencedEnvelope bounds;
         // aggregate
         List<ReferencedEnvelope> envelopes = new ArrayList<>(features.size());
@@ -178,8 +175,7 @@ public class WFSParsingUtils {
         boolean consistent = true;
         for (ReferencedEnvelope envelope : envelopes) {
             if (!CRS.equalsIgnoreMetadata(
-                    firstBounds.getCoordinateReferenceSystem(),
-                    envelope.getCoordinateReferenceSystem())) {
+                    firstBounds.getCoordinateReferenceSystem(), envelope.getCoordinateReferenceSystem())) {
                 consistent = false;
                 break;
             }
@@ -207,9 +203,6 @@ public class WFSParsingUtils {
 
     @SuppressWarnings("unchecked")
     public static List<FeatureCollection> features(EObject obj) {
-        return (List)
-                (EMFUtils.has(obj, "feature")
-                        ? EMFUtils.get(obj, "feature")
-                        : EMFUtils.get(obj, "member"));
+        return (List) (EMFUtils.has(obj, "feature") ? EMFUtils.get(obj, "feature") : EMFUtils.get(obj, "member"));
     }
 }

@@ -74,16 +74,12 @@ public class TransformFeatureSource implements SimpleFeatureSource {
      * Creates a transformed feature source from the original source, giving it a certain name and a
      * set of computed properties
      */
-    public TransformFeatureSource(
-            SimpleFeatureSource source, Name name, List<Definition> definitions)
+    public TransformFeatureSource(SimpleFeatureSource source, Name name, List<Definition> definitions)
             throws IOException {
         this.transformer = new Transformer(source, name, definitions, null);
         this.source = source;
 
-        LOGGER.log(
-                Level.FINE,
-                "Transformed target schema for this feature source is {0}",
-                transformer.getSchema());
+        LOGGER.log(Level.FINE, "Transformed target schema for this feature source is {0}", transformer.getSchema());
     }
 
     @Override

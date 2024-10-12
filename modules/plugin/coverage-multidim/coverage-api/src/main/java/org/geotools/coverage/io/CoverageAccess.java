@@ -136,11 +136,7 @@ public interface CoverageAccess {
      * @param listener used to report progress while obtianing access
      */
     public CoverageSource access(
-            Name name,
-            Map<String, Serializable> params,
-            AccessType accessType,
-            Hints hints,
-            ProgressListener listener)
+            Name name, Map<String, Serializable> params, AccessType accessType, Hints hints, ProgressListener listener)
             throws IOException;
 
     //
@@ -171,8 +167,7 @@ public interface CoverageAccess {
      *     details
      * @return true if a coverage can be created
      */
-    public boolean canCreate(
-            Name name, Map<String, Serializable> params, Hints hints, ProgressListener listener)
+    public boolean canCreate(Name name, Map<String, Serializable> params, Hints hints, ProgressListener listener)
             throws IOException;
 
     /**
@@ -188,8 +183,7 @@ public interface CoverageAccess {
      *     details
      * @throws IllegalStateException if getSupportedAccessTypes() == READ_ONLY
      */
-    public CoverageStore create(
-            Name name, Map<String, Serializable> params, Hints hints, ProgressListener listener)
+    public CoverageStore create(Name name, Map<String, Serializable> params, Hints hints, ProgressListener listener)
             throws IOException;
 
     /**
@@ -211,8 +205,7 @@ public interface CoverageAccess {
      * @param hints Implementation specific Hints; please consult the javadocs for the Driver you
      *     are working with.
      */
-    public boolean canDelete(Name name, Map<String, Serializable> params, Hints hints)
-            throws IOException;
+    public boolean canDelete(Name name, Map<String, Serializable> params, Hints hints) throws IOException;
 
     /**
      * Asks this {@link CoverageAccess} to entirely remove a certain Coverage from the available
@@ -223,8 +216,7 @@ public interface CoverageAccess {
      *
      * @return {@code true} in case of success.
      */
-    public boolean delete(Name name, Map<String, Serializable> params, Hints hints)
-            throws IOException;
+    public boolean delete(Name name, Map<String, Serializable> params, Hints hints) throws IOException;
 
     /**
      * Retrieves the parameters used to connect to this live instance of {@link CoverageAccess}.

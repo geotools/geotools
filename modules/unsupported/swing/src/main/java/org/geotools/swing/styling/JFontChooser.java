@@ -56,15 +56,12 @@ public class JFontChooser extends JDialog {
             GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
     private static final String[] styles = {"Normal", "Italic"};
     private static final String[] weights = {"Normal", "Bold"};
-    private static final Integer[] sizes = {
-        2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 28, 32, 36, 48, 72
-    };
+    private static final Integer[] sizes = {2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 28, 32, 36, 48, 72};
 
-    private static final String sampleText =
-            "ABCDEFGHIJKLMNOPQRSTUVWXYZ\n"
-                    + "abcdefghijklmnopqrstuvwxyz\n"
-                    + "0123456789\n"
-                    + "The quick brown fox jumped over the lazy dog";
+    private static final String sampleText = "ABCDEFGHIJKLMNOPQRSTUVWXYZ\n"
+            + "abcdefghijklmnopqrstuvwxyz\n"
+            + "0123456789\n"
+            + "The quick brown fox jumped over the lazy dog";
     private static final int sampleTextLines = 4;
 
     private JComboBox<String> familyCBox;
@@ -181,11 +178,10 @@ public class JFontChooser extends JDialog {
 
         familyCBox = new JComboBox<>(families);
         familyCBox.setSelectedIndex(familyIndex);
-        familyCBox.addActionListener(
-                e -> {
-                    familyIndex = familyCBox.getSelectedIndex();
-                    showSample();
-                });
+        familyCBox.addActionListener(e -> {
+            familyIndex = familyCBox.getSelectedIndex();
+            showSample();
+        });
         panel.add(familyCBox);
 
         label = new JLabel("Style");
@@ -193,11 +189,10 @@ public class JFontChooser extends JDialog {
 
         styleCBox = new JComboBox<>(styles);
         styleCBox.setSelectedIndex(styleIndex);
-        styleCBox.addActionListener(
-                e -> {
-                    styleIndex = styleCBox.getSelectedIndex();
-                    showSample();
-                });
+        styleCBox.addActionListener(e -> {
+            styleIndex = styleCBox.getSelectedIndex();
+            showSample();
+        });
         panel.add(styleCBox);
 
         label = new JLabel("Weight");
@@ -205,11 +200,10 @@ public class JFontChooser extends JDialog {
 
         weightCBox = new JComboBox<>(weights);
         weightCBox.setSelectedIndex(weightIndex);
-        weightCBox.addActionListener(
-                e -> {
-                    weightIndex = weightCBox.getSelectedIndex();
-                    showSample();
-                });
+        weightCBox.addActionListener(e -> {
+            weightIndex = weightCBox.getSelectedIndex();
+            showSample();
+        });
         panel.add(weightCBox);
 
         label = new JLabel("Size");
@@ -217,11 +211,10 @@ public class JFontChooser extends JDialog {
 
         sizeCBox = new JComboBox<>(sizes);
         sizeCBox.setSelectedIndex(sizeIndex);
-        sizeCBox.addActionListener(
-                e -> {
-                    sizeIndex = sizeCBox.getSelectedIndex();
-                    showSample();
-                });
+        sizeCBox.addActionListener(e -> {
+            sizeIndex = sizeCBox.getSelectedIndex();
+            showSample();
+        });
         panel.add(sizeCBox, "wrap");
 
         textArea = new JTextArea();
@@ -236,20 +229,18 @@ public class JFontChooser extends JDialog {
          * Apply and Cancel buttons
          */
         JButton btn = new JButton("Apply");
-        btn.addActionListener(
-                e -> {
-                    completed = true;
-                    createSelectedFont();
-                    setVisible(false);
-                });
+        btn.addActionListener(e -> {
+            completed = true;
+            createSelectedFont();
+            setVisible(false);
+        });
         panel.add(btn, "span, split 2, align right");
 
         btn = new JButton("Cancel");
-        btn.addActionListener(
-                e -> {
-                    selectedFont = null;
-                    setVisible(false);
-                });
+        btn.addActionListener(e -> {
+            selectedFont = null;
+            setVisible(false);
+        });
         panel.add(btn);
 
         getContentPane().add(panel);
@@ -320,11 +311,10 @@ public class JFontChooser extends JDialog {
 
     /** Create a new Font object to return as the selected font */
     private void createSelectedFont() {
-        selectedFont =
-                sf.createFont(
-                        ff.literal(families[familyIndex]),
-                        ff.literal(styles[styleIndex]),
-                        ff.literal(weights[weightIndex]),
-                        ff.literal(String.valueOf(sizes[sizeIndex])));
+        selectedFont = sf.createFont(
+                ff.literal(families[familyIndex]),
+                ff.literal(styles[styleIndex]),
+                ff.literal(weights[weightIndex]),
+                ff.literal(String.valueOf(sizes[sizeIndex])));
     }
 }

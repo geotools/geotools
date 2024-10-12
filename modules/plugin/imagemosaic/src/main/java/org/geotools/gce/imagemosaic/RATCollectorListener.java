@@ -120,10 +120,10 @@ class RATCollectorListener extends ImageMosaicEventHandlers.ProcessingEventListe
     }
 
     private void collectInternalRAT(File file) {
-        AbstractGridCoverage2DReader reader =
-                Optional.ofNullable(GridFormatFinder.findFormat(file, Utils.EXCLUDE_MOSAIC_HINTS))
-                        .map(f -> f.getReader(file))
-                        .orElse(null);
+        AbstractGridCoverage2DReader reader = Optional.ofNullable(
+                        GridFormatFinder.findFormat(file, Utils.EXCLUDE_MOSAIC_HINTS))
+                .map(f -> f.getReader(file))
+                .orElse(null);
         if (reader != null) {
             try {
                 ResourceInfo info = reader.getInfo(reader.getGridCoverageNames()[0]);
@@ -139,8 +139,9 @@ class RATCollectorListener extends ImageMosaicEventHandlers.ProcessingEventListe
     }
 
     private void collectRAT(PAMDataset pam) {
-        if (pam == null || pam.getPAMRasterBand() == null || pam.getPAMRasterBand().isEmpty())
-            return;
+        if (pam == null
+                || pam.getPAMRasterBand() == null
+                || pam.getPAMRasterBand().isEmpty()) return;
 
         List<PAMDataset.PAMRasterBand> bands = pam.getPAMRasterBand();
         if (first == null) {
@@ -183,9 +184,7 @@ class RATCollectorListener extends ImageMosaicEventHandlers.ProcessingEventListe
             // not all bands might have a RAT
             if (rat1 == null && rat2 == null) continue;
             if (rat1 == null || rat2 == null) {
-                LOGGER.warning(
-                        "Stopping PAM collection, RATs found in some files but not in others for band "
-                                + i);
+                LOGGER.warning("Stopping PAM collection, RATs found in some files but not in others for band " + i);
                 return false;
             }
 
@@ -193,8 +192,7 @@ class RATCollectorListener extends ImageMosaicEventHandlers.ProcessingEventListe
             List<PAMDataset.PAMRasterBand.FieldDefn> fields1 = rat1.getFieldDefn();
             List<PAMDataset.PAMRasterBand.FieldDefn> fields2 = rat2.getFieldDefn();
             if (!Objects.equals(fields1, fields2)) {
-                LOGGER.warning(
-                        "Stopping PAM collection, different field definitions found in PAM files");
+                LOGGER.warning("Stopping PAM collection, different field definitions found in PAM files");
                 return false;
             }
         }

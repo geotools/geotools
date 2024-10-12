@@ -51,16 +51,11 @@ public class ColorReductionDescriptor extends OperationDescriptorImpl {
                 new String[] {RenderedRegistryMode.MODE_NAME},
                 0, // Supported
                 // modes
-                new String[] {
-                    "numColors", "alphaThreshold", "subsampleX", "subsampleY"
-                }, // Parameter
+                new String[] {"numColors", "alphaThreshold", "subsampleX", "subsampleY"}, // Parameter
                 // names
-                new Class[] {
-                    Integer.class, Integer.class, Integer.class, Integer.class
-                }, // Parameter
+                new Class[] {Integer.class, Integer.class, Integer.class, Integer.class}, // Parameter
                 // classes
-                new Object[] {
-                    Integer.valueOf(255), Integer.valueOf(1), Integer.valueOf(1), Integer.valueOf(1)
+                new Object[] {Integer.valueOf(255), Integer.valueOf(1), Integer.valueOf(1), Integer.valueOf(1)
                 }, // Default
                 // values
                 null // Valid parameter values
@@ -76,8 +71,7 @@ public class ColorReductionDescriptor extends OperationDescriptorImpl {
      * @param message A buffer for formatting an error message if any.
      */
     @Override
-    protected boolean validateSources(
-            final String modeName, final ParameterBlock param, final StringBuffer message) {
+    protected boolean validateSources(final String modeName, final ParameterBlock param, final StringBuffer message) {
         if (super.validateSources(modeName, param, message)) {
             for (int i = param.getNumSources(); --i >= 0; ) {
                 final Object source = param.getSource(i);

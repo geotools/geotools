@@ -140,8 +140,7 @@ public class NetCDFUtilities {
      * When true, the stack trace that created a reader that wasn't closed is recorded and then
      * printed out when warning the user about this.
      */
-    public static final Boolean TRACE_ENABLED =
-            "true".equalsIgnoreCase(System.getProperty("gt2.netcdf.trace"));
+    public static final Boolean TRACE_ENABLED = "true".equalsIgnoreCase(System.getProperty("gt2.netcdf.trace"));
 
     public static final Set<NetcdfDataset.Enhance> DEFAULT_ENHANCE_MODE;
 
@@ -236,7 +235,8 @@ public class NetCDFUtilities {
 
     public static final String LONG_NAME = "long_name";
 
-    public static final String ELEVATION_DIM = ImageMosaicFormat.ELEVATION.getName().toString();
+    public static final String ELEVATION_DIM =
+            ImageMosaicFormat.ELEVATION.getName().toString();
 
     public static final String TIME_DIM = ImageMosaicFormat.TIME.getName().toString();
 
@@ -293,14 +293,11 @@ public class NetCDFUtilities {
 
     static final Set<String> EXCLUDED_ATTRIBUTES = new HashSet<>();
 
-    public static final String ENHANCE_COORD_SYSTEMS =
-            "org.geotools.coverage.io.netcdf.enhance.CoordSystems";
+    public static final String ENHANCE_COORD_SYSTEMS = "org.geotools.coverage.io.netcdf.enhance.CoordSystems";
 
-    public static final String ENHANCE_SCALE_MISSING =
-            "org.geotools.coverage.io.netcdf.enhance.ScaleMissing";
+    public static final String ENHANCE_SCALE_MISSING = "org.geotools.coverage.io.netcdf.enhance.ScaleMissing";
 
-    public static final String ENHANCE_CONVERT_ENUMS =
-            "org.geotools.coverage.io.netcdf.enhance.ConvertEnums";
+    public static final String ENHANCE_CONVERT_ENUMS = "org.geotools.coverage.io.netcdf.enhance.ConvertEnums";
 
     public static boolean ENHANCE_SCALE_OFFSET = false;
 
@@ -389,11 +386,10 @@ public class NetCDFUtilities {
      */
     public static final Set<DataType> VALID_TYPES = new HashSet<>(12);
 
-    public static final String NC4_ERROR_MESSAGE =
-            "Native NetCDF C library is not available. "
-                    + "Unable to handle NetCDF4 files on input/output."
-                    + "\nPlease make sure to add the path of the Native NetCDF C libraries to the "
-                    + "PATH environment variable\n if you want to support NetCDF4-Classic files";
+    public static final String NC4_ERROR_MESSAGE = "Native NetCDF C library is not available. "
+            + "Unable to handle NetCDF4 files on input/output."
+            + "\nPlease make sure to add the path of the Native NetCDF C libraries to the "
+            + "PATH environment variable\n if you want to support NetCDF4-Classic files";
 
     static {
         // TODO remove this block when enhance mode can be set some other way, possibly via read
@@ -469,18 +465,16 @@ public class NetCDFUtilities {
     }
 
     private static void initEnhanceMode() {
-        if (System.getProperty(ENHANCE_COORD_SYSTEMS) != null
-                && !Boolean.getBoolean(ENHANCE_COORD_SYSTEMS)) {
+        if (System.getProperty(ENHANCE_COORD_SYSTEMS) != null && !Boolean.getBoolean(ENHANCE_COORD_SYSTEMS)) {
             DEFAULT_ENHANCE_MODE.remove(NetcdfDataset.Enhance.CoordSystems);
         }
 
         if (Boolean.getBoolean(ENHANCE_SCALE_MISSING)) {
             // These sets are taken from the deprecated NetCDFDataset.parseEnhanceMode
-            EnumSet<NetcdfDataset.Enhance> set =
-                    EnumSet.of(
-                            NetcdfDataset.Enhance.ConvertUnsigned,
-                            NetcdfDataset.Enhance.ApplyScaleOffset,
-                            NetcdfDataset.Enhance.ConvertMissing);
+            EnumSet<NetcdfDataset.Enhance> set = EnumSet.of(
+                    NetcdfDataset.Enhance.ConvertUnsigned,
+                    NetcdfDataset.Enhance.ApplyScaleOffset,
+                    NetcdfDataset.Enhance.ConvertMissing);
             DEFAULT_ENHANCE_MODE.addAll(set);
             ENHANCE_SCALE_OFFSET = true;
         }
@@ -519,16 +513,13 @@ public class NetCDFUtilities {
             LOGGER.info("NetCDF File Cache has been enabled");
             int minElements = Integer.getInteger("org.geotools.coverage.io.netcdf.cache.min", 200);
             int maxElements = Integer.getInteger("org.geotools.coverage.io.netcdf.cache.max", 300);
-            int period =
-                    Integer.getInteger(
-                            "org.geotools.coverage.io.netcdf.cache.cleanup.period", 12 * 60);
+            int period = Integer.getInteger("org.geotools.coverage.io.netcdf.cache.cleanup.period", 12 * 60);
 
             // No replacements found for 5.5 even if deprecated. Documentation still uses it
             // https://docs.unidata.ucar.edu/netcdf-java/5.5/userguide/disk_caching.html#netcdffilecache
 
             if (useMemoryMapping()) {
-                rafFileCache =
-                        new MemoryMappedFileCache("rafCache", minElements, maxElements, -1, period);
+                rafFileCache = new MemoryMappedFileCache("rafCache", minElements, maxElements, -1, period);
             } else {
                 rafFileCache = new FileCache("rafCache", minElements, maxElements, -1, period);
             }
@@ -560,33 +551,30 @@ public class NetCDFUtilities {
         String dir = file.getAbsolutePath();
         if (!file.exists()) {
             if (LOGGER.isLoggable(Level.WARNING)) {
-                LOGGER.warning(
-                        "The specified "
-                                + NETCDF_DATA_DIR
-                                + " property doesn't refer "
-                                + "to an existing folder. Please check the path: "
-                                + dir);
+                LOGGER.warning("The specified "
+                        + NETCDF_DATA_DIR
+                        + " property doesn't refer "
+                        + "to an existing folder. Please check the path: "
+                        + dir);
             }
             return false;
         } else if (!file.isDirectory()) {
             if (LOGGER.isLoggable(Level.WARNING)) {
-                LOGGER.warning(
-                        "The specified "
-                                + NETCDF_DATA_DIR
-                                + " property doesn't refer "
-                                + "to a directory. Please check the path: "
-                                + dir);
+                LOGGER.warning("The specified "
+                        + NETCDF_DATA_DIR
+                        + " property doesn't refer "
+                        + "to a directory. Please check the path: "
+                        + dir);
             }
             return false;
         } else if (!file.canWrite()) {
             if (LOGGER.isLoggable(Level.WARNING)) {
-                LOGGER.warning(
-                        "The specified "
-                                + NETCDF_DATA_DIR
-                                + " property refers to "
-                                + "a directory which can't be written. Please check the path and"
-                                + " the permissions for: "
-                                + dir);
+                LOGGER.warning("The specified "
+                        + NETCDF_DATA_DIR
+                        + " property refers to "
+                        + "a directory which can't be written. Please check the path and"
+                        + " the permissions for: "
+                        + dir);
             }
             return false;
         }
@@ -737,18 +725,14 @@ public class NetCDFUtilities {
     }
 
     @SuppressWarnings("deprecation") // no Alternative for Dimension.getFullName
-    private static Variable getAuxiliaryCoordinate(
-            NetcdfDataset dataset, Group group, Variable var, String dimName) {
+    private static Variable getAuxiliaryCoordinate(NetcdfDataset dataset, Group group, Variable var, String dimName) {
         Variable coordinateVariable = null;
         Attribute attribute = var.findAttribute(NetCDFUtilities.COORDINATES);
         if (attribute != null) {
             String coordinates = attribute.getStringValue();
             String[] coords = coordinates.split(" ");
             for (String coord : coords) {
-                Variable coordVar =
-                        group == null
-                                ? dataset.findVariable(coord)
-                                : group.findVariableLocal(coord);
+                Variable coordVar = group == null ? dataset.findVariable(coord) : group.findVariableLocal(coord);
                 List<Dimension> varDimensions = coordVar.getDimensions();
                 if (varDimensions != null
                         && varDimensions.size() == 1
@@ -856,8 +840,7 @@ public class NetCDFUtilities {
                     return FileFormat.FC;
                 }
             } catch (XMLStreamException | FactoryConfigurationError e) {
-                if (LOGGER.isLoggable(Level.FINE))
-                    LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
+                if (LOGGER.isLoggable(Level.FINE)) LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
             } finally {
                 if (reader != null) {
                     if (streamSource.getInputStream() != null) {
@@ -1098,9 +1081,7 @@ public class NetCDFUtilities {
         }
         String pattern = null;
         if (yearLast) {
-            pattern =
-                    (monthFirst ? "MMM dd-" : "dd-" + (namedMonth ? "MMM-" : "MM-"))
-                            + (twoDigitYear ? "yy" : "yyyy");
+            pattern = (monthFirst ? "MMM dd-" : "dd-" + (namedMonth ? "MMM-" : "MM-")) + (twoDigitYear ? "yy" : "yyyy");
         } else {
             pattern = (twoDigitYear ? "yy-" : "yyyy-") + (namedMonth ? "MMM-" : "MM-") + "dd";
             if (dateLength < pattern.length()) {
@@ -1145,16 +1126,13 @@ public class NetCDFUtilities {
             String schemaName, String schemaDef, CoordinateReferenceSystem crs) {
         SimpleFeatureType indexSchema = null;
         if (schemaDef == null) {
-            throw new IllegalArgumentException(
-                    "Unable to create feature type from null definition!");
+            throw new IllegalArgumentException("Unable to create feature type from null definition!");
         }
         schemaDef = schemaDef.trim();
         // get the schema
         try {
             indexSchema = DataUtilities.createType(schemaName, schemaDef);
-            indexSchema =
-                    DataUtilities.createSubType(
-                            indexSchema, DataUtilities.attributeNames(indexSchema), crs);
+            indexSchema = DataUtilities.createSubType(indexSchema, DataUtilities.attributeNames(indexSchema), crs);
         } catch (Throwable e) {
             if (LOGGER.isLoggable(Level.FINE)) LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
             indexSchema = null;
@@ -1210,8 +1188,7 @@ public class NetCDFUtilities {
             while (attributes.hasNext()) {
                 Attribute attribute = attributes.next();
                 fullName = attribute.getFullName();
-                if (fullName.equalsIgnoreCase(FILL_VALUE)
-                        || fullName.equalsIgnoreCase(MISSING_VALUE)) {
+                if (fullName.equalsIgnoreCase(FILL_VALUE) || fullName.equalsIgnoreCase(MISSING_VALUE)) {
                     return attribute.getNumericValue();
                 }
             }

@@ -194,9 +194,8 @@ public class ImageComparator {
         this.bands = image1.getSampleModel().getNumBands();
         final boolean hasAlpha = image1.getColorModel().hasAlpha();
         if (bands > 4 || (bands == 2 && !hasAlpha) || (bands == 3 && hasAlpha)) {
-            throw new IllegalArgumentException(
-                    "Images have the wrong type, this code only supports gray, gray/alpha, "
-                            + "RGB, RGBA images, or images that can be transformed in those models");
+            throw new IllegalArgumentException("Images have the wrong type, this code only supports gray, gray/alpha, "
+                    + "RGB, RGBA images, or images that can be transformed in those models");
         }
 
         this.mode = mode;
@@ -230,11 +229,10 @@ public class ImageComparator {
 
     /** Forces the image to start in the origin and have a rgb/rbga/gray/gray+alpha structure */
     private RenderedImage normalizeImage(RenderedImage image1) {
-        image1 =
-                new ImageWorker(image1)
-                        .forceColorSpaceRGB()
-                        .forceComponentColorModel()
-                        .getRenderedImage();
+        image1 = new ImageWorker(image1)
+                .forceColorSpaceRGB()
+                .forceComponentColorModel()
+                .getRenderedImage();
         if (image1.getMinX() != 0 || image1.getMinY() != 0) {
             image1 = PlanarImage.wrapRenderedImage(image1).getAsBufferedImage();
         }
@@ -274,8 +272,7 @@ public class ImageComparator {
                     } else if (!px1.isSimilar(px2)) {
                         if (mode == Mode.IgnoreAntialiasing) {
                             if (isAntialised(px1, it1, r, c, width, height, components, cursor)
-                                    || isAntialised(
-                                            px2, it2, r, c, width, height, components, cursor)) {
+                                    || isAntialised(px2, it2, r, c, width, height, components, cursor)) {
                                 if (!px1.isBrightnessSimilar(px2)) {
                                     mismatchCount++;
                                 }
@@ -295,14 +292,7 @@ public class ImageComparator {
     }
 
     private boolean isAntialised(
-            Pixel source,
-            RandomIter it,
-            int row,
-            int col,
-            int width,
-            int height,
-            int[] pixel,
-            Pixel cursor) {
+            Pixel source, RandomIter it, int row, int col, int width, int height, int[] pixel, Pixel cursor) {
         final int DISTANCE = 1;
 
         int highContrastSibling = 0;

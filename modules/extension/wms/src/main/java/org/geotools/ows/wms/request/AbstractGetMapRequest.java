@@ -71,9 +71,7 @@ public abstract class AbstractGetMapRequest extends AbstractWMSRequest implement
                 try {
                     // spaces are converted to plus signs, but must be %20 for url calls [GEOT-4317]
                     layerString =
-                            layerString
-                                    + URLEncoder.encode(layerName, "UTF-8")
-                                            .replaceAll("\\+", "%20");
+                            layerString + URLEncoder.encode(layerName, "UTF-8").replaceAll("\\+", "%20");
                 } catch (UnsupportedEncodingException | NullPointerException e) {
                     layerString = layerString + layerName;
                 }
@@ -81,9 +79,7 @@ public abstract class AbstractGetMapRequest extends AbstractWMSRequest implement
                 try {
 
                     styleString =
-                            styleString
-                                    + URLEncoder.encode(styleName, "UTF-8")
-                                            .replaceAll("\\+", "%20");
+                            styleString + URLEncoder.encode(styleName, "UTF-8").replaceAll("\\+", "%20");
                 } catch (UnsupportedEncodingException | NullPointerException e1) {
                     styleString = styleString + styleName;
                 }
@@ -203,15 +199,13 @@ public abstract class AbstractGetMapRequest extends AbstractWMSRequest implement
                     if (CRS.getAxisOrder(crs) == AxisOrder.NORTH_EAST) {
                         Integer epsgCode = CRS.lookupEpsgCode(crs, false);
                         if (epsgCode == null) {
-                            throw new IllegalArgumentException(
-                                    "Could not find EPSG code for " + srsName);
+                            throw new IllegalArgumentException("Could not find EPSG code for " + srsName);
                         }
                         return CRS.decode("EPSG:" + epsgCode, true);
                     } else {
                         return crs;
                     }
-                } else if (srsName.startsWith("EPSG:")
-                        && isGeotoolsLongitudeFirstAxisOrderForced()) {
+                } else if (srsName.startsWith("EPSG:") && isGeotoolsLongitudeFirstAxisOrderForced()) {
                     // how do we look up the unmodified axis order?
                     String explicit = srsName.replace("EPSG:", "urn:x-ogc:def:crs:EPSG::");
                     return CRS.decode(explicit, false);
@@ -224,10 +218,7 @@ public abstract class AbstractGetMapRequest extends AbstractWMSRequest implement
         } catch (FactoryException e) {
             LOGGER.log(
                     Level.FINE,
-                    "Failed to build a coordiante reference system from "
-                            + srsName
-                            + " with forceXY "
-                            + forceXY,
+                    "Failed to build a coordiante reference system from " + srsName + " with forceXY " + forceXY,
                     e);
         }
         return DefaultEngineeringCRS.CARTESIAN_2D;
@@ -235,8 +226,7 @@ public abstract class AbstractGetMapRequest extends AbstractWMSRequest implement
 
     protected static boolean isGeotoolsLongitudeFirstAxisOrderForced() {
         return Boolean.getBoolean(GeoTools.FORCE_LONGITUDE_FIRST_AXIS_ORDER)
-                || GeoTools.getDefaultHints().get(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER)
-                        == Boolean.TRUE;
+                || GeoTools.getDefaultHints().get(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER) == Boolean.TRUE;
     }
     /** Sets BBOX and SRS using the provided Envelope. */
     @Override

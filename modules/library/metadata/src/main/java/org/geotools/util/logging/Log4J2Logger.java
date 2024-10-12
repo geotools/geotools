@@ -118,22 +118,19 @@ public final class Log4J2Logger extends LoggerAdapter {
             case 1: // (not allocated)
             case 0:
                 return org.apache.logging.log4j.Level.ALL; // ALL
-            default:
-                {
-                    // MAX_VALUE is a special value for Level.OFF. Otherwise and
-                    // if positive, log to fatal since we are greater than SEVERE.
-                    switch (n) {
-                        case Integer.MIN_VALUE:
-                            return org.apache.logging.log4j.Level.ALL;
-                        case Integer.MAX_VALUE:
-                            return org.apache.logging.log4j.Level.OFF;
-                        default:
-                            if (n >= 0)
-                                return org.apache.logging.log4j.Level
-                                        .FATAL; // fallthrough ALL otherwise.
-                            else return org.apache.logging.log4j.Level.ALL;
-                    }
+            default: {
+                // MAX_VALUE is a special value for Level.OFF. Otherwise and
+                // if positive, log to fatal since we are greater than SEVERE.
+                switch (n) {
+                    case Integer.MIN_VALUE:
+                        return org.apache.logging.log4j.Level.ALL;
+                    case Integer.MAX_VALUE:
+                        return org.apache.logging.log4j.Level.OFF;
+                    default:
+                        if (n >= 0) return org.apache.logging.log4j.Level.FATAL; // fallthrough ALL otherwise.
+                        else return org.apache.logging.log4j.Level.ALL;
                 }
+            }
         }
     }
 

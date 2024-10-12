@@ -60,6 +60,5 @@ public interface PropertyAccessor {
      * @param target The target context we intend to update (often null or Geometry.class)
      * @throws IllegalArgumentException In the even that xpath is not supported.
      */
-    <T> void set(Object object, String xpath, T value, Class<T> target)
-            throws IllegalArgumentException;
+    <T> void set(Object object, String xpath, T value, Class<T> target) throws IllegalArgumentException;
 }

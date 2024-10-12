@@ -67,8 +67,7 @@ public class ImageMosaicDirectoryWalker extends ImageMosaicWalker {
         private ImageMosaicElementConsumer consumer;
 
         @Override
-        protected void handleCancelled(
-                File startDirectory, Collection results, CancelException cancel)
+        protected void handleCancelled(File startDirectory, Collection results, CancelException cancel)
                 throws IOException {
             super.handleCancelled(startDirectory, results, cancel);
             // clean up objects and rollback transaction
@@ -79,8 +78,7 @@ public class ImageMosaicDirectoryWalker extends ImageMosaicWalker {
         }
 
         @Override
-        protected boolean handleIsCancelled(final File file, final int depth, Collection results)
-                throws IOException {
+        protected boolean handleIsCancelled(final File file, final int depth, Collection results) throws IOException {
 
             //
             // Anyone has asked us to stop?
@@ -92,8 +90,7 @@ public class ImageMosaicDirectoryWalker extends ImageMosaicWalker {
         }
 
         @Override
-        protected void handleFile(
-                final File fileBeingProcessed, final int depth, final Collection results)
+        protected void handleFile(final File fileBeingProcessed, final int depth, final Collection results)
                 throws IOException {
 
             handleElement(fileBeingProcessed, walker);
@@ -184,25 +181,19 @@ public class ImageMosaicDirectoryWalker extends ImageMosaicWalker {
 
             // TODO we might want to remove this in the future for performance
             int numFiles = 0;
-            String harvestDirectory =
-                    configHandler.getRunConfiguration().getParameter(Prop.HARVEST_DIRECTORY);
-            String indexDirs =
-                    configHandler.getRunConfiguration().getParameter(Prop.INDEXING_DIRECTORIES);
+            String harvestDirectory = configHandler.getRunConfiguration().getParameter(Prop.HARVEST_DIRECTORY);
+            String indexDirs = configHandler.getRunConfiguration().getParameter(Prop.INDEXING_DIRECTORIES);
             if (harvestDirectory != null) {
                 indexDirs = harvestDirectory;
             }
             String[] indexDirectories = indexDirs.split("\\s*,\\s*");
             boolean recursive =
-                    Boolean.parseBoolean(
-                            configHandler.getRunConfiguration().getParameter(Prop.RECURSIVE));
+                    Boolean.parseBoolean(configHandler.getRunConfiguration().getParameter(Prop.RECURSIVE));
             for (String indexingDirectory : indexDirectories) {
                 indexingDirectory = Utils.checkDirectory(indexingDirectory, false);
                 final File directoryToScan = new File(indexingDirectory);
-                final Collection files =
-                        FileUtils.listFiles(
-                                directoryToScan,
-                                finalFilter,
-                                recursive ? TrueFileFilter.INSTANCE : FalseFileFilter.INSTANCE);
+                final Collection files = FileUtils.listFiles(
+                        directoryToScan, finalFilter, recursive ? TrueFileFilter.INSTANCE : FalseFileFilter.INSTANCE);
                 numFiles += files.size();
             }
             //
@@ -210,8 +201,7 @@ public class ImageMosaicDirectoryWalker extends ImageMosaicWalker {
             //
             if (numFiles > 0) {
                 setNumElements(numFiles);
-                final List<String> indexingDirectories =
-                        new ArrayList<>(Arrays.asList(indexDirectories));
+                final List<String> indexingDirectories = new ArrayList<>(Arrays.asList(indexDirectories));
                 new MosaicDirectoryWalker(
                         indexingDirectories,
                         finalFilter,
@@ -230,92 +220,66 @@ public class ImageMosaicDirectoryWalker extends ImageMosaicWalker {
 
     /** @return */
     private IOFileFilter createDefaultGranuleExclusionFilter() {
-        final IOFileFilter specialWildCardFileFilter =
-                WildcardFileFilter.builder()
-                        .setWildcards(
-                                configHandler.getRunConfiguration().getParameter(Prop.WILDCARD))
-                        .setIoCase(IOCase.INSENSITIVE)
-                        .get();
-        IOFileFilter dirFilter =
-                FileFilterUtils.and(
-                        FileFilterUtils.directoryFileFilter(), HiddenFileFilter.VISIBLE);
-        IOFileFilter filesFilter =
-                Utils.excludeFilters(
-                        FileFilterUtils.makeSVNAware(
-                                FileFilterUtils.makeFileOnly(
-                                        FileFilterUtils.and(
-                                                specialWildCardFileFilter,
-                                                HiddenFileFilter.VISIBLE))),
-                        FileFilterUtils.suffixFileFilter("shp"),
-                        FileFilterUtils.suffixFileFilter("dbf"),
-                        FileFilterUtils.suffixFileFilter("sbn"),
-                        FileFilterUtils.suffixFileFilter("sbx"),
-                        FileFilterUtils.suffixFileFilter("shx"),
-                        FileFilterUtils.suffixFileFilter("qix"),
-                        FileFilterUtils.suffixFileFilter("lyr"),
-                        FileFilterUtils.suffixFileFilter("prj"),
-                        FileFilterUtils.suffixFileFilter("ncx2"),
-                        FileFilterUtils.suffixFileFilter("ncx3"),
-                        FileFilterUtils.suffixFileFilter("gbx9"),
-                        FileFilterUtils.suffixFileFilter("ncx"),
-                        FileFilterUtils.nameFileFilter("error.txt"),
-                        FileFilterUtils.nameFileFilter("error.txt.lck"),
-                        FileFilterUtils.suffixFileFilter("properties"),
-                        FileFilterUtils.suffixFileFilter("svn-base"));
-        filesFilter =
-                FileFilterUtils.or(
-                        filesFilter, FileFilterUtils.nameFileFilter("indexer.properties"));
+        final IOFileFilter specialWildCardFileFilter = WildcardFileFilter.builder()
+                .setWildcards(configHandler.getRunConfiguration().getParameter(Prop.WILDCARD))
+                .setIoCase(IOCase.INSENSITIVE)
+                .get();
+        IOFileFilter dirFilter = FileFilterUtils.and(FileFilterUtils.directoryFileFilter(), HiddenFileFilter.VISIBLE);
+        IOFileFilter filesFilter = Utils.excludeFilters(
+                FileFilterUtils.makeSVNAware(FileFilterUtils.makeFileOnly(
+                        FileFilterUtils.and(specialWildCardFileFilter, HiddenFileFilter.VISIBLE))),
+                FileFilterUtils.suffixFileFilter("shp"),
+                FileFilterUtils.suffixFileFilter("dbf"),
+                FileFilterUtils.suffixFileFilter("sbn"),
+                FileFilterUtils.suffixFileFilter("sbx"),
+                FileFilterUtils.suffixFileFilter("shx"),
+                FileFilterUtils.suffixFileFilter("qix"),
+                FileFilterUtils.suffixFileFilter("lyr"),
+                FileFilterUtils.suffixFileFilter("prj"),
+                FileFilterUtils.suffixFileFilter("ncx2"),
+                FileFilterUtils.suffixFileFilter("ncx3"),
+                FileFilterUtils.suffixFileFilter("gbx9"),
+                FileFilterUtils.suffixFileFilter("ncx"),
+                FileFilterUtils.nameFileFilter("error.txt"),
+                FileFilterUtils.nameFileFilter("error.txt.lck"),
+                FileFilterUtils.suffixFileFilter("properties"),
+                FileFilterUtils.suffixFileFilter("svn-base"));
+        filesFilter = FileFilterUtils.or(filesFilter, FileFilterUtils.nameFileFilter("indexer.properties"));
 
         // exclude common extensions
         Set<String> extensions = WorldImageFormat.getWorldExtension("png");
         for (String ext : extensions) {
-            filesFilter =
-                    FileFilterUtils.and(
-                            filesFilter,
-                            FileFilterUtils.notFileFilter(
-                                    FileFilterUtils.suffixFileFilter(ext.substring(1))));
+            filesFilter = FileFilterUtils.and(
+                    filesFilter, FileFilterUtils.notFileFilter(FileFilterUtils.suffixFileFilter(ext.substring(1))));
         }
         extensions = WorldImageFormat.getWorldExtension("gif");
         for (String ext : extensions) {
-            filesFilter =
-                    FileFilterUtils.and(
-                            filesFilter,
-                            FileFilterUtils.notFileFilter(
-                                    FileFilterUtils.suffixFileFilter(ext.substring(1))));
+            filesFilter = FileFilterUtils.and(
+                    filesFilter, FileFilterUtils.notFileFilter(FileFilterUtils.suffixFileFilter(ext.substring(1))));
         }
         extensions = WorldImageFormat.getWorldExtension("jpg");
         for (String ext : extensions) {
-            filesFilter =
-                    FileFilterUtils.and(
-                            filesFilter,
-                            FileFilterUtils.notFileFilter(
-                                    FileFilterUtils.suffixFileFilter(ext.substring(1))));
+            filesFilter = FileFilterUtils.and(
+                    filesFilter, FileFilterUtils.notFileFilter(FileFilterUtils.suffixFileFilter(ext.substring(1))));
         }
         extensions = WorldImageFormat.getWorldExtension("tiff");
         for (String ext : extensions) {
-            filesFilter =
-                    FileFilterUtils.and(
-                            filesFilter,
-                            FileFilterUtils.notFileFilter(
-                                    FileFilterUtils.suffixFileFilter(ext.substring(1))));
+            filesFilter = FileFilterUtils.and(
+                    filesFilter, FileFilterUtils.notFileFilter(FileFilterUtils.suffixFileFilter(ext.substring(1))));
         }
         extensions = WorldImageFormat.getWorldExtension("bmp");
         for (String ext : extensions) {
-            filesFilter =
-                    FileFilterUtils.and(
-                            filesFilter,
-                            FileFilterUtils.notFileFilter(
-                                    FileFilterUtils.suffixFileFilter(ext.substring(1))));
+            filesFilter = FileFilterUtils.and(
+                    filesFilter, FileFilterUtils.notFileFilter(FileFilterUtils.suffixFileFilter(ext.substring(1))));
         }
 
         // sdw
-        filesFilter =
-                FileFilterUtils.and(
-                        filesFilter,
-                        FileFilterUtils.notFileFilter(FileFilterUtils.suffixFileFilter("sdw")),
-                        FileFilterUtils.notFileFilter(FileFilterUtils.suffixFileFilter("aux")),
-                        FileFilterUtils.notFileFilter(FileFilterUtils.suffixFileFilter("wld")),
-                        FileFilterUtils.notFileFilter(FileFilterUtils.suffixFileFilter("svn")));
+        filesFilter = FileFilterUtils.and(
+                filesFilter,
+                FileFilterUtils.notFileFilter(FileFilterUtils.suffixFileFilter("sdw")),
+                FileFilterUtils.notFileFilter(FileFilterUtils.suffixFileFilter("aux")),
+                FileFilterUtils.notFileFilter(FileFilterUtils.suffixFileFilter("wld")),
+                FileFilterUtils.notFileFilter(FileFilterUtils.suffixFileFilter("svn")));
 
         if (this.fileFilter != null) {
             filesFilter = FileFilterUtils.and(this.fileFilter, filesFilter);
@@ -332,17 +296,14 @@ public class ImageMosaicDirectoryWalker extends ImageMosaicWalker {
      * a more flexible way than the wildcards)
      */
     public ImageMosaicDirectoryWalker(
-            ImageMosaicConfigHandler configHandler,
-            ImageMosaicEventHandlers eventHandler,
-            IOFileFilter filter) {
+            ImageMosaicConfigHandler configHandler, ImageMosaicEventHandlers eventHandler, IOFileFilter filter) {
         super(configHandler, eventHandler);
 
         this.fileFilter = filter;
     }
 
     /** */
-    public ImageMosaicDirectoryWalker(
-            ImageMosaicConfigHandler catalogHandler, ImageMosaicEventHandlers eventHandler) {
+    public ImageMosaicDirectoryWalker(ImageMosaicConfigHandler catalogHandler, ImageMosaicEventHandlers eventHandler) {
         this(catalogHandler, eventHandler, null);
     }
 }

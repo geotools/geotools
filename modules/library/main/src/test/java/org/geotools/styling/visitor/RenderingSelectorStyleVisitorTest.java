@@ -37,8 +37,7 @@ public class RenderingSelectorStyleVisitorTest {
 
         Style noOption = buildStyleWithInclusionOption(null);
 
-        RenderingSelectorStyleVisitor selectorStyleVisitor =
-                new LegendRenderingSelectorStyleVisitor();
+        RenderingSelectorStyleVisitor selectorStyleVisitor = new LegendRenderingSelectorStyleVisitor();
 
         selectorStyleVisitor.visit(noOption);
         assertEquals(noOption, selectorStyleVisitor.getCopy());
@@ -128,30 +127,20 @@ public class RenderingSelectorStyleVisitorTest {
             style.featureTypeStyles()
                     .get(0)
                     .getOptions()
-                    .put(
-                            org.geotools.api.style.FeatureTypeStyle.VENDOR_OPTION_INCLUSION,
-                            inclusionValue);
+                    .put(org.geotools.api.style.FeatureTypeStyle.VENDOR_OPTION_INCLUSION, inclusionValue);
 
         Rule rule = sf.createRule();
         Symbolizer symb1 = sf.createLineSymbolizer(sf.getDefaultStroke(), "geometry");
         rule.symbolizers().add(symb1);
         if (inclusionValue != null)
-            rule.getOptions()
-                    .put(
-                            org.geotools.api.style.FeatureTypeStyle.VENDOR_OPTION_INCLUSION,
-                            inclusionValue);
+            rule.getOptions().put(org.geotools.api.style.FeatureTypeStyle.VENDOR_OPTION_INCLUSION, inclusionValue);
 
         Rule rule2 = sf.createRule();
-        Symbolizer symb2 =
-                sf.createPolygonSymbolizer(sf.getDefaultStroke(), sf.getDefaultFill(), "shape");
+        Symbolizer symb2 = sf.createPolygonSymbolizer(sf.getDefaultStroke(), sf.getDefaultFill(), "shape");
         rule2.symbolizers().add(symb2);
-        Symbolizer symb3 =
-                sf.createPolygonSymbolizer(sf.getDefaultStroke(), sf.getDefaultFill(), "extension");
+        Symbolizer symb3 = sf.createPolygonSymbolizer(sf.getDefaultStroke(), sf.getDefaultFill(), "extension");
         if (inclusionValue != null)
-            symb3.getOptions()
-                    .put(
-                            org.geotools.api.style.FeatureTypeStyle.VENDOR_OPTION_INCLUSION,
-                            inclusionValue);
+            symb3.getOptions().put(org.geotools.api.style.FeatureTypeStyle.VENDOR_OPTION_INCLUSION, inclusionValue);
         rule2.symbolizers().add(symb3);
 
         FeatureTypeStyle fts = sf.createFeatureTypeStyle(rule);

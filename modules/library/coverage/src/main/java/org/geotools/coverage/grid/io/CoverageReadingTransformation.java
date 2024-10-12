@@ -32,8 +32,7 @@ public interface CoverageReadingTransformation extends RenderingTransformation {
         GridCoverage2DReader reader;
         GeneralParameterValue[] readParameters;
 
-        public ReaderAndParams(
-                GridCoverage2DReader reader, GeneralParameterValue[] readParameters) {
+        public ReaderAndParams(GridCoverage2DReader reader, GeneralParameterValue[] readParameters) {
             this.reader = reader;
             this.readParameters = readParameters;
         }

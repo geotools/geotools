@@ -90,8 +90,7 @@ class Binarizator {
         this.origH = pxHeight;
 
         final ReferencedEnvelope env = JTS.toEnvelope(bbox);
-        w2gTransform =
-                RendererUtilities.worldToScreenTransform(env, new Rectangle(pxWidth, pxHeight));
+        w2gTransform = RendererUtilities.worldToScreenTransform(env, new Rectangle(pxWidth, pxHeight));
 
         if (w2gTransform == null) {
             LOGGER.info("Null transformer, possible bad bbox requested " + env);
@@ -174,23 +173,14 @@ class Binarizator {
             Envelope tileBBox = tile.getTileBBox().getEnvelopeInternal();
             Envelope roiEnvelope = JTS.toEnvelope(roiBounds);
             if (tileBBox.intersects(roiEnvelope)) {
-                PlanarImage txROI =
-                        new ImageWorker(roiImage)
-                                .affine(
-                                        w2gTransform,
-                                        Interpolation.getInstance(Interpolation.INTERP_NEAREST),
-                                        null)
-                                .getPlanarImage();
+                PlanarImage txROI = new ImageWorker(roiImage)
+                        .affine(w2gTransform, Interpolation.getInstance(Interpolation.INTERP_NEAREST), null)
+                        .getPlanarImage();
                 if (tile.draw(txROI)) {
                     added = true;
                     if (tile.isFullyCovered()) {
                         if (LOGGER.isLoggable(Level.FINE)) {
-                            LOGGER.fine(
-                                    "Removing covered tile "
-                                            + tile
-                                            + " ("
-                                            + activeTiles.size()
-                                            + " left)");
+                            LOGGER.fine("Removing covered tile " + tile + " (" + activeTiles.size() + " left)");
                         }
                         it.remove();
                         tile.dispose();
@@ -236,12 +226,7 @@ class Binarizator {
                 {
                     added = true;
                     if (LOGGER.isLoggable(Level.FINE)) {
-                        LOGGER.fine(
-                                "Removing fully covered tile "
-                                        + tile
-                                        + " ("
-                                        + activeTiles.size()
-                                        + " left)");
+                        LOGGER.fine("Removing fully covered tile " + tile + " (" + activeTiles.size() + " left)");
                     }
                     it.remove();
                     tile.dispose();
@@ -256,12 +241,7 @@ class Binarizator {
                         added = true;
                         if (tile.isFullyCovered()) {
                             if (LOGGER.isLoggable(Level.FINE)) {
-                                LOGGER.fine(
-                                        "Removing covered tile "
-                                                + tile
-                                                + " ("
-                                                + activeTiles.size()
-                                                + " left)");
+                                LOGGER.fine("Removing covered tile " + tile + " (" + activeTiles.size() + " left)");
                             }
                             it.remove();
                             tile.dispose();
@@ -285,12 +265,10 @@ class Binarizator {
     BufferedImage getDebugImage() {
 
         // "The code works only if the sample model data type is BYTE");
-        SampleModel sampleModel =
-                new MultiPixelPackedSampleModel(DataBuffer.TYPE_BYTE, origW, origH, 1);
+        SampleModel sampleModel = new MultiPixelPackedSampleModel(DataBuffer.TYPE_BYTE, origW, origH, 1);
 
         // build the raster
-        WritableRaster mainRaster =
-                RasterFactory.createWritableRaster(sampleModel, new java.awt.Point(0, 0));
+        WritableRaster mainRaster = RasterFactory.createWritableRaster(sampleModel, new java.awt.Point(0, 0));
 
         // fill with 0 the whole raster
         int[] data = new int[origW * origH];

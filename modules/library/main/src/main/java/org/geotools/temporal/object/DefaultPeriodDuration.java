@@ -253,9 +253,7 @@ public class DefaultPeriodDuration extends DefaultDuration implements PeriodDura
 
         // if the period contains years (31536000000 ms) the response will be incremented
         if (periodDescription.indexOf('Y') != -1) {
-            int nbYear =
-                    Integer.parseInt(
-                            periodDescription.substring(0, periodDescription.indexOf('Y')));
+            int nbYear = Integer.parseInt(periodDescription.substring(0, periodDescription.indexOf('Y')));
             response += nbYear * yearMS;
             periodDescription = periodDescription.substring(periodDescription.indexOf('Y') + 1);
         }
@@ -265,27 +263,21 @@ public class DefaultPeriodDuration extends DefaultDuration implements PeriodDura
                 || ((periodDescription.indexOf('T') != -1)
                         && (periodDescription.indexOf('M') < periodDescription.indexOf('T'))
                         && ((periodDescription.indexOf('M') != -1)))) {
-            int nbMonth =
-                    Integer.parseInt(
-                            periodDescription.substring(0, periodDescription.indexOf('M')));
+            int nbMonth = Integer.parseInt(periodDescription.substring(0, periodDescription.indexOf('M')));
             response += nbMonth * monthMS;
             periodDescription = periodDescription.substring(periodDescription.indexOf('M') + 1);
         }
 
         // if the period contains weeks (604800000 ms)
         if (periodDescription.indexOf('W') != -1) {
-            int nbWeek =
-                    Integer.parseInt(
-                            periodDescription.substring(0, periodDescription.indexOf('W')));
+            int nbWeek = Integer.parseInt(periodDescription.substring(0, periodDescription.indexOf('W')));
             response += nbWeek * weekMS;
             periodDescription = periodDescription.substring(periodDescription.indexOf('W') + 1);
         }
 
         // if the period contains days (86400000 ms)
         if (periodDescription.indexOf('D') != -1) {
-            int nbDay =
-                    Integer.parseInt(
-                            periodDescription.substring(0, periodDescription.indexOf('D')));
+            int nbDay = Integer.parseInt(periodDescription.substring(0, periodDescription.indexOf('D')));
             response += nbDay * dayMS;
             periodDescription = periodDescription.substring(periodDescription.indexOf('D') + 1);
         }
@@ -297,27 +289,21 @@ public class DefaultPeriodDuration extends DefaultDuration implements PeriodDura
 
         // if the period contains hours (3600000 ms)
         if (periodDescription.indexOf('H') != -1) {
-            int nbHour =
-                    Integer.parseInt(
-                            periodDescription.substring(0, periodDescription.indexOf('H')));
+            int nbHour = Integer.parseInt(periodDescription.substring(0, periodDescription.indexOf('H')));
             response += nbHour * hourMS;
             periodDescription = periodDescription.substring(periodDescription.indexOf('H') + 1);
         }
 
         // if the period contains minutes (60000 ms)
         if (periodDescription.indexOf('M') != -1) {
-            int nbMin =
-                    Integer.parseInt(
-                            periodDescription.substring(0, periodDescription.indexOf('M')));
+            int nbMin = Integer.parseInt(periodDescription.substring(0, periodDescription.indexOf('M')));
             response += nbMin * minMS;
             periodDescription = periodDescription.substring(periodDescription.indexOf('M') + 1);
         }
 
         // if the period contains seconds (1000 ms)
         if (periodDescription.indexOf('S') != -1) {
-            int nbSec =
-                    Integer.parseInt(
-                            periodDescription.substring(0, periodDescription.indexOf('S')));
+            int nbSec = Integer.parseInt(periodDescription.substring(0, periodDescription.indexOf('S')));
             response += nbSec * secondMS;
             periodDescription = periodDescription.substring(periodDescription.indexOf('S') + 1);
         }

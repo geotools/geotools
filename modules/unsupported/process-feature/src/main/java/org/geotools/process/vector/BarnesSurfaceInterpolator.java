@@ -402,8 +402,7 @@ public class BarnesSurfaceInterpolator {
         return weight(gridPt, dataPt, lengthScale, 1.0);
     }
 
-    private double weight(
-            Coordinate dataPt, Coordinate gridPt, double lengthScale, double convergenceFactor) {
+    private double weight(Coordinate dataPt, Coordinate gridPt, double lengthScale, double convergenceFactor) {
         double dist = dataPt.distance(gridPt);
         return weight(dist, lengthScale, convergenceFactor);
     }

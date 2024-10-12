@@ -179,9 +179,7 @@ public class PostPreProcessFilterSplittingVisitor implements FilterVisitor, Expr
      *     obtaining the information from the transaction.
      */
     public PostPreProcessFilterSplittingVisitor(
-            FilterCapabilities fcs,
-            SimpleFeatureType parent,
-            ClientTransactionAccessor transactionAccessor) {
+            FilterCapabilities fcs, SimpleFeatureType parent, ClientTransactionAccessor transactionAccessor) {
         this.fcs = fcs;
         this.parent = parent;
         this.transactionAccessor = transactionAccessor;
@@ -530,19 +528,18 @@ public class PostPreProcessFilterSplittingVisitor implements FilterVisitor, Expr
         if (original == null) original = filter;
 
         @SuppressWarnings({"unchecked", "PMD.UseShortArrayInitializer"})
-        Class<? extends Filter>[] spatialOps =
-                new Class[] {
-                    Beyond.class,
-                    Contains.class,
-                    Crosses.class,
-                    Disjoint.class,
-                    DWithin.class,
-                    Equals.class,
-                    Intersects.class,
-                    Overlaps.class,
-                    Touches.class,
-                    Within.class
-                };
+        Class<? extends Filter>[] spatialOps = new Class[] {
+            Beyond.class,
+            Contains.class,
+            Crosses.class,
+            Disjoint.class,
+            DWithin.class,
+            Equals.class,
+            Intersects.class,
+            Overlaps.class,
+            Touches.class,
+            Within.class
+        };
 
         for (Class<? extends Filter> spatialOp : spatialOps) {
             if (spatialOp.isAssignableFrom(filter.getClass())) {
@@ -803,10 +800,7 @@ public class PostPreProcessFilterSplittingVisitor implements FilterVisitor, Expr
         // JD: use an expression to get at the attribute type intead of accessing directly
         if (parent != null && expression.evaluate(parent) == null) {
             throw new IllegalArgumentException(
-                    "Property '"
-                            + expression.getPropertyName()
-                            + "' could not be found in "
-                            + parent.getTypeName());
+                    "Property '" + expression.getPropertyName() + "' could not be found in " + parent.getTypeName());
         }
         if (transactionAccessor != null) {
             Filter updateFilter = transactionAccessor.getUpdateFilter(expression.getPropertyName());
@@ -851,10 +845,7 @@ public class PostPreProcessFilterSplittingVisitor implements FilterVisitor, Expr
     }
 
     protected void visitMathExpression(BinaryExpression expression) {
-        if (!supports(Add.class)
-                && !supports(Subtract.class)
-                && !supports(Multiply.class)
-                && !supports(Divide.class)) {
+        if (!supports(Add.class) && !supports(Subtract.class) && !supports(Multiply.class) && !supports(Divide.class)) {
             postStack.push(expression);
             return;
         }
@@ -1080,8 +1071,7 @@ public class PostPreProcessFilterSplittingVisitor implements FilterVisitor, Expr
         if (value instanceof Class) supports = fcs.supports((Class) value);
         else if (value instanceof Filter) supports = fcs.supports((Filter) value);
         else if (value instanceof Expression) supports = fcs.supports(value.getClass());
-        else if (value instanceof FilterCapabilities)
-            supports = fcs.supports((FilterCapabilities) value);
+        else if (value instanceof FilterCapabilities) supports = fcs.supports((FilterCapabilities) value);
 
         return supports;
     }

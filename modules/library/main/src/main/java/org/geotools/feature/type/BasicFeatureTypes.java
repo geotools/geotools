@@ -71,15 +71,8 @@ public class BasicFeatureTypes {
 
         // Feature is the base of everything else, must be created directly instead
         // of going thru the builder because the builder assumes it as the default base type
-        FEATURE =
-                new SimpleFeatureTypeImpl(
-                        new NameImpl("Feature"),
-                        Collections.emptyList(),
-                        null,
-                        true,
-                        Collections.emptyList(),
-                        null,
-                        null);
+        FEATURE = new SimpleFeatureTypeImpl(
+                new NameImpl("Feature"), Collections.emptyList(), null, true, Collections.emptyList(), null, null);
 
         try {
             SimpleFeatureTypeBuilder build = new SimpleFeatureTypeBuilder();

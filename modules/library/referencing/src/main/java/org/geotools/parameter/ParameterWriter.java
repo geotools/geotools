@@ -176,10 +176,7 @@ public class ParameterWriter extends FilterWriter {
      * @throws IOException if an error occured will writing to the stream.
      */
     @SuppressWarnings("PMD.CloseResource")
-    private void format(
-            final String name,
-            final ParameterDescriptorGroup group,
-            final ParameterValueGroup values)
+    private void format(final String name, final ParameterDescriptorGroup group, final ParameterValueGroup values)
             throws IOException {
         /*
          * Write the operation name (including aliases) before the table.
@@ -213,9 +210,7 @@ public class ParameterWriter extends FilterWriter {
         table.nextColumn();
         table.write("Maximum"); // TODO localize
         table.nextColumn();
-        table.write(
-                resources.getString(
-                        (values == null) ? VocabularyKeys.DEFAULT_VALUE : VocabularyKeys.VALUE));
+        table.write(resources.getString((values == null) ? VocabularyKeys.DEFAULT_VALUE : VocabularyKeys.VALUE));
         table.nextColumn();
         table.write("Units"); // TODO localize
         table.nextLine();
@@ -354,8 +349,7 @@ public class ParameterWriter extends FilterWriter {
      * @throws IOException if an error occured will writing to the stream.
      */
     @SuppressWarnings("PMD.CloseResource")
-    public void summary(
-            final Collection<? extends IdentifiedObject> parameters, final Set<String> scopes)
+    public void summary(final Collection<? extends IdentifiedObject> parameters, final Set<String> scopes)
             throws IOException {
         /*
          * Prepares the list of alias before any write to the output stream.

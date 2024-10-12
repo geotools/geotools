@@ -84,8 +84,7 @@ public class MultiSurface extends MultiPolygon implements MultiCurvedGeometry<Mu
                 } else {
                     // straight lines polygon
                     sb.append("(");
-                    writeCoordinateSequence(
-                            sb, component.getExteriorRing().getCoordinateSequence());
+                    writeCoordinateSequence(sb, component.getExteriorRing().getCoordinateSequence());
                     int numHoles = component.getNumInteriorRing();
                     for (int i = 0; i < numHoles; i++) {
                         sb.append(", ");

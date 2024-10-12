@@ -43,8 +43,7 @@ public class GTXML {
      * @param crs Optional coordinate reference system for generated feature type
      * @return FeatureType
      */
-    public static FeatureType parseFeatureType(
-            Configuration configuration, QName name, CoordinateReferenceSystem crs)
+    public static FeatureType parseFeatureType(Configuration configuration, QName name, CoordinateReferenceSystem crs)
             throws IOException {
         return EmfAppSchemaParser.parse(configuration, name, crs);
     }

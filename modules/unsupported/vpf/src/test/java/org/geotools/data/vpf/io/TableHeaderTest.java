@@ -84,9 +84,7 @@ public class TableHeaderTest {
     @Before
     public void setUp() throws IOException {
         File dht = TestData.file(this, "dnc13/dht");
-        VPFInputStream tis =
-                new VariableIndexInputStream(
-                        dht.getPath(), DataTypesDefinition.LITTLE_ENDIAN_ORDER);
+        VPFInputStream tis = new VariableIndexInputStream(dht.getPath(), DataTypesDefinition.LITTLE_ENDIAN_ORDER);
         varTableHeader = tis.getHeader();
         tis.close();
     } // end of setUp()

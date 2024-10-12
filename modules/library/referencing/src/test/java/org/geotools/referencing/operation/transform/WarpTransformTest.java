@@ -58,8 +58,8 @@ public final class WarpTransformTest {
      * Constructs a warp and tests the transformations. Coefficients will be tested later (by the
      * caller).
      */
-    private static WarpPolynomial executeTest(
-            final Formula formula, final int degree, final float EPS) throws TransformException {
+    private static WarpPolynomial executeTest(final Formula formula, final int degree, final float EPS)
+            throws TransformException {
         /*
          * Creates a set of points and transform them according the formula supplied in argument.
          */
@@ -77,16 +77,15 @@ public final class WarpTransformTest {
          */
         final Point ext = new Point(WIDTH, HEIGHT);
         formula.transform(ext);
-        final WarpTransform2D transform =
-                new WarpTransform2D(
-                        new Rectangle(0, 0, WIDTH, HEIGHT),
-                        sources,
-                        0,
-                        new Rectangle(0, 0, ext.x, ext.y),
-                        dest,
-                        0,
-                        sources.length,
-                        degree);
+        final WarpTransform2D transform = new WarpTransform2D(
+                new Rectangle(0, 0, WIDTH, HEIGHT),
+                sources,
+                0,
+                new Rectangle(0, 0, ext.x, ext.y),
+                dest,
+                0,
+                sources.length,
+                degree);
         final WarpTransform2D inverse = (WarpTransform2D) transform.inverse();
         assertNotNull("WKT formatting test", transform.toString());
         /*
@@ -143,25 +142,23 @@ public final class WarpTransformTest {
         for (int i = 0; i < scalesX.length; i++) {
             final int scaleX = scalesX[i];
             final int scaleY = scalesY[i];
-            final WarpPolynomial warp =
-                    executeTest(
-                            new Formula() {
-                                @Override
-                                public String message() {
-                                    return "WarpAffine[" + scaleX + ',' + scaleY + ']';
-                                }
+            final WarpPolynomial warp = executeTest(
+                    new Formula() {
+                        @Override
+                        public String message() {
+                            return "WarpAffine[" + scaleX + ',' + scaleY + ']';
+                        }
 
-                                @Override
-                                public void transform(final Point point) {
-                                    point.x *= scaleX;
-                                    point.y *= scaleY;
-                                }
-                            },
-                            1,
-                            1E-5f);
+                        @Override
+                        public void transform(final Point point) {
+                            point.x *= scaleX;
+                            point.y *= scaleY;
+                        }
+                    },
+                    1,
+                    1E-5f);
             assertTrue(
-                    "Expected an affine warp but got " + Classes.getShortClassName(warp),
-                    warp instanceof WarpAffine);
+                    "Expected an affine warp but got " + Classes.getShortClassName(warp), warp instanceof WarpAffine);
         }
     }
 
@@ -173,22 +170,21 @@ public final class WarpTransformTest {
         for (int i = 0; i < scalesX.length; i++) {
             final int scaleX = scalesX[i];
             final int scaleY = scalesY[i];
-            final WarpPolynomial warp =
-                    executeTest(
-                            new Formula() {
-                                @Override
-                                public String message() {
-                                    return "WarpQuadratic[" + scaleX + ',' + scaleY + ']';
-                                }
+            final WarpPolynomial warp = executeTest(
+                    new Formula() {
+                        @Override
+                        public String message() {
+                            return "WarpQuadratic[" + scaleX + ',' + scaleY + ']';
+                        }
 
-                                @Override
-                                public void transform(final Point point) {
-                                    point.x *= scaleX * point.x;
-                                    point.y *= scaleY;
-                                }
-                            },
-                            2,
-                            1E-2f);
+                        @Override
+                        public void transform(final Point point) {
+                            point.x *= scaleX * point.x;
+                            point.y *= scaleY;
+                        }
+                    },
+                    2,
+                    1E-2f);
             assertTrue(
                     "Expected a quatratic warp but got " + Classes.getShortClassName(warp),
                     warp instanceof WarpQuadratic);
@@ -205,8 +201,7 @@ public final class WarpTransformTest {
         final WarpAdapter adapter = new WarpAdapter("test", transform);
         final Random random = new Random(-854734760285695284L);
         for (int i = 0; i < 200; i++) {
-            Point2D source =
-                    new Point2D.Double(random.nextDouble() * 100, random.nextDouble() * 100);
+            Point2D source = new Point2D.Double(random.nextDouble() * 100, random.nextDouble() * 100);
             Point2D expected = warp.mapDestPoint(source);
             Point2D computed = adapter.mapDestPoint(source);
             assertEquals("X", expected.getX(), computed.getX(), 1E-5);

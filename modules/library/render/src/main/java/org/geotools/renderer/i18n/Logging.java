@@ -59,8 +59,7 @@ public class Logging extends IndexedResourceBundle {
      * @return The string for the given key.
      * @throws MissingResourceException If no object for the given key can be found.
      */
-    public static LogRecord format(final Level level, final int key)
-            throws MissingResourceException {
+    public static LogRecord format(final Level level, final int key) throws MissingResourceException {
         return getResources(null).getLogRecord(level, key);
     }
 
@@ -90,8 +89,7 @@ public class Logging extends IndexedResourceBundle {
      * @return The formatted string for the given key.
      * @throws MissingResourceException If no object for the given key can be found.
      */
-    public static LogRecord format(
-            final Level level, final int key, final Object arg0, final Object arg1)
+    public static LogRecord format(final Level level, final int key, final Object arg0, final Object arg1)
             throws MissingResourceException {
         return getResources(null).getLogRecord(level, key, arg0, arg1);
     }
@@ -109,11 +107,7 @@ public class Logging extends IndexedResourceBundle {
      * @throws MissingResourceException If no object for the given key can be found.
      */
     public static LogRecord format(
-            final Level level,
-            final int key,
-            final Object arg0,
-            final Object arg1,
-            final Object arg2)
+            final Level level, final int key, final Object arg0, final Object arg1, final Object arg2)
             throws MissingResourceException {
         return getResources(null).getLogRecord(level, key, arg0, arg1, arg2);
     }

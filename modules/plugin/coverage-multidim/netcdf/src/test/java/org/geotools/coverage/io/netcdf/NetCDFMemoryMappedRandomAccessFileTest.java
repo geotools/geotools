@@ -117,10 +117,7 @@ public class NetCDFMemoryMappedRandomAccessFileTest extends NetCDFBaseTest {
             GridCoverage2D grid = reader.read("NO2", values);
             assertFalse(grid.getSampleDimension(0).getDescription().toString().endsWith(":sd"));
             assertNotNull(grid);
-            float[] value =
-                    grid.evaluate(
-                            (Position) new Position2D(DefaultGeographicCRS.WGS84, 5, 45),
-                            new float[1]);
+            float[] value = grid.evaluate((Position) new Position2D(DefaultGeographicCRS.WGS84, 5, 45), new float[1]);
             assertEquals(6.15991f, value[0], 0.00001);
 
             time.setValue(List.of(formatD.parse(t2)));
@@ -128,10 +125,7 @@ public class NetCDFMemoryMappedRandomAccessFileTest extends NetCDFBaseTest {
             grid = reader.read("O3", values);
             assertFalse(grid.getSampleDimension(0).getDescription().toString().endsWith(":sd"));
             assertNotNull(grid);
-            value =
-                    grid.evaluate(
-                            (Position) new Position2D(DefaultGeographicCRS.WGS84, 5, 45),
-                            new float[1]);
+            value = grid.evaluate((Position) new Position2D(DefaultGeographicCRS.WGS84, 5, 45), new float[1]);
             assertEquals(56.946774f, value[0], 0.00001);
 
         } finally {
@@ -169,10 +163,7 @@ public class NetCDFMemoryMappedRandomAccessFileTest extends NetCDFBaseTest {
             GridCoverage2D grid = reader.read(names[0], null);
             assertFalse(grid.getSampleDimension(0).getDescription().toString().endsWith(":sd"));
             assertNotNull(grid);
-            float[] value =
-                    grid.evaluate(
-                            (Position) new Position2D(DefaultGeographicCRS.WGS84, -84, 26),
-                            new float[1]);
+            float[] value = grid.evaluate((Position) new Position2D(DefaultGeographicCRS.WGS84, -84, 26), new float[1]);
             assertEquals(24.0f, value[0], 0.00001);
             FileCacheIF fileCache = NetCDFUtilities.getRafFileCache();
             List<String> cached = fileCache.showCache();

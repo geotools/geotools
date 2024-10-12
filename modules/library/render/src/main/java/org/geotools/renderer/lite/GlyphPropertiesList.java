@@ -37,14 +37,13 @@ public class GlyphPropertiesList {
             list.add(new GlyphProperty(name, type, value));
             names.add(name);
         } else {
-            throw new RuntimeException(
-                    "Wrong class for setting variable "
-                            + name
-                            + ".  Expected a "
-                            + type
-                            + " but received a "
-                            + value.getClass()
-                            + ".");
+            throw new RuntimeException("Wrong class for setting variable "
+                    + name
+                    + ".  Expected a "
+                    + type
+                    + " but received a "
+                    + value.getClass()
+                    + ".");
         }
     }
 
@@ -73,8 +72,7 @@ public class GlyphPropertiesList {
         if (index != -1) {
             return getPropertyType(index);
         } else {
-            throw new RuntimeException(
-                    "Tried to get the class of a non-existent property: " + name);
+            throw new RuntimeException("Tried to get the class of a non-existent property: " + name);
         }
     }
 
@@ -95,8 +93,7 @@ public class GlyphPropertiesList {
         if (index != -1) {
             return getPropertyValue(index);
         } else {
-            throw new RuntimeException(
-                    "Tried to get the class of a non-existent property: " + name);
+            throw new RuntimeException("Tried to get the class of a non-existent property: " + name);
         }
     }
 
@@ -136,18 +133,16 @@ public class GlyphPropertiesList {
             if (prop.getType().isAssignableFrom(value.getClass())) {
                 prop.setValue(value);
             } else {
-                throw new RuntimeException(
-                        "Wrong class for setting variable "
-                                + name
-                                + ".  Expected a "
-                                + prop.getType()
-                                + " but received a "
-                                + value.getClass()
-                                + ".");
+                throw new RuntimeException("Wrong class for setting variable "
+                        + name
+                        + ".  Expected a "
+                        + prop.getType()
+                        + " but received a "
+                        + value.getClass()
+                        + ".");
             }
         } else {
-            throw new RuntimeException(
-                    "Tried to set the value of a non-existent property: " + name);
+            throw new RuntimeException("Tried to set the value of a non-existent property: " + name);
         }
     }
 }

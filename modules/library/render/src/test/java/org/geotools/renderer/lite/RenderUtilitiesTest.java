@@ -40,8 +40,7 @@ public class RenderUtilitiesTest {
     @Test
     public void testNAD83() throws Exception {
         CoordinateReferenceSystem nad83 = CRS.decode("EPSG:4269", true);
-        ReferencedEnvelope re =
-                new ReferencedEnvelope(new Envelope(-121.1, -121.0, 46.7, 46.8), nad83);
+        ReferencedEnvelope re = new ReferencedEnvelope(new Envelope(-121.1, -121.0, 46.7, 46.8), nad83);
         double scale = RendererUtilities.calculateScale(re, 750, 600, 75);
         Assert.assertEquals(41470, scale, 1d);
     }
@@ -49,8 +48,7 @@ public class RenderUtilitiesTest {
     @Test
     public void testWGS84() throws Exception {
         CoordinateReferenceSystem wgs84 = CRS.decode("EPSG:4326", true);
-        ReferencedEnvelope re =
-                new ReferencedEnvelope(new Envelope(-121.1, -121.0, 46.7, 46.8), wgs84);
+        ReferencedEnvelope re = new ReferencedEnvelope(new Envelope(-121.1, -121.0, 46.7, 46.8), wgs84);
         double scale = RendererUtilities.calculateScale(re, 750, 600, 75);
         Assert.assertEquals(41470, scale, 1d);
     }
@@ -82,18 +80,14 @@ public class RenderUtilitiesTest {
 
     @Test
     public void testScaleCartesian() throws Exception {
-        ReferencedEnvelope re =
-                new ReferencedEnvelope(
-                        new Envelope(0, 10, 0, 10), DefaultEngineeringCRS.CARTESIAN_2D);
+        ReferencedEnvelope re = new ReferencedEnvelope(new Envelope(0, 10, 0, 10), DefaultEngineeringCRS.CARTESIAN_2D);
         double scale = RendererUtilities.calculateScale(re, 10 * 100, 10 * 100, 2.54);
         Assert.assertEquals(1.0, scale, 0.00001); // no projection deformation here!
     }
 
     @Test
     public void testScaleGeneric() throws Exception {
-        ReferencedEnvelope re =
-                new ReferencedEnvelope(
-                        new Envelope(0, 10, 0, 10), DefaultEngineeringCRS.GENERIC_2D);
+        ReferencedEnvelope re = new ReferencedEnvelope(new Envelope(0, 10, 0, 10), DefaultEngineeringCRS.GENERIC_2D);
         double scale = RendererUtilities.calculateScale(re, 10 * 100, 10 * 100, 2.54);
         Assert.assertEquals(1.0, scale, 0.00001); // no projection deformation here!
     }
@@ -101,18 +95,14 @@ public class RenderUtilitiesTest {
     @Test
     public void testScaleGenericFeet() throws Exception {
         ReferencedEnvelope re =
-                new ReferencedEnvelope(
-                        new Envelope(1587500, 1587510, 475000, 475010),
-                        CRS.decode("EPSG:2927", true));
+                new ReferencedEnvelope(new Envelope(1587500, 1587510, 475000, 475010), CRS.decode("EPSG:2927", true));
         double scale = RendererUtilities.calculateScale(re, 10 * 100, 10 * 100, 2.54);
         Assert.assertEquals(0.30564, scale, 0.00001); // includes some projection deformation
     }
 
     @Test
     public void testOGCScaleProjected() throws Exception {
-        ReferencedEnvelope re =
-                new ReferencedEnvelope(
-                        new Envelope(0, 10, 0, 10), DefaultEngineeringCRS.CARTESIAN_2D);
+        ReferencedEnvelope re = new ReferencedEnvelope(new Envelope(0, 10, 0, 10), DefaultEngineeringCRS.CARTESIAN_2D);
         int tenMetersPixels = (int) Math.round(10 / 0.00028);
         double scale = RendererUtilities.calculateOGCScale(re, tenMetersPixels, new HashMap());
         Assert.assertEquals(1.0, scale, 0.0001);
@@ -121,9 +111,7 @@ public class RenderUtilitiesTest {
     @Test
     public void testOGCScaleFeet() throws Exception {
         try {
-            ReferencedEnvelope re =
-                    new ReferencedEnvelope(
-                            new Envelope(0, 10, 0, 10), CRS.decode("EPSG:2927", true));
+            ReferencedEnvelope re = new ReferencedEnvelope(new Envelope(0, 10, 0, 10), CRS.decode("EPSG:2927", true));
             int tenMetersPixels = (int) Math.round(10 / 0.00028);
 
             RendererUtilities.SCALE_UNIT_COMPENSATION = false;
@@ -142,8 +130,7 @@ public class RenderUtilitiesTest {
     public void testOGCScaleGeographic() throws Exception {
         // same example as page 29 in the SLD OGC spec, but with the expected scale corrected
         // since the OGC document contains a very imprecise one
-        ReferencedEnvelope re =
-                new ReferencedEnvelope(new Envelope(0, 2, 0, 2), DefaultGeographicCRS.WGS84);
+        ReferencedEnvelope re = new ReferencedEnvelope(new Envelope(0, 2, 0, 2), DefaultGeographicCRS.WGS84);
         double scale = RendererUtilities.calculateOGCScale(re, 600, new HashMap());
         Assert.assertEquals(1325232.03, scale, 0.01);
     }
@@ -200,19 +187,16 @@ public class RenderUtilitiesTest {
         worldToScreen.translate(-offset, -offset);
         AffineTransform at = new AffineTransform(worldToScreen);
         Envelope env = RendererUtilities.createMapEnvelope(paintArea, at);
-        assertEnvelopeEquals(
-                new Envelope(offset, offset + 1600, offset, offset + 1200), env, 0.001);
+        assertEnvelopeEquals(new Envelope(offset, offset + 1600, offset, offset + 1200), env, 0.001);
         // Test for negative world coordinates
         at.translate(2 * offset, 2 * offset);
         env = RendererUtilities.createMapEnvelope(paintArea, at);
-        assertEnvelopeEquals(
-                new Envelope(-offset, -offset + 1600, -offset, -offset + 1200), env, 0.001);
+        assertEnvelopeEquals(new Envelope(-offset, -offset + 1600, -offset, -offset + 1200), env, 0.001);
         // Restore to standard offset
         at.translate(-2 * offset, -2 * offset);
         at.rotate(Math.PI / 2.0, offset, offset);
         env = RendererUtilities.createMapEnvelope(paintArea, at);
-        assertEnvelopeEquals(
-                new Envelope(offset, offset + 1200, offset - 1600, offset), env, 0.0001);
+        assertEnvelopeEquals(new Envelope(offset, offset + 1200, offset - 1600, offset), env, 0.0001);
         at = new AffineTransform(worldToScreen);
         at.rotate(Math.PI / 4.0, offset, offset);
         env = RendererUtilities.createMapEnvelope(paintArea, at);
@@ -246,8 +230,7 @@ public class RenderUtilitiesTest {
      */
     @Test
     public void testCenterTile() throws Exception {
-        ReferencedEnvelope envelope =
-                new ReferencedEnvelope(0, 36, -18, 18, DefaultGeographicCRS.WGS84);
+        ReferencedEnvelope envelope = new ReferencedEnvelope(0, 36, -18, 18, DefaultGeographicCRS.WGS84);
         double scale = RendererUtilities.calculateScale(envelope, 512, 512, 72.0);
         double groundDistance = Math.hypot(36, 36) * (1852 * 60);
         double pixelDistance = Math.hypot(512, 512) * (0.0254 / 72);
@@ -261,8 +244,7 @@ public class RenderUtilitiesTest {
         CoordinateReferenceSystem wgs84 = CRS.decode("EPSG:4326", true);
 
         // First cross equator and prime meridian
-        ReferencedEnvelope re =
-                new ReferencedEnvelope(new Envelope(-72.0, 132.0, -4.0, 70.0), wgs84);
+        ReferencedEnvelope re = new ReferencedEnvelope(new Envelope(-72.0, 132.0, -4.0, 70.0), wgs84);
         double scale = RendererUtilities.calculateScale(re, 1000, 500, 75);
         Assert.assertTrue(scale > 1.0d);
 
@@ -290,11 +272,10 @@ public class RenderUtilitiesTest {
     @Test
     public void testSampleForCentralPoint() throws Exception {
         // create a "C" shape polygon that won't contain it's centroid
-        Polygon g =
-                (Polygon)
-                        new WKTReader()
-                                .read(
-                                        "POLYGON ((-112.534433451864 43.8706532611928,-112.499157652296 44.7878240499628,-99.6587666095152 44.7878240499628,-99.7242788087131 43.2155312692142,-111.085391877449 43.099601544023,-110.744593363875 36.1862602686501,-98.6760836215473 35.9436771582516,-98.7415958207452 33.5197257879307,-111.77852346112 33.9783111823157,-111.758573671673 34.6566040234952,-113.088767445077 34.7644575726901,-113.023255245879 43.8706532611928,-112.534433451864 43.8706532611928))");
+        Polygon g = (Polygon)
+                new WKTReader()
+                        .read(
+                                "POLYGON ((-112.534433451864 43.8706532611928,-112.499157652296 44.7878240499628,-99.6587666095152 44.7878240499628,-99.7242788087131 43.2155312692142,-111.085391877449 43.099601544023,-110.744593363875 36.1862602686501,-98.6760836215473 35.9436771582516,-98.7415958207452 33.5197257879307,-111.77852346112 33.9783111823157,-111.758573671673 34.6566040234952,-113.088767445077 34.7644575726901,-113.023255245879 43.8706532611928,-112.534433451864 43.8706532611928))");
         Point p = g.getCentroid();
 
         Assert.assertFalse(g.contains(p));

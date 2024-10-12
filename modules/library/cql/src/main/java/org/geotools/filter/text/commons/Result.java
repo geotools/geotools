@@ -38,8 +38,7 @@ public final class Result {
         this.nodeType = nodeType;
     }
 
-    public Result(
-            Object built2, org.geotools.filter.text.generated.parsers.Token token2, int type) {}
+    public Result(Object built2, org.geotools.filter.text.generated.parsers.Token token2, int type) {}
 
     @Override
     public String toString() {

@@ -73,8 +73,7 @@ public class CassiniSoldner extends MapProjection {
      * {@code ptDst}.
      */
     @Override
-    protected Point2D inverseTransformNormalized(double x, double y, Point2D ptDst)
-            throws ProjectionException {
+    protected Point2D inverseTransformNormalized(double x, double y, Point2D ptDst) throws ProjectionException {
         double ph1 = inv_mlfn(ml0 + y);
         double tn = Math.tan(ph1);
         double t = tn * tn;
@@ -98,8 +97,7 @@ public class CassiniSoldner extends MapProjection {
      * the result in {@code ptDst} (linear distance on a unit sphere).
      */
     @Override
-    protected Point2D transformNormalized(double lam, double phi, Point2D ptDst)
-            throws ProjectionException {
+    protected Point2D transformNormalized(double lam, double phi, Point2D ptDst) throws ProjectionException {
         double sinphi = Math.sin(phi);
         double cosphi = Math.cos(phi);
 
@@ -111,10 +109,7 @@ public class CassiniSoldner extends MapProjection {
         double a2 = a1 * a1;
 
         double x = n * a1 * (1.0 - a2 * t * (C1 - (8.0 - t + 8.0 * c) * a2 * C2));
-        double y =
-                (mlfn(phi, sinphi, cosphi))
-                        - ml0
-                        + n * tn * a2 * (0.5 + (5.0 - t + 6.0 * c) * a2 * C3);
+        double y = (mlfn(phi, sinphi, cosphi)) - ml0 + n * tn * a2 * (0.5 + (5.0 - t + 6.0 * c) * a2 * C3);
 
         if (ptDst != null) {
             ptDst.setLocation(x, y);
@@ -133,8 +128,7 @@ public class CassiniSoldner extends MapProjection {
 
         /** {@inheritDoc} */
         @Override
-        protected Point2D transformNormalized(double x, double y, Point2D ptDst)
-                throws ProjectionException {
+        protected Point2D transformNormalized(double x, double y, Point2D ptDst) throws ProjectionException {
             double x1 = Math.asin(Math.cos(y) * Math.sin(x));
             double y1 = Math.atan2(Math.tan(y), Math.cos(x)) - latitudeOfOrigin;
             if (ptDst != null) {
@@ -146,8 +140,7 @@ public class CassiniSoldner extends MapProjection {
 
         /** {@inheritDoc} */
         @Override
-        protected Point2D inverseTransformNormalized(double x, double y, Point2D ptDst)
-                throws ProjectionException {
+        protected Point2D inverseTransformNormalized(double x, double y, Point2D ptDst) throws ProjectionException {
             double dd = y + latitudeOfOrigin;
             double phi = Math.asin(Math.sin(dd) * Math.cos(x));
             double lam = Math.atan2(Math.tan(x), Math.cos(dd));
@@ -173,30 +166,24 @@ public class CassiniSoldner extends MapProjection {
      */
     public static class Provider extends AbstractProvider {
         /** Returns a descriptor group for the specified parameters. */
-        static ParameterDescriptorGroup createDescriptorGroup(
-                final ReferenceIdentifier... identifiers) {
-            return createDescriptorGroup(
-                    identifiers,
-                    new ParameterDescriptor[] {
-                        SEMI_MAJOR, SEMI_MINOR,
-                        CENTRAL_MERIDIAN, LATITUDE_OF_ORIGIN,
-                        SCALE_FACTOR, FALSE_EASTING,
-                        FALSE_NORTHING
-                    });
+        static ParameterDescriptorGroup createDescriptorGroup(final ReferenceIdentifier... identifiers) {
+            return createDescriptorGroup(identifiers, new ParameterDescriptor[] {
+                SEMI_MAJOR, SEMI_MINOR,
+                CENTRAL_MERIDIAN, LATITUDE_OF_ORIGIN,
+                SCALE_FACTOR, FALSE_EASTING,
+                FALSE_NORTHING
+            });
         }
 
         /** The parameters group. */
-        static final ParameterDescriptorGroup PARAMETERS =
-                createDescriptorGroup(
-                        new NamedIdentifier(Citations.OGC, "Cassini_Soldner"),
-                        new NamedIdentifier(Citations.EPSG, "Cassini-Soldner"),
-                        new NamedIdentifier(Citations.EPSG, "9806"),
-                        new NamedIdentifier(Citations.GEOTIFF, "CT_CassiniSoldner"),
-                        new NamedIdentifier(Citations.ESRI, "Cassini"),
-                        new NamedIdentifier(
-                                Citations.GEOTOOLS,
-                                Vocabulary.formatInternational(
-                                        VocabularyKeys.CASSINI_SOLDNER_PROJECTION)));
+        static final ParameterDescriptorGroup PARAMETERS = createDescriptorGroup(
+                new NamedIdentifier(Citations.OGC, "Cassini_Soldner"),
+                new NamedIdentifier(Citations.EPSG, "Cassini-Soldner"),
+                new NamedIdentifier(Citations.EPSG, "9806"),
+                new NamedIdentifier(Citations.GEOTIFF, "CT_CassiniSoldner"),
+                new NamedIdentifier(Citations.ESRI, "Cassini"),
+                new NamedIdentifier(
+                        Citations.GEOTOOLS, Vocabulary.formatInternational(VocabularyKeys.CASSINI_SOLDNER_PROJECTION)));
 
         /** Constructs a new provider. */
         public Provider() {

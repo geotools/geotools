@@ -55,8 +55,7 @@ public interface RenderingTransformation extends Function {
     GridGeometry invertGridGeometry(Query targetQuery, GridGeometry targetGridGeometry);
 
     /** Allows the transformation to customize the read */
-    default GeneralParameterValue[] customizeReadParams(
-            GridCoverageReader reader, GeneralParameterValue... params) {
+    default GeneralParameterValue[] customizeReadParams(GridCoverageReader reader, GeneralParameterValue... params) {
         return params;
     }
 }

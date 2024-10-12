@@ -225,8 +225,7 @@ final class FilterToECQL implements FilterVisitor {
     }
 
     /** Check if this is an encoding of ECQL geospatial operation */
-    private boolean isFunctionTrue(
-            PropertyIsEqualTo filter, String operation, int numberOfArguments) {
+    private boolean isFunctionTrue(PropertyIsEqualTo filter, String operation, int numberOfArguments) {
         if (filter.getExpression1() instanceof Function) {
             Function function = (Function) filter.getExpression1();
             List<Expression> parameters = function.getParameters();
@@ -345,26 +344,22 @@ final class FilterToECQL implements FilterVisitor {
 
     @Override
     public Object visit(Beyond filter, Object extraData) {
-        return FilterToTextUtil.buildDistanceBufferOperation(
-                "BEYOND", filter, extraData, expressionVisitor);
+        return FilterToTextUtil.buildDistanceBufferOperation("BEYOND", filter, extraData, expressionVisitor);
     }
 
     @Override
     public Object visit(Contains filter, Object extraData) {
-        return FilterToTextUtil.buildBinarySpatialOperator(
-                "CONTAINS", filter, extraData, expressionVisitor);
+        return FilterToTextUtil.buildBinarySpatialOperator("CONTAINS", filter, extraData, expressionVisitor);
     }
 
     @Override
     public Object visit(Crosses filter, Object extraData) {
-        return FilterToTextUtil.buildBinarySpatialOperator(
-                "CROSSES", filter, extraData, expressionVisitor);
+        return FilterToTextUtil.buildBinarySpatialOperator("CROSSES", filter, extraData, expressionVisitor);
     }
 
     @Override
     public Object visit(Disjoint filter, Object extraData) {
-        return FilterToTextUtil.buildBinarySpatialOperator(
-                "DISJOINT", filter, extraData, expressionVisitor);
+        return FilterToTextUtil.buildBinarySpatialOperator("DISJOINT", filter, extraData, expressionVisitor);
     }
 
     @Override
@@ -374,32 +369,27 @@ final class FilterToECQL implements FilterVisitor {
 
     @Override
     public Object visit(Equals filter, Object extraData) {
-        return FilterToTextUtil.buildBinarySpatialOperator(
-                "EQUALS", filter, extraData, expressionVisitor);
+        return FilterToTextUtil.buildBinarySpatialOperator("EQUALS", filter, extraData, expressionVisitor);
     }
 
     @Override
     public Object visit(Intersects filter, Object extraData) {
-        return FilterToTextUtil.buildBinarySpatialOperator(
-                "INTERSECTS", filter, extraData, expressionVisitor);
+        return FilterToTextUtil.buildBinarySpatialOperator("INTERSECTS", filter, extraData, expressionVisitor);
     }
 
     @Override
     public Object visit(Overlaps filter, Object extraData) {
-        return FilterToTextUtil.buildBinarySpatialOperator(
-                "OVERLAPS", filter, extraData, expressionVisitor);
+        return FilterToTextUtil.buildBinarySpatialOperator("OVERLAPS", filter, extraData, expressionVisitor);
     }
 
     @Override
     public Object visit(Touches filter, Object extraData) {
-        return FilterToTextUtil.buildBinarySpatialOperator(
-                "TOUCHES", filter, extraData, expressionVisitor);
+        return FilterToTextUtil.buildBinarySpatialOperator("TOUCHES", filter, extraData, expressionVisitor);
     }
 
     @Override
     public Object visit(Within filter, Object extraData) {
-        return FilterToTextUtil.buildBinarySpatialOperator(
-                "WITHIN", filter, extraData, expressionVisitor);
+        return FilterToTextUtil.buildBinarySpatialOperator("WITHIN", filter, extraData, expressionVisitor);
     }
 
     @Override
@@ -434,8 +424,7 @@ final class FilterToECQL implements FilterVisitor {
      * @return UnsupportedOperationException
      */
     private static UnsupportedOperationException ecqlUnsupported(final String filterName) {
-        return new UnsupportedOperationException(
-                "The" + filterName + " has not an ECQL expression");
+        return new UnsupportedOperationException("The" + filterName + " has not an ECQL expression");
     }
 
     @Override

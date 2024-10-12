@@ -37,8 +37,7 @@ import java.util.Set;
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
-public abstract class DerivedSet<B, E> extends AbstractSet<E>
-        implements CheckedCollection<E>, Serializable {
+public abstract class DerivedSet<B, E> extends AbstractSet<E> implements CheckedCollection<E>, Serializable {
     /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = -4662336508586424581L;
 

@@ -103,8 +103,7 @@ public final class CachedCRSAuthorityDecorator extends AbstractAuthorityFactory
      * @param factory The factory to cache. Can not be {@code null}.
      * @param cache The underlying cache
      */
-    protected CachedCRSAuthorityDecorator(
-            CRSAuthorityFactory factory, ObjectCache<Object, Object> cache) {
+    protected CachedCRSAuthorityDecorator(CRSAuthorityFactory factory, ObjectCache<Object, Object> cache) {
         super(((ReferencingFactory) factory).getPriority()); // TODO
         this.cache = cache;
         crsAuthority = factory;
@@ -112,8 +111,7 @@ public final class CachedCRSAuthorityDecorator extends AbstractAuthorityFactory
     }
 
     /** Utility method used to produce cache based on hint */
-    protected static <K, V> ObjectCache<K, V> createCache(final Hints hints)
-            throws FactoryRegistryException {
+    protected static <K, V> ObjectCache<K, V> createCache(final Hints hints) throws FactoryRegistryException {
         return ObjectCaches.create(hints);
     }
 
@@ -152,8 +150,7 @@ public final class CachedCRSAuthorityDecorator extends AbstractAuthorityFactory
     }
 
     @Override
-    public Set<String> getAuthorityCodes(Class<? extends IdentifiedObject> type)
-            throws FactoryException {
+    public Set<String> getAuthorityCodes(Class<? extends IdentifiedObject> type) throws FactoryException {
         return crsAuthority.getAuthorityCodes(type);
     }
 
@@ -185,8 +182,7 @@ public final class CachedCRSAuthorityDecorator extends AbstractAuthorityFactory
     }
 
     @Override
-    public CoordinateReferenceSystem createCoordinateReferenceSystem(String code)
-            throws FactoryException {
+    public CoordinateReferenceSystem createCoordinateReferenceSystem(String code) throws FactoryException {
         final String key = toKey(code);
         CoordinateReferenceSystem crs = (CoordinateReferenceSystem) cache.get(key);
         if (crs == null) {
@@ -379,10 +375,9 @@ public final class CachedCRSAuthorityDecorator extends AbstractAuthorityFactory
      * @since 2.4
      */
     @Override
-    public synchronized IdentifiedObjectFinder getIdentifiedObjectFinder(
-            final Class<? extends IdentifiedObject> type) throws FactoryException {
-        return new Finder(
-                delegate.getIdentifiedObjectFinder(type), ObjectCaches.create("weak", 250));
+    public synchronized IdentifiedObjectFinder getIdentifiedObjectFinder(final Class<? extends IdentifiedObject> type)
+            throws FactoryException {
+        return new Finder(delegate.getIdentifiedObjectFinder(type), ObjectCaches.create("weak", 250));
     }
 
     /**

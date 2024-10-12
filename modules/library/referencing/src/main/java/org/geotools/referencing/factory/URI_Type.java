@@ -50,8 +50,7 @@ final class URI_Type {
         new URI_Type("ellipsoid", DatumAuthorityFactory.class),
         new URI_Type("cs", CSAuthorityFactory.class),
         new URI_Type("axis", CSAuthorityFactory.class),
-        new URI_Type(
-                "coordinateOperation", CoordinateOperationAuthorityFactory.class), // deprecated
+        new URI_Type("coordinateOperation", CoordinateOperationAuthorityFactory.class), // deprecated
         new URI_Type("coordinate-operation", CoordinateOperationAuthorityFactory.class),
         new URI_Type("method", CoordinateOperationAuthorityFactory.class),
         new URI_Type("parameter", CoordinateOperationAuthorityFactory.class),

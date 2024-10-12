@@ -173,33 +173,29 @@ public final class CRS {
     private static volatile CoordinateOperationFactory lenientFactory;
 
     /** A cache for coordinate reference systems in the default axis order */
-    private static SoftValueHashMap<String, CoordinateReferenceSystem> defaultCache =
-            new SoftValueHashMap<>();
+    private static SoftValueHashMap<String, CoordinateReferenceSystem> defaultCache = new SoftValueHashMap<>();
 
     /** A cache for the coordinate reference systems in the xy (east/north) axis order */
-    private static SoftValueHashMap<String, CoordinateReferenceSystem> xyCache =
-            new SoftValueHashMap<>();
+    private static SoftValueHashMap<String, CoordinateReferenceSystem> xyCache = new SoftValueHashMap<>();
 
-    private static SoftValueHashMap<String, CoordinateReferenceSystem> wktCache =
-            new SoftValueHashMap<>();
+    private static SoftValueHashMap<String, CoordinateReferenceSystem> wktCache = new SoftValueHashMap<>();
 
     /** Registers a listener automatically invoked when the system-wide configuration changed. */
     static {
-        GeoTools.addChangeListener(
-                new ChangeListener() {
-                    @Override
-                    public void stateChanged(ChangeEvent e) {
-                        synchronized (CRS.class) {
-                            defaultFactory = null;
-                            xyFactory = null;
-                            strictFactory = null;
-                            lenientFactory = null;
-                            xyCache.clear();
-                            wktCache.clear();
-                            defaultCache.clear();
-                        }
-                    }
-                });
+        GeoTools.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                synchronized (CRS.class) {
+                    defaultFactory = null;
+                    xyFactory = null;
+                    strictFactory = null;
+                    lenientFactory = null;
+                    xyCache.clear();
+                    wktCache.clear();
+                    defaultCache.clear();
+                }
+            }
+        });
     }
 
     /** Do not allow instantiation of this class. */
@@ -249,10 +245,8 @@ public final class CRS {
     private static void updateForcedLonLat() {
         boolean forcedLonLat = false;
         try {
-            forcedLonLat =
-                    Boolean.getBoolean("org.geotools.referencing.forceXY")
-                            || Boolean.TRUE.equals(
-                                    Hints.getSystemDefault(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER));
+            forcedLonLat = Boolean.getBoolean("org.geotools.referencing.forceXY")
+                    || Boolean.TRUE.equals(Hints.getSystemDefault(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER));
         } catch (Exception e) {
             // all right it was a best effort attempt
             LOGGER.log(Level.FINE, "Failed to determine if we are in forced lon/lat mode", e);
@@ -278,9 +272,7 @@ public final class CRS {
      * @return compatibility as boolean
      */
     public static boolean isCompatible(
-            CoordinateReferenceSystem sourceCrs,
-            CoordinateReferenceSystem targetCrs,
-            boolean allowDifferentDimension) {
+            CoordinateReferenceSystem sourceCrs, CoordinateReferenceSystem targetCrs, boolean allowDifferentDimension) {
         if (sourceCrs == null || targetCrs == null) {
             return true;
         } else if (equalsIgnoreMetadata(sourceCrs, targetCrs)) {
@@ -597,17 +589,9 @@ public final class CRS {
          */
         final GeographicBoundingBox bounds = getGeographicBoundingBox(crs);
         if (bounds != null && !Boolean.FALSE.equals(bounds.getInclusion())) {
-            envelope =
-                    merged =
-                            new GeneralBounds(
-                                    new double[] {
-                                        bounds.getWestBoundLongitude(),
-                                        bounds.getSouthBoundLatitude()
-                                    },
-                                    new double[] {
-                                        bounds.getEastBoundLongitude(),
-                                        bounds.getNorthBoundLatitude()
-                                    });
+            envelope = merged = new GeneralBounds(
+                    new double[] {bounds.getWestBoundLongitude(), bounds.getSouthBoundLatitude()},
+                    new double[] {bounds.getEastBoundLongitude(), bounds.getNorthBoundLatitude()});
             /*
              * We do not assign WGS84 inconditionnaly to the geographic bounding box, because it is not defined to be on a particular datum; it is
              * only approximative bounds. We try to get the GeographicCRS from the user-supplied CRS and fallback on WGS 84 only if we found none.
@@ -651,8 +635,7 @@ public final class CRS {
      * @see #getEnvelope
      * @since 2.3
      */
-    public static GeographicBoundingBox getGeographicBoundingBox(
-            final CoordinateReferenceSystem crs) {
+    public static GeographicBoundingBox getGeographicBoundingBox(final CoordinateReferenceSystem crs) {
         GeographicBoundingBox bounds = null;
         GeographicBoundingBoxImpl merged = null;
         if (crs != null) {
@@ -734,9 +717,8 @@ public final class CRS {
                     Map<String, ?> properties = CRSUtilities.changeDimensionInName(cs, "3D", "2D");
                     EllipsoidalCS horizontalCS;
                     try {
-                        horizontalCS =
-                                ReferencingFactoryFinder.getCSFactory(null)
-                                        .createEllipsoidalCS(properties, axis0, axis1);
+                        horizontalCS = ReferencingFactoryFinder.getCSFactory(null)
+                                .createEllipsoidalCS(properties, axis0, axis1);
                     } catch (FactoryException e) {
                         Logging.recoverableException(CRS.class, "getHorizontalCRS", e);
                         horizontalCS = new DefaultEllipsoidalCS(properties, axis0, axis1);
@@ -744,9 +726,8 @@ public final class CRS {
                     properties = CRSUtilities.changeDimensionInName(crs, "3D", "2D");
                     GeographicCRS horizontalCRS;
                     try {
-                        horizontalCRS =
-                                ReferencingFactoryFinder.getCRSFactory(null)
-                                        .createGeographicCRS(properties, datum, horizontalCS);
+                        horizontalCRS = ReferencingFactoryFinder.getCRSFactory(null)
+                                .createGeographicCRS(properties, datum, horizontalCS);
                     } catch (FactoryException e) {
                         Logging.recoverableException(CRS.class, "getHorizontalCRS", e);
                         horizontalCRS = new DefaultGeographicCRS(properties, datum, horizontalCS);
@@ -909,10 +890,8 @@ public final class CRS {
         if (object1 == object2) {
             return true;
         }
-        if (object1 instanceof AbstractIdentifiedObject
-                && object2 instanceof AbstractIdentifiedObject) {
-            return ((AbstractIdentifiedObject) object1)
-                    .equals(((AbstractIdentifiedObject) object2), false);
+        if (object1 instanceof AbstractIdentifiedObject && object2 instanceof AbstractIdentifiedObject) {
+            return ((AbstractIdentifiedObject) object1).equals(((AbstractIdentifiedObject) object2), false);
         }
         return object1 != null && object1.equals(object2);
     }
@@ -932,8 +911,7 @@ public final class CRS {
      * @param source The source {@link CoordinateReferenceSystem}
      * @param target the target {@link CoordinateReferenceSystem}
      */
-    public static boolean isTransformationRequired(
-            CoordinateReferenceSystem source, CoordinateReferenceSystem target)
+    public static boolean isTransformationRequired(CoordinateReferenceSystem source, CoordinateReferenceSystem target)
             throws FactoryException {
         // null cases, no transformation possible
         if (source == null || target == null) {
@@ -941,12 +919,10 @@ public final class CRS {
         }
 
         // wildcard cases
-        if (source instanceof DefaultEngineeringCRS
-                && ((DefaultEngineeringCRS) source).isWildcard()) {
+        if (source instanceof DefaultEngineeringCRS && ((DefaultEngineeringCRS) source).isWildcard()) {
             return false;
         }
-        if (target instanceof DefaultEngineeringCRS
-                && ((DefaultEngineeringCRS) target).isWildcard()) {
+        if (target instanceof DefaultEngineeringCRS && ((DefaultEngineeringCRS) target).isWildcard()) {
             return false;
         }
 
@@ -968,8 +944,7 @@ public final class CRS {
      * @param source The source {@link CoordinateReferenceSystem}
      * @param target the target {@link CoordinateReferenceSystem}
      */
-    public static boolean isEquivalent(
-            CoordinateReferenceSystem source, CoordinateReferenceSystem target) {
+    public static boolean isEquivalent(CoordinateReferenceSystem source, CoordinateReferenceSystem target) {
         boolean equivalentCRS = equalsIgnoreMetadata(source, target);
         if (!equivalentCRS) {
 
@@ -978,10 +953,7 @@ public final class CRS {
             } catch (FactoryException e) {
                 // That was an attempt looking for an identity transform.
                 // Let's ignore the exception and return the previous result
-                LOGGER.log(
-                        Level.FINE,
-                        "Unable to find MathTransform between source and target CRS",
-                        e);
+                LOGGER.log(Level.FINE, "Unable to find MathTransform between source and target CRS", e);
             }
         }
         return equivalentCRS;
@@ -1117,10 +1089,8 @@ public final class CRS {
          * We perform the search using the 'xyFactory' because our implementation of IdentifiedObjectFinder should be able to inspect both the (x,y)
          * and (y,x) axis order using this factory.
          */
-        final AbstractAuthorityFactory xyFactory =
-                (AbstractAuthorityFactory) getAuthorityFactory(true);
-        final IdentifiedObjectFinder finder =
-                xyFactory.getIdentifiedObjectFinder(object.getClass());
+        final AbstractAuthorityFactory xyFactory = (AbstractAuthorityFactory) getAuthorityFactory(true);
+        final IdentifiedObjectFinder finder = xyFactory.getIdentifiedObjectFinder(object.getClass());
         finder.setFullScanAllowed(fullScan);
         return finder.findIdentifier(object);
     }
@@ -1157,8 +1127,7 @@ public final class CRS {
             return id.getCode();
         }
         for (final CRSAuthorityFactory factory :
-                ReferencingFactoryFinder.getCRSAuthorityFactories(
-                        FORCE_LONGITUDE_FIRST_AXIS_ORDER)) {
+                ReferencingFactoryFinder.getCRSAuthorityFactories(FORCE_LONGITUDE_FIRST_AXIS_ORDER)) {
             if (!Citations.identifierMatches(factory.getAuthority(), authority)) {
                 continue;
             }
@@ -1187,8 +1156,8 @@ public final class CRS {
      * @throws FactoryException if an error occured while searching for the identifier.
      * @since 2.5
      */
-    public static Integer lookupEpsgCode(
-            final CoordinateReferenceSystem crs, final boolean fullScan) throws FactoryException {
+    public static Integer lookupEpsgCode(final CoordinateReferenceSystem crs, final boolean fullScan)
+            throws FactoryException {
         final String identifier = lookupIdentifier(Citations.EPSG, crs, fullScan);
         if (identifier != null) {
             final int split = identifier.lastIndexOf(GenericName.DEFAULT_SEPARATOR);
@@ -1198,8 +1167,7 @@ public final class CRS {
             try {
                 return Integer.parseInt(code);
             } catch (NumberFormatException e) {
-                throw new FactoryException(
-                        MessageFormat.format(ErrorKeys.ILLEGAL_IDENTIFIER_$1, identifier), e);
+                throw new FactoryException(MessageFormat.format(ErrorKeys.ILLEGAL_IDENTIFIER_$1, identifier), e);
             }
         }
         return null;
@@ -1267,9 +1235,7 @@ public final class CRS {
      *     target CRS.
      */
     public static MathTransform findMathTransform(
-            CoordinateReferenceSystem sourceCRS,
-            CoordinateReferenceSystem targetCRS,
-            String transformCode)
+            CoordinateReferenceSystem sourceCRS, CoordinateReferenceSystem targetCRS, String transformCode)
             throws FactoryException {
 
         Map<String, AbstractCoordinateOperation> transforms = getTransforms(sourceCRS, targetCRS);
@@ -1299,10 +1265,8 @@ public final class CRS {
      * @throws FactoryException
      */
     public static Map<String, AbstractCoordinateOperation> getTransforms(
-            CoordinateReferenceSystem sourceCRS, CoordinateReferenceSystem targetCRS)
-            throws FactoryException {
-        Set<CoordinateOperation> ops =
-                CRS.getCoordinateOperationFactory(true).findOperations(sourceCRS, targetCRS);
+            CoordinateReferenceSystem sourceCRS, CoordinateReferenceSystem targetCRS) throws FactoryException {
+        Set<CoordinateOperation> ops = CRS.getCoordinateOperationFactory(true).findOperations(sourceCRS, targetCRS);
         Map<String, AbstractCoordinateOperation> transforms = new HashMap<>();
         for (CoordinateOperation op : ops) {
             if (op instanceof DefaultConcatenatedOperation) {
@@ -1342,9 +1306,7 @@ public final class CRS {
      * @see Hints#LENIENT_DATUM_SHIFT
      */
     public static MathTransform findMathTransform(
-            final CoordinateReferenceSystem sourceCRS,
-            final CoordinateReferenceSystem targetCRS,
-            boolean lenient)
+            final CoordinateReferenceSystem sourceCRS, final CoordinateReferenceSystem targetCRS, boolean lenient)
             throws FactoryException {
         if (equalsIgnoreMetadata(sourceCRS, targetCRS)) {
             // Slight optimization in order to avoid the overhead of loading the full referencing
@@ -1375,8 +1337,8 @@ public final class CRS {
      * @throws TransformException If a transformation was required and failed.
      * @since 2.5
      */
-    public static GeneralBounds transform(
-            Bounds envelope, final CoordinateReferenceSystem targetCRS) throws TransformException {
+    public static GeneralBounds transform(Bounds envelope, final CoordinateReferenceSystem targetCRS)
+            throws TransformException {
         if (envelope != null && targetCRS != null) {
             final CoordinateReferenceSystem sourceCRS = envelope.getCoordinateReferenceSystem();
             if (sourceCRS != null) {
@@ -1390,8 +1352,7 @@ public final class CRS {
                     }
                     if (!operation.getMathTransform().isIdentity()) {
                         envelope = transform(operation, envelope);
-                    } else if (!equalsIgnoreMetadata(
-                            envelope.getCoordinateReferenceSystem(), targetCRS)) {
+                    } else if (!equalsIgnoreMetadata(envelope.getCoordinateReferenceSystem(), targetCRS)) {
                         GeneralBounds tx = new GeneralBounds(envelope);
                         tx.setCoordinateReferenceSystem(targetCRS);
                         envelope = tx;
@@ -1430,8 +1391,7 @@ public final class CRS {
      * projected center coordinate. If {@code targetPt} is non-null, then this method will set it to
      * the center of the source envelope projected to the target CRS.
      */
-    static GeneralBounds transform(
-            final MathTransform transform, final Bounds envelope, GeneralPosition targetPt)
+    static GeneralBounds transform(final MathTransform transform, final Bounds envelope, GeneralPosition targetPt)
             throws TransformException {
         if (envelope == null) {
             return null;
@@ -1505,12 +1465,10 @@ public final class CRS {
                         sourcePt.setOrdinate(i, envelope.getMaximum(i));
                         continue loop;
                     case 2:
-                        sourcePt.setOrdinate(
-                                i, (envelope.getMinimum(i) + envelope.getMedian(i)) / 2);
+                        sourcePt.setOrdinate(i, (envelope.getMinimum(i) + envelope.getMedian(i)) / 2);
                         continue loop;
                     case 3:
-                        sourcePt.setOrdinate(
-                                i, (envelope.getMedian(i) + envelope.getMaximum(i)) / 2);
+                        sourcePt.setOrdinate(i, (envelope.getMedian(i) + envelope.getMaximum(i)) / 2);
                         continue loop;
                     case 4:
                         sourcePt.setOrdinate(i, envelope.getMedian(i));
@@ -1540,8 +1498,8 @@ public final class CRS {
      * @since 2.4
      * @see #transform(MathTransform, Bounds)
      */
-    public static GeneralBounds transform(
-            final CoordinateOperation operation, final Bounds envelope) throws TransformException {
+    public static GeneralBounds transform(final CoordinateOperation operation, final Bounds envelope)
+            throws TransformException {
         return EnvelopeReprojector.transform(operation, envelope);
     }
 
@@ -1563,8 +1521,7 @@ public final class CRS {
      * @since 30
      * @see #transform(CoordinateOperation, Rectangle2D, Rectangle2D)
      */
-    public static Rectangle2D transform(
-            final MathTransform2D transform, final Rectangle2D rectangle)
+    public static Rectangle2D transform(final MathTransform2D transform, final Rectangle2D rectangle)
             throws TransformException {
         return transform(transform, rectangle, (Rectangle2D) null);
     }
@@ -1703,9 +1660,7 @@ public final class CRS {
      *     java.awt.geom.AffineTransform, Rectangle2D, Rectangle2D)
      */
     public static Rectangle2D transform(
-            final CoordinateOperation operation,
-            final Rectangle2D envelope,
-            Rectangle2D destination)
+            final CoordinateOperation operation, final Rectangle2D envelope, Rectangle2D destination)
             throws TransformException {
         if (envelope == null) {
             return null;
@@ -1715,11 +1670,7 @@ public final class CRS {
         if (destination == null) {
             return result.toRectangle2D();
         } else {
-            destination.setFrame(
-                    result.getMinimum(0),
-                    result.getMinimum(1),
-                    result.getSpan(0),
-                    result.getSpan(1));
+            destination.setFrame(result.getMinimum(0), result.getMinimum(1), result.getSpan(0), result.getSpan(1));
             return destination;
         }
     }
@@ -1816,10 +1767,9 @@ public final class CRS {
         }
 
         if (crs instanceof ProjectedCRS) {
-            cs =
-                    !useBaseGeoCRS
-                            ? crs.getCoordinateSystem()
-                            : ((ProjectedCRS) crs).getBaseCRS().getCoordinateSystem();
+            cs = !useBaseGeoCRS
+                    ? crs.getCoordinateSystem()
+                    : ((ProjectedCRS) crs).getBaseCRS().getCoordinateSystem();
         } else if (crs instanceof GeographicCRS) {
             cs = crs.getCoordinateSystem();
         } else {
@@ -1854,11 +1804,9 @@ public final class CRS {
         // stereographics)
         String labelFirst = cs.getAxis(0).getAbbreviation();
         String labelSecond = cs.getAxis(1).getAbbreviation();
-        if (labelFirst.equals(NORTHING.getAbbreviation())
-                && labelSecond.equals(EASTING.getAbbreviation())) {
+        if (labelFirst.equals(NORTHING.getAbbreviation()) && labelSecond.equals(EASTING.getAbbreviation())) {
             return AxisOrder.NORTH_EAST;
-        } else if (labelFirst.equals(EASTING.getAbbreviation())
-                && labelSecond.equals(NORTHING.getAbbreviation())) {
+        } else if (labelFirst.equals(EASTING.getAbbreviation()) && labelSecond.equals(NORTHING.getAbbreviation())) {
             return AxisOrder.EAST_NORTH;
         }
 

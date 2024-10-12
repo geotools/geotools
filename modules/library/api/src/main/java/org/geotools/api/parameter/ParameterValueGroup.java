@@ -122,8 +122,7 @@ public interface ParameterValueGroup extends GeneralParameterValue {
      *     ParameterDescriptorGroup#getMaximumOccurs maximum number of occurences} of subgroups of
      *     the given name.
      */
-    ParameterValueGroup addGroup(String name)
-            throws ParameterNotFoundException, IllegalStateException;
+    ParameterValueGroup addGroup(String name) throws ParameterNotFoundException, IllegalStateException;
 
     /**
      * Returns a copy of this group of parameter values. Included parameter values and subgroups are

@@ -144,8 +144,7 @@ public class Layer implements Comparable<Layer> {
      * This is where we try and go from our rather lame CRSEnvelope data structure to an actual
      * ReferencedEnvelope with a real CoordinateReferenceSystem.
      */
-    private Map<CoordinateReferenceSystem, Bounds> envelopeCache =
-            Collections.synchronizedMap(new WeakHashMap<>());
+    private Map<CoordinateReferenceSystem, Bounds> envelopeCache = Collections.synchronizedMap(new WeakHashMap<>());
 
     private List<MetadataURL> metadataURL;
 
@@ -573,8 +572,7 @@ public class Layer implements Comparable<Layer> {
         if (latLonBoundingBox.getSRSName() != null) {
             String srsName = latLonBoundingBox.getSRSName();
             if (!srsName.equals("CRS:84")) {
-                throw new IllegalStateException(
-                        "Layer LatLonBoundingBox srsName required to be null or CRS:84");
+                throw new IllegalStateException("Layer LatLonBoundingBox srsName required to be null or CRS:84");
             }
         } else {
             latLonBoundingBox.setSRSName("CRS:84", false);
@@ -757,8 +755,7 @@ public class Layer implements Comparable<Layer> {
                 break;
             }
             // Otherwise, locate a LatLon bounding box ... if applicable
-            if ("CRS:84".equals(srsName.toUpperCase())
-                    || "EPSG:4326".equals(srsName.toUpperCase())) {
+            if ("CRS:84".equals(srsName.toUpperCase()) || "EPSG:4326".equals(srsName.toUpperCase())) {
                 tempBBox = getLatLonBoundingBox(); // checks parents
                 break;
             }
@@ -770,7 +767,9 @@ public class Layer implements Comparable<Layer> {
         // TODO Attempt to figure out the valid area of the CRS and use that.
 
         // last attempt grab the first thing (and we will transform it)
-        if (tempBBox == null && getBoundingBoxes() != null && !getBoundingBoxes().isEmpty()) {
+        if (tempBBox == null
+                && getBoundingBoxes() != null
+                && !getBoundingBoxes().isEmpty()) {
             tempBBox = getBoundingBoxes().values().iterator().next();
         }
 
@@ -780,10 +779,9 @@ public class Layer implements Comparable<Layer> {
                 Bounds fixed = CRS.transform(tempBBox, crs);
                 env = new GeneralBounds(fixed);
             } catch (TransformException e) {
-                env =
-                        new GeneralBounds(
-                                new double[] {tempBBox.getMinX(), tempBBox.getMinY()},
-                                new double[] {tempBBox.getMaxX(), tempBBox.getMaxY()});
+                env = new GeneralBounds(
+                        new double[] {tempBBox.getMinX(), tempBBox.getMinY()},
+                        new double[] {tempBBox.getMaxX(), tempBBox.getMaxY()});
                 env.setCoordinateReferenceSystem(crs);
                 LOGGER.warning("Forcing bbox as " + env);
             }

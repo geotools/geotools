@@ -41,8 +41,7 @@ import org.geotools.api.filter.spatial.DistanceBufferOperator;
  * @version $Id$
  * @task REVISIT: add units for distance.
  */
-public abstract class CartesianDistanceFilter extends GeometryFilterImpl
-        implements DistanceBufferOperator {
+public abstract class CartesianDistanceFilter extends GeometryFilterImpl implements DistanceBufferOperator {
     /** The distance value */
     private double distance;
     /** the distnace units */
@@ -113,12 +112,7 @@ public abstract class CartesianDistanceFilter extends GeometryFilterImpl
             return "[ " + leftGeometry.toString() + operator + "null" + distStr + " ]";
         }
 
-        return "[ "
-                + leftGeometry.toString()
-                + operator
-                + rightGeometry.toString()
-                + distStr
-                + " ]";
+        return "[ " + leftGeometry.toString() + operator + rightGeometry.toString() + distStr + " ]";
     }
 
     /**
@@ -130,8 +124,7 @@ public abstract class CartesianDistanceFilter extends GeometryFilterImpl
      */
     @Override
     public boolean equals(Object oFilter) {
-        return super.equals(oFilter)
-                && (this.distance == ((CartesianDistanceFilter) oFilter).distance);
+        return super.equals(oFilter) && (this.distance == ((CartesianDistanceFilter) oFilter).distance);
     }
 
     /**

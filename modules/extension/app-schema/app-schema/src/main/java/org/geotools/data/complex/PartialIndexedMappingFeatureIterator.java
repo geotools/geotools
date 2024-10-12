@@ -101,9 +101,8 @@ public class PartialIndexedMappingFeatureIterator extends IndexedMappingFeatureI
         nextQuery.setMaxFeatures(Integer.MAX_VALUE);
         // instance appschema feature iterator:
         try {
-            sourceIterator =
-                    MappingFeatureIteratorFactory.getInstance(
-                            store, mapping, nextQuery, unrolledFilter, transaction, false);
+            sourceIterator = MappingFeatureIteratorFactory.getInstance(
+                    store, mapping, nextQuery, unrolledFilter, transaction, false);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

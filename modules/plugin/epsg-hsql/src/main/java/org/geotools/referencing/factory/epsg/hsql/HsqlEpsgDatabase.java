@@ -127,15 +127,11 @@ public class HsqlEpsgDatabase {
      * package.
      */
     private static void generateData(javax.sql.DataSource dataSource) throws SQLException {
-        Logging.getLogger(HsqlEpsgDatabase.class)
-                .config("Creating cached EPSG database."); // TODO: localize
+        Logging.getLogger(HsqlEpsgDatabase.class).config("Creating cached EPSG database."); // TODO: localize
         try (Connection connection = dataSource.getConnection();
                 Statement statement = connection.createStatement();
-                BufferedReader in =
-                        new BufferedReader(
-                                new InputStreamReader(
-                                        HsqlEpsgDatabase.class.getResourceAsStream("EPSG.sql"),
-                                        StandardCharsets.ISO_8859_1))) {
+                BufferedReader in = new BufferedReader(new InputStreamReader(
+                        HsqlEpsgDatabase.class.getResourceAsStream("EPSG.sql"), StandardCharsets.ISO_8859_1))) {
             StringBuilder insertStatement = null;
             String line;
             while ((line = in.readLine()) != null) {
@@ -244,12 +240,8 @@ public class HsqlEpsgDatabase {
      */
     static boolean dataExists(final Connection connection) throws SQLException {
         final DatabaseMetaData metaData = connection.getMetaData();
-        try (final ResultSet tables =
-                metaData.getTables(
-                        null,
-                        null,
-                        "EPSG" + metaData.getSearchStringEscape() + "_%",
-                        new String[] {"TABLE"})) {
+        try (final ResultSet tables = metaData.getTables(
+                null, null, "EPSG" + metaData.getSearchStringEscape() + "_%", new String[] {"TABLE"})) {
             return tables.next();
         }
     }

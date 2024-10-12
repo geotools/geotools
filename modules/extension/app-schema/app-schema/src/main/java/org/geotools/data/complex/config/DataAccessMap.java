@@ -32,8 +32,7 @@ import org.geotools.api.feature.type.FeatureType;
  *
  * @author Stefano Costa, GeoSolutions
  */
-public class DataAccessMap
-        extends HashMap<Map<String, Serializable>, DataAccess<FeatureType, Feature>> {
+public class DataAccessMap extends HashMap<Map<String, Serializable>, DataAccess<FeatureType, Feature>> {
 
     /** serialVersionUID */
     private static final long serialVersionUID = 133019722648852790L;

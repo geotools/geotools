@@ -83,36 +83,31 @@ public class JIntegerField extends JValueField {
         setDocument(document);
         setValue(value);
 
-        document.addDocumentListener(
-                new DocumentListener() {
+        document.addDocumentListener(new DocumentListener() {
 
-                    @Override
-                    public void insertUpdate(DocumentEvent e) {
-                        if (fireEvents) {
-                            ValueChangedEvent<Integer> ev =
-                                    new ValueChangedEvent<>(
-                                            JIntegerField.this,
-                                            Integer.valueOf(document.getValue()));
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                if (fireEvents) {
+                    ValueChangedEvent<Integer> ev =
+                            new ValueChangedEvent<>(JIntegerField.this, Integer.valueOf(document.getValue()));
 
-                            fireValueChangedEvent(ev);
-                        }
-                    }
+                    fireValueChangedEvent(ev);
+                }
+            }
 
-                    @Override
-                    public void removeUpdate(DocumentEvent e) {
-                        if (fireEvents) {
-                            ValueChangedEvent<Integer> ev =
-                                    new ValueChangedEvent<>(
-                                            JIntegerField.this,
-                                            Integer.valueOf(document.getValue()));
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                if (fireEvents) {
+                    ValueChangedEvent<Integer> ev =
+                            new ValueChangedEvent<>(JIntegerField.this, Integer.valueOf(document.getValue()));
 
-                            fireValueChangedEvent(ev);
-                        }
-                    }
+                    fireValueChangedEvent(ev);
+                }
+            }
 
-                    @Override
-                    public void changedUpdate(DocumentEvent e) {}
-                });
+            @Override
+            public void changedUpdate(DocumentEvent e) {}
+        });
     }
 
     /**
@@ -154,9 +149,7 @@ public class JIntegerField extends JValueField {
 
         if (!document.getAllowsNegative() && value < 0) {
             throw new IllegalArgumentException(
-                    String.format(
-                            "Negative value (%d) but text field set to only allow positive values",
-                            value));
+                    String.format("Negative value (%d) but text field set to only allow positive values", value));
         }
         setText(String.valueOf(value));
         fireEvents = true;

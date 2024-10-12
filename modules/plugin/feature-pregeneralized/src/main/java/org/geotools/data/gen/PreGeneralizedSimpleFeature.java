@@ -89,10 +89,9 @@ public class PreGeneralizedSimpleFeature implements SimpleFeature {
     }
 
     private Property createProperty(String name) {
-        Object value =
-                name.equals(geomPropertyName)
-                        ? feature.getAttribute(backendGeomPropertyName)
-                        : feature.getAttribute(name);
+        Object value = name.equals(geomPropertyName)
+                ? feature.getAttribute(backendGeomPropertyName)
+                : feature.getAttribute(name);
         AttributeDescriptor attrDescr = featureTyp.getDescriptor(name);
         if (attrDescr == null) return null;
         if (attrDescr instanceof GeometryDescriptor)
@@ -187,8 +186,7 @@ public class PreGeneralizedSimpleFeature implements SimpleFeature {
     @Override
     public GeometryAttribute getDefaultGeometryProperty() {
         Object value = feature.getAttribute(backendGeomPropertyName);
-        GeometryAttribute attr =
-                new GeometryAttributeImpl(value, featureTyp.getGeometryDescriptor(), null);
+        GeometryAttribute attr = new GeometryAttributeImpl(value, featureTyp.getGeometryDescriptor(), null);
         return attr;
     }
 
@@ -290,8 +288,7 @@ public class PreGeneralizedSimpleFeature implements SimpleFeature {
 
         PreGeneralizedSimpleFeature feat = (PreGeneralizedSimpleFeature) obj;
         if (feat.geomPropertyName.equals(this.geomPropertyName) == false) return false;
-        if (feat.backendGeomPropertyName.equals(this.backendGeomPropertyName) == false)
-            return false;
+        if (feat.backendGeomPropertyName.equals(this.backendGeomPropertyName) == false) return false;
         if (feat.featureTyp.equals(this.featureTyp) == false) return false;
         if (feat.feature.equals(this.feature) == false) return false;
         return true;

@@ -65,15 +65,14 @@ public class Csv2Shape {
          *
          * See also the createFeatureType method below for another, more flexible approach.
          */
-        final SimpleFeatureType TYPE =
-                DataUtilities.createType(
-                        "Location",
-                        "the_geom:Point:srid=4326,"
-                                + // <- the geometry attribute: Point type
-                                "name:String,"
-                                + // <- a String attribute
-                                "number:Integer" // a number attribute
-                        );
+        final SimpleFeatureType TYPE = DataUtilities.createType(
+                "Location",
+                "the_geom:Point:srid=4326,"
+                        + // <- the geometry attribute: Point type
+                        "name:String,"
+                        + // <- a String attribute
+                        "number:Integer" // a number attribute
+                );
         System.out.println("TYPE:" + TYPE);
         // docs break feature collection
         /*
@@ -126,8 +125,7 @@ public class Csv2Shape {
         params.put("url", newFile.toURI().toURL());
         params.put("create spatial index", Boolean.TRUE);
 
-        ShapefileDataStore newDataStore =
-                (ShapefileDataStore) dataStoreFactory.createNewDataStore(params);
+        ShapefileDataStore newDataStore = (ShapefileDataStore) dataStoreFactory.createNewDataStore(params);
 
         /*
          * TYPE is used as a template to describe the file contents

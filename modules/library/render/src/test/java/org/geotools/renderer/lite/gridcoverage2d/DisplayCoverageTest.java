@@ -126,25 +126,20 @@ public class DisplayCoverageTest {
         context.addLayer(new GridCoverageLayer(coverage, style));
         renderer.setMapContent(context);
 
-        RenderListener listener =
-                new RenderListener() {
-                    @Override
-                    public void featureRenderer(SimpleFeature feature) {}
+        RenderListener listener = new RenderListener() {
+            @Override
+            public void featureRenderer(SimpleFeature feature) {}
 
-                    @Override
-                    public void errorOccurred(Exception e) {
-                        java.util.logging.Logger.getGlobal()
-                                .log(java.util.logging.Level.INFO, "", e);
-                        fail("Failed to render coverage");
-                    }
-                };
+            @Override
+            public void errorOccurred(Exception e) {
+                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
+                fail("Failed to render coverage");
+            }
+        };
         BufferedImage image = RendererBaseTest.renderImage(renderer, env, listener);
 
         File reference =
-                new File(
-                        "./src/test/resources/org/geotools/renderer/lite/gridcoverage2d/"
-                                + styleName
-                                + ".png");
+                new File("./src/test/resources/org/geotools/renderer/lite/gridcoverage2d/" + styleName + ".png");
 
         ImageAssert.assertEquals(reference, image, 0);
     }
@@ -179,10 +174,8 @@ public class DisplayCoverageTest {
         StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
-        ContrastEnhancement ce =
-                sf.contrastEnhancement(
-                        ff.function("env", ff.literal("gamma"), ff.literal(1)),
-                        ContrastMethod.NORMALIZE);
+        ContrastEnhancement ce = sf.contrastEnhancement(
+                ff.function("env", ff.literal("gamma"), ff.literal(1)), ContrastMethod.NORMALIZE);
         SelectedChannelType sct = sf.createSelectedChannelType(bandName, ce);
 
         RasterSymbolizer sym = sf.getDefaultRasterSymbolizer();

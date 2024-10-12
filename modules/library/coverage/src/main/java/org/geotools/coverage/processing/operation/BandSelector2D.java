@@ -107,7 +107,8 @@ final class BandSelector2D extends GridCoverage2D {
         if (bandIndices != null) {
             bandIndices = bandIndices.clone();
         }
-        Integer visibleBand = (Integer) parameters.parameter("VisibleSampleDimension").getValue();
+        Integer visibleBand =
+                (Integer) parameters.parameter("VisibleSampleDimension").getValue();
         /*
          * Prepares the informations needed for JAI's "BandSelect" operation. The loop below
          * should be executed only once, except if the source grid coverage is itself an instance
@@ -145,8 +146,7 @@ final class BandSelector2D extends GridCoverage2D {
                 if (visibleSourceBand < 0) {
                     // TODO: localize
                     throw new IllegalArgumentException(
-                            "Visible sample dimension is "
-                                    + "not among the ones specified in SampleDimensions param");
+                            "Visible sample dimension is " + "not among the ones specified in SampleDimensions param");
                 }
             } else {
                 // Try to keep the original one, if it hasn't been selected, fall
@@ -206,13 +206,9 @@ final class BandSelector2D extends GridCoverage2D {
                 final IndexColorModel indexed = (IndexColorModel) colors;
                 final int[] ARGB = new int[indexed.getMapSize()];
                 indexed.getRGBs(ARGB);
-                colors =
-                        ColorUtilities.getIndexColorModel(
-                                ARGB, targetBands.length, visibleTargetBand);
+                colors = ColorUtilities.getIndexColorModel(ARGB, targetBands.length, visibleTargetBand);
             } else {
-                colors =
-                        targetBands[visibleTargetBand].getColorModel(
-                                visibleTargetBand, targetBands.length);
+                colors = targetBands[visibleTargetBand].getColorModel(visibleTargetBand, targetBands.length);
             }
             /*
              * If we are not able to provide a color model because our sample dimensions
@@ -248,10 +244,9 @@ final class BandSelector2D extends GridCoverage2D {
             // did we manage to create one?
             if (tempCM != null) {
                 layout.setColorModel(tempCM);
-                ImageWorker iw =
-                        new ImageWorker(image)
-                                .setRenderingHints(hints)
-                                .format(image.getSampleModel().getDataType());
+                ImageWorker iw = new ImageWorker(image)
+                        .setRenderingHints(hints)
+                        .format(image.getSampleModel().getDataType());
                 image = iw.getPlanarImage();
 
                 // Check the NOData properties
@@ -259,9 +254,8 @@ final class BandSelector2D extends GridCoverage2D {
                 Map<String, Object> properties = source.getProperties();
                 if (properties != null && CoverageUtilities.getNoDataProperty(source) != null) {
                     NoDataContainer noDataC = CoverageUtilities.getNoDataProperty(source);
-                    Range noData =
-                            RangeFactory.convert(
-                                    noDataC.getAsRange(), image.getSampleModel().getDataType());
+                    Range noData = RangeFactory.convert(
+                            noDataC.getAsRange(), image.getSampleModel().getDataType());
                     CoverageUtilities.setNoDataProperty(properties, noData);
                 }
             }

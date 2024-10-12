@@ -93,8 +93,7 @@ public class GridCoverageBuilder {
     private NumberRange<? extends Number> range;
 
     /** The default {@linkplain #range}. */
-    private static final NumberRange<Integer> DEFAULT_RANGE =
-            NumberRange.create(0, true, 256, false);
+    private static final NumberRange<Integer> DEFAULT_RANGE = NumberRange.create(0, true, 256, false);
 
     /**
      * The list of variables created. Each variable will be mapped to a {@linkplain
@@ -142,9 +141,7 @@ public class GridCoverageBuilder {
      * DefaultGeographicCRS#WGS84 WGS84}.
      */
     public CoordinateReferenceSystem getCoordinateReferenceSystem() {
-        return (envelope != null)
-                ? envelope.getCoordinateReferenceSystem()
-                : DefaultGeographicCRS.WGS84;
+        return (envelope != null) ? envelope.getCoordinateReferenceSystem() : DefaultGeographicCRS.WGS84;
     }
 
     /**
@@ -154,8 +151,7 @@ public class GridCoverageBuilder {
      * @throws IllegalArgumentException if the CRS is illegal for the {@linkplain #getEnvelope
      *     current envelope}.
      */
-    public void setCoordinateReferenceSystem(final CoordinateReferenceSystem crs)
-            throws IllegalArgumentException {
+    public void setCoordinateReferenceSystem(final CoordinateReferenceSystem crs) throws IllegalArgumentException {
         if (envelope == null) {
             if (crs != null) {
                 envelope = wrap(CRS.getEnvelope(crs));
@@ -168,8 +164,7 @@ public class GridCoverageBuilder {
             try {
                 envelope = wrap(CRS.transform(envelope, crs));
             } catch (TransformException exception) {
-                throw new IllegalArgumentException(
-                        ErrorKeys.ILLEGAL_COORDINATE_REFERENCE_SYSTEM, exception);
+                throw new IllegalArgumentException(ErrorKeys.ILLEGAL_COORDINATE_REFERENCE_SYSTEM, exception);
             }
         coverage = null;
     }
@@ -185,8 +180,7 @@ public class GridCoverageBuilder {
         try {
             crs = CRS.decode(code, true);
         } catch (FactoryException exception) {
-            throw new IllegalArgumentException(
-                    ErrorKeys.ILLEGAL_COORDINATE_REFERENCE_SYSTEM, exception);
+            throw new IllegalArgumentException(ErrorKeys.ILLEGAL_COORDINATE_REFERENCE_SYSTEM, exception);
         }
         setCoordinateReferenceSystem(crs);
     }
@@ -225,8 +219,7 @@ public class GridCoverageBuilder {
             try {
                 envelope = CRS.transform(envelope, this.envelope.getCoordinateReferenceSystem());
             } catch (TransformException exception) {
-                throw new IllegalArgumentException(
-                        ErrorKeys.ILLEGAL_COORDINATE_REFERENCE_SYSTEM, exception);
+                throw new IllegalArgumentException(ErrorKeys.ILLEGAL_COORDINATE_REFERENCE_SYSTEM, exception);
             }
         this.envelope = new GeneralBounds(envelope);
         coverage = null;
@@ -441,14 +434,12 @@ public class GridCoverageBuilder {
          * @param value The pixel value to assign to "nodata".
          * @throws IllegalArgumentException if the given pixel value is already assigned.
          */
-        public void addNodataValue(final CharSequence name, final int value)
-                throws IllegalArgumentException {
+        public void addNodataValue(final CharSequence name, final int value) throws IllegalArgumentException {
             final Integer key = value;
             final CharSequence old = nodata.put(key, name);
             if (old != null) {
                 nodata.put(key, old);
-                throw new IllegalArgumentException(
-                        MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "value", key));
+                throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "value", key));
             }
             sampleDimension = null;
         }

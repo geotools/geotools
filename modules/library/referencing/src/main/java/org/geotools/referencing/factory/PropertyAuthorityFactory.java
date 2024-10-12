@@ -94,8 +94,7 @@ public class PropertyAuthorityFactory extends DirectAuthorityFactory
      * needed. View are always up to date even if entries are added or removed in the {@linkplain
      * #definitions} map.
      */
-    private transient Map<Class<? extends IdentifiedObject>, Set<String>> filteredCodes =
-            new HashMap<>();
+    private transient Map<Class<? extends IdentifiedObject>, Set<String>> filteredCodes = new HashMap<>();
 
     /** A WKT parser. */
     private transient Parser parser;
@@ -110,9 +109,7 @@ public class PropertyAuthorityFactory extends DirectAuthorityFactory
      * @throws IOException if the definitions can't be read.
      */
     public PropertyAuthorityFactory(
-            final ReferencingFactoryContainer factories,
-            final Citation authority,
-            final URL definitions)
+            final ReferencingFactoryContainer factories, final Citation authority, final URL definitions)
             throws IOException {
         this(factories, new Citation[] {authority}, definitions);
     }
@@ -135,9 +132,7 @@ public class PropertyAuthorityFactory extends DirectAuthorityFactory
      * @since 2.4
      */
     public PropertyAuthorityFactory(
-            final ReferencingFactoryContainer factories,
-            final Citation[] authorities,
-            final URL definitions)
+            final ReferencingFactoryContainer factories, final Citation[] authorities, final URL definitions)
             throws IOException {
         super(factories, MINIMUM_PRIORITY + 10);
         // The following hints have no effect on this class behaviour,
@@ -169,10 +164,9 @@ public class PropertyAuthorityFactory extends DirectAuthorityFactory
         final Symbols s = Symbols.DEFAULT;
         for (final Object wkt : this.definitions.values()) {
             if (s.containsAxis((String) wkt)) {
-                LOGGER.fine(
-                        "Axis elements found in a wkt definition, the force longitude "
-                                + "first axis order hint might not be respected:\n"
-                                + wkt);
+                LOGGER.fine("Axis elements found in a wkt definition, the force longitude "
+                        + "first axis order hint might not be respected:\n"
+                        + wkt);
                 return;
             }
         }
@@ -212,8 +206,7 @@ public class PropertyAuthorityFactory extends DirectAuthorityFactory
      * @throws FactoryException if access to the underlying database failed.
      */
     @Override
-    public Set<String> getAuthorityCodes(final Class<? extends IdentifiedObject> type)
-            throws FactoryException {
+    public Set<String> getAuthorityCodes(final Class<? extends IdentifiedObject> type) throws FactoryException {
         if (type == null || type.isAssignableFrom(IdentifiedObject.class)) {
             return codes;
         }
@@ -246,9 +239,7 @@ public class PropertyAuthorityFactory extends DirectAuthorityFactory
         private final Map<String, String> definitions;
 
         /** Constructs a set of codes for the specified type. */
-        public Codes(
-                final Map<String, String> definitions,
-                final Class<? extends IdentifiedObject> type) {
+        public Codes(final Map<String, String> definitions, final Class<? extends IdentifiedObject> type) {
             super(definitions.keySet(), String.class);
             this.definitions = definitions;
             this.type = type;
@@ -334,8 +325,7 @@ public class PropertyAuthorityFactory extends DirectAuthorityFactory
      * @throws FactoryException if the object creation failed for some other reason.
      */
     @Override
-    public IdentifiedObject createObject(final String code)
-            throws NoSuchAuthorityCodeException, FactoryException {
+    public IdentifiedObject createObject(final String code) throws NoSuchAuthorityCodeException, FactoryException {
         final String wkt = getWKT(code);
         final Parser parser = getParser();
         try {

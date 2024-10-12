@@ -69,10 +69,7 @@ public final class SoftValueHashMapTest {
                 key = null;
 
                 assertEquals("containsKey:", strongMap.containsKey(key), softMap.containsKey(key));
-                assertEquals(
-                        "containsValue:",
-                        strongMap.containsValue(value),
-                        softMap.containsValue(value));
+                assertEquals("containsValue:", strongMap.containsValue(value), softMap.containsValue(value));
                 assertSame("get:", strongMap.get(key), softMap.get(key));
                 assertEquals("equals:", strongMap, softMap);
                 if (random.nextBoolean()) {
@@ -225,8 +222,7 @@ public final class SoftValueHashMapTest {
         private Random random;
         private CountDownLatch latch;
 
-        public CacheTestThreadGetPut(
-                SoftValueHashMap<Integer, Integer> cache, Random random, CountDownLatch latch) {
+        public CacheTestThreadGetPut(SoftValueHashMap<Integer, Integer> cache, Random random, CountDownLatch latch) {
             this.cache = cache;
             this.random = random;
             this.latch = latch;
@@ -254,8 +250,7 @@ public final class SoftValueHashMapTest {
         private SoftValueHashMap<Integer, Integer> cache;
         private CountDownLatch latch;
 
-        public CacheTestThreadIterators(
-                SoftValueHashMap<Integer, Integer> cache, CountDownLatch latch) {
+        public CacheTestThreadIterators(SoftValueHashMap<Integer, Integer> cache, CountDownLatch latch) {
             this.cache = cache;
             this.latch = latch;
         }

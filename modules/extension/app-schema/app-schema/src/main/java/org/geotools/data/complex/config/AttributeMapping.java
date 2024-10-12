@@ -420,9 +420,7 @@ public class AttributeMapping implements Serializable {
                 + isMultiple
                 + ", encodeIfEmpty: "
                 + encodeIfEmpty
-                + ((targetAttributeSchemaElement == null)
-                        ? ""
-                        : (", target node: " + targetAttributeSchemaElement))
+                + ((targetAttributeSchemaElement == null) ? "" : (", target node: " + targetAttributeSchemaElement))
                 + ((linkElement == null) ? "" : (", linkElement: " + linkElement))
                 + ((linkField == null) ? "" : (", linkField: " + linkField))
                 + "]";

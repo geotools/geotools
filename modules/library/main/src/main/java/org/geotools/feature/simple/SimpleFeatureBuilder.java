@@ -391,16 +391,14 @@ public class SimpleFeatureBuilder extends FeatureBuilder<FeatureType, Feature> {
         final int ATTRIBUTE_COUNT = type.getAttributeCount();
         final int VALUE_COUNT = values.size();
         if (ATTRIBUTE_COUNT < VALUE_COUNT) {
-            LOGGER.fine(
-                    String.format(
-                            "%s '%s' limited to the first %d values, out of a total %d values provided",
-                            type.getTypeName(), id, ATTRIBUTE_COUNT, VALUE_COUNT));
+            LOGGER.fine(String.format(
+                    "%s '%s' limited to the first %d values, out of a total %d values provided",
+                    type.getTypeName(), id, ATTRIBUTE_COUNT, VALUE_COUNT));
             values = values.subList(0, type.getAttributeCount());
         } else if (ATTRIBUTE_COUNT > VALUE_COUNT) {
-            LOGGER.fine(
-                    String.format(
-                            "%s '%s' used the first %d values, using default values for remaining %d attributes.",
-                            type.getTypeName(), id, VALUE_COUNT, (ATTRIBUTE_COUNT - VALUE_COUNT)));
+            LOGGER.fine(String.format(
+                    "%s '%s' used the first %d values, using default values for remaining %d attributes.",
+                    type.getTypeName(), id, VALUE_COUNT, (ATTRIBUTE_COUNT - VALUE_COUNT)));
             values = new ArrayList<>(values);
             values.addAll(Collections.nCopies(ATTRIBUTE_COUNT - VALUE_COUNT, null));
         }
@@ -447,8 +445,7 @@ public class SimpleFeatureBuilder extends FeatureBuilder<FeatureType, Feature> {
                 }
                 builder.set(property.getName(), copy);
             } catch (Exception e) {
-                throw new IllegalAttributeException(
-                        (AttributeDescriptor) property.getDescriptor(), value, e);
+                throw new IllegalAttributeException((AttributeDescriptor) property.getDescriptor(), value, e);
             }
         }
         return builder.buildFeature(original.getID());

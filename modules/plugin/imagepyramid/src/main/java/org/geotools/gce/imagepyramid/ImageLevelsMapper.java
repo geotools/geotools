@@ -47,8 +47,7 @@ import org.geotools.util.factory.Hints;
 class ImageLevelsMapper {
 
     /** Logger. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(ImageLevelsMapper.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(ImageLevelsMapper.class);
 
     /**
      * The whole number of overviews in the pyramid.
@@ -146,15 +145,13 @@ class ImageLevelsMapper {
                 element.getValue().dispose();
             } catch (Exception e) {
                 // Mimic the underlying imageMosaicReader dispose behavior
-                if (LOGGER.isLoggable(Level.FINE))
-                    LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
+                if (LOGGER.isLoggable(Level.FINE)) LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
             }
         }
         readers.clear();
     }
 
-    protected ImageMosaicReader getReader(
-            Integer imageChoice, String coverageName, URL sourceURL, Hints hints)
+    protected ImageMosaicReader getReader(Integer imageChoice, String coverageName, URL sourceURL, Hints hints)
             throws IOException {
         int imageIndex = getImageReaderIndex(imageChoice);
         // light check to see if this reader had been disposed, not synching for performance.
@@ -171,12 +168,11 @@ class ImageLevelsMapper {
             final String levelDirName = levelsDirs[imageIndex];
             final URL parentUrl = URLs.getParentUrl(sourceURL);
             // look for a shapefile first
-            final String extension =
-                    new StringBuilder(levelDirName)
-                            .append("/")
-                            .append(coverageName)
-                            .append(".shp")
-                            .toString();
+            final String extension = new StringBuilder(levelDirName)
+                    .append("/")
+                    .append(coverageName)
+                    .append(".shp")
+                    .toString();
             final URL shpFileUrl = URLs.extendUrl(parentUrl, extension);
             if (shpFileUrl.getProtocol() != null
                     && shpFileUrl.getProtocol().equalsIgnoreCase("file")
@@ -185,8 +181,7 @@ class ImageLevelsMapper {
             } else {
                 reader = new ImageMosaicReader(shpFileUrl, hints);
             }
-            final ImageMosaicReader putByOtherThreadJustNow =
-                    readers.putIfAbsent(imageIndex, reader);
+            final ImageMosaicReader putByOtherThreadJustNow = readers.putIfAbsent(imageIndex, reader);
             if (putByOtherThreadJustNow != null) {
                 // some other thread just did inserted this
                 try {

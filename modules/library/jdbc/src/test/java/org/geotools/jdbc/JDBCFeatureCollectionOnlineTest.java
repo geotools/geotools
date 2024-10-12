@@ -51,28 +51,24 @@ public abstract class JDBCFeatureCollectionOnlineTest extends JDBCTestSupport {
     public void testIterator() throws Exception {
         try (FeatureIterator<SimpleFeature> i = collection.features()) {
             assertNotNull(i);
-            assertFeatureIterator(
-                    0,
-                    3,
-                    i,
-                    new SimpleFeatureAssertion() {
+            assertFeatureIterator(0, 3, i, new SimpleFeatureAssertion() {
 
-                        @Override
-                        public int toIndex(SimpleFeature feature) {
-                            return ((Number) feature.getAttribute(aname("intProperty"))).intValue();
-                        }
+                @Override
+                public int toIndex(SimpleFeature feature) {
+                    return ((Number) feature.getAttribute(aname("intProperty"))).intValue();
+                }
 
-                        @Override
-                        public void check(int index, SimpleFeature feature) {
-                            assertNotNull(feature);
+                @Override
+                public void check(int index, SimpleFeature feature) {
+                    assertNotNull(feature);
 
-                            String fid = feature.getID();
+                    String fid = feature.getID();
 
-                            int id = Integer.parseInt(fid.substring(fid.indexOf('.') + 1));
+                    int id = Integer.parseInt(fid.substring(fid.indexOf('.') + 1));
 
-                            assertEquals(index, id);
-                        }
-                    });
+                    assertEquals(index, id);
+                }
+            });
         }
     }
 
@@ -137,11 +133,8 @@ public abstract class JDBCFeatureCollectionOnlineTest extends JDBCTestSupport {
                             ((Double) f.getAttribute(aname("doubleProperty"))).doubleValue(),
                             1e-5);
                     assertEquals(
-                            feature.getAttribute(aname("stringProperty")),
-                            f.getAttribute(aname("stringProperty")));
-                    assertEquals(
-                            feature.getAttribute(aname("geometry")),
-                            f.getAttribute(aname("geometry")));
+                            feature.getAttribute(aname("stringProperty")), f.getAttribute(aname("stringProperty")));
+                    assertEquals(feature.getAttribute(aname("geometry")), f.getAttribute(aname("geometry")));
                     found = true;
                 }
             }

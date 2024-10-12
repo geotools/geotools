@@ -286,8 +286,7 @@ public class LineMBLayer extends MBLayer {
      * @return The geometry's offset, as a Displacement.
      */
     public Displacement lineTranslateDisplacement() {
-        return parse.displacement(
-                paint, "line-translate", sf.displacement(ff.literal(0), ff.literal(0)));
+        return parse.displacement(paint, "line-translate", sf.displacement(ff.literal(0), ff.literal(0)));
     }
 
     /**
@@ -314,8 +313,7 @@ public class LineMBLayer extends MBLayer {
      * @return The translation reference point.
      */
     public LineTranslateAnchor getLineTranslateAnchor() {
-        return parse.getEnum(
-                paint, "line-translate-anchor", LineTranslateAnchor.class, LineTranslateAnchor.MAP);
+        return parse.getEnum(paint, "line-translate-anchor", LineTranslateAnchor.class, LineTranslateAnchor.MAP);
     }
 
     /**
@@ -445,8 +443,7 @@ public class LineMBLayer extends MBLayer {
      */
     public List<Double> getLineDasharray() {
         List<Double> ret = new ArrayList<>();
-        if (paint.get("line-dasharray") != null
-                && paint.get("line-dasharray") instanceof JSONArray) {
+        if (paint.get("line-dasharray") != null && paint.get("line-dasharray") instanceof JSONArray) {
             JSONArray a = (JSONArray) paint.get("line-dasharray");
             for (Object o : a) {
                 Number n = (Number) o;
@@ -484,9 +481,8 @@ public class LineMBLayer extends MBLayer {
         } else if (defn instanceof JSONObject) {
             throw new MBFormatException("\"line-dasharray\": Functions not supported yet.");
         } else {
-            throw new MBFormatException(
-                    "\"line-dasharray\": Expected array or function, but was "
-                            + defn.getClass().getSimpleName());
+            throw new MBFormatException("\"line-dasharray\": Expected array or function, but was "
+                    + defn.getClass().getSimpleName());
         }
     }
 
@@ -537,60 +533,34 @@ public class LineMBLayer extends MBLayer {
     public List<FeatureTypeStyle> transformInternal(MBStyle styleContext) {
         MBStyleTransformer transformer = new MBStyleTransformer(parse);
         List<Symbolizer> symbolizers = new ArrayList<>();
-        org.geotools.api.style.Stroke stroke =
-                sf.stroke(
-                        lineColor(),
-                        lineOpacity(),
-                        lineWidth(),
-                        lineJoin(),
-                        lineCap(),
-                        null,
-                        null); // last "offset" is really "dash offset"
+        org.geotools.api.style.Stroke stroke = sf.stroke(
+                lineColor(),
+                lineOpacity(),
+                lineWidth(),
+                lineJoin(),
+                lineCap(),
+                null,
+                null); // last "offset" is really "dash offset"
 
         stroke.setDashArray(scaleByWidth(lineDasharray(), lineWidth()));
-        LineSymbolizer ls =
-                sf.lineSymbolizer(
-                        getId(),
-                        null,
-                        sf.description(Text.text("line"), null),
-                        Units.PIXEL,
-                        stroke,
-                        lineOffset());
+        LineSymbolizer ls = sf.lineSymbolizer(
+                getId(), null, sf.description(Text.text("line"), null), Units.PIXEL, stroke, lineOffset());
 
         if (hasLinePattern()) {
-            ExternalGraphic eg =
-                    transformer.createExternalGraphicForSprite(linePattern(), styleContext);
-            GraphicFill fill =
-                    sf.graphicFill(Arrays.asList(eg), lineOpacity(), null, null, null, null);
+            ExternalGraphic eg = transformer.createExternalGraphicForSprite(linePattern(), styleContext);
+            GraphicFill fill = sf.graphicFill(Arrays.asList(eg), lineOpacity(), null, null, null, null);
             stroke.setGraphicFill(fill);
         }
 
         if (hasLineGapWidth()) {
-            Expression topOffset =
-                    ff.add(
-                            lineOffset(),
-                            ff.divide(ff.add(lineGapWidth(), lineWidth()), ff.literal(2)));
+            Expression topOffset = ff.add(lineOffset(), ff.divide(ff.add(lineGapWidth(), lineWidth()), ff.literal(2)));
             Expression bottomOffset =
-                    ff.subtract(
-                            lineOffset(),
-                            ff.divide(ff.add(lineGapWidth(), lineWidth()), ff.literal(2)));
+                    ff.subtract(lineOffset(), ff.divide(ff.add(lineGapWidth(), lineWidth()), ff.literal(2)));
 
-            ls =
-                    sf.lineSymbolizer(
-                            getId(),
-                            null,
-                            sf.description(Text.text("line"), null),
-                            Units.PIXEL,
-                            stroke,
-                            topOffset);
-            LineSymbolizer bottomLine =
-                    sf.lineSymbolizer(
-                            getId(),
-                            null,
-                            sf.description(Text.text("line"), null),
-                            Units.PIXEL,
-                            stroke,
-                            bottomOffset);
+            ls = sf.lineSymbolizer(
+                    getId(), null, sf.description(Text.text("line"), null), Units.PIXEL, stroke, topOffset);
+            LineSymbolizer bottomLine = sf.lineSymbolizer(
+                    getId(), null, sf.description(Text.text("line"), null), Units.PIXEL, stroke, bottomOffset);
             symbolizers.add(bottomLine);
         }
         symbolizers.add(ls);
@@ -598,27 +568,16 @@ public class LineMBLayer extends MBLayer {
         MBFilter filter = getFilter();
         List<org.geotools.api.style.Rule> rules = new ArrayList<>();
 
-        Rule rule =
-                sf.rule(
-                        getId(),
-                        null,
-                        null,
-                        0.0,
-                        Double.POSITIVE_INFINITY,
-                        symbolizers,
-                        filter.filter());
+        Rule rule = sf.rule(getId(), null, null, 0.0, Double.POSITIVE_INFINITY, symbolizers, filter.filter());
         rules.add(rule);
 
-        return Collections.singletonList(
-                sf.featureTypeStyle(
-                        getId(),
-                        sf.description(
-                                Text.text("MBStyle " + getId()),
-                                Text.text("Generated for " + getSourceLayer())),
-                        null,
-                        Collections.emptySet(),
-                        filter.semanticTypeIdentifiers(),
-                        rules));
+        return Collections.singletonList(sf.featureTypeStyle(
+                getId(),
+                sf.description(Text.text("MBStyle " + getId()), Text.text("Generated for " + getSourceLayer())),
+                null,
+                Collections.emptySet(),
+                filter.semanticTypeIdentifiers(),
+                rules));
     }
 
     private List<Expression> scaleByWidth(List<Expression> dasharray, Expression lineWidth) {
@@ -627,14 +586,11 @@ public class LineMBLayer extends MBLayer {
         }
 
         // no need for scaling if the width happens to be exactly 1
-        if (lineWidth instanceof Literal
-                && Double.valueOf(1).equals(lineWidth.evaluate(null, Double.class))) {
+        if (lineWidth instanceof Literal && Double.valueOf(1).equals(lineWidth.evaluate(null, Double.class))) {
             return dasharray;
         }
 
-        return dasharray.stream()
-                .map(dash -> ff.multiply(dash, lineWidth))
-                .collect(Collectors.toList());
+        return dasharray.stream().map(dash -> ff.multiply(dash, lineWidth)).collect(Collectors.toList());
     }
 
     /**

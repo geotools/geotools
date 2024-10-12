@@ -91,11 +91,7 @@ final class LiteFeatureTypeStyle {
      * graphics. WATCH OUT FOR THIS. NOTE: image=null in this case
      */
     public LiteFeatureTypeStyle(
-            Layer layer,
-            Graphics2D graphics,
-            List<Rule> ruleList,
-            List<Rule> elseRuleList,
-            Expression transformation) {
+            Layer layer, Graphics2D graphics, List<Rule> ruleList, List<Rule> elseRuleList, Expression transformation) {
         this.layer = layer;
         this.graphics = graphics;
         this.ruleList = ruleList.toArray(new Rule[ruleList.size()]);

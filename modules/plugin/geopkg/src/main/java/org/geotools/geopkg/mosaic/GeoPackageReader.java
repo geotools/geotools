@@ -135,8 +135,7 @@ public class GeoPackageReader extends AbstractGridCoverage2DReader {
     @Override
     public GeneralBounds getOriginalEnvelope(String coverageName) {
         if (!checkName(coverageName)) {
-            throw new IllegalArgumentException(
-                    "The specified coverageName " + coverageName + "is not supported");
+            throw new IllegalArgumentException("The specified coverageName " + coverageName + "is not supported");
         }
 
         return new GeneralBounds(tiles.get(coverageName).getTileMatrixSetBounds());
@@ -145,8 +144,7 @@ public class GeoPackageReader extends AbstractGridCoverage2DReader {
     @Override
     protected double[] getHighestRes(String coverageName) {
         if (!checkName(coverageName)) {
-            throw new IllegalArgumentException(
-                    "The specified coverageName " + coverageName + "is not supported");
+            throw new IllegalArgumentException("The specified coverageName " + coverageName + "is not supported");
         }
 
         List<TileMatrix> matrices = tiles.get(coverageName).getTileMatricies();
@@ -157,23 +155,19 @@ public class GeoPackageReader extends AbstractGridCoverage2DReader {
     @Override
     public GridEnvelope getOriginalGridRange(String coverageName) {
         if (!checkName(coverageName)) {
-            throw new IllegalArgumentException(
-                    "The specified coverageName " + coverageName + "is not supported");
+            throw new IllegalArgumentException("The specified coverageName " + coverageName + "is not supported");
         }
 
         List<TileMatrix> matrices = tiles.get(coverageName).getTileMatricies();
         TileMatrix matrix = matrices.get(matrices.size() - 1);
-        return new GridEnvelope2D(
-                new Rectangle(
-                        matrix.getMatrixWidth() * matrix.getTileWidth(),
-                        matrix.getMatrixHeight() * matrix.getTileHeight()));
+        return new GridEnvelope2D(new Rectangle(
+                matrix.getMatrixWidth() * matrix.getTileWidth(), matrix.getMatrixHeight() * matrix.getTileHeight()));
     }
 
     @Override
     public CoordinateReferenceSystem getCoordinateReferenceSystem(String coverageName) {
         if (!checkName(coverageName)) {
-            throw new IllegalArgumentException(
-                    "The specified coverageName " + coverageName + "is not supported");
+            throw new IllegalArgumentException("The specified coverageName " + coverageName + "is not supported");
         }
 
         try {
@@ -213,10 +207,9 @@ public class GeoPackageReader extends AbstractGridCoverage2DReader {
                 if (name.equals(AbstractGridFormat.READ_GRIDGEOMETRY2D.getName())) {
                     final GridGeometry2D gg = (GridGeometry2D) param.getValue();
                     try {
-                        requestedEnvelope =
-                                ReferencedEnvelope.create(
-                                                gg.getEnvelope(), gg.getCoordinateReferenceSystem())
-                                        .transform(crs, true);
+                        requestedEnvelope = ReferencedEnvelope.create(
+                                        gg.getEnvelope(), gg.getCoordinateReferenceSystem())
+                                .transform(crs, true);
                     } catch (Exception e) {
                         requestedEnvelope = null;
                     }
@@ -231,9 +224,7 @@ public class GeoPackageReader extends AbstractGridCoverage2DReader {
         TileMatrix bestMatrix = null;
         if (requestedEnvelope != null && dim != null) {
             // requested res
-            double horRes =
-                    requestedEnvelope.getSpan(0)
-                            / dim.getWidth(); // proportion of total width that is being
+            double horRes = requestedEnvelope.getSpan(0) / dim.getWidth(); // proportion of total width that is being
             // requested
 
             // loop over matrices
@@ -285,8 +276,7 @@ public class GeoPackageReader extends AbstractGridCoverage2DReader {
         int leftTile, bottomTile, rightTile, topTile;
         if (requestedEnvelope != null) {
             TileBoundsCalculator tileBoundsCalculator =
-                    new TileBoundsCalculator(requestedEnvelope, resX, resY, offsetX, offsetY)
-                            .invoke();
+                    new TileBoundsCalculator(requestedEnvelope, resX, resY, offsetX, offsetY).invoke();
             leftTile = tileBoundsCalculator.getLeftTile();
             bottomTile = tileBoundsCalculator.getBottomTile();
             rightTile = tileBoundsCalculator.getRightTile();
@@ -307,15 +297,14 @@ public class GeoPackageReader extends AbstractGridCoverage2DReader {
             bottomTile = (int) Math.ceil((offsetY - minY) / resY);
         }
 
-        try (TileReader it =
-                file.reader(
-                        entry,
-                        bestMatrix.getZoomLevel(),
-                        bestMatrix.getZoomLevel(),
-                        leftTile,
-                        rightTile,
-                        topTile,
-                        bottomTile)) {
+        try (TileReader it = file.reader(
+                entry,
+                bestMatrix.getZoomLevel(),
+                bestMatrix.getZoomLevel(),
+                leftTile,
+                rightTile,
+                topTile,
+                bottomTile)) {
             /**
              * Composing the output is harder than it seems, GeoPackage does not mandate any
              * uniformity in tiles, they can be in different formats (a mix of PNG and JPEG) and can
@@ -329,13 +318,12 @@ public class GeoPackageReader extends AbstractGridCoverage2DReader {
             while (it.hasNext()) {
                 Tile tile = it.next();
                 // recalculate the envelope we are actually returning (remember y axis is flipped)
-                ReferencedEnvelope tileEnvelope =
-                        new ReferencedEnvelope( //
-                                offsetX + tile.getColumn() * resX, //
-                                offsetX + (tile.getColumn() + 1) * resX, //
-                                offsetY - (tile.getRow() + 1) * resY, //
-                                offsetY - tile.getRow() * resY,
-                                crs);
+                ReferencedEnvelope tileEnvelope = new ReferencedEnvelope( //
+                        offsetX + tile.getColumn() * resX, //
+                        offsetX + (tile.getColumn() + 1) * resX, //
+                        offsetY - (tile.getRow() + 1) * resY, //
+                        offsetY - tile.getRow() * resY,
+                        crs);
                 if (resultEnvelope == null) {
                     resultEnvelope = tileEnvelope;
                 } else {
@@ -379,15 +367,20 @@ public class GeoPackageReader extends AbstractGridCoverage2DReader {
     private OpImage mosaicUniformImages(List<ImageInTile> sources) {
         // compute bounds
         int minx = sources.stream().mapToInt(it -> it.posx).min().getAsInt();
-        int maxx = sources.stream().mapToInt(it -> it.posx + it.image.getWidth()).max().getAsInt();
+        int maxx = sources.stream()
+                .mapToInt(it -> it.posx + it.image.getWidth())
+                .max()
+                .getAsInt();
         int miny = sources.stream().mapToInt(it -> it.posy).min().getAsInt();
-        int maxy = sources.stream().mapToInt(it -> it.posy + it.image.getHeight()).max().getAsInt();
+        int maxy = sources.stream()
+                .mapToInt(it -> it.posy + it.image.getHeight())
+                .max()
+                .getAsInt();
         int width = maxx - minx;
         int height = maxy - miny;
 
         // compute layout
-        List<BufferedImage> sourceImages =
-                sources.stream().map(it -> it.image).collect(Collectors.toList());
+        List<BufferedImage> sourceImages = sources.stream().map(it -> it.image).collect(Collectors.toList());
         ImageLayout il = new ImageLayout(sourceImages.get(0));
         il.setMinX(minx);
         il.setWidth(width);
@@ -405,19 +398,16 @@ public class GeoPackageReader extends AbstractGridCoverage2DReader {
             public Raster computeTile(int tileX, int tileY) {
                 int posx = tileX * tileWidth + tileGridXOffset;
                 int posy = tileY * tileHeight + tileGridYOffset;
-                ImageInTile candidate =
-                        sources.stream()
-                                .filter(it -> it.posx == posx && it.posy == posy)
-                                .findFirst()
-                                .orElse(null);
+                ImageInTile candidate = sources.stream()
+                        .filter(it -> it.posx == posx && it.posy == posy)
+                        .findFirst()
+                        .orElse(null);
                 if (candidate != null) {
                     return candidate.image.getData().createTranslatedChild(posx, posy);
                 }
 
                 // not inside the available grid, build a white cell then
-                WritableRaster dest =
-                        createWritableRaster(
-                                sampleModel, new Point(tileXToX(tileX), tileYToY(tileY)));
+                WritableRaster dest = createWritableRaster(sampleModel, new Point(tileXToX(tileX), tileYToY(tileY)));
                 BufferedImage bi = new BufferedImage(getColorModel(), dest, false, null);
                 Graphics2D g2D = (Graphics2D) bi.getGraphics();
                 g2D.setColor(Color.WHITE);
@@ -450,13 +440,11 @@ public class GeoPackageReader extends AbstractGridCoverage2DReader {
     private RenderedImage mosaicHeterogeneousImages(List<ImageInTile> sources) {
         // at the time of writing, only JAI-EXT mosaic can handle a mix of different
         // color models, we need to use it explicitly
-        final ParameterBlockJAI pb =
-                new ParameterBlockJAI(new it.geosolutions.jaiext.mosaic.MosaicDescriptor());
+        final ParameterBlockJAI pb = new ParameterBlockJAI(new it.geosolutions.jaiext.mosaic.MosaicDescriptor());
         for (ImageInTile it : sources) {
             if (it.posx != 0 || it.posy != 0) {
                 ImageWorker iw = new ImageWorker(it.image);
-                iw.translate(
-                        it.posx, it.posy, Interpolation.getInstance(Interpolation.INTERP_NEAREST));
+                iw.translate(it.posx, it.posy, Interpolation.getInstance(Interpolation.INTERP_NEAREST));
                 RenderedImage translated = iw.getRenderedImage();
                 pb.addSource(translated);
             } else {
@@ -477,8 +465,7 @@ public class GeoPackageReader extends AbstractGridCoverage2DReader {
     }
 
     @Override
-    public GridCoverage2D read(GeneralParameterValue[] parameters)
-            throws IllegalArgumentException, IOException {
+    public GridCoverage2D read(GeneralParameterValue[] parameters) throws IllegalArgumentException, IOException {
         return read(coverageName, parameters);
     }
 
@@ -502,11 +489,7 @@ public class GeoPackageReader extends AbstractGridCoverage2DReader {
         private int topTile;
 
         public TileBoundsCalculator(
-                Envelope requestedEnvelope,
-                double resX,
-                double resY,
-                double offsetX,
-                double offsetY) {
+                Envelope requestedEnvelope, double resX, double resY, double offsetX, double offsetY) {
             this.requestedEnvelope = requestedEnvelope;
             this.resX = resX;
             this.resY = resY;
@@ -635,9 +618,7 @@ public class GeoPackageReader extends AbstractGridCoverage2DReader {
 
         // see how many types we're dealing with
         int colorModelsTypes =
-                (hasIndexedColorModels ? 1 : 0)
-                        + (hasComponentColorModels ? 1 : 0)
-                        + (hasPackedColorModels ? 1 : 0);
+                (hasIndexedColorModels ? 1 : 0) + (hasComponentColorModels ? 1 : 0) + (hasPackedColorModels ? 1 : 0);
         // if uniform, we have it easy
         if (colorModelsTypes > 1) {
             return false;
@@ -674,12 +655,11 @@ public class GeoPackageReader extends AbstractGridCoverage2DReader {
 
             // check the basics
             if (reference.getNumColorComponents() != sourceColorModel.getNumColorComponents()) {
-                throw new IllegalArgumentException(
-                        "Cannot mosaic togheter images with index "
-                                + "color models having different numbers of color components:\n "
-                                + reference
-                                + "\n"
-                                + sourceColorModel);
+                throw new IllegalArgumentException("Cannot mosaic togheter images with index "
+                        + "color models having different numbers of color components:\n "
+                        + reference
+                        + "\n"
+                        + sourceColorModel);
             }
 
             // if not the same color space, then we need to expand

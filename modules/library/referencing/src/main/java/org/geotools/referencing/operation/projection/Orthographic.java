@@ -111,26 +111,23 @@ public abstract class Orthographic extends MapProjection {
         private static final long serialVersionUID = 3180410512573499562L;
 
         /** The parameters group. */
-        static final ParameterDescriptorGroup PARAMETERS =
-                createDescriptorGroup(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.OGC, "Orthographic"),
-                            new NamedIdentifier(Citations.GEOTIFF, "CT_Orthographic"),
-                            new NamedIdentifier(Citations.ESRI, "Orthographic"),
-                            new NamedIdentifier(
-                                    Citations.GEOTOOLS,
-                                    Vocabulary.formatInternational(
-                                            VocabularyKeys.ORTHOGRAPHIC_PROJECTION))
-                        },
-                        new ParameterDescriptor[] {
-                            SEMI_MAJOR,
-                            SEMI_MINOR,
-                            CENTRAL_MERIDIAN,
-                            LATITUDE_OF_ORIGIN,
-                            SCALE_FACTOR,
-                            FALSE_EASTING,
-                            FALSE_NORTHING
-                        });
+        static final ParameterDescriptorGroup PARAMETERS = createDescriptorGroup(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.OGC, "Orthographic"),
+                    new NamedIdentifier(Citations.GEOTIFF, "CT_Orthographic"),
+                    new NamedIdentifier(Citations.ESRI, "Orthographic"),
+                    new NamedIdentifier(
+                            Citations.GEOTOOLS, Vocabulary.formatInternational(VocabularyKeys.ORTHOGRAPHIC_PROJECTION))
+                },
+                new ParameterDescriptor[] {
+                    SEMI_MAJOR,
+                    SEMI_MINOR,
+                    CENTRAL_MERIDIAN,
+                    LATITUDE_OF_ORIGIN,
+                    SCALE_FACTOR,
+                    FALSE_EASTING,
+                    FALSE_NORTHING
+                });
 
         /** Constructs a new provider. */
         public Provider() {
@@ -154,8 +151,7 @@ public abstract class Orthographic extends MapProjection {
         protected MathTransform createMathTransform(final ParameterValueGroup parameters)
                 throws ParameterNotFoundException, FactoryException {
             // Values here are in radians (the standard units for the map projection package)
-            final double latitudeOfOrigin =
-                    abs(AbstractProvider.doubleValue(LATITUDE_OF_ORIGIN, parameters));
+            final double latitudeOfOrigin = abs(AbstractProvider.doubleValue(LATITUDE_OF_ORIGIN, parameters));
             if (!isSpherical(parameters)) {
                 LOGGER.log(
                         Level.FINE,

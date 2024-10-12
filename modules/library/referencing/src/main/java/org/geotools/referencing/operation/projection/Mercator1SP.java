@@ -74,8 +74,7 @@ public class Mercator1SP extends Mercator {
          * @param parameters The parameter values in standard units.
          * @throws ParameterNotFoundException if a mandatory parameter is missing.
          */
-        protected Spherical(final ParameterValueGroup parameters)
-                throws ParameterNotFoundException {
+        protected Spherical(final ParameterValueGroup parameters) throws ParameterNotFoundException {
             super(parameters);
         }
 
@@ -109,29 +108,27 @@ public class Mercator1SP extends Mercator {
         private static final long serialVersionUID = -5886510621481710072L;
 
         /** The parameters group. */
-        static final ParameterDescriptorGroup PARAMETERS =
-                createDescriptorGroup(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.OGC, "Mercator_1SP"),
-                            new NamedIdentifier(Citations.EPSG, "Mercator (1SP)"),
-                            new NamedIdentifier(Citations.EPSG, "Mercator (1SP) (Spherical)"),
-                            new NamedIdentifier(Citations.EPSG, "Mercator (variant A)"),
-                            new NamedIdentifier(Citations.EPSG, "9804"),
-                            new NamedIdentifier(Citations.GEOTIFF, "CT_Mercator"),
-                            new NamedIdentifier(
-                                    Citations.GEOTOOLS,
-                                    Vocabulary.formatInternational(
-                                            VocabularyKeys.CYLINDRICAL_MERCATOR_PROJECTION))
-                        },
-                        new ParameterDescriptor[] {
-                            SEMI_MAJOR,
-                            SEMI_MINOR,
-                            LATITUDE_OF_ORIGIN,
-                            CENTRAL_MERIDIAN,
-                            SCALE_FACTOR,
-                            FALSE_EASTING,
-                            FALSE_NORTHING
-                        });
+        static final ParameterDescriptorGroup PARAMETERS = createDescriptorGroup(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.OGC, "Mercator_1SP"),
+                    new NamedIdentifier(Citations.EPSG, "Mercator (1SP)"),
+                    new NamedIdentifier(Citations.EPSG, "Mercator (1SP) (Spherical)"),
+                    new NamedIdentifier(Citations.EPSG, "Mercator (variant A)"),
+                    new NamedIdentifier(Citations.EPSG, "9804"),
+                    new NamedIdentifier(Citations.GEOTIFF, "CT_Mercator"),
+                    new NamedIdentifier(
+                            Citations.GEOTOOLS,
+                            Vocabulary.formatInternational(VocabularyKeys.CYLINDRICAL_MERCATOR_PROJECTION))
+                },
+                new ParameterDescriptor[] {
+                    SEMI_MAJOR,
+                    SEMI_MINOR,
+                    LATITUDE_OF_ORIGIN,
+                    CENTRAL_MERIDIAN,
+                    SCALE_FACTOR,
+                    FALSE_EASTING,
+                    FALSE_NORTHING
+                });
 
         /** Constructs a new provider. */
         public Provider() {

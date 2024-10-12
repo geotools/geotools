@@ -41,10 +41,7 @@ import org.geotools.util.factory.Hints;
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
  */
 public abstract class Abstract_URI_AuthorityFactory extends AuthorityFactoryAdapter
-        implements CRSAuthorityFactory,
-                CSAuthorityFactory,
-                DatumAuthorityFactory,
-                CoordinateOperationAuthorityFactory {
+        implements CRSAuthorityFactory, CSAuthorityFactory, DatumAuthorityFactory, CoordinateOperationAuthorityFactory {
     /**
      * The backing factory. Will be used as a fallback if no object is available for some specific
      * version of an EPSG database.
@@ -137,8 +134,7 @@ public abstract class Abstract_URI_AuthorityFactory extends AuthorityFactoryAdap
     @Override
     protected AuthorityFactory getAuthorityFactory(final String code) throws FactoryException {
         if (code != null) {
-            return getAuthorityFactory(
-                    getParser(code).type.type.asSubclass(AuthorityFactory.class), code);
+            return getAuthorityFactory(getParser(code).type.type.asSubclass(AuthorityFactory.class), code);
         } else {
             return super.getAuthorityFactory(code);
         }
@@ -156,8 +152,7 @@ public abstract class Abstract_URI_AuthorityFactory extends AuthorityFactoryAdap
      * @throws FactoryException if no datum factory is available.
      */
     @Override
-    protected DatumAuthorityFactory getDatumAuthorityFactory(final String code)
-            throws FactoryException {
+    protected DatumAuthorityFactory getDatumAuthorityFactory(final String code) throws FactoryException {
         if (code != null) {
             final URI_Parser parser = getParser(code);
             parser.logWarningIfTypeMismatch(this, DatumAuthorityFactory.class);
@@ -205,8 +200,7 @@ public abstract class Abstract_URI_AuthorityFactory extends AuthorityFactoryAdap
      * @throws FactoryException if no coordinate reference system factory is available.
      */
     @Override
-    protected CRSAuthorityFactory getCRSAuthorityFactory(final String code)
-            throws FactoryException {
+    protected CRSAuthorityFactory getCRSAuthorityFactory(final String code) throws FactoryException {
         if (code != null) {
             final URI_Parser parser = getParser(code);
             parser.logWarningIfTypeMismatch(this, CRSAuthorityFactory.class);
@@ -230,8 +224,8 @@ public abstract class Abstract_URI_AuthorityFactory extends AuthorityFactoryAdap
      * @throws FactoryException if no coordinate operation factory is available.
      */
     @Override
-    protected CoordinateOperationAuthorityFactory getCoordinateOperationAuthorityFactory(
-            final String code) throws FactoryException {
+    protected CoordinateOperationAuthorityFactory getCoordinateOperationAuthorityFactory(final String code)
+            throws FactoryException {
         if (code != null) {
             final URI_Parser parser = getParser(code);
             parser.logWarningIfTypeMismatch(this, CoordinateOperationAuthorityFactory.class);
@@ -281,12 +275,10 @@ public abstract class Abstract_URI_AuthorityFactory extends AuthorityFactoryAdap
      * @return The factory, of {@code null} if there is none for the specified version.
      * @throws FactoryException if an error occurred while creating the factory.
      */
-    protected AuthorityFactory createVersionedFactory(final Version version)
-            throws FactoryException {
+    protected AuthorityFactory createVersionedFactory(final Version version) throws FactoryException {
         final Hints hints = new Hints(factory.getImplementationHints());
         hints.put(Hints.VERSION, version);
-        final List<AuthorityFactory> factories =
-                Arrays.asList(new AllAuthoritiesFactory(hints), factory);
+        final List<AuthorityFactory> factories = Arrays.asList(new AllAuthoritiesFactory(hints), factory);
         return FallbackAuthorityFactory.create(factories);
     }
 

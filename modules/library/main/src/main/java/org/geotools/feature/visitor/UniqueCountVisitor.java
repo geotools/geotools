@@ -33,13 +33,11 @@ public class UniqueCountVisitor extends UniqueVisitor {
         super(attributeTypeName);
     }
 
-    public UniqueCountVisitor(int attributeTypeIndex, SimpleFeatureType type)
-            throws IllegalFilterException {
+    public UniqueCountVisitor(int attributeTypeIndex, SimpleFeatureType type) throws IllegalFilterException {
         super(attributeTypeIndex, type);
     }
 
-    public UniqueCountVisitor(String attrName, SimpleFeatureType type)
-            throws IllegalFilterException {
+    public UniqueCountVisitor(String attrName, SimpleFeatureType type) throws IllegalFilterException {
         super(attrName, type);
     }
 

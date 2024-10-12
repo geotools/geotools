@@ -73,8 +73,7 @@ public interface AuthorityFactory extends Factory {
      * @throws NoSuchAuthorityCodeException if the specified {@code code} was not found.
      * @throws FactoryException if the query failed for some other reason.
      */
-    InternationalString getDescriptionText(String code)
-            throws NoSuchAuthorityCodeException, FactoryException;
+    InternationalString getDescriptionText(String code) throws NoSuchAuthorityCodeException, FactoryException;
 
     /**
      * Returns an arbitrary object from a code. The returned object will typically be an instance of
@@ -96,6 +95,5 @@ public interface AuthorityFactory extends Factory {
      * @see org.geotools.api.referencing.datum.DatumAuthorityFactory#createDatum
      * @see org.geotools.api.referencing.crs.CRSAuthorityFactory#createCoordinateReferenceSystem
      */
-    IdentifiedObject createObject(String code)
-            throws NoSuchAuthorityCodeException, FactoryException;
+    IdentifiedObject createObject(String code) throws NoSuchAuthorityCodeException, FactoryException;
 }

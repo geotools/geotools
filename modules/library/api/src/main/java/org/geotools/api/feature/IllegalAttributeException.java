@@ -24,8 +24,7 @@ import org.geotools.api.feature.type.Name;
 public class IllegalAttributeException extends IllegalArgumentException {
     private static final long serialVersionUID = 3373066465585246605L;
 
-    private static final AttributeDescriptor NULL_ATTRIBUTE_DESCRIPTOR =
-            new NullAttributeDescriptor();
+    private static final AttributeDescriptor NULL_ATTRIBUTE_DESCRIPTOR = new NullAttributeDescriptor();
 
     /** AttributeDescriptor being used to validate against. */
     private final AttributeDescriptor descriptor;
@@ -49,8 +48,7 @@ public class IllegalAttributeException extends IllegalArgumentException {
         this.value = value;
     }
 
-    public IllegalAttributeException(
-            AttributeDescriptor descriptor, Object value, String message, Throwable t) {
+    public IllegalAttributeException(AttributeDescriptor descriptor, Object value, String message, Throwable t) {
         super(message, t);
         this.descriptor = descriptor;
         this.value = value;

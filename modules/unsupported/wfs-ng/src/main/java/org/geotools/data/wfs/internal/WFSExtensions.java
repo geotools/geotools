@@ -78,12 +78,11 @@ public class WFSExtensions {
                 }
             }
         }
-        throw new FactoryNotFoundException(
-                "Can't find a response parser factory for "
-                        + originatingRequest.getOperation()
-                        + "/'"
-                        + contentType
-                        + "'");
+        throw new FactoryNotFoundException("Can't find a response parser factory for "
+                + originatingRequest.getOperation()
+                + "/'"
+                + contentType
+                + "'");
     }
 
     public static List<WFSResponseFactory> findResponseFactories(final WFSOperationType operation) {
@@ -116,8 +115,7 @@ public class WFSExtensions {
                      */
                     final ClassLoader current = Thread.currentThread().getContextClassLoader();
                     try {
-                        final ClassLoader tempClassLoader =
-                                WFSDataStoreFactory.class.getClassLoader();
+                        final ClassLoader tempClassLoader = WFSDataStoreFactory.class.getClassLoader();
                         Thread.currentThread().setContextClassLoader(tempClassLoader);
                         /*
                          * Now that we're on the correct classloader lets perform the lookup

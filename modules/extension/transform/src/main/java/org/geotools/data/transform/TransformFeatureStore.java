@@ -46,8 +46,7 @@ public class TransformFeatureStore extends TransformFeatureSource implements Sim
 
     protected Transformer invertedTransformer;
 
-    public TransformFeatureStore(SimpleFeatureStore store, Name name, List<Definition> definitions)
-            throws IOException {
+    public TransformFeatureStore(SimpleFeatureStore store, Name name, List<Definition> definitions) throws IOException {
         super(store, name, definitions);
         this.store = store;
 
@@ -63,8 +62,7 @@ public class TransformFeatureStore extends TransformFeatureSource implements Sim
         // check it was possible to invert at least one definition
         if (inverted.isEmpty()) {
             throw new IllegalArgumentException(
-                    "None of the expressions could be inverted, cannot "
-                            + "create a writable transformer");
+                    "None of the expressions could be inverted, cannot " + "create a writable transformer");
         }
 
         // check we have enough to compute all required fields
@@ -73,10 +71,9 @@ public class TransformFeatureStore extends TransformFeatureSource implements Sim
             requiredAttributes.remove(id.getName());
         }
         if (!requiredAttributes.isEmpty()) {
-            throw new IllegalArgumentException(
-                    "The inverted expressions do not cover some of the required attributes, "
-                            + "cannot create a writable transformer. The missing mandatory attributes are: "
-                            + requiredAttributes);
+            throw new IllegalArgumentException("The inverted expressions do not cover some of the required attributes, "
+                    + "cannot create a writable transformer. The missing mandatory attributes are: "
+                    + requiredAttributes);
         }
 
         // ah, all is in order, create the inverse transformer then
@@ -111,8 +108,8 @@ public class TransformFeatureStore extends TransformFeatureSource implements Sim
     }
 
     @Override
-    public List<FeatureId> addFeatures(
-            FeatureCollection<SimpleFeatureType, SimpleFeature> collection) throws IOException {
+    public List<FeatureId> addFeatures(FeatureCollection<SimpleFeatureType, SimpleFeature> collection)
+            throws IOException {
         // re-shape back the collection provided, and then just call the wrapper store
         TransformFeatureCollectionWrapper transformed =
                 new TransformFeatureCollectionWrapper(collection, invertedTransformer);
@@ -122,17 +119,14 @@ public class TransformFeatureStore extends TransformFeatureSource implements Sim
     }
 
     @Override
-    public void setFeatures(FeatureReader<SimpleFeatureType, SimpleFeature> reader)
-            throws IOException {
+    public void setFeatures(FeatureReader<SimpleFeatureType, SimpleFeature> reader) throws IOException {
         // transform back the reader and call back the wrapped store
-        TransformFeatureReaderWrapper rr =
-                new TransformFeatureReaderWrapper(reader, invertedTransformer);
+        TransformFeatureReaderWrapper rr = new TransformFeatureReaderWrapper(reader, invertedTransformer);
         store.setFeatures(rr);
     }
 
     @Override
-    public void modifyFeatures(Name[] attributeNames, Object[] attributeValues, Filter filter)
-            throws IOException {
+    public void modifyFeatures(Name[] attributeNames, Object[] attributeValues, Filter filter) throws IOException {
         String[] simpleNames = new String[attributeNames.length];
         for (int i = 0; i < attributeNames.length; i++) {
             simpleNames[i] = attributeNames[i].getLocalPart();
@@ -142,20 +136,17 @@ public class TransformFeatureStore extends TransformFeatureSource implements Sim
     }
 
     @Override
-    public void modifyFeatures(Name attributeName, Object attributeValue, Filter filter)
-            throws IOException {
+    public void modifyFeatures(Name attributeName, Object attributeValue, Filter filter) throws IOException {
         modifyFeatures(new Name[] {attributeName}, new Object[] {attributeValue}, filter);
     }
 
     @Override
-    public void modifyFeatures(String name, Object attributeValue, Filter filter)
-            throws IOException {
+    public void modifyFeatures(String name, Object attributeValue, Filter filter) throws IOException {
         modifyFeatures(new String[] {name}, new Object[] {attributeValue}, filter);
     }
 
     @Override
-    public void modifyFeatures(String[] nameArray, Object[] attributeValues, Filter filter)
-            throws IOException {
+    public void modifyFeatures(String[] nameArray, Object[] attributeValues, Filter filter) throws IOException {
         // build a feature out of the provided attribute values
         SimpleFeatureBuilder fb = new SimpleFeatureBuilder(getSchema());
         for (int i = 0; i < nameArray.length; i++) {

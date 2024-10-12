@@ -51,8 +51,7 @@ public class StyleBuilderTest {
         UserLayer layer = sf.createUserLayer();
         layer.setName("layer");
 
-        FeatureTypeConstraint constraint =
-                sf.createFeatureTypeConstraint("Feature", Filter.INCLUDE, null);
+        FeatureTypeConstraint constraint = sf.createFeatureTypeConstraint("Feature", Filter.INCLUDE, null);
 
         layer.layerFeatureConstraints().add(constraint);
 
@@ -163,13 +162,12 @@ public class StyleBuilderTest {
     public void ftsOptions() {
         StyleBuilder builder = new StyleBuilder();
 
-        RuleBuilder rule =
-                builder.featureTypeStyle()
-                        .featureTypeName("Feature")
-                        .option(
-                                org.geotools.api.style.FeatureTypeStyle.KEY_EVALUATION_MODE,
-                                org.geotools.api.style.FeatureTypeStyle.VALUE_EVALUATION_MODE_FIRST)
-                        .rule();
+        RuleBuilder rule = builder.featureTypeStyle()
+                .featureTypeName("Feature")
+                .option(
+                        org.geotools.api.style.FeatureTypeStyle.KEY_EVALUATION_MODE,
+                        org.geotools.api.style.FeatureTypeStyle.VALUE_EVALUATION_MODE_FIRST)
+                .rule();
         rule.point().graphic().mark().name("circle");
 
         Style style = builder.build();
@@ -187,9 +185,7 @@ public class StyleBuilderTest {
         StyleBuilder builder = new StyleBuilder();
 
         // don't have a RT handy, we'll just use a random function instead
-        builder.featureTypeStyle()
-                .featureTypeName("Feature")
-                .transformation(FF.function("abs", FF.literal("123")));
+        builder.featureTypeStyle().featureTypeName("Feature").transformation(FF.function("abs", FF.literal("123")));
 
         Style style = builder.build();
 
@@ -413,18 +409,12 @@ public class StyleBuilderTest {
     @Test
     public void testRuleBuilderWithLegendGraphicClone() throws Exception {
         org.geotools.styling.StyleBuilder builder = new org.geotools.styling.StyleBuilder();
-        Graphic pointGraphic =
-                builder.createGraphic(
-                        builder.createExternalGraphic("file:/point-symbolizer.png", "image/png"),
-                        null,
-                        null);
+        Graphic pointGraphic = builder.createGraphic(
+                builder.createExternalGraphic("file:/point-symbolizer.png", "image/png"), null, null);
         Rule rule = builder.createRule(builder.createPointSymbolizer(pointGraphic));
 
         Graphic legendGraphic =
-                builder.createGraphic(
-                        builder.createExternalGraphic("file:/nice-legend.png", "image/png"),
-                        null,
-                        null);
+                builder.createGraphic(builder.createExternalGraphic("file:/nice-legend.png", "image/png"), null, null);
 
         rule.setLegend((GraphicLegend) legendGraphic);
 
@@ -436,7 +426,8 @@ public class StyleBuilderTest {
         ExternalGraphic cloneExternal = (ExternalGraphic) symbol;
         Assert.assertNotNull(cloneExternal.getLocation());
         Assert.assertEquals(
-                "file:/nice-legend.png", cloneExternal.getOnlineResource().getLinkage().toString());
+                "file:/nice-legend.png",
+                cloneExternal.getOnlineResource().getLinkage().toString());
     }
 
     @Test
@@ -573,11 +564,10 @@ public class StyleBuilderTest {
     @Test
     public void testRuleOptions() {
         StyleBuilder sb = new StyleBuilder();
-        RuleBuilder ruleBuilder =
-                sb.featureTypeStyle()
-                        .rule()
-                        .option("RuleOption", "RuleOptionValue")
-                        .option("RuleOption2", "RuleOptionValue2");
+        RuleBuilder ruleBuilder = sb.featureTypeStyle()
+                .rule()
+                .option("RuleOption", "RuleOptionValue")
+                .option("RuleOption2", "RuleOptionValue2");
         Rule rule = ruleBuilder.build();
         Map<String, String> options = rule.getOptions();
         assertEquals("RuleOptionValue", options.get("RuleOption"));

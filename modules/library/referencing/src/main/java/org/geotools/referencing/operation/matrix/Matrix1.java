@@ -233,15 +233,13 @@ public class Matrix1 implements XMatrix, Serializable {
     @Override
     public void getRow(int row, double[] array) {
         if (array.length != 1) {
-            throw new IllegalArgumentException(
-                    "Call getRow received an array of length "
-                            + array.length
-                            + ".  "
-                            + "The dimensions of the matrix is 1 by 1.");
+            throw new IllegalArgumentException("Call getRow received an array of length "
+                    + array.length
+                    + ".  "
+                    + "The dimensions of the matrix is 1 by 1.");
         }
         if (row != 0) {
-            throw new IllegalArgumentException(
-                    "Specified element is out of bounds: (" + row + " , 0)");
+            throw new IllegalArgumentException("Specified element is out of bounds: (" + row + " , 0)");
         }
         array[0] = m00;
     }
@@ -249,11 +247,10 @@ public class Matrix1 implements XMatrix, Serializable {
     @Override
     public void setRow(int row, double... values) {
         if (values.length != 1) {
-            throw new IllegalArgumentException(
-                    "Call setRow received an array of length "
-                            + values.length
-                            + ".  "
-                            + "The dimensions of the matrix is 1 by 1.");
+            throw new IllegalArgumentException("Call setRow received an array of length "
+                    + values.length
+                    + ".  "
+                    + "The dimensions of the matrix is 1 by 1.");
         }
         m00 = values[0];
     }
@@ -261,15 +258,13 @@ public class Matrix1 implements XMatrix, Serializable {
     @Override
     public void getColumn(int column, double[] array) {
         if (array.length != 1) {
-            throw new IllegalArgumentException(
-                    "Call getColumn received an array of length "
-                            + array.length
-                            + ".  "
-                            + "The dimensions of the matrix is 1 by 1.");
+            throw new IllegalArgumentException("Call getColumn received an array of length "
+                    + array.length
+                    + ".  "
+                    + "The dimensions of the matrix is 1 by 1.");
         }
         if (column != 0) {
-            throw new IllegalArgumentException(
-                    "Specified element is out of bounds: (0 , " + column + ")");
+            throw new IllegalArgumentException("Specified element is out of bounds: (0 , " + column + ")");
         }
         array[0] = m00;
     }
@@ -277,11 +272,10 @@ public class Matrix1 implements XMatrix, Serializable {
     @Override
     public void setColumn(int column, double... values) {
         if (values.length != 0) {
-            throw new IllegalArgumentException(
-                    "Call setColumn received an array of length "
-                            + values.length
-                            + ".  "
-                            + "The dimensions of the matrix is 1 by 1.");
+            throw new IllegalArgumentException("Call setColumn received an array of length "
+                    + values.length
+                    + ".  "
+                    + "The dimensions of the matrix is 1 by 1.");
         }
         m00 = values[0];
     }

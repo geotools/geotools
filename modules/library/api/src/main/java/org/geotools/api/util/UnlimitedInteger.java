@@ -24,12 +24,10 @@ public final class UnlimitedInteger extends Number implements Comparable<Unlimit
     private static final long serialVersionUID = 4748246369364771836L;
 
     /** A constant holding the negative infinity. */
-    public static final UnlimitedInteger NEGATIVE_INFINITY =
-            new UnlimitedInteger(Integer.MIN_VALUE);
+    public static final UnlimitedInteger NEGATIVE_INFINITY = new UnlimitedInteger(Integer.MIN_VALUE);
 
     /** A constant holding the positive infinity. */
-    public static final UnlimitedInteger POSITIVE_INFINITY =
-            new UnlimitedInteger(Integer.MAX_VALUE);
+    public static final UnlimitedInteger POSITIVE_INFINITY = new UnlimitedInteger(Integer.MAX_VALUE);
 
     /** A constant holding the minimum finite value a {@code UnlimitedInteger} can have. */
     public static final int MIN_VALUE = Integer.MIN_VALUE + 1;

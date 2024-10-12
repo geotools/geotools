@@ -47,14 +47,11 @@ public class DefaultTemporalCoordinateSystemTest {
         Calendar cal = Calendar.getInstance();
         cal.set(2000, 1, 1);
         temporalCoordinateSystem1 =
-                new DefaultTemporalCoordinateSystem(
-                        name1, null, cal.getTime(), new SimpleInternationalString("day"));
-        temporalCoordinate1 =
-                new DefaultTemporalCoordinate(temporalCoordinateSystem1, null, 50785.48);
+                new DefaultTemporalCoordinateSystem(name1, null, cal.getTime(), new SimpleInternationalString("day"));
+        temporalCoordinate1 = new DefaultTemporalCoordinate(temporalCoordinateSystem1, null, 50785.48);
         cal.set(1981, 6, 25);
         temporalCoordinateSystem2 =
-                new DefaultTemporalCoordinateSystem(
-                        name2, null, cal.getTime(), new SimpleInternationalString("month"));
+                new DefaultTemporalCoordinateSystem(name2, null, cal.getTime(), new SimpleInternationalString("month"));
         temporalCoordinate2 = new DefaultTemporalCoordinate(temporalCoordinateSystem2, null, 285);
     }
 

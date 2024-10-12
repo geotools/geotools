@@ -52,8 +52,7 @@ public class PeriodNode {
         this.end = end;
     }
 
-    public static PeriodNode createPeriodDateAndDate(
-            final Literal beginDate, final Literal endDate) {
+    public static PeriodNode createPeriodDateAndDate(final Literal beginDate, final Literal endDate) {
         PeriodNode period = new PeriodNode(beginDate, endDate);
 
         return period;

@@ -49,8 +49,7 @@ import java.util.AbstractList;
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
-public class UnmodifiableArrayList<E> extends AbstractList<E>
-        implements CheckedCollection<E>, Serializable {
+public class UnmodifiableArrayList<E> extends AbstractList<E> implements CheckedCollection<E>, Serializable {
     /** For compatibility with different versions. */
     private static final long serialVersionUID = -3605810209653785967L;
 

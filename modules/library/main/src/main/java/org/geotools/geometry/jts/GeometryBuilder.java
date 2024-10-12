@@ -275,8 +275,7 @@ public class GeometryBuilder {
      * @return a Polygon with a hole
      */
     public Polygon polygon(Polygon shell, Polygon hole) {
-        return geomFact.createPolygon(
-                shell.getExteriorRing(), new LinearRing[] {hole.getExteriorRing()});
+        return geomFact.createPolygon(shell.getExteriorRing(), new LinearRing[] {hole.getExteriorRing()});
     }
 
     /**
@@ -369,8 +368,7 @@ public class GeometryBuilder {
      * @param z2 the Z ordinate of the second point
      * @return A 3D MultiPoint
      */
-    public MultiPoint multiPointZ(
-            double x1, double y1, double z1, double x2, double y2, double z2) {
+    public MultiPoint multiPointZ(double x1, double y1, double z1, double x2, double y2, double z2) {
         return geomFact.createMultiPoint(new Point[] {pointZ(x1, y1, z1), pointZ(x2, y2, z2)});
     }
 
@@ -440,10 +438,7 @@ public class GeometryBuilder {
     private CoordinateSequence createCS(double[] ord, int dim) {
         if (ord.length % dim != 0)
             throw new IllegalArgumentException(
-                    "Ordinate array length "
-                            + ord.length
-                            + " is not a multiple of dimension "
-                            + dim);
+                    "Ordinate array length " + ord.length + " is not a multiple of dimension " + dim);
         int n = ord.length / dim;
         CoordinateSequence cs;
         if (csFact instanceof CoordinateArraySequenceFactory && dim == 1) {
@@ -456,10 +451,7 @@ public class GeometryBuilder {
         if (cs.getDimension() != dim) {
             // illegal state error, try and fix
             throw new IllegalStateException(
-                    "Unable to use"
-                            + csFact
-                            + " to produce CoordinateSequence with dimension "
-                            + dim);
+                    "Unable to use" + csFact + " to produce CoordinateSequence with dimension " + dim);
         }
         for (int i = 0; i < n; i++) {
             for (int d = 0; d < dim; d++) cs.setOrdinate(i, d, ord[dim * i + d]);

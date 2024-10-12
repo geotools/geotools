@@ -50,41 +50,36 @@ public class ParameterCQLExpressionFilterFactoryImpl extends FilterFactoryImpl {
     public ParameterCQLExpressionFilterFactoryImpl() {
         List<ParameterCQLExpressionPropertyName> tmp = new ArrayList<>();
 
-        tmp.add(
-                new ParameterCQLExpressionPropertyName("bboxMinX") {
-                    @Override
-                    protected Object get(ParameterMappingContext context) {
-                        return context.getBBOX().getMinX();
-                    }
-                });
-        tmp.add(
-                new ParameterCQLExpressionPropertyName("bboxMaxX") {
-                    @Override
-                    protected Object get(ParameterMappingContext context) {
-                        return context.getBBOX().getMaxX();
-                    }
-                });
-        tmp.add(
-                new ParameterCQLExpressionPropertyName("bboxMinY") {
-                    @Override
-                    protected Object get(ParameterMappingContext context) {
-                        return context.getBBOX().getMinY();
-                    }
-                });
-        tmp.add(
-                new ParameterCQLExpressionPropertyName("bboxMaxY") {
-                    @Override
-                    protected Object get(ParameterMappingContext context) {
-                        return context.getBBOX().getMaxY();
-                    }
-                });
-        tmp.add(
-                new ParameterCQLExpressionPropertyName("defaultSRS") {
-                    @Override
-                    protected Object get(ParameterMappingContext context) {
-                        return context.getFeatureTypeInfo().getDefaultSRS();
-                    }
-                });
+        tmp.add(new ParameterCQLExpressionPropertyName("bboxMinX") {
+            @Override
+            protected Object get(ParameterMappingContext context) {
+                return context.getBBOX().getMinX();
+            }
+        });
+        tmp.add(new ParameterCQLExpressionPropertyName("bboxMaxX") {
+            @Override
+            protected Object get(ParameterMappingContext context) {
+                return context.getBBOX().getMaxX();
+            }
+        });
+        tmp.add(new ParameterCQLExpressionPropertyName("bboxMinY") {
+            @Override
+            protected Object get(ParameterMappingContext context) {
+                return context.getBBOX().getMinY();
+            }
+        });
+        tmp.add(new ParameterCQLExpressionPropertyName("bboxMaxY") {
+            @Override
+            protected Object get(ParameterMappingContext context) {
+                return context.getBBOX().getMaxY();
+            }
+        });
+        tmp.add(new ParameterCQLExpressionPropertyName("defaultSRS") {
+            @Override
+            protected Object get(ParameterMappingContext context) {
+                return context.getFeatureTypeInfo().getDefaultSRS();
+            }
+        });
 
         properties = new HashMap<>();
         for (ParameterCQLExpressionPropertyName p : tmp) {
@@ -98,13 +93,12 @@ public class ParameterCQLExpressionFilterFactoryImpl extends FilterFactoryImpl {
 
         if (ret == null && name.startsWith("viewparam:")) {
             final String paramName = name.substring(10);
-            ret =
-                    new ParameterCQLExpressionPropertyName(name) {
-                        @Override
-                        protected Object get(ParameterMappingContext context) {
-                            return context.getViewParams().get(paramName);
-                        }
-                    };
+            ret = new ParameterCQLExpressionPropertyName(name) {
+                @Override
+                protected Object get(ParameterMappingContext context) {
+                    return context.getViewParams().get(paramName);
+                }
+            };
         }
 
         if (ret == null) {

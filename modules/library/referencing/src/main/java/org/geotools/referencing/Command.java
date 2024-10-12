@@ -70,10 +70,9 @@ final class Command {
 
     /** Creates an instance of the specified authority. */
     private Command(final String authority) {
-        factory =
-                (authority == null)
-                        ? CRS.getAuthorityFactory(false)
-                        : ReferencingFactoryFinder.getCRSAuthorityFactory(authority, HINTS);
+        factory = (authority == null)
+                ? CRS.getAuthorityFactory(false)
+                : ReferencingFactoryFinder.getCRSAuthorityFactory(authority, HINTS);
         formatter = new Parser();
     }
 
@@ -98,8 +97,7 @@ final class Command {
         out.println(" -forcexy       : Force \"longitude first\" axis order.");
         out.println(" -help          : Prints this message.");
         out.println(" -locale=ARG    : Formats texts in the specified locale.");
-        out.println(
-                " -operations    : Prints all available coordinate operations between a pair of CRS.");
+        out.println(" -operations    : Prints all available coordinate operations between a pair of CRS.");
         out.println(" -transform     : Prints the preferred math transform between a pair of CRS.");
     }
 
@@ -224,9 +222,7 @@ final class Command {
         nf.setMaximumFractionDigits(3);
         final TableWriter table = new TableWriter(out);
         table.writeHorizontalSeparator();
-        final String[] titles = {
-            Vocabulary.format(VocabularyKeys.TARGET), "dx", "dy", "dz", "ex", "ey", "ez", "ppm"
-        };
+        final String[] titles = {Vocabulary.format(VocabularyKeys.TARGET), "dx", "dy", "dz", "ex", "ey", "ez", "ppm"};
         for (String title : titles) {
             table.write(title);
             table.nextColumn();
@@ -239,8 +235,7 @@ final class Command {
                 object = CRSUtilities.getDatum((CoordinateReferenceSystem) object);
             }
             if (object instanceof DefaultGeodeticDatum) {
-                final BursaWolfParameters[] params =
-                        ((DefaultGeodeticDatum) object).getBursaWolfParameters();
+                final BursaWolfParameters[] params = ((DefaultGeodeticDatum) object).getBursaWolfParameters();
                 for (final BursaWolfParameters p : params) {
                     table.setAlignment(TableWriter.ALIGN_LEFT);
                     table.write(p.targetDatum.getName().getCode());
@@ -294,13 +289,11 @@ final class Command {
         if (!(factory instanceof CoordinateOperationAuthorityFactory)) {
             return;
         }
-        final CoordinateOperationAuthorityFactory factory =
-                (CoordinateOperationAuthorityFactory) this.factory;
+        final CoordinateOperationAuthorityFactory factory = (CoordinateOperationAuthorityFactory) this.factory;
         char[] separator = null;
         for (int i = 0; i < args.length; i++) {
             for (int j = i + 1; j < args.length; j++) {
-                final Set<CoordinateOperation> op =
-                        factory.createFromCoordinateReferenceSystemCodes(args[i], args[j]);
+                final Set<CoordinateOperation> op = factory.createFromCoordinateReferenceSystemCodes(args[i], args[j]);
                 for (final CoordinateOperation operation : op) {
                     if (separator == null) {
                         separator = getSeparator();
@@ -319,14 +312,12 @@ final class Command {
             return;
         }
         final CRSAuthorityFactory factory = (CRSAuthorityFactory) this.factory;
-        final CoordinateOperationFactory opFactory =
-                ReferencingFactoryFinder.getCoordinateOperationFactory(HINTS);
+        final CoordinateOperationFactory opFactory = ReferencingFactoryFinder.getCoordinateOperationFactory(HINTS);
         char[] separator = null;
         for (int i = 0; i < args.length; i++) {
             final CoordinateReferenceSystem crs1 = factory.createCoordinateReferenceSystem(args[i]);
             for (int j = i + 1; j < args.length; j++) {
-                final CoordinateReferenceSystem crs2 =
-                        factory.createCoordinateReferenceSystem(args[j]);
+                final CoordinateReferenceSystem crs2 = factory.createCoordinateReferenceSystem(args[j]);
                 final CoordinateOperation op;
                 try {
                     op = opFactory.createOperation(crs1, crs2);
@@ -345,8 +336,7 @@ final class Command {
     }
 
     /** Prints all {@linkplain AuthorityFactory authority factory} dependencies as a tree. */
-    private static void printAuthorityFactoryDependencies(
-            final PrintWriter out, final boolean colors) {
+    private static void printAuthorityFactoryDependencies(final PrintWriter out, final boolean colors) {
         final FactoryDependencies printer = new FactoryDependencies(CRS.getAuthorityFactory(false));
         printer.setAttributeEnabled(true);
         printer.setColorEnabled(colors);

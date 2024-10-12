@@ -77,8 +77,7 @@ public class KmlTypeBinding extends AbstractComplexBinding {
     @Override
     public Object getProperty(Object object, QName name) throws Exception {
         if (KML.Feature.getLocalPart().equals(name.getLocalPart())
-                || org.geotools.kml.v22.KML.AbstractFeatureGroup.getLocalPart()
-                        .equals(name.getLocalPart())) {
+                || org.geotools.kml.v22.KML.AbstractFeatureGroup.getLocalPart().equals(name.getLocalPart())) {
             return object;
         }
 

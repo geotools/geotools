@@ -113,8 +113,7 @@ public class CQL {
      *     is null the method finds the default implementation.
      * @return a {@link Filter} equivalent to the constraint specified in <code>Predicate</code>.
      */
-    public static Filter toFilter(final String cqlPredicate, final FilterFactory filterFactory)
-            throws CQLException {
+    public static Filter toFilter(final String cqlPredicate, final FilterFactory filterFactory) throws CQLException {
 
         CQLCompilerFactory compilerFactory = new CQLCompilerFactory();
         Filter result = CompilerUtil.parseFilter(cqlPredicate, compilerFactory, filterFactory);
@@ -143,12 +142,11 @@ public class CQL {
      * @return a {@link Filter} equivalent to the constraint specified in <code>cqlExpression</code>
      *     .
      */
-    public static Expression toExpression(
-            final String cqlExpression, final FilterFactory filterFactory) throws CQLException {
+    public static Expression toExpression(final String cqlExpression, final FilterFactory filterFactory)
+            throws CQLException {
         CQLCompilerFactory compilerFactory = new CQLCompilerFactory();
 
-        Expression expression =
-                CompilerUtil.parseExpression(cqlExpression, compilerFactory, filterFactory);
+        Expression expression = CompilerUtil.parseExpression(cqlExpression, compilerFactory, filterFactory);
 
         return expression;
     }
@@ -220,14 +218,12 @@ public class CQL {
      *     it is null the method finds the default implementation.
      * @return a List of {@link Filter}, one for each input CQL statement
      */
-    public static List<Filter> toFilterList(
-            final String cqlSequencePredicate, final FilterFactory filterFactory)
+    public static List<Filter> toFilterList(final String cqlSequencePredicate, final FilterFactory filterFactory)
             throws CQLException {
 
         CQLCompilerFactory compilerFactory = new CQLCompilerFactory();
 
-        List<Filter> filters =
-                CompilerUtil.parseFilterList(cqlSequencePredicate, compilerFactory, filterFactory);
+        List<Filter> filters = CompilerUtil.parseFilterList(cqlSequencePredicate, compilerFactory, filterFactory);
 
         return filters;
     }

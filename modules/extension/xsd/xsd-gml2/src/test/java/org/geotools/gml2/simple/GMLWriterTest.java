@@ -74,12 +74,8 @@ public class GMLWriterTest extends GMLTestSupport {
     @Test
     public void testGeometryCollectionEncoder() throws Exception {
         GeometryCollectionEncoder gce = new GeometryCollectionEncoder(gtEncoder, "gml");
-        GeometryCollection geometry =
-                (GeometryCollection)
-                        new WKTReader2()
-                                .read(
-                                        "GEOMETRYCOLLECTION (LINESTRING"
-                                                + " (180 200, 160 180), POINT (19 19), POINT (20 10))");
+        GeometryCollection geometry = (GeometryCollection) new WKTReader2()
+                .read("GEOMETRYCOLLECTION (LINESTRING" + " (180 200, 160 180), POINT (19 19), POINT (20 10))");
         Document doc = encode(gce, geometry);
 
         assertThat(doc, hasXPath("count(//gml:LineString)", (equalTo("1"))));
@@ -99,8 +95,7 @@ public class GMLWriterTest extends GMLTestSupport {
     @Test
     public void testEncode3DLineFromLiteCS() throws Exception {
         LineStringEncoder encoder = new LineStringEncoder(gtEncoder, "gml");
-        LiteCoordinateSequence cs =
-                new LiteCoordinateSequence(new double[] {0, 0, 50, 120, 0, 100}, 3);
+        LiteCoordinateSequence cs = new LiteCoordinateSequence(new double[] {0, 0, 50, 120, 0, 100}, 3);
         LineString geometry = new GeometryFactory().createLineString(cs);
         Document doc = encode(encoder, geometry);
         assertThat(doc, hasXPath("//gml:coordinates", equalTo("0,0,50 120,0,100")));
@@ -133,23 +128,17 @@ public class GMLWriterTest extends GMLTestSupport {
         return new GMLConfiguration();
     }
 
-    protected <T extends Geometry> Document encode(GeometryEncoder<T> encoder, T geometry)
-            throws Exception {
+    protected <T extends Geometry> Document encode(GeometryEncoder<T> encoder, T geometry) throws Exception {
         return encode(encoder, geometry, 6, false, false);
     }
 
     protected <T extends Geometry> Document encode(
-            GeometryEncoder<T> encoder,
-            T geometry,
-            int numDecimals,
-            boolean forceDecimals,
-            boolean padWithZeros)
+            GeometryEncoder<T> encoder, T geometry, int numDecimals, boolean forceDecimals, boolean padWithZeros)
             throws Exception {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
 
         // create the document serializer
-        SAXTransformerFactory txFactory =
-                (SAXTransformerFactory) SAXTransformerFactory.newInstance();
+        SAXTransformerFactory txFactory = (SAXTransformerFactory) SAXTransformerFactory.newInstance();
 
         TransformerHandler xmls;
         try {
@@ -164,13 +153,7 @@ public class GMLWriterTest extends GMLTestSupport {
         xmls.setResult(new StreamResult(out));
 
         GMLWriter handler =
-                new GMLWriter(
-                        xmls,
-                        gtEncoder.getNamespaces(),
-                        numDecimals,
-                        forceDecimals,
-                        padWithZeros,
-                        "gml");
+                new GMLWriter(xmls, gtEncoder.getNamespaces(), numDecimals, forceDecimals, padWithZeros, "gml");
         handler.startDocument();
         handler.startPrefixMapping("gml", GML.NAMESPACE);
         handler.endPrefixMapping("gml");

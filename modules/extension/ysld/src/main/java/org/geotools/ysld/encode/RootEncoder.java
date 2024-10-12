@@ -100,21 +100,19 @@ public class RootEncoder extends YsldEncodeHandler<StyledLayerDescriptor> {
         if (style == null) return null;
 
         return sld.layers().stream()
-                .filter(
-                        new Predicate<StyledLayer>() {
-                            @Override
-                            public boolean test(StyledLayer styledLayer) {
-                                List<Style> styles;
-                                if (styledLayer instanceof NamedLayer)
-                                    styles = ((NamedLayer) styledLayer).styles();
-                                else if (styledLayer instanceof UserLayer) {
-                                    styles = ((UserLayer) styledLayer).userStyles();
-                                } else {
-                                    styles = Collections.emptyList();
-                                }
-                                return styles.contains(style);
-                            }
-                        })
+                .filter(new Predicate<StyledLayer>() {
+                    @Override
+                    public boolean test(StyledLayer styledLayer) {
+                        List<Style> styles;
+                        if (styledLayer instanceof NamedLayer) styles = ((NamedLayer) styledLayer).styles();
+                        else if (styledLayer instanceof UserLayer) {
+                            styles = ((UserLayer) styledLayer).userStyles();
+                        } else {
+                            styles = Collections.emptyList();
+                        }
+                        return styles.contains(style);
+                    }
+                })
                 .findFirst()
                 .orElse(null);
     }

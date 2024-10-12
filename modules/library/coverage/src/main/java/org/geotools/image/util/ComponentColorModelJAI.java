@@ -84,21 +84,18 @@ public class ComponentColorModelJAI extends ComponentColorModel {
     @Override
     public SampleModel createCompatibleSampleModel(final int w, final int h) {
         switch (transferType) {
-            default:
-                {
-                    return super.createCompatibleSampleModel(w, h);
-                }
+            default: {
+                return super.createCompatibleSampleModel(w, h);
+            }
             case DataBuffer.TYPE_FLOAT: // fall through
-            case DataBuffer.TYPE_DOUBLE:
-                {
-                    final int numComponents = getNumComponents();
-                    final int[] bandOffsets = new int[numComponents];
-                    for (int i = 0; i < numComponents; i++) {
-                        bandOffsets[i] = i;
-                    }
-                    return new ComponentSampleModelJAI(
-                            transferType, w, h, numComponents, w * numComponents, bandOffsets);
+            case DataBuffer.TYPE_DOUBLE: {
+                final int numComponents = getNumComponents();
+                final int[] bandOffsets = new int[numComponents];
+                for (int i = 0; i < numComponents; i++) {
+                    bandOffsets[i] = i;
                 }
+                return new ComponentSampleModelJAI(transferType, w, h, numComponents, w * numComponents, bandOffsets);
+            }
         }
     }
 
@@ -109,18 +106,17 @@ public class ComponentColorModelJAI extends ComponentColorModel {
      */
     @Override
     public String toString() {
-        return new String(
-                "ComponentColorModelJAI: #pixelBits = "
-                        + pixel_bits
-                        + " numComponents = "
-                        + super.getNumComponents()
-                        + " color space = "
-                        + super.getColorSpace()
-                        + " transparency = "
-                        + super.getTransparency()
-                        + " has alpha = "
-                        + super.hasAlpha()
-                        + " isAlphaPre = "
-                        + super.isAlphaPremultiplied());
+        return new String("ComponentColorModelJAI: #pixelBits = "
+                + pixel_bits
+                + " numComponents = "
+                + super.getNumComponents()
+                + " color space = "
+                + super.getColorSpace()
+                + " transparency = "
+                + super.getTransparency()
+                + " has alpha = "
+                + super.hasAlpha()
+                + " isAlphaPre = "
+                + super.isAlphaPremultiplied());
     }
 }

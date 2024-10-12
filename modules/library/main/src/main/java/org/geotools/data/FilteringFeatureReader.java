@@ -40,8 +40,7 @@ import org.geotools.filter.visitor.BindingFilterVisitor;
  * @author Chris Holmes
  * @version $Id$
  */
-public class FilteringFeatureReader<T extends FeatureType, F extends Feature>
-        implements DelegatingFeatureReader<T, F> {
+public class FilteringFeatureReader<T extends FeatureType, F extends Feature> implements DelegatingFeatureReader<T, F> {
     protected final FeatureReader<T, F> featureReader;
     protected final Filter filter;
     protected F next;
@@ -57,10 +56,7 @@ public class FilteringFeatureReader<T extends FeatureType, F extends Feature>
      */
     public FilteringFeatureReader(FeatureReader<T, F> featureReader, Filter filter) {
         this.featureReader = featureReader;
-        this.filter =
-                (Filter)
-                        filter.accept(
-                                new BindingFilterVisitor(featureReader.getFeatureType()), null);
+        this.filter = (Filter) filter.accept(new BindingFilterVisitor(featureReader.getFeatureType()), null);
         next = null;
     }
 

@@ -114,8 +114,7 @@ public class ComplexTypeHandler extends XSIElementHandler {
                 if (child == null) {
                     child = sth;
                 } else {
-                    throw new SAXNotRecognizedException(
-                            LOCALNAME + " may only have one child declaration.");
+                    throw new SAXNotRecognizedException(LOCALNAME + " may only have one child declaration.");
                 }
 
                 return sth;
@@ -128,8 +127,7 @@ public class ComplexTypeHandler extends XSIElementHandler {
                 if (child == null) {
                     child = sth;
                 } else {
-                    throw new SAXNotRecognizedException(
-                            LOCALNAME + " may only have one child declaration.");
+                    throw new SAXNotRecognizedException(LOCALNAME + " may only have one child declaration.");
                 }
 
                 return sth;
@@ -142,8 +140,7 @@ public class ComplexTypeHandler extends XSIElementHandler {
                 if (child == null) {
                     child = sth;
                 } else {
-                    throw new SAXNotRecognizedException(
-                            LOCALNAME + " may only have one child declaration.");
+                    throw new SAXNotRecognizedException(LOCALNAME + " may only have one child declaration.");
                 }
 
                 return sth;
@@ -156,8 +153,7 @@ public class ComplexTypeHandler extends XSIElementHandler {
                 if (child == null) {
                     child = sth;
                 } else {
-                    throw new SAXNotRecognizedException(
-                            LOCALNAME + " may only have one child declaration.");
+                    throw new SAXNotRecognizedException(LOCALNAME + " may only have one child declaration.");
                 }
 
                 return sth;
@@ -194,8 +190,7 @@ public class ComplexTypeHandler extends XSIElementHandler {
                 if (anyAttribute == null) {
                     anyAttribute = sth;
                 } else {
-                    throw new SAXNotRecognizedException(
-                            LOCALNAME + " may only have one child declaration.");
+                    throw new SAXNotRecognizedException(LOCALNAME + " may only have one child declaration.");
                 }
 
                 return sth;
@@ -208,8 +203,7 @@ public class ComplexTypeHandler extends XSIElementHandler {
                 if (child == null) {
                     child = sth;
                 } else {
-                    throw new SAXNotRecognizedException(
-                            LOCALNAME + " may only have one child declaration.");
+                    throw new SAXNotRecognizedException(LOCALNAME + " may only have one child declaration.");
                 }
 
                 return sth;
@@ -222,8 +216,7 @@ public class ComplexTypeHandler extends XSIElementHandler {
                 if (child == null) {
                     child = sth;
                 } else {
-                    throw new SAXNotRecognizedException(
-                            LOCALNAME + " may only have one child declaration.");
+                    throw new SAXNotRecognizedException(LOCALNAME + " may only have one child declaration.");
                 }
 
                 return sth;
@@ -238,8 +231,7 @@ public class ComplexTypeHandler extends XSIElementHandler {
      *     org.xml.sax.Attributes)
      */
     @Override
-    public void startElement(String namespaceURI, String localName, Attributes atts)
-            throws SAXException {
+    public void startElement(String namespaceURI, String localName, Attributes atts) throws SAXException {
         id = atts.getValue("", "id");
 
         if (id == null) {
@@ -266,10 +258,9 @@ public class ComplexTypeHandler extends XSIElementHandler {
             } else if ("false".equals(abstracT1)) {
                 this.abstracT = false;
             } else {
-                throw new SAXException(
-                        String.format(
-                                "Schema element declaration supports 'abstract' \"true\" or \"false\" only (abstract=\"%s\")",
-                                abstracT1));
+                throw new SAXException(String.format(
+                        "Schema element declaration supports 'abstract' \"true\" or \"false\" only (abstract=\"%s\")",
+                        abstracT1));
             }
         }
 
@@ -303,10 +294,9 @@ public class ComplexTypeHandler extends XSIElementHandler {
             } else if ("false".equals(mixed1)) {
                 this.mixed = false;
             } else {
-                throw new SAXException(
-                        String.format(
-                                "Schema element declaration supports 'mixed' \"true\" or \"false\" only (mixed=\"%s\")",
-                                abstracT1));
+                throw new SAXException(String.format(
+                        "Schema element declaration supports 'mixed' \"true\" or \"false\" only (mixed=\"%s\")",
+                        abstracT1));
             }
         }
 
@@ -405,11 +395,9 @@ public class ComplexTypeHandler extends XSIElementHandler {
                 SimpleContentHandler sch = (SimpleContentHandler) child;
 
                 if (sch.getChild() instanceof ExtensionHandler) {
-                    compressSimpleExtensionHandler(
-                            parent, dct, attr, (ExtensionHandler) sch.getChild());
+                    compressSimpleExtensionHandler(parent, dct, attr, (ExtensionHandler) sch.getChild());
                 } else {
-                    compressSimpleRestriction(
-                            parent, dct, attr, (RestrictionHandler) sch.getChild());
+                    compressSimpleRestriction(parent, dct, attr, (RestrictionHandler) sch.getChild());
                 }
 
                 dct.mixed = true;
@@ -473,20 +461,12 @@ public class ComplexTypeHandler extends XSIElementHandler {
         cache = dct;
 
         if (((cache.getChild() == null) && !abstracT) && !dct.simple) {
-            logger.warning(
-                    getName()
-                            + " :: "
-                            + parent.getTargetNamespace()
-                            + " should have a real child: ");
+            logger.warning(getName() + " :: " + parent.getTargetNamespace() + " should have a real child: ");
             throw new NullPointerException();
         }
 
         if ((dct.parent == null) && dct.simple) {
-            logger.warning(
-                    getName()
-                            + " :: "
-                            + parent.getTargetNamespace()
-                            + " should have a real parent: ");
+            logger.warning(getName() + " :: " + parent.getTargetNamespace() + " should have a real parent: ");
             throw new NullPointerException();
         }
 
@@ -500,10 +480,7 @@ public class ComplexTypeHandler extends XSIElementHandler {
     }
 
     private void compressComplexRestriction(
-            SchemaHandler parent,
-            DefaultComplexType dct,
-            Set<Attribute> attr,
-            ComplexContentHandler cch)
+            SchemaHandler parent, DefaultComplexType dct, Set<Attribute> attr, ComplexContentHandler cch)
             throws SAXException {
         // restriction
         RestrictionHandler ext = (RestrictionHandler) cch.getChild();
@@ -568,22 +545,17 @@ public class ComplexTypeHandler extends XSIElementHandler {
         }
 
         if (ct != null && ext.getChild() != null) {
-            logger.finest(
-                    "Looked up "
-                            + ext.getBase()
-                            + " and found "
-                            + ((ct == null) ? null : (ct.getName() + ":::" + ct.getNamespace()))
-                            + " for "
-                            + name);
+            logger.finest("Looked up "
+                    + ext.getBase()
+                    + " and found "
+                    + ((ct == null) ? null : (ct.getName() + ":::" + ct.getNamespace()))
+                    + " for "
+                    + name);
 
             ElementGrouping extensionBaseType = ct.getChild();
-            ElementGrouping extensionChild =
-                    ((ElementGroupingHandler) ext.getChild()).compress(parent);
-            dct.child =
-                    loadNewEG(
-                            extensionBaseType,
-                            extensionChild,
-                            parent); // note should override element def only ... not
+            ElementGrouping extensionChild = ((ElementGroupingHandler) ext.getChild()).compress(parent);
+            dct.child = loadNewEG(
+                    extensionBaseType, extensionChild, parent); // note should override element def only ... not
             // spot
         } else {
             if (ct != null) dct.child = ct.getChild();
@@ -591,10 +563,7 @@ public class ComplexTypeHandler extends XSIElementHandler {
     }
 
     private void compressSimpleRestriction(
-            SchemaHandler parent,
-            DefaultComplexType dct,
-            Set<Attribute> attr,
-            RestrictionHandler rest)
+            SchemaHandler parent, DefaultComplexType dct, Set<Attribute> attr, RestrictionHandler rest)
             throws SAXException {
         // attributes
         if (rest.getAttributeDeclarations() != null) {
@@ -614,15 +583,14 @@ public class ComplexTypeHandler extends XSIElementHandler {
             }
         }
 
-        SimpleType st =
-                new SimpleTypeGT(
-                        id,
-                        name,
-                        parent.getTargetNamespace(),
-                        SimpleType.RESTRICTION,
-                        SimpleTypeHandler.getSimpleTypes(rest, parent),
-                        SimpleTypeHandler.getFacets(rest),
-                        finaL);
+        SimpleType st = new SimpleTypeGT(
+                id,
+                name,
+                parent.getTargetNamespace(),
+                SimpleType.RESTRICTION,
+                SimpleTypeHandler.getSimpleTypes(rest, parent),
+                SimpleTypeHandler.getFacets(rest),
+                finaL);
         dct.parent = st;
         dct.simple = true;
     }
@@ -751,9 +719,7 @@ public class ComplexTypeHandler extends XSIElementHandler {
                 logger.finest("Two sequences being merged");
 
                 Sequence sq2 = (Sequence) eg;
-                children =
-                        new ElementGrouping
-                                [sequence.getChildren().length + sq2.getChildren().length];
+                children = new ElementGrouping[sequence.getChildren().length + sq2.getChildren().length];
                 logger.finest("There are a total of " + children.length + " Children");
 
                 for (int i = 0; i < sequence.getChildren().length; i++) {
@@ -767,8 +733,7 @@ public class ComplexTypeHandler extends XSIElementHandler {
                 children = new ElementGrouping[sequence.getChildren().length + 1];
                 logger.finest("There are a total of " + children.length + " Children");
 
-                for (int i = 0; i < sequence.getChildren().length; i++)
-                    children[i] = sequence.getChildren()[i];
+                for (int i = 0; i < sequence.getChildren().length; i++) children[i] = sequence.getChildren()[i];
 
                 children[sequence.getChildren().length] = eg;
             }
@@ -1021,11 +986,7 @@ public class ComplexTypeHandler extends XSIElementHandler {
          *     org.geotools.xml.xsi.ElementValue[], org.xml.sax.Attributes)
          */
         @Override
-        public Object getValue(
-                Element element,
-                ElementValue[] value,
-                final Attributes attrs,
-                Map<String, Object> hints)
+        public Object getValue(Element element, ElementValue[] value, final Attributes attrs, Map<String, Object> hints)
                 throws OperationNotSupportedException, SAXException {
             Object[] values = null;
 
@@ -1057,18 +1018,17 @@ public class ComplexTypeHandler extends XSIElementHandler {
 
                 // This seems to some how be for mixed content?  Don't really understand what
                 // is going on here.
-                values[0] =
-                        new ElementValue() {
-                            @Override
-                            public Element getElement() {
-                                return null;
-                            }
+                values[0] = new ElementValue() {
+                    @Override
+                    public Element getElement() {
+                        return null;
+                    }
 
-                            @Override
-                            public Object getValue() {
-                                return attrs;
-                            }
-                        };
+                    @Override
+                    public Object getValue() {
+                        return attrs;
+                    }
+                };
 
                 for (int i = 1; i < value.length + 1; i++) {
                     values[i] = value[i - (isMixed() ? 0 : 1)].getValue();
@@ -1113,8 +1073,7 @@ public class ComplexTypeHandler extends XSIElementHandler {
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
         @Override
-        public void encode(
-                Element element, Object value, PrintHandler output, Map<String, Object> hints)
+        public void encode(Element element, Object value, PrintHandler output, Map<String, Object> hints)
                 throws IOException, OperationNotSupportedException {
             if ((parent != null) && parent.canEncode(element, value, hints)) {
                 parent.encode(element, value, output, hints);
@@ -1134,11 +1093,9 @@ public class ComplexTypeHandler extends XSIElementHandler {
                             found = true;
                         }
                     }
-                    if (!found)
-                        throw new RuntimeException("It is not known how to print this element");
+                    if (!found) throw new RuntimeException("It is not known how to print this element");
                 } else {
-                    throw new OperationNotSupportedException(
-                            "It is not known how to print this element");
+                    throw new OperationNotSupportedException("It is not known how to print this element");
                 }
                 output.endElement(element.getNamespace(), element.getName());
             }

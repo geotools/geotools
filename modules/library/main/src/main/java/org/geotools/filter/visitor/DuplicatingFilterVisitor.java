@@ -183,32 +183,28 @@ public class DuplicatingFilterVisitor implements FilterVisitor, ExpressionVisito
     public Object visit(PropertyIsGreaterThan filter, Object extraData) {
         Expression expr1 = visit(filter.getExpression1(), extraData);
         Expression expr2 = visit(filter.getExpression2(), extraData);
-        return getFactory(extraData)
-                .greater(expr1, expr2, filter.isMatchingCase(), filter.getMatchAction());
+        return getFactory(extraData).greater(expr1, expr2, filter.isMatchingCase(), filter.getMatchAction());
     }
 
     @Override
     public Object visit(PropertyIsGreaterThanOrEqualTo filter, Object extraData) {
         Expression expr1 = visit(filter.getExpression1(), extraData);
         Expression expr2 = visit(filter.getExpression2(), extraData);
-        return getFactory(extraData)
-                .greaterOrEqual(expr1, expr2, filter.isMatchingCase(), filter.getMatchAction());
+        return getFactory(extraData).greaterOrEqual(expr1, expr2, filter.isMatchingCase(), filter.getMatchAction());
     }
 
     @Override
     public Object visit(PropertyIsLessThan filter, Object extraData) {
         Expression expr1 = visit(filter.getExpression1(), extraData);
         Expression expr2 = visit(filter.getExpression2(), extraData);
-        return getFactory(extraData)
-                .less(expr1, expr2, filter.isMatchingCase(), filter.getMatchAction());
+        return getFactory(extraData).less(expr1, expr2, filter.isMatchingCase(), filter.getMatchAction());
     }
 
     @Override
     public Object visit(PropertyIsLessThanOrEqualTo filter, Object extraData) {
         Expression expr1 = visit(filter.getExpression1(), extraData);
         Expression expr2 = visit(filter.getExpression2(), extraData);
-        return getFactory(extraData)
-                .lessOrEqual(expr1, expr2, filter.isMatchingCase(), filter.getMatchAction());
+        return getFactory(extraData).lessOrEqual(expr1, expr2, filter.isMatchingCase(), filter.getMatchAction());
     }
 
     @Override
@@ -220,14 +216,7 @@ public class DuplicatingFilterVisitor implements FilterVisitor, ExpressionVisito
         String escape = filter.getEscape();
         boolean matchCase = filter.isMatchingCase();
         return getFactory(extraData)
-                .like(
-                        expr,
-                        pattern,
-                        wildcard,
-                        singleChar,
-                        escape,
-                        matchCase,
-                        filter.getMatchAction());
+                .like(expr, pattern, wildcard, singleChar, escape, matchCase, filter.getMatchAction());
     }
 
     @Override
@@ -255,8 +244,7 @@ public class DuplicatingFilterVisitor implements FilterVisitor, ExpressionVisito
         Expression geometry2 = visit(filter.getExpression2(), extraData);
         double distance = filter.getDistance();
         String units = filter.getDistanceUnits();
-        return getFactory(extraData)
-                .beyond(geometry1, geometry2, distance, units, filter.getMatchAction());
+        return getFactory(extraData).beyond(geometry1, geometry2, distance, units, filter.getMatchAction());
     }
 
     @Override
@@ -286,8 +274,7 @@ public class DuplicatingFilterVisitor implements FilterVisitor, ExpressionVisito
         Expression geometry2 = visit(filter.getExpression2(), extraData);
         double distance = filter.getDistance();
         String units = filter.getDistanceUnits();
-        return getFactory(extraData)
-                .dwithin(geometry1, geometry2, distance, units, filter.getMatchAction());
+        return getFactory(extraData).dwithin(geometry1, geometry2, distance, units, filter.getMatchAction());
     }
 
     @Override
@@ -381,8 +368,7 @@ public class DuplicatingFilterVisitor implements FilterVisitor, ExpressionVisito
     @Override
     public Object visit(PropertyName expression, Object extraData) {
         // NC - namespace support
-        return getFactory(extraData)
-                .property(expression.getPropertyName(), expression.getNamespaceContext());
+        return getFactory(extraData).property(expression.getPropertyName(), expression.getNamespaceContext());
     }
 
     @Override
@@ -408,7 +394,8 @@ public class DuplicatingFilterVisitor implements FilterVisitor, ExpressionVisito
                         visit(anyInteracts.getExpression1(), extraData),
                         visit(anyInteracts.getExpression2(), extraData),
                         anyInteracts.getMatchAction());
-    };
+    }
+    ;
 
     @Override
     public Object visit(Before before, Object extraData) {
@@ -426,7 +413,8 @@ public class DuplicatingFilterVisitor implements FilterVisitor, ExpressionVisito
                         visit(begins.getExpression1(), extraData),
                         visit(begins.getExpression2(), extraData),
                         begins.getMatchAction());
-    };
+    }
+    ;
 
     @Override
     public Object visit(BegunBy begunBy, Object extraData) {

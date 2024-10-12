@@ -87,22 +87,14 @@ public final class AppSchemaXSDRegistry implements XSDSchemaLocator {
     /** Implements schema locator... creates and registers new schema if necessary */
     @Override
     public synchronized XSDSchema locateSchema(
-            XSDSchema xsdSchema,
-            String namespaceURI,
-            String rawSchemaLocationURI,
-            String resolvedSchemaLocationURI) {
+            XSDSchema xsdSchema, String namespaceURI, String rawSchemaLocationURI, String resolvedSchemaLocationURI) {
 
         if (xsdSchema != null) {
             // first see if the schema can already be found in same resource set
             // (to avoid infinite loop)
             ResourceSet resourceSet = xsdSchema.eResource().getResourceSet();
-            Resource resolvedResource =
-                    resourceSet.getResource(
-                            URI.createURI(
-                                    resolvedSchemaLocationURI == null
-                                            ? ""
-                                            : resolvedSchemaLocationURI),
-                            false);
+            Resource resolvedResource = resourceSet.getResource(
+                    URI.createURI(resolvedSchemaLocationURI == null ? "" : resolvedSchemaLocationURI), false);
 
             if (resolvedResource != null && resolvedResource instanceof XSDResourceImpl) {
                 return ((XSDResourceImpl) resolvedResource).getSchema();

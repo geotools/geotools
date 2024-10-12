@@ -31,12 +31,11 @@ import org.geotools.filter.capability.FunctionNameImpl;
  */
 public class TintFunction extends FunctionImpl {
 
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "tint",
-                    parameter("result", Color.class),
-                    parameter("color", Color.class),
-                    parameter("weight", Double.class));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "tint",
+            parameter("result", Color.class),
+            parameter("color", Color.class),
+            parameter("weight", Double.class));
     private MixFunction delegate;
 
     public TintFunction() {

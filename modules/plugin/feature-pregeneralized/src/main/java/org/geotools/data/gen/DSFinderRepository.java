@@ -75,8 +75,7 @@ public class DSFinderRepository implements Repository {
         return result;
     }
 
-    private Map<String, Serializable> getMapFromPropetryLocation(String location)
-            throws IOException {
+    private Map<String, Serializable> getMapFromPropetryLocation(String location) throws IOException {
 
         URL url = getURLForLocation(location);
 

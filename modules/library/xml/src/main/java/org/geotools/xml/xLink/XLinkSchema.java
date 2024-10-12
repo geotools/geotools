@@ -258,8 +258,7 @@ public class XLinkSchema implements Schema {
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
         @Override
-        public void encode(
-                Element element, Object value, PrintHandler output, Map<String, Object> hints) {
+        public void encode(Element element, Object value, PrintHandler output, Map<String, Object> hints) {
             // it's an attribute ... do nothing
         }
 
@@ -308,8 +307,7 @@ public class XLinkSchema implements Schema {
 
         /** @see schema.Type#getValue(java.lang.Object, org.xml.sax.Attributes) */
         @Override
-        public Object getValue(
-                Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
+        public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException {
             if ((value == null) || (value.length != 1) || (value[0] == null)) {
                 return null;
@@ -331,8 +329,7 @@ public class XLinkSchema implements Schema {
          *     java.lang.Object, java.util.Map)
          */
         @Override
-        public AttributeValue toAttribute(
-                Attribute attribute, Object value, Map<String, Object> hints) {
+        public AttributeValue toAttribute(Attribute attribute, Object value, Map<String, Object> hints) {
             if (canCreateAttributes(attribute, value, hints)) {
                 return new AttributeValueGT(attribute, (String) value);
             }
@@ -346,8 +343,7 @@ public class XLinkSchema implements Schema {
          *     java.lang.Object, java.util.Map)
          */
         @Override
-        public boolean canCreateAttributes(
-                Attribute attribute, Object value, Map<String, Object> hints) {
+        public boolean canCreateAttributes(Attribute attribute, Object value, Map<String, Object> hints) {
             return (attribute.getName() != null)
                     && attribute.getName().equals(Actuate.getInstance().getName())
                     && lookUpTable.contains(value);
@@ -397,8 +393,7 @@ public class XLinkSchema implements Schema {
          *     java.lang.Object, java.util.Map)
          */
         @Override
-        public AttributeValue toAttribute(
-                Attribute attribute, Object value, Map<String, Object> hints) {
+        public AttributeValue toAttribute(Attribute attribute, Object value, Map<String, Object> hints) {
             if (canCreateAttributes(attribute, value, hints)) {
                 return new AttributeValueGT(attribute, (String) value);
             }
@@ -418,8 +413,7 @@ public class XLinkSchema implements Schema {
          *     java.lang.Object, java.util.Map)
          */
         @Override
-        public boolean canCreateAttributes(
-                Attribute attribute, Object value, Map<String, Object> hints) {
+        public boolean canCreateAttributes(Attribute attribute, Object value, Map<String, Object> hints) {
             return (attribute.getName() != null)
                     && attribute.getName().equals(Actuate.getInstance().getName())
                     && lookUpTable.contains(value);
@@ -471,8 +465,7 @@ public class XLinkSchema implements Schema {
 
         /** @see schema.Type#getValue(java.lang.Object, org.xml.sax.Attributes) */
         @Override
-        public Object getValue(
-                Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
+        public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map<String, Object> hints)
                 throws SAXException {
             if ((value == null) || (value.length != 1) || (value[0] == null)) {
                 return null;
@@ -504,8 +497,7 @@ public class XLinkSchema implements Schema {
          *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
         @Override
-        public void encode(
-                Element element, Object value, PrintHandler output, Map<String, Object> hints) {
+        public void encode(Element element, Object value, PrintHandler output, Map<String, Object> hints) {
             // it's an attribute ... do nothing
         }
 
@@ -1062,12 +1054,7 @@ public class XLinkSchema implements Schema {
 
         // the static attribute list
         private static final Attribute[] attributes1 = {
-            Href.instance1,
-            Role.instance1,
-            Arcrole.instance1,
-            Title.instance1,
-            Show.instance1,
-            Actuate.instance1,
+            Href.instance1, Role.instance1, Arcrole.instance1, Title.instance1, Show.instance1, Actuate.instance1,
         };
 
         /** @see schema.AttributeGroup#getAttributeDescriptors() */
@@ -1139,11 +1126,7 @@ public class XLinkSchema implements Schema {
 
         // the static attribute list
         private static final Attribute[] attributes1 = {
-            new Type("extended"),
-            new Href(Attribute.REQUIRED),
-            Role.instance1,
-            Title.instance1,
-            Label.instance1
+            new Type("extended"), new Href(Attribute.REQUIRED), Role.instance1, Title.instance1, Label.instance1
         };
 
         /** @see schema.AttributeGroup#getAttributeDescriptors() */

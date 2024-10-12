@@ -90,12 +90,7 @@ public class SymbolMBLayer extends MBLayer {
     static {
         StyleFactory sf = CommonFactoryFinder.getStyleFactory();
         FilterFactory ff = CommonFactoryFinder.getFilterFactory();
-        TINY_FONT =
-                sf.createFont(
-                        ff.literal("Sans"),
-                        ff.literal("normal"),
-                        ff.literal("normal"),
-                        ff.literal(1));
+        TINY_FONT = sf.createFont(ff.literal("Sans"), ff.literal("normal"), ff.literal("normal"), ff.literal(1));
     }
 
     private static final Color DEFAULT_HALO_COLOR = new Color(0, 0, 0, 0);
@@ -224,11 +219,10 @@ public class SymbolMBLayer extends MBLayer {
             try {
                 return TextAnchor.valueOf(name);
             } catch (IllegalArgumentException invalid) {
-                throw new MBFormatException(
-                        "Invalid text-alginment '"
-                                + jsonString
-                                + "' expected one of"
-                                + "center, left, right, top, bottom, top-left, top-right, bottom-left, bottom-right");
+                throw new MBFormatException("Invalid text-alginment '"
+                        + jsonString
+                        + "' expected one of"
+                        + "center, left, right, top, bottom, top-left, top-right, bottom-left, bottom-right");
             }
         }
 
@@ -285,8 +279,7 @@ public class SymbolMBLayer extends MBLayer {
      * 'icon-image' will actually be interpreted as the well-known name of a GeoTools {@link Mark}
      * rather than an actual sprite sheet location.
      */
-    protected static final Set<String> MARK_SHEET_ALIASES =
-            ImmutableSet.of("geotoolsmarks", "geoservermarks", "");
+    protected static final Set<String> MARK_SHEET_ALIASES = ImmutableSet.of("geotoolsmarks", "geoservermarks", "");
 
     /**
      * The default base size (pixels) to use to render GeoTools marks in a MB style. This is needed
@@ -504,8 +497,7 @@ public class SymbolMBLayer extends MBLayer {
      * @return Expression providing icon rotation alignment.
      */
     public Expression iconRotationAlignment() {
-        return parse.enumToExpression(
-                layout, "icon-rotation-alignment", Alignment.class, Alignment.AUTO);
+        return parse.enumToExpression(layout, "icon-rotation-alignment", Alignment.class, Alignment.AUTO);
     }
 
     /**
@@ -732,8 +724,7 @@ public class SymbolMBLayer extends MBLayer {
      * @return Icon offset
      */
     public Displacement iconOffsetDisplacement() {
-        return parse.displacement(
-                layout, "icon-offset", sf.displacement(ff.literal(0), ff.literal(0)));
+        return parse.displacement(layout, "icon-offset", sf.displacement(ff.literal(0), ff.literal(0)));
     }
 
     /**
@@ -768,8 +759,7 @@ public class SymbolMBLayer extends MBLayer {
      * @return Expression of text pitch alignment
      */
     public Expression textPitchAlignment() {
-        return parse.enumToExpression(
-                layout, "text-pitch-alignment", Alignment.class, Alignment.AUTO);
+        return parse.enumToExpression(layout, "text-pitch-alignment", Alignment.class, Alignment.AUTO);
     }
 
     /**
@@ -808,8 +798,7 @@ public class SymbolMBLayer extends MBLayer {
      * @see #getTextRotationAlignment()
      */
     public Expression textRotationAlignment() {
-        return parse.enumToExpression(
-                layout, "text-rotation-alignment", Alignment.class, Alignment.AUTO);
+        return parse.enumToExpression(layout, "text-rotation-alignment", Alignment.class, Alignment.AUTO);
     }
 
     /**
@@ -851,12 +840,8 @@ public class SymbolMBLayer extends MBLayer {
         if (layout.get("text-font") instanceof JSONObject) {
             return null;
         } else {
-            fonts =
-                    parse.array(
-                            String.class,
-                            layout,
-                            "text-font",
-                            new String[] {"Open Sans Regular", "Arial Unicode MS Regular"});
+            fonts = parse.array(
+                    String.class, layout, "text-font", new String[] {"Open Sans Regular", "Arial Unicode MS Regular"});
             return Arrays.asList(fonts);
         }
     }
@@ -995,8 +980,7 @@ public class SymbolMBLayer extends MBLayer {
      * @return Expression of text justification
      */
     public Expression textJustify() {
-        return parse.enumToExpression(
-                layout, "text-justify", Justification.class, Justification.CENTER);
+        return parse.enumToExpression(layout, "text-justify", Justification.class, Justification.CENTER);
     }
 
     /**
@@ -1220,8 +1204,7 @@ public class SymbolMBLayer extends MBLayer {
      * @return Expression providing text transformation
      */
     public Expression textTransform() {
-        return parse.enumToExpression(
-                layout, "text-transform", TextTransform.class, TextTransform.NONE);
+        return parse.enumToExpression(layout, "text-transform", TextTransform.class, TextTransform.NONE);
     }
 
     /**
@@ -1260,8 +1243,7 @@ public class SymbolMBLayer extends MBLayer {
      * @return (Optional) Units in ems. Defaults to 0,0. Requires text-field.
      */
     public Displacement textOffsetDisplacement() {
-        return parse.displacement(
-                layout, "text-offset", sf.displacement(ff.literal(0), ff.literal(0)));
+        return parse.displacement(layout, "text-offset", sf.displacement(ff.literal(0), ff.literal(0)));
     }
 
     private boolean hasTextOffset() {
@@ -1490,8 +1472,7 @@ public class SymbolMBLayer extends MBLayer {
      * @return Icon translate displacement
      */
     public Displacement iconTranslateDisplacement() {
-        return parse.displacement(
-                paint, "icon-translate", sf.displacement(ff.literal(0), ff.literal(0)));
+        return parse.displacement(paint, "icon-translate", sf.displacement(ff.literal(0), ff.literal(0)));
     }
 
     /**
@@ -1525,8 +1506,7 @@ public class SymbolMBLayer extends MBLayer {
      * @return an expression that evaluates to one of "map", "viewport".
      */
     public Expression iconTranslateAnchor() {
-        return parse.enumToExpression(
-                layout, "icon-translate-anchor", TranslateAnchor.class, TranslateAnchor.MAP);
+        return parse.enumToExpression(layout, "icon-translate-anchor", TranslateAnchor.class, TranslateAnchor.MAP);
     }
 
     /**
@@ -1584,8 +1564,7 @@ public class SymbolMBLayer extends MBLayer {
         if (!paint.containsKey("text-halo-color")) {
             return DEFAULT_HALO_COLOR;
         } else {
-            return parse.convertToColor(
-                    parse.optional(String.class, paint, "text-halo-color", "#000000"));
+            return parse.convertToColor(parse.optional(String.class, paint, "text-halo-color", "#000000"));
         }
     }
 
@@ -1683,8 +1662,7 @@ public class SymbolMBLayer extends MBLayer {
      * @return Displacement defined by text-translate
      */
     public Displacement textTranslateDisplacement() {
-        return parse.displacement(
-                paint, "text-translate", sf.displacement(ff.literal(0), ff.literal(0)));
+        return parse.displacement(paint, "text-translate", sf.displacement(ff.literal(0), ff.literal(0)));
     }
 
     /**
@@ -1718,8 +1696,7 @@ public class SymbolMBLayer extends MBLayer {
      * @return Expresesion of text translate anchor
      */
     public Expression textTranslateAnchor() {
-        return parse.enumToExpression(
-                layout, "text-translate-anchor", TranslateAnchor.class, TranslateAnchor.MAP);
+        return parse.enumToExpression(layout, "text-translate-anchor", TranslateAnchor.class, TranslateAnchor.MAP);
     }
 
     /**
@@ -1739,9 +1716,8 @@ public class SymbolMBLayer extends MBLayer {
         // Create point or line placement
 
         // Functions not yet supported for symbolPlacement, so try to evaluate or use default.
-        String symbolPlacementVal =
-                MBStyleTransformer.requireLiteral(
-                        symbolPlacement(), String.class, "point", "symbol-placement", getId());
+        String symbolPlacementVal = MBStyleTransformer.requireLiteral(
+                symbolPlacement(), String.class, "point", "symbol-placement", getId());
         Expression fontSize = textSize();
         if ("point".equalsIgnoreCase(symbolPlacementVal.trim())) {
             // Point Placement (default)
@@ -1754,8 +1730,7 @@ public class SymbolMBLayer extends MBLayer {
             Displacement displacement = null;
             if (hasTextTranslate()) {
                 Displacement textTranslate = textTranslateDisplacement();
-                textTranslate.setDisplacementY(
-                        ff.multiply(ff.literal(-1), textTranslate.getDisplacementY()));
+                textTranslate.setDisplacementY(ff.multiply(ff.literal(-1), textTranslate.getDisplacementY()));
                 displacement = textTranslate;
             }
             // MapBox test-offset: +y mean down and expressed in ems
@@ -1764,9 +1739,7 @@ public class SymbolMBLayer extends MBLayer {
                 textOffset = textOffsetDisplacement();
                 textOffset.setDisplacementX(ff.multiply(fontSize, textOffset.getDisplacementX()));
                 textOffset.setDisplacementY(
-                        ff.multiply(
-                                fontSize,
-                                ff.multiply(ff.literal(-1), textOffset.getDisplacementY())));
+                        ff.multiply(fontSize, ff.multiply(ff.literal(-1), textOffset.getDisplacementY())));
                 if (displacement == null) {
                     displacement = textOffset;
                 } else {
@@ -1786,11 +1759,9 @@ public class SymbolMBLayer extends MBLayer {
             lineP.setRepeated(true);
 
             // pixels (geotools) vs ems (mapbox) for text-offset
-            lineP.setPerpendicularOffset(
-                    ff.multiply(
-                            fontSize,
-                            ff.multiply(
-                                    ff.literal(-1), textOffsetDisplacement().getDisplacementY())));
+            lineP.setPerpendicularOffset(ff.multiply(
+                    fontSize,
+                    ff.multiply(ff.literal(-1), textOffsetDisplacement().getDisplacementY())));
 
             labelPlacement = lineP;
         }
@@ -1811,28 +1782,22 @@ public class SymbolMBLayer extends MBLayer {
         if (staticFonts != null) {
             for (String textFont : staticFonts) {
                 FontAttributesExtractor fae = new FontAttributesExtractor(textFont);
-                Font font =
-                        sb.createFont(
-                                ff.function(
-                                        FontAlternativesFunction.NAME.getName(),
-                                        ff.literal(fae.getBaseName())),
-                                ff.literal(fae.isItalic() ? "italic" : "normal"),
-                                ff.literal(fae.isBold() ? "bold" : "normal"),
-                                fontSize);
+                Font font = sb.createFont(
+                        ff.function(FontAlternativesFunction.NAME.getName(), ff.literal(fae.getBaseName())),
+                        ff.literal(fae.isItalic() ? "italic" : "normal"),
+                        ff.literal(fae.isBold() ? "bold" : "normal"),
+                        fontSize);
                 fonts.add(font);
             }
         } else if (textFont() != null) {
             Expression dynamicFont = textFont();
-            Font font =
-                    sb.createFont(
-                            ff.function(
-                                    FontAlternativesFunction.NAME.getName(),
-                                    ff.function(
-                                            MapBoxFontBaseNameFunction.NAME.getName(),
-                                            dynamicFont)),
-                            ff.function(MapBoxFontStyleFunction.NAME.getName(), dynamicFont),
-                            ff.function(MapBoxFontWeightFunction.NAME.getName(), dynamicFont),
-                            fontSize);
+            Font font = sb.createFont(
+                    ff.function(
+                            FontAlternativesFunction.NAME.getName(),
+                            ff.function(MapBoxFontBaseNameFunction.NAME.getName(), dynamicFont)),
+                    ff.function(MapBoxFontStyleFunction.NAME.getName(), dynamicFont),
+                    ff.function(MapBoxFontWeightFunction.NAME.getName(), dynamicFont),
+                    fontSize);
             fonts.add(font);
         }
 
@@ -1853,17 +1818,16 @@ public class SymbolMBLayer extends MBLayer {
             textExpression = ff.function("StringTransform", textExpression, textTransform());
         }
 
-        TextSymbolizer symbolizer =
-                sf.textSymbolizer(
-                        getId(),
-                        ff.property((String) null),
-                        sf.description(Text.text("text"), null),
-                        Units.PIXEL,
-                        textExpression,
-                        null,
-                        labelPlacement,
-                        halo,
-                        fill);
+        TextSymbolizer symbolizer = sf.textSymbolizer(
+                getId(),
+                ff.property((String) null),
+                sf.description(Text.text("text"), null),
+                Units.PIXEL,
+                textExpression,
+                null,
+                labelPlacement,
+                halo,
+                fill);
         symbolizer.fonts().clear();
         // no need to add fonts and alternatives if we are displaying a simple symbol, use a tiny
         // font to help centering the symbol along the line instead
@@ -1874,8 +1838,7 @@ public class SymbolMBLayer extends MBLayer {
         }
 
         Number symbolSpacing =
-                MBStyleTransformer.requireLiteral(
-                        symbolSpacing(), Number.class, 250, "symbol-spacing", getId());
+                MBStyleTransformer.requireLiteral(symbolSpacing(), Number.class, 250, "symbol-spacing", getId());
         Map<String, String> options = symbolizer.getOptions();
         options.put(TextSymbolizer.LABEL_REPEAT_KEY, String.valueOf(symbolSpacing));
 
@@ -1887,8 +1850,7 @@ public class SymbolMBLayer extends MBLayer {
                 options.put(TextSymbolizer.FORCE_LEFT_TO_RIGHT_KEY, "false");
             } else {
                 // otherwise align with the text being drawn (e.g. label shields)
-                options.put(
-                        TextSymbolizer.FORCE_LEFT_TO_RIGHT_KEY, String.valueOf(textKeepUpright()));
+                options.put(TextSymbolizer.FORCE_LEFT_TO_RIGHT_KEY, String.valueOf(textKeepUpright()));
             }
             // "followLine" will be true if line placement, it is an implied default of MBstyles.
             options.put(TextSymbolizer.FOLLOW_LINE_KEY, "true");
@@ -1903,21 +1865,16 @@ public class SymbolMBLayer extends MBLayer {
         // conflictResolution
         // Mapbox allows text overlap and icon overlap separately. GeoTools only has
         // conflictResolution.
-        Boolean textAllowOverlap =
-                MBStyleTransformer.requireLiteral(
-                        textAllowOverlap(), Boolean.class, false, "text-allow-overlap", getId());
-        Boolean iconAllowOverlap =
-                MBStyleTransformer.requireLiteral(
-                        iconAllowOverlap(), Boolean.class, false, "icon-allow-overlap", getId());
+        Boolean textAllowOverlap = MBStyleTransformer.requireLiteral(
+                textAllowOverlap(), Boolean.class, false, "text-allow-overlap", getId());
+        Boolean iconAllowOverlap = MBStyleTransformer.requireLiteral(
+                iconAllowOverlap(), Boolean.class, false, "icon-allow-overlap", getId());
 
-        options.put(
-                TextSymbolizer.CONFLICT_RESOLUTION_KEY,
-                String.valueOf(!(textAllowOverlap || iconAllowOverlap)));
+        options.put(TextSymbolizer.CONFLICT_RESOLUTION_KEY, String.valueOf(!(textAllowOverlap || iconAllowOverlap)));
 
-        String textFitVal =
-                MBStyleTransformer.requireLiteral(
-                                iconTextFit(), String.class, "none", "icon-text-fit", getId())
-                        .trim();
+        String textFitVal = MBStyleTransformer.requireLiteral(
+                        iconTextFit(), String.class, "none", "icon-text-fit", getId())
+                .trim();
         if ("height".equalsIgnoreCase(textFitVal) || "width".equalsIgnoreCase(textFitVal)) {
             options.put(TextSymbolizer.GRAPHIC_RESIZE_KEY, STRETCH.name());
         } else if ("both".equalsIgnoreCase(textFitVal)) {
@@ -1960,15 +1917,9 @@ public class SymbolMBLayer extends MBLayer {
         // options don't take expressions)
         if (hasTextMaxWidth()) {
             double textMaxWidth =
-                    MBStyleTransformer.requireLiteral(
-                            textMaxWidth(), Double.class, 10.0, "text-max-width", getId());
-            double textSize =
-                    MBStyleTransformer.requireLiteral(
-                            fontSize,
-                            Double.class,
-                            16.0,
-                            "text-size (when text-max-width is specified)",
-                            getId());
+                    MBStyleTransformer.requireLiteral(textMaxWidth(), Double.class, 10.0, "text-max-width", getId());
+            double textSize = MBStyleTransformer.requireLiteral(
+                    fontSize, Double.class, 16.0, "text-size (when text-max-width is specified)", getId());
             options.put(TextSymbolizer.AUTO_WRAP_KEY, String.valueOf(textMaxWidth * textSize));
         }
 
@@ -2003,29 +1954,18 @@ public class SymbolMBLayer extends MBLayer {
 
         // List of opengis rules here (needed for constructor)
         List<org.geotools.api.style.Rule> rules = new ArrayList<>();
-        Rule rule =
-                sf.rule(
-                        getId(),
-                        null,
-                        null,
-                        0.0,
-                        Double.POSITIVE_INFINITY,
-                        symbolizers,
-                        filter.filter());
+        Rule rule = sf.rule(getId(), null, null, 0.0, Double.POSITIVE_INFINITY, symbolizers, filter.filter());
 
         rules.add(rule);
 
-        return Collections.singletonList(
-                sf.featureTypeStyle(
-                        getId(),
-                        sf.description(
-                                Text.text("MBStyle " + getId()),
-                                Text.text("Generated for " + getSourceLayer())),
-                        null, // (unused)
-                        Collections.emptySet(),
-                        filter.semanticTypeIdentifiers(), // we only expect this to be applied to
-                        // polygons
-                        rules));
+        return Collections.singletonList(sf.featureTypeStyle(
+                getId(),
+                sf.description(Text.text("MBStyle " + getId()), Text.text("Generated for " + getSourceLayer())),
+                null, // (unused)
+                Collections.emptySet(),
+                filter.semanticTypeIdentifiers(), // we only expect this to be applied to
+                // polygons
+                rules));
     }
 
     /**
@@ -2042,9 +1982,7 @@ public class SymbolMBLayer extends MBLayer {
         // Note: the URL is expected to be a CQL STRING ...
         Expression iconExpression = iconImage();
         if (iconExpression instanceof Literal) {
-            iconExpression =
-                    transformer.cqlExpressionFromTokens(
-                            iconExpression.evaluate(null, String.class));
+            iconExpression = transformer.cqlExpressionFromTokens(iconExpression.evaluate(null, String.class));
         }
 
         Expression graphicSize = null;
@@ -2053,10 +1991,9 @@ public class SymbolMBLayer extends MBLayer {
         // In the special case that the 'sprite' source designates the internal GeoTools marks, then
         // create a mark graphic.
         // Otherwise, create a sprite-based external graphic.
-        String spriteSheetLocation =
-                styleContext.getSprite() == null
-                        ? ""
-                        : styleContext.getSprite().trim().toLowerCase();
+        String spriteSheetLocation = styleContext.getSprite() == null
+                ? ""
+                : styleContext.getSprite().trim().toLowerCase();
         Expression iconSize = iconSize();
         if (MARK_SHEET_ALIASES.contains(spriteSheetLocation)) {
             Fill f = sf.fill(null, iconColor(), null);
@@ -2074,15 +2011,13 @@ public class SymbolMBLayer extends MBLayer {
             graphicSize = ff.multiply(ff.literal(MARK_ICON_DEFAULT_SIZE), iconSize);
         }
 
-        Graphic g =
-                sf.graphic(Arrays.asList(gs), iconOpacity(), graphicSize, iconRotate(), null, null);
+        Graphic g = sf.graphic(Arrays.asList(gs), iconOpacity(), graphicSize, iconRotate(), null, null);
         // From the specification:
         // Offset distance of icon from its anchor. Positive values indicate right and down, while
         // negative values indicate left and up. Each component is multiplied by the value of
         // icon-size to obtain the final offset in pixels
         Displacement d = iconOffsetDisplacement();
-        d.setDisplacementY(
-                ff.multiply(iconSize, ff.multiply(ff.literal(-1), d.getDisplacementY())));
+        d.setDisplacementY(ff.multiply(iconSize, ff.multiply(ff.literal(-1), d.getDisplacementY())));
         d.setDisplacementX(ff.multiply(iconSize, d.getDisplacementX()));
         g.setDisplacement(d);
         g.setAnchorPoint(iconAnchorPoint());

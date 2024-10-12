@@ -286,11 +286,10 @@ public abstract class JDBCTestSupport extends OnlineTestSupport {
         if (e1 == null && e2 == null) return true;
         if (e1 == null || e2 == null) return false;
 
-        boolean equal =
-                Math.round(e1.getMinX()) == Math.round(e2.getMinX())
-                        && Math.round(e1.getMinY()) == Math.round(e2.getMinY())
-                        && Math.round(e1.getMaxX()) == Math.round(e2.getMaxX())
-                        && Math.round(e1.getMaxY()) == Math.round(e2.getMaxY());
+        boolean equal = Math.round(e1.getMinX()) == Math.round(e2.getMinX())
+                && Math.round(e1.getMinY()) == Math.round(e2.getMinY())
+                && Math.round(e1.getMaxX()) == Math.round(e2.getMaxX())
+                && Math.round(e1.getMaxY()) == Math.round(e2.getMaxY());
 
         if (!equal) return false;
         return areCRSEqual(e1.getCoordinateReferenceSystem(), e2.getCoordinateReferenceSystem());
@@ -305,18 +304,12 @@ public abstract class JDBCTestSupport extends OnlineTestSupport {
     public static interface SimpleFeatureAssertion extends FeatureAssertion<SimpleFeature> {}
 
     protected <FT extends FeatureType, F extends Feature> void assertFeatureCollection(
-            int startIndex,
-            int numberExpected,
-            FeatureCollection<FT, F> collection,
-            FeatureAssertion<F> assertion) {
+            int startIndex, int numberExpected, FeatureCollection<FT, F> collection, FeatureAssertion<F> assertion) {
         assertFeatureIterator(startIndex, numberExpected, collection.features(), assertion);
     }
 
     protected <F extends Feature> void assertFeatureIterator(
-            int startIndex,
-            int numberExpected,
-            FeatureIterator<F> iter,
-            FeatureAssertion<F> assertion) {
+            int startIndex, int numberExpected, FeatureIterator<F> iter, FeatureAssertion<F> assertion) {
         try {
             boolean[] loadedFeatures = new boolean[numberExpected];
             for (int j = startIndex; j < numberExpected + startIndex; j++) {
@@ -344,65 +337,57 @@ public abstract class JDBCTestSupport extends OnlineTestSupport {
     }
 
     protected <F extends Feature> void assertFeatureIterator(
-            int startIndex,
-            int numberExpected,
-            final Iterator<F> iterator,
-            FeatureAssertion<F> assertion) {
-        try (FeatureIterator<F> adapter =
-                new FeatureIterator<F>() {
-                    @Override
-                    public boolean hasNext() {
-                        return iterator.hasNext();
-                    }
+            int startIndex, int numberExpected, final Iterator<F> iterator, FeatureAssertion<F> assertion) {
+        try (FeatureIterator<F> adapter = new FeatureIterator<F>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
 
-                    @Override
-                    public F next() {
-                        return iterator.next();
-                    }
+            @Override
+            public F next() {
+                return iterator.next();
+            }
 
-                    @Override
-                    public void close() {}
-                }) {
+            @Override
+            public void close() {}
+        }) {
             assertFeatureIterator(startIndex, numberExpected, adapter, assertion);
         }
     }
 
     protected <FT extends FeatureType, F extends Feature> void assertFeatureReader(
-            int startIndex,
-            int numberExpected,
-            final FeatureReader<FT, F> reader,
-            FeatureAssertion<F> assertion)
+            int startIndex, int numberExpected, final FeatureReader<FT, F> reader, FeatureAssertion<F> assertion)
             throws IOException {
-        try (FeatureIterator<F> iter =
-                new FeatureIterator<F>() {
+        try (FeatureIterator<F> iter = new FeatureIterator<F>() {
 
-                    @Override
-                    public boolean hasNext() {
-                        try {
-                            return reader.hasNext();
-                        } catch (IOException e) {
-                            throw new AssertionError(e);
-                        }
-                    }
+            @Override
+            public boolean hasNext() {
+                try {
+                    return reader.hasNext();
+                } catch (IOException e) {
+                    throw new AssertionError(e);
+                }
+            }
 
-                    @Override
-                    public F next() throws NoSuchElementException {
-                        try {
-                            return reader.next();
-                        } catch (IOException e) {
-                            throw new AssertionError(e);
-                        }
-                    }
+            @Override
+            public F next() throws NoSuchElementException {
+                try {
+                    return reader.next();
+                } catch (IOException e) {
+                    throw new AssertionError(e);
+                }
+            }
 
-                    @Override
-                    public void close() {
-                        try {
-                            reader.close();
-                        } catch (IOException e) {
-                            throw new AssertionError(e);
-                        }
-                    }
-                }) {
+            @Override
+            public void close() {
+                try {
+                    reader.close();
+                } catch (IOException e) {
+                    throw new AssertionError(e);
+                }
+            }
+        }) {
             assertFeatureIterator(startIndex, numberExpected, iter, assertion);
         }
     }

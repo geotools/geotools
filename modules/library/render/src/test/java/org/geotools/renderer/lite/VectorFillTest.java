@@ -66,10 +66,8 @@ public class VectorFillTest {
         bounds.expandBy(0.2, 0.2);
 
         // load font
-        Font f =
-                Font.createFont(
-                        Font.TRUETYPE_FONT,
-                        TestData.getResource(this, "recreate.ttf").openStream());
+        Font f = Font.createFont(
+                Font.TRUETYPE_FONT, TestData.getResource(this, "recreate.ttf").openStream());
         FontCache.getDefaultInstance().registerFont(f);
 
         // System.setProperty("org.geotools.test.interactive", "true");
@@ -86,8 +84,7 @@ public class VectorFillTest {
         runSingleLayerTest(styleName, threshold, style);
     }
 
-    private void runSingleLayerTest(String fileName, int threshold, Style style)
-            throws Exception, IOException {
+    private void runSingleLayerTest(String fileName, int threshold, Style style) throws Exception, IOException {
         MapContent mc = new MapContent();
         mc.addLayer(new FeatureLayer(fs, style));
 
@@ -100,10 +97,7 @@ public class VectorFillTest {
 
         BufferedImage image = RendererBaseTest.showRender(fileName, renderer, TIME, bounds);
         File reference =
-                new File(
-                        "./src/test/resources/org/geotools/renderer/lite/test-data/vector"
-                                + fileName
-                                + ".png");
+                new File("./src/test/resources/org/geotools/renderer/lite/test-data/vector" + fileName + ".png");
         ImageAssert.assertEquals(reference, image, threshold);
     }
 
@@ -205,21 +199,19 @@ public class VectorFillTest {
 
     @Test
     public void testWktComposite() throws Exception {
-        testParametricMark(
-                "wktcomposite", "wkt://MULTILINESTRING((-0.5 -0.5, 0.5 0.5), (0 -0.5, 0 0.5))");
+        testParametricMark("wktcomposite", "wkt://MULTILINESTRING((-0.5 -0.5, 0.5 0.5), (0 -0.5, 0 0.5))");
     }
 
     protected void testParametricMark(String fileName, final String markName) throws Exception {
         Style slashStyle = RendererBaseTest.loadStyle(this, "fillSlash.sld");
-        final DuplicatingStyleVisitor markReplacer =
-                new DuplicatingStyleVisitor() {
-                    @Override
-                    public void visit(Mark mark) {
-                        super.visit(mark);
-                        Mark copy = (Mark) pages.peek();
-                        copy.setWellKnownName(ff.literal(markName));
-                    }
-                };
+        final DuplicatingStyleVisitor markReplacer = new DuplicatingStyleVisitor() {
+            @Override
+            public void visit(Mark mark) {
+                super.visit(mark);
+                Mark copy = (Mark) pages.peek();
+                copy.setWellKnownName(ff.literal(markName));
+            }
+        };
         slashStyle.accept(markReplacer);
         Style style = (Style) markReplacer.getCopy();
         runSingleLayerTest(fileName, 100, style);

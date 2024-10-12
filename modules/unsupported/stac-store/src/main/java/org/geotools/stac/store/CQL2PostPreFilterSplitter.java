@@ -52,8 +52,7 @@ class CQL2PostPreFilterSplitter extends PostPreProcessFilterSplittingVisitor {
     @Override
     public Object visit(BBOX filter, Object notUsed) {
         if (forcePropertyLiteral
-                && !(filter.getExpression1() instanceof PropertyName
-                        && filter.getExpression2() instanceof Literal)) {
+                && !(filter.getExpression1() instanceof PropertyName && filter.getExpression2() instanceof Literal)) {
             postStack.push(filter);
             return null;
         }
@@ -64,8 +63,7 @@ class CQL2PostPreFilterSplitter extends PostPreProcessFilterSplittingVisitor {
     @Override
     protected void visitBinaryComparisonOperator(BinaryComparisonOperator filter) {
         if (forcePropertyLiteral
-                && !(filter.getExpression1() instanceof PropertyName
-                        && filter.getExpression2() instanceof Literal)) {
+                && !(filter.getExpression1() instanceof PropertyName && filter.getExpression2() instanceof Literal)) {
             postStack.push(filter);
             return;
         }
@@ -76,8 +74,7 @@ class CQL2PostPreFilterSplitter extends PostPreProcessFilterSplittingVisitor {
     @Override
     protected void visitBinarySpatialOperator(BinarySpatialOperator filter) {
         if (forcePropertyLiteral
-                && !(filter.getExpression1() instanceof PropertyName
-                        && filter.getExpression2() instanceof Literal)) {
+                && !(filter.getExpression1() instanceof PropertyName && filter.getExpression2() instanceof Literal)) {
             postStack.push(filter);
             return;
         }
@@ -88,8 +85,7 @@ class CQL2PostPreFilterSplitter extends PostPreProcessFilterSplittingVisitor {
     @Override
     protected Object visit(BinaryTemporalOperator filter, Object data) {
         if (forcePropertyLiteral
-                && !(filter.getExpression1() instanceof PropertyName
-                        && filter.getExpression2() instanceof Literal)) {
+                && !(filter.getExpression1() instanceof PropertyName && filter.getExpression2() instanceof Literal)) {
             postStack.push(filter);
             return data;
         }

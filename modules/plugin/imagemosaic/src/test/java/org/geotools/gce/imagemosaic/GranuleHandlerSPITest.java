@@ -34,8 +34,7 @@ public class GranuleHandlerSPITest {
     @Test
     public void basicTest() {
         // get the SPIs
-        Map<String, GranuleHandlerFactorySPI> spiMap =
-                GranuleHandlerFactoryFinder.getGranuleHandlersSPI();
+        Map<String, GranuleHandlerFactorySPI> spiMap = GranuleHandlerFactoryFinder.getGranuleHandlersSPI();
 
         // make sure it is not empty
         assertNotNull(spiMap);

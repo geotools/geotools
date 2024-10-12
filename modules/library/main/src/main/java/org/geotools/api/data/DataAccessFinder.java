@@ -47,8 +47,7 @@ import org.geotools.util.factory.FactoryRegistry;
  */
 public final class DataAccessFinder {
     /** The logger for the filter module. */
-    protected static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(DataAccessFinder.class);
+    protected static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(DataAccessFinder.class);
 
     /** The service registry for this manager. Will be initialized only when first needed. */
     private static volatile FactoryRegistry registry;
@@ -68,8 +67,7 @@ public final class DataAccessFinder {
      *     specified resource without errors.
      */
     @SuppressWarnings("unchecked")
-    public static synchronized DataAccess<FeatureType, Feature> getDataStore(Map<String, ?> params)
-            throws IOException {
+    public static synchronized DataAccess<FeatureType, Feature> getDataStore(Map<String, ?> params) throws IOException {
         Iterator<DataAccessFactory> ps = getAvailableDataStores();
         return (DataAccess<FeatureType, Feature>) getDataStore(params, ps);
     }
@@ -86,12 +84,7 @@ public final class DataAccessFinder {
                 canProcess = fac.canProcess(params);
             } catch (Throwable t) {
                 LOGGER.log(
-                        Level.WARNING,
-                        "Problem asking "
-                                + fac.getDisplayName()
-                                + " if it can process request:"
-                                + t,
-                        t);
+                        Level.WARNING, "Problem asking " + fac.getDisplayName() + " if it can process request:" + t, t);
                 // Protect against DataStores that don't carefully code
                 // canProcess
                 continue;
@@ -102,12 +95,7 @@ public final class DataAccessFinder {
                     isAvailable = fac.isAvailable();
                 } catch (Throwable t) {
                     LOGGER.log(
-                            Level.WARNING,
-                            "Difficulity checking if "
-                                    + fac.getDisplayName()
-                                    + " is available:"
-                                    + t,
-                            t);
+                            Level.WARNING, "Difficulity checking if " + fac.getDisplayName() + " is available:" + t, t);
                     // Protect against DataStores that don't carefully code
                     // isAvailable
                     continue;
@@ -123,10 +111,9 @@ public final class DataAccessFinder {
                                 couldNotConnect);
                     }
                 } else {
-                    canProcessButNotAvailable =
-                            new IOException(
-                                    fac.getDisplayName()
-                                            + " should be used, but is not availble. Have you installed the required drivers or jar files?");
+                    canProcessButNotAvailable = new IOException(
+                            fac.getDisplayName()
+                                    + " should be used, but is not availble. Have you installed the required drivers or jar files?");
                     LOGGER.log(
                             Level.WARNING,
                             fac.getDisplayName() + " should be used, but is not availble",
@@ -149,8 +136,7 @@ public final class DataAccessFinder {
     public static synchronized Iterator<DataAccessFactory> getAllDataStores() {
         Set<DataAccessFactory> all = new HashSet<>();
         Iterator<DataStoreFactorySpi> allDataStores = DataStoreFinder.getAllDataStores();
-        Iterator<DataAccessFactory> allDataAccess =
-                getAllDataStores(getServiceRegistry(), DataAccessFactory.class);
+        Iterator<DataAccessFactory> allDataAccess = getAllDataStores(getServiceRegistry(), DataAccessFactory.class);
         while (allDataStores.hasNext()) {
             DataStoreFactorySpi next = allDataStores.next();
             all.add(next);
@@ -178,11 +164,9 @@ public final class DataAccessFinder {
     public static synchronized Iterator<DataAccessFactory> getAvailableDataStores() {
 
         FactoryRegistry serviceRegistry = getServiceRegistry();
-        Set<DataAccessFactory> availableDS =
-                getAvailableDataStores(serviceRegistry, DataAccessFactory.class);
+        Set<DataAccessFactory> availableDS = getAvailableDataStores(serviceRegistry, DataAccessFactory.class);
 
-        Iterator<DataStoreFactorySpi> availableDataStores =
-                DataStoreFinder.getAvailableDataStores();
+        Iterator<DataStoreFactorySpi> availableDataStores = DataStoreFinder.getAvailableDataStores();
         while (availableDataStores.hasNext()) {
             availableDS.add(availableDataStores.next());
         }

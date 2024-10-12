@@ -25,8 +25,7 @@ public class FunctionTestFixture {
         WKTReader reader = new WKTReader();
         for (int i = 0; i < polygons.length; i++) {
             Geometry polygon = reader.read(polygons[i]);
-            featureCollection.add(
-                    SimpleFeatureBuilder.build(type, new Object[] {i, polygon}, String.valueOf(i)));
+            featureCollection.add(SimpleFeatureBuilder.build(type, new Object[] {i, polygon}, String.valueOf(i)));
         }
         return featureCollection;
     }

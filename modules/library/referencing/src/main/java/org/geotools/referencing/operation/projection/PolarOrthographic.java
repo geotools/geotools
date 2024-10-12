@@ -59,8 +59,7 @@ public class PolarOrthographic extends Orthographic {
      * @param parameters The parameter values in standard units.
      * @throws ParameterNotFoundException if a mandatory parameter is missing.
      */
-    protected PolarOrthographic(final ParameterValueGroup parameters)
-            throws ParameterNotFoundException {
+    protected PolarOrthographic(final ParameterValueGroup parameters) throws ParameterNotFoundException {
         super(parameters);
         ensureLatitudeEquals(Provider.LATITUDE_OF_ORIGIN, latitudeOfOrigin, PI / 2);
         northPole = (latitudeOfOrigin > 0);
@@ -72,8 +71,7 @@ public class PolarOrthographic extends Orthographic {
      * radians) and stores the result in {@code ptDst} (linear distance on a unit sphere).
      */
     @Override
-    protected Point2D transformNormalized(double x, double y, final Point2D ptDst)
-            throws ProjectionException {
+    protected Point2D transformNormalized(double x, double y, final Point2D ptDst) throws ProjectionException {
         if (abs(y - latitudeOfOrigin) - EPSILON > PI / 2) {
             throw new ProjectionException(ErrorKeys.POINT_OUTSIDE_HEMISPHERE);
         }
@@ -97,8 +95,7 @@ public class PolarOrthographic extends Orthographic {
      * {@code ptDst}.
      */
     @Override
-    protected Point2D inverseTransformNormalized(double x, double y, final Point2D ptDst)
-            throws ProjectionException {
+    protected Point2D inverseTransformNormalized(double x, double y, final Point2D ptDst) throws ProjectionException {
         final double rho = hypot(x, y);
         double sinc = rho;
         if (sinc > 1.0) {

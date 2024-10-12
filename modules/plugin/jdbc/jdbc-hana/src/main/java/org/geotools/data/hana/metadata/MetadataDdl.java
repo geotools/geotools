@@ -109,9 +109,7 @@ public final class MetadataDdl {
         sql.append(" SNAP TO GRID 0 ");
         sql.append(" POLYGON FORMAT 'EvenOdd' ");
         sql.append(" STORAGE FORMAT ");
-        sql.append(
-                HanaUtil.toStringLiteral(
-                        srs.getType() == Srs.Type.GEOGRAPHIC ? "Mixed" : "Internal"));
+        sql.append(HanaUtil.toStringLiteral(srs.getType() == Srs.Type.GEOGRAPHIC ? "Mixed" : "Internal"));
         return sql.toString();
     }
 

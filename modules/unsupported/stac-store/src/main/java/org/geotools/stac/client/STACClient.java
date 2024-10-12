@@ -95,15 +95,13 @@ public class STACClient implements Closeable {
     private void checkJSONResponse(HTTPResponse response) {
         String mime = response.getContentType();
         if (mime == null || !mime.startsWith(JSON_MIME))
-            throw new IllegalArgumentException(
-                    "Was expecting a JSON response, got a different mime type: " + mime);
+            throw new IllegalArgumentException("Was expecting a JSON response, got a different mime type: " + mime);
     }
 
     private void checkGeoJSONResponse(HTTPResponse response) {
         String mime = response.getContentType();
         if (mime == null || !mime.startsWith(GEOJSON_MIME))
-            throw new IllegalArgumentException(
-                    "Was expecting a GeoJSON response, got a different mime type: " + mime);
+            throw new IllegalArgumentException("Was expecting a GeoJSON response, got a different mime type: " + mime);
     }
 
     /**
@@ -132,8 +130,9 @@ public class STACClient implements Closeable {
         Optional<Link> maybeData =
                 landingPage.getLinks().stream().filter(this::isDataJSONLink).findFirst();
         if (!maybeData.isPresent()) {
-            maybeData =
-                    landingPage.getLinks().stream().filter(this::isChildrenJSONLink).findFirst();
+            maybeData = landingPage.getLinks().stream()
+                    .filter(this::isChildrenJSONLink)
+                    .findFirst();
         }
         if (!maybeData.isPresent()) return Collections.emptyList();
 
@@ -177,8 +176,8 @@ public class STACClient implements Closeable {
      *     present
      * @throws IOException
      */
-    public SimpleFeatureCollection search(
-            SearchQuery search, SearchMode mode, SimpleFeatureType schema) throws IOException {
+    public SimpleFeatureCollection search(SearchQuery search, SearchMode mode, SimpleFeatureType schema)
+            throws IOException {
         if (!STACConformance.ITEM_SEARCH.matches(landingPage.getConformance()))
             // might want to take a different path and see if OGC API - Features is supported
             // instead
@@ -199,22 +198,15 @@ public class STACClient implements Closeable {
                 }
                 String body = OBJECT_MAPPER.writeValueAsString(search);
 
-                LOGGER.log(
-                        Level.FINE,
-                        () -> "STAC POST search request: " + postURL + " with body:\n" + body);
-                response =
-                        this.http.post(
-                                postURL,
-                                new ByteArrayInputStream(body.getBytes(StandardCharsets.UTF_8)),
-                                "application/json");
+                LOGGER.log(Level.FINE, () -> "STAC POST search request: " + postURL + " with body:\n" + body);
+                response = this.http.post(
+                        postURL, new ByteArrayInputStream(body.getBytes(StandardCharsets.UTF_8)), "application/json");
             }
             checkGeoJSONResponse(response);
 
             // TODO: support paging following links
             try (STACGeoJSONReader reader =
-                    new STACGeoJSONReader(
-                            new BufferedInputStream(response.getResponseStream(), 1024 * 32),
-                            http)) {
+                    new STACGeoJSONReader(new BufferedInputStream(response.getResponseStream(), 1024 * 32), http)) {
                 if (schema != null) reader.setSchema(schema);
                 return reader.getFeatures();
             }

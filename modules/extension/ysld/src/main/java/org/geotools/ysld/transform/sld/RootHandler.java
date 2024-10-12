@@ -27,15 +27,13 @@ import javax.xml.stream.XMLStreamReader;
  */
 public class RootHandler extends SldTransformHandler {
     @Override
-    public void document(XMLStreamReader xml, SldTransformContext context)
-            throws XMLStreamException, IOException {
+    public void document(XMLStreamReader xml, SldTransformContext context) throws XMLStreamException, IOException {
         super.document(xml, context);
         context.document();
     }
 
     @Override
-    public void element(XMLStreamReader xml, SldTransformContext context)
-            throws XMLStreamException, IOException {
+    public void element(XMLStreamReader xml, SldTransformContext context) throws XMLStreamException, IOException {
         super.element(xml, context);
         if ("UserStyle".equals(xml.getName().getLocalPart())) {
             context.mapping().push(new UserStyleHandler());
@@ -43,8 +41,7 @@ public class RootHandler extends SldTransformHandler {
     }
 
     @Override
-    public void endDocument(XMLStreamReader xml, SldTransformContext context)
-            throws XMLStreamException, IOException {
+    public void endDocument(XMLStreamReader xml, SldTransformContext context) throws XMLStreamException, IOException {
         super.endDocument(xml, context);
         context.endDocument();
     }
@@ -52,8 +49,7 @@ public class RootHandler extends SldTransformHandler {
     static class UserStyleHandler extends SldTransformHandler {
 
         @Override
-        public void element(XMLStreamReader xml, SldTransformContext context)
-                throws XMLStreamException, IOException {
+        public void element(XMLStreamReader xml, SldTransformContext context) throws XMLStreamException, IOException {
             String name = xml.getLocalName();
             if ("Name".equals(name)) {
                 context.scalar("name");

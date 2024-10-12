@@ -137,8 +137,8 @@ public class FCBuffer extends Thread implements FeatureReader<SimpleFeatureType,
      *
      * @param document URL to parse
      */
-    public static FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader(
-            URI document, int capacity) throws SAXException {
+    public static FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader(URI document, int capacity)
+            throws SAXException {
         return getFeatureReader(document, capacity, 1000, null);
     }
 

@@ -43,8 +43,7 @@ public class DecoratingSimpleFeatureCollection implements SimpleFeatureCollectio
     /** the delegate */
     protected SimpleFeatureCollection delegate;
 
-    protected DecoratingSimpleFeatureCollection(
-            FeatureCollection<SimpleFeatureType, SimpleFeature> delegate) {
+    protected DecoratingSimpleFeatureCollection(FeatureCollection<SimpleFeatureType, SimpleFeature> delegate) {
         this.delegate = DataUtilities.simple(delegate);
     }
 
@@ -54,8 +53,7 @@ public class DecoratingSimpleFeatureCollection implements SimpleFeatureCollectio
 
     @Override
     public void accepts(
-            org.geotools.api.feature.FeatureVisitor visitor,
-            org.geotools.api.util.ProgressListener progress)
+            org.geotools.api.feature.FeatureVisitor visitor, org.geotools.api.util.ProgressListener progress)
             throws IOException {
         if (canDelegate(visitor)) {
             delegate.accepts(visitor, progress);

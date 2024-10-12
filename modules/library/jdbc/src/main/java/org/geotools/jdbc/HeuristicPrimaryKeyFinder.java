@@ -37,8 +37,7 @@ public class HeuristicPrimaryKeyFinder extends PrimaryKeyFinder {
     protected static final Logger LOGGER = Logging.getLogger(HeuristicPrimaryKeyFinder.class);
 
     @Override
-    public PrimaryKey getPrimaryKey(
-            JDBCDataStore store, String databaseSchema, String tableName, Connection cx)
+    public PrimaryKey getPrimaryKey(JDBCDataStore store, String databaseSchema, String tableName, Connection cx)
             throws SQLException {
         DatabaseMetaData metaData = cx.getMetaData();
         LOGGER.log(Level.FINE, "Getting information about primary keys of {0}", tableName);
@@ -52,29 +51,17 @@ public class HeuristicPrimaryKeyFinder extends PrimaryKeyFinder {
              * name <LI><B>KEY_SEQ</B> short => sequence number within primary key
              * <LI><B>PK_NAME</B> String => primary key name (may be <code>null</code>)
              */
-            PrimaryKey pkey =
-                    createPrimaryKey(store, primaryKey, metaData, databaseSchema, tableName, cx);
+            PrimaryKey pkey = createPrimaryKey(store, primaryKey, metaData, databaseSchema, tableName, cx);
             if (pkey == null) {
                 // No known database supports unique indexes on views and this check
                 // causes problems with Oracle, so we skip it
                 if (!store.isView(metaData, databaseSchema, tableName)
                         && store.getVirtualTables().get(tableName) == null) {
                     // no primary key, check for a unique index
-                    LOGGER.log(
-                            Level.FINE,
-                            "Getting information about unique indexes of {0}",
-                            tableName);
-                    ResultSet uniqueIndex =
-                            metaData.getIndexInfo(null, databaseSchema, tableName, true, true);
+                    LOGGER.log(Level.FINE, "Getting information about unique indexes of {0}", tableName);
+                    ResultSet uniqueIndex = metaData.getIndexInfo(null, databaseSchema, tableName, true, true);
                     try {
-                        pkey =
-                                createPrimaryKey(
-                                        store,
-                                        uniqueIndex,
-                                        metaData,
-                                        databaseSchema,
-                                        tableName,
-                                        cx);
+                        pkey = createPrimaryKey(store, uniqueIndex, metaData, databaseSchema, tableName, cx);
                     } finally {
                         store.closeSafe(uniqueIndex);
                     }
@@ -109,12 +96,11 @@ public class HeuristicPrimaryKeyFinder extends PrimaryKeyFinder {
             }
 
             // look up the type ( should only be one row )
-            ResultSet columns =
-                    metaData.getColumns(
-                            null,
-                            store.escapeNamePattern(metaData, databaseSchema),
-                            store.escapeNamePattern(metaData, tableName),
-                            store.escapeNamePattern(metaData, columnName));
+            ResultSet columns = metaData.getColumns(
+                    null,
+                    store.escapeNamePattern(metaData, databaseSchema),
+                    store.escapeNamePattern(metaData, tableName),
+                    store.escapeNamePattern(metaData, columnName));
             Class columnType;
             try {
                 columns.next();
@@ -169,9 +155,7 @@ public class HeuristicPrimaryKeyFinder extends PrimaryKeyFinder {
             if (col == null) {
                 try {
                     String sequenceName =
-                            store.getSQLDialect()
-                                    .getSequenceForColumn(
-                                            databaseSchema, tableName, columnName, cx);
+                            store.getSQLDialect().getSequenceForColumn(databaseSchema, tableName, columnName, cx);
                     if (sequenceName != null) {
                         col = new SequencedPrimaryKeyColumn(columnName, columnType, sequenceName);
                     }
@@ -179,10 +163,7 @@ public class HeuristicPrimaryKeyFinder extends PrimaryKeyFinder {
                     // log the exception , and continue on
                     LOGGER.log(
                             Level.WARNING,
-                            "Error occured determining sequence for "
-                                    + columnName
-                                    + ", "
-                                    + tableName,
+                            "Error occured determining sequence for " + columnName + ", " + tableName,
                             e);
                 }
             }

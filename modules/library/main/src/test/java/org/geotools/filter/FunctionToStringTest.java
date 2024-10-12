@@ -61,17 +61,16 @@ public class FunctionToStringTest {
     private DefaultFunctionFactory functionFactory;
 
     /** The collection function list. */
-    private static List<String> collectionFunctionList =
-            Arrays.asList(
-                    Collection_AverageFunction.NAME.getName(),
-                    Collection_BoundsFunction.NAME.getName(),
-                    Collection_CountFunction.NAME.getName(),
-                    Collection_MaxFunction.NAME.getName(),
-                    Collection_MedianFunction.NAME.getName(),
-                    Collection_MinFunction.NAME.getName(),
-                    Collection_NearestFunction.NAME.getName(),
-                    Collection_SumFunction.NAME.getName(),
-                    Collection_UniqueFunction.NAME.getName());
+    private static List<String> collectionFunctionList = Arrays.asList(
+            Collection_AverageFunction.NAME.getName(),
+            Collection_BoundsFunction.NAME.getName(),
+            Collection_CountFunction.NAME.getName(),
+            Collection_MaxFunction.NAME.getName(),
+            Collection_MedianFunction.NAME.getName(),
+            Collection_MinFunction.NAME.getName(),
+            Collection_NearestFunction.NAME.getName(),
+            Collection_SumFunction.NAME.getName(),
+            Collection_UniqueFunction.NAME.getName());
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
@@ -121,8 +120,7 @@ public class FunctionToStringTest {
         createNewFunctionParameters(functionName, parameters);
 
         // Create function expression with supplied parameters
-        Function function =
-                functionFactory.function(functionName.getFunctionName(), parameters, fallback);
+        Function function = functionFactory.function(functionName.getFunctionName(), parameters, fallback);
 
         return function;
     }
@@ -135,8 +133,7 @@ public class FunctionToStringTest {
      * @param functionName the function name
      * @param parameters the parameters
      */
-    private static void createNewFunctionParameters(
-            FunctionName functionName, List<Expression> parameters) {
+    private static void createNewFunctionParameters(FunctionName functionName, List<Expression> parameters) {
         String name = functionName.getName();
 
         if (collectionFunctionList.contains(name)) {
@@ -179,21 +176,17 @@ public class FunctionToStringTest {
                 } else if (type == Class.class) {
                     parameters.add(null);
                 } else if (type.getName()
-                                .compareToIgnoreCase(
-                                        "org.geotools.filter.function.color.AbstractHSLFunction$Method")
+                                .compareToIgnoreCase("org.geotools.filter.function.color.AbstractHSLFunction$Method")
                         == 0) {
                     parameters.add(null);
-                } else if (type.getName()
-                                .compareToIgnoreCase("org.geotools.styling.visitor.RescalingMode")
-                        == 0) {
+                } else if (type.getName().compareToIgnoreCase("org.geotools.styling.visitor.RescalingMode") == 0) {
                     parameters.add(ff.literal(0));
                 } else {
                     Object newObj = null;
                     try {
                         newObj = type.getDeclaredConstructor().newInstance();
                     } catch (Exception e) {
-                        java.util.logging.Logger.getGlobal()
-                                .log(java.util.logging.Level.INFO, "", e);
+                        java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
                     }
 
                     parameters.add(ff.literal(newObj));

@@ -76,9 +76,8 @@ public class MBTypes extends MBExpression {
                 JSONArray arr = (JSONArray) json.get(1);
                 return ff.literal(arr);
             } else {
-                throw new MBFormatException(
-                        "The \"literal\" expression requires a JSONObject or JSONArray but was "
-                                + json.get(1).getClass());
+                throw new MBFormatException("The \"literal\" expression requires a JSONObject or JSONArray but was "
+                        + json.get(1).getClass());
             }
         }
         throw new MBFormatException("The \"literal\" expression requires exactly 1 argument");

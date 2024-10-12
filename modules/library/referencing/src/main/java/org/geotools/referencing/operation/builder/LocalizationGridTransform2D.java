@@ -63,8 +63,7 @@ import org.geotools.util.logging.Logging;
  *     javax.media.jai.WarpGrid} the first time the {@link WarpTransform2D#getWarp()} method is
  *     invoked (GEOT-522).
  */
-final class LocalizationGridTransform2D extends AbstractMathTransform
-        implements MathTransform2D, Serializable {
+final class LocalizationGridTransform2D extends AbstractMathTransform implements MathTransform2D, Serializable {
     /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = 1067560328828441295L;
 
@@ -192,8 +191,7 @@ final class LocalizationGridTransform2D extends AbstractMathTransform
      * @param numPts Nombre de points à transformer.
      */
     @Override
-    public void transform(
-            final float[] srcPts, int srcOff, final float[] dstPts, int dstOff, int numPts) {
+    public void transform(final float[] srcPts, int srcOff, final float[] dstPts, int dstOff, int numPts) {
         transform(srcPts, null, srcOff, dstPts, null, dstOff, numPts);
     }
 
@@ -209,8 +207,7 @@ final class LocalizationGridTransform2D extends AbstractMathTransform
      * @param numPts Nombre de points à transformer.
      */
     @Override
-    public void transform(
-            final double[] srcPts, int srcOff, final double[] dstPts, int dstOff, int numPts) {
+    public void transform(final double[] srcPts, int srcOff, final double[] dstPts, int dstOff, int numPts) {
         transform(null, srcPts, srcOff, null, dstPts, dstOff, numPts);
     }
 
@@ -259,33 +256,13 @@ final class LocalizationGridTransform2D extends AbstractMathTransform
              * sortie (à calculer) sont entre parenthèses.
              */
             final double x0 =
-                    linearInterpolation(
-                            col + 0,
-                            grid[offset00 + X_OFFSET],
-                            col + 1,
-                            grid[offset10 + X_OFFSET],
-                            xi);
+                    linearInterpolation(col + 0, grid[offset00 + X_OFFSET], col + 1, grid[offset10 + X_OFFSET], xi);
             final double y0 =
-                    linearInterpolation(
-                            col + 0,
-                            grid[offset00 + Y_OFFSET],
-                            col + 1,
-                            grid[offset10 + Y_OFFSET],
-                            xi);
+                    linearInterpolation(col + 0, grid[offset00 + Y_OFFSET], col + 1, grid[offset10 + Y_OFFSET], xi);
             final double x1 =
-                    linearInterpolation(
-                            col + 0,
-                            grid[offset01 + X_OFFSET],
-                            col + 1,
-                            grid[offset11 + X_OFFSET],
-                            xi);
+                    linearInterpolation(col + 0, grid[offset01 + X_OFFSET], col + 1, grid[offset11 + X_OFFSET], xi);
             final double y1 =
-                    linearInterpolation(
-                            col + 0,
-                            grid[offset01 + Y_OFFSET],
-                            col + 1,
-                            grid[offset11 + Y_OFFSET],
-                            xi);
+                    linearInterpolation(col + 0, grid[offset01 + Y_OFFSET], col + 1, grid[offset11 + Y_OFFSET], xi);
             /*
              * Interpole maintenant les coordonnées (x,y) entre les deux lignes.
              */
@@ -357,13 +334,7 @@ final class LocalizationGridTransform2D extends AbstractMathTransform
         final double dyCol = (grid[offset10 + Y_OFFSET] - y) * sgnCol;
         final double dxRow = (grid[offset01 + X_OFFSET] - x) * sgnRow;
         final double dyRow = (grid[offset01 + Y_OFFSET] - y) * sgnRow;
-        dest.setTransform(
-                dxCol,
-                dyCol,
-                dxRow,
-                dyRow,
-                x - dxCol * col - dxRow * row,
-                y - dyCol * col - dyRow * row);
+        dest.setTransform(dxCol, dyCol, dxRow, dyRow, x - dxCol * col - dxRow * row, y - dyCol * col - dyRow * row);
         /*
          * Si l'on transforme les 3 points qui ont servit à déterminer la transformation
          * affine, on devrait obtenir un résultat identique (aux erreurs d'arrondissement
@@ -417,8 +388,7 @@ final class LocalizationGridTransform2D extends AbstractMathTransform
      * @param tr In input, the affine transform to use for the first step. In output, the last
      *     affine transform used for the transformation.
      */
-    final void inverseTransform(
-            final Point2D source, final Point2D.Double target, final AffineTransform tr)
+    final void inverseTransform(final Point2D source, final Point2D.Double target, final AffineTransform tr)
             throws TransformException {
         if (CONSERVATIVE) {
             // In an optimal approach, we should reuse the same affine transform than the one used
@@ -574,8 +544,7 @@ final class LocalizationGridTransform2D extends AbstractMathTransform
      * @version $Id$
      * @author Martin Desruisseaux (IRD)
      */
-    private final class Inverse extends AbstractMathTransform.Inverse
-            implements MathTransform2D, Serializable {
+    private final class Inverse extends AbstractMathTransform.Inverse implements MathTransform2D, Serializable {
         /** Serial number for interoperability with different versions. */
         private static final long serialVersionUID = 4876426825123740986L;
 
@@ -586,8 +555,7 @@ final class LocalizationGridTransform2D extends AbstractMathTransform
 
         /** Transform a "real world" coordinate into a grid coordinate. */
         @Override
-        public Point2D transform(final Point2D ptSrc, final Point2D ptDst)
-                throws TransformException {
+        public Point2D transform(final Point2D ptSrc, final Point2D ptDst) throws TransformException {
             final AffineTransform tr = new AffineTransform(global);
             if (ptDst == null) {
                 final Point2D.Double target = new Point2D.Double();
@@ -619,8 +587,7 @@ final class LocalizationGridTransform2D extends AbstractMathTransform
          * @throws TransformException if a point can't be transformed.
          */
         @Override
-        public void transform(
-                final float[] srcPts, int srcOff, final float[] dstPts, int dstOff, int numPts)
+        public void transform(final float[] srcPts, int srcOff, final float[] dstPts, int dstOff, int numPts)
                 throws TransformException {
             int postIncrement = 0;
             if (srcPts == dstPts && srcOff < dstOff) {
@@ -657,8 +624,7 @@ final class LocalizationGridTransform2D extends AbstractMathTransform
          * @throws TransformException if a point can't be transformed.
          */
         @Override
-        public void transform(
-                final double[] srcPts, int srcOff, final double[] dstPts, int dstOff, int numPts)
+        public void transform(final double[] srcPts, int srcOff, final double[] dstPts, int dstOff, int numPts)
                 throws TransformException {
             int postIncrement = 0;
             if (srcPts == dstPts && srcOff < dstOff) {
@@ -725,12 +691,9 @@ final class LocalizationGridTransform2D extends AbstractMathTransform
         private static final long serialVersionUID = -8263439392080019340L;
 
         /** The parameters group. */
-        static final ParameterDescriptorGroup PARAMETERS =
-                createDescriptorGroup(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.GEOTOOLS, "WarpPolynomial")
-                        },
-                        new ParameterDescriptor[] {});
+        static final ParameterDescriptorGroup PARAMETERS = createDescriptorGroup(
+                new NamedIdentifier[] {new NamedIdentifier(Citations.GEOTOOLS, "WarpPolynomial")},
+                new ParameterDescriptor[] {});
 
         /** Create a provider for warp transforms. */
         public Provider() {

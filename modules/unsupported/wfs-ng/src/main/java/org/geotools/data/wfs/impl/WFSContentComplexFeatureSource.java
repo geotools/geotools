@@ -67,8 +67,7 @@ public class WFSContentComplexFeatureSource implements FeatureSource<FeatureType
      * @param client The WFSClient responsible for making the WFS requests.
      * @param dataAccess The data access object.
      */
-    public WFSContentComplexFeatureSource(
-            Name typeName, WFSClient client, WFSContentDataAccess dataAccess) {
+    public WFSContentComplexFeatureSource(Name typeName, WFSClient client, WFSContentDataAccess dataAccess) {
         this.typeName = typeName;
         this.client = client;
         this.dataAccess = dataAccess;
@@ -90,10 +89,9 @@ public class WFSContentComplexFeatureSource implements FeatureSource<FeatureType
     @Override
     public FeatureCollection<FeatureType, Feature> getFeatures(Query query) throws IOException {
         if (query.getTypeName() != null && !typeName.getLocalPart().equals(query.getTypeName())) {
-            throw new IllegalArgumentException(
-                    String.format(
-                            "Query's local typeName %s doesn't match the one of this feature source %s.",
-                            query.getTypeName(), typeName.getLocalPart()));
+            throw new IllegalArgumentException(String.format(
+                    "Query's local typeName %s doesn't match the one of this feature source %s.",
+                    query.getTypeName(), typeName.getLocalPart()));
         }
         GetFeatureRequest request = client.createGetFeatureRequest();
         FeatureType schema = dataAccess.getSchema(typeName);
@@ -107,10 +105,7 @@ public class WFSContentComplexFeatureSource implements FeatureSource<FeatureType
         if (query.getCoordinateSystem() != null) {
             request.findSupportedSrsName(query.getCoordinateSystem());
             if (request.getSrsName() == null) {
-                LOGGER.log(
-                        Level.WARNING,
-                        "WFS doesn't support the coordinate system: "
-                                + query.getCoordinateSystem());
+                LOGGER.log(Level.WARNING, "WFS doesn't support the coordinate system: " + query.getCoordinateSystem());
             }
         }
 
@@ -143,9 +138,7 @@ public class WFSContentComplexFeatureSource implements FeatureSource<FeatureType
 
             @Override
             public CoordinateReferenceSystem getCRS() {
-                return WFSContentComplexFeatureSource.this
-                        .getSchema()
-                        .getCoordinateReferenceSystem();
+                return WFSContentComplexFeatureSource.this.getSchema().getCoordinateReferenceSystem();
             }
 
             @Override
@@ -225,10 +218,9 @@ public class WFSContentComplexFeatureSource implements FeatureSource<FeatureType
             return null;
         }
         QName name = dataAccess.getRemoteTypeName(typeName);
-        final CoordinateReferenceSystem targetCrs =
-                query.getCoordinateSystemReproject() != null
-                        ? query.getCoordinateSystemReproject()
-                        : client.getDefaultCRS(name);
+        final CoordinateReferenceSystem targetCrs = query.getCoordinateSystemReproject() != null
+                ? query.getCoordinateSystemReproject()
+                : client.getDefaultCRS(name);
 
         return client.getBounds(name, targetCrs);
     }

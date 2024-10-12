@@ -45,8 +45,7 @@ public class BatchFeatureEvent extends FeatureEvent {
     static final Logger LOGGER = Logging.getLogger(BatchFeatureEvent.class);
     private static final long serialVersionUID = 3154238322369916486L;
 
-    public BatchFeatureEvent(
-            FeatureSource<? extends FeatureType, ? extends Feature> featureSource) {
+    public BatchFeatureEvent(FeatureSource<? extends FeatureType, ? extends Feature> featureSource) {
         this(featureSource, new ReferencedEnvelope(), Filter.EXCLUDE);
     }
 
@@ -93,8 +92,7 @@ public class BatchFeatureEvent extends FeatureEvent {
             // so we are never going to be able to be more specific
             return;
         }
-        if (change.getFilter() == Filter.INCLUDE
-                || change.getBounds() == ReferencedEnvelope.EVERYTHING) {
+        if (change.getFilter() == Filter.INCLUDE || change.getBounds() == ReferencedEnvelope.EVERYTHING) {
             // something has changed but we are not sure what...
             filter = Filter.INCLUDE;
             bounds = ReferencedEnvelope.EVERYTHING;

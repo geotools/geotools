@@ -98,8 +98,7 @@ public class ThreadedTransformTest {
     }
 
     protected void transform()
-            throws URISyntaxException, OperationNotFoundException, FactoryException,
-                    TransformException {
+            throws URISyntaxException, OperationNotFoundException, FactoryException, TransformException {
         for (int iter = 0; iter < NUM_ITERATIONS; iter++) {
             CoordinateOperationFactory coordinateOperationFactory =
                     ReferencingFactoryFinder.getCoordinateOperationFactory(HINTS);
@@ -107,8 +106,7 @@ public class ThreadedTransformTest {
             // coordinateOperationFactory = CRS
             // .getCoordinateOperationFactory(LENIENT);
 
-            final CoordinateOperation operation =
-                    coordinateOperationFactory.createOperation(wgs84, nad83);
+            final CoordinateOperation operation = coordinateOperationFactory.createOperation(wgs84, nad83);
 
             CRS.transform(operation, envelope);
         }
@@ -130,19 +128,15 @@ public class ThreadedTransformTest {
         List<Future<Void>> futures = new ArrayList<>();
         // raise some hell with 32 total threads
         for (int i = 0; i < 16; i++) {
-            Future<Void> f =
-                    EXECUTOR.submit(
-                            () -> {
-                                retrieve();
-                                return null;
-                            });
+            Future<Void> f = EXECUTOR.submit(() -> {
+                retrieve();
+                return null;
+            });
             futures.add(f);
-            f =
-                    EXECUTOR.submit(
-                            () -> {
-                                transform();
-                                return null;
-                            });
+            f = EXECUTOR.submit(() -> {
+                transform();
+                return null;
+            });
             futures.add(f);
         }
 

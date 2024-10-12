@@ -45,9 +45,8 @@ public class TotalIndexedMappingFeatureIterator extends IndexedMappingFeatureIte
         // get re-mapped query with IN ids from index result
         Query nextQuery = getNextSourceQuery();
         try {
-            sourceIterator =
-                    MappingFeatureIteratorFactory.getInstance(
-                            store, mapping, nextQuery, unrolledFilter, transaction, false);
+            sourceIterator = MappingFeatureIteratorFactory.getInstance(
+                    store, mapping, nextQuery, unrolledFilter, transaction, false);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

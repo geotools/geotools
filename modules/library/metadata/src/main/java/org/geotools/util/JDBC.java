@@ -56,18 +56,14 @@ public final class JDBC {
             synchronized (DRIVERS) {
                 if (!DRIVERS.contains(driver)) {
                     try {
-                        final Driver d =
-                                (Driver)
-                                        Class.forName(driver)
-                                                .getDeclaredConstructor()
-                                                .newInstance();
-                        log =
-                                Loggings.format(
-                                        Level.CONFIG,
-                                        LoggingKeys.LOADED_JDBC_DRIVER_$3,
-                                        driver,
-                                        d.getMajorVersion(),
-                                        d.getMinorVersion());
+                        final Driver d = (Driver)
+                                Class.forName(driver).getDeclaredConstructor().newInstance();
+                        log = Loggings.format(
+                                Level.CONFIG,
+                                LoggingKeys.LOADED_JDBC_DRIVER_$3,
+                                driver,
+                                d.getMajorVersion(),
+                                d.getMinorVersion());
                         DRIVERS.add(driver);
                     } catch (Exception exception) {
                         log = new LogRecord(Level.WARNING, exception.toString());

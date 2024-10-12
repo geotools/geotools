@@ -36,8 +36,7 @@ public class PostgisTransformFeatureStore extends TransformFeatureStore {
     DataStore datastore;
 
     public PostgisTransformFeatureStore(
-            SimpleFeatureStore store, Name name, List<Definition> definitions, DataStore datastore)
-            throws IOException {
+            SimpleFeatureStore store, Name name, List<Definition> definitions, DataStore datastore) throws IOException {
         super(store, name, definitions);
         this.datastore = datastore;
     }

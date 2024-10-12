@@ -39,8 +39,7 @@ import org.xml.sax.SAXException;
  */
 public class GMLFilterDocument extends org.xml.sax.helpers.XMLFilterImpl {
     /** The logger for the GML module */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(GMLFilterDocument.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(GMLFilterDocument.class);
 
     // Static Globals to handle some expected elements
 
@@ -64,24 +63,21 @@ public class GMLFilterDocument extends org.xml.sax.helpers.XMLFilterImpl {
 
     /** Sub geometry elements that may be passed in GML */
     private static final java.util.Collection<String> SUB_GEOMETRY_TYPES =
-            new ArrayList<>(
-                    java.util.Arrays.asList(new String[] {"outerBoundaryIs", "innerBoundaryIs"}));
+            new ArrayList<>(java.util.Arrays.asList(new String[] {"outerBoundaryIs", "innerBoundaryIs"}));
 
     /** Base geometry elements that may be passed in GML */
     private static final java.util.Collection<String> BASE_GEOMETRY_TYPES =
-            new ArrayList<>(
-                    java.util.Arrays.asList(
-                            new String[] {
-                                "Point",
-                                "LineString",
-                                "Polygon",
-                                "LinearRing",
-                                "Box",
-                                "MultiPoint",
-                                "MultiLineString",
-                                "MultiPolygon",
-                                "GeometryCollection"
-                            }));
+            new ArrayList<>(java.util.Arrays.asList(new String[] {
+                "Point",
+                "LineString",
+                "Polygon",
+                "LinearRing",
+                "Box",
+                "MultiPoint",
+                "MultiLineString",
+                "MultiPolygon",
+                "GeometryCollection"
+            }));
 
     /** Added by Sean Geoghegan to store character data chunks */
     private StringBuffer buffer = new StringBuffer();
@@ -122,13 +118,9 @@ public class GMLFilterDocument extends org.xml.sax.helpers.XMLFilterImpl {
      * @throws SAXException Some parsing error occurred while reading coordinates.
      */
     @Override
-    public void startElement(
-            String namespaceURI, String localName, String qName, org.xml.sax.Attributes atts)
+    public void startElement(String namespaceURI, String localName, String qName, org.xml.sax.Attributes atts)
             throws SAXException {
-        LOGGER.entering(
-                "GMLFilterDocument",
-                "startElement",
-                new Object[] {namespaceURI, localName, qName, atts});
+        LOGGER.entering("GMLFilterDocument", "startElement", new Object[] {namespaceURI, localName, qName, atts});
 
         /* if at a GML element, do some checks to determine
          * how to handle the element
@@ -185,9 +177,7 @@ public class GMLFilterDocument extends org.xml.sax.helpers.XMLFilterImpl {
     @Override
     public void characters(char[] ch, int start, int length) throws SAXException {
         LOGGER.entering(
-                "GMLFilterDocument",
-                "characters",
-                new Object[] {ch, Integer.valueOf(start), Integer.valueOf(length)});
+                "GMLFilterDocument", "characters", new Object[] {ch, Integer.valueOf(start), Integer.valueOf(length)});
 
         /* the methods here read in both coordinates and coords and
          * take the grunt-work out of this task for geometry handlers
@@ -230,10 +220,8 @@ public class GMLFilterDocument extends org.xml.sax.helpers.XMLFilterImpl {
      * @throws SAXException Some parsing error occurred while reading coordinates.
      */
     @Override
-    public void endElement(String namespaceURI, String localName, String qName)
-            throws SAXException {
-        LOGGER.entering(
-                "GMLFilterDocument", "endElement", new Object[] {namespaceURI, localName, qName});
+    public void endElement(String namespaceURI, String localName, String qName) throws SAXException {
+        LOGGER.entering("GMLFilterDocument", "endElement", new Object[] {namespaceURI, localName, qName});
 
         /* if leaving a GML element, handle and pass to appropriate
          * internal or external method
@@ -354,8 +342,7 @@ public class GMLFilterDocument extends org.xml.sax.helpers.XMLFilterImpl {
             }
 
             // separate tuples and loop through the set
-            StringTokenizer coordinateSets =
-                    new StringTokenizer(coordinateString.trim(), tupleDelimeter);
+            StringTokenizer coordinateSets = new StringTokenizer(coordinateString.trim(), tupleDelimeter);
             StringTokenizer coordinates;
 
             // loop through each of the coordinate sets.

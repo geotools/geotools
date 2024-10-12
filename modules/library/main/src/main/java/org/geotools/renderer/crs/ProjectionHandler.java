@@ -73,8 +73,7 @@ public class ProjectionHandler {
 
     protected static final double EPS = 1e-6;
 
-    protected static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(ProjectionHandler.class);
+    protected static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(ProjectionHandler.class);
 
     /**
      * The default densification limit. A {@link org.locationtech.jts.geom.Coordinate} object is 40
@@ -96,10 +95,9 @@ public class ProjectionHandler {
         String property = System.getProperty(DENSIFICATION_LIMIT_KEY);
         if (property != null) {
             // parse and validate, prepare error message to re-use its setup
-            String errorMessage =
-                    format(
-                            "Invalid value for %s, it should be a positive integer greater than 2. Will use the default value.",
-                            DENSIFICATION_LIMIT_KEY);
+            String errorMessage = format(
+                    "Invalid value for %s, it should be a positive integer greater than 2. Will use the default value.",
+                    DENSIFICATION_LIMIT_KEY);
             try {
                 int limit = Integer.parseInt(property);
                 if (limit > 2) {
@@ -147,17 +145,13 @@ public class ProjectionHandler {
      * @param renderingEnvelope The target rendering area and target CRS
      */
     public ProjectionHandler(
-            CoordinateReferenceSystem sourceCRS,
-            Envelope validAreaBounds,
-            ReferencedEnvelope renderingEnvelope)
+            CoordinateReferenceSystem sourceCRS, Envelope validAreaBounds, ReferencedEnvelope renderingEnvelope)
             throws FactoryException {
         this.renderingEnvelope = renderingEnvelope;
         this.sourceCRS = CRS.getHorizontalCRS(sourceCRS);
         this.targetCRS = renderingEnvelope.getCoordinateReferenceSystem();
         this.validAreaBounds =
-                validAreaBounds != null
-                        ? new ReferencedEnvelope(validAreaBounds, DefaultGeographicCRS.WGS84)
-                        : null;
+                validAreaBounds != null ? new ReferencedEnvelope(validAreaBounds, DefaultGeographicCRS.WGS84) : null;
         this.validArea = null;
         this.validaAreaTester = null;
         checkReprojection();
@@ -171,9 +165,7 @@ public class ProjectionHandler {
      * @param renderingEnvelope The target rendering area and target CRS
      */
     public ProjectionHandler(
-            CoordinateReferenceSystem sourceCRS,
-            Geometry validArea,
-            ReferencedEnvelope renderingEnvelope)
+            CoordinateReferenceSystem sourceCRS, Geometry validArea, ReferencedEnvelope renderingEnvelope)
             throws FactoryException {
         this(sourceCRS, validArea, renderingEnvelope, false);
     }
@@ -197,18 +189,14 @@ public class ProjectionHandler {
             this.renderingEnvelope = renderingEnvelope;
             this.sourceCRS = sourceCRS;
             this.targetCRS = renderingEnvelope.getCoordinateReferenceSystem();
-            this.validAreaBounds =
-                    new ReferencedEnvelope(
-                            validArea.getEnvelopeInternal(), DefaultGeographicCRS.WGS84);
+            this.validAreaBounds = new ReferencedEnvelope(validArea.getEnvelopeInternal(), DefaultGeographicCRS.WGS84);
             this.validArea = null;
             this.validaAreaTester = null;
         } else {
             this.renderingEnvelope = renderingEnvelope;
             this.sourceCRS = sourceCRS;
             this.targetCRS = renderingEnvelope.getCoordinateReferenceSystem();
-            this.validAreaBounds =
-                    new ReferencedEnvelope(
-                            validArea.getEnvelopeInternal(), DefaultGeographicCRS.WGS84);
+            this.validAreaBounds = new ReferencedEnvelope(validArea.getEnvelopeInternal(), DefaultGeographicCRS.WGS84);
             this.validArea = validArea;
             this.validaAreaTester = PreparedGeometryFactory.prepare(validArea);
         }
@@ -232,18 +220,14 @@ public class ProjectionHandler {
         try {
             noReprojection = !CRS.isTransformationRequired(geometryCRS, renderingCRS);
         } catch (Exception e) {
-            LOGGER.log(
-                    Level.FINE,
-                    "Failed to determine is reprojection is required, assumming it is",
-                    e);
+            LOGGER.log(Level.FINE, "Failed to determine is reprojection is required, assumming it is", e);
             noReprojection = false;
         }
         // query across dateline only in case of reprojection, Oracle won't use the spatial index
         // with two or-ed bboxes and fixing the issue at the store level requires more
         // time/resources than we presently have
         this.queryAcrossDateline =
-                !CRS.equalsIgnoreMetadata(
-                        sourceCRS, renderingEnvelope.getCoordinateReferenceSystem());
+                !CRS.equalsIgnoreMetadata(sourceCRS, renderingEnvelope.getCoordinateReferenceSystem());
 
         this.sourceAxisOrder = CRS.getAxisOrder(sourceCRS);
         this.targetAxisOrder = CRS.getAxisOrder(targetCRS);
@@ -262,16 +246,14 @@ public class ProjectionHandler {
      * Returns a set of envelopes that will be used to query the data given the specified rendering
      * envelope and the current query envelope
      */
-    public List<ReferencedEnvelope> getQueryEnvelopes()
-            throws TransformException, FactoryException {
+    public List<ReferencedEnvelope> getQueryEnvelopes() throws TransformException, FactoryException {
         CoordinateReferenceSystem renderingCRS = renderingEnvelope.getCoordinateReferenceSystem();
         if (!queryAcrossDateline) {
             ReferencedEnvelope envelope = transformEnvelope(renderingEnvelope, sourceCRS);
             if (envelope == null) return Collections.emptyList();
             return Collections.singletonList(envelope);
         }
-        if (renderingCRS instanceof GeographicCRS
-                && !CRS.equalsIgnoreMetadata(renderingCRS, WGS84)) {
+        if (renderingCRS instanceof GeographicCRS && !CRS.equalsIgnoreMetadata(renderingCRS, WGS84)) {
             // special case, if we just transform the coordinates are going to be wrapped by the
             // referencing
             // subsystem directly
@@ -309,16 +291,14 @@ public class ProjectionHandler {
                 double minY = renderingEnvelope.getMinY();
                 double maxX = renderingEnvelope.getMaxX();
                 double maxY = renderingEnvelope.getMaxY();
-                ReferencedEnvelope re1 =
-                        new ReferencedEnvelope(minX, datelineX - EPS, minY, maxY, renderingCRS);
+                ReferencedEnvelope re1 = new ReferencedEnvelope(minX, datelineX - EPS, minY, maxY, renderingCRS);
                 List<ReferencedEnvelope> result = new ArrayList<>();
                 ReferencedEnvelope tx1 = transformEnvelope(re1, WGS84);
                 if (tx1 != null) {
                     tx1.expandToInclude(180, tx1.getMinY());
                     addTransformedEnvelope(tx1, result);
                 }
-                ReferencedEnvelope re2 =
-                        new ReferencedEnvelope(datelineX + EPS, maxX, minY, maxY, renderingCRS);
+                ReferencedEnvelope re2 = new ReferencedEnvelope(datelineX + EPS, maxX, minY, maxY, renderingCRS);
                 ReferencedEnvelope tx2 = transformEnvelope(re2, WGS84);
                 if (tx2 != null) {
                     if (tx2.getMinX() > 180) {
@@ -375,8 +355,7 @@ public class ProjectionHandler {
      * whole world extent. When transform flag is true, the envelopes will be transformed before
      * being returned
      */
-    private void adjustEnvelope(
-            ReferencedEnvelope re, List<ReferencedEnvelope> envelopes, boolean transform)
+    private void adjustEnvelope(ReferencedEnvelope re, List<ReferencedEnvelope> envelopes, boolean transform)
             throws TransformException, FactoryException {
         CoordinateReferenceSystem crs = re.getCoordinateReferenceSystem();
         boolean isLatLon = CRS.getAxisOrder(crs) == CRS.AxisOrder.NORTH_EAST;
@@ -394,13 +373,12 @@ public class ProjectionHandler {
             minX = -180;
             maxX = 180;
             // Create a whole world envelope taking into account latLon/lonLat
-            ReferencedEnvelope envelope =
-                    new ReferencedEnvelope(
-                            isLatLon ? minY : minX,
-                            isLatLon ? maxY : maxX,
-                            isLatLon ? minX : minY,
-                            isLatLon ? maxX : maxY,
-                            crs);
+            ReferencedEnvelope envelope = new ReferencedEnvelope(
+                    isLatLon ? minY : minX,
+                    isLatLon ? maxY : maxX,
+                    isLatLon ? minX : minY,
+                    isLatLon ? maxX : maxY,
+                    crs);
             envelopesToBeAdded.add(envelope);
         } else {
             // Note that the extent won't be > 360 at this point
@@ -476,20 +454,17 @@ public class ProjectionHandler {
                     coord4R = isLatLon ? 180 : maxY;
                 }
 
-                envelopesToBeAdded.add(
-                        new ReferencedEnvelope(coord1L, coord2L, coord3L, coord4L, crs));
-                envelopesToBeAdded.add(
-                        new ReferencedEnvelope(coord1R, coord2R, coord3R, coord4R, crs));
+                envelopesToBeAdded.add(new ReferencedEnvelope(coord1L, coord2L, coord3L, coord4L, crs));
+                envelopesToBeAdded.add(new ReferencedEnvelope(coord1R, coord2R, coord3R, coord4R, crs));
 
             } else {
                 // No dateline has been crossed. One envelope would be enough
-                envelopesToBeAdded.add(
-                        new ReferencedEnvelope(
-                                isLatLon ? minY : minX,
-                                isLatLon ? maxY : maxX,
-                                isLatLon ? minX : minY,
-                                isLatLon ? maxX : maxY,
-                                crs));
+                envelopesToBeAdded.add(new ReferencedEnvelope(
+                        isLatLon ? minY : minX,
+                        isLatLon ? maxY : maxX,
+                        isLatLon ? minX : minY,
+                        isLatLon ? maxX : maxY,
+                        crs));
             }
         }
         for (ReferencedEnvelope env : envelopesToBeAdded) {
@@ -509,14 +484,12 @@ public class ProjectionHandler {
      * @param targetCRS target CRS
      * @return reprojected envelope
      */
-    public ReferencedEnvelope getProjectedEnvelope(
-            ReferencedEnvelope envelope, CoordinateReferenceSystem targetCRS)
+    public ReferencedEnvelope getProjectedEnvelope(ReferencedEnvelope envelope, CoordinateReferenceSystem targetCRS)
             throws TransformException, FactoryException {
         return transformEnvelope(envelope, targetCRS);
     }
 
-    protected ReferencedEnvelope transformEnvelope(
-            ReferencedEnvelope envelope, CoordinateReferenceSystem targetCRS)
+    protected ReferencedEnvelope transformEnvelope(ReferencedEnvelope envelope, CoordinateReferenceSystem targetCRS)
             throws TransformException, FactoryException {
         if (CRS.equalsIgnoreMetadata(envelope.getCoordinateReferenceSystem(), targetCRS)) {
             return envelope;
@@ -532,12 +505,8 @@ public class ProjectionHandler {
             }
 
             ReferencedEnvelope transformed = envelope.transform(targetCRS, true, 10);
-            ProjectionHandler handler =
-                    ProjectionHandlerFinder.getHandler(
-                            new ReferencedEnvelope(targetCRS),
-                            DefaultGeographicCRS.WGS84,
-                            true,
-                            projectionParameters);
+            ProjectionHandler handler = ProjectionHandlerFinder.getHandler(
+                    new ReferencedEnvelope(targetCRS), DefaultGeographicCRS.WGS84, true, projectionParameters);
             // does the target CRS have a strict notion of what's possible in terms of
             // valid coordinate ranges?
             if (handler == null || handler instanceof WrappingProjectionHandler) {
@@ -554,19 +523,17 @@ public class ProjectionHandler {
                 return reduced;
             }
         } catch (Exception e) {
-            LOGGER.fine(
-                    "Failed to reproject the envelope "
-                            + envelope
-                            + " to "
-                            + targetCRS
-                            + " trying an area restriction");
+            LOGGER.fine("Failed to reproject the envelope "
+                    + envelope
+                    + " to "
+                    + targetCRS
+                    + " trying an area restriction");
 
             ReferencedEnvelope envWGS84 = envelope.transform(DefaultGeographicCRS.WGS84, true);
 
             // do we have restrictions on the target CRS?
-            ProjectionHandler handler =
-                    ProjectionHandlerFinder.getHandler(
-                            new ReferencedEnvelope(targetCRS), DefaultGeographicCRS.WGS84, false);
+            ProjectionHandler handler = ProjectionHandlerFinder.getHandler(
+                    new ReferencedEnvelope(targetCRS), DefaultGeographicCRS.WGS84, false);
             if (handler != null && handler.validAreaBounds != null) {
                 ReferencedEnvelope validAreaBounds = handler.validAreaBounds;
                 envWGS84 = envWGS84.intersection(validAreaBounds);
@@ -574,9 +541,7 @@ public class ProjectionHandler {
 
             // let's see if we can restrict the area we're reprojecting back using a projection
             // handler for the source CRS
-            handler =
-                    ProjectionHandlerFinder.getHandler(
-                            envelope, envelope.getCoordinateReferenceSystem(), false);
+            handler = ProjectionHandlerFinder.getHandler(envelope, envelope.getCoordinateReferenceSystem(), false);
             if (handler != null && handler.validAreaBounds != null) {
                 ReferencedEnvelope validAreaBounds = handler.validAreaBounds;
                 envWGS84 = envWGS84.intersection(validAreaBounds);
@@ -589,52 +554,37 @@ public class ProjectionHandler {
                 try {
                     return ReferencedEnvelope.reference(envWGS84).transform(targetCRS, true);
                 } catch (Exception e2) {
-                    LOGGER.fine(
-                            "Failed to reproject the restricted envelope "
-                                    + envWGS84
-                                    + " to "
-                                    + targetCRS);
+                    LOGGER.fine("Failed to reproject the restricted envelope " + envWGS84 + " to " + targetCRS);
                 }
             }
 
             // ok, let's see if we have an area of validity then
             GeographicBoundingBox bbox = CRS.getGeographicBoundingBox(targetCRS);
             if (bbox != null) {
-                ReferencedEnvelope restriction =
-                        new ReferencedEnvelope(
-                                bbox.getEastBoundLongitude(),
-                                bbox.getWestBoundLongitude(),
-                                bbox.getSouthBoundLatitude(),
-                                bbox.getNorthBoundLatitude(),
-                                DefaultGeographicCRS.WGS84);
+                ReferencedEnvelope restriction = new ReferencedEnvelope(
+                        bbox.getEastBoundLongitude(),
+                        bbox.getWestBoundLongitude(),
+                        bbox.getSouthBoundLatitude(),
+                        bbox.getNorthBoundLatitude(),
+                        DefaultGeographicCRS.WGS84);
                 Envelope intersection = envWGS84.intersection(restriction);
                 if (intersection.isNull()) {
                     return null;
                 } else {
                     try {
-                        return ReferencedEnvelope.reference(intersection)
-                                .transform(targetCRS, true);
+                        return ReferencedEnvelope.reference(intersection).transform(targetCRS, true);
                     } catch (Exception e2) {
-                        LOGGER.fine(
-                                "Failed to reproject the restricted envelope "
-                                        + intersection
-                                        + " to "
-                                        + targetCRS);
+                        LOGGER.fine("Failed to reproject the restricted envelope " + intersection + " to " + targetCRS);
                     }
                 }
             }
 
             throw new TransformException(
-                    "All attemptsto reproject the envelope "
-                            + envelope
-                            + " to "
-                            + targetCRS
-                            + " failed");
+                    "All attemptsto reproject the envelope " + envelope + " to " + targetCRS + " failed");
         }
     }
 
-    protected void reprojectEnvelopes(
-            CoordinateReferenceSystem queryCRS, List<ReferencedEnvelope> envelopes)
+    protected void reprojectEnvelopes(CoordinateReferenceSystem queryCRS, List<ReferencedEnvelope> envelopes)
             throws TransformException, FactoryException {
         // reproject the surviving envelopes
         for (int i = 0; i < envelopes.size(); i++) {
@@ -712,15 +662,13 @@ public class ProjectionHandler {
             // and the valid area in WGS84, which is a neutral, everything can
             // be turned into it, and then turn back the intersection into
             // the origin SRS
-            ReferencedEnvelope envIntWgs84 =
-                    new ReferencedEnvelope(validAreaBounds.intersection(geWGS84), WGS84);
+            ReferencedEnvelope envIntWgs84 = new ReferencedEnvelope(validAreaBounds.intersection(geWGS84), WGS84);
 
             // if the intersection is empty the geometry is completely outside of the valid area,
             // skip it
             if (envIntWgs84.getHeight() <= 0 || envIntWgs84.getWidth() <= 0) {
                 // valid area is crossing dateline?
-                if (validAreaBounds.contains(
-                        180, (validAreaBounds.getMinY() + validAreaBounds.getMaxY()) / 2)) {
+                if (validAreaBounds.contains(180, (validAreaBounds.getMinY() + validAreaBounds.getMaxY()) / 2)) {
                     ReferencedEnvelope translated = new ReferencedEnvelope(validAreaBounds);
                     translated.translate(-360, 0);
                     if (translated.contains((Envelope) geWGS84)) {
@@ -754,8 +702,7 @@ public class ProjectionHandler {
             // and the valid area in WGS84, which is a neutral, everything can
             // be turned into it, and then turn back the intersection into
             // the origin SRS
-            ReferencedEnvelope envIntWgs84 =
-                    new ReferencedEnvelope(validAreaBounds.intersection(geWGS84), WGS84);
+            ReferencedEnvelope envIntWgs84 = new ReferencedEnvelope(validAreaBounds.intersection(geWGS84), WGS84);
 
             // if the intersection is empty the geometry is completely outside of the valid area,
             // skip it
@@ -780,10 +727,7 @@ public class ProjectionHandler {
      * <p>It returns the original geometry if densification is not enabled.
      */
     protected Geometry densify(Geometry geometry, boolean validate) {
-        if (geometry != null
-                && densify > 0.0
-                && !(geometry instanceof Point)
-                && !(geometry instanceof MultiPoint)) {
+        if (geometry != null && densify > 0.0 && !(geometry instanceof Point) && !(geometry instanceof MultiPoint)) {
             try {
                 // does it make sense to densify to start with?
                 double length = geometry.getLength();
@@ -822,8 +766,7 @@ public class ProjectionHandler {
         return geometry;
     }
 
-    protected Geometry intersect(
-            Geometry geometry, Geometry mask, CoordinateReferenceSystem geometryCRS) {
+    protected Geometry intersect(Geometry geometry, Geometry mask, CoordinateReferenceSystem geometryCRS) {
         // this seems to cause issues to JTS, reduce to
         // single geometry when possible (http://jira.codehaus.org/browse/GEOS-6570)
         if (geometry instanceof GeometryCollection) {
@@ -844,8 +787,7 @@ public class ProjectionHandler {
                             if (intersected.getGeometryType().equals(geometryType)) {
                                 elements.add(intersected);
                             } else if (intersected instanceof GeometryCollection) {
-                                addGeometries(
-                                        elements, (GeometryCollection) intersected, geometryType);
+                                addGeometries(elements, (GeometryCollection) intersected, geometryType);
                             }
                         }
                     }
@@ -887,8 +829,7 @@ public class ProjectionHandler {
             }
             // from mm to km
             for (int i = 0; i < 6; i++) {
-                GeometryPrecisionReducer reducer =
-                        new GeometryPrecisionReducer(new PrecisionModel(1 / precision));
+                GeometryPrecisionReducer reducer = new GeometryPrecisionReducer(new PrecisionModel(1 / precision));
                 Geometry reduced = reducer.reduce(geometry);
                 try {
                     if (LOGGER.isLoggable(Level.FINE)) {
@@ -916,8 +857,7 @@ public class ProjectionHandler {
         }
 
         // clean up lower dimensional elements
-        GeometryDimensionCollector collector =
-                new GeometryDimensionCollector(geometry.getDimension());
+        GeometryDimensionCollector collector = new GeometryDimensionCollector(geometry.getDimension());
         result.apply(collector);
         result = collector.collect();
 
@@ -956,9 +896,7 @@ public class ProjectionHandler {
         for (MathTransform element : elements) {
             if (datumShiftChain != null) {
                 datumShiftChain.add(element);
-                if (element.getClass()
-                        .getName()
-                        .equals(GeocentricTransform.class.getName() + "$Inverse")) {
+                if (element.getClass().getName().equals(GeocentricTransform.class.getName() + "$Inverse")) {
                     datumShiftDetected = true;
                     MathTransform combined = concatenateTransforms(datumShiftChain);
                     GeographicOffsetWrapper wrapper = new GeographicOffsetWrapper(combined);
@@ -987,8 +925,7 @@ public class ProjectionHandler {
         if (datumShiftChain.size() == 1) {
             return datumShiftChain.get(0);
         } else {
-            MathTransform mt =
-                    ConcatenatedTransform.create(datumShiftChain.get(0), datumShiftChain.get(1));
+            MathTransform mt = ConcatenatedTransform.create(datumShiftChain.get(0), datumShiftChain.get(1));
             for (int i = 2; i < datumShiftChain.size(); i++) {
                 MathTransform curr = datumShiftChain.get(i);
                 mt = ConcatenatedTransform.create(mt, curr);
@@ -1055,9 +992,7 @@ public class ProjectionHandler {
                 throw new RuntimeException("Computed Earth half circle is 0, what is going on?");
             }
         } catch (Exception e) {
-            throw new RuntimeException(
-                    "Unexpected error computing the Earth half circle in the current projection",
-                    e);
+            throw new RuntimeException("Unexpected error computing the Earth half circle in the current projection", e);
         }
 
         computeDatelineX();
@@ -1067,11 +1002,8 @@ public class ProjectionHandler {
         // compute the x of the dateline in the rendering CRS
         try {
             double[] ordinates = {180, -80, 180, 80};
-            MathTransform mt =
-                    CRS.findMathTransform(
-                            DefaultGeographicCRS.WGS84,
-                            renderingEnvelope.getCoordinateReferenceSystem(),
-                            true);
+            MathTransform mt = CRS.findMathTransform(
+                    DefaultGeographicCRS.WGS84, renderingEnvelope.getCoordinateReferenceSystem(), true);
             mt.transform(ordinates, 0, ordinates, 0, 2);
             datelineX = ordinates[0];
         } catch (Exception e) {
@@ -1084,8 +1016,7 @@ public class ProjectionHandler {
      * Private method for adding to the input List only the {@link Geometry} objects of the input
      * {@link GeometryCollection} which belongs to the defined geometryType
      */
-    protected void addGeometries(
-            List<Geometry> geoms, GeometryCollection collection, String geometryType) {
+    protected void addGeometries(List<Geometry> geoms, GeometryCollection collection, String geometryType) {
         // Check if the list exists
         if (geoms == null) {
             return;

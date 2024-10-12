@@ -49,12 +49,10 @@ public class WarpBuilderTest {
     }
 
     @Test
-    public void testUTM32N()
-            throws FactoryException, TransformException, NoninvertibleTransformException {
+    public void testUTM32N() throws FactoryException, TransformException, NoninvertibleTransformException {
 
-        CoordinateReferenceSystem utm32n =
-                CRS.parseWKT(
-                        "PROJCS[\"WGS 84 / UTM zone 32N\",   GEOGCS[\"WGS 84\",     DATUM[\"World Geodetic System 1984\",       SPHEROID[\"WGS 84\", 6378137.0, 298.257223563, AUTHORITY[\"EPSG\",\"7030\"]],       AUTHORITY[\"EPSG\",\"6326\"]],     PRIMEM[\"Greenwich\", 0.0, AUTHORITY[\"EPSG\",\"8901\"]],     UNIT[\"degree\", 0.017453292519943295],     AXIS[\"Geodetic longitude\", EAST],     AXIS[\"Geodetic latitude\", NORTH],     AUTHORITY[\"EPSG\",\"4326\"]],   PROJECTION[\"Transverse_Mercator\", AUTHORITY[\"EPSG\",\"9807\"]],   PARAMETER[\"central_meridian\", 9.0],   PARAMETER[\"latitude_of_origin\", 0.0],   PARAMETER[\"scale_factor\", 0.9996],   PARAMETER[\"false_easting\", 500000.0],   PARAMETER[\"false_northing\", 0.0],   UNIT[\"m\", 1.0],   AXIS[\"Easting\", EAST],   AXIS[\"Northing\", NORTH],   AUTHORITY[\"EPSG\",\"32632\"]]");
+        CoordinateReferenceSystem utm32n = CRS.parseWKT(
+                "PROJCS[\"WGS 84 / UTM zone 32N\",   GEOGCS[\"WGS 84\",     DATUM[\"World Geodetic System 1984\",       SPHEROID[\"WGS 84\", 6378137.0, 298.257223563, AUTHORITY[\"EPSG\",\"7030\"]],       AUTHORITY[\"EPSG\",\"6326\"]],     PRIMEM[\"Greenwich\", 0.0, AUTHORITY[\"EPSG\",\"8901\"]],     UNIT[\"degree\", 0.017453292519943295],     AXIS[\"Geodetic longitude\", EAST],     AXIS[\"Geodetic latitude\", NORTH],     AUTHORITY[\"EPSG\",\"4326\"]],   PROJECTION[\"Transverse_Mercator\", AUTHORITY[\"EPSG\",\"9807\"]],   PARAMETER[\"central_meridian\", 9.0],   PARAMETER[\"latitude_of_origin\", 0.0],   PARAMETER[\"scale_factor\", 0.9996],   PARAMETER[\"false_easting\", 500000.0],   PARAMETER[\"false_northing\", 0.0],   UNIT[\"m\", 1.0],   AXIS[\"Easting\", EAST],   AXIS[\"Northing\", NORTH],   AUTHORITY[\"EPSG\",\"32632\"]]");
         Rectangle screen = new Rectangle(0, 0, 512, 512);
         GeneralBounds env = new GeneralBounds(new double[] {9 - 40, 0}, new double[] {9, 40});
         env.setCoordinateReferenceSystem(WGS84);
@@ -80,11 +78,9 @@ public class WarpBuilderTest {
     }
 
     @Test
-    public void testPolarStereo()
-            throws FactoryException, TransformException, NoninvertibleTransformException {
-        CoordinateReferenceSystem polar =
-                CRS.parseWKT(
-                        "PROJCS[\"WGS 84 / Antarctic Polar Stereographic\",   GEOGCS[\"WGS 84\",     DATUM[\"World Geodetic System 1984\",       SPHEROID[\"WGS 84\", 6378137.0, 298.257223563, AUTHORITY[\"EPSG\",\"7030\"]],       AUTHORITY[\"EPSG\",\"6326\"]],     PRIMEM[\"Greenwich\", 0.0, AUTHORITY[\"EPSG\",\"8901\"]],     UNIT[\"degree\", 0.017453292519943295],     AXIS[\"Geodetic longitude\", EAST],     AXIS[\"Geodetic latitude\", NORTH],     AUTHORITY[\"EPSG\",\"4326\"]],   PROJECTION[\"Polar Stereographic (variant B)\", AUTHORITY[\"EPSG\",\"9829\"]],   PARAMETER[\"central_meridian\", 0.0],   PARAMETER[\"Standard_Parallel_1\", -71.0],   PARAMETER[\"false_easting\", 0.0],   PARAMETER[\"false_northing\", 0.0],   UNIT[\"m\", 1.0],   AXIS[\"Easting\", \"North along 90 deg East\"],   AXIS[\"Northing\", \"North along 0 deg\"],   AUTHORITY[\"EPSG\",\"3031\"]]");
+    public void testPolarStereo() throws FactoryException, TransformException, NoninvertibleTransformException {
+        CoordinateReferenceSystem polar = CRS.parseWKT(
+                "PROJCS[\"WGS 84 / Antarctic Polar Stereographic\",   GEOGCS[\"WGS 84\",     DATUM[\"World Geodetic System 1984\",       SPHEROID[\"WGS 84\", 6378137.0, 298.257223563, AUTHORITY[\"EPSG\",\"7030\"]],       AUTHORITY[\"EPSG\",\"6326\"]],     PRIMEM[\"Greenwich\", 0.0, AUTHORITY[\"EPSG\",\"8901\"]],     UNIT[\"degree\", 0.017453292519943295],     AXIS[\"Geodetic longitude\", EAST],     AXIS[\"Geodetic latitude\", NORTH],     AUTHORITY[\"EPSG\",\"4326\"]],   PROJECTION[\"Polar Stereographic (variant B)\", AUTHORITY[\"EPSG\",\"9829\"]],   PARAMETER[\"central_meridian\", 0.0],   PARAMETER[\"Standard_Parallel_1\", -71.0],   PARAMETER[\"false_easting\", 0.0],   PARAMETER[\"false_northing\", 0.0],   UNIT[\"m\", 1.0],   AXIS[\"Easting\", \"North along 90 deg East\"],   AXIS[\"Northing\", \"North along 0 deg\"],   AUTHORITY[\"EPSG\",\"3031\"]]");
         Rectangle screen = new Rectangle(0, 0, 512, 512);
         GeneralBounds env = new GeneralBounds(new double[] {-10, -90}, new double[] {10, -85});
         env.setCoordinateReferenceSystem(WGS84);
@@ -119,22 +115,18 @@ public class WarpBuilderTest {
             boolean[] reverse)
             throws TransformException, FactoryException, NoninvertibleTransformException {
 
-        MathTransform2D crsTransform =
-                (MathTransform2D)
-                        CRS.findMathTransform(
-                                CRS.getHorizontalCRS(sourceCRS), CRS.getHorizontalCRS(targetCRS));
+        MathTransform2D crsTransform = (MathTransform2D)
+                CRS.findMathTransform(CRS.getHorizontalCRS(sourceCRS), CRS.getHorizontalCRS(targetCRS));
         Bounds targetEnvelope = transformEnvelope(sourceEnvelope, targetCRS);
 
         AffineTransform at = worldToScreenTransform(targetEnvelope, screen, reverse);
         MathTransform2D screenTransform = new AffineTransform2D(at);
-        MathTransform2D fullTranform =
-                (MathTransform2D) ConcatenatedTransform.create(crsTransform, screenTransform);
-        Rectangle2D.Double sourceDomain =
-                new Rectangle2D.Double(
-                        sourceEnvelope.getLowerCorner().getOrdinate(0),
-                        sourceEnvelope.getLowerCorner().getOrdinate(1),
-                        sourceEnvelope.getSpan(0),
-                        sourceEnvelope.getSpan(1));
+        MathTransform2D fullTranform = (MathTransform2D) ConcatenatedTransform.create(crsTransform, screenTransform);
+        Rectangle2D.Double sourceDomain = new Rectangle2D.Double(
+                sourceEnvelope.getLowerCorner().getOrdinate(0),
+                sourceEnvelope.getLowerCorner().getOrdinate(1),
+                sourceEnvelope.getSpan(0),
+                sourceEnvelope.getSpan(1));
         WarpBuilder wb = new WarpBuilder(0.8);
         int[] actualSplit = wb.getRowColsSplit(fullTranform, sourceDomain);
         Assert.assertArrayEquals(expectedSplit, actualSplit);
@@ -142,13 +134,10 @@ public class WarpBuilderTest {
 
     /**/
 
-    private AffineTransform worldToScreenTransform(
-            Bounds mapExtent, Rectangle paintArea, boolean[] reverse)
+    private AffineTransform worldToScreenTransform(Bounds mapExtent, Rectangle paintArea, boolean[] reverse)
             throws NoninvertibleTransformException {
         GeneralBounds gridRange =
-                new GeneralBounds(
-                        new double[] {0, 0},
-                        new double[] {paintArea.getWidth(), paintArea.getHeight()});
+                new GeneralBounds(new double[] {0, 0}, new double[] {paintArea.getWidth(), paintArea.getHeight()});
         final Matrix matrix = MatrixFactory.create(2 + 1);
         for (int i = 0; i < 2; i++) {
             int j = i;
@@ -172,11 +161,9 @@ public class WarpBuilderTest {
 
     private GeneralBounds transformEnvelope(GeneralBounds env, CoordinateReferenceSystem targetCRS)
             throws TransformException, OperationNotFoundException, FactoryException {
-        CoordinateOperationFactory coordinateOperationFactory =
-                CRS.getCoordinateOperationFactory(true);
+        CoordinateOperationFactory coordinateOperationFactory = CRS.getCoordinateOperationFactory(true);
 
-        final CoordinateOperation operation =
-                coordinateOperationFactory.createOperation(WGS84, targetCRS);
+        final CoordinateOperation operation = coordinateOperationFactory.createOperation(WGS84, targetCRS);
         final GeneralBounds transformed = CRS.transform(operation, env);
         transformed.setCoordinateReferenceSystem(targetCRS);
         final MathTransform transform = operation.getMathTransform();

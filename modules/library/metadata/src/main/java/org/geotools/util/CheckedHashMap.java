@@ -79,8 +79,7 @@ public class CheckedHashMap<K, V> extends LinkedHashMap<K, V> implements Cloneab
      * @param element the object to check, or {@code null}.
      * @throws IllegalArgumentException if the specified element is not of the expected type.
      */
-    private static <E> void ensureValidType(final E element, final Class<E> type)
-            throws IllegalArgumentException {
+    private static <E> void ensureValidType(final E element, final Class<E> type) throws IllegalArgumentException {
         if (element != null && !type.isInstance(element)) {
             throw new IllegalArgumentException(
                     MessageFormat.format(ErrorKeys.ILLEGAL_CLASS_$2, element.getClass(), type));
@@ -163,8 +162,7 @@ public class CheckedHashMap<K, V> extends LinkedHashMap<K, V> implements Cloneab
      * @throws UnsupportedOperationException if this collection is unmodifiable.
      */
     @Override
-    public V put(final K key, final V value)
-            throws IllegalArgumentException, UnsupportedOperationException {
+    public V put(final K key, final V value) throws IllegalArgumentException, UnsupportedOperationException {
         ensureValidType(key, keyType);
         ensureValidType(value, valueType);
         synchronized (getLock()) {

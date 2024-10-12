@@ -53,8 +53,7 @@ public class AbstractDecorator<D> implements Wrapper, Serializable {
         // implements the required interface and return it
         if (delegate instanceof Wrapper) return ((Wrapper) delegate).unwrap(iface);
         else if (iface.isInstance(delegate)) return (T) delegate;
-        else
-            throw new IllegalArgumentException("Cannot unwrap to the requested interface " + iface);
+        else throw new IllegalArgumentException("Cannot unwrap to the requested interface " + iface);
     }
 
     @Override

@@ -53,8 +53,7 @@ public class HanaSpatialFilterOnViewOnlineTest extends JDBCTestSupport {
     public void testCountWithFilterOnView() throws Exception {
         GeometryFactory gf = new GeometryFactory();
         PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
-        LinearRing shell =
-                gf.createLinearRing(sf.create(new double[] {0, 0, 4, 0, 4, 4, 0, 4, 0, 0}, 2));
+        LinearRing shell = gf.createLinearRing(sf.create(new double[] {0, 0, 4, 0, 4, 4, 0, 4, 0, 0}, 2));
         Polygon polygon = gf.createPolygon(shell, null);
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         Intersects intersects = ff.intersects(ff.property(aname("geom")), ff.literal(polygon));

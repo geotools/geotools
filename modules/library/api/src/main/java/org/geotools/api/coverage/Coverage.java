@@ -176,8 +176,7 @@ public interface Coverage {
      *     small to hold the output.
      */
     boolean[] evaluate(Position point, boolean[] destination)
-            throws PointOutsideCoverageException, CannotEvaluateException,
-                    ArrayIndexOutOfBoundsException;
+            throws PointOutsideCoverageException, CannotEvaluateException, ArrayIndexOutOfBoundsException;
 
     /**
      * Return a sequence of unsigned byte values for a given point in the coverage. A value for each
@@ -200,8 +199,7 @@ public interface Coverage {
      *     small to hold the output.
      */
     byte[] evaluate(Position point, byte[] destination)
-            throws PointOutsideCoverageException, CannotEvaluateException,
-                    ArrayIndexOutOfBoundsException;
+            throws PointOutsideCoverageException, CannotEvaluateException, ArrayIndexOutOfBoundsException;
 
     /**
      * Return a sequence of integer values for a given point in the coverage. A value for each
@@ -225,8 +223,7 @@ public interface Coverage {
      * @see Raster#getPixel(int, int, int[])
      */
     int[] evaluate(Position point, int[] destination)
-            throws PointOutsideCoverageException, CannotEvaluateException,
-                    ArrayIndexOutOfBoundsException;
+            throws PointOutsideCoverageException, CannotEvaluateException, ArrayIndexOutOfBoundsException;
 
     /**
      * Return a sequence of float values for a given point in the coverage. A value for each sample
@@ -249,8 +246,7 @@ public interface Coverage {
      * @see Raster#getPixel(int, int, float[])
      */
     float[] evaluate(Position point, float[] destination)
-            throws PointOutsideCoverageException, CannotEvaluateException,
-                    ArrayIndexOutOfBoundsException;
+            throws PointOutsideCoverageException, CannotEvaluateException, ArrayIndexOutOfBoundsException;
 
     /**
      * Return a sequence of double values for a given point in the coverage. A value for each sample
@@ -273,8 +269,7 @@ public interface Coverage {
      * @see Raster#getPixel(int, int, double[])
      */
     double[] evaluate(Position point, double[] destination)
-            throws PointOutsideCoverageException, CannotEvaluateException,
-                    ArrayIndexOutOfBoundsException;
+            throws PointOutsideCoverageException, CannotEvaluateException, ArrayIndexOutOfBoundsException;
 
     /**
      * The number of sample dimensions in the coverage. For grid coverages, a sample dimension is a

@@ -48,8 +48,7 @@ import org.xml.sax.SAXException;
  */
 public class XMLConfigDigester {
 
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(XMLConfigDigester.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(XMLConfigDigester.class);
 
     /** Namespace URI for the AppSchemaDataAccess configuration files */
     public static final String CONFIG_NS_URI = "http://www.geotools.org/app-schema";
@@ -120,8 +119,7 @@ public class XMLConfigDigester {
             }
         }
 
-        XMLConfigDigester.LOGGER.fine(
-                "parsing complex datastore config: " + dataStoreConfigUrl.toExternalForm());
+        XMLConfigDigester.LOGGER.fine("parsing complex datastore config: " + dataStoreConfigUrl.toExternalForm());
 
         Digester digester = new Digester();
         XMLConfigDigester.LOGGER.fine("digester created");
@@ -241,8 +239,7 @@ public class XMLConfigDigester {
         digester.addCallMethod(attMap + "/targetAttribute", "setTargetAttributePath", 1);
         digester.addCallParam(attMap + "/targetAttribute", 0);
 
-        digester.addCallMethod(
-                attMap + "/targetAttributeNode", "setTargetAttributeSchemaElement", 1);
+        digester.addCallMethod(attMap + "/targetAttributeNode", "setTargetAttributeSchemaElement", 1);
         digester.addCallParam(attMap + "/targetAttributeNode", 0);
 
         digester.addCallMethod(attMap + "/idExpression/OCQL", "setIdentifierExpression", 1);
@@ -258,8 +255,7 @@ public class XMLConfigDigester {
         digester.addCallParam(attMap + "/idExpression/inputAttribute", 0);
 
         // if the source is a data access, then the input is in XPath expression
-        digester.addCallMethod(
-                attMap + "/sourceExpression/inputAttribute", "setInputAttributePath", 1);
+        digester.addCallMethod(attMap + "/sourceExpression/inputAttribute", "setInputAttributePath", 1);
         digester.addCallParam(attMap + "/sourceExpression/inputAttribute", 0);
 
         // for feature chaining: this refers to the nested feature type
@@ -289,8 +285,7 @@ public class XMLConfigDigester {
 
         // parse JDBC multi value element
         String jdbcMultipleValue = attMap + "/jdbcMultipleValue";
-        digester.addObjectCreate(
-                jdbcMultipleValue, XMLConfigDigester.CONFIG_NS_URI, JdbcMultipleValue.class);
+        digester.addObjectCreate(jdbcMultipleValue, XMLConfigDigester.CONFIG_NS_URI, JdbcMultipleValue.class);
         digester.addCallMethod(jdbcMultipleValue + "/sourceColumn", "setSourceColumn", 1);
         digester.addCallParam(jdbcMultipleValue + "/sourceColumn", 0);
         digester.addCallMethod(jdbcMultipleValue + "/targetTable", "setTargetTable", 1);
@@ -354,15 +349,12 @@ public class XMLConfigDigester {
             Class<? extends SourceDataStore> datStoreType, String dataStoreTag, Digester digester) {
         String dataStores = "AppSchemaDataAccess/sourceDataStores/";
         // create a SourceDataStore for each DataStore tag
-        digester.addObjectCreate(
-                dataStores + dataStoreTag, XMLConfigDigester.CONFIG_NS_URI, datStoreType);
+        digester.addObjectCreate(dataStores + dataStoreTag, XMLConfigDigester.CONFIG_NS_URI, datStoreType);
         digester.addCallMethod(dataStores + dataStoreTag + "/id", "setId", 1);
         digester.addCallParam(dataStores + dataStoreTag + "/id", 0);
         // handle the parameters
         digester.addObjectCreate(
-                dataStores + dataStoreTag + "/parameters",
-                XMLConfigDigester.CONFIG_NS_URI,
-                HashMap.class);
+                dataStores + dataStoreTag + "/parameters", XMLConfigDigester.CONFIG_NS_URI, HashMap.class);
         digester.addCallMethod(dataStores + dataStoreTag + "/parameters/Parameter", "put", 2);
         digester.addCallParam(dataStores + dataStoreTag + "/parameters/Parameter/name", 0);
         digester.addCallParam(dataStores + dataStoreTag + "/parameters/Parameter/value", 1);

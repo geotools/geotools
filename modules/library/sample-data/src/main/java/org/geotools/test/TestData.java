@@ -133,22 +133,21 @@ public class TestData implements Runnable {
                 // native libs installed
                 if (mediaLib) {
                     final Class mImage = mediaLibImage;
-                    PrivilegedAction<Boolean> action =
-                            () -> {
-                                try {
-                                    // get the method
-                                    final Class[] params = {};
-                                    Method method = mImage.getDeclaredMethod("isAvailable", params);
+                    PrivilegedAction<Boolean> action = () -> {
+                        try {
+                            // get the method
+                            final Class[] params = {};
+                            Method method = mImage.getDeclaredMethod("isAvailable", params);
 
-                                    // invoke
-                                    final Object[] paramsObj = {};
+                            // invoke
+                            final Object[] paramsObj = {};
 
-                                    final Object o = mImage.getDeclaredConstructor().newInstance();
-                                    return (Boolean) method.invoke(o, paramsObj);
-                                } catch (Throwable e) {
-                                    return false;
-                                }
-                            };
+                            final Object o = mImage.getDeclaredConstructor().newInstance();
+                            return (Boolean) method.invoke(o, paramsObj);
+                        } catch (Throwable e) {
+                            return false;
+                        }
+                    };
                     mediaLib = AccessController.doPrivileged(action);
                 }
             } catch (Throwable e) {
@@ -304,8 +303,7 @@ public class TestData implements Runnable {
      * @throws FileNotFoundException if the file is not found.
      * @throws IOException if the resource can't be fetched for an other reason.
      */
-    public static File file(final Object caller, final String path)
-            throws FileNotFoundException, IOException {
+    public static File file(final Object caller, final String path) throws FileNotFoundException, IOException {
         final URL url = url(caller, path);
         final File file = new File(URLDecoder.decode(url.getPath(), ENCODING));
         if (!file.exists()) {
@@ -406,8 +404,7 @@ public class TestData implements Runnable {
      * @throws IOException if an error occurs during an input or output operation.
      * @since 2.2
      */
-    public static void unzipFile(final Object caller, final String name)
-            throws FileNotFoundException, IOException {
+    public static void unzipFile(final Object caller, final String name) throws FileNotFoundException, IOException {
         final File file = file(caller, name);
         final File parent = file.getParentFile().getAbsoluteFile();
         unzip(file, parent);

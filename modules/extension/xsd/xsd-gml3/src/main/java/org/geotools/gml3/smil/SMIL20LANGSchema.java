@@ -49,15 +49,14 @@ public class SMIL20LANGSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType ANIMATETYPE_TYPE =
-            new ComplexTypeImpl(
-                    new NameImpl("http://www.w3.org/2001/SMIL20/Language", "animateType"),
-                    Collections.emptyList(),
-                    false,
-                    false,
-                    Collections.emptyList(),
-                    SMIL20Schema.ANIMATEPROTOTYPE_TYPE,
-                    null);
+    public static final ComplexType ANIMATETYPE_TYPE = new ComplexTypeImpl(
+            new NameImpl("http://www.w3.org/2001/SMIL20/Language", "animateType"),
+            Collections.emptyList(),
+            false,
+            false,
+            Collections.emptyList(),
+            SMIL20Schema.ANIMATEPROTOTYPE_TYPE,
+            null);
 
     /**
      *
@@ -85,15 +84,14 @@ public class SMIL20LANGSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType ANIMATEMOTIONTYPE_TYPE =
-            new ComplexTypeImpl(
-                    new NameImpl("http://www.w3.org/2001/SMIL20/Language", "animateMotionType"),
-                    Collections.emptyList(),
-                    false,
-                    false,
-                    Collections.emptyList(),
-                    SMIL20Schema.ANIMATEMOTIONPROTOTYPE_TYPE,
-                    null);
+    public static final ComplexType ANIMATEMOTIONTYPE_TYPE = new ComplexTypeImpl(
+            new NameImpl("http://www.w3.org/2001/SMIL20/Language", "animateMotionType"),
+            Collections.emptyList(),
+            false,
+            false,
+            Collections.emptyList(),
+            SMIL20Schema.ANIMATEMOTIONPROTOTYPE_TYPE,
+            null);
 
     /**
      *
@@ -120,15 +118,14 @@ public class SMIL20LANGSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType SETTYPE_TYPE =
-            new ComplexTypeImpl(
-                    new NameImpl("http://www.w3.org/2001/SMIL20/Language", "setType"),
-                    Collections.emptyList(),
-                    false,
-                    false,
-                    Collections.emptyList(),
-                    SMIL20Schema.SETPROTOTYPE_TYPE,
-                    null);
+    public static final ComplexType SETTYPE_TYPE = new ComplexTypeImpl(
+            new NameImpl("http://www.w3.org/2001/SMIL20/Language", "setType"),
+            Collections.emptyList(),
+            false,
+            false,
+            Collections.emptyList(),
+            SMIL20Schema.SETPROTOTYPE_TYPE,
+            null);
 
     /**
      *
@@ -156,28 +153,21 @@ public class SMIL20LANGSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final ComplexType ANIMATECOLORTYPE_TYPE =
-            new ComplexTypeImpl(
-                    new NameImpl("http://www.w3.org/2001/SMIL20/Language", "animateColorType"),
-                    Collections.emptyList(),
-                    false,
-                    false,
-                    Collections.emptyList(),
-                    SMIL20Schema.ANIMATECOLORPROTOTYPE_TYPE,
-                    null);
+    public static final ComplexType ANIMATECOLORTYPE_TYPE = new ComplexTypeImpl(
+            new NameImpl("http://www.w3.org/2001/SMIL20/Language", "animateColorType"),
+            Collections.emptyList(),
+            false,
+            false,
+            Collections.emptyList(),
+            SMIL20Schema.ANIMATECOLORPROTOTYPE_TYPE,
+            null);
 
     public SMIL20LANGSchema() {
         super("http://www.w3.org/2001/SMIL20/Language");
 
-        put(
-                new NameImpl("http://www.w3.org/2001/SMIL20/Language", "animateType"),
-                ANIMATETYPE_TYPE);
-        put(
-                new NameImpl("http://www.w3.org/2001/SMIL20/Language", "animateMotionType"),
-                ANIMATEMOTIONTYPE_TYPE);
+        put(new NameImpl("http://www.w3.org/2001/SMIL20/Language", "animateType"), ANIMATETYPE_TYPE);
+        put(new NameImpl("http://www.w3.org/2001/SMIL20/Language", "animateMotionType"), ANIMATEMOTIONTYPE_TYPE);
         put(new NameImpl("http://www.w3.org/2001/SMIL20/Language", "setType"), SETTYPE_TYPE);
-        put(
-                new NameImpl("http://www.w3.org/2001/SMIL20/Language", "animateColorType"),
-                ANIMATECOLORTYPE_TYPE);
+        put(new NameImpl("http://www.w3.org/2001/SMIL20/Language", "animateColorType"), ANIMATECOLORTYPE_TYPE);
     }
 }

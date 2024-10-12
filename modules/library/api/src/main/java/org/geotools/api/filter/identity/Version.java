@@ -107,8 +107,7 @@ public final class Version {
             throw new IllegalArgumentException("index can't be null");
         }
         if (0 >= index.intValue()) {
-            throw new IllegalArgumentException(
-                    "Invalid version index: " + index + ". Must be a positive integer > 0.");
+            throw new IllegalArgumentException("Invalid version index: " + index + ". Must be a positive integer > 0.");
         }
         this.union = UNION_INTEGER | (long) index;
     }

@@ -112,49 +112,44 @@ public class AffineTransform2D extends AffineTransform implements Matrix {
     @Override
     public double getElement(final int row, final int column) {
         switch (row) {
-            case 0:
-                {
-                    switch (column) {
-                        case 0:
-                            return getScaleX();
-                        case 1:
-                            return getShearX();
-                        case 2:
-                            return getTranslateX();
-                    }
-                    break;
+            case 0: {
+                switch (column) {
+                    case 0:
+                        return getScaleX();
+                    case 1:
+                        return getShearX();
+                    case 2:
+                        return getTranslateX();
                 }
-            case 1:
-                {
-                    switch (column) {
-                        case 0:
-                            return getShearY();
-                        case 1:
-                            return getScaleY();
-                        case 2:
-                            return getTranslateY();
-                    }
-                    break;
+                break;
+            }
+            case 1: {
+                switch (column) {
+                    case 0:
+                        return getShearY();
+                    case 1:
+                        return getScaleY();
+                    case 2:
+                        return getTranslateY();
                 }
-            case 2:
-                {
-                    switch (column) {
-                        case 0: // fall through
-                        case 1:
-                            return 0;
-                        case 2:
-                            return 1;
-                    }
-                    break;
+                break;
+            }
+            case 2: {
+                switch (column) {
+                    case 0: // fall through
+                    case 1:
+                        return 0;
+                    case 2:
+                        return 1;
                 }
-            default:
-                {
-                    throw new IndexOutOfBoundsException(
-                            MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "column", column));
-                }
+                break;
+            }
+            default: {
+                throw new IndexOutOfBoundsException(
+                        MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "column", column));
+            }
         }
-        throw new IndexOutOfBoundsException(
-                MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "row", row));
+        throw new IndexOutOfBoundsException(MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "row", row));
     }
 
     /**
@@ -167,12 +162,10 @@ public class AffineTransform2D extends AffineTransform implements Matrix {
     @Override
     public void setElement(final int row, final int column, final double value) {
         if (row < 0 || row >= SIZE) {
-            throw new IndexOutOfBoundsException(
-                    MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "row", row));
+            throw new IndexOutOfBoundsException(MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "row", row));
         }
         if (column < 0 || column >= SIZE) {
-            throw new IndexOutOfBoundsException(
-                    MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "column", column));
+            throw new IndexOutOfBoundsException(MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "column", column));
         }
         if (row == SIZE - 1) {
             checkLastRow(column, value);
@@ -190,14 +183,10 @@ public class AffineTransform2D extends AffineTransform implements Matrix {
      * only 0 values except the last column which is set to 1. This method throws an exception if
      * the specified value is not the expected one.
      */
-    private static void checkLastRow(final int column, final double value)
-            throws IllegalArgumentException {
+    private static void checkLastRow(final int column, final double value) throws IllegalArgumentException {
         if (value != (column == SIZE - 1 ? 1 : 0)) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(
-                            ErrorKeys.ILLEGAL_ARGUMENT_$2,
-                            "matrix[" + (SIZE - 1) + ',' + column + ']',
-                            value));
+            throw new IllegalArgumentException(MessageFormat.format(
+                    ErrorKeys.ILLEGAL_ARGUMENT_$2, "matrix[" + (SIZE - 1) + ',' + column + ']', value));
         }
     }
 

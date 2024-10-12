@@ -34,7 +34,6 @@ public class SchemaIndexedFilterDetectorVisitor extends IndexedFilterDetectorVis
 
     @Override
     protected boolean isFullyIndexed(Filter filter) {
-        return IndexQueryUtils.checkAllPropertiesIndexed(
-                IndexQueryUtils.getAttributesOnFilter(filter), mapping);
+        return IndexQueryUtils.checkAllPropertiesIndexed(IndexQueryUtils.getAttributesOnFilter(filter), mapping);
     }
 }

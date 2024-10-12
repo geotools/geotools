@@ -111,8 +111,7 @@ public class GMLLinearRingTypeBinding extends AbstractComplexBinding {
             CoordinateSequence seq = (CoordinateSequence) cnode.getValue();
             int dimension = GMLUtil.getDimension(seq);
 
-            CoordinateSequence lineSeq =
-                    seq = JTS.createCS(csFactory, coordinates.size(), dimension);
+            CoordinateSequence lineSeq = seq = JTS.createCS(csFactory, coordinates.size(), dimension);
 
             for (int i = 0; i < coordinates.size(); i++) {
                 cnode = (Node) coordinates.get(i);

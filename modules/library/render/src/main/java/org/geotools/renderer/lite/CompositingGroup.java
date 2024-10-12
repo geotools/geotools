@@ -93,10 +93,7 @@ class CompositingGroup {
     }
 
     private static void addToCompositingMapContents(
-            Graphics2D graphics,
-            Rectangle screenSize,
-            List<CompositingGroup> compositingContents,
-            List<Layer> layers) {
+            Graphics2D graphics, Rectangle screenSize, List<CompositingGroup> compositingContents, List<Layer> layers) {
         Composite composite = getComposite(layers);
         addToCompositingMapContents(graphics, screenSize, compositingContents, layers, composite);
     }
@@ -177,10 +174,7 @@ class CompositingGroup {
     }
 
     static boolean isCompositingBase(FeatureTypeStyle fts) {
-        return "true"
-                .equalsIgnoreCase(
-                        fts.getOptions()
-                                .get(org.geotools.api.style.FeatureTypeStyle.COMPOSITE_BASE));
+        return "true".equalsIgnoreCase(fts.getOptions().get(org.geotools.api.style.FeatureTypeStyle.COMPOSITE_BASE));
     }
 
     Graphics2D graphics;

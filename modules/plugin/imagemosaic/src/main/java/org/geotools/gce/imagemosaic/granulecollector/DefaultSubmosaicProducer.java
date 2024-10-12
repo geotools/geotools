@@ -39,8 +39,7 @@ public class DefaultSubmosaicProducer extends BaseSubmosaicProducer {
      *     {@link DefaultSubmosaicProducer}.
      * @param dryRun whether we need to make
      */
-    public DefaultSubmosaicProducer(
-            RasterLayerResponse rasterLayerResponse, Filter granuleFilter, boolean dryRun) {
+    public DefaultSubmosaicProducer(RasterLayerResponse rasterLayerResponse, Filter granuleFilter, boolean dryRun) {
         super(rasterLayerResponse, dryRun);
         this.granuleFilter = granuleFilter;
     }

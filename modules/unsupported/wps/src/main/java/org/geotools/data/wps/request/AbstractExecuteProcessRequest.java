@@ -44,8 +44,7 @@ import org.geotools.xsd.Encoder;
  *
  * @author gdavis
  */
-public abstract class AbstractExecuteProcessRequest extends AbstractWPSRequest
-        implements ExecuteProcessRequest {
+public abstract class AbstractExecuteProcessRequest extends AbstractWPSRequest implements ExecuteProcessRequest {
 
     /**
      * only support POST for execute requests right now (in the future this could be dynamically set
@@ -148,11 +147,10 @@ public abstract class AbstractExecuteProcessRequest extends AbstractWPSRequest
                         input.setReference(rt);
                         inputtypes.getInput().add(input);
                     } else {
-                        throw new IllegalStateException(
-                                "The input for key "
-                                        + key
-                                        + " contain an unsupported object of type "
-                                        + oInput.getClass());
+                        throw new IllegalStateException("The input for key "
+                                + key
+                                + " contain an unsupported object of type "
+                                + oInput.getClass());
                     }
                 }
             }
@@ -183,9 +181,8 @@ public abstract class AbstractExecuteProcessRequest extends AbstractWPSRequest
             // check input for validity
             for (EObject o : value) {
                 if (!(o instanceof DataType) && !(o instanceof InputReferenceType)) {
-                    throw new IllegalArgumentException(
-                            "The values can be either of type net.opengis.wps10.DataType "
-                                    + "or of type net.opengis.wps10.InputReferenceType");
+                    throw new IllegalArgumentException("The values can be either of type net.opengis.wps10.DataType "
+                            + "or of type net.opengis.wps10.InputReferenceType");
                 }
             }
             // all right, let's roll

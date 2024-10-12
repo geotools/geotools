@@ -52,8 +52,7 @@ import org.geotools.util.factory.Hints;
  */
 public class FormatDateTimezoneFunction implements Function {
 
-    public static final FunctionName NAME =
-            new FunctionNameImpl("FormatDateTimezone", "pattern", "date", "timezone");
+    public static final FunctionName NAME = new FunctionNameImpl("FormatDateTimezone", "pattern", "date", "timezone");
 
     private final Literal fallback;
 
@@ -82,8 +81,7 @@ public class FormatDateTimezoneFunction implements Function {
     @SuppressWarnings("unchecked")
     public <T> T evaluate(Object object, Class<T> context) {
         if (parameters.size() != 3) {
-            throw new RuntimeException(
-                    getName() + ": wrong number of parameters (" + parameters.size() + " not 3)");
+            throw new RuntimeException(getName() + ": wrong number of parameters (" + parameters.size() + " not 3)");
         }
         // return null if any parameter is null
         for (Expression p : parameters) {
@@ -96,9 +94,7 @@ public class FormatDateTimezoneFunction implements Function {
         if (date == null) {
             // malformed date that was not null
             throw new RuntimeException(
-                    getName()
-                            + ": could not parse date: "
-                            + parameters.get(1).evaluate(object, String.class));
+                    getName() + ": could not parse date: " + parameters.get(1).evaluate(object, String.class));
         }
         // if timezone is not understood it is silently set to UTC
         TimeZone timezone = TimeZone.getTimeZone(parameters.get(2).evaluate(object, String.class));

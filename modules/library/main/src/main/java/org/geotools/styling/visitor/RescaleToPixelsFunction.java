@@ -31,21 +31,20 @@ import org.geotools.filter.capability.FunctionNameImpl;
  */
 public class RescaleToPixelsFunction extends FunctionExpressionImpl {
 
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "rescaleToPixels",
-                    String.class,
-                    /**
-                     * The value to be rescaled, could be a number, e.g., 3.75, or a number plus
-                     * unit, e.g. 5m, 7.8ft
-                     */
-                    parameter("value", String.class),
-                    /** The default unit, could be null, in this case pixel is assumed */
-                    parameter("defaultUnit", Unit.class),
-                    /** The unit-less rescaling factor */
-                    parameter("scaleFactor", Double.class),
-                    /** Whether real world units should be rescaled, or left as they are */
-                    parameter("rescalingMode", RescalingMode.class, 0, 1));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "rescaleToPixels",
+            String.class,
+            /**
+             * The value to be rescaled, could be a number, e.g., 3.75, or a number plus
+             * unit, e.g. 5m, 7.8ft
+             */
+            parameter("value", String.class),
+            /** The default unit, could be null, in this case pixel is assumed */
+            parameter("defaultUnit", Unit.class),
+            /** The unit-less rescaling factor */
+            parameter("scaleFactor", Double.class),
+            /** Whether real world units should be rescaled, or left as they are */
+            parameter("rescalingMode", RescalingMode.class, 0, 1));
 
     public RescaleToPixelsFunction() {
         super(NAME);

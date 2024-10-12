@@ -72,8 +72,7 @@ public final class FallbackAuthorityFactoryTest {
      */
     @Test
     public void testFactoryOrdering() {
-        Set<CRSAuthorityFactory> factories =
-                ReferencingFactoryFinder.getCRSAuthorityFactories(null);
+        Set<CRSAuthorityFactory> factories = ReferencingFactoryFinder.getCRSAuthorityFactories(null);
         boolean foundWkt = false;
         boolean foundExtra = false;
         for (CRSAuthorityFactory factory : factories) {
@@ -82,8 +81,7 @@ public final class FallbackAuthorityFactoryTest {
                 foundExtra = true;
             } else if (type == FactoryUsingWKT.class) {
                 foundWkt = true;
-                assertTrue(
-                        "We should have encountered WKT factory after the extra one", foundExtra);
+                assertTrue("We should have encountered WKT factory after the extra one", foundExtra);
             }
         }
         assertTrue(foundWkt);

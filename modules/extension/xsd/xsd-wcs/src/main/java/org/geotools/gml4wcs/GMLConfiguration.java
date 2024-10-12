@@ -77,8 +77,7 @@ public class GMLConfiguration extends Configuration {
         register(bindings, gmlFactory, GML._Ring);
         register(bindings, gmlFactory, GML._Surface);
 
-        bindings.put(
-                GML.AbstractGeometricPrimitiveType, new AbstractGeometricPrimitiveTypeBinding());
+        bindings.put(GML.AbstractGeometricPrimitiveType, new AbstractGeometricPrimitiveTypeBinding());
         bindings.put(GML.AbstractGeometryBaseType, new AbstractGeometryBaseTypeBinding());
         bindings.put(GML.AbstractGeometryType, new AbstractGeometryTypeBinding());
 
@@ -195,8 +194,7 @@ public class GMLConfiguration extends Configuration {
         container.registerComponentInstance(new FeatureTypeCache());
 
         // factories
-        container.registerComponentInstance(
-                CoordinateSequenceFactory.class, CoordinateArraySequenceFactory.instance());
+        container.registerComponentInstance(CoordinateSequenceFactory.class, CoordinateArraySequenceFactory.instance());
         container.registerComponentImplementation(GeometryFactory.class);
     }
 }

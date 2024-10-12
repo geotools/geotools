@@ -80,8 +80,7 @@ public class Descriptions extends IndexedResourceBundle {
      * @return The formatted string for the given key.
      * @throws MissingResourceException If no object for the given key can be found.
      */
-    public static String format(final int key, final Object arg0, final Object arg1)
-            throws MissingResourceException {
+    public static String format(final int key, final Object arg0, final Object arg1) throws MissingResourceException {
         return getResources(null).getString(key, arg0, arg1);
     }
 
@@ -96,8 +95,7 @@ public class Descriptions extends IndexedResourceBundle {
      * @return The formatted string for the given key.
      * @throws MissingResourceException If no object for the given key can be found.
      */
-    public static String format(
-            final int key, final Object arg0, final Object arg1, final Object arg2)
+    public static String format(final int key, final Object arg0, final Object arg1, final Object arg2)
             throws MissingResourceException {
         return getResources(null).getString(key, arg0, arg1, arg2);
     }

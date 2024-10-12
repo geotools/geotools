@@ -141,8 +141,7 @@ import si.uom.SI;
  */
 @DescribeProcess(
         title = "BarnesSurface",
-        description =
-                "Uses Barnes Analysis to compute an interpolated surface over a set of irregular data points.")
+        description = "Uses Barnes Analysis to compute an interpolated surface over a set of irregular data points.")
 public class BarnesSurfaceProcess implements VectorProcess {
 
     // no process state is defined, since RenderingTransformation processes must be stateless
@@ -151,12 +150,10 @@ public class BarnesSurfaceProcess implements VectorProcess {
     public GridCoverage2D execute(
 
             // process data
-            @DescribeParameter(name = "data", description = "Input features")
-                    SimpleFeatureCollection obsFeatures,
+            @DescribeParameter(name = "data", description = "Input features") SimpleFeatureCollection obsFeatures,
             @DescribeParameter(
                             name = "valueAttr",
-                            description =
-                                    "Name of attribute containing the data value to be interpolated")
+                            description = "Name of attribute containing the data value to be interpolated")
                     String valueAttr,
             @DescribeParameter(
                             name = "dataLimit",
@@ -168,15 +165,13 @@ public class BarnesSurfaceProcess implements VectorProcess {
             // process parameters
             @DescribeParameter(
                             name = "scale",
-                            description =
-                                    "Length scale for the interpolation, in units of the source data CRS",
+                            description = "Length scale for the interpolation, in units of the source data CRS",
                             min = 1,
                             max = 1)
                     Double argScale,
             @DescribeParameter(
                             name = "convergence",
-                            description =
-                                    "Convergence factor for refinement (between 0 and 1, default 0.3)",
+                            description = "Convergence factor for refinement (between 0 and 1, default 0.3)",
                             min = 0,
                             max = 1,
                             defaultValue = "0.3")
@@ -212,8 +207,7 @@ public class BarnesSurfaceProcess implements VectorProcess {
                     Double argNoDataValue,
             @DescribeParameter(
                             name = "pixelsPerCell",
-                            description =
-                                    "Resolution of the computed grid in pixels per grid cell (default = 1)",
+                            description = "Resolution of the computed grid in pixels per grid cell (default = 1)",
                             defaultValue = "1",
                             min = 0,
                             max = 1)
@@ -231,13 +225,9 @@ public class BarnesSurfaceProcess implements VectorProcess {
             // output image parameters
             @DescribeParameter(name = "outputBBOX", description = "Bounding box for output")
                     ReferencedEnvelope outputEnv,
-            @DescribeParameter(
-                            name = "outputWidth",
-                            description = "Width of the output raster in pixels")
+            @DescribeParameter(name = "outputWidth", description = "Width of the output raster in pixels")
                     Integer outputWidth,
-            @DescribeParameter(
-                            name = "outputHeight",
-                            description = "Height of the output raster in pixels")
+            @DescribeParameter(name = "outputHeight", description = "Height of the output raster in pixels")
                     Integer outputHeight,
             ProgressListener monitor)
             throws ProcessException {
@@ -307,30 +297,27 @@ public class BarnesSurfaceProcess implements VectorProcess {
          */
         // Stopwatch sw = new Stopwatch();
         // interpolate the surface at the specified resolution
-        float[][] barnesGrid =
-                createBarnesGrid(
-                        pts,
-                        dstLengthScale,
-                        convergenceFactor,
-                        passes,
-                        minObsCount,
-                        dstMaxObsDistance,
-                        noDataValue,
-                        outputEnv,
-                        gridWidth,
-                        gridHeight);
+        float[][] barnesGrid = createBarnesGrid(
+                pts,
+                dstLengthScale,
+                convergenceFactor,
+                passes,
+                minObsCount,
+                dstMaxObsDistance,
+                noDataValue,
+                outputEnv,
+                gridWidth,
+                gridHeight);
 
         // flip now, since grid size may be smaller
         barnesGrid = flipXY(barnesGrid);
 
         // upsample to output resolution if necessary
         float[][] outGrid = barnesGrid;
-        if (pixelsPerCell > 1)
-            outGrid = upsample(barnesGrid, noDataValue, outputWidth, outputHeight);
+        if (pixelsPerCell > 1) outGrid = upsample(barnesGrid, noDataValue, outputWidth, outputHeight);
 
         // convert to the GridCoverage2D required for output
-        GridCoverageFactory gcf =
-                CoverageFactoryFinder.getGridCoverageFactory(GeoTools.getDefaultHints());
+        GridCoverageFactory gcf = CoverageFactoryFinder.getGridCoverageFactory(GeoTools.getDefaultHints());
         GridCoverage2D gridCov = gcf.create("values", outGrid, outputEnv);
 
         // System.out.println("**************  Barnes Surface computed in " + sw.getTimeString());
@@ -345,8 +332,7 @@ public class BarnesSurfaceProcess implements VectorProcess {
      */
     private static final double METRES_PER_DEGREE = 111320;
 
-    private static double distanceConversionFactor(
-            CoordinateReferenceSystem srcCRS, CoordinateReferenceSystem dstCRS) {
+    private static double distanceConversionFactor(CoordinateReferenceSystem srcCRS, CoordinateReferenceSystem dstCRS) {
         Unit<?> srcUnit = srcCRS.getCoordinateSystem().getAxis(0).getUnit();
         Unit<?> dstUnit = dstCRS.getCoordinateSystem().getAxis(0).getUnit();
         if (srcUnit == dstUnit) {
@@ -356,8 +342,7 @@ public class BarnesSurfaceProcess implements VectorProcess {
         } else if (srcUnit == SI.METRE && dstUnit == NonSI.DEGREE_ANGLE) {
             return 1.0 / METRES_PER_DEGREE;
         }
-        throw new IllegalStateException(
-                "Unable to convert distances from " + srcUnit + " to " + dstUnit);
+        throw new IllegalStateException("Unable to convert distances from " + srcUnit + " to " + dstUnit);
     }
 
     /**
@@ -464,10 +449,7 @@ public class BarnesSurfaceProcess implements VectorProcess {
     }
 
     private Filter expandBBox(Filter filter, double distance) {
-        return (Filter)
-                filter.accept(
-                        new BBOXExpandingFilterVisitor(distance, distance, distance, distance),
-                        null);
+        return (Filter) filter.accept(new BBOXExpandingFilterVisitor(distance, distance, distance, distance), null);
     }
 
     public static Coordinate[] extractPoints(

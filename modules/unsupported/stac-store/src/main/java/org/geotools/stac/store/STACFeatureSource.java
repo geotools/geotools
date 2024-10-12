@@ -130,7 +130,8 @@ public class STACFeatureSource extends ContentFeatureSource {
         SimpleFeatureCollection fc = client.search(searchQuery, getDataStore().getSearchMode());
         // if there was a "next" link, the reader returns a paging collection
         if (fc instanceof PagingFeatureCollection) {
-            return Optional.ofNullable(((PagingFeatureCollection) fc).getMatched()).orElse(-1);
+            return Optional.ofNullable(((PagingFeatureCollection) fc).getMatched())
+                    .orElse(-1);
         }
         // otherwise everything is in memory
         if (fc instanceof ListFeatureCollection) {
@@ -151,8 +152,7 @@ public class STACFeatureSource extends ContentFeatureSource {
         SimpleFeatureCollection fc = client.search(sq, getDataStore().getSearchMode());
         SimpleFeatureType rawSchema = fc.getSchema();
 
-        SimpleFeatureTypeBuilder tb =
-                new SimpleFeatureTypeBuilder(new STACFeatureTypeFactoryImpl());
+        SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder(new STACFeatureTypeFactoryImpl());
         tb.init(rawSchema);
         tb.add(ASSETS, ObjectNode.class);
         tb.setName(entry.getTypeName());
@@ -185,8 +185,7 @@ public class STACFeatureSource extends ContentFeatureSource {
 
     @Override
     @SuppressWarnings("PMD.CloseResource")
-    protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query)
-            throws IOException {
+    protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query) throws IOException {
         Pair<SearchQuery, Filter> pair = queryBuilder.toSearchQuery(query, false);
         SearchQuery sq;
         Filter postFilter;
@@ -213,8 +212,7 @@ public class STACFeatureSource extends ContentFeatureSource {
         }
 
         // handle post filtering, if the full filter could not be encoded
-        if (!Filter.INCLUDE.equals(postFilter))
-            result = new FilteringSimpleFeatureReader(result, query.getFilter());
+        if (!Filter.INCLUDE.equals(postFilter)) result = new FilteringSimpleFeatureReader(result, query.getFilter());
 
         // handle property selection, if it was not fully encoded in the query, or a post
         // filter required more properties than strictly necessary.
@@ -222,15 +220,13 @@ public class STACFeatureSource extends ContentFeatureSource {
                 && !query.getProperties().isEmpty()
                 && (sq.getFields() == null || !Filter.INCLUDE.equals(postFilter))) {
             SimpleFeatureType targetType =
-                    SimpleFeatureTypeBuilder.retype(
-                            getSchema(), Arrays.asList(query.getPropertyNames()));
+                    SimpleFeatureTypeBuilder.retype(getSchema(), Arrays.asList(query.getPropertyNames()));
             result = DataUtilities.simple(new ReTypeFeatureReader(result, targetType, false));
         }
 
         // handle max feature from the query
         int max = query.getMaxFeatures();
-        if (max < Query.DEFAULT_MAX)
-            result = DataUtilities.simple(new MaxFeatureReader<>(result, max));
+        if (max < Query.DEFAULT_MAX) result = DataUtilities.simple(new MaxFeatureReader<>(result, max));
 
         return result;
     }
@@ -241,13 +237,11 @@ public class STACFeatureSource extends ContentFeatureSource {
 
     @Override
     protected boolean handleVisitor(Query query, FeatureVisitor visitor) throws IOException {
-        if (visitor instanceof MinVisitor
-                && ((MinVisitor) visitor).getExpression() instanceof PropertyName) {
+        if (visitor instanceof MinVisitor && ((MinVisitor) visitor).getExpression() instanceof PropertyName) {
             String pn = ((PropertyName) ((MinVisitor) visitor).getExpression()).getPropertyName();
             ((MinVisitor) visitor).setValue(getExtremeValue(query, pn, SortOrder.ASCENDING));
             return true;
-        } else if (visitor instanceof MaxVisitor
-                && ((MaxVisitor) visitor).getExpression() instanceof PropertyName) {
+        } else if (visitor instanceof MaxVisitor && ((MaxVisitor) visitor).getExpression() instanceof PropertyName) {
             String pn = ((PropertyName) ((MaxVisitor) visitor).getExpression()).getPropertyName();
             ((MaxVisitor) visitor).setValue(getExtremeValue(query, pn, SortOrder.DESCENDING));
             return true;

@@ -101,9 +101,7 @@ public abstract class IndexedMappingFeatureIterator implements IMappingFeatureIt
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints());
         for (SortBy aSort : sortArray) {
             SortBy newSort =
-                    ff.sort(
-                            unrollIndex(aSort.getPropertyName(), mapping).getPropertyName(),
-                            aSort.getSortOrder());
+                    ff.sort(unrollIndex(aSort.getPropertyName(), mapping).getPropertyName(), aSort.getSortOrder());
             unrolledSorts.add(newSort);
         }
         return unrolledSorts.toArray(new SortBy[] {});
@@ -202,8 +200,7 @@ public abstract class IndexedMappingFeatureIterator implements IMappingFeatureIt
      *
      * @return indexed attribute xpath, or null if not found
      */
-    protected static AttributeMapping getIndexedAttribute(
-            FeatureTypeMapping mapping, String xpath) {
+    protected static AttributeMapping getIndexedAttribute(FeatureTypeMapping mapping, String xpath) {
         return IndexQueryUtils.getIndexedAttribute(mapping, xpath);
     }
 }

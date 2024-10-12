@@ -31,8 +31,7 @@ import org.geotools.referencing.operation.matrix.XMatrix;
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
-final class ConcatenatedTransformDirect2D extends ConcatenatedTransformDirect
-        implements MathTransform2D {
+final class ConcatenatedTransformDirect2D extends ConcatenatedTransformDirect implements MathTransform2D {
     /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = 6009454091075588885L;
 
@@ -49,8 +48,7 @@ final class ConcatenatedTransformDirect2D extends ConcatenatedTransformDirect
     private final MathTransform2D transform2;
 
     /** Constructs a concatenated transform. */
-    public ConcatenatedTransformDirect2D(
-            final MathTransform2D transform1, final MathTransform2D transform2) {
+    public ConcatenatedTransformDirect2D(final MathTransform2D transform1, final MathTransform2D transform2) {
         super(transform1, transform2);
         this.transform1 = transform1;
         this.transform2 = transform2;

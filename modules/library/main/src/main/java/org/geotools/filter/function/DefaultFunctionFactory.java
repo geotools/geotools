@@ -120,19 +120,16 @@ public class DefaultFunctionFactory implements FunctionFactory {
             functionName = filterFactory.functionName(name, argc);
             if (!functionName.getName().equals(name)) {
                 LOGGER.warning(
-                        function.getClass()
-                                + " FunctionName was null, used for etArgumentCount(): "
-                                + functionName);
+                        function.getClass() + " FunctionName was null, used for etArgumentCount(): " + functionName);
             }
         } else {
             if (!functionName.getName().equals(name)) {
-                LOGGER.warning(
-                        function.getClass()
-                                + " has name conflict betwee '"
-                                + name
-                                + "' and '"
-                                + functionName.getName()
-                                + "'");
+                LOGGER.warning(function.getClass()
+                        + " has name conflict betwee '"
+                        + name
+                        + "' and '"
+                        + functionName.getName()
+                        + "'");
             }
         }
         return functionName;
@@ -153,13 +150,12 @@ public class DefaultFunctionFactory implements FunctionFactory {
             if (functionMap.containsKey(key)) {
                 // conflicted name - probably a cut and paste error when creating functionName
                 FunctionDescriptor conflict = functionMap.get(key);
-                LOGGER.warning(
-                        "Function "
-                                + key
-                                + " clash between "
-                                + conflict.clazz.getSimpleName()
-                                + " and "
-                                + function.getClass().getSimpleName());
+                LOGGER.warning("Function "
+                        + key
+                        + " clash between "
+                        + conflict.clazz.getSimpleName()
+                        + " and "
+                        + function.getClass().getSimpleName());
             }
             functionMap.put(key, fd);
         }
@@ -211,7 +207,8 @@ public class DefaultFunctionFactory implements FunctionFactory {
                 return function;
             }
             if (FunctionImpl.class.isAssignableFrom(clazz)) {
-                FunctionImpl function = (FunctionImpl) clazz.getDeclaredConstructor().newInstance();
+                FunctionImpl function =
+                        (FunctionImpl) clazz.getDeclaredConstructor().newInstance();
                 if (parameters != null) {
                     function.setParameters(parameters);
                 }
@@ -221,8 +218,7 @@ public class DefaultFunctionFactory implements FunctionFactory {
                 return function;
             }
             // Function function = (Function) functionClass.newInstance();
-            Constructor<? extends Function> constructor =
-                    clazz.getConstructor(new Class[] {List.class, Literal.class});
+            Constructor<? extends Function> constructor = clazz.getConstructor(new Class[] {List.class, Literal.class});
             return constructor.newInstance(parameters, fallback);
         }
     }

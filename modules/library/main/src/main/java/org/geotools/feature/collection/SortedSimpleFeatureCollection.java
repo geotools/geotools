@@ -40,8 +40,7 @@ public class SortedSimpleFeatureCollection extends DecoratingSimpleFeatureCollec
         this.sort = sort;
     }
 
-    public SortedSimpleFeatureCollection(
-            SimpleFeatureCollection delegate, SortBy[] sort, int maxMemoryFeatures) {
+    public SortedSimpleFeatureCollection(SimpleFeatureCollection delegate, SortBy[] sort, int maxMemoryFeatures) {
         super(delegate);
         this.sort = sort;
         this.maxMemoryFeatures = maxMemoryFeatures;
@@ -54,8 +53,7 @@ public class SortedSimpleFeatureCollection extends DecoratingSimpleFeatureCollec
             SimpleFeatureIterator features = delegate.features();
             // sort if necessary
             if (sort != null) {
-                features =
-                        new SortedFeatureIterator(features, getSchema(), sort, maxMemoryFeatures);
+                features = new SortedFeatureIterator(features, getSchema(), sort, maxMemoryFeatures);
             }
             return features;
         } catch (IOException e) {

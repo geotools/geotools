@@ -63,11 +63,10 @@ public class DefaultVerticalCRS extends AbstractSingleCRS implements VerticalCRS
      * @see DefaultVerticalDatum#ELLIPSOIDAL
      * @see DefaultVerticalCS#ELLIPSOIDAL_HEIGHT
      */
-    public static final DefaultVerticalCRS ELLIPSOIDAL_HEIGHT =
-            new DefaultVerticalCRS(
-                    getProperties(DefaultVerticalCS.ELLIPSOIDAL_HEIGHT),
-                    DefaultVerticalDatum.ELLIPSOIDAL,
-                    DefaultVerticalCS.ELLIPSOIDAL_HEIGHT);
+    public static final DefaultVerticalCRS ELLIPSOIDAL_HEIGHT = new DefaultVerticalCRS(
+            getProperties(DefaultVerticalCS.ELLIPSOIDAL_HEIGHT),
+            DefaultVerticalDatum.ELLIPSOIDAL,
+            DefaultVerticalCS.ELLIPSOIDAL_HEIGHT);
 
     /**
      * Default vertical coordinate reference system using geoidal datum.
@@ -76,11 +75,10 @@ public class DefaultVerticalCRS extends AbstractSingleCRS implements VerticalCRS
      * @see DefaultVerticalCS#GRAVITY_RELATED_HEIGHT
      * @since 2.5
      */
-    public static final DefaultVerticalCRS GEOIDAL_HEIGHT =
-            new DefaultVerticalCRS(
-                    getProperties(DefaultVerticalCS.GRAVITY_RELATED_HEIGHT),
-                    DefaultVerticalDatum.GEOIDAL,
-                    DefaultVerticalCS.GRAVITY_RELATED_HEIGHT);
+    public static final DefaultVerticalCRS GEOIDAL_HEIGHT = new DefaultVerticalCRS(
+            getProperties(DefaultVerticalCS.GRAVITY_RELATED_HEIGHT),
+            DefaultVerticalDatum.GEOIDAL,
+            DefaultVerticalCS.GRAVITY_RELATED_HEIGHT);
 
     /**
      * Constructs a new vertical CRS with the same values than the specified one. This copy
@@ -125,8 +123,7 @@ public class DefaultVerticalCRS extends AbstractSingleCRS implements VerticalCRS
      * @param datum The datum.
      * @param cs The coordinate system.
      */
-    public DefaultVerticalCRS(
-            final Map<String, ?> properties, final VerticalDatum datum, final VerticalCS cs) {
+    public DefaultVerticalCRS(final Map<String, ?> properties, final VerticalDatum datum, final VerticalCS cs) {
         super(properties, datum, cs);
     }
 

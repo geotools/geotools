@@ -104,9 +104,7 @@ public class BaseUnitFormatter implements UnitFormatter {
         for (UnitDefinition unitDefinition : unitDefinitions) {
             Unit<?> unit = unitDefinition.getUnit();
             String unitSymbol =
-                    unitDefinition.getSymbolOverride() != null
-                            ? unitDefinition.getSymbolOverride()
-                            : unit.getSymbol();
+                    unitDefinition.getSymbolOverride() != null ? unitDefinition.getSymbolOverride() : unit.getSymbol();
 
             // add units
             this.addLabel(unit, unitSymbol);
@@ -162,8 +160,7 @@ public class BaseUnitFormatter implements UnitFormatter {
      * @param pos the cursor position.
      * @return the corresponding unit or <code>null</code> if the string cannot be parsed.
      */
-    public final Unit<?> parseObject(String source, ParsePosition pos)
-            throws MeasurementParseException {
+    public final Unit<?> parseObject(String source, ParsePosition pos) throws MeasurementParseException {
         return parseProductUnit(source, pos);
     }
 
@@ -182,29 +179,25 @@ public class BaseUnitFormatter implements UnitFormatter {
     // TODO: investigate whether these should better operate on `PrefixDefinitions`,
     //       or even prefix definitions passed in the constructor of this class.
 
-    private static final String[] METRIC_PREFIX_SYMBOLS =
-            Stream.of(MetricPrefix.values())
-                    .map(Prefix::getSymbol)
-                    .collect(Collectors.toList())
-                    .toArray(new String[] {});
+    private static final String[] METRIC_PREFIX_SYMBOLS = Stream.of(MetricPrefix.values())
+            .map(Prefix::getSymbol)
+            .collect(Collectors.toList())
+            .toArray(new String[] {});
 
-    private static final UnitConverter[] METRIC_PREFIX_CONVERTERS =
-            Stream.of(MetricPrefix.values())
-                    .map(MultiplyConverter::ofPrefix)
-                    .collect(Collectors.toList())
-                    .toArray(new UnitConverter[] {});
+    private static final UnitConverter[] METRIC_PREFIX_CONVERTERS = Stream.of(MetricPrefix.values())
+            .map(MultiplyConverter::ofPrefix)
+            .collect(Collectors.toList())
+            .toArray(new UnitConverter[] {});
 
-    private static final String[] BINARY_PREFIX_SYMBOLS =
-            Stream.of(BinaryPrefix.values())
-                    .map(Prefix::getSymbol)
-                    .collect(Collectors.toList())
-                    .toArray(new String[] {});
+    private static final String[] BINARY_PREFIX_SYMBOLS = Stream.of(BinaryPrefix.values())
+            .map(Prefix::getSymbol)
+            .collect(Collectors.toList())
+            .toArray(new String[] {});
 
-    private static final UnitConverter[] BINARY_PREFIX_CONVERTERS =
-            Stream.of(BinaryPrefix.values())
-                    .map(MultiplyConverter::ofPrefix)
-                    .collect(Collectors.toList())
-                    .toArray(new UnitConverter[] {});
+    private static final UnitConverter[] BINARY_PREFIX_CONVERTERS = Stream.of(BinaryPrefix.values())
+            .map(MultiplyConverter::ofPrefix)
+            .collect(Collectors.toList())
+            .toArray(new UnitConverter[] {});
 
     private enum Token {
         EOF,
@@ -357,11 +350,9 @@ public class BaseUnitFormatter implements UnitFormatter {
         }
         if (unit instanceof AnnotatedUnit<?>) {
             AnnotatedUnit<?> annotatedUnit = (AnnotatedUnit<?>) unit;
-            final StringBuilder annotable =
-                    new StringBuilder(nameFor(annotatedUnit.getActualUnit()));
+            final StringBuilder annotable = new StringBuilder(nameFor(annotatedUnit.getActualUnit()));
             if (annotatedUnit.getAnnotation() != null) {
-                annotable.append(
-                        '{'); // TODO maybe also configure this one similar to mix delimiter
+                annotable.append('{'); // TODO maybe also configure this one similar to mix delimiter
                 annotable.append(annotatedUnit.getAnnotation());
                 annotable.append('}');
             }
@@ -508,8 +499,7 @@ public class BaseUnitFormatter implements UnitFormatter {
                 case CLOSE_PAREN:
                     return result;
                 default:
-                    throw new MeasurementParseException(
-                            "unexpected token " + token, csq, pos.getIndex());
+                    throw new MeasurementParseException("unexpected token " + token, csq, pos.getIndex());
             }
             token = nextToken(csq, pos);
         }
@@ -542,8 +532,7 @@ public class BaseUnitFormatter implements UnitFormatter {
                 return Token.PLUS;
             } else if ((c == '-') || Character.isDigit(c)) {
                 int index = pos.getIndex() + 1;
-                while ((index < length)
-                        && (Character.isDigit(c) || (c == '-') || (c == '.') || (c == 'E'))) {
+                while ((index < length) && (Character.isDigit(c) || (c == '-') || (c == '.') || (c == 'E'))) {
                     c = csq.charAt(index++);
                     if (c == '.') {
                         return Token.FLOAT;
@@ -559,8 +548,7 @@ public class BaseUnitFormatter implements UnitFormatter {
     private static void check(boolean expr, String message, CharSequence csq, int index)
             throws MeasurementParseException {
         if (!expr) {
-            throw new MeasurementParseException(
-                    message + " (in " + csq + " at index " + index + ")", index);
+            throw new MeasurementParseException(message + " (in " + csq + " at index " + index + ")", index);
         }
     }
 
@@ -751,8 +739,7 @@ public class BaseUnitFormatter implements UnitFormatter {
         return appendable;
     }
 
-    private static void append(Appendable appendable, CharSequence symbol, int pow, int root)
-            throws IOException {
+    private static void append(Appendable appendable, CharSequence symbol, int pow, int root) throws IOException {
         appendable.append(symbol);
         if ((pow != 1) || (root != 1)) {
             // Write exponent.

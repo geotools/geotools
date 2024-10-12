@@ -147,10 +147,8 @@ public class TileMatrix {
 
     /** */
     public void setTopLeft(double lon, double lat) {
-        boolean isLongitudeFirstAxisOrderForced =
-                Boolean.getBoolean(GeoTools.FORCE_LONGITUDE_FIRST_AXIS_ORDER)
-                        || GeoTools.getDefaultHints().get(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER)
-                                == Boolean.TRUE;
+        boolean isLongitudeFirstAxisOrderForced = Boolean.getBoolean(GeoTools.FORCE_LONGITUDE_FIRST_AXIS_ORDER)
+                || GeoTools.getDefaultHints().get(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER) == Boolean.TRUE;
 
         CoordinateReferenceSystem crs = getCrs();
         if (isLongitudeFirstAxisOrderForced

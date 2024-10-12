@@ -98,8 +98,7 @@ public class EmfComplexFeatureReader {
      *     schema pointed out by <code>location</code> or one of its dependencies.
      */
     public SchemaIndex parse(String nameSpace, String schemaLocation) throws IOException {
-        AppSchemaConfiguration configuration =
-                new AppSchemaConfiguration(nameSpace, schemaLocation, resolver);
+        AppSchemaConfiguration configuration = new AppSchemaConfiguration(nameSpace, schemaLocation, resolver);
         return parse(configuration);
     }
 
@@ -155,8 +154,7 @@ public class EmfComplexFeatureReader {
             throw (RuntimeException) new RuntimeException(msg).initCause(e);
         }
         if (targetNamespace == null) {
-            throw new IllegalArgumentException(
-                    "Input document does not specifies a targetNamespace");
+            throw new IllegalArgumentException("Input document does not specifies a targetNamespace");
         }
         return targetNamespace;
     }

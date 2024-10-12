@@ -81,8 +81,7 @@ public final class JP2MrSIDTest extends GDALTestCase {
         }
 
         final JP2MrSIDReader reader = new JP2MrSIDReader(file);
-        final ParameterValue gg =
-                ((AbstractGridFormat) reader.getFormat()).READ_GRIDGEOMETRY2D.createValue();
+        final ParameterValue gg = ((AbstractGridFormat) reader.getFormat()).READ_GRIDGEOMETRY2D.createValue();
         final GeneralBounds oldEnvelope = reader.getOriginalEnvelope();
         gg.setValue(new GridGeometry2D(reader.getOriginalGridRange(), oldEnvelope));
 

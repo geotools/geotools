@@ -135,90 +135,61 @@ public final class CoverageUtilitiesTest {
         final Map<String, Object> properties = new HashMap<>();
         CoverageUtilities.setNoDataProperty(properties, -9999.0);
         final GridGeometry2D gg2D =
-                new GridGeometry2D(
-                        new Rectangle(0, 0, 800, 600), new Rectangle(-180, 90, 360, 180));
+                new GridGeometry2D(new Rectangle(0, 0, 800, 600), new Rectangle(-180, 90, 360, 180));
 
-        GridCoverage2D gc =
-                CoverageFactoryFinder.getGridCoverageFactory(null)
-                        .create(
-                                "test",
-                                new ImageWorker()
-                                        .function(
-                                                new MyImageFunction(),
-                                                800,
-                                                600,
-                                                1.0f,
-                                                1.0f,
-                                                0.0f,
-                                                0.0f)
-                                        .getRenderedImage(), // ImageFunctionDescriptor.create(new
-                                // MyImageFunction(),
-                                // Integer.valueOf(800),
-                                // Integer.valueOf(600),
-                                // Float.valueOf(1.0f),
-                                // Float.valueOf(1.0f),
-                                // Float.valueOf(0.0f),
-                                // Float.valueOf(0.0f), null),
-                                gg2D,
-                                null,
-                                null,
-                                properties);
+        GridCoverage2D gc = CoverageFactoryFinder.getGridCoverageFactory(null)
+                .create(
+                        "test",
+                        new ImageWorker()
+                                .function(new MyImageFunction(), 800, 600, 1.0f, 1.0f, 0.0f, 0.0f)
+                                .getRenderedImage(), // ImageFunctionDescriptor.create(new
+                        // MyImageFunction(),
+                        // Integer.valueOf(800),
+                        // Integer.valueOf(600),
+                        // Float.valueOf(1.0f),
+                        // Float.valueOf(1.0f),
+                        // Float.valueOf(0.0f),
+                        // Float.valueOf(0.0f), null),
+                        gg2D,
+                        null,
+                        null,
+                        properties);
 
         double[] bkg = CoverageUtilities.getBackgroundValues(gc);
         assertEquals(1, bkg.length);
         assertEquals(NO_DATA, bkg[0], DELTA);
 
         // test grid sampledimension no data property
-        final Category noDataCategory =
-                new Category(
-                        CoverageUtilities.NODATA,
-                        new Color[] {Color.black},
-                        NumberRange.create(-9999.0, -9999.0),
-                        false);
+        final Category noDataCategory = new Category(
+                CoverageUtilities.NODATA, new Color[] {Color.black}, NumberRange.create(-9999.0, -9999.0), false);
         final GridSampleDimension gsd =
                 new GridSampleDimension("test", new Category[] {noDataCategory}, AbstractUnit.ONE);
-        gc =
-                CoverageFactoryFinder.getGridCoverageFactory(null)
-                        .create(
-                                "test",
-                                new ImageWorker()
-                                        .function(
-                                                new MyImageFunction(),
-                                                800,
-                                                600,
-                                                1.0f,
-                                                1.0f,
-                                                0.0f,
-                                                0.0f)
-                                        .getRenderedImage(),
-                                gg2D,
-                                new GridSampleDimension[] {gsd},
-                                null,
-                                null);
+        gc = CoverageFactoryFinder.getGridCoverageFactory(null)
+                .create(
+                        "test",
+                        new ImageWorker()
+                                .function(new MyImageFunction(), 800, 600, 1.0f, 1.0f, 0.0f, 0.0f)
+                                .getRenderedImage(),
+                        gg2D,
+                        new GridSampleDimension[] {gsd},
+                        null,
+                        null);
 
         bkg = CoverageUtilities.getBackgroundValues(gc);
         assertEquals(1, bkg.length);
         assertEquals(NO_DATA, bkg[0], DELTA);
 
         // test getting NaN in case we do not have any no data
-        gc =
-                CoverageFactoryFinder.getGridCoverageFactory(null)
-                        .create(
-                                "test",
-                                new ImageWorker()
-                                        .function(
-                                                new MyImageFunction(),
-                                                800,
-                                                600,
-                                                1.0f,
-                                                1.0f,
-                                                0.0f,
-                                                0.0f)
-                                        .getRenderedImage(),
-                                gg2D,
-                                null,
-                                null,
-                                null);
+        gc = CoverageFactoryFinder.getGridCoverageFactory(null)
+                .create(
+                        "test",
+                        new ImageWorker()
+                                .function(new MyImageFunction(), 800, 600, 1.0f, 1.0f, 0.0f, 0.0f)
+                                .getRenderedImage(),
+                        gg2D,
+                        null,
+                        null,
+                        null);
 
         bkg = CoverageUtilities.getBackgroundValues(gc);
         assertEquals(1, bkg.length);
@@ -228,13 +199,10 @@ public final class CoverageUtilitiesTest {
     @Test
     public void testSuggestNodata() {
         assertEquals((byte) 0, CoverageUtilities.suggestNoDataValue(DataBuffer.TYPE_BYTE));
-        assertTrue(
-                Double.isNaN(
-                        CoverageUtilities.suggestNoDataValue(DataBuffer.TYPE_DOUBLE)
-                                .doubleValue()));
-        assertTrue(
-                Float.isNaN(
-                        CoverageUtilities.suggestNoDataValue(DataBuffer.TYPE_FLOAT).floatValue()));
+        assertTrue(Double.isNaN(
+                CoverageUtilities.suggestNoDataValue(DataBuffer.TYPE_DOUBLE).doubleValue()));
+        assertTrue(Float.isNaN(
+                CoverageUtilities.suggestNoDataValue(DataBuffer.TYPE_FLOAT).floatValue()));
         assertEquals(Integer.MIN_VALUE, CoverageUtilities.suggestNoDataValue(DataBuffer.TYPE_INT));
         assertEquals((short) 0, CoverageUtilities.suggestNoDataValue(DataBuffer.TYPE_USHORT));
         assertEquals(Short.MIN_VALUE, CoverageUtilities.suggestNoDataValue(DataBuffer.TYPE_SHORT));

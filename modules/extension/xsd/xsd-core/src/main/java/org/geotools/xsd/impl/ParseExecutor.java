@@ -53,11 +53,7 @@ public class ParseExecutor implements Visitor {
     /** final parsed result */
     private Object result;
 
-    public ParseExecutor(
-            InstanceComponent instance,
-            Node node,
-            MutablePicoContainer context,
-            ParserHandler parser) {
+    public ParseExecutor(InstanceComponent instance, Node node, MutablePicoContainer context, ParserHandler parser) {
         this.instance = instance;
         this.node = node;
         this.context = context;
@@ -82,16 +78,13 @@ public class ParseExecutor implements Visitor {
 
                 binding = parser.getBindingLoader().loadBinding(bindingTarget, context);
                 if (binding == null) {
-                    binding =
-                            parser.getBindingLoader()
-                                    .loadBinding(bindingTarget, bindingClass, context);
+                    binding = parser.getBindingLoader().loadBinding(bindingTarget, bindingClass, context);
                 }
                 if (binding.getClass() != bindingClass) {
-                    throw new IllegalStateException(
-                            "Reloaded binding resulted in different type, from "
-                                    + bindingClass
-                                    + " to "
-                                    + binding.getClass());
+                    throw new IllegalStateException("Reloaded binding resulted in different type, from "
+                            + bindingClass
+                            + " to "
+                            + binding.getClass());
                 }
             }
         }
@@ -109,9 +102,7 @@ public class ParseExecutor implements Visitor {
                     type = instance.getTypeDefinition();
                 } else {
                     // type binding
-                    type =
-                            Schemas.getBaseTypeDefinition(
-                                    instance.getTypeDefinition(), binding.getTarget());
+                    type = Schemas.getBaseTypeDefinition(instance.getTypeDefinition(), binding.getTarget());
                 }
 
                 if (value == null) {
@@ -170,8 +161,7 @@ public class ParseExecutor implements Visitor {
         if (instance.getTypeDefinition() instanceof XSDSimpleTypeDefinition) {
             type = (XSDSimpleTypeDefinition) instance.getTypeDefinition();
         } else {
-            XSDComplexTypeDefinition complexType =
-                    (XSDComplexTypeDefinition) instance.getTypeDefinition();
+            XSDComplexTypeDefinition complexType = (XSDComplexTypeDefinition) instance.getTypeDefinition();
 
             if (complexType.getContentType() instanceof XSDSimpleTypeDefinition) {
                 type = (XSDSimpleTypeDefinition) complexType.getContentType();
@@ -246,8 +236,7 @@ public class ParseExecutor implements Visitor {
                 List<Object> parsed = new ArrayList<>();
 
                 // create a pseudo declaration
-                final XSDElementDeclaration element =
-                        XSDFactory.eINSTANCE.createXSDElementDeclaration();
+                final XSDElementDeclaration element = XSDFactory.eINSTANCE.createXSDElementDeclaration();
                 element.setTypeDefinition(itemType);
 
                 if (instance.getName() != null) {
@@ -259,18 +248,18 @@ public class ParseExecutor implements Visitor {
                 }
 
                 // create a new instance of the specified type
-                InstanceComponentImpl theInstance =
-                        new InstanceComponentImpl() {
-                            @Override
-                            public XSDTypeDefinition getTypeDefinition() {
-                                return itemType;
-                            }
+                InstanceComponentImpl theInstance = new InstanceComponentImpl() {
+                    @Override
+                    public XSDTypeDefinition getTypeDefinition() {
+                        return itemType;
+                    }
 
-                            @Override
-                            public XSDNamedComponent getDeclaration() {
-                                return element;
-                            };
-                        };
+                    @Override
+                    public XSDNamedComponent getDeclaration() {
+                        return element;
+                    }
+                    ;
+                };
 
                 for (String s : list) {
                     theInstance.setText(s);

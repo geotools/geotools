@@ -61,8 +61,7 @@ public class CRSListModel extends AbstractListModel<String> {
      */
     public CRSListModel(String authority) {
         try {
-            CRSAuthorityFactory fac =
-                    ReferencingFactoryFinder.getCRSAuthorityFactory(authority, null);
+            CRSAuthorityFactory fac = ReferencingFactoryFinder.getCRSAuthorityFactory(authority, null);
 
             Set<String> codes = fac.getAuthorityCodes(CoordinateReferenceSystem.class);
 
@@ -117,7 +116,8 @@ public class CRSListModel extends AbstractListModel<String> {
             String lo = subStr.toLowerCase();
 
             for (Item item : allItems) {
-                if (item.code.toLowerCase().contains(lo) || item.desc.toLowerCase().contains(lo)) {
+                if (item.code.toLowerCase().contains(lo)
+                        || item.desc.toLowerCase().contains(lo)) {
                     filterItems.add(item);
                 }
             }

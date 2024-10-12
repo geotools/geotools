@@ -33,14 +33,10 @@ import org.locationtech.jts.geom.Geometry;
  */
 public class GeometryFunction extends FunctionExpressionImpl implements VolatileFunction {
 
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "geometry",
-                    FunctionNameImpl.parameter(
-                            "geometry",
-                            Boolean.class,
-                            "Default Geometry",
-                            "Default geometry, or null if there is none."));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "geometry",
+            FunctionNameImpl.parameter(
+                    "geometry", Boolean.class, "Default Geometry", "Default geometry, or null if there is none."));
 
     public GeometryFunction() {
         super(NAME);

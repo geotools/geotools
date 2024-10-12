@@ -81,10 +81,9 @@ public final class MathTransformTest {
     public void testDirectPositionTransform() throws FactoryException, TransformException {
         CoordinateReferenceSystem crs =
                 ReferencingFactoryFinder.getCRSFactory(null).createFromWKT(WKT.UTM_10N);
-        MathTransform t =
-                ReferencingFactoryFinder.getCoordinateOperationFactory(null)
-                        .createOperation(DefaultGeographicCRS.WGS84, crs)
-                        .getMathTransform();
+        MathTransform t = ReferencingFactoryFinder.getCoordinateOperationFactory(null)
+                .createOperation(DefaultGeographicCRS.WGS84, crs)
+                .getMathTransform();
         Position position = new GeneralPosition(-123, 55);
         position = t.transform(position, position);
         position = t.inverse().transform(position, position);
@@ -97,29 +96,17 @@ public final class MathTransformTest {
     public void testAffineTransform() throws FactoryException, TransformException {
         for (int pass = 0; pass < 10; pass++) {
             final AffineTransform transform = new AffineTransform();
-            transform.rotate(
-                    Math.PI * random.nextDouble(),
-                    100 * random.nextDouble(),
-                    100 * random.nextDouble());
+            transform.rotate(Math.PI * random.nextDouble(), 100 * random.nextDouble(), 100 * random.nextDouble());
             transform.scale(2 * random.nextDouble(), 2 * random.nextDouble());
             transform.shear(2 * random.nextDouble(), 2 * random.nextDouble());
             transform.translate(100 * random.nextDouble(), 100 * random.nextDouble());
-            compareTransforms(
-                    "AffineTransform",
-                    new MathTransform[] {
-                        new ProjectiveTransform(new GeneralMatrix(transform)),
-                        new AffineTransform2D(transform)
-                    });
+            compareTransforms("AffineTransform", new MathTransform[] {
+                new ProjectiveTransform(new GeneralMatrix(transform)), new AffineTransform2D(transform)
+            });
         }
 
-        AffineTransform at =
-                new AffineTransform(
-                        23.157082917424454,
-                        0.0,
-                        3220.1613428464952,
-                        0.0,
-                        -23.157082917424457,
-                        1394.4593259871676);
+        AffineTransform at = new AffineTransform(
+                23.157082917424454, 0.0, 3220.1613428464952, 0.0, -23.157082917424457, 1394.4593259871676);
         MathTransform mt = factory.createAffineTransform(new GeneralMatrix(at));
 
         final double[] points = {
@@ -168,8 +155,7 @@ public final class MathTransformTest {
                 final GeneralMatrix sub = new GeneralMatrix(i + 1, i + 1);
                 matrix.copySubMatrix(0, 0, i, i, 0, 0, sub); // Scale terms
                 matrix.copySubMatrix(0, dimension, i, 1, 0, i, sub); // Translation terms
-                final MathTransform transform =
-                        transforms[i - 1] = factory.createAffineTransform(sub);
+                final MathTransform transform = transforms[i - 1] = factory.createAffineTransform(sub);
                 assertTrue(sub.isAffine());
                 assertEquals(sub, new GeneralMatrix(((LinearTransform) transform).getMatrix()));
                 assertInterfaced(transform);
@@ -233,16 +219,7 @@ public final class MathTransformTest {
                 assertEquals("dimSource[" + i + ']', dimSource, transform.getSourceDimensions());
                 assertEquals("dimTarget[" + i + ']', dimTarget, transform.getTargetDimensions());
                 transform.transform(sourcePt, 0, compare, 0, numPts);
-                String name =
-                        "transform["
-                                + i
-                                + "]("
-                                + dimSource
-                                + " -> "
-                                + dimInterm
-                                + " -> "
-                                + dimTarget
-                                + ')';
+                String name = "transform[" + i + "](" + dimSource + " -> " + dimInterm + " -> " + dimTarget + ')';
                 assertPointsEqual(name, targetPt, compare, delta);
             }
         }
@@ -289,8 +266,7 @@ public final class MathTransformTest {
      * {@link LogarithmicTransform1D}.
      */
     @Test
-    public void testLogarithmicAndExponentialConcatenation()
-            throws FactoryException, TransformException {
+    public void testLogarithmicAndExponentialConcatenation() throws FactoryException, TransformException {
         final int numPts = 200;
         final double[] sourcePt = new double[numPts];
         final double[] targetPt = new double[numPts];
@@ -393,8 +369,7 @@ public final class MathTransformTest {
      *
      * @throws TransformException if a transformation failed.
      */
-    private void compareTransforms(final String name, final MathTransform[] transforms)
-            throws TransformException {
+    private void compareTransforms(final String name, final MathTransform[] transforms) throws TransformException {
         /*
          * Initialisation...
          */
@@ -442,8 +417,7 @@ public final class MathTransformTest {
                     final String label = buffer.toString();
                     final GeneralPosition targetI = targets[i];
                     assertNotSame(targetJ.ordinates, targetI.ordinates);
-                    for (int k = Math.min(targetJ.ordinates.length, targetI.ordinates.length);
-                            --k >= 0; ) {
+                    for (int k = Math.min(targetJ.ordinates.length, targetI.ordinates.length); --k >= 0; ) {
                         assertEquals(label, targetJ.ordinates[k], targetI.ordinates[k], 1E-6);
                     }
                 }
@@ -460,16 +434,12 @@ public final class MathTransformTest {
      * @param expected Array of expected output values.
      */
     private void compareTransform1D(
-            final String classification,
-            final double base,
-            final double[] input,
-            final double[] expected)
+            final String classification, final double base, final double[] input, final double[] expected)
             throws FactoryException, TransformException {
         assertEquals(input.length, expected.length);
         final ParameterValueGroup parameters = factory.getDefaultParameters(classification);
         parameters.parameter("base").setValue(base);
-        final MathTransform1D direct =
-                (MathTransform1D) factory.createParameterizedTransform(parameters);
+        final MathTransform1D direct = (MathTransform1D) factory.createParameterizedTransform(parameters);
         final MathTransform1D inverse = direct.inverse();
         final Position1D point = new Position1D();
         for (int i = 0; i < expected.length; i++) {
@@ -485,8 +455,7 @@ public final class MathTransformTest {
 
     /** Count the number of non-linear steps in a {@link MathTransform}. */
     private static int countNonlinear(final MathTransform transform) {
-        if ((transform instanceof ExponentialTransform1D)
-                || (transform instanceof LogarithmicTransform1D)) {
+        if ((transform instanceof ExponentialTransform1D) || (transform instanceof LogarithmicTransform1D)) {
             return 1;
         }
         if (transform instanceof ConcatenatedTransform) {
@@ -539,10 +508,7 @@ public final class MathTransformTest {
      *     length must be equal to coordinate dimension (usually 1, 2 or 3).
      */
     private static void assertPointsEqual(
-            final String name,
-            final double[] expected,
-            final double[] actual,
-            final double[] delta) {
+            final String name, final double[] expected, final double[] actual, final double[] delta) {
         final int dimension = delta.length;
         final int stop = Math.min(expected.length, actual.length) / dimension * dimension;
         assertEquals("Array length for expected points", stop, expected.length);
@@ -576,23 +542,21 @@ public final class MathTransformTest {
      */
     @Test
     public void testWGS84toWGS843D() throws Exception {
-        String wkt =
-                "GEOGCS[\"GDA94\","
-                        + " DATUM[\"Geocentric Datum of Australia 1994\","
-                        + "  SPHEROID[\"GRS 1980\", 6378137.0, 298.257222101, AUTHORITY[\"EPSG\",\"7019\"]],"
-                        + "  TOWGS84[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "
-                        + " AUTHORITY[\"EPSG\",\"6283\"]], "
-                        + " PRIMEM[\"Greenwich\", 0.0, AUTHORITY[\"EPSG\",\"8901\"]],"
-                        + " UNIT[\"degree\", 0.017453292519943295], "
-                        + " AXIS[\"Geodetic latitude\", NORTH], "
-                        + " AXIS[\"Geodetic longitude\", EAST], "
-                        + " AXIS[\"Ellipsoidal height\", UP], "
-                        + " AUTHORITY[\"EPSG\",\"4939\"]]";
+        String wkt = "GEOGCS[\"GDA94\","
+                + " DATUM[\"Geocentric Datum of Australia 1994\","
+                + "  SPHEROID[\"GRS 1980\", 6378137.0, 298.257222101, AUTHORITY[\"EPSG\",\"7019\"]],"
+                + "  TOWGS84[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "
+                + " AUTHORITY[\"EPSG\",\"6283\"]], "
+                + " PRIMEM[\"Greenwich\", 0.0, AUTHORITY[\"EPSG\",\"8901\"]],"
+                + " UNIT[\"degree\", 0.017453292519943295], "
+                + " AXIS[\"Geodetic latitude\", NORTH], "
+                + " AXIS[\"Geodetic longitude\", EAST], "
+                + " AXIS[\"Ellipsoidal height\", UP], "
+                + " AUTHORITY[\"EPSG\",\"4939\"]]";
         CoordinateReferenceSystem gda94 = CRS.parseWKT(wkt);
 
         MathTransform toWgs84_3d = CRS.findMathTransform(gda94, DefaultGeographicCRS.WGS84_3D);
-        MathTransform toWgs84_2d =
-                CRS.findMathTransform(DefaultGeographicCRS.WGS84_3D, DefaultGeographicCRS.WGS84);
+        MathTransform toWgs84_2d = CRS.findMathTransform(DefaultGeographicCRS.WGS84_3D, DefaultGeographicCRS.WGS84);
         MathTransform transform = ConcatenatedTransform.create(toWgs84_3d, toWgs84_2d);
         assertNotNull(transform);
         assertEquals(3, transform.getSourceDimensions());

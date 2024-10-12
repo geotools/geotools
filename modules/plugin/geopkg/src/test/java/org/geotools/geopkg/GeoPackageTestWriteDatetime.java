@@ -88,15 +88,12 @@ public class GeoPackageTestWriteDatetime {
     }
 
     private Geometry createGeometry() {
-        return new GeometryFactory()
-                .createLineString(
-                        new Coordinate[] {
-                            new Coordinate(0.1, 0.1), new Coordinate(0.2, 0.2),
-                        });
+        return new GeometryFactory().createLineString(new Coordinate[] {
+            new Coordinate(0.1, 0.1), new Coordinate(0.2, 0.2),
+        });
     }
 
-    private SimpleFeature createSimpleFeatureWithValue(
-            SimpleFeatureBuilder featureBuilder, Object value) {
+    private SimpleFeature createSimpleFeatureWithValue(SimpleFeatureBuilder featureBuilder, Object value) {
         featureBuilder.add(createGeometry());
         featureBuilder.add(value);
         return featureBuilder.buildFeature(null);
@@ -141,8 +138,7 @@ public class GeoPackageTestWriteDatetime {
         Instant instant = Instant.parse("2024-02-27T08:13:00.0Z");
         Timestamp timestamp = Timestamp.from(instant);
 
-        SimpleFeatureType featureType =
-                createFeatureTypeWithAttribute(featureName, attributeName, Timestamp.class);
+        SimpleFeatureType featureType = createFeatureTypeWithAttribute(featureName, attributeName, Timestamp.class);
         SimpleFeatureBuilder featureBuilder = new SimpleFeatureBuilder(featureType);
         SimpleFeature simpleFeature = createSimpleFeatureWithValue(featureBuilder, timestamp);
         SimpleFeatureCollection collection = DataUtilities.collection(simpleFeature);
@@ -168,8 +164,7 @@ public class GeoPackageTestWriteDatetime {
 
         Timestamp timestamp = null;
 
-        SimpleFeatureType featureType =
-                createFeatureTypeWithAttribute(featureName, attributeName, Timestamp.class);
+        SimpleFeatureType featureType = createFeatureTypeWithAttribute(featureName, attributeName, Timestamp.class);
         SimpleFeatureBuilder featureBuilder = new SimpleFeatureBuilder(featureType);
         SimpleFeature simpleFeature = createSimpleFeatureWithValue(featureBuilder, timestamp);
         SimpleFeatureCollection collection = DataUtilities.collection(simpleFeature);
@@ -185,8 +180,7 @@ public class GeoPackageTestWriteDatetime {
     }
 
     void assertIsDatetimeColumn(String table, String column) throws Exception {
-        String query =
-                "SELECT type AS data_type" + " FROM pragma_table_info(?)" + " WHERE name = ?";
+        String query = "SELECT type AS data_type" + " FROM pragma_table_info(?)" + " WHERE name = ?";
         try (Connection cx = geopkg.getDataSource().getConnection();
                 PreparedStatement ps = cx.prepareStatement(query)) {
             ps.setString(1, table);

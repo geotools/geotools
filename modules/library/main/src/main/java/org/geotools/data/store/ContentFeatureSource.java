@@ -381,8 +381,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
         ReferencedEnvelope bounds;
         if (!canTransact() && transaction != null && transaction != Transaction.AUTO_COMMIT) {
             // grab the in memory transaction diff
-            DiffTransactionState state =
-                    (DiffTransactionState) getTransaction().getState(getEntry());
+            DiffTransactionState state = (DiffTransactionState) getTransaction().getState(getEntry());
             Diff diff = state.getDiff();
 
             // don't compute the bounds of the features that are modified or removed in the diff
@@ -456,9 +455,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
                     } catch (Exception e) {
                         if (e instanceof IOException) throw (IOException) e;
                         else
-                            throw (IOException)
-                                    new IOException("Error occurred trying to reproject data")
-                                            .initCause(e);
+                            throw (IOException) new IOException("Error occurred trying to reproject data").initCause(e);
                     }
                 }
             }
@@ -493,8 +490,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
         }
         // if the internal actually counted, consider transactions
         if (!canTransact() && transaction != null && transaction != Transaction.AUTO_COMMIT) {
-            DiffTransactionState state =
-                    (DiffTransactionState) getTransaction().getState(getEntry());
+            DiffTransactionState state = (DiffTransactionState) getTransaction().getState(getEntry());
             Diff diff = state.getDiff();
             synchronized (diff) {
                 // consider newly added features that satisfy the filter
@@ -592,14 +588,12 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
     }
 
     /** Returns a reader for the features specified by a query. */
-    public final FeatureReader<SimpleFeatureType, SimpleFeature> getReader(Query query)
-            throws IOException {
+    public final FeatureReader<SimpleFeatureType, SimpleFeature> getReader(Query query) throws IOException {
         query = joinQuery(query);
         query = resolvePropertyNames(query);
 
         // see if we need to enable native sorting in order to support stable paging
-        if (query.getStartIndex() != null
-                && (query.getSortBy() == null || query.getSortBy().length == 0)) {
+        if (query.getStartIndex() != null && (query.getSortBy() == null || query.getSortBy().length == 0)) {
             Query dq = new Query(query);
             dq.setSortBy(SortBy.NATURAL_ORDER);
             query = dq;
@@ -613,14 +607,12 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
         // if the implementation can retype but not sort, we might have
         // to remove the retyping, or we won't be able to sort in memory
         FeatureReader<SimpleFeatureType, SimpleFeature> reader;
-        boolean postRetypeRequired =
-                !canSort(query)
-                        && canRetype(query)
-                        && query.getSortBy() != null
-                        && query.getPropertyNames() != Query.ALL_NAMES;
+        boolean postRetypeRequired = !canSort(query)
+                && canRetype(query)
+                && query.getSortBy() != null
+                && query.getPropertyNames() != Query.ALL_NAMES;
         if (postRetypeRequired) {
-            List<String> requestedProperties =
-                    new ArrayList<>(Arrays.asList(query.getPropertyNames()));
+            List<String> requestedProperties = new ArrayList<>(Arrays.asList(query.getPropertyNames()));
             Set<String> sortProperties = getSortPropertyNames(query.getSortBy());
             if (requestedProperties.containsAll(sortProperties)) {
                 reader = getReaderInternal(query);
@@ -641,8 +633,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
         //
         // transactions
         if (!canTransact() && transaction != null && transaction != Transaction.AUTO_COMMIT) {
-            DiffTransactionState state =
-                    (DiffTransactionState) getTransaction().getState(getEntry());
+            DiffTransactionState state = (DiffTransactionState) getTransaction().getState(getEntry());
             reader = new DiffFeatureReader<>(reader, state.getDiff(), query.getFilter());
         }
 
@@ -665,8 +656,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
             if (query.getPropertyNames() != Query.ALL_NAMES) {
                 // rebuild the type and wrap the reader
                 SimpleFeatureType target =
-                        SimpleFeatureTypeBuilder.retype(
-                                reader.getFeatureType(), query.getPropertyNames());
+                        SimpleFeatureTypeBuilder.retype(reader.getFeatureType(), query.getPropertyNames());
 
                 // do an equals check because we may have needlessly retyped (that is,
                 // the subclass might be able to only partially retype)
@@ -696,16 +686,14 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
         if (!canReproject()) {
             CoordinateReferenceSystem sourceCRS = query.getCoordinateSystem();
             CoordinateReferenceSystem targetCRS = query.getCoordinateSystemReproject();
-            CoordinateReferenceSystem nativeCRS =
-                    reader.getFeatureType().getCoordinateReferenceSystem();
+            CoordinateReferenceSystem nativeCRS = reader.getFeatureType().getCoordinateReferenceSystem();
 
             if (sourceCRS != null && !sourceCRS.equals(nativeCRS)) {
                 // override the nativeCRS
                 try {
                     reader = new ForceCoordinateSystemFeatureReader(reader, sourceCRS);
                 } catch (SchemaException e) {
-                    throw (IOException)
-                            new IOException("Error occurred trying to force CRS").initCause(e);
+                    throw (IOException) new IOException("Error occurred trying to force CRS").initCause(e);
                 }
             } else {
                 // no override
@@ -720,9 +708,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
                     } catch (Exception e) {
                         if (e instanceof IOException) throw (IOException) e;
                         else
-                            throw (IOException)
-                                    new IOException("Error occurred trying to reproject data")
-                                            .initCause(e);
+                            throw (IOException) new IOException("Error occurred trying to reproject data").initCause(e);
                     }
                 }
             }
@@ -811,14 +797,11 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
                     throw erp;
                 } catch (Exception unexpected) {
                     progress.exceptionOccurred(unexpected);
-                    String fid = feature == null ? "feature" : feature.getIdentifier().toString();
+                    String fid = feature == null
+                            ? "feature"
+                            : feature.getIdentifier().toString();
                     throw new IOException(
-                            "Problem visiting "
-                                    + query.getTypeName()
-                                    + " visiting "
-                                    + fid
-                                    + ":"
-                                    + unexpected,
+                            "Problem visiting " + query.getTypeName() + " visiting " + fid + ":" + unexpected,
                             unexpected);
                 }
             }
@@ -870,8 +853,8 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
      * </p>
      *
      */
-    protected abstract FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(
-            Query query) throws IOException;
+    protected abstract FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query)
+            throws IOException;
 
     /**
      * Determines if the datastore can natively perform reprojection.
@@ -1075,8 +1058,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
      *
      * <p>This method calls through to {@link #getReader(Query)}.
      */
-    public final FeatureReader<SimpleFeatureType, SimpleFeature> getReader(Filter filter)
-            throws IOException {
+    public final FeatureReader<SimpleFeatureType, SimpleFeature> getReader(Filter filter) throws IOException {
         return getReader(new Query(getSchema().getTypeName(), filter));
     }
 
@@ -1281,20 +1263,17 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
                     if (canLock()) {
                         doLockInternal(typeName, feature);
                     } else {
-                        getDataStore()
-                                .getLockingManager()
-                                .lockFeatureID(typeName, feature.getID(), transaction, lock);
+                        getDataStore().getLockingManager().lockFeatureID(typeName, feature.getID(), transaction, lock);
                     }
 
                     logger.fine("Locked feature: " + feature.getID());
                     locked++;
                 } catch (FeatureLockException e) {
                     // ignore
-                    String msg =
-                            "Unable to lock feature:"
-                                    + feature.getID()
-                                    + "."
-                                    + " Change logging to FINEST for stack trace";
+                    String msg = "Unable to lock feature:"
+                            + feature.getID()
+                            + "."
+                            + " Change logging to FINEST for stack trace";
                     logger.fine(msg);
                     logger.log(Level.FINEST, "Unable to lock feature: " + feature.getID(), e);
                 }
@@ -1336,9 +1315,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
                 if (canLock()) {
                     doUnlockInternal(typeName, feature);
                 } else {
-                    getDataStore()
-                            .getLockingManager()
-                            .unLockFeatureID(typeName, feature.getID(), transaction, lock);
+                    getDataStore().getLockingManager().unLockFeatureID(typeName, feature.getID(), transaction, lock);
                 }
             }
         }

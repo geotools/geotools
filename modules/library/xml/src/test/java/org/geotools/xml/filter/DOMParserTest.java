@@ -114,8 +114,7 @@ public class DOMParserTest extends FilterTestSupport {
         attributes[10] = Double.valueOf(0.0);
 
         // Creates the feature itself
-        FilterTestSupport.testFeature =
-                SimpleFeatureBuilder.build(FilterTestSupport.testSchema, attributes, null);
+        FilterTestSupport.testFeature = SimpleFeatureBuilder.build(FilterTestSupport.testSchema, attributes, null);
     }
 
     @Test
@@ -318,8 +317,7 @@ public class DOMParserTest extends FilterTestSupport {
                 assertNotNull("Null filter returned", filter);
                 FilterTestSupport.LOGGER.finer("filter: " + filter.getClass().toString());
                 FilterTestSupport.LOGGER.fine("parsed: " + filter.toString());
-                FilterTestSupport.LOGGER.finer(
-                        "result " + filter.evaluate(FilterTestSupport.testFeature));
+                FilterTestSupport.LOGGER.finer("result " + filter.evaluate(FilterTestSupport.testFeature));
             }
         }
 
@@ -352,8 +350,7 @@ public class DOMParserTest extends FilterTestSupport {
                 assertNotNull("Null filter returned", filter);
                 FilterTestSupport.LOGGER.finer("filter: " + filter.getClass().toString());
                 FilterTestSupport.LOGGER.fine("parsed: " + filter.toString());
-                FilterTestSupport.LOGGER.finer(
-                        "result " + filter.evaluate(FilterTestSupport.testFeature));
+                FilterTestSupport.LOGGER.finer("result " + filter.evaluate(FilterTestSupport.testFeature));
 
                 return filter;
             }

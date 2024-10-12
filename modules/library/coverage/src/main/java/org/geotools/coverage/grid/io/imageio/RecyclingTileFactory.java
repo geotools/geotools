@@ -118,8 +118,7 @@ public class RecyclingTileFactory extends java.util.Observable
     private static long getBufferSizeCSM(ComponentSampleModel csm) {
         int[] bandOffsets = csm.getBandOffsets();
         int maxBandOff = bandOffsets[0];
-        for (int i = 1; i < bandOffsets.length; i++)
-            maxBandOff = Math.max(maxBandOff, bandOffsets[i]);
+        for (int i = 1; i < bandOffsets.length; i++) maxBandOff = Math.max(maxBandOff, bandOffsets[i]);
 
         long size = 0;
         if (maxBandOff >= 0) size += maxBandOff + 1;
@@ -261,9 +260,8 @@ public class RecyclingTileFactory extends java.util.Observable
             MultiPixelPackedSampleModel mppsm = (MultiPixelPackedSampleModel) sampleModel;
             numBanks = 1;
             int dataTypeSize = DataBuffer.getDataTypeSize(type);
-            size =
-                    mppsm.getScanlineStride() * mppsm.getHeight()
-                            + (mppsm.getDataBitOffset() + dataTypeSize - 1) / dataTypeSize;
+            size = mppsm.getScanlineStride() * mppsm.getHeight()
+                    + (mppsm.getDataBitOffset() + dataTypeSize - 1) / dataTypeSize;
         } else if (sampleModel instanceof SinglePixelPackedSampleModel) {
             SinglePixelPackedSampleModel sppsm = (SinglePixelPackedSampleModel) sampleModel;
             numBanks = 1;
@@ -337,14 +335,7 @@ public class RecyclingTileFactory extends java.util.Observable
                 }
             } else if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.fine(
-                        getClass().getName()
-                                + " No type "
-                                + type
-                                + " array["
-                                + numBanks
-                                + "]["
-                                + size
-                                + "] available");
+                        getClass().getName() + " No type " + type + " array[" + numBanks + "][" + size + "] available");
             }
         } else if (LOGGER.isLoggable(Level.FINE)) {
             LOGGER.fine(getClass().getName() + " Size is zero");
@@ -367,19 +358,10 @@ public class RecyclingTileFactory extends java.util.Observable
         DataBuffer db = tile.getDataBuffer();
 
         Long key =
-                Long.valueOf(
-                        ((long) db.getDataType() << 56)
-                                | ((long) db.getNumBanks() << 32)
-                                | (long) db.getSize());
+                Long.valueOf(((long) db.getDataType() << 56) | ((long) db.getNumBanks() << 32) | (long) db.getSize());
 
         if (LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.fine(
-                    "Recycling array for: "
-                            + db.getDataType()
-                            + " "
-                            + db.getNumBanks()
-                            + " "
-                            + db.getSize());
+            LOGGER.fine("Recycling array for: " + db.getDataType() + " " + db.getNumBanks() + " " + db.getSize());
             LOGGER.fine("recycleTile(); key = " + key);
         }
 
@@ -409,13 +391,7 @@ public class RecyclingTileFactory extends java.util.Observable
         Long key = Long.valueOf(((long) arrayType << 56) | numBanks << 32 | arrayLength);
 
         if (LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.fine(
-                    "Attempting to get array for: "
-                            + arrayType
-                            + " "
-                            + numBanks
-                            + " "
-                            + arrayLength);
+            LOGGER.fine("Attempting to get array for: " + arrayType + " " + numBanks + " " + arrayLength);
             LOGGER.fine("Attempting to get array for key " + key);
         }
 

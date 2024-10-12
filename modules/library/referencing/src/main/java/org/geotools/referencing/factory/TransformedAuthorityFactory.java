@@ -237,9 +237,7 @@ public class TransformedAuthorityFactory extends AuthorityFactoryAdapter {
             final ReferencingFactoryContainer factories = getFactoryContainer(false);
             final CSFactory csFactory = factories.getCSFactory();
             final Map<String, ?> properties = getProperties(axis);
-            axis =
-                    csFactory.createCoordinateSystemAxis(
-                            properties, axis.getAbbreviation(), newDirection, newUnits);
+            axis = csFactory.createCoordinateSystemAxis(properties, axis.getAbbreviation(), newDirection, newUnits);
             axis = pool.unique(axis);
         }
         return axis;
@@ -269,8 +267,7 @@ public class TransformedAuthorityFactory extends AuthorityFactoryAdapter {
         for (int i = 0; i < dimension; i++) {
             if (!orderedAxis[i].equals(cs.getAxis(i))) {
                 CoordinateSystem modified = createCS(cs.getClass(), getProperties(cs), orderedAxis);
-                assert Classes.sameInterfaces(
-                        cs.getClass(), modified.getClass(), CoordinateSystem.class);
+                assert Classes.sameInterfaces(cs.getClass(), modified.getClass(), CoordinateSystem.class);
                 modified = pool.unique(modified);
                 return modified;
             }
@@ -307,8 +304,7 @@ public class TransformedAuthorityFactory extends AuthorityFactoryAdapter {
      */
     // @Override
     @Override
-    protected CoordinateReferenceSystem replace(final CoordinateReferenceSystem crs)
-            throws FactoryException {
+    protected CoordinateReferenceSystem replace(final CoordinateReferenceSystem crs) throws FactoryException {
         /*
          * Gets the replaced coordinate system and datum, and checks if there is any change.
          */
@@ -339,20 +335,15 @@ public class TransformedAuthorityFactory extends AuthorityFactoryAdapter {
             final ReferencingFactoryContainer factories = getFactoryContainer(true);
             final CRSFactory crsFactory = factories.getCRSFactory();
             Conversion fromBase = derivedCRS.getConversionFromBase();
-            fromBase =
-                    new DefiningConversion(
-                            getProperties(fromBase),
-                            fromBase.getMethod(),
-                            fromBase.getParameterValues());
+            fromBase = new DefiningConversion(
+                    getProperties(fromBase), fromBase.getMethod(), fromBase.getParameterValues());
             if (crs instanceof ProjectedCRS) {
                 modified =
-                        crsFactory.createProjectedCRS(
-                                properties, (GeographicCRS) baseCRS, fromBase, (CartesianCS) cs);
+                        crsFactory.createProjectedCRS(properties, (GeographicCRS) baseCRS, fromBase, (CartesianCS) cs);
             } else {
                 // TODO: Need a createDerivedCRS method.
                 final Object arg0 = crs.getName().getCode();
-                throw new FactoryException(
-                        MessageFormat.format(ErrorKeys.UNSUPPORTED_CRS_$1, arg0));
+                throw new FactoryException(MessageFormat.format(ErrorKeys.UNSUPPORTED_CRS_$1, arg0));
             }
         } else if (sameCS) {
             return crs;
@@ -361,9 +352,7 @@ public class TransformedAuthorityFactory extends AuthorityFactoryAdapter {
             final ReferencingFactoryContainer factories = getFactoryContainer(true);
             final CRSFactory crsFactory = factories.getCRSFactory();
             if (crs instanceof GeographicCRS) {
-                modified =
-                        crsFactory.createGeographicCRS(
-                                properties, (GeodeticDatum) datum, (EllipsoidalCS) cs);
+                modified = crsFactory.createGeographicCRS(properties, (GeodeticDatum) datum, (EllipsoidalCS) cs);
             } else if (crs instanceof GeocentricCRS) {
                 final GeodeticDatum gd = (GeodeticDatum) datum;
                 if (cs instanceof CartesianCS) {
@@ -372,31 +361,23 @@ public class TransformedAuthorityFactory extends AuthorityFactoryAdapter {
                     modified = crsFactory.createGeocentricCRS(properties, gd, (SphericalCS) cs);
                 }
             } else if (crs instanceof VerticalCRS) {
-                modified =
-                        crsFactory.createVerticalCRS(
-                                properties, (VerticalDatum) datum, (VerticalCS) cs);
+                modified = crsFactory.createVerticalCRS(properties, (VerticalDatum) datum, (VerticalCS) cs);
             } else if (crs instanceof TemporalCRS) {
-                modified =
-                        crsFactory.createTemporalCRS(
-                                properties, (TemporalDatum) datum, (TimeCS) cs);
+                modified = crsFactory.createTemporalCRS(properties, (TemporalDatum) datum, (TimeCS) cs);
             } else if (crs instanceof ImageCRS) {
                 modified = crsFactory.createImageCRS(properties, (ImageDatum) datum, (AffineCS) cs);
             } else if (crs instanceof EngineeringCRS) {
-                modified =
-                        crsFactory.createEngineeringCRS(properties, (EngineeringDatum) datum, cs);
+                modified = crsFactory.createEngineeringCRS(properties, (EngineeringDatum) datum, cs);
             } else if (crs instanceof CompoundCRS) {
-                final List<CoordinateReferenceSystem> elements =
-                        ((CompoundCRS) crs).getCoordinateReferenceSystems();
-                final CoordinateReferenceSystem[] m =
-                        new CoordinateReferenceSystem[elements.size()];
+                final List<CoordinateReferenceSystem> elements = ((CompoundCRS) crs).getCoordinateReferenceSystems();
+                final CoordinateReferenceSystem[] m = new CoordinateReferenceSystem[elements.size()];
                 for (int i = 0; i < m.length; i++) {
                     m[i] = replace(elements.get(i));
                 }
                 modified = crsFactory.createCompoundCRS(properties, m);
             } else {
                 final Object arg0 = crs.getName().getCode();
-                throw new FactoryException(
-                        MessageFormat.format(ErrorKeys.UNSUPPORTED_CRS_$1, arg0));
+                throw new FactoryException(MessageFormat.format(ErrorKeys.UNSUPPORTED_CRS_$1, arg0));
             }
         }
         modified = pool.unique(modified);
@@ -415,8 +396,7 @@ public class TransformedAuthorityFactory extends AuthorityFactoryAdapter {
      */
     // @Override
     @Override
-    protected CoordinateOperation replace(final CoordinateOperation operation)
-            throws FactoryException {
+    protected CoordinateOperation replace(final CoordinateOperation operation) throws FactoryException {
         final CoordinateReferenceSystem oldSrcCRS = operation.getSourceCRS();
         final CoordinateReferenceSystem oldTgtCRS = operation.getTargetCRS();
         final CoordinateReferenceSystem sourceCRS = (oldSrcCRS != null) ? replace(oldSrcCRS) : null;
@@ -504,8 +484,7 @@ public class TransformedAuthorityFactory extends AuthorityFactoryAdapter {
                     return csFactory.createUserDefinedCS(properties, axis[0], axis[1], axis[2]);
             }
         }
-        throw new FactoryException(
-                MessageFormat.format(ErrorKeys.UNSUPPORTED_COORDINATE_SYSTEM_$1, type));
+        throw new FactoryException(MessageFormat.format(ErrorKeys.UNSUPPORTED_COORDINATE_SYSTEM_$1, type));
     }
 
     /**
@@ -537,8 +516,7 @@ public class TransformedAuthorityFactory extends AuthorityFactoryAdapter {
             final String sourceCode, final String targetCode) throws FactoryException {
         final Set<CoordinateOperation> operations =
                 super.createFromCoordinateReferenceSystemCodes(sourceCode, targetCode);
-        final Set<CoordinateOperation> modified =
-                new LinkedHashSet<>((int) (operations.size() / 0.75f) + 1);
+        final Set<CoordinateOperation> modified = new LinkedHashSet<>((int) (operations.size() / 0.75f) + 1);
         for (final Iterator<CoordinateOperation> it = operations.iterator(); it.hasNext(); ) {
             final CoordinateOperation operation;
             try {

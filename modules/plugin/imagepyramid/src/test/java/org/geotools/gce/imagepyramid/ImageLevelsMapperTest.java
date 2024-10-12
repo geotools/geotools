@@ -61,8 +61,7 @@ public class ImageLevelsMapperTest extends AbstractPyramidTest {
         final URL testFile = TestData.getResource(this, "multipyramidwithoverviews");
         File mosaicFolder = URLs.urlToFile(testFile);
         assertNotNull(testFile);
-        File[] pyramidLevels =
-                mosaicFolder.listFiles((FileFilter) FileFilterUtils.directoryFileFilter());
+        File[] pyramidLevels = mosaicFolder.listFiles((FileFilter) FileFilterUtils.directoryFileFilter());
         for (File pyramidLevel : pyramidLevels) {
             cleanFiles(pyramidLevel);
         }
@@ -94,11 +93,9 @@ public class ImageLevelsMapperTest extends AbstractPyramidTest {
         assertEquals(64, gridEnvelope.getSpan(1), DELTA);
 
         // Read a reduced view of the RGB coverage
-        final ParameterValue<GridGeometry2D> gg =
-                AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
+        final ParameterValue<GridGeometry2D> gg = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
         final GeneralBounds envelope = reader.getOriginalEnvelope();
-        GridEnvelope2D gridRange =
-                new GridEnvelope2D(((GridEnvelope2D) reader.getOriginalGridRange()).getBounds());
+        GridEnvelope2D gridRange = new GridEnvelope2D(((GridEnvelope2D) reader.getOriginalGridRange()).getBounds());
         final Dimension dim = new Dimension();
         dim.setSize(gridRange.getSpan(0) / 16.0, gridRange.getSpan(1) / 16.0);
         Rectangle rasterArea = gridRange;
@@ -116,16 +113,15 @@ public class ImageLevelsMapperTest extends AbstractPyramidTest {
         assertEquals(4, gridEnvelope.getSpan(1), DELTA);
 
         // test on expanded Envelope (Double the size of the envelope)
-        final GeneralBounds doubleEnvelope =
-                new GeneralBounds(
-                        new double[] {
-                            envelope.getLowerCorner().getOrdinate(0),
-                            envelope.getLowerCorner().getOrdinate(1)
-                        },
-                        new double[] {
-                            envelope.getLowerCorner().getOrdinate(0) + envelope.getSpan(0) * 2,
-                            envelope.getLowerCorner().getOrdinate(1) + envelope.getSpan(1) * 2
-                        });
+        final GeneralBounds doubleEnvelope = new GeneralBounds(
+                new double[] {
+                    envelope.getLowerCorner().getOrdinate(0),
+                    envelope.getLowerCorner().getOrdinate(1)
+                },
+                new double[] {
+                    envelope.getLowerCorner().getOrdinate(0) + envelope.getSpan(0) * 2,
+                    envelope.getLowerCorner().getOrdinate(1) + envelope.getSpan(1) * 2
+                });
         doubleEnvelope.setCoordinateReferenceSystem(envelope.getCoordinateReferenceSystem());
 
         GridEnvelope doubleRange = reader.getOriginalGridRange();

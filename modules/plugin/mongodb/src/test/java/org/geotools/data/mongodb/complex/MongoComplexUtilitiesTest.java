@@ -50,8 +50,7 @@ public abstract class MongoComplexUtilitiesTest extends MongoTestSupport {
      */
     public void testGetValueEmptyList() throws IOException {
         final BasicDBList list = new BasicDBList();
-        Object value =
-                MongoComplexUtilities.getValue(list, Collections.emptyMap(), "path1.path2", null);
+        Object value = MongoComplexUtilities.getValue(list, Collections.emptyMap(), "path1.path2", null);
         // no exception thrown, the value is null
         assertNull(value);
     }
@@ -62,8 +61,7 @@ public abstract class MongoComplexUtilitiesTest extends MongoTestSupport {
         // the feature value is picked up instead of the one from the DBObject
         SimpleFeatureSource source = dataStore.getFeatureSource("ft3");
         try (FeatureIterator<SimpleFeature> it = source.getFeatures().features()) {
-            GeometryCoordinateSequenceTransformer transformer =
-                    new GeometryCoordinateSequenceTransformer();
+            GeometryCoordinateSequenceTransformer transformer = new GeometryCoordinateSequenceTransformer();
             CoordinateReferenceSystem original = source.getSchema().getCoordinateReferenceSystem();
             CoordinateReferenceSystem target = CRS.decode("urn:x-ogc:def:crs:EPSG:6.11.2:4326");
             transformer.setMathTransform(CRS.findMathTransform(original, target, false));
@@ -77,10 +75,8 @@ public abstract class MongoComplexUtilitiesTest extends MongoTestSupport {
                 Geometry geometry2 = (Geometry) MongoComplexUtilities.getValue(f, "geometry");
                 assertEquals(geom, geometry2);
                 MongoFeature mongoFeature = (MongoFeature) f;
-                Geometry dbGeom =
-                        new MongoGeometryBuilder()
-                                .toGeometry(
-                                        (DBObject) mongoFeature.getMongoObject().get("geometry"));
+                Geometry dbGeom = new MongoGeometryBuilder()
+                        .toGeometry((DBObject) mongoFeature.getMongoObject().get("geometry"));
                 assertFalse(geometry2.equals(dbGeom));
             }
         }
@@ -90,8 +86,7 @@ public abstract class MongoComplexUtilitiesTest extends MongoTestSupport {
             throws IOException, FactoryException, TransformException, SchemaException {
         SimpleFeatureSource source = dataStore.getFeatureSource("ft3");
         try (FeatureIterator<SimpleFeature> it = source.getFeatures().features()) {
-            GeometryCoordinateSequenceTransformer transformer =
-                    new GeometryCoordinateSequenceTransformer();
+            GeometryCoordinateSequenceTransformer transformer = new GeometryCoordinateSequenceTransformer();
             CoordinateReferenceSystem original = source.getSchema().getCoordinateReferenceSystem();
             CoordinateReferenceSystem target = CRS.decode("urn:x-ogc:def:crs:EPSG:6.11.2:4326");
             transformer.setMathTransform(CRS.findMathTransform(original, target, false));

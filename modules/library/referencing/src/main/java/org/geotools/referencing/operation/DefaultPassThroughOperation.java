@@ -36,8 +36,7 @@ import org.geotools.util.UnsupportedImplementationException;
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
-public class DefaultPassThroughOperation extends DefaultSingleOperation
-        implements PassThroughOperation {
+public class DefaultPassThroughOperation extends DefaultSingleOperation implements PassThroughOperation {
     /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = 4308173919747248695L;
 
@@ -71,8 +70,7 @@ public class DefaultPassThroughOperation extends DefaultSingleOperation
                 sourceCRS,
                 targetCRS,
                 operation,
-                PassThroughTransform.create(
-                        firstAffectedOrdinate, operation.getMathTransform(), numTrailingOrdinates));
+                PassThroughTransform.create(firstAffectedOrdinate, operation.getMathTransform(), numTrailingOrdinates));
     }
 
     /**

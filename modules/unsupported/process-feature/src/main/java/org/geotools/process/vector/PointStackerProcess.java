@@ -134,13 +134,10 @@ public class PointStackerProcess implements VectorProcess {
     public SimpleFeatureCollection execute(
 
             // process data
-            @DescribeParameter(name = "data", description = "Input feature collection")
-                    SimpleFeatureCollection data,
+            @DescribeParameter(name = "data", description = "Input feature collection") SimpleFeatureCollection data,
 
             // process parameters
-            @DescribeParameter(
-                            name = "cellSize",
-                            description = "Grid cell size to aggregate to, in pixels")
+            @DescribeParameter(name = "cellSize", description = "Grid cell size to aggregate to, in pixels")
                     Integer cellSize,
             @DescribeParameter(
                             name = "weightClusterPosition",
@@ -149,8 +146,7 @@ public class PointStackerProcess implements VectorProcess {
                     Boolean argWeightClusterPosition,
             @DescribeParameter(
                             name = "normalize",
-                            description =
-                                    "Indicates whether to add fields normalized to the range 0-1.",
+                            description = "Indicates whether to add fields normalized to the range 0-1.",
                             defaultValue = "false")
                     Boolean argNormalize,
             @DescribeParameter(
@@ -162,24 +158,15 @@ public class PointStackerProcess implements VectorProcess {
                     PreserveLocation preserveLocation,
 
             // output image parameters
-            @DescribeParameter(
-                            name = "outputBBOX",
-                            description = "Bounding box for target image extent")
+            @DescribeParameter(name = "outputBBOX", description = "Bounding box for target image extent")
                     ReferencedEnvelope outputEnv,
-            @DescribeParameter(
-                            name = "outputWidth",
-                            description = "Target image width in pixels",
-                            minValue = 1)
+            @DescribeParameter(name = "outputWidth", description = "Target image width in pixels", minValue = 1)
                     Integer outputWidth,
-            @DescribeParameter(
-                            name = "outputHeight",
-                            description = "Target image height in pixels",
-                            minValue = 1)
+            @DescribeParameter(name = "outputHeight", description = "Target image height in pixels", minValue = 1)
                     Integer outputHeight,
             @DescribeParameter(
                             name = "filter",
-                            description =
-                                    "Optional CQL filter to restrict the points to be clustered",
+                            description = "Optional CQL filter to restrict the points to be clustered",
                             min = 0,
                             max = 1)
                     String cql,
@@ -221,14 +208,8 @@ public class PointStackerProcess implements VectorProcess {
         double cellSizeSrc = cellSize * outputEnv.getWidth() / outputWidth;
 
         // create cluster points, based on cellSize and width and height of the viewd area.
-        Collection<StackedPoint> stackedPts =
-                stackPoints(
-                        data,
-                        crsTransform,
-                        cellSizeSrc,
-                        weightClusterPosition,
-                        outputEnv.getMinX(),
-                        outputEnv.getMinY());
+        Collection<StackedPoint> stackedPts = stackPoints(
+                data, crsTransform, cellSizeSrc, weightClusterPosition, outputEnv.getMinX(), outputEnv.getMinY());
 
         SimpleFeatureType schema = createType(srcCRS, normalize, data.getSchema());
         ListFeatureCollection result = new ListFeatureCollection(schema);
@@ -276,8 +257,7 @@ public class PointStackerProcess implements VectorProcess {
             // should probably use a ReferencedEnvelope here
             invTransform.transform(srcPt, 0, dstPt, 0, 1);
             invTransform.transform(srcPt2, 0, dstPt2, 0, 1);
-            Envelope boundingBoxTransformed =
-                    new Envelope(dstPt[0], dstPt[1], dstPt2[0], dstPt2[1]);
+            Envelope boundingBoxTransformed = new Envelope(dstPt[0], dstPt[1], dstPt2[0], dstPt2[1]);
             fb.set(ATTR_BOUNDING_BOX_GEOM, boundingBoxTransformed);
             // adding bounding box of the points staked, as string
             fb.set(ATTR_BOUNDING_BOX, boundingBoxTransformed.toString());
@@ -409,8 +389,7 @@ public class PointStackerProcess implements VectorProcess {
         griddedPt.y = iy;
     }
 
-    private SimpleFeatureType createType(
-            CoordinateReferenceSystem crs, boolean stretch, SimpleFeatureType original) {
+    private SimpleFeatureType createType(CoordinateReferenceSystem crs, boolean stretch, SimpleFeatureType original) {
         SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
         tb.add(ATTR_GEOM, Point.class, crs);
         tb.add(ATTR_COUNT, Integer.class);

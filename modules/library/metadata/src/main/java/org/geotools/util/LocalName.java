@@ -36,8 +36,7 @@ import org.geotools.api.util.ScopedName;
  * @author Martin Desruisseaux (IRD)
  * @see NameFactory
  */
-public class LocalName extends org.geotools.util.GenericName
-        implements org.geotools.api.util.LocalName {
+public class LocalName extends org.geotools.util.GenericName implements org.geotools.api.util.LocalName {
     /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = -5627125375582385822L;
 

@@ -24,5 +24,4 @@ package org.geotools.ysld.parse;
  * @deprecated Use {@link org.geotools.styling.zoom.ContinuousZoomContext} instead.
  */
 @Deprecated
-public abstract class ContinuousZoomContext
-        extends org.geotools.styling.zoom.ContinuousZoomContext {}
+public abstract class ContinuousZoomContext extends org.geotools.styling.zoom.ContinuousZoomContext {}

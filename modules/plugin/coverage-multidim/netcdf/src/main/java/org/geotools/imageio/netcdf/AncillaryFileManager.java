@@ -93,24 +93,20 @@ public class AncillaryFileManager implements FileSetManager {
                 // input file
                 // (filename.xml)
                 String optionalAuxiliaryPath =
-                        parentDirectory.getAbsolutePath()
-                                + File.separator
-                                + baseName
-                                + INDEX_SUFFIX;
+                        parentDirectory.getAbsolutePath() + File.separator + baseName + INDEX_SUFFIX;
                 File file = new File(optionalAuxiliaryPath);
                 if (!file.exists() || !file.canRead()) {
                     // CASE 2: side file in hidden folder (for retrocompatibility)
                     // Compose the path to an optional XML auxiliary file inside a directory of with
                     // the same
                     // name of the file but with a dot before (.filename/filename.xml)
-                    optionalAuxiliaryPath =
-                            parentDirectory.getAbsolutePath()
-                                    + File.separator
-                                    + "."
-                                    + baseName
-                                    + File.separator
-                                    + baseName
-                                    + INDEX_SUFFIX;
+                    optionalAuxiliaryPath = parentDirectory.getAbsolutePath()
+                            + File.separator
+                            + "."
+                            + baseName
+                            + File.separator
+                            + baseName
+                            + INDEX_SUFFIX;
                     file = new File(optionalAuxiliaryPath);
                     if (!file.exists() || !file.canRead()) {
                         file = null;
@@ -134,22 +130,19 @@ public class AncillaryFileManager implements FileSetManager {
                 // Compose the path to an optional datastore file in the same directory of the input
                 // file
                 String optionalAuxiliaryDatastorePath =
-                        parentDirectory.getAbsolutePath()
-                                + File.separator
-                                + DEFAULT_DATASTORE_PROPERTIES;
+                        parentDirectory.getAbsolutePath() + File.separator + DEFAULT_DATASTORE_PROPERTIES;
                 File file = new File(optionalAuxiliaryDatastorePath);
                 if (!file.exists() || !file.canRead()) {
                     // CASE 2: side file in hidden folder (for backward compatibility)
                     // Compose the path to an optional datastore file inside a directory with the
                     // same
                     // name of the file but with a dot before (.filename/mddatastore.properties)
-                    optionalAuxiliaryDatastorePath =
-                            parentDirectory.getAbsolutePath()
-                                    + File.separator
-                                    + "."
-                                    + baseName
-                                    + File.separator
-                                    + DEFAULT_DATASTORE_PROPERTIES;
+                    optionalAuxiliaryDatastorePath = parentDirectory.getAbsolutePath()
+                            + File.separator
+                            + "."
+                            + baseName
+                            + File.separator
+                            + DEFAULT_DATASTORE_PROPERTIES;
                     file = new File(optionalAuxiliaryDatastorePath);
                     if (!file.exists() || !file.canRead()) {
                         file = null;
@@ -181,23 +174,20 @@ public class AncillaryFileManager implements FileSetManager {
 
     private static final Set<String> CUT_EXTENSIONS = new HashSet<>();
 
-    private static final Set<PropertiesCollectorSPI> pcSPIs =
-            PropertiesCollectorFinder.getPropertiesCollectorSPI();
+    private static final Set<PropertiesCollectorSPI> pcSPIs = PropertiesCollectorFinder.getPropertiesCollectorSPI();
 
     private static JAXBContext CONTEXT = null;
 
     // contains information about dimensions that will produce multiple bands indexed by the
     // dimension name
-    private final Map<String, MultipleBandsDimensionInfo> multipleBandsDimensionsInfo =
-            new HashMap<>();
+    private final Map<String, MultipleBandsDimensionInfo> multipleBandsDimensionsInfo = new HashMap<>();
 
     // Indexer and datastore config can be considered static so we can cache them
     // in order to avoid their repeated unmarshalling when accessing a dataset.
 
     protected static final Map<String, Indexer> INDEXER_CACHE = new SoftValueHashMap<>();
 
-    protected static final Map<String, DataStoreConfiguration> DATASTORE_CONFIG_CACHE =
-            new SoftValueHashMap<>();
+    protected static final Map<String, DataStoreConfiguration> DATASTORE_CONFIG_CACHE = new SoftValueHashMap<>();
 
     static {
         try {
@@ -257,8 +247,7 @@ public class AncillaryFileManager implements FileSetManager {
         this(netcdfFile, indexFilePath, null);
     }
 
-    public AncillaryFileManager(
-            final File netcdfFile, final String indexFilePath, final String datastoreFilePath)
+    public AncillaryFileManager(final File netcdfFile, final String indexFilePath, final String datastoreFilePath)
             throws IOException, JAXBException, NoSuchAlgorithmException {
 
         org.geotools.util.Utilities.ensureNonNull("file", netcdfFile);
@@ -290,8 +279,7 @@ public class AncillaryFileManager implements FileSetManager {
         String mainName = FilenameUtils.getName(mainFilePath);
         // TODO: Improve that check on extensions.
         String extension = FilenameUtils.getExtension(mainName);
-        String baseName =
-                cutExtension(extension) ? FilenameUtils.removeExtension(mainName) : mainName;
+        String baseName = cutExtension(extension) ? FilenameUtils.removeExtension(mainName) : mainName;
         String outputLocalFolder = "." + baseName + "_" + hashCode;
         destinationDir = new File(baseDir, outputLocalFolder);
 
@@ -315,8 +303,7 @@ public class AncillaryFileManager implements FileSetManager {
 
         // init
         initIndexer();
-        datastoreIndexFile =
-                lookupFile(datastoreFilePath, baseName, AuxiliaryFileType.INDEXER_DATASTORE);
+        datastoreIndexFile = lookupFile(datastoreFilePath, baseName, AuxiliaryFileType.INDEXER_DATASTORE);
     }
 
     /**
@@ -345,8 +332,7 @@ public class AncillaryFileManager implements FileSetManager {
     }
 
     /** Check whether the file have been updated. */
-    private static void checkReset(
-            final File mainFile, final File slicesIndexFile, final File destinationDir)
+    private static void checkReset(final File mainFile, final File slicesIndexFile, final File destinationDir)
             throws IOException {
         // TODO: Consider acquiring a LOCK on the file
         if (slicesIndexFile.exists()) {
@@ -356,8 +342,7 @@ public class AncillaryFileManager implements FileSetManager {
             // Check whether the NetCDF time is more recent with respect to the auxiliary indexes
             if (mainFileTime > indexTime) {
                 // Need to delete all the auxiliary files and start from scratch
-                final Collection<File> listedFiles =
-                        FileUtils.listFiles(destinationDir, null, true);
+                final Collection<File> listedFiles = FileUtils.listFiles(destinationDir, null, true);
                 for (File file : listedFiles) {
 
                     // Preserve summary file which contains mapping between coverages and underlying
@@ -531,13 +516,11 @@ public class AncillaryFileManager implements FileSetManager {
             if (unmarshaller != null) {
                 indexer = (Indexer) unmarshaller.unmarshal(indexerFile);
                 if (indexer == null) {
-                    throw new IllegalArgumentException(
-                            "unable to create Indexer for " + indexerPath);
+                    throw new IllegalArgumentException("unable to create Indexer for " + indexerPath);
                 }
                 INDEXER_CACHE.put(indexerFile.getAbsolutePath(), indexer);
             } else {
-                throw new IllegalArgumentException(
-                        "unable to create Unmarshaller for " + indexerPath);
+                throw new IllegalArgumentException("unable to create Unmarshaller for " + indexerPath);
             }
         }
         if (indexer != null) {
@@ -609,8 +592,7 @@ public class AncillaryFileManager implements FileSetManager {
                 }
 
                 // Add the newly created indexer coverage
-                final Coverage coverage =
-                        createCoverage(coverageName, origName, schemaAttributes, schemaName);
+                final Coverage coverage = createCoverage(coverageName, origName, schemaAttributes, schemaName);
                 addCoverage(coverage);
             }
         }
@@ -624,8 +606,7 @@ public class AncillaryFileManager implements FileSetManager {
      * @param schemaAttributes schema definition attributes
      * @param schemaName schema name
      */
-    private Coverage createCoverage(
-            String coverageName, String origName, String schemaAttributes, String schemaName) {
+    private Coverage createCoverage(String coverageName, String origName, String schemaAttributes, String schemaName) {
         SchemaType schema = OBJECT_FACTORY.createSchemaType();
         Coverage coverage = OBJECT_FACTORY.createIndexerCoveragesCoverage();
         coverage.setOrigName(origName);
@@ -680,9 +661,7 @@ public class AncillaryFileManager implements FileSetManager {
                     }
                     if (selectedSPI == null) {
                         if (LOGGER.isLoggable(Level.INFO)) {
-                            LOGGER.info(
-                                    "Unable to find a PropertyCollector for this INTERNAL_STORE_SPI: "
-                                            + spiName);
+                            LOGGER.info("Unable to find a PropertyCollector for this INTERNAL_STORE_SPI: " + spiName);
                         }
                         continue;
                     }
@@ -691,10 +670,8 @@ public class AncillaryFileManager implements FileSetManager {
                     final String[] propertyNames = {mapped != null ? mapped : COVERAGE_NAME};
 
                     // create the PropertiesCollector
-                    final PropertiesCollector pc =
-                            selectedSPI.create(
-                                    DefaultPropertiesCollectorSPI.REGEX_PREFIX + value,
-                                    Arrays.asList(propertyNames));
+                    final PropertiesCollector pc = selectedSPI.create(
+                            DefaultPropertiesCollectorSPI.REGEX_PREFIX + value, Arrays.asList(propertyNames));
                     if (pc != null) {
                         this.collectors.put(collectorName, pc);
                     }
@@ -781,9 +758,7 @@ public class AncillaryFileManager implements FileSetManager {
             int two_halfs = 0;
             do {
                 buf.append(
-                        (0 <= halfbyte) && (halfbyte <= 9)
-                                ? (char) ('0' + halfbyte)
-                                : (char) ('a' + (halfbyte - 10)));
+                        (0 <= halfbyte) && (halfbyte <= 9) ? (char) ('0' + halfbyte) : (char) ('a' + (halfbyte - 10)));
                 halfbyte = b & 0x0F;
             } while (two_halfs++ < 1);
         }
@@ -812,13 +787,9 @@ public class AncillaryFileManager implements FileSetManager {
                     final String SPIClass = properties.getProperty("SPI");
                     try {
                         // create a datastore as instructed
-                        final DataStoreFactorySpi spi =
-                                (DataStoreFactorySpi)
-                                        Class.forName(SPIClass)
-                                                .getDeclaredConstructor()
-                                                .newInstance();
-                        Map<String, Serializable> datastoreParams =
-                                Utils.filterDataStoreParams(properties, spi);
+                        final DataStoreFactorySpi spi = (DataStoreFactorySpi)
+                                Class.forName(SPIClass).getDeclaredConstructor().newInstance();
+                        Map<String, Serializable> datastoreParams = Utils.filterDataStoreParams(properties, spi);
 
                         // create a datastore configuration using the specified SPI and
                         // datastoreParams
@@ -838,13 +809,10 @@ public class AncillaryFileManager implements FileSetManager {
             }
         } else {
             File parentFile = slicesIndexFile.getParentFile();
-            String database =
-                    FilenameUtils.removeExtension(
-                                    FilenameUtils.getName(slicesIndexFile.getCanonicalPath()))
-                            .replace(".", "");
+            String database = FilenameUtils.removeExtension(FilenameUtils.getName(slicesIndexFile.getCanonicalPath()))
+                    .replace(".", "");
             datastoreConfiguration =
-                    new DataStoreConfiguration(
-                            DataStoreConfiguration.getDefaultParams(database, parentFile));
+                    new DataStoreConfiguration(DataStoreConfiguration.getDefaultParams(database, parentFile));
         }
         return datastoreConfiguration;
     }
@@ -853,13 +821,14 @@ public class AncillaryFileManager implements FileSetManager {
      * Check whether the dataStore needs to be wrapped (as an instance, to allow long typeNames and
      * attributes).
      */
-    private void checkStoreWrapping(DataStoreConfiguration datastoreConfiguration)
-            throws IOException {
+    private void checkStoreWrapping(DataStoreConfiguration datastoreConfiguration) throws IOException {
         Map<String, Serializable> params = datastoreConfiguration.getParams();
         String param = getParameter(Utils.Prop.WRAP_STORE);
         if (param != null && param.trim().equalsIgnoreCase("true")) {
             params.put(Utils.Prop.WRAP_STORE, true);
-            params.put(Utils.Prop.PARENT_LOCATION, URLs.fileToUrl(getDestinationDir()).toString());
+            params.put(
+                    Utils.Prop.PARENT_LOCATION,
+                    URLs.fileToUrl(getDestinationDir()).toString());
         }
     }
 

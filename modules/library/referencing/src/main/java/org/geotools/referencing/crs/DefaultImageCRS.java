@@ -79,8 +79,7 @@ public class DefaultImageCRS extends AbstractSingleCRS implements ImageCRS {
      * @param datum The datum.
      * @param cs The coordinate system.
      */
-    public DefaultImageCRS(
-            final Map<String, ?> properties, final ImageDatum datum, final AffineCS cs) {
+    public DefaultImageCRS(final Map<String, ?> properties, final ImageDatum datum, final AffineCS cs) {
         super(properties, datum, cs);
     }
 

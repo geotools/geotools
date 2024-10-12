@@ -94,8 +94,7 @@ public class Operations {
      * @throws CoverageProcessingException if the operation can't be applied.
      * @see org.geotools.coverage.processing.operation.AddConst
      */
-    public Coverage add(final Coverage source, final double[] constants)
-            throws CoverageProcessingException {
+    public Coverage add(final Coverage source, final double[] constants) throws CoverageProcessingException {
         return doOperation("AddConst", source, "constants", constants);
     }
 
@@ -107,8 +106,7 @@ public class Operations {
      * @throws CoverageProcessingException if the operation can't be applied.
      * @see org.geotools.coverage.processing.operation.Add
      */
-    public Coverage add(final Coverage source0, final Coverage source1)
-            throws CoverageProcessingException {
+    public Coverage add(final Coverage source0, final Coverage source1) throws CoverageProcessingException {
         return doOperation("Add", source0, source1);
     }
 
@@ -120,8 +118,7 @@ public class Operations {
      * @throws CoverageProcessingException if the operation can't be applied.
      * @see org.geotools.coverage.processing.operation.Multiply
      */
-    public Coverage multiply(final Coverage source0, final Coverage source1)
-            throws CoverageProcessingException {
+    public Coverage multiply(final Coverage source0, final Coverage source1) throws CoverageProcessingException {
         return doOperation("Multiply", source0, source1);
     }
 
@@ -133,8 +130,7 @@ public class Operations {
      * @throws CoverageProcessingException if the operation can't be applied.
      * @see org.geotools.coverage.processing.operation.SubtractConst
      */
-    public Coverage subtract(final Coverage source, final double[] constants)
-            throws CoverageProcessingException {
+    public Coverage subtract(final Coverage source, final double[] constants) throws CoverageProcessingException {
         return doOperation("SubtractConst", source, "constants", constants);
     }
 
@@ -146,8 +142,7 @@ public class Operations {
      * @throws CoverageProcessingException if the operation can't be applied.
      * @see org.geotools.coverage.processing.operation.SubtractFromConst
      */
-    public Coverage subtractFrom(final Coverage source, final double[] constants)
-            throws CoverageProcessingException {
+    public Coverage subtractFrom(final Coverage source, final double[] constants) throws CoverageProcessingException {
         return doOperation("SubtractFromConst", source, "constants", constants);
     }
 
@@ -159,8 +154,7 @@ public class Operations {
      * @throws CoverageProcessingException if the operation can't be applied.
      * @see org.geotools.coverage.processing.operation.MultiplyConst
      */
-    public Coverage multiply(final Coverage source, final double[] constants)
-            throws CoverageProcessingException {
+    public Coverage multiply(final Coverage source, final double[] constants) throws CoverageProcessingException {
         return doOperation("MultiplyConst", source, "constants", constants);
     }
 
@@ -172,8 +166,7 @@ public class Operations {
      * @throws CoverageProcessingException if the operation can't be applied.
      * @see org.geotools.coverage.processing.operation.DivideByConst
      */
-    public Coverage divideBy(final Coverage source, final double[] constants)
-            throws CoverageProcessingException {
+    public Coverage divideBy(final Coverage source, final double[] constants) throws CoverageProcessingException {
         return doOperation("DivideByConst", source, "constants", constants);
     }
 
@@ -271,14 +264,12 @@ public class Operations {
      * @throws CoverageProcessingException if the operation can't be applied.
      * @see org.geotools.coverage.processing.operation.NodataFilter
      */
-    public GridCoverage nodataFilter(
-            final GridCoverage source, final int padding, final int validityThreshold)
+    public GridCoverage nodataFilter(final GridCoverage source, final int padding, final int validityThreshold)
             throws CoverageProcessingException {
-        return (GridCoverage)
-                doOperation(
-                        "NodataFilter", source,
-                        "padding", Integer.valueOf(padding),
-                        "validityThreshold", Integer.valueOf(validityThreshold));
+        return (GridCoverage) doOperation(
+                "NodataFilter", source,
+                "padding", Integer.valueOf(padding),
+                "validityThreshold", Integer.valueOf(validityThreshold));
     }
 
     /**
@@ -292,8 +283,7 @@ public class Operations {
      * @throws CoverageProcessingException if the operation can't be applied.
      * @see org.geotools.coverage.processing.operation.Interpolate
      */
-    public GridCoverage interpolate(final GridCoverage source, final String type)
-            throws CoverageProcessingException {
+    public GridCoverage interpolate(final GridCoverage source, final String type) throws CoverageProcessingException {
         return (GridCoverage) doOperation("Interpolate", source, "Type", type);
     }
 
@@ -374,8 +364,7 @@ public class Operations {
      * @see org.geotools.coverage.processing.operation.Resample#computeGridGeometry
      * @since 2.5
      */
-    public Coverage resample(
-            final GridCoverage source, final Bounds envelope, final Interpolation interpolationType)
+    public Coverage resample(final GridCoverage source, final Bounds envelope, final Interpolation interpolationType)
             throws CoverageProcessingException {
         final GridGeometry gridGeometry;
         try {
@@ -448,8 +437,7 @@ public class Operations {
      * @see org.geotools.coverage.processing.operation.Crop
      * @since 2.3
      */
-    public Coverage crop(final Coverage source, final Bounds envelope)
-            throws CoverageProcessingException {
+    public Coverage crop(final Coverage source, final Bounds envelope) throws CoverageProcessingException {
         return doOperation("CoverageCrop", source, "Envelope", envelope);
     }
 
@@ -461,8 +449,7 @@ public class Operations {
      * @throws CoverageProcessingException if the operation can't be applied.
      * @see org.geotools.coverage.processing.operation.Crop
      */
-    public Coverage crop(final Coverage source, final Geometry roi)
-            throws CoverageProcessingException {
+    public Coverage crop(final Coverage source, final Geometry roi) throws CoverageProcessingException {
         return doOperation("CoverageCrop", source, Crop.CROP_ROI.getName().getCode(), roi);
     }
 
@@ -485,13 +472,7 @@ public class Operations {
             final double xTrans,
             final double yTrans)
             throws CoverageProcessingException {
-        return scale(
-                source,
-                xScale,
-                yScale,
-                xTrans,
-                yTrans,
-                Interpolation.getInstance(Interpolation.INTERP_NEAREST));
+        return scale(source, xScale, yScale, xTrans, yTrans, Interpolation.getInstance(Interpolation.INTERP_NEAREST));
     }
 
     /**
@@ -503,8 +484,7 @@ public class Operations {
      * @see org.geotools.coverage.processing.operation.Scale
      * @since 2.3
      */
-    public GridCoverage warp(final GridCoverage source, final Warp warp)
-            throws CoverageProcessingException {
+    public GridCoverage warp(final GridCoverage source, final Warp warp) throws CoverageProcessingException {
         return warp(source, warp, Interpolation.getInstance(Interpolation.INTERP_NEAREST));
     }
     /**
@@ -524,16 +504,15 @@ public class Operations {
             final Interpolation interpolation,
             final double[] noDataValues)
             throws CoverageProcessingException {
-        return (GridCoverage)
-                doOperation(
-                        "Affine",
-                        source,
-                        "transform",
-                        transform,
-                        "Interpolation",
-                        interpolation,
-                        "backgroundValues",
-                        noDataValues);
+        return (GridCoverage) doOperation(
+                "Affine",
+                source,
+                "transform",
+                transform,
+                "Interpolation",
+                interpolation,
+                "backgroundValues",
+                noDataValues);
     }
 
     /**
@@ -557,20 +536,19 @@ public class Operations {
             final double yTrans,
             final Interpolation interpolation)
             throws CoverageProcessingException {
-        return (GridCoverage)
-                doOperation(
-                        "Scale",
-                        source,
-                        "xScale",
-                        Float.valueOf((float) xScale),
-                        "yScale",
-                        Float.valueOf((float) yScale),
-                        "xTrans",
-                        Float.valueOf((float) xTrans),
-                        "yTrans",
-                        Float.valueOf((float) yTrans),
-                        "Interpolation",
-                        interpolation);
+        return (GridCoverage) doOperation(
+                "Scale",
+                source,
+                "xScale",
+                Float.valueOf((float) xScale),
+                "yScale",
+                Float.valueOf((float) yScale),
+                "xTrans",
+                Float.valueOf((float) xTrans),
+                "yTrans",
+                Float.valueOf((float) yTrans),
+                "Interpolation",
+                interpolation);
     }
 
     /**
@@ -583,11 +561,9 @@ public class Operations {
      * @see org.geotools.coverage.processing.operation.Scale
      * @since 2.3
      */
-    public GridCoverage warp(
-            final GridCoverage source, final Warp warp, final Interpolation interpolation)
+    public GridCoverage warp(final GridCoverage source, final Warp warp, final Interpolation interpolation)
             throws CoverageProcessingException {
-        return (GridCoverage)
-                doOperation("Warp", source, "warp", warp, "interpolation", interpolation);
+        return (GridCoverage) doOperation("Warp", source, "warp", warp, "interpolation", interpolation);
     }
 
     /////////////////////////////////////////////////////////////////////////////////
@@ -606,14 +582,12 @@ public class Operations {
      * @see org.geotools.coverage.processing.operation.SubsampleAverage
      * @since 2.3
      */
-    public GridCoverage subsampleAverage(
-            final GridCoverage source, final double scaleX, final double scaleY)
+    public GridCoverage subsampleAverage(final GridCoverage source, final double scaleX, final double scaleY)
             throws CoverageProcessingException {
-        return (GridCoverage)
-                doOperation(
-                        "SubsampleAverage", source,
-                        "scaleX", Double.valueOf(scaleX),
-                        "scaleY", Double.valueOf(scaleY));
+        return (GridCoverage) doOperation(
+                "SubsampleAverage", source,
+                "scaleX", Double.valueOf(scaleX),
+                "scaleY", Double.valueOf(scaleY));
     }
     /**
      * Subsamples an image using the default values. The scale factor is 2 and the filter is a
@@ -624,8 +598,7 @@ public class Operations {
      * @see org.geotools.coverage.processing.operation.FilteredSubsample
      * @since 2.3
      */
-    public GridCoverage filteredSubsample(final GridCoverage source)
-            throws CoverageProcessingException {
+    public GridCoverage filteredSubsample(final GridCoverage source) throws CoverageProcessingException {
         return (GridCoverage) doOperation("FilteredSubsample", source);
     }
 
@@ -645,11 +618,7 @@ public class Operations {
             final GridCoverage source, final int scaleX, final int scaleY, final float[] qsFilter)
             throws CoverageProcessingException {
         return filteredSubsample(
-                source,
-                scaleX,
-                scaleY,
-                qsFilter,
-                Interpolation.getInstance(Interpolation.INTERP_NEAREST));
+                source, scaleX, scaleY, qsFilter, Interpolation.getInstance(Interpolation.INTERP_NEAREST));
     }
 
     /**
@@ -672,18 +641,17 @@ public class Operations {
             final float[] qsFilter,
             final Interpolation interpolation)
             throws CoverageProcessingException {
-        return (GridCoverage)
-                doOperation(
-                        "FilteredSubsample",
-                        source,
-                        "scaleX",
-                        Integer.valueOf(scaleX),
-                        "scaleY",
-                        Integer.valueOf(scaleY),
-                        "qsFilterArray",
-                        qsFilter,
-                        "Interpolation",
-                        interpolation);
+        return (GridCoverage) doOperation(
+                "FilteredSubsample",
+                source,
+                "scaleX",
+                Integer.valueOf(scaleX),
+                "scaleY",
+                Integer.valueOf(scaleY),
+                "qsFilterArray",
+                qsFilter,
+                "Interpolation",
+                interpolation);
     }
 
     /////////////////////////////////////////////////////////////////////////////////
@@ -721,8 +689,7 @@ public class Operations {
      * @throws OperationNotFoundException if there is no operation named {@code operationName}.
      * @throws CoverageProcessingException if the operation can't be applied.
      */
-    protected final Coverage doOperation(
-            final String operationName, final Coverage source0, final Coverage source1)
+    protected final Coverage doOperation(final String operationName, final Coverage source0, final Coverage source1)
             throws OperationNotFoundException, CoverageProcessingException {
         final Operation operation = processor.getOperation(operationName);
         final ParameterValueGroup parameters = operation.getParameters();
@@ -744,12 +711,8 @@ public class Operations {
      * @throws CoverageProcessingException if the operation can't be applied.
      */
     protected final Coverage doOperation(
-            final String operationName,
-            final Coverage source,
-            final String argumentName1,
-            final Object argumentValue1)
-            throws OperationNotFoundException, InvalidParameterNameException,
-                    CoverageProcessingException {
+            final String operationName, final Coverage source, final String argumentName1, final Object argumentValue1)
+            throws OperationNotFoundException, InvalidParameterNameException, CoverageProcessingException {
         final Operation operation = processor.getOperation(operationName);
         final ParameterValueGroup parameters = operation.getParameters();
         addSources(operationName, parameters, source);
@@ -779,8 +742,7 @@ public class Operations {
             final Object argumentValue1,
             final String argumentName2,
             final Object argumentValue2)
-            throws OperationNotFoundException, InvalidParameterNameException,
-                    CoverageProcessingException {
+            throws OperationNotFoundException, InvalidParameterNameException, CoverageProcessingException {
         final Operation operation = processor.getOperation(operationName);
         final ParameterValueGroup parameters = operation.getParameters();
         addSources(operationName, parameters, source);
@@ -815,8 +777,7 @@ public class Operations {
             final Object argumentValue2,
             final String argumentName3,
             final Object argumentValue3)
-            throws OperationNotFoundException, InvalidParameterNameException,
-                    CoverageProcessingException {
+            throws OperationNotFoundException, InvalidParameterNameException, CoverageProcessingException {
         final Operation operation = processor.getOperation(operationName);
         final ParameterValueGroup parameters = operation.getParameters();
         addSources(operationName, parameters, source);
@@ -849,8 +810,7 @@ public class Operations {
             final Object argumentValue3,
             final String argumentName4,
             final Object argumentValue4)
-            throws OperationNotFoundException, InvalidParameterNameException,
-                    CoverageProcessingException {
+            throws OperationNotFoundException, InvalidParameterNameException, CoverageProcessingException {
         final Operation operation = processor.getOperation(operationName);
         final ParameterValueGroup parameters = operation.getParameters();
         addSources(operationName, parameters, source);
@@ -886,8 +846,7 @@ public class Operations {
             final Object argumentValue4,
             final String argumentName5,
             final Object argumentValue5)
-            throws OperationNotFoundException, InvalidParameterNameException,
-                    CoverageProcessingException {
+            throws OperationNotFoundException, InvalidParameterNameException, CoverageProcessingException {
         final Operation operation = processor.getOperation(operationName);
         final ParameterValueGroup parameters = operation.getParameters();
         addSources(operationName, parameters, source);
@@ -926,8 +885,7 @@ public class Operations {
             final Object argumentValue5,
             final String argumentName6,
             final Object argumentValue6)
-            throws OperationNotFoundException, InvalidParameterNameException,
-                    CoverageProcessingException {
+            throws OperationNotFoundException, InvalidParameterNameException, CoverageProcessingException {
         final Operation operation = processor.getOperation(operationName);
         final ParameterValueGroup parameters = operation.getParameters();
         addSources(operationName, parameters, source);
@@ -941,9 +899,7 @@ public class Operations {
     }
 
     private void addSources(
-            final String operationName,
-            final ParameterValueGroup parameters,
-            final Coverage... sources) {
+            final String operationName, final ParameterValueGroup parameters, final Coverage... sources) {
         if (JAIExt.getOperationName(operationName).equalsIgnoreCase("algebric")) {
             ArrayList<Coverage> sourceList = new ArrayList<>();
             sourceList.addAll(Arrays.asList(sources));
@@ -958,17 +914,14 @@ public class Operations {
     }
 
     /** Set the specified parameter to the specified value, if not null. */
-    private static void setParameterValue(
-            final ParameterValueGroup parameters, String name, Object value)
+    private static void setParameterValue(final ParameterValueGroup parameters, String name, Object value)
             throws InvalidParameterNameException {
         if (value != null)
             try {
                 parameters.parameter(name).setValue(value);
             } catch (ParameterNotFoundException cause) {
-                final InvalidParameterNameException exception =
-                        new InvalidParameterNameException(
-                                MessageFormat.format(ErrorKeys.UNKNOW_PARAMETER_NAME_$1, name),
-                                name);
+                final InvalidParameterNameException exception = new InvalidParameterNameException(
+                        MessageFormat.format(ErrorKeys.UNKNOW_PARAMETER_NAME_$1, name), name);
                 exception.initCause(cause);
                 throw exception;
             }

@@ -28,8 +28,7 @@ import org.geotools.api.feature.simple.SimpleFeatureType;
  * @version $Id$
  */
 public class DefaultFIDReader implements FIDReader {
-    protected static final String CLOSE_MESG =
-            "Close has already been called" + " on this FIDReader";
+    protected static final String CLOSE_MESG = "Close has already been called" + " on this FIDReader";
 
     private int len;
     protected int index = 0;

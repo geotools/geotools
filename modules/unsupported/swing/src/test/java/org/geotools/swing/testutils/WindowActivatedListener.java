@@ -38,8 +38,7 @@ import org.assertj.swing.fixture.FrameFixture;
  * @since 8.0
  * @version $Id$
  */
-public class WindowActivatedListener<S, C extends Window, D extends WindowDriver>
-        implements AWTEventListener {
+public class WindowActivatedListener<S, C extends Window, D extends WindowDriver> implements AWTEventListener {
 
     private final Class<? extends Window> windowClass;
     private final CountDownLatch latch;
@@ -51,8 +50,7 @@ public class WindowActivatedListener<S, C extends Window, D extends WindowDriver
      * @param windowClass the class to listen for.
      */
     public WindowActivatedListener(Class<? extends Window> windowClass) {
-        if (Frame.class.isAssignableFrom(windowClass)
-                || Dialog.class.isAssignableFrom(windowClass)) {
+        if (Frame.class.isAssignableFrom(windowClass) || Dialog.class.isAssignableFrom(windowClass)) {
             this.windowClass = windowClass;
 
         } else {
@@ -73,8 +71,7 @@ public class WindowActivatedListener<S, C extends Window, D extends WindowDriver
     public void eventDispatched(AWTEvent event) {
         if (fixture == null) {
             Object source = event.getSource();
-            if (windowClass.isAssignableFrom(source.getClass())
-                    && event.getID() == WindowEvent.WINDOW_ACTIVATED) {
+            if (windowClass.isAssignableFrom(source.getClass()) && event.getID() == WindowEvent.WINDOW_ACTIVATED) {
 
                 if (source instanceof Frame) {
                     fixture = (AbstractWindowFixture<S, C, D>) new FrameFixture((Frame) source);
@@ -95,8 +92,7 @@ public class WindowActivatedListener<S, C extends Window, D extends WindowDriver
      * @throws InterruptedException on interruption while waiting for the fixture to become
      *     available
      */
-    public AbstractWindowFixture<S, C, D> getFixture(long timeOutMillis)
-            throws InterruptedException {
+    public AbstractWindowFixture<S, C, D> getFixture(long timeOutMillis) throws InterruptedException {
         if (latch.await(timeOutMillis, TimeUnit.MILLISECONDS)) {
             return fixture;
         } else {

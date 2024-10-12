@@ -122,8 +122,7 @@ class NullHandlingVisitor extends DuplicatingFilterVisitor {
         int maxListSize = 0;
         for (Filter child : filter.getChildren()) {
             // not equal comparisons are simplified another way
-            if (child instanceof PropertyIsNotEqualTo
-                    || !(child instanceof BinaryComparisonOperator)) {
+            if (child instanceof PropertyIsNotEqualTo || !(child instanceof BinaryComparisonOperator)) {
                 grouped.put(child, child.accept(this, null));
             } else {
                 String name = getComparisonPropertyName((BinaryComparisonOperator) child);
@@ -175,11 +174,9 @@ class NullHandlingVisitor extends DuplicatingFilterVisitor {
      * property and a literal
      */
     private String getComparisonPropertyName(BinaryComparisonOperator filter) {
-        if (filter.getExpression1() instanceof PropertyName
-                && filter.getExpression2() instanceof Literal) {
+        if (filter.getExpression1() instanceof PropertyName && filter.getExpression2() instanceof Literal) {
             return ((PropertyName) filter.getExpression1()).getPropertyName();
-        } else if (filter.getExpression2() instanceof PropertyName
-                && filter.getExpression1() instanceof Literal) {
+        } else if (filter.getExpression2() instanceof PropertyName && filter.getExpression1() instanceof Literal) {
             return ((PropertyName) filter.getExpression2()).getPropertyName();
         }
         return null;

@@ -45,10 +45,7 @@ public class GeneralizationInfo {
     private GeneralizationInfos parent;
 
     public GeneralizationInfo(
-            String baseFeatureName,
-            String featureName,
-            String geomPropertyName,
-            GeneralizationInfos parent) {
+            String baseFeatureName, String featureName, String geomPropertyName, GeneralizationInfos parent) {
         super();
         this.baseFeatureName = baseFeatureName;
         this.featureName = featureName;

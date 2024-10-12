@@ -69,28 +69,24 @@ abstract class GlyphProcessor {
         double minDistance;
 
         public ConflictDetector(
-                LabelPainter painter,
-                Rectangle displayArea,
-                LabelIndex paintedBounds,
-                LabelIndex groupLabels) {
+                LabelPainter painter, Rectangle displayArea, LabelIndex paintedBounds, LabelIndex groupLabels) {
             super(painter);
             this.displayArea = displayArea;
             this.paintedBounds = paintedBounds;
             this.groupLabels = groupLabels;
             int space = labelItem.getSpaceAround();
-            int haloRadius =
-                    Math.round(
-                            labelItem.getTextStyle().getHaloFill() != null
-                                    ? labelItem.getTextStyle().getHaloRadius()
-                                    : 0);
+            int haloRadius = Math.round(
+                    labelItem.getTextStyle().getHaloFill() != null
+                            ? labelItem.getTextStyle().getHaloRadius()
+                            : 0);
             extraSpace = space + haloRadius;
             minDistance = labelItem.getMinGroupDistance();
         }
 
         @Override
         public boolean process(GlyphVector glyphVector, int g, AffineTransform tx, char c) {
-            Rectangle2D labelEnvelope =
-                    tx.createTransformedShape(glyphVector.getGlyphLogicalBounds(g)).getBounds2D();
+            Rectangle2D labelEnvelope = tx.createTransformedShape(glyphVector.getGlyphLogicalBounds(g))
+                    .getBounds2D();
             // try to paint the label, the condition under which this happens are complex
             // white space character does not conflict with other labels
             if (Character.isWhitespace(c)) return false;

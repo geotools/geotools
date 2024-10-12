@@ -144,8 +144,7 @@ public class YamlObject<T> {
                 if (index != -1) {
                     here = list.get(index);
                 } else {
-                    throw new IndexOutOfBoundsException(
-                            "Index: " + key + ", Size: " + list.raw.size());
+                    throw new IndexOutOfBoundsException("Index: " + key + ", Size: " + list.raw.size());
                 }
             } else {
                 throw new NoSuchElementException(

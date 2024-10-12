@@ -147,8 +147,7 @@ public class TWKBReader {
         }
     }
 
-    private MultiLineString readMultiLineString(TWKBMetadata metadata)
-            throws IOException, ParseException {
+    private MultiLineString readMultiLineString(TWKBMetadata metadata) throws IOException, ParseException {
         if (!metadata.isEmpty()) {
             int numGeom = dis.readUnsignedInt();
             LineString[] geoms = new LineString[numGeom];
@@ -161,8 +160,7 @@ public class TWKBReader {
         }
     }
 
-    private MultiPolygon readMultiPolygon(TWKBMetadata metadata)
-            throws IOException, ParseException {
+    private MultiPolygon readMultiPolygon(TWKBMetadata metadata) throws IOException, ParseException {
         if (!metadata.isEmpty()) {
             int numGeom = dis.readUnsignedInt();
             Polygon[] geoms = new Polygon[numGeom];
@@ -175,8 +173,7 @@ public class TWKBReader {
         }
     }
 
-    private GeometryCollection readGeometryCollection(TWKBMetadata metadata)
-            throws IOException, ParseException {
+    private GeometryCollection readGeometryCollection(TWKBMetadata metadata) throws IOException, ParseException {
         if (!metadata.isEmpty()) {
             int numGeom = dis.readUnsignedInt();
             Geometry[] geoms = new Geometry[numGeom];
@@ -198,8 +195,7 @@ public class TWKBReader {
         return factory.createLinearRing(pts);
     }
 
-    private CoordinateSequence readCoordinateSequenceRing(int size, TWKBMetadata metadata)
-            throws IOException {
+    private CoordinateSequence readCoordinateSequenceRing(int size, TWKBMetadata metadata) throws IOException {
         CoordinateSequence seq = readCoordinateSequence(size, metadata);
         return CoordinateSequences.ensureValidRing(csFactory, seq);
     }
@@ -259,8 +255,7 @@ public class TWKBReader {
         return metadata;
     }
 
-    protected CoordinateSequence readCoordinateSequence(int numPts, TWKBMetadata metadata)
-            throws IOException {
+    protected CoordinateSequence readCoordinateSequence(int numPts, TWKBMetadata metadata) throws IOException {
         int dims = metadata.getDims();
 
         // Create CoordinateSequence and read geometry
@@ -360,8 +355,7 @@ public class TWKBReader {
                     if (hasZ && hasM) {
                         return scaleM;
                     } else {
-                        throw new IllegalArgumentException(
-                                "Mismatch with the number of dimensions.");
+                        throw new IllegalArgumentException("Mismatch with the number of dimensions.");
                     }
             }
 

@@ -34,8 +34,7 @@ import org.xml.sax.helpers.AttributesImpl;
 class MultiPointEncoder extends GeometryEncoder<MultiPoint> {
     static final QualifiedName MULTI_POINT = new QualifiedName(GML.NAMESPACE, "MultiPoint", "gml");
 
-    static final QualifiedName POINT_MEMBER =
-            new QualifiedName(GML.NAMESPACE, "pointMember", "gml");
+    static final QualifiedName POINT_MEMBER = new QualifiedName(GML.NAMESPACE, "pointMember", "gml");
 
     PointEncoder pe;
 
@@ -49,8 +48,7 @@ class MultiPointEncoder extends GeometryEncoder<MultiPoint> {
         init(gmlPrefix, gmlUri);
     }
 
-    protected MultiPointEncoder(
-            Encoder encoder, String gmlPrefix, String gmlUri, boolean encodeGmlId) {
+    protected MultiPointEncoder(Encoder encoder, String gmlPrefix, String gmlUri, boolean encodeGmlId) {
         super(encoder, encodeGmlId);
         pe = new PointEncoder(encoder, gmlPrefix, gmlUri, encodeGmlId);
         init(gmlPrefix, gmlUri);
@@ -62,8 +60,7 @@ class MultiPointEncoder extends GeometryEncoder<MultiPoint> {
     }
 
     @Override
-    public void encode(MultiPoint geometry, AttributesImpl atts, GMLWriter handler, String gmlId)
-            throws Exception {
+    public void encode(MultiPoint geometry, AttributesImpl atts, GMLWriter handler, String gmlId) throws Exception {
         atts = cloneWithGmlId(atts, gmlId);
         handler.startElement(multiPoint, atts);
 

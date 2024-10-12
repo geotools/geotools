@@ -97,7 +97,8 @@ public class MapboxSpriteTest {
 
     @Before
     public void setUp() throws Exception {
-        File property = new File(TestData.getResource(this, "testpoints.properties").toURI());
+        File property =
+                new File(TestData.getResource(this, "testpoints.properties").toURI());
         PropertyDataStore ds = new PropertyDataStore(property.getParentFile());
         pointFS = ds.getFeatureSource("testpoints");
         bgFS = ds.getFeatureSource("background");
@@ -118,8 +119,7 @@ public class MapboxSpriteTest {
      */
     @Test
     public void testServiceRegistered() {
-        Iterator<ExternalGraphicFactory> it =
-                DynamicSymbolFactoryFinder.getExternalGraphicFactories();
+        Iterator<ExternalGraphicFactory> it = DynamicSymbolFactoryFinder.getExternalGraphicFactories();
         boolean foundIt = false;
         while (it.hasNext()) {
             ExternalGraphicFactory egf = it.next();
@@ -142,14 +142,10 @@ public class MapboxSpriteTest {
         ExternalGraphic eg = styleFactory.createExternalGraphic(iconUrl, "mbsprite");
 
         // Also add a simple background layer.
-        mc.addLayer(
-                new FeatureLayer(
-                        bgFS,
-                        SLD.wrapSymbolizers(
-                                styleFactory.createPolygonSymbolizer(
-                                        null,
-                                        styleFactory.createFill(filterFactory.literal("#6ba3ff")),
-                                        null))));
+        mc.addLayer(new FeatureLayer(
+                bgFS,
+                SLD.wrapSymbolizers(styleFactory.createPolygonSymbolizer(
+                        null, styleFactory.createFill(filterFactory.literal("#6ba3ff")), null))));
 
         mc.addLayer(new FeatureLayer(pointFS, pointStyleWithExternalGraphic(eg, null)));
 
@@ -157,13 +153,8 @@ public class MapboxSpriteTest {
         StreamingRenderer renderer = new StreamingRenderer();
         renderer.setMapContent(mc);
         renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
-        BufferedImage image =
-                MapboxTestUtils.showRender(
-                        "Mapbox Sprite Icon Test",
-                        renderer,
-                        DISPLAY_TIME,
-                        new ReferencedEnvelope[] {bounds},
-                        null);
+        BufferedImage image = MapboxTestUtils.showRender(
+                "Mapbox Sprite Icon Test", renderer, DISPLAY_TIME, new ReferencedEnvelope[] {bounds}, null);
         ImageAssert.assertEquals(file("rendered-icons"), image, 50);
     }
 
@@ -179,8 +170,7 @@ public class MapboxSpriteTest {
                 SpriteGraphicFactory.parseBaseUrl(url).toExternalForm());
         assertEquals("someIconName", SpriteGraphicFactory.parseIconName(url));
 
-        URL url2x =
-                new URL("file:/GeoServerDataDirs/release/styles/testSpritesheet@2x#someIconName");
+        URL url2x = new URL("file:/GeoServerDataDirs/release/styles/testSpritesheet@2x#someIconName");
         assertEquals(
                 "file:/GeoServerDataDirs/release/styles/testSpritesheet@2x",
                 SpriteGraphicFactory.parseBaseUrl(url2x).toExternalForm());
@@ -194,13 +184,10 @@ public class MapboxSpriteTest {
         assertNotNull(spriteIndex);
 
         assertEquals(6, spriteIndex.getIcons().keySet().size());
-        assertTrue(
-                spriteIndex
-                        .getIcons()
-                        .keySet()
-                        .containsAll(
-                                Arrays.asList(
-                                        "bomb", "face", "goldfish", "owl", "owlhead", "pattern")));
+        assertTrue(spriteIndex
+                .getIcons()
+                .keySet()
+                .containsAll(Arrays.asList("bomb", "face", "goldfish", "owl", "owlhead", "pattern")));
 
         assertEquals(32, spriteIndex.getIcon("goldfish").getHeight());
         assertEquals(32, spriteIndex.getIcon("goldfish").getWidth());
@@ -257,14 +244,8 @@ public class MapboxSpriteTest {
      */
     public Style pointStyleWithExternalGraphic(ExternalGraphic eg, String size) {
         size = size == null ? "-1" : size;
-        Graphic gr =
-                styleFactory.graphic(
-                        Arrays.asList(eg),
-                        filterFactory.literal(1),
-                        filterFactory.literal(size),
-                        null,
-                        null,
-                        null);
+        Graphic gr = styleFactory.graphic(
+                Arrays.asList(eg), filterFactory.literal(1), filterFactory.literal(size), null, null, null);
         Rule rule = styleFactory.createRule();
         PointSymbolizer p = styleFactory.createPointSymbolizer(gr, null);
         rule.symbolizers().add(p);
@@ -278,9 +259,6 @@ public class MapboxSpriteTest {
         // The first time you run a new test, the reference image must be generated. To do so, run
         // the test with
         // -Dorg.geotools.image.test.interactive=true</code>
-        return new File(
-                "src/test/resources/org/geotools/mbstyle/sprite/test-data/rendered/"
-                        + name
-                        + ".png");
+        return new File("src/test/resources/org/geotools/mbstyle/sprite/test-data/rendered/" + name + ".png");
     }
 }

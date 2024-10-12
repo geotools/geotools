@@ -52,8 +52,8 @@ class GTDataStoreFootprintProvider implements FootprintGeometryProvider {
 
     private DataStore store;
 
-    public GTDataStoreFootprintProvider(
-            Map<String, Serializable> params, String typeName, Filter filter) throws IOException {
+    public GTDataStoreFootprintProvider(Map<String, Serializable> params, String typeName, Filter filter)
+            throws IOException {
         store = DataStoreFinder.getDataStore(params);
         if (store == null) {
             throw new IOException("Coould not create footprint data store from params: " + params);
@@ -79,14 +79,13 @@ class GTDataStoreFootprintProvider implements FootprintGeometryProvider {
                 SimpleFeature sf = fi.next();
                 result = (Geometry) sf.getDefaultGeometry();
                 if (fi.hasNext()) {
-                    throw new IOException(
-                            "The filter "
-                                    + localFilter
-                                    + " matched more than one footprint record, in particular, it"
-                                    + " matched "
-                                    + fc.size()
-                                    + ", the first match is: "
-                                    + sf);
+                    throw new IOException("The filter "
+                            + localFilter
+                            + " matched more than one footprint record, in particular, it"
+                            + " matched "
+                            + fc.size()
+                            + ", the first match is: "
+                            + sf);
                 }
             }
 

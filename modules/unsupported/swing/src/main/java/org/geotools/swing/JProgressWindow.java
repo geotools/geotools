@@ -129,8 +129,7 @@ public class JProgressWindow implements ProgressListener {
          * Creates the window containing the components.
          */
         Dimension parentSize;
-        final Vocabulary resources =
-                Vocabulary.getResources(parent != null ? parent.getLocale() : null);
+        final Vocabulary resources = Vocabulary.getResources(parent != null ? parent.getLocale() : null);
         final String title = resources.getString(VocabularyKeys.PROGRESSION);
         final JDesktopPane desktop = JOptionPane.getDesktopPaneForComponent(parent);
         if (desktop != null) {
@@ -149,8 +148,7 @@ public class JProgressWindow implements ProgressListener {
             dialog.setDefaultCloseOperation(JDialog.HIDE_ON_CLOSE);
             dialog.setResizable(false);
         }
-        window.setBounds(
-                (parentSize.width - WIDTH) / 2, (parentSize.height - HEIGHT) / 2, WIDTH, HEIGHT);
+        window.setBounds((parentSize.width - WIDTH) / 2, (parentSize.height - HEIGHT) / 2, WIDTH, HEIGHT);
         /*
          * Creates the label that is going to display the undergoing operation.
          * This label is initially empty.
@@ -162,9 +160,8 @@ public class JProgressWindow implements ProgressListener {
          */
         progressBar = new JProgressBar();
         progressBar.setIndeterminate(true);
-        progressBar.setBorder(
-                BorderFactory.createCompoundBorder(
-                        BorderFactory.createEmptyBorder(6, 9, 6, 9), progressBar.getBorder()));
+        progressBar.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createEmptyBorder(6, 9, 6, 9), progressBar.getBorder()));
         /*
          * Creates the cancel button.
          */
@@ -180,10 +177,9 @@ public class JProgressWindow implements ProgressListener {
          * order to put some space between the window content and the window border.
          */
         final JPanel panel = new JPanel(new GridLayout(2, 1));
-        panel.setBorder(
-                BorderFactory.createCompoundBorder(
-                        BorderFactory.createEmptyBorder(VMARGIN, HMARGIN, VMARGIN, HMARGIN),
-                        BorderFactory.createEtchedBorder()));
+        panel.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createEmptyBorder(VMARGIN, HMARGIN, VMARGIN, HMARGIN),
+                BorderFactory.createEtchedBorder()));
         panel.add(description);
         panel.add(progressBar);
         content.setLayout(new BorderLayout());
@@ -294,8 +290,7 @@ public class JProgressWindow implements ProgressListener {
      * @param warning DOCUMENT ME
      */
     @Override
-    public synchronized void warningOccurred(
-            final String source, String margin, final String warning) {
+    public synchronized void warningOccurred(final String source, String margin, final String warning) {
         final StringBuffer buffer = new StringBuffer(warning.length() + 16);
         if (source == null || !source.equals(lastSource)) {
             lastSource = source;
@@ -447,35 +442,30 @@ public class JProgressWindow implements ProgressListener {
         public void run() {
             final BoundedRangeModel model = progressBar.getModel();
             switch (task) {
-                case -LABEL:
-                    {
-                        value = description.getText();
-                        return;
-                    }
-                case +LABEL:
-                    {
-                        description.setText((String) value);
-                        return;
-                    }
-                case PROGRESS:
-                    {
-                        model.setValue(((Integer) value).intValue());
-                        progressBar.setIndeterminate(false);
-                        return;
-                    }
-                case STARTED:
-                    {
-                        model.setRangeProperties(0, 1, 0, 100, false);
-                        window.setVisible(true);
-                        break; // Need further action below.
-                    }
-                case COMPLETE:
-                    {
-                        model.setRangeProperties(100, 1, 0, 100, false);
-                        window.setVisible(warningArea != null);
-                        cancel.setEnabled(false);
-                        break; // Need further action below.
-                    }
+                case -LABEL: {
+                    value = description.getText();
+                    return;
+                }
+                case +LABEL: {
+                    description.setText((String) value);
+                    return;
+                }
+                case PROGRESS: {
+                    model.setValue(((Integer) value).intValue());
+                    progressBar.setIndeterminate(false);
+                    return;
+                }
+                case STARTED: {
+                    model.setRangeProperties(0, 1, 0, 100, false);
+                    window.setVisible(true);
+                    break; // Need further action below.
+                }
+                case COMPLETE: {
+                    model.setRangeProperties(100, 1, 0, 100, false);
+                    window.setVisible(warningArea != null);
+                    cancel.setEnabled(false);
+                    break; // Need further action below.
+                }
             }
             /*
              * Some of the tasks above requires an action on the window, which may be a JDialog or
@@ -485,66 +475,56 @@ public class JProgressWindow implements ProgressListener {
                 if (window instanceof JDialog) {
                     final JDialog window = (JDialog) JProgressWindow.this.window;
                     switch (task) {
-                        case -TITLE:
-                            {
-                                value = window.getTitle();
-                                return;
+                        case -TITLE: {
+                            value = window.getTitle();
+                            return;
+                        }
+                        case +TITLE: {
+                            window.setTitle((String) value);
+                            return;
+                        }
+                        case STARTED: {
+                            window.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+                            return;
+                        }
+                        case COMPLETE: {
+                            window.setDefaultCloseOperation(JDialog.HIDE_ON_CLOSE);
+                            return;
+                        }
+                        case DISPOSE: {
+                            window.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+                            if (warningArea == null || !window.isVisible()) {
+                                window.dispose();
                             }
-                        case +TITLE:
-                            {
-                                window.setTitle((String) value);
-                                return;
-                            }
-                        case STARTED:
-                            {
-                                window.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
-                                return;
-                            }
-                        case COMPLETE:
-                            {
-                                window.setDefaultCloseOperation(JDialog.HIDE_ON_CLOSE);
-                                return;
-                            }
-                        case DISPOSE:
-                            {
-                                window.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-                                if (warningArea == null || !window.isVisible()) {
-                                    window.dispose();
-                                }
-                                return;
-                            }
+                            return;
+                        }
                     }
                 } else {
                     final JInternalFrame window = (JInternalFrame) JProgressWindow.this.window;
                     switch (task) {
-                        case -TITLE:
-                            {
-                                value = window.getTitle();
-                                return;
+                        case -TITLE: {
+                            value = window.getTitle();
+                            return;
+                        }
+                        case +TITLE: {
+                            window.setTitle((String) value);
+                            return;
+                        }
+                        case STARTED: {
+                            window.setClosable(false);
+                            return;
+                        }
+                        case COMPLETE: {
+                            window.setClosable(true);
+                            return;
+                        }
+                        case DISPOSE: {
+                            window.setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
+                            if (warningArea == null || !window.isVisible()) {
+                                window.dispose();
                             }
-                        case +TITLE:
-                            {
-                                window.setTitle((String) value);
-                                return;
-                            }
-                        case STARTED:
-                            {
-                                window.setClosable(false);
-                                return;
-                            }
-                        case COMPLETE:
-                            {
-                                window.setClosable(true);
-                                return;
-                            }
-                        case DISPOSE:
-                            {
-                                window.setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
-                                if (warningArea == null || !window.isVisible()) {
-                                    window.dispose();
-                                }
-                                return;
-                            }
+                            return;
+                        }
                     }
                 }
                 /*
@@ -558,10 +538,8 @@ public class JProgressWindow implements ProgressListener {
                     JProgressWindow.this.warningArea = warningArea;
                     warningArea.setFont(Font.getFont("Monospaced"));
                     warningArea.setEditable(false);
-                    namedArea.setBorder(
-                            BorderFactory.createEmptyBorder(0, HMARGIN, VMARGIN, HMARGIN));
-                    namedArea.add(
-                            new JLabel(getString(VocabularyKeys.WARNING)), BorderLayout.NORTH);
+                    namedArea.setBorder(BorderFactory.createEmptyBorder(0, HMARGIN, VMARGIN, HMARGIN));
+                    namedArea.add(new JLabel(getString(VocabularyKeys.WARNING)), BorderLayout.NORTH);
                     namedArea.add(scroll, BorderLayout.CENTER);
                     content.add(namedArea, BorderLayout.CENTER);
                     if (window instanceof JDialog) {

@@ -217,11 +217,9 @@ public class DefaultOperationMethod extends AbstractIdentifiedObject implements 
      * @param value The parameter value.
      * @throws IllegalArgumentException if the specified value is not positive.
      */
-    private static void ensurePositive(final String name, final int value)
-            throws IllegalArgumentException {
+    private static void ensurePositive(final String name, final int value) throws IllegalArgumentException {
         if (value < 0) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, name, value));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, name, value));
         }
     }
 
@@ -400,8 +398,7 @@ public class DefaultOperationMethod extends AbstractIdentifiedObject implements 
                 }
             }
             throw new IllegalArgumentException(
-                    MessageFormat.format(
-                            ErrorKeys.MISMATCHED_DIMENSION_$3, name, actual, expected));
+                    MessageFormat.format(ErrorKeys.MISMATCHED_DIMENSION_$3, name, actual, expected));
         }
     }
 }

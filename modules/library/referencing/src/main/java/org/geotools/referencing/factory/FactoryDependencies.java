@@ -72,17 +72,7 @@ public class FactoryDependencies {
 
     /** Labels for {@link #TYPES}. */
     private static final String[] TYPE_LABELS = {
-        "crs",
-        "crs",
-        "cs",
-        "cs",
-        "datum",
-        "datum",
-        "operation",
-        "operation",
-        "buffered",
-        "optional",
-        "registered"
+        "crs", "crs", "cs", "cs", "datum", "datum", "operation", "operation", "buffered", "optional", "registered"
     };
 
     /**
@@ -181,9 +171,7 @@ public class FactoryDependencies {
                             throw new AssertionError(); // Should never happen.
                         }
                     } else {
-                        child =
-                                OptionalDependencies.createTreeNode(
-                                        String.valueOf(element), element, false);
+                        child = OptionalDependencies.createTreeNode(String.valueOf(element), element, false);
                     }
                     root.add(child);
                 }
@@ -194,8 +182,7 @@ public class FactoryDependencies {
 
     /** Creates a single node for the specified factory. */
     private DefaultMutableTreeNode createNode(final Factory factory) {
-        final StringBuilder buffer =
-                new StringBuilder(Classes.getShortClassName(factory)).append('[');
+        final StringBuilder buffer = new StringBuilder(Classes.getShortClassName(factory)).append('[');
         if (factory instanceof AuthorityFactory) {
             final Citation authority = ((AuthorityFactory) factory).getAuthority();
             if (authority != null) {

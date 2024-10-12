@@ -81,8 +81,7 @@ public class ConcatenatedTransform extends AbstractMathTransform implements Seri
      * @param transform1 The first math transform.
      * @param transform2 The second math transform.
      */
-    protected ConcatenatedTransform(
-            final MathTransform transform1, final MathTransform transform2) {
+    protected ConcatenatedTransform(final MathTransform transform1, final MathTransform transform2) {
         this.transform1 = transform1;
         this.transform2 = transform2;
         if (!isValid()) {
@@ -289,8 +288,7 @@ public class ConcatenatedTransform extends AbstractMathTransform implements Seri
      * Continue the construction started by {@link #create}. The construction step is available
      * separatly for testing purpose (in a JUnit test), and for {@link #inverse()} implementation.
      */
-    static ConcatenatedTransform createConcatenatedTransform(
-            final MathTransform tr1, final MathTransform tr2) {
+    static ConcatenatedTransform createConcatenatedTransform(final MathTransform tr1, final MathTransform tr2) {
         final int dimSource = tr1.getSourceDimensions();
         final int dimTarget = tr2.getTargetDimensions();
         /*
@@ -298,8 +296,7 @@ public class ConcatenatedTransform extends AbstractMathTransform implements Seri
          */
         if (dimSource == 1 && dimTarget == 1) {
             if (tr1 instanceof MathTransform1D && tr2 instanceof MathTransform1D) {
-                return new ConcatenatedTransformDirect1D(
-                        (MathTransform1D) tr1, (MathTransform1D) tr2);
+                return new ConcatenatedTransformDirect1D((MathTransform1D) tr1, (MathTransform1D) tr2);
             } else {
                 return new ConcatenatedTransform1D(tr1, tr2);
             }
@@ -309,8 +306,7 @@ public class ConcatenatedTransform extends AbstractMathTransform implements Seri
          */
         if (dimSource == 2 && dimTarget == 2) {
             if (tr1 instanceof MathTransform2D && tr2 instanceof MathTransform2D) {
-                return new ConcatenatedTransformDirect2D(
-                        (MathTransform2D) tr1, (MathTransform2D) tr2);
+                return new ConcatenatedTransformDirect2D((MathTransform2D) tr1, (MathTransform2D) tr2);
             } else {
                 return new ConcatenatedTransform2D(tr1, tr2);
             }
@@ -387,8 +383,7 @@ public class ConcatenatedTransform extends AbstractMathTransform implements Seri
 
     /** Transforms the specified {@code ptSrc} and stores the result in {@code ptDst}. */
     @Override
-    public Position transform(final Position ptSrc, final Position ptDst)
-            throws TransformException {
+    public Position transform(final Position ptSrc, final Position ptDst) throws TransformException {
         assert isValid();
         //  Note: If we know that the transfert dimension is the same than source
         //        and target dimension, then we don't need to use an intermediate
@@ -402,8 +397,7 @@ public class ConcatenatedTransform extends AbstractMathTransform implements Seri
      * The transformations are performed without intermediate buffer if it can be avoided.
      */
     @Override
-    public void transform(
-            final double[] srcPts, int srcOff, final double[] dstPts, int dstOff, int numPts)
+    public void transform(final double[] srcPts, int srcOff, final double[] dstPts, int dstOff, int numPts)
             throws TransformException {
         assert isValid();
         final int intermDim = transform1.getTargetDimensions();
@@ -454,8 +448,7 @@ public class ConcatenatedTransform extends AbstractMathTransform implements Seri
      * results is necesssary for reducing rounding errors.
      */
     @Override
-    public void transform(
-            final float[] srcPts, int srcOff, final float[] dstPts, int dstOff, int numPts)
+    public void transform(final float[] srcPts, int srcOff, final float[] dstPts, int dstOff, int numPts)
             throws TransformException {
         assert isValid();
         if (numPts <= 0) {

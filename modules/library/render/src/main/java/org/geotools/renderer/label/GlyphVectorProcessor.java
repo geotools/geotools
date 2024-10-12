@@ -137,9 +137,7 @@ abstract class GlyphVectorProcessor {
                         Point2D p = gv.getGlyphPosition(i);
                         float advance = nextAdvance;
                         nextAdvance =
-                                i < numGlyphs - 1
-                                        ? gv.getGlyphMetrics(i + 1).getAdvance() * 0.5f
-                                        : 0;
+                                i < numGlyphs - 1 ? gv.getGlyphMetrics(i + 1).getAdvance() * 0.5f : 0;
                         c = cursor.getCurrentPosition(c);
                         AffineTransform t = new AffineTransform();
                         t.setToTranslation(c.x, c.y);

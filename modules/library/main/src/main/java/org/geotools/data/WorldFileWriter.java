@@ -59,21 +59,18 @@ public class WorldFileWriter {
 
     private static AffineTransform checkTransform(AffineTransform transform) {
         if (transform == null)
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "transform"));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "transform"));
         return transform;
     }
 
     private static MathTransform checkMathTransform(MathTransform transform) {
         if (transform == null)
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "transform"));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "transform"));
         return transform;
     }
 
     /** Logger for this class. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(WorldFileWriter.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(WorldFileWriter.class);
 
     /**
      * Constructor.
@@ -82,12 +79,8 @@ public class WorldFileWriter {
      * @param transform the transformation that we want to write out.
      * @throws IOException in case something bad happens.
      */
-    public WorldFileWriter(final File outLocation, final AffineTransform transform)
-            throws IOException {
-        this(
-                outLocation,
-                ProjectiveTransform.create(checkTransform(transform)),
-                DEFAULT_BUFFER_SIZE);
+    public WorldFileWriter(final File outLocation, final AffineTransform transform) throws IOException {
+        this(outLocation, ProjectiveTransform.create(checkTransform(transform)), DEFAULT_BUFFER_SIZE);
     }
 
     /**
@@ -98,8 +91,7 @@ public class WorldFileWriter {
      * @param buffSize size of the buffer to use.
      * @throws IOException in case something bad happens.
      */
-    public WorldFileWriter(
-            final File outLocation, final AffineTransform transform, final int buffSize)
+    public WorldFileWriter(final File outLocation, final AffineTransform transform, final int buffSize)
             throws IOException {
         this(outLocation, ProjectiveTransform.create(checkTransform(transform)), buffSize);
     }
@@ -111,8 +103,7 @@ public class WorldFileWriter {
      * @param transform the transformation that we want to write out.
      * @throws IOException in case something bad happens.
      */
-    public WorldFileWriter(final OutputStream outLocation, final AffineTransform transform)
-            throws IOException {
+    public WorldFileWriter(final OutputStream outLocation, final AffineTransform transform) throws IOException {
         this(outLocation, ProjectiveTransform.create(checkTransform(transform)));
     }
 
@@ -124,8 +115,7 @@ public class WorldFileWriter {
      * @param buffSize size of the buffer to use.
      * @throws IOException in case something bad happens.
      */
-    public WorldFileWriter(
-            final OutputStream outLocation, final AffineTransform transform, final int buffSize)
+    public WorldFileWriter(final OutputStream outLocation, final AffineTransform transform, final int buffSize)
             throws IOException {
         this(outLocation, ProjectiveTransform.create(checkTransform(transform)), buffSize);
     }
@@ -139,8 +129,7 @@ public class WorldFileWriter {
      * @param transform the transformation that we want to write out.
      * @throws IOException in case something bad happens.
      */
-    public WorldFileWriter(final OutputStream outLocation, final MathTransform transform)
-            throws IOException {
+    public WorldFileWriter(final OutputStream outLocation, final MathTransform transform) throws IOException {
         this(outLocation, transform, DEFAULT_BUFFER_SIZE);
     }
 
@@ -154,12 +143,10 @@ public class WorldFileWriter {
      * @param buffSize size of the buffer to use.
      * @throws IOException in case something bad happens.
      */
-    public WorldFileWriter(
-            final OutputStream outLocation, final MathTransform transform, final int buffSize)
+    public WorldFileWriter(final OutputStream outLocation, final MathTransform transform, final int buffSize)
             throws IOException {
         if (outLocation == null)
-            throw new NullPointerException(
-                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "outLocation"));
+            throw new NullPointerException(MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "outLocation"));
         if (transform.getSourceDimensions() != 2 || transform.getTargetDimensions() != 2) {
             final Object arg1 = transform.getSourceDimensions();
             throw new IllegalArgumentException(
@@ -214,8 +201,7 @@ public class WorldFileWriter {
             }
             assert false : transform;
         } catch (IOException e) {
-            if (LOGGER.isLoggable(Level.SEVERE))
-                LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
+            if (LOGGER.isLoggable(Level.SEVERE)) LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
         } finally {
             close(writer);
         }
@@ -239,11 +225,9 @@ public class WorldFileWriter {
      * @param buffSize size of the buffer to use.
      * @throws IOException in case something bad happens.
      */
-    public WorldFileWriter(final File outLocation, final MathTransform transform, int buffSize)
-            throws IOException {
+    public WorldFileWriter(final File outLocation, final MathTransform transform, int buffSize) throws IOException {
         if (outLocation == null)
-            throw new NullPointerException(
-                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "outLocation"));
+            throw new NullPointerException(MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "outLocation"));
         checkMathTransform(transform);
         if (transform.getSourceDimensions() != 2 || transform.getTargetDimensions() != 2) {
             final Object arg1 = transform.getSourceDimensions();
@@ -253,12 +237,9 @@ public class WorldFileWriter {
         if (!outLocation.exists())
             if (!outLocation.createNewFile())
                 throw new IOException(
-                        MessageFormat.format(
-                                ErrorKeys.ILLEGAL_ARGUMENT_$1,
-                                "Unable to create file " + outLocation));
+                        MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$1, "Unable to create file " + outLocation));
         if (!outLocation.canWrite() || !outLocation.isFile())
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.FILE_DOES_NOT_EXIST_$1, outLocation));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.FILE_DOES_NOT_EXIST_$1, outLocation));
         // create a writer
         write(new BufferedWriter(new FileWriter(outLocation), buffSize), transform);
     }
@@ -271,8 +252,7 @@ public class WorldFileWriter {
      * @param transform the transformation that we want to write out.
      * @throws IOException in case something bad happens.
      */
-    public WorldFileWriter(final File outLocation, final MathTransform transform)
-            throws IOException {
+    public WorldFileWriter(final File outLocation, final MathTransform transform) throws IOException {
         this(outLocation, transform, DEFAULT_BUFFER_SIZE);
     }
 }

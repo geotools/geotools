@@ -31,8 +31,7 @@ import org.geotools.util.CheckedArrayList;
  * @since 2.4
  */
 public class TypeMapping implements Serializable {
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(TypeMapping.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(TypeMapping.class);
 
     private static final long serialVersionUID = 1444252634598922057L;
 
@@ -135,11 +134,10 @@ public class TypeMapping implements Serializable {
 
     public boolean isDenormalised() {
         if (!isDenormalisedSet) {
-            LOGGER.info(
-                    "isDenormalised is not set in app-schema mapping file for: "
-                            + (mappingName == null ? targetElementName : mappingName)
-                            + ".\n"
-                            + "Setting isDenormalised can result in more efficient SQL queries.");
+            LOGGER.info("isDenormalised is not set in app-schema mapping file for: "
+                    + (mappingName == null ? targetElementName : mappingName)
+                    + ".\n"
+                    + "Setting isDenormalised can result in more efficient SQL queries.");
         }
         return isDenormalised;
     }

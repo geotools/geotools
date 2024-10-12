@@ -162,8 +162,7 @@ public class RasterLayerResponse {
         PAMDataset pamDataset;
     }
 
-    private static final class SimplifiedGridSampleDimension extends GridSampleDimension
-            implements SampleDimension {
+    private static final class SimplifiedGridSampleDimension extends GridSampleDimension implements SampleDimension {
 
         /** */
         private static final long serialVersionUID = 2227219522016820587L;
@@ -329,8 +328,7 @@ public class RasterLayerResponse {
                 CoordinateReferenceSystem mosaicCRS = queryBBox.getCoordinateReferenceSystem();
                 try {
                     if (!CRS.equalsIgnoreMetadata(granuleCRS, mosaicCRS)) {
-                        ProjectionHandler handler =
-                                ProjectionHandlerFinder.getHandler(queryBBox, granuleCRS, true);
+                        ProjectionHandler handler = ProjectionHandlerFinder.getHandler(queryBBox, granuleCRS, true);
                         MathTransform mt = CRS.findMathTransform(granuleCRS, mosaicCRS);
                         if (handler != null) {
                             Geometry preProcessed = handler.preProcess(inclusionGeometry);
@@ -367,16 +365,13 @@ public class RasterLayerResponse {
                 // with an heterogenous CRS that also happens when zooming out a lot, otherwise not
                 // so much
                 if (!found && getExcessGranuleRemover() == null && !heterogeneousCRS) {
-                    throw new IllegalStateException(
-                            "Unable to locate a granule collector accepting this granule:\n"
-                                    + granuleDescriptor.toString());
+                    throw new IllegalStateException("Unable to locate a granule collector accepting this granule:\n"
+                            + granuleDescriptor.toString());
                 }
 
             } else {
                 if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.fine(
-                            "We rejected for non ROI inclusion the granule "
-                                    + granuleDescriptor.toString());
+                    LOGGER.fine("We rejected for non ROI inclusion the granule " + granuleDescriptor.toString());
                 }
             }
         }
@@ -417,8 +412,7 @@ public class RasterLayerResponse {
                     LOGGER.fine("Submosaic producer being called: " + collector.toString());
                 }
                 final List<MosaicElement> preparedMosaic = collector.createMosaic();
-                if (!preparedMosaic.isEmpty()
-                        && !preparedMosaic.stream().allMatch(p -> p == null)) {
+                if (!preparedMosaic.isEmpty() && !preparedMosaic.stream().allMatch(p -> p == null)) {
                     size += preparedMosaic.size();
                     mosaicInputs.addAll(preparedMosaic);
                     if (first == null) {
@@ -437,16 +431,11 @@ public class RasterLayerResponse {
                 return null;
             }
 
-            MosaicInputs mosaickingInputs =
-                    new MosaicInputs(
-                            first.doInputTransparency(),
-                            first.hasAlpha(),
-                            mosaicInputs,
-                            first.getSourceThreshold());
+            MosaicInputs mosaickingInputs = new MosaicInputs(
+                    first.doInputTransparency(), first.hasAlpha(), mosaicInputs, first.getSourceThreshold());
             // normal situation
             return new MosaicOutput(
-                    new Mosaicker(RasterLayerResponse.this, mosaickingInputs, mergeBehavior)
-                            .createMosaic());
+                    new Mosaicker(RasterLayerResponse.this, mosaickingInputs, mergeBehavior).createMosaic());
         }
 
         public SubmosaicProducerFactory getGranuleCollectorsFactory() {
@@ -455,8 +444,7 @@ public class RasterLayerResponse {
     }
 
     /** Logger. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(RasterLayerResponse.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(RasterLayerResponse.class);
 
     /** The GridCoverage produced after a {@link #createResponse()} method call */
     private GridCoverage2D gridCoverage;
@@ -500,8 +488,7 @@ public class RasterLayerResponse {
 
     private int defaultArtifactsFilterThreshold = Integer.MIN_VALUE;
 
-    private double artifactsFilterPTileThreshold =
-            ImageMosaicFormat.DEFAULT_ARTIFACTS_FILTER_PTILE_THRESHOLD;
+    private double artifactsFilterPTileThreshold = ImageMosaicFormat.DEFAULT_ARTIFACTS_FILTER_PTILE_THRESHOLD;
 
     private boolean oversampledRequest;
 
@@ -662,8 +649,7 @@ public class RasterLayerResponse {
 
             // === collect granules
             List<SubmosaicProducer> producers =
-                    submosaicProducerFactory.createProducers(
-                            this.getRequest(), this.getRasterManager(), this, false);
+                    submosaicProducerFactory.createProducers(this.getRequest(), this.getRasterManager(), this, false);
             for (SubmosaicProducer producer : producers) {
                 producer.init(query);
             }
@@ -689,11 +675,10 @@ public class RasterLayerResponse {
             //
             if (returnValue != null) {
                 if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.fine(
-                            "Loaded bbox "
-                                    + queryBBox.toString()
-                                    + " while crop bbox "
-                                    + request.spatialRequestHelper.getComputedBBox().toString());
+                    LOGGER.fine("Loaded bbox "
+                            + queryBBox.toString()
+                            + " while crop bbox "
+                            + request.spatialRequestHelper.getComputedBBox().toString());
                 }
                 return returnValue;
             }
@@ -705,24 +690,21 @@ public class RasterLayerResponse {
                 // spawn any loading tasks, we also ensure we get only 1 feature at most
                 // to make this blazing fast
                 LOGGER.fine("We got no granules, let's do a dry run with no filters");
-                List<SubmosaicProducer> collectors =
-                        submosaicProducerFactory.createProducers(
-                                this.getRequest(), this.getRasterManager(), this, true);
+                List<SubmosaicProducer> collectors = submosaicProducerFactory.createProducers(
+                        this.getRequest(), this.getRasterManager(), this, true);
                 for (SubmosaicProducer producer : collectors) {
                     producer.init(query);
                 }
                 final MosaicProducer dryRunVisitor = new MosaicProducer(true, collectors);
                 final Utils.BBOXFilterExtractor bboxExtractor = new Utils.BBOXFilterExtractor();
                 query.getFilter().accept(bboxExtractor, null);
-                query.setFilter(
-                        FeatureUtilities.DEFAULT_FILTER_FACTORY.bbox(
-                                FeatureUtilities.DEFAULT_FILTER_FACTORY.property(
-                                        rasterManager
-                                                .getGranuleCatalog()
-                                                .getType(rasterManager.getTypeName())
-                                                .getGeometryDescriptor()
-                                                .getName()),
-                                bboxExtractor.getBBox()));
+                query.setFilter(FeatureUtilities.DEFAULT_FILTER_FACTORY.bbox(
+                        FeatureUtilities.DEFAULT_FILTER_FACTORY.property(rasterManager
+                                .getGranuleCatalog()
+                                .getType(rasterManager.getTypeName())
+                                .getGeometryDescriptor()
+                                .getName()),
+                        bboxExtractor.getBBox()));
                 query.setMaxFeatures(1);
                 query.setSortBy(null);
                 rasterManager.getGranuleDescriptors(query, dryRunVisitor);
@@ -738,14 +720,11 @@ public class RasterLayerResponse {
             // do we return a null (outside of the coverage) or a blank? The choice is "hard" as we
             // might be in a hole of the coverage and not know it
             if (!queryBBox.intersects((BoundingBox) ReferencedEnvelope.reference(coverageEnvelope))
-                    && !queryBBox.intersects(
-                            (BoundingBox)
-                                    ReferencedEnvelope.reference(
-                                            rasterManager.spatialDomainManager.coverageBBox))) {
+                    && !queryBBox.intersects((BoundingBox)
+                            ReferencedEnvelope.reference(rasterManager.spatialDomainManager.coverageBBox))) {
                 if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.fine(
-                            "Could not locate any granule in the requested bbox, returning null as it does not "
-                                    + "match the cached bbox of the mosaic");
+                    LOGGER.fine("Could not locate any granule in the requested bbox, returning null as it does not "
+                            + "match the cached bbox of the mosaic");
                 }
                 return null;
             } else {
@@ -774,12 +753,11 @@ public class RasterLayerResponse {
             } else {
                 tileWidth = tileHeight = ROIExcessGranuleRemover.DEFAULT_TILE_SIZE;
             }
-            excessGranuleRemover =
-                    new ROIExcessGranuleRemover(
-                            rasterBounds,
-                            tileWidth,
-                            tileHeight,
-                            rasterManager.getConfiguration().getCrs());
+            excessGranuleRemover = new ROIExcessGranuleRemover(
+                    rasterBounds,
+                    tileWidth,
+                    tileHeight,
+                    rasterManager.getConfiguration().getCrs());
         }
     }
 
@@ -797,9 +775,7 @@ public class RasterLayerResponse {
         // than what we need. The code below is a bit better since it uses a proper logic (see
         // GridEnvelope
         // Javadoc)
-        rasterBounds =
-                new GridEnvelope2D(
-                        new ReferencedEnvelope(tempRasterBounds), PixelInCell.CELL_CORNER);
+        rasterBounds = new GridEnvelope2D(new ReferencedEnvelope(tempRasterBounds), PixelInCell.CELL_CORNER);
         if (rasterBounds.width == 0) rasterBounds.width++;
         if (rasterBounds.height == 0) rasterBounds.height++;
         if (oversampledRequest) rasterBounds.grow(2, 2);
@@ -809,11 +785,9 @@ public class RasterLayerResponse {
         // (the above expansion might have made them so)
         if (!request.spatialRequestHelper.isSupportingAlternativeCRSOutput()) {
             final GeneralBounds levelRasterArea_ =
-                    CRS.transform(
-                            finalWorldToGridCorner, request.spatialRequestHelper.getCoverageBBox());
+                    CRS.transform(finalWorldToGridCorner, request.spatialRequestHelper.getCoverageBBox());
             final GridEnvelope2D levelRasterArea =
-                    new GridEnvelope2D(
-                            new ReferencedEnvelope(levelRasterArea_), PixelInCell.CELL_CORNER);
+                    new GridEnvelope2D(new ReferencedEnvelope(levelRasterArea_), PixelInCell.CELL_CORNER);
             XRectangle2D.intersect(levelRasterArea, rasterBounds, rasterBounds);
         }
     }
@@ -829,17 +803,14 @@ public class RasterLayerResponse {
         final AffineTransform g2w;
         final SpatialRequestHelper spatialRequestHelper = request.spatialRequestHelper;
         if (!request.isHeterogeneousGranules()) {
-            final OverviewLevel baseLevel =
-                    rasterManager.overviewsController.resolutionsLevels.get(0);
-            final OverviewLevel selectedLevel =
-                    rasterManager.overviewsController.resolutionsLevels.get(imageChoice);
+            final OverviewLevel baseLevel = rasterManager.overviewsController.resolutionsLevels.get(0);
+            final OverviewLevel selectedLevel = rasterManager.overviewsController.resolutionsLevels.get(imageChoice);
             final double resX = baseLevel.resolutionX;
             final double resY = baseLevel.resolutionY;
             final double[] requestRes = spatialRequestHelper.getComputedResolution();
 
             BoundingBox computedBBox = spatialRequestHelper.getComputedBBox();
-            GeneralBounds requestedRasterArea =
-                    CRS.transform(baseGridToWorld.inverse(), computedBBox);
+            GeneralBounds requestedRasterArea = CRS.transform(baseGridToWorld.inverse(), computedBBox);
             double minxRaster = Math.round(requestedRasterArea.getMinimum(0));
             double minyRaster = Math.round(requestedRasterArea.getMinimum(1));
 
@@ -851,14 +822,8 @@ public class RasterLayerResponse {
             Point2D src = new Point2D.Double(minxRaster, minyRaster);
             Point2D dst = new Point2D.Double();
             at.transform(src, dst);
-            g2w =
-                    new AffineTransform(
-                            at.getScaleX(),
-                            at.getShearX(),
-                            at.getShearY(),
-                            at.getScaleY(),
-                            dst.getX(),
-                            dst.getY());
+            g2w = new AffineTransform(
+                    at.getScaleX(), at.getShearX(), at.getShearY(), at.getScaleY(), dst.getX(), dst.getY());
             g2w.concatenate(CoverageUtilities.CENTER_TO_CORNER);
 
             if ((requestRes[0] < resX || requestRes[1] < resY)) {
@@ -877,13 +842,9 @@ public class RasterLayerResponse {
             if (!oversampledRequest) {
                 // SG going back to working on a per level basis to do the composition
                 // g2w = new AffineTransform(request.getRequestedGridToWorld());
-                g2w.concatenate(
-                        AffineTransform.getScaleInstance(
-                                selectedLevel.scaleFactor, selectedLevel.scaleFactor));
-                g2w.concatenate(
-                        AffineTransform.getScaleInstance(
-                                baseReadParameters.getSourceXSubsampling(),
-                                baseReadParameters.getSourceYSubsampling()));
+                g2w.concatenate(AffineTransform.getScaleInstance(selectedLevel.scaleFactor, selectedLevel.scaleFactor));
+                g2w.concatenate(AffineTransform.getScaleInstance(
+                        baseReadParameters.getSourceXSubsampling(), baseReadParameters.getSourceYSubsampling()));
             }
         } else {
             g2w = new AffineTransform(spatialRequestHelper.getComputedGridToWorld());
@@ -907,9 +868,7 @@ public class RasterLayerResponse {
             if (request.spatialRequestHelper.isSupportingAlternativeCRSOutput()) {
                 // When supporting Output in alternative CRS
                 // BBOX for query and BBOX for computations are different
-                mosaicBBox =
-                        ReferencedEnvelope.reference(
-                                request.spatialRequestHelper.getComputedBBox(true));
+                mosaicBBox = ReferencedEnvelope.reference(request.spatialRequestHelper.getComputedBBox(true));
             }
         } else {
             queryBBox = new ReferencedEnvelope(coverageEnvelope);
@@ -941,27 +900,25 @@ public class RasterLayerResponse {
         if (request.spatialRequestHelper.getComputedBBox() != null
                 && request.spatialRequestHelper.getComputedRasterArea() != null
                 && !request.isHeterogeneousGranules()) {
-            imageChoice =
-                    ReadParamsController.setReadParams(
-                            request.spatialRequestHelper.getComputedResolution(),
-                            request.getOverviewPolicy(),
-                            request.getDecimationPolicy(),
-                            baseReadParameters,
-                            request.rasterManager,
-                            request.rasterManager.overviewsController,
-                            virtualNativeResolution); // use general overviews controller
+            imageChoice = ReadParamsController.setReadParams(
+                    request.spatialRequestHelper.getComputedResolution(),
+                    request.getOverviewPolicy(),
+                    request.getDecimationPolicy(),
+                    baseReadParameters,
+                    request.rasterManager,
+                    request.rasterManager.overviewsController,
+                    virtualNativeResolution); // use general overviews controller
         } else {
             imageChoice = 0;
         }
         assert imageChoice >= 0;
         if (LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.fine(
-                    "Loading level "
-                            + imageChoice
-                            + " with subsampling factors "
-                            + baseReadParameters.getSourceXSubsampling()
-                            + " "
-                            + baseReadParameters.getSourceYSubsampling());
+            LOGGER.fine("Loading level "
+                    + imageChoice
+                    + " with subsampling factors "
+                    + baseReadParameters.getSourceXSubsampling()
+                    + " "
+                    + baseReadParameters.getSourceYSubsampling());
         }
     }
 
@@ -997,13 +954,8 @@ public class RasterLayerResponse {
                 default:
                     cs = new BogusColorSpace(nBands);
             }
-            cm =
-                    new ComponentColorModel(
-                            cs,
-                            cm.hasAlpha(),
-                            cm.isAlphaPremultiplied(),
-                            cm.getTransparency(),
-                            cm.getTransferType());
+            cm = new ComponentColorModel(
+                    cs, cm.hasAlpha(), cm.isAlphaPremultiplied(), cm.getTransparency(), cm.getTransferType());
             sm = cm.createCompatibleSampleModel(sm.getWidth(), sm.getHeight());
         }
 
@@ -1019,17 +971,12 @@ public class RasterLayerResponse {
                 .setTileHeight((int) tileSize.getHeight());
         final RenderingHints renderingHints = new RenderingHints(JAI.KEY_IMAGE_LAYOUT, il);
 
-        final Number[] values =
-                ImageUtilities.getBackgroundValues(rasterManager.defaultSM, backgroundValues);
+        final Number[] values = ImageUtilities.getBackgroundValues(rasterManager.defaultSM, backgroundValues);
         RenderedImage finalImage;
         if (ImageUtilities.isMediaLibAvailable()) {
             // create a constant image with a proper layout
-            finalImage =
-                    ConstantDescriptor.create(
-                            (float) rasterBounds.width,
-                            (float) rasterBounds.height,
-                            values,
-                            renderingHints);
+            finalImage = ConstantDescriptor.create(
+                    (float) rasterBounds.width, (float) rasterBounds.height, values, renderingHints);
             if (rasterBounds.x != 0 || rasterBounds.y != 0) {
                 ImageWorker w = new ImageWorker(finalImage);
                 w.translate(
@@ -1044,11 +991,10 @@ public class RasterLayerResponse {
             if (cm != null) {
                 il.setColorModel(cm);
                 il.setSampleModel(cm.createCompatibleSampleModel(tileSize.width, tileSize.height));
-                finalImage =
-                        new ImageWorker(finalImage)
-                                .setRenderingHints(renderingHints)
-                                .format(il.getSampleModel(null).getDataType())
-                                .getRenderedImage();
+                finalImage = new ImageWorker(finalImage)
+                        .setRenderingHints(renderingHints)
+                        .format(il.getSampleModel(null).getDataType())
+                        .getRenderedImage();
             }
         } else {
             il.setWidth(rasterBounds.width).setHeight(rasterBounds.height);
@@ -1078,11 +1024,7 @@ public class RasterLayerResponse {
                     bkgValues[i] = values[i].doubleValue();
                 }
             }
-            Assert.isTrue(
-                    il.isValid(
-                            ImageLayout.WIDTH_MASK
-                                    | ImageLayout.HEIGHT_MASK
-                                    | ImageLayout.SAMPLE_MODEL_MASK));
+            Assert.isTrue(il.isValid(ImageLayout.WIDTH_MASK | ImageLayout.HEIGHT_MASK | ImageLayout.SAMPLE_MODEL_MASK));
             ImageWorker w = new ImageWorker(renderingHints);
             w.setBackground(bkgValues);
             w.mosaic(
@@ -1109,25 +1051,22 @@ public class RasterLayerResponse {
         //
         Color inputTransparentColor = request.getInputTransparentColor();
         boolean hasAlpha;
-        if (inputTransparentColor != null
-                && (footprintBehavior == null || !footprintBehavior.handleFootprints())) {
+        if (inputTransparentColor != null && (footprintBehavior == null || !footprintBehavior.handleFootprints())) {
             if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.fine("Support for alpha on blank image");
             }
-            finalImage =
-                    new ImageWorker(finalImage)
-                            .makeColorTransparent(inputTransparentColor)
-                            .getRenderedImage();
+            finalImage = new ImageWorker(finalImage)
+                    .makeColorTransparent(inputTransparentColor)
+                    .getRenderedImage();
             hasAlpha = finalImage.getColorModel().hasAlpha();
             if (!hasAlpha) {
                 // if the resulting image has no transparency (can happen with IndexColorModel then
                 // we need to try component
                 // color model
-                finalImage =
-                        new ImageWorker(finalImage)
-                                .forceComponentColorModel(true)
-                                .makeColorTransparent(inputTransparentColor)
-                                .getRenderedImage();
+                finalImage = new ImageWorker(finalImage)
+                        .forceComponentColorModel(true)
+                        .makeColorTransparent(inputTransparentColor)
+                        .getRenderedImage();
                 hasAlpha = finalImage.getColorModel().hasAlpha();
             }
             assert hasAlpha;
@@ -1148,11 +1087,9 @@ public class RasterLayerResponse {
         final RenderedImage image = mosaicOutput.image;
         final SampleModel sm = image.getSampleModel();
         final ColorModel cm = image.getColorModel();
-        final int numBands =
-                request.getBands() == null ? sm.getNumBands() : request.getBands().length;
+        final int numBands = request.getBands() == null ? sm.getNumBands() : request.getBands().length;
         // quick check the possible provided bands names are equal the number of bands
-        if (rasterManager.providedBandsNames != null
-                && rasterManager.providedBandsNames.length != numBands) {
+        if (rasterManager.providedBandsNames != null && rasterManager.providedBandsNames.length != numBands) {
             // let's see if bands have been selected
             if (request.getBands() == null) {
                 // no definitively there is something wrong
@@ -1188,8 +1125,7 @@ public class RasterLayerResponse {
                 if (bandName == null) {
                     bandName = colorInterpretation.name();
                     if (colorInterpretation == ColorInterpretation.UNDEFINED
-                            || bandNames.contains(
-                                    bandName)) { // make sure we create no duplicate band names
+                            || bandNames.contains(bandName)) { // make sure we create no duplicate band names
                         bandName = "Band" + (i + 1);
                     }
                 }
@@ -1240,21 +1176,19 @@ public class RasterLayerResponse {
                     else if (st.compareTo(SampleDimensionType.UNSIGNED_4BITS) == 0) max = 7;
                     else if (st.compareTo(SampleDimensionType.UNSIGNED_8BITS) == 0) max = 255;
                     else if (st.compareTo(SampleDimensionType.UNSIGNED_16BITS) == 0) max = 65535;
-                    else if (st.compareTo(SampleDimensionType.UNSIGNED_32BITS) == 0)
-                        max = Math.pow(2, 32) - 1;
+                    else if (st.compareTo(SampleDimensionType.UNSIGNED_32BITS) == 0) max = Math.pow(2, 32) - 1;
                 }
             }
-            bands[i] =
-                    new SimplifiedGridSampleDimension(
-                            bandName,
-                            st,
-                            colorInterpretation,
-                            noData,
-                            min,
-                            max,
-                            1, // no scale
-                            0, // no offset
-                            null);
+            bands[i] = new SimplifiedGridSampleDimension(
+                    bandName,
+                    st,
+                    colorInterpretation,
+                    noData,
+                    min,
+                    max,
+                    1, // no scale
+                    0, // no offset
+                    null);
         }
 
         // creating the final coverage by keeping into account the fact that we
@@ -1418,75 +1352,64 @@ public class RasterLayerResponse {
         CoordinateReferenceSystem granuleCRS =
                 templateDescriptor.getGranuleEnvelope().getCoordinateReferenceSystem();
         RasterLayerRequest originalRequest = this.getRequest();
-        CoordinateReferenceSystem referenceCRS =
-                originalRequest.spatialRequestHelper.getReferenceCRS(true);
+        CoordinateReferenceSystem referenceCRS = originalRequest.spatialRequestHelper.getReferenceCRS(true);
         if (CRS.equalsIgnoreMetadata(referenceCRS, granuleCRS)) {
             return this;
         }
 
         // rebuild
         RasterManager originalRasterManager = originalRequest.getRasterManager();
-        RasterManager manager =
-                originalRasterManager.getForGranuleCRS(
-                        request,
-                        templateDescriptor,
-                        this.mosaicBBox,
-                        originalRequest.spatialRequestHelper.isSupportingAlternativeCRSOutput()
-                                ? this.queryBBox
-                                : this.mosaicBBox);
-        RasterLayerRequest request =
-                new RasterLayerRequest(originalRequest.getParams(), manager) {
-                    @Override
-                    protected ReferencedEnvelope computeCoverageBoundingBox(
-                            RasterManager rasterManager) throws IOException {
-                        // in case of filtering we are re-computing the bbox from the data, it gets
-                        // back in the mosaic CRS instead of the desired one. Force it to use the
-                        // whole
-                        // thing, we already used the filter
-                        // TODO: add projection handler support
-                        if (filter != null && !Filter.INCLUDE.equals(filter)) {
-                            // limit it to the filtered granules bounding box by full enumeration,
-                            // to avoid
-                            // imprecise datastore optimizations (e.g., loose bounds)
-                            GranuleSource granules = rasterManager.getGranuleSource(true, null);
-                            String crsAttribute = manager.getCrsAttribute();
-                            String granuleCRSCode =
-                                    (String)
-                                            Utils.getAttribute(
-                                                    templateDescriptor.getOriginator(),
-                                                    crsAttribute);
-                            FilterFactory ff = FeatureUtilities.DEFAULT_FILTER_FACTORY;
-                            PropertyIsEqualTo crsFilter =
-                                    ff.equal(
-                                            ff.property(crsAttribute),
-                                            ff.literal(granuleCRSCode),
-                                            false);
-                            Filter composite = ff.and(crsFilter, filter);
+        RasterManager manager = originalRasterManager.getForGranuleCRS(
+                request,
+                templateDescriptor,
+                this.mosaicBBox,
+                originalRequest.spatialRequestHelper.isSupportingAlternativeCRSOutput()
+                        ? this.queryBBox
+                        : this.mosaicBBox);
+        RasterLayerRequest request = new RasterLayerRequest(originalRequest.getParams(), manager) {
+            @Override
+            protected ReferencedEnvelope computeCoverageBoundingBox(RasterManager rasterManager) throws IOException {
+                // in case of filtering we are re-computing the bbox from the data, it gets
+                // back in the mosaic CRS instead of the desired one. Force it to use the
+                // whole
+                // thing, we already used the filter
+                // TODO: add projection handler support
+                if (filter != null && !Filter.INCLUDE.equals(filter)) {
+                    // limit it to the filtered granules bounding box by full enumeration,
+                    // to avoid
+                    // imprecise datastore optimizations (e.g., loose bounds)
+                    GranuleSource granules = rasterManager.getGranuleSource(true, null);
+                    String crsAttribute = manager.getCrsAttribute();
+                    String granuleCRSCode =
+                            (String) Utils.getAttribute(templateDescriptor.getOriginator(), crsAttribute);
+                    FilterFactory ff = FeatureUtilities.DEFAULT_FILTER_FACTORY;
+                    PropertyIsEqualTo crsFilter =
+                            ff.equal(ff.property(crsAttribute), ff.literal(granuleCRSCode), false);
+                    Filter composite = ff.and(crsFilter, filter);
 
-                            Query query = new Query(granules.getSchema().getTypeName(), composite);
-                            // ... load only the default geometry if possible
-                            final GeometryDescriptor gd =
-                                    granules.getSchema().getGeometryDescriptor();
-                            if (gd != null) {
-                                query.setPropertyNames(gd.getLocalName());
-                            }
-                            SimpleFeatureCollection features = granules.getGranules(query);
-                            ReferencedEnvelope envelope = DataUtilities.bounds(features);
-                            if (envelope != null && !envelope.isEmpty()) {
-                                try {
-                                    return envelope.transform(granuleCRS, true);
-                                } catch (TransformException | FactoryException e) {
-                                    LOGGER.log(
-                                            Level.FINE,
-                                            "Could not transform filtered envelope into target granule CRS, falling back on mosaic");
-                                }
-                            }
-                        }
-
-                        // fallback
-                        return rasterManager.spatialDomainManager.coverageBBox;
+                    Query query = new Query(granules.getSchema().getTypeName(), composite);
+                    // ... load only the default geometry if possible
+                    final GeometryDescriptor gd = granules.getSchema().getGeometryDescriptor();
+                    if (gd != null) {
+                        query.setPropertyNames(gd.getLocalName());
                     }
-                };
+                    SimpleFeatureCollection features = granules.getGranules(query);
+                    ReferencedEnvelope envelope = DataUtilities.bounds(features);
+                    if (envelope != null && !envelope.isEmpty()) {
+                        try {
+                            return envelope.transform(granuleCRS, true);
+                        } catch (TransformException | FactoryException e) {
+                            LOGGER.log(
+                                    Level.FINE,
+                                    "Could not transform filtered envelope into target granule CRS, falling back on mosaic");
+                        }
+                    }
+                }
+
+                // fallback
+                return rasterManager.spatialDomainManager.coverageBBox;
+            }
+        };
         // if the output needs to have transparent footprint behavior, we need to preserve the
         // various sub-mosaic ROIs until the final mosaicking
         if (request.getFootprintBehavior() == FootprintBehavior.Transparent) {
@@ -1495,13 +1418,12 @@ public class RasterLayerResponse {
         if (request.spatialRequestHelper.isEmpty()) {
             return null;
         }
-        RasterLayerResponse response =
-                new RasterLayerResponse(request, manager, this.submosaicProducerFactory) {
-                    @Override
-                    public void addGranulePaths(String granulesPaths) {
-                        RasterLayerResponse.this.addGranulePaths(granulesPaths);
-                    }
-                };
+        RasterLayerResponse response = new RasterLayerResponse(request, manager, this.submosaicProducerFactory) {
+            @Override
+            public void addGranulePaths(String granulesPaths) {
+                RasterLayerResponse.this.addGranulePaths(granulesPaths);
+            }
+        };
         // initialize enough info without actually running the output computation
         response.chooseOverview();
         response.initBBOX();

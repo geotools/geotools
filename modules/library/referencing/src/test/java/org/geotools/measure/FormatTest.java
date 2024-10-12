@@ -101,24 +101,21 @@ public final class FormatTest {
     public void testCoordinateFormat() {
         final Date epoch = new Date(1041375600000L); // January 1st, 2003
         final DefaultTemporalDatum datum = new DefaultTemporalDatum("Time", epoch);
-        final AbstractCRS crs =
-                new DefaultCompoundCRS(
-                        "WGS84 3D + time",
-                        DefaultGeographicCRS.WGS84,
-                        DefaultVerticalCRS.ELLIPSOIDAL_HEIGHT,
-                        new DefaultTemporalCRS("Time", datum, DefaultTimeCS.DAYS));
+        final AbstractCRS crs = new DefaultCompoundCRS(
+                "WGS84 3D + time",
+                DefaultGeographicCRS.WGS84,
+                DefaultVerticalCRS.ELLIPSOIDAL_HEIGHT,
+                new DefaultTemporalCRS("Time", datum, DefaultTimeCS.DAYS));
         final CoordinateFormat format = new CoordinateFormat(Locale.FRANCE);
         format.setCoordinateReferenceSystem(crs);
         format.setTimeZone(TimeZone.getTimeZone("GMT+01:00"));
-        final GeneralPosition position =
-                new GeneralPosition(new double[] {23.78, -12.74, 127.9, 3.2});
+        final GeneralPosition position = new GeneralPosition(new double[] {23.78, -12.74, 127.9, 3.2});
         format.setDatePattern("dd MM yyyy");
         assertEquals("23°46,8'E 12°44,4'S 127,9\u00A0m 04 01 2003", format.format(position));
         /*
          * Try a point with wrong dimension.
          */
-        final GeneralPosition wrong =
-                new GeneralPosition(new double[] {23.78, -12.74, 127.9, 3.2, 8.5});
+        final GeneralPosition wrong = new GeneralPosition(new double[] {23.78, -12.74, 127.9, 3.2, 8.5});
         try {
             assertNotNull(format.format(wrong));
             fail("Excepted a mismatched dimension exception.");

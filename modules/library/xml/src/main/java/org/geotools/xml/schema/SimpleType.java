@@ -70,8 +70,7 @@ public interface SimpleType extends Type {
             throws OperationNotSupportedException;
 
     /** */
-    public boolean canCreateAttributes(
-            Attribute attribute, Object value, Map<String, Object> hints);
+    public boolean canCreateAttributes(Attribute attribute, Object value, Map<String, Object> hints);
 
     /** Returns an int of either List, Union or Restriction */
     public int getChildType();

@@ -121,8 +121,7 @@ public class MathTransformParser extends AbstractParser {
      * @return The next element as a {@link MathTransform} object.
      * @throws ParseException if the next element can't be parsed.
      */
-    final MathTransform parseMathTransform(final Element element, final boolean required)
-            throws ParseException {
+    final MathTransform parseMathTransform(final Element element, final boolean required) throws ParseException {
         lastMethod = null;
         classification = null;
         final Object key = element.peek();
@@ -294,8 +293,7 @@ public class MathTransformParser extends AbstractParser {
              * getLastMethod(). Performs a slower and less robust check as a fallback.
              */
             if (classification != null) {
-                for (final OperationMethod method :
-                        mtFactory.getAvailableMethods(Operation.class)) {
+                for (final OperationMethod method : mtFactory.getAvailableMethods(Operation.class)) {
                     if (AbstractIdentifiedObject.nameMatches(method, classification)) {
                         lastMethod = method;
                         break;

@@ -574,119 +574,117 @@ public class StrokeImpl implements Stroke, Cloneable {
         }
     }
 
-    public static Stroke DEFAULT =
-            new ConstantStroke() {
-                @Override
-                public Expression getColor() {
-                    return ConstantExpression.BLACK;
-                }
+    public static Stroke DEFAULT = new ConstantStroke() {
+        @Override
+        public Expression getColor() {
+            return ConstantExpression.BLACK;
+        }
 
-                @Override
-                public Expression getWidth() {
-                    return ConstantExpression.ONE;
-                }
+        @Override
+        public Expression getWidth() {
+            return ConstantExpression.ONE;
+        }
 
-                @Override
-                public Expression getOpacity() {
-                    return ConstantExpression.ONE;
-                }
+        @Override
+        public Expression getOpacity() {
+            return ConstantExpression.ONE;
+        }
 
-                @Override
-                public Expression getLineJoin() {
-                    return ConstantExpression.constant("miter");
-                }
+        @Override
+        public Expression getLineJoin() {
+            return ConstantExpression.constant("miter");
+        }
 
-                @Override
-                public Expression getLineCap() {
-                    return ConstantExpression.constant("butt");
-                }
+        @Override
+        public Expression getLineCap() {
+            return ConstantExpression.constant("butt");
+        }
 
-                @Override
-                public float[] getDashArray() {
-                    return null;
-                }
+        @Override
+        public float[] getDashArray() {
+            return null;
+        }
 
-                @Override
-                public List<Expression> dashArray() {
-                    return null;
-                }
+        @Override
+        public List<Expression> dashArray() {
+            return null;
+        }
 
-                @Override
-                public Expression getDashOffset() {
-                    return ConstantExpression.ZERO;
-                }
+        @Override
+        public Expression getDashOffset() {
+            return ConstantExpression.ZERO;
+        }
 
-                @Override
-                public Graphic getGraphicFill() {
-                    return GraphicImpl.DEFAULT;
-                }
+        @Override
+        public Graphic getGraphicFill() {
+            return GraphicImpl.DEFAULT;
+        }
 
-                @Override
-                public Graphic getGraphicStroke() {
-                    return GraphicImpl.NULL;
-                }
+        @Override
+        public Graphic getGraphicStroke() {
+            return GraphicImpl.NULL;
+        }
 
-                @Override
-                public Object clone() {
-                    return this; // we are constant
-                }
-            };
+        @Override
+        public Object clone() {
+            return this; // we are constant
+        }
+    };
     /**
      * Null Stroke capturing the defaults indicated by the standard.
      *
      * <p>This is a NullObject, it purpose is to prevent client code from having to do null
      * checking.
      */
-    public static final Stroke NULL =
-            new ConstantStroke() {
-                @Override
-                public Expression getColor() {
-                    return ConstantExpression.NULL;
-                }
+    public static final Stroke NULL = new ConstantStroke() {
+        @Override
+        public Expression getColor() {
+            return ConstantExpression.NULL;
+        }
 
-                @Override
-                public Expression getWidth() {
-                    return ConstantExpression.NULL;
-                }
+        @Override
+        public Expression getWidth() {
+            return ConstantExpression.NULL;
+        }
 
-                @Override
-                public Expression getOpacity() {
-                    return ConstantExpression.NULL;
-                }
+        @Override
+        public Expression getOpacity() {
+            return ConstantExpression.NULL;
+        }
 
-                @Override
-                public Expression getLineJoin() {
-                    return ConstantExpression.NULL;
-                }
+        @Override
+        public Expression getLineJoin() {
+            return ConstantExpression.NULL;
+        }
 
-                @Override
-                public Expression getLineCap() {
-                    return ConstantExpression.NULL;
-                }
+        @Override
+        public Expression getLineCap() {
+            return ConstantExpression.NULL;
+        }
 
-                @Override
-                public float[] getDashArray() {
-                    return new float[] {};
-                }
+        @Override
+        public float[] getDashArray() {
+            return new float[] {};
+        }
 
-                @Override
-                public List<Expression> dashArray() {
-                    return Collections.emptyList();
-                }
+        @Override
+        public List<Expression> dashArray() {
+            return Collections.emptyList();
+        }
 
-                @Override
-                public Expression getDashOffset() {
-                    return ConstantExpression.NULL;
-                }
+        @Override
+        public Expression getDashOffset() {
+            return ConstantExpression.NULL;
+        }
 
-                @Override
-                public Graphic getGraphicFill() {
-                    return GraphicImpl.NULL;
-                }
+        @Override
+        public Graphic getGraphicFill() {
+            return GraphicImpl.NULL;
+        }
 
-                @Override
-                public Graphic getGraphicStroke() {
-                    return GraphicImpl.NULL;
-                }
-            };
+        @Override
+        public Graphic getGraphicStroke() {
+            return GraphicImpl.NULL;
+        }
+    };
 }

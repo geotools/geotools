@@ -42,8 +42,7 @@ public class AppSchemaIndexIntegrationTest extends AppSchemaOnlineTestSupport {
     protected final String attId = "st:Station";
     protected final String attName = "st:Station/st:stationName";
     protected final String attComments = "st:Station/st:comments";
-    protected final String attObservationDesc =
-            "st:Station/st:observation/st:Observation/st:description";
+    protected final String attObservationDesc = "st:Station/st:observation/st:Observation/st:description";
 
     @Test
     public void testIndex() throws IOException {
@@ -54,9 +53,7 @@ public class AppSchemaIndexIntegrationTest extends AppSchemaOnlineTestSupport {
 
     private void totalindexCase() throws IOException {
         FeatureCollection<FeatureType, Feature> fcoll =
-                this.mappingDataStore
-                        .getFeatureSource(this.mappedTypeName)
-                        .getFeatures(totalIndexedFilterCase());
+                this.mappingDataStore.getFeatureSource(this.mappedTypeName).getFeatures(totalIndexedFilterCase());
         try (FeatureIterator<Feature> iterator = fcoll.features()) {
             assertTrue(iterator instanceof TotalIndexedMappingFeatureIterator);
         }

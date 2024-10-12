@@ -127,8 +127,7 @@ public class ScaleRangeExtractor extends AbstractSelectorVisitor {
         }
 
         org.geotools.styling.zoom.ScaleRange scaleRange = zoomContext.getRange(min, max);
-        Range<Double> localRange =
-                new Range<>(Double.class, scaleRange.getMinDenom(), scaleRange.getMaxDenom());
+        Range<Double> localRange = new Range<>(Double.class, scaleRange.getMinDenom(), scaleRange.getMaxDenom());
         if (range == null) {
             range = localRange;
         } else {

@@ -31,15 +31,13 @@ import org.locationtech.jts.io.WKTReader;
 
 public class SearchGetBuilderTest {
 
-    private static final String BASE =
-            "https://geoservice.dlr.de/eoc/ogc/stac/search?f=application%2Fgeo%2Bjson";
+    private static final String BASE = "https://geoservice.dlr.de/eoc/ogc/stac/search?f=application%2Fgeo%2Bjson";
     private static SearchGetBuilder BUILDER;
 
     @BeforeClass
     public static void setupBuilder() throws IOException {
         try (InputStream stream = STACOfflineTest.class.getResourceAsStream("landingPage.json")) {
-            STACLandingPage landingPage =
-                    STACClient.OBJECT_MAPPER.readValue(stream, STACLandingPage.class);
+            STACLandingPage landingPage = STACClient.OBJECT_MAPPER.readValue(stream, STACLandingPage.class);
             BUILDER = new SearchGetBuilder(landingPage);
         }
     }
@@ -69,8 +67,7 @@ public class SearchGetBuilderTest {
         SearchQuery search = new SearchQuery();
         search.setIntersects(new WKTReader().read("POINT(0 0)"));
         assertURLEquals(
-                BASE
-                        + "&intersects=%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B0%2C0%5D%7D",
+                BASE + "&intersects=%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B0%2C0%5D%7D",
                 BUILDER.toGetURL(search));
     }
 

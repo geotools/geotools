@@ -42,8 +42,7 @@ public class SpatialCapabiltiesImpl implements SpatialCapabilities {
         this.spatialOperators = new SpatialOperatorsImpl();
     }
 
-    public SpatialCapabiltiesImpl(
-            Collection<GeometryOperand> geometryOperands, SpatialOperators spatialOperators) {
+    public SpatialCapabiltiesImpl(Collection<GeometryOperand> geometryOperands, SpatialOperators spatialOperators) {
         this.geometryOperands = new HashSet<>();
         if (geometryOperands != null) {
             this.geometryOperands.addAll(geometryOperands);
@@ -51,8 +50,7 @@ public class SpatialCapabiltiesImpl implements SpatialCapabilities {
         this.spatialOperators = toSpatialOperatorsImpl(spatialOperators);
     }
 
-    public SpatialCapabiltiesImpl(
-            GeometryOperand[] geometryOperands, SpatialOperators spatialOperators) {
+    public SpatialCapabiltiesImpl(GeometryOperand[] geometryOperands, SpatialOperators spatialOperators) {
         this.geometryOperands = new HashSet<>();
         if (geometryOperands != null) {
             this.geometryOperands.addAll(Arrays.asList(geometryOperands));

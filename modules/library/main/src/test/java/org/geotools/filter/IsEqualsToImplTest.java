@@ -27,8 +27,7 @@ import org.junit.Test;
 
 public class IsEqualsToImplTest {
 
-    org.geotools.api.filter.FilterFactory filterFactory =
-            CommonFactoryFinder.getFilterFactory(null);
+    org.geotools.api.filter.FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory(null);
 
     @Test
     public void testOperandsSameType() {

@@ -42,36 +42,20 @@ public class RowFieldTest implements DataTypesDefinition {
     /** Method for testing original source method: double getAsDouble() from tested class */
     @Test
     public void testGetAsDouble() {
-        double[] testVals = {
-            Double.MAX_VALUE,
-            Double.MIN_VALUE,
-            Double.NEGATIVE_INFINITY,
-            Double.POSITIVE_INFINITY,
-            0
-        };
+        double[] testVals = {Double.MAX_VALUE, Double.MIN_VALUE, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, 0};
         for (double testVal : testVals) {
             varRowField = new RowField(Double.valueOf(testVal), DATA_LONG_FLOAT);
-            Assert.assertEquals(
-                    "Test RowField for double value: " + testVal,
-                    testVal,
-                    varRowField.doubleValue(),
-                    0);
+            Assert.assertEquals("Test RowField for double value: " + testVal, testVal, varRowField.doubleValue(), 0);
         } // end of for (int i = 0; i < testVals.length; i++)
     } // end of testGetAsDouble()
 
     /** Method for testing original source method: float getAsFloat() from tested class */
     @Test
     public void testGetAsFloat() {
-        float[] testVals = {
-            Float.MAX_VALUE, Float.MIN_VALUE, Float.NEGATIVE_INFINITY, Float.POSITIVE_INFINITY, 0
-        };
+        float[] testVals = {Float.MAX_VALUE, Float.MIN_VALUE, Float.NEGATIVE_INFINITY, Float.POSITIVE_INFINITY, 0};
         for (float testVal : testVals) {
             varRowField = new RowField(Float.valueOf(testVal), DATA_SHORT_FLOAT);
-            Assert.assertEquals(
-                    "Test RowField for float value: " + testVal,
-                    testVal,
-                    varRowField.floatValue(),
-                    0);
+            Assert.assertEquals("Test RowField for float value: " + testVal, testVal, varRowField.floatValue(), 0);
         } // end of for (int i = 0; i < testVals.length; i++)
     } // end of testGetAsFloat()
 
@@ -81,10 +65,7 @@ public class RowFieldTest implements DataTypesDefinition {
         int[] testVals = {Integer.MAX_VALUE, Integer.MIN_VALUE, 0};
         for (int testVal : testVals) {
             varRowField = new RowField(Integer.valueOf(testVal), DATA_LONG_INTEGER);
-            Assert.assertEquals(
-                    "Testing RowField for integer value: " + testVal,
-                    testVal,
-                    varRowField.intValue());
+            Assert.assertEquals("Testing RowField for integer value: " + testVal, testVal, varRowField.intValue());
         } // end of for (int i = 0; i < testVals.length; i++)
     } // end of testGetAsInt()
 
@@ -94,10 +75,7 @@ public class RowFieldTest implements DataTypesDefinition {
         long[] testVals = {Long.MAX_VALUE, Long.MIN_VALUE, 0};
         for (long testVal : testVals) {
             varRowField = new RowField(Long.valueOf(testVal), DATA_LONG_INTEGER);
-            Assert.assertEquals(
-                    "Testing RowField for long value: " + testVal,
-                    testVal,
-                    varRowField.longValue());
+            Assert.assertEquals("Testing RowField for long value: " + testVal, testVal, varRowField.longValue());
         } // end of for (int i = 0; i < testVals.length; i++)
     } // end of testGetAsLong()
 
@@ -107,10 +85,7 @@ public class RowFieldTest implements DataTypesDefinition {
         short[] testVals = {Short.MAX_VALUE, Short.MIN_VALUE, 0};
         for (short testVal : testVals) {
             varRowField = new RowField(Short.valueOf(testVal), DATA_SHORT_INTEGER);
-            Assert.assertEquals(
-                    "Testing RowField for short value: " + testVal,
-                    testVal,
-                    varRowField.shortValue());
+            Assert.assertEquals("Testing RowField for short value: " + testVal, testVal, varRowField.shortValue());
         } // end of for (int i = 0; i < testVals.length; i++)
     } // end of testGetAsShort()
 
@@ -151,8 +126,7 @@ public class RowFieldTest implements DataTypesDefinition {
     @Test
     public void testGetType() {
         for (char testType : TEST_TYPES) {
-            Assert.assertEquals(
-                    "Cheking type " + testType, testType, new RowField("1", testType).getType());
+            Assert.assertEquals("Cheking type " + testType, testType, new RowField("1", testType).getType());
         } // end of for (int i = 0; i < TEST_TYPES.length; i++)
     } // end of testGetType()
 

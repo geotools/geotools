@@ -45,18 +45,17 @@ public class Angle implements Comparable<Angle>, Serializable {
 
     /** Define how angle can be converted to {@link Number} objects. */
     static {
-        ClassChanger.register(
-                new ClassChanger<Angle, Double>(Angle.class, Double.class) {
-                    @Override
-                    protected Double convert(final Angle o) {
-                        return o.theta;
-                    }
+        ClassChanger.register(new ClassChanger<Angle, Double>(Angle.class, Double.class) {
+            @Override
+            protected Double convert(final Angle o) {
+                return o.theta;
+            }
 
-                    @Override
-                    protected Angle inverseConvert(final Double value) {
-                        return new Angle(value);
-                    }
-                });
+            @Override
+            protected Angle inverseConvert(final Double value) {
+                return new Angle(value);
+            }
+        });
     }
 
     /** Angle value in degres. */

@@ -253,8 +253,7 @@ public class WKTWriter2 extends WKTWriter {
      *
      * @param geometry a <code>Geometry</code> to process
      */
-    private void writeFormatted(Geometry geometry, boolean useFormatting, Writer writer)
-            throws IOException {
+    private void writeFormatted(Geometry geometry, boolean useFormatting, Writer writer) throws IOException {
         this.useFormatting = useFormatting;
         formatter = createFormatter(geometry.getPrecisionModel());
         appendGeometryTaggedText(geometry, 0, writer);
@@ -267,8 +266,7 @@ public class WKTWriter2 extends WKTWriter {
      * @param geometry the <code>Geometry</code> to process
      * @param writer the output writer to append to
      */
-    private void appendGeometryTaggedText(Geometry geometry, int level, Writer writer)
-            throws IOException {
+    private void appendGeometryTaggedText(Geometry geometry, int level, Writer writer) throws IOException {
         indent(level, writer);
 
         if (geometry instanceof Point) {
@@ -307,8 +305,7 @@ public class WKTWriter2 extends WKTWriter {
         } else if (geometry instanceof GeometryCollection) {
             appendGeometryCollectionTaggedText((GeometryCollection) geometry, level, writer);
         } else {
-            Assert.shouldNeverReachHere(
-                    "Unsupported Geometry implementation:" + geometry.getClass());
+            Assert.shouldNeverReachHere("Unsupported Geometry implementation:" + geometry.getClass());
         }
     }
 
@@ -321,8 +318,7 @@ public class WKTWriter2 extends WKTWriter {
      * @param precisionModel the <code>PrecisionModel</code> to use to convert from a precise
      *     coordinate to an external coordinate
      */
-    private void appendPointTaggedText(
-            Coordinate coordinate, int level, Writer writer, PrecisionModel precisionModel)
+    private void appendPointTaggedText(Coordinate coordinate, int level, Writer writer, PrecisionModel precisionModel)
             throws IOException {
         writer.write("POINT ");
         appendPointText(coordinate, level, writer, precisionModel);
@@ -335,8 +331,8 @@ public class WKTWriter2 extends WKTWriter {
      * @param circularString the <code>SingleCurvedGeometry</code></code> to process
      * @param writer the output writer to append to
      */
-    private void appendCircularStringTaggedText(
-            SingleCurvedGeometry circularString, int level, Writer writer) throws IOException {
+    private void appendCircularStringTaggedText(SingleCurvedGeometry circularString, int level, Writer writer)
+            throws IOException {
         writer.write("CIRCULARSTRING ");
         appendControlPointText(circularString, level, false, writer);
     }
@@ -348,8 +344,7 @@ public class WKTWriter2 extends WKTWriter {
      * @param lineString the <code>LineString</code> to process
      * @param writer the output writer to append to
      */
-    private void appendLineStringTaggedText(LineString lineString, int level, Writer writer)
-            throws IOException {
+    private void appendLineStringTaggedText(LineString lineString, int level, Writer writer) throws IOException {
         writer.write("LINESTRING ");
         appendLineStringText(lineString, level, false, writer);
     }
@@ -361,8 +356,7 @@ public class WKTWriter2 extends WKTWriter {
      * @param linearRing the <code>LinearRing</code> to process
      * @param writer the output writer to append to
      */
-    private void appendLinearRingTaggedText(LinearRing linearRing, int level, Writer writer)
-            throws IOException {
+    private void appendLinearRingTaggedText(LinearRing linearRing, int level, Writer writer) throws IOException {
         writer.write("LINEARRING ");
         appendLineStringText(linearRing, level, false, writer);
     }
@@ -374,8 +368,7 @@ public class WKTWriter2 extends WKTWriter {
      * @param polygon the <code>Polygon</code> to process
      * @param writer the output writer to append to
      */
-    private void appendPolygonTaggedText(Polygon polygon, int level, Writer writer)
-            throws IOException {
+    private void appendPolygonTaggedText(Polygon polygon, int level, Writer writer) throws IOException {
         writer.write("POLYGON ");
         appendPolygonText(polygon, level, false, writer);
     }
@@ -387,8 +380,7 @@ public class WKTWriter2 extends WKTWriter {
      * @param multipoint the <code>MultiPoint</code> to process
      * @param writer the output writer to append to
      */
-    private void appendMultiPointTaggedText(MultiPoint multipoint, int level, Writer writer)
-            throws IOException {
+    private void appendMultiPointTaggedText(MultiPoint multipoint, int level, Writer writer) throws IOException {
         writer.write("MULTIPOINT ");
         appendMultiPointText(multipoint, level, writer);
     }
@@ -400,8 +392,8 @@ public class WKTWriter2 extends WKTWriter {
      * @param multiLineString the <code>MultiLineString</code> to process
      * @param writer the output writer to append to
      */
-    private void appendMultiLineStringTaggedText(
-            MultiLineString multiLineString, int level, Writer writer) throws IOException {
+    private void appendMultiLineStringTaggedText(MultiLineString multiLineString, int level, Writer writer)
+            throws IOException {
         writer.write("MULTILINESTRING ");
         appendMultiLineStringText(multiLineString, level, false, writer);
     }
@@ -413,8 +405,7 @@ public class WKTWriter2 extends WKTWriter {
      * @param multiPolygon the <code>MultiPolygon</code> to process
      * @param writer the output writer to append to
      */
-    private void appendMultiPolygonTaggedText(MultiPolygon multiPolygon, int level, Writer writer)
-            throws IOException {
+    private void appendMultiPolygonTaggedText(MultiPolygon multiPolygon, int level, Writer writer) throws IOException {
         writer.write("MULTIPOLYGON ");
         appendMultiPolygonText(multiPolygon, level, writer);
     }
@@ -426,8 +417,8 @@ public class WKTWriter2 extends WKTWriter {
      * @param geometryCollection the <code>GeometryCollection</code> to process
      * @param writer the output writer to append to
      */
-    private void appendGeometryCollectionTaggedText(
-            GeometryCollection geometryCollection, int level, Writer writer) throws IOException {
+    private void appendGeometryCollectionTaggedText(GeometryCollection geometryCollection, int level, Writer writer)
+            throws IOException {
         writer.write("GEOMETRYCOLLECTION ");
         appendGeometryCollectionText(geometryCollection, level, writer);
     }
@@ -441,8 +432,7 @@ public class WKTWriter2 extends WKTWriter {
      * @param precisionModel the <code>PrecisionModel</code> to use to convert from a precise
      *     coordinate to an external coordinate
      */
-    private void appendPointText(
-            Coordinate coordinate, int level, Writer writer, PrecisionModel precisionModel)
+    private void appendPointText(Coordinate coordinate, int level, Writer writer, PrecisionModel precisionModel)
             throws IOException {
         if (coordinate == null) {
             writer.write("EMPTY");
@@ -496,8 +486,7 @@ public class WKTWriter2 extends WKTWriter {
      * @param cg the <code>SingleCurvedGeometry</code> to process
      * @param writer the output writer to append to
      */
-    private void appendControlPointText(
-            SingleCurvedGeometry cg, int level, boolean doIndent, Writer writer)
+    private void appendControlPointText(SingleCurvedGeometry cg, int level, boolean doIndent, Writer writer)
             throws IOException {
         if (((Geometry) cg).isEmpty()) {
             writer.write("EMPTY");
@@ -525,8 +514,8 @@ public class WKTWriter2 extends WKTWriter {
      * @param lineString the <code>LineString</code> to process
      * @param writer the output writer to append to
      */
-    private void appendLineStringText(
-            LineString lineString, int level, boolean doIndent, Writer writer) throws IOException {
+    private void appendLineStringText(LineString lineString, int level, boolean doIndent, Writer writer)
+            throws IOException {
         if (lineString.isEmpty()) {
             writer.write("EMPTY");
         } else {
@@ -545,8 +534,7 @@ public class WKTWriter2 extends WKTWriter {
         }
     }
 
-    private void appendCurvePolygonTaggedText(CurvePolygon polygon, int level, Writer writer)
-            throws IOException {
+    private void appendCurvePolygonTaggedText(CurvePolygon polygon, int level, Writer writer) throws IOException {
         writer.write("CURVEPOLYGON ");
         if (polygon.isEmpty()) {
             writer.write("EMPTY");
@@ -561,8 +549,7 @@ public class WKTWriter2 extends WKTWriter {
         }
     }
 
-    private void appendMultiCurveTaggedText(MultiCurve mc, int level, Writer writer)
-            throws IOException {
+    private void appendMultiCurveTaggedText(MultiCurve mc, int level, Writer writer) throws IOException {
         writer.write("MULTICURVE ");
         if (mc.isEmpty()) {
             writer.write("EMPTY");
@@ -578,16 +565,14 @@ public class WKTWriter2 extends WKTWriter {
         }
     }
 
-    private void appendMultiSurfaceTaggedText(MultiSurface ms, int level, Writer writer)
-            throws IOException {
+    private void appendMultiSurfaceTaggedText(MultiSurface ms, int level, Writer writer) throws IOException {
         writer.write("MULTISURFACE ");
         if (ms.isEmpty()) {
             writer.write("EMPTY");
         } else {
             writer.write("(");
             for (int i = 0; i < ms.getNumGeometries(); i++) {
-                appendPotentialCurvePolygonText(
-                        (Polygon) ms.getGeometryN(i), level + 1, true, writer);
+                appendPotentialCurvePolygonText((Polygon) ms.getGeometryN(i), level + 1, true, writer);
                 if (i < ms.getNumGeometries() - 1) {
                     writer.write(", ");
                 }
@@ -603,8 +588,7 @@ public class WKTWriter2 extends WKTWriter {
      * @param polygon the <code>Polygon</code> to process
      * @param writer the output writer to append to
      */
-    private void appendPolygonText(Polygon polygon, int level, boolean indentFirst, Writer writer)
-            throws IOException {
+    private void appendPolygonText(Polygon polygon, int level, boolean indentFirst, Writer writer) throws IOException {
         if (polygon.isEmpty()) {
             writer.write("EMPTY");
         } else {
@@ -626,8 +610,7 @@ public class WKTWriter2 extends WKTWriter {
      * @param multiPoint the <code>MultiPoint</code> to process
      * @param writer the output writer to append to
      */
-    private void appendMultiPointText(MultiPoint multiPoint, int level, Writer writer)
-            throws IOException {
+    private void appendMultiPointText(MultiPoint multiPoint, int level, Writer writer) throws IOException {
         if (multiPoint.isEmpty()) {
             writer.write("EMPTY");
         } else {
@@ -646,8 +629,7 @@ public class WKTWriter2 extends WKTWriter {
     }
 
     private void appendCompoundCurveTaggedText(
-            CompoundCurvedGeometry<LineString> multiLineString, int level, Writer writer)
-            throws IOException {
+            CompoundCurvedGeometry<LineString> multiLineString, int level, Writer writer) throws IOException {
         writer.write("COMPOUNDCURVE ");
         if (((Geometry) multiLineString).isEmpty()) {
             writer.write("EMPTY");
@@ -669,24 +651,23 @@ public class WKTWriter2 extends WKTWriter {
         }
     }
 
-    private void appendPotentialCurveText(
-            LineString component, int level, boolean doIndent, Writer writer) throws IOException {
+    private void appendPotentialCurveText(LineString component, int level, boolean doIndent, Writer writer)
+            throws IOException {
         if (component instanceof SingleCurvedGeometry) {
             @SuppressWarnings("unchecked")
             SingleCurvedGeometry<LineString> cast = (SingleCurvedGeometry<LineString>) component;
             appendCircularStringTaggedText(cast, level, writer);
         } else if (component instanceof CompoundCurvedGeometry) {
             @SuppressWarnings("unchecked")
-            CompoundCurvedGeometry<LineString> cast =
-                    (CompoundCurvedGeometry<LineString>) component;
+            CompoundCurvedGeometry<LineString> cast = (CompoundCurvedGeometry<LineString>) component;
             appendCompoundCurveTaggedText(cast, level, writer);
         } else {
             appendLineStringText(component, level, doIndent, writer);
         }
     }
 
-    private void appendPotentialCurvePolygonText(
-            Polygon component, int level, boolean doIndent, Writer writer) throws IOException {
+    private void appendPotentialCurvePolygonText(Polygon component, int level, boolean doIndent, Writer writer)
+            throws IOException {
         if (component instanceof CurvePolygon) {
             appendCurvePolygonTaggedText((CurvePolygon) component, level, writer);
         } else {
@@ -702,8 +683,7 @@ public class WKTWriter2 extends WKTWriter {
      * @param writer the output writer to append to
      */
     private void appendMultiLineStringText(
-            MultiLineString multiLineString, int level, boolean indentFirst, Writer writer)
-            throws IOException {
+            MultiLineString multiLineString, int level, boolean indentFirst, Writer writer) throws IOException {
         if (multiLineString.isEmpty()) {
             writer.write("EMPTY");
         } else {
@@ -716,8 +696,7 @@ public class WKTWriter2 extends WKTWriter {
                     level2 = level + 1;
                     doIndent = true;
                 }
-                appendLineStringText(
-                        (LineString) multiLineString.getGeometryN(i), level2, doIndent, writer);
+                appendLineStringText((LineString) multiLineString.getGeometryN(i), level2, doIndent, writer);
             }
             writer.write(")");
         }
@@ -730,8 +709,7 @@ public class WKTWriter2 extends WKTWriter {
      * @param multiPolygon the <code>MultiPolygon</code> to process
      * @param writer the output writer to append to
      */
-    private void appendMultiPolygonText(MultiPolygon multiPolygon, int level, Writer writer)
-            throws IOException {
+    private void appendMultiPolygonText(MultiPolygon multiPolygon, int level, Writer writer) throws IOException {
         if (multiPolygon.isEmpty()) {
             writer.write("EMPTY");
         } else {
@@ -757,8 +735,8 @@ public class WKTWriter2 extends WKTWriter {
      * @param geometryCollection the <code>GeometryCollection</code> to process
      * @param writer the output writer to append to
      */
-    private void appendGeometryCollectionText(
-            GeometryCollection geometryCollection, int level, Writer writer) throws IOException {
+    private void appendGeometryCollectionText(GeometryCollection geometryCollection, int level, Writer writer)
+            throws IOException {
         if (geometryCollection.isEmpty()) {
             writer.write("EMPTY");
         } else {

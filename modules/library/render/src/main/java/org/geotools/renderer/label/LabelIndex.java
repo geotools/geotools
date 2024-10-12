@@ -43,15 +43,13 @@ public class LabelIndex {
         Envelope e = toEnvelope(bounds);
         e.expandBy(distance);
         AtomicBoolean intersectionFound = new AtomicBoolean(false);
-        index.query(
-                e,
-                o -> {
-                    if (intersectionFound.get()) return;
-                    InterferenceItem item = (InterferenceItem) o;
-                    if (item.env.intersects(e)) {
-                        intersectionFound.set(true);
-                    }
-                });
+        index.query(e, o -> {
+            if (intersectionFound.get()) return;
+            InterferenceItem item = (InterferenceItem) o;
+            if (item.env.intersects(e)) {
+                intersectionFound.set(true);
+            }
+        });
         return intersectionFound.get();
     }
 

@@ -276,8 +276,7 @@ public class GeoJSONReader implements AutoCloseable {
      * @throws JsonParseException JSON Parsing Issue
      * @throws IOException IO Exception reading json
      */
-    public static SimpleFeature parseFeature(
-            String json, IdStrategy idStrategy, String idPrefix, String idFieldName)
+    public static SimpleFeature parseFeature(String json, IdStrategy idStrategy, String idPrefix, String idFieldName)
             throws JsonParseException, IOException {
         try (JsonParser lParser = factory.createParser(new ByteArrayInputStream(json.getBytes()))) {
             ObjectMapper mapper = ObjectMapperFactory.getDefaultMapper();
@@ -298,8 +297,7 @@ public class GeoJSONReader implements AutoCloseable {
 
     /** Parses and returns a feature collection from a GeoJSON */
     public static SimpleFeatureCollection parseFeatureCollection(String jsonString) {
-        try (GeoJSONReader reader =
-                new GeoJSONReader(new ByteArrayInputStream(jsonString.getBytes()))) {
+        try (GeoJSONReader reader = new GeoJSONReader(new ByteArrayInputStream(jsonString.getBytes()))) {
             SimpleFeatureCollection features = (SimpleFeatureCollection) reader.getFeatures();
             return features;
         } catch (IOException e) {
@@ -309,8 +307,7 @@ public class GeoJSONReader implements AutoCloseable {
 
     /** Parses and returns a single geometry */
     public static Geometry parseGeometry(String input) {
-        try (JsonParser lParser =
-                factory.createParser(new ByteArrayInputStream(input.getBytes()))) {
+        try (JsonParser lParser = factory.createParser(new ByteArrayInputStream(input.getBytes()))) {
             ObjectMapper mapper = ObjectMapperFactory.getDefaultMapper();
             ObjectNode node = mapper.readTree(lParser);
             Geometry g = GEOM_PARSER.geometryFromJson(node);
@@ -385,8 +382,7 @@ public class GeoJSONReader implements AutoCloseable {
                 ObjectNode node = mapper.readTree(parser);
                 JsonNode matchedNode = node.get("matched");
                 matched = matchedNode.asInt();
-            } else if ("numberMatched".equals(name)
-                    && parser.nextToken() == JsonToken.VALUE_NUMBER_INT) {
+            } else if ("numberMatched".equals(name) && parser.nextToken() == JsonToken.VALUE_NUMBER_INT) {
                 matched = mapper.readValue(parser, Integer.class);
             }
         }
@@ -432,14 +428,11 @@ public class GeoJSONReader implements AutoCloseable {
     private SimpleFeature getNextFeature(ObjectNode node) throws IOException {
         JsonNode type = node.get("type");
         if (type == null) {
-            throw new RuntimeException(
-                    "Missing object type in GeoJSON Parsing, expected type=Feature here");
+            throw new RuntimeException("Missing object type in GeoJSON Parsing, expected type=Feature here");
         }
         if (!"Feature".equalsIgnoreCase(type.asText())) {
             throw new RuntimeException(
-                    "Unexpected object type in GeoJSON Parsing, expected Feature got '"
-                            + type.asText()
-                            + "'");
+                    "Unexpected object type in GeoJSON Parsing, expected Feature got '" + type.asText() + "'");
         }
         JsonNode geom = node.get("geometry");
 
@@ -518,8 +511,7 @@ public class GeoJSONReader implements AutoCloseable {
                                 break;
                             default:
                                 throw new IllegalArgumentException(
-                                        "Cannot handle arrays with values of type "
-                                                + item.getNodeType());
+                                        "Cannot handle arrays with values of type " + item.getNodeType());
                         }
                         list.add(vc);
                     }
@@ -549,17 +541,12 @@ public class GeoJSONReader implements AutoCloseable {
             feature = builder.buildFeature(newId);
             if (node.fields().hasNext()) {
                 Map<String, Object> topLevelAttributes = new HashMap<>();
-                node.fields()
-                        .forEachRemaining(
-                                e -> {
-                                    String k = e.getKey();
-                                    if (!"geometry".equals(k)
-                                            && !"type".equals(k)
-                                            && !"properties".equals(k)
-                                            && !"bbox".equals(k)) {
-                                        topLevelAttributes.put(k, e.getValue());
-                                    }
-                                });
+                node.fields().forEachRemaining(e -> {
+                    String k = e.getKey();
+                    if (!"geometry".equals(k) && !"type".equals(k) && !"properties".equals(k) && !"bbox".equals(k)) {
+                        topLevelAttributes.put(k, e.getValue());
+                    }
+                });
                 if (!topLevelAttributes.isEmpty()) {
                     feature.getUserData().put(TOP_LEVEL_ATTRIBUTES, topLevelAttributes);
                 }
@@ -619,9 +606,7 @@ public class GeoJSONReader implements AutoCloseable {
             // copy the existing types to the new schema
             for (AttributeDescriptor att : schema.getAttributeDescriptors()) {
                 // in case of Geometry, see if we have mixed geometry types
-                if (att instanceof GeometryDescriptor
-                        && schema.getGeometryDescriptor() == att
-                        && g != null) {
+                if (att instanceof GeometryDescriptor && schema.getGeometryDescriptor() == att && g != null) {
                     GeometryDescriptor gd = (GeometryDescriptor) att;
                     Class<?> currClass = g.getClass();
                     Class<?> prevClass = gd.getType().getBinding();
@@ -765,8 +750,7 @@ public class GeoJSONReader implements AutoCloseable {
                 if (token == null) {
                     break;
                 }
-                if (JsonToken.FIELD_NAME.equals(token)
-                        && "features".equalsIgnoreCase(parser.currentName())) {
+                if (JsonToken.FIELD_NAME.equals(token) && "features".equalsIgnoreCase(parser.currentName())) {
                     token = parser.nextToken();
 
                     if (!JsonToken.START_ARRAY.equals(token) || token == null) {

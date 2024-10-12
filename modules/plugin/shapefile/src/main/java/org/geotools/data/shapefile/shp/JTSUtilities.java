@@ -284,8 +284,7 @@ public class JTSUtilities {
      * @throws ShapefileException If theres a problem, like a bogus Geometry.
      * @return The best ShapeType.
      */
-    public static final ShapeType getShapeType(Geometry geom, int shapeFileDimentions)
-            throws ShapefileException {
+    public static final ShapeType getShapeType(Geometry geom, int shapeFileDimentions) throws ShapefileException {
 
         ShapeType type = null;
 
@@ -301,8 +300,7 @@ public class JTSUtilities {
                     type = ShapeType.POINTZ;
                     break;
                 default:
-                    throw new ShapefileException(
-                            "Too many dimensions for shapefile : " + shapeFileDimentions);
+                    throw new ShapefileException("Too many dimensions for shapefile : " + shapeFileDimentions);
             }
         } else if (geom instanceof MultiPoint) {
             switch (shapeFileDimentions) {
@@ -316,8 +314,7 @@ public class JTSUtilities {
                     type = ShapeType.MULTIPOINTZ;
                     break;
                 default:
-                    throw new ShapefileException(
-                            "Too many dimensions for shapefile : " + shapeFileDimentions);
+                    throw new ShapefileException("Too many dimensions for shapefile : " + shapeFileDimentions);
             }
         } else if ((geom instanceof Polygon) || (geom instanceof MultiPolygon)) {
             switch (shapeFileDimentions) {
@@ -331,8 +328,7 @@ public class JTSUtilities {
                     type = ShapeType.POLYGONZ;
                     break;
                 default:
-                    throw new ShapefileException(
-                            "Too many dimensions for shapefile : " + shapeFileDimentions);
+                    throw new ShapefileException("Too many dimensions for shapefile : " + shapeFileDimentions);
             }
         } else if ((geom instanceof LineString) || (geom instanceof MultiLineString)) {
             switch (shapeFileDimentions) {
@@ -346,15 +342,13 @@ public class JTSUtilities {
                     type = ShapeType.ARCZ;
                     break;
                 default:
-                    throw new ShapefileException(
-                            "Too many dimensions for shapefile : " + shapeFileDimentions);
+                    throw new ShapefileException("Too many dimensions for shapefile : " + shapeFileDimentions);
             }
         }
 
         if (type == null) {
-            throw new ShapefileException(
-                    "Cannot handle geometry type : "
-                            + (geom == null ? "null" : geom.getClass().getName()));
+            throw new ShapefileException("Cannot handle geometry type : "
+                    + (geom == null ? "null" : geom.getClass().getName()));
         }
         return type;
     }
@@ -366,21 +360,18 @@ public class JTSUtilities {
      * @return The best ShapeType.
      * @throws ShapefileException If theres a problem, like a bogus feature class.
      */
-    public static final ShapeType getShapeType(Class<? extends Geometry> featureClass)
-            throws ShapefileException {
+    public static final ShapeType getShapeType(Class<? extends Geometry> featureClass) throws ShapefileException {
         if (Point.class.equals(featureClass)) {
             return ShapeType.POINT;
         } else if (MultiPoint.class.equals(featureClass)) {
             return ShapeType.MULTIPOINT;
         } else if (Polygon.class.equals(featureClass) || MultiPolygon.class.equals(featureClass)) {
             return ShapeType.POLYGON;
-        } else if (LineString.class.equals(featureClass)
-                || MultiLineString.class.equals(featureClass)) {
+        } else if (LineString.class.equals(featureClass) || MultiLineString.class.equals(featureClass)) {
             return ShapeType.ARC;
         }
         throw new ShapefileException(
-                "Cannot handle geometry class : "
-                        + (featureClass == null ? "null" : featureClass.getName()));
+                "Cannot handle geometry class : " + (featureClass == null ? "null" : featureClass.getName()));
     }
 
     /**
@@ -400,12 +391,10 @@ public class JTSUtilities {
             return dim == 3 ? ShapeType.MULTIPOINTZ : ShapeType.MULTIPOINT;
         } else if (Polygon.class.equals(featureClass) || MultiPolygon.class.equals(featureClass)) {
             return dim == 3 ? ShapeType.POLYGON : ShapeType.POLYGONZ;
-        } else if (LineString.class.equals(featureClass)
-                || MultiLineString.class.equals(featureClass)) {
+        } else if (LineString.class.equals(featureClass) || MultiLineString.class.equals(featureClass)) {
             return dim == 3 ? ShapeType.ARC : ShapeType.ARCZ;
         }
         throw new ShapefileException(
-                "Cannot handle geometry class : "
-                        + (featureClass == null ? "null" : featureClass.getName()));
+                "Cannot handle geometry class : " + (featureClass == null ? "null" : featureClass.getName()));
     }
 }

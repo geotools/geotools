@@ -30,13 +30,7 @@ public class TPKTile {
     public TileInfo tileInfo; // data length and offset for read
     public int bundleNum; // index into the zoom level bundles list
 
-    public TPKTile(
-            long zoomLevel,
-            long col,
-            long row,
-            String imageFormat,
-            TileInfo tileInfo,
-            int bundleNum) {
+    public TPKTile(long zoomLevel, long col, long row, String imageFormat, TileInfo tileInfo, int bundleNum) {
         this.zoomLevel = zoomLevel;
         this.col = col;
         this.row = row;

@@ -145,7 +145,8 @@ public class IsFullySupportedFilterVisitor implements FilterVisitor, ExpressionV
         Set<Identifier> identifiers = filter.getIdentifiers();
         if (identifiers == null) return null;
         for (Identifier identifier : identifiers) {
-            if (identifier instanceof FeatureId && capabilities.getIdCapabilities().hasFID()) {
+            if (identifier instanceof FeatureId
+                    && capabilities.getIdCapabilities().hasFID()) {
                 continue;
             } else if (identifier instanceof ObjectId
                     && capabilities.getIdCapabilities().hasEID()) {

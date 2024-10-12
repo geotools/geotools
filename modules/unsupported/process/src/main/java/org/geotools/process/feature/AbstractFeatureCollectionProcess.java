@@ -54,6 +54,5 @@ public abstract class AbstractFeatureCollectionProcess extends AbstractProcess {
      * @param feature the feature being processed
      * @param input a Map of input parameters
      */
-    protected abstract void processFeature(SimpleFeature feature, Map<String, Object> input)
-            throws Exception;
+    protected abstract void processFeature(SimpleFeature feature, Map<String, Object> input) throws Exception;
 }

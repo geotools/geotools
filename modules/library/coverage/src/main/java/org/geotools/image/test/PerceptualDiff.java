@@ -45,7 +45,8 @@ class PerceptualDiff {
             this.imagesDifferent = different;
             this.output = output;
         }
-    };
+    }
+    ;
 
     static {
         if (Boolean.getBoolean("org.geotools.image.test.enabled")) {
@@ -70,8 +71,7 @@ class PerceptualDiff {
      */
     public static Difference compareImages(File image1, File image2, int threshold) {
         if (!AVAILABLE) {
-            LOGGER.severe(
-                    "perceptualdiff is not available, can't compare " + image1 + " with image2");
+            LOGGER.severe("perceptualdiff is not available, can't compare " + image1 + " with image2");
             return new Difference(false, "Perceptual diff not available...");
         }
 
@@ -108,8 +108,7 @@ class PerceptualDiff {
         StringBuilder sb = new StringBuilder();
         builder.redirectErrorStream(true);
         Process p = builder.start();
-        try (BufferedReader reader =
-                new BufferedReader(new InputStreamReader(p.getInputStream()))) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()))) {
             String line = null;
             while ((line = reader.readLine()) != null) {
                 if (sb != null) {

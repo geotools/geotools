@@ -45,23 +45,15 @@ public class FeatureTransformerTest extends XmlTestSupport {
         // System.out.println(result);
 
         assertThat(result, hasXPath("count(//wfs:FeatureCollection)", equalTo("1")));
-        assertThat(
-                result,
-                hasXPath("/wfs:FeatureCollection/gml:boundedBy/gml:null", equalTo("unknown")));
+        assertThat(result, hasXPath("/wfs:FeatureCollection/gml:boundedBy/gml:null", equalTo("unknown")));
         assertThat(result, hasXPath("count(//gml:featureMember)", equalTo("0")));
     }
 
     @Test
     public void testRemoveInvalidXMLChars() throws Exception {
-        SimpleFeatureType ft =
-                DataUtilities.createType("invalidChars", "the_geom:Point,data:String");
-        SimpleFeature feature =
-                SimpleFeatureBuilder.build(
-                        ft,
-                        new Object[] {
-                            new WKTReader().read("POINT(0 0)"), "One " + ((char) 0x7) + " test"
-                        },
-                        "123");
+        SimpleFeatureType ft = DataUtilities.createType("invalidChars", "the_geom:Point,data:String");
+        SimpleFeature feature = SimpleFeatureBuilder.build(
+                ft, new Object[] {new WKTReader().read("POINT(0 0)"), "One " + ((char) 0x7) + " test"}, "123");
         SimpleFeatureCollection fc = DataUtilities.collection(feature);
 
         FeatureTransformer tx = new FeatureTransformer();
@@ -86,17 +78,13 @@ public class FeatureTransformerTest extends XmlTestSupport {
         TimeZone defaultTimeZone = TimeZone.getDefault();
         try {
             TimeZone.setDefault(TimeZone.getTimeZone("GMT"));
-            SimpleFeatureType ft =
-                    DataUtilities.createType("invalidChars", "the_geom:Point,dia:Date");
+            SimpleFeatureType ft = DataUtilities.createType("invalidChars", "the_geom:Point,dia:Date");
             Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
             cal.clear();
             cal.set(1982, 11, 3);
             Date dateValue = cal.getTime();
             SimpleFeature feature =
-                    SimpleFeatureBuilder.build(
-                            ft,
-                            new Object[] {new WKTReader().read("POINT(0 0)"), dateValue},
-                            "123");
+                    SimpleFeatureBuilder.build(ft, new Object[] {new WKTReader().read("POINT(0 0)"), dateValue}, "123");
             SimpleFeatureCollection fc = DataUtilities.collection(feature);
 
             FeatureTransformer tx = new FeatureTransformer();
@@ -126,17 +114,13 @@ public class FeatureTransformerTest extends XmlTestSupport {
         TimeZone defaultTimeZone = TimeZone.getDefault();
         try {
             TimeZone.setDefault(TimeZone.getTimeZone("GMT"));
-            SimpleFeatureType ft =
-                    DataUtilities.createType("invalidChars", "the_geom:Point,dia:Date");
+            SimpleFeatureType ft = DataUtilities.createType("invalidChars", "the_geom:Point,dia:Date");
             Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
             cal.clear();
             cal.set(1982, 11, 3);
             Date dateValue = cal.getTime();
             SimpleFeature feature =
-                    SimpleFeatureBuilder.build(
-                            ft,
-                            new Object[] {new WKTReader().read("POINT(0 0)"), dateValue},
-                            "123");
+                    SimpleFeatureBuilder.build(ft, new Object[] {new WKTReader().read("POINT(0 0)"), dateValue}, "123");
             SimpleFeatureCollection fc = DataUtilities.collection(feature);
 
             FeatureTransformer tx = new FeatureTransformer();

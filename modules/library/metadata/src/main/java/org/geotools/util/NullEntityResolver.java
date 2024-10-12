@@ -47,8 +47,7 @@ public class NullEntityResolver implements EntityResolver2, Serializable {
      *     identifier.
      */
     @Override
-    public InputSource resolveEntity(String publicId, String systemId)
-            throws SAXException, IOException {
+    public InputSource resolveEntity(String publicId, String systemId) throws SAXException, IOException {
         return null;
     }
 
@@ -56,8 +55,7 @@ public class NullEntityResolver implements EntityResolver2, Serializable {
      * @return {@code null} to indicate that no external subset is provided.
      */
     @Override
-    public InputSource getExternalSubset(String name, String baseURI)
-            throws SAXException, IOException {
+    public InputSource getExternalSubset(String name, String baseURI) throws SAXException, IOException {
         return null;
     }
 

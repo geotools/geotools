@@ -69,23 +69,18 @@ import org.junit.Test;
  */
 public class TransparencyStyledTest {
 
-    private static final StyleFactory SF =
-            CommonFactoryFinder.getStyleFactory(GeoTools.getDefaultHints());
+    private static final StyleFactory SF = CommonFactoryFinder.getStyleFactory(GeoTools.getDefaultHints());
 
-    private GridCoverage2D readCoverage(
-            File mosaicDirectory, FootprintBehavior fp, Color transparentColor)
+    private GridCoverage2D readCoverage(File mosaicDirectory, FootprintBehavior fp, Color transparentColor)
             throws NoSuchAuthorityCodeException, FactoryException, IOException {
 
-        ImageMosaicReader reader =
-                (ImageMosaicReader)
-                        new ImageMosaicFormatFactory().createFormat().getReader(mosaicDirectory);
+        ImageMosaicReader reader = (ImageMosaicReader)
+                new ImageMosaicFormatFactory().createFormat().getReader(mosaicDirectory);
 
-        ParameterValue<String> footprintBehaviorParam =
-                AbstractGridFormat.FOOTPRINT_BEHAVIOR.createValue();
+        ParameterValue<String> footprintBehaviorParam = AbstractGridFormat.FOOTPRINT_BEHAVIOR.createValue();
         footprintBehaviorParam.setValue(fp.name());
 
-        ParameterValue<Color> inputTransparentColor =
-                AbstractGridFormat.INPUT_TRANSPARENT_COLOR.createValue();
+        ParameterValue<Color> inputTransparentColor = AbstractGridFormat.INPUT_TRANSPARENT_COLOR.createValue();
         inputTransparentColor.setValue(transparentColor);
 
         GeneralParameterValue[] readParams = {footprintBehaviorParam, inputTransparentColor};

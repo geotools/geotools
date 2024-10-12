@@ -37,9 +37,7 @@ public class HanaGeographyTestSetup extends JDBCGeographyTestSetup {
             HanaTestUtil htu = new HanaTestUtil(conn, fixture);
             htu.createTestSchema();
 
-            String[][] cols = {
-                {"id", "INT PRIMARY KEY"}, {"name", "VARCHAR(64)"}, {"geo", "ST_Geometry(4326)"}
-            };
+            String[][] cols = {{"id", "INT PRIMARY KEY"}, {"name", "VARCHAR(64)"}, {"geo", "ST_Geometry(4326)"}};
             htu.createRegisteredTestTable(POINT_TABLE, cols);
 
             htu.insertIntoTestTable(
@@ -74,9 +72,7 @@ public class HanaGeographyTestSetup extends JDBCGeographyTestSetup {
             HanaTestUtil htu = new HanaTestUtil(conn, fixture);
             htu.createTestSchema();
 
-            String[][] cols = {
-                {"id", "INT PRIMARY KEY"}, {"name", "VARCHAR(64)"}, {"geo", "ST_Geometry(4326)"}
-            };
+            String[][] cols = {{"id", "INT PRIMARY KEY"}, {"name", "VARCHAR(64)"}, {"geo", "ST_Geometry(4326)"}};
             htu.createRegisteredTestTable(LINE_TABLE, cols);
 
             htu.insertIntoTestTable(

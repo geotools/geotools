@@ -114,10 +114,7 @@ public interface CoordinateOperation extends IdentifiedObject {
      * @return The position error estimates, or an empty collection if not available.
      * @since GeoAPI 2.1
      */
-    @UML(
-            identifier = "coordinateOperationAccuracy",
-            obligation = OPTIONAL,
-            specification = ISO_19111)
+    @UML(identifier = "coordinateOperationAccuracy", obligation = OPTIONAL, specification = ISO_19111)
     Collection<PositionalAccuracy> getCoordinateOperationAccuracy();
 
     /**

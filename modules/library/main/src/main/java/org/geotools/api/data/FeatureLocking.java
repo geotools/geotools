@@ -47,8 +47,7 @@ import org.geotools.api.filter.Filter;
  *
  * @version $Id$
  */
-public interface FeatureLocking<T extends FeatureType, F extends Feature>
-        extends FeatureStore<T, F> {
+public interface FeatureLocking<T extends FeatureType, F extends Feature> extends FeatureStore<T, F> {
     /**
      * All locking operations will operate against the provided <code>lock</code>.
      *

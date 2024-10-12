@@ -54,13 +54,12 @@ public final class TestsSolrUtils {
      * @return Apache Solr client instance
      */
     public static HttpSolrClient instantiateClient(String baseUrl) {
-        HttpSolrClient client =
-                new HttpSolrClient.Builder()
-                        .withBaseSolrUrl(baseUrl)
-                        .allowCompression(true)
-                        .withConnectionTimeout(5000)
-                        .withSocketTimeout(5000)
-                        .build();
+        HttpSolrClient client = new HttpSolrClient.Builder()
+                .withBaseSolrUrl(baseUrl)
+                .allowCompression(true)
+                .withConnectionTimeout(5000)
+                .withSocketTimeout(5000)
+                .build();
         // we can use low timeouts values for tests
         client.setFollowRedirects(true);
         return client;
@@ -104,9 +103,7 @@ public final class TestsSolrUtils {
         Map<String, Object> attributes = new HashMap<>();
         attributes.put("name", "wkt");
         attributes.put("class", "solr.SpatialRecursivePrefixTreeFieldType");
-        attributes.put(
-                "spatialContextFactory",
-                "org.locationtech.spatial4j.context.jts.JtsSpatialContextFactory");
+        attributes.put("spatialContextFactory", "org.locationtech.spatial4j.context.jts.JtsSpatialContextFactory");
         // create or replace the field type definition
         createFieldType(client, attributes);
     }
@@ -162,8 +159,7 @@ public final class TestsSolrUtils {
         InputStream input = TestsSolrUtils.class.getResourceAsStream(resourceAbsolutePath);
         if (input == null) {
             // the resource was not found
-            throw new RuntimeException(
-                    String.format("Could not find resource '%s'.", resourceAbsolutePath));
+            throw new RuntimeException(String.format("Could not find resource '%s'.", resourceAbsolutePath));
         }
         return input;
     }
@@ -179,15 +175,13 @@ public final class TestsSolrUtils {
         FieldTypeDefinition typeDefinition = new FieldTypeDefinition();
         typeDefinition.setAttributes(attributes);
         // try to create the field type
-        Response addResponse =
-                runSolrRequest(client, new SchemaRequest.AddFieldType(typeDefinition));
+        Response addResponse = runSolrRequest(client, new SchemaRequest.AddFieldType(typeDefinition));
         if (!addResponse.hasErrors()) {
             // no errors, which means that the field type was correctly created
             return;
         }
         // something bad happen, let's assume that a field type with the same name already exists
-        Response replaceResponse =
-                runSolrRequest(client, new SchemaRequest.ReplaceFieldType(typeDefinition));
+        Response replaceResponse = runSolrRequest(client, new SchemaRequest.ReplaceFieldType(typeDefinition));
         if (replaceResponse.hasErrors()) {
             // trying to replace the field type failed, let's throw an exception with all the
             // messages errors
@@ -233,8 +227,7 @@ public final class TestsSolrUtils {
      * @param request Solr request
      * @return response containing any found error or none
      */
-    private static Response runSolrRequest(
-            HttpSolrClient client, SolrRequest<? extends SolrResponseBase> request) {
+    private static Response runSolrRequest(HttpSolrClient client, SolrRequest<? extends SolrResponseBase> request) {
         try {
             // execute the requests and parse is result
             Response response = Response.parse(request.process(client));
@@ -331,8 +324,7 @@ public final class TestsSolrUtils {
      * @param type the field type
      * @param multiValued TRUE if the type is multi valued, otherwise FALSE
      */
-    public static void createField(
-            HttpSolrClient client, String name, String type, boolean multiValued) {
+    public static void createField(HttpSolrClient client, String name, String type, boolean multiValued) {
         Map<String, Object> field = new HashMap<>();
         field.put("name", name);
         field.put("type", type);
@@ -377,8 +369,7 @@ public final class TestsSolrUtils {
         private void throwIfNeeded() {
             if (errors) {
                 throw new RuntimeException(
-                        String.format(
-                                "Something bad happen when executing Solr request '%s'.", message));
+                        String.format("Something bad happen when executing Solr request '%s'.", message));
             }
         }
 
@@ -407,17 +398,14 @@ public final class TestsSolrUtils {
          */
         private static void throwIfNeeded(Response... responses) {
             // merge all errors messages in a single string
-            String errors =
-                    Arrays.stream(responses)
-                            .filter(Response::hasErrors)
-                            .map(Response::getMessage)
-                            .collect(Collectors.joining(", "));
+            String errors = Arrays.stream(responses)
+                    .filter(Response::hasErrors)
+                    .map(Response::getMessage)
+                    .collect(Collectors.joining(", "));
             if (!errors.isEmpty()) {
                 // at leats one message errors exists, let's throw an exception
                 throw new RuntimeException(
-                        String.format(
-                                "Something bad happen when executing Solr request(s) '%s'.",
-                                errors));
+                        String.format("Something bad happen when executing Solr request(s) '%s'.", errors));
             }
         }
     }
@@ -449,14 +437,12 @@ public final class TestsSolrUtils {
             indexed = client.query(query).getResults().getNumFound();
         } catch (Exception exception) {
             throw new RuntimeException(
-                    "Error counting the number of document indexed int he Apache Solr target core.",
-                    exception);
+                    "Error counting the number of document indexed int he Apache Solr target core.", exception);
         }
         if (indexed > 25) {
             // we have problem, this doesn't looks like a test Apache Solr core
-            throw new RuntimeException(
-                    "The target core contains more than 25 documents, "
-                            + "please double check the correct core is used and manually delete all documents.");
+            throw new RuntimeException("The target core contains more than 25 documents, "
+                    + "please double check the correct core is used and manually delete all documents.");
         }
         try {
             // remove all the index stations data

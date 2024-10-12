@@ -52,8 +52,7 @@ import tech.units.indriya.AbstractUnit;
  * @see LogarithmicTransform1D
  * @see LinearTransform1D
  */
-public class ExponentialTransform1D extends AbstractMathTransform
-        implements MathTransform1D, Serializable {
+public class ExponentialTransform1D extends AbstractMathTransform implements MathTransform1D, Serializable {
     /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = 5331178990358868947L;
 
@@ -127,12 +126,9 @@ public class ExponentialTransform1D extends AbstractMathTransform
      */
     @Override
     public ParameterValueGroup getParameterValues() {
-        return new org.geotools.parameter.ParameterGroup(
-                getParameterDescriptors(),
-                new ParameterValue[] {
-                    new FloatParameter(Provider.BASE, base),
-                    new FloatParameter(Provider.SCALE, scale)
-                });
+        return new org.geotools.parameter.ParameterGroup(getParameterDescriptors(), new ParameterValue[] {
+            new FloatParameter(Provider.BASE, base), new FloatParameter(Provider.SCALE, scale)
+        });
     }
 
     /** Gets the dimension of input points, which is 1. */
@@ -186,8 +182,7 @@ public class ExponentialTransform1D extends AbstractMathTransform
 
     /** Transforms a list of coordinate point ordinal values. */
     @Override
-    public void transform(
-            final double[] srcPts, int srcOff, final double[] dstPts, int dstOff, int numPts) {
+    public void transform(final double[] srcPts, int srcOff, final double[] dstPts, int dstOff, int numPts) {
         if (srcPts != dstPts || srcOff >= dstOff) {
             while (--numPts >= 0) {
                 dstPts[dstOff++] = scale * Math.pow(base, srcPts[srcOff++]);
@@ -245,8 +240,7 @@ public class ExponentialTransform1D extends AbstractMathTransform
      * @return The combined math transform, or {@code null} if no optimized combined transform is
      *     available.
      */
-    MathTransform concatenateLog(
-            final LogarithmicTransform1D other, final boolean applyOtherFirst) {
+    MathTransform concatenateLog(final LogarithmicTransform1D other, final boolean applyOtherFirst) {
         if (applyOtherFirst) {
             final double newScale = scale * Math.pow(base, other.offset);
             final double newPower = lnBase / other.lnBase;
@@ -259,8 +253,7 @@ public class ExponentialTransform1D extends AbstractMathTransform
                 //       y(x)  =  newScale * Math.pow(x, newPower);
             }
         } else if (scale > 0) {
-            return LinearTransform1D.create(
-                    lnBase / other.lnBase, Math.log(scale) / other.lnBase + other.offset);
+            return LinearTransform1D.create(lnBase / other.lnBase, Math.log(scale) / other.lnBase + other.offset);
         }
         return null;
     }
@@ -312,23 +305,15 @@ public class ExponentialTransform1D extends AbstractMathTransform
          * The operation parameter descriptor for the {@link #scale scale} parameter value. Valid
          * values range is unrestricted. The default value is 1.
          */
-        public static final ParameterDescriptor<Double> SCALE =
-                DefaultParameterDescriptor.create(
-                        "scale",
-                        1,
-                        Double.NEGATIVE_INFINITY,
-                        Double.POSITIVE_INFINITY,
-                        AbstractUnit.ONE);
+        public static final ParameterDescriptor<Double> SCALE = DefaultParameterDescriptor.create(
+                "scale", 1, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, AbstractUnit.ONE);
 
         /** The parameters group. */
-        static final ParameterDescriptorGroup PARAMETERS =
-                createDescriptorGroup(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(
-                                    Citations.GEOTOOLS,
-                                    Vocabulary.formatInternational(VocabularyKeys.EXPONENTIAL))
-                        },
-                        new ParameterDescriptor[] {BASE, SCALE});
+        static final ParameterDescriptorGroup PARAMETERS = createDescriptorGroup(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.GEOTOOLS, Vocabulary.formatInternational(VocabularyKeys.EXPONENTIAL))
+                },
+                new ParameterDescriptor[] {BASE, SCALE});
 
         /** Create a provider for logarithmic transforms. */
         public Provider() {

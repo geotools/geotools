@@ -106,10 +106,7 @@ class NetCDFFileResourceInfo extends DefaultResourceInfo implements FileResource
                 // Group features sharing same location
                 next = slicesIterator.next();
                 relevantSlices.add(next);
-                String nextLocation =
-                        (String)
-                                next.getOriginator()
-                                        .getAttribute(CoverageSlice.Attributes.LOCATION);
+                String nextLocation = (String) next.getOriginator().getAttribute(CoverageSlice.Attributes.LOCATION);
                 if (location.equalsIgnoreCase(nextLocation)) {
                     groupedFeatures++;
                 } else {
@@ -173,8 +170,7 @@ class NetCDFFileResourceInfo extends DefaultResourceInfo implements FileResource
             if (sourceURL != null) {
                 file = URLs.urlToFile(sourceURL);
                 if (file == null || !file.exists()) {
-                    throw new IllegalArgumentException(
-                            "Unable to get a FileGroup on top of file:  " + file);
+                    throw new IllegalArgumentException("Unable to get a FileGroup on top of file:  " + file);
                 }
             }
 
@@ -194,17 +190,14 @@ class NetCDFFileResourceInfo extends DefaultResourceInfo implements FileResource
         private FileGroup buildFileGroupOnSlices(File file) throws IOException {
             List<File> supportFiles = null;
             Map<String, Object> metadataMap = computeSlicesMetadata(slices);
-            metadataMap.put(
-                    Utils.BBOX, new ReferencedEnvelope(reader.getOriginalEnvelope(coverageName)));
+            metadataMap.put(Utils.BBOX, new ReferencedEnvelope(reader.getOriginalEnvelope(coverageName)));
             return new FileGroup(file, supportFiles, metadataMap);
         }
 
         @SuppressWarnings("unchecked")
-        protected Map<String, Object> computeSlicesMetadata(List<CoverageSlice> slices)
-                throws IOException {
+        protected Map<String, Object> computeSlicesMetadata(List<CoverageSlice> slices) throws IOException {
             Map<String, Object> metadataMap = null;
-            List<DimensionDescriptor> dimensionDescriptors =
-                    reader.getDimensionDescriptors(coverageName);
+            List<DimensionDescriptor> dimensionDescriptors = reader.getDimensionDescriptors(coverageName);
             // extract metadata for the available domains
             if (dimensionDescriptors != null && !dimensionDescriptors.isEmpty()) {
                 metadataMap = new HashMap<>();
@@ -235,18 +228,13 @@ class NetCDFFileResourceInfo extends DefaultResourceInfo implements FileResource
         }
 
         /** Add a metadata element to the FileGroup metadata map */
-        protected void addMetadaElement(
-                String name, Comparable min, Comparable max, Map<String, Object> metadataMap) {
+        protected void addMetadaElement(String name, Comparable min, Comparable max, Map<String, Object> metadataMap) {
             if (Utils.TIME_DOMAIN.equalsIgnoreCase(name) || min instanceof Date) {
                 metadataMap.put(name.toUpperCase(), new DateRange((Date) min, (Date) max));
             } else if (Utils.ELEVATION_DOMAIN.equalsIgnoreCase(name) || min instanceof Number) {
                 metadataMap.put(
                         name.toUpperCase(),
-                        NumberRange.create(
-                                ((Number) min).doubleValue(),
-                                true,
-                                ((Number) max).doubleValue(),
-                                true));
+                        NumberRange.create(((Number) min).doubleValue(), true, ((Number) max).doubleValue(), true));
             } else {
                 metadataMap.put(name, new Range<>(String.class, (String) min, (String) max));
             }
@@ -269,10 +257,7 @@ class NetCDFFileResourceInfo extends DefaultResourceInfo implements FileResource
 
     /** ImageMosaicFileGroupProvider constructor */
     public NetCDFFileResourceInfo(
-            NetCDFReader reader,
-            String coverageName,
-            CoverageSlicesCatalog slicesCatalog,
-            URL sourceURL) {
+            NetCDFReader reader, String coverageName, CoverageSlicesCatalog slicesCatalog, URL sourceURL) {
         this.reader = reader;
         this.slicesCatalog = slicesCatalog;
         this.coverageName = coverageName;
@@ -293,11 +278,9 @@ class NetCDFFileResourceInfo extends DefaultResourceInfo implements FileResource
 
             if (sharedCatalog) {
                 final List<SortBy> clauses = new ArrayList<>(1);
-                clauses.add(
-                        new SortByImpl(
-                                FeatureUtilities.DEFAULT_FILTER_FACTORY.property(
-                                        CoverageSlice.Attributes.LOCATION),
-                                SortOrder.ASCENDING));
+                clauses.add(new SortByImpl(
+                        FeatureUtilities.DEFAULT_FILTER_FACTORY.property(CoverageSlice.Attributes.LOCATION),
+                        SortOrder.ASCENDING));
                 final SortBy[] sb = clauses.toArray(new SortBy[] {});
                 final boolean isSortBySupported =
                         slicesCatalog.getQueryCapabilities(coverageName).supportsSorting(sb);

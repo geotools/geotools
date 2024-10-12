@@ -107,8 +107,7 @@ public class ObliqueStereographic extends StereographicUSGS {
      * @param parameters The group of parameter values.
      * @throws ParameterNotFoundException if a required parameter was not found.
      */
-    protected ObliqueStereographic(final ParameterValueGroup parameters)
-            throws ParameterNotFoundException {
+    protected ObliqueStereographic(final ParameterValueGroup parameters) throws ParameterNotFoundException {
         this(parameters, Provider.PARAMETERS);
     }
 
@@ -119,8 +118,7 @@ public class ObliqueStereographic extends StereographicUSGS {
      * @param descriptor The expected parameter descriptor.
      * @throws ParameterNotFoundException if a required parameter was not found.
      */
-    ObliqueStereographic(
-            final ParameterValueGroup parameters, final ParameterDescriptorGroup descriptor)
+    ObliqueStereographic(final ParameterValueGroup parameters, final ParameterDescriptorGroup descriptor)
             throws ParameterNotFoundException {
         super(parameters, descriptor);
 
@@ -134,10 +132,8 @@ public class ObliqueStereographic extends StereographicUSGS {
         sinc0 = sin(phic0);
         cosc0 = cos(phic0);
         ratexp = 0.5 * C * excentricity;
-        K =
-                tan(0.5 * phic0 + PI / 4)
-                        / (pow(tan(0.5 * latitudeOfOrigin + PI / 4), C)
-                                * srat(excentricity * sphi, ratexp));
+        K = tan(0.5 * phic0 + PI / 4)
+                / (pow(tan(0.5 * latitudeOfOrigin + PI / 4), C) * srat(excentricity * sphi, ratexp));
     }
 
     /**
@@ -145,14 +141,11 @@ public class ObliqueStereographic extends StereographicUSGS {
      * radians) and stores the result in {@code ptDst} (linear distance on a unit sphere).
      */
     @Override
-    protected Point2D transformNormalized(double x, double y, Point2D ptDst)
-            throws ProjectionException {
+    protected Point2D transformNormalized(double x, double y, Point2D ptDst) throws ProjectionException {
         // Compute using USGS formulas, for comparaison later.
         assert (ptDst = super.transformNormalized(x, y, ptDst)) != null;
 
-        y =
-                2.0 * atan(K * pow(tan(0.5 * y + PI / 4), C) * srat(excentricity * sin(y), ratexp))
-                        - PI / 2;
+        y = 2.0 * atan(K * pow(tan(0.5 * y + PI / 4), C) * srat(excentricity * sin(y), ratexp)) - PI / 2;
         x *= C;
         final double sinc = sin(y);
         final double cosc = cos(y);
@@ -174,8 +167,7 @@ public class ObliqueStereographic extends StereographicUSGS {
      * {@code ptDst}.
      */
     @Override
-    protected Point2D inverseTransformNormalized(double x, double y, Point2D ptDst)
-            throws ProjectionException {
+    protected Point2D inverseTransformNormalized(double x, double y, Point2D ptDst) throws ProjectionException {
         // Compute using USGS formulas, for comparaison later.
         assert (ptDst = super.inverseTransformNormalized(x, y, ptDst)) != null;
         final double rho = hypot(x, y);
@@ -199,8 +191,7 @@ public class ObliqueStereographic extends StereographicUSGS {
         x /= C;
         double num = pow(tan(0.5 * y + PI / 4) / K, 1.0 / C);
         for (int i = MAXIMUM_ITERATIONS; ; ) {
-            double phi =
-                    2.0 * atan(num * srat(excentricity * sin(y), -0.5 * excentricity)) - PI / 2;
+            double phi = 2.0 * atan(num * srat(excentricity * sin(y), -0.5 * excentricity)) - PI / 2;
             if (abs(phi - y) < ITERATION_TOLERANCE) {
                 break;
             }
@@ -249,26 +240,25 @@ public class ObliqueStereographic extends StereographicUSGS {
         private static final long serialVersionUID = 6505988910141381354L;
 
         /** The parameters group. */
-        static final ParameterDescriptorGroup PARAMETERS =
-                createDescriptorGroup(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.OGC, "Oblique_Stereographic"),
-                            new NamedIdentifier(Citations.EPSG, "Oblique Stereographic"),
-                            new NamedIdentifier(Citations.EPSG, "Roussilhe"),
-                            new NamedIdentifier(Citations.EPSG, "9809"),
-                            new NamedIdentifier(Citations.GEOTIFF, "CT_ObliqueStereographic"),
-                            new NamedIdentifier(Citations.ESRI, "Double_Stereographic"),
-                            new NamedIdentifier(Citations.GEOTOOLS, NAME)
-                        },
-                        new ParameterDescriptor[] {
-                            SEMI_MAJOR,
-                            SEMI_MINOR,
-                            CENTRAL_MERIDIAN,
-                            LATITUDE_OF_ORIGIN,
-                            SCALE_FACTOR,
-                            FALSE_EASTING,
-                            FALSE_NORTHING
-                        });
+        static final ParameterDescriptorGroup PARAMETERS = createDescriptorGroup(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.OGC, "Oblique_Stereographic"),
+                    new NamedIdentifier(Citations.EPSG, "Oblique Stereographic"),
+                    new NamedIdentifier(Citations.EPSG, "Roussilhe"),
+                    new NamedIdentifier(Citations.EPSG, "9809"),
+                    new NamedIdentifier(Citations.GEOTIFF, "CT_ObliqueStereographic"),
+                    new NamedIdentifier(Citations.ESRI, "Double_Stereographic"),
+                    new NamedIdentifier(Citations.GEOTOOLS, NAME)
+                },
+                new ParameterDescriptor[] {
+                    SEMI_MAJOR,
+                    SEMI_MINOR,
+                    CENTRAL_MERIDIAN,
+                    LATITUDE_OF_ORIGIN,
+                    SCALE_FACTOR,
+                    FALSE_EASTING,
+                    FALSE_NORTHING
+                });
 
         /** Constructs a new provider. */
         public Provider() {

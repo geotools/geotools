@@ -45,9 +45,7 @@ final class OverviewsController {
      *     the resolution is the index of the corresponding level.</b>
      */
     public OverviewsController(
-            final double[] highestRes,
-            final int numberOfOverviews,
-            final double[][] overviewsResolution) {
+            final double[] highestRes, final int numberOfOverviews, final double[][] overviewsResolution) {
 
         // notice that we assume what follows:
         // -highest resolution image is at level 0.
@@ -58,12 +56,11 @@ final class OverviewsController {
         this.numberOfOverviews = numberOfOverviews;
         if (numberOfOverviews > 0) {
             for (int i = 0; i < overviewsResolution.length; i++) {
-                resolutionsLevels.add(
-                        new OverviewLevel(
-                                overviewsResolution[i][0] / highestRes[0],
-                                overviewsResolution[i][0],
-                                overviewsResolution[i][1],
-                                i + 1));
+                resolutionsLevels.add(new OverviewLevel(
+                        overviewsResolution[i][0] / highestRes[0],
+                        overviewsResolution[i][0],
+                        overviewsResolution[i][1],
+                        i + 1));
             }
             Collections.sort(resolutionsLevels);
         }
@@ -76,9 +73,7 @@ final class OverviewsController {
      * @return the OverviewLevel index
      */
     int pickOverviewLevel(
-            final OverviewPolicy policy,
-            final double[] requestedResolution,
-            final double[] virtualNativeResolution) {
+            final OverviewPolicy policy, final double[] requestedResolution, final double[] virtualNativeResolution) {
 
         // //
         //
@@ -115,10 +110,9 @@ final class OverviewsController {
             if (useVirtual) {
                 virtualRequestedScaleFactorX = virtualNativeResolution[0] / max.resolutionX;
                 virtualRequestedScaleFactorY = virtualNativeResolution[1] / max.resolutionY;
-                virtualRequestedScaleFactor =
-                        (virtualRequestedScaleFactorX <= virtualRequestedScaleFactorY)
-                                ? virtualRequestedScaleFactorX
-                                : virtualRequestedScaleFactorY;
+                virtualRequestedScaleFactor = (virtualRequestedScaleFactorX <= virtualRequestedScaleFactorY)
+                        ? virtualRequestedScaleFactorX
+                        : virtualRequestedScaleFactorY;
             }
         }
         if (!useVirtual && requestedResolution == null) {
@@ -133,8 +127,7 @@ final class OverviewsController {
         double requestedScaleFactorY = reqy / max.resolutionY;
 
         final int leastReduceAxis = requestedScaleFactorX <= requestedScaleFactorY ? 0 : 1;
-        final double requestedScaleFactor =
-                leastReduceAxis == 0 ? requestedScaleFactorX : requestedScaleFactorY;
+        final double requestedScaleFactor = leastReduceAxis == 0 ? requestedScaleFactorX : requestedScaleFactorY;
 
         // are we looking for a resolution even higher than the native one?
         if (requestedScaleFactor <= 1 && !useVirtual) {
@@ -208,8 +201,7 @@ final class OverviewsController {
                     }
                 } else if (policy == OverviewPolicy.SPEED) {
                     return curr.imageChoice;
-                } else if (requestedScaleFactor - prev.scaleFactor
-                        < curr.scaleFactor - requestedScaleFactor) {
+                } else if (requestedScaleFactor - prev.scaleFactor < curr.scaleFactor - requestedScaleFactor) {
                     return prev.imageChoice;
                 } else {
                     return curr.imageChoice;
@@ -252,10 +244,7 @@ final class OverviewsController {
 
         /** */
         public OverviewLevel(
-                final double scaleFactor,
-                final double resolutionX,
-                final double resolutionY,
-                final int imageChoice) {
+                final double scaleFactor, final double resolutionX, final double resolutionY, final int imageChoice) {
             this.scaleFactor = scaleFactor;
             this.resolutionX = resolutionX;
             this.resolutionY = resolutionY;

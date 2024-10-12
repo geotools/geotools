@@ -116,8 +116,7 @@ import org.locationtech.jts.geom.Point;
 public abstract class AbstractFilterToMongo implements FilterVisitor, ExpressionVisitor {
 
     public static final int HUNDRED_KM_IN_METERS = 100000;
-    protected static Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(AbstractFilterToMongo.class);
+    protected static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(AbstractFilterToMongo.class);
 
     private static final int DEFAULT_SEGMENTS = 10;
     protected final MongoGeometryBuilder geometryBuilder;
@@ -275,8 +274,7 @@ public abstract class AbstractFilterToMongo implements FilterVisitor, Expression
             output.put(strPn, dbObject);
         } else {
             // no PropertyName found throwing exception
-            throw new UnsupportedOperationException(
-                    "No propertyName found, cannot use $not as top level operator");
+            throw new UnsupportedOperationException("No propertyName found, cannot use $not as top level operator");
         }
         return output;
     }
@@ -305,8 +303,7 @@ public abstract class AbstractFilterToMongo implements FilterVisitor, Expression
         return encodeBinaryComparisonOp(filter, "$eq", extraData);
     }
 
-    BasicDBObject encodeBinaryComparisonOp(
-            BinaryComparisonOperator filter, String op, Object extraData) {
+    BasicDBObject encodeBinaryComparisonOp(BinaryComparisonOperator filter, String op, Object extraData) {
         BasicDBObject output = asDBObject(extraData);
 
         Expression left = filter.getExpression1();
@@ -436,8 +433,7 @@ public abstract class AbstractFilterToMongo implements FilterVisitor, Expression
             objectIds.add(new ObjectId(id.toString()));
         }
 
-        Object objectIdDBO =
-                (objectIds.size() > 1) ? new BasicDBObject("$in", objectIds) : objectIds.get(0);
+        Object objectIdDBO = (objectIds.size() > 1) ? new BasicDBObject("$in", objectIds) : objectIds.get(0);
 
         output.put("_id", objectIdDBO);
         return output;
@@ -462,11 +458,10 @@ public abstract class AbstractFilterToMongo implements FilterVisitor, Expression
 
         DBObject geometryDBObject = geometryBuilder.toObject(envelope);
         addCrsToGeometryDBObject(geometryDBObject);
-        DBObject dbo =
-                BasicDBObjectBuilder.start()
-                        .push("$geoIntersects")
-                        .add("$geometry", geometryDBObject)
-                        .get();
+        DBObject dbo = BasicDBObjectBuilder.start()
+                .push("$geoIntersects")
+                .add("$geometry", geometryDBObject)
+                .get();
 
         output.put((String) e1, dbo);
         return output;
@@ -484,11 +479,10 @@ public abstract class AbstractFilterToMongo implements FilterVisitor, Expression
 
         DBObject geometryDBObject = geometryBuilder.toObject(geometry);
         addCrsToGeometryDBObject(geometryDBObject);
-        DBObject dbo =
-                BasicDBObjectBuilder.start()
-                        .push("$geoIntersects")
-                        .add("$geometry", geometryDBObject)
-                        .get();
+        DBObject dbo = BasicDBObjectBuilder.start()
+                .push("$geoIntersects")
+                .add("$geometry", geometryDBObject)
+                .get();
 
         output.put((String) e1, dbo);
         return output;
@@ -505,11 +499,10 @@ public abstract class AbstractFilterToMongo implements FilterVisitor, Expression
 
         DBObject geometryDBObject = geometryBuilder.toObject(geometry);
         addCrsToGeometryDBObject(geometryDBObject);
-        DBObject dbo =
-                BasicDBObjectBuilder.start()
-                        .push("$geoWithin")
-                        .add("$geometry", geometryDBObject)
-                        .get();
+        DBObject dbo = BasicDBObjectBuilder.start()
+                .push("$geoWithin")
+                .add("$geometry", geometryDBObject)
+                .get();
 
         output.put((String) e1, dbo);
         return output;
@@ -566,19 +559,17 @@ public abstract class AbstractFilterToMongo implements FilterVisitor, Expression
 
         Geometry geometry = filter.getExpression2().evaluate(null, Geometry.class);
 
-        CoordinateReferenceSystem coordinateReferenceSystem =
-                featureType.getCoordinateReferenceSystem();
+        CoordinateReferenceSystem coordinateReferenceSystem = featureType.getCoordinateReferenceSystem();
         double distanceInMeters = DistanceBufferUtil.getDistanceInMeters(filter);
         DBObject dbo;
         // If point use $near
         if (geometry instanceof Point) {
             DBObject geometryDBObject = geometryBuilder.toObject(geometry);
-            dbo =
-                    BasicDBObjectBuilder.start()
-                            .push("$near")
-                            .add("$geometry", geometryDBObject)
-                            .add("$maxDistance", distanceInMeters)
-                            .get();
+            dbo = BasicDBObjectBuilder.start()
+                    .push("$near")
+                    .add("$geometry", geometryDBObject)
+                    .add("$maxDistance", distanceInMeters)
+                    .get();
             // Other type of geometry, use $geoIntersects
         } else {
             try {
@@ -586,8 +577,7 @@ public abstract class AbstractFilterToMongo implements FilterVisitor, Expression
                 CoordinateReferenceSystem azimuthalEquidistantCRS =
                         computeAzimutalEquidistantCRS(centroid, coordinateReferenceSystem);
                 // Transform geometry to CRS that supports meters
-                MathTransform transform =
-                        CRS.findMathTransform(coordinateReferenceSystem, azimuthalEquidistantCRS);
+                MathTransform transform = CRS.findMathTransform(coordinateReferenceSystem, azimuthalEquidistantCRS);
                 geometry = JTS.transform(geometry, transform);
                 // Apply buffer in meters to geometry
                 Geometry bufferedGeometry = geometry.buffer(distanceInMeters, DEFAULT_SEGMENTS);
@@ -595,19 +585,16 @@ public abstract class AbstractFilterToMongo implements FilterVisitor, Expression
                 logAdditionalInformation(bufferedGeometry);
 
                 // Transform back to original with buffer applied
-                transform =
-                        CRS.findMathTransform(azimuthalEquidistantCRS, coordinateReferenceSystem);
+                transform = CRS.findMathTransform(azimuthalEquidistantCRS, coordinateReferenceSystem);
                 geometry = JTS.transform(bufferedGeometry, transform);
             } catch (FactoryException | TransformException e) {
-                throw new RuntimeException(
-                        "Failed to compute polygon within distance from reference geometry", e);
+                throw new RuntimeException("Failed to compute polygon within distance from reference geometry", e);
             }
             DBObject geometryDBObject = geometryBuilder.toObject(geometry);
-            dbo =
-                    BasicDBObjectBuilder.start()
-                            .push("$geoIntersects")
-                            .add("$geometry", geometryDBObject)
-                            .get();
+            dbo = BasicDBObjectBuilder.start()
+                    .push("$geoIntersects")
+                    .add("$geometry", geometryDBObject)
+                    .get();
         }
 
         output.put((String) e1, dbo);
@@ -632,8 +619,7 @@ public abstract class AbstractFilterToMongo implements FilterVisitor, Expression
             throws FactoryException, TransformException {
         if (!(coordinateReferenceSystem instanceof GeographicCRS)
                 || CRS.getAxisOrder(coordinateReferenceSystem).equals(CRS.AxisOrder.NORTH_EAST)) {
-            MathTransform mathTransform =
-                    CRS.findMathTransform(coordinateReferenceSystem, DefaultGeographicCRS.WGS84);
+            MathTransform mathTransform = CRS.findMathTransform(coordinateReferenceSystem, DefaultGeographicCRS.WGS84);
             centroid = (Point) JTS.transform(centroid, mathTransform);
         }
 
@@ -781,8 +767,7 @@ public abstract class AbstractFilterToMongo implements FilterVisitor, Expression
         } else if (literal instanceof String) {
             if (targetType != null && Date.class.isAssignableFrom(targetType)) {
                 // try parse string assuming it's ISO-8601 formatted
-                return Date.from(
-                        Instant.from(DateTimeFormatter.ISO_DATE_TIME.parse((String) literal)));
+                return Date.from(Instant.from(DateTimeFormatter.ISO_DATE_TIME.parse((String) literal)));
             }
             // try to convert to the expected type
             return convertLiteral(literal, targetType);

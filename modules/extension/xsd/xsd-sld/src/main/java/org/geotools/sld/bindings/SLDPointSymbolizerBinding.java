@@ -134,8 +134,7 @@ public class SLDPointSymbolizerBinding extends AbstractComplexBinding {
 
         // &lt;xsd:element ref="sld:VendorOption" minOccurs="0" maxOccurs="unbounded"/&gt;
         for (CssParameter param : node.getChildValues(CssParameter.class)) {
-            ps.getOptions()
-                    .put(param.getName(), param.getExpression().evaluate(null, String.class));
+            ps.getOptions().put(param.getName(), param.getExpression().evaluate(null, String.class));
         }
 
         return ps;

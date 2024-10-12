@@ -109,8 +109,7 @@ public class GeoTiffWriter extends AbstractGridCoverageWriter implements GridCov
     public GeoTiffWriter(Object destination, Hints hints) throws IOException {
 
         this.destination = destination;
-        if (destination instanceof File)
-            this.outStream = ImageIOExt.createImageOutputStream(null, destination);
+        if (destination instanceof File) this.outStream = ImageIOExt.createImageOutputStream(null, destination);
         else if (destination instanceof URL) {
             final URL dest = (URL) destination;
             if (dest.getProtocol().equalsIgnoreCase("file")) {
@@ -125,8 +124,7 @@ public class GeoTiffWriter extends AbstractGridCoverageWriter implements GridCov
             } else {
                 this.outStream = ImageIOExt.createImageOutputStream(null, destination);
             }
-        } else if (destination instanceof ImageOutputStream)
-            this.outStream = (ImageOutputStream) destination;
+        } else if (destination instanceof ImageOutputStream) this.outStream = (ImageOutputStream) destination;
         else throw new IllegalArgumentException("The provided destination canno be used!");
         // //
         //
@@ -320,8 +318,7 @@ public class GeoTiffWriter extends AbstractGridCoverageWriter implements GridCov
         // Setting raster type to pixel corner since that is the default for geotiff
         // and makes most software happy
         //
-        metadata.addGeoShortParam(
-                GeoTiffConstants.GTRasterTypeGeoKey, GeoTiffConstants.RasterPixelIsArea);
+        metadata.addGeoShortParam(GeoTiffConstants.GTRasterTypeGeoKey, GeoTiffConstants.RasterPixelIsArea);
 
         //
         // AXES Swap Management
@@ -330,9 +327,8 @@ public class GeoTiffWriter extends AbstractGridCoverageWriter implements GridCov
         // specified, trying to understand the direction of the first axis in
         // order to correctly use transformations.
         //
-        boolean swapAxes =
-                XAffineTransform.getSwapXY(modifiedRasterToModel) == -1
-                        || CRS.getAxisOrder(crs).equals(AxisOrder.NORTH_EAST);
+        boolean swapAxes = XAffineTransform.getSwapXY(modifiedRasterToModel) == -1
+                || CRS.getAxisOrder(crs).equals(AxisOrder.NORTH_EAST);
         swapAxes &= !retainAxesOrder;
 
         //
@@ -368,15 +364,10 @@ public class GeoTiffWriter extends AbstractGridCoverageWriter implements GridCov
         //
         // GETTING READER AND METADATA
         //
-        final TIFFImageWriter writer =
-                (TIFFImageWriter) GeoTiffFormat.IMAGEIO_WRITER_FACTORY.createWriterInstance();
+        final TIFFImageWriter writer = (TIFFImageWriter) GeoTiffFormat.IMAGEIO_WRITER_FACTORY.createWriterInstance();
         try {
-            final IIOMetadata metadata =
-                    createGeoTiffIIOMetadata(
-                            writer,
-                            ImageTypeSpecifier.createFromRenderedImage(image),
-                            geoTIFFMetadata,
-                            params);
+            final IIOMetadata metadata = createGeoTiffIIOMetadata(
+                    writer, ImageTypeSpecifier.createFromRenderedImage(image), geoTIFFMetadata, params);
 
             //
             // IMAGEWRITE
@@ -389,17 +380,13 @@ public class GeoTiffWriter extends AbstractGridCoverageWriter implements GridCov
                 writer.addIIOWriteProgressListener(progressAdapter);
                 writer.addIIOWriteWarningListener(progressAdapter);
             }
-            writer.write(
-                    writer.getDefaultStreamMetadata(params),
-                    new IIOImage(image, null, metadata),
-                    params);
+            writer.write(writer.getDefaultStreamMetadata(params), new IIOImage(image, null, metadata), params);
 
             outputStream.flush();
         } finally {
 
             try {
-                if (!(destination instanceof ImageOutputStream) && outputStream != null)
-                    outputStream.close();
+                if (!(destination instanceof ImageOutputStream) && outputStream != null) outputStream.close();
             } catch (Throwable e) {
                 // eat me
                 if (LOGGER.isLoggable(Level.WARNING)) {
@@ -439,14 +426,12 @@ public class GeoTiffWriter extends AbstractGridCoverageWriter implements GridCov
         IIOMetadata imageMetadata = writer.getDefaultImageMetadata(type, params);
         imageMetadata = writer.convertImageMetadata(imageMetadata, type, params);
         org.w3c.dom.Element w3cElement =
-                (org.w3c.dom.Element)
-                        imageMetadata.getAsTree(GeoTiffConstants.GEOTIFF_IIO_METADATA_FORMAT_NAME);
+                (org.w3c.dom.Element) imageMetadata.getAsTree(GeoTiffConstants.GEOTIFF_IIO_METADATA_FORMAT_NAME);
 
         geoTIFFMetadata.assignTo(w3cElement);
         try {
             Node TIFFIFD = w3cElement.getChildNodes().item(0);
-            final IIOMetadata iioMetadata =
-                    new TIFFImageMetadata(TIFFImageMetadata.parseIFD(TIFFIFD));
+            final IIOMetadata iioMetadata = new TIFFImageMetadata(TIFFImageMetadata.parseIFD(TIFFIFD));
             imageMetadata = iioMetadata;
         } catch (IIOInvalidTreeException e) {
             throw new IIOException("Failed to set GeoTIFFWritingUtilities specific tags.", e);

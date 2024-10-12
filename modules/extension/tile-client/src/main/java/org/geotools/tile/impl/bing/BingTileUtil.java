@@ -52,16 +52,8 @@ public final class BingTileUtil {
      *     detail).
      */
     public static int[] lonLatToPixelXY(double longitude, double latitude, int zoomLevel) {
-        double _latitude =
-                clip(
-                        latitude,
-                        WebMercatorTileService.MIN_LATITUDE,
-                        WebMercatorTileService.MAX_LATITUDE);
-        double _longitude =
-                clip(
-                        longitude,
-                        WebMercatorTileService.MIN_LONGITUDE,
-                        WebMercatorTileService.MAX_LONGITUDE);
+        double _latitude = clip(latitude, WebMercatorTileService.MIN_LATITUDE, WebMercatorTileService.MAX_LATITUDE);
+        double _longitude = clip(longitude, WebMercatorTileService.MIN_LONGITUDE, WebMercatorTileService.MAX_LONGITUDE);
 
         double x = (_longitude + 180) / 360;
         double sinLatitude = Math.sin(_latitude * Math.PI / 180);
@@ -195,18 +187,13 @@ public final class BingTileUtil {
         int tileTopLeftPixelY = numberOfTilesY * BingTile.DEFAULT_TILE_SIZE;
 
         double[] topLeftCoords = pixelXYToLonLat(tileTopLeftPixelX, tileTopLeftPixelY, zoomLevel);
-        double[] bottomRightCoords =
-                pixelXYToLonLat(
-                        tileTopLeftPixelX + BingTile.DEFAULT_TILE_SIZE,
-                        tileTopLeftPixelY + BingTile.DEFAULT_TILE_SIZE,
-                        zoomLevel);
+        double[] bottomRightCoords = pixelXYToLonLat(
+                tileTopLeftPixelX + BingTile.DEFAULT_TILE_SIZE,
+                tileTopLeftPixelY + BingTile.DEFAULT_TILE_SIZE,
+                zoomLevel);
 
         Envelope envelope =
-                new Envelope(
-                        topLeftCoords[0],
-                        bottomRightCoords[0],
-                        topLeftCoords[1],
-                        bottomRightCoords[1]);
+                new Envelope(topLeftCoords[0], bottomRightCoords[0], topLeftCoords[1], bottomRightCoords[1]);
 
         return new ReferencedEnvelope(envelope, DefaultGeographicCRS.WGS84);
     }

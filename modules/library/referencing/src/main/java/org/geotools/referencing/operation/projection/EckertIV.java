@@ -80,8 +80,7 @@ public class EckertIV extends MapProjection {
      * radians) and stores the result in {@code ptDst} (linear distance on a unit sphere).
      */
     @Override
-    protected Point2D transformNormalized(double lam, double phi, Point2D ptDst)
-            throws ProjectionException {
+    protected Point2D transformNormalized(double lam, double phi, Point2D ptDst) throws ProjectionException {
 
         double p = C_p * sin(phi);
         double V = phi * phi;
@@ -111,8 +110,7 @@ public class EckertIV extends MapProjection {
      * {@code ptDst}.
      */
     @Override
-    protected Point2D inverseTransformNormalized(double x, double y, Point2D ptDst)
-            throws ProjectionException {
+    protected Point2D inverseTransformNormalized(double x, double y, Point2D ptDst) throws ProjectionException {
 
         double phi = aasin(y / C_y);
         double c = cos(phi);
@@ -154,13 +152,12 @@ public class EckertIV extends MapProjection {
         private static final long serialVersionUID = 1136453952351519284L;
 
         /** The parameters group. */
-        static final ParameterDescriptorGroup PARAMETERS =
-                createDescriptorGroup(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.GEOTOOLS, "Eckert_IV"),
-                            new NamedIdentifier(Citations.ESRI, "Eckert_IV")
-                        },
-                        new ParameterDescriptor[] {SEMI_MAJOR, SEMI_MINOR, CENTRAL_MERIDIAN});
+        static final ParameterDescriptorGroup PARAMETERS = createDescriptorGroup(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.GEOTOOLS, "Eckert_IV"),
+                    new NamedIdentifier(Citations.ESRI, "Eckert_IV")
+                },
+                new ParameterDescriptor[] {SEMI_MAJOR, SEMI_MINOR, CENTRAL_MERIDIAN});
 
         /** Constructs a new provider. */
         public Provider() {

@@ -51,14 +51,12 @@ import org.geotools.util.factory.GeoTools;
  * @author James Macgill
  * @author Cory Horner, Refractions Research Inc.
  */
-public abstract class ClassificationFunction extends DefaultExpression
-        implements FunctionExpression {
+public abstract class ClassificationFunction extends DefaultExpression implements FunctionExpression {
 
     protected static final java.util.logging.Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(ClassificationFunction.class);
 
-    static final FilterFactory FF =
-            CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints());
+    static final FilterFactory FF = CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints());
 
     FunctionName name;
 
@@ -232,8 +230,7 @@ public abstract class ClassificationFunction extends DefaultExpression
         List<org.geotools.api.filter.expression.Expression> params = getParameters();
         if (params != null) {
             org.geotools.api.filter.expression.Expression exp;
-            for (Iterator<org.geotools.api.filter.expression.Expression> it = params.iterator();
-                    it.hasNext(); ) {
+            for (Iterator<org.geotools.api.filter.expression.Expression> it = params.iterator(); it.hasNext(); ) {
                 exp = it.next();
                 sb.append("[");
                 sb.append(exp);
@@ -260,31 +257,24 @@ public abstract class ClassificationFunction extends DefaultExpression
      * @throws IOException
      */
     protected double[] computeGroupByPercentages(
-            FeatureCollection collection,
-            double[] percentages,
-            int totalSize,
-            double min,
-            double classWidth)
+            FeatureCollection collection, double[] percentages, int totalSize, double min, double classWidth)
             throws IOException {
         Subtract subtract = FF.subtract(getParameters().get(0), FF.literal(min));
         Divide divide = FF.divide(subtract, FF.literal(classWidth));
         Function convert = FF.function("convert", divide, FF.literal(Integer.class));
         GroupByVisitor groupBy =
-                new GroupByVisitor(
-                        Aggregate.COUNT, getParameters().get(0), Arrays.asList(convert), null);
+                new GroupByVisitor(Aggregate.COUNT, getParameters().get(0), Arrays.asList(convert), null);
         collection.accepts(groupBy, null);
         @SuppressWarnings("unchecked")
         Map<List<Integer>, Integer> result = groupBy.getResult().toMap();
-        Map<Integer, Integer> resultIntKeys =
-                result.entrySet().stream()
-                        .collect(Collectors.toMap(e -> e.getKey().get(0), e -> e.getValue()));
+        Map<Integer, Integer> resultIntKeys = result.entrySet().stream()
+                .collect(Collectors.toMap(e -> e.getKey().get(0), e -> e.getValue()));
         // getting a tree set from the keys to get them asc ordered and
         // collect percentages in the right order
         Set<Integer> keys = new TreeSet<>(resultIntKeys.keySet());
         for (Integer key : keys) {
             int intKey = key.intValue();
-            computePercentage(
-                    percentages, Double.valueOf(resultIntKeys.get(key)), totalSize, intKey);
+            computePercentage(percentages, Double.valueOf(resultIntKeys.get(key)), totalSize, intKey);
         }
         return percentages;
     }
@@ -293,8 +283,7 @@ public abstract class ClassificationFunction extends DefaultExpression
      * Compute the percentage from the input parameters, setting in the percentages array at the
      * specified index
      */
-    protected void computePercentage(
-            double[] percentages, double classMembers, double totalSize, int index) {
+    protected void computePercentage(double[] percentages, double classMembers, double totalSize, int index) {
         // handle case when the query return one class plus,
         // e.g. classWidth is an integer so that in an interval of values 1-25,
         // for three classes, we would have value 25 falling in group with key 3

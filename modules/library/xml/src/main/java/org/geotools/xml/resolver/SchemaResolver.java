@@ -45,8 +45,7 @@ import java.util.logging.Logger;
  */
 public class SchemaResolver {
 
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(SchemaResolver.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(SchemaResolver.class);
 
     /** A local OASIS catalog (null if not present). */
     private SchemaCatalog catalog;
@@ -117,10 +116,9 @@ public class SchemaResolver {
         if (!locationUri.isAbsolute()) {
             // Location is relative, so need to resolve against context.
             if (context == null) {
-                throw new RuntimeException(
-                        "Could not determine absolute schema location for "
-                                + location
-                                + " because context schema location is unknown");
+                throw new RuntimeException("Could not determine absolute schema location for "
+                        + location
+                        + " because context schema location is unknown");
             }
             // Find the original absolute http/https (canonical) URL used to obtain the
             // context schema, so relative imports can be honoured across resolution source

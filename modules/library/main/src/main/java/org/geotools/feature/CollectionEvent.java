@@ -49,9 +49,7 @@ public class CollectionEvent extends EventObject {
     /** Holds value of property features. */
     private SimpleFeature[] features;
 
-    public CollectionEvent(
-            FeatureCollection<? extends FeatureType, ? extends Feature> collection,
-            FeatureEvent event) {
+    public CollectionEvent(FeatureCollection<? extends FeatureType, ? extends Feature> collection, FeatureEvent event) {
         super(collection);
 
         switch (event.getType()) {

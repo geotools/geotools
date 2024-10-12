@@ -62,8 +62,7 @@ public abstract class GeoJSONTestSupport {
                         Assert.assertEquals(((Number) o1).intValue(), ((Number) o2).intValue());
                     } else if (o1 instanceof Float || o1 instanceof Double) {
                         Assert.assertTrue(o2 instanceof Float || o2 instanceof Double);
-                        Assert.assertEquals(
-                                ((Number) o1).doubleValue(), ((Number) o2).doubleValue(), 0d);
+                        Assert.assertEquals(((Number) o1).doubleValue(), ((Number) o2).doubleValue(), 0d);
                     } else {
                         Assert.fail();
                     }
@@ -79,8 +78,6 @@ public abstract class GeoJSONTestSupport {
     }
 
     protected String toString(int val) {
-        return val == 0
-                ? "zero"
-                : val == 1 ? "one" : val == 2 ? "two" : val == 3 ? "three" : "four";
+        return val == 0 ? "zero" : val == 1 ? "one" : val == 2 ? "two" : val == 3 ? "three" : "four";
     }
 }

@@ -52,15 +52,14 @@ import org.locationtech.jts.geom.Geometry;
  */
 public class AttributeBuilder {
 
-    protected static final ComplexType ANYTYPE_TYPE =
-            new ComplexTypeImpl(
-                    new NameImpl("http://www.w3.org/2001/XMLSchema", "anyType"),
-                    null,
-                    false,
-                    true,
-                    Collections.emptyList(),
-                    null,
-                    null);
+    protected static final ComplexType ANYTYPE_TYPE = new ComplexTypeImpl(
+            new NameImpl("http://www.w3.org/2001/XMLSchema", "anyType"),
+            null,
+            false,
+            true,
+            Collections.emptyList(),
+            null,
+            null);
 
     /** Factory used to create attributes */
     FeatureFactory attributeFactory;
@@ -141,7 +140,9 @@ public class AttributeBuilder {
                 if (property instanceof Attribute) {
                     Attribute att = (Attribute) property;
                     add(
-                            att.getIdentifier() == null ? null : att.getIdentifier().toString(),
+                            att.getIdentifier() == null
+                                    ? null
+                                    : att.getIdentifier().toString(),
                             att.getValue(),
                             att.getName());
                 } else if (property instanceof Association) {
@@ -156,10 +157,7 @@ public class AttributeBuilder {
 
             if (feature.getDefaultGeometryProperty() != null) {
                 if (crs == null) {
-                    crs =
-                            feature.getDefaultGeometryProperty()
-                                    .getType()
-                                    .getCoordinateReferenceSystem();
+                    crs = feature.getDefaultGeometryProperty().getType().getCoordinateReferenceSystem();
                 }
                 defaultGeometry = feature.getDefaultGeometryProperty().getValue();
             }
@@ -421,8 +419,7 @@ public class AttributeBuilder {
      * Factors out attribute creation code, needs to be called with either one of type or descriptor
      * null.
      */
-    protected Attribute create(
-            Object value, AttributeType type, AttributeDescriptor descriptor, String id) {
+    protected Attribute create(Object value, AttributeType type, AttributeDescriptor descriptor, String id) {
         if (descriptor != null) {
             type = descriptor.getType();
         }
@@ -434,14 +431,11 @@ public class AttributeBuilder {
         if (type instanceof FeatureType) {
             return descriptor != null
                     ? attributeFactory.createFeature(toPropertyCollection(value), descriptor, id)
-                    : attributeFactory.createFeature(
-                            toPropertyCollection(value), (FeatureType) type, id);
+                    : attributeFactory.createFeature(toPropertyCollection(value), (FeatureType) type, id);
         } else if (type instanceof ComplexType) {
-            return createComplexAttribute(
-                    toPropertyCollection(value), (ComplexType) type, descriptor, id);
+            return createComplexAttribute(toPropertyCollection(value), (ComplexType) type, descriptor, id);
         } else if (type instanceof GeometryType) {
-            return attributeFactory.createGeometryAttribute(
-                    value, (GeometryDescriptor) descriptor, id, getCRS(value));
+            return attributeFactory.createGeometryAttribute(value, (GeometryDescriptor) descriptor, id, getCRS(value));
         } else {
             return attributeFactory.createAttribute(value, descriptor, id);
         }
@@ -456,8 +450,7 @@ public class AttributeBuilder {
     public ComplexAttribute createComplexAttribute(
             Object value, ComplexType type, AttributeDescriptor descriptor, String id) {
         return descriptor != null
-                ? attributeFactory.createComplexAttribute(
-                        toPropertyCollection(value), descriptor, id)
+                ? attributeFactory.createComplexAttribute(toPropertyCollection(value), descriptor, id)
                 : attributeFactory.createComplexAttribute(toPropertyCollection(value), type, id);
     }
 
@@ -517,8 +510,7 @@ public class AttributeBuilder {
      * @param type the type of the value
      * @param descriptor the attribute descriptor of anyType type
      */
-    public Attribute addAnyTypeValue(
-            Object value, AttributeType type, AttributeDescriptor descriptor, String id) {
+    public Attribute addAnyTypeValue(Object value, AttributeType type, AttributeDescriptor descriptor, String id) {
         Attribute attribute = create(value, type, descriptor, id);
         properties().add(attribute);
         return attribute;
@@ -528,19 +520,17 @@ public class AttributeBuilder {
      * Create a complex attribute for XS.AnyType, since it's defined as a simple type. We need a
      * complex attribute so we can set xlink:href in it.
      */
-    public Attribute addComplexAnyTypeAttribute(
-            Object value, AttributeDescriptor descriptor, String id) {
+    public Attribute addComplexAnyTypeAttribute(Object value, AttributeDescriptor descriptor, String id) {
         // need to create a complex attribute for any type, so we can have client properties
         // for xlink:href and so we chain features etc.
         Map<Object, Object> userData = descriptor.getUserData();
-        descriptor =
-                new AttributeDescriptorImpl(
-                        ANYTYPE_TYPE,
-                        descriptor.getName(),
-                        descriptor.getMinOccurs(),
-                        descriptor.getMaxOccurs(),
-                        descriptor.isNillable(),
-                        descriptor.getDefaultValue());
+        descriptor = new AttributeDescriptorImpl(
+                ANYTYPE_TYPE,
+                descriptor.getName(),
+                descriptor.getMinOccurs(),
+                descriptor.getMaxOccurs(),
+                descriptor.isNillable(),
+                descriptor.getDefaultValue());
         descriptor.getUserData().putAll(userData);
         return createComplexAttribute(value, ANYTYPE_TYPE, descriptor, id);
     }

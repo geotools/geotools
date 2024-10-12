@@ -92,8 +92,7 @@ import org.geotools.factory.CommonFactoryFinder;
  */
 public class LogicSAXParser {
     /** The logger for the filter module. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(LogicSAXParser.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(LogicSAXParser.class);
 
     /** factory for creating filters. */
     private FilterFactory ff;
@@ -172,8 +171,7 @@ public class LogicSAXParser {
             LOGGER.finer("end element matched internal type: " + this.logicType);
             isComplete = true;
         } else {
-            throw new IllegalFilterException(
-                    "Logic Factory got an end message that it can't process.");
+            throw new IllegalFilterException("Logic Factory got an end message that it can't process.");
         }
     }
 

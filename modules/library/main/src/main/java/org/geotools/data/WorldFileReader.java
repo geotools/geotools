@@ -64,8 +64,7 @@ public class WorldFileReader {
     public static final int DEFAULT_BUFFER_SIZE = 4096;
 
     /** Logger for this class. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(WorldFileReader.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(WorldFileReader.class);
 
     /** Resolution on the first dimension. */
     private double xPixelSize = 0.0;
@@ -107,11 +106,9 @@ public class WorldFileReader {
      */
     public WorldFileReader(final File worldfile, final int bufferSize) throws IOException {
         if (worldfile == null)
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "worldfile"));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "worldfile"));
         if (!worldfile.isFile() || !worldfile.canRead())
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.FILE_DOES_NOT_EXIST_$1, worldfile));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.FILE_DOES_NOT_EXIST_$1, worldfile));
         if (bufferSize <= 0)
             throw new IllegalArgumentException(
                     MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "bufferSize", bufferSize));
@@ -127,8 +124,7 @@ public class WorldFileReader {
      */
     public WorldFileReader(final URL worldfile, final int bufferSize) throws IOException {
         if (worldfile == null)
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "inFile"));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "inFile"));
         if (bufferSize <= 0)
             throw new IllegalArgumentException(
                     MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "bufferSize", bufferSize));
@@ -145,8 +141,7 @@ public class WorldFileReader {
         this(worldfile, WorldFileReader.DEFAULT_BUFFER_SIZE);
     }
 
-    private void parseWorldFile(final BufferedReader bufferedreader)
-            throws IOException, DataSourceException {
+    private void parseWorldFile(final BufferedReader bufferedreader) throws IOException, DataSourceException {
         int index = 0;
         String str;
         try {
@@ -158,8 +153,7 @@ public class WorldFileReader {
                     value = Double.parseDouble(str.trim());
                 } catch (Throwable t) {
                     // A trick to bypass invalid lines ...
-                    if (LOGGER.isLoggable(Level.FINE))
-                        LOGGER.log(Level.FINE, t.getLocalizedMessage(), t);
+                    if (LOGGER.isLoggable(Level.FINE)) LOGGER.log(Level.FINE, t.getLocalizedMessage(), t);
                     continue;
                 }
 
@@ -207,14 +201,12 @@ public class WorldFileReader {
                 bufferedreader.close();
             } catch (Throwable t) {
                 // A trick to bypass invalid lines ...
-                if (LOGGER.isLoggable(Level.FINE))
-                    LOGGER.log(Level.FINE, t.getLocalizedMessage(), t);
+                if (LOGGER.isLoggable(Level.FINE)) LOGGER.log(Level.FINE, t.getLocalizedMessage(), t);
             }
         }
 
         // did we find all we were looking for?
-        if (index < 5)
-            throw new DataSourceException("Not all the values were found for this world file!");
+        if (index < 5) throw new DataSourceException("Not all the values were found for this world file!");
     }
 
     public double getRotationX() {

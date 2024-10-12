@@ -43,8 +43,7 @@ public class MinVisitor implements FeatureCalc, FeatureAttributeVisitor {
         expr = factory.property(attributeTypeName);
     }
 
-    public MinVisitor(int attributeTypeIndex, SimpleFeatureType type)
-            throws IllegalFilterException {
+    public MinVisitor(int attributeTypeIndex, SimpleFeatureType type) throws IllegalFilterException {
         FilterFactory factory = CommonFactoryFinder.getFilterFactory(null);
         expr = factory.property(type.getDescriptor(attributeTypeIndex).getLocalName());
     }
@@ -188,13 +187,10 @@ public class MinVisitor implements FeatureCalc, FeatureAttributeVisitor {
                 Comparable toAdd = (Comparable) resultsToAdd.getValue();
                 Comparable newMin = minValue;
 
-                if (newMin.getClass()
-                        != toAdd.getClass()) { // 2 different data types, therefore convert
+                if (newMin.getClass() != toAdd.getClass()) { // 2 different data types, therefore convert
                     Class bestClass = CalcUtil.bestClass(toAdd, newMin);
-                    if (bestClass != toAdd.getClass())
-                        toAdd = (Comparable) CalcUtil.convert(toAdd, bestClass);
-                    if (bestClass != newMin.getClass())
-                        newMin = (Comparable) CalcUtil.convert(newMin, bestClass);
+                    if (bestClass != toAdd.getClass()) toAdd = (Comparable) CalcUtil.convert(toAdd, bestClass);
+                    if (bestClass != newMin.getClass()) newMin = (Comparable) CalcUtil.convert(newMin, bestClass);
                 }
                 if (newMin.compareTo(toAdd) > 0) {
                     newMin = toAdd;

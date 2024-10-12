@@ -70,8 +70,7 @@ public class PrjFileReader implements Closeable {
      * @param channel The channel to read from.
      * @throws IOException If an error occurs.
      */
-    public PrjFileReader(ReadableByteChannel channel, final Hints hints)
-            throws IOException, FactoryException {
+    public PrjFileReader(ReadableByteChannel channel, final Hints hints) throws IOException, FactoryException {
         try {
             Charset chars = StandardCharsets.ISO_8859_1;
             decoder = chars.newDecoder();
@@ -83,9 +82,7 @@ public class PrjFileReader implements Closeable {
             decoder.decode(buffer, charBuffer, true);
             buffer.limit(buffer.capacity());
             charBuffer.flip();
-            crs =
-                    ReferencingFactoryFinder.getCRSFactory(hints)
-                            .createFromWKT(charBuffer.toString());
+            crs = ReferencingFactoryFinder.getCRSFactory(hints).createFromWKT(charBuffer.toString());
         } finally {
             // we are done reading, so just close this
             close();

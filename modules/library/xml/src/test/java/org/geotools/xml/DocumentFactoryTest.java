@@ -45,11 +45,9 @@ import org.xml.sax.SAXNotSupportedException;
  * @author Aaron Waddell
  */
 public class DocumentFactoryTest {
-    private final String LOAD_EXTERNAL_DTD =
-            "http://apache.org/xml/features/nonvalidating/load-external-dtd";
+    private final String LOAD_EXTERNAL_DTD = "http://apache.org/xml/features/nonvalidating/load-external-dtd";
 
-    private final String EXTERNAL_GENERAL_ENTITIES_FEATURE =
-            "http://xml.org/sax/features/external-general-entities";
+    private final String EXTERNAL_GENERAL_ENTITIES_FEATURE = "http://xml.org/sax/features/external-general-entities";
 
     private final String EXTERNAL_PARAMETER_ENTITIES_FEATURE =
             "http://xml.org/sax/features/external-parameter-entities";
@@ -58,11 +56,14 @@ public class DocumentFactoryTest {
 
     private Map<String, Object> hints;
 
-    @Mock private SAXParserFactory mockSaxParserFactory;
+    @Mock
+    private SAXParserFactory mockSaxParserFactory;
 
-    @Mock private SAXParser mockSaxParser;
+    @Mock
+    private SAXParser mockSaxParser;
 
-    @Mock InputStream inputStream;
+    @Mock
+    InputStream inputStream;
 
     @Before
     public void before() throws Exception {
@@ -73,31 +74,23 @@ public class DocumentFactoryTest {
         hints.put(XMLHandlerHints.SAX_PARSER_FACTORY, mockSaxParserFactory);
         when(mockSaxParserFactory.newSAXParser()).thenReturn(mockSaxParser);
 
-        Answer<Void> startDocumentAnswer =
-                invocationOnMock -> {
-                    XMLSAXHandler xmlSaxHandler =
-                            (XMLSAXHandler) invocationOnMock.getArguments()[1];
-                    xmlSaxHandler.startDocument();
-                    return null;
-                };
-        doAnswer(startDocumentAnswer)
-                .when(mockSaxParser)
-                .parse(anyString(), any(XMLSAXHandler.class));
-        doAnswer(startDocumentAnswer)
-                .when(mockSaxParser)
-                .parse(any(InputStream.class), any(XMLSAXHandler.class));
+        Answer<Void> startDocumentAnswer = invocationOnMock -> {
+            XMLSAXHandler xmlSaxHandler = (XMLSAXHandler) invocationOnMock.getArguments()[1];
+            xmlSaxHandler.startDocument();
+            return null;
+        };
+        doAnswer(startDocumentAnswer).when(mockSaxParser).parse(anyString(), any(XMLSAXHandler.class));
+        doAnswer(startDocumentAnswer).when(mockSaxParser).parse(any(InputStream.class), any(XMLSAXHandler.class));
     }
 
     @Test
-    public void testGetInstanceFromURIWithSpecifiedLevelButNoPDisableExternalEntities()
-            throws Exception {
+    public void testGetInstanceFromURIWithSpecifiedLevelButNoPDisableExternalEntities() throws Exception {
         DocumentFactory.getInstance(uri, hints, Level.WARNING);
         verifyDisableExternalEntities(false);
     }
 
     @Test
-    public void testGetInstanceFromURIWithSpecifiedLevelAndDisableExternalEntitiesTrue()
-            throws Exception {
+    public void testGetInstanceFromURIWithSpecifiedLevelAndDisableExternalEntitiesTrue() throws Exception {
         hints.put(DocumentFactory.DISABLE_EXTERNAL_ENTITIES, Boolean.TRUE);
         DocumentFactory.getInstance(uri, hints, Level.WARNING);
 
@@ -105,8 +98,7 @@ public class DocumentFactoryTest {
     }
 
     @Test
-    public void testGetInstanceFromURIWithSpecifiedLevelAndDisableExternalEntitiesFalse()
-            throws Exception {
+    public void testGetInstanceFromURIWithSpecifiedLevelAndDisableExternalEntitiesFalse() throws Exception {
         hints.put(DocumentFactory.DISABLE_EXTERNAL_ENTITIES, Boolean.FALSE);
         DocumentFactory.getInstance(uri, hints, Level.WARNING);
 
@@ -115,39 +107,31 @@ public class DocumentFactoryTest {
 
     @Test(expected = SAXException.class)
     public void testGetInstanceFromURIWithSpecifiedLevelParseFailureIOException() throws Exception {
-        doThrow(new IOException("Failure"))
-                .when(mockSaxParser)
-                .parse(anyString(), any(XMLSAXHandler.class));
+        doThrow(new IOException("Failure")).when(mockSaxParser).parse(anyString(), any(XMLSAXHandler.class));
         DocumentFactory.getInstance(uri, hints, Level.WARNING);
     }
 
     @Test(expected = SAXException.class)
-    public void testGetInstanceFromURIWithSpecifiedLevelParseFailureSAXException()
-            throws Exception {
-        doThrow(new SAXException("Failure"))
-                .when(mockSaxParser)
-                .parse(anyString(), any(XMLSAXHandler.class));
+    public void testGetInstanceFromURIWithSpecifiedLevelParseFailureSAXException() throws Exception {
+        doThrow(new SAXException("Failure")).when(mockSaxParser).parse(anyString(), any(XMLSAXHandler.class));
         DocumentFactory.getInstance(uri, hints, Level.WARNING);
     }
 
     @Test(expected = SAXException.class)
     public void testGetInstanceFromURIWithSpecifiedLevelNewSAXParserFailure() throws Exception {
-        when(mockSaxParserFactory.newSAXParser())
-                .thenThrow(new ParserConfigurationException("Failure"));
+        when(mockSaxParserFactory.newSAXParser()).thenThrow(new ParserConfigurationException("Failure"));
         DocumentFactory.getInstance(uri, hints, Level.WARNING);
     }
 
     @Test
-    public void testGetInstanceFromInputStreamWithSpecifiedLevelNoDisableExternalEntities()
-            throws Exception {
+    public void testGetInstanceFromInputStreamWithSpecifiedLevelNoDisableExternalEntities() throws Exception {
         DocumentFactory.getInstance(inputStream, hints, Level.WARNING);
 
         verifyDisableExternalEntities(false);
     }
 
     @Test
-    public void testGetInstanceFromInputStreamWithSpecifiedLevelAndDisableExternalEntitiesTrue()
-            throws Exception {
+    public void testGetInstanceFromInputStreamWithSpecifiedLevelAndDisableExternalEntitiesTrue() throws Exception {
         hints.put(DocumentFactory.DISABLE_EXTERNAL_ENTITIES, Boolean.TRUE);
         DocumentFactory.getInstance(inputStream, hints, Level.WARNING);
 
@@ -155,8 +139,7 @@ public class DocumentFactoryTest {
     }
 
     @Test
-    public void testGetInstanceFromInputStreamWithSpecifiedLevelAndPDisableExternalEntitiesFalse()
-            throws Exception {
+    public void testGetInstanceFromInputStreamWithSpecifiedLevelAndPDisableExternalEntitiesFalse() throws Exception {
         hints.put(DocumentFactory.DISABLE_EXTERNAL_ENTITIES, Boolean.FALSE);
         DocumentFactory.getInstance(inputStream, hints, Level.WARNING);
 
@@ -164,8 +147,7 @@ public class DocumentFactoryTest {
     }
 
     @Test(expected = SAXException.class)
-    public void testGetInstanceFromInputStreamWithSpecifiedLevelParseFailureIOException()
-            throws Exception {
+    public void testGetInstanceFromInputStreamWithSpecifiedLevelParseFailureIOException() throws Exception {
         doThrow(new IOException("Parse failure"))
                 .when(mockSaxParser)
                 .parse(any(InputStream.class), any(XMLSAXHandler.class));
@@ -173,8 +155,7 @@ public class DocumentFactoryTest {
     }
 
     @Test(expected = SAXException.class)
-    public void testGetInstanceFromInputStreamWithSpecifiedLevelParseFailureSAXException()
-            throws Exception {
+    public void testGetInstanceFromInputStreamWithSpecifiedLevelParseFailureSAXException() throws Exception {
         doThrow(new SAXException("Parse failure"))
                 .when(mockSaxParser)
                 .parse(any(InputStream.class), any(XMLSAXHandler.class));
@@ -182,8 +163,7 @@ public class DocumentFactoryTest {
     }
 
     void verifyDisableExternalEntities(boolean disabledExternalEntities)
-            throws SAXNotRecognizedException, SAXNotSupportedException,
-                    ParserConfigurationException {
+            throws SAXNotRecognizedException, SAXNotSupportedException, ParserConfigurationException {
 
         // double check DTD support disabled
         // verify(mockSaxParserFactory).setFeature(DISALLOW_DOCTYPE_DECLAIRATION, true);
@@ -194,10 +174,8 @@ public class DocumentFactoryTest {
             verify(mockSaxParserFactory).setFeature(EXTERNAL_GENERAL_ENTITIES_FEATURE, false);
             verify(mockSaxParserFactory).setFeature(EXTERNAL_PARAMETER_ENTITIES_FEATURE, false);
         } else {
-            verify(mockSaxParserFactory, never())
-                    .setFeature(EXTERNAL_GENERAL_ENTITIES_FEATURE, false);
-            verify(mockSaxParserFactory, never())
-                    .setFeature(EXTERNAL_PARAMETER_ENTITIES_FEATURE, false);
+            verify(mockSaxParserFactory, never()).setFeature(EXTERNAL_GENERAL_ENTITIES_FEATURE, false);
+            verify(mockSaxParserFactory, never()).setFeature(EXTERNAL_PARAMETER_ENTITIES_FEATURE, false);
         }
     }
 }

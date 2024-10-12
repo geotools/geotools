@@ -74,11 +74,7 @@ public final class LiteShape2 implements Shape, Cloneable {
      * @param maxDistance - distance used in the generalization process
      */
     public LiteShape2(
-            Geometry geom,
-            MathTransform mathTransform,
-            Decimator decimator,
-            boolean generalize,
-            double maxDistance)
+            Geometry geom, MathTransform mathTransform, Decimator decimator, boolean generalize, double maxDistance)
             throws TransformException, FactoryException {
         this(geom, mathTransform, decimator, generalize);
         this.maxDistance = maxDistance;
@@ -93,8 +89,7 @@ public final class LiteShape2 implements Shape, Cloneable {
      * @param decimator -
      * @param generalize - set to true if the geometry need to be generalized during rendering
      */
-    public LiteShape2(
-            Geometry geom, MathTransform mathTransform, Decimator decimator, boolean generalize)
+    public LiteShape2(Geometry geom, MathTransform mathTransform, Decimator decimator, boolean generalize)
             throws TransformException, FactoryException {
         this(geom, mathTransform, decimator, generalize, true);
     }
@@ -111,33 +106,22 @@ public final class LiteShape2 implements Shape, Cloneable {
      *     will be cloned to make sure the original remains untouched
      */
     public LiteShape2(
-            Geometry geom,
-            MathTransform mathTransform,
-            Decimator decimator,
-            boolean generalize,
-            boolean clone)
+            Geometry geom, MathTransform mathTransform, Decimator decimator, boolean generalize, boolean clone)
             throws TransformException, FactoryException {
         if (geom != null) {
-            if (!clone
-                    && geom.getFactory().getCoordinateSequenceFactory()
-                            instanceof LiteCoordinateSequenceFactory) this.geometry = geom;
+            if (!clone && geom.getFactory().getCoordinateSequenceFactory() instanceof LiteCoordinateSequenceFactory)
+                this.geometry = geom;
             else this.geometry = LiteCoordinateSequence.cloneGeometry(geom);
         }
 
         this.mathTransform = mathTransform;
         if (decimator != null) {
-            this.geometry =
-                    decimator.decimateTransformGeneralize(this.geometry, this.mathTransform);
+            this.geometry = decimator.decimateTransformGeneralize(this.geometry, this.mathTransform);
             this.geometry.geometryChanged();
         } else {
             // if we have a transform a decimation span can be detected, so try to decimate anyways
-            if (mathTransform != null
-                    && !mathTransform.isIdentity()
-                    && generalize
-                    && geometry != null) {
-                new Decimator(
-                                mathTransform.inverse(),
-                                getRectangle(this.geometry.getEnvelopeInternal()))
+            if (mathTransform != null && !mathTransform.isIdentity() && generalize && geometry != null) {
+                new Decimator(mathTransform.inverse(), getRectangle(this.geometry.getEnvelopeInternal()))
                         .decimate(this.geometry);
                 this.geometry.geometryChanged();
             }
@@ -167,8 +151,7 @@ public final class LiteShape2 implements Shape, Cloneable {
                 transformGeometry(collection.getGeometryN(i));
             }
         } else if (geometry instanceof Point) {
-            LiteCoordinateSequence seq =
-                    (LiteCoordinateSequence) ((Point) geometry).getCoordinateSequence();
+            LiteCoordinateSequence seq = (LiteCoordinateSequence) ((Point) geometry).getCoordinateSequence();
             double[] coords = seq.getArray();
             double[] newCoords = new double[coords.length];
             mathTransform.transform(coords, 0, newCoords, 0, seq.size());
@@ -180,8 +163,7 @@ public final class LiteShape2 implements Shape, Cloneable {
                 transformGeometry(polygon.getInteriorRingN(i));
             }
         } else if (geometry instanceof LineString) {
-            LiteCoordinateSequence seq =
-                    (LiteCoordinateSequence) ((LineString) geometry).getCoordinateSequence();
+            LiteCoordinateSequence seq = (LiteCoordinateSequence) ((LineString) geometry).getCoordinateSequence();
             double[] coords = seq.getArray();
             mathTransform.transform(coords, 0, coords, 0, seq.size());
             seq.setArray(coords);
@@ -320,10 +302,8 @@ public final class LiteShape2 implements Shape, Cloneable {
     public Rectangle getBounds() {
         Rectangle2D env = getBounds2D();
         return new Rectangle(
-                (int) Math.round(env.getMinX()),
-                (int) Math.round(env.getMinY()),
-                (int) Math.ceil(env.getWidth()),
-                (int) Math.ceil(env.getHeight()));
+                (int) Math.round(env.getMinX()), (int) Math.round(env.getMinY()), (int) Math.ceil(env.getWidth()), (int)
+                        Math.ceil(env.getHeight()));
     }
 
     /**
@@ -345,10 +325,7 @@ public final class LiteShape2 implements Shape, Cloneable {
         Envelope env = geometry.getEnvelopeInternal();
         // note, we dont' use getWidth/getHeight since they are slower
         return new Rectangle2D.Double(
-                env.getMinX(),
-                env.getMinY(),
-                env.getMaxX() - env.getMinX(),
-                env.getMaxY() - env.getMinY());
+                env.getMinX(), env.getMinY(), env.getMaxX() - env.getMinX(), env.getMaxY() - env.getMinY());
     }
 
     /**
@@ -391,9 +368,7 @@ public final class LiteShape2 implements Shape, Cloneable {
         } else if (this.geometry instanceof LineString) {
             pi = new LineIterator((LineString) geometry, at, generalize, (float) maxDistance);
         } else if (this.geometry instanceof GeometryCollection) {
-            pi =
-                    new GeomCollectionIterator(
-                            (GeometryCollection) geometry, at, generalize, maxDistance);
+            pi = new GeomCollectionIterator((GeometryCollection) geometry, at, generalize, maxDistance);
         }
         return pi;
     }

@@ -103,10 +103,7 @@ public class HTTPClientFinder extends FactoryFinder {
                 .filter((fact) -> matchHttpClientHintsBehaviors(fact, hints, behaviors))
                 .filter((fact) -> matchDefault(fact, hints, behaviors))
                 .findFirst()
-                .orElseThrow(
-                        () ->
-                                new HTTPFactoryException(
-                                        "Couldn't create HTTP client.", hints, behaviors))
+                .orElseThrow(() -> new HTTPFactoryException("Couldn't create HTTP client.", hints, behaviors))
                 .createClient(hints, behaviors);
     }
 

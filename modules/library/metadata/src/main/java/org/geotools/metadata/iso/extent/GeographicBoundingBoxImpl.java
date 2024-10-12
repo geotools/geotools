@@ -43,8 +43,7 @@ import org.geotools.util.Utilities;
  * @author Martin Desruisseaux (IRD)
  * @author Touraïvane
  */
-public class GeographicBoundingBoxImpl extends GeographicExtentImpl
-        implements GeographicBoundingBox {
+public class GeographicBoundingBoxImpl extends GeographicExtentImpl implements GeographicBoundingBox {
     /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = -3278089380004172514L;
 
@@ -376,8 +375,7 @@ public class GeographicBoundingBoxImpl extends GeographicExtentImpl
         final Boolean inc2 = box.getInclusion();
         ensureNonNull("inclusion", inc2);
         if (inc1.booleanValue() != inc2.booleanValue()) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$1, "box"));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$1, "box"));
         }
         final double xmin = box.getWestBoundLongitude();
         final double xmax = box.getEastBoundLongitude();
@@ -388,12 +386,10 @@ public class GeographicBoundingBoxImpl extends GeographicExtentImpl
         if (ymin > southBoundLatitude) southBoundLatitude = ymin;
         if (ymax < northBoundLatitude) northBoundLatitude = ymax;
         if (westBoundLongitude > eastBoundLongitude) {
-            westBoundLongitude =
-                    eastBoundLongitude = 0.5 * (westBoundLongitude + eastBoundLongitude);
+            westBoundLongitude = eastBoundLongitude = 0.5 * (westBoundLongitude + eastBoundLongitude);
         }
         if (southBoundLatitude > northBoundLatitude) {
-            southBoundLatitude =
-                    northBoundLatitude = 0.5 * (southBoundLatitude + northBoundLatitude);
+            southBoundLatitude = northBoundLatitude = 0.5 * (southBoundLatitude + northBoundLatitude);
         }
     }
 
@@ -405,8 +401,7 @@ public class GeographicBoundingBoxImpl extends GeographicExtentImpl
      */
     public boolean isEmpty() {
         // Use '!' in order to catch NaN values.
-        return !(eastBoundLongitude > westBoundLongitude
-                && northBoundLatitude > southBoundLatitude);
+        return !(eastBoundLongitude > westBoundLongitude && northBoundLatitude > southBoundLatitude);
     }
 
     /**
@@ -424,14 +419,10 @@ public class GeographicBoundingBoxImpl extends GeographicExtentImpl
         if (object != null && object.getClass().equals(GeographicBoundingBoxImpl.class)) {
             final GeographicBoundingBoxImpl that = (GeographicBoundingBoxImpl) object;
             return Utilities.equals(this.getInclusion(), that.getInclusion())
-                    && doubleToLongBits(this.southBoundLatitude)
-                            == doubleToLongBits(that.southBoundLatitude)
-                    && doubleToLongBits(this.northBoundLatitude)
-                            == doubleToLongBits(that.northBoundLatitude)
-                    && doubleToLongBits(this.eastBoundLongitude)
-                            == doubleToLongBits(that.eastBoundLongitude)
-                    && doubleToLongBits(this.westBoundLongitude)
-                            == doubleToLongBits(that.westBoundLongitude);
+                    && doubleToLongBits(this.southBoundLatitude) == doubleToLongBits(that.southBoundLatitude)
+                    && doubleToLongBits(this.northBoundLatitude) == doubleToLongBits(that.northBoundLatitude)
+                    && doubleToLongBits(this.eastBoundLongitude) == doubleToLongBits(that.eastBoundLongitude)
+                    && doubleToLongBits(this.westBoundLongitude) == doubleToLongBits(that.westBoundLongitude);
         }
         return super.equals(object);
     }
@@ -477,12 +468,10 @@ public class GeographicBoundingBoxImpl extends GeographicExtentImpl
      * @return A string representation of the given box in the given locale.
      * @since 2.2
      */
-    public static String toString(
-            final GeographicBoundingBox box, final String pattern, final Locale locale) {
+    public static String toString(final GeographicBoundingBox box, final String pattern, final Locale locale) {
         if (toString == null) {
             // No need to synchronize.
-            toString =
-                    getMethod("toString", GeographicBoundingBox.class, String.class, Locale.class);
+            toString = getMethod("toString", GeographicBoundingBox.class, String.class, Locale.class);
         }
         try {
             return String.valueOf(invoke(toString, box, pattern, locale));
@@ -497,8 +486,7 @@ public class GeographicBoundingBoxImpl extends GeographicExtentImpl
      */
     private static Method getMethod(final String name, final Class<?>... arguments) {
         try {
-            return Class.forName("org.geotools.referencing.util.BoundingBoxes")
-                    .getMethod(name, arguments);
+            return Class.forName("org.geotools.referencing.util.BoundingBoxes").getMethod(name, arguments);
         } catch (ClassNotFoundException exception) {
             throw new UnsupportedOperationException(
                     MessageFormat.format(ErrorKeys.MISSING_MODULE_$1, "referencing"), exception);
@@ -509,8 +497,7 @@ public class GeographicBoundingBoxImpl extends GeographicExtentImpl
     }
 
     /** Invokes the specified method with the specified arguments. */
-    private static Object invoke(final Method method, final Object... arguments)
-            throws InvocationTargetException {
+    private static Object invoke(final Method method, final Object... arguments) throws InvocationTargetException {
         try {
             return method.invoke(null, arguments);
         } catch (IllegalAccessException exception) {

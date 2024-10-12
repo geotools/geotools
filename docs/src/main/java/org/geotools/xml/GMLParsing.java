@@ -115,14 +115,10 @@ public class GMLParsing {
         DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         Document d = db.parse(GMLParsing.class.getResourceAsStream("states.xml"));
         d.getDocumentElement()
-                .setAttribute(
-                        "xsi:schemaLocation",
-                        "http://www.openplans.org/topp " + xsd.getCanonicalPath());
+                .setAttribute("xsi:schemaLocation", "http://www.openplans.org/topp " + xsd.getCanonicalPath());
 
         File xml = File.createTempFile("states", "xml");
-        TransformerFactory.newInstance()
-                .newTransformer()
-                .transform(new DOMSource(d), new StreamResult(xml));
+        TransformerFactory.newInstance().newTransformer().transform(new DOMSource(d), new StreamResult(xml));
         return xml;
     }
 }

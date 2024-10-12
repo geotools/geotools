@@ -46,9 +46,7 @@ public class HStore extends HashMap<String, String> {
         String prefix = "";
         for (Map.Entry<String, String> entry : entrySet()) {
             sb.append(prefix);
-            sb.append(doubleQuoteString(entry.getKey()))
-                    .append(":")
-                    .append(doubleQuoteString(entry.getValue()));
+            sb.append(doubleQuoteString(entry.getKey())).append(":").append(doubleQuoteString(entry.getValue()));
             prefix = ",";
         }
         sb.append("}");

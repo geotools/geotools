@@ -94,9 +94,7 @@ public class CategorizeFunctionTest extends SEFunctionTestBase {
         }
 
         // above last threshold
-        result =
-                fn.evaluate(
-                        feature(thresholds[thresholds.length - 1].intValue() + 1), String.class);
+        result = fn.evaluate(feature(thresholds[thresholds.length - 1].intValue() + 1), String.class);
         assertEquals(categories[categories.length - 1], result);
     }
 
@@ -128,9 +126,7 @@ public class CategorizeFunctionTest extends SEFunctionTestBase {
         }
 
         // above last threshold
-        result =
-                fn.evaluate(
-                        feature(thresholds[thresholds.length - 1].intValue() + 1), String.class);
+        result = fn.evaluate(feature(thresholds[thresholds.length - 1].intValue() + 1), String.class);
         assertEquals(categories[categories.length - 1], result);
     }
 

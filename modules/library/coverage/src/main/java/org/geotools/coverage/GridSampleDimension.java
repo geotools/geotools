@@ -142,8 +142,7 @@ public class GridSampleDimension implements SampleDimension, Serializable {
      *     dimension, as {@link String} or {@link InternationalString} objects.
      * @since 2.3
      */
-    public GridSampleDimension(
-            final CharSequence description, final CharSequence[] categoriesNames) {
+    public GridSampleDimension(final CharSequence description, final CharSequence[] categoriesNames) {
         // TODO: 'list(...)' should be inlined there if only Sun was to fix RFE #4093999
         // ("Relax constraint on placement of this()/super() call in constructors").
         this(description, list(categoriesNames), 1, 0);
@@ -178,8 +177,7 @@ public class GridSampleDimension implements SampleDimension, Serializable {
      *     {@code names}.
      * @since 2.3
      */
-    public GridSampleDimension(
-            final CharSequence description, final CharSequence[] names, final Color[] colors) {
+    public GridSampleDimension(final CharSequence description, final CharSequence[] names, final Color[] colors) {
         // TODO: 'list(...)' should be inlined there if only Sun was to fix RFE #4093999
         // ("Relax constraint on placement of this()/super() call in constructors").
         this(description, list(names, colors), 1, 0);
@@ -335,8 +333,7 @@ public class GridSampleDimension implements SampleDimension, Serializable {
             description = Vocabulary.formatInternational(VocabularyKeys.UNTITLED);
         }
         if (Double.isInfinite(minimum) || Double.isInfinite(maximum) || !(minimum < maximum)) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.BAD_RANGE_$2, minimum, maximum));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.BAD_RANGE_$2, minimum, maximum));
         }
         if (type == null) {
             type = TypeMap.getSampleDimensionType(minimum, maximum);
@@ -493,11 +490,9 @@ public class GridSampleDimension implements SampleDimension, Serializable {
                 min = ClassChanger.cast(min, classe);
                 max = ClassChanger.cast(max, classe);
                 @SuppressWarnings("unchecked")
-                final NumberRange<? extends Number> range =
-                        new NumberRange(classe, min, minIncluded, max, maxIncluded);
+                final NumberRange<? extends Number> range = new NumberRange(classe, min, minIncluded, max, maxIncluded);
                 final Color[] colors =
-                        ColorUtilities.subarray(
-                                palette, (int) Math.ceil(minimum), (int) Math.floor(maximum));
+                        ColorUtilities.subarray(palette, (int) Math.ceil(minimum), (int) Math.floor(maximum));
                 categoryList.add(new Category(description, colors, range));
                 needQuantitative = false;
             }
@@ -507,8 +502,7 @@ public class GridSampleDimension implements SampleDimension, Serializable {
          *          sample dimension appropriate for the type of palette used.
          */
         final Category[] cl = categoryList.toArray(new Category[categoryList.size()]);
-        if (ColorInterpretation.PALETTE_INDEX.equals(color)
-                || ColorInterpretation.GRAY_INDEX.equals(color)) {
+        if (ColorInterpretation.PALETTE_INDEX.equals(color) || ColorInterpretation.GRAY_INDEX.equals(color)) {
             return list(cl, unit);
         }
         throw new UnsupportedOperationException("Not yet implemented");
@@ -555,8 +549,7 @@ public class GridSampleDimension implements SampleDimension, Serializable {
      *     {@link #getDescription}.
      * @param list The list of categories, or {@code null}.
      */
-    private GridSampleDimension(
-            final CharSequence description, final CategoryList list, double scale, double offset) {
+    private GridSampleDimension(final CharSequence description, final CategoryList list, double scale, double offset) {
         /*
          * Checks the supplied description to see if it is null. In such a case it builds up a new
          * description by using the list of categories supplied. This second description may be less
@@ -620,8 +613,7 @@ public class GridSampleDimension implements SampleDimension, Serializable {
         }
     }
 
-    public GridSampleDimension(
-            String description, Category[] categories, double scale, double offset) {
+    public GridSampleDimension(String description, Category[] categories, double scale, double offset) {
         this(description, list(categories, null), scale, offset);
     }
 
@@ -895,8 +887,7 @@ public class GridSampleDimension implements SampleDimension, Serializable {
      * Returns {@code true} if at least one value of {@code values} is in the range {@code lower}
      * inclusive to {@code upper} exclusive.
      */
-    private static boolean rangeContains(
-            final double lower, final double upper, final double[] values) {
+    private static boolean rangeContains(final double lower, final double upper, final double[] values) {
         if (values != null) {
             for (final double v : values) {
                 if (v >= lower && v < upper) {
@@ -1097,8 +1088,7 @@ public class GridSampleDimension implements SampleDimension, Serializable {
             final GridSampleDimension that = (GridSampleDimension) object;
             // two dimensions are equal if they have de same description (name)
             // and same categories lists
-            return this.description.equals(that.description)
-                    && Utilities.equals(this.categories, that.categories);
+            return this.description.equals(that.description) && Utilities.equals(this.categories, that.categories);
         }
         return false;
     }

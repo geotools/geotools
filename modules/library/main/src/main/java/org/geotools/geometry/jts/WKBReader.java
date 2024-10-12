@@ -90,8 +90,7 @@ public class WKBReader {
 
         for (int i = 0; i < hex.length() / 2; i++) {
             int i2 = 2 * i;
-            if (i2 + 1 > hex.length())
-                throw new IllegalArgumentException("Hex string has odd length");
+            if (i2 + 1 > hex.length()) throw new IllegalArgumentException("Hex string has odd length");
 
             int nib1 = hexToInt(hex.charAt(i2));
             int nib0 = hexToInt(hex.charAt(i2 + 1));
@@ -176,9 +175,7 @@ public class WKBReader {
         byte byteOrderWKB = dis.readByte();
         // always set byte order, since it may change from geometry to geometry
         int byteOrder =
-                byteOrderWKB == WKBConstants.wkbNDR
-                        ? ByteOrderValues.LITTLE_ENDIAN
-                        : ByteOrderValues.BIG_ENDIAN;
+                byteOrderWKB == WKBConstants.wkbNDR ? ByteOrderValues.LITTLE_ENDIAN : ByteOrderValues.BIG_ENDIAN;
         dis.setOrder(byteOrder);
 
         int typeInt = dis.readInt();
@@ -288,8 +285,7 @@ public class WKBReader {
         List<LineString> geoms = new ArrayList<>();
         for (int i = 0; i < numGeom; i++) {
             Geometry g = readGeometry();
-            if (!(g instanceof LineString))
-                throw new ParseException(INVALID_GEOM_TYPE_MSG + "CompoundCurve");
+            if (!(g instanceof LineString)) throw new ParseException(INVALID_GEOM_TYPE_MSG + "CompoundCurve");
             geoms.add((LineString) g);
         }
         return factory.createCurvedGeometry(geoms);
@@ -366,8 +362,7 @@ public class WKBReader {
         Point[] geoms = new Point[numGeom];
         for (int i = 0; i < numGeom; i++) {
             Geometry g = readGeometry();
-            if (!(g instanceof Point))
-                throw new ParseException(INVALID_GEOM_TYPE_MSG + "MultiPoint");
+            if (!(g instanceof Point)) throw new ParseException(INVALID_GEOM_TYPE_MSG + "MultiPoint");
             geoms[i] = (Point) g;
         }
         return factory.createMultiPoint(geoms);
@@ -378,8 +373,7 @@ public class WKBReader {
         LineString[] geoms = new LineString[numGeom];
         for (int i = 0; i < numGeom; i++) {
             Geometry g = readGeometry();
-            if (!(g instanceof LineString))
-                throw new ParseException(INVALID_GEOM_TYPE_MSG + "MultiLineString");
+            if (!(g instanceof LineString)) throw new ParseException(INVALID_GEOM_TYPE_MSG + "MultiLineString");
             geoms[i] = (LineString) g;
         }
         return factory.createMultiLineString(geoms);
@@ -390,8 +384,7 @@ public class WKBReader {
         Polygon[] geoms = new Polygon[numGeom];
         for (int i = 0; i < numGeom; i++) {
             Geometry g = readGeometry();
-            if (!(g instanceof Polygon))
-                throw new ParseException(INVALID_GEOM_TYPE_MSG + "MultiPolygon");
+            if (!(g instanceof Polygon)) throw new ParseException(INVALID_GEOM_TYPE_MSG + "MultiPolygon");
             geoms[i] = (Polygon) g;
         }
         return factory.createMultiPolygon(geoms);
@@ -423,24 +416,21 @@ public class WKBReader {
         return seq;
     }
 
-    private CoordinateSequence readCoordinateSequenceCircularString(int size)
-            throws IOException, ParseException {
+    private CoordinateSequence readCoordinateSequenceCircularString(int size) throws IOException, ParseException {
         CoordinateSequence seq = readCoordinateSequence(size);
         if (isStrict) return seq;
         if (seq.size() == 0 || seq.size() >= 3) return seq;
         return CoordinateSequences.extend(csFactory, seq, 3);
     }
 
-    private CoordinateSequence readCoordinateSequenceLineString(int size)
-            throws IOException, ParseException {
+    private CoordinateSequence readCoordinateSequenceLineString(int size) throws IOException, ParseException {
         CoordinateSequence seq = readCoordinateSequence(size);
         if (isStrict) return seq;
         if (seq.size() == 0 || seq.size() >= 2) return seq;
         return CoordinateSequences.extend(csFactory, seq, 2);
     }
 
-    private CoordinateSequence readCoordinateSequenceRing(int size)
-            throws IOException, ParseException {
+    private CoordinateSequence readCoordinateSequenceRing(int size) throws IOException, ParseException {
         CoordinateSequence seq = readCoordinateSequence(size);
         if (isStrict) return seq;
         if (CoordinateSequences.isRing(seq)) return seq;

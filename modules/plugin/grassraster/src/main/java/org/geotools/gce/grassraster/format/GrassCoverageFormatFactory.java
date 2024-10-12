@@ -32,8 +32,7 @@ import org.geotools.coverage.grid.io.GridFormatFactorySpi;
 public class GrassCoverageFormatFactory implements GridFormatFactorySpi {
 
     /** Logger. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(GrassCoverageFormatFactory.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(GrassCoverageFormatFactory.class);
 
     /**
      * Creates a new instance of GrassCoverageFormat

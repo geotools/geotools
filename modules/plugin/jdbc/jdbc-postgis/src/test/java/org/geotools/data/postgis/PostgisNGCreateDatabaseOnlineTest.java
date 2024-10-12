@@ -57,26 +57,21 @@ public class PostgisNGCreateDatabaseOnlineTest extends OnlineTestCase {
 
         try (Connection cx = DriverManager.getConnection(url, user, password);
                 Statement st = cx.createStatement()) {
-            try (ResultSet rs =
-                    st.executeQuery(
-                            "select rolcreatedb from pg_authid where rolname = '" + user + "'")) {
+            try (ResultSet rs = st.executeQuery("select rolcreatedb from pg_authid where rolname = '" + user + "'")) {
                 boolean canCreate = false;
                 if (rs.next()) {
                     canCreate = rs.getBoolean(1);
                 }
 
                 if (!canCreate) {
-                    System.out.println(
-                            "User " + user + " has no database creation options, skipping test");
+                    System.out.println("User " + user + " has no database creation options, skipping test");
                     return false;
                 }
             }
 
             // creation options available, let's check if we have the postgis extension available
             // then
-            try (ResultSet rs =
-                    st.executeQuery(
-                            "select * from pg_available_extensions where name = 'postgis'")) {
+            try (ResultSet rs = st.executeQuery("select * from pg_available_extensions where name = 'postgis'")) {
                 boolean hasPostgisExtension = false;
                 if (rs.next()) {
                     hasPostgisExtension = true;
@@ -90,9 +85,7 @@ public class PostgisNGCreateDatabaseOnlineTest extends OnlineTestCase {
             }
 
             // drop the database if available
-            try (ResultSet rs =
-                    st.executeQuery(
-                            "select * from pg_database where datname = 'create_drop_testdb'")) {
+            try (ResultSet rs = st.executeQuery("select * from pg_database where datname = 'create_drop_testdb'")) {
                 boolean databaseExists = rs.next();
 
                 if (databaseExists) {
@@ -129,8 +122,7 @@ public class PostgisNGCreateDatabaseOnlineTest extends OnlineTestCase {
         // force database creation and check the store functions
         JDBCDataStore store = factory.createDataStore(params);
         assertNotNull(store);
-        store.createSchema(
-                DataUtilities.createType("test", "id:String,polygonProperty:Polygon:srid=32615"));
+        store.createSchema(DataUtilities.createType("test", "id:String,polygonProperty:Polygon:srid=32615"));
         store.getSchema("test");
 
         // now disconnect and drop

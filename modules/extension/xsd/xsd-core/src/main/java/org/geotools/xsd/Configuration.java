@@ -295,12 +295,9 @@ public abstract class Configuration {
             }
         }
 
-        PriorityQueue<DepNode> q =
-                new PriorityQueue<>(
-                        g.nodes.size(),
-                        (o1, o2) ->
-                                Integer.valueOf(o1.outgoing().size())
-                                        .compareTo(o2.outgoing().size()));
+        PriorityQueue<DepNode> q = new PriorityQueue<>(
+                g.nodes.size(), (o1, o2) -> Integer.valueOf(o1.outgoing().size())
+                        .compareTo(o2.outgoing().size()));
         for (DepNode n : g.nodes.values()) {
             q.add(n);
         }
@@ -336,12 +333,10 @@ public abstract class Configuration {
     public <C extends Configuration> C getDependency(Class<C> clazz) {
         List dependencies = allDependencies();
         @SuppressWarnings("unchecked")
-        C cast =
-                (C)
-                        dependencies.stream()
-                                .filter(dep -> clazz.isInstance(dep))
-                                .findFirst()
-                                .orElse(null);
+        C cast = (C) dependencies.stream()
+                .filter(dep -> clazz.isInstance(dep))
+                .findFirst()
+                .orElse(null);
         return cast;
     }
 

@@ -45,8 +45,7 @@ public class AnchorPointImpl implements org.geotools.api.style.AnchorPoint, Clon
     static final FilterFactory ff = CommonFactoryFinder.getFilterFactory();
 
     static final AnchorPoint DEFAULT =
-            new AnchorPointImpl(
-                    ff, ConstantExpression.constant(0.5), ConstantExpression.constant(0.5)) {
+            new AnchorPointImpl(ff, ConstantExpression.constant(0.5), ConstantExpression.constant(0.5)) {
                 private void cannotModifyConstant() {
                     throw new UnsupportedOperationException("Constant Stroke may not be modified");
                 }

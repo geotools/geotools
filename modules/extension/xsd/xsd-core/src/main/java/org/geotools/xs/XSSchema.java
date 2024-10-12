@@ -52,15 +52,14 @@ public class XSSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final AttributeType ANYTYPE_TYPE =
-            new AttributeTypeImpl(
-                    new NameImpl("http://www.w3.org/2001/XMLSchema", "anyType"),
-                    java.lang.Object.class,
-                    false,
-                    false,
-                    Collections.emptyList(),
-                    null,
-                    null);
+    public static final AttributeType ANYTYPE_TYPE = new AttributeTypeImpl(
+            new NameImpl("http://www.w3.org/2001/XMLSchema", "anyType"),
+            java.lang.Object.class,
+            false,
+            false,
+            Collections.emptyList(),
+            null,
+            null);
 
     /**
      *
@@ -76,15 +75,14 @@ public class XSSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final AttributeType ANYSIMPLETYPE_TYPE =
-            new AttributeTypeImpl(
-                    new NameImpl("http://www.w3.org/2001/XMLSchema", "anySimpleType"),
-                    java.lang.Object.class,
-                    false,
-                    false,
-                    Collections.emptyList(),
-                    ANYTYPE_TYPE,
-                    null);
+    public static final AttributeType ANYSIMPLETYPE_TYPE = new AttributeTypeImpl(
+            new NameImpl("http://www.w3.org/2001/XMLSchema", "anySimpleType"),
+            java.lang.Object.class,
+            false,
+            false,
+            Collections.emptyList(),
+            ANYTYPE_TYPE,
+            null);
 
     /**
      *
@@ -123,15 +121,14 @@ public class XSSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final AttributeType NOTATION_TYPE =
-            new AttributeTypeImpl(
-                    new NameImpl("http://www.w3.org/2001/XMLSchema", "NOTATION"),
-                    java.lang.Object.class,
-                    false,
-                    false,
-                    Collections.emptyList(),
-                    ANYSIMPLETYPE_TYPE,
-                    null);
+    public static final AttributeType NOTATION_TYPE = new AttributeTypeImpl(
+            new NameImpl("http://www.w3.org/2001/XMLSchema", "NOTATION"),
+            java.lang.Object.class,
+            false,
+            false,
+            Collections.emptyList(),
+            ANYSIMPLETYPE_TYPE,
+            null);
 
     /**
      *
@@ -167,15 +164,14 @@ public class XSSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final AttributeType DECIMAL_TYPE =
-            new AttributeTypeImpl(
-                    new NameImpl("http://www.w3.org/2001/XMLSchema", "decimal"),
-                    BigDecimal.class,
-                    false,
-                    false,
-                    Collections.emptyList(),
-                    ANYSIMPLETYPE_TYPE,
-                    null);
+    public static final AttributeType DECIMAL_TYPE = new AttributeTypeImpl(
+            new NameImpl("http://www.w3.org/2001/XMLSchema", "decimal"),
+            BigDecimal.class,
+            false,
+            false,
+            Collections.emptyList(),
+            ANYSIMPLETYPE_TYPE,
+            null);
 
     /**
      *
@@ -197,15 +193,14 @@ public class XSSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final AttributeType INTEGER_TYPE =
-            new AttributeTypeImpl(
-                    new NameImpl("http://www.w3.org/2001/XMLSchema", "integer"),
-                    BigInteger.class,
-                    false,
-                    false,
-                    Collections.emptyList(),
-                    DECIMAL_TYPE,
-                    null);
+    public static final AttributeType INTEGER_TYPE = new AttributeTypeImpl(
+            new NameImpl("http://www.w3.org/2001/XMLSchema", "integer"),
+            BigInteger.class,
+            false,
+            false,
+            Collections.emptyList(),
+            DECIMAL_TYPE,
+            null);
 
     /**
      *
@@ -226,15 +221,14 @@ public class XSSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final AttributeType NONNEGATIVEINTEGER_TYPE =
-            new AttributeTypeImpl(
-                    new NameImpl("http://www.w3.org/2001/XMLSchema", "nonNegativeInteger"),
-                    BigInteger.class,
-                    false,
-                    false,
-                    Collections.emptyList(),
-                    INTEGER_TYPE,
-                    null);
+    public static final AttributeType NONNEGATIVEINTEGER_TYPE = new AttributeTypeImpl(
+            new NameImpl("http://www.w3.org/2001/XMLSchema", "nonNegativeInteger"),
+            BigInteger.class,
+            false,
+            false,
+            Collections.emptyList(),
+            INTEGER_TYPE,
+            null);
 
     /**
      *
@@ -259,15 +253,14 @@ public class XSSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final AttributeType UNSIGNEDLONG_TYPE =
-            new AttributeTypeImpl(
-                    new NameImpl("http://www.w3.org/2001/XMLSchema", "unsignedLong"),
-                    BigInteger.class,
-                    false,
-                    false,
-                    Collections.emptyList(),
-                    NONNEGATIVEINTEGER_TYPE,
-                    null);
+    public static final AttributeType UNSIGNEDLONG_TYPE = new AttributeTypeImpl(
+            new NameImpl("http://www.w3.org/2001/XMLSchema", "unsignedLong"),
+            BigInteger.class,
+            false,
+            false,
+            Collections.emptyList(),
+            NONNEGATIVEINTEGER_TYPE,
+            null);
 
     /**
      *
@@ -288,15 +281,14 @@ public class XSSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final AttributeType UNSIGNEDINT_TYPE =
-            new AttributeTypeImpl(
-                    new NameImpl("http://www.w3.org/2001/XMLSchema", "unsignedInt"),
-                    Long.class,
-                    false,
-                    false,
-                    Collections.emptyList(),
-                    UNSIGNEDLONG_TYPE,
-                    null);
+    public static final AttributeType UNSIGNEDINT_TYPE = new AttributeTypeImpl(
+            new NameImpl("http://www.w3.org/2001/XMLSchema", "unsignedInt"),
+            Long.class,
+            false,
+            false,
+            Collections.emptyList(),
+            UNSIGNEDLONG_TYPE,
+            null);
 
     /**
      *
@@ -317,15 +309,14 @@ public class XSSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final AttributeType UNSIGNEDSHORT_TYPE =
-            new AttributeTypeImpl(
-                    new NameImpl("http://www.w3.org/2001/XMLSchema", "unsignedShort"),
-                    Integer.class,
-                    false,
-                    false,
-                    Collections.emptyList(),
-                    UNSIGNEDINT_TYPE,
-                    null);
+    public static final AttributeType UNSIGNEDSHORT_TYPE = new AttributeTypeImpl(
+            new NameImpl("http://www.w3.org/2001/XMLSchema", "unsignedShort"),
+            Integer.class,
+            false,
+            false,
+            Collections.emptyList(),
+            UNSIGNEDINT_TYPE,
+            null);
 
     /**
      *
@@ -346,15 +337,14 @@ public class XSSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final AttributeType UNSIGNEDBYTE_TYPE =
-            new AttributeTypeImpl(
-                    new NameImpl("http://www.w3.org/2001/XMLSchema", "unsignedByte"),
-                    Short.class,
-                    false,
-                    false,
-                    Collections.emptyList(),
-                    UNSIGNEDSHORT_TYPE,
-                    null);
+    public static final AttributeType UNSIGNEDBYTE_TYPE = new AttributeTypeImpl(
+            new NameImpl("http://www.w3.org/2001/XMLSchema", "unsignedByte"),
+            Short.class,
+            false,
+            false,
+            Collections.emptyList(),
+            UNSIGNEDSHORT_TYPE,
+            null);
 
     /**
      *
@@ -387,15 +377,14 @@ public class XSSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final AttributeType QNAME_TYPE =
-            new AttributeTypeImpl(
-                    new NameImpl("http://www.w3.org/2001/XMLSchema", "QName"),
-                    QName.class,
-                    false,
-                    false,
-                    Collections.emptyList(),
-                    ANYSIMPLETYPE_TYPE,
-                    null);
+    public static final AttributeType QNAME_TYPE = new AttributeTypeImpl(
+            new NameImpl("http://www.w3.org/2001/XMLSchema", "QName"),
+            QName.class,
+            false,
+            false,
+            Collections.emptyList(),
+            ANYSIMPLETYPE_TYPE,
+            null);
 
     /**
      *
@@ -428,15 +417,14 @@ public class XSSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final AttributeType STRING_TYPE =
-            new AttributeTypeImpl(
-                    new NameImpl("http://www.w3.org/2001/XMLSchema", "string"),
-                    String.class,
-                    false,
-                    false,
-                    Collections.emptyList(),
-                    ANYSIMPLETYPE_TYPE,
-                    null);
+    public static final AttributeType STRING_TYPE = new AttributeTypeImpl(
+            new NameImpl("http://www.w3.org/2001/XMLSchema", "string"),
+            String.class,
+            false,
+            false,
+            Collections.emptyList(),
+            ANYSIMPLETYPE_TYPE,
+            null);
 
     /**
      *
@@ -457,15 +445,14 @@ public class XSSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final AttributeType NORMALIZEDSTRING_TYPE =
-            new AttributeTypeImpl(
-                    new NameImpl("http://www.w3.org/2001/XMLSchema", "normalizedString"),
-                    java.lang.Object.class,
-                    false,
-                    false,
-                    Collections.emptyList(),
-                    STRING_TYPE,
-                    null);
+    public static final AttributeType NORMALIZEDSTRING_TYPE = new AttributeTypeImpl(
+            new NameImpl("http://www.w3.org/2001/XMLSchema", "normalizedString"),
+            java.lang.Object.class,
+            false,
+            false,
+            Collections.emptyList(),
+            STRING_TYPE,
+            null);
 
     /**
      *
@@ -486,15 +473,14 @@ public class XSSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final AttributeType TOKEN_TYPE =
-            new AttributeTypeImpl(
-                    new NameImpl("http://www.w3.org/2001/XMLSchema", "token"),
-                    java.lang.Object.class,
-                    false,
-                    false,
-                    Collections.emptyList(),
-                    NORMALIZEDSTRING_TYPE,
-                    null);
+    public static final AttributeType TOKEN_TYPE = new AttributeTypeImpl(
+            new NameImpl("http://www.w3.org/2001/XMLSchema", "token"),
+            java.lang.Object.class,
+            false,
+            false,
+            Collections.emptyList(),
+            NORMALIZEDSTRING_TYPE,
+            null);
 
     /**
      *
@@ -521,15 +507,14 @@ public class XSSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final AttributeType NAME_TYPE =
-            new AttributeTypeImpl(
-                    new NameImpl("http://www.w3.org/2001/XMLSchema", "Name"),
-                    java.lang.Object.class,
-                    false,
-                    false,
-                    Collections.emptyList(),
-                    TOKEN_TYPE,
-                    null);
+    public static final AttributeType NAME_TYPE = new AttributeTypeImpl(
+            new NameImpl("http://www.w3.org/2001/XMLSchema", "Name"),
+            java.lang.Object.class,
+            false,
+            false,
+            Collections.emptyList(),
+            TOKEN_TYPE,
+            null);
 
     /**
      *
@@ -556,15 +541,14 @@ public class XSSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final AttributeType NCNAME_TYPE =
-            new AttributeTypeImpl(
-                    new NameImpl("http://www.w3.org/2001/XMLSchema", "NCName"),
-                    java.lang.Object.class,
-                    false,
-                    false,
-                    Collections.emptyList(),
-                    NAME_TYPE,
-                    null);
+    public static final AttributeType NCNAME_TYPE = new AttributeTypeImpl(
+            new NameImpl("http://www.w3.org/2001/XMLSchema", "NCName"),
+            java.lang.Object.class,
+            false,
+            false,
+            Collections.emptyList(),
+            NAME_TYPE,
+            null);
 
     /**
      *
@@ -583,15 +567,14 @@ public class XSSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final AttributeType ENTITY_TYPE =
-            new AttributeTypeImpl(
-                    new NameImpl("http://www.w3.org/2001/XMLSchema", "ENTITY"),
-                    java.lang.Object.class,
-                    false,
-                    false,
-                    Collections.emptyList(),
-                    NCNAME_TYPE,
-                    null);
+    public static final AttributeType ENTITY_TYPE = new AttributeTypeImpl(
+            new NameImpl("http://www.w3.org/2001/XMLSchema", "ENTITY"),
+            java.lang.Object.class,
+            false,
+            false,
+            Collections.emptyList(),
+            NCNAME_TYPE,
+            null);
 
     /**
      *
@@ -627,15 +610,14 @@ public class XSSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final AttributeType SIMPLEDERIVATIONSET_TYPE =
-            new AttributeTypeImpl(
-                    new NameImpl("http://www.w3.org/2001/XMLSchema", "simpleDerivationSet"),
-                    java.lang.Object.class,
-                    false,
-                    false,
-                    Collections.emptyList(),
-                    ANYSIMPLETYPE_TYPE,
-                    null);
+    public static final AttributeType SIMPLEDERIVATIONSET_TYPE = new AttributeTypeImpl(
+            new NameImpl("http://www.w3.org/2001/XMLSchema", "simpleDerivationSet"),
+            java.lang.Object.class,
+            false,
+            false,
+            Collections.emptyList(),
+            ANYSIMPLETYPE_TYPE,
+            null);
 
     /**
      *
@@ -657,15 +639,14 @@ public class XSSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final AttributeType PUBLIC_TYPE =
-            new AttributeTypeImpl(
-                    new NameImpl("http://www.w3.org/2001/XMLSchema", "public"),
-                    java.lang.Object.class,
-                    false,
-                    false,
-                    Collections.emptyList(),
-                    TOKEN_TYPE,
-                    null);
+    public static final AttributeType PUBLIC_TYPE = new AttributeTypeImpl(
+            new NameImpl("http://www.w3.org/2001/XMLSchema", "public"),
+            java.lang.Object.class,
+            false,
+            false,
+            Collections.emptyList(),
+            TOKEN_TYPE,
+            null);
 
     /**
      *
@@ -693,15 +674,14 @@ public class XSSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final AttributeType LANGUAGE_TYPE =
-            new AttributeTypeImpl(
-                    new NameImpl("http://www.w3.org/2001/XMLSchema", "language"),
-                    java.lang.Object.class,
-                    false,
-                    false,
-                    Collections.emptyList(),
-                    TOKEN_TYPE,
-                    null);
+    public static final AttributeType LANGUAGE_TYPE = new AttributeTypeImpl(
+            new NameImpl("http://www.w3.org/2001/XMLSchema", "language"),
+            java.lang.Object.class,
+            false,
+            false,
+            Collections.emptyList(),
+            TOKEN_TYPE,
+            null);
 
     /**
      *
@@ -735,15 +715,14 @@ public class XSSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final AttributeType DURATION_TYPE =
-            new AttributeTypeImpl(
-                    new NameImpl("http://www.w3.org/2001/XMLSchema", "duration"),
-                    java.lang.Object.class,
-                    false,
-                    false,
-                    Collections.emptyList(),
-                    ANYSIMPLETYPE_TYPE,
-                    null);
+    public static final AttributeType DURATION_TYPE = new AttributeTypeImpl(
+            new NameImpl("http://www.w3.org/2001/XMLSchema", "duration"),
+            java.lang.Object.class,
+            false,
+            false,
+            Collections.emptyList(),
+            ANYSIMPLETYPE_TYPE,
+            null);
 
     /**
      *
@@ -783,15 +762,14 @@ public class XSSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final AttributeType BLOCKSET_TYPE =
-            new AttributeTypeImpl(
-                    new NameImpl("http://www.w3.org/2001/XMLSchema", "blockSet"),
-                    java.lang.Object.class,
-                    false,
-                    false,
-                    Collections.emptyList(),
-                    ANYSIMPLETYPE_TYPE,
-                    null);
+    public static final AttributeType BLOCKSET_TYPE = new AttributeTypeImpl(
+            new NameImpl("http://www.w3.org/2001/XMLSchema", "blockSet"),
+            java.lang.Object.class,
+            false,
+            false,
+            Collections.emptyList(),
+            ANYSIMPLETYPE_TYPE,
+            null);
 
     /**
      *
@@ -825,15 +803,14 @@ public class XSSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final AttributeType FLOAT_TYPE =
-            new AttributeTypeImpl(
-                    new NameImpl("http://www.w3.org/2001/XMLSchema", "float"),
-                    Float.class,
-                    false,
-                    false,
-                    Collections.emptyList(),
-                    ANYSIMPLETYPE_TYPE,
-                    null);
+    public static final AttributeType FLOAT_TYPE = new AttributeTypeImpl(
+            new NameImpl("http://www.w3.org/2001/XMLSchema", "float"),
+            Float.class,
+            false,
+            false,
+            Collections.emptyList(),
+            ANYSIMPLETYPE_TYPE,
+            null);
 
     /**
      *
@@ -867,15 +844,14 @@ public class XSSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final AttributeType DATETIME_TYPE =
-            new AttributeTypeImpl(
-                    new NameImpl("http://www.w3.org/2001/XMLSchema", "dateTime"),
-                    Timestamp.class,
-                    false,
-                    false,
-                    Collections.emptyList(),
-                    ANYSIMPLETYPE_TYPE,
-                    null);
+    public static final AttributeType DATETIME_TYPE = new AttributeTypeImpl(
+            new NameImpl("http://www.w3.org/2001/XMLSchema", "dateTime"),
+            Timestamp.class,
+            false,
+            false,
+            Collections.emptyList(),
+            ANYSIMPLETYPE_TYPE,
+            null);
 
     /**
      *
@@ -909,15 +885,14 @@ public class XSSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final AttributeType GYEARMONTH_TYPE =
-            new AttributeTypeImpl(
-                    new NameImpl("http://www.w3.org/2001/XMLSchema", "gYearMonth"),
-                    java.lang.Object.class,
-                    false,
-                    false,
-                    Collections.emptyList(),
-                    ANYSIMPLETYPE_TYPE,
-                    null);
+    public static final AttributeType GYEARMONTH_TYPE = new AttributeTypeImpl(
+            new NameImpl("http://www.w3.org/2001/XMLSchema", "gYearMonth"),
+            java.lang.Object.class,
+            false,
+            false,
+            Collections.emptyList(),
+            ANYSIMPLETYPE_TYPE,
+            null);
 
     /**
      *
@@ -936,15 +911,14 @@ public class XSSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final AttributeType ID_TYPE =
-            new AttributeTypeImpl(
-                    new NameImpl("http://www.w3.org/2001/XMLSchema", "ID"),
-                    java.lang.Object.class,
-                    false,
-                    false,
-                    Collections.emptyList(),
-                    NCNAME_TYPE,
-                    null);
+    public static final AttributeType ID_TYPE = new AttributeTypeImpl(
+            new NameImpl("http://www.w3.org/2001/XMLSchema", "ID"),
+            java.lang.Object.class,
+            false,
+            false,
+            Collections.emptyList(),
+            NCNAME_TYPE,
+            null);
 
     /**
      *
@@ -971,15 +945,14 @@ public class XSSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final AttributeType NMTOKEN_TYPE =
-            new AttributeTypeImpl(
-                    new NameImpl("http://www.w3.org/2001/XMLSchema", "NMTOKEN"),
-                    java.lang.Object.class,
-                    false,
-                    false,
-                    Collections.emptyList(),
-                    TOKEN_TYPE,
-                    null);
+    public static final AttributeType NMTOKEN_TYPE = new AttributeTypeImpl(
+            new NameImpl("http://www.w3.org/2001/XMLSchema", "NMTOKEN"),
+            java.lang.Object.class,
+            false,
+            false,
+            Collections.emptyList(),
+            TOKEN_TYPE,
+            null);
 
     /**
      *
@@ -1005,15 +978,14 @@ public class XSSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final AttributeType DERIVATIONCONTROL_TYPE =
-            new AttributeTypeImpl(
-                    new NameImpl("http://www.w3.org/2001/XMLSchema", "derivationControl"),
-                    java.lang.Object.class,
-                    false,
-                    false,
-                    Collections.emptyList(),
-                    NMTOKEN_TYPE,
-                    null);
+    public static final AttributeType DERIVATIONCONTROL_TYPE = new AttributeTypeImpl(
+            new NameImpl("http://www.w3.org/2001/XMLSchema", "derivationControl"),
+            java.lang.Object.class,
+            false,
+            false,
+            Collections.emptyList(),
+            NMTOKEN_TYPE,
+            null);
 
     /**
      *
@@ -1036,15 +1008,14 @@ public class XSSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final AttributeType REDUCEDDERIVATIONCONTROL_TYPE =
-            new AttributeTypeImpl(
-                    new NameImpl("http://www.w3.org/2001/XMLSchema", "reducedDerivationControl"),
-                    java.lang.Object.class,
-                    false,
-                    false,
-                    Collections.emptyList(),
-                    DERIVATIONCONTROL_TYPE,
-                    null);
+    public static final AttributeType REDUCEDDERIVATIONCONTROL_TYPE = new AttributeTypeImpl(
+            new NameImpl("http://www.w3.org/2001/XMLSchema", "reducedDerivationControl"),
+            java.lang.Object.class,
+            false,
+            false,
+            Collections.emptyList(),
+            DERIVATIONCONTROL_TYPE,
+            null);
 
     /**
      *
@@ -1065,15 +1036,14 @@ public class XSSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final AttributeType NONPOSITIVEINTEGER_TYPE =
-            new AttributeTypeImpl(
-                    new NameImpl("http://www.w3.org/2001/XMLSchema", "nonPositiveInteger"),
-                    BigInteger.class,
-                    false,
-                    false,
-                    Collections.emptyList(),
-                    INTEGER_TYPE,
-                    null);
+    public static final AttributeType NONPOSITIVEINTEGER_TYPE = new AttributeTypeImpl(
+            new NameImpl("http://www.w3.org/2001/XMLSchema", "nonPositiveInteger"),
+            BigInteger.class,
+            false,
+            false,
+            Collections.emptyList(),
+            INTEGER_TYPE,
+            null);
 
     /**
      *
@@ -1094,15 +1064,14 @@ public class XSSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final AttributeType NEGATIVEINTEGER_TYPE =
-            new AttributeTypeImpl(
-                    new NameImpl("http://www.w3.org/2001/XMLSchema", "negativeInteger"),
-                    BigInteger.class,
-                    false,
-                    false,
-                    Collections.emptyList(),
-                    NONPOSITIVEINTEGER_TYPE,
-                    null);
+    public static final AttributeType NEGATIVEINTEGER_TYPE = new AttributeTypeImpl(
+            new NameImpl("http://www.w3.org/2001/XMLSchema", "negativeInteger"),
+            BigInteger.class,
+            false,
+            false,
+            Collections.emptyList(),
+            NONPOSITIVEINTEGER_TYPE,
+            null);
 
     /**
      *
@@ -1136,15 +1105,14 @@ public class XSSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final AttributeType GMONTH_TYPE =
-            new AttributeTypeImpl(
-                    new NameImpl("http://www.w3.org/2001/XMLSchema", "gMonth"),
-                    java.lang.Object.class,
-                    false,
-                    false,
-                    Collections.emptyList(),
-                    ANYSIMPLETYPE_TYPE,
-                    null);
+    public static final AttributeType GMONTH_TYPE = new AttributeTypeImpl(
+            new NameImpl("http://www.w3.org/2001/XMLSchema", "gMonth"),
+            java.lang.Object.class,
+            false,
+            false,
+            Collections.emptyList(),
+            ANYSIMPLETYPE_TYPE,
+            null);
 
     /**
      *
@@ -1167,15 +1135,14 @@ public class XSSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final AttributeType FORMCHOICE_TYPE =
-            new AttributeTypeImpl(
-                    new NameImpl("http://www.w3.org/2001/XMLSchema", "formChoice"),
-                    java.lang.Object.class,
-                    false,
-                    false,
-                    Collections.emptyList(),
-                    NMTOKEN_TYPE,
-                    null);
+    public static final AttributeType FORMCHOICE_TYPE = new AttributeTypeImpl(
+            new NameImpl("http://www.w3.org/2001/XMLSchema", "formChoice"),
+            java.lang.Object.class,
+            false,
+            false,
+            Collections.emptyList(),
+            NMTOKEN_TYPE,
+            null);
 
     /**
      *
@@ -1196,15 +1163,14 @@ public class XSSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final AttributeType POSITIVEINTEGER_TYPE =
-            new AttributeTypeImpl(
-                    new NameImpl("http://www.w3.org/2001/XMLSchema", "positiveInteger"),
-                    BigInteger.class,
-                    false,
-                    false,
-                    Collections.emptyList(),
-                    NONNEGATIVEINTEGER_TYPE,
-                    null);
+    public static final AttributeType POSITIVEINTEGER_TYPE = new AttributeTypeImpl(
+            new NameImpl("http://www.w3.org/2001/XMLSchema", "positiveInteger"),
+            BigInteger.class,
+            false,
+            false,
+            Collections.emptyList(),
+            NONNEGATIVEINTEGER_TYPE,
+            null);
 
     /**
      *
@@ -1237,15 +1203,14 @@ public class XSSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final AttributeType BASE64BINARY_TYPE =
-            new AttributeTypeImpl(
-                    new NameImpl("http://www.w3.org/2001/XMLSchema", "base64Binary"),
-                    java.lang.Object.class,
-                    false,
-                    false,
-                    Collections.emptyList(),
-                    ANYSIMPLETYPE_TYPE,
-                    null);
+    public static final AttributeType BASE64BINARY_TYPE = new AttributeTypeImpl(
+            new NameImpl("http://www.w3.org/2001/XMLSchema", "base64Binary"),
+            java.lang.Object.class,
+            false,
+            false,
+            Collections.emptyList(),
+            ANYSIMPLETYPE_TYPE,
+            null);
 
     /**
      *
@@ -1279,15 +1244,14 @@ public class XSSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final AttributeType DOUBLE_TYPE =
-            new AttributeTypeImpl(
-                    new NameImpl("http://www.w3.org/2001/XMLSchema", "double"),
-                    Double.class,
-                    false,
-                    false,
-                    Collections.emptyList(),
-                    ANYSIMPLETYPE_TYPE,
-                    null);
+    public static final AttributeType DOUBLE_TYPE = new AttributeTypeImpl(
+            new NameImpl("http://www.w3.org/2001/XMLSchema", "double"),
+            Double.class,
+            false,
+            false,
+            Collections.emptyList(),
+            ANYSIMPLETYPE_TYPE,
+            null);
 
     /**
      *
@@ -1328,15 +1292,14 @@ public class XSSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final AttributeType NAMESPACELIST_TYPE =
-            new AttributeTypeImpl(
-                    new NameImpl("http://www.w3.org/2001/XMLSchema", "namespaceList"),
-                    java.lang.Object.class,
-                    false,
-                    false,
-                    Collections.emptyList(),
-                    ANYSIMPLETYPE_TYPE,
-                    null);
+    public static final AttributeType NAMESPACELIST_TYPE = new AttributeTypeImpl(
+            new NameImpl("http://www.w3.org/2001/XMLSchema", "namespaceList"),
+            java.lang.Object.class,
+            false,
+            false,
+            Collections.emptyList(),
+            ANYSIMPLETYPE_TYPE,
+            null);
 
     /**
      *
@@ -1370,15 +1333,14 @@ public class XSSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final AttributeType GYEAR_TYPE =
-            new AttributeTypeImpl(
-                    new NameImpl("http://www.w3.org/2001/XMLSchema", "gYear"),
-                    java.lang.Object.class,
-                    false,
-                    false,
-                    Collections.emptyList(),
-                    ANYSIMPLETYPE_TYPE,
-                    null);
+    public static final AttributeType GYEAR_TYPE = new AttributeTypeImpl(
+            new NameImpl("http://www.w3.org/2001/XMLSchema", "gYear"),
+            java.lang.Object.class,
+            false,
+            false,
+            Collections.emptyList(),
+            ANYSIMPLETYPE_TYPE,
+            null);
 
     /**
      *
@@ -1409,15 +1371,14 @@ public class XSSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final AttributeType DERIVATIONSET_TYPE =
-            new AttributeTypeImpl(
-                    new NameImpl("http://www.w3.org/2001/XMLSchema", "derivationSet"),
-                    java.lang.Object.class,
-                    false,
-                    false,
-                    Collections.emptyList(),
-                    ANYSIMPLETYPE_TYPE,
-                    null);
+    public static final AttributeType DERIVATIONSET_TYPE = new AttributeTypeImpl(
+            new NameImpl("http://www.w3.org/2001/XMLSchema", "derivationSet"),
+            java.lang.Object.class,
+            false,
+            false,
+            Collections.emptyList(),
+            ANYSIMPLETYPE_TYPE,
+            null);
 
     /**
      *
@@ -1451,15 +1412,14 @@ public class XSSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final AttributeType GMONTHDAY_TYPE =
-            new AttributeTypeImpl(
-                    new NameImpl("http://www.w3.org/2001/XMLSchema", "gMonthDay"),
-                    java.lang.Object.class,
-                    false,
-                    false,
-                    Collections.emptyList(),
-                    ANYSIMPLETYPE_TYPE,
-                    null);
+    public static final AttributeType GMONTHDAY_TYPE = new AttributeTypeImpl(
+            new NameImpl("http://www.w3.org/2001/XMLSchema", "gMonthDay"),
+            java.lang.Object.class,
+            false,
+            false,
+            Collections.emptyList(),
+            ANYSIMPLETYPE_TYPE,
+            null);
 
     /**
      *
@@ -1485,15 +1445,14 @@ public class XSSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final AttributeType LONG_TYPE =
-            new AttributeTypeImpl(
-                    new NameImpl("http://www.w3.org/2001/XMLSchema", "long"),
-                    Long.class,
-                    false,
-                    false,
-                    Collections.emptyList(),
-                    INTEGER_TYPE,
-                    null);
+    public static final AttributeType LONG_TYPE = new AttributeTypeImpl(
+            new NameImpl("http://www.w3.org/2001/XMLSchema", "long"),
+            Long.class,
+            false,
+            false,
+            Collections.emptyList(),
+            INTEGER_TYPE,
+            null);
 
     /**
      *
@@ -1515,15 +1474,14 @@ public class XSSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final AttributeType INT_TYPE =
-            new AttributeTypeImpl(
-                    new NameImpl("http://www.w3.org/2001/XMLSchema", "int"),
-                    Integer.class,
-                    false,
-                    false,
-                    Collections.emptyList(),
-                    LONG_TYPE,
-                    null);
+    public static final AttributeType INT_TYPE = new AttributeTypeImpl(
+            new NameImpl("http://www.w3.org/2001/XMLSchema", "int"),
+            Integer.class,
+            false,
+            false,
+            Collections.emptyList(),
+            LONG_TYPE,
+            null);
 
     /**
      *
@@ -1545,15 +1503,14 @@ public class XSSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final AttributeType SHORT_TYPE =
-            new AttributeTypeImpl(
-                    new NameImpl("http://www.w3.org/2001/XMLSchema", "short"),
-                    Short.class,
-                    false,
-                    false,
-                    Collections.emptyList(),
-                    INT_TYPE,
-                    null);
+    public static final AttributeType SHORT_TYPE = new AttributeTypeImpl(
+            new NameImpl("http://www.w3.org/2001/XMLSchema", "short"),
+            Short.class,
+            false,
+            false,
+            Collections.emptyList(),
+            INT_TYPE,
+            null);
 
     /**
      *
@@ -1575,15 +1532,14 @@ public class XSSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final AttributeType BYTE_TYPE =
-            new AttributeTypeImpl(
-                    new NameImpl("http://www.w3.org/2001/XMLSchema", "byte"),
-                    Byte.class,
-                    false,
-                    false,
-                    Collections.emptyList(),
-                    SHORT_TYPE,
-                    null);
+    public static final AttributeType BYTE_TYPE = new AttributeTypeImpl(
+            new NameImpl("http://www.w3.org/2001/XMLSchema", "byte"),
+            Byte.class,
+            false,
+            false,
+            Collections.emptyList(),
+            SHORT_TYPE,
+            null);
 
     /**
      *
@@ -1612,15 +1568,14 @@ public class XSSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final AttributeType BOOLEAN_TYPE =
-            new AttributeTypeImpl(
-                    new NameImpl("http://www.w3.org/2001/XMLSchema", "boolean"),
-                    Boolean.class,
-                    false,
-                    false,
-                    Collections.emptyList(),
-                    ANYSIMPLETYPE_TYPE,
-                    null);
+    public static final AttributeType BOOLEAN_TYPE = new AttributeTypeImpl(
+            new NameImpl("http://www.w3.org/2001/XMLSchema", "boolean"),
+            Boolean.class,
+            false,
+            false,
+            Collections.emptyList(),
+            ANYSIMPLETYPE_TYPE,
+            null);
 
     /**
      *
@@ -1653,15 +1608,14 @@ public class XSSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final AttributeType ANYURI_TYPE =
-            new AttributeTypeImpl(
-                    new NameImpl("http://www.w3.org/2001/XMLSchema", "anyURI"),
-                    URI.class,
-                    false,
-                    false,
-                    Collections.emptyList(),
-                    ANYSIMPLETYPE_TYPE,
-                    null);
+    public static final AttributeType ANYURI_TYPE = new AttributeTypeImpl(
+            new NameImpl("http://www.w3.org/2001/XMLSchema", "anyURI"),
+            URI.class,
+            false,
+            false,
+            Collections.emptyList(),
+            ANYSIMPLETYPE_TYPE,
+            null);
 
     /**
      *
@@ -1695,15 +1649,14 @@ public class XSSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final AttributeType GDAY_TYPE =
-            new AttributeTypeImpl(
-                    new NameImpl("http://www.w3.org/2001/XMLSchema", "gDay"),
-                    java.lang.Object.class,
-                    false,
-                    false,
-                    Collections.emptyList(),
-                    ANYSIMPLETYPE_TYPE,
-                    null);
+    public static final AttributeType GDAY_TYPE = new AttributeTypeImpl(
+            new NameImpl("http://www.w3.org/2001/XMLSchema", "gDay"),
+            java.lang.Object.class,
+            false,
+            false,
+            Collections.emptyList(),
+            ANYSIMPLETYPE_TYPE,
+            null);
 
     /**
      *
@@ -1737,15 +1690,14 @@ public class XSSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final AttributeType TIME_TYPE =
-            new AttributeTypeImpl(
-                    new NameImpl("http://www.w3.org/2001/XMLSchema", "time"),
-                    Time.class,
-                    false,
-                    false,
-                    Collections.emptyList(),
-                    ANYSIMPLETYPE_TYPE,
-                    null);
+    public static final AttributeType TIME_TYPE = new AttributeTypeImpl(
+            new NameImpl("http://www.w3.org/2001/XMLSchema", "time"),
+            Time.class,
+            false,
+            false,
+            Collections.emptyList(),
+            ANYSIMPLETYPE_TYPE,
+            null);
 
     /**
      *
@@ -1778,15 +1730,14 @@ public class XSSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final AttributeType HEXBINARY_TYPE =
-            new AttributeTypeImpl(
-                    new NameImpl("http://www.w3.org/2001/XMLSchema", "hexBinary"),
-                    byte[].class,
-                    false,
-                    false,
-                    Collections.emptyList(),
-                    ANYSIMPLETYPE_TYPE,
-                    null);
+    public static final AttributeType HEXBINARY_TYPE = new AttributeTypeImpl(
+            new NameImpl("http://www.w3.org/2001/XMLSchema", "hexBinary"),
+            byte[].class,
+            false,
+            false,
+            Collections.emptyList(),
+            ANYSIMPLETYPE_TYPE,
+            null);
 
     /**
      *
@@ -1820,15 +1771,14 @@ public class XSSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final AttributeType DATE_TYPE =
-            new AttributeTypeImpl(
-                    new NameImpl("http://www.w3.org/2001/XMLSchema", "date"),
-                    java.sql.Date.class,
-                    false,
-                    false,
-                    Collections.emptyList(),
-                    ANYSIMPLETYPE_TYPE,
-                    null);
+    public static final AttributeType DATE_TYPE = new AttributeTypeImpl(
+            new NameImpl("http://www.w3.org/2001/XMLSchema", "date"),
+            java.sql.Date.class,
+            false,
+            false,
+            Collections.emptyList(),
+            ANYSIMPLETYPE_TYPE,
+            null);
 
     /**
      *
@@ -1854,15 +1804,14 @@ public class XSSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final AttributeType ALLNNI_TYPE =
-            new AttributeTypeImpl(
-                    new NameImpl("http://www.w3.org/2001/XMLSchema", "allNNI"),
-                    java.lang.Object.class,
-                    false,
-                    false,
-                    Collections.emptyList(),
-                    ANYSIMPLETYPE_TYPE,
-                    null);
+    public static final AttributeType ALLNNI_TYPE = new AttributeTypeImpl(
+            new NameImpl("http://www.w3.org/2001/XMLSchema", "allNNI"),
+            java.lang.Object.class,
+            false,
+            false,
+            Collections.emptyList(),
+            ANYSIMPLETYPE_TYPE,
+            null);
 
     /**
      *
@@ -1881,15 +1830,14 @@ public class XSSchema extends SchemaImpl {
      *
      * @generated
      */
-    public static final AttributeType IDREF_TYPE =
-            new AttributeTypeImpl(
-                    new NameImpl("http://www.w3.org/2001/XMLSchema", "IDREF"),
-                    java.lang.Object.class,
-                    false,
-                    false,
-                    Collections.emptyList(),
-                    NCNAME_TYPE,
-                    null);
+    public static final AttributeType IDREF_TYPE = new AttributeTypeImpl(
+            new NameImpl("http://www.w3.org/2001/XMLSchema", "IDREF"),
+            java.lang.Object.class,
+            false,
+            false,
+            Collections.emptyList(),
+            NCNAME_TYPE,
+            null);
 
     public XSSchema() {
         super("http://www.w3.org/2001/XMLSchema");
@@ -1899,25 +1847,19 @@ public class XSSchema extends SchemaImpl {
         put(new NameImpl("http://www.w3.org/2001/XMLSchema", "NOTATION"), NOTATION_TYPE);
         put(new NameImpl("http://www.w3.org/2001/XMLSchema", "decimal"), DECIMAL_TYPE);
         put(new NameImpl("http://www.w3.org/2001/XMLSchema", "integer"), INTEGER_TYPE);
-        put(
-                new NameImpl("http://www.w3.org/2001/XMLSchema", "nonNegativeInteger"),
-                NONNEGATIVEINTEGER_TYPE);
+        put(new NameImpl("http://www.w3.org/2001/XMLSchema", "nonNegativeInteger"), NONNEGATIVEINTEGER_TYPE);
         put(new NameImpl("http://www.w3.org/2001/XMLSchema", "unsignedLong"), UNSIGNEDLONG_TYPE);
         put(new NameImpl("http://www.w3.org/2001/XMLSchema", "unsignedInt"), UNSIGNEDINT_TYPE);
         put(new NameImpl("http://www.w3.org/2001/XMLSchema", "unsignedShort"), UNSIGNEDSHORT_TYPE);
         put(new NameImpl("http://www.w3.org/2001/XMLSchema", "unsignedByte"), UNSIGNEDBYTE_TYPE);
         put(new NameImpl("http://www.w3.org/2001/XMLSchema", "QName"), QNAME_TYPE);
         put(new NameImpl("http://www.w3.org/2001/XMLSchema", "string"), STRING_TYPE);
-        put(
-                new NameImpl("http://www.w3.org/2001/XMLSchema", "normalizedString"),
-                NORMALIZEDSTRING_TYPE);
+        put(new NameImpl("http://www.w3.org/2001/XMLSchema", "normalizedString"), NORMALIZEDSTRING_TYPE);
         put(new NameImpl("http://www.w3.org/2001/XMLSchema", "token"), TOKEN_TYPE);
         put(new NameImpl("http://www.w3.org/2001/XMLSchema", "Name"), NAME_TYPE);
         put(new NameImpl("http://www.w3.org/2001/XMLSchema", "NCName"), NCNAME_TYPE);
         put(new NameImpl("http://www.w3.org/2001/XMLSchema", "ENTITY"), ENTITY_TYPE);
-        put(
-                new NameImpl("http://www.w3.org/2001/XMLSchema", "simpleDerivationSet"),
-                SIMPLEDERIVATIONSET_TYPE);
+        put(new NameImpl("http://www.w3.org/2001/XMLSchema", "simpleDerivationSet"), SIMPLEDERIVATIONSET_TYPE);
         put(new NameImpl("http://www.w3.org/2001/XMLSchema", "public"), PUBLIC_TYPE);
         put(new NameImpl("http://www.w3.org/2001/XMLSchema", "language"), LANGUAGE_TYPE);
         put(new NameImpl("http://www.w3.org/2001/XMLSchema", "duration"), DURATION_TYPE);
@@ -1927,23 +1869,15 @@ public class XSSchema extends SchemaImpl {
         put(new NameImpl("http://www.w3.org/2001/XMLSchema", "gYearMonth"), GYEARMONTH_TYPE);
         put(new NameImpl("http://www.w3.org/2001/XMLSchema", "ID"), ID_TYPE);
         put(new NameImpl("http://www.w3.org/2001/XMLSchema", "NMTOKEN"), NMTOKEN_TYPE);
-        put(
-                new NameImpl("http://www.w3.org/2001/XMLSchema", "derivationControl"),
-                DERIVATIONCONTROL_TYPE);
+        put(new NameImpl("http://www.w3.org/2001/XMLSchema", "derivationControl"), DERIVATIONCONTROL_TYPE);
         put(
                 new NameImpl("http://www.w3.org/2001/XMLSchema", "reducedDerivationControl"),
                 REDUCEDDERIVATIONCONTROL_TYPE);
-        put(
-                new NameImpl("http://www.w3.org/2001/XMLSchema", "nonPositiveInteger"),
-                NONPOSITIVEINTEGER_TYPE);
-        put(
-                new NameImpl("http://www.w3.org/2001/XMLSchema", "negativeInteger"),
-                NEGATIVEINTEGER_TYPE);
+        put(new NameImpl("http://www.w3.org/2001/XMLSchema", "nonPositiveInteger"), NONPOSITIVEINTEGER_TYPE);
+        put(new NameImpl("http://www.w3.org/2001/XMLSchema", "negativeInteger"), NEGATIVEINTEGER_TYPE);
         put(new NameImpl("http://www.w3.org/2001/XMLSchema", "gMonth"), GMONTH_TYPE);
         put(new NameImpl("http://www.w3.org/2001/XMLSchema", "formChoice"), FORMCHOICE_TYPE);
-        put(
-                new NameImpl("http://www.w3.org/2001/XMLSchema", "positiveInteger"),
-                POSITIVEINTEGER_TYPE);
+        put(new NameImpl("http://www.w3.org/2001/XMLSchema", "positiveInteger"), POSITIVEINTEGER_TYPE);
         put(new NameImpl("http://www.w3.org/2001/XMLSchema", "base64Binary"), BASE64BINARY_TYPE);
         put(new NameImpl("http://www.w3.org/2001/XMLSchema", "double"), DOUBLE_TYPE);
         put(new NameImpl("http://www.w3.org/2001/XMLSchema", "namespaceList"), NAMESPACELIST_TYPE);

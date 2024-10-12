@@ -37,16 +37,14 @@ public abstract class DefaultTemporalPrimitive extends DefaultTemporalObject
     public int compareTo(TemporalPrimitive that) {
         if (that == null) throw new IllegalArgumentException("Provided temporal object is null");
         final RelativePosition pos = this.relativePosition(that);
-        if (pos == null)
-            throw new ClassCastException("The provided object cannot be compared to this one");
+        if (pos == null) throw new ClassCastException("The provided object cannot be compared to this one");
         if (pos == RelativePosition.BEFORE) return -1;
         if (pos == RelativePosition.AFTER) return +1;
 
         if (pos == RelativePosition.EQUALS) return 0;
 
         // TODO rethink this since it looks like it is a pretty dirty hack
-        if (this instanceof Period && that instanceof Instant
-                || this instanceof Instant && that instanceof Period) {
+        if (this instanceof Period && that instanceof Instant || this instanceof Instant && that instanceof Period) {
             if (pos == RelativePosition.ENDED_BY
                     || pos == RelativePosition.BEGUN_BY
                     || pos == RelativePosition.CONTAINS) return 0;
@@ -61,9 +59,8 @@ public abstract class DefaultTemporalPrimitive extends DefaultTemporalObject
             if (pos == RelativePosition.ENDED_BY) return -1;
             if (pos == RelativePosition.OVERLAPS) return -1;
             if (pos == RelativePosition.OVERLAPPED_BY) return +1;
-            if (pos == RelativePosition.DURING
-                    || pos == RelativePosition.CONTAINS
-                    || pos == RelativePosition.EQUALS) return 0;
+            if (pos == RelativePosition.DURING || pos == RelativePosition.CONTAINS || pos == RelativePosition.EQUALS)
+                return 0;
         }
 
         throw new IllegalStateException("Unable to compare the provided object with this one");
@@ -130,8 +127,7 @@ public abstract class DefaultTemporalPrimitive extends DefaultTemporalObject
             return RelativePosition.DURING;
         } else if (thisBeginning.before(otherBeginning) && thisEnding.after(otherEnding)) {
             return RelativePosition.CONTAINS;
-        } else if (thisBeginning.compareTo(otherBeginning) == 0
-                && thisEnding.compareTo(otherEnding) == 0) {
+        } else if (thisBeginning.compareTo(otherBeginning) == 0 && thisEnding.compareTo(otherEnding) == 0) {
             return RelativePosition.EQUALS;
         } else if (thisBeginning.after(otherBeginning)
                 && thisBeginning.before(otherEnding)
@@ -142,9 +138,7 @@ public abstract class DefaultTemporalPrimitive extends DefaultTemporalObject
         } else if (thisBeginning.before(otherBeginning) && thisEnding.compareTo(otherEnding) == 0) {
             return RelativePosition.ENDED_BY;
         } else {
-            return (thisBeginning.compareTo(otherEnding) == 0)
-                    ? RelativePosition.MET_BY
-                    : RelativePosition.AFTER;
+            return (thisBeginning.compareTo(otherEnding) == 0) ? RelativePosition.MET_BY : RelativePosition.AFTER;
         }
     }
 
@@ -181,9 +175,7 @@ public abstract class DefaultTemporalPrimitive extends DefaultTemporalObject
             if (thisStart.before(otherDate) && thisEnd.after(otherDate)) {
                 return RelativePosition.CONTAINS;
             } else {
-                return (thisStart.compareTo(otherDate) == 0)
-                        ? RelativePosition.BEGUN_BY
-                        : RelativePosition.AFTER;
+                return (thisStart.compareTo(otherDate) == 0) ? RelativePosition.BEGUN_BY : RelativePosition.AFTER;
             }
         }
     }
@@ -194,9 +186,7 @@ public abstract class DefaultTemporalPrimitive extends DefaultTemporalObject
         if (thisDate.before(otherDate)) {
             return RelativePosition.BEFORE;
         } else {
-            return (thisDate.compareTo(otherDate) == 0)
-                    ? RelativePosition.EQUALS
-                    : RelativePosition.AFTER;
+            return (thisDate.compareTo(otherDate) == 0) ? RelativePosition.EQUALS : RelativePosition.AFTER;
         }
     }
 }

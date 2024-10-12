@@ -34,52 +34,29 @@ import org.geotools.api.data.Parameter;
  */
 public class DBCPDataSourceFactory extends AbstractDataSourceFactorySpi {
 
-    public static final Param DSTYPE =
-            new Param(
-                    "dstype",
-                    String.class,
-                    "Must be DBCP",
-                    false,
-                    null,
-                    Collections.singletonMap(Parameter.LEVEL, "program"));
+    public static final Param DSTYPE = new Param(
+            "dstype", String.class, "Must be DBCP", false, null, Collections.singletonMap(Parameter.LEVEL, "program"));
 
-    public static final Param USERNAME =
-            new Param("username", String.class, "User name to login as", false);
+    public static final Param USERNAME = new Param("username", String.class, "User name to login as", false);
 
-    public static final Param PASSWORD =
-            new Param("password", String.class, "Password used to login", false);
+    public static final Param PASSWORD = new Param("password", String.class, "Password used to login", false);
 
-    public static final Param JDBC_URL =
-            new Param(
-                    "jdbcUrl",
-                    String.class,
-                    "The JDBC url (check the JDBC driver docs to find out its format)",
-                    true);
+    public static final Param JDBC_URL = new Param(
+            "jdbcUrl", String.class, "The JDBC url (check the JDBC driver docs to find out its format)", true);
 
-    public static final Param DRIVERCLASS =
-            new Param(
-                    "driverClassName",
-                    String.class,
-                    "The JDBC driver class name (check the JDBC driver docs to find out its name)",
-                    true);
+    public static final Param DRIVERCLASS = new Param(
+            "driverClassName",
+            String.class,
+            "The JDBC driver class name (check the JDBC driver docs to find out its name)",
+            true);
 
     public static final Param MAXACTIVE =
-            new Param(
-                    "maxActive",
-                    Integer.class,
-                    "The maximum number of active connections in the pool",
-                    true);
+            new Param("maxActive", Integer.class, "The maximum number of active connections in the pool", true);
 
     public static final Param MAXIDLE =
-            new Param(
-                    "maxIdle",
-                    Integer.class,
-                    "The maximum number of idle connections in the pool",
-                    true);
+            new Param("maxIdle", Integer.class, "The maximum number of idle connections in the pool", true);
 
-    private static final Param[] PARAMS = {
-        DSTYPE, DRIVERCLASS, JDBC_URL, USERNAME, PASSWORD, MAXACTIVE, MAXIDLE
-    };
+    private static final Param[] PARAMS = {DSTYPE, DRIVERCLASS, JDBC_URL, USERNAME, PASSWORD, MAXACTIVE, MAXIDLE};
 
     @Override
     public DataSource createDataSource(Map<String, ?> params) throws IOException {
@@ -108,8 +85,7 @@ public class DBCPDataSourceFactory extends AbstractDataSourceFactorySpi {
         try {
             conn = dataSource.getConnection();
         } catch (SQLException e) {
-            throw new DataSourceException(
-                    "Connection pool improperly set up: " + e.getMessage(), e);
+            throw new DataSourceException("Connection pool improperly set up: " + e.getMessage(), e);
         } finally {
             // close the connection at once
             if (conn != null)

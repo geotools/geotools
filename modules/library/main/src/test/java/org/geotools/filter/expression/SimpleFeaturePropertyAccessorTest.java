@@ -87,11 +87,8 @@ public class SimpleFeaturePropertyAccessorTest {
         Assert.assertEquals(Integer.valueOf(1), accessor.get(feature, "sf:foo[1]", null));
         Assert.assertEquals(Double.valueOf(2.0), accessor.get(feature, "bar", null));
         Assert.assertEquals(Double.valueOf(3.0), accessor.get(feature, COMPLEX_PROPERTY, null));
-        Assert.assertEquals(
-                "fid", SimpleFeaturePropertyAccessorFactory.FID_ACCESS.get(feature, "@id", null));
-        Assert.assertEquals(
-                "fid",
-                SimpleFeaturePropertyAccessorFactory.FID_ACCESS.get(feature, "@gml:id", null));
+        Assert.assertEquals("fid", SimpleFeaturePropertyAccessorFactory.FID_ACCESS.get(feature, "@id", null));
+        Assert.assertEquals("fid", SimpleFeaturePropertyAccessorFactory.FID_ACCESS.get(feature, "@gml:id", null));
         Assert.assertFalse(accessor.canHandle(feature, "illegal", null));
         Assert.assertNull(accessor.get(feature, "illegal", null));
     }
@@ -154,8 +151,6 @@ public class SimpleFeaturePropertyAccessorTest {
 
         Assert.assertNull(feature.getDefaultGeometry());
         Assert.assertEquals(
-                p,
-                SimpleFeaturePropertyAccessorFactory.DEFAULT_GEOMETRY_ACCESS.get(
-                        feature, "", Geometry.class));
+                p, SimpleFeaturePropertyAccessorFactory.DEFAULT_GEOMETRY_ACCESS.get(feature, "", Geometry.class));
     }
 }

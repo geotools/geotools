@@ -158,9 +158,7 @@ public class Krovak extends MapProjection {
      * @throws ParameterNotFoundException if a mandatory parameter is missing.
      */
     protected Krovak(
-            final ParameterValueGroup parameters,
-            final ParameterDescriptorGroup descriptors,
-            boolean esriDefinition)
+            final ParameterValueGroup parameters, final ParameterDescriptorGroup descriptors, boolean esriDefinition)
             throws ParameterNotFoundException {
         super(parameters, descriptors.descriptors());
         this.descriptors = descriptors;
@@ -171,8 +169,7 @@ public class Krovak extends MapProjection {
         latitudeOfOrigin = doubleValue(expected, BaseProvider.LATITUDE_OF_CENTER, parameters);
         centralMeridian = doubleValue(expected, BaseProvider.LONGITUDE_OF_CENTER, parameters);
         azimuth = doubleValue(expected, BaseProvider.AZIMUTH, parameters);
-        pseudoStandardParallel =
-                doubleValue(expected, BaseProvider.PSEUDO_STANDARD_PARALLEL, parameters);
+        pseudoStandardParallel = doubleValue(expected, BaseProvider.PSEUDO_STANDARD_PARALLEL, parameters);
         scaleFactor = doubleValue(expected, BaseProvider.SCALE_FACTOR, parameters);
         x_scale = doubleValue(expected, BaseProvider.X_SCALE, parameters);
         y_scale = doubleValue(expected, BaseProvider.Y_SCALE, parameters);
@@ -184,8 +181,7 @@ public class Krovak extends MapProjection {
          */
         if (Double.isNaN(doubleValue(expected, BaseProvider.X_SCALE, parameters))
                 && Double.isNaN(doubleValue(expected, BaseProvider.Y_SCALE, parameters))
-                && Double.isNaN(
-                        doubleValue(expected, BaseProvider.XY_PLANE_ROTATION, parameters))) {
+                && Double.isNaN(doubleValue(expected, BaseProvider.XY_PLANE_ROTATION, parameters))) {
             this.esriDefinition = false;
 
         } else {
@@ -213,8 +209,7 @@ public class Krovak extends MapProjection {
         k1 = pow(tan(latitudeOfOrigin / 2 + s45), alfa) * g / tan(u0 / 2 + s45);
         ka = pow(1 / k1, -1 / alfa);
 
-        final double radius =
-                sqrt(1 - excentricitySquared) / (1 - (excentricitySquared * (sinLat * sinLat)));
+        final double radius = sqrt(1 - excentricitySquared) / (1 - (excentricitySquared * (sinLat * sinLat)));
 
         ro0 = scaleFactor * radius / tan(pseudoStandardParallel);
         rop = ro0 * pow(tanS2, n);
@@ -225,8 +220,7 @@ public class Krovak extends MapProjection {
         return this.descriptors;
     }
 
-    private MathTransform createAffineTransform(
-            double x_scale, double y_scale, double xy_plane_rotation) {
+    private MathTransform createAffineTransform(double x_scale, double y_scale, double xy_plane_rotation) {
         /** calculates matrix coefficients form geometric coefficients */
         double a00 = x_scale * Math.cos(xy_plane_rotation);
         double a01 = -y_scale * Math.sin(xy_plane_rotation);
@@ -369,120 +363,110 @@ public class Krovak extends MapProjection {
          * The operation parameter descriptor for the {@linkplain #latitudeOfOrigin latitude of
          * origin} parameter value. Valid values range is from -90 to 90. Default value is 49.5.
          */
-        public static final ParameterDescriptor LATITUDE_OF_CENTER =
-                createDescriptor(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.OGC, "latitude_of_center"),
-                            new NamedIdentifier(Citations.EPSG, "Latitude of projection centre"),
-                            new NamedIdentifier(Citations.EPSG, "Latitude of origin"),
-                            new NamedIdentifier(Citations.GEOTIFF, "CenterLat")
-                        },
-                        49.5,
-                        -90,
-                        90,
-                        NonSI.DEGREE_ANGLE);
+        public static final ParameterDescriptor LATITUDE_OF_CENTER = createDescriptor(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.OGC, "latitude_of_center"),
+                    new NamedIdentifier(Citations.EPSG, "Latitude of projection centre"),
+                    new NamedIdentifier(Citations.EPSG, "Latitude of origin"),
+                    new NamedIdentifier(Citations.GEOTIFF, "CenterLat")
+                },
+                49.5,
+                -90,
+                90,
+                NonSI.DEGREE_ANGLE);
 
         /**
          * The operation parameter descriptor for the {@linkplain #centralMeridian central meridian}
          * parameter value. Valid values range is from -180 to 180. Default value is 24ï¿½50' (=
          * 42ï¿½50' from Ferro prime meridian).
          */
-        public static final ParameterDescriptor LONGITUDE_OF_CENTER =
-                createDescriptor(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.OGC, "longitude_of_center"),
-                            new NamedIdentifier(Citations.EPSG, "Longitude of projection centre"),
-                            new NamedIdentifier(Citations.EPSG, "Longitude of origin"),
-                            new NamedIdentifier(Citations.GEOTIFF, "CenterLong")
-                        },
-                        42.5 - 17.66666666666667,
-                        -180,
-                        180,
-                        NonSI.DEGREE_ANGLE);
+        public static final ParameterDescriptor LONGITUDE_OF_CENTER = createDescriptor(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.OGC, "longitude_of_center"),
+                    new NamedIdentifier(Citations.EPSG, "Longitude of projection centre"),
+                    new NamedIdentifier(Citations.EPSG, "Longitude of origin"),
+                    new NamedIdentifier(Citations.GEOTIFF, "CenterLong")
+                },
+                42.5 - 17.66666666666667,
+                -180,
+                180,
+                NonSI.DEGREE_ANGLE);
 
         /**
          * The operation parameter descriptor for the {@linkplain #azimuth azimuth} parameter value.
          * Valid values range is from -90 to 90. Default value is 30.28813972222.
          */
-        public static final ParameterDescriptor AZIMUTH =
-                createDescriptor(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.EPSG, "Co-latitude of cone axis"),
-                            new NamedIdentifier(Citations.OGC, "azimuth"),
-                            new NamedIdentifier(Citations.EPSG, "Azimuth of initial line"),
-                            new NamedIdentifier(Citations.GEOTIFF, "AzimuthAngle"),
-                            new NamedIdentifier(Citations.ESRI, "Azimuth"),
-                        },
-                        30.28813972222222,
-                        0,
-                        360,
-                        NonSI.DEGREE_ANGLE);
+        public static final ParameterDescriptor AZIMUTH = createDescriptor(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.EPSG, "Co-latitude of cone axis"),
+                    new NamedIdentifier(Citations.OGC, "azimuth"),
+                    new NamedIdentifier(Citations.EPSG, "Azimuth of initial line"),
+                    new NamedIdentifier(Citations.GEOTIFF, "AzimuthAngle"),
+                    new NamedIdentifier(Citations.ESRI, "Azimuth"),
+                },
+                30.28813972222222,
+                0,
+                360,
+                NonSI.DEGREE_ANGLE);
 
         /**
          * The operation parameter descriptor for the pseudo {@linkplain #pseudoStandardParallel
          * pseudo standard parallel} parameter value. Valid values range is from -90 to 90. Default
          * value is 78.5.
          */
-        public static final ParameterDescriptor PSEUDO_STANDARD_PARALLEL =
-                createDescriptor(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.OGC, "pseudo_standard_parallel_1"),
-                            new NamedIdentifier(
-                                    Citations.EPSG, "Latitude of Pseudo Standard Parallel"),
-                            new NamedIdentifier(Citations.ESRI, "Pseudo_Standard_Parallel_1")
-                        },
-                        78.5,
-                        -90,
-                        90,
-                        NonSI.DEGREE_ANGLE);
+        public static final ParameterDescriptor PSEUDO_STANDARD_PARALLEL = createDescriptor(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.OGC, "pseudo_standard_parallel_1"),
+                    new NamedIdentifier(Citations.EPSG, "Latitude of Pseudo Standard Parallel"),
+                    new NamedIdentifier(Citations.ESRI, "Pseudo_Standard_Parallel_1")
+                },
+                78.5,
+                -90,
+                90,
+                NonSI.DEGREE_ANGLE);
 
         /**
          * The operation parameter descriptor for the {@link #scaleFactor scaleFactor} parameter
          * value. Valid values range is from 0 to infinity. Default value is 1.
          */
-        public static final ParameterDescriptor SCALE_FACTOR =
-                createDescriptor(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.OGC, "scale_factor"),
-                            new NamedIdentifier(
-                                    Citations.EPSG, "Scale factor on pseudo standard parallel"),
-                            new NamedIdentifier(Citations.GEOTIFF, "ScaleAtCenter"),
-                            new NamedIdentifier(Citations.OGC, "Scale_Factor")
-                        },
-                        0.9999,
-                        0,
-                        Double.POSITIVE_INFINITY,
-                        AbstractUnit.ONE);
+        public static final ParameterDescriptor SCALE_FACTOR = createDescriptor(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.OGC, "scale_factor"),
+                    new NamedIdentifier(Citations.EPSG, "Scale factor on pseudo standard parallel"),
+                    new NamedIdentifier(Citations.GEOTIFF, "ScaleAtCenter"),
+                    new NamedIdentifier(Citations.OGC, "Scale_Factor")
+                },
+                0.9999,
+                0,
+                Double.POSITIVE_INFINITY,
+                AbstractUnit.ONE);
 
         /** ESRI Parameter for scale of X axis in projected coordinate system. */
-        public static final ParameterDescriptor X_SCALE =
-                createOptionalDescriptor(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.ESRI, "X_Scale"),
-                        },
-                        Double.NEGATIVE_INFINITY,
-                        Double.POSITIVE_INFINITY,
-                        AbstractUnit.ONE);
+        public static final ParameterDescriptor X_SCALE = createOptionalDescriptor(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.ESRI, "X_Scale"),
+                },
+                Double.NEGATIVE_INFINITY,
+                Double.POSITIVE_INFINITY,
+                AbstractUnit.ONE);
 
         /** ESRI Parameter for scale of Y axis in projected coordinate system. */
-        public static final ParameterDescriptor Y_SCALE =
-                createOptionalDescriptor(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.ESRI, "Y_Scale"),
-                        },
-                        Double.NEGATIVE_INFINITY,
-                        Double.POSITIVE_INFINITY,
-                        AbstractUnit.ONE);
+        public static final ParameterDescriptor Y_SCALE = createOptionalDescriptor(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.ESRI, "Y_Scale"),
+                },
+                Double.NEGATIVE_INFINITY,
+                Double.POSITIVE_INFINITY,
+                AbstractUnit.ONE);
 
         /** ESRI Parameter for rotation of projected coordinate system. */
-        public static final ParameterDescriptor XY_PLANE_ROTATION =
-                createOptionalDescriptor(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.ESRI, "XY_Plane_Rotation"),
-                        },
-                        -360,
-                        360,
-                        NonSI.DEGREE_ANGLE);
+        public static final ParameterDescriptor XY_PLANE_ROTATION = createOptionalDescriptor(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.ESRI, "XY_Plane_Rotation"),
+                },
+                -360,
+                360,
+                NonSI.DEGREE_ANGLE);
 
         /** Constructs a new provider. */
         public BaseProvider(final ParameterDescriptorGroup params) {
@@ -499,53 +483,51 @@ public class Krovak extends MapProjection {
     public static class Provider extends BaseProvider {
 
         /** The parameters group. */
-        static final ParameterDescriptorGroup PARAMETERS =
-                createDescriptorGroup(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.OGC, "Krovak"),
-                            new NamedIdentifier(Citations.GEOTIFF, "Krovak"),
-                            new NamedIdentifier(Citations.EPSG, "Krovak Oblique Conformal Conic"),
-                            new NamedIdentifier(Citations.EPSG, "Krovak Oblique Conic Conformal"),
-                            new NamedIdentifier(Citations.EPSG, "9819"),
-                            new NamedIdentifier(Citations.ESRI, "Krovak"),
-                        },
-                        new ParameterDescriptor[] {
-                            SEMI_MAJOR,
-                            SEMI_MINOR,
-                            LATITUDE_OF_CENTER,
-                            LONGITUDE_OF_CENTER,
-                            AZIMUTH,
-                            PSEUDO_STANDARD_PARALLEL,
-                            SCALE_FACTOR,
-                            FALSE_EASTING,
-                            FALSE_NORTHING
-                        });
+        static final ParameterDescriptorGroup PARAMETERS = createDescriptorGroup(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.OGC, "Krovak"),
+                    new NamedIdentifier(Citations.GEOTIFF, "Krovak"),
+                    new NamedIdentifier(Citations.EPSG, "Krovak Oblique Conformal Conic"),
+                    new NamedIdentifier(Citations.EPSG, "Krovak Oblique Conic Conformal"),
+                    new NamedIdentifier(Citations.EPSG, "9819"),
+                    new NamedIdentifier(Citations.ESRI, "Krovak"),
+                },
+                new ParameterDescriptor[] {
+                    SEMI_MAJOR,
+                    SEMI_MINOR,
+                    LATITUDE_OF_CENTER,
+                    LONGITUDE_OF_CENTER,
+                    AZIMUTH,
+                    PSEUDO_STANDARD_PARALLEL,
+                    SCALE_FACTOR,
+                    FALSE_EASTING,
+                    FALSE_NORTHING
+                });
 
         /** The parameters group. */
-        static final ParameterDescriptorGroup ESRI_PARAMETERS =
-                createDescriptorGroup(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.OGC, "Krovak"),
-                            new NamedIdentifier(Citations.GEOTIFF, "Krovak"),
-                            new NamedIdentifier(Citations.EPSG, "Krovak Oblique Conformal Conic"),
-                            new NamedIdentifier(Citations.EPSG, "Krovak Oblique Conic Conformal"),
-                            new NamedIdentifier(Citations.EPSG, "9819"),
-                            new NamedIdentifier(Citations.ESRI, "Krovak"),
-                        },
-                        new ParameterDescriptor[] {
-                            SEMI_MAJOR,
-                            SEMI_MINOR,
-                            LATITUDE_OF_CENTER,
-                            LONGITUDE_OF_CENTER,
-                            AZIMUTH,
-                            PSEUDO_STANDARD_PARALLEL,
-                            SCALE_FACTOR,
-                            FALSE_EASTING,
-                            FALSE_NORTHING,
-                            X_SCALE,
-                            Y_SCALE,
-                            XY_PLANE_ROTATION
-                        });
+        static final ParameterDescriptorGroup ESRI_PARAMETERS = createDescriptorGroup(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.OGC, "Krovak"),
+                    new NamedIdentifier(Citations.GEOTIFF, "Krovak"),
+                    new NamedIdentifier(Citations.EPSG, "Krovak Oblique Conformal Conic"),
+                    new NamedIdentifier(Citations.EPSG, "Krovak Oblique Conic Conformal"),
+                    new NamedIdentifier(Citations.EPSG, "9819"),
+                    new NamedIdentifier(Citations.ESRI, "Krovak"),
+                },
+                new ParameterDescriptor[] {
+                    SEMI_MAJOR,
+                    SEMI_MINOR,
+                    LATITUDE_OF_CENTER,
+                    LONGITUDE_OF_CENTER,
+                    AZIMUTH,
+                    PSEUDO_STANDARD_PARALLEL,
+                    SCALE_FACTOR,
+                    FALSE_EASTING,
+                    FALSE_NORTHING,
+                    X_SCALE,
+                    Y_SCALE,
+                    XY_PLANE_ROTATION
+                });
 
         public Provider() {
             super(ESRI_PARAMETERS);
@@ -569,8 +551,7 @@ public class Krovak extends MapProjection {
                 if (descriptor instanceof ParameterDescriptor) {
                     if (AbstractIdentifiedObject.nameMatches(descriptor, X_SCALE)
                             || AbstractIdentifiedObject.nameMatches(descriptor, Y_SCALE)
-                            || AbstractIdentifiedObject.nameMatches(
-                                    descriptor, XY_PLANE_ROTATION)) {
+                            || AbstractIdentifiedObject.nameMatches(descriptor, XY_PLANE_ROTATION)) {
                         return true;
                     }
                 }
@@ -583,26 +564,25 @@ public class Krovak extends MapProjection {
     public static class NorthProvider extends BaseProvider {
 
         /** The parameters group. */
-        static final ParameterDescriptorGroup PARAMETERS =
-                createDescriptorGroup(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.OGC, "Krovak"),
-                            new NamedIdentifier(Citations.GEOTIFF, "Krovak"),
-                            new NamedIdentifier(Citations.OGC, "Krovak (North Orientated)"),
-                            new NamedIdentifier(Citations.EPSG, "Krovak (North Orientated)"),
-                            new NamedIdentifier(Citations.EPSG, "1041"),
-                        },
-                        new ParameterDescriptor[] {
-                            SEMI_MAJOR,
-                            SEMI_MINOR,
-                            LATITUDE_OF_CENTER,
-                            LONGITUDE_OF_CENTER,
-                            AZIMUTH,
-                            PSEUDO_STANDARD_PARALLEL,
-                            SCALE_FACTOR,
-                            FALSE_EASTING,
-                            FALSE_NORTHING
-                        });
+        static final ParameterDescriptorGroup PARAMETERS = createDescriptorGroup(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.OGC, "Krovak"),
+                    new NamedIdentifier(Citations.GEOTIFF, "Krovak"),
+                    new NamedIdentifier(Citations.OGC, "Krovak (North Orientated)"),
+                    new NamedIdentifier(Citations.EPSG, "Krovak (North Orientated)"),
+                    new NamedIdentifier(Citations.EPSG, "1041"),
+                },
+                new ParameterDescriptor[] {
+                    SEMI_MAJOR,
+                    SEMI_MINOR,
+                    LATITUDE_OF_CENTER,
+                    LONGITUDE_OF_CENTER,
+                    AZIMUTH,
+                    PSEUDO_STANDARD_PARALLEL,
+                    SCALE_FACTOR,
+                    FALSE_EASTING,
+                    FALSE_NORTHING
+                });
 
         public NorthProvider() {
             super(PARAMETERS);
@@ -620,8 +600,7 @@ public class Krovak extends MapProjection {
     /** Returns a hash value for this projection. */
     @Override
     public int hashCode() {
-        final long code =
-                Double.doubleToLongBits(azimuth) ^ Double.doubleToLongBits(pseudoStandardParallel);
+        final long code = Double.doubleToLongBits(azimuth) ^ Double.doubleToLongBits(pseudoStandardParallel);
         return ((int) code ^ (int) (code >>> 32)) + 37 * super.hashCode();
     }
 
@@ -634,8 +613,7 @@ public class Krovak extends MapProjection {
         }
         if (super.equals(object)) {
             final Krovak that = (Krovak) object;
-            return equals(azimuth, that.azimuth)
-                    && equals(pseudoStandardParallel, that.pseudoStandardParallel);
+            return equals(azimuth, that.azimuth) && equals(pseudoStandardParallel, that.pseudoStandardParallel);
         }
         return false;
     }

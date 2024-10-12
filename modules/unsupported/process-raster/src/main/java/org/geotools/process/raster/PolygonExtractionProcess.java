@@ -62,16 +62,12 @@ import org.locationtech.jts.geom.util.AffineTransformation;
  */
 @DescribeProcess(
         title = "Polygon Extraction",
-        description =
-                "Extracts vector polygons from a raster, based on regions which are equal or in given ranges")
+        description = "Extracts vector polygons from a raster, based on regions which are equal or in given ranges")
 public class PolygonExtractionProcess implements RasterProcess {
 
     static {
         Registry.registerRIF(
-                JAI.getDefaultInstance(),
-                new VectorizeDescriptor(),
-                new VectorizeRIF(),
-                Registry.JAI_TOOLS_PRODUCT);
+                JAI.getDefaultInstance(), new VectorizeDescriptor(), new VectorizeRIF(), Registry.JAI_TOOLS_PRODUCT);
     }
 
     /**
@@ -97,8 +93,7 @@ public class PolygonExtractionProcess implements RasterProcess {
      */
     @DescribeResult(name = "result", description = "The extracted polygon features")
     public SimpleFeatureCollection execute(
-            @DescribeParameter(name = "data", description = "Source raster")
-                    GridCoverage2D coverage,
+            @DescribeParameter(name = "data", description = "Source raster") GridCoverage2D coverage,
             @DescribeParameter(
                             name = "band",
                             description = "Source band to use (default = 0)",
@@ -113,8 +108,7 @@ public class PolygonExtractionProcess implements RasterProcess {
                     Boolean insideEdges,
             @DescribeParameter(
                             name = "roi",
-                            description =
-                                    "Geometry delineating the region of interest (in raster coordinate system)",
+                            description = "Geometry delineating the region of interest (in raster coordinate system)",
                             min = 0)
                     Geometry roi,
             @DescribeParameter(
@@ -147,8 +141,7 @@ public class PolygonExtractionProcess implements RasterProcess {
         }
 
         // do we have classification ranges?
-        boolean hasClassificationRanges =
-                classificationRanges != null && !classificationRanges.isEmpty();
+        boolean hasClassificationRanges = classificationRanges != null && !classificationRanges.isEmpty();
 
         // apply the classification by setting 0 as the default value and using 1, ..., numClasses
         // for the other classes.
@@ -173,8 +166,7 @@ public class PolygonExtractionProcess implements RasterProcess {
         // GRID TO WORLD preparation
         //
         final AffineTransform mt2D =
-                (AffineTransform)
-                        coverage.getGridGeometry().getGridToCRS2D(PixelOrientation.UPPER_LEFT);
+                (AffineTransform) coverage.getGridGeometry().getGridToCRS2D(PixelOrientation.UPPER_LEFT);
 
         // get the rendered image
         final RenderedImage raster = coverage.getRenderedImage();
@@ -199,19 +191,17 @@ public class PolygonExtractionProcess implements RasterProcess {
                 (Collection<Polygon>) dest.getProperty(VectorizeDescriptor.VECTOR_PROPERTY_NAME);
 
         // wrap as a feature collection and return
-        final SimpleFeatureType featureType =
-                CoverageUtilities.createFeatureType(coverage, Polygon.class);
+        final SimpleFeatureType featureType = CoverageUtilities.createFeatureType(coverage, Polygon.class);
         final SimpleFeatureBuilder builder = new SimpleFeatureBuilder(featureType);
         int i = 0;
         final ListFeatureCollection featureCollection = new ListFeatureCollection(featureType);
-        final AffineTransformation jtsTransformation =
-                new AffineTransformation(
-                        mt2D.getScaleX(),
-                        mt2D.getShearX(),
-                        mt2D.getTranslateX(),
-                        mt2D.getShearY(),
-                        mt2D.getScaleY(),
-                        mt2D.getTranslateY());
+        final AffineTransformation jtsTransformation = new AffineTransformation(
+                mt2D.getScaleX(),
+                mt2D.getShearX(),
+                mt2D.getTranslateX(),
+                mt2D.getShearY(),
+                mt2D.getScaleY(),
+                mt2D.getTranslateY());
         for (Polygon polygon : prop) {
             // get value
             Double value = (Double) polygon.getUserData();

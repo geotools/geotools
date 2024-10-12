@@ -79,10 +79,8 @@ public class PropertyFeatureSource extends ContentFeatureSource {
     @Override
     protected ReferencedEnvelope getBoundsInternal(Query query) throws IOException {
         if (query.getFilter() == Filter.INCLUDE) { // filtering not implemented
-            ReferencedEnvelope bounds =
-                    ReferencedEnvelope.create(getSchema().getCoordinateReferenceSystem());
-            try (FeatureReader<SimpleFeatureType, SimpleFeature> featureReader =
-                    getReaderInternal(query)) {
+            ReferencedEnvelope bounds = ReferencedEnvelope.create(getSchema().getCoordinateReferenceSystem());
+            try (FeatureReader<SimpleFeatureType, SimpleFeature> featureReader = getReaderInternal(query)) {
                 while (featureReader.hasNext()) {
                     SimpleFeature feature = featureReader.next();
                     bounds.include(feature.getBounds());
@@ -97,8 +95,7 @@ public class PropertyFeatureSource extends ContentFeatureSource {
     protected int getCountInternal(Query query) throws IOException {
         if (query.getFilter() == Filter.INCLUDE) { // filtering not implemented
             int count = 0;
-            try (FeatureReader<SimpleFeatureType, SimpleFeature> featureReader =
-                    getReaderInternal(query)) {
+            try (FeatureReader<SimpleFeatureType, SimpleFeature> featureReader = getReaderInternal(query)) {
                 while (featureReader.hasNext()) {
                     featureReader.next();
                     count++;
@@ -137,8 +134,7 @@ public class PropertyFeatureSource extends ContentFeatureSource {
     }
 
     @Override
-    protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query)
-            throws IOException {
+    protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query) throws IOException {
         File file = new File(store.dir, typeName + ".properties");
         PropertyFeatureReader reader =
                 new PropertyFeatureReader(store.getNamespaceURI(), file, getGeometryFactory(query));

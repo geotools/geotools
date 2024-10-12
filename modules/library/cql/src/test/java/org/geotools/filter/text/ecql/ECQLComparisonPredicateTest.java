@@ -175,19 +175,16 @@ public class ECQLComparisonPredicateTest extends CQLComparisonPredicateTest {
     @Test
     public void dateLiteralTimeZoneUTC() throws Exception {
         Filter f = parseFilter("X = 2012-02-01Z");
-        testPropertyIsEqualDate(
-                f, date(2012, FEBRUARY, 1, 0, 0, 0, 0, TimeZone.getTimeZone("GMT")));
+        testPropertyIsEqualDate(f, date(2012, FEBRUARY, 1, 0, 0, 0, 0, TimeZone.getTimeZone("GMT")));
     }
 
     @Test
     public void dateLiteralTimeZonePlusMinus() throws Exception {
         Filter f = parseFilter("X = 2012-02-01-0800");
-        testPropertyIsEqualDate(
-                f, date(2012, FEBRUARY, 1, 0, 0, 0, 0, TimeZone.getTimeZone("GMT-8:00")));
+        testPropertyIsEqualDate(f, date(2012, FEBRUARY, 1, 0, 0, 0, 0, TimeZone.getTimeZone("GMT-8:00")));
 
         f = parseFilter("X = 2012-02-01+08:00");
-        testPropertyIsEqualDate(
-                f, date(2012, FEBRUARY, 1, 0, 0, 0, 0, TimeZone.getTimeZone("GMT+8:00")));
+        testPropertyIsEqualDate(f, date(2012, FEBRUARY, 1, 0, 0, 0, 0, TimeZone.getTimeZone("GMT+8:00")));
     }
 
     @Test
@@ -205,19 +202,16 @@ public class ECQLComparisonPredicateTest extends CQLComparisonPredicateTest {
     @Test
     public void dateTimeLiteralTimeZoneUTC() throws Exception {
         Filter f = parseFilter("X = 2012-02-01T12:10:13.123Z");
-        testPropertyIsEqualDate(
-                f, date(2012, FEBRUARY, 1, 12, 10, 13, 123, TimeZone.getTimeZone("GMT")));
+        testPropertyIsEqualDate(f, date(2012, FEBRUARY, 1, 12, 10, 13, 123, TimeZone.getTimeZone("GMT")));
     }
 
     @Test
     public void dateTimeLiteralTimeZonePlusMinus() throws Exception {
         Filter f = parseFilter("X = 2012-02-01T12:10:13.123-0800");
-        testPropertyIsEqualDate(
-                f, date(2012, FEBRUARY, 1, 12, 10, 13, 123, TimeZone.getTimeZone("GMT-8:00")));
+        testPropertyIsEqualDate(f, date(2012, FEBRUARY, 1, 12, 10, 13, 123, TimeZone.getTimeZone("GMT-8:00")));
 
         f = parseFilter("X = 2012-02-01T12:10:13+08:00");
-        testPropertyIsEqualDate(
-                f, date(2012, FEBRUARY, 1, 12, 10, 13, 0, TimeZone.getTimeZone("GMT+8:00")));
+        testPropertyIsEqualDate(f, date(2012, FEBRUARY, 1, 12, 10, 13, 0, TimeZone.getTimeZone("GMT+8:00")));
     }
 
     /** Checks that both positive and negative numbers are parsed to numbers, not strings */
@@ -242,14 +236,7 @@ public class ECQLComparisonPredicateTest extends CQLComparisonPredicateTest {
     }
 
     protected Date date(
-            int year,
-            int month,
-            int dayOfMonth,
-            int hourOfDay,
-            int minute,
-            int second,
-            int milliscond,
-            TimeZone tz) {
+            int year, int month, int dayOfMonth, int hourOfDay, int minute, int second, int milliscond, TimeZone tz) {
         Calendar c = Calendar.getInstance();
         c.set(Calendar.YEAR, year);
         c.set(Calendar.MONTH, month);

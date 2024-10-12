@@ -47,10 +47,7 @@ public class TileEntry extends Entry {
     void init(TileEntry e) {
         super.init(e);
         setTileMatricies(e.getTileMatricies());
-        this.tileMatrixSetBounds =
-                e.tileMatrixSetBounds == null
-                        ? null
-                        : new ReferencedEnvelope(e.tileMatrixSetBounds);
+        this.tileMatrixSetBounds = e.tileMatrixSetBounds == null ? null : new ReferencedEnvelope(e.tileMatrixSetBounds);
     }
 
     /**

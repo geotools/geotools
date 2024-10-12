@@ -90,8 +90,7 @@ public class StandardDeviationVisitor implements FeatureCalc, FeatureAttributeVi
         } else if (value instanceof Number) {
             this.result = new Result(((Number) value).doubleValue());
         } else {
-            throw new IllegalArgumentException(
-                    "Result must be a " + Result.class.getName() + " or a Number");
+            throw new IllegalArgumentException("Result must be a " + Result.class.getName() + " or a Number");
         }
     }
 
@@ -103,8 +102,7 @@ public class StandardDeviationVisitor implements FeatureCalc, FeatureAttributeVi
     @Override
     public Optional<List<Class>> getResultType(List<Class> inputTypes) {
         if (inputTypes == null || inputTypes.size() != 1)
-            throw new IllegalArgumentException(
-                    "Expecting a single type in input, not " + inputTypes);
+            throw new IllegalArgumentException("Expecting a single type in input, not " + inputTypes);
 
         return Optional.of(Collections.singletonList(Double.class));
     }

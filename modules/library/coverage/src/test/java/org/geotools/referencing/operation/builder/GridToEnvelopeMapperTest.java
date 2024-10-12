@@ -98,10 +98,8 @@ public final class GridToEnvelopeMapperTest {
         ///  Tests the setting of grid range and envelope.
         ///
         Point2D.Double point = new Point2D.Double();
-        GeneralGridEnvelope gridRange =
-                new GeneralGridEnvelope(new int[] {10, 20}, new int[] {110, 220}, false);
-        GeneralBounds envelope =
-                new GeneralBounds(new double[] {1, 4, 6}, new double[] {11, 44, 66});
+        GeneralGridEnvelope gridRange = new GeneralGridEnvelope(new int[] {10, 20}, new int[] {110, 220}, false);
+        GeneralBounds envelope = new GeneralBounds(new double[] {1, 4, 6}, new double[] {11, 44, 66});
         mapper.setGridRange(gridRange);
         assertSame(gridRange, mapper.getGridRange());
         try {
@@ -137,9 +135,7 @@ public final class GridToEnvelopeMapperTest {
         assertTrue(reverse[1]);
         final AffineTransform tr1 = mapper.createAffineTransform();
         assertEquals(
-                AffineTransform.TYPE_GENERAL_SCALE
-                        | AffineTransform.TYPE_TRANSLATION
-                        | AffineTransform.TYPE_FLIP,
+                AffineTransform.TYPE_GENERAL_SCALE | AffineTransform.TYPE_TRANSLATION | AffineTransform.TYPE_FLIP,
                 tr1.getType());
         assertEquals(0.1, tr1.getScaleX(), EPS);
         assertEquals(-0.2, tr1.getScaleY(), EPS);
@@ -165,9 +161,7 @@ public final class GridToEnvelopeMapperTest {
         final AffineTransform tr2 = mapper.createAffineTransform();
         assertNotSame("Should be a new transform", tr1, tr2);
         assertEquals(
-                AffineTransform.TYPE_GENERAL_SCALE
-                        | AffineTransform.TYPE_TRANSLATION
-                        | AffineTransform.TYPE_FLIP,
+                AffineTransform.TYPE_GENERAL_SCALE | AffineTransform.TYPE_TRANSLATION | AffineTransform.TYPE_FLIP,
                 tr2.getType());
         assertEquals(0.1, tr2.getScaleX(), EPS);
         assertEquals(-0.2, tr2.getScaleY(), EPS);
@@ -184,14 +178,11 @@ public final class GridToEnvelopeMapperTest {
         ///  Tests the creation with a (latitude, longitude) CRS.
         ///
         envelope = envelope.clone();
-        envelope.setCoordinateReferenceSystem(
-                new DefaultGeographicCRS(
-                        "WGS84",
-                        DefaultGeodeticDatum.WGS84,
-                        new DefaultEllipsoidalCS(
-                                "WGS84",
-                                DefaultCoordinateSystemAxis.LATITUDE,
-                                DefaultCoordinateSystemAxis.LONGITUDE)));
+        envelope.setCoordinateReferenceSystem(new DefaultGeographicCRS(
+                "WGS84",
+                DefaultGeodeticDatum.WGS84,
+                new DefaultEllipsoidalCS(
+                        "WGS84", DefaultCoordinateSystemAxis.LATITUDE, DefaultCoordinateSystemAxis.LONGITUDE)));
         mapper.setEnvelope(envelope);
         assertTrue(mapper.getSwapXY());
         assertArrayEquals(new boolean[] {true, false}, mapper.getReverseAxis());
@@ -249,16 +240,15 @@ public final class GridToEnvelopeMapperTest {
     @Test
     public void testFittedCS() throws FactoryException {
         CoordinateReferenceSystem crs =
-                CRS.parseWKT(
-                        "FITTED_CS[\"rotated_latitude_longitude\", INVERSE_MT[PARAM_MT[\"Rotated_Pole\", "
-                                + " PARAMETER[\"semi_major\", 6371229.0],  PARAMETER[\"semi_minor\", "
-                                + "6371229.0],  PARAMETER[\"central_meridian\", -106.0],  "
-                                + "PARAMETER[\"latitude_of_origin\", 54.0],  PARAMETER[\"scale_factor\", "
-                                + "1.0],  PARAMETER[\"false_easting\", 0.0],  "
-                                + "PARAMETER[\"false_northing\", 0.0]]],  GEOGCS[\"unknown\", "
-                                + "DATUM[\"unknown\",  SPHEROID[\"unknown\", 6371229.0, 0.0]],  "
-                                + "PRIMEM[\"Greenwich\", 0.0],  UNIT[\"degree\", 0.017453292519943295],  "
-                                + "AXIS[\"Geodetic longitude\", EAST],  AXIS[\"Geodetic latitude\", NORTH]]]");
+                CRS.parseWKT("FITTED_CS[\"rotated_latitude_longitude\", INVERSE_MT[PARAM_MT[\"Rotated_Pole\", "
+                        + " PARAMETER[\"semi_major\", 6371229.0],  PARAMETER[\"semi_minor\", "
+                        + "6371229.0],  PARAMETER[\"central_meridian\", -106.0],  "
+                        + "PARAMETER[\"latitude_of_origin\", 54.0],  PARAMETER[\"scale_factor\", "
+                        + "1.0],  PARAMETER[\"false_easting\", 0.0],  "
+                        + "PARAMETER[\"false_northing\", 0.0]]],  GEOGCS[\"unknown\", "
+                        + "DATUM[\"unknown\",  SPHEROID[\"unknown\", 6371229.0, 0.0]],  "
+                        + "PRIMEM[\"Greenwich\", 0.0],  UNIT[\"degree\", 0.017453292519943295],  "
+                        + "AXIS[\"Geodetic longitude\", EAST],  AXIS[\"Geodetic latitude\", NORTH]]]");
         ReferencedEnvelope envelope = new ReferencedEnvelope(-35, 35, -10, 10, crs);
         GridToEnvelopeMapper mapper = new GridToEnvelopeMapper();
         mapper.setEnvelope(envelope);

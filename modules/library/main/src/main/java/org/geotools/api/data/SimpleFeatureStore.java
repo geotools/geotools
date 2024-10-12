@@ -22,14 +22,11 @@ import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.Filter;
 import org.geotools.data.simple.SimpleFeatureCollection;
 
-public interface SimpleFeatureStore
-        extends FeatureStore<SimpleFeatureType, SimpleFeature>, SimpleFeatureSource {
+public interface SimpleFeatureStore extends FeatureStore<SimpleFeatureType, SimpleFeature>, SimpleFeatureSource {
 
-    public void modifyFeatures(String name, Object attributeValue, Filter filter)
-            throws IOException;
+    public void modifyFeatures(String name, Object attributeValue, Filter filter) throws IOException;
 
-    public void modifyFeatures(String[] names, Object[] attributeValues, Filter filter)
-            throws IOException;
+    public void modifyFeatures(String[] names, Object[] attributeValues, Filter filter) throws IOException;
 
     @Override
     public SimpleFeatureCollection getFeatures() throws IOException;

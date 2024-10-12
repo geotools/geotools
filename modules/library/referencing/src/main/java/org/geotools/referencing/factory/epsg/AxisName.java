@@ -49,8 +49,7 @@ final class AxisName {
     public boolean equals(final Object object) {
         if (object instanceof AxisName) {
             final AxisName that = (AxisName) object;
-            return Utilities.equals(this.name, that.name)
-                    && Utilities.equals(this.description, that.description);
+            return Utilities.equals(this.name, that.name) && Utilities.equals(this.description, that.description);
         }
         return false;
     }

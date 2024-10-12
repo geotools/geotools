@@ -152,16 +152,15 @@ public abstract class AbstractMapPane extends JPanel
          * default to the standard cursor sometimes (at least
          * on OSX)
          */
-        addMouseListener(
-                new MouseInputAdapter() {
-                    @Override
-                    public void mouseEntered(MouseEvent e) {
-                        super.mouseEntered(e);
-                        if (currentCursorTool != null) {
-                            setCursor(currentCursorTool.getCursor());
-                        }
-                    }
-                });
+        addMouseListener(new MouseInputAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                super.mouseEntered(e);
+                if (currentCursorTool != null) {
+                    setCursor(currentCursorTool.getCursor());
+                }
+            }
+        });
 
         keyHandler = new MapPaneKeyHandler(this);
         addKeyListener(keyHandler);
@@ -171,24 +170,22 @@ public abstract class AbstractMapPane extends JPanel
          * and showing events (with HierarchyListener). Although showing
          * is often accompanied by resizing this is not reliable in Swing.
          */
-        addHierarchyListener(
-                he -> {
-                    if ((he.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0) {
-                        if (isShowing()) {
-                            onShownOrResized();
-                        }
-                    }
-                });
+        addHierarchyListener(he -> {
+            if ((he.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0) {
+                if (isShowing()) {
+                    onShownOrResized();
+                }
+            }
+        });
 
-        addHierarchyBoundsListener(
-                new HierarchyBoundsAdapter() {
-                    @Override
-                    public void ancestorResized(HierarchyEvent he) {
-                        if (isShowing()) {
-                            onShownOrResized();
-                        }
-                    }
-                });
+        addHierarchyBoundsListener(new HierarchyBoundsAdapter() {
+            @Override
+            public void ancestorResized(HierarchyEvent he) {
+                if (isShowing()) {
+                    onShownOrResized();
+                }
+            }
+        });
 
         doSetMapContent(content);
         doSetRenderingExecutor(executor);
@@ -357,17 +354,16 @@ public abstract class AbstractMapPane extends JPanel
             resizedFuture.cancel(true);
         }
 
-        resizedFuture =
-                paneTaskExecutor.schedule(
-                        () -> {
-                            setForNewSize();
+        resizedFuture = paneTaskExecutor.schedule(
+                () -> {
+                    setForNewSize();
 
-                            // Call repaint here rather than within setForNewSize so that
-                            // drawingLock will be available in paintComponent
-                            repaint();
-                        },
-                        paintDelay,
-                        TimeUnit.MILLISECONDS);
+                    // Call repaint here rather than within setForNewSize so that
+                    // drawingLock will be available in paintComponent
+                    repaint();
+                },
+                paintDelay,
+                TimeUnit.MILLISECONDS);
     }
 
     protected void setForNewSize() {
@@ -396,9 +392,7 @@ public abstract class AbstractMapPane extends JPanel
                     doSetDisplayArea(fullExtent);
                 }
 
-                publishEvent(
-                        new MapPaneEvent(
-                                this, MapPaneEvent.Type.DISPLAY_AREA_CHANGED, getDisplayArea()));
+                publishEvent(new MapPaneEvent(this, MapPaneEvent.Type.DISPLAY_AREA_CHANGED, getDisplayArea()));
 
                 acceptRepaintRequests.set(true);
                 drawLayers(true);
@@ -431,15 +425,14 @@ public abstract class AbstractMapPane extends JPanel
             imageMovedFuture.cancel(true);
         }
 
-        imageMovedFuture =
-                paneTaskExecutor.schedule(
-                        () -> {
-                            afterImageMoved();
-                            clearLabelCache.set(true);
-                            drawLayers(false);
-                        },
-                        paintDelay,
-                        TimeUnit.MILLISECONDS);
+        imageMovedFuture = paneTaskExecutor.schedule(
+                () -> {
+                    afterImageMoved();
+                    clearLabelCache.set(true);
+                    drawLayers(false);
+                },
+                paintDelay,
+                TimeUnit.MILLISECONDS);
     }
 
     /** Called after the base image has been dragged. Sets the new map area and transforms */
@@ -451,7 +444,8 @@ public abstract class AbstractMapPane extends JPanel
             Position2D newPos = new Position2D(dx, dy);
             mapContent.getViewport().getScreenToWorld().transform(newPos, newPos);
 
-            ReferencedEnvelope env = new ReferencedEnvelope(mapContent.getViewport().getBounds());
+            ReferencedEnvelope env =
+                    new ReferencedEnvelope(mapContent.getViewport().getBounds());
             env.translate(env.getMinimum(0) - newPos.x, env.getMaximum(1) - newPos.y);
             doSetDisplayArea(env);
 
@@ -527,8 +521,7 @@ public abstract class AbstractMapPane extends JPanel
                 }
             }
 
-            MapPaneEvent event =
-                    new MapPaneEvent(this, MapPaneEvent.Type.NEW_MAPCONTENT, mapContent);
+            MapPaneEvent event = new MapPaneEvent(this, MapPaneEvent.Type.NEW_MAPCONTENT, mapContent);
             publishEvent(event);
 
             drawLayers(false);
@@ -587,13 +580,12 @@ public abstract class AbstractMapPane extends JPanel
                 crs = mapContent.getCoordinateReferenceSystem();
             }
 
-            ReferencedEnvelope refEnv =
-                    new ReferencedEnvelope(
-                            envelope.getMinimum(0),
-                            envelope.getMaximum(0),
-                            envelope.getMinimum(1),
-                            envelope.getMaximum(1),
-                            crs);
+            ReferencedEnvelope refEnv = new ReferencedEnvelope(
+                    envelope.getMinimum(0),
+                    envelope.getMaximum(0),
+                    envelope.getMinimum(1),
+                    envelope.getMaximum(1),
+                    crs);
 
             mapContent.getViewport().setBounds(refEnv);
 
@@ -602,8 +594,7 @@ public abstract class AbstractMapPane extends JPanel
         }
 
         // Publish the resulting display area with the event
-        publishEvent(
-                new MapPaneEvent(this, MapPaneEvent.Type.DISPLAY_AREA_CHANGED, getDisplayArea()));
+        publishEvent(new MapPaneEvent(this, MapPaneEvent.Type.DISPLAY_AREA_CHANGED, getDisplayArea()));
     }
 
     /** {@inheritDoc} */
@@ -880,9 +871,7 @@ public abstract class AbstractMapPane extends JPanel
                  */
                 if (fullExtent == null) {
                     // set arbitrary bounds centred on 0,0
-                    fullExtent =
-                            new ReferencedEnvelope(
-                                    -1, 1, -1, 1, mapContent.getCoordinateReferenceSystem());
+                    fullExtent = new ReferencedEnvelope(-1, 1, -1, 1, mapContent.getCoordinateReferenceSystem());
 
                 } else {
                     double w = fullExtent.getWidth();
@@ -905,12 +894,7 @@ public abstract class AbstractMapPane extends JPanel
                     }
 
                     fullExtent =
-                            new ReferencedEnvelope(
-                                    xmin,
-                                    xmax,
-                                    ymin,
-                                    ymax,
-                                    mapContent.getCoordinateReferenceSystem());
+                            new ReferencedEnvelope(xmin, xmax, ymin, ymax, mapContent.getCoordinateReferenceSystem());
                 }
 
             } catch (Exception ex) {

@@ -36,8 +36,7 @@ public abstract class CodeList<E extends CodeList<E>> implements Comparable<E>, 
     private static final long serialVersionUID = 5655809691319522885L;
 
     /** The values for each code list. */
-    private static final Map<Class<? extends CodeList>, Collection<? extends CodeList>> VALUES =
-            new HashMap<>();
+    private static final Map<Class<? extends CodeList>, Collection<? extends CodeList>> VALUES = new HashMap<>();
 
     /** The types expected in constructors. */
     @SuppressWarnings({"unchecked", "PMD.UseShortArrayInitializer"})
@@ -118,13 +117,11 @@ public abstract class CodeList<E extends CodeList<E>> implements Comparable<E>, 
                 }
             }
             try {
-                final Constructor<T> constructor =
-                        codeType.getDeclaredConstructor(CONSTRUCTOR_PARAMETERS);
+                final Constructor<T> constructor = codeType.getDeclaredConstructor(CONSTRUCTOR_PARAMETERS);
                 constructor.setAccessible(true);
                 return constructor.newInstance(name);
             } catch (Exception exception) {
-                throw new IllegalArgumentException(
-                        "Can't create code of type " + codeType.getSimpleName(), exception);
+                throw new IllegalArgumentException("Can't create code of type " + codeType.getSimpleName(), exception);
             }
         }
     }
@@ -236,8 +233,7 @@ public abstract class CodeList<E extends CodeList<E>> implements Comparable<E>, 
         final Class<? extends CodeList> ct = this.getClass();
         final Class<? extends CodeList> co = other.getClass();
         if (!ct.equals(co)) {
-            throw new ClassCastException(
-                    "Can't compare " + ct.getSimpleName() + " to " + co.getSimpleName());
+            throw new ClassCastException("Can't compare " + ct.getSimpleName() + " to " + co.getSimpleName());
         }
         return ordinal - ((CodeList) other).ordinal;
     }

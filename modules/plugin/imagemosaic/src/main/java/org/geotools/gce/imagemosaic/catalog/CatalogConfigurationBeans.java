@@ -37,15 +37,13 @@ public class CatalogConfigurationBeans {
         if (configurations == null || configurations.isEmpty())
             throw new IllegalArgumentException("The configuration map is null or empty");
         this.configurations = configurations;
-        if (this.configurations.isEmpty())
-            throw new IllegalArgumentException("The configuration map is null or empty");
+        if (this.configurations.isEmpty()) throw new IllegalArgumentException("The configuration map is null or empty");
         else if (this.configurations.size() == 1)
             this.loneConfiguration = this.configurations.values().iterator().next();
     }
 
     public CatalogConfigurationBeans(CatalogConfigurationBean loneConfiguration) {
-        if (loneConfiguration == null)
-            throw new IllegalArgumentException("The configuration is null");
+        if (loneConfiguration == null) throw new IllegalArgumentException("The configuration is null");
         this.loneConfiguration = loneConfiguration;
     }
 
@@ -54,13 +52,8 @@ public class CatalogConfigurationBeans {
     }
 
     public CatalogConfigurationBeans(List<MosaicConfigurationBean> beans) {
-        this(
-                beans.stream()
-                        .collect(
-                                Collectors.toMap(
-                                        c -> c.getName(),
-                                        c -> c.getCatalogConfigurationBean(),
-                                        (c1, c2) -> c1)));
+        this(beans.stream()
+                .collect(Collectors.toMap(c -> c.getName(), c -> c.getCatalogConfigurationBean(), (c1, c2) -> c1)));
     }
 
     /**

@@ -13,8 +13,7 @@ public class DescribeCoverageTest {
     @Test
     public void testParseDescribeCoverage() throws Exception {
         String capRequestPath = "requestDescribeCoverage.xml";
-        DescribeCoverageType dc =
-                (DescribeCoverageType) parser.parse(getClass().getResourceAsStream(capRequestPath));
+        DescribeCoverageType dc = (DescribeCoverageType) parser.parse(getClass().getResourceAsStream(capRequestPath));
         assertEquals("WCS", dc.getService());
         assertEquals("1.1.1", dc.getVersion());
     }

@@ -63,8 +63,7 @@ public class FIDFeatureReader implements FeatureReader<SimpleFeatureType, Simple
      * @param schema FeatureType to use, may be <code>null</code>
      * @throws SchemaException if we could not determine the correct FeatureType
      */
-    public FIDFeatureReader(
-            AttributeReader attributeReader, FIDReader fidReader, SimpleFeatureType schema)
+    public FIDFeatureReader(AttributeReader attributeReader, FIDReader fidReader, SimpleFeatureType schema)
             throws SchemaException {
         this.attributeReader = attributeReader;
         this.fidReader = fidReader;
@@ -78,14 +77,12 @@ public class FIDFeatureReader implements FeatureReader<SimpleFeatureType, Simple
         this.builder = new SimpleFeatureBuilder(schema);
     }
 
-    public FIDFeatureReader(AttributeReader attributeReader, FIDReader fidReader)
-            throws SchemaException {
+    public FIDFeatureReader(AttributeReader attributeReader, FIDReader fidReader) throws SchemaException {
         this(attributeReader, fidReader, null);
     }
 
     @Override
-    public SimpleFeature next()
-            throws IOException, IllegalAttributeException, NoSuchElementException {
+    public SimpleFeature next() throws IOException, IllegalAttributeException, NoSuchElementException {
         if (hasNext()) {
             hasNextFlag = null;
             attributeReader.next();
@@ -107,8 +104,7 @@ public class FIDFeatureReader implements FeatureReader<SimpleFeatureType, Simple
         return b.buildFeatureType();
     }
 
-    protected SimpleFeature readFeature(AttributeReader atts)
-            throws IllegalAttributeException, IOException {
+    protected SimpleFeature readFeature(AttributeReader atts) throws IllegalAttributeException, IOException {
 
         // Seems like doing it here could be a bit expensive.
         // The other option from this is to have this constructed with two

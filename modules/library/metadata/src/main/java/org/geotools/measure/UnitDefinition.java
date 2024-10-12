@@ -36,10 +36,7 @@ public final class UnitDefinition {
     private final List<String> aliases;
 
     public static UnitDefinition of(
-            Unit<?> unit,
-            List<PrefixDefinition> prefixes,
-            String symbolOverride,
-            List<String> aliases) {
+            Unit<?> unit, List<PrefixDefinition> prefixes, String symbolOverride, List<String> aliases) {
         return new UnitDefinition(unit, prefixes, symbolOverride, aliases);
     }
 
@@ -47,11 +44,7 @@ public final class UnitDefinition {
         return new UnitDefinition(unit, PrefixDefinitions.STANDARD, null, emptyList());
     }
 
-    private UnitDefinition(
-            Unit<?> unit,
-            List<PrefixDefinition> prefixes,
-            String symbolOverride,
-            List<String> aliases) {
+    private UnitDefinition(Unit<?> unit, List<PrefixDefinition> prefixes, String symbolOverride, List<String> aliases) {
         this.unit = unit;
         this.prefixes = prefixes;
         this.symbolOverride = symbolOverride;

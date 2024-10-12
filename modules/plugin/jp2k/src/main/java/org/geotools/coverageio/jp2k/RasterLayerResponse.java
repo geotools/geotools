@@ -105,8 +105,7 @@ class RasterLayerResponse {
             this.cropBBox = cropBBox;
             this.worldToGrid = worldToGrid;
             this.granule = granule;
-            this.tilesDimension =
-                    tilesDimension != null ? (Dimension) tilesDimension.clone() : null;
+            this.tilesDimension = tilesDimension != null ? (Dimension) tilesDimension.clone() : null;
         }
 
         public BoundingBox getCropBBox() {
@@ -132,8 +131,7 @@ class RasterLayerResponse {
         @Override
         public RenderedImage call() throws Exception {
 
-            return granule.loadRaster(
-                    readParameters, imageIndex, cropBBox, worldToGrid, request, tilesDimension);
+            return granule.loadRaster(readParameters, imageIndex, cropBBox, worldToGrid, request, tilesDimension);
         }
     }
 
@@ -153,8 +151,7 @@ class RasterLayerResponse {
             final ReferencedEnvelope granuleBBox = aoi;
 
             // Load a granule from disk as requested.
-            if (LOGGER.isLoggable(Level.FINE))
-                LOGGER.fine("About to read image number " + granulesNumber);
+            if (LOGGER.isLoggable(Level.FINE)) LOGGER.fine("About to read image number " + granulesNumber);
 
             // If the granule is not there, dump a message and continue
             final File rasterFile = new File(location);
@@ -175,14 +172,13 @@ class RasterLayerResponse {
             // load raster data
             //
             // create a granule loader
-            final GranuleLoader loader =
-                    new GranuleLoader(
-                            baseReadParameters,
-                            imageChoice,
-                            bbox,
-                            finalWorldToGridCorner,
-                            granule,
-                            request.getTileDimensions());
+            final GranuleLoader loader = new GranuleLoader(
+                    baseReadParameters,
+                    imageChoice,
+                    bbox,
+                    finalWorldToGridCorner,
+                    granule,
+                    request.getTileDimensions());
             tasks.add(new FutureTask<>(loader));
 
             granulesNumber++;
@@ -227,31 +223,19 @@ class RasterLayerResponse {
 
                 } catch (InterruptedException | ExecutionException e) {
                     if (LOGGER.isLoggable(Level.SEVERE))
-                        LOGGER.log(
-                                Level.SEVERE,
-                                "Unable to load the raster for granule " + granuleIndex,
-                                e);
+                        LOGGER.log(Level.SEVERE, "Unable to load the raster for granule " + granuleIndex, e);
                     continue;
                 } catch (ImagingException | javax.media.jai.util.ImagingException e) {
                     if (LOGGER.isLoggable(Level.FINE))
                         LOGGER.fine(
-                                "Loading image number "
-                                        + granuleIndex
-                                        + " failed, original request was "
-                                        + request);
+                                "Loading image number " + granuleIndex + " failed, original request was " + request);
                     continue;
                 }
 
-                if (LOGGER.isLoggable(Level.FINE))
-                    LOGGER.fine("Loading image number " + granuleIndex);
+                if (LOGGER.isLoggable(Level.FINE)) LOGGER.fine("Loading image number " + granuleIndex);
 
-                final RenderedImage raster =
-                        processGranuleRaster(
-                                loadedImage,
-                                granuleIndex,
-                                alphaIn,
-                                doInputTransparency,
-                                inputTransparentColor);
+                final RenderedImage raster = processGranuleRaster(
+                        loadedImage, granuleIndex, alphaIn, doInputTransparency, inputTransparentColor);
 
                 theImage = raster;
 
@@ -261,16 +245,14 @@ class RasterLayerResponse {
 
             granulesNumber = granuleIndex;
             if (granulesNumber == 0) {
-                if (LOGGER.isLoggable(Level.FINE))
-                    LOGGER.log(Level.FINE, "Unable to load any data ");
+                if (LOGGER.isLoggable(Level.FINE)) LOGGER.log(Level.FINE, "Unable to load any data ");
                 return;
             }
         }
     }
 
     /** Logger. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(RasterLayerResponse.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(RasterLayerResponse.class);
 
     /** The GridCoverage produced after a {@link #compute()} method call */
     private GridCoverage2D gridCoverage;
@@ -319,8 +301,7 @@ class RasterLayerResponse {
      *
      * @param request a {@link RasterLayerRequest} originating this response.
      */
-    public RasterLayerResponse(
-            final RasterLayerRequest request, final RasterManager rasterManager) {
+    public RasterLayerResponse(final RasterLayerRequest request, final RasterManager rasterManager) {
         this.request = request;
         inputURL = rasterManager.getInputURL();
         File tempFile = null;
@@ -404,19 +385,17 @@ class RasterLayerResponse {
             // factors.
 
             if (request.getRequestedBBox() != null && request.getRequestedRasterArea() != null)
-                imageChoice =
-                        setReadParams(request.getOverviewPolicy(), baseReadParameters, request);
+                imageChoice = setReadParams(request.getOverviewPolicy(), baseReadParameters, request);
             else imageChoice = 0;
             assert imageChoice >= 0;
             if (LOGGER.isLoggable(Level.FINE))
-                LOGGER.fine(
-                        new StringBuffer("Loading level ")
-                                .append(imageChoice)
-                                .append(" with subsampling factors ")
-                                .append(baseReadParameters.getSourceXSubsampling())
-                                .append(" ")
-                                .append(baseReadParameters.getSourceYSubsampling())
-                                .toString());
+                LOGGER.fine(new StringBuffer("Loading level ")
+                        .append(imageChoice)
+                        .append(" with subsampling factors ")
+                        .append(baseReadParameters.getSourceXSubsampling())
+                        .append(" ")
+                        .append(baseReadParameters.getSourceYSubsampling())
+                        .toString());
 
             final BoundingBox cropBBOX = request.getCropBBox();
             if (cropBBOX != null) bbox = ReferencedEnvelope.reference(cropBBOX);
@@ -429,29 +408,21 @@ class RasterLayerResponse {
             g2w.concatenate(CoverageUtilities.CENTER_TO_CORNER);
 
             // keep into account overviews and subsampling
-            final OverviewLevel level =
-                    rasterManager.overviewsController.resolutionsLevels.get(imageChoice);
-            final OverviewLevel baseLevel =
-                    rasterManager.overviewsController.resolutionsLevels.get(0);
-            final AffineTransform2D adjustments =
-                    new AffineTransform2D(
-                            (level.resolutionX / baseLevel.resolutionX)
-                                    * baseReadParameters.getSourceXSubsampling(),
-                            0,
-                            0,
-                            (level.resolutionY / baseLevel.resolutionY)
-                                    * baseReadParameters.getSourceYSubsampling(),
-                            0,
-                            0);
+            final OverviewLevel level = rasterManager.overviewsController.resolutionsLevels.get(imageChoice);
+            final OverviewLevel baseLevel = rasterManager.overviewsController.resolutionsLevels.get(0);
+            final AffineTransform2D adjustments = new AffineTransform2D(
+                    (level.resolutionX / baseLevel.resolutionX) * baseReadParameters.getSourceXSubsampling(),
+                    0,
+                    0,
+                    (level.resolutionY / baseLevel.resolutionY) * baseReadParameters.getSourceYSubsampling(),
+                    0,
+                    0);
             g2w.concatenate(adjustments);
             finalGridToWorldCorner = new AffineTransform2D(g2w);
             finalWorldToGridCorner = finalGridToWorldCorner.inverse(); // compute raster bounds
-            rasterBounds =
-                    new GeneralGridEnvelope(
-                                    CRS.transform(finalWorldToGridCorner, bbox),
-                                    PixelInCell.CELL_CORNER,
-                                    false)
-                            .toRectangle();
+            rasterBounds = new GeneralGridEnvelope(
+                            CRS.transform(finalWorldToGridCorner, bbox), PixelInCell.CELL_CORNER, false)
+                    .toRectangle();
 
             // create Init the granuleWorker
             final GranuleWorker worker = new GranuleWorker();
@@ -464,12 +435,11 @@ class RasterLayerResponse {
             if (worker.granulesNumber >= 1) {
 
                 if (LOGGER.isLoggable(Level.FINE))
-                    LOGGER.fine(
-                            new StringBuilder("Loaded bbox ")
-                                    .append(bbox.toString())
-                                    .append(" while crop bbox ")
-                                    .append(request.getCropBBox().toString())
-                                    .toString());
+                    LOGGER.fine(new StringBuilder("Loaded bbox ")
+                            .append(bbox.toString())
+                            .append(" while crop bbox ")
+                            .append(request.getCropBBox().toString())
+                            .toString());
                 return theImage;
 
             } else {
@@ -524,8 +494,7 @@ class RasterLayerResponse {
         // TRANSPARENT COLOR MANAGEMENT
         //
         if (doTransparentColor) {
-            if (LOGGER.isLoggable(Level.FINE))
-                LOGGER.fine("Support for alpha on input image number " + granuleIndex);
+            if (LOGGER.isLoggable(Level.FINE)) LOGGER.fine("Support for alpha on input image number " + granuleIndex);
             granule = ImageUtilities.maskColor(transparentColor, granule);
         }
         return granule;
@@ -540,18 +509,12 @@ class RasterLayerResponse {
         // setting bands names.
         for (int i = 0; i < numBands; i++) {
             final ColorInterpretation colorInterpretation = TypeMap.getColorInterpretation(cm, i);
-            if (colorInterpretation == null)
-                throw new IOException("Unrecognized sample dimension type");
+            if (colorInterpretation == null) throw new IOException("Unrecognized sample dimension type");
             bands[i] = new GridSampleDimension(colorInterpretation.name());
         }
 
         return coverageFactory.create(
-                rasterManager.getCoverageIdentifier(),
-                image,
-                new GeneralBounds(bbox),
-                bands,
-                null,
-                null);
+                rasterManager.getCoverageIdentifier(), image, new GeneralBounds(bbox), bands, null, null);
     }
 
     /**
@@ -572,9 +535,7 @@ class RasterLayerResponse {
      * @return the index of the raster to read in the underlying data source.
      */
     private int setReadParams(
-            final OverviewPolicy overviewPolicy,
-            final ImageReadParam readParams,
-            final RasterLayerRequest request)
+            final OverviewPolicy overviewPolicy, final ImageReadParam readParams, final RasterLayerRequest request)
             throws IOException, TransformException {
 
         // Default image index 0
@@ -608,8 +569,7 @@ class RasterLayerResponse {
         if (transparentColor != null) {
             if (LOGGER.isLoggable(Level.FINE)) LOGGER.fine("Support for alpha on final image");
             final ImageWorker w = new ImageWorker(image);
-            if (image.getSampleModel() instanceof MultiPixelPackedSampleModel)
-                w.forceComponentColorModel();
+            if (image.getSampleModel() instanceof MultiPixelPackedSampleModel) w.forceComponentColorModel();
             return w.makeColorTransparent(transparentColor).getRenderedImage();
         }
         return image;

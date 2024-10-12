@@ -79,8 +79,7 @@ public class DataAccessRegistry implements Repository {
      *
      * @return feature source
      */
-    public synchronized FeatureSource<FeatureType, Feature> featureSource(Name name)
-            throws IOException {
+    public synchronized FeatureSource<FeatureType, Feature> featureSource(Name name) throws IOException {
         for (DataAccess<FeatureType, Feature> dataAccess : registry) {
             if (dataAccess.getNames().contains(name)) {
                 if (dataAccess instanceof AppSchemaDataAccess) {
@@ -106,14 +105,12 @@ public class DataAccessRegistry implements Repository {
 
     @Override
     public DataStore dataStore(Name name) {
-        throw new UnsupportedOperationException(
-                "Simple feature DataStores not supported by app-schema registry.");
+        throw new UnsupportedOperationException("Simple feature DataStores not supported by app-schema registry.");
     }
 
     @Override
     public List<DataStore> getDataStores() {
-        throw new UnsupportedOperationException(
-                "Simple feature DataStores not supported by app-schema registry.");
+        throw new UnsupportedOperationException("Simple feature DataStores not supported by app-schema registry.");
     }
 
     /**
@@ -143,10 +140,7 @@ public class DataAccessRegistry implements Repository {
                 try {
                     disposeHiddenDataAccessInstances(asda.url);
                 } catch (IOException e) {
-                    LOGGER.log(
-                            Level.SEVERE,
-                            "Exception occurred disposing unused data access instances",
-                            e);
+                    LOGGER.log(Level.SEVERE, "Exception occurred disposing unused data access instances", e);
                 }
             }
         }
@@ -288,13 +282,11 @@ public class DataAccessRegistry implements Repository {
      *
      * @return feature source
      */
-    public static FeatureSource<FeatureType, Feature> getFeatureSource(Name featureTypeName)
-            throws IOException {
+    public static FeatureSource<FeatureType, Feature> getFeatureSource(Name featureTypeName) throws IOException {
         return getInstance().featureSource(featureTypeName);
     }
 
-    public static DataAccess<FeatureType, Feature> getDataAccess(Name featureTypeName)
-            throws IOException {
+    public static DataAccess<FeatureType, Feature> getDataAccess(Name featureTypeName) throws IOException {
         return getInstance().featureSource(featureTypeName).getDataStore();
     }
 
@@ -353,13 +345,12 @@ public class DataAccessRegistry implements Repository {
         for (DataAccess<FeatureType, Feature> featureTypeFeatureDataAccess : registry) {
             typeNames.addAll(featureTypeFeatureDataAccess.getNames());
         }
-        throw new DataSourceException(
-                "Feature type "
-                        + featureTypeName
-                        + " not found."
-                        + " Has the data access been registered in DataAccessRegistry?"
-                        + " Available: "
-                        + typeNames.toString());
+        throw new DataSourceException("Feature type "
+                + featureTypeName
+                + " not found."
+                + " Has the data access been registered in DataAccessRegistry?"
+                + " Available: "
+                + typeNames.toString());
     }
 
     public Feature findFeature(FeatureId id, Hints hints) throws IOException {

@@ -36,8 +36,7 @@ public class NTv2GridShiftFactoryTest {
     private static final URL TEST_GRID = NTv2GridShiftFactoryTest.class.getResource("BALR2009.gsb");
     private static final URL INEXISTENT_GRID =
             NTv2GridShiftFactoryTest.class.getResource("this_NTv2_grid_does_not_exist");
-    private static final URL MALFORMED_GRID =
-            NTv2GridShiftFactoryTest.class.getResource("malformedNTv2grid.gsb");
+    private static final URL MALFORMED_GRID = NTv2GridShiftFactoryTest.class.getResource("malformedNTv2grid.gsb");
 
     private NTv2GridShiftFactory factory;
 

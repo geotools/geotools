@@ -102,10 +102,8 @@ public class CQL2Json {
      * @throws IOException if an error occurs while parsing the JSON String
      * @throws ParseException if an error occurs while parsing the JSON String
      */
-    public static Expression toExpression(String cql2Json)
-            throws CQLException, IOException, ParseException {
-        CQLJsonFilterBuilder cqlJsonFilterBuilder =
-                new CQLJsonFilterBuilder(new FilterFactoryImpl());
+    public static Expression toExpression(String cql2Json) throws CQLException, IOException, ParseException {
+        CQLJsonFilterBuilder cqlJsonFilterBuilder = new CQLJsonFilterBuilder(new FilterFactoryImpl());
         return cqlJsonFilterBuilder.getExpression(objectMapper.readTree(cql2Json));
     }
 }

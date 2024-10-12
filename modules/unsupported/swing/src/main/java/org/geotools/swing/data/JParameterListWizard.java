@@ -72,10 +72,7 @@ public class JParameterListWizard extends JWizard {
      * @param connectionParams an optional {@code Map} of initial parameter values
      */
     public JParameterListWizard(
-            String title,
-            String description,
-            List<Parameter<?>> contents,
-            Map<String, Object> connectionParams) {
+            String title, String description, List<Parameter<?>> contents, Map<String, Object> connectionParams) {
         super(title);
         this.connectionParameters = connectionParams == null ? new HashMap<>() : connectionParams;
         fillInDefaults(contents, this.connectionParameters);
@@ -89,9 +86,7 @@ public class JParameterListWizard extends JWizard {
         List<Parameter<?>> advancedContents = contentsForLevel(contents, "advanced");
 
         if (!advancedContents.isEmpty()) {
-            advancedPage =
-                    new JParameterListPage(
-                            title, description, advancedContents, connectionParameters);
+            advancedPage = new JParameterListPage(title, description, advancedContents, connectionParameters);
             advancedPage.setPageIdentifier("advancedPage");
             advancedPage.setBackPageIdentifier("userPage");
             registerWizardPanel(advancedPage);
@@ -138,10 +133,7 @@ public class JParameterListWizard extends JWizard {
         if (contents != null) {
             for (Parameter<?> param : contents) {
                 if (level != null) {
-                    String check =
-                            param.metadata == null
-                                    ? "user"
-                                    : (String) param.metadata.get(Parameter.LEVEL);
+                    String check = param.metadata == null ? "user" : (String) param.metadata.get(Parameter.LEVEL);
                     if (check == null) {
                         check = "user";
                     }

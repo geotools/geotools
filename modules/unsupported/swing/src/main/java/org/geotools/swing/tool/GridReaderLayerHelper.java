@@ -114,13 +114,12 @@ public class GridReaderLayerHelper extends InfoToolHelper {
         if (reader == null) {
             return false;
         }
-        GeneralParameterValue parameter =
-                new Parameter<>(
-                        AbstractGridFormat.READ_GRIDGEOMETRY2D,
-                        new GridGeometry2D(
-                                new GridEnvelope2D(queryRect),
-                                reader.getOriginalGridToWorld(PixelInCell.CELL_CENTER),
-                                reader.getCoordinateReferenceSystem()));
+        GeneralParameterValue parameter = new Parameter<>(
+                AbstractGridFormat.READ_GRIDGEOMETRY2D,
+                new GridGeometry2D(
+                        new GridEnvelope2D(queryRect),
+                        reader.getOriginalGridToWorld(PixelInCell.CELL_CENTER),
+                        reader.getCoordinateReferenceSystem()));
 
         try {
             cachedCoverage = reader.read(new GeneralParameterValue[] {parameter});
@@ -147,14 +146,12 @@ public class GridReaderLayerHelper extends InfoToolHelper {
             int halfWidth = CACHED_RASTER_WIDTH / 2;
 
             final Rectangle queryRect =
-                    new Rectangle(
-                            x - halfWidth, y - halfWidth, CACHED_RASTER_WIDTH, CACHED_RASTER_WIDTH);
+                    new Rectangle(x - halfWidth, y - halfWidth, CACHED_RASTER_WIDTH, CACHED_RASTER_WIDTH);
 
             GridEnvelope gridEnv = reader.getOriginalGridRange();
-            Rectangle rect =
-                    new Rectangle(
-                            gridEnv.getLow(0), gridEnv.getLow(1),
-                            gridEnv.getSpan(0), gridEnv.getSpan(1));
+            Rectangle rect = new Rectangle(
+                    gridEnv.getLow(0), gridEnv.getLow(1),
+                    gridEnv.getSpan(0), gridEnv.getSpan(1));
 
             XRectangle2D.intersect(queryRect, rect, queryRect);
             return queryRect;

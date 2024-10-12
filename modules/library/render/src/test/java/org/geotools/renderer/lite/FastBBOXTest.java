@@ -63,38 +63,28 @@ public class FastBBOXTest {
     @Test
     public void evaluate_envelopeOverlapsBBOX() throws Exception {
         FastBBOX fastBBOX =
-                new FastBBOX(
-                        filterFactory.property("geometry"),
-                        new Envelope(0.8, 2, 0.8, 2),
-                        filterFactory);
+                new FastBBOX(filterFactory.property("geometry"), new Envelope(0.8, 2, 0.8, 2), filterFactory);
         assertTrue(fastBBOX.evaluate(circle));
     }
 
     @Test
     public void evaluate_envelopeIntersectsGeometry() throws Exception {
         FastBBOX fastBBOX =
-                new FastBBOX(
-                        filterFactory.property("geometry"),
-                        new Envelope(0.5, 2, 0.5, 2),
-                        filterFactory);
+                new FastBBOX(filterFactory.property("geometry"), new Envelope(0.5, 2, 0.5, 2), filterFactory);
         assertTrue(fastBBOX.evaluate(circle));
     }
 
     @Test
     public void evaluate_envelopeDisjoint() throws Exception {
         FastBBOX fastBBOX =
-                new FastBBOX(
-                        filterFactory.property("geometry"),
-                        new Envelope(1.1, 2, 1.1, 2),
-                        filterFactory);
+                new FastBBOX(filterFactory.property("geometry"), new Envelope(1.1, 2, 1.1, 2), filterFactory);
         assertFalse(fastBBOX.evaluate(circle));
     }
 
     @Test
     public void evaluateOnGeometryAttribute() throws FactoryException {
         Envelope env = new Envelope(0.5, 2, 0.5, 2);
-        FastBBOX fastBBOX =
-                new FastBBOX(filterFactory.property("geometryAttribute"), env, filterFactory);
+        FastBBOX fastBBOX = new FastBBOX(filterFactory.property("geometryAttribute"), env, filterFactory);
         assertTrue(fastBBOX.evaluate(circle));
     }
 
@@ -109,18 +99,16 @@ public class FastBBOXTest {
 
         public MockDataObject(Geometry g) {
             this.geometry = g;
-            GeometryType type =
-                    new GeometryTypeImpl(
-                            new NameImpl("GEOMETRY"),
-                            Geometry.class,
-                            DefaultGeographicCRS.WGS84,
-                            false,
-                            false,
-                            Collections.emptyList(),
-                            null,
-                            null);
-            GeometryDescriptor desc =
-                    new GeometryDescriptorImpl(type, new NameImpl("geometry"), 0, 1, false, null);
+            GeometryType type = new GeometryTypeImpl(
+                    new NameImpl("GEOMETRY"),
+                    Geometry.class,
+                    DefaultGeographicCRS.WGS84,
+                    false,
+                    false,
+                    Collections.emptyList(),
+                    null,
+                    null);
+            GeometryDescriptor desc = new GeometryDescriptorImpl(type, new NameImpl("geometry"), 0, 1, false, null);
             this.geometryAttribute = new GeometryAttributeImpl(g, desc, null);
         }
     }
@@ -133,8 +121,7 @@ public class FastBBOXTest {
      */
     public static class MockPropertyAccessorFactory implements PropertyAccessorFactory {
         @Override
-        public PropertyAccessor createPropertyAccessor(
-                Class<?> type, String xpath, Class<?> target, Hints hints) {
+        public PropertyAccessor createPropertyAccessor(Class<?> type, String xpath, Class<?> target, Hints hints) {
             if (!MockDataObject.class.equals(type)) {
                 return null;
             }
@@ -145,8 +132,7 @@ public class FastBBOXTest {
                 }
 
                 @Override
-                public <T> T get(Object object, String xpath, Class<T> target)
-                        throws IllegalArgumentException {
+                public <T> T get(Object object, String xpath, Class<T> target) throws IllegalArgumentException {
                     if ("geometry".equals(xpath)) {
                         @SuppressWarnings("unchecked")
                         T result = (T) ((MockDataObject) object).geometry;

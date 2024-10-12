@@ -38,12 +38,7 @@ public class GMLMultiLineStringPropertyTypeBindingTest extends AbstractGMLBindin
     public void setUp() throws Exception {
         super.setUp();
 
-        association =
-                createElement(
-                        GML.NAMESPACE,
-                        "myMultiLineStringProperty",
-                        GML.MultiLineStringPropertyType,
-                        null);
+        association = createElement(GML.NAMESPACE, "myMultiLineStringProperty", GML.MultiLineStringPropertyType, null);
         geometry = createElement(GML.NAMESPACE, "myMultiLineString", GML.MultiLineStringType, null);
 
         container = new DefaultPicoContainer();
@@ -55,36 +50,24 @@ public class GMLMultiLineStringPropertyTypeBindingTest extends AbstractGMLBindin
     @Test
     public void testWithGeometry() throws Exception {
         LineString p1 =
-                new GeometryFactory()
-                        .createLineString(
-                                new Coordinate[] {new Coordinate(0, 0), new Coordinate(1, 1)});
+                new GeometryFactory().createLineString(new Coordinate[] {new Coordinate(0, 0), new Coordinate(1, 1)});
         LineString p2 =
-                new GeometryFactory()
-                        .createLineString(
-                                new Coordinate[] {new Coordinate(2, 2), new Coordinate(3, 3)});
+                new GeometryFactory().createLineString(new Coordinate[] {new Coordinate(2, 2), new Coordinate(3, 3)});
 
-        Node node =
-                createNode(
-                        association,
-                        new ElementInstance[] {geometry},
-                        new Object[] {
-                            new GeometryFactory().createMultiLineString(new LineString[] {p1, p2})
-                        },
-                        null,
-                        null);
+        Node node = createNode(
+                association,
+                new ElementInstance[] {geometry},
+                new Object[] {new GeometryFactory().createMultiLineString(new LineString[] {p1, p2})},
+                null,
+                null);
 
-        GMLGeometryAssociationTypeBinding s =
-                (GMLGeometryAssociationTypeBinding)
-                        container.getComponentInstanceOfType(
-                                GMLGeometryAssociationTypeBinding.class);
+        GMLGeometryAssociationTypeBinding s = (GMLGeometryAssociationTypeBinding)
+                container.getComponentInstanceOfType(GMLGeometryAssociationTypeBinding.class);
 
-        GMLMultiLineStringPropertyTypeBinding s1 =
-                (GMLMultiLineStringPropertyTypeBinding)
-                        container.getComponentInstanceOfType(
-                                GMLMultiLineStringPropertyTypeBinding.class);
+        GMLMultiLineStringPropertyTypeBinding s1 = (GMLMultiLineStringPropertyTypeBinding)
+                container.getComponentInstanceOfType(GMLMultiLineStringPropertyTypeBinding.class);
 
-        MultiLineString p =
-                (MultiLineString) s1.parse(association, node, s.parse(association, node, null));
+        MultiLineString p = (MultiLineString) s1.parse(association, node, s.parse(association, node, null));
         assertNotNull(p);
     }
 }

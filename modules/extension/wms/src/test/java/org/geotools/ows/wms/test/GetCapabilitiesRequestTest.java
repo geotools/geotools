@@ -33,8 +33,7 @@ public class GetCapabilitiesRequestTest {
     @Test
     public void testGetCapabilitiesRequest() throws Exception {
         URL testURL =
-                new URL(
-                        "http://office.refractions.net:4001/cgi-bin/mapserv?map=/opt/dra2/orthophotos/tiles.map&");
+                new URL("http://office.refractions.net:4001/cgi-bin/mapserv?map=/opt/dra2/orthophotos/tiles.map&");
         AbstractGetCapabilitiesRequest request = new Request(testURL);
         URL finalURL = request.getFinalURL();
 
@@ -84,8 +83,7 @@ public class GetCapabilitiesRequestTest {
         }
 
         @Override
-        public Response createResponse(HTTPResponse httpResponse)
-                throws ServiceException, IOException {
+        public Response createResponse(HTTPResponse httpResponse) throws ServiceException, IOException {
             return new WMSGetCapabilitiesResponse(httpResponse, hints);
         }
     }

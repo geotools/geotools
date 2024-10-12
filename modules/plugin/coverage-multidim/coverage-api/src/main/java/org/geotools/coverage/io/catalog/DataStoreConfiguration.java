@@ -65,8 +65,7 @@ public class DataStoreConfiguration {
         this(INTERNAL_STORE_SPI, datastoreParams);
     }
 
-    public DataStoreConfiguration(
-            DataStoreFactorySpi datastoreSpi, Map<String, Serializable> datastoreParams) {
+    public DataStoreConfiguration(DataStoreFactorySpi datastoreSpi, Map<String, Serializable> datastoreParams) {
         this.datastoreSpi = datastoreSpi;
         this.params = datastoreParams;
     }

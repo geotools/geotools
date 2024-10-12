@@ -36,10 +36,6 @@ public class ThirdEPSGFactory extends MockCRSAuthorityFactory {
                 "Third",
                 Citations.EPSG,
                 MAXIMUM_PRIORITY - 52,
-                new Hints(
-                        Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER,
-                        Boolean.FALSE,
-                        Hints.VERSION,
-                        new Version("3.0")));
+                new Hints(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.FALSE, Hints.VERSION, new Version("3.0")));
     }
 }

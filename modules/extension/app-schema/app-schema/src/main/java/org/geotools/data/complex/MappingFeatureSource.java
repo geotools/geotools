@@ -111,9 +111,7 @@ public class MappingFeatureSource implements FeatureSource<FeatureType, Feature>
     }
 
     private Query namedQuery(Query query) {
-        Query namedQuery =
-                namedQuery(
-                        query.getFilter(), query.getMaxFeatures(), query instanceof JoiningQuery);
+        Query namedQuery = namedQuery(query.getFilter(), query.getMaxFeatures(), query instanceof JoiningQuery);
         namedQuery.setProperties(query.getProperties());
         namedQuery.setCoordinateSystem(query.getCoordinateSystem());
         namedQuery.setCoordinateSystemReproject(query.getCoordinateSystemReproject());
@@ -140,8 +138,7 @@ public class MappingFeatureSource implements FeatureSource<FeatureType, Feature>
         int count = 0;
         Query namedQuery = namedQuery(query);
         FeatureSource mappedSource = mapping.getSource();
-        if (!(mappedSource instanceof JDBCFeatureSource
-                || mappedSource instanceof JDBCFeatureStore)) {
+        if (!(mappedSource instanceof JDBCFeatureSource || mappedSource instanceof JDBCFeatureStore)) {
             count = store.getCount(namedQuery);
         }
         if (count >= 0) {
@@ -182,16 +179,13 @@ public class MappingFeatureSource implements FeatureSource<FeatureType, Feature>
         return new MappingFeatureCollection(store, mapping, namedQuery(filter, Integer.MAX_VALUE));
     }
 
-    public FeatureCollection<FeatureType, Feature> getFeatures(Filter filter, Hints hints)
-            throws IOException {
-        return new MappingFeatureCollection(
-                store, mapping, namedQuery(filter, Integer.MAX_VALUE, hints));
+    public FeatureCollection<FeatureType, Feature> getFeatures(Filter filter, Hints hints) throws IOException {
+        return new MappingFeatureCollection(store, mapping, namedQuery(filter, Integer.MAX_VALUE, hints));
     }
 
     @Override
     public FeatureCollection<FeatureType, Feature> getFeatures() throws IOException {
-        return new MappingFeatureCollection(
-                store, mapping, namedQuery(Filter.INCLUDE, Integer.MAX_VALUE));
+        return new MappingFeatureCollection(store, mapping, namedQuery(Filter.INCLUDE, Integer.MAX_VALUE));
     }
 
     @Override

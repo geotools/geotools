@@ -144,9 +144,7 @@ public abstract class AbstractCachedAuthorityFactory extends AbstractAuthorityFa
      * @param cache The cache to use
      */
     protected AbstractCachedAuthorityFactory(
-            int priority,
-            ObjectCache<Object, Object> cache,
-            ReferencingFactoryContainer container) {
+            int priority, ObjectCache<Object, Object> cache, ReferencingFactoryContainer container) {
         super(priority);
         this.factories = container;
         this.cache = cache;
@@ -284,8 +282,7 @@ public abstract class AbstractCachedAuthorityFactory extends AbstractAuthorityFa
     }
 
     @Override
-    public CoordinateReferenceSystem createCoordinateReferenceSystem(String code)
-            throws FactoryException {
+    public CoordinateReferenceSystem createCoordinateReferenceSystem(String code) throws FactoryException {
         final String key = toKey(code);
         CoordinateReferenceSystem crs = (CoordinateReferenceSystem) cache.get(key);
         if (crs == null) {
@@ -303,8 +300,7 @@ public abstract class AbstractCachedAuthorityFactory extends AbstractAuthorityFa
         return crs;
     }
 
-    protected abstract CoordinateReferenceSystem generateCoordinateReferenceSystem(String code)
-            throws FactoryException;
+    protected abstract CoordinateReferenceSystem generateCoordinateReferenceSystem(String code) throws FactoryException;
 
     @Override
     public DerivedCRS createDerivedCRS(final String code) throws FactoryException {
@@ -426,8 +422,7 @@ public abstract class AbstractCachedAuthorityFactory extends AbstractAuthorityFa
         return cs;
     }
 
-    protected abstract CoordinateSystem generateCoordinateSystem(String code)
-            throws FactoryException;
+    protected abstract CoordinateSystem generateCoordinateSystem(String code) throws FactoryException;
 
     // sample implemenation with get/test
     @Override
@@ -449,8 +444,7 @@ public abstract class AbstractCachedAuthorityFactory extends AbstractAuthorityFa
         return axis;
     }
 
-    protected abstract CoordinateSystemAxis generateCoordinateSystemAxis(String code)
-            throws FactoryException;
+    protected abstract CoordinateSystemAxis generateCoordinateSystemAxis(String code) throws FactoryException;
 
     /**
      * The default implementation invokes <code>
@@ -676,8 +670,7 @@ public abstract class AbstractCachedAuthorityFactory extends AbstractAuthorityFa
         return operation;
     }
 
-    protected abstract CoordinateOperation generateCoordinateOperation(String code)
-            throws FactoryException;
+    protected abstract CoordinateOperation generateCoordinateOperation(String code) throws FactoryException;
 
     @Override
     @SuppressWarnings("unchecked")
@@ -704,8 +697,8 @@ public abstract class AbstractCachedAuthorityFactory extends AbstractAuthorityFa
         return operations;
     }
 
-    protected abstract Set generateFromCoordinateReferenceSystemCodes(
-            String sourceCode, String targetCode) throws FactoryException;
+    protected abstract Set generateFromCoordinateReferenceSystemCodes(String sourceCode, String targetCode)
+            throws FactoryException;
 
     /** We will clear out our cache and factories reference */
     @Override
@@ -721,8 +714,8 @@ public abstract class AbstractCachedAuthorityFactory extends AbstractAuthorityFa
      * @since 2.4
      */
     @Override
-    public synchronized IdentifiedObjectFinder getIdentifiedObjectFinder(
-            final Class<? extends IdentifiedObject> type) throws FactoryException {
+    public synchronized IdentifiedObjectFinder getIdentifiedObjectFinder(final Class<? extends IdentifiedObject> type)
+            throws FactoryException {
         return new CachedFinder(type);
     }
 

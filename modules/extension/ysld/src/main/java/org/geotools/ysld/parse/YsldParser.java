@@ -41,15 +41,13 @@ public class YsldParser extends YamlParser {
 
     UomMapper uomMapper = new UomMapper();
 
-    ResourceLocator locator =
-            uri -> {
-                try {
-                    return new URL(uri);
-                } catch (MalformedURLException e) {
-                    throw new IllegalArgumentException(
-                            String.format("'%s' is not a valid URI", uri), e);
-                }
-            };
+    ResourceLocator locator = uri -> {
+        try {
+            return new URL(uri);
+        } catch (MalformedURLException e) {
+            throw new IllegalArgumentException(String.format("'%s' is not a valid URI", uri), e);
+        }
+    };
 
     public YsldParser(InputStream ysld) throws IOException {
         super(ysld);
@@ -59,8 +57,7 @@ public class YsldParser extends YamlParser {
         super(reader);
     }
 
-    public void setZoomContextFinders(
-            List<org.geotools.styling.zoom.ZoomContextFinder> zCtxtFinders) {
+    public void setZoomContextFinders(List<org.geotools.styling.zoom.ZoomContextFinder> zCtxtFinders) {
         this.zCtxtFinders = zCtxtFinders;
     }
 

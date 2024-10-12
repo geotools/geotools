@@ -62,15 +62,13 @@ class TWKBAttributeIO {
         }
 
         @Override
-        protected CoordinateSequence readCoordinateSequence(int numPts, TWKBMetadata metadata)
-                throws IOException {
+        protected CoordinateSequence readCoordinateSequence(int numPts, TWKBMetadata metadata) throws IOException {
             if (!(csFactory instanceof LiteCoordinateSequenceFactory)) {
                 return super.readCoordinateSequence(numPts, metadata);
             }
 
             final int dims = metadata.getDims();
-            final LiteCoordinateSequence seq =
-                    (LiteCoordinateSequence) csFactory.create(numPts, dims);
+            final LiteCoordinateSequence seq = (LiteCoordinateSequence) csFactory.create(numPts, dims);
             final double[] ordinates = new double[numPts * dims];
             final double[] scales = new double[dims];
             for (int i = 0; i < scales.length; i++) {
@@ -215,14 +213,12 @@ class TWKBAttributeIO {
     }
 
     public LineString toLineString(CoordinateSequence cs) {
-        CoordinateSequence lineSequence =
-                CoordinateSequences.extend(gf.getCoordinateSequenceFactory(), cs, 2);
+        CoordinateSequence lineSequence = CoordinateSequences.extend(gf.getCoordinateSequenceFactory(), cs, 2);
         return gf.createLineString(lineSequence);
     }
 
     public Polygon toPolygon(CoordinateSequence cs) {
-        CoordinateSequence ringSequence =
-                CoordinateSequences.ensureValidRing(gf.getCoordinateSequenceFactory(), cs);
+        CoordinateSequence ringSequence = CoordinateSequences.ensureValidRing(gf.getCoordinateSequenceFactory(), cs);
         LinearRing shell = gf.createLinearRing(ringSequence);
         return gf.createPolygon(shell);
     }

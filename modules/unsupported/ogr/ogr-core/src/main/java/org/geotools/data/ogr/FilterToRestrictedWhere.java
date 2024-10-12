@@ -309,11 +309,8 @@ class FilterToRestrictedWhere implements FilterVisitor, ExpressionVisitor {
         if (target != null) {
             // use the target type
             if (Number.class.isAssignableFrom(target)) {
-                literal =
-                        Converters.convert(
-                                expression.evaluate(null),
-                                target,
-                                new Hints(ConverterFactory.SAFE_CONVERSION, true));
+                literal = Converters.convert(
+                        expression.evaluate(null), target, new Hints(ConverterFactory.SAFE_CONVERSION, true));
             } else {
                 literal = expression.evaluate(null, target);
             }

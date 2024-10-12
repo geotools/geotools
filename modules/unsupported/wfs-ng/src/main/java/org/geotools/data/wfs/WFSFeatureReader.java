@@ -40,8 +40,7 @@ class WFSFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature
 
     private GetFeatureResponse response;
 
-    public WFSFeatureReader(
-            final GetParser<SimpleFeature> parser, final GetFeatureResponse response)
+    public WFSFeatureReader(final GetParser<SimpleFeature> parser, final GetFeatureResponse response)
             throws IOException {
         this.response = response;
         this.parser = parser;
@@ -77,8 +76,7 @@ class WFSFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature
     @Override
     public SimpleFeatureType getFeatureType() {
         if (featureType == null) {
-            throw new IllegalStateException(
-                    "No features were retrieved, shouldn't be calling getFeatureType()");
+            throw new IllegalStateException("No features were retrieved, shouldn't be calling getFeatureType()");
         }
         return featureType;
     }

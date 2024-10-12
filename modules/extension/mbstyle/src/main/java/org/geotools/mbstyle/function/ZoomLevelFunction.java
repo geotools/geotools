@@ -53,12 +53,11 @@ import org.geotools.filter.capability.FunctionNameImpl;
  */
 public class ZoomLevelFunction extends FunctionExpressionImpl {
 
-    public static final FunctionName NAME =
-            new FunctionNameImpl(
-                    "zoomLevel",
-                    parameter("zoomLevel", Number.class),
-                    parameter("scaleDenominator", Number.class),
-                    parameter("srid", String.class));
+    public static final FunctionName NAME = new FunctionNameImpl(
+            "zoomLevel",
+            parameter("zoomLevel", Number.class),
+            parameter("scaleDenominator", Number.class),
+            parameter("srid", String.class));
 
     /** Name of the system variable controlling {@link #ROOT_TILE_PIXELS} */
     public static final String MBSTYLE_ROOT_TILE_PIXELS_KEY = "MBSTYLE_ROOT_TILE_PIXELS";
@@ -87,16 +86,14 @@ public class ZoomLevelFunction extends FunctionExpressionImpl {
             arg0 = getExpression(0).evaluate(feature, Number.class);
         } catch (Exception e) {
             throw new IllegalArgumentException(
-                    "Filter Function problem for function zoomLevel argument #0 - expected Number",
-                    e);
+                    "Filter Function problem for function zoomLevel argument #0 - expected Number", e);
         }
 
         try {
             arg1 = getExpression(1).evaluate(feature, String.class);
         } catch (Exception e) {
             throw new IllegalArgumentException(
-                    "Filter Function problem for function zoomLevel argument #1 - expected String",
-                    e);
+                    "Filter Function problem for function zoomLevel argument #1 - expected String", e);
         }
 
         if ("EPSG:3857".equals(arg1)) {

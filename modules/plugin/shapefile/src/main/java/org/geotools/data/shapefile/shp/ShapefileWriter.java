@@ -127,16 +127,14 @@ public class ShapefileWriter implements Closeable {
             // if (size > largestShapeSize)
             // largestShapeSize = size;
         }
-        writeHeaders(
-                geometries.getEnvelopeInternal(), type, geometries.getNumGeometries(), fileLength);
+        writeHeaders(geometries.getEnvelopeInternal(), type, geometries.getNumGeometries(), fileLength);
     }
 
     /**
      * Write the headers for this shapefile including the bounds, shape type, the number of
      * geometries and the total fileLength (in actual bytes, NOT 16 bit words).
      */
-    public void writeHeaders(
-            Envelope bounds, ShapeType type, int numberOfGeometries, int fileLength)
+    public void writeHeaders(Envelope bounds, ShapeType type, int numberOfGeometries, int fileLength)
             throws IOException {
 
         try {
@@ -270,8 +268,7 @@ public class ShapefileWriter implements Closeable {
      * Bulk write method for writing a collection of (hopefully) like geometries of the given
      * ShapeType.
      */
-    public void write(GeometryCollection geometries, ShapeType type)
-            throws IOException, ShapefileException {
+    public void write(GeometryCollection geometries, ShapeType type) throws IOException, ShapefileException {
         handler = type.getShapeHandler(gf);
 
         writeHeaders(geometries, type);

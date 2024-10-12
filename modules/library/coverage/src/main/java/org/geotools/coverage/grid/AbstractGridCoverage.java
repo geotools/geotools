@@ -220,8 +220,7 @@ public abstract class AbstractGridCoverage extends AbstractCoverage implements G
     protected String formatEvaluateError(final Position point, final boolean outside) {
         final Locale locale = getLocale();
         return MessageFormat.format(
-                outside ? ErrorKeys.POINT_OUTSIDE_COVERAGE_$1 : ErrorKeys.CANT_EVALUATE_$1,
-                toString(point, locale));
+                outside ? ErrorKeys.POINT_OUTSIDE_COVERAGE_$1 : ErrorKeys.CANT_EVALUATE_$1, toString(point, locale));
     }
 
     /**

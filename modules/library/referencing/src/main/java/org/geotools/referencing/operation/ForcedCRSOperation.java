@@ -45,9 +45,7 @@ class ForcedCRSOperation implements CoordinateOperation {
     CoordinateReferenceSystem targetCRS;
 
     public ForcedCRSOperation(
-            CoordinateOperation delegate,
-            CoordinateReferenceSystem sourceCRS,
-            CoordinateReferenceSystem targetCRS) {
+            CoordinateOperation delegate, CoordinateReferenceSystem sourceCRS, CoordinateReferenceSystem targetCRS) {
         this.delegate = delegate;
         this.sourceCRS = sourceCRS;
         this.targetCRS = targetCRS;

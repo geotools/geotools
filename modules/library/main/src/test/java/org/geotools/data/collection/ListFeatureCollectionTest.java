@@ -58,8 +58,7 @@ public class ListFeatureCollectionTest {
 
     private static final CoordinateReferenceSystem DEFAULT_CRS = DefaultEngineeringCRS.CARTESIAN_2D;
 
-    private static final ReferencedEnvelope WORLD =
-            new ReferencedEnvelope(-10.0, 10.0, -5.0, 5.0, DEFAULT_CRS);
+    private static final ReferencedEnvelope WORLD = new ReferencedEnvelope(-10.0, 10.0, -5.0, 5.0, DEFAULT_CRS);
 
     private static final SimpleFeatureType TYPE = createType();
     private static final GeometryFactory geomFactory = new GeometryFactory();
@@ -168,21 +167,12 @@ public class ListFeatureCollectionTest {
 
         // initialize FC with test features
         featureCollection = new ListFeatureCollection(TYPE, featureList);
-        SimpleFeature f1 =
-                SimpleFeatureBuilder.build(
-                        type,
-                        new Object[] {"testFeature1", gf.createPoint(new Coordinate(10, 20, 30))},
-                        null);
-        SimpleFeature f2 =
-                SimpleFeatureBuilder.build(
-                        type,
-                        new Object[] {"testFeature2", gf.createPoint(new Coordinate(10, 10, 60))},
-                        null);
-        SimpleFeature f3 =
-                SimpleFeatureBuilder.build(
-                        type,
-                        new Object[] {"testFeature2", gf.createPoint(new Coordinate(1, 10, 6))},
-                        null);
+        SimpleFeature f1 = SimpleFeatureBuilder.build(
+                type, new Object[] {"testFeature1", gf.createPoint(new Coordinate(10, 20, 30))}, null);
+        SimpleFeature f2 = SimpleFeatureBuilder.build(
+                type, new Object[] {"testFeature2", gf.createPoint(new Coordinate(10, 10, 60))}, null);
+        SimpleFeature f3 = SimpleFeatureBuilder.build(
+                type, new Object[] {"testFeature2", gf.createPoint(new Coordinate(1, 10, 6))}, null);
         featureCollection.add(f1);
         featureCollection.add(f2);
 

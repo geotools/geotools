@@ -143,10 +143,7 @@ public class DefaultRenderingExecutor implements RenderingExecutor {
      */
     @Override
     public synchronized long submit(
-            MapContent mapContent,
-            GTRenderer renderer,
-            Graphics2D graphics,
-            RenderingExecutorListener listener) {
+            MapContent mapContent, GTRenderer renderer, Graphics2D graphics, RenderingExecutorListener listener) {
 
         long rtnValue = RenderingExecutor.TASK_REJECTED;
 
@@ -184,10 +181,7 @@ public class DefaultRenderingExecutor implements RenderingExecutor {
     }
 
     @Override
-    public long submit(
-            MapContent mapContent,
-            List<RenderingOperands> operands,
-            RenderingExecutorListener listener) {
+    public long submit(MapContent mapContent, List<RenderingOperands> operands, RenderingExecutorListener listener) {
 
         long rtnValue = RenderingExecutor.TASK_REJECTED;
 
@@ -224,8 +218,7 @@ public class DefaultRenderingExecutor implements RenderingExecutor {
                 MapContent mc = new SingleLayerMapContent(op.getLayer());
                 mc.setViewport(vp);
                 op.getRenderer().setMapContent(mc);
-                RenderingTask task =
-                        new RenderingTask(mapContent, op.getGraphics(), op.getRenderer());
+                RenderingTask task = new RenderingTask(mapContent, op.getGraphics(), op.getRenderer());
                 Future<Boolean> future = taskExecutor.submit(task);
                 currentTasks.add(new TaskInfo(id, task, mc, future, listener));
             }
@@ -299,12 +292,8 @@ public class DefaultRenderingExecutor implements RenderingExecutor {
     }
 
     private void startPolling() {
-        watcher =
-                watchExecutor.scheduleAtFixedRate(
-                        () -> pollTaskResult(),
-                        pollingInterval,
-                        pollingInterval,
-                        TimeUnit.MILLISECONDS);
+        watcher = watchExecutor.scheduleAtFixedRate(
+                () -> pollTaskResult(), pollingInterval, pollingInterval, TimeUnit.MILLISECONDS);
     }
 
     private void restartPolling() {

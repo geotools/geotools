@@ -53,11 +53,7 @@ public class GML3ParsingUtils {
      * @return A feature.
      */
     public static SimpleFeature parseFeature(
-            ElementInstance instance,
-            Node node,
-            Object value,
-            FeatureTypeCache ftCache,
-            BindingWalkerFactory bwFactory)
+            ElementInstance instance, Node node, Object value, FeatureTypeCache ftCache, BindingWalkerFactory bwFactory)
             throws Exception {
         return GML2ParsingUtils.parseFeature(instance, node, value, ftCache, bwFactory);
     }
@@ -67,8 +63,8 @@ public class GML3ParsingUtils {
      *
      * @return The corresponding geotools feature type.
      */
-    public static SimpleFeatureType featureType(
-            XSDElementDeclaration element, BindingWalkerFactory bwFactory) throws Exception {
+    public static SimpleFeatureType featureType(XSDElementDeclaration element, BindingWalkerFactory bwFactory)
+            throws Exception {
         return GML2ParsingUtils.featureType(element, bwFactory);
     }
 
@@ -89,8 +85,7 @@ public class GML3ParsingUtils {
         return (LinearRing) line(node, gf, csf, true);
     }
 
-    static LineString line(
-            Node node, GeometryFactory gf, CoordinateSequenceFactory csf, boolean ring) {
+    static LineString line(Node node, GeometryFactory gf, CoordinateSequenceFactory csf, boolean ring) {
         if (node.hasChild(Position.class)) {
             List dps = node.getChildValues(Position.class);
             Position dp = (Position) dps.get(0);

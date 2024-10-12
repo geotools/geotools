@@ -59,8 +59,7 @@ public class AnyHandler extends ElementGroupingHandler {
     @Override
     @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
-        return (LOCALNAME.hashCode() * ((id == null) ? 1 : id.hashCode()))
-                + (minOccurs * maxOccurs);
+        return (LOCALNAME.hashCode() * ((id == null) ? 1 : id.hashCode())) + (minOccurs * maxOccurs);
     }
 
     /** @see org.geotools.xml.XSIElementHandler#getHandler(java.lang.String, java.lang.String) */
@@ -74,8 +73,7 @@ public class AnyHandler extends ElementGroupingHandler {
      *     org.xml.sax.Attributes)
      */
     @Override
-    public void startElement(String namespaceURI, String localName, Attributes atts)
-            throws SAXException {
+    public void startElement(String namespaceURI, String localName, Attributes atts) throws SAXException {
         id = atts.getValue("", "id");
 
         if (id == null) {

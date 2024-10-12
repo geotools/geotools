@@ -27,5 +27,4 @@ import org.geotools.api.feature.simple.SimpleFeatureType;
  * locking for a set time period; so even if your application or machine crashes the lock will
  * eventually be released allowing others to play.
  */
-public interface SimpleFeatureLocking
-        extends SimpleFeatureStore, FeatureLocking<SimpleFeatureType, SimpleFeature> {}
+public interface SimpleFeatureLocking extends SimpleFeatureStore, FeatureLocking<SimpleFeatureType, SimpleFeature> {}

@@ -152,8 +152,7 @@ public class Robinson extends MapProjection {
      * radians) and stores the result in {@code ptDst} (linear distance on a unit sphere).
      */
     @Override
-    protected Point2D transformNormalized(double lam, double phi, final Point2D ptDst)
-            throws ProjectionException {
+    protected Point2D transformNormalized(double lam, double phi, final Point2D ptDst) throws ProjectionException {
 
         double dphi = abs(phi);
         int i = (int) floor(dphi * C1);
@@ -180,15 +179,13 @@ public class Robinson extends MapProjection {
      * {@code ptDst}.
      */
     @Override
-    protected Point2D inverseTransformNormalized(double x, double y, final Point2D ptDst)
-            throws ProjectionException {
+    protected Point2D inverseTransformNormalized(double x, double y, final Point2D ptDst) throws ProjectionException {
         double lam = x / FXC;
         double phi = abs(y / FYC);
         if (phi >= 1d) {
             /* simple pathologic cases */
             if (phi > ONEEPS) {
-                throw new ProjectionException(
-                        "Tolerance error occurred appling inverse Robinson projection");
+                throw new ProjectionException("Tolerance error occurred appling inverse Robinson projection");
             } else {
                 phi = y < 0. ? -PI / 2 : PI / 2;
                 lam /= X[NODES].c0;
@@ -261,15 +258,11 @@ public class Robinson extends MapProjection {
         private static final long serialVersionUID = 3586488124601927036L;
 
         /** The parameters group. */
-        static final ParameterDescriptorGroup PARAMETERS =
-                createDescriptorGroup(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.GEOTOOLS, "Robinson"),
-                            new NamedIdentifier(Citations.ESRI, "Robinson")
-                        },
-                        new ParameterDescriptor[] {
-                            SEMI_MAJOR, SEMI_MINOR, CENTRAL_MERIDIAN, FALSE_EASTING, FALSE_NORTHING
-                        });
+        static final ParameterDescriptorGroup PARAMETERS = createDescriptorGroup(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.GEOTOOLS, "Robinson"), new NamedIdentifier(Citations.ESRI, "Robinson")
+                },
+                new ParameterDescriptor[] {SEMI_MAJOR, SEMI_MINOR, CENTRAL_MERIDIAN, FALSE_EASTING, FALSE_NORTHING});
 
         /** Constructs a new provider. */
         public Provider() {

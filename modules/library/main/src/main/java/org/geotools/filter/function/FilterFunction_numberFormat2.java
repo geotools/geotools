@@ -36,15 +36,14 @@ import org.geotools.filter.capability.FunctionNameImpl;
  */
 public class FilterFunction_numberFormat2 extends FunctionExpressionImpl {
 
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "numberFormat2",
-                    String.class,
-                    parameter("format", String.class),
-                    parameter("number", Number.class),
-                    parameter("minus", String.class),
-                    parameter("decimal", String.class),
-                    parameter("separator", String.class));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "numberFormat2",
+            String.class,
+            parameter("format", String.class),
+            parameter("number", Number.class),
+            parameter("minus", String.class),
+            parameter("decimal", String.class),
+            parameter("separator", String.class));
 
     public FilterFunction_numberFormat2() {
         super(NAME);

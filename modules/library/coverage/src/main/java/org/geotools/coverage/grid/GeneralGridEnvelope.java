@@ -228,8 +228,7 @@ public class GeneralGridEnvelope implements GridEnvelope, Serializable {
      *     org.geotools.api.referencing.operation.MathTransform,
      *     org.geotools.api.referencing.crs.CoordinateReferenceSystem)
      */
-    public GeneralGridEnvelope(final Bounds envelope, final PixelInCell anchor)
-            throws IllegalArgumentException {
+    public GeneralGridEnvelope(final Bounds envelope, final PixelInCell anchor) throws IllegalArgumentException {
         this(envelope, anchor, false);
     }
 
@@ -279,8 +278,7 @@ public class GeneralGridEnvelope implements GridEnvelope, Serializable {
      *     org.geotools.api.referencing.operation.MathTransform,
      *     org.geotools.api.referencing.crs.CoordinateReferenceSystem)
      */
-    public GeneralGridEnvelope(
-            final Bounds envelope, final PixelInCell anchor, final boolean isHighIncluded)
+    public GeneralGridEnvelope(final Bounds envelope, final PixelInCell anchor, final boolean isHighIncluded)
             throws IllegalArgumentException {
         final double offset = PixelTranslation.getPixelTranslation(anchor) + 0.5;
         final int dimension = envelope.getDimension();
@@ -315,8 +313,7 @@ public class GeneralGridEnvelope implements GridEnvelope, Serializable {
     public GeneralGridEnvelope(final int[] low, final int[] high, final boolean isHighIncluded) {
         if (low.length != high.length) {
             throw new IllegalArgumentException(
-                    MessageFormat.format(
-                            ErrorKeys.MISMATCHED_DIMENSION_$2, low.length, high.length));
+                    MessageFormat.format(ErrorKeys.MISMATCHED_DIMENSION_$2, low.length, high.length));
         }
         index = new int[low.length + high.length];
         System.arraycopy(low, 0, index, 0, low.length);
@@ -427,17 +424,14 @@ public class GeneralGridEnvelope implements GridEnvelope, Serializable {
      * @return The sub grid envelope.
      * @throws IndexOutOfBoundsException if an index is out of bounds.
      */
-    public GeneralGridEnvelope getSubGridEnvelope(final int lower, final int upper)
-            throws IndexOutOfBoundsException {
+    public GeneralGridEnvelope getSubGridEnvelope(final int lower, final int upper) throws IndexOutOfBoundsException {
         final int curDim = index.length / 2;
         final int newDim = upper - lower;
         if (lower < 0 || lower > curDim) {
-            throw new IndexOutOfBoundsException(
-                    MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "lower", lower));
+            throw new IndexOutOfBoundsException(MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "lower", lower));
         }
         if (newDim < 0 || upper > curDim) {
-            throw new IndexOutOfBoundsException(
-                    MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "upper", upper));
+            throw new IndexOutOfBoundsException(MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "upper", upper));
         }
         final GeneralGridEnvelope sub = new GeneralGridEnvelope(newDim);
         System.arraycopy(index, lower, sub.index, 0, newDim);
@@ -457,8 +451,7 @@ public class GeneralGridEnvelope implements GridEnvelope, Serializable {
             return new Rectangle(index[0], index[1], index[2] - index[0], index[3] - index[1]);
         } else {
             final Object arg0 = getDimension();
-            throw new IllegalStateException(
-                    MessageFormat.format(ErrorKeys.NOT_TWO_DIMENSIONAL_$1, arg0));
+            throw new IllegalStateException(MessageFormat.format(ErrorKeys.NOT_TWO_DIMENSIONAL_$1, arg0));
         }
     }
 

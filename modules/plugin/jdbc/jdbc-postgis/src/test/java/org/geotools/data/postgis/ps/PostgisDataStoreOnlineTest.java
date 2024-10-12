@@ -57,14 +57,11 @@ public class PostgisDataStoreOnlineTest extends JDBCDataStoreOnlineTest {
         assertNotNull(simpleFeatureType);
         try (Transaction t = new DefaultTransaction("metadata");
                 Connection cx = dataStore.getConnection(t);
-                ResultSet rs =
-                        cx.getMetaData().getColumns(null, null, "varchartest", "stringProperty")) {
+                ResultSet rs = cx.getMetaData().getColumns(null, null, "varchartest", "stringProperty")) {
 
             rs.absolute(1);
             int columnSize = rs.getInt("COLUMN_SIZE");
-            assertTrue(
-                    "column size should be larger than 255 (default) but was " + columnSize,
-                    columnSize > 255);
+            assertTrue("column size should be larger than 255 (default) but was " + columnSize, columnSize > 255);
         }
     }
 }

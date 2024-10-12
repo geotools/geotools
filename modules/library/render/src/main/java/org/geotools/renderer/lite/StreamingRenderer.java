@@ -225,8 +225,7 @@ public class StreamingRenderer implements GTRenderer {
     private static final double TOLERANCE = 1e-6;
 
     /** The logger for the rendering module. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(StreamingRenderer.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(StreamingRenderer.class);
 
     int error = 0;
 
@@ -308,23 +307,20 @@ public class StreamingRenderer implements GTRenderer {
      * faster, and more consistent with how the platform renders the text in other applications. The
      * downside is that on most platform the label and its eventual halo are not properly centered.
      */
-    public static final String TEXT_RENDERING_STRING =
-            LabelCacheImpl.LabelRenderingMode.STRING.name();
+    public static final String TEXT_RENDERING_STRING = LabelCacheImpl.LabelRenderingMode.STRING.name();
 
     /**
      * Text will be rendered using the associated {@link GlyphVector} outline, that is, a {@link
      * Shape}. This ensures perfect centering between the text and the halo, but introduces more
      * text aliasing.
      */
-    public static final String TEXT_RENDERING_OUTLINE =
-            LabelCacheImpl.LabelRenderingMode.OUTLINE.name();
+    public static final String TEXT_RENDERING_OUTLINE = LabelCacheImpl.LabelRenderingMode.OUTLINE.name();
 
     /**
      * Will use STRING mode for horizontal labels, OUTLINE mode for all other labels. Works best
      * when coupled with {@link RenderingHints#VALUE_FRACTIONALMETRICS_ON}
      */
-    public static final String TEXT_RENDERING_ADAPTIVE =
-            LabelCacheImpl.LabelRenderingMode.ADAPTIVE.name();
+    public static final String TEXT_RENDERING_ADAPTIVE = LabelCacheImpl.LabelRenderingMode.ADAPTIVE.name();
 
     /** The text rendering method, either TEXT_RENDERING_OUTLINE or TEXT_RENDERING_STRING */
     public static final String TEXT_RENDERING_KEY = "textRenderingMethod";
@@ -380,8 +376,7 @@ public class StreamingRenderer implements GTRenderer {
     /**
      * Boolean flag indicating whether advanced projection densification should be used when needed.
      */
-    public static final String ADVANCED_PROJECTION_DENSIFICATION_KEY =
-            "advancedProjectionDensificationEnabled";
+    public static final String ADVANCED_PROJECTION_DENSIFICATION_KEY = "advancedProjectionDensificationEnabled";
 
     private static boolean ADVANCED_PROJECTION_DENSIFICATION_DEFAULT = false;
 
@@ -612,8 +607,7 @@ public class StreamingRenderer implements GTRenderer {
         double ty = (mapExtent.getMinY() * scaleY) + paintArea.getHeight();
 
         AffineTransform at = new AffineTransform(scaleX, 0.0d, 0.0d, -scaleY, tx, ty);
-        AffineTransform originTranslation =
-                AffineTransform.getTranslateInstance(paintArea.x, paintArea.y);
+        AffineTransform originTranslation = AffineTransform.getTranslateInstance(paintArea.x, paintArea.y);
         originTranslation.concatenate(at);
 
         return originTranslation != null ? originTranslation : at;
@@ -636,11 +630,7 @@ public class StreamingRenderer implements GTRenderer {
             LOGGER.info("renderer passed null arguments");
             return;
         } // Other arguments get checked later
-        paint(
-                graphics,
-                paintArea,
-                mapArea,
-                RendererUtilities.worldToScreenTransform(mapArea, paintArea));
+        paint(graphics, paintArea, mapArea, RendererUtilities.worldToScreenTransform(mapArea, paintArea));
     }
 
     /**
@@ -657,11 +647,7 @@ public class StreamingRenderer implements GTRenderer {
      * @param worldToScreen A transform which converts World coordinates to Screen coordinates.
      */
     @Override
-    public void paint(
-            Graphics2D graphics,
-            Rectangle paintArea,
-            Envelope mapArea,
-            AffineTransform worldToScreen) {
+    public void paint(Graphics2D graphics, Rectangle paintArea, Envelope mapArea, AffineTransform worldToScreen) {
         paint(
                 graphics,
                 paintArea,
@@ -670,14 +656,10 @@ public class StreamingRenderer implements GTRenderer {
     }
 
     private double computeScale(
-            ReferencedEnvelope envelope,
-            Rectangle paintArea,
-            AffineTransform worldToScreen,
-            Map<?, ?> hints) {
+            ReferencedEnvelope envelope, Rectangle paintArea, AffineTransform worldToScreen, Map<?, ?> hints) {
         if (getScaleComputationMethod().equals(SCALE_ACCURATE)) {
             try {
-                return RendererUtilities.calculateScale(
-                        envelope, paintArea.width, paintArea.height, hints);
+                return RendererUtilities.calculateScale(envelope, paintArea.width, paintArea.height, hints);
             } catch (Exception e) // probably either (1) no CRS (2) error xforming
             {
                 LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
@@ -706,10 +688,7 @@ public class StreamingRenderer implements GTRenderer {
      */
     @Override
     public void paint(
-            Graphics2D graphics,
-            Rectangle paintArea,
-            ReferencedEnvelope mapArea,
-            AffineTransform worldToScreen) {
+            Graphics2D graphics, Rectangle paintArea, ReferencedEnvelope mapArea, AffineTransform worldToScreen) {
         // ////////////////////////////////////////////////////////////////////
         //
         // Check for null arguments, recompute missing ones if possible
@@ -739,24 +718,18 @@ public class StreamingRenderer implements GTRenderer {
                 if (code != null) {
                     String srs = "EPSG:" + code;
                     CoordinateReferenceSystem earthNorthCRS = CRS.decode(srs, true);
-                    mapArea =
-                            new ReferencedEnvelope(
-                                    mapArea.getMinY(),
-                                    mapArea.getMaxY(),
-                                    mapArea.getMinX(),
-                                    mapArea.getMaxX(),
-                                    earthNorthCRS);
+                    mapArea = new ReferencedEnvelope(
+                            mapArea.getMinY(), mapArea.getMaxY(), mapArea.getMinX(), mapArea.getMaxX(), earthNorthCRS);
                 }
 
                 // flip world to screen too
-                worldToScreen =
-                        new AffineTransform(
-                                worldToScreen.getShearX(),
-                                worldToScreen.getScaleX(),
-                                worldToScreen.getScaleY(),
-                                worldToScreen.getShearY(),
-                                worldToScreen.getTranslateX(),
-                                worldToScreen.getTranslateY());
+                worldToScreen = new AffineTransform(
+                        worldToScreen.getShearX(),
+                        worldToScreen.getScaleX(),
+                        worldToScreen.getScaleY(),
+                        worldToScreen.getShearY(),
+                        worldToScreen.getTranslateX(),
+                        worldToScreen.getTranslateY());
             } catch (Exception e) {
                 LOGGER.log(
                         Level.FINER,
@@ -781,9 +754,7 @@ public class StreamingRenderer implements GTRenderer {
         if (java2dHints != null) graphics.setRenderingHints(java2dHints);
         // add the anchor for graphic fills
         Point2D textureAnchor =
-                new Point2D.Double(
-                        worldToScreenTransform.getTranslateX(),
-                        worldToScreenTransform.getTranslateY());
+                new Point2D.Double(worldToScreenTransform.getTranslateX(), worldToScreenTransform.getTranslateY());
         graphics.setRenderingHint(StyledShapePainter.TEXTURE_ANCHOR_HINT_KEY, textureAnchor);
         // reset the abort flag
         renderingStopRequested = false;
@@ -808,8 +779,7 @@ public class StreamingRenderer implements GTRenderer {
 
         // compute scale according to the user specified method
         scaleDenominator = computeScale(mapArea, paintArea, worldToScreenTransform, rendererHints);
-        if (LOGGER.isLoggable(Level.FINE))
-            LOGGER.fine("Computed scale denominator: " + scaleDenominator);
+        if (LOGGER.isLoggable(Level.FINE)) LOGGER.fine("Computed scale denominator: " + scaleDenominator);
         //////////////////////////////////////////////////////////////////////
         //
         // Consider expanding the map extent so that a few more geometries
@@ -820,10 +790,8 @@ public class StreamingRenderer implements GTRenderer {
         int buffer = getRenderingBuffer();
         originalMapExtent = mapExtent;
         if (buffer > 0) {
-            mapExtent =
-                    new ReferencedEnvelope(
-                            expandEnvelope(mapExtent, worldToScreen, buffer),
-                            mapExtent.getCoordinateReferenceSystem());
+            mapExtent = new ReferencedEnvelope(
+                    expandEnvelope(mapExtent, worldToScreen, buffer), mapExtent.getCoordinateReferenceSystem());
         }
 
         // Setup the secondary painting thread
@@ -839,17 +807,14 @@ public class StreamingRenderer implements GTRenderer {
         List<CompositingGroup> compositingGroups = null;
         try {
             if (mapContent == null) {
-                throw new IllegalStateException(
-                        "Cannot call paint, you did not set a MapContent in this renderer");
+                throw new IllegalStateException("Cannot call paint, you did not set a MapContent in this renderer");
             }
 
             // re-organize the map content and generate the z group layers
             MapContent zGroupedMapContent = ZGroupLayerFactory.filter(mapContent);
 
             // split over multiple map contents, one per composition base
-            compositingGroups =
-                    CompositingGroup.splitOnCompositingBase(
-                            graphics, paintArea, zGroupedMapContent);
+            compositingGroups = CompositingGroup.splitOnCompositingBase(graphics, paintArea, zGroupedMapContent);
 
             int layerCounter = 0;
 
@@ -867,8 +832,7 @@ public class StreamingRenderer implements GTRenderer {
                 labelCache.start();
                 if (labelCache instanceof LabelCacheImpl) {
                     ((LabelCacheImpl) labelCache)
-                            .setLabelRenderingMode(
-                                    LabelRenderingMode.valueOf(getTextRenderingMethod()));
+                            .setLabelRenderingMode(LabelRenderingMode.valueOf(getTextRenderingMethod()));
                 }
 
                 for (Layer layer : currentMapContent.layers()) {
@@ -897,8 +861,7 @@ public class StreamingRenderer implements GTRenderer {
                     labelCache.startLayer(layerId);
                     if (layer instanceof DirectLayer) {
                         RenderingRequest request =
-                                new RenderDirectLayerRequest(
-                                        compositingGraphic, (DirectLayer) layer);
+                                new RenderDirectLayerRequest(compositingGraphic, (DirectLayer) layer);
                         try {
                             requests.put(request);
                         } catch (InterruptedException e) {
@@ -931,8 +894,7 @@ public class StreamingRenderer implements GTRenderer {
 
                 // have we been painting on a back buffer? If so, merge on the main graphic
                 if (compositingGraphic instanceof DelayedBackbufferGraphic) {
-                    RenderingRequest request =
-                            new MargeCompositingGroupRequest(graphics, compositingGroup);
+                    RenderingRequest request = new MargeCompositingGroupRequest(graphics, compositingGroup);
                     try {
                         requests.put(request);
                     } catch (InterruptedException e) {
@@ -978,20 +940,17 @@ public class StreamingRenderer implements GTRenderer {
         }
 
         if (LOGGER.isLoggable(Level.FINE))
-            LOGGER.fine(
-                    new StringBuffer("Style cache hit ratio: ")
-                            .append(styleFactory.getHitRatio())
-                            .append(" , hits ")
-                            .append(styleFactory.getHits())
-                            .append(", requests ")
-                            .append(styleFactory.getRequests())
-                            .toString());
+            LOGGER.fine(new StringBuffer("Style cache hit ratio: ")
+                    .append(styleFactory.getHitRatio())
+                    .append(" , hits ")
+                    .append(styleFactory.getHits())
+                    .append(", requests ")
+                    .append(styleFactory.getRequests())
+                    .toString());
         if (error > 0) {
-            LOGGER.warning(
-                    new StringBuffer(
-                                    "Number of Errors during paint(Graphics2D, AffineTransform) = ")
-                            .append(error)
-                            .toString());
+            LOGGER.warning(new StringBuffer("Number of Errors during paint(Graphics2D, AffineTransform) = ")
+                    .append(error)
+                    .toString());
         }
     }
 
@@ -1083,8 +1042,7 @@ public class StreamingRenderer implements GTRenderer {
             boolean hasRenderingTransformation)
             throws IllegalFilterException, IOException, FactoryException {
         @SuppressWarnings("unchecked")
-        FeatureSource<FeatureType, Feature> source =
-                (FeatureSource<FeatureType, Feature>) layer.getFeatureSource();
+        FeatureSource<FeatureType, Feature> source = (FeatureSource<FeatureType, Feature>) layer.getFeatureSource();
         FeatureType schema = source.getSchema();
         Query query = new Query(Query.ALL);
         Filter filter = null;
@@ -1095,10 +1053,7 @@ public class StreamingRenderer implements GTRenderer {
             int metaBuffer = findRenderingBuffer(styleList);
             if (metaBuffer > 0) {
                 mapArea = expandEnvelope(mapArea, worldToScreenTransform, metaBuffer);
-                LOGGER.fine(
-                        "Expanding rendering area by "
-                                + metaBuffer
-                                + " pixels to consider stroke width");
+                LOGGER.fine("Expanding rendering area by " + metaBuffer + " pixels to consider stroke width");
 
                 // expand the screenmaps by the meta buffer, otherwise we'll throw away geomtries
                 // that sit outside of the map, but whose symbolizer may contribute to it
@@ -1112,8 +1067,7 @@ public class StreamingRenderer implements GTRenderer {
         }
 
         // take care of rendering transforms
-        mapArea =
-                expandEnvelopeByTransformations(styleList, new ReferencedEnvelope(mapArea, mapCRS));
+        mapArea = expandEnvelopeByTransformations(styleList, new ReferencedEnvelope(mapArea, mapCRS));
 
         // build a list of attributes used in the rendering
         List<PropertyName> attributes;
@@ -1135,16 +1089,12 @@ public class StreamingRenderer implements GTRenderer {
             // enable advanced projection handling with the updated map extent
             if (isAdvancedProjectionHandlingEnabled()) {
                 Map<String, Object> projectionHints = new HashMap<>();
-                if (isAdvancedProjectionDensificationEnabled()
-                        && !CRS.equalsIgnoreMetadata(featCrs, mapCRS)) {
+                if (isAdvancedProjectionDensificationEnabled() && !CRS.equalsIgnoreMetadata(featCrs, mapCRS)) {
                     double tolerance = getAdvancedProjectionDensificationTolerance();
                     if (tolerance > 0.0) {
                         ReferencedEnvelope targetEnvelope = envelope;
-                        ReferencedEnvelope sourceEnvelope =
-                                transformEnvelope(targetEnvelope, featCrs);
-                        if (sourceEnvelope != null
-                                && !sourceEnvelope.isEmpty()
-                                && !sourceEnvelope.isNull()) {
+                        ReferencedEnvelope sourceEnvelope = transformEnvelope(targetEnvelope, featCrs);
+                        if (sourceEnvelope != null && !sourceEnvelope.isEmpty() && !sourceEnvelope.isNull()) {
                             setupDensificationHints(
                                     mapCRS,
                                     featCrs,
@@ -1157,22 +1107,18 @@ public class StreamingRenderer implements GTRenderer {
                     }
                 }
                 if (!isWrappingHeuristicEnabled()) {
-                    projectionHints.put(
-                            WrappingProjectionHandler.DATELINE_WRAPPING_CHECK_ENABLED, false);
+                    projectionHints.put(WrappingProjectionHandler.DATELINE_WRAPPING_CHECK_ENABLED, false);
                 }
                 // get the projection handler and set a tentative envelope
                 ProjectionHandler projectionHandler =
-                        ProjectionHandlerFinder.getHandler(
-                                envelope, featCrs, isMapWrappingEnabled(), projectionHints);
+                        ProjectionHandlerFinder.getHandler(envelope, featCrs, isMapWrappingEnabled(), projectionHints);
                 if (projectionHandler != null) {
                     setProjectionHandler(styleList, projectionHandler);
                     envelopes = projectionHandler.getQueryEnvelopes();
                 }
             }
             if (envelopes == null) {
-                if (mapCRS != null
-                        && featCrs != null
-                        && !CRS.equalsIgnoreMetadata(featCrs, mapCRS)) {
+                if (mapCRS != null && featCrs != null && !CRS.equalsIgnoreMetadata(featCrs, mapCRS)) {
                     envelopes = Collections.singletonList(envelope.transform(featCrs, true, 10));
                 } else {
                     envelopes = Collections.singletonList(envelope);
@@ -1224,11 +1170,10 @@ public class StreamingRenderer implements GTRenderer {
         if (sortBy != null) {
             QueryCapabilities qc = source.getQueryCapabilities();
             if (qc != null && !qc.supportsSorting(sortBy)) {
-                throw new IllegalArgumentException(
-                        "The feature source in layer "
-                                + layer.getTitle()
-                                + " cannot sort on "
-                                + Arrays.toString(sortBy));
+                throw new IllegalArgumentException("The feature source in layer "
+                        + layer.getTitle()
+                        + " cannot sort on "
+                        + Arrays.toString(sortBy));
             }
             query.setSortBy(sortBy);
         }
@@ -1249,15 +1194,9 @@ public class StreamingRenderer implements GTRenderer {
                 Set<RenderingHints.Key> fsHints = source.getSupportedHints();
 
                 SingleCRS crs2D = crs == null ? null : CRS.getHorizontalCRS(crs);
-                MathTransform sourceToScreen =
-                        buildFullTransform(crs2D, mapCRS, worldToScreenTransform);
+                MathTransform sourceToScreen = buildFullTransform(crs2D, mapCRS, worldToScreenTransform);
                 double[] spans =
-                        getGeneralizationSpans(
-                                envelope,
-                                sourceToScreen,
-                                worldToScreenTransform,
-                                featCrs,
-                                screenSize);
+                        getGeneralizationSpans(envelope, sourceToScreen, worldToScreenTransform, featCrs, screenSize);
                 for (LiteFeatureTypeStyle fts : styleList) {
                     if (fts.screenMap != null) {
                         fts.screenMap.setTransform(sourceToScreen);
@@ -1330,42 +1269,30 @@ public class StreamingRenderer implements GTRenderer {
         AffineTransform screenToWorldTransform = new AffineTransform(at);
         screenToWorldTransform.invert();
         MathTransform2D crsTransform =
-                (MathTransform2D)
-                        CRS.findMathTransform(
-                                CRS.getHorizontalCRS(featCrs), CRS.getHorizontalCRS(mapCRS));
+                (MathTransform2D) CRS.findMathTransform(CRS.getHorizontalCRS(featCrs), CRS.getHorizontalCRS(mapCRS));
         MathTransform2D screenTransform = new AffineTransform2D(at);
-        MathTransform2D fullTranform =
-                (MathTransform2D) ConcatenatedTransform.create(crsTransform, screenTransform);
-        Rectangle2D.Double sourceDomain =
-                new Rectangle2D.Double(
-                        sourceEnvelope.getMinX(),
-                        sourceEnvelope.getMinY(),
-                        sourceEnvelope.getWidth(),
-                        sourceEnvelope.getHeight());
+        MathTransform2D fullTranform = (MathTransform2D) ConcatenatedTransform.create(crsTransform, screenTransform);
+        Rectangle2D.Double sourceDomain = new Rectangle2D.Double(
+                sourceEnvelope.getMinX(),
+                sourceEnvelope.getMinY(),
+                sourceEnvelope.getWidth(),
+                sourceEnvelope.getHeight());
         WarpBuilder wb = new WarpBuilder(tolerance);
         double densifyDistance = 0.0;
         // the splits are communicated as the number of rows and columns the area need to be
         // divided into, in order to have each cell contain a straight line without noticing issues
-        int[] rowCol =
-                wb.isValidDomain(sourceDomain)
-                        ? wb.getRowColsSplit(fullTranform, sourceDomain)
-                        : null;
-        double minDistance =
-                Math.min(
-                        MAX_PIXELS_DENSIFY * sourceEnvelope.getWidth() / screenSize.getWidth(),
-                        MAX_PIXELS_DENSIFY * sourceEnvelope.getHeight() / screenSize.getHeight());
+        int[] rowCol = wb.isValidDomain(sourceDomain) ? wb.getRowColsSplit(fullTranform, sourceDomain) : null;
+        double minDistance = Math.min(
+                MAX_PIXELS_DENSIFY * sourceEnvelope.getWidth() / screenSize.getWidth(),
+                MAX_PIXELS_DENSIFY * sourceEnvelope.getHeight() / screenSize.getHeight());
         if (rowCol == null) {
             // alghoritm gave up, we decide to use a fixed distance value
             densifyDistance = minDistance;
         } else if (rowCol[0] != 1 || rowCol[1] != 1) {
             int columns = rowCol[1];
             int rows = rowCol[0];
-            densifyDistance =
-                    Math.max(
-                            Math.min(
-                                    sourceEnvelope.getWidth() / columns,
-                                    sourceEnvelope.getHeight() / rows),
-                            minDistance);
+            densifyDistance = Math.max(
+                    Math.min(sourceEnvelope.getWidth() / columns, sourceEnvelope.getHeight() / rows), minDistance);
         }
         if (densifyDistance > 0.0) {
             projectionHints.put(ProjectionHandler.ADVANCED_PROJECTION_DENSIFY, densifyDistance);
@@ -1381,11 +1308,8 @@ public class StreamingRenderer implements GTRenderer {
             throws TransformException {
         // can we cut on the valid area? No? well, let's hope for the best
         try {
-            ProjectionHandler ph =
-                    ProjectionHandlerFinder.getHandler(
-                            new ReferencedEnvelope(featureCRS),
-                            envelope.getCoordinateReferenceSystem(),
-                            false);
+            ProjectionHandler ph = ProjectionHandlerFinder.getHandler(
+                    new ReferencedEnvelope(featureCRS), envelope.getCoordinateReferenceSystem(), false);
             if (isAdvancedProjectionHandlingEnabled() && ph != null) {
 
                 Polygon renderPolygon = JTS.toGeometry(envelope);
@@ -1426,12 +1350,10 @@ public class StreamingRenderer implements GTRenderer {
         }
 
         // fallback, use the entire rendering area
-        return Decimator.computeGeneralizationDistances(
-                sourceToScreen.inverse(), screen, generalizationDistance);
+        return Decimator.computeGeneralizationDistances(sourceToScreen.inverse(), screen, generalizationDistance);
     }
 
-    protected ReferencedEnvelope transformEnvelope(
-            ReferencedEnvelope envelope, CoordinateReferenceSystem crs)
+    protected ReferencedEnvelope transformEnvelope(ReferencedEnvelope envelope, CoordinateReferenceSystem crs)
             throws TransformException, FactoryException {
         try {
             ProjectionHandler projectionHandler =
@@ -1452,8 +1374,7 @@ public class StreamingRenderer implements GTRenderer {
         }
     }
 
-    private void setProjectionHandler(
-            List<LiteFeatureTypeStyle> styleList, ProjectionHandler projectionHandler) {
+    private void setProjectionHandler(List<LiteFeatureTypeStyle> styleList, ProjectionHandler projectionHandler) {
         for (LiteFeatureTypeStyle fts : styleList) {
             fts.projectionHandler = projectionHandler;
         }
@@ -1482,9 +1403,7 @@ public class StreamingRenderer implements GTRenderer {
     }
 
     Query getDefinitionQuery(
-            Layer currLayer,
-            FeatureSource<FeatureType, Feature> source,
-            CoordinateReferenceSystem featCrs)
+            Layer currLayer, FeatureSource<FeatureType, Feature> source, CoordinateReferenceSystem featCrs)
             throws FactoryException {
         // now, if a definition query has been established for this layer, be
         // sure to respect it by combining it with the bounding box one.
@@ -1495,8 +1414,7 @@ public class StreamingRenderer implements GTRenderer {
     }
 
     /** Takes care of eventual geometric transformations */
-    ReferencedEnvelope expandEnvelopeByTransformations(
-            List<LiteFeatureTypeStyle> styles, ReferencedEnvelope envelope) {
+    ReferencedEnvelope expandEnvelopeByTransformations(List<LiteFeatureTypeStyle> styles, ReferencedEnvelope envelope) {
         GeometryTransformationVisitor visitor = new GeometryTransformationVisitor();
         ReferencedEnvelope result = new ReferencedEnvelope(envelope);
         if (styles != null) {
@@ -1538,9 +1456,7 @@ public class StreamingRenderer implements GTRenderer {
 
         // concatenate from world to screen
         if (mt != null && !mt.isIdentity()) {
-            mt =
-                    ConcatenatedTransform.create(
-                            mt, ProjectiveTransform.create(worldToScreenTransform));
+            mt = ConcatenatedTransform.create(mt, ProjectiveTransform.create(worldToScreenTransform));
         } else {
             mt = ProjectiveTransform.create(worldToScreenTransform);
         }
@@ -1560,18 +1476,14 @@ public class StreamingRenderer implements GTRenderer {
      * @return the transform, or null if any of the crs is null, or if the the two crs are equal
      * @throws FactoryException If no transform is available to the destCRS
      */
-    private MathTransform buildTransform(
-            CoordinateReferenceSystem sourceCRS, CoordinateReferenceSystem destCRS)
+    private MathTransform buildTransform(CoordinateReferenceSystem sourceCRS, CoordinateReferenceSystem destCRS)
             throws FactoryException {
         MathTransform transform = null;
         if (sourceCRS != null && sourceCRS.getCoordinateSystem().getDimension() >= 3) {
             // We are going to transform over to DefaultGeographic.WGS84 on the fly
             // so we will set up our math transform to take it from there
-            MathTransform toWgs84_3d =
-                    CRS.findMathTransform(sourceCRS, DefaultGeographicCRS.WGS84_3D);
-            MathTransform toWgs84_2d =
-                    CRS.findMathTransform(
-                            DefaultGeographicCRS.WGS84_3D, DefaultGeographicCRS.WGS84);
+            MathTransform toWgs84_3d = CRS.findMathTransform(sourceCRS, DefaultGeographicCRS.WGS84_3D);
+            MathTransform toWgs84_2d = CRS.findMathTransform(DefaultGeographicCRS.WGS84_3D, DefaultGeographicCRS.WGS84);
             transform = ConcatenatedTransform.create(toWgs84_3d, toWgs84_2d);
             sourceCRS = DefaultGeographicCRS.WGS84;
         }
@@ -1598,8 +1510,7 @@ public class StreamingRenderer implements GTRenderer {
      * Scans the schema for the specified attributes are returns a single CRS if all the geometric
      * attributes in the lot share one CRS, null if there are different ones
      */
-    private CoordinateReferenceSystem getNativeCRS(
-            FeatureType schema, List<PropertyName> attNames) {
+    private CoordinateReferenceSystem getNativeCRS(FeatureType schema, List<PropertyName> attNames) {
         // first off, check how many crs we have, this hint works only
         // if we have just one native CRS at hand (and the native CRS is known
         CoordinateReferenceSystem crs = null;
@@ -1684,10 +1595,7 @@ public class StreamingRenderer implements GTRenderer {
             q.setFilter(ruleFiltersCombined);
         } catch (Exception e) {
             if (LOGGER.isLoggable(Level.WARNING))
-                LOGGER.log(
-                        Level.SEVERE,
-                        "Could not send rules to datastore due to: " + e.getLocalizedMessage(),
-                        e);
+                LOGGER.log(Level.SEVERE, "Could not send rules to datastore due to: " + e.getLocalizedMessage(), e);
         }
     }
 
@@ -1805,10 +1713,9 @@ public class StreamingRenderer implements GTRenderer {
         }
 
         if (!rbe.isEstimateAccurate())
-            LOGGER.fine(
-                    "Assuming rendering buffer = "
-                            + rbe.getBuffer()
-                            + ", but estimation is not accurate, you may want to set a buffer manually");
+            LOGGER.fine("Assuming rendering buffer = "
+                    + rbe.getBuffer()
+                    + ", but estimation is not accurate, you may want to set a buffer manually");
 
         // the actual amount we have to grow the rendering area by is half of the stroke/symbol
         // sizes
@@ -1824,8 +1731,7 @@ public class StreamingRenderer implements GTRenderer {
      * @param schema the <code>layer</code>'s FeatureSource<SimpleFeatureType, SimpleFeature> schema
      * @return the minimum set of attribute names needed to render <code>layer</code>
      */
-    private List<PropertyName> findStyleAttributes(
-            List<LiteFeatureTypeStyle> styles, FeatureType schema) {
+    private List<PropertyName> findStyleAttributes(List<LiteFeatureTypeStyle> styles, FeatureType schema) {
         final StyleAttributeExtractor sae = new StyleAttributeExtractor();
 
         for (LiteFeatureTypeStyle lfts : styles) {
@@ -1877,8 +1783,7 @@ public class StreamingRenderer implements GTRenderer {
             // default geometry is used. So, we no longer add EVERY geometry
             // column to the query!!
 
-            if ((attName.getLocalPart().equalsIgnoreCase("grid"))
-                            && !attributeNames.contains(attName.getLocalPart())
+            if ((attName.getLocalPart().equalsIgnoreCase("grid")) && !attributeNames.contains(attName.getLocalPart())
                     || (attName.getLocalPart().equalsIgnoreCase("params"))
                             && !attributeNames.contains(attName.getLocalPart())) {
                 atts.add(filterFactory.property(attName));
@@ -1927,8 +1832,7 @@ public class StreamingRenderer implements GTRenderer {
      *     GeometryFilter</code>.
      * @throws IllegalFilterException if something goes wrong creating the filter
      */
-    private Filter createBBoxFilters(
-            FeatureType schema, List<PropertyName> attributes, List<ReferencedEnvelope> bboxes)
+    private Filter createBBoxFilters(FeatureType schema, List<PropertyName> attributes, List<ReferencedEnvelope> bboxes)
             throws IllegalFilterException {
         // if there are no bboxes to render then use Filter.EXCLUDE as there is no clear way
         // to return
@@ -1962,10 +1866,7 @@ public class StreamingRenderer implements GTRenderer {
                     for (int k = 1; k < bboxes.size(); k++) {
                         // filter = filterFactory.or( filter, new FastBBOX(localName, bboxes.get(k),
                         // filterFactory) );
-                        filter =
-                                filterFactory.or(
-                                        filter,
-                                        new FastBBOX(attribute, bboxes.get(k), filterFactory));
+                        filter = filterFactory.or(filter, new FastBBOX(attribute, bboxes.get(k), filterFactory));
                     }
                 }
             }
@@ -1992,12 +1893,10 @@ public class StreamingRenderer implements GTRenderer {
      * @return ArrayList<LiteFeatureTypeStyle>
      */
     ArrayList<LiteFeatureTypeStyle> createLiteFeatureTypeStyles(
-            Layer layer, Graphics2D graphics, boolean optimizedFTSRendering)
-            throws IOException, FactoryException {
+            Layer layer, Graphics2D graphics, boolean optimizedFTSRendering) throws IOException, FactoryException {
         if (LOGGER.isLoggable(Level.FINE))
-            LOGGER.fine(
-                    "creating rules for scale denominator - "
-                            + NumberFormat.getNumberInstance().format(scaleDenominator));
+            LOGGER.fine("creating rules for scale denominator - "
+                    + NumberFormat.getNumberInstance().format(scaleDenominator));
         ArrayList<LiteFeatureTypeStyle> result = new ArrayList<>();
 
         LiteFeatureTypeStyle lfts;
@@ -2034,28 +1933,18 @@ public class StreamingRenderer implements GTRenderer {
                 // we can optimize this one and draw directly on the graphics, assuming
                 // there is no composition
                 if (!foundComposite && (result.isEmpty() || !optimizedFTSRendering)) {
-                    lfts =
-                            new LiteFeatureTypeStyle(
-                                    layer,
-                                    graphics,
-                                    ruleList,
-                                    elseRuleList,
-                                    fts.getTransformation());
+                    lfts = new LiteFeatureTypeStyle(layer, graphics, ruleList, elseRuleList, fts.getTransformation());
                 } else {
-                    lfts =
-                            new LiteFeatureTypeStyle(
-                                    layer,
-                                    new DelayedBackbufferGraphic(graphics, screenSize),
-                                    ruleList,
-                                    elseRuleList,
-                                    fts.getTransformation());
+                    lfts = new LiteFeatureTypeStyle(
+                            layer,
+                            new DelayedBackbufferGraphic(graphics, screenSize),
+                            ruleList,
+                            elseRuleList,
+                            fts.getTransformation());
                 }
                 lfts.composite = composite;
                 if (org.geotools.api.style.FeatureTypeStyle.VALUE_EVALUATION_MODE_FIRST.equals(
-                        fts.getOptions()
-                                .get(
-                                        org.geotools.api.style.FeatureTypeStyle
-                                                .KEY_EVALUATION_MODE))) {
+                        fts.getOptions().get(org.geotools.api.style.FeatureTypeStyle.KEY_EVALUATION_MODE))) {
                     lfts.matchFirst = true;
                 }
 
@@ -2065,12 +1954,11 @@ public class StreamingRenderer implements GTRenderer {
 
                 if (screenMapEnabled(lfts)) {
                     int renderingBuffer = getRenderingBuffer();
-                    lfts.screenMap =
-                            new ScreenMap(
-                                    screenSize.x - renderingBuffer,
-                                    screenSize.y - renderingBuffer,
-                                    screenSize.width + renderingBuffer * 2,
-                                    screenSize.height + renderingBuffer * 2);
+                    lfts.screenMap = new ScreenMap(
+                            screenSize.x - renderingBuffer,
+                            screenSize.y - renderingBuffer,
+                            screenSize.width + renderingBuffer * 2,
+                            screenSize.height + renderingBuffer * 2);
                 }
 
                 result.add(lfts);
@@ -2098,10 +1986,7 @@ public class StreamingRenderer implements GTRenderer {
         }
 
         OpacityFinder finder =
-                new OpacityFinder(
-                        new Class[] {
-                            PointSymbolizer.class, LineSymbolizer.class, PolygonSymbolizer.class
-                        });
+                new OpacityFinder(new Class[] {PointSymbolizer.class, LineSymbolizer.class, PolygonSymbolizer.class});
         for (Rule r : lfts.ruleList) {
             r.accept(finder);
         }
@@ -2117,8 +2002,7 @@ public class StreamingRenderer implements GTRenderer {
         return fts.featureTypeNames().isEmpty()
                 || ((ftype.getName().getLocalPart() != null)
                         && (fts.featureTypeNames().isEmpty()
-                                || fts.featureTypeNames().stream()
-                                        .anyMatch(tn -> FeatureTypes.matches(ftype, tn))));
+                                || fts.featureTypeNames().stream().anyMatch(tn -> FeatureTypes.matches(ftype, tn))));
     }
 
     private List<List<Rule>> splitRules(FeatureTypeStyle fts) {
@@ -2133,17 +2017,15 @@ public class StreamingRenderer implements GTRenderer {
                     // rules can have dynamic bits related to env variables that we evaluate and
                     // skip at this this time
                     if (!Filter.INCLUDE.equals(r.getFilter()) && hasEnvVariables(r.getFilter())) {
-                        DuplicatingStyleVisitor cloner =
-                                new DuplicatingStyleVisitor() {
-                                    SimplifyingFilterVisitor simplifier =
-                                            new SimplifyingFilterVisitor();
+                        DuplicatingStyleVisitor cloner = new DuplicatingStyleVisitor() {
+                            SimplifyingFilterVisitor simplifier = new SimplifyingFilterVisitor();
 
-                                    @Override
-                                    protected Filter copy(Filter filter) {
-                                        if (filter == null) return null;
-                                        return (Filter) filter.accept(simplifier, ff);
-                                    }
-                                };
+                            @Override
+                            protected Filter copy(Filter filter) {
+                                if (filter == null) return null;
+                                return (Filter) filter.accept(simplifier, ff);
+                            }
+                        };
                         r.accept(cloner);
                         Rule copy = (Rule) cloner.getCopy();
                         if (!Filter.EXCLUDE.equals(copy.getFilter())) {
@@ -2162,17 +2044,16 @@ public class StreamingRenderer implements GTRenderer {
         if (filter == null) {
             return false;
         }
-        DefaultFilterVisitor envFunctionChecker =
-                new DefaultFilterVisitor() {
-                    @Override
-                    public Object visit(Function expression, Object data) {
-                        if (Boolean.TRUE.equals(super.visit(expression, data))) {
-                            return true;
-                        } else {
-                            return expression instanceof EnvFunction;
-                        }
-                    }
-                };
+        DefaultFilterVisitor envFunctionChecker = new DefaultFilterVisitor() {
+            @Override
+            public Object visit(Function expression, Object data) {
+                if (Boolean.TRUE.equals(super.visit(expression, data))) {
+                    return true;
+                } else {
+                    return expression instanceof EnvFunction;
+                }
+            }
+        };
         return Boolean.TRUE.equals(filter.accept(envFunctionChecker, null));
     }
 
@@ -2236,8 +2117,7 @@ public class StreamingRenderer implements GTRenderer {
      * @param layer The layer being styled
      * @param layerId Handle used to identify the layer in the {@link LabelCache}
      */
-    private void processStylers(final Graphics2D graphics, final Layer layer, String layerId)
-            throws Exception {
+    private void processStylers(final Graphics2D graphics, final Layer layer, String layerId) throws Exception {
         // /////////////////////////////////////////////////////////////////////
         //
         // Preparing feature information and styles
@@ -2245,8 +2125,7 @@ public class StreamingRenderer implements GTRenderer {
         // /////////////////////////////////////////////////////////////////////
         final FeatureSource featureSource = layer.getFeatureSource();
         if (featureSource == null) {
-            throw new IllegalArgumentException(
-                    "The layer does not contain a feature source: " + layer.getTitle());
+            throw new IllegalArgumentException("The layer does not contain a feature source: " + layer.getTitle());
         }
         final FeatureType schema = featureSource.getSchema();
 
@@ -2287,8 +2166,7 @@ public class StreamingRenderer implements GTRenderer {
                     for (int i = 0; i < fts.ruleList.length; i++) {
                         Rule rule = fts.ruleList[i];
                         DuplicatingStyleVisitor optimizingStyleVisitor =
-                                new DuplicatingStyleVisitor(
-                                        STYLE_FACTORY, filterFactory, filterOptimizer);
+                                new DuplicatingStyleVisitor(STYLE_FACTORY, filterFactory, filterOptimizer);
                         rule.accept(optimizingStyleVisitor);
                         fts.ruleList[i] = (Rule) optimizingStyleVisitor.getCopy();
                     }
@@ -2305,11 +2183,8 @@ public class StreamingRenderer implements GTRenderer {
     }
 
     FeatureCollection getFeatures(
-            final Layer layer,
-            final FeatureType schema,
-            List<LiteFeatureTypeStyle> featureTypeStyles)
-            throws IOException, FactoryException, NoninvertibleTransformException, SchemaException,
-                    TransformException {
+            final Layer layer, final FeatureType schema, List<LiteFeatureTypeStyle> featureTypeStyles)
+            throws IOException, FactoryException, NoninvertibleTransformException, SchemaException, TransformException {
         @SuppressWarnings("unchecked")
         final FeatureSource<FeatureType, Feature> featureSource =
                 (FeatureSource<FeatureType, Feature>) layer.getFeatureSource();
@@ -2327,17 +2202,16 @@ public class StreamingRenderer implements GTRenderer {
         // ... assume we have to do the generalization, the query layer process will
         // turn down the flag if we don't
         boolean hasTransformation = transform != null;
-        Query styleQuery =
-                getStyleQuery(
-                        layer,
-                        featureTypeStyles,
-                        mapExtent,
-                        destinationCrs,
-                        sourceCrs,
-                        screenSize,
-                        geometryAttribute,
-                        worldToScreenTransform,
-                        hasTransformation);
+        Query styleQuery = getStyleQuery(
+                layer,
+                featureTypeStyles,
+                mapExtent,
+                destinationCrs,
+                sourceCrs,
+                screenSize,
+                geometryAttribute,
+                worldToScreenTransform,
+                hasTransformation);
         Query definitionQuery = getDefinitionQuery(layer, featureSource, sourceCrs);
         FeatureCollection features = null;
         if (hasTransformation) {
@@ -2349,15 +2223,8 @@ public class StreamingRenderer implements GTRenderer {
             // so they have to be applied before and after the transformation respectively
             RenderingTransformationHelper helper = new GCRRenderingTransformationHelper(layer);
 
-            Object result =
-                    helper.applyRenderingTransformation(
-                            transform,
-                            featureSource,
-                            definitionQuery,
-                            styleQuery,
-                            gridGeometry,
-                            sourceCrs,
-                            java2dHints);
+            Object result = helper.applyRenderingTransformation(
+                    transform, featureSource, definitionQuery, styleQuery, gridGeometry, sourceCrs, java2dHints);
             if (result == null) {
                 return null;
             } else if (result instanceof FeatureCollection) {
@@ -2371,15 +2238,12 @@ public class StreamingRenderer implements GTRenderer {
                 }
                 features = FeatureUtilities.wrapGridCoverage(coverage);
             } else if (result instanceof GridCoverage2DReader) {
-                features =
-                        FeatureUtilities.wrapGridCoverageReader(
-                                (GridCoverage2DReader) result, null);
+                features = FeatureUtilities.wrapGridCoverageReader((GridCoverage2DReader) result, null);
             } else {
-                throw new IllegalArgumentException(
-                        "Don't know how to handle the results of the transformation, "
-                                + "the supported result types are FeatureCollection, GridCoverage2D "
-                                + "and GridCoverage2DReader, but we got: "
-                                + result.getClass());
+                throw new IllegalArgumentException("Don't know how to handle the results of the transformation, "
+                        + "the supported result types are FeatureCollection, GridCoverage2D "
+                        + "and GridCoverage2DReader, but we got: "
+                        + result.getClass());
             }
         } else {
             Query mixed = DataUtilities.mixQueries(definitionQuery, styleQuery, null);
@@ -2428,11 +2292,10 @@ public class StreamingRenderer implements GTRenderer {
                 sortBy = curr.sortBy;
             } else {
                 // do they have the same transformation?
-                boolean differentTransformation =
-                        (transformation != curr.transformation)
-                                || (transformation != null
-                                        && curr.transformation != null
-                                        && !curr.transformation.equals(transformation));
+                boolean differentTransformation = (transformation != curr.transformation)
+                        || (transformation != null
+                                && curr.transformation != null
+                                && !curr.transformation.equals(transformation));
 
                 // is sorting incompatible, that is, different from the one
                 // we are working against? "null" means not caring about sorting,
@@ -2474,20 +2337,15 @@ public class StreamingRenderer implements GTRenderer {
                     for (PropertyDescriptor pd : schema.getDescriptors()) {
                         allNames.add(pd.getName());
                     }
-                    throw new IllegalFilterException(
-                            "Could not find '"
-                                    + attribute
-                                    + "' in the FeatureType ("
-                                    + schema.getName()
-                                    + "), available attributes are: "
-                                    + allNames);
+                    throw new IllegalFilterException("Could not find '"
+                            + attribute
+                            + "' in the FeatureType ("
+                            + schema.getName()
+                            + "), available attributes are: "
+                            + allNames);
                 } else {
                     throw new IllegalFilterException(
-                            "Could not find '"
-                                    + attribute
-                                    + "' in the FeatureType ("
-                                    + schema.getName()
-                                    + ")");
+                            "Could not find '" + attribute + "' in the FeatureType (" + schema.getName() + ")");
                 }
             }
         }
@@ -2503,16 +2361,14 @@ public class StreamingRenderer implements GTRenderer {
         double standardDpi = RendererUtilities.getDpi(Collections.emptyMap());
         if (dpi != standardDpi) {
             double scaleFactor = dpi / standardDpi;
-            DpiRescaleStyleVisitor dpiVisitor =
-                    new GraphicsAwareDpiRescaleStyleVisitor(scaleFactor);
+            DpiRescaleStyleVisitor dpiVisitor = new GraphicsAwareDpiRescaleStyleVisitor(scaleFactor);
             for (LiteFeatureTypeStyle fts : lfts) {
                 rescaleFeatureTypeStyle(fts, dpiVisitor);
             }
         }
 
         // apply UOM rescaling
-        double pixelsPerMeters =
-                RendererUtilities.calculatePixelsPerMeterRatio(scaleDenominator, rendererHints);
+        double pixelsPerMeters = RendererUtilities.calculatePixelsPerMeterRatio(scaleDenominator, rendererHints);
         UomRescaleStyleVisitor rescaleVisitor = new UomRescaleStyleVisitor(pixelsPerMeters);
         for (LiteFeatureTypeStyle fts : lfts) {
             rescaleFeatureTypeStyle(fts, rescaleVisitor);
@@ -2550,8 +2406,7 @@ public class StreamingRenderer implements GTRenderer {
      * Reprojects all spatial filters in the specified Query so that they match the native srs of
      * the specified feature source
      */
-    private Query reprojectQuery(Query query, FeatureSource<FeatureType, Feature> source)
-            throws FactoryException {
+    private Query reprojectQuery(Query query, FeatureSource<FeatureType, Feature> source) throws FactoryException {
         if (query == null || query.getFilter() == null) {
             return query;
         }
@@ -2573,8 +2428,7 @@ public class StreamingRenderer implements GTRenderer {
      * Reprojects spatial filters so that they match the feature source native CRS, and assuming all
      * literal geometries are specified in the specified declaredCRS
      */
-    void reprojectSpatialFilters(
-            LiteFeatureTypeStyle fts, CoordinateReferenceSystem declaredCRS, FeatureType schema) {
+    void reprojectSpatialFilters(LiteFeatureTypeStyle fts, CoordinateReferenceSystem declaredCRS, FeatureType schema) {
         for (int i = 0; i < fts.ruleList.length; i++) {
             fts.ruleList[i] = reprojectSpatialFilters(fts.ruleList[i], declaredCRS, schema);
         }
@@ -2589,8 +2443,7 @@ public class StreamingRenderer implements GTRenderer {
      * Reprojects spatial filters so that they match the feature source native CRS, and assuming all
      * literal geometries are specified in the specified declaredCRS
      */
-    private Rule reprojectSpatialFilters(
-            Rule rule, CoordinateReferenceSystem declaredCRS, FeatureType schema) {
+    private Rule reprojectSpatialFilters(Rule rule, CoordinateReferenceSystem declaredCRS, FeatureType schema) {
         // NPE avoidance
         Filter filter = rule.getFilter();
         if (filter == null) {
@@ -2614,8 +2467,7 @@ public class StreamingRenderer implements GTRenderer {
      * Reprojects spatial filters so that they match the feature source native CRS, and assuming all
      * literal geometries are specified in the specified declaredCRS
      */
-    private Filter reprojectSpatialFilter(
-            CoordinateReferenceSystem declaredCRS, FeatureType schema, Filter filter) {
+    private Filter reprojectSpatialFilter(CoordinateReferenceSystem declaredCRS, FeatureType schema, Filter filter) {
         // NPE avoidance
         if (filter == null) {
             return null;
@@ -2632,8 +2484,7 @@ public class StreamingRenderer implements GTRenderer {
         // the native one
         DefaultCRSFilterVisitor defaulter = new DefaultCRSFilterVisitor(filterFactory, declaredCRS);
         Filter defaulted = (Filter) filter.accept(defaulter, null);
-        ReprojectingFilterVisitor reprojector =
-                new ReprojectingFilterVisitor(filterFactory, schema);
+        ReprojectingFilterVisitor reprojector = new ReprojectingFilterVisitor(filterFactory, schema);
         Filter reprojected = (Filter) defaulted.accept(reprojector, null);
         return reprojected;
     }
@@ -2670,8 +2521,7 @@ public class StreamingRenderer implements GTRenderer {
                 }
                 boolean cloningRequired = isCloningRequired(lfts);
                 RenderableFeature rf = createRenderableFeature(layerId, cloningRequired);
-                ProjectionHandler handler =
-                        checkForReprojection(features, rf, lfts, liteFeatureTypeStyle);
+                ProjectionHandler handler = checkForReprojection(features, rf, lfts, liteFeatureTypeStyle);
                 // loop exit condition tested inside try catch
                 // make sure we test hasNext() outside of the try/cath that follows, as that
                 // one is there to make sure a single feature error does not ruin the rendering
@@ -2685,9 +2535,7 @@ public class StreamingRenderer implements GTRenderer {
 
             if (liteFeatureTypeStyle.composite != null) {
                 try {
-                    requests.put(
-                            new MergeLayersRequest(
-                                    graphics, Collections.singletonList(liteFeatureTypeStyle)));
+                    requests.put(new MergeLayersRequest(graphics, Collections.singletonList(liteFeatureTypeStyle)));
                 } catch (InterruptedException e) {
                     fireErrorEvent(e);
                 }
@@ -2737,8 +2585,7 @@ public class StreamingRenderer implements GTRenderer {
                 for (int i = 0; i < lfts.size(); i++) {
                     LiteFeatureTypeStyle liteFeatureTypeStyle = lfts.get(i);
                     if (firstFeature) {
-                        handlers[i] =
-                                checkForReprojection(features, rf, lfts, liteFeatureTypeStyle);
+                        handlers[i] = checkForReprojection(features, rf, lfts, liteFeatureTypeStyle);
                         screenMaps[i] = rf.screenMap;
                     } else {
                         rf.layer = liteFeatureTypeStyle.layer;
@@ -2766,13 +2613,9 @@ public class StreamingRenderer implements GTRenderer {
         // projection handler
         CoordinateReferenceSystem featureCrs = features.getSchema().getCoordinateReferenceSystem();
         ScreenMap screenMap = liteFeatureTypeStyle.screenMap;
-        if (handler != null
-                && featureCrs != null
-                && !CRS.equalsIgnoreMetadata(handler.getSourceCRS(), featureCrs)) {
+        if (handler != null && featureCrs != null && !CRS.equalsIgnoreMetadata(handler.getSourceCRS(), featureCrs)) {
             try {
-                handler =
-                        ProjectionHandlerFinder.getHandler(
-                                mapExtent, featureCrs, isMapWrappingEnabled());
+                handler = ProjectionHandlerFinder.getHandler(mapExtent, featureCrs, isMapWrappingEnabled());
                 if (screenMap != null) {
                     Envelope mapArea = mapExtent;
                     if (getRenderingBuffer() == 0) {
@@ -2782,19 +2625,12 @@ public class StreamingRenderer implements GTRenderer {
                         }
                     }
                     ReferencedEnvelope envelope =
-                            expandEnvelopeByTransformations(
-                                    lfts, new ReferencedEnvelope(mapArea, destinationCrs));
+                            expandEnvelopeByTransformations(lfts, new ReferencedEnvelope(mapArea, destinationCrs));
                     envelope = new ReferencedEnvelope(envelope, destinationCrs);
                     SingleCRS crs2D = CRS.getHorizontalCRS(featureCrs);
-                    MathTransform sourceToScreen =
-                            buildFullTransform(crs2D, destinationCrs, worldToScreenTransform);
-                    double[] spans =
-                            getGeneralizationSpans(
-                                    envelope,
-                                    sourceToScreen,
-                                    worldToScreenTransform,
-                                    featureCrs,
-                                    screenSize);
+                    MathTransform sourceToScreen = buildFullTransform(crs2D, destinationCrs, worldToScreenTransform);
+                    double[] spans = getGeneralizationSpans(
+                            envelope, sourceToScreen, worldToScreenTransform, featureCrs, screenSize);
                     screenMap.setTransform(sourceToScreen);
                     screenMap.setSpans(spans[0], spans[1]);
                 }
@@ -2864,12 +2700,10 @@ public class StreamingRenderer implements GTRenderer {
                 }
             }
         }
-        Set<String> filterAndSymbolizerProperties =
-                extractorOther.getAttributes().stream()
-                        .map(pn -> pn.getPropertyName())
-                        .collect(Collectors.toSet());
-        if (extractorOther.getDefaultGeometryUsed()
-                && featureType.getGeometryDescriptor() != null) {
+        Set<String> filterAndSymbolizerProperties = extractorOther.getAttributes().stream()
+                .map(pn -> pn.getPropertyName())
+                .collect(Collectors.toSet());
+        if (extractorOther.getDefaultGeometryUsed() && featureType.getGeometryDescriptor() != null) {
             String defaultGeometryName =
                     featureType.getGeometryDescriptor().getName().getLocalPart();
             filterAndSymbolizerProperties.add(defaultGeometryName);
@@ -2879,8 +2713,7 @@ public class StreamingRenderer implements GTRenderer {
     }
 
     /** */
-    void processFeature(
-            RenderableFeature rf, LiteFeatureTypeStyle fts, ProjectionHandler projectionHandler) {
+    void processFeature(RenderableFeature rf, LiteFeatureTypeStyle fts, ProjectionHandler projectionHandler) {
         try {
             // init the renderable feature for this fts
             rf.inMemoryGeneralization = fts.inMemoryGeneralization;
@@ -2943,9 +2776,7 @@ public class StreamingRenderer implements GTRenderer {
      *     range we are working on... provided in order to make the style factory happy
      */
     private int processSymbolizers(
-            final Graphics2D graphics,
-            final RenderableFeature drawMe,
-            final List<Symbolizer> symbolizers)
+            final Graphics2D graphics, final RenderableFeature drawMe, final List<Symbolizer> symbolizers)
             throws Exception {
         int paintCommands = 0;
 
@@ -2971,31 +2802,28 @@ public class StreamingRenderer implements GTRenderer {
                         coverage = (GridCoverage2D) grid;
                         if (coverage != null) {
                             disposeCoverage = grid instanceof DisposableGridCoverage;
-                            requests.put(
-                                    new RenderRasterRequest(
-                                            graphics,
-                                            coverage,
-                                            disposeCoverage,
-                                            (RasterSymbolizer) symbolizer,
-                                            destinationCrs,
-                                            worldToScreenTransform,
-                                            getRenderingInterpolation(drawMe.layer)));
+                            requests.put(new RenderRasterRequest(
+                                    graphics,
+                                    coverage,
+                                    disposeCoverage,
+                                    (RasterSymbolizer) symbolizer,
+                                    destinationCrs,
+                                    worldToScreenTransform,
+                                    getRenderingInterpolation(drawMe.layer)));
                             paintCommands++;
                         }
                     } else if (grid instanceof GridCoverage2DReader) {
                         final GeneralParameterValue[] params =
-                                (GeneralParameterValue[])
-                                        paramsPropertyName.evaluate(drawMe.feature);
+                                (GeneralParameterValue[]) paramsPropertyName.evaluate(drawMe.feature);
                         GridCoverage2DReader reader = (GridCoverage2DReader) grid;
-                        requests.put(
-                                new RenderCoverageReaderRequest(
-                                        graphics,
-                                        reader,
-                                        params,
-                                        (RasterSymbolizer) symbolizer,
-                                        destinationCrs,
-                                        worldToScreenTransform,
-                                        getRenderingInterpolation(drawMe.layer)));
+                        requests.put(new RenderCoverageReaderRequest(
+                                graphics,
+                                reader,
+                                params,
+                                (RasterSymbolizer) symbolizer,
+                                destinationCrs,
+                                worldToScreenTransform,
+                                getRenderingInterpolation(drawMe.layer)));
                     }
                 } catch (IllegalArgumentException e) {
                     LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
@@ -3014,12 +2842,7 @@ public class StreamingRenderer implements GTRenderer {
                 }
 
                 if (symbolizer instanceof TextSymbolizer && drawMe.feature instanceof Feature) {
-                    labelCache.put(
-                            drawMe.layerId,
-                            (TextSymbolizer) symbolizer,
-                            drawMe.feature,
-                            shape,
-                            null);
+                    labelCache.put(drawMe.layerId, (TextSymbolizer) symbolizer, drawMe.feature, shape, null);
                     paintCommands++;
                 } else {
                     Style2D style = styleFactory.createStyle(drawMe.feature, symbolizer);
@@ -3030,22 +2853,16 @@ public class StreamingRenderer implements GTRenderer {
                     // take into account the meta buffer to try and clip all geometries by the same
                     // amount
                     double clipBuffer = Math.max(size / 2, drawMe.metaBuffer) + 10;
-                    Envelope env =
-                            new Envelope(
-                                    screenSize.getMinX(),
-                                    screenSize.getMaxX(),
-                                    screenSize.getMinY(),
-                                    screenSize.getMaxY());
+                    Envelope env = new Envelope(
+                            screenSize.getMinX(), screenSize.getMaxX(), screenSize.getMinY(), screenSize.getMaxY());
                     env.expandBy(clipBuffer);
                     final GeometryClipper clipper = new GeometryClipper(env);
                     Geometry source = shape.getGeometry();
                     // we need to preserve the topology if we end up applying buffer for perp.
                     // offset
-                    boolean preserveTopology =
-                            style instanceof LineStyle2D
-                                    && ((LineStyle2D) style).getPerpendicularOffset() != 0
-                                    && (source instanceof Polygon
-                                            || source instanceof MultiPolygon);
+                    boolean preserveTopology = style instanceof LineStyle2D
+                            && ((LineStyle2D) style).getPerpendicularOffset() != 0
+                            && (source instanceof Polygon || source instanceof MultiPolygon);
 
                     Geometry g = clipper.clipSafe(shape.getGeometry(), preserveTopology, 1);
 
@@ -3060,13 +2877,11 @@ public class StreamingRenderer implements GTRenderer {
                         // do so... however buffering is damn expensive, so let's apply some
                         // heuristics
                         // to still run the offset curve builder for the simplest cases
-                        if ((source instanceof Polygon || source instanceof MultiPolygon)
-                                && abs(offset) > 3) {
+                        if ((source instanceof Polygon || source instanceof MultiPolygon) && abs(offset) > 3) {
                             // buffering is expensive, we can be a bit off with the
                             // result, do simplify the geometry first
                             Geometry simplified =
-                                    TopologyPreservingSimplifier.simplify(
-                                            source, Math.max(abs(offset) / 10, 1));
+                                    TopologyPreservingSimplifier.simplify(source, Math.max(abs(offset) / 10, 1));
                             try {
                                 g = simplified.buffer(offset);
                             } catch (Exception e) {
@@ -3084,11 +2899,9 @@ public class StreamingRenderer implements GTRenderer {
                     } else if (style instanceof LineStyle2D) {
                         if (((LineStyle2D) style).getStroke() instanceof MarkAlongLine) {
                             double simplificationFactor =
-                                    ((MarkAlongLine) ((LineStyle2D) style).getStroke())
-                                            .getSimplificatorFactor();
+                                    ((MarkAlongLine) ((LineStyle2D) style).getStroke()).getSimplificatorFactor();
                             if (simplificationFactor != 0) {
-                                Decimator d =
-                                        new Decimator(simplificationFactor, simplificationFactor);
+                                Decimator d = new Decimator(simplificationFactor, simplificationFactor);
                                 g = source;
                                 d.decimate(g);
                             }
@@ -3107,8 +2920,7 @@ public class StreamingRenderer implements GTRenderer {
                     }
                     Polygon clip = getClip(drawMe);
                     if (clip != null) {
-                        LiteShape2 clipShape =
-                                drawMe.getShape(null, worldToScreenTransform, clip, true);
+                        LiteShape2 clipShape = drawMe.getShape(null, worldToScreenTransform, clip, true);
                         paintShapeRequest.setClipShape(clipShape);
                     }
                     requests.put(paintShapeRequest);
@@ -3135,13 +2947,10 @@ public class StreamingRenderer implements GTRenderer {
      * map extent and target paint area, and expanding the target raster area by {@link
      * #REPROJECTION_RASTER_GUTTER}
      */
-    GridGeometry2D getRasterGridGeometry(
-            CoordinateReferenceSystem destinationCrs, CoordinateReferenceSystem sourceCRS)
+    GridGeometry2D getRasterGridGeometry(CoordinateReferenceSystem destinationCrs, CoordinateReferenceSystem sourceCRS)
             throws NoninvertibleTransformException {
         GridGeometry2D readGG;
-        if (sourceCRS == null
-                || destinationCrs == null
-                || CRS.equalsIgnoreMetadata(destinationCrs, sourceCRS)) {
+        if (sourceCRS == null || destinationCrs == null || CRS.equalsIgnoreMetadata(destinationCrs, sourceCRS)) {
             readGG = new GridGeometry2D(new GridEnvelope2D(screenSize), originalMapExtent);
         } else {
             // reprojection involved, read a bit more pixels to account for rotation
@@ -3150,17 +2959,15 @@ public class StreamingRenderer implements GTRenderer {
                     screenSize.x + screenSize.width + REPROJECTION_RASTER_GUTTER,
                     screenSize.y + screenSize.height + REPROJECTION_RASTER_GUTTER);
             bufferedTargetArea.add( // exand bottom/left
-                    screenSize.x - REPROJECTION_RASTER_GUTTER,
-                    screenSize.y - REPROJECTION_RASTER_GUTTER);
+                    screenSize.x - REPROJECTION_RASTER_GUTTER, screenSize.y - REPROJECTION_RASTER_GUTTER);
 
             // now create the final envelope accordingly
-            readGG =
-                    new GridGeometry2D(
-                            new GridEnvelope2D(bufferedTargetArea),
-                            PixelInCell.CELL_CORNER,
-                            new AffineTransform2D(worldToScreenTransform.createInverse()),
-                            originalMapExtent.getCoordinateReferenceSystem(),
-                            null);
+            readGG = new GridGeometry2D(
+                    new GridEnvelope2D(bufferedTargetArea),
+                    PixelInCell.CELL_CORNER,
+                    new AffineTransform2D(worldToScreenTransform.createInverse()),
+                    originalMapExtent.getCoordinateReferenceSystem(),
+                    null);
         }
         return readGG;
     }
@@ -3179,8 +2986,7 @@ public class StreamingRenderer implements GTRenderer {
         // get the geometry
         Geometry geom;
         if (geomExpr == null) {
-            if (drawMe instanceof SimpleFeature)
-                geom = (Geometry) ((SimpleFeature) drawMe).getDefaultGeometry();
+            if (drawMe instanceof SimpleFeature) geom = (Geometry) ((SimpleFeature) drawMe).getDefaultGeometry();
             else if (drawMe instanceof Feature) geom = findComplexFeatureGeometry((Feature) drawMe);
             else geom = defaultGeometryPropertyName.evaluate(drawMe, Geometry.class);
         } else {
@@ -3214,8 +3020,7 @@ public class StreamingRenderer implements GTRenderer {
      * @return The geometry requested in the symbolizer, or the default geometry if none is
      *     specified
      */
-    private org.geotools.api.referencing.crs.CoordinateReferenceSystem findGeometryCS(
-            Feature f, Symbolizer s) {
+    private org.geotools.api.referencing.crs.CoordinateReferenceSystem findGeometryCS(Feature f, Symbolizer s) {
         if (s == null) {
             if (f != null) {
                 return f.getType().getCoordinateReferenceSystem();
@@ -3346,16 +3151,13 @@ public class StreamingRenderer implements GTRenderer {
     public void setRendererHints(Map<?, ?> hints) {
         if (hints != null && hints.containsKey(LABEL_CACHE_KEY)) {
             LabelCache cache = (LabelCache) hints.get(LABEL_CACHE_KEY);
-            if (cache == null)
-                throw new NullPointerException(
-                        "Label_Cache_Hint has a null value for the labelcache");
+            if (cache == null) throw new NullPointerException("Label_Cache_Hint has a null value for the labelcache");
 
             this.labelCache = cache;
             painter = new StyledShapePainter(cache);
         }
         if (hints != null && hints.containsKey(LINE_WIDTH_OPTIMIZATION_KEY)) {
-            styleFactory.setLineOptimizationEnabled(
-                    Boolean.TRUE.equals(hints.get(LINE_WIDTH_OPTIMIZATION_KEY)));
+            styleFactory.setLineOptimizationEnabled(Boolean.TRUE.equals(hints.get(LINE_WIDTH_OPTIMIZATION_KEY)));
         }
         rendererHints = hints;
 
@@ -3406,8 +3208,7 @@ public class StreamingRenderer implements GTRenderer {
             return Interpolation.getInstance(Interpolation.INTERP_NEAREST);
         }
         Object interpolationHint = java2dHints.get(RenderingHints.KEY_INTERPOLATION);
-        if (interpolationHint == null
-                || interpolationHint == RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR) {
+        if (interpolationHint == null || interpolationHint == RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR) {
             return Interpolation.getInstance(Interpolation.INTERP_NEAREST);
         } else if (interpolationHint == RenderingHints.VALUE_INTERPOLATION_BILINEAR) {
             return Interpolation.getInstance(Interpolation.INTERP_BILINEAR);
@@ -3450,8 +3251,7 @@ public class StreamingRenderer implements GTRenderer {
             shapes.clear();
         }
 
-        public LiteShape2 getShape(Symbolizer symbolizer, AffineTransform at)
-                throws FactoryException {
+        public LiteShape2 getShape(Symbolizer symbolizer, AffineTransform at) throws FactoryException {
             Geometry g = findGeometry(feature, symbolizer); // pulls the geometry
 
             if (g == null || g.isEmpty()) return null;
@@ -3459,8 +3259,7 @@ public class StreamingRenderer implements GTRenderer {
             return getShape(symbolizer, at, g, clone);
         }
 
-        public LiteShape2 getShape(
-                Symbolizer symbolizer, AffineTransform at, Geometry g, boolean clone)
+        public LiteShape2 getShape(Symbolizer symbolizer, AffineTransform at, Geometry g, boolean clone)
                 throws FactoryException {
             try {
 
@@ -3477,14 +3276,13 @@ public class StreamingRenderer implements GTRenderer {
                         if (screenMap.checkAndSet(env)) {
                             return null;
                         } else {
-                            g =
-                                    screenMap.getSimplifiedShape(
-                                            env.getMinX(),
-                                            env.getMinY(),
-                                            env.getMaxX(),
-                                            env.getMaxY(),
-                                            g.getFactory(),
-                                            g.getClass());
+                            g = screenMap.getSimplifiedShape(
+                                    env.getMinX(),
+                                    env.getMinY(),
+                                    env.getMaxX(),
+                                    env.getMaxY(),
+                                    g.getFactory(),
+                                    g.getClass());
                         }
                 }
 
@@ -3529,15 +3327,12 @@ public class StreamingRenderer implements GTRenderer {
             }
         }
 
-        private LiteShape2 getPointSymbolizerShape(
-                Geometry g, SymbolizerAssociation sa, boolean clone)
+        private LiteShape2 getPointSymbolizerShape(Geometry g, SymbolizerAssociation sa, boolean clone)
                 throws TransformException, FactoryException {
             // if the coordinate transformation will occurr in place on the coordinate sequence
             if (clone
-                    || !(g.getFactory().getCoordinateSequenceFactory()
-                            instanceof LiteCoordinateSequenceFactory)
-                    || g instanceof Point)
-                return getTransformedShape(RendererUtilities.getCentroid(g), sa, clone);
+                    || !(g.getFactory().getCoordinateSequenceFactory() instanceof LiteCoordinateSequenceFactory)
+                    || g instanceof Point) return getTransformedShape(RendererUtilities.getCentroid(g), sa, clone);
 
             // if the symbolizer is a point symbolizer we first get the transformed geometry to
             // make sure the coordinates have been modified once, and then compute the centroid
@@ -3547,8 +3342,7 @@ public class StreamingRenderer implements GTRenderer {
             LiteShape2 first = getTransformedShape(g, sa, clone);
             if (first == null) return null;
 
-            if (projectionHandler == null)
-                return getTransformedShape(RendererUtilities.getCentroid(g), null, clone);
+            if (projectionHandler == null) return getTransformedShape(RendererUtilities.getCentroid(g), null, clone);
 
             // at the same time, we cannot keep the geometry in screen space because that would
             // prevent the advanced projection handling to do its work, to replicate the geometries
@@ -3566,8 +3360,7 @@ public class StreamingRenderer implements GTRenderer {
             return -1;
         }
 
-        private LiteShape2 getTransformedShape(
-                Geometry originalGeom, SymbolizerAssociation sa, boolean clone)
+        private LiteShape2 getTransformedShape(Geometry originalGeom, SymbolizerAssociation sa, boolean clone)
                 throws TransformException, FactoryException {
             int idx = getGeometryIndex(originalGeom);
             if (idx != -1) {
@@ -3577,9 +3370,7 @@ public class StreamingRenderer implements GTRenderer {
             // we need to clone if the clone flag is high or if the coordinate sequence is not the
             // one we asked for
             Geometry geom = originalGeom;
-            if (clone
-                    || !(geom.getFactory().getCoordinateSequenceFactory()
-                            instanceof LiteCoordinateSequenceFactory)) {
+            if (clone || !(geom.getFactory().getCoordinateSequenceFactory() instanceof LiteCoordinateSequenceFactory)) {
                 int dim = sa.crs != null ? sa.crs.getCoordinateSystem().getDimension() : 2;
                 geom = LiteCoordinateSequence.cloneGeometry(geom, dim);
             }
@@ -3599,14 +3390,9 @@ public class StreamingRenderer implements GTRenderer {
                     MathTransform reverse = null;
                     if (sa.crsxform != null) {
                         if (sa.crsxform instanceof ConcatenatedTransform
-                                && ((ConcatenatedTransform) sa.crsxform)
-                                                .transform1.getTargetDimensions()
-                                        >= 3
-                                && ((ConcatenatedTransform) sa.crsxform)
-                                                .transform2.getTargetDimensions()
-                                        == 2) {
-                            reverse =
-                                    null; // We are downcasting 3D data to 2D data so no inverse is
+                                && ((ConcatenatedTransform) sa.crsxform).transform1.getTargetDimensions() >= 3
+                                && ((ConcatenatedTransform) sa.crsxform).transform2.getTargetDimensions() == 2) {
+                            reverse = null; // We are downcasting 3D data to 2D data so no inverse is
                             // available
                         } else {
                             try {
@@ -3652,11 +3438,7 @@ public class StreamingRenderer implements GTRenderer {
             if (decimator == null) {
                 try {
                     if (mathTransform != null && !mathTransform.isIdentity())
-                        decimator =
-                                new Decimator(
-                                        mathTransform.inverse(),
-                                        screenSize,
-                                        generalizationDistance);
+                        decimator = new Decimator(mathTransform.inverse(), screenSize, generalizationDistance);
                     else decimator = new Decimator(null, screenSize, generalizationDistance);
                 } catch (org.geotools.api.referencing.operation.NoninvertibleTransformException e) {
                     decimator = new Decimator(null, screenSize, generalizationDistance);
@@ -3699,8 +3481,7 @@ public class StreamingRenderer implements GTRenderer {
             this.clipShape = clipShape;
         }
 
-        public PaintShapeRequest(
-                Graphics2D graphic, LiteShape2 shape, Style2D style, double scale) {
+        public PaintShapeRequest(Graphics2D graphic, LiteShape2 shape, Style2D style, double scale) {
             this.graphic = graphic;
             this.shape = shape;
             this.style = style;
@@ -3788,9 +3569,7 @@ public class StreamingRenderer implements GTRenderer {
                         // has not been initialized
                         if (image == null) {
                             Rectangle size = ((DelayedBackbufferGraphic) ftsGraphics).screenSize;
-                            image =
-                                    new BufferedImage(
-                                            size.width, size.height, BufferedImage.TYPE_4BYTE_ABGR);
+                            image = new BufferedImage(size.width, size.height, BufferedImage.TYPE_4BYTE_ABGR);
                         }
                         graphics.setComposite(currentLayer.composite);
                     }
@@ -3808,8 +3587,7 @@ public class StreamingRenderer implements GTRenderer {
 
         CompositingGroup compositingGroup;
 
-        public MargeCompositingGroupRequest(
-                Graphics2D graphics, CompositingGroup compositingGroup) {
+        public MargeCompositingGroupRequest(Graphics2D graphics, CompositingGroup compositingGroup) {
             this.graphics = graphics;
             this.compositingGroup = compositingGroup;
         }
@@ -3819,8 +3597,7 @@ public class StreamingRenderer implements GTRenderer {
             if (graphics instanceof DelayedBackbufferGraphic) {
                 ((DelayedBackbufferGraphic) graphics).init();
             }
-            final BufferedImage image =
-                    ((DelayedBackbufferGraphic) compositingGroup.graphics).image;
+            final BufferedImage image = ((DelayedBackbufferGraphic) compositingGroup.graphics).image;
             // we may have not found anything to paint, in that case the delegate
             // has not been initialized
             if (image != null) {
@@ -3888,13 +3665,8 @@ public class StreamingRenderer implements GTRenderer {
                 // /////////////////////////////////////////////////////////////////
                 Hints localHints = new Hints(java2dHints);
                 if (interpolation != null) localHints.put(JAI.KEY_INTERPOLATION, interpolation);
-                final GridCoverageRenderer gcr =
-                        new GridCoverageRenderer(
-                                destinationCRS,
-                                originalMapExtent,
-                                screenSize,
-                                worldToScreen,
-                                localHints);
+                final GridCoverageRenderer gcr = new GridCoverageRenderer(
+                        destinationCRS, originalMapExtent, screenSize, worldToScreen, localHints);
 
                 try {
                     gcr.paint(graphics, coverage, symbolizer);
@@ -3978,13 +3750,8 @@ public class StreamingRenderer implements GTRenderer {
                 // rely on the gridocerage renderer itself.
                 //
                 // /////////////////////////////////////////////////////////////////
-                final GridCoverageRenderer gcr =
-                        new GridCoverageRenderer(
-                                destinationCRS,
-                                originalMapExtent,
-                                screenSize,
-                                worldToScreen,
-                                java2dHints);
+                final GridCoverageRenderer gcr = new GridCoverageRenderer(
+                        destinationCRS, originalMapExtent, screenSize, worldToScreen, java2dHints);
 
                 // Checks on the Reprojection parameters
                 gcr.setAdvancedProjectionHandlingEnabled(isAdvancedProjectionHandlingEnabled());
@@ -4301,41 +4068,30 @@ public class StreamingRenderer implements GTRenderer {
         }
 
         @Override
-        protected GridCoverage2D readCoverage(
-                GridCoverage2DReader reader, Object readParams, GridGeometry2D readGG)
+        protected GridCoverage2D readCoverage(GridCoverage2DReader reader, Object readParams, GridGeometry2D readGG)
                 throws IOException {
             Interpolation interpolation = getRenderingInterpolation(layer);
-            RenderingHints interpolationHints =
-                    new RenderingHints(JAI.KEY_INTERPOLATION, interpolation);
+            RenderingHints interpolationHints = new RenderingHints(JAI.KEY_INTERPOLATION, interpolation);
             final GridCoverageRenderer gcr;
 
             try {
                 Rectangle mapRasterArea = readGG.getGridRange2D();
                 final AffineTransform worldToScreen =
                         RendererUtilities.worldToScreenTransform(mapExtent, mapRasterArea);
-                gcr =
-                        new GridCoverageRenderer(
-                                mapExtent.getCoordinateReferenceSystem(),
-                                mapExtent,
-                                mapRasterArea,
-                                worldToScreen,
-                                interpolationHints);
+                gcr = new GridCoverageRenderer(
+                        mapExtent.getCoordinateReferenceSystem(),
+                        mapExtent,
+                        mapRasterArea,
+                        worldToScreen,
+                        interpolationHints);
                 gcr.setAdvancedProjectionHandlingEnabled(isAdvancedProjectionHandlingEnabled());
                 gcr.setWrapEnabled(isMapWrappingEnabled());
-                RenderedImage ri =
-                        gcr.renderImage(
-                                reader,
-                                (GeneralParameterValue[]) readParams,
-                                null,
-                                interpolation,
-                                null,
-                                256,
-                                256);
+                RenderedImage ri = gcr.renderImage(
+                        reader, (GeneralParameterValue[]) readParams, null, interpolation, null, 256, 256);
                 if (ri != null) {
                     PlanarImage pi = PlanarImage.wrapRenderedImage(ri);
                     GridCoverage2D gc2d =
-                            (GridCoverage2D)
-                                    pi.getProperty(GridCoverageRenderer.PARENT_COVERAGE_PROPERTY);
+                            (GridCoverage2D) pi.getProperty(GridCoverageRenderer.PARENT_COVERAGE_PROPERTY);
                     return gc2d;
                 }
                 return null;

@@ -171,8 +171,7 @@ public class CurvedGeometryFactory extends GeometryFactory {
         if (delegate == null) {
             if (other.delegate != null) return false;
         } else if (!delegate.equals(other.delegate)) return false;
-        if (Double.doubleToLongBits(tolerance) != Double.doubleToLongBits(other.tolerance))
-            return false;
+        if (Double.doubleToLongBits(tolerance) != Double.doubleToLongBits(other.tolerance)) return false;
         return true;
     }
 
@@ -328,13 +327,11 @@ public class CurvedGeometryFactory extends GeometryFactory {
         }
 
         final AtomicBoolean hasCurves = new AtomicBoolean(false);
-        g.apply(
-                (GeometryComponentFilter)
-                        geom -> {
-                            if (geom instanceof CurvedGeometry) {
-                                hasCurves.set(true);
-                            }
-                        });
+        g.apply((GeometryComponentFilter) geom -> {
+            if (geom instanceof CurvedGeometry) {
+                hasCurves.set(true);
+            }
+        });
 
         return hasCurves.get();
     }

@@ -140,15 +140,9 @@ public class InterpolateFunctionTest extends SEFunctionTestBase {
     @Test
     public void testNumericInterpolationStringContext() throws Exception {
         double testValue = data[0];
-        assertThat(
-                runNumeric(InterpolateFunction.MODE_LINEAR, testValue, String.class),
-                instanceOf(String.class));
-        assertThat(
-                runNumeric(InterpolateFunction.MODE_CUBIC, testValue, String.class),
-                instanceOf(String.class));
-        assertThat(
-                runNumeric(InterpolateFunction.MODE_COSINE, testValue, String.class),
-                instanceOf(String.class));
+        assertThat(runNumeric(InterpolateFunction.MODE_LINEAR, testValue, String.class), instanceOf(String.class));
+        assertThat(runNumeric(InterpolateFunction.MODE_CUBIC, testValue, String.class), instanceOf(String.class));
+        assertThat(runNumeric(InterpolateFunction.MODE_COSINE, testValue, String.class), instanceOf(String.class));
     }
 
     /**
@@ -204,16 +198,10 @@ public class InterpolateFunctionTest extends SEFunctionTestBase {
         for (int i = 1; i < data.length; i++) {
             double testValue = (data[i] + data[i - 1]) / 2.0;
             result = (Color) fn.evaluate(feature(testValue), context);
-            Color expected =
-                    new Color(
-                            (int) Math.round((colors[i].getRed() + colors[i - 1].getRed()) / 2.0),
-                            (int)
-                                    Math.round(
-                                            (colors[i].getGreen() + colors[i - 1].getGreen())
-                                                    / 2.0),
-                            (int)
-                                    Math.round(
-                                            (colors[i].getBlue() + colors[i - 1].getBlue()) / 2.0));
+            Color expected = new Color(
+                    (int) Math.round((colors[i].getRed() + colors[i - 1].getRed()) / 2.0),
+                    (int) Math.round((colors[i].getGreen() + colors[i - 1].getGreen()) / 2.0),
+                    (int) Math.round((colors[i].getBlue() + colors[i - 1].getBlue()) / 2.0));
             assertEquals(expected, result);
         }
 
@@ -249,9 +237,7 @@ public class InterpolateFunctionTest extends SEFunctionTestBase {
             double testValue = data[i - 1] + t * (data[i] - data[i - 1]);
             result = fn.evaluate(feature(Double.valueOf(testValue)), Double.class);
 
-            expected =
-                    values[i - 1]
-                            + (values[i] - values[i - 1]) * (1.0 - Math.cos(t * Math.PI)) * 0.5;
+            expected = values[i - 1] + (values[i] - values[i - 1]) * (1.0 - Math.cos(t * Math.PI)) * 0.5;
             assertEquals(expected, result, TOL);
         }
 
@@ -288,11 +274,9 @@ public class InterpolateFunctionTest extends SEFunctionTestBase {
             double testValue = data[i - 1] + t * (data[i] - data[i - 1]);
             result = fn.evaluate(feature(Double.valueOf(testValue)), Double.class);
 
-            expected =
-                    cubic(
-                            testValue,
-                            new double[] {data[i - 2], data[i - 1], data[i], data[i + 1]},
-                            new double[] {values[i - 2], values[i - 1], values[i], values[i + 1]});
+            expected = cubic(testValue, new double[] {data[i - 2], data[i - 1], data[i], data[i + 1]}, new double[] {
+                values[i - 2], values[i - 1], values[i], values[i + 1]
+            });
             assertEquals(expected, result, TOL);
         }
 
@@ -320,16 +304,10 @@ public class InterpolateFunctionTest extends SEFunctionTestBase {
         for (int i = 1; i < data.length; i++) {
             double rasterValue = (data[i] + data[i - 1]) / 2.0;
             result = fn.evaluate(rasterValue, Color.class);
-            Color expected =
-                    new Color(
-                            (int) Math.round((colors[i].getRed() + colors[i - 1].getRed()) / 2.0),
-                            (int)
-                                    Math.round(
-                                            (colors[i].getGreen() + colors[i - 1].getGreen())
-                                                    / 2.0),
-                            (int)
-                                    Math.round(
-                                            (colors[i].getBlue() + colors[i - 1].getBlue()) / 2.0));
+            Color expected = new Color(
+                    (int) Math.round((colors[i].getRed() + colors[i - 1].getRed()) / 2.0),
+                    (int) Math.round((colors[i].getGreen() + colors[i - 1].getGreen()) / 2.0),
+                    (int) Math.round((colors[i].getBlue() + colors[i - 1].getBlue()) / 2.0));
             assertEquals(expected, result);
         }
 
@@ -485,8 +463,7 @@ public class InterpolateFunctionTest extends SEFunctionTestBase {
         assertTrue(hexColor.matcher((String) result).matches());
     }
 
-    private Object runMethodColor(String interpolationMode, double testValue, Class<?> context)
-            throws Exception {
+    private Object runMethodColor(String interpolationMode, double testValue, Class<?> context) throws Exception {
         setupParameters(data, colors);
         parameters.add(ff2.literal(InterpolateFunction.METHOD_COLOR));
         parameters.add(ff2.literal(interpolationMode));
@@ -527,11 +504,10 @@ public class InterpolateFunctionTest extends SEFunctionTestBase {
         double m1 = 0.5 * ((yi[2] - yi[1]) / span12 + (yi[1] - yi[0]) / span01);
         double m2 = 0.5 * ((yi[3] - yi[2]) / span23 + (yi[2] - yi[1]) / span12);
 
-        double y =
-                (2 * t3 - 3 * t2 + 1) * yi[1]
-                        + (t3 - 2 * t2 + t) * span12 * m1
-                        + (-2 * t3 + 3 * t2) * yi[2]
-                        + (t3 - t2) * span12 * m2;
+        double y = (2 * t3 - 3 * t2 + 1) * yi[1]
+                + (t3 - 2 * t2 + t) * span12 * m1
+                + (-2 * t3 + 3 * t2) * yi[2]
+                + (t3 - t2) * span12 * m2;
 
         return y;
     }

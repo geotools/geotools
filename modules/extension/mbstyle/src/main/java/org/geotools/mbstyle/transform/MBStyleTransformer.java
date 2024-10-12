@@ -124,8 +124,7 @@ public class MBStyleTransformer {
      * @return An external graphic with the full URL of the mage for the {@link
      *     SpriteGraphicFactory}.
      */
-    public ExternalGraphic createExternalGraphicForSprite(
-            Expression iconName, MBStyle styleContext) {
+    public ExternalGraphic createExternalGraphicForSprite(Expression iconName, MBStyle styleContext) {
         return createExternalGraphicForSprite(iconName, ff.literal("1"), styleContext);
     }
 
@@ -186,11 +185,10 @@ public class MBStyleTransformer {
         try {
             return ExpressionExtractor.extractCqlExpressions(cqlStringFromTokens(tokenStr));
         } catch (IllegalArgumentException iae) {
-            LOGGER.warning(
-                    "Exception converting Mapbox token string to CQL expression. Mapbox token string was: \""
-                            + tokenStr
-                            + "\". Exception was: "
-                            + iae.getMessage());
+            LOGGER.warning("Exception converting Mapbox token string to CQL expression. Mapbox token string was: \""
+                    + tokenStr
+                    + "\". Exception was: "
+                    + iae.getMessage());
             return ff.literal(tokenStr);
         }
     }
@@ -216,11 +214,7 @@ public class MBStyleTransformer {
      *     value.
      */
     public static <T> T requireLiteral(
-            Expression expression,
-            Class<T> clazz,
-            T fallback,
-            String propertyName,
-            String layerId) {
+            Expression expression, Class<T> clazz, T fallback, String propertyName, String layerId) {
         if (expression instanceof Literal) {
             T value = expression.evaluate(null, clazz);
             if (value != null) {
@@ -229,13 +223,12 @@ public class MBStyleTransformer {
                 return fallback;
             }
         } else {
-            LOGGER.warning(
-                    "Mapbox '"
-                            + propertyName
-                            + "' property: functions not yet supported for this property, falling back to default value."
-                            + " (layerId = '"
-                            + layerId
-                            + "')");
+            LOGGER.warning("Mapbox '"
+                    + propertyName
+                    + "' property: functions not yet supported for this property, falling back to default value."
+                    + " (layerId = '"
+                    + layerId
+                    + "')");
             return fallback;
         }
     }

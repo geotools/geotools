@@ -80,8 +80,7 @@ public final class Element {
      * @param position In input, the position where to start parsing from. In output, the first
      *     character after the separator.
      */
-    Element(final AbstractParser parser, final String text, final ParsePosition position)
-            throws ParseException {
+    Element(final AbstractParser parser, final String text, final ParsePosition position) throws ParseException {
         /*
          * Find the first keyword in the specified string. If a keyword is found, then
          * the position is set to the index of the first character after the keyword.
@@ -114,8 +113,7 @@ public final class Element {
                 list = null;
                 return;
             }
-        } while (!parseOptionalSeparator(
-                text, position, parser.symbols.openingBrackets[bracketIndex]));
+        } while (!parseOptionalSeparator(text, position, parser.symbols.openingBrackets[bracketIndex]));
         list = new LinkedList<>();
         /*
          * Parse all elements inside the bracket. Elements are parsed sequentially
@@ -209,8 +207,7 @@ public final class Element {
      * @param separator The character to search.
      * @throws ParseException if the separator was not found.
      */
-    private void parseSeparator(
-            final String text, final ParsePosition position, final char separator)
+    private void parseSeparator(final String text, final ParsePosition position, final char separator)
             throws ParseException {
         if (!parseOptionalSeparator(text, position, separator)) {
             position.setErrorIndex(position.getIndex());
@@ -271,9 +268,7 @@ public final class Element {
         return trim(
                 "missingCharacter",
                 new ParseException(
-                        complete(
-                                MessageFormat.format(
-                                        ErrorKeys.MISSING_CHARACTER_$1, Character.valueOf(c))),
+                        complete(MessageFormat.format(ErrorKeys.MISSING_CHARACTER_$1, Character.valueOf(c))),
                         position));
     }
 
@@ -289,9 +284,7 @@ public final class Element {
         }
         return trim(
                 "missingParameter",
-                new ParseException(
-                        complete(MessageFormat.format(ErrorKeys.MISSING_PARAMETER_$1, key)),
-                        error));
+                new ParseException(complete(MessageFormat.format(ErrorKeys.MISSING_PARAMETER_$1, key)), error));
     }
 
     /**
@@ -378,10 +371,7 @@ public final class Element {
                 final Number number = (Number) object;
                 if (number instanceof Float || number instanceof Double) {
                     throw new ParseException(
-                            complete(
-                                    MessageFormat.format(
-                                            ErrorKeys.ILLEGAL_ARGUMENT_$2, key, number)),
-                            offset);
+                            complete(MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, key, number)), offset);
                 }
                 return number.intValue();
             }

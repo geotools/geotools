@@ -92,14 +92,12 @@ public class IntersectUtils {
                 return intersection((GeometryCollection) g1, (GeometryCollection) g2);
             } else {
                 List<Geometry> ret = intersection((GeometryCollection) g1, g2);
-                return g1.getFactory()
-                        .createGeometryCollection(GeometryFactory.toGeometryArray(ret));
+                return g1.getFactory().createGeometryCollection(GeometryFactory.toGeometryArray(ret));
             }
         } else {
             if (g2 instanceof GeometryCollection) {
                 List<Geometry> ret = intersection((GeometryCollection) g2, g1);
-                return g1.getFactory()
-                        .createGeometryCollection(GeometryFactory.toGeometryArray(ret));
+                return g1.getFactory().createGeometryCollection(GeometryFactory.toGeometryArray(ret));
             } else {
                 return g1.intersection(g2);
             }
@@ -178,8 +176,7 @@ public class IntersectUtils {
         } else if (geometry instanceof MultiPolygon) {
 
             MultiPolygon mp = (MultiPolygon) geometry;
-            return geometry.getFactory()
-                    .createMultiPolygon(unrollGeometries(mp).toArray(new Polygon[0]));
+            return geometry.getFactory().createMultiPolygon(unrollGeometries(mp).toArray(new Polygon[0]));
 
         } else if (geometry instanceof GeometryCollection) {
             List<org.locationtech.jts.geom.Polygon> ret = new ArrayList<>();
@@ -205,8 +202,7 @@ public class IntersectUtils {
         List<org.locationtech.jts.geom.Polygon> ret = new ArrayList<>();
 
         for (int i = 0; i < mp.getNumGeometries(); i++) {
-            org.locationtech.jts.geom.Polygon g =
-                    (org.locationtech.jts.geom.Polygon) mp.getGeometryN(i);
+            org.locationtech.jts.geom.Polygon g = (org.locationtech.jts.geom.Polygon) mp.getGeometryN(i);
             ret.add(g);
         }
 

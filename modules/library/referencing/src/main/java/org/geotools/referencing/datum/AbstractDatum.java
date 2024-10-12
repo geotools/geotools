@@ -147,15 +147,13 @@ public class AbstractDatum extends AbstractIdentifiedObject implements Datum {
      * Work around for RFE #4093999 in Sun's bug database ("Relax constraint on placement of
      * this()/super() call in constructors").
      */
-    private AbstractDatum(
-            final Map<String, ?> properties, final Map<String, Object> subProperties) {
+    private AbstractDatum(final Map<String, ?> properties, final Map<String, Object> subProperties) {
         super(properties, subProperties, LOCALIZABLES);
         anchorPoint = (InternationalString) subProperties.get(ANCHOR_POINT_KEY);
         final Date realizationEpoch = (Date) subProperties.get(REALIZATION_EPOCH_KEY);
         domainOfValidity = (Extent) subProperties.get(DOMAIN_OF_VALIDITY_KEY);
         scope = (InternationalString) subProperties.get(SCOPE_KEY);
-        this.realizationEpoch =
-                (realizationEpoch != null) ? realizationEpoch.getTime() : Long.MIN_VALUE;
+        this.realizationEpoch = (realizationEpoch != null) ? realizationEpoch.getTime() : Long.MIN_VALUE;
     }
 
     /**

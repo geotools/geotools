@@ -179,7 +179,8 @@ public class GmlFeatureTypeRegistryConfiguration implements FeatureTypeRegistryC
         while ((baseType = typeDefinition.getBaseType()) != null) {
             targetNamespace = baseType.getTargetNamespace();
             name = baseType.getName();
-            if (XS.NAMESPACE.equals(targetNamespace) && XS.ANYTYPE.getLocalPart().equals(name)) {
+            if (XS.NAMESPACE.equals(targetNamespace)
+                    && XS.ANYTYPE.getLocalPart().equals(name)) {
                 // break the loop or this goes forever
                 return false;
             }
@@ -194,8 +195,7 @@ public class GmlFeatureTypeRegistryConfiguration implements FeatureTypeRegistryC
     /**
      * Returns whether <code>typeDefinition</code> has an ancestor named <code>baseTypeName</code>.
      */
-    private static boolean isDerivedFrom(
-            final XSDTypeDefinition typeDefinition, final QName baseTypeName) {
+    private static boolean isDerivedFrom(final XSDTypeDefinition typeDefinition, final QName baseTypeName) {
         return isDerivedFrom(typeDefinition, Types.toTypeName(baseTypeName));
     }
 
@@ -203,8 +203,7 @@ public class GmlFeatureTypeRegistryConfiguration implements FeatureTypeRegistryC
      * Returns <code>true</code> if <code>typeDefinition</code> is derived from a type named <code>
      * superTypeName</code>
      */
-    private static boolean isDerivedFrom(
-            XSDTypeDefinition typeDefinition, final Name superTypeName) {
+    private static boolean isDerivedFrom(XSDTypeDefinition typeDefinition, final Name superTypeName) {
 
         XSDTypeDefinition baseType;
         final String superNS = superTypeName.getNamespaceURI();
@@ -215,7 +214,8 @@ public class GmlFeatureTypeRegistryConfiguration implements FeatureTypeRegistryC
         while ((baseType = typeDefinition.getBaseType()) != null) {
             targetNamespace = baseType.getTargetNamespace();
             name = baseType.getName();
-            if (XS.NAMESPACE.equals(targetNamespace) && XS.ANYTYPE.getLocalPart().equals(name)) {
+            if (XS.NAMESPACE.equals(targetNamespace)
+                    && XS.ANYTYPE.getLocalPart().equals(name)) {
                 return false;
             }
             if (superNS.equals(targetNamespace) && superName.equals(name)) {
@@ -231,15 +231,14 @@ public class GmlFeatureTypeRegistryConfiguration implements FeatureTypeRegistryC
      * Configuration} for that GML version.
      */
     @SuppressWarnings("serial")
-    private static final Map<QName, Class<? extends Configuration>>
-            SUPPORTED_GML_KNOWN_TYPE_TO_CONFIGURATION_MAP =
-                    Map.ofEntries(
-                            // GML 3.1
-                            entry(GML.AbstractFeatureType, GMLConfiguration.class),
-                            // GML 3.2
-                            entry(
-                                    org.geotools.gml3.v3_2.GML.AbstractFeatureType,
-                                    org.geotools.gml3.v3_2.GMLConfiguration.class));
+    private static final Map<QName, Class<? extends Configuration>> SUPPORTED_GML_KNOWN_TYPE_TO_CONFIGURATION_MAP =
+            Map.ofEntries(
+                    // GML 3.1
+                    entry(GML.AbstractFeatureType, GMLConfiguration.class),
+                    // GML 3.2
+                    entry(
+                            org.geotools.gml3.v3_2.GML.AbstractFeatureType,
+                            org.geotools.gml3.v3_2.GMLConfiguration.class));
 
     public static Configuration findGmlConfiguration(Configuration configuration) {
         SchemaIndex index = null;
@@ -261,9 +260,8 @@ public class GmlFeatureTypeRegistryConfiguration implements FeatureTypeRegistryC
             for (XSDSchema schema : index.getSchemas()) {
                 String ns = schema.getTargetNamespace();
                 if (ns != null && ns.startsWith("http://www.opengis.net/gml")) {
-                    throw new RuntimeException(
-                            "Unsupported GML version for schema at "
-                                    + configuration.getXSD().getSchemaLocation());
+                    throw new RuntimeException("Unsupported GML version for schema at "
+                            + configuration.getXSD().getSchemaLocation());
                 }
             }
         } finally {

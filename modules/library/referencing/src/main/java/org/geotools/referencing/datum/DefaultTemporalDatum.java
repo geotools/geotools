@@ -44,10 +44,8 @@ public class DefaultTemporalDatum extends AbstractDatum implements TemporalDatum
      * @see org.geotools.referencing.crs.DefaultTemporalCRS#JULIAN
      * @since 2.5
      */
-    public static final DefaultTemporalDatum JULIAN =
-            new DefaultTemporalDatum(
-                    name(VocabularyKeys.JULIAN),
-                    new Date(-2440588 * (24 * 60 * 60 * 1000L) + (12 * 60 * 60 * 1000L)));
+    public static final DefaultTemporalDatum JULIAN = new DefaultTemporalDatum(
+            name(VocabularyKeys.JULIAN), new Date(-2440588 * (24 * 60 * 60 * 1000L) + (12 * 60 * 60 * 1000L)));
 
     /**
      * Datum for time measured since November 17, 1858 at 00:00 UTC. A <cite>Modified Julian
@@ -58,9 +56,7 @@ public class DefaultTemporalDatum extends AbstractDatum implements TemporalDatum
      * @since 2.5
      */
     public static final DefaultTemporalDatum MODIFIED_JULIAN =
-            new DefaultTemporalDatum(
-                    name(VocabularyKeys.MODIFIED_JULIAN),
-                    new Date(-40587 * (24 * 60 * 60 * 1000L)));
+            new DefaultTemporalDatum(name(VocabularyKeys.MODIFIED_JULIAN), new Date(-40587 * (24 * 60 * 60 * 1000L)));
 
     /**
      * Datum for time measured since May 24, 1968 at 00:00 UTC. This epoch was introduced by NASA
@@ -71,8 +67,7 @@ public class DefaultTemporalDatum extends AbstractDatum implements TemporalDatum
      * @since 2.5
      */
     public static final DefaultTemporalDatum TRUNCATED_JULIAN =
-            new DefaultTemporalDatum(
-                    name(VocabularyKeys.TRUNCATED_JULIAN), new Date(-587 * (24 * 60 * 60 * 1000L)));
+            new DefaultTemporalDatum(name(VocabularyKeys.TRUNCATED_JULIAN), new Date(-587 * (24 * 60 * 60 * 1000L)));
 
     /**
      * Datum for time measured since December 31, 1899 at 12:00 UTC. A <cite>Dublin Julian
@@ -82,10 +77,8 @@ public class DefaultTemporalDatum extends AbstractDatum implements TemporalDatum
      * @see org.geotools.referencing.crs.DefaultTemporalCRS#DUBLIN_JULIAN
      * @since 2.5
      */
-    public static final DefaultTemporalDatum DUBLIN_JULIAN =
-            new DefaultTemporalDatum(
-                    name(VocabularyKeys.DUBLIN_JULIAN),
-                    new Date(-25568 * (24 * 60 * 60 * 1000L) + (12 * 60 * 60 * 1000L)));
+    public static final DefaultTemporalDatum DUBLIN_JULIAN = new DefaultTemporalDatum(
+            name(VocabularyKeys.DUBLIN_JULIAN), new Date(-25568 * (24 * 60 * 60 * 1000L) + (12 * 60 * 60 * 1000L)));
 
     /**
      * Default datum for time measured since January 1st, 1970 at 00:00 UTC.

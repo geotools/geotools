@@ -47,16 +47,14 @@ public class PathTypeTest extends Assert {
 
         // test it as a relative path to the test-data directory
         final URL temp =
-                PathType.RELATIVE.resolvePath(
-                        TestData.url(this, ".").toExternalForm(), "rgb/global_mosaic_0.pgw");
+                PathType.RELATIVE.resolvePath(TestData.url(this, ".").toExternalForm(), "rgb/global_mosaic_0.pgw");
         assertNotNull(temp);
         temp.openStream().close();
 
         // test error checks
         LOGGER.info("Testing invalid path");
         final URL temp1 =
-                PathType.RELATIVE.resolvePath(
-                        TestData.url(this, ".").toExternalForm(), "rgb/global_mosaic_0.pg");
+                PathType.RELATIVE.resolvePath(TestData.url(this, ".").toExternalForm(), "rgb/global_mosaic_0.pg");
         assertNull(temp1);
         try {
             temp1.openStream().close();
@@ -73,8 +71,7 @@ public class PathTypeTest extends Assert {
 
         // test it as a absolute path to the test-data directory
         final URL temp =
-                PathType.ABSOLUTE.resolvePath(
-                        TestData.url(this, ".").toExternalForm(), testFile.toExternalForm());
+                PathType.ABSOLUTE.resolvePath(TestData.url(this, ".").toExternalForm(), testFile.toExternalForm());
         assertNotNull(temp);
         temp.openStream().close();
 
@@ -84,8 +81,7 @@ public class PathTypeTest extends Assert {
 
         // test error checks using relative call
         final URL temp2 =
-                PathType.ABSOLUTE.resolvePath(
-                        TestData.url(this, ".").toExternalForm(), "rgb/global_mosaic_0.pg");
+                PathType.ABSOLUTE.resolvePath(TestData.url(this, ".").toExternalForm(), "rgb/global_mosaic_0.pg");
         assertNull(temp2);
         try {
             temp2.openStream().close();

@@ -146,8 +146,7 @@ public class DefaultRepository implements Repository {
             throw new IllegalArgumentException("lockID required");
         }
         if (transaction == null || transaction == Transaction.AUTO_COMMIT) {
-            throw new IllegalArgumentException(
-                    "Tansaction required (with authorization for " + lockID + ")");
+            throw new IllegalArgumentException("Tansaction required (with authorization for " + lockID + ")");
         }
         LockingManager lockManager;
 
@@ -183,8 +182,7 @@ public class DefaultRepository implements Repository {
             throw new IllegalArgumentException("lockID required");
         }
         if (transaction == null || transaction == Transaction.AUTO_COMMIT) {
-            throw new IllegalArgumentException(
-                    "Tansaction required (with authorization for " + lockID + ")");
+            throw new IllegalArgumentException("Tansaction required (with authorization for " + lockID + ")");
         }
 
         LockingManager lockManager;
@@ -233,8 +231,7 @@ public class DefaultRepository implements Repository {
     }
 
     /** Internal method parsing parameters from a string */
-    private static final Map<String, Serializable> definition(String definition)
-            throws ParseException {
+    private static final Map<String, Serializable> definition(String definition) throws ParseException {
         Map<String, Serializable> map = new HashMap<>();
 
         String[] params = definition.split(",");

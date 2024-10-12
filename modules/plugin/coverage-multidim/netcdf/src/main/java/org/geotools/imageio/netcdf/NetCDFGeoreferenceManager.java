@@ -141,8 +141,7 @@ class NetCDFGeoreferenceManager {
                     crs = NetCDFProjection.lookupForCustomEpsg(localCrs);
                 }
             }
-            ReferencedEnvelope boundingBox =
-                    new ReferencedEnvelope(xLon[0], xLon[1], yLat[0], yLat[1], crs);
+            ReferencedEnvelope boundingBox = new ReferencedEnvelope(xLon[0], xLon[1], yLat[0], yLat[1], crs);
             boundingBoxes.put(NetCDFGeoreferenceManager.DEFAULT, boundingBox);
         }
 
@@ -197,8 +196,7 @@ class NetCDFGeoreferenceManager {
             /**
              * Compute a {@link ReferencedEnvelope} instance, from the specified coordinate names
              */
-            public ReferencedEnvelope computeEnvelope(
-                    String coordinates, CoordinateReferenceSystem crs) {
+            public ReferencedEnvelope computeEnvelope(String coordinates, CoordinateReferenceSystem crs) {
                 Utilities.ensureNonNull("coordinates", coordinates);
                 String[] coords = coordinates.split(" ");
                 double[] xLon = null;
@@ -316,14 +314,12 @@ class NetCDFGeoreferenceManager {
             if (coordinates != null) {
                 return boundingBoxes.get(coordinates);
             }
-            throw new IllegalArgumentException(
-                    "Unable to find an envelope for the provided variable: " + shortName);
+            throw new IllegalArgumentException("Unable to find an envelope for the provided variable: " + shortName);
         }
 
         /** Look for a Coordinate Reference System */
         private CoordinateReferenceSystem lookForCrs(
-                CoordinateReferenceSystem crs, Attribute gridMappingAttribute, Variable var)
-                throws FactoryException {
+                CoordinateReferenceSystem crs, Attribute gridMappingAttribute, Variable var) throws FactoryException {
             if (gridMappingAttribute != null) {
                 String gridMappingName = gridMappingAttribute.getStringValue();
                 if (LOGGER.isLoggable(Level.FINE)) {
@@ -337,12 +333,11 @@ class NetCDFGeoreferenceManager {
                         crs = NetCDFProjection.lookupForCustomEpsg(localCrs);
                     }
                 } else if (LOGGER.isLoggable(Level.WARNING)) {
-                    LOGGER.warning(
-                            "The specified variable "
-                                    + var.getFullName()
-                                    + " declares a gridMapping = "
-                                    + gridMappingName
-                                    + " but that mapping doesn't exist.");
+                    LOGGER.warning("The specified variable "
+                            + var.getFullName()
+                            + " declares a gridMapping = "
+                            + gridMappingName
+                            + " but that mapping doesn't exist.");
                 }
             }
             return crs;
@@ -440,11 +435,10 @@ class NetCDFGeoreferenceManager {
                     }
                 } else {
                     if (LOGGER.isLoggable(Level.FINE)) {
-                        LOGGER.fine(
-                                "Null coordinate variable: '"
-                                        + key
-                                        + "' while processing input: "
-                                        + dataset.getLocation());
+                        LOGGER.fine("Null coordinate variable: '"
+                                + key
+                                + "' while processing input: "
+                                + dataset.getLocation());
                     }
                 }
             }
@@ -526,8 +520,7 @@ class NetCDFGeoreferenceManager {
         if (envelope != null) {
             return envelope.getCoordinateReferenceSystem();
         }
-        throw new IllegalArgumentException(
-                "Unable to find a CRS for the provided variable: " + shortName);
+        throw new IllegalArgumentException("Unable to find a CRS for the provided variable: " + shortName);
     }
 
     private String getCoordinatesForVariable(String shortName) {
@@ -602,19 +595,16 @@ class NetCDFGeoreferenceManager {
                     } else if ("time".equals(axisName)) {
                         if (LOGGER.isLoggable(Level.FINE)) {
                             LOGGER.fine(
-                                    "Detected unparseable unit string in time axis: '"
-                                            + axis.getUnitsString()
-                                            + "'.");
+                                    "Detected unparseable unit string in time axis: '" + axis.getUnitsString() + "'.");
                         }
                         axis.setAxisType(AxisType.Time);
                         coordinates.put(axisName, CoordinateVariable.create(axis));
                     } else if (!ignored.contains(axisName)) {
-                        LOGGER.warning(
-                                "Unsupported axis: "
-                                        + axis
-                                        + " in input: "
-                                        + dataset.getLocation()
-                                        + " has been found");
+                        LOGGER.warning("Unsupported axis: "
+                                + axis
+                                + " in input: "
+                                + dataset.getLocation()
+                                + " has been found");
                     }
                 }
             }

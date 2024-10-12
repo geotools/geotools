@@ -180,8 +180,7 @@ public class AbstractFactory implements Factory, RegistrableFactory {
      * #getImplementationHints}. Its content reflects the {@link #hints} map even if the later is
      * modified.
      */
-    private final Map<RenderingHints.Key, Object> unmodifiableHints =
-            Collections.unmodifiableMap(hints);
+    private final Map<RenderingHints.Key, Object> unmodifiableHints = Collections.unmodifiableMap(hints);
 
     /** Creates a new factory with the {@linkplain #NORMAL_PRIORITY default priority}. */
     protected AbstractFactory() {
@@ -286,17 +285,16 @@ public class AbstractFactory implements Factory, RegistrableFactory {
                 .filter(factory -> factory != this)
                 .filter(AbstractFactory.class::isInstance)
                 .map(factory -> (AbstractFactory) factory)
-                .forEach(
-                        factory -> {
-                            final int priority = getPriority();
-                            final int compare = factory.getPriority();
-                            if (priority > compare) {
-                                registry.setOrdering((Class) category, this, factory);
-                            } else if (priority < compare) {
-                                registry.setOrdering((Class) category, factory, this);
-                            }
-                            // no ordering if priority == compare
-                        });
+                .forEach(factory -> {
+                    final int priority = getPriority();
+                    final int compare = factory.getPriority();
+                    if (priority > compare) {
+                        registry.setOrdering((Class) category, this, factory);
+                    } else if (priority < compare) {
+                        registry.setOrdering((Class) category, factory, this);
+                    }
+                    // no ordering if priority == compare
+                });
     }
 
     /**
@@ -416,17 +414,11 @@ public class AbstractFactory implements Factory, RegistrableFactory {
 
     /** Formats recursively the tree. This method invoke itself. */
     private static void format(
-            final Writer table,
-            final Map<?, ?> hints,
-            final String indent,
-            final Map<Factory, String> done)
+            final Writer table, final Map<?, ?> hints, final String indent, final Map<Factory, String> done)
             throws IOException {
         for (final Map.Entry<?, ?> entry : hints.entrySet()) {
             final Object k = entry.getKey();
-            String key =
-                    (k instanceof RenderingHints.Key)
-                            ? Hints.nameOf((RenderingHints.Key) k)
-                            : String.valueOf(k);
+            String key = (k instanceof RenderingHints.Key) ? Hints.nameOf((RenderingHints.Key) k) : String.valueOf(k);
             Object value = entry.getValue();
             table.write(indent);
             table.write(key);

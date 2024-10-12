@@ -38,8 +38,7 @@ public class OSMTileFactory extends WebMercatorTileFactory {
     }
 
     @Override
-    public Tile findTileAtCoordinate(
-            double lon, double lat, ZoomLevel zoomLevel, TileService service) {
+    public Tile findTileAtCoordinate(double lon, double lat, ZoomLevel zoomLevel, TileService service) {
 
         return create(service.identifyTileAtCoordinate(lon, lat, zoomLevel), service);
     }

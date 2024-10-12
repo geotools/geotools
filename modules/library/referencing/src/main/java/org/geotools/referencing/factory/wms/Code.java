@@ -121,13 +121,10 @@ final class Code {
      * @param code The unknow authority code.
      * @return An exception initialized with an error message built from the specified informations.
      */
-    private static NoSuchAuthorityCodeException noSuchAuthorityCode(
-            final Class type, final String code) {
+    private static NoSuchAuthorityCodeException noSuchAuthorityCode(final Class type, final String code) {
         final String authority = "AUTO";
         return new NoSuchAuthorityCodeException(
-                MessageFormat.format(ErrorKeys.NO_SUCH_AUTHORITY_CODE_$3, code, authority, type),
-                authority,
-                code);
+                MessageFormat.format(ErrorKeys.NO_SUCH_AUTHORITY_CODE_$3, code, authority, type), authority, code);
     }
 
     /** Returns a string representation of this code. */

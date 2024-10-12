@@ -150,8 +150,7 @@ public class Filters {
      *
      * @return And
      */
-    public static Filter and(
-            org.geotools.api.filter.FilterFactory ff, Filter filter1, Filter filter2) {
+    public static Filter and(org.geotools.api.filter.FilterFactory ff, Filter filter1, Filter filter2) {
         ArrayList<Filter> list = new ArrayList<>(2);
         if (filter1 instanceof And) {
             And some = (And) filter1;
@@ -199,8 +198,7 @@ public class Filters {
      * Safe version of FilterFactory *or* that is willing to combine filter1 and filter2 correctly
      * in the even either of them is already an Or filter.
      */
-    public static Filter or(
-            org.geotools.api.filter.FilterFactory ff, Filter filter1, Filter filter2) {
+    public static Filter or(org.geotools.api.filter.FilterFactory ff, Filter filter1, Filter filter2) {
         ArrayList<Filter> list = new ArrayList<>();
         if (filter1 instanceof Or) {
             Or some = (Or) filter1;
@@ -253,8 +251,7 @@ public class Filters {
      * @see ExpressionType
      * @return ExpressionType constant.
      */
-    public static short getExpressionType(
-            org.geotools.api.filter.expression.Expression experssion) {
+    public static short getExpressionType(org.geotools.api.filter.expression.Expression experssion) {
         if (experssion == null) return 0;
         else if (experssion instanceof PropertyName) return ExpressionType.ATTRIBUTE;
         else if (experssion instanceof Function) return ExpressionType.FUNCTION;
@@ -404,8 +401,7 @@ public class Filters {
         if (value instanceof Expression) {
             throw new IllegalArgumentException("Cannot deal with un evaulated Expression");
         }
-        throw new IllegalArgumentException(
-                "Unable to evaulate " + value.getClass() + " in a numeric context");
+        throw new IllegalArgumentException("Unable to evaulate " + value.getClass() + " in a numeric context");
     }
 
     /**
@@ -608,54 +604,50 @@ public class Filters {
             return baseFilter; // nothing to traverse
         }
         if (recurse) {
-            DuplicatingFilterVisitor remove =
-                    new DuplicatingFilterVisitor() {
-                        @Override
-                        public Object visit(Or filter, Object extraData) {
-                            List<Filter> newChildren = children(filter, targetFilter, extraData);
-                            if (newChildren.isEmpty()) {
-                                // every time you remove a filter from an Or
-                                // expression you get less stuff, so removing the last is ...
-                                return Filter.EXCLUDE;
-                            } else if (newChildren.size() == 1) {
-                                return newChildren.get(0);
-                            } else {
-                                return getFactory(extraData).or(newChildren);
-                            }
-                        }
+            DuplicatingFilterVisitor remove = new DuplicatingFilterVisitor() {
+                @Override
+                public Object visit(Or filter, Object extraData) {
+                    List<Filter> newChildren = children(filter, targetFilter, extraData);
+                    if (newChildren.isEmpty()) {
+                        // every time you remove a filter from an Or
+                        // expression you get less stuff, so removing the last is ...
+                        return Filter.EXCLUDE;
+                    } else if (newChildren.size() == 1) {
+                        return newChildren.get(0);
+                    } else {
+                        return getFactory(extraData).or(newChildren);
+                    }
+                }
 
-                        @Override
-                        public Object visit(And filter, Object extraData) {
-                            List<Filter> newChildren = children(filter, targetFilter, extraData);
-                            if (newChildren.isEmpty()) {
-                                // every time you remove a filter from an And
-                                // filter you get more stuff, so removing the last is ...
-                                return Filter.INCLUDE;
-                            } else if (newChildren.size() == 1) {
-                                return newChildren.get(0);
-                            } else {
-                                return getFactory(extraData).and(newChildren);
-                            }
-                        }
+                @Override
+                public Object visit(And filter, Object extraData) {
+                    List<Filter> newChildren = children(filter, targetFilter, extraData);
+                    if (newChildren.isEmpty()) {
+                        // every time you remove a filter from an And
+                        // filter you get more stuff, so removing the last is ...
+                        return Filter.INCLUDE;
+                    } else if (newChildren.size() == 1) {
+                        return newChildren.get(0);
+                    } else {
+                        return getFactory(extraData).and(newChildren);
+                    }
+                }
 
-                        private List<Filter> children(
-                                BinaryLogicOperator filter,
-                                final Filter targetFilter,
-                                Object extraData) {
-                            List<Filter> children = filter.getChildren();
-                            List<Filter> newChildren = new ArrayList<>();
-                            for (Filter child : children) {
-                                if (targetFilter.equals(child)) {
-                                    continue; // skip this one
-                                }
-                                if (child != null) {
-                                    Filter newChild = (Filter) child.accept(this, extraData);
-                                    newChildren.add(newChild);
-                                }
-                            }
-                            return newChildren;
+                private List<Filter> children(BinaryLogicOperator filter, final Filter targetFilter, Object extraData) {
+                    List<Filter> children = filter.getChildren();
+                    List<Filter> newChildren = new ArrayList<>();
+                    for (Filter child : children) {
+                        if (targetFilter.equals(child)) {
+                            continue; // skip this one
                         }
-                    };
+                        if (child != null) {
+                            Filter newChild = (Filter) child.accept(this, extraData);
+                            newChildren.add(newChild);
+                        }
+                    }
+                    return newChildren;
+                }
+            };
             return (Filter) baseFilter.accept(remove, ff);
         } else {
             BinaryLogicOperator blo = (BinaryLogicOperator) baseFilter;
@@ -737,8 +729,7 @@ public class Filters {
      * <p>The feature type is supplied as contexts used to lookup expressions in cases where the
      * attributeName does not match the actual name of the type.
      */
-    public static Set<PropertyName> propertyNames(
-            Filter filter, final SimpleFeatureType featureType) {
+    public static Set<PropertyName> propertyNames(Filter filter, final SimpleFeatureType featureType) {
         if (filter == null) {
             return Collections.emptySet();
         }
@@ -759,8 +750,7 @@ public class Filters {
      * <p>The feature type is supplied as contexts used to lookup expressions in cases where the
      * attributeName does not match the actual name of the type.
      */
-    public static Set<PropertyName> propertyNames(
-            Expression expression, final SimpleFeatureType featureType) {
+    public static Set<PropertyName> propertyNames(Expression expression, final SimpleFeatureType featureType) {
         if (expression == null) {
             return Collections.emptySet();
         }
@@ -799,7 +789,8 @@ public class Filters {
                 }
                 return data;
             }
-        };
+        }
+        ;
         SearchFilterVisitor search = new SearchFilterVisitor();
         boolean found = (Boolean) filter.accept(search, false);
         return found;
@@ -948,8 +939,7 @@ public class Filters {
      * @param filterType - class of the filter to look for
      * @param propertyName - name of the property to look for
      */
-    public static <T extends Filter> T search(
-            Filter filter, Class<T> filterType, String propertyName) {
+    public static <T extends Filter> T search(Filter filter, Class<T> filterType, String propertyName) {
         List<Filter> allBase = children(filter);
         for (Filter base : allBase) {
             if (filterType.isInstance(base) && uses(base, propertyName)) {
@@ -976,7 +966,8 @@ public class Filters {
             public Object visit(PropertyName name, Object data) {
                 return name.getPropertyName();
             }
-        };
+        }
+        ;
         SearchFilterVisitor search = new SearchFilterVisitor();
         return (String) filter.accept(search, null);
     }
@@ -987,8 +978,7 @@ public class Filters {
      *
      * @return all filters that are of the given type using the specified property
      */
-    static <T extends Filter> List<T> findAllByTypeAndName(
-            Filter filter, Class<T> filterType, String property) {
+    static <T extends Filter> List<T> findAllByTypeAndName(Filter filter, Class<T> filterType, String property) {
         List<T> retVal = new ArrayList<>();
         List<Filter> allBase = children(filter);
         allBase.add(0, filter);

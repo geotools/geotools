@@ -59,8 +59,7 @@ public class ColorSpaceNameCollectorSPI implements CoverageNameCollectorSPI {
                         coverageName = RGB;
                         break;
                     default:
-                        throw new IllegalArgumentException(
-                                "The specified ColorSpace's type is not supported: " + type);
+                        throw new IllegalArgumentException("The specified ColorSpace's type is not supported: " + type);
                 }
             } catch (IOException e) {
                 throw new IllegalArgumentException(e);

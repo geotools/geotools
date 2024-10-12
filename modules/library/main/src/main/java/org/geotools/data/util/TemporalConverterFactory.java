@@ -124,13 +124,11 @@ public class TemporalConverterFactory implements ConverterFactory {
                     @Override
                     public <T> T convert(Object source, Class<T> target) throws Exception {
                         Date date = (Date) source;
-                        Calendar calendar =
-                                createConverter(Date.class, Calendar.class, null)
-                                        .convert(date, Calendar.class);
+                        Calendar calendar = createConverter(Date.class, Calendar.class, null)
+                                .convert(date, Calendar.class);
 
-                        return target.cast(
-                                createConverter(Calendar.class, XMLGregorianCalendar.class, null)
-                                        .convert(calendar, XMLGregorianCalendar.class));
+                        return target.cast(createConverter(Calendar.class, XMLGregorianCalendar.class, null)
+                                .convert(calendar, XMLGregorianCalendar.class));
                     }
                 };
             }
@@ -159,10 +157,7 @@ public class TemporalConverterFactory implements ConverterFactory {
                         Calendar calendar = (Calendar) source;
 
                         return target.cast(
-                                timeMillisToDate(
-                                        calendar.getTimeInMillis(),
-                                        target,
-                                        calendar.getTimeZone()));
+                                timeMillisToDate(calendar.getTimeInMillis(), target, calendar.getTimeZone()));
                     }
                 };
             }
@@ -172,8 +167,7 @@ public class TemporalConverterFactory implements ConverterFactory {
                     public <T> T convert(Object source, Class<T> target) throws Exception {
                         if (source instanceof GregorianCalendar) {
                             return target.cast(
-                                    DatatypeFactory.newInstance()
-                                            .newXMLGregorianCalendar((GregorianCalendar) source));
+                                    DatatypeFactory.newInstance().newXMLGregorianCalendar((GregorianCalendar) source));
                         }
 
                         return null;
@@ -196,13 +190,11 @@ public class TemporalConverterFactory implements ConverterFactory {
                 return new Converter() {
                     @Override
                     public <T> T convert(Object source, Class<T> target) throws Exception {
-                        Calendar calendar =
-                                createConverter(XMLGregorianCalendar.class, Calendar.class, null)
-                                        .convert(source, Calendar.class);
+                        Calendar calendar = createConverter(XMLGregorianCalendar.class, Calendar.class, null)
+                                .convert(source, Calendar.class);
                         if (calendar != null) {
-                            return target.cast(
-                                    createConverter(Calendar.class, target, null)
-                                            .convert(calendar, target));
+                            return target.cast(createConverter(Calendar.class, target, null)
+                                    .convert(calendar, target));
                         }
                         return null;
                     }

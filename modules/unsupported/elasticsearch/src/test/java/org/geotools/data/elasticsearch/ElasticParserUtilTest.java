@@ -152,8 +152,7 @@ public class ElasticParserUtilTest {
     public void testGeoPointAsStringArray() {
         final double lat = rand.nextDouble() * 90 - 90;
         final double lon = rand.nextDouble() * 180 - 180;
-        final Geometry geometry =
-                parserUtil.createGeometry(Arrays.asList(String.valueOf(lon), String.valueOf(lat)));
+        final Geometry geometry = parserUtil.createGeometry(Arrays.asList(String.valueOf(lon), String.valueOf(lat)));
         assertTrue(geometry.equals(geometryFactory.createPoint(new Coordinate(lon, lat))));
     }
 
@@ -430,12 +429,10 @@ public class ElasticParserUtilTest {
     public void testReadStringFromObjectArrayOnceRemoved() {
         properties.put("parent", new ArrayList<Map<String, Object>>());
         ((List) properties.get("parent")).add(new LinkedHashMap<String, Object>());
-        ((Map) ((List) properties.get("parent")).get(0))
-                .put("child", new LinkedHashMap<String, Object>());
+        ((Map) ((List) properties.get("parent")).get(0)).put("child", new LinkedHashMap<String, Object>());
         ((Map) ((Map) ((List) properties.get("parent")).get(0)).get("child")).put("attr", "value1");
         ((List) properties.get("parent")).add(new LinkedHashMap<String, Object>());
-        ((Map) ((List) properties.get("parent")).get(1))
-                .put("child", new LinkedHashMap<String, Object>());
+        ((Map) ((List) properties.get("parent")).get(1)).put("child", new LinkedHashMap<String, Object>());
         ((Map) ((Map) ((List) properties.get("parent")).get(1)).get("child")).put("attr", "value2");
         List<Object> values = parserUtil.readField(properties, "parent.child.attr");
         assertEquals(2, values.size());

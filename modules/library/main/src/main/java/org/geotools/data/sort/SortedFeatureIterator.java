@@ -49,10 +49,7 @@ public class SortedFeatureIterator implements SimpleFeatureIterator {
      */
     @SuppressWarnings("PMD.CloseResource") // kept as field
     public SortedFeatureIterator(
-            SimpleFeatureIterator iterator,
-            SimpleFeatureType schema,
-            SortBy[] sortBy,
-            int maxFeatures)
+            SimpleFeatureIterator iterator, SimpleFeatureType schema, SortBy[] sortBy, int maxFeatures)
             throws IOException {
         DelegateSimpleFeatureReader reader = new DelegateSimpleFeatureReader(schema, iterator);
         SimpleFeatureReader sorted = new SortedFeatureReader(reader, sortBy, maxFeatures);

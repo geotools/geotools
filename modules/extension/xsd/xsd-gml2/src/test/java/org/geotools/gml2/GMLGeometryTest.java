@@ -43,8 +43,7 @@ public class GMLGeometryTest {
 
     @Test
     public void test() throws Exception {
-        GeometryCollection gc =
-                (GeometryCollection) parser.parse(getClass().getResourceAsStream("geometry.xml"));
+        GeometryCollection gc = (GeometryCollection) parser.parse(getClass().getResourceAsStream("geometry.xml"));
 
         Assert.assertEquals(gc.getNumGeometries(), 3);
 

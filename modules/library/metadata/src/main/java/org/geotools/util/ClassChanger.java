@@ -44,9 +44,7 @@ public abstract class ClassChanger<S extends Comparable<S>, T extends Number> {
     /** Wrapper classes sorted by their wide. */
     @SuppressWarnings("unchecked")
     private static final Class<? extends Number>[] TYPES_BY_SIZE =
-            new Class[] {
-                Byte.class, Short.class, Integer.class, Long.class, Float.class, Double.class
-            };
+            new Class[] {Byte.class, Short.class, Integer.class, Long.class, Float.class, Double.class};
 
     /**
      * A list of class objects that can be converted to numbers. This list is initialized to a few
@@ -54,20 +52,19 @@ public abstract class ClassChanger<S extends Comparable<S>, T extends Number> {
      * objects can be added dynamically. This list must be <u>ordered</u>: subclasses must be listed
      * before parent classes.
      */
-    private static ClassChanger<?, ?>[] changers =
-            new ClassChanger[] {
-                new ClassChanger<Date, Long>(Date.class, Long.class) {
-                    @Override
-                    protected Long convert(final Date object) {
-                        return object.getTime();
-                    }
+    private static ClassChanger<?, ?>[] changers = new ClassChanger[] {
+        new ClassChanger<Date, Long>(Date.class, Long.class) {
+            @Override
+            protected Long convert(final Date object) {
+                return object.getTime();
+            }
 
-                    @Override
-                    protected Date inverseConvert(final Long value) {
-                        return new Date(value.longValue());
-                    }
-                }
-            };
+            @Override
+            protected Date inverseConvert(final Long value) {
+                return new Date(value.longValue());
+            }
+        }
+    };
 
     /** Parent class for {@link #convert}'s input objects. */
     private final Class<S> source;
@@ -141,8 +138,7 @@ public abstract class ClassChanger<S extends Comparable<S>, T extends Number> {
      *     same {@code source} class. This is usually not a concern since the registration usually
      *     take place during the class initialization ("static" constructor).
      */
-    public static synchronized void register(final ClassChanger<?, ?> converter)
-            throws IllegalStateException {
+    public static synchronized void register(final ClassChanger<?, ?> converter) throws IllegalStateException {
         int i;
         for (i = 0; i < changers.length; i++) {
             if (changers[i].source.isAssignableFrom(converter.source)) {
@@ -170,8 +166,8 @@ public abstract class ClassChanger<S extends Comparable<S>, T extends Number> {
      * @return The class changer for the specified class.
      * @throws ClassNotFoundException if {@code source} is not a registered class.
      */
-    private static synchronized <S extends Comparable<S>> ClassChanger<S, ?> getClassChanger(
-            final Class<S> source) throws ClassNotFoundException {
+    private static synchronized <S extends Comparable<S>> ClassChanger<S, ?> getClassChanger(final Class<S> source)
+            throws ClassNotFoundException {
         for (final ClassChanger<?, ?> candidate : changers) {
             if (candidate.source.isAssignableFrom(source)) {
                 @SuppressWarnings("unchecked")
@@ -292,8 +288,7 @@ public abstract class ClassChanger<S extends Comparable<S>, T extends Number> {
      * Short}, {@link Integer}, {@link Long}, {@link Float} or {@link Double}.
      */
     @SuppressWarnings("unchecked")
-    public static <N extends Number> N cast(final Number n, final Class<N> c)
-            throws IllegalArgumentException {
+    public static <N extends Number> N cast(final Number n, final Class<N> c) throws IllegalArgumentException {
         if (n == null || n.getClass().equals(c)) {
             return (N) n;
         }
@@ -313,8 +308,7 @@ public abstract class ClassChanger<S extends Comparable<S>, T extends Number> {
      */
     public static Class<? extends Number> getWidestClass(final Number n1, final Number n2)
             throws IllegalArgumentException {
-        return getWidestClass(
-                (n1 != null) ? n1.getClass() : null, (n2 != null) ? n2.getClass() : null);
+        return getWidestClass((n1 != null) ? n1.getClass() : null, (n2 != null) ? n2.getClass() : null);
     }
 
     /**
@@ -323,8 +317,7 @@ public abstract class ClassChanger<S extends Comparable<S>, T extends Number> {
      * types. At most one of the argument can be null.
      */
     public static Class<? extends Number> getWidestClass(
-            final Class<? extends Number> c1, final Class<? extends Number> c2)
-            throws IllegalArgumentException {
+            final Class<? extends Number> c1, final Class<? extends Number> c2) throws IllegalArgumentException {
         if (c1 == null) return c2;
         if (c2 == null) return c1;
         return TYPES_BY_SIZE[Math.max(getRank(c1), getRank(c2))];
@@ -336,8 +329,7 @@ public abstract class ClassChanger<S extends Comparable<S>, T extends Number> {
      * types. At most one of the argument can be null.
      */
     public static Class<? extends Number> getFinestClass(
-            final Class<? extends Number> c1, final Class<? extends Number> c2)
-            throws IllegalArgumentException {
+            final Class<? extends Number> c1, final Class<? extends Number> c2) throws IllegalArgumentException {
         if (c1 == null) return c2;
         if (c2 == null) return c1;
         return TYPES_BY_SIZE[Math.min(getRank(c1), getRank(c2))];

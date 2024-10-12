@@ -57,10 +57,8 @@ public class WFSContentDataAccessTest {
     private TestHttpClient createHttpClient() throws IOException {
         TestHttpClient mockHttp = new TestHttpClient();
         mockHttp.expectGet(
-                new URL(
-                        "https://wfs.geonorge.no/skwms1/wfs.stedsnavn?REQUEST=GetCapabilities&SERVICE=WFS"),
-                new MockHttpResponse(
-                        TestData.file(mockHttp, "KartverketNo/GetCapabilities.xml"), "text/xml"));
+                new URL("https://wfs.geonorge.no/skwms1/wfs.stedsnavn?REQUEST=GetCapabilities&SERVICE=WFS"),
+                new MockHttpResponse(TestData.file(mockHttp, "KartverketNo/GetCapabilities.xml"), "text/xml"));
         return mockHttp;
     }
 }

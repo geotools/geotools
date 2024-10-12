@@ -147,9 +147,6 @@ public class FeatureTypeAttributePointer extends NodePointer {
     @Override
     public NodeIterator attributeIterator(QName qname) {
         return new DescriptorXmlAttributeNodeIterator(
-                this,
-                Types.typeName(
-                        getNamespaceResolver().getNamespaceURI(qname.getPrefix()),
-                        qname.getName()));
+                this, Types.typeName(getNamespaceResolver().getNamespaceURI(qname.getPrefix()), qname.getName()));
     }
 }

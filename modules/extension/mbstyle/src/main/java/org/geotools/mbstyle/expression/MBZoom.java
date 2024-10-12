@@ -36,9 +36,7 @@ public class MBZoom extends MBExpression {
      */
     private Expression mbZoom() {
         return ff.function(
-                "zoomLevel",
-                ff.function("env", ff.literal("wms_scale_denominator")),
-                ff.literal("EPSG:3857"));
+                "zoomLevel", ff.function("env", ff.literal("wms_scale_denominator")), ff.literal("EPSG:3857"));
     }
 
     @Override

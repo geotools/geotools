@@ -25,34 +25,25 @@ public class XmlXpathUtilitesTest {
 
     @Test
     public void testGetXPathValuesWithJavaMethod() {
-        RuntimeException exception =
-                assertThrows(
-                        RuntimeException.class,
-                        () ->
-                                XmlXpathUtilites.getXPathValues(
-                                        null, "java.lang.Thread.sleep(30000)", null));
+        RuntimeException exception = assertThrows(
+                RuntimeException.class,
+                () -> XmlXpathUtilites.getXPathValues(null, "java.lang.Thread.sleep(30000)", null));
         assertEquals("Error reading xpath java.lang.Thread.sleep(30000)", exception.getMessage());
     }
 
     @Test
     public void testCountXPathNodesWithJavaMethod() {
-        RuntimeException exception =
-                assertThrows(
-                        RuntimeException.class,
-                        () ->
-                                XmlXpathUtilites.countXPathNodes(
-                                        null, "java.lang.Thread.sleep(30000)", null));
+        RuntimeException exception = assertThrows(
+                RuntimeException.class,
+                () -> XmlXpathUtilites.countXPathNodes(null, "java.lang.Thread.sleep(30000)", null));
         assertEquals("Error reading xpath java.lang.Thread.sleep(30000)", exception.getMessage());
     }
 
     @Test
     public void testGetSingleXPathValueWithJavaMethod() {
-        RuntimeException exception =
-                assertThrows(
-                        RuntimeException.class,
-                        () ->
-                                XmlXpathUtilites.getSingleXPathValue(
-                                        null, "java.lang.Thread.sleep(30000)", null));
+        RuntimeException exception = assertThrows(
+                RuntimeException.class,
+                () -> XmlXpathUtilites.getSingleXPathValue(null, "java.lang.Thread.sleep(30000)", null));
         assertEquals("Error reading xpath java.lang.Thread.sleep(30000)", exception.getMessage());
     }
 }

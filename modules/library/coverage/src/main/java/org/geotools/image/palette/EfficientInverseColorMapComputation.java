@@ -58,18 +58,9 @@ public final class EfficientInverseColorMapComputation {
         redQuantizationMask = (greenQuantizationMask << bits);
         final int maximumQuantizationValue = 1 << bits;
         final int numberOfColors = colorMap[0].length;
-        mapBuf =
-                new byte
-                        [maximumQuantizationValue
-                                * maximumQuantizationValue
-                                * maximumQuantizationValue];
-        if (mapBuf.length <= 0)
-            throw new IllegalArgumentException("Illegal number of quantization colors");
-        final int[] distBuf =
-                new int
-                        [maximumQuantizationValue
-                                * maximumQuantizationValue
-                                * maximumQuantizationValue];
+        mapBuf = new byte[maximumQuantizationValue * maximumQuantizationValue * maximumQuantizationValue];
+        if (mapBuf.length <= 0) throw new IllegalArgumentException("Illegal number of quantization colors");
+        final int[] distBuf = new int[maximumQuantizationValue * maximumQuantizationValue * maximumQuantizationValue];
 
         final int x = (1 << truncationBits);
         final int xsqr = x * x;
@@ -115,17 +106,11 @@ public final class EfficientInverseColorMapComputation {
             // Going to check for all the quantized space
             //
             // //
-            for (int r = 0, rxx = rinc, rgbI = 0;
-                    r < maximumQuantizationValue;
-                    rdist += rxx, ++r, rxx += txsqr) {
+            for (int r = 0, rxx = rinc, rgbI = 0; r < maximumQuantizationValue; rdist += rxx, ++r, rxx += txsqr) {
                 gdist = rdist;
-                for (int g = 0, gxx = ginc;
-                        g < maximumQuantizationValue;
-                        gdist += gxx, ++g, gxx += txsqr) {
+                for (int g = 0, gxx = ginc; g < maximumQuantizationValue; gdist += gxx, ++g, gxx += txsqr) {
                     bdist = gdist;
-                    for (int b = 0, bxx = binc;
-                            b < maximumQuantizationValue;
-                            bdist += bxx, ++b, ++rgbI, bxx += txsqr) {
+                    for (int b = 0, bxx = binc; b < maximumQuantizationValue; bdist += bxx, ++b, ++rgbI, bxx += txsqr) {
                         if (i == 0 || distBuf[rgbI] > bdist) {
                             distBuf[rgbI] = bdist;
                             mapBuf[rgbI] = (byte) i;

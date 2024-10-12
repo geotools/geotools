@@ -55,8 +55,7 @@ public class PreventLocalEntityResolver implements EntityResolver2, Serializable
     // http(s) - external schema reference
     // jar - internal schema reference
     // vfs - internal schema reference (JBoss/WildFly)
-    private static final Pattern ALLOWED_URIS =
-            Pattern.compile("(?i)(jar:file|http|vfs)[^?#;]*\\.xsd");
+    private static final Pattern ALLOWED_URIS = Pattern.compile("(?i)(jar:file|http|vfs)[^?#;]*\\.xsd");
 
     /** Singleton instance of PreventLocalEntityResolver */
     public static final PreventLocalEntityResolver INSTANCE = new PreventLocalEntityResolver();
@@ -66,14 +65,12 @@ public class PreventLocalEntityResolver implements EntityResolver2, Serializable
     }
 
     @Override
-    public InputSource resolveEntity(String publicId, String systemId)
-            throws SAXException, IOException {
+    public InputSource resolveEntity(String publicId, String systemId) throws SAXException, IOException {
         return resolveEntity(null, publicId, null, systemId);
     }
 
     @Override
-    public InputSource getExternalSubset(String name, String baseURI)
-            throws SAXException, IOException {
+    public InputSource getExternalSubset(String name, String baseURI) throws SAXException, IOException {
         return null;
     }
 
@@ -88,10 +85,9 @@ public class PreventLocalEntityResolver implements EntityResolver2, Serializable
     public InputSource resolveEntity(String name, String publicId, String baseURI, String systemId)
             throws SAXException, IOException {
         if (LOGGER.isLoggable(Level.FINEST)) {
-            LOGGER.finest(
-                    String.format(
-                            "resolveEntity request: name=%s, publicId=%s, baseURI=%s, systemId=%s",
-                            name, publicId, baseURI, systemId));
+            LOGGER.finest(String.format(
+                    "resolveEntity request: name=%s, publicId=%s, baseURI=%s, systemId=%s",
+                    name, publicId, baseURI, systemId));
         }
 
         try {

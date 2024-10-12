@@ -55,20 +55,18 @@ public class InPlaceCoordinateSequenceTransformer implements CoordinateSequenceT
      *     org.geotools.api.referencing.operation.MathTransform)
      */
     @Override
-    public CoordinateSequence transform(CoordinateSequence cs, MathTransform transform)
-            throws TransformException {
+    public CoordinateSequence transform(CoordinateSequence cs, MathTransform transform) throws TransformException {
         if (cs instanceof PackedCoordinateSequence) {
             return transformInternal((PackedCoordinateSequence) cs, transform);
         }
         throw new TransformException(
-                cs.getClass().getName()
-                        + " is not a implementation that is known to be transformable in place");
+                cs.getClass().getName() + " is not a implementation that is known to be transformable in place");
     }
 
     FlyWeightDirectPosition start = new FlyWeightDirectPosition(2);
 
-    private CoordinateSequence transformInternal(
-            PackedCoordinateSequence sequence, MathTransform transform) throws TransformException {
+    private CoordinateSequence transformInternal(PackedCoordinateSequence sequence, MathTransform transform)
+            throws TransformException {
 
         start.setSequence(sequence);
         for (int i = 0; i < sequence.size(); i++) {
@@ -112,9 +110,7 @@ public class InPlaceCoordinateSequenceTransformer implements CoordinateSequenceT
         @Override
         public double[] getCoordinate() {
             return new double[] {
-                sequence.getX(offset),
-                sequence.getY(offset),
-                sequence.getOrdinate(offset, CoordinateSequence.Z)
+                sequence.getX(offset), sequence.getY(offset), sequence.getOrdinate(offset, CoordinateSequence.Z)
             };
         }
 

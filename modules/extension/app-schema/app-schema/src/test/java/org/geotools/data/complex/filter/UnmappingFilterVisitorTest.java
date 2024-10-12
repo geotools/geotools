@@ -128,9 +128,7 @@ public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
     public static void oneTimeSetUp() throws IOException {
         final String schemaBase = "/test-data/";
         final Map<String, Serializable> dsParams = new HashMap<>();
-        final URL url =
-                UnmappingFilterVisitorTest.class.getResource(
-                        schemaBase + "BoreholeTest_properties.xml");
+        final URL url = UnmappingFilterVisitorTest.class.getResource(schemaBase + "BoreholeTest_properties.xml");
         dsParams.put("dbtype", "app-schema");
         dsParams.put("url", url.toExternalForm());
 
@@ -150,7 +148,8 @@ public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
 
         AttributeType areaOfInfluence =
                 builder.name("areaOfInfluence").bind(Polygon.class).attribute();
-        AttributeType concatType = builder.name("concatenated").bind(String.class).attribute();
+        AttributeType concatType =
+                builder.name("concatenated").bind(String.class).attribute();
 
         builder.setName("target");
         builder.addAttribute("areaOfInfluence", areaOfInfluence);
@@ -158,8 +157,7 @@ public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
 
         FeatureType targetType = builder.feature();
         AttributeDescriptor targetFeature =
-                tf.createAttributeDescriptor(
-                        targetType, targetType.getName(), 0, Integer.MAX_VALUE, true, null);
+                tf.createAttributeDescriptor(targetType, targetType.getName(), 0, Integer.MAX_VALUE, true, null);
 
         // create the mapping definition
         List attMappings = new LinkedList();
@@ -168,20 +166,14 @@ public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
 
         Function aoiExpr = ff.function("buffer", ff.property("location"), ff.literal(10));
 
-        attMappings.add(
-                new AttributeMapping(
-                        null, aoiExpr, XPath.steps(targetFeature, "areaOfInfluence", namespaces)));
+        attMappings.add(new AttributeMapping(null, aoiExpr, XPath.steps(targetFeature, "areaOfInfluence", namespaces)));
 
-        Function strConcat =
-                ff.function("strConcat", ff.property("anzlic_no"), ff.property("project_no"));
+        Function strConcat = ff.function("strConcat", ff.property("anzlic_no"), ff.property("project_no"));
 
-        attMappings.add(
-                new AttributeMapping(
-                        null, strConcat, XPath.steps(targetFeature, "concatenated", namespaces)));
+        attMappings.add(new AttributeMapping(null, strConcat, XPath.steps(targetFeature, "concatenated", namespaces)));
 
         FeatureSource<?, ?> simpleSource = mapping.getSource();
-        FeatureTypeMapping mapping =
-                new FeatureTypeMapping(simpleSource, targetFeature, attMappings, namespaces);
+        FeatureTypeMapping mapping = new FeatureTypeMapping(simpleSource, targetFeature, attMappings, namespaces);
         return mapping;
     }
 
@@ -260,9 +252,8 @@ public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
      */
     @Test
     public void testUnrollGetidToGetid() throws Exception {
-        checkUnrollIdExpression(
-                CommonFactoryFinder.getFilterFactory(null)
-                        .function("getID", new org.geotools.api.filter.expression.Expression[0]));
+        checkUnrollIdExpression(CommonFactoryFinder.getFilterFactory(null)
+                .function("getID", new org.geotools.api.filter.expression.Expression[0]));
     }
 
     /** Implementation for tests of fid -> fid unmapping. */
@@ -432,11 +423,7 @@ public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
     @Test
     public void testBetweenFilter() throws Exception {
         PropertyIsBetween bf =
-                ff.between(
-                        ff.property("measurement/result"),
-                        ff.literal(1),
-                        ff.literal(2),
-                        MatchAction.ALL);
+                ff.between(ff.property("measurement/result"), ff.literal(1), ff.literal(2), MatchAction.ALL);
 
         PropertyIsBetween unrolled = (PropertyIsBetween) bf.accept(visitor, null);
         assertEquals(MatchAction.ALL, unrolled.getMatchAction());
@@ -504,8 +491,7 @@ public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
         namespaces.declarePrefix("xmml", XMMLNS);
 
         FilterFactory ff = new FilterFactoryImplNamespaceAware(namespaces);
-        PropertyIsEqualTo complexFilter =
-                ff.equals(ff.property("gml:name"), ff.literal("SWADLINCOTE"));
+        PropertyIsEqualTo complexFilter = ff.equals(ff.property("gml:name"), ff.literal("SWADLINCOTE"));
 
         visitor = new UnmappingFilterVisitor(mapping);
 
@@ -585,11 +571,10 @@ public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
 
     @Test
     public void testFunction() throws Exception {
-        Function fe =
-                ff.function(
-                        "strIndexOf",
-                        ff.property("/measurement/determinand_description"),
-                        ff.literal("determinand_description_1"));
+        Function fe = ff.function(
+                "strIndexOf",
+                ff.property("/measurement/determinand_description"),
+                ff.literal("determinand_description_1"));
 
         List unrolledExpressions = (List) fe.accept(visitor, null);
 
@@ -608,8 +593,7 @@ public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
         targetDescriptor = mapping.getTargetFeature();
         targetType = (FeatureType) targetDescriptor.getType();
 
-        Expression literalGeom =
-                ff.literal(new GeometryFactory().createPoint(new Coordinate(1, 1)));
+        Expression literalGeom = ff.literal(new GeometryFactory().createPoint(new Coordinate(1, 1)));
 
         Intersects gf = ff.intersects(ff.property("areaOfInfluence"), literalGeom, MatchAction.ALL);
 
@@ -637,15 +621,14 @@ public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
         final String wildcard = "%";
         final String single = "?";
         final String escape = "\\";
-        PropertyIsLike like =
-                ff.like(
-                        ff.property("/measurement/determinand_description"),
-                        "%n_1_1",
-                        wildcard,
-                        single,
-                        escape,
-                        true,
-                        MatchAction.ONE);
+        PropertyIsLike like = ff.like(
+                ff.property("/measurement/determinand_description"),
+                "%n_1_1",
+                wildcard,
+                single,
+                escape,
+                true,
+                MatchAction.ONE);
 
         PropertyIsLike unmapped = (PropertyIsLike) like.accept(visitor, null);
         assertEquals(like.getLiteral(), unmapped.getLiteral());
@@ -679,11 +662,10 @@ public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
         PropertyIsGreaterThan resultFilter =
                 ff.greater(ff.property("measurement/result"), ff.literal(Integer.valueOf(5)));
 
-        PropertyIsBetween determFilter =
-                ff.between(
-                        ff.property("measurement/determinand_description"),
-                        ff.literal("determinand_description_1_1"),
-                        ff.literal("determinand_description_3_3"));
+        PropertyIsBetween determFilter = ff.between(
+                ff.property("measurement/determinand_description"),
+                ff.literal("determinand_description_1_1"),
+                ff.literal("determinand_description_3_3"));
 
         if (And.class.equals(filterType)) {
             complexLogicFilter = ff.and(resultFilter, determFilter);
@@ -706,21 +688,13 @@ public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
         PropertyIsGreaterThan unmappedResult = (PropertyIsGreaterThan) children.get(0);
         PropertyIsBetween unmappedDeterm = (PropertyIsBetween) children.get(1);
 
-        assertEquals(
-                "results_value",
-                ((PropertyName) unmappedResult.getExpression1()).getPropertyName());
+        assertEquals("results_value", ((PropertyName) unmappedResult.getExpression1()).getPropertyName());
 
         assertEquals(Integer.valueOf(5), ((Literal) unmappedResult.getExpression2()).getValue());
 
-        assertEquals(
-                "determinand_description",
-                ((PropertyName) unmappedDeterm.getExpression()).getPropertyName());
-        assertEquals(
-                "determinand_description_1_1",
-                ((Literal) unmappedDeterm.getLowerBoundary()).getValue());
-        assertEquals(
-                "determinand_description_3_3",
-                ((Literal) unmappedDeterm.getUpperBoundary()).getValue());
+        assertEquals("determinand_description", ((PropertyName) unmappedDeterm.getExpression()).getPropertyName());
+        assertEquals("determinand_description_1_1", ((Literal) unmappedDeterm.getLowerBoundary()).getValue());
+        assertEquals("determinand_description_3_3", ((Literal) unmappedDeterm.getUpperBoundary()).getValue());
     }
 
     @Test

@@ -35,8 +35,7 @@ import org.xml.sax.SAXNotSupportedException;
  */
 public abstract class XSIElementHandler implements Serializable {
     /** the logger -- should be used for debugging (assuming there are bugs LOL) */
-    public static final Logger logger =
-            org.geotools.util.logging.Logging.getLogger(XSIElementHandler.class);
+    public static final Logger logger = org.geotools.util.logging.Logging.getLogger(XSIElementHandler.class);
 
     private static Level level = Level.WARNING;
 
@@ -91,8 +90,7 @@ public abstract class XSIElementHandler implements Serializable {
     public abstract void endElement(String namespaceURI, String localName) throws SAXException;
 
     /** handles SAX start Element events. This is an opportunity to complete some pre-processing. */
-    public abstract void startElement(String namespaceURI, String localName, Attributes attr)
-            throws SAXException;
+    public abstract void startElement(String namespaceURI, String localName, Attributes attr) throws SAXException;
 
     /**
      * This method will be used to create the XSI document. Validation and in-fix processing is
@@ -101,8 +99,7 @@ public abstract class XSIElementHandler implements Serializable {
      *
      * @return XSIElementHandler, or null
      */
-    public abstract XSIElementHandler getHandler(String namespaceURI, String localName)
-            throws SAXException;
+    public abstract XSIElementHandler getHandler(String namespaceURI, String localName) throws SAXException;
 
     /**
      * Returns the LocalName for this element (ie this declaration in the Schema ... so ComplexType

@@ -69,16 +69,12 @@ class ElasticFeatureTypeBuilder extends SimpleFeatureTypeBuilder {
                                 attributeBuilder.setCRS(CRS.decode("EPSG:" + srid));
                                 attributeBuilder.setName(attributeName);
                                 attributeBuilder.setBinding(attribute.getType());
-                                att =
-                                        attributeBuilder.buildDescriptor(
-                                                attributeName,
-                                                attributeBuilder.buildGeometryType());
+                                att = attributeBuilder.buildDescriptor(
+                                        attributeName, attributeBuilder.buildGeometryType());
 
-                                final ElasticAttribute.ElasticGeometryType geometryType =
-                                        attribute.getGeometryType();
+                                final ElasticAttribute.ElasticGeometryType geometryType = attribute.getGeometryType();
                                 att.getUserData().put(GEOMETRY_TYPE, geometryType);
-                                if (attribute.isDefaultGeometry() != null
-                                        && attribute.isDefaultGeometry()) {
+                                if (attribute.isDefaultGeometry() != null && attribute.isDefaultGeometry()) {
                                     defaultGeometryName = attributeName;
                                 }
                             }
@@ -89,13 +85,9 @@ class ElasticFeatureTypeBuilder extends SimpleFeatureTypeBuilder {
                     } else {
                         attributeBuilder.setName(attributeName);
                         attributeBuilder.setBinding(attribute.getType());
-                        att =
-                                attributeBuilder.buildDescriptor(
-                                        attributeName, attributeBuilder.buildType());
+                        att = attributeBuilder.buildDescriptor(attributeName, attributeBuilder.buildType());
                     }
-                    if (att != null
-                            && (attribute.getValidDateFormats() != null
-                                    || attribute.getDateFormat() != null)) {
+                    if (att != null && (attribute.getValidDateFormats() != null || attribute.getDateFormat() != null)) {
                         if (attribute.getValidDateFormats() == null) {
                             List<String> validFormats = new ArrayList<>();
                             validFormats.add(attribute.getDateFormat());

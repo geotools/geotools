@@ -75,11 +75,7 @@ public class TableHeader implements VPFHeader, DataTypesDefinition {
      * @param columnDefs a <code>List</code> value of all column definitions for this table.
      */
     public TableHeader(
-            int length,
-            char byteOrder,
-            String description,
-            String narrativeTable,
-            List<TableColumnDef> columnDefs) {
+            int length, char byteOrder, String description, String narrativeTable, List<TableColumnDef> columnDefs) {
         this.headerLength = length;
         this.byteOrder = byteOrder;
         this.description = description;

@@ -79,8 +79,7 @@ public class OGCOrBinding extends AbstractComplexBinding {
      */
     @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-        List<Filter> operands =
-                FilterParsingUtils.BinaryLogicOperator_getChildFilters(node, filterfactory);
+        List<Filter> operands = FilterParsingUtils.BinaryLogicOperator_getChildFilters(node, filterfactory);
         return filterfactory.or(operands);
     }
 }

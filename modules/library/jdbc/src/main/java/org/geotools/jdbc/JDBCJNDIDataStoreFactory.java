@@ -39,12 +39,7 @@ public abstract class JDBCJNDIDataStoreFactory extends JDBCDataStoreFactory {
     public static final String J2EERootContext = "java:comp/env/";
     /** JNDI data source name */
     public static final Param JNDI_REFNAME =
-            new Param(
-                    "jndiReferenceName",
-                    String.class,
-                    "JNDI data source",
-                    true,
-                    J2EERootContext + "jdbc/mydatabase");
+            new Param("jndiReferenceName", String.class, "JNDI data source", true, J2EERootContext + "jdbc/mydatabase");
 
     /** regular datastore factory to delegate to. */
     protected JDBCDataStoreFactory delegate;
@@ -82,8 +77,7 @@ public abstract class JDBCJNDIDataStoreFactory extends JDBCDataStoreFactory {
 
     /** Override to create the datasource from the external JNDI conection. */
     @Override
-    protected DataSource createDataSource(Map<String, ?> params, SQLDialect dialect)
-            throws IOException {
+    protected DataSource createDataSource(Map<String, ?> params, SQLDialect dialect) throws IOException {
         String jndiName = (String) JNDI_REFNAME.lookUp(params);
         if (jndiName == null) throw new IOException("Missing " + JNDI_REFNAME.description);
 
@@ -132,13 +126,7 @@ public abstract class JDBCJNDIDataStoreFactory extends JDBCDataStoreFactory {
     @Override
     protected void setupParameters(Map<String, Object> parameters) {
         parameters.put(
-                DBTYPE.key,
-                new Param(
-                        DBTYPE.key,
-                        DBTYPE.type,
-                        DBTYPE.description,
-                        DBTYPE.required,
-                        getDatabaseID()));
+                DBTYPE.key, new Param(DBTYPE.key, DBTYPE.type, DBTYPE.description, DBTYPE.required, getDatabaseID()));
         parameters.put(JNDI_REFNAME.key, JNDI_REFNAME);
         parameters.put(SCHEMA.key, SCHEMA);
         parameters.put(NAMESPACE.key, NAMESPACE);
@@ -167,8 +155,7 @@ public abstract class JDBCJNDIDataStoreFactory extends JDBCDataStoreFactory {
     }
 
     @Override
-    protected JDBCDataStore createDataStoreInternal(JDBCDataStore dataStore, Map<String, ?> params)
-            throws IOException {
+    protected JDBCDataStore createDataStoreInternal(JDBCDataStore dataStore, Map<String, ?> params) throws IOException {
         return delegate.createDataStoreInternal(dataStore, params);
     }
 

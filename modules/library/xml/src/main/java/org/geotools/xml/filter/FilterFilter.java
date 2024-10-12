@@ -46,8 +46,7 @@ import org.xml.sax.helpers.XMLFilterImpl;
  */
 public class FilterFilter extends XMLFilterImpl implements GMLHandlerJTS {
     /** The logger for the filter module. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(FilterFilter.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(FilterFilter.class);
 
     /** For handling and creating logic filters that come in. */
     private LogicSAXParser logicFactory;
@@ -108,8 +107,7 @@ public class FilterFilter extends XMLFilterImpl implements GMLHandlerJTS {
      * @param parent The parent of this filter, to recieve the filters created.
      * @param schema The schema that the filter will be used against.
      */
-    public FilterFilter(
-            FilterHandler parent, SimpleFeatureType schema, boolean convertLiteralToNumber) {
+    public FilterFilter(FilterHandler parent, SimpleFeatureType schema, boolean convertLiteralToNumber) {
         this(parent, schema);
         this.convertLiteralToNumber = convertLiteralToNumber;
     }
@@ -124,8 +122,7 @@ public class FilterFilter extends XMLFilterImpl implements GMLHandlerJTS {
      * @throws SAXException Some parsing error occured while reading filter.
      */
     @Override
-    public void startElement(String namespaceURI, String localName, String qName, Attributes atts)
-            throws SAXException {
+    public void startElement(String namespaceURI, String localName, String qName, Attributes atts) throws SAXException {
         LOGGER.finer("found start element: " + localName);
 
         characters.setLength(0);
@@ -156,10 +153,9 @@ public class FilterFilter extends XMLFilterImpl implements GMLHandlerJTS {
                             || (localName.equals("LowerBoundary"))
                             || (localName.equals("Distance")))) {
                 if (!(localName.endsWith("Member"))) // from CITE tests
-                throw new SAXException(
-                            "Attempted to construct illegal filter - I dont understand the tag: "
-                                    + qName
-                                    + ".  HINT: tags are case-sensitive!");
+                throw new SAXException("Attempted to construct illegal filter - I dont understand the tag: "
+                        + qName
+                        + ".  HINT: tags are case-sensitive!");
             }
 
             try {
@@ -222,8 +218,7 @@ public class FilterFilter extends XMLFilterImpl implements GMLHandlerJTS {
                     }
                 }
             } catch (IllegalFilterException ife) {
-                throw new SAXException(
-                        "Attempted to construct illegal " + "filter: " + ife.getMessage(), ife);
+                throw new SAXException("Attempted to construct illegal " + "filter: " + ife.getMessage(), ife);
             }
         } else {
             parent.startElement(namespaceURI, localName, qName, atts);
@@ -297,8 +292,7 @@ public class FilterFilter extends XMLFilterImpl implements GMLHandlerJTS {
      * @throws SAXException Parsing error occurred while reading coordinates.
      */
     @Override
-    public void endElement(String namespaceURI, String localName, String qName)
-            throws SAXException {
+    public void endElement(String namespaceURI, String localName, String qName) throws SAXException {
         LOGGER.finer("found end element: " + localName);
 
         processCharacters();
@@ -317,8 +311,7 @@ public class FilterFilter extends XMLFilterImpl implements GMLHandlerJTS {
                         addFilterToParent();
                     }
                 } catch (IllegalFilterException e) {
-                    throw new SAXException(
-                            "Attempted to construct illegal filter: " + e.getMessage());
+                    throw new SAXException("Attempted to construct illegal filter: " + e.getMessage());
                 }
             }
 
@@ -375,8 +368,7 @@ public class FilterFilter extends XMLFilterImpl implements GMLHandlerJTS {
                     insideDistance = false;
                 }
             } catch (IllegalFilterException e) {
-                throw new SAXException(
-                        "Attempted to construct illegal filter: " + e.getMessage(), e);
+                throw new SAXException("Attempted to construct illegal filter: " + e.getMessage(), e);
             }
         } else {
             parent.endElement(namespaceURI, localName, qName);

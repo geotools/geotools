@@ -181,8 +181,7 @@ public class DefaultTemporalCRS extends AbstractSingleCRS implements TemporalCRS
      * @param cs The coordinate system.
      * @param datum The datum.
      */
-    public DefaultTemporalCRS(
-            final Map<String, ?> properties, final TemporalDatum datum, final TimeCS cs) {
+    public DefaultTemporalCRS(final Map<String, ?> properties, final TemporalDatum datum, final TimeCS cs) {
         super(properties, datum, cs);
     }
 

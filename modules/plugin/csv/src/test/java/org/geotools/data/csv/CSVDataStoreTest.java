@@ -82,8 +82,7 @@ public class CSVDataStoreTest {
 
     @Test
     public void testFeatureReader() throws IOException {
-        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                csvDataStore.getFeatureReader(); ) {
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader = csvDataStore.getFeatureReader(); ) {
 
             assertNotNull(reader);
             int count = 0;
@@ -106,8 +105,7 @@ public class CSVDataStoreTest {
         ReferencedEnvelope env = source.getBounds();
         assertNotNull(env);
         ReferencedEnvelope expected =
-                new ReferencedEnvelope(
-                        -123.365556, 151.211111, -33.925278, 48.428611, DefaultGeographicCRS.WGS84);
+                new ReferencedEnvelope(-123.365556, 151.211111, -33.925278, 48.428611, DefaultGeographicCRS.WGS84);
         assertTrue(env.boundsEquals2D(expected, 0.0001));
     }
 
@@ -122,8 +120,7 @@ public class CSVDataStoreTest {
         boolean created = tmp.mkdirs();
         assertTrue(created);
         File blankLinefile = new File(tmp, "locations.csv");
-        Files.copy(
-                resource.openStream(), blankLinefile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(resource.openStream(), blankLinefile.toPath(), StandardCopyOption.REPLACE_EXISTING);
         try (FileWriter writer = new FileWriter(blankLinefile, true)) {
             writer.append("\n");
         }
@@ -139,8 +136,7 @@ public class CSVDataStoreTest {
 
     @Test
     public void testReadFeatures() throws IOException {
-        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                csvDataStore.getFeatureReader()) {
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader = csvDataStore.getFeatureReader()) {
             List<Coordinate> geometries = new ArrayList<>();
             List<String> cities = new ArrayList<>();
             List<String> numbers = new ArrayList<>();
@@ -153,36 +149,32 @@ public class CSVDataStoreTest {
                 numbers.add(feature.getAttribute("NUMBER").toString());
             }
 
-            List<Coordinate> expectedCoordinates =
-                    makeExpectedCoordinates(
-                            46.066667,
-                            11.116667,
-                            44.9441,
-                            -93.0852,
-                            13.752222,
-                            100.493889,
-                            45.420833,
-                            -75.69,
-                            44.9801,
-                            -93.251867,
-                            46.519833,
-                            6.6335,
-                            48.428611,
-                            -123.365556,
-                            -33.925278,
-                            18.423889,
-                            -33.859972,
-                            151.211111);
+            List<Coordinate> expectedCoordinates = makeExpectedCoordinates(
+                    46.066667,
+                    11.116667,
+                    44.9441,
+                    -93.0852,
+                    13.752222,
+                    100.493889,
+                    45.420833,
+                    -75.69,
+                    44.9801,
+                    -93.251867,
+                    46.519833,
+                    6.6335,
+                    48.428611,
+                    -123.365556,
+                    -33.925278,
+                    18.423889,
+                    -33.859972,
+                    151.211111);
             assertEquals("Unexpected coordinates", expectedCoordinates, geometries);
 
-            List<String> expectedCities =
-                    Arrays.asList(
-                            "Trento, St Paul, Bangkok, Ottawa, Minneapolis, Lausanne, Victoria, Cape Town, Sydney"
-                                    .split(", "));
+            List<String> expectedCities = Arrays.asList(
+                    "Trento, St Paul, Bangkok, Ottawa, Minneapolis, Lausanne, Victoria, Cape Town, Sydney".split(", "));
             assertEquals("Unexecpted cities", expectedCities, cities);
 
-            List<String> expectedNumbers =
-                    Arrays.asList("140, 125, 150, 200, 350, 560, 721, 550, 436".split(", "));
+            List<String> expectedNumbers = Arrays.asList("140, 125, 150, 200, 350, 560, 721, 550, 436".split(", "));
             assertEquals("Unexpected numbers", expectedNumbers, numbers);
         }
     }
@@ -195,8 +187,7 @@ public class CSVDataStoreTest {
         SimpleFeatureSource rows = csvDataStore.getFeatureSource();
         SimpleFeatureCollection matches = rows.getFeatures(query);
         List<String> offsetCities =
-                Arrays.asList(
-                        "Ottawa", "Minneapolis", "Lausanne", "Victoria", "Cape Town", "Sydney");
+                Arrays.asList("Ottawa", "Minneapolis", "Lausanne", "Victoria", "Cape Town", "Sydney");
         int count = 0;
         try (SimpleFeatureIterator iter = matches.features()) {
             while (iter.hasNext()) {

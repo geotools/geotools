@@ -75,8 +75,7 @@ public class IndexedDbaseFileReader extends DbaseFileReader {
      * @param useMemoryMappedBuffer Wether or not map the file in memory
      * @throws IOException If an error occurs while initializing.
      */
-    public IndexedDbaseFileReader(ShpFiles shpFiles, boolean useMemoryMappedBuffer)
-            throws IOException {
+    public IndexedDbaseFileReader(ShpFiles shpFiles, boolean useMemoryMappedBuffer) throws IOException {
         super(
                 shpFiles,
                 useMemoryMappedBuffer,
@@ -84,17 +83,13 @@ public class IndexedDbaseFileReader extends DbaseFileReader {
                 TimeZone.getDefault());
     }
 
-    public IndexedDbaseFileReader(
-            ShpFiles shpFiles, boolean useMemoryMappedBuffer, Charset stringCharset)
+    public IndexedDbaseFileReader(ShpFiles shpFiles, boolean useMemoryMappedBuffer, Charset stringCharset)
             throws IOException {
         super(shpFiles, useMemoryMappedBuffer, stringCharset, TimeZone.getDefault());
     }
 
     public IndexedDbaseFileReader(
-            ShpFiles shpFiles,
-            boolean useMemoryMappedBuffer,
-            Charset stringCharset,
-            TimeZone timeZone)
+            ShpFiles shpFiles, boolean useMemoryMappedBuffer, Charset stringCharset, TimeZone timeZone)
             throws IOException {
         super(shpFiles, useMemoryMappedBuffer, stringCharset, timeZone);
     }
@@ -103,14 +98,11 @@ public class IndexedDbaseFileReader extends DbaseFileReader {
     public void goTo(int recno) throws IOException, UnsupportedOperationException {
 
         if (this.randomAccessEnabled) {
-            long newPosition =
-                    this.header.getHeaderLength()
-                            + this.header.getRecordLength() * (long) (recno - 1);
+            long newPosition = this.header.getHeaderLength() + this.header.getRecordLength() * (long) (recno - 1);
 
             if (this.useMemoryMappedBuffer) {
                 if (newPosition < this.currentOffset
-                        || (this.currentOffset + buffer.limit())
-                                < (newPosition + header.getRecordLength())) {
+                        || (this.currentOffset + buffer.limit()) < (newPosition + header.getRecordLength())) {
                     NIOUtilities.clean(buffer);
                     FileChannel fc = (FileChannel) channel;
                     if (fc.size() > newPosition + Integer.MAX_VALUE) {
@@ -124,8 +116,7 @@ public class IndexedDbaseFileReader extends DbaseFileReader {
                     ((Buffer) buffer).position((int) (newPosition - currentOffset));
                 }
             } else {
-                if (this.currentOffset <= newPosition
-                        && this.currentOffset + buffer.limit() >= newPosition) {
+                if (this.currentOffset <= newPosition && this.currentOffset + buffer.limit() >= newPosition) {
                     ((Buffer) buffer).position((int) (newPosition - this.currentOffset));
                     // System.out.println("Hit");
                 } else {
@@ -150,8 +141,7 @@ public class IndexedDbaseFileReader extends DbaseFileReader {
 
     @SuppressWarnings("PMD.SystemPrintln")
     public static void main(String[] args) throws Exception {
-        try (IndexedDbaseFileReader reader =
-                new IndexedDbaseFileReader(new ShpFiles(args[0]), false)) {
+        try (IndexedDbaseFileReader reader = new IndexedDbaseFileReader(new ShpFiles(args[0]), false)) {
             System.out.println(reader.getHeader());
             int r = 0;
             while (reader.hasNext()) {

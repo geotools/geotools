@@ -106,9 +106,7 @@ public class FeatureTypes {
     static {
         SimpleFeatureType featureType = null;
         try {
-            featureType =
-                    FeatureTypes.newFeatureType(
-                            null, "Feature", new URI("http://www.opengis.net/gml"), true);
+            featureType = FeatureTypes.newFeatureType(null, "Feature", new URI("http://www.opengis.net/gml"), true);
         } catch (Exception e) {
             // shold not happen
         }
@@ -123,15 +121,8 @@ public class FeatureTypes {
     public static final int ANY_LENGTH = -1;
 
     /** An feature type with no attributes */
-    public static final SimpleFeatureType EMPTY =
-            new SimpleFeatureTypeImpl(
-                    new NameImpl("Empty"),
-                    Collections.emptyList(),
-                    null,
-                    false,
-                    Collections.emptyList(),
-                    null,
-                    null);
+    public static final SimpleFeatureType EMPTY = new SimpleFeatureTypeImpl(
+            new NameImpl("Empty"), Collections.emptyList(), null, false, Collections.emptyList(), null, null);
 
     protected static FilterFactory FF = CommonFactoryFinder.getFilterFactory(null);
 
@@ -282,9 +273,7 @@ public class FeatureTypes {
         PropertyIsEqualTo equal = f;
         Expression x1 = equal.getExpression1();
         Expression x2 = equal.getExpression2();
-        if (x1 instanceof PropertyName
-                && ".".equals(((PropertyName) x1).getPropertyName())
-                && x2 instanceof Literal) {
+        if (x1 instanceof PropertyName && ".".equals(((PropertyName) x1).getPropertyName()) && x2 instanceof Literal) {
             return x2.evaluate(null);
         }
         return null;
@@ -301,10 +290,9 @@ public class FeatureTypes {
             return null;
         }
         PropertyName thisProperty = FF.property(".");
-        List<Filter> filters =
-                options.stream()
-                        .map(o -> FF.equal(thisProperty, FF.literal(o), false))
-                        .collect(Collectors.toList());
+        List<Filter> filters = options.stream()
+                .map(o -> FF.equal(thisProperty, FF.literal(o), false))
+                .collect(Collectors.toList());
         if (filters.size() == 1) {
             return filters.get(0);
         } else {
@@ -318,8 +306,8 @@ public class FeatureTypes {
      * @param schema the original schema
      * @param crs the forced crs
      */
-    public static SimpleFeatureType transform(
-            SimpleFeatureType schema, CoordinateReferenceSystem crs) throws SchemaException {
+    public static SimpleFeatureType transform(SimpleFeatureType schema, CoordinateReferenceSystem crs)
+            throws SchemaException {
         return transform(schema, crs, false);
     }
 
@@ -332,8 +320,7 @@ public class FeatureTypes {
      *     miss one
      */
     public static SimpleFeatureType transform(
-            SimpleFeatureType schema, CoordinateReferenceSystem crs, boolean forceOnlyMissing)
-            throws SchemaException {
+            SimpleFeatureType schema, CoordinateReferenceSystem crs, boolean forceOnlyMissing) throws SchemaException {
         return transform(schema, crs, forceOnlyMissing, false);
     }
 
@@ -348,10 +335,7 @@ public class FeatureTypes {
      *     compatible with it. This property is ignored if forceOnlyMissing is true.
      */
     public static SimpleFeatureType transform(
-            SimpleFeatureType schema,
-            CoordinateReferenceSystem crs,
-            boolean forceOnlyMissing,
-            boolean onlyIfCompatible)
+            SimpleFeatureType schema, CoordinateReferenceSystem crs, boolean forceOnlyMissing, boolean onlyIfCompatible)
             throws SchemaException {
         SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
         tb.setName(schema.getTypeName());
@@ -368,8 +352,7 @@ public class FeatureTypes {
                 if (forceOnlyMissing
                         ? geometryType.getCoordinateReferenceSystem() == null
                         : !onlyIfCompatible
-                                || CRS.isCompatible(
-                                        geometryType.getCoordinateReferenceSystem(), crs, false)) {
+                                || CRS.isCompatible(geometryType.getCoordinateReferenceSystem(), crs, false)) {
                     tb.crs(crs);
                 }
 
@@ -395,8 +378,7 @@ public class FeatureTypes {
      * @param transform MathTransform used to transform coordinates - reproject( crs, crs )
      * @return transformed Feature of type schema
      */
-    public static SimpleFeature transform(
-            SimpleFeature feature, SimpleFeatureType schema, MathTransform transform)
+    public static SimpleFeature transform(SimpleFeature feature, SimpleFeatureType schema, MathTransform transform)
             throws MismatchedDimensionException, TransformException, IllegalAttributeException {
         feature = SimpleFeatureBuilder.copy(feature);
 
@@ -445,11 +427,7 @@ public class FeatureTypes {
      * @throws SchemaException If the AttributeTypes provided are invalid in some way.
      */
     public static SimpleFeatureType newFeatureType(
-            AttributeDescriptor[] types,
-            String name,
-            URI ns,
-            boolean isAbstract,
-            SimpleFeatureType[] superTypes)
+            AttributeDescriptor[] types, String name, URI ns, boolean isAbstract, SimpleFeatureType[] superTypes)
             throws FactoryRegistryException, SchemaException {
         return newFeatureType(types, name, ns, isAbstract, superTypes, null);
     }
@@ -532,8 +510,7 @@ public class FeatureTypes {
             SimpleFeatureType[] superTypes,
             GeometryDescriptor defaultGeometry)
             throws FactoryRegistryException, SchemaException {
-        return newFeatureType(
-                types, name, ns, isAbstract, superTypes, (AttributeDescriptor) defaultGeometry);
+        return newFeatureType(types, name, ns, isAbstract, superTypes, (AttributeDescriptor) defaultGeometry);
     }
 
     /**
@@ -548,8 +525,7 @@ public class FeatureTypes {
      * @throws FactoryRegistryException If there are problems creating a factory.
      * @throws SchemaException If the AttributeTypes provided are invalid in some way.
      */
-    public static SimpleFeatureType newFeatureType(
-            AttributeDescriptor[] types, String name, URI ns, boolean isAbstract)
+    public static SimpleFeatureType newFeatureType(AttributeDescriptor[] types, String name, URI ns, boolean isAbstract)
             throws FactoryRegistryException, SchemaException {
         return newFeatureType(types, name, ns, isAbstract, null);
     }
@@ -611,10 +587,7 @@ public class FeatureTypes {
     public static boolean matches(FeatureType featureType, Name name) {
         if (featureType.getName().equals(name)
                 || (name.getNamespaceURI() == null
-                        && featureType
-                                .getName()
-                                .getLocalPart()
-                                .equalsIgnoreCase(name.getLocalPart()))) {
+                        && featureType.getName().getLocalPart().equalsIgnoreCase(name.getLocalPart()))) {
             return true;
         }
 
@@ -689,8 +662,7 @@ public class FeatureTypes {
     }
 
     /** Exact equality based on typeNames, namespace, attributes and ancestors */
-    static boolean equals(
-            SimpleFeatureType typeA, SimpleFeatureType typeB, boolean compareUserMaps) {
+    static boolean equals(SimpleFeatureType typeA, SimpleFeatureType typeB, boolean compareUserMaps) {
         if (typeA == typeB) return true;
 
         if (typeA == null || typeB == null) {
@@ -706,47 +678,36 @@ public class FeatureTypes {
         }
 
         return equalsId(typeA, typeB)
-                && equals(
-                        typeA.getAttributeDescriptors(),
-                        typeB.getAttributeDescriptors(),
-                        compareUserMaps)
+                && equals(typeA.getAttributeDescriptors(), typeB.getAttributeDescriptors(), compareUserMaps)
                 && equalsAncestors(typeA, typeB);
     }
 
     static boolean equals(
-            List<AttributeDescriptor> attributesA,
-            List<AttributeDescriptor> attributesB,
-            boolean compareUserMaps) {
+            List<AttributeDescriptor> attributesA, List<AttributeDescriptor> attributesB, boolean compareUserMaps) {
         return equals(
                 attributesA.toArray(new AttributeDescriptor[attributesA.size()]),
                 attributesB.toArray(new AttributeDescriptor[attributesB.size()]),
                 compareUserMaps);
     }
 
-    public static boolean equals(
-            List<AttributeDescriptor> attributesA, List<AttributeDescriptor> attributesB) {
+    public static boolean equals(List<AttributeDescriptor> attributesA, List<AttributeDescriptor> attributesB) {
         return equals(attributesA, attributesB, false);
     }
 
-    public static boolean equalsExact(
-            List<AttributeDescriptor> attributesA, List<AttributeDescriptor> attributesB) {
+    public static boolean equalsExact(List<AttributeDescriptor> attributesA, List<AttributeDescriptor> attributesB) {
         return equals(attributesA, attributesB, true);
     }
 
-    public static boolean equals(
-            AttributeDescriptor[] attributesA, AttributeDescriptor[] attributesB) {
+    public static boolean equals(AttributeDescriptor[] attributesA, AttributeDescriptor[] attributesB) {
         return equals(attributesA, attributesB, false);
     }
 
-    public static boolean equalsExact(
-            AttributeDescriptor[] attributesA, AttributeDescriptor[] attributesB) {
+    public static boolean equalsExact(AttributeDescriptor[] attributesA, AttributeDescriptor[] attributesB) {
         return equals(attributesA, attributesB, true);
     }
 
     static boolean equals(
-            AttributeDescriptor[] attributesA,
-            AttributeDescriptor[] attributesB,
-            boolean compareUserMaps) {
+            AttributeDescriptor[] attributesA, AttributeDescriptor[] attributesB, boolean compareUserMaps) {
         if (attributesA.length != attributesB.length) return false;
 
         for (int i = 0, length = attributesA.length; i < length; i++) {

@@ -57,8 +57,7 @@ public class FeatureLayerHelper extends InfoToolHelper {
      */
     public static final double DEFAULT_DISTANCE_FRACTION = 0.01d;
 
-    private static final GeometryFactory geometryFactory =
-            JTSFactoryFinder.getGeometryFactory(null);
+    private static final GeometryFactory geometryFactory = JTSFactoryFinder.getGeometryFactory(null);
     private static final FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory(null);
 
     private String attrName;
@@ -100,9 +99,7 @@ public class FeatureLayerHelper extends InfoToolHelper {
             Filter filter = null;
             if (geomType == Geometries.POLYGON || geomType == Geometries.MULTIPOLYGON) {
                 Geometry posGeom = createSearchPoint(pos);
-                filter =
-                        filterFactory.intersects(
-                                filterFactory.property(attrName), filterFactory.literal(posGeom));
+                filter = filterFactory.intersects(filterFactory.property(attrName), filterFactory.literal(posGeom));
 
             } else {
                 ReferencedEnvelope env = createSearchEnv(pos);
@@ -112,7 +109,8 @@ public class FeatureLayerHelper extends InfoToolHelper {
             Query query = new Query(null, filter);
             query.setCoordinateSystemReproject(getMapContent().getCoordinateReferenceSystem());
             FeatureSource featureSource = getLayer().getFeatureSource();
-            Collection<PropertyDescriptor> descriptors = featureSource.getSchema().getDescriptors();
+            Collection<PropertyDescriptor> descriptors =
+                    featureSource.getSchema().getDescriptors();
 
             FeatureCollection queryResult = featureSource.getFeatures(query);
 
@@ -172,17 +170,11 @@ public class FeatureLayerHelper extends InfoToolHelper {
             mapBounds = getLayer().getBounds();
         }
 
-        double halfWidth =
-                0.5 * DEFAULT_DISTANCE_FRACTION * (mapBounds.getWidth() + mapBounds.getHeight());
+        double halfWidth = 0.5 * DEFAULT_DISTANCE_FRACTION * (mapBounds.getWidth() + mapBounds.getHeight());
 
         CoordinateReferenceSystem contentCRS = getMapContent().getCoordinateReferenceSystem();
-        ReferencedEnvelope env =
-                new ReferencedEnvelope(
-                        pos.x - halfWidth,
-                        pos.x + halfWidth,
-                        pos.y - halfWidth,
-                        pos.y + halfWidth,
-                        contentCRS);
+        ReferencedEnvelope env = new ReferencedEnvelope(
+                pos.x - halfWidth, pos.x + halfWidth, pos.y - halfWidth, pos.y + halfWidth, contentCRS);
 
         if (isTransformRequired()) {
             CoordinateReferenceSystem layerCRS =

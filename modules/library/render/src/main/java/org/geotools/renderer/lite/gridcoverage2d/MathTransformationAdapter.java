@@ -49,11 +49,9 @@ public class MathTransformationAdapter implements MathTransformation {
      * @param object User argument.
      * @throws IllegalArgumentException if {@code object} is null.
      */
-    private static void ensureNonNull(final String name, final Object object)
-            throws IllegalArgumentException {
+    private static void ensureNonNull(final String name, final Object object) throws IllegalArgumentException {
         if (object == null) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, name));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, name));
         }
     }
 
@@ -65,8 +63,7 @@ public class MathTransformationAdapter implements MathTransformation {
     @Override
     public double derivative(double value) throws TransformException {
 
-        throw new UnsupportedOperationException(
-                MessageFormat.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "inverse"));
+        throw new UnsupportedOperationException(MessageFormat.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "inverse"));
     }
 
     /*
@@ -77,8 +74,7 @@ public class MathTransformationAdapter implements MathTransformation {
     @Override
     public double transform(double value) {
 
-        throw new UnsupportedOperationException(
-                MessageFormat.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "transform"));
+        throw new UnsupportedOperationException(MessageFormat.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "transform"));
     }
 
     /*
@@ -110,8 +106,7 @@ public class MathTransformationAdapter implements MathTransformation {
      */
     @Override
     public MathTransformation inverseTransform() {
-        throw new UnsupportedOperationException(
-                MessageFormat.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "inverse"));
+        throw new UnsupportedOperationException(MessageFormat.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "inverse"));
     }
 
     /*
@@ -122,8 +117,7 @@ public class MathTransformationAdapter implements MathTransformation {
     @Override
     public boolean isIdentity() {
 
-        throw new UnsupportedOperationException(
-                MessageFormat.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "isIdentity"));
+        throw new UnsupportedOperationException(MessageFormat.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "isIdentity"));
     }
 
     @Override

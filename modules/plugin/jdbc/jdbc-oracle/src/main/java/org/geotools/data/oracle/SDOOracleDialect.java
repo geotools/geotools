@@ -53,20 +53,17 @@ class SDOOracleDialect extends OracleDialect {
     }
 
     @Override
-    public Geometry readGeometry(Object object, GeometryFactory factory, Connection cx)
-            throws SQLException {
+    public Geometry readGeometry(Object object, GeometryFactory factory, Connection cx) throws SQLException {
         if (object == null) return null;
 
         //        JGeometry geom = JGeometry.load((oracle.sql.STRUCT) object);
         //        return JGeometryConverter.toJTS(factory, geom);
         throw new UnsupportedOperationException(
-                "Due to licensing issues the code depending to "
-                        + "JGeometry has been commented out");
+                "Due to licensing issues the code depending to " + "JGeometry has been commented out");
     }
 
     @Override
-    public void setGeometryValue(
-            Geometry g, int dimension, int srid, Class binding, PreparedStatement ps, int column)
+    public void setGeometryValue(Geometry g, int dimension, int srid, Class binding, PreparedStatement ps, int column)
             throws SQLException {
         // Handle the null geometry case.
         // Surprisingly, using setNull(column, Types.OTHER) does not work...
@@ -76,8 +73,7 @@ class SDOOracleDialect extends OracleDialect {
         }
 
         throw new UnsupportedOperationException(
-                "Due to licensing issues the code depending to "
-                        + "JGeometry has been commented out");
+                "Due to licensing issues the code depending to " + "JGeometry has been commented out");
 
         //        OracleConnection ocx = unwrapConnection(ps.getConnection());
         //

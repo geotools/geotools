@@ -110,8 +110,7 @@ public class ReferencingFactory extends AbstractFactory implements Factory {
      * @param object User argument.
      * @throws InvalidParameterValueException if {@code object} is null.
      */
-    protected static void ensureNonNull(final String name, final Object object)
-            throws InvalidParameterValueException {
+    protected static void ensureNonNull(final String name, final Object object) throws InvalidParameterValueException {
         if (object == null) {
             throw new InvalidParameterValueException(
                     MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, name), name, object);

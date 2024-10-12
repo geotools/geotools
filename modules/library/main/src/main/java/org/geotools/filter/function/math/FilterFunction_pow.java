@@ -28,12 +28,11 @@ import org.geotools.util.factory.Hints;
 
 public class FilterFunction_pow extends FunctionExpressionImpl {
 
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "pow",
-                    parameter("power", Double.class),
-                    parameter("base", Number.class),
-                    parameter("exponent", Number.class));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "pow",
+            parameter("power", Double.class),
+            parameter("base", Number.class),
+            parameter("exponent", Number.class));
 
     public FilterFunction_pow() {
         super("pow");

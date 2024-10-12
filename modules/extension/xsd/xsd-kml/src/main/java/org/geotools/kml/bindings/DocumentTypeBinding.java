@@ -122,8 +122,7 @@ public class DocumentTypeBinding extends AbstractComplexBinding {
     }
 
     @Override
-    public List<Object[]> getProperties(Object object, XSDElementDeclaration element)
-            throws Exception {
+    public List<Object[]> getProperties(Object object, XSDElementDeclaration element) throws Exception {
         Object[] prop = new Object[2];
         prop[0] = getPlacemarkName();
         if (object instanceof FeatureCollection) {

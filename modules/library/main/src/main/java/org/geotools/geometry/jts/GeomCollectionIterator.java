@@ -58,8 +58,7 @@ public final class GeomCollectionIterator extends AbstractLiteIterator {
     public GeomCollectionIterator() {}
 
     /** */
-    public void init(
-            GeometryCollection gc, AffineTransform at, boolean generalize, double maxDistance) {
+    public void init(GeometryCollection gc, AffineTransform at, boolean generalize, double maxDistance) {
         this.gc = gc;
         this.at = at == null ? new AffineTransform() : at;
         this.generalize = generalize;
@@ -78,8 +77,7 @@ public final class GeomCollectionIterator extends AbstractLiteIterator {
      * @param maxDistance during iteration, a point will be skipped if it's distance from the
      *     previous is less than maxDistance
      */
-    public GeomCollectionIterator(
-            GeometryCollection gc, AffineTransform at, boolean generalize, double maxDistance) {
+    public GeomCollectionIterator(GeometryCollection gc, AffineTransform at, boolean generalize, double maxDistance) {
         init(gc, at, generalize, maxDistance);
     }
 

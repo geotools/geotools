@@ -68,12 +68,6 @@ public class Attribution {
 
     @Override
     public String toString() {
-        return "Attribution [title="
-                + title
-                + ", onlineResource="
-                + onlineResource
-                + ", logoURL="
-                + logoURL
-                + "]";
+        return "Attribution [title=" + title + ", onlineResource=" + onlineResource + ", logoURL=" + logoURL + "]";
     }
 }

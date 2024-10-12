@@ -44,8 +44,7 @@ final class GeometryCollectionBuilder extends GeometryBuilder {
 
         Geometry[] geometries = geometryList.toArray(new Geometry[geometryList.size()]);
 
-        GeometryCollection geometryCollection =
-                getGeometryFactory().createGeometryCollection(geometries);
+        GeometryCollection geometryCollection = getGeometryFactory().createGeometryCollection(geometries);
 
         return geometryCollection;
     }

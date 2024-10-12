@@ -77,22 +77,17 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
         this(serverURL, HTTPClientFinder.createClient(), null);
     }
 
-    public AbstractOpenWebService(final URL serverURL, HTTPClient httpClient)
-            throws IOException, ServiceException {
+    public AbstractOpenWebService(final URL serverURL, HTTPClient httpClient) throws IOException, ServiceException {
         this(serverURL, httpClient, null);
     }
 
-    public AbstractOpenWebService(
-            final URL serverURL, final HTTPClient httpClient, final C capabilities)
+    public AbstractOpenWebService(final URL serverURL, final HTTPClient httpClient, final C capabilities)
             throws ServiceException, IOException {
         this(serverURL, httpClient, capabilities, null);
     }
 
     public AbstractOpenWebService(
-            final URL serverURL,
-            final HTTPClient httpClient,
-            final C capabilities,
-            Map<String, Object> hints)
+            final URL serverURL, final HTTPClient httpClient, final C capabilities, Map<String, Object> hints)
             throws ServiceException, IOException {
         this(serverURL, httpClient, capabilities, hints, null);
     }
@@ -123,8 +118,7 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
         if (capabilities == null) {
             this.capabilities = negotiateVersion();
             if (this.capabilities == null) {
-                throw new ServiceException(
-                        "Version negotiation unable to retrieve or parse Capabilities document.");
+                throw new ServiceException("Version negotiation unable to retrieve or parse Capabilities document.");
             }
         } else {
             this.capabilities = capabilities;
@@ -139,11 +133,10 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
 
         if (specification == null) {
             specification = specs[specs.length - 1];
-            LOGGER.warning(
-                    "Unable to choose a specification based on cached capabilities. "
-                            + "Arbitrarily choosing spec '"
-                            + specification.getVersion()
-                            + "'.");
+            LOGGER.warning("Unable to choose a specification based on cached capabilities. "
+                    + "Arbitrarily choosing spec '"
+                    + specification.getVersion()
+                    + "'.");
         }
     }
 
@@ -264,10 +257,7 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
             String[] tokens = serverURL.getQuery().split("&");
             for (String token : tokens) {
                 String[] param = token.split("=");
-                if (param != null
-                        && param.length > 1
-                        && param[0] != null
-                        && param[0].equalsIgnoreCase("version")) {
+                if (param != null && param.length > 1 && param[0] != null && param[0].equalsIgnoreCase("version")) {
                     if (versions.contains(param[1])) test = versions.indexOf(param[1]);
                 }
             }
@@ -277,8 +267,7 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
             Specification tempSpecification = specs[test];
             String clientVersion = tempSpecification.getVersion();
 
-            GetCapabilitiesRequest request =
-                    tempSpecification.createGetCapabilitiesRequest(serverURL);
+            GetCapabilitiesRequest request = tempSpecification.createGetCapabilitiesRequest(serverURL);
             request.setRequestHints(hints);
 
             // Grab document
@@ -359,13 +348,10 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
         // could not talk to this server
         if (exception != null) {
             IOException e =
-                    new IOException(
-                            "Could not establish version negotiation: " + exception.getMessage(),
-                            exception);
+                    new IOException("Could not establish version negotiation: " + exception.getMessage(), exception);
             throw e;
         } else {
-            throw new ServiceException(
-                    "Version negotiation unable to retrieve or parse Capabilities document.");
+            throw new ServiceException("Version negotiation unable to retrieve or parse Capabilities document.");
         }
     }
 
@@ -488,8 +474,7 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
         return in;
     }
 
-    public GetCapabilitiesResponse issueRequest(GetCapabilitiesRequest request)
-            throws IOException, ServiceException {
+    public GetCapabilitiesResponse issueRequest(GetCapabilitiesRequest request) throws IOException, ServiceException {
         return (GetCapabilitiesResponse) internalIssueRequest(request);
     }
 

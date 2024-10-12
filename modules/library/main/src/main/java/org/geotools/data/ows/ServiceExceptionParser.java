@@ -82,14 +82,12 @@ public class ServiceExceptionParser {
         return exceptions.isEmpty() ? null : exceptions.get(0);
     }
 
-    private static String parseServiceExceptionMessage(XMLStreamReader reader)
-            throws XMLStreamException {
+    private static String parseServiceExceptionMessage(XMLStreamReader reader) throws XMLStreamException {
         reader.require(START_ELEMENT, null, "ServiceException");
         return reader.getElementText();
     }
 
-    private static String parseServiceExceptionCode(XMLStreamReader reader)
-            throws XMLStreamException {
+    private static String parseServiceExceptionCode(XMLStreamReader reader) throws XMLStreamException {
         reader.require(START_ELEMENT, null, "ServiceException");
         String value = null;
         for (int i = 0; i < reader.getAttributeCount(); i++) {

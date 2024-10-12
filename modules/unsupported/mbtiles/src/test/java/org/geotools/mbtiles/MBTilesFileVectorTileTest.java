@@ -38,9 +38,7 @@ public class MBTilesFileVectorTileTest {
             assertEquals(180.0, metadata2.getBounds().getUpperCorner().getOrdinate(0), delta);
             assertEquals(-85.0511, metadata2.getBounds().getLowerCorner().getOrdinate(1), delta);
             assertEquals(85.0511, metadata2.getBounds().getUpperCorner().getOrdinate(1), delta);
-            assertEquals(
-                    CRS.decode("EPSG:4326", true),
-                    metadata2.getBounds().getCoordinateReferenceSystem());
+            assertEquals(CRS.decode("EPSG:4326", true), metadata2.getBounds().getCoordinateReferenceSystem());
             assertEquals(t_format.PBF, metadata2.getFormat());
             assertEquals(t_type.BASE_LAYER, metadata2.getType());
             assertEquals(0, metadata2.getMinZoom());
@@ -51,8 +49,7 @@ public class MBTilesFileVectorTileTest {
     @Test
     public void testMBTilesGetTile() throws Exception {
         byte[] expected;
-        try (InputStream is =
-                MBTilesFileVectorTileTest.class.getResourceAsStream("tile_data.pbf.gz")) {
+        try (InputStream is = MBTilesFileVectorTileTest.class.getResourceAsStream("tile_data.pbf.gz")) {
             expected = IOUtils.toByteArray(is);
         }
         try (MBTilesFile file = new MBTilesFile(dbfile); ) {

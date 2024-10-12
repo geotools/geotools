@@ -76,8 +76,7 @@ class FastBBOX implements BBOX, BinarySpatialOperator, BinaryComparisonOperator 
 
         BBOX clone = (BBOX) result;
         if (clone.getExpression1().equals(getExpression1())
-                && clone.getExpression2().equals(getExpression2()))
-            return new FastBBOX(property, envelope, factory);
+                && clone.getExpression2().equals(getExpression2())) return new FastBBOX(property, envelope, factory);
 
         return result;
     }

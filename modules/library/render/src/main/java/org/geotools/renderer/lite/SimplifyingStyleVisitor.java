@@ -64,16 +64,14 @@ class SimplifyingStyleVisitor extends DuplicatingStyleVisitor {
 
         FeatureTypeStyle copy = new FeatureTypeStyleImpl(fts);
 
-        List<Rule> rulesCopy =
-                fts.rules().stream()
-                        .filter(Objects::nonNull)
-                        .map(
-                                r -> {
-                                    r.accept(this);
-                                    return !pages.isEmpty() ? (Rule) pages.pop() : null;
-                                })
-                        .filter(Objects::nonNull)
-                        .collect(Collectors.toList());
+        List<Rule> rulesCopy = fts.rules().stream()
+                .filter(Objects::nonNull)
+                .map(r -> {
+                    r.accept(this);
+                    return !pages.isEmpty() ? (Rule) pages.pop() : null;
+                })
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
 
         copy.rules().clear();
         copy.rules().addAll(rulesCopy);
@@ -91,8 +89,7 @@ class SimplifyingStyleVisitor extends DuplicatingStyleVisitor {
         copy.getOptions().putAll(fts.getOptions());
 
         if (STRICT && !copy.equals(fts)) {
-            throw new IllegalStateException(
-                    "Was unable to duplicate provided FeatureTypeStyle:" + fts);
+            throw new IllegalStateException("Was unable to duplicate provided FeatureTypeStyle:" + fts);
         }
 
         pages.push(copy);

@@ -49,8 +49,7 @@ public class MultiLevelROIGeometryOverviews implements MultiLevelROI {
     /** {@link Logger} used for logging exceptions */
     private static final Logger LOGGER = Logging.getLogger(MultiLevelROIGeometryOverviews.class);
 
-    private static final AffineTransformation Y_INVERSION =
-            new AffineTransformation(1, 0, 0, 0, -1, 0);
+    private static final AffineTransformation Y_INVERSION = new AffineTransformation(1, 0, 0, 0, -1, 0);
 
     /** The original footprint geometry */
     private Geometry originalFootprint;
@@ -74,10 +73,7 @@ public class MultiLevelROIGeometryOverviews implements MultiLevelROI {
     private boolean overviewsRoiInRasterSpace;
 
     public MultiLevelROIGeometryOverviews(
-            Geometry footprint,
-            List<Geometry> multilevelFootprints,
-            boolean overviewsInRasterSpace,
-            Hints hints) {
+            Geometry footprint, List<Geometry> multilevelFootprints, boolean overviewsInRasterSpace, Hints hints) {
         this.originalFootprint = footprint;
         this.multilevelFootprints = multilevelFootprints;
         this.numOverviews = multilevelFootprints != null ? multilevelFootprints.size() : 0;
@@ -88,11 +84,7 @@ public class MultiLevelROIGeometryOverviews implements MultiLevelROI {
 
     @Override
     public ROIGeometry getTransformedROI(
-            AffineTransform at,
-            int imageIndex,
-            Rectangle imgBounds,
-            ImageReadParam params,
-            ReadType readType) {
+            AffineTransform at, int imageIndex, Rectangle imgBounds, ImageReadParam params, ReadType readType) {
         if (empty) {
             return null;
         }
@@ -103,9 +95,7 @@ public class MultiLevelROIGeometryOverviews implements MultiLevelROI {
         if (roiGeometry == null) {
             boolean useOverviews = imageIndex != 0 && numOverviews > 0;
             Geometry rescaled =
-                    (useOverviews
-                            ? multilevelFootprints.get(imageIndex - 1).copy()
-                            : originalFootprint.copy());
+                    (useOverviews ? multilevelFootprints.get(imageIndex - 1).copy() : originalFootprint.copy());
             if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.fine("Using footprint's overview: " + useOverviews);
             }
@@ -123,22 +113,20 @@ public class MultiLevelROIGeometryOverviews implements MultiLevelROI {
 
                 // rescale the geometry to align it with the read portion
                 if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.fine(
-                            "Adapting overview's geometry to current image, using transformation: "
-                                    + geometryAT.toString());
+                    LOGGER.fine("Adapting overview's geometry to current image, using transformation: "
+                            + geometryAT.toString());
                 }
 
                 rescaled.apply(geometryAT);
 
             } else {
-                geometryAT =
-                        new AffineTransformation(
-                                at.getScaleX(),
-                                at.getShearX(),
-                                at.getTranslateX(),
-                                at.getShearY(),
-                                at.getScaleY(),
-                                at.getTranslateY());
+                geometryAT = new AffineTransformation(
+                        at.getScaleX(),
+                        at.getShearX(),
+                        at.getTranslateX(),
+                        at.getShearY(),
+                        at.getScaleY(),
+                        at.getTranslateY());
                 rescaled.apply(geometryAT);
             }
 

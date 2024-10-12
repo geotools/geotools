@@ -118,8 +118,7 @@ public class AlbersEqualArea extends MapProjection {
      * @param parameters The parameter values in standard units.
      * @throws ParameterNotFoundException if a mandatory parameter is missing.
      */
-    protected AlbersEqualArea(final ParameterValueGroup parameters)
-            throws ParameterNotFoundException {
+    protected AlbersEqualArea(final ParameterValueGroup parameters) throws ParameterNotFoundException {
         // Fetch parameters
         super(parameters);
         final Collection<GeneralParameterDescriptor> expected =
@@ -136,8 +135,7 @@ public class AlbersEqualArea extends MapProjection {
         if (abs(phi1 + phi2) < EPSILON) {
             final Object arg0 = new Latitude(toDegrees(phi1));
             final Object arg1 = new Latitude(toDegrees(phi2));
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.ANTIPODE_LATITUDES_$2, arg0, arg1));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.ANTIPODE_LATITUDES_$2, arg0, arg1));
         }
         double sinphi = sin(phi1);
         double cosphi = cos(phi1);
@@ -162,12 +160,11 @@ public class AlbersEqualArea extends MapProjection {
             }
             c = m1 * m1 + n * q1;
             rho0 = sqrt(c - n * qsfn(sin(latitudeOfOrigin))) / n;
-            ec =
-                    1.0
-                            - .5
-                                    * (1.0 - excentricitySquared)
-                                    * log((1.0 - excentricity) / (1.0 + excentricity))
-                                    / excentricity;
+            ec = 1.0
+                    - .5
+                            * (1.0 - excentricitySquared)
+                            * log((1.0 - excentricity) / (1.0 + excentricity))
+                            / excentricity;
         }
         this.n = n;
     }
@@ -194,8 +191,7 @@ public class AlbersEqualArea extends MapProjection {
      * radians) and stores the result in {@code ptDst} (linear distance on a unit sphere).
      */
     @Override
-    protected Point2D transformNormalized(double x, double y, Point2D ptDst)
-            throws ProjectionException {
+    protected Point2D transformNormalized(double x, double y, Point2D ptDst) throws ProjectionException {
         x *= n;
         double rho;
         if (isSpherical) {
@@ -226,8 +222,7 @@ public class AlbersEqualArea extends MapProjection {
      * {@code ptDst}.
      */
     @Override
-    protected Point2D inverseTransformNormalized(double x, double y, Point2D ptDst)
-            throws ProjectionException {
+    protected Point2D inverseTransformNormalized(double x, double y, Point2D ptDst) throws ProjectionException {
         y = rho0 - y;
         double rho = hypot(x, y);
         if (rho > EPSILON) {
@@ -281,14 +276,11 @@ public class AlbersEqualArea extends MapProjection {
             final double cospi = cos(phi);
             final double con = excentricity * sinpi;
             final double com = 1.0 - con * con;
-            final double dphi =
-                    0.5
-                            * com
-                            * com
-                            / cospi
-                            * (qs / tone_es
-                                    - sinpi / com
-                                    + 0.5 / excentricity * log((1. - con) / (1. + con)));
+            final double dphi = 0.5
+                    * com
+                    * com
+                    / cospi
+                    * (qs / tone_es - sinpi / com + 0.5 / excentricity * log((1. - con) / (1. + con)));
             phi += dphi;
             if (abs(dphi) <= ITERATION_TOLERANCE) {
                 return phi;
@@ -307,9 +299,7 @@ public class AlbersEqualArea extends MapProjection {
         final double one_es = 1 - excentricitySquared;
         if (excentricity >= EPSILON) {
             final double con = excentricity * sinphi;
-            return (one_es
-                    * (sinphi / (1. - con * con)
-                            - (0.5 / excentricity) * log((1. - con) / (1. + con))));
+            return (one_es * (sinphi / (1. - con * con) - (0.5 / excentricity) * log((1. - con) / (1. + con))));
         } else {
             return sinphi + sinphi;
         }
@@ -361,26 +351,24 @@ public class AlbersEqualArea extends MapProjection {
         private static final long serialVersionUID = -7489679528438418778L;
 
         /** The parameters group. */
-        static final ParameterDescriptorGroup PARAMETERS =
-                createDescriptorGroup(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.OGC, "Albers_Conic_Equal_Area"),
-                            new NamedIdentifier(Citations.EPSG, "Albers Equal Area"),
-                            new NamedIdentifier(Citations.EPSG, "9822"),
-                            new NamedIdentifier(Citations.GEOTIFF, "CT_AlbersEqualArea"),
-                            new NamedIdentifier(Citations.ESRI, "Albers"),
-                            new NamedIdentifier(Citations.ESRI, "Albers Equal Area Conic"),
-                            new NamedIdentifier(
-                                    Citations.GEOTOOLS,
-                                    Vocabulary.formatInternational(
-                                            VocabularyKeys.ALBERS_EQUAL_AREA_PROJECTION))
-                        },
-                        new ParameterDescriptor[] {
-                            SEMI_MAJOR, SEMI_MINOR,
-                            CENTRAL_MERIDIAN, LATITUDE_OF_ORIGIN,
-                            STANDARD_PARALLEL_1, STANDARD_PARALLEL_2,
-                            FALSE_EASTING, FALSE_NORTHING
-                        });
+        static final ParameterDescriptorGroup PARAMETERS = createDescriptorGroup(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.OGC, "Albers_Conic_Equal_Area"),
+                    new NamedIdentifier(Citations.EPSG, "Albers Equal Area"),
+                    new NamedIdentifier(Citations.EPSG, "9822"),
+                    new NamedIdentifier(Citations.GEOTIFF, "CT_AlbersEqualArea"),
+                    new NamedIdentifier(Citations.ESRI, "Albers"),
+                    new NamedIdentifier(Citations.ESRI, "Albers Equal Area Conic"),
+                    new NamedIdentifier(
+                            Citations.GEOTOOLS,
+                            Vocabulary.formatInternational(VocabularyKeys.ALBERS_EQUAL_AREA_PROJECTION))
+                },
+                new ParameterDescriptor[] {
+                    SEMI_MAJOR, SEMI_MINOR,
+                    CENTRAL_MERIDIAN, LATITUDE_OF_ORIGIN,
+                    STANDARD_PARALLEL_1, STANDARD_PARALLEL_2,
+                    FALSE_EASTING, FALSE_NORTHING
+                });
 
         /** Constructs a new provider. */
         public Provider() {

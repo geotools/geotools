@@ -59,22 +59,16 @@ public class DefaultGeocentricCRS extends AbstractSingleCRS implements Geocentri
      * metres. The <var>X</var> axis points towards the prime meridian. The <var>Y</var> axis points
      * East. The <var>Z</var> axis points North.
      */
-    public static final DefaultGeocentricCRS CARTESIAN =
-            new DefaultGeocentricCRS(
-                    name(VocabularyKeys.CARTESIAN),
-                    DefaultGeodeticDatum.WGS84,
-                    DefaultCartesianCS.GEOCENTRIC);
+    public static final DefaultGeocentricCRS CARTESIAN = new DefaultGeocentricCRS(
+            name(VocabularyKeys.CARTESIAN), DefaultGeodeticDatum.WGS84, DefaultCartesianCS.GEOCENTRIC);
 
     /**
      * The default geocentric CRS with a {@linkplain DefaultSphericalCS#GEOCENTRIC spherical
      * coordinate system}. Prime meridian is Greenwich, geodetic datum is WGS84 and linear units are
      * metres.
      */
-    public static final DefaultGeocentricCRS SPHERICAL =
-            new DefaultGeocentricCRS(
-                    name(VocabularyKeys.SPHERICAL),
-                    DefaultGeodeticDatum.WGS84,
-                    DefaultSphericalCS.GEOCENTRIC);
+    public static final DefaultGeocentricCRS SPHERICAL = new DefaultGeocentricCRS(
+            name(VocabularyKeys.SPHERICAL), DefaultGeodeticDatum.WGS84, DefaultSphericalCS.GEOCENTRIC);
 
     /**
      * Constructs a new geocentric CRS with the same values than the specified one. This copy
@@ -96,8 +90,7 @@ public class DefaultGeocentricCRS extends AbstractSingleCRS implements Geocentri
      * @param datum The datum.
      * @param cs The coordinate system.
      */
-    public DefaultGeocentricCRS(
-            final String name, final GeodeticDatum datum, final CartesianCS cs) {
+    public DefaultGeocentricCRS(final String name, final GeodeticDatum datum, final CartesianCS cs) {
         this(Collections.singletonMap(NAME_KEY, name), datum, cs);
     }
 
@@ -108,8 +101,7 @@ public class DefaultGeocentricCRS extends AbstractSingleCRS implements Geocentri
      * @param datum The datum.
      * @param cs The coordinate system.
      */
-    public DefaultGeocentricCRS(
-            final String name, final GeodeticDatum datum, final SphericalCS cs) {
+    public DefaultGeocentricCRS(final String name, final GeodeticDatum datum, final SphericalCS cs) {
         this(Collections.singletonMap(NAME_KEY, name), datum, cs);
     }
 
@@ -122,8 +114,7 @@ public class DefaultGeocentricCRS extends AbstractSingleCRS implements Geocentri
      * @param datum The datum.
      * @param cs The coordinate system.
      */
-    public DefaultGeocentricCRS(
-            final Map<String, ?> properties, final GeodeticDatum datum, final CartesianCS cs) {
+    public DefaultGeocentricCRS(final Map<String, ?> properties, final GeodeticDatum datum, final CartesianCS cs) {
         super(properties, datum, cs);
     }
 
@@ -136,8 +127,7 @@ public class DefaultGeocentricCRS extends AbstractSingleCRS implements Geocentri
      * @param datum The datum.
      * @param cs The coordinate system.
      */
-    public DefaultGeocentricCRS(
-            final Map<String, ?> properties, final GeodeticDatum datum, final SphericalCS cs) {
+    public DefaultGeocentricCRS(final Map<String, ?> properties, final GeodeticDatum datum, final SphericalCS cs) {
         super(properties, datum, cs);
     }
 

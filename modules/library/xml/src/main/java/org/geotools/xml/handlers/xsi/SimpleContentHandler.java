@@ -62,8 +62,7 @@ public class SimpleContentHandler extends XSIElementHandler {
                 if (child == null) {
                     child = lh;
                 } else {
-                    throw new SAXNotRecognizedException(
-                            getLocalName() + " may only have one child declaration.");
+                    throw new SAXNotRecognizedException(getLocalName() + " may only have one child declaration.");
                 }
 
                 return lh;
@@ -76,8 +75,7 @@ public class SimpleContentHandler extends XSIElementHandler {
                 if (child == null) {
                     child = lh;
                 } else {
-                    throw new SAXNotRecognizedException(
-                            getLocalName() + " may only have one child declaration.");
+                    throw new SAXNotRecognizedException(getLocalName() + " may only have one child declaration.");
                 }
 
                 return lh;

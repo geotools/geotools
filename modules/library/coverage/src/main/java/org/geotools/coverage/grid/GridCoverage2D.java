@@ -203,12 +203,7 @@ public class GridCoverage2D extends AbstractGridCoverage {
             final GridEnvelope r = new GeneralGridEnvelope(image, dimension);
             if (gridGeometry.isDefined(GridGeometry2D.GRID_TO_CRS_BITMASK)) {
                 gridGeometry =
-                        new GridGeometry2D(
-                                r,
-                                PIXEL_IN_CELL,
-                                gridGeometry.getGridToCRS(PIXEL_IN_CELL),
-                                crs,
-                                hints);
+                        new GridGeometry2D(r, PIXEL_IN_CELL, gridGeometry.getGridToCRS(PIXEL_IN_CELL), crs, hints);
             } else {
                 /*
                  * If the math transform was not explicitly specified by the user, then it will be
@@ -225,11 +220,10 @@ public class GridCoverage2D extends AbstractGridCoverage {
             gridGeometry.getGridToCRS();
         }
         this.gridGeometry = gridGeometry;
-        assert gridGeometry.isDefined(
-                GridGeometry2D.CRS_BITMASK
-                        | GridGeometry2D.ENVELOPE_BITMASK
-                        | GridGeometry2D.GRID_RANGE_BITMASK
-                        | GridGeometry2D.GRID_TO_CRS_BITMASK);
+        assert gridGeometry.isDefined(GridGeometry2D.CRS_BITMASK
+                | GridGeometry2D.ENVELOPE_BITMASK
+                | GridGeometry2D.GRID_RANGE_BITMASK
+                | GridGeometry2D.GRID_TO_CRS_BITMASK);
         /*
          * Last argument checks. The image size must be consistent with the grid range
          * and the envelope must be non-empty.
@@ -410,8 +404,7 @@ public class GridCoverage2D extends AbstractGridCoverage {
      *     failed because the input point has invalid coordinates.
      */
     @Override
-    public float[] evaluate(final Position coord, final float[] dest)
-            throws CannotEvaluateException {
+    public float[] evaluate(final Position coord, final float[] dest) throws CannotEvaluateException {
         return evaluate(gridGeometry.toPoint2D(coord), dest);
     }
 
@@ -426,8 +419,7 @@ public class GridCoverage2D extends AbstractGridCoverage {
      *     failed because the input point has invalid coordinates.
      */
     @Override
-    public double[] evaluate(final Position coord, final double[] dest)
-            throws CannotEvaluateException {
+    public double[] evaluate(final Position coord, final double[] dest) throws CannotEvaluateException {
         return evaluate(gridGeometry.toPoint2D(coord), dest);
     }
 
@@ -465,8 +457,7 @@ public class GridCoverage2D extends AbstractGridCoverage {
      *     More specifically, {@link PointOutsideCoverageException} is thrown if the evaluation
      *     failed because the input point has invalid coordinates.
      */
-    public float[] evaluate(final Point2D coord, final float[] dest)
-            throws CannotEvaluateException {
+    public float[] evaluate(final Point2D coord, final float[] dest) throws CannotEvaluateException {
         final Point2D pixel = gridGeometry.inverseTransform(coord);
         final double fx = pixel.getX();
         final double fy = pixel.getY();
@@ -490,8 +481,7 @@ public class GridCoverage2D extends AbstractGridCoverage {
      *     More specifically, {@link PointOutsideCoverageException} is thrown if the evaluation
      *     failed because the input point has invalid coordinates.
      */
-    public double[] evaluate(final Point2D coord, final double[] dest)
-            throws CannotEvaluateException {
+    public double[] evaluate(final Point2D coord, final double[] dest) throws CannotEvaluateException {
         final Point2D pixel = gridGeometry.inverseTransform(coord);
         final double fx = pixel.getX();
         final double fy = pixel.getY();
@@ -781,15 +771,9 @@ public class GridCoverage2D extends AbstractGridCoverage {
                 if (tileEncoding == null) {
                     tileEncoding = "gzip";
                 }
-                serializedImage =
-                        new SerializableRenderedImage(
-                                source, false, null, tileEncoding, null, null);
+                serializedImage = new SerializableRenderedImage(source, false, null, tileEncoding, null, null);
                 final LogRecord record =
-                        Loggings.format(
-                                Level.FINE,
-                                LoggingKeys.CREATED_SERIALIZABLE_IMAGE_$2,
-                                getName(),
-                                tileEncoding);
+                        Loggings.format(Level.FINE, LoggingKeys.CREATED_SERIALIZABLE_IMAGE_$2, getName(), tileEncoding);
                 record.setSourceClassName(GridCoverage2D.class.getName());
                 record.setSourceMethodName("writeObject");
                 record.setLoggerName(LOGGER.getName());
@@ -853,7 +837,9 @@ public class GridCoverage2D extends AbstractGridCoverage {
         final String lineSeparator = System.getProperty("line.separator", "\n");
         buffer.append("\u2514 Image=").append(Classes.getShortClassName(image)).append('[');
         if (image instanceof OperationNode) {
-            buffer.append('"').append(((OperationNode) image).getOperationName()).append('"');
+            buffer.append('"')
+                    .append(((OperationNode) image).getOperationName())
+                    .append('"');
         }
         buffer.append(']');
         return buffer.append(lineSeparator).toString();

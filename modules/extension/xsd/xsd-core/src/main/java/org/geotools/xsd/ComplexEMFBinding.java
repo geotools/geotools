@@ -72,12 +72,6 @@ public class ComplexEMFBinding extends AbstractComplexEMFBinding implements Inst
 
     @Override
     public String toString() {
-        return "ComplexEMFBinding [target="
-                + target
-                + ", factory="
-                + factory
-                + ", type="
-                + type
-                + "]";
+        return "ComplexEMFBinding [target=" + target + ", factory=" + factory + ", type=" + type + "]";
     }
 }

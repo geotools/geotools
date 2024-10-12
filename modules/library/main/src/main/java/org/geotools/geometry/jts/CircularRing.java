@@ -39,20 +39,13 @@ import org.locationtech.jts.geom.impl.CoordinateArraySequence;
  *
  * @author Andrea Aime - GeoSolutions
  */
-public class CircularRing extends LinearRing
-        implements SingleCurvedGeometry<LinearRing>, CurvedRing {
+public class CircularRing extends LinearRing implements SingleCurvedGeometry<LinearRing>, CurvedRing {
 
     private static final long serialVersionUID = -5796254063449438787L;
 
     /** This sequence is used as a fake to trick the constructor */
-    static final CoordinateSequence FAKE_RING_2D =
-            new CoordinateArraySequence(
-                    new Coordinate[] {
-                        new Coordinate(0, 0),
-                        new Coordinate(0, 1),
-                        new Coordinate(1, 1),
-                        new Coordinate(0, 0)
-                    });
+    static final CoordinateSequence FAKE_RING_2D = new CoordinateArraySequence(
+            new Coordinate[] {new Coordinate(0, 0), new Coordinate(0, 1), new Coordinate(1, 1), new Coordinate(0, 0)});
 
     CircularString delegate;
 
@@ -60,8 +53,7 @@ public class CircularRing extends LinearRing
         super(FAKE_RING_2D, factory);
         delegate = new CircularString(points, factory, tolerance);
         if (!delegate.isClosed()) {
-            throw new IllegalArgumentException(
-                    "Start and end point are not matching, this is not a ring");
+            throw new IllegalArgumentException("Start and end point are not matching, this is not a ring");
         }
     }
 
@@ -69,8 +61,7 @@ public class CircularRing extends LinearRing
         super(FAKE_RING_2D, factory);
         delegate = new CircularString(controlPoints, factory, tolerance);
         if (!delegate.isClosed()) {
-            throw new IllegalArgumentException(
-                    "Start and end point are not matching, this is not a ring");
+            throw new IllegalArgumentException("Start and end point are not matching, this is not a ring");
         }
     }
 

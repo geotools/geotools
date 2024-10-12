@@ -48,10 +48,9 @@ public class OptLineGraphGeneratorTest {
         final int n = 100;
         for (int i = 1; i <= n; i++) {
             generator()
-                    .add(
-                            new LineSegment(
-                                    new Coordinate(base.x + (i - 1), base.y + (i - 1)),
-                                    new Coordinate(base.x + i, base.y + i)));
+                    .add(new LineSegment(
+                            new Coordinate(base.x + (i - 1), base.y + (i - 1)),
+                            new Coordinate(base.x + i, base.y + i)));
         }
         generator().generate();
         Graph built = generator().getGraph();
@@ -64,23 +63,21 @@ public class OptLineGraphGeneratorTest {
         Assert.assertEquals(built.getNodesOfDegree(2).size(), n - 1);
 
         // ensure coordinates
-        GraphVisitor visitor =
-                component -> {
-                    Edge e = (Edge) component;
-                    XYNode a = (XYNode) e.getNodeA();
-                    XYNode b = (XYNode) e.getNodeB();
+        GraphVisitor visitor = component -> {
+            Edge e = (Edge) component;
+            XYNode a = (XYNode) e.getNodeA();
+            XYNode b = (XYNode) e.getNodeB();
 
-                    // coordinats should be a distance of sqrt(2)
-                    Assert.assertTrue(
-                            Math.abs(a.getCoordinate().x - b.getCoordinate().x) == 1
-                                    && Math.abs(a.getCoordinate().y - b.getCoordinate().y) == 1);
+            // coordinats should be a distance of sqrt(2)
+            Assert.assertTrue(Math.abs(a.getCoordinate().x - b.getCoordinate().x) == 1
+                    && Math.abs(a.getCoordinate().y - b.getCoordinate().y) == 1);
 
-                    //        assertTrue(
-                    //            Math.abs(a.getX() - b.getX()) == 1
-                    //         && Math.abs(a.getY() - b.getY()) == 1
-                    //        );
-                    return (0);
-                };
+            //        assertTrue(
+            //            Math.abs(a.getX() - b.getX()) == 1
+            //         && Math.abs(a.getY() - b.getY()) == 1
+            //        );
+            return (0);
+        };
         built.visitEdges(visitor);
     }
 
@@ -96,10 +93,9 @@ public class OptLineGraphGeneratorTest {
         final int n = 100;
         for (int i = 1; i <= n; i++) {
             generator()
-                    .add(
-                            new LineSegment(
-                                    new Coordinate(base.x + (i - 1), base.y + (i - 1)),
-                                    new Coordinate(base.x + i, base.y + i)));
+                    .add(new LineSegment(
+                            new Coordinate(base.x + (i - 1), base.y + (i - 1)),
+                            new Coordinate(base.x + i, base.y + i)));
         }
 
         // complete the circle
@@ -115,23 +111,20 @@ public class OptLineGraphGeneratorTest {
         Assert.assertEquals(built.getNodesOfDegree(2).size(), built.getNodes().size());
 
         // ensure coordinates
-        GraphVisitor visitor =
-                component -> {
-                    Edge e = (Edge) component;
-                    XYNode a = (XYNode) e.getNodeA();
-                    XYNode b = (XYNode) e.getNodeB();
+        GraphVisitor visitor = component -> {
+            Edge e = (Edge) component;
+            XYNode a = (XYNode) e.getNodeA();
+            XYNode b = (XYNode) e.getNodeB();
 
-                    if (b.getCoordinate().equals(base)) {
-                        Assert.assertEquals(a.getCoordinate(), new Coordinate(n, n));
-                    } else {
-                        Assert.assertTrue(
-                                Math.abs(a.getCoordinate().x - b.getCoordinate().x) == 1
-                                        && Math.abs(a.getCoordinate().y - b.getCoordinate().y)
-                                                == 1);
-                    }
+            if (b.getCoordinate().equals(base)) {
+                Assert.assertEquals(a.getCoordinate(), new Coordinate(n, n));
+            } else {
+                Assert.assertTrue(Math.abs(a.getCoordinate().x - b.getCoordinate().x) == 1
+                        && Math.abs(a.getCoordinate().y - b.getCoordinate().y) == 1);
+            }
 
-                    return (0);
-                };
+            return (0);
+        };
         built.visitEdges(visitor);
     }
 

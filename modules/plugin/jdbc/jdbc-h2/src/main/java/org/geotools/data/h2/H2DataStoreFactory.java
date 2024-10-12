@@ -37,53 +37,39 @@ import org.geotools.jdbc.SQLDialect;
 public class H2DataStoreFactory extends JDBCDataStoreFactory {
     /** parameter for database type */
     public static final Param DBTYPE =
-            new Param(
-                    "dbtype",
-                    String.class,
-                    "Type",
-                    true,
-                    "h2",
-                    Collections.singletonMap(Parameter.LEVEL, "program"));
+            new Param("dbtype", String.class, "Type", true, "h2", Collections.singletonMap(Parameter.LEVEL, "program"));
 
     /** parameter for how to handle associations */
     public static final Param ASSOCIATIONS =
             new Param("Associations", Boolean.class, "Associations", false, Boolean.FALSE);
 
     /** optional user parameter */
-    public static final Param USER =
-            new Param(
-                    JDBCDataStoreFactory.USER.key,
-                    JDBCDataStoreFactory.USER.type,
-                    JDBCDataStoreFactory.USER.description,
-                    false,
-                    JDBCDataStoreFactory.USER.sample);
+    public static final Param USER = new Param(
+            JDBCDataStoreFactory.USER.key,
+            JDBCDataStoreFactory.USER.type,
+            JDBCDataStoreFactory.USER.description,
+            false,
+            JDBCDataStoreFactory.USER.sample);
 
     /** optional host parameter */
-    public static final Param HOST =
-            new Param(
-                    JDBCDataStoreFactory.HOST.key,
-                    JDBCDataStoreFactory.HOST.type,
-                    JDBCDataStoreFactory.HOST.description,
-                    false,
-                    JDBCDataStoreFactory.HOST.sample);
+    public static final Param HOST = new Param(
+            JDBCDataStoreFactory.HOST.key,
+            JDBCDataStoreFactory.HOST.type,
+            JDBCDataStoreFactory.HOST.description,
+            false,
+            JDBCDataStoreFactory.HOST.sample);
 
     /** optional port parameter */
-    public static final Param PORT =
-            new Param(
-                    JDBCDataStoreFactory.PORT.key,
-                    JDBCDataStoreFactory.PORT.type,
-                    JDBCDataStoreFactory.PORT.description,
-                    false,
-                    9902);
+    public static final Param PORT = new Param(
+            JDBCDataStoreFactory.PORT.key,
+            JDBCDataStoreFactory.PORT.type,
+            JDBCDataStoreFactory.PORT.description,
+            false,
+            9902);
 
     /** optional auto server mode parameter */
-    public static final Param AUTO_SERVER =
-            new Param(
-                    "autoServer",
-                    Boolean.class,
-                    "Activate AUTO_SERVER mode for local file database connections",
-                    false,
-                    false);
+    public static final Param AUTO_SERVER = new Param(
+            "autoServer", Boolean.class, "Activate AUTO_SERVER mode for local file database connections", false, false);
 
     /**
      * optional parameter to handle MVCC.
@@ -161,8 +147,7 @@ public class H2DataStoreFactory extends JDBCDataStoreFactory {
     }
 
     @Override
-    protected DataSource createDataSource(Map<String, ?> params, SQLDialect dialect)
-            throws IOException {
+    protected DataSource createDataSource(Map<String, ?> params, SQLDialect dialect) throws IOException {
         BasicDataSource dataSource = new BasicDataSource();
         dataSource.setUrl(getJDBCUrl(params));
 
@@ -208,16 +193,12 @@ public class H2DataStoreFactory extends JDBCDataStoreFactory {
                 location = database;
             }
 
-            return "jdbc:h2:file:"
-                    + location
-                    + autoServerSpec
-                    + (mvcc != null ? (";MVCC=" + mvcc) : "");
+            return "jdbc:h2:file:" + location + autoServerSpec + (mvcc != null ? (";MVCC=" + mvcc) : "");
         }
     }
 
     @Override
-    protected JDBCDataStore createDataStoreInternal(JDBCDataStore dataStore, Map<String, ?> params)
-            throws IOException {
+    protected JDBCDataStore createDataStoreInternal(JDBCDataStore dataStore, Map<String, ?> params) throws IOException {
         // check the foreign keys parameter
         Boolean foreignKeys = (Boolean) ASSOCIATIONS.lookUp(params);
 

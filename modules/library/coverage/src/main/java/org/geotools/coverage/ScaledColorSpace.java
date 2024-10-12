@@ -55,8 +55,7 @@ final class ScaledColorSpace extends ColorSpace {
      * @param minimum La valeur géophysique minimale.
      * @param maximum La valeur géophysique maximale.
      */
-    public ScaledColorSpace(
-            final int band, final int numComponents, final double minimum, final double maximum) {
+    public ScaledColorSpace(final int band, final int numComponents, final double minimum, final double maximum) {
         super(TYPE_GRAY, numComponents);
         this.band = band;
         final double scale = (maximum - minimum) / (MAX_VALUE - MIN_VALUE);
@@ -112,11 +111,6 @@ final class ScaledColorSpace extends ColorSpace {
     /** Returns a string representation of this color model. */
     @Override
     public String toString() {
-        return Classes.getShortClassName(this)
-                + '['
-                + getMinValue(band)
-                + ", "
-                + getMaxValue(band)
-                + ']';
+        return Classes.getShortClassName(this) + '[' + getMinValue(band) + ", " + getMaxValue(band) + ']';
     }
 }

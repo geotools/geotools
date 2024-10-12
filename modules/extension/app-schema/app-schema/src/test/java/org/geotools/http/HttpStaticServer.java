@@ -50,38 +50,32 @@ final class HttpStaticServer {
         connector = new ServerConnector(server);
         connector.setPort(0);
         server.setConnectors(new Connector[] {connector});
-        server.setHandler(
-                new AbstractHandler() {
-                    @Override
-                    public void handle(
-                            String target,
-                            Request baseRequest,
-                            HttpServletRequest request,
-                            HttpServletResponse response) {
-                        for (Map.Entry<String, String> resource : resources.entrySet()) {
-                            if (target != null
-                                    && target.equalsIgnoreCase("/" + resource.getKey())) {
-                                // we found the resource we where looking for
-                                response.setContentType("text/xml");
-                                response.setStatus(HttpServletResponse.SC_OK);
-                                baseRequest.setHandled(true);
-                                try (InputStream input =
-                                        new ByteArrayInputStream(resource.getValue().getBytes())) {
-                                    // write the resource content to the HTTP response output stream
-                                    IOUtils.copy(input, response.getOutputStream());
-                                    // we are done
-                                    return;
-                                } catch (Exception exception) {
-                                    throw new RuntimeException(
-                                            "Error writing HTTP response.", exception);
-                                }
-                            }
-                        }
-                        // request not handled
-                        response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+        server.setHandler(new AbstractHandler() {
+            @Override
+            public void handle(
+                    String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response) {
+                for (Map.Entry<String, String> resource : resources.entrySet()) {
+                    if (target != null && target.equalsIgnoreCase("/" + resource.getKey())) {
+                        // we found the resource we where looking for
+                        response.setContentType("text/xml");
+                        response.setStatus(HttpServletResponse.SC_OK);
                         baseRequest.setHandled(true);
+                        try (InputStream input =
+                                new ByteArrayInputStream(resource.getValue().getBytes())) {
+                            // write the resource content to the HTTP response output stream
+                            IOUtils.copy(input, response.getOutputStream());
+                            // we are done
+                            return;
+                        } catch (Exception exception) {
+                            throw new RuntimeException("Error writing HTTP response.", exception);
+                        }
                     }
-                });
+                }
+                // request not handled
+                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                baseRequest.setHandled(true);
+            }
+        });
     }
 
     /**
@@ -94,16 +88,14 @@ final class HttpStaticServer {
             if (input == null) {
                 // we could not find the resource int he classpath
                 throw new RuntimeException(
-                        String.format(
-                                "Resource '%s' with path '%s' not found.",
-                                resourceName, resourcePath));
+                        String.format("Resource '%s' with path '%s' not found.", resourceName, resourcePath));
             }
             // read the resource from the classpath
             String resource = IOUtils.toString(input, StandardCharsets.UTF_8);
             // substitute host and port place holders
-            String relativePath =
-                    URLs.urlToFile(URLs.getParentUrl(this.getClass().getResource(resourcePath)))
-                            .getPath();
+            String relativePath = URLs.urlToFile(
+                            URLs.getParentUrl(this.getClass().getResource(resourcePath)))
+                    .getPath();
             resource = resource.replace("{relative}", relativePath);
             resource = resource.replace("{host}", getHost());
             resource = resource.replace("{port}", String.valueOf(getPort()));
@@ -112,9 +104,7 @@ final class HttpStaticServer {
             LOGGER.info(String.format("Resource %s added.", buildUrl(resourceName)));
         } catch (Exception exception) {
             throw new RuntimeException(
-                    String.format(
-                            "Error registering resource '%s' with path '%s'.",
-                            resourceName, resourcePath),
+                    String.format("Error registering resource '%s' with path '%s'.", resourceName, resourcePath),
                     exception);
         }
     }

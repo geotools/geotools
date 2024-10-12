@@ -164,13 +164,7 @@ public class FeatureTypeStyleBuilder extends AbstractStyleBuilder<FeatureTypeSty
             list.add(ruleBuilder.build());
         }
         FeatureTypeStyle fts =
-                sf.featureTypeStyle(
-                        name,
-                        description.build(),
-                        definedFor.build(),
-                        featureTypeNames,
-                        types,
-                        list);
+                sf.featureTypeStyle(name, description.build(), definedFor.build(), featureTypeNames, types, list);
         if (!options.isEmpty()) {
             fts.getOptions().putAll(options);
         }

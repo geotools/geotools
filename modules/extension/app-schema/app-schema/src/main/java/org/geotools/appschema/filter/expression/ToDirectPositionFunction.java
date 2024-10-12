@@ -57,11 +57,10 @@ public class ToDirectPositionFunction implements Function {
     private static final String USAGE =
             "Usage: toDirectPosition('SRS_NAME'(optional), srsName(optional), point 1, point 2(optional))";
 
-    public static final FunctionName NAME =
-            new FunctionNameImpl(
-                    "toDirectPosition",
-                    FunctionNameImpl.parameter("return", Position.class),
-                    FunctionNameImpl.parameter("parameter", Object.class, 1, 4));
+    public static final FunctionName NAME = new FunctionNameImpl(
+            "toDirectPosition",
+            FunctionNameImpl.parameter("return", Position.class),
+            FunctionNameImpl.parameter("parameter", Object.class, 1, 4));
 
     private static FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
@@ -116,11 +115,10 @@ public class ToDirectPositionFunction implements Function {
         if (param1.equals(SRS_NAME)) {
             // must be followed by srsName expression, and at least 1 point
             if (parameters.size() < 3 || parameters.size() > 4) {
-                throw new IllegalArgumentException(
-                        "Wrong number of parameters toDirectPosition function: "
-                                + parameters.toString()
-                                + ". "
-                                + USAGE);
+                throw new IllegalArgumentException("Wrong number of parameters toDirectPosition function: "
+                        + parameters.toString()
+                        + ". "
+                        + USAGE);
             }
             String srsName = parameters.get(1).evaluate(object, String.class);
             try {
@@ -147,10 +145,7 @@ public class ToDirectPositionFunction implements Function {
             // should only have points, 1 for 1D, 2 for 2D
             if (parameters.size() > 2) {
                 throw new IllegalArgumentException(
-                        "Too many parameters for toDirectPosition function: "
-                                + parameters.toString()
-                                + ". "
-                                + USAGE);
+                        "Too many parameters for toDirectPosition function: " + parameters.toString() + ". " + USAGE);
             }
             if (parameters.size() == 1) {
                 // 1D

@@ -147,12 +147,7 @@ public class AttributeTable {
         @Override
         public String toString() {
             if (range == 0f) return String.valueOf(low) + ":" + catText; // $NON-NLS-1$
-            else
-                return String.valueOf(low)
-                        + "-"
-                        + String.valueOf(low + range)
-                        + ":"
-                        + catText; // $NON-NLS-1$
+            else return String.valueOf(low) + "-" + String.valueOf(low + range) + ":" + catText; // $NON-NLS-1$
         }
     }
 }

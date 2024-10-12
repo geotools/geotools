@@ -45,13 +45,12 @@ import org.geotools.filter.capability.FunctionNameImpl;
  */
 public class UniqueIntervalFunction extends ClassificationFunction {
 
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "UniqueInterval",
-                    RangedClassifier.class,
-                    parameter("value", Double.class),
-                    parameter("classes", Integer.class),
-                    parameter("percentages", Boolean.class, 0, 1));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "UniqueInterval",
+            RangedClassifier.class,
+            parameter("value", Double.class),
+            parameter("classes", Integer.class),
+            parameter("percentages", Boolean.class, 0, 1));
 
     public UniqueIntervalFunction() {
         super(NAME);
@@ -71,22 +70,20 @@ public class UniqueIntervalFunction extends ClassificationFunction {
             if (calcResult == null) return null;
             List result = calcResult.toList();
             // sort the results and put them in an array
-            Collections.sort(
-                    result,
-                    (o1, o2) -> {
-                        if (o1 == null) {
-                            if (o2 == null) {
-                                return 0; // equal
-                            }
-                            return -1; // less than
-                        } else if (o2 == null) {
-                            return 1;
-                        }
-                        if (o1 instanceof String && o2 instanceof String) {
-                            return ((String) o1).compareTo((String) o2);
-                        }
-                        return 0;
-                    });
+            Collections.sort(result, (o1, o2) -> {
+                if (o1 == null) {
+                    if (o2 == null) {
+                        return 0; // equal
+                    }
+                    return -1; // less than
+                } else if (o2 == null) {
+                    return 1;
+                }
+                if (o1 instanceof String && o2 instanceof String) {
+                    return ((String) o1).compareTo((String) o2);
+                }
+                return 0;
+            });
             Object[] results = result.toArray();
             // put the results into their respective slots/bins/buckets
             Set[] values;
@@ -105,10 +102,8 @@ public class UniqueIntervalFunction extends ClassificationFunction {
                 for (int binIndex = 0; binIndex < classNum; binIndex++) {
                     HashSet val = new HashSet();
                     // add the items
-                    for (int binItem = 0; binItem < binPop; binItem++)
-                        val.add(results[itemIndex++]);
-                    if (lastBigBin == binIndex)
-                        binPop--; // decrease the number of items in a bin for the
+                    for (int binItem = 0; binItem < binPop; binItem++) val.add(results[itemIndex++]);
+                    if (lastBigBin == binIndex) binPop--; // decrease the number of items in a bin for the
                     // next iteration
                     // store the bin
                     values[binIndex] = val;
@@ -150,19 +145,16 @@ public class UniqueIntervalFunction extends ClassificationFunction {
         return calculate((SimpleFeatureCollection) feature);
     }
 
-    private double[] getPercentages(FeatureCollection collection, Set... values)
-            throws IOException {
+    private double[] getPercentages(FeatureCollection collection, Set... values) throws IOException {
         Expression prop = getParameters().get(0);
-        GroupByVisitor groupBy =
-                new GroupByVisitor(Aggregate.COUNT, prop, Arrays.asList(prop), null);
+        GroupByVisitor groupBy = new GroupByVisitor(Aggregate.COUNT, prop, Arrays.asList(prop), null);
         collection.accepts(groupBy, null);
         @SuppressWarnings("unchecked")
         Map<List, Integer> result = groupBy.getResult().toMap();
         return computePercentages(result, collection.size(), values);
     }
 
-    private double[] computePercentages(
-            Map<List, Integer> queryResult, int totalSize, Set... values) {
+    private double[] computePercentages(Map<List, Integer> queryResult, int totalSize, Set... values) {
         double[] percentages = new double[values.length];
         for (int i = 0; i < values.length; i++) {
             Set s = values[i];

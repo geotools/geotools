@@ -54,8 +54,7 @@ public class TransformHandler extends YsldParseHandler {
     public void handle(YamlObject<?> obj, YamlParseContext context) {
         // lookup process function factory, if null means process modules not on classpath
         if (functionFactory == null) {
-            LOG.warning(
-                    "Unable to load process factory, ignoring transform, ensure process modules installed");
+            LOG.warning("Unable to load process factory, ignoring transform, ensure process modules installed");
             return;
         }
 
@@ -96,13 +95,9 @@ public class TransformHandler extends YsldParseHandler {
         Expression outputWidth = null;
         Expression outputHeight = null;
         if (wmsParams) {
-            outputBBOX =
-                    paramExpression("outputBBOX", Collections.singletonList(envVar("wms_bbox")));
-            outputWidth =
-                    paramExpression("outputWidth", Collections.singletonList(envVar("wms_width")));
-            outputHeight =
-                    paramExpression(
-                            "outputHeight", Collections.singletonList(envVar("wms_height")));
+            outputBBOX = paramExpression("outputBBOX", Collections.singletonList(envVar("wms_bbox")));
+            outputWidth = paramExpression("outputWidth", Collections.singletonList(envVar("wms_width")));
+            outputHeight = paramExpression("outputHeight", Collections.singletonList(envVar("wms_height")));
         }
 
         YamlMap params = map.map("params");
@@ -172,8 +167,7 @@ public class TransformHandler extends YsldParseHandler {
         List<Expression> paramArgs = new ArrayList<>(valueArgs.size() + 1);
         paramArgs.add(factory.filter.literal(name));
         paramArgs.addAll(valueArgs);
-        return factory.filter.function(
-                "parameter", paramArgs.toArray(new Expression[paramArgs.size()]));
+        return factory.filter.function("parameter", paramArgs.toArray(new Expression[paramArgs.size()]));
     }
 
     void convertAndAdd(Object val, Parameter<?> p, List<Expression> valueArgs) {

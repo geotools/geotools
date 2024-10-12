@@ -67,8 +67,7 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
      * @throws ServiceException
      * @throws IOException
      */
-    public WebMapTileServer(URL serverURL, HTTPClient httpClient)
-            throws ServiceException, IOException {
+    public WebMapTileServer(URL serverURL, HTTPClient httpClient) throws ServiceException, IOException {
         super(serverURL, httpClient);
         setupType();
     }
@@ -98,8 +97,7 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
      * @throws ServiceException
      * @throws IOException
      */
-    public WebMapTileServer(URL serverURL, WMTSCapabilities capabilities)
-            throws ServiceException, IOException {
+    public WebMapTileServer(URL serverURL, WMTSCapabilities capabilities) throws ServiceException, IOException {
         this(serverURL, HTTPClientFinder.createClient(), capabilities, null);
     }
 
@@ -130,10 +128,7 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
      * @throws IOException
      */
     public WebMapTileServer(
-            URL serverURL,
-            HTTPClient httpClient,
-            WMTSCapabilities capabilities,
-            Map<String, Object> hints)
+            URL serverURL, HTTPClient httpClient, WMTSCapabilities capabilities, Map<String, Object> hints)
             throws ServiceException, IOException {
         super(serverURL, httpClient, capabilities, hints);
         setupType();
@@ -197,8 +192,7 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
     /**
      * The new issueRequest, which gives a GetTileResponse in response for a GetSingleTileRequest.
      */
-    public GetTileResponse issueRequest(GetSingleTileRequest tileRequest)
-            throws IOException, ServiceException {
+    public GetTileResponse issueRequest(GetSingleTileRequest tileRequest) throws IOException, ServiceException {
         return (GetTileResponse) internalIssueRequest(tileRequest);
     }
 
@@ -217,9 +211,7 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
         props.put("type", type.name());
 
         GetTileRequest request =
-                getSpecification()
-                        .createGetMultiTileRequest(
-                                url, props, getCapabilities(), this.getHTTPClient());
+                getSpecification().createGetMultiTileRequest(url, props, getCapabilities(), this.getHTTPClient());
 
         if (headers != null) {
             request.getHeaders().putAll(headers);
@@ -314,10 +306,9 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
         // The layer does not provide the requested CRS, so just take any one
         if (retMatrixSet == null) {
             if (LOGGER.isLoggable(Level.INFO)) {
-                LOGGER.info(
-                        "Failed to match the requested CRS ("
-                                + requestCRS.getName()
-                                + ") with any of the tile matrices!");
+                LOGGER.info("Failed to match the requested CRS ("
+                        + requestCRS.getName()
+                        + ") with any of the tile matrices!");
             }
             for (TileMatrixSet matrix : capabilities.getMatrixSets()) {
                 if (links.containsKey((matrix.getIdentifier()))) { // available for this layer
@@ -331,11 +322,10 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
             }
         }
         if (retMatrixSet == null) {
-            throw new ServiceException(
-                    "Unable to find a matching TileMatrixSet for layer "
-                            + layer.getName()
-                            + " and SRS: "
-                            + requestCRS.getName());
+            throw new ServiceException("Unable to find a matching TileMatrixSet for layer "
+                    + layer.getName()
+                    + " and SRS: "
+                    + requestCRS.getName());
         }
         return retMatrixSet;
     }

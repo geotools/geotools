@@ -65,8 +65,7 @@ class TimeCoordinateVariable extends CoordinateVariable<Date> {
 
         baseTimeUnits = NetCDFTimeUtilities.getTimeUnits(units, null);
         if (baseTimeUnits == -1) {
-            throw new IllegalArgumentException(
-                    "Couldn't determine time units from unit string '" + units + "'");
+            throw new IllegalArgumentException("Couldn't determine time units from unit string '" + units + "'");
         }
         if (origin != null) {
             origin = NetCDFTimeUtilities.trimFractionalPart(origin);
@@ -74,13 +73,10 @@ class TimeCoordinateVariable extends CoordinateVariable<Date> {
             origin = NetCDFTimeUtilities.checkDateDigits(origin);
 
             try {
-                epoch =
-                        (Date)
-                                NetCDFUtilities.getAxisFormat(AxisType.Time, origin)
-                                        .parseObject(origin);
+                epoch = (Date)
+                        NetCDFUtilities.getAxisFormat(AxisType.Time, origin).parseObject(origin);
             } catch (ParseException e) {
-                LOGGER.warning(
-                        "Error while parsing time Axis. Skip setting the TemporalExtent from coordinateAxis");
+                LOGGER.warning("Error while parsing time Axis. Skip setting the TemporalExtent from coordinateAxis");
             }
         }
         init();

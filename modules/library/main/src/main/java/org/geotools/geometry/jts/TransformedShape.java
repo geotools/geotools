@@ -233,8 +233,7 @@ public final class TransformedShape extends AffineTransform implements Shape {
      * work since <code>contains(...)</code> method may conservatively return <code>false</code>. We
      * will just log a warning message and continue.
      */
-    private static void exceptionOccured(
-            final NoninvertibleTransformException exception, final String method) {
+    private static void exceptionOccured(final NoninvertibleTransformException exception, final String method) {
         final LogRecord record = new LogRecord(Level.WARNING, exception.getLocalizedMessage());
         record.setSourceClassName(TransformedShape.class.getName());
         record.setSourceMethodName(method);

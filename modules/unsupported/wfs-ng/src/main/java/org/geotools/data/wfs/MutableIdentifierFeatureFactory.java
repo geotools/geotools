@@ -34,18 +34,17 @@ import org.geotools.filter.FilterFactoryImpl;
  */
 class MutableIdentifierFeatureFactory extends AbstractFeatureFactoryImpl {
 
-    private static FilterFactory MUTABLE_FIDS_FILTER_FACTORY =
-            new FilterFactoryImpl() {
-                @Override
-                public MutableFeatureId featureId(String id) {
-                    return new MutableFeatureId(id);
-                }
+    private static FilterFactory MUTABLE_FIDS_FILTER_FACTORY = new FilterFactoryImpl() {
+        @Override
+        public MutableFeatureId featureId(String id) {
+            return new MutableFeatureId(id);
+        }
 
-                @Override
-                public MutableFeatureId featureId(String fid, String featureVersion) {
-                    return new MutableFeatureId(fid, featureVersion);
-                }
-            };
+        @Override
+        public MutableFeatureId featureId(String fid, String featureVersion) {
+            return new MutableFeatureId(fid, featureVersion);
+        }
+    };
 
     @Override
     @SuppressWarnings("unchecked")

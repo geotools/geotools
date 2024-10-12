@@ -225,25 +225,14 @@ public class WebMapServer extends AbstractOpenWebService<WMSCapabilities, Layer>
 
                 try {
                     crs = CRS.decode(bbox.getEPSGCode());
-                    env =
-                            new ReferencedEnvelope(
-                                    bbox.getMinX(),
-                                    bbox.getMaxX(),
-                                    bbox.getMinY(),
-                                    bbox.getMaxY(),
-                                    crs);
+                    env = new ReferencedEnvelope(bbox.getMinX(), bbox.getMaxX(), bbox.getMinY(), bbox.getMaxY(), crs);
                 } catch (FactoryException e) {
                     crs = DefaultGeographicCRS.WGS84;
                     env = layer.getEnvelope(crs);
                 }
             }
-            bounds =
-                    new ReferencedEnvelope(
-                            env.getMinimum(0),
-                            env.getMaximum(0),
-                            env.getMinimum(1),
-                            env.getMaximum(1),
-                            crs);
+            bounds = new ReferencedEnvelope(
+                    env.getMinimum(0), env.getMaximum(0), env.getMinimum(1), env.getMaximum(1), crs);
 
             String source = getInfo().getSource().toString();
 
@@ -292,8 +281,7 @@ public class WebMapServer extends AbstractOpenWebService<WMSCapabilities, Layer>
                     // Do not request "parent" layer graphics - this kills Mapserver
                     return icon;
                 }
-                OperationType getLegendGraphic =
-                        getCapabilities().getRequest().getGetLegendGraphic();
+                OperationType getLegendGraphic = getCapabilities().getRequest().getGetLegendGraphic();
                 if (getLegendGraphic == null) {
                     // this wms server does not support legend graphics
                     return icon;
@@ -359,10 +347,7 @@ public class WebMapServer extends AbstractOpenWebService<WMSCapabilities, Layer>
      * capabilities.getRequest().getGetCapabilities().getGet()
      */
     public WebMapServer(WMSCapabilities capabilities) throws IOException, ServiceException {
-        super(
-                capabilities.getRequest().getGetCapabilities().getGet(),
-                HTTPClientFinder.createClient(),
-                capabilities);
+        super(capabilities.getRequest().getGetCapabilities().getGet(), HTTPClientFinder.createClient(), capabilities);
     }
 
     /**
@@ -385,8 +370,7 @@ public class WebMapServer extends AbstractOpenWebService<WMSCapabilities, Layer>
      * @throws IOException if there is an error communicating with the server
      * @throws ServiceException if the server responds with an error
      */
-    public WebMapServer(final URL serverURL, final HTTPClient httpClient)
-            throws IOException, ServiceException {
+    public WebMapServer(final URL serverURL, final HTTPClient httpClient) throws IOException, ServiceException {
         super(serverURL, httpClient);
     }
 
@@ -419,10 +403,7 @@ public class WebMapServer extends AbstractOpenWebService<WMSCapabilities, Layer>
      * @throws ServiceException if the server responds with an error
      */
     public WebMapServer(
-            final URL serverURL,
-            final HTTPClient httpClient,
-            Map<String, Object> hints,
-            Map<String, String> headers)
+            final URL serverURL, final HTTPClient httpClient, Map<String, Object> hints, Map<String, String> headers)
             throws IOException, ServiceException {
         super(serverURL, httpClient, null, hints, headers);
     }
@@ -467,8 +448,7 @@ public class WebMapServer extends AbstractOpenWebService<WMSCapabilities, Layer>
     }
 
     @Override
-    public GetCapabilitiesResponse issueRequest(GetCapabilitiesRequest request)
-            throws IOException, ServiceException {
+    public GetCapabilitiesResponse issueRequest(GetCapabilitiesRequest request) throws IOException, ServiceException {
         return (GetCapabilitiesResponse) internalIssueRequest(request);
     }
 
@@ -476,28 +456,23 @@ public class WebMapServer extends AbstractOpenWebService<WMSCapabilities, Layer>
         return (GetMapResponse) internalIssueRequest(request);
     }
 
-    public GetFeatureInfoResponse issueRequest(GetFeatureInfoRequest request)
-            throws IOException, ServiceException {
+    public GetFeatureInfoResponse issueRequest(GetFeatureInfoRequest request) throws IOException, ServiceException {
         return (GetFeatureInfoResponse) internalIssueRequest(request);
     }
 
-    public DescribeLayerResponse issueRequest(DescribeLayerRequest request)
-            throws IOException, ServiceException {
+    public DescribeLayerResponse issueRequest(DescribeLayerRequest request) throws IOException, ServiceException {
         return (DescribeLayerResponse) internalIssueRequest(request);
     }
 
-    public GetLegendGraphicResponse issueRequest(GetLegendGraphicRequest request)
-            throws IOException, ServiceException {
+    public GetLegendGraphicResponse issueRequest(GetLegendGraphicRequest request) throws IOException, ServiceException {
         return (GetLegendGraphicResponse) internalIssueRequest(request);
     }
 
-    public GetStylesResponse issueRequest(GetStylesRequest request)
-            throws IOException, ServiceException {
+    public GetStylesResponse issueRequest(GetStylesRequest request) throws IOException, ServiceException {
         return (GetStylesResponse) internalIssueRequest(request);
     }
 
-    public PutStylesResponse issueRequest(PutStylesRequest request)
-            throws IOException, ServiceException {
+    public PutStylesResponse issueRequest(PutStylesRequest request) throws IOException, ServiceException {
         return (PutStylesResponse) internalIssueRequest(request);
     }
 
@@ -543,14 +518,12 @@ public class WebMapServer extends AbstractOpenWebService<WMSCapabilities, Layer>
      */
     public GetFeatureInfoRequest createGetFeatureInfoRequest(GetMapRequest getMapRequest) {
         if (getCapabilities().getRequest().getGetFeatureInfo() == null) {
-            throw new UnsupportedOperationException(
-                    "This Web Map Server does not support GetFeatureInfo requests");
+            throw new UnsupportedOperationException("This Web Map Server does not support GetFeatureInfo requests");
         }
 
         URL onlineResource = findURL(getCapabilities().getRequest().getGetFeatureInfo());
 
-        GetFeatureInfoRequest request =
-                getSpecification().createGetFeatureInfoRequest(onlineResource, getMapRequest);
+        GetFeatureInfoRequest request = getSpecification().createGetFeatureInfoRequest(onlineResource, getMapRequest);
 
         return request;
     }
@@ -566,26 +539,24 @@ public class WebMapServer extends AbstractOpenWebService<WMSCapabilities, Layer>
             onlineResource = serverURL;
         }
 
-        DescribeLayerRequest request =
-                getSpecification().createDescribeLayerRequest(onlineResource);
+        DescribeLayerRequest request = getSpecification().createDescribeLayerRequest(onlineResource);
 
         return request;
     }
 
-    public GetLegendGraphicRequest createGetLegendGraphicRequest()
-            throws UnsupportedOperationException {
+    public GetLegendGraphicRequest createGetLegendGraphicRequest() throws UnsupportedOperationException {
         if (getCapabilities().getRequest().getGetLegendGraphic() == null) {
             throw new UnsupportedOperationException(
                     "Server does not specify a GetLegendGraphic operation. Cannot be performed");
         }
 
-        URL onlineResource = getCapabilities().getRequest().getGetLegendGraphic().getGet();
+        URL onlineResource =
+                getCapabilities().getRequest().getGetLegendGraphic().getGet();
         if (onlineResource == null) {
             onlineResource = serverURL;
         }
 
-        GetLegendGraphicRequest request =
-                getSpecification().createGetLegendGraphicRequest(onlineResource);
+        GetLegendGraphicRequest request = getSpecification().createGetLegendGraphicRequest(onlineResource);
 
         return request;
     }

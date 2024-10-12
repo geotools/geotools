@@ -44,12 +44,7 @@ public class GeometryColumnEncoder {
         this.dialect = dialect;
     }
 
-    public void encode(
-            GeometryDescriptor gatt,
-            String prefix,
-            StringBuffer sql,
-            boolean force2D,
-            Double distance) {
+    public void encode(GeometryDescriptor gatt, String prefix, StringBuffer sql, boolean force2D, Double distance) {
 
         if (encodeBase64) {
             sql.append("encode(");
@@ -66,11 +61,9 @@ public class GeometryColumnEncoder {
         }
     }
 
-    private void encodeNotSimplified(
-            GeometryDescriptor gatt, String prefix, StringBuffer sql, boolean force2D) {
+    private void encodeNotSimplified(GeometryDescriptor gatt, String prefix, StringBuffer sql, boolean force2D) {
 
-        boolean geography =
-                "geography".equals(gatt.getUserData().get(JDBCDataStore.JDBC_NATIVE_TYPENAME));
+        boolean geography = "geography".equals(gatt.getUserData().get(JDBCDataStore.JDBC_NATIVE_TYPENAME));
         if (geography) {
             encodeGeography(gatt, prefix, sql);
         } else {
@@ -93,13 +86,8 @@ public class GeometryColumnEncoder {
     }
 
     private void encodeSimplified(
-            GeometryDescriptor gatt,
-            String prefix,
-            StringBuffer sql,
-            boolean force2D,
-            double distance) {
-        boolean geography =
-                "geography".equals(gatt.getUserData().get(JDBCDataStore.JDBC_NATIVE_TYPENAME));
+            GeometryDescriptor gatt, String prefix, StringBuffer sql, boolean force2D, double distance) {
+        boolean geography = "geography".equals(gatt.getUserData().get(JDBCDataStore.JDBC_NATIVE_TYPENAME));
 
         if (geography) {
             encodeGeography(gatt, prefix, sql);
@@ -129,8 +117,7 @@ public class GeometryColumnEncoder {
         }
     }
 
-    private void encode2DGeometry(
-            GeometryDescriptor gatt, String prefix, StringBuffer sql, Double distance) {
+    private void encode2DGeometry(GeometryDescriptor gatt, String prefix, StringBuffer sql, Double distance) {
         if (distance != null) {
             if (stPreserveTopologyEnabled) {
                 sql.append("ST_SimplifyPreserveTopology(");

@@ -109,8 +109,7 @@ public class GranuleLoader implements Callable<GranuleLoadingResult> {
             return granuleDescriptor.loadRaster(
                     readParameters, imageIndex, cropBBox, mosaicWorldToGrid, request, hints);
         } catch (Exception e) {
-            throw new GranuleLoadingException(
-                    "Failed to load granule " + granuleDescriptor.getGranuleUrl(), e);
+            throw new GranuleLoadingException("Failed to load granule " + granuleDescriptor.getGranuleUrl(), e);
         }
     }
 }

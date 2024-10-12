@@ -32,14 +32,12 @@ public final class ExceptionChecker {
      * @throws Exception Throws the original exception back if the message DOES match. This means
      *     you still need to have the annotation: Test(expected = ***Exception.class)
      */
-    public static void assertExceptionMessage(Exception exception, String expectedMessage)
-            throws Exception {
+    public static void assertExceptionMessage(Exception exception, String expectedMessage) throws Exception {
         String actualMessage = exception.getMessage();
         if (actualMessage.compareTo(expectedMessage) != 0) {
-            fail(
-                    String.format(
-                            "Expected %s to say: '%s' but got: '%s'",
-                            exception.getClass().getSimpleName(), expectedMessage, actualMessage));
+            fail(String.format(
+                    "Expected %s to say: '%s' but got: '%s'",
+                    exception.getClass().getSimpleName(), expectedMessage, actualMessage));
         }
 
         throw exception;

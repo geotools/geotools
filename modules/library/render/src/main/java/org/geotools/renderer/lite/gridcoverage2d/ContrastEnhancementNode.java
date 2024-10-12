@@ -140,10 +140,8 @@ class ContrastEnhancementNode extends StyleVisitorCoverageProcessingNodeAdapter
                 this.type = type.toUpperCase();
                 if (!SUPPORTED_HE_ALGORITHMS.contains(type.toUpperCase()))
                     throw new IllegalArgumentException(
-                            MessageFormat.format(
-                                    ErrorKeys.OPERATION_NOT_FOUND_$1, type.toUpperCase()));
-                this.contrastEnhancementMethod =
-                        parseContrastEnhancementMethod(contrastMethod, ce.getOptions());
+                            MessageFormat.format(ErrorKeys.OPERATION_NOT_FOUND_$1, type.toUpperCase()));
+                this.contrastEnhancementMethod = parseContrastEnhancementMethod(contrastMethod, ce.getOptions());
             }
         }
 
@@ -185,8 +183,7 @@ class ContrastEnhancementNode extends StyleVisitorCoverageProcessingNodeAdapter
         } else if ("HISTOGRAM".equalsIgnoreCase(name)) {
             ceMethod = new HistogramContrastMethodStrategy();
         } else {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.UNSUPPORTED_METHOD_$1, method));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.UNSUPPORTED_METHOD_$1, method));
         }
         ceMethod.setOptions(options);
         return ceMethod;
@@ -208,8 +205,7 @@ class ContrastEnhancementNode extends StyleVisitorCoverageProcessingNodeAdapter
                 1,
                 hints,
                 SimpleInternationalString.wrap("ContrastEnhancementNode"),
-                SimpleInternationalString.wrap(
-                        "Node which applies ContrastEnhancement following SLD 1.0 spec."));
+                SimpleInternationalString.wrap("Node which applies ContrastEnhancement following SLD 1.0 spec."));
     }
 
     /*
@@ -231,11 +227,10 @@ class ContrastEnhancementNode extends StyleVisitorCoverageProcessingNodeAdapter
         final List<CoverageProcessingNode> sources = this.getSources();
         if (sources != null && !sources.isEmpty()) {
             final GridCoverage2D source = (GridCoverage2D) getSource(0).getOutput();
-            GridCoverageRendererUtilities.ensureSourceNotNull(source, this.getName().toString());
+            GridCoverageRendererUtilities.ensureSourceNotNull(
+                    source, this.getName().toString());
             GridCoverage2D output;
-            if ((!Double.isNaN(gammaValue)
-                            && !Double.isInfinite(gammaValue)
-                            && !(Math.abs(gammaValue - 1) < 1E-6))
+            if ((!Double.isNaN(gammaValue) && !Double.isInfinite(gammaValue) && !(Math.abs(gammaValue - 1) < 1E-6))
                     || (type != null && type.length() > 0)) {
 
                 // /////////////////////////////////////////////////////////////////////
@@ -275,20 +270,18 @@ class ContrastEnhancementNode extends StyleVisitorCoverageProcessingNodeAdapter
                 ////
                 ImageWorker worker;
                 if (type != null && type.equalsIgnoreCase("HISTOGRAM")) {
-                    worker =
-                            new ImageWorker(sourceImage)
-                                    .setROI(roi)
-                                    .setNoData(nodata)
-                                    .setRenderingHints(hints)
-                                    .forceComponentColorModel()
-                                    .rescaleToBytes();
+                    worker = new ImageWorker(sourceImage)
+                            .setROI(roi)
+                            .setNoData(nodata)
+                            .setRenderingHints(hints)
+                            .forceComponentColorModel()
+                            .rescaleToBytes();
                 } else {
-                    worker =
-                            new ImageWorker(sourceImage)
-                                    .setROI(roi)
-                                    .setNoData(nodata)
-                                    .setRenderingHints(hints)
-                                    .forceComponentColorModel();
+                    worker = new ImageWorker(sourceImage)
+                            .setROI(roi)
+                            .setNoData(nodata)
+                            .setRenderingHints(hints)
+                            .forceComponentColorModel();
                 }
                 final int numbands = worker.getNumBands();
 
@@ -302,11 +295,10 @@ class ContrastEnhancementNode extends StyleVisitorCoverageProcessingNodeAdapter
                 RenderedImage alphaBand = null;
                 if (numbands % 2 == 0) {
                     // get the alpha band
-                    alphaBand =
-                            new ImageWorker(worker.getRenderedImage())
-                                    .setRenderingHints(hints)
-                                    .retainLastBand()
-                                    .getRenderedImage();
+                    alphaBand = new ImageWorker(worker.getRenderedImage())
+                            .setRenderingHints(hints)
+                            .retainLastBand()
+                            .getRenderedImage();
                     // strip the alpha band from the original image
                     worker.setRenderingHints(hints).retainBands(numbands - 1);
                 }
@@ -329,16 +321,14 @@ class ContrastEnhancementNode extends StyleVisitorCoverageProcessingNodeAdapter
 
                     // get the various singular bands
                     intensityWorker = worker.setRenderingHints(hints).retainFirstBand();
-                    sChannel =
-                            new ImageWorker(IHS)
-                                    .setRenderingHints(hints)
-                                    .retainLastBand()
-                                    .getRenderedImage();
-                    hChannel =
-                            new ImageWorker(IHS)
-                                    .setRenderingHints(hints)
-                                    .retainBands(new int[] {1})
-                                    .getRenderedImage();
+                    sChannel = new ImageWorker(IHS)
+                            .setRenderingHints(hints)
+                            .retainLastBand()
+                            .getRenderedImage();
+                    hChannel = new ImageWorker(IHS)
+                            .setRenderingHints(hints)
+                            .retainBands(new int[] {1})
+                            .getRenderedImage();
                     intensity = true;
                 } else {
                     // //
@@ -413,22 +403,20 @@ class ContrastEnhancementNode extends StyleVisitorCoverageProcessingNodeAdapter
                 //
                 // //
                 if (alphaBand != null) {
-                    final ColorModel cm =
-                            new ComponentColorModel(
-                                    numbands >= 3
-                                            ? ColorSpace.getInstance(ColorSpace.CS_sRGB)
-                                            : ColorSpace.getInstance(ColorSpace.CS_GRAY),
-                                    numbands >= 3 ? new int[] {8, 8, 8, 8} : new int[] {8, 8},
-                                    true,
-                                    false,
-                                    Transparency.TRANSLUCENT,
-                                    DataBuffer.TYPE_BYTE);
+                    final ColorModel cm = new ComponentColorModel(
+                            numbands >= 3
+                                    ? ColorSpace.getInstance(ColorSpace.CS_sRGB)
+                                    : ColorSpace.getInstance(ColorSpace.CS_GRAY),
+                            numbands >= 3 ? new int[] {8, 8, 8, 8} : new int[] {8, 8},
+                            true,
+                            false,
+                            Transparency.TRANSLUCENT,
+                            DataBuffer.TYPE_BYTE);
                     final ImageLayout imageLayout = new ImageLayout();
                     imageLayout.setColorModel(cm);
-                    imageLayout.setSampleModel(
-                            cm.createCompatibleSampleModel(
-                                    intensityWorker.getRenderedImage().getWidth(),
-                                    intensityWorker.getRenderedImage().getHeight()));
+                    imageLayout.setSampleModel(cm.createCompatibleSampleModel(
+                            intensityWorker.getRenderedImage().getWidth(),
+                            intensityWorker.getRenderedImage().getHeight()));
                     // merge and go to rgb
                     intensityWorker
                             .setRenderingHints(hints)
@@ -451,9 +439,7 @@ class ContrastEnhancementNode extends StyleVisitorCoverageProcessingNodeAdapter
                 }
                 // Setting ROI and NODATA
                 if (intensityWorker.getNoData() != null) {
-                    props.put(
-                            NoDataContainer.GC_NODATA,
-                            new NoDataContainer(intensityWorker.getNoData()));
+                    props.put(NoDataContainer.GC_NODATA, new NoDataContainer(intensityWorker.getNoData()));
                 }
                 if (intensityWorker.getROI() != null) {
                     props.put("GC_ROI", intensityWorker.getROI());
@@ -461,26 +447,24 @@ class ContrastEnhancementNode extends StyleVisitorCoverageProcessingNodeAdapter
 
                 if (numActualBands == numSourceBands) {
                     final String name = "ce_coverage" + source.getName();
-                    output =
-                            factory.create(
-                                    name,
-                                    finalImage,
-                                    source.getGridGeometry(),
-                                    source.getSampleDimensions(),
-                                    new GridCoverage[] {source},
-                                    props);
+                    output = factory.create(
+                            name,
+                            finalImage,
+                            source.getGridGeometry(),
+                            source.getSampleDimensions(),
+                            new GridCoverage[] {source},
+                            props);
                 } else {
                     // replicate input bands
                     final GridSampleDimension[] sd = new GridSampleDimension[numActualBands];
                     for (int i = 0; i < numActualBands; i++) sd[i] = source.getSampleDimension(0);
-                    output =
-                            factory.create(
-                                    "ce_coverage" + source.getName().toString(),
-                                    finalImage,
-                                    source.getGridGeometry(),
-                                    sd,
-                                    new GridCoverage[] {source},
-                                    props);
+                    output = factory.create(
+                            "ce_coverage" + source.getName().toString(),
+                            finalImage,
+                            source.getGridGeometry(),
+                            sd,
+                            new GridCoverage[] {source},
+                            props);
                 }
 
             } else
@@ -495,8 +479,7 @@ class ContrastEnhancementNode extends StyleVisitorCoverageProcessingNodeAdapter
             return output;
         }
         final Object arg0 = this.getName().toString();
-        throw new IllegalStateException(
-                MessageFormat.format(ErrorKeys.SOURCE_CANT_BE_NULL_$1, arg0));
+        throw new IllegalStateException(MessageFormat.format(ErrorKeys.SOURCE_CANT_BE_NULL_$1, arg0));
     }
 
     /**
@@ -515,8 +498,7 @@ class ContrastEnhancementNode extends StyleVisitorCoverageProcessingNodeAdapter
             RenderedImage inputImage = inputWorker.getRenderedImage();
             assert inputImage.getSampleModel().getNumBands() == 1 : inputImage;
 
-            ContrastEnhancementType ceType =
-                    ContrastEnhancementType.getType(contrastEnhancementMethod);
+            ContrastEnhancementType ceType = ContrastEnhancementType.getType(contrastEnhancementMethod);
             return ceType.process(inputWorker, hints, contrastEnhancementMethod.getParameters());
         }
 
@@ -568,8 +550,7 @@ class ContrastEnhancementNode extends StyleVisitorCoverageProcessingNodeAdapter
                 // STEP 2 do the gamma correction by using generic piecewise
                 //
                 final PiecewiseTransform1D<DefaultPiecewiseTransform1DElement> transform =
-                        ContrastEnhancementType.generateGammaCorrectedPiecewise(
-                                minimum[0], maximum[0], gammaValue);
+                        ContrastEnhancementType.generateGammaCorrectedPiecewise(minimum[0], maximum[0], gammaValue);
                 worker.piecewise(transform, Integer.valueOf(0));
             }
         }

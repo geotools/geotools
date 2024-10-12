@@ -249,9 +249,7 @@ public class AttributeHandler extends XSIElementHandler {
             }
         }
 
-        cache =
-                new AttributeGT(
-                        id, name1, parent.getTargetNamespace(), st, use1, def1, fixed1, false);
+        cache = new AttributeGT(id, name1, parent.getTargetNamespace(), st, use1, def1, fixed1, false);
 
         id = type = ref = null;
 

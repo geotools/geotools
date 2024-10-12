@@ -106,40 +106,38 @@ abstract class AuthorityFactoryProxy {
      * The types that factories can be create. The most specific types must appear first in this
      * list.
      */
-    private static final List<Class<? extends IdentifiedObject>> TYPES =
-            new ArrayList<>(
-                    Arrays.asList(
-                            CoordinateOperation.class,
-                            OperationMethod.class,
-                            ParameterDescriptor.class,
-                            ProjectedCRS.class,
-                            GeographicCRS.class,
-                            GeocentricCRS.class,
-                            ImageCRS.class,
-                            DerivedCRS.class,
-                            VerticalCRS.class,
-                            TemporalCRS.class,
-                            EngineeringCRS.class,
-                            CompoundCRS.class,
-                            CoordinateReferenceSystem.class,
-                            CoordinateSystemAxis.class,
-                            CartesianCS.class,
-                            EllipsoidalCS.class,
-                            SphericalCS.class,
-                            CylindricalCS.class,
-                            PolarCS.class,
-                            VerticalCS.class,
-                            TimeCS.class,
-                            CoordinateSystem.class,
-                            PrimeMeridian.class,
-                            Ellipsoid.class,
-                            GeodeticDatum.class,
-                            ImageDatum.class,
-                            VerticalDatum.class,
-                            TemporalDatum.class,
-                            EngineeringDatum.class,
-                            Datum.class,
-                            IdentifiedObject.class));
+    private static final List<Class<? extends IdentifiedObject>> TYPES = new ArrayList<>(Arrays.asList(
+            CoordinateOperation.class,
+            OperationMethod.class,
+            ParameterDescriptor.class,
+            ProjectedCRS.class,
+            GeographicCRS.class,
+            GeocentricCRS.class,
+            ImageCRS.class,
+            DerivedCRS.class,
+            VerticalCRS.class,
+            TemporalCRS.class,
+            EngineeringCRS.class,
+            CompoundCRS.class,
+            CoordinateReferenceSystem.class,
+            CoordinateSystemAxis.class,
+            CartesianCS.class,
+            EllipsoidalCS.class,
+            SphericalCS.class,
+            CylindricalCS.class,
+            PolarCS.class,
+            VerticalCS.class,
+            TimeCS.class,
+            CoordinateSystem.class,
+            PrimeMeridian.class,
+            Ellipsoid.class,
+            GeodeticDatum.class,
+            ImageDatum.class,
+            VerticalDatum.class,
+            TemporalDatum.class,
+            EngineeringDatum.class,
+            Datum.class,
+            IdentifiedObject.class));
 
     /** Creates a new proxy. */
     AuthorityFactoryProxy() {}
@@ -184,8 +182,8 @@ abstract class AuthorityFactoryProxy {
      * @return The most specific GeoAPI interface implemented by {@code type}.
      * @throws IllegalArgumentException if the type doesn't implement a valid interface.
      */
-    public static Class<? extends IdentifiedObject> getType(
-            final Class<? extends IdentifiedObject> type) throws IllegalArgumentException {
+    public static Class<? extends IdentifiedObject> getType(final Class<? extends IdentifiedObject> type)
+            throws IllegalArgumentException {
         for (final Class<? extends IdentifiedObject> candidate : TYPES) {
             if (candidate.isAssignableFrom(type)) {
                 return candidate;
@@ -219,8 +217,7 @@ abstract class AuthorityFactoryProxy {
      * @throws NoSuchAuthorityCodeException if the specified {@code code} was not found.
      * @throws FactoryException if the object creation failed for some other reason.
      */
-    public abstract IdentifiedObject create(String code)
-            throws NoSuchAuthorityCodeException, FactoryException;
+    public abstract IdentifiedObject create(String code) throws NoSuchAuthorityCodeException, FactoryException;
 
     /** Returns a string representation of this proxy, for debugging purpose only. */
     @Override
@@ -277,8 +274,7 @@ abstract class AuthorityFactoryProxy {
                     return;
                 }
             }
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.UNKNOW_TYPE_$1, type));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.UNKNOW_TYPE_$1, type));
         }
 
         /** {@inheritDoc} */

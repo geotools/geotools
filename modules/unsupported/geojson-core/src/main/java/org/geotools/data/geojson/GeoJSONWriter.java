@@ -279,8 +279,7 @@ public class GeoJSONWriter implements AutoCloseable {
                                 }
 
                                 @Override
-                                public DefaultSerializerProvider withCaches(
-                                        CacheProvider cacheProvider) {
+                                public DefaultSerializerProvider withCaches(CacheProvider cacheProvider) {
                                     throw new UnsupportedOperationException();
                                 }
                             });
@@ -312,10 +311,7 @@ public class GeoJSONWriter implements AutoCloseable {
             return collection;
         }
         CoordinateReferenceSystem inCRS =
-                currentFeature
-                        .getDefaultGeometryProperty()
-                        .getDescriptor()
-                        .getCoordinateReferenceSystem();
+                currentFeature.getDefaultGeometryProperty().getDescriptor().getCoordinateReferenceSystem();
         if (transform == null || inCRS != lastCRS) {
             lastCRS = inCRS;
             try {
@@ -342,9 +338,7 @@ public class GeoJSONWriter implements AutoCloseable {
     private void writeBbox(JsonGenerator g, Geometry defaultGeometry) throws IOException {
         g.writeFieldName("bbox");
         final Envelope envelope = defaultGeometry.getEnvelopeInternal();
-        double[] coords = {
-            envelope.getMinX(), envelope.getMinY(), envelope.getMaxX(), envelope.getMaxY()
-        };
+        double[] coords = {envelope.getMinX(), envelope.getMinY(), envelope.getMaxX(), envelope.getMaxY()};
         formatter.setMaximumFractionDigits(maxDecimals);
         g.writeStartArray();
         for (double c : coords) {
@@ -426,10 +420,7 @@ public class GeoJSONWriter implements AutoCloseable {
         } catch (IOException e) {
             // very hard to actually generate this
             LOGGER.warning("Unexpected IOException converting featureCollection to GeoJSON");
-            LOGGER.log(
-                    Level.FINE,
-                    "Unexpected IOException converting featureCollection to GeoJSON",
-                    e);
+            LOGGER.log(Level.FINE, "Unexpected IOException converting featureCollection to GeoJSON", e);
         }
         return new String(out.toByteArray());
     }

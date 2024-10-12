@@ -77,11 +77,7 @@ public abstract class JDBCMeasuredGeometriesTestSetup extends JDBCDelegatingTest
 
     /** Quietly drop the created tables, all exceptions will be ignored. */
     private void dropTables() {
-        quietly(
-                this::dropTablePointsM,
-                this::dropTablePointsZM,
-                this::dropTableLinesM,
-                this::dropTableLinesZM);
+        quietly(this::dropTablePointsM, this::dropTablePointsZM, this::dropTableLinesM, this::dropTableLinesZM);
     }
 
     /**

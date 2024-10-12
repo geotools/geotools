@@ -42,17 +42,16 @@ public final class WktUnitFormat extends BaseUnitFormatter {
         return INSTANCE;
     }
 
-    private static final List<UnitDefinition> UNIT_DEFINITIONS =
-            Stream.of(
-                            UnitDefinitions.DIMENSIONLESS,
-                            UnitDefinitions.CONSTANTS,
-                            UnitDefinitions.SI_BASE,
-                            UnitDefinitions.SI_DERIVED,
-                            UnitDefinitions.NON_SI,
-                            UnitDefinitions.US_CUSTOMARY,
-                            UnitDefinitions.WKT)
-                    .flatMap(Collection::stream)
-                    .collect(Collectors.toUnmodifiableList());
+    private static final List<UnitDefinition> UNIT_DEFINITIONS = Stream.of(
+                    UnitDefinitions.DIMENSIONLESS,
+                    UnitDefinitions.CONSTANTS,
+                    UnitDefinitions.SI_BASE,
+                    UnitDefinitions.SI_DERIVED,
+                    UnitDefinitions.NON_SI,
+                    UnitDefinitions.US_CUSTOMARY,
+                    UnitDefinitions.WKT)
+            .flatMap(Collection::stream)
+            .collect(Collectors.toUnmodifiableList());
 
     private static final WktUnitFormat INSTANCE = new WktUnitFormat(UNIT_DEFINITIONS);
 

@@ -35,20 +35,18 @@ import org.geotools.filter.capability.FunctionNameImpl;
 
 public class JsonArrayContainsFunction extends FunctionExpressionImpl {
 
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(JsonArrayContainsFunction.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(JsonArrayContainsFunction.class);
 
     private static final HashMap<String, JsonPointer> jsonPointerCache = new HashMap<>();
     private static final JsonToken END_OF_STREAM = null;
     private final JsonFactory factory;
 
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "jsonArrayContains",
-                    Boolean.class,
-                    parameter("column", String.class),
-                    parameter("pointer", String.class),
-                    parameter("expected", String.class));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "jsonArrayContains",
+            Boolean.class,
+            parameter("column", String.class),
+            parameter("pointer", String.class),
+            parameter("expected", String.class));
 
     public JsonArrayContainsFunction() {
         super(NAME);
@@ -64,11 +62,7 @@ public class JsonArrayContainsFunction extends FunctionExpressionImpl {
             try (JsonParser parser = factory.createParser(json)) {
                 found = checkExpected(parser, object);
             } catch (IOException e) {
-                LOGGER.severe(
-                        "Error when parsing the JSON: "
-                                + json
-                                + ". Exception: "
-                                + e.getLocalizedMessage());
+                LOGGER.severe("Error when parsing the JSON: " + json + ". Exception: " + e.getLocalizedMessage());
                 throw new RuntimeException(e);
             }
         }
@@ -89,8 +83,7 @@ public class JsonArrayContainsFunction extends FunctionExpressionImpl {
          */
         while (parser.nextToken() != END_OF_STREAM && !found) {
             final JsonPointer pointer = parser.getParsingContext().pathAsPointer();
-            if (pointer.equals(expectedPointer)
-                    && parser.currentTokenId() == JsonTokenId.ID_START_ARRAY) {
+            if (pointer.equals(expectedPointer) && parser.currentTokenId() == JsonTokenId.ID_START_ARRAY) {
                 StringWriter writer = new StringWriter();
                 try (final JsonGenerator generator = factory.createGenerator(writer)) {
                     serializeArray(parser, generator);

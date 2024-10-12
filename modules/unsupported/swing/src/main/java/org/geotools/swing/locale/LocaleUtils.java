@@ -227,16 +227,12 @@ public class LocaleUtils {
     private static ResourceBundle getBundle(String resBundleName) {
         ResourceBundle rb = bundles.get(resBundleName);
         if (rb == null) {
-            rb =
-                    ResourceBundle.getBundle(
-                            PREFIX + resBundleName,
-                            new ResourceBundle.Control() {
-                                @Override
-                                public List<Locale> getCandidateLocales(
-                                        String baseName, Locale locale) {
-                                    return workingLocales;
-                                }
-                            });
+            rb = ResourceBundle.getBundle(PREFIX + resBundleName, new ResourceBundle.Control() {
+                @Override
+                public List<Locale> getCandidateLocales(String baseName, Locale locale) {
+                    return workingLocales;
+                }
+            });
 
             bundles.put(resBundleName, rb);
         }

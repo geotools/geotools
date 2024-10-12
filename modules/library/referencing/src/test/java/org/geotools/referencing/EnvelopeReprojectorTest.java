@@ -52,18 +52,15 @@ public class EnvelopeReprojectorTest {
                 CRS.getCoordinateOperationFactory(true).createOperation(WGS84, mapCRS);
         assertFalse(operation.getMathTransform().isIdentity());
 
-        final GeneralBounds firstEnvelope =
-                new GeneralBounds(new double[] {-124, 42}, new double[] {-122, 43});
+        final GeneralBounds firstEnvelope = new GeneralBounds(new double[] {-124, 42}, new double[] {-122, 43});
         firstEnvelope.setCoordinateReferenceSystem(WGS84);
 
-        final GeneralBounds transformedEnvelope =
-                EnvelopeReprojector.transform(operation, firstEnvelope);
+        final GeneralBounds transformedEnvelope = EnvelopeReprojector.transform(operation, firstEnvelope);
         transformedEnvelope.setCoordinateReferenceSystem(mapCRS);
 
         final CoordinateOperation inverse =
                 CRS.getCoordinateOperationFactory(true).createOperation(mapCRS, WGS84);
-        final GeneralBounds oldEnvelope =
-                EnvelopeReprojector.transform(inverse, transformedEnvelope);
+        final GeneralBounds oldEnvelope = EnvelopeReprojector.transform(inverse, transformedEnvelope);
         oldEnvelope.setCoordinateReferenceSystem(WGS84);
 
         assertTrue(oldEnvelope.contains(firstEnvelope, true));
@@ -81,8 +78,7 @@ public class EnvelopeReprojectorTest {
         final MathTransform crsTransform = CRS.findMathTransform(WGS84, WGS84Altered, true);
         assertTrue(crsTransform.isIdentity());
 
-        final GeneralBounds firstEnvelope =
-                new GeneralBounds(new double[] {-124, 42}, new double[] {-122, 43});
+        final GeneralBounds firstEnvelope = new GeneralBounds(new double[] {-124, 42}, new double[] {-122, 43});
         firstEnvelope.setCoordinateReferenceSystem(WGS84);
 
         // this triggered a assertion error in GEOT-2934
@@ -101,15 +97,13 @@ public class EnvelopeReprojectorTest {
     @Ignore
     public void testEnvelopeTransformClipping() throws Exception {
         final CoordinateReferenceSystem source = WGS84;
-        final CoordinateReferenceSystem target =
-                CRS.parseWKT(
-                        "GEOGCS[\"GCS_North_American_1983\","
-                                + "DATUM[\"North_American_Datum_1983\", "
-                                + "SPHEROID[\"GRS_1980\", 6378137.0, 298.257222101]], "
-                                + "PRIMEM[\"Greenwich\", 0.0], "
-                                + "UNIT[\"degree\", 0.017453292519943295], "
-                                + "AXIS[\"Longitude\", EAST], "
-                                + "AXIS[\"Latitude\", NORTH]]");
+        final CoordinateReferenceSystem target = CRS.parseWKT("GEOGCS[\"GCS_North_American_1983\","
+                + "DATUM[\"North_American_Datum_1983\", "
+                + "SPHEROID[\"GRS_1980\", 6378137.0, 298.257222101]], "
+                + "PRIMEM[\"Greenwich\", 0.0], "
+                + "UNIT[\"degree\", 0.017453292519943295], "
+                + "AXIS[\"Longitude\", EAST], "
+                + "AXIS[\"Latitude\", NORTH]]");
         // bounds from geotiff
         GeneralBounds geotiff = new GeneralBounds(source);
         geotiff.add(new Position2D(source, -179.9, -90.0));
@@ -138,22 +132,14 @@ public class EnvelopeReprojectorTest {
         /*
          * The rectangle to test, which contains the South pole.
          */
-        Rectangle2D envelope =
-                XRectangle2D.createFromExtremums(
-                        -3943612.4042124213,
-                        -4078471.954436003,
-                        3729092.5890516187,
-                        4033483.085688618);
+        Rectangle2D envelope = XRectangle2D.createFromExtremums(
+                -3943612.4042124213, -4078471.954436003, 3729092.5890516187, 4033483.085688618);
         /*
          * This is what we get without special handling of singularity point.
          * Note that is doesn't include the South pole as we would expect.
          */
-        Rectangle2D expected =
-                XRectangle2D.createFromExtremums(
-                        -178.49352310409273,
-                        -88.99136583196398,
-                        137.56220967463082,
-                        -40.905775004205864);
+        Rectangle2D expected = XRectangle2D.createFromExtremums(
+                -178.49352310409273, -88.99136583196398, 137.56220967463082, -40.905775004205864);
         /*
          * Tests what we actually get.
          */
@@ -178,36 +164,34 @@ public class EnvelopeReprojectorTest {
 
     @Test
     public void testReprojectEnvelope() throws Exception {
-        String wkt =
-                "GEOGCS[\"WGS84(DD)\","
-                        + "DATUM[\"WGS84\", "
-                        + "SPHEROID[\"WGS84\", 6378137.0, 298.257223563]],"
-                        + "PRIMEM[\"Greenwich\", 0.0],"
-                        + "UNIT[\"degree\", 0.017453292519943295],"
-                        + "AXIS[\"Geodetic longitude\", EAST],"
-                        + "AXIS[\"Geodetic latitude\", NORTH]]";
+        String wkt = "GEOGCS[\"WGS84(DD)\","
+                + "DATUM[\"WGS84\", "
+                + "SPHEROID[\"WGS84\", 6378137.0, 298.257223563]],"
+                + "PRIMEM[\"Greenwich\", 0.0],"
+                + "UNIT[\"degree\", 0.017453292519943295],"
+                + "AXIS[\"Geodetic longitude\", EAST],"
+                + "AXIS[\"Geodetic latitude\", NORTH]]";
         CoordinateReferenceSystem wgs84 = CRS.parseWKT(wkt);
-        wkt =
-                "PROJCS[\"WGS 84 / UTM zone 32N\", \n"
-                        + "  GEOGCS[\"WGS 84\", \n"
-                        + "    DATUM[\"World Geodetic System 1984\", \n"
-                        + "      SPHEROID[\"WGS 84\", 6378137.0, 298.257223563, AUTHORITY[\"EPSG\",\"7030\"]], \n"
-                        + "      AUTHORITY[\"EPSG\",\"6326\"]], \n"
-                        + "    PRIMEM[\"Greenwich\", 0.0, AUTHORITY[\"EPSG\",\"8901\"]], \n"
-                        + "    UNIT[\"degree\", 0.017453292519943295], \n"
-                        + "    AXIS[\"Geodetic longitude\", EAST], \n"
-                        + "    AXIS[\"Geodetic latitude\", NORTH], \n"
-                        + "    AUTHORITY[\"EPSG\",\"4326\"]], \n"
-                        + "  PROJECTION[\"Transverse Mercator\", AUTHORITY[\"EPSG\",\"9807\"]], \n"
-                        + "  PARAMETER[\"central_meridian\", 9.0], \n"
-                        + "  PARAMETER[\"latitude_of_origin\", 0.0], \n"
-                        + "  PARAMETER[\"scale_factor\", 0.9996], \n"
-                        + "  PARAMETER[\"false_easting\", 500000.0], \n"
-                        + "  PARAMETER[\"false_northing\", 0.0], \n"
-                        + "  UNIT[\"m\", 1.0], \n"
-                        + "  AXIS[\"Easting\", EAST], \n"
-                        + "  AXIS[\"Northing\", NORTH], \n"
-                        + "  AUTHORITY[\"EPSG\",\"32632\"]]";
+        wkt = "PROJCS[\"WGS 84 / UTM zone 32N\", \n"
+                + "  GEOGCS[\"WGS 84\", \n"
+                + "    DATUM[\"World Geodetic System 1984\", \n"
+                + "      SPHEROID[\"WGS 84\", 6378137.0, 298.257223563, AUTHORITY[\"EPSG\",\"7030\"]], \n"
+                + "      AUTHORITY[\"EPSG\",\"6326\"]], \n"
+                + "    PRIMEM[\"Greenwich\", 0.0, AUTHORITY[\"EPSG\",\"8901\"]], \n"
+                + "    UNIT[\"degree\", 0.017453292519943295], \n"
+                + "    AXIS[\"Geodetic longitude\", EAST], \n"
+                + "    AXIS[\"Geodetic latitude\", NORTH], \n"
+                + "    AUTHORITY[\"EPSG\",\"4326\"]], \n"
+                + "  PROJECTION[\"Transverse Mercator\", AUTHORITY[\"EPSG\",\"9807\"]], \n"
+                + "  PARAMETER[\"central_meridian\", 9.0], \n"
+                + "  PARAMETER[\"latitude_of_origin\", 0.0], \n"
+                + "  PARAMETER[\"scale_factor\", 0.9996], \n"
+                + "  PARAMETER[\"false_easting\", 500000.0], \n"
+                + "  PARAMETER[\"false_northing\", 0.0], \n"
+                + "  UNIT[\"m\", 1.0], \n"
+                + "  AXIS[\"Easting\", EAST], \n"
+                + "  AXIS[\"Northing\", NORTH], \n"
+                + "  AUTHORITY[\"EPSG\",\"32632\"]]";
         CoordinateReferenceSystem utm32n = CRS.parseWKT(wkt);
 
         GeneralBounds envelope = new GeneralBounds(utm32n);
@@ -230,11 +214,9 @@ public class EnvelopeReprojectorTest {
         testOrthographicDisc(orthographic, bounds);
     }
 
-    private static void testOrthographicDisc(
-            CoordinateReferenceSystem orthographic, GeneralBounds bounds)
+    private static void testOrthographicDisc(CoordinateReferenceSystem orthographic, GeneralBounds bounds)
             throws FactoryException, TransformException {
-        CoordinateOperation operation =
-                CRS.getCoordinateOperationFactory(true).createOperation(WGS84, orthographic);
+        CoordinateOperation operation = CRS.getCoordinateOperationFactory(true).createOperation(WGS84, orthographic);
 
         // off center bounds, the right corners are outside of the sphere
         Bounds result = EnvelopeReprojector.transform(operation, bounds);
@@ -249,8 +231,7 @@ public class EnvelopeReprojectorTest {
     public void testGeostationaryCentered() throws Exception {
         // centered geostationary
         CoordinateReferenceSystem geos = CRS.decode("AUTO:97004,9001,0,0");
-        CoordinateOperation operation =
-                CRS.getCoordinateOperationFactory(true).createOperation(WGS84, geos);
+        CoordinateOperation operation = CRS.getCoordinateOperationFactory(true).createOperation(WGS84, geos);
 
         // envelope wrapping the area of validity
         GeneralBounds bounds = new GeneralBounds(WGS84);

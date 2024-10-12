@@ -85,8 +85,8 @@ public class GeoJSONMapper extends AbstractCollectionMapper {
                     ftBuilder.userData(MongoDataStore.KEY_mapping, "properties." + key);
                     ftBuilder.add(key, binding);
                 } else {
-                    LOGGER.warning(
-                            "unmapped key, " + key + " with type of " + v.getClass().getName());
+                    LOGGER.warning("unmapped key, " + key + " with type of "
+                            + v.getClass().getName());
                 }
             }
         }

@@ -52,17 +52,14 @@ public class InterpolationPropertiesTest extends AppSchemaTestSupport {
     public static final String TEST_SYSTEM_PROPERTY_VALUE = "system";
 
     /** System property set to trigger file (not classpath) loading. */
-    public static final String TEST_FILE_SYSTEM_PROPERTY =
-            IDENTIFIER + "-file-identifier" + ".properties";
+    public static final String TEST_FILE_SYSTEM_PROPERTY = IDENTIFIER + "-file-identifier" + ".properties";
 
     @Before
     public void setUp() throws Exception {
         System.setProperty(TEST_SYSTEM_PROPERTY, TEST_SYSTEM_PROPERTY_VALUE);
         System.setProperty(
                 TEST_FILE_SYSTEM_PROPERTY,
-                URLs.urlToFile(
-                                InterpolationProperties.class.getResource(
-                                        "/" + IDENTIFIER + ".file.properties"))
+                URLs.urlToFile(InterpolationProperties.class.getResource("/" + IDENTIFIER + ".file.properties"))
                         .getPath());
     }
 
@@ -78,10 +75,8 @@ public class InterpolationPropertiesTest extends AppSchemaTestSupport {
         properties.put("foo.y", "abc");
         properties.put("foo.z", "bar");
         InterpolationProperties props = new InterpolationProperties(properties);
-        String result =
-                props.interpolate(
-                        "123ajh${foo.z} akl ${foo.y}${foo.y} laskj ${foo.x}\n"
-                                + "foo.x${foo.x}${foo.x} ${foo.z}${foo.y}");
+        String result = props.interpolate(
+                "123ajh${foo.z} akl ${foo.y}${foo.y} laskj ${foo.x}\n" + "foo.x${foo.x}${foo.x} ${foo.z}${foo.y}");
         assertEquals("123ajhbar akl abcabc laskj 123\nfoo.x123123 barabc", result);
     }
 

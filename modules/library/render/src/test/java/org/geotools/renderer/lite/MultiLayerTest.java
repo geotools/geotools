@@ -25,15 +25,14 @@ public class MultiLayerTest {
     @Test
     public void testRasterOpacity() throws Exception {
         // a polygon layer
-        File property = new File(TestData.getResource(this, "buildings.properties").toURI());
+        File property =
+                new File(TestData.getResource(this, "buildings.properties").toURI());
         PropertyDataStore ds = new PropertyDataStore(property.getParentFile());
         SimpleFeatureSource fs = ds.getFeatureSource("buildings");
-        ReferencedEnvelope bounds =
-                new ReferencedEnvelope(0, 10, 0, 10, DefaultGeographicCRS.WGS84);
+        ReferencedEnvelope bounds = new ReferencedEnvelope(0, 10, 0, 10, DefaultGeographicCRS.WGS84);
 
         StyleBuilder sb = new StyleBuilder();
-        Style pst =
-                sb.createStyle(sb.createPolygonSymbolizer(null, sb.createFill(Color.GRAY, 0.5)));
+        Style pst = sb.createStyle(sb.createPolygonSymbolizer(null, sb.createFill(Color.GRAY, 0.5)));
 
         // a raster layer
         BufferedImage bi = new BufferedImage(300, 300, BufferedImage.TYPE_4BYTE_ABGR);

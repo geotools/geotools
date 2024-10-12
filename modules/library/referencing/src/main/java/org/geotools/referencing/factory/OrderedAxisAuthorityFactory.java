@@ -31,8 +31,7 @@ import org.geotools.util.factory.Hints;
  * <p>See {@link OrderedAxisCRSAuthorityFactory} for details. This class also implements {@link
  * CSAuthorityFactory}
  */
-public class OrderedAxisAuthorityFactory extends OrderedAxisCRSAuthorityFactory
-        implements CSAuthorityFactory {
+public class OrderedAxisAuthorityFactory extends OrderedAxisCRSAuthorityFactory implements CSAuthorityFactory {
 
     /**
      * Creates a factory which will reorder the axis of all objects created by the default authority
@@ -56,8 +55,7 @@ public class OrderedAxisAuthorityFactory extends OrderedAxisCRSAuthorityFactory
      * @throws IllegalArgumentException If at least two axis directions are colinear.
      * @since 2.3
      */
-    public OrderedAxisAuthorityFactory(
-            final String authority, final Hints userHints, final AxisDirection... axisOrder)
+    public OrderedAxisAuthorityFactory(final String authority, final Hints userHints, final AxisDirection... axisOrder)
             throws FactoryRegistryException, IllegalArgumentException {
         super(authority, userHints, axisOrder);
     }
@@ -81,9 +79,7 @@ public class OrderedAxisAuthorityFactory extends OrderedAxisCRSAuthorityFactory
      * @since 2.3
      */
     public OrderedAxisAuthorityFactory(
-            final AbstractAuthorityFactory factory,
-            final Hints userHints,
-            final AxisDirection... axisOrder)
+            final AbstractAuthorityFactory factory, final Hints userHints, final AxisDirection... axisOrder)
             throws IllegalArgumentException {
         super(factory, userHints, axisOrder);
     }

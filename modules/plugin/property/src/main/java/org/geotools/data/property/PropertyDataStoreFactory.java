@@ -39,8 +39,7 @@ public class PropertyDataStoreFactory implements DataStoreFactorySpi {
     public static final Param DIRECTORY =
             new Param("directory", File.class, "Directory containting property files", true);
 
-    public static final Param NAMESPACE =
-            new Param("namespace", String.class, "namespace of datastore", false);
+    public static final Param NAMESPACE = new Param("namespace", String.class, "namespace of datastore", false);
     /**
      * Public "no argument" constructor called by Factory Service Provider (SPI) entry listed in
      * META-INF/services/org.geotools.data.DataStoreFactorySPI
@@ -146,16 +145,14 @@ public class PropertyDataStoreFactory implements DataStoreFactorySpi {
                 throw new FileNotFoundException(directory.getAbsolutePath());
             }
             if (!directory.isDirectory()) {
-                throw new IllegalArgumentException(
-                        directory.getAbsolutePath() + " is not a directory");
+                throw new IllegalArgumentException(directory.getAbsolutePath() + " is not a directory");
             }
         } else if (!directory.isDirectory()) {
             // check if they pointed to a properties file; and use the parent directory
             if (directory.getPath().endsWith(".properties")) {
                 return directory.getParentFile();
             } else {
-                throw new IllegalArgumentException(
-                        directory.getAbsolutePath() + " is not a directory");
+                throw new IllegalArgumentException(directory.getAbsolutePath() + " is not a directory");
             }
         }
         return directory;

@@ -59,8 +59,7 @@ public class SubFeatureCollection extends BaseSimpleFeatureCollection {
             subfilter = Filter.INCLUDE;
         }
         if (subfilter.equals(Filter.EXCLUDE)) {
-            throw new IllegalArgumentException(
-                    "A subcollection with Filter.EXCLUDE would be empty");
+            throw new IllegalArgumentException("A subcollection with Filter.EXCLUDE would be empty");
         }
         if (collection instanceof SubFeatureCollection) {
             SubFeatureCollection filtered = (SubFeatureCollection) collection;

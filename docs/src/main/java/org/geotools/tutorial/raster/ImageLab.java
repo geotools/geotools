@@ -74,23 +74,16 @@ public class ImageLab {
      */
     private void getLayersAndDisplay() throws Exception {
         List<Parameter<?>> list = new ArrayList<>();
-        list.add(
-                new Parameter<>(
-                        "image",
-                        File.class,
-                        "Image",
-                        "GeoTiff or World+Image to display as basemap",
-                        new KVP(Parameter.EXT, "tif", Parameter.EXT, "jpg")));
-        list.add(
-                new Parameter<>(
-                        "shape",
-                        File.class,
-                        "Shapefile",
-                        "Shapefile contents to display",
-                        new KVP(Parameter.EXT, "shp")));
+        list.add(new Parameter<>(
+                "image",
+                File.class,
+                "Image",
+                "GeoTiff or World+Image to display as basemap",
+                new KVP(Parameter.EXT, "tif", Parameter.EXT, "jpg")));
+        list.add(new Parameter<>(
+                "shape", File.class, "Shapefile", "Shapefile contents to display", new KVP(Parameter.EXT, "shp")));
 
-        JParameterListWizard wizard =
-                new JParameterListWizard("Image Lab", "Fill in the following layers", list);
+        JParameterListWizard wizard = new JParameterListWizard("Image Lab", "Fill in the following layers", list);
         int finish = wizard.showModalDialog();
 
         if (finish != JWizard.FINISH) {
@@ -152,27 +145,25 @@ public class ImageLab {
         JMenu menu = new JMenu("Raster");
         menuBar.add(menu);
 
-        menu.add(
-                new SafeAction("Grayscale display") {
-                    public void action(ActionEvent e) throws Throwable {
-                        Style style = createGreyscaleStyle();
-                        if (style != null) {
-                            ((StyleLayer) map.layers().get(0)).setStyle(style);
-                            frame.repaint();
-                        }
-                    }
-                });
+        menu.add(new SafeAction("Grayscale display") {
+            public void action(ActionEvent e) throws Throwable {
+                Style style = createGreyscaleStyle();
+                if (style != null) {
+                    ((StyleLayer) map.layers().get(0)).setStyle(style);
+                    frame.repaint();
+                }
+            }
+        });
 
-        menu.add(
-                new SafeAction("RGB display") {
-                    public void action(ActionEvent e) throws Throwable {
-                        Style style = createRGBStyle();
-                        if (style != null) {
-                            ((StyleLayer) map.layers().get(0)).setStyle(style);
-                            frame.repaint();
-                        }
-                    }
-                });
+        menu.add(new SafeAction("RGB display") {
+            public void action(ActionEvent e) throws Throwable {
+                Style style = createRGBStyle();
+                if (style != null) {
+                    ((StyleLayer) map.layers().get(0)).setStyle(style);
+                    frame.repaint();
+                }
+            }
+        });
         // Finally display the map frame.
         // When it is closed the app will exit.
         frame.setVisible(true);
@@ -198,15 +189,14 @@ public class ImageLab {
         for (int i = 0; i < numBands; i++) {
             bandNumbers[i] = i + 1;
         }
-        Object selection =
-                JOptionPane.showInputDialog(
-                        frame,
-                        "Band to use for greyscale display",
-                        "Select an image band",
-                        JOptionPane.QUESTION_MESSAGE,
-                        null,
-                        bandNumbers,
-                        1);
+        Object selection = JOptionPane.showInputDialog(
+                frame,
+                "Band to use for greyscale display",
+                "Select an image band",
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                bandNumbers,
+                1);
         if (selection != null) {
             int band = ((Number) selection).intValue();
             return createGreyscaleStyle(band);

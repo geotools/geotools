@@ -64,22 +64,20 @@ public class GMLLinearRingTypeBindingTest extends AbstractGMLBindingTest {
 
     @Test
     public void testCoordFour() throws Exception {
-        Node node =
-                createNode(
-                        ring,
-                        new ElementInstance[] {coord1, coord2, coord3, coord4},
-                        new Object[] {
-                            createCoordinateSequence(new Coordinate(1, 2)),
-                            createCoordinateSequence(new Coordinate(3, 4)),
-                            createCoordinateSequence(new Coordinate(5, 6)),
-                            createCoordinateSequence(new Coordinate(1, 2))
-                        },
-                        null,
-                        null);
+        Node node = createNode(
+                ring,
+                new ElementInstance[] {coord1, coord2, coord3, coord4},
+                new Object[] {
+                    createCoordinateSequence(new Coordinate(1, 2)),
+                    createCoordinateSequence(new Coordinate(3, 4)),
+                    createCoordinateSequence(new Coordinate(5, 6)),
+                    createCoordinateSequence(new Coordinate(1, 2))
+                },
+                null,
+                null);
 
         GMLLinearRingTypeBinding s =
-                (GMLLinearRingTypeBinding)
-                        container.getComponentInstanceOfType(GMLLinearRingTypeBinding.class);
+                (GMLLinearRingTypeBinding) container.getComponentInstanceOfType(GMLLinearRingTypeBinding.class);
         LinearRing linearRing = (LinearRing) s.parse(ring, node, null);
 
         assertNotNull(linearRing);
@@ -96,21 +94,19 @@ public class GMLLinearRingTypeBindingTest extends AbstractGMLBindingTest {
 
     @Test
     public void testCoordLessThanFour() throws Exception {
-        Node node =
-                createNode(
-                        ring,
-                        new ElementInstance[] {coord1, coord2, coord3},
-                        new Object[] {
-                            createCoordinateSequence(new Coordinate(1, 2)),
-                            createCoordinateSequence(new Coordinate(3, 4)),
-                            createCoordinateSequence(new Coordinate(1, 2))
-                        },
-                        null,
-                        null);
+        Node node = createNode(
+                ring,
+                new ElementInstance[] {coord1, coord2, coord3},
+                new Object[] {
+                    createCoordinateSequence(new Coordinate(1, 2)),
+                    createCoordinateSequence(new Coordinate(3, 4)),
+                    createCoordinateSequence(new Coordinate(1, 2))
+                },
+                null,
+                null);
 
         GMLLinearRingTypeBinding s =
-                (GMLLinearRingTypeBinding)
-                        container.getComponentInstanceOfType(GMLLinearRingTypeBinding.class);
+                (GMLLinearRingTypeBinding) container.getComponentInstanceOfType(GMLLinearRingTypeBinding.class);
 
         try {
             s.parse(ring, node, null);
@@ -122,23 +118,21 @@ public class GMLLinearRingTypeBindingTest extends AbstractGMLBindingTest {
 
     @Test
     public void testCoordMoreThanFour() throws Exception {
-        Node node =
-                createNode(
-                        ring,
-                        new ElementInstance[] {coord1, coord2, coord3, coord4, coord5},
-                        new Object[] {
-                            createCoordinateSequence(new Coordinate(1, 2)),
-                            createCoordinateSequence(new Coordinate(3, 4)),
-                            createCoordinateSequence(new Coordinate(5, 6)),
-                            createCoordinateSequence(new Coordinate(7, 8)),
-                            createCoordinateSequence(new Coordinate(1, 2))
-                        },
-                        null,
-                        null);
+        Node node = createNode(
+                ring,
+                new ElementInstance[] {coord1, coord2, coord3, coord4, coord5},
+                new Object[] {
+                    createCoordinateSequence(new Coordinate(1, 2)),
+                    createCoordinateSequence(new Coordinate(3, 4)),
+                    createCoordinateSequence(new Coordinate(5, 6)),
+                    createCoordinateSequence(new Coordinate(7, 8)),
+                    createCoordinateSequence(new Coordinate(1, 2))
+                },
+                null,
+                null);
 
         GMLLinearRingTypeBinding s =
-                (GMLLinearRingTypeBinding)
-                        container.getComponentInstanceOfType(GMLLinearRingTypeBinding.class);
+                (GMLLinearRingTypeBinding) container.getComponentInstanceOfType(GMLLinearRingTypeBinding.class);
         LinearRing linearRing = (LinearRing) s.parse(ring, node, null);
 
         assertNotNull(linearRing);
@@ -157,25 +151,19 @@ public class GMLLinearRingTypeBindingTest extends AbstractGMLBindingTest {
 
     @Test
     public void testCoordinatesFour() throws Exception {
-        Node node =
-                createNode(
-                        ring,
-                        new ElementInstance[] {coords},
-                        new Object[] {
-                            createCoordinateSequence(
-                                    new Coordinate[] {
-                                        new Coordinate(1, 2),
-                                        new Coordinate(3, 4),
-                                        new Coordinate(5, 6),
-                                        new Coordinate(1, 2)
-                                    }),
-                        },
-                        null,
-                        null);
+        Node node = createNode(
+                ring,
+                new ElementInstance[] {coords},
+                new Object[] {
+                    createCoordinateSequence(new Coordinate[] {
+                        new Coordinate(1, 2), new Coordinate(3, 4), new Coordinate(5, 6), new Coordinate(1, 2)
+                    }),
+                },
+                null,
+                null);
 
         GMLLinearRingTypeBinding s =
-                (GMLLinearRingTypeBinding)
-                        container.getComponentInstanceOfType(GMLLinearRingTypeBinding.class);
+                (GMLLinearRingTypeBinding) container.getComponentInstanceOfType(GMLLinearRingTypeBinding.class);
 
         LinearRing linearRing = (LinearRing) s.parse(ring, node, null);
         assertNotNull(linearRing);
@@ -192,20 +180,17 @@ public class GMLLinearRingTypeBindingTest extends AbstractGMLBindingTest {
 
     @Test
     public void testCoordinatesLessThanFour() throws Exception {
-        Node node =
-                createNode(
-                        ring,
-                        new ElementInstance[] {coords},
-                        new Object[] {
-                            createCoordinateSequence(
-                                    new Coordinate[] {new Coordinate(1, 2), new Coordinate(1, 2)}),
-                        },
-                        null,
-                        null);
+        Node node = createNode(
+                ring,
+                new ElementInstance[] {coords},
+                new Object[] {
+                    createCoordinateSequence(new Coordinate[] {new Coordinate(1, 2), new Coordinate(1, 2)}),
+                },
+                null,
+                null);
 
         GMLLinearRingTypeBinding s =
-                (GMLLinearRingTypeBinding)
-                        container.getComponentInstanceOfType(GMLLinearRingTypeBinding.class);
+                (GMLLinearRingTypeBinding) container.getComponentInstanceOfType(GMLLinearRingTypeBinding.class);
 
         try {
             s.parse(ring, node, null);
@@ -217,26 +202,23 @@ public class GMLLinearRingTypeBindingTest extends AbstractGMLBindingTest {
 
     @Test
     public void testCoordinatesMoreThanFour() throws Exception {
-        Node node =
-                createNode(
-                        ring,
-                        new ElementInstance[] {coords},
-                        new Object[] {
-                            createCoordinateSequence(
-                                    new Coordinate[] {
-                                        new Coordinate(1, 2),
-                                        new Coordinate(3, 4),
-                                        new Coordinate(5, 6),
-                                        new Coordinate(7, 8),
-                                        new Coordinate(1, 2)
-                                    }),
-                        },
-                        null,
-                        null);
+        Node node = createNode(
+                ring,
+                new ElementInstance[] {coords},
+                new Object[] {
+                    createCoordinateSequence(new Coordinate[] {
+                        new Coordinate(1, 2),
+                        new Coordinate(3, 4),
+                        new Coordinate(5, 6),
+                        new Coordinate(7, 8),
+                        new Coordinate(1, 2)
+                    }),
+                },
+                null,
+                null);
 
         GMLLinearRingTypeBinding s =
-                (GMLLinearRingTypeBinding)
-                        container.getComponentInstanceOfType(GMLLinearRingTypeBinding.class);
+                (GMLLinearRingTypeBinding) container.getComponentInstanceOfType(GMLLinearRingTypeBinding.class);
 
         LinearRing linearRing = (LinearRing) s.parse(ring, node, null);
         assertNotNull(linearRing);

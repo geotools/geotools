@@ -73,8 +73,7 @@ class WFSFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature
     @Override
     public SimpleFeatureType getFeatureType() {
         if (featureType == null) {
-            throw new IllegalStateException(
-                    "No features were retrieved, shouldn't be calling getFeatureType()");
+            throw new IllegalStateException("No features were retrieved, shouldn't be calling getFeatureType()");
         }
         return featureType;
     }

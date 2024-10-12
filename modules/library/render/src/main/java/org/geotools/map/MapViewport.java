@@ -401,8 +401,7 @@ public class MapViewport {
                             bounds = bounds.transform(crs, true);
                             setTransforms(true);
 
-                            fireMapBoundsListenerMapBoundsChanged(
-                                    MapBoundsEvent.Type.CRS, old, bounds);
+                            fireMapBoundsListenerMapBoundsChanged(MapBoundsEvent.Type.CRS, old, bounds);
 
                         } catch (Exception e) {
                             LOGGER.log(Level.FINE, "Difficulty transforming to {0}", crs);
@@ -560,14 +559,8 @@ public class MapViewport {
         double xscale = screenArea.getWidth() / requestedBounds.getWidth();
         double yscale = screenArea.getHeight() / requestedBounds.getHeight();
 
-        worldToScreen =
-                new AffineTransform(
-                        xscale,
-                        0,
-                        0,
-                        -yscale,
-                        -xscale * requestedBounds.getMinX(),
-                        yscale * requestedBounds.getMaxY());
+        worldToScreen = new AffineTransform(
+                xscale, 0, 0, -yscale, -xscale * requestedBounds.getMinX(), yscale * requestedBounds.getMaxY());
         try {
             screenToWorld = worldToScreen.createInverse();
 
@@ -599,10 +592,7 @@ public class MapViewport {
         final boolean state = editable.get();
         if (!state) {
             if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.log(
-                        Level.FINE,
-                        "Ignored call to {0} because viewport is not editable",
-                        methodName);
+                LOGGER.log(Level.FINE, "Ignored call to {0} because viewport is not editable", methodName);
             }
         }
 

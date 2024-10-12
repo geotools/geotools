@@ -35,12 +35,11 @@ import org.geotools.filter.capability.FunctionNameImpl;
  */
 public class FilterFunction_dateParse extends FunctionExpressionImpl {
 
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "dateParse",
-                    parameter("date", Date.class),
-                    parameter("format", String.class),
-                    parameter("dateString", String.class));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "dateParse",
+            parameter("date", Date.class),
+            parameter("format", String.class),
+            parameter("dateString", String.class));
 
     public FilterFunction_dateParse() {
         super(NAME);

@@ -91,13 +91,11 @@ public class CQL2TemporalPredicateTest {
         expected = FilterCQLSample.getSample(FilterCQLSample.FILTER_BEFORE_DATE_MILLIS);
         assertEquals(expected, resultFilter);
 
-        resultFilter =
-                CQL2.toFilter(
-                        "T_BEFORE(ATTR1, INTERVAL(TIMESTAMP('"
-                                + FilterCQLSample.FIRST_DATE
-                                + "'), TIMESTAMP('"
-                                + FilterCQLSample.LAST_DATE
-                                + "')))");
+        resultFilter = CQL2.toFilter("T_BEFORE(ATTR1, INTERVAL(TIMESTAMP('"
+                + FilterCQLSample.FIRST_DATE
+                + "'), TIMESTAMP('"
+                + FilterCQLSample.LAST_DATE
+                + "')))");
 
         Assert.assertNotNull("Filter expected", resultFilter);
 
@@ -105,15 +103,12 @@ public class CQL2TemporalPredicateTest {
 
         Assert.assertEquals("less than first date of period ", expected, resultFilter);
 
-        resultFilter =
-                CQL2.toFilter(
-                        "T_BEFORE(ATTR1, INTERVAL(TIMESTAMP('2006-11-30T01:30:00.123Z'), TIMESTAMP('2006-12-31T01:30:00.456Z')))");
+        resultFilter = CQL2.toFilter(
+                "T_BEFORE(ATTR1, INTERVAL(TIMESTAMP('2006-11-30T01:30:00.123Z'), TIMESTAMP('2006-12-31T01:30:00.456Z')))");
 
         Assert.assertNotNull("Filter expected", resultFilter);
 
-        expected =
-                FilterCQLSample.getSample(
-                        FilterCQLSample.FILTER_BEFORE_PERIOD_BETWEEN_DATES_MILLIS);
+        expected = FilterCQLSample.getSample(FilterCQLSample.FILTER_BEFORE_PERIOD_BETWEEN_DATES_MILLIS);
 
         Assert.assertEquals("less than first date of period ", expected, resultFilter);
     }
@@ -144,8 +139,7 @@ public class CQL2TemporalPredicateTest {
     public void dateTime() throws Exception {
 
         final String cqlDateTime = "2008-09-09T17:00:00Z";
-        Filter resultFilter =
-                CQL2.toFilter("T_BEFORE(ZONE_VALID_FROM, TIMESTAMP('" + cqlDateTime + "'))");
+        Filter resultFilter = CQL2.toFilter("T_BEFORE(ZONE_VALID_FROM, TIMESTAMP('" + cqlDateTime + "'))");
         Before before = (Before) resultFilter;
 
         // date test
@@ -177,8 +171,7 @@ public class CQL2TemporalPredicateTest {
         TimeZone tz = TimeZone.getTimeZone(offset);
         dateFormatter.setTimeZone(tz);
 
-        Filter resultFilter =
-                CQL2.toFilter("T_BEFORE(ZONE_VALID_FROM, TIMESTAMP('2008-09-09T17:00:00+01:00'))");
+        Filter resultFilter = CQL2.toFilter("T_BEFORE(ZONE_VALID_FROM, TIMESTAMP('2008-09-09T17:00:00+01:00'))");
 
         Before before = (Before) resultFilter;
 
@@ -193,13 +186,11 @@ public class CQL2TemporalPredicateTest {
 
     @Test
     public void during() throws Exception {
-        Filter resultFilter =
-                CQL2.toFilter(
-                        "T_DURING(ATTR1, INTERVAL(TIMESTAMP('2006-11-30T01:30:00Z'), TIMESTAMP('2006-12-31T01:30:00Z')))");
+        Filter resultFilter = CQL2.toFilter(
+                "T_DURING(ATTR1, INTERVAL(TIMESTAMP('2006-11-30T01:30:00Z'), TIMESTAMP('2006-12-31T01:30:00Z')))");
         Assert.assertNotNull("Filter expected", resultFilter);
 
-        Filter expected =
-                FilterCQLSample.getSample(FilterCQLSample.FILTER_DURING_PERIOD_BETWEEN_DATES);
+        Filter expected = FilterCQLSample.getSample(FilterCQLSample.FILTER_DURING_PERIOD_BETWEEN_DATES);
 
         Assert.assertEquals("greater filter ", expected, resultFilter);
     }
@@ -215,9 +206,8 @@ public class CQL2TemporalPredicateTest {
 
         Assert.assertEquals("greater filter ", expected, resultFilter);
 
-        resultFilter =
-                CQL2.toFilter(
-                        "T_AFTER(ATTR1, INTERVAL(TIMESTAMP('2006-11-30T01:30:00Z'), TIMESTAMP('2006-12-31T01:30:00Z')))");
+        resultFilter = CQL2.toFilter(
+                "T_AFTER(ATTR1, INTERVAL(TIMESTAMP('2006-11-30T01:30:00Z'), TIMESTAMP('2006-12-31T01:30:00Z')))");
 
         Assert.assertNotNull("Filter expected", resultFilter);
 

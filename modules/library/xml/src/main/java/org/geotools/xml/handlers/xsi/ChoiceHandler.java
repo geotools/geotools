@@ -49,8 +49,7 @@ public class ChoiceHandler extends ElementGroupingHandler {
     @Override
     @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
-        return (LOCALNAME.hashCode() * ((id == null) ? 1 : id.hashCode()))
-                + (minOccurs * maxOccurs);
+        return (LOCALNAME.hashCode() * ((id == null) ? 1 : id.hashCode())) + (minOccurs * maxOccurs);
     }
 
     /** @see org.geotools.xml.XSIElementHandler#getHandler(java.lang.String, java.lang.String) */
@@ -148,12 +147,9 @@ public class ChoiceHandler extends ElementGroupingHandler {
         }
 
         minOccurs = ((min == null) || "".equalsIgnoreCase(min)) ? 1 : Integer.parseInt(min);
-        maxOccurs =
-                ((max == null) || "".equalsIgnoreCase(max))
-                        ? 1
-                        : ("unbounded".equalsIgnoreCase(max)
-                                ? ElementGrouping.UNBOUNDED
-                                : Integer.parseInt(max));
+        maxOccurs = ((max == null) || "".equalsIgnoreCase(max))
+                ? 1
+                : ("unbounded".equalsIgnoreCase(max) ? ElementGrouping.UNBOUNDED : Integer.parseInt(max));
     }
 
     /** @see org.geotools.xml.XSIElementHandler#getLocalName() */

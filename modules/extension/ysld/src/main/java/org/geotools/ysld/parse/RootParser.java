@@ -89,8 +89,7 @@ public class RootParser extends YsldParseHandler {
             }
             if (root.has("user-remote")) {
                 RemoteOWS remote =
-                        factory.style.createRemoteOWS(
-                                root.strOr("user-service", "WMS"), root.str("user-remote"));
+                        factory.style.createRemoteOWS(root.strOr("user-service", "WMS"), root.str("user-remote"));
                 layer.setRemoteOWS(remote);
             }
         } else {

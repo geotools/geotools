@@ -103,30 +103,28 @@ import org.locationtech.jts.io.WKTWriter;
  * @author Mueller Christian
  */
 public class DB2FilterToSQL extends PreparedFilterToSQL {
-    private static Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(DB2FilterToSQL.class);
+    private static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(DB2FilterToSQL.class);
 
     // Class to convert geometry value into a Well-known Text string
     private static WKTWriter wktWriter = new WKTWriter();
 
     /** Conversion factor from common units to meter */
-    private static final Map<String, Double> UNITS_MAP =
-            Map.ofEntries(
-                    Map.entry("kilometers", 1000.0),
-                    Map.entry("kilometer", 1000.0),
-                    Map.entry("meters", 1.0),
-                    Map.entry("meter", 1.0),
-                    Map.entry("mm", 0.001),
-                    Map.entry("millimeter", 0.001),
-                    Map.entry("mi", 1609.344),
-                    Map.entry("statute miles", 1609.344),
-                    Map.entry("miles", 1609.344),
-                    Map.entry("mile", 1609.344),
-                    Map.entry("nautical miles", 1852.0),
-                    Map.entry("NM", 1852d),
-                    Map.entry("feet", 0.3048),
-                    Map.entry("ft", 0.3048),
-                    Map.entry("in", 0.0254));
+    private static final Map<String, Double> UNITS_MAP = Map.ofEntries(
+            Map.entry("kilometers", 1000.0),
+            Map.entry("kilometer", 1000.0),
+            Map.entry("meters", 1.0),
+            Map.entry("meter", 1.0),
+            Map.entry("mm", 0.001),
+            Map.entry("millimeter", 0.001),
+            Map.entry("mi", 1609.344),
+            Map.entry("statute miles", 1609.344),
+            Map.entry("miles", 1609.344),
+            Map.entry("mile", 1609.344),
+            Map.entry("nautical miles", 1852.0),
+            Map.entry("NM", 1852d),
+            Map.entry("feet", 0.3048),
+            Map.entry("ft", 0.3048),
+            Map.entry("in", 0.0254));
 
     boolean functionEncodingEnabled = false;
 
@@ -258,18 +256,13 @@ public class DB2FilterToSQL extends PreparedFilterToSQL {
 
     @Override
     protected Object visitBinarySpatialOperator(
-            BinarySpatialOperator filter,
-            PropertyName property,
-            Literal geometry,
-            boolean swapped,
-            Object extraData) {
+            BinarySpatialOperator filter, PropertyName property, Literal geometry, boolean swapped, Object extraData) {
 
         if (filter instanceof DistanceBufferOperator) {
             return visitDistanceSpatialOperator(
                     (DistanceBufferOperator) filter, property, geometry, swapped, extraData);
         } else {
-            return visitBinarySpatialOperator(
-                    filter, property, (Expression) geometry, swapped, extraData);
+            return visitBinarySpatialOperator(filter, property, (Expression) geometry, swapped, extraData);
         }
     }
 
@@ -290,11 +283,7 @@ public class DB2FilterToSQL extends PreparedFilterToSQL {
     }
 
     Object visitDistanceSpatialOperator(
-            DistanceBufferOperator filter,
-            PropertyName property,
-            Literal geometry,
-            boolean swapped,
-            Object extraData) {
+            DistanceBufferOperator filter, PropertyName property, Literal geometry, boolean swapped, Object extraData) {
         try {
             String comparisonOperator = ") < ";
             if ((filter instanceof DWithin && swapped) || (filter instanceof Beyond && !swapped)) {
@@ -327,11 +316,7 @@ public class DB2FilterToSQL extends PreparedFilterToSQL {
     }
 
     protected Object visitBinarySpatialOperator(
-            BinarySpatialOperator filter,
-            Expression e1,
-            Expression e2,
-            boolean swapped,
-            Object extraData) {
+            BinarySpatialOperator filter, Expression e1, Expression e2, boolean swapped, Object extraData) {
 
         String checkValue = "1";
 
@@ -392,8 +377,7 @@ public class DB2FilterToSQL extends PreparedFilterToSQL {
         String wktRepresentation = wktWriter.write((Geometry) expression.getValue());
         int spacePos = wktRepresentation.indexOf(" ");
         String geomType = wktRepresentation.substring(0, spacePos);
-        this.out.write(
-                "db2gse.ST_" + geomType + "('" + wktRepresentation + "', " + getSRID() + ")");
+        this.out.write("db2gse.ST_" + geomType + "('" + wktRepresentation + "', " + getSRID() + ")");
     }
 
     protected void addSelectivity() throws IOException {
@@ -446,8 +430,7 @@ public class DB2FilterToSQL extends PreparedFilterToSQL {
 
     private Integer getSRID(GeometryDescriptor gDescr) {
         Integer result = null;
-        if (gDescr != null)
-            result = (Integer) gDescr.getUserData().get(JDBCDataStore.JDBC_NATIVE_SRID);
+        if (gDescr != null) result = (Integer) gDescr.getUserData().get(JDBCDataStore.JDBC_NATIVE_SRID);
 
         if (result == null) result = currentSRID;
         return result;

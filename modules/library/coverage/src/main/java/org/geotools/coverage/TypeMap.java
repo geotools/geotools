@@ -80,7 +80,8 @@ public final class TypeMap {
         new TypeMap(SIGNED_32BITS, DataBuffer.TYPE_INT, (byte) 32, true, false, pool);
         new TypeMap(REAL_32BITS, DataBuffer.TYPE_FLOAT, (byte) 32, true, true, M1, P1, pool);
         new TypeMap(REAL_64BITS, DataBuffer.TYPE_DOUBLE, (byte) 64, true, true, M2, P2, pool);
-    };
+    }
+    ;
 
     /**
      * The {@link DataBuffer} type. Must be one of the following constants: {@link
@@ -112,17 +113,13 @@ public final class TypeMap {
     private final NumberRange<? extends Number> positiveRange;
 
     /** The name as an international string. */
-    private final InternationalString name =
-            new AbstractInternationalString() {
-                @Override
-                public String toString(final Locale locale) {
-                    return Vocabulary.getResources(locale)
-                            .getString(
-                                    VocabularyKeys.DATA_TYPE_$2,
-                                    Integer.valueOf(real ? 2 : signed ? 1 : 0),
-                                    size);
-                }
-            };
+    private final InternationalString name = new AbstractInternationalString() {
+        @Override
+        public String toString(final Locale locale) {
+            return Vocabulary.getResources(locale)
+                    .getString(VocabularyKeys.DATA_TYPE_$2, Integer.valueOf(real ? 2 : signed ? 1 : 0), size);
+        }
+    };
 
     /** Constructs a new mapping with the specified value. */
     private TypeMap(
@@ -275,11 +272,10 @@ public final class TypeMap {
      * @throws IllegalArgumentException if the band number is not in the valid range.
      */
     @SuppressWarnings("fallthrough")
-    public static SampleDimensionType getSampleDimensionType(
-            final SampleModel model, final int band) throws IllegalArgumentException {
+    public static SampleDimensionType getSampleDimensionType(final SampleModel model, final int band)
+            throws IllegalArgumentException {
         if (band < 0 || band >= model.getNumBands()) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.BAD_BAND_NUMBER_$1, band));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.BAD_BAND_NUMBER_$1, band));
         }
         boolean signed = true;
         switch (model.getDataType()) {
@@ -291,26 +287,25 @@ public final class TypeMap {
             case DataBuffer.TYPE_BYTE:
                 signed = false; // Fall through
             case DataBuffer.TYPE_INT:
-            case DataBuffer.TYPE_SHORT:
-                {
-                    switch (model.getSampleSize(band)) {
-                        case 1:
-                            return UNSIGNED_1BIT;
-                        case 2:
-                            return UNSIGNED_2BITS;
-                        case 4:
-                            return UNSIGNED_4BITS;
-                        case 5:
-                            return UNSIGNED_8BITS; // for BufferedImages TYPE_USHORT_555_RGB
-                            // TYPE_USHORT_565_RGB
-                        case 8:
-                            return signed ? SIGNED_8BITS : UNSIGNED_8BITS;
-                        case 16:
-                            return signed ? SIGNED_16BITS : UNSIGNED_16BITS;
-                        case 32:
-                            return signed ? SIGNED_32BITS : UNSIGNED_32BITS;
-                    }
+            case DataBuffer.TYPE_SHORT: {
+                switch (model.getSampleSize(band)) {
+                    case 1:
+                        return UNSIGNED_1BIT;
+                    case 2:
+                        return UNSIGNED_2BITS;
+                    case 4:
+                        return UNSIGNED_4BITS;
+                    case 5:
+                        return UNSIGNED_8BITS; // for BufferedImages TYPE_USHORT_555_RGB
+                        // TYPE_USHORT_565_RGB
+                    case 8:
+                        return signed ? SIGNED_8BITS : UNSIGNED_8BITS;
+                    case 16:
+                        return signed ? SIGNED_16BITS : UNSIGNED_16BITS;
+                    case 32:
+                        return signed ? SIGNED_32BITS : UNSIGNED_32BITS;
                 }
+            }
         }
         return null;
     }
@@ -403,8 +398,7 @@ public final class TypeMap {
                 }
             }
         }
-        throw new IllegalArgumentException(
-                MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "type", type));
+        throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "type", type));
     }
 
     /**
@@ -422,8 +416,7 @@ public final class TypeMap {
      *     {@code value} can't fit in the specified sample type.
      */
     @SuppressWarnings("fallthrough")
-    public static Number wrapSample(
-            final double value, final SampleDimensionType type, final boolean allowWidening)
+    public static Number wrapSample(final double value, final SampleDimensionType type, final boolean allowWidening)
             throws IllegalArgumentException {
         /*
          * Note about 'ordinal' computation: We would like to switch on SampleDimensionType
@@ -443,63 +436,54 @@ public final class TypeMap {
             case 1: // Fall through
             case 2: // Fall through
             case 4: // Fall through
-            case -8:
-                {
-                    final byte candidate = (byte) value;
-                    if (candidate == value) {
-                        return Byte.valueOf(candidate);
-                    }
-                    if (!allowWidening) break;
-                    // Fall through
+            case -8: {
+                final byte candidate = (byte) value;
+                if (candidate == value) {
+                    return Byte.valueOf(candidate);
                 }
+                if (!allowWidening) break;
+                // Fall through
+            }
             case 8: // Fall through
-            case -16:
-                {
-                    final short candidate = (short) value;
-                    if (candidate == value) {
-                        return Short.valueOf(candidate);
-                    }
-                    if (!allowWidening) break;
-                    // Fall through
+            case -16: {
+                final short candidate = (short) value;
+                if (candidate == value) {
+                    return Short.valueOf(candidate);
                 }
+                if (!allowWidening) break;
+                // Fall through
+            }
             case 16: // Fall through
-            case -32:
-                {
-                    final int candidate = (int) value;
-                    if (candidate == value) {
-                        return Integer.valueOf(candidate);
-                    }
-                    if (!allowWidening) break;
-                    // Fall through
+            case -32: {
+                final int candidate = (int) value;
+                if (candidate == value) {
+                    return Integer.valueOf(candidate);
                 }
-            case 32:
-                {
-                    final long candidate = (long) value;
-                    if (candidate == value) {
-                        return Long.valueOf(candidate);
-                    }
-                    if (!allowWidening) break;
-                    // Fall through
+                if (!allowWidening) break;
+                // Fall through
+            }
+            case 32: {
+                final long candidate = (long) value;
+                if (candidate == value) {
+                    return Long.valueOf(candidate);
                 }
-            case (32 << 16):
-                {
-                    if (!allowWidening || Math.abs(value) <= Float.MAX_VALUE) {
-                        return Float.valueOf((float) value);
-                    }
-                    // Fall through
+                if (!allowWidening) break;
+                // Fall through
+            }
+            case (32 << 16): {
+                if (!allowWidening || Math.abs(value) <= Float.MAX_VALUE) {
+                    return Float.valueOf((float) value);
                 }
-            case (64 << 16):
-                {
-                    return Double.valueOf(value);
-                }
-            default:
-                {
-                    throw new IllegalArgumentException(
-                            MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "type", type));
-                }
+                // Fall through
+            }
+            case (64 << 16): {
+                return Double.valueOf(value);
+            }
+            default: {
+                throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "type", type));
+            }
         }
-        throw new IllegalArgumentException(
-                MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "value", value));
+        throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "value", value));
     }
 
     /**
@@ -516,66 +500,61 @@ public final class TypeMap {
             return ColorInterpretation.UNDEFINED;
         }
         if (band < 0 || band >= ColorUtilities.getNumBands(model)) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.BAD_BAND_NUMBER_$1, band));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.BAD_BAND_NUMBER_$1, band));
         }
         if (model instanceof IndexColorModel) {
             return ColorInterpretation.PALETTE_INDEX;
         }
         switch (model.getColorSpace().getType()) {
-            case ColorSpace.TYPE_GRAY:
-                {
-                    switch (band) {
-                        case 0:
-                            return ColorInterpretation.GRAY_INDEX;
-                        default:
-                            return ColorInterpretation.UNDEFINED;
-                    }
+            case ColorSpace.TYPE_GRAY: {
+                switch (band) {
+                    case 0:
+                        return ColorInterpretation.GRAY_INDEX;
+                    default:
+                        return ColorInterpretation.UNDEFINED;
                 }
-            case ColorSpace.TYPE_RGB:
-                {
-                    switch (band) {
-                        case 0:
-                            return ColorInterpretation.RED_BAND;
-                        case 1:
-                            return ColorInterpretation.GREEN_BAND;
-                        case 2:
-                            return ColorInterpretation.BLUE_BAND;
-                        case 3:
-                            return ColorInterpretation.ALPHA_BAND;
-                        default:
-                            return ColorInterpretation.UNDEFINED;
-                    }
+            }
+            case ColorSpace.TYPE_RGB: {
+                switch (band) {
+                    case 0:
+                        return ColorInterpretation.RED_BAND;
+                    case 1:
+                        return ColorInterpretation.GREEN_BAND;
+                    case 2:
+                        return ColorInterpretation.BLUE_BAND;
+                    case 3:
+                        return ColorInterpretation.ALPHA_BAND;
+                    default:
+                        return ColorInterpretation.UNDEFINED;
                 }
-            case ColorSpace.TYPE_HSV:
-                {
-                    switch (band) {
-                        case 0:
-                            return ColorInterpretation.HUE_BAND;
-                        case 1:
-                            return ColorInterpretation.SATURATION_BAND;
-                        case 2:
-                            return ColorInterpretation.LIGHTNESS_BAND;
-                        default:
-                            return ColorInterpretation.UNDEFINED;
-                    }
+            }
+            case ColorSpace.TYPE_HSV: {
+                switch (band) {
+                    case 0:
+                        return ColorInterpretation.HUE_BAND;
+                    case 1:
+                        return ColorInterpretation.SATURATION_BAND;
+                    case 2:
+                        return ColorInterpretation.LIGHTNESS_BAND;
+                    default:
+                        return ColorInterpretation.UNDEFINED;
                 }
+            }
             case ColorSpace.TYPE_CMY:
-            case ColorSpace.TYPE_CMYK:
-                {
-                    switch (band) {
-                        case 0:
-                            return ColorInterpretation.CYAN_BAND;
-                        case 1:
-                            return ColorInterpretation.MAGENTA_BAND;
-                        case 2:
-                            return ColorInterpretation.YELLOW_BAND;
-                        case 3:
-                            return ColorInterpretation.BLACK_BAND;
-                        default:
-                            return ColorInterpretation.UNDEFINED;
-                    }
+            case ColorSpace.TYPE_CMYK: {
+                switch (band) {
+                    case 0:
+                        return ColorInterpretation.CYAN_BAND;
+                    case 1:
+                        return ColorInterpretation.MAGENTA_BAND;
+                    case 2:
+                        return ColorInterpretation.YELLOW_BAND;
+                    case 3:
+                        return ColorInterpretation.BLACK_BAND;
+                    default:
+                        return ColorInterpretation.UNDEFINED;
                 }
+            }
             default:
                 return ColorInterpretation.UNDEFINED;
         }

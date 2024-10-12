@@ -146,10 +146,8 @@ public abstract class AbstractMathTransform extends Formattable implements MathT
      * @param dimension The wrong dimension.
      * @param expected The expected dimension.
      */
-    private static String constructMessage(
-            final String argument, final int dimension, final int expected) {
-        return MessageFormat.format(
-                ErrorKeys.MISMATCHED_DIMENSION_$3, argument, dimension, expected);
+    private static String constructMessage(final String argument, final int dimension, final int expected) {
+        return MessageFormat.format(ErrorKeys.MISMATCHED_DIMENSION_$3, argument, dimension, expected);
     }
 
     /**
@@ -200,8 +198,7 @@ public abstract class AbstractMathTransform extends Formattable implements MathT
         if (ptDst != null) {
             dimPoint = ptDst.getDimension();
             if (dimPoint != dimTarget) {
-                throw new MismatchedDimensionException(
-                        constructMessage("ptDst", dimPoint, dimTarget));
+                throw new MismatchedDimensionException(constructMessage("ptDst", dimPoint, dimTarget));
             }
             /*
              * Transforms the coordinates using a temporary 'double[]' buffer,
@@ -248,11 +245,7 @@ public abstract class AbstractMathTransform extends Formattable implements MathT
      */
     @Override
     public void transform(
-            final float[] srcPts,
-            final int srcOff,
-            final float[] dstPts,
-            final int dstOff,
-            final int numPts)
+            final float[] srcPts, final int srcOff, final float[] dstPts, final int dstOff, final int numPts)
             throws TransformException {
         final int dimSource = getSourceDimensions();
         final int dimTarget = getTargetDimensions();
@@ -274,11 +267,7 @@ public abstract class AbstractMathTransform extends Formattable implements MathT
      */
     @Override
     public void transform(
-            final double[] srcPts,
-            final int srcOff,
-            final float[] dstPts,
-            final int dstOff,
-            final int numPts)
+            final double[] srcPts, final int srcOff, final float[] dstPts, final int dstOff, final int numPts)
             throws TransformException {
         final int dimSource = getSourceDimensions();
         final int dimTarget = getTargetDimensions();
@@ -298,11 +287,7 @@ public abstract class AbstractMathTransform extends Formattable implements MathT
      */
     @Override
     public void transform(
-            final float[] srcPts,
-            final int srcOff,
-            final double[] dstPts,
-            final int dstOff,
-            final int numPts)
+            final float[] srcPts, final int srcOff, final double[] dstPts, final int dstOff, final int numPts)
             throws TransformException {
         final int dimSource = getSourceDimensions();
         final int dimTarget = getTargetDimensions();
@@ -332,9 +317,7 @@ public abstract class AbstractMathTransform extends Formattable implements MathT
      * @see MathTransform2D#createTransformedShape(Shape)
      */
     public Shape createTransformedShape(final Shape shape) throws TransformException {
-        return isIdentity()
-                ? shape
-                : createTransformedShape(shape, null, null, ShapeUtilities.PARALLEL);
+        return isIdentity() ? shape : createTransformedShape(shape, null, null, ShapeUtilities.PARALLEL);
     }
 
     /**
@@ -373,108 +356,96 @@ public abstract class AbstractMathTransform extends Formattable implements MathT
         double px = 0, py = 0; // Coordinate of the last point after  transform.
         for (; !it.isDone(); it.next()) {
             switch (it.currentSegment(buffer)) {
-                default:
-                    {
-                        throw new IllegalPathStateException();
-                    }
-                case PathIterator.SEG_CLOSE:
-                    {
-                        /*
-                         * Closes the geometric shape and continues the loop. We use the 'continue'
-                         * instruction here instead of 'break' because we don't want to execute the
-                         * code after the switch (addition of transformed points into the path - there
-                         * is no such point in a SEG_CLOSE).
-                         */
-                        path.closePath();
-                        continue;
-                    }
-                case PathIterator.SEG_MOVETO:
-                    {
-                        /*
-                         * Transforms the single point and adds it to the path. We use the 'continue'
-                         * instruction here instead of 'break' because we don't want to execute the
-                         * code after the switch (addition of a line or a curve - there is no such
-                         * curve to add here; we are just moving the cursor).
-                         */
-                        ax = buffer[0];
-                        ay = buffer[1];
-                        transform(buffer, 0, buffer, 0, 1);
-                        px = buffer[0];
-                        py = buffer[1];
-                        path.moveTo((float) px, (float) py);
-                        continue;
-                    }
-                case PathIterator.SEG_LINETO:
-                    {
-                        /*
-                         * Inserts a new control point at 'buffer[0,1]'. This control point will
-                         * be initialised with coordinates in the middle of the straight line:
-                         *
-                         *  x = 0.5*(x1+x2)
-                         *  y = 0.5*(y1+y2)
-                         *
-                         * This point will be transformed after the 'switch', which is why we use
-                         * the 'break' statement here instead of 'continue' as in previous case.
-                         */
-                        buffer[0] = 0.5 * (ax + (ax = buffer[0]));
-                        buffer[1] = 0.5 * (ay + (ay = buffer[1]));
-                        buffer[2] = ax;
-                        buffer[3] = ay;
-                        break;
-                    }
-                case PathIterator.SEG_QUADTO:
-                    {
-                        /*
-                         * Replaces the control point in 'buffer[0,1]' by a new control point lying
-                         * on the quadratic curve. Coordinates for a point in the middle of the curve
-                         * can be computed with:
-                         *
-                         *  x = 0.5*(ctrlx + 0.5*(x1+x2))
-                         *  y = 0.5*(ctrly + 0.5*(y1+y2))
-                         *
-                         * There is no need to keep the old control point because it was not lying
-                         * on the curve.
-                         */
-                        buffer[0] = 0.5 * (buffer[0] + 0.5 * (ax + (ax = buffer[2])));
-                        buffer[1] = 0.5 * (buffer[1] + 0.5 * (ay + (ay = buffer[3])));
-                        break;
-                    }
-                case PathIterator.SEG_CUBICTO:
-                    {
-                        /*
-                         * Replaces the control point in 'buffer[0,1]' by a new control point lying
-                         * on the cubic curve. Coordinates for a point in the middle of the curve
-                         * can be computed with:
-                         *
-                         *  x = 0.25*(1.5*(ctrlx1+ctrlx2) + 0.5*(x1+x2));
-                         *  y = 0.25*(1.5*(ctrly1+ctrly2) + 0.5*(y1+y2));
-                         *
-                         * There is no need to keep the old control point because it was not lying
-                         * on the curve.
-                         *
-                         * NOTE: Le point calculé est bien sur la courbe, mais n'est pas
-                         *       nécessairement représentatif. Cet algorithme remplace les
-                         *       deux points de contrôles par un seul, ce qui se traduit par
-                         *       une perte de souplesse qui peut donner de mauvais résultats
-                         *       si la courbe cubique était bien tordue. Projeter une courbe
-                         *       cubique ne me semble pas être un problème simple, mais ce
-                         *       cas devrait être assez rare. Il se produira le plus souvent
-                         *       si on essaye de projeter un cercle ou une ellipse, auxquels
-                         *       cas l'algorithme actuel donnera quand même des résultats
-                         *       tolérables.
-                         */
-                        buffer[0] =
-                                0.25
-                                        * (1.5 * (buffer[0] + buffer[2])
-                                                + 0.5 * (ax + (ax = buffer[4])));
-                        buffer[1] =
-                                0.25
-                                        * (1.5 * (buffer[1] + buffer[3])
-                                                + 0.5 * (ay + (ay = buffer[5])));
-                        buffer[2] = ax;
-                        buffer[3] = ay;
-                        break;
-                    }
+                default: {
+                    throw new IllegalPathStateException();
+                }
+                case PathIterator.SEG_CLOSE: {
+                    /*
+                     * Closes the geometric shape and continues the loop. We use the 'continue'
+                     * instruction here instead of 'break' because we don't want to execute the
+                     * code after the switch (addition of transformed points into the path - there
+                     * is no such point in a SEG_CLOSE).
+                     */
+                    path.closePath();
+                    continue;
+                }
+                case PathIterator.SEG_MOVETO: {
+                    /*
+                     * Transforms the single point and adds it to the path. We use the 'continue'
+                     * instruction here instead of 'break' because we don't want to execute the
+                     * code after the switch (addition of a line or a curve - there is no such
+                     * curve to add here; we are just moving the cursor).
+                     */
+                    ax = buffer[0];
+                    ay = buffer[1];
+                    transform(buffer, 0, buffer, 0, 1);
+                    px = buffer[0];
+                    py = buffer[1];
+                    path.moveTo((float) px, (float) py);
+                    continue;
+                }
+                case PathIterator.SEG_LINETO: {
+                    /*
+                     * Inserts a new control point at 'buffer[0,1]'. This control point will
+                     * be initialised with coordinates in the middle of the straight line:
+                     *
+                     *  x = 0.5*(x1+x2)
+                     *  y = 0.5*(y1+y2)
+                     *
+                     * This point will be transformed after the 'switch', which is why we use
+                     * the 'break' statement here instead of 'continue' as in previous case.
+                     */
+                    buffer[0] = 0.5 * (ax + (ax = buffer[0]));
+                    buffer[1] = 0.5 * (ay + (ay = buffer[1]));
+                    buffer[2] = ax;
+                    buffer[3] = ay;
+                    break;
+                }
+                case PathIterator.SEG_QUADTO: {
+                    /*
+                     * Replaces the control point in 'buffer[0,1]' by a new control point lying
+                     * on the quadratic curve. Coordinates for a point in the middle of the curve
+                     * can be computed with:
+                     *
+                     *  x = 0.5*(ctrlx + 0.5*(x1+x2))
+                     *  y = 0.5*(ctrly + 0.5*(y1+y2))
+                     *
+                     * There is no need to keep the old control point because it was not lying
+                     * on the curve.
+                     */
+                    buffer[0] = 0.5 * (buffer[0] + 0.5 * (ax + (ax = buffer[2])));
+                    buffer[1] = 0.5 * (buffer[1] + 0.5 * (ay + (ay = buffer[3])));
+                    break;
+                }
+                case PathIterator.SEG_CUBICTO: {
+                    /*
+                     * Replaces the control point in 'buffer[0,1]' by a new control point lying
+                     * on the cubic curve. Coordinates for a point in the middle of the curve
+                     * can be computed with:
+                     *
+                     *  x = 0.25*(1.5*(ctrlx1+ctrlx2) + 0.5*(x1+x2));
+                     *  y = 0.25*(1.5*(ctrly1+ctrly2) + 0.5*(y1+y2));
+                     *
+                     * There is no need to keep the old control point because it was not lying
+                     * on the curve.
+                     *
+                     * NOTE: Le point calculé est bien sur la courbe, mais n'est pas
+                     *       nécessairement représentatif. Cet algorithme remplace les
+                     *       deux points de contrôles par un seul, ce qui se traduit par
+                     *       une perte de souplesse qui peut donner de mauvais résultats
+                     *       si la courbe cubique était bien tordue. Projeter une courbe
+                     *       cubique ne me semble pas être un problème simple, mais ce
+                     *       cas devrait être assez rare. Il se produira le plus souvent
+                     *       si on essaye de projeter un cercle ou une ellipse, auxquels
+                     *       cas l'algorithme actuel donnera quand même des résultats
+                     *       tolérables.
+                     */
+                    buffer[0] = 0.25 * (1.5 * (buffer[0] + buffer[2]) + 0.5 * (ax + (ax = buffer[4])));
+                    buffer[1] = 0.25 * (1.5 * (buffer[1] + buffer[3]) + 0.5 * (ay + (ay = buffer[5])));
+                    buffer[2] = ax;
+                    buffer[3] = ay;
+                    break;
+                }
             }
             /*
              * Applies the transform on the point in the buffer, and append the transformed points
@@ -482,9 +453,8 @@ public abstract class AbstractMathTransform extends Formattable implements MathT
              * the computed control point is colinear with the starting and ending points.
              */
             transform(buffer, 0, buffer, 0, 2);
-            final Point2D ctrlPoint =
-                    ShapeUtilities.parabolicControlPoint(
-                            px, py, buffer[0], buffer[1], buffer[2], buffer[3], orientation, ctrl);
+            final Point2D ctrlPoint = ShapeUtilities.parabolicControlPoint(
+                    px, py, buffer[0], buffer[1], buffer[2], buffer[3], orientation, ctrl);
             px = buffer[2];
             py = buffer[3];
             if (ctrlPoint != null) {
@@ -554,8 +524,7 @@ public abstract class AbstractMathTransform extends Formattable implements MathT
         } else {
             final int dimPoint = point.getDimension();
             if (dimPoint != dimSource) {
-                throw new MismatchedDimensionException(
-                        constructMessage("point", dimPoint, dimSource));
+                throw new MismatchedDimensionException(constructMessage("point", dimPoint, dimSource));
             }
             if (dimSource == 2) {
                 if (point instanceof Point2D) {
@@ -672,8 +641,7 @@ public abstract class AbstractMathTransform extends Formattable implements MathT
      * @param object User argument.
      * @throws InvalidParameterValueException if {@code object} is null.
      */
-    protected static void ensureNonNull(final String name, final Object object)
-            throws InvalidParameterValueException {
+    protected static void ensureNonNull(final String name, final Object object) throws InvalidParameterValueException {
         if (object == null) {
             throw new InvalidParameterValueException(
                     MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, name), name, object);
@@ -729,11 +697,7 @@ public abstract class AbstractMathTransform extends Formattable implements MathT
      *     transformation in order to avoid an overlap with the destination array.
      */
     protected static boolean needCopy(
-            final int srcOff,
-            final int dimSource,
-            final int dstOff,
-            final int dimTarget,
-            final int numPts) {
+            final int srcOff, final int dimSource, final int dstOff, final int dimTarget, final int numPts) {
         if (numPts <= 1 || (srcOff >= dstOff && dimSource >= dimTarget)) {
             /*
              * Source coordinates are stored after target coordinates. If implementation
@@ -807,8 +771,7 @@ public abstract class AbstractMathTransform extends Formattable implements MathT
             m.invert();
             return m;
         } catch (SingularMatrixException exception) {
-            NoninvertibleTransformException e =
-                    new NoninvertibleTransformException(ErrorKeys.NONINVERTIBLE_TRANSFORM);
+            NoninvertibleTransformException e = new NoninvertibleTransformException(ErrorKeys.NONINVERTIBLE_TRANSFORM);
             e.initCause(exception);
             throw e;
         }

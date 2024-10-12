@@ -37,8 +37,7 @@ public class SQLServerTransformFeatureStore extends TransformFeatureStore {
     DataStore datastore;
 
     public SQLServerTransformFeatureStore(
-            SimpleFeatureStore store, Name name, List<Definition> definitions, DataStore datastore)
-            throws IOException {
+            SimpleFeatureStore store, Name name, List<Definition> definitions, DataStore datastore) throws IOException {
         super(store, name, definitions);
         this.datastore = datastore;
     }

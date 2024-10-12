@@ -51,8 +51,7 @@ public abstract class AbstractMetadata {
      *     corresponding to the {@code get} methods found in the implemented interface, or if this
      *     instance is not modifiable for some other reason.
      */
-    protected AbstractMetadata(final Object source)
-            throws ClassCastException, UnmodifiableMetadataException {
+    protected AbstractMetadata(final Object source) throws ClassCastException, UnmodifiableMetadataException {
         getStandard().shallowCopy(source, this, true);
     }
 

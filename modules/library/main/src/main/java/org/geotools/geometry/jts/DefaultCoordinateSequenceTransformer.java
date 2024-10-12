@@ -61,8 +61,7 @@ public class DefaultCoordinateSequenceTransformer implements CoordinateSequenceT
 
     /** {@inheritDoc} */
     @Override
-    public CoordinateSequence transform(
-            final CoordinateSequence sequence, final MathTransform transform)
+    public CoordinateSequence transform(final CoordinateSequence sequence, final MathTransform transform)
             throws TransformException {
         final int sourceDim = transform.getSourceDimensions();
         final int targetDim = transform.getTargetDimensions();
@@ -76,8 +75,7 @@ public class DefaultCoordinateSequenceTransformer implements CoordinateSequenceT
         // create a target CS so that the dimensions not contemplated in the source CS
         // are copied over (think Z or M with a 2d CRS)
         int targetCSDim = targetDim + (sequence.getDimension() - sourceDim);
-        CoordinateSequence result =
-                JTS.createCS(csFactory, sequence.size(), targetCSDim, sequence.getMeasures());
+        CoordinateSequence result = JTS.createCS(csFactory, sequence.size(), targetCSDim, sequence.getMeasures());
 
         for (int i = 0; i < size; i++) {
             switch (sourceDim) {
@@ -120,8 +118,7 @@ public class DefaultCoordinateSequenceTransformer implements CoordinateSequenceT
                     }
                     // copy over the non transformed portion
                     for (; oi < targetCSDim; oi++) {
-                        result.setOrdinate(
-                                it, oi, sequence.getOrdinate(it, oi + (targetDim - sourceDim)));
+                        result.setOrdinate(it, oi, sequence.getOrdinate(it, oi + (targetDim - sourceDim)));
                     }
                     // force to NaN eventual extra ordinates the sequence has (some are fixed size,
                     // wont'

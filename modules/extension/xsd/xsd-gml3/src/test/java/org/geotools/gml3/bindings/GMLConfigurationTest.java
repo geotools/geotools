@@ -47,8 +47,7 @@ public class GMLConfigurationTest {
                     Binding binding = (Binding) c.newInstance(params);
                     Assert.assertNotNull(binding.getTarget());
                     if (binding.getTarget().getNamespaceURI().equals(GML.NAMESPACE)) {
-                        Assert.assertNotNull(
-                                binding.getTarget() + " has a null type", binding.getType());
+                        Assert.assertNotNull(binding.getTarget() + " has a null type", binding.getType());
                     }
                 }
             }

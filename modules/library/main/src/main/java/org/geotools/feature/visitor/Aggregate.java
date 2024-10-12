@@ -105,8 +105,7 @@ public enum Aggregate {
         @Override
         public Class getTargetType(Class inputType) {
             if (!Comparable.class.isAssignableFrom(inputType))
-                throw new IllegalArgumentException(
-                        "Median can be computed only on comparable types");
+                throw new IllegalArgumentException("Median can be computed only on comparable types");
             return inputType;
         }
     },
@@ -146,8 +145,7 @@ public enum Aggregate {
         @Override
         public Class getTargetType(Class inputType) {
             if (!Number.class.isAssignableFrom(inputType))
-                throw new IllegalArgumentException(
-                        "Standard deviation can be computed only on numeric types");
+                throw new IllegalArgumentException("Standard deviation can be computed only on numeric types");
             return inputType;
         }
     },

@@ -47,8 +47,7 @@ public class CollectionFeatureReader implements FeatureReader<SimpleFeatureType,
      *     FeatureType</b>
      * @param typeArg the Feature type of of the features.
      */
-    public CollectionFeatureReader(
-            Collection<SimpleFeature> featuresArg, SimpleFeatureType typeArg) {
+    public CollectionFeatureReader(Collection<SimpleFeature> featuresArg, SimpleFeatureType typeArg) {
         assert !featuresArg.isEmpty();
         this.features = new DelegateSimpleFeatureIterator(featuresArg.iterator());
         this.type = typeArg;
@@ -86,8 +85,7 @@ public class CollectionFeatureReader implements FeatureReader<SimpleFeatureType,
 
     /** @see FeatureReader#next() */
     @Override
-    public SimpleFeature next()
-            throws IOException, IllegalAttributeException, NoSuchElementException {
+    public SimpleFeature next() throws IOException, IllegalAttributeException, NoSuchElementException {
         if (closed) {
             throw new NoSuchElementException("Reader has been closed");
         }

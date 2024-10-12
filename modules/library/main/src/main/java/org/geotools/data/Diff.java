@@ -293,7 +293,8 @@ public class Diff {
                     tree.insert(ReferencedEnvelope.reference(f.getBounds()), f);
                 }
             }
-            Iterator<Entry<String, SimpleFeature>> j = diff.getModified().entrySet().iterator();
+            Iterator<Entry<String, SimpleFeature>> j =
+                    diff.getModified().entrySet().iterator();
             while (j.hasNext()) {
                 Entry<String, SimpleFeature> e = j.next();
                 SimpleFeature f = e.getValue();
@@ -311,174 +312,172 @@ public class Diff {
      * have been removed. The concept is generally useful and may wish to be taken out as a separate
      * class (used for example to represent deleted rows in a shapefile).
      */
-    public static final SimpleFeature NULL =
-            new SimpleFeature() {
-                @Override
-                public Object getAttribute(String path) {
-                    return null;
-                }
+    public static final SimpleFeature NULL = new SimpleFeature() {
+        @Override
+        public Object getAttribute(String path) {
+            return null;
+        }
 
-                @Override
-                public Object getAttribute(int index) {
-                    return null;
-                }
+        @Override
+        public Object getAttribute(int index) {
+            return null;
+        }
 
-                // public Object[] getAttributes(Object[] attributes) {
-                // return null;
-                // }
+        // public Object[] getAttributes(Object[] attributes) {
+        // return null;
+        // }
 
-                @Override
-                public ReferencedEnvelope getBounds() {
-                    return null;
-                }
+        @Override
+        public ReferencedEnvelope getBounds() {
+            return null;
+        }
 
-                @Override
-                public Geometry getDefaultGeometry() {
-                    return null;
-                }
+        @Override
+        public Geometry getDefaultGeometry() {
+            return null;
+        }
 
-                @Override
-                public SimpleFeatureType getFeatureType() {
-                    return null;
-                }
+        @Override
+        public SimpleFeatureType getFeatureType() {
+            return null;
+        }
 
-                @Override
-                public String getID() {
-                    return null;
-                }
+        @Override
+        public String getID() {
+            return null;
+        }
 
-                @Override
-                public FeatureId getIdentifier() {
-                    return null;
-                }
+        @Override
+        public FeatureId getIdentifier() {
+            return null;
+        }
 
-                // public int getNumberOfAttributes() {
-                // return 0;
-                // }
+        // public int getNumberOfAttributes() {
+        // return 0;
+        // }
 
-                @Override
-                public void setAttribute(int position, Object val) {}
+        @Override
+        public void setAttribute(int position, Object val) {}
 
-                @Override
-                public void setAttribute(String path, Object attribute)
-                        throws IllegalAttributeException {}
+        @Override
+        public void setAttribute(String path, Object attribute) throws IllegalAttributeException {}
 
-                // public void setDefaultGeometry(Geometry geometry)
-                // throws IllegalAttributeException {
-                // }
+        // public void setDefaultGeometry(Geometry geometry)
+        // throws IllegalAttributeException {
+        // }
 
-                @Override
-                public Object getAttribute(Name name) {
-                    return null;
-                }
+        @Override
+        public Object getAttribute(Name name) {
+            return null;
+        }
 
-                @Override
-                public int getAttributeCount() {
-                    return 0;
-                }
+        @Override
+        public int getAttributeCount() {
+            return 0;
+        }
 
-                @Override
-                public List<Object> getAttributes() {
-                    return null;
-                }
+        @Override
+        public List<Object> getAttributes() {
+            return null;
+        }
 
-                @Override
-                public SimpleFeatureType getType() {
-                    return null;
-                }
+        @Override
+        public SimpleFeatureType getType() {
+            return null;
+        }
 
-                @Override
-                public void setAttribute(Name name, Object value) {}
+        @Override
+        public void setAttribute(Name name, Object value) {}
 
-                @Override
-                public void setAttributes(List<Object> values) {}
+        @Override
+        public void setAttributes(List<Object> values) {}
 
-                @Override
-                public void setAttributes(Object[] values) {}
+        @Override
+        public void setAttributes(Object[] values) {}
 
-                @Override
-                public void setDefaultGeometry(Object geometry) {}
+        @Override
+        public void setDefaultGeometry(Object geometry) {}
 
-                @Override
-                public GeometryAttribute getDefaultGeometryProperty() {
-                    return null;
-                }
+        @Override
+        public GeometryAttribute getDefaultGeometryProperty() {
+            return null;
+        }
 
-                @Override
-                public void setDefaultGeometryProperty(GeometryAttribute geometryAttribute) {}
+        @Override
+        public void setDefaultGeometryProperty(GeometryAttribute geometryAttribute) {}
 
-                @Override
-                public Collection<Property> getProperties(Name name) {
-                    return null;
-                }
+        @Override
+        public Collection<Property> getProperties(Name name) {
+            return null;
+        }
 
-                @Override
-                public Collection<Property> getProperties() {
-                    return null;
-                }
+        @Override
+        public Collection<Property> getProperties() {
+            return null;
+        }
 
-                @Override
-                public Collection<Property> getProperties(String name) {
-                    return null;
-                }
+        @Override
+        public Collection<Property> getProperties(String name) {
+            return null;
+        }
 
-                @Override
-                public Property getProperty(Name name) {
-                    return null;
-                }
+        @Override
+        public Property getProperty(Name name) {
+            return null;
+        }
 
-                @Override
-                public Property getProperty(String name) {
-                    return null;
-                }
+        @Override
+        public Property getProperty(String name) {
+            return null;
+        }
 
-                @Override
-                public Collection<? extends Property> getValue() {
-                    return null;
-                }
+        @Override
+        public Collection<? extends Property> getValue() {
+            return null;
+        }
 
-                @Override
-                public void setValue(Collection<Property> values) {}
+        @Override
+        public void setValue(Collection<Property> values) {}
 
-                @Override
-                public AttributeDescriptor getDescriptor() {
-                    return null;
-                }
+        @Override
+        public AttributeDescriptor getDescriptor() {
+            return null;
+        }
 
-                @Override
-                public Name getName() {
-                    return null;
-                }
+        @Override
+        public Name getName() {
+            return null;
+        }
 
-                @Override
-                public Map<Object, Object> getUserData() {
-                    return null;
-                }
+        @Override
+        public Map<Object, Object> getUserData() {
+            return null;
+        }
 
-                @Override
-                public boolean isNillable() {
-                    return false;
-                }
+        @Override
+        public boolean isNillable() {
+            return false;
+        }
 
-                @Override
-                public void setValue(Object newValue) {}
+        @Override
+        public void setValue(Object newValue) {}
 
-                @Override
-                public String toString() {
-                    return "<NullFeature>";
-                }
+        @Override
+        public String toString() {
+            return "<NullFeature>";
+        }
 
-                @Override
-                public int hashCode() {
-                    return 0;
-                }
+        @Override
+        public int hashCode() {
+            return 0;
+        }
 
-                @Override
-                public boolean equals(Object arg0) {
-                    return arg0 == this;
-                }
+        @Override
+        public boolean equals(Object arg0) {
+            return arg0 == this;
+        }
 
-                @Override
-                public void validate() {}
-            };
+        @Override
+        public void validate() {}
+    };
 }

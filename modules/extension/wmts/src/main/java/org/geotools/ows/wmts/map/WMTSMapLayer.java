@@ -44,12 +44,10 @@ import org.geotools.parameter.Parameter;
  */
 public class WMTSMapLayer extends GridReaderLayer {
 
-    public static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(WMTSMapLayer.class);
+    public static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(WMTSMapLayer.class);
 
     public static final DefaultParameterDescriptor<CoordinateReferenceSystem> SOURCE_CRS =
-            new DefaultParameterDescriptor<>(
-                    "SourceCRS", CoordinateReferenceSystem.class, null, null);
+            new DefaultParameterDescriptor<>("SourceCRS", CoordinateReferenceSystem.class, null, null);
 
     private static Style createStyle() {
         StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
@@ -77,8 +75,7 @@ public class WMTSMapLayer extends GridReaderLayer {
     public WMTSMapLayer(WebMapTileServer wmts, Layer layer, CoordinateReferenceSystem sourceCRS) {
         super(new WMTSCoverageReader(wmts, layer), createStyle());
         GeneralParameterValue[] generalParameterValues = new GeneralParameterValue[1];
-        Parameter<CoordinateReferenceSystem> parameter =
-                new Parameter<>(WMTSMapLayer.SOURCE_CRS, sourceCRS);
+        Parameter<CoordinateReferenceSystem> parameter = new Parameter<>(WMTSMapLayer.SOURCE_CRS, sourceCRS);
         generalParameterValues[0] = parameter;
         this.params = generalParameterValues;
     }

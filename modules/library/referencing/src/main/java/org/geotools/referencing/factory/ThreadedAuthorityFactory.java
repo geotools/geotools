@@ -140,8 +140,7 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
      * @param factory The factory to cache. Can not be {@code null}.
      * @param maxStrongReferences The maximum number of objects to keep by strong reference.
      */
-    protected ThreadedAuthorityFactory(
-            AbstractAuthorityFactory factory, final int maxStrongReferences) {
+    protected ThreadedAuthorityFactory(AbstractAuthorityFactory factory, final int maxStrongReferences) {
         super(factory.getPriority());
         while (factory instanceof ThreadedAuthorityFactory) {
             factory = ((ThreadedAuthorityFactory) factory).backingStore;
@@ -262,8 +261,7 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
                 }
             }
             final LogRecord record =
-                    Loggings.format(
-                            Level.WARNING, LoggingKeys.UNAVAILABLE_AUTHORITY_FACTORY_$1, title);
+                    Loggings.format(Level.WARNING, LoggingKeys.UNAVAILABLE_AUTHORITY_FACTORY_$1, title);
             record.setSourceClassName(getClass().getName());
             record.setSourceMethodName("isAvailable");
             record.setThrown(exception);
@@ -325,8 +323,7 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
      * @throws FactoryException if access to the underlying database failed.
      */
     @Override
-    public Set<String> getAuthorityCodes(final Class<? extends IdentifiedObject> type)
-            throws FactoryException {
+    public Set<String> getAuthorityCodes(final Class<? extends IdentifiedObject> type) throws FactoryException {
         return getBackingStore().getAuthorityCodes(type);
     }
 
@@ -376,8 +373,7 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
 
     /** Returns an engineering datum from a code. */
     @Override
-    public synchronized EngineeringDatum createEngineeringDatum(final String code)
-            throws FactoryException {
+    public synchronized EngineeringDatum createEngineeringDatum(final String code) throws FactoryException {
         final EngineeringDatum datum;
         final String key = trimAuthority(code);
         final Object cached = objectCache.get(key);
@@ -407,8 +403,7 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
 
     /** Returns a vertical datum from a code. */
     @Override
-    public synchronized VerticalDatum createVerticalDatum(final String code)
-            throws FactoryException {
+    public synchronized VerticalDatum createVerticalDatum(final String code) throws FactoryException {
         final VerticalDatum datum;
         final String key = trimAuthority(code);
         final Object cached = objectCache.get(key);
@@ -423,8 +418,7 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
 
     /** Returns a temporal datum from a code. */
     @Override
-    public synchronized TemporalDatum createTemporalDatum(final String code)
-            throws FactoryException {
+    public synchronized TemporalDatum createTemporalDatum(final String code) throws FactoryException {
         final TemporalDatum datum;
         final String key = trimAuthority(code);
         final Object cached = objectCache.get(key);
@@ -439,8 +433,7 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
 
     /** Returns a geodetic datum from a code. */
     @Override
-    public synchronized GeodeticDatum createGeodeticDatum(final String code)
-            throws FactoryException {
+    public synchronized GeodeticDatum createGeodeticDatum(final String code) throws FactoryException {
         final GeodeticDatum datum;
         final String key = trimAuthority(code);
         final Object cached = objectCache.get(key);
@@ -470,8 +463,7 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
 
     /** Returns a prime meridian from a code. */
     @Override
-    public synchronized PrimeMeridian createPrimeMeridian(final String code)
-            throws FactoryException {
+    public synchronized PrimeMeridian createPrimeMeridian(final String code) throws FactoryException {
         final PrimeMeridian meridian;
         final String key = trimAuthority(code);
         final Object cached = objectCache.get(key);
@@ -501,8 +493,7 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
 
     /** Returns an arbitrary coordinate system from a code. */
     @Override
-    public synchronized CoordinateSystem createCoordinateSystem(final String code)
-            throws FactoryException {
+    public synchronized CoordinateSystem createCoordinateSystem(final String code) throws FactoryException {
         final CoordinateSystem cs;
         final String key = trimAuthority(code);
         final Object cached = objectCache.get(key);
@@ -547,8 +538,7 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
 
     /** Returns a cylindrical coordinate system from a code. */
     @Override
-    public synchronized CylindricalCS createCylindricalCS(final String code)
-            throws FactoryException {
+    public synchronized CylindricalCS createCylindricalCS(final String code) throws FactoryException {
         final CylindricalCS cs;
         final String key = trimAuthority(code);
         final Object cached = objectCache.get(key);
@@ -578,8 +568,7 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
 
     /** Returns an ellipsoidal coordinate system from a code. */
     @Override
-    public synchronized EllipsoidalCS createEllipsoidalCS(final String code)
-            throws FactoryException {
+    public synchronized EllipsoidalCS createEllipsoidalCS(final String code) throws FactoryException {
         final EllipsoidalCS cs;
         final String key = trimAuthority(code);
         final Object cached = objectCache.get(key);
@@ -624,8 +613,7 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
 
     /** Returns a coordinate system axis from a code. */
     @Override
-    public synchronized CoordinateSystemAxis createCoordinateSystemAxis(final String code)
-            throws FactoryException {
+    public synchronized CoordinateSystemAxis createCoordinateSystemAxis(final String code) throws FactoryException {
         final CoordinateSystemAxis axis;
         final String key = trimAuthority(code);
         final Object cached = objectCache.get(key);
@@ -705,8 +693,7 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
 
     /** Returns an engineering coordinate reference system from a code. */
     @Override
-    public synchronized EngineeringCRS createEngineeringCRS(final String code)
-            throws FactoryException {
+    public synchronized EngineeringCRS createEngineeringCRS(final String code) throws FactoryException {
         final EngineeringCRS crs;
         final String key = trimAuthority(code);
         final Object cached = objectCache.get(key);
@@ -721,8 +708,7 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
 
     /** Returns a geographic coordinate reference system from a code. */
     @Override
-    public synchronized GeographicCRS createGeographicCRS(final String code)
-            throws FactoryException {
+    public synchronized GeographicCRS createGeographicCRS(final String code) throws FactoryException {
         final GeographicCRS crs;
         final String key = trimAuthority(code);
         final Object cached = objectCache.get(key);
@@ -737,8 +723,7 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
 
     /** Returns a geocentric coordinate reference system from a code. */
     @Override
-    public synchronized GeocentricCRS createGeocentricCRS(final String code)
-            throws FactoryException {
+    public synchronized GeocentricCRS createGeocentricCRS(final String code) throws FactoryException {
         final GeocentricCRS crs;
         final String key = trimAuthority(code);
         final Object cached = objectCache.get(key);
@@ -813,8 +798,7 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
 
     /** Returns a parameter descriptor from a code. */
     @Override
-    public synchronized ParameterDescriptor createParameterDescriptor(final String code)
-            throws FactoryException {
+    public synchronized ParameterDescriptor createParameterDescriptor(final String code) throws FactoryException {
         final ParameterDescriptor parameter;
         final String key = trimAuthority(code);
         final Object cached = objectCache.get(key);
@@ -829,8 +813,7 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
 
     /** Returns an operation method from a code. */
     @Override
-    public synchronized OperationMethod createOperationMethod(final String code)
-            throws FactoryException {
+    public synchronized OperationMethod createOperationMethod(final String code) throws FactoryException {
         final OperationMethod method;
         final String key = trimAuthority(code);
         final Object cached = objectCache.get(key);
@@ -845,8 +828,7 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
 
     /** Returns an operation from a single operation code. */
     @Override
-    public synchronized CoordinateOperation createCoordinateOperation(final String code)
-            throws FactoryException {
+    public synchronized CoordinateOperation createCoordinateOperation(final String code) throws FactoryException {
         final CoordinateOperation operation;
         final String key = trimAuthority(code);
         final Object cached = objectCache.get(key);
@@ -870,11 +852,8 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
         if (cached instanceof CoordinateOperation) {
             operations = (Set<CoordinateOperation>) cached;
         } else {
-            operations =
-                    Collections.unmodifiableSet(
-                            getBackingStore()
-                                    .createFromCoordinateReferenceSystemCodes(
-                                            sourceCode, targetCode));
+            operations = Collections.unmodifiableSet(
+                    getBackingStore().createFromCoordinateReferenceSystemCodes(sourceCode, targetCode));
         }
         objectCache.put(key, operations);
         return operations;
@@ -904,8 +883,7 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
         public boolean equals(final Object other) {
             if (other instanceof CodePair) {
                 final CodePair that = (CodePair) other;
-                return Utilities.equals(this.source, that.source)
-                        && Utilities.equals(this.target, that.target);
+                return Utilities.equals(this.source, that.source) && Utilities.equals(this.target, that.target);
             }
             return false;
         }
@@ -921,8 +899,8 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
      * implementation delegates lookup to the underlying backing store and caches the result.
      */
     @Override
-    public synchronized IdentifiedObjectFinder getIdentifiedObjectFinder(
-            final Class<? extends IdentifiedObject> type) throws FactoryException {
+    public synchronized IdentifiedObjectFinder getIdentifiedObjectFinder(final Class<? extends IdentifiedObject> type)
+            throws FactoryException {
         return new Finder(getBackingStore().getIdentifiedObjectFinder(type));
     }
 

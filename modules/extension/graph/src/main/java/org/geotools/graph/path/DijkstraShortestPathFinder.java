@@ -72,8 +72,7 @@ public class DijkstraShortestPathFinder implements GraphWalker {
      * @param weighter Associates weights with edges in the graph.
      * @param nweighter Associates weights with nodes in the graph.
      */
-    public DijkstraShortestPathFinder(
-            Graph graph, Graphable source, EdgeWeighter weighter, NodeWeighter nweighter) {
+    public DijkstraShortestPathFinder(Graph graph, Graphable source, EdgeWeighter weighter, NodeWeighter nweighter) {
         m_iterator = new DijkstraIterator(weighter, nweighter);
         m_iterator.setSource(source);
         m_traversal = new BasicGraphTraversal(graph, this, m_iterator);

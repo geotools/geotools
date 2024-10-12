@@ -64,18 +64,15 @@ public final class CommonFactoryFinder extends FactoryFinder {
     private static FactoryRegistry getServiceRegistry() {
         assert Thread.holdsLock(CommonFactoryFinder.class);
         if (registry == null) {
-            registry =
-                    new FactoryCreator(
-                            Arrays.asList(
-                                    new Class<?>[] {
-                                        StyleFactory.class,
-                                        FilterFactory.class,
-                                        FileDataStoreFactorySpi.class,
-                                        Function.class,
-                                        FunctionFactory.class,
-                                        FeatureFactory.class,
-                                        FeatureTypeFactory.class
-                                    }));
+            registry = new FactoryCreator(Arrays.asList(new Class<?>[] {
+                StyleFactory.class,
+                FilterFactory.class,
+                FileDataStoreFactorySpi.class,
+                Function.class,
+                FunctionFactory.class,
+                FeatureFactory.class,
+                FeatureTypeFactory.class
+            }));
         }
         return registry;
     }
@@ -149,8 +146,7 @@ public final class CommonFactoryFinder extends FactoryFinder {
      */
     public static synchronized Set<FileDataStoreFactorySpi> getFileDataStoreFactories(Hints hints) {
         hints = mergeSystemHints(hints);
-        return new LazySet<>(
-                getServiceRegistry().getFactories(FileDataStoreFactorySpi.class, null, hints));
+        return new LazySet<>(getServiceRegistry().getFactories(FileDataStoreFactorySpi.class, null, hints));
     }
 
     /**

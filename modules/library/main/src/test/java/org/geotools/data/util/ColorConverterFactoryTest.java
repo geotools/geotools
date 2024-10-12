@@ -84,57 +84,43 @@ public class ColorConverterFactoryTest {
     @Test
     public void testToCSS() throws Exception {
         Converter converter =
-                factory.createConverter(
-                        Color.class, String.class, new Hints(Hints.COLOR_DEFINITION, "CSS"));
+                factory.createConverter(Color.class, String.class, new Hints(Hints.COLOR_DEFINITION, "CSS"));
 
         Assert.assertEquals("aliceblue", "aliceblue", converter.convert(ALICE_BLUE, String.class));
         Assert.assertEquals("gray", "gray", converter.convert(GRAY, String.class));
 
-        Assert.assertEquals(
-                "pale blue",
-                "rgb(33,66,255)",
-                converter.convert(new Color(33, 66, 255), String.class));
+        Assert.assertEquals("pale blue", "rgb(33,66,255)", converter.convert(new Color(33, 66, 255), String.class));
 
         Assert.assertEquals(
-                "gray transparent",
-                "rgba(128,128,128,0.5)",
-                converter.convert(GRAY_TRANSPARENT, String.class));
+                "gray transparent", "rgba(128,128,128,0.5)", converter.convert(GRAY_TRANSPARENT, String.class));
 
         Assert.assertEquals(
-                "blueish",
-                "rgba(33,66,255,0.992)",
-                converter.convert(new Color(33, 66, 255, 254), String.class));
+                "blueish", "rgba(33,66,255,0.992)", converter.convert(new Color(33, 66, 255, 254), String.class));
     }
 
     @Test
     public void testFromCss() throws Exception {
         Converter converter =
-                factory.createConverter(
-                        String.class, Color.class, new Hints(Hints.COLOR_DEFINITION, "CSS"));
+                factory.createConverter(String.class, Color.class, new Hints(Hints.COLOR_DEFINITION, "CSS"));
         Assert.assertEquals("aliceblue", ALICE_BLUE, converter.convert("aliceblue", Color.class));
         Assert.assertEquals("AliceBlue", ALICE_BLUE, converter.convert("AliceBlue", Color.class));
         Assert.assertEquals("gray", GRAY, converter.convert("gray", Color.class));
-        Assert.assertEquals(
-                "lemonchiffon", LEMON_CHIFFON, converter.convert("lemonchiffon", Color.class));
+        Assert.assertEquals("lemonchiffon", LEMON_CHIFFON, converter.convert("lemonchiffon", Color.class));
         Assert.assertEquals("WHITE", WHITE, converter.convert("WHITE", Color.class));
         Assert.assertEquals("black", BLACK, converter.convert("black", Color.class));
         Assert.assertEquals("thistle", THISTLE, converter.convert("thistle", Color.class));
         Assert.assertEquals("hex", GRAY, converter.convert("#808080", Color.class));
 
-        Assert.assertEquals(
-                "hex alpha", GRAY_TRANSPARENT, converter.convert("#80808080", Color.class));
+        Assert.assertEquals("hex alpha", GRAY_TRANSPARENT, converter.convert("#80808080", Color.class));
 
         Assert.assertEquals("rgb", GRAY, converter.convert("rgb(128,128,128)", Color.class));
 
-        Assert.assertEquals(
-                "rgba", GRAY_TRANSPARENT, converter.convert("rgba(128,128,128, 0.5)", Color.class));
+        Assert.assertEquals("rgba", GRAY_TRANSPARENT, converter.convert("rgba(128,128,128, 0.5)", Color.class));
 
         Assert.assertEquals("rgba", GRAY, converter.convert("rgba(128,128,128, 1)", Color.class));
 
         Assert.assertEquals(
-                "rgba",
-                new Color(33, 66, 255, 254),
-                converter.convert("rgba(33,66,255,0.99607843)", Color.class));
+                "rgba", new Color(33, 66, 255, 254), converter.convert("rgba(33,66,255,0.99607843)", Color.class));
     }
 
     @Test
@@ -169,8 +155,7 @@ public class ColorConverterFactoryTest {
     @Test
     public void testHsl() throws Exception {
         Converter converter =
-                factory.createConverter(
-                        String.class, Color.class, new Hints(Hints.COLOR_DEFINITION, "CSS"));
+                factory.createConverter(String.class, Color.class, new Hints(Hints.COLOR_DEFINITION, "CSS"));
         Assert.assertEquals(BLACK, converter.convert("hsl(0, 0, 0)", Color.class));
         Assert.assertEquals(WHITE, converter.convert("hsl(0, 0, 100%)", Color.class));
         Assert.assertEquals(RED, converter.convert("hsl(0, 100%, 50%)", Color.class));
@@ -180,11 +165,8 @@ public class ColorConverterFactoryTest {
     @Test
     public void testHsla() throws Exception {
         Converter converter =
-                factory.createConverter(
-                        String.class, Color.class, new Hints(Hints.COLOR_DEFINITION, "CSS"));
+                factory.createConverter(String.class, Color.class, new Hints(Hints.COLOR_DEFINITION, "CSS"));
         Assert.assertEquals(BLACK, converter.convert("hsla(0, 0%, 0%, 1)", Color.class));
-        Assert.assertEquals(
-                new Color(255, 255, 255, 128),
-                converter.convert("hsla(0, 0%, 100%, 0.5)", Color.class));
+        Assert.assertEquals(new Color(255, 255, 255, 128), converter.convert("hsla(0, 0%, 100%, 0.5)", Color.class));
     }
 }

@@ -141,11 +141,7 @@ public abstract class OnlineTestCase extends TestCase {
                 try {
                     available = isOnline();
                 } catch (Throwable t) {
-                    System.out.println(
-                            "Skipping "
-                                    + fixtureId
-                                    + " tests, resources not available: "
-                                    + t.getMessage());
+                    System.out.println("Skipping " + fixtureId + " tests, resources not available: " + t.getMessage());
                     Logger.getGlobal().log(Level.INFO, "", t);
                     available = Boolean.FALSE;
                 }
@@ -182,8 +178,7 @@ public abstract class OnlineTestCase extends TestCase {
                         if (profile == null) {
                             Properties exampleFixture = createExampleFixture();
                             if (exampleFixture != null) {
-                                File exFixtureFile =
-                                        new File(fixtureFile.getAbsolutePath() + ".example");
+                                File exFixtureFile = new File(fixtureFile.getAbsolutePath() + ".example");
                                 if (!exFixtureFile.exists()) {
                                     createExampleFixture(exFixtureFile, exampleFixture);
                                 }
@@ -235,9 +230,7 @@ public abstract class OnlineTestCase extends TestCase {
         super.setUp();
         setUpInternal();
 
-        skipOnFailure =
-                Boolean.parseBoolean(
-                        fixture.getProperty(SKIP_ON_FAILURE_KEY, SKIP_ON_FAILURE_DEFAULT));
+        skipOnFailure = Boolean.parseBoolean(fixture.getProperty(SKIP_ON_FAILURE_KEY, SKIP_ON_FAILURE_DEFAULT));
         // call the setUp template method
         try {
             connect();

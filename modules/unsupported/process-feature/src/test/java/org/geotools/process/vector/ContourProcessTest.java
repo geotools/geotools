@@ -66,8 +66,7 @@ public class ContourProcessTest {
 
     @Test
     public void testSimplePointsInterval() {
-        ReferencedEnvelope bounds =
-                new ReferencedEnvelope(0, 30, 0, 30, DefaultGeographicCRS.WGS84);
+        ReferencedEnvelope bounds = new ReferencedEnvelope(0, 30, 0, 30, DefaultGeographicCRS.WGS84);
         Coordinate[] data = {
             new Coordinate(10, 10, 100),
             new Coordinate(10, 20, 20),
@@ -81,8 +80,7 @@ public class ContourProcessTest {
         Boolean simplify = Boolean.TRUE;
         Boolean smooth = Boolean.TRUE;
         ProgressListener progressListener = null;
-        SimpleFeatureCollection results =
-                cp.execute(fc, "value", levels, interval, simplify, smooth, progressListener);
+        SimpleFeatureCollection results = cp.execute(fc, "value", levels, interval, simplify, smooth, progressListener);
 
         try {
             displayResults(fc, results);
@@ -94,8 +92,7 @@ public class ContourProcessTest {
 
     @Test
     public void testSimplePointsLevel() {
-        ReferencedEnvelope bounds =
-                new ReferencedEnvelope(0, 30, 0, 30, DefaultGeographicCRS.WGS84);
+        ReferencedEnvelope bounds = new ReferencedEnvelope(0, 30, 0, 30, DefaultGeographicCRS.WGS84);
         Coordinate[] data = {
             new Coordinate(10, 10, 100),
             new Coordinate(10, 20, 20),
@@ -109,8 +106,7 @@ public class ContourProcessTest {
         Boolean simplify = Boolean.TRUE;
         Boolean smooth = Boolean.TRUE;
         ProgressListener progressListener = null;
-        SimpleFeatureCollection results =
-                cp.execute(fc, "value", levels, interval, simplify, smooth, progressListener);
+        SimpleFeatureCollection results = cp.execute(fc, "value", levels, interval, simplify, smooth, progressListener);
 
         try {
             displayResults(fc, results);
@@ -133,15 +129,14 @@ public class ContourProcessTest {
         Boolean simplify = Boolean.TRUE;
         Boolean smooth = Boolean.TRUE;
         ProgressListener progressListener = null;
-        SimpleFeatureCollection results =
-                cp.execute(
-                        features,
-                        "propertyVa",
-                        ArrayUtils.toPrimitive(levels.toArray(new Double[] {})),
-                        interval,
-                        simplify,
-                        smooth,
-                        progressListener);
+        SimpleFeatureCollection results = cp.execute(
+                features,
+                "propertyVa",
+                ArrayUtils.toPrimitive(levels.toArray(new Double[] {})),
+                interval,
+                simplify,
+                smooth,
+                progressListener);
         try {
             displayResults((SimpleFeatureCollection) features, results);
         } catch (InterruptedException e) {
@@ -156,13 +151,10 @@ public class ContourProcessTest {
             throws InterruptedException {
         if (!show) return;
         MapContent map = new MapContent();
-        map.addLayer(
-                new FeatureLayer(
-                        points, SLD.createPointStyle("circle", Color.red, Color.red, 1, 5)));
+        map.addLayer(new FeatureLayer(points, SLD.createPointStyle("circle", Color.red, Color.red, 1, 5)));
         StyleBuilder sb = new StyleBuilder();
         Font font = sb.createFont("Arial", 10);
-        map.addLayer(
-                new FeatureLayer(results, SLD.createLineStyle(Color.black, 1, "elevation", font)));
+        map.addLayer(new FeatureLayer(results, SLD.createLineStyle(Color.black, 1, "elevation", font)));
 
         JMapFrame frame = new JMapFrame();
 
@@ -173,33 +165,31 @@ public class ContourProcessTest {
         frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         frame.setVisible(true);
 
-        Thread t =
-                new Thread() {
-                    @Override
-                    public void run() {
-                        synchronized (lock) {
-                            while (frame.isVisible())
-                                try {
-                                    lock.wait();
-                                } catch (InterruptedException e) {
-                                    LOGGER.log(Level.WARNING, "", e);
-                                }
+        Thread t = new Thread() {
+            @Override
+            public void run() {
+                synchronized (lock) {
+                    while (frame.isVisible())
+                        try {
+                            lock.wait();
+                        } catch (InterruptedException e) {
+                            LOGGER.log(Level.WARNING, "", e);
                         }
-                    }
-                };
+                }
+            }
+        };
         t.start();
 
-        frame.addWindowListener(
-                new WindowAdapter() {
+        frame.addWindowListener(new WindowAdapter() {
 
-                    @Override
-                    public void windowClosing(WindowEvent arg0) {
-                        synchronized (lock) {
-                            frame.setVisible(false);
-                            lock.notify();
-                        }
-                    }
-                });
+            @Override
+            public void windowClosing(WindowEvent arg0) {
+                synchronized (lock) {
+                    frame.setVisible(false);
+                    lock.notify();
+                }
+            }
+        });
 
         t.join();
     }

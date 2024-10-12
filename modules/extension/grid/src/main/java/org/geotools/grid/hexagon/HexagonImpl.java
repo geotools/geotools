@@ -56,11 +56,7 @@ public class HexagonImpl implements Hexagon {
      * @param crs the coordinate reference system (may be {@code null})
      */
     public HexagonImpl(
-            double minX,
-            double minY,
-            double sideLen,
-            HexagonOrientation orientation,
-            CoordinateReferenceSystem crs) {
+            double minX, double minY, double sideLen, HexagonOrientation orientation, CoordinateReferenceSystem crs) {
 
         if (sideLen <= 0.0) {
             throw new IllegalArgumentException("side length must be > 0");
@@ -116,12 +112,10 @@ public class HexagonImpl implements Hexagon {
     @Override
     public ReferencedEnvelope getBounds() {
         if (orientation == HexagonOrientation.FLAT) {
-            return new ReferencedEnvelope(
-                    minX, minX + 2.0 * sideLen, minY, minY + ROOT3 * sideLen, crs);
+            return new ReferencedEnvelope(minX, minX + 2.0 * sideLen, minY, minY + ROOT3 * sideLen, crs);
 
         } else { // ANGLED
-            return new ReferencedEnvelope(
-                    minX, minX + ROOT3 * sideLen, minY, minY + 2.0 * sideLen, crs);
+            return new ReferencedEnvelope(minX, minX + ROOT3 * sideLen, minY, minY + 2.0 * sideLen, crs);
         }
     }
 

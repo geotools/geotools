@@ -163,11 +163,10 @@ class Polygon implements Cloneable {
         ArrayList<Position> redCoords = new ArrayList<>();
 
         for (Position vertex : vertices) {
-            redCoords.add(
-                    new Position2D(
-                            vertex.getCoordinateReferenceSystem(),
-                            vertex.getCoordinate()[0] - vertices[0].getCoordinate()[0],
-                            vertex.getCoordinate()[1] - vertices[0].getCoordinate()[1]));
+            redCoords.add(new Position2D(
+                    vertex.getCoordinateReferenceSystem(),
+                    vertex.getCoordinate()[0] - vertices[0].getCoordinate()[0],
+                    vertex.getCoordinate()[1] - vertices[0].getCoordinate()[1]));
         }
 
         return redCoords;

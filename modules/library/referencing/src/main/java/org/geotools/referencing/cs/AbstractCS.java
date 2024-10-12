@@ -147,16 +147,12 @@ public class AbstractCS extends AbstractIdentifiedObject implements CoordinateSy
             if (!isCompatibleDirection(direction)) {
                 // TOOD: localize name()
                 throw new IllegalArgumentException(
-                        MessageFormat.format(
-                                ErrorKeys.ILLEGAL_AXIS_ORIENTATION_$2,
-                                direction.name(),
-                                getClass()));
+                        MessageFormat.format(ErrorKeys.ILLEGAL_AXIS_ORIENTATION_$2, direction.name(), getClass()));
             }
             final Unit<?> unit = axis[i].getUnit();
             ensureNonNull("unit", unit);
             if (!isCompatibleUnit(direction, unit)) {
-                throw new IllegalArgumentException(
-                        MessageFormat.format(ErrorKeys.INCOMPATIBLE_UNIT_$1, unit));
+                throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.INCOMPATIBLE_UNIT_$1, unit));
             }
             /*
              * Ensures there is no axis along the same direction
@@ -196,11 +192,8 @@ public class AbstractCS extends AbstractIdentifiedObject implements CoordinateSy
                          * considered as a contradiction...
                          */
                         if (m == null) {
-                            throw new IllegalArgumentException(
-                                    MessageFormat.format(
-                                            ErrorKeys.INCONSISTENT_AXIS_ORIENTATION_$2,
-                                            name,
-                                            direction.name()));
+                            throw new IllegalArgumentException(MessageFormat.format(
+                                    ErrorKeys.INCONSISTENT_AXIS_ORIENTATION_$2, name, direction.name()));
                         }
                     }
                 }
@@ -310,11 +303,9 @@ public class AbstractCS extends AbstractIdentifiedObject implements CoordinateSy
      *     geometry.
      * @throws ConversionException if the unit conversion is non-linear.
      */
-    public static Matrix swapAndScaleAxis(
-            final CoordinateSystem sourceCS, final CoordinateSystem targetCS)
+    public static Matrix swapAndScaleAxis(final CoordinateSystem sourceCS, final CoordinateSystem targetCS)
             throws IllegalArgumentException {
-        if (!Classes.sameInterfaces(
-                sourceCS.getClass(), targetCS.getClass(), CoordinateSystem.class)) {
+        if (!Classes.sameInterfaces(sourceCS.getClass(), targetCS.getClass(), CoordinateSystem.class)) {
             throw new IllegalArgumentException(ErrorKeys.INCOMPATIBLE_COORDINATE_SYSTEM_TYPE);
         }
         final AxisDirection[] sourceAxis = getAxisDirections(sourceCS);
@@ -358,10 +349,7 @@ public class AbstractCS extends AbstractIdentifiedObject implements CoordinateSy
                 UnitConverter converter = Units.getConverterToAny(sourceUnit, targetUnit);
                 if (!converter.isLinear()) {
                     throw new IllegalArgumentException(
-                            MessageFormat.format(
-                                    ErrorKeys.NON_LINEAR_UNIT_CONVERSION_$2,
-                                    sourceUnit,
-                                    targetUnit));
+                            MessageFormat.format(ErrorKeys.NON_LINEAR_UNIT_CONVERSION_$2, sourceUnit, targetUnit));
                 }
                 final double offset = converter.convert(0);
                 final double scale = converter.convert(1) - offset;
@@ -405,8 +393,7 @@ public class AbstractCS extends AbstractIdentifiedObject implements CoordinateSy
      * @throws IllegalArgumentException if the specified coordinate system is unknow to this method.
      * @since 2.2
      */
-    public static CoordinateSystem standard(final CoordinateSystem cs)
-            throws IllegalArgumentException {
+    public static CoordinateSystem standard(final CoordinateSystem cs) throws IllegalArgumentException {
         return PredefinedCS.standard(cs);
     }
 
@@ -456,15 +443,10 @@ public class AbstractCS extends AbstractIdentifiedObject implements CoordinateSy
      * @param coordinates The coordinate array to check.
      * @throws MismatchedDimensionException if the coordinate doesn't have the expected dimension.
      */
-    final void ensureDimensionMatch(final String name, final double[] coordinates)
-            throws MismatchedDimensionException {
+    final void ensureDimensionMatch(final String name, final double[] coordinates) throws MismatchedDimensionException {
         if (coordinates.length != axis.length) {
             throw new MismatchedDimensionException(
-                    MessageFormat.format(
-                            ErrorKeys.MISMATCHED_DIMENSION_$3,
-                            name,
-                            coordinates.length,
-                            axis.length));
+                    MessageFormat.format(ErrorKeys.MISMATCHED_DIMENSION_$3, name, coordinates.length, axis.length));
         }
     }
 
@@ -526,8 +508,7 @@ public class AbstractCS extends AbstractIdentifiedObject implements CoordinateSy
      * implementation.
      */
     private static DefaultCoordinateSystemAxis[] getDefaultAxis(final CoordinateSystem cs) {
-        final DefaultCoordinateSystemAxis[] axis =
-                new DefaultCoordinateSystemAxis[cs.getDimension()];
+        final DefaultCoordinateSystemAxis[] axis = new DefaultCoordinateSystemAxis[cs.getDimension()];
         for (int i = 0; i < axis.length; i++) {
             final CoordinateSystemAxis a = cs.getAxis(i);
             DefaultCoordinateSystemAxis c = DefaultCoordinateSystemAxis.getPredefined(a);

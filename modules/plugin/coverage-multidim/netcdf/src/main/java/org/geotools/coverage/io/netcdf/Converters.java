@@ -37,9 +37,7 @@ final class ConvertersHack {
 
     /** Cached list of converter factories */
     static final ConverterFactory[] factories = {
-        new NumericConverterFactory(),
-        new BooleanConverterFactory(),
-        new TemporalConverterFactoryHack()
+        new NumericConverterFactory(), new BooleanConverterFactory(), new TemporalConverterFactoryHack()
     };
 
     /**
@@ -77,9 +75,7 @@ final class ConvertersHack {
 
         // handle case of source being an instance of target up front
         final Class<?> sourceClass = source.getClass();
-        if (sourceClass == target
-                || sourceClass.equals(target)
-                || target.isAssignableFrom(sourceClass)) {
+        if (sourceClass == target || sourceClass.equals(target) || target.isAssignableFrom(sourceClass)) {
             return target.cast(source);
         }
 

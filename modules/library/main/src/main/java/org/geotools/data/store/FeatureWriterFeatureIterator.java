@@ -74,8 +74,7 @@ final class FeatureWriterFeatureIterator implements SimpleFeatureIterator {
         try {
             return writer.next();
         } catch (IOException io) {
-            NoSuchElementException problem =
-                    new NoSuchElementException("Could not obtain the next feature:" + io);
+            NoSuchElementException problem = new NoSuchElementException("Could not obtain the next feature:" + io);
             problem.initCause(io);
             throw problem;
         }
@@ -85,8 +84,7 @@ final class FeatureWriterFeatureIterator implements SimpleFeatureIterator {
         try {
             writer.remove();
         } catch (IOException problem) {
-            throw (IllegalStateException)
-                    new IllegalStateException("Could not remove feature").initCause(problem);
+            throw (IllegalStateException) new IllegalStateException("Could not remove feature").initCause(problem);
         }
     }
 

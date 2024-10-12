@@ -65,8 +65,8 @@ public class SimpleElementHandler extends XMLElementHandler {
 
     /** @see org.geotools.xml.XMLElementHandler#getHandler(java.lang.String, java.lang.String) */
     @Override
-    public XMLElementHandler getHandler(
-            URI namespaceURI, String localName, Map<String, Object> hints) throws SAXException {
+    public XMLElementHandler getHandler(URI namespaceURI, String localName, Map<String, Object> hints)
+            throws SAXException {
         throw new SAXException("Should not have any children - this is a simpleType");
     }
 

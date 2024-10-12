@@ -65,8 +65,7 @@ abstract class URI_Parser {
      * @param version the version of the resource or null if none
      * @param code the resource code
      */
-    protected URI_Parser(
-            String uri, URI_Type type, String authority, Version version, String code) {
+    protected URI_Parser(String uri, URI_Type type, String authority, Version version, String code) {
         this.uri = uri;
         this.type = type;
         this.authority = authority;
@@ -93,8 +92,7 @@ abstract class URI_Parser {
             AuthorityFactory authorityFactory, final Class<? extends AuthorityFactory> expected) {
         if (!expected.isAssignableFrom(type.type)) {
             // Build a simplified URN, omitting "urn:ogc:def" and version number.
-            final LogRecord record =
-                    Loggings.format(Level.WARNING, LoggingKeys.MISMATCHED_URI_TYPE_$1, uri);
+            final LogRecord record = Loggings.format(Level.WARNING, LoggingKeys.MISMATCHED_URI_TYPE_$1, uri);
             // Set the source to the public or protected method.
             record.setSourceClassName(authorityFactory.getClass().getName());
             record.setSourceMethodName("get" + Classes.getShortName(expected));

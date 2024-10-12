@@ -37,13 +37,12 @@ public class TimeParser {
 
     /** Creates the parser */
     public TimeParser() {
-        parser =
-                new DateTimeParser(
-                        -1,
-                        DateTimeParser.FLAG_GET_TIME_ON_CURRENT
-                                | DateTimeParser.FLAG_GET_TIME_ON_NOW
-                                | DateTimeParser.FLAG_GET_TIME_ON_PRESENT
-                                | DateTimeParser.FLAG_IS_LENIENT);
+        parser = new DateTimeParser(
+                -1,
+                DateTimeParser.FLAG_GET_TIME_ON_CURRENT
+                        | DateTimeParser.FLAG_GET_TIME_ON_NOW
+                        | DateTimeParser.FLAG_GET_TIME_ON_PRESENT
+                        | DateTimeParser.FLAG_IS_LENIENT);
     }
 
     /**
@@ -59,11 +58,10 @@ public class TimeParser {
      */
     public List<Date> parse(String value) throws ParseException {
         Collection<?> results = parser.parse(value);
-        List<Date> dates =
-                results.stream()
-                        .filter(o -> o instanceof Date)
-                        .map(o -> (Date) o)
-                        .collect(Collectors.toList());
+        List<Date> dates = results.stream()
+                .filter(o -> o instanceof Date)
+                .map(o -> (Date) o)
+                .collect(Collectors.toList());
         return dates;
     }
 }

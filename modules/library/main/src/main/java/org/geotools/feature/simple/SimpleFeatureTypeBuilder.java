@@ -102,8 +102,7 @@ import org.locationtech.jts.geom.Geometry;
  */
 public class SimpleFeatureTypeBuilder {
     /** logger */
-    static Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(SimpleFeatureTypeBuilder.class);
+    static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(SimpleFeatureTypeBuilder.class);
 
     /** factories */
     protected FeatureTypeFactory factory;
@@ -586,16 +585,12 @@ public class SimpleFeatureTypeBuilder {
         // feature can be backed by another geometry model (like iso), we need
         // to remove this check
         //
-        if ((defaultGeometry != null && defaultGeometry.equals(name))
-                || Geometry.class.isAssignableFrom(binding)) {
+        if ((defaultGeometry != null && defaultGeometry.equals(name)) || Geometry.class.isAssignableFrom(binding)) {
 
             // if no crs was set, set to defaultCRS
             if (!attributeBuilder.isCRSSet()) {
                 if (defaultCrs == null && !defaultCrsSet) {
-                    LOGGER.fine(
-                            "Creating "
-                                    + name
-                                    + " with null CoordinateReferenceSystem - did you mean to setCRS?");
+                    LOGGER.fine("Creating " + name + " with null CoordinateReferenceSystem - did you mean to setCRS?");
                 }
                 attributeBuilder.setCRS(defaultCrs);
             }
@@ -638,8 +633,7 @@ public class SimpleFeatureTypeBuilder {
                 return descriptor;
             }
         }
-        throw new IllegalArgumentException(
-                attributeName + " is not an existing attribute descriptor in this builder");
+        throw new IllegalArgumentException(attributeName + " is not an existing attribute descriptor in this builder");
     }
 
     /**
@@ -760,8 +754,7 @@ public class SimpleFeatureTypeBuilder {
         int index = indexOf(descriptor.getLocalName());
         if (index == -1) {
             throw new IllegalArgumentException(
-                    descriptor.getLocalName()
-                            + " is not an existing attribute descriptor in this builder");
+                    descriptor.getLocalName() + " is not an existing attribute descriptor in this builder");
         }
         set(index, descriptor);
     }
@@ -833,10 +826,7 @@ public class SimpleFeatureTypeBuilder {
                     // ensure the attribute is a geometry attribute
                     //
                     if (!(att instanceof GeometryDescriptor)) {
-                        LOGGER.warning(
-                                "Default Geometry "
-                                        + this.defaultGeometry
-                                        + " was added as a geometry");
+                        LOGGER.warning("Default Geometry " + this.defaultGeometry + " was added as a geometry");
                         attributeBuilder.init(att);
                         attributeBuilder.setCRS(defaultCrs);
                         GeometryType type = attributeBuilder.buildGeometryType();
@@ -851,10 +841,7 @@ public class SimpleFeatureTypeBuilder {
 
             if (defGeom == null) {
                 String msg =
-                        "'"
-                                + this.defaultGeometry
-                                + "' specified as default"
-                                + " but could find no such attribute.";
+                        "'" + this.defaultGeometry + "' specified as default" + " but could find no such attribute.";
                 throw new IllegalArgumentException(msg);
             }
         }
@@ -869,15 +856,8 @@ public class SimpleFeatureTypeBuilder {
             }
         }
 
-        SimpleFeatureType built =
-                factory.createSimpleFeatureType(
-                        name(),
-                        attributes(),
-                        defGeom,
-                        isAbstract,
-                        restrictions(),
-                        superType,
-                        description);
+        SimpleFeatureType built = factory.createSimpleFeatureType(
+                name(), attributes(), defGeom, isAbstract, restrictions(), superType, description);
 
         init();
         return built;
@@ -1005,8 +985,7 @@ public class SimpleFeatureTypeBuilder {
 
         // handle default geometry
         GeometryDescriptor defaultGeometry = original.getGeometryDescriptor();
-        String defaultGeometryName =
-                defaultGeometry != null ? defaultGeometry.getLocalName() : null;
+        String defaultGeometryName = defaultGeometry != null ? defaultGeometry.getLocalName() : null;
         if (defaultGeometryName != null && attributes.contains(defaultGeometryName)) {
             b.setDefaultGeometry(defaultGeometryName);
         } else {
@@ -1023,8 +1002,7 @@ public class SimpleFeatureTypeBuilder {
      * @param crs CoordinateReferenceSystem of result
      * @return SimpleFeatureType updated with the provided CoordinateReferenceSystem
      */
-    public static SimpleFeatureType retype(
-            SimpleFeatureType original, CoordinateReferenceSystem crs) {
+    public static SimpleFeatureType retype(SimpleFeatureType original, CoordinateReferenceSystem crs) {
         SimpleFeatureTypeBuilder b = new SimpleFeatureTypeBuilder();
 
         // initialize the builder
@@ -1036,8 +1014,7 @@ public class SimpleFeatureTypeBuilder {
         // add attributes in order
         for (AttributeDescriptor descriptor : original.getAttributeDescriptors()) {
             if (descriptor instanceof GeometryDescriptor) {
-                GeometryDescriptor geometryDescriptor =
-                        retype(b, (GeometryDescriptor) descriptor, crs);
+                GeometryDescriptor geometryDescriptor = retype(b, (GeometryDescriptor) descriptor, crs);
                 b.add(geometryDescriptor);
                 continue;
             }
@@ -1082,10 +1059,9 @@ public class SimpleFeatureTypeBuilder {
 
         List<String> attributeNames;
         if (attributes == Query.ALL_NAMES) {
-            attributeNames =
-                    original.getAttributeDescriptors().stream()
-                            .map(AttributeDescriptor::getLocalName)
-                            .collect(Collectors.toList());
+            attributeNames = original.getAttributeDescriptors().stream()
+                    .map(AttributeDescriptor::getLocalName)
+                    .collect(Collectors.toList());
         } else {
             attributeNames = Arrays.asList(attributes);
         }
@@ -1097,8 +1073,7 @@ public class SimpleFeatureTypeBuilder {
         for (String localName : attributeNames) {
             AttributeDescriptor descriptor = original.getDescriptor(localName);
             if (descriptor instanceof GeometryDescriptor) {
-                GeometryDescriptor geometryDescriptor =
-                        retype(b, (GeometryDescriptor) descriptor, crs);
+                GeometryDescriptor geometryDescriptor = retype(b, (GeometryDescriptor) descriptor, crs);
                 b.add(geometryDescriptor);
                 continue;
             }
@@ -1107,8 +1082,7 @@ public class SimpleFeatureTypeBuilder {
 
         // handle default geometry
         GeometryDescriptor defaultGeometry = original.getGeometryDescriptor();
-        String defaultGeometryName =
-                defaultGeometry != null ? defaultGeometry.getLocalName() : null;
+        String defaultGeometryName = defaultGeometry != null ? defaultGeometry.getLocalName() : null;
         if (defaultGeometryName != null && attributeNames.contains(defaultGeometryName)) {
             b.setDefaultGeometry(defaultGeometryName);
         } else {
@@ -1128,9 +1102,7 @@ public class SimpleFeatureTypeBuilder {
      * @return GeometryDescriptor updated with the provided CoordinateReferenceSystem
      */
     private static GeometryDescriptor retype(
-            SimpleFeatureTypeBuilder b,
-            GeometryDescriptor descriptor,
-            CoordinateReferenceSystem crs) {
+            SimpleFeatureTypeBuilder b, GeometryDescriptor descriptor, CoordinateReferenceSystem crs) {
         if (crs != null && !crs.equals(descriptor.getCoordinateReferenceSystem())) {
             // Check for reprojection with equals, not CRS.equalsIgnoreMetadata
             AttributeTypeBuilder adjust = new AttributeTypeBuilder(b.factory);

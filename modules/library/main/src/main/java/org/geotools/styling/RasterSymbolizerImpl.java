@@ -41,8 +41,7 @@ import org.geotools.util.factory.GeoTools;
  * @author iant
  * @author Johann Sorel (Geomatys)
  */
-public class RasterSymbolizerImpl extends AbstractSymbolizer
-        implements RasterSymbolizer, Cloneable {
+public class RasterSymbolizerImpl extends AbstractSymbolizer implements RasterSymbolizer, Cloneable {
 
     private OverlapBehaviorEnum behavior;
 
@@ -64,11 +63,7 @@ public class RasterSymbolizerImpl extends AbstractSymbolizer
     }
 
     public RasterSymbolizerImpl(
-            FilterFactory factory,
-            Description desc,
-            String name,
-            Unit<Length> uom,
-            OverlapBehaviorEnum behavior) {
+            FilterFactory factory, Description desc, String name, Unit<Length> uom, OverlapBehaviorEnum behavior) {
         super(name, desc, (String) null, uom);
         this.filterFactory = factory;
         this.opacity = filterFactory.literal(1.0);
@@ -82,9 +77,7 @@ public class RasterSymbolizerImpl extends AbstractSymbolizer
         result = prime * result + ((behavior == null) ? 0 : behavior.hashCode());
         result = prime * result + ((channelSelection == null) ? 0 : channelSelection.hashCode());
         result = prime * result + ((colorMap == null) ? 0 : colorMap.hashCode());
-        result =
-                prime * result
-                        + ((contrastEnhancement == null) ? 0 : contrastEnhancement.hashCode());
+        result = prime * result + ((contrastEnhancement == null) ? 0 : contrastEnhancement.hashCode());
         result = prime * result + ((filterFactory == null) ? 0 : filterFactory.hashCode());
         result = prime * result + ((opacity == null) ? 0 : opacity.hashCode());
         result = prime * result + ((shadedRelief == null) ? 0 : shadedRelief.hashCode());
@@ -320,8 +313,7 @@ public class RasterSymbolizerImpl extends AbstractSymbolizer
      * @param contrastEnhancement the contrastEnhancement
      */
     @Override
-    public void setContrastEnhancement(
-            org.geotools.api.style.ContrastEnhancement contrastEnhancement) {
+    public void setContrastEnhancement(org.geotools.api.style.ContrastEnhancement contrastEnhancement) {
         if (this.contrastEnhancement == contrastEnhancement) {
             return;
         }
@@ -355,15 +347,13 @@ public class RasterSymbolizerImpl extends AbstractSymbolizer
     public void setImageOutline(org.geotools.api.style.Symbolizer symbolizer) {
         if (symbolizer == null) {
             this.symbolizer = null;
-        } else if (symbolizer instanceof LineSymbolizer
-                || symbolizer instanceof PolygonSymbolizer) {
+        } else if (symbolizer instanceof LineSymbolizer || symbolizer instanceof PolygonSymbolizer) {
             if (this.symbolizer == symbolizer) {
                 return;
             }
             this.symbolizer = symbolizer;
         } else {
-            throw new IllegalArgumentException(
-                    "Only a line or polygon symbolizer may be used to outline a raster");
+            throw new IllegalArgumentException("Only a line or polygon symbolizer may be used to outline a raster");
         }
     }
 
@@ -398,8 +388,7 @@ public class RasterSymbolizerImpl extends AbstractSymbolizer
             return;
         }
 
-        OverlapBehaviorEnum overlapBehavior =
-                OverlapBehaviorEnum.valueOf(overlap.evaluate(null, String.class));
+        OverlapBehaviorEnum overlapBehavior = OverlapBehaviorEnum.valueOf(overlap.evaluate(null, String.class));
         setOverlapBehavior(overlapBehavior);
     }
 

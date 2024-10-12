@@ -110,8 +110,7 @@ public class GeometryClipper {
             if (scale != 0) {
                 // Step 2: Snap to provided scale
                 try {
-                    GeometryPrecisionReducer reducer =
-                            new GeometryPrecisionReducer(new PrecisionModel(scale));
+                    GeometryPrecisionReducer reducer = new GeometryPrecisionReducer(new PrecisionModel(scale));
 
                     // reduce method already tries to fix problems with geometry (ie buffer(0) if
                     // invalid)
@@ -178,8 +177,7 @@ public class GeometryClipper {
     }
 
     /** Cohen-Sutherland outcode, see http://en.wikipedia.org/wiki/Cohen%E2%80%93Sutherland */
-    private int computeOutCode(
-            double x, double y, double xmin, double ymin, double xmax, double ymax) {
+    private int computeOutCode(double x, double y, double xmin, double ymin, double xmax, double ymax) {
         int code = 0;
         if (y > ymax) code |= TOP;
         else if (y < ymin) code |= BOTTOM;
@@ -509,8 +507,7 @@ public class GeometryClipper {
         }
 
         return ring.getFactory()
-                .createLinearRing(
-                        out.toCoordinateSequence(ring.getFactory().getCoordinateSequenceFactory()));
+                .createLinearRing(out.toCoordinateSequence(ring.getFactory().getCoordinateSequenceFactory()));
     }
 
     /** Builds a linear ring representing the clipping area */
@@ -563,14 +560,11 @@ public class GeometryClipper {
             if (gc instanceof MultiPoint) {
                 return gc.getFactory().createMultiPoint(result.toArray(new Point[result.size()]));
             } else if (gc instanceof MultiLineString) {
-                return gc.getFactory()
-                        .createMultiLineString(result.toArray(new LineString[result.size()]));
+                return gc.getFactory().createMultiLineString(result.toArray(new LineString[result.size()]));
             } else if (gc instanceof MultiPolygon) {
-                return gc.getFactory()
-                        .createMultiPolygon(result.toArray(new Polygon[result.size()]));
+                return gc.getFactory().createMultiPolygon(result.toArray(new Polygon[result.size()]));
             } else {
-                return gc.getFactory()
-                        .createGeometryCollection(result.toArray(new Geometry[result.size()]));
+                return gc.getFactory().createGeometryCollection(result.toArray(new Geometry[result.size()]));
             }
         }
     }
@@ -635,9 +629,7 @@ public class GeometryClipper {
                         segment[3] = y1;
                         double[] clippedSegment = clipSegment(segment);
                         if (clippedSegment != null) {
-                            CoordinateSequence cs =
-                                    JTS.createCS(
-                                            csf, 2, coords.getDimension(), coords.getMeasures());
+                            CoordinateSequence cs = JTS.createCS(csf, 2, coords.getDimension(), coords.getMeasures());
                             cs.setOrdinate(0, 0, clippedSegment[0]);
                             cs.setOrdinate(0, 1, clippedSegment[1]);
                             cs.setOrdinate(1, 0, clippedSegment[2]);

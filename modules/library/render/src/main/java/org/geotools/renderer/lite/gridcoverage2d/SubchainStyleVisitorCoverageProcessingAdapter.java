@@ -30,8 +30,7 @@ import org.geotools.util.logging.Logging;
  *
  * @author Simone Giannecchini, GeoSolutions.
  */
-public abstract class SubchainStyleVisitorCoverageProcessingAdapter
-        extends StyleVisitorCoverageProcessingNodeAdapter {
+public abstract class SubchainStyleVisitorCoverageProcessingAdapter extends StyleVisitorCoverageProcessingNodeAdapter {
 
     /** Logger for this class. */
     private static final Logger LOGGER = Logging.getLogger(RasterSymbolizerHelper.class);
@@ -45,8 +44,7 @@ public abstract class SubchainStyleVisitorCoverageProcessingAdapter
         super(adaptee);
     }
 
-    public SubchainStyleVisitorCoverageProcessingAdapter(
-            InternationalString name, InternationalString description) {
+    public SubchainStyleVisitorCoverageProcessingAdapter(InternationalString name, InternationalString description) {
         super(name, description);
     }
 
@@ -56,10 +54,7 @@ public abstract class SubchainStyleVisitorCoverageProcessingAdapter
     }
 
     public SubchainStyleVisitorCoverageProcessingAdapter(
-            int maxSources,
-            Hints hints,
-            InternationalString name,
-            InternationalString description) {
+            int maxSources, Hints hints, InternationalString name, InternationalString description) {
         super(maxSources, hints, name, description);
     }
 
@@ -106,8 +101,7 @@ public abstract class SubchainStyleVisitorCoverageProcessingAdapter
             return sink.getOutput();
         }
         // log an helper message
-        if (LOGGER.isLoggable(Level.FINE))
-            LOGGER.fine("Sink for this chain is null, It was probably not set.");
+        if (LOGGER.isLoggable(Level.FINE)) LOGGER.fine("Sink for this chain is null, It was probably not set.");
 
         // something bad happened
         return null;

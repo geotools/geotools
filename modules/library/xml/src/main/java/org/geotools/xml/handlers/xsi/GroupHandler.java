@@ -189,10 +189,7 @@ public class GroupHandler extends ElementGroupingHandler {
         cache.namespace = parent.getTargetNamespace();
         cache.min = this.minOccurs;
         cache.max = this.maxOccurs;
-        cache.child =
-                (this.child == null)
-                        ? null
-                        : this.child.compress(parent); // deal with all/choice/sequnce
+        cache.child = (this.child == null) ? null : this.child.compress(parent); // deal with all/choice/sequnce
         if (ref != null) {
             Group g = parent.lookUpGroup(ref);
             if (g != null) {

@@ -52,8 +52,7 @@ public final class InverseColorMapOp implements BufferedImageOp {
 
     protected final int transparencyIndex;
 
-    public InverseColorMapOp(
-            final IndexColorModel destCM, final int quantizationColors, final int alphaThreshold) {
+    public InverseColorMapOp(final IndexColorModel destCM, final int quantizationColors, final int alphaThreshold) {
         this.rasterOp = new InverseColorMapRasterOp(destCM, quantizationColors, alphaThreshold);
         this.icm = destCM;
         this.alphaThreshold = alphaThreshold;
@@ -62,35 +61,26 @@ public final class InverseColorMapOp implements BufferedImageOp {
     }
 
     public InverseColorMapOp(final IndexColorModel destCM) {
-        this(
-                destCM,
-                InverseColorMapRasterOp.DEFAULT_QUANTIZATION_COLORS,
-                InverseColorMapRasterOp.DEFAULT_ALPHA_TH);
+        this(destCM, InverseColorMapRasterOp.DEFAULT_QUANTIZATION_COLORS, InverseColorMapRasterOp.DEFAULT_ALPHA_TH);
     }
 
     @Override
     public BufferedImage createCompatibleDestImage(BufferedImage src, ColorModel destCM) {
-        if (!(destCM instanceof IndexColorModel)
-                || destCM.getTransparency() == Transparency.TRANSLUCENT) return null;
+        if (!(destCM instanceof IndexColorModel) || destCM.getTransparency() == Transparency.TRANSLUCENT) return null;
         return new BufferedImage(
-                src.getWidth(),
-                src.getHeight(),
-                BufferedImage.TYPE_BYTE_INDEXED,
-                (IndexColorModel) destCM);
+                src.getWidth(), src.getHeight(), BufferedImage.TYPE_BYTE_INDEXED, (IndexColorModel) destCM);
     }
 
     @Override
     public BufferedImage filter(BufferedImage src, BufferedImage dest) {
         if (dest == null)
-            dest =
-                    new BufferedImage(
-                            src.getWidth(), src.getHeight(), BufferedImage.TYPE_BYTE_INDEXED, icm);
+            dest = new BufferedImage(src.getWidth(), src.getHeight(), BufferedImage.TYPE_BYTE_INDEXED, icm);
         else {
             if (!(dest.getColorModel() instanceof IndexColorModel)
                     || dest.getColorModel().getTransparency() != this.transparencyIndex)
                 throw new IllegalArgumentException();
-            if (((IndexColorModel) dest.getColorModel()).getTransparentPixel()
-                    != this.transparencyIndex) throw new IllegalArgumentException();
+            if (((IndexColorModel) dest.getColorModel()).getTransparentPixel() != this.transparencyIndex)
+                throw new IllegalArgumentException();
         }
         final WritableRaster wr = dest.getRaster();
         final Raster ir = src.getRaster();
@@ -112,8 +102,7 @@ public final class InverseColorMapOp implements BufferedImageOp {
         //
         // //
         final BufferedImage dest =
-                new BufferedImage(
-                        src.getWidth(), src.getHeight(), BufferedImage.TYPE_BYTE_INDEXED, icm);
+                new BufferedImage(src.getWidth(), src.getHeight(), BufferedImage.TYPE_BYTE_INDEXED, icm);
         final WritableRaster destWr = dest.getRaster();
 
         // //
@@ -133,14 +122,7 @@ public final class InverseColorMapOp implements BufferedImageOp {
             final int minTileY = src.getMinTileY();
             final Raster sourceR = src.getTile(minTileX, minTileY);
             rasterOp.filter(
-                    sourceR.createChild(
-                            src.getMinX(),
-                            src.getMinY(),
-                            src.getWidth(),
-                            src.getHeight(),
-                            0,
-                            0,
-                            null),
+                    sourceR.createChild(src.getMinX(), src.getMinY(), src.getWidth(), src.getHeight(), 0, 0, null),
                     destWr);
             return dest;
         }
@@ -195,14 +177,9 @@ public final class InverseColorMapOp implements BufferedImageOp {
 
                         if (!sourceHasAlpha
                                 || !hasAlpha
-                                || (sourceHasAlpha
-                                        && hasAlpha
-                                        && rgba[alphaBand] >= this.alphaThreshold)) {
-                            int val =
-                                    invCM.getIndexNearest(
-                                            rgba[0] & 0xff,
-                                            rgba[numBands == 1 ? 0 : 1] & 0xff,
-                                            rgba[numBands == 1 ? 0 : 2]);
+                                || (sourceHasAlpha && hasAlpha && rgba[alphaBand] >= this.alphaThreshold)) {
+                            int val = invCM.getIndexNearest(
+                                    rgba[0] & 0xff, rgba[numBands == 1 ? 0 : 1] & 0xff, rgba[numBands == 1 ? 0 : 2]);
                             if (hasAlpha && val >= transparencyIndex) val++;
                             destWr.setSample(ii, jj, 0, (byte) (val & 0xff));
                         } else destWr.setSample(ii, jj, 0, transparencyIndex);

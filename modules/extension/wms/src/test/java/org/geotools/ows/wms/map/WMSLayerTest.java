@@ -48,15 +48,15 @@ public class WMSLayerTest {
 
     Map<String, String> parseParams(String query) {
 
-        List<org.apache.http.NameValuePair> params =
-                URLEncodedUtils.parse(query, StandardCharsets.UTF_8);
+        List<org.apache.http.NameValuePair> params = URLEncodedUtils.parse(query, StandardCharsets.UTF_8);
         Map<String, String> result = new HashMap<>();
         for (Object param : params) {
             NameValuePair pair = (NameValuePair) param;
             result.put(pair.getName().toUpperCase(), pair.getValue());
         }
         return result;
-    };
+    }
+    ;
     /** @throws java.lang.Exception */
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {}
@@ -68,27 +68,25 @@ public class WMSLayerTest {
     /** @throws java.lang.Exception */
     @Before
     public void setUp() throws Exception {
-        HTTPClient client =
-                new MockHttpClient() {
+        HTTPClient client = new MockHttpClient() {
 
-                    @Override
-                    public HTTPResponse get(URL url) throws IOException {
-                        if (url.getQuery().contains("GetCapabilities")) {
-                            Map<String, String> params = parseParams(url.getQuery());
-                            URL caps = null;
-                            if ("1.3.0".equals(params.get("VERSION"))) {
-                                caps = WMSCoverageReaderTest.class.getResource("caps130.xml");
-                            } else if ("1.1.0".equals(params.get("VERSION"))) {
-                                caps = WMSCoverageReaderTest.class.getResource("caps110.xml");
-                            }
-                            return new MockHttpResponse(caps, "text/xml");
-                        } else {
-                            throw new IllegalArgumentException(
-                                    "Don't know how to handle a get request over "
-                                            + url.toExternalForm());
-                        }
+            @Override
+            public HTTPResponse get(URL url) throws IOException {
+                if (url.getQuery().contains("GetCapabilities")) {
+                    Map<String, String> params = parseParams(url.getQuery());
+                    URL caps = null;
+                    if ("1.3.0".equals(params.get("VERSION"))) {
+                        caps = WMSCoverageReaderTest.class.getResource("caps130.xml");
+                    } else if ("1.1.0".equals(params.get("VERSION"))) {
+                        caps = WMSCoverageReaderTest.class.getResource("caps110.xml");
                     }
-                };
+                    return new MockHttpResponse(caps, "text/xml");
+                } else {
+                    throw new IllegalArgumentException(
+                            "Don't know how to handle a get request over " + url.toExternalForm());
+                }
+            }
+        };
         // setup the reader
         server = new WebMapServer(new URL("http://geoserver.org/geoserver/wms"), client);
     }
@@ -132,30 +130,25 @@ public class WMSLayerTest {
      */
     @Test
     public void testPreferedFormatWMSLayerJPEGOnly() throws Exception {
-        MockHttpClient client =
-                new MockHttpClient() {
+        MockHttpClient client = new MockHttpClient() {
 
-                    @Override
-                    public HTTPResponse get(URL url) throws IOException {
-                        if (url.getQuery().contains("GetCapabilities")) {
-                            Map<String, String> params = parseParams(url.getQuery());
-                            URL caps = null;
-                            if ("1.3.0".equals(params.get("VERSION"))) {
-                                caps =
-                                        WMSCoverageReaderTest.class.getResource(
-                                                "caps130_jpeg_only.xml");
-                            }
-                            return new MockHttpResponse(caps, "text/xml");
-                        } else {
-                            throw new IllegalArgumentException(
-                                    "Don't know how to handle a get request over "
-                                            + url.toExternalForm());
-                        }
+            @Override
+            public HTTPResponse get(URL url) throws IOException {
+                if (url.getQuery().contains("GetCapabilities")) {
+                    Map<String, String> params = parseParams(url.getQuery());
+                    URL caps = null;
+                    if ("1.3.0".equals(params.get("VERSION"))) {
+                        caps = WMSCoverageReaderTest.class.getResource("caps130_jpeg_only.xml");
                     }
-                };
+                    return new MockHttpResponse(caps, "text/xml");
+                } else {
+                    throw new IllegalArgumentException(
+                            "Don't know how to handle a get request over " + url.toExternalForm());
+                }
+            }
+        };
         // setup the reader
-        WebMapServer jpegOnlyWMSserver =
-                new WebMapServer(new URL("http://jpeg.geoserver.org/geoserver/wms"), client);
+        WebMapServer jpegOnlyWMSserver = new WebMapServer(new URL("http://jpeg.geoserver.org/geoserver/wms"), client);
         Layer[] wmsLayers = WMSUtils.getNamedLayers(jpegOnlyWMSserver.getCapabilities());
 
         WMSLayer l = new WMSLayer(jpegOnlyWMSserver, wmsLayers[0], "", "image/png");

@@ -230,15 +230,13 @@ class WFSFeatureSource extends ContentFeatureSource {
         query.setFilter(filter);
     }
 
-    protected GetFeatureRequest createGetFeature(Query query, ResultType resultType)
-            throws IOException {
+    protected GetFeatureRequest createGetFeature(Query query, ResultType resultType) throws IOException {
         GetFeatureRequest request = client.createGetFeatureRequest();
 
         final WFSDataStore dataStore = getDataStore();
 
         final QName remoteTypeName = dataStore.getRemoteTypeName(getEntry().getName());
-        final SimpleFeatureType remoteSimpleFeatureType =
-                dataStore.getRemoteSimpleFeatureType(remoteTypeName);
+        final SimpleFeatureType remoteSimpleFeatureType = dataStore.getRemoteSimpleFeatureType(remoteTypeName);
 
         request.setTypeName(remoteTypeName);
         request.setFullType(remoteSimpleFeatureType);
@@ -271,8 +269,7 @@ class WFSFeatureSource extends ContentFeatureSource {
      */
     @Override
     @SuppressWarnings("PMD.CloseResource") // the reader is returned and managed outside
-    protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query localQuery)
-            throws IOException {
+    protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query localQuery) throws IOException {
 
         if (Filter.EXCLUDE.equals(localQuery.getFilter())) {
             LOGGER.fine("Filter is EXCLUDE returning empty collection");
@@ -283,11 +280,9 @@ class WFSFeatureSource extends ContentFeatureSource {
 
         // the read type migth contain extra properties to run the unsupported filter
         CoordinateReferenceSystem crs = localQuery.getCoordinateSystemReproject();
-        final SimpleFeatureType destType =
-                getQueryType(crs, localQuery.getPropertyNames(), getSchema());
+        final SimpleFeatureType destType = getQueryType(crs, localQuery.getPropertyNames(), getSchema());
         final SimpleFeatureType contentType =
-                getQueryType(
-                        crs, request.getPropertyNames(), (SimpleFeatureType) request.getFullType());
+                getQueryType(crs, request.getPropertyNames(), (SimpleFeatureType) request.getFullType());
         request.setQueryType(contentType);
         LOGGER.fine(() -> "request = " + request);
         GetFeatureResponse response = client.issueRequest(request);
@@ -295,8 +290,7 @@ class WFSFeatureSource extends ContentFeatureSource {
         GeometryFactory geometryFactory = findGeometryFactory(localQuery.getHints());
         GetParser<SimpleFeature> features = response.getSimpleFeatures(geometryFactory);
 
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                new WFSFeatureReader(features, response);
+        FeatureReader<SimpleFeatureType, SimpleFeature> reader = new WFSFeatureReader(features, response);
 
         Filter unsupportedFilter = request.getUnsupportedFilter();
         if (unsupportedFilter != null && unsupportedFilter != Filter.INCLUDE) {
@@ -336,18 +330,13 @@ class WFSFeatureSource extends ContentFeatureSource {
     }
 
     protected FeatureReader<SimpleFeatureType, SimpleFeature> applyReprojectionDecorator(
-            FeatureReader<SimpleFeatureType, SimpleFeature> reader,
-            Query query,
-            GetFeatureRequest request) {
+            FeatureReader<SimpleFeatureType, SimpleFeature> reader, Query query, GetFeatureRequest request) {
         FeatureReader<SimpleFeatureType, SimpleFeature> tmp = reader;
         if (query.getCoordinateSystem() != null
-                && FeatureTypes.shouldReproject(
-                        reader.getFeatureType(), query.getCoordinateSystem())) {
+                && FeatureTypes.shouldReproject(reader.getFeatureType(), query.getCoordinateSystem())) {
             if (request.getSrsName() != null) {
                 try {
-                    reader =
-                            new ForceCoordinateSystemFeatureReader(
-                                    reader, query.getCoordinateSystem());
+                    reader = new ForceCoordinateSystemFeatureReader(reader, query.getCoordinateSystem());
                 } catch (SchemaException e) {
                     LOGGER.warning(e.toString());
                     reader = tmp;
@@ -384,8 +373,7 @@ class WFSFeatureSource extends ContentFeatureSource {
         final Name localTypeName = getEntry().getName();
         final QName remoteTypeName = dataStore.getRemoteTypeName(localTypeName);
 
-        final SimpleFeatureType remoteSimpleFeatureType =
-                dataStore.getRemoteSimpleFeatureType(remoteTypeName);
+        final SimpleFeatureType remoteSimpleFeatureType = dataStore.getRemoteSimpleFeatureType(remoteTypeName);
 
         // adapt the feature type name
         SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
@@ -417,8 +405,7 @@ class WFSFeatureSource extends ContentFeatureSource {
      * original feature type for the request's type name in terms of the query CRS and requested
      * attributes.
      */
-    SimpleFeatureType getQueryType(
-            CoordinateReferenceSystem crs, String[] propertyNames, SimpleFeatureType featureType)
+    SimpleFeatureType getQueryType(CoordinateReferenceSystem crs, String[] propertyNames, SimpleFeatureType featureType)
             throws IOException {
 
         SimpleFeatureType queryType = featureType;

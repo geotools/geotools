@@ -46,8 +46,7 @@ abstract class MarkFeatureIterator implements FeatureIterator<Feature> {
      * The listener won't receive any notification, but will be used to check if the data loading
      * should be stopped using {@link ProgressListener#isCanceled()}
      */
-    public static MarkFeatureIterator create(
-            FeatureCollection fc, int maxFeaturesInMemory, ProgressListener listener)
+    public static MarkFeatureIterator create(FeatureCollection fc, int maxFeaturesInMemory, ProgressListener listener)
             throws IOException {
         List<Feature> features = new ArrayList<>();
         int count = 0;
@@ -64,13 +63,11 @@ abstract class MarkFeatureIterator implements FeatureIterator<Feature> {
                 count++;
                 if (count >= maxFeaturesInMemory) {
                     if (fc.getSchema() instanceof SimpleFeatureType) {
-                        return new DiskMarkFeatureIterator(
-                                features, fi, (SimpleFeatureType) fc.getSchema(), listener);
+                        return new DiskMarkFeatureIterator(features, fi, (SimpleFeatureType) fc.getSchema(), listener);
                     } else {
-                        throw new IllegalArgumentException(
-                                "Cannot offload to disk complex features "
-                                        + "and reached the max number of feature in memory: "
-                                        + maxFeaturesInMemory);
+                        throw new IllegalArgumentException("Cannot offload to disk complex features "
+                                + "and reached the max number of feature in memory: "
+                                + maxFeaturesInMemory);
                     }
                 }
             }
@@ -152,10 +149,7 @@ abstract class MarkFeatureIterator implements FeatureIterator<Feature> {
         int featureCount;
 
         public DiskMarkFeatureIterator(
-                List<Feature> features,
-                FeatureIterator fi,
-                SimpleFeatureType schema,
-                ProgressListener listener)
+                List<Feature> features, FeatureIterator fi, SimpleFeatureType schema, ProgressListener listener)
                 throws IOException {
             File file = File.createTempFile("z-ordered-", ".features");
             this.io = new SimpleFeatureIO(file, schema);
@@ -245,8 +239,7 @@ abstract class MarkFeatureIterator implements FeatureIterator<Feature> {
         protected void finalize() throws Throwable {
             if (io != null) {
                 LOGGER.warning(
-                        "There is code leaving DiskMarkFeatureIterator open, "
-                                + "this is leaking temporary files!");
+                        "There is code leaving DiskMarkFeatureIterator open, " + "this is leaking temporary files!");
                 close();
             }
         }

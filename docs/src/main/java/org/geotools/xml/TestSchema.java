@@ -64,8 +64,7 @@ public class TestSchema {
     }
 
     /** A feature collection contains zero or more featureMember elements. */
-    public static interface TestFeatureCollectionType
-            extends GML2Schema.AbstractFeatureCollectionType {}
+    public static interface TestFeatureCollectionType extends GML2Schema.AbstractFeatureCollectionType {}
 
     public static class TestFeatureCollection implements TestFeatureCollectionType {
 

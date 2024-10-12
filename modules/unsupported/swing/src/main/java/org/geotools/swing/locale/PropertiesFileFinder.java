@@ -89,8 +89,7 @@ public class PropertiesFileFinder {
             } catch (NoSuchMethodException | SecurityException ex) {
                 LOGGER.log(Level.FINE, "", ex);
                 throw new IllegalArgumentException(
-                        "did not find method toFileUTL in class the org.eclipse.core.runtime.FileLocator",
-                        ex);
+                        "did not find method toFileUTL in class the org.eclipse.core.runtime.FileLocator", ex);
             }
             // convert to a directory we can list
             URL url = new URL(path);
@@ -99,16 +98,11 @@ public class PropertiesFileFinder {
             try {
                 urlFile = (URL) toFileURLMethod.invoke(null, url);
                 // try to load
-                if (urlFile == null)
-                    throw new RuntimeException(
-                            "error while converting the url " + url + " to a file");
+                if (urlFile == null) throw new RuntimeException("error while converting the url " + url + " to a file");
                 mydirectory = new File(urlFile.getFile());
-            } catch (IllegalAccessException
-                    | IllegalArgumentException
-                    | InvocationTargetException e) {
+            } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
                 LOGGER.log(Level.FINE, "", e);
-                throw new RuntimeException(
-                        "error while converting the url " + url + " to a file", e);
+                throw new RuntimeException("error while converting the url " + url + " to a file", e);
             }
 
             // list files

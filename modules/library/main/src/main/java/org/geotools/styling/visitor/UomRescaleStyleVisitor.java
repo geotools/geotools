@@ -68,9 +68,7 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
     public UomRescaleStyleVisitor(double mapScale) {
         if (mapScale <= 0)
             throw new IllegalArgumentException(
-                    "The mapScale is out of range. Value is "
-                            + Double.toString(mapScale)
-                            + ". It must be positive.");
+                    "The mapScale is out of range. Value is " + Double.toString(mapScale) + ". It must be positive.");
 
         this.mapScale = mapScale;
     }
@@ -196,10 +194,7 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
         Unit<Length> uom = copy.getUnitOfMeasure();
         rescaleStroke(copy.getStroke(), uom);
         rescaleFill(copy.getFill(), uom);
-        scaleIntArrayOption(
-                copy.getOptions(),
-                org.geotools.api.style.PolygonSymbolizer.GRAPHIC_MARGIN_KEY,
-                uom);
+        scaleIntArrayOption(copy.getOptions(), org.geotools.api.style.PolygonSymbolizer.GRAPHIC_MARGIN_KEY, uom);
         copy.setUnitOfMeasure(Units.PIXEL);
     }
 
@@ -237,8 +232,7 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
             LinePlacement linePlacement = (LinePlacement) placement;
             linePlacement.setGap(rescale(linePlacement.getGap(), uom));
             linePlacement.setInitialGap(rescale(linePlacement.getInitialGap(), uom));
-            linePlacement.setPerpendicularOffset(
-                    rescale(linePlacement.getPerpendicularOffset(), uom));
+            linePlacement.setPerpendicularOffset(rescale(linePlacement.getPerpendicularOffset(), uom));
         }
         copy.setLabelPlacement(placement);
 
@@ -270,8 +264,7 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
         }
     }
 
-    private void scaleIntArrayOption(
-            Map<String, String> options, String optionName, Unit<Length> uom) {
+    private void scaleIntArrayOption(Map<String, String> options, String optionName, Unit<Length> uom) {
         if (options.containsKey(optionName)) {
             String strValue = options.get(optionName);
             if (strValue != null) {

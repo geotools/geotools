@@ -88,8 +88,7 @@ public class MockAbstractGridCoverage2DReader extends AbstractGridCoverage2DRead
     }
 
     @Override
-    public GridCoverage2D read(GeneralParameterValue[] parameters)
-            throws IllegalArgumentException, IOException {
+    public GridCoverage2D read(GeneralParameterValue[] parameters) throws IllegalArgumentException, IOException {
         return new GridCoverageBuilder().getGridCoverage2D();
     }
 
@@ -111,7 +110,6 @@ public class MockAbstractGridCoverage2DReader extends AbstractGridCoverage2DRead
             GeneralBounds requestedEnvelope,
             Rectangle requestedDim)
             throws IOException, TransformException {
-        return super.setReadParams(
-                coverageName, overviewPolicy, readP, requestedEnvelope, requestedDim);
+        return super.setReadParams(coverageName, overviewPolicy, readP, requestedEnvelope, requestedDim);
     }
 }

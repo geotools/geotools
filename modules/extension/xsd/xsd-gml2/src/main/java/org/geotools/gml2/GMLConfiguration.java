@@ -69,8 +69,7 @@ public class GMLConfiguration extends Configuration {
      * Boolean property which controls whether the FeatureCollection should be encoded with multiple
      * featureMember as opposed to a single featureMembers
      */
-    public static final QName ENCODE_FEATURE_MEMBER =
-            new QName("org.geotools.gml", "encodeFeatureMember");
+    public static final QName ENCODE_FEATURE_MEMBER = new QName("org.geotools.gml", "encodeFeatureMember");
 
     /**
      * Boolean property which controls whether geometry and envelope objects are encoded with an srs
@@ -79,8 +78,7 @@ public class GMLConfiguration extends Configuration {
     public static final QName NO_SRS_DIMENSION = new QName("org.geotools.gml", "noSrsDimension");
 
     /** Property which engages "fast" gml encoding. */
-    public static final QName OPTIMIZED_ENCODING =
-            new QName("org.geotools.gml", "optimizedEncoding");
+    public static final QName OPTIMIZED_ENCODING = new QName("org.geotools.gml", "optimizedEncoding");
 
     /** Srs name style to encode srsName URI's with */
     protected SrsSyntax srsSyntax = SrsSyntax.OGC_HTTP_URL;
@@ -120,68 +118,45 @@ public class GMLConfiguration extends Configuration {
     public void registerBindings(MutablePicoContainer container) {
         // geometry
         container.registerComponentImplementation(
-                GML.AbstractGeometryCollectionBaseType,
-                GMLAbstractGeometryCollectionBaseTypeBinding.class);
-        container.registerComponentImplementation(
-                GML.AbstractGeometryType, GMLAbstractGeometryTypeBinding.class);
+                GML.AbstractGeometryCollectionBaseType, GMLAbstractGeometryCollectionBaseTypeBinding.class);
+        container.registerComponentImplementation(GML.AbstractGeometryType, GMLAbstractGeometryTypeBinding.class);
         container.registerComponentImplementation(GML.BoxType, GMLBoxTypeBinding.class);
-        container.registerComponentImplementation(
-                GML.CoordinatesType, GMLCoordinatesTypeBinding.class);
+        container.registerComponentImplementation(GML.CoordinatesType, GMLCoordinatesTypeBinding.class);
         container.registerComponentImplementation(GML.CoordType, GMLCoordTypeBinding.class);
-        container.registerComponentImplementation(
-                GML.GeometryAssociationType, GMLGeometryAssociationTypeBinding.class);
-        container.registerComponentImplementation(
-                GML.GeometryCollectionType, GMLGeometryCollectionTypeBinding.class);
-        container.registerComponentImplementation(
-                GML.LinearRingMemberType, GMLLinearRingMemberTypeBinding.class);
-        container.registerComponentImplementation(
-                GML.LinearRingType, GMLLinearRingTypeBinding.class);
-        container.registerComponentImplementation(
-                GML.LineStringMemberType, GMLLineStringMemberTypeBinding.class);
-        container.registerComponentImplementation(
-                GML.LineStringType, GMLLineStringTypeBinding.class);
-        container.registerComponentImplementation(
-                GML.MultiLineStringType, GMLMultiLineStringTypeBinding.class);
-        container.registerComponentImplementation(
-                GML.MultiPointType, GMLMultiPointTypeBinding.class);
-        container.registerComponentImplementation(
-                GML.MultiPolygonType, GMLMultiPolygonTypeBinding.class);
-        container.registerComponentImplementation(
-                GML.PointMemberType, GMLPointMemberTypeBinding.class);
+        container.registerComponentImplementation(GML.GeometryAssociationType, GMLGeometryAssociationTypeBinding.class);
+        container.registerComponentImplementation(GML.GeometryCollectionType, GMLGeometryCollectionTypeBinding.class);
+        container.registerComponentImplementation(GML.LinearRingMemberType, GMLLinearRingMemberTypeBinding.class);
+        container.registerComponentImplementation(GML.LinearRingType, GMLLinearRingTypeBinding.class);
+        container.registerComponentImplementation(GML.LineStringMemberType, GMLLineStringMemberTypeBinding.class);
+        container.registerComponentImplementation(GML.LineStringType, GMLLineStringTypeBinding.class);
+        container.registerComponentImplementation(GML.MultiLineStringType, GMLMultiLineStringTypeBinding.class);
+        container.registerComponentImplementation(GML.MultiPointType, GMLMultiPointTypeBinding.class);
+        container.registerComponentImplementation(GML.MultiPolygonType, GMLMultiPolygonTypeBinding.class);
+        container.registerComponentImplementation(GML.PointMemberType, GMLPointMemberTypeBinding.class);
         container.registerComponentImplementation(GML.PointType, GMLPointTypeBinding.class);
-        container.registerComponentImplementation(
-                GML.PolygonMemberType, GMLPolygonMemberTypeBinding.class);
+        container.registerComponentImplementation(GML.PolygonMemberType, GMLPolygonMemberTypeBinding.class);
         container.registerComponentImplementation(GML.PolygonType, GMLPolygonTypeBinding.class);
 
         // feature
         container.registerComponentImplementation(
-                GML.AbstractFeatureCollectionBaseType,
-                GMLAbstractFeatureCollectionBaseTypeBinding.class);
+                GML.AbstractFeatureCollectionBaseType, GMLAbstractFeatureCollectionBaseTypeBinding.class);
         container.registerComponentImplementation(
                 GML.AbstractFeatureCollectionType, GMLAbstractFeatureCollectionTypeBinding.class);
-        container.registerComponentImplementation(
-                GML.AbstractFeatureType, GMLAbstractFeatureTypeBinding.class);
-        container.registerComponentImplementation(
-                GML.BoundingShapeType, GMLBoundingShapeTypeBinding.class);
-        container.registerComponentImplementation(
-                GML.FeatureAssociationType, GMLFeatureAssociationTypeBinding.class);
-        container.registerComponentImplementation(
-                GML.GeometryPropertyType, GMLGeometryPropertyTypeBinding.class);
-        container.registerComponentImplementation(
-                GML.LineStringPropertyType, GMLLineStringPropertyTypeBinding.class);
+        container.registerComponentImplementation(GML.AbstractFeatureType, GMLAbstractFeatureTypeBinding.class);
+        container.registerComponentImplementation(GML.BoundingShapeType, GMLBoundingShapeTypeBinding.class);
+        container.registerComponentImplementation(GML.FeatureAssociationType, GMLFeatureAssociationTypeBinding.class);
+        container.registerComponentImplementation(GML.GeometryPropertyType, GMLGeometryPropertyTypeBinding.class);
+        container.registerComponentImplementation(GML.LineStringPropertyType, GMLLineStringPropertyTypeBinding.class);
         container.registerComponentImplementation(
                 GML.MultiGeometryPropertyType, GMLMultiGeometryPropertyTypeBinding.class);
         container.registerComponentImplementation(
                 GML.MultiLineStringPropertyType, GMLMultiLineStringPropertyTypeBinding.class);
-        container.registerComponentImplementation(
-                GML.MultiPointPropertyType, GMLMultiPointPropertyTypeBinding.class);
+        container.registerComponentImplementation(GML.MultiPointPropertyType, GMLMultiPointPropertyTypeBinding.class);
         container.registerComponentImplementation(
                 GML.MultiPolygonPropertyType, GMLMultiPolygonPropertyTypeBinding.class);
         container.registerComponentImplementation(GML.NullType, GMLNullTypeBinding.class);
-        container.registerComponentImplementation(
-                GML.PointPropertyType, GMLPointPropertyTypeBinding.class);
-        container.registerComponentImplementation(
-                GML.PolygonPropertyType, GMLPolygonPropertyTypeBinding.class);
+        container.registerComponentImplementation(GML.PointPropertyType, GMLPointPropertyTypeBinding.class);
+        container.registerComponentImplementation(GML.PolygonPropertyType, GMLPolygonPropertyTypeBinding.class);
     }
 
     /**
@@ -201,8 +176,7 @@ public class GMLConfiguration extends Configuration {
 
         container.registerComponentInstance(new FeatureTypeCache());
 
-        container.registerComponentInstance(
-                CoordinateSequenceFactory.class, CoordinateArraySequenceFactory.instance());
+        container.registerComponentInstance(CoordinateSequenceFactory.class, CoordinateArraySequenceFactory.instance());
         container.registerComponentImplementation(GeometryFactory.class);
 
         container.registerComponentInstance(srsSyntax);

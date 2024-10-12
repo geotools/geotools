@@ -161,8 +161,7 @@ public class TPKBundle {
                     int bytesRead = stream.read(result, readOffset, length);
 
                     if (bytesRead == -1) {
-                        Logger.getLogger(this.getClass().getName())
-                                .warning("Didn't read correctly");
+                        Logger.getLogger(this.getClass().getName()).warning("Didn't read correctly");
                         length = 0;
                         result = null;
                     } else {

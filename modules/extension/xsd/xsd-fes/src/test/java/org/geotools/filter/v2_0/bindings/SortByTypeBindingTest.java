@@ -15,16 +15,15 @@ import org.w3c.dom.Document;
 public class SortByTypeBindingTest extends FESTestSupport {
     @Test
     public void testParse() throws Exception {
-        String xml =
-                "      <fes:SortBy xmlns:fes='http://www.opengis.net/fes/2.0'> "
-                        + "         <fes:SortProperty> "
-                        + "            <fes:ValueReference>myns:depth</fes:ValueReference> "
-                        + "         </fes:SortProperty> "
-                        + "         <fes:SortProperty> "
-                        + "            <fes:ValueReference>myns:temperature</fes:ValueReference> "
-                        + "            <fes:SortOrder>DESC</fes:SortOrder> "
-                        + "         </fes:SortProperty> "
-                        + "      </fes:SortBy>";
+        String xml = "      <fes:SortBy xmlns:fes='http://www.opengis.net/fes/2.0'> "
+                + "         <fes:SortProperty> "
+                + "            <fes:ValueReference>myns:depth</fes:ValueReference> "
+                + "         </fes:SortProperty> "
+                + "         <fes:SortProperty> "
+                + "            <fes:ValueReference>myns:temperature</fes:ValueReference> "
+                + "            <fes:SortOrder>DESC</fes:SortOrder> "
+                + "         </fes:SortProperty> "
+                + "      </fes:SortBy>";
         buildDocument(xml);
 
         SortBy[] sortBy = (SortBy[]) parse();
@@ -47,7 +46,8 @@ public class SortByTypeBindingTest extends FESTestSupport {
 
         Document doc = encode(list, FES.SortBy);
         assertEquals("fes:SortBy", doc.getDocumentElement().getNodeName());
-        assertEquals(1, doc.getElementsByTagNameNS(FES.NAMESPACE, "SortProperty").getLength());
+        assertEquals(
+                1, doc.getElementsByTagNameNS(FES.NAMESPACE, "SortProperty").getLength());
         assertEquals(1, doc.getElementsByTagNameNS(FES.NAMESPACE, "SortOrder").getLength());
     }
 }

@@ -38,13 +38,12 @@ import org.geotools.filter.capability.FunctionNameImpl;
  */
 public class StandardDeviationFunction extends ClassificationFunction {
 
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "StandardDeviation",
-                    RangedClassifier.class,
-                    parameter("value", Double.class),
-                    parameter("classes", Integer.class),
-                    parameter("percentages", Boolean.class, 0, 1));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "StandardDeviation",
+            RangedClassifier.class,
+            parameter("value", Double.class),
+            parameter("classes", Integer.class),
+            parameter("percentages", Boolean.class, 0, 1));
 
     public StandardDeviationFunction() {
         super(NAME);
@@ -55,7 +54,8 @@ public class StandardDeviationFunction extends ClassificationFunction {
             int classNum = getClasses();
 
             // find the standard deviation
-            StandardDeviationVisitor sdVisit = new StandardDeviationVisitor(getParameters().get(0));
+            StandardDeviationVisitor sdVisit =
+                    new StandardDeviationVisitor(getParameters().get(0));
 
             featureCollection.accepts(sdVisit, progress);
             if (progress != null && progress.isCanceled()) {
@@ -67,8 +67,7 @@ public class StandardDeviationFunction extends ClassificationFunction {
             }
             double standardDeviation = calcResult.toDouble();
             if (standardDeviation == 0) {
-                return new RangedClassifier(
-                        new Comparable[] {sdVisit.getMean()}, new Comparable[] {sdVisit.getMean()});
+                return new RangedClassifier(new Comparable[] {sdVisit.getMean()}, new Comparable[] {sdVisit.getMean()});
             }
 
             // figure out the min and max values
@@ -80,12 +79,8 @@ public class StandardDeviationFunction extends ClassificationFunction {
             }
             RangedClassifier classifier = new RangedClassifier(min, max);
             if (percentages()) {
-                double[] percentages =
-                        getPercentages(
-                                featureCollection,
-                                classifier,
-                                getParameters().get(0),
-                                standardDeviation);
+                double[] percentages = getPercentages(
+                        featureCollection, classifier, getParameters().get(0), standardDeviation);
                 classifier.setPercentages(percentages);
             }
             return classifier;
@@ -114,10 +109,7 @@ public class StandardDeviationFunction extends ClassificationFunction {
     }
 
     private double[] getPercentages(
-            FeatureCollection features,
-            RangedClassifier classifier,
-            Expression attr,
-            double standardDeviation)
+            FeatureCollection features, RangedClassifier classifier, Expression attr, double standardDeviation)
             throws IOException {
         int classSize = classifier.getSize();
         Object firstMax = classifier.getMax(0);
@@ -132,9 +124,7 @@ public class StandardDeviationFunction extends ClassificationFunction {
         percentages[0] = ((double) sizeFirstClass / (double) totalSize) * 100;
 
         double min = ((Number) classifier.getMin(1)).doubleValue();
-        percentages =
-                computeGroupByPercentages(
-                        subCollection, percentages, totalSize, min, standardDeviation);
+        percentages = computeGroupByPercentages(subCollection, percentages, totalSize, min, standardDeviation);
         computeLastPercentage(percentages, totalSize);
         return percentages;
     }
@@ -145,8 +135,7 @@ public class StandardDeviationFunction extends ClassificationFunction {
     }
 
     @Override
-    protected void computePercentage(
-            double[] percentages, double classMembers, double totalSize, int index) {
+    protected void computePercentage(double[] percentages, double classMembers, double totalSize, int index) {
         index += 1;
         if (index < percentages.length - 1) percentages[index] = (classMembers / totalSize) * 100;
     }

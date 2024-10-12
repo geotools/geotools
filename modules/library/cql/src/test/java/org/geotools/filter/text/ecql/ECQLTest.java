@@ -105,10 +105,9 @@ public final class ECQLTest {
 
     @Test
     public void relateGeoOperation() throws CQLException {
-        PropertyIsEqualTo filter =
-                assertFilter(
-                        "RELATE(geometry,LINESTRING (-134.921387 58.687767, -135.303391 59.092838),T*****FF*)",
-                        PropertyIsEqualTo.class);
+        PropertyIsEqualTo filter = assertFilter(
+                "RELATE(geometry,LINESTRING (-134.921387 58.687767, -135.303391 59.092838),T*****FF*)",
+                PropertyIsEqualTo.class);
 
         Assert.assertTrue(
                 "Relate Pattern Function was expected",
@@ -130,16 +129,13 @@ public final class ECQLTest {
 
     @Test
     public void dwithinGeometry() throws Exception {
-        assertFilter(
-                "DWITHIN(buffer(the_geom,5), POINT (1 2), 10.0, kilometers)",
-                DistanceBufferOperator.class);
+        assertFilter("DWITHIN(buffer(the_geom,5), POINT (1 2), 10.0, kilometers)", DistanceBufferOperator.class);
     }
 
     @Test
     public void dwithinReferencedGeometry() throws Exception {
         assertFilter(
-                "DWITHIN(buffer(the_geom,5), SRID=3857;POINT (1 2), 10.0, kilometers)",
-                DistanceBufferOperator.class);
+                "DWITHIN(buffer(the_geom,5), SRID=3857;POINT (1 2), 10.0, kilometers)", DistanceBufferOperator.class);
     }
 
     /**
@@ -189,8 +185,7 @@ public final class ECQLTest {
         assertFilter("IN ('river.1','river.2')", Id.class);
     }
 
-    private <F extends Expression> F assertExpression(String ecql, Class<F> expected)
-            throws CQLException {
+    private <F extends Expression> F assertExpression(String ecql, Class<F> expected) throws CQLException {
         Expression expression = ECQL.toExpression(ecql);
         Assert.assertTrue(expected.getSimpleName(), expected.isInstance(expression));
         Assert.assertEquals(ecql, ecql, ECQL.toCQL(expression));
@@ -206,8 +201,7 @@ public final class ECQLTest {
         return type.cast(filter);
     }
 
-    private <F extends Filter> F assertFilter(String ecql, String expected, Class<F> type)
-            throws CQLException {
+    private <F extends Filter> F assertFilter(String ecql, String expected, Class<F> type) throws CQLException {
         Filter filter = ECQL.toFilter(ecql);
         Assert.assertEquals(ecql, expected, ECQL.toCQL(filter));
 
@@ -250,8 +244,7 @@ public final class ECQLTest {
         assertFilter("aProperty LIKE '%bb%'", PropertyIsLike.class);
 
         // using function as expression
-        PropertyIsLike like =
-                assertFilter("strToUpperCase(anAttribute) LIKE '%BB%'", PropertyIsLike.class);
+        PropertyIsLike like = assertFilter("strToUpperCase(anAttribute) LIKE '%BB%'", PropertyIsLike.class);
 
         Assert.assertTrue(like.getExpression() instanceof Function);
     }
@@ -335,15 +328,14 @@ public final class ECQLTest {
     public void toFilterUsesProvidedFilterFactory() throws Exception {
         final boolean[] called = {false};
 
-        FilterFactory ff =
-                new FilterFactoryImpl() {
-                    @Override
-                    public PropertyName property(String propName) {
-                        called[0] = true;
+        FilterFactory ff = new FilterFactoryImpl() {
+            @Override
+            public PropertyName property(String propName) {
+                called[0] = true;
 
-                        return super.property(propName);
-                    }
-                };
+                return super.property(propName);
+            }
+        };
 
         ECQL.toFilter("attName > 20", ff);
         Assert.assertTrue("Provided FilterFactory was not called", called[0]);
@@ -365,8 +357,7 @@ public final class ECQLTest {
     @Test
     public void filterListToECQLWithRefencedGeometries() throws Exception {
 
-        String expectedECQL =
-                "INTERSECTS(the_geom, SRID=4326;POINT (1 2)); INTERSECTS(abcd, SRID=4962;POINT (0 0))";
+        String expectedECQL = "INTERSECTS(the_geom, SRID=4326;POINT (1 2)); INTERSECTS(abcd, SRID=4962;POINT (0 0))";
         List<Filter> list = ECQL.toFilterList(expectedECQL);
 
         assertEquals(2, list.size());
@@ -403,15 +394,14 @@ public final class ECQLTest {
     public void toExpressionUsesProvidedFilterFactory() throws Exception {
         final boolean[] called = {false};
 
-        FilterFactory ff =
-                new FilterFactoryImpl() {
-                    @Override
-                    public PropertyName property(String propName) {
-                        called[0] = true;
+        FilterFactory ff = new FilterFactoryImpl() {
+            @Override
+            public PropertyName property(String propName) {
+                called[0] = true;
 
-                        return super.property(propName);
-                    }
-                };
+                return super.property(propName);
+            }
+        };
 
         ECQL.toExpression("attName", ff);
         Assert.assertTrue("Provided FilterFactory was not called", called[0]);
@@ -420,12 +410,9 @@ public final class ECQLTest {
     @Test
     public void testDivideEncode() throws Exception {
         final FilterFactory filterFactory2 = CommonFactoryFinder.getFilterFactory();
-        final Filter javaFilter =
-                filterFactory2.less(
-                        filterFactory2.divide(
-                                filterFactory2.property("population"), filterFactory2.literal(2)),
-                        filterFactory2.divide(
-                                filterFactory2.property("pop2000"), filterFactory2.literal(2)));
+        final Filter javaFilter = filterFactory2.less(
+                filterFactory2.divide(filterFactory2.property("population"), filterFactory2.literal(2)),
+                filterFactory2.divide(filterFactory2.property("pop2000"), filterFactory2.literal(2)));
         Assert.assertEquals("population/2<pop2000/2", ECQL.toCQL(javaFilter).replace(" ", ""));
     }
 
@@ -446,14 +433,13 @@ public final class ECQLTest {
 
         FilterFactory ff = CommonFactoryFinder.getFilterFactory();
 
-        Function function =
-                ff.function(
-                        "Interpolate",
-                        ff.property("population"),
-                        ff.literal(0),
-                        ff.literal(Color.RED),
-                        ff.literal(10),
-                        ff.literal(Color.BLUE));
+        Function function = ff.function(
+                "Interpolate",
+                ff.property("population"),
+                ff.literal(0),
+                ff.literal(Color.RED),
+                ff.literal(10),
+                ff.literal(Color.BLUE));
 
         actual = ECQL.toCQL(function);
         assertEquals("color literals", expected, actual);

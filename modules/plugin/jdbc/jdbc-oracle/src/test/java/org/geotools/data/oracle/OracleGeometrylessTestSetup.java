@@ -29,9 +29,7 @@ public class OracleGeometrylessTestSetup extends JDBCGeometrylessTestSetup {
     @Override
     protected void createPersonTable() throws Exception {
         // set up table
-        run(
-                "CREATE TABLE person (fid int, id int, "
-                        + " name varchar(255), age int, PRIMARY KEY (fid) )");
+        run("CREATE TABLE person (fid int, id int, " + " name varchar(255), age int, PRIMARY KEY (fid) )");
         run("CREATE SEQUENCE person_fid_seq START WITH 0 MINVALUE 0");
 
         // insert data

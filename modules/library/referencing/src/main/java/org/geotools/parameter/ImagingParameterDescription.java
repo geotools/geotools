@@ -32,8 +32,7 @@ import org.geotools.util.Utilities;
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
-final class ImagingParameterDescription extends AbstractInternationalString
-        implements Serializable {
+final class ImagingParameterDescription extends AbstractInternationalString implements Serializable {
     /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = -325584046563057577L;
 
@@ -80,8 +79,7 @@ final class ImagingParameterDescription extends AbstractInternationalString
      * @param operation The operation to fetch localized resource from.
      * @param key The key for the resource to fetch.
      */
-    public ImagingParameterDescription(
-            final OperationDescriptor operation, final String key, final String prefixKey) {
+    public ImagingParameterDescription(final OperationDescriptor operation, final String key, final String prefixKey) {
         this.operation = operation;
         this.key = key;
         this.prefixKey = prefixKey;

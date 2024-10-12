@@ -102,20 +102,18 @@ public class WalkTest {
         NoBifurcationIterator iterator = new NoBifurcationIterator();
         iterator.setSource(ends[0]);
 
-        GraphWalker walker =
-                new GraphWalker() {
-                    @Override
-                    public int visit(Graphable element, GraphTraversal traversal) {
-                        walk.add((Node) element);
-                        return (GraphTraversal.CONTINUE);
-                    }
+        GraphWalker walker = new GraphWalker() {
+            @Override
+            public int visit(Graphable element, GraphTraversal traversal) {
+                walk.add((Node) element);
+                return (GraphTraversal.CONTINUE);
+            }
 
-                    @Override
-                    public void finish() {}
-                };
+            @Override
+            public void finish() {}
+        };
 
-        BasicGraphTraversal traversal =
-                new BasicGraphTraversal(builder().getGraph(), walker, iterator);
+        BasicGraphTraversal traversal = new BasicGraphTraversal(builder().getGraph(), walker, iterator);
         traversal.init();
         traversal.traverse();
 
@@ -138,20 +136,18 @@ public class WalkTest {
         NoBifurcationIterator iterator = new NoBifurcationIterator();
         iterator.setSource(ends[0]);
 
-        GraphWalker walker =
-                new GraphWalker() {
-                    @Override
-                    public int visit(Graphable element, GraphTraversal traversal) {
-                        walk.add((Node) element);
-                        return (GraphTraversal.CONTINUE);
-                    }
+        GraphWalker walker = new GraphWalker() {
+            @Override
+            public int visit(Graphable element, GraphTraversal traversal) {
+                walk.add((Node) element);
+                return (GraphTraversal.CONTINUE);
+            }
 
-                    @Override
-                    public void finish() {}
-                };
+            @Override
+            public void finish() {}
+        };
 
-        BasicGraphTraversal traversal =
-                new BasicGraphTraversal(builder().getGraph(), walker, iterator);
+        BasicGraphTraversal traversal = new BasicGraphTraversal(builder().getGraph(), walker, iterator);
         traversal.init();
         traversal.traverse();
 
@@ -167,20 +163,18 @@ public class WalkTest {
         NoBifurcationIterator iterator = new NoBifurcationIterator();
         iterator.setSource(ends[0]);
 
-        GraphWalker walker =
-                new GraphWalker() {
-                    @Override
-                    public int visit(Graphable element, GraphTraversal traversal) {
-                        walk.add((Node) element);
-                        return (GraphTraversal.CONTINUE);
-                    }
+        GraphWalker walker = new GraphWalker() {
+            @Override
+            public int visit(Graphable element, GraphTraversal traversal) {
+                walk.add((Node) element);
+                return (GraphTraversal.CONTINUE);
+            }
 
-                    @Override
-                    public void finish() {}
-                };
+            @Override
+            public void finish() {}
+        };
 
-        BasicGraphTraversal traversal =
-                new BasicGraphTraversal(builder().getGraph(), walker, iterator);
+        BasicGraphTraversal traversal = new BasicGraphTraversal(builder().getGraph(), walker, iterator);
         traversal.init();
         traversal.traverse();
 
@@ -197,22 +191,20 @@ public class WalkTest {
         NoBifurcationIterator iterator = new NoBifurcationIterator();
         iterator.setSource(ends[0]);
 
-        GraphWalker walker =
-                new GraphWalker() {
-                    int count = 0;
+        GraphWalker walker = new GraphWalker() {
+            int count = 0;
 
-                    @Override
-                    public int visit(Graphable element, GraphTraversal traversal) {
-                        walk.add((Node) element);
-                        return (GraphTraversal.CONTINUE);
-                    }
+            @Override
+            public int visit(Graphable element, GraphTraversal traversal) {
+                walk.add((Node) element);
+                return (GraphTraversal.CONTINUE);
+            }
 
-                    @Override
-                    public void finish() {}
-                };
+            @Override
+            public void finish() {}
+        };
 
-        BasicGraphTraversal traversal =
-                new BasicGraphTraversal(builder().getGraph(), walker, iterator);
+        BasicGraphTraversal traversal = new BasicGraphTraversal(builder().getGraph(), walker, iterator);
         traversal.init();
         traversal.traverse();
 
@@ -229,22 +221,20 @@ public class WalkTest {
         NoBifurcationIterator iterator = new NoBifurcationIterator();
         iterator.setSource(ends[0]);
 
-        GraphWalker walker =
-                new GraphWalker() {
-                    int count = 0;
+        GraphWalker walker = new GraphWalker() {
+            int count = 0;
 
-                    @Override
-                    public int visit(Graphable element, GraphTraversal traversal) {
-                        walk.add((Node) element);
-                        return (GraphTraversal.CONTINUE);
-                    }
+            @Override
+            public int visit(Graphable element, GraphTraversal traversal) {
+                walk.add((Node) element);
+                return (GraphTraversal.CONTINUE);
+            }
 
-                    @Override
-                    public void finish() {}
-                };
+            @Override
+            public void finish() {}
+        };
 
-        BasicGraphTraversal traversal =
-                new BasicGraphTraversal(builder().getGraph(), walker, iterator);
+        BasicGraphTraversal traversal = new BasicGraphTraversal(builder().getGraph(), walker, iterator);
         traversal.init();
         traversal.traverse();
 

@@ -58,74 +58,72 @@ public class GraphicImpl
      * <p>For some attributes the standard does not define a default, so a reasonable value is
      * supplied.
      */
-    public static final Graphic DEFAULT =
-            new ConstantGraphic() {
+    public static final Graphic DEFAULT = new ConstantGraphic() {
 
-                @Override
-                public List<GraphicalSymbol> graphicalSymbols() {
-                    return Collections.emptyList();
-                }
+        @Override
+        public List<GraphicalSymbol> graphicalSymbols() {
+            return Collections.emptyList();
+        }
 
-                @Override
-                public Expression getOpacity() {
-                    return ConstantExpression.ONE;
-                }
+        @Override
+        public Expression getOpacity() {
+            return ConstantExpression.ONE;
+        }
 
-                @Override
-                public Expression getSize() {
-                    // default size is unknown, it depends on the target
-                    return Expression.NIL;
-                }
+        @Override
+        public Expression getSize() {
+            // default size is unknown, it depends on the target
+            return Expression.NIL;
+        }
 
-                @Override
-                public Displacement getDisplacement() {
-                    return DisplacementImpl.DEFAULT;
-                }
+        @Override
+        public Displacement getDisplacement() {
+            return DisplacementImpl.DEFAULT;
+        }
 
-                @Override
-                public Expression getRotation() {
-                    return ConstantExpression.ZERO;
-                }
-            };
+        @Override
+        public Expression getRotation() {
+            return ConstantExpression.ZERO;
+        }
+    };
     /**
      * Indicates an absense of graphic.
      *
      * <p>This value is used to indicate that the Graphics based opperation should be skipped. Aka
      * this is used by Stroke.Stroke as place holders for GRAPHIC_FILL and GRAPHIC_STROKE.
      */
-    public static final Graphic NULL =
-            new ConstantGraphic() {
+    public static final Graphic NULL = new ConstantGraphic() {
 
-                @Override
-                public List<GraphicalSymbol> graphicalSymbols() {
-                    return Collections.emptyList();
-                }
+        @Override
+        public List<GraphicalSymbol> graphicalSymbols() {
+            return Collections.emptyList();
+        }
 
-                @Override
-                public Expression getOpacity() {
-                    return ConstantExpression.NULL;
-                }
+        @Override
+        public Expression getOpacity() {
+            return ConstantExpression.NULL;
+        }
 
-                @Override
-                public Expression getSize() {
-                    return ConstantExpression.NULL;
-                }
+        @Override
+        public Expression getSize() {
+            return ConstantExpression.NULL;
+        }
 
-                @Override
-                public Displacement getDisplacement() {
-                    return DisplacementImpl.NULL;
-                }
+        @Override
+        public Displacement getDisplacement() {
+            return DisplacementImpl.NULL;
+        }
 
-                @Override
-                public Expression getRotation() {
-                    return ConstantExpression.NULL;
-                }
+        @Override
+        public Expression getRotation() {
+            return ConstantExpression.NULL;
+        }
 
-                //            public String getGeometryPropertyName() {
-                //                return "";
-                //            }
+        //            public String getGeometryPropertyName() {
+        //                return "";
+        //            }
 
-            };
+    };
     /** The logger for the default core module. */
     // private static final java.util.logging.Logger LOGGER =
     // org.geotools.util.logging.Logging.getLogger(GraphicImpl.class);
@@ -150,8 +148,7 @@ public class GraphicImpl
         this(factory, null, null, null);
     }
 
-    public GraphicImpl(
-            FilterFactory factory, AnchorPoint anchor, Expression gap, Expression initialGap) {
+    public GraphicImpl(FilterFactory factory, AnchorPoint anchor, Expression gap, Expression initialGap) {
         this.anchor = AnchorPointImpl.cast(anchor);
 
         if (gap == null) this.gap = ConstantExpression.constant(0);

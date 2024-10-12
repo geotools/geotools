@@ -65,8 +65,7 @@ public class CommonsLoggerFactory extends LoggerFactory<Log> {
     @Override
     protected Log getImplementation(final String name) {
         final Log log = LogFactory.getLog(name);
-        if (log != null
-                && log.getClass().getName().equals("org.apache.commons.logging.impl.Jdk14Logger")) {
+        if (log != null && log.getClass().getName().equals("org.apache.commons.logging.impl.Jdk14Logger")) {
             return null;
         }
         return log;

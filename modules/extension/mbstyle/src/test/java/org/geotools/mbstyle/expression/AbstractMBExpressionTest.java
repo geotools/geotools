@@ -78,23 +78,20 @@ public abstract class AbstractMBExpressionTest {
         parse = new MBObjectParser(MBExpression.class);
         ff = parse.getFilterFactory();
         // setup test features
-        final SimpleFeatureType dataType =
-                DataUtilities.createType(
-                        "mbexpression.test",
-                        "anIntField:int,anotherIntField:int,doubleField:double,geom:Point,name:String");
+        final SimpleFeatureType dataType = DataUtilities.createType(
+                "mbexpression.test", "anIntField:int,anotherIntField:int,doubleField:double,geom:Point,name:String");
         testFeatures = new SimpleFeature[intVals.length];
         for (int i = 0; i < intVals.length; ++i) {
-            final SimpleFeature simpleFeature =
-                    SimpleFeatureBuilder.build(
-                            dataType,
-                            new Object[] {
-                                i,
-                                intVals[i],
-                                doubleVals[i],
-                                geometryFactory.createPoint(new Coordinate(intVals[i], intVals[i])),
-                                "name_" + intVals[i]
-                            },
-                            "mbexpression." + (i + 1));
+            final SimpleFeature simpleFeature = SimpleFeatureBuilder.build(
+                    dataType,
+                    new Object[] {
+                        i,
+                        intVals[i],
+                        doubleVals[i],
+                        geometryFactory.createPoint(new Coordinate(intVals[i], intVals[i])),
+                        "name_" + intVals[i]
+                    },
+                    "mbexpression." + (i + 1));
             testFeatures[i] = simpleFeature;
         }
         // finally, do any subclass setup steps
@@ -171,15 +168,13 @@ public abstract class AbstractMBExpressionTest {
      * @param feature Feature to which the expression should be evaluated.
      * @return The Expression evaluation of the supplied tectField value.
      */
-    protected Object getExpressionEvaluation(
-            JSONObject json, String jsonTextField, SimpleFeature feature) {
+    protected Object getExpressionEvaluation(JSONObject json, String jsonTextField, SimpleFeature feature) {
         // get the Object from the supplied JSON
         final Object textFieldObj = json.get(jsonTextField);
         // make sure we got a field
         assertNotNull(
                 String.format(
-                        "JSON Text Field not extracted. Is the field name spelled correctly? \"%s\"",
-                        jsonTextField),
+                        "JSON Text Field not extracted. Is the field name spelled correctly? \"%s\"", jsonTextField),
                 textFieldObj);
         // assert the field is a JSONArray
         assertEquals(JSONArray.class, textFieldObj.getClass());

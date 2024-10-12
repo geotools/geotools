@@ -42,8 +42,7 @@ import org.locationtech.jts.geom.Polygon;
  * @version $Id$
  */
 public class PolygonHandler implements ShapeHandler {
-    protected static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(PolygonHandler.class);
+    protected static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(PolygonHandler.class);
 
     GeometryFactory geometryFactory;
 
@@ -56,8 +55,7 @@ public class PolygonHandler implements ShapeHandler {
 
     public PolygonHandler(ShapeType type, GeometryFactory gf) throws ShapefileException {
         if (!type.isPolygonType()) {
-            throw new ShapefileException(
-                    "PolygonHandler constructor - expected type to be 5, 15, or 25.");
+            throw new ShapefileException("PolygonHandler constructor - expected type to be 5, 15, or 25.");
         }
 
         shapeType = type;
@@ -173,38 +171,21 @@ public class PolygonHandler implements ShapeHandler {
             CoordinateSequence csRing;
 
             if (coords.hasZ() && !flatFeature) {
-                csRing =
-                        JTS.createCS(
-                                geometryFactory.getCoordinateSequenceFactory(),
-                                length + close,
-                                4,
-                                1);
+                csRing = JTS.createCS(geometryFactory.getCoordinateSequenceFactory(), length + close, 4, 1);
             } else if (coords.hasM() && !flatFeature) {
-                csRing =
-                        JTS.createCS(
-                                geometryFactory.getCoordinateSequenceFactory(),
-                                length + close,
-                                3,
-                                1);
+                csRing = JTS.createCS(geometryFactory.getCoordinateSequenceFactory(), length + close, 3, 1);
 
             } else {
-                csRing =
-                        JTS.createCS(
-                                geometryFactory.getCoordinateSequenceFactory(), length + close, 2);
+                csRing = JTS.createCS(geometryFactory.getCoordinateSequenceFactory(), length + close, 2);
             }
 
             // double area = 0;
             // int sx = offset;
             for (int i = 0; i < length; i++) {
-                csRing.setOrdinate(
-                        i, CoordinateSequence.X, coords.getOrdinate(offset, CoordinateSequence.X));
-                csRing.setOrdinate(
-                        i, CoordinateSequence.Y, coords.getOrdinate(offset, CoordinateSequence.Y));
+                csRing.setOrdinate(i, CoordinateSequence.X, coords.getOrdinate(offset, CoordinateSequence.X));
+                csRing.setOrdinate(i, CoordinateSequence.Y, coords.getOrdinate(offset, CoordinateSequence.Y));
                 if (coords.hasZ() && !flatFeature) {
-                    csRing.setOrdinate(
-                            i,
-                            CoordinateSequence.Z,
-                            coords.getOrdinate(offset, CoordinateSequence.Z));
+                    csRing.setOrdinate(i, CoordinateSequence.Z, coords.getOrdinate(offset, CoordinateSequence.Z));
                 }
                 if (coords.hasM() && !flatFeature) {
                     double m = coords.getOrdinate(offset, CoordinateSequence.M);
@@ -216,25 +197,13 @@ public class PolygonHandler implements ShapeHandler {
                 offset++;
             }
             if (close == 1) {
-                csRing.setOrdinate(
-                        length,
-                        CoordinateSequence.X,
-                        coords.getOrdinate(start, CoordinateSequence.X));
-                csRing.setOrdinate(
-                        length,
-                        CoordinateSequence.Y,
-                        coords.getOrdinate(start, CoordinateSequence.Y));
+                csRing.setOrdinate(length, CoordinateSequence.X, coords.getOrdinate(start, CoordinateSequence.X));
+                csRing.setOrdinate(length, CoordinateSequence.Y, coords.getOrdinate(start, CoordinateSequence.Y));
                 if (coords.hasZ() && !flatFeature) {
-                    csRing.setOrdinate(
-                            length,
-                            CoordinateSequence.Z,
-                            coords.getOrdinate(start, CoordinateSequence.Z));
+                    csRing.setOrdinate(length, CoordinateSequence.Z, coords.getOrdinate(start, CoordinateSequence.Z));
                 }
                 if (coords.hasM() && !flatFeature) {
-                    csRing.setOrdinate(
-                            length,
-                            CoordinateSequence.M,
-                            coords.getOrdinate(start, CoordinateSequence.M));
+                    csRing.setOrdinate(length, CoordinateSequence.M, coords.getOrdinate(start, CoordinateSequence.M));
                 }
             }
             // REVISIT: polygons with only 1 or 2 points are not polygons -
@@ -274,19 +243,14 @@ public class PolygonHandler implements ShapeHandler {
 
     /** @param flatFeature */
     private CoordinateSequence readCoordinates(
-            final ByteBuffer buffer,
-            final int numPoints,
-            final int dimensions,
-            boolean flatFeature) {
+            final ByteBuffer buffer, final int numPoints, final int dimensions, boolean flatFeature) {
         CoordinateSequence cs;
         if (shapeType == ShapeType.POLYGONM && !flatFeature) {
             cs = JTS.createCS(geometryFactory.getCoordinateSequenceFactory(), numPoints, 3, 1);
         } else if (shapeType == ShapeType.POLYGONZ && !flatFeature) {
             cs = JTS.createCS(geometryFactory.getCoordinateSequenceFactory(), numPoints, 4, 1);
         } else {
-            cs =
-                    JTS.createCS(
-                            geometryFactory.getCoordinateSequenceFactory(), numPoints, dimensions);
+            cs = JTS.createCS(geometryFactory.getCoordinateSequenceFactory(), numPoints, dimensions);
         }
         DoubleBuffer dbuffer = buffer.asDoubleBuffer();
         double[] ordinates = new double[numPoints * 2];
@@ -305,8 +269,7 @@ public class PolygonHandler implements ShapeHandler {
                 }
             }
 
-            boolean isArcZWithM =
-                    (dbuffer.remaining() >= numPoints + 2) && shapeType == ShapeType.POLYGONZ;
+            boolean isArcZWithM = (dbuffer.remaining() >= numPoints + 2) && shapeType == ShapeType.POLYGONZ;
             if (isArcZWithM || shapeType == ShapeType.POLYGONM) {
                 // Handle M
                 dbuffer.position(dbuffer.position() + 2);
@@ -322,9 +285,7 @@ public class PolygonHandler implements ShapeHandler {
 
     /** */
     private Geometry buildGeometries(
-            final List<LinearRing> shells,
-            final List<LinearRing> holes,
-            final List<List<LinearRing>> holesForShells) {
+            final List<LinearRing> shells, final List<LinearRing> holes, final List<List<LinearRing>> holesForShells) {
         Polygon[] polygons;
 
         // if we have shells, lets use them
@@ -340,8 +301,7 @@ public class PolygonHandler implements ShapeHandler {
             LinearRing shell = shells.get(i);
             List<LinearRing> holesForShell = holesForShells.get(i);
             polygons[i] =
-                    geometryFactory.createPolygon(
-                            shell, holesForShell.toArray(new LinearRing[holesForShell.size()]));
+                    geometryFactory.createPolygon(shell, holesForShell.toArray(new LinearRing[holesForShell.size()]));
         }
 
         // this will take care of the "only holes case"
@@ -359,8 +319,7 @@ public class PolygonHandler implements ShapeHandler {
     }
 
     /** <b>Package private for testing</b> */
-    List<List<LinearRing>> assignHolesToShells(
-            final ArrayList<LinearRing> shells, final ArrayList<LinearRing> holes) {
+    List<List<LinearRing>> assignHolesToShells(final ArrayList<LinearRing> shells, final ArrayList<LinearRing> holes) {
         List<List<LinearRing>> holesForShells = getListOfLists(shells.size());
 
         // find homes
@@ -424,10 +383,7 @@ public class PolygonHandler implements ShapeHandler {
 
     private MultiPolygon createMulti(LinearRing single, List<LinearRing> holes) {
         return geometryFactory.createMultiPolygon(
-                new Polygon[] {
-                    geometryFactory.createPolygon(
-                            single, holes.toArray(new LinearRing[holes.size()]))
-                });
+                new Polygon[] {geometryFactory.createPolygon(single, holes.toArray(new LinearRing[holes.size()]))});
     }
 
     private MultiPolygon createNull() {
@@ -539,10 +495,9 @@ public class PolygonHandler implements ShapeHandler {
             buffer.putDouble(!Double.isNaN(edge) ? edge : -10E40);
 
             // m values
-            values.forEach(
-                    x -> {
-                        buffer.putDouble(Double.isNaN(x) ? -10E40 : x);
-                    });
+            values.forEach(x -> {
+                buffer.putDouble(Double.isNaN(x) ? -10E40 : x);
+            });
         }
     }
 }

@@ -93,11 +93,9 @@ public abstract class RenderingSelectorStyleVisitor extends DuplicatingStyleVisi
      */
     protected boolean canRender(Map<String, String> vendorOptions) {
         boolean canRenderer;
-        String value =
-                vendorOptions != null
-                        ? vendorOptions.get(
-                                org.geotools.api.style.FeatureTypeStyle.VENDOR_OPTION_INCLUSION)
-                        : null;
+        String value = vendorOptions != null
+                ? vendorOptions.get(org.geotools.api.style.FeatureTypeStyle.VENDOR_OPTION_INCLUSION)
+                : null;
         if (value == null) canRenderer = true;
         else if (value.equalsIgnoreCase(NORMAL.name())) canRenderer = true;
         else {

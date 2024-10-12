@@ -40,13 +40,12 @@ public class DecoratingFeatureCollectionTest {
         EasyMock.expectLastCall();
         EasyMock.replay(mock);
 
-        DecoratingFeatureCollection decorator =
-                new DecoratingFeatureCollection<FeatureType, Feature>(mock) {
-                    @Override
-                    protected boolean canDelegate(FeatureVisitor visitor) {
-                        return true;
-                    }
-                };
+        DecoratingFeatureCollection decorator = new DecoratingFeatureCollection<FeatureType, Feature>(mock) {
+            @Override
+            protected boolean canDelegate(FeatureVisitor visitor) {
+                return true;
+            }
+        };
         decorator.accepts(visitor, null);
         EasyMock.verify(mock);
     }
@@ -62,13 +61,12 @@ public class DecoratingFeatureCollectionTest {
         EasyMock.expect(mock.features()).andReturn(iterator);
         EasyMock.replay(mock, iterator);
 
-        DecoratingFeatureCollection decorator =
-                new DecoratingFeatureCollection<FeatureType, Feature>(mock) {
-                    @Override
-                    protected boolean canDelegate(FeatureVisitor visitor) {
-                        return false;
-                    }
-                };
+        DecoratingFeatureCollection decorator = new DecoratingFeatureCollection<FeatureType, Feature>(mock) {
+            @Override
+            protected boolean canDelegate(FeatureVisitor visitor) {
+                return false;
+            }
+        };
         decorator.accepts(visitor, null);
         EasyMock.verify(mock);
     }

@@ -60,9 +60,7 @@ public class Collection<T> extends AbstractDocument {
         ReferencedEnvelope result = null;
 
         CoordinateReferenceSystem crs =
-                Optional.ofNullable(ext.getCrs())
-                        .map(Collection::decodeSafe)
-                        .orElse(DefaultGeographicCRS.WGS84);
+                Optional.ofNullable(ext.getCrs()).map(Collection::decodeSafe).orElse(DefaultGeographicCRS.WGS84);
         for (List<Double> box : ext.getBbox()) {
             ReferencedEnvelope re = toEnvelope(box, crs);
             if (result == null) result = re;
@@ -88,9 +86,7 @@ public class Collection<T> extends AbstractDocument {
             return new ReferencedEnvelope3D(
                     box.get(0), box.get(3), box.get(1), box.get(4), box.get(2), box.get(5), crs);
         }
-        LOGGER.log(
-                Level.FINE,
-                "Don't know how to represent a bounding box with " + size + " ordinates, skipping");
+        LOGGER.log(Level.FINE, "Don't know how to represent a bounding box with " + size + " ordinates, skipping");
         return null;
     }
 }

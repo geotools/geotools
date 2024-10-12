@@ -278,10 +278,7 @@ public class TableWriter extends FilterWriter {
      * @throws IOException if the writting operation failed.
      */
     private void writeBorder(
-            final Writer out,
-            final int horizontalBorder,
-            final int verticalBorder,
-            final char horizontalChar)
+            final Writer out, final int horizontalBorder, final int verticalBorder, final char horizontalChar)
             throws IOException {
         /*
          * Obtient les ensembles de caractères qui
@@ -467,26 +464,23 @@ public class TableWriter extends FilterWriter {
         synchronized (lock) {
             if (!multiLinesCells) {
                 switch (c) {
-                    case '\t':
-                        {
-                            nextColumn();
-                            skipCR = false;
-                            return;
-                        }
-                    case '\r':
-                        {
+                    case '\t': {
+                        nextColumn();
+                        skipCR = false;
+                        return;
+                    }
+                    case '\r': {
+                        nextLine();
+                        skipCR = true;
+                        return;
+                    }
+                    case '\n': {
+                        if (!skipCR) {
                             nextLine();
-                            skipCR = true;
-                            return;
                         }
-                    case '\n':
-                        {
-                            if (!skipCR) {
-                                nextLine();
-                            }
-                            skipCR = false;
-                            return;
-                        }
+                        skipCR = false;
+                        return;
+                    }
                 }
             }
             if (c < Character.MIN_VALUE || c > Character.MAX_VALUE) {
@@ -532,31 +526,28 @@ public class TableWriter extends FilterWriter {
                 int upper = offset;
                 for (; length != 0; length--) {
                     switch (string.charAt(upper++)) {
-                        case '\t':
-                            {
-                                buffer.append(string.substring(offset, upper - 1));
-                                nextColumn();
-                                offset = upper;
-                                break;
+                        case '\t': {
+                            buffer.append(string.substring(offset, upper - 1));
+                            nextColumn();
+                            offset = upper;
+                            break;
+                        }
+                        case '\r': {
+                            buffer.append(string.substring(offset, upper - 1));
+                            nextLine();
+                            if (length != 0 && string.charAt(upper) == '\n') {
+                                upper++;
+                                length--;
                             }
-                        case '\r':
-                            {
-                                buffer.append(string.substring(offset, upper - 1));
-                                nextLine();
-                                if (length != 0 && string.charAt(upper) == '\n') {
-                                    upper++;
-                                    length--;
-                                }
-                                offset = upper;
-                                break;
-                            }
-                        case '\n':
-                            {
-                                buffer.append(string.substring(offset, upper - 1));
-                                nextLine();
-                                offset = upper;
-                                break;
-                            }
+                            offset = upper;
+                            break;
+                        }
+                        case '\n': {
+                            buffer.append(string.substring(offset, upper - 1));
+                            nextLine();
+                            offset = upper;
+                            break;
+                        }
                     }
                 }
                 length = upper - offset;
@@ -602,31 +593,28 @@ public class TableWriter extends FilterWriter {
                 int upper = offset;
                 for (; length != 0; length--) {
                     switch (cbuf[upper++]) {
-                        case '\t':
-                            {
-                                buffer.append(cbuf, offset, upper - offset - 1);
-                                nextColumn();
-                                offset = upper;
-                                break;
+                        case '\t': {
+                            buffer.append(cbuf, offset, upper - offset - 1);
+                            nextColumn();
+                            offset = upper;
+                            break;
+                        }
+                        case '\r': {
+                            buffer.append(cbuf, offset, upper - offset - 1);
+                            nextLine();
+                            if (length != 0 && cbuf[upper] == '\n') {
+                                upper++;
+                                length--;
                             }
-                        case '\r':
-                            {
-                                buffer.append(cbuf, offset, upper - offset - 1);
-                                nextLine();
-                                if (length != 0 && cbuf[upper] == '\n') {
-                                    upper++;
-                                    length--;
-                                }
-                                offset = upper;
-                                break;
-                            }
-                        case '\n':
-                            {
-                                buffer.append(cbuf, offset, upper - offset - 1);
-                                nextLine();
-                                offset = upper;
-                                break;
-                            }
+                            offset = upper;
+                            break;
+                        }
+                        case '\n': {
+                            buffer.append(cbuf, offset, upper - offset - 1);
+                            nextLine();
+                            offset = upper;
+                            break;
+                        }
                     }
                 }
                 length = upper - offset;
@@ -857,37 +845,29 @@ public class TableWriter extends FilterWriter {
                     if (isFirstColumn) {
                         out.write(leftBorder);
                     }
-                    final Writer tabExpander =
-                            (cellText.indexOf('\t') >= 0) ? new ExpandedTabWriter(out) : out;
+                    final Writer tabExpander = (cellText.indexOf('\t') >= 0) ? new ExpandedTabWriter(out) : out;
                     switch (cell.alignment) {
-                        default:
-                            {
-                                // Should not happen.
-                                throw new AssertionError(cell.alignment);
-                            }
-                        case ALIGN_LEFT:
-                            {
-                                tabExpander.write(cellText);
-                                repeat(tabExpander, cell.fill, cellWidth - textLength);
-                                break;
-                            }
-                        case ALIGN_RIGHT:
-                            {
-                                repeat(tabExpander, cell.fill, cellWidth - textLength);
-                                tabExpander.write(cellText);
-                                break;
-                            }
-                        case ALIGN_CENTER:
-                            {
-                                final int rightMargin = (cellWidth - textLength) / 2;
-                                repeat(tabExpander, cell.fill, rightMargin);
-                                tabExpander.write(cellText);
-                                repeat(
-                                        tabExpander,
-                                        cell.fill,
-                                        (cellWidth - rightMargin) - textLength);
-                                break;
-                            }
+                        default: {
+                            // Should not happen.
+                            throw new AssertionError(cell.alignment);
+                        }
+                        case ALIGN_LEFT: {
+                            tabExpander.write(cellText);
+                            repeat(tabExpander, cell.fill, cellWidth - textLength);
+                            break;
+                        }
+                        case ALIGN_RIGHT: {
+                            repeat(tabExpander, cell.fill, cellWidth - textLength);
+                            tabExpander.write(cellText);
+                            break;
+                        }
+                        case ALIGN_CENTER: {
+                            final int rightMargin = (cellWidth - textLength) / 2;
+                            repeat(tabExpander, cell.fill, rightMargin);
+                            tabExpander.write(cellText);
+                            repeat(tabExpander, cell.fill, (cellWidth - rightMargin) - textLength);
+                            break;
+                        }
                     }
                     out.write(isLastColumn ? rightBorder : columnSeparator);
                 }

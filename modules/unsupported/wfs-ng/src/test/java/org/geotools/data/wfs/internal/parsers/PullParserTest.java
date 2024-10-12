@@ -86,8 +86,7 @@ public class PullParserTest extends AbstractGetFeatureParserTest {
             String axisOrder = null;
             HTTPClient httpClient = createMjosovervakHttpClient();
             GetParser<SimpleFeature> parser =
-                    new PullParserFeatureReader(
-                            wfsConfiguration, inputStream, featureType, axisOrder, httpClient);
+                    new PullParserFeatureReader(wfsConfiguration, inputStream, featureType, axisOrder, httpClient);
             SimpleFeature first = parser.parse();
             Assert.assertNotNull(first);
             Assert.assertEquals("Svanfoss", first.getAttribute("STATION_NAME"));
@@ -110,8 +109,7 @@ public class PullParserTest extends AbstractGetFeatureParserTest {
             String axisOrder = null;
             HTTPClient httpClient = createFailingHttpClient();
             GetParser<SimpleFeature> parser =
-                    new PullParserFeatureReader(
-                            wfsConfiguration, inputStream, featureType, axisOrder, httpClient);
+                    new PullParserFeatureReader(wfsConfiguration, inputStream, featureType, axisOrder, httpClient);
             parser.parse();
         }
     }

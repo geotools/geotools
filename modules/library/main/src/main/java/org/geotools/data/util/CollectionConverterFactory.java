@@ -46,98 +46,94 @@ import org.geotools.util.factory.Hints;
 public class CollectionConverterFactory implements ConverterFactory {
 
     /** Converter for collection to collection */
-    protected static final Converter CollectionToCollection =
-            new Converter() {
+    protected static final Converter CollectionToCollection = new Converter() {
 
-                @Override
-                public <T> T convert(Object source, Class<T> target) throws Exception {
-                    // if source is already an instance nevermind
-                    if (target.isInstance(source)) {
-                        return target.cast(source);
-                    }
+        @Override
+        public <T> T convert(Object source, Class<T> target) throws Exception {
+            // if source is already an instance nevermind
+            if (target.isInstance(source)) {
+                return target.cast(source);
+            }
 
-                    // dynamically create and add
-                    Collection<Object> converted = newCollection(target);
-                    if (converted != null) {
-                        @SuppressWarnings("unchecked")
-                        Collection<Object> castSource = (Collection<Object>) source;
-                        converted.addAll(castSource);
-                    }
+            // dynamically create and add
+            Collection<Object> converted = newCollection(target);
+            if (converted != null) {
+                @SuppressWarnings("unchecked")
+                Collection<Object> castSource = (Collection<Object>) source;
+                converted.addAll(castSource);
+            }
 
-                    return target.cast(converted);
-                }
-            };
+            return target.cast(converted);
+        }
+    };
 
     /** Converter for collection to array. */
-    protected static final Converter CollectionToArray =
-            new Converter() {
+    protected static final Converter CollectionToArray = new Converter() {
 
-                @Override
-                public <T> T convert(Object source, Class<T> target) throws Exception {
-                    Collection s = (Collection) source;
-                    Object array = Array.newInstance(target.getComponentType(), s.size());
+        @Override
+        public <T> T convert(Object source, Class<T> target) throws Exception {
+            Collection s = (Collection) source;
+            Object array = Array.newInstance(target.getComponentType(), s.size());
 
-                    try {
-                        int x = 0;
-                        for (Object o : s) {
-                            Array.set(array, x++, o);
-                        }
-
-                        return target.cast(array);
-                    } catch (Exception e) {
-                        // Means an incompatable type assignment
-
-                    }
-
-                    return null;
+            try {
+                int x = 0;
+                for (Object o : s) {
+                    Array.set(array, x++, o);
                 }
-            };
+
+                return target.cast(array);
+            } catch (Exception e) {
+                // Means an incompatable type assignment
+
+            }
+
+            return null;
+        }
+    };
 
     /** Converter for array to collection. */
-    protected static final Converter ArrayToCollection =
-            new Converter() {
+    protected static final Converter ArrayToCollection = new Converter() {
 
-                @Override
-                public <T> T convert(Object source, Class<T> target) throws Exception {
-                    Collection<Object> collection = newCollection(target);
-                    if (collection != null) {
-                        int length = Array.getLength(source);
-                        for (int i = 0; i < length; i++) {
-                            collection.add(Array.get(source, i));
-                        }
-                    }
-
-                    return target.cast(collection);
+        @Override
+        public <T> T convert(Object source, Class<T> target) throws Exception {
+            Collection<Object> collection = newCollection(target);
+            if (collection != null) {
+                int length = Array.getLength(source);
+                for (int i = 0; i < length; i++) {
+                    collection.add(Array.get(source, i));
                 }
-            };
+            }
+
+            return target.cast(collection);
+        }
+    };
 
     /** Converter for array to array. */
-    protected static final Converter ArrayToArray =
-            new Converter() {
+    protected static final Converter ArrayToArray = new Converter() {
 
-                @Override
-                public <T> T convert(Object source, Class<T> target) throws Exception {
-                    // get the individual component types
-                    Class<?> s = source.getClass().getComponentType();
-                    Class<?> t = target.getComponentType();
+        @Override
+        public <T> T convert(Object source, Class<T> target) throws Exception {
+            // get the individual component types
+            Class<?> s = source.getClass().getComponentType();
+            Class<?> t = target.getComponentType();
 
-                    // make sure the source can be assiigned to the target
-                    if (t.isAssignableFrom(s)) {
-                        int length = Array.getLength(source);
-                        Object converted = Array.newInstance(t, length);
+            // make sure the source can be assiigned to the target
+            if (t.isAssignableFrom(s)) {
+                int length = Array.getLength(source);
+                Object converted = Array.newInstance(t, length);
 
-                        for (int i = 0; i < length; i++) {
-                            Array.set(converted, i, Array.get(source, i));
-                        }
-
-                        @SuppressWarnings("unchecked")
-                        T cast = (T) converted;
-                        return cast;
-                    }
-
-                    return null;
+                for (int i = 0; i < length; i++) {
+                    Array.set(converted, i, Array.get(source, i));
                 }
-            };
+
+                @SuppressWarnings("unchecked")
+                T cast = (T) converted;
+                return cast;
+            }
+
+            return null;
+        }
+    };
 
     protected static Collection<Object> newCollection(Class target) throws Exception {
         if (target.isInterface()) {
@@ -156,7 +152,8 @@ public class CollectionConverterFactory implements ConverterFactory {
         } else {
             // instantiate directly
             @SuppressWarnings("unchecked")
-            Collection<Object> result = (Collection) target.getDeclaredConstructor().newInstance();
+            Collection<Object> result =
+                    (Collection) target.getDeclaredConstructor().newInstance();
             return result;
         }
     }
@@ -167,8 +164,7 @@ public class CollectionConverterFactory implements ConverterFactory {
                 && (Collection.class.isAssignableFrom(target) || target.isArray())) {
 
             // both collections?
-            if (Collection.class.isAssignableFrom(source)
-                    && Collection.class.isAssignableFrom(target)) {
+            if (Collection.class.isAssignableFrom(source) && Collection.class.isAssignableFrom(target)) {
                 return CollectionToCollection;
             }
 

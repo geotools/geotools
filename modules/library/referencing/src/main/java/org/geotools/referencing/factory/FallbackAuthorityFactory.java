@@ -108,14 +108,12 @@ public class FallbackAuthorityFactory extends AuthorityFactoryAdapter {
      * @param fallback The factory to use as a fallback if the primary factory failed.
      * @see #create
      */
-    protected FallbackAuthorityFactory(
-            final AuthorityFactory primary, final AuthorityFactory fallback) {
+    protected FallbackAuthorityFactory(final AuthorityFactory primary, final AuthorityFactory fallback) {
         super(primary, fallback);
         ensureNonNull("fallback", fallback);
-        this.fallback =
-                (fallback instanceof AbstractAuthorityFactory)
-                        ? (AbstractAuthorityFactory) fallback
-                        : new AuthorityFactoryAdapter(fallback);
+        this.fallback = (fallback instanceof AbstractAuthorityFactory)
+                ? (AbstractAuthorityFactory) fallback
+                : new AuthorityFactoryAdapter(fallback);
     }
 
     /**
@@ -131,14 +129,12 @@ public class FallbackAuthorityFactory extends AuthorityFactoryAdapter {
      * @throws FactoryNotFoundException if the collection doesn't contains at least one element.
      * @throws ClassCastException if {@code type} is illegal.
      */
-    public static <T extends AuthorityFactory> T create(
-            final Class<T> type, final Collection<T> factories)
+    public static <T extends AuthorityFactory> T create(final Class<T> type, final Collection<T> factories)
             throws FactoryNotFoundException, ClassCastException {
         ensureNonNull("type", type);
         ensureNonNull("factories", factories);
         if (factories.isEmpty()) {
-            throw new FactoryNotFoundException(
-                    MessageFormat.format(ErrorKeys.FACTORY_NOT_FOUND_$1, type));
+            throw new FactoryNotFoundException(MessageFormat.format(ErrorKeys.FACTORY_NOT_FOUND_$1, type));
         }
         return type.cast(create(false, interfaceMask(type), factories.iterator()));
     }
@@ -177,9 +173,7 @@ public class FallbackAuthorityFactory extends AuthorityFactoryAdapter {
      * @param factories The factories to chain.
      */
     private static AuthorityFactory create(
-            final boolean automatic,
-            int interfaceMask,
-            final Iterator<? extends AuthorityFactory> factories)
+            final boolean automatic, int interfaceMask, final Iterator<? extends AuthorityFactory> factories)
             throws FactoryNotFoundException {
         AuthorityFactory primary = factories.next();
         if (factories.hasNext()) {
@@ -240,8 +234,7 @@ public class FallbackAuthorityFactory extends AuthorityFactoryAdapter {
      * factories.
      */
     @Override
-    public Set<String> getAuthorityCodes(final Class<? extends IdentifiedObject> type)
-            throws FactoryException {
+    public Set<String> getAuthorityCodes(final Class<? extends IdentifiedObject> type) throws FactoryException {
         final Set<String> codes = new LinkedHashSet<>(super.getAuthorityCodes(type));
         codes.addAll(fallback.getAuthorityCodes(type));
         return codes;
@@ -283,8 +276,7 @@ public class FallbackAuthorityFactory extends AuthorityFactoryAdapter {
      * @throws FactoryException if the object creation failed for all factories.
      */
     @Override
-    public org.geotools.api.referencing.datum.Datum createDatum(final String code)
-            throws FactoryException {
+    public org.geotools.api.referencing.datum.Datum createDatum(final String code) throws FactoryException {
         try {
             return super.createDatum(code);
         } catch (FactoryException exception) {
@@ -607,8 +599,7 @@ public class FallbackAuthorityFactory extends AuthorityFactoryAdapter {
      * @throws FactoryException if the object creation failed for all factories.
      */
     @Override
-    public CoordinateSystemAxis createCoordinateSystemAxis(final String code)
-            throws FactoryException {
+    public CoordinateSystemAxis createCoordinateSystemAxis(final String code) throws FactoryException {
         try {
             return super.createCoordinateSystemAxis(code);
         } catch (FactoryException exception) {
@@ -647,8 +638,7 @@ public class FallbackAuthorityFactory extends AuthorityFactoryAdapter {
      * @throws FactoryException if the object creation failed for all factories.
      */
     @Override
-    public CoordinateReferenceSystem createCoordinateReferenceSystem(final String code)
-            throws FactoryException {
+    public CoordinateReferenceSystem createCoordinateReferenceSystem(final String code) throws FactoryException {
         try {
             return super.createCoordinateReferenceSystem(code);
         } catch (FactoryException exception) {
@@ -838,8 +828,7 @@ public class FallbackAuthorityFactory extends AuthorityFactoryAdapter {
      * @throws FactoryException if the object creation failed for all factories.
      */
     @Override
-    public ParameterDescriptor createParameterDescriptor(final String code)
-            throws FactoryException {
+    public ParameterDescriptor createParameterDescriptor(final String code) throws FactoryException {
         try {
             return super.createParameterDescriptor(code);
         } catch (FactoryException exception) {
@@ -877,8 +866,7 @@ public class FallbackAuthorityFactory extends AuthorityFactoryAdapter {
      * @throws FactoryException if the object creation failed for all factories.
      */
     @Override
-    public CoordinateOperation createCoordinateOperation(final String code)
-            throws FactoryException {
+    public CoordinateOperation createCoordinateOperation(final String code) throws FactoryException {
         try {
             return super.createCoordinateOperation(code);
         } catch (FactoryException exception) {
@@ -940,9 +928,8 @@ public class FallbackAuthorityFactory extends AuthorityFactoryAdapter {
         /** Makes sure that {@link #fallback} is initialized. */
         private void ensureFallback() throws FactoryException {
             if (fallback == null) {
-                fallback =
-                        FallbackAuthorityFactory.this.fallback.getIdentifiedObjectFinder(
-                                getProxy().getType());
+                fallback = FallbackAuthorityFactory.this.fallback.getIdentifiedObjectFinder(
+                        getProxy().getType());
             }
             fallback.setFullScanAllowed(isFullScanAllowed());
         }
@@ -985,8 +972,7 @@ public class FallbackAuthorityFactory extends AuthorityFactoryAdapter {
     private static void notifyFailure(final String method, final FactoryException exception) {
         failureCount++;
         if (LOGGER.isLoggable(Level.FINE)) {
-            final LogRecord record =
-                    Loggings.format(Level.FINE, LoggingKeys.FALLBACK_FACTORY_$1, exception);
+            final LogRecord record = Loggings.format(Level.FINE, LoggingKeys.FALLBACK_FACTORY_$1, exception);
             record.setSourceClassName(FallbackAuthorityFactory.class.getName());
             record.setSourceMethodName(method);
             record.setLoggerName(LOGGER.getName());
@@ -1109,8 +1095,7 @@ public class FallbackAuthorityFactory extends AuthorityFactoryAdapter {
     }
 
     /** For internal use by {@link FallbackAuthorityFactory#create} only. */
-    private static final class Datum extends FallbackAuthorityFactory
-            implements DatumAuthorityFactory {
+    private static final class Datum extends FallbackAuthorityFactory implements DatumAuthorityFactory {
         Datum(final AuthorityFactory primary, final AuthorityFactory fallback) {
             super(primary, fallback);
         }

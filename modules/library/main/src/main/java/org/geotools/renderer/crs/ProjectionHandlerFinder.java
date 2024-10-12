@@ -49,9 +49,7 @@ public class ProjectionHandlerFinder {
 
     static {
         if (registry == null) {
-            registry =
-                    new FactoryCreator(
-                            Arrays.asList(new Class<?>[] {ProjectionHandlerFactory.class}));
+            registry = new FactoryCreator(Arrays.asList(new Class<?>[] {ProjectionHandlerFactory.class}));
         }
 
         String wrapLimit = System.getProperty(WRAP_LIMIT_KEY);
@@ -63,9 +61,7 @@ public class ProjectionHandlerFinder {
         } catch (NumberFormatException e) {
             LOGGER.log(
                     Level.SEVERE,
-                    WRAP_LIMIT_KEY
-                            + " has invalid value, it should be an integer number but it was: "
-                            + wrapLimit);
+                    WRAP_LIMIT_KEY + " has invalid value, it should be an integer number but it was: " + wrapLimit);
         }
         WRAP_LIMIT = limit;
     }
@@ -114,8 +110,7 @@ public class ProjectionHandlerFinder {
         if (renderingArea.getCoordinateReferenceSystem() == null) return null;
 
         for (ProjectionHandlerFactory factory : getProjectionHandlerFactories()) {
-            ProjectionHandler handler =
-                    factory.getHandler(renderingArea, sourceCrs, wrap, WRAP_LIMIT);
+            ProjectionHandler handler = factory.getHandler(renderingArea, sourceCrs, wrap, WRAP_LIMIT);
             if (handler != null) {
                 handler.setProjectionParameters(projectionParameters);
                 return handler;

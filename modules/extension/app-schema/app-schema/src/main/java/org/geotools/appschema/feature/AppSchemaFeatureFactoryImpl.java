@@ -80,26 +80,24 @@ public class AppSchemaFeatureFactoryImpl extends ValidatingFeatureFactoryImpl {
         if (crs != null && !(crs.equals(descriptor.getCoordinateReferenceSystem()))) {
             // update CRS
             GeometryType origType = descriptor.getType();
-            GeometryType geomType =
-                    new GeometryTypeImpl(
-                            origType.getName(),
-                            origType.getBinding(),
-                            crs,
-                            origType.isIdentified(),
-                            origType.isAbstract(),
-                            origType.getRestrictions(),
-                            origType.getSuper(),
-                            origType.getDescription());
+            GeometryType geomType = new GeometryTypeImpl(
+                    origType.getName(),
+                    origType.getBinding(),
+                    crs,
+                    origType.isIdentified(),
+                    origType.isAbstract(),
+                    origType.getRestrictions(),
+                    origType.getSuper(),
+                    origType.getDescription());
             geomType.getUserData().putAll(origType.getUserData());
 
-            descriptor =
-                    new GeometryDescriptorImpl(
-                            geomType,
-                            descriptor.getName(),
-                            descriptor.getMinOccurs(),
-                            descriptor.getMaxOccurs(),
-                            descriptor.isNillable(),
-                            descriptor.getDefaultValue());
+            descriptor = new GeometryDescriptorImpl(
+                    geomType,
+                    descriptor.getName(),
+                    descriptor.getMinOccurs(),
+                    descriptor.getMaxOccurs(),
+                    descriptor.isNillable(),
+                    descriptor.getDefaultValue());
             descriptor.getUserData().putAll(descriptor.getUserData());
         }
         return new GeometryAttributeImpl(value, descriptor, buildSafeGmlObjectId(id));
@@ -114,10 +112,8 @@ public class AppSchemaFeatureFactoryImpl extends ValidatingFeatureFactoryImpl {
      */
     @Override
     @SuppressWarnings("unchecked")
-    public ComplexAttribute createComplexAttribute(
-            Collection value, AttributeDescriptor descriptor, String id) {
-        return new ComplexAttributeImpl(
-                buildCollectionIfNull(value), descriptor, buildSafeGmlObjectId(id));
+    public ComplexAttribute createComplexAttribute(Collection value, AttributeDescriptor descriptor, String id) {
+        return new ComplexAttributeImpl(buildCollectionIfNull(value), descriptor, buildSafeGmlObjectId(id));
     }
 
     /**
@@ -130,8 +126,7 @@ public class AppSchemaFeatureFactoryImpl extends ValidatingFeatureFactoryImpl {
     @Override
     @SuppressWarnings("unchecked")
     public ComplexAttribute createComplexAttribute(Collection value, ComplexType type, String id) {
-        return new ComplexAttributeImpl(
-                buildCollectionIfNull(value), type, buildSafeGmlObjectId(id));
+        return new ComplexAttributeImpl(buildCollectionIfNull(value), type, buildSafeGmlObjectId(id));
     }
 
     /**

@@ -77,9 +77,7 @@ public class DefiningConversion extends DefaultConversion {
      * @param parameters The parameter values.
      */
     public DefiningConversion(
-            final Map<String, ?> properties,
-            final OperationMethod method,
-            final ParameterValueGroup parameters) {
+            final Map<String, ?> properties, final OperationMethod method, final ParameterValueGroup parameters) {
         super(properties, null, null, null, method);
         ensureNonNull("parameters", parameters);
         this.parameters = parameters.clone();
@@ -96,9 +94,7 @@ public class DefiningConversion extends DefaultConversion {
      * @since 2.5
      */
     public DefiningConversion(
-            final Map<String, ?> properties,
-            final OperationMethod method,
-            final MathTransform transform) {
+            final Map<String, ?> properties, final OperationMethod method, final MathTransform transform) {
         super(properties, null, null, transform, method);
         parameters = null;
     }

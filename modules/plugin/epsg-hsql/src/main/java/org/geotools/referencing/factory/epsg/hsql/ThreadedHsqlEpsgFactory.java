@@ -268,29 +268,23 @@ public class ThreadedHsqlEpsgFactory extends ThreadedEpsgFactory {
                      * INTO" statements using Compactor class in this package.
                      */
                     final LogRecord record =
-                            Loggings.format(
-                                    Level.FINE,
-                                    LoggingKeys.CREATING_CACHED_EPSG_DATABASE_$1,
-                                    VERSION);
+                            Loggings.format(Level.FINE, LoggingKeys.CREATING_CACHED_EPSG_DATABASE_$1, VERSION);
                     record.setLoggerName(logger.getName());
                     logger.log(record);
 
                     ZipInputStream zin =
-                            new ZipInputStream(
-                                    ThreadedHsqlEpsgFactory.class.getResourceAsStream(ZIP_FILE));
+                            new ZipInputStream(ThreadedHsqlEpsgFactory.class.getResourceAsStream(ZIP_FILE));
                     ZipEntry ze = null;
                     byte[] buf = new byte[1024];
                     int read = 0;
                     while ((ze = zin.getNextEntry()) != null) {
                         try {
-                            Utilities.assertNotZipSlipVulnarable(
-                                    new File(directory, ze.getName()), directory.toPath());
+                            Utilities.assertNotZipSlipVulnarable(new File(directory, ze.getName()), directory.toPath());
                         } catch (IOException zipSlipVulnerable) {
                             // check not expected to work when running as a windows service
                             LOGGER.fine("Expected Reference to internal jar:" + zipSlipVulnerable);
                         }
-                        FileOutputStream fout =
-                                new FileOutputStream(new File(directory, ze.getName()));
+                        FileOutputStream fout = new FileOutputStream(new File(directory, ze.getName()));
                         while ((read = zin.read(buf)) > 0) {
                             fout.write(buf, 0, read);
                         }
@@ -303,10 +297,8 @@ public class ThreadedHsqlEpsgFactory extends ThreadedEpsgFactory {
                     new File(directory, MARKER_FILE).createNewFile();
                 }
             } catch (IOException exception) {
-                SQLException e =
-                        new SQLException(MessageFormat.format(ErrorKeys.CANT_READ_$1, ZIP_FILE));
-                e.initCause(
-                        exception); // TODO: inline cause when we will be allowed to target Java 6.
+                SQLException e = new SQLException(MessageFormat.format(ErrorKeys.CANT_READ_$1, ZIP_FILE));
+                e.initCause(exception); // TODO: inline cause when we will be allowed to target Java 6.
                 throw e;
             } finally {
                 if (lock != null) {
@@ -320,18 +312,17 @@ public class ThreadedHsqlEpsgFactory extends ThreadedEpsgFactory {
                 }
             }
         }
-        FactoryUsingHSQL factory =
-                new FactoryUsingHSQL(hints, getDataSource()) {
-                    @Override
-                    protected void shutdown(boolean active) throws SQLException {
-                        // Disabled because finalizer shutdown causes concurrent EPSG lookup via
-                        // other FactoryUsingHSQL instances using the same database URL and thus
-                        // the same org.hsqldb.Database instance to fail in, for example,
-                        // GeoServer gs-main unit tests.
-                        // Note that createDataSource() opens the database with "shutdown=true"
-                        // so the database will be shutdown when the last session is closed.
-                    }
-                };
+        FactoryUsingHSQL factory = new FactoryUsingHSQL(hints, getDataSource()) {
+            @Override
+            protected void shutdown(boolean active) throws SQLException {
+                // Disabled because finalizer shutdown causes concurrent EPSG lookup via
+                // other FactoryUsingHSQL instances using the same database URL and thus
+                // the same org.hsqldb.Database instance to fail in, for example,
+                // GeoServer gs-main unit tests.
+                // Note that createDataSource() opens the database with "shutdown=true"
+                // so the database will be shutdown when the last session is closed.
+            }
+        };
         factory.setValidationQuery("CALL NOW()");
         return factory;
     }

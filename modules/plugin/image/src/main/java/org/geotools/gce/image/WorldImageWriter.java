@@ -61,8 +61,7 @@ import org.geotools.util.factory.Hints;
  * @author rgould
  * @author Alessio Fabiani, GeoSolutions
  */
-public final class WorldImageWriter extends AbstractGridCoverageWriter
-        implements GridCoverageWriter {
+public final class WorldImageWriter extends AbstractGridCoverageWriter implements GridCoverageWriter {
     /** format for this writer */
     private Format format = new WorldImageFormat();
 
@@ -104,8 +103,7 @@ public final class WorldImageWriter extends AbstractGridCoverageWriter
 
                 this.destination = new File(path);
             } else {
-                throw new RuntimeException(
-                        "WorldImageWriter::write:It is not possible writing to an URL!");
+                throw new RuntimeException("WorldImageWriter::write:It is not possible writing to an URL!");
             }
         }
 
@@ -199,8 +197,7 @@ public final class WorldImageWriter extends AbstractGridCoverageWriter
      * the crs.
      */
     private static void createProjectionFile(
-            final String baseFile, final CoordinateReferenceSystem coordinateReferenceSystem)
-            throws IOException {
+            final String baseFile, final CoordinateReferenceSystem coordinateReferenceSystem) throws IOException {
         final File prjFile = new File(new StringBuffer(baseFile).append(".prj").toString());
         try (BufferedWriter out = new BufferedWriter(new FileWriter(prjFile))) {
             out.write(coordinateReferenceSystem.toWKT());
@@ -219,17 +216,15 @@ public final class WorldImageWriter extends AbstractGridCoverageWriter
      * @throws IOException In case we cannot create the world file.
      */
     private static void createWorldFile(
-            final GridCoverage gc,
-            final RenderedImage image,
-            final String baseFile,
-            final String extension)
+            final GridCoverage gc, final RenderedImage image, final String baseFile, final String extension)
             throws IOException, TransformException {
         // /////////////////////////////////////////////////////////////////////
         //
         // CRS information
         //
         // ////////////////////////////////////////////////////////////////////
-        final AffineTransform gridToWorld = (AffineTransform) gc.getGridGeometry().getGridToCRS();
+        final AffineTransform gridToWorld =
+                (AffineTransform) gc.getGridGeometry().getGridToCRS();
         final boolean lonFirst = (XAffineTransform.getSwapXY(gridToWorld) != -1);
 
         // /////////////////////////////////////////////////////////////////////
@@ -278,15 +273,12 @@ public final class WorldImageWriter extends AbstractGridCoverageWriter
      * @param outstream OutputStream
      */
     private static void encode(
-            final GridCoverage2D sourceCoverage,
-            final ImageOutputStream outstream,
-            final String extension)
+            final GridCoverage2D sourceCoverage, final ImageOutputStream outstream, final String extension)
             throws IOException {
 
         // do we have a source coverage?
         if (sourceCoverage == null) {
-            throw new IllegalArgumentException(
-                    "A coverage must be provided in order for write to succeed!");
+            throw new IllegalArgumentException("A coverage must be provided in order for write to succeed!");
         }
 
         RenderedImage image = (sourceCoverage).getRenderedImage();

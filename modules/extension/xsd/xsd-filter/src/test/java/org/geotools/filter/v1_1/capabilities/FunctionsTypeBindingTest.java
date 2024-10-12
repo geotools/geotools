@@ -57,8 +57,7 @@ public class FunctionsTypeBindingTest extends OGCTestSupport {
 
     @Test
     public void testParse() throws Exception {
-        Element element =
-                FilterMockData.element(document, document, new QName(OGC.NAMESPACE, "Functions"));
+        Element element = FilterMockData.element(document, document, new QName(OGC.NAMESPACE, "Functions"));
         FilterMockData.functionNames(document, element);
 
         Functions functions = (Functions) parse(OGC.FunctionsType);
@@ -70,7 +69,9 @@ public class FunctionsTypeBindingTest extends OGCTestSupport {
         Functions functions = FilterMockData.functions();
         Document dom = encode(functions, new QName(OGC.NAMESPACE, "Functions"), OGC.FunctionsType);
 
-        assertEquals(1, dom.getElementsByTagNameNS(OGC.NAMESPACE, "FunctionNames").getLength());
-        assertEquals(2, dom.getElementsByTagNameNS(OGC.NAMESPACE, "FunctionName").getLength());
+        assertEquals(
+                1, dom.getElementsByTagNameNS(OGC.NAMESPACE, "FunctionNames").getLength());
+        assertEquals(
+                2, dom.getElementsByTagNameNS(OGC.NAMESPACE, "FunctionName").getLength());
     }
 }

@@ -46,10 +46,8 @@ public class MultiplyCoveragesProcess implements RasterProcess {
 
     @DescribeResult(name = "result", description = "Computed raster")
     public GridCoverage2D execute(
-            @DescribeParameter(name = "coverageA", description = "First input raster")
-                    GridCoverage2D coverageA,
-            @DescribeParameter(name = "coverageB", description = "Second input raster")
-                    GridCoverage2D coverageB,
+            @DescribeParameter(name = "coverageA", description = "First input raster") GridCoverage2D coverageA,
+            @DescribeParameter(name = "coverageB", description = "Second input raster") GridCoverage2D coverageB,
             ProgressListener progressListener)
             throws ProcessException {
 

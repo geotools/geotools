@@ -35,8 +35,7 @@ import org.geotools.metadata.i18n.ErrorKeys;
  * @version $Id$
  * @author Martin Desruisseaux (Geomatys)
  */
-public class IntegerList extends AbstractList<Integer>
-        implements RandomAccess, Serializable, Cloneable {
+public class IntegerList extends AbstractList<Integer> implements RandomAccess, Serializable, Cloneable {
     /** For cross-version compatibility. */
     private static final long serialVersionUID = 1241962316404811189L;
 
@@ -95,8 +94,7 @@ public class IntegerList extends AbstractList<Integer>
                     MessageFormat.format(ErrorKeys.NOT_GREATER_THAN_ZERO_$1, initialCapacity));
         }
         if (maximalValue <= 0) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.NOT_GREATER_THAN_ZERO_$1, maximalValue));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.NOT_GREATER_THAN_ZERO_$1, maximalValue));
         }
         int bitCount = 0;
         do {
@@ -183,8 +181,7 @@ public class IntegerList extends AbstractList<Integer>
     @SuppressWarnings("fallthrough")
     public void fill(int value) {
         if (value < 0 || value > mask) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.VALUE_OUT_OF_BOUNDS_$3, value, 0, mask));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.VALUE_OUT_OF_BOUNDS_$3, value, 0, mask));
         }
         final long p;
         if (value == 0) {
@@ -206,13 +203,12 @@ public class IntegerList extends AbstractList<Integer>
                 case 32:
                     p = (value & 0xFFFFFFFFL) | ((long) value << 32);
                     break;
-                default:
-                    { // General case (unoptimized)
-                        for (int i = 0; i < size; i++) {
-                            setUnchecked(i, value);
-                        }
-                        return;
+                default: { // General case (unoptimized)
+                    for (int i = 0; i < size; i++) {
+                        setUnchecked(i, value);
                     }
+                    return;
+                }
             }
         Arrays.fill(values, 0, length(size), p);
     }
@@ -244,8 +240,7 @@ public class IntegerList extends AbstractList<Integer>
      */
     public void addInteger(final int value) throws IllegalArgumentException {
         if (value < 0 || value > mask) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.VALUE_OUT_OF_BOUNDS_$3, value, 0, mask));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.VALUE_OUT_OF_BOUNDS_$3, value, 0, mask));
         }
         final int length = length(++size);
         if (length > values.length) {
@@ -275,8 +270,7 @@ public class IntegerList extends AbstractList<Integer>
      */
     public int getInteger(int index) throws IndexOutOfBoundsException {
         if (index < 0 || index >= size) {
-            throw new IndexOutOfBoundsException(
-                    MessageFormat.format(ErrorKeys.INDEX_OUT_OF_BOUNDS_$1, index));
+            throw new IndexOutOfBoundsException(MessageFormat.format(ErrorKeys.INDEX_OUT_OF_BOUNDS_$1, index));
         }
         index *= bitCount;
         int base = index >>> BASE_SHIFT;
@@ -318,12 +312,10 @@ public class IntegerList extends AbstractList<Integer>
      */
     public void setInteger(int index, int value) throws IndexOutOfBoundsException {
         if (index < 0 || index >= size) {
-            throw new IndexOutOfBoundsException(
-                    MessageFormat.format(ErrorKeys.INDEX_OUT_OF_BOUNDS_$1, index));
+            throw new IndexOutOfBoundsException(MessageFormat.format(ErrorKeys.INDEX_OUT_OF_BOUNDS_$1, index));
         }
         if (value < 0 || value > mask) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.VALUE_OUT_OF_BOUNDS_$3, value, 0, mask));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.VALUE_OUT_OF_BOUNDS_$3, value, 0, mask));
         }
         setUnchecked(index, value);
     }

@@ -105,8 +105,7 @@ public class ECQL {
      *     is null the method finds the default implementation.
      * @return a {@link Filter} equivalent to the constraint specified in <code>Predicate</code>.
      */
-    public static Filter toFilter(final String ecqlPredicate, final FilterFactory filterFactory)
-            throws CQLException {
+    public static Filter toFilter(final String ecqlPredicate, final FilterFactory filterFactory) throws CQLException {
 
         ECQLCompilerFactory compilerFactory = new ECQLCompilerFactory();
         Filter result = CompilerUtil.parseFilter(ecqlPredicate, compilerFactory, filterFactory);
@@ -135,13 +134,12 @@ public class ECQL {
      * @return a {@link Filter} equivalent to the constraint specified in <code>ecqlExpression
      *     </code>.
      */
-    public static Expression toExpression(
-            final String ecqlExpression, final FilterFactory filterFactory) throws CQLException {
+    public static Expression toExpression(final String ecqlExpression, final FilterFactory filterFactory)
+            throws CQLException {
 
         ECQLCompilerFactory compilerFactory = new ECQLCompilerFactory();
 
-        Expression expression =
-                CompilerUtil.parseExpression(ecqlExpression, compilerFactory, filterFactory);
+        Expression expression = CompilerUtil.parseExpression(ecqlExpression, compilerFactory, filterFactory);
 
         return expression;
     }
@@ -153,8 +151,7 @@ public class ECQL {
      * @param ecqlSequencePredicate a list of ECQL predicates separated by "<code>;</code>"
      * @return a List of {@link Filter}, one for each input ECQL statement
      */
-    public static List<Filter> toFilterList(final String ecqlSequencePredicate)
-            throws CQLException {
+    public static List<Filter> toFilterList(final String ecqlSequencePredicate) throws CQLException {
 
         return toFilterList(ecqlSequencePredicate, null);
     }
@@ -167,13 +164,12 @@ public class ECQL {
      * @param filterFactory the factory used to make the filters
      * @return a List of {@link Filter}, one for each input ECQL statement
      */
-    public static List<Filter> toFilterList(
-            final String ecqlSequencePredicate, FilterFactory filterFactory) throws CQLException {
+    public static List<Filter> toFilterList(final String ecqlSequencePredicate, FilterFactory filterFactory)
+            throws CQLException {
 
         ECQLCompilerFactory compilerFactory = new ECQLCompilerFactory();
 
-        List<Filter> filters =
-                CompilerUtil.parseFilterList(ecqlSequencePredicate, compilerFactory, filterFactory);
+        List<Filter> filters = CompilerUtil.parseFilterList(ecqlSequencePredicate, compilerFactory, filterFactory);
 
         return filters;
     }

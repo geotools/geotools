@@ -70,8 +70,7 @@ public class DataDefinition {
         } else if (clazz.isAssignableFrom(Double.class)) {
             this.fields.add(new Field(clazz, 8));
         } else {
-            throw new IllegalArgumentException(
-                    "Unknow len of class " + clazz + "use addField(int)");
+            throw new IllegalArgumentException("Unknow len of class " + clazz + "use addField(int)");
         }
     }
 

@@ -60,8 +60,7 @@ public class SQLServerBinaryReaderTest {
         String geometryLineStringWithZWKT = "LINESTRING (0 1 1, 3 2 2, 4 5 NaN)";
         String geometryLineStringWithZBinary =
                 "E61000000105030000000000000000000000000000000000F03F0000000000000840000000000000004000000000000010400000000000001440000000000000F03F0000000000000040000000000000F8FF01000000010000000001000000FFFFFFFF0000000002";
-        Geometry geometry =
-                testGeometry(geometryLineStringWithZBinary, geometryLineStringWithZWKT, 4326);
+        Geometry geometry = testGeometry(geometryLineStringWithZBinary, geometryLineStringWithZWKT, 4326);
         Assert.assertEquals(1.0, geometry.getCoordinates()[0].getZ(), 0);
         Assert.assertEquals(2.0, geometry.getCoordinates()[1].getZ(), 0);
         Assert.assertEquals(Double.NaN, geometry.getCoordinates()[2].getZ(), 0);
@@ -84,8 +83,7 @@ public class SQLServerBinaryReaderTest {
 
     @Test
     public void testMultiLinestring() throws Exception {
-        String wkt =
-                "MULTILINESTRING ((10 10, 20 20, 10 40), (40 40, 30 30, 40 20, 30 10)) "; // 4326
+        String wkt = "MULTILINESTRING ((10 10, 20 20, 10 40), (40 40, 30 30, 40 20, 30 10)) "; // 4326
         String binary =
                 "00000000010407000000000000000000244000000000000024400000000000003440000000000000344000000000000024400000000000004440000000000000444000000000000044400000000000003E400000000000003E40000000000000444000000000000034400000000000003E400000000000002440020000000100000000010300000003000000FFFFFFFF0000000005000000000000000002000000000100000002";
         testGeometry(binary, wkt, 0);
@@ -101,8 +99,7 @@ public class SQLServerBinaryReaderTest {
 
     @Test
     public void testMultiPolygon() throws Exception {
-        String wkt =
-                "MULTIPOLYGON (((30 20, 10 40, 45 40, 30 20)),((15 5, 40 10, 10 20, 5 10, 15 5)))";
+        String wkt = "MULTIPOLYGON (((30 20, 10 40, 45 40, 30 20)),((15 5, 40 10, 10 20, 5 10, 15 5)))";
         String binary =
                 "000000000104090000000000000000003E40000000000000344000000000000024400000000000004440000000000080464000000000000044400000000000003E4000000000000034400000000000002E4000000000000014400000000000004440000000000000244000000000000024400000000000003440000000000000144000000000000024400000000000002E400000000000001440020000000200000000020400000003000000FFFFFFFF0000000006000000000000000003000000000100000003";
         testGeometry(binary, wkt, 0);
@@ -111,16 +108,14 @@ public class SQLServerBinaryReaderTest {
     @Test
     public void testSingleLineSegment() throws Exception {
         String geometryPointWKT = "LINESTRING (5 10, 10 10)";
-        String geometryPointBinary =
-                "0000000001140000000000001440000000000000244000000000000024400000000000002440";
+        String geometryPointBinary = "0000000001140000000000001440000000000000244000000000000024400000000000002440";
         testGeometry(geometryPointBinary, geometryPointWKT, 0);
     }
 
     @Test
     public void testGeographyExtremeValues() throws Exception {
         String wkt = "LINESTRING (-90 -15069, 90 15069)";
-        String binary =
-                "E6100000011400000000008056C000000000806ECDC0000000000080564000000000806ECD40";
+        String binary = "E6100000011400000000008056C000000000806ECDC0000000000080564000000000806ECD40";
         testGeometry(binary, wkt, 4326);
     }
 
@@ -151,8 +146,7 @@ public class SQLServerBinaryReaderTest {
 
     @Test
     public void testCompoundCurve() throws Exception {
-        String wkt =
-                "COMPOUNDCURVE((10 45, 20 45), CIRCULARSTRING(20.0 45.0, 23.0 48.0, 20.0 51.0 ), (20 51, 10 51))";
+        String wkt = "COMPOUNDCURVE((10 45, 20 45), CIRCULARSTRING(20.0 45.0, 23.0 48.0, 20.0 51.0 ), (20 51, 10 51))";
         String binary =
                 "787F0000020405000000000000000000244000000000008046400000000000003440000000000080464000000000000037400000000000004840000000000000344000000000008049400000000000002440000000000080494001000000030000000001000000FFFFFFFF000000000903000000020302";
         testCurveGeometry(binary, wkt, 32632);
@@ -160,8 +154,7 @@ public class SQLServerBinaryReaderTest {
 
     @Test
     public void testClosedCompoundCurve() throws Exception {
-        String wkt =
-                "COMPOUNDCURVE((10 78, 10 75, 20 75, 20 78), CIRCULARSTRING(20 78, 15 80, 10 78))";
+        String wkt = "COMPOUNDCURVE((10 78, 10 75, 20 75, 20 78), CIRCULARSTRING(20 78, 15 80, 10 78))";
         String binary =
                 "787F00000204060000000000000000002440000000000080534000000000000024400000000000C0524000000000000034400000000000C05240000000000000344000000000008053400000000000002E4000000000000054400000000000002440000000000080534001000000030000000001000000FFFFFFFF00000000090400000002000003";
         testCurveGeometry(binary, wkt, 32632);
@@ -177,8 +170,7 @@ public class SQLServerBinaryReaderTest {
 
     @Test
     public void testCurvePolygonCompoundShell() throws Exception {
-        String wkt =
-                "CURVEPOLYGON(COMPOUNDCURVE((6 10, 10 1, 14 10), CIRCULARSTRING(14 10, 10 14, 6 10)))";
+        String wkt = "CURVEPOLYGON(COMPOUNDCURVE((6 10, 10 1, 14 10), CIRCULARSTRING(14 10, 10 14, 6 10)))";
         String binary =
                 "787F0000020405000000000000000000184000000000000024400000000000002440000000000000F03F0000000000002C40000000000000244000000000000024400000000000002C400000000000001840000000000000244001000000030000000001000000FFFFFFFF000000000A03000000020003";
         testCurveGeometry(binary, wkt, 32632);
@@ -186,10 +178,9 @@ public class SQLServerBinaryReaderTest {
 
     @Test
     public void testMultipolygonCurves() throws Exception {
-        String wkt =
-                "GEOMETRYCOLLECTION(CURVEPOLYGON("
-                        + "COMPOUNDCURVE((6 10, 10 1, 14 10), CIRCULARSTRING(14 10, 10 14, 6 10)), COMPOUNDCURVE((13 10, 10 2, 7 10), CIRCULARSTRING(7 10, 10 13, 13 10))), "
-                        + "CURVEPOLYGON(COMPOUNDCURVE((106 110, 110 101, 114 110), CIRCULARSTRING(114 110, 110 114, 106 110))))";
+        String wkt = "GEOMETRYCOLLECTION(CURVEPOLYGON("
+                + "COMPOUNDCURVE((6 10, 10 1, 14 10), CIRCULARSTRING(14 10, 10 14, 6 10)), COMPOUNDCURVE((13 10, 10 2, 7 10), CIRCULARSTRING(7 10, 10 13, 13 10))), "
+                + "CURVEPOLYGON(COMPOUNDCURVE((106 110, 110 101, 114 110), CIRCULARSTRING(114 110, 110 114, 106 110))))";
         String binary =
                 "787F000002040F000000000000000000184000000000000024400000000000002440000000000000F03F0000000000002C40000000000000244000000000000024400000000000002C40000000000000184000000000000024400000000000002A400000000000002440000000000000244000000000000000400000000000001C40000000000000244000000000000024400000000000002A400000000000002A4000000000000024400000000000805A400000000000805B400000000000805B4000000000004059400000000000805C400000000000805B400000000000805B400000000000805C400000000000805A400000000000805B400300000003000000000305000000030A00000003000000FFFFFFFF000000000700000000000000000A00000000020000000A09000000020003020003020003";
         testCurveGeometry(binary, wkt, 32632);
@@ -197,10 +188,9 @@ public class SQLServerBinaryReaderTest {
 
     @Test
     public void testCurvePolygonHole() throws Exception {
-        String wkt =
-                "CURVEPOLYGON("
-                        + "COMPOUNDCURVE((20 30, 11 30, 7 22, 7 15, 11 10, 21 10, 27 30), CIRCULARSTRING(27 30, 25 27, 20 30)), "
-                        + "CIRCULARSTRING(10 17, 15 12, 20 17, 15 22, 10 17))";
+        String wkt = "CURVEPOLYGON("
+                + "COMPOUNDCURVE((20 30, 11 30, 7 22, 7 15, 11 10, 21 10, 27 30), CIRCULARSTRING(27 30, 25 27, 20 30)), "
+                + "CIRCULARSTRING(10 17, 15 12, 20 17, 15 22, 10 17))";
         String binary =
                 "787F000002000E00000000000000000034400000000000003E4000000000000026400000000000003E400000000000001C4000000000000036400000000000001C400000000000002E4000000000000026400000000000002440000000000000354000000000000024400000000000003B400000000000003E4000000000000039400000000000003B4000000000000034400000000000003E40000000000000244000000000000031400000000000002E400000000000002840000000000000344000000000000031400000000000002E40000000000000364000000000000024400000000000003140020000000300000000020900000001000000FFFFFFFF000000000A0700000002000000000003";
         testCurveGeometry(binary, wkt, 32632);
@@ -214,17 +204,13 @@ public class SQLServerBinaryReaderTest {
         testCurveGeometry(binary, wkt, 32632);
     }
 
-    private Geometry testCurveGeometry(String geometryBinary, String geometryWKT, int srid)
-            throws Exception {
+    private Geometry testCurveGeometry(String geometryBinary, String geometryWKT, int srid) throws Exception {
         WKTReader2 readerWkt =
-                new WKTReader2(
-                        new CurvedGeometryFactory(
-                                new GeometryFactory(new PrecisionModel(), srid), 0.1));
+                new WKTReader2(new CurvedGeometryFactory(new GeometryFactory(new PrecisionModel(), srid), 0.1));
         return testCurveGeometry(geometryBinary, geometryWKT, readerWkt);
     }
 
-    private Geometry testCurveGeometry(
-            String geometryBinary, String geometryWKT, WKTReader2 wktReader)
+    private Geometry testCurveGeometry(String geometryBinary, String geometryWKT, WKTReader2 wktReader)
             throws ParseException, IOException {
         byte[] bytes = WKBReader.hexToBytes(geometryBinary);
         Geometry geometryFromWkt = wktReader.read(geometryWKT);
@@ -249,8 +235,7 @@ public class SQLServerBinaryReaderTest {
         return geometryFromBinary;
     }
 
-    private Geometry testGeometry(String geometryBinary, String geometryWKT, int srid)
-            throws Exception {
+    private Geometry testGeometry(String geometryBinary, String geometryWKT, int srid) throws Exception {
         WKTReader readerWkt = new WKTReader((new GeometryFactory(new PrecisionModel(), srid)));
         Geometry geometry = testGeometry(geometryBinary, geometryWKT, readerWkt);
         Assert.assertEquals(srid, geometry.getSRID());

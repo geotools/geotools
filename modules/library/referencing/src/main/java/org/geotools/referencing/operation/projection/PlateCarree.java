@@ -66,8 +66,7 @@ public class PlateCarree extends EquidistantCylindrical {
      * radians) and stores the result in {@code ptDst} (linear distance on a unit sphere).
      */
     @Override
-    protected Point2D transformNormalized(double x, double y, final Point2D ptDst)
-            throws ProjectionException {
+    protected Point2D transformNormalized(double x, double y, final Point2D ptDst) throws ProjectionException {
         if (ptDst != null) {
             ptDst.setLocation(x, y);
             return ptDst;
@@ -80,8 +79,7 @@ public class PlateCarree extends EquidistantCylindrical {
      * {@code ptDst}.
      */
     @Override
-    protected Point2D inverseTransformNormalized(double x, double y, final Point2D ptDst)
-            throws ProjectionException {
+    protected Point2D inverseTransformNormalized(double x, double y, final Point2D ptDst) throws ProjectionException {
         if (ptDst != null) {
             ptDst.setLocation(x, y);
             return ptDst;
@@ -112,16 +110,13 @@ public class PlateCarree extends EquidistantCylindrical {
         private static final long serialVersionUID = 8535645757318203345L;
 
         /** The parameters group. */
-        static final ParameterDescriptorGroup PARAMETERS =
-                createDescriptorGroup(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.ESRI, "Plate_Carree"),
-                            new NamedIdentifier(Citations.OGC, "Equirectangular"),
-                            new NamedIdentifier(Citations.GEOTIFF, "CT_Equirectangular")
-                        },
-                        new ParameterDescriptor[] {
-                            SEMI_MAJOR, SEMI_MINOR, CENTRAL_MERIDIAN, FALSE_EASTING, FALSE_NORTHING
-                        });
+        static final ParameterDescriptorGroup PARAMETERS = createDescriptorGroup(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.ESRI, "Plate_Carree"),
+                    new NamedIdentifier(Citations.OGC, "Equirectangular"),
+                    new NamedIdentifier(Citations.GEOTIFF, "CT_Equirectangular")
+                },
+                new ParameterDescriptor[] {SEMI_MAJOR, SEMI_MINOR, CENTRAL_MERIDIAN, FALSE_EASTING, FALSE_NORTHING});
 
         /** Constructs a new provider. */
         public Provider() {

@@ -30,20 +30,7 @@ import org.junit.Test;
 public final class MolodenskiTransformTest extends TransformTestBase {
     /** An array with a variety of test points */
     private float[] srcFloat2 = {
-        0.0f,
-        0.0f,
-        0.0f,
-        89.999f,
-        0.0f,
-        -89.999f,
-        179.999f,
-        0.0f,
-        -179.999f,
-        0.0f,
-        0.0f,
-        0.0f,
-        -123.19641f,
-        39.26859f
+        0.0f, 0.0f, 0.0f, 89.999f, 0.0f, -89.999f, 179.999f, 0.0f, -179.999f, 0.0f, 0.0f, 0.0f, -123.19641f, 39.26859f
     };
 
     /** The molodenski transform to use for testing. */
@@ -75,10 +62,7 @@ public final class MolodenskiTransformTest extends TransformTestBase {
         int dim = 2;
         for (int i = 0; i < numPts; i++) {
             assertEquals(srcFloat2[srcOff + dim * i], overWriteTestArray[dstOff + dim * i], 1E-6);
-            assertEquals(
-                    srcFloat2[srcOff + dim * i + 1],
-                    overWriteTestArray[dstOff + dim * i + 1],
-                    1E-6);
+            assertEquals(srcFloat2[srcOff + dim * i + 1], overWriteTestArray[dstOff + dim * i + 1], 1E-6);
         }
     }
 }

@@ -57,8 +57,7 @@ public class MapLayerListEvent extends EventObject {
         this.toIndex = position;
     }
 
-    public MapLayerListEvent(
-            MapContent map, Layer element, int index, MapLayerEvent mapLayerEvent) {
+    public MapLayerListEvent(MapContent map, Layer element, int index, MapLayerEvent mapLayerEvent) {
         super(map);
         this.layer = element;
         this.fromIndex = index;

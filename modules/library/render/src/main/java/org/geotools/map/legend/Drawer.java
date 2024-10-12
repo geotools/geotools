@@ -123,26 +123,19 @@ public class Drawer {
         drawFeature(bi, feature, worldToScreenTransform, drawVertices, getSymbolizers(feature), mt);
     }
 
-    public void drawFeature(
-            BufferedImage bi, SimpleFeature feature, AffineTransform worldToScreenTransform) {
+    public void drawFeature(BufferedImage bi, SimpleFeature feature, AffineTransform worldToScreenTransform) {
         if (feature == null) return;
         drawFeature(bi, feature, worldToScreenTransform, false, getSymbolizers(feature), null);
     }
 
     public void drawFeature(
-            BufferedImage bi,
-            SimpleFeature feature,
-            AffineTransform worldToScreenTransform,
-            Style style) {
+            BufferedImage bi, SimpleFeature feature, AffineTransform worldToScreenTransform, Style style) {
         if (feature == null) return;
         drawFeature(bi, feature, worldToScreenTransform, false, getSymbolizers(style), null);
     }
 
     public void drawFeature(
-            BufferedImage bi,
-            SimpleFeature feature,
-            Style style,
-            AffineTransform worldToScreenTransform) {
+            BufferedImage bi, SimpleFeature feature, Style style, AffineTransform worldToScreenTransform) {
         if (feature == null) return;
 
         drawFeature(bi, feature, worldToScreenTransform, false, getSymbolizers(style), null);
@@ -183,9 +176,8 @@ public class Drawer {
             PointSymbolizer point = builder.createPointSymbolizer(builder.createGraphic());
             // set graphic size to 10 by default
             point.getGraphic()
-                    .setSize(
-                            CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints())
-                                    .literal(10));
+                    .setSize(CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints())
+                            .literal(10));
 
             // danger assumes a Mark!
             Mark mark = (Mark) point.getGraphic().graphicalSymbols().get(0);
@@ -193,10 +185,8 @@ public class Drawer {
             syms[0] = point;
         }
         if (Polygon.class.isAssignableFrom(type) || MultiPolygon.class.isAssignableFrom(type)) {
-            syms[0] =
-                    builder.createPolygonSymbolizer(
-                            builder.createStroke(baseColor, 2),
-                            builder.createFill(baseColor, useTransparency ? .6 : 1.0));
+            syms[0] = builder.createPolygonSymbolizer(
+                    builder.createStroke(baseColor, 2), builder.createFill(baseColor, useTransparency ? .6 : 1.0));
         }
         return syms;
     }
@@ -257,8 +247,7 @@ public class Drawer {
                     graphics.setColor(Color.RED);
                     for (Coordinate coord : coords) {
                         java.awt.Point p = worldToPixel(coord, worldToScreenTransform);
-                        graphics.fillRect(
-                                p.x - (pixels - 1) / 2, p.y - (pixels - 1) / 2, pixels, pixels);
+                        graphics.fillRect(p.x - (pixels - 1) / 2, p.y - (pixels - 1) / 2, pixels, pixels);
                     }
                 }
             }
@@ -282,12 +271,7 @@ public class Drawer {
 
             if (Double.isNaN(opacity)) opacity = 1.0;
             if (fill != null) {
-                fill =
-                        new Color(
-                                fill.getRed(),
-                                fill.getGreen(),
-                                fill.getBlue(),
-                                (int) (255 * opacity));
+                fill = new Color(fill.getRed(), fill.getGreen(), fill.getBlue(), (int) (255 * opacity));
                 g.setColor(fill);
                 g.fill(shape);
             }
@@ -325,11 +309,8 @@ public class Drawer {
             float[] point = new float[6];
             shape.getPathIterator(null).currentSegment(point);
             SLDStyleFactory styleFactory = new SLDStyleFactory();
-            Style2D tmp =
-                    styleFactory.createStyle(
-                            feature,
-                            pointSymbolizer,
-                            NumberRange.create(Double.MIN_VALUE, Double.MAX_VALUE));
+            Style2D tmp = styleFactory.createStyle(
+                    feature, pointSymbolizer, NumberRange.create(Double.MIN_VALUE, Double.MAX_VALUE));
 
             if (tmp instanceof MarkStyle2D) {
                 MarkStyle2D style = (MarkStyle2D) tmp;
@@ -397,8 +378,7 @@ public class Drawer {
         // location to place the
         // point in order to avoid recomputing that location at each rendering
         // step
-        if ((s instanceof PointSymbolizer || s instanceof TextSymbolizer)
-                && !(geom instanceof Point)) {
+        if ((s instanceof PointSymbolizer || s instanceof TextSymbolizer) && !(geom instanceof Point)) {
             if (geom instanceof LineString && !(geom instanceof LinearRing)) {
                 // use the mid point to represent the point/text symbolizer
                 // anchor
@@ -485,28 +465,17 @@ public class Drawer {
 
     static {
         try {
-            pointSchema =
-                    DataUtilities.createType(
-                            "generated:point", "*point:Point"); // $NON-NLS-1$ //$NON-NLS-2$
-            lineSchema =
-                    DataUtilities.createType(
-                            "generated:linestring",
-                            "*linestring:LineString"); // $NON-NLS-1$ //$NON-NLS-2$
+            pointSchema = DataUtilities.createType("generated:point", "*point:Point"); // $NON-NLS-1$ //$NON-NLS-2$
+            lineSchema = DataUtilities.createType(
+                    "generated:linestring", "*linestring:LineString"); // $NON-NLS-1$ //$NON-NLS-2$
             polygonSchema =
-                    DataUtilities.createType(
-                            "generated:polygon", "*polygon:Polygon"); // $NON-NLS-1$ //$NON-NLS-2$
-            multipointSchema =
-                    DataUtilities.createType(
-                            "generated:multipoint",
-                            "*multipoint:MultiPoint"); // $NON-NLS-1$ //$NON-NLS-2$
-            multilineSchema =
-                    DataUtilities.createType(
-                            "generated:multilinestring",
-                            "*multilinestring:MultiLineString"); // $NON-NLS-1$ //$NON-NLS-2$
-            multipolygonSchema =
-                    DataUtilities.createType(
-                            "generated:multipolygon",
-                            "*multipolygon:MultiPolygon"); // $NON-NLS-1$ //$NON-NLS-2$
+                    DataUtilities.createType("generated:polygon", "*polygon:Polygon"); // $NON-NLS-1$ //$NON-NLS-2$
+            multipointSchema = DataUtilities.createType(
+                    "generated:multipoint", "*multipoint:MultiPoint"); // $NON-NLS-1$ //$NON-NLS-2$
+            multilineSchema = DataUtilities.createType(
+                    "generated:multilinestring", "*multilinestring:MultiLineString"); // $NON-NLS-1$ //$NON-NLS-2$
+            multipolygonSchema = DataUtilities.createType(
+                    "generated:multipolygon", "*multipolygon:MultiPolygon"); // $NON-NLS-1$ //$NON-NLS-2$
         } catch (SchemaException unExpected) {
             // System.err.println(unExpected);
         }
@@ -532,8 +501,7 @@ public class Drawer {
         } else if (geom instanceof MultiLineString) {
             return feature((MultiLineString) geom);
         } else {
-            throw new IllegalArgumentException(
-                    "Geometry is not supported to create feature"); // $NON-NLS-1$
+            throw new IllegalArgumentException("Geometry is not supported to create feature"); // $NON-NLS-1$
         }
     }
 
@@ -548,8 +516,7 @@ public class Drawer {
             return SimpleFeatureBuilder.build(pointSchema, new Object[] {point}, null);
         } catch (IllegalAttributeException e) {
             // this should not happen because we *know* the parameter matches schame
-            throw new RuntimeException(
-                    "Could not generate feature for point " + point); // $NON-NLS-1$
+            throw new RuntimeException("Could not generate feature for point " + point); // $NON-NLS-1$
         }
     }
     /**
@@ -563,8 +530,7 @@ public class Drawer {
             return SimpleFeatureBuilder.build(lineSchema, new Object[] {line}, null);
         } catch (IllegalAttributeException e) {
             // this should not happen because we *know* the parameter matches schame
-            throw new RuntimeException(
-                    "Could not generate feature for point " + line); // $NON-NLS-1$
+            throw new RuntimeException("Could not generate feature for point " + line); // $NON-NLS-1$
         }
     }
 
@@ -579,8 +545,7 @@ public class Drawer {
             return SimpleFeatureBuilder.build(polygonSchema, new Object[] {polygon}, null);
         } catch (IllegalAttributeException e) {
             // this should not happen because we *know* the parameter matches schame
-            throw new RuntimeException(
-                    "Could not generate feature for point " + polygon); // $NON-NLS-1$
+            throw new RuntimeException("Could not generate feature for point " + polygon); // $NON-NLS-1$
         }
     }
 
@@ -590,14 +555,12 @@ public class Drawer {
      * @return Feature with a default geometry and no attribtues
      */
     public SimpleFeature feature(MultiPoint multipoint) {
-        if (multipoint == null)
-            throw new NullPointerException("multipoint required"); // $NON-NLS-1$
+        if (multipoint == null) throw new NullPointerException("multipoint required"); // $NON-NLS-1$
         try {
             return SimpleFeatureBuilder.build(multipointSchema, new Object[] {multipoint}, null);
         } catch (IllegalAttributeException e) {
             // this should not happen because we *know* the parameter matches schame
-            throw new RuntimeException(
-                    "Could not generate feature for point " + multipoint); // $NON-NLS-1$
+            throw new RuntimeException("Could not generate feature for point " + multipoint); // $NON-NLS-1$
         }
     }
     /**
@@ -606,15 +569,12 @@ public class Drawer {
      * @return Feature with a default geometry and no attribtues
      */
     public SimpleFeature feature(MultiLineString multilinestring) {
-        if (multilinestring == null)
-            throw new NullPointerException("multilinestring required"); // $NON-NLS-1$
+        if (multilinestring == null) throw new NullPointerException("multilinestring required"); // $NON-NLS-1$
         try {
-            return SimpleFeatureBuilder.build(
-                    multilineSchema, new Object[] {multilinestring}, null);
+            return SimpleFeatureBuilder.build(multilineSchema, new Object[] {multilinestring}, null);
         } catch (IllegalAttributeException e) {
             // this should not happen because we *know* the parameter matches schame
-            throw new RuntimeException(
-                    "Could not generate feature for point " + multilinestring); // $NON-NLS-1$
+            throw new RuntimeException("Could not generate feature for point " + multilinestring); // $NON-NLS-1$
         }
     }
     /**
@@ -623,15 +583,12 @@ public class Drawer {
      * @return Feature with a default geometry and no attribtues
      */
     public SimpleFeature feature(MultiPolygon multipolygon) {
-        if (multipolygon == null)
-            throw new NullPointerException("multipolygon required"); // $NON-NLS-1$
+        if (multipolygon == null) throw new NullPointerException("multipolygon required"); // $NON-NLS-1$
         try {
-            return SimpleFeatureBuilder.build(
-                    multipolygonSchema, new Object[] {multipolygon}, null);
+            return SimpleFeatureBuilder.build(multipolygonSchema, new Object[] {multipolygon}, null);
         } catch (IllegalAttributeException e) {
             // this should not happen because we *know* the parameter matches schame
-            throw new RuntimeException(
-                    "Could not generate feature for point " + multipolygon); // $NON-NLS-1$
+            throw new RuntimeException("Could not generate feature for point " + multipolygon); // $NON-NLS-1$
         }
     }
 

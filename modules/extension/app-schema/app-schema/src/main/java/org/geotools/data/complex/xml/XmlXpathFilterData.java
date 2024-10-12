@@ -36,8 +36,7 @@ public class XmlXpathFilterData {
 
     private String itemXpath;
 
-    public XmlXpathFilterData(
-            NamespaceSupport namespaces, Document doc, int count, String itemXpath) {
+    public XmlXpathFilterData(NamespaceSupport namespaces, Document doc, int count, String itemXpath) {
         this.namespaces = namespaces;
         this.doc = doc;
         this.count = count;

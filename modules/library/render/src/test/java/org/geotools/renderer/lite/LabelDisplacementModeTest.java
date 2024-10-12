@@ -73,21 +73,13 @@ public class LabelDisplacementModeTest {
 
         GeometryFactory gf = new GeometryFactory();
         SimpleFeature f1 =
-                SimpleFeatureBuilder.build(
-                        type,
-                        new Object[] {gf.createPoint(new Coordinate(5, 8.2)), "labelA"},
-                        null);
-        SimpleFeature f2 =
-                SimpleFeatureBuilder.build(
-                        type,
-                        new Object[] {gf.createPoint(new Coordinate(5, 8.0)), "labelA1"},
-                        null);
+                SimpleFeatureBuilder.build(type, new Object[] {gf.createPoint(new Coordinate(5, 8.2)), "labelA"}, null);
+        SimpleFeature f2 = SimpleFeatureBuilder.build(
+                type, new Object[] {gf.createPoint(new Coordinate(5, 8.0)), "labelA1"}, null);
         SimpleFeature f3 =
-                SimpleFeatureBuilder.build(
-                        type, new Object[] {gf.createPoint(new Coordinate(5, 2)), "labelB"}, null);
+                SimpleFeatureBuilder.build(type, new Object[] {gf.createPoint(new Coordinate(5, 2)), "labelB"}, null);
         SimpleFeature f4 =
-                SimpleFeatureBuilder.build(
-                        type, new Object[] {gf.createPoint(new Coordinate(5, 3)), "labelB1"}, null);
+                SimpleFeatureBuilder.build(type, new Object[] {gf.createPoint(new Coordinate(5, 3)), "labelB1"}, null);
 
         MemoryDataStore data = new MemoryDataStore();
         data.addFeature(f4);
@@ -102,21 +94,19 @@ public class LabelDisplacementModeTest {
         builder2.setName("labelPolyDisplacement");
         SimpleFeatureType type2 = builder2.buildFeatureType();
 
-        SimpleFeature f11 =
-                SimpleFeatureBuilder.build(
-                        type2,
-                        new Object[] {
-                            gf.createPolygon(
-                                    new Coordinate[] {
-                                        new Coordinate(4, 7),
-                                        new Coordinate(4, 9),
-                                        new Coordinate(6, 9),
-                                        new Coordinate(6, 7),
-                                        new Coordinate(4, 7)
-                                    }),
-                            "labelPolyA"
-                        },
-                        null);
+        SimpleFeature f11 = SimpleFeatureBuilder.build(
+                type2,
+                new Object[] {
+                    gf.createPolygon(new Coordinate[] {
+                        new Coordinate(4, 7),
+                        new Coordinate(4, 9),
+                        new Coordinate(6, 9),
+                        new Coordinate(6, 7),
+                        new Coordinate(4, 7)
+                    }),
+                    "labelPolyA"
+                },
+                null);
         MemoryDataStore data2 = new MemoryDataStore();
         data2.addFeature(f11);
         fs2 = data2.getFeatureSource("labelPolyDisplacement");
@@ -124,8 +114,7 @@ public class LabelDisplacementModeTest {
 
     @Test
     public void testDisplacementStandard() throws Exception {
-        Style style =
-                RendererBaseTest.loadStyle(this, "displacementMode/textDisplacementStandard.sld");
+        Style style = RendererBaseTest.loadStyle(this, "displacementMode/textDisplacementStandard.sld");
         BufferedImage image = renderLabels(fs, style, "Label Default Displacement");
         String refPath =
                 "./src/test/resources/org/geotools/renderer/lite/test-data/displacementMode/textDisplacementStandard.png";
@@ -212,8 +201,7 @@ public class LabelDisplacementModeTest {
 
     @Test
     public void testDisplacementDiagonal() throws Exception {
-        Style style =
-                RendererBaseTest.loadStyle(this, "displacementMode/textDisplacementDiagonal.sld");
+        Style style = RendererBaseTest.loadStyle(this, "displacementMode/textDisplacementDiagonal.sld");
         BufferedImage image = renderLabels(fs, style, "Label Diagonal Displacement");
         // ImageIO.write(image, "PNG", new
         // File("./src/test/resources/org/geotools/renderer/lite/test-data/displacementMode/textDisplacementVerticalBoth1.png"));
@@ -224,9 +212,7 @@ public class LabelDisplacementModeTest {
 
     @Test
     public void testDisplacementNotDiagonal() throws Exception {
-        Style style =
-                RendererBaseTest.loadStyle(
-                        this, "displacementMode/textDisplacementNotDiagonal.sld");
+        Style style = RendererBaseTest.loadStyle(this, "displacementMode/textDisplacementNotDiagonal.sld");
         BufferedImage image = renderLabels(fs, style, "Label Not Diagonal Displacement");
         // ImageIO.write(image, "PNG", new
         // File("./src/test/resources/org/geotools/renderer/lite/test-data/displacementMode/textDisplacementVerticalBoth1.png"));
@@ -248,11 +234,8 @@ public class LabelDisplacementModeTest {
 
     @Test
     public void testDisplacementRandomConflictDisabled() throws Exception {
-        Style style =
-                RendererBaseTest.loadStyle(
-                        this, "displacementMode/textDisplacementRandom_conflict_disabled.sld");
-        BufferedImage image =
-                renderLabels(fs, style, "Label Random Displacement (conflict_disabled)");
+        Style style = RendererBaseTest.loadStyle(this, "displacementMode/textDisplacementRandom_conflict_disabled.sld");
+        BufferedImage image = renderLabels(fs, style, "Label Random Displacement (conflict_disabled)");
         // ImageIO.write(image, "PNG", new
         // File("./src/test/resources/org/geotools/renderer/lite/test-data/displacementMode/textDisplacementVerticalBoth_conflict_disabled.png"));
         String refPath =
@@ -262,16 +245,10 @@ public class LabelDisplacementModeTest {
 
     @Test
     public void testDisplacementStandardMultiLayer() throws Exception {
-        Style style =
-                RendererBaseTest.loadStyle(this, "displacementMode/textDisplacementStandard.sld");
-        Style style2 =
-                RendererBaseTest.loadStyle(
-                        this, "displacementMode/textDisplacementStandardPoly.sld");
-        BufferedImage image =
-                renderLabels(
-                        new SimpleFeatureSource[] {fs, fs2},
-                        new Style[] {style, style2},
-                        "Label Default Displacement");
+        Style style = RendererBaseTest.loadStyle(this, "displacementMode/textDisplacementStandard.sld");
+        Style style2 = RendererBaseTest.loadStyle(this, "displacementMode/textDisplacementStandardPoly.sld");
+        BufferedImage image = renderLabels(
+                new SimpleFeatureSource[] {fs, fs2}, new Style[] {style, style2}, "Label Default Displacement");
         // ImageIO.write(image, "PNG", new
         // File("./src/test/resources/org/geotools/renderer/lite/test-data/displacementMode/textDisplacementStandard1_multi.png"));
         String refPath =
@@ -281,17 +258,12 @@ public class LabelDisplacementModeTest {
 
     @Test
     public void testDisplacementNotDiagonalMultiLayer() throws Exception {
-        Style style =
-                RendererBaseTest.loadStyle(
-                        this, "displacementMode/textDisplacementNotDiagonal.sld");
-        Style style2 =
-                RendererBaseTest.loadStyle(
-                        this, "displacementMode/textDisplacementNotDiagonalPoly.sld");
-        BufferedImage image =
-                renderLabels(
-                        new SimpleFeatureSource[] {fs, fs2},
-                        new Style[] {style, style2},
-                        "Label Not Diagonal Displacement (multi)");
+        Style style = RendererBaseTest.loadStyle(this, "displacementMode/textDisplacementNotDiagonal.sld");
+        Style style2 = RendererBaseTest.loadStyle(this, "displacementMode/textDisplacementNotDiagonalPoly.sld");
+        BufferedImage image = renderLabels(
+                new SimpleFeatureSource[] {fs, fs2},
+                new Style[] {style, style2},
+                "Label Not Diagonal Displacement (multi)");
         // ImageIO.write(image, "PNG", new
         // File("./src/test/resources/org/geotools/renderer/lite/test-data/displacementMode/textDisplacementVerticalBoth1_multi.png"));
         String refPath =
@@ -301,9 +273,7 @@ public class LabelDisplacementModeTest {
 
     @Test
     public void testDisplacementVerticalBoth() throws Exception {
-        Style style =
-                RendererBaseTest.loadStyle(
-                        this, "displacementMode/textDisplacementVerticalBoth.sld");
+        Style style = RendererBaseTest.loadStyle(this, "displacementMode/textDisplacementVerticalBoth.sld");
         BufferedImage image = renderLabels(fs, style, "Label Vertical Both Displacement");
         // ImageIO.write(image, "PNG", new
         // File("./src/test/resources/org/geotools/renderer/lite/test-data/displacementMode/textDisplacementVerticalBoth1.png"));
@@ -314,17 +284,10 @@ public class LabelDisplacementModeTest {
 
     @Test
     public void testDisplacementVerticalBothMultiLayer() throws Exception {
-        Style style =
-                RendererBaseTest.loadStyle(
-                        this, "displacementMode/textDisplacementVerticalBoth.sld");
-        Style style2 =
-                RendererBaseTest.loadStyle(
-                        this, "displacementMode/textDisplacementVerticalBothPoly.sld");
-        BufferedImage image =
-                renderLabels(
-                        new SimpleFeatureSource[] {fs, fs2},
-                        new Style[] {style, style2},
-                        "Label Vertical Both Displacement");
+        Style style = RendererBaseTest.loadStyle(this, "displacementMode/textDisplacementVerticalBoth.sld");
+        Style style2 = RendererBaseTest.loadStyle(this, "displacementMode/textDisplacementVerticalBothPoly.sld");
+        BufferedImage image = renderLabels(
+                new SimpleFeatureSource[] {fs, fs2}, new Style[] {style, style2}, "Label Vertical Both Displacement");
         // ImageIO.write(image, "PNG", new
         // File("./src/test/resources/org/geotools/renderer/lite/test-data/displacementMode/textDisplacementVerticalBoth1_multi.png"));
         String refPath =
@@ -335,11 +298,8 @@ public class LabelDisplacementModeTest {
     @Test
     public void testDisplacementVerticalBothConflictDisabled() throws Exception {
         Style style =
-                RendererBaseTest.loadStyle(
-                        this,
-                        "displacementMode/textDisplacementVerticalBoth_conflict_disabled.sld");
-        BufferedImage image =
-                renderLabels(fs, style, "Label Vertical Both Displacement (conflict_disabled)");
+                RendererBaseTest.loadStyle(this, "displacementMode/textDisplacementVerticalBoth_conflict_disabled.sld");
+        BufferedImage image = renderLabels(fs, style, "Label Vertical Both Displacement (conflict_disabled)");
         // ImageIO.write(image, "PNG", new
         // File("./src/test/resources/org/geotools/renderer/lite/test-data/displacementMode/textDisplacementVerticalBoth_conflict_disabled.png"));
         String refPath =
@@ -350,18 +310,13 @@ public class LabelDisplacementModeTest {
     @Test
     public void testDisplacementVerticalBothConflictDisabledMultiLayer() throws Exception {
         Style style =
-                RendererBaseTest.loadStyle(
-                        this,
-                        "displacementMode/textDisplacementVerticalBoth_conflict_disabled.sld");
-        Style style2 =
-                RendererBaseTest.loadStyle(
-                        this,
-                        "displacementMode/textDisplacementVerticalBoth_conflict_disabledPoly.sld");
-        BufferedImage image =
-                renderLabels(
-                        new SimpleFeatureSource[] {fs, fs2},
-                        new Style[] {style, style2},
-                        "Label Vertical Both Displacement (conflict_disabled)");
+                RendererBaseTest.loadStyle(this, "displacementMode/textDisplacementVerticalBoth_conflict_disabled.sld");
+        Style style2 = RendererBaseTest.loadStyle(
+                this, "displacementMode/textDisplacementVerticalBoth_conflict_disabledPoly.sld");
+        BufferedImage image = renderLabels(
+                new SimpleFeatureSource[] {fs, fs2},
+                new Style[] {style, style2},
+                "Label Vertical Both Displacement (conflict_disabled)");
         // ImageIO.write(image, "PNG", new
         // File("./src/test/resources/org/geotools/renderer/lite/test-data/displacementMode/textDisplacementVerticalBoth_conflict_disabled_multi.png"));
         String refPath =
@@ -388,54 +343,50 @@ public class LabelDisplacementModeTest {
 
         // a horizontal line with label with line breaks
         // Formata-CondensedMedium(windows) ,// Formata-Condensed(other OS) was reported.
-        SimpleFeature f11 =
-                SimpleFeatureBuilder.build(
-                        type,
-                        new Object[] {
-                            gf.createLineString( // straight line
-                                    new Coordinate[] {
-                                        new Coordinate(2, 5),
-                                        new Coordinate(3, 5),
-                                        new Coordinate(4, 5),
-                                        new Coordinate(5, 5),
-                                        new Coordinate(6, 5),
-                                        new Coordinate(7, 5),
-                                        new Coordinate(8, 5)
-                                    }),
-                            "Espace\nPierrey\nBetazg", // label with decender and line breaks
-                            "Bitstream Vera Sans",
-                            10,
-                            "Bold",
-                            0,
-                            0 // anchorY
-                        },
-                        null);
-        SimpleFeature f12 =
-                SimpleFeatureBuilder.build(
-                        type,
-                        new Object[] {
-                            gf.createLineString( // straight line
-                                    new Coordinate[] {
-                                        new Coordinate(2, 3),
-                                        new Coordinate(3, 3),
-                                        new Coordinate(4, 3),
-                                        new Coordinate(5, 3),
-                                        new Coordinate(6, 3),
-                                        new Coordinate(7, 3),
-                                        new Coordinate(8, 3)
-                                    }),
-                            "Liney 1\nLineg", // label with decender and line breaks
-                            "Bitstream Vera Sans",
-                            10,
-                            "Bold",
-                            0,
-                            1 // anchorY
-                        },
-                        null);
+        SimpleFeature f11 = SimpleFeatureBuilder.build(
+                type,
+                new Object[] {
+                    gf.createLineString( // straight line
+                            new Coordinate[] {
+                                new Coordinate(2, 5),
+                                new Coordinate(3, 5),
+                                new Coordinate(4, 5),
+                                new Coordinate(5, 5),
+                                new Coordinate(6, 5),
+                                new Coordinate(7, 5),
+                                new Coordinate(8, 5)
+                            }),
+                    "Espace\nPierrey\nBetazg", // label with decender and line breaks
+                    "Bitstream Vera Sans",
+                    10,
+                    "Bold",
+                    0,
+                    0 // anchorY
+                },
+                null);
+        SimpleFeature f12 = SimpleFeatureBuilder.build(
+                type,
+                new Object[] {
+                    gf.createLineString( // straight line
+                            new Coordinate[] {
+                                new Coordinate(2, 3),
+                                new Coordinate(3, 3),
+                                new Coordinate(4, 3),
+                                new Coordinate(5, 3),
+                                new Coordinate(6, 3),
+                                new Coordinate(7, 3),
+                                new Coordinate(8, 3)
+                            }),
+                    "Liney 1\nLineg", // label with decender and line breaks
+                    "Bitstream Vera Sans",
+                    10,
+                    "Bold",
+                    0,
+                    1 // anchorY
+                },
+                null);
 
-        Style style =
-                RendererBaseTest.loadStyle(
-                        this, "displacementMode/testMultiLineLabelDisplacementY.sld");
+        Style style = RendererBaseTest.loadStyle(this, "displacementMode/testMultiLineLabelDisplacementY.sld");
         Assert.assertNotNull(style);
 
         MemoryDataStore data = new MemoryDataStore();
@@ -460,8 +411,7 @@ public class LabelDisplacementModeTest {
         ImageAssert.assertEquals(new File(refPath), image, tolerance);
     }
 
-    private BufferedImage renderLabels(SimpleFeatureSource fs, Style style, String title)
-            throws Exception {
+    private BufferedImage renderLabels(SimpleFeatureSource fs, Style style, String title) throws Exception {
         MapContent mc = new MapContent();
         mc.getViewport().setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);
         mc.addLayer(new FeatureLayer(fs, style));
@@ -473,8 +423,7 @@ public class LabelDisplacementModeTest {
         return RendererBaseTest.showRender(title, renderer, TIME, bounds);
     }
 
-    private BufferedImage renderLabels(SimpleFeatureSource[] fs, Style[] style, String title)
-            throws Exception {
+    private BufferedImage renderLabels(SimpleFeatureSource[] fs, Style[] style, String title) throws Exception {
         MapContent mc = new MapContent();
         mc.getViewport().setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);
         for (int i = 0; i < fs.length; i++) {

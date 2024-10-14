@@ -97,7 +97,6 @@ import org.geotools.feature.visitor.UniqueCountVisitor;
 import org.geotools.feature.visitor.UniqueVisitor;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.filter.visitor.ExpressionTypeVisitor;
-import org.geotools.filter.visitor.PostPreProcessFilterSplittingVisitor;
 import org.geotools.geometry.jts.CurvedGeometry;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.jdbc.JoinInfo.JoinPart;
@@ -1443,12 +1442,9 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
             // this visitor is not supported
             return null;
         }
-        FilterCapabilities caps = getFilterCapabilities();
 
-        PostPreProcessFilterSplittingVisitor splitter =
-                new PostPreProcessFilterSplittingVisitor(caps, featureType, null);
-        query.getFilter().accept(splitter, null);
-        if (!splitter.getFilterPost().equals(Filter.INCLUDE)) {
+        Filter[] preAndPost = dialect.splitFilter(query.getFilter(), featureType);
+        if (!preAndPost[1].equals(Filter.INCLUDE)) {
             // we can't process all of the filter
             return null;
         }

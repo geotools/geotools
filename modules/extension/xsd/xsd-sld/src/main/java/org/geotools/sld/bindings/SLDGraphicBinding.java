@@ -121,9 +121,9 @@ public class SLDGraphicBinding extends AbstractComplexBinding {
 
         List<Symbol> symbols = node.getChildValues(Symbol.class);
 
-        Expression opacity = (Expression) node.getChildValue("Opacity");
-        Expression size = (Expression) node.getChildValue("Size");
-        Expression rotation = (Expression) node.getChildValue("Rotation");
+        Expression opacity = (Expression) getChildValue(node, "Opacity");
+        Expression size = (Expression) getChildValue(node, "Size");
+        Expression rotation = (Expression) getChildValue(node, "Rotation");
 
         Graphic graphic =
                 styleFactory.createGraphic(
@@ -142,5 +142,19 @@ public class SLDGraphicBinding extends AbstractComplexBinding {
         }
 
         return graphic;
+    }
+
+    /**
+     *  Returns the child value of a node. If it's an empty string, <code>null</code> will be returned.
+     */
+    private Object getChildValue(Node node, String name) {
+        Object value = node.getChildValue(name);
+        if (value instanceof String) {
+            String text = (String) value;
+            if (text.isEmpty()) {
+                return null;
+            }
+        }
+        return value;
     }
 }

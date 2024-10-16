@@ -54,6 +54,10 @@ public class SLDMockData {
         return size;
     }
 
+    static Element emptySize(Document document, Node parent) {
+        return element(SLD.SIZE, document, parent);
+    }
+
     static Element opacity(Document document, Node parent) {
         Element opacity = element(SLD.OPACITY, document, parent);
         opacity.appendChild(document.createTextNode("1"));
@@ -61,11 +65,19 @@ public class SLDMockData {
         return opacity;
     }
 
+    static Element emptyOpacity(Document document, Node parent) {
+        return element(SLD.OPACITY, document, parent);
+    }
+
     static Element rotation(Document document, Node parent) {
         Element rotation = element(SLD.ROTATION, document, parent);
         rotation.appendChild(document.createTextNode("90"));
 
         return rotation;
+    }
+
+    static Element emptyRotation(Document document, Node parent) {
+        return element(SLD.ROTATION, document, parent);
     }
 
     static Element pointPlacement(Document document, Node parent) {
@@ -131,6 +143,33 @@ public class SLDMockData {
         opacity(document, graphic);
         rotation(document, graphic);
 
+        return graphic;
+    }
+
+    static Element graphicWithEmptyRotation(Document document, Node parent) {
+        Element graphic = element(SLD.GRAPHIC, document, parent);
+        mark(document, graphic);
+        size(document, graphic);
+        opacity(document, graphic);
+        emptyRotation(document, graphic);
+        return graphic;
+    }
+
+    static Element graphicWithEmptySize(Document document, Node parent) {
+        Element graphic = element(SLD.GRAPHIC, document, parent);
+        mark(document, graphic);
+        emptySize(document, graphic);
+        opacity(document, graphic);
+        rotation(document, graphic);
+        return graphic;
+    }
+
+    static Element graphicWithEmptyOpacity(Document document, Node parent) {
+        Element graphic = element(SLD.GRAPHIC, document, parent);
+        mark(document, graphic);
+        size(document, graphic);
+        emptyOpacity(document, graphic);
+        rotation(document, graphic);
         return graphic;
     }
 

@@ -16,8 +16,7 @@
  */
 package org.geotools.ows.wms;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import org.geotools.data.ows.Capabilities;
 
@@ -30,7 +29,12 @@ public class WMSCapabilities extends Capabilities {
     private WMSRequest request;
     private Layer layer;
 
-    private List<Layer> layers; // cache
+    /**
+     * Cached immutable list of layers, built on demand at {@link #getLayerList()}, reset to {@code
+     * null} at {@link #setLayer(Layer)}
+     */
+    private List<Layer> layers;
+
     private String[] exceptions;
 
     /**
@@ -54,6 +58,7 @@ public class WMSCapabilities extends Capabilities {
 
     public void setLayer(Layer layer) {
         this.layer = layer;
+        this.layers = null;
         if (getVersion() != null) {
             boolean forceXY = !getVersion().startsWith("1.3");
             fixLayerBoundingBox(layer, forceXY);
@@ -93,11 +98,12 @@ public class WMSCapabilities extends Capabilities {
      */
     public List<Layer> getLayerList() {
         if (layers == null) {
-            layers = new ArrayList<>();
-            layers.add(layer);
-            addChildrenRecursive(layers, layer);
+            List<Layer> target = new LinkedList<>();
+            target.add(layer);
+            addChildrenRecursive(target, layer);
+            this.layers = List.copyOf(target);
         }
-        return Collections.unmodifiableList(layers);
+        return layers;
     }
 
     private void addChildrenRecursive(List<Layer> layers, Layer layer) {

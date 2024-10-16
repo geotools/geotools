@@ -32,9 +32,69 @@ public class SLDGraphicBindingTest extends SLDTestSupport {
     }
 
     @Test
-    public void test() throws Exception {
+    public void testGraphic() throws Exception {
         SLDMockData.graphic(document, document);
 
+        Graphic graphic = (Graphic) parse();
+        assertNotNull(graphic);
+
+        assertEquals(graphic.graphicalSymbols().size(), 1);
+
+        Mark mark = (Mark) graphic.graphicalSymbols().get(0);
+
+        Color c = org.geotools.styling.SLD.color(mark.getFill().getColor());
+        assertEquals(Integer.parseInt("12", 16), c.getRed());
+        assertEquals(Integer.parseInt("34", 16), c.getGreen());
+        assertEquals(Integer.parseInt("56", 16), c.getBlue());
+
+        assertEquals(1, Filters.asInt(graphic.getSize()));
+        assertEquals(1, Filters.asInt(graphic.getOpacity()));
+        assertEquals(90, Filters.asInt(graphic.getRotation()));
+    }
+
+    @Test
+    public void testGraphicEmptyRotation() throws Exception {
+        SLDMockData.graphicWithEmptyRotation(document, document);
+        Graphic graphic = (Graphic) parse();
+        assertNotNull(graphic);
+
+        assertEquals(graphic.graphicalSymbols().size(), 1);
+
+        Mark mark = (Mark) graphic.graphicalSymbols().get(0);
+
+        Color c = org.geotools.styling.SLD.color(mark.getFill().getColor());
+        assertEquals(Integer.parseInt("12", 16), c.getRed());
+        assertEquals(Integer.parseInt("34", 16), c.getGreen());
+        assertEquals(Integer.parseInt("56", 16), c.getBlue());
+
+        assertEquals(1, Filters.asInt(graphic.getSize()));
+        assertEquals(1, Filters.asInt(graphic.getOpacity()));
+        assertEquals(0, Filters.asInt(graphic.getRotation()));
+    }
+
+    @Test
+    public void testGraphicEmptySize() throws Exception {
+        SLDMockData.graphicWithEmptySize(document, document);
+        Graphic graphic = (Graphic) parse();
+        assertNotNull(graphic);
+
+        assertEquals(graphic.graphicalSymbols().size(), 1);
+
+        Mark mark = (Mark) graphic.graphicalSymbols().get(0);
+
+        Color c = org.geotools.styling.SLD.color(mark.getFill().getColor());
+        assertEquals(Integer.parseInt("12", 16), c.getRed());
+        assertEquals(Integer.parseInt("34", 16), c.getGreen());
+        assertEquals(Integer.parseInt("56", 16), c.getBlue());
+
+        assertEquals(-1, Filters.asInt(graphic.getSize()));
+        assertEquals(1, Filters.asInt(graphic.getOpacity()));
+        assertEquals(90, Filters.asInt(graphic.getRotation()));
+    }
+
+    @Test
+    public void testGraphicEmptyOpacity() throws Exception {
+        SLDMockData.graphicWithEmptyOpacity(document, document);
         Graphic graphic = (Graphic) parse();
         assertNotNull(graphic);
 

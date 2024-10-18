@@ -194,16 +194,26 @@ public class VectorMosaicFeatureSource extends ContentFeatureSource {
     @Override
     protected int getCountInternal(Query query) throws IOException {
         int count = 0;
+        int maxFeatures = query.getMaxFeatures();
+        boolean applyMaxFeatures = maxFeatures != Query.DEFAULT_MAX;
         SimpleFeatureCollection features = getDelegateFeatures(query);
         try (GranuleSourceProvider provider = new GranuleSourceProvider(this, features, query)) {
             SimpleFeatureSource source;
             while ((source = provider.getNextGranuleSource()) != null) {
+                // get the query, set it to count at most the leftover to the max
                 Query granuleQuery = provider.getGranuleQuery();
+                if (applyMaxFeatures) granuleQuery.setMaxFeatures(maxFeatures - count);
+
+                // actual count
                 int granuleCount = source.getCount(granuleQuery);
-                if (granuleCount < 0) {
-                    granuleCount = source.getFeatures(granuleQuery).size();
-                }
+                if (granuleCount < 0) granuleCount = source.getFeatures(granuleQuery).size();
                 count += granuleCount;
+
+                // early bail out, and for extra measure, we don't want to count more than the max
+                if (applyMaxFeatures && count >= maxFeatures) {
+                    count = maxFeatures;
+                    break;
+                }
             }
         }
 

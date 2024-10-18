@@ -16,6 +16,7 @@
  */
 package org.geotools.jdbc;
 
+import static org.geotools.jdbc.SQLDialect.BASE_DBMS_CAPABILITIES;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
@@ -36,6 +37,8 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
@@ -45,10 +48,17 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import org.geotools.api.data.Query;
 import org.geotools.api.data.Transaction;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.GeometryDescriptor;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.expression.NilExpression;
 import org.geotools.data.DefaultTransaction;
+import org.geotools.data.jdbc.FilterToSQL;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.feature.visitor.Aggregate;
+import org.geotools.feature.visitor.CountVisitor;
+import org.geotools.feature.visitor.GroupByVisitor;
 import org.geotools.util.factory.Hints;
 import org.junit.Assert;
 import org.junit.Test;
@@ -251,5 +261,31 @@ public class JDBCDataStoreTest {
                 () -> {
                     try (Connection connection = store.getConnection((Transaction) null)) {}
                 });
+    }
+
+    @Test
+    public void testSplitFilterByGetAggregateValue() throws Exception {
+        JDBCDataStore store = new JDBCDataStore();
+        store.aggregateFunctions = new HashMap<>();
+        store.aggregateFunctions.put(CountVisitor.class, "COUNT");
+        BasicSQLDialect sqlDialect = mock(BasicSQLDialect.class);
+        when(sqlDialect.isGroupBySupported()).thenReturn(true);
+        FilterToSQL f2s = new FilterToSQL();
+        f2s.setCapabilities(BASE_DBMS_CAPABILITIES);
+        when(sqlDialect.createFilterToSQL()).thenReturn(f2s);
+        Filter[] filters = new Filter[2];
+        filters[0] = Filter.EXCLUDE;
+        filters[1] = Filter.EXCLUDE;
+        when(sqlDialect.splitFilter(any(), any())).thenReturn(filters);
+        store.setSQLDialect(sqlDialect);
+        GroupByVisitor groupVisitor =
+                new GroupByVisitor(
+                        Aggregate.COUNT, NilExpression.NIL, Collections.emptyList(), null);
+        Query query = mock(Query.class);
+        when(query.getFilter()).thenReturn(Filter.INCLUDE);
+        SimpleFeatureType featureType = mock(SimpleFeatureType.class);
+        when(query.getTypeName()).thenReturn("test");
+        store.getAggregateValue(groupVisitor, featureType, query, null);
+        verify(sqlDialect, times(1)).splitFilter(any(), any());
     }
 }

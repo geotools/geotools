@@ -145,12 +145,28 @@ public class PostGISJsonOnlineTest extends JDBCTestSupport {
         }
     }
 
-    private void pointerEquals(ContentFeatureSource fs, FilterFactory ff, String column)
-            throws IOException {
-        Function pointer = ff.function("jsonPointer", ff.property(column), ff.literal("/weight"));
+    @Test
+    public void testJSONPointerGetAggregate() throws Exception {
+        ContentFeatureSource fs = dataStore.getFeatureSource(tname("jsontest"));
+        FilterFactory ff = dataStore.getFilterFactory();
+        assertEquals(1, fs.getCount(getPointerEqualsQuery(ff, "jsonColumn")));
+    }
+
+    private Function getPointerEqualsFunction(FilterFactory ff, String column) {
+        return ff.function("jsonPointer", ff.property(column), ff.literal("/weight"));
+    }
+
+    private Query getPointerEqualsQuery(FilterFactory ff, String column) {
+        Function pointer = getPointerEqualsFunction(ff, column);
         Literal literal = ff.literal(0.001);
         Filter filter = ff.equals(pointer, literal);
-        Query q = new Query(tname("jsontest"), filter);
+        return new Query(tname("jsontest"), filter);
+    }
+
+    private void pointerEquals(ContentFeatureSource fs, FilterFactory ff, String column)
+            throws IOException {
+        Function pointer = getPointerEqualsFunction(ff, column);
+        Query q = getPointerEqualsQuery(ff, column);
         FeatureCollection collection = fs.getFeatures(q);
         try (FeatureIterator it = collection.features()) {
             int size = 0;

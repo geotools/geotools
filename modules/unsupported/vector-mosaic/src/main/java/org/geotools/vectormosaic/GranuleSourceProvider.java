@@ -98,6 +98,9 @@ class GranuleSourceProvider implements Closeable {
                                 granuleDataStore, granule.getGranuleTypeName(), query, false);
                 granuleQuery.setPropertyNames(filteredArray);
             }
+            if (query.getMaxFeatures() != Query.DEFAULT_MAX) {
+                granuleQuery.setMaxFeatures(query.getMaxFeatures());
+            }
 
             return granuleDataStore.getFeatureSource(granule.getGranuleTypeName());
         }

@@ -58,6 +58,19 @@ public class VectorMosaicFeatureSourceTest extends VectorMosaicTest {
     }
 
     @Test
+    public void testCountAllMaxFeatures() throws Exception {
+        FeatureSource featureSource = MOSAIC_STORE.getFeatureSource(MOSAIC_TYPE_NAME);
+        GranuleTracker tracker = new GranuleTracker();
+        GranuleStoreFinder finder = ((VectorMosaicFeatureSource) featureSource).finder;
+        finder.granuleTracker = tracker;
+
+        Query q = new Query();
+        q.setMaxFeatures(2);
+        assertEquals(2, featureSource.getCount(q));
+        assertEquals(2, tracker.getCount());
+    }
+
+    @Test
     public void testCountFilterDelegate() throws Exception {
         FeatureSource featureSource = MOSAIC_STORE.getFeatureSource(MOSAIC_TYPE_NAME);
         GranuleTracker tracker = new GranuleTracker();
@@ -68,6 +81,20 @@ public class VectorMosaicFeatureSourceTest extends VectorMosaicTest {
         query.setFilter(FF.lessOrEqual(FF.property("rank"), FF.literal(2)));
         assertEquals(2, featureSource.getCount(query));
         assertEquals(2, tracker.getCount());
+    }
+
+    @Test
+    public void testCountFilterDelegateMaxFeatures() throws Exception {
+        FeatureSource featureSource = MOSAIC_STORE.getFeatureSource(MOSAIC_TYPE_NAME);
+        GranuleTracker tracker = new GranuleTracker();
+        GranuleStoreFinder finder = ((VectorMosaicFeatureSource) featureSource).finder;
+        finder.granuleTracker = tracker;
+
+        Query query = new Query();
+        query.setMaxFeatures(1); // this will stop the counting before the end
+        query.setFilter(FF.lessOrEqual(FF.property("rank"), FF.literal(2)));
+        assertEquals(1, featureSource.getCount(query));
+        assertEquals(1, tracker.getCount());
     }
 
     @Test
@@ -82,6 +109,21 @@ public class VectorMosaicFeatureSourceTest extends VectorMosaicTest {
         query.setFilter(FF.lessOrEqual(FF.property("tractorid"), FF.literal("deere2")));
         assertEquals(2, featureSource.getCount(query));
         assertEquals(4, tracker.getCount());
+    }
+
+    @Test
+    public void testCountFilterGranulesMaxFeatures() throws Exception {
+        FeatureSource featureSource = MOSAIC_STORE.getFeatureSource(MOSAIC_TYPE_NAME);
+        GranuleTracker tracker = new GranuleTracker();
+        GranuleStoreFinder finder = ((VectorMosaicFeatureSource) featureSource).finder;
+        finder.granuleTracker = tracker;
+
+        // this one has to visit all granules to find the actual count, but the max features
+        // will stop it before the end
+        Query q = new Query();
+        q.setMaxFeatures(2);
+        assertEquals(2, featureSource.getCount(q));
+        assertEquals(2, tracker.getCount());
     }
 
     @Test

@@ -420,14 +420,17 @@ public final class ElasticsearchDateConverter {
                         return (T) zonedDateTime.toInstant();
                     } else if (accessor.isSupported(ChronoField.YEAR)
                             && accessor.isSupported(ChronoField.MONTH_OF_YEAR)) {
-                        if (accessor.isSupported(ChronoField.HOUR_OF_DAY)) {
-                            LocalDateTime localDateTime =
-                                    accessor.query(getTemporalQuery(LocalDateTime.class));
-                            return (T) localDateTime.toInstant(ZoneOffset.UTC);
-                        } else {
-                            YearMonth ym = accessor.query(getTemporalQuery(YearMonth.class));
-                            return (T) ym.atDay(1).atStartOfDay().toInstant(ZoneOffset.UTC);
+                        int dayOfMonth = 1;
+                        if (accessor.isSupported(ChronoField.DAY_OF_MONTH)) {
+                            dayOfMonth = accessor.get(ChronoField.DAY_OF_MONTH);
+                            if (accessor.isSupported(ChronoField.HOUR_OF_DAY)) {
+                                LocalDateTime localDateTime =
+                                        accessor.query(getTemporalQuery(LocalDateTime.class));
+                                return (T) localDateTime.toInstant(ZoneOffset.UTC);
+                            }
                         }
+                        YearMonth ym = accessor.query(getTemporalQuery(YearMonth.class));
+                        return (T) ym.atDay(dayOfMonth).atStartOfDay().toInstant(ZoneOffset.UTC);
                     } else if (accessor.isSupported(ChronoField.YEAR)) {
                         Year y = accessor.query(getTemporalQuery(Year.class));
                         return (T) y.atDay(1).atStartOfDay().toInstant(ZoneOffset.UTC);

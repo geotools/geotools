@@ -19,6 +19,8 @@ package org.geotools.data.elasticsearch.date;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.logging.Logger;
 import org.geotools.util.logging.Logging;
@@ -154,9 +156,9 @@ public class ElasticsearchDateConverterParseTest {
 
     @Test
     public void testDate() {
-        assertRoundTrip("2018-12-31", DateFormat.date);
-        assertRoundTrip("18-5-6", DateFormat.date);
-        assertRoundTrip("10000-5-6", DateFormat.date);
+        assertRoundTripDay("2018-12-31", DateFormat.date);
+        assertRoundTripDay("18-5-6", DateFormat.date);
+        assertRoundTripDay("10000-5-6", DateFormat.date);
     }
 
     @Test
@@ -421,10 +423,27 @@ public class ElasticsearchDateConverterParseTest {
 
     @Test
     public void testYearMonthDay() {
-        assertRoundTrip("2012-12-31", DateFormat.year_month_day);
-        assertRoundTrip("1-12-31", DateFormat.year_month_day);
-        assertRoundTrip("2012-1-31", DateFormat.year_month_day);
-        assertRoundTrip("2012-12-1", DateFormat.year_month_day);
+        assertRoundTripDay("2012-12-31", DateFormat.year_month_day);
+        assertRoundTripDay("1-12-31", DateFormat.year_month_day);
+        assertRoundTripDay("2012-1-31", DateFormat.year_month_day);
+        assertRoundTripDay("2012-12-1", DateFormat.year_month_day);
+    }
+
+    private void assertRoundTripDay(String date, DateFormat dateFormat) {
+        ElasticsearchDateConverter converter = ElasticsearchDateConverter.of(dateFormat);
+        Date parsed = converter.parse(date);
+        assertNotNull(parsed);
+        String formatted = converter.format(parsed);
+        Date parsed2 = converter.parse(formatted);
+        assertEquals(parsed, parsed2);
+        LocalDate localDate = parsed2.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+        int dayOfMonth = localDate.getDayOfMonth();
+        int lastHyphenIndex = date.lastIndexOf('-');
+        String dayString = date.substring(lastHyphenIndex + 1);
+        int day = Integer.parseInt(dayString);
+        assertEquals(day, dayOfMonth);
+        LOGGER.info(date + " -> " + formatted);
     }
 
     private void assertRoundTrip(String date, DateFormat dateFormat) {

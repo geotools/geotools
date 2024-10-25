@@ -16,16 +16,16 @@
  */
 package org.geotools.api.data;
 
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.util.factory.FactoryCreator;
+import org.geotools.util.factory.FactoryRegistry;
+
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Logger;
-import org.geotools.api.feature.Feature;
-import org.geotools.api.feature.type.FeatureType;
-import org.geotools.util.factory.FactoryCreator;
-import org.geotools.util.factory.FactoryRegistry;
 
 /**
  * Enable programs to find all available datastore implementations.
@@ -42,15 +42,18 @@ import org.geotools.util.factory.FactoryRegistry;
  * <code>org.geotools.data.mytype.MyTypeDataStoreFacotry</code>
  */
 public final class DataStoreFinder {
-    /** The logger for the filter module. */
-    protected static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(DataStoreFinder.class);
 
     /** The service registry for this manager. Will be initialized only when first needed. */
     private static volatile FactoryRegistry registry;
 
     // Singleton pattern
     private DataStoreFinder() {}
+
+    /*
+     * Implementation note: because this class and DataStoreFinder call each other, all
+     * non-thread-safe methods are synchronized on a common object (DataAccessFinder.class)
+     * in order to prevent potential deadlocks.
+     */
 
     /**
      * Checks each available datasource implementation in turn and returns the first one which
@@ -63,11 +66,13 @@ public final class DataStoreFinder {
      * @throws IOException If a suitable loader can be found, but it can not be attached to the
      *     specified resource without errors.
      */
-    public static synchronized DataStore getDataStore(Map<String, ?> params) throws IOException {
-        Iterator<DataStoreFactorySpi> ps = getAvailableDataStores();
-        DataAccess<? extends FeatureType, ? extends Feature> dataStore =
-                DataAccessFinder.getDataStore(params, ps);
-        return (DataStore) dataStore;
+    public static DataStore getDataStore(Map<String, ?> params) throws IOException {
+        synchronized (DataAccessFinder.class) {
+            Iterator<DataStoreFactorySpi> ps = getAvailableDataStores();
+            DataAccess<? extends FeatureType, ? extends Feature> dataStore =
+                    DataAccessFinder.getDataStore(params, ps);
+            return (DataStore) dataStore;
+        }
     }
 
     /**
@@ -76,8 +81,11 @@ public final class DataStoreFinder {
      *
      * @return An iterator over all discovered datastores which have registered factories
      */
-    public static synchronized Iterator<DataStoreFactorySpi> getAllDataStores() {
-        return DataAccessFinder.getAllDataStores(getServiceRegistry(), DataStoreFactorySpi.class);
+    public static Iterator<DataStoreFactorySpi> getAllDataStores() {
+        synchronized (DataAccessFinder.class) {
+            return DataAccessFinder.getAllDataStores(
+                    getServiceRegistry(), DataStoreFactorySpi.class);
+        }
     }
 
     /**
@@ -87,11 +95,14 @@ public final class DataStoreFinder {
      * @return An iterator over all discovered datastores which have registered factories, and whose
      *     available method returns true.
      */
-    public static synchronized Iterator<DataStoreFactorySpi> getAvailableDataStores() {
-        FactoryRegistry serviceRegistry = getServiceRegistry();
-        Set<DataStoreFactorySpi> availableDS =
-                DataAccessFinder.getAvailableDataStores(serviceRegistry, DataStoreFactorySpi.class);
-        return availableDS.iterator();
+    public static Iterator<DataStoreFactorySpi> getAvailableDataStores() {
+        synchronized (DataAccessFinder.class) {
+            FactoryRegistry serviceRegistry = getServiceRegistry();
+            Set<DataStoreFactorySpi> availableDS =
+                    DataAccessFinder.getAvailableDataStores(
+                            serviceRegistry, DataStoreFactorySpi.class);
+            return availableDS.iterator();
+        }
     }
 
     /**
@@ -99,7 +110,7 @@ public final class DataStoreFinder {
      * invoked.
      */
     private static FactoryRegistry getServiceRegistry() {
-        assert Thread.holdsLock(DataStoreFinder.class);
+        assert Thread.holdsLock(DataAccessFinder.class);
         if (registry == null) {
             registry =
                     new FactoryCreator(Arrays.asList(new Class<?>[] {DataStoreFactorySpi.class}));
@@ -115,9 +126,10 @@ public final class DataStoreFinder {
      * re-scan. Thus this method need only be invoked by sophisticated applications which
      * dynamically make new plug-ins available at runtime.
      */
-    public static synchronized void scanForPlugins() {
-
-        getServiceRegistry().scanForPlugins();
+    public static void scanForPlugins() {
+        synchronized (DataAccessFinder.class) {
+            getServiceRegistry().scanForPlugins();
+        }
     }
 
     /** Resets the factory finder and prepares for a new full scan of the SPI subsystems */
@@ -133,15 +145,19 @@ public final class DataStoreFinder {
      * Programmatically registers a store. Mostly useful for tests, normal store registration should
      * go through the SPI subsystem (META-INF/services files).
      */
-    public static synchronized void registerFactrory(DataStoreFactorySpi factorySpi) {
-        getServiceRegistry().registerFactory(factorySpi);
+    public static void registerFactrory(DataStoreFactorySpi factorySpi) {
+        synchronized (DataAccessFinder.class) {
+            getServiceRegistry().registerFactory(factorySpi);
+        }
     }
 
     /**
      * Programmatically deregisters a store. Mostly useful for tests, normal store registration
      * should go through the SPI subsystem (META-INF/services files).
      */
-    public static synchronized void deregisterFactrory(DataStoreFactorySpi factorySpi) {
-        getServiceRegistry().deregisterFactory(factorySpi);
+    public static void deregisterFactrory(DataStoreFactorySpi factorySpi) {
+        synchronized (DataAccessFinder.class) {
+            getServiceRegistry().deregisterFactory(factorySpi);
+        }
     }
 }

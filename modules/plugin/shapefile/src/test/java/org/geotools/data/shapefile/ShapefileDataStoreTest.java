@@ -108,8 +108,8 @@ import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 
 /**
- * @version $Id$
  * @author Ian Schneider
+ * @version $Id$
  */
 public class ShapefileDataStoreTest extends TestCaseSupport {
 

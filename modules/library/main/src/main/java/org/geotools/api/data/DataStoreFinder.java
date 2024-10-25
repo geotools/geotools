@@ -16,16 +16,15 @@
  */
 package org.geotools.api.data;
 
-import org.geotools.api.feature.Feature;
-import org.geotools.api.feature.type.FeatureType;
-import org.geotools.util.factory.FactoryCreator;
-import org.geotools.util.factory.FactoryRegistry;
-
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.util.factory.FactoryCreator;
+import org.geotools.util.factory.FactoryRegistry;
 
 /**
  * Enable programs to find all available datastore implementations.

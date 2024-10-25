@@ -24,10 +24,16 @@ import static org.geotools.data.shapefile.files.ShpFileType.SHX;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URL;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
 import java.nio.charset.Charset;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.zip.GZIPInputStream;
+import org.apache.commons.io.FileUtils;
 import org.geotools.api.data.DataSourceException;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.data.PrjFileReader;
@@ -91,7 +97,28 @@ class ShapefileSetManager implements FileReader {
         if (shpFiles.isLocal() && !shpFiles.exists(DBF)) {
             return null;
         }
+        if (shpFiles.isLocal() && shpFiles.exists(DBF)) {
+            File file = URLs.urlToFile(new URL(shpFiles.get(DBF)));
+            byte[] bytes;
+            DbaseFileHeader header = new DbaseFileHeader();
+            InputStream in;
+            if (shpFiles.isGz()) {
+                in = new GZIPInputStream(new FileInputStream(file));
+            } else {
+                in = new FileInputStream(file);
+            }
+            try (ReadableByteChannel channel = Channels.newChannel(in); ) {
+                header.readHeader(channel);
+            } catch (IOException e) {
+                // finished too soon
+                return null;
+            }
+            // We need to handle an "empty" dbf file that is not actually empty (lots of nulls etc)
 
+            if (header.getHeaderLength() <= 0 || header.getNumFields() == 0) {
+                return null;
+            }
+        }
         Charset charset = store.getCharset();
 
         if (store.isTryCPGFile()

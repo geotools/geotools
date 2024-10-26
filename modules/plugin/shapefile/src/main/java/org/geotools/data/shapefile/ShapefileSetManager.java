@@ -26,14 +26,15 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.nio.ByteBuffer;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
 import java.nio.charset.Charset;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
-import org.apache.commons.io.FileUtils;
 import org.geotools.api.data.DataSourceException;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.data.PrjFileReader;
@@ -102,23 +103,21 @@ class ShapefileSetManager implements FileReader {
         if (shpFiles.isLocal() && shpFiles.exists(DBF)) {
             File file = URLs.urlToFile(new URL(shpFiles.get(DBF)));
             byte[] bytes;
+            DbaseFileHeader header = new DbaseFileHeader();
+            InputStream in;
             if (shpFiles.isGz()) {
-                try (GZIPInputStream in = new GZIPInputStream(new FileInputStream(file))) {
-                    bytes = in.readNBytes(4096);
-                }
+                in = new GZIPInputStream(new FileInputStream(file));
             } else {
-                bytes = FileUtils.readFileToByteArray(file);
-                int limit = 0x1c; // DBF Header must be at least this long
-                long length = file.length();
-                if (length < limit) {
-                    return null;
-                }
+                in = new FileInputStream(file);
+            }
+            try (ReadableByteChannel channel = Channels.newChannel(in); ) {
+                header.readHeader(channel);
+            } catch (IOException e) {
+                // finished too soon
+                return null;
             }
             // We need to handle an "empty" dbf file that is not actually empty (lots of nulls etc)
 
-            DbaseFileHeader header = new DbaseFileHeader();
-            ByteBuffer field = ByteBuffer.wrap(bytes);
-            header.readHeader(field);
             if (header.getHeaderLength() <= 0 || header.getNumFields() == 0) {
                 return null;
             }

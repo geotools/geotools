@@ -59,10 +59,12 @@ public class DataStoreFinderTest {
 
         // register and second lookup
         DataStoreFinder.registerFactory(mockFactory);
-        assertEquals(mockStore, DataStoreFinder.getDataStore(params));
-
-        // unregister, should stop working
-        DataStoreFinder.deregisterFactory(mockFactory);
+        try {
+            assertEquals(mockStore, DataStoreFinder.getDataStore(params));
+        } finally {
+            // unregister, should stop working
+            DataStoreFinder.deregisterFactory(mockFactory);
+        }
         assertNull(DataStoreFinder.getDataStore(params));
     }
 

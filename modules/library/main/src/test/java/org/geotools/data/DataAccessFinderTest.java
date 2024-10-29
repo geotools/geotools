@@ -219,11 +219,11 @@ public class DataAccessFinderTest {
         assertNull(DataAccessFinder.getDataStore(params));
 
         // register and second lookup
-        DataAccessFinder.registerFactrory(mockFactory);
+        DataAccessFinder.registerFactory(mockFactory);
         assertEquals(mockAccess, DataAccessFinder.getDataStore(params));
 
         // unregister, should stop working
-        DataAccessFinder.deregisterFactrory(mockFactory);
+        DataAccessFinder.deregisterFactory(mockFactory);
         assertNull(DataAccessFinder.getDataStore(params));
     }
 

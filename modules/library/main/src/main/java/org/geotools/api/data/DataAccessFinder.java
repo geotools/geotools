@@ -252,7 +252,7 @@ public final class DataAccessFinder {
      * Programmatically registers a store. Mostly useful for tests, normal store registration should
      * go through the SPI subsystem (META-INF/services files).
      */
-    public static void registerFactrory(DataAccessFactory factorySpi) {
+    public static void registerFactory(DataAccessFactory factorySpi) {
         synchronized (DataAccessFinder.class) {
             getServiceRegistry().registerFactory(factorySpi);
         }
@@ -262,9 +262,19 @@ public final class DataAccessFinder {
      * Programmatically deregisters a store. Mostly useful for tests, normal store registration
      * should go through the SPI subsystem (META-INF/services files).
      */
-    public static void deregisterFactrory(DataAccessFactory factorySpi) {
+    public static void deregisterFactory(DataAccessFactory factorySpi) {
         synchronized (DataAccessFinder.class) {
             getServiceRegistry().deregisterFactory(factorySpi);
         }
+    }
+
+    @Deprecated
+    public static void registerFactrory(DataAccessFactory factorySpi) {
+        registerFactory(factorySpi);
+    }
+
+    @Deprecated
+    public static void deregisterFactrory(DataAccessFactory factorySpi) {
+        deregisterFactory(factorySpi);
     }
 }

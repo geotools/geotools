@@ -24,11 +24,10 @@ import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.util.factory.Hints;
 
 /**
- * {@link AuthorityFactory} for OGC HTTP URI resources. For example, the WGS84 coordinate reference
- * system can be expressed as {@code "http://www.opengis.net/def/crs/EPSG/0/4326"}.
+ * {@link AuthorityFactory} for OGC HTTP URI resources. For example, the WGS84 coordinate reference system can be
+ * expressed as {@code "http://www.opengis.net/def/crs/EPSG/0/4326"}.
  *
- * <p>Use {@link org.geotools.api.referencing.ReferencingFactoryFinder} instead of instantiating
- * this class directly.
+ * <p>Use {@link org.geotools.api.referencing.ReferencingFactoryFinder} instead of instantiating this class directly.
  *
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
  */
@@ -70,10 +69,7 @@ public class HTTP_URI_AuthorityFactory extends Abstract_URI_AuthorityFactory {
         return Citations.HTTP_URI_OGC;
     }
 
-    /**
-     * @see
-     *     org.geotools.referencing.factory.Abstract_URI_AuthorityFactory#buildParser(java.lang.String)
-     */
+    /** @see org.geotools.referencing.factory.Abstract_URI_AuthorityFactory#buildParser(java.lang.String) */
     @Override
     protected URI_Parser buildParser(String code) throws NoSuchAuthorityCodeException {
         return HTTP_URI_Parser.buildParser(code);

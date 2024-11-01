@@ -31,8 +31,7 @@ import org.locationtech.jts.geom.Envelope;
 /**
  * Java porting of mapserver quadtree implementation.<br>
  * <br>
- * Note that this implementation is <b>not thread safe</b>, so don't share the same instance across
- * two or more threads.
+ * Note that this implementation is <b>not thread safe</b>, so don't share the same instance across two or more threads.
  *
  * <p>TODO: example of typical use...
  *
@@ -42,8 +41,7 @@ public class QuadTree implements Closeable {
 
     private static final double SPLITRATIO = 0.55d;
 
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(QuadTree.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(QuadTree.class);
 
     private Node root;
     private int numShapes;
@@ -117,8 +115,7 @@ public class QuadTree implements Closeable {
     }
 
     /** Inserts a shape record id in the quadtree */
-    public void insert(Node node, final int recno, final Envelope recBounds, final int maxDepth)
-            throws StoreException {
+    public void insert(Node node, final int recno, final Envelope recBounds, final int maxDepth) throws StoreException {
 
         if (maxDepth > 1 && node.getNumSubNodes() > 0) {
             /*

@@ -37,12 +37,12 @@ import org.geotools.metadata.i18n.Loggings;
 import org.geotools.util.logging.Logging;
 
 /**
- * A set of EPSG authority codes. This set requires a living connection to the EPSG database. All
- * {@link #iterator} method call creates a new {@link ResultSet} holding the codes. However, call to
- * {@link #contains} map directly to a SQL call.
+ * A set of EPSG authority codes. This set requires a living connection to the EPSG database. All {@link #iterator}
+ * method call creates a new {@link ResultSet} holding the codes. However, call to {@link #contains} map directly to a
+ * SQL call.
  *
- * <p>Serialization of this class store a copy of all authority codes. The serialization do not
- * preserve any connection to the database.
+ * <p>Serialization of this class store a copy of all authority codes. The serialization do not preserve any connection
+ * to the database.
  *
  * @since 2.2
  * @version $Id$
@@ -53,16 +53,15 @@ public final class AuthorityCodes extends AbstractSet<String> implements Seriali
     private static final long serialVersionUID = 7105664579449680562L;
 
     /**
-     * The factory which is the owner of this set. One purpose of this field (even if it were not
-     * used directly by this class) is to avoid garbage collection of the factory as long as this
-     * set is in use. This is required because {@link DirectEpsgFactory#finalize} closes the JDBC
-     * connections.
+     * The factory which is the owner of this set. One purpose of this field (even if it were not used directly by this
+     * class) is to avoid garbage collection of the factory as long as this set is in use. This is required because
+     * {@link DirectEpsgFactory#finalize} closes the JDBC connections.
      */
     private final DirectEpsgFactory factory;
 
     /**
-     * The type for this code set. This is translated to the most appropriate interface type even if
-     * the user supplied an implementation type.
+     * The type for this code set. This is translated to the most appropriate interface type even if the user supplied
+     * an implementation type.
      */
     public final Class<?> type;
 
@@ -70,20 +69,17 @@ public final class AuthorityCodes extends AbstractSet<String> implements Seriali
     private final boolean isProjection;
 
     /**
-     * A view of this set as a map with object's name as values, or {@code null} if none. Will be
-     * created only when first needed.
+     * A view of this set as a map with object's name as values, or {@code null} if none. Will be created only when
+     * first needed.
      */
     private transient java.util.Map<String, String> asMap;
 
-    /**
-     * The SQL command to use for creating the {@code queryAll} statement. Used for iteration over
-     * all codes.
-     */
+    /** The SQL command to use for creating the {@code queryAll} statement. Used for iteration over all codes. */
     final String sqlAll;
 
     /**
-     * The SQL command to use for creating the {@code querySingle} statement. Used for fetching the
-     * description from a code.
+     * The SQL command to use for creating the {@code querySingle} statement. Used for fetching the description from a
+     * code.
      */
     private final String sqlSingle;
 
@@ -94,9 +90,9 @@ public final class AuthorityCodes extends AbstractSet<String> implements Seriali
     private transient PreparedStatement querySingle;
 
     /**
-     * The collection's size, or a negative value if not yet computed. The records will be counted
-     * only when first needed. The special value -2 if set by {@link #isEmpty} if the size has not
-     * yet been computed, but we know that the set is not empty.
+     * The collection's size, or a negative value if not yet computed. The records will be counted only when first
+     * needed. The special value -2 if set by {@link #isEmpty} if the size has not yet been computed, but we know that
+     * the set is not empty.
      */
     private int size = -1;
 
@@ -107,8 +103,7 @@ public final class AuthorityCodes extends AbstractSet<String> implements Seriali
      * @param type The type to query.
      * @param factory The factory originator.
      */
-    public AuthorityCodes(
-            final TableInfo table, final Class<?> type, final DirectEpsgFactory factory) {
+    public AuthorityCodes(final TableInfo table, final Class<?> type, final DirectEpsgFactory factory) {
         this.factory = factory;
         final StringBuilder buffer = new StringBuilder("SELECT ");
         buffer.append(table.codeColumn);
@@ -147,8 +142,7 @@ public final class AuthorityCodes extends AbstractSet<String> implements Seriali
     }
 
     @SuppressWarnings("PMD.CloseResource")
-    protected PreparedStatement validateStatement(PreparedStatement stmt, String sql)
-            throws SQLException {
+    protected PreparedStatement validateStatement(PreparedStatement stmt, String sql) throws SQLException {
         Connection conn = null;
         if (stmt != null) {
             try {
@@ -199,8 +193,8 @@ public final class AuthorityCodes extends AbstractSet<String> implements Seriali
     }
 
     /**
-     * Returns {@code true} if the code in the specified result set is acceptable. This method
-     * handle projections in a special way.
+     * Returns {@code true} if the code in the specified result set is acceptable. This method handle projections in a
+     * special way.
      */
     private boolean isAcceptable(final ResultSet results) throws SQLException {
         if (!isProjection) {
@@ -213,8 +207,8 @@ public final class AuthorityCodes extends AbstractSet<String> implements Seriali
     }
 
     /**
-     * Returns {@code true} if the code in the specified code is acceptable. This method handle
-     * projections in a special way.
+     * Returns {@code true} if the code in the specified code is acceptable. This method handle projections in a special
+     * way.
      */
     private boolean isAcceptable(final String code) throws SQLException {
         if (!isProjection) {
@@ -226,8 +220,8 @@ public final class AuthorityCodes extends AbstractSet<String> implements Seriali
     }
 
     /**
-     * Returns {@code true} if this collection contains no elements. This method fetch at most one
-     * row instead of counting all rows.
+     * Returns {@code true} if this collection contains no elements. This method fetch at most one row instead of
+     * counting all rows.
      */
     @Override
     public synchronized boolean isEmpty() {
@@ -292,8 +286,8 @@ public final class AuthorityCodes extends AbstractSet<String> implements Seriali
     }
 
     /**
-     * Returns an iterator over the codes. The iterator is backed by a living {@link ResultSet},
-     * which will be closed as soon as the iterator reach the last element.
+     * Returns an iterator over the codes. The iterator is backed by a living {@link ResultSet}, which will be closed as
+     * soon as the iterator reach the last element.
      */
     @Override
     public synchronized java.util.Iterator<String> iterator() {
@@ -314,18 +308,17 @@ public final class AuthorityCodes extends AbstractSet<String> implements Seriali
     }
 
     /**
-     * Returns a serializable copy of this set. This method is invoked automatically during
-     * serialization. The serialised set of authority code is disconnected from the underlying
-     * database.
+     * Returns a serializable copy of this set. This method is invoked automatically during serialization. The
+     * serialised set of authority code is disconnected from the underlying database.
      */
     protected Object writeReplace() throws ObjectStreamException {
         return new LinkedHashSet<>(this);
     }
 
     /**
-     * Closes the underlying statements. Note: this method is also invoked directly by {@link
-     * DirectEpsgFactory#dispose}, which is okay in this particular case since the implementation of
-     * this method can be executed an arbitrary amount of times.
+     * Closes the underlying statements. Note: this method is also invoked directly by
+     * {@link DirectEpsgFactory#dispose}, which is okay in this particular case since the implementation of this method
+     * can be executed an arbitrary amount of times.
      */
     @Override
     @SuppressWarnings("deprecation") // finalize is deprecated in Java 9
@@ -346,8 +339,7 @@ public final class AuthorityCodes extends AbstractSet<String> implements Seriali
     }
 
     /** Invoked when an exception occured. This method just log a warning. */
-    static void unexpectedException(
-            final Class<?> classe, final String method, final SQLException exception) {
+    static void unexpectedException(final Class<?> classe, final String method, final SQLException exception) {
         Logging.unexpectedException(classe, method, exception);
     }
 
@@ -364,9 +356,8 @@ public final class AuthorityCodes extends AbstractSet<String> implements Seriali
     }
 
     /**
-     * The iterator over the codes. This inner class must kept a reference toward the enclosing
-     * {@link AuthorityCodes} in order to prevent a call to {@link AuthorityCodes#finalize} before
-     * the iteration is finished.
+     * The iterator over the codes. This inner class must kept a reference toward the enclosing {@link AuthorityCodes}
+     * in order to prevent a call to {@link AuthorityCodes#finalize} before the iteration is finished.
      */
     private final class Iterator implements java.util.Iterator<String> {
         /** The result set, or {@code null} if there is no more elements. */
@@ -456,10 +447,7 @@ public final class AuthorityCodes extends AbstractSet<String> implements Seriali
         return asMap;
     }
 
-    /**
-     * A view of {@link AuthorityCodes} as a map, with authority codes as key and object names as
-     * values.
-     */
+    /** A view of {@link AuthorityCodes} as a map, with authority codes as key and object names as values. */
     private final class Map extends AbstractMap<String, String> {
         /** Returns the number of key-value mappings in this map. */
         @Override

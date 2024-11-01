@@ -26,8 +26,8 @@ import org.apache.commons.logging.LogFactory;
  * HREF="https://commons.apache.org/proper/commons-logging/">Commons-logging</A> framework.
  *
  * <p>Out of the box commons logging delegates to the java util logging framework (using the class
- * org.apache.commons.logging.impl.Jdk14Logger). If this factory detects Commons logging is already
- * delegating to Jdk14Logger it will return {@code null} allowing java util logging directly.
+ * org.apache.commons.logging.impl.Jdk14Logger). If this factory detects Commons logging is already delegating to
+ * Jdk14Logger it will return {@code null} allowing java util logging directly.
  *
  * @since 2.4
  * @version $Id$
@@ -59,14 +59,13 @@ public class CommonsLoggerFactory extends LoggerFactory<Log> {
     }
 
     /**
-     * Returns the implementation to use for the logger of the specified name, or {@code null} if
-     * the logger would delegate to Java logging anyway.
+     * Returns the implementation to use for the logger of the specified name, or {@code null} if the logger would
+     * delegate to Java logging anyway.
      */
     @Override
     protected Log getImplementation(final String name) {
         final Log log = LogFactory.getLog(name);
-        if (log != null
-                && log.getClass().getName().equals("org.apache.commons.logging.impl.Jdk14Logger")) {
+        if (log != null && log.getClass().getName().equals("org.apache.commons.logging.impl.Jdk14Logger")) {
             return null;
         }
         return log;
@@ -79,8 +78,8 @@ public class CommonsLoggerFactory extends LoggerFactory<Log> {
     }
 
     /**
-     * Returns the {@linkplain #getImplementation implementation} wrapped by the specified logger,
-     * or {@code null} if none.
+     * Returns the {@linkplain #getImplementation implementation} wrapped by the specified logger, or {@code null} if
+     * none.
      */
     @Override
     protected Log unwrap(final Logger logger) {

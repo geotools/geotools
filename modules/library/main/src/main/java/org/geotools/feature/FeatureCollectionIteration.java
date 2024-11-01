@@ -23,15 +23,14 @@ import org.geotools.api.feature.Property;
 import org.geotools.api.feature.type.PropertyDescriptor;
 
 /**
- * The FeatureCollectionIteration provides a depth first traversal of a SimpleFeatureCollection
- * which will call the provided call-back Handler. Because of the complex nature of Features, which
- * may have other Features (or even a collection of Features) as attributes, the handler is
- * repsonsible for maintaining its own state as to where in the traversal it is recieving events
- * from. Many handlers will not need to worry about state.
+ * The FeatureCollectionIteration provides a depth first traversal of a SimpleFeatureCollection which will call the
+ * provided call-back Handler. Because of the complex nature of Features, which may have other Features (or even a
+ * collection of Features) as attributes, the handler is repsonsible for maintaining its own state as to where in the
+ * traversal it is recieving events from. Many handlers will not need to worry about state.
  *
- * <p><b>Implementation Notes:</b> The depth first visitation is implemented through recursion. The
- * limits to recursion depending on the settings in the JVM, but some tests show a 2 argument
- * recursive having a limit of ~50000 method calls with a stack size of 512k (the standard setting).
+ * <p><b>Implementation Notes:</b> The depth first visitation is implemented through recursion. The limits to recursion
+ * depending on the settings in the JVM, but some tests show a 2 argument recursive having a limit of ~50000 method
+ * calls with a stack size of 512k (the standard setting).
  *
  * @author Ian Schneider, USDA-ARS
  * @author Chris Holmes, TOPP
@@ -50,8 +49,7 @@ public class FeatureCollectionIteration {
      * @param collection The collection to iterate over.
      * @throws NullPointerException If handler or collection are null.
      */
-    public FeatureCollectionIteration(Handler handler, FeatureCollection<?, ?> collection)
-            throws NullPointerException {
+    public FeatureCollectionIteration(Handler handler, FeatureCollection<?, ?> collection) throws NullPointerException {
         if (handler == null) {
             throw new NullPointerException("handler");
         }
@@ -81,9 +79,9 @@ public class FeatureCollectionIteration {
     }
 
     /**
-     * Perform the iterative behavior on the given collection. This will alert the handler with a
-     * <code>handleFeatureCollection</code> call, followed by an <code> iterate()</code>, followed
-     * by a <code>handler.endFeatureCollection()</code> call.
+     * Perform the iterative behavior on the given collection. This will alert the handler with a <code>
+     * handleFeatureCollection</code> call, followed by an <code> iterate()</code>, followed by a <code>
+     * handler.endFeatureCollection()</code> call.
      *
      * @param collection The collection to iterate upon.
      */

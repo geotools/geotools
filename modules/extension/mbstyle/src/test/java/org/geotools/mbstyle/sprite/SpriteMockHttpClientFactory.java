@@ -52,14 +52,11 @@ public class SpriteMockHttpClientFactory extends AbstractHTTPClientFactory {
 
             try {
                 final MockHttpResponse jsonResponse =
-                        new MockHttpResponse(
-                                toByteArray(SpriteGraphicFactoryMockTest.jsonURL),
-                                "application/json");
+                        new MockHttpResponse(toByteArray(SpriteGraphicFactoryMockTest.jsonURL), "application/json");
                 expectGet(SpriteGraphicFactoryMockTest.jsonURL, jsonResponse);
 
                 final MockHttpResponse pngResponse =
-                        new MockHttpResponse(
-                                toByteArray(SpriteGraphicFactoryMockTest.pngURL), "image/png");
+                        new MockHttpResponse(toByteArray(SpriteGraphicFactoryMockTest.pngURL), "image/png");
                 expectGet(SpriteGraphicFactoryMockTest.pngURL, pngResponse);
             } catch (IOException e) {
                 throw new RuntimeException(e);

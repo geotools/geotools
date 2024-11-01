@@ -23,9 +23,9 @@ import javax.media.jai.iterator.RandomIterFactory;
 import org.geotools.image.ImageWorker;
 
 /**
- * Utility to compare two images and verify if the are equal to the human eye, or not. See the
- * {@link Mode} enumeration for comparison modes. The image comparison logic has been ported to Java
- * from Resemble.js, https://github.com/Huddle/Resemble.js
+ * Utility to compare two images and verify if the are equal to the human eye, or not. See the {@link Mode} enumeration
+ * for comparison modes. The image comparison logic has been ported to Java from Resemble.js,
+ * https://github.com/Huddle/Resemble.js
  *
  * @author Andrea Aime - GeoSolutions
  */
@@ -33,13 +33,13 @@ public class ImageComparator {
 
     public enum Mode {
         /**
-         * Checks if the images are equal taking into account the full color and all pixels. Some
-         * light difference between the two images is still being tolerated
+         * Checks if the images are equal taking into account the full color and all pixels. Some light difference
+         * between the two images is still being tolerated
          */
         IgnoreNothing,
         /**
-         * Same as above, but if a pixel is found to be anti-aliased, only brightness will be
-         * compared, instead of the full color component
+         * Same as above, but if a pixel is found to be anti-aliased, only brightness will be compared, instead of the
+         * full color component
          */
         IgnoreAntialiasing,
         /** Ignores the colors and compares only the brightness */
@@ -194,9 +194,8 @@ public class ImageComparator {
         this.bands = image1.getSampleModel().getNumBands();
         final boolean hasAlpha = image1.getColorModel().hasAlpha();
         if (bands > 4 || (bands == 2 && !hasAlpha) || (bands == 3 && hasAlpha)) {
-            throw new IllegalArgumentException(
-                    "Images have the wrong type, this code only supports gray, gray/alpha, "
-                            + "RGB, RGBA images, or images that can be transformed in those models");
+            throw new IllegalArgumentException("Images have the wrong type, this code only supports gray, gray/alpha, "
+                    + "RGB, RGBA images, or images that can be transformed in those models");
         }
 
         this.mode = mode;
@@ -230,11 +229,10 @@ public class ImageComparator {
 
     /** Forces the image to start in the origin and have a rgb/rbga/gray/gray+alpha structure */
     private RenderedImage normalizeImage(RenderedImage image1) {
-        image1 =
-                new ImageWorker(image1)
-                        .forceColorSpaceRGB()
-                        .forceComponentColorModel()
-                        .getRenderedImage();
+        image1 = new ImageWorker(image1)
+                .forceColorSpaceRGB()
+                .forceComponentColorModel()
+                .getRenderedImage();
         if (image1.getMinX() != 0 || image1.getMinY() != 0) {
             image1 = PlanarImage.wrapRenderedImage(image1).getAsBufferedImage();
         }
@@ -274,8 +272,7 @@ public class ImageComparator {
                     } else if (!px1.isSimilar(px2)) {
                         if (mode == Mode.IgnoreAntialiasing) {
                             if (isAntialised(px1, it1, r, c, width, height, components, cursor)
-                                    || isAntialised(
-                                            px2, it2, r, c, width, height, components, cursor)) {
+                                    || isAntialised(px2, it2, r, c, width, height, components, cursor)) {
                                 if (!px1.isBrightnessSimilar(px2)) {
                                     mismatchCount++;
                                 }
@@ -295,14 +292,7 @@ public class ImageComparator {
     }
 
     private boolean isAntialised(
-            Pixel source,
-            RandomIter it,
-            int row,
-            int col,
-            int width,
-            int height,
-            int[] pixel,
-            Pixel cursor) {
+            Pixel source, RandomIter it, int row, int col, int width, int height, int[] pixel, Pixel cursor) {
         final int DISTANCE = 1;
 
         int highContrastSibling = 0;

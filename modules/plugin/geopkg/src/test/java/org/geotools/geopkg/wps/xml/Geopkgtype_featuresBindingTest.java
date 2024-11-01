@@ -26,7 +26,8 @@ public class Geopkgtype_featuresBindingTest extends GPKGTestSupport {
     @Test
     public void testType() {
         assertEquals(
-                GeoPackageProcessRequest.Layer.class, binding(GPKG.geopkgtype_features).getType());
+                GeoPackageProcessRequest.Layer.class,
+                binding(GPKG.geopkgtype_features).getType());
     }
 
     @Test

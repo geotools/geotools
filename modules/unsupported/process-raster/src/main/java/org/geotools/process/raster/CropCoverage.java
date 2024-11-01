@@ -39,9 +39,7 @@ import org.locationtech.jts.geom.GeometryCollection;
  * @author Andrea Aime - GeoSolutions
  * @author ETj <etj at geo-solutions.it>
  */
-@DescribeProcess(
-        title = "Crop Coverage",
-        description = "Returns the portion of a raster bounded by a given geometry.")
+@DescribeProcess(title = "Crop Coverage", description = "Returns the portion of a raster bounded by a given geometry.")
 public class CropCoverage implements RasterProcess {
 
     private static final CoverageProcessor PROCESSOR = CoverageProcessor.getInstance();
@@ -49,10 +47,8 @@ public class CropCoverage implements RasterProcess {
 
     @DescribeResult(name = "result", description = "Cropped raster")
     public GridCoverage2D execute(
-            @DescribeParameter(name = "coverage", description = "Input raster")
-                    GridCoverage2D coverage,
-            @DescribeParameter(name = "cropShape", description = "Geometry used to crop the raster")
-                    Geometry cropShape,
+            @DescribeParameter(name = "coverage", description = "Input raster") GridCoverage2D coverage,
+            @DescribeParameter(name = "cropShape", description = "Geometry used to crop the raster") Geometry cropShape,
             ProgressListener progressListener)
             throws IOException {
         // get the bounds
@@ -63,8 +59,7 @@ public class CropCoverage implements RasterProcess {
             // assume the geometry is in the same crs
             crs = coverage.getCoordinateReferenceSystem();
         }
-        GeneralBounds bounds =
-                new GeneralBounds(new ReferencedEnvelope(cropShape.getEnvelopeInternal(), crs));
+        GeneralBounds bounds = new GeneralBounds(new ReferencedEnvelope(cropShape.getEnvelopeInternal(), crs));
 
         // force it to a collection if necessary
         GeometryCollection roi;

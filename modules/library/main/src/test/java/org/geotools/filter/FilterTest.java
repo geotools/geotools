@@ -76,16 +76,15 @@ import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.geom.PrecisionModel;
 
 /**
- * Unit test for filters. Note that this unit test does not encompass all of filter package, just
- * the filters themselves. There is a seperate unit test for expressions.
+ * Unit test for filters. Note that this unit test does not encompass all of filter package, just the filters
+ * themselves. There is a seperate unit test for expressions.
  *
  * @author James MacGill, CCG
  * @author Rob Hranac, TOPP
  */
 public class FilterTest {
     /** The logger for the filter module. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(FilterTest.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(FilterTest.class);
 
     /** SimpleFeature on which to preform tests */
     private static SimpleFeature testFeature = null;
@@ -186,38 +185,22 @@ public class FilterTest {
 
     @Test
     public void testLikeToSQL() {
-        Assert.assertEquals(
-                "BroadWay%", LikeFilterImpl.convertToSQL92('!', '*', '.', true, "BroadWay*", true));
-        Assert.assertEquals(
-                "broad#ay", LikeFilterImpl.convertToSQL92('!', '*', '.', true, "broad#ay", true));
-        Assert.assertEquals(
-                "broadway", LikeFilterImpl.convertToSQL92('!', '*', '.', true, "broadway", true));
+        Assert.assertEquals("BroadWay%", LikeFilterImpl.convertToSQL92('!', '*', '.', true, "BroadWay*", true));
+        Assert.assertEquals("broad#ay", LikeFilterImpl.convertToSQL92('!', '*', '.', true, "broad#ay", true));
+        Assert.assertEquals("broadway", LikeFilterImpl.convertToSQL92('!', '*', '.', true, "broadway", true));
 
-        Assert.assertEquals(
-                "broad_ay", LikeFilterImpl.convertToSQL92('!', '*', '.', true, "broad.ay", true));
-        Assert.assertEquals(
-                "broad.ay", LikeFilterImpl.convertToSQL92('!', '*', '.', true, "broad!.ay", true));
+        Assert.assertEquals("broad_ay", LikeFilterImpl.convertToSQL92('!', '*', '.', true, "broad.ay", true));
+        Assert.assertEquals("broad.ay", LikeFilterImpl.convertToSQL92('!', '*', '.', true, "broad!.ay", true));
 
+        Assert.assertEquals("broa''dway", LikeFilterImpl.convertToSQL92('!', '*', '.', true, "broa'dway", true));
         Assert.assertEquals(
-                "broa''dway",
-                LikeFilterImpl.convertToSQL92('!', '*', '.', true, "broa'dway", true));
-        Assert.assertEquals(
-                "broa''''dway",
-                LikeFilterImpl.convertToSQL92('!', '*', '.', true, "broa" + "''dway", true));
-        Assert.assertEquals(
-                "broa'dway",
-                LikeFilterImpl.convertToSQL92('!', '*', '.', true, "broa'dway", false));
-        Assert.assertEquals(
-                "broa''dway",
-                LikeFilterImpl.convertToSQL92('!', '*', '.', true, "broa" + "''dway", false));
+                "broa''''dway", LikeFilterImpl.convertToSQL92('!', '*', '.', true, "broa" + "''dway", true));
+        Assert.assertEquals("broa'dway", LikeFilterImpl.convertToSQL92('!', '*', '.', true, "broa'dway", false));
+        Assert.assertEquals("broa''dway", LikeFilterImpl.convertToSQL92('!', '*', '.', true, "broa" + "''dway", false));
 
-        Assert.assertEquals(
-                "broadway_", LikeFilterImpl.convertToSQL92('!', '*', '.', true, "broadway.", true));
-        Assert.assertEquals(
-                "broadway", LikeFilterImpl.convertToSQL92('!', '*', '.', true, "broadway!", true));
-        Assert.assertEquals(
-                "broadway!",
-                LikeFilterImpl.convertToSQL92('!', '*', '.', true, "broadway!!", true));
+        Assert.assertEquals("broadway_", LikeFilterImpl.convertToSQL92('!', '*', '.', true, "broadway.", true));
+        Assert.assertEquals("broadway", LikeFilterImpl.convertToSQL92('!', '*', '.', true, "broadway!", true));
+        Assert.assertEquals("broadway!", LikeFilterImpl.convertToSQL92('!', '*', '.', true, "broadway!!", true));
     }
 
     /**
@@ -237,31 +220,24 @@ public class FilterTest {
 
         // Test all permutations of integers as strings
         compareStringToIntegerRunner(testAttribute, PropertyIsEqualTo.class, false, true, false);
-        compareStringToIntegerRunner(
-                testAttribute, PropertyIsGreaterThan.class, true, false, false);
+        compareStringToIntegerRunner(testAttribute, PropertyIsGreaterThan.class, true, false, false);
         compareStringToIntegerRunner(testAttribute, PropertyIsLessThan.class, false, false, true);
-        compareStringToIntegerRunner(
-                testAttribute, PropertyIsGreaterThanOrEqualTo.class, true, true, false);
-        compareStringToIntegerRunner(
-                testAttribute, PropertyIsLessThanOrEqualTo.class, false, true, true);
+        compareStringToIntegerRunner(testAttribute, PropertyIsGreaterThanOrEqualTo.class, true, true, false);
+        compareStringToIntegerRunner(testAttribute, PropertyIsLessThanOrEqualTo.class, false, true, true);
 
         // Test all permutations of integers as doubles
         compareIntegerToDoubleRunner(testAttribute, PropertyIsEqualTo.class, false, true, false);
-        compareIntegerToDoubleRunner(
-                testAttribute, PropertyIsGreaterThan.class, true, false, false);
+        compareIntegerToDoubleRunner(testAttribute, PropertyIsGreaterThan.class, true, false, false);
         compareIntegerToDoubleRunner(testAttribute, PropertyIsLessThan.class, false, false, true);
-        compareIntegerToDoubleRunner(
-                testAttribute, PropertyIsGreaterThanOrEqualTo.class, true, true, false);
-        compareIntegerToDoubleRunner(
-                testAttribute, PropertyIsLessThanOrEqualTo.class, false, true, true);
+        compareIntegerToDoubleRunner(testAttribute, PropertyIsGreaterThanOrEqualTo.class, true, true, false);
+        compareIntegerToDoubleRunner(testAttribute, PropertyIsLessThanOrEqualTo.class, false, true, true);
 
         // test all date permutations, with string/date conversion included
         testAttribute = new AttributeExpressionImpl(testSchema, "date");
         compareSqlDateRunner(testAttribute, PropertyIsEqualTo.class, false, true, false);
         compareSqlDateRunner(testAttribute, PropertyIsGreaterThan.class, true, false, false);
         compareSqlDateRunner(testAttribute, PropertyIsLessThan.class, false, false, true);
-        compareSqlDateRunner(
-                testAttribute, PropertyIsGreaterThanOrEqualTo.class, true, true, false);
+        compareSqlDateRunner(testAttribute, PropertyIsGreaterThanOrEqualTo.class, true, true, false);
         compareSqlDateRunner(testAttribute, PropertyIsLessThanOrEqualTo.class, false, true, true);
 
         // test all date permutations, with string/date conversion included
@@ -269,8 +245,7 @@ public class FilterTest {
         compareSqlTimeRunner(testAttribute, PropertyIsEqualTo.class, false, true, false);
         compareSqlTimeRunner(testAttribute, PropertyIsGreaterThan.class, true, false, false);
         compareSqlTimeRunner(testAttribute, PropertyIsLessThan.class, false, false, true);
-        compareSqlTimeRunner(
-                testAttribute, PropertyIsGreaterThanOrEqualTo.class, true, true, false);
+        compareSqlTimeRunner(testAttribute, PropertyIsGreaterThanOrEqualTo.class, true, true, false);
         compareSqlTimeRunner(testAttribute, PropertyIsLessThanOrEqualTo.class, false, true, true);
 
         // Set up the string test.
@@ -278,8 +253,7 @@ public class FilterTest {
 
         // Test for false positive.
         Literal testLiteral = new LiteralExpressionImpl("test string data");
-        org.geotools.api.filter.Filter filter =
-                compare(PropertyIsEqualTo.class, testAttribute, testLiteral);
+        org.geotools.api.filter.Filter filter = compare(PropertyIsEqualTo.class, testAttribute, testLiteral);
 
         // LOGGER.finer( filter.toString());
         // LOGGER.finer( "contains feature: " + filter.contains(testFeature));
@@ -307,11 +281,7 @@ public class FilterTest {
      * @throws IllegalFilterException If the constructed filter is not valid.
      */
     public void compareNumberRunner(
-            PropertyName testAttribute,
-            Class filterType,
-            boolean test1,
-            boolean test2,
-            boolean test3)
+            PropertyName testAttribute, Class filterType, boolean test1, boolean test2, boolean test3)
             throws IllegalFilterException {
         Literal testLiteral = new LiteralExpressionImpl(Integer.valueOf(1001));
         org.geotools.api.filter.Filter filter = compare(filterType, testAttribute, testLiteral);
@@ -336,11 +306,7 @@ public class FilterTest {
     }
 
     public void compareStringToIntegerRunner(
-            PropertyName testAttribute,
-            Class filterType,
-            boolean test1,
-            boolean test2,
-            boolean test3)
+            PropertyName testAttribute, Class filterType, boolean test1, boolean test2, boolean test3)
             throws IllegalFilterException {
         Literal testLiteral = new LiteralExpressionImpl("1001.0");
         org.geotools.api.filter.Filter filter = compare(filterType, testAttribute, testLiteral);
@@ -365,11 +331,7 @@ public class FilterTest {
     }
 
     public void compareIntegerToDoubleRunner(
-            PropertyName testAttribute,
-            Class filterType,
-            boolean test1,
-            boolean test2,
-            boolean test3)
+            PropertyName testAttribute, Class filterType, boolean test1, boolean test2, boolean test3)
             throws IllegalFilterException {
         Literal testLiteral = new LiteralExpressionImpl(Double.valueOf(1001.0));
         org.geotools.api.filter.Filter filter = compare(filterType, testAttribute, testLiteral);
@@ -399,25 +361,19 @@ public class FilterTest {
      * @throws IllegalFilterException If the constructed filter is not valid.
      */
     public void compareSqlDateRunner(
-            PropertyName testAttribute,
-            Class filterType,
-            boolean test1,
-            boolean test2,
-            boolean test3)
+            PropertyName testAttribute, Class filterType, boolean test1, boolean test2, boolean test3)
             throws IllegalFilterException {
         Calendar calLocal = Calendar.getInstance();
         calLocal.setTime(calDate.getTime());
         calLocal.set(Calendar.DAY_OF_MONTH, calDateTime.get(Calendar.DAY_OF_MONTH) - 1);
-        Literal testLiteral =
-                new LiteralExpressionImpl(new java.sql.Date(calLocal.getTimeInMillis()).toString());
+        Literal testLiteral = new LiteralExpressionImpl(new java.sql.Date(calLocal.getTimeInMillis()).toString());
         org.geotools.api.filter.Filter filter = compare(filterType, testAttribute, testLiteral);
 
         // LOGGER.finer( filter.toString());
         // LOGGER.finer( "contains feature: " + filter.contains(testFeature));
         Assert.assertEquals(test1, filter.evaluate(testFeature));
 
-        testLiteral =
-                new LiteralExpressionImpl(new java.sql.Date(calDate.getTimeInMillis()).toString());
+        testLiteral = new LiteralExpressionImpl(new java.sql.Date(calDate.getTimeInMillis()).toString());
         filter = compare(filterType, testAttribute, testLiteral);
 
         // LOGGER.finer( filter.toString());
@@ -425,8 +381,7 @@ public class FilterTest {
         Assert.assertEquals(test2, filter.evaluate(testFeature));
 
         calLocal.set(Calendar.DAY_OF_MONTH, calDateTime.get(Calendar.DAY_OF_MONTH) + 1);
-        testLiteral =
-                new LiteralExpressionImpl(new java.sql.Date(calLocal.getTimeInMillis()).toString());
+        testLiteral = new LiteralExpressionImpl(new java.sql.Date(calLocal.getTimeInMillis()).toString());
         filter = compare(filterType, testAttribute, testLiteral);
 
         // LOGGER.finer( filter.toString());
@@ -461,25 +416,19 @@ public class FilterTest {
      * @throws IllegalFilterException If the constructed filter is not valid.
      */
     public void compareSqlTimeRunner(
-            PropertyName testAttribute,
-            Class filterType,
-            boolean test1,
-            boolean test2,
-            boolean test3)
+            PropertyName testAttribute, Class filterType, boolean test1, boolean test2, boolean test3)
             throws IllegalFilterException {
         Calendar calLocal = Calendar.getInstance();
         calLocal.setTime(calTime.getTime());
         calLocal.set(Calendar.HOUR_OF_DAY, calTime.get(Calendar.HOUR_OF_DAY) - 1);
-        Literal testLiteral =
-                new LiteralExpressionImpl(new java.sql.Time(calLocal.getTimeInMillis()).toString());
+        Literal testLiteral = new LiteralExpressionImpl(new java.sql.Time(calLocal.getTimeInMillis()).toString());
         org.geotools.api.filter.Filter filter = compare(filterType, testAttribute, testLiteral);
 
         // LOGGER.finer( filter.toString());
         // LOGGER.finer( "contains feature: " + filter.contains(testFeature));
         Assert.assertEquals(filter.evaluate(testFeature), test1);
 
-        testLiteral =
-                new LiteralExpressionImpl(new java.sql.Time(calTime.getTimeInMillis()).toString());
+        testLiteral = new LiteralExpressionImpl(new java.sql.Time(calTime.getTimeInMillis()).toString());
         filter = compare(filterType, testAttribute, testLiteral);
 
         // LOGGER.finer( filter.toString());
@@ -487,8 +436,7 @@ public class FilterTest {
         Assert.assertEquals(filter.evaluate(testFeature), test2);
 
         calLocal.set(Calendar.HOUR_OF_DAY, calTime.get(Calendar.HOUR_OF_DAY) + 1);
-        testLiteral =
-                new LiteralExpressionImpl(new java.sql.Time(calLocal.getTimeInMillis()).toString());
+        testLiteral = new LiteralExpressionImpl(new java.sql.Time(calLocal.getTimeInMillis()).toString());
         filter = compare(filterType, testAttribute, testLiteral);
 
         // LOGGER.finer( filter.toString());
@@ -577,10 +525,9 @@ public class FilterTest {
 
     /**
      * A filter is composed of a logic AND bettween a non null check and a comparison filter, for an
-     * AttributeExpression. If the AttributeExpression evaluates to null, the short-circuit
-     * comparison in the LogicFilter should return without throwing a NullPointerException. If
-     * short-circuit evaluation would not be done in LogicFilter, then a NullPointerException would
-     * be thrown.
+     * AttributeExpression. If the AttributeExpression evaluates to null, the short-circuit comparison in the
+     * LogicFilter should return without throwing a NullPointerException. If short-circuit evaluation would not be done
+     * in LogicFilter, then a NullPointerException would be thrown.
      *
      * @throws IllegalFilterException If the constructed filter is not valid.
      */
@@ -606,8 +553,7 @@ public class FilterTest {
         try {
             Assert.assertFalse(finalFilter.evaluate(testFeature));
         } catch (NullPointerException e) {
-            Assert.fail(
-                    "Short-circuit evaluation was not performed by LogicFilter: " + e.getMessage());
+            Assert.fail("Short-circuit evaluation was not performed by LogicFilter: " + e.getMessage());
         }
 
         // test OR
@@ -615,8 +561,7 @@ public class FilterTest {
         try {
             Assert.assertTrue(finalFilter.evaluate(testFeature));
         } catch (NullPointerException e) {
-            Assert.fail(
-                    "Short-circuit evaluation was not performed by LogicFilter: " + e.getMessage());
+            Assert.fail("Short-circuit evaluation was not performed by LogicFilter: " + e.getMessage());
         }
     }
 
@@ -706,11 +651,7 @@ public class FilterTest {
     @Test
     public void testContains() throws Exception {
         Coordinate[] coords = {
-            new Coordinate(0, 0),
-            new Coordinate(6, 0),
-            new Coordinate(6, 7),
-            new Coordinate(0, 7),
-            new Coordinate(0, 0)
+            new Coordinate(0, 0), new Coordinate(6, 0), new Coordinate(6, 7), new Coordinate(0, 7), new Coordinate(0, 0)
         };
 
         // Test Equals
@@ -737,14 +678,9 @@ public class FilterTest {
         LOGGER.finer("contains feature: " + filter.evaluate(testFeature));
         Assert.assertFalse(filter.evaluate(testFeature));
 
-        coords =
-                new Coordinate[] {
-                    new Coordinate(2, 2),
-                    new Coordinate(6, 0),
-                    new Coordinate(6, 7),
-                    new Coordinate(0, 7),
-                    new Coordinate(2, 2)
-                };
+        coords = new Coordinate[] {
+            new Coordinate(2, 2), new Coordinate(6, 0), new Coordinate(6, 7), new Coordinate(0, 7), new Coordinate(2, 2)
+        };
         geom = gf.createPolygon(gf.createLinearRing(coords), new LinearRing[0]);
         expr1 = new LiteralExpressionImpl(geom);
         filter = fac.contains(expr1, expr2);
@@ -763,11 +699,7 @@ public class FilterTest {
     @Test
     public void testWithin() throws Exception {
         Coordinate[] coords = {
-            new Coordinate(0, 0),
-            new Coordinate(6, 0),
-            new Coordinate(6, 7),
-            new Coordinate(0, 7),
-            new Coordinate(0, 0)
+            new Coordinate(0, 0), new Coordinate(6, 0), new Coordinate(6, 7), new Coordinate(0, 7), new Coordinate(0, 0)
         };
 
         // Test Equals
@@ -794,17 +726,10 @@ public class FilterTest {
         LOGGER.finer("contains feature: " + filter.evaluate(testFeature));
         Assert.assertFalse(filter.evaluate(testFeature));
 
-        coords =
-                new Coordinate[] {
-                    new Coordinate(2, 2),
-                    new Coordinate(6, 0),
-                    new Coordinate(6, 7),
-                    new Coordinate(0, 7),
-                    new Coordinate(2, 2)
-                };
-        expr2 =
-                new LiteralExpressionImpl(
-                        gf.createPolygon(gf.createLinearRing(coords), new LinearRing[0]));
+        coords = new Coordinate[] {
+            new Coordinate(2, 2), new Coordinate(6, 0), new Coordinate(6, 7), new Coordinate(0, 7), new Coordinate(2, 2)
+        };
+        expr2 = new LiteralExpressionImpl(gf.createPolygon(gf.createLinearRing(coords), new LinearRing[0]));
         filter = fac.within(expr2, expr1);
 
         LOGGER.finer(filter.toString());
@@ -969,8 +894,7 @@ public class FilterTest {
         coords2[3] = new Coordinate(10, 15);
         coords2[4] = new Coordinate(10, 10);
         GeometryFactory gf = new GeometryFactory(new PrecisionModel());
-        Literal right =
-                new LiteralExpressionImpl(gf.createPolygon(gf.createLinearRing(coords2), null));
+        Literal right = new LiteralExpressionImpl(gf.createPolygon(gf.createLinearRing(coords2), null));
 
         DWithin filter = fac.dwithin(left, right, 20, "m");
         LOGGER.finer(filter.toString());
@@ -1000,8 +924,7 @@ public class FilterTest {
         coords2[3] = new Coordinate(10, 15);
         coords2[4] = new Coordinate(10, 10);
         GeometryFactory gf = new GeometryFactory(new PrecisionModel());
-        Literal right =
-                new LiteralExpressionImpl(gf.createPolygon(gf.createLinearRing(coords2), null));
+        Literal right = new LiteralExpressionImpl(gf.createPolygon(gf.createLinearRing(coords2), null));
 
         Beyond filter = fac.beyond(left, right, 20, "m");
         LOGGER.finer(filter.toString());
@@ -1155,8 +1078,8 @@ public class FilterTest {
     }
 
     /**
-     * Test that Filter works over Object as expected, provided there exists a {@link
-     * PropertyAccessor} for the given kind of object.
+     * Test that Filter works over Object as expected, provided there exists a {@link PropertyAccessor} for the given
+     * kind of object.
      */
     @Test
     public void testEvaluateNonFeatureObject() {
@@ -1168,13 +1091,11 @@ public class FilterTest {
 
         Assert.assertTrue(f.evaluate(object));
 
-        org.geotools.api.filter.Filter f2 =
-                fac.and(f, fac.equals(fac.property("stringVal"), fac.literal("cinco")));
+        org.geotools.api.filter.Filter f2 = fac.and(f, fac.equals(fac.property("stringVal"), fac.literal("cinco")));
 
         Assert.assertTrue(f2.evaluate(object));
 
-        org.geotools.api.filter.Filter f3 =
-                fac.and(f, fac.equals(fac.property("stringVal"), fac.literal("seis")));
+        org.geotools.api.filter.Filter f3 = fac.and(f, fac.equals(fac.property("stringVal"), fac.literal("seis")));
 
         Assert.assertFalse(f3.evaluate(object));
 
@@ -1185,8 +1106,7 @@ public class FilterTest {
     }
 
     /**
-     * A simple data object to be used on testing Filter.evaluate(Object) through {@link
-     * MockPropertyAccessorFactory}
+     * A simple data object to be used on testing Filter.evaluate(Object) through {@link MockPropertyAccessorFactory}
      *
      * @author Gabriel Roldan, Axios Engineering
      */
@@ -1206,16 +1126,15 @@ public class FilterTest {
     }
 
     /**
-     * A {@link PropertyAccessorFactory} intended to be used on testing that the Filter
-     * implementation works over Object as expected, and not only over SimpleFeature
+     * A {@link PropertyAccessorFactory} intended to be used on testing that the Filter implementation works over Object
+     * as expected, and not only over SimpleFeature
      *
      * @author Gabriel Roldan, Axios Engineering
      */
     public static class MockPropertyAccessorFactory implements PropertyAccessorFactory {
 
         @Override
-        public PropertyAccessor createPropertyAccessor(
-                Class type, String xpath, Class target, Hints hints) {
+        public PropertyAccessor createPropertyAccessor(Class type, String xpath, Class target, Hints hints) {
             if (!MockDataObject.class.equals(type)) {
                 return null;
             }
@@ -1226,8 +1145,7 @@ public class FilterTest {
                 }
 
                 @Override
-                public <T> T get(Object object, String xpath, Class<T> target)
-                        throws IllegalArgumentException {
+                public <T> T get(Object object, String xpath, Class<T> target) throws IllegalArgumentException {
                     if (object == null) return null;
 
                     try {
@@ -1238,8 +1156,7 @@ public class FilterTest {
                         return cast;
                     } catch (Exception e) {
                         throw (IllegalArgumentException)
-                                new IllegalArgumentException("Illegal property name: " + xpath)
-                                        .initCause(e);
+                                new IllegalArgumentException("Illegal property name: " + xpath).initCause(e);
                     }
                 }
 

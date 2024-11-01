@@ -25,8 +25,7 @@ import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
 
 /**
- * Binding object for the type
- * http://www.opengis.net/wcs:WCSCapabilityType_VendorSpecificCapabilities.
+ * Binding object for the type http://www.opengis.net/wcs:WCSCapabilityType_VendorSpecificCapabilities.
  *
  * <p>
  *

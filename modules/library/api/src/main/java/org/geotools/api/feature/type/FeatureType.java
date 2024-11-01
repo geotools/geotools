@@ -52,8 +52,7 @@ public interface FeatureType extends ComplexType {
      *   ((GeometryType)getDefaultGeometry().getType()).getCRS();
      * </pre>
      *
-     * <p>This method will return <code>null</code> in the case where no default geometric attribute
-     * is defined.
+     * <p>This method will return <code>null</code> in the case where no default geometric attribute is defined.
      *
      * @return The coordinate referencing system, or <code>null</code>.
      */

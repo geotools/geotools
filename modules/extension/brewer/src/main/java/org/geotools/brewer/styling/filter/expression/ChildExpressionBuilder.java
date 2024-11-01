@@ -20,11 +20,10 @@ import org.geotools.api.filter.expression.Expression;
 import org.geotools.brewer.styling.builder.Builder;
 
 /**
- * Child expression builder; suitable for use collecting function parameters and binary expression
- * arguments.
+ * Child expression builder; suitable for use collecting function parameters and binary expression arguments.
  *
- * <p>This builder is designed to be "chained" from a parent builder; you may return to the parent
- * builder at any time by calling end().
+ * <p>This builder is designed to be "chained" from a parent builder; you may return to the parent builder at any time
+ * by calling end().
  *
  * @param <P> parent builder
  */
@@ -62,8 +61,7 @@ public class ChildExpressionBuilder<P extends Builder<?>> extends ExpressionBuil
     /**
      * Build the parameter; adding it to the parent.
      *
-     * <p>When using this from another builder you may wish to override the this build() method as
-     * shown below:
+     * <p>When using this from another builder you may wish to override the this build() method as shown below:
      *
      * <pre>
      * final Expression array[] = ...

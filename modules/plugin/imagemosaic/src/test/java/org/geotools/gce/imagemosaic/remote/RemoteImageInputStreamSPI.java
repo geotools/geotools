@@ -40,9 +40,7 @@ public class RemoteImageInputStreamSPI extends ImageInputStreamSpi {
             throws IOException {
         try {
             return delegate.createInputStreamInstance(
-                    TestData.file(RemoteTest.class, "remote_test" + ((URL) input).getPath()),
-                    useCache,
-                    cacheDir);
+                    TestData.file(RemoteTest.class, "remote_test" + ((URL) input).getPath()), useCache, cacheDir);
         } catch (FileNotFoundException e) {
             return null;
         }

@@ -42,20 +42,18 @@ import org.locationtech.jts.geom.impl.PackedCoordinateSequenceFactory;
 /**
  * A {@link DataStoreFactorySpi} to connect to a Web Feature Service.
  *
- * <p>Produces a {@link WFSDataStore} if the correct set of connection parameters are provided. For
- * instance, the only mandatory one is {@link #URL}.
+ * <p>Produces a {@link WFSDataStore} if the correct set of connection parameters are provided. For instance, the only
+ * mandatory one is {@link #URL}.
  *
- * <p>As with all the DataStoreFactorySpi implementations, this one is not intended to be used
- * directly but through the {@link DataStoreFinder} mechanism, hence client applications should not
- * have strong dependencies over this module.
+ * <p>As with all the DataStoreFactorySpi implementations, this one is not intended to be used directly but through the
+ * {@link DataStoreFinder} mechanism, hence client applications should not have strong dependencies over this module.
  *
- * <p>Upon a valid URL to a WFS GetCapabilities document, this factory will perform version
- * negotiation between the server supported protocol versions and this plugin supported ones, and
- * will return a {@link DataStore} capable of communicating with the server using the agreed WFS
- * protocol version.
+ * <p>Upon a valid URL to a WFS GetCapabilities document, this factory will perform version negotiation between the
+ * server supported protocol versions and this plugin supported ones, and will return a {@link DataStore} capable of
+ * communicating with the server using the agreed WFS protocol version.
  *
- * <p>In the case the provided GetCapabilities URL explicitly contains a VERSION parameter and both
- * the server and client support that version, that version will be used.
+ * <p>In the case the provided GetCapabilities URL explicitly contains a VERSION parameter and both the server and
+ * client support that version, that version will be used.
  *
  * @see WFSDataStore
  * @see WFSClient
@@ -66,14 +64,12 @@ public class WFSDataStoreFactory extends WFSDataAccessFactory implements DataSto
     private static int GMLComplianceLevel = 0;
 
     /**
-     * Requests the WFS Capabilities document from the {@link WFSDataStoreFactory#URL url} parameter
-     * in {@code params} and returns a {@link WFSDataStore} according to the version of the
-     * GetCapabilities document returned.
+     * Requests the WFS Capabilities document from the {@link WFSDataStoreFactory#URL url} parameter in {@code params}
+     * and returns a {@link WFSDataStore} according to the version of the GetCapabilities document returned.
      *
-     * <p>Note the {@code URL} provided as parameter must refer to the actual {@code
-     * GetCapabilities} request. If you need to specify a preferred version or want the
-     * GetCapabilities request to be generated from a base URL build the URL with the {@link
-     * #createGetCapabilitiesRequest} first.
+     * <p>Note the {@code URL} provided as parameter must refer to the actual {@code GetCapabilities} request. If you
+     * need to specify a preferred version or want the GetCapabilities request to be generated from a base URL build the
+     * URL with the {@link #createGetCapabilitiesRequest} first.
      *
      * @see DataStoreFactorySpi#createDataStore(java.util.Map)
      */
@@ -87,8 +83,7 @@ public class WFSDataStoreFactory extends WFSDataAccessFactory implements DataSto
             String password = config.getPassword();
             if (((user == null) && (password != null))
                     || ((config.getPassword() == null) && (config.getUser() != null))) {
-                throw new IOException(
-                        "Cannot define only one of USERNAME or PASSWORD, must define both or neither");
+                throw new IOException("Cannot define only one of USERNAME or PASSWORD, must define both or neither");
             }
         }
 
@@ -113,8 +108,7 @@ public class WFSDataStoreFactory extends WFSDataAccessFactory implements DataSto
         WFSDataStore dataStore = new WFSDataStore(wfsClient);
         // factories
         dataStore.setFilterFactory(CommonFactoryFinder.getFilterFactory(null));
-        dataStore.setGeometryFactory(
-                new GeometryFactory(PackedCoordinateSequenceFactory.DOUBLE_FACTORY));
+        dataStore.setGeometryFactory(new GeometryFactory(PackedCoordinateSequenceFactory.DOUBLE_FACTORY));
         dataStore.setFeatureTypeFactory(new FeatureTypeFactoryImpl());
         dataStore.setFeatureFactory(CommonFactoryFinder.getFeatureFactory(null));
         dataStore.setDataStoreFactory(this);
@@ -124,8 +118,7 @@ public class WFSDataStoreFactory extends WFSDataAccessFactory implements DataSto
     }
 
     /**
-     * Creates the HttpClient instance used to connect to the WFS service, compatible with the given
-     * parameters.
+     * Creates the HttpClient instance used to connect to the WFS service, compatible with the given parameters.
      *
      * @param params wfs service connection parameters
      * @return the HttpClient instance
@@ -177,14 +170,13 @@ public class WFSDataStoreFactory extends WFSDataAccessFactory implements DataSto
     }
 
     /**
-     * Creates a HTTP GET Method based WFS {@code GetCapabilities} request for the given protocol
-     * version.
+     * Creates a HTTP GET Method based WFS {@code GetCapabilities} request for the given protocol version.
      *
-     * <p>If the query string in the {@code host} URL already contains a VERSION number, that
-     * version is <b>discarded</b>.
+     * <p>If the query string in the {@code host} URL already contains a VERSION number, that version is
+     * <b>discarded</b>.
      *
-     * @param host non null URL from which to construct the WFS {@code GetCapabilities} request by
-     *     discarding the query string, if any, and appending the propper query string.
+     * @param host non null URL from which to construct the WFS {@code GetCapabilities} request by discarding the query
+     *     string, if any, and appending the propper query string.
      */
     public static URL createGetCapabilitiesRequest(URL host, Version version) {
         if (host == null) {
@@ -204,15 +196,15 @@ public class WFSDataStoreFactory extends WFSDataAccessFactory implements DataSto
     /**
      * Creates a HTTP GET Method based WFS {@code GetCapabilities} request.
      *
-     * <p>If the query string in the {@code host} URL already contains a VERSION number, that
-     * version is used, otherwise the queried version will be 1.0.0.
+     * <p>If the query string in the {@code host} URL already contains a VERSION number, that version is used, otherwise
+     * the queried version will be 1.0.0.
      *
-     * <p><b>NOTE</b> the default version will be 1.0.0 until the support for 1.1.0 gets stable
-     * enough for general use. If you want to use a 1.1.0 WFS you'll have to explicitly provide the
-     * VERSION=1.1.0 parameter in the GetCapabilities request meanwhile.
+     * <p><b>NOTE</b> the default version will be 1.0.0 until the support for 1.1.0 gets stable enough for general use.
+     * If you want to use a 1.1.0 WFS you'll have to explicitly provide the VERSION=1.1.0 parameter in the
+     * GetCapabilities request meanwhile.
      *
-     * @param host non null URL pointing either to a base WFS service access point, or to a full
-     *     {@code GetCapabilities} request.
+     * @param host non null URL pointing either to a base WFS service access point, or to a full {@code GetCapabilities}
+     *     request.
      */
     public static URL createGetCapabilitiesRequest(final URL host) {
         if (host == null) {
@@ -220,10 +212,7 @@ public class WFSDataStoreFactory extends WFSDataAccessFactory implements DataSto
         }
 
         String queryString = host.getQuery();
-        queryString =
-                queryString == null || "".equals(queryString.trim())
-                        ? ""
-                        : queryString.toUpperCase();
+        queryString = queryString == null || "".equals(queryString.trim()) ? "" : queryString.toUpperCase();
 
         final Version defaultVersion = Versions.highest();
 

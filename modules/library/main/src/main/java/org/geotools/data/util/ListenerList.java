@@ -17,16 +17,16 @@
 package org.geotools.data.util;
 
 /**
- * This class is used to maintain a list of listeners, and is used in the implementations of several
- * classes within JFace which allow you to register listeners of various kinds. It is a fairly
- * lightweight object, occupying minimal space when no listeners are registered.
+ * This class is used to maintain a list of listeners, and is used in the implementations of several classes within
+ * JFace which allow you to register listeners of various kinds. It is a fairly lightweight object, occupying minimal
+ * space when no listeners are registered.
  *
- * <p>Note that the <code>add</code> method checks for and eliminates duplicates based on identity
- * (not equality). Likewise, the <code>remove</code> method compares based on identity.
+ * <p>Note that the <code>add</code> method checks for and eliminates duplicates based on identity (not equality).
+ * Likewise, the <code>remove</code> method compares based on identity.
  *
- * <p>Use the <code>getListeners</code> method when notifying listeners. Note that no garbage is
- * created if no listeners are registered. The recommended code sequence for notifying all
- * registered listeners of say, <code>FooListener.eventHappened</code>, is:
+ * <p>Use the <code>getListeners</code> method when notifying listeners. Note that no garbage is created if no listeners
+ * are registered. The recommended code sequence for notifying all registered listeners of say, <code>
+ * FooListener.eventHappened</code>, is:
  *
  * <pre>
  * Object[] listeners = myListenerList.getListeners();
@@ -43,9 +43,8 @@ public class ListenerList {
     private int size;
 
     /**
-     * The list of listeners. Initially <code>null</code> but initialized to an array of size
-     * capacity the first time a listener is added. Maintains invariant: listeners != null IFF size
-     * != 0
+     * The list of listeners. Initially <code>null</code> but initialized to an array of size capacity the first time a
+     * listener is added. Maintains invariant: listeners != null IFF size != 0
      */
     private Object[] listeners = null;
 
@@ -60,8 +59,8 @@ public class ListenerList {
     /**
      * Creates a listener list with the given initial capacity.
      *
-     * @param capacity the number of listeners which this list can initially accept without growing
-     *     its internal representation; must be at least 1
+     * @param capacity the number of listeners which this list can initially accept without growing its internal
+     *     representation; must be at least 1
      */
     public ListenerList(int capacity) {
         assert capacity >= 1;
@@ -69,8 +68,7 @@ public class ListenerList {
     }
 
     /**
-     * Adds the given listener to this list. Has no effect if an identical listener is already
-     * registered.
+     * Adds the given listener to this list. Has no effect if an identical listener is already registered.
      *
      * @param listener the listener
      */
@@ -102,13 +100,12 @@ public class ListenerList {
     }
 
     /**
-     * Returns an array containing all the registered listeners, in the order in which they were
-     * added.
+     * Returns an array containing all the registered listeners, in the order in which they were added.
      *
-     * <p>The resulting array is unaffected by subsequent adds or removes. If there are no listeners
-     * registered, the result is an empty array singleton instance (no garbage is created). Use this
-     * method when notifying listeners, so that any modifications to the listener list during the
-     * notification will have no effect on the notification itself.
+     * <p>The resulting array is unaffected by subsequent adds or removes. If there are no listeners registered, the
+     * result is an empty array singleton instance (no garbage is created). Use this method when notifying listeners, so
+     * that any modifications to the listener list during the notification will have no effect on the notification
+     * itself.
      *
      * @return the list of registered listeners
      */
@@ -122,16 +119,14 @@ public class ListenerList {
     /**
      * Returns whether this listener list is empty.
      *
-     * @return <code>true</code> if there are no registered listeners, and <code>false</code>
-     *     otherwise
+     * @return <code>true</code> if there are no registered listeners, and <code>false</code> otherwise
      */
     public boolean isEmpty() {
         return size == 0;
     }
 
     /**
-     * Removes the given listener from this list. Has no effect if an identical listener was not
-     * already registered.
+     * Removes the given listener from this list. Has no effect if an identical listener was not already registered.
      *
      * @param listener the listener
      */

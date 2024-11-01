@@ -45,8 +45,7 @@ public class FilterSplitterTest extends MongoTestSupport {
     @Test
     public void testAndSplit() throws Exception {
         // FIXME: CQL.toFilter(before) has wrong date format
-        checkSplitter(
-                "a=1 AND b BEFORE 1980-09-03T00:00:00", "a=1", "b BEFORE 1980-09-03T00:00:00");
+        checkSplitter("a=1 AND b BEFORE 1980-09-03T00:00:00", "a=1", "b BEFORE 1980-09-03T00:00:00");
     }
 
     @Test
@@ -70,8 +69,7 @@ public class FilterSplitterTest extends MongoTestSupport {
      * @param toPostprocess The part of the filter done by postprocessing
      * @throws Exception
      */
-    private void checkSplitter(String beforeSplit, String toMongo, String toPostprocess)
-            throws Exception {
+    private void checkSplitter(String beforeSplit, String toMongo, String toPostprocess) throws Exception {
         // FIXME getCountInternal ignores the toPostprocess, is this correct?
         connect();
         ContentEntry entry = new ContentEntry(dataStore, new NameImpl("ft1"));

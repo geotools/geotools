@@ -42,8 +42,8 @@ public class SortedFeatureReader implements SimpleFeatureReader {
     SimpleFeatureReader delegate;
 
     /**
-     * Checks if the schema and the sortBy are suitable for merge/sort. All attributes need to be
-     * {@link Serializable}, all sorting attributes need to be {@link Comparable}
+     * Checks if the schema and the sortBy are suitable for merge/sort. All attributes need to be {@link Serializable},
+     * all sorting attributes need to be {@link Comparable}
      */
     public static final boolean canSort(SimpleFeatureType schema, SortBy... sortBy) {
         return MergeSortDumper.canSort(schema, sortBy);
@@ -58,8 +58,8 @@ public class SortedFeatureReader implements SimpleFeatureReader {
      * Builds a new sorting feature reader
      *
      * @param reader The reader to be sorted
-     * @param query The query holding the SortBy directives, and the eventual max features in memory
-     *     hint {@link Hints#MAX_MEMORY_SORT}
+     * @param query The query holding the SortBy directives, and the eventual max features in memory hint
+     *     {@link Hints#MAX_MEMORY_SORT}
      */
     public SortedFeatureReader(SimpleFeatureReader reader, Query query) throws IOException {
         this.delegate = MergeSortDumper.getDelegateReader(reader, query);
@@ -72,8 +72,7 @@ public class SortedFeatureReader implements SimpleFeatureReader {
      * @param sortBy The sorting directives
      * @param maxFeatures The maximum number of features to keep in memory
      */
-    public SortedFeatureReader(SimpleFeatureReader reader, SortBy[] sortBy, int maxFeatures)
-            throws IOException {
+    public SortedFeatureReader(SimpleFeatureReader reader, SortBy[] sortBy, int maxFeatures) throws IOException {
         this.delegate = MergeSortDumper.getDelegateReader(reader, sortBy, maxFeatures);
     }
 
@@ -83,8 +82,7 @@ public class SortedFeatureReader implements SimpleFeatureReader {
     }
 
     @Override
-    public SimpleFeature next()
-            throws IOException, IllegalArgumentException, NoSuchElementException {
+    public SimpleFeature next() throws IOException, IllegalArgumentException, NoSuchElementException {
         return delegate.next();
     }
 
@@ -104,8 +102,7 @@ public class SortedFeatureReader implements SimpleFeatureReader {
     }
 
     /** Builds a comparator that can be used to sort SimpleFeature instances in memory */
-    public static Comparator<SimpleFeature> getComparator(
-            SortBy[] sortBy, SimpleFeatureType schema) {
+    public static Comparator<SimpleFeature> getComparator(SortBy[] sortBy, SimpleFeatureType schema) {
         // handle the easy cases, no sorting or natural sorting
         if (sortBy == SortBy.UNSORTED || sortBy == null) {
             return null;

@@ -43,18 +43,14 @@ import org.geotools.filter.capability.FunctionNameImpl;
 public class Collection_MaxFunction extends FunctionExpressionImpl {
 
     /** The logger for the filter module. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(Collection_MaxFunction.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(Collection_MaxFunction.class);
 
     SimpleFeatureCollection previousFeatureCollection = null;
     Object max = null;
 
     // public static FunctionName NAME = new FunctionNameImpl("Collection_Max","value");
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "Collection_Max",
-                    parameter("max", Comparable.class),
-                    parameter("expression", Comparable.class));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "Collection_Max", parameter("max", Comparable.class), parameter("expression", Comparable.class));
 
     /** Creates a new instance of Collection_MaxFunction */
     public Collection_MaxFunction() {
@@ -79,8 +75,8 @@ public class Collection_MaxFunction extends FunctionExpressionImpl {
     /**
      * The provided arguments are evaulated with respect to the FeatureCollection.
      *
-     * <p>For an aggregate function (like max) please use the WFS mandated XPath syntax to refer to
-     * featureMember content.
+     * <p>For an aggregate function (like max) please use the WFS mandated XPath syntax to refer to featureMember
+     * content.
      *
      * <p>To refer to all 'X': <code>featureMember/asterisk/X</code>
      */
@@ -88,9 +84,8 @@ public class Collection_MaxFunction extends FunctionExpressionImpl {
     public void setParameters(List<Expression> args) {
         // if we see "featureMembers/*/ATTRIBUTE" change to "ATTRIBUTE"
         org.geotools.api.filter.expression.Expression expr = args.get(0);
-        expr =
-                (org.geotools.api.filter.expression.Expression)
-                        expr.accept(new CollectionFeatureMemberFilterVisitor(), null);
+        expr = (org.geotools.api.filter.expression.Expression)
+                expr.accept(new CollectionFeatureMemberFilterVisitor(), null);
         args.set(0, expr);
         super.setParameters(args);
     }

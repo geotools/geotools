@@ -46,21 +46,29 @@ import org.postgresql.jdbc.PgConnection;
 
 public class PostgisNGDataStoreFactoryTest {
 
-    @Mock private DataSource ds = null;
+    @Mock
+    private DataSource ds = null;
 
-    @Mock private Connection conn = null;
+    @Mock
+    private Connection conn = null;
 
-    @Mock private PgConnection pgConn = null;
+    @Mock
+    private PgConnection pgConn = null;
 
-    @Mock private DatabaseMetaData md = null;
+    @Mock
+    private DatabaseMetaData md = null;
 
-    @Mock private Statement st1 = null;
+    @Mock
+    private Statement st1 = null;
 
-    @Mock private Statement st2 = null;
+    @Mock
+    private Statement st2 = null;
 
-    @Mock private ResultSet rs1 = null;
+    @Mock
+    private ResultSet rs1 = null;
 
-    @Mock private ResultSet rs2 = null;
+    @Mock
+    private ResultSet rs2 = null;
 
     private JDBCDataStore store = null;
 
@@ -130,8 +138,8 @@ public class PostgisNGDataStoreFactoryTest {
         verifyFilterToSqlSettings(true, true, true);
     }
 
-    private void verifyFilterToSqlSettings(
-            boolean escapeBackslash, boolean withPS, boolean withQuery) throws Exception {
+    private void verifyFilterToSqlSettings(boolean escapeBackslash, boolean withPS, boolean withQuery)
+            throws Exception {
         if (withQuery) {
             when(this.st2.executeQuery("SHOW standard_conforming_strings")).thenReturn(this.rs2);
             when(this.rs2.next()).thenReturn(true);
@@ -148,8 +156,7 @@ public class PostgisNGDataStoreFactoryTest {
         assertNotNull(this.store);
         SQLDialect dialect = this.store.getSQLDialect();
         assertThat(dialect, instanceOf(withPS ? PostGISPSDialect.class : PostGISDialect.class));
-        PostGISDialect pgDialect =
-                withPS ? ((PostGISPSDialect) dialect).getDelegate() : (PostGISDialect) dialect;
+        PostGISDialect pgDialect = withPS ? ((PostGISPSDialect) dialect).getDelegate() : (PostGISDialect) dialect;
         assertEquals(new Version("15.1"), pgDialect.getPostgreSQLVersion(this.conn));
         assertEquals(new Version("3.3.2"), pgDialect.getVersion(this.conn));
         assertEquals(escapeBackslash, pgDialect.isEscapeBackslash());

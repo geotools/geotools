@@ -30,9 +30,9 @@ import javax.measure.Unit;
 import tech.units.indriya.unit.TransformedUnit;
 
 /**
- * UnitFormat configured to parse units. Since usually we don't know the citation in use for a
- * particular unit literal definition, this format includes the aliases of EPSG and ESRI citations,
- * in order to be able to parse the widest possible range of units.
+ * UnitFormat configured to parse units. Since usually we don't know the citation in use for a particular unit literal
+ * definition, this format includes the aliases of EPSG and ESRI citations, in order to be able to parse the widest
+ * possible range of units.
  */
 // this is in `org.geotools.measure` instead of `org.geotools.referencing.wkt`, because
 // `Units.autoCorrect` depends on it & we need `Units` for the unit definitions in gt-measure there
@@ -42,17 +42,16 @@ public final class WktUnitFormat extends BaseUnitFormatter {
         return INSTANCE;
     }
 
-    private static final List<UnitDefinition> UNIT_DEFINITIONS =
-            Stream.of(
-                            UnitDefinitions.DIMENSIONLESS,
-                            UnitDefinitions.CONSTANTS,
-                            UnitDefinitions.SI_BASE,
-                            UnitDefinitions.SI_DERIVED,
-                            UnitDefinitions.NON_SI,
-                            UnitDefinitions.US_CUSTOMARY,
-                            UnitDefinitions.WKT)
-                    .flatMap(Collection::stream)
-                    .collect(Collectors.toUnmodifiableList());
+    private static final List<UnitDefinition> UNIT_DEFINITIONS = Stream.of(
+                    UnitDefinitions.DIMENSIONLESS,
+                    UnitDefinitions.CONSTANTS,
+                    UnitDefinitions.SI_BASE,
+                    UnitDefinitions.SI_DERIVED,
+                    UnitDefinitions.NON_SI,
+                    UnitDefinitions.US_CUSTOMARY,
+                    UnitDefinitions.WKT)
+            .flatMap(Collection::stream)
+            .collect(Collectors.toUnmodifiableList());
 
     private static final WktUnitFormat INSTANCE = new WktUnitFormat(UNIT_DEFINITIONS);
 
@@ -72,9 +71,9 @@ public final class WktUnitFormat extends BaseUnitFormatter {
     }
 
     /**
-     * Returns an equivalent unit instance based on the provided unit. First, it tries to get one of
-     * the reference units defined in the JSR 385 implementation in use. If no equivalent reference
-     * unit is defined, it returns the provided unit
+     * Returns an equivalent unit instance based on the provided unit. First, it tries to get one of the reference units
+     * defined in the JSR 385 implementation in use. If no equivalent reference unit is defined, it returns the provided
+     * unit
      */
     @SuppressWarnings("unchecked")
     public <Q extends Quantity<Q>> Unit<Q> getEquivalentUnit(Unit<Q> unit) {
@@ -82,9 +81,8 @@ public final class WktUnitFormat extends BaseUnitFormatter {
     }
 
     /**
-     * This wrapper is used to compare equivalent units using the {@link Units#equals} method. It
-     * implements hashCode and equals method in a coherent way, so it can be used in a HashMap to
-     * retrieve equivalent units.
+     * This wrapper is used to compare equivalent units using the {@link Units#equals} method. It implements hashCode
+     * and equals method in a coherent way, so it can be used in a HashMap to retrieve equivalent units.
      *
      * @author cesar
      */

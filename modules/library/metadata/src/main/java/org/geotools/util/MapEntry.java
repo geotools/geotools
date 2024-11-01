@@ -20,16 +20,16 @@ import java.io.Serializable;
 import java.util.Map;
 
 /**
- * A default implementation of {@link java.util.Map.Entry} which map an arbitrary key-value pairs.
- * This entry is immutable by default.
+ * A default implementation of {@link java.util.Map.Entry} which map an arbitrary key-value pairs. This entry is
+ * immutable by default.
  *
  * @param <K> The class of key elements.
  * @param <V> The class of value elements.
  * @since 2.1
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
- * @todo This class will be removed when we will be allowed to compile for JSE 1.6, since a default
- *     map entry implementation is provided there.
+ * @todo This class will be removed when we will be allowed to compile for JSE 1.6, since a default map entry
+ *     implementation is provided there.
  */
 public class MapEntry<K, V> implements Map.Entry<K, V>, Serializable {
     /** For cross-version compatibility. */
@@ -65,8 +65,8 @@ public class MapEntry<K, V> implements Map.Entry<K, V>, Serializable {
     }
 
     /**
-     * Replaces the value corresponding to this entry with the specified value (optional operation).
-     * The default implementation throws an {@link UnsupportedOperationException}.
+     * Replaces the value corresponding to this entry with the specified value (optional operation). The default
+     * implementation throws an {@link UnsupportedOperationException}.
      */
     @Override
     public V setValue(final V value) {
@@ -82,8 +82,7 @@ public class MapEntry<K, V> implements Map.Entry<K, V>, Serializable {
     public boolean equals(final Object object) {
         if (object instanceof Map.Entry) {
             final Map.Entry that = (Map.Entry) object;
-            return Utilities.equals(this.getKey(), that.getKey())
-                    && Utilities.equals(this.getValue(), that.getValue());
+            return Utilities.equals(this.getKey(), that.getKey()) && Utilities.equals(this.getValue(), that.getValue());
         }
         return false;
     }

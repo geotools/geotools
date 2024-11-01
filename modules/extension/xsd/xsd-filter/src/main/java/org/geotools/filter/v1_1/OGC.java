@@ -36,8 +36,7 @@ public final class OGC extends XSD {
 
     /* Type Definitions */
     /** @generated */
-    public static final QName AbstractIdType =
-            new QName("http://www.opengis.net/ogc", "AbstractIdType");
+    public static final QName AbstractIdType = new QName("http://www.opengis.net/ogc", "AbstractIdType");
 
     /** @generated */
     public static final QName ArithmeticOperatorsType =
@@ -51,16 +50,13 @@ public final class OGC extends XSD {
             new QName("http://www.opengis.net/ogc", "BinaryComparisonOpType");
 
     /** @generated */
-    public static final QName BinaryLogicOpType =
-            new QName("http://www.opengis.net/ogc", "BinaryLogicOpType");
+    public static final QName BinaryLogicOpType = new QName("http://www.opengis.net/ogc", "BinaryLogicOpType");
 
     /** @generated */
-    public static final QName BinaryOperatorType =
-            new QName("http://www.opengis.net/ogc", "BinaryOperatorType");
+    public static final QName BinaryOperatorType = new QName("http://www.opengis.net/ogc", "BinaryOperatorType");
 
     /** @generated */
-    public static final QName BinarySpatialOpType =
-            new QName("http://www.opengis.net/ogc", "BinarySpatialOpType");
+    public static final QName BinarySpatialOpType = new QName("http://www.opengis.net/ogc", "BinarySpatialOpType");
 
     /** @generated */
     public static final QName ComparisonOperatorsType =
@@ -71,86 +67,67 @@ public final class OGC extends XSD {
             new QName("http://www.opengis.net/ogc", "ComparisonOperatorType");
 
     /** @generated */
-    public static final QName ComparisonOpsType =
-            new QName("http://www.opengis.net/ogc", "ComparisonOpsType");
+    public static final QName ComparisonOpsType = new QName("http://www.opengis.net/ogc", "ComparisonOpsType");
 
     /** @generated */
-    public static final QName DistanceBufferType =
-            new QName("http://www.opengis.net/ogc", "DistanceBufferType");
+    public static final QName DistanceBufferType = new QName("http://www.opengis.net/ogc", "DistanceBufferType");
 
     /** @generated */
-    public static final QName DistanceType =
-            new QName("http://www.opengis.net/ogc", "DistanceType");
+    public static final QName DistanceType = new QName("http://www.opengis.net/ogc", "DistanceType");
 
     /** @generated */
-    public static final QName ExpressionType =
-            new QName("http://www.opengis.net/ogc", "ExpressionType");
+    public static final QName ExpressionType = new QName("http://www.opengis.net/ogc", "ExpressionType");
 
     /** @generated */
-    public static final QName FeatureIdType =
-            new QName("http://www.opengis.net/ogc", "FeatureIdType");
+    public static final QName FeatureIdType = new QName("http://www.opengis.net/ogc", "FeatureIdType");
 
     /** @generated */
     public static final QName FilterType = new QName("http://www.opengis.net/ogc", "FilterType");
 
     /** @generated */
-    public static final QName FunctionNamesType =
-            new QName("http://www.opengis.net/ogc", "FunctionNamesType");
+    public static final QName FunctionNamesType = new QName("http://www.opengis.net/ogc", "FunctionNamesType");
 
     /** @generated */
-    public static final QName FunctionNameType =
-            new QName("http://www.opengis.net/ogc", "FunctionNameType");
+    public static final QName FunctionNameType = new QName("http://www.opengis.net/ogc", "FunctionNameType");
 
     /** @generated */
-    public static final QName FunctionsType =
-            new QName("http://www.opengis.net/ogc", "FunctionsType");
+    public static final QName FunctionsType = new QName("http://www.opengis.net/ogc", "FunctionsType");
 
     /** @generated */
-    public static final QName FunctionType =
-            new QName("http://www.opengis.net/ogc", "FunctionType");
+    public static final QName FunctionType = new QName("http://www.opengis.net/ogc", "FunctionType");
 
     /** @generated */
-    public static final QName GeometryOperandsType =
-            new QName("http://www.opengis.net/ogc", "GeometryOperandsType");
+    public static final QName GeometryOperandsType = new QName("http://www.opengis.net/ogc", "GeometryOperandsType");
 
     /** @generated */
-    public static final QName GeometryOperandType =
-            new QName("http://www.opengis.net/ogc", "GeometryOperandType");
+    public static final QName GeometryOperandType = new QName("http://www.opengis.net/ogc", "GeometryOperandType");
 
     /** @generated */
-    public static final QName GmlObjectIdType =
-            new QName("http://www.opengis.net/ogc", "GmlObjectIdType");
+    public static final QName GmlObjectIdType = new QName("http://www.opengis.net/ogc", "GmlObjectIdType");
 
     /** @generated */
-    public static final QName Id_CapabilitiesType =
-            new QName("http://www.opengis.net/ogc", "Id_CapabilitiesType");
+    public static final QName Id_CapabilitiesType = new QName("http://www.opengis.net/ogc", "Id_CapabilitiesType");
 
     /** @generated */
     public static final QName LiteralType = new QName("http://www.opengis.net/ogc", "LiteralType");
 
     /** @generated */
-    public static final QName LogicOpsType =
-            new QName("http://www.opengis.net/ogc", "LogicOpsType");
+    public static final QName LogicOpsType = new QName("http://www.opengis.net/ogc", "LogicOpsType");
 
     /** @generated */
-    public static final QName LowerBoundaryType =
-            new QName("http://www.opengis.net/ogc", "LowerBoundaryType");
+    public static final QName LowerBoundaryType = new QName("http://www.opengis.net/ogc", "LowerBoundaryType");
 
     /** @generated */
-    public static final QName PropertyIsBetweenType =
-            new QName("http://www.opengis.net/ogc", "PropertyIsBetweenType");
+    public static final QName PropertyIsBetweenType = new QName("http://www.opengis.net/ogc", "PropertyIsBetweenType");
 
     /** @generated */
-    public static final QName PropertyIsLikeType =
-            new QName("http://www.opengis.net/ogc", "PropertyIsLikeType");
+    public static final QName PropertyIsLikeType = new QName("http://www.opengis.net/ogc", "PropertyIsLikeType");
 
     /** @generated */
-    public static final QName PropertyIsNullType =
-            new QName("http://www.opengis.net/ogc", "PropertyIsNullType");
+    public static final QName PropertyIsNullType = new QName("http://www.opengis.net/ogc", "PropertyIsNullType");
 
     /** @generated */
-    public static final QName PropertyNameType =
-            new QName("http://www.opengis.net/ogc", "PropertyNameType");
+    public static final QName PropertyNameType = new QName("http://www.opengis.net/ogc", "PropertyNameType");
 
     /** @generated */
     public static final QName Scalar_CapabilitiesType =
@@ -160,12 +137,10 @@ public final class OGC extends XSD {
     public static final QName SortByType = new QName("http://www.opengis.net/ogc", "SortByType");
 
     /** @generated */
-    public static final QName SortOrderType =
-            new QName("http://www.opengis.net/ogc", "SortOrderType");
+    public static final QName SortOrderType = new QName("http://www.opengis.net/ogc", "SortOrderType");
 
     /** @generated */
-    public static final QName SortPropertyType =
-            new QName("http://www.opengis.net/ogc", "SortPropertyType");
+    public static final QName SortPropertyType = new QName("http://www.opengis.net/ogc", "SortPropertyType");
 
     /** @generated */
     public static final QName Spatial_CapabilitiesType =
@@ -176,24 +151,19 @@ public final class OGC extends XSD {
             new QName("http://www.opengis.net/ogc", "SpatialOperatorNameType");
 
     /** @generated */
-    public static final QName SpatialOperatorsType =
-            new QName("http://www.opengis.net/ogc", "SpatialOperatorsType");
+    public static final QName SpatialOperatorsType = new QName("http://www.opengis.net/ogc", "SpatialOperatorsType");
 
     /** @generated */
-    public static final QName SpatialOperatorType =
-            new QName("http://www.opengis.net/ogc", "SpatialOperatorType");
+    public static final QName SpatialOperatorType = new QName("http://www.opengis.net/ogc", "SpatialOperatorType");
 
     /** @generated */
-    public static final QName SpatialOpsType =
-            new QName("http://www.opengis.net/ogc", "SpatialOpsType");
+    public static final QName SpatialOpsType = new QName("http://www.opengis.net/ogc", "SpatialOpsType");
 
     /** @generated */
-    public static final QName UnaryLogicOpType =
-            new QName("http://www.opengis.net/ogc", "UnaryLogicOpType");
+    public static final QName UnaryLogicOpType = new QName("http://www.opengis.net/ogc", "UnaryLogicOpType");
 
     /** @generated */
-    public static final QName UpperBoundaryType =
-            new QName("http://www.opengis.net/ogc", "UpperBoundaryType");
+    public static final QName UpperBoundaryType = new QName("http://www.opengis.net/ogc", "UpperBoundaryType");
 
     /** @generated */
     public static final QName _EID = new QName("http://www.opengis.net/ogc", "_EID");
@@ -202,16 +172,13 @@ public final class OGC extends XSD {
     public static final QName _FID = new QName("http://www.opengis.net/ogc", "_FID");
 
     /** @generated */
-    public static final QName _Filter_Capabilities =
-            new QName("http://www.opengis.net/ogc", "_Filter_Capabilities");
+    public static final QName _Filter_Capabilities = new QName("http://www.opengis.net/ogc", "_Filter_Capabilities");
 
     /** @generated */
-    public static final QName _LogicalOperators =
-            new QName("http://www.opengis.net/ogc", "_LogicalOperators");
+    public static final QName _LogicalOperators = new QName("http://www.opengis.net/ogc", "_LogicalOperators");
 
     /** @generated */
-    public static final QName _SimpleArithmetic =
-            new QName("http://www.opengis.net/ogc", "_SimpleArithmetic");
+    public static final QName _SimpleArithmetic = new QName("http://www.opengis.net/ogc", "_SimpleArithmetic");
 
     /* Elements */
     /** @generated */
@@ -230,8 +197,7 @@ public final class OGC extends XSD {
     public static final QName Beyond = new QName("http://www.opengis.net/ogc", "Beyond");
 
     /** @generated */
-    public static final QName comparisonOps =
-            new QName("http://www.opengis.net/ogc", "comparisonOps");
+    public static final QName comparisonOps = new QName("http://www.opengis.net/ogc", "comparisonOps");
 
     /** @generated */
     public static final QName Contains = new QName("http://www.opengis.net/ogc", "Contains");
@@ -267,8 +233,7 @@ public final class OGC extends XSD {
     public static final QName Filter = new QName("http://www.opengis.net/ogc", "Filter");
 
     /** @generated */
-    public static final QName Filter_Capabilities =
-            new QName("http://www.opengis.net/ogc", "Filter_Capabilities");
+    public static final QName Filter_Capabilities = new QName("http://www.opengis.net/ogc", "Filter_Capabilities");
 
     /** @generated */
     public static final QName Function = new QName("http://www.opengis.net/ogc", "Function");
@@ -283,8 +248,7 @@ public final class OGC extends XSD {
     public static final QName Literal = new QName("http://www.opengis.net/ogc", "Literal");
 
     /** @generated */
-    public static final QName LogicalOperators =
-            new QName("http://www.opengis.net/ogc", "LogicalOperators");
+    public static final QName LogicalOperators = new QName("http://www.opengis.net/ogc", "LogicalOperators");
 
     /** @generated */
     public static final QName logicOps = new QName("http://www.opengis.net/ogc", "logicOps");
@@ -302,48 +266,39 @@ public final class OGC extends XSD {
     public static final QName Overlaps = new QName("http://www.opengis.net/ogc", "Overlaps");
 
     /** @generated */
-    public static final QName PropertyIsBetween =
-            new QName("http://www.opengis.net/ogc", "PropertyIsBetween");
+    public static final QName PropertyIsBetween = new QName("http://www.opengis.net/ogc", "PropertyIsBetween");
 
     /** @generated */
-    public static final QName PropertyIsEqualTo =
-            new QName("http://www.opengis.net/ogc", "PropertyIsEqualTo");
+    public static final QName PropertyIsEqualTo = new QName("http://www.opengis.net/ogc", "PropertyIsEqualTo");
 
     /** @generated */
-    public static final QName PropertyIsGreaterThan =
-            new QName("http://www.opengis.net/ogc", "PropertyIsGreaterThan");
+    public static final QName PropertyIsGreaterThan = new QName("http://www.opengis.net/ogc", "PropertyIsGreaterThan");
 
     /** @generated */
     public static final QName PropertyIsGreaterThanOrEqualTo =
             new QName("http://www.opengis.net/ogc", "PropertyIsGreaterThanOrEqualTo");
 
     /** @generated */
-    public static final QName PropertyIsLessThan =
-            new QName("http://www.opengis.net/ogc", "PropertyIsLessThan");
+    public static final QName PropertyIsLessThan = new QName("http://www.opengis.net/ogc", "PropertyIsLessThan");
 
     /** @generated */
     public static final QName PropertyIsLessThanOrEqualTo =
             new QName("http://www.opengis.net/ogc", "PropertyIsLessThanOrEqualTo");
 
     /** @generated */
-    public static final QName PropertyIsLike =
-            new QName("http://www.opengis.net/ogc", "PropertyIsLike");
+    public static final QName PropertyIsLike = new QName("http://www.opengis.net/ogc", "PropertyIsLike");
 
     /** @generated */
-    public static final QName PropertyIsNotEqualTo =
-            new QName("http://www.opengis.net/ogc", "PropertyIsNotEqualTo");
+    public static final QName PropertyIsNotEqualTo = new QName("http://www.opengis.net/ogc", "PropertyIsNotEqualTo");
 
     /** @generated */
-    public static final QName PropertyIsNull =
-            new QName("http://www.opengis.net/ogc", "PropertyIsNull");
+    public static final QName PropertyIsNull = new QName("http://www.opengis.net/ogc", "PropertyIsNull");
 
     /** @generated */
-    public static final QName PropertyName =
-            new QName("http://www.opengis.net/ogc", "PropertyName");
+    public static final QName PropertyName = new QName("http://www.opengis.net/ogc", "PropertyName");
 
     /** @generated */
-    public static final QName SimpleArithmetic =
-            new QName("http://www.opengis.net/ogc", "SimpleArithmetic");
+    public static final QName SimpleArithmetic = new QName("http://www.opengis.net/ogc", "SimpleArithmetic");
 
     /** @generated */
     public static final QName SortBy = new QName("http://www.opengis.net/ogc", "SortBy");

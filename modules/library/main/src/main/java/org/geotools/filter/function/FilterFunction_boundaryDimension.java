@@ -27,11 +27,8 @@ import org.locationtech.jts.geom.Geometry;
 
 public class FilterFunction_boundaryDimension extends FunctionExpressionImpl {
 
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "boundaryDimension",
-                    parameter("dimension", Integer.class),
-                    parameter("geometry", Geometry.class));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "boundaryDimension", parameter("dimension", Integer.class), parameter("geometry", Geometry.class));
 
     public FilterFunction_boundaryDimension() {
         super(NAME);

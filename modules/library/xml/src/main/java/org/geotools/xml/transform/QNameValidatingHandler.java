@@ -51,8 +51,7 @@ public class QNameValidatingHandler implements TransformerHandler {
     }
 
     @Override
-    public void startElement(String namespaceURI, String localName, String qName, Attributes atts)
-            throws SAXException {
+    public void startElement(String namespaceURI, String localName, String qName, Attributes atts) throws SAXException {
         if (!checkName(localName, qName) || !checkAtts(atts)) {
             throw new DOMException(
                     DOMException.INVALID_CHARACTER_ERR,
@@ -69,8 +68,7 @@ public class QNameValidatingHandler implements TransformerHandler {
             // unit tests that pass qualified names with an empty prefix when the test
             // only uses local names (e.g., ':Name' instead of 'Name' or 'sld:Name')
             String[] names = qName.split(":", 2);
-            return (names[0].isEmpty() || isValidNCName(names[0]))
-                    && (names.length == 1 || isValidNCName(names[1]));
+            return (names[0].isEmpty() || isValidNCName(names[0])) && (names.length == 1 || isValidNCName(names[1]));
         }
         return !isEmpty(localName);
     }
@@ -100,9 +98,7 @@ public class QNameValidatingHandler implements TransformerHandler {
     private static void checkNamespaceUri(String uri) {
         // block the HTML namespace URI to prevent XSS
         if ("http://www.w3.org/1999/xhtml".equals(uri)) {
-            throw new DOMException(
-                    DOMException.NAMESPACE_ERR,
-                    "NAMESPACE_ERR: The XHTML namespace is not allowed.");
+            throw new DOMException(DOMException.NAMESPACE_ERR, "NAMESPACE_ERR: The XHTML namespace is not allowed.");
         }
     }
 
@@ -119,8 +115,7 @@ public class QNameValidatingHandler implements TransformerHandler {
     }
 
     @Override
-    public void endElement(String namespaceURI, String localName, String qName)
-            throws SAXException {
+    public void endElement(String namespaceURI, String localName, String qName) throws SAXException {
         original.endElement(namespaceURI, localName, qName);
     }
 
@@ -211,8 +206,7 @@ public class QNameValidatingHandler implements TransformerHandler {
     }
 
     @Override
-    public void unparsedEntityDecl(
-            String name, String publicId, String systemId, String notationName)
+    public void unparsedEntityDecl(String name, String publicId, String systemId, String notationName)
             throws SAXException {
         if (original instanceof DTDHandler) {
             ((DTDHandler) original).notationDecl(name, publicId, systemId);

@@ -46,8 +46,7 @@ public abstract class AbstractReaderWriter implements GraphReaderWriter {
     }
 
     /**
-     * Sets a property. Some properties dont have values associated with them, they are just set,
-     * and unset.
+     * Sets a property. Some properties dont have values associated with them, they are just set, and unset.
      *
      * @param name Name of property
      */

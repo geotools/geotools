@@ -37,19 +37,17 @@ public class AzimuthalEquidistantTest {
     @Test
     public void toWKT() throws Exception {
         // @formatter:off
-        CoordinateReferenceSystem crs =
-                CRS.parseWKT(
-                        "PROJCS[\"unnamed\", "
-                                + "GEOGCS[\"unnamed ellipse\", "
-                                + "DATUM[\"unknown\", SPHEROID[\"unnamed\",6370841.391468334,0]], "
-                                + "PRIMEM[\"Greenwich\",0], "
-                                + "UNIT[\"degree\",0.0174532925199433]], "
-                                + "PROJECTION[\"Azimuthal_Equidistant\"], "
-                                + "PARAMETER[\"latitude_of_center\",42.42], "
-                                + "PARAMETER[\"longitude_of_center\",16.16], "
-                                + "PARAMETER[\"false_easting\",100000], "
-                                + "PARAMETER[\"false_northing\",200000],"
-                                + "UNIT[\"metre\", 1, AUTHORITY[\"EPSG\",\"9001\"]]]");
+        CoordinateReferenceSystem crs = CRS.parseWKT("PROJCS[\"unnamed\", "
+                + "GEOGCS[\"unnamed ellipse\", "
+                + "DATUM[\"unknown\", SPHEROID[\"unnamed\",6370841.391468334,0]], "
+                + "PRIMEM[\"Greenwich\",0], "
+                + "UNIT[\"degree\",0.0174532925199433]], "
+                + "PROJECTION[\"Azimuthal_Equidistant\"], "
+                + "PARAMETER[\"latitude_of_center\",42.42], "
+                + "PARAMETER[\"longitude_of_center\",16.16], "
+                + "PARAMETER[\"false_easting\",100000], "
+                + "PARAMETER[\"false_northing\",200000],"
+                + "UNIT[\"metre\", 1, AUTHORITY[\"EPSG\",\"9001\"]]]");
         // @formatter:on
         String wkt = crs.toWKT();
         Assert.assertTrue(wkt.contains("PROJECTION[\"Azimuthal_Equidistant\"]"));
@@ -61,24 +59,22 @@ public class AzimuthalEquidistantTest {
 
     @Test
     public void testLegacyProjectionParameters() throws Exception {
-        CoordinateReferenceSystem azeq =
-                CRS.parseWKT(
-                        "PROJCS[\"Azeq test\", GEOGCS[\"WGS 84\", "
-                                + "DATUM[\"World Geodetic System 1984\", "
-                                + "SPHEROID[\"WGS 84\", 6378137.0, 298.257223563, "
-                                + "AUTHORITY[\"EPSG\",\"7030\"]], "
-                                + "AUTHORITY[\"EPSG\",\"6326\"]], "
-                                + "PRIMEM[\"Greenwich\", 0.0, "
-                                + "AUTHORITY[\"EPSG\",\"8901\"]], "
-                                + "UNIT[\"degree\", 0.017453292519943295], "
-                                + "AUTHORITY[\"EPSG\",\"4326\"]], "
-                                + "PROJECTION[\"Azimuthal Equidistant\"], "
-                                + "PARAMETER[\"latitude_of_origin\", 42.56], "
-                                + "PARAMETER[\"longitude_of_origin\", -71.43], "
-                                + "PARAMETER[\"scale_factor\", 1.0], "
-                                + "PARAMETER[\"false_easting\", 0.0], "
-                                + "PARAMETER[\"false_northing\", 0.0], "
-                                + "UNIT[\"m\", 1.0],  AUTHORITY[\"EPSG\",\"741002\"]]");
+        CoordinateReferenceSystem azeq = CRS.parseWKT("PROJCS[\"Azeq test\", GEOGCS[\"WGS 84\", "
+                + "DATUM[\"World Geodetic System 1984\", "
+                + "SPHEROID[\"WGS 84\", 6378137.0, 298.257223563, "
+                + "AUTHORITY[\"EPSG\",\"7030\"]], "
+                + "AUTHORITY[\"EPSG\",\"6326\"]], "
+                + "PRIMEM[\"Greenwich\", 0.0, "
+                + "AUTHORITY[\"EPSG\",\"8901\"]], "
+                + "UNIT[\"degree\", 0.017453292519943295], "
+                + "AUTHORITY[\"EPSG\",\"4326\"]], "
+                + "PROJECTION[\"Azimuthal Equidistant\"], "
+                + "PARAMETER[\"latitude_of_origin\", 42.56], "
+                + "PARAMETER[\"longitude_of_origin\", -71.43], "
+                + "PARAMETER[\"scale_factor\", 1.0], "
+                + "PARAMETER[\"false_easting\", 0.0], "
+                + "PARAMETER[\"false_northing\", 0.0], "
+                + "UNIT[\"m\", 1.0],  AUTHORITY[\"EPSG\",\"741002\"]]");
 
         MathTransform transform = CRS.findMathTransform(azeq, DefaultGeographicCRS.WGS84);
         Point2D out = doTransform(transform, new Point2D.Double(0, 0));

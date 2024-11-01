@@ -18,9 +18,8 @@
 package org.geotools.swing.event;
 
 /**
- * An adapter class that implements all of the mouse event handling methods defined in the
- * MapMouseListener interface as empty methods, allowing sub-classes to just override the methods
- * they need.
+ * An adapter class that implements all of the mouse event handling methods defined in the MapMouseListener interface as
+ * empty methods, allowing sub-classes to just override the methods they need.
  *
  * @author Michael Bedward
  * @since 2.6

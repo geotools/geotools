@@ -83,8 +83,7 @@ public class XSNonNegativeIntegerBinding implements SimpleBinding {
      * <!-- begin-user-doc -->
      * Restriction of integer to non negative values.
      *
-     * <p>Please just treat this as a Number, actual value returned may be BigInteger or Long or
-     * Integer.
+     * <p>Please just treat this as a Number, actual value returned may be BigInteger or Long or Integer.
      *
      * @param instance with text to be parsed
      * @param value BigInteger from parent XSIntegerStratagy
@@ -97,8 +96,7 @@ public class XSNonNegativeIntegerBinding implements SimpleBinding {
         BigInteger number = (BigInteger) value;
 
         if (BigInteger.ZERO.compareTo(number) > 0) {
-            throw new IllegalArgumentException(
-                    "Value '" + number + "' must be non-negative (0 or above).");
+            throw new IllegalArgumentException("Value '" + number + "' must be non-negative (0 or above).");
         }
 
         if (MAX_INTEGER.compareTo(number) >= 0) {
@@ -124,8 +122,7 @@ public class XSNonNegativeIntegerBinding implements SimpleBinding {
         Number number = (Number) object;
 
         if (number.longValue() < 0) {
-            throw new IllegalArgumentException(
-                    "Value '" + number + "' must be non-negative (0 or above).");
+            throw new IllegalArgumentException("Value '" + number + "' must be non-negative (0 or above).");
         }
 
         return value;

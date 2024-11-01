@@ -28,16 +28,15 @@ import org.geotools.api.filter.Filter;
 public abstract class AbstractFilter extends FilterAbstract implements FilterType, Filter {
 
     /** The logger for the default core module. */
-    protected static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(AbstractFilter.class);
+    protected static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(AbstractFilter.class);
 
     protected AbstractFilter() {}
 
     /**
-     * This method checks if the object is an instance of {@link Feature} and if so, calls through
-     * to {@link Filter#evaluate(Feature)}. This is done to maintain backwards compatability with
-     * previous version of Filter api which depended on Feature. If the object is not an instance of
-     * feature the super implementation is called.
+     * This method checks if the object is an instance of {@link Feature} and if so, calls through to
+     * {@link Filter#evaluate(Feature)}. This is done to maintain backwards compatability with previous version of
+     * Filter api which depended on Feature. If the object is not an instance of feature the super implementation is
+     * called.
      */
     /*
     public boolean evaluate(Object object) {

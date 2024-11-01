@@ -50,8 +50,8 @@ public class Definition {
     static final FilterFactory FF = CommonFactoryFinder.getFilterFactory();
 
     /**
-     * Creates a new transformed property that mirrors 1-1 an existing property in the source type,
-     * without even renaming it
+     * Creates a new transformed property that mirrors 1-1 an existing property in the source type, without even
+     * renaming it
      *
      * @param name The property name
      */
@@ -83,8 +83,8 @@ public class Definition {
      *
      * @param name The property name
      * @param source The expression generating the property
-     * @param binding The property type. Optional, the store will try to figure out the type from
-     *     the expression in case it's missing
+     * @param binding The property type. Optional, the store will try to figure out the type from the expression in case
+     *     it's missing
      */
     public Definition(String name, Expression source, Class binding) {
         this(name, source, binding, null);
@@ -95,13 +95,11 @@ public class Definition {
      *
      * @param name The property name
      * @param source The expression generating the property
-     * @param binding The property type. Optional, the store will try to figure out the type from
-     *     the expression in case it's missing
-     * @param crs The coordinate reference system of the property, to be used only for geometry
-     *     properties
+     * @param binding The property type. Optional, the store will try to figure out the type from the expression in case
+     *     it's missing
+     * @param crs The coordinate reference system of the property, to be used only for geometry properties
      */
-    public Definition(
-            String name, Expression source, Class binding, CoordinateReferenceSystem crs) {
+    public Definition(String name, Expression source, Class binding, CoordinateReferenceSystem crs) {
         this(name, source, binding, crs, null);
     }
 
@@ -110,10 +108,9 @@ public class Definition {
      *
      * @param name The property name
      * @param source The expression generating the property
-     * @param binding The property type. Optional, the store will try to figure out the type from
-     *     the expression in case it's missing
-     * @param crs The coordinate reference system of the property, to be used only for geometry
-     *     properties
+     * @param binding The property type. Optional, the store will try to figure out the type from the expression in case
+     *     it's missing
+     * @param crs The coordinate reference system of the property, to be used only for geometry properties
      * @param description The property description
      */
     public Definition(
@@ -150,13 +147,12 @@ public class Definition {
     }
 
     /**
-     * Returns the inverse to this Definition, that is, the definition of the source attribute
-     * corresponding to this computed attribute, if any. Only a small set of expression are
-     * invertible in general, and a smaller subset of that can be inverted by this method.
-     * Implementor can override this method to provide a custom inversion logic.
+     * Returns the inverse to this Definition, that is, the definition of the source attribute corresponding to this
+     * computed attribute, if any. Only a small set of expression are invertible in general, and a smaller subset of
+     * that can be inverted by this method. Implementor can override this method to provide a custom inversion logic.
      *
-     * @return The inverse of this definition, or null if not invertible or if the inversion logic
-     *     for the specified case is missing
+     * @return The inverse of this definition, or null if not invertible or if the inversion logic for the specified
+     *     case is missing
      */
     public List<Definition> inverse() {
         if (expression instanceof PropertyName) {
@@ -175,9 +171,9 @@ public class Definition {
     }
 
     /**
-     * Computes the output attribute descriptor for this {@link Definition} given a sample feature
-     * of the original feature type. The code will first attempt a static analysis on the original
-     * feature type, if that fails it will try to evaluate the expression on the sample feature.
+     * Computes the output attribute descriptor for this {@link Definition} given a sample feature of the original
+     * feature type. The code will first attempt a static analysis on the original feature type, if that fails it will
+     * try to evaluate the expression on the sample feature.
      */
     public AttributeDescriptor getAttributeDescriptor(SimpleFeature originalFeature) {
         // try the static analysis
@@ -213,9 +209,8 @@ public class Definition {
     }
 
     /**
-     * Computes the output attribute descriptor for this {@link Definition} given only the original
-     * feature type. The code will attempt a static analysis on the original feature type, if that
-     * fails it will return null
+     * Computes the output attribute descriptor for this {@link Definition} given only the original feature type. The
+     * code will attempt a static analysis on the original feature type, if that fails it will return null
      */
     public AttributeDescriptor getAttributeDescriptor(SimpleFeatureType originalSchema) {
         AttributeTypeBuilder ab = new AttributeTypeBuilder();
@@ -247,8 +242,7 @@ public class Definition {
                 AttributeDescriptor descriptor = originalSchema.getDescriptor(pn.getPropertyName());
 
                 if (descriptor == null) {
-                    throw new IllegalArgumentException(
-                            "Original feature type does not have a property named " + name);
+                    throw new IllegalArgumentException("Original feature type does not have a property named " + name);
                 } else {
                     ab.init(descriptor);
                     ab.setName(name);
@@ -300,8 +294,7 @@ public class Definition {
     }
 
     private CoordinateReferenceSystem evaluateCRS(SimpleFeatureType originalSchema) {
-        return (CoordinateReferenceSystem)
-                expression.accept(new CRSEvaluator(originalSchema), null);
+        return (CoordinateReferenceSystem) expression.accept(new CRSEvaluator(originalSchema), null);
     }
 
     @Override

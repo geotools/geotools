@@ -26,10 +26,7 @@ public class LinearRingTypeBinding extends org.geotools.gml3.bindings.LinearRing
     }
 
     @Override
-    /**
-     * In gml 3.2 LinearRing does not extend from AbstractGeometryType... so we change BEFORE to
-     * OVERRIDE
-     */
+    /** In gml 3.2 LinearRing does not extend from AbstractGeometryType... so we change BEFORE to OVERRIDE */
     public int getExecutionMode() {
         return OVERRIDE;
     }

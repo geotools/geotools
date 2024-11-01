@@ -14,20 +14,19 @@ import javax.measure.quantity.Angle;
 import org.geotools.api.referencing.IdentifiedObject;
 
 /**
- * A prime meridian defines the origin from which longitude values are determined. The {@link
- * #getName name} initial value is "Greenwich", and that value shall be used when the {@linkplain
- * #getGreenwichLongitude greenwich longitude} value is zero.
+ * A prime meridian defines the origin from which longitude values are determined. The {@link #getName name} initial
+ * value is "Greenwich", and that value shall be used when the {@linkplain #getGreenwichLongitude greenwich longitude}
+ * value is zero.
  *
- * @version <A HREF="http://portal.opengeospatial.org/files/?artifact_id=6716">Abstract
- *     specification 2.0</A>
+ * @version <A HREF="http://portal.opengeospatial.org/files/?artifact_id=6716">Abstract specification 2.0</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0
  */
 public interface PrimeMeridian extends IdentifiedObject {
     /**
      * Longitude of the prime meridian measured from the Greenwich meridian, positive eastward. The
-     * {@code greenwichLongitude} initial value is zero, and that value shall be used when the
-     * {@linkplain #getName meridian name} value is "Greenwich".
+     * {@code greenwichLongitude} initial value is zero, and that value shall be used when the {@linkplain #getName
+     * meridian name} value is "Greenwich".
      *
      * @return The prime meridian Greenwich longitude, in {@linkplain #getAngularUnit angular unit}.
      */

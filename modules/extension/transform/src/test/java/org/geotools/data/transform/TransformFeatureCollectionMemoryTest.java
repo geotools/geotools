@@ -59,14 +59,13 @@ public class TransformFeatureCollectionMemoryTest extends FeatureCollectionWrapp
         definitions.add(new Definition("att", ECQL.toExpression("someAtt")));
         definitions.add(new Definition("geom", ECQL.toExpression("buffer(defaultGeom, 1)")));
 
-        SimpleFeatureSource source =
-                new CollectionFeatureSource(delegate) {
-                    /** Return a query caps declaring offset is not supported */
-                    @Override
-                    public synchronized QueryCapabilities getQueryCapabilities() {
-                        return new QueryCapabilities();
-                    }
-                };
+        SimpleFeatureSource source = new CollectionFeatureSource(delegate) {
+            /** Return a query caps declaring offset is not supported */
+            @Override
+            public synchronized QueryCapabilities getQueryCapabilities() {
+                return new QueryCapabilities();
+            }
+        };
         TransformFeatureSource transformedSource =
                 new TransformFeatureSource(source, new NameImpl("Transformed"), definitions);
 
@@ -92,8 +91,7 @@ public class TransformFeatureCollectionMemoryTest extends FeatureCollectionWrapp
         definitions.add(new Definition("geom", ECQL.toExpression("buffer(defaultGeom, 1)")));
 
         TransformFeatureSource transformedSource =
-                new TransformFeatureSource(
-                        DataUtilities.source(delegate), new NameImpl("Transformed"), definitions);
+                new TransformFeatureSource(DataUtilities.source(delegate), new NameImpl("Transformed"), definitions);
 
         // try to transform a query with paging
         Query q = new Query();

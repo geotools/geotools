@@ -70,30 +70,27 @@ import org.locationtech.jts.geom.prep.PreparedGeometryFactory;
 import si.uom.SI;
 
 /**
- * Class for holding utility functions that are common tasks for people using the
- * "StreamingRenderer/Renderer".
+ * Class for holding utility functions that are common tasks for people using the "StreamingRenderer/Renderer".
  *
  * @author dblasby
  * @author Simone Giannecchini
  */
 public final class RendererUtilities {
 
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(RendererUtilities.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(RendererUtilities.class);
 
     /**
      * Enable unit correction in {@link #toMeters(double, CoordinateReferenceSystem)} calculation.
      *
-     * <p>Toggle for a bug fix that will invalidate a good number of SLDs out there (and thus, we
-     * allow people to turn off the fix).
+     * <p>Toggle for a bug fix that will invalidate a good number of SLDs out there (and thus, we allow people to turn
+     * off the fix).
      */
     static boolean SCALE_UNIT_COMPENSATION =
-            Boolean.parseBoolean(
-                    System.getProperty("org.geotoools.render.lite.scale.unitCompensation", "true"));
+            Boolean.parseBoolean(System.getProperty("org.geotoools.render.lite.scale.unitCompensation", "true"));
 
     /**
-     * Helber class for building affine transforms. We use one instance per thread, in order to
-     * avoid the need for {@code synchronized} statements.
+     * Helber class for building affine transforms. We use one instance per thread, in order to avoid the need for
+     * {@code synchronized} statements.
      */
     private static final ThreadLocal<GridToEnvelopeMapper> gridToEnvelopeMappers =
             new ThreadLocal<GridToEnvelopeMapper>() {
@@ -106,21 +103,20 @@ public final class RendererUtilities {
             };
 
     /** Utilities classes should not be instantiated. */
-    private RendererUtilities() {};
+    private RendererUtilities() {}
+    ;
 
     /**
      * Sets up the affine transform
      *
-     * <p>NOTE It is worth to note that here we do not take into account the half a pixel
-     * translation stated by ogc for coverages bounds. One reason is that WMS 1.1.1 does not follow
-     * it!!!
+     * <p>NOTE It is worth to note that here we do not take into account the half a pixel translation stated by ogc for
+     * coverages bounds. One reason is that WMS 1.1.1 does not follow it!!!
      *
      * @param mapExtent the map extent
      * @param paintArea the size of the rendering output area
      * @return a transform that maps from real world coordinates to the screen
      */
-    public static AffineTransform worldToScreenTransform(
-            ReferencedEnvelope mapExtent, Rectangle paintArea) {
+    public static AffineTransform worldToScreenTransform(ReferencedEnvelope mapExtent, Rectangle paintArea) {
 
         // //
         //
@@ -148,10 +144,9 @@ public final class RendererUtilities {
     /**
      * Creates the map's bounding box in real world coordinates.
      *
-     * @param worldToScreen a transform which converts World coordinates to screen pixel
-     *     coordinates. No assumptions are done on axis order as this is assumed to be
-     *     pre-calculated. The affine transform may specify an rotation, in case the envelope will
-     *     encompass the complete (rotated) world polygon.
+     * @param worldToScreen a transform which converts World coordinates to screen pixel coordinates. No assumptions are
+     *     done on axis order as this is assumed to be pre-calculated. The affine transform may specify an rotation, in
+     *     case the envelope will encompass the complete (rotated) world polygon.
      * @param paintArea the size of the rendering output area
      * @return the envelope in world coordinates corresponding to the screen rectangle.
      */
@@ -187,12 +182,10 @@ public final class RendererUtilities {
     /**
      * Creates the map's bounding box in real world coordinates
      *
-     * <p>NOTE It is worth to note that here we do not take into account the half a pixel
-     * translation stated by ogc for coverages bounds. One reason is that WMS 1.1.1 does not follow
-     * it!!!
+     * <p>NOTE It is worth to note that here we do not take into account the half a pixel translation stated by ogc for
+     * coverages bounds. One reason is that WMS 1.1.1 does not follow it!!!
      *
-     * @param worldToScreen a transform which converts World coordinates to screen pixel
-     *     coordinates.
+     * @param worldToScreen a transform which converts World coordinates to screen pixel coordinates.
      * @param paintArea the size of the rendering output area
      */
     public static ReferencedEnvelope createMapEnvelope(
@@ -219,24 +212,21 @@ public final class RendererUtilities {
      * Calculates the pixels per meter ratio based on a scale denominator.
      *
      * @param scaleDenominator The scale denominator value.
-     * @param hints The hints used in calculation. if "dpi" key is present, it uses it's Integer
-     *     value as the dpi of the current device. if not it uses 90 that is the OGC default value.
+     * @param hints The hints used in calculation. if "dpi" key is present, it uses it's Integer value as the dpi of the
+     *     current device. if not it uses 90 that is the OGC default value.
      * @return The pixels per meter ratio for the given scale denominator.
      */
     public static double calculatePixelsPerMeterRatio(double scaleDenominator, Map hints) {
-        if (scaleDenominator <= 0.0)
-            throw new IllegalArgumentException("The scale denominator must be positive.");
+        if (scaleDenominator <= 0.0) throw new IllegalArgumentException("The scale denominator must be positive.");
         double scale = 1.0 / scaleDenominator;
         return scale * (getDpi(hints) / 0.0254);
     }
 
     /**
-     * This method performs the computation using the methods suggested by the OGC SLD
-     * specification, page 26.
+     * This method performs the computation using the methods suggested by the OGC SLD specification, page 26.
      *
-     * <p>In GeoTools 12 this method started to take into account units of measure, if this is not
-     * desirable in your application you can set the system variable
-     * "org.geotoools.render.lite.scale.unitCompensation" to false.
+     * <p>In GeoTools 12 this method started to take into account units of measure, if this is not desirable in your
+     * application you can set the system variable "org.geotoools.render.lite.scale.unitCompensation" to false.
      */
     public static double calculateOGCScale(ReferencedEnvelope envelope, int imageWidth, Map hints) {
         // if it's geodetic, we're dealing with lat/lon unit measures
@@ -248,21 +238,18 @@ public final class RendererUtilities {
     }
 
     /**
-     * Method used by the OGC scale calculation to turn a given length in the specified CRS towards
-     * meters.
+     * Method used by the OGC scale calculation to turn a given length in the specified CRS towards meters.
      *
      * <p>GeographicCRS uses {@link #OGC_DEGREE_TO_METERS} for conversion of lat/lon measures
      *
-     * <p>Otherwise the horizontal component of the CRS is assumed to have a uniform axis unit of
-     * measure providing the Unit used for conversion. To ignore unit disable {@link
-     * #SCALE_UNIT_COMPENSATION} to for the unaltered size.
+     * <p>Otherwise the horizontal component of the CRS is assumed to have a uniform axis unit of measure providing the
+     * Unit used for conversion. To ignore unit disable {@link #SCALE_UNIT_COMPENSATION} to for the unaltered size.
      *
      * @return size adjusted for GeographicCRS or CRS units
      */
     public static double toMeters(double size, CoordinateReferenceSystem crs) {
         if (crs == null) {
-            LOGGER.finer(
-                    "toMeters: assuming the original size is in meters already, as crs is null");
+            LOGGER.finer("toMeters: assuming the original size is in meters already, as crs is null");
             return size;
         }
         if (crs instanceof GeographicCRS) {
@@ -291,13 +278,11 @@ public final class RendererUtilities {
     }
 
     /**
-     * This method performs the computation using the methods suggested by the OGC SLD
-     * specification, page 26.
+     * This method performs the computation using the methods suggested by the OGC SLD specification, page 26.
      *
-     * @param crs the coordinate reference system. Used to check if we are operating in degrees or
-     *     meters.
-     * @param worldToScreen the transformation mapping world coordinates to screen coordinates.
-     *     Might specify a rotation in addition to translation and scaling.
+     * @param crs the coordinate reference system. Used to check if we are operating in degrees or meters.
+     * @param worldToScreen the transformation mapping world coordinates to screen coordinates. Might specify a rotation
+     *     in addition to translation and scaling.
      */
     public static double calculateOGCScaleAffine(
             CoordinateReferenceSystem crs, AffineTransform worldToScreen, Map hints) {
@@ -311,20 +296,18 @@ public final class RendererUtilities {
     }
 
     /**
-     * First searches the hints for the scale denominator hint otherwise calls {@link
-     * #calculateScale(org.geotools.util.SoftValueHashMap.Reference, int, int, double)}. If the
-     * hints contains a DPI then that DPI is used otherwise 90 is used (the OGS default).
+     * First searches the hints for the scale denominator hint otherwise calls
+     * {@link #calculateScale(org.geotools.util.SoftValueHashMap.Reference, int, int, double)}. If the hints contains a
+     * DPI then that DPI is used otherwise 90 is used (the OGS default).
      */
-    public static double calculateScale(
-            ReferencedEnvelope envelope, int imageWidth, int imageHeight, Map<?, ?> hints)
+    public static double calculateScale(ReferencedEnvelope envelope, int imageWidth, int imageHeight, Map<?, ?> hints)
             throws TransformException, FactoryException {
 
         if (hints != null && hints.containsKey("declaredScaleDenominator")) {
             Double scale = (Double) hints.get("declaredScaleDenominator");
             if (scale.doubleValue() <= 0)
                 throw new IllegalArgumentException(
-                        "the declaredScaleDenominator must be greater than 0, was: "
-                                + scale.doubleValue());
+                        "the declaredScaleDenominator must be greater than 0, was: " + scale.doubleValue());
             return scale.doubleValue();
         }
 
@@ -332,8 +315,8 @@ public final class RendererUtilities {
     }
 
     /**
-     * Either gets a DPI from the hints, or return the OGC standard, stating that a pixel is 0.28 mm
-     * (the result is a non integer DPI...)
+     * Either gets a DPI from the hints, or return the OGC standard, stating that a pixel is 0.28 mm (the result is a
+     * non integer DPI...)
      *
      * @return DPI as doubles, to avoid issues with integer trunking in scale computation expression
      */
@@ -346,34 +329,29 @@ public final class RendererUtilities {
     }
 
     /**
-     * Find the scale denominator of the map. Method: 1. find the diagonal distance (meters) 2. find
-     * the diagonal distance (pixels) 3. find the diagonal distance (meters) -- use DPI 4. calculate
-     * scale (#1/#2)
+     * Find the scale denominator of the map. Method: 1. find the diagonal distance (meters) 2. find the diagonal
+     * distance (pixels) 3. find the diagonal distance (meters) -- use DPI 4. calculate scale (#1/#2)
      *
      * <p>NOTE: return the scale denominator not the actual scale (1/scale = denominator)
      *
-     * <p>TODO: (SLD spec page 28): Since it is common to integrate the output of multiple servers
-     * into a single displayed result in the web-mapping environment, it is important that different
-     * map servers have consistent behaviour with respect to processing scales, so that all of the
-     * independent servers will select or deselect rules at the same scales. To insure consistent
-     * behaviour, scales relative to coordinate spaces must be handled consistently between map
-     * servers. For geographic coordinate systems, which use angular units, the angular coverage of
-     * a map should be converted to linear units for computation of scale by using the circumference
-     * of the Earth at the equator and by assuming perfectly square linear units. For linear
-     * coordinate systems, the size of the coordinate space should be used directly without
-     * compensating for distortions in it with respect to the shape of the real Earth.
+     * <p>TODO: (SLD spec page 28): Since it is common to integrate the output of multiple servers into a single
+     * displayed result in the web-mapping environment, it is important that different map servers have consistent
+     * behaviour with respect to processing scales, so that all of the independent servers will select or deselect rules
+     * at the same scales. To insure consistent behaviour, scales relative to coordinate spaces must be handled
+     * consistently between map servers. For geographic coordinate systems, which use angular units, the angular
+     * coverage of a map should be converted to linear units for computation of scale by using the circumference of the
+     * Earth at the equator and by assuming perfectly square linear units. For linear coordinate systems, the size of
+     * the coordinate space should be used directly without compensating for distortions in it with respect to the shape
+     * of the real Earth.
      *
-     * <p>NOTE: we are actually doing a a much more exact calculation, and accounting for non-square
-     * pixels (which are allowed in WMS) ADDITIONAL NOTE from simboss: I added soe minor fixes. See
-     * below.
+     * <p>NOTE: we are actually doing a a much more exact calculation, and accounting for non-square pixels (which are
+     * allowed in WMS) ADDITIONAL NOTE from simboss: I added soe minor fixes. See below.
      *
      * @param DPI screen dots per inch (OGC standard is 90)
-     *     <p>TODO should I take into account also the destination CRS? Otherwise I am just assuming
-     *     that the final crs is lon,lat that is it maps lon to x (n raster space) and lat to y (in
-     *     raster space).
+     *     <p>TODO should I take into account also the destination CRS? Otherwise I am just assuming that the final crs
+     *     is lon,lat that is it maps lon to x (n raster space) and lat to y (in raster space).
      */
-    public static double calculateScale(
-            ReferencedEnvelope envelope, int imageWidth, int imageHeight, double DPI)
+    public static double calculateScale(ReferencedEnvelope envelope, int imageWidth, int imageHeight, double DPI)
             throws TransformException, FactoryException {
 
         final double diagonalGroundDistance;
@@ -383,21 +361,17 @@ public final class RendererUtilities {
             // get CRS2D for this referenced envelope, check that its 2d
             //
             // //
-            final CoordinateReferenceSystem tempCRS =
-                    CRS.getHorizontalCRS(envelope.getCoordinateReferenceSystem());
+            final CoordinateReferenceSystem tempCRS = CRS.getHorizontalCRS(envelope.getCoordinateReferenceSystem());
             if (tempCRS == null) {
                 final Object arg0 = envelope.getCoordinateReferenceSystem();
-                throw new TransformException(
-                        MessageFormat.format(ErrorKeys.CANT_REDUCE_TO_TWO_DIMENSIONS_$1, arg0));
+                throw new TransformException(MessageFormat.format(ErrorKeys.CANT_REDUCE_TO_TWO_DIMENSIONS_$1, arg0));
             }
             ReferencedEnvelope envelopeWGS84 = envelope.transform(DefaultGeographicCRS.WGS84, true);
             diagonalGroundDistance = geodeticDiagonalDistance(envelopeWGS84);
         } else {
             // if it's an engineering crs, compute only the graphical scale, assuming a CAD space
             diagonalGroundDistance =
-                    Math.sqrt(
-                            envelope.getWidth() * envelope.getWidth()
-                                    + envelope.getHeight() * envelope.getHeight());
+                    Math.sqrt(envelope.getWidth() * envelope.getWidth() + envelope.getHeight() * envelope.getHeight());
         }
 
         // //
@@ -406,8 +380,7 @@ public final class RendererUtilities {
         //
         // //
         // pythagoras theorem
-        double diagonalPixelDistancePixels =
-                Math.sqrt(imageWidth * imageWidth + imageHeight * imageHeight);
+        double diagonalPixelDistancePixels = Math.sqrt(imageWidth * imageWidth + imageHeight * imageHeight);
         double diagonalPixelDistanceMeters =
                 diagonalPixelDistancePixels / DPI * 2.54 / 100; // 2.54 = cm/inch, 100= cm/m
         return diagonalGroundDistance / diagonalPixelDistanceMeters;
@@ -416,8 +389,7 @@ public final class RendererUtilities {
 
     private static double geodeticDiagonalDistance(Envelope env) {
         if (env.getWidth() < 180 && env.getHeight() < 180) {
-            return getGeodeticSegmentLength(
-                    env.getMinX(), env.getMinY(), env.getMaxX(), env.getMaxY());
+            return getGeodeticSegmentLength(env.getMinX(), env.getMinY(), env.getMaxX(), env.getMaxY());
         } else {
             // we cannot compute geodetic distance for distances longer than a hemisphere,
             // we have to build a set of lines connecting the two points that are smaller to
@@ -425,12 +397,9 @@ public final class RendererUtilities {
             // a set of quadrants that are 180x180
             double distance = 0;
             GeometryFactory gf = new GeometryFactory();
-            LineString ls =
-                    gf.createLineString(
-                            new Coordinate[] {
-                                new Coordinate(env.getMinX(), env.getMinY()),
-                                new Coordinate(env.getMaxX(), env.getMaxY())
-                            });
+            LineString ls = gf.createLineString(new Coordinate[] {
+                new Coordinate(env.getMinX(), env.getMinY()), new Coordinate(env.getMaxX(), env.getMaxY())
+            });
             int qMinX = -1;
             int qMaxX = 1;
             int qMinY = -1;
@@ -438,45 +407,25 @@ public final class RendererUtilities {
             // we must consider at least a pair of quadrants in each direction other wise lines
             // which don't cross both the equator and prime meridian are
             // measured as 0 length. But for some cases we need to consider still more hemispheres.
-            qMinX =
-                    Math.min(
-                            qMinX,
-                            (int)
-                                    (Math.signum(env.getMinX())
-                                            * Math.ceil(Math.abs(env.getMinX() / 180.0))));
-            qMaxX =
-                    Math.max(
-                            qMaxX,
-                            (int)
-                                    (Math.signum(env.getMaxX())
-                                            * Math.ceil(Math.abs(env.getMaxX() / 180.0))));
-            qMinY =
-                    Math.min(
-                            qMinY,
-                            (int)
-                                    (Math.signum(env.getMinY())
-                                            * Math.ceil(Math.abs((env.getMinY() + 90) / 180.0))));
-            qMaxY =
-                    Math.max(
-                            qMaxY,
-                            (int)
-                                    (Math.signum(env.getMaxY())
-                                            * Math.ceil(Math.abs((env.getMaxY() + 90) / 180.0))));
+            qMinX = Math.min(qMinX, (int) (Math.signum(env.getMinX()) * Math.ceil(Math.abs(env.getMinX() / 180.0))));
+            qMaxX = Math.max(qMaxX, (int) (Math.signum(env.getMaxX()) * Math.ceil(Math.abs(env.getMaxX() / 180.0))));
+            qMinY = Math.min(
+                    qMinY, (int) (Math.signum(env.getMinY()) * Math.ceil(Math.abs((env.getMinY() + 90) / 180.0))));
+            qMaxY = Math.max(
+                    qMaxY, (int) (Math.signum(env.getMaxY()) * Math.ceil(Math.abs((env.getMaxY() + 90) / 180.0))));
             for (int i = qMinX; i < qMaxX; i++) {
                 for (int j = qMinY; j < qMaxY; j++) {
                     double minX = i * 180.0;
                     double minY = j * 180.0 - 90;
                     double maxX = minX + 180;
                     double maxY = minY + 180;
-                    LinearRing ring =
-                            gf.createLinearRing(
-                                    new Coordinate[] {
-                                        new Coordinate(minX, minY),
-                                        new Coordinate(minX, maxY),
-                                        new Coordinate(maxX, maxY),
-                                        new Coordinate(maxX, minY),
-                                        new Coordinate(minX, minY)
-                                    });
+                    LinearRing ring = gf.createLinearRing(new Coordinate[] {
+                        new Coordinate(minX, minY),
+                        new Coordinate(minX, maxY),
+                        new Coordinate(maxX, maxY),
+                        new Coordinate(maxX, minY),
+                        new Coordinate(minX, minY)
+                    });
                     Polygon p = gf.createPolygon(ring, null);
                     Geometry intersection = p.intersection(ls);
                     if (!intersection.isEmpty()) {
@@ -508,8 +457,7 @@ public final class RendererUtilities {
         return getGeodeticSegmentLength(start.x, start.y, end.x, end.y);
     }
 
-    private static double getGeodeticSegmentLength(
-            double minx, double miny, double maxx, double maxy) {
+    private static double getGeodeticSegmentLength(double minx, double miny, double maxx, double maxy) {
         final GeodeticCalculator calculator = new GeodeticCalculator(DefaultGeographicCRS.WGS84);
         double rminx = rollLongitude(minx);
         double rminy = rollLatitude(miny);
@@ -531,12 +479,12 @@ public final class RendererUtilities {
     }
 
     /**
-     * This worldToScreenTransform method makes the assumption that the crs is in Lon,Lat or
-     * Lat,Lon. If the provided envelope does not carry along a crs the assumption that the map
-     * extent is in the classic Lon,Lat form. In case the provided envelope is of type.
+     * This worldToScreenTransform method makes the assumption that the crs is in Lon,Lat or Lat,Lon. If the provided
+     * envelope does not carry along a crs the assumption that the map extent is in the classic Lon,Lat form. In case
+     * the provided envelope is of type.
      *
-     * <p>Note that this method takes into account also the OGC standard with respect to the
-     * relation between pixels and sample.
+     * <p>Note that this method takes into account also the OGC standard with respect to the relation between pixels and
+     * sample.
      *
      * @param mapExtent The envelope of the map in lon,lat
      * @param paintArea The area to paint as a rectangle
@@ -550,22 +498,16 @@ public final class RendererUtilities {
         final CoordinateReferenceSystem crs2D = CRS.getHorizontalCRS(destinationCrs);
         if (crs2D == null)
             throw new TransformException(
-                    MessageFormat.format(
-                            ErrorKeys.CANT_REDUCE_TO_TWO_DIMENSIONS_$1, destinationCrs));
+                    MessageFormat.format(ErrorKeys.CANT_REDUCE_TO_TWO_DIMENSIONS_$1, destinationCrs));
         final boolean lonFirst =
-                crs2D.getCoordinateSystem()
-                        .getAxis(0)
-                        .getDirection()
-                        .absolute()
-                        .equals(AxisDirection.EAST);
-        final GeneralBounds newEnvelope =
-                lonFirst
-                        ? new GeneralBounds(
-                                new double[] {mapExtent.getMinX(), mapExtent.getMinY()},
-                                new double[] {mapExtent.getMaxX(), mapExtent.getMaxY()})
-                        : new GeneralBounds(
-                                new double[] {mapExtent.getMinY(), mapExtent.getMinX()},
-                                new double[] {mapExtent.getMaxY(), mapExtent.getMaxX()});
+                crs2D.getCoordinateSystem().getAxis(0).getDirection().absolute().equals(AxisDirection.EAST);
+        final GeneralBounds newEnvelope = lonFirst
+                ? new GeneralBounds(
+                        new double[] {mapExtent.getMinX(), mapExtent.getMinY()},
+                        new double[] {mapExtent.getMaxX(), mapExtent.getMaxY()})
+                : new GeneralBounds(
+                        new double[] {mapExtent.getMinY(), mapExtent.getMinX()},
+                        new double[] {mapExtent.getMaxY(), mapExtent.getMaxX()});
         newEnvelope.setCoordinateReferenceSystem(destinationCrs);
 
         //
@@ -581,9 +523,9 @@ public final class RendererUtilities {
     }
 
     /**
-     * Finds the centroid of the input geometry if input = point, line, polygon --> return a point
-     * that represents the centroid of that geom if input = geometry collection --> return a
-     * multipoint that represents the centoid of each sub-geom
+     * Finds the centroid of the input geometry if input = point, line, polygon --> return a point that represents the
+     * centroid of that geom if input = geometry collection --> return a multipoint that represents the centoid of each
+     * sub-geom
      */
     public static Geometry getCentroid(Geometry g) {
         if (g instanceof Point || g instanceof MultiPoint) {
@@ -664,23 +606,18 @@ public final class RendererUtilities {
     }
 
     /**
-     * Makes sure the feature collection generates the desired sourceCrs, this is mostly a
-     * workaround against feature sources generating feature collections without a CRS (which is
-     * fatal to the reprojection handling later in the code)
+     * Makes sure the feature collection generates the desired sourceCrs, this is mostly a workaround against feature
+     * sources generating feature collections without a CRS (which is fatal to the reprojection handling later in the
+     * code)
      *
-     * @return FeatureCollection<SimpleFeatureType, SimpleFeature> that produces results with the
-     *     correct CRS
+     * @return FeatureCollection<SimpleFeatureType, SimpleFeature> that produces results with the correct CRS
      */
     static FeatureCollection fixFeatureCollectionReferencing(
             FeatureCollection features, CoordinateReferenceSystem sourceCrs) {
         // this is the reader's CRS
         CoordinateReferenceSystem rCS = null;
         try {
-            rCS =
-                    features.getSchema()
-                            .getGeometryDescriptor()
-                            .getType()
-                            .getCoordinateReferenceSystem();
+            rCS = features.getSchema().getGeometryDescriptor().getType().getCoordinateReferenceSystem();
         } catch (NullPointerException e) {
             // life sucks sometimes
         }
@@ -691,8 +628,7 @@ public final class RendererUtilities {
             if ((rCS == null) || !CRS.equalsIgnoreMetadata(rCS, sourceCrs)) {
                 // need to retag the features
                 try {
-                    return new ForceCoordinateSystemFeatureResults(
-                            (SimpleFeatureCollection) features, sourceCrs);
+                    return new ForceCoordinateSystemFeatureResults((SimpleFeatureCollection) features, sourceCrs);
                 } catch (Exception ee) {
                     LOGGER.log(Level.WARNING, ee.getLocalizedMessage(), ee);
                 }
@@ -702,8 +638,8 @@ public final class RendererUtilities {
     }
 
     /**
-     * Finds a centroid for a polygon catching any exceptions resulting from generalization or other
-     * polygon irregularities.
+     * Finds a centroid for a polygon catching any exceptions resulting from generalization or other polygon
+     * irregularities.
      *
      * @param geom The polygon.
      * @return The polygon centroid, or null if it can't be found.
@@ -731,24 +667,18 @@ public final class RendererUtilities {
     /**
      * Uses a sampling technique to obtain a central point that lies inside the specified polygon.
      *
-     * <p>Sampling occurs horizontally along the middle of the polygon obtained from the y
-     * coordinate of the polygon centroid.
+     * <p>Sampling occurs horizontally along the middle of the polygon obtained from the y coordinate of the polygon
+     * centroid.
      *
      * @param geom The polygon.
-     * @param centroid The centroid of the polygon, can be null in which case it will be computed
-     *     from {@link #getPolygonCentroid(Polygon)}.
-     * @param pg The prepared version of geom, can be null in which case it will be computed on
-     *     demand.
+     * @param centroid The centroid of the polygon, can be null in which case it will be computed from
+     *     {@link #getPolygonCentroid(Polygon)}.
+     * @param pg The prepared version of geom, can be null in which case it will be computed on demand.
      * @param gf The geometry factory, can be null in which case the polygons factory will be used.
      * @return A central point that lies inside of the polygon, or null if one could not be found.
      */
     public static Point sampleForInternalPoint(
-            Polygon geom,
-            Point centroid,
-            PreparedGeometry pg,
-            GeometryFactory gf,
-            double stepSize,
-            int numSamples) {
+            Polygon geom, Point centroid, PreparedGeometry pg, GeometryFactory gf, double stepSize, int numSamples) {
 
         if (centroid == null) {
             centroid = getPolygonCentroid(geom);
@@ -770,8 +700,7 @@ public final class RendererUtilities {
         } else if (numSamples > 0) {
             stepSize = env.getWidth() / numSamples;
         } else {
-            throw new IllegalArgumentException(
-                    "One of stepSize or numSamples must be greater than zero");
+            throw new IllegalArgumentException("One of stepSize or numSamples must be greater than zero");
         }
 
         Coordinate c = new Coordinate();

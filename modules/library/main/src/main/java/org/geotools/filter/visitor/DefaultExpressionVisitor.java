@@ -30,10 +30,10 @@ import org.geotools.api.filter.expression.Subtract;
 /**
  * Abstract implementation of ExpressionVisitor that simply walks the data structure.
  *
- * <p>This class implements the full ExpressionVisitor interface and will visit every Filter member
- * of an Expression object. This class performs no actions and is not intended to be used directly,
- * instead extend it and overide the methods for the Expression type you are interested in. Remember
- * to call the super method if you want to ensure that the entire expression tree is still visited.
+ * <p>This class implements the full ExpressionVisitor interface and will visit every Filter member of an Expression
+ * object. This class performs no actions and is not intended to be used directly, instead extend it and overide the
+ * methods for the Expression type you are interested in. Remember to call the super method if you want to ensure that
+ * the entire expression tree is still visited.
  *
  * <pre><code>
  * FilterVisitor allProperties = new DefaultExpressionVisitor(){

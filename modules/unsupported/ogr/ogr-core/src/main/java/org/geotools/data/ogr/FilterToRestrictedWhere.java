@@ -175,8 +175,7 @@ class FilterToRestrictedWhere implements FilterVisitor, ExpressionVisitor {
     }
 
     /**
-     * Common implementation for BinaryLogicOperator filters. This way they're all handled
-     * centrally.
+     * Common implementation for BinaryLogicOperator filters. This way they're all handled centrally.
      *
      * @param filter the logic statement to be turned into SQL.
      * @param extraData extra filter data. Not modified directly by this method.
@@ -309,11 +308,8 @@ class FilterToRestrictedWhere implements FilterVisitor, ExpressionVisitor {
         if (target != null) {
             // use the target type
             if (Number.class.isAssignableFrom(target)) {
-                literal =
-                        Converters.convert(
-                                expression.evaluate(null),
-                                target,
-                                new Hints(ConverterFactory.SAFE_CONVERSION, true));
+                literal = Converters.convert(
+                        expression.evaluate(null), target, new Hints(ConverterFactory.SAFE_CONVERSION, true));
             } else {
                 literal = expression.evaluate(null, target);
             }
@@ -330,9 +326,9 @@ class FilterToRestrictedWhere implements FilterVisitor, ExpressionVisitor {
     }
 
     /**
-     * Writes out a non null, non geometry literal. The base class properly handles null, numeric
-     * and booleans (true|false), and turns everything else into a string. Subclasses are expected
-     * to override this shall they need a different treatment (e.g. for dates)
+     * Writes out a non null, non geometry literal. The base class properly handles null, numeric and booleans
+     * (true|false), and turns everything else into a string. Subclasses are expected to override this shall they need a
+     * different treatment (e.g. for dates)
      */
     protected void writeLiteral(Object literal) {
         if (literal == null) {

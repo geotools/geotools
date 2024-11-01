@@ -96,9 +96,7 @@ public class GridEnvelopeTypeBinding extends AbstractComplexBinding {
         GeneralBounds envelope = (GeneralBounds) object;
 
         if (envelope.isNull()) {
-            value.appendChild(
-                    document.createElementNS(
-                            GML.NAMESPACE, org.geotools.gml3.GML.Null.getLocalPart()));
+            value.appendChild(document.createElementNS(GML.NAMESPACE, org.geotools.gml3.GML.Null.getLocalPart()));
         }
 
         return null;

@@ -26,8 +26,8 @@ import org.geotools.filter.capability.FunctionNameImpl;
 import org.json.simple.JSONObject;
 
 /**
- * Takes one or more arguments and returns the the first argument of type specified by the first
- * string argument, throws an exception if no arguments are of type specified.
+ * Takes one or more arguments and returns the the first argument of type specified by the first string argument, throws
+ * an exception if no arguments are of type specified.
  */
 class MapBoxTypeFunction extends FunctionExpressionImpl {
     Class<?> type;
@@ -57,8 +57,7 @@ class MapBoxTypeFunction extends FunctionExpressionImpl {
             }
         }
         // couldn't find a JSONObject value
-        throw new IllegalArgumentException(
-                "Function \"mbType\" failed with no arguments of type JSONObject");
+        throw new IllegalArgumentException("Function \"mbType\" failed with no arguments of type JSONObject");
     }
 
     public Class<?> type(String string) {
@@ -74,7 +73,6 @@ class MapBoxTypeFunction extends FunctionExpressionImpl {
             case "string":
                 return String.class;
         }
-        throw new IllegalArgumentException(
-                "Requires argument of array, boolean, number, object or string");
+        throw new IllegalArgumentException("Requires argument of array, boolean, number, object or string");
     }
 }

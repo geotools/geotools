@@ -32,8 +32,7 @@ public interface GraphWalker {
      * @param traversal The traversal controlling the sequence of graph component visits.
      * @return GraphTraversal#CONTINUE to signal that the traversal should continue.<br>
      *     GraphTraversal#CONTINUE to signal that the traversal should suspend.<br>
-     *     GraphTraversal#KILL_BRANCH to signal that the traversal should kill its current branch.
-     *     <br>
+     *     GraphTraversal#KILL_BRANCH to signal that the traversal should kill its current branch. <br>
      *     GraphTraversal#STOP to signal that the traversal should stop.<br>
      * @see GraphTraversal
      * @see GraphIterator
@@ -41,8 +40,8 @@ public interface GraphWalker {
     public int visit(Graphable element, GraphTraversal traversal);
 
     /**
-     * Called when the graph traversal is completed. Whether this method is called after a traversal
-     * has been stopped with a return signal is up to the implementation of GraphTraversal.
+     * Called when the graph traversal is completed. Whether this method is called after a traversal has been stopped
+     * with a return signal is up to the implementation of GraphTraversal.
      *
      * @see GraphTraversal
      */

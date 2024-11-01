@@ -137,8 +137,7 @@ public class CQL2Test {
         assertFilter("(A = 1 OR B = 2) AND NOT (C = 3)", And.class);
     }
 
-    private <F extends Expression> F assertExpression(String cql, Class<F> expected)
-            throws CQLException {
+    private <F extends Expression> F assertExpression(String cql, Class<F> expected) throws CQLException {
         Expression expression = CQL2.toExpression(cql);
         Assert.assertTrue(expected.getSimpleName(), expected.isInstance(expression));
         Assert.assertEquals(cql, cql, CQL2.toCQL2(expression));
@@ -154,8 +153,7 @@ public class CQL2Test {
         return type.cast(filter);
     }
 
-    private <F extends Filter> F assertFilter(String cql, String expected, Class<F> type)
-            throws CQLException {
+    private <F extends Filter> F assertFilter(String cql, String expected, Class<F> type) throws CQLException {
         Filter filter = CQL2.toFilter(cql);
         Assert.assertEquals(cql, expected, CQL2.toCQL2(filter));
 
@@ -198,8 +196,7 @@ public class CQL2Test {
         assertFilter("aProperty LIKE '%bb%'", PropertyIsLike.class);
 
         // using function as expression
-        PropertyIsLike like =
-                assertFilter("strToUpperCase(anAttribute) LIKE '%BB%'", PropertyIsLike.class);
+        PropertyIsLike like = assertFilter("strToUpperCase(anAttribute) LIKE '%BB%'", PropertyIsLike.class);
 
         Assert.assertTrue(like.getExpression() instanceof Function);
     }
@@ -259,15 +256,14 @@ public class CQL2Test {
     public void toFilterUsesProvidedFilterFactory() throws Exception {
         final boolean[] called = {false};
 
-        FilterFactory ff =
-                new FilterFactoryImpl() {
-                    @Override
-                    public PropertyName property(String propName) {
-                        called[0] = true;
+        FilterFactory ff = new FilterFactoryImpl() {
+            @Override
+            public PropertyName property(String propName) {
+                called[0] = true;
 
-                        return super.property(propName);
-                    }
-                };
+                return super.property(propName);
+            }
+        };
 
         CQL2.toFilter("attName > 20", ff);
         Assert.assertTrue("Provided FilterFactory was not called", called[0]);
@@ -300,15 +296,14 @@ public class CQL2Test {
     public void toExpressionUsesProvidedFilterFactory() throws Exception {
         final boolean[] called = {false};
 
-        FilterFactory ff =
-                new FilterFactoryImpl() {
-                    @Override
-                    public PropertyName property(String propName) {
-                        called[0] = true;
+        FilterFactory ff = new FilterFactoryImpl() {
+            @Override
+            public PropertyName property(String propName) {
+                called[0] = true;
 
-                        return super.property(propName);
-                    }
-                };
+                return super.property(propName);
+            }
+        };
 
         CQL2.toExpression("attName", ff);
         Assert.assertTrue("Provided FilterFactory was not called", called[0]);
@@ -317,12 +312,9 @@ public class CQL2Test {
     @Test
     public void testDivideEncode() throws Exception {
         final FilterFactory filterFactory2 = CommonFactoryFinder.getFilterFactory();
-        final Filter javaFilter =
-                filterFactory2.less(
-                        filterFactory2.divide(
-                                filterFactory2.property("population"), filterFactory2.literal(2)),
-                        filterFactory2.divide(
-                                filterFactory2.property("pop2000"), filterFactory2.literal(2)));
+        final Filter javaFilter = filterFactory2.less(
+                filterFactory2.divide(filterFactory2.property("population"), filterFactory2.literal(2)),
+                filterFactory2.divide(filterFactory2.property("pop2000"), filterFactory2.literal(2)));
         Assert.assertEquals("population/2<pop2000/2", CQL2.toCQL2(javaFilter).replace(" ", ""));
     }
 
@@ -343,14 +335,13 @@ public class CQL2Test {
 
         FilterFactory ff = CommonFactoryFinder.getFilterFactory();
 
-        Function function =
-                ff.function(
-                        "Interpolate",
-                        ff.property("population"),
-                        ff.literal(0),
-                        ff.literal(Color.RED),
-                        ff.literal(10),
-                        ff.literal(Color.BLUE));
+        Function function = ff.function(
+                "Interpolate",
+                ff.property("population"),
+                ff.literal(0),
+                ff.literal(Color.RED),
+                ff.literal(10),
+                ff.literal(Color.BLUE));
 
         actual = CQL2.toCQL2(function);
         assertEquals("color literals", expected, actual);
@@ -384,7 +375,6 @@ public class CQL2Test {
     public void bbox() throws CQLException {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         BBOX bbox = ff.bbox("geometry", -180, -90, 180, 90, "CRS:84");
-        assertEquals(
-                "S_INTERSECTS(geometry, ENVELOPE(-180.0,-90.0,180.0,90.0))", CQL2.toCQL2(bbox));
+        assertEquals("S_INTERSECTS(geometry, ENVELOPE(-180.0,-90.0,180.0,90.0))", CQL2.toCQL2(bbox));
     }
 }

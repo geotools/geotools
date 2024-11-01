@@ -38,13 +38,13 @@ public class QueryBand {
     /** Local query band for type of statement, SELECT, DELETE, etc... */
     public static String PROCESS = "Process";
 
-    static ThreadLocal<Map<String, String>> LOCAL =
-            new ThreadLocal<Map<String, String>>() {
-                @Override
-                protected Map<String, String> initialValue() {
-                    return new HashMap<>();
-                };
-            };
+    static ThreadLocal<Map<String, String>> LOCAL = new ThreadLocal<Map<String, String>>() {
+        @Override
+        protected Map<String, String> initialValue() {
+            return new HashMap<>();
+        }
+        ;
+    };
 
     /** Returns local query band map. */
     public static Map<String, String> local() {

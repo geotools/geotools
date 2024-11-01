@@ -22,13 +22,8 @@ import org.geotools.gce.imagemosaic.RasterLayerRequest;
 import org.geotools.gce.imagemosaic.RasterLayerResponse;
 import org.geotools.gce.imagemosaic.RasterManager;
 
-/**
- * Creates the SubmosaicProducers necessary for the MosaicProducer to actually produce the mosaic.
- */
+/** Creates the SubmosaicProducers necessary for the MosaicProducer to actually produce the mosaic. */
 public interface SubmosaicProducerFactory {
     List<SubmosaicProducer> createProducers(
-            RasterLayerRequest request,
-            RasterManager rasterManager,
-            RasterLayerResponse response,
-            boolean dryRun);
+            RasterLayerRequest request, RasterManager rasterManager, RasterLayerResponse response, boolean dryRun);
 }

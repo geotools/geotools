@@ -12,13 +12,11 @@ package org.geotools.api.filter.expression;
 // Annotation
 
 /**
- * Visitor with {@code visit} methods to be called by {@link Expression#accept
- * Expression.accept(...)}.
+ * Visitor with {@code visit} methods to be called by {@link Expression#accept Expression.accept(...)}.
  *
- * <p>Please note that a generic visit( Expression ) entry point has not been provided, although
- * Expression forms a heirarchy for your convience it is not an open heirarchy. If you need to
- * extend this system please make use of {code Function}, this will allow extention while remaining
- * standards complient.
+ * <p>Please note that a generic visit( Expression ) entry point has not been provided, although Expression forms a
+ * heirarchy for your convience it is not an open heirarchy. If you need to extend this system please make use of {code
+ * Function}, this will allow extention while remaining standards complient.
  *
  * <p>It is very common for a single instnace to implement both ExpressionVisitor and FilterVisitor.
  *
@@ -28,11 +26,10 @@ package org.geotools.api.filter.expression;
  */
 public interface ExpressionVisitor {
     /**
-     * Used to visit a Expression.NIL, also called for <code>null</code> where an expression is
-     * expected.
+     * Used to visit a Expression.NIL, also called for <code>null</code> where an expression is expected.
      *
-     * <p>This is particularly useful when doing data transformations, as an example when using a
-     * StyleSymbolizer Expression.NIL can be used to represent the default stroke color.
+     * <p>This is particularly useful when doing data transformations, as an example when using a StyleSymbolizer
+     * Expression.NIL can be used to represent the default stroke color.
      *
      * @return implementation specific
      */

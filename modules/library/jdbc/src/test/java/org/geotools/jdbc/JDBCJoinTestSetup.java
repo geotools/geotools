@@ -41,8 +41,8 @@ public abstract class JDBCJoinTestSetup extends JDBCDelegatingTestSetup {
     /**
      * Creates two tables with the following schema:
      *
-     * <p>ftjoin( id:Integer; name:String; geom:POLYGON; join1intProperty:Integer ) The table should
-     * be populated with the following data:
+     * <p>ftjoin( id:Integer; name:String; geom:POLYGON; join1intProperty:Integer ) The table should be populated with
+     * the following data:
      *
      * <pre>
      * 0 | 'zero' | POLYGON ((-0.1 -0.1, -0.1 0.1, 0.1 0.1, 0.1 -0.1, -0.1 -0.1)) | 0
@@ -51,8 +51,8 @@ public abstract class JDBCJoinTestSetup extends JDBCDelegatingTestSetup {
      * 3 | 'three' | NULL | 3
      * </pre>
      *
-     * <p>ftjoin2( id:Integer; join2intProperty:Integer; stringProperty2:String ) The table should
-     * be populated with the following data:
+     * <p>ftjoin2( id:Integer; join2intProperty:Integer; stringProperty2:String ) The table should be populated with the
+     * following data:
      *
      * <pre>
      * 0 | 0 | '2nd zero'

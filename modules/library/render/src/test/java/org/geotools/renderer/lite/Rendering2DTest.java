@@ -81,8 +81,7 @@ import org.locationtech.jts.geom.impl.PackedCoordinateSequenceFactory;
 public class Rendering2DTest {
 
     /** The logger for the rendering module. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(Rendering2DTest.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(Rendering2DTest.class);
 
     private final int xCenter = -74;
 
@@ -184,15 +183,14 @@ public class Rendering2DTest {
         return polysym;
     }
 
-    SimpleFeatureCollection createTestFeatureCollection(
-            CoordinateReferenceSystem crs, String typeName) throws Exception {
+    SimpleFeatureCollection createTestFeatureCollection(CoordinateReferenceSystem crs, String typeName)
+            throws Exception {
         GeometryFactory geomFac = new GeometryFactory();
         return createTestFeatureCollection(crs, geomFac, typeName);
     }
 
     SimpleFeatureCollection createTestFeatureCollection(
-            CoordinateReferenceSystem crs, GeometryFactory geomFac, String typeName)
-            throws Exception {
+            CoordinateReferenceSystem crs, GeometryFactory geomFac, String typeName) throws Exception {
 
         LineString line = makeSampleLineString(geomFac);
         SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
@@ -201,8 +199,7 @@ public class Rendering2DTest {
         else builder.add("centerline", line.getClass());
         builder.add("name", String.class);
         SimpleFeatureType lineType = builder.buildFeatureType();
-        SimpleFeature lineFeature =
-                SimpleFeatureBuilder.build(lineType, new Object[] {line, "centerline"}, null);
+        SimpleFeature lineFeature = SimpleFeatureBuilder.build(lineType, new Object[] {line, "centerline"}, null);
 
         Polygon polygon = makeSamplePolygon(geomFac);
         builder.setName(POLYGON);
@@ -210,8 +207,7 @@ public class Rendering2DTest {
         else builder.add("edge", polygon.getClass());
         builder.add("name", String.class);
         SimpleFeatureType polygonType = builder.buildFeatureType();
-        SimpleFeature polygonFeature =
-                SimpleFeatureBuilder.build(polygonType, new Object[] {polygon, "edge"}, null);
+        SimpleFeature polygonFeature = SimpleFeatureBuilder.build(polygonType, new Object[] {polygon, "edge"}, null);
 
         Point point = makeSamplePoint(geomFac);
         builder.setName(POINT);
@@ -219,8 +215,7 @@ public class Rendering2DTest {
         else builder.add("centre", point.getClass());
         builder.add("name", String.class);
         SimpleFeatureType pointType = builder.buildFeatureType();
-        SimpleFeature pointFeature =
-                SimpleFeatureBuilder.build(pointType, new Object[] {point, "centre"}, null);
+        SimpleFeature pointFeature = SimpleFeatureBuilder.build(pointType, new Object[] {point, "centre"}, null);
 
         LinearRing ring = makeSampleLinearRing(geomFac);
         builder.setName(RING);
@@ -228,8 +223,7 @@ public class Rendering2DTest {
         else builder.add("centerline", line.getClass());
         builder.add("name", String.class);
         SimpleFeatureType lrType = builder.buildFeatureType();
-        SimpleFeature ringFeature =
-                SimpleFeatureBuilder.build(lrType, new Object[] {ring, "centerline"}, null);
+        SimpleFeature ringFeature = SimpleFeatureBuilder.build(lrType, new Object[] {ring, "centerline"}, null);
 
         GeometryCollection coll = makeSampleGeometryCollection(geomFac);
         builder.setName(COLLECTION);
@@ -237,8 +231,7 @@ public class Rendering2DTest {
         else builder.add("collection", coll.getClass());
         builder.add("name", String.class);
         SimpleFeatureType collType = builder.buildFeatureType();
-        SimpleFeature collFeature =
-                SimpleFeatureBuilder.build(collType, new Object[] {coll, "collection"}, null);
+        SimpleFeature collFeature = SimpleFeatureBuilder.build(collType, new Object[] {coll, "collection"}, null);
 
         MemoryDataStore data = new MemoryDataStore();
         data.addFeature(lineFeature);
@@ -260,8 +253,7 @@ public class Rendering2DTest {
         // CREATING FEATURES
         //
         // ////////////////////////////////////////////////////////////////////
-        final SimpleFeatureCollection ft =
-                createTestFeatureCollection(DefaultGeographicCRS.WGS84, POLYGON);
+        final SimpleFeatureCollection ft = createTestFeatureCollection(DefaultGeographicCRS.WGS84, POLYGON);
 
         // ////////////////////////////////////////////////////////////////////
         //
@@ -322,8 +314,7 @@ public class Rendering2DTest {
         // CREATING FEATURES
         //
         // ////////////////////////////////////////////////////////////////////
-        final SimpleFeatureCollection ft =
-                createTestFeatureCollection(DefaultGeographicCRS.WGS84, LINE);
+        final SimpleFeatureCollection ft = createTestFeatureCollection(DefaultGeographicCRS.WGS84, LINE);
 
         // ////////////////////////////////////////////////////////////////////
         //
@@ -355,13 +346,12 @@ public class Rendering2DTest {
         //
         // ////////////////////////////////////////////////////////////////////
         ReferencedEnvelope env = map.getMaxBounds();
-        env =
-                new ReferencedEnvelope(
-                        env.getMinX() - 20,
-                        env.getMaxX() + 20,
-                        env.getMinY() - 20,
-                        env.getMaxY() + 20,
-                        map.getCoordinateReferenceSystem());
+        env = new ReferencedEnvelope(
+                env.getMinX() - 20,
+                env.getMaxX() + 20,
+                env.getMinY() - 20,
+                env.getMaxY() + 20,
+                map.getCoordinateReferenceSystem());
         RendererBaseTest.showRender("testSimpleLineRender", renderer, 1000, env);
     }
 
@@ -373,8 +363,7 @@ public class Rendering2DTest {
         // CREATING FEATURES
         //
         // ////////////////////////////////////////////////////////////////////
-        final SimpleFeatureCollection ft =
-                createTestFeatureCollection(DefaultGeographicCRS.WGS84, POINT);
+        final SimpleFeatureCollection ft = createTestFeatureCollection(DefaultGeographicCRS.WGS84, POINT);
 
         // ////////////////////////////////////////////////////////////////////
         //
@@ -406,13 +395,12 @@ public class Rendering2DTest {
         //
         // ////////////////////////////////////////////////////////////////////
         ReferencedEnvelope env = map.getMaxBounds();
-        env =
-                new ReferencedEnvelope(
-                        env.getMinX() - 20,
-                        env.getMaxX() + 20,
-                        env.getMinY() - 20,
-                        env.getMaxY() + 20,
-                        map.getCoordinateReferenceSystem());
+        env = new ReferencedEnvelope(
+                env.getMinX() - 20,
+                env.getMaxX() + 20,
+                env.getMinY() - 20,
+                env.getMaxY() + 20,
+                map.getCoordinateReferenceSystem());
         RendererBaseTest.showRender("testSimplePointRender", renderer, 1000, env);
     }
 
@@ -428,10 +416,8 @@ public class Rendering2DTest {
         // Create test features
         //
         // //
-        GeometryFactory geomFac =
-                new GeometryFactory(PackedCoordinateSequenceFactory.DOUBLE_FACTORY);
-        SimpleFeatureCollection ft =
-                createTestFeatureCollection(DefaultGeographicCRS.WGS84, geomFac, POLYGON);
+        GeometryFactory geomFac = new GeometryFactory(PackedCoordinateSequenceFactory.DOUBLE_FACTORY);
+        SimpleFeatureCollection ft = createTestFeatureCollection(DefaultGeographicCRS.WGS84, geomFac, POLYGON);
         Style style = createTestStyle();
 
         // //
@@ -456,24 +442,22 @@ public class Rendering2DTest {
         // Transform the area of interest
         //
         // //
-        final CoordinateReferenceSystem crs =
-                CRS.parseWKT(
-                        "PROJCS[\"NAD83 / BC"
-                                + "Albers\",GEOGCS[\"NAD83\",DATUM[\"North_American_Datum_1983\",SPHEROID[\"GRS"
-                                + "1980\",6378137,298.257222101,AUTHORITY[\"EPSG\",\"7019\"]],"
-                                + "TOWGS84[0,0,0],AUTHORITY[\"EPSG\",\"6269\"]],"
-                                + "PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\",\"8901\"]],"
-                                + "UNIT[\"degree\",0.01745329251994328,AUTHORITY[\"EPSG\",\"9122\"]],"
-                                + "AUTHORITY[\"EPSG\",\"4269\"]],"
-                                + "PROJECTION[\"Albers_Conic_Equal_Area\"],"
-                                + "PARAMETER[\"standard_parallel_1\",50],"
-                                + "PARAMETER[\"standard_parallel_2\",58.5],"
-                                + "PARAMETER[\"latitude_of_center\",45],"
-                                + "PARAMETER[\"longitude_of_center\",-126],"
-                                + "PARAMETER[\"false_easting\",1000000],"
-                                + "PARAMETER[\"false_northing\",0],"
-                                + "UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],"
-                                + "AUTHORITY[\"EPSG\",\"3005\"]]");
+        final CoordinateReferenceSystem crs = CRS.parseWKT("PROJCS[\"NAD83 / BC"
+                + "Albers\",GEOGCS[\"NAD83\",DATUM[\"North_American_Datum_1983\",SPHEROID[\"GRS"
+                + "1980\",6378137,298.257222101,AUTHORITY[\"EPSG\",\"7019\"]],"
+                + "TOWGS84[0,0,0],AUTHORITY[\"EPSG\",\"6269\"]],"
+                + "PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\",\"8901\"]],"
+                + "UNIT[\"degree\",0.01745329251994328,AUTHORITY[\"EPSG\",\"9122\"]],"
+                + "AUTHORITY[\"EPSG\",\"4269\"]],"
+                + "PROJECTION[\"Albers_Conic_Equal_Area\"],"
+                + "PARAMETER[\"standard_parallel_1\",50],"
+                + "PARAMETER[\"standard_parallel_2\",58.5],"
+                + "PARAMETER[\"latitude_of_center\",45],"
+                + "PARAMETER[\"longitude_of_center\",-126],"
+                + "PARAMETER[\"false_easting\",1000000],"
+                + "PARAMETER[\"false_northing\",0],"
+                + "UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],"
+                + "AUTHORITY[\"EPSG\",\"3005\"]]");
         final MathTransform t = CRS.findMathTransform(DefaultGeographicCRS.WGS84, crs, true);
 
         // //
@@ -482,8 +466,7 @@ public class Rendering2DTest {
         //
         // //
         final ReferencedEnvelope env = map.getMaxBounds();
-        final ReferencedEnvelope bounds =
-                new ReferencedEnvelope(JTS.transform(env, null, t, 10), crs);
+        final ReferencedEnvelope bounds = new ReferencedEnvelope(JTS.transform(env, null, t, 10), crs);
 
         RendererBaseTest.showRender("testReprojection", renderer, 1000, bounds);
 
@@ -499,10 +482,8 @@ public class Rendering2DTest {
         //
         // /////////////////////////////////////////////////////////////////
         LOGGER.finer("starting testLiteRender2");
-        final GeometryFactory geomFac =
-                new GeometryFactory(PackedCoordinateSequenceFactory.DOUBLE_FACTORY);
-        final SimpleFeatureCollection ft =
-                createTestFeatureCollection(DefaultGeographicCRS.WGS84, geomFac, LINE);
+        final GeometryFactory geomFac = new GeometryFactory(PackedCoordinateSequenceFactory.DOUBLE_FACTORY);
+        final SimpleFeatureCollection ft = createTestFeatureCollection(DefaultGeographicCRS.WGS84, geomFac, LINE);
         final Style style = createTestStyle();
 
         //
@@ -521,24 +502,22 @@ public class Rendering2DTest {
         //
         //
         // /////////////////////////////////////////////////////////////////
-        final CoordinateReferenceSystem crs =
-                CRS.parseWKT(
-                        "PROJCS[\"NAD83 / BC"
-                                + "Albers\",GEOGCS[\"NAD83\",DATUM[\"North_American_Datum_1983\",SPHEROID[\"GRS"
-                                + "1980\",6378137,298.257222101,AUTHORITY[\"EPSG\",\"7019\"]],"
-                                + "TOWGS84[0,0,0],AUTHORITY[\"EPSG\",\"6269\"]],"
-                                + "PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\",\"8901\"]],"
-                                + "UNIT[\"degree\",0.01745329251994328,AUTHORITY[\"EPSG\",\"9122\"]],"
-                                + "AUTHORITY[\"EPSG\",\"4269\"]],"
-                                + "PROJECTION[\"Albers_Conic_Equal_Area\"],"
-                                + "PARAMETER[\"standard_parallel_1\",50],"
-                                + "PARAMETER[\"standard_parallel_2\",58.5],"
-                                + "PARAMETER[\"latitude_of_center\",45],"
-                                + "PARAMETER[\"longitude_of_center\",-126],"
-                                + "PARAMETER[\"false_easting\",1000000],"
-                                + "PARAMETER[\"false_northing\",0],"
-                                + "UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],"
-                                + "AUTHORITY[\"EPSG\",\"3005\"]]");
+        final CoordinateReferenceSystem crs = CRS.parseWKT("PROJCS[\"NAD83 / BC"
+                + "Albers\",GEOGCS[\"NAD83\",DATUM[\"North_American_Datum_1983\",SPHEROID[\"GRS"
+                + "1980\",6378137,298.257222101,AUTHORITY[\"EPSG\",\"7019\"]],"
+                + "TOWGS84[0,0,0],AUTHORITY[\"EPSG\",\"6269\"]],"
+                + "PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\",\"8901\"]],"
+                + "UNIT[\"degree\",0.01745329251994328,AUTHORITY[\"EPSG\",\"9122\"]],"
+                + "AUTHORITY[\"EPSG\",\"4269\"]],"
+                + "PROJECTION[\"Albers_Conic_Equal_Area\"],"
+                + "PARAMETER[\"standard_parallel_1\",50],"
+                + "PARAMETER[\"standard_parallel_2\",58.5],"
+                + "PARAMETER[\"latitude_of_center\",45],"
+                + "PARAMETER[\"longitude_of_center\",-126],"
+                + "PARAMETER[\"false_easting\",1000000],"
+                + "PARAMETER[\"false_northing\",0],"
+                + "UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],"
+                + "AUTHORITY[\"EPSG\",\"3005\"]]");
 
         // /////////////////////////////////////////////////////////////////
         //
@@ -551,13 +530,12 @@ public class Rendering2DTest {
         renderer.setMapContent(map);
 
         ReferencedEnvelope env = map.getMaxBounds();
-        env =
-                new ReferencedEnvelope(
-                        env.getMinX() - 20,
-                        env.getMaxX() + 20,
-                        env.getMinY() - 20,
-                        env.getMaxY() + 20,
-                        DefaultGeographicCRS.WGS84);
+        env = new ReferencedEnvelope(
+                env.getMinX() - 20,
+                env.getMaxX() + 20,
+                env.getMinY() - 20,
+                env.getMaxY() + 20,
+                DefaultGeographicCRS.WGS84);
         final ReferencedEnvelope newbounds = env.transform(crs, true);
         RendererBaseTest.showRender("testLineReprojection", renderer, 1000, newbounds);
     }
@@ -572,10 +550,8 @@ public class Rendering2DTest {
         //
         // /////////////////////////////////////////////////////////////////
         LOGGER.finer("starting testLiteRender2");
-        final GeometryFactory geomFac =
-                new GeometryFactory(PackedCoordinateSequenceFactory.DOUBLE_FACTORY);
-        final SimpleFeatureCollection ft =
-                createTestFeatureCollection(DefaultGeographicCRS.WGS84, geomFac, POINT);
+        final GeometryFactory geomFac = new GeometryFactory(PackedCoordinateSequenceFactory.DOUBLE_FACTORY);
+        final SimpleFeatureCollection ft = createTestFeatureCollection(DefaultGeographicCRS.WGS84, geomFac, POINT);
         final Style style = createTestStyle();
 
         //
@@ -599,24 +575,22 @@ public class Rendering2DTest {
         // Transform the area of interest
         //
         // //
-        final CoordinateReferenceSystem crs =
-                CRS.parseWKT(
-                        "PROJCS[\"NAD83 / BC"
-                                + "Albers\",GEOGCS[\"NAD83\",DATUM[\"North_American_Datum_1983\",SPHEROID[\"GRS"
-                                + "1980\",6378137,298.257222101,AUTHORITY[\"EPSG\",\"7019\"]],"
-                                + "TOWGS84[0,0,0],AUTHORITY[\"EPSG\",\"6269\"]],"
-                                + "PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\",\"8901\"]],"
-                                + "UNIT[\"degree\",0.01745329251994328,AUTHORITY[\"EPSG\",\"9122\"]],"
-                                + "AUTHORITY[\"EPSG\",\"4269\"]],"
-                                + "PROJECTION[\"Albers_Conic_Equal_Area\"],"
-                                + "PARAMETER[\"standard_parallel_1\",50],"
-                                + "PARAMETER[\"standard_parallel_2\",58.5],"
-                                + "PARAMETER[\"latitude_of_center\",45],"
-                                + "PARAMETER[\"longitude_of_center\",-126],"
-                                + "PARAMETER[\"false_easting\",1000000],"
-                                + "PARAMETER[\"false_northing\",0],"
-                                + "UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],"
-                                + "AUTHORITY[\"EPSG\",\"3005\"]]");
+        final CoordinateReferenceSystem crs = CRS.parseWKT("PROJCS[\"NAD83 / BC"
+                + "Albers\",GEOGCS[\"NAD83\",DATUM[\"North_American_Datum_1983\",SPHEROID[\"GRS"
+                + "1980\",6378137,298.257222101,AUTHORITY[\"EPSG\",\"7019\"]],"
+                + "TOWGS84[0,0,0],AUTHORITY[\"EPSG\",\"6269\"]],"
+                + "PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\",\"8901\"]],"
+                + "UNIT[\"degree\",0.01745329251994328,AUTHORITY[\"EPSG\",\"9122\"]],"
+                + "AUTHORITY[\"EPSG\",\"4269\"]],"
+                + "PROJECTION[\"Albers_Conic_Equal_Area\"],"
+                + "PARAMETER[\"standard_parallel_1\",50],"
+                + "PARAMETER[\"standard_parallel_2\",58.5],"
+                + "PARAMETER[\"latitude_of_center\",45],"
+                + "PARAMETER[\"longitude_of_center\",-126],"
+                + "PARAMETER[\"false_easting\",1000000],"
+                + "PARAMETER[\"false_northing\",0],"
+                + "UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],"
+                + "AUTHORITY[\"EPSG\",\"3005\"]]");
 
         // /////////////////////////////////////////////////////////////////
         //
@@ -629,13 +603,12 @@ public class Rendering2DTest {
         renderer.setMapContent(map);
 
         ReferencedEnvelope env = map.getMaxBounds();
-        env =
-                new ReferencedEnvelope(
-                        env.getMinX() - 20,
-                        env.getMaxX() + 20,
-                        env.getMinY() - 20,
-                        env.getMaxY() + 20,
-                        DefaultGeographicCRS.WGS84);
+        env = new ReferencedEnvelope(
+                env.getMinX() - 20,
+                env.getMaxX() + 20,
+                env.getMinY() - 20,
+                env.getMaxY() + 20,
+                DefaultGeographicCRS.WGS84);
         final ReferencedEnvelope newbounds = env.transform(crs, true);
         RendererBaseTest.showRender("testPointReprojection", renderer, 1000, newbounds);
     }
@@ -928,31 +901,24 @@ public class Rendering2DTest {
         // 1407342.5139777814, 650162.7155794351
         // 655,368
         // some location in bc albers
-        CoordinateReferenceSystem crs =
-                CRS.parseWKT(
-                        "PROJCS[\"NAD83 / BC"
-                                + "Albers\",GEOGCS[\"NAD83\",DATUM[\"North_American_Datum_1983\",SPHEROID[\"GRS"
-                                + "1980\",6378137,298.257222101,AUTHORITY[\"EPSG\",\"7019\"]],"
-                                + "TOWGS84[0,0,0],AUTHORITY[\"EPSG\",\"6269\"]],"
-                                + "PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\",\"8901\"]],"
-                                + "UNIT[\"degree\",0.01745329251994328,AUTHORITY[\"EPSG\",\"9122\"]],"
-                                + "AUTHORITY[\"EPSG\",\"4269\"]],"
-                                + "PROJECTION[\"Albers_Conic_Equal_Area\"],"
-                                + "PARAMETER[\"standard_parallel_1\",50],"
-                                + "PARAMETER[\"standard_parallel_2\",58.5],"
-                                + "PARAMETER[\"latitude_of_center\",45],"
-                                + "PARAMETER[\"longitude_of_center\",-126],"
-                                + "PARAMETER[\"false_easting\",1000000],"
-                                + "PARAMETER[\"false_northing\",0],"
-                                + "UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],"
-                                + "AUTHORITY[\"EPSG\",\"3005\"]]");
-        ReferencedEnvelope envelope =
-                new ReferencedEnvelope(
-                        1388422.8746916912,
-                        1407342.5139777814,
-                        639551.3924667438,
-                        650162.715579435,
-                        crs);
+        CoordinateReferenceSystem crs = CRS.parseWKT("PROJCS[\"NAD83 / BC"
+                + "Albers\",GEOGCS[\"NAD83\",DATUM[\"North_American_Datum_1983\",SPHEROID[\"GRS"
+                + "1980\",6378137,298.257222101,AUTHORITY[\"EPSG\",\"7019\"]],"
+                + "TOWGS84[0,0,0],AUTHORITY[\"EPSG\",\"6269\"]],"
+                + "PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\",\"8901\"]],"
+                + "UNIT[\"degree\",0.01745329251994328,AUTHORITY[\"EPSG\",\"9122\"]],"
+                + "AUTHORITY[\"EPSG\",\"4269\"]],"
+                + "PROJECTION[\"Albers_Conic_Equal_Area\"],"
+                + "PARAMETER[\"standard_parallel_1\",50],"
+                + "PARAMETER[\"standard_parallel_2\",58.5],"
+                + "PARAMETER[\"latitude_of_center\",45],"
+                + "PARAMETER[\"longitude_of_center\",-126],"
+                + "PARAMETER[\"false_easting\",1000000],"
+                + "PARAMETER[\"false_northing\",0],"
+                + "UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],"
+                + "AUTHORITY[\"EPSG\",\"3005\"]]");
+        ReferencedEnvelope envelope = new ReferencedEnvelope(
+                1388422.8746916912, 1407342.5139777814, 639551.3924667438, 650162.715579435, crs);
 
         double s = RendererUtilities.calculateScale(envelope, 655, 368, 90.0);
 
@@ -964,13 +930,9 @@ public class Rendering2DTest {
     public void testRenderEmptyLine() throws SchemaException, IllegalAttributeException {
         GeometryFactory gf = new GeometryFactory();
         StyleBuilder sb = new StyleBuilder();
-        SimpleFeatureType pointType =
-                DataUtilities.createType("emptyLines", "geom:LineString,name:String");
-        SimpleFeature f =
-                SimpleFeatureBuilder.build(
-                        pointType,
-                        new Object[] {gf.createLineString((Coordinate[]) null), "name"},
-                        null);
+        SimpleFeatureType pointType = DataUtilities.createType("emptyLines", "geom:LineString,name:String");
+        SimpleFeature f = SimpleFeatureBuilder.build(
+                pointType, new Object[] {gf.createLineString((Coordinate[]) null), "name"}, null);
         Style style = sb.createStyle(sb.createLineSymbolizer());
 
         renderEmptyGeometry(f, style);
@@ -980,34 +942,25 @@ public class Rendering2DTest {
     public void testRenderEmptyCollection() throws SchemaException, IllegalAttributeException {
         GeometryFactory gf = new GeometryFactory();
         StyleBuilder sb = new StyleBuilder();
-        SimpleFeatureType pointType =
-                DataUtilities.createType("emptyPolygon", "geom:MultiPolygon,name:String");
+        SimpleFeatureType pointType = DataUtilities.createType("emptyPolygon", "geom:MultiPolygon,name:String");
         SimpleFeature f =
-                SimpleFeatureBuilder.build(
-                        pointType, new Object[] {gf.createMultiPolygon(null), "name"}, null);
+                SimpleFeatureBuilder.build(pointType, new Object[] {gf.createMultiPolygon(null), "name"}, null);
         Style style = sb.createStyle(sb.createPolygonSymbolizer());
 
         renderEmptyGeometry(f, style);
     }
 
     @Test
-    public void testRenderCollectionWithEmptyItems()
-            throws SchemaException, IllegalAttributeException {
+    public void testRenderCollectionWithEmptyItems() throws SchemaException, IllegalAttributeException {
         GeometryFactory gf = new GeometryFactory();
         StyleBuilder sb = new StyleBuilder();
-        SimpleFeatureType pointType =
-                DataUtilities.createType("emptyPolygon", "geom:MultiPolygon,name:String");
+        SimpleFeatureType pointType = DataUtilities.createType("emptyPolygon", "geom:MultiPolygon,name:String");
         Polygon p1 = gf.createPolygon(gf.createLinearRing((Coordinate[]) null), null);
-        Polygon p2 =
-                gf.createPolygon(
-                        gf.createLinearRing(
-                                new Coordinate[] {
-                                    new Coordinate(0, 0),
-                                    new Coordinate(1, 1),
-                                    new Coordinate(1, 0),
-                                    new Coordinate(0, 0)
-                                }),
-                        null);
+        Polygon p2 = gf.createPolygon(
+                gf.createLinearRing(new Coordinate[] {
+                    new Coordinate(0, 0), new Coordinate(1, 1), new Coordinate(1, 0), new Coordinate(0, 0)
+                }),
+                null);
         MultiPolygon mp = gf.createMultiPolygon(new Polygon[] {p1, p2});
         SimpleFeature f = SimpleFeatureBuilder.build(pointType, new Object[] {mp, "name"}, null);
         Style style = sb.createStyle(sb.createPolygonSymbolizer());
@@ -1019,17 +972,11 @@ public class Rendering2DTest {
     public void testRenderPolygonEmptyRings() throws SchemaException, IllegalAttributeException {
         GeometryFactory gf = new GeometryFactory();
         StyleBuilder sb = new StyleBuilder();
-        SimpleFeatureType pointType =
-                DataUtilities.createType("emptyRings", "geom:MultiPolygon,name:String");
+        SimpleFeatureType pointType = DataUtilities.createType("emptyRings", "geom:MultiPolygon,name:String");
         LinearRing emptyRing = gf.createLinearRing((Coordinate[]) null);
-        LinearRing realRing =
-                gf.createLinearRing(
-                        new Coordinate[] {
-                            new Coordinate(0, 0),
-                            new Coordinate(1, 1),
-                            new Coordinate(1, 0),
-                            new Coordinate(0, 0)
-                        });
+        LinearRing realRing = gf.createLinearRing(
+                new Coordinate[] {new Coordinate(0, 0), new Coordinate(1, 1), new Coordinate(1, 0), new Coordinate(0, 0)
+                });
         Polygon p1 = gf.createPolygon(realRing, new LinearRing[] {emptyRing});
         Polygon p2 = gf.createPolygon(emptyRing, new LinearRing[] {emptyRing});
         MultiPolygon mp = gf.createMultiPolygon(new Polygon[] {p1, p2});
@@ -1043,11 +990,9 @@ public class Rendering2DTest {
     public void testMixedEmptyMultiLine() throws SchemaException, IllegalAttributeException {
         GeometryFactory gf = new GeometryFactory();
         StyleBuilder sb = new StyleBuilder();
-        SimpleFeatureType pointType =
-                DataUtilities.createType("emptyRings", "geom:MultiLineString,name:String");
+        SimpleFeatureType pointType = DataUtilities.createType("emptyRings", "geom:MultiLineString,name:String");
         LineString emptyLine = gf.createLineString((Coordinate[]) null);
-        LineString realLine =
-                gf.createLineString(new Coordinate[] {new Coordinate(0, 0), new Coordinate(1, 1)});
+        LineString realLine = gf.createLineString(new Coordinate[] {new Coordinate(0, 0), new Coordinate(1, 1)});
         MultiLineString mls = gf.createMultiLineString(new LineString[] {emptyLine, realLine});
         SimpleFeature f = SimpleFeatureBuilder.build(pointType, new Object[] {mls, "name"}, null);
         Style style = sb.createStyle(sb.createPolygonSymbolizer());
@@ -1062,21 +1007,18 @@ public class Rendering2DTest {
         StreamingRenderer sr = new StreamingRenderer();
         sr.setMapContent(mc);
         BufferedImage bi = new BufferedImage(640, 480, BufferedImage.TYPE_4BYTE_ABGR);
-        sr.addRenderListener(
-                new RenderListener() {
+        sr.addRenderListener(new RenderListener() {
 
-                    @Override
-                    public void featureRenderer(SimpleFeature feature) {}
+            @Override
+            public void featureRenderer(SimpleFeature feature) {}
 
-                    @Override
-                    public void errorOccurred(Exception e) {
-                        java.util.logging.Logger.getGlobal()
-                                .log(java.util.logging.Level.INFO, "", e);
-                        Assert.fail(
-                                "Got an exception during rendering, this should not happen, "
-                                        + "not even with emtpy geometries");
-                    }
-                });
+            @Override
+            public void errorOccurred(Exception e) {
+                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
+                Assert.fail("Got an exception during rendering, this should not happen, "
+                        + "not even with emtpy geometries");
+            }
+        });
         sr.paint(
                 (Graphics2D) bi.getGraphics(),
                 new Rectangle(640, 480),

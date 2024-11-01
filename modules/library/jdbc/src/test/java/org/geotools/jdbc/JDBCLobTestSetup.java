@@ -25,8 +25,8 @@ public abstract class JDBCLobTestSetup extends JDBCDelegatingTestSetup {
      *
      * <p>testlob( id:Integer; blob_field: blob; clob_field: clob)
      *
-     * <p>The table should be populated with the following data 0 | [0,1,2,3,4,5] | "small clob"
-     * Where [0,1,2,3,4,5] is a byte[]
+     * <p>The table should be populated with the following data 0 | [0,1,2,3,4,5] | "small clob" Where [0,1,2,3,4,5] is
+     * a byte[]
      */
     protected abstract void createLobTable() throws Exception;
 

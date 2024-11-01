@@ -77,12 +77,10 @@ public class RootHandler extends XSIElementHandler {
     }
 
     /**
-     * @see org.geotools.xml.XSIElementHandler#startElement(java.lang.String, java.lang.String,
-     *     org.xml.sax.Attributes)
+     * @see org.geotools.xml.XSIElementHandler#startElement(java.lang.String, java.lang.String, org.xml.sax.Attributes)
      */
     @Override
-    public void startElement(String namespaceURI, String localName, Attributes attr)
-            throws SAXException {
+    public void startElement(String namespaceURI, String localName, Attributes attr) throws SAXException {
         throw new SAXNotSupportedException("Should never have elements at the root level");
     }
 
@@ -92,10 +90,7 @@ public class RootHandler extends XSIElementHandler {
         return LOCALNAME;
     }
 
-    /**
-     * intended to be called after the parse, this generates a Schema object from the schema which
-     * was parsed in.
-     */
+    /** intended to be called after the parse, this generates a Schema object from the schema which was parsed in. */
     public Schema getSchema() throws SAXException {
         Schema s = schema.compress(uri);
 

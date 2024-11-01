@@ -31,9 +31,8 @@ import org.geotools.stac.client.STACClient;
 import org.geotools.util.logging.Logging;
 
 /**
- * A {@link DataStore} implementation connecting to a <a
- * href="https://github.com/radiantearth/stac-api-spec">STAC API</a>, exposing collections as
- * feature types, and items as features.
+ * A {@link DataStore} implementation connecting to a <a href="https://github.com/radiantearth/stac-api-spec">STAC
+ * API</a>, exposing collections as feature types, and items as features.
  */
 public class STACDataStore extends ContentDataStore {
 
@@ -96,8 +95,7 @@ public class STACDataStore extends ContentDataStore {
     }
 
     /**
-     * Maximum number of STAC items a collection will ever provide (set to zero or negative not to
-     * have this limit).
+     * Maximum number of STAC items a collection will ever provide (set to zero or negative not to have this limit).
      *
      * @param hardLimit
      */

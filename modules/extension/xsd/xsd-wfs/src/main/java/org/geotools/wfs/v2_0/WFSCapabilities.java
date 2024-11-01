@@ -20,8 +20,7 @@ import java.util.Set;
 import org.geotools.xsd.XSD;
 
 /**
- * XSD for wfs 1.0. capabilities document; for non capabilities use {@link WFS}, as it's based on a
- * different schema.
+ * XSD for wfs 1.0. capabilities document; for non capabilities use {@link WFS}, as it's based on a different schema.
  *
  * @see WFSCapabilitiesConfiguration
  */

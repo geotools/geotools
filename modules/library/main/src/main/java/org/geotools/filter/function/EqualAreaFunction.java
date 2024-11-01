@@ -29,8 +29,7 @@ import org.geotools.feature.visitor.FeatureCalc;
 import org.geotools.filter.capability.FunctionNameImpl;
 
 /**
- * Breaks a SimpleFeatureCollection into classes with (roughtly) equal total items area in each
- * class
+ * Breaks a SimpleFeatureCollection into classes with (roughtly) equal total items area in each class
  *
  * @author Andrea Aime - GeoSolutions
  */
@@ -38,25 +37,23 @@ public class EqualAreaFunction extends AbstractQuantityClassificationFunction {
 
     private static final FilterFactory FF = CommonFactoryFinder.getFilterFactory();
 
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "EqualArea",
-                    RangedClassifier.class,
-                    parameter("value", Double.class),
-                    parameter("classes", Integer.class),
-                    parameter("areaFunction", Double.class, 0, 1),
-                    parameter("percentages", Boolean.class, 0, 1));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "EqualArea",
+            RangedClassifier.class,
+            parameter("value", Double.class),
+            parameter("classes", Integer.class),
+            parameter("areaFunction", Double.class, 0, 1),
+            parameter("percentages", Boolean.class, 0, 1));
 
     public EqualAreaFunction() {
         super(NAME);
     }
 
     /**
-     * The default area is computed as a cartesian area of the data (will work reasonably on
-     * geodetic dataset over small areas, but won't work properly over large areas) However, it is
-     * to be remembered that these classification functions are trying to get a certain evennes on
-     * the display, so if the display is in plate caree, then computing area over lon/lat is
-     * actually the right thing to do.
+     * The default area is computed as a cartesian area of the data (will work reasonably on geodetic dataset over small
+     * areas, but won't work properly over large areas) However, it is to be remembered that these classification
+     * functions are trying to get a certain evennes on the display, so if the display is in plate caree, then computing
+     * area over lon/lat is actually the right thing to do.
      */
     public static Function getCartesianAreaFunction() {
         // Would have loved to keep this as static, but cannot be done since the equal area

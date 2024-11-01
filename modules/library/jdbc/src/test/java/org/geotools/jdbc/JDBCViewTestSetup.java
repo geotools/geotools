@@ -45,16 +45,15 @@ public abstract class JDBCViewTestSetup extends JDBCDelegatingTestSetup {
     protected abstract void createLakesTable() throws Exception;
 
     /**
-     * Creates a "lakesview" view that simply returns the lake table fully. The table should be
-     * registered in the geometry metadata tables
+     * Creates a "lakesview" view that simply returns the lake table fully. The table should be registered in the
+     * geometry metadata tables
      */
     protected abstract void createLakesView() throws Exception;
 
     /**
-     * If the database supports views with primary keys, creates a "lakesviewpk" view that simply
-     * returns the lake table fully and makes sure the original pk is registered as a pk in the view
-     * as well. The table should be registered in the geometry metadata tables. If no primary key on
-     * views support is available, the method can be empty
+     * If the database supports views with primary keys, creates a "lakesviewpk" view that simply returns the lake table
+     * fully and makes sure the original pk is registered as a pk in the view as well. The table should be registered in
+     * the geometry metadata tables. If no primary key on views support is available, the method can be empty
      */
     protected abstract void createLakesViewPk() throws Exception;
 

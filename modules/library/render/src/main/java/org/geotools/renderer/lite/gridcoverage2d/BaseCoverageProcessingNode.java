@@ -37,14 +37,12 @@ import org.geotools.util.factory.Hints;
 /**
  * Base implementation of a {@link CoverageProcessingNode} .
  *
- * <p>This implementation provides convenient methods for managing sinks and source for a {@link
- * CoverageProcessingNode} . The {@link #getOutput()} is used to get the output of this {@link
- * CoverageProcessingNode} (a {@link CoverageProcessingException} is thrown in case something bad
- * happens while processing
+ * <p>This implementation provides convenient methods for managing sinks and source for a {@link CoverageProcessingNode}
+ * . The {@link #getOutput()} is used to get the output of this {@link CoverageProcessingNode} (a
+ * {@link CoverageProcessingException} is thrown in case something bad happens while processing
  *
- * <p>Implementors must implement the abstract method {@link #execute()} which is guaranteed to run
- * in a critical section where the sources and sinks for this {@link CoverageProcessingNode} will
- * not be touched.
+ * <p>Implementors must implement the abstract method {@link #execute()} which is guaranteed to run in a critical
+ * section where the sources and sinks for this {@link CoverageProcessingNode} will not be touched.
  *
  * @author Simone Giannecchini, GeoSolutions.
  */
@@ -80,12 +78,10 @@ public abstract class BaseCoverageProcessingNode implements CoverageProcessingNo
     }
 
     /** Detects cycle in out graph */
-    private static final CoverageProcessingCycleDetector cycleDetector =
-            new CoverageProcessingCycleDetector();
+    private static final CoverageProcessingCycleDetector cycleDetector = new CoverageProcessingCycleDetector();
 
     /** Logger for this class. */
-    private static final Logger LOGGER =
-            Logger.getLogger(BaseCoverageProcessingNode.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(BaseCoverageProcessingNode.class.getName());
 
     /**
      * {@link List} of sources for this {@link CoverageProcessingNode} .
@@ -130,8 +126,7 @@ public abstract class BaseCoverageProcessingNode implements CoverageProcessingNo
     private Hints hints;
 
     /**
-     * {@link GridCoverageFactory} to build {@link GridCoverage2D} objects as output of this
-     * operation.
+     * {@link GridCoverageFactory} to build {@link GridCoverage2D} objects as output of this operation.
      *
      * @uml.property name="coverageFactory"
      */
@@ -152,8 +147,7 @@ public abstract class BaseCoverageProcessingNode implements CoverageProcessingNo
      *
      * @uml.property name="name"
      */
-    private InternationalString name =
-            Vocabulary.formatInternational(VocabularyKeys.BASE_COVERAGE_PROCESSING);
+    private InternationalString name = Vocabulary.formatInternational(VocabularyKeys.BASE_COVERAGE_PROCESSING);
 
     /**
      * Internationalized description for this {@link CoverageProcessingNode} .
@@ -172,8 +166,7 @@ public abstract class BaseCoverageProcessingNode implements CoverageProcessingNo
      *
      * @param maxSources maximum number of sources allowed for this node.
      */
-    public BaseCoverageProcessingNode(
-            int maxSources, InternationalString name, InternationalString description) {
+    public BaseCoverageProcessingNode(int maxSources, InternationalString name, InternationalString description) {
         this(maxSources, null, name, description);
     }
 
@@ -181,14 +174,11 @@ public abstract class BaseCoverageProcessingNode implements CoverageProcessingNo
      * Default constructor that gives users the possibility
      *
      * @param maxSources maximum number of sources allowed for this node.
-     * @param hints instance of {@link Hints} class to control creation of internal factories. It
-     *     can be <code>null</code>.
+     * @param hints instance of {@link Hints} class to control creation of internal factories. It can be <code>null
+     *     </code>.
      */
     public BaseCoverageProcessingNode(
-            int maxSources,
-            Hints hints,
-            InternationalString name,
-            InternationalString description) {
+            int maxSources, Hints hints, InternationalString name, InternationalString description) {
         ensureNotNull(name, "CoverageProcessingNode name ");
         ensureNotNull(description, "CoverageProcessingNode descripion ");
         maximumNumberOfSources = maxSources;
@@ -211,9 +201,7 @@ public abstract class BaseCoverageProcessingNode implements CoverageProcessingNo
         //
         // /////////////////////////////////////////////////////////////////////
         if (disposed) {
-            error =
-                    new CoverageProcessingException(
-                            "Trying to process a disposed CoverageProcessingNode.");
+            error = new CoverageProcessingException("Trying to process a disposed CoverageProcessingNode.");
             return;
         }
 
@@ -228,13 +216,11 @@ public abstract class BaseCoverageProcessingNode implements CoverageProcessingNo
                 // executes this node
                 final GridCoverage result = execute();
                 if (result == null)
-                    error =
-                            new CoverageProcessingException(
-                                    "Something bad occurred while trying to execute this node.");
+                    error = new CoverageProcessingException(
+                            "Something bad occurred while trying to execute this node.");
                 if (!(result instanceof GridCoverage2D))
-                    error =
-                            new CoverageProcessingException(
-                                    "Something bad occurred while trying to execute this node.");
+                    error = new CoverageProcessingException(
+                            "Something bad occurred while trying to execute this node.");
                 if (error == null) output = (GridCoverage2D) result;
             } catch (Throwable t) {
                 // something bad happened
@@ -254,17 +240,16 @@ public abstract class BaseCoverageProcessingNode implements CoverageProcessingNo
     /**
      * Subclasses MUST override this method in order to do the actual processing.
      *
-     * <p>Note that this method is invoked through this framework hence it is run within a critical
-     * section. Be careful with what you do within this method since it is essentially an "alien"
-     * method running within a synch section, hence all sort of bad things can happen.
+     * <p>Note that this method is invoked through this framework hence it is run within a critical section. Be careful
+     * with what you do within this method since it is essentially an "alien" method running within a synch section,
+     * hence all sort of bad things can happen.
      *
      * @return a {@link GridCoverage2D} which is the result of the processing.
      */
     protected abstract GridCoverage execute();
 
     /**
-     * Disposes this {@link CoverageProcessingNode} along with all the resources it might have
-     * allocated
+     * Disposes this {@link CoverageProcessingNode} along with all the resources it might have allocated
      *
      * <p>The result for this {@link CoverageProcessingNode} is also disposed.
      *
@@ -317,8 +302,8 @@ public abstract class BaseCoverageProcessingNode implements CoverageProcessingNo
     }
 
     /**
-     * This method is responsible for triggering the execution of this {@link
-     * CoverageProcessingNode} and also of all its sources.
+     * This method is responsible for triggering the execution of this {@link CoverageProcessingNode} and also of all
+     * its sources.
      *
      * <p>In case something bad happens a {@link CoverageProcessingException} is thrown.
      *
@@ -370,17 +355,14 @@ public abstract class BaseCoverageProcessingNode implements CoverageProcessingNo
     }
 
     private void detectCycle() throws IllegalStateException {
-        if (cycleDetector.detectCycle(this))
-            throw new IllegalStateException(ErrorKeys.CYCLE_DETECTED);
+        if (cycleDetector.detectCycle(this)) throw new IllegalStateException(ErrorKeys.CYCLE_DETECTED);
     }
 
     private void checkNumSources(final int sourcesToAdd) {
         if (maximumNumberOfSources != -1)
             if (this.sources.size() + sourcesToAdd > maximumNumberOfSources)
                 throw new IllegalStateException(
-                        MessageFormat.format(
-                                ErrorKeys.TOO_MANY_SOURCES_$1,
-                                Integer.valueOf(maximumNumberOfSources)));
+                        MessageFormat.format(ErrorKeys.TOO_MANY_SOURCES_$1, Integer.valueOf(maximumNumberOfSources)));
     }
 
     /*
@@ -467,8 +449,7 @@ public abstract class BaseCoverageProcessingNode implements CoverageProcessingNo
     /**
      * Getter for {@link Hints} .
      *
-     * @return {@link Hints} provided at construction time to control {@link GridCoverageFactory}
-     *     creation.
+     * @return {@link Hints} provided at construction time to control {@link GridCoverageFactory} creation.
      * @uml.property name="hints"
      */
     @Override
@@ -477,11 +458,9 @@ public abstract class BaseCoverageProcessingNode implements CoverageProcessingNo
     }
 
     /**
-     * retrieves the maximum number of sources we are allowed to set for this {@link
-     * CoverageProcessingNode}
+     * retrieves the maximum number of sources we are allowed to set for this {@link CoverageProcessingNode}
      *
-     * @return the maximum number of sources we are allowed to set for this {@link
-     *     CoverageProcessingNode}
+     * @return the maximum number of sources we are allowed to set for this {@link CoverageProcessingNode}
      * @uml.property name="maximumNumberOfSources"
      */
     public int getMaximumNumberOfSources() {
@@ -489,11 +468,10 @@ public abstract class BaseCoverageProcessingNode implements CoverageProcessingNo
     }
 
     /**
-     * The {@link GridCoverageFactory} we will internally use for build intermediate and output
-     * {@link GridCoverage2D} .
+     * The {@link GridCoverageFactory} we will internally use for build intermediate and output {@link GridCoverage2D} .
      *
-     * @return a {@link GridCoverageFactory} we will internally use for build intermediate and
-     *     output {@link GridCoverage2D} .
+     * @return a {@link GridCoverageFactory} we will internally use for build intermediate and output
+     *     {@link GridCoverage2D} .
      * @uml.property name="coverageFactory"
      */
     @Override
@@ -544,29 +522,26 @@ public abstract class BaseCoverageProcessingNode implements CoverageProcessingNo
     }
 
     /**
-     * Checks whether the provided source object is null or not. If it is null it throws an {@link
-     * IllegalArgumentException} exception.
+     * Checks whether the provided source object is null or not. If it is null it throws an
+     * {@link IllegalArgumentException} exception.
      *
      * @param source the object to check.
      * @param name the operation we are trying to run.
      */
     protected static void ensureSourceNotNull(final Object source, final String name) {
         if (source == null)
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.SOURCE_CANT_BE_NULL_$1, name));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.SOURCE_CANT_BE_NULL_$1, name));
     }
 
     /**
-     * Checks whether the provided object is null or not. If it is null it throws an {@link
-     * IllegalArgumentException} exception.
+     * Checks whether the provided object is null or not. If it is null it throws an {@link IllegalArgumentException}
+     * exception.
      *
      * @param source the object to check.
      * @param name the operation we are trying to run.
      */
     protected static void ensureNotNull(final Object source, final String name) {
-        if (source == null)
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, name));
+        if (source == null) throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, name));
     }
 
     /*
@@ -588,7 +563,9 @@ public abstract class BaseCoverageProcessingNode implements CoverageProcessingNo
     public String toString() {
         final StringBuffer buffer = new StringBuffer();
         buffer.append("Node Name:").append(this.getName().toString()).append("\n");
-        buffer.append("Node Description:").append(this.getDescription().toString()).append("\n");
+        buffer.append("Node Description:")
+                .append(this.getDescription().toString())
+                .append("\n");
         // if(executed&&error==null)
         // buffer.append("Node executed fine with
         // output:\n\t").append(this.getOutput().toString()).append("\n");
@@ -605,8 +582,7 @@ public abstract class BaseCoverageProcessingNode implements CoverageProcessingNo
     /**
      * Tells me whether or not the node has been already disposed.
      *
-     * @return <code>true</code> if the node has been already disposed, <code>false</code>
-     *     otherwise.
+     * @return <code>true</code> if the node has been already disposed, <code>false</code> otherwise.
      * @uml.property name="disposed"
      */
     public boolean isDisposed() {
@@ -616,8 +592,7 @@ public abstract class BaseCoverageProcessingNode implements CoverageProcessingNo
     /**
      * Tells me whether or not the node has been already executed.
      *
-     * @return <code>true</code> if the node has been already executed, <code>false</code>
-     *     otherwise.
+     * @return <code>true</code> if the node has been already executed, <code>false</code> otherwise.
      * @uml.property name="executed"
      */
     public boolean isExecuted() {

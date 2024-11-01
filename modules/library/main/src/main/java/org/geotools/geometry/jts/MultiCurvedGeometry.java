@@ -19,8 +19,7 @@ package org.geotools.geometry.jts;
 import org.locationtech.jts.geom.Geometry;
 
 /**
- * This interface is really just a trick for schema building, there are no concrete implementors for
- * it
+ * This interface is really just a trick for schema building, there are no concrete implementors for it
  *
  * @author Andrea Aime - GeoSolutions
  */

@@ -21,8 +21,8 @@ import org.geotools.api.temporal.IntervalLength;
 import org.geotools.util.Utilities;
 
 /**
- * A data type for intervals of time which supports the expression of duration in terms of a
- * specified multiple of a single unit of time.
+ * A data type for intervals of time which supports the expression of duration in terms of a specified multiple of a
+ * single unit of time.
  *
  * @author Mehdi Sidhoum (Geomatys)
  */
@@ -35,14 +35,13 @@ public class DefaultIntervalLength extends DefaultDuration implements IntervalLe
     /** This is the exponent of the base. */
     private int factor;
     /**
-     * This is the length of the time interval as an integer multiple of one radix(exp -factor) of
-     * the specified unit.
+     * This is the length of the time interval as an integer multiple of one radix(exp -factor) of the specified unit.
      */
     private int value;
 
     /**
-     * Creates a new instance of IntervalUnit example : Unit="second" radix=10 factor=3 value=7
-     * specifies a time interval length of 7ms.
+     * Creates a new instance of IntervalUnit example : Unit="second" radix=10 factor=3 value=7 specifies a time
+     * interval length of 7ms.
      */
     public DefaultIntervalLength(Unit unit, int radix, int factor, int value) {
         this.unit = unit;

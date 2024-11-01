@@ -21,23 +21,21 @@ import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 
 /**
- * Interpolates a surface across a regular grid from an irregular set of data points using the
- * Barnes Surface Interpolation technique.
+ * Interpolates a surface across a regular grid from an irregular set of data points using the Barnes Surface
+ * Interpolation technique.
  *
- * <p>Barnes Surface Interpolation is a surface estimating method commonly used as an interpolation
- * technique for meteorological datasets. The algorithm operates on a regular grid of cells covering
- * a specified extent in the input data space. It computes an initial pass to produce an averaged
- * (smoothed) value for each cell in the grid, based on the cell's proximity to the points in the
- * input observations. Subsequent refinement passes may be performed to improve the surface estimate
- * to better approximate the observed values.
+ * <p>Barnes Surface Interpolation is a surface estimating method commonly used as an interpolation technique for
+ * meteorological datasets. The algorithm operates on a regular grid of cells covering a specified extent in the input
+ * data space. It computes an initial pass to produce an averaged (smoothed) value for each cell in the grid, based on
+ * the cell's proximity to the points in the input observations. Subsequent refinement passes may be performed to
+ * improve the surface estimate to better approximate the observed values.
  *
  * <ul>
- *   <li>The initial pass produces an averaged (smoothed) value for each grid cell using a summation
- *       of exponential (Gaussian) decay functions around each observation point.
- *   <li>Subsequent refinement passes compute an error surface in the same way, using the deltas
- *       between the previous estimated surface and the observations. The error surface is added to
- *       the previous estimated surface to refine the estimate (by reducing the delta between the
- *       estimate and the observations).
+ *   <li>The initial pass produces an averaged (smoothed) value for each grid cell using a summation of exponential
+ *       (Gaussian) decay functions around each observation point.
+ *   <li>Subsequent refinement passes compute an error surface in the same way, using the deltas between the previous
+ *       estimated surface and the observations. The error surface is added to the previous estimated surface to refine
+ *       the estimate (by reducing the delta between the estimate and the observations).
  * </ul>
  *
  * <p>For the first pass, the estimated value at each grid cell is:
@@ -50,8 +48,7 @@ import org.locationtech.jts.geom.Envelope;
  *
  * <ul>
  *   <li><code>E<sub>g</sub></code> is the estimated surface value at the grid cell
- *   <li><code>w<sub>i</sub></code> is the weight value for the i'th observation point (see below
- *       for definition)
+ *   <li><code>w<sub>i</sub></code> is the weight value for the i'th observation point (see below for definition)
  *   <li><code>o<sub>i</sub></code> is the value of the i'th observation point
  * </ul>
  *
@@ -65,14 +62,14 @@ import org.locationtech.jts.geom.Envelope;
  *
  * <ul>
  *   <li><code>w<sub>i</sub></code> is the <b>weight</b> of the i'th observation point value
- *   <li><code>d<sub>i</sub></code> is the <b>distance</b> from the grid cell being estimated to the
- *       i'th observation point
- *   <li><code>L</code> is the <b>length scale</b>, which is determined by the observation spacing
- *       and the natural scale of the phenomena being measured. The length scale is in the units of
- *       the coordinate system of the data points. It will likely need to be empirically estimated.
- *   <li><code>c</code> is the <b>convergence factor</b>, which controls how much refinement takes
- *       place during each refinement step. In the first pass the convergence is automatically set
- *       to 1. For subsequent passes a value in the range 0.2 - 0.3 is usually effective.
+ *   <li><code>d<sub>i</sub></code> is the <b>distance</b> from the grid cell being estimated to the i'th observation
+ *       point
+ *   <li><code>L</code> is the <b>length scale</b>, which is determined by the observation spacing and the natural scale
+ *       of the phenomena being measured. The length scale is in the units of the coordinate system of the data points.
+ *       It will likely need to be empirically estimated.
+ *   <li><code>c</code> is the <b>convergence factor</b>, which controls how much refinement takes place during each
+ *       refinement step. In the first pass the convergence is automatically set to 1. For subsequent passes a value in
+ *       the range 0.2 - 0.3 is usually effective.
  * </ul>
  *
  * During refinement passes the value at each grid cell is re-estimated as:
@@ -81,24 +78,22 @@ import org.locationtech.jts.geom.Envelope;
  *  E<sub>g</sub>' = E<sub>g</sub> + sum( w<sub>i</sub> * (o<sub>i</sub> - E<sub>i</sub>) ) / sum( w<sub>i</sub> )
  * </pre>
  *
- * To optimize performance for large input datasets, it is only necessary to provide the data points
- * which affect the surface interpolation within the specified output extent. In order to avoid
- * "edge effects", the provided data points should be taken from an area somewhat larger than the
- * output extent. The extent of the data area depends on the length scale, convergence factor, and
- * data spacing in a complex way. A reasonable heuristic for determining the size of the query
- * extent is to expand the output extent by a value of 2L.
+ * To optimize performance for large input datasets, it is only necessary to provide the data points which affect the
+ * surface interpolation within the specified output extent. In order to avoid "edge effects", the provided data points
+ * should be taken from an area somewhat larger than the output extent. The extent of the data area depends on the
+ * length scale, convergence factor, and data spacing in a complex way. A reasonable heuristic for determining the size
+ * of the query extent is to expand the output extent by a value of 2L.
  *
- * <p>Since the visual quality and accuracy of the computed surface is lower further from valid
- * observations, the algorithm allows limiting the extent of the computed cells. This is done by
- * using the concept of <b>supported grid cells</b>. Grid cells are supported by the input
- * observations if they are within a specified distance of a specified number of observation points.
- * Grid cells which are not supported are not computed and are output as NO_DATA values.
+ * <p>Since the visual quality and accuracy of the computed surface is lower further from valid observations, the
+ * algorithm allows limiting the extent of the computed cells. This is done by using the concept of <b>supported grid
+ * cells</b>. Grid cells are supported by the input observations if they are within a specified distance of a specified
+ * number of observation points. Grid cells which are not supported are not computed and are output as NO_DATA values.
  *
  * <p><b>References</b>
  *
  * <ol>
- *   <li>Barnes, S. L (1964). "A technique for maximizing details in numerical weather-map
- *       analysis". <i>Journal of Applied Meterology</i> 3 (4): 396 - 409
+ *   <li>Barnes, S. L (1964). "A technique for maximizing details in numerical weather-map analysis". <i>Journal of
+ *       Applied Meterology</i> 3 (4): 396 - 409
  * </ol>
  *
  * @author Martin Davis - OpenGeo
@@ -112,15 +107,15 @@ public class BarnesSurfaceInterpolator {
 
     // =========== Input parameters
     /**
-     * These parameters control which grid points are considered to be supported, i.e. have enough
-     * nearby observation points to be reasonably estimated.
+     * These parameters control which grid points are considered to be supported, i.e. have enough nearby observation
+     * points to be reasonably estimated.
      *
      * <p>A grid point is supported if it has:
      *
      * <p>count(obs within maxObservationDistance) >= minObservationCount
      *
-     * <p>Using these parameters is optional, but recommended, since estimating grid points which
-     * are far from any observations can produce unrealistic surfaces.
+     * <p>Using these parameters is optional, but recommended, since estimating grid points which are far from any
+     * observations can produce unrealistic surfaces.
      */
     private int minObservationCount = 2;
 
@@ -147,9 +142,9 @@ public class BarnesSurfaceInterpolator {
     private float[] estimatedObs;
 
     /**
-     * Creates a Barnes Interpolator over a specified dataset of observation values. The observation
-     * data is provided as an array of {@link Coordinate} values, where the X,Y ordinates are the
-     * observation location, and the Z ordinate contains the observation value.
+     * Creates a Barnes Interpolator over a specified dataset of observation values. The observation data is provided as
+     * an array of {@link Coordinate} values, where the X,Y ordinates are the observation location, and the Z ordinate
+     * contains the observation value.
      *
      * @param observationData the observed data values
      */
@@ -168,9 +163,8 @@ public class BarnesSurfaceInterpolator {
     }
 
     /**
-     * Sets the length scale for the interpolation weighting function. The length scale is
-     * determined from the distance between the observation points, as well as the scale of the
-     * phenomena which is being measured.
+     * Sets the length scale for the interpolation weighting function. The length scale is determined from the distance
+     * between the observation points, as well as the scale of the phenomena which is being measured.
      *
      * <p>
      */
@@ -179,9 +173,9 @@ public class BarnesSurfaceInterpolator {
     }
 
     /**
-     * Sets the convergence factor used during refinement passes. The value should be in the range
-     * [0,1]. Empirically, values between 0.2 - 0.3 are most effective. Smaller values tend to make
-     * the interpolated surface too "jittery". Larger values produce less refinement effect.
+     * Sets the convergence factor used during refinement passes. The value should be in the range [0,1]. Empirically,
+     * values between 0.2 - 0.3 are most effective. Smaller values tend to make the interpolated surface too "jittery".
+     * Larger values produce less refinement effect.
      *
      * @param convergenceFactor the factor determining how much to refine the surface estimate
      */
@@ -190,10 +184,9 @@ public class BarnesSurfaceInterpolator {
     }
 
     /**
-     * Sets the maximum distance from an observation for a grid point to be supported by that
-     * observation. Empirically determined; a reasonable starting point is between 1.5 and 2 times
-     * the Length scale. If the value is 0 (which is the default), all grid points are considered to
-     * be supported, and will thus be computed.
+     * Sets the maximum distance from an observation for a grid point to be supported by that observation. Empirically
+     * determined; a reasonable starting point is between 1.5 and 2 times the Length scale. If the value is 0 (which is
+     * the default), all grid points are considered to be supported, and will thus be computed.
      *
      * @param maxObsDistance the maximum distance from an observation for a supported grid point
      */
@@ -202,8 +195,8 @@ public class BarnesSurfaceInterpolator {
     }
 
     /**
-     * Sets the minimum number of in-range observations which are required for a grid point to be
-     * supported. The default is 2.
+     * Sets the minimum number of in-range observations which are required for a grid point to be supported. The default
+     * is 2.
      *
      * @param minObsCount the minimum in-range observation count for supported grid points
      */
@@ -212,8 +205,8 @@ public class BarnesSurfaceInterpolator {
     }
 
     /**
-     * Sets the NO_DATA value used to indicate that a grid cell was not computed. This value should
-     * be distinct from any potential data value.
+     * Sets the NO_DATA value used to indicate that a grid cell was not computed. This value should be distinct from any
+     * potential data value.
      *
      * @param noDataValue the value to use to represent NO_DATA.
      */
@@ -222,9 +215,8 @@ public class BarnesSurfaceInterpolator {
     }
 
     /**
-     * Computes the estimated values for a regular grid of cells. The area covered by the grid is
-     * specified by an {@link Envelope}. The size of the grid is specified by the cell count for the
-     * grid width (X) and height (Y).
+     * Computes the estimated values for a regular grid of cells. The area covered by the grid is specified by an
+     * {@link Envelope}. The size of the grid is specified by the cell count for the grid width (X) and height (Y).
      *
      * @param srcEnv the area covered by the grid
      * @param xSize the width of the grid
@@ -370,8 +362,7 @@ public class BarnesSurfaceInterpolator {
     }
 
     /**
-     * Computes a refinement delta, which is added to a grid point estimated value to refine the
-     * estimate.
+     * Computes a refinement delta, which is added to a grid point estimated value to refine the estimate.
      *
      * @param x the x ordinate of the grid point location
      * @param y the y ordinate of the grid point location
@@ -402,8 +393,7 @@ public class BarnesSurfaceInterpolator {
         return weight(gridPt, dataPt, lengthScale, 1.0);
     }
 
-    private double weight(
-            Coordinate dataPt, Coordinate gridPt, double lengthScale, double convergenceFactor) {
+    private double weight(Coordinate dataPt, Coordinate gridPt, double lengthScale, double convergenceFactor) {
         double dist = dataPt.distance(gridPt);
         return weight(dist, lengthScale, convergenceFactor);
     }
@@ -412,19 +402,17 @@ public class BarnesSurfaceInterpolator {
         /**
          * MD - using an effective radius is problematic.
          *
-         * <p>The effective radius grows as a log function of the cutoff weight, so even for very
-         * small cutoff weight values, the effective radius is only a few times the size of the
-         * influence radius.
+         * <p>The effective radius grows as a log function of the cutoff weight, so even for very small cutoff weight
+         * values, the effective radius is only a few times the size of the influence radius.
          *
-         * <p>Also, dropping observation terms from the estimate results in very drastic
-         * (discontinuous) changes at distances around the effective radius. (Probably because
-         * beyond that distance there are very few terms (maybe only 2) contributing to the
-         * estimate, so there is no smoothing effect from incorporating many estimates)
+         * <p>Also, dropping observation terms from the estimate results in very drastic (discontinuous) changes at
+         * distances around the effective radius. (Probably because beyond that distance there are very few terms (maybe
+         * only 2) contributing to the estimate, so there is no smoothing effect from incorporating many estimates)
          *
          * <p>So - don't use effectiveRadius.
          *
-         * <p>Or, maybe it's ok as long as a observation mask is used as well, since the effect only
-         * occurs at large distances from observation points?
+         * <p>Or, maybe it's ok as long as a observation mask is used as well, since the effect only occurs at large
+         * distances from observation points?
          */
         /*
          * if (dist > effectiveRadius) return INTERNAL_NO_DATA; //

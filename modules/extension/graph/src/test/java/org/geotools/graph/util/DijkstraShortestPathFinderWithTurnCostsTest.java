@@ -73,8 +73,7 @@ public class DijkstraShortestPathFinderWithTurnCostsTest {
         Node source = (Node) it.next();
 
         // create the path finder
-        DijkstraShortestPathFinder pf =
-                new DijkstraShortestPathFinder(graph, source, costFunction(), tcostFunction());
+        DijkstraShortestPathFinder pf = new DijkstraShortestPathFinder(graph, source, costFunction(), tcostFunction());
 
         pf.calculate();
 

@@ -26,11 +26,9 @@ public class PostGISAggregateTestSetup extends JDBCAggregateTestSetup {
 
     @Override
     protected void createAggregateTable() throws Exception {
-        run(
-                "CREATE TABLE \"aggregate\"(\"fid\" serial PRIMARY KEY, \"id\" int, "
-                        + "\"geom\" geometry, \"name\" varchar )");
-        run(
-                "INSERT INTO GEOMETRY_COLUMNS VALUES('', 'public', 'aggregate', 'geom', 2, '4326', 'POLYGON')");
+        run("CREATE TABLE \"aggregate\"(\"fid\" serial PRIMARY KEY, \"id\" int, "
+                + "\"geom\" geometry, \"name\" varchar )");
+        run("INSERT INTO GEOMETRY_COLUMNS VALUES('', 'public', 'aggregate', 'geom', 2, '4326', 'POLYGON')");
 
         if (((PostGISTestSetup) delegate).isVersion2()) {
             run("ALTER TABLE \"aggregate\" ALTER COLUMN  \"geom\" TYPE geometry(Polygon,4326);");
@@ -40,18 +38,15 @@ public class PostGISAggregateTestSetup extends JDBCAggregateTestSetup {
         // advance the sequence to 1 to compensate for hand insertions
         run("SELECT nextval(pg_get_serial_sequence('aggregate','fid'))");
 
-        run(
-                "INSERT INTO \"aggregate\" (\"fid\", \"id\",\"geom\",\"name\") VALUES (0, 0,"
-                        + "ST_GeomFromText('POLYGON((12 6, 14 8, 16 6, 16 4, 14 4, 12 6))',4326),"
-                        + "'muddy1')");
-        run(
-                "INSERT INTO \"aggregate\" (\"fid\", \"id\",\"geom\",\"name\") VALUES (1, 1,"
-                        + "ST_GeomFromText('POLYGON((12 6, 14 8, 16 6, 16 4, 14 4, 12 6))',4326),"
-                        + "'muddy1')");
-        run(
-                "INSERT INTO \"aggregate\" (\"fid\", \"id\",\"geom\",\"name\") VALUES (2, 2,"
-                        + "ST_GeomFromText('POLYGON((12 6, 14 8, 16 6, 16 4, 14 4, 12 6))',4326),"
-                        + "'muddy2')");
+        run("INSERT INTO \"aggregate\" (\"fid\", \"id\",\"geom\",\"name\") VALUES (0, 0,"
+                + "ST_GeomFromText('POLYGON((12 6, 14 8, 16 6, 16 4, 14 4, 12 6))',4326),"
+                + "'muddy1')");
+        run("INSERT INTO \"aggregate\" (\"fid\", \"id\",\"geom\",\"name\") VALUES (1, 1,"
+                + "ST_GeomFromText('POLYGON((12 6, 14 8, 16 6, 16 4, 14 4, 12 6))',4326),"
+                + "'muddy1')");
+        run("INSERT INTO \"aggregate\" (\"fid\", \"id\",\"geom\",\"name\") VALUES (2, 2,"
+                + "ST_GeomFromText('POLYGON((12 6, 14 8, 16 6, 16 4, 14 4, 12 6))',4326),"
+                + "'muddy2')");
     }
 
     @Override

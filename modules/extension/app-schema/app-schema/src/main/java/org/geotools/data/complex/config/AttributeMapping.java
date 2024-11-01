@@ -37,26 +37,25 @@ public class AttributeMapping implements Serializable {
     /** XPath expression addressing the target attribute in a target FeatureType. */
     private String targetAttributePath;
     /**
-     * XPath expression addressing the input attribute in the input FeatureType if the source is a
-     * data access containing complex features.
+     * XPath expression addressing the input attribute in the input FeatureType if the source is a data access
+     * containing complex features.
      */
     private String inputAttributePath;
     /** XPath expression indicating the node in xml of an individual feature. */
     private String identifierPath;
     /**
-     * Expression whose evaluation result against a Feature of the source FeatureType is going to be
-     * the value of the target attribute in output FeatureType.
+     * Expression whose evaluation result against a Feature of the source FeatureType is going to be the value of the
+     * target attribute in output FeatureType.
      *
      * <p>At this stage, the expression must be a valid OpenGIS Common Query Language expression.
      */
     private String sourceExpression;
 
     /**
-     * Expression whose evaluation result in numeric value to indicate row number to extract {@link
-     * this#sourceExpression} from denormalised database rows.
+     * Expression whose evaluation result in numeric value to indicate row number to extract
+     * {@link this#sourceExpression} from denormalised database rows.
      *
-     * <p>At this stage, the expression must be a valid integer, or LAST would work to get the last
-     * dynamic result.
+     * <p>At this stage, the expression must be a valid integer, or LAST would work to get the last dynamic result.
      */
     private String sourceIndex;
 
@@ -79,47 +78,42 @@ public class AttributeMapping implements Serializable {
     private String linkField;
 
     /**
-     * Expression whose evaluation result against a Feature of the source FeatureType is going to be
-     * the value of the id attribute property
+     * Expression whose evaluation result against a Feature of the source FeatureType is going to be the value of the id
+     * attribute property
      *
      * <p>At this stage, the expression must be a valid OpenGIS Common Query Language expression.
      */
     private String identifierExpression;
 
     /**
-     * Name of the target element instance this attribute mapping applies to, or <code>null</code>
-     * if its fully addressable by the FeatureType.
+     * Name of the target element instance this attribute mapping applies to, or <code>null</code> if its fully
+     * addressable by the FeatureType.
      *
-     * <p>for example, the target FeatureType may define a property as GeometryAttributeType, but
-     * the actual instance should be PointPropertyType.
+     * <p>for example, the target FeatureType may define a property as GeometryAttributeType, but the actual instance
+     * should be PointPropertyType.
      */
     private String targetAttributeSchemaElement;
 
     /**
-     * If <code>true</code>, indicates that one instance of this attribute mapping must be created
-     * for every repeating group of attributes. In other words, indicates whether this attribute
-     * corresponds to a multivalued or a single valued attribute.
+     * If <code>true</code>, indicates that one instance of this attribute mapping must be created for every repeating
+     * group of attributes. In other words, indicates whether this attribute corresponds to a multivalued or a single
+     * valued attribute.
      */
     private boolean isMultiple;
 
-    /**
-     * If <code>true</code>, indicates that one this attribute should be encode if it contains null
-     * or empty value.
-     */
+    /** If <code>true</code>, indicates that one this attribute should be encode if it contains null or empty value. */
     private boolean encodeIfEmpty;
 
     /**
-     * If <code>true</code>, indicates that this attribute corresponds to a list of values. This is
-     * similar to isMultiple, except the values are concatenated as a big String inside the
-     * attribute.
+     * If <code>true</code>, indicates that this attribute corresponds to a list of values. This is similar to
+     * isMultiple, except the values are concatenated as a big String inside the attribute.
      */
     private boolean isList;
 
     /**
-     * Client properties definitions for instances of the target attribute. The map is keys are
-     * strings representing the name of the client properties, and the map values are strings
-     * representing OCG's CQL expressions whose evaluated value against the instances of the source
-     * features are going to be the client properties values.
+     * Client properties definitions for instances of the target attribute. The map is keys are strings representing the
+     * name of the client properties, and the map values are strings representing OCG's CQL expressions whose evaluated
+     * value against the instances of the source features are going to be the client properties values.
      *
      * <p>for example: srsName/strConcat("#bh.", BGS_ID)
      */
@@ -129,16 +123,16 @@ public class AttributeMapping implements Serializable {
     private String indexField;
 
     /**
-     * Mapping of attributes with 1..N cardinality. Each data store is free to contribute is own
-     * syntax (e.g. Solr multi values to support multi valuated fields).
+     * Mapping of attributes with 1..N cardinality. Each data store is free to contribute is own syntax (e.g. Solr multi
+     * values to support multi valuated fields).
      */
     private MultipleValue multipleValue;
 
     private Map<String, String> anonymousAttributes = new HashMap<>();
 
     /**
-     * Returns the expression whose evaluation result against a Feature of the source FeatureType is
-     * going to be the value of the target attribute in output FeatureType.
+     * Returns the expression whose evaluation result against a Feature of the source FeatureType is going to be the
+     * value of the target attribute in output FeatureType.
      *
      * <p>At this stage, the expression must be a valid OpenGIS Common Query Language expression.
      *
@@ -158,11 +152,10 @@ public class AttributeMapping implements Serializable {
     }
 
     /**
-     * Returns the expression whose evaluation result in numeric value to indicate row number to
-     * extract {@link this#sourceExpression} from denormalised database rows.
+     * Returns the expression whose evaluation result in numeric value to indicate row number to extract
+     * {@link this#sourceExpression} from denormalised database rows.
      *
-     * <p>At this stage, the expression must be a valid integer, or LAST would work to get the last
-     * dynamic result.
+     * <p>At this stage, the expression must be a valid integer, or LAST would work to get the last dynamic result.
      *
      * @return OGC CQL expression for the attribute value
      */
@@ -188,10 +181,7 @@ public class AttributeMapping implements Serializable {
         return inputAttributePath;
     }
 
-    /**
-     * Set the input XPath expression where we are getting the features from a data access instead
-     * of a data store.
-     */
+    /** Set the input XPath expression where we are getting the features from a data access instead of a data store. */
     public void setInputAttributePath(String inputAttributePath) {
         this.inputAttributePath = inputAttributePath;
     }
@@ -251,8 +241,7 @@ public class AttributeMapping implements Serializable {
     }
 
     /**
-     * Returns the XPath expression addressing the target attribute in the linked target feature
-     * type
+     * Returns the XPath expression addressing the target attribute in the linked target feature type
      *
      * @return the linked field
      */
@@ -260,9 +249,7 @@ public class AttributeMapping implements Serializable {
         return linkField;
     }
 
-    /**
-     * Sets the XPath expression addressing the target attribute in the linked target feature type
-     */
+    /** Sets the XPath expression addressing the target attribute in the linked target feature type */
     public void setLinkField(String linkField) {
         this.linkField = linkField;
     }
@@ -289,13 +276,11 @@ public class AttributeMapping implements Serializable {
      * Returns the name of the target element instance this attribute mapping applies to, or <code>
      * null</code> if its fully addressable by the FeatureType.
      *
-     * <p>For example, the target FeatureType may define a property as GeometryAttributeType, but
-     * the actual instance should be PointPropertyType. In which case, it should be set to
-     * "gml:PointPropertyType" so AppSchemaDataAccess knows it should create a point property an
-     * thus its subelements are to be addressable by subsequent mappings.
+     * <p>For example, the target FeatureType may define a property as GeometryAttributeType, but the actual instance
+     * should be PointPropertyType. In which case, it should be set to "gml:PointPropertyType" so AppSchemaDataAccess
+     * knows it should create a point property an thus its subelements are to be addressable by subsequent mappings.
      *
-     * @return name of the target element instance in the output schema or <code>null</code> if not
-     *     set.
+     * @return name of the target element instance in the output schema or <code>null</code> if not set.
      */
     public String getTargetAttributeSchemaElement() {
         return targetAttributeSchemaElement;
@@ -304,9 +289,9 @@ public class AttributeMapping implements Serializable {
     /**
      * Sets the name of the target element instance in the output schema.
      *
-     * @param targetAttributeSchemaElement name of the target element instance in the output schema.
-     *     Could be prefixed, in which case the prefix mapping has to be available in the
-     *     corresponding {@link AppSchemaDataAccessDTO#getNamespaces()}
+     * @param targetAttributeSchemaElement name of the target element instance in the output schema. Could be prefixed,
+     *     in which case the prefix mapping has to be available in the corresponding
+     *     {@link AppSchemaDataAccessDTO#getNamespaces()}
      */
     public void setTargetAttributeSchemaElement(String targetAttributeSchemaElement) {
         this.targetAttributeSchemaElement = targetAttributeSchemaElement;
@@ -325,8 +310,8 @@ public class AttributeMapping implements Serializable {
     /**
      * Sets whether this attribute should be treated as a single or multi valued property.
      *
-     * @param isMultiple <code>true</code> if this attribute corresponds to a multivalued property,
-     *     <code>false</code> otherwise.
+     * @param isMultiple <code>true</code> if this attribute corresponds to a multivalued property, <code>false</code>
+     *     otherwise.
      */
     public void setMultiple(boolean isMultiple) {
         this.isMultiple = isMultiple;
@@ -344,8 +329,7 @@ public class AttributeMapping implements Serializable {
     /**
      * Returns whether this attribute should encode when empty;
      *
-     * @param encodeIfEmpty <code>true</code> encode when the value is empty, <code>false</code>
-     *     otherwise.
+     * @param encodeIfEmpty <code>true</code> encode when the value is empty, <code>false</code> otherwise.
      */
     public void setEncodeIfEmpty(boolean encodeIfEmpty) {
         this.encodeIfEmpty = encodeIfEmpty;
@@ -354,8 +338,7 @@ public class AttributeMapping implements Serializable {
     /**
      * Returns whether this attribute should encode when empty;
      *
-     * @param encodeIfEmpty <code>true</code> encode when the value is empty, <code>false</code>
-     *     otherwise.
+     * @param encodeIfEmpty <code>true</code> encode when the value is empty, <code>false</code> otherwise.
      */
     public void setEncodeIfEmpty(String encodeIfEmpty) {
         this.encodeIfEmpty = Boolean.parseBoolean(encodeIfEmpty);
@@ -364,8 +347,8 @@ public class AttributeMapping implements Serializable {
     /**
      * Sets whether this attribute should be treated as a list valued property.
      *
-     * @param isList <code>true</code> if this attribute corresponds to a list valued property,
-     *     <code>false</code> otherwise.
+     * @param isList <code>true</code> if this attribute corresponds to a list valued property, <code>false</code>
+     *     otherwise.
      */
     public void setList(boolean isList) {
         this.isList = isList;
@@ -420,9 +403,7 @@ public class AttributeMapping implements Serializable {
                 + isMultiple
                 + ", encodeIfEmpty: "
                 + encodeIfEmpty
-                + ((targetAttributeSchemaElement == null)
-                        ? ""
-                        : (", target node: " + targetAttributeSchemaElement))
+                + ((targetAttributeSchemaElement == null) ? "" : (", target node: " + targetAttributeSchemaElement))
                 + ((linkElement == null) ? "" : (", linkElement: " + linkElement))
                 + ((linkField == null) ? "" : (", linkField: " + linkField))
                 + "]";

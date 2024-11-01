@@ -75,9 +75,7 @@ public class EmfAppSchemaReaderTest extends AppSchemaTestSupport {
             AttributeType type = parsedTypes.getAttributeType(typeName);
             Assert.assertNotNull(type);
             Assert.assertTrue(type.getClass().getName(), type instanceof ComplexType);
-            Assert.assertTrue(
-                    type.getUserData().get(XSDTypeDefinition.class)
-                            instanceof XSDComplexTypeDefinition);
+            Assert.assertTrue(type.getUserData().get(XSDTypeDefinition.class) instanceof XSDComplexTypeDefinition);
 
             ComplexType ft = (ComplexType) type;
             String local = ft.getName().getLocalPart();
@@ -85,11 +83,8 @@ public class EmfAppSchemaReaderTest extends AppSchemaTestSupport {
             Assert.assertEquals("simpleFeatureType", local);
             Assert.assertEquals(NS_URI, uri);
 
-            List<PropertyDescriptor> attributes =
-                    Arrays.asList(
-                            ((ComplexFeatureTypeImpl) ft)
-                                    .getTypeDescriptors()
-                                    .toArray(new PropertyDescriptor[0]));
+            List<PropertyDescriptor> attributes = Arrays.asList(
+                    ((ComplexFeatureTypeImpl) ft).getTypeDescriptors().toArray(new PropertyDescriptor[0]));
             Assert.assertEquals(8, attributes.size());
 
             AttributeDescriptor descriptor = (AttributeDescriptor) attributes.get(5);
@@ -118,18 +113,11 @@ public class EmfAppSchemaReaderTest extends AppSchemaTestSupport {
     }
 
     private void assertSimpleAttribute(
-            AttributeDescriptor descriptor,
-            Name name,
-            Name typeName,
-            Class<?> binding,
-            int minOccurs,
-            int maxOccurs) {
+            AttributeDescriptor descriptor, Name name, Name typeName, Class<?> binding, int minOccurs, int maxOccurs) {
         Assert.assertEquals(name, descriptor.getName());
         Assert.assertEquals(minOccurs, descriptor.getMinOccurs());
         Assert.assertEquals(maxOccurs, descriptor.getMaxOccurs());
-        Assert.assertTrue(
-                descriptor.getUserData().get(XSDElementDeclaration.class)
-                        instanceof XSDElementDeclaration);
+        Assert.assertTrue(descriptor.getUserData().get(XSDElementDeclaration.class) instanceof XSDElementDeclaration);
 
         AttributeType type = descriptor.getType();
         Assert.assertNotNull(type);
@@ -156,9 +144,7 @@ public class EmfAppSchemaReaderTest extends AppSchemaTestSupport {
             Assert.assertTrue(type instanceof FeatureType);
             Assert.assertFalse(type instanceof SimpleFeatureType);
             Assert.assertEquals(typeName, type.getName());
-            Assert.assertTrue(
-                    type.getUserData().get(XSDTypeDefinition.class)
-                            instanceof XSDComplexTypeDefinition);
+            Assert.assertTrue(type.getUserData().get(XSDTypeDefinition.class) instanceof XSDComplexTypeDefinition);
 
             FeatureType wq_plus_Type = (FeatureType) type;
 
@@ -169,7 +155,8 @@ public class EmfAppSchemaReaderTest extends AppSchemaTestSupport {
             Assert.assertEquals(typeName, wq_plus_Type.getSuper().getName());
             Assert.assertNotNull(wq_plus_Type.getDescriptors());
             Assert.assertEquals(
-                    8, ((ComplexFeatureTypeImpl) wq_plus_Type).getTypeDescriptors().size());
+                    8,
+                    ((ComplexFeatureTypeImpl) wq_plus_Type).getTypeDescriptors().size());
 
             Name name = Types.typeName(NS_URI, "wq_plus");
             AttributeDescriptor wqPlusDescriptor = typeRegistry.getDescriptor(name, null);
@@ -177,16 +164,13 @@ public class EmfAppSchemaReaderTest extends AppSchemaTestSupport {
             Assert.assertEquals(name, wqPlusDescriptor.getName());
             Assert.assertSame(wq_plus_Type, wqPlusDescriptor.getType());
             Assert.assertTrue(
-                    wqPlusDescriptor.getUserData().get(XSDElementDeclaration.class)
-                            instanceof XSDElementDeclaration);
+                    wqPlusDescriptor.getUserData().get(XSDElementDeclaration.class) instanceof XSDElementDeclaration);
 
             typeName = Types.typeName(NS_URI, "measurementType");
             type = typeRegistry.getAttributeType(typeName);
             Assert.assertTrue(type instanceof ComplexType);
             Assert.assertFalse(type instanceof FeatureType);
-            Assert.assertTrue(
-                    type.getUserData().get(XSDTypeDefinition.class)
-                            instanceof XSDComplexTypeDefinition);
+            Assert.assertTrue(type.getUserData().get(XSDTypeDefinition.class) instanceof XSDComplexTypeDefinition);
 
             ComplexType measurementType = (ComplexType) type;
             Assert.assertEquals(typeName, measurementType.getName());
@@ -195,8 +179,7 @@ public class EmfAppSchemaReaderTest extends AppSchemaTestSupport {
             Assert.assertEquals(2, measurementType.getDescriptors().size());
 
             name = Types.typeName(NS_URI, "measurement");
-            AttributeDescriptor descriptor =
-                    (AttributeDescriptor) Types.descriptor(wq_plus_Type, name);
+            AttributeDescriptor descriptor = (AttributeDescriptor) Types.descriptor(wq_plus_Type, name);
             Assert.assertNotNull(descriptor);
             Assert.assertEquals(name, descriptor.getName());
             Assert.assertNotNull(descriptor.getType());
@@ -204,8 +187,7 @@ public class EmfAppSchemaReaderTest extends AppSchemaTestSupport {
             Assert.assertEquals(0, descriptor.getMinOccurs());
             Assert.assertEquals(Integer.MAX_VALUE, descriptor.getMaxOccurs());
             Assert.assertTrue(
-                    descriptor.getUserData().get(XSDElementDeclaration.class)
-                            instanceof XSDElementDeclaration);
+                    descriptor.getUserData().get(XSDElementDeclaration.class) instanceof XSDElementDeclaration);
 
             name = Types.typeName(NS_URI, "result");
             descriptor = (AttributeDescriptor) Types.descriptor(measurementType, name);
@@ -261,13 +243,11 @@ public class EmfAppSchemaReaderTest extends AppSchemaTestSupport {
     /** Test we can find that GeoSciML 2.0 depends on GML 3.1. */
     @Test
     public void findGml31Configuration() {
-        AppSchemaConfiguration configuration =
-                new AppSchemaConfiguration(
-                        "urn:cgi:xmlns:CGI:GeoSciML:2.0",
-                        "http://www.geosciml.org/geosciml/2.0/xsd/geosciml.xsd",
-                        new SchemaResolver());
-        Configuration gmlConfiguration =
-                GmlFeatureTypeRegistryConfiguration.findGmlConfiguration(configuration);
+        AppSchemaConfiguration configuration = new AppSchemaConfiguration(
+                "urn:cgi:xmlns:CGI:GeoSciML:2.0",
+                "http://www.geosciml.org/geosciml/2.0/xsd/geosciml.xsd",
+                new SchemaResolver());
+        Configuration gmlConfiguration = GmlFeatureTypeRegistryConfiguration.findGmlConfiguration(configuration);
         Assert.assertNotNull(gmlConfiguration);
         Assert.assertEquals(new GMLConfiguration(), gmlConfiguration);
     }
@@ -275,31 +255,24 @@ public class EmfAppSchemaReaderTest extends AppSchemaTestSupport {
     /** Test we can find that GeoSciML 3.0rc1 depends on GML 3.2. */
     @Test
     public void findGml32Configuration() {
-        AppSchemaConfiguration configuration =
-                new AppSchemaConfiguration(
-                        "urn:cgi:xmlns:CGI:GeoSciML-Core:3.0.0",
-                        "https://www.seegrid.csiro.au/subversion/GeoSciML/branches/3.0.0_rc1_gml3.2/geosciml-core/3.0.0/xsd/geosciml-core.xsd",
-                        new SchemaResolver());
-        Configuration gmlConfiguration =
-                GmlFeatureTypeRegistryConfiguration.findGmlConfiguration(configuration);
+        AppSchemaConfiguration configuration = new AppSchemaConfiguration(
+                "urn:cgi:xmlns:CGI:GeoSciML-Core:3.0.0",
+                "https://www.seegrid.csiro.au/subversion/GeoSciML/branches/3.0.0_rc1_gml3.2/geosciml-core/3.0.0/xsd/geosciml-core.xsd",
+                new SchemaResolver());
+        Configuration gmlConfiguration = GmlFeatureTypeRegistryConfiguration.findGmlConfiguration(configuration);
         Assert.assertNotNull(gmlConfiguration);
         Assert.assertEquals(new org.geotools.gml3.v3_2.GMLConfiguration(), gmlConfiguration);
     }
 
-    /**
-     * Test when secondary schemaUri contains non GML schema used in anyType from primary schema.
-     */
+    /** Test when secondary schemaUri contains non GML schema used in anyType from primary schema. */
     @Test
     public void testNonGMLConfiguration() {
-        SchemaCatalog catalog =
-                SchemaCatalog.build(getClass().getResource("/test-data/mappedPolygons.oasis.xml"));
-        AppSchemaConfiguration configuration =
-                new AppSchemaConfiguration(
-                        "http://www.opengis.net/swe/2.0",
-                        "http://schemas.opengis.net/sweCommon/2.0/swe.xsd",
-                        new SchemaResolver(catalog));
-        Configuration gmlConfiguration =
-                GmlFeatureTypeRegistryConfiguration.findGmlConfiguration(configuration);
+        SchemaCatalog catalog = SchemaCatalog.build(getClass().getResource("/test-data/mappedPolygons.oasis.xml"));
+        AppSchemaConfiguration configuration = new AppSchemaConfiguration(
+                "http://www.opengis.net/swe/2.0",
+                "http://schemas.opengis.net/sweCommon/2.0/swe.xsd",
+                new SchemaResolver(catalog));
+        Configuration gmlConfiguration = GmlFeatureTypeRegistryConfiguration.findGmlConfiguration(configuration);
         // Null should be returned, not exception
         // Warning message should be in the log
         Assert.assertNull(gmlConfiguration);

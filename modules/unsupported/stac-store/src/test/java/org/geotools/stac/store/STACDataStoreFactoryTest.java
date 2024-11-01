@@ -61,19 +61,13 @@ public class STACDataStoreFactoryTest {
     @Test
     @SuppressWarnings("PMD.CloseResource") // pooling HTTP client closed via store
     public void testConnect() throws IOException {
-        stubFor(
-                get(urlEqualTo("/stac"))
-                        .willReturn(
-                                aResponse()
-                                        .withStatus(200)
-                                        .withHeader("Content-Type", "application/json")
-                                        .withHeader("Authentication", "dXNlcjpwYXNzd29yZA==")
-                                        .withBody(
-                                                IOUtils.toString(
-                                                        getClass()
-                                                                .getResourceAsStream(
-                                                                        "../landingPage.json"),
-                                                        StandardCharsets.UTF_8))));
+        stubFor(get(urlEqualTo("/stac"))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "application/json")
+                        .withHeader("Authentication", "dXNlcjpwYXNzd29yZA==")
+                        .withBody(IOUtils.toString(
+                                getClass().getResourceAsStream("../landingPage.json"), StandardCharsets.UTF_8))));
 
         Map<String, Object> params = new HashMap<>();
         params.put(DBTYPE.key, DBTYPE.sample);

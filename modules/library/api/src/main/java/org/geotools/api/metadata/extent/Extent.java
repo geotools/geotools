@@ -13,11 +13,10 @@ import java.util.Collection;
 import org.geotools.api.util.InternationalString;
 
 /**
- * Information about spatial, vertical, and temporal extent. This interface has four optional
- * attributes ({@linkplain #getGeographicElements geographic elements}, {@linkplain
- * #getTemporalElements temporal elements}, and {@linkplain #getVerticalElements vertical elements})
- * and an element called {@linkplain #getDescription description}. At least one of the four shall be
- * used.
+ * Information about spatial, vertical, and temporal extent. This interface has four optional attributes
+ * ({@linkplain #getGeographicElements geographic elements}, {@linkplain #getTemporalElements temporal elements}, and
+ * {@linkplain #getVerticalElements vertical elements}) and an element called {@linkplain #getDescription description}.
+ * At least one of the four shall be used.
  *
  * @version <A HREF="http://www.opengeospatial.org/standards/as#01-111">ISO 19115</A>
  * @author Martin Desruisseaux (IRD)

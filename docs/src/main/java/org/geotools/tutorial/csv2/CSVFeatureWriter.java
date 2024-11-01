@@ -56,12 +56,11 @@ public class CSVFeatureWriter implements FeatureWriter<SimpleFeatureType, Simple
     private boolean appending = false;
 
     /** flag to keep track of lat/lon order */
-    private boolean latlon =
-            DefaultGeographicCRS.WGS84
-                    .getCoordinateSystem()
-                    .getAxis(0)
-                    .getDirection()
-                    .equals(AxisDirection.NORTH);
+    private boolean latlon = DefaultGeographicCRS.WGS84
+            .getCoordinateSystem()
+            .getAxis(0)
+            .getDirection()
+            .equals(AxisDirection.NORTH);
 
     int latIndex = 0;
     int lngIndex = 0;
@@ -114,8 +113,7 @@ public class CSVFeatureWriter implements FeatureWriter<SimpleFeatureType, Simple
 
     // next start
     @Override
-    public SimpleFeature next()
-            throws IOException, IllegalArgumentException, NoSuchElementException {
+    public SimpleFeature next() throws IOException, IllegalArgumentException, NoSuchElementException {
         if (csvWriter == null) {
             throw new IOException("FeatureWriter has been closed");
         }
@@ -144,10 +142,7 @@ public class CSVFeatureWriter implements FeatureWriter<SimpleFeatureType, Simple
     // next end
 
     // remove start
-    /**
-     * Mark our {@link #currentFeature} feature as null, it will be skipped when written effectively
-     * removing it.
-     */
+    /** Mark our {@link #currentFeature} feature as null, it will be skipped when written effectively removing it. */
     public void remove() throws IOException {
         this.currentFeature = null; // just mark it done which means it will not get written out.
     }

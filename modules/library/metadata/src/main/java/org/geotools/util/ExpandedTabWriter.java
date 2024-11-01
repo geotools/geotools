@@ -35,8 +35,7 @@ public class ExpandedTabWriter extends FilterWriter {
     private int column = 0;
 
     /**
-     * Constructs a filter which replaces tab characters ({@code '\t'}) by spaces. Tab widths
-     * default to 8 characters.
+     * Constructs a filter which replaces tab characters ({@code '\t'}) by spaces. Tab widths default to 8 characters.
      *
      * @param out A writer object to provide the underlying stream.
      */
@@ -45,8 +44,7 @@ public class ExpandedTabWriter extends FilterWriter {
     }
 
     /**
-     * Constructs a filter which replaces tab characters ({@code '\t'}) by spaces, using the
-     * specified tab width.
+     * Constructs a filter which replaces tab characters ({@code '\t'}) by spaces, using the specified tab width.
      *
      * @param out A writer object to provide the underlying stream.
      * @param tabWidth The tab width. Must be greater than 0.

@@ -32,8 +32,8 @@ import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 
 /**
- * Looks up the {@link ProjectionHandler} for the specified rendering area. WARNING: this API is not
- * finalized and is meant to be used by StreamingRenderer only
+ * Looks up the {@link ProjectionHandler} for the specified rendering area. WARNING: this API is not finalized and is
+ * meant to be used by StreamingRenderer only
  *
  * @author Andrea Aime - OpenGeo
  */
@@ -49,9 +49,7 @@ public class ProjectionHandlerFinder {
 
     static {
         if (registry == null) {
-            registry =
-                    new FactoryCreator(
-                            Arrays.asList(new Class<?>[] {ProjectionHandlerFactory.class}));
+            registry = new FactoryCreator(Arrays.asList(new Class<?>[] {ProjectionHandlerFactory.class}));
         }
 
         String wrapLimit = System.getProperty(WRAP_LIMIT_KEY);
@@ -63,17 +61,12 @@ public class ProjectionHandlerFinder {
         } catch (NumberFormatException e) {
             LOGGER.log(
                     Level.SEVERE,
-                    WRAP_LIMIT_KEY
-                            + " has invalid value, it should be an integer number but it was: "
-                            + wrapLimit);
+                    WRAP_LIMIT_KEY + " has invalid value, it should be an integer number but it was: " + wrapLimit);
         }
         WRAP_LIMIT = limit;
     }
 
-    /**
-     * Programmatically sets the number of wraps per direction the wrapping projection handlers will
-     * apply
-     */
+    /** Programmatically sets the number of wraps per direction the wrapping projection handlers will apply */
     public static void setWrapLimit(int wrapLimit) {
         ProjectionHandlerFinder.WRAP_LIMIT = wrapLimit;
     }
@@ -86,8 +79,7 @@ public class ProjectionHandlerFinder {
     /**
      * Returns a projection handler for the specified rendering area, or null if not found
      *
-     * @param renderingArea The area to be painted (mind, the CRS must be property set for
-     *     projection handling to work)
+     * @param renderingArea The area to be painted (mind, the CRS must be property set for projection handling to work)
      * @param wrap Enable continuous map wrapping if it's possible for the current projection
      */
     public static ProjectionHandler getHandler(
@@ -99,11 +91,10 @@ public class ProjectionHandlerFinder {
     /**
      * Returns a projection handler for the specified rendering area, or null if not found
      *
-     * @param renderingArea The area to be painted (mind, the CRS must be property set for
-     *     projection handling to work)
+     * @param renderingArea The area to be painted (mind, the CRS must be property set for projection handling to work)
      * @param wrap Enable continuous map wrapping if it's possible for the current projection
-     * @param projectionParameters map of options for the projection handler, allows finer
-     *     configuration of the handler from the final user of it
+     * @param projectionParameters map of options for the projection handler, allows finer configuration of the handler
+     *     from the final user of it
      */
     public static ProjectionHandler getHandler(
             ReferencedEnvelope renderingArea,
@@ -114,8 +105,7 @@ public class ProjectionHandlerFinder {
         if (renderingArea.getCoordinateReferenceSystem() == null) return null;
 
         for (ProjectionHandlerFactory factory : getProjectionHandlerFactories()) {
-            ProjectionHandler handler =
-                    factory.getHandler(renderingArea, sourceCrs, wrap, WRAP_LIMIT);
+            ProjectionHandler handler = factory.getHandler(renderingArea, sourceCrs, wrap, WRAP_LIMIT);
             if (handler != null) {
                 handler.setProjectionParameters(projectionParameters);
                 return handler;

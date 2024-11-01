@@ -33,10 +33,9 @@ import org.geotools.coverage.processing.OperationJAI;
 import org.geotools.util.NumberRange;
 
 /**
- * Multiplies every sample values of the source coverage by constants (one for each band). If the
- * number of constants supplied is less than the number of bands of the destination, then the
- * constant from entry 0 is applied to all the bands. Otherwise, a constant from a different entry
- * is applied to each band.
+ * Multiplies every sample values of the source coverage by constants (one for each band). If the number of constants
+ * supplied is less than the number of bands of the destination, then the constant from entry 0 is applied to all the
+ * bands. Otherwise, a constant from a different entry is applied to each band.
  *
  * <p><STRONG>Name:</STRONG>&nbsp;<CODE>"MultiplyConst"</CODE><br>
  * <STRONG>JAI operator:</STRONG>&nbsp;<CODE>"{@linkplain MultiplyConstDescriptor MultiplyConst}"
@@ -70,8 +69,7 @@ import org.geotools.util.NumberRange;
  * @since 2.2
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
- * @see org.geotools.coverage.processing.Operations#multiply(org.geotools.api.coverage.Coverage,
- *     double[])
+ * @see org.geotools.coverage.processing.Operations#multiply(org.geotools.api.coverage.Coverage, double[])
  * @see MultiplyConstDescriptor
  * @todo Should operates on {@code sampleToGeophysics} transform when possible. See <A
  *     HREF="http://jira.codehaus.org/browse/GEOT-610">GEOT-610</A>.
@@ -106,9 +104,9 @@ public class MultiplyConst extends OperationJAI {
     }
 
     @Override
-    protected void handleJAIEXTParams(
-            ParameterBlockJAI parameters, ParameterValueGroup parameters2) {
-        GridCoverage2D source = (GridCoverage2D) parameters2.parameter("source0").getValue();
+    protected void handleJAIEXTParams(ParameterBlockJAI parameters, ParameterValueGroup parameters2) {
+        GridCoverage2D source =
+                (GridCoverage2D) parameters2.parameter("source0").getValue();
         if (JAIExt.isJAIExtOperation("operationConst")) {
             parameters.set(Operator.MULTIPLY, 1);
         }
@@ -123,7 +121,6 @@ public class MultiplyConst extends OperationJAI {
             MathTransform gridToCRS,
             GridCoverage2D[] sources,
             Parameters parameters) {
-        return handleROINoDataProperties(
-                null, parameters.parameters, sources[0], "operationConst", 2, 3, 4);
+        return handleROINoDataProperties(null, parameters.parameters, sources[0], "operationConst", 2, 3, 4);
     }
 }

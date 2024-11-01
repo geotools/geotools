@@ -29,21 +29,16 @@ public interface CurvedGeometry<T extends Geometry> {
     T linearize();
 
     /**
-     * Linearizes the geometry using the provided tolerance, the result is guaranteed to be less
-     * than tolerance away from the curved geometry unless the number of points needed to linearize
-     * the geometry exceeds the build-in per quadrant maximum, see {@link
-     * CircularArc#MAX_SEGMENTS_QUADRANT}
+     * Linearizes the geometry using the provided tolerance, the result is guaranteed to be less than tolerance away
+     * from the curved geometry unless the number of points needed to linearize the geometry exceeds the build-in per
+     * quadrant maximum, see {@link CircularArc#MAX_SEGMENTS_QUADRANT}
      *
-     * @param tolerance Linearization tolerance, should be zero or positive. When zero is used, the
-     *     maximum number of allowed linearization points will be used, see {@link
-     *     CircularArc#MAX_SEGMENTS_QUADRANT}
+     * @param tolerance Linearization tolerance, should be zero or positive. When zero is used, the maximum number of
+     *     allowed linearization points will be used, see {@link CircularArc#MAX_SEGMENTS_QUADRANT}
      */
     T linearize(double tolerance);
 
-    /**
-     * Parallel method to {@link Geometry#toText()} that will output the geometry as curved instead
-     * of as linear
-     */
+    /** Parallel method to {@link Geometry#toText()} that will output the geometry as curved instead of as linear */
     String toCurvedText();
 
     /** The default linearization tolerance */

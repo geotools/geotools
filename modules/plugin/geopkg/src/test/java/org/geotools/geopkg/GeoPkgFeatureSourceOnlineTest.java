@@ -49,16 +49,15 @@ public class GeoPkgFeatureSourceOnlineTest extends JDBCFeatureSourceOnlineTest {
         // seems there are rounding issues here - consider new test
     }
     /**
-     * SQLite's LIKE is usually case insensitive - there are many possible "fixes" out there but all
-     * are hard to implement or seem not to work for all CharacterSets.
+     * SQLite's LIKE is usually case insensitive - there are many possible "fixes" out there but all are hard to
+     * implement or seem not to work for all CharacterSets.
      */
     @Override
     public void testLikeFilter() throws Exception {
         FilterFactory ff = (FilterFactory) dataStore.getFilterFactory();
         //        PropertyIsLike caseSensitiveLike =
         //                ff.like(ff.property(aname("stringProperty")), "Z*", "*", "?", "\\", true);
-        PropertyIsLike caseInsensitiveLike =
-                ff.like(ff.property(aname("stringProperty")), "Z*", "*", "?", "\\", false);
+        PropertyIsLike caseInsensitiveLike = ff.like(ff.property(aname("stringProperty")), "Z*", "*", "?", "\\", false);
         PropertyIsLike caseInsensitiveLike2 =
                 ff.like(ff.property(aname("stringProperty")), "z*", "*", "?", "\\", false);
         // SQLLITE LIKE is always case insensitive

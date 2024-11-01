@@ -88,8 +88,8 @@ public class GML3EncodingUtils {
     }
 
     /**
-     * Helper method used to implement {@link ComplexBinding#getProperty(Object, QName)} for
-     * bindings of geometry reference types:
+     * Helper method used to implement {@link ComplexBinding#getProperty(Object, QName)} for bindings of geometry
+     * reference types:
      *
      * <ul>
      *   <li>GeometryPropertyType
@@ -126,8 +126,8 @@ public class GML3EncodingUtils {
     }
 
     /**
-     * Helper method used to implement {@link ComplexBinding#getProperties(Object,
-     * XSDElementDeclaration)} for bindings of geometry reference types:
+     * Helper method used to implement {@link ComplexBinding#getProperties(Object, XSDElementDeclaration)} for bindings
+     * of geometry reference types:
      *
      * <ul>
      *   <li>GeometryPropertyType

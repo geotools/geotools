@@ -25,8 +25,7 @@ import org.geotools.api.feature.type.FeatureType;
  * @author Justin Deoliveira, OpenGEO
  * @since 2.5
  */
-public interface DelegatingFeatureWriter<T extends FeatureType, F extends Feature>
-        extends FeatureWriter<T, F> {
+public interface DelegatingFeatureWriter<T extends FeatureType, F extends Feature> extends FeatureWriter<T, F> {
 
     /** @return The delegate writer. */
     FeatureWriter<T, F> getDelegate();

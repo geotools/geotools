@@ -86,8 +86,8 @@ public class WMSCapabilities extends Capabilities {
     /**
      * Access a flat view of the layers available in the WMS.
      *
-     * <p>The information available here is the same as doing a top down walk of all the layers
-     * available via getLayer().
+     * <p>The information available here is the same as doing a top down walk of all the layers available via
+     * getLayer().
      *
      * @return List of all available layers
      */
@@ -110,8 +110,8 @@ public class WMSCapabilities extends Capabilities {
     }
 
     /**
-     * The request contains information about possible Requests that can be made against this
-     * server, including URLs and formats.
+     * The request contains information about possible Requests that can be made against this server, including URLs and
+     * formats.
      *
      * @return Returns the request.
      */
@@ -125,8 +125,8 @@ public class WMSCapabilities extends Capabilities {
     }
 
     /**
-     * Exceptions declare what kind of formats this server can return exceptions in. They are used
-     * during subsequent requests.
+     * Exceptions declare what kind of formats this server can return exceptions in. They are used during subsequent
+     * requests.
      */
     public String[] getExceptions() {
         return exceptions;

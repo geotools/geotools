@@ -13,8 +13,8 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * A list of logically related elements as (<var>name</var>, <var>value</var>) pairs in a
- * dictionary. A record may be used as an implementation representation for features.
+ * A list of logically related elements as (<var>name</var>, <var>value</var>) pairs in a dictionary. A record may be
+ * used as an implementation representation for features.
  *
  * <p>This class can be think as the equivalent of the Java {@link Object} class.
  *
@@ -25,8 +25,8 @@ import java.util.Set;
  */
 public interface Record {
     /**
-     * Returns the type definition of record. All attributes named in this record must be defined in
-     * the returned record type. In other words, the following relationship must holds:
+     * Returns the type definition of record. All attributes named in this record must be defined in the returned record
+     * type. In other words, the following relationship must holds:
      *
      * <p>
      *
@@ -42,18 +42,17 @@ public interface Record {
     RecordType getRecordType();
 
     /**
-     * Returns the dictionary of all (<var>name</var>, <var>value</var>) pairs in this record. The
-     * returned map shall not allows key addition. It may allows the replacement of existing keys
-     * only.
+     * Returns the dictionary of all (<var>name</var>, <var>value</var>) pairs in this record. The returned map shall
+     * not allows key addition. It may allows the replacement of existing keys only.
      *
      * @see RecordType#getAttributeTypes
      */
     Map<MemberName, Object> getAttributes();
 
     /**
-     * Returns the value for an attribute of the specified name. This is functionnaly equivalent to
-     * <code>{@linkplain #getAttributes()}.{@linkplain Map#get get}(name)</code>. The type of the
-     * returned object is given by <code>
+     * Returns the value for an attribute of the specified name. This is functionnaly equivalent to <code>
+     * {@linkplain #getAttributes()}.{@linkplain Map#get get}(name)</code>. The type of the returned object is given by
+     * <code>
      * {@linkplain #getRecordType()}.{@linkplain RecordType#locate locate}(name)</code>.
      *
      * @see RecordType#locate
@@ -61,10 +60,9 @@ public interface Record {
     Object locate(MemberName name);
 
     /**
-     * Set the value for the attribute of the specified name. This is functionally equivalent to
-     * <code>{@linkplain #getAttributes()}.{@linkplain Map#put put}(name,value)</code>. Remind that
-     * {@code name} keys are constrained to {@linkplain RecordType#getMembers record type members}
-     * only.
+     * Set the value for the attribute of the specified name. This is functionally equivalent to <code>
+     * {@linkplain #getAttributes()}.{@linkplain Map#put put}(name,value)</code>. Remind that {@code name} keys are
+     * constrained to {@linkplain RecordType#getMembers record type members} only.
      *
      * @param name The name of the attribute to modify.
      * @param value The new value for the attribute.

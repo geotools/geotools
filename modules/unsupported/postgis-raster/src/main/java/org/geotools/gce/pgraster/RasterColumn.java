@@ -38,8 +38,8 @@ import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.io.WKTReader;
 
 /**
- * A raster column of a table in a postgis raster database, obtained from the obtained from the
- * <code>raster_columns</code> view.
+ * A raster column of a table in a postgis raster database, obtained from the obtained from the <code>raster_columns
+ * </code> view.
  */
 class RasterColumn {
 
@@ -50,13 +50,11 @@ class RasterColumn {
         try (Connection cx = config.dataSource.getConnection()) {
 
             // load the column
-            SQL sql =
-                    new SQL()
-                            .append(
-                                    "SELECT r_table_schema, r_table_name, r_raster_column, srid, num_bands, ")
-                            .append("ST_AsText(extent) as extent, scale_x, scale_y")
-                            .append(" FROM raster_columns")
-                            .append(" WHERE r_table_name = ?");
+            SQL sql = new SQL()
+                    .append("SELECT r_table_schema, r_table_name, r_raster_column, srid, num_bands, ")
+                    .append("ST_AsText(extent) as extent, scale_x, scale_y")
+                    .append(" FROM raster_columns")
+                    .append(" WHERE r_table_name = ?");
 
             if (config.schema != null) {
                 sql.append(" AND r_table_schema = ?");
@@ -78,10 +76,9 @@ class RasterColumn {
                 try (ResultSet rc = st.executeQuery()) {
                     while (rc.next()) {
                         if (col != null)
-                            throw new IllegalArgumentException(
-                                    "Multiple raster columns found for table '"
-                                            + col.tableKey()
-                                            + "', please specify one in config");
+                            throw new IllegalArgumentException("Multiple raster columns found for table '"
+                                    + col.tableKey()
+                                    + "', please specify one in config");
 
                         col = new RasterColumn(rc);
 
@@ -96,10 +93,7 @@ class RasterColumn {
                             try {
                                 col.crs = CRS.decode("EPSG:" + srid);
                             } catch (Exception e) {
-                                LOG.log(
-                                        Level.WARNING,
-                                        "Error looking up SRS for srid = " + srid,
-                                        e);
+                                LOG.log(Level.WARNING, "Error looking up SRS for srid = " + srid, e);
                             }
                         }
                         if (col.crs == null) {
@@ -118,14 +112,11 @@ class RasterColumn {
                         }
 
                         if (col.extent == null) {
-                            LOG.warning(
-                                    "Unable to determine extent for raster column: " + col.key());
+                            LOG.warning("Unable to determine extent for raster column: " + col.key());
                         }
 
                         // scale
-                        Point2D.Double scale =
-                                new Point2D.Double(
-                                        rc.getDouble("scale_x"), rc.getDouble("scale_y"));
+                        Point2D.Double scale = new Point2D.Double(rc.getDouble("scale_x"), rc.getDouble("scale_y"));
 
                         if (scale.x == 0d || scale.y == 0d) {
                             scale = fetchScale(col, cx);
@@ -137,15 +128,12 @@ class RasterColumn {
                         }
 
                         if (col.scale == null) {
-                            LOG.warning(
-                                    "Unable to determine scale for raster column: " + col.key());
+                            LOG.warning("Unable to determine scale for raster column: " + col.key());
                         }
 
                         if (col.extent != null && col.scale != null) {
-                            col.size =
-                                    new Dimension(
-                                            (int) (col.extent.getWidth() / col.scale.x),
-                                            (int) (col.extent.getHeight() / col.scale.y));
+                            col.size = new Dimension((int) (col.extent.getWidth() / col.scale.x), (int)
+                                    (col.extent.getHeight() / col.scale.y));
                         }
 
                         // num bands
@@ -169,25 +157,18 @@ class RasterColumn {
 
                 if (col == null) {
                     String dump =
-                            "schema = "
-                                    + config.schema
-                                    + ", table = "
-                                    + config.table
-                                    + ", column = "
-                                    + config.column;
-                    throw new IllegalArgumentException(
-                            "No raster column found for config: " + dump);
+                            "schema = " + config.schema + ", table = " + config.table + ", column = " + config.column;
+                    throw new IllegalArgumentException("No raster column found for config: " + dump);
                 }
             }
 
             // load it's overviews
-            sql =
-                    new SQL()
-                            .append("SELECT * FROM raster_overviews")
-                            .append(" WHERE r_table_name = ?")
-                            .append(" AND r_table_schema = ?")
-                            .append(" AND r_raster_column = ?")
-                            .append(" ORDER BY overview_factor ASC");
+            sql = new SQL()
+                    .append("SELECT * FROM raster_overviews")
+                    .append(" WHERE r_table_name = ?")
+                    .append(" AND r_table_schema = ?")
+                    .append(" AND r_raster_column = ?")
+                    .append(" ORDER BY overview_factor ASC");
 
             try (PreparedStatement ps = cx.prepareCall(sql.logAndGet(LOG))) {
                 ps.setString(1, col.table);
@@ -208,15 +189,14 @@ class RasterColumn {
     }
 
     static int fetchSrid(RasterColumn col, Connection cx) throws SQLException {
-        SQL sql =
-                new SQL()
-                        .append("SELECT srid FROM (")
-                        .append("SELECT DISTINCT st_srid(")
-                        .name(col.name)
-                        .append(") as srid")
-                        .append(" FROM ")
-                        .table(col)
-                        .append(") AS a WHERE srid IS NOT NULL");
+        SQL sql = new SQL()
+                .append("SELECT srid FROM (")
+                .append("SELECT DISTINCT st_srid(")
+                .name(col.name)
+                .append(") as srid")
+                .append(" FROM ")
+                .table(col)
+                .append(") AS a WHERE srid IS NOT NULL");
 
         try (Statement st = cx.createStatement()) {
             try (ResultSet rs = st.executeQuery(sql.logAndGet(LOG))) {
@@ -228,13 +208,12 @@ class RasterColumn {
 
     static String fetchExtent(RasterColumn col, Connection cx) throws SQLException {
 
-        SQL sql =
-                new SQL()
-                        .append("SELECT ST_AsText(ST_Extent(ST_Envelope(")
-                        .name(col.name)
-                        .append("::geometry))) AS extent")
-                        .append(" FROM ")
-                        .table(col);
+        SQL sql = new SQL()
+                .append("SELECT ST_AsText(ST_Extent(ST_Envelope(")
+                .name(col.name)
+                .append("::geometry))) AS extent")
+                .append(" FROM ")
+                .table(col);
 
         try (Statement st = cx.createStatement()) {
             try (ResultSet rs = st.executeQuery(sql.logAndGet(LOG))) {
@@ -264,17 +243,15 @@ class RasterColumn {
         return null;
     }
 
-    static TimeColumn fetchTime(RasterColumn col, TimeConfig time, Connection cx)
-            throws SQLException {
-        SQL sql =
-                new SQL()
-                        .append("SELECT column_name, data_type")
-                        .append(" FROM ")
-                        .append("information_schema.columns")
-                        .append(" WHERE table_schema = ? AND table_name = ?")
-                        .append(" AND (")
-                        .append(" data_type = 'date' OR data_type LIKE 'timestamp %'")
-                        .append(" )");
+    static TimeColumn fetchTime(RasterColumn col, TimeConfig time, Connection cx) throws SQLException {
+        SQL sql = new SQL()
+                .append("SELECT column_name, data_type")
+                .append(" FROM ")
+                .append("information_schema.columns")
+                .append(" WHERE table_schema = ? AND table_name = ?")
+                .append(" AND (")
+                .append(" data_type = 'date' OR data_type LIKE 'timestamp %'")
+                .append(" )");
 
         if (time.column != null) {
             sql.append(" AND column_name = ?");
@@ -304,17 +281,16 @@ class RasterColumn {
     }
 
     static Point2D.Double fetchScale(RasterColumn col, Connection cx) throws SQLException {
-        SQL sql =
-                new SQL()
-                        .append("SELECT ST_ScaleX(")
-                        .name(col.name)
-                        .append(") as scale_x,")
-                        .append(" ST_ScaleY(")
-                        .name(col.name)
-                        .append(") as scale_y")
-                        .append(" FROM ")
-                        .table(col)
-                        .append(" LIMIT 1");
+        SQL sql = new SQL()
+                .append("SELECT ST_ScaleX(")
+                .name(col.name)
+                .append(") as scale_x,")
+                .append(" ST_ScaleY(")
+                .name(col.name)
+                .append(") as scale_y")
+                .append(" FROM ")
+                .table(col)
+                .append(" LIMIT 1");
 
         try (Statement st = cx.createStatement()) {
             try (ResultSet rs = st.executeQuery(sql.logAndGet(LOG))) {
@@ -328,14 +304,13 @@ class RasterColumn {
     }
 
     static int fetchNumBands(RasterColumn col, Connection cx) throws SQLException {
-        SQL sql =
-                new SQL()
-                        .append("SELECT max(ST_NumBands(")
-                        .name(col.name)
-                        .append(")) as num_bands")
-                        .append(" FROM ")
-                        .table(col)
-                        .append(" LIMIT 1");
+        SQL sql = new SQL()
+                .append("SELECT max(ST_NumBands(")
+                .name(col.name)
+                .append(")) as num_bands")
+                .append(" FROM ")
+                .table(col)
+                .append(" LIMIT 1");
 
         try (Statement st = cx.createStatement()) {
             try (ResultSet rs = st.executeQuery(sql.logAndGet(LOG))) {
@@ -369,10 +344,7 @@ class RasterColumn {
     }
 
     RasterColumn(ResultSet rs) throws SQLException {
-        this(
-                rs.getString("r_raster_column"),
-                rs.getString("r_table_name"),
-                rs.getString("r_table_schema"));
+        this(rs.getString("r_raster_column"), rs.getString("r_table_name"), rs.getString("r_table_schema"));
     }
 
     String key() {

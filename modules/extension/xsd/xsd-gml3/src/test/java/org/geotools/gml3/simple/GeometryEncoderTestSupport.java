@@ -53,19 +53,17 @@ public abstract class GeometryEncoderTestSupport extends GML3TestSupport {
         this.gtEncoder = new Encoder(createConfiguration());
     }
 
-    protected <T extends Geometry> Document encode(GeometryEncoder<T> encoder, T geometry)
-            throws Exception {
+    protected <T extends Geometry> Document encode(GeometryEncoder<T> encoder, T geometry) throws Exception {
         return encode(encoder, geometry, null);
     }
 
-    protected <T extends Geometry> Document encode(
-            GeometryEncoder<T> encoder, T geometry, String gmlId) throws Exception {
+    protected <T extends Geometry> Document encode(GeometryEncoder<T> encoder, T geometry, String gmlId)
+            throws Exception {
         return encode(encoder, geometry, true, gmlId, 6, false, false);
     }
 
     protected <T extends Geometry> Document encode(
-            GeometryEncoder<T> encoder, T geometry, boolean encodeMeasures, String gmlId)
-            throws Exception {
+            GeometryEncoder<T> encoder, T geometry, boolean encodeMeasures, String gmlId) throws Exception {
         return encode(encoder, geometry, encodeMeasures, gmlId, 6, false, false);
     }
 
@@ -81,8 +79,7 @@ public abstract class GeometryEncoderTestSupport extends GML3TestSupport {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
 
         // create the document serializer
-        SAXTransformerFactory txFactory =
-                (SAXTransformerFactory) SAXTransformerFactory.newInstance();
+        SAXTransformerFactory txFactory = (SAXTransformerFactory) SAXTransformerFactory.newInstance();
 
         TransformerHandler xmls;
         try {
@@ -96,15 +93,8 @@ public abstract class GeometryEncoderTestSupport extends GML3TestSupport {
         xmls.getTransformer().setOutputProperty(OutputKeys.METHOD, "xml");
         xmls.setResult(new StreamResult(out));
 
-        GMLWriter handler =
-                new GMLWriter(
-                        xmls,
-                        gtEncoder.getNamespaces(),
-                        numDecimals,
-                        decimalEncoding,
-                        padWithZeros,
-                        "gml",
-                        encodeMeasures);
+        GMLWriter handler = new GMLWriter(
+                xmls, gtEncoder.getNamespaces(), numDecimals, decimalEncoding, padWithZeros, "gml", encodeMeasures);
         handler.startDocument();
         handler.startPrefixMapping("gml", GML.NAMESPACE);
         handler.endPrefixMapping("gml");

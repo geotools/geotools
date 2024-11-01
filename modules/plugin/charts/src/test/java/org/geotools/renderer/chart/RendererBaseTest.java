@@ -44,12 +44,7 @@ public abstract class RendererBaseTest {
 
     /** bounds may be null */
     protected static void showRender(
-            String testName,
-            Object renderer,
-            long timeOut,
-            ReferencedEnvelope bounds,
-            final int w,
-            final int h)
+            String testName, Object renderer, long timeOut, ReferencedEnvelope bounds, final int w, final int h)
             throws Exception {
         final BufferedImage image = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
         Graphics g = image.getGraphics();
@@ -61,30 +56,28 @@ public abstract class RendererBaseTest {
         if (!headless.equalsIgnoreCase("true") && TestData.isInteractiveTest()) {
             try {
                 Frame frame = new Frame(testName);
-                frame.addWindowListener(
-                        new WindowAdapter() {
+                frame.addWindowListener(new WindowAdapter() {
 
-                            @Override
-                            public void windowClosing(WindowEvent e) {
-                                e.getWindow().dispose();
-                            }
-                        });
+                    @Override
+                    public void windowClosing(WindowEvent e) {
+                        e.getWindow().dispose();
+                    }
+                });
 
-                Panel p =
-                        new Panel() {
+                Panel p = new Panel() {
 
-                            /** <code>serialVersionUID</code> field */
-                            private static final long serialVersionUID = 1L;
+                    /** <code>serialVersionUID</code> field */
+                    private static final long serialVersionUID = 1L;
 
-                            {
-                                setPreferredSize(new Dimension(w, h));
-                            }
+                    {
+                        setPreferredSize(new Dimension(w, h));
+                    }
 
-                            @Override
-                            public void paint(Graphics g) {
-                                g.drawImage(image, 0, 0, this);
-                            }
-                        };
+                    @Override
+                    public void paint(Graphics g) {
+                        g.drawImage(image, 0, 0, this);
+                    }
+                };
 
                 frame.add(p);
                 frame.pack();

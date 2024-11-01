@@ -40,8 +40,7 @@ import org.geotools.util.Utilities;
  */
 public class StyleImpl implements Style, Cloneable {
     /** The logger for the default core module. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(StyleImpl.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(StyleImpl.class);
 
     private List<FeatureTypeStyle> featureTypeStyles = new ArrayList<>();
     private DescriptionImpl description = new DescriptionImpl();
@@ -63,8 +62,7 @@ public class StyleImpl implements Style, Cloneable {
         FeatureTypeStyle[] ret = {(FeatureTypeStyle) new FeatureTypeStyleImpl()};
 
         if ((featureTypeStyles != null) && (!featureTypeStyles.isEmpty())) {
-            if (LOGGER.isLoggable(Level.FINE))
-                LOGGER.fine("number of fts set " + featureTypeStyles.size());
+            if (LOGGER.isLoggable(Level.FINE)) LOGGER.fine("number of fts set " + featureTypeStyles.size());
 
             ret = featureTypeStyles.toArray(new FeatureTypeStyle[] {});
         }
@@ -155,15 +153,13 @@ public class StyleImpl implements Style, Cloneable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(
-                featureTypeStyles, description, name, defaultB, background, defaultSymbolizer);
+        return Objects.hash(featureTypeStyles, description, name, defaultB, background, defaultSymbolizer);
     }
 
     /**
      * Compares this Style with another.
      *
-     * <p>Two StyleImpl are equal if they have the same properties and the same list of
-     * FeatureTypeStyles.
+     * <p>Two StyleImpl are equal if they have the same properties and the same list of FeatureTypeStyles.
      *
      * @param oth The object to compare with this for equality.
      * @return True if this and oth are equal.

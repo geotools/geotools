@@ -121,40 +121,35 @@ public class ZonalStatsProcessTest extends Assert {
             assertTrue(store instanceof ShapefileDataStore);
             FeatureSource<SimpleFeatureType, SimpleFeature> featureSource =
                     store.getFeatureSource(store.getNames().get(0));
-            SimpleFeatureCollection featureCollection =
-                    (SimpleFeatureCollection) featureSource.getFeatures();
+            SimpleFeatureCollection featureCollection = (SimpleFeatureCollection) featureSource.getFeatures();
 
             // build the DataFile
             final File tiff = TestData.file(this, "test.tif");
             final File tfw = TestData.file(this, "test.tfw");
-            reader =
-                    (it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReader)
-                            new TIFFImageReaderSpi().createReaderInstance();
+            reader = (it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReader)
+                    new TIFFImageReaderSpi().createReaderInstance();
             assertNotNull(reader);
             reader.setInput(ImageIO.createImageInputStream(tiff));
             final BufferedImage image = reader.read(0);
 
             final MathTransform transform = new WorldFileReader(tfw).getTransform();
-            coverage2D =
-                    CoverageFactoryFinder.getGridCoverageFactory(null)
-                            .create(
-                                    "coverage",
-                                    image,
-                                    new GridGeometry2D(
-                                            new GridEnvelope2D(
-                                                    PlanarImage.wrapRenderedImage(image)
-                                                            .getBounds()),
-                                            transform,
-                                            DefaultGeographicCRS.WGS84),
-                                    new GridSampleDimension[] {new GridSampleDimension("coverage")},
-                                    null,
-                                    null);
+            coverage2D = CoverageFactoryFinder.getGridCoverageFactory(null)
+                    .create(
+                            "coverage",
+                            image,
+                            new GridGeometry2D(
+                                    new GridEnvelope2D(
+                                            PlanarImage.wrapRenderedImage(image).getBounds()),
+                                    transform,
+                                    DefaultGeographicCRS.WGS84),
+                            new GridSampleDimension[] {new GridSampleDimension("coverage")},
+                            null,
+                            null);
             assertNotNull(coverage2D);
 
             // build the classificator
             // generate the classificator image
-            final BufferedImage imageClassificator =
-                    new BufferedImage(120, 80, BufferedImage.TYPE_BYTE_INDEXED);
+            final BufferedImage imageClassificator = new BufferedImage(120, 80, BufferedImage.TYPE_BYTE_INDEXED);
             final WritableRaster raster = imageClassificator.getRaster();
             for (int i = raster.getWidth(); --i >= 0; ) {
                 for (int j = raster.getHeight(); --j >= 0; ) {
@@ -164,25 +159,21 @@ public class ZonalStatsProcessTest extends Assert {
                 }
             }
             // create the coverage for the classification layer
-            covClassificator =
-                    CoverageFactoryFinder.getGridCoverageFactory(null)
-                            .create(
-                                    "coverageClassificator",
-                                    imageClassificator,
-                                    new GridGeometry2D(
-                                            new GridEnvelope2D(
-                                                    PlanarImage.wrapRenderedImage(
-                                                                    imageClassificator)
-                                                            .getBounds()),
-                                            coverage2D.getEnvelope()),
-                                    new GridSampleDimension[] {new GridSampleDimension("coverage")},
-                                    null,
-                                    null);
+            covClassificator = CoverageFactoryFinder.getGridCoverageFactory(null)
+                    .create(
+                            "coverageClassificator",
+                            imageClassificator,
+                            new GridGeometry2D(
+                                    new GridEnvelope2D(PlanarImage.wrapRenderedImage(imageClassificator)
+                                            .getBounds()),
+                                    coverage2D.getEnvelope()),
+                            new GridSampleDimension[] {new GridSampleDimension("coverage")},
+                            null,
+                            null);
             assertNotNull(coverage2D);
 
             // invoke the process
-            SimpleFeatureCollection sfc =
-                    process.execute(coverage2D, null, featureCollection, covClassificator);
+            SimpleFeatureCollection sfc = process.execute(coverage2D, null, featureCollection, covClassificator);
 
             try (SimpleFeatureIterator iterator = sfc.features()) {
                 assertNotNull(iterator);
@@ -233,21 +224,19 @@ public class ZonalStatsProcessTest extends Assert {
         graphics.setColor(Color.WHITE);
         graphics.fillRect(0, 0, 50, 100);
         graphics.dispose();
-        final MathTransform transform =
-                new AffineTransform2D(AffineTransform.getScaleInstance(1, 1));
-        GridCoverage2D coverage2D =
-                CoverageFactoryFinder.getGridCoverageFactory(null)
-                        .create(
-                                "coverage",
-                                image,
-                                new GridGeometry2D(
-                                        new GridEnvelope2D(
-                                                PlanarImage.wrapRenderedImage(image).getBounds()),
-                                        transform,
-                                        crs),
-                                new GridSampleDimension[] {new GridSampleDimension("coverage")},
-                                null,
-                                null);
+        final MathTransform transform = new AffineTransform2D(AffineTransform.getScaleInstance(1, 1));
+        GridCoverage2D coverage2D = CoverageFactoryFinder.getGridCoverageFactory(null)
+                .create(
+                        "coverage",
+                        image,
+                        new GridGeometry2D(
+                                new GridEnvelope2D(
+                                        PlanarImage.wrapRenderedImage(image).getBounds()),
+                                transform,
+                                crs),
+                        new GridSampleDimension[] {new GridSampleDimension("coverage")},
+                        null,
+                        null);
         assertNotNull(coverage2D);
 
         // prepare one rectangle feature that covers (and more) the top half of the raster
@@ -257,9 +246,7 @@ public class ZonalStatsProcessTest extends Assert {
         tb.setName("zones");
         SimpleFeatureType schema = tb.buildFeatureType();
         Polygon poly = JTS.toGeometry(new Envelope(-10, 110, -10, 50));
-        SimpleFeature feature =
-                SimpleFeatureBuilder.build(
-                        schema, new Object[] {poly, Integer.valueOf(1)}, "fid123");
+        SimpleFeature feature = SimpleFeatureBuilder.build(schema, new Object[] {poly, Integer.valueOf(1)}, "fid123");
         SimpleFeatureCollection features = DataUtilities.collection(feature);
 
         RasterZonalStatistics stats = new RasterZonalStatistics();

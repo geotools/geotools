@@ -71,9 +71,7 @@ public abstract class AbstractGetMapRequest extends AbstractWMSRequest implement
                 try {
                     // spaces are converted to plus signs, but must be %20 for url calls [GEOT-4317]
                     layerString =
-                            layerString
-                                    + URLEncoder.encode(layerName, "UTF-8")
-                                            .replaceAll("\\+", "%20");
+                            layerString + URLEncoder.encode(layerName, "UTF-8").replaceAll("\\+", "%20");
                 } catch (UnsupportedEncodingException | NullPointerException e) {
                     layerString = layerString + layerName;
                 }
@@ -81,9 +79,7 @@ public abstract class AbstractGetMapRequest extends AbstractWMSRequest implement
                 try {
 
                     styleString =
-                            styleString
-                                    + URLEncoder.encode(styleName, "UTF-8")
-                                            .replaceAll("\\+", "%20");
+                            styleString + URLEncoder.encode(styleName, "UTF-8").replaceAll("\\+", "%20");
                 } catch (UnsupportedEncodingException | NullPointerException e1) {
                     styleString = styleString + styleName;
                 }
@@ -157,14 +153,13 @@ public abstract class AbstractGetMapRequest extends AbstractWMSRequest implement
     }
 
     /**
-     * From the Web Map Service Implementation Specification: "The required SRS parameter states
-     * which Spatial Reference System applies to the values in the BBOX parameter. The value of the
-     * SRS parameter shall be on of the values defined in the character data section of an &lt;SRS>
-     * element defined or inherited by the requested layer. The same SRS applies to all layers in a
-     * single request. If the WMS has declared SRS=NONE for a Layer, then the Layer does not have a
-     * well-defined spatial reference system and should not be shown in conjunction with other
-     * layers. The client shall specify SRS as "none" in the GetMap request and the Server may issue
-     * a Service Exception otherwise."
+     * From the Web Map Service Implementation Specification: "The required SRS parameter states which Spatial Reference
+     * System applies to the values in the BBOX parameter. The value of the SRS parameter shall be on of the values
+     * defined in the character data section of an &lt;SRS> element defined or inherited by the requested layer. The
+     * same SRS applies to all layers in a single request. If the WMS has declared SRS=NONE for a Layer, then the Layer
+     * does not have a well-defined spatial reference system and should not be shown in conjunction with other layers.
+     * The client shall specify SRS as "none" in the GetMap request and the Server may issue a Service Exception
+     * otherwise."
      *
      * @param srs A String indicating the Spatial Reference System to render the layers in.
      */
@@ -174,15 +169,13 @@ public abstract class AbstractGetMapRequest extends AbstractWMSRequest implement
     }
 
     /**
-     * From the Web Map Service Implementation Specification: "The required BBOX parameter allows a
-     * Client to request a particular Bounding Box. The value of the BBOX parameter in a GetMap
-     * request is a list of comma-separated numbers of the form "minx,miny,maxx,maxy". If the WMS
-     * server has declared that a Layer is not subsettable, then the Client shall specify exactly
-     * the declared Bounding Box values in the GetMap request and the Server may issue a Service
-     * Exception otherwise."
+     * From the Web Map Service Implementation Specification: "The required BBOX parameter allows a Client to request a
+     * particular Bounding Box. The value of the BBOX parameter in a GetMap request is a list of comma-separated numbers
+     * of the form "minx,miny,maxx,maxy". If the WMS server has declared that a Layer is not subsettable, then the
+     * Client shall specify exactly the declared Bounding Box values in the GetMap request and the Server may issue a
+     * Service Exception otherwise."
      *
-     * <p>Yu must also call setSRS to provide the spatial reference system information (or CRS:84
-     * will be assumed)
+     * <p>Yu must also call setSRS to provide the spatial reference system information (or CRS:84 will be assumed)
      *
      * @param bbox A string representing a bounding box in the format "minx,miny,maxx,maxy"
      */
@@ -203,15 +196,13 @@ public abstract class AbstractGetMapRequest extends AbstractWMSRequest implement
                     if (CRS.getAxisOrder(crs) == AxisOrder.NORTH_EAST) {
                         Integer epsgCode = CRS.lookupEpsgCode(crs, false);
                         if (epsgCode == null) {
-                            throw new IllegalArgumentException(
-                                    "Could not find EPSG code for " + srsName);
+                            throw new IllegalArgumentException("Could not find EPSG code for " + srsName);
                         }
                         return CRS.decode("EPSG:" + epsgCode, true);
                     } else {
                         return crs;
                     }
-                } else if (srsName.startsWith("EPSG:")
-                        && isGeotoolsLongitudeFirstAxisOrderForced()) {
+                } else if (srsName.startsWith("EPSG:") && isGeotoolsLongitudeFirstAxisOrderForced()) {
                     // how do we look up the unmodified axis order?
                     String explicit = srsName.replace("EPSG:", "urn:x-ogc:def:crs:EPSG::");
                     return CRS.decode(explicit, false);
@@ -224,10 +215,7 @@ public abstract class AbstractGetMapRequest extends AbstractWMSRequest implement
         } catch (FactoryException e) {
             LOGGER.log(
                     Level.FINE,
-                    "Failed to build a coordiante reference system from "
-                            + srsName
-                            + " with forceXY "
-                            + forceXY,
+                    "Failed to build a coordiante reference system from " + srsName + " with forceXY " + forceXY,
                     e);
         }
         return DefaultEngineeringCRS.CARTESIAN_2D;
@@ -235,8 +223,7 @@ public abstract class AbstractGetMapRequest extends AbstractWMSRequest implement
 
     protected static boolean isGeotoolsLongitudeFirstAxisOrderForced() {
         return Boolean.getBoolean(GeoTools.FORCE_LONGITUDE_FIRST_AXIS_ORDER)
-                || GeoTools.getDefaultHints().get(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER)
-                        == Boolean.TRUE;
+                || GeoTools.getDefaultHints().get(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER) == Boolean.TRUE;
     }
     /** Sets BBOX and SRS using the provided Envelope. */
     @Override
@@ -261,11 +248,10 @@ public abstract class AbstractGetMapRequest extends AbstractWMSRequest implement
         setBBox(sb.toString());
     }
     /**
-     * From the Web Map Service Implementation Specification: "The required FORMAT parameter states
-     * the desired format of the response to an operation. Supported values for a GetMap request on
-     * a WMS instance are listed in one or more &lt;Format> elements in the &;ltRequest>&lt;GetMap>
-     * element of its Capabilities XML. The entire MIME type string in &lt;Format> is used as the
-     * value of the FORMAT parameter."
+     * From the Web Map Service Implementation Specification: "The required FORMAT parameter states the desired format
+     * of the response to an operation. Supported values for a GetMap request on a WMS instance are listed in one or
+     * more &lt;Format> elements in the &;ltRequest>&lt;GetMap> element of its Capabilities XML. The entire MIME type
+     * string in &lt;Format> is used as the value of the FORMAT parameter."
      *
      * @param format The desired format for the GetMap response
      */
@@ -275,13 +261,12 @@ public abstract class AbstractGetMapRequest extends AbstractWMSRequest implement
     }
 
     /**
-     * From the Web Map Service Implementation Specification: "The required WIDTH and HEIGHT
-     * parameters specify the size in integer pixels of the map image to be produced. WIDTH
-     * specifies the number of pixels to be used between the minimum and maximum X values
-     * (inclusive) in the BBOX parameter, while HEIGHT specifies the number of pixels between the
-     * minimum and maximum Y values. If the WMS server has declared that a Layer has fixed width and
-     * height, then the Client shall specify exactly those WIDTH and HEIGHT values in the GetMap
-     * request and the Server may issue a Service Exception otherwise."
+     * From the Web Map Service Implementation Specification: "The required WIDTH and HEIGHT parameters specify the size
+     * in integer pixels of the map image to be produced. WIDTH specifies the number of pixels to be used between the
+     * minimum and maximum X values (inclusive) in the BBOX parameter, while HEIGHT specifies the number of pixels
+     * between the minimum and maximum Y values. If the WMS server has declared that a Layer has fixed width and height,
+     * then the Client shall specify exactly those WIDTH and HEIGHT values in the GetMap request and the Server may
+     * issue a Service Exception otherwise."
      */
     @Override
     public void setDimensions(String width, String height) {
@@ -298,9 +283,9 @@ public abstract class AbstractGetMapRequest extends AbstractWMSRequest implement
     // TODO Implement optional parameters.
 
     /**
-     * From the Web Map Service Implementation Specification: "The optional TRANSPARENT parameter
-     * specifies whether the map background is to be made transparent or not. The default value is
-     * false if the parameter is absent from the request."
+     * From the Web Map Service Implementation Specification: "The optional TRANSPARENT parameter specifies whether the
+     * map background is to be made transparent or not. The default value is false if the parameter is absent from the
+     * request."
      *
      * @param transparent true for transparency, false otherwise
      */
@@ -316,9 +301,9 @@ public abstract class AbstractGetMapRequest extends AbstractWMSRequest implement
     }
 
     /**
-     * Specifies the colour, in hexidecimal format, to be used as the background of the map. It is a
-     * String representing RGB values in hexidecimal format, prefixed by "0x". The format is:
-     * 0xRRGGBB. The default value is 0xFFFFFF (white)
+     * Specifies the colour, in hexidecimal format, to be used as the background of the map. It is a String representing
+     * RGB values in hexidecimal format, prefixed by "0x". The format is: 0xRRGGBB. The default value is 0xFFFFFF
+     * (white)
      *
      * @param bgColour the background colour of the map, in the format 0xRRGGBB
      */
@@ -364,8 +349,7 @@ public abstract class AbstractGetMapRequest extends AbstractWMSRequest implement
     }
 
     /**
-     * See the Web Map Server Implementation Specification 1.1.1, Annex C, in particular section
-     * C.4.2
+     * See the Web Map Server Implementation Specification 1.1.1, Annex C, in particular section C.4.2
      *
      * <p>Example use: <code>request.setSampleDimensionValue("DIM_WAVELENGTH",
      * "4000");</code>

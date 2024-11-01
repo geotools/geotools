@@ -49,8 +49,7 @@ import org.locationtech.jts.index.strtree.STRtree;
 /**
  * FeatureCollection used to stage information for display using a SpatialIndex.
  *
- * <p>Please note that this feature collection cannot be modified after the spatial index is
- * created.
+ * <p>Please note that this feature collection cannot be modified after the spatial index is created.
  *
  * @author Jody
  */
@@ -88,8 +87,7 @@ public class SpatialIndexFeatureCollection implements SimpleFeatureCollection {
         listeners.add(listener);
     }
 
-    public synchronized void removeListener(CollectionListener listener)
-            throws NullPointerException {
+    public synchronized void removeListener(CollectionListener listener) throws NullPointerException {
         if (listeners == null) {
             return;
         }
@@ -114,12 +112,8 @@ public class SpatialIndexFeatureCollection implements SimpleFeatureCollection {
     @Override
     @SuppressWarnings("unchecked")
     public SimpleFeatureIterator features() {
-        Envelope everything =
-                new Envelope(
-                        Double.NEGATIVE_INFINITY,
-                        Double.POSITIVE_INFINITY,
-                        Double.NEGATIVE_INFINITY,
-                        Double.POSITIVE_INFINITY);
+        Envelope everything = new Envelope(
+                Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
 
         final List<SimpleFeature> list = (List<SimpleFeature>) index.query(everything);
         final Iterator<SimpleFeature> iterator = list.iterator();
@@ -173,41 +167,33 @@ public class SpatialIndexFeatureCollection implements SimpleFeatureCollection {
     }
 
     @Override
-    public void accepts(final FeatureVisitor visitor, ProgressListener listener)
-            throws IOException {
-        Envelope everything =
-                new Envelope(
-                        Double.NEGATIVE_INFINITY,
-                        Double.POSITIVE_INFINITY,
-                        Double.NEGATIVE_INFINITY,
-                        Double.POSITIVE_INFINITY);
+    public void accepts(final FeatureVisitor visitor, ProgressListener listener) throws IOException {
+        Envelope everything = new Envelope(
+                Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
         final ProgressListener progress = listener != null ? listener : new NullProgressListener();
         progress.started();
         final float size = (float) size();
         final IOException[] problem = new IOException[1];
-        index.query(
-                everything,
-                new ItemVisitor() {
-                    float count = 0f;
+        index.query(everything, new ItemVisitor() {
+            float count = 0f;
 
-                    @Override
-                    public void visitItem(Object item) {
-                        SimpleFeature feature = null;
-                        try {
-                            feature = (SimpleFeature) item;
-                            visitor.visit(feature);
-                        } catch (Throwable t) {
-                            progress.exceptionOccurred(t);
-                            String fid =
-                                    feature == null
-                                            ? "feature"
-                                            : feature.getIdentifier().toString();
-                            problem[0] = new IOException("Problem visiting " + fid + ":" + t, t);
-                        } finally {
-                            progress.progress(count / size);
-                        }
-                    }
-                });
+            @Override
+            public void visitItem(Object item) {
+                SimpleFeature feature = null;
+                try {
+                    feature = (SimpleFeature) item;
+                    visitor.visit(feature);
+                } catch (Throwable t) {
+                    progress.exceptionOccurred(t);
+                    String fid = feature == null
+                            ? "feature"
+                            : feature.getIdentifier().toString();
+                    problem[0] = new IOException("Problem visiting " + fid + ":" + t, t);
+                } finally {
+                    progress.progress(count / size);
+                }
+            }
+        });
         if (problem[0] != null) {
             throw problem[0];
         }
@@ -232,8 +218,7 @@ public class SpatialIndexFeatureCollection implements SimpleFeatureCollection {
         return false;
     }
 
-    public boolean addAll(
-            FeatureCollection<? extends SimpleFeatureType, ? extends SimpleFeature> collection) {
+    public boolean addAll(FeatureCollection<? extends SimpleFeatureType, ? extends SimpleFeature> collection) {
         try (FeatureIterator<? extends SimpleFeature> iter = collection.features()) {
             while (iter.hasNext()) {
                 try {
@@ -310,12 +295,8 @@ public class SpatialIndexFeatureCollection implements SimpleFeatureCollection {
 
     @SuppressWarnings("unchecked")
     public Iterator<SimpleFeature> iterator() {
-        Envelope everything =
-                new Envelope(
-                        Double.NEGATIVE_INFINITY,
-                        Double.POSITIVE_INFINITY,
-                        Double.NEGATIVE_INFINITY,
-                        Double.POSITIVE_INFINITY);
+        Envelope everything = new Envelope(
+                Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
         final List<SimpleFeature> list = (List<SimpleFeature>) index.query(everything);
         return list.iterator();
     }
@@ -350,10 +331,7 @@ public class SpatialIndexFeatureCollection implements SimpleFeatureCollection {
     public <O> O[] toArray(O[] array) {
         int size = size();
         if (array.length < size) {
-            array =
-                    (O[])
-                            java.lang.reflect.Array.newInstance(
-                                    array.getClass().getComponentType(), size);
+            array = (O[]) java.lang.reflect.Array.newInstance(array.getClass().getComponentType(), size);
         }
         Iterator<SimpleFeature> it = iterator();
         try {

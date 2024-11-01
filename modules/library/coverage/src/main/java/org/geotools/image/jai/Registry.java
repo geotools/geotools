@@ -56,27 +56,23 @@ public final class Registry {
     private Registry() {}
 
     /**
-     * Allows or disallow native acceleration for the specified operation on the given JAI instance.
-     * By default, JAI uses hardware accelerated methods when available. For example, it make use of
-     * MMX instructions on Intel processors. Unfortunatly, some native method crash the Java Virtual
-     * Machine under some circonstances. For example on JAI 1.1.2, the {@code "Affine"} operation on
-     * an image with float data type, bilinear interpolation and an {@link
-     * javax.media.jai.ImageLayout} rendering hint cause an exception in medialib native code.
-     * Disabling the native acceleration (i.e using the pure Java version) is a convenient
-     * workaround until Sun fix the bug.
+     * Allows or disallow native acceleration for the specified operation on the given JAI instance. By default, JAI
+     * uses hardware accelerated methods when available. For example, it make use of MMX instructions on Intel
+     * processors. Unfortunatly, some native method crash the Java Virtual Machine under some circonstances. For example
+     * on JAI 1.1.2, the {@code "Affine"} operation on an image with float data type, bilinear interpolation and an
+     * {@link javax.media.jai.ImageLayout} rendering hint cause an exception in medialib native code. Disabling the
+     * native acceleration (i.e using the pure Java version) is a convenient workaround until Sun fix the bug.
      *
-     * <p><strong>Implementation note:</strong> the current implementation assumes that factories
-     * for native implementations are declared in the {@code com.sun.media.jai.mlib} package, while
-     * factories for pure java implementations are declared in the {@code com.sun.media.jai.opimage}
-     * package. It work for Sun's 1.1.2 implementation, but may change in future versions. If this
-     * method doesn't recognize the package, it does nothing.
+     * <p><strong>Implementation note:</strong> the current implementation assumes that factories for native
+     * implementations are declared in the {@code com.sun.media.jai.mlib} package, while factories for pure java
+     * implementations are declared in the {@code com.sun.media.jai.opimage} package. It work for Sun's 1.1.2
+     * implementation, but may change in future versions. If this method doesn't recognize the package, it does nothing.
      *
      * @param operation The operation name (e.g. {@code "Affine"}).
      * @param allowed {@code false} to disallow native acceleration.
-     * @param jai The instance of {@link JAI} we are going to work on. This argument can be omitted
-     *     for the {@linkplain JAI#getDefaultInstance default JAI instance}.
-     * @see <a href="http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4906854">JAI bug report
-     *     4906854</a>
+     * @param jai The instance of {@link JAI} we are going to work on. This argument can be omitted for the
+     *     {@linkplain JAI#getDefaultInstance default JAI instance}.
+     * @see <a href="http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4906854">JAI bug report 4906854</a>
      * @since 2.5
      */
     public static synchronized void setNativeAccelerationAllowed(
@@ -123,20 +119,19 @@ public final class Registry {
                         product,
                         allowed ? nativeFactory : javaFactory,
                         allowed ? javaFactory : nativeFactory);
-                final LogRecord record =
-                        Loggings.format(
-                                Level.CONFIG,
-                                LoggingKeys.NATIVE_ACCELERATION_STATE_$2,
-                                operation,
-                                Integer.valueOf(allowed ? 1 : 0));
+                final LogRecord record = Loggings.format(
+                        Level.CONFIG,
+                        LoggingKeys.NATIVE_ACCELERATION_STATE_$2,
+                        operation,
+                        Integer.valueOf(allowed ? 1 : 0));
                 log("setNativeAccelerationAllowed", record);
             }
         }
     }
 
     /**
-     * Allows or disallow native acceleration for the specified operation on the {@linkplain
-     * JAI#getDefaultInstance default JAI instance}. This method is a shortcut for <code>
+     * Allows or disallow native acceleration for the specified operation on the {@linkplain JAI#getDefaultInstance
+     * default JAI instance}. This method is a shortcut for <code>
      * {@linkplain #setNativeAccelerationAllowed(String,boolean,JAI)
      * setNativeAccelerationAllowed}(operation, allowed, JAI.getDefaultInstance())</code>.
      *
@@ -147,8 +142,8 @@ public final class Registry {
     }
 
     /**
-     * Register the "SampleTranscode" image operation to the operation registry of the specified JAI
-     * instance. This method is invoked by the static initializer of {@link GridSampleDimension}.
+     * Register the "SampleTranscode" image operation to the operation registry of the specified JAI instance. This
+     * method is invoked by the static initializer of {@link GridSampleDimension}.
      *
      * @param jai is he {@link JAI} instance in which we ant to register this operation.
      * @param descriptor is the {@link OperationDescriptor} for the JAI operation to register.
@@ -167,8 +162,7 @@ public final class Registry {
             registry.registerFactory(RenderedRegistryMode.MODE_NAME, name, GEOTOOLS_PRODUCT, crif);
             return true;
         } catch (IllegalArgumentException exception) {
-            final LogRecord record =
-                    Loggings.format(Level.SEVERE, LoggingKeys.CANT_REGISTER_JAI_OPERATION_$1, name);
+            final LogRecord record = Loggings.format(Level.SEVERE, LoggingKeys.CANT_REGISTER_JAI_OPERATION_$1, name);
             // Note: GridSampleDimension is the public class that use this
             // transcoder.
             record.setSourceClassName(GridSampleDimension.class.getName());
@@ -183,14 +177,11 @@ public final class Registry {
     /**
      * Forcefully registers the specified rendered operation in the JAI registry
      *
-     * @return true if the registration succeded, false if the registration was not required as the
-     *     operation was already available in the registry
+     * @return true if the registration succeded, false if the registration was not required as the operation was
+     *     already available in the registry
      */
     public static boolean registerRIF(
-            final JAI jai,
-            OperationDescriptor descriptor,
-            RenderedImageFactory rif,
-            String productName) {
+            final JAI jai, OperationDescriptor descriptor, RenderedImageFactory rif, String productName) {
         final OperationRegistry registry = jai.getOperationRegistry();
         try {
             // see if the operation is already registered, avoid registering it twice

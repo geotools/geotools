@@ -144,12 +144,10 @@ public class ElementTypeHandler extends ElementGroupingHandler {
     }
 
     /**
-     * @see org.geotools.xml.XSIElementHandler#startElement(java.lang.String, java.lang.String,
-     *     org.xml.sax.Attributes)
+     * @see org.geotools.xml.XSIElementHandler#startElement(java.lang.String, java.lang.String, org.xml.sax.Attributes)
      */
     @Override
-    public void startElement(String namespaceURI, String localName, Attributes atts)
-            throws SAXException {
+    public void startElement(String namespaceURI, String localName, Attributes atts) throws SAXException {
         // abstract
         String abstracT1 = atts.getValue("", "abstract");
 
@@ -165,10 +163,9 @@ public class ElementTypeHandler extends ElementGroupingHandler {
             } else if ("false".equals(abstracT1)) {
                 this.abstracT = false;
             } else {
-                throw new SAXException(
-                        String.format(
-                                "Schema element declaration supports 'abstract' \"true\" or \"false\" only (abstract=\"%s\")",
-                                abstracT1));
+                throw new SAXException(String.format(
+                        "Schema element declaration supports 'abstract' \"true\" or \"false\" only (abstract=\"%s\")",
+                        abstracT1));
             }
         }
 
@@ -293,18 +290,16 @@ public class ElementTypeHandler extends ElementGroupingHandler {
 
         if (ref != null && !ref.isEmpty()) {
             if (name != null && !name.isEmpty()) {
-                throw new SAXException(
-                        String.format(
-                                "Schema element declaration cannot have both "
-                                        + "'ref' and 'name' attributes (ref=\"%s\", name=\"%s\")",
-                                ref, name));
+                throw new SAXException(String.format(
+                        "Schema element declaration cannot have both "
+                                + "'ref' and 'name' attributes (ref=\"%s\", name=\"%s\")",
+                        ref, name));
             }
             if (type != null && !type.isEmpty()) {
-                throw new SAXException(
-                        String.format(
-                                "Schema element declaration cannot have both "
-                                        + "'ref' and 'type' attributes (ref=\"%s\", type=\"%s\")",
-                                ref, type));
+                throw new SAXException(String.format(
+                        "Schema element declaration cannot have both "
+                                + "'ref' and 'type' attributes (ref=\"%s\", type=\"%s\")",
+                        ref, type));
             }
             name = type = ref;
         }
@@ -321,10 +316,7 @@ public class ElementTypeHandler extends ElementGroupingHandler {
         return name;
     }
 
-    /**
-     * @see
-     *     org.geotools.xml.XSIHandlers.ElementGroupingHandler#compress(org.geotools.xml.XSIHandlers.SchemaHandler)
-     */
+    /** @see org.geotools.xml.XSIHandlers.ElementGroupingHandler#compress(org.geotools.xml.XSIHandlers.SchemaHandler) */
     @Override
     protected ElementGrouping compress(SchemaHandler parent) throws SAXException {
 
@@ -539,9 +531,7 @@ public class ElementTypeHandler extends ElementGroupingHandler {
                 }
             }
 
-            return (type == null)
-                    ? null
-                    : XMLTypeHelper.findChildElement(type, localName, namespaceURI);
+            return (type == null) ? null : XMLTypeHelper.findChildElement(type, localName, namespaceURI);
         }
     }
 }

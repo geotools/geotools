@@ -98,8 +98,7 @@ public class RuleBuilder extends AbstractStyleBuilder<Rule> {
     public RuleBuilder min(double minScaleDenominator) {
         unset = false;
         if (minScaleDenominator < 0)
-            throw new IllegalArgumentException(
-                    "Invalid min scale denominator, should be positive or 0");
+            throw new IllegalArgumentException("Invalid min scale denominator, should be positive or 0");
         this.minScaleDenominator = minScaleDenominator;
         return this;
     }
@@ -107,8 +106,7 @@ public class RuleBuilder extends AbstractStyleBuilder<Rule> {
     public RuleBuilder max(double maxScaleDenominator) {
         unset = false;
         if (maxScaleDenominator < 0)
-            throw new IllegalArgumentException(
-                    "Invalid max scale denominator, should be positive or 0");
+            throw new IllegalArgumentException("Invalid max scale denominator, should be positive or 0");
         this.maxScaleDenominator = maxScaleDenominator;
         return this;
     }
@@ -236,9 +234,12 @@ public class RuleBuilder extends AbstractStyleBuilder<Rule> {
             return unset();
         }
         name = rule.getName();
-        title = Optional.ofNullable(rule.getDescription()).map(d -> d.getTitle()).orElse(null);
-        ruleAbstract =
-                Optional.ofNullable(rule.getDescription()).map(d -> d.getAbstract()).orElse(null);
+        title = Optional.ofNullable(rule.getDescription())
+                .map(d -> d.getTitle())
+                .orElse(null);
+        ruleAbstract = Optional.ofNullable(rule.getDescription())
+                .map(d -> d.getAbstract())
+                .orElse(null);
         minScaleDenominator = rule.getMinScaleDenominator();
         maxScaleDenominator = rule.getMaxScaleDenominator();
         filter = rule.getFilter();

@@ -57,8 +57,7 @@ import org.w3c.dom.NodeList;
 public class XMLEncoderTest {
 
     /** Standard logging instance */
-    protected static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(XMLEncoderTest.class);
+    protected static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(XMLEncoderTest.class);
 
     /** Constructor with test name. */
     String dataFolder = "";
@@ -91,8 +90,7 @@ public class XMLEncoderTest {
         StringWriter output = new StringWriter();
         DocumentWriter.writeFragment(test, FilterSchema.getInstance(), output, null);
         // System.out.println( output );
-        InputStream stream =
-                new ByteArrayInputStream(output.toString().getBytes(StandardCharsets.UTF_8));
+        InputStream stream = new ByteArrayInputStream(output.toString().getBytes(StandardCharsets.UTF_8));
 
         Object o = DocumentFactory.getInstance(stream, new HashMap<>(), Level.FINEST);
         Assert.assertNotNull(o);
@@ -240,16 +238,13 @@ public class XMLEncoderTest {
 
         StringWriter output = new StringWriter();
         XMLHandlerHints hints = new XMLHandlerHints();
-        hints.put(
-                XMLHandlerHints.FILTER_COMPLIANCE_STRICTNESS,
-                XMLHandlerHints.VALUE_FILTER_COMPLIANCE_MEDIUM);
+        hints.put(XMLHandlerHints.FILTER_COMPLIANCE_STRICTNESS, XMLHandlerHints.VALUE_FILTER_COMPLIANCE_MEDIUM);
         DocumentWriter.writeFragment(filter, FilterSchema.getInstance(), output, hints);
         String string = output.toString().replaceAll("\\s", "");
-        String xml =
-                "<Filterxmlns=\"http://www.opengis.net/ogc\"xmlns:gml=\"http://www.opengis.net/gml\">"
-                        + "<PropertyIsNull><PropertyName>geom</PropertyName></PropertyIsNull>"
-                        + "<Filter><FeatureIdfid=\"FID.1\"/></Filter>"
-                        + "</Filter>";
+        String xml = "<Filterxmlns=\"http://www.opengis.net/ogc\"xmlns:gml=\"http://www.opengis.net/gml\">"
+                + "<PropertyIsNull><PropertyName>geom</PropertyName></PropertyIsNull>"
+                + "<Filter><FeatureIdfid=\"FID.1\"/></Filter>"
+                + "</Filter>";
         Assert.assertEquals(xml, string);
 
         // Note:  Round trip doesn't work in this case because request may returns more features
@@ -266,9 +261,7 @@ public class XMLEncoderTest {
 
         StringWriter output = new StringWriter();
         XMLHandlerHints hints = new XMLHandlerHints();
-        hints.put(
-                XMLHandlerHints.FILTER_COMPLIANCE_STRICTNESS,
-                XMLHandlerHints.VALUE_FILTER_COMPLIANCE_MEDIUM);
+        hints.put(XMLHandlerHints.FILTER_COMPLIANCE_STRICTNESS, XMLHandlerHints.VALUE_FILTER_COMPLIANCE_MEDIUM);
         DocumentWriter.writeFragment(filter, FilterSchema.getInstance(), output, hints);
         String string = output.toString().replaceAll("\\s", "");
         // The following test fails with Java 1.6. May be caused by some iteration order dependent
@@ -279,7 +272,8 @@ public class XMLEncoderTest {
                             + ".net/gml\"><FeatureIdfid=\"FID.1\"/><FeatureIdfid=\"FID.2\"/></Filter>",
                     string);
         }
-        ByteArrayInputStream byteStream = new ByteArrayInputStream(output.toString().getBytes());
+        ByteArrayInputStream byteStream =
+                new ByteArrayInputStream(output.toString().getBytes());
         Filter roundTrip = (Filter) DocumentFactory.getInstance(byteStream, null, Level.OFF);
         Assert.assertEquals(filter, roundTrip);
     }

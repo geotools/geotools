@@ -26,13 +26,11 @@ import org.geotools.coverage.processing.CoverageProcessingException;
 import org.geotools.util.factory.Hints;
 
 /**
- * Basic interface for Coverage Processing as used by SLD 1.0. The immediate goal here is to
- * implement RasterSymbolizer support for SLD 1.0 but in future it could be extended/used for an
- * elaborate coverage processing framework.
+ * Basic interface for Coverage Processing as used by SLD 1.0. The immediate goal here is to implement RasterSymbolizer
+ * support for SLD 1.0 but in future it could be extended/used for an elaborate coverage processing framework.
  *
- * <p>This interface can be used to chain together {@link CoverageProcessingNode}s in order to
- * create graphs of operations. A single node can have multiple sources but only one output in this
- * design.
+ * <p>This interface can be used to chain together {@link CoverageProcessingNode}s in order to create graphs of
+ * operations. A single node can have multiple sources but only one output in this design.
  *
  * @author Simone Giannecchini, GeoSolutions.
  */
@@ -49,8 +47,7 @@ public interface CoverageProcessingNode {
     /**
      * Forces this node to create the output coverage for the operation represented by this node.
      *
-     * @return the {@link Coverage} which represents the output for this {@link
-     *     CoverageProcessingNode}.
+     * @return the {@link Coverage} which represents the output for this {@link CoverageProcessingNode}.
      */
     public GridCoverage getOutput() throws CoverageProcessingException;
 
@@ -63,17 +60,17 @@ public interface CoverageProcessingNode {
      */
 
     /**
-     * Retrieves the {@link List} of source for this {@link CoverageProcessingNode}. Each source
-     * <strong>MUST</strong> be a {@link CoverageProcessingNode}.
+     * Retrieves the {@link List} of source for this {@link CoverageProcessingNode}. Each source <strong>MUST</strong>
+     * be a {@link CoverageProcessingNode}.
      *
-     * @return a {@link List} of {@link CoverageProcessingNode} which represents the sources for
-     *     this {@link CoverageProcessingNode}.
+     * @return a {@link List} of {@link CoverageProcessingNode} which represents the sources for this
+     *     {@link CoverageProcessingNode}.
      */
     public List<CoverageProcessingNode> getSources();
 
     /**
-     * Retrieves the source located at index <code>index</code> in the {@link List} of sources for
-     * this {@link CoverageProcessingNode}.
+     * Retrieves the source located at index <code>index</code> in the {@link List} of sources for this
+     * {@link CoverageProcessingNode}.
      *
      * @param index is the zero-based index for the sink we want to get.
      * @return the {@link CoverageProcessingNode} which represents the sink at index <code>index
@@ -82,38 +79,35 @@ public interface CoverageProcessingNode {
     public CoverageProcessingNode getSource(final int index) throws IndexOutOfBoundsException;
 
     /**
-     * Adds a source {@link CoverageProcessingNode} to the list of sources for this {@link
-     * CoverageProcessingNode}.
+     * Adds a source {@link CoverageProcessingNode} to the list of sources for this {@link CoverageProcessingNode}.
      *
-     * @param source the {@link CoverageProcessingNode} to add to the {@link List} of sources for
-     *     this {@link CoverageProcessingNode}.
+     * @param source the {@link CoverageProcessingNode} to add to the {@link List} of sources for this
+     *     {@link CoverageProcessingNode}.
      * @return <code>true</code> if everything goes fine, <code>false</code> otherwise.
      */
     public boolean addSource(final CoverageProcessingNode source);
 
     /**
-     * Removes a source {@link CoverageProcessingNode} to the list of sources for this {@link
-     * CoverageProcessingNode}.
+     * Removes a source {@link CoverageProcessingNode} to the list of sources for this {@link CoverageProcessingNode}.
      *
-     * @param index the index at which we want to remove a source from the {@link List} of sources
-     *     for this {@link CoverageProcessingNode}.
+     * @param index the index at which we want to remove a source from the {@link List} of sources for this
+     *     {@link CoverageProcessingNode}.
      * @return the {@link CoverageProcessingNode} we actually remove from the sources list.
      */
     public CoverageProcessingNode removeSource(final int index) throws IndexOutOfBoundsException;
 
     /**
-     * Removes a source {@link CoverageProcessingNode} to the list of sources for this {@link
-     * CoverageProcessingNode}.
+     * Removes a source {@link CoverageProcessingNode} to the list of sources for this {@link CoverageProcessingNode}.
      *
-     * @param source the {@link CoverageProcessingNode} to remove from the {@link List} of sources
-     *     for this {@link CoverageProcessingNode}.
+     * @param source the {@link CoverageProcessingNode} to remove from the {@link List} of sources for this
+     *     {@link CoverageProcessingNode}.
      * @return <code>true</code> in case we remove something, <code>false</code> otherwise.
      */
     public boolean removeSource(final CoverageProcessingNode source);
 
     /**
-     * Retrieves the {@link List} of sinks for this {@link CoverageProcessingNode}. Each sink
-     * <strong>MUST</strong> be a {@link CoverageProcessingNode}.
+     * Retrieves the {@link List} of sinks for this {@link CoverageProcessingNode}. Each sink <strong>MUST</strong> be a
+     * {@link CoverageProcessingNode}.
      *
      * @return a {@link List} of {@link CoverageProcessingNode} which represents the sinks for this
      *     {@link CoverageProcessingNode}.
@@ -131,8 +125,7 @@ public interface CoverageProcessingNode {
     public CoverageProcessingNode getSink(final int index) throws IndexOutOfBoundsException;
 
     /**
-     * Adds a sink {@link CoverageProcessingNode} to the list of sinks for this {@link
-     * CoverageProcessingNode}.
+     * Adds a sink {@link CoverageProcessingNode} to the list of sinks for this {@link CoverageProcessingNode}.
      *
      * @param sink the {@link CoverageProcessingNode} to add to the {@link List} of sinks for this
      *     {@link CoverageProcessingNode}.
@@ -140,21 +133,19 @@ public interface CoverageProcessingNode {
     public void addSink(final CoverageProcessingNode sink);
 
     /**
-     * Removes a sink {@link CoverageProcessingNode} from the list of sinks for this {@link
-     * CoverageProcessingNode}.
+     * Removes a sink {@link CoverageProcessingNode} from the list of sinks for this {@link CoverageProcessingNode}.
      *
-     * @param index the index at which we want to remove a sink from the {@link List} of sinks for
-     *     this {@link CoverageProcessingNode}.
+     * @param index the index at which we want to remove a sink from the {@link List} of sinks for this
+     *     {@link CoverageProcessingNode}.
      * @return the {@link CoverageProcessingNode} we actually remove from the sinks list.
      */
     public CoverageProcessingNode removeSink(final int index) throws IndexOutOfBoundsException;
 
     /**
-     * Removes a sink {@link CoverageProcessingNode} from the list of sinks for this {@link
-     * CoverageProcessingNode}.
+     * Removes a sink {@link CoverageProcessingNode} from the list of sinks for this {@link CoverageProcessingNode}.
      *
-     * @param sink the {@link CoverageProcessingNode} to remove from the {@link List} of sinks for
-     *     this {@link CoverageProcessingNode}.
+     * @param sink the {@link CoverageProcessingNode} to remove from the {@link List} of sinks for this
+     *     {@link CoverageProcessingNode}.
      * @return <code>true</code> in case we remove something, <code>false</code> otherwise.
      */
     public boolean removeSink(final CoverageProcessingNode sink);
@@ -183,17 +174,15 @@ public interface CoverageProcessingNode {
     /**
      * Getter for {@link Hints}.
      *
-     * @return {@link Hints} provided at construction time to control {@link GridCoverageFactory}
-     *     creation.
+     * @return {@link Hints} provided at construction time to control {@link GridCoverageFactory} creation.
      */
     public Hints getHints();
 
     /**
-     * The {@link GridCoverageFactory} we will internally use for build intermediate and output
-     * {@link GridCoverage2D}.
+     * The {@link GridCoverageFactory} we will internally use for build intermediate and output {@link GridCoverage2D}.
      *
-     * @return a {@link GridCoverageFactory} we will internally use for build intermediate and
-     *     output {@link GridCoverage2D}.
+     * @return a {@link GridCoverageFactory} we will internally use for build intermediate and output
+     *     {@link GridCoverage2D}.
      */
     public GridCoverageFactory getCoverageFactory();
 

@@ -39,10 +39,9 @@ public class MedianVisitor implements FeatureCalc, FeatureAttributeVisitor {
     private Expression expr;
     private List<Comparable> list = new ArrayList<>();
     /**
-     * This var is only used to store the median for optimized functions, where we don't have a
-     * complete list, but just the answer instead (merging will be disabled until some cool code is
-     * written to handle this). Only setValue(median) should write to this var. If this value is not
-     * null, it takes priority over list.
+     * This var is only used to store the median for optimized functions, where we don't have a complete list, but just
+     * the answer instead (merging will be disabled until some cool code is written to handle this). Only
+     * setValue(median) should write to this var. If this value is not null, it takes priority over list.
      */
     private Object median = null;
 
@@ -51,8 +50,7 @@ public class MedianVisitor implements FeatureCalc, FeatureAttributeVisitor {
         expr = factory.property(attributeTypeName);
     }
 
-    public MedianVisitor(int attributeTypeIndex, SimpleFeatureType type)
-            throws IllegalFilterException {
+    public MedianVisitor(int attributeTypeIndex, SimpleFeatureType type) throws IllegalFilterException {
         FilterFactory factory = CommonFactoryFinder.getFilterFactory(null);
         expr = factory.property(type.getDescriptor(attributeTypeIndex).getLocalName());
     }
@@ -151,8 +149,7 @@ public class MedianVisitor implements FeatureCalc, FeatureAttributeVisitor {
     public static class MedianResult extends AbstractCalcResult {
         private List<Comparable> list;
         /**
-         * When an optimization is used, median will have a value and list will not. This var takes
-         * priority over list.
+         * When an optimization is used, median will have a value and list will not. This var takes priority over list.
          */
         private Object median;
 
@@ -182,8 +179,7 @@ public class MedianVisitor implements FeatureCalc, FeatureAttributeVisitor {
         @Override
         public boolean isCompatible(CalcResult targetResults) {
             // list each calculation result which can merge with this type of result
-            if (targetResults instanceof MedianResult || targetResults == CalcResult.NULL_RESULT)
-                return true;
+            if (targetResults instanceof MedianResult || targetResults == CalcResult.NULL_RESULT) return true;
             return false;
         }
 
@@ -206,8 +202,7 @@ public class MedianVisitor implements FeatureCalc, FeatureAttributeVisitor {
                 MedianResult moreResults = (MedianResult) resultsToAdd;
                 // ensure both MedianResults are NOT optimized
                 if (isOptimized() || moreResults.isOptimized()) {
-                    throw new IllegalArgumentException(
-                            "Optimized median results cannot be merged.");
+                    throw new IllegalArgumentException("Optimized median results cannot be merged.");
                 }
                 // merge away...
                 List<Comparable> toAdd = moreResults.getList();
@@ -233,10 +228,9 @@ public class MedianVisitor implements FeatureCalc, FeatureAttributeVisitor {
     }
 
     /**
-     * Given a list, determines the median value and returns it. For numbers, the middle value is
-     * returned, or the average of the two middle numbers if there are an even number of elements.
-     * For non-numeric values (strings, etc) where the number of elements is even, a list containing
-     * the two middle elements is returned.
+     * Given a list, determines the median value and returns it. For numbers, the middle value is returned, or the
+     * average of the two middle numbers if there are an even number of elements. For non-numeric values (strings, etc)
+     * where the number of elements is even, a list containing the two middle elements is returned.
      *
      * @param list an arraylist which is to be sorted and its median extracted
      * @return the median

@@ -25,7 +25,5 @@ import org.geotools.data.complex.util.XPathUtil;
 public interface CustomAttributeExpressionFactory {
 
     Expression createNestedAttributeExpression(
-            FeatureTypeMapping mappings,
-            XPathUtil.StepList xpath,
-            NestedAttributeMapping nestedMapping);
+            FeatureTypeMapping mappings, XPathUtil.StepList xpath, NestedAttributeMapping nestedMapping);
 }

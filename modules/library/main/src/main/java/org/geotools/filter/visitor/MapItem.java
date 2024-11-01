@@ -19,11 +19,11 @@ package org.geotools.filter.visitor;
 import org.geotools.api.filter.expression.Expression;
 
 /**
- * This function recodes values from a property or expression into corresponding values of arbitrary
- * type. The comparisons are performed checking for identical values.
+ * This function recodes values from a property or expression into corresponding values of arbitrary type. The
+ * comparisons are performed checking for identical values.
  *
- * @version <A HREF="http://www.opengeospatial.org/standards/symbol">Symbology Encoding
- *     Implementation Specification 1.1.0</A>
+ * @version <A HREF="http://www.opengeospatial.org/standards/symbol">Symbology Encoding Implementation Specification
+ *     1.1.0</A>
  * @author Johann Sorel (Geomatys)
  */
 public interface MapItem extends Expression {
@@ -31,8 +31,8 @@ public interface MapItem extends Expression {
     /**
      * Get value.
      *
-     * <p>The Values can be of any type, dependent on which symbolization context the function is
-     * employed. Color values (like #00ffff) or numeric values are typical.
+     * <p>The Values can be of any type, dependent on which symbolization context the function is employed. Color values
+     * (like #00ffff) or numeric values are typical.
      *
      * @return Expression
      */

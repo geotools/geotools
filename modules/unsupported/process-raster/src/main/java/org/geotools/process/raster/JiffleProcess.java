@@ -71,10 +71,7 @@ public class JiffleProcess implements RasterProcess {
 
     static {
         Registry.registerRIF(
-                JAI.getDefaultInstance(),
-                new JiffleDescriptor(),
-                new JiffleRIF(),
-                "it.geosolutions.jaiext");
+                JAI.getDefaultInstance(), new JiffleDescriptor(), new JiffleRIF(), "it.geosolutions.jaiext");
     }
 
     static final Logger LOGGER = Logging.getLogger(JiffleProcess.class);
@@ -90,17 +87,15 @@ public class JiffleProcess implements RasterProcess {
     public static final String TX_BANDS = "bands";
 
     /**
-     * Executes a Jiffle raster algebra. Check the {@link DescribeParameter} annotations for a
-     * description of the various arguments
+     * Executes a Jiffle raster algebra. Check the {@link DescribeParameter} annotations for a description of the
+     * various arguments
      */
     @DescribeResult(name = OUT_RESULT, description = "The map algebra output")
     public GridCoverage2D execute(
-            @DescribeParameter(name = IN_COVERAGE, description = "Source raster(s)")
-                    GridCoverage2D[] coverages,
+            @DescribeParameter(name = IN_COVERAGE, description = "Source raster(s)") GridCoverage2D[] coverages,
             @DescribeParameter(
                             name = IN_SCRIPT,
-                            description =
-                                    "The script performing the map algebra, in Jiffle language")
+                            description = "The script performing the map algebra, in Jiffle language")
                     String script,
             @DescribeParameter(
                             name = IN_DEST_NAME,
@@ -153,17 +148,14 @@ public class JiffleProcess implements RasterProcess {
             if (coverage.getGridGeometry().equals(reference.getGridGeometry())) {
                 sources[i] = coverage.getRenderedImage();
             } else {
-                sources[i] =
-                        GridCoverage2DRIA.create(
-                                coverage, reference, nodata, GeoTools.getDefaultHints(), roi);
+                sources[i] = GridCoverage2DRIA.create(coverage, reference, nodata, GeoTools.getDefaultHints(), roi);
             }
         }
 
         // in case we have optimized out band selection, need to remap the band access
         BandTransform[] bandTransforms = null;
         if (sources.length == 1) {
-            BandTransform bt =
-                    getRenderingTransformationBandTransform(script, sourceNames, sources[0]);
+            BandTransform bt = getRenderingTransformationBandTransform(script, sourceNames, sources[0]);
             bandTransforms = new BandTransform[] {bt};
         }
 
@@ -171,23 +163,21 @@ public class JiffleProcess implements RasterProcess {
         if (outputBandCount == null && outputBandNames != null) {
             outputBandCount = outputBandNames.split("\\s*,\\s*").length;
         }
-        RenderedOp result =
-                JiffleDescriptor.create(
-                        sources,
-                        sourceNames,
-                        destName,
-                        script,
-                        null,
-                        awtDataType,
-                        outputBandCount,
-                        null,
-                        bandTransforms,
-                        GeoTools.getDefaultHints());
+        RenderedOp result = JiffleDescriptor.create(
+                sources,
+                sourceNames,
+                destName,
+                script,
+                null,
+                awtDataType,
+                outputBandCount,
+                null,
+                bandTransforms,
+                GeoTools.getDefaultHints());
 
         GridSampleDimension[] sampleDimensions = getSampleDimensions(result, outputBandNames);
         GridCoverageFactory factory = new GridCoverageFactory(GeoTools.getDefaultHints());
-        return factory.create(
-                "jiffle", result, reference.getEnvelope(), sampleDimensions, coverages, null);
+        return factory.create("jiffle", result, reference.getEnvelope(), sampleDimensions, coverages, null);
     }
 
     private GridSampleDimension[] getSampleDimensions(RenderedOp result, String outputBandNames) {
@@ -198,10 +188,7 @@ public class JiffleProcess implements RasterProcess {
         double[] nodata = null; // {Double.NaN};
         double min = range.getMinimum();
         double max = range.getMaximum();
-        return names.map(
-                        n ->
-                                new GridSampleDimension(
-                                        n, sourceType, null, nodata, min, max, 1, 0, null))
+        return names.map(n -> new GridSampleDimension(n, sourceType, null, nodata, min, max, 1, 0, null))
                 .toArray(n -> new GridSampleDimension[n]);
     }
 
@@ -241,8 +228,7 @@ public class JiffleProcess implements RasterProcess {
         // A band selection was performed unless the source has more bands than the
         // max band value (if they are equal, we don't care, they must be a match
         // with the source bands due to the two previous properties
-        if (source.getSampleModel().getNumBands() > scriptBands[scriptBands.length - 1])
-            return null;
+        if (source.getSampleModel().getNumBands() > scriptBands[scriptBands.length - 1]) return null;
 
         // is there a mismatch between the available bands and the ones used in the script?
         // if so assume bands mapping has taken place in the RT
@@ -265,15 +251,14 @@ public class JiffleProcess implements RasterProcess {
     }
 
     /**
-     * This is called by the renderer to optimize the read, if possible, we'll customize the band
-     * reading so that we read only what we know will be used by the script. At the time of writing,
-     * this works only if band positions in the script are literals.
+     * This is called by the renderer to optimize the read, if possible, we'll customize the band reading so that we
+     * read only what we know will be used by the script. At the time of writing, this works only if band positions in
+     * the script are literals.
      */
     public GeneralParameterValue[] customizeReadParams(
             @DescribeParameter(
                             name = IN_SCRIPT,
-                            description =
-                                    "The script performing the map algebra, in Jiffle language")
+                            description = "The script performing the map algebra, in Jiffle language")
                     String script,
             @DescribeParameter(
                             name = IN_DEST_NAME,
@@ -287,18 +272,14 @@ public class JiffleProcess implements RasterProcess {
                                     "Name of the inputs, as used in the script (default to src, src1, src2, ... if not specified)",
                             min = 0)
                     String[] sourceNames,
-            @DescribeParameter(
-                            name = TX_BANDS,
-                            description = "Bands read by the transformation",
-                            min = 0)
+            @DescribeParameter(name = TX_BANDS, description = "Bands read by the transformation", min = 0)
                     int[] usedBands,
             GridCoverageReader reader,
             GeneralParameterValue[] params) {
         try {
             // do we have a band selection parameter in the input?
             ParameterValueGroup readerParams = reader.getFormat().getReadParameters();
-            ParameterValue<?> bands =
-                    readerParams.parameter(AbstractGridFormat.BANDS.getName(null));
+            ParameterValue<?> bands = readerParams.parameter(AbstractGridFormat.BANDS.getName(null));
             if (bands == null) {
                 LOGGER.log(Level.FINE, "The reader does not support band selection, reading all");
                 return params;
@@ -356,11 +337,10 @@ public class JiffleProcess implements RasterProcess {
     }
 
     /**
-     * Returns the source bands used, or null the bands indexes cannot be computed (e.g., they
-     * depend on script variables)
+     * Returns the source bands used, or null the bands indexes cannot be computed (e.g., they depend on script
+     * variables)
      */
-    private int[] getTransformationBands(String script, String[] sourceNames)
-            throws JiffleException {
+    private int[] getTransformationBands(String script, String[] sourceNames) throws JiffleException {
         // a rendering transformation only uses a single input
         String sourceName = "src";
         if (sourceNames != null && sourceNames.length > 0) {

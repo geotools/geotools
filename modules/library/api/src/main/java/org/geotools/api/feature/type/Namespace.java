@@ -14,9 +14,9 @@ import java.util.Set;
 /**
  * A set of 0 or more names, with no duplicates.
  *
- * <p>A namespace contains {@link Name} objects. Each name usually corresponds to the name of a
- * type. The namespace uri of each name ({@link Namespace#getURI()} is the same as the uri of the
- * Namespace object containing it ({@link #getURI()}.
+ * <p>A namespace contains {@link Name} objects. Each name usually corresponds to the name of a type. The namespace uri
+ * of each name ({@link Namespace#getURI()} is the same as the uri of the Namespace object containing it
+ * ({@link #getURI()}.
  *
  * <pre>
  *  //create namespace for gml
@@ -41,16 +41,15 @@ import java.util.Set;
  *   <li>getNames() - set of names
  * </ul>
  *
- * We have combined these concerns by making this a Set of Names, and we remember the URI of this
- * namespace.
+ * We have combined these concerns by making this a Set of Names, and we remember the URI of this namespace.
  *
- * <p>One allowance ISO_19103 allows for is having a Namespace located inside another namespace. You
- * may certaintly do this by constructing a facility similar to Schema in which namespaces may be
- * looked up via a Name with the same URI as the one used here.
+ * <p>One allowance ISO_19103 allows for is having a Namespace located inside another namespace. You may certaintly do
+ * this by constructing a facility similar to Schema in which namespaces may be looked up via a Name with the same URI
+ * as the one used here.
  *
- * <p>We are simply not dictating the lookup mechanism, or a backpointer to a containing namespace
- * (note the two solutions are in conflict and we would like to offer application the freedom to
- * back this interface onto a facility such as JNDI used in their own application).
+ * <p>We are simply not dictating the lookup mechanism, or a backpointer to a containing namespace (note the two
+ * solutions are in conflict and we would like to offer application the freedom to back this interface onto a facility
+ * such as JNDI used in their own application).
  *
  * @author Jody Garnett, Refractions Research, Inc.
  * @author Justin Deoliveira, The Open Planning Project
@@ -68,8 +67,8 @@ public interface Namespace extends Set<Name> {
     /**
      * Looks up a name in the namespace.
      *
-     * <p>Since all Name objects in the namespace share the same uri as the namespace itself, only
-     * the local part of the name is specified.
+     * <p>Since all Name objects in the namespace share the same uri as the namespace itself, only the local part of the
+     * name is specified.
      *
      * <p>This method returns <code>null</code> if no such name exists.
      *

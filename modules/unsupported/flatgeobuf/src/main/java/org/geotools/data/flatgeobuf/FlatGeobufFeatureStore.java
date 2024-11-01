@@ -37,14 +37,13 @@ public class FlatGeobufFeatureStore extends ContentFeatureStore {
         super(entry, query);
     }
 
-    FlatGeobufFeatureSource delegate =
-            new FlatGeobufFeatureSource(entry, query) {
-                @Override
-                public void setTransaction(Transaction transaction) {
-                    super.setTransaction(transaction);
-                    FlatGeobufFeatureStore.this.setTransaction(transaction);
-                }
-            };
+    FlatGeobufFeatureSource delegate = new FlatGeobufFeatureSource(entry, query) {
+        @Override
+        public void setTransaction(Transaction transaction) {
+            super.setTransaction(transaction);
+            FlatGeobufFeatureStore.this.setTransaction(transaction);
+        }
+    };
 
     @Override
     public void setTransaction(Transaction transaction) {
@@ -60,8 +59,7 @@ public class FlatGeobufFeatureStore extends ContentFeatureStore {
     }
 
     @Override
-    protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query)
-            throws IOException {
+    protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query) throws IOException {
         return delegate.getReaderInternal(query);
     }
 

@@ -20,8 +20,7 @@ import java.util.Collections;
 import java.util.Set;
 
 /**
- * Null implementation for the {@link ObjectCache}. Used for cases where caching is
- * <strong>not</strong> desired.
+ * Null implementation for the {@link ObjectCache}. Used for cases where caching is <strong>not</strong> desired.
  *
  * @since 2.5
  * @version $Id$

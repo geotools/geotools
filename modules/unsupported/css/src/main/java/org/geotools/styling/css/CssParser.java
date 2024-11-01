@@ -56,8 +56,8 @@ import org.parboiled.support.ParsingResult;
 import org.parboiled.support.ValueStack;
 
 /**
- * Parser for the cartographic CSS. In order to parse a CSS either get a parser using the {@link
- * #getInstance()} method, or directly call {@link #parse(String)}
+ * Parser for the cartographic CSS. In order to parse a CSS either get a parser using the {@link #getInstance()} method,
+ * or directly call {@link #parse(String)}
  *
  * @author Andrea Aime - GeoSolutions
  */
@@ -93,15 +93,12 @@ public class CssParser extends BaseParser<Object> {
         }
     }
 
-    /**
-     * Allows Parboiled to do its magic, while disallowing normal users from instantiating this
-     * class
-     */
+    /** Allows Parboiled to do its magic, while disallowing normal users from instantiating this class */
     protected CssParser() {}
 
     /**
-     * Returns the single instance of the CSS parser. The CSSParser should not be instantiated
-     * directly, Parboiled needs to do it instead.
+     * Returns the single instance of the CSS parser. The CSSParser should not be instantiated directly, Parboiled needs
+     * to do it instead.
      */
     public static CssParser getInstance() {
         // we need to lazily create it, otherwise Parboiled won't be able to instrument the class
@@ -113,8 +110,8 @@ public class CssParser extends BaseParser<Object> {
     }
 
     /**
-     * Turns the CSS provided into a {@link Stylesheet} object, will throw a {@link
-     * CSSParseException} in case of syntax errors
+     * Turns the CSS provided into a {@link Stylesheet} object, will throw a {@link CSSParseException} in case of syntax
+     * errors
      */
     public static Stylesheet parse(String css) throws CSSParseException {
         CssParser parser = getInstance();
@@ -176,16 +173,13 @@ public class CssParser extends BaseParser<Object> {
 
                         final Stream<?> stream = contents.stream();
                         Map<Boolean, List<Object>> splitContents =
-                                stream.collect(
-                                        Collectors.partitioningBy(x -> x instanceof CssRule));
-                        List<Property> properties =
-                                splitContents.get(Boolean.FALSE).stream()
-                                        .map(o -> (Property) o)
-                                        .collect(Collectors.toList());
-                        List<CssRule> subRules =
-                                splitContents.get(Boolean.TRUE).stream()
-                                        .map(o -> (CssRule) o)
-                                        .collect(Collectors.toList());
+                                stream.collect(Collectors.partitioningBy(x -> x instanceof CssRule));
+                        List<Property> properties = splitContents.get(Boolean.FALSE).stream()
+                                .map(o -> (Property) o)
+                                .collect(Collectors.toList());
+                        List<CssRule> subRules = splitContents.get(Boolean.TRUE).stream()
+                                .map(o -> (CssRule) o)
+                                .collect(Collectors.toList());
 
                         final CssRule rule = new CssRule(selector, properties, comment);
                         rule.nestedRules = subRules;
@@ -199,12 +193,8 @@ public class CssParser extends BaseParser<Object> {
     Rule RuleContents() {
         return Sequence(
                 FirstOf(CssRule(), Property()),
-                ZeroOrMore(
-                        Sequence(
-                                WhitespaceOrIgnoredComment(),
-                                ';',
-                                OptionalWhiteSpace(),
-                                FirstOf(CssRule(), Property()))),
+                ZeroOrMore(Sequence(
+                        WhitespaceOrIgnoredComment(), ';', OptionalWhiteSpace(), FirstOf(CssRule(), Property()))),
                 Optional(';'),
                 push(popAll(Property.class, CssRule.class)));
     }
@@ -263,15 +253,11 @@ public class CssParser extends BaseParser<Object> {
                 Number(),
                 push(match()),
                 ')',
-                swap()
-                        && push(
-                                PseudoClass.newPseudoClass(
-                                        (String) pop(), Integer.valueOf((String) pop()))));
+                swap() && push(PseudoClass.newPseudoClass((String) pop(), Integer.valueOf((String) pop()))));
     }
 
     Rule ClassName() {
-        return Sequence(
-                FirstOf("mark", "stroke", "fill", "symbol", "shield", "background"), push(match()));
+        return Sequence(FirstOf("mark", "stroke", "fill", "symbol", "shield", "background"), push(match()));
     }
 
     @SuppressSubnodes
@@ -321,12 +307,7 @@ public class CssParser extends BaseParser<Object> {
                 FirstOf(">=", ">"),
                 OptionalWhiteSpace(),
                 ScaleNumber(),
-                push(
-                        new ScaleRange(
-                                parseScaleValue(match()),
-                                true,
-                                Double.POSITIVE_INFINITY,
-                                true)), //
+                push(new ScaleRange(parseScaleValue(match()), true, Double.POSITIVE_INFINITY, true)), //
                 OptionalWhiteSpace(),
                 "]");
     }
@@ -368,12 +349,7 @@ public class CssParser extends BaseParser<Object> {
                 "=",
                 OptionalWhiteSpace(),
                 IntegralNumber(),
-                push(
-                        new ZoomRange(
-                                Integer.valueOf(match()),
-                                true,
-                                Integer.valueOf(match()),
-                                true)), //
+                push(new ZoomRange(Integer.valueOf(match()), true, Integer.valueOf(match()), true)), //
                 OptionalWhiteSpace(),
                 "]");
     }
@@ -439,13 +415,8 @@ public class CssParser extends BaseParser<Object> {
                 OptionalWhiteSpace(),
                 Colon(),
                 OptionalWhiteSpace(), //
-                Sequence(
-                        Value(),
-                        OptionalWhiteSpace(),
-                        ZeroOrMore(',', OptionalWhiteSpace(), Value())), //
-                push(popAll(Value.class))
-                        && swap()
-                        && push(new Property(pop(String.class), pop(List.class))));
+                Sequence(Value(), OptionalWhiteSpace(), ZeroOrMore(',', OptionalWhiteSpace(), Value())), //
+                push(popAll(Value.class)) && swap() && push(new Property(pop(String.class), pop(List.class))));
     }
 
     Rule KeyValue() {
@@ -483,15 +454,13 @@ public class CssParser extends BaseParser<Object> {
     }
 
     Rule None() {
-        return Sequence(
-                String("none"),
-                new Action() {
-                    @Override
-                    public boolean run(Context context) {
-                        push(Value.NONE);
-                        return true;
-                    }
-                });
+        return Sequence(String("none"), new Action() {
+            @Override
+            public boolean run(Context context) {
+                push(Value.NONE);
+                return true;
+            }
+        });
     }
 
     Rule VariableValue() {
@@ -499,19 +468,16 @@ public class CssParser extends BaseParser<Object> {
                 Ch('@'),
                 Identifier(),
                 push(new Value.Literal(match())),
-                Optional(
-                        Sequence(
-                                Ch('('),
-                                OneOrMore(Sequence(TestNot(AnyOf(")")), ANY)),
-                                push(new Value.Literal(match())),
-                                Ch(')'))),
+                Optional(Sequence(
+                        Ch('('),
+                        OneOrMore(Sequence(TestNot(AnyOf(")")), ANY)),
+                        push(new Value.Literal(match())),
+                        Ch(')'))),
                 new Action() {
                     @Override
                     public boolean run(Context context) {
                         List<Value> values =
-                                popAll(Value.class).stream()
-                                        .map(o -> (Value) o)
-                                        .collect(Collectors.toList());
+                                popAll(Value.class).stream().map(o -> (Value) o).collect(Collectors.toList());
                         Literal id = (Literal) values.get(0);
                         if ("sd".equals(id.body)) {
                             values.set(0, new Value.Literal("wms_scale_denominator"));
@@ -522,8 +488,7 @@ public class CssParser extends BaseParser<Object> {
                             if (Value.COLORS_TO_HEX.containsKey(body)) {
                                 values.set(1, new Value.Literal(Value.COLORS_TO_HEX.get(body)));
                             } else if (body.startsWith("'") && body.endsWith("'")) {
-                                values.set(
-                                        1, new Value.Literal(body.substring(1, body.length() - 1)));
+                                values.set(1, new Value.Literal(body.substring(1, body.length() - 1)));
                             }
                         }
                         push(new Value.Function("env", values));
@@ -538,12 +503,7 @@ public class CssParser extends BaseParser<Object> {
                 OneOrMore(
                         FirstOf(ECQLExpression(), String()),
                         Optional(
-                                FirstOf(
-                                        String("px"),
-                                        String("m"),
-                                        String("ft"),
-                                        String("%"),
-                                        String("deg")),
+                                FirstOf(String("px"), String("m"), String("ft"), String("%"), String("deg")),
                                 push(new Value.Literal(match())))),
                 new Action() {
 
@@ -566,11 +526,8 @@ public class CssParser extends BaseParser<Object> {
                             push(firstValue);
                         } else {
                             Collections.reverse(expressions);
-                            org.geotools.api.filter.expression.Function function =
-                                    Data.FF.function(
-                                            "Concatenate",
-                                            expressions.toArray(
-                                                    new Expression[expressions.size()]));
+                            org.geotools.api.filter.expression.Function function = Data.FF.function(
+                                    "Concatenate", expressions.toArray(new Expression[expressions.size()]));
                             push(new Value.Expression(function));
                         }
                         return true;
@@ -639,8 +596,7 @@ public class CssParser extends BaseParser<Object> {
 
     Rule SimpleURL() {
         return Sequence(
-                OneOrMore(FirstOf(Alphanumeric(), AnyOf("-._]:/?#[]@|$&'*+,;="))),
-                push(new Value.Literal(match())));
+                OneOrMore(FirstOf(Alphanumeric(), AnyOf("-._]:/?#[]@|$&'*+,;="))), push(new Value.Literal(match())));
     }
 
     Rule QuotedURL() {
@@ -660,31 +616,24 @@ public class CssParser extends BaseParser<Object> {
     Rule String() {
         return FirstOf(
                 Sequence(
-                        '\'',
-                        ZeroOrMore(Sequence(TestNot(AnyOf("'\\")), ANY)),
-                        push(new Value.Literal(match())),
-                        '\''),
+                        '\'', ZeroOrMore(Sequence(TestNot(AnyOf("'\\")), ANY)), push(new Value.Literal(match())), '\''),
                 Sequence(
-                        '"',
-                        ZeroOrMore(Sequence(TestNot(AnyOf("\"\\")), ANY)),
-                        push(new Value.Literal(match())),
-                        '"'));
+                        '"', ZeroOrMore(Sequence(TestNot(AnyOf("\"\\")), ANY)), push(new Value.Literal(match())), '"'));
     }
 
     Rule Measure() {
         return Sequence(
                 Sequence(
                         Number(),
-                        Optional(
-                                FirstOf(
-                                        String("k"),
-                                        String("M"),
-                                        String("G"),
-                                        String("px"),
-                                        String("m"),
-                                        String("ft"),
-                                        String("%"),
-                                        String("deg")))),
+                        Optional(FirstOf(
+                                String("k"),
+                                String("M"),
+                                String("G"),
+                                String("px"),
+                                String("m"),
+                                String("ft"),
+                                String("%"),
+                                String("deg")))),
                 new Action<Value>() {
                     @Override
                     public boolean run(Context<Value> ctx) {
@@ -709,73 +658,62 @@ public class CssParser extends BaseParser<Object> {
     }
 
     Rule ECQLExpression() {
-        return ECQL(
-                new Action<Value>() {
-                    @Override
-                    public boolean run(Context<Value> ctx) {
-                        String expression = match();
-                        expression = expandEnvironmentVariables(expression);
-                        try {
-                            org.geotools.api.filter.expression.Expression e =
-                                    ECQL.toExpression(expression);
-                            ctx.getValueStack().push(new Value.Expression(e));
-                            return true;
-                        } catch (CQLException e) {
-                            throw new ParserRuntimeException(
-                                    reportPosition(ctx) + ". " + e.getMessage(), e);
-                        }
-                    }
-                });
+        return ECQL(new Action<Value>() {
+            @Override
+            public boolean run(Context<Value> ctx) {
+                String expression = match();
+                expression = expandEnvironmentVariables(expression);
+                try {
+                    org.geotools.api.filter.expression.Expression e = ECQL.toExpression(expression);
+                    ctx.getValueStack().push(new Value.Expression(e));
+                    return true;
+                } catch (CQLException e) {
+                    throw new ParserRuntimeException(reportPosition(ctx) + ". " + e.getMessage(), e);
+                }
+            }
+        });
     }
 
     private String expandEnvironmentVariables(String expression) {
-        String variablesExpanded =
-                expandUnquoted(
-                        expression,
-                        (token, sb) -> {
-                            Matcher matcher = ENV_PATTERN.matcher(token);
+        String variablesExpanded = expandUnquoted(expression, (token, sb) -> {
+            Matcher matcher = ENV_PATTERN.matcher(token);
 
-                            if (!matcher.find()) {
-                                sb.append(token);
-                            } else {
-                                do {
-                                    String variable = matcher.group(1);
+            if (!matcher.find()) {
+                sb.append(token);
+            } else {
+                do {
+                    String variable = matcher.group(1);
 
-                                    if ("sd".equals(variable)) {
-                                        // for conformity with GeoServer WMS env vars
-                                        variable = "wms_scale_denominator";
-                                    }
+                    if ("sd".equals(variable)) {
+                        // for conformity with GeoServer WMS env vars
+                        variable = "wms_scale_denominator";
+                    }
 
-                                    String defaultValue = matcher.group(3);
-                                    if (defaultValue != null) {
-                                        matcher.appendReplacement(
-                                                sb,
-                                                "env('" + variable + "', '" + defaultValue + "')");
-                                    } else {
-                                        matcher.appendReplacement(sb, "env('" + variable + "')");
-                                    }
-                                } while (matcher.find());
-                                matcher.appendTail(sb);
-                            }
-                        });
-        String numbersExpanded =
-                expandUnquoted(
-                        variablesExpanded,
-                        (token, sb) -> {
-                            Pattern scaledNumber = Pattern.compile("(?<!\\w)\\d+(\\.\\d+)?[kMG]");
-                            Matcher matcher = scaledNumber.matcher(token);
+                    String defaultValue = matcher.group(3);
+                    if (defaultValue != null) {
+                        matcher.appendReplacement(sb, "env('" + variable + "', '" + defaultValue + "')");
+                    } else {
+                        matcher.appendReplacement(sb, "env('" + variable + "')");
+                    }
+                } while (matcher.find());
+                matcher.appendTail(sb);
+            }
+        });
+        String numbersExpanded = expandUnquoted(variablesExpanded, (token, sb) -> {
+            Pattern scaledNumber = Pattern.compile("(?<!\\w)\\d+(\\.\\d+)?[kMG]");
+            Matcher matcher = scaledNumber.matcher(token);
 
-                            if (!matcher.find()) {
-                                sb.append(token);
-                            } else {
-                                do {
-                                    String value = matcher.group(0);
-                                    String expandedScaleValue = scaleValueToString(value);
-                                    matcher.appendReplacement(sb, expandedScaleValue);
-                                } while (matcher.find());
-                                matcher.appendTail(sb);
-                            }
-                        });
+            if (!matcher.find()) {
+                sb.append(token);
+            } else {
+                do {
+                    String value = matcher.group(0);
+                    String expandedScaleValue = scaleValueToString(value);
+                    matcher.appendReplacement(sb, expandedScaleValue);
+                } while (matcher.find());
+                matcher.appendTail(sb);
+            }
+        });
 
         return numbersExpanded;
     }
@@ -805,32 +743,27 @@ public class CssParser extends BaseParser<Object> {
     }
 
     Rule ECQLSelector() {
-        return ECQL(
-                new Action<Data>() {
-                    @Override
-                    public boolean run(Context<Data> ctx) {
-                        String expression = match();
-                        expression = expandEnvironmentVariables(expression);
-                        try {
-                            Filter f = ECQL.toFilter(expression);
-                            ctx.getValueStack().push(new Data(f));
-                            return true;
-                        } catch (CQLException e) {
-                            throw new ParserRuntimeException(
-                                    reportPosition(ctx) + ". " + e.getMessage(), e);
-                        }
-                    }
-                });
+        return ECQL(new Action<Data>() {
+            @Override
+            public boolean run(Context<Data> ctx) {
+                String expression = match();
+                expression = expandEnvironmentVariables(expression);
+                try {
+                    Filter f = ECQL.toFilter(expression);
+                    ctx.getValueStack().push(new Data(f));
+                    return true;
+                } catch (CQLException e) {
+                    throw new ParserRuntimeException(reportPosition(ctx) + ". " + e.getMessage(), e);
+                }
+            }
+        });
     }
 
     Rule ECQL(Action parserChecker) {
         return Sequence(
                 '[',
-                OneOrMore(
-                        FirstOf(
-                                SingleQuotedString(),
-                                DoubleQuotedString(),
-                                Sequence(TestNot(AnyOf("\"'[]")), ANY))), //
+                OneOrMore(FirstOf(
+                        SingleQuotedString(), DoubleQuotedString(), Sequence(TestNot(AnyOf("\"'[]")), ANY))), //
                 parserChecker,
                 ']');
     }
@@ -848,13 +781,11 @@ public class CssParser extends BaseParser<Object> {
     }
 
     Rule Number() {
-        return Sequence(
-                Optional(AnyOf("-+")), OneOrMore(Digit()), Optional('.', ZeroOrMore(Digit())));
+        return Sequence(Optional(AnyOf("-+")), OneOrMore(Digit()), Optional('.', ZeroOrMore(Digit())));
     }
 
     Rule ScaleNumber() {
-        return Sequence(
-                OneOrMore(Digit()), Optional('.', ZeroOrMore(Digit())), Optional(AnyOf("kMG")));
+        return Sequence(OneOrMore(Digit()), Optional('.', ZeroOrMore(Digit())), Optional(AnyOf("kMG")));
     }
 
     Rule ScaleValue() {
@@ -870,9 +801,7 @@ public class CssParser extends BaseParser<Object> {
         return Sequence(
                 Sequence(
                         '#',
-                        FirstOf(
-                                Sequence(Hex(), Hex(), Hex(), Hex(), Hex(), Hex()),
-                                Sequence(Hex(), Hex(), Hex()))),
+                        FirstOf(Sequence(Hex(), Hex(), Hex(), Hex(), Hex(), Hex()), Sequence(Hex(), Hex(), Hex()))),
                 push(new Value.Literal(toHexColor(match()))));
     }
 
@@ -902,17 +831,15 @@ public class CssParser extends BaseParser<Object> {
             insensitiveColorNames[j] = IgnoreCase(colorNames[j]);
         }
 
-        return Sequence(
-                FirstOf(insensitiveColorNames),
-                new Action() {
+        return Sequence(FirstOf(insensitiveColorNames), new Action() {
 
-                    @Override
-                    public boolean run(Context ctx) {
-                        String hex = Value.COLORS_TO_HEX.get(match().toLowerCase());
-                        push(new Value.Literal(hex));
-                        return true;
-                    }
-                });
+            @Override
+            public boolean run(Context ctx) {
+                String hex = Value.COLORS_TO_HEX.get(match().toLowerCase());
+                push(new Value.Literal(hex));
+                return true;
+            }
+        });
     }
 
     @SuppressNode
@@ -979,9 +906,9 @@ public class CssParser extends BaseParser<Object> {
     }
 
     /**
-     * We redefine the rule creation for string literals to automatically match trailing whitespace
-     * if the string literal ends with a space character, this way we don't have to insert extra
-     * whitespace() rules after each character or string literal
+     * We redefine the rule creation for string literals to automatically match trailing whitespace if the string
+     * literal ends with a space character, this way we don't have to insert extra whitespace() rules after each
+     * character or string literal
      */
     @Override
     protected Rule fromStringLiteral(String string) {

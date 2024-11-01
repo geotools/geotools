@@ -51,16 +51,11 @@ public class ColorReductionDescriptor extends OperationDescriptorImpl {
                 new String[] {RenderedRegistryMode.MODE_NAME},
                 0, // Supported
                 // modes
-                new String[] {
-                    "numColors", "alphaThreshold", "subsampleX", "subsampleY"
-                }, // Parameter
+                new String[] {"numColors", "alphaThreshold", "subsampleX", "subsampleY"}, // Parameter
                 // names
-                new Class[] {
-                    Integer.class, Integer.class, Integer.class, Integer.class
-                }, // Parameter
+                new Class[] {Integer.class, Integer.class, Integer.class, Integer.class}, // Parameter
                 // classes
-                new Object[] {
-                    Integer.valueOf(255), Integer.valueOf(1), Integer.valueOf(1), Integer.valueOf(1)
+                new Object[] {Integer.valueOf(255), Integer.valueOf(1), Integer.valueOf(1), Integer.valueOf(1)
                 }, // Default
                 // values
                 null // Valid parameter values
@@ -68,16 +63,15 @@ public class ColorReductionDescriptor extends OperationDescriptorImpl {
     }
 
     /**
-     * Returns {@code true} if this operation supports the specified mode, and is capable of
-     * handling the given input source(s) for the specified mode.
+     * Returns {@code true} if this operation supports the specified mode, and is capable of handling the given input
+     * source(s) for the specified mode.
      *
      * @param modeName The mode name (usually "Rendered").
      * @param param The parameter block for the operation to performs.
      * @param message A buffer for formatting an error message if any.
      */
     @Override
-    protected boolean validateSources(
-            final String modeName, final ParameterBlock param, final StringBuffer message) {
+    protected boolean validateSources(final String modeName, final ParameterBlock param, final StringBuffer message) {
         if (super.validateSources(modeName, param, message)) {
             for (int i = param.getNumSources(); --i >= 0; ) {
                 final Object source = param.getSource(i);
@@ -91,8 +85,8 @@ public class ColorReductionDescriptor extends OperationDescriptorImpl {
     }
 
     /**
-     * Returns {@code true} if the parameters are valids. This implementation check that the number
-     * of bands in the source src1 is equals to the number of bands of source src2.
+     * Returns {@code true} if the parameters are valids. This implementation check that the number of bands in the
+     * source src1 is equals to the number of bands of source src2.
      *
      * @param modeName The mode name (usually "Rendered").
      * @param param The parameter block for the operation to performs.

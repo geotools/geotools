@@ -34,8 +34,7 @@ import org.junit.Test;
 
 public class SolrDataStoreFinderTest {
 
-    protected static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(SolrDataStoreFinderTest.class);
+    protected static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(SolrDataStoreFinderTest.class);
 
     private DataStore source;
 
@@ -67,8 +66,7 @@ public class SolrDataStoreFinderTest {
     }
 
     private FactoryRegistry getServiceRegistry() {
-        FactoryRegistry registry =
-                new FactoryCreator(Arrays.asList(new Class<?>[] {DataStoreFactorySpi.class}));
+        FactoryRegistry registry = new FactoryCreator(Arrays.asList(new Class<?>[] {DataStoreFactorySpi.class}));
         return registry;
     }
 

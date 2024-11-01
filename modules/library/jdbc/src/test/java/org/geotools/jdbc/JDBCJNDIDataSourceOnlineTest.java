@@ -94,39 +94,38 @@ public abstract class JDBCJNDIDataSourceOnlineTest extends JDBCTestSupport {
     }
 
     protected JDBCDataStoreFactory getBaseFactory() {
-        JDBCDataStoreFactory factory =
-                new JDBCDataStoreFactory() {
+        JDBCDataStoreFactory factory = new JDBCDataStoreFactory() {
 
-                    @Override
-                    public String getDescription() {
-                        // nothing to do here
-                        return null;
-                    }
+            @Override
+            public String getDescription() {
+                // nothing to do here
+                return null;
+            }
 
-                    @Override
-                    protected String getValidationQuery() {
-                        // nothing to do here
-                        return null;
-                    }
+            @Override
+            protected String getValidationQuery() {
+                // nothing to do here
+                return null;
+            }
 
-                    @Override
-                    protected String getDriverClassName() {
-                        // nothing to do here
-                        return null;
-                    }
+            @Override
+            protected String getDriverClassName() {
+                // nothing to do here
+                return null;
+            }
 
-                    @Override
-                    protected String getDatabaseID() {
-                        // nothing to do here
-                        return null;
-                    }
+            @Override
+            protected String getDatabaseID() {
+                // nothing to do here
+                return null;
+            }
 
-                    @Override
-                    protected SQLDialect createSQLDialect(JDBCDataStore dataStore) {
-                        // nothing to do here
-                        return null;
-                    }
-                };
+            @Override
+            protected SQLDialect createSQLDialect(JDBCDataStore dataStore) {
+                // nothing to do here
+                return null;
+            }
+        };
         return factory;
     }
 

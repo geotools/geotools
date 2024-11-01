@@ -53,8 +53,8 @@ public class GridCoverageRenderingOutOfViewTest {
 
     @Test
     public void test()
-            throws IOException, URISyntaxException, MismatchedDimensionException,
-                    NoSuchAuthorityCodeException, FactoryException {
+            throws IOException, URISyntaxException, MismatchedDimensionException, NoSuchAuthorityCodeException,
+                    FactoryException {
         StreamingRenderer renderer = new StreamingRenderer();
 
         MapContent map = new MapContent();
@@ -69,17 +69,16 @@ public class GridCoverageRenderingOutOfViewTest {
         ReferencedEnvelope refenv = new ReferencedEnvelope(env, gc.getCoordinateReferenceSystem());
 
         AtomicReference<Exception> error = new AtomicReference<>();
-        renderer.addRenderListener(
-                new RenderListener() {
+        renderer.addRenderListener(new RenderListener() {
 
-                    @Override
-                    public void featureRenderer(SimpleFeature feature) {}
+            @Override
+            public void featureRenderer(SimpleFeature feature) {}
 
-                    @Override
-                    public void errorOccurred(Exception e) {
-                        error.set(e);
-                    }
-                });
+            @Override
+            public void errorOccurred(Exception e) {
+                error.set(e);
+            }
+        });
         renderer.paint(image.createGraphics(), new Rectangle(400, 300), refenv);
         map.dispose();
 
@@ -89,41 +88,28 @@ public class GridCoverageRenderingOutOfViewTest {
     @Test
     public void testOversamplingOnLayoutHelperArithmetic() throws Exception {
 
-        URL coverageFile =
-                org.geotools.test.TestData.url(GridCoverageRendererTest.class, "arithmetic.tif");
+        URL coverageFile = org.geotools.test.TestData.url(GridCoverageRendererTest.class, "arithmetic.tif");
         GeoTiffReader reader = new GeoTiffReader(coverageFile);
         GridCoverage2D coverage = reader.read(null);
         CoordinateReferenceSystem crs = reader.getCoordinateReferenceSystem();
 
         // Setup params for a tiny bbox and oversampling
         ReferencedEnvelope mapExtent =
-                new ReferencedEnvelope(
-                        244897.2157599071,
-                        244897.2203125144,
-                        202588.4763366661,
-                        202588.4808892734,
-                        crs);
+                new ReferencedEnvelope(244897.2157599071, 244897.2203125144, 202588.4763366661, 202588.4808892734, crs);
         Rectangle screenSize = new Rectangle(0, 0, 200, 200);
-        AffineTransform w2s =
-                new AffineTransform(
-                        43930.870040629205,
-                        0.0,
-                        0.0,
-                        -43930.870040629205,
-                        -1.0758547758860409E10,
-                        8.899888225675163E9);
+        AffineTransform w2s = new AffineTransform(
+                43930.870040629205, 0.0, 0.0, -43930.870040629205, -1.0758547758860409E10, 8.899888225675163E9);
         GridCoverageRenderer renderer = new GridCoverageRenderer(crs, mapExtent, screenSize, w2s);
 
         RasterSymbolizer rasterSymbolizer = new RasterSymbolizerImpl();
 
-        RenderedImage rendered =
-                renderer.renderImage(
-                        coverage,
-                        rasterSymbolizer,
-                        Interpolation.getInstance(Interpolation.INTERP_NEAREST),
-                        Color.RED,
-                        200,
-                        200);
+        RenderedImage rendered = renderer.renderImage(
+                coverage,
+                rasterSymbolizer,
+                Interpolation.getInstance(Interpolation.INTERP_NEAREST),
+                Color.RED,
+                200,
+                200);
         // No java.lang.ArithmeticException: / by zero occurred
         assertTrue(rendered.getWidth() > 0);
         assertTrue(rendered.getHeight() > 0);
@@ -131,8 +117,7 @@ public class GridCoverageRenderingOutOfViewTest {
         coverage.dispose(true);
     }
 
-    public Layer loadGeoReferencedImageFile(GridCoverage2D gc, String title)
-            throws IOException, URISyntaxException {
+    public Layer loadGeoReferencedImageFile(GridCoverage2D gc, String title) throws IOException, URISyntaxException {
 
         StyleBuilder sb = new StyleBuilder();
         RasterSymbolizer rs = sb.createRasterSymbolizer();

@@ -54,8 +54,7 @@ public class Toolbox {
 
     static String MissingTargetDir = "Missing target directory ";
 
-    static String MissingGeneralizations =
-            "Missing generalization distances as comma seperated list ";
+    static String MissingGeneralizations = "Missing generalization distances as comma seperated list ";
 
     public static void main(String[] args) {
         Toolbox toolBox = new Toolbox();
@@ -120,31 +119,26 @@ public class Toolbox {
         prov.getGeneralizationInfos(xmlLocation);
     }
 
-    protected void generalizeShapeFile(
-            String shapeFileName, String targetDirName, String generalizations) throws IOException {
+    protected void generalizeShapeFile(String shapeFileName, String targetDirName, String generalizations)
+            throws IOException {
         File shapeFile = new File(shapeFileName);
         if (shapeFile.exists() == false) throw new IOException("Could not find " + shapeFileName);
-        DataStore shapeDS =
-                new ShapefileDataStoreFactory().createDataStore(shapeFile.toURI().toURL());
+        DataStore shapeDS = new ShapefileDataStoreFactory()
+                .createDataStore(shapeFile.toURI().toURL());
 
         File targetDir = new File(targetDirName);
         if (targetDir.exists() == false) throw new IOException("Could not find " + targetDir);
 
         String[] distanceStrings = generalizations.split(",");
         Double[] distanceArray = new Double[distanceStrings.length];
-        for (int i = 0; i < distanceStrings.length; i++)
-            distanceArray[i] = Double.valueOf(distanceStrings[i]);
+        for (int i = 0; i < distanceStrings.length; i++) distanceArray[i] = Double.valueOf(distanceStrings[i]);
 
         generalizeShapeFile(shapeFile, shapeDS, targetDir, distanceArray);
         shapeDS.dispose();
     }
 
-    @SuppressWarnings({
-        "PMD.CloseResource",
-        "PMD.UseTryWithResources"
-    }) // writers are actually closed
-    protected void generalizeShapeFile(
-            File shapeFile, DataStore shapeDS, File targetDir, Double[] distanceArray)
+    @SuppressWarnings({"PMD.CloseResource", "PMD.UseTryWithResources"}) // writers are actually closed
+    protected void generalizeShapeFile(File shapeFile, DataStore shapeDS, File targetDir, Double[] distanceArray)
             throws IOException {
         String typeName = shapeDS.getTypeNames()[0];
         SimpleFeatureSource fs = shapeDS.getFeatureSource(typeName);
@@ -167,9 +161,8 @@ public class Toolbox {
                     FeatureWriter<SimpleFeatureType, SimpleFeature> w = writers.get(i);
                     SimpleFeature genFeature = w.next();
                     genFeature.setAttributes(feature.getAttributes());
-                    Geometry newGeom =
-                            TopologyPreservingSimplifier.simplify(
-                                    (Geometry) feature.getDefaultGeometry(), distanceArray[i]);
+                    Geometry newGeom = TopologyPreservingSimplifier.simplify(
+                            (Geometry) feature.getDefaultGeometry(), distanceArray[i]);
                     genFeature.setDefaultGeometry(newGeom);
                     w.write();
                 }
@@ -191,8 +184,7 @@ public class Toolbox {
         }
     }
 
-    DataStore[] createDataStores(
-            File shapeFile, File targetDir, SimpleFeatureType ft, Double[] distanceArray)
+    DataStore[] createDataStores(File shapeFile, File targetDir, SimpleFeatureType ft, Double[] distanceArray)
             throws IOException {
 
         FileDataStoreFactorySpi factory = new ShapefileDataStoreFactory();
@@ -208,8 +200,7 @@ public class Toolbox {
         for (int i = 0; i < distanceArray.length; i++) {
 
             String newShapeFileDirName = targetDir.getAbsolutePath();
-            if (newShapeFileDirName.endsWith(File.separator) == false)
-                newShapeFileDirName += File.separator;
+            if (newShapeFileDirName.endsWith(File.separator) == false) newShapeFileDirName += File.separator;
             newShapeFileDirName += distanceArray[i] + File.separator;
 
             File dir = new File(newShapeFileDirName);

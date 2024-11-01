@@ -42,15 +42,11 @@ public class H2EmptyGeometryTestSetup extends JDBCEmptyGeometryTestSetup {
                         + ")");
 
         run("CALL AddGeometryColumn('geotools', 'empty', 'geom_point', 4326, 'POINT', 2)");
-        run(
-                "CALL AddGeometryColumn('geotools', 'empty', 'geom_linestring', 4326, 'LINESTRING', 2)");
+        run("CALL AddGeometryColumn('geotools', 'empty', 'geom_linestring', 4326, 'LINESTRING', 2)");
         run("CALL AddGeometryColumn('geotools', 'empty', 'geom_polygon', 4326, 'POLYGON', 2)");
-        run(
-                "CALL AddGeometryColumn('geotools', 'empty', 'geom_multipoint', 4326, 'MULTIPOINT', 2)");
-        run(
-                "CALL AddGeometryColumn('geotools', 'empty', 'geom_multilinestring', 4326, 'MULTILINESTRING', 2)");
-        run(
-                "CALL AddGeometryColumn('geotools', 'empty', 'geom_multipolygon', 4326, 'MULTIPOLYGON', 2)");
+        run("CALL AddGeometryColumn('geotools', 'empty', 'geom_multipoint', 4326, 'MULTIPOINT', 2)");
+        run("CALL AddGeometryColumn('geotools', 'empty', 'geom_multilinestring', 4326, 'MULTILINESTRING', 2)");
+        run("CALL AddGeometryColumn('geotools', 'empty', 'geom_multipolygon', 4326, 'MULTIPOLYGON', 2)");
     }
 
     @Override

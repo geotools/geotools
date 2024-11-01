@@ -86,8 +86,7 @@ public class FilteringFeatureReaderTest extends DataTestCase {
             assertTrue(reader.hasNext());
         }
 
-        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                DataUtilities.reader(roadFeatures)) {
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader = DataUtilities.reader(roadFeatures)) {
             assertEquals(roadFeatures.length, count(reader));
         }
 
@@ -102,8 +101,7 @@ public class FilteringFeatureReaderTest extends DataTestCase {
         }
     }
 
-    void assertContents(
-            SimpleFeature[] expected, FeatureReader<SimpleFeatureType, SimpleFeature> reader)
+    void assertContents(SimpleFeature[] expected, FeatureReader<SimpleFeatureType, SimpleFeature> reader)
             throws IOException {
         assertNotNull(reader);
         assertNotNull(expected);

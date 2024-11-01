@@ -21,8 +21,8 @@ import javax.xml.namespace.QName;
 import org.geotools.filter.v1_0.OGC;
 
 /**
- * XSD for wfs 1.0; except for WFS 1.0 capabilities document, for which {@link WFSCapabilities}
- * shall be used, as its based on a different schema.
+ * XSD for wfs 1.0; except for WFS 1.0 capabilities document, for which {@link WFSCapabilities} shall be used, as its
+ * based on a different schema.
  *
  * @author Justin Deoliveira, OpenGEO
  */
@@ -45,11 +45,9 @@ public final class WFS extends org.geotools.wfs.WFS {
             new QName("http://www.opengis.net/wfs", "WFS_LockFeatureResponse");
 
     /** @generated */
-    public static final QName InsertResultType =
-            new QName("http://www.opengis.net/wfs", "InsertResultType");
+    public static final QName InsertResultType = new QName("http://www.opengis.net/wfs", "InsertResultType");
 
-    public static final QName TransactionResultType =
-            new QName("http://www.opengis.net/wfs", "TransactionResultType");
+    public static final QName TransactionResultType = new QName("http://www.opengis.net/wfs", "TransactionResultType");
 
     /** singleton instance */
     private static final WFS instance = new WFS();

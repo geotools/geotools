@@ -35,8 +35,7 @@ public class DescribeFeatureTypeResponse extends WFSResponse {
 
     private FeatureType parsed;
 
-    public DescribeFeatureTypeResponse(
-            final DescribeFeatureTypeRequest request, final HTTPResponse httpResponse)
+    public DescribeFeatureTypeResponse(final DescribeFeatureTypeRequest request, final HTTPResponse httpResponse)
             throws ServiceException, IOException {
 
         super(request, httpResponse);
@@ -62,13 +61,8 @@ public class DescribeFeatureTypeResponse extends WFSResponse {
             }
             try {
                 URL schemaLocation = tmpSchemaFile.toURI().toURL();
-                this.parsed =
-                        EmfAppSchemaParser.parse(
-                                wfsConfiguration,
-                                remoteTypeName,
-                                schemaLocation,
-                                defaultCrs,
-                                strategy.getFieldTypeMappings());
+                this.parsed = EmfAppSchemaParser.parse(
+                        wfsConfiguration, remoteTypeName, schemaLocation, defaultCrs, strategy.getFieldTypeMappings());
             } finally {
                 tmpSchemaFile.delete();
             }

@@ -23,8 +23,8 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 /**
- * Wrapper around a {@link JSONObject} holding a tiled Mapbox source. Tiled sources (vector and
- * raster) must specify their details in terms of the TileJSON specification.
+ * Wrapper around a {@link JSONObject} holding a tiled Mapbox source. Tiled sources (vector and raster) must specify
+ * their details in terms of the TileJSON specification.
  *
  * @see MBSource
  * @see <a
@@ -41,8 +41,7 @@ public abstract class TileMBSource extends MBSource {
     }
 
     /**
-     * (Optional) A URL to a TileJSON resource. Supported protocols are http:, https:, and
-     * mapbox://&lt;mapid&gt;.
+     * (Optional) A URL to a TileJSON resource. Supported protocols are http:, https:, and mapbox://&lt;mapid&gt;.
      *
      * @return A String for the URL.
      */
@@ -65,8 +64,7 @@ public abstract class TileMBSource extends MBSource {
     }
 
     /**
-     * (Optional) Defaults to 0. Minimum zoom level for which tiles are available, as in the
-     * TileJSON spec.
+     * (Optional) Defaults to 0. Minimum zoom level for which tiles are available, as in the TileJSON spec.
      *
      * @return Number for the min zoom, defaulting to 0
      */
@@ -75,9 +73,8 @@ public abstract class TileMBSource extends MBSource {
     }
 
     /**
-     * (Optional) Defaults to 22. Maximum zoom level for which tiles are available, as in the
-     * TileJSON spec. Data from tiles at the maxzoom are used when displaying the map at higher zoom
-     * levels.
+     * (Optional) Defaults to 22. Maximum zoom level for which tiles are available, as in the TileJSON spec. Data from
+     * tiles at the maxzoom are used when displaying the map at higher zoom levels.
      *
      * @return Number for the max zoom, defaulting to 22
      */

@@ -36,14 +36,13 @@ import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.NamedIdentifier;
 
 /**
- * Equal Earth is a projection inspired by the Robinson projection, but unlike the Robinson
- * projection retains the relative size of areas.
+ * Equal Earth is a projection inspired by the Robinson projection, but unlike the Robinson projection retains the
+ * relative size of areas.
  *
  * <p>The projection was designed in 2018 by Bojan Savric, Tom Patterson and Bernhard Jenny.
  *
- * <p>Publication: Bojan Savric, Tom Patterson & Bernhard Jenny (2018). The Equal Earth map
- * projection, International Journal of Geographical Information Science, DOI:
- * 10.1080/13658816.2018.1504949
+ * <p>Publication: Bojan Savric, Tom Patterson & Bernhard Jenny (2018). The Equal Earth map projection, International
+ * Journal of Geographical Information Science, DOI: 10.1080/13658816.2018.1504949
  */
 public class EqualArea extends MapProjection {
 
@@ -66,8 +65,7 @@ public class EqualArea extends MapProjection {
     }
 
     @Override
-    protected Point2D inverseTransformNormalized(double x, double y, Point2D ptDst)
-            throws ProjectionException {
+    protected Point2D inverseTransformNormalized(double x, double y, Point2D ptDst) throws ProjectionException {
         double tol, y2, y6, f, fder;
 
         /* make sure y is inside valid range */
@@ -109,14 +107,12 @@ public class EqualArea extends MapProjection {
     }
 
     @Override
-    protected Point2D transformNormalized(double lpLambda, double lpPhi, Point2D ptDst)
-            throws ProjectionException {
+    protected Point2D transformNormalized(double lpLambda, double lpPhi, Point2D ptDst) throws ProjectionException {
         double phi = asin(M * sin(lpPhi));
         double phi2 = phi * phi;
         double phi6 = phi2 * phi2 * phi2;
 
-        double x =
-                lpLambda * cos(phi) / (M * (A1 + 3 * A2 * phi2 + phi6 * (7 * A3 + 9 * A4 * phi2)));
+        double x = lpLambda * cos(phi) / (M * (A1 + 3 * A2 * phi2 + phi6 * (7 * A3 + 9 * A4 * phi2)));
         double y = phi * (A1 + A2 * phi2 + phi6 * (A3 + A4 * phi2));
         if (ptDst != null) {
             ptDst.setLocation(x, y);
@@ -126,9 +122,8 @@ public class EqualArea extends MapProjection {
     }
 
     /**
-     * The {@linkplain org.geotools.referencing.operation.MathTransformProvider math transform
-     * provider} for an {@linkplain org.geotools.referencing.operation.projection.PlateCarree Plate
-     * Carree} projection.
+     * The {@linkplain org.geotools.referencing.operation.MathTransformProvider math transform provider} for an
+     * {@linkplain org.geotools.referencing.operation.projection.PlateCarree Plate Carree} projection.
      *
      * @since 2.2
      * @version $Id$
@@ -139,14 +134,11 @@ public class EqualArea extends MapProjection {
         private static final long serialVersionUID = -339526664946772642L;
 
         /** The parameters group. */
-        static final ParameterDescriptorGroup PARAMETERS =
-                createDescriptorGroup(
-                        new NamedIdentifier[] {
-                            new NamedIdentifier(Citations.GEOTOOLS, "Equal Earth"),
-                        },
-                        new ParameterDescriptor[] {
-                            SEMI_MAJOR, SEMI_MINOR, CENTRAL_MERIDIAN, FALSE_EASTING, FALSE_NORTHING
-                        });
+        static final ParameterDescriptorGroup PARAMETERS = createDescriptorGroup(
+                new NamedIdentifier[] {
+                    new NamedIdentifier(Citations.GEOTOOLS, "Equal Earth"),
+                },
+                new ParameterDescriptor[] {SEMI_MAJOR, SEMI_MINOR, CENTRAL_MERIDIAN, FALSE_EASTING, FALSE_NORTHING});
 
         /** Constructs a new provider. */
         public Provider() {

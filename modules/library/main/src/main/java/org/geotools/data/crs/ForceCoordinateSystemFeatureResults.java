@@ -32,8 +32,8 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 /**
  * ForceCoordinateSystemFeatureResults provides a CoordinateReferenceSystem for FeatureTypes.
  *
- * <p>ForceCoordinateSystemFeatureReader is a wrapper used to force GeometryAttributes to a user
- * supplied CoordinateReferenceSystem rather then the default supplied by the DataStore.
+ * <p>ForceCoordinateSystemFeatureReader is a wrapper used to force GeometryAttributes to a user supplied
+ * CoordinateReferenceSystem rather then the default supplied by the DataStore.
  *
  * <p>Example Use:
  *
@@ -58,8 +58,7 @@ public class ForceCoordinateSystemFeatureResults extends AbstractFeatureCollecti
     FeatureCollection<SimpleFeatureType, SimpleFeature> results;
 
     public ForceCoordinateSystemFeatureResults(
-            FeatureCollection<SimpleFeatureType, SimpleFeature> results,
-            CoordinateReferenceSystem forcedCS)
+            FeatureCollection<SimpleFeatureType, SimpleFeature> results, CoordinateReferenceSystem forcedCS)
             throws IOException, SchemaException {
         this(results, forcedCS, false);
     }
@@ -74,8 +73,7 @@ public class ForceCoordinateSystemFeatureResults extends AbstractFeatureCollecti
         this.results = results;
     }
 
-    private static SimpleFeatureType origionalType(
-            FeatureCollection<SimpleFeatureType, SimpleFeature> results) {
+    private static SimpleFeatureType origionalType(FeatureCollection<SimpleFeatureType, SimpleFeature> results) {
         while (true) {
             if (results instanceof ReprojectFeatureResults) {
                 results = ((ReprojectFeatureResults) results).getOrigin();
@@ -108,17 +106,14 @@ public class ForceCoordinateSystemFeatureResults extends AbstractFeatureCollecti
     }
 
     private static SimpleFeatureType forceType(
-            SimpleFeatureType startingType,
-            CoordinateReferenceSystem forcedCS,
-            boolean forceOnlyMissing)
+            SimpleFeatureType startingType, CoordinateReferenceSystem forcedCS, boolean forceOnlyMissing)
             throws SchemaException {
         if (forcedCS == null) {
             throw new NullPointerException("CoordinateSystem required");
         }
-        CoordinateReferenceSystem originalCs =
-                startingType.getGeometryDescriptor() != null
-                        ? startingType.getGeometryDescriptor().getCoordinateReferenceSystem()
-                        : null;
+        CoordinateReferenceSystem originalCs = startingType.getGeometryDescriptor() != null
+                ? startingType.getGeometryDescriptor().getCoordinateReferenceSystem()
+                : null;
 
         if (forcedCS.equals(originalCs)) {
             return startingType;
@@ -164,8 +159,7 @@ public class ForceCoordinateSystemFeatureResults extends AbstractFeatureCollecti
 
     @Override
     public void accepts(
-            org.geotools.api.feature.FeatureVisitor visitor,
-            org.geotools.api.util.ProgressListener progress)
+            org.geotools.api.feature.FeatureVisitor visitor, org.geotools.api.util.ProgressListener progress)
             throws IOException {
         if (canDelegate(visitor)) {
             results.accepts(visitor, progress);

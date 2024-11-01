@@ -20,19 +20,19 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 /**
- * GeoTools custom ersion of Spotbugs SuppressFBWarnings, added here to avoid dependencies on extra
- * jars and for IDE friendlyness (IntelliJ does not seem to provide completion for optional
- * dependencies, even if annotations not found at runtime apparently don't cause issues).
+ * GeoTools custom ersion of Spotbugs SuppressFBWarnings, added here to avoid dependencies on extra jars and for IDE
+ * friendlyness (IntelliJ does not seem to provide completion for optional dependencies, even if annotations not found
+ * at runtime apparently don't cause issues).
  *
- * <p>Spotbugs checks annotations by name, anything ending with "SuppressFBWarnings" or
- * "SuppressWarnings" will be checked for suppressions. We cannot use SuppressWarnings simply
- * because it is not retained in bytecode, which is what SpotBugs processes.
+ * <p>Spotbugs checks annotations by name, anything ending with "SuppressFBWarnings" or "SuppressWarnings" will be
+ * checked for suppressions. We cannot use SuppressWarnings simply because it is not retained in bytecode, which is what
+ * SpotBugs processes.
  */
 @Retention(RetentionPolicy.CLASS)
 public @interface SuppressFBWarnings {
     /**
-     * The set of FindBugs warnings that are to be suppressed in annotated element. The value can be
-     * a bug category, kind or pattern.
+     * The set of FindBugs warnings that are to be suppressed in annotated element. The value can be a bug category,
+     * kind or pattern.
      */
     String[] value() default {};
 

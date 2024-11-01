@@ -53,8 +53,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.springframework.util.Assert;
 
 /**
- * Provides Converter instances to convert to and from Dates in the different date and time formats
- * that elasticsearch understands.
+ * Provides Converter instances to convert to and from Dates in the different date and time formats that elasticsearch
+ * understands.
  *
  * @author Peter-Josef Meisch
  * @since 4.0
@@ -64,8 +64,8 @@ public final class ElasticsearchDateConverter {
     private static final ConcurrentHashMap<String, ElasticsearchDateConverter> patternConverters =
             new ConcurrentHashMap<>();
 
-    private static final ConcurrentHashMap<DateFormat, ElasticsearchDateConverter>
-            dateFormatConverters = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<DateFormat, ElasticsearchDateConverter> dateFormatConverters =
+            new ConcurrentHashMap<>();
 
     private final DateFormatter dateFormatter;
 
@@ -90,8 +90,7 @@ public final class ElasticsearchDateConverter {
 
         Assert.notNull(dateFormat, "dateFormat must not be null");
 
-        return dateFormatConverters.computeIfAbsent(
-                dateFormat, d -> new ElasticsearchDateConverter(forDateFormat(d)));
+        return dateFormatConverters.computeIfAbsent(dateFormat, d -> new ElasticsearchDateConverter(forDateFormat(d)));
     }
 
     /**
@@ -178,29 +177,25 @@ public final class ElasticsearchDateConverter {
         }
 
         if (DateFormat.date_optional_time.equals(format)) {
-            DateTimeFormatter formatter =
-                    new DateTimeFormatterBuilder()
-                            .appendPattern("uuuu-MM-dd'T'HH:mm:ss")
-                            .optionalStart()
-                            .appendFraction(ChronoField.NANO_OF_SECOND, 0, 9, true)
-                            .optionalEnd()
-                            .appendPattern("[X]")
-                            .toFormatter();
-            DateTimeFormatter fullParser =
-                    new DateTimeFormatterBuilder()
-                            .appendPattern("uuuu-MM-dd'T'HH:mm:ss")
-                            .optionalStart()
-                            .appendFraction(ChronoField.NANO_OF_SECOND, 0, 9, true)
-                            .optionalEnd()
-                            .appendPattern("[VV][X]")
-                            .toFormatter();
-            DateTimeFormatter simplifiedParser =
-                    DateTimeFormatter.ofPattern("[uuuu-M[-d['T'H[:m[:s]]]]]");
-            DateTimeFormatter parser =
-                    new DateTimeFormatterBuilder()
-                            .appendOptional(fullParser)
-                            .appendOptional(simplifiedParser)
-                            .toFormatter();
+            DateTimeFormatter formatter = new DateTimeFormatterBuilder()
+                    .appendPattern("uuuu-MM-dd'T'HH:mm:ss")
+                    .optionalStart()
+                    .appendFraction(ChronoField.NANO_OF_SECOND, 0, 9, true)
+                    .optionalEnd()
+                    .appendPattern("[X]")
+                    .toFormatter();
+            DateTimeFormatter fullParser = new DateTimeFormatterBuilder()
+                    .appendPattern("uuuu-MM-dd'T'HH:mm:ss")
+                    .optionalStart()
+                    .appendFraction(ChronoField.NANO_OF_SECOND, 0, 9, true)
+                    .optionalEnd()
+                    .appendPattern("[VV][X]")
+                    .toFormatter();
+            DateTimeFormatter simplifiedParser = DateTimeFormatter.ofPattern("[uuuu-M[-d['T'H[:m[:s]]]]]");
+            DateTimeFormatter parser = new DateTimeFormatterBuilder()
+                    .appendOptional(fullParser)
+                    .appendOptional(simplifiedParser)
+                    .toFormatter();
             return new PatternDateFormatter(formatter, parser);
         }
 
@@ -213,8 +208,8 @@ public final class ElasticsearchDateConverter {
     }
 
     /**
-     * Creates a {@link DateFormatter} for a given pattern. The pattern can be the name of a {@link
-     * DateFormat} enum value or a literal pattern.
+     * Creates a {@link DateFormatter} for a given pattern. The pattern can be the name of a {@link DateFormat} enum
+     * value or a literal pattern.
      *
      * @param pattern the pattern to use
      * @return DateFormatter
@@ -303,8 +298,7 @@ public final class ElasticsearchDateConverter {
                 Object o = method.invoke(null, temporal);
                 return type.cast(o);
             } catch (NoSuchMethodException e) {
-                throw new RuntimeException(
-                        "no 'from' factory method found in class " + type.getName());
+                throw new RuntimeException("no 'from' factory method found in class " + type.getName());
             } catch (IllegalAccessException | InvocationTargetException e) {
                 throw new RuntimeException("could not create object of class " + type.getName(), e);
             }
@@ -335,10 +329,7 @@ public final class ElasticsearchDateConverter {
         }
     }
 
-    /**
-     * a DateFormatter to convert epoch seconds. Elasticsearch's formatter uses double values, so do
-     * we
-     */
+    /** a DateFormatter to convert epoch seconds. Elasticsearch's formatter uses double values, so do we */
     static class EpochSecondDateFormatter implements DateFormatter {
 
         @Override
@@ -390,8 +381,7 @@ public final class ElasticsearchDateConverter {
             } catch (Exception e) {
                 if (accessor instanceof Instant) {
                     // as alternatives try to format a ZonedDateTime or LocalDateTime
-                    return formatter.format(
-                            ZonedDateTime.ofInstant((Instant) accessor, ZoneId.of("UTC")));
+                    return formatter.format(ZonedDateTime.ofInstant((Instant) accessor, ZoneId.of("UTC")));
                 } else {
                     throw e;
                 }
@@ -415,14 +405,12 @@ public final class ElasticsearchDateConverter {
                     if (accessor.isSupported(ChronoField.OFFSET_SECONDS)
                             && accessor.isSupported(ChronoField.YEAR)
                             && accessor.isSupported(ChronoField.MONTH_OF_YEAR)) {
-                        ZonedDateTime zonedDateTime =
-                                accessor.query(getTemporalQuery(ZonedDateTime.class));
+                        ZonedDateTime zonedDateTime = accessor.query(getTemporalQuery(ZonedDateTime.class));
                         return (T) zonedDateTime.toInstant();
                     } else if (accessor.isSupported(ChronoField.YEAR)
                             && accessor.isSupported(ChronoField.MONTH_OF_YEAR)) {
                         if (accessor.isSupported(ChronoField.HOUR_OF_DAY)) {
-                            LocalDateTime localDateTime =
-                                    accessor.query(getTemporalQuery(LocalDateTime.class));
+                            LocalDateTime localDateTime = accessor.query(getTemporalQuery(LocalDateTime.class));
                             return (T) localDateTime.toInstant(ZoneOffset.UTC);
                         } else {
                             YearMonth ym = accessor.query(getTemporalQuery(YearMonth.class));

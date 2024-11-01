@@ -30,12 +30,11 @@ import org.locationtech.jts.awt.PointShapeFactory.Point;
 import org.locationtech.jts.geom.Geometry;
 
 public class PolygonLabelFunction implements Function {
-    static FunctionName NAME =
-            new FunctionNameImpl(
-                    "labelPoint",
-                    Point.class,
-                    FunctionNameImpl.parameter("polygon", Geometry.class),
-                    FunctionNameImpl.parameter("tolerance", Double.class));
+    static FunctionName NAME = new FunctionNameImpl(
+            "labelPoint",
+            Point.class,
+            FunctionNameImpl.parameter("polygon", Geometry.class),
+            FunctionNameImpl.parameter("tolerance", Double.class));
 
     private final List<Expression> parameters;
 

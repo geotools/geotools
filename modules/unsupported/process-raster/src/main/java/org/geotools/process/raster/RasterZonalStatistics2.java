@@ -40,15 +40,14 @@ import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.Polygon;
 
 /**
- * This class wraps the "ZonalStats2" OperationJAI and executes the selected operation with the
- * defined parameters. No transformation of the optional classifier image is needed because inside
- * the process the classifier image is already transformed by the {@link GridCoverage2DRIA}
- * operation. By default the input band is set 0, and the statistics to MEAN, MAX, MIN, EXTREMA,
- * VARIANCE, STANDARD DEVIATION.
+ * This class wraps the "ZonalStats2" OperationJAI and executes the selected operation with the defined parameters. No
+ * transformation of the optional classifier image is needed because inside the process the classifier image is already
+ * transformed by the {@link GridCoverage2DRIA} operation. By default the input band is set 0, and the statistics to
+ * MEAN, MAX, MIN, EXTREMA, VARIANCE, STANDARD DEVIATION.
  *
- * <p>The main difference between this class and {@link RasterZonalStatistics} is the fact that this
- * operation will calculate the requested statistics for all the {@link SimpleFeature}s in a single
- * step, without having to iterate on the features.
+ * <p>The main difference between this class and {@link RasterZonalStatistics} is the fact that this operation will
+ * calculate the requested statistics for all the {@link SimpleFeature}s in a single step, without having to iterate on
+ * the features.
  *
  * <p>This Process is a simple wrapper of the {@link ZonalStatistics} operation
  *
@@ -56,8 +55,7 @@ import org.locationtech.jts.geom.Polygon;
  */
 @DescribeProcess(
         title = "Raster Zonal Statistics",
-        description =
-                "Computes statistics for the distribution of a certain quantity in a set of polygonal zones.")
+        description = "Computes statistics for the distribution of a certain quantity in a set of polygonal zones.")
 public class RasterZonalStatistics2 implements RasterProcess {
 
     /** Default processor used for executing the operations. */
@@ -65,12 +63,7 @@ public class RasterZonalStatistics2 implements RasterProcess {
 
     /** Default statistics to calculate. */
     private static final StatsType[] DEFAULT_STATISTICS = {
-        StatsType.MEAN,
-        StatsType.MAX,
-        StatsType.MIN,
-        StatsType.EXTREMA,
-        StatsType.VARIANCE,
-        StatsType.DEV_STD
+        StatsType.MEAN, StatsType.MAX, StatsType.MIN, StatsType.EXTREMA, StatsType.VARIANCE, StatsType.DEV_STD
     };
 
     @DescribeResult(
@@ -78,17 +71,11 @@ public class RasterZonalStatistics2 implements RasterProcess {
             description =
                     "A feature collection with the attributes of the zone layer (prefixed by 'z_') and the statistics fields min,max,sum,avg,stddev")
     public List<ZoneGeometry> execute(
-            @DescribeParameter(
-                            name = "source",
-                            description = "Input raster to compute statistics for")
+            @DescribeParameter(name = "source", description = "Input raster to compute statistics for")
                     GridCoverage2D coverage,
-            @DescribeParameter(
-                            name = "bands",
-                            description = "Source band used to compute statistics (default is 0)")
+            @DescribeParameter(name = "bands", description = "Source band used to compute statistics (default is 0)")
                     int[] bands,
-            @DescribeParameter(
-                            name = "zones",
-                            description = "Zone polygon features for which to compute statistics")
+            @DescribeParameter(name = "zones", description = "Zone polygon features for which to compute statistics")
                     List<SimpleFeature> zones,
             @DescribeParameter(
                             name = "classifier",
@@ -97,11 +84,8 @@ public class RasterZonalStatistics2 implements RasterProcess {
                                             + "by classes according to the values of the raster. Must be a single band raster with integer values.",
                             min = 0)
                     GridCoverage2D classifier,
-            @DescribeParameter(name = "nodata", description = "Input Range for NoData")
-                    Range nodata,
-            @DescribeParameter(
-                            name = "mask",
-                            description = "Optional mask for the statistic calculations")
+            @DescribeParameter(name = "nodata", description = "Input Range for NoData") Range nodata,
+            @DescribeParameter(name = "mask", description = "Optional mask for the statistic calculations")
                     Geometry mask,
             @DescribeParameter(
                             name = "useROIAccessor",
@@ -109,14 +93,11 @@ public class RasterZonalStatistics2 implements RasterProcess {
                                     "Boolean indicating if a RasterAccessor associated to the Mask should be used for calculating statistics. (Only with Mask field present)",
                             defaultValue = "false")
                     boolean useROIAccessor,
-            @DescribeParameter(
-                            name = "roi",
-                            description = "Optional roi object, if the zones parameter is not used")
+            @DescribeParameter(name = "roi", description = "Optional roi object, if the zones parameter is not used")
                     Polygon roi,
             @DescribeParameter(
                             name = "statistics",
-                            description =
-                                    "Statistics to calculate (default are min,max,sum,avg,stddev)")
+                            description = "Statistics to calculate (default are min,max,sum,avg,stddev)")
                     StatsType[] stats,
             @DescribeParameter(
                             name = "minbounds",
@@ -196,8 +177,7 @@ public class RasterZonalStatistics2 implements RasterProcess {
         GridCoverage2D output = (GridCoverage2D) PROCESSOR.doOperation(param);
         // Retrieval of the result
         @SuppressWarnings("unchecked")
-        List<ZoneGeometry> value =
-                (List<ZoneGeometry>) output.getProperty(ZonalStatsDescriptor.ZS_PROPERTY);
+        List<ZoneGeometry> value = (List<ZoneGeometry>) output.getProperty(ZonalStatsDescriptor.ZS_PROPERTY);
         return value;
     }
 }

@@ -73,13 +73,8 @@ public class SQLServerFilterToSQL extends FilterToSQL {
 
     @Override
     protected Object visitBinarySpatialOperator(
-            BinarySpatialOperator filter,
-            PropertyName property,
-            Literal geometry,
-            boolean swapped,
-            Object extraData) {
-        return visitBinarySpatialOperator(
-                filter, property, (Expression) geometry, swapped, extraData);
+            BinarySpatialOperator filter, PropertyName property, Literal geometry, boolean swapped, Object extraData) {
+        return visitBinarySpatialOperator(filter, property, (Expression) geometry, swapped, extraData);
     }
 
     @Override
@@ -89,11 +84,7 @@ public class SQLServerFilterToSQL extends FilterToSQL {
     }
 
     protected Object visitBinarySpatialOperator(
-            BinarySpatialOperator filter,
-            Expression e1,
-            Expression e2,
-            boolean swapped,
-            Object extraData) {
+            BinarySpatialOperator filter, Expression e1, Expression e2, boolean swapped, Object extraData) {
 
         try {
             // if the filter is not disjoint, and it with a BBOX filter

@@ -37,8 +37,8 @@ import org.geotools.xs.XSSchema;
 /**
  * This is a set of utility methods used when <b>implementing</b> types.
  *
- * <p>This set of classes captures the all important how does it work questions, particularly with
- * respect to super types.
+ * <p>This set of classes captures the all important how does it work questions, particularly with respect to super
+ * types.
  *
  * @author Jody Garnett (Refractions Research)
  * @author Justin Deoliveira (The Open Planning Project)
@@ -67,8 +67,8 @@ public class Types extends org.geotools.feature.type.Types {
     }
 
     /**
-     * Return true if the type is either a simple type or has a simple type as its supertype. In
-     * particular, complex types with simple content will return true.
+     * Return true if the type is either a simple type or has a simple type as its supertype. In particular, complex
+     * types with simple content will return true.
      */
     public static boolean isSimpleContentType(PropertyType type) {
         if (type == XSSchema.ANYSIMPLETYPE_TYPE) {
@@ -122,8 +122,7 @@ public class Types extends org.geotools.feature.type.Types {
             // type was derived from xs:anyType: check derivation mode and content type category
             Map<Object, Object> userData = type.getUserData();
             if (userData != null && userData.get(XSDTypeDefinition.class) != null) {
-                XSDTypeDefinition typeDef =
-                        (XSDTypeDefinition) userData.get(XSDTypeDefinition.class);
+                XSDTypeDefinition typeDef = (XSDTypeDefinition) userData.get(XSDTypeDefinition.class);
                 if (typeDef instanceof XSDComplexTypeDefinition) {
                     XSDComplexTypeDefinition complexTypeDef = (XSDComplexTypeDefinition) typeDef;
                     XSDContentTypeCategory category = complexTypeDef.getContentTypeCategory();

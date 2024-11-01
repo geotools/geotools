@@ -107,19 +107,15 @@ public class TimeSequenceTypeBinding extends AbstractComplexBinding {
             List<Node> timePeriods = node.getChildren("timePeriod");
             if (timePeriods != null && !timePeriods.isEmpty()) {
                 for (Node timePeriodNode : timePeriods) {
-                    Instant begining =
-                            new DefaultInstant(
-                                    (Position) timePeriodNode.getChild("beginPosition").getValue());
-                    Instant ending =
-                            new DefaultInstant(
-                                    (Position) timePeriodNode.getChild("endPosition").getValue());
+                    Instant begining = new DefaultInstant(
+                            (Position) timePeriodNode.getChild("beginPosition").getValue());
+                    Instant ending = new DefaultInstant(
+                            (Position) timePeriodNode.getChild("endPosition").getValue());
 
                     // Period timePeriod = new DefaultPeriod(begining, ending);
                     TimePeriodType timePeriod = Wcs10Factory.eINSTANCE.createTimePeriodType();
-                    TimePositionType beginPosition =
-                            Gml4wcsFactory.eINSTANCE.createTimePositionType();
-                    TimePositionType endPosition =
-                            Gml4wcsFactory.eINSTANCE.createTimePositionType();
+                    TimePositionType beginPosition = Gml4wcsFactory.eINSTANCE.createTimePositionType();
+                    TimePositionType endPosition = Gml4wcsFactory.eINSTANCE.createTimePositionType();
 
                     beginPosition.setValue(begining.getPosition().getDate());
                     endPosition.setValue(ending.getPosition().getDate());

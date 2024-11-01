@@ -124,8 +124,7 @@ public class SequenceHandler extends ElementGroupingHandler {
     }
 
     /**
-     * @see org.geotools.xml.XSIElementHandler#startElement(java.lang.String, java.lang.String,
-     *     org.xml.sax.Attributes)
+     * @see org.geotools.xml.XSIElementHandler#startElement(java.lang.String, java.lang.String, org.xml.sax.Attributes)
      */
     @Override
     public void startElement(String namespaceURI, String localName, Attributes atts) {
@@ -173,10 +172,7 @@ public class SequenceHandler extends ElementGroupingHandler {
         return LOCALNAME;
     }
 
-    /**
-     * @see
-     *     org.geotools.xml.XSIHandlers.ElementGroupingHandler#compress(org.geotools.xml.XSIHandlers.SchemaHandler)
-     */
+    /** @see org.geotools.xml.XSIHandlers.ElementGroupingHandler#compress(org.geotools.xml.XSIHandlers.SchemaHandler) */
     @Override
     protected ElementGrouping compress(SchemaHandler parent) throws SAXException {
 
@@ -189,11 +185,7 @@ public class SequenceHandler extends ElementGroupingHandler {
         cache.minOccurs = minOccurs;
         cache.maxOccurs = maxOccurs;
 
-        logger.finest(
-                id
-                        + " :: This Sequence has "
-                        + ((children == null) ? 0 : children.size())
-                        + " children");
+        logger.finest(id + " :: This Sequence has " + ((children == null) ? 0 : children.size()) + " children");
 
         if (children != null) {
             cache.children = new ElementGrouping[children.size()];

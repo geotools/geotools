@@ -40,8 +40,8 @@ public class MBStyleParser {
     /**
      * Parse the provided json into MBStyle.
      *
-     * <p>Please be aware that {@link MBStyle}.is a thin wrapper around the provided json and will
-     * lazily parse map box style contents as required.
+     * <p>Please be aware that {@link MBStyle}.is a thin wrapper around the provided json and will lazily parse map box
+     * style contents as required.
      *
      * @param json String
      * @return MBStyle
@@ -55,8 +55,8 @@ public class MBStyleParser {
     /**
      * Parse the provided json into MBStyle.
      *
-     * <p>Please be aware that {@link MBStyle}.is a thin wrapper around the provided json and will
-     * lazily parse map box style contents as required.
+     * <p>Please be aware that {@link MBStyle}.is a thin wrapper around the provided json and will lazily parse map box
+     * style contents as required.
      *
      * @param json Reader
      * @return MBStyle
@@ -75,8 +75,8 @@ public class MBStyleParser {
     /**
      * Parse the provided json into MBStyle.
      *
-     * <p>Please be aware that {@link MBStyle}.is a thin wrapper around the provided json and will
-     * lazily parse map box style contents as required.
+     * <p>Please be aware that {@link MBStyle}.is a thin wrapper around the provided json and will lazily parse map box
+     * style contents as required.
      *
      * @param json InputStream
      * @return MBStyle

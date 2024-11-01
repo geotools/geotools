@@ -236,8 +236,7 @@ public class RuleImpl implements Rule, Cloneable {
                 clone.filter = null;
             } else {
                 DuplicatingFilterVisitor visitor = new DuplicatingFilterVisitor();
-                clone.filter =
-                        (Filter) filter.accept(visitor, CommonFactoryFinder.getFilterFactory(null));
+                clone.filter = (Filter) filter.accept(visitor, CommonFactoryFinder.getFilterFactory(null));
             }
             clone.hasElseFilter = hasElseFilter;
             clone.legend = legend;
@@ -257,8 +256,8 @@ public class RuleImpl implements Rule, Cloneable {
     /**
      * Generates a hashcode for the Rule.
      *
-     * <p>For complex styles this can be an expensive operation since the hash code is computed
-     * using all the hashcodes of the object within the style.
+     * <p>For complex styles this can be an expensive operation since the hash code is computed using all the hashcodes
+     * of the object within the style.
      *
      * @return The hashcode.
      */
@@ -303,8 +302,7 @@ public class RuleImpl implements Rule, Cloneable {
      *
      * <p>Two RuleImpls are equal if all their properties are equal.
      *
-     * <p>For complex styles this can be an expensive operation since it checks all objects for
-     * equality.
+     * <p>For complex styles this can be an expensive operation since it checks all objects for equality.
      *
      * @param oth The other rule to compare with.
      * @return True if this and oth are equal.

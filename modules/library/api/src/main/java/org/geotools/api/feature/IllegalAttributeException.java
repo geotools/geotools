@@ -15,8 +15,7 @@ import org.geotools.api.feature.type.AttributeType;
 import org.geotools.api.feature.type.Name;
 
 /**
- * Indicates a validation check has failed; the provided descriptor and value are available via this
- * exception.
+ * Indicates a validation check has failed; the provided descriptor and value are available via this exception.
  *
  * @author Jody Garnett (Refractions Research, Inc.)
  * @since GeoAPI 2.2
@@ -24,8 +23,7 @@ import org.geotools.api.feature.type.Name;
 public class IllegalAttributeException extends IllegalArgumentException {
     private static final long serialVersionUID = 3373066465585246605L;
 
-    private static final AttributeDescriptor NULL_ATTRIBUTE_DESCRIPTOR =
-            new NullAttributeDescriptor();
+    private static final AttributeDescriptor NULL_ATTRIBUTE_DESCRIPTOR = new NullAttributeDescriptor();
 
     /** AttributeDescriptor being used to validate against. */
     private final AttributeDescriptor descriptor;
@@ -49,8 +47,7 @@ public class IllegalAttributeException extends IllegalArgumentException {
         this.value = value;
     }
 
-    public IllegalAttributeException(
-            AttributeDescriptor descriptor, Object value, String message, Throwable t) {
+    public IllegalAttributeException(AttributeDescriptor descriptor, Object value, String message, Throwable t) {
         super(message, t);
         this.descriptor = descriptor;
         this.value = value;
@@ -101,10 +98,7 @@ public class IllegalAttributeException extends IllegalArgumentException {
         return buf.toString();
     }
 
-    /**
-     * A descriptor for an attribute that does not exist. An ugly, ugly workaround for
-     * GEOT-2111/GEO-156.
-     */
+    /** A descriptor for an attribute that does not exist. An ugly, ugly workaround for GEOT-2111/GEO-156. */
     private static class NullAttributeDescriptor implements AttributeDescriptor {
 
         @Override

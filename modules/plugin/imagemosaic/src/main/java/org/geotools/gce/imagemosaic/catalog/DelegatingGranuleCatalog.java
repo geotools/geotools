@@ -43,8 +43,7 @@ class DelegatingGranuleCatalog extends GranuleCatalog {
     }
 
     @Override
-    public void addGranules(
-            String typeName, Collection<SimpleFeature> granules, Transaction transaction)
+    public void addGranules(String typeName, Collection<SimpleFeature> granules, Transaction transaction)
             throws IOException {
         adaptee.addGranules(typeName, granules, transaction);
     }
@@ -55,8 +54,7 @@ class DelegatingGranuleCatalog extends GranuleCatalog {
     }
 
     @Override
-    public void createType(String namespace, String typeName, String typeSpec)
-            throws IOException, SchemaException {
+    public void createType(String namespace, String typeName, String typeSpec) throws IOException, SchemaException {
         adaptee.createType(namespace, typeName, typeSpec);
     }
 
@@ -66,8 +64,7 @@ class DelegatingGranuleCatalog extends GranuleCatalog {
     }
 
     @Override
-    public void createType(String identification, String typeSpec)
-            throws SchemaException, IOException {
+    public void createType(String identification, String typeSpec) throws SchemaException, IOException {
         adaptee.createType(identification, typeSpec);
     }
 
@@ -137,8 +134,7 @@ class DelegatingGranuleCatalog extends GranuleCatalog {
     }
 
     @Override
-    public void addGranule(String typeName, SimpleFeature granule, Transaction transaction)
-            throws IOException {
+    public void addGranule(String typeName, SimpleFeature granule, Transaction transaction) throws IOException {
         adaptee.addGranule(typeName, granule, transaction);
     }
 

@@ -28,10 +28,9 @@ import org.geotools.data.shapefile.shp.IndexFile;
 import org.locationtech.jts.geom.Envelope;
 
 /**
- * Iterator that search the quad tree depth first. 32000 indices are cached at a time and each time
- * a node is visited the indices are removed from the node so that the memory footprint is kept
- * small. Note that if other iterators operate on the same tree then they can interfere with each
- * other.
+ * Iterator that search the quad tree depth first. 32000 indices are cached at a time and each time a node is visited
+ * the indices are removed from the node so that the memory footprint is kept small. Note that if other iterators
+ * operate on the same tree then they can interfere with each other.
  *
  * @author Jesse
  */

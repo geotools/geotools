@@ -141,8 +141,7 @@ public class CQLJsonCompiler implements ICompiler {
      * @throws IOException IO Issues
      * @throws ParseException JSON Parsing Issues
      */
-    public Filter convertToFilter(JsonNode cql2Expression)
-            throws CQLException, IOException, ParseException {
+    public Filter convertToFilter(JsonNode cql2Expression) throws CQLException, IOException, ParseException {
         Filter out = null;
         if (isCql2Expression(cql2Expression)) {
             String op = cql2Expression.get("op").textValue();

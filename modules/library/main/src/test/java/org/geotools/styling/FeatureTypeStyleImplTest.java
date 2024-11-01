@@ -44,16 +44,15 @@ public class FeatureTypeStyleImplTest {
         Assert.assertEquals("orig: one rule expected", 1, original.rules().size());
         original.featureTypeNames().add(new NameImpl("MyFeatureType1"));
         original.featureTypeNames().add(new NameImpl("MyFeatureType2"));
-        Assert.assertNotNull(
-                "orig: featureTypeNames must not be null", original.featureTypeNames());
+        Assert.assertNotNull("orig: featureTypeNames must not be null", original.featureTypeNames());
         Assert.assertEquals(
-                "orig: two featureTypeNames expected", 2, original.featureTypeNames().size());
+                "orig: two featureTypeNames expected",
+                2,
+                original.featureTypeNames().size());
         original.semanticTypeIdentifiers().add(SemanticType.POINT);
         original.semanticTypeIdentifiers().add(SemanticType.LINE);
         original.semanticTypeIdentifiers().add(SemanticType.POLYGON);
-        Assert.assertNotNull(
-                "orig: semanticTypeIdentifiers must not be null",
-                original.semanticTypeIdentifiers());
+        Assert.assertNotNull("orig: semanticTypeIdentifiers must not be null", original.semanticTypeIdentifiers());
         Assert.assertEquals(
                 "orig: three semanticTypeIdentifiers expected",
                 3,
@@ -62,17 +61,17 @@ public class FeatureTypeStyleImplTest {
         final FeatureTypeStyle clone = (FeatureTypeStyle) original.clone();
         Assert.assertNotNull("clone: rules must not be null", clone.rules());
         Assert.assertEquals("clone: one rule expected", 1, clone.rules().size());
-        Assert.assertNotSame(
-                "clone: rules collection should have been cloned", clone.rules(), original.rules());
+        Assert.assertNotSame("clone: rules collection should have been cloned", clone.rules(), original.rules());
         Assert.assertNotNull("clone: featureTypeNames must not be null", clone.featureTypeNames());
         Assert.assertEquals(
-                "clone: two featureTypeNames expected", 2, clone.featureTypeNames().size());
+                "clone: two featureTypeNames expected",
+                2,
+                clone.featureTypeNames().size());
         Assert.assertNotSame(
                 "clone: semanticTypeIdentifiers collection should have been cloned",
                 clone.featureTypeNames(),
                 original.featureTypeNames());
-        Assert.assertNotNull(
-                "clone: semanticTypeIdentifiers must not be null", clone.semanticTypeIdentifiers());
+        Assert.assertNotNull("clone: semanticTypeIdentifiers must not be null", clone.semanticTypeIdentifiers());
         Assert.assertEquals(
                 "clone: three semanticTypeIdentifiers expected",
                 3,

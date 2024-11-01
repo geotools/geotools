@@ -48,73 +48,59 @@ public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
 
     /** url to the .shp file. */
     public static final Param URLP =
-            new Param(
-                    "url",
-                    URL.class,
-                    "url to a .shp or a .shp.gz file",
-                    true,
-                    null,
-                    new KVP(Param.EXT, "shp"));
+            new Param("url", URL.class, "url to a .shp or a .shp.gz file", true, null, new KVP(Param.EXT, "shp"));
 
-    /**
-     * This system property will enable "DBF charset autodetection from CPG sidecar file" feature.
-     */
+    /** This system property will enable "DBF charset autodetection from CPG sidecar file" feature. */
     public static final String ENABLE_CPG_SWITCH = "org.geotools.shapefile.enableCPG";
 
     /** Optional - uri of the FeatureType's namespace */
-    public static final Param NAMESPACEP =
-            new Param(
-                    "namespace",
-                    URI.class,
-                    "uri to a the namespace",
-                    false,
-                    null, // not required
-                    new KVP(Param.LEVEL, "advanced"));
+    public static final Param NAMESPACEP = new Param(
+            "namespace",
+            URI.class,
+            "uri to a the namespace",
+            false,
+            null, // not required
+            new KVP(Param.LEVEL, "advanced"));
 
     /** Optional - enable/disable the use of memory-mapped io */
-    public static final Param MEMORY_MAPPED =
-            new Param(
-                    "memory mapped buffer",
-                    Boolean.class,
-                    "enable/disable the use of memory-mapped io",
-                    false,
-                    false,
-                    new KVP(Param.LEVEL, "advanced"));
+    public static final Param MEMORY_MAPPED = new Param(
+            "memory mapped buffer",
+            Boolean.class,
+            "enable/disable the use of memory-mapped io",
+            false,
+            false,
+            new KVP(Param.LEVEL, "advanced"));
 
     /** Optional - enable/disable the use of memory-mapped io */
-    public static final Param CACHE_MEMORY_MAPS =
-            new Param(
-                    "cache and reuse memory maps",
-                    Boolean.class,
-                    "only memory map a file one, then cache and reuse the map",
-                    false,
-                    true,
-                    new KVP(Param.LEVEL, "advanced"));
+    public static final Param CACHE_MEMORY_MAPS = new Param(
+            "cache and reuse memory maps",
+            Boolean.class,
+            "only memory map a file one, then cache and reuse the map",
+            false,
+            true,
+            new KVP(Param.LEVEL, "advanced"));
 
     /** Optional - discriminator for directory stores */
-    public static final Param FILE_TYPE =
-            new Param(
-                    "filetype",
-                    String.class,
-                    "Discriminator for directory stores",
-                    false,
-                    "shapefile",
-                    new KVP(Param.LEVEL, "program"));
+    public static final Param FILE_TYPE = new Param(
+            "filetype",
+            String.class,
+            "Discriminator for directory stores",
+            false,
+            "shapefile",
+            new KVP(Param.LEVEL, "program"));
 
     /** Optional - Enable/disable the automatic creation of spatial index */
-    public static final Param CREATE_SPATIAL_INDEX =
-            new Param(
-                    "create spatial index",
-                    Boolean.class,
-                    "enable/disable the automatic creation of spatial index",
-                    false,
-                    true,
-                    new KVP(Param.LEVEL, "advanced"));
+    public static final Param CREATE_SPATIAL_INDEX = new Param(
+            "create spatial index",
+            Boolean.class,
+            "enable/disable the automatic creation of spatial index",
+            false,
+            true,
+            new KVP(Param.LEVEL, "advanced"));
 
     /**
-     * Optional - character used to decode strings from the DBF file. If none is provided, the
-     * factory will instruct {@link ShapefileDataStore} to try to guess a charset from CPG file,
-     * before using a default value.
+     * Optional - character used to decode strings from the DBF file. If none is provided, the factory will instruct
+     * {@link ShapefileDataStore} to try to guess a charset from CPG file, before using a default value.
      *
      * @see ShapefileDataStore#setTryCPGFile(boolean)
      */
@@ -142,21 +128,16 @@ public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
                 }
             };
     /**
-     * Optional parameter used to indicate 'shape-ng' (as a marker to select the implementation of
-     * DataStore to use).
+     * Optional parameter used to indicate 'shape-ng' (as a marker to select the implementation of DataStore to use).
      */
-    public static final Param FSTYPE =
-            new Param(
-                    "fstype",
-                    String.class,
-                    "Enable using a setting of 'shape'.",
-                    false,
-                    "shape",
-                    new KVP(
-                            Param.LEVEL,
-                            "advanced",
-                            Param.OPTIONS,
-                            Arrays.asList(new String[] {"shape-ng", "shape", "index"})));
+    public static final Param FSTYPE = new Param(
+            "fstype",
+            String.class,
+            "Enable using a setting of 'shape'.",
+            false,
+            "shape",
+            new KVP(Param.LEVEL, "advanced", Param.OPTIONS, Arrays.asList(new String[] {"shape-ng", "shape", "index"
+            })));
     /** Optional - timezone to decode dates from the DBF file */
     public static final Param DBFTIMEZONE =
             new Param(
@@ -179,24 +160,22 @@ public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
             };
 
     /** Optional - enable spatial index for local files */
-    public static final Param ENABLE_SPATIAL_INDEX =
-            new Param(
-                    "enable spatial index",
-                    Boolean.class,
-                    "enable/disable the use of spatial index for local shapefiles",
-                    false,
-                    true,
-                    new KVP(Param.LEVEL, "advanced"));
+    public static final Param ENABLE_SPATIAL_INDEX = new Param(
+            "enable spatial index",
+            Boolean.class,
+            "enable/disable the use of spatial index for local shapefiles",
+            false,
+            true,
+            new KVP(Param.LEVEL, "advanced"));
 
     /** Optional - skip the scan for alternative shapefile extensions (i.e. .SHP, .shp.XML, ...) */
-    public static final Param SKIP_SCAN =
-            new Param(
-                    "skipScan",
-                    Boolean.class,
-                    "Skip scan for alternative shapefile extensions (i.e. .SHP, .shp.XML, ...)",
-                    false,
-                    true,
-                    new KVP(Param.LEVEL, "advanced"));
+    public static final Param SKIP_SCAN = new Param(
+            "skipScan",
+            Boolean.class,
+            "Skip scan for alternative shapefile extensions (i.e. .SHP, .shp.XML, ...)",
+            false,
+            true,
+            new KVP(Param.LEVEL, "advanced"));
 
     @Override
     public String getDisplayName() {
@@ -254,8 +233,7 @@ public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
         // are we creating a directory of shapefiles store, or a single one?
         File dir = URLs.urlToFile(url);
         if (dir != null && dir.isDirectory()) {
-            return new DirectoryDataStore(
-                    URLs.urlToFile(url), new ShpFileStoreFactory(this, params));
+            return new DirectoryDataStore(URLs.urlToFile(url), new ShpFileStoreFactory(this, params));
         } else {
             ShpFiles shpFiles = new ShpFiles(url, skipScan);
 
@@ -290,8 +268,7 @@ public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
     }
 
     /**
-     * Looks up a parameter, if not found it returns the default value, assuming there is one, or
-     * null otherwise
+     * Looks up a parameter, if not found it returns the default value, assuming there is one, or null otherwise
      *
      * @param <T>
      */
@@ -339,9 +316,7 @@ public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
                     }
                 }
 
-                return dir != null
-                        && dir.isDirectory()
-                        && (fileType == null || "shapefile".equals(fileType));
+                return dir != null && dir.isDirectory() && (fileType == null || "shapefile".equals(fileType));
             }
         } catch (IOException e) {
             return false;
@@ -372,8 +347,7 @@ public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
         static FileFilter SHP_FILE_FILTER =
                 file -> file != null && file.getName().toUpperCase().endsWith("SHP");
 
-        public ShpFileStoreFactory(
-                ShapefileDataStoreFactory factory, Map<String, ?> originalParams) {
+        public ShpFileStoreFactory(ShapefileDataStoreFactory factory, Map<String, ?> originalParams) {
             this.shpFactory = factory;
             this.originalParams = originalParams;
         }

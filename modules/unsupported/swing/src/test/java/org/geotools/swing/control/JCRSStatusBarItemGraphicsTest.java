@@ -45,8 +45,7 @@ import org.junit.runner.RunWith;
  * @version $Id$
  */
 @RunWith(GraphicsTestRunner.class)
-public class JCRSStatusBarItemGraphicsTest
-        extends GraphicsTestBase<FrameFixture, Frame, FrameDriver> {
+public class JCRSStatusBarItemGraphicsTest extends GraphicsTestBase<FrameFixture, Frame, FrameDriver> {
 
     private MapContent mapContent;
     private MapPane mapPane;
@@ -54,26 +53,22 @@ public class JCRSStatusBarItemGraphicsTest
 
     @Before
     public void setup() {
-        JFrame frame =
-                GuiActionRunner.execute(
-                        new GuiQuery<JFrame>() {
+        JFrame frame = GuiActionRunner.execute(new GuiQuery<JFrame>() {
 
-                            @Override
-                            protected JFrame executeInEDT() throws Throwable {
-                                JFrame frame = new JFrame();
-                                frame.setLayout(new BorderLayout());
-                                mapContent = new MapContent();
-                                mapContent
-                                        .getViewport()
-                                        .setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);
-                                mapPane = new MockMapPane();
-                                mapPane.setMapContent(mapContent);
-                                item = new JCRSStatusBarItem(mapPane);
-                                frame.add(item, BorderLayout.CENTER);
-                                frame.pack();
-                                return frame;
-                            }
-                        });
+            @Override
+            protected JFrame executeInEDT() throws Throwable {
+                JFrame frame = new JFrame();
+                frame.setLayout(new BorderLayout());
+                mapContent = new MapContent();
+                mapContent.getViewport().setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);
+                mapPane = new MockMapPane();
+                mapPane.setMapContent(mapContent);
+                item = new JCRSStatusBarItem(mapPane);
+                frame.add(item, BorderLayout.CENTER);
+                frame.pack();
+                return frame;
+            }
+        });
 
         windowFixture = new FrameFixture(frame);
         windowFixture.show();

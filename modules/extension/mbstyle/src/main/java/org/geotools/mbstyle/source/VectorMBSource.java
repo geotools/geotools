@@ -20,8 +20,8 @@ import org.geotools.mbstyle.parse.MBObjectParser;
 import org.json.simple.JSONObject;
 
 /**
- * Wrapper around a {@link JSONObject} holding a Mapbox vectorsource. Tiled sources (vector and
- * raster) must specify their details in terms of the TileJSON specification.
+ * Wrapper around a {@link JSONObject} holding a Mapbox vectorsource. Tiled sources (vector and raster) must specify
+ * their details in terms of the TileJSON specification.
  *
  * @see MBSource
  * @see <a

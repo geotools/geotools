@@ -35,9 +35,7 @@ import org.locationtech.jts.geom.LinearRing;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.geom.impl.PackedCoordinateSequenceFactory;
 
-/**
- * Same as {@link SQLServerSpatialFiltersOnlineTest}, but forcing the sql hints for spatial filters
- */
+/** Same as {@link SQLServerSpatialFiltersOnlineTest}, but forcing the sql hints for spatial filters */
 public class SQLServerTableHintsOnlineTest extends SQLServerSpatialFiltersOnlineTest {
 
     private String originalSchema;
@@ -68,20 +66,17 @@ public class SQLServerTableHintsOnlineTest extends SQLServerSpatialFiltersOnline
     @Test
     public void testDecorateWithIndexAndNamespace() throws IOException {
         SQLServerDialect dialect = (SQLServerDialect) dataStore.getSQLDialect();
-        StringBuffer sql1 =
-                new StringBuffer(
-                        "SELECT \"fid\",\"id\",\"geom\".STAsBinary() as \"geom\",\"name\" "
-                                + "FROM \"schema\".\"road\" "
-                                + "WHERE  \"geom\".Filter(geometry::STGeomFromText('POLYGON ((2 -1, 2 5, 4 5, 4 -1, 2 -1))', 4326)) = 1 "
-                                + "AND geometry::STGeomFromText('POLYGON ((2 -1, 2 5, 4 5, 4 -1, 2 -1))', 4326).STContains(\"geom\") = 1");
+        StringBuffer sql1 = new StringBuffer(
+                "SELECT \"fid\",\"id\",\"geom\".STAsBinary() as \"geom\",\"name\" "
+                        + "FROM \"schema\".\"road\" "
+                        + "WHERE  \"geom\".Filter(geometry::STGeomFromText('POLYGON ((2 -1, 2 5, 4 5, 4 -1, 2 -1))', 4326)) = 1 "
+                        + "AND geometry::STGeomFromText('POLYGON ((2 -1, 2 5, 4 5, 4 -1, 2 -1))', 4326).STContains(\"geom\") = 1");
 
         // the filter for the Query
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         GeometryFactory gf = new GeometryFactory();
         PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
-        LinearRing shell =
-                gf.createLinearRing(
-                        sf.create(new double[] {2, -1, 2, 5, 4, 5, 4, -1, 2, -1}, 2, 0));
+        LinearRing shell = gf.createLinearRing(sf.create(new double[] {2, -1, 2, 5, 4, 5, 4, -1, 2, -1}, 2, 0));
         Polygon polygon = gf.createPolygon(shell, null);
         Contains cs = ff.contains(ff.literal(polygon), ff.property(aname("geom")));
 
@@ -91,10 +86,7 @@ public class SQLServerTableHintsOnlineTest extends SQLServerSpatialFiltersOnline
         dialect.handleSelectHints(sql1, roadSchema, new Query("road", cs));
         StringBuffer sql = sql1;
 
-        assertTrue(
-                sql.toString()
-                        .contains(
-                                "FROM \"schema\".\"road\" WITH(INDEX(\"_road_geometry_index\"))"));
+        assertTrue(sql.toString().contains("FROM \"schema\".\"road\" WITH(INDEX(\"_road_geometry_index\"))"));
     }
 
     @Test
@@ -103,26 +95,21 @@ public class SQLServerTableHintsOnlineTest extends SQLServerSpatialFiltersOnline
         dialect.setTableHints("NOLOCK");
         StringBuffer sql = decorateSpatialQuery(dialect);
 
-        assertTrue(
-                sql.toString()
-                        .contains("FROM \"road\" WITH(INDEX(\"_road_geometry_index\"), NOLOCK)"));
+        assertTrue(sql.toString().contains("FROM \"road\" WITH(INDEX(\"_road_geometry_index\"), NOLOCK)"));
     }
 
     private StringBuffer decorateSpatialQuery(SQLServerDialect dialect) throws IOException {
-        StringBuffer sql =
-                new StringBuffer(
-                        "SELECT \"fid\",\"id\",\"geom\".STAsBinary() as \"geom\",\"name\" "
-                                + "FROM \"road\" "
-                                + "WHERE  \"geom\".Filter(geometry::STGeomFromText('POLYGON ((2 -1, 2 5, 4 5, 4 -1, 2 -1))', 4326)) = 1 "
-                                + "AND geometry::STGeomFromText('POLYGON ((2 -1, 2 5, 4 5, 4 -1, 2 -1))', 4326).STContains(\"geom\") = 1");
+        StringBuffer sql = new StringBuffer(
+                "SELECT \"fid\",\"id\",\"geom\".STAsBinary() as \"geom\",\"name\" "
+                        + "FROM \"road\" "
+                        + "WHERE  \"geom\".Filter(geometry::STGeomFromText('POLYGON ((2 -1, 2 5, 4 5, 4 -1, 2 -1))', 4326)) = 1 "
+                        + "AND geometry::STGeomFromText('POLYGON ((2 -1, 2 5, 4 5, 4 -1, 2 -1))', 4326).STContains(\"geom\") = 1");
 
         // the filter for the Query
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         GeometryFactory gf = new GeometryFactory();
         PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
-        LinearRing shell =
-                gf.createLinearRing(
-                        sf.create(new double[] {2, -1, 2, 5, 4, 5, 4, -1, 2, -1}, 2, 0));
+        LinearRing shell = gf.createLinearRing(sf.create(new double[] {2, -1, 2, 5, 4, 5, 4, -1, 2, -1}, 2, 0));
         Polygon polygon = gf.createPolygon(shell, null);
         Contains cs = ff.contains(ff.literal(polygon), ff.property(aname("geom")));
 
@@ -134,11 +121,9 @@ public class SQLServerTableHintsOnlineTest extends SQLServerSpatialFiltersOnline
     @Test
     public void testNonSpatialNoTableHints() throws IOException {
         SQLServerDialect dialect = (SQLServerDialect) dataStore.getSQLDialect();
-        StringBuffer sql =
-                new StringBuffer(
-                        "SELECT \"fid\",\"id\",\"geom\".STAsBinary() as \"geom\",\"name\" "
-                                + "FROM \"road\" "
-                                + "WHERE \"name\" = 'XXX')");
+        StringBuffer sql = new StringBuffer("SELECT \"fid\",\"id\",\"geom\".STAsBinary() as \"geom\",\"name\" "
+                + "FROM \"road\" "
+                + "WHERE \"name\" = 'XXX')");
 
         // the filter for the Query
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
@@ -154,11 +139,9 @@ public class SQLServerTableHintsOnlineTest extends SQLServerSpatialFiltersOnline
     public void testNonSpatialWithTableHints() throws IOException {
         SQLServerDialect dialect = (SQLServerDialect) dataStore.getSQLDialect();
         dialect.setTableHints("NOLOCK");
-        StringBuffer sql =
-                new StringBuffer(
-                        "SELECT \"fid\",\"id\",\"geom\".STAsBinary() as \"geom\",\"name\" "
-                                + "FROM \"road\" "
-                                + "WHERE \"name\" = 'XXX')");
+        StringBuffer sql = new StringBuffer("SELECT \"fid\",\"id\",\"geom\".STAsBinary() as \"geom\",\"name\" "
+                + "FROM \"road\" "
+                + "WHERE \"name\" = 'XXX')");
 
         // the filter for the Query
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
@@ -174,11 +157,9 @@ public class SQLServerTableHintsOnlineTest extends SQLServerSpatialFiltersOnline
     public void testNonSpatialWithTableHintsAndSchema() throws IOException {
         SQLServerDialect dialect = (SQLServerDialect) dataStore.getSQLDialect();
         dialect.setTableHints("NOLOCK");
-        StringBuffer sql =
-                new StringBuffer(
-                        "SELECT \"fid\",\"id\",\"geom\".STAsBinary() as \"geom\",\"name\" "
-                                + "FROM \"schema\".\"road\" "
-                                + "WHERE \"name\" = 'XXX')");
+        StringBuffer sql = new StringBuffer("SELECT \"fid\",\"id\",\"geom\".STAsBinary() as \"geom\",\"name\" "
+                + "FROM \"schema\".\"road\" "
+                + "WHERE \"name\" = 'XXX')");
 
         // the filter for the Query
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
@@ -197,8 +178,7 @@ public class SQLServerTableHintsOnlineTest extends SQLServerSpatialFiltersOnline
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         // should match only "r2"
         BBOX bbox = ff.bbox(aname("geom"), 2, 3, 4, 5, "EPSG:4326");
-        ReferencedEnvelope bounds =
-                dataStore.getFeatureSource(tname("road")).getBounds(new Query(null, bbox));
+        ReferencedEnvelope bounds = dataStore.getFeatureSource(tname("road")).getBounds(new Query(null, bbox));
         assertEquals(3, bounds.getMinX(), 1e-3d);
         assertEquals(3, bounds.getMaxX(), 1e-3d);
         assertEquals(0, bounds.getMinY(), 1e-3d);

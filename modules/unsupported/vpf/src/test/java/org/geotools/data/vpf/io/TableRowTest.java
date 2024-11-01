@@ -47,8 +47,8 @@ public class TableRowTest implements DataTypesDefinition {
     };
 
     /**
-     * This method is called every time before particular test execution. It creates new instance of
-     * tested class and it can perform some more actions which are necessary for performs tests.
+     * This method is called every time before particular test execution. It creates new instance of tested class and it
+     * can perform some more actions which are necessary for performs tests.
      */
     @Before
     public void setUp() {
@@ -65,31 +65,19 @@ public class TableRowTest implements DataTypesDefinition {
         Assert.assertEquals("Checking row size.", TEST_FIELDS.length, varTableRow.fieldsCount());
     } // end of testFieldsCount()
 
-    /**
-     * Method for testing original source method: org.geotools.vpf.RowField get(java.lang.String)
-     * from tested class
-     */
+    /** Method for testing original source method: org.geotools.vpf.RowField get(java.lang.String) from tested class */
     @org.junit.Test
     public void testGet1195259493() {
-        Assert.assertSame(
-                "Checking method get field by name.", TEST_FIELDS[0], varTableRow.get("first"));
-        Assert.assertSame(
-                "Checking method get field by name.", TEST_FIELDS[1], varTableRow.get("second"));
-        Assert.assertSame(
-                "Checking method get field by name.", TEST_FIELDS[2], varTableRow.get("third"));
+        Assert.assertSame("Checking method get field by name.", TEST_FIELDS[0], varTableRow.get("first"));
+        Assert.assertSame("Checking method get field by name.", TEST_FIELDS[1], varTableRow.get("second"));
+        Assert.assertSame("Checking method get field by name.", TEST_FIELDS[2], varTableRow.get("third"));
     } // end of testGet1195259493(java.lang.String)
 
-    /**
-     * Method for testing original source method: org.geotools.vpf.RowField get(int) from tested
-     * class
-     */
+    /** Method for testing original source method: org.geotools.vpf.RowField get(int) from tested class */
     @org.junit.Test
     public void testGet104431() {
-        Assert.assertSame(
-                "Checking method get field by index.", TEST_FIELDS[0], varTableRow.get(0));
-        Assert.assertSame(
-                "Checking method get field by index.", TEST_FIELDS[1], varTableRow.get(1));
-        Assert.assertSame(
-                "Checking method get field by index.", TEST_FIELDS[2], varTableRow.get(2));
+        Assert.assertSame("Checking method get field by index.", TEST_FIELDS[0], varTableRow.get(0));
+        Assert.assertSame("Checking method get field by index.", TEST_FIELDS[1], varTableRow.get(1));
+        Assert.assertSame("Checking method get field by index.", TEST_FIELDS[2], varTableRow.get(2));
     } // end of testGet104431(int)
 } // end of TableRowTest

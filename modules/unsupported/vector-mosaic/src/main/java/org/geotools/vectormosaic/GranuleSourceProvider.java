@@ -31,8 +31,8 @@ import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.util.logging.Logging;
 
 /**
- * Fed with a delegate feature collection, transforms each in a granule sources, or into a granule
- * collection with the expected filter.
+ * Fed with a delegate feature collection, transforms each in a granule sources, or into a granule collection with the
+ * expected filter.
  */
 class GranuleSourceProvider implements Closeable {
 
@@ -50,18 +50,14 @@ class GranuleSourceProvider implements Closeable {
     protected SimpleFeature delegateFeature = null;
     private Query granuleQuery;
 
-    GranuleSourceProvider(
-            VectorMosaicFeatureSource source,
-            SimpleFeatureCollection delegateCollection,
-            Query query) {
+    GranuleSourceProvider(VectorMosaicFeatureSource source, SimpleFeatureCollection delegateCollection, Query query) {
         this.source = source;
         this.query = query;
         this.delegateIterator = delegateCollection.features();
     }
 
     private Filter getGranuleFilter(VectorMosaicGranule granule) {
-        Filter filter =
-                source.getSplitFilter(query, granuleDataStore, granule.getGranuleTypeName(), false);
+        Filter filter = source.getSplitFilter(query, granuleDataStore, granule.getGranuleTypeName(), false);
         Filter configuredFilter = granule.getFilter();
         if (configuredFilter != null && configuredFilter != Filter.INCLUDE) {
             FilterFactory ff = source.getDataStore().getFilterFactory();
@@ -93,9 +89,8 @@ class GranuleSourceProvider implements Closeable {
             Filter granuleFilter = getGranuleFilter(granule);
             this.granuleQuery = new Query(granule.getGranuleTypeName(), granuleFilter);
             if (query.getPropertyNames() != Query.ALL_NAMES) {
-                String[] filteredArray =
-                        VectorMosaicFeatureSource.getOnlyTypeMatchingAttributes(
-                                granuleDataStore, granule.getGranuleTypeName(), query, false);
+                String[] filteredArray = VectorMosaicFeatureSource.getOnlyTypeMatchingAttributes(
+                        granuleDataStore, granule.getGranuleTypeName(), query, false);
                 granuleQuery.setPropertyNames(filteredArray);
             }
 

@@ -28,8 +28,8 @@ import org.geotools.util.IndexedResourceCompiler;
 @SuppressWarnings("PMD.SystemPrintln")
 public final class Compiler {
     /**
-     * The base directory for {@code "java"} {@code "resources"} sub-directories. The directory
-     * structure must be consistent with Maven conventions.
+     * The base directory for {@code "java"} {@code "resources"} sub-directories. The directory structure must be
+     * consistent with Maven conventions.
      */
     private static final File SOURCE_DIRECTORY = new File("./src/main");
 

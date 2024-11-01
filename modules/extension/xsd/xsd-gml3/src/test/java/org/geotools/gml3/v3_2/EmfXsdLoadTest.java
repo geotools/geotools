@@ -35,9 +35,8 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * Test that complex type child elements have types. This version does not use the GeoTools {@link
- * Configuration} or {@link XSD} support, relying only on EMF and its native file-based schema
- * include/import support.
+ * Test that complex type child elements have types. This version does not use the GeoTools {@link Configuration} or
+ * {@link XSD} support, relying only on EMF and its native file-based schema include/import support.
  *
  * @author Ben Caradoc-Davies, CSIRO Earth Science and Resource Engineering
  */
@@ -52,29 +51,25 @@ public class EmfXsdLoadTest {
     /** Test that gts:TM_Primitive_PropertyType child elements have types. */
     @Test
     public void test_TM_Primitive_PropertyType() {
-        checkChildElementTypes(
-                "gml.xsd", "http://www.isotc211.org/2005/gts", "TM_Primitive_PropertyType");
+        checkChildElementTypes("gml.xsd", "http://www.isotc211.org/2005/gts", "TM_Primitive_PropertyType");
     }
 
     /** Test that gts:TM_PeriodDuration_PropertyType child elements have types. */
     @Test
     public void test_TM_PeriodDuration_PropertyType() {
-        checkChildElementTypes(
-                "gml.xsd", "http://www.isotc211.org/2005/gts", "TM_PeriodDuration_PropertyType");
+        checkChildElementTypes("gml.xsd", "http://www.isotc211.org/2005/gts", "TM_PeriodDuration_PropertyType");
     }
 
     /** Test that gmd:CI_ResponsibleParty_Type child elements have types. */
     @Test
     public void test_CI_ResponsibleParty_Type() {
-        checkChildElementTypes(
-                "gml.xsd", "http://www.isotc211.org/2005/gmd", "CI_ResponsibleParty_Type");
+        checkChildElementTypes("gml.xsd", "http://www.isotc211.org/2005/gmd", "CI_ResponsibleParty_Type");
     }
 
     /** Test that gss:GM_Point_PropertyType child elements have types. */
     @Test
     public void test_GM_Point_PropertyType() {
-        checkChildElementTypes(
-                "gml.xsd", "http://www.isotc211.org/2005/gss", "GM_Point_PropertyType");
+        checkChildElementTypes("gml.xsd", "http://www.isotc211.org/2005/gss", "GM_Point_PropertyType");
     }
 
     /**
@@ -87,12 +82,8 @@ public class EmfXsdLoadTest {
     @SuppressWarnings("unchecked")
     private static void checkChildElementTypes(String filename, String namespace, String name) {
         ResourceSet resourceSet = XSDSchemaImpl.createResourceSet();
-        XSDResourceImpl resource =
-                (XSDResourceImpl)
-                        resourceSet.getResource(
-                                URI.createURI(
-                                        EmfXsdLoadTest.class.getResource(filename).toString()),
-                                true);
+        XSDResourceImpl resource = (XSDResourceImpl) resourceSet.getResource(
+                URI.createURI(EmfXsdLoadTest.class.getResource(filename).toString()), true);
         XSDSchema schema = resource.getSchema();
         Assert.assertNotNull(schema);
         SchemaIndex index = null;

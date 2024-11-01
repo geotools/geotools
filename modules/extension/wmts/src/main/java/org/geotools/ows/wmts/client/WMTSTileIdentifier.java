@@ -20,17 +20,14 @@ import org.geotools.tile.TileIdentifier;
 import org.geotools.tile.impl.ZoomLevel;
 
 /**
- * A TileIdentifier locates a tile in the grid space of a given tile server by giving its column,
- * row and zoom level.
+ * A TileIdentifier locates a tile in the grid space of a given tile server by giving its column, row and zoom level.
  *
  * @author ian
  * @author Emanuele Tajariol (etj at geo-solutions dot it)
  */
 class WMTSTileIdentifier extends TileIdentifier {
 
-    /**
-     * create an identifier based on /layername/{TileMatrixSet}/{TileMatrix}/{TileCol}/{TileRow}.png
-     */
+    /** create an identifier based on /layername/{TileMatrixSet}/{TileMatrix}/{TileCol}/{TileRow}.png */
     public WMTSTileIdentifier(int x, int y, ZoomLevel zoomLevel, String serviceName) {
         super(x, y, zoomLevel, serviceName);
     }

@@ -39,8 +39,7 @@ public class PropertyDataStoreFactory implements DataStoreFactorySpi {
     public static final Param DIRECTORY =
             new Param("directory", File.class, "Directory containting property files", true);
 
-    public static final Param NAMESPACE =
-            new Param("namespace", String.class, "namespace of datastore", false);
+    public static final Param NAMESPACE = new Param("namespace", String.class, "namespace of datastore", false);
     /**
      * Public "no argument" constructor called by Factory Service Provider (SPI) entry listed in
      * META-INF/services/org.geotools.data.DataStoreFactorySPI
@@ -88,9 +87,9 @@ public class PropertyDataStoreFactory implements DataStoreFactorySpi {
     }
 
     /**
-     * Test to see if this datastore is available, if it has all the appropriate libraries to
-     * construct a datastore. This datastore just returns true for now. This method is used for gui
-     * apps, so as to not advertise data store capabilities they don't actually have.
+     * Test to see if this datastore is available, if it has all the appropriate libraries to construct a datastore.
+     * This datastore just returns true for now. This method is used for gui apps, so as to not advertise data store
+     * capabilities they don't actually have.
      *
      * @return <tt>true</tt> if and only if this factory is available to create DataStores.
      * @task <code>true</code> property datastore is always available
@@ -124,17 +123,16 @@ public class PropertyDataStoreFactory implements DataStoreFactorySpi {
     }
 
     /**
-     * Lookups the directory containing property files in the params argument, and returns the
-     * corresponding <code>java.io.File</code>.
+     * Lookups the directory containing property files in the params argument, and returns the corresponding <code>
+     * java.io.File</code>.
      *
-     * <p>The file is first checked for existence as an absolute path in the filesystem. If such a
-     * directory is not found, then it is treated as a relative path, taking Java system property
-     * <code>"user.dir"</code> as the base.
+     * <p>The file is first checked for existence as an absolute path in the filesystem. If such a directory is not
+     * found, then it is treated as a relative path, taking Java system property <code>"user.dir"</code> as the base.
      *
      * @throws IllegalArgumentException if directory is not a directory.
      * @throws FileNotFoundException if directory does not exists
-     * @throws IOException if {@linkplain #DIRECTORY} doesn't find parameter in <code>params</code>
-     *     file does not exists.
+     * @throws IOException if {@linkplain #DIRECTORY} doesn't find parameter in <code>params</code> file does not
+     *     exists.
      */
     private File directoryLookup(Map<String, ?> params)
             throws IOException, FileNotFoundException, IllegalArgumentException {
@@ -146,16 +144,14 @@ public class PropertyDataStoreFactory implements DataStoreFactorySpi {
                 throw new FileNotFoundException(directory.getAbsolutePath());
             }
             if (!directory.isDirectory()) {
-                throw new IllegalArgumentException(
-                        directory.getAbsolutePath() + " is not a directory");
+                throw new IllegalArgumentException(directory.getAbsolutePath() + " is not a directory");
             }
         } else if (!directory.isDirectory()) {
             // check if they pointed to a properties file; and use the parent directory
             if (directory.getPath().endsWith(".properties")) {
                 return directory.getParentFile();
             } else {
-                throw new IllegalArgumentException(
-                        directory.getAbsolutePath() + " is not a directory");
+                throw new IllegalArgumentException(directory.getAbsolutePath() + " is not a directory");
             }
         }
         return directory;

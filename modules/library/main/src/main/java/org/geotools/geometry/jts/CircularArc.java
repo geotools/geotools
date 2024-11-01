@@ -31,8 +31,8 @@ import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 
 /**
- * Represents an arc by three points, and provides methods to linearize it to a given max distance
- * from the actual circle
+ * Represents an arc by three points, and provides methods to linearize it to a given max distance from the actual
+ * circle
  *
  * @author Andrea Aime - GeoSolutions
  */
@@ -44,19 +44,15 @@ public class CircularArc {
 
     public static final double COLLINEARS = Double.POSITIVE_INFINITY;
 
-    private static final String BASE_SEGMENTS_QUADRANT_KEY =
-            "org.getools.geometry.arc.baseSegmentsQuadrant";
+    private static final String BASE_SEGMENTS_QUADRANT_KEY = "org.getools.geometry.arc.baseSegmentsQuadrant";
 
     /** Minimum number of segments per quadrant */
-    static int BASE_SEGMENTS_QUADRANT =
-            Integer.valueOf(System.getProperty(BASE_SEGMENTS_QUADRANT_KEY, "12"));
+    static int BASE_SEGMENTS_QUADRANT = Integer.valueOf(System.getProperty(BASE_SEGMENTS_QUADRANT_KEY, "12"));
 
-    private static final String MAX_SEGMENTS_QUADRANT_KEY =
-            "org.getools.geometry.arc.maxSegmentsQuadrant";
+    private static final String MAX_SEGMENTS_QUADRANT_KEY = "org.getools.geometry.arc.maxSegmentsQuadrant";
 
     /** Max number of segments per quadrant the system will use to satisfy the given tolerance */
-    static int MAX_SEGMENTS_QUADRANT =
-            Integer.valueOf(System.getProperty(MAX_SEGMENTS_QUADRANT_KEY, "10000"));
+    static int MAX_SEGMENTS_QUADRANT = Integer.valueOf(System.getProperty(MAX_SEGMENTS_QUADRANT_KEY, "10000"));
 
     /** Allows to programmatically set the number of segments per quadrant (default to 8) */
     public static void setBaseSegmentsQuadrant(int baseSegmentsQuadrant) {
@@ -66,9 +62,7 @@ public class CircularArc {
         BASE_SEGMENTS_QUADRANT = baseSegmentsQuadrant;
     }
 
-    /**
-     * Allows to programmatically set the maximum number of segments per quadrant (default to 10000)
-     */
+    /** Allows to programmatically set the maximum number of segments per quadrant (default to 10000) */
     public static void setMaxSegmentsQuadrant(int baseSegmentsQuadrant) {
         if (baseSegmentsQuadrant < 0) {
             throw new IllegalArgumentException("The max segments per quadrant must be at least 1");
@@ -94,7 +88,8 @@ public class CircularArc {
                     "Invalid control point array, it must be made of 6 ordinates for a total of 3 control points, start, mid and end");
         }
         this.controlPoints = controlPoints;
-    };
+    }
+    ;
 
     public CircularArc(double sx, double sy, double mx, double my, double ex, double ey) {
         this(new double[] {sx, sy, mx, my, ex, ey});
@@ -162,8 +157,7 @@ public class CircularArc {
                     segmentsPerQuadrant *= 2;
                 }
             } else {
-                while (currentTolerance > tolerance
-                        && segmentsPerQuadrant < MAX_SEGMENTS_QUADRANT) {
+                while (currentTolerance > tolerance && segmentsPerQuadrant < MAX_SEGMENTS_QUADRANT) {
                     // going up
                     segmentsPerQuadrant *= 2;
                     currentTolerance = computeChordCircleDistance(segmentsPerQuadrant);
@@ -332,35 +326,32 @@ public class CircularArc {
                 if ((sqs1 <= sqs3) && (sqs2 <= sqs3)) {
                     // Take equations (1) and (2)
                     A = new DMatrixRMaj(2, 2, true, dx12, dy12, dx13, dy13);
-                    b =
-                            new DMatrixRMaj(
-                                    2,
-                                    1,
-                                    true,
-                                    0.5 * (dx12 * (sx + mx) + dy12 * (sy + my)),
-                                    0.5 * (dx13 * (sx + ex) + dy13 * (sy + ey)));
+                    b = new DMatrixRMaj(
+                            2,
+                            1,
+                            true,
+                            0.5 * (dx12 * (sx + mx) + dy12 * (sy + my)),
+                            0.5 * (dx13 * (sx + ex) + dy13 * (sy + ey)));
                     sqs = sqs1 + sqs2;
                 } else if ((sqs1 <= sqs2) && (sqs3 <= sqs2)) {
                     // Take equations (1) and (3)
                     A = new DMatrixRMaj(2, 2, true, dx12, dy12, dx23, dy23);
-                    b =
-                            new DMatrixRMaj(
-                                    2,
-                                    1,
-                                    true,
-                                    0.5 * (dx12 * (sx + mx) + dy12 * (sy + my)),
-                                    0.5 * (dx23 * (mx + ex) + dy23 * (my + ey)));
+                    b = new DMatrixRMaj(
+                            2,
+                            1,
+                            true,
+                            0.5 * (dx12 * (sx + mx) + dy12 * (sy + my)),
+                            0.5 * (dx23 * (mx + ex) + dy23 * (my + ey)));
                     sqs = sqs1 + sqs3;
                 } else {
                     // Take equations (2) and (3)
                     A = new DMatrixRMaj(2, 2, true, dx13, dy13, dx23, dy23);
-                    b =
-                            new DMatrixRMaj(
-                                    2,
-                                    1,
-                                    true,
-                                    0.5 * (dx13 * (sx + ex) + dy13 * (sy + ey)),
-                                    0.5 * (dx23 * (mx + ex) + dy23 * (my + ey)));
+                    b = new DMatrixRMaj(
+                            2,
+                            1,
+                            true,
+                            0.5 * (dx13 * (sx + ex) + dy13 * (sy + ey)),
+                            0.5 * (dx23 * (mx + ex) + dy23 * (my + ey)));
                     sqs = sqs2 + sqs3;
                 }
 

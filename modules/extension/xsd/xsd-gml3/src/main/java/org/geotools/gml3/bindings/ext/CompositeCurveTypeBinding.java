@@ -41,8 +41,7 @@ public class CompositeCurveTypeBinding extends LineStringTypeBinding {
 
     private ArcParameters arcParameters;
 
-    public CompositeCurveTypeBinding(
-            GeometryFactory gFactory, CoordinateSequenceFactory csFactory) {
+    public CompositeCurveTypeBinding(GeometryFactory gFactory, CoordinateSequenceFactory csFactory) {
         super(gFactory, csFactory);
         this.gFactory = gFactory;
     }
@@ -77,8 +76,7 @@ public class CompositeCurveTypeBinding extends LineStringTypeBinding {
             return gFactory.createLineString(new Coordinate[0]);
         } else {
             CoordinateSequence cs = components.get(0).getCoordinateSequence();
-            CurvedGeometryFactory factory =
-                    GML3ParsingUtils.getCurvedGeometryFactory(arcParameters, gFactory, cs);
+            CurvedGeometryFactory factory = GML3ParsingUtils.getCurvedGeometryFactory(arcParameters, gFactory, cs);
             return factory.createCurvedGeometry(components);
         }
     }

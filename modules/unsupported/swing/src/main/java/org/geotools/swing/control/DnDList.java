@@ -35,17 +35,16 @@ import java.util.List;
 import javax.swing.JList;
 
 /**
- * A sub-class of JList that supports drag and drop to reorder items within a single list and to
- * copy or move items between lists. It is used by the {@linkplain org.geotools.swing.MapLayerTable}
- * widget but has been written in a general fashion so that it may be used for other pusposes.
+ * A sub-class of JList that supports drag and drop to reorder items within a single list and to copy or move items
+ * between lists. It is used by the {@linkplain org.geotools.swing.MapLayerTable} widget but has been written in a
+ * general fashion so that it may be used for other pusposes.
  *
  * @see DnDListModel
  * @author Michael Bedward
  * @since 2.6
  * @version $Id$
  */
-public class DnDList<T> extends JList<T>
-        implements DragGestureListener, DragSourceListener, DropTargetListener {
+public class DnDList<T> extends JList<T> implements DragGestureListener, DragSourceListener, DropTargetListener {
     private static final long serialVersionUID = 3310751294076288683L;
 
     private DragSource src;
@@ -104,8 +103,8 @@ public class DnDList<T> extends JList<T>
      * DragSourceListener method - presently ignored
      *
      * <p>Description copied from interface:<br>
-     * Called as the cursor's hotspot enters a platform-dependent drop site. This method is invoked
-     * when all the following conditions are true:
+     * Called as the cursor's hotspot enters a platform-dependent drop site. This method is invoked when all the
+     * following conditions are true:
      *
      * <ul>
      *   <li>The cursor's hotspot enters the operable part of a platform- dependent drop site.
@@ -122,12 +121,12 @@ public class DnDList<T> extends JList<T>
      * DragSourceListener method - presently ignored
      *
      * <p>Description copied from interface:<br>
-     * Called as the cursor's hotspot moves over a platform-dependent drop site. This method is
-     * invoked when all the following conditions are true:
+     * Called as the cursor's hotspot moves over a platform-dependent drop site. This method is invoked when all the
+     * following conditions are true:
      *
      * <ul>
-     *   <li>The cursor's hotspot has moved, but still intersects the operable part of the drop site
-     *       associated with the previous dragEnter() invocation.
+     *   <li>The cursor's hotspot has moved, but still intersects the operable part of the drop site associated with the
+     *       previous dragEnter() invocation.
      *   <li>The drop site is still active.
      *   <li>The drop site accepts the drag.
      * </ul>
@@ -141,9 +140,9 @@ public class DnDList<T> extends JList<T>
      * DragSourceListener method - presently ignored
      *
      * <p>Description copied from interface:<br>
-     * Called when the user has modified the drop gesture. This method is invoked when the state of
-     * the input device(s) that the user is interacting with changes. Such devices are typically the
-     * mouse buttons or keyboard modifiers that the user is interacting with.
+     * Called when the user has modified the drop gesture. This method is invoked when the state of the input device(s)
+     * that the user is interacting with changes. Such devices are typically the mouse buttons or keyboard modifiers
+     * that the user is interacting with.
      */
     @Override
     public void dropActionChanged(DragSourceDragEvent dsde) {
@@ -154,15 +153,14 @@ public class DnDList<T> extends JList<T>
      * DragSourceListener method - presently ignored
      *
      * <p>Description copied from interface:<br>
-     * Called as the cursor's hotspot exits a platform-dependent drop site. This method is invoked
-     * when <b>any</b> of the following conditions are true:
+     * Called as the cursor's hotspot exits a platform-dependent drop site. This method is invoked when <b>any</b> of
+     * the following conditions are true:
      *
      * <ul>
-     *   <li>The cursor's hotspot no longer intersects the operable part of the drop site associated
-     *       with the previous dragEnter() invocation.
+     *   <li>The cursor's hotspot no longer intersects the operable part of the drop site associated with the previous
+     *       dragEnter() invocation.
      *   <li>The drop site associated with the previous dragEnter() invocation is no longer active.
-     *   <li>The drop site associated with the previous dragEnter() invocation has rejected the
-     *       drag.
+     *   <li>The drop site associated with the previous dragEnter() invocation has rejected the drag.
      * </ul>
      */
     @Override
@@ -172,11 +170,10 @@ public class DnDList<T> extends JList<T>
 
     /**
      * Description copied from interface:<br>
-     * This method is invoked to signify that the Drag and Drop operation is complete. The
-     * getDropSuccess() method of the DragSourceDropEvent can be used to determine the termination
-     * state. The getDropAction() method returns the operation that the drop site selected to apply
-     * to the Drop operation. Once this method is complete, the current DragSourceContext and
-     * associated resources become invalid.
+     * This method is invoked to signify that the Drag and Drop operation is complete. The getDropSuccess() method of
+     * the DragSourceDropEvent can be used to determine the termination state. The getDropAction() method returns the
+     * operation that the drop site selected to apply to the Drop operation. Once this method is complete, the current
+     * DragSourceContext and associated resources become invalid.
      */
     @Override
     public void dragDropEnd(DragSourceDropEvent dsde) {
@@ -188,8 +185,8 @@ public class DnDList<T> extends JList<T>
      * Records the index of the list item (if any) pointed to by the mouse cursor
      *
      * <p>Description copied from interface:<br>
-     * Called while a drag operation is ongoing, when the mouse pointer enters the operable part of
-     * the drop site for the DropTarget registered with this listener.
+     * Called while a drag operation is ongoing, when the mouse pointer enters the operable part of the drop site for
+     * the DropTarget registered with this listener.
      */
     @Override
     public void dragEnter(DropTargetDragEvent dtde) {
@@ -201,8 +198,8 @@ public class DnDList<T> extends JList<T>
      * Records the index of the list item (if any) pointed to by the mouse cursor
      *
      * <p>Description copied from interface:<br>
-     * Called when a drag operation is ongoing, while the mouse pointer is still over the operable
-     * part of the drop site for the DropTarget registered with this listener.
+     * Called when a drag operation is ongoing, while the mouse pointer is still over the operable part of the drop site
+     * for the DropTarget registered with this listener.
      */
     @Override
     public void dragOver(DropTargetDragEvent dtde) {
@@ -226,8 +223,8 @@ public class DnDList<T> extends JList<T>
 
     /**
      * Description copied from interface:<br>
-     * Called while a drag operation is ongoing, when the mouse pointer has exited the operable part
-     * of the drop site for the DropTarget registered with this listener.
+     * Called while a drag operation is ongoing, when the mouse pointer has exited the operable part of the drop site
+     * for the DropTarget registered with this listener.
      */
     @Override
     public void dragExit(DropTargetEvent dte) {
@@ -235,31 +232,29 @@ public class DnDList<T> extends JList<T>
     }
 
     /**
-     * Handles the moving (for drag and drop actions within this list) or transfer (for actions
-     * between lists) of list items. Description copied from interface:<br>
-     * Called when the drag operation has terminated with a drop on the operable part of the drop
-     * site for the DropTarget registered with this listener.
+     * Handles the moving (for drag and drop actions within this list) or transfer (for actions between lists) of list
+     * items. Description copied from interface:<br>
+     * Called when the drag operation has terminated with a drop on the operable part of the drop site for the
+     * DropTarget registered with this listener.
      *
-     * <p>This method is responsible for undertaking the transfer of the data associated with the
-     * gesture. The DropTargetDropEvent provides a means to obtain a Transferable object that
-     * represents the data object(s) to be transfered.
+     * <p>This method is responsible for undertaking the transfer of the data associated with the gesture. The
+     * DropTargetDropEvent provides a means to obtain a Transferable object that represents the data object(s) to be
+     * transfered.
      *
-     * <p>From this method, the DropTargetListener shall accept or reject the drop via the
-     * acceptDrop(int dropAction) or rejectDrop() methods of the DropTargetDropEvent parameter.
+     * <p>From this method, the DropTargetListener shall accept or reject the drop via the acceptDrop(int dropAction) or
+     * rejectDrop() methods of the DropTargetDropEvent parameter.
      *
-     * <p>Subsequent to acceptDrop(), but not before, DropTargetDropEvent's getTransferable() method
-     * may be invoked, and data transfer may be performed via the returned Transferable's
-     * getTransferData() method.
+     * <p>Subsequent to acceptDrop(), but not before, DropTargetDropEvent's getTransferable() method may be invoked, and
+     * data transfer may be performed via the returned Transferable's getTransferData() method.
      *
-     * <p>At the completion of a drop, an implementation of this method is required to signal the
-     * success/failure of the drop by passing an appropriate boolean to the DropTargetDropEvent's
-     * dropComplete(boolean success) method.
+     * <p>At the completion of a drop, an implementation of this method is required to signal the success/failure of the
+     * drop by passing an appropriate boolean to the DropTargetDropEvent's dropComplete(boolean success) method.
      *
-     * <p>Note: The data transfer should be completed before the call to the DropTargetDropEvent's
-     * dropComplete(boolean success) method. After that, a call to the getTransferData() method of
-     * the Transferable returned by DropTargetDropEvent.getTransferable() is guaranteed to succeed
-     * only if the data transfer is local; that is, only if DropTargetDropEvent.isLocalTransfer()
-     * returns true. Otherwise, the behavior of the call is implementation-dependent.
+     * <p>Note: The data transfer should be completed before the call to the DropTargetDropEvent's dropComplete(boolean
+     * success) method. After that, a call to the getTransferData() method of the Transferable returned by
+     * DropTargetDropEvent.getTransferable() is guaranteed to succeed only if the data transfer is local; that is, only
+     * if DropTargetDropEvent.isLocalTransfer() returns true. Otherwise, the behavior of the call is
+     * implementation-dependent.
      */
     @Override
     public void drop(DropTargetDropEvent dtde) {

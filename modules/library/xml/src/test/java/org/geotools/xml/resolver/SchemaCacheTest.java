@@ -47,7 +47,8 @@ public class SchemaCacheTest {
 
     public static final String MOCK_HTTP_RESPONSE_BODY = "<schemaCacheMockHttpClientResponse>";
 
-    @Rule public TemporaryFolder folder = new TemporaryFolder();
+    @Rule
+    public TemporaryFolder folder = new TemporaryFolder();
 
     /**
      * Test the {@link SchemaCache#delete(File) method.
@@ -70,12 +71,9 @@ public class SchemaCacheTest {
     public void resolve() throws Exception {
         // intentionally construct non-canonical cache directory
         File cacheDirectory =
-                new File(
-                        URLs.urlToFile(SchemaCacheTest.class.getResource("/test-data/cache")),
-                        "../cache");
+                new File(URLs.urlToFile(SchemaCacheTest.class.getResource("/test-data/cache")), "../cache");
         SchemaResolver resolver = new SchemaResolver(new SchemaCache(cacheDirectory, false));
-        String resolvedLocation =
-                resolver.resolve("http://schemas.example.org/cache-test/cache-test.xsd");
+        String resolvedLocation = resolver.resolve("http://schemas.example.org/cache-test/cache-test.xsd");
         Assert.assertTrue(resolvedLocation.startsWith("file:"));
         Assert.assertTrue(resolvedLocation.endsWith("cache-test.xsd"));
         Assert.assertTrue(URLs.urlToFile((new URI(resolvedLocation)).toURL()).exists());
@@ -92,8 +90,8 @@ public class SchemaCacheTest {
     }
 
     /**
-     * Tests if current data directory have workspace and styles directories and workspace directory
-     * has default.xml file inside.
+     * Tests if current data directory have workspace and styles directories and workspace directory has default.xml
+     * file inside.
      */
     @Test
     public void testIsSuitableDirectoryToContainCache() throws Exception {
@@ -114,21 +112,13 @@ public class SchemaCacheTest {
         Hints.removeSystemDefault(Hints.HTTP_CLIENT_FACTORY);
     }
 
-    /**
-     * Test that a circular redirect is not followed indefinitely when using the multithreaded HTTP
-     * client
-     */
+    /** Test that a circular redirect is not followed indefinitely when using the multithreaded HTTP client */
     @Test
     public void circularRedirectMultithreadedHttpClient() {
         Hints.putSystemDefault(Hints.HTTP_CLIENT_FACTORY, MultithreadedHttpClientFactory.class);
         String redirectUrl = "http://localhost:" + wireMockRule.port() + "/test";
-        wireMockRule.addStubMapping(
-                stubFor(
-                        get(urlEqualTo("/test"))
-                                .willReturn(
-                                        aResponse()
-                                                .withStatus(301)
-                                                .withHeader("Location", redirectUrl))));
+        wireMockRule.addStubMapping(stubFor(
+                get(urlEqualTo("/test")).willReturn(aResponse().withStatus(301).withHeader("Location", redirectUrl))));
         byte[] responseBody = SchemaCache.download(redirectUrl);
         Assert.assertNull(responseBody);
         Hints.removeSystemDefault(Hints.HTTP_CLIENT_FACTORY);

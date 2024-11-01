@@ -34,14 +34,13 @@ import org.geotools.util.factory.FactoryRegistryException;
 import org.geotools.util.factory.Hints;
 
 /**
- * Defines static methods used to access the application's default implementation for some common
- * factories. Those "common" factories comprise the {@linkplain StyleFactory style} and {@linkplain
- * FilterFactory filter} factories. Note that some specialized factories finder like {@linkplain
- * org.geotools.referencing.ReferencingFactoryFinder referencing} are defined in specialized
- * classes.
+ * Defines static methods used to access the application's default implementation for some common factories. Those
+ * "common" factories comprise the {@linkplain StyleFactory style} and {@linkplain FilterFactory filter} factories. Note
+ * that some specialized factories finder like {@linkplain org.geotools.referencing.ReferencingFactoryFinder
+ * referencing} are defined in specialized classes.
  *
- * <p><b>Tip:</b> The {@link BasicFactories} classes provides an other way to access the various
- * factories from a central point.
+ * <p><b>Tip:</b> The {@link BasicFactories} classes provides an other way to access the various factories from a
+ * central point.
  *
  * @since 2.4
  * @version $Id$
@@ -57,37 +56,31 @@ public final class CommonFactoryFinder extends FactoryFinder {
         // singleton
     }
 
-    /**
-     * Returns the service registry. The registry will be created the first time this method is
-     * invoked.
-     */
+    /** Returns the service registry. The registry will be created the first time this method is invoked. */
     private static FactoryRegistry getServiceRegistry() {
         assert Thread.holdsLock(CommonFactoryFinder.class);
         if (registry == null) {
-            registry =
-                    new FactoryCreator(
-                            Arrays.asList(
-                                    new Class<?>[] {
-                                        StyleFactory.class,
-                                        FilterFactory.class,
-                                        FileDataStoreFactorySpi.class,
-                                        Function.class,
-                                        FunctionFactory.class,
-                                        FeatureFactory.class,
-                                        FeatureTypeFactory.class
-                                    }));
+            registry = new FactoryCreator(Arrays.asList(new Class<?>[] {
+                StyleFactory.class,
+                FilterFactory.class,
+                FileDataStoreFactorySpi.class,
+                Function.class,
+                FunctionFactory.class,
+                FeatureFactory.class,
+                FeatureTypeFactory.class
+            }));
         }
         return registry;
     }
 
     /**
-     * Returns the first implementation of {@link StyleFactory} matching the specified hints. If no
-     * implementation matches, a new one is created if possible or an exception is thrown otherwise.
+     * Returns the first implementation of {@link StyleFactory} matching the specified hints. If no implementation
+     * matches, a new one is created if possible or an exception is thrown otherwise.
      *
      * @param hints An optional map of hints, or {@code null} if none.
      * @return The first style factory that matches the supplied hints.
-     * @throws FactoryRegistryException if no implementation was found or can be created for the
-     *     {@link StyleFactory} interface.
+     * @throws FactoryRegistryException if no implementation was found or can be created for the {@link StyleFactory}
+     *     interface.
      * @see Hints#STYLE_FACTORY
      */
     public static StyleFactory getStyleFactory(Hints hints) throws FactoryRegistryException {
@@ -95,12 +88,12 @@ public final class CommonFactoryFinder extends FactoryFinder {
         return lookup(StyleFactory.class, hints, Hints.STYLE_FACTORY);
     }
     /**
-     * Returns the first implementation of {@link StyleFactory}. If no implementation matches, a new
-     * one is created if possible or an exception is thrown otherwise.
+     * Returns the first implementation of {@link StyleFactory}. If no implementation matches, a new one is created if
+     * possible or an exception is thrown otherwise.
      *
      * @return The first style factory available
-     * @throws FactoryRegistryException if no implementation was found or can be created for the
-     *     {@link StyleFactory} interface.
+     * @throws FactoryRegistryException if no implementation was found or can be created for the {@link StyleFactory}
+     *     interface.
      * @see Hints#STYLE_FACTORY
      */
     public static StyleFactory getStyleFactory() throws FactoryRegistryException {
@@ -141,21 +134,18 @@ public final class CommonFactoryFinder extends FactoryFinder {
     }
 
     /**
-     * Returns a set of all available implementations for the {@link FileDataStoreFactorySpi}
-     * interface.
+     * Returns a set of all available implementations for the {@link FileDataStoreFactorySpi} interface.
      *
      * @param hints An optional map of hints, or {@code null} if none.
      * @return Set of available file data store factory implementations.
      */
     public static synchronized Set<FileDataStoreFactorySpi> getFileDataStoreFactories(Hints hints) {
         hints = mergeSystemHints(hints);
-        return new LazySet<>(
-                getServiceRegistry().getFactories(FileDataStoreFactorySpi.class, null, hints));
+        return new LazySet<>(getServiceRegistry().getFactories(FileDataStoreFactorySpi.class, null, hints));
     }
 
     /**
-     * Return an implementation of {@link FeatureFactory} matching the specified hint
-     * FEATURE_FACTORY.
+     * Return an implementation of {@link FeatureFactory} matching the specified hint FEATURE_FACTORY.
      *
      * <p>If no hint is specified, {@link LenientFeatureFactoryImpl} will be used.
      *
@@ -190,13 +180,13 @@ public final class CommonFactoryFinder extends FactoryFinder {
     }
 
     /**
-     * Returns the first implementation of {@link FilterFactory} matching the specified hints. If no
-     * implementation matches, a new one is created if possible or an exception is thrown otherwise.
+     * Returns the first implementation of {@link FilterFactory} matching the specified hints. If no implementation
+     * matches, a new one is created if possible or an exception is thrown otherwise.
      *
      * @param hints An optional map of hints, or {@code null} if none.
      * @return The first filter factory that matches the supplied hints.
-     * @throws FactoryRegistryException if no implementation was found or can be created for the
-     *     {@link FilterFactory} interface.
+     * @throws FactoryRegistryException if no implementation was found or can be created for the {@link FilterFactory}
+     *     interface.
      * @see Hints#FILTER_FACTORY
      */
     public static FilterFactory getFilterFactory(Hints hints) throws FactoryRegistryException {
@@ -205,12 +195,12 @@ public final class CommonFactoryFinder extends FactoryFinder {
     }
 
     /**
-     * Returns the first implementation of {@link FilterFactory}. If no implementation matches, a
-     * new one is created if possible or an exception is thrown otherwise.
+     * Returns the first implementation of {@link FilterFactory}. If no implementation matches, a new one is created if
+     * possible or an exception is thrown otherwise.
      *
      * @return The first filter factory implementation
-     * @throws FactoryRegistryException if no implementation was found or can be created for the
-     *     {@link FilterFactory} interface.
+     * @throws FactoryRegistryException if no implementation was found or can be created for the {@link FilterFactory}
+     *     interface.
      * @see Hints#FILTER_FACTORY
      */
     public static FilterFactory getFilterFactory() throws FactoryRegistryException {
@@ -221,8 +211,7 @@ public final class CommonFactoryFinder extends FactoryFinder {
      * Looks up a certain factory using two methods:
      *
      * <ul>
-     *   <li>First and un-synchronized lookup in the hints, should the user have provided the
-     *       preferred factroy
+     *   <li>First and un-synchronized lookup in the hints, should the user have provided the preferred factroy
      *   <li>A standard SPI registry scan, which has to be fully synchronized
      */
     private static <T> T lookup(Class<T> category, Hints hints, Hints.Key key) {
@@ -257,11 +246,10 @@ public final class CommonFactoryFinder extends FactoryFinder {
     }
 
     /**
-     * Scans for factory plug-ins on the application class path. This method is needed because the
-     * application class path can theoretically change, or additional plug-ins may become available.
-     * Rather than re-scanning the classpath on every invocation of the API, the class path is
-     * scanned automatically only on the first invocation. Clients can call this method to prompt a
-     * re-scan. Thus this method need only be invoked by sophisticated applications which
+     * Scans for factory plug-ins on the application class path. This method is needed because the application class
+     * path can theoretically change, or additional plug-ins may become available. Rather than re-scanning the classpath
+     * on every invocation of the API, the class path is scanned automatically only on the first invocation. Clients can
+     * call this method to prompt a re-scan. Thus this method need only be invoked by sophisticated applications which
      * dynamically make new plug-ins available at runtime.
      */
     public static synchronized void scanForPlugins() {

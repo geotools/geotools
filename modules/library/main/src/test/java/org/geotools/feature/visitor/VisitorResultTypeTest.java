@@ -52,51 +52,30 @@ public class VisitorResultTypeTest extends DataTestCase {
 
     @Test
     public void testGroupByAverageInteger() {
-        GroupByVisitor visitor =
-                new GroupByVisitor(
-                        Aggregate.AVERAGE,
-                        ff.property("id"),
-                        Arrays.asList(ff.property("id")),
-                        new NullProgressListener());
-        assertEquals(
-                Arrays.asList(Double.class), getResultTypes(visitor, Integer.class, Integer.class));
+        GroupByVisitor visitor = new GroupByVisitor(
+                Aggregate.AVERAGE, ff.property("id"), Arrays.asList(ff.property("id")), new NullProgressListener());
+        assertEquals(Arrays.asList(Double.class), getResultTypes(visitor, Integer.class, Integer.class));
     }
 
     @Test
     public void testGroupByAverageDouble() {
-        GroupByVisitor visitor =
-                new GroupByVisitor(
-                        Aggregate.AVERAGE,
-                        ff.property("id"),
-                        Arrays.asList(ff.property("flow")),
-                        new NullProgressListener());
-        assertEquals(
-                Arrays.asList(Double.class), getResultTypes(visitor, Integer.class, Double.class));
+        GroupByVisitor visitor = new GroupByVisitor(
+                Aggregate.AVERAGE, ff.property("id"), Arrays.asList(ff.property("flow")), new NullProgressListener());
+        assertEquals(Arrays.asList(Double.class), getResultTypes(visitor, Integer.class, Double.class));
     }
 
     @Test
     public void testGroupByMaxInteger() {
-        GroupByVisitor visitor =
-                new GroupByVisitor(
-                        Aggregate.MAX,
-                        ff.property("id"),
-                        Arrays.asList(ff.property("id")),
-                        new NullProgressListener());
-        assertEquals(
-                Arrays.asList(Integer.class),
-                getResultTypes(visitor, Integer.class, Integer.class));
+        GroupByVisitor visitor = new GroupByVisitor(
+                Aggregate.MAX, ff.property("id"), Arrays.asList(ff.property("id")), new NullProgressListener());
+        assertEquals(Arrays.asList(Integer.class), getResultTypes(visitor, Integer.class, Integer.class));
     }
 
     @Test
     public void testGroupByMaxDouble() {
-        GroupByVisitor visitor =
-                new GroupByVisitor(
-                        Aggregate.MAX,
-                        ff.property("id"),
-                        Arrays.asList(ff.property("flow")),
-                        new NullProgressListener());
-        assertEquals(
-                Arrays.asList(Double.class), getResultTypes(visitor, Integer.class, Double.class));
+        GroupByVisitor visitor = new GroupByVisitor(
+                Aggregate.MAX, ff.property("id"), Arrays.asList(ff.property("flow")), new NullProgressListener());
+        assertEquals(Arrays.asList(Double.class), getResultTypes(visitor, Integer.class, Double.class));
     }
 
     private List<Class> getResultTypes(FeatureAttributeVisitor visitor, Class... inputTypes) {

@@ -81,14 +81,16 @@ public class GeobufFeatureType {
         // Number of digits after decimal point
         dataBuilder.setPrecision(precision);
         // Set Feature Collection
-        dataBuilder.setFeatureCollection(Geobuf.Data.FeatureCollection.newBuilder().build());
+        dataBuilder.setFeatureCollection(
+                Geobuf.Data.FeatureCollection.newBuilder().build());
     }
 
     private String createGeometryName(List<String> names) {
         if (!names.contains(defaultGeometryName)) {
             return defaultGeometryName;
         }
-        Integer maxLen = names.stream().map(String::length).max(Integer::compareTo).orElse(0);
+        Integer maxLen =
+                names.stream().map(String::length).max(Integer::compareTo).orElse(0);
         return defaultGeometryName + new String(new char[maxLen]);
     }
 
@@ -101,7 +103,8 @@ public class GeobufFeatureType {
         } else if (data.getDataTypeCase() == Geobuf.Data.DataTypeCase.FEATURE) {
             String geometryName = createGeometryName(data.getKeysList());
             featureTypeBuilder.setDefaultGeometry(geometryName);
-            featureTypeBuilder.add(geometryName, getGeometryType(data.getFeature().getGeometry()));
+            featureTypeBuilder.add(
+                    geometryName, getGeometryType(data.getFeature().getGeometry()));
             int keyCount = data.getKeysCount();
             for (int i = 0; i < keyCount; i++) {
                 String key = data.getKeys(i);
@@ -116,7 +119,8 @@ public class GeobufFeatureType {
             } else {
                 featureTypeBuilder.add(
                         geometryName,
-                        getGeometryType(data.getFeatureCollection().getFeatures(0).getGeometry()));
+                        getGeometryType(
+                                data.getFeatureCollection().getFeatures(0).getGeometry()));
             }
 
             int keyCount = data.getKeysCount();
@@ -128,8 +132,7 @@ public class GeobufFeatureType {
                 Geobuf.Data.Feature feature = data.getFeatureCollection().getFeatures(i);
                 int propertiesCount = feature.getPropertiesCount();
                 if ((propertiesCount & 0x01) != 0) {
-                    throw new IllegalStateException(
-                            "number of properties (pairs of key/value indexes) is odd");
+                    throw new IllegalStateException("number of properties (pairs of key/value indexes) is odd");
                 }
                 int valueCount = propertiesCount / 2;
                 for (int j = 0; j < valueCount; j++) {
@@ -138,8 +141,7 @@ public class GeobufFeatureType {
                     if (feature.getValuesCount() > valOffset) {
                         String key = data.getKeys(attrOffset);
                         if (!keyClass.containsKey(key)) {
-                            Class<?> type =
-                                    getType(feature.getValues(valOffset).getValueTypeCase());
+                            Class<?> type = getType(feature.getValues(valOffset).getValueTypeCase());
                             keyClass.put(key, type);
                         }
                     }

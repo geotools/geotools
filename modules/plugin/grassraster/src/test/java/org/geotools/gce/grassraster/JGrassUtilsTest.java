@@ -58,11 +58,9 @@ public class JGrassUtilsTest {
         double w = 1640710.0;
         double e = 1640920.0;
         CoordinateReferenceSystem crs = CRS.decode("EPSG:32632");
-        GridCoverage2D elevationCoverage =
-                JGrassUtilities.buildCoverage("elevation", mapData, n, s, w, e, crs, true);
+        GridCoverage2D elevationCoverage = JGrassUtilities.buildCoverage("elevation", mapData, n, s, w, e, crs, true);
 
-        RenderedImage scaledJAIImage =
-                JGrassUtilities.scaleJAIImage(5, 4, elevationCoverage.getRenderedImage(), null);
+        RenderedImage scaledJAIImage = JGrassUtilities.scaleJAIImage(5, 4, elevationCoverage.getRenderedImage(), null);
         checkMatrixEqual(scaledJAIImage, mapDataAfter, 0.0);
     }
 

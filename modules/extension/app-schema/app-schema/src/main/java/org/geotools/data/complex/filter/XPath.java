@@ -75,13 +75,13 @@ import org.locationtech.jts.geom.Geometry;
 import org.xml.sax.Attributes;
 
 /**
- * Utility class to evaluate XPath expressions against an Attribute instance, which may be any
- * Attribute, whether it is simple, complex, a feature, etc.
+ * Utility class to evaluate XPath expressions against an Attribute instance, which may be any Attribute, whether it is
+ * simple, complex, a feature, etc.
  *
- * <p>At the difference of the Filter subsystem, which works against Attribute contents (for example
- * to evaluate a comparison filter), the XPath subsystem, for which this class is the single entry
- * point, works against Attribute instances. That is, the result of an XPath expression, if a single
- * value, is an Attribute, not the attribute content, or a List of Attributes, for instance.
+ * <p>At the difference of the Filter subsystem, which works against Attribute contents (for example to evaluate a
+ * comparison filter), the XPath subsystem, for which this class is the single entry point, works against Attribute
+ * instances. That is, the result of an XPath expression, if a single value, is an Attribute, not the attribute content,
+ * or a List of Attributes, for instance.
  *
  * @author Gabriel Roldan (Axios Engineering)
  * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
@@ -98,9 +98,8 @@ public class XPath extends XPathUtil {
     private CoordinateReferenceSystem crs;
 
     /**
-     * Used to create specific attribute descriptors for {@link #set(Attribute, String, Object,
-     * String, AttributeType)} when the actual attribute instance is of a derived type of the
-     * corresponding one declared in the feature type.
+     * Used to create specific attribute descriptors for {@link #set(Attribute, String, Object, String, AttributeType)}
+     * when the actual attribute instance is of a derived type of the corresponding one declared in the feature type.
      */
     private FeatureTypeFactory descriptorFactory;
 
@@ -129,17 +128,16 @@ public class XPath extends XPathUtil {
     }
 
     /**
-     * Sets the value of the attribute of <code>att</code> addressed by <code>xpath</code> and of
-     * type <code>targetNodeType</code> to be <code>value</code> with id <code>id</code>.
+     * Sets the value of the attribute of <code>att</code> addressed by <code>xpath</code> and of type <code>
+     * targetNodeType</code> to be <code>value</code> with id <code>id</code>.
      *
      * @param att the root attribute for which to set the child attribute value
-     * @param xpath the xpath expression that addresses the <code>att</code> child whose value is to
-     *     be set
+     * @param xpath the xpath expression that addresses the <code>att</code> child whose value is to be set
      * @param value the value of the attribute addressed by <code>xpath</code>
      * @param id the identifier of the attribute addressed by <code>xpath</code>, might be <code>
      *     null</code>
-     * @param targetNodeType the expected type of the attribute addressed by <code>xpath</code>, or
-     *     <code>null</code> if unknown
+     * @param targetNodeType the expected type of the attribute addressed by <code>xpath</code>, or <code>null</code> if
+     *     unknown
      * @param isXlinkRef true if the attribute would only contain xlink:href client property
      */
     public Attribute set(
@@ -182,30 +180,24 @@ public class XPath extends XPathUtil {
                 } else {
                     // except when the xpath is the root itself
                     // where it is done for feature chaining for simple content
-                    if (Types.isSimpleContentType(parent.getType())
-                            || Types.canHaveTextContent(parent.getType())) {
+                    if (Types.isSimpleContentType(parent.getType()) || Types.canHaveTextContent(parent.getType())) {
                         return setSimpleContentValue(parent, value);
                     } else if (Types.isGeometryType(parent.getType())) {
-                        ComplexFeatureTypeFactoryImpl typeFactory =
-                                new ComplexFeatureTypeFactoryImpl();
+                        ComplexFeatureTypeFactoryImpl typeFactory = new ComplexFeatureTypeFactoryImpl();
                         GeometryType geomType;
                         if (parent.getType() instanceof GeometryType) {
                             geomType = (GeometryType) parent.getType();
                         } else {
-                            geomType =
-                                    (GeometryType)
-                                            ((NonFeatureTypeProxy) parent.getType()).getSubject();
+                            geomType = (GeometryType) ((NonFeatureTypeProxy) parent.getType()).getSubject();
                         }
-                        GeometryDescriptor geomDescriptor =
-                                typeFactory.createGeometryDescriptor(
-                                        geomType,
-                                        rootName,
-                                        parentDescriptor.getMinOccurs(),
-                                        parentDescriptor.getMaxOccurs(),
-                                        parentDescriptor.isNillable(),
-                                        parentDescriptor.getDefaultValue());
-                        GeometryAttributeImpl geom =
-                                new GeometryAttributeImpl(value, geomDescriptor, null);
+                        GeometryDescriptor geomDescriptor = typeFactory.createGeometryDescriptor(
+                                geomType,
+                                rootName,
+                                parentDescriptor.getMinOccurs(),
+                                parentDescriptor.getMaxOccurs(),
+                                parentDescriptor.isNillable(),
+                                parentDescriptor.getDefaultValue());
+                        GeometryAttributeImpl geom = new GeometryAttributeImpl(value, geomDescriptor, null);
                         parent.setValue(List.of(geom));
                         return geom;
                     }
@@ -223,8 +215,7 @@ public class XPath extends XPathUtil {
             final Name attributeName = org.geotools.feature.type.Types.toTypeName(stepName);
 
             final AttributeType _parentType = parent.getType();
-            if (_parentType.getName().equals(XSSchema.ANYTYPE_TYPE.getName())
-                    && targetDescriptor != null) {
+            if (_parentType.getName().equals(XSSchema.ANYTYPE_TYPE.getName()) && targetDescriptor != null) {
                 // this needs to be passed on if casting anyType to something else, since it won't
                 // exist in the schema
                 currStepDescriptor = targetDescriptor;
@@ -234,13 +225,9 @@ public class XPath extends XPathUtil {
                 if (!isLastStep || targetNodeType == null) {
                     if (null == attributeName.getNamespaceURI()) {
                         currStepDescriptor =
-                                (AttributeDescriptor)
-                                        Types.findDescriptor(
-                                                parentType, attributeName.getLocalPart());
+                                (AttributeDescriptor) Types.findDescriptor(parentType, attributeName.getLocalPart());
                     } else {
-                        currStepDescriptor =
-                                (AttributeDescriptor)
-                                        Types.findDescriptor(parentType, attributeName);
+                        currStepDescriptor = (AttributeDescriptor) Types.findDescriptor(parentType, attributeName);
                     }
 
                     if (currStepDescriptor == null) {
@@ -258,13 +245,9 @@ public class XPath extends XPathUtil {
                     AttributeDescriptor actualDescriptor;
                     if (null == attributeName.getNamespaceURI()) {
                         actualDescriptor =
-                                (AttributeDescriptor)
-                                        Types.findDescriptor(
-                                                parentType, attributeName.getLocalPart());
+                                (AttributeDescriptor) Types.findDescriptor(parentType, attributeName.getLocalPart());
                     } else {
-                        actualDescriptor =
-                                (AttributeDescriptor)
-                                        Types.findDescriptor(parentType, attributeName);
+                        actualDescriptor = (AttributeDescriptor) Types.findDescriptor(parentType, attributeName);
                     }
 
                     if (actualDescriptor != null) {
@@ -275,43 +258,33 @@ public class XPath extends XPathUtil {
                             // important to maintain CRS information encoding
                             if (Geometry.class.isAssignableFrom(targetNodeType.getBinding())) {
                                 if (!(targetNodeType instanceof GeometryType)) {
-                                    targetNodeType =
-                                            new GeometryTypeImpl(
-                                                    targetNodeType.getName(),
-                                                    targetNodeType.getBinding(),
-                                                    ((GeometryDescriptor) actualDescriptor)
-                                                            .getCoordinateReferenceSystem(),
-                                                    targetNodeType.isIdentified(),
-                                                    targetNodeType.isAbstract(),
-                                                    targetNodeType.getRestrictions(),
-                                                    targetNodeType.getSuper(),
-                                                    targetNodeType.getDescription());
+                                    targetNodeType = new GeometryTypeImpl(
+                                            targetNodeType.getName(),
+                                            targetNodeType.getBinding(),
+                                            ((GeometryDescriptor) actualDescriptor).getCoordinateReferenceSystem(),
+                                            targetNodeType.isIdentified(),
+                                            targetNodeType.isAbstract(),
+                                            targetNodeType.getRestrictions(),
+                                            targetNodeType.getSuper(),
+                                            targetNodeType.getDescription());
                                 }
-                                currStepDescriptor =
-                                        descriptorFactory.createGeometryDescriptor(
-                                                (GeometryType) targetNodeType,
-                                                attributeName,
-                                                minOccurs,
-                                                maxOccurs,
-                                                nillable,
-                                                null);
+                                currStepDescriptor = descriptorFactory.createGeometryDescriptor(
+                                        (GeometryType) targetNodeType,
+                                        attributeName,
+                                        minOccurs,
+                                        maxOccurs,
+                                        nillable,
+                                        null);
                             } else {
-                                throw new IllegalArgumentException(
-                                        "Can't set targetNodeType: "
-                                                + targetNodeType.toString()
-                                                + " for attribute mapping: "
-                                                + attributeName
-                                                + " as it is not a Geometry type!");
+                                throw new IllegalArgumentException("Can't set targetNodeType: "
+                                        + targetNodeType.toString()
+                                        + " for attribute mapping: "
+                                        + attributeName
+                                        + " as it is not a Geometry type!");
                             }
                         } else {
-                            currStepDescriptor =
-                                    descriptorFactory.createAttributeDescriptor(
-                                            targetNodeType,
-                                            attributeName,
-                                            minOccurs,
-                                            maxOccurs,
-                                            nillable,
-                                            null);
+                            currStepDescriptor = descriptorFactory.createAttributeDescriptor(
+                                    targetNodeType, attributeName, minOccurs, maxOccurs, nillable, null);
                         }
                     }
                 }
@@ -329,18 +302,17 @@ public class XPath extends XPathUtil {
                             parentAtts.append(", ");
                         }
                     }
-                    throw new IllegalArgumentException(
-                            currStep
-                                    + " is not a valid location path for type "
-                                    + parentType.getName()
-                                    + ". "
-                                    + currStep
-                                    + " ns: "
-                                    + currStep.getName().getNamespaceURI()
-                                    + ", "
-                                    + parentType.getName().getLocalPart()
-                                    + " properties: "
-                                    + parentAtts);
+                    throw new IllegalArgumentException(currStep
+                            + " is not a valid location path for type "
+                            + parentType.getName()
+                            + ". "
+                            + currStep
+                            + " ns: "
+                            + currStep.getName().getNamespaceURI()
+                            + ", "
+                            + parentType.getName().getLocalPart()
+                            + " properties: "
+                            + parentAtts);
                 }
             }
 
@@ -348,14 +320,7 @@ public class XPath extends XPathUtil {
                 // reached the leaf, currStepDescriptor is guaranteed to be non-null
                 assert currStepDescriptor != null;
 
-                return setLeafAttribute(
-                        currStepDescriptor,
-                        currStep,
-                        id,
-                        value,
-                        parent,
-                        targetNodeType,
-                        isXlinkRef);
+                return setLeafAttribute(currStepDescriptor, currStep, id, value, parent, targetNodeType, isXlinkRef);
             } else {
                 // parent = appendComplexProperty(parent, currStep,
                 // currStepDescriptor);
@@ -376,25 +341,20 @@ public class XPath extends XPathUtil {
     private Attribute setSimpleContentValue(Attribute attribute, Object value) {
         Property simpleContent = null;
         if (attribute instanceof ComplexAttribute) {
-            simpleContent =
-                    ((ComplexAttribute) attribute)
-                            .getProperty(ComplexFeatureConstants.SIMPLE_CONTENT);
+            simpleContent = ((ComplexAttribute) attribute).getProperty(ComplexFeatureConstants.SIMPLE_CONTENT);
         }
         if (simpleContent == null) {
             simpleContent = buildSimpleContent(attribute.getType(), value);
             Collection<Property> contents = List.of(simpleContent);
             Attribute nestedAtt =
-                    new ComplexAttributeImpl(
-                            contents, attribute.getDescriptor(), attribute.getIdentifier());
+                    new ComplexAttributeImpl(contents, attribute.getDescriptor(), attribute.getIdentifier());
             List<Attribute> nestedAttContents = List.of(nestedAtt);
             attribute.setValue(nestedAttContents);
 
             return nestedAtt;
         } else {
-            PropertyType simpleContentType =
-                    getSimpleContentType((AttributeType) simpleContent.getType());
-            Object convertedValue =
-                    FF.literal(value).evaluate(value, simpleContentType.getBinding());
+            PropertyType simpleContentType = getSimpleContentType((AttributeType) simpleContent.getType());
+            Object convertedValue = FF.literal(value).evaluate(value, simpleContentType.getBinding());
             simpleContent.setValue(convertedValue);
             return attribute;
         }
@@ -410,8 +370,7 @@ public class XPath extends XPathUtil {
             AttributeType targetNodeType,
             boolean isXlinkRef) {
         int index = currStep.isIndexed() ? currStep.getIndex() : -1;
-        Attribute attribute =
-                setValue(currStepDescriptor, id, value, index, parent, targetNodeType, isXlinkRef);
+        Attribute attribute = setValue(currStepDescriptor, id, value, index, parent, targetNodeType, isXlinkRef);
         return attribute;
     }
 
@@ -446,15 +405,9 @@ public class XPath extends XPathUtil {
 
         final Name attributeName = descriptor.getName();
 
-        Attribute leafAttribute =
-                (parent instanceof ComplexAttribute)
-                        ? findLeafAttribute(
-                                (ComplexAttribute) parent,
-                                attributeName,
-                                index,
-                                isXlinkRef,
-                                convertedValue)
-                        : null;
+        Attribute leafAttribute = (parent instanceof ComplexAttribute)
+                ? findLeafAttribute((ComplexAttribute) parent, attributeName, index, isXlinkRef, convertedValue)
+                : null;
 
         // Build a new leaf if either:
         // (1) have no leaf (leafAttribute == null), or
@@ -478,14 +431,12 @@ public class XPath extends XPathUtil {
                 if (parent.getType().getName().equals(XSSchema.ANYTYPE_TYPE.getName())) {
                     // special handling for casting any type since there's no attributes in its
                     // schema
-                    leafAttribute =
-                            builder.addAnyTypeValue(convertedValue, targetNodeType, descriptor, id);
+                    leafAttribute = builder.addAnyTypeValue(convertedValue, targetNodeType, descriptor, id);
                 } else {
                     leafAttribute = builder.add(id, convertedValue, attributeName, targetNodeType);
                 }
             } else if (descriptor.getType().getName().equals(XSSchema.ANYTYPE_TYPE.getName())
-                    && (value == null
-                            || (value instanceof Collection && ((Collection) value).isEmpty()))) {
+                    && (value == null || (value instanceof Collection && ((Collection) value).isEmpty()))) {
                 // casting anyType as a complex attribute so we can set xlink:href
                 leafAttribute = builder.addComplexAnyTypeAttribute(convertedValue, descriptor, id);
             } else {
@@ -547,13 +498,11 @@ public class XPath extends XPathUtil {
             leafAttribute = getAttributeMatchingIndex(parent, attributeName, index);
         } else {
             // eliminate duplicates in case the values come from denormalized view..
-            Predicate<Attribute> valueFilter =
-                    att -> att != null && Objects.equals(att.getValue(), (convertedValue));
+            Predicate<Attribute> valueFilter = att -> att != null && Objects.equals(att.getValue(), (convertedValue));
             if (index > -1) {
                 final boolean checkMappedAttributeIndexOnly = true;
                 Attribute sameIndex =
-                        getAttributeWithMappedIndex(
-                                parent, attributeName, index, checkMappedAttributeIndexOnly);
+                        getAttributeWithMappedIndex(parent, attributeName, index, checkMappedAttributeIndexOnly);
                 if (valueFilter.test(sameIndex)) {
                     leafAttribute = sameIndex;
                 }
@@ -577,9 +526,7 @@ public class XPath extends XPathUtil {
         if (index > -1) {
             // get the attribute of specified index
             final boolean checkMappedAttributeIndexOnly = false;
-            leafAttribute =
-                    getAttributeWithMappedIndex(
-                            parent, attributeName, index, checkMappedAttributeIndexOnly);
+            leafAttribute = getAttributeWithMappedIndex(parent, attributeName, index, checkMappedAttributeIndexOnly);
         } else {
             // get the last existing node
             leafAttribute = getLastAttribute(parent, attributeName);
@@ -587,8 +534,7 @@ public class XPath extends XPathUtil {
         return leafAttribute;
     }
 
-    private Attribute findFirst(
-            ComplexAttribute parent, Name attributeName, Predicate<Attribute> filter) {
+    private Attribute findFirst(ComplexAttribute parent, Name attributeName, Predicate<Attribute> filter) {
         Optional<? extends Property> found;
 
         // try to avoid calling parent.getProperties(attributeName) because it's a performance
@@ -596,12 +542,11 @@ public class XPath extends XPathUtil {
         if (parent instanceof ComplexAttributeImpl) {
             Predicate<Property> nameFilter = p -> attributeName.equals(p.getName());
             Predicate<Property> attFilter = p -> Attribute.class.isInstance(p);
-            found =
-                    ((ComplexAttributeImpl) parent)
-                            .findAll(attFilter.and(nameFilter))
-                            .map(Attribute.class::cast)
-                            .filter(filter)
-                            .findFirst();
+            found = ((ComplexAttributeImpl) parent)
+                    .findAll(attFilter.and(nameFilter))
+                    .map(Attribute.class::cast)
+                    .filter(filter)
+                    .findFirst();
         } else {
             final List<Attribute> values = getAttributes(parent, attributeName);
             Predicate<Attribute> nameFilter = p -> attributeName.equals(p.getName());
@@ -611,39 +556,34 @@ public class XPath extends XPathUtil {
     }
 
     private Attribute getAttributeWithMappedIndex(
-            ComplexAttribute parent,
-            Name attributeName,
-            int index,
-            boolean checkMappedAttributeIndexOnly) {
+            ComplexAttribute parent, Name attributeName, int index, boolean checkMappedAttributeIndexOnly) {
 
-        final Predicate<Attribute> filter =
-                stepValue -> {
-                    int valueIndex = 1;
-                    if (attributeName.equals(stepValue.getName())) {
-                        Object mappedIndex;
-                        if (stepValue instanceof PropertyImpl) {
-                            // non-api method
-                            mappedIndex =
-                                    ((PropertyImpl) stepValue).getUserData(MAPPED_ATTRIBUTE_INDEX);
-                        } else {
-                            mappedIndex = stepValue.getUserData().get(MAPPED_ATTRIBUTE_INDEX);
-                        }
-                        if (null == mappedIndex) {
-                            if (checkMappedAttributeIndexOnly) {
-                                return false;
-                            }
-                            mappedIndex = valueIndex;
-                        }
-                        if (!(mappedIndex instanceof Number)) {
-                            mappedIndex = Integer.parseInt(String.valueOf(mappedIndex));
-                        }
-                        if (index == ((Number) mappedIndex).intValue()) {
-                            return true;
-                        }
-                        valueIndex++;
+        final Predicate<Attribute> filter = stepValue -> {
+            int valueIndex = 1;
+            if (attributeName.equals(stepValue.getName())) {
+                Object mappedIndex;
+                if (stepValue instanceof PropertyImpl) {
+                    // non-api method
+                    mappedIndex = ((PropertyImpl) stepValue).getUserData(MAPPED_ATTRIBUTE_INDEX);
+                } else {
+                    mappedIndex = stepValue.getUserData().get(MAPPED_ATTRIBUTE_INDEX);
+                }
+                if (null == mappedIndex) {
+                    if (checkMappedAttributeIndexOnly) {
+                        return false;
                     }
-                    return false;
-                };
+                    mappedIndex = valueIndex;
+                }
+                if (!(mappedIndex instanceof Number)) {
+                    mappedIndex = Integer.parseInt(String.valueOf(mappedIndex));
+                }
+                if (index == ((Number) mappedIndex).intValue()) {
+                    return true;
+                }
+                valueIndex++;
+            }
+            return false;
+        };
         return findFirst(parent, attributeName, filter);
     }
 
@@ -672,9 +612,9 @@ public class XPath extends XPathUtil {
     }
 
     /**
-     * Extract the simple content attribute from a list of features. This is used when feature
-     * chaining is used for simple contents, such as gml:name.. therefore the iterator would create
-     * a list of features containing the simple content attributes.
+     * Extract the simple content attribute from a list of features. This is used when feature chaining is used for
+     * simple contents, such as gml:name.. therefore the iterator would create a list of features containing the simple
+     * content attributes.
      *
      * @param value List of features
      * @return The attribute with simple content
@@ -714,8 +654,7 @@ public class XPath extends XPathUtil {
      * @param simpleContentProperties Map of new client properties
      */
     @SuppressWarnings("unchecked")
-    private void mergeClientProperties(
-            Attribute leafAttribute, Map<Object, Object> simpleContentProperties) {
+    private void mergeClientProperties(Attribute leafAttribute, Map<Object, Object> simpleContentProperties) {
 
         Map<Object, Object> origData = leafAttribute.getUserData();
         for (Object key : simpleContentProperties.keySet()) {
@@ -743,9 +682,8 @@ public class XPath extends XPathUtil {
     }
 
     /**
-     * Determine whether or not the value is a feature with target descriptor that is of the given
-     * attribute descriptor. If it is, then it is a feature chained feature with only simple
-     * content.
+     * Determine whether or not the value is a feature with target descriptor that is of the given attribute descriptor.
+     * If it is, then it is a feature chained feature with only simple content.
      *
      * @param descriptor The attribute descriptor
      * @param value value to check
@@ -791,17 +729,16 @@ public class XPath extends XPathUtil {
                     return value; // no conversion required
                 }
                 return values.stream()
-                        .map(
-                                v -> {
-                                    if (v instanceof Property) {
-                                        return (Property) v;
-                                    } else if (isSimpleContent) {
-                                        return buildSimpleContent(type, v);
-                                    } else if (canHaveTextContent) {
-                                        return buildTextContent(type, v);
-                                    }
-                                    return null;
-                                })
+                        .map(v -> {
+                            if (v instanceof Property) {
+                                return (Property) v;
+                            } else if (isSimpleContent) {
+                                return buildSimpleContent(type, v);
+                            } else if (canHaveTextContent) {
+                                return buildTextContent(type, v);
+                            }
+                            return null;
+                        })
                         .filter(Objects::nonNull)
                         .collect(Collectors.toList());
 
@@ -860,14 +797,8 @@ public class XPath extends XPathUtil {
 
     private Attribute buildSimpleContentInternal(AttributeType simpleContentType, Object value) {
         Object convertedValue = FF.literal(value).evaluate(value, simpleContentType.getBinding());
-        AttributeDescriptor descriptor =
-                new AttributeDescriptorImpl(
-                        simpleContentType,
-                        ComplexFeatureConstants.SIMPLE_CONTENT,
-                        1,
-                        1,
-                        true,
-                        null);
+        AttributeDescriptor descriptor = new AttributeDescriptorImpl(
+                simpleContentType, ComplexFeatureConstants.SIMPLE_CONTENT, 1, 1, true, null);
         return new AttributeImpl(convertedValue, descriptor, null);
     }
 

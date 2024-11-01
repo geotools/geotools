@@ -63,29 +63,26 @@ import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.io.WKTReader;
 
 /**
- * This abstract class provides the common behavior to build the filters for the related semantic
- * actions of parsing language process.
+ * This abstract class provides the common behavior to build the filters for the related semantic actions of parsing
+ * language process.
  *
- * <p>Builds Filter or Expression and their components (literal, functions, etc). It maintains the
- * results of semantic actions in the stack used to build complex filters and expressions.
+ * <p>Builds Filter or Expression and their components (literal, functions, etc). It maintains the results of semantic
+ * actions in the stack used to build complex filters and expressions.
  *
- * <p>Warning: This component is not published. It is part of module implementation. Client module
- * should not use this feature.
+ * <p>Warning: This component is not published. It is part of module implementation. Client module should not use this
+ * feature.
  *
  * @author Mauricio Pazos (Axios Engineering)
  * @since 2.6
  */
 public abstract class AbstractFilterBuilder {
 
-    /**
-     * Pattern for matching date time strings with capturing groups for date, time, and timezone.
-     */
-    static Pattern DATETIME_PATTERN =
-            Pattern.compile(
-                    "(\\d{4}-\\d{1,2}-\\d{1,2})?"
-                            + "(?:T?(\\d{2}:\\d{2}:\\d{2}(?:\\.\\d+)?))?"
-                            + "(Z|(?:[+-]\\d{2}(?:\\:?\\d{2})?))?",
-                    Pattern.CASE_INSENSITIVE);
+    /** Pattern for matching date time strings with capturing groups for date, time, and timezone. */
+    static Pattern DATETIME_PATTERN = Pattern.compile(
+            "(\\d{4}-\\d{1,2}-\\d{1,2})?"
+                    + "(?:T?(\\d{2}:\\d{2}:\\d{2}(?:\\.\\d+)?))?"
+                    + "(Z|(?:[+-]\\d{2}(?:\\:?\\d{2})?))?",
+            Pattern.CASE_INSENSITIVE);
 
     /** Pattern for matching if a time zone specified as offset. */
     static Pattern TZOFFSET_PATTERN = Pattern.compile("[+-]\\d{2}(?:\\d{2})");
@@ -248,18 +245,14 @@ public abstract class AbstractFilterBuilder {
         final String ESCAPE = "\\";
 
         try {
-            org.geotools.api.filter.expression.Expression pattern =
-                    this.resultStack.popExpression();
+            org.geotools.api.filter.expression.Expression pattern = this.resultStack.popExpression();
             org.geotools.api.filter.expression.Expression expr = this.resultStack.popExpression();
 
-            PropertyIsLike f =
-                    filterFactory.like(
-                            expr, pattern.toString(), WC_MULTI, WC_SINGLE, ESCAPE, matchCase);
+            PropertyIsLike f = filterFactory.like(expr, pattern.toString(), WC_MULTI, WC_SINGLE, ESCAPE, matchCase);
 
             return f;
         } catch (IllegalFilterException ife) {
-            throw new CQLException(
-                    "Exception building LikeFilter: " + ife.getMessage(), this.cqlSource);
+            throw new CQLException("Exception building LikeFilter: " + ife.getMessage(), this.cqlSource);
         }
     }
 
@@ -270,8 +263,7 @@ public abstract class AbstractFilterBuilder {
      */
     public PropertyIsNull buildPropertyIsNull() throws CQLException {
         try {
-            org.geotools.api.filter.expression.Expression property =
-                    this.resultStack.popExpression();
+            org.geotools.api.filter.expression.Expression property = this.resultStack.popExpression();
 
             PropertyIsNull filter = filterFactory.isNull(property);
 
@@ -300,8 +292,7 @@ public abstract class AbstractFilterBuilder {
 
             return filter;
         } catch (IllegalFilterException ife) {
-            throw new CQLException(
-                    "Exception building CompareFilter: " + ife.getMessage(), this.cqlSource);
+            throw new CQLException("Exception building CompareFilter: " + ife.getMessage(), this.cqlSource);
         }
     }
 
@@ -325,8 +316,7 @@ public abstract class AbstractFilterBuilder {
 
         PropertyName property = this.resultStack.popPropertyName();
 
-        org.geotools.api.filter.expression.Expression[] args =
-                new org.geotools.api.filter.expression.Expression[1];
+        org.geotools.api.filter.expression.Expression[] args = new org.geotools.api.filter.expression.Expression[1];
         args[0] = filterFactory.literal(property);
 
         Function function = filterFactory.function("PropertyExists", args);
@@ -358,8 +348,7 @@ public abstract class AbstractFilterBuilder {
             return asLiteralTemporal(strDate, null, strTimeZone);
 
         } catch (java.text.ParseException e) {
-            throw new CQLException(
-                    "Unsupported date time format: " + e.getMessage(), this.cqlSource);
+            throw new CQLException("Unsupported date time format: " + e.getMessage(), this.cqlSource);
         }
     }
     /**
@@ -378,13 +367,11 @@ public abstract class AbstractFilterBuilder {
             return asLiteralTemporal(strDate, strTime, timeZoneOffset);
 
         } catch (java.text.ParseException e) {
-            throw new CQLException(
-                    "Unsupported date time format: " + e.getMessage(), this.cqlSource);
+            throw new CQLException("Unsupported date time format: " + e.getMessage(), this.cqlSource);
         }
     }
 
-    private Literal asLiteralTemporal(String strDate, String strTime, String timeZoneOffset)
-            throws ParseException {
+    private Literal asLiteralTemporal(String strDate, String strTime, String timeZoneOffset) throws ParseException {
         StringBuilder format = new StringBuilder("yyyy-MM-dd");
         if (strTime != null && !"".equals(strTime)) {
             format.append(" HH:mm:ss");
@@ -495,8 +482,7 @@ public abstract class AbstractFilterBuilder {
     }
 
     /**
-     * Removes initial and final "'" from string. If some "''" is found it will be changed by a
-     * single quote "'".
+     * Removes initial and final "'" from string. If some "''" is found it will be changed by a single quote "'".
      *
      * @return string without initial and final quote, and "''" replaced by "'".
      */
@@ -536,8 +522,7 @@ public abstract class AbstractFilterBuilder {
                 part = removeFirstAndLastDoubleQuote(part);
                 arrayParts.add(part);
             }
-            assert !arrayParts.isEmpty()
-                    : "postcondition: the list of identifier part must have one or more elements ";
+            assert !arrayParts.isEmpty() : "postcondition: the list of identifier part must have one or more elements ";
 
             // makes the identifier
             StringBuffer identifier = new StringBuffer(100);
@@ -562,8 +547,7 @@ public abstract class AbstractFilterBuilder {
     }
 
     /**
-     * Creates the identifier part. An identifier like "idpart1:idpart2:idpart3: ... idpartN" has N
-     * part.
+     * Creates the identifier part. An identifier like "idpart1:idpart2:idpart3: ... idpartN" has N part.
      *
      * @return identifier part
      */
@@ -574,8 +558,8 @@ public abstract class AbstractFilterBuilder {
     }
 
     /**
-     * Removes the initial and final double quote. If the source string has not double quotes the
-     * source is returned without changes.
+     * Removes the initial and final double quote. If the source string has not double quotes the source is returned
+     * without changes.
      *
      * @return the source without double quotes (initial and final)
      */
@@ -600,8 +584,8 @@ public abstract class AbstractFilterBuilder {
         return property;
     }
     /** @return PropertyName */
-    public PropertyName buildCompoundAttribute(
-            final int nodeSimpleAttr, final String nodeAttrSeparator) throws CQLException {
+    public PropertyName buildCompoundAttribute(final int nodeSimpleAttr, final String nodeAttrSeparator)
+            throws CQLException {
 
         ArrayList<String> arrayIdentifiers = new ArrayList<>();
 
@@ -659,9 +643,7 @@ public abstract class AbstractFilterBuilder {
 
         Expression property = this.resultStack.popExpression();
 
-        FilterFactory ff =
-                (FilterFactory)
-                        filterFactory; // TODO this cast must be removed. It depends of Geometry
+        FilterFactory ff = (FilterFactory) filterFactory; // TODO this cast must be removed. It depends of Geometry
         // implementation
 
         return ff.equal(property, geom);
@@ -672,9 +654,7 @@ public abstract class AbstractFilterBuilder {
 
         Expression property = this.resultStack.popExpression();
 
-        FilterFactory ff =
-                (FilterFactory)
-                        filterFactory; // TODO this cast must be removed. It depends of Geometry
+        FilterFactory ff = (FilterFactory) filterFactory; // TODO this cast must be removed. It depends of Geometry
         // implementation
 
         return ff.disjoint(property, geom);
@@ -686,9 +666,7 @@ public abstract class AbstractFilterBuilder {
 
         Expression property = this.resultStack.popExpression();
 
-        FilterFactory ff =
-                (FilterFactory)
-                        filterFactory; // TODO this cast must be removed. It depends of Geometry
+        FilterFactory ff = (FilterFactory) filterFactory; // TODO this cast must be removed. It depends of Geometry
         // implementation
 
         return ff.intersects(property, geom);
@@ -726,9 +704,7 @@ public abstract class AbstractFilterBuilder {
 
         Expression property = this.resultStack.popExpression();
 
-        FilterFactory ff =
-                (FilterFactory)
-                        filterFactory; // TODO this cast must be removed. It depends of Geometry
+        FilterFactory ff = (FilterFactory) filterFactory; // TODO this cast must be removed. It depends of Geometry
         // implementation
 
         return ff.touches(property, geom);
@@ -739,9 +715,7 @@ public abstract class AbstractFilterBuilder {
 
         Expression property = this.resultStack.popExpression();
 
-        FilterFactory ff =
-                (FilterFactory)
-                        filterFactory; // TODO this cast must be removed. It depends of Geometry
+        FilterFactory ff = (FilterFactory) filterFactory; // TODO this cast must be removed. It depends of Geometry
         // implementation
 
         return ff.crosses(property, geom);
@@ -753,9 +727,7 @@ public abstract class AbstractFilterBuilder {
 
         Expression property = this.resultStack.popExpression();
 
-        FilterFactory ff =
-                (FilterFactory)
-                        filterFactory; // TODO this cast must be removed. It depends of Geometry
+        FilterFactory ff = (FilterFactory) filterFactory; // TODO this cast must be removed. It depends of Geometry
         // implementation
 
         return ff.within(property, geom);
@@ -767,9 +739,7 @@ public abstract class AbstractFilterBuilder {
 
         Expression property = this.resultStack.popExpression();
 
-        FilterFactory ff =
-                (FilterFactory)
-                        filterFactory; // TODO this cast must be removed. It depends of Geometry
+        FilterFactory ff = (FilterFactory) filterFactory; // TODO this cast must be removed. It depends of Geometry
         // implementation
 
         return ff.contains(property, geom);
@@ -781,9 +751,7 @@ public abstract class AbstractFilterBuilder {
 
         Expression property = this.resultStack.popExpression();
 
-        FilterFactory ff =
-                (FilterFactory)
-                        filterFactory; // TODO this cast must be removed. It depends of Geometry
+        FilterFactory ff = (FilterFactory) filterFactory; // TODO this cast must be removed. It depends of Geometry
         // implementation
 
         return ff.overlaps(property, geom);
@@ -812,8 +780,7 @@ public abstract class AbstractFilterBuilder {
         PropertyName property = this.resultStack.popPropertyName();
         String strProperty = property.getPropertyName();
 
-        org.geotools.api.filter.spatial.BBOX bbox =
-                filterFactory.bbox(strProperty, minX, minY, maxX, maxY, crs);
+        org.geotools.api.filter.spatial.BBOX bbox = filterFactory.bbox(strProperty, minX, minY, maxX, maxY, crs);
         return bbox;
     }
 
@@ -827,9 +794,7 @@ public abstract class AbstractFilterBuilder {
 
         Expression property = this.resultStack.popExpression();
 
-        FilterFactory ff =
-                (FilterFactory)
-                        filterFactory; // TODO this cast must be removed. It depends of Geometry
+        FilterFactory ff = (FilterFactory) filterFactory; // TODO this cast must be removed. It depends of Geometry
         // implementation
 
         return ff.dwithin(property, geom, tolerance, unit);
@@ -845,9 +810,7 @@ public abstract class AbstractFilterBuilder {
 
         Expression property = this.resultStack.popExpression();
 
-        FilterFactory ff =
-                (FilterFactory)
-                        filterFactory; // TODO this cast must be removed. It depends of Geometry
+        FilterFactory ff = (FilterFactory) filterFactory; // TODO this cast must be removed. It depends of Geometry
         // implementation
 
         return ff.beyond(property, geom, tolerance, unit);
@@ -905,15 +868,13 @@ public abstract class AbstractFilterBuilder {
      */
     public org.geotools.api.filter.expression.Literal buildDurationExpression(final IToken token) {
         String duration = token.toString();
-        org.geotools.api.filter.expression.Literal literalDuration =
-                filterFactory.literal(duration);
+        org.geotools.api.filter.expression.Literal literalDuration = filterFactory.literal(duration);
 
         return literalDuration;
     }
 
     /**
-     * Create an AND filter with property between dates of period. (firstDate<= property <=
-     * lastDate)
+     * Create an AND filter with property between dates of period. (firstDate<= property <= lastDate)
      *
      * @return And filter
      */
@@ -930,9 +891,7 @@ public abstract class AbstractFilterBuilder {
         Expression property = this.resultStack.popExpression();
 
         And filter =
-                filterFactory.and(
-                        filterFactory.lessOrEqual(begin, property),
-                        filterFactory.lessOrEqual(property, end));
+                filterFactory.and(filterFactory.lessOrEqual(begin, property), filterFactory.lessOrEqual(property, end));
 
         return filter;
     }
@@ -1061,8 +1020,7 @@ public abstract class AbstractFilterBuilder {
         } catch (org.locationtech.jts.io.ParseException e) {
             throw new CQLException(e.getMessage(), geometry, e, this.cqlSource);
         } catch (Exception e) {
-            throw new CQLException(
-                    "Error building WKT Geometry: " + e.getMessage(), geometry, e, this.cqlSource);
+            throw new CQLException("Error building WKT Geometry: " + e.getMessage(), geometry, e, this.cqlSource);
         }
     }
 
@@ -1085,8 +1043,8 @@ public abstract class AbstractFilterBuilder {
     }
 
     /**
-     * This transformation is required because some geometries like <b>Multipoint</b> has different
-     * definition in vividsolucion library.
+     * This transformation is required because some geometries like <b>Multipoint</b> has different definition in
+     * vividsolucion library.
      *
      * <p>
      *
@@ -1111,8 +1069,7 @@ public abstract class AbstractFilterBuilder {
 
         if ((cur = source.indexOf(MULTIPOINT_TYPE)) != -1) {
             // extract "(" and ")" from points in arguments
-            String argument =
-                    source.substring(cur + MULTIPOINT_TYPE.length() + 1, source.length() - 1);
+            String argument = source.substring(cur + MULTIPOINT_TYPE.length() + 1, source.length() - 1);
 
             argument = argument.replace('(', ' ');
             argument = argument.replace(')', ' ');
@@ -1351,8 +1308,7 @@ public abstract class AbstractFilterBuilder {
         PropertyName property = this.resultStack.popPropertyName();
 
         // makes the after filter
-        Before right =
-                this.filterFactory.before(property, filterFactory.literal(period.getBeginning()));
+        Before right = this.filterFactory.before(property, filterFactory.literal(period.getBeginning()));
 
         // makes the during filter
         During left = this.filterFactory.during(property, this.filterFactory.literal(period));

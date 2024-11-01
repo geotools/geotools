@@ -207,9 +207,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
         assertTrue(fs.getSupportedHints().contains(Hints.JTS_COORDINATE_SEQUENCE_FACTORY));
 
         Query q = new Query(tname("road"));
-        Hints hints =
-                new Hints(
-                        Hints.JTS_COORDINATE_SEQUENCE_FACTORY, new LiteCoordinateSequenceFactory());
+        Hints hints = new Hints(Hints.JTS_COORDINATE_SEQUENCE_FACTORY, new LiteCoordinateSequenceFactory());
         q.setHints(hints);
 
         try (SimpleFeatureIterator it = fs.getFeatures(q).features()) {
@@ -259,8 +257,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
     }
 
     @Test
-    public void testGetFeatureReaderFilterPrePostWithNoGeometry()
-            throws IOException, IllegalFilterException {
+    public void testGetFeatureReaderFilterPrePostWithNoGeometry() throws IOException, IllegalFilterException {
         // GEOT-1069, make sure the post filter is run even if the geom property is not requested
         try (Transaction t = new DefaultTransaction()) {
             FilterFactory factory = CommonFactoryFinder.getFilterFactory(null);
@@ -272,16 +269,14 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
             Query query = new Query(tname("road"), filter);
             query.setPropertyNames(Collections.singletonList(aname("id")));
 
-            try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                    dataStore.getFeatureReader(query, t)) {
+            try (FeatureReader<SimpleFeatureType, SimpleFeature> reader = dataStore.getFeatureReader(query, t)) {
                 // if the above statement didn't throw an exception, we're content
                 assertNotNull(reader);
             }
 
             filter = factory.equals(geomTypeExpr, factory.literal("LineString"));
             query.setFilter(filter);
-            try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                    dataStore.getFeatureReader(query, t)) {
+            try (FeatureReader<SimpleFeatureType, SimpleFeature> reader = dataStore.getFeatureReader(query, t)) {
                 assertTrue(reader.hasNext());
             }
         }
@@ -301,8 +296,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
 
         // with GEOT-1069 an exception is thrown here
         try (Transaction t = new DefaultTransaction();
-                FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                        dataStore.getFeatureReader(q, t)) {
+                FeatureReader<SimpleFeatureType, SimpleFeature> reader = dataStore.getFeatureReader(q, t)) {
             assertTrue(reader.hasNext());
             assertEquals(1, reader.getFeatureType().getAttributeCount());
             reader.next();
@@ -326,8 +320,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
 
         // with GEOT-1069 an exception is thrown here
         try (Transaction t = new DefaultTransaction();
-                FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                        dataStore.getFeatureReader(q, t)) {
+                FeatureReader<SimpleFeatureType, SimpleFeature> reader = dataStore.getFeatureReader(q, t)) {
 
             assertTrue(reader.hasNext());
             assertEquals(1, reader.getFeatureType().getAttributeCount());
@@ -444,24 +437,21 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
             throws NoSuchElementException, IOException, IllegalAttributeException {
         SimpleFeatureType type = dataStore.getSchema(tname("road"));
         try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                dataStore.getFeatureReader(
-                        new Query(tname("road"), Filter.INCLUDE), Transaction.AUTO_COMMIT); ) {
+                dataStore.getFeatureReader(new Query(tname("road"), Filter.INCLUDE), Transaction.AUTO_COMMIT); ) {
             assertFalse(reader instanceof FilteringFeatureReader);
             assertEquals(type, reader.getFeatureType());
             assertEquals(td.roadFeatures.length, count(reader));
         }
 
         try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                dataStore.getFeatureReader(
-                        new Query(tname("road"), Filter.EXCLUDE), Transaction.AUTO_COMMIT)) {
+                dataStore.getFeatureReader(new Query(tname("road"), Filter.EXCLUDE), Transaction.AUTO_COMMIT)) {
             assertFalse(reader.hasNext());
             assertEquals(type, reader.getFeatureType());
             assertEquals(0, count(reader));
         }
 
         try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                dataStore.getFeatureReader(
-                        new Query(tname("road"), td.rd1Filter), Transaction.AUTO_COMMIT)) {
+                dataStore.getFeatureReader(new Query(tname("road"), td.rd1Filter), Transaction.AUTO_COMMIT)) {
             // assertTrue(reader instanceof FilteringFeatureReader);
             assertEquals(type, reader.getFeatureType());
             assertEquals(1, count(reader));
@@ -542,8 +532,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
     @Test
     public void testGetFeatureWriterClose() throws Exception {
         try (FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
-                dataStore.getFeatureWriter(
-                        tname("road"), Filter.INCLUDE, Transaction.AUTO_COMMIT)) {
+                dataStore.getFeatureWriter(tname("road"), Filter.INCLUDE, Transaction.AUTO_COMMIT)) {
             writer.close();
 
             try {
@@ -629,8 +618,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
     }
 
     @Test
-    public void testGetFeatureWriterTypeNameTransaction()
-            throws NoSuchElementException, IOException {
+    public void testGetFeatureWriterTypeNameTransaction() throws NoSuchElementException, IOException {
         try (FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
                 dataStore.getFeatureWriter(tname("road"), Transaction.AUTO_COMMIT)) {
             assertEquals(td.roadFeatures.length, count(writer));
@@ -659,16 +647,14 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
     @Test
     public void testGetFeatureWriterFilter() throws NoSuchElementException, IOException {
         try (FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
-                dataStore.getFeatureWriter(
-                        tname("road"), Filter.EXCLUDE, Transaction.AUTO_COMMIT)) {
+                dataStore.getFeatureWriter(tname("road"), Filter.EXCLUDE, Transaction.AUTO_COMMIT)) {
             // see task above
             // assertTrue(writer instanceof EmptyFeatureWriter);
             assertEquals(0, count(writer));
         }
 
         try (FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
-                dataStore.getFeatureWriter(
-                        tname("road"), Filter.INCLUDE, Transaction.AUTO_COMMIT)) {
+                dataStore.getFeatureWriter(tname("road"), Filter.INCLUDE, Transaction.AUTO_COMMIT)) {
             // assertFalse(writer instanceof FilteringFeatureWriter);
             assertEquals(td.roadFeatures.length, count(writer));
         }
@@ -735,9 +721,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
 
                 // start off with ORIGINAL
                 try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                        dataStore.getFeatureReader(
-                                new Query(tname("road"), Filter.INCLUDE),
-                                Transaction.AUTO_COMMIT)) {
+                        dataStore.getFeatureReader(new Query(tname("road"), Filter.INCLUDE), Transaction.AUTO_COMMIT)) {
                     assertTrue(
                             "Sanity check failed: before modification reader didn't match original content",
                             covers(reader, ORIGINAL));
@@ -754,12 +738,8 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
 
                 // still have ORIGINAL and t1 has REMOVE
                 try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                        dataStore.getFeatureReader(
-                                new Query(tname("road"), Filter.INCLUDE),
-                                Transaction.AUTO_COMMIT)) {
-                    assertTrue(
-                            "Feature deletion managed to leak out of transaction?",
-                            covers(reader, ORIGINAL));
+                        dataStore.getFeatureReader(new Query(tname("road"), Filter.INCLUDE), Transaction.AUTO_COMMIT)) {
+                    assertTrue("Feature deletion managed to leak out of transaction?", covers(reader, ORIGINAL));
                 }
 
                 try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
@@ -774,9 +754,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
 
                 // We still have ORIGIONAL and t1 has REMOVE
                 try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                        dataStore.getFeatureReader(
-                                new Query(tname("road"), Filter.INCLUDE),
-                                Transaction.AUTO_COMMIT)) {
+                        dataStore.getFeatureReader(new Query(tname("road"), Filter.INCLUDE), Transaction.AUTO_COMMIT)) {
                     assertTrue(covers(reader, ORIGINAL));
                 }
 
@@ -805,8 +783,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
 
             // We still have ORIGINAL and t2 has ADD
             try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                    dataStore.getFeatureReader(
-                            new Query(tname("road"), Filter.INCLUDE), Transaction.AUTO_COMMIT)) {
+                    dataStore.getFeatureReader(new Query(tname("road"), Filter.INCLUDE), Transaction.AUTO_COMMIT)) {
                 assertTrue(covers(reader, ORIGINAL));
             }
 
@@ -817,8 +794,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
 
             // Still have ORIGIONAL and t2 has ADD
             try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                    dataStore.getFeatureReader(
-                            new Query(tname("road"), Filter.INCLUDE), Transaction.AUTO_COMMIT)) {
+                    dataStore.getFeatureReader(new Query(tname("road"), Filter.INCLUDE), Transaction.AUTO_COMMIT)) {
                 assertTrue(covers(reader, ORIGINAL));
             }
             try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
@@ -835,8 +811,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
             // We now have REMOVE, as does t1 (which has not additional diffs)
             // t2 will have FINAL
             try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                    dataStore.getFeatureReader(
-                            new Query(tname("road"), Filter.INCLUDE), Transaction.AUTO_COMMIT)) {
+                    dataStore.getFeatureReader(new Query(tname("road"), Filter.INCLUDE), Transaction.AUTO_COMMIT)) {
                 assertTrue(covers(reader, REMOVE));
             }
             try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
@@ -855,8 +830,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
 
             // We now have Number( remove one and add one)
             try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                    dataStore.getFeatureReader(
-                            new Query(tname("road"), Filter.INCLUDE), Transaction.AUTO_COMMIT)) {
+                    dataStore.getFeatureReader(new Query(tname("road"), Filter.INCLUDE), Transaction.AUTO_COMMIT)) {
                 assertTrue(coversLax(reader, FINAL));
             }
 
@@ -873,8 +847,8 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
     }
 
     /**
-     * Tests that if 2 transactions attempt to modify the same feature without committing, that the
-     * second transaction does not lock up waiting to obtain the lock.
+     * Tests that if 2 transactions attempt to modify the same feature without committing, that the second transaction
+     * does not lock up waiting to obtain the lock.
      *
      * @author chorner
      */
@@ -975,8 +949,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
     }
 
     @Test
-    public void testGetFeatureSourceRiver()
-            throws NoSuchElementException, IOException, IllegalAttributeException {
+    public void testGetFeatureSourceRiver() throws NoSuchElementException, IOException, IllegalAttributeException {
         SimpleFeatureSource river = dataStore.getFeatureSource(tname("river"));
 
         assertFeatureTypesEqual(td.riverType, river.getSchema());
@@ -1022,8 +995,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
         FilterFactory factory = CommonFactoryFinder.getFilterFactory(null);
 
         // td.rd1Filter = factory.createFidFilter(td.roadFeatures[0].getID());
-        Filter rd1Filter =
-                factory.id(Collections.singleton(factory.featureId(td.roadFeatures[0].getID())));
+        Filter rd1Filter = factory.id(Collections.singleton(factory.featureId(td.roadFeatures[0].getID())));
 
         road.modifyFeatures(
                 new Name[] {
@@ -1041,10 +1013,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
         }
     }
 
-    /**
-     * Test with a filter that won't be matched after the modification is done, was throwing an NPE
-     * before the fix
-     */
+    /** Test with a filter that won't be matched after the modification is done, was throwing an NPE before the fix */
     @Test
     public void testGetFeatureStoreModifyFeatures3() throws IOException {
         SimpleFeatureStore road = (SimpleFeatureStore) dataStore.getFeatureSource(tname("road"));
@@ -1081,11 +1050,9 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
 
     @Test
     public void testGetFeatureStoreAddFeatures() throws IOException {
-        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                DataUtilities.reader(td.newRoad)) {
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader = DataUtilities.reader(td.newRoad)) {
 
-            SimpleFeatureStore road =
-                    (SimpleFeatureStore) dataStore.getFeatureSource(tname("road"));
+            SimpleFeatureStore road = (SimpleFeatureStore) dataStore.getFeatureSource(tname("road"));
 
             road.addFeatures(DataUtilities.collection(reader));
             assertEquals(td.roadFeatures.length + 1, count(tname("road")));
@@ -1093,12 +1060,9 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
     }
 
     @Test
-    public void testGetFeatureStoreSetFeatures()
-            throws NoSuchElementException, IOException, IllegalAttributeException {
-        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                DataUtilities.reader(td.newRoad)) {
-            SimpleFeatureStore road =
-                    (SimpleFeatureStore) dataStore.getFeatureSource(tname("road"));
+    public void testGetFeatureStoreSetFeatures() throws NoSuchElementException, IOException, IllegalAttributeException {
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> reader = DataUtilities.reader(td.newRoad)) {
+            SimpleFeatureStore road = (SimpleFeatureStore) dataStore.getFeatureSource(tname("road"));
             assertEquals(3, count(tname("road")));
             road.setFeatures(reader);
             assertEquals(1, count(tname("road")));
@@ -1106,8 +1070,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
     }
 
     boolean isLocked(String typeName, String fid) {
-        InProcessLockingManager lockingManager =
-                (InProcessLockingManager) dataStore.getLockingManager();
+        InProcessLockingManager lockingManager = (InProcessLockingManager) dataStore.getLockingManager();
 
         return lockingManager.isLocked(typeName, fid);
     }
@@ -1122,8 +1085,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
     @Test
     public void testLockFeatures() throws IOException {
         FeatureLock lock = new FeatureLock("test", LOCK_DURATION);
-        SimpleFeatureLocking road =
-                (SimpleFeatureLocking) dataStore.getFeatureSource(tname("road"));
+        SimpleFeatureLocking road = (SimpleFeatureLocking) dataStore.getFeatureSource(tname("road"));
         road.setFeatureLock(lock);
 
         assertFalse(isLocked(tname("road"), tname("road") + ".1"));
@@ -1134,8 +1096,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
     @Test
     public void testUnLockFeatures() throws IOException {
         FeatureLock lock = new FeatureLock("test", LOCK_DURATION);
-        SimpleFeatureLocking road =
-                (SimpleFeatureLocking) dataStore.getFeatureSource(tname("road"));
+        SimpleFeatureLocking road = (SimpleFeatureLocking) dataStore.getFeatureSource(tname("road"));
         road.setFeatureLock(lock);
         road.lockFeatures();
 
@@ -1165,10 +1126,8 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
         FeatureLock lockB = new FeatureLock("LockB", LOCK_DURATION);
         try (Transaction t1 = new DefaultTransaction();
                 Transaction t2 = new DefaultTransaction()) {
-            SimpleFeatureLocking road1 =
-                    (SimpleFeatureLocking) dataStore.getFeatureSource(tname("road"));
-            SimpleFeatureLocking road2 =
-                    (SimpleFeatureLocking) dataStore.getFeatureSource(tname("road"));
+            SimpleFeatureLocking road1 = (SimpleFeatureLocking) dataStore.getFeatureSource(tname("road"));
+            SimpleFeatureLocking road2 = (SimpleFeatureLocking) dataStore.getFeatureSource(tname("road"));
             road1.setTransaction(t1);
             road2.setTransaction(t2);
             road1.setFeatureLock(lockA);
@@ -1219,8 +1178,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
     public void testGetFeatureLockingExpire() throws Exception {
         FeatureLock lock = new FeatureLock("Timed", 1000);
 
-        SimpleFeatureLocking road =
-                (SimpleFeatureLocking) dataStore.getFeatureSource(tname("road"));
+        SimpleFeatureLocking road = (SimpleFeatureLocking) dataStore.getFeatureSource(tname("road"));
         road.setFeatureLock(lock);
         assertFalse(isLocked(tname("road"), tname("road") + "." + (td.initialFidValue)));
 
@@ -1269,8 +1227,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
     }
 
     /** Ensure readers contents equal those in the feature array */
-    void assertCovered(
-            SimpleFeature[] features, FeatureReader<SimpleFeatureType, SimpleFeature> reader)
+    void assertCovered(SimpleFeature[] features, FeatureReader<SimpleFeatureType, SimpleFeature> reader)
             throws NoSuchElementException, IOException, IllegalAttributeException {
         int count = 0;
 
@@ -1358,8 +1315,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
     }
 
     FeatureReader<SimpleFeatureType, SimpleFeature> reader(String typeName) throws IOException {
-        return dataStore.getFeatureReader(
-                new Query(typeName, Filter.INCLUDE), Transaction.AUTO_COMMIT);
+        return dataStore.getFeatureReader(new Query(typeName, Filter.INCLUDE), Transaction.AUTO_COMMIT);
     }
 
     FeatureWriter<SimpleFeatureType, SimpleFeature> writer(String typeName) throws IOException {
@@ -1422,10 +1378,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
         return count == array.length;
     }
 
-    /**
-     * Ensure that FeatureReader<SimpleFeatureType, SimpleFeature> reader contains exactly the
-     * contents of array.
-     */
+    /** Ensure that FeatureReader<SimpleFeatureType, SimpleFeature> reader contains exactly the contents of array. */
     boolean covers(FeatureReader<SimpleFeatureType, SimpleFeature> reader, SimpleFeature[] array)
             throws NoSuchElementException, IOException, IllegalAttributeException {
         SimpleFeature feature;
@@ -1506,9 +1459,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
      * @throws IllegalAttributeException if attributeName did not match schema
      */
     SimpleFeature findFeature(
-            FeatureReader<SimpleFeatureType, SimpleFeature> reader,
-            String attributeName,
-            Object value)
+            FeatureReader<SimpleFeatureType, SimpleFeature> reader, String attributeName, Object value)
             throws NoSuchElementException, IOException, IllegalAttributeException {
         SimpleFeature f;
 
@@ -1542,9 +1493,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
      *
      * <p>Implemented using match on attribute types, not feature id
      */
-    void assertMatched(
-            SimpleFeature[] array, FeatureReader<SimpleFeatureType, SimpleFeature> reader)
-            throws Exception {
+    void assertMatched(SimpleFeature[] array, FeatureReader<SimpleFeatureType, SimpleFeature> reader) throws Exception {
         SimpleFeature feature;
         int count = 0;
 

@@ -17,9 +17,8 @@
 package org.geotools.data.vpf;
 
 /**
- * This class encapsulates a join between two columns. It was originally intended to join two
- * VPFColumn types, but there should not be anything about it which constrains it to those two
- * types.
+ * This class encapsulates a join between two columns. It was originally intended to join two VPFColumn types, but there
+ * should not be anything about it which constrains it to those two types.
  *
  * @author <a href="mailto:jeff@ionicenterprise.com">Jeff Yutzler</a>
  * @source $URL$

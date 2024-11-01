@@ -57,31 +57,26 @@ public class PointStackerProcessTest {
 
     @Test
     public void testSimple() throws ProcessException, TransformException {
-        ReferencedEnvelope bounds =
-                new ReferencedEnvelope(0, 10, 0, 10, DefaultGeographicCRS.WGS84);
+        ReferencedEnvelope bounds = new ReferencedEnvelope(0, 10, 0, 10, DefaultGeographicCRS.WGS84);
 
         // Simple dataset with some coincident points
         Coordinate[] data = {
-            new Coordinate(4, 4),
-            new Coordinate(4.1, 4.1),
-            new Coordinate(4.1, 4.1),
-            new Coordinate(8, 8)
+            new Coordinate(4, 4), new Coordinate(4.1, 4.1), new Coordinate(4.1, 4.1), new Coordinate(8, 8)
         };
 
         SimpleFeatureCollection fc = createPoints(data, bounds);
         ProgressListener monitor = null;
 
         PointStackerProcess psp = new PointStackerProcess();
-        SimpleFeatureCollection result =
-                psp.execute(
-                        fc, 100, // cellSize
-                        null, // weightClusterPosition
-                        null, // normalize
-                        null, // preserve location
-                        bounds, // outputBBOX
-                        1000, // outputWidth
-                        1000, // outputHeight
-                        null, monitor);
+        SimpleFeatureCollection result = psp.execute(
+                fc, 100, // cellSize
+                null, // weightClusterPosition
+                null, // normalize
+                null, // preserve location
+                bounds, // outputBBOX
+                1000, // outputWidth
+                1000, // outputHeight
+                null, monitor);
 
         checkSchemaCorrect(result.getSchema(), false);
         assertEquals(2, result.size());
@@ -91,31 +86,26 @@ public class PointStackerProcessTest {
 
     @Test
     public void testNormal() throws ProcessException, TransformException {
-        ReferencedEnvelope bounds =
-                new ReferencedEnvelope(0, 10, 0, 10, DefaultGeographicCRS.WGS84);
+        ReferencedEnvelope bounds = new ReferencedEnvelope(0, 10, 0, 10, DefaultGeographicCRS.WGS84);
 
         // Simple dataset with some coincident points
         Coordinate[] data = {
-            new Coordinate(4, 4),
-            new Coordinate(4.1, 4.1),
-            new Coordinate(4.1, 4.1),
-            new Coordinate(8, 8)
+            new Coordinate(4, 4), new Coordinate(4.1, 4.1), new Coordinate(4.1, 4.1), new Coordinate(8, 8)
         };
 
         SimpleFeatureCollection fc = createPoints(data, bounds);
         ProgressListener monitor = null;
 
         PointStackerProcess psp = new PointStackerProcess();
-        SimpleFeatureCollection result =
-                psp.execute(
-                        fc, 100, // cellSize
-                        false, // weighClusterPostion
-                        true, // normalize
-                        null, // preserve location
-                        bounds, // outputBBOX
-                        1000, // outputWidth
-                        1000, // outputHeight
-                        null, monitor);
+        SimpleFeatureCollection result = psp.execute(
+                fc, 100, // cellSize
+                false, // weighClusterPostion
+                true, // normalize
+                null, // preserve location
+                bounds, // outputBBOX
+                1000, // outputWidth
+                1000, // outputHeight
+                null, monitor);
 
         checkSchemaCorrect(result.getSchema(), true);
         assertEquals(2, result.size());
@@ -125,8 +115,7 @@ public class PointStackerProcessTest {
 
     @Test
     public void testPreserveSingle() throws ProcessException, TransformException {
-        ReferencedEnvelope bounds =
-                new ReferencedEnvelope(0, 10, 0, 10, DefaultGeographicCRS.WGS84);
+        ReferencedEnvelope bounds = new ReferencedEnvelope(0, 10, 0, 10, DefaultGeographicCRS.WGS84);
 
         // Simple dataset with some coincident points
         Coordinate[] data = {
@@ -141,18 +130,17 @@ public class PointStackerProcessTest {
         ProgressListener monitor = null;
 
         PointStackerProcess psp = new PointStackerProcess();
-        SimpleFeatureCollection result =
-                psp.execute(
-                        fc,
-                        100, // cellSize
-                        false, // weightClusterPosition
-                        true, // normalize
-                        PreserveLocation.Single, // preserve location
-                        bounds, // outputBBOX
-                        1000, // outputWidth
-                        1000, // outputHeight
-                        null,
-                        monitor);
+        SimpleFeatureCollection result = psp.execute(
+                fc,
+                100, // cellSize
+                false, // weightClusterPosition
+                true, // normalize
+                PreserveLocation.Single, // preserve location
+                bounds, // outputBBOX
+                1000, // outputWidth
+                1000, // outputHeight
+                null,
+                monitor);
 
         checkSchemaCorrect(result.getSchema(), true);
         assertEquals(3, result.size());
@@ -163,8 +151,7 @@ public class PointStackerProcessTest {
 
     @Test
     public void testPreserveSuperimposed() throws ProcessException, TransformException {
-        ReferencedEnvelope bounds =
-                new ReferencedEnvelope(0, 10, 0, 10, DefaultGeographicCRS.WGS84);
+        ReferencedEnvelope bounds = new ReferencedEnvelope(0, 10, 0, 10, DefaultGeographicCRS.WGS84);
 
         // Simple dataset with some coincident points
         Coordinate[] data = {
@@ -179,24 +166,22 @@ public class PointStackerProcessTest {
         ProgressListener monitor = null;
 
         PointStackerProcess psp = new PointStackerProcess();
-        SimpleFeatureCollection result =
-                psp.execute(
-                        fc,
-                        100, // cellSize
-                        false, // weightClusterPosition
-                        true, // normalize
-                        PreserveLocation.Superimposed, // preserve location
-                        bounds, // outputBBOX
-                        1000, // outputWidth
-                        1000, // outputHeight
-                        null,
-                        monitor);
+        SimpleFeatureCollection result = psp.execute(
+                fc,
+                100, // cellSize
+                false, // weightClusterPosition
+                true, // normalize
+                PreserveLocation.Superimposed, // preserve location
+                bounds, // outputBBOX
+                1000, // outputWidth
+                1000, // outputHeight
+                null,
+                monitor);
 
         checkSchemaCorrect(result.getSchema(), true);
         assertEquals(3, result.size());
         checkStackedPoint(new Coordinate(4, 4), 1, 1, getResultPoint(result, new Coordinate(4, 4)));
-        checkStackedPoint(
-                new Coordinate(6.5, 6.5), 2, 1, getResultPoint(result, new Coordinate(6.5, 6.5)));
+        checkStackedPoint(new Coordinate(6.5, 6.5), 2, 1, getResultPoint(result, new Coordinate(6.5, 6.5)));
         checkStackedPoint(null, 2, 2, getResultPoint(result, new Coordinate(8, 8)));
     }
 
@@ -208,8 +193,7 @@ public class PointStackerProcessTest {
      * @throws TransformException
      */
     public void testGEOT_7039() throws ProcessException, TransformException {
-        ReferencedEnvelope bounds =
-                new ReferencedEnvelope(0, 10, 0, 10, DefaultGeographicCRS.WGS84);
+        ReferencedEnvelope bounds = new ReferencedEnvelope(0, 10, 0, 10, DefaultGeographicCRS.WGS84);
 
         // Simple dataset with some coincident points
         Coordinate[] data = {
@@ -224,18 +208,17 @@ public class PointStackerProcessTest {
         ProgressListener monitor = null;
 
         PointStackerProcess psp = new PointStackerProcess();
-        SimpleFeatureCollection result =
-                psp.execute(
-                        fc,
-                        100, // cellSize
-                        false, // weightClusterPosition
-                        true, // normalize
-                        PreserveLocation.Superimposed, // preserve location
-                        bounds, // outputBBOX
-                        1000, // outputWidth
-                        1000, // outputHeight
-                        null,
-                        monitor);
+        SimpleFeatureCollection result = psp.execute(
+                fc,
+                100, // cellSize
+                false, // weightClusterPosition
+                true, // normalize
+                PreserveLocation.Superimposed, // preserve location
+                bounds, // outputBBOX
+                1000, // outputWidth
+                1000, // outputHeight
+                null,
+                monitor);
 
         checkSchemaCorrect(result.getSchema(), true);
         assertEquals(3, result.size());
@@ -256,8 +239,7 @@ public class PointStackerProcessTest {
      * @throws TransformException
      */
     public void testGEOT_7041() throws ProcessException, TransformException {
-        ReferencedEnvelope bounds =
-                new ReferencedEnvelope(0, 10, 0, 10, DefaultGeographicCRS.WGS84);
+        ReferencedEnvelope bounds = new ReferencedEnvelope(0, 10, 0, 10, DefaultGeographicCRS.WGS84);
 
         // Simple dataset with some coincident points
         Coordinate[] data = {
@@ -272,18 +254,17 @@ public class PointStackerProcessTest {
         ProgressListener monitor = null;
 
         PointStackerProcess psp = new PointStackerProcess();
-        SimpleFeatureCollection result =
-                psp.execute(
-                        fc,
-                        100, // cellSize
-                        false, // weightClusterPosition
-                        true, // normalize
-                        PreserveLocation.Superimposed, // preserve location
-                        bounds, // outputBBOX
-                        1000, // outputWidth
-                        1000, // outputHeight
-                        "value > 25.0",
-                        monitor);
+        SimpleFeatureCollection result = psp.execute(
+                fc,
+                100, // cellSize
+                false, // weightClusterPosition
+                true, // normalize
+                PreserveLocation.Superimposed, // preserve location
+                bounds, // outputBBOX
+                1000, // outputWidth
+                1000, // outputHeight
+                "value > 25.0",
+                monitor);
 
         checkSchemaCorrect(result.getSchema(), true);
         assertEquals(3, result.size());
@@ -302,8 +283,7 @@ public class PointStackerProcessTest {
         assertEquals(33.0, (double) res.getAttribute("value"), 0.000001);
     }
 
-    private void checkStackedPoint(
-            Coordinate expectedCoordinate, int count, int countUnique, SimpleFeature f) {
+    private void checkStackedPoint(Coordinate expectedCoordinate, int count, int countUnique, SimpleFeature f) {
         if (expectedCoordinate != null) {
             Point p = (Point) f.getDefaultGeometry();
             assertEquals(expectedCoordinate, p.getCoordinate());
@@ -313,102 +293,75 @@ public class PointStackerProcessTest {
         assertEquals(countUnique, f.getAttribute(PointStackerProcess.ATTR_COUNT_UNIQUE));
     }
 
-    /**
-     * Tests point stacking when output CRS is different to data CRS. The result data should be
-     * reprojected.
-     */
+    /** Tests point stacking when output CRS is different to data CRS. The result data should be reprojected. */
     @Test
     public void testReprojected()
-            throws NoSuchAuthorityCodeException, FactoryException, ProcessException,
-                    TransformException {
+            throws NoSuchAuthorityCodeException, FactoryException, ProcessException, TransformException {
 
-        ReferencedEnvelope inBounds =
-                new ReferencedEnvelope(0, 10, 0, 10, DefaultGeographicCRS.WGS84);
+        ReferencedEnvelope inBounds = new ReferencedEnvelope(0, 10, 0, 10, DefaultGeographicCRS.WGS84);
 
         // Dataset with some points located in appropriate area
         // points are close enough to create a single cluster
-        Coordinate[] data = {
-            new Coordinate(-121.813201, 48.777343), new Coordinate(-121.813, 48.777)
-        };
+        Coordinate[] data = {new Coordinate(-121.813201, 48.777343), new Coordinate(-121.813, 48.777)};
 
         SimpleFeatureCollection fc = createPoints(data, inBounds);
         ProgressListener monitor = null;
 
         // Google Mercator BBOX for northern Washington State (roughly)
         CoordinateReferenceSystem webMerc = CRS.decode("EPSG:3785");
-        ReferencedEnvelope outBounds =
-                new ReferencedEnvelope(
-                        -1.4045034049133E7,
-                        -1.2937920131607E7,
-                        5916835.1504419,
-                        6386464.2521607,
-                        webMerc);
+        ReferencedEnvelope outBounds = new ReferencedEnvelope(
+                -1.4045034049133E7, -1.2937920131607E7, 5916835.1504419, 6386464.2521607, webMerc);
 
         PointStackerProcess psp = new PointStackerProcess();
-        SimpleFeatureCollection result =
-                psp.execute(
-                        fc, 100, // cellSize
-                        null, // weightClusterPosition
-                        null, // normalize
-                        null, // preserve location
-                        outBounds, // outputBBOX
-                        1810, // outputWidth
-                        768, // outputHeight
-                        null, monitor);
+        SimpleFeatureCollection result = psp.execute(
+                fc, 100, // cellSize
+                null, // weightClusterPosition
+                null, // normalize
+                null, // preserve location
+                outBounds, // outputBBOX
+                1810, // outputWidth
+                768, // outputHeight
+                null, monitor);
 
         checkSchemaCorrect(result.getSchema(), false);
         assertEquals(1, result.size());
-        assertEquals(
-                inBounds.getCoordinateReferenceSystem(),
-                result.getBounds().getCoordinateReferenceSystem());
+        assertEquals(inBounds.getCoordinateReferenceSystem(), result.getBounds().getCoordinateReferenceSystem());
         checkResultPoint(result, new Coordinate(-121.813201, 48.777343), 2, 2, null, null);
     }
 
     @Test
     public void testWeightClusterPosition()
-            throws NoSuchAuthorityCodeException, FactoryException, ProcessException,
-                    TransformException {
+            throws NoSuchAuthorityCodeException, FactoryException, ProcessException, TransformException {
 
-        ReferencedEnvelope inBounds =
-                new ReferencedEnvelope(0, 10, 0, 10, DefaultGeographicCRS.WGS84);
+        ReferencedEnvelope inBounds = new ReferencedEnvelope(0, 10, 0, 10, DefaultGeographicCRS.WGS84);
 
         // Dataset with some points located in appropriate area
         // points are close enough to create a single cluster
-        Coordinate[] data = {
-            new Coordinate(-121.813201, 48.777343), new Coordinate(-121.813, 48.777)
-        };
+        Coordinate[] data = {new Coordinate(-121.813201, 48.777343), new Coordinate(-121.813, 48.777)};
 
         SimpleFeatureCollection fc = createPoints(data, inBounds);
         ProgressListener monitor = null;
 
         // Google Mercator BBOX for northern Washington State (roughly)
         CoordinateReferenceSystem webMerc = CRS.decode("EPSG:3785");
-        ReferencedEnvelope outBounds =
-                new ReferencedEnvelope(
-                        -1.4045034049133E7,
-                        -1.2937920131607E7,
-                        5916835.1504419,
-                        6386464.2521607,
-                        webMerc);
+        ReferencedEnvelope outBounds = new ReferencedEnvelope(
+                -1.4045034049133E7, -1.2937920131607E7, 5916835.1504419, 6386464.2521607, webMerc);
 
         PointStackerProcess psp = new PointStackerProcess();
-        SimpleFeatureCollection result =
-                psp.execute(
-                        fc, 100, // cellSize
-                        true, // weightClusterPosition
-                        null, // normalize
-                        null, // preserve location
-                        outBounds, // outputBBOX
-                        1810, // outputWidth
-                        768, // outputHeight
-                        null, monitor);
+        SimpleFeatureCollection result = psp.execute(
+                fc, 100, // cellSize
+                true, // weightClusterPosition
+                null, // normalize
+                null, // preserve location
+                outBounds, // outputBBOX
+                1810, // outputWidth
+                768, // outputHeight
+                null, monitor);
 
         // check if we did not alter the results
         checkSchemaCorrect(result.getSchema(), false);
         assertEquals(1, result.size());
-        assertEquals(
-                inBounds.getCoordinateReferenceSystem(),
-                result.getBounds().getCoordinateReferenceSystem());
+        assertEquals(inBounds.getCoordinateReferenceSystem(), result.getBounds().getCoordinateReferenceSystem());
         checkResultPoint(result, new Coordinate(-121.813201, 48.777343), 2, 2, null, null);
     }
 
@@ -435,9 +388,8 @@ public class PointStackerProcessTest {
     }
 
     /**
-     * Check that a result set contains a stacked point in the right cell with expected attribute
-     * values. Because it's not known in advance what the actual location of a stacked point will
-     * be, a nearest-point strategy is used.
+     * Check that a result set contains a stacked point in the right cell with expected attribute values. Because it's
+     * not known in advance what the actual location of a stacked point will be, a nearest-point strategy is used.
      */
     private void checkResultPoint(
             SimpleFeatureCollection result,
@@ -463,8 +415,7 @@ public class PointStackerProcessTest {
         assertEquals(expectedCount, count);
         assertEquals(expectedCountUnique, countunique);
         if (expectedProportion != null) assertEquals(expectedProportion, normCount, 0.0001);
-        if (expectedProportionUnique != null)
-            assertEquals(expectedProportionUnique, normCountUnique, 0.0001);
+        if (expectedProportionUnique != null) assertEquals(expectedProportionUnique, normCountUnique, 0.0001);
     }
 
     private void checkSchemaCorrect(SimpleFeatureType ft, boolean includeProportionColumns) {
@@ -483,11 +434,15 @@ public class PointStackerProcessTest {
                 ft.getDescriptor(PointStackerProcess.ATTR_COUNT).getType().getBinding());
         assertEquals(
                 Integer.class,
-                ft.getDescriptor(PointStackerProcess.ATTR_COUNT_UNIQUE).getType().getBinding());
+                ft.getDescriptor(PointStackerProcess.ATTR_COUNT_UNIQUE)
+                        .getType()
+                        .getBinding());
         if (includeProportionColumns) {
             assertEquals(
                     Double.class,
-                    ft.getDescriptor(PointStackerProcess.ATTR_NORM_COUNT).getType().getBinding());
+                    ft.getDescriptor(PointStackerProcess.ATTR_NORM_COUNT)
+                            .getType()
+                            .getBinding());
             assertEquals(
                     Double.class,
                     ft.getDescriptor(PointStackerProcess.ATTR_NORM_COUNT_UNIQUE)

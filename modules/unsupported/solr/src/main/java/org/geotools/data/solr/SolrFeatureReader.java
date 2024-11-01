@@ -70,8 +70,7 @@ public class SolrFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
 
     /**
      * Creates the feature reader for SOLR store <br>
-     * The feature reader use SOLR CURSOR to paginate request, so multiple SOLR query will be
-     * executed
+     * The feature reader use SOLR CURSOR to paginate request, so multiple SOLR query will be executed
      *
      * @param featureType the feature type to query
      * @param server The SOLR server
@@ -80,10 +79,7 @@ public class SolrFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
      * @throws java.io.IOException
      */
     public SolrFeatureReader(
-            SimpleFeatureType featureType,
-            HttpSolrClient server,
-            SolrQuery solrQuery,
-            SolrDataStore solrDataStore)
+            SimpleFeatureType featureType, HttpSolrClient server, SolrQuery solrQuery, SolrDataStore solrDataStore)
             throws SolrServerException, IOException {
         this.featureType = featureType;
         this.solrQuery = solrQuery;
@@ -108,9 +104,7 @@ public class SolrFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
         solrQuery.set(CursorMarkParams.CURSOR_MARK_PARAM, cursorMark);
         QueryResponse rsp = server.query(solrQuery);
         if (this.solrDataStore.getLogger().isLoggable(Level.FINE)) {
-            this.solrDataStore
-                    .getLogger()
-                    .log(Level.FINE, "SOLR query done: " + solrQuery.toString());
+            this.solrDataStore.getLogger().log(Level.FINE, "SOLR query done: " + solrQuery.toString());
         }
         this.solrDocIterator = rsp.getResults().iterator();
         nextCursorMark = rsp.getNextCursorMark();
@@ -120,8 +114,7 @@ public class SolrFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
         geometryReaders = new HashMap<>();
         for (AttributeDescriptor att : featureType.getAttributeDescriptors()) {
             if (att instanceof GeometryDescriptor) {
-                SolrSpatialStrategy spatialStrategy =
-                        SolrSpatialStrategy.createStrategy((GeometryDescriptor) att);
+                SolrSpatialStrategy spatialStrategy = SolrSpatialStrategy.createStrategy((GeometryDescriptor) att);
                 geometryReaders.put(att.getName(), spatialStrategy);
             }
         }
@@ -139,9 +132,7 @@ public class SolrFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
         solrQuery.set(CursorMarkParams.CURSOR_MARK_PARAM, CursorMarkParams.CURSOR_MARK_START);
         QueryResponse rsp = server.query(solrQuery);
         if (this.solrDataStore.getLogger().isLoggable(Level.FINE)) {
-            this.solrDataStore
-                    .getLogger()
-                    .log(Level.FINE, "SOLR query done: " + solrQuery.toString());
+            this.solrDataStore.getLogger().log(Level.FINE, "SOLR query done: " + solrQuery.toString());
         }
         String nextC = rsp.getNextCursorMark();
         solrQuery.setRows(prevRows);
@@ -153,19 +144,14 @@ public class SolrFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
         return this.featureType;
     }
 
-    /**
-     * SOLR multiValues fields are returned as single String field, with values concatenated and
-     * separated by ";"
-     */
+    /** SOLR multiValues fields are returned as single String field, with values concatenated and separated by ";" */
     @Override
-    public SimpleFeature next()
-            throws IOException, IllegalArgumentException, NoSuchElementException {
+    public SimpleFeature next() throws IOException, IllegalArgumentException, NoSuchElementException {
         String fid = "";
         try {
             if (!hasNext()) {
-                throw new NoSuchElementException(
-                        "No more features in this reader, you should call "
-                                + "hasNext() to check for feature availability");
+                throw new NoSuchElementException("No more features in this reader, you should call "
+                        + "hasNext() to check for feature availability");
             }
             SolrDocument doc = this.solrDocIterator.next();
             fid = featureType.getTypeName() + "." + doc.getFieldValue(pkey.getName());
@@ -209,9 +195,7 @@ public class SolrFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
         }
     }
 
-    /**
-     * SOLR CURSOR MARK is used to retrieve data until no more cursor and no more data is available
-     */
+    /** SOLR CURSOR MARK is used to retrieve data until no more cursor and no more data is available */
     @Override
     public boolean hasNext() throws IOException {
         if (next == null) {
@@ -226,11 +210,7 @@ public class SolrFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
                         if (this.solrDataStore.getLogger().isLoggable(Level.FINE)) {
                             this.solrDataStore
                                     .getLogger()
-                                    .log(
-                                            Level.FINE,
-                                            server.getBaseURL()
-                                                    + "/select?"
-                                                    + solrQuery.toString());
+                                    .log(Level.FINE, server.getBaseURL() + "/select?" + solrQuery.toString());
                         }
                         this.solrDocIterator = rsp.getResults().iterator();
                         nextCursorMark = rsp.getNextCursorMark();

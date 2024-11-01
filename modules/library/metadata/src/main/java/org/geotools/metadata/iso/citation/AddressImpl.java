@@ -73,10 +73,8 @@ public class AddressImpl extends MetadataEntity implements Address {
         if (address.getAdministrativeArea() != null)
             setAdministrativeArea(new SimpleInternationalString(address.getAdministrativeArea()));
         if (address.getCity() != null) setCity(new SimpleInternationalString(address.getCity()));
-        if (address.getCountry() != null)
-            setCountry(new SimpleInternationalString(address.getCountry()));
-        if (address.getDeliveryPoint() != null)
-            setDeliveryPoints(Collections.singleton(address.getDeliveryPoint()));
+        if (address.getCountry() != null) setCountry(new SimpleInternationalString(address.getCountry()));
+        if (address.getDeliveryPoint() != null) setDeliveryPoints(Collections.singleton(address.getDeliveryPoint()));
         if (address.getElectronicMailAddress() != null)
             setElectronicMailAddresses(Collections.singleton(address.getElectronicMailAddress()));
         if (address.getPostalCode() != null) setPostalCode(address.getPostalCode());
@@ -129,9 +127,7 @@ public class AddressImpl extends MetadataEntity implements Address {
         deliveryPoints = copyCollection(newValues, deliveryPoints, String.class);
     }
 
-    /**
-     * Returns the address of the electronic mailbox of the responsible organization or individual.
-     */
+    /** Returns the address of the electronic mailbox of the responsible organization or individual. */
     @Override
     public Collection<String> getElectronicMailAddresses() {
         return (electronicMailAddresses = nonNullCollection(electronicMailAddresses, String.class));

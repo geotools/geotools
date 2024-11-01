@@ -24,8 +24,8 @@ import org.geotools.feature.SchemaException;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 
 /**
- * Subclass of {@link ListFeatureCollection} that computes the target schema from the first entry as
- * needed, instead of eagerly requesting one at construction time
+ * Subclass of {@link ListFeatureCollection} that computes the target schema from the first entry as needed, instead of
+ * eagerly requesting one at construction time
  */
 class DelayedSchemaFeatureCollection extends ListFeatureCollection {
 

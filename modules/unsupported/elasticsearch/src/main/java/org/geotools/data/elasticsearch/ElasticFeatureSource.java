@@ -44,10 +44,7 @@ import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Envelope;
 
-/**
- * Provides access to a specific type within the Elasticsearch index described by the associated
- * data store.
- */
+/** Provides access to a specific type within the Elasticsearch index described by the associated data store. */
 public class ElasticFeatureSource extends ContentFeatureSource {
 
     private static final Logger LOGGER = Logging.getLogger(ElasticFeatureSource.class);
@@ -59,8 +56,7 @@ public class ElasticFeatureSource extends ContentFeatureSource {
 
         final ElasticDataStore dataStore = getDataStore();
         if (dataStore.getLayerConfigurations().get(entry.getName().getLocalPart()) == null) {
-            final List<ElasticAttribute> attributes =
-                    dataStore.getElasticAttributes(entry.getName());
+            final List<ElasticAttribute> attributes = dataStore.getElasticAttributes(entry.getName());
             final ElasticLayerConfiguration config =
                     new ElasticLayerConfiguration(entry.getName().getLocalPart());
             config.getAttributes().addAll(attributes);
@@ -81,8 +77,7 @@ public class ElasticFeatureSource extends ContentFeatureSource {
         final CoordinateReferenceSystem crs = getSchema().getCoordinateReferenceSystem();
         final ReferencedEnvelope bounds = new ReferencedEnvelope(crs);
 
-        try (FeatureReader<SimpleFeatureType, SimpleFeature> featureReader =
-                getReaderInternal(query)) {
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> featureReader = getReaderInternal(query)) {
             while (featureReader.hasNext()) {
                 final SimpleFeature feature = featureReader.next();
                 bounds.include(feature.getBounds());
@@ -98,8 +93,7 @@ public class ElasticFeatureSource extends ContentFeatureSource {
         final ElasticRequest searchRequest = prepareSearchRequest(query, false);
         try {
             if (!filterFullySupported) {
-                try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                        getReaderInternal(query)) {
+                try (FeatureReader<SimpleFeatureType, SimpleFeature> reader = getReaderInternal(query)) {
                     while (reader.hasNext()) {
                         reader.next();
                         hits++;
@@ -110,9 +104,7 @@ public class ElasticFeatureSource extends ContentFeatureSource {
                 final ElasticDataStore dataStore = getDataStore();
                 final String docType = dataStore.getDocType(entry.getName());
                 final ElasticResponse sr =
-                        dataStore
-                                .getClient()
-                                .search(dataStore.getIndexName(), docType, searchRequest);
+                        dataStore.getClient().search(dataStore.getIndexName(), docType, searchRequest);
                 final int totalHits = (int) sr.getTotalNumHits();
                 final int size = getSize(query);
                 final int from = getStartIndex(query);
@@ -127,23 +119,18 @@ public class ElasticFeatureSource extends ContentFeatureSource {
     }
 
     @Override
-    protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query)
-            throws IOException {
+    protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query) throws IOException {
         LOGGER.fine("getReaderInternal");
         FeatureReader<SimpleFeatureType, SimpleFeature> reader;
         try {
             final ElasticDataStore dataStore = getDataStore();
             final String docType = dataStore.getDocType(entry.getName());
-            final boolean scroll =
-                    !useSortOrPagination(query)
-                            && dataStore.getScrollEnabled()
-                            && !isAggregation(query);
+            final boolean scroll = !useSortOrPagination(query) && dataStore.getScrollEnabled() && !isAggregation(query);
             final ElasticRequest searchRequest = prepareSearchRequest(query, scroll);
             if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.fine("Search request: " + searchRequest);
             }
-            final ElasticResponse sr =
-                    dataStore.getClient().search(dataStore.getIndexName(), docType, searchRequest);
+            final ElasticResponse sr = dataStore.getClient().search(dataStore.getIndexName(), docType, searchRequest);
             if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.fine("Search response: " + sr);
             }
@@ -193,23 +180,18 @@ public class ElasticFeatureSource extends ContentFeatureSource {
                         if (feature.getAttribute("_aggregation") != null) {
                             final byte[] data = (byte[]) feature.getAttribute("_aggregation");
                             final Map<String, Object> aggregation =
-                                    mapper.readValue(
-                                            data, new TypeReference<Map<String, Object>>() {});
+                                    mapper.readValue(data, new TypeReference<Map<String, Object>>() {});
                             elasticBucketVisitor.getBuckets().add(aggregation);
                         }
                     } catch (IOException erp) {
                         LOGGER.fine("Failed to parse aggregation value: " + erp);
                         throw erp;
                     } catch (Exception unexpected) {
-                        String fid =
-                                feature == null ? "feature" : feature.getIdentifier().toString();
+                        String fid = feature == null
+                                ? "feature"
+                                : feature.getIdentifier().toString();
                         throw new IOException(
-                                "Problem visiting "
-                                        + query.getTypeName()
-                                        + " visiting "
-                                        + fid
-                                        + ":"
-                                        + unexpected,
+                                "Problem visiting " + query.getTypeName() + " visiting " + fid + ":" + unexpected,
                                 unexpected);
                     }
                 }
@@ -275,9 +257,8 @@ public class ElasticFeatureSource extends ContentFeatureSource {
         filterToElastic.encode(query);
         filterFullySupported = filterToElastic.getFullySupported();
         if (!filterFullySupported) {
-            LOGGER.fine(
-                    "Filter is not fully supported by native Elasticsearch."
-                            + " Additional post-query filtering will be performed.");
+            LOGGER.fine("Filter is not fully supported by native Elasticsearch."
+                    + " Additional post-query filtering will be performed.");
         }
         final Map<String, Object> queryBuilder = filterToElastic.getQueryBuilder();
 
@@ -291,8 +272,7 @@ public class ElasticFeatureSource extends ContentFeatureSource {
         }
 
         if (filterToElastic.getAggregations() != null) {
-            final Map<String, Map<String, Map<String, Object>>> aggregations =
-                    filterToElastic.getAggregations();
+            final Map<String, Map<String, Map<String, Object>>> aggregations = filterToElastic.getAggregations();
             Envelope envelope = getQueryEnvelope(query);
             final long gridSize;
             if (dataStore.getGridSize() != null) {
@@ -340,8 +320,7 @@ public class ElasticFeatureSource extends ContentFeatureSource {
     }
 
     private boolean useSortOrPagination(Query query) {
-        return (query.getSortBy() != null && query.getSortBy().length > 0)
-                || query.getStartIndex() != null;
+        return (query.getSortBy() != null && query.getSortBy().length > 0) || query.getStartIndex() != null;
     }
 
     private int getSize(Query query) {
@@ -377,8 +356,7 @@ public class ElasticFeatureSource extends ContentFeatureSource {
             attributes = null;
         }
 
-        final ElasticFeatureTypeBuilder typeBuilder =
-                new ElasticFeatureTypeBuilder(attributes, entry.getName());
+        final ElasticFeatureTypeBuilder typeBuilder = new ElasticFeatureTypeBuilder(attributes, entry.getName());
         return typeBuilder.buildFeatureType();
     }
 

@@ -29,23 +29,22 @@ import org.geotools.filter.capability.FunctionNameImpl;
 import org.xml.sax.helpers.NamespaceSupport;
 
 /**
- * Function that selects a JSON object using a JSON path. This function implements the {@link
- * PropertyName} interface for compatibility with the filtering processing stack.
+ * Function that selects a JSON object using a JSON path. This function implements the {@link PropertyName} interface
+ * for compatibility with the filtering processing stack.
  */
 public final class JsonSelectFunction extends FunctionExpressionImpl implements PropertyName {
 
     private static final NamespaceSupport NAMESPACE_SUPPORT = new NamespaceSupport();
 
-    private static final FunctionName DEFINITION =
-            new FunctionNameImpl("jsonSelect", parameter("path", String.class));
+    private static final FunctionName DEFINITION = new FunctionNameImpl("jsonSelect", parameter("path", String.class));
 
     public JsonSelectFunction() {
         super(DEFINITION);
     }
 
     /**
-     * Evaluates this function against the provided object. If a NULL object is provided and
-     * attribute expression will be returned.
+     * Evaluates this function against the provided object. If a NULL object is provided and attribute expression will
+     * be returned.
      */
     @Override
     public Object evaluate(Object object) {

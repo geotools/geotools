@@ -56,9 +56,7 @@ public class QueryTypeBindingTest extends WFSTestSupport {
         buildDocument(resource);
 
         final Object parsed = parse(WFS.Query);
-        assertTrue(
-                (parsed == null) ? "null" : parsed.getClass().toString(),
-                parsed instanceof QueryType);
+        assertTrue((parsed == null) ? "null" : parsed.getClass().toString(), parsed instanceof QueryType);
 
         QueryType query = (QueryType) parsed;
         List typeNames = query.getTypeName();
@@ -78,7 +76,8 @@ public class QueryTypeBindingTest extends WFSTestSupport {
         assertEquals("property1", query.getPropertyName().get(0));
         assertEquals("property2", query.getPropertyName().get(1));
 
-        XlinkPropertyNameType xlink = (XlinkPropertyNameType) query.getXlinkPropertyName().get(0);
+        XlinkPropertyNameType xlink =
+                (XlinkPropertyNameType) query.getXlinkPropertyName().get(0);
         assertEquals("gt:propertyA/gt:propertyB", xlink.getValue());
         assertEquals("*", xlink.getTraverseXlinkDepth());
         assertEquals(BigInteger.valueOf(10), xlink.getTraverseXlinkExpiry());
@@ -132,17 +131,15 @@ public class QueryTypeBindingTest extends WFSTestSupport {
 
     /**
      * Builds a {@link QueryType} instance equivalent to the test query in the file <code>
-     * test-data/QueryTypeBinding.xml</code> in the <code>org.geotools.wfs.bindings</code> package
-     * of the test resources.
+     * test-data/QueryTypeBinding.xml</code> in the <code>org.geotools.wfs.bindings</code> package of the test
+     * resources.
      */
     @SuppressWarnings("unchecked")
     private QueryType buildTestQuery() {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
-        final Function function1 =
-                ff.function("MAX", new Expression[] {ff.literal(1), ff.literal(2)});
-        final Function function2 =
-                ff.function("MIN", new Expression[] {ff.literal(1), ff.literal(2)});
+        final Function function1 = ff.function("MAX", new Expression[] {ff.literal(1), ff.literal(2)});
+        final Function function2 = ff.function("MIN", new Expression[] {ff.literal(1), ff.literal(2)});
 
         final XlinkPropertyNameType xlinkPropertyName1 = factory.createXlinkPropertyNameType();
         xlinkPropertyName1.setTraverseXlinkExpiry(BigInteger.valueOf(10));

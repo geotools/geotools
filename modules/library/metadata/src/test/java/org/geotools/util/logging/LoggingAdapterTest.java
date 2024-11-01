@@ -30,8 +30,8 @@ import org.junit.Test;
  */
 public final class LoggingAdapterTest {
     /**
-     * Tests the {@link LoggerAdapter#log(Level,String)} method. This is of special interest because
-     * of the switch cases used in implementation.
+     * Tests the {@link LoggerAdapter#log(Level,String)} method. This is of special interest because of the switch cases
+     * used in implementation.
      */
     @Test
     public void testLog() {

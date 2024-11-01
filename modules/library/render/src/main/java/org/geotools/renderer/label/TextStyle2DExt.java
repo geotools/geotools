@@ -25,8 +25,8 @@ import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.prep.PreparedGeometry;
 
 /**
- * Helper class that keeps the state of the alternate polygon labelling angle to avoid its (sometime
- * expensive) computation as the labeller tries different labelling positions
+ * Helper class that keeps the state of the alternate polygon labelling angle to avoid its (sometime expensive)
+ * computation as the labeller tries different labelling positions
  *
  * @author Andrea Aime - GeoSolutions
  */

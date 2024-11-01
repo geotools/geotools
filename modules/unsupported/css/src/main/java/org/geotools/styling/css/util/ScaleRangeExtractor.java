@@ -27,8 +27,8 @@ import org.geotools.styling.zoom.ZoomContext;
 import org.geotools.util.Range;
 
 /**
- * Extracts the scale range from a {@link Selector}, throws an exception if the selector contains
- * more than one scale range in a OR
+ * Extracts the scale range from a {@link Selector}, throws an exception if the selector contains more than one scale
+ * range in a OR
  *
  * @author Andrea Aime - GeoSolutions
  */
@@ -37,10 +37,7 @@ public class ScaleRangeExtractor extends AbstractSelectorVisitor {
     public static final ZoomContext WEB_MERCATOR_ZOOM_CONTEXT =
             WellKnownZoomContextFinder.getInstance().get("WebMercatorQuad");
 
-    /**
-     * Flags whether we are inside a OR or not. If a OR contains a range, we are going to reject the
-     * extraction
-     */
+    /** Flags whether we are inside a OR or not. If a OR contains a range, we are going to reject the extraction */
     private boolean insideOr;
 
     /** The extracted range */
@@ -127,8 +124,7 @@ public class ScaleRangeExtractor extends AbstractSelectorVisitor {
         }
 
         org.geotools.styling.zoom.ScaleRange scaleRange = zoomContext.getRange(min, max);
-        Range<Double> localRange =
-                new Range<>(Double.class, scaleRange.getMinDenom(), scaleRange.getMaxDenom());
+        Range<Double> localRange = new Range<>(Double.class, scaleRange.getMinDenom(), scaleRange.getMaxDenom());
         if (range == null) {
             range = localRange;
         } else {

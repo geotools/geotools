@@ -23,8 +23,8 @@ import org.geotools.graph.structure.Edge;
 import org.geotools.graph.structure.Node;
 
 /**
- * Represents a cycle in a graph. A <B>cycle</B> C is defined as a closed walk of size n in which
- * nodes 1 through n-1 form a path.
+ * Represents a cycle in a graph. A <B>cycle</B> C is defined as a closed walk of size n in which nodes 1 through n-1
+ * form a path.
  *
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
  */
@@ -38,8 +38,7 @@ public class Cycle extends Walk {
      * Tests if the cycle is valid. A valid cycle satisfies two conditions: <br>
      * <br>
      * 1. Each pair of adjacent nodes share an edge.<br>
-     * 2. The first and last nodes share an edge. 3. The only node repetition is the first and last
-     * nodes.
+     * 2. The first and last nodes share an edge. 3. The only node repetition is the first and last nodes.
      */
     @Override
     public boolean isValid() {

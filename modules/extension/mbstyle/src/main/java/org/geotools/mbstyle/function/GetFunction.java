@@ -26,12 +26,11 @@ import org.json.simple.JSONObject;
 
 /** Returns the value of a given object key in a JSONObject. */
 public class GetFunction extends FunctionExpressionImpl {
-    public static final FunctionName NAME =
-            new FunctionNameImpl(
-                    "get",
-                    parameter("value", String.class),
-                    parameter("object", JSONObject.class),
-                    parameter("fallback", Object.class));
+    public static final FunctionName NAME = new FunctionNameImpl(
+            "get",
+            parameter("value", String.class),
+            parameter("object", JSONObject.class),
+            parameter("fallback", Object.class));
 
     public GetFunction() {
         super(NAME);

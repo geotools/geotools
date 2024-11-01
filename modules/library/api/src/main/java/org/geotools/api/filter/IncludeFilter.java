@@ -13,8 +13,8 @@ import java.io.ObjectStreamException;
 import java.io.Serializable;
 
 /**
- * Indicating "no filtering", evaluates to {@code true}. This is a placeholder filter intended to be
- * used in data structuring definition.
+ * Indicating "no filtering", evaluates to {@code true}. This is a placeholder filter intended to be used in data
+ * structuring definition.
  *
  * <p>
  *

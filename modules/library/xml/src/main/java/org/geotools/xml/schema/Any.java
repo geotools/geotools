@@ -38,8 +38,8 @@ public interface Any extends ElementGrouping {
     public int getMinOccurs();
 
     /**
-     * Returns the namespace attribute of the 'any' contruct that an instance of this interface is
-     * representing within an XML Schema.
+     * Returns the namespace attribute of the 'any' contruct that an instance of this interface is representing within
+     * an XML Schema.
      */
     public URI getNamespace();
 }

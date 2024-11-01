@@ -99,8 +99,7 @@ public class WMTSTileFactory4326Test {
     }
 
     private Tile createTileFromXYZoom(TileService service) throws Exception {
-        TileIdentifier identifier =
-                new WMTSTileIdentifier(20, 15, new WebMercatorZoomLevel(5), service.getName());
+        TileIdentifier identifier = new WMTSTileIdentifier(20, 15, new WebMercatorZoomLevel(5), service.getName());
         Tile tile = factory.create(identifier, service);
 
         Assert.assertEquals(RenderState.NEW, tile.getRenderState());
@@ -184,8 +183,7 @@ public class WMTSTileFactory4326Test {
             // assertTrue(neighbour.getContextState().equals(ContextState.OKAY));
             WMTSTile expectedNeighbour = new WMTSTile(21, 15, zoomLevel, service);
 
-            Assert.assertEquals(
-                    expectedNeighbour.getTileIdentifier(), neighbour.getTileIdentifier());
+            Assert.assertEquals(expectedNeighbour.getTileIdentifier(), neighbour.getTileIdentifier());
         }
     }
 
@@ -193,16 +191,13 @@ public class WMTSTileFactory4326Test {
     public void testFindLowerNeighbour() throws Exception {
         for (WMTSServiceType t : WMTSServiceType.values()) {
             TileService service = createService(t);
-            WMTSTile tile =
-                    new WMTSTile(10, 5, new WMTSZoomLevel(5, (WMTSTileService) service), service);
+            WMTSTile tile = new WMTSTile(10, 5, new WMTSZoomLevel(5, (WMTSTileService) service), service);
 
             Tile neighbour = factory.findLowerNeighbour(tile, service);
 
-            WMTSTile expectedNeighbour =
-                    new WMTSTile(10, 6, new WMTSZoomLevel(5, (WMTSTileService) service), service);
+            WMTSTile expectedNeighbour = new WMTSTile(10, 6, new WMTSZoomLevel(5, (WMTSTileService) service), service);
 
-            Assert.assertEquals(
-                    expectedNeighbour.getTileIdentifier(), neighbour.getTileIdentifier());
+            Assert.assertEquals(expectedNeighbour.getTileIdentifier(), neighbour.getTileIdentifier());
         }
     }
 
@@ -213,10 +208,8 @@ public class WMTSTileFactory4326Test {
         WMTSTileService[] services = {createRESTService(), createKVPService()};
 
         ReferencedEnvelope[] expectedEnv = {
-            new ReferencedEnvelope(
-                    1102848.0, 2151424.0, -951424.0, 97152.0, CRS.decode("EPSG:31287")),
-            new ReferencedEnvelope(
-                    -90, 0.00, -90.0, 0.0, DefaultGeographicCRS.WGS84) // This doesn't look right
+            new ReferencedEnvelope(1102848.0, 2151424.0, -951424.0, 97152.0, CRS.decode("EPSG:31287")),
+            new ReferencedEnvelope(-90, 0.00, -90.0, 0.0, DefaultGeographicCRS.WGS84) // This doesn't look right
         };
 
         for (int i = 0; i < 2; i++) {
@@ -250,21 +243,15 @@ public class WMTSTileFactory4326Test {
 
     private WMTSTileService createRESTService() throws Exception {
         try {
-            URL capaResource =
-                    getClass().getClassLoader().getResource("test-data/zamg.getcapa.xml");
+            URL capaResource = getClass().getClassLoader().getResource("test-data/zamg.getcapa.xml");
             assertNotNull("Can't find REST getCapa resource", capaResource);
             File capaFile = new File(capaResource.toURI());
             assertTrue("Can't find REST getCapa file", capaFile.exists());
             WMTSCapabilities capa = createCapabilities(capaFile);
 
-            String baseURL =
-                    "XXXhttp://wmsx.zamg.ac.at/mapcacheStatmap/wmts/1.0.0/WMTSCapabilities.xml";
+            String baseURL = "XXXhttp://wmsx.zamg.ac.at/mapcacheStatmap/wmts/1.0.0/WMTSCapabilities.xml";
             return new WMTSTileService(
-                    baseURL,
-                    WMTSServiceType.REST,
-                    capa.getLayer("grey"),
-                    null,
-                    capa.getMatrixSet("statmap"));
+                    baseURL, WMTSServiceType.REST, capa.getLayer("grey"), null, capa.getMatrixSet("statmap"));
 
         } catch (URISyntaxException ex) {
             fail(ex.getMessage());
@@ -274,16 +261,12 @@ public class WMTSTileFactory4326Test {
 
     private WMTSTileService createKVPService() throws Exception {
         try {
-            URL capaKvp =
-                    getClass()
-                            .getClassLoader()
-                            .getResource("test-data/geosolutions_getcapa_kvp.xml");
+            URL capaKvp = getClass().getClassLoader().getResource("test-data/geosolutions_getcapa_kvp.xml");
             assertNotNull(capaKvp);
             File capaFile = new File(capaKvp.toURI());
             WMTSCapabilities capa = createCapabilities(capaFile);
 
-            String baseURL =
-                    "http://demo.geo-solutions.it/geoserver/gwc/service/wmts?REQUEST=getcapabilities";
+            String baseURL = "http://demo.geo-solutions.it/geoserver/gwc/service/wmts?REQUEST=getcapabilities";
 
             WMTSLayer layer = capa.getLayer("unesco:Unesco_point");
             TileMatrixSet matrixSet = capa.getMatrixSet("EPSG:4326");
@@ -306,9 +289,7 @@ public class WMTSTileFactory4326Test {
         Parser parser = new Parser(new WMTSConfiguration());
 
         Object object = parser.parse(new FileReader(capFile));
-        assertTrue(
-                "Capabilities failed to parse " + object.getClass(),
-                object instanceof CapabilitiesType);
+        assertTrue("Capabilities failed to parse " + object.getClass(), object instanceof CapabilitiesType);
 
         return new WMTSCapabilities((CapabilitiesType) object);
     }
@@ -325,13 +306,8 @@ public class WMTSTileFactory4326Test {
 
         String baseURL =
                 "http://wmsx.zamg.ac.at/mapcacheStatmap/wmts/1.0.0/overlay-all/default/{style}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png";
-        WMTSTileService service =
-                new WMTSTileService(
-                        baseURL,
-                        WMTSServiceType.REST,
-                        capa.getLayer("grey"),
-                        "default",
-                        capa.getMatrixSet("statmap"));
+        WMTSTileService service = new WMTSTileService(
+                baseURL, WMTSServiceType.REST, capa.getLayer("grey"), "default", capa.getMatrixSet("statmap"));
 
         WMTSZoomLevel zoomLevel = service.getZoomLevel(1);
         WMTSTileIdentifier tileId = new WMTSTileIdentifier(1, 1, zoomLevel, "SomeName");
@@ -352,16 +328,10 @@ public class WMTSTileFactory4326Test {
 
         String baseURL =
                 "https://maps1.wien.gv.at/basemap/bmapoberflaeche/{Style}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.jpeg";
-        WMTSTileService service =
-                new WMTSTileService(
-                        baseURL,
-                        WMTSServiceType.REST,
-                        capa.getLayer("bmaphidpi"),
-                        "normal",
-                        capa.getMatrixSet("EPSG:4326"));
+        WMTSTileService service = new WMTSTileService(
+                baseURL, WMTSServiceType.REST, capa.getLayer("bmaphidpi"), "normal", capa.getMatrixSet("EPSG:4326"));
 
-        WMTSTileIdentifier tileId =
-                new WMTSTileIdentifier(1, 1, service.getZoomLevel(1), "SomeName");
+        WMTSTileIdentifier tileId = new WMTSTileIdentifier(1, 1, service.getZoomLevel(1), "SomeName");
         WMTSTile tile = new WMTSTile(tileId, service);
         String url = tile.getUrl().toString();
         // check that url contains style name instead of {Style}

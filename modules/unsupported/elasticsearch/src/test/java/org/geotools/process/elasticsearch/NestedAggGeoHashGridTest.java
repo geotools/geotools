@@ -98,10 +98,8 @@ public class NestedAggGeoHashGridTest {
 
     @Test
     public void testComputeCellValue() {
-        Number rasterValue =
-                geohashGrid.computeCellValue(
-                        TestUtil.createAggBucket(
-                                NestedAggGeoHashGrid.DEFAULT_AGG_KEY, AGG_RESULTS));
+        Number rasterValue = geohashGrid.computeCellValue(
+                TestUtil.createAggBucket(NestedAggGeoHashGrid.DEFAULT_AGG_KEY, AGG_RESULTS));
         assertEquals(5, rasterValue);
     }
 

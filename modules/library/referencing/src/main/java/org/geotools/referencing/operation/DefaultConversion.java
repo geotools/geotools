@@ -32,9 +32,9 @@ import org.geotools.api.referencing.operation.PlanarProjection;
 import org.geotools.api.referencing.operation.Projection;
 
 /**
- * An operation on coordinates that does not include any change of Datum. The best-known example of
- * a coordinate conversion is a map projection. The parameters describing coordinate conversions are
- * defined rather than empirically derived. Note that some conversions have no parameters.
+ * An operation on coordinates that does not include any change of Datum. The best-known example of a coordinate
+ * conversion is a map projection. The parameters describing coordinate conversions are defined rather than empirically
+ * derived. Note that some conversions have no parameters.
  *
  * @since 2.1
  * @version $Id$
@@ -46,15 +46,15 @@ public class DefaultConversion extends DefaultOperation implements Conversion {
     private static final long serialVersionUID = -2148164324805562793L;
 
     /**
-     * Constructs a new conversion with the same values than the specified one, together with the
-     * specified source and target CRS. While the source conversion can be an arbitrary one, it is
-     * typically a {@linkplain DefiningConversion defining conversion}.
+     * Constructs a new conversion with the same values than the specified one, together with the specified source and
+     * target CRS. While the source conversion can be an arbitrary one, it is typically a {@linkplain DefiningConversion
+     * defining conversion}.
      *
      * @param definition The defining conversion.
      * @param sourceCRS The source CRS.
      * @param targetCRS The target CRS.
-     * @param transform Transform from positions in the {@linkplain #getSourceCRS source CRS} to
-     *     positions in the {@linkplain #getTargetCRS target CRS}.
+     * @param transform Transform from positions in the {@linkplain #getSourceCRS source CRS} to positions in the
+     *     {@linkplain #getTargetCRS target CRS}.
      */
     public DefaultConversion(
             final Conversion definition,
@@ -65,14 +65,14 @@ public class DefaultConversion extends DefaultOperation implements Conversion {
     }
 
     /**
-     * Constructs a conversion from a set of properties. The properties given in argument follow the
-     * same rules than for the {@link AbstractCoordinateOperation} constructor.
+     * Constructs a conversion from a set of properties. The properties given in argument follow the same rules than for
+     * the {@link AbstractCoordinateOperation} constructor.
      *
      * @param properties Set of properties. Should contains at least {@code "name"}.
      * @param sourceCRS The source CRS.
      * @param targetCRS The target CRS.
-     * @param transform Transform from positions in the {@linkplain #getSourceCRS source CRS} to
-     *     positions in the {@linkplain #getTargetCRS target CRS}.
+     * @param transform Transform from positions in the {@linkplain #getSourceCRS source CRS} to positions in the
+     *     {@linkplain #getTargetCRS target CRS}.
      * @param method The operation method.
      */
     public DefaultConversion(
@@ -86,9 +86,9 @@ public class DefaultConversion extends DefaultOperation implements Conversion {
 
     /**
      * Invoked by the super-class constructor for checking argument validity. At the opposite of
-     * {@link DefaultOperation}, a conversion accepts null {@code transform}, {@code sourceCRS} and
-     * {@code targetCRS} providing that all of them are null together. If only one or two of them is
-     * {@code null}, we will rely on the default validation which will throw an exception.
+     * {@link DefaultOperation}, a conversion accepts null {@code transform}, {@code sourceCRS} and {@code targetCRS}
+     * providing that all of them are null together. If only one or two of them is {@code null}, we will rely on the
+     * default validation which will throw an exception.
      */
     @Override
     void validate() throws IllegalArgumentException {
@@ -98,20 +98,18 @@ public class DefaultConversion extends DefaultOperation implements Conversion {
     }
 
     /**
-     * Returns a conversion from the specified {@linkplain DefiningConversion defining conversion}.
-     * The new conversion will be a more specific type like a {@linkplain PlanarProjection planar},
-     * {@linkplain CylindricalProjection cylindrical} or {@linkplain ConicProjection conic
-     * projection}. This type is inferred from the {@code conversion} argument when possible.
-     * However the inferred type is not always the most accurate one, so an optional {@code
-     * typeHint} argument may be specified in order to get a more specific subclass. This later
-     * argument is just a hint: it may be {@code null} and will be ignored if it conflict with the
-     * automatically inferred type.
+     * Returns a conversion from the specified {@linkplain DefiningConversion defining conversion}. The new conversion
+     * will be a more specific type like a {@linkplain PlanarProjection planar}, {@linkplain CylindricalProjection
+     * cylindrical} or {@linkplain ConicProjection conic projection}. This type is inferred from the {@code conversion}
+     * argument when possible. However the inferred type is not always the most accurate one, so an optional
+     * {@code typeHint} argument may be specified in order to get a more specific subclass. This later argument is just
+     * a hint: it may be {@code null} and will be ignored if it conflict with the automatically inferred type.
      *
      * @param definition The defining conversion.
      * @param sourceCRS The source CRS.
      * @param targetCRS The target CRS.
-     * @param transform Transform from positions in the {@linkplain #getSourceCRS source CRS} to
-     *     positions in the {@linkplain #getTargetCRS target CRS}.
+     * @param transform Transform from positions in the {@linkplain #getSourceCRS source CRS} to positions in the
+     *     {@linkplain #getTargetCRS target CRS}.
      * @param typeHint One of <code>{@linkplain PlanarProjection}.class</code>, <code>
      *     {@linkplain CylindricalProjection}.class</code> or <code>
      *     {@linkplain ConicProjection}.class</code>, or {@code null}.
@@ -128,8 +126,7 @@ public class DefaultConversion extends DefaultOperation implements Conversion {
         Class<? extends CoordinateOperation> type = getType(definition);
         final OperationMethod method = definition.getMethod();
         if (method instanceof MathTransformProvider) {
-            final Class<? extends Operation> candidate =
-                    ((MathTransformProvider) method).getOperationType();
+            final Class<? extends Operation> candidate = ((MathTransformProvider) method).getOperationType();
             if (candidate != null) {
                 if (type.isAssignableFrom(candidate)) {
                     type = candidate;

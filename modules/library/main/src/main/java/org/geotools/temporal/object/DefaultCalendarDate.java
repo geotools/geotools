@@ -34,11 +34,10 @@ public class DefaultCalendarDate extends DefaultTemporalPosition implements Cale
     /** This is the name of the calendar era to which the date is referenced. */
     private InternationalString calendarEraName;
     /**
-     * This is a sequence of positive integers in which the first integeridentifies a specific
-     * instance of the unit used at the highest level of the calendar hierarchy, the second integer
-     * identifies a specific instance of the unit used at the next lower level in the hierarchy, and
-     * so on. The format defined in ISO 8601 for dates in the Gregorian calendar may be used for any
-     * date that is composed of values for year, month and day.
+     * This is a sequence of positive integers in which the first integeridentifies a specific instance of the unit used
+     * at the highest level of the calendar hierarchy, the second integer identifies a specific instance of the unit
+     * used at the next lower level in the hierarchy, and so on. The format defined in ISO 8601 for dates in the
+     * Gregorian calendar may be used for any date that is composed of values for year, month and day.
      */
     private int[] calendarDate;
 
@@ -52,21 +51,17 @@ public class DefaultCalendarDate extends DefaultTemporalPosition implements Cale
         this.calendarEraName = calendarEraName;
     }
 
-    /**
-     * Provides the name of the {@linkplain CalendarEra calendar era} to which the date is
-     * referenced.
-     */
+    /** Provides the name of the {@linkplain CalendarEra calendar era} to which the date is referenced. */
     @Override
     public InternationalString getCalendarEraName() {
         return calendarEraName;
     }
 
     /**
-     * Provides a sequence of integers in which the first integer identifies a specific instance of
-     * the unit used at the highest level of the calendar hierarchy, the second integer identifies a
-     * specific instance of the unit used at the next lower level in the hierarchy, and so on. The
-     * format defined in ISO 8601 for dates in the Gregorian calendar may be used for any date that
-     * is composed of values for year, month and day.
+     * Provides a sequence of integers in which the first integer identifies a specific instance of the unit used at the
+     * highest level of the calendar hierarchy, the second integer identifies a specific instance of the unit used at
+     * the next lower level in the hierarchy, and so on. The format defined in ISO 8601 for dates in the Gregorian
+     * calendar may be used for any date that is composed of values for year, month and day.
      */
     @Override
     public int[] getCalendarDate() {

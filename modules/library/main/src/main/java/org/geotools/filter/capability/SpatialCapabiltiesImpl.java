@@ -27,8 +27,8 @@ import org.geotools.api.filter.capability.SpatialOperators;
 /**
  * Implementation of the SpatialCapabilities interface.
  *
- * <p>This class is "null safe" in that component classes will be created as needed if if they were
- * not provided during construction.
+ * <p>This class is "null safe" in that component classes will be created as needed if if they were not provided during
+ * construction.
  *
  * @author Justin Deoliveira, The Open Planning Project
  */
@@ -42,8 +42,7 @@ public class SpatialCapabiltiesImpl implements SpatialCapabilities {
         this.spatialOperators = new SpatialOperatorsImpl();
     }
 
-    public SpatialCapabiltiesImpl(
-            Collection<GeometryOperand> geometryOperands, SpatialOperators spatialOperators) {
+    public SpatialCapabiltiesImpl(Collection<GeometryOperand> geometryOperands, SpatialOperators spatialOperators) {
         this.geometryOperands = new HashSet<>();
         if (geometryOperands != null) {
             this.geometryOperands.addAll(geometryOperands);
@@ -51,8 +50,7 @@ public class SpatialCapabiltiesImpl implements SpatialCapabilities {
         this.spatialOperators = toSpatialOperatorsImpl(spatialOperators);
     }
 
-    public SpatialCapabiltiesImpl(
-            GeometryOperand[] geometryOperands, SpatialOperators spatialOperators) {
+    public SpatialCapabiltiesImpl(GeometryOperand[] geometryOperands, SpatialOperators spatialOperators) {
         this.geometryOperands = new HashSet<>();
         if (geometryOperands != null) {
             this.geometryOperands.addAll(Arrays.asList(geometryOperands));

@@ -73,8 +73,7 @@ public abstract class RendererBaseTest {
      * @throws Exception In the event of failure
      */
     protected static BufferedImage showRender(
-            String testName, GTRenderer renderer, long timeOut, ReferencedEnvelope... bounds)
-            throws Exception {
+            String testName, GTRenderer renderer, long timeOut, ReferencedEnvelope... bounds) throws Exception {
         return showRender(testName, renderer, timeOut, bounds, null);
     }
 
@@ -89,11 +88,7 @@ public abstract class RendererBaseTest {
      * @throws Exception In the event of failure
      */
     protected static BufferedImage showRender(
-            String testName,
-            GTRenderer renderer,
-            long timeOut,
-            ReferencedEnvelope[] bounds,
-            RenderListener listener)
+            String testName, GTRenderer renderer, long timeOut, ReferencedEnvelope[] bounds, RenderListener listener)
             throws Exception {
         BufferedImage[] images = new BufferedImage[bounds.length];
         for (int i = 0; i < images.length; i++) {
@@ -119,37 +114,33 @@ public abstract class RendererBaseTest {
         return image;
     }
 
-    public static void showImage(String testName, long timeOut, final BufferedImage image)
-            throws InterruptedException {
+    public static void showImage(String testName, long timeOut, final BufferedImage image) throws InterruptedException {
         final String headless = System.getProperty("java.awt.headless", "false");
         if (!headless.equalsIgnoreCase("true") && TestData.isInteractiveTest()) {
             try {
                 Frame frame = new Frame(testName);
-                frame.addWindowListener(
-                        new WindowAdapter() {
+                frame.addWindowListener(new WindowAdapter() {
 
-                            @Override
-                            public void windowClosing(WindowEvent e) {
-                                e.getWindow().dispose();
-                            }
-                        });
+                    @Override
+                    public void windowClosing(WindowEvent e) {
+                        e.getWindow().dispose();
+                    }
+                });
 
-                Panel p =
-                        new Panel() {
+                Panel p = new Panel() {
 
-                            /** <code>serialVersionUID</code> field */
-                            private static final long serialVersionUID = 1L;
+                    /** <code>serialVersionUID</code> field */
+                    private static final long serialVersionUID = 1L;
 
-                            {
-                                setPreferredSize(
-                                        new Dimension(image.getWidth(), image.getHeight()));
-                            }
+                    {
+                        setPreferredSize(new Dimension(image.getWidth(), image.getHeight()));
+                    }
 
-                            @Override
-                            public void paint(Graphics g) {
-                                g.drawImage(image, 0, 0, this);
-                            }
-                        };
+                    @Override
+                    public void paint(Graphics g) {
+                        g.drawImage(image, 0, 0, this);
+                    }
+                };
 
                 frame.add(p);
                 frame.pack();
@@ -163,8 +154,7 @@ public abstract class RendererBaseTest {
         }
     }
 
-    public static BufferedImage renderImage(
-            GTRenderer renderer, ReferencedEnvelope bounds, RenderListener listener) {
+    public static BufferedImage renderImage(GTRenderer renderer, ReferencedEnvelope bounds, RenderListener listener) {
         int w = 300;
         int h = 300;
         return renderImage(renderer, bounds, listener, w, h);
@@ -188,8 +178,7 @@ public abstract class RendererBaseTest {
             totalWidth += bufferedImage.getWidth();
             height = Math.max(height, bufferedImage.getHeight());
         }
-        BufferedImage joinedImage =
-                new BufferedImage(totalWidth, height, BufferedImage.TYPE_INT_ARGB);
+        BufferedImage joinedImage = new BufferedImage(totalWidth, height, BufferedImage.TYPE_INT_ARGB);
         Graphics g = joinedImage.getGraphics();
         int x = 0;
         for (BufferedImage bufferedImage : images) {
@@ -254,16 +243,15 @@ public abstract class RendererBaseTest {
     protected static Style loadSEStyle(Object loader, String sldFilename) throws IOException {
         try {
             final java.net.URL surl = TestData.getResource(loader, sldFilename);
-            SLDConfiguration configuration =
-                    new SLDConfiguration() {
-                        @Override
-                        protected void configureContext(
-                                org.picocontainer.MutablePicoContainer container) {
-                            DefaultResourceLocator locator = new DefaultResourceLocator();
-                            locator.setSourceUrl(surl);
-                            container.registerComponentInstance(ResourceLocator.class, locator);
-                        };
-                    };
+            SLDConfiguration configuration = new SLDConfiguration() {
+                @Override
+                protected void configureContext(org.picocontainer.MutablePicoContainer container) {
+                    DefaultResourceLocator locator = new DefaultResourceLocator();
+                    locator.setSourceUrl(surl);
+                    container.registerComponentInstance(ResourceLocator.class, locator);
+                }
+                ;
+            };
             Parser parser = new Parser(configuration);
 
             StyledLayerDescriptor sld = (StyledLayerDescriptor) parser.parse(surl.openStream());
@@ -320,12 +308,7 @@ public abstract class RendererBaseTest {
 
         Color actual;
         if (cm.hasAlpha()) {
-            actual =
-                    new Color(
-                            cm.getRed(pixel),
-                            cm.getGreen(pixel),
-                            cm.getBlue(pixel),
-                            cm.getAlpha(pixel));
+            actual = new Color(cm.getRed(pixel), cm.getGreen(pixel), cm.getBlue(pixel), cm.getAlpha(pixel));
         } else {
             actual = new Color(cm.getRed(pixel), cm.getGreen(pixel), cm.getBlue(pixel), 255);
         }
@@ -335,10 +318,8 @@ public abstract class RendererBaseTest {
     /** Configure the Bistream Vera Sans font so that it's available to the JVM */
     public static void setupVeraFonts() throws IOException, FontFormatException {
         FontCache.getDefaultInstance()
-                .registerFont(
-                        java.awt.Font.createFont(
-                                java.awt.Font.TRUETYPE_FONT,
-                                TestData.getResource(RendererBaseTest.class, "Vera.ttf")
-                                        .openStream()));
+                .registerFont(java.awt.Font.createFont(
+                        java.awt.Font.TRUETYPE_FONT,
+                        TestData.getResource(RendererBaseTest.class, "Vera.ttf").openStream()));
     }
 }

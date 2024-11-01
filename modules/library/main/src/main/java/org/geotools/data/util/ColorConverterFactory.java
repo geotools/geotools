@@ -40,8 +40,8 @@ import org.geotools.util.factory.Hints;
  *   <li>"gray" (String) --> Color.GRAY
  * </ul>
  *
- * <p>This code was previously part of the SLD utility class, it is being made available as part of
- * the Converters framework to allow for broader use.
+ * <p>This code was previously part of the SLD utility class, it is being made available as part of the Converters
+ * framework to allow for broader use.
  *
  * @author Jody Garnett (Refractions Research)
  * @since 2.5
@@ -49,146 +49,141 @@ import org.geotools.util.factory.Hints;
 public class ColorConverterFactory implements ConverterFactory {
 
     /** Uses {@link Color#decode(String)} to convert String to Color. */
-    public static Converter CONVERT_STRING =
-            new Converter() {
-                @Override
-                public <T> T convert(Object source, Class<T> target) throws Exception {
-                    String rgba = (String) source;
-                    try {
-                        // expand compact color expression
-                        if (rgba.length() == 4) {
-                            char r = rgba.charAt(1);
-                            char g = rgba.charAt(2);
-                            char b = rgba.charAt(3);
-                            rgba = "#" + r + r + g + g + b + b;
-                        }
-                        return target.cast(Color.decode(rgba));
-                    } catch (NumberFormatException badRGB) {
-                        // unavailable
-                        return null;
-                    }
+    public static Converter CONVERT_STRING = new Converter() {
+        @Override
+        public <T> T convert(Object source, Class<T> target) throws Exception {
+            String rgba = (String) source;
+            try {
+                // expand compact color expression
+                if (rgba.length() == 4) {
+                    char r = rgba.charAt(1);
+                    char g = rgba.charAt(2);
+                    char b = rgba.charAt(3);
+                    rgba = "#" + r + r + g + g + b + b;
                 }
+                return target.cast(Color.decode(rgba));
+            } catch (NumberFormatException badRGB) {
+                // unavailable
+                return null;
+            }
+        }
 
-                @Override
-                public String toString() {
-                    return "CONVERT_STRING";
-                }
-            };
+        @Override
+        public String toString() {
+            return "CONVERT_STRING";
+        }
+    };
 
     /** Converts provided integer to color, taking care to allow rgb and rgba support. */
-    public static Converter CONVERT_NUMBER_TO_COLOR =
-            new Converter() {
-                @Override
-                public <T> T convert(Object source, Class<T> target) throws Exception {
-                    Number number = (Number) source;
-                    // is it an integral number, and small enough to be an integer?
-                    if (((int) number.doubleValue()) == number.doubleValue()
-                            && number.doubleValue() < Integer.MAX_VALUE) {
-                        int rgba = number.intValue();
-                        int alpha = 0xff000000 & rgba;
-                        return target.cast(new Color(rgba, alpha != 0));
-                    } else {
-                        return null;
-                    }
-                }
+    public static Converter CONVERT_NUMBER_TO_COLOR = new Converter() {
+        @Override
+        public <T> T convert(Object source, Class<T> target) throws Exception {
+            Number number = (Number) source;
+            // is it an integral number, and small enough to be an integer?
+            if (((int) number.doubleValue()) == number.doubleValue() && number.doubleValue() < Integer.MAX_VALUE) {
+                int rgba = number.intValue();
+                int alpha = 0xff000000 & rgba;
+                return target.cast(new Color(rgba, alpha != 0));
+            } else {
+                return null;
+            }
+        }
 
-                @Override
-                public String toString() {
-                    return "CONVERT_NUMBER_TO_COLOR";
-                }
-            };
+        @Override
+        public String toString() {
+            return "CONVERT_NUMBER_TO_COLOR";
+        }
+    };
 
     protected static DecimalFormat FORMAT;
 
     static {
-        DecimalFormat decimalFormat =
-                (DecimalFormat) NumberFormat.getNumberInstance(Locale.ENGLISH);
+        DecimalFormat decimalFormat = (DecimalFormat) NumberFormat.getNumberInstance(Locale.ENGLISH);
         decimalFormat.applyPattern("#.###");
         FORMAT = decimalFormat;
     }
 
     /** Converts color to css representation. */
-    private static Converter CONVERT_COLOR_TO_CSS =
-            new Converter() {
+    private static Converter CONVERT_COLOR_TO_CSS = new Converter() {
 
-                @Override
-                public <T> T convert(Object source, Class<T> target) throws Exception {
-                    Color color = (Color) source;
+        @Override
+        public <T> T convert(Object source, Class<T> target) throws Exception {
+            Color color = (Color) source;
 
-                    if (CSS_COLORS.containsValue(color)) {
-                        for (Entry<String, Color> entry : CSS_COLORS.entrySet()) {
-                            if (entry.getValue().equals(color)) {
-                                return target.cast(entry.getKey());
-                            }
-                        }
-                        return null; // something is inconsistent here
+            if (CSS_COLORS.containsValue(color)) {
+                for (Entry<String, Color> entry : CSS_COLORS.entrySet()) {
+                    if (entry.getValue().equals(color)) {
+                        return target.cast(entry.getKey());
                     }
-                    if (color.getAlpha() == 255) {
-                        StringBuilder rgb = new StringBuilder(16);
-                        rgb.append("rgb(");
-                        rgb.append(color.getRed());
-                        rgb.append(",");
-                        rgb.append(color.getGreen());
-                        rgb.append(",");
-                        rgb.append(color.getBlue());
-                        rgb.append(")");
-
-                        return target.cast(rgb.toString());
-                    } else {
-                        StringBuilder rgba = new StringBuilder(20);
-                        rgba.append("rgba(");
-                        rgba.append(color.getRed());
-                        rgba.append(",");
-                        rgba.append(color.getGreen());
-                        rgba.append(",");
-                        rgba.append(color.getBlue());
-                        rgba.append(",");
-
-                        float opacity = ((float) color.getAlpha()) / 256.0f;
-
-                        rgba.append(FORMAT.format(opacity));
-
-                        rgba.append(")");
-                        return target.cast(rgba.toString());
-                    }
-                    //            String alphaCode = Integer.toHexString(color.getAlpha());
-                    //            String redCode = Integer.toHexString(color.getRed());
-                    //            String greenCode = Integer.toHexString(color.getGreen());
-                    //            String blueCode = Integer.toHexString(color.getBlue());
-                    //
-                    //            StringBuilder hex = new StringBuilder(9);
-                    //
-                    //            hex.append("#");
-                    //            if (redCode.length() == 1) {
-                    //                hex.append("0");
-                    //            }
-                    //            hex.append( redCode.toUpperCase() );
-                    //
-                    //            if (greenCode.length() == 1) {
-                    //                hex.append("0");
-                    //            }
-                    //            hex.append( greenCode.toUpperCase() );
-                    //
-                    //            if (blueCode.length() == 1) {
-                    //                hex.append("0");
-                    //            }
-                    //            hex.append( blueCode.toUpperCase() );
-                    //
-                    //            if( !"ff".equals(alphaCode)){
-                    //                if (alphaCode.length() == 1) {
-                    //                    hex.append("0");
-                    //                }
-                    //                hex.append( alphaCode.toUpperCase() );
-                    //            }
-                    //            String str = hex.toString();
-                    //            return target.cast(str);
                 }
+                return null; // something is inconsistent here
+            }
+            if (color.getAlpha() == 255) {
+                StringBuilder rgb = new StringBuilder(16);
+                rgb.append("rgb(");
+                rgb.append(color.getRed());
+                rgb.append(",");
+                rgb.append(color.getGreen());
+                rgb.append(",");
+                rgb.append(color.getBlue());
+                rgb.append(")");
 
-                @Override
-                public String toString() {
-                    return "CONVERT_COLOR_TO_CSS";
-                }
-            };
+                return target.cast(rgb.toString());
+            } else {
+                StringBuilder rgba = new StringBuilder(20);
+                rgba.append("rgba(");
+                rgba.append(color.getRed());
+                rgba.append(",");
+                rgba.append(color.getGreen());
+                rgba.append(",");
+                rgba.append(color.getBlue());
+                rgba.append(",");
+
+                float opacity = ((float) color.getAlpha()) / 256.0f;
+
+                rgba.append(FORMAT.format(opacity));
+
+                rgba.append(")");
+                return target.cast(rgba.toString());
+            }
+            //            String alphaCode = Integer.toHexString(color.getAlpha());
+            //            String redCode = Integer.toHexString(color.getRed());
+            //            String greenCode = Integer.toHexString(color.getGreen());
+            //            String blueCode = Integer.toHexString(color.getBlue());
+            //
+            //            StringBuilder hex = new StringBuilder(9);
+            //
+            //            hex.append("#");
+            //            if (redCode.length() == 1) {
+            //                hex.append("0");
+            //            }
+            //            hex.append( redCode.toUpperCase() );
+            //
+            //            if (greenCode.length() == 1) {
+            //                hex.append("0");
+            //            }
+            //            hex.append( greenCode.toUpperCase() );
+            //
+            //            if (blueCode.length() == 1) {
+            //                hex.append("0");
+            //            }
+            //            hex.append( blueCode.toUpperCase() );
+            //
+            //            if( !"ff".equals(alphaCode)){
+            //                if (alphaCode.length() == 1) {
+            //                    hex.append("0");
+            //                }
+            //                hex.append( alphaCode.toUpperCase() );
+            //            }
+            //            String str = hex.toString();
+            //            return target.cast(str);
+        }
+
+        @Override
+        public String toString() {
+            return "CONVERT_COLOR_TO_CSS";
+        }
+    };
 
     /**
      * A mapping from CSS Color Module 4 names to Color objects.
@@ -353,9 +348,8 @@ public class ColorConverterFactory implements ConverterFactory {
     }
 
     /**
-     * Converts CSS Color Module 4 names to colors, with a fallback to the basic {@link
-     * #CONVERT_STRING} converter if the provided source String is not found in the {@link
-     * #CSS_COLORS} map.
+     * Converts CSS Color Module 4 names to colors, with a fallback to the basic {@link #CONVERT_STRING} converter if
+     * the provided source String is not found in the {@link #CSS_COLORS} map.
      *
      * <p>This converter is willing to work with:
      *
@@ -366,135 +360,124 @@ public class ColorConverterFactory implements ConverterFactory {
      *   <li>Hex representation of the form <code>#RRGGBB</code> and <code>#RRGGBBAA</code>
      * </ul>
      */
-    public static Converter CONVERT_CSS_TO_COLOR =
-            new Converter() {
+    public static Converter CONVERT_CSS_TO_COLOR = new Converter() {
 
-                @Override
-                public <T> T convert(Object source, Class<T> target) throws Exception {
-                    String text = (String) source;
-                    String key = text.toLowerCase().trim();
-                    try {
-                        if (CSS_COLORS.containsKey(key)) {
-                            return target.cast(CSS_COLORS.get(key));
-                        } else if (text.startsWith("rgb(")) {
-                            String colorString = text.substring(4, text.length() - 1);
-                            String[] rgb = colorString.split("\\s*,\\s*");
-                            Color c =
-                                    new Color(
-                                            Integer.parseInt(rgb[0]),
-                                            Integer.parseInt(rgb[1]),
-                                            Integer.parseInt(rgb[2]));
+        @Override
+        public <T> T convert(Object source, Class<T> target) throws Exception {
+            String text = (String) source;
+            String key = text.toLowerCase().trim();
+            try {
+                if (CSS_COLORS.containsKey(key)) {
+                    return target.cast(CSS_COLORS.get(key));
+                } else if (text.startsWith("rgb(")) {
+                    String colorString = text.substring(4, text.length() - 1);
+                    String[] rgb = colorString.split("\\s*,\\s*");
+                    Color c = new Color(Integer.parseInt(rgb[0]), Integer.parseInt(rgb[1]), Integer.parseInt(rgb[2]));
 
-                            return target.cast(c);
-                        } else if (text.startsWith("rgba(")) {
-                            String colorString = text.substring(5, text.length() - 1);
-                            String[] rgba = colorString.split("\\s*,\\s*");
-                            float opacity = Float.parseFloat(rgba[3]);
+                    return target.cast(c);
+                } else if (text.startsWith("rgba(")) {
+                    String colorString = text.substring(5, text.length() - 1);
+                    String[] rgba = colorString.split("\\s*,\\s*");
+                    float opacity = Float.parseFloat(rgba[3]);
 
-                            int alpha = (int) (Math.floor(opacity == 1.0f ? 255 : opacity * 256f));
-                            Color c =
-                                    new Color(
-                                            Integer.parseInt(rgba[0]),
-                                            Integer.parseInt(rgba[1]),
-                                            Integer.parseInt(rgba[2]),
-                                            alpha);
-                            return target.cast(c);
-                        } else if (text.startsWith("hsl(")) {
-                            String colorString = text.substring(4, text.length() - 1);
-                            String[] hsl = colorString.split("\\s*,\\s*");
-                            double hue = Double.parseDouble(hsl[0]);
-                            double saturation = parsePercentage(hsl[1]);
-                            double lightness = parsePercentage(hsl[2]);
-                            return target.cast(new HSLColor(hue, saturation, lightness).toRGB());
-                        } else if (text.startsWith("hsla(")) {
-                            String colorString = text.substring(5, text.length() - 1);
-                            String[] hsla = colorString.split("\\s*,\\s*");
-                            double hue = Double.parseDouble(hsla[0]);
-                            double saturation = parsePercentage(hsla[1]);
-                            double lightness = parsePercentage(hsla[2]);
-                            double alpha = parsePercentage(hsla[3]);
-                            return target.cast(
-                                    new HSLColor(hue, saturation, lightness, alpha).toRGB());
-                        } else if (text.startsWith("#") || text.startsWith("0x")) {
-                            Number number = Long.decode(text);
-                            long rgba = number.longValue();
-                            long h = (rgba >> 24) & 0xFF;
+                    int alpha = (int) (Math.floor(opacity == 1.0f ? 255 : opacity * 256f));
+                    Color c = new Color(
+                            Integer.parseInt(rgba[0]), Integer.parseInt(rgba[1]), Integer.parseInt(rgba[2]), alpha);
+                    return target.cast(c);
+                } else if (text.startsWith("hsl(")) {
+                    String colorString = text.substring(4, text.length() - 1);
+                    String[] hsl = colorString.split("\\s*,\\s*");
+                    double hue = Double.parseDouble(hsl[0]);
+                    double saturation = parsePercentage(hsl[1]);
+                    double lightness = parsePercentage(hsl[2]);
+                    return target.cast(new HSLColor(hue, saturation, lightness).toRGB());
+                } else if (text.startsWith("hsla(")) {
+                    String colorString = text.substring(5, text.length() - 1);
+                    String[] hsla = colorString.split("\\s*,\\s*");
+                    double hue = Double.parseDouble(hsla[0]);
+                    double saturation = parsePercentage(hsla[1]);
+                    double lightness = parsePercentage(hsla[2]);
+                    double alpha = parsePercentage(hsla[3]);
+                    return target.cast(new HSLColor(hue, saturation, lightness, alpha).toRGB());
+                } else if (text.startsWith("#") || text.startsWith("0x")) {
+                    Number number = Long.decode(text);
+                    long rgba = number.longValue();
+                    long h = (rgba >> 24) & 0xFF;
 
-                            if (h != 0) {
-                                int r = (int) h;
-                                int g = (int) ((rgba >> 16) & 0xFF);
-                                int b = (int) ((rgba >> 8) & 0xFF);
-                                int a = (int) ((rgba >> 0) & 0xFF);
-                                Color color = new Color(r, g, b, a);
-                                return target.cast(color);
-                            } else {
-                                int r = (int) ((rgba >> 16) & 0xFF);
-                                int g = (int) ((rgba >> 8) & 0xFF);
-                                int b = (int) ((rgba >> 0) & 0xFF);
-
-                                Color color = new Color(r, g, b);
-                                return target.cast(color);
-                            }
-                        }
-                        return null; // unavailable
-                    } catch (NumberFormatException badRGB) {
-                        // unavailable
-                        return null;
-                    }
-                }
-
-                private double parsePercentage(String spec) {
-                    if (spec.endsWith("%")) {
-                        return Double.parseDouble(spec.substring(0, spec.length() - 1)) / 100;
+                    if (h != 0) {
+                        int r = (int) h;
+                        int g = (int) ((rgba >> 16) & 0xFF);
+                        int b = (int) ((rgba >> 8) & 0xFF);
+                        int a = (int) ((rgba >> 0) & 0xFF);
+                        Color color = new Color(r, g, b, a);
+                        return target.cast(color);
                     } else {
-                        return Double.parseDouble(spec);
+                        int r = (int) ((rgba >> 16) & 0xFF);
+                        int g = (int) ((rgba >> 8) & 0xFF);
+                        int b = (int) ((rgba >> 0) & 0xFF);
+
+                        Color color = new Color(r, g, b);
+                        return target.cast(color);
                     }
                 }
+                return null; // unavailable
+            } catch (NumberFormatException badRGB) {
+                // unavailable
+                return null;
+            }
+        }
 
-                @Override
-                public String toString() {
-                    return "CONVERT_CSS_TO_COLOR";
-                }
-            };
+        private double parsePercentage(String spec) {
+            if (spec.endsWith("%")) {
+                return Double.parseDouble(spec.substring(0, spec.length() - 1)) / 100;
+            } else {
+                return Double.parseDouble(spec);
+            }
+        }
+
+        @Override
+        public String toString() {
+            return "CONVERT_CSS_TO_COLOR";
+        }
+    };
 
     /** Converts color to hex representation. */
-    public static Converter CONVERT_COLOR_TO_STRING =
-            new Converter() {
+    public static Converter CONVERT_COLOR_TO_STRING = new Converter() {
 
-                @Override
-                public <T> T convert(Object source, Class<T> target) throws Exception {
-                    Color color = (Color) source;
+        @Override
+        public <T> T convert(Object source, Class<T> target) throws Exception {
+            Color color = (Color) source;
 
-                    String redCode = Integer.toHexString(color.getRed());
-                    String greenCode = Integer.toHexString(color.getGreen());
-                    String blueCode = Integer.toHexString(color.getBlue());
+            String redCode = Integer.toHexString(color.getRed());
+            String greenCode = Integer.toHexString(color.getGreen());
+            String blueCode = Integer.toHexString(color.getBlue());
 
-                    StringBuilder hex = new StringBuilder(9);
+            StringBuilder hex = new StringBuilder(9);
 
-                    hex.append("#");
-                    if (redCode.length() == 1) {
-                        hex.append("0");
-                    }
-                    hex.append(redCode.toUpperCase());
+            hex.append("#");
+            if (redCode.length() == 1) {
+                hex.append("0");
+            }
+            hex.append(redCode.toUpperCase());
 
-                    if (greenCode.length() == 1) {
-                        hex.append("0");
-                    }
-                    hex.append(greenCode.toUpperCase());
+            if (greenCode.length() == 1) {
+                hex.append("0");
+            }
+            hex.append(greenCode.toUpperCase());
 
-                    if (blueCode.length() == 1) {
-                        hex.append("0");
-                    }
-                    hex.append(blueCode.toUpperCase());
-                    String str = hex.toString();
-                    return target.cast(str);
-                }
+            if (blueCode.length() == 1) {
+                hex.append("0");
+            }
+            hex.append(blueCode.toUpperCase());
+            String str = hex.toString();
+            return target.cast(str);
+        }
 
-                @Override
-                public String toString() {
-                    return "CONVERT_COLOR_TO_STRING";
-                }
-            };
+        @Override
+        public String toString() {
+            return "CONVERT_COLOR_TO_STRING";
+        }
+    };
 
     @Override
     public Converter createConverter(Class source, Class target, Hints hints) {

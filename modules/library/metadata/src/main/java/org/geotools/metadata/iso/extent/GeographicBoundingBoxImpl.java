@@ -34,30 +34,22 @@ import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.util.Utilities;
 
 /**
- * Geographic position of the dataset. This is only an approximate so specifying the coordinate
- * reference system is unnecessary. The CRS shall be geographic with Greenwich prime meridian, but
- * the datum doesn't need to be WGS84.
+ * Geographic position of the dataset. This is only an approximate so specifying the coordinate reference system is
+ * unnecessary. The CRS shall be geographic with Greenwich prime meridian, but the datum doesn't need to be WGS84.
  *
  * @since 2.1
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Touraïvane
  */
-public class GeographicBoundingBoxImpl extends GeographicExtentImpl
-        implements GeographicBoundingBox {
+public class GeographicBoundingBoxImpl extends GeographicExtentImpl implements GeographicBoundingBox {
     /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = -3278089380004172514L;
 
-    /**
-     * The method for constructing a bounding box from an envelope. Will be obtained only when first
-     * needed.
-     */
+    /** The method for constructing a bounding box from an envelope. Will be obtained only when first needed. */
     private static Method constructor;
 
-    /**
-     * The method for constructing a string representation of this box. Will be obtained only when
-     * first needed.
-     */
+    /** The method for constructing a string representation of this box. Will be obtained only when first needed. */
     private static Method toString;
 
     /**
@@ -74,26 +66,26 @@ public class GeographicBoundingBoxImpl extends GeographicExtentImpl
     }
 
     /**
-     * The western-most coordinate of the limit of the dataset extent. The value is expressed in
-     * longitude in decimal degrees (positive east).
+     * The western-most coordinate of the limit of the dataset extent. The value is expressed in longitude in decimal
+     * degrees (positive east).
      */
     private double westBoundLongitude;
 
     /**
-     * The eastern-most coordinate of the limit of the dataset extent. The value is expressed in
-     * longitude in decimal degrees (positive east).
+     * The eastern-most coordinate of the limit of the dataset extent. The value is expressed in longitude in decimal
+     * degrees (positive east).
      */
     private double eastBoundLongitude;
 
     /**
-     * The southern-most coordinate of the limit of the dataset extent. The value is expressed in
-     * latitude in decimal degrees (positive north).
+     * The southern-most coordinate of the limit of the dataset extent. The value is expressed in latitude in decimal
+     * degrees (positive north).
      */
     private double southBoundLatitude;
 
     /**
-     * The northern-most, coordinate of the limit of the dataset extent. The value is expressed in
-     * latitude in decimal degrees (positive north).
+     * The northern-most, coordinate of the limit of the dataset extent. The value is expressed in latitude in decimal
+     * degrees (positive north).
      */
     private double northBoundLatitude;
 
@@ -119,19 +111,16 @@ public class GeographicBoundingBoxImpl extends GeographicExtentImpl
     }
 
     /**
-     * Constructs a geographic bounding box from the specified envelope. If the envelope contains a
-     * CRS, then the bounding box may be projected to a geographic one. Otherwise, the envelope is
-     * assumed already in appropriate CRS.
+     * Constructs a geographic bounding box from the specified envelope. If the envelope contains a CRS, then the
+     * bounding box may be projected to a geographic one. Otherwise, the envelope is assumed already in appropriate CRS.
      *
      * <p>When coordinate transformation is required, the target geographic CRS is not necessarly
-     * {@linkplain org.geotools.referencing.crs.DefaultGeographicCRS#WGS84 WGS84}. This method
-     * preserves the same {@linkplain org.geotools.api.referencing.datum.Ellipsoid ellipsoid} than
-     * in the envelope CRS when possible. This is because geographic bounding box are only
-     * approximative and the ISO specification do not mandates a particular CRS, so we avoid
-     * transformations that are not strictly necessary.
+     * {@linkplain org.geotools.referencing.crs.DefaultGeographicCRS#WGS84 WGS84}. This method preserves the same
+     * {@linkplain org.geotools.api.referencing.datum.Ellipsoid ellipsoid} than in the envelope CRS when possible. This
+     * is because geographic bounding box are only approximative and the ISO specification do not mandates a particular
+     * CRS, so we avoid transformations that are not strictly necessary.
      *
-     * <p><strong>Note:</strong> This constructor is available only if the referencing module is on
-     * the classpath.
+     * <p><strong>Note:</strong> This constructor is available only if the referencing module is on the classpath.
      *
      * @param envelope The envelope to use for initializing this geographic bounding box.
      * @throws UnsupportedOperationException if the referencing module is not on the classpath.
@@ -156,8 +145,8 @@ public class GeographicBoundingBoxImpl extends GeographicExtentImpl
     }
 
     /**
-     * Constructs a geographic bounding box from the specified rectangle. The rectangle is assumed
-     * in {@linkplain DefaultGeographicCRS#WGS84 WGS 84} CRS.
+     * Constructs a geographic bounding box from the specified rectangle. The rectangle is assumed in
+     * {@linkplain DefaultGeographicCRS#WGS84 WGS 84} CRS.
      *
      * @param bounds The rectangle to use for initializing this geographic bounding box.
      */
@@ -170,10 +159,9 @@ public class GeographicBoundingBoxImpl extends GeographicExtentImpl
     /**
      * Creates a geographic bounding box initialized to the specified values.
      *
-     * <p><strong>Caution:</strong> Arguments are expected in the same order than they appear in the
-     * ISO 19115 specification. This is different than the order commonly found in Java world, which
-     * is rather (<var>x</var><sub>min</sub>, <var>y</var><sub>min</sub>,
-     * <var>x</var><sub>max</sub>, <var>y</var><sub>max</sub>).
+     * <p><strong>Caution:</strong> Arguments are expected in the same order than they appear in the ISO 19115
+     * specification. This is different than the order commonly found in Java world, which is rather
+     * (<var>x</var><sub>min</sub>, <var>y</var><sub>min</sub>, <var>x</var><sub>max</sub>, <var>y</var><sub>max</sub>).
      *
      * @param westBoundLongitude The minimal <var>x</var> value.
      * @param eastBoundLongitude The maximal <var>x</var> value.
@@ -192,8 +180,8 @@ public class GeographicBoundingBoxImpl extends GeographicExtentImpl
     }
 
     /**
-     * Returns the western-most coordinate of the limit of the dataset extent. The value is
-     * expressed in longitude in decimal degrees (positive east).
+     * Returns the western-most coordinate of the limit of the dataset extent. The value is expressed in longitude in
+     * decimal degrees (positive east).
      *
      * @return The western-most longitude between -180 and +180°.
      */
@@ -203,8 +191,8 @@ public class GeographicBoundingBoxImpl extends GeographicExtentImpl
     }
 
     /**
-     * Set the western-most coordinate of the limit of the dataset extent. The value is expressed in
-     * longitude in decimal degrees (positive east).
+     * Set the western-most coordinate of the limit of the dataset extent. The value is expressed in longitude in
+     * decimal degrees (positive east).
      *
      * @param newValue The western-most longitude between -180 and +180°.
      */
@@ -214,8 +202,8 @@ public class GeographicBoundingBoxImpl extends GeographicExtentImpl
     }
 
     /**
-     * Returns the eastern-most coordinate of the limit of the dataset extent. The value is
-     * expressed in longitude in decimal degrees (positive east).
+     * Returns the eastern-most coordinate of the limit of the dataset extent. The value is expressed in longitude in
+     * decimal degrees (positive east).
      *
      * @return The eastern-most longitude between -180 and +180°.
      */
@@ -225,8 +213,8 @@ public class GeographicBoundingBoxImpl extends GeographicExtentImpl
     }
 
     /**
-     * Set the eastern-most coordinate of the limit of the dataset extent. The value is expressed in
-     * longitude in decimal degrees (positive east).
+     * Set the eastern-most coordinate of the limit of the dataset extent. The value is expressed in longitude in
+     * decimal degrees (positive east).
      *
      * @param newValue The eastern-most longitude between -180 and +180°.
      */
@@ -236,8 +224,8 @@ public class GeographicBoundingBoxImpl extends GeographicExtentImpl
     }
 
     /**
-     * Returns the southern-most coordinate of the limit of the dataset extent. The value is
-     * expressed in latitude in decimal degrees (positive north).
+     * Returns the southern-most coordinate of the limit of the dataset extent. The value is expressed in latitude in
+     * decimal degrees (positive north).
      *
      * @return The southern-most latitude between -90 and +90°.
      */
@@ -247,8 +235,8 @@ public class GeographicBoundingBoxImpl extends GeographicExtentImpl
     }
 
     /**
-     * Set the southern-most coordinate of the limit of the dataset extent. The value is expressed
-     * in latitude in decimal degrees (positive north).
+     * Set the southern-most coordinate of the limit of the dataset extent. The value is expressed in latitude in
+     * decimal degrees (positive north).
      *
      * @param newValue The southern-most latitude between -90 and +90°.
      */
@@ -258,8 +246,8 @@ public class GeographicBoundingBoxImpl extends GeographicExtentImpl
     }
 
     /**
-     * Returns the northern-most, coordinate of the limit of the dataset extent. The value is
-     * expressed in latitude in decimal degrees (positive north).
+     * Returns the northern-most, coordinate of the limit of the dataset extent. The value is expressed in latitude in
+     * decimal degrees (positive north).
      *
      * @return The northern-most latitude between -90 and +90°.
      */
@@ -269,8 +257,8 @@ public class GeographicBoundingBoxImpl extends GeographicExtentImpl
     }
 
     /**
-     * Set the northern-most, coordinate of the limit of the dataset extent. The value is expressed
-     * in latitude in decimal degrees (positive north).
+     * Set the northern-most, coordinate of the limit of the dataset extent. The value is expressed in latitude in
+     * decimal degrees (positive north).
      *
      * @param newValue The northern-most latitude between -90 and +90°.
      */
@@ -282,10 +270,9 @@ public class GeographicBoundingBoxImpl extends GeographicExtentImpl
     /**
      * Sets the bounding box to the specified values.
      *
-     * <p><strong>Caution:</strong> Arguments are expected in the same order than they appear in the
-     * ISO 19115 specification. This is different than the order commonly found in Java world, which
-     * is rather (<var>x</var><sub>min</sub>, <var>y</var><sub>min</sub>,
-     * <var>x</var><sub>max</sub>, <var>y</var><sub>max</sub>).
+     * <p><strong>Caution:</strong> Arguments are expected in the same order than they appear in the ISO 19115
+     * specification. This is different than the order commonly found in Java world, which is rather
+     * (<var>x</var><sub>min</sub>, <var>y</var><sub>min</sub>, <var>x</var><sub>max</sub>, <var>y</var><sub>max</sub>).
      *
      * @param westBoundLongitude The minimal <var>x</var> value.
      * @param eastBoundLongitude The maximal <var>x</var> value.
@@ -320,12 +307,11 @@ public class GeographicBoundingBoxImpl extends GeographicExtentImpl
     }
 
     /**
-     * Adds a geographic bounding box to this box. If the {@linkplain #getInclusion inclusion}
-     * status is the same for this box and the box to be added, then the resulting bounding box is
-     * the union of the two boxes. If the {@linkplain #getInclusion inclusion} status are opposite
-     * (<cite>exclusion</cite>), then this method attempt to exclude some area of specified box from
-     * this box. The resulting bounding box is smaller if the exclusion can be performed without
-     * ambiguity.
+     * Adds a geographic bounding box to this box. If the {@linkplain #getInclusion inclusion} status is the same for
+     * this box and the box to be added, then the resulting bounding box is the union of the two boxes. If the
+     * {@linkplain #getInclusion inclusion} status are opposite (<cite>exclusion</cite>), then this method attempt to
+     * exclude some area of specified box from this box. The resulting bounding box is smaller if the exclusion can be
+     * performed without ambiguity.
      *
      * @param box The geographic bounding box to add to this box.
      * @since 2.2
@@ -363,8 +349,8 @@ public class GeographicBoundingBoxImpl extends GeographicExtentImpl
     }
 
     /**
-     * Sets this bounding box to the intersection of this box with the specified one. The
-     * {@linkplain #getInclusion inclusion} status must be the same for both boxes.
+     * Sets this bounding box to the intersection of this box with the specified one. The {@linkplain #getInclusion
+     * inclusion} status must be the same for both boxes.
      *
      * @param box The geographic bounding box to intersect with this box.
      * @since 2.5
@@ -376,8 +362,7 @@ public class GeographicBoundingBoxImpl extends GeographicExtentImpl
         final Boolean inc2 = box.getInclusion();
         ensureNonNull("inclusion", inc2);
         if (inc1.booleanValue() != inc2.booleanValue()) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$1, "box"));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$1, "box"));
         }
         final double xmin = box.getWestBoundLongitude();
         final double xmax = box.getEastBoundLongitude();
@@ -388,12 +373,10 @@ public class GeographicBoundingBoxImpl extends GeographicExtentImpl
         if (ymin > southBoundLatitude) southBoundLatitude = ymin;
         if (ymax < northBoundLatitude) northBoundLatitude = ymax;
         if (westBoundLongitude > eastBoundLongitude) {
-            westBoundLongitude =
-                    eastBoundLongitude = 0.5 * (westBoundLongitude + eastBoundLongitude);
+            westBoundLongitude = eastBoundLongitude = 0.5 * (westBoundLongitude + eastBoundLongitude);
         }
         if (southBoundLatitude > northBoundLatitude) {
-            southBoundLatitude =
-                    northBoundLatitude = 0.5 * (southBoundLatitude + northBoundLatitude);
+            southBoundLatitude = northBoundLatitude = 0.5 * (southBoundLatitude + northBoundLatitude);
         }
     }
 
@@ -405,8 +388,7 @@ public class GeographicBoundingBoxImpl extends GeographicExtentImpl
      */
     public boolean isEmpty() {
         // Use '!' in order to catch NaN values.
-        return !(eastBoundLongitude > westBoundLongitude
-                && northBoundLatitude > southBoundLatitude);
+        return !(eastBoundLongitude > westBoundLongitude && northBoundLatitude > southBoundLatitude);
     }
 
     /**
@@ -424,14 +406,10 @@ public class GeographicBoundingBoxImpl extends GeographicExtentImpl
         if (object != null && object.getClass().equals(GeographicBoundingBoxImpl.class)) {
             final GeographicBoundingBoxImpl that = (GeographicBoundingBoxImpl) object;
             return Utilities.equals(this.getInclusion(), that.getInclusion())
-                    && doubleToLongBits(this.southBoundLatitude)
-                            == doubleToLongBits(that.southBoundLatitude)
-                    && doubleToLongBits(this.northBoundLatitude)
-                            == doubleToLongBits(that.northBoundLatitude)
-                    && doubleToLongBits(this.eastBoundLongitude)
-                            == doubleToLongBits(that.eastBoundLongitude)
-                    && doubleToLongBits(this.westBoundLongitude)
-                            == doubleToLongBits(that.westBoundLongitude);
+                    && doubleToLongBits(this.southBoundLatitude) == doubleToLongBits(that.southBoundLatitude)
+                    && doubleToLongBits(this.northBoundLatitude) == doubleToLongBits(that.northBoundLatitude)
+                    && doubleToLongBits(this.eastBoundLongitude) == doubleToLongBits(that.eastBoundLongitude)
+                    && doubleToLongBits(this.westBoundLongitude) == doubleToLongBits(that.westBoundLongitude);
         }
         return super.equals(object);
     }
@@ -468,8 +446,8 @@ public class GeographicBoundingBoxImpl extends GeographicExtentImpl
     }
 
     /**
-     * Returns a string representation of the specified extent using the specified angle pattern and
-     * locale. See {@link AngleFormat} for a description of angle patterns.
+     * Returns a string representation of the specified extent using the specified angle pattern and locale. See
+     * {@link AngleFormat} for a description of angle patterns.
      *
      * @param box The bounding box to format.
      * @param pattern The angle pattern (e.g. {@code DD°MM'SS.s"}.
@@ -477,12 +455,10 @@ public class GeographicBoundingBoxImpl extends GeographicExtentImpl
      * @return A string representation of the given box in the given locale.
      * @since 2.2
      */
-    public static String toString(
-            final GeographicBoundingBox box, final String pattern, final Locale locale) {
+    public static String toString(final GeographicBoundingBox box, final String pattern, final Locale locale) {
         if (toString == null) {
             // No need to synchronize.
-            toString =
-                    getMethod("toString", GeographicBoundingBox.class, String.class, Locale.class);
+            toString = getMethod("toString", GeographicBoundingBox.class, String.class, Locale.class);
         }
         try {
             return String.valueOf(invoke(toString, box, pattern, locale));
@@ -492,13 +468,12 @@ public class GeographicBoundingBoxImpl extends GeographicExtentImpl
     }
 
     /**
-     * Returns a helper method which depends on the referencing module. We use reflection since we
-     * can't have a direct dependency to this module.
+     * Returns a helper method which depends on the referencing module. We use reflection since we can't have a direct
+     * dependency to this module.
      */
     private static Method getMethod(final String name, final Class<?>... arguments) {
         try {
-            return Class.forName("org.geotools.referencing.util.BoundingBoxes")
-                    .getMethod(name, arguments);
+            return Class.forName("org.geotools.referencing.util.BoundingBoxes").getMethod(name, arguments);
         } catch (ClassNotFoundException exception) {
             throw new UnsupportedOperationException(
                     MessageFormat.format(ErrorKeys.MISSING_MODULE_$1, "referencing"), exception);
@@ -509,8 +484,7 @@ public class GeographicBoundingBoxImpl extends GeographicExtentImpl
     }
 
     /** Invokes the specified method with the specified arguments. */
-    private static Object invoke(final Method method, final Object... arguments)
-            throws InvocationTargetException {
+    private static Object invoke(final Method method, final Object... arguments) throws InvocationTargetException {
         try {
             return method.invoke(null, arguments);
         } catch (IllegalAccessException exception) {

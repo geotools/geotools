@@ -174,8 +174,7 @@ public final class CodeListTest {
             final ArrayList<?> asList;
             try {
                 final Object candidate = field.get(null);
-                assertEquals(
-                        fullName + " is not an ArrayList.", ArrayList.class, candidate.getClass());
+                assertEquals(fullName + " is not an ArrayList.", ArrayList.class, candidate.getClass());
                 asList = (ArrayList<?>) candidate;
             } catch (IllegalAccessException e) {
                 fail(className + ".VALUES is not accessible.");

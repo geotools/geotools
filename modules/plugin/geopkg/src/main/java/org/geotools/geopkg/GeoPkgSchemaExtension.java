@@ -33,8 +33,8 @@ import org.geotools.util.NumberRange;
 import org.geotools.util.logging.Logging;
 
 /**
- * The geopackage schema extension, allowing to declare more information about columns and
- * eventually express constraints on them
+ * The geopackage schema extension, allowing to declare more information about columns and eventually express
+ * constraints on them
  */
 public class GeoPkgSchemaExtension extends GeoPkgExtension {
 
@@ -62,8 +62,7 @@ public class GeoPkgSchemaExtension extends GeoPkgExtension {
     static final Logger LOGGER = Logging.getLogger(GeoPkgSchemaExtension.class);
 
     static final String NAME = "gpkg_schema";
-    static final String DEFINITION =
-            "http://www.geopackage.org/spec121/index.html#extension_schema";
+    static final String DEFINITION = "http://www.geopackage.org/spec121/index.html#extension_schema";
 
     public GeoPkgSchemaExtension(GeoPackage geoPackage) {
         super(NAME, DEFINITION, Scope.ReadWrite, geoPackage);
@@ -77,18 +76,14 @@ public class GeoPkgSchemaExtension extends GeoPkgExtension {
         }
     }
 
-    List<DataColumn> getDataColumns(String tableName, Connection cx)
-            throws IOException, SQLException {
+    List<DataColumn> getDataColumns(String tableName, Connection cx) throws IOException, SQLException {
         List<DataColumn> result = new ArrayList<>();
         if (!isRegistered(cx)) {
             return Collections.emptyList();
         }
-        String sql =
-                format(
-                        "SELECT *"
-                                + " FROM %s"
-                                + " WHERE table_name = ? order by table_name, column_name",
-                        GeoPackage.DATA_COLUMNS);
+        String sql = format(
+                "SELECT *" + " FROM %s" + " WHERE table_name = ? order by table_name, column_name",
+                GeoPackage.DATA_COLUMNS);
 
         try (PreparedStatement ps = cx.prepareStatement(sql)) {
             ps.setString(1, tableName);
@@ -136,10 +131,8 @@ public class GeoPkgSchemaExtension extends GeoPkgExtension {
         if (!isRegistered(cx)) {
             return null;
         }
-        String sql =
-                format(
-                        "SELECT *" + " FROM %s dcc " + " WHERE dcc.constraint_name = ?",
-                        GeoPackage.DATA_COLUMN_CONSTRAINTS);
+        String sql = format(
+                "SELECT *" + " FROM %s dcc " + " WHERE dcc.constraint_name = ?", GeoPackage.DATA_COLUMN_CONSTRAINTS);
 
         DataColumnConstraint constraint = null;
         try (PreparedStatement ps = cx.prepareStatement(sql)) {
@@ -157,23 +150,17 @@ public class GeoPkgSchemaExtension extends GeoPkgExtension {
                             enumValues = new LinkedHashMap<>();
                             constraint = new DataColumnConstraint.Enum(constraintName, enumValues);
                         } else if ("glob".equals(constraintType)) {
-                            constraint =
-                                    new DataColumnConstraint.Glob(
-                                            constraintName, rs.getString("value"));
+                            constraint = new DataColumnConstraint.Glob(constraintName, rs.getString("value"));
                         } else if ("range".equals(constraintType)) {
                             Double min = rs.getDouble("min");
                             boolean minInclusve = rs.getBoolean("min_is_inclusive");
                             Double max = rs.getDouble("max");
                             boolean maxInclusve = rs.getBoolean("max_is_inclusive");
                             NumberRange<Double> range =
-                                    new NumberRange<>(
-                                            Double.class, min, minInclusve, max, maxInclusve);
+                                    new NumberRange<>(Double.class, min, minInclusve, max, maxInclusve);
                             constraint = new DataColumnConstraint.Range<>(constraintName, range);
                         } else {
-                            LOGGER.warning(
-                                    "Cannot process a constraint of type "
-                                            + constraintType
-                                            + ", ignoring");
+                            LOGGER.warning("Cannot process a constraint of type " + constraintType + ", ignoring");
                         }
                     }
 
@@ -195,8 +182,7 @@ public class GeoPkgSchemaExtension extends GeoPkgExtension {
         }
     }
 
-    void addDataColumn(String tableName, DataColumn dataColumn, Connection cx)
-            throws IOException, SQLException {
+    void addDataColumn(String tableName, DataColumn dataColumn, Connection cx) throws IOException, SQLException {
         DataColumnConstraint constraint = dataColumn.getConstraint();
         String constraintName = null;
         if (constraint != null) {
@@ -206,8 +192,7 @@ public class GeoPkgSchemaExtension extends GeoPkgExtension {
             }
         }
 
-        String dataColumnSql =
-                format("INSERT INTO %s VALUES(?, ?, ?, ?, ?, ?, ?)", GeoPackage.DATA_COLUMNS);
+        String dataColumnSql = format("INSERT INTO %s VALUES(?, ?, ?, ?, ?, ?, ?)", GeoPackage.DATA_COLUMNS);
         try (PreparedStatement ps = cx.prepareStatement(dataColumnSql)) {
             ps.setString(1, tableName);
             ps.setString(2, dataColumn.getColumnName());
@@ -239,10 +224,7 @@ public class GeoPkgSchemaExtension extends GeoPkgExtension {
 
     public void addConstraint(Connection cx, DataColumnConstraint constraint) throws SQLException {
         String constraintName = constraint.getName();
-        String sql =
-                format(
-                        "INSERT INTO %s VALUES(?, ?, ?, ?, ?, ?, ?, ?)",
-                        GeoPackage.DATA_COLUMN_CONSTRAINTS);
+        String sql = format("INSERT INTO %s VALUES(?, ?, ?, ?, ?, ?, ?, ?)", GeoPackage.DATA_COLUMN_CONSTRAINTS);
         if (constraint instanceof DataColumnConstraint.Enum) {
             DataColumnConstraint.Enum cEnum = (DataColumnConstraint.Enum) constraint;
             for (Map.Entry<String, String> entry : cEnum.getValues().entrySet()) {

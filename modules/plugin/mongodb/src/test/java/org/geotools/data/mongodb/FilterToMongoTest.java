@@ -125,15 +125,12 @@ public class FilterToMongoTest {
         BasicDBObject filterIntersectsCrs = (BasicDBObject) filterIntersectsGeometry.get("crs");
         Assert.assertNotNull(filterIntersectsCrs);
 
-        BasicDBObject filterIntersectsCrsProperties =
-                (BasicDBObject) filterIntersectsCrs.get("properties");
+        BasicDBObject filterIntersectsCrsProperties = (BasicDBObject) filterIntersectsCrs.get("properties");
         Assert.assertNotNull(filterIntersectsCrsProperties);
 
-        String filterIntersectsCrsPropertiesName =
-                (String) filterIntersectsCrsProperties.get("name");
+        String filterIntersectsCrsPropertiesName = (String) filterIntersectsCrsProperties.get("name");
         Assert.assertNotNull(filterIntersectsCrsPropertiesName);
-        Assert.assertEquals(
-                "urn:x-mongodb:crs:strictwinding:EPSG:4326", filterIntersectsCrsPropertiesName);
+        Assert.assertEquals("urn:x-mongodb:crs:strictwinding:EPSG:4326", filterIntersectsCrsPropertiesName);
     }
 
     @Test
@@ -184,15 +181,12 @@ public class FilterToMongoTest {
         BasicDBObject filterIntersectsCrs = (BasicDBObject) filterIntersectsGeometry.get("crs");
         Assert.assertNotNull(filterIntersectsCrs);
 
-        BasicDBObject filterIntersectsCrsProperties =
-                (BasicDBObject) filterIntersectsCrs.get("properties");
+        BasicDBObject filterIntersectsCrsProperties = (BasicDBObject) filterIntersectsCrs.get("properties");
         Assert.assertNotNull(filterIntersectsCrsProperties);
 
-        String filterIntersectsCrsPropertiesName =
-                (String) filterIntersectsCrsProperties.get("name");
+        String filterIntersectsCrsPropertiesName = (String) filterIntersectsCrsProperties.get("name");
         Assert.assertNotNull(filterIntersectsCrsPropertiesName);
-        Assert.assertEquals(
-                "urn:x-mongodb:crs:strictwinding:EPSG:4326", filterIntersectsCrsPropertiesName);
+        Assert.assertEquals("urn:x-mongodb:crs:strictwinding:EPSG:4326", filterIntersectsCrsPropertiesName);
     }
 
     @Test
@@ -217,15 +211,12 @@ public class FilterToMongoTest {
         BasicDBObject filterIntersectsCrs = (BasicDBObject) filterIntersectsGeometry.get("crs");
         Assert.assertNotNull(filterIntersectsCrs);
 
-        BasicDBObject filterIntersectsCrsProperties =
-                (BasicDBObject) filterIntersectsCrs.get("properties");
+        BasicDBObject filterIntersectsCrsProperties = (BasicDBObject) filterIntersectsCrs.get("properties");
         Assert.assertNotNull(filterIntersectsCrsProperties);
 
-        String filterIntersectsCrsPropertiesName =
-                (String) filterIntersectsCrsProperties.get("name");
+        String filterIntersectsCrsPropertiesName = (String) filterIntersectsCrsProperties.get("name");
         Assert.assertNotNull(filterIntersectsCrsPropertiesName);
-        Assert.assertEquals(
-                "urn:x-mongodb:crs:strictwinding:EPSG:4326", filterIntersectsCrsPropertiesName);
+        Assert.assertEquals("urn:x-mongodb:crs:strictwinding:EPSG:4326", filterIntersectsCrsPropertiesName);
     }
 
     @Test
@@ -361,14 +352,8 @@ public class FilterToMongoTest {
     @Test
     public void testLikeUnsupported() throws Exception {
         PropertyIsLike likeLiteral = ff.like(ff.literal("once upon a time"), "on%", "%", "_", "\\");
-        PropertyIsLike likeFunction =
-                ff.like(
-                        ff.function(
-                                "Concatenate", ff.property("stringProperty"), ff.literal("test")),
-                        "on%",
-                        "%",
-                        "_",
-                        "\\");
+        PropertyIsLike likeFunction = ff.like(
+                ff.function("Concatenate", ff.property("stringProperty"), ff.literal("test")), "on%", "%", "_", "\\");
 
         try {
             likeLiteral.accept(filterToMongo, null);
@@ -387,8 +372,7 @@ public class FilterToMongoTest {
 
     @Test
     public void testDateGreaterComparison() {
-        PropertyIsGreaterThan gt =
-                ff.greater(ff.property("dateProperty"), ff.literal(DATE_LITERAL));
+        PropertyIsGreaterThan gt = ff.greater(ff.property("dateProperty"), ff.literal(DATE_LITERAL));
         BasicDBObject obj = (BasicDBObject) gt.accept(filterToMongo, null);
 
         Assert.assertNotNull(obj);
@@ -414,10 +398,7 @@ public class FilterToMongoTest {
         final String UPPER_BOUND = "2015-07-31T00:00:00.000+01:00";
 
         PropertyIsBetween lt =
-                ff.between(
-                        ff.property("dateProperty"),
-                        ff.literal(LOWER_BOUND),
-                        ff.literal(UPPER_BOUND));
+                ff.between(ff.property("dateProperty"), ff.literal(LOWER_BOUND), ff.literal(UPPER_BOUND));
         BasicDBObject obj = (BasicDBObject) lt.accept(filterToMongo, null);
 
         Assert.assertNotNull(obj);
@@ -476,8 +457,7 @@ public class FilterToMongoTest {
 
     @Test
     public void testEqualToBigInteger() throws Exception {
-        PropertyIsEqualTo equalTo =
-                ff.equals(ff.property("foo"), ff.literal(BigInteger.valueOf(10L)));
+        PropertyIsEqualTo equalTo = ff.equals(ff.property("foo"), ff.literal(BigInteger.valueOf(10L)));
         BasicDBObject obj = (BasicDBObject) equalTo.accept(filterToMongo, null);
         Assert.assertNotNull(obj);
         BasicDBObject operator = (BasicDBObject) obj.get("properties.foo");
@@ -525,9 +505,7 @@ public class FilterToMongoTest {
 
     @Test
     public void testIntersectsWithJsonSelect() {
-        Intersects intersects =
-                ff.intersects(
-                        ff.function("jsonSelect", ff.literal("geom")), getGeometryParameter());
+        Intersects intersects = ff.intersects(ff.function("jsonSelect", ff.literal("geom")), getGeometryParameter());
         BasicDBObject mongoQuery = (BasicDBObject) intersects.accept(filterToMongo, null);
         testIntersectMongoQuery(mongoQuery);
     }
@@ -535,9 +513,7 @@ public class FilterToMongoTest {
     @Test
     public void testIntersectsWithJsonSelectAll() {
 
-        Intersects intersects =
-                ff.intersects(
-                        ff.function("jsonSelectAll", ff.literal("geom")), getGeometryParameter());
+        Intersects intersects = ff.intersects(ff.function("jsonSelectAll", ff.literal("geom")), getGeometryParameter());
         BasicDBObject mongoQuery = (BasicDBObject) intersects.accept(filterToMongo, null);
         testIntersectMongoQuery(mongoQuery);
     }
@@ -582,15 +558,12 @@ public class FilterToMongoTest {
         BasicDBObject filterIntersectsCrs = (BasicDBObject) filterIntersectsGeometry.get("crs");
         Assert.assertNotNull(filterIntersectsCrs);
 
-        BasicDBObject filterIntersectsCrsProperties =
-                (BasicDBObject) filterIntersectsCrs.get("properties");
+        BasicDBObject filterIntersectsCrsProperties = (BasicDBObject) filterIntersectsCrs.get("properties");
         Assert.assertNotNull(filterIntersectsCrsProperties);
 
-        String filterIntersectsCrsPropertiesName =
-                (String) filterIntersectsCrsProperties.get("name");
+        String filterIntersectsCrsPropertiesName = (String) filterIntersectsCrsProperties.get("name");
         Assert.assertNotNull(filterIntersectsCrsPropertiesName);
-        Assert.assertEquals(
-                "urn:x-mongodb:crs:strictwinding:EPSG:4326", filterIntersectsCrsPropertiesName);
+        Assert.assertEquals("urn:x-mongodb:crs:strictwinding:EPSG:4326", filterIntersectsCrsPropertiesName);
     }
 
     public static Polygon convertBasicDBListToPolygon(BasicDBList basicDBList) {

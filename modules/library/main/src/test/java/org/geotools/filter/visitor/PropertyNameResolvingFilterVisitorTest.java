@@ -47,8 +47,7 @@ public class PropertyNameResolvingFilterVisitorTest {
 
     @Test
     public void testResolvePropertyName() {
-        PropertyIsEqualTo f =
-                factory.equal(factory.property("gml:name"), factory.literal("foo"), true);
+        PropertyIsEqualTo f = factory.equal(factory.property("gml:name"), factory.literal("foo"), true);
         Assert.assertEquals("gml:name", f.getExpression1().toString());
 
         f = (PropertyIsEqualTo) f.accept(new PropertyNameResolvingVisitor(featureType), null);

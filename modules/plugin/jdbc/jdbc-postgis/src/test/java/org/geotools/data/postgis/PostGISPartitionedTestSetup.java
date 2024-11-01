@@ -15,9 +15,7 @@ public class PostGISPartitionedTestSetup extends JDBCDelegatingTestSetup {
 
         PostGISTestSetup postGISTestSetup = (PostGISTestSetup) delegate;
 
-        boolean var =
-                postGISTestSetup.pgsqlVersion != null
-                        && postGISTestSetup.pgsqlVersion.compareTo(v) >= 0;
+        boolean var = postGISTestSetup.pgsqlVersion != null && postGISTestSetup.pgsqlVersion.compareTo(v) >= 0;
         return var;
     }
 

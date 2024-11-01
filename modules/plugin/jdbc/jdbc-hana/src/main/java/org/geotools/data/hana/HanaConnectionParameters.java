@@ -33,8 +33,7 @@ public final class HanaConnectionParameters {
         return forPort(host, port, null);
     }
 
-    public static HanaConnectionParameters forPort(
-            String host, int port, Map<String, String> additionalOptions) {
+    public static HanaConnectionParameters forPort(String host, int port, Map<String, String> additionalOptions) {
         return new HanaConnectionParameters(host, port, additionalOptions);
     }
 
@@ -52,8 +51,7 @@ public final class HanaConnectionParameters {
         return new HanaConnectionParameters(host, null, options);
     }
 
-    public static HanaConnectionParameters forMultiContainerSystemDatabase(
-            String host, int instance) {
+    public static HanaConnectionParameters forMultiContainerSystemDatabase(String host, int instance) {
         return forMultiContainer(host, instance, "SYSTEMDB");
     }
 
@@ -62,8 +60,7 @@ public final class HanaConnectionParameters {
         return forMultiContainer(host, instance, "SYSTEMDB", additionalOptions);
     }
 
-    public static HanaConnectionParameters forMultiContainer(
-            String host, int instance, String database) {
+    public static HanaConnectionParameters forMultiContainer(String host, int instance, String database) {
         return forMultiContainer(host, instance, database, null);
     }
 
@@ -78,8 +75,7 @@ public final class HanaConnectionParameters {
         return new HanaConnectionParameters(host, null, options);
     }
 
-    private HanaConnectionParameters(
-            String host, Integer port, Map<String, String> additionalOptions) {
+    private HanaConnectionParameters(String host, Integer port, Map<String, String> additionalOptions) {
         this.host = host;
         this.port = port;
         this.additionalOptions = additionalOptions;

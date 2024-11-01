@@ -27,9 +27,8 @@ import org.geotools.util.Classes;
 import org.geotools.util.Version;
 
 /**
- * Split a URI into its {@link #type} and {@link #version} parts for {@link
- * Abstract_URI_AuthorityFactory}. This class must be immutable in order to avoid the need for
- * synchronization in the authority factory.
+ * Split a URI into its {@link #type} and {@link #version} parts for {@link Abstract_URI_AuthorityFactory}. This class
+ * must be immutable in order to avoid the need for synchronization in the authority factory.
  *
  * @author Martin Desruisseaux
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
@@ -42,9 +41,7 @@ abstract class URI_Parser {
     /** The parsed code as full URI. */
     public final String uri;
 
-    /**
-     * The type part of the URN ({@code "crs"}, {@code "cs"}, {@code "datum"}, <cite>etc</cite>).
-     */
+    /** The type part of the URN ({@code "crs"}, {@code "cs"}, {@code "datum"}, <cite>etc</cite>). */
     public final URI_Type type;
 
     /** The authority part of the URI (typically {@code "EPSG"}). */
@@ -65,8 +62,7 @@ abstract class URI_Parser {
      * @param version the version of the resource or null if none
      * @param code the resource code
      */
-    protected URI_Parser(
-            String uri, URI_Type type, String authority, Version version, String code) {
+    protected URI_Parser(String uri, URI_Type type, String authority, Version version, String code) {
         this.uri = uri;
         this.type = type;
         this.authority = authority;
@@ -75,8 +71,8 @@ abstract class URI_Parser {
     }
 
     /**
-     * Returns the concatenation of the {@linkplain #authority} and the {@linkplain #code},
-     * separated by {@link #AUTHORITY_CODE_SEPARATOR}.
+     * Returns the concatenation of the {@linkplain #authority} and the {@linkplain #code}, separated by
+     * {@link #AUTHORITY_CODE_SEPARATOR}.
      */
     public String getAuthorityCode() {
         return authority + AUTHORITY_CODE_SEPARATOR + code;
@@ -84,17 +80,15 @@ abstract class URI_Parser {
 
     /**
      * Checks if the type is compatible with the expected one. This method is used as a safety by
-     * {@code getFooAuthorityFactory(String)} methods in {@link URN_AuthorityFactory}. If a mismatch
-     * is found, a warning is logged but no exception is thrown since it doesn't prevent the class
-     * to work in a predictable way. It is just an indication for the user that his URN may be
-     * wrong.
+     * {@code getFooAuthorityFactory(String)} methods in {@link URN_AuthorityFactory}. If a mismatch is found, a warning
+     * is logged but no exception is thrown since it doesn't prevent the class to work in a predictable way. It is just
+     * an indication for the user that his URN may be wrong.
      */
     final void logWarningIfTypeMismatch(
             AuthorityFactory authorityFactory, final Class<? extends AuthorityFactory> expected) {
         if (!expected.isAssignableFrom(type.type)) {
             // Build a simplified URN, omitting "urn:ogc:def" and version number.
-            final LogRecord record =
-                    Loggings.format(Level.WARNING, LoggingKeys.MISMATCHED_URI_TYPE_$1, uri);
+            final LogRecord record = Loggings.format(Level.WARNING, LoggingKeys.MISMATCHED_URI_TYPE_$1, uri);
             // Set the source to the public or protected method.
             record.setSourceClassName(authorityFactory.getClass().getName());
             record.setSourceMethodName("get" + Classes.getShortName(expected));

@@ -10,8 +10,7 @@
 package org.geotools.api.temporal;
 
 /**
- * Provides a single data type for identifying a temporal position with a resolution of less than a
- * day.
+ * Provides a single data type for identifying a temporal position with a resolution of less than a day.
  *
  * @author Stephane Fellah (Image Matters)
  * @author Alexander Petkov

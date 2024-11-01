@@ -39,8 +39,8 @@ import org.geotools.data.shapefile.ShapefileDataStoreFactory;
 import org.geotools.util.logging.Logging;
 
 /**
- * Implementation of {@link Repository} This class interprets the data source name as a file name or
- * an URL for a property file containing the ds creation parameters
+ * Implementation of {@link Repository} This class interprets the data source name as a file name or an URL for a
+ * property file containing the ds creation parameters
  *
  * <p>For shape files ending with .shp or SHP, the shape file could be passed as name
  *
@@ -75,8 +75,7 @@ public class DSFinderRepository implements Repository {
         return result;
     }
 
-    private Map<String, Serializable> getMapFromPropetryLocation(String location)
-            throws IOException {
+    private Map<String, Serializable> getMapFromPropetryLocation(String location) throws IOException {
 
         URL url = getURLForLocation(location);
 

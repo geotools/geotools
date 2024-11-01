@@ -45,10 +45,10 @@ import org.geotools.referencing.wkt.Formatter;
 import org.geotools.util.SuppressFBWarnings;
 
 /**
- * A 2D coordinate reference system used to approximate the shape of the earth on a planar surface.
- * It is done in such a way that the distortion that is inherent to the approximation is carefully
- * controlled and known. Distortion correction is commonly applied to calculated bearings and
- * distances to produce values that are a close match to actual field values.
+ * A 2D coordinate reference system used to approximate the shape of the earth on a planar surface. It is done in such a
+ * way that the distortion that is inherent to the approximation is carefully controlled and known. Distortion
+ * correction is commonly applied to calculated bearings and distances to produce values that are a close match to
+ * actual field values.
  *
  * <TABLE CELLPADDING='6' BORDER='1'>
  * <TR BGCOLOR="#EEEEFF"><TH NOWRAP>Used with CS type(s)</TH></TR>
@@ -64,16 +64,14 @@ public class DefaultProjectedCRS extends AbstractDerivedCRS implements Projected
     /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = -4502680112031773028L;
 
-    /**
-     * Name of the {@value} projection parameter, which is handled specially during WKT formatting.
-     */
+    /** Name of the {@value} projection parameter, which is handled specially during WKT formatting. */
     private static final String SEMI_MAJOR = "semi_major", SEMI_MINOR = "semi_minor";
 
     /**
-     * Constructs a new projected CRS with the same values than the specified one. This copy
-     * constructor provides a way to wrap an arbitrary implementation into a Geotools one or a
-     * user-defined one (as a subclass), usually in order to leverage some implementation-specific
-     * API. This constructor performs a shallow copy, i.e. the properties are not cloned.
+     * Constructs a new projected CRS with the same values than the specified one. This copy constructor provides a way
+     * to wrap an arbitrary implementation into a Geotools one or a user-defined one (as a subclass), usually in order
+     * to leverage some implementation-specific API. This constructor performs a shallow copy, i.e. the properties are
+     * not cloned.
      *
      * @param crs The coordinate reference system to copy.
      * @since 2.2
@@ -83,51 +81,43 @@ public class DefaultProjectedCRS extends AbstractDerivedCRS implements Projected
     }
 
     /**
-     * Constructs a projected CRS from a name. A {@linkplain DefaultOperationMethod default
-     * operation method} is inferred from the {@linkplain MathTransform math transform}. This is a
-     * convenience constructor that is not garanteed to work reliably for non-GeoTools
-     * implementations. Use the constructor expecting a {@linkplain DefiningConversion defining
-     * conversion} for more determinist result.
+     * Constructs a projected CRS from a name. A {@linkplain DefaultOperationMethod default operation method} is
+     * inferred from the {@linkplain MathTransform math transform}. This is a convenience constructor that is not
+     * garanteed to work reliably for non-GeoTools implementations. Use the constructor expecting a
+     * {@linkplain DefiningConversion defining conversion} for more determinist result.
      *
      * @param name The name.
      * @param base Coordinate reference system to base the derived CRS on.
      * @param baseToDerived The transform from the base CRS to returned CRS.
-     * @param derivedCS The coordinate system for the derived CRS. The number of axes must match the
-     *     target dimension of the transform {@code baseToDerived}.
-     * @throws MismatchedDimensionException if the source and target dimension of {@code
-     *     baseToDeviced} don't match the dimension of {@code base} and {@code derivedCS}
-     *     respectively.
+     * @param derivedCS The coordinate system for the derived CRS. The number of axes must match the target dimension of
+     *     the transform {@code baseToDerived}.
+     * @throws MismatchedDimensionException if the source and target dimension of {@code baseToDeviced} don't match the
+     *     dimension of {@code base} and {@code derivedCS} respectively.
      * @since 2.5
      */
     public DefaultProjectedCRS(
-            final String name,
-            final GeographicCRS base,
-            final MathTransform baseToDerived,
-            final CartesianCS derivedCS)
+            final String name, final GeographicCRS base, final MathTransform baseToDerived, final CartesianCS derivedCS)
             throws MismatchedDimensionException {
         this(Collections.singletonMap(NAME_KEY, name), base, baseToDerived, derivedCS);
     }
 
     /**
-     * Constructs a projected CRS from a set of properties. A {@linkplain DefaultOperationMethod
-     * default operation method} is inferred from the {@linkplain MathTransform math transform}.
-     * This is a convenience constructor that is not garanteed to work reliably for non-GeoTools
-     * implementations. Use the constructor expecting a {@linkplain DefiningConversion defining
-     * conversion} for more determinist result.
+     * Constructs a projected CRS from a set of properties. A {@linkplain DefaultOperationMethod default operation
+     * method} is inferred from the {@linkplain MathTransform math transform}. This is a convenience constructor that is
+     * not garanteed to work reliably for non-GeoTools implementations. Use the constructor expecting a
+     * {@linkplain DefiningConversion defining conversion} for more determinist result.
      *
-     * <p>The properties are given unchanged to the {@linkplain
-     * AbstractDerivedCRS#AbstractDerivedCRS(Map, CoordinateReferenceSystem, MathTransform,
-     * CoordinateSystem) super-class constructor}.
+     * <p>The properties are given unchanged to the {@linkplain AbstractDerivedCRS#AbstractDerivedCRS(Map,
+     * CoordinateReferenceSystem, MathTransform, CoordinateSystem) super-class constructor}.
      *
-     * @param properties Name and other properties to give to the new derived CRS object and to the
-     *     underlying {@linkplain org.geotools.referencing.operation.DefaultProjection projection}.
+     * @param properties Name and other properties to give to the new derived CRS object and to the underlying
+     *     {@linkplain org.geotools.referencing.operation.DefaultProjection projection}.
      * @param base Coordinate reference system to base the derived CRS on.
      * @param baseToDerived The transform from the base CRS to returned CRS.
-     * @param derivedCS The coordinate system for the derived CRS. The number of axes must match the
-     *     target dimension of the transform {@code baseToDerived}.
-     * @throws MismatchedDimensionException if the source and target dimension of {@code
-     *     baseToDeviced} don't match the dimension of {@code base} and {@code derivedCS}
-     *     respectively.
+     * @param derivedCS The coordinate system for the derived CRS. The number of axes must match the target dimension of
+     *     the transform {@code baseToDerived}.
+     * @throws MismatchedDimensionException if the source and target dimension of {@code baseToDeviced} don't match the
+     *     dimension of {@code base} and {@code derivedCS} respectively.
      * @since 2.5
      */
     public DefaultProjectedCRS(
@@ -140,21 +130,19 @@ public class DefaultProjectedCRS extends AbstractDerivedCRS implements Projected
     }
 
     /**
-     * Constructs a projected CRS from a set of properties. The properties are given unchanged to
-     * the {@linkplain AbstractDerivedCRS#AbstractDerivedCRS(Map, OperationMethod,
-     * CoordinateReferenceSystem, MathTransform, CoordinateSystem) super-class constructor}.
+     * Constructs a projected CRS from a set of properties. The properties are given unchanged to the
+     * {@linkplain AbstractDerivedCRS#AbstractDerivedCRS(Map, OperationMethod, CoordinateReferenceSystem, MathTransform,
+     * CoordinateSystem) super-class constructor}.
      *
-     * @param properties Name and other properties to give to the new derived CRS object and to the
-     *     underlying {@linkplain org.geotools.referencing.operation.DefaultProjection projection}.
-     * @param method A description of the {@linkplain Conversion#getMethod method for the
-     *     conversion}.
+     * @param properties Name and other properties to give to the new derived CRS object and to the underlying
+     *     {@linkplain org.geotools.referencing.operation.DefaultProjection projection}.
+     * @param method A description of the {@linkplain Conversion#getMethod method for the conversion}.
      * @param base Coordinate reference system to base the derived CRS on.
      * @param baseToDerived The transform from the base CRS to returned CRS.
-     * @param derivedCS The coordinate system for the derived CRS. The number of axes must match the
-     *     target dimension of the transform {@code baseToDerived}.
-     * @throws MismatchedDimensionException if the source and target dimension of {@code
-     *     baseToDeviced} don't match the dimension of {@code base} and {@code derivedCS}
-     *     respectively.
+     * @param derivedCS The coordinate system for the derived CRS. The number of axes must match the target dimension of
+     *     the transform {@code baseToDerived}.
+     * @throws MismatchedDimensionException if the source and target dimension of {@code baseToDeviced} don't match the
+     *     dimension of {@code base} and {@code derivedCS} respectively.
      */
     public DefaultProjectedCRS(
             final Map<String, Object> properties,
@@ -167,20 +155,18 @@ public class DefaultProjectedCRS extends AbstractDerivedCRS implements Projected
     }
 
     /**
-     * Constructs a projected CRS from a {@linkplain DefiningConversion defining conversion}. The
-     * properties are given unchanged to the {@linkplain AbstractDerivedCRS#AbstractDerivedCRS(Map,
-     * Conversion, CoordinateReferenceSystem, MathTransform, CoordinateSystem) super-class
-     * constructor}.
+     * Constructs a projected CRS from a {@linkplain DefiningConversion defining conversion}. The properties are given
+     * unchanged to the {@linkplain AbstractDerivedCRS#AbstractDerivedCRS(Map, Conversion, CoordinateReferenceSystem,
+     * MathTransform, CoordinateSystem) super-class constructor}.
      *
      * @param properties Name and other properties to give to the new projected CRS object.
      * @param conversionFromBase The {@linkplain DefiningConversion defining conversion}.
      * @param base Coordinate reference system to base the projected CRS on.
      * @param baseToDerived The transform from the base CRS to returned CRS.
-     * @param derivedCS The coordinate system for the projected CRS. The number of axes must match
-     *     the target dimension of the transform {@code baseToDerived}.
-     * @throws MismatchedDimensionException if the source and target dimension of {@code
-     *     baseToDerived} don't match the dimension of {@code base} and {@code derivedCS}
-     *     respectively.
+     * @param derivedCS The coordinate system for the projected CRS. The number of axes must match the target dimension
+     *     of the transform {@code baseToDerived}.
+     * @throws MismatchedDimensionException if the source and target dimension of {@code baseToDerived} don't match the
+     *     dimension of {@code base} and {@code derivedCS} respectively.
      */
     public DefaultProjectedCRS(
             final Map<String, ?> properties,
@@ -233,8 +219,7 @@ public class DefaultProjectedCRS extends AbstractDerivedCRS implements Projected
     /**
      * Returns a hash value for this projected CRS.
      *
-     * @return The hash code value. This value doesn't need to be the same in past or future
-     *     versions of this class.
+     * @return The hash code value. This value doesn't need to be the same in past or future versions of this class.
      */
     @Override
     @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
@@ -244,8 +229,8 @@ public class DefaultProjectedCRS extends AbstractDerivedCRS implements Projected
 
     /**
      * Format the inner part of a <A
-     * HREF="http://geoapi.sourceforge.net/snapshot/javadoc/org/opengis/referencing/doc-files/WKT.html"><cite>Well
-     * Known Text</cite> (WKT)</A> element.
+     * HREF="http://geoapi.sourceforge.net/snapshot/javadoc/org/opengis/referencing/doc-files/WKT.html"><cite>Well Known
+     * Text</cite> (WKT)</A> element.
      *
      * @param formatter The formatter to use.
      * @return The name of the WKT element type, which is {@code "PROJCS"}.
@@ -260,11 +245,11 @@ public class DefaultProjectedCRS extends AbstractDerivedCRS implements Projected
         final Unit<Angle> angularUnit = formatter.getAngularUnit();
         final Unit<Length> axisUnit = ellipsoid.getAxisUnit();
         formatter.setLinearUnit(unit);
-        formatter.setAngularUnit(
-                DefaultGeographicCRS.getAngularUnit(baseCRS.getCoordinateSystem()));
+        formatter.setAngularUnit(DefaultGeographicCRS.getAngularUnit(baseCRS.getCoordinateSystem()));
         formatter.append(baseCRS);
         formatter.append(conversionFromBase.getMethod());
-        for (final GeneralParameterValue param : conversionFromBase.getParameterValues().values()) {
+        for (final GeneralParameterValue param :
+                conversionFromBase.getParameterValues().values()) {
             final GeneralParameterDescriptor desc = param.getDescriptor();
             String name;
             if (nameMatches(desc, name = SEMI_MAJOR) || nameMatches(desc, name = SEMI_MINOR)) {
@@ -275,11 +260,10 @@ public class DefaultProjectedCRS extends AbstractDerivedCRS implements Projected
                  */
                 if (param instanceof ParameterValue) {
                     final double value = ((ParameterValue<?>) param).doubleValue(axisUnit);
-                    final double expected =
-                            (name == SEMI_MINOR)
-                                    ? // using '==' is okay here.
-                                    ellipsoid.getSemiMinorAxis()
-                                    : ellipsoid.getSemiMajorAxis();
+                    final double expected = (name == SEMI_MINOR)
+                            ? // using '==' is okay here.
+                            ellipsoid.getSemiMinorAxis()
+                            : ellipsoid.getSemiMajorAxis();
                     if (value == expected) {
                         continue;
                     }

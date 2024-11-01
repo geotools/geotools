@@ -42,8 +42,7 @@ public class YsldValidator {
      * Validate the passed style
      *
      * @param input Reader for the style
-     * @return List of {@link MarkedYAMLException} representing any errors, or an empty list if the
-     *     style is valid
+     * @return List of {@link MarkedYAMLException} representing any errors, or an empty list if the style is valid
      */
     public List<MarkedYAMLException> validate(Reader input) throws IOException {
         YsldValidateContext context = new YsldValidateContext();

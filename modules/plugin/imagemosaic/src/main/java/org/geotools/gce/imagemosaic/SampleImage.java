@@ -51,8 +51,7 @@ public class SampleImage implements Serializable {
     public BufferedImage toBufferedImage() {
         final SampleModel sm = sampleModel.createCompatibleSampleModel(1, 1);
         final WritableRaster raster = RasterFactory.createWritableRaster(sm, null);
-        final BufferedImage image =
-                new BufferedImage(colorModel, raster, colorModel.isAlphaPremultiplied(), null);
+        final BufferedImage image = new BufferedImage(colorModel, raster, colorModel.isAlphaPremultiplied(), null);
         return image;
     }
 

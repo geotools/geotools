@@ -134,8 +134,7 @@ public class EnvelopeTypeBinding extends AbstractComplexBinding {
                         crs);
             }
 
-            return new ReferencedEnvelope(
-                    u.getOrdinate(0), l.getOrdinate(0), u.getOrdinate(1), l.getOrdinate(1), crs);
+            return new ReferencedEnvelope(u.getOrdinate(0), l.getOrdinate(0), u.getOrdinate(1), l.getOrdinate(1), crs);
         }
 
         if (node.hasChild(Coordinate.class)) {
@@ -166,11 +165,7 @@ public class EnvelopeTypeBinding extends AbstractComplexBinding {
                         crs);
             } else {
                 return new ReferencedEnvelope(
-                        dp1.getOrdinate(0),
-                        dp2.getOrdinate(0),
-                        dp1.getOrdinate(1),
-                        dp2.getOrdinate(1),
-                        crs);
+                        dp1.getOrdinate(0), dp2.getOrdinate(0), dp1.getOrdinate(1), dp2.getOrdinate(1), crs);
             }
         }
 
@@ -187,8 +182,7 @@ public class EnvelopeTypeBinding extends AbstractComplexBinding {
                         seq.getOrdinate(1, 2),
                         crs);
             } else {
-                return new ReferencedEnvelope(
-                        seq.getX(0), seq.getX(1), seq.getY(0), seq.getY(1), crs);
+                return new ReferencedEnvelope(seq.getX(0), seq.getX(1), seq.getY(0), seq.getY(1), crs);
             }
         }
 
@@ -200,9 +194,7 @@ public class EnvelopeTypeBinding extends AbstractComplexBinding {
         Envelope envelope = (Envelope) object;
 
         if (envelope.isNull()) {
-            value.appendChild(
-                    document.createElementNS(
-                            getTarget().getNamespaceURI(), GML.Null.getLocalPart()));
+            value.appendChild(document.createElementNS(getTarget().getNamespaceURI(), GML.Null.getLocalPart()));
         }
 
         return null;
@@ -217,13 +209,11 @@ public class EnvelopeTypeBinding extends AbstractComplexBinding {
         }
 
         if (name.getLocalPart().equals("lowerCorner")) {
-            return new LiteCoordinateSequence(
-                    new double[] {envelope.getMinX(), envelope.getMinY()}, 2);
+            return new LiteCoordinateSequence(new double[] {envelope.getMinX(), envelope.getMinY()}, 2);
         }
 
         if (name.getLocalPart().equals("upperCorner")) {
-            return new LiteCoordinateSequence(
-                    new double[] {envelope.getMaxX(), envelope.getMaxY()}, 2);
+            return new LiteCoordinateSequence(new double[] {envelope.getMaxX(), envelope.getMaxY()}, 2);
         }
 
         if (envelope instanceof ReferencedEnvelope) {
@@ -237,8 +227,7 @@ public class EnvelopeTypeBinding extends AbstractComplexBinding {
                     return null;
                 }
 
-                CoordinateReferenceSystem crs =
-                        ((ReferencedEnvelope) envelope).getCoordinateReferenceSystem();
+                CoordinateReferenceSystem crs = ((ReferencedEnvelope) envelope).getCoordinateReferenceSystem();
                 if (crs != null) {
                     return crs.getCoordinateSystem().getDimension();
                 }

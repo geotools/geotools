@@ -24,8 +24,8 @@ import org.geotools.api.filter.expression.Expression;
 import org.geotools.data.simple.SimpleFeatureCollection;
 
 /**
- * Obtains the data needed for a Equal Area operation (classification of features into classes each
- * roughly having the same area).
+ * Obtains the data needed for a Equal Area operation (classification of features into classes each roughly having the
+ * same area).
  *
  * <p>The result contains an array of lists with the expression values in each.
  *

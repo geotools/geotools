@@ -68,8 +68,7 @@ import org.geotools.filter.visitor.DefaultFilterVisitor;
 import org.locationtech.jts.geom.Geometry;
 
 /**
- * Applies duck typing to properties in filters, aggregating the types found in the {@link
- * TypeAggregator}
+ * Applies duck typing to properties in filters, aggregating the types found in the {@link TypeAggregator}
  *
  * @author Andrea Aime - GeoSolutions
  */

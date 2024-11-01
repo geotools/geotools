@@ -32,16 +32,16 @@ import org.locationtech.jts.geom.impl.PackedCoordinateSequence;
 import org.locationtech.jts.geom.impl.PackedCoordinateSequenceFactory;
 
 /**
- * A stateful geometry collector that will add all geometries into a single resulting geometry
- * collection with the following properties:
+ * A stateful geometry collector that will add all geometries into a single resulting geometry collection with the
+ * following properties:
  *
  * <ul>
- *   <li>the elements of the resulting geometry are simple geometries, adding a geometry collection
- *       will result in it being flattened
- *   <li>the resulting geometry collection type will match its contents, a generic geometry
- *       collection will be used only in case of heterogeneous contents
- *   <li>all geometries will be cloned using the provided geometry factory (one based on a {@link
- *       PackedCoordinateSequence} is used by default to reduce memory usage)
+ *   <li>the elements of the resulting geometry are simple geometries, adding a geometry collection will result in it
+ *       being flattened
+ *   <li>the resulting geometry collection type will match its contents, a generic geometry collection will be used only
+ *       in case of heterogeneous contents
+ *   <li>all geometries will be cloned using the provided geometry factory (one based on a
+ *       {@link PackedCoordinateSequence} is used by default to reduce memory usage)
  * </ul>
  *
  * @author Andrea Aime - GeoSolutions
@@ -59,10 +59,7 @@ public class GeometryCollector {
 
     int srid = -1;
 
-    /**
-     * Returns the maximum number of coordinates this collector is allowed to keep in the resulting
-     * geometry
-     */
+    /** Returns the maximum number of coordinates this collector is allowed to keep in the resulting geometry */
     public long getMaxCoordinates() {
         return maxCoordinates;
     }
@@ -73,17 +70,17 @@ public class GeometryCollector {
     }
 
     /**
-     * Returns the geometry factory used to deep clone the geometries while collecting them (if null
-     * no cloning will happen)
+     * Returns the geometry factory used to deep clone the geometries while collecting them (if null no cloning will
+     * happen)
      */
     public GeometryFactory getFactory() {
         return factory;
     }
 
     /**
-     * Sets the geometry factory used to deep clone the geometries while collecting them. May be set
-     * to null to avoid deep cloning. By default a geometry factory based on {@link
-     * PackedCoordinateSequenceFactory} is used to minimize the memory usage
+     * Sets the geometry factory used to deep clone the geometries while collecting them. May be set to null to avoid
+     * deep cloning. By default a geometry factory based on {@link PackedCoordinateSequenceFactory} is used to minimize
+     * the memory usage
      */
     public void setFactory(GeometryFactory factory) {
         this.factory = factory;
@@ -201,11 +198,10 @@ public class GeometryCollector {
         } else {
             coordinates += g.getNumPoints();
             if (maxCoordinates > 0 && coordinates > maxCoordinates) {
-                throw new IllegalStateException(
-                        "Max number of collected ordinates has been exceeded. Current count is "
-                                + coordinates
-                                + ", max count is "
-                                + maxCoordinates);
+                throw new IllegalStateException("Max number of collected ordinates has been exceeded. Current count is "
+                        + coordinates
+                        + ", max count is "
+                        + maxCoordinates);
             }
 
             // apply the geometry factory if possible (this ensures the proper coordinate sequence

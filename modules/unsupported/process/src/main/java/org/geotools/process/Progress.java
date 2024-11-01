@@ -22,8 +22,8 @@ import java.util.concurrent.Future;
 /**
  * Used to report on the progress of a running {@link Process}.
  *
- * <p>The contents of the Map returned by get() are described by {@link
- * ProcessFactory#getResultInfo(Name, Map) } description.
+ * <p>The contents of the Map returned by get() are described by {@link ProcessFactory#getResultInfo(Name, Map) }
+ * description.
  *
  * @author Jody
  */

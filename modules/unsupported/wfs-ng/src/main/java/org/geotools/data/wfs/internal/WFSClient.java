@@ -66,19 +66,14 @@ public class WFSClient extends AbstractOpenWebService<WFSGetCapabilities, QName>
         this(capabilitiesURL, httpClient, config, null);
     }
 
-    public WFSClient(
-            URL capabilitiesURL,
-            HTTPClient httpClient,
-            WFSConfig config,
-            WFSGetCapabilities capabilities)
+    public WFSClient(URL capabilitiesURL, HTTPClient httpClient, WFSConfig config, WFSGetCapabilities capabilities)
             throws IOException, ServiceException {
 
         super(
                 capabilitiesURL,
                 httpClient,
                 capabilities,
-                Collections.singletonMap(
-                        XMLHandlerHints.ENTITY_RESOLVER, config.getEntityResolver()),
+                Collections.singletonMap(XMLHandlerHints.ENTITY_RESOLVER, config.getEntityResolver()),
                 config.additionalHeaders);
         this.config = config;
         super.specification = determineCorrectStrategy();
@@ -110,8 +105,7 @@ public class WFSClient extends AbstractOpenWebService<WFSGetCapabilities, QName>
     }
 
     @Override
-    @SuppressFBWarnings(
-            "UR_UNINIT_READ_CALLED_FROM_SUPER_CONSTRUCTOR") // actual issue, but don't know how to
+    @SuppressFBWarnings("UR_UNINIT_READ_CALLED_FROM_SUPER_CONSTRUCTOR") // actual issue, but don't know how to
     // fix it!
     protected void setupSpecifications() {
         specs = new Specification[3];
@@ -152,16 +146,12 @@ public class WFSClient extends AbstractOpenWebService<WFSGetCapabilities, QName>
                 strategy = new CubeWerxStrategy();
             } else if (override.equalsIgnoreCase("ionic")) {
                 strategy = new IonicStrategy();
-            } else if (override.equalsIgnoreCase("arcgis")
-                    && !Versions.v2_0_0.equals(capsVersion)) {
+            } else if (override.equalsIgnoreCase("arcgis") && !Versions.v2_0_0.equals(capsVersion)) {
                 strategy = new ArcGisStrategy_1_X();
             } else if (override.equalsIgnoreCase("arcgis") && Versions.v2_0_0.equals(capsVersion)) {
                 strategy = new ArcGisStrategy_2_0();
             } else {
-                LOGGER.warning(
-                        "Could not handle wfs strategy override "
-                                + override
-                                + " proceeding with autodetection");
+                LOGGER.warning("Could not handle wfs strategy override " + override + " proceeding with autodetection");
             }
         }
 
@@ -191,10 +181,9 @@ public class WFSClient extends AbstractOpenWebService<WFSGetCapabilities, QName>
                 if (ionicNs.equals("http://www.ionicsoft.com/versions/4")) {
                     strategy = new IonicStrategy();
                 } else if (ionicNs.startsWith("http://www.ionicsoft.com/versions")) {
-                    LOGGER.warning(
-                            "Found a Ionic server but the version may not match the strategy "
-                                    + "we have (v.4). Ionic namespace url: "
-                                    + ionicNs);
+                    LOGGER.warning("Found a Ionic server but the version may not match the strategy "
+                            + "we have (v.4). Ionic namespace url: "
+                            + ionicNs);
                     strategy = new IonicStrategy();
                 }
             }
@@ -213,18 +202,13 @@ public class WFSClient extends AbstractOpenWebService<WFSGetCapabilities, QName>
              * feel free to apply the patch if its a blocker for you, but don't close this issue. Just add a reminder that the heuristic for geoserver
              * needs to be improved?
              */
-            if (!uri.startsWith("file:")
-                    && uri.contains("geoserver")
-                    && !Versions.v2_0_0.equals(capsVersion)) {
+            if (!uri.startsWith("file:") && uri.contains("geoserver") && !Versions.v2_0_0.equals(capsVersion)) {
                 strategy = new GeoServerPre200Strategy();
-            } else if (uri.toLowerCase().contains("/arcgis/services/")
-                    && !Versions.v2_0_0.equals(capsVersion)) {
+            } else if (uri.toLowerCase().contains("/arcgis/services/") && !Versions.v2_0_0.equals(capsVersion)) {
                 strategy = new ArcGisStrategy_1_X();
-            } else if (uri.toLowerCase().contains("/arcgis/services/")
-                    && Versions.v2_0_0.equals(capsVersion)) {
+            } else if (uri.toLowerCase().contains("/arcgis/services/") && Versions.v2_0_0.equals(capsVersion)) {
                 strategy = new ArcGisStrategy_2_0();
-            } else if ((uri.contains("mapserver") || uri.contains("map="))
-                    && !Versions.v2_0_0.equals(capsVersion)) {
+            } else if ((uri.contains("mapserver") || uri.contains("map=")) && !Versions.v2_0_0.equals(capsVersion)) {
                 // v 1.x strategy, won't work with WFS 2.0
                 strategy = new MapServerWFSStrategy(capabilitiesDoc);
             }
@@ -284,10 +268,8 @@ public class WFSClient extends AbstractOpenWebService<WFSGetCapabilities, QName>
     }
 
     public boolean supportsStoredQueries() {
-        return getStrategy()
-                        .supportsOperation(WFSOperationType.LIST_STORED_QUERIES, HttpMethod.POST)
-                || getStrategy()
-                        .supportsOperation(WFSOperationType.LIST_STORED_QUERIES, HttpMethod.GET);
+        return getStrategy().supportsOperation(WFSOperationType.LIST_STORED_QUERIES, HttpMethod.POST)
+                || getStrategy().supportsOperation(WFSOperationType.LIST_STORED_QUERIES, HttpMethod.GET);
     }
 
     public ReferencedEnvelope getBounds(QName typeName, CoordinateReferenceSystem targetCrs) {
@@ -300,15 +282,11 @@ public class WFSClient extends AbstractOpenWebService<WFSGetCapabilities, QName>
         try {
             bounds = nativeBounds.transform(targetCrs, true);
         } catch (Exception e) {
-            LOGGER.log(
-                    Level.WARNING,
-                    "Can't transform native bounds of " + typeName + ": " + e.getMessage());
+            LOGGER.log(Level.WARNING, "Can't transform native bounds of " + typeName + ": " + e.getMessage());
             try {
                 bounds = typeInfo.getWGS84BoundingBox().transform(targetCrs, true);
             } catch (Exception ew) {
-                LOGGER.log(
-                        Level.WARNING,
-                        "Can't transform wgs84 bounds of " + typeName + ": " + e.getMessage());
+                LOGGER.log(Level.WARNING, "Can't transform wgs84 bounds of " + typeName + ": " + e.getMessage());
                 bounds = new ReferencedEnvelope(targetCrs);
             }
         }
@@ -340,18 +318,15 @@ public class WFSClient extends AbstractOpenWebService<WFSGetCapabilities, QName>
     }
 
     @Override
-    public GetCapabilitiesResponse issueRequest(GetCapabilitiesRequest request)
-            throws IOException, ServiceException {
+    public GetCapabilitiesResponse issueRequest(GetCapabilitiesRequest request) throws IOException, ServiceException {
         return (GetCapabilitiesResponse) internalIssueRequest(request);
     }
 
-    public ListStoredQueriesResponse issueRequest(ListStoredQueriesRequest request)
-            throws IOException {
+    public ListStoredQueriesResponse issueRequest(ListStoredQueriesRequest request) throws IOException {
         return (ListStoredQueriesResponse) internalIssueRequest(request);
     }
 
-    public DescribeStoredQueriesResponse issueRequest(DescribeStoredQueriesRequest request)
-            throws IOException {
+    public DescribeStoredQueriesResponse issueRequest(DescribeStoredQueriesRequest request) throws IOException {
         return (DescribeStoredQueriesResponse) internalIssueRequest(request);
     }
 
@@ -375,22 +350,19 @@ public class WFSClient extends AbstractOpenWebService<WFSGetCapabilities, QName>
 
         Response response = internalIssueRequest(request);
         if (!(response instanceof GetFeatureResponse)) {
-            throw new RuntimeException(
-                    "Should have been a GetFeatureResponse, but instead is:"
-                            + response.getClass().getSimpleName());
+            throw new RuntimeException("Should have been a GetFeatureResponse, but instead is:"
+                    + response.getClass().getSimpleName());
         }
         return (GetFeatureResponse) response;
     }
 
     /** Issue a GetFeature request that will not be treated as SimpleFeatureType */
-    public ComplexGetFeatureResponse issueComplexRequest(GetFeatureRequest request)
-            throws IOException {
+    public ComplexGetFeatureResponse issueComplexRequest(GetFeatureRequest request) throws IOException {
         requestDebug("Sending GetFeature request to ", request.getFinalURL());
         Response response = internalIssueRequest(request);
         if (!(response instanceof ComplexGetFeatureResponse)) {
-            throw new RuntimeException(
-                    "Should have been a ComplexGetFeatureResponse, but instead is:"
-                            + response.getClass().getSimpleName());
+            throw new RuntimeException("Should have been a ComplexGetFeatureResponse, but instead is:"
+                    + response.getClass().getSimpleName());
         }
         return (ComplexGetFeatureResponse) response;
     }
@@ -403,11 +375,8 @@ public class WFSClient extends AbstractOpenWebService<WFSGetCapabilities, QName>
     public URL getDescribeFeatureTypeGetURL(QName name) {
         try {
             WFSConfig config =
-                    WFSConfig.fromParams(
-                            Collections.singletonMap(
-                                    WFSDataStoreFactory.PROTOCOL.key, Boolean.FALSE));
-            DescribeFeatureTypeRequest request =
-                    new DescribeFeatureTypeRequest(config, getStrategy());
+                    WFSConfig.fromParams(Collections.singletonMap(WFSDataStoreFactory.PROTOCOL.key, Boolean.FALSE));
+            DescribeFeatureTypeRequest request = new DescribeFeatureTypeRequest(config, getStrategy());
             request.setTypeName(name);
             return request.getFinalURL();
         } catch (IOException e) {
@@ -423,8 +392,7 @@ public class WFSClient extends AbstractOpenWebService<WFSGetCapabilities, QName>
         return new DescribeStoredQueriesRequest(config, getStrategy());
     }
 
-    public DescribeFeatureTypeResponse issueRequest(DescribeFeatureTypeRequest request)
-            throws IOException {
+    public DescribeFeatureTypeResponse issueRequest(DescribeFeatureTypeRequest request) throws IOException {
 
         requestDebug("Sending DFT request to ", request.getFinalURL());
 
@@ -433,11 +401,10 @@ public class WFSClient extends AbstractOpenWebService<WFSGetCapabilities, QName>
     }
 
     /**
-     * Splits the filter provided by the geotools query into the server supported and unsupported
-     * ones.
+     * Splits the filter provided by the geotools query into the server supported and unsupported ones.
      *
-     * @return a two-element array where the first element is the supported filter and the second
-     *     the one to post-process
+     * @return a two-element array where the first element is the supported filter and the second the one to
+     *     post-process
      * @see WFSStrategy#splitFilters(QName, Filter)
      */
     public Filter[] splitFilters(QName typeName, Filter filter) {

@@ -36,21 +36,20 @@ import org.geotools.util.factory.AbstractFactory;
 import org.geotools.util.logging.Logging;
 
 /**
- * Base class for all factories in the referencing module. Factories can be grouped in two
- * categories:
+ * Base class for all factories in the referencing module. Factories can be grouped in two categories:
  *
  * <ul>
  *   <li>
- *       <p>{@linkplain org.geotools.api.referencing.AuthorityFactory Authority factories} creates
- *       objects from a compact string defined by an authority. <br>
- *       <em>These classes are working as "builders": they hold the definition or recipies used to
- *       construct an objet.</em>
+ *       <p>{@linkplain org.geotools.api.referencing.AuthorityFactory Authority factories} creates objects from a
+ *       compact string defined by an authority. <br>
+ *       <em>These classes are working as "builders": they hold the definition or recipies used to construct an
+ *       objet.</em>
  *   <li>
- *       <p>{@linkplain org.geotools.api.referencing.ObjectFactory Object factories} allows
- *       applications to make objects that cannot be created by an authority factory. This factory
- *       is very flexible, whereas the authority factory is easier to use. <br>
- *       <em>These classes are working as "Factories": they provide a series of {@code create}
- *       methods that can be used like a constructor.</em>
+ *       <p>{@linkplain org.geotools.api.referencing.ObjectFactory Object factories} allows applications to make objects
+ *       that cannot be created by an authority factory. This factory is very flexible, whereas the authority factory is
+ *       easier to use. <br>
+ *       <em>These classes are working as "Factories": they provide a series of {@code create} methods that can be used
+ *       like a constructor.</em>
  * </ul>
  *
  * @since 2.1
@@ -62,11 +61,10 @@ public class ReferencingFactory extends AbstractFactory implements Factory {
     public static final Logger LOGGER = Logging.getLogger(ReferencingFactory.class);
 
     /**
-     * A citation which contains only the title "All" in localized language. Used as a
-     * pseudoèauthority name for {@link AllAuthoritiesFactory}. Declared here because processed
-     * specially by {@link IdentifiedObjectFinder}, since it is not a valid authority name (not
-     * declared in {@link AllAuthoritiesFactory} because we want to avoid this dependency in {@link
-     * IdentifiedObjectFinder}).
+     * A citation which contains only the title "All" in localized language. Used as a pseudoèauthority name for
+     * {@link AllAuthoritiesFactory}. Declared here because processed specially by {@link IdentifiedObjectFinder}, since
+     * it is not a valid authority name (not declared in {@link AllAuthoritiesFactory} because we want to avoid this
+     * dependency in {@link IdentifiedObjectFinder}).
      */
     static final Citation ALL;
 
@@ -84,17 +82,16 @@ public class ReferencingFactory extends AbstractFactory implements Factory {
     /**
      * Constructs a factory with the specified priority.
      *
-     * @param priority The priority for this factory, as a number between {@link #MINIMUM_PRIORITY
-     *     MINIMUM_PRIORITY} and {@link #MAXIMUM_PRIORITY MAXIMUM_PRIORITY} inclusive.
+     * @param priority The priority for this factory, as a number between {@link #MINIMUM_PRIORITY MINIMUM_PRIORITY} and
+     *     {@link #MAXIMUM_PRIORITY MAXIMUM_PRIORITY} inclusive.
      */
     protected ReferencingFactory(final int priority) {
         super(priority);
     }
 
     /**
-     * Returns the vendor responsible for creating this factory implementation. Many implementations
-     * may be available for the same factory interface. The default implementation returns
-     * {@linkplain Citations#GEOTOOLS Geotools}.
+     * Returns the vendor responsible for creating this factory implementation. Many implementations may be available
+     * for the same factory interface. The default implementation returns {@linkplain Citations#GEOTOOLS Geotools}.
      *
      * @return The vendor for this factory implementation.
      */
@@ -110,8 +107,7 @@ public class ReferencingFactory extends AbstractFactory implements Factory {
      * @param object User argument.
      * @throws InvalidParameterValueException if {@code object} is null.
      */
-    protected static void ensureNonNull(final String name, final Object object)
-            throws InvalidParameterValueException {
+    protected static void ensureNonNull(final String name, final Object object) throws InvalidParameterValueException {
         if (object == null) {
             throw new InvalidParameterValueException(
                     MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, name), name, object);
@@ -119,9 +115,9 @@ public class ReferencingFactory extends AbstractFactory implements Factory {
     }
 
     /**
-     * Returns the direct {@linkplain Factory factory} dependencies, which may be {@code null}. This
-     * method should not returns indirect dependencies. Elements should be instance of {@link
-     * Factory} or {@link FactoryException} if a particular dependency can't be obtained.
+     * Returns the direct {@linkplain Factory factory} dependencies, which may be {@code null}. This method should not
+     * returns indirect dependencies. Elements should be instance of {@link Factory} or {@link FactoryException} if a
+     * particular dependency can't be obtained.
      *
      * <p>The default implementation always returns an empty set.
      */

@@ -47,14 +47,13 @@ import org.geotools.api.filter.Filter;
  *
  * @version $Id$
  */
-public interface FeatureLocking<T extends FeatureType, F extends Feature>
-        extends FeatureStore<T, F> {
+public interface FeatureLocking<T extends FeatureType, F extends Feature> extends FeatureStore<T, F> {
     /**
      * All locking operations will operate against the provided <code>lock</code>.
      *
-     * <p>This in in keeping with the stateful spirit of DataSource in which operations are against
-     * the "current" transaction. If a FeatureLock is not provided lock operations will only be
-     * applicable for the current transaction (they will expire on the next commit or rollback).
+     * <p>This in in keeping with the stateful spirit of DataSource in which operations are against the "current"
+     * transaction. If a FeatureLock is not provided lock operations will only be applicable for the current transaction
+     * (they will expire on the next commit or rollback).
      *
      * <p>That is lockFeatures() operations will:
      *
@@ -80,9 +79,8 @@ public interface FeatureLocking<T extends FeatureType, F extends Feature>
     /**
      * FeatureLock features described by Query.
      *
-     * <p>To implement WFS parcial Locking retrieve your features with a query operation first
-     * before trying to lock them individually. If you are not into WFS please don't ask what
-     * parcial locking is.
+     * <p>To implement WFS parcial Locking retrieve your features with a query operation first before trying to lock
+     * them individually. If you are not into WFS please don't ask what parcial locking is.
      *
      * @param query Query describing the features to lock
      * @return Number of features locked
@@ -93,9 +91,8 @@ public interface FeatureLocking<T extends FeatureType, F extends Feature>
     /**
      * FeatureLock features described by Filter.
      *
-     * <p>To implement WFS partial Locking retrieve your features with a query operation first
-     * before trying to lock them individually. If you are not into WFS please don't ask what
-     * partial locking is.
+     * <p>To implement WFS partial Locking retrieve your features with a query operation first before trying to lock
+     * them individually. If you are not into WFS please don't ask what partial locking is.
      *
      * @param filter Filter describing the features to lock
      * @return Number of features locked
@@ -106,8 +103,8 @@ public interface FeatureLocking<T extends FeatureType, F extends Feature>
     /**
      * FeatureLock all Features.
      *
-     * <p>The method does not prevent addFeatures() from being used (we could add a lockDataSource()
-     * method if this functionality is required.
+     * <p>The method does not prevent addFeatures() from being used (we could add a lockDataSource() method if this
+     * functionality is required.
      *
      * @return Number of Features locked by this opperation
      */

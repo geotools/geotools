@@ -24,8 +24,8 @@ import org.locationtech.jts.geom.CoordinateSequenceFactory;
 import org.locationtech.jts.geom.impl.CoordinateArraySequenceFactory;
 
 /**
- * A CSBuilder that generates DefaultCoordinateSequence objects, that is, coordinate sequences
- * backed by a Coordinate[] array.
+ * A CSBuilder that generates DefaultCoordinateSequence objects, that is, coordinate sequences backed by a Coordinate[]
+ * array.
  *
  * @author wolf
  */
@@ -103,13 +103,11 @@ public class DefaultCSBuilder implements CSBuilder {
     }
 
     /**
-     * @see
-     *     org.geotools.geometry.coordinatesequence.CSBuilder#setOrdinate(org.locationtech.jts.geom.CoordinateSequence,
+     * @see org.geotools.geometry.coordinatesequence.CSBuilder#setOrdinate(org.locationtech.jts.geom.CoordinateSequence,
      *     double, int, int)
      */
     @Override
-    public void setOrdinate(
-            CoordinateSequence sequence, double value, int ordinateIndex, int coordinateIndex) {
+    public void setOrdinate(CoordinateSequence sequence, double value, int ordinateIndex, int coordinateIndex) {
         Coordinate c = sequence.getCoordinate(coordinateIndex);
         switch (ordinateIndex) {
             case 0:

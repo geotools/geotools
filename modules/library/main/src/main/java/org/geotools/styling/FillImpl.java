@@ -34,64 +34,62 @@ import org.geotools.util.factory.GeoTools;
  * @author James Macgill, CCG
  */
 public class FillImpl implements Fill, Cloneable {
-    public static final Fill DEFAULT =
-            new ConstantFill() {
-                private void cannotModifyConstant() {
-                    throw new UnsupportedOperationException("Constant Stroke may not be modified");
-                }
+    public static final Fill DEFAULT = new ConstantFill() {
+        private void cannotModifyConstant() {
+            throw new UnsupportedOperationException("Constant Stroke may not be modified");
+        }
 
-                final Expression COLOR = ConstantExpression.color(new Color(128, 128, 128));
-                final Expression BGCOLOR = ConstantExpression.color(new Color(255, 255, 255, 0));
-                final Expression OPACITY = ConstantExpression.ONE;
+        final Expression COLOR = ConstantExpression.color(new Color(128, 128, 128));
+        final Expression BGCOLOR = ConstantExpression.color(new Color(255, 255, 255, 0));
+        final Expression OPACITY = ConstantExpression.ONE;
 
-                @Override
-                public Expression getColor() {
-                    return COLOR;
-                }
+        @Override
+        public Expression getColor() {
+            return COLOR;
+        }
 
-                @Override
-                public Expression getOpacity() {
-                    return OPACITY;
-                }
+        @Override
+        public Expression getOpacity() {
+            return OPACITY;
+        }
 
-                @Override
-                public Graphic getGraphicFill() {
-                    return null;
-                }
+        @Override
+        public Graphic getGraphicFill() {
+            return null;
+        }
 
-                @Override
-                public Object accept(TraversingStyleVisitor visitor, Object extraData) {
-                    cannotModifyConstant();
-                    return null;
-                }
-            };
-    public static final Fill NULL =
-            new ConstantFill() {
-                private void cannotModifyConstant() {
-                    throw new UnsupportedOperationException("Constant Stroke may not be modified");
-                }
+        @Override
+        public Object accept(TraversingStyleVisitor visitor, Object extraData) {
+            cannotModifyConstant();
+            return null;
+        }
+    };
+    public static final Fill NULL = new ConstantFill() {
+        private void cannotModifyConstant() {
+            throw new UnsupportedOperationException("Constant Stroke may not be modified");
+        }
 
-                @Override
-                public Expression getColor() {
-                    return ConstantExpression.NULL;
-                }
+        @Override
+        public Expression getColor() {
+            return ConstantExpression.NULL;
+        }
 
-                @Override
-                public Expression getOpacity() {
-                    return ConstantExpression.NULL;
-                }
+        @Override
+        public Expression getOpacity() {
+            return ConstantExpression.NULL;
+        }
 
-                @Override
-                public Graphic getGraphicFill() {
-                    return GraphicImpl.NULL;
-                }
+        @Override
+        public Graphic getGraphicFill() {
+            return GraphicImpl.NULL;
+        }
 
-                @Override
-                public Object accept(TraversingStyleVisitor visitor, Object extraData) {
-                    cannotModifyConstant();
-                    return null;
-                }
-            };
+        @Override
+        public Object accept(TraversingStyleVisitor visitor, Object extraData) {
+            cannotModifyConstant();
+            return null;
+        }
+    };
     private FilterFactory filterFactory;
     private Expression color = null;
     private Expression opacity = null;
@@ -112,10 +110,10 @@ public class FillImpl implements Fill, Cloneable {
 
     /**
      * This parameter gives the solid color that will be used for a Fill.<br>
-     * The color value is RGB-encoded using two hexadecimal digits per primary-color component, in
-     * the order Red, Green, Blue, prefixed with the hash (#) sign. The hexadecimal digits between A
-     * and F may be in either upper or lower case. For example, full red is encoded as "#ff0000"
-     * (with no quotation marks). The default color is defined to be 50% gray ("#808080").
+     * The color value is RGB-encoded using two hexadecimal digits per primary-color component, in the order Red, Green,
+     * Blue, prefixed with the hash (#) sign. The hexadecimal digits between A and F may be in either upper or lower
+     * case. For example, full red is encoded as "#ff0000" (with no quotation marks). The default color is defined to be
+     * 50% gray ("#808080").
      *
      * <p>Note: in CSS this parameter is just called Fill and not Color.
      *
@@ -128,10 +126,9 @@ public class FillImpl implements Fill, Cloneable {
 
     /**
      * This parameter gives the solid color that will be used for a Fill.<br>
-     * The color value is RGB-encoded using two hexidecimal digits per primary-color component, in
-     * the order Red, Green, Blue, prefixed with the hash (#) sign. The hexidecimal digits between A
-     * and F may be in either upper or lower case. For example, full red is encoded as "#ff0000"
-     * (with no quotation marks).
+     * The color value is RGB-encoded using two hexidecimal digits per primary-color component, in the order Red, Green,
+     * Blue, prefixed with the hash (#) sign. The hexidecimal digits between A and F may be in either upper or lower
+     * case. For example, full red is encoded as "#ff0000" (with no quotation marks).
      *
      * <p>Note: in CSS this parameter is just called Fill and not Color.
      *
@@ -151,13 +148,11 @@ public class FillImpl implements Fill, Cloneable {
 
     /**
      * This specifies the level of translucency to use when rendering the fill. <br>
-     * The value is encoded as a floating-point value between 0.0 and 1.0 with 0.0 representing
-     * totally transparent and 1.0 representing totally opaque, with a linear scale of translucency
-     * for intermediate values.<br>
+     * The value is encoded as a floating-point value between 0.0 and 1.0 with 0.0 representing totally transparent and
+     * 1.0 representing totally opaque, with a linear scale of translucency for intermediate values.<br>
      * For example, "0.65" would represent 65% opacity. The default value is 1.0 (opaque).
      *
-     * @return The opacity of the fill, where 0.0 is completely transparent and 1.0 is completely
-     *     opaque.
+     * @return The opacity of the fill, where 0.0 is completely transparent and 1.0 is completely opaque.
      */
     @Override
     public Expression getOpacity() {
@@ -183,11 +178,9 @@ public class FillImpl implements Fill, Cloneable {
     }
 
     /**
-     * This parameter indicates that a stipple-fill repeated graphic will be used and specifies the
-     * fill graphic to use.
+     * This parameter indicates that a stipple-fill repeated graphic will be used and specifies the fill graphic to use.
      *
-     * @return graphic The graphic to use as a stipple fill. If null then no Stipple fill should be
-     *     used.
+     * @return graphic The graphic to use as a stipple fill. If null then no Stipple fill should be used.
      */
     @Override
     public Graphic getGraphicFill() {
@@ -255,8 +248,7 @@ public class FillImpl implements Fill, Cloneable {
     /**
      * Compares a FillImpl with another for equality.
      *
-     * <p>Two FillImpls are equal if they contain the same, color, backgroundcolor, opacity and
-     * graphicFill.
+     * <p>Two FillImpls are equal if they contain the same, color, backgroundcolor, opacity and graphicFill.
      *
      * @param oth The other FillImpl
      * @return True if this FillImpl is equal to oth.

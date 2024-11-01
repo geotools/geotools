@@ -32,9 +32,7 @@ import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
 import org.geotools.ysld.YamlSeq;
 
-/**
- * Handles parsing a Ysld "rules" property into {@link Rule} objects for a {@link FeatureTypeStyle}.
- */
+/** Handles parsing a Ysld "rules" property into {@link Rule} objects for a {@link FeatureTypeStyle}. */
 public class RuleParser extends YsldParseHandler {
 
     FeatureTypeStyle featureStyle;
@@ -62,15 +60,12 @@ public class RuleParser extends YsldParseHandler {
             }
             rule.getDescription().setTitle(r.str("title"));
             rule.getDescription().setAbstract(r.str("abstract"));
-            context.push(
-                    r,
-                    "legend",
-                    new GraphicParser(factory) {
-                        @Override
-                        protected void graphic(Graphic g) {
-                            rule.setLegend((GraphicLegend) g);
-                        }
-                    });
+            context.push(r, "legend", new GraphicParser(factory) {
+                @Override
+                protected void graphic(Graphic g) {
+                    rule.setLegend((GraphicLegend) g);
+                }
+            });
 
             if (r.has("filter")) {
                 try {
@@ -103,9 +98,7 @@ public class RuleParser extends YsldParseHandler {
                 t = Tuple.of(2).parse(value);
             } catch (IllegalArgumentException e) {
                 throw new IllegalArgumentException(
-                        String.format(
-                                "Bad scale value: '%s', must be of form [<min>,<max>]", value),
-                        e);
+                        String.format("Bad scale value: '%s', must be of form [<min>,<max>]", value), e);
             }
             double min = 0;
             double max = Double.POSITIVE_INFINITY;
@@ -134,8 +127,7 @@ public class RuleParser extends YsldParseHandler {
                 t = Tuple.of(2).parse(value);
             } catch (IllegalArgumentException e) {
                 throw new IllegalArgumentException(
-                        String.format("Bad zoom value: '%s', must be of form [<min>,<max>]", value),
-                        e);
+                        String.format("Bad zoom value: '%s', must be of form [<min>,<max>]", value), e);
             }
             @Nullable Integer min = null;
             @Nullable Integer max = null;

@@ -49,57 +49,48 @@ import org.geotools.util.WeakValueHashMap;
 import org.geotools.util.logging.Logging;
 
 /**
- * An identification of a CRS object. The main interface implemented by this class is {@link
- * ReferenceIdentifier}. However, this class also implements {@link GenericName} in order to make it
- * possible to reuse the same identifiers in the list of {@linkplain
- * AbstractIdentifiedObject#getAlias aliases}. Casting an alias's {@linkplain GenericName generic
- * name} to an {@linkplain ReferenceIdentifier identifier} gives access to more informations, like
- * the URL of the authority.
+ * An identification of a CRS object. The main interface implemented by this class is {@link ReferenceIdentifier}.
+ * However, this class also implements {@link GenericName} in order to make it possible to reuse the same identifiers in
+ * the list of {@linkplain AbstractIdentifiedObject#getAlias aliases}. Casting an alias's {@linkplain GenericName
+ * generic name} to an {@linkplain ReferenceIdentifier identifier} gives access to more informations, like the URL of
+ * the authority.
  *
- * <p>The {@linkplain GenericName generic name} will be infered from {@linkplain ReferenceIdentifier
- * identifier} attributes. More specifically, a {@linkplain ScopedName scoped name} will be
- * constructed using the shortest authority's {@linkplain Citation#getAlternateTitles alternate
- * titles} (or the {@linkplain Citation#getTitle main title} if there is no alternate titles) as the
- * {@linkplain ScopedName#getScope scope}, and the {@linkplain #getCode code} as the {@linkplain
- * ScopedName#asLocalName head}. This heuristic rule seems raisonable since, according ISO 19115,
- * the {@linkplain Citation#getAlternateTitles alternate titles} often contains abreviation (for
- * example "DCW" as an alternative title for "<cite>Digital Chart of the World</cite>").
+ * <p>The {@linkplain GenericName generic name} will be infered from {@linkplain ReferenceIdentifier identifier}
+ * attributes. More specifically, a {@linkplain ScopedName scoped name} will be constructed using the shortest
+ * authority's {@linkplain Citation#getAlternateTitles alternate titles} (or the {@linkplain Citation#getTitle main
+ * title} if there is no alternate titles) as the {@linkplain ScopedName#getScope scope}, and the {@linkplain #getCode
+ * code} as the {@linkplain ScopedName#asLocalName head}. This heuristic rule seems raisonable since, according ISO
+ * 19115, the {@linkplain Citation#getAlternateTitles alternate titles} often contains abreviation (for example "DCW" as
+ * an alternative title for "<cite>Digital Chart of the World</cite>").
  *
  * @since 2.1
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
 @SuppressWarnings("ComparableType") // comparable of different type than implementation
-public class NamedIdentifier
-        implements ReferenceIdentifier, GenericName, Comparable<GenericName>, Serializable {
+public class NamedIdentifier implements ReferenceIdentifier, GenericName, Comparable<GenericName>, Serializable {
     /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = 8474731565582774497L;
 
     /**
-     * A pool of {@link LocalName} values for given {@link InternationalString}. Will be constructed
-     * only when first needed.
+     * A pool of {@link LocalName} values for given {@link InternationalString}. Will be constructed only when first
+     * needed.
      */
     private static Map<CharSequence, GenericName> SCOPES;
 
-    /**
-     * Identifier code or name, optionally from a controlled list or pattern defined by a code
-     * space.
-     */
+    /** Identifier code or name, optionally from a controlled list or pattern defined by a code space. */
     private final String code;
 
     /** Name or identifier of the person or organization responsible for namespace. */
     private final String codespace;
 
-    /**
-     * Organization or party responsible for definition and maintenance of the code space or code.
-     */
+    /** Organization or party responsible for definition and maintenance of the code space or code. */
     private final Citation authority;
 
     /**
-     * Identifier of the version of the associated code space or code, as specified by the code
-     * space or code authority. This version is included only when the {@linkplain #getCode code}
-     * uses versions. When appropriate, the edition is identified by the effective date, coded using
-     * ISO 8601 date format.
+     * Identifier of the version of the associated code space or code, as specified by the code space or code authority.
+     * This version is included only when the {@linkplain #getCode code} uses versions. When appropriate, the edition is
+     * identified by the effective date, coded using ISO 8601 date format.
      */
     private final String version;
 
@@ -107,17 +98,15 @@ public class NamedIdentifier
     private final InternationalString remarks;
 
     /**
-     * The name of this identifier as a generic name. If {@code null}, will be constructed only when
-     * first needed. This field is serialized (instead of being recreated after deserialization)
-     * because it may be a user-supplied value.
+     * The name of this identifier as a generic name. If {@code null}, will be constructed only when first needed. This
+     * field is serialized (instead of being recreated after deserialization) because it may be a user-supplied value.
      */
     private GenericName name;
 
     /**
-     * Constructs an identifier from a set of properties. Keys are strings from the table below. Key
-     * are case-insensitive, and leading and trailing spaces are ignored. The map given in argument
-     * shall contains at least a <code>"code"</code> property. Other properties listed in the table
-     * below are optional.
+     * Constructs an identifier from a set of properties. Keys are strings from the table below. Key are
+     * case-insensitive, and leading and trailing spaces are ignored. The map given in argument shall contains at least
+     * a <code>"code"</code> property. Other properties listed in the table below are optional.
      *
      * <p>
      *
@@ -154,10 +143,9 @@ public class NamedIdentifier
      *   </tr>
      * </table>
      *
-     * <p><code>"remarks"</code> is a localizable attributes which may have a language and country
-     * code suffix. For example the <code>"remarks_fr"</code> property stands for remarks in
-     * {@linkplain Locale#FRENCH French} and the <code>"remarks_fr_CA"</code> property stands for
-     * remarks in {@linkplain Locale#CANADA_FRENCH French Canadian}.
+     * <p><code>"remarks"</code> is a localizable attributes which may have a language and country code suffix. For
+     * example the <code>"remarks_fr"</code> property stands for remarks in {@linkplain Locale#FRENCH French} and the
+     * <code>"remarks_fr_CA"</code> property stands for remarks in {@linkplain Locale#CANADA_FRENCH French Canadian}.
      *
      * @param properties The properties to be given to this identifier.
      * @throws InvalidParameterValueException if a property has an invalid value.
@@ -168,14 +156,13 @@ public class NamedIdentifier
     }
 
     /**
-     * Constructs an identifier from an authority and code informations. This is a convenience
-     * constructor for commonly-used parameters. If more control are wanted (for example adding
-     * remarks), use the {@linkplain #NamedIdentifier(Map) constructor with a properties map}.
+     * Constructs an identifier from an authority and code informations. This is a convenience constructor for
+     * commonly-used parameters. If more control are wanted (for example adding remarks), use the
+     * {@linkplain #NamedIdentifier(Map) constructor with a properties map}.
      *
-     * @param authority The authority (e.g. {@link Citations#OGC OGC} or {@link Citations#EPSG
-     *     EPSG}).
-     * @param code The code. The {@linkplain Locale#US English name} is used for the code, and the
-     *     international string is used for the {@linkplain GenericName generic name}.
+     * @param authority The authority (e.g. {@link Citations#OGC OGC} or {@link Citations#EPSG EPSG}).
+     * @param code The code. The {@linkplain Locale#US English name} is used for the code, and the international string
+     *     is used for the {@linkplain GenericName generic name}.
      */
     public NamedIdentifier(final Citation authority, final InternationalString code) {
         // The "null" locale argument is required for getting the unlocalized version.
@@ -184,12 +171,11 @@ public class NamedIdentifier
     }
 
     /**
-     * Constructs an identifier from an authority and code informations. This is a convenience
-     * constructor for commonly-used parameters. If more control are wanted (for example adding
-     * remarks), use the {@linkplain #NamedIdentifier(Map) constructor with a properties map}.
+     * Constructs an identifier from an authority and code informations. This is a convenience constructor for
+     * commonly-used parameters. If more control are wanted (for example adding remarks), use the
+     * {@linkplain #NamedIdentifier(Map) constructor with a properties map}.
      *
-     * @param authority The authority (e.g. {@link Citations#OGC OGC} or {@link Citations#EPSG
-     *     EPSG}).
+     * @param authority The authority (e.g. {@link Citations#OGC OGC} or {@link Citations#EPSG EPSG}).
      * @param code The code. This parameter is mandatory.
      */
     public NamedIdentifier(final Citation authority, final String code) {
@@ -197,12 +183,11 @@ public class NamedIdentifier
     }
 
     /**
-     * Constructs an identifier from an authority and code informations. This is a convenience
-     * constructor for commonly-used parameters. If more control are wanted (for example adding
-     * remarks), use the {@linkplain #NamedIdentifier(Map) constructor with a properties map}.
+     * Constructs an identifier from an authority and code informations. This is a convenience constructor for
+     * commonly-used parameters. If more control are wanted (for example adding remarks), use the
+     * {@linkplain #NamedIdentifier(Map) constructor with a properties map}.
      *
-     * @param authority The authority (e.g. {@link Citations#OGC OGC} or {@link Citations#EPSG
-     *     EPSG}).
+     * @param authority The authority (e.g. {@link Citations#OGC OGC} or {@link Citations#EPSG EPSG}).
      * @param code The code. This parameter is mandatory.
      * @param version The version, or {@code null} if none.
      */
@@ -211,11 +196,10 @@ public class NamedIdentifier
     }
 
     /**
-     * Work around for RFE #4093999 in Sun's bug database ("Relax constraint on placement of
-     * this()/super() call in constructors").
+     * Work around for RFE #4093999 in Sun's bug database ("Relax constraint on placement of this()/super() call in
+     * constructors").
      */
-    private static Map<String, ?> toMap(
-            final Citation authority, final String code, final String version) {
+    private static Map<String, ?> toMap(final Citation authority, final String code, final String version) {
         final Map<String, Object> properties = new HashMap<>(4);
         if (authority != null) properties.put(AUTHORITY_KEY, authority);
         if (code != null) properties.put(CODE_KEY, code);
@@ -224,18 +208,17 @@ public class NamedIdentifier
     }
 
     /**
-     * Implementation of the constructor. The remarks in the {@code properties} will be parsed only
-     * if the {@code standalone} argument is set to {@code true}, i.e. this identifier is being
-     * constructed as a standalone object. If {@code false}, then this identifier is assumed to be
-     * constructed from inside the {@link AbstractIdentifiedObject} constructor.
+     * Implementation of the constructor. The remarks in the {@code properties} will be parsed only if the
+     * {@code standalone} argument is set to {@code true}, i.e. this identifier is being constructed as a standalone
+     * object. If {@code false}, then this identifier is assumed to be constructed from inside the
+     * {@link AbstractIdentifiedObject} constructor.
      *
      * @param properties The properties to parse, as described in the public constructor.
      * @param standalone {@code true} for parsing "remarks" as well.
      * @throws InvalidParameterValueException if a property has an invalid value.
      * @throws IllegalArgumentException if a property is invalid for some other reason.
      */
-    NamedIdentifier(final Map<String, ?> properties, final boolean standalone)
-            throws IllegalArgumentException {
+    NamedIdentifier(final Map<String, ?> properties, final boolean standalone) throws IllegalArgumentException {
         ensureNonNull("properties", properties);
         Object code = null;
         Object codespace = null;
@@ -262,59 +245,53 @@ public class NamedIdentifier
              *       so it should not change across implementations.
              */
             switch (key.hashCode()) {
-                case 3373707:
-                    {
-                        if (!standalone && key.equals("name")) {
-                            code = value;
+                case 3373707: {
+                    if (!standalone && key.equals("name")) {
+                        code = value;
+                        continue;
+                    }
+                    break;
+                }
+                case 3059181: {
+                    if (key.equals(CODE_KEY)) {
+                        code = value;
+                        continue;
+                    }
+                    break;
+                }
+                case -1108676807: {
+                    if (key.equals(CODESPACE_KEY)) {
+                        codespace = value;
+                        continue;
+                    }
+                    break;
+                }
+                case 351608024: {
+                    if (key.equals(VERSION_KEY)) {
+                        version = value;
+                        continue;
+                    }
+                    break;
+                }
+                case 1475610435: {
+                    if (key.equals(AUTHORITY_KEY)) {
+                        if (value instanceof String) {
+                            value = Citations.fromName(value.toString());
+                        }
+                        authority = value;
+                        continue;
+                    }
+                    break;
+                }
+                case 1091415283: {
+                    if (standalone && key.equals(REMARKS_KEY)) {
+                        if (value instanceof InternationalString) {
+                            remarks = value;
                             continue;
                         }
-                        break;
                     }
-                case 3059181:
-                    {
-                        if (key.equals(CODE_KEY)) {
-                            code = value;
-                            continue;
-                        }
-                        break;
-                    }
-                case -1108676807:
-                    {
-                        if (key.equals(CODESPACE_KEY)) {
-                            codespace = value;
-                            continue;
-                        }
-                        break;
-                    }
-                case 351608024:
-                    {
-                        if (key.equals(VERSION_KEY)) {
-                            version = value;
-                            continue;
-                        }
-                        break;
-                    }
-                case 1475610435:
-                    {
-                        if (key.equals(AUTHORITY_KEY)) {
-                            if (value instanceof String) {
-                                value = Citations.fromName(value.toString());
-                            }
-                            authority = value;
-                            continue;
-                        }
-                        break;
-                    }
-                case 1091415283:
-                    {
-                        if (standalone && key.equals(REMARKS_KEY)) {
-                            if (value instanceof InternationalString) {
-                                remarks = value;
-                                continue;
-                            }
-                        }
-                        break;
-                    }
+                    break;
+                }
             }
             /*
              * Search for additional locales (e.g. "remarks_fr").
@@ -340,8 +317,7 @@ public class NamedIdentifier
                 remarks = growable;
             } else {
                 final Logger logger = Logging.getLogger(NamedIdentifier.class);
-                final LogRecord record =
-                        Loggings.format(Level.WARNING, LoggingKeys.LOCALES_DISCARTED);
+                final LogRecord record = Loggings.format(Level.WARNING, LoggingKeys.LOCALES_DISCARTED);
                 record.setLoggerName(logger.getName());
                 logger.log(record);
             }
@@ -370,11 +346,8 @@ public class NamedIdentifier
             key = REMARKS_KEY;
             this.remarks = (InternationalString) (value = remarks);
         } catch (ClassCastException exception) {
-            InvalidParameterValueException e =
-                    new InvalidParameterValueException(
-                            MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, key, value),
-                            key,
-                            value);
+            InvalidParameterValueException e = new InvalidParameterValueException(
+                    MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, key, value), key, value);
             e.initCause(exception);
             throw e;
         }
@@ -382,17 +355,15 @@ public class NamedIdentifier
     }
 
     /**
-     * Makes sure an argument is non-null. This is method duplicate {@link
-     * AbstractIdentifiedObject#ensureNonNull(String, Object)} except for the more accurate stack
-     * trace. It is duplicated there in order to avoid a dependency to {@link
-     * AbstractIdentifiedObject}.
+     * Makes sure an argument is non-null. This is method duplicate
+     * {@link AbstractIdentifiedObject#ensureNonNull(String, Object)} except for the more accurate stack trace. It is
+     * duplicated there in order to avoid a dependency to {@link AbstractIdentifiedObject}.
      *
      * @param name Argument name.
      * @param object User argument.
      * @throws InvalidParameterValueException if {@code object} is null.
      */
-    private static void ensureNonNull(final String name, final Object object)
-            throws IllegalArgumentException {
+    private static void ensureNonNull(final String name, final Object object) throws IllegalArgumentException {
         if (object == null) {
             throw new InvalidParameterValueException(
                     MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, name), name, object);
@@ -420,8 +391,7 @@ public class NamedIdentifier
     }
 
     /**
-     * Organization or party responsible for definition and maintenance of the {@linkplain #getCode
-     * code}.
+     * Organization or party responsible for definition and maintenance of the {@linkplain #getCode code}.
      *
      * @return The authority, or {@code null} if not available.
      */
@@ -431,10 +401,9 @@ public class NamedIdentifier
     }
 
     /**
-     * Identifier of the version of the associated code space or code, as specified by the code
-     * authority. This version is included only when the {@linkplain #getCode code} uses versions.
-     * When appropriate, the edition is identified by the effective date, coded using ISO 8601 date
-     * format.
+     * Identifier of the version of the associated code space or code, as specified by the code authority. This version
+     * is included only when the {@linkplain #getCode code} uses versions. When appropriate, the edition is identified
+     * by the effective date, coded using ISO 8601 date format.
      *
      * @return The version, or {@code null} if not available.
      */
@@ -453,12 +422,11 @@ public class NamedIdentifier
     }
 
     /**
-     * Returns the generic name of this identifier. The name will be constructed automatically the
-     * first time it will be needed. The name's scope is infered from the shortest alternative title
-     * (if any). This heuristic rule seems raisonable since, according ISO 19115, the {@linkplain
-     * Citation#getAlternateTitles alternate titles} often contains abreviation (for example "DCW"
-     * as an alternative title for "Digital Chart of the World"). If no alternative title is found
-     * or if the main title is yet shorter, then it is used.
+     * Returns the generic name of this identifier. The name will be constructed automatically the first time it will be
+     * needed. The name's scope is infered from the shortest alternative title (if any). This heuristic rule seems
+     * raisonable since, according ISO 19115, the {@linkplain Citation#getAlternateTitles alternate titles} often
+     * contains abreviation (for example "DCW" as an alternative title for "Digital Chart of the World"). If no
+     * alternative title is found or if the main title is yet shorter, then it is used.
      */
     private synchronized GenericName getName() {
         if (name == null) {
@@ -510,8 +478,8 @@ public class NamedIdentifier
     }
 
     /**
-     * Tries to get a codespace from the specified authority. This method scan first through the
-     * identifier, then through the titles if no suitable identifier were found.
+     * Tries to get a codespace from the specified authority. This method scan first through the identifier, then
+     * through the titles if no suitable identifier were found.
      */
     private static String getCodeSpace(final Citation authority) {
         final Collection<? extends Identifier> identifiers = authority.getIdentifiers();
@@ -532,9 +500,8 @@ public class NamedIdentifier
     }
 
     /**
-     * Returns {@code true} if the specified string looks like a valid code space. This method,
-     * together with {@link #getShortestTitle}, uses somewhat heuristic rules that may change in
-     * future Geotools versions.
+     * Returns {@code true} if the specified string looks like a valid code space. This method, together with
+     * {@link #getShortestTitle}, uses somewhat heuristic rules that may change in future Geotools versions.
      */
     private static boolean isValidCodeSpace(final String codespace) {
         if (codespace == null) {
@@ -589,9 +556,8 @@ public class NamedIdentifier
     }
 
     /**
-     * Returns the sequence of {@linkplain LocalName local names} making this generic name. Each
-     * element in this list is like a directory name in a file path name. The length of this
-     * sequence is the generic name depth.
+     * Returns the sequence of {@linkplain LocalName local names} making this generic name. Each element in this list is
+     * like a directory name in a file path name. The length of this sequence is the generic name depth.
      */
     @Override
     @SuppressWarnings("unchecked")
@@ -601,8 +567,8 @@ public class NamedIdentifier
     }
 
     /**
-     * Returns this name expanded with the specified scope. One may represent this operation as a
-     * concatenation of the specified {@code name} with {@code this}.
+     * Returns this name expanded with the specified scope. One may represent this operation as a concatenation of the
+     * specified {@code name} with {@code this}.
      *
      * @since 2.3
      */
@@ -622,11 +588,10 @@ public class NamedIdentifier
     }
 
     /**
-     * Returns a local-dependent string representation of this generic name. This string is similar
-     * to the one returned by {@link #toString} except that each element has been localized in the
-     * {@linkplain InternationalString#toString(Locale) specified locale}. If no international
-     * string is available, then this method returns an implementation mapping to {@link #toString}
-     * for all locales.
+     * Returns a local-dependent string representation of this generic name. This string is similar to the one returned
+     * by {@link #toString} except that each element has been localized in the
+     * {@linkplain InternationalString#toString(Locale) specified locale}. If no international string is available, then
+     * this method returns an implementation mapping to {@link #toString} for all locales.
      */
     @Override
     public InternationalString toInternationalString() {
@@ -634,9 +599,9 @@ public class NamedIdentifier
     }
 
     /**
-     * Returns a string representation of this generic name. This string representation is
-     * local-independant. It contains all elements listed by {@link #getParsedNames} separated by an
-     * arbitrary character (usually {@code :} or {@code /}).
+     * Returns a string representation of this generic name. This string representation is local-independant. It
+     * contains all elements listed by {@link #getParsedNames} separated by an arbitrary character (usually {@code :} or
+     * {@code /}).
      */
     @Override
     public String toString() {
@@ -644,9 +609,8 @@ public class NamedIdentifier
     }
 
     /**
-     * Compares this name with the specified object for order. Returns a negative integer, zero, or
-     * a positive integer as this name lexicographically precedes, is equals to, or follows the
-     * specified object.
+     * Compares this name with the specified object for order. Returns a negative integer, zero, or a positive integer
+     * as this name lexicographically precedes, is equals to, or follows the specified object.
      *
      * @param object The object to compare with.
      * @return -1 if this identifier precedes the given object, +1 if it follows it.

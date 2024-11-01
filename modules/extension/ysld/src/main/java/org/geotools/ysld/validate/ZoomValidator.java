@@ -36,8 +36,7 @@ public class ZoomValidator extends RangeValidator<Integer> {
     @Override
     protected void validateParsed(Integer parsed, ScalarEvent evt, YsldValidateContext context) {
         if (!context.getZCtxt().isInRange(parsed)) {
-            context.error(
-                    String.format("Zoom level %d is out of range", parsed), evt.getStartMark());
+            context.error(String.format("Zoom level %d is out of range", parsed), evt.getStartMark());
         }
     }
 }

@@ -44,8 +44,7 @@ public class SVGMarkFactory implements MarkFactory {
     }
 
     @Override
-    public Shape getShape(Graphics2D graphics, Expression symbolUrl, Feature feature)
-            throws Exception {
+    public Shape getShape(Graphics2D graphics, Expression symbolUrl, Feature feature) throws Exception {
         RenderableSVG svg = cache.getRenderableSVG(feature, symbolUrl, "image/svg");
         if (svg == null) {
             return null;

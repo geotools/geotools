@@ -31,8 +31,7 @@ class LocationFeatureCollection extends DecoratingSimpleFeatureCollection {
     private final String location;
     private final SimpleFeatureType schema;
 
-    public LocationFeatureCollection(
-            SimpleFeatureCollection delegate, String location, SimpleFeatureType schema) {
+    public LocationFeatureCollection(SimpleFeatureCollection delegate, String location, SimpleFeatureType schema) {
         super(delegate);
         this.location = location;
         this.schema = schema;

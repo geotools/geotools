@@ -68,26 +68,14 @@ public class CompositeTest {
         // compositing modes
         result.add(new Object[] {"copy", AlphaComposite.getInstance(AlphaComposite.SRC)});
         result.add(new Object[] {"destination", AlphaComposite.getInstance(AlphaComposite.DST)});
-        result.add(
-                new Object[] {"source-over", AlphaComposite.getInstance(AlphaComposite.SRC_OVER)});
-        result.add(
-                new Object[] {
-                    "destination-over", AlphaComposite.getInstance(AlphaComposite.DST_OVER)
-                });
+        result.add(new Object[] {"source-over", AlphaComposite.getInstance(AlphaComposite.SRC_OVER)});
+        result.add(new Object[] {"destination-over", AlphaComposite.getInstance(AlphaComposite.DST_OVER)});
         result.add(new Object[] {"source-in", AlphaComposite.getInstance(AlphaComposite.SRC_IN)});
-        result.add(
-                new Object[] {"destination-in", AlphaComposite.getInstance(AlphaComposite.DST_IN)});
+        result.add(new Object[] {"destination-in", AlphaComposite.getInstance(AlphaComposite.DST_IN)});
         result.add(new Object[] {"source-out", AlphaComposite.getInstance(AlphaComposite.SRC_OUT)});
-        result.add(
-                new Object[] {
-                    "destination-out", AlphaComposite.getInstance(AlphaComposite.DST_OUT)
-                });
-        result.add(
-                new Object[] {"source-atop", AlphaComposite.getInstance(AlphaComposite.SRC_ATOP)});
-        result.add(
-                new Object[] {
-                    "destination-atop", AlphaComposite.getInstance(AlphaComposite.DST_ATOP)
-                });
+        result.add(new Object[] {"destination-out", AlphaComposite.getInstance(AlphaComposite.DST_OUT)});
+        result.add(new Object[] {"source-atop", AlphaComposite.getInstance(AlphaComposite.SRC_ATOP)});
+        result.add(new Object[] {"destination-atop", AlphaComposite.getInstance(AlphaComposite.DST_ATOP)});
         result.add(new Object[] {"xor", AlphaComposite.getInstance(AlphaComposite.XOR)});
 
         // blending modes
@@ -113,10 +101,7 @@ public class CompositeTest {
 
         BufferedImage blended = blend(bkg, map);
         File reference =
-                new File(
-                        "./src/test/resources/org/geotools/renderer/composite/test-data/blend1-"
-                                + name
-                                + ".png");
+                new File("./src/test/resources/org/geotools/renderer/composite/test-data/blend1-" + name + ".png");
         ImageAssert.assertEquals(reference, blended, 0);
     }
 
@@ -127,10 +112,7 @@ public class CompositeTest {
 
         BufferedImage blended = blend(bkg, map);
         File reference =
-                new File(
-                        "./src/test/resources/org/geotools/renderer/composite/test-data/blend1-"
-                                + name
-                                + ".png");
+                new File("./src/test/resources/org/geotools/renderer/composite/test-data/blend1-" + name + ".png");
         ImageAssert.assertEquals(reference, blended, 0);
     }
 
@@ -141,10 +123,7 @@ public class CompositeTest {
 
         BufferedImage blended = blend(bkg2, map2);
         File reference =
-                new File(
-                        "./src/test/resources/org/geotools/renderer/composite/test-data/blend2-"
-                                + name
-                                + ".png");
+                new File("./src/test/resources/org/geotools/renderer/composite/test-data/blend2-" + name + ".png");
         ImageAssert.assertEquals(reference, blended, 0);
     }
 
@@ -155,10 +134,7 @@ public class CompositeTest {
 
         BufferedImage blended = blend(bkg2, map2);
         File reference =
-                new File(
-                        "./src/test/resources/org/geotools/renderer/composite/test-data/blend2-"
-                                + name
-                                + ".png");
+                new File("./src/test/resources/org/geotools/renderer/composite/test-data/blend2-" + name + ".png");
         ImageAssert.assertEquals(reference, blended, 0);
     }
 

@@ -79,33 +79,24 @@ public class PostGISArrayOnlineTest extends JDBCTestSupport {
 
         // check the non null array
         SimpleFeature first =
-                getSingleArrayFeature(
-                        ff.id(Collections.singleton(ff.featureId(tname("arraytest") + ".0"))));
+                getSingleArrayFeature(ff.id(Collections.singleton(ff.featureId(tname("arraytest") + ".0"))));
         assertArrayEquals(new String[] {"A", "B"}, (String[]) first.getAttribute(aname("strings")));
         assertArrayEquals(new Integer[] {1, 2}, (Integer[]) first.getAttribute(aname("ints")));
         assertArrayEquals(new Float[] {3.4f, 5.6f}, (Float[]) first.getAttribute(aname("floats")));
-        assertArrayEquals(
-                new Timestamp[] {expectedDate},
-                (Timestamp[]) first.getAttribute(aname("timestamps")));
+        assertArrayEquals(new Timestamp[] {expectedDate}, (Timestamp[]) first.getAttribute(aname("timestamps")));
 
         // check the one containing null values inside non null arrays
         SimpleFeature nullValues =
-                getSingleArrayFeature(
-                        ff.id(Collections.singleton(ff.featureId(tname("arraytest") + ".1"))));
+                getSingleArrayFeature(ff.id(Collections.singleton(ff.featureId(tname("arraytest") + ".1"))));
+        assertArrayEquals(new String[] {null, "C"}, (String[]) nullValues.getAttribute(aname("strings")));
+        assertArrayEquals(new Integer[] {null, 3}, (Integer[]) nullValues.getAttribute(aname("ints")));
+        assertArrayEquals(new Float[] {null, 7.8f}, (Float[]) nullValues.getAttribute(aname("floats")));
         assertArrayEquals(
-                new String[] {null, "C"}, (String[]) nullValues.getAttribute(aname("strings")));
-        assertArrayEquals(
-                new Integer[] {null, 3}, (Integer[]) nullValues.getAttribute(aname("ints")));
-        assertArrayEquals(
-                new Float[] {null, 7.8f}, (Float[]) nullValues.getAttribute(aname("floats")));
-        assertArrayEquals(
-                new Timestamp[] {null, expectedDate},
-                (Timestamp[]) nullValues.getAttribute(aname("timestamps")));
+                new Timestamp[] {null, expectedDate}, (Timestamp[]) nullValues.getAttribute(aname("timestamps")));
 
         // check the one containing null arrays
         SimpleFeature nullArrays =
-                getSingleArrayFeature(
-                        ff.id(Collections.singleton(ff.featureId(tname("arraytest") + ".2"))));
+                getSingleArrayFeature(ff.id(Collections.singleton(ff.featureId(tname("arraytest") + ".2"))));
         assertNull(nullArrays.getAttribute(aname("strings")));
         assertNull(nullArrays.getAttribute(aname("ints")));
         assertNull(nullArrays.getAttribute(aname("floats")));
@@ -151,48 +142,26 @@ public class PostGISArrayOnlineTest extends JDBCTestSupport {
         ContentFeatureSource fs = dataStore.getFeatureSource(tname("arraytest"));
 
         // check string equality
-        assertMatchedFeatureIds(
-                fs,
-                ff.equals(ff.property(aname("strings")), ff.literal(new String[] {"A", "B"})),
-                0);
+        assertMatchedFeatureIds(fs, ff.equals(ff.property(aname("strings")), ff.literal(new String[] {"A", "B"})), 0);
         // check string equality with null values
-        assertMatchedFeatureIds(
-                fs,
-                ff.equals(ff.property(aname("strings")), ff.literal(new String[] {null, "C"})),
-                1);
+        assertMatchedFeatureIds(fs, ff.equals(ff.property(aname("strings")), ff.literal(new String[] {null, "C"})), 1);
 
         // check int equality
-        assertMatchedFeatureIds(
-                fs, ff.equals(ff.property(aname("ints")), ff.literal(new Integer[] {1, 2})), 0);
+        assertMatchedFeatureIds(fs, ff.equals(ff.property(aname("ints")), ff.literal(new Integer[] {1, 2})), 0);
         // check int equality with null values
-        assertMatchedFeatureIds(
-                fs, ff.equals(ff.property(aname("ints")), ff.literal(new Integer[] {null, 3})), 1);
+        assertMatchedFeatureIds(fs, ff.equals(ff.property(aname("ints")), ff.literal(new Integer[] {null, 3})), 1);
 
         // check float equality
-        assertMatchedFeatureIds(
-                fs,
-                ff.equals(ff.property(aname("floats")), ff.literal(new Float[] {3.4f, 5.6f})),
-                0);
+        assertMatchedFeatureIds(fs, ff.equals(ff.property(aname("floats")), ff.literal(new Float[] {3.4f, 5.6f})), 0);
         // check float equality with null values
-        assertMatchedFeatureIds(
-                fs,
-                ff.equals(ff.property(aname("floats")), ff.literal(new Float[] {null, 7.8f})),
-                1);
+        assertMatchedFeatureIds(fs, ff.equals(ff.property(aname("floats")), ff.literal(new Float[] {null, 7.8f})), 1);
 
         // check timestamp equality
         assertMatchedFeatureIds(
-                fs,
-                ff.equals(
-                        ff.property(aname("timestamps")),
-                        ff.literal(new Timestamp[] {expectedDate})),
-                0);
+                fs, ff.equals(ff.property(aname("timestamps")), ff.literal(new Timestamp[] {expectedDate})), 0);
         // check float equality with null values
         assertMatchedFeatureIds(
-                fs,
-                ff.equals(
-                        ff.property(aname("timestamps")),
-                        ff.literal(new Timestamp[] {null, expectedDate})),
-                1);
+                fs, ff.equals(ff.property(aname("timestamps")), ff.literal(new Timestamp[] {null, expectedDate})), 1);
     }
 
     @Test
@@ -202,34 +171,20 @@ public class PostGISArrayOnlineTest extends JDBCTestSupport {
 
         // string, straight
         assertMatchedFeatureIds(
-                fs,
-                ff.equal(ff.property(aname("strings")), ff.literal("A"), false, MatchAction.ANY),
-                0);
+                fs, ff.equal(ff.property(aname("strings")), ff.literal("A"), false, MatchAction.ANY), 0);
         // string, flipped
         assertMatchedFeatureIds(
-                fs,
-                ff.equal(ff.literal("A"), ff.property(aname("strings")), false, MatchAction.ANY),
-                0);
+                fs, ff.equal(ff.literal("A"), ff.property(aname("strings")), false, MatchAction.ANY), 0);
         // string, nulls
         assertMatchedFeatureIds(
-                fs,
-                ff.equal(ff.property(aname("strings")), ff.literal(null), false, MatchAction.ANY),
-                1);
+                fs, ff.equal(ff.property(aname("strings")), ff.literal(null), false, MatchAction.ANY), 1);
 
         // ints
-        assertMatchedFeatureIds(
-                fs, ff.equal(ff.property(aname("ints")), ff.literal(1), false, MatchAction.ANY), 0);
+        assertMatchedFeatureIds(fs, ff.equal(ff.property(aname("ints")), ff.literal(1), false, MatchAction.ANY), 0);
 
         // timestamps
         assertMatchedFeatureIds(
-                fs,
-                ff.equal(
-                        ff.property(aname("timestamps")),
-                        ff.literal(expectedDate),
-                        false,
-                        MatchAction.ANY),
-                0,
-                1);
+                fs, ff.equal(ff.property(aname("timestamps")), ff.literal(expectedDate), false, MatchAction.ANY), 0, 1);
     }
 
     @Test
@@ -239,16 +194,11 @@ public class PostGISArrayOnlineTest extends JDBCTestSupport {
 
         // A > A -> false, should match the first, and null > A -> false, so also the second
         assertMatchedFeatureIds(
-                fs,
-                ff.greater(ff.property(aname("strings")), ff.literal("A"), false, MatchAction.ONE),
-                0,
-                1);
+                fs, ff.greater(ff.property(aname("strings")), ff.literal("A"), false, MatchAction.ONE), 0, 1);
 
         // A = A true only in the first
         assertMatchedFeatureIds(
-                fs,
-                ff.equal(ff.property(aname("strings")), ff.literal("A"), false, MatchAction.ONE),
-                0);
+                fs, ff.equal(ff.property(aname("strings")), ff.literal("A"), false, MatchAction.ONE), 0);
     }
 
     @Test
@@ -258,35 +208,21 @@ public class PostGISArrayOnlineTest extends JDBCTestSupport {
 
         // all non null string arrays besides the null ones contain
         assertMatchedFeatureIds(
-                fs,
-                ff.greater(ff.property(aname("strings")), ff.literal("A"), false, MatchAction.ANY),
-                0,
-                1);
+                fs, ff.greater(ff.property(aname("strings")), ff.literal("A"), false, MatchAction.ANY), 0, 1);
         // all non null int arrays besides the null ones contain
         assertMatchedFeatureIds(
-                fs,
-                ff.greater(ff.property(aname("ints")), ff.literal(1), false, MatchAction.ANY),
-                0,
-                1);
+                fs, ff.greater(ff.property(aname("ints")), ff.literal(1), false, MatchAction.ANY), 0, 1);
 
         // none has numbers so high
-        assertMatchedFeatureIds(
-                fs, ff.greater(ff.property(aname("ints")), ff.literal(20), false, MatchAction.ANY));
+        assertMatchedFeatureIds(fs, ff.greater(ff.property(aname("ints")), ff.literal(20), false, MatchAction.ANY));
 
         // only one matching here
         assertMatchedFeatureIds(
-                fs,
-                ff.greater(ff.property(aname("floats")), ff.literal(6f), false, MatchAction.ANY),
-                1);
+                fs, ff.greater(ff.property(aname("floats")), ff.literal(6f), false, MatchAction.ANY), 1);
 
         // timestamps, none matching
         assertMatchedFeatureIds(
-                fs,
-                ff.greater(
-                        ff.property(aname("timestamps")),
-                        ff.literal(expectedDate),
-                        false,
-                        MatchAction.ANY));
+                fs, ff.greater(ff.property(aname("timestamps")), ff.literal(expectedDate), false, MatchAction.ANY));
 
         // timestamps, all matching this time
         assertMatchedFeatureIds(
@@ -307,62 +243,23 @@ public class PostGISArrayOnlineTest extends JDBCTestSupport {
 
         // strings
         assertMatchedFeatureIds(
-                fs,
-                ff.between(
-                        ff.property(aname("strings")),
-                        ff.literal("B"),
-                        ff.literal("C"),
-                        MatchAction.ANY),
-                0,
-                1);
+                fs, ff.between(ff.property(aname("strings")), ff.literal("B"), ff.literal("C"), MatchAction.ANY), 0, 1);
         assertMatchedFeatureIds(
-                fs,
-                ff.between(
-                        ff.property(aname("strings")),
-                        ff.literal("A"),
-                        ff.literal("B"),
-                        MatchAction.ANY),
-                0);
+                fs, ff.between(ff.property(aname("strings")), ff.literal("A"), ff.literal("B"), MatchAction.ANY), 0);
         assertMatchedFeatureIds(
-                fs,
-                ff.between(
-                        ff.property(aname("strings")),
-                        ff.literal("C"),
-                        ff.literal("F"),
-                        MatchAction.ANY),
-                1);
+                fs, ff.between(ff.property(aname("strings")), ff.literal("C"), ff.literal("F"), MatchAction.ANY), 1);
         assertMatchedFeatureIds(
-                fs,
-                ff.between(
-                        ff.property(aname("strings")),
-                        ff.literal("D"),
-                        ff.literal("F"),
-                        MatchAction.ANY));
+                fs, ff.between(ff.property(aname("strings")), ff.literal("D"), ff.literal("F"), MatchAction.ANY));
 
         // ints
         assertMatchedFeatureIds(
-                fs,
-                ff.between(
-                        ff.property(aname("ints")), ff.literal(1), ff.literal(5), MatchAction.ANY),
-                0,
-                1);
+                fs, ff.between(ff.property(aname("ints")), ff.literal(1), ff.literal(5), MatchAction.ANY), 0, 1);
         assertMatchedFeatureIds(
-                fs,
-                ff.between(
-                        ff.property(aname("ints")), ff.literal(1), ff.literal(2), MatchAction.ANY),
-                0);
+                fs, ff.between(ff.property(aname("ints")), ff.literal(1), ff.literal(2), MatchAction.ANY), 0);
         assertMatchedFeatureIds(
-                fs,
-                ff.between(
-                        ff.property(aname("ints")), ff.literal(3), ff.literal(5), MatchAction.ANY),
-                1);
+                fs, ff.between(ff.property(aname("ints")), ff.literal(3), ff.literal(5), MatchAction.ANY), 1);
         assertMatchedFeatureIds(
-                fs,
-                ff.between(
-                        ff.property(aname("ints")),
-                        ff.literal(8),
-                        ff.literal(100),
-                        MatchAction.ANY));
+                fs, ff.between(ff.property(aname("ints")), ff.literal(8), ff.literal(100), MatchAction.ANY));
 
         // timestamps
         assertMatchedFeatureIds(
@@ -392,59 +289,23 @@ public class PostGISArrayOnlineTest extends JDBCTestSupport {
 
         // strings
         assertMatchedFeatureIds(
-                fs,
-                ff.between(
-                        ff.property(aname("strings")),
-                        ff.literal("B"),
-                        ff.literal("C"),
-                        MatchAction.ONE),
-                0,
-                1);
+                fs, ff.between(ff.property(aname("strings")), ff.literal("B"), ff.literal("C"), MatchAction.ONE), 0, 1);
         assertMatchedFeatureIds(
-                fs,
-                ff.between(
-                        ff.property(aname("strings")),
-                        ff.literal("A"),
-                        ff.literal("B"),
-                        MatchAction.ONE));
+                fs, ff.between(ff.property(aname("strings")), ff.literal("A"), ff.literal("B"), MatchAction.ONE));
         assertMatchedFeatureIds(
-                fs,
-                ff.between(
-                        ff.property(aname("strings")),
-                        ff.literal("C"),
-                        ff.literal("F"),
-                        MatchAction.ONE),
-                1);
+                fs, ff.between(ff.property(aname("strings")), ff.literal("C"), ff.literal("F"), MatchAction.ONE), 1);
         assertMatchedFeatureIds(
-                fs,
-                ff.between(
-                        ff.property(aname("strings")),
-                        ff.literal("D"),
-                        ff.literal("F"),
-                        MatchAction.ONE));
+                fs, ff.between(ff.property(aname("strings")), ff.literal("D"), ff.literal("F"), MatchAction.ONE));
 
         // ints
         assertMatchedFeatureIds(
-                fs,
-                ff.between(
-                        ff.property(aname("ints")), ff.literal(1), ff.literal(5), MatchAction.ONE),
-                1);
+                fs, ff.between(ff.property(aname("ints")), ff.literal(1), ff.literal(5), MatchAction.ONE), 1);
         assertMatchedFeatureIds(
-                fs,
-                ff.between(
-                        ff.property(aname("ints")), ff.literal(1), ff.literal(2), MatchAction.ONE));
+                fs, ff.between(ff.property(aname("ints")), ff.literal(1), ff.literal(2), MatchAction.ONE));
         assertMatchedFeatureIds(
-                fs,
-                ff.between(
-                        ff.property(aname("ints")), ff.literal(3), ff.literal(5), MatchAction.ONE),
-                1);
+                fs, ff.between(ff.property(aname("ints")), ff.literal(3), ff.literal(5), MatchAction.ONE), 1);
         assertMatchedFeatureIds(
-                fs,
-                ff.between(
-                        ff.property(aname("ints")),
-                        ff.literal(8),
-                        ff.literal(100),
-                        MatchAction.ONE));
+                fs, ff.between(ff.property(aname("ints")), ff.literal(8), ff.literal(100), MatchAction.ONE));
 
         // timestamps
         assertMatchedFeatureIds(
@@ -474,31 +335,15 @@ public class PostGISArrayOnlineTest extends JDBCTestSupport {
 
         // strings
         assertMatchedFeatureIds(
-                fs,
-                ff.between(
-                        ff.property(aname("strings")),
-                        ff.literal("A"),
-                        ff.literal("C"),
-                        MatchAction.ALL),
-                0);
+                fs, ff.between(ff.property(aname("strings")), ff.literal("A"), ff.literal("C"), MatchAction.ALL), 0);
         assertMatchedFeatureIds(
-                fs,
-                ff.between(
-                        ff.property(aname("strings")),
-                        ff.literal("D"),
-                        ff.literal("F"),
-                        MatchAction.ONE));
+                fs, ff.between(ff.property(aname("strings")), ff.literal("D"), ff.literal("F"), MatchAction.ONE));
 
         // ints
         assertMatchedFeatureIds(
-                fs,
-                ff.between(
-                        ff.property(aname("ints")), ff.literal(1), ff.literal(5), MatchAction.ALL),
-                0);
+                fs, ff.between(ff.property(aname("ints")), ff.literal(1), ff.literal(5), MatchAction.ALL), 0);
         assertMatchedFeatureIds(
-                fs,
-                ff.between(
-                        ff.property(aname("ints")), ff.literal(2), ff.literal(3), MatchAction.ALL));
+                fs, ff.between(ff.property(aname("ints")), ff.literal(2), ff.literal(3), MatchAction.ALL));
 
         // timestamps
         assertMatchedFeatureIds(
@@ -511,8 +356,7 @@ public class PostGISArrayOnlineTest extends JDBCTestSupport {
                 0);
     }
 
-    private void assertMatchedFeatureIds(ContentFeatureSource fs, Filter filter, Integer... ids)
-            throws IOException {
+    private void assertMatchedFeatureIds(ContentFeatureSource fs, Filter filter, Integer... ids) throws IOException {
         ContentFeatureCollection fc = fs.getFeatures(filter);
         if (ids.length > 0) {
             Set<Integer> expected = new HashSet<>(Arrays.asList(ids));
@@ -527,8 +371,7 @@ public class PostGISArrayOnlineTest extends JDBCTestSupport {
             assertTrue("Some of the expected ids were not found " + expected, expected.isEmpty());
         } else {
             assertEquals(
-                    "Expected to find an empty result, but instead it was "
-                            + new ListFeatureCollection(fc),
+                    "Expected to find an empty result, but instead it was " + new ListFeatureCollection(fc),
                     0,
                     fc.size());
         }

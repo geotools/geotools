@@ -64,8 +64,7 @@ public class ColorUtilitiesTest {
         byte[] b = {0, 0, -1};
         byte[] a = {-128, -128, -128};
         IndexColorModel icm = new IndexColorModel(2, 3, r, g, b, a);
-        IndexColorModel merged =
-                ColorUtilities.applyBackgroundColor(icm, new Color(255, 255, 255, 128));
+        IndexColorModel merged = ColorUtilities.applyBackgroundColor(icm, new Color(255, 255, 255, 128));
         assertTrue(merged.hasAlpha());
         assertEquals(merged.getTransparency(), Transparency.TRANSLUCENT);
         byte[] mr = new byte[3];

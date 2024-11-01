@@ -138,8 +138,8 @@ public class TestData {
      * <pre>
      * </pre>
      */
-    public static List<AttributeMapping> createMappingsColumnsAndValues(
-            AttributeDescriptor targetFeature) throws Exception {
+    public static List<AttributeMapping> createMappingsColumnsAndValues(AttributeDescriptor targetFeature)
+            throws Exception {
 
         List<AttributeMapping> mappings = new LinkedList<>();
 
@@ -155,32 +155,27 @@ public class TestData {
 
         source = ff.property("ph");
         target = "sample/measurement[1]/value";
-        attMapping =
-                new AttributeMapping(null, source, XPath.steps(targetFeature, target, namespaces));
+        attMapping = new AttributeMapping(null, source, XPath.steps(targetFeature, target, namespaces));
         mappings.add(attMapping);
 
         source = ff.literal("temp");
         target = "sample/measurement[2]/parameter";
-        attMapping =
-                new AttributeMapping(null, source, XPath.steps(targetFeature, target, namespaces));
+        attMapping = new AttributeMapping(null, source, XPath.steps(targetFeature, target, namespaces));
         mappings.add(attMapping);
 
         source = ff.property("temp");
         target = "sample/measurement[2]/value";
-        attMapping =
-                new AttributeMapping(null, source, XPath.steps(targetFeature, target, namespaces));
+        attMapping = new AttributeMapping(null, source, XPath.steps(targetFeature, target, namespaces));
         mappings.add(attMapping);
 
         source = ff.literal("turbidity");
         target = "sample/measurement[3]/parameter";
-        attMapping =
-                new AttributeMapping(null, source, XPath.steps(targetFeature, target, namespaces));
+        attMapping = new AttributeMapping(null, source, XPath.steps(targetFeature, target, namespaces));
         mappings.add(attMapping);
 
         source = ff.property("turbidity");
         target = "sample/measurement[3]/value";
-        attMapping =
-                new AttributeMapping(null, source, XPath.steps(targetFeature, target, namespaces));
+        attMapping = new AttributeMapping(null, source, XPath.steps(targetFeature, target, namespaces));
         mappings.add(attMapping);
 
         return mappings;
@@ -232,17 +227,14 @@ public class TestData {
      *        location		--&gt;location
      * </pre>
      */
-    public static FeatureTypeMapping createMappingsGroupByStation(MemoryDataStore simpleStore)
-            throws Exception {
+    public static FeatureTypeMapping createMappingsGroupByStation(MemoryDataStore simpleStore) throws Exception {
         Name sourceTypeName = WATERSAMPLE_TYPENAME;
-        final FeatureSource<SimpleFeatureType, SimpleFeature> wsSource =
-                simpleStore.getFeatureSource(sourceTypeName);
+        final FeatureSource<SimpleFeatureType, SimpleFeature> wsSource = simpleStore.getFeatureSource(sourceTypeName);
 
         FeatureType targetType = createComplexWaterQualityType();
         FeatureTypeFactory tf = new UniqueNameFeatureTypeFactoryImpl();
         AttributeDescriptor targetFeature =
-                tf.createAttributeDescriptor(
-                        targetType, targetType.getName(), 0, Integer.MAX_VALUE, true, null);
+                tf.createAttributeDescriptor(targetType, targetType.getName(), 0, Integer.MAX_VALUE, true, null);
 
         List<AttributeMapping> mappings = new LinkedList<>();
 
@@ -252,63 +244,48 @@ public class TestData {
         Expression source = Expression.NIL;
         String target = "wq_plus";
         NamespaceSupport namespaces = new NamespaceSupport();
-        mappings.add(
-                new AttributeMapping(id, source, XPath.steps(targetFeature, target, namespaces)));
+        mappings.add(new AttributeMapping(id, source, XPath.steps(targetFeature, target, namespaces)));
 
         source = ff.property("sitename");
         target = "wq_plus/sitename";
-        mappings.add(
-                new AttributeMapping(null, source, XPath.steps(targetFeature, target, namespaces)));
+        mappings.add(new AttributeMapping(null, source, XPath.steps(targetFeature, target, namespaces)));
 
         source = ff.property("anzlic_no");
         target = "wq_plus/anzlic_no";
-        mappings.add(
-                new AttributeMapping(null, source, XPath.steps(targetFeature, target, namespaces)));
+        mappings.add(new AttributeMapping(null, source, XPath.steps(targetFeature, target, namespaces)));
 
         source = ff.property("project_no");
         target = "wq_plus/project_no";
-        mappings.add(
-                new AttributeMapping(null, source, XPath.steps(targetFeature, target, namespaces)));
+        mappings.add(new AttributeMapping(null, source, XPath.steps(targetFeature, target, namespaces)));
 
         id = ff.property("id[1]");
         source = null;
         target = "wq_plus/measurement";
-        mappings.add(
-                new AttributeMapping(
-                        id,
-                        source,
-                        null,
-                        XPath.steps(targetFeature, target, namespaces),
-                        null,
-                        true,
-                        null));
+        mappings.add(new AttributeMapping(
+                id, source, null, XPath.steps(targetFeature, target, namespaces), null, true, null));
 
         source = ff.property("determinand_description");
         target = "wq_plus/measurement/determinand_description";
-        mappings.add(
-                new AttributeMapping(null, source, XPath.steps(targetFeature, target, namespaces)));
+        mappings.add(new AttributeMapping(null, source, XPath.steps(targetFeature, target, namespaces)));
 
         source = ff.property("results_value");
         target = "wq_plus/measurement/result";
-        mappings.add(
-                new AttributeMapping(null, source, XPath.steps(targetFeature, target, namespaces)));
+        mappings.add(new AttributeMapping(null, source, XPath.steps(targetFeature, target, namespaces)));
 
         source = ff.property("location");
         target = "wq_plus/location";
-        mappings.add(
-                new AttributeMapping(null, source, XPath.steps(targetFeature, target, namespaces)));
+        mappings.add(new AttributeMapping(null, source, XPath.steps(targetFeature, target, namespaces)));
 
         return new FeatureTypeMapping(wsSource, targetFeature, mappings, namespaces);
     }
 
     /**
-     * Creates a flat FeatureType <code>wq_ir_results</code> with a structure like the following,
-     * from which a complex one should be constructed grouping by station_no attribute.
+     * Creates a flat FeatureType <code>wq_ir_results</code> with a structure like the following, from which a complex
+     * one should be constructed grouping by station_no attribute.
      *
-     * <p>Following this sample schema, a total of 10 unique station_no identifiers will be created,
-     * and for each one, a total of N desagregate rows with the same station_no, where N goes from 1
-     * to 10. So for the first station_no there will be just one occurrence and the last one will
-     * have 10.
+     * <p>Following this sample schema, a total of 10 unique station_no identifiers will be created, and for each one, a
+     * total of N desagregate rows with the same station_no, where N goes from 1 to 10. So for the first station_no
+     * there will be just one occurrence and the last one will have 10.
      *
      * <p>
      *

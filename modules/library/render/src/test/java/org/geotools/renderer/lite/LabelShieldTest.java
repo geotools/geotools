@@ -44,7 +44,8 @@ public class LabelShieldTest {
     @Before
     public void setUp() throws Exception {
         // setup data
-        File property = new File(TestData.getResource(this, "diaglines.properties").toURI());
+        File property =
+                new File(TestData.getResource(this, "diaglines.properties").toURI());
         PropertyDataStore ds = new PropertyDataStore(property.getParentFile());
         fs = ds.getFeatureSource("diaglines");
         fs_multiline = ds.getFeatureSource("diaglines_multiline");
@@ -82,11 +83,9 @@ public class LabelShieldTest {
         renderer.setMapContent(mc);
         final ReferencedEnvelope pointBounds = pointShield.getBounds();
         pointBounds.expandBy(3, 3);
-        BufferedImage image =
-                RendererBaseTest.showRender("Text under the line", renderer, TIME, pointBounds);
+        BufferedImage image = RendererBaseTest.showRender("Text under the line", renderer, TIME, pointBounds);
 
-        String refPath =
-                "./src/test/resources/org/geotools/renderer/lite/test-data/textLabelShieldUnderTheLine.png";
+        String refPath = "./src/test/resources/org/geotools/renderer/lite/test-data/textLabelShieldUnderTheLine.png";
         ImageAssert.assertEquals(new File(refPath), image, 1200);
     }
 
@@ -100,11 +99,9 @@ public class LabelShieldTest {
         renderer.setMapContent(mc);
         final ReferencedEnvelope pointBounds = pointShield.getBounds();
         pointBounds.expandBy(3, 3);
-        BufferedImage image =
-                RendererBaseTest.showRender("Graphic above text", renderer, TIME, pointBounds);
+        BufferedImage image = RendererBaseTest.showRender("Graphic above text", renderer, TIME, pointBounds);
 
-        String refPath =
-                "./src/test/resources/org/geotools/renderer/lite/test-data/textLabelIndependentGraphic.png";
+        String refPath = "./src/test/resources/org/geotools/renderer/lite/test-data/textLabelIndependentGraphic.png";
         ImageAssert.assertEquals(new File(refPath), image, 1200);
     }
 
@@ -117,10 +114,8 @@ public class LabelShieldTest {
 
         renderer.setMapContent(mc);
 
-        BufferedImage image =
-                RendererBaseTest.showRender("Labels and shield", renderer, TIME, bounds);
-        String refPath =
-                "./src/test/resources/org/geotools/renderer/lite/test-data/textLabelShieldMultiline.png";
+        BufferedImage image = RendererBaseTest.showRender("Labels and shield", renderer, TIME, bounds);
+        String refPath = "./src/test/resources/org/geotools/renderer/lite/test-data/textLabelShieldMultiline.png";
         ImageAssert.assertEquals(new File(refPath), image, 1200);
     }
 
@@ -133,8 +128,7 @@ public class LabelShieldTest {
 
         renderer.setMapContent(mc);
 
-        BufferedImage image =
-                RendererBaseTest.showRender("Labels and shield", renderer, TIME, bounds);
+        BufferedImage image = RendererBaseTest.showRender("Labels and shield", renderer, TIME, bounds);
         String refPath =
                 "./src/test/resources/org/geotools/renderer/lite/test-data/textLabelShieldMultilineStretch.png";
         ImageAssert.assertEquals(new File(refPath), image, 1200);

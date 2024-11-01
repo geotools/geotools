@@ -168,12 +168,12 @@ public class QueryTypeBinding extends AbstractComplexEMFBinding {
     }
 
     /**
-     * Overrides to return the value of the "typeName" attribute as a single String instead of a
-     * List. Otherwise typeName gets encoded as the {@link QueryType#getTypeName()} toString's value
-     * which depends on the toString implementation of the internal java.util.List.
+     * Overrides to return the value of the "typeName" attribute as a single String instead of a List. Otherwise
+     * typeName gets encoded as the {@link QueryType#getTypeName()} toString's value which depends on the toString
+     * implementation of the internal java.util.List.
      *
-     * <p>Also, if the requested property is "SortBy" and the QueryType has an empty sortby list,
-     * returns null to avoid encoding an empty sortBy list
+     * <p>Also, if the requested property is "SortBy" and the QueryType has an empty sortby list, returns null to avoid
+     * encoding an empty sortBy list
      */
     @Override
     public Object getProperty(Object object, QName name) throws Exception {

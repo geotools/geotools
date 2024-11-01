@@ -22,8 +22,8 @@ import java.util.List;
  * A NamedLayer is used to refer to a layer that has a name in a WMS.
  *
  * <p>The details of this object are taken from the <a
- * href="https://portal.opengeospatial.org/files/?artifact_id=1188">OGC Styled-Layer Descriptor
- * Report (OGC 02-070) version 1.0.0.</a>:
+ * href="https://portal.opengeospatial.org/files/?artifact_id=1188">OGC Styled-Layer Descriptor Report (OGC 02-070)
+ * version 1.0.0.</a>:
  *
  * <pre><code>
  * &lt;xsd:element name="NamedLayer"&gt;

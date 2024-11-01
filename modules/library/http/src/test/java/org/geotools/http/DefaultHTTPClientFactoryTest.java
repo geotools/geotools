@@ -54,16 +54,15 @@ public class DefaultHTTPClientFactoryTest {
     }
 
     /**
-     * Tests if 1) hint for logging produces expected client and 2) client calls expected API of
-     * delegate, to pass on headers. Also covers {@link DelegateHTTPClient}.
+     * Tests if 1) hint for logging produces expected client and 2) client calls expected API of delegate, to pass on
+     * headers. Also covers {@link DelegateHTTPClient}.
      *
      * @throws Exception
      */
     @Test
     public void testLoggingUsage() throws Exception {
         HTTPClientFactory factory = new DefaultHTTPClientFactory();
-        HTTPClient client =
-                factory.createClient(new Hints(Hints.HTTP_LOGGING, "TRUE"), new LinkedList<>());
+        HTTPClient client = factory.createClient(new Hints(Hints.HTTP_LOGGING, "TRUE"), new LinkedList<>());
         assertTrue(client instanceof LoggingHTTPClient);
 
         LoggingHTTPClient loggingClient = (LoggingHTTPClient) client;

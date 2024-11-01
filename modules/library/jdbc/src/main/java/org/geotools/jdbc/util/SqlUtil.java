@@ -200,8 +200,7 @@ public class SqlUtil {
                             String propertyName = matcher.group(1);
                             String propertyValue = properties.get(propertyName);
                             if (propertyValue == null) {
-                                throw new RuntimeException(
-                                        "Missing property " + propertyName + " for sql script");
+                                throw new RuntimeException("Missing property " + propertyName + " for sql script");
                             } else {
                                 buf.replace(matcher.start(), matcher.end(), propertyValue);
                                 matcher.reset();
@@ -235,8 +234,7 @@ public class SqlUtil {
         }
     }
 
-    public static PreparedStatementBuilder prepare(Connection conn, String sql)
-            throws SQLException {
+    public static PreparedStatementBuilder prepare(Connection conn, String sql) throws SQLException {
         return new PreparedStatementBuilder(conn, sql);
     }
 

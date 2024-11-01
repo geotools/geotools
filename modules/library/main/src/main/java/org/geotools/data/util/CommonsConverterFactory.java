@@ -35,8 +35,7 @@ import org.geotools.util.factory.Hints;
 /**
  * Convert String to common scalar values.
  *
- * <p>Formerly this class made use of the apache commons {@link
- * org.apache.commons.beanutils.Converter} interface.
+ * <p>Formerly this class made use of the apache commons {@link org.apache.commons.beanutils.Converter} interface.
  *
  * @author Justin Deoliveira, The Open Planning Project
  * @since 2.4
@@ -258,10 +257,7 @@ public class CommonsConverterFactory implements ConverterFactory {
     static class DateConverter implements Converter {
 
         public static List<String> formats =
-                Arrays.asList(
-                        "yyyy-MM-dd HH:mm:ss.S a",
-                        "yyyy-MM-dd HH:mm:ssa",
-                        "yyyy-MM-dd'T'HH:mm:ss.SSSX");
+                Arrays.asList("yyyy-MM-dd HH:mm:ss.S a", "yyyy-MM-dd HH:mm:ssa", "yyyy-MM-dd'T'HH:mm:ss.SSSX");
 
         @Override
         public <T> T convert(Object source, Class<T> target) throws Exception {

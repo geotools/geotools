@@ -32,8 +32,7 @@ import org.junit.Test;
  *
  * @author Jesse
  */
-public class PostPreProcessFilterSplitterVisitorFunctionTest
-        extends AbstractPostPreProcessFilterSplittingVisitorTests {
+public class PostPreProcessFilterSplitterVisitorFunctionTest extends AbstractPostPreProcessFilterSplittingVisitorTests {
 
     PostPreProcessFilterSplittingVisitor visitor;
 

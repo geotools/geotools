@@ -33,14 +33,11 @@ public final class SymbolsTest {
     public void testContainsAxis() {
         final Symbols s = Symbols.DEFAULT;
         assertTrue("AXIS at the begining of a line.", s.containsAxis("AXIS[\"Long\", EAST]"));
-        assertTrue(
-                "AXIS embeded in GEOGCS.",
-                s.containsAxis("GEOGCS[\"WGS84\", AXIS[\"Long\", EAST]]"));
+        assertTrue("AXIS embeded in GEOGCS.", s.containsAxis("GEOGCS[\"WGS84\", AXIS[\"Long\", EAST]]"));
         assertTrue(
                 "AXIS followed by spaces and different opening brace.",
                 s.containsAxis("GEOGCS[\"WGS84\", AXIS (\"Long\", EAST)]"));
-        assertTrue(
-                "AXIS in mixed cases.", s.containsAxis("GEOGCS[\"WGS84\", aXis[\"Long\", EAST]]"));
+        assertTrue("AXIS in mixed cases.", s.containsAxis("GEOGCS[\"WGS84\", aXis[\"Long\", EAST]]"));
         assertFalse("AXIS in quoted text.", s.containsAxis("GEOGCS[\"AXIS\"]"));
         assertFalse("AXIS without opening bracket.", s.containsAxis("GEOGCS[\"WGS84\", AXIS]"));
         assertFalse("No AXIS.", s.containsAxis("GEOGCS[\"WGS84\"]"));

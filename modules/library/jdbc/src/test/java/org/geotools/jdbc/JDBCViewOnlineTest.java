@@ -61,10 +61,7 @@ public abstract class JDBCViewOnlineTest extends JDBCTestSupport {
         lakeViewPkSchema = tb.retype(lakeViewSchema, ID, GEOM, NAME);
     }
 
-    /**
-     * Whether the pk field in a view is nillable or not (it is for most databases, but not for
-     * Oracle for example).
-     */
+    /** Whether the pk field in a view is nillable or not (it is for most databases, but not for Oracle for example). */
     protected boolean isPkNillable() {
         return true;
     }
@@ -90,7 +87,8 @@ public abstract class JDBCViewOnlineTest extends JDBCTestSupport {
 
     @Test
     public void testReadFeatures() throws Exception {
-        SimpleFeatureCollection fc = dataStore.getFeatureSource(tname(LAKESVIEW)).getFeatures();
+        SimpleFeatureCollection fc =
+                dataStore.getFeatureSource(tname(LAKESVIEW)).getFeatures();
         assertEquals(1, fc.size());
         try (SimpleFeatureIterator fr = fc.features()) {
             assertTrue(fr.hasNext());
@@ -102,7 +100,8 @@ public abstract class JDBCViewOnlineTest extends JDBCTestSupport {
     @Test
     public void testGetBounds() throws Exception {
         // GEOT-2067 Make sure it's possible to compute bounds out of a view
-        ReferencedEnvelope reference = dataStore.getFeatureSource(tname(LAKESVIEW)).getBounds();
+        ReferencedEnvelope reference =
+                dataStore.getFeatureSource(tname(LAKESVIEW)).getBounds();
         assertEquals(12.0, reference.getMinX(), 0.0);
         assertEquals(16.0, reference.getMaxX(), 0.0);
         assertEquals(4.0, reference.getMinY(), 0.0);
@@ -110,8 +109,7 @@ public abstract class JDBCViewOnlineTest extends JDBCTestSupport {
     }
 
     /**
-     * Subclasses may want to override this in case the database has a native way, other than the
-     * pk, to identify a row
+     * Subclasses may want to override this in case the database has a native way, other than the pk, to identify a row
      */
     @Test
     public void testReadOnly() throws Exception {

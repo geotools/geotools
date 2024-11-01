@@ -125,14 +125,8 @@ public class SLDGraphicBinding extends AbstractComplexBinding {
         Expression size = (Expression) node.getChildValue("Size");
         Expression rotation = (Expression) node.getChildValue("Rotation");
 
-        Graphic graphic =
-                styleFactory.createGraphic(
-                        null,
-                        null,
-                        symbols.toArray(new Symbol[symbols.size()]),
-                        opacity,
-                        size,
-                        rotation);
+        Graphic graphic = styleFactory.createGraphic(
+                null, null, symbols.toArray(new Symbol[symbols.size()]), opacity, size, rotation);
 
         if (node.getChild("Displacement") != null) {
             graphic.setDisplacement((Displacement) node.getChildValue("Displacement"));

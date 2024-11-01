@@ -58,9 +58,9 @@ import org.geotools.util.factory.GeoTools;
 import org.geotools.util.factory.Hints;
 
 /**
- * A set of utilities methods working on factories. Many of those methods requires more than one
- * factory. Consequently, they can't be a method in a single factory. Furthermore, since they are
- * helper methods and somewhat implementation-dependent, they are not part of GeoAPI.
+ * A set of utilities methods working on factories. Many of those methods requires more than one factory. Consequently,
+ * they can't be a method in a single factory. Furthermore, since they are helper methods and somewhat
+ * implementation-dependent, they are not part of GeoAPI.
  *
  * @since 2.4
  * @version $Id$
@@ -70,27 +70,24 @@ public class ReferencingFactoryContainer extends ReferencingFactory {
     /** A factory registry used as a cache for factory groups created up to date. */
     private static FactoryRegistry cache;
 
-    /**
-     * The {@linkplain Datum datum} factory. If null, then a default factory will be created only
-     * when first needed.
-     */
+    /** The {@linkplain Datum datum} factory. If null, then a default factory will be created only when first needed. */
     private DatumFactory datumFactory;
 
     /**
-     * The {@linkplain CoordinateSystem coordinate system} factory. If null, then a default factory
-     * will be created only when first needed.
+     * The {@linkplain CoordinateSystem coordinate system} factory. If null, then a default factory will be created only
+     * when first needed.
      */
     private CSFactory csFactory;
 
     /**
-     * The {@linkplain CoordinateReferenceSystem coordinate reference system} factory. If null, then
-     * a default factory will be created only when first needed.
+     * The {@linkplain CoordinateReferenceSystem coordinate reference system} factory. If null, then a default factory
+     * will be created only when first needed.
      */
     private CRSFactory crsFactory;
 
     /**
-     * The {@linkplain MathTransform math transform} factory. If null, then a default factory will
-     * be created only when first needed.
+     * The {@linkplain MathTransform math transform} factory. If null, then a default factory will be created only when
+     * first needed.
      */
     private MathTransformFactory mtFactory;
 
@@ -102,13 +99,12 @@ public class ReferencingFactoryContainer extends ReferencingFactory {
     // and even with authority factories.
 
     /**
-     * Creates an instance from the specified hints. This constructor recognizes the {@link
-     * Hints#CRS_FACTORY CRS}, {@link Hints#CS_FACTORY CS}, {@link Hints#DATUM_FACTORY DATUM} and
-     * {@link Hints#MATH_TRANSFORM_FACTORY MATH_TRANSFORM} {@code FACTORY} hints.
+     * Creates an instance from the specified hints. This constructor recognizes the {@link Hints#CRS_FACTORY CRS},
+     * {@link Hints#CS_FACTORY CS}, {@link Hints#DATUM_FACTORY DATUM} and {@link Hints#MATH_TRANSFORM_FACTORY
+     * MATH_TRANSFORM} {@code FACTORY} hints.
      *
-     * <p>This constructor is public mainly for {@link org.geotools.util.factory.FactoryCreator}
-     * usage. Consider invoking <code>{@linkplain #createInstance createInstance}(userHints)</code>
-     * instead.
+     * <p>This constructor is public mainly for {@link org.geotools.util.factory.FactoryCreator} usage. Consider
+     * invoking <code>{@linkplain #createInstance createInstance}(userHints)</code> instead.
      *
      * @param userHints The hints, or {@code null} if none.
      */
@@ -137,8 +133,8 @@ public class ReferencingFactoryContainer extends ReferencingFactory {
     }
 
     /**
-     * Returns the factory for the specified hint, or {@code null} if the hint is not a factory
-     * instance. It could be for example a {@link Class}.
+     * Returns the factory for the specified hint, or {@code null} if the hint is not a factory instance. It could be
+     * for example a {@link Class}.
      */
     private static Factory extract(final Map<?, ?> reduced, final Hints.Key key) {
         if (reduced != null) {
@@ -152,9 +148,9 @@ public class ReferencingFactoryContainer extends ReferencingFactory {
     }
 
     /**
-     * Creates an instance from the specified hints. This method recognizes the {@link
-     * Hints#CRS_FACTORY CRS}, {@link Hints#CS_FACTORY CS}, {@link Hints#DATUM_FACTORY DATUM} and
-     * {@link Hints#MATH_TRANSFORM_FACTORY MATH_TRANSFORM} {@code FACTORY} hints.
+     * Creates an instance from the specified hints. This method recognizes the {@link Hints#CRS_FACTORY CRS},
+     * {@link Hints#CS_FACTORY CS}, {@link Hints#DATUM_FACTORY DATUM} and {@link Hints#MATH_TRANSFORM_FACTORY
+     * MATH_TRANSFORM} {@code FACTORY} hints.
      *
      * @param hints The hints, or {@code null} if none.
      * @return A factory group created from the specified set of hints.
@@ -172,20 +168,16 @@ public class ReferencingFactoryContainer extends ReferencingFactory {
          */
         synchronized (ReferencingFactoryFinder.class) {
             if (cache == null) {
-                cache =
-                        new FactoryCreator(
-                                Arrays.asList(new Class<?>[] {ReferencingFactoryContainer.class}));
-                cache.registerFactory(
-                        new ReferencingFactoryContainer(null), ReferencingFactoryContainer.class);
+                cache = new FactoryCreator(Arrays.asList(new Class<?>[] {ReferencingFactoryContainer.class}));
+                cache.registerFactory(new ReferencingFactoryContainer(null), ReferencingFactoryContainer.class);
             }
             return cache.getFactory(ReferencingFactoryContainer.class, null, completed, null);
         }
     }
 
     /**
-     * Forces the initialisation of all factories. Implementation note: we try to create the
-     * factories in typical dependency order (CRS all because it has the greatest chances to depends
-     * on other factories).
+     * Forces the initialisation of all factories. Implementation note: we try to create the factories in typical
+     * dependency order (CRS all because it has the greatest chances to depends on other factories).
      */
     private void initialize() {
         mtFactory = getMathTransformFactory();
@@ -203,9 +195,9 @@ public class ReferencingFactoryContainer extends ReferencingFactory {
     }
 
     /**
-     * Returns all factories in this group. The returned map contains values for the {@link
-     * Hints#CRS_FACTORY CRS}, {@link Hints#CS_FACTORY CS}, {@link Hints#DATUM_FACTORY DATUM} and
-     * {@link Hints#MATH_TRANSFORM_FACTORY MATH_TRANSFORM} {@code FACTORY} hints.
+     * Returns all factories in this group. The returned map contains values for the {@link Hints#CRS_FACTORY CRS},
+     * {@link Hints#CS_FACTORY CS}, {@link Hints#DATUM_FACTORY DATUM} and {@link Hints#MATH_TRANSFORM_FACTORY
+     * MATH_TRANSFORM} {@code FACTORY} hints.
      */
     @Override
     public Map<RenderingHints.Key, ?> getImplementationHints() {
@@ -219,9 +211,8 @@ public class ReferencingFactoryContainer extends ReferencingFactory {
     }
 
     /**
-     * Returns the hints to be used for lazy creation of <em>default</em> factories in various
-     * {@code getFoo} methods. This is different from {@link #getImplementationHints} because the
-     * later may returns non-default factories.
+     * Returns the hints to be used for lazy creation of <em>default</em> factories in various {@code getFoo} methods.
+     * This is different from {@link #getImplementationHints} because the later may returns non-default factories.
      */
     private Hints hints() {
         final Hints completed = new Hints(hints);
@@ -286,12 +277,11 @@ public class ReferencingFactoryContainer extends ReferencingFactory {
     }
 
     /**
-     * Converts a 2D&nbsp;+&nbsp;1D compound CRS into a 3D CRS, if possible. More specifically, if
-     * the specified {@linkplain CompoundCRS compound CRS} is made of a {@linkplain GeographicCRS
-     * geographic} (or {@linkplain ProjectedCRS projected}) and a {@linkplain VerticalCRS vertical}
-     * CRS, and if the vertical CRS datum type is {@linkplain VerticalDatumType#ELLIPSOIDAL height
-     * above the ellipsoid}, then this method converts the compound CRS in a single 3D CRS.
-     * Otherwise, the {@code crs} argument is returned unchanged.
+     * Converts a 2D&nbsp;+&nbsp;1D compound CRS into a 3D CRS, if possible. More specifically, if the specified
+     * {@linkplain CompoundCRS compound CRS} is made of a {@linkplain GeographicCRS geographic} (or
+     * {@linkplain ProjectedCRS projected}) and a {@linkplain VerticalCRS vertical} CRS, and if the vertical CRS datum
+     * type is {@linkplain VerticalDatumType#ELLIPSOIDAL height above the ellipsoid}, then this method converts the
+     * compound CRS in a single 3D CRS. Otherwise, the {@code crs} argument is returned unchanged.
      *
      * @param crs The compound CRS to converts in a 3D geographic or projected CRS.
      * @return The 3D geographic or projected CRS, or {@code crs} if the change can't be applied.
@@ -308,8 +298,7 @@ public class ReferencingFactoryContainer extends ReferencingFactory {
             if (candidate instanceof VerticalCRS) {
                 if (vertical == null) {
                     vertical = (VerticalCRS) candidate;
-                    if (VerticalDatumType.ELLIPSOIDAL.equals(
-                            vertical.getDatum().getVerticalDatumType())) {
+                    if (VerticalDatumType.ELLIPSOIDAL.equals(vertical.getDatum().getVerticalDatumType())) {
                         vi = i;
                         continue;
                     }
@@ -334,8 +323,7 @@ public class ReferencingFactoryContainer extends ReferencingFactory {
              * only ones, the result is returned directly. Otherwise, a new compound CRS is created.
              */
             final boolean xyFirst = (hi < vi);
-            final SingleCRS single =
-                    toGeodetic3D(count == 2 ? crs : null, horizontal, vertical, xyFirst);
+            final SingleCRS single = toGeodetic3D(count == 2 ? crs : null, horizontal, vertical, xyFirst);
             if (count == 2) {
                 return single;
             }
@@ -350,24 +338,20 @@ public class ReferencingFactoryContainer extends ReferencingFactory {
     }
 
     /**
-     * Implementation of {@link #toGeodetic3D(CompoundCRS)} invoked after the horizontal and
-     * vertical parts have been identified. This method may invokes itself recursively if the
-     * horizontal CRS is a derived one.
+     * Implementation of {@link #toGeodetic3D(CompoundCRS)} invoked after the horizontal and vertical parts have been
+     * identified. This method may invokes itself recursively if the horizontal CRS is a derived one.
      *
-     * @param crs The compound CRS to converts in a 3D geographic CRS, or {@code null}. Used only in
-     *     order to infer the name properties of objects to create.
+     * @param crs The compound CRS to converts in a 3D geographic CRS, or {@code null}. Used only in order to infer the
+     *     name properties of objects to create.
      * @param horizontal The horizontal component of {@code crs}.
      * @param vertical The vertical component of {@code crs}.
-     * @param xyFirst {@code true} if the horizontal component appears before the vertical
-     *     component, or {@code false} for the converse.
+     * @param xyFirst {@code true} if the horizontal component appears before the vertical component, or {@code false}
+     *     for the converse.
      * @return The 3D geographic or projected CRS.
      * @throws FactoryException if the object creation failed.
      */
     private SingleCRS toGeodetic3D(
-            final CompoundCRS crs,
-            final SingleCRS horizontal,
-            final VerticalCRS vertical,
-            final boolean xyFirst)
+            final CompoundCRS crs, final SingleCRS horizontal, final VerticalCRS vertical, final boolean xyFirst)
             throws FactoryException {
         /*
          * Creates the set of axis in an order which depends of the xyFirst argument.
@@ -395,8 +379,7 @@ public class ReferencingFactoryContainer extends ReferencingFactory {
              * part - we just give the 3 axis all together to a new GeographicCRS.
              */
             final GeographicCRS sourceCRS = (GeographicCRS) horizontal;
-            final EllipsoidalCS targetCS =
-                    csFactory.createEllipsoidalCS(csName, axis[0], axis[1], axis[2]);
+            final EllipsoidalCS targetCS = csFactory.createEllipsoidalCS(csName, axis[0], axis[1], axis[2]);
             return crsFactory.createGeographicCRS(crsName, sourceCRS.getDatum(), targetCS);
         }
         if (horizontal instanceof ProjectedCRS) {
@@ -409,25 +392,19 @@ public class ReferencingFactoryContainer extends ReferencingFactory {
              * otherwise).
              */
             final ProjectedCRS sourceCRS = (ProjectedCRS) horizontal;
-            final CartesianCS targetCS =
-                    csFactory.createCartesianCS(csName, axis[0], axis[1], axis[2]);
+            final CartesianCS targetCS = csFactory.createCartesianCS(csName, axis[0], axis[1], axis[2]);
             final GeographicCRS base2D = sourceCRS.getBaseCRS();
-            final GeographicCRS base3D =
-                    (GeographicCRS) toGeodetic3D(null, base2D, vertical, xyFirst);
+            final GeographicCRS base3D = (GeographicCRS) toGeodetic3D(null, base2D, vertical, xyFirst);
             final Matrix prepend = toStandard(base2D, false);
             final Matrix append = toStandard(sourceCRS, true);
             Conversion projection = sourceCRS.getConversionFromBase();
             if (!prepend.isIdentity() || !append.isIdentity()) {
                 final MathTransformFactory mtFactory = getMathTransformFactory();
                 MathTransform mt = projection.getMathTransform();
-                mt =
-                        mtFactory.createConcatenatedTransform(
-                                mtFactory.createConcatenatedTransform(
-                                        mtFactory.createAffineTransform(prepend), mt),
-                                mtFactory.createAffineTransform(append));
-                projection =
-                        new DefiningConversion(
-                                AbstractCS.getProperties(projection), projection.getMethod(), mt);
+                mt = mtFactory.createConcatenatedTransform(
+                        mtFactory.createConcatenatedTransform(mtFactory.createAffineTransform(prepend), mt),
+                        mtFactory.createAffineTransform(append));
+                projection = new DefiningConversion(AbstractCS.getProperties(projection), projection.getMethod(), mt);
             }
             return crsFactory.createProjectedCRS(crsName, base3D, projection, targetCS);
         }
@@ -446,24 +423,23 @@ public class ReferencingFactoryContainer extends ReferencingFactory {
     }
 
     /**
-     * Returns a new coordinate reference system with only the specified dimension. This method is
-     * used for example in order to get a component of a {@linkplain CompoundCRS compound CRS}.
+     * Returns a new coordinate reference system with only the specified dimension. This method is used for example in
+     * order to get a component of a {@linkplain CompoundCRS compound CRS}.
      *
      * @param crs The original (usually compound) CRS.
      * @param dimensions The dimensions to keep.
      * @return The CRS with only the specified dimensions.
      * @throws FactoryException if the given dimensions can not be isolated in the given CRS.
      */
-    public CoordinateReferenceSystem separate(
-            final CoordinateReferenceSystem crs, final int[] dimensions) throws FactoryException {
+    public CoordinateReferenceSystem separate(final CoordinateReferenceSystem crs, final int[] dimensions)
+            throws FactoryException {
         final int length = dimensions.length;
         final int crsDimension = crs.getCoordinateSystem().getDimension();
         if (length == 0
                 || dimensions[0] < 0
                 || dimensions[length - 1] >= crsDimension
                 || !XArray.isStrictlySorted(dimensions)) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$1, "dimension"));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$1, "dimension"));
         }
         if (length == crsDimension) {
             return crs;
@@ -475,10 +451,8 @@ public class ReferencingFactoryContainer extends ReferencingFactory {
          */
         if (crs instanceof CompoundCRS) {
             int count = 0, lowerDimension = 0, lowerIndex = 0;
-            final List<CoordinateReferenceSystem> sources =
-                    ((CompoundCRS) crs).getCoordinateReferenceSystems();
-            final CoordinateReferenceSystem[] targets =
-                    new CoordinateReferenceSystem[sources.size()];
+            final List<CoordinateReferenceSystem> sources = ((CompoundCRS) crs).getCoordinateReferenceSystems();
+            final CoordinateReferenceSystem[] targets = new CoordinateReferenceSystem[sources.size()];
             search:
             for (final CoordinateReferenceSystem source : sources) {
                 final int upperDimension =
@@ -515,8 +489,7 @@ public class ReferencingFactoryContainer extends ReferencingFactory {
             if (count == 1) {
                 return targets[0];
             }
-            return getCRSFactory()
-                    .createCompoundCRS(getTemporaryName(crs), XArray.resize(targets, count));
+            return getCRSFactory().createCompoundCRS(getTemporaryName(crs), XArray.resize(targets, count));
         }
         /*
          * TODO: Implement other cases here (3D-GeographicCRS, etc.).

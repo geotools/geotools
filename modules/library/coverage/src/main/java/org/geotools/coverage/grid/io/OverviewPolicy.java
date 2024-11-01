@@ -26,8 +26,7 @@ package org.geotools.coverage.grid.io;
  */
 public enum OverviewPolicy {
     /**
-     * Choose the overview with the lower resolution among the ones with higher resolution than one
-     * used for rendering.
+     * Choose the overview with the lower resolution among the ones with higher resolution than one used for rendering.
      */
     QUALITY,
 
@@ -38,8 +37,7 @@ public enum OverviewPolicy {
     NEAREST,
 
     /**
-     * Choose the overview with the higher resolution among the ones with lower resolution than one
-     * used for rendering.
+     * Choose the overview with the higher resolution among the ones with lower resolution than one used for rendering.
      */
     SPEED;
 

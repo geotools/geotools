@@ -31,8 +31,7 @@ import org.geotools.util.factory.Hints;
  * @author Simone Giannecchini (simboss), GeoSolutions
  * @since 2.5.x
  */
-public final class JP2MrSIDReader extends BaseGDALGridCoverage2DReader
-        implements GridCoverageReader {
+public final class JP2MrSIDReader extends BaseGDALGridCoverage2DReader implements GridCoverageReader {
     private static final String worldFileExt = ".j2w";
 
     /**
@@ -45,8 +44,8 @@ public final class JP2MrSIDReader extends BaseGDALGridCoverage2DReader
     }
 
     /**
-     * Creates a new instance of a {@link JP2MrSIDReader} basing the decision on whether the file is
-     * compressed or not. I assume nothing about file extension.
+     * Creates a new instance of a {@link JP2MrSIDReader} basing the decision on whether the file is compressed or not.
+     * I assume nothing about file extension.
      *
      * @param input Source object for which we want to build a {@link JP2MrSIDReader}.
      * @param hints Hints to be used by this reader throughout his life.

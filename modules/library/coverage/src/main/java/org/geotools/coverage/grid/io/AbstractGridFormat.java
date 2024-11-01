@@ -39,11 +39,11 @@ import org.geotools.util.factory.GeoTools;
 import org.geotools.util.factory.Hints;
 
 /**
- * AbstractGridFormat is a convenience class so subclasses only need to populate a Map class and set
- * the read and write parameter fields.
+ * AbstractGridFormat is a convenience class so subclasses only need to populate a Map class and set the read and write
+ * parameter fields.
  *
- * <p>For example the ArcGridFormat has the following method which sets up all the required
- * information: <code>private void setInfo(){ HashMap info=new
+ * <p>For example the ArcGridFormat has the following method which sets up all the required information: <code>
+ * private void setInfo(){ HashMap info=new
  * HashMap(); info.put("name", "ArcGrid"); info.put("description", "Arc Grid
  * Coverage Format"); info.put("vendor", "Geotools"); info.put("docURL",
  * "http://gdal.velocet.ca/projects/aigrid/index.html"); info.put("version",
@@ -61,26 +61,23 @@ import org.geotools.util.factory.Hints;
 public abstract class AbstractGridFormat implements Format {
 
     /**
-     * The Map object is used by the information methods(such as getName()) as a data source. The
-     * keys in the Map object (for the associated method) are as follows: getName() key = "name"
-     * value type=String getDescription() key = "description" value type=String getVendor() key =
-     * "vendor" value type=String getDocURL() key = "docURL" value type=String getVersion() key =
-     * "version" value type=String Naturally, any methods that are overridden need not have an entry
-     * in the Map
+     * The Map object is used by the information methods(such as getName()) as a data source. The keys in the Map object
+     * (for the associated method) are as follows: getName() key = "name" value type=String getDescription() key =
+     * "description" value type=String getVendor() key = "vendor" value type=String getDocURL() key = "docURL" value
+     * type=String getVersion() key = "version" value type=String Naturally, any methods that are overridden need not
+     * have an entry in the Map
      */
     protected Map<String, String> mInfo;
 
     /**
-     * {@link ParameterValueGroup} that controls the reading process for a {@link
-     * GridCoverageReader} through the {@link
-     * GridCoverageReader#read(org.geotools.api.parameter.GeneralParameterValue[])} method.
+     * {@link ParameterValueGroup} that controls the reading process for a {@link GridCoverageReader} through the
+     * {@link GridCoverageReader#read(org.geotools.api.parameter.GeneralParameterValue[])} method.
      */
     protected ParameterValueGroup readParameters;
 
     /**
-     * {@link ParameterValueGroup} that controls the writing process for a {@link
-     * GridCoverageWriter} through the {@link
-     * GridCoverageWriter#write(org.geotools.api.coverage.grid.GridCoverage,
+     * {@link ParameterValueGroup} that controls the writing process for a {@link GridCoverageWriter} through the
+     * {@link GridCoverageWriter#write(org.geotools.api.coverage.grid.GridCoverage,
      * org.geotools.api.parameter.GeneralParameterValue[])} method.
      */
     protected ParameterValueGroup writeParameters;
@@ -89,97 +86,83 @@ public abstract class AbstractGridFormat implements Format {
     private static CoordinateReferenceSystem crs = CartesianAuthorityFactory.GENERIC_2D;
 
     /**
-     * This {@link GeneralParameterValue} can be provided to the {@link GridCoverageReader}s through
-     * the {@code GridCoverageReader#read(GeneralParameterValue[])} method in order to pick up the
-     * best matching resolution level and (soon) the best matching area.
+     * This {@link GeneralParameterValue} can be provided to the {@link GridCoverageReader}s through the
+     * {@code GridCoverageReader#read(GeneralParameterValue[])} method in order to pick up the best matching resolution
+     * level and (soon) the best matching area.
      */
     public static final DefaultParameterDescriptor<GridGeometry2D> READ_GRIDGEOMETRY2D =
-            new DefaultParameterDescriptor<>(
-                    "ReadGridGeometry2D", GridGeometry2D.class, null, null);
+            new DefaultParameterDescriptor<>("ReadGridGeometry2D", GridGeometry2D.class, null, null);
 
     /**
-     * This {@link GeneralParameterValue} can be provided to the {@link GridCoverageReader}s through
-     * the {@code GridCoverageReader#write(GeneralParameterValue[])} method in order to monitor a
-     * writing process
+     * This {@link GeneralParameterValue} can be provided to the {@link GridCoverageReader}s through the
+     * {@code GridCoverageReader#write(GeneralParameterValue[])} method in order to monitor a writing process
      */
     public static final DefaultParameterDescriptor<ProgressListener> PROGRESS_LISTENER =
             new DefaultParameterDescriptor<>("Listener", ProgressListener.class, null, null);
 
     /**
-     * This {@link GeneralParameterValue} can be provided to the {@link GridCoverageWriter}s through
-     * the {@code GridCoverageWriter#write(org.geotools.api.coverage.grid.GridCoverage,
-     * GeneralParameterValue[])} method in order to control the writing process in terms of
-     * compression, tiling, etc.GridGeometry2D
+     * This {@link GeneralParameterValue} can be provided to the {@link GridCoverageWriter}s through the
+     * {@code GridCoverageWriter#write(org.geotools.api.coverage.grid.GridCoverage, GeneralParameterValue[])} method in
+     * order to control the writing process in terms of compression, tiling, etc.GridGeometry2D
      */
     public static final DefaultParameterDescriptor<GeoToolsWriteParams> GEOTOOLS_WRITE_PARAMS =
-            new DefaultParameterDescriptor<>(
-                    "WriteParameters", GeoToolsWriteParams.class, null, null);
+            new DefaultParameterDescriptor<>("WriteParameters", GeoToolsWriteParams.class, null, null);
 
     /**
-     * This {@code GeneralParameterValue} can be provided to the {@link GridCoverageReader}s through
-     * the {@link GridCoverageReader#read(GeneralParameterValue[])} method in order to specify the
-     * type of image read operation requested: using a JAI ImageRead operation (leveraging on
-     * Deferred Execution Model, Tile Caching,...), or the direct {@code ImageReader}'s read
-     * methods.
+     * This {@code GeneralParameterValue} can be provided to the {@link GridCoverageReader}s through the
+     * {@link GridCoverageReader#read(GeneralParameterValue[])} method in order to specify the type of image read
+     * operation requested: using a JAI ImageRead operation (leveraging on Deferred Execution Model, Tile Caching,...),
+     * or the direct {@code ImageReader}'s read methods.
      */
-    public static final DefaultParameterDescriptor<Boolean> USE_JAI_IMAGEREAD =
-            new DefaultParameterDescriptor<>(
-                    Hints.USE_JAI_IMAGEREAD.toString(),
-                    Boolean.class,
-                    new Boolean[] {Boolean.TRUE, Boolean.FALSE},
-                    Boolean.TRUE);
+    public static final DefaultParameterDescriptor<Boolean> USE_JAI_IMAGEREAD = new DefaultParameterDescriptor<>(
+            Hints.USE_JAI_IMAGEREAD.toString(),
+            Boolean.class,
+            new Boolean[] {Boolean.TRUE, Boolean.FALSE},
+            Boolean.TRUE);
 
     /**
-     * This {@link GeneralParameterValue} can be provided to the {@link GridCoverageReader}s through
-     * the {@code GridCoverageReader#read(GeneralParameterValue[])} method in order to specify the
-     * policy a reader should adopt when choosing the right overview during a read operation.
+     * This {@link GeneralParameterValue} can be provided to the {@link GridCoverageReader}s through the
+     * {@code GridCoverageReader#read(GeneralParameterValue[])} method in order to specify the policy a reader should
+     * adopt when choosing the right overview during a read operation.
      */
-    public static final DefaultParameterDescriptor<OverviewPolicy> OVERVIEW_POLICY =
-            new DefaultParameterDescriptor<>(
-                    Hints.OVERVIEW_POLICY.toString(),
-                    OverviewPolicy.class,
-                    new OverviewPolicy[] {
-                        OverviewPolicy.IGNORE,
-                        OverviewPolicy.NEAREST,
-                        OverviewPolicy.QUALITY,
-                        OverviewPolicy.SPEED
-                    },
-                    OverviewPolicy.QUALITY);
+    public static final DefaultParameterDescriptor<OverviewPolicy> OVERVIEW_POLICY = new DefaultParameterDescriptor<>(
+            Hints.OVERVIEW_POLICY.toString(),
+            OverviewPolicy.class,
+            new OverviewPolicy[] {
+                OverviewPolicy.IGNORE, OverviewPolicy.NEAREST, OverviewPolicy.QUALITY, OverviewPolicy.SPEED
+            },
+            OverviewPolicy.QUALITY);
 
     /**
-     * This {@link GeneralParameterValue} can be provided to the {@link GridCoverageReader}s through
-     * the {@code GridCoverageReader#read(GeneralParameterValue[])} method in order to specify the
-     * policy a reader should adopt when setting read parameters when evaluating a needed
-     * resolution.
+     * This {@link GeneralParameterValue} can be provided to the {@link GridCoverageReader}s through the
+     * {@code GridCoverageReader#read(GeneralParameterValue[])} method in order to specify the policy a reader should
+     * adopt when setting read parameters when evaluating a needed resolution.
      */
-    public static final ParameterDescriptor<DecimationPolicy> DECIMATION_POLICY =
-            new DefaultParameterDescriptor<>(
-                    Hints.DECIMATION_POLICY.toString(),
-                    DecimationPolicy.class,
-                    new DecimationPolicy[] {DecimationPolicy.ALLOW, DecimationPolicy.DISALLOW},
-                    DecimationPolicy.ALLOW);
+    public static final ParameterDescriptor<DecimationPolicy> DECIMATION_POLICY = new DefaultParameterDescriptor<>(
+            Hints.DECIMATION_POLICY.toString(),
+            DecimationPolicy.class,
+            new DecimationPolicy[] {DecimationPolicy.ALLOW, DecimationPolicy.DISALLOW},
+            DecimationPolicy.ALLOW);
 
     /** The {@code String} representing the parameter to customize tile sizes */
     private static final String SUGGESTED_TILESIZE = "SUGGESTED_TILE_SIZE";
 
     /**
-     * This {@link GeneralParameterValue} can be provided to the {@link GridCoverageReader}s through
-     * the {@code GridCoverageReader#read(GeneralParameterValue[])} method in order to specify the
-     * suggested size of tiles to avoid long time reading occurring with JAI ImageRead on striped
-     * images. (Images with tiles Nx1) Value should be a String in the form of "W,H" (without
-     * quotes) where W is a number representing the suggested tileWidth and H is a number
-     * representing the suggested tileHeight.
+     * This {@link GeneralParameterValue} can be provided to the {@link GridCoverageReader}s through the
+     * {@code GridCoverageReader#read(GeneralParameterValue[])} method in order to specify the suggested size of tiles
+     * to avoid long time reading occurring with JAI ImageRead on striped images. (Images with tiles Nx1) Value should
+     * be a String in the form of "W,H" (without quotes) where W is a number representing the suggested tileWidth and H
+     * is a number representing the suggested tileHeight.
      */
     public static final DefaultParameterDescriptor<String> SUGGESTED_TILE_SIZE =
             new DefaultParameterDescriptor<>(SUGGESTED_TILESIZE, String.class, null, "512,512");
 
     /**
-     * This {@link GeneralParameterValue} can be provided to the {@link GridCoverageReader}s through
-     * the {@code GridCoverageReader#read(GeneralParameterValue[])} method to specify the band
-     * indices of the input grid coverage that are going to be in the resulting coverage. The order
-     * of the bands on the output coverage is the order of the indices in the parameter. Value
-     * should be an integer array (int[]) containing the band indices in the desired order.
-     * Duplicate or multiple appearances of the same band index are allowed.
+     * This {@link GeneralParameterValue} can be provided to the {@link GridCoverageReader}s through the
+     * {@code GridCoverageReader#read(GeneralParameterValue[])} method to specify the band indices of the input grid
+     * coverage that are going to be in the resulting coverage. The order of the bands on the output coverage is the
+     * order of the indices in the parameter. Value should be an integer array (int[]) containing the band indices in
+     * the desired order. Duplicate or multiple appearances of the same band index are allowed.
      */
     public static final DefaultParameterDescriptor<int[]> BANDS =
             new DefaultParameterDescriptor<>("Bands", int[].class, null, null);
@@ -196,46 +179,33 @@ public abstract class AbstractGridFormat implements Format {
 
     /** Optional Time value for this mosaic. */
     public static final ParameterDescriptor<List> TIME =
-            DefaultParameterDescriptor.create(
-                    "TIME", "A list of time objects", List.class, null, false);
+            DefaultParameterDescriptor.create("TIME", "A list of time objects", List.class, null, false);
 
     /** Optional Elevation value for this mosaic. */
     public static final ParameterDescriptor<List> ELEVATION =
-            DefaultParameterDescriptor.create(
-                    "ELEVATION", "An elevation value", List.class, null, false);
+            DefaultParameterDescriptor.create("ELEVATION", "An elevation value", List.class, null, false);
 
     static final Interpolation DEFAULT_INTERPOLATION = new InterpolationNearest();
 
-    /**
-     * Control the interpolation to be used in the eventual image processing done while reading data
-     */
+    /** Control the interpolation to be used in the eventual image processing done while reading data */
     public static final ParameterDescriptor<Interpolation> INTERPOLATION =
-            new DefaultParameterDescriptor<>(
-                    "Interpolation", Interpolation.class, null, DEFAULT_INTERPOLATION);
+            new DefaultParameterDescriptor<>("Interpolation", Interpolation.class, null, DEFAULT_INTERPOLATION);
 
     /** Control the footprint management. */
-    public static final ParameterDescriptor<String> FOOTPRINT_BEHAVIOR =
-            new DefaultParameterDescriptor<>(
-                    "FootprintBehavior",
-                    String.class,
-                    FootprintBehavior.valuesAsStrings(),
-                    FootprintBehavior.None.name());
+    public static final ParameterDescriptor<String> FOOTPRINT_BEHAVIOR = new DefaultParameterDescriptor<>(
+            "FootprintBehavior", String.class, FootprintBehavior.valuesAsStrings(), FootprintBehavior.None.name());
 
     /** Default value of the rescaling behavior, in case it's not specified */
     private static boolean RESCALE_DEFAULT =
             Boolean.valueOf(System.getProperty("org.geotools.coverage.io.rescale", "true"));
 
     /**
-     * This {@code GeneralParameterValue} can be provided to the {@link GridCoverageReader}s through
-     * the {@link GridCoverageReader#read(GeneralParameterValue[])} method in order to specify the
-     * whether eventual value rescaling should be performed, or the original pixel value preserved
+     * This {@code GeneralParameterValue} can be provided to the {@link GridCoverageReader}s through the
+     * {@link GridCoverageReader#read(GeneralParameterValue[])} method in order to specify the whether eventual value
+     * rescaling should be performed, or the original pixel value preserved
      */
-    public static final DefaultParameterDescriptor<Boolean> RESCALE_PIXELS =
-            new DefaultParameterDescriptor<>(
-                    "RescalePixels",
-                    Boolean.class,
-                    new Boolean[] {Boolean.TRUE, Boolean.FALSE},
-                    RESCALE_DEFAULT);
+    public static final DefaultParameterDescriptor<Boolean> RESCALE_PIXELS = new DefaultParameterDescriptor<>(
+            "RescalePixels", Boolean.class, new Boolean[] {Boolean.TRUE, Boolean.FALSE}, RESCALE_DEFAULT);
 
     /** @see org.geotools.api.coverage.grid.Format#getName() */
     @Override
@@ -323,9 +293,7 @@ public abstract class AbstractGridFormat implements Format {
      */
     public abstract boolean accepts(Object source, Hints hints);
 
-    /**
-     * @see org.geotools.data.coverage.grid.Format#equals(org.geotools.data.coverage.grid.Format)
-     */
+    /** @see org.geotools.data.coverage.grid.Format#equals(org.geotools.data.coverage.grid.Format) */
     public boolean equals(Format f) {
         if (f.getClass() == getClass()) {
             return true;
@@ -341,8 +309,7 @@ public abstract class AbstractGridFormat implements Format {
     @Override
     public ParameterValueGroup getReadParameters() {
         if (this.readParameters == null)
-            throw new UnsupportedOperationException(
-                    "This format does not support usage of read parameters.");
+            throw new UnsupportedOperationException("This format does not support usage of read parameters.");
         return this.readParameters.clone();
     }
 
@@ -354,8 +321,7 @@ public abstract class AbstractGridFormat implements Format {
     @Override
     public ParameterValueGroup getWriteParameters() {
         if (this.writeParameters == null)
-            throw new UnsupportedOperationException(
-                    "This format does not support usage of write parameters.");
+            throw new UnsupportedOperationException("This format does not support usage of write parameters.");
         return this.writeParameters.clone();
     }
 
@@ -380,8 +346,7 @@ public abstract class AbstractGridFormat implements Format {
     public abstract GeoToolsWriteParams getDefaultImageIOWriteParameters();
 
     /**
-     * Call the accepts() method before asking for a writer to determine if the current object is
-     * supported.
+     * Call the accepts() method before asking for a writer to determine if the current object is supported.
      *
      * @param destination the destination object to write a WorldImage to
      * @param hints {@link Hints} to control the internal machinery.

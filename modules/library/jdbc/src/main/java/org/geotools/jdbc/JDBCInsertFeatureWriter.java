@@ -31,10 +31,7 @@ import org.geotools.data.store.ContentFeatureStore;
 import org.geotools.data.store.ContentState;
 import org.geotools.filter.identity.FeatureIdImpl;
 
-/**
- * Inserts features in the database. Buffers the insertions until BUFFER_SIZE is reached or the
- * writer is closed.
- */
+/** Inserts features in the database. Buffers the insertions until BUFFER_SIZE is reached or the writer is closed. */
 public class JDBCInsertFeatureWriter extends JDBCFeatureReader
         implements FeatureWriter<SimpleFeatureType, SimpleFeature> {
     /** Grouping elements together in order to have a decent batch size. */
@@ -42,16 +39,14 @@ public class JDBCInsertFeatureWriter extends JDBCFeatureReader
 
     private int curBufferPos = 0;
 
-    public JDBCInsertFeatureWriter(
-            String sql, Connection cx, JDBCFeatureSource featureSource, Query query)
+    public JDBCInsertFeatureWriter(String sql, Connection cx, JDBCFeatureSource featureSource, Query query)
             throws SQLException, IOException {
         super(sql, cx, featureSource, featureSource.getSchema(), query);
         md = rs.getMetaData();
         buffer = new ResultSetFeature[dataStore.getBatchInsertSize()];
     }
 
-    public JDBCInsertFeatureWriter(
-            PreparedStatement ps, Connection cx, JDBCFeatureSource featureSource, Query query)
+    public JDBCInsertFeatureWriter(PreparedStatement ps, Connection cx, JDBCFeatureSource featureSource, Query query)
             throws SQLException, IOException {
         super(ps, cx, featureSource, featureSource.getSchema(), query);
         md = rs.getMetaData();
@@ -125,8 +120,7 @@ public class JDBCInsertFeatureWriter extends JDBCFeatureReader
         }
         try {
             // do the insert
-            Collection<ResultSetFeature> features =
-                    Arrays.asList(Arrays.copyOfRange(buffer, 0, curBufferPos));
+            Collection<ResultSetFeature> features = Arrays.asList(Arrays.copyOfRange(buffer, 0, curBufferPos));
             dataStore.insert(features, featureType, st.getConnection());
 
             for (ResultSetFeature cur : features) {
@@ -134,8 +128,7 @@ public class JDBCInsertFeatureWriter extends JDBCFeatureReader
                 final String fid = (String) cur.getUserData().get("fid");
                 cur.setID(fid);
                 final SimpleFeature orig =
-                        (SimpleFeature)
-                                cur.getUserData().get(ContentFeatureStore.ORIGINAL_FEATURE_KEY);
+                        (SimpleFeature) cur.getUserData().get(ContentFeatureStore.ORIGINAL_FEATURE_KEY);
                 if (orig != null) {
                     ((FeatureIdImpl) orig.getIdentifier()).setID(fid);
                     orig.getUserData().putAll(cur.getUserData());

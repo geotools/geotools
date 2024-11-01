@@ -18,13 +18,11 @@ public class EncoderTest {
     @Test
     @Ignore // needs a string comparison ignoring newlines...
     public void testIndent() throws Exception {
-        Mail ml =
-                new Mail(
-                        BigInteger.valueOf(10),
-                        "hi",
-                        new Envelope(
-                                "me@me.org", "you@you.org", Calendar.getInstance(), "hey", null),
-                        null);
+        Mail ml = new Mail(
+                BigInteger.valueOf(10),
+                "hi",
+                new Envelope("me@me.org", "you@you.org", Calendar.getInstance(), "hey", null),
+                null);
         Encoder e = new Encoder(new MLConfiguration());
         e.setIndenting(true);
         e.setIndentSize(4);

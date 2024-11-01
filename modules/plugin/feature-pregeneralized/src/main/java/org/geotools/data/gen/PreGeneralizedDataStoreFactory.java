@@ -36,33 +36,30 @@ import org.geotools.data.gen.info.GeneralizationInfosProviderImpl;
  *     <p>RepositoryClassName (String,mandatory) Name of a class implementing {@link Repository}
  *     <p>GeneralizationInfosProviderClassName (String,mandatory) Name of a class implementing
  *     {@link GeneralizationInfosProvider}
- *     <p>GeneralizationInfosProviderProviderParam (Object,optional) Parameter object for {@link
- *     GeneralizationInfosProvider#getGeneralizationInfos(Object)}
+ *     <p>GeneralizationInfosProviderProviderParam (Object,optional) Parameter object for
+ *     {@link GeneralizationInfosProvider#getGeneralizationInfos(Object)}
  */
 public class PreGeneralizedDataStoreFactory implements DataStoreFactorySpi {
 
-    public static final Param REPOSITORY_CLASS =
-            new Param(
-                    "RepositoryClassName",
-                    String.class,
-                    "Class name for data store repository implementation",
-                    true,
-                    DSFinderRepository.class.getName());
+    public static final Param REPOSITORY_CLASS = new Param(
+            "RepositoryClassName",
+            String.class,
+            "Class name for data store repository implementation",
+            true,
+            DSFinderRepository.class.getName());
 
-    public static final Param GENERALIZATION_INFOS_PROVIDER_CLASS =
-            new Param(
-                    "GeneralizationInfosProviderClassName",
-                    String.class,
-                    "Class name for GeneralizationInfosProvider implementation",
-                    true,
-                    GeneralizationInfosProviderImpl.class.getName());
+    public static final Param GENERALIZATION_INFOS_PROVIDER_CLASS = new Param(
+            "GeneralizationInfosProviderClassName",
+            String.class,
+            "Class name for GeneralizationInfosProvider implementation",
+            true,
+            GeneralizationInfosProviderImpl.class.getName());
 
-    public static final Param GENERALIZATION_INFOS_PROVIDER_PARAM =
-            new Param(
-                    "GeneralizationInfosProviderParam",
-                    String.class,
-                    "Optional config parameter for GeneralizationInfosProvider implementation",
-                    false);
+    public static final Param GENERALIZATION_INFOS_PROVIDER_PARAM = new Param(
+            "GeneralizationInfosProviderParam",
+            String.class,
+            "Optional config parameter for GeneralizationInfosProvider implementation",
+            false);
 
     public static final Param NAMESPACEP =
             new Param("namespace", URI.class, "uri to a the namespace", false); // not required
@@ -78,9 +75,8 @@ public class PreGeneralizedDataStoreFactory implements DataStoreFactorySpi {
 
         try {
             Class<?> providerClass = Class.forName(providerClassName);
-            GeneralizationInfosProvider provider =
-                    (GeneralizationInfosProvider)
-                            providerClass.getDeclaredConstructor().newInstance();
+            GeneralizationInfosProvider provider = (GeneralizationInfosProvider)
+                    providerClass.getDeclaredConstructor().newInstance();
             GeneralizationInfos gInfos = provider.getGeneralizationInfos(providerParam);
 
             Class<?> repositoryClass = Class.forName(repositoryClassName);
@@ -128,10 +124,7 @@ public class PreGeneralizedDataStoreFactory implements DataStoreFactorySpi {
     @Override
     public Param[] getParametersInfo() {
         return new Param[] {
-            REPOSITORY_CLASS,
-            GENERALIZATION_INFOS_PROVIDER_CLASS,
-            GENERALIZATION_INFOS_PROVIDER_PARAM,
-            NAMESPACEP
+            REPOSITORY_CLASS, GENERALIZATION_INFOS_PROVIDER_CLASS, GENERALIZATION_INFOS_PROVIDER_PARAM, NAMESPACEP
         };
     }
 

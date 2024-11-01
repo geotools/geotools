@@ -19,8 +19,7 @@ import org.geotools.api.annotation.UML;
 import org.geotools.api.util.CodeList;
 
 /**
- * Specifies the various dimension types for coverage values. For grid coverages, these correspond
- * to band types.
+ * Specifies the various dimension types for coverage values. For grid coverages, these correspond to band types.
  *
  * @version <A HREF="http://www.opengis.org/docs/01-004.pdf">Grid Coverage specification 1.0</A>
  * @author Martin Desruisseaux (IRD)
@@ -38,50 +37,46 @@ public final class SampleDimensionType extends CodeList<SampleDimensionType> {
     /**
      * Unsigned 1 bit integers.
      *
-     * @rename Renamed {@code CV_1BIT} as {@code UNSIGNED_1BIT} since we drop the prefix, but can't
-     *     get a name starting with a digit.
+     * @rename Renamed {@code CV_1BIT} as {@code UNSIGNED_1BIT} since we drop the prefix, but can't get a name starting
+     *     with a digit.
      */
     @UML(identifier = "CV_1BIT", obligation = CONDITIONAL, specification = OGC_01004)
-    public static final SampleDimensionType UNSIGNED_1BIT =
-            new SampleDimensionType("UNSIGNED_1BIT");
+    public static final SampleDimensionType UNSIGNED_1BIT = new SampleDimensionType("UNSIGNED_1BIT");
 
     /**
      * Unsigned 2 bits integers.
      *
-     * @rename Renamed {@code CV_2BIT} as {@code UNSIGNED_2BITS} since we drop the prefix, but can't
-     *     get a name starting with a digit.
+     * @rename Renamed {@code CV_2BIT} as {@code UNSIGNED_2BITS} since we drop the prefix, but can't get a name starting
+     *     with a digit.
      */
     @UML(identifier = "CV_2BIT", obligation = CONDITIONAL, specification = OGC_01004)
-    public static final SampleDimensionType UNSIGNED_2BITS =
-            new SampleDimensionType("UNSIGNED_2BITS");
+    public static final SampleDimensionType UNSIGNED_2BITS = new SampleDimensionType("UNSIGNED_2BITS");
 
     /**
      * Unsigned 4 bits integers.
      *
-     * @rename Renamed {@code CV_4BIT} as {@code UNSIGNED_4BITS} since we drop the prefix, but can't
-     *     get a name starting with a digit.
+     * @rename Renamed {@code CV_4BIT} as {@code UNSIGNED_4BITS} since we drop the prefix, but can't get a name starting
+     *     with a digit.
      */
     @UML(identifier = "CV_4BIT", obligation = CONDITIONAL, specification = OGC_01004)
-    public static final SampleDimensionType UNSIGNED_4BITS =
-            new SampleDimensionType("UNSIGNED_4BITS");
+    public static final SampleDimensionType UNSIGNED_4BITS = new SampleDimensionType("UNSIGNED_4BITS");
 
     /**
      * Unsigned 8 bits integers.
      *
-     * @rename Renamed {@code CV_8BIT_U} as {@code UNSIGNED_8BITS} since we drop the prefix, but
-     *     can't get a name starting with a digit.
+     * @rename Renamed {@code CV_8BIT_U} as {@code UNSIGNED_8BITS} since we drop the prefix, but can't get a name
+     *     starting with a digit.
      * @see #SIGNED_8BITS
      * @see DataBuffer#TYPE_BYTE
      */
     @UML(identifier = "CV_8BIT_U", obligation = CONDITIONAL, specification = OGC_01004)
-    public static final SampleDimensionType UNSIGNED_8BITS =
-            new SampleDimensionType("UNSIGNED_8BITS");
+    public static final SampleDimensionType UNSIGNED_8BITS = new SampleDimensionType("UNSIGNED_8BITS");
 
     /**
      * Signed 8 bits integers.
      *
-     * @rename Renamed {@code CV_8BIT_S} as {@code SIGNED_8BITS} since we drop the prefix, but can't
-     *     get a name starting with a digit.
+     * @rename Renamed {@code CV_8BIT_S} as {@code SIGNED_8BITS} since we drop the prefix, but can't get a name starting
+     *     with a digit.
      * @see #UNSIGNED_8BITS
      */
     @UML(identifier = "CV_8BIT_S", obligation = CONDITIONAL, specification = OGC_01004)
@@ -90,55 +85,51 @@ public final class SampleDimensionType extends CodeList<SampleDimensionType> {
     /**
      * Unsigned 16 bits integers.
      *
-     * @rename Renamed {@code CV_16BIT_U} as {@code UNSIGNED_16BITS} since we drop the prefix, but
-     *     can't get a name starting with a digit.
+     * @rename Renamed {@code CV_16BIT_U} as {@code UNSIGNED_16BITS} since we drop the prefix, but can't get a name
+     *     starting with a digit.
      * @see #SIGNED_16BITS
      * @see DataBuffer#TYPE_USHORT
      */
     @UML(identifier = "CV_16BIT_U", obligation = CONDITIONAL, specification = OGC_01004)
-    public static final SampleDimensionType UNSIGNED_16BITS =
-            new SampleDimensionType("UNSIGNED_16BITS");
+    public static final SampleDimensionType UNSIGNED_16BITS = new SampleDimensionType("UNSIGNED_16BITS");
 
     /**
      * Signed 16 bits integers.
      *
-     * @rename Renamed {@code CV_16BIT_S} as {@code SIGNED_16BITS} since we drop the prefix, but
-     *     can't get a name starting with a digit.
+     * @rename Renamed {@code CV_16BIT_S} as {@code SIGNED_16BITS} since we drop the prefix, but can't get a name
+     *     starting with a digit.
      * @see #UNSIGNED_16BITS
      * @see DataBuffer#TYPE_SHORT
      */
     @UML(identifier = "CV_16BIT_S", obligation = CONDITIONAL, specification = OGC_01004)
-    public static final SampleDimensionType SIGNED_16BITS =
-            new SampleDimensionType("SIGNED_16BITS");
+    public static final SampleDimensionType SIGNED_16BITS = new SampleDimensionType("SIGNED_16BITS");
 
     /**
      * Unsigned 32 bits integers.
      *
-     * @rename Renamed {@code CV_32BIT_U} as {@code UNSIGNED_32BITS} since we drop the prefix, but
-     *     can't get a name starting with a digit.
+     * @rename Renamed {@code CV_32BIT_U} as {@code UNSIGNED_32BITS} since we drop the prefix, but can't get a name
+     *     starting with a digit.
      * @see #SIGNED_32BITS
      */
     @UML(identifier = "CV_32BIT_U", obligation = CONDITIONAL, specification = OGC_01004)
-    public static final SampleDimensionType UNSIGNED_32BITS =
-            new SampleDimensionType("UNSIGNED_32BITS");
+    public static final SampleDimensionType UNSIGNED_32BITS = new SampleDimensionType("UNSIGNED_32BITS");
 
     /**
      * Signed 32 bits integers.
      *
-     * @rename Renamed {@code CV_32BIT_S} as {@code SIGNED_32BITS} since we drop the prefix, but
-     *     can't get a name starting with a digit.
+     * @rename Renamed {@code CV_32BIT_S} as {@code SIGNED_32BITS} since we drop the prefix, but can't get a name
+     *     starting with a digit.
      * @see #UNSIGNED_32BITS
      * @see DataBuffer#TYPE_INT
      */
     @UML(identifier = "CV_32BIT_S", obligation = CONDITIONAL, specification = OGC_01004)
-    public static final SampleDimensionType SIGNED_32BITS =
-            new SampleDimensionType("SIGNED_32BITS");
+    public static final SampleDimensionType SIGNED_32BITS = new SampleDimensionType("SIGNED_32BITS");
 
     /**
      * Simple precision floating point numbers.
      *
-     * @rename Renamed {@code CV_32BIT_REAL} as {@code REAL_32BITS} since we drop the prefix, but
-     *     can't get a name starting with a digit.
+     * @rename Renamed {@code CV_32BIT_REAL} as {@code REAL_32BITS} since we drop the prefix, but can't get a name
+     *     starting with a digit.
      * @see #REAL_64BITS
      * @see DataBuffer#TYPE_FLOAT
      */
@@ -148,8 +139,8 @@ public final class SampleDimensionType extends CodeList<SampleDimensionType> {
     /**
      * Double precision floating point numbers.
      *
-     * @rename Renamed {@code CV_64BIT_REAL} as {@code REAL_64BITS} since we drop the prefix, but
-     *     can't get a name starting with a digit.
+     * @rename Renamed {@code CV_64BIT_REAL} as {@code REAL_64BITS} since we drop the prefix, but can't get a name
+     *     starting with a digit.
      * @see #REAL_32BITS
      * @see DataBuffer#TYPE_DOUBLE
      */
@@ -157,8 +148,8 @@ public final class SampleDimensionType extends CodeList<SampleDimensionType> {
     public static final SampleDimensionType REAL_64BITS = new SampleDimensionType("REAL_64BITS");
 
     /**
-     * Constructs an enum with the given name. The new enum is automatically added to the list
-     * returned by {@link #values}.
+     * Constructs an enum with the given name. The new enum is automatically added to the list returned by
+     * {@link #values}.
      *
      * @param name The enum name. This name must not be in use by an other enum of this type.
      */
@@ -184,8 +175,7 @@ public final class SampleDimensionType extends CodeList<SampleDimensionType> {
     }
 
     /**
-     * Returns the sample dimension type that matches the given string, or returns a new one if none
-     * match it.
+     * Returns the sample dimension type that matches the given string, or returns a new one if none match it.
      *
      * @param code The name of the code to fetch or to create.
      * @return A code matching the given name.

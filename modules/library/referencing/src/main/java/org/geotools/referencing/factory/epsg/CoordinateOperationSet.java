@@ -27,9 +27,8 @@ import org.geotools.api.referencing.operation.CoordinateOperationAuthorityFactor
 import org.geotools.referencing.factory.IdentifiedObjectSet;
 
 /**
- * A lazy set of {@link CoordinateOperation} objects to be returned by the {@link
- * DirectEpsgFactory#createFromCoordinateReferenceSystemCodes
- * createFromCoordinateReferenceSystemCodes} method.
+ * A lazy set of {@link CoordinateOperation} objects to be returned by the
+ * {@link DirectEpsgFactory#createFromCoordinateReferenceSystemCodes createFromCoordinateReferenceSystemCodes} method.
  *
  * @since 2.2
  * @version $Id$
@@ -40,8 +39,7 @@ final class CoordinateOperationSet extends IdentifiedObjectSet {
     private static final long serialVersionUID = -2421669857023064667L;
 
     /**
-     * The codes of {@link ProjectedCRS} objects for the specified {@link Conversion} codes, or
-     * {@code null} if none.
+     * The codes of {@link ProjectedCRS} objects for the specified {@link Conversion} codes, or {@code null} if none.
      */
     private Map<String, String> projections;
 
@@ -72,9 +70,7 @@ final class CoordinateOperationSet extends IdentifiedObjectSet {
         if (projections != null) {
             final String crs = projections.get(code);
             if (crs != null) {
-                return ((CRSAuthorityFactory) factory)
-                        .createProjectedCRS(crs)
-                        .getConversionFromBase();
+                return ((CRSAuthorityFactory) factory).createProjectedCRS(crs).getConversionFromBase();
             }
         }
         return ((CoordinateOperationAuthorityFactory) factory).createCoordinateOperation(code);

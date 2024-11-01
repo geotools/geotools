@@ -20,18 +20,18 @@ import org.geotools.api.metadata.Identifier;
  */
 public interface ReferenceIdentifier extends Identifier {
     /**
-     * Key for the <code>{@value}</code> property to be given to the {@linkplain
-     * org.geotools.api.referencing.ObjectFactory CRS factory} <code>createFoo(&hellip;)</code>
-     * methods. This is used for setting the value to be returned by {@link #getCodeSpace}.
+     * Key for the <code>{@value}</code> property to be given to the
+     * {@linkplain org.geotools.api.referencing.ObjectFactory CRS factory} <code>createFoo(&hellip;)</code> methods.
+     * This is used for setting the value to be returned by {@link #getCodeSpace}.
      *
      * @see #getCodeSpace
      */
     String CODESPACE_KEY = "codespace";
 
     /**
-     * Key for the <code>{@value}</code> property to be given to the {@linkplain
-     * org.geotools.api.referencing.ObjectFactory CRS factory} <code>createFoo(&hellip;)</code>
-     * methods. This is used for setting the value to be returned by {@link #getVersion}.
+     * Key for the <code>{@value}</code> property to be given to the
+     * {@linkplain org.geotools.api.referencing.ObjectFactory CRS factory} <code>createFoo(&hellip;)</code> methods.
+     * This is used for setting the value to be returned by {@link #getVersion}.
      *
      * @see #getVersion
      */
@@ -45,11 +45,10 @@ public interface ReferenceIdentifier extends Identifier {
     String getCodeSpace();
 
     /**
-     * Version identifier for the namespace, as specified by the code authority. When appropriate,
-     * the edition is identified by the effective date, coded using ISO 8601 date format.
+     * Version identifier for the namespace, as specified by the code authority. When appropriate, the edition is
+     * identified by the effective date, coded using ISO 8601 date format.
      *
-     * @return The version for the namespace (for example the version of the underlying EPSG
-     *     database).
+     * @return The version for the namespace (for example the version of the underlying EPSG database).
      */
     String getVersion();
 }

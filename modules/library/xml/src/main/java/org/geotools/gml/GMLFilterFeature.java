@@ -32,11 +32,10 @@ import org.xml.sax.helpers.XMLFilterImpl;
 /**
  * LEVEL3 GML filter: translates JTS elements and attribute data into features.
  *
- * <p>This filter simply reads in the events and coordinates passed to it by its GMLFilterDocument
- * child and converts them into JTS objects. Note that it passes through anything not specifically
- * sent to it by GMLFilterDocument (i.e. more or less everything not in geometry.xsd). The parent of
- * this filter must implement GMLHandlerJTS in order to receive the JTS objects passed by this
- * filter.
+ * <p>This filter simply reads in the events and coordinates passed to it by its GMLFilterDocument child and converts
+ * them into JTS objects. Note that it passes through anything not specifically sent to it by GMLFilterDocument (i.e.
+ * more or less everything not in geometry.xsd). The parent of this filter must implement GMLHandlerJTS in order to
+ * receive the JTS objects passed by this filter.
  *
  * @author Rob Hranac, Vision for New York
  * @version $Id$
@@ -46,8 +45,7 @@ public class GMLFilterFeature extends XMLFilterImpl implements GMLHandlerJTS {
     // Static Globals to handle some expected elements
 
     /** The logger for the GML module. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(GMLFilterFeature.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(GMLFilterFeature.class);
 
     /** GML namespace string. */
 
@@ -89,8 +87,8 @@ public class GMLFilterFeature extends XMLFilterImpl implements GMLHandlerJTS {
     private String typeName = "GenericFeature";
 
     /**
-     * Collects string chunks in {@link #characters(char[], int, int)} callback to be handled at the
-     * beggining of {@link #endElement(String, String, String)}
+     * Collects string chunks in {@link #characters(char[], int, int)} callback to be handled at the beggining of
+     * {@link #endElement(String, String, String)}
      */
     private StringBuffer characters = new StringBuffer();
 
@@ -107,10 +105,9 @@ public class GMLFilterFeature extends XMLFilterImpl implements GMLHandlerJTS {
     public void setSchema(String uri) {}
 
     /**
-     * Manages the start of a new main or sub geometry. This method looks at the status of the
-     * current handler and either returns a new sub-handler (if the last one was successfully
-     * returned already) or passes the element start notification along to the current handler as a
-     * sub geometry notice.
+     * Manages the start of a new main or sub geometry. This method looks at the status of the current handler and
+     * either returns a new sub-handler (if the last one was successfully returned already) or passes the element start
+     * notification along to the current handler as a sub geometry notice.
      *
      * @param geometry The geometry from the child.
      */
@@ -137,9 +134,9 @@ public class GMLFilterFeature extends XMLFilterImpl implements GMLHandlerJTS {
     }
 
     /**
-     * Checks for GML element start and - if not a coordinates element - sends it directly on down
-     * the chain to the appropriate parent handler. If it is a coordinates (or coord) element, it
-     * uses internal methods to set the current state of the coordinates reader appropriately.
+     * Checks for GML element start and - if not a coordinates element - sends it directly on down the chain to the
+     * appropriate parent handler. If it is a coordinates (or coord) element, it uses internal methods to set the
+     * current state of the coordinates reader appropriately.
      *
      * @param namespaceURI The namespace of the element.
      * @param localName The local name of the element.
@@ -149,8 +146,7 @@ public class GMLFilterFeature extends XMLFilterImpl implements GMLHandlerJTS {
      * @task HACK:The method for determining if something is a feature or not is too crude.
      */
     @Override
-    public void startElement(String namespaceURI, String localName, String qName, Attributes atts)
-            throws SAXException {
+    public void startElement(String namespaceURI, String localName, String qName, Attributes atts) throws SAXException {
         characters.setLength(0);
 
         if (localName.endsWith("Collection")) {
@@ -215,9 +211,8 @@ public class GMLFilterFeature extends XMLFilterImpl implements GMLHandlerJTS {
     }
 
     /**
-     * Reads the only internal characters read by pure GML parsers, which are coordinates. These
-     * coordinates are sent to the coordinates reader class which interprets them appropriately,
-     * depending on the its current state.
+     * Reads the only internal characters read by pure GML parsers, which are coordinates. These coordinates are sent to
+     * the coordinates reader class which interprets them appropriately, depending on the its current state.
      *
      * @param ch Raw coordinate string from the GML document.
      * @param start Beginning character position of raw coordinate string.
@@ -251,9 +246,9 @@ public class GMLFilterFeature extends XMLFilterImpl implements GMLHandlerJTS {
     }
 
     /**
-     * Checks for GML element end and - if not a coordinates element - sends it directly on down the
-     * chain to the appropriate parent handler. If it is a coordinates (or coord) element, it uses
-     * internal methods to set the current state of the coordinates reader appropriately.
+     * Checks for GML element end and - if not a coordinates element - sends it directly on down the chain to the
+     * appropriate parent handler. If it is a coordinates (or coord) element, it uses internal methods to set the
+     * current state of the coordinates reader appropriately.
      *
      * @param namespaceURI Namespace of the element.
      * @param localName Local name of the element.
@@ -261,8 +256,7 @@ public class GMLFilterFeature extends XMLFilterImpl implements GMLHandlerJTS {
      * @throws SAXException Parsing error occurred while reading coordinates.
      */
     @Override
-    public void endElement(String namespaceURI, String localName, String qName)
-            throws SAXException {
+    public void endElement(String namespaceURI, String localName, String qName) throws SAXException {
         handleCharacters();
         if (isFeatureMember(localName)) {
             SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();

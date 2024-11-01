@@ -28,8 +28,7 @@ import org.geotools.filter.FilterCapabilities;
 import org.locationtech.jts.geom.Geometry;
 
 /**
- * jdbc-h2gis is an extension to connect H2GIS a spatial library that brings spatial support to the
- * H2 Java database.
+ * jdbc-h2gis is an extension to connect H2GIS a spatial library that brings spatial support to the H2 Java database.
  *
  * <p>H2GIS filter wrapper for H2GIS database.
  *
@@ -68,14 +67,9 @@ public class H2GISFilterToSQL extends FilterToSQL {
 
     @Override
     protected Object visitBinarySpatialOperator(
-            BinarySpatialOperator filter,
-            PropertyName property,
-            Literal geometry,
-            boolean swapped,
-            Object extraData) {
+            BinarySpatialOperator filter, PropertyName property, Literal geometry, boolean swapped, Object extraData) {
         h2GISFilterToSQLHelper.out = out;
-        return h2GISFilterToSQLHelper.visitBinarySpatialOperator(
-                filter, property, geometry, swapped, extraData);
+        return h2GISFilterToSQLHelper.visitBinarySpatialOperator(filter, property, geometry, swapped, extraData);
     }
 
     @Override

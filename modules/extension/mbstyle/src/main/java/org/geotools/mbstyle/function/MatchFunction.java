@@ -26,12 +26,11 @@ import org.geotools.mbstyle.parse.MBFormatException;
 import org.json.simple.JSONArray;
 
 /**
- * MapBox Expression function that will return the output expression evaluation result of the output
- * expression that is associated with the first label that matches the Input expression evaluation
- * value. Each provided label can be a single expression, or an array of expressions. If no label
- * matches or contains the Input expression evaluation value, the default expression value is
- * returned, if present. If no label matches or contains the Input expression evaluation value, and
- * no default expression is provided, null is returned.
+ * MapBox Expression function that will return the output expression evaluation result of the output expression that is
+ * associated with the first label that matches the Input expression evaluation value. Each provided label can be a
+ * single expression, or an array of expressions. If no label matches or contains the Input expression evaluation value,
+ * the default expression value is returned, if present. If no label matches or contains the Input expression evaluation
+ * value, and no default expression is provided, null is returned.
  *
  * <p>Format:
  *
@@ -93,10 +92,9 @@ class MatchFunction extends FunctionExpressionImpl {
         if (inputType == null
                 || (!Number.class.isAssignableFrom(inputType.getClass())
                         && !String.class.isAssignableFrom(inputType.getClass()))) {
-            throw new MBFormatException(
-                    String.format(
-                            "MBDecision \"match\" requires a number or string expression for input type, found %s",
-                            inputType != null ? inputType.getClass().getName() : null));
+            throw new MBFormatException(String.format(
+                    "MBDecision \"match\" requires a number or string expression for input type, found %s",
+                    inputType != null ? inputType.getClass().getName() : null));
         }
         int labelIndex = 1;
         int outputIndex = 2;

@@ -137,11 +137,9 @@ public class SLDParser {
     /** NORMALIZE */
     private static final String NORMALIZE = "normalize";
     /** a list of available Contrast Methods */
-    static final List<String> CONTRAST_METHODS =
-            Arrays.asList(NORMALIZE, LOGARITHMIC, EXPONENTIAL, HISTOGRAM);
+    static final List<String> CONTRAST_METHODS = Arrays.asList(NORMALIZE, LOGARITHMIC, EXPONENTIAL, HISTOGRAM);
 
-    private static final java.util.logging.Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(SLDParser.class);
+    private static final java.util.logging.Logger LOGGER = org.geotools.util.logging.Logging.getLogger(SLDParser.class);
 
     private static final String channelSelectionString = "ChannelSelection";
 
@@ -345,10 +343,7 @@ public class SLDParser {
         this.onlineResourceLocator = onlineResourceLocator;
     }
 
-    /**
-     * Sets the EntityResolver implementation that will be used by DocumentBuilder to resolve XML
-     * external entities.
-     */
+    /** Sets the EntityResolver implementation that will be used by DocumentBuilder to resolve XML external entities. */
     public void setEntityResolver(EntityResolver entityResolver) {
         this.entityResolver = entityResolver;
     }
@@ -362,8 +357,7 @@ public class SLDParser {
 
     protected javax.xml.parsers.DocumentBuilder newDocumentBuilder(boolean namespaceAware)
             throws ParserConfigurationException {
-        javax.xml.parsers.DocumentBuilderFactory dbf =
-                javax.xml.parsers.DocumentBuilderFactory.newInstance();
+        javax.xml.parsers.DocumentBuilderFactory dbf = javax.xml.parsers.DocumentBuilderFactory.newInstance();
         dbf.setNamespaceAware(namespaceAware);
         javax.xml.parsers.DocumentBuilder db = dbf.newDocumentBuilder();
 
@@ -744,9 +738,7 @@ public class SLDParser {
         for (int j = 0; j < length; j++) {
             Node child = children.item(j);
 
-            if ((child == null)
-                    || (child.getNodeType() != Node.ELEMENT_NODE)
-                    || (child.getFirstChild() == null)) {
+            if ((child == null) || (child.getNodeType() != Node.ELEMENT_NODE) || (child.getFirstChild() == null)) {
                 continue;
             }
             if (LOGGER.isLoggable(Level.FINEST)) {
@@ -790,9 +782,7 @@ public class SLDParser {
         for (int j = 0; j < length; j++) {
             Node child = children.item(j);
 
-            if ((child == null)
-                    || (child.getNodeType() != Node.ELEMENT_NODE)
-                    || (child.getFirstChild() == null)) {
+            if ((child == null) || (child.getNodeType() != Node.ELEMENT_NODE) || (child.getFirstChild() == null)) {
                 continue;
             }
             // System.out.println("The child is: " + child.getNodeName() + " or
@@ -870,8 +860,7 @@ public class SLDParser {
             } else if (childName.equalsIgnoreCase("Rule")) {
                 rules.add(parseRule(child));
             } else if (childName.equalsIgnoreCase("Transformation")) {
-                ExpressionDOMParser parser =
-                        new ExpressionDOMParser(CommonFactoryFinder.getFilterFactory(null));
+                ExpressionDOMParser parser = new ExpressionDOMParser(CommonFactoryFinder.getFilterFactory(null));
                 Expression tx = parser.expression(getFirstNonTextChild(child));
                 ft.setTransformation(tx);
             } else if (childName.equalsIgnoreCase(VendorOptionString)) {
@@ -1002,8 +991,7 @@ public class SLDParser {
 
             if ((child == null)) {
                 continue;
-            } else if (child.getNodeType() == Node.TEXT_NODE
-                    || child.getNodeType() == Node.CDATA_SECTION_NODE) {
+            } else if (child.getNodeType() == Node.TEXT_NODE || child.getNodeType() == Node.CDATA_SECTION_NODE) {
                 // append text as is
                 String value = child.getNodeValue();
                 if (value == null) continue;
@@ -1027,14 +1015,13 @@ public class SLDParser {
             String simpleText = getFirstChildValue(root);
             return new SimpleInternationalString(simpleText == null ? "" : simpleText);
         } else {
-            GrowableInternationalString intString =
-                    new GrowableInternationalString(text.toString()) {
+            GrowableInternationalString intString = new GrowableInternationalString(text.toString()) {
 
-                        @Override
-                        public String toString() {
-                            return super.toString(null);
-                        }
-                    };
+                @Override
+                public String toString() {
+                    return super.toString(null);
+                }
+            };
             for (String lang : translations.keySet()) {
                 intString.add("", "_" + lang, translations.get(lang));
             }
@@ -1180,15 +1167,13 @@ public class SLDParser {
             } else if (childName.equalsIgnoreCase(fillSt)) {
                 symbol.setFill(parseFill(child));
             } else if (childName.equalsIgnoreCase("Label")) {
-                if (LOGGER.isLoggable(Level.FINEST))
-                    LOGGER.finest("parsing label " + child.getNodeValue());
+                if (LOGGER.isLoggable(Level.FINEST)) LOGGER.finest("parsing label " + child.getNodeValue());
                 // the label parser should collapse whitespaces to one, so
                 // we call parseCssParameter with trimWhiteSpace=false
                 symbol.setLabel(parseCssParameter(child, false));
                 if (symbol.getLabel() == null) {
                     if (LOGGER.isLoggable(Level.WARNING))
-                        LOGGER.warning(
-                                "parsing TextSymbolizer node - couldnt find anything in the Label element!");
+                        LOGGER.warning("parsing TextSymbolizer node - couldnt find anything in the Label element!");
                 }
             }
 
@@ -1199,14 +1184,12 @@ public class SLDParser {
             } else if (childName.equalsIgnoreCase("Halo")) {
                 symbol.setHalo(parseHalo(child));
             } else if (childName.equalsIgnoreCase("Graphic")) {
-                if (LOGGER.isLoggable(Level.FINEST))
-                    LOGGER.finest("Parsing non-standard Graphic in TextSymbolizer");
+                if (LOGGER.isLoggable(Level.FINEST)) LOGGER.finest("Parsing non-standard Graphic in TextSymbolizer");
 
                 symbol.setGraphic(parseGraphic(child));
 
             } else if (childName.equalsIgnoreCase("Snippet")) {
-                if (LOGGER.isLoggable(Level.FINEST))
-                    LOGGER.finest("Parsing non-standard Abstract in TextSymbolizer");
+                if (LOGGER.isLoggable(Level.FINEST)) LOGGER.finest("Parsing non-standard Abstract in TextSymbolizer");
 
                 symbol.setSnippet(parseCssParameter(child, false));
             } else if (childName.equalsIgnoreCase("FeatureDescription")) {
@@ -1215,8 +1198,7 @@ public class SLDParser {
 
                 symbol.setFeatureDescription(parseCssParameter(child, false));
             } else if (childName.equalsIgnoreCase("OtherText")) {
-                if (LOGGER.isLoggable(Level.FINEST))
-                    LOGGER.finest("Parsing non-standard OtherText in TextSymbolizer");
+                if (LOGGER.isLoggable(Level.FINEST)) LOGGER.finest("Parsing non-standard OtherText in TextSymbolizer");
 
                 symbol.setOtherText(parseOtherText(child));
             } else if (childName.equalsIgnoreCase("priority")) {
@@ -1235,8 +1217,7 @@ public class SLDParser {
         OtherText ot = new OtherTextImpl();
         final Node targetAttribute = root.getAttributes().getNamedItem("target");
         if (targetAttribute == null)
-            throw new IllegalArgumentException(
-                    "OtherLocation does not have the " + "required 'target' attribute");
+            throw new IllegalArgumentException("OtherLocation does not have the " + "required 'target' attribute");
         String target = targetAttribute.getNodeValue();
         Expression text = parseCssParameter(root, true);
         ot.setTarget(target);
@@ -1289,8 +1270,7 @@ public class SLDParser {
                     Expression opacity = parseParameterValueExpression(child, false);
                     symbol.setOpacity(opacity);
                 } catch (Throwable e) {
-                    if (LOGGER.isLoggable(Level.WARNING))
-                        LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
+                    if (LOGGER.isLoggable(Level.WARNING)) LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
                 }
             } else if (childName.equalsIgnoreCase(channelSelectionString)) {
                 symbol.setChannelSelection(parseChannelSelection(child));
@@ -1299,8 +1279,7 @@ public class SLDParser {
                     final String overlapString = child.getFirstChild().getLocalName();
                     symbol.setOverlap(ff.literal(overlapString));
                 } catch (Throwable e) {
-                    if (LOGGER.isLoggable(Level.WARNING))
-                        LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
+                    if (LOGGER.isLoggable(Level.WARNING)) LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
                 }
             } else if (childName.equalsIgnoreCase(colorMapString)) {
                 symbol.setColorMap(parseColorMap(child));
@@ -1319,8 +1298,8 @@ public class SLDParser {
     }
 
     /**
-     * Many elements in an SLD extends ParameterValueType (allowing for the definition of
-     * Expressions) - this method will try and produce an expression for the provided node.
+     * Many elements in an SLD extends ParameterValueType (allowing for the definition of Expressions) - this method
+     * will try and produce an expression for the provided node.
      *
      * <p>As an example:
      *
@@ -1328,13 +1307,11 @@ public class SLDParser {
      *   <li>"sld:Opacity" is defined as a parameter value type:<br>
      *       &lt;sld:Opacity&gt;0.75&lt;\sld:Opacity&gt;
      *   <li>"sld:Label" is defined as a "mixed" parameter value type:<br>
-     *       &lt;sld:Label&gt;Hello
-     *       &lt;sld:PropertyName&gt;name&lt;\sld:PropertyName&gt;&lt;\sld:Label&gt;
+     *       &lt;sld:Label&gt;Hello &lt;sld:PropertyName&gt;name&lt;\sld:PropertyName&gt;&lt;\sld:Label&gt;
      * </ul>
      *
-     * From the SLD 1.0 spec: "ParameterValueType" uses WFS-Filter expressions to give values for
-     * SLD graphic parameters. A "mixed" element-content model is used with textual substitution for
-     * values.
+     * From the SLD 1.0 spec: "ParameterValueType" uses WFS-Filter expressions to give values for SLD graphic
+     * parameters. A "mixed" element-content model is used with textual substitution for values.
      */
     Expression parseParameterValueExpression(Node root, boolean mixedText) {
         ExpressionDOMParser parser = new ExpressionDOMParser((FilterFactory) ff);
@@ -1387,7 +1364,8 @@ public class SLDParser {
             symbol.setColor(ff.literal(atts.getNamedItem(colorMapColorString).getNodeValue()));
         }
         if (atts.getNamedItem(colorMapOpacityString) != null) {
-            symbol.setOpacity(ff.literal(atts.getNamedItem(colorMapOpacityString).getNodeValue()));
+            symbol.setOpacity(
+                    ff.literal(atts.getNamedItem(colorMapOpacityString).getNodeValue()));
         }
         if (atts.getNamedItem(colorMapQuantityString) != null) {
             symbol.setQuantity(
@@ -1415,9 +1393,7 @@ public class SLDParser {
                 } else if ("values".equalsIgnoreCase(type)) {
                     symbol.setType(org.geotools.api.style.ColorMap.TYPE_VALUES);
                 } else if (LOGGER.isLoggable(Level.FINE))
-                    LOGGER.fine(
-                            MessageFormat.format(
-                                    ErrorKeys.ILLEGAL_ARGUMENT_$2, "ColorMapType", type));
+                    LOGGER.fine(MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "ColorMapType", type));
             }
 
             // parsing extended colors
@@ -1430,8 +1406,7 @@ public class SLDParser {
                 } else if ("false".equalsIgnoreCase(type)) {
                     symbol.setExtendedColors(false);
                 } else if (LOGGER.isLoggable(Level.FINE))
-                    LOGGER.fine(
-                            MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "Extended", type));
+                    LOGGER.fine(MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "Extended", type));
             }
         }
 
@@ -1520,8 +1495,7 @@ public class SLDParser {
         }
 
         ChannelSelection dap =
-                factory.createChannelSelection(
-                        channels.toArray(new SelectedChannelType[channels.size()]));
+                factory.createChannelSelection(channels.toArray(new SelectedChannelType[channels.size()]));
 
         return dap;
     }
@@ -1575,8 +1549,7 @@ public class SLDParser {
                     Expression gamma = parseParameterValueExpression(child, false);
                     symbol.setGammaValue(gamma);
                 } catch (Exception e) {
-                    if (LOGGER.isLoggable(Level.WARNING))
-                        LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
+                    if (LOGGER.isLoggable(Level.WARNING)) LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
                 }
             }
         }
@@ -1654,8 +1627,7 @@ public class SLDParser {
                     Expression relief = ff.literal(Double.parseDouble(reliefString));
                     symbol.setReliefFactor(relief);
                 } catch (Exception e) {
-                    if (LOGGER.isLoggable(Level.WARNING))
-                        LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
+                    if (LOGGER.isLoggable(Level.WARNING)) LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
                 }
             }
         }
@@ -1802,8 +1774,7 @@ public class SLDParser {
             } else if (childName.equalsIgnoreCase(fillSt)) {
                 mark.setFill(parseFill(child));
             } else if (childName.equalsIgnoreCase("WellKnownName")) {
-                if (LOGGER.isLoggable(Level.FINEST))
-                    LOGGER.finest("setting mark to " + getFirstChildValue(child));
+                if (LOGGER.isLoggable(Level.FINEST)) LOGGER.finest("setting mark to " + getFirstChildValue(child));
                 Expression wellKnownName = parseCssParameter(child);
                 if (wellKnownName instanceof Literal) {
                     String expanded = wellKnownName.evaluate(null, String.class);
@@ -1812,9 +1783,7 @@ public class SLDParser {
                         if (url != null) {
                             wellKnownName = ff.literal(url.toExternalForm());
                         } else {
-                            LOGGER.log(
-                                    Level.WARNING,
-                                    "WellKnownName file reference could not be found: " + expanded);
+                            LOGGER.log(Level.WARNING, "WellKnownName file reference could not be found: " + expanded);
                         }
                     }
                 }
@@ -1858,8 +1827,7 @@ public class SLDParser {
                 } else {
                     content = "";
                     if (LOGGER.isLoggable(Level.WARNING)) {
-                        LOGGER.warning(
-                                "could not process <" + contentEncoding + "> content encoding");
+                        LOGGER.warning("could not process <" + contentEncoding + "> content encoding");
                     }
                 }
             } else if (childName.equalsIgnoreCase("OnLineResource")) {
@@ -1876,11 +1844,7 @@ public class SLDParser {
                 if (LOGGER.isLoggable(Level.FINEST)) LOGGER.finest("custom child is " + child);
                 String propName = child.getAttributes().getNamedItem("name").getNodeValue();
                 if (LOGGER.isLoggable(Level.FINEST))
-                    LOGGER.finest(
-                            "setting custom property "
-                                    + propName
-                                    + " to "
-                                    + getFirstChildValue(child));
+                    LOGGER.finest("setting custom property " + propName + " to " + getFirstChildValue(child));
                 Expression value = parseCssParameter(child);
                 paramList.put(propName, value);
             }
@@ -1894,10 +1858,7 @@ public class SLDParser {
                     icon = parseIcon(content);
                 } catch (IOException e) {
                     if (LOGGER.isLoggable(Level.WARNING)) {
-                        LOGGER.log(
-                                Level.WARNING,
-                                "could not parse graphic inline content: " + content,
-                                e);
+                        LOGGER.log(Level.WARNING, "could not parse graphic inline content: " + content, e);
                     }
                 }
             }
@@ -1952,8 +1913,7 @@ public class SLDParser {
         NodeList list = findElements(((Element) root), "GraphicFill");
         int length = list.getLength();
         if (length > 0) {
-            if (LOGGER.isLoggable(Level.FINEST))
-                LOGGER.finest("stroke: found a graphic fill " + list.item(0));
+            if (LOGGER.isLoggable(Level.FINEST)) LOGGER.finest("stroke: found a graphic fill " + list.item(0));
 
             NodeList kids = list.item(0).getChildNodes();
 
@@ -1969,8 +1929,7 @@ public class SLDParser {
                 }
                 if (childName.equalsIgnoreCase(graphicSt)) {
                     Graphic g = parseGraphic(child);
-                    if (LOGGER.isLoggable(Level.FINEST))
-                        LOGGER.finest("setting stroke graphicfill with " + g);
+                    if (LOGGER.isLoggable(Level.FINEST)) LOGGER.finest("setting stroke graphicfill with " + g);
                     stroke.setGraphicFill(g);
                 }
             }
@@ -1979,8 +1938,7 @@ public class SLDParser {
         list = findElements(((Element) root), "GraphicStroke");
         length = list.getLength();
         if (length > 0) {
-            if (LOGGER.isLoggable(Level.FINEST))
-                LOGGER.finest("stroke: found a graphic stroke " + list.item(0));
+            if (LOGGER.isLoggable(Level.FINEST)) LOGGER.finest("stroke: found a graphic stroke " + list.item(0));
 
             NodeList kids = list.item(0).getChildNodes();
 
@@ -1996,8 +1954,7 @@ public class SLDParser {
                 }
                 if (childName.equalsIgnoreCase(graphicSt)) {
                     Graphic g = parseGraphic(child);
-                    if (LOGGER.isLoggable(Level.FINEST))
-                        LOGGER.finest("setting stroke graphicStroke with " + g);
+                    if (LOGGER.isLoggable(Level.FINEST)) LOGGER.finest("setting stroke graphicStroke with " + g);
                     stroke.setGraphicStroke(g);
                 }
             }
@@ -2037,24 +1994,19 @@ public class SLDParser {
                 } else if (res.equalsIgnoreCase("width") || res.equalsIgnoreCase("stroke-width")) {
                     Expression width = parseCssParameter(child, false);
                     stroke.setWidth(width);
-                } else if (res.equalsIgnoreCase(opacityString)
-                        || res.equalsIgnoreCase("stroke-opacity")) {
+                } else if (res.equalsIgnoreCase(opacityString) || res.equalsIgnoreCase("stroke-opacity")) {
                     Expression opacity = parseCssParameter(child, false);
                     stroke.setOpacity(opacity);
-                } else if (res.equalsIgnoreCase("linecap")
-                        || res.equalsIgnoreCase("stroke-linecap")) {
+                } else if (res.equalsIgnoreCase("linecap") || res.equalsIgnoreCase("stroke-linecap")) {
                     // since these are system-dependent just pass them through and hope.
                     stroke.setLineCap(parseCssParameter(child));
-                } else if (res.equalsIgnoreCase("linejoin")
-                        || res.equalsIgnoreCase("stroke-linejoin")) {
+                } else if (res.equalsIgnoreCase("linejoin") || res.equalsIgnoreCase("stroke-linejoin")) {
                     // since these are system-dependent just pass them through
                     // and hope.
                     stroke.setLineJoin(parseCssParameter(child));
-                } else if (res.equalsIgnoreCase("dasharray")
-                        || res.equalsIgnoreCase("stroke-dasharray")) {
+                } else if (res.equalsIgnoreCase("dasharray") || res.equalsIgnoreCase("stroke-dasharray")) {
                     stroke.setDashArray(parseDashArray(child));
-                } else if (res.equalsIgnoreCase("dashoffset")
-                        || res.equalsIgnoreCase("stroke-dashoffset")) {
+                } else if (res.equalsIgnoreCase("dashoffset") || res.equalsIgnoreCase("stroke-dashoffset")) {
                     stroke.setDashOffset(parseCssParameter(child));
                 }
             }
@@ -2123,8 +2075,7 @@ public class SLDParser {
         NodeList list = findElements(((Element) root), "GraphicFill");
         int length = list.getLength();
         if (length > 0) {
-            if (LOGGER.isLoggable(Level.FINEST))
-                LOGGER.finest("fill found a graphic fill " + list.item(0));
+            if (LOGGER.isLoggable(Level.FINEST)) LOGGER.finest("fill found a graphic fill " + list.item(0));
 
             NodeList kids = list.item(0).getChildNodes();
 
@@ -2140,8 +2091,7 @@ public class SLDParser {
                 }
                 if (childName.equalsIgnoreCase(graphicSt)) {
                     Graphic g = parseGraphic(child);
-                    if (LOGGER.isLoggable(Level.FINEST))
-                        LOGGER.finest("setting fill graphic with " + g);
+                    if (LOGGER.isLoggable(Level.FINEST)) LOGGER.finest("setting fill graphic with " + g);
                     fill.setGraphicFill(g);
                 }
             }
@@ -2176,8 +2126,7 @@ public class SLDParser {
 
                 if (res.equalsIgnoreCase(fillSt)) {
                     fill.setColor(parseCssParameter(child));
-                } else if (res.equalsIgnoreCase(opacityString)
-                        || res.equalsIgnoreCase("fill-opacity")) {
+                } else if (res.equalsIgnoreCase(opacityString) || res.equalsIgnoreCase("fill-opacity")) {
                     fill.setOpacity(parseCssParameter(child));
                 }
             }
@@ -2208,12 +2157,10 @@ public class SLDParser {
     }
 
     /**
-     * Parses a css parameter. You can choose if the parser must trim whitespace from text nodes or
-     * not.
+     * Parses a css parameter. You can choose if the parser must trim whitespace from text nodes or not.
      *
      * @param root node to parse
-     * @param trimWhiteSpace true to trim whitespace from text nodes. If false, whitespaces will be
-     *     collapsed into one
+     * @param trimWhiteSpace true to trim whitespace from text nodes. If false, whitespaces will be collapsed into one
      */
     private Expression parseCssParameter(Node root, boolean trimWhiteSpace) {
         if (LOGGER.isLoggable(Level.FINEST)) {

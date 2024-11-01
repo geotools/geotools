@@ -32,8 +32,8 @@ import org.geotools.renderer.lite.LabelCache;
 import org.geotools.renderer.lite.StreamingRenderer;
 
 /**
- * A lightweight map pane which uses a single renderer and backing image. Used by {@linkplain
- * JMapFrame} for the GeoTools tutorial applications.
+ * A lightweight map pane which uses a single renderer and backing image. Used by {@linkplain JMapFrame} for the
+ * GeoTools tutorial applications.
  *
  * @author Michael Bedward
  * @author Ian Turton
@@ -136,10 +136,9 @@ public class JMapPane extends AbstractMapPane {
     /**
      * Retrieve the map pane's current base image.
      *
-     * <p>The map pane caches the most recent rendering of map layers as an image to avoid
-     * time-consuming rendering requests whenever possible. The base image will be re-drawn whenever
-     * there is a change to map layer data, style or visibility; and it will be replaced by a new
-     * image when the pane is resized.
+     * <p>The map pane caches the most recent rendering of map layers as an image to avoid time-consuming rendering
+     * requests whenever possible. The base image will be re-drawn whenever there is a change to map layer data, style
+     * or visibility; and it will be replaced by a new image when the pane is resized.
      *
      * <p>This method returns a <b>live</b> reference to the current base image. Use with caution.
      *
@@ -168,18 +167,14 @@ public class JMapPane extends AbstractMapPane {
     protected void drawLayers(boolean createNewImage) {
         drawingLock.lock();
         try {
-            if (mapContent != null
-                    && !mapContent.getViewport().isEmpty()
-                    && acceptRepaintRequests.get()) {
+            if (mapContent != null && !mapContent.getViewport().isEmpty() && acceptRepaintRequests.get()) {
 
                 Rectangle r = getVisibleRect();
                 if (baseImage == null || createNewImage) {
-                    baseImage =
-                            GraphicsEnvironment.getLocalGraphicsEnvironment()
-                                    .getDefaultScreenDevice()
-                                    .getDefaultConfiguration()
-                                    .createCompatibleImage(
-                                            r.width, r.height, Transparency.TRANSLUCENT);
+                    baseImage = GraphicsEnvironment.getLocalGraphicsEnvironment()
+                            .getDefaultScreenDevice()
+                            .getDefaultConfiguration()
+                            .createCompatibleImage(r.width, r.height, Transparency.TRANSLUCENT);
 
                     if (baseImageGraphics != null) {
                         baseImageGraphics.dispose();
@@ -196,8 +191,7 @@ public class JMapPane extends AbstractMapPane {
                 }
 
                 if (mapContent != null && !mapContent.layers().isEmpty()) {
-                    getRenderingExecutor()
-                            .submit(mapContent, getRenderer(), baseImageGraphics, this);
+                    getRenderingExecutor().submit(mapContent, getRenderer(), baseImageGraphics, this);
                 }
             }
         } finally {

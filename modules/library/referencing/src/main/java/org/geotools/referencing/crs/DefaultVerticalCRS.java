@@ -30,17 +30,15 @@ import org.geotools.referencing.datum.DefaultVerticalDatum;
 import org.geotools.referencing.wkt.Formatter;
 
 /**
- * A 1D coordinate reference system used for recording heights or depths. Vertical CRSs make use of
- * the direction of gravity to define the concept of height or depth, but the relationship with
- * gravity may not be straightforward.
+ * A 1D coordinate reference system used for recording heights or depths. Vertical CRSs make use of the direction of
+ * gravity to define the concept of height or depth, but the relationship with gravity may not be straightforward.
  *
- * <p>By implication, ellipsoidal heights (<var>h</var>) cannot be captured in a vertical coordinate
- * reference system. Ellipsoidal heights cannot exist independently, but only as inseparable part of
- * a 3D coordinate tuple defined in a geographic 3D coordinate reference system. However GeoAPI does
- * not enforce this rule. This class defines a {@link #ELLIPSOIDAL_HEIGHT} constant in violation
- * with ISO 19111; this is considered okay if this constant is used merely as a step toward the
- * construction of a 3D CRS (for example in a transient state during WKT parsing), or for passing
- * arguments in methods enforcing type-safety.
+ * <p>By implication, ellipsoidal heights (<var>h</var>) cannot be captured in a vertical coordinate reference system.
+ * Ellipsoidal heights cannot exist independently, but only as inseparable part of a 3D coordinate tuple defined in a
+ * geographic 3D coordinate reference system. However GeoAPI does not enforce this rule. This class defines a
+ * {@link #ELLIPSOIDAL_HEIGHT} constant in violation with ISO 19111; this is considered okay if this constant is used
+ * merely as a step toward the construction of a 3D CRS (for example in a transient state during WKT parsing), or for
+ * passing arguments in methods enforcing type-safety.
  *
  * <TABLE CELLPADDING='6' BORDER='1'>
  * <TR BGCOLOR="#EEEEFF"><TH NOWRAP>Used with CS type(s)</TH></TR>
@@ -57,17 +55,16 @@ public class DefaultVerticalCRS extends AbstractSingleCRS implements VerticalCRS
     private static final long serialVersionUID = 3565878468719941800L;
 
     /**
-     * Default vertical coordinate reference system using ellipsoidal datum. Ellipsoidal heights are
-     * measured along the normal to the ellipsoid used in the definition of horizontal datum.
+     * Default vertical coordinate reference system using ellipsoidal datum. Ellipsoidal heights are measured along the
+     * normal to the ellipsoid used in the definition of horizontal datum.
      *
      * @see DefaultVerticalDatum#ELLIPSOIDAL
      * @see DefaultVerticalCS#ELLIPSOIDAL_HEIGHT
      */
-    public static final DefaultVerticalCRS ELLIPSOIDAL_HEIGHT =
-            new DefaultVerticalCRS(
-                    getProperties(DefaultVerticalCS.ELLIPSOIDAL_HEIGHT),
-                    DefaultVerticalDatum.ELLIPSOIDAL,
-                    DefaultVerticalCS.ELLIPSOIDAL_HEIGHT);
+    public static final DefaultVerticalCRS ELLIPSOIDAL_HEIGHT = new DefaultVerticalCRS(
+            getProperties(DefaultVerticalCS.ELLIPSOIDAL_HEIGHT),
+            DefaultVerticalDatum.ELLIPSOIDAL,
+            DefaultVerticalCS.ELLIPSOIDAL_HEIGHT);
 
     /**
      * Default vertical coordinate reference system using geoidal datum.
@@ -76,17 +73,16 @@ public class DefaultVerticalCRS extends AbstractSingleCRS implements VerticalCRS
      * @see DefaultVerticalCS#GRAVITY_RELATED_HEIGHT
      * @since 2.5
      */
-    public static final DefaultVerticalCRS GEOIDAL_HEIGHT =
-            new DefaultVerticalCRS(
-                    getProperties(DefaultVerticalCS.GRAVITY_RELATED_HEIGHT),
-                    DefaultVerticalDatum.GEOIDAL,
-                    DefaultVerticalCS.GRAVITY_RELATED_HEIGHT);
+    public static final DefaultVerticalCRS GEOIDAL_HEIGHT = new DefaultVerticalCRS(
+            getProperties(DefaultVerticalCS.GRAVITY_RELATED_HEIGHT),
+            DefaultVerticalDatum.GEOIDAL,
+            DefaultVerticalCS.GRAVITY_RELATED_HEIGHT);
 
     /**
-     * Constructs a new vertical CRS with the same values than the specified one. This copy
-     * constructor provides a way to wrap an arbitrary implementation into a Geotools one or a
-     * user-defined one (as a subclass), usually in order to leverage some implementation-specific
-     * API. This constructor performs a shallow copy, i.e. the properties are not cloned.
+     * Constructs a new vertical CRS with the same values than the specified one. This copy constructor provides a way
+     * to wrap an arbitrary implementation into a Geotools one or a user-defined one (as a subclass), usually in order
+     * to leverage some implementation-specific API. This constructor performs a shallow copy, i.e. the properties are
+     * not cloned.
      *
      * @since 2.2
      */
@@ -95,8 +91,8 @@ public class DefaultVerticalCRS extends AbstractSingleCRS implements VerticalCRS
     }
 
     /**
-     * Constructs a vertical CRS with the same properties than the given datum. The inherited
-     * properties include the {@linkplain #getName name} and aliases.
+     * Constructs a vertical CRS with the same properties than the given datum. The inherited properties include the
+     * {@linkplain #getName name} and aliases.
      *
      * @param datum The datum.
      * @param cs The coordinate system.
@@ -125,8 +121,7 @@ public class DefaultVerticalCRS extends AbstractSingleCRS implements VerticalCRS
      * @param datum The datum.
      * @param cs The coordinate system.
      */
-    public DefaultVerticalCRS(
-            final Map<String, ?> properties, final VerticalDatum datum, final VerticalCS cs) {
+    public DefaultVerticalCRS(final Map<String, ?> properties, final VerticalDatum datum, final VerticalCS cs) {
         super(properties, datum, cs);
     }
 
@@ -145,8 +140,7 @@ public class DefaultVerticalCRS extends AbstractSingleCRS implements VerticalCRS
     /**
      * Returns a hash value for this geographic CRS.
      *
-     * @return The hash code value. This value doesn't need to be the same in past or future
-     *     versions of this class.
+     * @return The hash code value. This value doesn't need to be the same in past or future versions of this class.
      */
     @Override
     @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
@@ -156,8 +150,8 @@ public class DefaultVerticalCRS extends AbstractSingleCRS implements VerticalCRS
 
     /**
      * Format the inner part of a <A
-     * HREF="http://geoapi.sourceforge.net/snapshot/javadoc/org/opengis/referencing/doc-files/WKT.html"><cite>Well
-     * Known Text</cite> (WKT)</A> element.
+     * HREF="http://geoapi.sourceforge.net/snapshot/javadoc/org/opengis/referencing/doc-files/WKT.html"><cite>Well Known
+     * Text</cite> (WKT)</A> element.
      *
      * @param formatter The formatter to use.
      * @return The name of the WKT element type, which is {@code "VERT_CS"}.

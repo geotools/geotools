@@ -45,8 +45,7 @@ public class KMLParsingTest {
     @Test
     public void testParse() throws Exception {
         Parser parser = new Parser(new KMLConfiguration());
-        SimpleFeature f =
-                (SimpleFeature) parser.parse(getClass().getResourceAsStream("states.kml"));
+        SimpleFeature f = (SimpleFeature) parser.parse(getClass().getResourceAsStream("states.kml"));
         Assert.assertNotNull(f);
 
         Assert.assertEquals("topp:states", f.getAttribute("name"));
@@ -57,11 +56,8 @@ public class KMLParsingTest {
 
     @Test
     public void testStream() throws Exception {
-        StreamingParser parser =
-                new StreamingParser(
-                        new KMLConfiguration(),
-                        getClass().getResourceAsStream("states.kml"),
-                        KML.Placemark);
+        StreamingParser parser = new StreamingParser(
+                new KMLConfiguration(), getClass().getResourceAsStream("states.kml"), KML.Placemark);
         int count = 0;
         SimpleFeature f = null;
 

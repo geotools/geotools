@@ -95,8 +95,8 @@ public class XSDecimalBinding implements SimpleBinding {
     /**
      * /**
      * <!-- begin-user-doc -->
-     * This is AFTER so value contains element.text after processing by AnySimpleType. This binding
-     * returns objects of type {@link Calendar}.
+     * This is AFTER so value contains element.text after processing by AnySimpleType. This binding returns objects of
+     * type {@link Calendar}.
      * <!-- end-user-doc -->
      *
      * @generated modifiable

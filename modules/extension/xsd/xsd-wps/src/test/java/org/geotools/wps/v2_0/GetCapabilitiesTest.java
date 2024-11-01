@@ -26,8 +26,7 @@ public class GetCapabilitiesTest extends WPSTestSupport {
     public void testParse() throws Exception {
         Parser parser = new Parser(createConfiguration());
 
-        Object o =
-                parser.parse(getClass().getResourceAsStream("wpsCapabilitiesDocumentExample.xml"));
+        Object o = parser.parse(getClass().getResourceAsStream("wpsCapabilitiesDocumentExample.xml"));
         Assert.assertTrue(o instanceof WPSCapabilitiesType);
 
         WPSCapabilitiesType caps = (WPSCapabilitiesType) o;
@@ -93,14 +92,12 @@ public class GetCapabilitiesTest extends WPSTestSupport {
         AddressType a = ci.getAddress();
         Assert.assertNotNull(a);
         Assert.assertNotNull(a.getDeliveryPoint());
-        Assert.assertEquals(
-                "Room 1135, Neatby Building, 960, Carling Avenue", a.getDeliveryPoint());
+        Assert.assertEquals("Room 1135, Neatby Building, 960, Carling Avenue", a.getDeliveryPoint());
         Assert.assertEquals("Ottawa", a.getCity());
         Assert.assertEquals("ON", a.getAdministrativeArea());
         Assert.assertEquals("Canada", a.getCountry());
         Assert.assertNotNull(a.getElectronicMailAddress());
-        Assert.assertNotNull(
-                "matthias_mueller@tu-dresden.de", ci.getAddress().getElectronicMailAddress());
+        Assert.assertNotNull("matthias_mueller@tu-dresden.de", ci.getAddress().getElectronicMailAddress());
     }
 
     void assertOperationsMetadata(OperationsMetadataType om) {
@@ -166,7 +163,8 @@ public class GetCapabilitiesTest extends WPSTestSupport {
         Assert.assertNotNull(pb);
         Assert.assertNotNull(pb.getIdentifier());
         Assert.assertNotNull(
-                "http://my.site/distance-transform/cost-distance", pb.getIdentifier().getValue());
+                "http://my.site/distance-transform/cost-distance",
+                pb.getIdentifier().getValue());
         Assert.assertEquals("Cost Distance", pb.getTitle().get(0).getValue());
         Assert.assertNotNull("1.4.0", pb.getProcessVersion());
         Assert.assertNotNull(pb.getJobControlOptions());
@@ -181,11 +179,7 @@ public class GetCapabilitiesTest extends WPSTestSupport {
     }
 
     public void assertOperationType(
-            OperationType op,
-            String operationName,
-            String href,
-            Boolean httpGet,
-            Boolean httpPost) {
+            OperationType op, String operationName, String href, Boolean httpGet, Boolean httpPost) {
         Assert.assertEquals(operationName, op.getName());
         Assert.assertEquals(1, op.getDCP().size());
 

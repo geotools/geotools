@@ -54,8 +54,8 @@ public class FactoryUsingSQL extends DirectEpsgFactory {
     /**
      * Invoked when a new {@link PreparedStatement} is about to be created from a SQL string.
      *
-     * <p>Since the <A HREF="http://www.epsg.org">EPSG database</A> is available mainly in MS-Access
-     * format, and this is the target of our super class, we have no work to do here.
+     * <p>Since the <A HREF="http://www.epsg.org">EPSG database</A> is available mainly in MS-Access format, and this is
+     * the target of our super class, we have no work to do here.
      *
      * @param statement The statement in MS-Access syntax.
      * @return The SQL statement to use. This implementation returns the string unchanged.

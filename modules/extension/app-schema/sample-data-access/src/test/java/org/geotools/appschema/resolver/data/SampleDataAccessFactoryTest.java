@@ -34,14 +34,12 @@ import org.junit.Test;
 public class SampleDataAccessFactoryTest {
 
     /**
-     * Test that {@link DataAccessFinder} can find {@link
-     * org.geotools.appschema.resolver.data.SampleDataAccessFactory} and use it to create a {@link
-     * org.geotools.appschema.resolver.data.SampleDataAccess}.
+     * Test that {@link DataAccessFinder} can find {@link org.geotools.appschema.resolver.data.SampleDataAccessFactory}
+     * and use it to create a {@link org.geotools.appschema.resolver.data.SampleDataAccess}.
      */
     @Test
     public void testFindSamplesDataAccessFactory() throws Exception {
-        DataAccess<FeatureType, Feature> dataAccess =
-                DataAccessFinder.getDataStore(SampleDataAccessFactory.PARAMS);
+        DataAccess<FeatureType, Feature> dataAccess = DataAccessFinder.getDataStore(SampleDataAccessFactory.PARAMS);
         Assert.assertNotNull(dataAccess);
         Assert.assertEquals(SampleDataAccess.class, dataAccess.getClass());
     }

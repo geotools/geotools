@@ -80,9 +80,9 @@ public class MapContentConcurrencyTest {
     }
 
     /**
-     * In this test we create multiple tasks: half of which add a layer to the layer list and the
-     * rest which remove the layer. Then the tasks are shuffled, submitted to the executor, and all
-     * started at the same time (or at least given permission to run at the same time).
+     * In this test we create multiple tasks: half of which add a layer to the layer list and the rest which remove the
+     * layer. Then the tasks are shuffled, submitted to the executor, and all started at the same time (or at least
+     * given permission to run at the same time).
      */
     @Test
     public void addAndRemoveOnSeparateThreads() throws Exception {
@@ -94,23 +94,21 @@ public class MapContentConcurrencyTest {
         List<Runnable> tasks = new ArrayList<>(numThreads);
         int k = 0;
         while (k < numThreads / 2) {
-            tasks.add(
-                    new AddLayerTask(layer1, startLatch) {
-                        @Override
-                        public void postRun() {
-                            assertEquals(1, mapContent.layers().size());
-                        }
-                    });
+            tasks.add(new AddLayerTask(layer1, startLatch) {
+                @Override
+                public void postRun() {
+                    assertEquals(1, mapContent.layers().size());
+                }
+            });
             k++;
         }
         while (k < numThreads) {
-            tasks.add(
-                    new RemoveLayerTask(layer1, startLatch) {
-                        @Override
-                        public void postRun() {
-                            assertTrue(mapContent.layers().isEmpty());
-                        }
-                    });
+            tasks.add(new RemoveLayerTask(layer1, startLatch) {
+                @Override
+                public void postRun() {
+                    assertTrue(mapContent.layers().isEmpty());
+                }
+            });
             k++;
         }
 

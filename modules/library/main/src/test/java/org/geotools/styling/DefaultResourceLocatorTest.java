@@ -75,38 +75,32 @@ public class DefaultResourceLocatorTest {
     @Test
     public void testInvalidPath() throws Exception {
         DefaultResourceLocator locator = new DefaultResourceLocator();
-        URL testURL =
-                new URL(
-                        "resource",
-                        null,
-                        -1,
-                        "target",
-                        new URLStreamHandler() {
+        URL testURL = new URL("resource", null, -1, "target", new URLStreamHandler() {
 
-                            @Override
-                            protected URLConnection openConnection(URL u) throws IOException {
-                                return new URLConnection(u) {
+            @Override
+            protected URLConnection openConnection(URL u) throws IOException {
+                return new URLConnection(u) {
 
-                                    @Override
-                                    public void connect() throws IOException {}
+                    @Override
+                    public void connect() throws IOException {}
 
-                                    @Override
-                                    public long getLastModified() {
-                                        return 0;
-                                    }
+                    @Override
+                    public long getLastModified() {
+                        return 0;
+                    }
 
-                                    @Override
-                                    public InputStream getInputStream() throws IOException {
-                                        return new ByteArrayInputStream(new byte[0]);
-                                    }
+                    @Override
+                    public InputStream getInputStream() throws IOException {
+                        return new ByteArrayInputStream(new byte[0]);
+                    }
 
-                                    @Override
-                                    public OutputStream getOutputStream() throws IOException {
-                                        return new ByteArrayOutputStream();
-                                    }
-                                };
-                            }
-                        });
+                    @Override
+                    public OutputStream getOutputStream() throws IOException {
+                        return new ByteArrayOutputStream();
+                    }
+                };
+            }
+        });
         locator.setSourceUrl(testURL);
         // used to go NPE here
         Assert.assertEquals(new URL("file://test"), locator.locateResource("file://test"));

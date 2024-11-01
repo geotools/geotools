@@ -68,7 +68,10 @@ public class CapabilitiesParseTest extends OWSTestSupport_1_1 {
         assertEquals(1, maximumHeightConstraint.getAllowedValues().getValue().size());
         assertEquals(
                 "4000",
-                ((ValueType) maximumHeightConstraint.getAllowedValues().getValue().get(0))
+                ((ValueType) maximumHeightConstraint
+                                .getAllowedValues()
+                                .getValue()
+                                .get(0))
                         .getValue());
 
         DomainType noValuesAllowedConstraint = (DomainType) om.getConstraint().get(3);

@@ -31,8 +31,8 @@ import org.geotools.util.factory.Hints;
 /**
  * Represents a Physical storage of coverage data (that we have a connection to).
  *
- * <p>Please note that this service may be remote (or otherwise slow). You are doing IO here and
- * should treat this class with respect - please do not access these methods from a display thread.
+ * <p>Please note that this service may be remote (or otherwise slow). You are doing IO here and should treat this class
+ * with respect - please do not access these methods from a display thread.
  *
  * @author Simone Giannecchini, GeoSolutions
  * @author Jody Garnett
@@ -44,15 +44,15 @@ public interface CoverageAccess {
         /**
          * Read access to coverage data.
          *
-         * <p>This level of access implys {@link CoverageAccess#access(Name, Map, AccessType, Hints,
-         * ProgressListener)} is able to return a {@link CoverageSource}
+         * <p>This level of access implys {@link CoverageAccess#access(Name, Map, AccessType, Hints, ProgressListener)}
+         * is able to return a {@link CoverageSource}
          */
         READ_ONLY,
         /**
          * Read-write access to coverage data
          *
-         * <p>This level of access implys {@link CoverageAccess#access(Name, Map, AccessType, Hints,
-         * ProgressListener)} is able to return a {@link CoverageStore}
+         * <p>This level of access implys {@link CoverageAccess#access(Name, Map, AccessType, Hints, ProgressListener)}
+         * is able to return a {@link CoverageStore}
          */
         READ_WRITE;
     }
@@ -75,11 +75,9 @@ public interface CoverageAccess {
     public ServiceInfo getInfo(final ProgressListener listener);
 
     /**
-     * Retrieves the {@link Set} of supported {@link AccessType}s for this {@link CoverageAccess}
-     * instance.
+     * Retrieves the {@link Set} of supported {@link AccessType}s for this {@link CoverageAccess} instance.
      *
-     * @return the {@link Set} of supported {@link AccessType}s for this {@link CoverageAccess}
-     *     instance.
+     * @return the {@link Set} of supported {@link AccessType}s for this {@link CoverageAccess} instance.
      */
     public Set<CoverageAccess.AccessType> getSupportedAccessTypes();
 
@@ -89,8 +87,7 @@ public interface CoverageAccess {
     /**
      * Names of the available Coverages.
      *
-     * <p>Each Coverage named here represents a unique data product that may be accessed via the
-     * CoverageSource
+     * <p>Each Coverage named here represents a unique data product that may be accessed via the CoverageSource
      *
      * @return Names of the available contents.
      */
@@ -114,8 +111,7 @@ public interface CoverageAccess {
     // Data Access
     //
     /**
-     * Describes the required (and optional) parameters that can be used to open a {@link
-     * CoverageSource}.
+     * Describes the required (and optional) parameters that can be used to open a {@link CoverageSource}.
      *
      * <p>
      *
@@ -131,16 +127,11 @@ public interface CoverageAccess {
      * @param name Indicate the coverage to access
      * @param params Additional parameters as needed to indicate what part of the data set to access
      * @param accessType Requested level of access
-     * @param hints Implementation specific hints; please review the javadocs for your Driver for
-     *     details
+     * @param hints Implementation specific hints; please review the javadocs for your Driver for details
      * @param listener used to report progress while obtianing access
      */
     public CoverageSource access(
-            Name name,
-            Map<String, Serializable> params,
-            AccessType accessType,
-            Hints hints,
-            ProgressListener listener)
+            Name name, Map<String, Serializable> params, AccessType accessType, Hints hints, ProgressListener listener)
             throws IOException;
 
     //
@@ -149,8 +140,7 @@ public interface CoverageAccess {
     // These methods only work for getSupportedAccessTypes() == READ_WRITE
 
     /**
-     * Tells me whether or not this {@link CoverageAccess} supports creation of a new coverage
-     * storage.
+     * Tells me whether or not this {@link CoverageAccess} supports creation of a new coverage storage.
      *
      * <p>This method will only return true if getSupportedAccessTypes() == READ_WRITE.
      *
@@ -160,41 +150,35 @@ public interface CoverageAccess {
     public boolean isCreateSupported();
 
     /**
-     * Test to see if this coverage access is suitable for creating a {@link CoverageStore} referred
-     * by Name, with the specified set of parameters.
+     * Test to see if this coverage access is suitable for creating a {@link CoverageStore} referred by Name, with the
+     * specified set of parameters.
      *
      * <p>This method will only return true if getSupportedAccessTypes() == READ_WRITE.
      *
      * @param name The name of the data set to create
      * @param params Indicate the content to be created
-     * @param hints Implementations specific Hints, please check the javadocs for your driver for
-     *     details
+     * @param hints Implementations specific Hints, please check the javadocs for your driver for details
      * @return true if a coverage can be created
      */
-    public boolean canCreate(
-            Name name, Map<String, Serializable> params, Hints hints, ProgressListener listener)
+    public boolean canCreate(Name name, Map<String, Serializable> params, Hints hints, ProgressListener listener)
             throws IOException;
 
     /**
      * Create a {@link CoverageStore} with the specified name.
      *
-     * <p>You can check isCreateSupported() prior to calling this method. Implementing subclasses
-     * may throw an {@link UnsupportedOperationException} in case the related Driver won't allow
-     * {@link CoverageStore} creation.
+     * <p>You can check isCreateSupported() prior to calling this method. Implementing subclasses may throw an
+     * {@link UnsupportedOperationException} in case the related Driver won't allow {@link CoverageStore} creation.
      *
      * @param name The name of the data set to create
      * @param params Indicate the content to be created
-     * @param hints Implementations specific Hints, please check the javadocs for your driver for
-     *     details
+     * @param hints Implementations specific Hints, please check the javadocs for your driver for details
      * @throws IllegalStateException if getSupportedAccessTypes() == READ_ONLY
      */
-    public CoverageStore create(
-            Name name, Map<String, Serializable> params, Hints hints, ProgressListener listener)
+    public CoverageStore create(Name name, Map<String, Serializable> params, Hints hints, ProgressListener listener)
             throws IOException;
 
     /**
-     * Tells me whether or not this {@link CoverageAccess} supports removal of an existing coverage
-     * storage.
+     * Tells me whether or not this {@link CoverageAccess} supports removal of an existing coverage storage.
      *
      * @return <code>true</code> when removal of an existing coverage storage is supported, <code>
      *     false</code> otherwise.
@@ -202,29 +186,26 @@ public interface CoverageAccess {
     public boolean isDeleteSupported();
 
     /**
-     * Test to see if this coverage access is suitable for deleting a {@link CoverageSource}
-     * referred by Name, with the specified set of parameters.
+     * Test to see if this coverage access is suitable for deleting a {@link CoverageSource} referred by Name, with the
+     * specified set of parameters.
      *
      * @param name Name of data set to remove from
-     * @param params Used to indicate what what of the data set to remove; if <code>null</code>
-     *     indicate the entire data set should be removed
-     * @param hints Implementation specific Hints; please consult the javadocs for the Driver you
-     *     are working with.
+     * @param params Used to indicate what what of the data set to remove; if <code>null</code> indicate the entire data
+     *     set should be removed
+     * @param hints Implementation specific Hints; please consult the javadocs for the Driver you are working with.
      */
-    public boolean canDelete(Name name, Map<String, Serializable> params, Hints hints)
-            throws IOException;
+    public boolean canDelete(Name name, Map<String, Serializable> params, Hints hints) throws IOException;
 
     /**
      * Asks this {@link CoverageAccess} to entirely remove a certain Coverage from the available
      * {@link CoverageSource}s.
      *
-     * <p>Many file based formats won't allow to perform such operation, but db based source should
-     * be quite happy with it.
+     * <p>Many file based formats won't allow to perform such operation, but db based source should be quite happy with
+     * it.
      *
      * @return {@code true} in case of success.
      */
-    public boolean delete(Name name, Map<String, Serializable> params, Hints hints)
-            throws IOException;
+    public boolean delete(Name name, Map<String, Serializable> params, Hints hints) throws IOException;
 
     /**
      * Retrieves the parameters used to connect to this live instance of {@link CoverageAccess}.
@@ -236,11 +217,10 @@ public interface CoverageAccess {
     /**
      * This will free any cached info object or header information.
      *
-     * <p>Often a {@link CoverageAccess} will keep a file channel open, this will clean that sort of
-     * thing up.
+     * <p>Often a {@link CoverageAccess} will keep a file channel open, this will clean that sort of thing up.
      *
-     * <p>Once a {@link CoverageAccess} has been disposed it can be seen as being in unspecified
-     * state, hence calling a method on it may have unpredictable results.
+     * <p>Once a {@link CoverageAccess} has been disposed it can be seen as being in unspecified state, hence calling a
+     * method on it may have unpredictable results.
      */
     public void dispose();
 

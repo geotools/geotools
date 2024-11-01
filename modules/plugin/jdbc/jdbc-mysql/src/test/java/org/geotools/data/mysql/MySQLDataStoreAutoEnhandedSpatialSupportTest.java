@@ -24,8 +24,7 @@ import org.geotools.jdbc.JDBCTestSupport;
 import org.junit.Test;
 
 /**
- * Tests that enhandedSpatialSupport flag is automatically and properly set based on identified
- * MySQL version.
+ * Tests that enhandedSpatialSupport flag is automatically and properly set based on identified MySQL version.
  *
  * @author Justin Deoliveira, The Open Planning Project
  */

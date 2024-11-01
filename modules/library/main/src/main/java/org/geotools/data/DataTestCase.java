@@ -49,11 +49,11 @@ import org.locationtech.jts.geom.Polygon;
 /**
  * A set of constructs and utility methods used to test the data module.
  *
- * <p>By isolating a common set of {@link SimpleFeature}s, {@link SimpleFeatureType}s and {@link
- * Filter}s we are able to reduce the amount of overhead in setting up new tests.
+ * <p>By isolating a common set of {@link SimpleFeature}s, {@link SimpleFeatureType}s and {@link Filter}s we are able to
+ * reduce the amount of overhead in setting up new tests.
  *
- * <p>This code has been made part of the public {@code geotools.jar} to provide a starting point
- * for test cases involving Data constructs.
+ * <p>This code has been made part of the public {@code geotools.jar} to provide a starting point for test cases
+ * involving Data constructs.
  *
  * @version $Id$
  * @author Jody Garnett, Refractions Research
@@ -115,9 +115,7 @@ public abstract class DataTestCase {
      */
     protected void dataSetUp() throws Exception {
         String namespace = getClass().getSimpleName();
-        roadType =
-                DataUtilities.createType(
-                        namespace + ".road", "id:0,geom:LineString,name:String,uuid:UUID");
+        roadType = DataUtilities.createType(namespace + ".road", "id:0,geom:LineString,name:String,uuid:UUID");
         subRoadType = DataUtilities.createType(namespace + "road", "id:0,geom:LineString");
         gf = new GeometryFactory();
 
@@ -127,46 +125,28 @@ public abstract class DataTestCase {
         //  2,2 +-----+-----+ 4,2
         //     /     rd1     \
         // 1,1+               +5,1
-        roadFeatures[0] =
-                SimpleFeatureBuilder.build(
-                        roadType,
-                        new Object[] {
-                            Integer.valueOf(1),
-                            line(new int[] {1, 1, 2, 2, 4, 2, 5, 1}),
-                            "r1",
-                            UUID.randomUUID()
-                        },
-                        "road.rd1");
+        roadFeatures[0] = SimpleFeatureBuilder.build(
+                roadType,
+                new Object[] {Integer.valueOf(1), line(new int[] {1, 1, 2, 2, 4, 2, 5, 1}), "r1", UUID.randomUUID()},
+                "road.rd1");
 
         //       + 3,4
         //       + 3,3
         //  rd2  + 3,2
         //       |
         //    3,0+
-        roadFeatures[1] =
-                SimpleFeatureBuilder.build(
-                        roadType,
-                        new Object[] {
-                            Integer.valueOf(2),
-                            line(new int[] {3, 0, 3, 2, 3, 3, 3, 4}),
-                            "r2",
-                            UUID.randomUUID()
-                        },
-                        "road.rd2");
+        roadFeatures[1] = SimpleFeatureBuilder.build(
+                roadType,
+                new Object[] {Integer.valueOf(2), line(new int[] {3, 0, 3, 2, 3, 3, 3, 4}), "r2", UUID.randomUUID()},
+                "road.rd2");
 
         //     rd3     + 5,3
         //            /
         //  3,2 +----+ 4,2
-        roadFeatures[2] =
-                SimpleFeatureBuilder.build(
-                        roadType,
-                        new Object[] {
-                            Integer.valueOf(3),
-                            line(new int[] {3, 2, 4, 2, 5, 3}),
-                            "r3",
-                            UUID.randomUUID()
-                        },
-                        "road.rd3");
+        roadFeatures[2] = SimpleFeatureBuilder.build(
+                roadType,
+                new Object[] {Integer.valueOf(3), line(new int[] {3, 2, 4, 2, 5, 3}), "r3", UUID.randomUUID()},
+                "road.rd3");
         roadBounds = new ReferencedEnvelope();
         roadBounds.expandToInclude(new ReferencedEnvelope(roadFeatures[0].getBounds()));
         roadBounds.expandToInclude(new ReferencedEnvelope(roadFeatures[1].getBounds()));
@@ -175,10 +155,7 @@ public abstract class DataTestCase {
         rd1Filter = ff.id(Collections.singleton(ff.featureId("road.rd1")));
         rd2Filter = ff.id(Collections.singleton(ff.featureId("road.rd2")));
 
-        Id create =
-                ff.id(
-                        new HashSet<>(
-                                Arrays.asList(ff.featureId("road.rd1"), ff.featureId("road.rd2"))));
+        Id create = ff.id(new HashSet<>(Arrays.asList(ff.featureId("road.rd1"), ff.featureId("road.rd2"))));
 
         rd12Filter = create;
 
@@ -188,20 +165,12 @@ public abstract class DataTestCase {
         //   + 2,3
         //  / rd4
         // + 1,2
-        newRoad =
-                SimpleFeatureBuilder.build(
-                        roadType,
-                        new Object[] {
-                            Integer.valueOf(4),
-                            line(new int[] {1, 2, 2, 3}),
-                            "r4",
-                            UUID.randomUUID()
-                        },
-                        "road.rd4");
+        newRoad = SimpleFeatureBuilder.build(
+                roadType,
+                new Object[] {Integer.valueOf(4), line(new int[] {1, 2, 2, 3}), "r4", UUID.randomUUID()},
+                "road.rd4");
 
-        riverType =
-                DataUtilities.createType(
-                        namespace + ".river", "id:0,geom:MultiLineString,river:String,flow:0.0");
+        riverType = DataUtilities.createType(namespace + ".river", "id:0,geom:MultiLineString,river:String,flow:0.0");
         subRiverType = DataUtilities.createType(namespace + ".river", "river:String,flow:0.0");
         gf = new GeometryFactory();
         riverFeatures = new SimpleFeature[2];
@@ -212,37 +181,29 @@ public abstract class DataTestCase {
         //  +---+ rv1
         //   7,5 \
         //    9,3 +----+ 11,3
-        riverFeatures[0] =
-                SimpleFeatureBuilder.build(
-                        riverType,
-                        new Object[] {
-                            Integer.valueOf(1),
-                            lines(
-                                    new int[][] {
-                                        {5, 5, 7, 4},
-                                        {7, 5, 9, 7, 13, 7},
-                                        {7, 5, 9, 3, 11, 3}
-                                    }),
-                            "rv1",
-                            Double.valueOf(4.5)
-                        },
-                        "river.rv1");
+        riverFeatures[0] = SimpleFeatureBuilder.build(
+                riverType,
+                new Object[] {
+                    Integer.valueOf(1),
+                    lines(new int[][] {
+                        {5, 5, 7, 4},
+                        {7, 5, 9, 7, 13, 7},
+                        {7, 5, 9, 3, 11, 3}
+                    }),
+                    "rv1",
+                    Double.valueOf(4.5)
+                },
+                "river.rv1");
 
         //         + 6,10
         //        /
         //    rv2+ 4,8
         //       |
         //   4,6 +
-        riverFeatures[1] =
-                SimpleFeatureBuilder.build(
-                        riverType,
-                        new Object[] {
-                            Integer.valueOf(2),
-                            lines(new int[][] {{4, 6, 4, 8, 6, 10}}),
-                            "rv2",
-                            Double.valueOf(3.0)
-                        },
-                        "river.rv2");
+        riverFeatures[1] = SimpleFeatureBuilder.build(
+                riverType,
+                new Object[] {Integer.valueOf(2), lines(new int[][] {{4, 6, 4, 8, 6, 10}}), "rv2", Double.valueOf(3.0)},
+                "river.rv2");
         riverBounds = new ReferencedEnvelope();
         riverBounds.expandToInclude(ReferencedEnvelope.reference(riverFeatures[0].getBounds()));
         riverBounds.expandToInclude(ReferencedEnvelope.reference(riverFeatures[1].getBounds()));
@@ -254,20 +215,13 @@ public abstract class DataTestCase {
         //     rv3  \
         //           + 13,3
         //
-        newRiver =
-                SimpleFeatureBuilder.build(
-                        riverType,
-                        new Object[] {
-                            Integer.valueOf(3),
-                            lines(new int[][] {{9, 5, 11, 5, 13, 3}}),
-                            "rv3",
-                            Double.valueOf(1.5)
-                        },
-                        "river.rv3");
+        newRiver = SimpleFeatureBuilder.build(
+                riverType,
+                new Object[] {Integer.valueOf(3), lines(new int[][] {{9, 5, 11, 5, 13, 3}}), "rv3", Double.valueOf(1.5)
+                },
+                "river.rv3");
 
-        lakeType =
-                DataUtilities.createType(
-                        namespace + ".lake", "id:0,geom:Polygon:nillable,name:String");
+        lakeType = DataUtilities.createType(namespace + ".lake", "id:0,geom:Polygon:nillable,name:String");
         lakeFeatures = new SimpleFeature[1];
         //             + 14,8
         //            / \
@@ -275,21 +229,15 @@ public abstract class DataTestCase {
         //            \  |
         //        14,4 +-+ 16,4
         //
-        lakeFeatures[0] =
-                SimpleFeatureBuilder.build(
-                        lakeType,
-                        new Object[] {
-                            Integer.valueOf(0),
-                            polygon(new int[] {12, 6, 14, 8, 16, 6, 16, 4, 14, 4, 12, 6}),
-                            "muddy"
-                        },
-                        "lake.lk1");
+        lakeFeatures[0] = SimpleFeatureBuilder.build(
+                lakeType,
+                new Object[] {Integer.valueOf(0), polygon(new int[] {12, 6, 14, 8, 16, 6, 16, 4, 14, 4, 12, 6}), "muddy"
+                },
+                "lake.lk1");
         lakeBounds = new ReferencedEnvelope();
         lakeBounds.expandToInclude(ReferencedEnvelope.reference(lakeFeatures[0].getBounds()));
 
-        invalidGeomType =
-                DataUtilities.createType(
-                        namespace + ".invalid", "id:0,geom:Polygon:nillable,name:String");
+        invalidGeomType = DataUtilities.createType(namespace + ".invalid", "id:0,geom:Polygon:nillable,name:String");
 
         invalidGeomFeatures = new SimpleFeature[1];
         //        12,8 14,8
@@ -297,20 +245,13 @@ public abstract class DataTestCase {
         //          |/\_\
         //     12,6 +   + 16,6
         //
-        invalidGeomFeatures[0] =
-                SimpleFeatureBuilder.build(
-                        invalidGeomType,
-                        new Object[] {
-                            Integer.valueOf(0),
-                            polygon(new int[] {12, 6, 14, 8, 16, 6, 12, 8, 12, 6}),
-                            "notvalid"
-                        },
-                        "invalid.inv1");
+        invalidGeomFeatures[0] = SimpleFeatureBuilder.build(
+                invalidGeomType,
+                new Object[] {Integer.valueOf(0), polygon(new int[] {12, 6, 14, 8, 16, 6, 12, 8, 12, 6}), "notvalid"},
+                "invalid.inv1");
         invalidGeomBounds = new ReferencedEnvelope();
 
-        buildingType =
-                DataUtilities.createType(
-                        namespace + ".building", "id:0,geom:Polygon:nillable,name:String");
+        buildingType = DataUtilities.createType(namespace + ".building", "id:0,geom:Polygon:nillable,name:String");
         buildingFeatures = new SimpleFeature[1];
         //             + 14,8
         //            / \
@@ -318,23 +259,19 @@ public abstract class DataTestCase {
         //           |   |
         //      12,4 +---+ 16,4
         //
-        buildingFeatures[0] =
-                SimpleFeatureBuilder.build(
-                        lakeType,
-                        new Object[] {
-                            Integer.valueOf(0),
-                            polygon(new int[] {12, 6, 14, 8, 16, 6, 16, 4, 12, 4, 12, 6}),
-                            "church"
-                        },
-                        "building.bd1");
+        buildingFeatures[0] = SimpleFeatureBuilder.build(
+                lakeType,
+                new Object[] {
+                    Integer.valueOf(0), polygon(new int[] {12, 6, 14, 8, 16, 6, 16, 4, 12, 4, 12, 6}), "church"
+                },
+                "building.bd1");
         buildingBounds = new ReferencedEnvelope();
-        buildingBounds.expandToInclude(
-                ReferencedEnvelope.reference(buildingFeatures[0].getBounds()));
+        buildingBounds.expandToInclude(ReferencedEnvelope.reference(buildingFeatures[0].getBounds()));
     }
 
     /**
-     * Set all data references to {@code null}, allowing garbage collection. This method is
-     * automatically invoked after each test.
+     * Set all data references to {@code null}, allowing garbage collection. This method is automatically invoked after
+     * each test.
      */
     @After
     public void tearDown() throws Exception {
@@ -358,8 +295,8 @@ public abstract class DataTestCase {
     }
 
     /**
-     * Creates a line from the specified (<var>x</var>,<var>y</var>) coordinates. The coordinates
-     * are stored in a flat array.
+     * Creates a line from the specified (<var>x</var>,<var>y</var>) coordinates. The coordinates are stored in a flat
+     * array.
      */
     public LineString line(int[] xy) {
         Coordinate[] coords = new Coordinate[xy.length / 2];
@@ -383,18 +320,15 @@ public abstract class DataTestCase {
     }
 
     /**
-     * Creates a polygon from the specified (<var>x</var>,<var>y</var>) coordinates. The coordinates
-     * are stored in a flat array.
+     * Creates a polygon from the specified (<var>x</var>,<var>y</var>) coordinates. The coordinates are stored in a
+     * flat array.
      */
     public Polygon polygon(int[] xy) {
         LinearRing shell = ring(xy);
         return gf.createPolygon(shell, null);
     }
 
-    /**
-     * Creates a line from the specified (<var>x</var>,<var>y</var>) coordinates and an arbitrary
-     * amount of holes.
-     */
+    /** Creates a line from the specified (<var>x</var>,<var>y</var>) coordinates and an arbitrary amount of holes. */
     public Polygon polygon(int[] xy, int[][] holes) {
         if (holes == null || holes.length == 0) {
             return polygon(xy);
@@ -410,8 +344,8 @@ public abstract class DataTestCase {
     }
 
     /**
-     * Creates a ring from the specified (<var>x</var>,<var>y</var>) coordinates. The coordinates
-     * are stored in a flat array.
+     * Creates a ring from the specified (<var>x</var>,<var>y</var>) coordinates. The coordinates are stored in a flat
+     * array.
      */
     public LinearRing ring(int[] xy) {
         Coordinate[] coords = new Coordinate[xy.length / 2];

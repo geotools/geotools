@@ -33,11 +33,8 @@ import org.locationtech.jts.geom.impl.CoordinateArraySequence;
 
 public class FilterFunction_vertices extends FunctionExpressionImpl {
 
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "vertices",
-                    parameter("vertices", MultiPoint.class),
-                    parameter("geometry", Geometry.class));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "vertices", parameter("vertices", MultiPoint.class), parameter("geometry", Geometry.class));
 
     public FilterFunction_vertices() {
         super(NAME);

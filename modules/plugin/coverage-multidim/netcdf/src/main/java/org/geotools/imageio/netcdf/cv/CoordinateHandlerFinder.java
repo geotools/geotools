@@ -35,8 +35,8 @@ import ucar.nc2.dataset.CoordinateAxis1D;
 /**
  * Enable programs to find all available CoordinateHandler implementations.
  *
- * <p>In order to be located by this finder modules must provide an implementation of the {@link
- * CoordinateHandlerSpi} interface.
+ * <p>In order to be located by this finder modules must provide an implementation of the {@link CoordinateHandlerSpi}
+ * interface.
  *
  * <p>In addition to implementing this interface, this service file should be defined:
  *
@@ -60,8 +60,8 @@ public final class CoordinateHandlerFinder {
     }
 
     /**
-     * Finds all available implementations of {@link CoordinateHandlerSpi} which have registered
-     * using the services mechanism.
+     * Finds all available implementations of {@link CoordinateHandlerSpi} which have registered using the services
+     * mechanism.
      *
      * @return An unmodifiable {@link Set} of all discovered modules which have registered factories
      */
@@ -78,25 +78,20 @@ public final class CoordinateHandlerFinder {
                 .collect(toUnmodifiableSet());
     }
 
-    /**
-     * Returns the service registry. The registry will be created the first time this method is
-     * invoked.
-     */
+    /** Returns the service registry. The registry will be created the first time this method is invoked. */
     private static FactoryRegistry getServiceRegistry() {
         assert Thread.holdsLock(CoordinateHandlerFinder.class);
         if (registry == null) {
-            registry =
-                    new FactoryCreator(Arrays.asList(new Class<?>[] {CoordinateHandlerSpi.class}));
+            registry = new FactoryCreator(Arrays.asList(new Class<?>[] {CoordinateHandlerSpi.class}));
         }
         return registry;
     }
 
     /**
-     * Scans for factory plug-ins on the application class path. This method is needed because the
-     * application class path can theoretically change, or additional plug-ins may become available.
-     * Rather than re-scanning the classpath on every invocation of the API, the class path is
-     * scanned automatically only on the first invocation. Clients can call this method to prompt a
-     * re-scan. Thus this method need only be invoked by sophisticated applications which
+     * Scans for factory plug-ins on the application class path. This method is needed because the application class
+     * path can theoretically change, or additional plug-ins may become available. Rather than re-scanning the classpath
+     * on every invocation of the API, the class path is scanned automatically only on the first invocation. Clients can
+     * call this method to prompt a re-scan. Thus this method need only be invoked by sophisticated applications which
      * dynamically make new plug-ins available at runtime.
      */
     public static synchronized void scanForPlugins() {
@@ -104,12 +99,11 @@ public final class CoordinateHandlerFinder {
     }
 
     /**
-     * Returns all the {@link CoordinateHandler}s that can handle the supplied {@link
-     * CoordinateAxis1D} axis.
+     * Returns all the {@link CoordinateHandler}s that can handle the supplied {@link CoordinateAxis1D} axis.
      *
      * @param axis is the axis to search a {@link CoordinateHandler} that is able to handle
-     * @return an unmodifiable {@link Set} comprising all the {@link CoordinateHandler} that can
-     *     handle the {@link CoordinateAxis1D} axis.
+     * @return an unmodifiable {@link Set} comprising all the {@link CoordinateHandler} that can handle the
+     *     {@link CoordinateAxis1D} axis.
      */
     public static synchronized Set<CoordinateHandler> findHandlers(CoordinateAxis axis) {
         final Set<CoordinateHandlerSpi> availableHandlersSpi = getAvailableHandlers();

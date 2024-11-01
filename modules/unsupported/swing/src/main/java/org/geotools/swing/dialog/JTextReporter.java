@@ -53,24 +53,23 @@ import net.miginfocom.swing.MigLayout;
 import org.geotools.util.logging.Logging;
 
 /**
- * Displays a text report dialog with options to copy text to the system clipboard or save to file.
- * It is used within the gt-swing module (for example, by the {@linkplain
- * org.geotools.swing.tool.InfoTool} class) and is also suitable for general use. This class is not
- * a Swing component itself, rather it is a dialog manager which allows an application to create and
- * update text reporter dialogs from any thread (not just the AWT Event Dispatch Thread).
+ * Displays a text report dialog with options to copy text to the system clipboard or save to file. It is used within
+ * the gt-swing module (for example, by the {@linkplain org.geotools.swing.tool.InfoTool} class) and is also suitable
+ * for general use. This class is not a Swing component itself, rather it is a dialog manager which allows an
+ * application to create and update text reporter dialogs from any thread (not just the AWT Event Dispatch Thread).
  *
- * <p>Dialogs are created using the various static {@code showDialog} methods. For example, this
- * code creates and shows a dialog displaying the given text:
+ * <p>Dialogs are created using the various static {@code showDialog} methods. For example, this code creates and shows
+ * a dialog displaying the given text:
  *
  * <pre><code>
  * String textToDisplay = ...
  * JTextReporter.showDialog("My very important report", text);
  * </code></pre>
  *
- * Dialog behaviour can be specified with those {@code showDialog} methods which accept a {@code
- * flags} argument. The dialog in the above example will have the default state (non-modal;
- * resizable; always on top of other windows) as specified by the {@linkplain #DEFAULT_FLAGS}
- * constant. If we wanted to display the text in a modal dialog we can do this:
+ * Dialog behaviour can be specified with those {@code showDialog} methods which accept a {@code flags} argument. The
+ * dialog in the above example will have the default state (non-modal; resizable; always on top of other windows) as
+ * specified by the {@linkplain #DEFAULT_FLAGS} constant. If we wanted to display the text in a modal dialog we can do
+ * this:
  *
  * <pre><code>
  * String textToDisplay = ...
@@ -78,10 +77,9 @@ import org.geotools.util.logging.Logging;
  *         JTextReporter.FLAG_MODAL | FLAG_RESIZEABLE);
  * </code></pre>
  *
- * As well as displaying fixed text, you can also append text to the dialog's display while it is
- * on-screen. Each of the {@code showDialog} methods returns a {@linkplain Connection} object (a
- * nested class within {@code JTextReporter}) which provides methods to append text safely from any
- * thread:
+ * As well as displaying fixed text, you can also append text to the dialog's display while it is on-screen. Each of the
+ * {@code showDialog} methods returns a {@linkplain Connection} object (a nested class within {@code JTextReporter})
+ * which provides methods to append text safely from any thread:
  *
  * <pre><code>
  * Connection conn = JTextReporter.showDialog("Progressive report");
@@ -93,12 +91,11 @@ import org.geotools.util.logging.Logging;
  * conn.append("Next line of the report").appendNewline();
  * </code></pre>
  *
- * A Connection object only keeps a {@linkplain WeakReference} to the associated dialog to avoid
- * memory leaks. If an attempt is made to append text after the user has closed the dialog an error
- * message is logged indicating that the connection has expired.
+ * A Connection object only keeps a {@linkplain WeakReference} to the associated dialog to avoid memory leaks. If an
+ * attempt is made to append text after the user has closed the dialog an error message is logged indicating that the
+ * connection has expired.
  *
- * <p>The {@linkplain Connection} also lets you add listeners to track when the text reporter is
- * updated or closed:
+ * <p>The {@linkplain Connection} also lets you add listeners to track when the text reporter is updated or closed:
  *
  * <pre><code>
  * Connection conn = JTextReporter.showDialog("Progressive report");
@@ -126,26 +123,25 @@ public class JTextReporter {
     private static final long DIALOG_CREATION_TIMEOUT = 1000;
 
     /**
-     * Constant indicating that a text reporter should be displayed as a modal dialog. Use with
-     * {@code showDialog} methods which take a {@code flags} argument.
+     * Constant indicating that a text reporter should be displayed as a modal dialog. Use with {@code showDialog}
+     * methods which take a {@code flags} argument.
      */
     public static final int FLAG_MODAL = 1;
 
     /**
-     * Constant indicating that a text reporter should stay on top of other application windows. Use
-     * with {@code showDialog} methods which take a {@code flags} argument.
+     * Constant indicating that a text reporter should stay on top of other application windows. Use with
+     * {@code showDialog} methods which take a {@code flags} argument.
      */
     public static final int FLAG_ALWAYS_ON_TOP = 1 << 1;
 
     /**
-     * Constant indicating that a text reporter dialog should be resizable. Use with {@code
-     * showDialog} methods which take a {@code flags} argument.
+     * Constant indicating that a text reporter dialog should be resizable. Use with {@code showDialog} methods which
+     * take a {@code flags} argument.
      */
     public static final int FLAG_RESIZABLE = 1 << 2;
 
     /**
-     * Default flags argument for {@code showDialog} methods. Equivalent to {@code
-     * FLAG_ALWAYS_ON_TOP | FLAG_RESIZABLE}.
+     * Default flags argument for {@code showDialog} methods. Equivalent to {@code FLAG_ALWAYS_ON_TOP | FLAG_RESIZABLE}.
      */
     public static final int DEFAULT_FLAGS = FLAG_ALWAYS_ON_TOP | FLAG_RESIZABLE;
 
@@ -162,8 +158,8 @@ public class JTextReporter {
     public static final char DEFAULT_SEPARATOR_CHAR = '-';
 
     /**
-     * A connection to an active text reporter dialog providing methods to update the text
-     * displayed, add or remove listeners, and close the dialog programatically.
+     * A connection to an active text reporter dialog providing methods to update the text displayed, add or remove
+     * listeners, and close the dialog programatically.
      */
     public static class Connection {
 
@@ -189,10 +185,7 @@ public class JTextReporter {
             active = new AtomicBoolean(true);
         }
 
-        /**
-         * Queries whether this is an open connection, ie. the associated dialog has not been
-         * closed.
-         */
+        /** Queries whether this is an open connection, ie. the associated dialog has not been closed. */
         public boolean isOpen() {
             updateLock.readLock().lock();
             try {
@@ -288,9 +281,7 @@ public class JTextReporter {
             return appendSeparatorLine(n, DEFAULT_SEPARATOR_CHAR);
         }
 
-        /**
-         * Appends a line consisting of {@code n} copies of char {@code c} followed by a newline.
-         */
+        /** Appends a line consisting of {@code n} copies of char {@code c} followed by a newline. */
         public Connection appendSeparatorLine(int n, char c) {
             char[] carray = new char[n];
             Arrays.fill(carray, c);
@@ -323,15 +314,11 @@ public class JTextReporter {
                         try {
                             SwingUtilities.invokeAndWait(() -> rtnText[0] = dialog.getText());
                         } catch (InterruptedException ex) {
-                            LOGGER.severe(
-                                    "Thread interrupted while getting text from text reporter");
+                            LOGGER.severe("Thread interrupted while getting text from text reporter");
                             rtnText[0] = "";
 
                         } catch (InvocationTargetException ex) {
-                            LOGGER.log(
-                                    Level.SEVERE,
-                                    "Error while trying to get text from text reporter",
-                                    ex);
+                            LOGGER.log(Level.SEVERE, "Error while trying to get text from text reporter", ex);
                             rtnText[0] = "";
                         }
                     }
@@ -344,11 +331,11 @@ public class JTextReporter {
         }
 
         /**
-         * Closes the associated dialog. The close operation is run on the event dispatch thread to
-         * try to avoid collisions with GUI actions, but you can call this method from any thread.
+         * Closes the associated dialog. The close operation is run on the event dispatch thread to try to avoid
+         * collisions with GUI actions, but you can call this method from any thread.
          *
-         * <p>It is safe to call this method speculatively: a {@linkplain Level#INFO} message will
-         * be logged but no error thrown.
+         * <p>It is safe to call this method speculatively: a {@linkplain Level#INFO} message will be logged but no
+         * error thrown.
          */
         public void closeDialog() {
             updateLock.writeLock().lock();
@@ -480,12 +467,10 @@ public class JTextReporter {
         } else {
             final CountDownLatch latch = new CountDownLatch(1);
 
-            SwingUtilities.invokeLater(
-                    () -> {
-                        conn[0] =
-                                doShowDialog(title, initialText, flags, textAreaRows, textAreaCols);
-                        latch.countDown();
-                    });
+            SwingUtilities.invokeLater(() -> {
+                conn[0] = doShowDialog(title, initialText, flags, textAreaRows, textAreaCols);
+                latch.countDown();
+            });
 
             try {
                 latch.await(DIALOG_CREATION_TIMEOUT, TimeUnit.MILLISECONDS);
@@ -531,14 +516,9 @@ public class JTextReporter {
          * @param textAreaRows number of text area rows
          * @param textAreaCols number of text area columns
          */
-        private TextDialog(
-                String title, String initialText, int flags, int textAreaRows, int textAreaCols) {
+        private TextDialog(String title, String initialText, int flags, int textAreaRows, int textAreaCols) {
 
-            super(
-                    (JDialog) null,
-                    title,
-                    isFlagSet(flags, FLAG_MODAL),
-                    isFlagSet(flags, FLAG_RESIZABLE));
+            super((JDialog) null, title, isFlagSet(flags, FLAG_MODAL), isFlagSet(flags, FLAG_RESIZABLE));
             setAlwaysOnTop(isFlagSet(flags, FLAG_ALWAYS_ON_TOP));
 
             textArea = new JTextArea(textAreaRows, textAreaCols);
@@ -561,26 +541,25 @@ public class JTextReporter {
              * former is called when the dialog is closed via the system button
              * and the latter when it is closed using the dialog Close button.
              */
-            addWindowListener(
-                    new WindowAdapter() {
-                        private boolean flag = false;
+            addWindowListener(new WindowAdapter() {
+                private boolean flag = false;
 
-                        @Override
-                        public void windowClosing(WindowEvent e) {
-                            if (!flag) {
-                                conn.setDialogClosed();
-                                flag = true;
-                            }
-                        }
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    if (!flag) {
+                        conn.setDialogClosed();
+                        flag = true;
+                    }
+                }
 
-                        @Override
-                        public void windowClosed(WindowEvent e) {
-                            if (!flag) {
-                                conn.setDialogClosed();
-                                flag = true;
-                            }
-                        }
-                    });
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    if (!flag) {
+                        conn.setDialogClosed();
+                        flag = true;
+                    }
+                }
+            });
         }
 
         @Override
@@ -688,8 +667,7 @@ public class JTextReporter {
         }
 
         /**
-         * Appends the given text to that displayed. No additional newlines are added after the
-         * text.
+         * Appends the given text to that displayed. No additional newlines are added after the text.
          *
          * @param text the text to append
          * @param indent indent width as number of spaces
@@ -731,19 +709,18 @@ public class JTextReporter {
          */
         static File getFile() {
             JFileChooser chooser = new JFileChooser(cwd);
-            chooser.setFileFilter(
-                    new FileFilter() {
+            chooser.setFileFilter(new FileFilter() {
 
-                        @Override
-                        public boolean accept(File f) {
-                            return true;
-                        }
+                @Override
+                public boolean accept(File f) {
+                    return true;
+                }
 
-                        @Override
-                        public String getDescription() {
-                            return "All files";
-                        }
-                    });
+                @Override
+                public String getDescription() {
+                    return "All files";
+                }
+            });
 
             if (chooser.showSaveDialog(null) != JFileChooser.APPROVE_OPTION) {
                 return null;

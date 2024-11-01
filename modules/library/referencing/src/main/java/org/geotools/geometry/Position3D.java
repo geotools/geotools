@@ -42,9 +42,7 @@ public class Position3D implements Position, Serializable, Cloneable {
     /** The coordinate reference system for this position; */
     private CoordinateReferenceSystem crs;
 
-    /**
-     * Constructs a position initialized to (0,0,0) with a {@code null} coordinate reference system.
-     */
+    /** Constructs a position initialized to (0,0,0) with a {@code null} coordinate reference system. */
     public Position3D() {}
 
     /**
@@ -77,8 +75,7 @@ public class Position3D implements Position, Serializable, Cloneable {
      * @param y The <var>y</var> value.
      * @param z The <var>z</var> value.
      */
-    public Position3D(
-            final CoordinateReferenceSystem crs, final double x, final double y, final double z) {
+    public Position3D(final CoordinateReferenceSystem crs, final double x, final double y, final double z) {
         this(x, y, z);
         setCoordinateReferenceSystem(crs);
     }
@@ -98,9 +95,9 @@ public class Position3D implements Position, Serializable, Cloneable {
     }
 
     /**
-     * Returns the coordinate reference system in which the coordinate is given. May be {@code null}
-     * if this particular {@code DirectPosition} is included in a larger object with such a
-     * reference to a {@linkplain CoordinateReferenceSystem coordinate reference system}.
+     * Returns the coordinate reference system in which the coordinate is given. May be {@code null} if this particular
+     * {@code DirectPosition} is included in a larger object with such a reference to a
+     * {@linkplain CoordinateReferenceSystem coordinate reference system}.
      *
      * @return The coordinate reference system, or {@code null}.
      */
@@ -131,8 +128,7 @@ public class Position3D implements Position, Serializable, Cloneable {
     }
 
     /**
-     * Returns a sequence of numbers that hold the coordinate of this position in its reference
-     * system.
+     * Returns a sequence of numbers that hold the coordinate of this position in its reference system.
      *
      * @return The coordinates
      */
@@ -189,8 +185,8 @@ public class Position3D implements Position, Serializable, Cloneable {
 
     /**
      * Set this coordinate to the specified direct position. If the specified position contains a
-     * {@linkplain CoordinateReferenceSystem coordinate reference system}, then the CRS for this
-     * position will be set to the CRS of the specified position.
+     * {@linkplain CoordinateReferenceSystem coordinate reference system}, then the CRS for this position will be set to
+     * the CRS of the specified position.
      *
      * @param position The new position for this point.
      * @throws MismatchedDimensionException if this point doesn't have the expected dimension.
@@ -210,8 +206,7 @@ public class Position3D implements Position, Serializable, Cloneable {
     }
 
     /**
-     * Returns a hash value for this coordinate. This method implements the {@link
-     * Position#hashCode} contract.
+     * Returns a hash value for this coordinate. This method implements the {@link Position#hashCode} contract.
      *
      * @return A hash code value for this position.
      */
@@ -221,9 +216,8 @@ public class Position3D implements Position, Serializable, Cloneable {
     }
 
     /**
-     * Compares this point with the specified object for equality. If the given object implements
-     * the {@link Position} interface, then the comparison is performed as specified in its {@link
-     * Position#equals} contract.
+     * Compares this point with the specified object for equality. If the given object implements the {@link Position}
+     * interface, then the comparison is performed as specified in its {@link Position#equals} contract.
      *
      * @param object The object to compare with this position.
      * @return {@code true} if the given object is equals to this position.
@@ -260,8 +254,7 @@ public class Position3D implements Position, Serializable, Cloneable {
     }
 
     /**
-     * Write this object to the specified stream. This method is necessary because the super-class
-     * is not serializable.
+     * Write this object to the specified stream. This method is necessary because the super-class is not serializable.
      */
     private void writeObject(final ObjectOutputStream out) throws IOException {
         out.defaultWriteObject();
@@ -271,8 +264,7 @@ public class Position3D implements Position, Serializable, Cloneable {
     }
 
     /**
-     * Read this object from the specified stream. This method is necessary because the super-class
-     * is not serializable.
+     * Read this object from the specified stream. This method is necessary because the super-class is not serializable.
      */
     private void readObject(final ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();

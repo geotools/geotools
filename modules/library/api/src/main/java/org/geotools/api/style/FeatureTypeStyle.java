@@ -20,8 +20,8 @@ import org.geotools.api.metadata.citation.OnLineResource;
 /**
  * Represents a style that applies to features or coverage.
  *
- * @version <A HREF="http://www.opengeospatial.org/standards/symbol">Symbology Encoding
- *     Implementation Specification 1.1.0</A>
+ * @version <A HREF="http://www.opengeospatial.org/standards/symbol">Symbology Encoding Implementation Specification
+ *     1.1.0</A>
  * @author Open Geospatial Consortium
  * @author Johann Sorel (Geomatys)
  * @author Chris Dillard (SYS Technologies)
@@ -36,89 +36,81 @@ public interface FeatureTypeStyle {
     /** Only the first matching rule gets executed, all the others are skipped */
     String VALUE_EVALUATION_MODE_FIRST = "first";
     /**
-     * Applies a color composition/blending operation at the feature type style level (that is,
-     * blending the current FTS level against the map below it).
+     * Applies a color composition/blending operation at the feature type style level (that is, blending the current FTS
+     * level against the map below it).
      *
-     * <p>The syntax for this key is {code}<VendorOption
-     * name="composite">name[,opacity]</VendorOption>{code} where:
+     * <p>The syntax for this key is {code}<VendorOption name="composite">name[,opacity]</VendorOption>{code} where:
      *
      * <ul>
-     *   <li>{code}name is one of the <a href="http://www.w3.org/TR/compositing-1/">SVG composition
-     *       operations</a>, in particular, copy, destination, source-over, destination-over,
-     *       source-in, destination-in, source-out, destination-out, source-atop, destination-atop,
-     *       xor, multiply, screen, overlay, darken, lighten, color-dodge, color-burn, hard-light,
-     *       soft-light, difference, exclusion
+     *   <li>{code}name is one of the <a href="http://www.w3.org/TR/compositing-1/">SVG composition operations</a>, in
+     *       particular, copy, destination, source-over, destination-over, source-in, destination-in, source-out,
+     *       destination-out, source-atop, destination-atop, xor, multiply, screen, overlay, darken, lighten,
+     *       color-dodge, color-burn, hard-light, soft-light, difference, exclusion
      *   <li>{opacity} indicates the opacity level to be used during the operation, defauls to 1
      * </ul>
      *
      * For example:
      *
      * <ul>
-     *   <li>{code}<VendorOption name="composite">source-atop, 0.5</VendorOption>{code} composes the
-     *       current FTS exclusively where the previous map has already been drawn, using a 0.5
-     *       opacity level
-     *   <li>{code}<VendorOption name="composite">multiply</VendorOption>{code} blends the current
-     *       FTS with the underlying map using color multiplication
+     *   <li>{code}<VendorOption name="composite">source-atop, 0.5</VendorOption>{code} composes the current FTS
+     *       exclusively where the previous map has already been drawn, using a 0.5 opacity level
+     *   <li>{code}<VendorOption name="composite">multiply</VendorOption>{code} blends the current FTS with the
+     *       underlying map using color multiplication
      * </ul>
      *
-     * <p>The same vendor option can also be applied at the symbolizer level to achieve different
-     * effects (feature by feature composition as oppose to layer by layer one).
+     * <p>The same vendor option can also be applied at the symbolizer level to achieve different effects (feature by
+     * feature composition as oppose to layer by layer one).
      *
-     * <p>Important note: for most compositing operation to work properly, the graphics used for the
-     * rendering should be derived from an image that has an alpha channel and transparent
-     * background (as most of the operations consider the transparency of the target surface in
-     * their math)
+     * <p>Important note: for most compositing operation to work properly, the graphics used for the rendering should be
+     * derived from an image that has an alpha channel and transparent background (as most of the operations consider
+     * the transparency of the target surface in their math)
      */
     String COMPOSITE = "composite";
     /**
-     * Boolean value, if true the current feature type style will be treated as a base for the
-     * subsequent feature type styles in the rendering stack (including other layer ones) as opposed
-     * to use the merged backdrop rendered so far. When the top of the stack is reached, or another
-     * base is found, this FTS will be merged into the backdrop, eventually using the indicated
-     * composite operator
+     * Boolean value, if true the current feature type style will be treated as a base for the subsequent feature type
+     * styles in the rendering stack (including other layer ones) as opposed to use the merged backdrop rendered so far.
+     * When the top of the stack is reached, or another base is found, this FTS will be merged into the backdrop,
+     * eventually using the indicated composite operator
      */
     String COMPOSITE_BASE = "composite-base";
     /**
-     * String value controlling the order in which the features are loaded from the data source, and
-     * thus painted, in this feature type style.
+     * String value controlling the order in which the features are loaded from the data source, and thus painted, in
+     * this feature type style.
      *
-     * <p>The syntax is <code>Attribute1 {A|D},Attribute2 {A|D}...</code>, <code>A</code> is
-     * ascending, <code>D</code> is descending. The sorting direction is optional and defaults to
-     * ascending if not specified.
+     * <p>The syntax is <code>Attribute1 {A|D},Attribute2 {A|D}...</code>, <code>A</code> is ascending, <code>D</code>
+     * is descending. The sorting direction is optional and defaults to ascending if not specified.
      *
-     * <p>E.g., <code>cat D,name</code> sorts data by <code>cat</code> in descending order, and then
-     * by ascending <code>name</code> within all features having the same <code>cat</code> value.
+     * <p>E.g., <code>cat D,name</code> sorts data by <code>cat</code> in descending order, and then by ascending <code>
+     * name</code> within all features having the same <code>cat</code> value.
      */
     String SORT_BY = "sortBy";
     /**
-     * String value controlling cross layer z-ordering. Several feature type styles in the same
-     * sortByGroup will have their features globally ordered before painting, for example, in order
-     * to respect their real world relationships. FeatureTypeStyle are grouped only if they are
-     * adjacent in the overall MapContent (even across layers). In case compositing is used in the
-     * same FeatureTypeStyle, the first value in group will be used for the entire group.
+     * String value controlling cross layer z-ordering. Several feature type styles in the same sortByGroup will have
+     * their features globally ordered before painting, for example, in order to respect their real world relationships.
+     * FeatureTypeStyle are grouped only if they are adjacent in the overall MapContent (even across layers). In case
+     * compositing is used in the same FeatureTypeStyle, the first value in group will be used for the entire group.
      */
     String SORT_BY_GROUP = "sortByGroup";
     /**
-     * String value allowing to control whether an SLD element should be included when applying the
-     * style to render maps or a legends. The option can be used also on Rule and all the
-     * Symbolizers. Possible values are normal, legendOnly, mapOnly.
+     * String value allowing to control whether an SLD element should be included when applying the style to render maps
+     * or a legends. The option can be used also on Rule and all the Symbolizers. Possible values are normal,
+     * legendOnly, mapOnly.
      */
     String VENDOR_OPTION_INCLUSION = "inclusion";
     /**
-     * Set of attributes to be included in vector tiles. Used by the GeoServer vector tiles module,
-     * declared here so that it can be referred to from style languages.
+     * Set of attributes to be included in vector tiles. Used by the GeoServer vector tiles module, declared here so
+     * that it can be referred to from style languages.
      */
     String VT_ATTRIBUTES = "vt-attributes";
     /**
-     * Wheter or not a dedicated label layer should be generated for vector tiles. Useful for
-     * polygon layers, but also for point and line layers, as it will include only features whose
-     * label attributes are not null. Used by the GeoServer vector tiles module, declared here so
-     * that it can be referred to from style languages
+     * Wheter or not a dedicated label layer should be generated for vector tiles. Useful for polygon layers, but also
+     * for point and line layers, as it will include only features whose label attributes are not null. Used by the
+     * GeoServer vector tiles module, declared here so that it can be referred to from style languages
      */
     String VT_LABELS = "vt-labels";
     /**
-     * Set of attributes to be included in the vector tiles label layer. Used by the GeoServer
-     * vector tiles module, declared here so that it can be referred to from style languages
+     * Set of attributes to be included in the vector tiles label layer. Used by the GeoServer vector tiles module,
+     * declared here so that it can be referred to from style languages
      */
     String VT_LABEL_ATTRIBUTES = "vt-label-attributes";
 
@@ -126,9 +118,8 @@ public interface FeatureTypeStyle {
     String VT_COALESCE = "vt-coalesce";
 
     /**
-     * Returns a name for this style. This can be any string that uniquely identifies this style
-     * within a given canvas. It is not meant to be human-friendly. (The "title" property is meant
-     * to be human friendly.)
+     * Returns a name for this style. This can be any string that uniquely identifies this style within a given canvas.
+     * It is not meant to be human-friendly. (The "title" property is meant to be human friendly.)
      *
      * @return a name for this style.
      */
@@ -147,9 +138,8 @@ public interface FeatureTypeStyle {
     /**
      * Returns a collection of Object identifying features object.
      *
-     * <p>ISO 19117 extends FeatureTypeStyle be providing this method. This method enable the
-     * possibility to use a feature type style on a given list of features only, which is not
-     * possible in OGC SE.
+     * <p>ISO 19117 extends FeatureTypeStyle be providing this method. This method enable the possibility to use a
+     * feature type style on a given list of features only, which is not possible in OGC SE.
      *
      * @return Collection<String>
      */
@@ -158,18 +148,17 @@ public interface FeatureTypeStyle {
     /**
      * Returns the names of the feature type that this style is meant to act upon.
      *
-     * <p>In OGC Symbology Encoding define this method to return a single String, and ISO 19117 use
-     * a Collection of String. We've choosen ISO because it is more logic that a featureTypeStyle
-     * can be applied to multiple featuretypes and not limited to a single one.
+     * <p>In OGC Symbology Encoding define this method to return a single String, and ISO 19117 use a Collection of
+     * String. We've choosen ISO because it is more logic that a featureTypeStyle can be applied to multiple
+     * featuretypes and not limited to a single one.
      *
      * @return the name of the feature type that this style is meant to act upon.
      */
     Set<Name> featureTypeNames();
 
     /**
-     * Returns a collection that identifies the more general "type" of geometry that this style is
-     * meant to act upon. In the current OGC SE specifications, this is an experimental element and
-     * can take only one of the following values:
+     * Returns a collection that identifies the more general "type" of geometry that this style is meant to act upon. In
+     * the current OGC SE specifications, this is an experimental element and can take only one of the following values:
      *
      * <p>
      *
@@ -196,17 +185,17 @@ public interface FeatureTypeStyle {
     List<Rule> rules();
 
     /**
-     * It is common to have a style coming from a external xml file, this method provide a way to
-     * get the original source if there is one. OGC SLD specification can use this method to know if
-     * a style must be written completely or if writing the online resource path is enough.
+     * It is common to have a style coming from a external xml file, this method provide a way to get the original
+     * source if there is one. OGC SLD specification can use this method to know if a style must be written completely
+     * or if writing the online resource path is enough.
      *
      * @return OnlineResource or null
      */
     OnLineResource getOnlineResource();
 
     /**
-     * It is common to have a style coming from a external xml file, this method provide a way to
-     * get the original source if there is one.
+     * It is common to have a style coming from a external xml file, this method provide a way to get the original
+     * source if there is one.
      *
      * @param online location external file defining this style, or null if not available
      */
@@ -215,9 +204,9 @@ public interface FeatureTypeStyle {
     void accept(StyleVisitor visitor);
 
     /**
-     * The eventual transformation to be applied before rendering the data (should be an expression
-     * taking a feature collection or a grid coverage as the evaluation context and returns a
-     * feature collection or a grid coverage as an output)
+     * The eventual transformation to be applied before rendering the data (should be an expression taking a feature
+     * collection or a grid coverage as the evaluation context and returns a feature collection or a grid coverage as an
+     * output)
      */
     Expression getTransformation();
 
@@ -229,9 +218,9 @@ public interface FeatureTypeStyle {
     Object accept(TraversingStyleVisitor visitor, Object extraData);
 
     /**
-     * Sets the eventual transformation to be applied before rendering the data (should be an
-     * expression taking a feature collection or a grid coverage as an input and returns a feature
-     * collection or a grid coverage as an output)
+     * Sets the eventual transformation to be applied before rendering the data (should be an expression taking a
+     * feature collection or a grid coverage as an input and returns a feature collection or a grid coverage as an
+     * output)
      */
     void setTransformation(Expression transformation);
 
@@ -241,8 +230,7 @@ public interface FeatureTypeStyle {
     /**
      * Map of vendor options for the symbolizer.
      *
-     * <p>Client code looking for the existence of a single option should use {@link
-     * #hasOption(String)}
+     * <p>Client code looking for the existence of a single option should use {@link #hasOption(String)}
      */
     Map<String, String> getOptions();
 

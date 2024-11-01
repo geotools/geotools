@@ -77,8 +77,8 @@ import org.locationtech.jts.geom.Geometry;
 import org.xml.sax.helpers.NamespaceSupport;
 
 /**
- * Interface whose methods allow the caller to create instances of the various {@link Filter} and
- * {@link Expression} subclasses.
+ * Interface whose methods allow the caller to create instances of the various {@link Filter} and {@link Expression}
+ * subclasses.
  *
  * <p>
  *
@@ -88,10 +88,9 @@ import org.xml.sax.helpers.NamespaceSupport;
  */
 public interface FilterFactory {
     /**
-     * The FilterCapabilities data structure is used to describe the abilities of this
-     * FilterFactory, it includes restrictions on the available spatial operations, scalar
-     * operations, lists the supported functions, and describes what geometry literals are
-     * understood.
+     * The FilterCapabilities data structure is used to describe the abilities of this FilterFactory, it includes
+     * restrictions on the available spatial operations, scalar operations, lists the supported functions, and describes
+     * what geometry literals are understood.
      *
      * @return FilterCapabilities describing the abilities of this FilterFactory
      */
@@ -117,14 +116,12 @@ public interface FilterFactory {
     /**
      * ResourceId for time based query.
      *
-     * <p>Date range constructor for a feature id; none or one of {@code start} and {@code end} can
-     * be {@code null}, making for an unconstrained date range at either of the ends.
+     * <p>Date range constructor for a feature id; none or one of {@code start} and {@code end} can be {@code null},
+     * making for an unconstrained date range at either of the ends.
      *
      * @param fid feature id, non null;
-     * @param startTime lower end timestamp of the time range, inclusive, or {@code null} only if
-     *     {@code end != null}
-     * @param endTime upper end timestamp of the time range, inclusive, or {@code null} only if
-     *     {@code start != null}
+     * @param startTime lower end timestamp of the time range, inclusive, or {@code null} only if {@code end != null}
+     * @param endTime upper end timestamp of the time range, inclusive, or {@code null} only if {@code start != null}
      */
     ResourceId resourceId(String fid, Date startTime, Date endTime);
 
@@ -152,17 +149,14 @@ public interface FilterFactory {
     /** Passes only for objects that have one of the IDs given to this object. */
     Id id(Set<? extends Identifier> ids);
 
-    /**
-     * Retrieves the value of a {@linkplain org.geotools.api.feature.Feature feature}'s property.
-     */
+    /** Retrieves the value of a {@linkplain org.geotools.api.feature.Feature feature}'s property. */
     PropertyName property(String name);
 
     /** A compact way of encoding a range check. */
     PropertyIsBetween between(Expression expr, Expression lower, Expression upper);
 
     /** A compact way of encoding a range check. */
-    PropertyIsBetween between(
-            Expression expr, Expression lower, Expression upper, MatchAction matchAction);
+    PropertyIsBetween between(Expression expr, Expression lower, Expression upper, MatchAction matchAction);
 
     /**
      * Compares that two sub-expressions are equal to each other.
@@ -175,8 +169,7 @@ public interface FilterFactory {
     PropertyIsEqualTo equal(Expression expr1, Expression expr2, boolean matchCase);
 
     /** Compares that two sub-expressions are equal to eacher other */
-    PropertyIsEqualTo equal(
-            Expression expr1, Expression expr2, boolean matchCase, MatchAction matchAction);
+    PropertyIsEqualTo equal(Expression expr1, Expression expr2, boolean matchCase, MatchAction matchAction);
 
     /** Checks that the first sub-expression is not equal to the second subexpression. */
     PropertyIsNotEqualTo notEqual(Expression expr1, Expression expr2);
@@ -200,8 +193,7 @@ public interface FilterFactory {
      * @param matchAction action for multi-valued properties
      * @return evaluates to true of expr1 not equal to expr2
      */
-    PropertyIsNotEqualTo notEqual(
-            Expression expr1, Expression expr2, boolean matchCase, MatchAction matchAction);
+    PropertyIsNotEqualTo notEqual(Expression expr1, Expression expr2, boolean matchCase, MatchAction matchAction);
 
     /** Checks that the first sub-expression is greater than the second subexpression. */
     PropertyIsGreaterThan greater(Expression expr1, Expression expr2);
@@ -224,15 +216,13 @@ public interface FilterFactory {
      * @param matchCase true if the comparison should be case insensitive
      * @return evaluates to true of expr1 is greater than expr2
      */
-    PropertyIsGreaterThan greater(
-            Expression expr1, Expression expr2, boolean matchCase, MatchAction matchAction);
+    PropertyIsGreaterThan greater(Expression expr1, Expression expr2, boolean matchCase, MatchAction matchAction);
 
     /** Checks that the first sub-expression is greater or equal to the second subexpression. */
     PropertyIsGreaterThanOrEqualTo greaterOrEqual(Expression expr1, Expression expr2);
 
     /** Checks that the first sub-expression is greater or equal to the second subexpression. */
-    PropertyIsGreaterThanOrEqualTo greaterOrEqual(
-            Expression expr1, Expression expr2, boolean matchCase);
+    PropertyIsGreaterThanOrEqualTo greaterOrEqual(Expression expr1, Expression expr2, boolean matchCase);
 
     /** Checks that the first sub-expression is greater or equal to the second subexpression. */
     PropertyIsGreaterThanOrEqualTo greaterOrEqual(
@@ -243,8 +233,7 @@ public interface FilterFactory {
 
     PropertyIsLessThan less(Expression expr1, Expression expr2, boolean matchCase);
 
-    PropertyIsLessThan less(
-            Expression expr1, Expression expr2, boolean matchCase, MatchAction matchAction);
+    PropertyIsLessThan less(Expression expr1, Expression expr2, boolean matchCase, MatchAction matchAction);
 
     /** Checks that its first sub-expression is less than or equal to its second subexpression. */
     PropertyIsLessThanOrEqualTo lessOrEqual(Expression expr1, Expression expr2);
@@ -258,17 +247,11 @@ public interface FilterFactory {
     PropertyIsLike like(Expression expr, String pattern);
 
     /** Character string comparison operator with pattern matching and specified wildcards. */
-    PropertyIsLike like(
-            Expression expr, String pattern, String wildcard, String singleChar, String escape);
+    PropertyIsLike like(Expression expr, String pattern, String wildcard, String singleChar, String escape);
 
     /** Character string comparison operator with pattern matching and specified wildcards. */
     PropertyIsLike like(
-            Expression expr,
-            String pattern,
-            String wildcard,
-            String singleChar,
-            String escape,
-            boolean matchCase);
+            Expression expr, String pattern, String wildcard, String singleChar, String escape, boolean matchCase);
 
     /** Character string comparison operator with pattern matching and specified wildcards. */
     PropertyIsLike like(
@@ -295,11 +278,10 @@ public interface FilterFactory {
     /**
      * Checks if the bounding box of the feature's geometry overlaps the indicated bounds.
      *
-     * <p>This method is defined in strict accordance with the Filter 1.0 specification, you may
-     * find the FilterFactory.bbox(Expression, BoundingBox) to be easier to use.
+     * <p>This method is defined in strict accordance with the Filter 1.0 specification, you may find the
+     * FilterFactory.bbox(Expression, BoundingBox) to be easier to use.
      *
-     * @param propertyName Name of geometry property (for a PropertyName to access a Feature's
-     *     Geometry)
+     * @param propertyName Name of geometry property (for a PropertyName to access a Feature's Geometry)
      * @param minx Minimum "x" value (for a literal BoundingBox)
      * @param miny Minimum "y" value (for a literal BoundingBox)
      * @param maxx Maximum "x" value (for a literal BoundingBox)
@@ -319,11 +301,10 @@ public interface FilterFactory {
     /**
      * Checks if the bounding box of the feature's geometry overlaps the indicated bounds.
      *
-     * <p>This method is defined in strict accordance with the Filter 1.0 specification, you may
-     * find the FilterFactory.bbox(Expression, BoundingBox) to be easier to use.
+     * <p>This method is defined in strict accordance with the Filter 1.0 specification, you may find the
+     * FilterFactory.bbox(Expression, BoundingBox) to be easier to use.
      *
-     * @param propertyName Name of geometry property (for a PropertyName to access a Feature's
-     *     Geometry)
+     * @param propertyName Name of geometry property (for a PropertyName to access a Feature's Geometry)
      * @param minx Minimum "x" value (for a literal BoundingBox)
      * @param miny Minimum "y" value (for a literal BoundingBox)
      * @param maxx Maximum "x" value (for a literal BoundingBox)
@@ -339,22 +320,11 @@ public interface FilterFactory {
             String srs,
             MatchAction matchAction);
 
-    /**
-     * Check if all of a feature's geometry is more distant than the given distance from this
-     * object's geometry.
-     */
+    /** Check if all of a feature's geometry is more distant than the given distance from this object's geometry. */
     Beyond beyond(String propertyName, Geometry geometry, double distance, String units);
 
-    /**
-     * Check if all of a feature's geometry is more distant than the given distance from this
-     * object's geometry.
-     */
-    Beyond beyond(
-            String propertyName,
-            Geometry geometry,
-            double distance,
-            String units,
-            MatchAction matchAction);
+    /** Check if all of a feature's geometry is more distant than the given distance from this object's geometry. */
+    Beyond beyond(String propertyName, Geometry geometry, double distance, String units, MatchAction matchAction);
 
     /** Checks if the the first geometric operand contains the second. */
     Contains contains(String propertyName, Geometry geometry);
@@ -374,22 +344,11 @@ public interface FilterFactory {
     /** Checks if the first operand is disjoint from the second. */
     Disjoint disjoint(String propertyName, Geometry geometry, MatchAction matchAction);
 
-    /**
-     * Checks if any part of the first geometry lies within the given distance of the second
-     * geometry.
-     */
+    /** Checks if any part of the first geometry lies within the given distance of the second geometry. */
     DWithin dwithin(String propertyName, Geometry geometry, double distance, String units);
 
-    /**
-     * Checks if any part of the first geometry lies within the given distance of the second
-     * geometry.
-     */
-    DWithin dwithin(
-            String propertyName,
-            Geometry geometry,
-            double distance,
-            String units,
-            MatchAction matchAction);
+    /** Checks if any part of the first geometry lies within the given distance of the second geometry. */
+    DWithin dwithin(String propertyName, Geometry geometry, double distance, String units, MatchAction matchAction);
 
     /** Checks if the geometry of the two operands are equal. */
     Equals equals(String propertyName, Geometry geometry);
@@ -403,38 +362,22 @@ public interface FilterFactory {
     /** Checks if the two geometric operands intersect. */
     Intersects intersects(String propertyName, Geometry geometry, MatchAction matchAction);
 
-    /**
-     * Checks if the interior of the first geometry somewhere overlaps the interior of the second
-     * geometry.
-     */
+    /** Checks if the interior of the first geometry somewhere overlaps the interior of the second geometry. */
     Overlaps overlaps(String propertyName, Geometry geometry);
 
-    /**
-     * Checks if the interior of the first geometry somewhere overlaps the interior of the second
-     * geometry.
-     */
+    /** Checks if the interior of the first geometry somewhere overlaps the interior of the second geometry. */
     Overlaps overlaps(String propertyName, Geometry geometry, MatchAction matchAction);
 
-    /**
-     * Checks if the feature's geometry touches, but does not overlap with the geometry held by this
-     * object.
-     */
+    /** Checks if the feature's geometry touches, but does not overlap with the geometry held by this object. */
     Touches touches(String propertyName, Geometry geometry);
 
-    /**
-     * Checks if the feature's geometry touches, but does not overlap with the geometry held by this
-     * object.
-     */
+    /** Checks if the feature's geometry touches, but does not overlap with the geometry held by this object. */
     Touches touches(String propertyName, Geometry geometry, MatchAction matchAction);
 
-    /**
-     * Checks if the feature's geometry is completely contained by the specified constant geometry.
-     */
+    /** Checks if the feature's geometry is completely contained by the specified constant geometry. */
     Within within(String propertyName, Geometry geometry);
 
-    /**
-     * Checks if the feature's geometry is completely contained by the specified constant geometry.
-     */
+    /** Checks if the feature's geometry is completely contained by the specified constant geometry. */
     Within within(String propertyName, Geometry geometry, MatchAction matchAction);
 
     /////////////////////////////////////////////////////////////////////////////////
@@ -623,8 +566,7 @@ public interface FilterFactory {
             ComparisonOperators comparison, ArithmeticOperators arithmetic, boolean logical);
 
     /** spatial capabilities */
-    SpatialCapabilities spatialCapabilities(
-            GeometryOperand[] geometryOperands, SpatialOperators spatial);
+    SpatialCapabilities spatialCapabilities(GeometryOperand[] geometryOperands, SpatialOperators spatial);
 
     /** id capabilities */
     IdCapabilities idCapabilities(boolean eid, boolean fid);
@@ -634,10 +576,7 @@ public interface FilterFactory {
 
     /** filter capabilities */
     FilterCapabilities capabilities(
-            String version,
-            ScalarCapabilities scalar,
-            SpatialCapabilities spatial,
-            IdCapabilities id);
+            String version, ScalarCapabilities scalar, SpatialCapabilities spatial, IdCapabilities id);
 
     /** filter capabilities */
     FilterCapabilities capabilities(
@@ -679,8 +618,8 @@ public interface FilterFactory {
      * FunctionName used to describe an available function.
      *
      * @param name name of function
-     * @param nargs number of arguments, use a negative number to indicate a minimum if the function
-     *     supports an open ended number of arguments
+     * @param nargs number of arguments, use a negative number to indicate a minimum if the function supports an open
+     *     ended number of arguments
      * @param argNames Optional list of argument names
      */
     FunctionName functionName(String name, int nargs, List<String> argNames);
@@ -689,8 +628,8 @@ public interface FilterFactory {
      * FunctionName used to describe an available function.
      *
      * @param name qualified name of function
-     * @param nargs number of arguments, use a negative number to indicate a minimum if the function
-     *     supports an open ended number of arguments
+     * @param nargs number of arguments, use a negative number to indicate a minimum if the function supports an open
+     *     ended number of arguments
      * @param argNames Optional list of argument names
      */
     FunctionName functionName(Name name, int nargs, List<String> argNames);
@@ -766,11 +705,10 @@ public interface FilterFactory {
     /**
      * Checks if the bounding box of the feature's geometry overlaps the indicated bounds.
      *
-     * <p>This method does not strictly confirm to the the Filter 1.0 specification, you may use it
-     * to check expressions other than PropertyName.
+     * <p>This method does not strictly confirm to the the Filter 1.0 specification, you may use it to check expressions
+     * other than PropertyName.
      *
-     * @param geometry Expression used to access a Geometry, in order to check for interaction with
-     *     bounds
+     * @param geometry Expression used to access a Geometry, in order to check for interaction with bounds
      * @param bounds Indicates the bounds to check geometry against
      */
     BBOX bbox(Expression geometry, BoundingBox bounds);
@@ -778,32 +716,20 @@ public interface FilterFactory {
     /**
      * Checks if the bounding box of the feature's geometry overlaps the indicated bounds.
      *
-     * <p>This method does not strictly confirm to the the Filter 1.0 specification, you may use it
-     * to check expressions other than PropertyName.
+     * <p>This method does not strictly confirm to the the Filter 1.0 specification, you may use it to check expressions
+     * other than PropertyName.
      *
-     * @param geometry Expression used to access a Geometry, in order to check for interaction with
-     *     bounds
+     * @param geometry Expression used to access a Geometry, in order to check for interaction with bounds
      * @param bounds Indicates the bounds to check geometry against
      * @param matchAction Match Action
      */
     BBOX bbox(Expression geometry, BoundingBox bounds, MatchAction matchAction);
 
-    /**
-     * Check if all of a geometry is more distant than the given distance from this object's
-     * geometry.
-     */
+    /** Check if all of a geometry is more distant than the given distance from this object's geometry. */
     Beyond beyond(Expression geometry1, Expression geometry2, double distance, String units);
 
-    /**
-     * Check if all of a geometry is more distant than the given distance from this object's
-     * geometry.
-     */
-    Beyond beyond(
-            Expression geometry1,
-            Expression geometry2,
-            double distance,
-            String units,
-            MatchAction matchAction);
+    /** Check if all of a geometry is more distant than the given distance from this object's geometry. */
+    Beyond beyond(Expression geometry1, Expression geometry2, double distance, String units, MatchAction matchAction);
 
     /** Checks if the the first geometric operand contains the second. */
     Contains contains(Expression geometry1, Expression geometry2);
@@ -823,36 +749,23 @@ public interface FilterFactory {
     /** Checks if the first operand is disjoint from the second. */
     Disjoint disjoint(Expression geometry1, Expression geometry2, MatchAction matchAction);
 
-    /**
-     * Checks if any part of the first geometry lies within the given distance of the second
-     * geometry.
-     */
+    /** Checks if any part of the first geometry lies within the given distance of the second geometry. */
     DWithin dwithin(Expression geometry1, Expression geometry2, double distance, String units);
 
-    /**
-     * Checks if any part of the first geometry lies within the given distance of the second
-     * geometry.
-     */
-    DWithin dwithin(
-            Expression geometry1,
-            Expression geometry2,
-            double distance,
-            String units,
-            MatchAction matchAction);
+    /** Checks if any part of the first geometry lies within the given distance of the second geometry. */
+    DWithin dwithin(Expression geometry1, Expression geometry2, double distance, String units, MatchAction matchAction);
 
     /**
      * Checks if the geometry of the two operands are equal.
      *
-     * @todo should be equals, resolve conflict with PropertyIsEqualTo equals( Expression,
-     *     Expression )
+     * @todo should be equals, resolve conflict with PropertyIsEqualTo equals( Expression, Expression )
      */
     Equals equal(Expression geometry1, Expression geometry2);
 
     /**
      * Checks if the geometry of the two operands are equal.
      *
-     * @todo should be equals, resolve conflict with PropertyIsEqualTo equals( Expression,
-     *     Expression )
+     * @todo should be equals, resolve conflict with PropertyIsEqualTo equals( Expression, Expression )
      */
     Equals equal(Expression geometry1, Expression geometry2, MatchAction matchAction);
 
@@ -862,38 +775,22 @@ public interface FilterFactory {
     /** Checks if the two geometric operands intersect. */
     Intersects intersects(Expression geometry1, Expression geometry2, MatchAction matchAction);
 
-    /**
-     * Checks if the interior of the first geometry somewhere overlaps the interior of the second
-     * geometry.
-     */
+    /** Checks if the interior of the first geometry somewhere overlaps the interior of the second geometry. */
     Overlaps overlaps(Expression geometry1, Expression geometry2);
 
-    /**
-     * Checks if the interior of the first geometry somewhere overlaps the interior of the second
-     * geometry.
-     */
+    /** Checks if the interior of the first geometry somewhere overlaps the interior of the second geometry. */
     Overlaps overlaps(Expression geometry1, Expression geometry2, MatchAction matchAction);
 
-    /**
-     * Checks if the feature's geometry touches, but does not overlap with the geometry held by this
-     * object.
-     */
+    /** Checks if the feature's geometry touches, but does not overlap with the geometry held by this object. */
     Touches touches(Expression propertyName1, Expression geometry2);
 
-    /**
-     * Checks if the feature's geometry touches, but does not overlap with the geometry held by this
-     * object.
-     */
+    /** Checks if the feature's geometry touches, but does not overlap with the geometry held by this object. */
     Touches touches(Expression propertyName1, Expression geometry2, MatchAction matchAction);
 
-    /**
-     * Checks if the feature's geometry is completely contained by the specified constant geometry.
-     */
+    /** Checks if the feature's geometry is completely contained by the specified constant geometry. */
     Within within(Expression geometry1, Expression geometry2);
 
-    /**
-     * Checks if the feature's geometry is completely contained by the specified constant geometry.
-     */
+    /** Checks if the feature's geometry is completely contained by the specified constant geometry. */
     Within within(Expression geometry1, Expression geometry2, MatchAction matchAction);
 
     /**
@@ -903,7 +800,6 @@ public interface FilterFactory {
      * @return the build native filter
      */
     default NativeFilter nativeFilter(String nativeFilter) {
-        throw new UnsupportedOperationException(
-                "Native filter building is not supported by this filter factory.");
+        throw new UnsupportedOperationException("Native filter building is not supported by this filter factory.");
     }
 }

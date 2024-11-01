@@ -26,9 +26,8 @@ import org.geotools.mbstyle.parse.MBFormatException;
 import org.json.simple.JSONArray;
 
 /**
- * This class is an extension of the MBExpression containing the functions to support MapBox Style
- * String expressions. String operators "concat", "upcase", and "downcase" are used to manipulate
- * strings within a style.
+ * This class is an extension of the MBExpression containing the functions to support MapBox Style String expressions.
+ * String operators "concat", "upcase", and "downcase" are used to manipulate strings within a style.
  */
 public class MBString extends MBExpression {
 
@@ -37,8 +36,7 @@ public class MBString extends MBExpression {
     }
 
     /**
-     * Returns a string consisting of the concatenation of the inputs. Example: ["concat", string,
-     * string, ...]: string
+     * Returns a string consisting of the concatenation of the inputs. Example: ["concat", string, string, ...]: string
      *
      * @return concatenate expression
      */
@@ -59,9 +57,8 @@ public class MBString extends MBExpression {
     }
 
     /**
-     * Returns the input string converted to lowercase. Follows the Unicode Default Case Conversion
-     * algorithm and the locale-insensitive case mappings in the Unicode Character Database.
-     * Example: ["downcase", string]: string
+     * Returns the input string converted to lowercase. Follows the Unicode Default Case Conversion algorithm and the
+     * locale-insensitive case mappings in the Unicode Character Database. Example: ["downcase", string]: string
      *
      * @return downcase string expression
      */
@@ -78,9 +75,8 @@ public class MBString extends MBExpression {
     }
 
     /**
-     * Returns the input string converted to uppercase. Follows the Unicode Default Case Conversion
-     * algorithm and the locale-insensitive case mappings in the Unicode Character Database.
-     * ["upcase", string]: string
+     * Returns the input string converted to uppercase. Follows the Unicode Default Case Conversion algorithm and the
+     * locale-insensitive case mappings in the Unicode Character Database. ["upcase", string]: string
      *
      * @return uppercase string expression
      */

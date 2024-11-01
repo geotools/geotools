@@ -91,9 +91,7 @@ public abstract class JDBCEmptyGeometryOnlineTest extends JDBCTestSupport {
         }
     }
 
-    /**
-     * By default checks the geometry is either null or empty, subclasses can change this behavior
-     */
+    /** By default checks the geometry is either null or empty, subclasses can change this behavior */
     protected void assertEmptyGeometry(Geometry geometry) {
         assertTrue(geometry == null || geometry.isEmpty());
     }

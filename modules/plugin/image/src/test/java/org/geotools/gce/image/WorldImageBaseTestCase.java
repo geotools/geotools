@@ -26,8 +26,7 @@ import java.util.Set;
 public abstract class WorldImageBaseTestCase {
 
     /**
-     * Helper class used to filter files basing the decision on the file extensions. It is not so
-     * smart I know.... :-(
+     * Helper class used to filter files basing the decision on the file extensions. It is not so smart I know.... :-(
      *
      * @author giannecchini
      */
@@ -52,10 +51,7 @@ public abstract class WorldImageBaseTestCase {
             }
         }
 
-        /**
-         * Checks whether or not a file is acceptable following the conditions stated by the given
-         * extensions.
-         */
+        /** Checks whether or not a file is acceptable following the conditions stated by the given extensions. */
         @Override
         public boolean accept(File file, String name) {
             if (!this.extensions.isEmpty()) {

@@ -47,8 +47,8 @@ public class AStarIteratorTest {
         m_directed_builder = createDirectedBuilder();
     }
     /**
-     * Test 0: Graph with no bifurcations. 100 nodes. G = 1 for all edges H = TargetsID - currentID
-     * Expected: 1. Every node should be visited 2. ParentID = SonsID - 1
+     * Test 0: Graph with no bifurcations. 100 nodes. G = 1 for all edges H = TargetsID - currentID Expected: 1. Every
+     * node should be visited 2. ParentID = SonsID - 1
      */
     @Test
     public void test_0() {
@@ -59,35 +59,30 @@ public class AStarIteratorTest {
 
         final AStarIterator iterator = createIterator(ends[0], ends[ends.length - 1]);
 
-        BasicGraphTraversal traversal =
-                new BasicGraphTraversal(builder().getGraph(), walker, iterator);
+        BasicGraphTraversal traversal = new BasicGraphTraversal(builder().getGraph(), walker, iterator);
         traversal.init();
         traversal.traverse();
 
-        GraphVisitor visitor =
-                component -> {
-                    Assert.assertTrue(component.isVisited());
-                    if (component.getID() == 0)
-                        Assert.assertNull(iterator.getParent((Node) component));
-                    else
-                        Assert.assertEquals(
-                                component.getID(),
-                                iterator.getParent((Node) component).getID() + 1);
-                    return 0;
-                };
+        GraphVisitor visitor = component -> {
+            Assert.assertTrue(component.isVisited());
+            if (component.getID() == 0) Assert.assertNull(iterator.getParent((Node) component));
+            else
+                Assert.assertEquals(
+                        component.getID(), iterator.getParent((Node) component).getID() + 1);
+            return 0;
+        };
         builder().getGraph().visitNodes(visitor);
 
         Assert.assertEquals(walker.getCount(), nnodes);
     }
 
     /**
-     * Create a graph with no bifurcations and start a traversal from start node, then suspend, and
-     * resume. <br>
+     * Create a graph with no bifurcations and start a traversal from start node, then suspend, and resume. <br>
      * <br>
      * Expected: After suspend: 1. Nodes from 0 to suspend node should be visted, others not.
      *
-     * <p>After resume: 1. Next node visited should have id suspend node id + 1 2. Every node should
-     * have a parent with id node id + 1
+     * <p>After resume: 1. Next node visited should have id suspend node id + 1 2. Every node should have a parent with
+     * id node id + 1
      */
     @Test
     public void test_1() {
@@ -95,57 +90,49 @@ public class AStarIteratorTest {
         Node[] ends = GraphTestUtil.buildNoBifurcations(builder(), nnodes);
         final int suspend = 50;
 
-        CountingWalker walker =
-                new CountingWalker() {
-                    int m_mode = 0;
+        CountingWalker walker = new CountingWalker() {
+            int m_mode = 0;
 
-                    @Override
-                    public int visit(Graphable element, GraphTraversal traversal) {
-                        super.visit(element, traversal);
-                        if (m_mode == 0) {
-                            if (element.getID() == suspend) {
-                                m_mode++;
-                                return (GraphTraversal.SUSPEND);
-                            }
-                        } else if (m_mode == 1) {
-                            Assert.assertEquals(element.getID(), suspend + 1);
-                            m_mode++;
-                        }
-                        return (GraphTraversal.CONTINUE);
+            @Override
+            public int visit(Graphable element, GraphTraversal traversal) {
+                super.visit(element, traversal);
+                if (m_mode == 0) {
+                    if (element.getID() == suspend) {
+                        m_mode++;
+                        return (GraphTraversal.SUSPEND);
                     }
-                };
+                } else if (m_mode == 1) {
+                    Assert.assertEquals(element.getID(), suspend + 1);
+                    m_mode++;
+                }
+                return (GraphTraversal.CONTINUE);
+            }
+        };
 
         final AStarIterator iterator = createIterator(ends[0], ends[ends.length - 1]);
 
-        BasicGraphTraversal traversal =
-                new BasicGraphTraversal(builder().getGraph(), walker, iterator);
+        BasicGraphTraversal traversal = new BasicGraphTraversal(builder().getGraph(), walker, iterator);
         traversal.init();
         traversal.traverse();
 
-        GraphVisitor visitor =
-                component -> {
-                    if (component.getID() <= suspend) Assert.assertTrue(component.isVisited());
-                    else Assert.assertFalse(component.isVisited());
-                    return 0;
-                };
+        GraphVisitor visitor = component -> {
+            if (component.getID() <= suspend) Assert.assertTrue(component.isVisited());
+            else Assert.assertFalse(component.isVisited());
+            return 0;
+        };
         builder().getGraph().visitNodes(visitor);
         Assert.assertEquals(walker.getCount(), nnodes - suspend + 1);
 
         // resume
         traversal.traverse();
 
-        visitor =
-                component -> {
-                    Assert.assertTrue(component.isVisited());
-                    if (component.getID() == 0)
-                        Assert.assertNull(iterator.getParent((Node) component));
-                    else
-                        Assert.assertEquals(
-                                iterator.getParent((Node) component).getID(),
-                                component.getID() - 1);
+        visitor = component -> {
+            Assert.assertTrue(component.isVisited());
+            if (component.getID() == 0) Assert.assertNull(iterator.getParent((Node) component));
+            else Assert.assertEquals(iterator.getParent((Node) component).getID(), component.getID() - 1);
 
-                    return 0;
-                };
+            return 0;
+        };
         builder().getGraph().visitNodes(visitor);
         Assert.assertEquals(walker.getCount(), nnodes);
     }
@@ -153,15 +140,12 @@ public class AStarIteratorTest {
     /**
      * Create a balanced binary tree and do a normal traversal starting at root. <br>
      * <br>
-     * Expected: 1. #nodes_visited <= #nodes 2. The parent of each node should be the same as the
-     * parent of the tree. 3. G = depth. H = infinity if the target is not in any subtree of this
-     * node or depth difference between target node and current node otherwise.
+     * Expected: 1. #nodes_visited <= #nodes 2. The parent of each node should be the same as the parent of the tree. 3.
+     * G = depth. H = infinity if the target is not in any subtree of this node or depth difference between target node
+     * and current node otherwise.
      */
     @Test
-    @SuppressWarnings({
-        "unchecked",
-        "PMD.AvoidUsingHardCodedIP"
-    }) // refusing to clean up this unholy mess
+    @SuppressWarnings({"unchecked", "PMD.AvoidUsingHardCodedIP"}) // refusing to clean up this unholy mess
     public void test_3() {
         int k = 4;
         Object[] obj = GraphTestUtil.buildPerfectBinaryTree(builder(), k);
@@ -201,12 +185,9 @@ public class AStarIteratorTest {
         }
         Factory f = new Factory();
 
-        AStarShortestPathFinder walker =
-                new AStarShortestPathFinder(
-                        builder().getGraph(),
-                        root,
-                        ((Node) map.get("0.1.0.1")),
-                        f.createFunctions(((Node) map.get("0.1.0.1"))));
+        AStarShortestPathFinder walker = new AStarShortestPathFinder(
+                builder().getGraph(), root, ((Node) map.get("0.1.0.1")), f.createFunctions(((Node)
+                        map.get("0.1.0.1"))));
 
         walker.calculate();
         MyVisitor visitor = new MyVisitor();
@@ -233,12 +214,11 @@ public class AStarIteratorTest {
     }
 
     /**
-     * Create an undirected graph with no bifurcations and start a full traversal from start node.
-     * Test getRelated at each node.<br>
+     * Create an undirected graph with no bifurcations and start a full traversal from start node. Test getRelated at
+     * each node.<br>
      * <br>
-     * Expected: 1. The first and last node should have one related node. 2. All other nodes should
-     * have two related nodes 3. Related nodes should have an id one greater or one less than the
-     * current node
+     * Expected: 1. The first and last node should have one related node. 2. All other nodes should have two related
+     * nodes 3. Related nodes should have an id one greater or one less than the current node
      */
     @Test
     public void test_4() {
@@ -249,41 +229,38 @@ public class AStarIteratorTest {
 
         final AStarIterator iterator = createIterator(ends[0], ends[ends.length - 1]);
 
-        BasicGraphTraversal traversal =
-                new BasicGraphTraversal(builder().getGraph(), walker, iterator);
+        BasicGraphTraversal traversal = new BasicGraphTraversal(builder().getGraph(), walker, iterator);
         traversal.init();
         traversal.traverse();
 
-        GraphVisitor visitor =
-                component -> {
-                    Iterator related = iterator.getRelated(component);
-                    int count = 0;
-                    int expectedCount = 2;
-                    if (component.getID() == 0 || component.getID() == nnodes - 1) {
-                        expectedCount = 1;
-                    }
-                    while (related.hasNext()) {
-                        Graphable relatedComponent = (Graphable) related.next();
-                        Assert.assertTrue(
-                                component.getID() == relatedComponent.getID() - 1
-                                        || component.getID() == relatedComponent.getID() + 1);
-                        count++;
-                    }
-                    Assert.assertEquals(expectedCount, count);
+        GraphVisitor visitor = component -> {
+            Iterator related = iterator.getRelated(component);
+            int count = 0;
+            int expectedCount = 2;
+            if (component.getID() == 0 || component.getID() == nnodes - 1) {
+                expectedCount = 1;
+            }
+            while (related.hasNext()) {
+                Graphable relatedComponent = (Graphable) related.next();
+                Assert.assertTrue(component.getID() == relatedComponent.getID() - 1
+                        || component.getID() == relatedComponent.getID() + 1);
+                count++;
+            }
+            Assert.assertEquals(expectedCount, count);
 
-                    return 0;
-                };
+            return 0;
+        };
         builder().getGraph().visitNodes(visitor);
 
         Assert.assertEquals(walker.getCount(), nnodes);
     }
 
     /**
-     * Create a directed graph with no bifurcations and start a full traversal from start node. Test
-     * getRelated at each node.<br>
+     * Create a directed graph with no bifurcations and start a full traversal from start node. Test getRelated at each
+     * node.<br>
      * <br>
-     * Expected: 1. The last node should have no related nodes 2. All other nodes should have one
-     * related node 3. Related nodes should have an id one greater than the current node
+     * Expected: 1. The last node should have no related nodes 2. All other nodes should have one related node 3.
+     * Related nodes should have an id one greater than the current node
      */
     @Test
     public void test_5() {
@@ -299,23 +276,22 @@ public class AStarIteratorTest {
         traversal.init();
         traversal.traverse();
 
-        GraphVisitor visitor =
-                component -> {
-                    Iterator related = iterator.getRelated(component);
-                    int count = 0;
-                    int expectedCount = 1;
-                    if (component.getID() == nnodes - 1) {
-                        expectedCount = 0;
-                    }
-                    while (related.hasNext()) {
-                        Graphable relatedComponent = (Graphable) related.next();
-                        Assert.assertEquals(component.getID(), relatedComponent.getID() - 1);
-                        count++;
-                    }
-                    Assert.assertEquals(expectedCount, count);
+        GraphVisitor visitor = component -> {
+            Iterator related = iterator.getRelated(component);
+            int count = 0;
+            int expectedCount = 1;
+            if (component.getID() == nnodes - 1) {
+                expectedCount = 0;
+            }
+            while (related.hasNext()) {
+                Graphable relatedComponent = (Graphable) related.next();
+                Assert.assertEquals(component.getID(), relatedComponent.getID() - 1);
+                count++;
+            }
+            Assert.assertEquals(expectedCount, count);
 
-                    return 0;
-                };
+            return 0;
+        };
         directedBuilder().getGraph().visitNodes(visitor);
 
         Assert.assertEquals(walker.getCount(), nnodes);
@@ -350,19 +326,17 @@ public class AStarIteratorTest {
     }
 
     protected AStarIterator createIterator(Node source, Node target) {
-        return (new AStarIterator(
-                source,
-                new AStarIterator.AStarFunctions(target) {
+        return (new AStarIterator(source, new AStarIterator.AStarFunctions(target) {
 
-                    @Override
-                    public double cost(AStarNode n1, AStarNode n2) {
-                        return 1;
-                    }
+            @Override
+            public double cost(AStarNode n1, AStarNode n2) {
+                return 1;
+            }
 
-                    @Override
-                    public double h(Node n) {
-                        return (getDest().getID() - n.getID());
-                    }
-                }));
+            @Override
+            public double h(Node n) {
+                return (getDest().getID() - n.getID());
+            }
+        }));
     }
 }

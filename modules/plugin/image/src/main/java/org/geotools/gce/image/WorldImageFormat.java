@@ -45,10 +45,9 @@ import org.geotools.util.URLs;
 import org.geotools.util.factory.Hints;
 
 /**
- * A Format to allow discovery of Readers/Writers for raster images that support world files
- * containing information about the image. Supports gif+gfw, jpg/jpeg+jgw, tif/tiff+tfw and png+pgw.
- * wld may be used in place of the format specific extension (jpg+wld, etc) Designed to be used with
- * GridCoverageExchange.
+ * A Format to allow discovery of Readers/Writers for raster images that support world files containing information
+ * about the image. Supports gif+gfw, jpg/jpeg+jgw, tif/tiff+tfw and png+pgw. wld may be used in place of the format
+ * specific extension (jpg+wld, etc) Designed to be used with GridCoverageExchange.
  *
  * @author Simone Giannecchini
  */
@@ -104,20 +103,14 @@ public final class WorldImageFormat extends AbstractGridFormat implements Format
     }
 
     /** Logger. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(WorldImageFormat.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(WorldImageFormat.class);
 
     /**
-     * Format writing parameter. When writing a world image we need to provide an output format in
-     * which we want to encode the image itself. PNG is default output format.
+     * Format writing parameter. When writing a world image we need to provide an output format in which we want to
+     * encode the image itself. PNG is default output format.
      */
-    public static final ParameterDescriptor<String> FORMAT =
-            DefaultParameterDescriptor.create(
-                    "Format",
-                    "Indicates the output format for this image",
-                    String.class,
-                    "png",
-                    true);
+    public static final ParameterDescriptor<String> FORMAT = DefaultParameterDescriptor.create(
+            "Format", "Indicates the output format for this image", String.class, "png", true);
 
     /** WorldImageFormat */
     public WorldImageFormat() {
@@ -137,23 +130,18 @@ public final class WorldImageFormat extends AbstractGridFormat implements Format
 
         // reading parameters
         readParameters =
-                new ParameterGroup(
-                        new DefaultParameterDescriptorGroup(
-                                mInfo,
-                                new GeneralParameterDescriptor[] {
-                                    READ_GRIDGEOMETRY2D,
-                                }));
+                new ParameterGroup(new DefaultParameterDescriptorGroup(mInfo, new GeneralParameterDescriptor[] {
+                    READ_GRIDGEOMETRY2D,
+                }));
 
         // writing parameters
-        writeParameters =
-                new ParameterGroup(
-                        new DefaultParameterDescriptorGroup(
-                                mInfo, new GeneralParameterDescriptor[] {FORMAT}));
+        writeParameters = new ParameterGroup(
+                new DefaultParameterDescriptorGroup(mInfo, new GeneralParameterDescriptor[] {FORMAT}));
     }
 
     /**
-     * Retrieves a {@link WorldImageReader} in case the providede <code>source</code> can be
-     * accepted as a valid source for a world image. The method returns null otherwise.
+     * Retrieves a {@link WorldImageReader} in case the providede <code>source</code> can be accepted as a valid source
+     * for a world image. The method returns null otherwise.
      *
      * @param source The source object to read a WorldImage from
      * @return a new WorldImageReader for the source
@@ -164,8 +152,7 @@ public final class WorldImageFormat extends AbstractGridFormat implements Format
     }
 
     /**
-     * Call the accepts() method before asking for a writer to determine if the current object is
-     * supported.
+     * Call the accepts() method before asking for a writer to determine if the current object is supported.
      *
      * @param destination the destination object to write a WorldImage to
      * @return a new WorldImageWriter for the destination
@@ -176,8 +163,7 @@ public final class WorldImageFormat extends AbstractGridFormat implements Format
     }
 
     /**
-     * Call the accepts() method before asking for a writer to determine if the current object is
-     * supported.
+     * Call the accepts() method before asking for a writer to determine if the current object is supported.
      *
      * @param destination the destination object to write a WorldImage to
      * @return a new WorldImageWriter for the destination
@@ -188,8 +174,8 @@ public final class WorldImageFormat extends AbstractGridFormat implements Format
     }
 
     /**
-     * Takes the input and determines if it is a class that we can understand and then futher checks
-     * the format of the class to make sure we can read/write to it.
+     * Takes the input and determines if it is a class that we can understand and then futher checks the format of the
+     * class to make sure we can read/write to it.
      *
      * @param input The object to check for acceptance.
      * @return true if the input is acceptable, false otherwise
@@ -201,15 +187,15 @@ public final class WorldImageFormat extends AbstractGridFormat implements Format
         if (input instanceof URL) {
             final URL url = (URL) input;
             final String protocol = url.getProtocol();
-            if (protocol.equalsIgnoreCase("file")) pathname = URLs.urlToFile(url).getPath();
+            if (protocol.equalsIgnoreCase("file"))
+                pathname = URLs.urlToFile(url).getPath();
             else {
                 if (protocol.equalsIgnoreCase("http")) {
                     final String query;
                     try {
                         query = java.net.URLDecoder.decode(url.getQuery().intern(), "UTF-8");
                     } catch (UnsupportedEncodingException e) {
-                        if (LOGGER.isLoggable(Level.FINE))
-                            LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
+                        if (LOGGER.isLoggable(Level.FINE)) LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
                         return false;
                     }
 
@@ -250,8 +236,8 @@ public final class WorldImageFormat extends AbstractGridFormat implements Format
     }
 
     /**
-     * Takes an image file extension (such as .gif, including the '.') and returns it's
-     * corresponding world file extension (such as .gfw).
+     * Takes an image file extension (such as .gif, including the '.') and returns it's corresponding world file
+     * extension (such as .gfw).
      *
      * @param fileExtension an image file extension, including the '.'
      * @return a corresponding {@link Set} of world file extensions, including the '.'
@@ -285,8 +271,8 @@ public final class WorldImageFormat extends AbstractGridFormat implements Format
     }
 
     /**
-     * Retrieves a {@link WorldImageReader} in case the providede <code>source</code> can be
-     * accepted as a valid source for a world image. The method returns null otherwise.
+     * Retrieves a {@link WorldImageReader} in case the providede <code>source</code> can be accepted as a valid source
+     * for a world image. The method returns null otherwise.
      *
      * @param source The source object to read a WorldImage from
      * @param hints {@link Hints} to control the provided {@link WorldImageReader}.
@@ -297,15 +283,13 @@ public final class WorldImageFormat extends AbstractGridFormat implements Format
         try {
             return new WorldImageReader(source, hints);
         } catch (DataSourceException e) {
-            if (LOGGER.isLoggable(Level.WARNING))
-                LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
+            if (LOGGER.isLoggable(Level.WARNING)) LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
             return null;
         }
     }
 
     /**
-     * Always returns null since for the moment there are no {@link GeoToolsWriteParams} available
-     * for this format.
+     * Always returns null since for the moment there are no {@link GeoToolsWriteParams} available for this format.
      *
      * @return always null.
      */

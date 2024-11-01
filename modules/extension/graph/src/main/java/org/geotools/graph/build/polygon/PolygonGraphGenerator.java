@@ -29,8 +29,8 @@ import org.locationtech.jts.index.quadtree.Quadtree;
 /**
  * An implementation of GraphGenerator used to build graphs from a set of polygons.
  *
- * <p>This graph generator takes {@link org.locationtech.jts.geom.Polygon} objects as input when
- * constructing a graph. The following code constructs a graph from a set of polygons.
+ * <p>This graph generator takes {@link org.locationtech.jts.geom.Polygon} objects as input when constructing a graph.
+ * The following code constructs a graph from a set of polygons.
  *
  * <pre>
  * 	<code>
@@ -58,11 +58,10 @@ import org.locationtech.jts.index.quadtree.Quadtree;
  * 	</code>
  * </pre>
  *
- * For each distinct polygon added to the graph, a node is created. If two polygons are considered
- * equal, only a single node is created. If two polygons are considered related, the associated
- * nodes share an edge. Equality and relationship is determined by {@link
- * org.geotools.graph.build.polygon.PolygonGraphGenerator.PolygonRelationship} interface. An
- * instance of this interface is passed to the generator at construction.
+ * For each distinct polygon added to the graph, a node is created. If two polygons are considered equal, only a single
+ * node is created. If two polygons are considered related, the associated nodes share an edge. Equality and
+ * relationship is determined by {@link org.geotools.graph.build.polygon.PolygonGraphGenerator.PolygonRelationship}
+ * interface. An instance of this interface is passed to the generator at construction.
  *
  * @author Justin Deoliveira, The Open Planning Project
  */

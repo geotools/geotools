@@ -14,8 +14,7 @@ public class GetCapabilitiesTest {
     @Test
     public void testParseCapabilitiesRequest() throws Exception {
         String capRequestPath = "requestGetCapabilities.xml";
-        GetCapabilitiesType caps =
-                (GetCapabilitiesType) parser.parse(getClass().getResourceAsStream(capRequestPath));
+        GetCapabilitiesType caps = (GetCapabilitiesType) parser.parse(getClass().getResourceAsStream(capRequestPath));
         assertEquals("WCS", caps.getService());
 
         List versions = caps.getAcceptVersions().getVersion();

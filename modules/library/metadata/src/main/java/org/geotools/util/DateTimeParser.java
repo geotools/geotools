@@ -36,8 +36,8 @@ import java.util.logging.Logger;
 import org.geotools.util.logging.Logging;
 
 /**
- * Parses the {@code time} parameter of the request. The date, time and period are expected to be
- * formatted according ISO-8601 standard.
+ * Parses the {@code time} parameter of the request. The date, time and period are expected to be formatted according
+ * ISO-8601 standard.
  *
  * @author Cedric Briancon
  * @author Martin Desruisseaux
@@ -63,16 +63,15 @@ public class DateTimeParser {
     public static final int FLAG_GET_TIME_ON_CURRENT = 4;
 
     /**
-     * FLAG allowing Lenient ISO8601 format alternatives, for example, YYYYMMdd in addition to
-     * YYYY-MM-dd). See the LENIENT_FORMATS_XXX Constants for a list of supported values
+     * FLAG allowing Lenient ISO8601 format alternatives, for example, YYYYMMdd in addition to YYYY-MM-dd). See the
+     * LENIENT_FORMATS_XXX Constants for a list of supported values
      */
     public static final int FLAG_IS_LENIENT = 256;
 
     /** FLAG to return a validity date range for dates with reduced precision */
     public static final int FLAG_SINGLE_DATE_AS_DATERANGE = 65536;
 
-    private static final Set<String> CURRENT_TIME_NAMES =
-            new HashSet<>(Arrays.asList("current", "now", "present"));
+    private static final Set<String> CURRENT_TIME_NAMES = new HashSet<>(Arrays.asList("current", "now", "present"));
 
     private static final String SIMPLIFIED_FORMAT_MILLISECOND = "yyyyMMdd'T'HHmmssSSS";
 
@@ -118,9 +117,7 @@ public class DateTimeParser {
         SIMPLIFIED_FORMAT_MINUTE
     };
 
-    public static final String[] LENIENT_FORMATS_HOUR = {
-        "yyyyMMdd'T'HH'Z'", "yyyy-MM-dd'T'HH", SIMPLIFIED_FORMAT_HOUR
-    };
+    public static final String[] LENIENT_FORMATS_HOUR = {"yyyyMMdd'T'HH'Z'", "yyyy-MM-dd'T'HH", SIMPLIFIED_FORMAT_HOUR};
 
     public static final String[] LENIENT_FORMATS_DAY = {SIMPLIFIED_FORMAT_DAY};
 
@@ -128,12 +125,10 @@ public class DateTimeParser {
 
     public static final String[] LENIENT_FORMATS_YEAR = {}; // Intentionally empty
 
-    private static final String ISO8601_CHARS_REGEX =
-            "([^(yyyy)|^(MM)|^(dd)|^(HH)|^(mm)|^(ss)|^(SSS)|^('T')])|('Z')";
+    private static final String ISO8601_CHARS_REGEX = "([^(yyyy)|^(MM)|^(dd)|^(HH)|^(mm)|^(ss)|^(SSS)|^('T')])|('Z')";
 
     public static enum FormatAndPrecision {
-        MILLISECOND(
-                "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Calendar.MILLISECOND, LENIENT_FORMATS_MILLISECOND),
+        MILLISECOND("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Calendar.MILLISECOND, LENIENT_FORMATS_MILLISECOND),
         SECOND("yyyy-MM-dd'T'HH:mm:ss'Z'", Calendar.SECOND, LENIENT_FORMATS_SECOND),
         MINUTE("yyyy-MM-dd'T'HH:mm'Z'", Calendar.MINUTE, LENIENT_FORMATS_MINUTE),
         HOUR("yyyy-MM-dd'T'HH'Z'", Calendar.HOUR_OF_DAY, LENIENT_FORMATS_HOUR),
@@ -181,20 +176,13 @@ public class DateTimeParser {
         private static int findPrecision(String format) {
             // Converting the custom format to a simplified ISO8601
             String simplifiedFormat = format.replaceAll(ISO8601_CHARS_REGEX, "");
-            if (SIMPLIFIED_FORMAT_MILLISECOND.equalsIgnoreCase(simplifiedFormat))
-                return Calendar.MILLISECOND;
-            else if (SIMPLIFIED_FORMAT_SECOND.equalsIgnoreCase(simplifiedFormat))
-                return Calendar.SECOND;
-            else if (SIMPLIFIED_FORMAT_MINUTE.equalsIgnoreCase(simplifiedFormat))
-                return Calendar.MINUTE;
-            else if (SIMPLIFIED_FORMAT_HOUR.equalsIgnoreCase(simplifiedFormat))
-                return Calendar.HOUR;
-            else if (SIMPLIFIED_FORMAT_DAY.equalsIgnoreCase(simplifiedFormat))
-                return Calendar.DAY_OF_MONTH;
-            else if (SIMPLIFIED_FORMAT_MONTH.equalsIgnoreCase(simplifiedFormat))
-                return Calendar.MONTH;
-            else if (SIMPLIFIED_FORMAT_YEAR.equalsIgnoreCase(simplifiedFormat))
-                return Calendar.YEAR;
+            if (SIMPLIFIED_FORMAT_MILLISECOND.equalsIgnoreCase(simplifiedFormat)) return Calendar.MILLISECOND;
+            else if (SIMPLIFIED_FORMAT_SECOND.equalsIgnoreCase(simplifiedFormat)) return Calendar.SECOND;
+            else if (SIMPLIFIED_FORMAT_MINUTE.equalsIgnoreCase(simplifiedFormat)) return Calendar.MINUTE;
+            else if (SIMPLIFIED_FORMAT_HOUR.equalsIgnoreCase(simplifiedFormat)) return Calendar.HOUR;
+            else if (SIMPLIFIED_FORMAT_DAY.equalsIgnoreCase(simplifiedFormat)) return Calendar.DAY_OF_MONTH;
+            else if (SIMPLIFIED_FORMAT_MONTH.equalsIgnoreCase(simplifiedFormat)) return Calendar.MONTH;
+            else if (SIMPLIFIED_FORMAT_YEAR.equalsIgnoreCase(simplifiedFormat)) return Calendar.YEAR;
             // No ISO8601 strict variant has been identified.
             // Try finding the precision through the ending part of the format
             else if (simplifiedFormat.endsWith("SSS")) return Calendar.MILLISECOND;
@@ -205,8 +193,7 @@ public class DateTimeParser {
             else if (simplifiedFormat.endsWith("mm")) return Calendar.MONTH;
             else if (simplifiedFormat.endsWith("yyyy")) return Calendar.YEAR;
             throw new IllegalArgumentException(
-                    "Unable to identify an ISO8601 format corresponding to the provided format:"
-                            + format);
+                    "Unable to identify an ISO8601 format corresponding to the provided format:" + format);
         }
     }
 
@@ -246,11 +233,10 @@ public class DateTimeParser {
     }
 
     /**
-     * Parses the date given in parameter. The date format should comply to ISO-8601 standard. The
-     * string may contains either a single date, or a start time, end time and a period. In the
-     * first case, this method returns a singleton containing only the parsed date. In the second
-     * case, this method returns a list including all dates from start time up to the end time with
-     * the interval specified in the {@code value} string.
+     * Parses the date given in parameter. The date format should comply to ISO-8601 standard. The string may contains
+     * either a single date, or a start time, end time and a period. In the first case, this method returns a singleton
+     * containing only the parsed date. In the second case, this method returns a list including all dates from start
+     * time up to the end time with the interval specified in the {@code value} string.
      *
      * @param value The date, time and period to parse.
      * @return A list of dates, or an empty list of the {@code value} string is null or empty.
@@ -266,36 +252,34 @@ public class DateTimeParser {
             return Collections.emptyList();
         }
 
-        final Set result =
-                new TreeSet(
-                        (o1, o2) -> {
-                            final boolean o1Date = o1 instanceof Date;
-                            final boolean o2Date = o2 instanceof Date;
+        final Set result = new TreeSet((o1, o2) -> {
+            final boolean o1Date = o1 instanceof Date;
+            final boolean o2Date = o2 instanceof Date;
 
-                            if (o1 == o2) {
-                                return 0;
-                            }
+            if (o1 == o2) {
+                return 0;
+            }
 
-                            // o1 date
-                            if (o1Date) {
-                                final Date dateLeft = (Date) o1;
-                                if (o2Date) {
-                                    // o2 date
-                                    return dateLeft.compareTo((Date) o2);
-                                }
-                                // o2 daterange
-                                return dateLeft.compareTo(((DateRange) o2).getMinValue());
-                            }
+            // o1 date
+            if (o1Date) {
+                final Date dateLeft = (Date) o1;
+                if (o2Date) {
+                    // o2 date
+                    return dateLeft.compareTo((Date) o2);
+                }
+                // o2 daterange
+                return dateLeft.compareTo(((DateRange) o2).getMinValue());
+            }
 
-                            // o1 date range
-                            final DateRange left = (DateRange) o1;
-                            if (o2Date) {
-                                // o2 date
-                                return left.getMinValue().compareTo(((Date) o2));
-                            }
-                            // o2 daterange
-                            return left.getMinValue().compareTo(((DateRange) o2).getMinValue());
-                        });
+            // o1 date range
+            final DateRange left = (DateRange) o1;
+            if (o2Date) {
+                // o2 date
+                return left.getMinValue().compareTo(((Date) o2));
+            }
+            // o2 daterange
+            return left.getMinValue().compareTo(((DateRange) o2).getMinValue());
+        });
         String[] listDates = value.split(",");
         int maxValues = maxTimes;
         for (String date : listDates) {
@@ -335,9 +319,7 @@ public class DateTimeParser {
                         if (!addDate(result, calendar.getTime()) && j >= maxValues) {
                             // prevent infinite loops
                             throw new RuntimeException(
-                                    "Exceeded "
-                                            + maxValues
-                                            + " iterations parsing times, bailing out.");
+                                    "Exceeded " + maxValues + " iterations parsing times, bailing out.");
                         }
                         j++;
                         checkMaxTimes(result, maxValues);
@@ -366,8 +348,7 @@ public class DateTimeParser {
     public void checkMaxTimes(Set result, int maxValues) {
         // limiting number of elements we can create
         if (maxValues > 0 && result.size() > maxValues) {
-            throw new RuntimeException(
-                    "More than " + maxValues + " times specified in the request, bailing out.");
+            throw new RuntimeException("More than " + maxValues + " times specified in the request, bailing out.");
         }
     }
 
@@ -481,9 +462,8 @@ public class DateTimeParser {
     }
 
     /**
-     * Parses date given in parameter according the ISO-8601 standard. This parameter should follow
-     * a syntax defined in the #FormatAndPrecision array to be validated. Lenient version are
-     * allowed too if the Lenient flag has been set
+     * Parses date given in parameter according the ISO-8601 standard. This parameter should follow a syntax defined in
+     * the #FormatAndPrecision array to be validated. Lenient version are allowed too if the Lenient flag has been set
      *
      * @param value The date to parse.
      * @return A date found in the request.
@@ -497,8 +477,7 @@ public class DateTimeParser {
         if (CURRENT_TIME_NAMES.contains(computedValue.toLowerCase())) {
             if ((computedValue.equalsIgnoreCase("current") && isFlagSet(FLAG_GET_TIME_ON_CURRENT))
                     || (computedValue.equalsIgnoreCase("now") && isFlagSet(FLAG_GET_TIME_ON_NOW))
-                    || (computedValue.equalsIgnoreCase("present")
-                            && isFlagSet(FLAG_GET_TIME_ON_PRESENT))) {
+                    || (computedValue.equalsIgnoreCase("present") && isFlagSet(FLAG_GET_TIME_ON_PRESENT))) {
                 Calendar now = Calendar.getInstance();
                 now.set(Calendar.MILLISECOND, 0);
                 computedValue = FormatAndPrecision.MILLISECOND.getFormat().format(now.getTime());
@@ -520,8 +499,8 @@ public class DateTimeParser {
     /**
      * Parses the increment part of a period and returns it in milliseconds.
      *
-     * @param period A string representation of the time increment according the ISO-8601:1988(E)
-     *     standard. For example: {@code "P1D"} = one day.
+     * @param period A string representation of the time increment according the ISO-8601:1988(E) standard. For example:
+     *     {@code "P1D"} = one day.
      * @return The increment value converted in milliseconds.
      * @throws ParseException if the string can not be parsed.
      */
@@ -619,8 +598,7 @@ public class DateTimeParser {
             Date time, String computedValue, ParsePosition pos, FormatAndPrecision f) {
         if (time != null && pos != null && pos.getIndex() == computedValue.length()) {
             DateRange range = f.expand(time);
-            if (range.getMinValue().equals(range.getMaxValue())
-                    || !isFlagSet(FLAG_SINGLE_DATE_AS_DATERANGE)) {
+            if (range.getMinValue().equals(range.getMaxValue()) || !isFlagSet(FLAG_SINGLE_DATE_AS_DATERANGE)) {
                 return range.getMinValue();
             } else {
                 return range;

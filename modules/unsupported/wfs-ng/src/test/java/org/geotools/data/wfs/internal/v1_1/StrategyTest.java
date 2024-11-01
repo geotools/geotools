@@ -34,11 +34,9 @@ public class StrategyTest {
 
     @Test
     public void testResultTypeHits() throws ServiceException, IOException {
-        URL capabilitiesUrl =
-                new URL("http://localhost/geoserver/wfs?REQUEST=GetCapabilities&SERVICE=WFS");
+        URL capabilitiesUrl = new URL("http://localhost/geoserver/wfs?REQUEST=GetCapabilities&SERVICE=WFS");
         TestHttpClient httpClient = new TestHttpClient();
-        httpClient.expectGet(
-                capabilitiesUrl, new TestHttpResponse(GEOS_STATES_11.CAPABILITIES, "text/xml"));
+        httpClient.expectGet(capabilitiesUrl, new TestHttpResponse(GEOS_STATES_11.CAPABILITIES, "text/xml"));
 
         TestWFSClient wfsClient = new TestWFSClient(capabilitiesUrl, httpClient);
 

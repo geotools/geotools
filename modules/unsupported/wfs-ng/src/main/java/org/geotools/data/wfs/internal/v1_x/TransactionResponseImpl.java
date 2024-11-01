@@ -49,8 +49,7 @@ public class TransactionResponseImpl extends WFSResponse implements TransactionR
 
     private int insertCount;
 
-    public TransactionResponseImpl(
-            WFSRequest originatingRequest, HTTPResponse response, InputStream in)
+    public TransactionResponseImpl(WFSRequest originatingRequest, HTTPResponse response, InputStream in)
             throws ServiceException, IOException {
 
         super(originatingRequest, response);

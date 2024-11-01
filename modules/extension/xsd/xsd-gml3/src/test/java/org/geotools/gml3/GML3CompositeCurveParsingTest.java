@@ -19,8 +19,7 @@ public class GML3CompositeCurveParsingTest extends GML3TestSupport {
     public void testCompositeCurve() throws Exception {
         GMLConfiguration gml = new GMLConfiguration(true);
         Parser p = new Parser(gml);
-        Object compositeCurve =
-                p.parse(getClass().getResourceAsStream("v3_2/gml_compositecurve_1.xml"));
+        Object compositeCurve = p.parse(getClass().getResourceAsStream("v3_2/gml_compositecurve_1.xml"));
         assertFalse(compositeCurve instanceof String);
         // System.out.println(compositeCurve);
         assertTrue("wrong element type", compositeCurve instanceof Geometry);

@@ -30,8 +30,7 @@ import org.locationtech.jts.geom.Polygon;
  */
 public class SubHandlerBox extends SubHandler {
     /** The logger for the GML module */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(SubHandlerBox.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(SubHandlerBox.class);
 
     /** */
     org.locationtech.jts.geom.Envelope e = new org.locationtech.jts.geom.Envelope();
@@ -75,8 +74,7 @@ public class SubHandlerBox extends SubHandler {
      * @return the polygon.
      */
     @Override
-    public org.locationtech.jts.geom.Geometry create(
-            org.locationtech.jts.geom.GeometryFactory geometryFactory) {
+    public org.locationtech.jts.geom.Geometry create(org.locationtech.jts.geom.GeometryFactory geometryFactory) {
         LOGGER.entering("SubHandlerBox", "create", geometryFactory);
 
         Coordinate[] c = new Coordinate[5];

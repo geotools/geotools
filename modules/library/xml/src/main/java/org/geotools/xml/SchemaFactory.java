@@ -130,19 +130,15 @@ public class SchemaFactory {
                 while (e.hasMoreElements()) {
                     URL res = (URL) e.nextElement();
                     try (BufferedReader rd =
-                            new BufferedReader(
-                                    new InputStreamReader(res.openStream(), "UTF" + "-8"))) {
+                            new BufferedReader(new InputStreamReader(res.openStream(), "UTF" + "-8"))) {
 
                         while (rd.ready()) {
                             String factoryClassName = rd.readLine().trim();
 
                             try {
-                                Schema s =
-                                        (Schema)
-                                                cl.loadClass(factoryClassName)
-                                                        .getDeclaredMethod(
-                                                                "getInstance", new Class[0])
-                                                        .invoke(null, new Object[0]);
+                                Schema s = (Schema) cl.loadClass(factoryClassName)
+                                        .getDeclaredMethod("getInstance", new Class[0])
+                                        .invoke(null, new Object[0]);
                                 schemas.put(s.getTargetNamespace(), s);
                             } catch (IllegalArgumentException
                                     | ClassNotFoundException
@@ -192,8 +188,8 @@ public class SchemaFactory {
     }
 
     /**
-     * Returns an instance of the desired class. There is no provision for: a) same instances each
-     * call b) different instances each call c) this factory being thread safe
+     * Returns an instance of the desired class. There is no provision for: a) same instances each call b) different
+     * instances each call c) this factory being thread safe
      *
      * @param desiredSchema URI the uri of which you want a schema instance.
      * @return Schema an instance of the desired schema.
@@ -215,9 +211,8 @@ public class SchemaFactory {
         }
     }
     /**
-     * Returns an instance of the targetNamespace if it can be found ... null otherwise.
-     * targetNamespaces which can be found are either hard-coded namespaces
-     * (SchemaFactory.properties), have already been parsed or were registered.
+     * Returns an instance of the targetNamespace if it can be found ... null otherwise. targetNamespaces which can be
+     * found are either hard-coded namespaces (SchemaFactory.properties), have already been parsed or were registered.
      *
      * @see #registerSchema(Strin,Schema)
      */
@@ -262,8 +257,8 @@ public class SchemaFactory {
     }
 
     /**
-     * Returns an instance of the desired class. There is no provision for: a) same instances each
-     * call b) different instances each call c) this factory being thread safe
+     * Returns an instance of the desired class. There is no provision for: a) same instances each call b) different
+     * instances each call c) this factory being thread safe
      *
      * @param targetNamespace The targetNamespace to search for.
      * @param desiredSchema URI the uri of which you want a schema instance.
@@ -271,13 +266,13 @@ public class SchemaFactory {
      * @return Schema an instance of the desired schema.
      * @throws SAXException When something goes wrong
      */
-    public static synchronized Schema getInstance(
-            URI targetNamespace, URI desiredSchema, Level level) throws SAXException {
+    public static synchronized Schema getInstance(URI targetNamespace, URI desiredSchema, Level level)
+            throws SAXException {
         return getInstance().getRealInstance(targetNamespace, desiredSchema, level);
     }
 
-    private synchronized Schema getRealInstance(
-            URI targetNamespace2, URI desiredSchema, Level level) throws SAXException {
+    private synchronized Schema getRealInstance(URI targetNamespace2, URI desiredSchema, Level level)
+            throws SAXException {
         URI targetNamespace = targetNamespace2;
         if ((targetNamespace == null) || (schemas.get(targetNamespace) == null)) {
             setParser();
@@ -393,11 +388,10 @@ public class SchemaFactory {
     }
 
     /**
-     * Registers a Schema instance with the factory. A clone is NOT created within this method. The
-     * Schema passed in is associated with the specified targetNamespace. The Schema is not tested
-     * to ensure the intended targetNamespace (schema.getTargetNamespace()) is equal to
-     * targetNamespace. The ramifications is that you may hack wildly within the repository, but we
-     * aware you may have some 'undocumented features' as a result (odd Schemas being returned).
+     * Registers a Schema instance with the factory. A clone is NOT created within this method. The Schema passed in is
+     * associated with the specified targetNamespace. The Schema is not tested to ensure the intended targetNamespace
+     * (schema.getTargetNamespace()) is equal to targetNamespace. The ramifications is that you may hack wildly within
+     * the repository, but we aware you may have some 'undocumented features' as a result (odd Schemas being returned).
      */
     public static void registerSchema(URI targetNamespace, Schema schema) {
         getInstance().registerRealSchema(targetNamespace, schema);
@@ -425,9 +419,9 @@ public class SchemaFactory {
     }
 
     /**
-     * The Schema will contain references to the elements within the two Schemas provided in the
-     * constructor. In most cases this is used to incorporate additional definitions into a
-     * targetNamespace by parsing an additional schema file.
+     * The Schema will contain references to the elements within the two Schemas provided in the constructor. In most
+     * cases this is used to incorporate additional definitions into a targetNamespace by parsing an additional schema
+     * file.
      *
      * @author dzwiers
      * @see Schema
@@ -456,13 +450,12 @@ public class SchemaFactory {
         private URI uri;
 
         /**
-         * This completes the merge of two schemas, s1 and s2. When there is a conflict in data
-         * between the two schemas, s1 is assumed to be correct.
+         * This completes the merge of two schemas, s1 and s2. When there is a conflict in data between the two schemas,
+         * s1 is assumed to be correct.
          *
          * @param s1 Schema (Tie Winner)
          * @param s2 Schema (Tie Loser)
-         * @throws SAXException When some thing bad happens (for example merging two
-         *     targetNamespaces)
+         * @throws SAXException When some thing bad happens (for example merging two targetNamespaces)
          */
         public MergedSchema(Schema s1, Schema s2) throws SAXException {
             if ((s1.getId() == null) || s1.getId().equals("")) {
@@ -477,16 +470,16 @@ public class SchemaFactory {
                 version = s1.getVersion();
             }
 
-            if ((s1.getTargetNamespace() == null) || s1.getTargetNamespace().toString().isEmpty()) {
+            if ((s1.getTargetNamespace() == null)
+                    || s1.getTargetNamespace().toString().isEmpty()) {
                 targetNamespace = s2.getTargetNamespace();
             } else {
                 if ((s2.getTargetNamespace() != null)
                         && !s1.getTargetNamespace().equals(s2.getTargetNamespace())) {
-                    throw new SAXException(
-                            "cannot merge two target namespaces. "
-                                    + s1.getTargetNamespace()
-                                    + " "
-                                    + s2.getTargetNamespace());
+                    throw new SAXException("cannot merge two target namespaces. "
+                            + s1.getTargetNamespace()
+                            + " "
+                            + s2.getTargetNamespace());
                 }
 
                 targetNamespace = s1.getTargetNamespace();
@@ -509,8 +502,7 @@ public class SchemaFactory {
                 ag2 = new AttributeGroup[0];
             }
 
-            for (AttributeGroup attributeGroup1 : ag1)
-                m.put(attributeGroup1.getName(), attributeGroup1);
+            for (AttributeGroup attributeGroup1 : ag1) m.put(attributeGroup1.getName(), attributeGroup1);
 
             for (AttributeGroup attributeGroup : ag2)
                 if (!m.containsKey(attributeGroup.getName())) {

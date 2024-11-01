@@ -41,8 +41,7 @@ public class OvalImpl implements Oval {
      * @param height span in the Y direction
      * @param crs coordinate reference system (may be {@code null})
      */
-    public OvalImpl(
-            double minX, double minY, double width, double height, CoordinateReferenceSystem crs) {
+    public OvalImpl(double minX, double minY, double width, double height, CoordinateReferenceSystem crs) {
         if (width <= 0 || height <= 0) {
             throw new IllegalArgumentException("width and height must both be positive");
         }
@@ -70,8 +69,7 @@ public class OvalImpl implements Oval {
     /**
      * {@inheritDoc}
      *
-     * <p>Vertex 0 is at the min X and Y coordinate (lower left) with the subsequent vertices being
-     * indexed clockwise.
+     * <p>Vertex 0 is at the min X and Y coordinate (lower left) with the subsequent vertices being indexed clockwise.
      */
     @Override
     public Coordinate[] getVertices() {

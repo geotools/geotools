@@ -88,8 +88,8 @@ public abstract class BaseFeatureCollection<T extends FeatureType, F extends Fea
     /**
      * Subclasses required to implement this method to traverse FeatureCollection contents.
      *
-     * <p>Note that {@link FeatureIterator<F>#close()} is available to clean up after any resource
-     * use required during traversal.
+     * <p>Note that {@link FeatureIterator<F>#close()} is available to clean up after any resource use required during
+     * traversal.
      */
     @Override
     public abstract FeatureIterator<F> features();
@@ -97,8 +97,8 @@ public abstract class BaseFeatureCollection<T extends FeatureType, F extends Fea
     /**
      * Returns <tt>true</tt> if this collection contains the specified element. <tt></tt>.
      *
-     * <p>This implementation iterates over the elements in the collection, checking each element in
-     * turn for equality with the specified element.
+     * <p>This implementation iterates over the elements in the collection, checking each element in turn for equality
+     * with the specified element.
      *
      * @param o object to be checked for containment in this collection.
      * @return <tt>true</tt> if this collection contains the specified element.
@@ -124,14 +124,12 @@ public abstract class BaseFeatureCollection<T extends FeatureType, F extends Fea
     }
 
     /**
-     * Returns <tt>true</tt> if this collection contains all of the elements in the specified
-     * collection.
+     * Returns <tt>true</tt> if this collection contains all of the elements in the specified collection.
      *
      * <p>
      *
      * @param c collection to be checked for containment in this collection.
-     * @return <tt>true</tt> if this collection contains all of the elements in the specified
-     *     collection.
+     * @return <tt>true</tt> if this collection contains all of the elements in the specified collection.
      * @throws NullPointerException if the specified collection is null.
      * @see #contains(Object)
      */
@@ -187,8 +185,7 @@ public abstract class BaseFeatureCollection<T extends FeatureType, F extends Fea
 
     @Override
     public void accepts(
-            org.geotools.api.feature.FeatureVisitor visitor,
-            org.geotools.api.util.ProgressListener progress)
+            org.geotools.api.feature.FeatureVisitor visitor, org.geotools.api.util.ProgressListener progress)
             throws IOException {
         DataUtilities.visit(this, visitor, progress);
     }
@@ -197,9 +194,8 @@ public abstract class BaseFeatureCollection<T extends FeatureType, F extends Fea
     // Feature Collections API
     //
     /**
-     * Convenience implementation that just wraps this collection into a {@link
-     * FilteringFeatureCollection}. Subclasses might want to override this in case the filter can be
-     * cascaded to their data sources.
+     * Convenience implementation that just wraps this collection into a {@link FilteringFeatureCollection}. Subclasses
+     * might want to override this in case the filter can be cascaded to their data sources.
      */
     @Override
     public FeatureCollection<T, F> subCollection(Filter filter) {
@@ -211,8 +207,7 @@ public abstract class BaseFeatureCollection<T extends FeatureType, F extends Fea
     /**
      * Obtained sorted contents, only implemented for SimpleFeature at present.
      *
-     * <p>This method only supports SimpleFeature at present, consider use of
-     * FeatureSource.features( Query ).
+     * <p>This method only supports SimpleFeature at present, consider use of FeatureSource.features( Query ).
      *
      * @param order Sort order
      * @return FeatureCollection sorted in the indicated order
@@ -224,15 +219,12 @@ public abstract class BaseFeatureCollection<T extends FeatureType, F extends Fea
             // go for the most efficient way if possible, otherwise rely on pure in memory
             // sorting...
             SimpleFeatureCollection simple =
-                    DataUtilities.simple(
-                            (FeatureCollection<SimpleFeatureType, SimpleFeature>) this);
-            return (FeatureCollection<T, F>)
-                    new SortedSimpleFeatureCollection(simple, new SortBy[] {order});
+                    DataUtilities.simple((FeatureCollection<SimpleFeatureType, SimpleFeature>) this);
+            return (FeatureCollection<T, F>) new SortedSimpleFeatureCollection(simple, new SortBy[] {order});
         } else {
             // hmm... we don't even have a basic non simple collection... need to implement one
             // before going here
-            throw new UnsupportedOperationException(
-                    "Cannot sort on complex features at the moment");
+            throw new UnsupportedOperationException("Cannot sort on complex features at the moment");
         }
     }
 
@@ -255,8 +247,8 @@ public abstract class BaseFeatureCollection<T extends FeatureType, F extends Fea
     }
 
     /**
-     * Full collection traversal to obtain bounds of FeatureCollection. Subclasees are strong
-     * encouraged to override this expensive method (even if just to implement caching).
+     * Full collection traversal to obtain bounds of FeatureCollection. Subclasees are strong encouraged to override
+     * this expensive method (even if just to implement caching).
      */
     @Override
     public ReferencedEnvelope getBounds() {

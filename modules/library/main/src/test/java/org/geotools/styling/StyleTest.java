@@ -26,9 +26,8 @@ import org.junit.Test;
  *
  * <ul>
  *   <li>Testing any methods not hit by StyleFactoryImpl and SLDParsing
- *   <li>Going over the "cast" methods used to promote org.geotools.api.styling instances to a
- *       StyleImpl if required. These are used to ensure that any set methods can handle a
- *       org.geotools.api.styling instances.
+ *   <li>Going over the "cast" methods used to promote org.geotools.api.styling instances to a StyleImpl if required.
+ *       These are used to ensure that any set methods can handle a org.geotools.api.styling instances.
  * </ul>
  */
 public class StyleTest {
@@ -47,42 +46,41 @@ public class StyleTest {
 
         assertEquals(displacement, sf.displacement(ff.literal(1.0), ff.literal(1.0)));
 
-        org.geotools.api.style.Displacement external =
-                new Displacement() {
-                    @Override
-                    public Expression getDisplacementY() {
-                        return ff.literal(1.0);
-                    }
+        org.geotools.api.style.Displacement external = new Displacement() {
+            @Override
+            public Expression getDisplacementY() {
+                return ff.literal(1.0);
+            }
 
-                    @Override
-                    public Expression getDisplacementX() {
-                        return ff.literal(1.0);
-                    }
+            @Override
+            public Expression getDisplacementX() {
+                return ff.literal(1.0);
+            }
 
-                    @Override
-                    public Object accept(TraversingStyleVisitor visitor, Object data) {
-                        return visitor.visit(this, data);
-                    }
+            @Override
+            public Object accept(TraversingStyleVisitor visitor, Object data) {
+                return visitor.visit(this, data);
+            }
 
-                    /**
-                     * Sets the expression that computes a pixel offset from the geometry point.
-                     *
-                     * @param x
-                     */
-                    @Override
-                    public void setDisplacementX(Expression x) {}
+            /**
+             * Sets the expression that computes a pixel offset from the geometry point.
+             *
+             * @param x
+             */
+            @Override
+            public void setDisplacementX(Expression x) {}
 
-                    /**
-                     * Sets the expression that computes a pixel offset from the geometry point.
-                     *
-                     * @param y
-                     */
-                    @Override
-                    public void setDisplacementY(Expression y) {}
+            /**
+             * Sets the expression that computes a pixel offset from the geometry point.
+             *
+             * @param y
+             */
+            @Override
+            public void setDisplacementY(Expression y) {}
 
-                    @Override
-                    public void accept(StyleVisitor visitor) {}
-                };
+            @Override
+            public void accept(StyleVisitor visitor) {}
+        };
         displacement = DisplacementImpl.cast(external);
         assertEquals(ff.literal(1.0), displacement.getDisplacementX());
     }

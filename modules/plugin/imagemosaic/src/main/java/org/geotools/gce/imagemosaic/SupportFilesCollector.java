@@ -31,8 +31,7 @@ import org.geotools.util.logging.Logging;
 /**
  * A collector of supportFiles.
  *
- * <p>It will look for ancillary files having same name but different extension, trying from a set
- * of possible values.
+ * <p>It will look for ancillary files having same name but different extension, trying from a set of possible values.
  */
 public class SupportFilesCollector {
 
@@ -88,8 +87,8 @@ public class SupportFilesCollector {
     }
 
     /**
-     * Gets the support file collector for the given file, or <code>null</code> if the file type is
-     * not known (the extension will be evaluated in a case insensitive way)
+     * Gets the support file collector for the given file, or <code>null</code> if the file type is not known (the
+     * extension will be evaluated in a case insensitive way)
      */
     public static SupportFilesCollector getCollectorFor(File file) {
         String extension = FilenameUtils.getExtension(file.getName());

@@ -40,8 +40,7 @@ import org.geotools.util.factory.OptionalFactory;
 public abstract class MockCRSAuthorityFactory extends AbstractAuthorityFactory
         implements CRSAuthorityFactory, OptionalFactory {
 
-    public static final String USE_MOCK_CRS_FACTORY =
-            "org.geotools.referencing.crs.usemockcrsfactory";
+    public static final String USE_MOCK_CRS_FACTORY = "org.geotools.referencing.crs.usemockcrsfactory";
 
     private final String name;
 
@@ -62,8 +61,7 @@ public abstract class MockCRSAuthorityFactory extends AbstractAuthorityFactory
     }
 
     @Override
-    public Set<String> getAuthorityCodes(Class<? extends IdentifiedObject> type)
-            throws FactoryException {
+    public Set<String> getAuthorityCodes(Class<? extends IdentifiedObject> type) throws FactoryException {
         return codes;
     }
 
@@ -74,8 +72,7 @@ public abstract class MockCRSAuthorityFactory extends AbstractAuthorityFactory
     }
 
     @Override
-    public IdentifiedObject createObject(String code)
-            throws NoSuchAuthorityCodeException, FactoryException {
+    public IdentifiedObject createObject(String code) throws NoSuchAuthorityCodeException, FactoryException {
         if (codes.contains(code)) {
             return new MockCRS();
         }
@@ -83,8 +80,7 @@ public abstract class MockCRSAuthorityFactory extends AbstractAuthorityFactory
     }
 
     @Override
-    public InternationalString getDescriptionText(String code)
-            throws NoSuchAuthorityCodeException, FactoryException {
+    public InternationalString getDescriptionText(String code) throws NoSuchAuthorityCodeException, FactoryException {
         return Text.text("description");
     }
 

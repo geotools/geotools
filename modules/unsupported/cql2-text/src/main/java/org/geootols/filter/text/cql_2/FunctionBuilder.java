@@ -23,8 +23,7 @@ import org.geotools.filter.text.commons.BuildResultStack;
 import org.geotools.filter.text.cql2.CQLException;
 
 /**
- * Abstract class for function builder. Copied from gt-cql, should be removed once the modules are
- * merged.
+ * Abstract class for function builder. Copied from gt-cql, should be removed once the modules are merged.
  *
  * @author Mauricio Pazos (Axios Engineering)
  * @since 2.6

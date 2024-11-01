@@ -26,8 +26,8 @@ import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
 
 /**
- * Will reproject the features to another CRS. Can also be used to force a known CRS onto a dataset
- * that does not have ones
+ * Will reproject the features to another CRS. Can also be used to force a known CRS onto a dataset that does not have
+ * ones
  *
  * @author Andrea Aime
  */
@@ -39,9 +39,7 @@ public class ReprojectProcess implements VectorProcess {
 
     @DescribeResult(name = "result", description = "Input feature collection")
     public SimpleFeatureCollection execute(
-            @DescribeParameter(
-                            name = "features",
-                            description = "The feature collection that will be reprojected")
+            @DescribeParameter(name = "features", description = "The feature collection that will be reprojected")
                     SimpleFeatureCollection features,
             @DescribeParameter(
                             name = "forcedCRS",
@@ -52,8 +50,7 @@ public class ReprojectProcess implements VectorProcess {
             @DescribeParameter(
                             name = "targetCRS",
                             min = 0,
-                            description =
-                                    "Target coordinate reference system to use for reprojection")
+                            description = "Target coordinate reference system to use for reprojection")
                     CoordinateReferenceSystem targetCRS)
             throws Exception {
 

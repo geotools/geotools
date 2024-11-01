@@ -14,8 +14,8 @@ import org.geotools.api.filter.expression.Expression;
 /**
  * Gives directions for how to draw lines on a map.
  *
- * @version <A HREF="http://www.opengeospatial.org/standards/symbol">Symbology Encoding
- *     Implementation Specification 1.1.0</A>
+ * @version <A HREF="http://www.opengeospatial.org/standards/symbol">Symbology Encoding Implementation Specification
+ *     1.1.0</A>
  * @author Open Geospatial Consortium
  * @author Johann Sorel (Geomatys)
  * @author Chris Dillard (SYS Technologies)
@@ -31,13 +31,12 @@ public interface LineSymbolizer extends Symbolizer {
     Stroke getStroke();
 
     /**
-     * PerpendicularOffset allows to draw lines in parallel to the original geometry. For complex
-     * line strings these parallel lines have to be constructed so that the distance between
-     * original geometry and drawn line stays equal. This construction can result in drawn lines
-     * that are actually smaller or longer than the original geometry.
+     * PerpendicularOffset allows to draw lines in parallel to the original geometry. For complex line strings these
+     * parallel lines have to be constructed so that the distance between original geometry and drawn line stays equal.
+     * This construction can result in drawn lines that are actually smaller or longer than the original geometry.
      *
-     * <p>The distance is in uoms and is positive to the left-hand side of the line string. Negative
-     * numbers mean right. The default offset is 0.
+     * <p>The distance is in uoms and is positive to the left-hand side of the line string. Negative numbers mean right.
+     * The default offset is 0.
      *
      * @return Expression
      */
@@ -61,8 +60,8 @@ public interface LineSymbolizer extends Symbolizer {
     /**
      * Define an offset to draw lines in parallel to the original geometry.
      *
-     * @param offset Distance in UOMs to offset line; left-hand side is positive; right-hand side is
-     *     negative; the default value is 0
+     * @param offset Distance in UOMs to offset line; left-hand side is positive; right-hand side is negative; the
+     *     default value is 0
      */
     void setPerpendicularOffset(Expression offset);
 }

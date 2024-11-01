@@ -24,8 +24,7 @@ import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
 
 /**
- * Base class for handling the parsing of Ysld "symbolizer" properties into {@link Symbolizer}
- * objects.
+ * Base class for handling the parsing of Ysld "symbolizer" properties into {@link Symbolizer} objects.
  *
  * @param <T> The type of {@link Symbolizer} being parsed.
  */

@@ -31,11 +31,9 @@ import org.xml.sax.helpers.AttributesImpl;
  */
 class MultiLineStringEncoder extends GeometryEncoder<MultiLineString> {
 
-    static final QualifiedName MULTI_LINE_STRING =
-            new QualifiedName(GML.NAMESPACE, "MultiLineString", "gml");
+    static final QualifiedName MULTI_LINE_STRING = new QualifiedName(GML.NAMESPACE, "MultiLineString", "gml");
 
-    static final QualifiedName LINE_STRING_MEMBER =
-            new QualifiedName(GML.NAMESPACE, "lineStringMember", "gml");
+    static final QualifiedName LINE_STRING_MEMBER = new QualifiedName(GML.NAMESPACE, "lineStringMember", "gml");
 
     LineStringEncoder lse;
 
@@ -54,8 +52,7 @@ class MultiLineStringEncoder extends GeometryEncoder<MultiLineString> {
     }
 
     @Override
-    public void encode(MultiLineString geometry, AttributesImpl atts, GMLWriter handler)
-            throws Exception {
+    public void encode(MultiLineString geometry, AttributesImpl atts, GMLWriter handler) throws Exception {
         handler.startElement(multiLineString, atts);
 
         for (int i = 0; i < geometry.getNumGeometries(); i++) {

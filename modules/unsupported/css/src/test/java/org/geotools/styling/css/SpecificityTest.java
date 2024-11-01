@@ -43,8 +43,7 @@ public class SpecificityTest {
 
     public static Selector PSEUDO_NTH = PseudoClass.newPseudoClass("mark", 1);
 
-    public static Selector SCALE_MIN_10000 =
-            new ScaleRange(10000, true, Double.POSITIVE_INFINITY, false);
+    public static Selector SCALE_MIN_10000 = new ScaleRange(10000, true, Double.POSITIVE_INFINITY, false);
 
     public static Selector PROPERTY = new Data("att > 10");
 

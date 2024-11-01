@@ -43,10 +43,7 @@ public class XSDateTimeStrategyTest extends TestSchema {
     }
 
     public void checkParseEncode(
-            final QName qname,
-            final String toParse,
-            final Date toEncode,
-            final String expectedEncoding)
+            final QName qname, final String toParse, final Date toEncode, final String expectedEncoding)
             throws Exception {
 
         SimpleBinding strategy = (SimpleBinding) stratagy(qname);
@@ -107,15 +104,10 @@ public class XSDateTimeStrategyTest extends TestSchema {
         java.sql.Time expected = new java.sql.Time(timestamp(nil, nil, nil, 10, 53, 24));
         checkParseEncode(XS.TIME, "10:53:24Z", expected, "10:53:24Z");
 
-        expected =
-                new java.sql.Time(
-                        timestamp(TimeZone.getTimeZone("GMT-3:00"), nil, nil, nil, 10, 53, 24));
+        expected = new java.sql.Time(timestamp(TimeZone.getTimeZone("GMT-3:00"), nil, nil, nil, 10, 53, 24));
         checkParseEncode(XS.TIME, "10:53:24-03:00", expected, "13:53:24Z");
 
-        expected =
-                new java.sql.Time(
-                        timestamp(
-                                TimeZone.getTimeZone("GMT+3:00"), nil, nil, nil, 10, 53, 24, 255));
+        expected = new java.sql.Time(timestamp(TimeZone.getTimeZone("GMT+3:00"), nil, nil, nil, 10, 53, 24, 255));
         checkParseEncode(XS.TIME, "10:53:24.255+03:00", expected, "07:53:24.255Z");
     }
 
@@ -126,20 +118,13 @@ public class XSDateTimeStrategyTest extends TestSchema {
         checkParseEncode(XS.DATETIME, "2011-10-24T10:53:24Z", expected, "2011-10-24T10:53:24Z");
 
         expected = new java.sql.Timestamp(timestamp(2011, 9, 24, 10, 53, 24, 200));
-        checkParseEncode(
-                XS.DATETIME, "2011-10-24T10:53:24.200Z", expected, "2011-10-24T10:53:24.200Z");
+        checkParseEncode(XS.DATETIME, "2011-10-24T10:53:24.200Z", expected, "2011-10-24T10:53:24.200Z");
 
-        expected =
-                new java.sql.Timestamp(
-                        timestamp(TimeZone.getTimeZone("GMT+3:00"), 2011, 9, 24, 0, 00, 00, 200));
-        checkParseEncode(
-                XS.DATETIME, "2011-10-24T00:00:00.200+03:00", expected, "2011-10-23T21:00:00.200Z");
+        expected = new java.sql.Timestamp(timestamp(TimeZone.getTimeZone("GMT+3:00"), 2011, 9, 24, 0, 00, 00, 200));
+        checkParseEncode(XS.DATETIME, "2011-10-24T00:00:00.200+03:00", expected, "2011-10-23T21:00:00.200Z");
 
-        expected =
-                new java.sql.Timestamp(
-                        timestamp(TimeZone.getTimeZone("GMT-3:00"), 2011, 9, 24, 0, 00, 00, 200));
-        checkParseEncode(
-                XS.DATETIME, "2011-10-24T00:00:00.200-03:00", expected, "2011-10-24T03:00:00.200Z");
+        expected = new java.sql.Timestamp(timestamp(TimeZone.getTimeZone("GMT-3:00"), 2011, 9, 24, 0, 00, 00, 200));
+        checkParseEncode(XS.DATETIME, "2011-10-24T00:00:00.200-03:00", expected, "2011-10-24T03:00:00.200Z");
 
         expected = new java.sql.Timestamp(timestamp(2011, 9, 24, 10, 53, 00));
         checkParseEncode(XS.DATETIME, "2011-10-24T10:53Z", expected, "2011-10-24T10:53:00Z");
@@ -188,10 +173,7 @@ public class XSDateTimeStrategyTest extends TestSchema {
         assertEquals("2011-10-24T10:53:31.999Z", encoded);
     }
 
-    /**
-     * GEOT-7072: Non-comformant WFS implementations tend to send empty elements (e.g. {@code
-     * <value></value>})
-     */
+    /** GEOT-7072: Non-comformant WFS implementations tend to send empty elements (e.g. {@code <value></value>}) */
     @Test
     public void testParseEmptyStringAsNull() throws Exception {
         validateValues(XS.DATE, "", null);
@@ -214,10 +196,9 @@ public class XSDateTimeStrategyTest extends TestSchema {
 
         encoder.encode(cal, qname, out);
 
-        Document dom =
-                DocumentBuilderFactory.newInstance()
-                        .newDocumentBuilder()
-                        .parse(new ByteArrayInputStream(out.toByteArray()));
+        Document dom = DocumentBuilderFactory.newInstance()
+                .newDocumentBuilder()
+                .parse(new ByteArrayInputStream(out.toByteArray()));
 
         String encodedValue = dom.getDocumentElement().getTextContent();
 

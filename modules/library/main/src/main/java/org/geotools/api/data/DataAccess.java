@@ -34,38 +34,35 @@ import org.geotools.feature.FeatureCollection;
  *
  * <ul>
  *   <li>{@link DataAccess.getInfo()} - information about the file or server itself
- *   <li>{@link DataAccess.getNames()} - list of the available contents (each is an individual
- *       resource)
- *   <li>{@link DataAccess.getSchema( Name )} - FeatureType describing the information available in
- *       the named resource
+ *   <li>{@link DataAccess.getNames()} - list of the available contents (each is an individual resource)
+ *   <li>{@link DataAccess.getSchema( Name )} - FeatureType describing the information available in the named resource
  * </ul>
  *
  * <p>
  *
  * <h2>Contents</h2>
  *
- * You can access the contents of a service or file using getFeatureSource( Name ). Depending the
- * abilities of your implementation and your credentials you will have access to
+ * You can access the contents of a service or file using getFeatureSource( Name ). Depending the abilities of your
+ * implementation and your credentials you will have access to
  *
  * <ul>
- *   <li>{@link FeatureSource}: read-only api similar to the WFS getFeature operations. Please note
- *       the reutrned FeatureCollection may be *lazy*; for many implementations no actual access
- *       will occur until you use the FetaureCollection for the first time.
- *   <li>{@link FeatureStore}: read/write api similar to the WFS Transaction operation. Batch
- *       changes such as addFeatures, modifyFeatures and removeFeatures are supported.
- *   <li>{@link FeatureLocking}: concurrency control; the Data Access API is thread safe; one
- *       consequence of this is modifications being held up while other threads read the contents.
- *       You may wish to Lock a selection of features for your exclusive use. Locks are timed; and
- *       will expire after the indicated period.
+ *   <li>{@link FeatureSource}: read-only api similar to the WFS getFeature operations. Please note the reutrned
+ *       FeatureCollection may be *lazy*; for many implementations no actual access will occur until you use the
+ *       FetaureCollection for the first time.
+ *   <li>{@link FeatureStore}: read/write api similar to the WFS Transaction operation. Batch changes such as
+ *       addFeatures, modifyFeatures and removeFeatures are supported.
+ *   <li>{@link FeatureLocking}: concurrency control; the Data Access API is thread safe; one consequence of this is
+ *       modifications being held up while other threads read the contents. You may wish to Lock a selection of features
+ *       for your exclusive use. Locks are timed; and will expire after the indicated period.
  * </ul>
  *
- * <p>Please note that all interaction occurs within the context of a Transaction, this facility
- * provides session management and is strongly advised. Please note that your application is
- * responsible for managing its own Transactions; as an example they are often associated with a
- * single Map in a desktop application; or a single session in a J2EE web app.
+ * <p>Please note that all interaction occurs within the context of a Transaction, this facility provides session
+ * management and is strongly advised. Please note that your application is responsible for managing its own
+ * Transactions; as an example they are often associated with a single Map in a desktop application; or a single session
+ * in a J2EE web app.
  *
- * <p>The use of Transaction.AUTO_COMMIT is suitable for read-only access when you wish to minimize
- * the number of connections in use, when used for writing performance will often be terrible.
+ * <p>The use of Transaction.AUTO_COMMIT is suitable for read-only access when you wish to minimize the number of
+ * connections in use, when used for writing performance will often be terrible.
  *
  * <h2>Lifecycle</h2>
  *
@@ -73,9 +70,8 @@ import org.geotools.feature.FeatureCollection;
  *
  * <ul>
  *   <li>Connect using a DataAccessFactory.createDataStore using a set of connection parameters
- *   <li>Application is responsible for holding a single instance to the service or file, DataAccess
- *       implementations will hold onto database connections, internal caches and so on - and as
- *       such should not be duplicated.
+ *   <li>Application is responsible for holding a single instance to the service or file, DataAccess implementations
+ *       will hold onto database connections, internal caches and so on - and as such should not be duplicated.
  *   <li>DataAccess.dispose() is called when the application is shut down
  * </ul>
  *
@@ -84,14 +80,13 @@ import org.geotools.feature.FeatureCollection;
  * <ul>
  *   <li>Created using a DataAccessFactory.createNewDataStore using a set of creation parameters
  *   <li>DataAccess.createSchema( T ) is called to set up the contents
- *   <li>DataAccess.getFetaureSource( Name ) is called, and FeatureStore.addFeatures( collection )
- *       used to populate the contents
+ *   <li>DataAccess.getFetaureSource( Name ) is called, and FeatureStore.addFeatures( collection ) used to populate the
+ *       contents
  *   <li>DataAccess.dispose() is called when the application is shut down
  * </ul>
  *
- * <p>Applications are responsible for holding a single instance to the service or file, The
- * DataAccess implementations will hold onto database connections, internal caches and so on - and
- * as such should not be duplicated.
+ * <p>Applications are responsible for holding a single instance to the service or file, The DataAccess implementations
+ * will hold onto database connections, internal caches and so on - and as such should not be duplicated.
  *
  * @see DataStore Subclass restricted to working with simple content
  * @param <T> Type of Feature Content, may be SimpleFeatureType
@@ -102,9 +97,8 @@ public interface DataAccess<T extends FeatureType, F extends Feature> {
     /**
      * Information about this service.
      *
-     * <p>This method offers access to a summary of header or metadata information describing the
-     * service. Subclasses may return a specific ServiceInfo instance that has additional
-     * information (such as FilterCapabilities).
+     * <p>This method offers access to a summary of header or metadata information describing the service. Subclasses
+     * may return a specific ServiceInfo instance that has additional information (such as FilterCapabilities).
      *
      * @return SeviceInfo
      */
@@ -113,8 +107,7 @@ public interface DataAccess<T extends FeatureType, F extends Feature> {
     /**
      * Creates storage for a new <code>featureType</code>.
      *
-     * <p>The provided <code>featureType</code> we be accessable by the typeName provided by
-     * featureType.getTypeName().
+     * <p>The provided <code>featureType</code> we be accessable by the typeName provided by featureType.getTypeName().
      *
      * @param featureType FetureType to add to DataStore
      * @throws IOException If featureType cannot be created
@@ -124,8 +117,8 @@ public interface DataAccess<T extends FeatureType, F extends Feature> {
     /**
      * Used to update a schema in place.
      *
-     * <p>This functionality is similar to an "alter table" statement in SQL. Implementation is
-     * optional; it may not be supported by all servers or files.
+     * <p>This functionality is similar to an "alter table" statement in SQL. Implementation is optional; it may not be
+     * supported by all servers or files.
      *
      * @throws IOException if the operation failed
      * @throws UnsupportedOperation if functionality is not available
@@ -135,8 +128,8 @@ public interface DataAccess<T extends FeatureType, F extends Feature> {
     /**
      * Used to permanently remove a schema from the underlying storage
      *
-     * <p>This functionality is similar to an "drop table" statement in SQL. Implementation is
-     * optional; it may not be supported by all servers or files.
+     * <p>This functionality is similar to an "drop table" statement in SQL. Implementation is optional; it may not be
+     * supported by all servers or files.
      *
      * @throws IOException if the operation failed
      * @throws UnsupportedOperation if functionality is not available
@@ -155,8 +148,8 @@ public interface DataAccess<T extends FeatureType, F extends Feature> {
     /**
      * Description of the named resource.
      *
-     * <p>The FeatureType returned describes the contents being published. For additional metadata
-     * please review getInfo( Name ).
+     * <p>The FeatureType returned describes the contents being published. For additional metadata please review
+     * getInfo( Name ).
      *
      * @param name Type name a the resource from getNames()
      * @return Description of the FeatureType being made avaialble
@@ -184,15 +177,15 @@ public interface DataAccess<T extends FeatureType, F extends Feature> {
     /**
      * Disposes of this data store and releases any resource that it is using.
      *
-     * <p>A <code>DataStore</code> cannot be used after <code>dispose</code> has been called,
-     * neither can any data access object it helped create, such as {@link FeatureReader}, {@link
-     * FeatureSource} or {@link FeatureCollection}.
+     * <p>A <code>DataStore</code> cannot be used after <code>dispose</code> has been called, neither can any data
+     * access object it helped create, such as {@link FeatureReader}, {@link FeatureSource} or
+     * {@link FeatureCollection}.
      *
      * <p>This operation can be called more than once without side effects.
      *
-     * <p>There is no thread safety assurance associated with this method. For example, client code
-     * will have to make sure this method is not called while retrieving/saving data from/to the
-     * storage, or be prepared for the consequences.
+     * <p>There is no thread safety assurance associated with this method. For example, client code will have to make
+     * sure this method is not called while retrieving/saving data from/to the storage, or be prepared for the
+     * consequences.
      */
     void dispose();
 

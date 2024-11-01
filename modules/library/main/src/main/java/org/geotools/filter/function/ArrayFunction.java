@@ -29,8 +29,7 @@ import org.geotools.filter.capability.FunctionNameImpl;
  */
 public class ArrayFunction extends FunctionExpressionImpl {
 
-    public static FunctionName NAME =
-            new FunctionNameImpl("array", parameter("values", Object.class, 1, -1));
+    public static FunctionName NAME = new FunctionNameImpl("array", parameter("values", Object.class, 1, -1));
 
     public ArrayFunction() {
         super(NAME);

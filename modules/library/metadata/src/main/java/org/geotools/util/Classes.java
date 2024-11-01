@@ -59,8 +59,7 @@ public final class Classes {
         new Classes(Integer.TYPE, Integer.class, false, true, (byte) Integer.SIZE, INTEGER);
         new Classes(Short.TYPE, Short.class, false, true, (byte) Short.SIZE, SHORT);
         new Classes(Byte.TYPE, Byte.class, false, true, (byte) Byte.SIZE, BYTE);
-        new Classes(
-                Character.TYPE, Character.class, false, false, (byte) Character.SIZE, CHARACTER);
+        new Classes(Character.TYPE, Character.class, false, false, (byte) Character.SIZE, CHARACTER);
         new Classes(Boolean.TYPE, Boolean.class, false, false, (byte) 1, BOOLEAN);
         new Classes(Void.TYPE, Void.class, false, false, (byte) 0, OTHER);
     }
@@ -98,46 +97,44 @@ public final class Classes {
     }
 
     /**
-     * Returns the upper bounds of the parameterized type of the given attribute. If the attribute
-     * does not have a parameterized type, returns {@code null}.
+     * Returns the upper bounds of the parameterized type of the given attribute. If the attribute does not have a
+     * parameterized type, returns {@code null}.
      *
-     * <p>This method is typically used for fetching the type of elements in a collection. We do not
-     * provide a method working from a {@link Class} instance because of the way parameterized types
-     * are implemented in Java (by erasure).
+     * <p>This method is typically used for fetching the type of elements in a collection. We do not provide a method
+     * working from a {@link Class} instance because of the way parameterized types are implemented in Java (by
+     * erasure).
      *
      * <p><b>Examples:</b> When invoking this method for a field of the type below:
      *
      * <ul>
      *   <li>{@code Set<Number>} returns {@code Number.class}.
-     *   <li>{@code Set<? extends Number>} returns {@code Number.class} as well, since that
-     *       collection can not (in theory) contain instances of super-classes; {@code Number} is
-     *       the <cite>upper bound</cite>.
-     *   <li>{@code Set<? super Number>} returns {@code Object.class}, because that collection is
-     *       allowed to contain such elements.
+     *   <li>{@code Set<? extends Number>} returns {@code Number.class} as well, since that collection can not (in
+     *       theory) contain instances of super-classes; {@code Number} is the <cite>upper bound</cite>.
+     *   <li>{@code Set<? super Number>} returns {@code Object.class}, because that collection is allowed to contain
+     *       such elements.
      *   <li>{@code Set} returns {@code null} because that collection is un-parameterized.
      * </ul>
      *
      * @param field The field for which to obtain the parameterized type.
-     * @return The upper bound of parameterized type, or {@code null} if the given field is not of a
-     *     parameterized type.
+     * @return The upper bound of parameterized type, or {@code null} if the given field is not of a parameterized type.
      */
     public static Class<?> boundOfParameterizedAttribute(final Field field) {
         return getActualTypeArgument(field.getGenericType());
     }
 
     /**
-     * If the given method is a getter or a setter for a parameterized attribute, returns the upper
-     * bounds of the parameterized type. Otherwise returns {@code null}. This method provides the
-     * same semantic than {@link #boundOfParameterizedAttribute(Field)}, but works on a getter or
-     * setter method rather then the field. See the javadoc of above methods for more details.
+     * If the given method is a getter or a setter for a parameterized attribute, returns the upper bounds of the
+     * parameterized type. Otherwise returns {@code null}. This method provides the same semantic than
+     * {@link #boundOfParameterizedAttribute(Field)}, but works on a getter or setter method rather then the field. See
+     * the javadoc of above methods for more details.
      *
-     * <p>This method is typically used for fetching the type of elements in a collection. We do not
-     * provide a method working from a {@link Class} instance because of the way parameterized types
-     * are implemented in Java (by erasure).
+     * <p>This method is typically used for fetching the type of elements in a collection. We do not provide a method
+     * working from a {@link Class} instance because of the way parameterized types are implemented in Java (by
+     * erasure).
      *
      * @param method The getter or setter method for which to obtain the parameterized type.
-     * @return The upper bound of parameterized type, or {@code null} if the given method do not
-     *     opperate on an object of a parameterized type.
+     * @return The upper bound of parameterized type, or {@code null} if the given method do not opperate on an object
+     *     of a parameterized type.
      */
     public static Class<?> boundOfParameterizedAttribute(final Method method) {
         Class<?> c = getActualTypeArgument(method.getGenericReturnType());
@@ -151,9 +148,9 @@ public final class Classes {
     }
 
     /**
-     * Delegates to {@link ParameterizedType#getActualTypeArguments} and returns the result as a
-     * {@link Class}, provided that every objects are of the expected classes and the result was an
-     * array of length 1 (so there is no ambiguity). Otherwise returns {@code null}.
+     * Delegates to {@link ParameterizedType#getActualTypeArguments} and returns the result as a {@link Class}, provided
+     * that every objects are of the expected classes and the result was an array of length 1 (so there is no
+     * ambiguity). Otherwise returns {@code null}.
      */
     private static Class<?> getActualTypeArgument(Type type) {
         if (type instanceof ParameterizedType) {
@@ -173,9 +170,8 @@ public final class Classes {
     }
 
     /**
-     * Returns the class of the specified object, or {@code null} if {@code object} is null. This
-     * method is also useful for fetching the class of an object known only by its bound type. As of
-     * Java 6, the usual pattern:
+     * Returns the class of the specified object, or {@code null} if {@code object} is null. This method is also useful
+     * for fetching the class of an object known only by its bound type. As of Java 6, the usual pattern:
      *
      * <blockquote>
      *
@@ -209,9 +205,9 @@ public final class Classes {
     }
 
     /**
-     * Returns the most specific class implemented by the objects in the given collection. If no
-     * class are {@linkplain Class#isAssignableFrom assignable} to all others, then this method
-     * returns the {@linkplain #commonClass most specific common super class}.
+     * Returns the most specific class implemented by the objects in the given collection. If no class are
+     * {@linkplain Class#isAssignableFrom assignable} to all others, then this method returns the
+     * {@linkplain #commonClass most specific common super class}.
      *
      * @param objects A collection of objects. May contains duplicated values and null values.
      * @return The most specific class.
@@ -248,8 +244,8 @@ public final class Classes {
     }
 
     /**
-     * Returns the most specific class which is a common parent of all the specified classes. This
-     * method should be invoked when no common parent has been found in the supplied list.
+     * Returns the most specific class which is a common parent of all the specified classes. This method should be
+     * invoked when no common parent has been found in the supplied list.
      */
     private static Class<?> commonSuperClass(final Collection<Class<?>> types) {
         // Build a list of all super classes.
@@ -278,9 +274,8 @@ public final class Classes {
     }
 
     /**
-     * Removes every classes in the specified collection which are assignable from an other class
-     * from the same collection. As a result of this method call, the given collection should
-     * contains only leaf classes.
+     * Removes every classes in the specified collection which are assignable from an other class from the same
+     * collection. As a result of this method call, the given collection should contains only leaf classes.
      *
      * @param types The collection to trim.
      * @return If there is exactly one element left, that element. Otherwise {@code null}.
@@ -299,11 +294,10 @@ public final class Classes {
     }
 
     /**
-     * Returns {@code true} if the two specified objects implements exactly the same set of
-     * interfaces. Only interfaces assignable to {@code base} are compared. Declaration order
-     * doesn't matter. For example in ISO 19111, different interfaces exist for different coordinate
-     * system geometries ({@code CartesianCS}, {@code PolarCS}, etc.). We can check if two CS
-     * implementations has the same geometry with the following code:
+     * Returns {@code true} if the two specified objects implements exactly the same set of interfaces. Only interfaces
+     * assignable to {@code base} are compared. Declaration order doesn't matter. For example in ISO 19111, different
+     * interfaces exist for different coordinate system geometries ({@code CartesianCS}, {@code PolarCS}, etc.). We can
+     * check if two CS implementations has the same geometry with the following code:
      *
      * <blockquote>
      *
@@ -317,13 +311,11 @@ public final class Classes {
      * @param object1 The first object to check for interfaces.
      * @param object2 The second object to check for interfaces.
      * @param base The parent of all interfaces to check.
-     * @return {@code true} if both objects implement the same set of interfaces, considering only
-     *     sub-interfaces of {@code base}.
+     * @return {@code true} if both objects implement the same set of interfaces, considering only sub-interfaces of
+     *     {@code base}.
      */
     public static <T> boolean sameInterfaces(
-            final Class<? extends T> object1,
-            final Class<? extends T> object2,
-            final Class<T> base) {
+            final Class<? extends T> object1, final Class<? extends T> object2, final Class<T> base) {
         if (object1 == object2) {
             return true;
         }
@@ -366,8 +358,7 @@ public final class Classes {
      * Returns {@code true} if the given {@code type} is a floating point type.
      *
      * @param type The type to test (may be {@code null}).
-     * @return {@code true} if {@code type} is the primitive or wrapper class of {@link Float} or
-     *     {@link Double}.
+     * @return {@code true} if {@code type} is the primitive or wrapper class of {@link Float} or {@link Double}.
      */
     public static boolean isFloat(final Class<?> type) {
         final Classes mapping = MAPPING.get(type);
@@ -378,8 +369,8 @@ public final class Classes {
      * Returns {@code true} if the given {@code type} is an integer type.
      *
      * @param type The type to test (may be {@code null}).
-     * @return {@code true} if {@code type} is the primitive of wrapper class of {@link Long},
-     *     {@link Integer}, {@link Short} or {@link Byte}.
+     * @return {@code true} if {@code type} is the primitive of wrapper class of {@link Long}, {@link Integer},
+     *     {@link Short} or {@link Byte}.
      */
     public static boolean isInteger(final Class<?> type) {
         final Classes mapping = MAPPING.get(type);
@@ -398,8 +389,8 @@ public final class Classes {
     }
 
     /**
-     * Changes a primitive class to its wrapper (e.g. {@code int} to {@link Integer}). If the
-     * specified class is not a primitive type, then it is returned unchanged.
+     * Changes a primitive class to its wrapper (e.g. {@code int} to {@link Integer}). If the specified class is not a
+     * primitive type, then it is returned unchanged.
      *
      * @param type The primitive type (may be {@code null}).
      * @return The type as a wrapper.
@@ -410,8 +401,8 @@ public final class Classes {
     }
 
     /**
-     * Changes a wrapper class to its primitive (e.g. {@link Integer} to {@code int}). If the
-     * specified class is not a wrapper type, then it is returned unchanged.
+     * Changes a wrapper class to its primitive (e.g. {@link Integer} to {@code int}). If the specified class is not a
+     * wrapper type, then it is returned unchanged.
      *
      * @param type The wrapper type (may be {@code null}).
      * @return The type as a primitive.
@@ -422,9 +413,9 @@ public final class Classes {
     }
 
     /**
-     * Returns one of {@link #DOUBLE}, {@link #FLOAT}, {@link #LONG}, {@link #INTEGER}, {@link
-     * #SHORT}, {@link #BYTE}, {@link #CHARACTER}, {@link #BOOLEAN} or {@link #OTHER} constants for
-     * the given type. This is a commodity for usage in {@code switch} statememnts.
+     * Returns one of {@link #DOUBLE}, {@link #FLOAT}, {@link #LONG}, {@link #INTEGER}, {@link #SHORT}, {@link #BYTE},
+     * {@link #CHARACTER}, {@link #BOOLEAN} or {@link #OTHER} constants for the given type. This is a commodity for
+     * usage in {@code switch} statememnts.
      *
      * @param type A type (usually either a primitive type or its wrapper).
      * @return The constant for the given type, or {@link #OTHER} if unknow.
@@ -435,20 +426,19 @@ public final class Classes {
     }
 
     /**
-     * Converts the specified string into a value object. The value object can be an instance of
-     * {@link Double}, {@link Float}, {@link Long}, {@link Integer}, {@link Short}, {@link Byte},
-     * {@link Boolean}, {@link Character} or {@link String} according the specified type. This
-     * method is intentionnaly restricted to primitive types, with the addition of {@code String}
-     * which can be though as an identity operation. Other types like {@link java.io.File} are not
-     * the purpose of this method.
+     * Converts the specified string into a value object. The value object can be an instance of {@link Double},
+     * {@link Float}, {@link Long}, {@link Integer}, {@link Short}, {@link Byte}, {@link Boolean}, {@link Character} or
+     * {@link String} according the specified type. This method is intentionnaly restricted to primitive types, with the
+     * addition of {@code String} which can be though as an identity operation. Other types like {@link java.io.File}
+     * are not the purpose of this method.
      *
      * @param  <T> The requested type.
      * @param type The requested type.
      * @param value the value to parse.
      * @return The value object, or {@code null} if {@code value} was null.
      * @throws IllegalArgumentException if {@code type} is not a recognized type.
-     * @throws NumberFormatException if {@code type} is a subclass of {@link Number} and the string
-     *     value is not parseable as a number of the specified type.
+     * @throws NumberFormatException if {@code type} is a subclass of {@link Number} and the string value is not
+     *     parseable as a number of the specified type.
      */
     @SuppressWarnings("unchecked")
     public static <T> T valueOf(final Class<T> type, final String value)
@@ -480,10 +470,9 @@ public final class Classes {
     }
 
     /**
-     * Returns a short class name for the specified class. This method will omit the package name.
-     * For example, it will return "String" instead of "java.lang.String" for a {@link String}
-     * object. It will also name array according Java language usage, for example "double[]" instead
-     * of "[D".
+     * Returns a short class name for the specified class. This method will omit the package name. For example, it will
+     * return "String" instead of "java.lang.String" for a {@link String} object. It will also name array according Java
+     * language usage, for example "double[]" instead of "[D".
      *
      * @param classe The object class (may be {@code null}).
      * @return A short class name for the specified object.
@@ -505,9 +494,8 @@ public final class Classes {
     }
 
     /**
-     * Returns a short class name for the specified object. This method will omit the package name.
-     * For example, it will return "String" instead of "java.lang.String" for a {@link String}
-     * object.
+     * Returns a short class name for the specified object. This method will omit the package name. For example, it will
+     * return "String" instead of "java.lang.String" for a {@link String} object.
      *
      * @param object The object (may be {@code null}).
      * @return A short class name for the specified object.

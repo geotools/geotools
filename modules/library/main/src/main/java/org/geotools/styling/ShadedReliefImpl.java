@@ -47,9 +47,8 @@ public class ShadedReliefImpl implements ShadedRelief {
     }
 
     /**
-     * The ReliefFactor gives the amount of exaggeration to use for the height of the ?hills.? A
-     * value of around 55 (times) gives reasonable results for Earth-based DEMs. The default value
-     * is system-dependent.
+     * The ReliefFactor gives the amount of exaggeration to use for the height of the ?hills.? A value of around 55
+     * (times) gives reasonable results for Earth-based DEMs. The default value is system-dependent.
      *
      * @return an expression which evaluates to a double.
      */
@@ -79,9 +78,8 @@ public class ShadedReliefImpl implements ShadedRelief {
     }
 
     /**
-     * The ReliefFactor gives the amount of exaggeration to use for the height of the ?hills.? A
-     * value of around 55 (times) gives reasonable results for Earth-based DEMs. The default value
-     * is system-dependent.
+     * The ReliefFactor gives the amount of exaggeration to use for the height of the ?hills.? A value of around 55
+     * (times) gives reasonable results for Earth-based DEMs. The default value is system-dependent.
      *
      * @param reliefFactor an expression which evaluates to a double.
      */
@@ -123,8 +121,7 @@ public class ShadedReliefImpl implements ShadedRelief {
         if (obj instanceof ShadedReliefImpl) {
             ShadedReliefImpl other = (ShadedReliefImpl) obj;
 
-            return Utilities.equals(reliefFactor, other.reliefFactor)
-                    && Utilities.equals(brightness, other.brightness);
+            return Utilities.equals(reliefFactor, other.reliefFactor) && Utilities.equals(brightness, other.brightness);
         }
 
         return false;

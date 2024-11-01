@@ -60,28 +60,25 @@ public class LikeFilterImpl extends AbstractFilter implements PropertyIsLike {
      *
      * <p>SQL % --> match any number of characters _ --> match a single character
      *
-     * <p>NOTE; the SQL command is 'string LIKE pattern [ESCAPE escape-character]' We could
-     * re-define the escape character, but I'm not doing to do that in this code since some
-     * databases will not handle this case.
+     * <p>NOTE; the SQL command is 'string LIKE pattern [ESCAPE escape-character]' We could re-define the escape
+     * character, but I'm not doing to do that in this code since some databases will not handle this case.
      *
      * <p>Method: 1.
      *
-     * <p>Examples: ( escape ='!', multi='*', single='.' ) broadway* -> 'broadway%' broad_ay ->
-     * 'broad_ay' broadway -> 'broadway'
+     * <p>Examples: ( escape ='!', multi='*', single='.' ) broadway* -> 'broadway%' broad_ay -> 'broad_ay' broadway ->
+     * 'broadway'
      *
-     * <p>broadway!* -> 'broadway*' (* has no significance and is escaped) can't -> 'can''t' ( '
-     * escaped for SQL compliance)
+     * <p>broadway!* -> 'broadway*' (* has no significance and is escaped) can't -> 'can''t' ( ' escaped for SQL
+     * compliance)
      *
-     * <p>NOTE: we also handle "'" characters as special because they are end-of-string characters.
-     * SQL will convert ' to '' (double single quote).
+     * <p>NOTE: we also handle "'" characters as special because they are end-of-string characters. SQL will convert '
+     * to '' (double single quote).
      *
-     * <p>NOTE: we dont handle "'" as a 'special' character because it would be too confusing to
-     * have a special char as another special char. Using this will throw an error
-     * (IllegalArgumentException).
+     * <p>NOTE: we dont handle "'" as a 'special' character because it would be too confusing to have a special char as
+     * another special char. Using this will throw an error (IllegalArgumentException).
      */
     @Deprecated
-    public static String convertToSQL92(
-            char escape, char multi, char single, boolean matchCase, String pattern)
+    public static String convertToSQL92(char escape, char multi, char single, boolean matchCase, String pattern)
             throws IllegalArgumentException {
         return convertToSQL92(escape, multi, single, matchCase, pattern, true);
     }
@@ -91,33 +88,25 @@ public class LikeFilterImpl extends AbstractFilter implements PropertyIsLike {
      *
      * <p>SQL % --> match any number of characters _ --> match a single character
      *
-     * <p>NOTE; the SQL command is 'string LIKE pattern [ESCAPE escape-character]' We could
-     * re-define the escape character, but I'm not doing to do that in this code since some
-     * databases will not handle this case.
+     * <p>NOTE; the SQL command is 'string LIKE pattern [ESCAPE escape-character]' We could re-define the escape
+     * character, but I'm not doing to do that in this code since some databases will not handle this case.
      *
      * <p>Method: 1.
      *
-     * <p>Examples: ( escape ='!', multi='*', single='.' ) broadway* -> 'broadway%' broad_ay ->
-     * 'broad_ay' broadway -> 'broadway'
+     * <p>Examples: ( escape ='!', multi='*', single='.' ) broadway* -> 'broadway%' broad_ay -> 'broad_ay' broadway ->
+     * 'broadway'
      *
-     * <p>broadway!* -> 'broadway*' (* has no significance and is escaped) can't -> 'can''t' ( '
-     * escaped for SQL compliance)
+     * <p>broadway!* -> 'broadway*' (* has no significance and is escaped) can't -> 'can''t' ( ' escaped for SQL
+     * compliance)
      *
-     * <p>NOTE: when the escapeSingleQuote parameter is false, this method will not convert ' to ''
-     * (double single quote) and it is the caller's responsibility to ensure that the resulting
-     * pattern is used safely in SQL queries.
+     * <p>NOTE: when the escapeSingleQuote parameter is false, this method will not convert ' to '' (double single
+     * quote) and it is the caller's responsibility to ensure that the resulting pattern is used safely in SQL queries.
      *
-     * <p>NOTE: we dont handle "'" as a 'special' character because it would be too confusing to
-     * have a special char as another special char. Using this will throw an error
-     * (IllegalArgumentException).
+     * <p>NOTE: we dont handle "'" as a 'special' character because it would be too confusing to have a special char as
+     * another special char. Using this will throw an error (IllegalArgumentException).
      */
     public static String convertToSQL92(
-            char escape,
-            char multi,
-            char single,
-            boolean matchCase,
-            String pattern,
-            boolean escapeSingleQuote) {
+            char escape, char multi, char single, boolean matchCase, String pattern, boolean escapeSingleQuote) {
         if ((escape == '\'') || (multi == '\'') || (single == '\''))
             throw new IllegalArgumentException("do not use single quote (') as special char!");
 
@@ -147,30 +136,21 @@ public class LikeFilterImpl extends AbstractFilter implements PropertyIsLike {
     @Deprecated
     public String getSQL92LikePattern() throws IllegalArgumentException {
         if (escape.length() != 1) {
-            throw new IllegalArgumentException(
-                    "Like Pattern --> escape char should be of length exactly 1");
+            throw new IllegalArgumentException("Like Pattern --> escape char should be of length exactly 1");
         }
         if (wildcardSingle.length() != 1) {
-            throw new IllegalArgumentException(
-                    "Like Pattern --> wildcardSingle char should be of length exactly 1");
+            throw new IllegalArgumentException("Like Pattern --> wildcardSingle char should be of length exactly 1");
         }
         if (wildcardMulti.length() != 1) {
-            throw new IllegalArgumentException(
-                    "Like Pattern --> wildcardMulti char should be of length exactly 1");
+            throw new IllegalArgumentException("Like Pattern --> wildcardMulti char should be of length exactly 1");
         }
         return LikeFilterImpl.convertToSQL92(
-                escape.charAt(0),
-                wildcardMulti.charAt(0),
-                wildcardSingle.charAt(0),
-                matchingCase,
-                pattern,
-                true);
+                escape.charAt(0), wildcardMulti.charAt(0), wildcardSingle.charAt(0), matchingCase, pattern, true);
     }
 
     public void setWildCard(String wildCard) {
         if (wildCard == null || wildCard.isEmpty() || wildCard.length() > 1) {
-            throw new IllegalArgumentException(
-                    "Like Pattern --> wildcardMulti char should be of length exactly 1");
+            throw new IllegalArgumentException("Like Pattern --> wildcardMulti char should be of length exactly 1");
         }
         this.wildcardMulti = wildCard;
         compPattern = null;
@@ -178,8 +158,7 @@ public class LikeFilterImpl extends AbstractFilter implements PropertyIsLike {
 
     public void setSingleChar(String singleChar) {
         if (singleChar == null || singleChar.length() != 1) {
-            throw new IllegalArgumentException(
-                    "Like Pattern --> wildcardSingle char should be of length exactly 1");
+            throw new IllegalArgumentException("Like Pattern --> wildcardSingle char should be of length exactly 1");
         }
         this.wildcardSingle = singleChar;
         compPattern = null;
@@ -190,13 +169,11 @@ public class LikeFilterImpl extends AbstractFilter implements PropertyIsLike {
         if (escape.startsWith("\\")) {
             if (escape.length() < 1 || escape.length() > 3) {
                 throw new IllegalArgumentException(
-                        "Like Pattern --> escape char should be of length exactly 1, not "
-                                + escape.length());
+                        "Like Pattern --> escape char should be of length exactly 1, not " + escape.length());
             }
         } else if (!escape.isEmpty() && escape.length() > 1) {
             throw new IllegalArgumentException(
-                    "Like Pattern --> escape char should be of length exactly 1, not "
-                            + escape.length());
+                    "Like Pattern --> escape char should be of length exactly 1, not " + escape.length());
         }
         this.escape = escape;
         compPattern = null;
@@ -224,11 +201,9 @@ public class LikeFilterImpl extends AbstractFilter implements PropertyIsLike {
     private Matcher getMatcher(String string) {
         if (compPattern == null) {
             String pattern = new LikeToRegexConverter(this).getPattern();
-            compPattern =
-                    isMatchingCase()
-                            ? Pattern.compile(pattern)
-                            : Pattern.compile(
-                                    pattern, Pattern.CASE_INSENSITIVE /* | Pattern.UNICODE_CASE */);
+            compPattern = isMatchingCase()
+                    ? Pattern.compile(pattern)
+                    : Pattern.compile(pattern, Pattern.CASE_INSENSITIVE /* | Pattern.UNICODE_CASE */);
         }
         return compPattern.matcher(string);
     }
@@ -274,8 +249,7 @@ public class LikeFilterImpl extends AbstractFilter implements PropertyIsLike {
     /**
      * Gets the expression for hte filter.
      *
-     * <p>This method calls th deprecated {@link #getValue()} for backwards compatability with
-     * subclasses.
+     * <p>This method calls th deprecated {@link #getValue()} for backwards compatability with subclasses.
      */
     @Override
     public org.geotools.api.filter.expression.Expression getExpression() {
@@ -407,9 +381,8 @@ public class LikeFilterImpl extends AbstractFilter implements PropertyIsLike {
     }
 
     /**
-     * Compares this filter to the specified object. Returns true if the passed in object is the
-     * same as this filter. Checks to make sure the filter types, the value, and the pattern are the
-     * same. &
+     * Compares this filter to the specified object. Returns true if the passed in object is the same as this filter.
+     * Checks to make sure the filter types, the value, and the pattern are the same. &
      *
      * @param o - the object to compare this LikeFilter against.
      * @return true if specified object is equal to this filter; false otherwise.
@@ -437,13 +410,12 @@ public class LikeFilterImpl extends AbstractFilter implements PropertyIsLike {
     }
 
     /**
-     * Used by FilterVisitors to perform some action on this filter instance. Typicaly used by
-     * Filter decoders, but may also be used by any thing which needs infomration from filter
-     * structure. Implementations should always call: visitor.visit(this); It is importatant that
-     * this is not left to a parent class unless the parents API is identical.
+     * Used by FilterVisitors to perform some action on this filter instance. Typicaly used by Filter decoders, but may
+     * also be used by any thing which needs infomration from filter structure. Implementations should always call:
+     * visitor.visit(this); It is importatant that this is not left to a parent class unless the parents API is
+     * identical.
      *
-     * @param visitor The visitor which requires access to this filter, the method must call
-     *     visitor.visit(this);
+     * @param visitor The visitor which requires access to this filter, the method must call visitor.visit(this);
      */
     @Override
     public Object accept(FilterVisitor visitor, Object extraData) {

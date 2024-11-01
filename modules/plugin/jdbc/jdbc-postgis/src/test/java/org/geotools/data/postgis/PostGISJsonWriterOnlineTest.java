@@ -33,8 +33,7 @@ import org.geotools.jdbc.JDBCTestSupport;
 import org.junit.Test;
 
 /**
- * Tests SQL INSERT and UPDATE for PostGIS JSON and JSONB typed columns using regular statements
- * (=not prepared).
+ * Tests SQL INSERT and UPDATE for PostGIS JSON and JSONB typed columns using regular statements (=not prepared).
  *
  * @author awaterme
  */

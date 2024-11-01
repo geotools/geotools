@@ -104,16 +104,14 @@ import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 
 /**
- * This class is a first attempt for providing a way to get more informations out of a single 2D
- * raster datasets (x,y). It is worth to remark that for the moment this is thought for 2D rasters
- * not for 3D or 4D rasters (x,y,z,t).
+ * This class is a first attempt for providing a way to get more informations out of a single 2D raster datasets (x,y).
+ * It is worth to remark that for the moment this is thought for 2D rasters not for 3D or 4D rasters (x,y,z,t).
  *
- * <p>The main drawback I see with the current GeoApi GridCoverageReader interface is that there is
- * no way to get real information about a raster source unless you instantiate a GridCoverage. As an
- * instance it is impossible to know the envelope, the number of overviews, the tile size. This
- * information is needed in order to perform decimation on reading or to use built-in overviews<br>
- * This really impacts the ability to exploit raster datasets in a desktop environment where caching
- * is crucial.
+ * <p>The main drawback I see with the current GeoApi GridCoverageReader interface is that there is no way to get real
+ * information about a raster source unless you instantiate a GridCoverage. As an instance it is impossible to know the
+ * envelope, the number of overviews, the tile size. This information is needed in order to perform decimation on
+ * reading or to use built-in overviews<br>
+ * This really impacts the ability to exploit raster datasets in a desktop environment where caching is crucial.
  *
  * @author Simone Giannecchini, GeoSolutions
  * @since 2.3
@@ -127,8 +125,8 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
     protected static double EPS = 1e-6;
 
     /**
-     * Custom tag holding a XML that can be parsed into a {@link
-     * it.geosolutions.imageioimpl.plugins.tiff.gdal.GDALMetadata}
+     * Custom tag holding a XML that can be parsed into a
+     * {@link it.geosolutions.imageioimpl.plugins.tiff.gdal.GDALMetadata}
      */
     static final int GDAL_METADATA_TAG = 42112;
 
@@ -165,10 +163,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
     /** The original {@link GridRange} for the {@link GridCoverage2D} of this reader. */
     protected GridEnvelope originalGridRange = null;
 
-    /**
-     * Input stream that can be used to initialize subclasses of {@link
-     * AbstractGridCoverage2DReader}.
-     */
+    /** Input stream that can be used to initialize subclasses of {@link AbstractGridCoverage2DReader}. */
     protected ImageInputStream inStream = null;
 
     /** Resolutions avialaible through an overviews based mechanism. */
@@ -234,20 +229,19 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
         // Setting input
         //
         if (input == null) {
-            final IOException ex =
-                    new IOException(MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "input"));
+            final IOException ex = new IOException(MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "input"));
             throw new DataSourceException(ex);
         }
         this.source = input;
     }
 
     /**
-     * This method is responsible for checking the provided coverage name against the coverage name
-     * for this {@link GridCoverage2DReader}.
+     * This method is responsible for checking the provided coverage name against the coverage name for this
+     * {@link GridCoverage2DReader}.
      *
      * @param coverageName the coverage name to check.
-     * @return <code>true</code> if this {@link GridCoverage2DReader} contains the provided coverage
-     *     name, <code>false</code> otherwise.
+     * @return <code>true</code> if this {@link GridCoverage2DReader} contains the provided coverage name, <code>false
+     *     </code> otherwise.
      */
     protected boolean checkName(String coverageName) {
         Utilities.ensureNonNull("coverageName", coverageName);
@@ -262,8 +256,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
             return read(parameters);
         }
         // Subclasses should do more checks on coverageName
-        throw new IllegalArgumentException(
-                "The specified coverageName " + coverageName + "is not supported");
+        throw new IllegalArgumentException("The specified coverageName " + coverageName + "is not supported");
     }
 
     /**
@@ -278,18 +271,15 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
      *
      * @param parameters Optional parameters matching {@link Format#getReadParameters}.
      * @return a {@linkplain GridCoverage grid coverage} from the input source.
-     * @throws InvalidParameterNameException if a parameter in {@code parameters} doesn't have a
-     *     recognized name.
-     * @throws InvalidParameterValueException if a parameter in {@code parameters} doesn't have a
-     *     valid value.
-     * @throws ParameterNotFoundException if a parameter was required for the operation but was not
-     *     provided in the {@code parameters} list.
-     * @throws CannotCreateGridCoverageException if the coverage can't be created for a logical
-     *     reason (for example an unsupported format, or an inconsistency found in the data).
+     * @throws InvalidParameterNameException if a parameter in {@code parameters} doesn't have a recognized name.
+     * @throws InvalidParameterValueException if a parameter in {@code parameters} doesn't have a valid value.
+     * @throws ParameterNotFoundException if a parameter was required for the operation but was not provided in the
+     *     {@code parameters} list.
+     * @throws CannotCreateGridCoverageException if the coverage can't be created for a logical reason (for example an
+     *     unsupported format, or an inconsistency found in the data).
      * @throws IOException if a read operation failed for some other input/output reason, including
      *     {@link FileNotFoundException} if no file with the given {@code name} can be found, or
-     *     {@link javax.imageio.IIOException} if an error was thrown by the underlying image
-     *     library.
+     *     {@link javax.imageio.IIOException} if an error was thrown by the underlying image library.
      */
     @Override
     public abstract GridCoverage2D read(GeneralParameterValue[] parameters)
@@ -302,19 +292,18 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
     // -------------------------------------------------------------------------
 
     /**
-     * This method is responsible for preparing the read param for doing an {@link
-     * ImageReader#read(int, ImageReadParam)}.
+     * This method is responsible for preparing the read param for doing an {@link ImageReader#read(int,
+     * ImageReadParam)}.
      *
-     * <p>This method is responsible for preparing the read param for doing an {@link
-     * ImageReader#read(int, ImageReadParam)}. It sets the passed {@link ImageReadParam} in terms of
-     * decimation on reading using the provided requestedEnvelope and requestedDim to evaluate the
-     * needed resolution. It also returns and {@link Integer} representing the index of the raster
-     * to be read when dealing with multipage raster.
+     * <p>This method is responsible for preparing the read param for doing an {@link ImageReader#read(int,
+     * ImageReadParam)}. It sets the passed {@link ImageReadParam} in terms of decimation on reading using the provided
+     * requestedEnvelope and requestedDim to evaluate the needed resolution. It also returns and {@link Integer}
+     * representing the index of the raster to be read when dealing with multipage raster.
      *
-     * @param overviewPolicy it can be one of {@link Hints#VALUE_OVERVIEW_POLICY_IGNORE}, {@link
-     *     Hints#VALUE_OVERVIEW_POLICY_NEAREST}, {@link Hints#VALUE_OVERVIEW_POLICY_QUALITY} or
-     *     {@link Hints#VALUE_OVERVIEW_POLICY_SPEED}. It specifies the policy to compute the
-     *     overviews level upon request.
+     * @param overviewPolicy it can be one of {@link Hints#VALUE_OVERVIEW_POLICY_IGNORE},
+     *     {@link Hints#VALUE_OVERVIEW_POLICY_NEAREST}, {@link Hints#VALUE_OVERVIEW_POLICY_QUALITY} or
+     *     {@link Hints#VALUE_OVERVIEW_POLICY_SPEED}. It specifies the policy to compute the overviews level upon
+     *     request.
      * @param readP an instance of {@link ImageReadParam} for setting the subsampling factors.
      * @param requestedEnvelope the {@link GeneralBounds} we are requesting.
      * @param requestedDim the requested dimensions.
@@ -330,19 +319,18 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
     }
 
     /**
-     * This method is responsible for preparing the read param for doing an {@link
-     * ImageReader#read(int, ImageReadParam)}.
+     * This method is responsible for preparing the read param for doing an {@link ImageReader#read(int,
+     * ImageReadParam)}.
      *
-     * <p>This method is responsible for preparing the read param for doing an {@link
-     * ImageReader#read(int, ImageReadParam)}. It sets the passed {@link ImageReadParam} in terms of
-     * decimation on reading using the provided requestedEnvelope and requestedDim to evaluate the
-     * needed resolution. It also returns and {@link Integer} representing the index of the raster
-     * to be read when dealing with multipage raster.
+     * <p>This method is responsible for preparing the read param for doing an {@link ImageReader#read(int,
+     * ImageReadParam)}. It sets the passed {@link ImageReadParam} in terms of decimation on reading using the provided
+     * requestedEnvelope and requestedDim to evaluate the needed resolution. It also returns and {@link Integer}
+     * representing the index of the raster to be read when dealing with multipage raster.
      *
-     * @param overviewPolicy it can be one of {@link Hints#VALUE_OVERVIEW_POLICY_IGNORE}, {@link
-     *     Hints#VALUE_OVERVIEW_POLICY_NEAREST}, {@link Hints#VALUE_OVERVIEW_POLICY_QUALITY} or
-     *     {@link Hints#VALUE_OVERVIEW_POLICY_SPEED}. It specifies the policy to compute the
-     *     overviews level upon request.
+     * @param overviewPolicy it can be one of {@link Hints#VALUE_OVERVIEW_POLICY_IGNORE},
+     *     {@link Hints#VALUE_OVERVIEW_POLICY_NEAREST}, {@link Hints#VALUE_OVERVIEW_POLICY_QUALITY} or
+     *     {@link Hints#VALUE_OVERVIEW_POLICY_SPEED}. It specifies the policy to compute the overviews level upon
+     *     request.
      * @param readP an instance of {@link ImageReadParam} for setting the subsampling factors.
      * @param requestedEnvelope the {@link GeneralBounds} we are requesting.
      * @param requestedDim the requested dimensions.
@@ -378,10 +366,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
         // the user.
         //
         double[] requestedRes =
-                getResolution(
-                        requestedEnvelope,
-                        requestedDim,
-                        getCoordinateReferenceSystem(coverageName));
+                getResolution(requestedEnvelope, requestedDim, getCoordinateReferenceSystem(coverageName));
 
         // Decimation on reading (done here because it alters the read params allowing subsampling)
         decimationOnReadingControl(coverageName, imageChoice, readP, requestedRes);
@@ -424,13 +409,11 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
     }
 
     /**
-     * This method is responsible for checking the overview policy as defined by the provided {@link
-     * Hints}.
+     * This method is responsible for checking the overview policy as defined by the provided {@link Hints}.
      *
      * @return the overview policy which can be one of {@link Hints#VALUE_OVERVIEW_POLICY_IGNORE},
      *     {@link Hints#VALUE_OVERVIEW_POLICY_NEAREST}, {@link Hints#VALUE_OVERVIEW_POLICY_SPEED},
-     *     {@link Hints#VALUE_OVERVIEW_POLICY_QUALITY}. Default is {@link
-     *     Hints#VALUE_OVERVIEW_POLICY_NEAREST}.
+     *     {@link Hints#VALUE_OVERVIEW_POLICY_QUALITY}. Default is {@link Hints#VALUE_OVERVIEW_POLICY_NEAREST}.
      */
     private OverviewPolicy extractOverviewPolicy() {
         OverviewPolicy overviewPolicy = null;
@@ -446,8 +429,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
         return overviewPolicy;
     }
 
-    private Integer pickOverviewLevel(
-            String coverageName, OverviewPolicy policy, double[] requestedRes) {
+    private Integer pickOverviewLevel(String coverageName, OverviewPolicy policy, double[] requestedRes) {
         // setup policy
         if (policy == null) policy = extractOverviewPolicy();
 
@@ -468,12 +450,11 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
                 resolutionsLevels.add(new Resolution(1, getHighestRes()[0], getHighestRes()[1], 0));
                 if (numOverviews > 0) {
                     for (int i = 0; i < overViewResolutions.length; i++)
-                        resolutionsLevels.add(
-                                new Resolution(
-                                        overViewResolutions[i][0] / getHighestRes()[0],
-                                        overViewResolutions[i][0],
-                                        overViewResolutions[i][1],
-                                        i + 1));
+                        resolutionsLevels.add(new Resolution(
+                                overViewResolutions[i][0] / getHighestRes()[0],
+                                overViewResolutions[i][0],
+                                overViewResolutions[i][1],
+                                i + 1));
                     Collections.sort(resolutionsLevels);
                 }
             }
@@ -493,8 +474,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
         final double requestedScaleFactorX = reqx / max.resolutionX;
         final double requestedScaleFactorY = reqy / max.resolutionY;
         final int leastReduceAxis = requestedScaleFactorX <= requestedScaleFactorY ? 0 : 1;
-        final double requestedScaleFactor =
-                leastReduceAxis == 0 ? requestedScaleFactorX : requestedScaleFactorY;
+        final double requestedScaleFactor = leastReduceAxis == 0 ? requestedScaleFactorX : requestedScaleFactorY;
 
         // are we looking for a resolution even higher than the native one?
         if (requestedScaleFactor <= 1) return max.imageChoice;
@@ -521,8 +501,8 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
             if (curr.scaleFactor > requestedScaleFactor || i == size - 1) {
                 if (policy == OverviewPolicy.QUALITY) return prev.imageChoice;
                 else if (policy == OverviewPolicy.SPEED) return curr.imageChoice;
-                else if (requestedScaleFactor - prev.scaleFactor
-                        < curr.scaleFactor - requestedScaleFactor) return prev.imageChoice;
+                else if (requestedScaleFactor - prev.scaleFactor < curr.scaleFactor - requestedScaleFactor)
+                    return prev.imageChoice;
                 else return curr.imageChoice;
             }
             prev = curr;
@@ -532,27 +512,24 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
     }
 
     /**
-     * Returns the actual resolution used to read the data given the specified target resolution and
-     * the specified overview policy
+     * Returns the actual resolution used to read the data given the specified target resolution and the specified
+     * overview policy
      */
     @Override
-    public double[] getReadingResolutions(OverviewPolicy policy, double[] requestedResolution)
-            throws IOException {
+    public double[] getReadingResolutions(OverviewPolicy policy, double[] requestedResolution) throws IOException {
         // Default implementation for backwards compatibility
         return getReadingResolutions(coverageName, policy, requestedResolution);
     }
 
     /**
-     * Returns the actual resolution used to read the data given the specified target resolution and
-     * the specified overview policy
+     * Returns the actual resolution used to read the data given the specified target resolution and the specified
+     * overview policy
      */
     @Override
-    public double[] getReadingResolutions(
-            String coverageName, OverviewPolicy policy, double[] requestedResolution)
+    public double[] getReadingResolutions(String coverageName, OverviewPolicy policy, double[] requestedResolution)
             throws IOException {
         if (!checkName(coverageName)) {
-            throw new IllegalArgumentException(
-                    "The specified coverageName " + coverageName + "is not supported");
+            throw new IllegalArgumentException("The specified coverageName " + coverageName + "is not supported");
         }
         // find the target resolution level
         double[] result;
@@ -586,10 +563,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
         int imageChoice;
 
         public Resolution(
-                final double scaleFactor,
-                final double resolutionX,
-                final double resolutionY,
-                int imageChoice) {
+                final double scaleFactor, final double resolutionX, final double resolutionY, int imageChoice) {
             this.scaleFactor = scaleFactor;
             this.resolutionX = resolutionX;
             this.resolutionY = resolutionY;
@@ -610,12 +584,12 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
     }
 
     /**
-     * This method is responsible for evaluating possible subsampling factors once the best
-     * resolution level has been found, in case we have support for overviews, or starting from the
-     * original coverage in case there are no overviews available.
+     * This method is responsible for evaluating possible subsampling factors once the best resolution level has been
+     * found, in case we have support for overviews, or starting from the original coverage in case there are no
+     * overviews available.
      *
-     * <p>Anyhow this method should not be called directly but subclasses should make use of the
-     * setReadParams method instead in order to transparently look for overviews.
+     * <p>Anyhow this method should not be called directly but subclasses should make use of the setReadParams method
+     * instead in order to transparently look for overviews.
      */
     protected final void decimationOnReadingControl(
             String coverageName, Integer imageChoice, ImageReadParam readP, double[] requestedRes) {
@@ -655,8 +629,8 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
     }
 
     /**
-     * Creates a {@link GridCoverage} for the provided {@link PlanarImage} using the {@link
-     * #originalEnvelope} that was provided for this coverage.
+     * Creates a {@link GridCoverage} for the provided {@link PlanarImage} using the {@link #originalEnvelope} that was
+     * provided for this coverage.
      *
      * @param image contains the data for the coverage to create.
      * @return a {@link GridCoverage}
@@ -666,44 +640,41 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
     }
 
     /**
-     * Creates a {@link GridCoverage} for the provided {@link PlanarImage} using the {@link
-     * #originalEnvelope} that was provided for this coverage.
+     * Creates a {@link GridCoverage} for the provided {@link PlanarImage} using the {@link #originalEnvelope} that was
+     * provided for this coverage.
      *
      * @param image contains the data for the coverage to create.
      * @return a {@link GridCoverage}
      */
-    protected final GridCoverage createImageCoverage(String coverageName, PlanarImage image)
-            throws IOException {
+    protected final GridCoverage createImageCoverage(String coverageName, PlanarImage image) throws IOException {
         return createImageCoverage(coverageName, image, null);
     }
 
     /**
-     * Creates a {@link GridCoverage} for the provided {@link PlanarImage} using the {@link
-     * #raster2Model} that was provided for this coverage.
+     * Creates a {@link GridCoverage} for the provided {@link PlanarImage} using the {@link #raster2Model} that was
+     * provided for this coverage.
      *
-     * <p>This method is vital when working with coverages that have a raster to model
-     * transformation that is not a simple scale and translate.
+     * <p>This method is vital when working with coverages that have a raster to model transformation that is not a
+     * simple scale and translate.
      *
      * @param image contains the data for the coverage to create.
-     * @param raster2Model is the {@link MathTransform} that maps from the raster space to the model
-     *     space.
+     * @param raster2Model is the {@link MathTransform} that maps from the raster space to the model space.
      * @return a {@link GridCoverage}
      */
-    protected final GridCoverage2D createImageCoverage(
-            PlanarImage image, MathTransform raster2Model) throws IOException {
+    protected final GridCoverage2D createImageCoverage(PlanarImage image, MathTransform raster2Model)
+            throws IOException {
         return createImageCoverage(coverageName, image, raster2Model);
     }
 
     /**
-     * Creates a {@link GridCoverage} for the provided {@link PlanarImage} using the {@link
-     * #raster2Model} that was provided for this coverage.
+     * Creates a {@link GridCoverage} for the provided {@link PlanarImage} using the {@link #raster2Model} that was
+     * provided for this coverage.
      *
-     * <p>This method is vital when working with coverages that have a raster to model
-     * transformation that is not a simple scale and translate.
+     * <p>This method is vital when working with coverages that have a raster to model transformation that is not a
+     * simple scale and translate.
      *
      * @param image contains the data for the coverage to create.
-     * @param raster2Model is the {@link MathTransform} that maps from the raster space to the model
-     *     space.
+     * @param raster2Model is the {@link MathTransform} that maps from the raster space to the model space.
      * @return a {@link GridCoverage}
      */
     protected final GridCoverage2D createImageCoverage(
@@ -717,46 +688,32 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
         // setting bands names.
         for (int i = 0; i < numBands; i++) {
             final ColorInterpretation colorInterpretation = TypeMap.getColorInterpretation(cm, i);
-            if (colorInterpretation == null)
-                throw new IOException("Unrecognized sample dimension type");
+            if (colorInterpretation == null) throw new IOException("Unrecognized sample dimension type");
             bands[i] = new GridSampleDimension(colorInterpretation.name());
         }
         // creating coverage
         if (raster2Model != null) {
             return coverageFactory.create(
-                    coverageName,
-                    image,
-                    getCoordinateReferenceSystem(coverageName),
-                    raster2Model,
-                    bands,
-                    null,
-                    null);
+                    coverageName, image, getCoordinateReferenceSystem(coverageName), raster2Model, bands, null, null);
         }
         return coverageFactory.create(
-                coverageName,
-                image,
-                new GeneralBounds(getOriginalEnvelope(coverageName)),
-                bands,
-                null,
-                null);
+                coverageName, image, new GeneralBounds(getOriginalEnvelope(coverageName)), bands, null, null);
     }
 
     /**
-     * This method is responsible for computing the resolutions in for the provided grid geometry in
-     * the provided crs.
+     * This method is responsible for computing the resolutions in for the provided grid geometry in the provided crs.
      *
-     * <p>It is worth to note that the returned resolution array is of length of 2 and it always is
-     * lon, lat for the moment.<br>
-     * It might be worth to remove the axes reordering code when we are confident enough with the
-     * code to handle the north-up crs.
+     * <p>It is worth to note that the returned resolution array is of length of 2 and it always is lon, lat for the
+     * moment.<br>
+     * It might be worth to remove the axes reordering code when we are confident enough with the code to handle the
+     * north-up crs.
      *
      * <p>TODO use orthodromic distance?
      *
      * @param envelope the GeneralEnvelope
      */
     protected static final double[] getResolution(
-            GeneralBounds envelope, Rectangle2D dim, CoordinateReferenceSystem crs)
-            throws DataSourceException {
+            GeneralBounds envelope, Rectangle2D dim, CoordinateReferenceSystem crs) throws DataSourceException {
         double[] requestedRes = null;
         try {
             if (dim != null && envelope != null && crs != null) {
@@ -764,8 +721,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
                 final CoordinateReferenceSystem envelopeCrs2D =
                         CRS.getHorizontalCRS(envelope.getCoordinateReferenceSystem());
                 if (envelopeCrs2D != null && !CRS.equalsIgnoreMetadata(crs, envelopeCrs2D)) {
-                    CoordinateOperationFactory operationFactory =
-                            CRS.getCoordinateOperationFactory(true);
+                    CoordinateOperationFactory operationFactory = CRS.getCoordinateOperationFactory(true);
                     CoordinateOperation op = operationFactory.createOperation(envelopeCrs2D, crs);
                     envelope = CRS.transform(op, envelope);
                     envelope.setCoordinateReferenceSystem(crs);
@@ -781,11 +737,11 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
     }
 
     /**
-     * Retrieves the {@link GeneralGridEnvelope} that represents the raster grid dimensions of the
-     * highest resolution level in this dataset.
+     * Retrieves the {@link GeneralGridEnvelope} that represents the raster grid dimensions of the highest resolution
+     * level in this dataset.
      *
-     * @return the {@link GeneralGridEnvelope} that represents the raster grid dimensions of the
-     *     highest resolution level in this dataset.
+     * @return the {@link GeneralGridEnvelope} that represents the raster grid dimensions of the highest resolution
+     *     level in this dataset.
      */
     @Override
     public GridEnvelope getOriginalGridRange() {
@@ -793,17 +749,16 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
     }
 
     /**
-     * Retrieves the {@link GeneralGridEnvelope} that represents the raster grid dimensions of the
-     * highest resolution level in this dataset.
+     * Retrieves the {@link GeneralGridEnvelope} that represents the raster grid dimensions of the highest resolution
+     * level in this dataset.
      *
-     * @return the {@link GeneralGridEnvelope} that represents the raster grid dimensions of the
-     *     highest resolution level in this dataset.
+     * @return the {@link GeneralGridEnvelope} that represents the raster grid dimensions of the highest resolution
+     *     level in this dataset.
      */
     @Override
     public GridEnvelope getOriginalGridRange(String coverageName) {
         if (!checkName(coverageName)) {
-            throw new IllegalArgumentException(
-                    "The specified coverageName " + coverageName + "is not supported");
+            throw new IllegalArgumentException("The specified coverageName " + coverageName + "is not supported");
         }
         assert originalGridRange.getDimension() == 2;
         return new GridEnvelope2D(
@@ -832,8 +787,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
     @Override
     public CoordinateReferenceSystem getCoordinateReferenceSystem(String coverageName) {
         if (!checkName(coverageName)) {
-            throw new IllegalArgumentException(
-                    "The specified coverageName " + coverageName + "is not supported");
+            throw new IllegalArgumentException("The specified coverageName " + coverageName + "is not supported");
         }
 
         return crs;
@@ -857,19 +811,16 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
     @Override
     public GeneralBounds getOriginalEnvelope(String coverageName) {
         if (!checkName(coverageName)) {
-            throw new IllegalArgumentException(
-                    "The specified coverageName " + coverageName + "is not supported");
+            throw new IllegalArgumentException("The specified coverageName " + coverageName + "is not supported");
         }
         return new GeneralBounds(originalEnvelope);
     }
 
     /**
-     * Retrieves the original grid to world transformation for this {@link
-     * AbstractGridCoverage2DReader}.
+     * Retrieves the original grid to world transformation for this {@link AbstractGridCoverage2DReader}.
      *
      * @param pixInCell specifies the datum of the transformation we want.
-     * @return the original grid to world transformation for this {@link
-     *     AbstractGridCoverage2DReader}.
+     * @return the original grid to world transformation for this {@link AbstractGridCoverage2DReader}.
      */
     @Override
     public MathTransform getOriginalGridToWorld(final PixelInCell pixInCell) {
@@ -878,25 +829,20 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
     }
 
     /**
-     * Retrieves the original grid to world transformation for this {@link
-     * AbstractGridCoverage2DReader}.
+     * Retrieves the original grid to world transformation for this {@link AbstractGridCoverage2DReader}.
      *
      * @param pixInCell specifies the datum of the transformation we want.
-     * @return the original grid to world transformation for this {@link
-     *     AbstractGridCoverage2DReader}.
+     * @return the original grid to world transformation for this {@link AbstractGridCoverage2DReader}.
      */
     @Override
     public MathTransform getOriginalGridToWorld(String coverageName, PixelInCell pixInCell) {
         if (!checkName(coverageName)) {
-            throw new IllegalArgumentException(
-                    "The specified coverageName " + coverageName + "is not supported");
+            throw new IllegalArgumentException("The specified coverageName " + coverageName + "is not supported");
         }
         synchronized (this) {
             if (raster2Model == null) {
                 final GridToEnvelopeMapper geMapper =
-                        new GridToEnvelopeMapper(
-                                getOriginalGridRange(coverageName),
-                                getOriginalEnvelope(coverageName));
+                        new GridToEnvelopeMapper(getOriginalGridRange(coverageName), getOriginalEnvelope(coverageName));
                 geMapper.setPixelAnchor(PixelInCell.CELL_CENTER);
                 raster2Model = geMapper.createTransform();
             }
@@ -940,8 +886,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
             try {
                 inStream.close();
             } catch (IOException e) {
-                if (LOGGER.isLoggable(Level.FINE))
-                    LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
+                if (LOGGER.isLoggable(Level.FINE)) LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
             }
         }
     }
@@ -954,8 +899,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
     @Override
     public String[] getMetadataNames(final String coverageName) {
         if (!checkName(coverageName)) {
-            throw new IllegalArgumentException(
-                    "The specified coverageName " + coverageName + "is not supported");
+            throw new IllegalArgumentException("The specified coverageName " + coverageName + "is not supported");
         }
         return getMetadataNames();
     }
@@ -975,8 +919,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
     @Override
     public String getMetadataValue(final String coverageName, final String name) {
         if (!checkName(coverageName)) {
-            throw new IllegalArgumentException(
-                    "The specified coverageName " + coverageName + "is not supported");
+            throw new IllegalArgumentException("The specified coverageName " + coverageName + "is not supported");
         }
         return null;
     }
@@ -1028,8 +971,8 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
     }
 
     /**
-     * Returns a list of files making up the source data for this reader (as a whole). The default
-     * implementation returns the source, if it can be made into a File object, or null otherwise.
+     * Returns a list of files making up the source data for this reader (as a whole). The default implementation
+     * returns the source, if it can be made into a File object, or null otherwise.
      */
     protected List<FileGroup> getFiles() throws IOException {
         File file = getSourceAsFile();
@@ -1056,8 +999,8 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
     }
 
     /**
-     * Default implementation returns a FileResourceInfo containing same fileGroup list contained in
-     * the ServiceInfo object.
+     * Default implementation returns a FileResourceInfo containing same fileGroup list contained in the ServiceInfo
+     * object.
      */
     @Override
     public ResourceInfo getInfo(String coverageName) {
@@ -1078,8 +1021,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
     }
 
     /**
-     * Forcing disposal of this {@link AbstractGridCoverage2DReader} which may keep an {@link
-     * ImageInputStream} open.
+     * Forcing disposal of this {@link AbstractGridCoverage2DReader} which may keep an {@link ImageInputStream} open.
      */
     @Override
     @SuppressWarnings("deprecation") // finalize is deprecated in Java 9
@@ -1089,8 +1031,8 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
     }
 
     /**
-     * Return the set of dynamic parameterDescriptors (the ones related to domains) for this reader.
-     * Default implementation returns an empty set of parameters
+     * Return the set of dynamic parameterDescriptors (the ones related to domains) for this reader. Default
+     * implementation returns an empty set of parameters
      */
     @Override
     public Set<ParameterDescriptor<List>> getDynamicParameters() throws IOException {
@@ -1098,12 +1040,11 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
     }
 
     /**
-     * Return the set of dynamic parameterDescriptors (the ones related to domains) for this reader.
-     * Default implementation returns an empty set of parameters
+     * Return the set of dynamic parameterDescriptors (the ones related to domains) for this reader. Default
+     * implementation returns an empty set of parameters
      */
     @Override
-    public Set<ParameterDescriptor<List>> getDynamicParameters(String coverageName)
-            throws IOException {
+    public Set<ParameterDescriptor<List>> getDynamicParameters(String coverageName) throws IOException {
         return Collections.emptySet();
     }
 
@@ -1116,8 +1057,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
     @Override
     public DatasetLayout getDatasetLayout(String coverageName) {
         if (!checkName(coverageName)) {
-            throw new IllegalArgumentException(
-                    "The specified coverageName " + coverageName + " is not supported");
+            throw new IllegalArgumentException("The specified coverageName " + coverageName + " is not supported");
         }
         // for compatibility with the readers not initializing the field
         if (dtLayout == null) {
@@ -1135,11 +1075,9 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
         return getOverviewGridEnvelope(coverageName, overviewIndex);
     }
 
-    public GridEnvelope getOverviewGridEnvelope(String coverageName, int overviewIndex)
-            throws IOException {
+    public GridEnvelope getOverviewGridEnvelope(String coverageName, int overviewIndex) throws IOException {
         if (!checkName(coverageName)) {
-            throw new IllegalArgumentException(
-                    "The specified coverageName " + coverageName + "is not supported");
+            throw new IllegalArgumentException("The specified coverageName " + coverageName + "is not supported");
         }
 
         // Default implementation for backwards compatibility
@@ -1149,8 +1087,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
     @Override
     public ImageLayout getImageLayout(String coverageName) throws IOException {
         if (!checkName(coverageName)) {
-            throw new IllegalArgumentException(
-                    "The specified coverageName " + coverageName + "is not supported");
+            throw new IllegalArgumentException("The specified coverageName " + coverageName + "is not supported");
         }
 
         return (ImageLayout) imageLayout.clone();
@@ -1202,8 +1139,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
     @Override
     public double[][] getResolutionLevels(String coverageName) throws IOException {
         if (!checkName(coverageName)) {
-            throw new IllegalArgumentException(
-                    "The specified coverageName " + coverageName + "is not supported");
+            throw new IllegalArgumentException("The specified coverageName " + coverageName + "is not supported");
         }
 
         final double[][] returnValue = new double[numOverviews + 1][2];
@@ -1221,8 +1157,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
 
     protected double[] getHighestRes(String coverageName) {
         if (!checkName(coverageName)) {
-            throw new IllegalArgumentException(
-                    "The specified coverageName " + coverageName + "is not supported");
+            throw new IllegalArgumentException("The specified coverageName " + coverageName + "is not supported");
         }
 
         return highestRes;
@@ -1240,15 +1175,14 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
     /** Return the ground control points for the specified, or null if there are none */
     public GroundControlPoints getGroundControlPoints(String coverageName) {
         if (!checkName(coverageName)) {
-            throw new IllegalArgumentException(
-                    "The specified coverageName " + coverageName + "is not supported");
+            throw new IllegalArgumentException("The specified coverageName " + coverageName + "is not supported");
         }
         return null;
     }
 
     /**
-     * Computes the raster to model of a rescaled output raster, based on the original transform and
-     * output raster scaling factor
+     * Computes the raster to model of a rescaled output raster, based on the original transform and output raster
+     * scaling factor
      */
     protected AffineTransform getRescaledRasterToModel(RenderedImage coverageRaster) {
         final int ssWidth = coverageRaster.getWidth();
@@ -1270,8 +1204,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
         // //
         final double scaleX = originalGridRange.getSpan(0) / (1.0 * ssWidth);
         final double scaleY = originalGridRange.getSpan(1) / (1.0 * ssHeight);
-        final AffineTransform tempRaster2Model =
-                new AffineTransform((AffineTransform) raster2Model);
+        final AffineTransform tempRaster2Model = new AffineTransform((AffineTransform) raster2Model);
         AffineTransform scale = new AffineTransform(scaleX, 0, 0, scaleY, 0, 0);
         if (!XAffineTransform.isIdentity(scale, EPS)) {
             // the transformation includes the pixel is center shift, we need to
@@ -1292,13 +1225,12 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
         filename = (i == -1) ? filename : filename.substring(0, i);
 
         // getting name and extension
-        final String base =
-                (parentPath != null)
-                        ? new StringBuilder(parentPath)
-                                .append(File.separator)
-                                .append(filename)
-                                .toString()
-                        : filename;
+        final String base = (parentPath != null)
+                ? new StringBuilder(parentPath)
+                        .append(File.separator)
+                        .append(filename)
+                        .toString()
+                : filename;
 
         // We can now construct the baseURL from this string.
         File file2Parse = new File(new StringBuilder(base).append(extension).toString());
@@ -1317,13 +1249,12 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
         filename = (i == -1) ? filename : filename.substring(0, i);
 
         // getting name and extension
-        final String base =
-                (parentPath != null)
-                        ? new StringBuilder(parentPath)
-                                .append(File.separator)
-                                .append(filename)
-                                .toString()
-                        : filename;
+        final String base = (parentPath != null)
+                ? new StringBuilder(parentPath)
+                        .append(File.separator)
+                        .append(filename)
+                        .toString()
+                : filename;
 
         // We can now construct the baseURL from this string.
         for (String extension : extensions) {
@@ -1344,8 +1275,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
     }
 
     protected MultiLevelROIProvider getMultiLevelROIProvider(String coverageName) {
-        throw new UnsupportedOperationException(
-                "The abstract reader doesn't implement this method yet");
+        throw new UnsupportedOperationException("The abstract reader doesn't implement this method yet");
     }
 
     /** Collects the scales and offsets for value rescaling from the metadata, if present */
@@ -1358,13 +1288,12 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
     }
 
     /**
-     * Method that looks for an external {@link PAMDataset} first, and if not found, checks for an
-     * internal {@link it.geosolutions.imageioimpl.plugins.tiff.gdal.GDALMetadata} inside a custom
-     * tag.
+     * Method that looks for an external {@link PAMDataset} first, and if not found, checks for an internal
+     * {@link it.geosolutions.imageioimpl.plugins.tiff.gdal.GDALMetadata} inside a custom tag.
      *
-     * <p>The method is tolerant to invalid metadata contents and will log at INFO level in case of
-     * invalid metadata structure: there might be files with invalid metadata that used to be read
-     * just fine before PAM dataset reading was implemented.
+     * <p>The method is tolerant to invalid metadata contents and will log at INFO level in case of invalid metadata
+     * structure: there might be files with invalid metadata that used to be read just fine before PAM dataset reading
+     * was implemented.
      */
     public static PAMDataset getPamDataset(File sourceFile, IIOMetadata metadata) {
         if (sourceFile != null && !ImageIOUtilities.isSkipExternalFilesLookup()) {
@@ -1407,21 +1336,18 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
     }
 
     /**
-     * Part of the information contained in {@link GDALMetadata} can be trasformed in a semantically
-     * equivalent PAM dataset
+     * Part of the information contained in {@link GDALMetadata} can be trasformed in a semantically equivalent PAM
+     * dataset
      */
     private static PAMDataset toPamDataset(GDALMetadata metadata) {
         PAMDataset pam = new PAMDataset();
         Map<Integer, PAMDataset.PAMRasterBand> bands = new TreeMap<>();
-        metadata.getItems().stream()
-                .filter(i -> i.getSample() != null)
-                .forEach(i -> collectItemIntoBands(bands, i));
+        metadata.getItems().stream().filter(i -> i.getSample() != null).forEach(i -> collectItemIntoBands(bands, i));
         pam.getPAMRasterBand().addAll(bands.values());
         return pam;
     }
 
-    private static void collectItemIntoBands(
-            Map<Integer, PAMDataset.PAMRasterBand> bands, GDALMetadata.Item i) {
+    private static void collectItemIntoBands(Map<Integer, PAMDataset.PAMRasterBand> bands, GDALMetadata.Item i) {
         int bandNumber = i.getSample() + 1;
         PAMDataset.PAMRasterBand band = bands.computeIfAbsent(bandNumber, n -> getRasterBand(n));
         PAMDataset.PAMRasterBand.Metadata.MDI mdi = new PAMDataset.PAMRasterBand.Metadata.MDI();

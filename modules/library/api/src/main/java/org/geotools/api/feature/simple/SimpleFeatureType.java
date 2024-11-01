@@ -31,8 +31,8 @@ import org.geotools.api.feature.type.Name;
  *
  * <h3>Attribute Indexing</h3>
  *
- * The attributes which compose a simple feature type are ordered. For this reason attributes are
- * available via a simple index. Given the following type definition:
+ * The attributes which compose a simple feature type are ordered. For this reason attributes are available via a simple
+ * index. Given the following type definition:
  *
  * <pre>
  *   &lt;complexType name=&quot;mySimpleType&quot;/&gt;
@@ -58,8 +58,8 @@ import org.geotools.api.feature.type.Name;
  * <h3>Attribute Multiplicity</h3>
  *
  * With simple feature types, the multiplicity of attributes is always assumed to be 1, ie, <code>
- * getMinOccurs() == 1</code> and <code>getMaxOccurs() == 1</code>. A consequence of this is that
- * attributes from a simple feature always line up 1 to 1 with the descriptors from the type:
+ * getMinOccurs() == 1</code> and <code>getMaxOccurs() == 1</code>. A consequence of this is that attributes from a
+ * simple feature always line up 1 to 1 with the descriptors from the type:
  *
  * <pre>
  *   SimpleFeature feature = ...;
@@ -73,9 +73,8 @@ import org.geotools.api.feature.type.Name;
  *
  * <h3>Attribute Naming</h3>
  *
- * The names of attributes in a simple feature type are never namespace qualified. For this reason
- * there is no difference between accessing an attribute with {@link #getDescriptor(String)} and
- * {@link #getDescriptor(Name)}.
+ * The names of attributes in a simple feature type are never namespace qualified. For this reason there is no
+ * difference between accessing an attribute with {@link #getDescriptor(String)} and {@link #getDescriptor(Name)}.
  *
  * @author Jody Garnett, Refractions Research
  * @author Justin Deoliveira, The Open Planning Project
@@ -116,8 +115,7 @@ public interface SimpleFeatureType extends FeatureType {
      * <p>This method returns <code>null</code> if no such attribute exists.
      *
      * @param name The name of the descriptor to return.
-     * @return The attribute descriptor matching the specified name, or <code>null</code> if no such
-     *     attribute exists.
+     * @return The attribute descriptor matching the specified name, or <code>null</code> if no such attribute exists.
      */
     @Override
     AttributeDescriptor getDescriptor(String name);
@@ -134,8 +132,7 @@ public interface SimpleFeatureType extends FeatureType {
      * <p>This method returns <code>null</code> if no such attribute exists.
      *
      * @param name The name of the descriptor to return.
-     * @return The attribute descriptor matching the specified name, or <code>null</code> if no such
-     *     attribute exists.
+     * @return The attribute descriptor matching the specified name, or <code>null</code> if no such attribute exists.
      */
     @Override
     AttributeDescriptor getDescriptor(Name name);

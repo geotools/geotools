@@ -32,20 +32,18 @@ import org.geotools.util.Classes;
 import org.geotools.util.Utilities;
 
 /**
- * Specifies the relationship of a coordinate system to the earth, thus creating a {@linkplain
- * org.geotools.api.referencing.crs.CoordinateReferenceSystem coordinate reference system}. A datum
- * uses a parameter or set of parameters that determine the location of the origin of the coordinate
- * reference system. Each datum subtype can be associated with only specific types of {@linkplain
- * org.geotools.api.referencing.cs.AbstractCS coordinate systems}.
+ * Specifies the relationship of a coordinate system to the earth, thus creating a
+ * {@linkplain org.geotools.api.referencing.crs.CoordinateReferenceSystem coordinate reference system}. A datum uses a
+ * parameter or set of parameters that determine the location of the origin of the coordinate reference system. Each
+ * datum subtype can be associated with only specific types of {@linkplain org.geotools.api.referencing.cs.AbstractCS
+ * coordinate systems}.
  *
- * <p>A datum can be defined as a set of real points on the earth that have coordinates. The
- * definition of the datum may also include the temporal behavior (such as the rate of change of the
- * orientation of the coordinate axes).
+ * <p>A datum can be defined as a set of real points on the earth that have coordinates. The definition of the datum may
+ * also include the temporal behavior (such as the rate of change of the orientation of the coordinate axes).
  *
- * <p>This class is conceptually <cite>abstract</cite>, even if it is technically possible to
- * instantiate it. Typical applications should create instances of the most specific subclass with
- * {@code Default} prefix instead. An exception to this rule may occurs when it is not possible to
- * identify the exact type.
+ * <p>This class is conceptually <cite>abstract</cite>, even if it is technically possible to instantiate it. Typical
+ * applications should create instances of the most specific subclass with {@code Default} prefix instead. An exception
+ * to this rule may occurs when it is not possible to identify the exact type.
  *
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
@@ -57,38 +55,32 @@ public class AbstractDatum extends AbstractIdentifiedObject implements Datum {
     /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = -4894180465652474930L;
 
-    /**
-     * List of localizable properties. To be given to {@link AbstractIdentifiedObject} constructor.
-     */
+    /** List of localizable properties. To be given to {@link AbstractIdentifiedObject} constructor. */
     private static final String[] LOCALIZABLES = {ANCHOR_POINT_KEY, SCOPE_KEY};
 
     /**
-     * Description, possibly including coordinates, of the point or points used to anchor the datum
-     * to the Earth. Also known as the "origin", especially for Engineering and Image Datums.
+     * Description, possibly including coordinates, of the point or points used to anchor the datum to the Earth. Also
+     * known as the "origin", especially for Engineering and Image Datums.
      */
     private final InternationalString anchorPoint;
 
     /**
-     * The time after which this datum definition is valid. This time may be precise (e.g. 1997 for
-     * IRTF97) or merely a year (e.g. 1983 for NAD83). If the time is not defined, then the value is
-     * {@link Long#MIN_VALUE}.
+     * The time after which this datum definition is valid. This time may be precise (e.g. 1997 for IRTF97) or merely a
+     * year (e.g. 1983 for NAD83). If the time is not defined, then the value is {@link Long#MIN_VALUE}.
      */
     private final long realizationEpoch;
 
     /** Area or region in which this datum object is valid. */
     private final Extent domainOfValidity;
 
-    /**
-     * Description of domain of usage, or limitations of usage, for which this datum object is
-     * valid.
-     */
+    /** Description of domain of usage, or limitations of usage, for which this datum object is valid. */
     private final InternationalString scope;
 
     /**
-     * Constructs a new datum with the same values than the specified one. This copy constructor
-     * provides a way to wrap an arbitrary implementation into a Geotools one or a user-defined one
-     * (as a subclass), usually in order to leverage some implementation-specific API. This
-     * constructor performs a shallow copy, i.e. the properties are not cloned.
+     * Constructs a new datum with the same values than the specified one. This copy constructor provides a way to wrap
+     * an arbitrary implementation into a Geotools one or a user-defined one (as a subclass), usually in order to
+     * leverage some implementation-specific API. This constructor performs a shallow copy, i.e. the properties are not
+     * cloned.
      *
      * @param datum The datum to copy.
      * @since 2.2
@@ -103,10 +95,9 @@ public class AbstractDatum extends AbstractIdentifiedObject implements Datum {
     }
 
     /**
-     * Constructs a datum from a set of properties. The properties given in argument follow the same
-     * rules than for the {@linkplain AbstractIdentifiedObject#AbstractIdentifiedObject(Map)
-     * super-class constructor}. Additionally, the following properties are understood by this
-     * construtor: <br>
+     * Constructs a datum from a set of properties. The properties given in argument follow the same rules than for the
+     * {@linkplain AbstractIdentifiedObject#AbstractIdentifiedObject(Map) super-class constructor}. Additionally, the
+     * following properties are understood by this construtor: <br>
      * <br>
      *
      * <table border='1'>
@@ -144,24 +135,21 @@ public class AbstractDatum extends AbstractIdentifiedObject implements Datum {
     }
 
     /**
-     * Work around for RFE #4093999 in Sun's bug database ("Relax constraint on placement of
-     * this()/super() call in constructors").
+     * Work around for RFE #4093999 in Sun's bug database ("Relax constraint on placement of this()/super() call in
+     * constructors").
      */
-    private AbstractDatum(
-            final Map<String, ?> properties, final Map<String, Object> subProperties) {
+    private AbstractDatum(final Map<String, ?> properties, final Map<String, Object> subProperties) {
         super(properties, subProperties, LOCALIZABLES);
         anchorPoint = (InternationalString) subProperties.get(ANCHOR_POINT_KEY);
         final Date realizationEpoch = (Date) subProperties.get(REALIZATION_EPOCH_KEY);
         domainOfValidity = (Extent) subProperties.get(DOMAIN_OF_VALIDITY_KEY);
         scope = (InternationalString) subProperties.get(SCOPE_KEY);
-        this.realizationEpoch =
-                (realizationEpoch != null) ? realizationEpoch.getTime() : Long.MIN_VALUE;
+        this.realizationEpoch = (realizationEpoch != null) ? realizationEpoch.getTime() : Long.MIN_VALUE;
     }
 
     /**
-     * Same convenience method than {@link org.geotools.cs.AbstractCS#name} except that we get the
-     * unlocalized name (usually in English locale), because the name is part of the elements
-     * compared by the {@link #equals} method.
+     * Same convenience method than {@link org.geotools.cs.AbstractCS#name} except that we get the unlocalized name
+     * (usually in English locale), because the name is part of the elements compared by the {@link #equals} method.
      */
     static Map<String, Object> name(final int key) {
         final Map<String, Object> properties = new HashMap<>(4);
@@ -172,21 +160,19 @@ public class AbstractDatum extends AbstractIdentifiedObject implements Datum {
     }
 
     /**
-     * Description, possibly including coordinates, of the point or points used to anchor the datum
-     * to the Earth. Also known as the "origin", especially for Engineering and Image Datums.
+     * Description, possibly including coordinates, of the point or points used to anchor the datum to the Earth. Also
+     * known as the "origin", especially for Engineering and Image Datums.
      *
      * <ul>
-     *   <li>For a geodetic datum, this point is also known as the fundamental point, which is
-     *       traditionally the point where the relationship between geoid and ellipsoid is defined.
-     *       In some cases, the "fundamental point" may consist of a number of points. In those
-     *       cases, the parameters defining the geoid/ellipsoid relationship have then been averaged
-     *       for these points, and the averages adopted as the datum definition.
-     *   <li>For an engineering datum, the anchor point may be a physical point, or it may be a
-     *       point with defined coordinates in another CRS.
-     *   <li>For an image datum, the anchor point is usually either the centre of the image or the
-     *       corner of the image.
-     *   <li>For a temporal datum, this attribute is not defined. Instead of the anchor point, a
-     *       temporal datum carries a separate time origin of type {@link Date}.
+     *   <li>For a geodetic datum, this point is also known as the fundamental point, which is traditionally the point
+     *       where the relationship between geoid and ellipsoid is defined. In some cases, the "fundamental point" may
+     *       consist of a number of points. In those cases, the parameters defining the geoid/ellipsoid relationship
+     *       have then been averaged for these points, and the averages adopted as the datum definition.
+     *   <li>For an engineering datum, the anchor point may be a physical point, or it may be a point with defined
+     *       coordinates in another CRS.
+     *   <li>For an image datum, the anchor point is usually either the centre of the image or the corner of the image.
+     *   <li>For a temporal datum, this attribute is not defined. Instead of the anchor point, a temporal datum carries
+     *       a separate time origin of type {@link Date}.
      * </ul>
      */
     @Override
@@ -195,12 +181,11 @@ public class AbstractDatum extends AbstractIdentifiedObject implements Datum {
     }
 
     /**
-     * The time after which this datum definition is valid. This time may be precise (e.g. 1997 for
-     * IRTF97) or merely a year (e.g. 1983 for NAD83). In the latter case, the epoch usually refers
-     * to the year in which a major recalculation of the geodetic control network, underlying the
-     * datum, was executed or initiated. An old datum can remain valid after a new datum is defined.
-     * Alternatively, a datum may be superseded by a later datum, in which case the realization
-     * epoch for the new datum defines the upper limit for the validity of the superseded datum.
+     * The time after which this datum definition is valid. This time may be precise (e.g. 1997 for IRTF97) or merely a
+     * year (e.g. 1983 for NAD83). In the latter case, the epoch usually refers to the year in which a major
+     * recalculation of the geodetic control network, underlying the datum, was executed or initiated. An old datum can
+     * remain valid after a new datum is defined. Alternatively, a datum may be superseded by a later datum, in which
+     * case the realization epoch for the new datum defines the upper limit for the validity of the superseded datum.
      */
     @Override
     public Date getRealizationEpoch() {
@@ -217,21 +202,17 @@ public class AbstractDatum extends AbstractIdentifiedObject implements Datum {
         return domainOfValidity;
     }
 
-    /**
-     * Description of domain of usage, or limitations of usage, for which this datum object is
-     * valid.
-     */
+    /** Description of domain of usage, or limitations of usage, for which this datum object is valid. */
     @Override
     public InternationalString getScope() {
         return scope;
     }
 
     /**
-     * Gets the type of the datum as an enumerated code. Datum type was provided for all kind of
-     * datum in the legacy OGC 01-009 specification. In the new OGC 03-73 (ISO 19111) specification,
-     * datum type is provided only for vertical datum. Nevertheless, we keep this method around
-     * since it is needed for WKT formatting. Note that we returns the datum type ordinal value, not
-     * the code list object.
+     * Gets the type of the datum as an enumerated code. Datum type was provided for all kind of datum in the legacy OGC
+     * 01-009 specification. In the new OGC 03-73 (ISO 19111) specification, datum type is provided only for vertical
+     * datum. Nevertheless, we keep this method around since it is needed for WKT formatting. Note that we returns the
+     * datum type ordinal value, not the code list object.
      */
     int getLegacyDatumType() {
         return 0;
@@ -241,8 +222,8 @@ public class AbstractDatum extends AbstractIdentifiedObject implements Datum {
      * Compares the specified object with this datum for equality.
      *
      * @param object The object to compare to {@code this}.
-     * @param compareMetadata {@code true} for performing a strict comparaison, or {@code false} for
-     *     comparing only properties relevant to transformations.
+     * @param compareMetadata {@code true} for performing a strict comparaison, or {@code false} for comparing only
+     *     properties relevant to transformations.
      * @return {@code true} if both objects are equal.
      */
     @Override
@@ -269,12 +250,11 @@ public class AbstractDatum extends AbstractIdentifiedObject implements Datum {
 
     /**
      * Format the inner part of a <A
-     * HREF="http://geoapi.sourceforge.net/snapshot/javadoc/org/opengis/referencing/doc-files/WKT.html"><cite>Well
-     * Known Text</cite> (WKT)</A> element.
+     * HREF="http://geoapi.sourceforge.net/snapshot/javadoc/org/opengis/referencing/doc-files/WKT.html"><cite>Well Known
+     * Text</cite> (WKT)</A> element.
      *
      * <p>Note: All subclasses will override this method, but only {@link DefaultGeodeticDatum} will
-     * <strong>not</strong> invokes this parent method, because horizontal datum do not write the
-     * datum type.
+     * <strong>not</strong> invokes this parent method, because horizontal datum do not write the datum type.
      *
      * @param formatter The formatter to use.
      * @return The WKT element name.

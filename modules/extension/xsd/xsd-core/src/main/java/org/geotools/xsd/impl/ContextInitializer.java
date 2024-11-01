@@ -22,8 +22,8 @@ import org.geotools.xsd.Node;
 import org.picocontainer.MutablePicoContainer;
 
 /**
- * Invokes the {@link ComplexBinding#initializeChildContext(ElementInstance, Node,
- * MutablePicoContainer)} event/callback.
+ * Invokes the {@link ComplexBinding#initializeChildContext(ElementInstance, Node, MutablePicoContainer)}
+ * event/callback.
  */
 public class ContextInitializer extends ComplexBindingCallback {
 

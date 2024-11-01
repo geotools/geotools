@@ -20,11 +20,11 @@ import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.data.simple.SimpleFeatureIterator;
 
 /**
- * A feature iterator that completely delegates to a normal Iterator, simply allowing Java 1.4 code
- * to escape the caste (sic) system.
+ * A feature iterator that completely delegates to a normal Iterator, simply allowing Java 1.4 code to escape the caste
+ * (sic) system.
  *
- * <p>This implementation is not suitable for use with collections that make use of system
- * resources. As an alterantive please see ResourceFetaureIterator.
+ * <p>This implementation is not suitable for use with collections that make use of system resources. As an alterantive
+ * please see ResourceFetaureIterator.
  *
  * @author Jody Garnett, Refractions Research, Inc.
  */

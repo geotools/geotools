@@ -49,10 +49,7 @@ public class EMFUtils {
             EList l2 = (EList) o2;
             if (l1.size() != l2.size()) {
                 LOGGER.fine(
-                        "The two lists do not have the same size, e1 has "
-                                + l1.size()
-                                + " while o2 has "
-                                + l2.size());
+                        "The two lists do not have the same size, e1 has " + l1.size() + " while o2 has " + l2.size());
                 equals = false;
             } else {
                 for (int i = 0; i < l1.size() && equals; i++) {

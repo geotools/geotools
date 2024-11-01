@@ -50,8 +50,7 @@ import org.locationtech.jts.geom.MultiLineString;
  */
 public class MultiLineStringPropertyTypeBinding extends GeometryPropertyTypeBindingBase {
 
-    public MultiLineStringPropertyTypeBinding(
-            GML3EncodingUtils encodingUtils, XSDIdRegistry idRegistry) {
+    public MultiLineStringPropertyTypeBinding(GML3EncodingUtils encodingUtils, XSDIdRegistry idRegistry) {
         super(encodingUtils, idRegistry);
     }
 

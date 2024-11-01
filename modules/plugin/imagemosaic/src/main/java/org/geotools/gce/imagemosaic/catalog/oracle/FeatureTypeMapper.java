@@ -24,8 +24,8 @@ import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.data.transform.Definition;
 
 /**
- * A simple interface which provides FeatureType mapping information such as the name of the
- * original type name and the mapped one, the wrapped feature type as well as the customized version
+ * A simple interface which provides FeatureType mapping information such as the name of the original type name and the
+ * mapped one, the wrapped feature type as well as the customized version
  *
  * @author Daniele Romagnoli, GeoSolutions SAS @TODO: Move that interface on gt-transform when ready
  */

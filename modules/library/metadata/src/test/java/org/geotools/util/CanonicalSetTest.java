@@ -29,16 +29,15 @@ import java.util.UUID;
 import org.junit.Test;
 
 /**
- * Tests the {@link CanonicalSet}. A standard {@link HashSet} object is used for comparaison
- * purpose.
+ * Tests the {@link CanonicalSet}. A standard {@link HashSet} object is used for comparaison purpose.
  *
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
 public final class CanonicalSetTest {
     /**
-     * Tests the {@link CanonicalSet} using strong references. The tested {@link CanonicalSet}
-     * should behave like a standard {@link Set} object.
+     * Tests the {@link CanonicalSet} using strong references. The tested {@link CanonicalSet} should behave like a
+     * standard {@link Set} object.
      */
     @Test
     public void testStrongReferences() {
@@ -76,8 +75,8 @@ public final class CanonicalSetTest {
     }
 
     /**
-     * Test the {@link CanonicalSet} using weak references. In this test, we have to keep in mind
-     * than some elements in <code>weakSet</code> may disaspear at any time!
+     * Test the {@link CanonicalSet} using weak references. In this test, we have to keep in mind than some elements in
+     * <code>weakSet</code> may disaspear at any time!
      */
     @Test
     public void testWeakReferences() throws InterruptedException {

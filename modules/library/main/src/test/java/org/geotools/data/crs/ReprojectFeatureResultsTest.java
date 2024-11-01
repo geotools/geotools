@@ -69,23 +69,22 @@ public class ReprojectFeatureResultsTest {
         SimpleFeatureBuilder b = new SimpleFeatureBuilder(ft);
         b.add(p);
 
-        visitorCollection =
-                new ListFeatureCollection(ft) {
-                    @Override
-                    public void accepts(FeatureVisitor visitor, ProgressListener progress)
-                            throws java.io.IOException {
-                        lastVisitor = visitor;
-                    };
+        visitorCollection = new ListFeatureCollection(ft) {
+            @Override
+            public void accepts(FeatureVisitor visitor, ProgressListener progress) throws java.io.IOException {
+                lastVisitor = visitor;
+            }
+            ;
 
-                    @Override
-                    public SimpleFeatureCollection subCollection(Filter filter) {
-                        if (filter == Filter.INCLUDE) {
-                            return this;
-                        } else {
-                            return super.subCollection(filter);
-                        }
-                    }
-                };
+            @Override
+            public SimpleFeatureCollection subCollection(Filter filter) {
+                if (filter == Filter.INCLUDE) {
+                    return this;
+                } else {
+                    return super.subCollection(filter);
+                }
+            }
+        };
     }
 
     @Test
@@ -102,8 +101,7 @@ public class ReprojectFeatureResultsTest {
     }
 
     private void assertOptimalVisit(FeatureVisitor visitor) throws Exception {
-        SimpleFeatureCollection retypedCollection =
-                new ReprojectFeatureResults(visitorCollection, utm32n);
+        SimpleFeatureCollection retypedCollection = new ReprojectFeatureResults(visitorCollection, utm32n);
         retypedCollection.accepts(visitor, null);
         assertSame(lastVisitor, visitor);
     }
@@ -111,8 +109,7 @@ public class ReprojectFeatureResultsTest {
     @Test
     public void testBoundsNotOptimized() throws Exception {
         BoundsVisitor boundsVisitor = new BoundsVisitor();
-        SimpleFeatureCollection retypedCollection =
-                new ReprojectFeatureResults(visitorCollection, utm32n);
+        SimpleFeatureCollection retypedCollection = new ReprojectFeatureResults(visitorCollection, utm32n);
         retypedCollection.accepts(boundsVisitor, null);
         // not optimized
         assertNull(lastVisitor);
@@ -120,8 +117,7 @@ public class ReprojectFeatureResultsTest {
 
     @Test
     public void testBoundsCRS() throws Exception {
-        SimpleFeatureCollection retypedCollection =
-                new ReprojectFeatureResults(visitorCollection, utm32n);
+        SimpleFeatureCollection retypedCollection = new ReprojectFeatureResults(visitorCollection, utm32n);
         ReferencedEnvelope bounds = retypedCollection.getBounds();
         assertEquals(utm32n, bounds.getCoordinateReferenceSystem());
     }

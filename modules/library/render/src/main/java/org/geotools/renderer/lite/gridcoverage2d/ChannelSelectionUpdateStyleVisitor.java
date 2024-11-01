@@ -24,13 +24,12 @@ import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.styling.visitor.DuplicatingStyleVisitor;
 
 /**
- * ChannelSelectionUpdateStyleVisitor is a {@link DuplicatingStyleVisitor} that is used to "reset"
- * style symbolizer's selection channel order when the GridCoverageReader used to read a coverage
- * supports band selection. If a reader supports band selection then channel ordering is done by
- * band selection from the reader, so symbolizer does not need to re-apply selection channel order.
+ * ChannelSelectionUpdateStyleVisitor is a {@link DuplicatingStyleVisitor} that is used to "reset" style symbolizer's
+ * selection channel order when the GridCoverageReader used to read a coverage supports band selection. If a reader
+ * supports band selection then channel ordering is done by band selection from the reader, so symbolizer does not need
+ * to re-apply selection channel order.
  *
- * <p>Also, see {@link AbstractGridFormat#BANDS} for the reader band selection parameter
- * description.
+ * <p>Also, see {@link AbstractGridFormat#BANDS} for the reader band selection parameter description.
  *
  * @version $Id$
  */
@@ -53,8 +52,8 @@ public class ChannelSelectionUpdateStyleVisitor extends DuplicatingStyleVisitor 
     }
 
     /**
-     * Returns an int[] containing the indices of the coverage bands that are used for the
-     * symbolizer's selection channels
+     * Returns an int[] containing the indices of the coverage bands that are used for the symbolizer's selection
+     * channels
      *
      * @param symbolizer The input symbolizer
      * @return the band indices array (null if no channel selection was present in symbolizer)

@@ -35,8 +35,8 @@ import org.geotools.feature.visitor.FeatureAttributeVisitor;
 import org.geotools.filter.FilterAttributeExtractor;
 
 /**
- * SimpleFeatureCollection decorator which decorates a feature collection "re-typing" its schema
- * based on attributes specified in a query.
+ * SimpleFeatureCollection decorator which decorates a feature collection "re-typing" its schema based on attributes
+ * specified in a query.
  *
  * @author Justin Deoliveira, The Open Planning Project
  */
@@ -45,13 +45,11 @@ public class ReTypingFeatureCollection extends DecoratingSimpleFeatureCollection
     SimpleFeatureType featureType;
 
     public ReTypingFeatureCollection(
-            FeatureCollection<SimpleFeatureType, SimpleFeature> delegate,
-            SimpleFeatureType featureType) {
+            FeatureCollection<SimpleFeatureType, SimpleFeature> delegate, SimpleFeatureType featureType) {
         this(DataUtilities.simple(delegate), featureType);
     }
 
-    public ReTypingFeatureCollection(
-            SimpleFeatureCollection delegate, SimpleFeatureType featureType) {
+    public ReTypingFeatureCollection(SimpleFeatureCollection delegate, SimpleFeatureType featureType) {
         super(delegate);
         this.featureType = featureType;
     }
@@ -76,8 +74,8 @@ public class ReTypingFeatureCollection extends DecoratingSimpleFeatureCollection
     }
 
     /**
-     * Checks if the visitor is accessing only properties available in the specified feature type,
-     * or as a special case, if it's a count visitor accessing no properties at all
+     * Checks if the visitor is accessing only properties available in the specified feature type, or as a special case,
+     * if it's a count visitor accessing no properties at all
      */
     public static boolean isTypeCompatible(FeatureVisitor visitor, SimpleFeatureType featureType) {
         if (visitor instanceof FeatureAttributeVisitor) {

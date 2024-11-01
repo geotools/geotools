@@ -19,11 +19,11 @@ package org.geotools.ows.wms.xml;
 import java.net.URL;
 
 /**
- * A Map Server may use zero or more MetadataURL elements to offer detailed, standardized metadata
- * about the data underneath a particular layer. The type attribute indicates the standard to which
- * the metadata complies. Two types are defined at present: 'TC211' = ISO TC211 19115; 'FGDC' = FGDC
- * CSDGM. The format element indicates how the metadata is structured. --> <!ELEMENT MetadataURL
- * (Format, OnlineResource) > <!ATTLIST MetadataURL type ( TC211 | FGDC ) #REQUIRED>
+ * A Map Server may use zero or more MetadataURL elements to offer detailed, standardized metadata about the data
+ * underneath a particular layer. The type attribute indicates the standard to which the metadata complies. Two types
+ * are defined at present: 'TC211' = ISO TC211 19115; 'FGDC' = FGDC CSDGM. The format element indicates how the metadata
+ * is structured. --> <!ELEMENT MetadataURL (Format, OnlineResource) > <!ATTLIST MetadataURL type ( TC211 | FGDC )
+ * #REQUIRED>
  *
  * @author Meine Toonen meinetoonen@b3partners.nl
  */

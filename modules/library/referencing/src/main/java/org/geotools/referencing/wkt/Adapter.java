@@ -22,8 +22,8 @@ import org.geotools.util.UnsupportedImplementationException;
 
 /**
  * Adapter for implementations which doesn't extends {@link Formattable}. This includes especially
- * {@link org.geotools.referencing.operation.transform.AffineTransform2D}. This method looks for a
- * {@code toWKT()} method using reflection.
+ * {@link org.geotools.referencing.operation.transform.AffineTransform2D}. This method looks for a {@code toWKT()}
+ * method using reflection.
  *
  * @since 2.0
  * @version $Id$
@@ -39,8 +39,8 @@ final class Adapter extends Formattable {
     }
 
     /**
-     * Try to format the wrapped object as WKT. If the adapter fails to find a way to format the
-     * object as WKT, then an {@link UnsupportedImplementationException} is thrown.
+     * Try to format the wrapped object as WKT. If the adapter fails to find a way to format the object as WKT, then an
+     * {@link UnsupportedImplementationException} is thrown.
      */
     @Override
     protected String formatWKT(final Formatter formatter) {
@@ -51,8 +51,7 @@ final class Adapter extends Formattable {
         try {
             classe.getMethod("toWKT", (Class[]) null).invoke(object, (Object[]) null);
         } catch (Exception cause) {
-            final UnsupportedImplementationException exception =
-                    new UnsupportedImplementationException(classe);
+            final UnsupportedImplementationException exception = new UnsupportedImplementationException(classe);
             exception.initCause(cause);
             throw exception;
         }

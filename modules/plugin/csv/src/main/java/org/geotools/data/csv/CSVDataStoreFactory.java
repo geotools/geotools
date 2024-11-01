@@ -59,92 +59,67 @@ public class CSVDataStoreFactory implements FileDataStoreFactorySpi {
 
     public static final String[] EXTENSIONS = {"." + FILE_TYPE};
 
-    public static final Param FILE_PARAM =
-            new Param("file", File.class, FILE_TYPE + " file", false);
+    public static final Param FILE_PARAM = new Param("file", File.class, FILE_TYPE + " file", false);
 
     public static final Param URL_PARAM = new Param("url", URL.class, FILE_TYPE + " file", false);
 
     public static final Param NAMESPACEP =
-            new Param(
-                    "namespace",
-                    URI.class,
-                    "uri to the namespace",
-                    false,
-                    null,
-                    new KVP(Param.LEVEL, "advanced"));
+            new Param("namespace", URI.class, "uri to the namespace", false, null, new KVP(Param.LEVEL, "advanced"));
 
     public static final Param STRATEGYP = new Param("strategy", String.class, "strategy", false);
 
     public static final Param LATFIELDP =
-            new Param(
-                    "latField",
-                    String.class,
-                    "Latitude field. Assumes a CSVSpecifiedLatLngStrategy",
-                    false);
+            new Param("latField", String.class, "Latitude field. Assumes a CSVSpecifiedLatLngStrategy", false);
 
     public static final Param LnGFIELDP =
-            new Param(
-                    "lngField",
-                    String.class,
-                    "Longitude field. Assumes a CSVSpecifiedLatLngStrategy",
-                    false);
+            new Param("lngField", String.class, "Longitude field. Assumes a CSVSpecifiedLatLngStrategy", false);
 
     public static final Param WKTP =
-            new Param(
-                    "wktField",
-                    String.class,
-                    "WKT field. Assumes a CSVSpecifiedWKTStrategy",
-                    false);
+            new Param("wktField", String.class, "WKT field. Assumes a CSVSpecifiedWKTStrategy", false);
 
-    public static final Param QUOTEALL =
-            new Param(
-                    "quoteAll",
-                    Boolean.class,
-                    "Should all fields be quoted (true) or just ones that need it (false)",
-                    false,
-                    Boolean.FALSE,
-                    new KVP(Param.LEVEL, "advanced"));
-    public static final Param QUOTECHAR =
-            new Param(
-                    "quoteChar",
-                    Character.class,
-                    "Character to be used to quote attributes",
-                    false,
-                    '"',
-                    new KVP(Param.LEVEL, "advanced"));
-    public static final Param SEPERATORCHAR =
-            new Param(
-                    "seperator",
-                    Character.class,
-                    "Character to be used to seperate fields",
-                    false,
-                    ',',
-                    new KVP(Param.LEVEL, "advanced"));
-    public static final Param LINESEPSTRING =
-            new Param(
-                    "lineSeperator",
-                    String.class,
-                    "String to be used to seperate records",
-                    false,
-                    System.lineSeparator(),
-                    new KVP(Param.LEVEL, "advanced"));
-    public static final Param ESCAPECHAR =
-            new Param(
-                    "escapeChar",
-                    Character.class,
-                    "Character used to escape quotes",
-                    false,
-                    '\\',
-                    new KVP(Param.LEVEL, "advanced"));
+    public static final Param QUOTEALL = new Param(
+            "quoteAll",
+            Boolean.class,
+            "Should all fields be quoted (true) or just ones that need it (false)",
+            false,
+            Boolean.FALSE,
+            new KVP(Param.LEVEL, "advanced"));
+    public static final Param QUOTECHAR = new Param(
+            "quoteChar",
+            Character.class,
+            "Character to be used to quote attributes",
+            false,
+            '"',
+            new KVP(Param.LEVEL, "advanced"));
+    public static final Param SEPERATORCHAR = new Param(
+            "seperator",
+            Character.class,
+            "Character to be used to seperate fields",
+            false,
+            ',',
+            new KVP(Param.LEVEL, "advanced"));
+    public static final Param LINESEPSTRING = new Param(
+            "lineSeperator",
+            String.class,
+            "String to be used to seperate records",
+            false,
+            System.lineSeparator(),
+            new KVP(Param.LEVEL, "advanced"));
+    public static final Param ESCAPECHAR = new Param(
+            "escapeChar",
+            Character.class,
+            "Character used to escape quotes",
+            false,
+            '\\',
+            new KVP(Param.LEVEL, "advanced"));
 
-    public static final Param WRITEPRJ =
-            new Param(
-                    "writeprj",
-                    Boolean.class,
-                    "Should the CSVDatastore create a .prj file",
-                    false,
-                    false,
-                    new KVP(Param.LEVEL, "advanced"));
+    public static final Param WRITEPRJ = new Param(
+            "writeprj",
+            Boolean.class,
+            "Should the CSVDatastore create a .prj file",
+            false,
+            false,
+            new KVP(Param.LEVEL, "advanced"));
     public static final Param[] parametersInfo = {
         FILE_PARAM,
         NAMESPACEP,
@@ -244,8 +219,7 @@ public class CSVDataStoreFactory implements FileDataStoreFactorySpi {
     public FileDataStore createDataStore(Map<String, ?> params) throws IOException {
         File file = fileFromParams(params);
         if (file == null) {
-            throw new IllegalArgumentException(
-                    "Could not find file from params to create csv data store");
+            throw new IllegalArgumentException("Could not find file from params to create csv data store");
         }
         String path = file.getPath();
         if (path.startsWith("file:")) {
@@ -256,8 +230,7 @@ public class CSVDataStoreFactory implements FileDataStoreFactorySpi {
         return createDataStoreFromFile(file, namespace, params);
     }
 
-    private FileDataStore createDataStoreFromFile(File file, URI namespace, Map<String, ?> params)
-            throws IOException {
+    private FileDataStore createDataStoreFromFile(File file, URI namespace, Map<String, ?> params) throws IOException {
         CSVFileState csvFileState = new CSVFileState(file, namespace);
         Object strategyParam = STRATEGYP.lookUp(params);
         CSVStrategy csvStrategy = null;
@@ -274,14 +247,11 @@ public class CSVDataStoreFactory implements FileDataStoreFactorySpi {
                     throw new IllegalArgumentException(
                             "'specify' csv strategy selected, but lat/lng params both not specified");
                 }
-                csvStrategy =
-                        new CSVLatLonStrategy(
-                                csvFileState, latParam.toString(), lngParam.toString());
+                csvStrategy = new CSVLatLonStrategy(csvFileState, latParam.toString(), lngParam.toString());
             } else if (strategyString.equalsIgnoreCase(WKT_STRATEGY)) {
                 Object wktParam = WKTP.lookUp(params);
                 if (wktParam == null) {
-                    throw new IllegalArgumentException(
-                            "'wkt' csv strategy selected, but wktField param not specified");
+                    throw new IllegalArgumentException("'wkt' csv strategy selected, but wktField param not specified");
                 }
                 csvStrategy = new CSVSpecifiedWKTStrategy(csvFileState, wktParam.toString());
             } else {

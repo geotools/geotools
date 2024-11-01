@@ -12,8 +12,7 @@ package org.geotools.api.filter;
 // Annotations
 
 /**
- * Filter operator that checks that its first sub-expression is greater than its second
- * subexpression.
+ * Filter operator that checks that its first sub-expression is greater than its second subexpression.
  *
  * @version <A HREF="http://www.opengis.org/docs/02-059.pdf">Implementation specification 1.0</A>
  * @author Chris Dillard (SYS Technologies)

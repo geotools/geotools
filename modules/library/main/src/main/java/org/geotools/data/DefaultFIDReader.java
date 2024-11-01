@@ -21,15 +21,14 @@ import org.geotools.api.data.FIDReader;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 
 /**
- * A Default FIDReader. Just auto-increments an index. May be sufficient for files, representing
- * rows in a file. For jdbc datasources a ResultSetFIDReader should be used.
+ * A Default FIDReader. Just auto-increments an index. May be sufficient for files, representing rows in a file. For
+ * jdbc datasources a ResultSetFIDReader should be used.
  *
  * @author Chris Holmes
  * @version $Id$
  */
 public class DefaultFIDReader implements FIDReader {
-    protected static final String CLOSE_MESG =
-            "Close has already been called" + " on this FIDReader";
+    protected static final String CLOSE_MESG = "Close has already been called" + " on this FIDReader";
 
     private int len;
     protected int index = 0;

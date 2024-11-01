@@ -22,10 +22,9 @@ import org.geotools.api.geometry.MismatchedReferenceSystemException;
 import org.geotools.referencing.operation.matrix.GeneralMatrix;
 
 /**
- * Builds {@linkplain org.geotools.api.referencing.operation.MathTransform MathTransform} setup as
- * Similar transformation from a list of {@linkplain
- * org.geotools.referencing.operation.builder.MappedPosition MappedPosition}. The The calculation
- * uses least square method. The similar transform equation:
+ * Builds {@linkplain org.geotools.api.referencing.operation.MathTransform MathTransform} setup as Similar
+ * transformation from a list of {@linkplain org.geotools.referencing.operation.builder.MappedPosition MappedPosition}.
+ * The The calculation uses least square method. The similar transform equation:
  *
  * <pre>
  *  [ x']   [  a -b  Tx  ] [ x ]   [ a*x - b*y + Tx ]
@@ -57,16 +56,13 @@ import org.geotools.referencing.operation.matrix.GeneralMatrix;
  */
 public class SimilarTransformBuilder extends ProjectiveTransformBuilder {
     /**
-     * Creates SimilarTransformBuilder for the set of properties. The {@linkplain java.util.List
-     * List} of {@linkplain org.geotools.referencing.operation.builder.MappedPosition
-     * MappedPosition} is expected.
+     * Creates SimilarTransformBuilder for the set of properties. The {@linkplain java.util.List List} of
+     * {@linkplain org.geotools.referencing.operation.builder.MappedPosition MappedPosition} is expected.
      *
-     * @param vectors list of {@linkplain org.geotools.referencing.operation.builder.MappedPosition
-     *     MappedPosition}
+     * @param vectors list of {@linkplain org.geotools.referencing.operation.builder.MappedPosition MappedPosition}
      */
     public SimilarTransformBuilder(List<MappedPosition> vectors)
-            throws IllegalArgumentException, MismatchedDimensionException,
-                    MismatchedReferenceSystemException {
+            throws IllegalArgumentException, MismatchedDimensionException, MismatchedReferenceSystemException {
         super.setMappedPositions(vectors);
     }
 
@@ -78,25 +74,18 @@ public class SimilarTransformBuilder extends ProjectiveTransformBuilder {
 
         // Creates X matrix
         for (int j = 0; j < (numRow / 2); j++) {
-            A.setRow(
-                    j,
-                    new double[] {
-                        getSourcePoints()[j].getCoordinate()[0],
-                        -getSourcePoints()[j].getCoordinate()[1],
-                        1,
-                        0
-                    });
+            A.setRow(j, new double[] {
+                getSourcePoints()[j].getCoordinate()[0], -getSourcePoints()[j].getCoordinate()[1], 1, 0
+            });
         }
 
         for (int j = numRow / 2; j < numRow; j++) {
-            A.setRow(
-                    j,
-                    new double[] {
-                        getSourcePoints()[j - (numRow / 2)].getCoordinate()[1],
-                        getSourcePoints()[j - (numRow / 2)].getCoordinate()[0],
-                        0,
-                        1
-                    });
+            A.setRow(j, new double[] {
+                getSourcePoints()[j - (numRow / 2)].getCoordinate()[1],
+                getSourcePoints()[j - (numRow / 2)].getCoordinate()[0],
+                0,
+                1
+            });
         }
     }
 
@@ -111,8 +100,7 @@ public class SimilarTransformBuilder extends ProjectiveTransformBuilder {
     }
 
     /**
-     * Returns the matrix for Projective transformation setup as Affine. The M matrix looks like
-     * this:
+     * Returns the matrix for Projective transformation setup as Affine. The M matrix looks like this:
      *
      * <pre>
      * [  a  -b  Tx  ]

@@ -22,9 +22,9 @@ import org.locationtech.jts.geom.Envelope;
  */
 public class GML2Schema {
     /**
-     * An abstract feature provides a set of common properties. A concrete feature type must derive
-     * from this type and specify additional properties in an application schema. A feature may
-     * optionally possess an identifying attribute ('fid').
+     * An abstract feature provides a set of common properties. A concrete feature type must derive from this type and
+     * specify additional properties in an application schema. A feature may optionally possess an identifying attribute
+     * ('fid').
      */
     public static interface AbstractFeatureType {
         /** optional */

@@ -29,8 +29,8 @@ import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryCollection;
 
 /**
- * Collects all geometries from the specified vector layer into a single GeometryCollection (or
- * specialized subclass of it in case the geometries are uniform)
+ * Collects all geometries from the specified vector layer into a single GeometryCollection (or specialized subclass of
+ * it in case the geometries are uniform)
  *
  * @author Andrea Aime - GeoSolutions
  */
@@ -42,8 +42,7 @@ public class CollectGeometries implements VectorProcess {
 
     @DescribeResult(name = "result", description = "Geometry collection of all input geometries")
     public GeometryCollection execute(
-            @DescribeParameter(name = "features", description = "Input feature collection")
-                    FeatureCollection features,
+            @DescribeParameter(name = "features", description = "Input feature collection") FeatureCollection features,
             ProgressListener progressListener)
             throws IOException {
         int count = features.size();

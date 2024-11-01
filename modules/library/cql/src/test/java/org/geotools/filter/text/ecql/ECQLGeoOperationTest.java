@@ -99,8 +99,7 @@ public final class ECQLGeoOperationTest extends CQLGeoOperationTest {
     @Test
     public void Intersects() throws CQLException {
 
-        Filter resultFilter =
-                CompilerUtil.parseFilter(language, "INTERSECTS(the_geom, POINT(1 2))");
+        Filter resultFilter = CompilerUtil.parseFilter(language, "INTERSECTS(the_geom, POINT(1 2))");
 
         assertTrue("Intersects was expected", resultFilter instanceof Intersects);
     }
@@ -109,8 +108,7 @@ public final class ECQLGeoOperationTest extends CQLGeoOperationTest {
     public void IntersectsWithExpressions() throws CQLException {
 
         Filter resultFilter =
-                CompilerUtil.parseFilter(
-                        language, "INTERSECTS(POLYGON((1 2, 2 2, 2 3, 1 2)), POINT(1 2))");
+                CompilerUtil.parseFilter(language, "INTERSECTS(POLYGON((1 2, 2 2, 2 3, 1 2)), POINT(1 2))");
 
         assertTrue("Intersects was expected", resultFilter instanceof Intersects);
     }
@@ -160,8 +158,7 @@ public final class ECQLGeoOperationTest extends CQLGeoOperationTest {
     @Test
     public void functionAsFirstArgument() throws CQLException {
 
-        Filter resultFilter =
-                CompilerUtil.parseFilter(language, "INTERSECTS(centroid(the_geom), POINT(1 2))");
+        Filter resultFilter = CompilerUtil.parseFilter(language, "INTERSECTS(centroid(the_geom), POINT(1 2))");
 
         assertTrue("Intersects was expected", resultFilter instanceof Intersects);
     }
@@ -169,13 +166,11 @@ public final class ECQLGeoOperationTest extends CQLGeoOperationTest {
     @Test
     public void functionAsSecondArgument() throws CQLException {
 
-        Filter resultFilter =
-                CompilerUtil.parseFilter(language, "INTERSECTS(the_geom, buffer(POINT(1 2),10))");
+        Filter resultFilter = CompilerUtil.parseFilter(language, "INTERSECTS(the_geom, buffer(POINT(1 2),10))");
 
         assertTrue("Intersects was expected", resultFilter instanceof Intersects);
 
-        resultFilter =
-                CompilerUtil.parseFilter(language, "INTERSECTS(the_geom, buffer(the_geom,10))");
+        resultFilter = CompilerUtil.parseFilter(language, "INTERSECTS(the_geom, buffer(the_geom,10))");
 
         assertTrue("Intersects was expected", resultFilter instanceof Intersects);
     }
@@ -184,8 +179,7 @@ public final class ECQLGeoOperationTest extends CQLGeoOperationTest {
     public void functionAsFirstAndSecondArgument() throws CQLException {
 
         Filter resultFilter =
-                CompilerUtil.parseFilter(
-                        language, "INTERSECTS(centroid(the_geom), buffer(POINT(1 2) ,10))");
+                CompilerUtil.parseFilter(language, "INTERSECTS(centroid(the_geom), buffer(POINT(1 2) ,10))");
 
         assertTrue("Intersects was expected", resultFilter instanceof Intersects);
     }
@@ -193,8 +187,7 @@ public final class ECQLGeoOperationTest extends CQLGeoOperationTest {
     @Test
     public void intersectsWithReferencedGeometry() throws CQLException, FactoryException {
 
-        Filter resultFilter =
-                CompilerUtil.parseFilter(language, "INTERSECTS(the_geom, SRID=4326;POINT(1 2))");
+        Filter resultFilter = CompilerUtil.parseFilter(language, "INTERSECTS(the_geom, SRID=4326;POINT(1 2))");
 
         assertTrue("Intersects was expected", resultFilter instanceof Intersects);
         Intersects intersects = (Intersects) resultFilter;
@@ -206,8 +199,7 @@ public final class ECQLGeoOperationTest extends CQLGeoOperationTest {
 
     @Test
     public void testIntersectsEnvelope() throws CQLException {
-        Filter filter =
-                CompilerUtil.parseFilter(language, "INTERSECTS(geom, ENVELOPE(10, 40, 40, 10))");
+        Filter filter = CompilerUtil.parseFilter(language, "INTERSECTS(geom, ENVELOPE(10, 40, 40, 10))");
 
         Intersects intersects = (Intersects) filter;
         PropertyName pn = (PropertyName) intersects.getExpression1();

@@ -18,19 +18,19 @@ import org.geotools.api.filter.identity.Identifier;
  *
  * <p>The notion of an "attribute" is similar to that of an attribute in UML.
  *
- * <p>This interface is capable of modelling "primitive data", things like strings, numerics, dates,
- * etc... However for "complex data" (that is non-primitive data types which are made up other
- * primitive data types), a specific sub-interface is used, see {@link ComplexAttribute}.
+ * <p>This interface is capable of modelling "primitive data", things like strings, numerics, dates, etc... However for
+ * "complex data" (that is non-primitive data types which are made up other primitive data types), a specific
+ * sub-interface is used, see {@link ComplexAttribute}.
  *
- * <p>An analogy for an attribute is a "field" in a java object. A field also brings together a
- * field name, value and type.
+ * <p>An analogy for an attribute is a "field" in a java object. A field also brings together a field name, value and
+ * type.
  *
  * <p>
  *
  * <h3>Identifiable</h3>
  *
- * When an attribute is identifiable the {@link #getID()} method returns a unique identifier for the
- * attribute. The type of the attribute is used to determine identifiability.
+ * When an attribute is identifiable the {@link #getID()} method returns a unique identifier for the attribute. The type
+ * of the attribute is used to determine identifiability.
  *
  * <pre>
  * Attribute attribute = ...;
@@ -41,8 +41,8 @@ import org.geotools.api.filter.identity.Identifier;
  *
  * <h3>Validation</h3>
  *
- * An attribute may hold any value at runtime; checking that the value meets the constraints
- * supplied by the AttributeType is the work of the validate() method.
+ * An attribute may hold any value at runtime; checking that the value meets the constraints supplied by the
+ * AttributeType is the work of the validate() method.
  *
  * @see Property
  * @author Jody Garnett (Refractions Research)
@@ -51,8 +51,7 @@ import org.geotools.api.filter.identity.Identifier;
 public interface Attribute extends Property {
 
     /**
-     * Override of {@link Property#getDescriptor()} which type narrows to {@link
-     * AttributeDescriptor}.
+     * Override of {@link Property#getDescriptor()} which type narrows to {@link AttributeDescriptor}.
      *
      * @see Property#getDescriptor()
      * @return The attribute descriptor, may be null if this is a top level type
@@ -75,17 +74,15 @@ public interface Attribute extends Property {
      * <p>This value is non-null in the case that <code>getType().isIdentifiable()</code> is <code>
      * true</code>.
      *
-     * @return A unique identifier for the attribute, or <code>null</code> if the attribute is
-     *     non-identifiable.
+     * @return A unique identifier for the attribute, or <code>null</code> if the attribute is non-identifiable.
      */
     Identifier getIdentifier();
 
     /**
      * Check the attribute value against the constraints provided by the AttributeDescriptor.
      *
-     * <p>Please note this method checks the value only - it should have the correct java binding,
-     * it should only be null if isNillable is true; and if a value is provided it should satisfy
-     * all of the restrictions provided.
+     * <p>Please note this method checks the value only - it should have the correct java binding, it should only be
+     * null if isNillable is true; and if a value is provided it should satisfy all of the restrictions provided.
      *
      * <p>To check the the number of times an attribute is used (minOccurs and maxOccurs) please use
      * ComplexAttribute.validate().

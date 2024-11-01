@@ -42,42 +42,41 @@ public class GeopkgtypeBindingTest extends GPKGTestSupport {
 
     @Test
     public void testParse() throws Exception {
-        buildDocument(
-                "<geopackage name='mygeopackage' path='file://test' remove='true'>"
-                        + "<features name=\"features1\" identifier=\"f1\">"
-                        + "<description>features1 description</description>"
-                        + "<featuretype>featuretypename</featuretype>"
-                        + "<propertynames>property1,property2</propertynames>"
-                        + "<filter xmlns:fes=\"http://www.opengis.net/fes/2.0\">"
-                        + "<fes:PropertyIsEqualTo>"
-                        + "<fes:ValueReference>propertyx</fes:ValueReference>"
-                        + "<fes:Literal>999</fes:Literal>"
-                        + "</fes:PropertyIsEqualTo>"
-                        + "</filter>"
-                        + "</features>"
-                        + "<tiles name=\"tiles1\" identifier=\"t1\">"
-                        + "<description>tiles1 description</description>"
-                        + "<srs>EPSG:4326</srs>"
-                        + "<bbox>"
-                        + "  <minx>0</minx>"
-                        + "  <maxx>100</maxx>"
-                        + "  <miny>10</miny>"
-                        + "  <maxy>50</maxy>"
-                        + "</bbox>"
-                        + "<layers>layer1, layer2</layers>"
-                        + "<styles>style1, style2</styles>"
-                        + "<format>png</format>"
-                        + "<bgcolor>ffff00</bgcolor>"
-                        + "<transparent>true</transparent>"
-                        + "<coverage>"
-                        + "  <minZoom>1</minZoom>"
-                        + "  <maxZoom>10</maxZoom>"
-                        + "</coverage>"
-                        + "<gridset>"
-                        + "  <name>gridsetname</name>"
-                        + "</gridset>"
-                        + "</tiles>"
-                        + "</geopackage>");
+        buildDocument("<geopackage name='mygeopackage' path='file://test' remove='true'>"
+                + "<features name=\"features1\" identifier=\"f1\">"
+                + "<description>features1 description</description>"
+                + "<featuretype>featuretypename</featuretype>"
+                + "<propertynames>property1,property2</propertynames>"
+                + "<filter xmlns:fes=\"http://www.opengis.net/fes/2.0\">"
+                + "<fes:PropertyIsEqualTo>"
+                + "<fes:ValueReference>propertyx</fes:ValueReference>"
+                + "<fes:Literal>999</fes:Literal>"
+                + "</fes:PropertyIsEqualTo>"
+                + "</filter>"
+                + "</features>"
+                + "<tiles name=\"tiles1\" identifier=\"t1\">"
+                + "<description>tiles1 description</description>"
+                + "<srs>EPSG:4326</srs>"
+                + "<bbox>"
+                + "  <minx>0</minx>"
+                + "  <maxx>100</maxx>"
+                + "  <miny>10</miny>"
+                + "  <maxy>50</maxy>"
+                + "</bbox>"
+                + "<layers>layer1, layer2</layers>"
+                + "<styles>style1, style2</styles>"
+                + "<format>png</format>"
+                + "<bgcolor>ffff00</bgcolor>"
+                + "<transparent>true</transparent>"
+                + "<coverage>"
+                + "  <minZoom>1</minZoom>"
+                + "  <maxZoom>10</maxZoom>"
+                + "</coverage>"
+                + "<gridset>"
+                + "  <name>gridsetname</name>"
+                + "</gridset>"
+                + "</tiles>"
+                + "</geopackage>");
         Object result = parse(GPKG.geopkgtype);
         assertTrue(result instanceof GeoPackageProcessRequest);
         GeoPackageProcessRequest request = (GeoPackageProcessRequest) result;
@@ -88,19 +87,14 @@ public class GeopkgtypeBindingTest extends GPKGTestSupport {
         assertEquals(2, request.getLayerCount());
 
         assertTrue(request.getLayer(0) instanceof GeoPackageProcessRequest.FeaturesLayer);
-        GeoPackageProcessRequest.FeaturesLayer features =
-                (GeoPackageProcessRequest.FeaturesLayer) request.getLayer(0);
+        GeoPackageProcessRequest.FeaturesLayer features = (GeoPackageProcessRequest.FeaturesLayer) request.getLayer(0);
         assertEquals("f1", features.getIdentifier());
         assertEquals("features1", features.getName());
         assertEquals("features1 description", features.getDescription());
         assertEquals("featuretypename", features.getFeatureType().getLocalPart());
         assertEquals(2, features.getPropertyNames().size());
-        assertTrue(
-                features.getPropertyNames()
-                        .contains(new QName("http://www.opengis.net/gpkg", "property1", "")));
-        assertTrue(
-                features.getPropertyNames()
-                        .contains(new QName("http://www.opengis.net/gpkg", "property2", "")));
+        assertTrue(features.getPropertyNames().contains(new QName("http://www.opengis.net/gpkg", "property1", "")));
+        assertTrue(features.getPropertyNames().contains(new QName("http://www.opengis.net/gpkg", "property2", "")));
         assertTrue(features.getFilter() instanceof PropertyIsEqualTo);
         PropertyIsEqualTo filter = (PropertyIsEqualTo) features.getFilter();
         assertTrue(filter.getExpression1() instanceof PropertyName);
@@ -109,8 +103,7 @@ public class GeopkgtypeBindingTest extends GPKGTestSupport {
         assertEquals("999", ((Literal) filter.getExpression2()).getValue());
 
         assertTrue(request.getLayer(0) instanceof GeoPackageProcessRequest.FeaturesLayer);
-        GeoPackageProcessRequest.TilesLayer tiles =
-                (GeoPackageProcessRequest.TilesLayer) request.getLayer(1);
+        GeoPackageProcessRequest.TilesLayer tiles = (GeoPackageProcessRequest.TilesLayer) request.getLayer(1);
         assertEquals("t1", tiles.getIdentifier());
         assertEquals("tiles1", tiles.getName());
         assertEquals("tiles1 description", tiles.getDescription());

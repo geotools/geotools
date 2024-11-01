@@ -29,8 +29,8 @@ import org.xml.sax.helpers.AttributesImpl;
 import org.xml.sax.helpers.NamespaceSupport;
 
 /**
- * Helper class writing out GML elements and coordinates. Geared towards efficiency, write out
- * elements and ordinate lists with the minimim amount of garbage generation
+ * Helper class writing out GML elements and coordinates. Geared towards efficiency, write out elements and ordinate
+ * lists with the minimim amount of garbage generation
  *
  * @author Andrea Aime - GeoSolutions
  */
@@ -51,10 +51,7 @@ public class GMLWriter {
     /** We use a StringBuffer because the date formatters cannot take a StringBuilder */
     StringBuffer sb = new StringBuffer();
 
-    /**
-     * The StringBuffer above gets dumped into this char buffer in order to pass the chars to the
-     * handler
-     */
+    /** The StringBuffer above gets dumped into this char buffer in order to pass the chars to the handler */
     char[] buffer;
 
     /** Coordinates qualified name, with the right prefix */
@@ -166,8 +163,8 @@ public class GMLWriter {
     }
 
     /**
-     * @see org.xml.sax.ContentHandler#startElement(java.lang.String, java.lang.String,
-     *     java.lang.String, org.xml.sax.Attributes)
+     * @see org.xml.sax.ContentHandler#startElement(java.lang.String, java.lang.String, java.lang.String,
+     *     org.xml.sax.Attributes)
      */
     public void startElement(QualifiedName qn, Attributes atts) throws SAXException {
         String qualifiedName = qn.getQualifiedName();
@@ -200,10 +197,7 @@ public class GMLWriter {
         return qName;
     }
 
-    /**
-     * @see org.xml.sax.ContentHandler#endElement(java.lang.String, java.lang.String,
-     *     java.lang.String)
-     */
+    /** @see org.xml.sax.ContentHandler#endElement(java.lang.String, java.lang.String, java.lang.String) */
     public void endElement(QualifiedName qn) throws SAXException {
         String qualifiedName = qn.getQualifiedName();
         if (qualifiedName == null) {
@@ -272,8 +266,8 @@ public class GMLWriter {
     }
 
     /**
-     * Encodes the provided coordinates sequence, if encoding of measures is enabled this method
-     * will encode all the available ordinates.
+     * Encodes the provided coordinates sequence, if encoding of measures is enabled this method will encode all the
+     * available ordinates.
      *
      * @param coordinates the coordinates sequence
      */

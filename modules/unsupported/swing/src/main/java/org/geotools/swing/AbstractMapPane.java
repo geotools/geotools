@@ -62,10 +62,9 @@ import org.geotools.swing.event.MapPaneListener;
 import org.geotools.swing.tool.CursorTool;
 
 /**
- * Base class for Swing map panes. It extends Swing's {@code JPanel} class and handles window sizing
- * and repainting as well as redirecting mouse events. It also provides basic implementations of all
- * interface methods. Sub-classes must implement {@linkplain #drawLayers(boolean)} and override
- * {@linkplain JPanel#paintComponent(java.awt.Graphics)}.
+ * Base class for Swing map panes. It extends Swing's {@code JPanel} class and handles window sizing and repainting as
+ * well as redirecting mouse events. It also provides basic implementations of all interface methods. Sub-classes must
+ * implement {@linkplain #drawLayers(boolean)} and override {@linkplain JPanel#paintComponent(java.awt.Graphics)}.
  *
  * @author Michael Bedward
  * @since 8.0
@@ -75,8 +74,8 @@ public abstract class AbstractMapPane extends JPanel
         implements MapPane, RenderingExecutorListener, MapLayerListListener, MapBoundsListener {
 
     /**
-     * Default delay (500 milliseconds) before the map will be redrawn when resizing the pane or
-     * moving the displayed image. This avoids flickering and redundant rendering.
+     * Default delay (500 milliseconds) before the map will be redrawn when resizing the pane or moving the displayed
+     * image. This avoids flickering and redundant rendering.
      */
     public static final int DEFAULT_PAINT_DELAY = 500;
 
@@ -152,16 +151,15 @@ public abstract class AbstractMapPane extends JPanel
          * default to the standard cursor sometimes (at least
          * on OSX)
          */
-        addMouseListener(
-                new MouseInputAdapter() {
-                    @Override
-                    public void mouseEntered(MouseEvent e) {
-                        super.mouseEntered(e);
-                        if (currentCursorTool != null) {
-                            setCursor(currentCursorTool.getCursor());
-                        }
-                    }
-                });
+        addMouseListener(new MouseInputAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                super.mouseEntered(e);
+                if (currentCursorTool != null) {
+                    setCursor(currentCursorTool.getCursor());
+                }
+            }
+        });
 
         keyHandler = new MapPaneKeyHandler(this);
         addKeyListener(keyHandler);
@@ -171,24 +169,22 @@ public abstract class AbstractMapPane extends JPanel
          * and showing events (with HierarchyListener). Although showing
          * is often accompanied by resizing this is not reliable in Swing.
          */
-        addHierarchyListener(
-                he -> {
-                    if ((he.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0) {
-                        if (isShowing()) {
-                            onShownOrResized();
-                        }
-                    }
-                });
+        addHierarchyListener(he -> {
+            if ((he.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0) {
+                if (isShowing()) {
+                    onShownOrResized();
+                }
+            }
+        });
 
-        addHierarchyBoundsListener(
-                new HierarchyBoundsAdapter() {
-                    @Override
-                    public void ancestorResized(HierarchyEvent he) {
-                        if (isShowing()) {
-                            onShownOrResized();
-                        }
-                    }
-                });
+        addHierarchyBoundsListener(new HierarchyBoundsAdapter() {
+            @Override
+            public void ancestorResized(HierarchyEvent he) {
+                if (isShowing()) {
+                    onShownOrResized();
+                }
+            }
+        });
 
         doSetMapContent(content);
         doSetRenderingExecutor(executor);
@@ -226,9 +222,8 @@ public abstract class AbstractMapPane extends JPanel
     }
 
     /**
-     * Sets the rendering executor. If {@code executor} is {@code null}, the default {@linkplain
-     * DefaultRenderingExecutor} will be set on the next call to {@linkplain
-     * #getRenderingExecutor()}.
+     * Sets the rendering executor. If {@code executor} is {@code null}, the default
+     * {@linkplain DefaultRenderingExecutor} will be set on the next call to {@linkplain #getRenderingExecutor()}.
      *
      * @param executor the rendering executor
      */
@@ -254,8 +249,8 @@ public abstract class AbstractMapPane extends JPanel
     }
 
     /**
-     * Sets a handler for keyboard actions which control the map pane's display. The default handler
-     * is {@linkplain MapPaneKeyHandler} which provides for scrolling and zooming.
+     * Sets a handler for keyboard actions which control the map pane's display. The default handler is
+     * {@linkplain MapPaneKeyHandler} which provides for scrolling and zooming.
      *
      * @param controller the new handler or {@code null} to disable key handling
      */
@@ -272,9 +267,8 @@ public abstract class AbstractMapPane extends JPanel
     }
 
     /**
-     * Gets the current paint delay interval in milliseconds. The map pane uses this delay period to
-     * avoid flickering and redundant rendering when drag-resizing the pane or panning the map
-     * image.
+     * Gets the current paint delay interval in milliseconds. The map pane uses this delay period to avoid flickering
+     * and redundant rendering when drag-resizing the pane or panning the map image.
      *
      * @return delay in milliseconds
      */
@@ -289,9 +283,8 @@ public abstract class AbstractMapPane extends JPanel
     }
 
     /**
-     * Sets the current paint delay interval in milliseconds. The map pane uses this delay period to
-     * avoid flickering and redundant rendering when drag-resizing the pane or panning the map
-     * image.
+     * Sets the current paint delay interval in milliseconds. The map pane uses this delay period to avoid flickering
+     * and redundant rendering when drag-resizing the pane or panning the map image.
      *
      * @param delay the delay in milliseconds; if {@code <=} 0 the default delay period will be set
      */
@@ -324,8 +317,7 @@ public abstract class AbstractMapPane extends JPanel
      * myMapPane.repaint();
      * }</pre>
      *
-     * @param ignoreRepaint if false, paint requests will be handled normally; if true, paint
-     *     requests will be deferred.
+     * @param ignoreRepaint if false, paint requests will be handled normally; if true, paint requests will be deferred.
      * @see #isAcceptingRepaints()
      */
     @Override
@@ -341,11 +333,10 @@ public abstract class AbstractMapPane extends JPanel
     }
 
     /**
-     * Query whether the map pane is currently accepting or ignoring repaint requests from other GUI
-     * components and the system.
+     * Query whether the map pane is currently accepting or ignoring repaint requests from other GUI components and the
+     * system.
      *
-     * @return true if the pane is currently accepting repaint requests; false if it is ignoring
-     *     them
+     * @return true if the pane is currently accepting repaint requests; false if it is ignoring them
      * @see #setIgnoreRepaint(boolean)
      */
     public boolean isAcceptingRepaints() {
@@ -357,17 +348,16 @@ public abstract class AbstractMapPane extends JPanel
             resizedFuture.cancel(true);
         }
 
-        resizedFuture =
-                paneTaskExecutor.schedule(
-                        () -> {
-                            setForNewSize();
+        resizedFuture = paneTaskExecutor.schedule(
+                () -> {
+                    setForNewSize();
 
-                            // Call repaint here rather than within setForNewSize so that
-                            // drawingLock will be available in paintComponent
-                            repaint();
-                        },
-                        paintDelay,
-                        TimeUnit.MILLISECONDS);
+                    // Call repaint here rather than within setForNewSize so that
+                    // drawingLock will be available in paintComponent
+                    repaint();
+                },
+                paintDelay,
+                TimeUnit.MILLISECONDS);
     }
 
     protected void setForNewSize() {
@@ -396,9 +386,7 @@ public abstract class AbstractMapPane extends JPanel
                     doSetDisplayArea(fullExtent);
                 }
 
-                publishEvent(
-                        new MapPaneEvent(
-                                this, MapPaneEvent.Type.DISPLAY_AREA_CHANGED, getDisplayArea()));
+                publishEvent(new MapPaneEvent(this, MapPaneEvent.Type.DISPLAY_AREA_CHANGED, getDisplayArea()));
 
                 acceptRepaintRequests.set(true);
                 drawLayers(true);
@@ -431,15 +419,14 @@ public abstract class AbstractMapPane extends JPanel
             imageMovedFuture.cancel(true);
         }
 
-        imageMovedFuture =
-                paneTaskExecutor.schedule(
-                        () -> {
-                            afterImageMoved();
-                            clearLabelCache.set(true);
-                            drawLayers(false);
-                        },
-                        paintDelay,
-                        TimeUnit.MILLISECONDS);
+        imageMovedFuture = paneTaskExecutor.schedule(
+                () -> {
+                    afterImageMoved();
+                    clearLabelCache.set(true);
+                    drawLayers(false);
+                },
+                paintDelay,
+                TimeUnit.MILLISECONDS);
     }
 
     /** Called after the base image has been dragged. Sets the new map area and transforms */
@@ -451,7 +438,8 @@ public abstract class AbstractMapPane extends JPanel
             Position2D newPos = new Position2D(dx, dy);
             mapContent.getViewport().getScreenToWorld().transform(newPos, newPos);
 
-            ReferencedEnvelope env = new ReferencedEnvelope(mapContent.getViewport().getBounds());
+            ReferencedEnvelope env =
+                    new ReferencedEnvelope(mapContent.getViewport().getBounds());
             env.translate(env.getMinimum(0) - newPos.x, env.getMaximum(1) - newPos.y);
             doSetDisplayArea(env);
 
@@ -527,8 +515,7 @@ public abstract class AbstractMapPane extends JPanel
                 }
             }
 
-            MapPaneEvent event =
-                    new MapPaneEvent(this, MapPaneEvent.Type.NEW_MAPCONTENT, mapContent);
+            MapPaneEvent event = new MapPaneEvent(this, MapPaneEvent.Type.NEW_MAPCONTENT, mapContent);
             publishEvent(event);
 
             drawLayers(false);
@@ -574,8 +561,8 @@ public abstract class AbstractMapPane extends JPanel
     }
 
     /**
-     * Helper method for {@linkplain #setDisplayArea} which is also called by other methods that
-     * want to set the display area without provoking repainting of the display
+     * Helper method for {@linkplain #setDisplayArea} which is also called by other methods that want to set the display
+     * area without provoking repainting of the display
      *
      * @param envelope requested display area
      */
@@ -587,13 +574,12 @@ public abstract class AbstractMapPane extends JPanel
                 crs = mapContent.getCoordinateReferenceSystem();
             }
 
-            ReferencedEnvelope refEnv =
-                    new ReferencedEnvelope(
-                            envelope.getMinimum(0),
-                            envelope.getMaximum(0),
-                            envelope.getMinimum(1),
-                            envelope.getMaximum(1),
-                            crs);
+            ReferencedEnvelope refEnv = new ReferencedEnvelope(
+                    envelope.getMinimum(0),
+                    envelope.getMaximum(0),
+                    envelope.getMinimum(1),
+                    envelope.getMaximum(1),
+                    crs);
 
             mapContent.getViewport().setBounds(refEnv);
 
@@ -602,8 +588,7 @@ public abstract class AbstractMapPane extends JPanel
         }
 
         // Publish the resulting display area with the event
-        publishEvent(
-                new MapPaneEvent(this, MapPaneEvent.Type.DISPLAY_AREA_CHANGED, getDisplayArea()));
+        publishEvent(new MapPaneEvent(this, MapPaneEvent.Type.DISPLAY_AREA_CHANGED, getDisplayArea()));
     }
 
     /** {@inheritDoc} */
@@ -722,8 +707,8 @@ public abstract class AbstractMapPane extends JPanel
     }
 
     /**
-     * Called when a new map layer has been added. Sets the layer as selected (for queries) and, if
-     * the layer table is being used, adds the new layer to the table.
+     * Called when a new map layer has been added. Sets the layer as selected (for queries) and, if the layer table is
+     * being used, adds the new layer to the table.
      */
     @Override
     public void layerAdded(MapLayerListEvent event) {
@@ -774,9 +759,7 @@ public abstract class AbstractMapPane extends JPanel
         repaint();
     }
 
-    /**
-     * Called when a map layer has changed, e.g. features added to a displayed feature collection
-     */
+    /** Called when a map layer has changed, e.g. features added to a displayed feature collection */
     @Override
     public void layerChanged(MapLayerListEvent event) {
         paramsLock.writeLock().lock();
@@ -813,8 +796,8 @@ public abstract class AbstractMapPane extends JPanel
     }
 
     /**
-     * Called by the map content's viewport when its bounds have changed. Used here to watch for a
-     * changed CRS, in which case the map is re-displayed at full extent.
+     * Called by the map content's viewport when its bounds have changed. Used here to watch for a changed CRS, in which
+     * case the map is re-displayed at full extent.
      */
     @Override
     public void mapBoundsChanged(MapBoundsEvent event) {
@@ -880,9 +863,7 @@ public abstract class AbstractMapPane extends JPanel
                  */
                 if (fullExtent == null) {
                     // set arbitrary bounds centred on 0,0
-                    fullExtent =
-                            new ReferencedEnvelope(
-                                    -1, 1, -1, 1, mapContent.getCoordinateReferenceSystem());
+                    fullExtent = new ReferencedEnvelope(-1, 1, -1, 1, mapContent.getCoordinateReferenceSystem());
 
                 } else {
                     double w = fullExtent.getWidth();
@@ -905,12 +886,7 @@ public abstract class AbstractMapPane extends JPanel
                     }
 
                     fullExtent =
-                            new ReferencedEnvelope(
-                                    xmin,
-                                    xmax,
-                                    ymin,
-                                    ymax,
-                                    mapContent.getCoordinateReferenceSystem());
+                            new ReferencedEnvelope(xmin, xmax, ymin, ymax, mapContent.getCoordinateReferenceSystem());
                 }
 
             } catch (Exception ex) {
@@ -924,8 +900,8 @@ public abstract class AbstractMapPane extends JPanel
     }
 
     /**
-     * {@inheritDoc} Publishes a {@linkplain MapPaneEvent} of type {@code
-     * MapPaneEvent.Type.RENDERING_STARTED} to listeners.
+     * {@inheritDoc} Publishes a {@linkplain MapPaneEvent} of type {@code MapPaneEvent.Type.RENDERING_STARTED} to
+     * listeners.
      */
     @Override
     public void onRenderingStarted(RenderingExecutorEvent ev) {
@@ -933,8 +909,8 @@ public abstract class AbstractMapPane extends JPanel
     }
 
     /**
-     * {@inheritDoc} Publishes a {@linkplain MapPaneEvent} of type {@code
-     * MapPaneEvent.Type.RENDERING_STOPPED} to listeners.
+     * {@inheritDoc} Publishes a {@linkplain MapPaneEvent} of type {@code MapPaneEvent.Type.RENDERING_STOPPED} to
+     * listeners.
      */
     @Override
     public void onRenderingCompleted(RenderingExecutorEvent event) {
@@ -948,8 +924,8 @@ public abstract class AbstractMapPane extends JPanel
     }
 
     /**
-     * {@inheritDoc} Publishes a {@linkplain MapPaneEvent} of type {@code
-     * MapPaneEvent.Type.RENDERING_STOPPED} to listeners.
+     * {@inheritDoc} Publishes a {@linkplain MapPaneEvent} of type {@code MapPaneEvent.Type.RENDERING_STOPPED} to
+     * listeners.
      */
     @Override
     public void onRenderingFailed(RenderingExecutorEvent ev) {

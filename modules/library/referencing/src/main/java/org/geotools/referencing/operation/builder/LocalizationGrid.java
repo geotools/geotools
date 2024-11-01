@@ -38,31 +38,26 @@ import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.geotools.referencing.operation.transform.WarpTransform2D;
 
 /**
- * A factory for {@link MathTransform2D} backed by a <cite>grid of localization</cite>. A grid of
- * localization is a two-dimensional array of coordinate points. The grid size is {@code
- * width}&nbsp;&times;&nbsp;{@code height}. Input coordinates are (<var>i</var>,<var>j</var>) index
- * in the grid, where <var>i</var> must be in the range {@code [0..width-1]} and <var>j</var> in the
- * range {@code [0..height-1]} inclusive. Output coordinates are the values stored in the grid of
- * localization at the specified index.
+ * A factory for {@link MathTransform2D} backed by a <cite>grid of localization</cite>. A grid of localization is a
+ * two-dimensional array of coordinate points. The grid size is {@code width}&nbsp;&times;&nbsp;{@code height}. Input
+ * coordinates are (<var>i</var>,<var>j</var>) index in the grid, where <var>i</var> must be in the range
+ * {@code [0..width-1]} and <var>j</var> in the range {@code [0..height-1]} inclusive. Output coordinates are the values
+ * stored in the grid of localization at the specified index.
  *
- * <p>The {@code LocalizationGrid} class is usefull when the "{@linkplain
- * GridGeometry#getGridToCoordinateSystem grid to coordinate system}" transform for a coverage is
- * not some kind of global mathematical relationship like an {@linkplain AffineTransform affine
- * transform}. Instead, the "real world" coordinates are explicitly specified for each pixels. If
- * the real world coordinates are know only for some pixels at a fixed interval, then a
- * transformation can be constructed by the concatenation of an affine transform with a grid of
- * localization.
+ * <p>The {@code LocalizationGrid} class is usefull when the "{@linkplain GridGeometry#getGridToCoordinateSystem grid to
+ * coordinate system}" transform for a coverage is not some kind of global mathematical relationship like an
+ * {@linkplain AffineTransform affine transform}. Instead, the "real world" coordinates are explicitly specified for
+ * each pixels. If the real world coordinates are know only for some pixels at a fixed interval, then a transformation
+ * can be constructed by the concatenation of an affine transform with a grid of localization.
  *
- * <p>After a {@code LocalizationGrid} object has been fully constructed (i.e. real world
- * coordinates have been specified for all grid cells), a transformation from grid coordinates to
- * "real world" coordinates can be obtained with the {@link #getMathTransform} method. If this
- * transformation is close enough to an affine transform, then an instance of {@link
- * AffineTransform} is returned. Otherwise, a transform backed by the localization grid is returned.
+ * <p>After a {@code LocalizationGrid} object has been fully constructed (i.e. real world coordinates have been
+ * specified for all grid cells), a transformation from grid coordinates to "real world" coordinates can be obtained
+ * with the {@link #getMathTransform} method. If this transformation is close enough to an affine transform, then an
+ * instance of {@link AffineTransform} is returned. Otherwise, a transform backed by the localization grid is returned.
  *
- * <p>The example below goes through the steps of constructing a coordinate reference system for a
- * grid coverage from its grid of localization. This example assumes that the "real world"
- * coordinates are longitudes and latitudes on the {@linkplain DefaultGeodeticDatum#WGS84 WGS84}
- * ellipsoid.
+ * <p>The example below goes through the steps of constructing a coordinate reference system for a grid coverage from
+ * its grid of localization. This example assumes that the "real world" coordinates are longitudes and latitudes on the
+ * {@linkplain DefaultGeodeticDatum#WGS84 WGS84} ellipsoid.
  *
  * <blockquote>
  *
@@ -133,20 +128,20 @@ import org.geotools.referencing.operation.transform.WarpTransform2D;
  */
 public class LocalizationGrid implements Serializable {
     /**
-     * <var>x</var> (usually longitude) offset relative to an entry. Points are stored in {@link
-     * #grid} as {@code (x,y)} pairs.
+     * <var>x</var> (usually longitude) offset relative to an entry. Points are stored in {@link #grid} as {@code (x,y)}
+     * pairs.
      */
     private static final int X_OFFSET = LocalizationGridTransform2D.X_OFFSET;
 
     /**
-     * <var>y</var> (usually latitude) offset relative to an entry. Points are stored in {@link
-     * #grid} as {@code (x,y)} pairs.
+     * <var>y</var> (usually latitude) offset relative to an entry. Points are stored in {@link #grid} as {@code (x,y)}
+     * pairs.
      */
     private static final int Y_OFFSET = LocalizationGridTransform2D.Y_OFFSET;
 
     /**
-     * Length of an entry in the {@link #grid} array. This lenght is equals to the dimension of
-     * output coordinate points.
+     * Length of an entry in the {@link #grid} array. This lenght is equals to the dimension of output coordinate
+     * points.
      */
     private static final int CP_LENGTH = LocalizationGridTransform2D.CP_LENGTH;
 
@@ -160,22 +155,22 @@ public class LocalizationGrid implements Serializable {
     private double[] grid;
 
     /**
-     * A global affine transform for the whole grid. This affine transform will be computed when
-     * first requested using a "least squares" fitting.
+     * A global affine transform for the whole grid. This affine transform will be computed when first requested using a
+     * "least squares" fitting.
      */
     private transient AffineTransform global;
 
     /**
-     * Math transforms from grid to "real world" data for various degrees. By convention, {@code
-     * transforms[0]} is the transform backed by the whole grid. Other index are fittings using
-     * different polynomial degrees ({@code transforms[1]} for affine, {@code transforms[2]} for
-     * quadratic, <cite>etc.</cite>). Will be computed only when first needed.
+     * Math transforms from grid to "real world" data for various degrees. By convention, {@code transforms[0]} is the
+     * transform backed by the whole grid. Other index are fittings using different polynomial degrees
+     * ({@code transforms[1]} for affine, {@code transforms[2]} for quadratic, <cite>etc.</cite>). Will be computed only
+     * when first needed.
      */
     private transient MathTransform2D[] transforms;
 
     /**
-     * Constructs an initially empty localization grid. All "real worlds" coordinates are initially
-     * set to {@code (NaN,NaN)}.
+     * Constructs an initially empty localization grid. All "real worlds" coordinates are initially set to
+     * {@code (NaN,NaN)}.
      *
      * @param width Number of grid's columns.
      * @param height Number of grid's rows.
@@ -220,10 +215,9 @@ public class LocalizationGrid implements Serializable {
     }
 
     /**
-     * Returns the "real world" coordinates for the specified grid coordinates. Grid coordinates
-     * must be integers inside this grid's range. For general transformations involving non-integer
-     * grid coordinates and/or coordinates outside this grid's range, use {@link #getMathTransform}
-     * instead.
+     * Returns the "real world" coordinates for the specified grid coordinates. Grid coordinates must be integers inside
+     * this grid's range. For general transformations involving non-integer grid coordinates and/or coordinates outside
+     * this grid's range, use {@link #getMathTransform} instead.
      *
      * @param source The point in grid coordinates.
      * @return target The corresponding point in "real world" coordinates.
@@ -248,16 +242,13 @@ public class LocalizationGrid implements Serializable {
     /**
      * Set a point in this localization grid.
      *
-     * @param sourceX <var>x</var> coordinates in grid coordinates, in the range {@code
-     *     [0..width-1]} inclusive.
-     * @param sourceY <var>y</var> coordinates in grid coordinates. in the range {@code
-     *     [0..height-1]} inclusive.
+     * @param sourceX <var>x</var> coordinates in grid coordinates, in the range {@code [0..width-1]} inclusive.
+     * @param sourceY <var>y</var> coordinates in grid coordinates. in the range {@code [0..height-1]} inclusive.
      * @param targetX <var>x</var> coordinates in "real world" coordinates.
      * @param targetY <var>y</var> coordinates in "real world" coordinates.
      * @throws IndexOutOfBoundsException If the source coordinates is not in this grid's range.
      */
-    public synchronized void setLocalizationPoint(
-            int sourceX, int sourceY, double targetX, double targetY) {
+    public synchronized void setLocalizationPoint(int sourceX, int sourceY, double targetX, double targetY) {
         final int offset = computeOffset(sourceX, sourceY);
         notifyChange();
         global = null;
@@ -269,8 +260,8 @@ public class LocalizationGrid implements Serializable {
      * Apply a transformation to every "real world" coordinate points in a sub-region of this grid.
      *
      * @param transform The transform to apply.
-     * @param region The bounding rectangle (in grid coordinate) for region where to apply the
-     *     transform, or {@code null} to transform the whole grid.
+     * @param region The bounding rectangle (in grid coordinate) for region where to apply the transform, or
+     *     {@code null} to transform the whole grid.
      */
     public synchronized void transform(final AffineTransform transform, final Rectangle region) {
         assert X_OFFSET == 0 : X_OFFSET;
@@ -305,24 +296,22 @@ public class LocalizationGrid implements Serializable {
     }
 
     /**
-     * Returns {@code true} if all coordinates in this grid are increasing or decreasing. More
-     * specifically, returns {@code true} if the following conditions are meets:
+     * Returns {@code true} if all coordinates in this grid are increasing or decreasing. More specifically, returns
+     * {@code true} if the following conditions are meets:
      *
      * <ul>
-     *   <li>Coordinates in a row must be increasing or decreasing. If {@code strict} is {@code
-     *       true}, then coordinates must be strictly increasing or decreasing (i.e. equals value
-     *       are not accepted). {@code NaN} values are always ignored.
-     *   <li>Coordinates in all rows must be increasing, or coordinates in all rows must be
-     *       decreasing.
+     *   <li>Coordinates in a row must be increasing or decreasing. If {@code strict} is {@code true}, then coordinates
+     *       must be strictly increasing or decreasing (i.e. equals value are not accepted). {@code NaN} values are
+     *       always ignored.
+     *   <li>Coordinates in all rows must be increasing, or coordinates in all rows must be decreasing.
      *   <li>Idem for columns (Coordinates in a columns must be increasing or decreasing, etc.).
      * </ul>
      *
      * <var>x</var> and <var>y</var> coordinates are tested independently.
      *
-     * @param strict {@code true} to require strictly increasing or decreasing order, or {@code
-     *     false} to accept values that are equals.
-     * @return {@code true} if coordinates are increasing or decreasing in the same direction for
-     *     all rows and columns.
+     * @param strict {@code true} to require strictly increasing or decreasing order, or {@code false} to accept values
+     *     that are equals.
+     * @return {@code true} if coordinates are increasing or decreasing in the same direction for all rows and columns.
      */
     public synchronized boolean isMonotonic(final boolean strict) {
         int orderX = INCREASING | DECREASING;
@@ -366,13 +355,12 @@ public class LocalizationGrid implements Serializable {
      * @param offset The first element to test.
      * @param num The number of elements to test.
      * @param step The amount to increment {@code offset} in order to reach the next element.
-     * @param flags A combination of {@link #INCREASING}, {@link #DECREASING} and {@link #EQUALS}
-     *     that specify which ordering are accepted.
-     * @return 0 if the array is unordered. Otherwise, returns {@code flags} with maybe one of
-     *     {@link #INCREASING} or {@link #DECREASING} flags cleared.
+     * @param flags A combination of {@link #INCREASING}, {@link #DECREASING} and {@link #EQUALS} that specify which
+     *     ordering are accepted.
+     * @return 0 if the array is unordered. Otherwise, returns {@code flags} with maybe one of {@link #INCREASING} or
+     *     {@link #DECREASING} flags cleared.
      */
-    private static int testOrder(
-            final double[] grid, int offset, int num, final int step, int flags) {
+    private static int testOrder(final double[] grid, int offset, int num, final int step, int flags) {
         // We will check (num-1) combinations of coordinates.
         for (--num; --num >= 0; offset += step) {
             final double v1 = grid[offset];
@@ -408,9 +396,9 @@ public class LocalizationGrid implements Serializable {
     }
 
     /**
-     * Makes sure that the grid doesn't contains identical consecutive ordinates. If many
-     * consecutives ordinates are found to be identical in a row or in a column, then the first one
-     * is left inchanged and the other ones are linearly interpolated.
+     * Makes sure that the grid doesn't contains identical consecutive ordinates. If many consecutives ordinates are
+     * found to be identical in a row or in a column, then the first one is left inchanged and the other ones are
+     * linearly interpolated.
      */
     public void removeSingularities() {
         removeSingularities(X_OFFSET, false);
@@ -422,10 +410,8 @@ public class LocalizationGrid implements Serializable {
     /**
      * Applies a linear interpolation on consecutive identical ordinates.
      *
-     * @param index The offset of the ordinate to test. Should be {@link #X_OFFSET} or {@link
-     *     #Y_OFFSET}.
-     * @param vertical {@code true} to scan the grid vertically, or {@code false} to scan the grid
-     *     horizontally.
+     * @param index The offset of the ordinate to test. Should be {@link #X_OFFSET} or {@link #Y_OFFSET}.
+     * @param vertical {@code true} to scan the grid vertically, or {@code false} to scan the grid horizontally.
      */
     private void removeSingularities(final int index, final boolean vertical) {
         final int step, val1, val2;
@@ -451,8 +437,7 @@ public class LocalizationGrid implements Serializable {
                 final int currentOffset = previousOffset + step;
                 if (grid[previousOffset] == grid[currentOffset]) {
                     if (singularityOffset == -1) {
-                        singularityOffset =
-                                (previousOffset == offset) ? previousOffset : previousOffset - step;
+                        singularityOffset = (previousOffset == offset) ? previousOffset : previousOffset - step;
                     }
                 } else if (singularityOffset != -1) {
                     final int num = (currentOffset - singularityOffset) / step + 1;
@@ -477,18 +462,15 @@ public class LocalizationGrid implements Serializable {
      *
      * <p>Params are : offset = 0, num = 5, step = 1
      *
-     * <p>after *--*--*--*--*--* |07|08|09|10|11| *--*--*--*--*--* | | | | linear values are
-     * computed with these values
+     * <p>after *--*--*--*--*--* |07|08|09|10|11| *--*--*--*--*--* | | | | linear values are computed with these values
      *
      * @param grid The {link #grid} array.
      * @param offset The first element.
      * @param num The number of element.
      * @param step The amount to increment {@code offset} in order to reach the next element.
      */
-    private static void replaceSingularity(
-            final double[] grid, int offset, int num, final int step) {
-        final double increment =
-                (grid[offset + (num - 1) * step] - grid[offset]) / ((double) (num - 1));
+    private static void replaceSingularity(final double[] grid, int offset, int num, final int step) {
+        final double increment = (grid[offset + (num - 1) * step] - grid[offset]) / ((double) (num - 1));
         final double value = grid[offset];
         offset += step;
         for (int i = 0; i < (num - 2); i++, offset += step) {
@@ -497,9 +479,8 @@ public class LocalizationGrid implements Serializable {
     }
 
     /**
-     * Returns an affine transform for the whole grid. This transform is only an approximation for
-     * this localization grid. It is fitted (like "curve fitting") to grid data using the "least
-     * squares" method.
+     * Returns an affine transform for the whole grid. This transform is only an approximation for this localization
+     * grid. It is fitted (like "curve fitting") to grid data using the "least squares" method.
      *
      * @return A global affine transform as an approximation for the whole localization grid.
      */
@@ -516,23 +497,21 @@ public class LocalizationGrid implements Serializable {
     }
 
     /**
-     * Fit a plane through the longitude or latitude values. More specifically, find coefficients
-     * <var>c</var>, <var>cx</var> and <var>cy</var> for the following equation:
+     * Fit a plane through the longitude or latitude values. More specifically, find coefficients <var>c</var>,
+     * <var>cx</var> and <var>cy</var> for the following equation:
      *
      * <pre>[longitude or latitude] = c + cx*x + cy*y</pre>
      *
      * .
      *
-     * <p>where <var>x</var> and <var>cx</var> are grid coordinates. Coefficients are computed using
-     * the least-squares method.
+     * <p>where <var>x</var> and <var>cx</var> are grid coordinates. Coefficients are computed using the least-squares
+     * method.
      *
-     * @param offset {@link X_OFFSET} for fitting longitude values, or {@link X_OFFSET} for fitting
-     *     latitude values (assuming tha "real world" coordinates are longitude and latitude
-     *     values).
-     * @param coeff An array of length 6 in which to store plane's coefficients. Coefficients will
-     *     be store in the following order:
-     *     <p>{@code coeff[0 + offset] = cx;} {@code coeff[2 + offset] = cy;} {@code coeff[4 +
-     *     offset] = c;}
+     * @param offset {@link X_OFFSET} for fitting longitude values, or {@link X_OFFSET} for fitting latitude values
+     *     (assuming tha "real world" coordinates are longitude and latitude values).
+     * @param coeff An array of length 6 in which to store plane's coefficients. Coefficients will be store in the
+     *     following order:
+     *     <p>{@code coeff[0 + offset] = cx;} {@code coeff[2 + offset] = cy;} {@code coeff[4 + offset] = c;}
      */
     private void fitPlane(final int offset, final double[] coeff) {
         /*
@@ -585,8 +564,8 @@ public class LocalizationGrid implements Serializable {
 
     /**
      * Returns this localization grid and its inverse as warp objects. This method tries to fit a
-     * {@linkplain WarpPolynomial polynomial warp} to the gridded coordinates. The resulting Warp is
-     * wrapped into a {@link WarpTransform2D}.
+     * {@linkplain WarpPolynomial polynomial warp} to the gridded coordinates. The resulting Warp is wrapped into a
+     * {@link WarpTransform2D}.
      */
     private MathTransform2D fitWarps(final int degree) {
         final float[] srcCoords = new float[width * height * 2];
@@ -612,14 +591,12 @@ public class LocalizationGrid implements Serializable {
     }
 
     /**
-     * Returns a math transform from grid to "real world" coordinates using a polynomial fitting of
-     * the specified degree. By convention, a {@code degree} of 0 will returns the {@linkplain
-     * #getMathTransform() math transform backed by the whole grid}. Greater values will use a
-     * fitted polynomial ({@linkplain #getAffineTransform affine transform} for degree 1, quadratic
-     * transform for degree 2, cubic transform for degree 3, etc.).
+     * Returns a math transform from grid to "real world" coordinates using a polynomial fitting of the specified
+     * degree. By convention, a {@code degree} of 0 will returns the {@linkplain #getMathTransform() math transform
+     * backed by the whole grid}. Greater values will use a fitted polynomial ({@linkplain #getAffineTransform affine
+     * transform} for degree 1, quadratic transform for degree 2, cubic transform for degree 3, etc.).
      *
-     * @param degree The polynomial degree for the fitting, or 0 for a transform backed by the whole
-     *     grid.
+     * @param degree The polynomial degree for the fitting, or 0 for a transform backed by the whole grid.
      */
     public synchronized MathTransform2D getPolynomialTransform(final int degree) {
         if (degree < 0 || degree >= WarpTransform2D.MAX_DEGREE + 1) {
@@ -632,25 +609,20 @@ public class LocalizationGrid implements Serializable {
         if (transforms[degree] == null) {
             final MathTransform2D tr;
             switch (degree) {
-                case 0:
-                    {
-                        // NOTE: 'grid' is not cloned. This GridLocalization's grid will need to be
-                        // cloned if a "set" method is invoked after the math transform creation.
-                        tr =
-                                new LocalizationGridTransform2D(
-                                        width, height, grid, getAffineTransform());
-                        break;
-                    }
-                case 1:
-                    {
-                        tr = (MathTransform2D) ProjectiveTransform.create(getAffineTransform());
-                        break;
-                    }
-                default:
-                    {
-                        tr = fitWarps(degree);
-                        break;
-                    }
+                case 0: {
+                    // NOTE: 'grid' is not cloned. This GridLocalization's grid will need to be
+                    // cloned if a "set" method is invoked after the math transform creation.
+                    tr = new LocalizationGridTransform2D(width, height, grid, getAffineTransform());
+                    break;
+                }
+                case 1: {
+                    tr = (MathTransform2D) ProjectiveTransform.create(getAffineTransform());
+                    break;
+                }
+                default: {
+                    tr = fitWarps(degree);
+                    break;
+                }
             }
             transforms[degree] = tr;
         }
@@ -658,18 +630,17 @@ public class LocalizationGrid implements Serializable {
     }
 
     /**
-     * Returns a math transform from grid to "real world" coordinates. The math transform is backed
-     * by the full grid of localization. In terms of JAI's {@linkplain Warp image warp} operations,
-     * this math transform is backed by a {@link WarpGrid} while the previous methods return math
-     * transforms backed by {@link WarpPolynomial}.
+     * Returns a math transform from grid to "real world" coordinates. The math transform is backed by the full grid of
+     * localization. In terms of JAI's {@linkplain Warp image warp} operations, this math transform is backed by a
+     * {@link WarpGrid} while the previous methods return math transforms backed by {@link WarpPolynomial}.
      */
     public final MathTransform2D getMathTransform() {
         return getPolynomialTransform(0);
     }
 
     /**
-     * Notify this localization grid that a coordinate is about to be changed. This method
-     * invalidate any transforms previously created.
+     * Notify this localization grid that a coordinate is about to be changed. This method invalidate any transforms
+     * previously created.
      */
     private void notifyChange() {
         if (transforms != null) {

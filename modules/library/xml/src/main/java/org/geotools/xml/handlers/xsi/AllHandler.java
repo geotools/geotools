@@ -69,8 +69,7 @@ public class AllHandler extends ElementGroupingHandler {
     }
 
     /**
-     * @see org.geotools.xml.XSIElementHandler#startElement(java.lang.String, java.lang.String,
-     *     org.xml.sax.Attributes)
+     * @see org.geotools.xml.XSIElementHandler#startElement(java.lang.String, java.lang.String, org.xml.sax.Attributes)
      */
     @Override
     public void startElement(String namespaceURI, String localName, Attributes atts) {
@@ -110,10 +109,7 @@ public class AllHandler extends ElementGroupingHandler {
         return LOCALNAME;
     }
 
-    /**
-     * @see
-     *     org.geotools.xml.XSIHandlers.ElementGroupingHandler#compress(org.geotools.xml.XSIHandlers.SchemaHandler)
-     */
+    /** @see org.geotools.xml.XSIHandlers.ElementGroupingHandler#compress(org.geotools.xml.XSIHandlers.SchemaHandler) */
     @Override
     protected ElementGrouping compress(SchemaHandler parent) throws SAXException {
 
@@ -144,8 +140,7 @@ public class AllHandler extends ElementGroupingHandler {
     @Override
     @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
     public int hashCode() {
-        return (LOCALNAME.hashCode() * ((id == null) ? 1 : id.hashCode()))
-                + (minOccurs * maxOccurs);
+        return (LOCALNAME.hashCode() * ((id == null) ? 1 : id.hashCode())) + (minOccurs * maxOccurs);
     }
 
     /** @see org.geotools.xml.XSIElementHandler#getHandlerType() */

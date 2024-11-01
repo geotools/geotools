@@ -25,8 +25,7 @@ import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Polygon;
 
 /**
- * Builds the a {@link MultiPolygon} using the {@link Polygon} made in previous steps of parsing
- * process.
+ * Builds the a {@link MultiPolygon} using the {@link Polygon} made in previous steps of parsing process.
  *
  * @author Mauricio Pazos (Axios Engineering)
  * @since
@@ -38,10 +37,7 @@ final class MultiPolygonBuilder extends GeometryBuilder {
         super(statement, resultStack);
     }
 
-    /**
-     * Build a {@link MultiPolygon} using the polygon node made in previous steps of the parsing
-     * process.
-     */
+    /** Build a {@link MultiPolygon} using the polygon node made in previous steps of the parsing process. */
     @Override
     public Geometry build(int polygonNode) throws CQLException {
         List<Geometry> polygonList = popGeometry(polygonNode);

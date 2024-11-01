@@ -55,8 +55,7 @@ public class HanaFeatureSourceOnlineTest extends JDBCFeatureSourceOnlineTest {
         ((HanaDialect) dataStore.getSQLDialect()).setEstimatedExtentsEnabled(true);
 
         FilterFactory ff = dataStore.getFilterFactory();
-        PropertyIsEqualTo filter =
-                ff.equals(ff.property(aname("stringProperty")), ff.literal("one"));
+        PropertyIsEqualTo filter = ff.equals(ff.property(aname("stringProperty")), ff.literal("one"));
 
         Query query = new Query();
         query.setFilter(filter);

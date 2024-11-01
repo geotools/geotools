@@ -29,11 +29,9 @@ import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.util.Converters;
 
 /**
- * The function checks whether a candidate value is contained in an arbitrary long list of user
- * provided values.
+ * The function checks whether a candidate value is contained in an arbitrary long list of user provided values.
  *
- * <p>If the candidate value is found, the function returns <code>true</code>; otherwise, it returns
- * <code>false</code>.
+ * <p>If the candidate value is found, the function returns <code>true</code>; otherwise, it returns <code>false</code>.
  *
  * @author Stefano Costa, GeoSolutions
  */
@@ -48,8 +46,7 @@ public class InFunction extends FunctionExpressionImpl {
     private Class<?> lastContext;
 
     /**
-     * Returns true if the expression is a function in the "in" family, that is, "in", "in2", "in3",
-     * ...
+     * Returns true if the expression is a function in the "in" family, that is, "in", "in2", "in3", ...
      *
      * @param expression The expression to be tested
      */
@@ -87,8 +84,7 @@ public class InFunction extends FunctionExpressionImpl {
         return caps;
     }
 
-    public static FunctionName NAME =
-            functionName("in", "result:Boolean", "candidate:Object:1,1", "v:Object:1,");
+    public static FunctionName NAME = functionName("in", "result:Boolean", "candidate:Object:1,1", "v:Object:1,");
 
     public InFunction() {
         super(NAME);
@@ -152,7 +148,8 @@ public class InFunction extends FunctionExpressionImpl {
         }
 
         boolean result = false;
-        List<Expression> valuesToTest = getParameters().subList(1, getParameters().size());
+        List<Expression> valuesToTest =
+                getParameters().subList(1, getParameters().size());
         for (Expression expression : valuesToTest) {
             Object value = expression.evaluate(feature);
             if (candidate == null) {

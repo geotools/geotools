@@ -17,8 +17,7 @@
 package org.geotools.coverage.grid.io.imageio.geotiff;
 
 /**
- * Parsers for the {@link
- * org.geotools.coverage.grid.io.imageio.geotiff.codes.GeoTiffGCSCodes#GeogCitationGeoKey} values
+ * Parsers for the {@link org.geotools.coverage.grid.io.imageio.geotiff.codes.GeoTiffGCSCodes#GeogCitationGeoKey} values
  * and returns them as separate fields
  */
 public class GeographicCitation {

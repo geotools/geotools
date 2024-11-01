@@ -17,8 +17,8 @@
 package org.geotools.image.palette;
 
 /**
- * Helpers to extract components from a color represented as an integer, and back, as well as
- * methods to "pack" and unpack colors via bit shifts
+ * Helpers to extract components from a color represented as an integer, and back, as well as methods to "pack" and
+ * unpack colors via bit shifts
  *
  * @author Andrea Aime - GeoSolutions
  */
@@ -46,10 +46,7 @@ final class ColorUtils {
 
     /** Puts back the four color components into a integer representation */
     public static int color(int red, int green, int blue, int alpha) {
-        return ((alpha & 0xFF) << 24)
-                | ((red & 0xFF) << 16)
-                | ((green & 0xFF) << 8)
-                | ((blue & 0xFF) << 0);
+        return ((alpha & 0xFF) << 24) | ((red & 0xFF) << 16) | ((green & 0xFF) << 8) | ((blue & 0xFF) << 0);
     }
 
     /** Bit shifts a color component, loosing the less significant bits */
@@ -57,10 +54,7 @@ final class ColorUtils {
         return component >> shift;
     }
 
-    /**
-     * Undoes what shift did, with some heuristics to preserve full "black", full "white" and
-     * lighter colors
-     */
+    /** Undoes what shift did, with some heuristics to preserve full "black", full "white" and lighter colors */
     public static int unshift(int component, int shift) {
         if (component == 0) {
             return 0;

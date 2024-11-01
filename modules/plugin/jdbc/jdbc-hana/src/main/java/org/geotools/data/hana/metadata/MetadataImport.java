@@ -74,8 +74,7 @@ public final class MetadataImport {
         }
         String password = new String(passwordReader.readPassword());
         try (Connection conn =
-                DriverManager.getConnection(
-                        cla.getConnectionParameters().buildUrl(), cla.getUser(), password)) {
+                DriverManager.getConnection(cla.getConnectionParameters().buildUrl(), cla.getUser(), password)) {
             importUom(conn);
             importSrs(conn);
         }
@@ -84,8 +83,7 @@ public final class MetadataImport {
 
     private void importUom(Connection conn) throws SQLException, IOException {
         try (PreparedStatement psUomExists =
-                        conn.prepareStatement(
-                                "SELECT COUNT(*) FROM PUBLIC.ST_UNITS_OF_MEASURE WHERE UNIT_NAME = ?");
+                        conn.prepareStatement("SELECT COUNT(*) FROM PUBLIC.ST_UNITS_OF_MEASURE WHERE UNIT_NAME = ?");
                 Statement createUom = conn.createStatement();
                 InputStream is = MetadataImport.class.getResourceAsStream("uom.csv"); ) {
             UomReader reader = new UomReader(is);
@@ -95,8 +93,7 @@ public final class MetadataImport {
                     break;
                 }
                 if (doesUomExist(psUomExists, uom.getName())) {
-                    System.out.println(
-                            "Skipping UOM \"" + uom.getName() + "\" as it already exists");
+                    System.out.println("Skipping UOM \"" + uom.getName() + "\" as it already exists");
                     continue;
                 }
                 System.out.println("Creating UOM \"" + uom.getName() + "\"");
@@ -117,9 +114,8 @@ public final class MetadataImport {
     }
 
     private void importSrs(Connection conn) throws SQLException, IOException {
-        try (PreparedStatement psSrsExists =
-                        conn.prepareStatement(
-                                "SELECT COUNT(*) FROM PUBLIC.ST_SPATIAL_REFERENCE_SYSTEMS WHERE SRS_NAME = ? OR SRS_ID = ?");
+        try (PreparedStatement psSrsExists = conn.prepareStatement(
+                        "SELECT COUNT(*) FROM PUBLIC.ST_SPATIAL_REFERENCE_SYSTEMS WHERE SRS_NAME = ? OR SRS_ID = ?");
                 Statement createSrs = conn.createStatement();
                 InputStream is = MetadataImport.class.getResourceAsStream("srs.csv")) {
             SrsReader reader = new SrsReader(is);
@@ -129,8 +125,7 @@ public final class MetadataImport {
                     break;
                 }
                 if (doesSrsExist(psSrsExists, srs.getName(), srs.getSrid())) {
-                    System.out.println(
-                            "Skipping SRS \"" + srs.getName() + "\" as it already exists");
+                    System.out.println("Skipping SRS \"" + srs.getName() + "\" as it already exists");
                     continue;
                 }
                 System.out.println("Creating SRS \"" + srs.getName() + "\"");
@@ -139,8 +134,7 @@ public final class MetadataImport {
         }
     }
 
-    private boolean doesSrsExist(PreparedStatement psSrsExists, String name, int srid)
-            throws SQLException {
+    private boolean doesSrsExist(PreparedStatement psSrsExists, String name, int srid) throws SQLException {
         psSrsExists.setString(1, name);
         psSrsExists.setInt(2, srid);
         try (ResultSet rs = psSrsExists.executeQuery()) {

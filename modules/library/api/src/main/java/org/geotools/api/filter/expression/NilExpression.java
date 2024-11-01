@@ -13,10 +13,9 @@ import java.io.ObjectStreamException;
 import java.io.Serializable;
 
 /**
- * Placeholder class used to represent a NIL expression, evaluates to {@code null}. This placeholder
- * class allows data structures to avoid the use of {@code null}. Please note that {@link
- * Expression#NIL} is not considered a Literal with value {@code null} (since the literal may have
- * its value changed).
+ * Placeholder class used to represent a NIL expression, evaluates to {@code null}. This placeholder class allows data
+ * structures to avoid the use of {@code null}. Please note that {@link Expression#NIL} is not considered a Literal with
+ * value {@code null} (since the literal may have its value changed).
  *
  * @author Jody Garnett (Refractions Research, Inc.)
  * @author Martin Desruisseaux (Geomatys)

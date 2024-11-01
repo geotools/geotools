@@ -29,8 +29,8 @@ public interface GeneralizationInfosProvider {
      * @param source , source of the info, concrete class depending on implementation
      * @return a GeneralizationInfos object
      * @throws IOException in case of failure
-     *     <p>An implementor of this method must call {@link GeneralizationInfos#validate()}
-     *     otherwise, behavior is unexpected
+     *     <p>An implementor of this method must call {@link GeneralizationInfos#validate()} otherwise, behavior is
+     *     unexpected
      */
     public GeneralizationInfos getGeneralizationInfos(Object source) throws IOException;
 }

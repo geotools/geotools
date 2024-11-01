@@ -20,10 +20,9 @@
 package org.geotools.metadata.i18n;
 
 /**
- * Resource keys. This class is used when compiling sources, but no dependencies to {@code
- * ResourceKeys} should appear in any resulting class files. Since Java compiler inlines final
- * integer values, using long identifiers will not bloat constant pools of classes compiled against
- * the interface, provided that no class implements this interface.
+ * Resource keys. This class is used when compiling sources, but no dependencies to {@code ResourceKeys} should appear
+ * in any resulting class files. Since Java compiler inlines final integer values, using long identifiers will not bloat
+ * constant pools of classes compiled against the interface, provided that no class implements this interface.
  *
  * @see org.geotools.util.IndexedResourceBundle
  * @see org.geotools.util.IndexedResourceCompiler

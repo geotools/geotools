@@ -20,8 +20,7 @@ import org.geotools.api.referencing.operation.Matrix;
 import org.geotools.metadata.i18n.ErrorKeys;
 
 /**
- * A matrix of fixed {@value #SIZE}&times;{@value #SIZE} size. It is used primarily for supporting
- * datum shifts.
+ * A matrix of fixed {@value #SIZE}&times;{@value #SIZE} size. It is used primarily for supporting datum shifts.
  *
  * @since 2.2
  * @version 13.0
@@ -59,20 +58,17 @@ public class Matrix4 extends GeneralMatrix implements XMatrix {
             double m31,
             double m32,
             double m33) {
-        super(
-                SIZE,
-                SIZE,
-                new double[] {
-                    m00, m01, m02, m03,
-                    m10, m11, m12, m13,
-                    m20, m21, m22, m23,
-                    m30, m31, m32, m33
-                });
+        super(SIZE, SIZE, new double[] {
+            m00, m01, m02, m03,
+            m10, m11, m12, m13,
+            m20, m21, m22, m23,
+            m30, m31, m32, m33
+        });
     }
 
     /**
-     * Creates a new matrix initialized to the same value than the specified one. The specified
-     * matrix size must be {@value #SIZE}&times;{@value #SIZE}.
+     * Creates a new matrix initialized to the same value than the specified one. The specified matrix size must be
+     * {@value #SIZE}&times;{@value #SIZE}.
      */
     public Matrix4(final Matrix matrix) {
         super(SIZE);
@@ -86,19 +82,13 @@ public class Matrix4 extends GeneralMatrix implements XMatrix {
         }
     }
 
-    /**
-     * Returns the number of rows in this matrix, which is always {@value #SIZE} in this
-     * implementation.
-     */
+    /** Returns the number of rows in this matrix, which is always {@value #SIZE} in this implementation. */
     @Override
     public final int getNumRow() {
         return SIZE;
     }
 
-    /**
-     * Returns the number of colmuns in this matrix, which is always {@value #SIZE} in this
-     * implementation.
-     */
+    /** Returns the number of colmuns in this matrix, which is always {@value #SIZE} in this implementation. */
     @Override
     public final int getNumCol() {
         return SIZE;

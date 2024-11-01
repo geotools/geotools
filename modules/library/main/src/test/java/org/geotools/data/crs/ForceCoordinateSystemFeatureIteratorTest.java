@@ -49,8 +49,7 @@ public class ForceCoordinateSystemFeatureIteratorTest {
      * @param crs the CRS of the featuretype
      * @param p the point to add, should be same CRS as crs
      */
-    private SimpleFeatureCollection createDatastore(CoordinateReferenceSystem crs, Point p)
-            throws Exception {
+    private SimpleFeatureCollection createDatastore(CoordinateReferenceSystem crs, Point p) throws Exception {
 
         SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
         builder.setName(FEATURE_TYPE_NAME);
@@ -78,8 +77,7 @@ public class ForceCoordinateSystemFeatureIteratorTest {
 
         try (SimpleFeatureIterator original = collection.features();
                 ForceCoordinateSystemIterator modified =
-                        new ForceCoordinateSystemIterator(
-                                collection.features(), collection.getSchema(), crs)) {
+                        new ForceCoordinateSystemIterator(collection.features(), collection.getSchema(), crs)) {
 
             SimpleFeature f1 = original.next();
             SimpleFeature f2 = modified.next();
@@ -102,8 +100,7 @@ public class ForceCoordinateSystemFeatureIteratorTest {
         CoordinateReferenceSystem destCRS = DefaultEngineeringCRS.CARTESIAN_2D;
         try (SimpleFeatureIterator original = collection.features();
                 ForceCoordinateSystemIterator modified =
-                        new ForceCoordinateSystemIterator(
-                                collection.features(), collection.getSchema(), destCRS)) {
+                        new ForceCoordinateSystemIterator(collection.features(), collection.getSchema(), destCRS)) {
 
             SimpleFeature f1 = original.next();
             SimpleFeature f2 = modified.next();
@@ -116,12 +113,10 @@ public class ForceCoordinateSystemFeatureIteratorTest {
                     f2.getFeatureType().getCoordinateReferenceSystem());
             Assert.assertEquals(srcCRS, f1.getFeatureType().getCoordinateReferenceSystem());
             Assert.assertEquals(
-                    srcCRS,
-                    f1.getFeatureType().getGeometryDescriptor().getCoordinateReferenceSystem());
+                    srcCRS, f1.getFeatureType().getGeometryDescriptor().getCoordinateReferenceSystem());
             Assert.assertEquals(destCRS, f2.getFeatureType().getCoordinateReferenceSystem());
             Assert.assertEquals(
-                    destCRS,
-                    f2.getFeatureType().getGeometryDescriptor().getCoordinateReferenceSystem());
+                    destCRS, f2.getFeatureType().getGeometryDescriptor().getCoordinateReferenceSystem());
 
             Assert.assertFalse(original.hasNext());
             Assert.assertFalse(modified.hasNext());
@@ -156,8 +151,7 @@ public class ForceCoordinateSystemFeatureIteratorTest {
         CoordinateReferenceSystem destCRS = DefaultEngineeringCRS.CARTESIAN_2D;
         try (SimpleFeatureIterator original = collection.features();
                 ForceCoordinateSystemIterator modified =
-                        new ForceCoordinateSystemIterator(
-                                collection.features(), collection.getSchema(), destCRS)) {
+                        new ForceCoordinateSystemIterator(collection.features(), collection.getSchema(), destCRS)) {
 
             SimpleFeature f1 = original.next();
             SimpleFeature f2 = modified.next();
@@ -170,12 +164,10 @@ public class ForceCoordinateSystemFeatureIteratorTest {
                     f1.getFeatureType().getCoordinateReferenceSystem());
             Assert.assertEquals(srcCRS, f1.getFeatureType().getCoordinateReferenceSystem());
             Assert.assertEquals(
-                    srcCRS,
-                    f1.getFeatureType().getGeometryDescriptor().getCoordinateReferenceSystem());
+                    srcCRS, f1.getFeatureType().getGeometryDescriptor().getCoordinateReferenceSystem());
             Assert.assertEquals(destCRS, f2.getFeatureType().getCoordinateReferenceSystem());
             Assert.assertEquals(
-                    destCRS,
-                    f2.getFeatureType().getGeometryDescriptor().getCoordinateReferenceSystem());
+                    destCRS, f2.getFeatureType().getGeometryDescriptor().getCoordinateReferenceSystem());
 
             Assert.assertFalse(original.hasNext());
             Assert.assertFalse(modified.hasNext());

@@ -97,18 +97,16 @@ import org.locationtech.jts.geom.Envelope;
 public final class GridCoverageRenderer {
 
     /** Logger. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(GridCoverageRenderer.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(GridCoverageRenderer.class);
 
     /** IDENTITY */
     private static final AffineTransform IDENTITY = AffineTransform2D.getTranslateInstance(0, 0);
 
     /**
-     * This variable is use for testing purposes in order to force this {@link GridCoverageRenderer}
-     * to dump images at various steps on the disk.
+     * This variable is use for testing purposes in order to force this {@link GridCoverageRenderer} to dump images at
+     * various steps on the disk.
      */
-    private static boolean DEBUG =
-            Boolean.getBoolean("org.geotools.renderer.lite.gridcoverage2d.debug");
+    private static boolean DEBUG = Boolean.getBoolean("org.geotools.renderer.lite.gridcoverage2d.debug");
 
     private static String DUMP_DIRECTORY;
 
@@ -116,8 +114,7 @@ public final class GridCoverageRenderer {
         if (DEBUG) {
             final File tempDir = new File(System.getProperty("user.home"), "gt-renderer");
             if (!tempDir.exists()) {
-                if (!tempDir.mkdir())
-                    LOGGER.severe("Unable to create debug dir, exiting application!!!");
+                if (!tempDir.mkdir()) LOGGER.severe("Unable to create debug dir, exiting application!!!");
                 DEBUG = false;
                 DUMP_DIRECTORY = null;
             } else {
@@ -159,34 +156,32 @@ public final class GridCoverageRenderer {
     public static final String KEY_COMPOSITING = "Compositing";
 
     /**
-     * Enables/disable map wrapping (active only when rendering off a {@link GridCoverage2DReader}
-     * and when advanced projection handling has been enabled too)
+     * Enables/disable map wrapping (active only when rendering off a {@link GridCoverage2DReader} and when advanced
+     * projection handling has been enabled too)
      */
     public void setWrapEnabled(boolean wrapEnabled) {
         this.wrapEnabled = wrapEnabled;
     }
 
     /**
-     * Returns true if map wrapping is enabled (active only when rendering off a {@link
-     * GridCoverage2DReader} and when advanced projection handling has been enabled too)
+     * Returns true if map wrapping is enabled (active only when rendering off a {@link GridCoverage2DReader} and when
+     * advanced projection handling has been enabled too)
      */
     public boolean isWrapEnabled() {
         return this.wrapEnabled;
     }
 
     /**
-     * Enables/disables advanced projection handling (read all areas needed to make up the requested
-     * map, cut them to areas where reprojection makes sense, and so on). Works only when rendering
-     * off a {@link GridCoverage2DReader}.
+     * Enables/disables advanced projection handling (read all areas needed to make up the requested map, cut them to
+     * areas where reprojection makes sense, and so on). Works only when rendering off a {@link GridCoverage2DReader}.
      */
     public void setAdvancedProjectionHandlingEnabled(boolean enabled) {
         this.advancedProjectionHandlingEnabled = enabled;
     }
 
     /**
-     * Tests if advanced projection handling is enabled (read all areas needed to make up the
-     * requested map, cut them to areas where reprojection makes sense, and so on). Works only when
-     * rendering off a {@link GridCoverage2DReader}.
+     * Tests if advanced projection handling is enabled (read all areas needed to make up the requested map, cut them to
+     * areas where reprojection makes sense, and so on). Works only when rendering off a {@link GridCoverage2DReader}.
      */
     public boolean isAdvancedProjectionHandlingEnabled() {
         return this.advancedProjectionHandlingEnabled;
@@ -198,10 +193,9 @@ public final class GridCoverageRenderer {
      * @param destinationCRS the CRS of the {@link GridCoverage2D} to render.
      * @param envelope delineating the area to be rendered.
      * @param screenSize at which we want to render the source {@link GridCoverage2D}.
-     * @param worldToScreen if not <code>null</code> and if it contains a rotation, this Affine
-     *     Transform is used directly to convert from world coordinates to screen coordinates.
-     *     Otherwise, a standard {@link GridToEnvelopeMapper} is used to calculate the affine
-     *     transform.
+     * @param worldToScreen if not <code>null</code> and if it contains a rotation, this Affine Transform is used
+     *     directly to convert from world coordinates to screen coordinates. Otherwise, a standard
+     *     {@link GridToEnvelopeMapper} is used to calculate the affine transform.
      */
     public GridCoverageRenderer(
             final CoordinateReferenceSystem destinationCRS,
@@ -219,10 +213,9 @@ public final class GridCoverageRenderer {
      * @param destinationCRS the CRS of the {@link GridCoverage2D} to render.
      * @param envelope delineating the area to be rendered.
      * @param screenSize at which we want to render the source {@link GridCoverage2D}.
-     * @param worldToScreen if not <code>null</code> and if it contains a rotation, this Affine
-     *     Transform is used directly to convert from world coordinates to screen coordinates.
-     *     Otherwise, a standard {@link GridToEnvelopeMapper} is used to calculate the affine
-     *     transform.
+     * @param worldToScreen if not <code>null</code> and if it contains a rotation, this Affine Transform is used
+     *     directly to convert from world coordinates to screen coordinates. Otherwise, a standard
+     *     {@link GridToEnvelopeMapper} is used to calculate the affine transform.
      * @param newHints {@link RenderingHints} to control this rendering process.
      */
     public GridCoverageRenderer(
@@ -241,11 +234,9 @@ public final class GridCoverageRenderer {
         this.destinationSize = screenSize;
         this.destinationCRS = destinationCRS;
         if (this.destinationCRS == null) {
-            throw new TransformException(
-                    MessageFormat.format(ErrorKeys.CANT_SEPARATE_CRS_$1, this.destinationCRS));
+            throw new TransformException(MessageFormat.format(ErrorKeys.CANT_SEPARATE_CRS_$1, this.destinationCRS));
         }
-        destinationEnvelope =
-                new GeneralBounds(new ReferencedEnvelope(envelope, this.destinationCRS));
+        destinationEnvelope = new GeneralBounds(new ReferencedEnvelope(envelope, this.destinationCRS));
         // ///////////////////////////////////////////////////////////////////
         //
         // FINAL DRAWING DIMENSIONS AND RESOLUTION
@@ -302,9 +293,7 @@ public final class GridCoverageRenderer {
 
         // SG add hints for the border extender
         this.hints.add(
-                new RenderingHints(
-                        JAI.KEY_BORDER_EXTENDER,
-                        BorderExtender.createInstance(BorderExtender.BORDER_COPY)));
+                new RenderingHints(JAI.KEY_BORDER_EXTENDER, BorderExtender.createInstance(BorderExtender.BORDER_COPY)));
     }
 
     /** */
@@ -326,11 +315,9 @@ public final class GridCoverageRenderer {
      */
     static void writeRenderedImage(final RenderedImage raster, final String fileName) {
         if (DUMP_DIRECTORY == null)
-            throw new NullPointerException(
-                    "Unable to write the provided coverage in the debug directory");
+            throw new NullPointerException("Unable to write the provided coverage in the debug directory");
         if (DEBUG == false)
-            throw new IllegalStateException(
-                    "Unable to write the provided coverage since we are not in debug mode");
+            throw new IllegalStateException("Unable to write the provided coverage since we are not in debug mode");
         try {
             ImageIO.write(raster, "tiff", new File(DUMP_DIRECTORY, fileName + ".tiff"));
         } catch (IOException e) {
@@ -339,20 +326,15 @@ public final class GridCoverageRenderer {
     }
 
     /**
-     * Turns the coverage into a rendered image applying the necessary transformations and the
-     * symbolizer
+     * Turns the coverage into a rendered image applying the necessary transformations and the symbolizer
      *
-     * <p>Builds a (RenderedImage, AffineTransform) pair that can be used for rendering onto a
-     * {@link Graphics2D} or as the basis to build a final image. Will return null if there is
-     * nothing to render.
+     * <p>Builds a (RenderedImage, AffineTransform) pair that can be used for rendering onto a {@link Graphics2D} or as
+     * the basis to build a final image. Will return null if there is nothing to render.
      *
-     * @return The transformed image, or null if the coverage does not lie within the rendering
-     *     bounds
+     * @return The transformed image, or null if the coverage does not lie within the rendering bounds
      */
     public RenderedImage renderImage(
-            final GridCoverage2D gridCoverage,
-            final RasterSymbolizer symbolizer,
-            final double[] bkgValues)
+            final GridCoverage2D gridCoverage, final RasterSymbolizer symbolizer, final double[] bkgValues)
             throws Exception {
 
         final GridCoverage2D symbolizerGC = renderCoverage(gridCoverage, symbolizer, bkgValues);
@@ -363,9 +345,7 @@ public final class GridCoverageRenderer {
     }
 
     private GridCoverage2D renderCoverage(
-            final GridCoverage2D gridCoverage,
-            final RasterSymbolizer symbolizer,
-            final double[] bkgValues)
+            final GridCoverage2D gridCoverage, final RasterSymbolizer symbolizer, final double[] bkgValues)
             throws FactoryException {
         // Initial checks
         GridCoverageRendererUtilities.ensureNotNull(gridCoverage, "gridCoverage");
@@ -381,8 +361,7 @@ public final class GridCoverageRenderer {
         boolean doReprojection = false;
         final CoordinateReferenceSystem coverageCRS = gridCoverage.getCoordinateReferenceSystem2D();
         if (!CRS.equalsIgnoreMetadata(coverageCRS, destinationCRS)) {
-            final MathTransform transform =
-                    CRS.findMathTransform(coverageCRS, destinationCRS, true);
+            final MathTransform transform = CRS.findMathTransform(coverageCRS, destinationCRS, true);
             doReprojection = !transform.isIdentity();
             if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.fine("Reproject needed for rendering provided coverage");
@@ -413,15 +392,14 @@ public final class GridCoverageRenderer {
         GridCoverage2D afterReprojection = preReprojection;
         if (doReprojection) {
 
-            afterReprojection =
-                    GridCoverageRendererUtilities.reproject(
-                            preReprojection,
-                            destinationCRS,
-                            interpolation,
-                            destinationEnvelope,
-                            bkgValues,
-                            gridCoverageFactory,
-                            warpAffineHints);
+            afterReprojection = GridCoverageRendererUtilities.reproject(
+                    preReprojection,
+                    destinationCRS,
+                    interpolation,
+                    destinationEnvelope,
+                    bkgValues,
+                    gridCoverageFactory,
+                    warpAffineHints);
         }
 
         if (DEBUG) {
@@ -496,19 +474,17 @@ public final class GridCoverageRenderer {
             throws FactoryException {
 
         if (advancedProjectionHandlingEnabled) {
-            ProjectionHandler handler =
-                    ProjectionHandlerFinder.getHandler(
-                            ReferencedEnvelope.reference(destinationEnvelope),
-                            inputCoverage.getCoordinateReferenceSystem2D(),
-                            wrapEnabled);
+            ProjectionHandler handler = ProjectionHandlerFinder.getHandler(
+                    ReferencedEnvelope.reference(destinationEnvelope),
+                    inputCoverage.getCoordinateReferenceSystem2D(),
+                    wrapEnabled);
             if (handler != null) {
-                List<GridCoverage2D> cropped =
-                        GridCoverageRendererUtilities.forceToValidBounds(
-                                Arrays.asList(inputCoverage),
-                                handler,
-                                backgroundValues,
-                                destinationEnvelope.getCoordinateReferenceSystem(),
-                                hints);
+                List<GridCoverage2D> cropped = GridCoverageRendererUtilities.forceToValidBounds(
+                        Arrays.asList(inputCoverage),
+                        handler,
+                        backgroundValues,
+                        destinationEnvelope.getCoordinateReferenceSystem(),
+                        hints);
                 if (cropped != null && !cropped.isEmpty()) inputCoverage = cropped.get(0);
             }
         }
@@ -518,13 +494,8 @@ public final class GridCoverageRenderer {
             destinationEnvelope = padEnvelope(inputCoverage, destinationEnvelope, interpolation);
         }
 
-        GridCoverage2D outputCoverage =
-                GridCoverageRendererUtilities.crop(
-                        inputCoverage,
-                        destinationEnvelope,
-                        doReprojection,
-                        backgroundValues,
-                        hints);
+        GridCoverage2D outputCoverage = GridCoverageRendererUtilities.crop(
+                inputCoverage, destinationEnvelope, doReprojection, backgroundValues, hints);
         if (DEBUG && outputCoverage != null) {
             writeRenderedImage(outputCoverage.getRenderedImage(), "crop");
         }
@@ -532,9 +503,7 @@ public final class GridCoverageRenderer {
     }
 
     private static GeneralBounds padEnvelope(
-            GridCoverage2D inputCoverage,
-            GeneralBounds destinationEnvelope,
-            Interpolation interpolation) {
+            GridCoverage2D inputCoverage, GeneralBounds destinationEnvelope, Interpolation interpolation) {
         try {
             GridGeometry2D gg = inputCoverage.getGridGeometry();
             MathTransform crs2Grid = gg.getCRSToGrid2D();
@@ -548,23 +517,16 @@ public final class GridCoverageRenderer {
                     gridRange.width + padding * 2,
                     gridRange.height + padding * 2);
             GridGeometry2D gridGeometry =
-                    new GridGeometry2D(
-                            gridRange,
-                            gg.getGridToCRS(),
-                            inputCoverage.getCoordinateReferenceSystem2D());
+                    new GridGeometry2D(gridRange, gg.getGridToCRS(), inputCoverage.getCoordinateReferenceSystem2D());
             destinationEnvelope = new GeneralBounds(gridGeometry.getEnvelope());
         } catch (TransformException ex) {
-            LOGGER.log(
-                    Level.WARNING,
-                    "Unable to pad the destination envelope with interpolation padding",
-                    ex);
+            LOGGER.log(Level.WARNING, "Unable to pad the destination envelope with interpolation padding", ex);
         }
         return destinationEnvelope;
     }
 
     /** */
-    private GridCoverage2D affine(
-            GridCoverage2D input, double[] bkgValues, RasterSymbolizer symbolizer, Hints hints) {
+    private GridCoverage2D affine(GridCoverage2D input, double[] bkgValues, RasterSymbolizer symbolizer, Hints hints) {
         // NOTICE that at this stage the image we get should be 8 bits, either RGB, RGBA, Gray,
         // GrayA either multiband or indexed. It could also be 16 bits indexed!!!!
 
@@ -576,15 +538,14 @@ public final class GridCoverageRenderer {
         // Preserve the sample dimensions names when no symbolizer get used
         // Styles using GridCoverage's named properties may not find them if renamed
         final boolean useInputSampleDimensions = symbolizer == null;
-        GridCoverage2D gc =
-                GridCoverageRendererUtilities.affine(
-                        input,
-                        interpolation,
-                        finalWorldToGrid,
-                        bkgValues,
-                        useInputSampleDimensions,
-                        gridCoverageFactory,
-                        localHints);
+        GridCoverage2D gc = GridCoverageRendererUtilities.affine(
+                input,
+                interpolation,
+                finalWorldToGrid,
+                bkgValues,
+                useInputSampleDimensions,
+                gridCoverageFactory,
+                localHints);
         if (DEBUG && gc != null && gc.getRenderedImage() != null) {
             writeRenderedImage(gc.getRenderedImage(), "postAffine");
         }
@@ -592,11 +553,9 @@ public final class GridCoverageRenderer {
     }
 
     /**
-     * Turns the coverage into a rendered image applying the necessary transformations and the
-     * symbolizer
+     * Turns the coverage into a rendered image applying the necessary transformations and the symbolizer
      *
-     * @return The transformed image, or null if the coverage does not lie within the rendering
-     *     bounds
+     * @return The transformed image, or null if the coverage does not lie within the rendering bounds
      */
     public RenderedImage renderImage(
             final GridCoverage2D gridCoverage,
@@ -608,8 +567,7 @@ public final class GridCoverageRenderer {
             throws FactoryException, TransformException, NoninvertibleTransformException {
 
         GridCoverage2D coverage =
-                renderCoverage(
-                        gridCoverage, symbolizer, interpolation, background, tileSizeX, tileSizeY);
+                renderCoverage(gridCoverage, symbolizer, interpolation, background, tileSizeX, tileSizeY);
         return getImageFromParentCoverage(coverage);
     }
 
@@ -627,10 +585,7 @@ public final class GridCoverageRenderer {
         setupInterpolationHints(interpolation);
 
         try {
-            return renderCoverage(
-                    gridCoverage,
-                    symbolizer,
-                    GridCoverageRendererUtilities.colorToArray(background));
+            return renderCoverage(gridCoverage, symbolizer, GridCoverageRendererUtilities.colorToArray(background));
         } catch (Exception e) {
             throw new FactoryException(e);
         } finally {
@@ -695,8 +650,7 @@ public final class GridCoverageRenderer {
             final Color background,
             final int tileSizeX,
             final int tileSizeY)
-            throws FactoryException, TransformException, NoninvertibleTransformException,
-                    IOException {
+            throws FactoryException, TransformException, NoninvertibleTransformException, IOException {
         // setup the hints
         setupTilingHints(tileSizeX, tileSizeY);
         setupInterpolationHints(interpolation);
@@ -727,13 +681,8 @@ public final class GridCoverageRenderer {
         ProjectionHandler handler = null;
         List<GridCoverage2D> coverages;
         // read all the coverages we need, cut and whatnot
-        GridCoverageReaderHelper rh =
-                new GridCoverageReaderHelper(
-                        reader,
-                        destinationSize,
-                        ReferencedEnvelope.reference(destinationEnvelope),
-                        interpolation,
-                        hints);
+        GridCoverageReaderHelper rh = new GridCoverageReaderHelper(
+                reader, destinationSize, ReferencedEnvelope.reference(destinationEnvelope), interpolation, hints);
         // are we dealing with a remote service wrapped in a reader, one that can handle
         // reprojection
         // by itself?
@@ -743,9 +692,7 @@ public final class GridCoverageRenderer {
             coverages.add(coverage);
         } else {
             if (advancedProjectionHandlingEnabled) {
-                handler =
-                        ProjectionHandlerFinder.getHandler(
-                                rh.getReadEnvelope(), sourceCRS, wrapEnabled);
+                handler = ProjectionHandlerFinder.getHandler(rh.getReadEnvelope(), sourceCRS, wrapEnabled);
                 if (handler instanceof WrappingProjectionHandler) {
                     // raster data is monolithic and can cover the whole world, disable
                     // the geometry wrapping heuristic
@@ -770,14 +717,13 @@ public final class GridCoverageRenderer {
                         GridCoverage2D coverage = coverages.get(i);
                         ImageWorker iw = new ImageWorker(coverage.getRenderedImage());
                         iw.forceComponentColorModel();
-                        GridCoverage2D expandedCoverage =
-                                gridCoverageFactory.create(
-                                        coverage.getName(),
-                                        iw.getRenderedImage(),
-                                        coverage.getGridGeometry(),
-                                        null,
-                                        new GridCoverage2D[] {coverage},
-                                        coverage.getProperties());
+                        GridCoverage2D expandedCoverage = gridCoverageFactory.create(
+                                coverage.getName(),
+                                iw.getRenderedImage(),
+                                coverage.getGridGeometry(),
+                                null,
+                                new GridCoverage2D[] {coverage},
+                                coverage.getProperties());
                         coverages.set(i, expandedCoverage);
                     }
                 }
@@ -789,56 +735,43 @@ public final class GridCoverageRenderer {
         // if we need to reproject, we need to ensure that none of the pixels go out of
         // the projection valid area, not even slightly
         coverages =
-                GridCoverageRendererUtilities.forceToValidBounds(
-                        coverages, handler, bgValues, destinationCRS, hints);
+                GridCoverageRendererUtilities.forceToValidBounds(coverages, handler, bgValues, destinationCRS, hints);
         logCoverages("cropped", coverages);
 
         // reproject if needed
-        Hints warpAffineHints =
-                coverages.isEmpty() ? hints : getReprojectionHints(hints, coverages.get(0));
-        List<GridCoverage2D> reprojectedCoverages =
-                GridCoverageRendererUtilities.reproject(
-                        coverages,
-                        destinationCRS,
-                        interpolation,
-                        destinationEnvelope,
-                        bgValues,
-                        gridCoverageFactory,
-                        warpAffineHints);
+        Hints warpAffineHints = coverages.isEmpty() ? hints : getReprojectionHints(hints, coverages.get(0));
+        List<GridCoverage2D> reprojectedCoverages = GridCoverageRendererUtilities.reproject(
+                coverages,
+                destinationCRS,
+                interpolation,
+                destinationEnvelope,
+                bgValues,
+                gridCoverageFactory,
+                warpAffineHints);
         logCoverages("reprojected", reprojectedCoverages);
 
         // displace them if needed via a projection handler
-        List<GridCoverage2D> displacedCoverages =
-                GridCoverageRendererUtilities.displace(
-                        reprojectedCoverages,
-                        handler,
-                        destinationEnvelope,
-                        sourceCRS,
-                        targetCRS,
-                        gridCoverageFactory);
+        List<GridCoverage2D> displacedCoverages = GridCoverageRendererUtilities.displace(
+                reprojectedCoverages, handler, destinationEnvelope, sourceCRS, targetCRS, gridCoverageFactory);
 
-        GridCoverageRendererUtilities.removeNotIntersecting(
-                displacedCoverages, destinationEnvelope);
+        GridCoverageRendererUtilities.removeNotIntersecting(displacedCoverages, destinationEnvelope);
         logCoverages("displaced", displacedCoverages);
 
         // symbolize each bit (done here to make sure we can perform the warp/affine reduction)
         List<GridCoverage2D> symbolizedCoverages = new ArrayList<>();
         if (finalSymbolizer != null) {
             for (GridCoverage2D displaced : displacedCoverages) {
-                GridCoverage2D symbolized =
-                        symbolize(displaced, finalSymbolizer, bgValues, warpAffineHints);
+                GridCoverage2D symbolized = symbolize(displaced, finalSymbolizer, bgValues, warpAffineHints);
                 if (symbolized != null) {
                     symbolizedCoverages.add(symbolized);
                 }
             }
         } else if (!coverages.isEmpty()
-                && !CRS.isEquivalent(
-                        coverages.get(0).getCoordinateReferenceSystem2D(), destinationCRS)) {
+                && !CRS.isEquivalent(coverages.get(0).getCoordinateReferenceSystem2D(), destinationCRS)) {
             // do the affine step to allow warp/affine merging, in order to best preserve rotations
             // in the warp in case of oversampling
             for (GridCoverage2D displaced : displacedCoverages) {
-                final GridCoverage2D affined =
-                        affine(displaced, bgValues, symbolizer, warpAffineHints);
+                final GridCoverage2D affined = affine(displaced, bgValues, symbolizer, warpAffineHints);
                 if (affined != null) {
                     symbolizedCoverages.add(affined);
                 }
@@ -853,9 +786,8 @@ public final class GridCoverageRenderer {
         // and an optional reindexing after color expansion
 
         // if more than one coverage, mosaic
-        GridCoverage2D mosaicked =
-                GridCoverageRendererUtilities.mosaicSorted(
-                        symbolizedCoverages, destinationEnvelope, bgValues, this.hints);
+        GridCoverage2D mosaicked = GridCoverageRendererUtilities.mosaicSorted(
+                symbolizedCoverages, destinationEnvelope, bgValues, this.hints);
 
         // the mosaicking can cut off images that are just slightly out of the
         // request (effect of the read buffer + a request touching the actual data area)
@@ -865,15 +797,14 @@ public final class GridCoverageRenderer {
 
         // at this point, we might have a coverage that's still slightly larger
         // than the one requested, crop as needed
-        GridCoverage2D cropped =
-                crop(mosaicked, destinationEnvelope, false, bgValues, interpolation);
+        GridCoverage2D cropped = crop(mosaicked, destinationEnvelope, false, bgValues, interpolation);
         return getImageFromParentCoverage(cropped);
     }
 
     /**
-     * Computes the reprojection tolerance considering an eventual oversampling. In case of
-     * oversampling, the reprojection tolerance needs to be altered, because pixels will be expanded
-     * by an affine transform after reprojection, magnifying the linearization error.
+     * Computes the reprojection tolerance considering an eventual oversampling. In case of oversampling, the
+     * reprojection tolerance needs to be altered, because pixels will be expanded by an affine transform after
+     * reprojection, magnifying the linearization error.
      */
     private Hints getReprojectionHints(Hints hints, GridCoverage2D gridCoverage2D) {
         if (gridCoverage2D == null) return hints;
@@ -913,40 +844,33 @@ public final class GridCoverageRenderer {
 
     private void logCoverages(String name, List<GridCoverage2D> coverages) {
         if (LOGGER.isLoggable(Level.FINE)) {
-            String message =
-                    "GridCoverageRenderer coverages: " + name + "\n" + coverages == null
-                            ? "none"
-                            : coverages.stream()
-                                    .map(c -> c.toString())
-                                    .collect(Collectors.joining(","));
+            String message = "GridCoverageRenderer coverages: " + name + "\n" + coverages == null
+                    ? "none"
+                    : coverages.stream().map(c -> c.toString()).collect(Collectors.joining(","));
             LOGGER.log(Level.FINE, message);
         }
     }
 
     /**
-     * Paint this grid coverage. The caller must ensure that <code>graphics</code> has an affine
-     * transform mapping "real world" coordinates in the coordinate system given by
+     * Paint this grid coverage. The caller must ensure that <code>graphics</code> has an affine transform mapping "real
+     * world" coordinates in the coordinate system given by
      *
      * @param graphics the {@link Graphics2D} context in which to paint.
-     * @throws UnsupportedOperationException if the transformation from grid to coordinate system in
-     *     the GridCoverage is not an AffineTransform
+     * @throws UnsupportedOperationException if the transformation from grid to coordinate system in the GridCoverage is
+     *     not an AffineTransform
      */
-    public void paint(
-            final Graphics2D graphics,
-            final GridCoverage2D gridCoverage,
-            final RasterSymbolizer symbolizer)
+    public void paint(final Graphics2D graphics, final GridCoverage2D gridCoverage, final RasterSymbolizer symbolizer)
             throws Exception {
         paint(graphics, gridCoverage, symbolizer, null);
     }
 
     /**
-     * Paint this grid coverage. The caller must ensure that <code>graphics</code> has an affine
-     * transform mapping "real world" coordinates in the coordinate system given by {@link
-     * #getCoordinateSystem}.
+     * Paint this grid coverage. The caller must ensure that <code>graphics</code> has an affine transform mapping "real
+     * world" coordinates in the coordinate system given by {@link #getCoordinateSystem}.
      *
      * @param graphics the {@link Graphics2D} context in which to paint.
-     * @throws UnsupportedOperationException if the transformation from grid to coordinate system in
-     *     the GridCoverage is not an AffineTransform
+     * @throws UnsupportedOperationException if the transformation from grid to coordinate system in the GridCoverage is
+     *     not an AffineTransform
      */
     public void paint(
             final Graphics2D graphics,
@@ -959,19 +883,16 @@ public final class GridCoverageRenderer {
         // Initial checks
         //
         if (graphics == null) {
-            throw new NullPointerException(
-                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "graphics"));
+            throw new NullPointerException(MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "graphics"));
         }
         if (gridCoverage == null) {
-            throw new NullPointerException(
-                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "gridCoverage"));
+            throw new NullPointerException(MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "gridCoverage"));
         }
 
         if (LOGGER.isLoggable(Level.FINE))
-            LOGGER.fine(
-                    new StringBuilder("Drawing coverage ")
-                            .append(gridCoverage.toString())
-                            .toString());
+            LOGGER.fine(new StringBuilder("Drawing coverage ")
+                    .append(gridCoverage.toString())
+                    .toString());
 
         // Build the final image and the transformation
         RenderedImage finalImage = renderImage(gridCoverage, symbolizer, bkgValues);
@@ -979,13 +900,13 @@ public final class GridCoverageRenderer {
     }
 
     /**
-     * Paint the coverage read from the reader (using advanced projection handling). The caller must
-     * ensure that <code>graphics</code> has an affine transform mapping "real world" coordinates in
-     * the coordinate system given by {@link #getCoordinateSystem}.
+     * Paint the coverage read from the reader (using advanced projection handling). The caller must ensure that <code>
+     * graphics</code> has an affine transform mapping "real world" coordinates in the coordinate system given by
+     * {@link #getCoordinateSystem}.
      *
      * @param graphics the {@link Graphics2D} context in which to paint.
-     * @throws UnsupportedOperationException if the transformation from grid to coordinate system in
-     *     the GridCoverage is not an AffineTransform
+     * @throws UnsupportedOperationException if the transformation from grid to coordinate system in the GridCoverage is
+     *     not an AffineTransform
      */
     public void paint(
             final Graphics2D graphics,
@@ -1000,25 +921,21 @@ public final class GridCoverageRenderer {
         // Initial checks
         //
         if (graphics == null) {
-            throw new NullPointerException(
-                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "graphics"));
+            throw new NullPointerException(MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "graphics"));
         }
         if (gridCoverageReader == null) {
-            throw new NullPointerException(
-                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "gridCoverageReader"));
+            throw new NullPointerException(MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "gridCoverageReader"));
         }
 
         if (LOGGER.isLoggable(Level.FINE))
-            LOGGER.fine(
-                    new StringBuilder("Drawing reader ")
-                            .append(gridCoverageReader.toString())
-                            .toString());
+            LOGGER.fine(new StringBuilder("Drawing reader ")
+                    .append(gridCoverageReader.toString())
+                    .toString());
 
         setupInterpolationHints(interpolation);
 
         // Build the final image and the transformation
-        RenderedImage finalImage =
-                renderImage(gridCoverageReader, readParams, symbolizer, interpolation, background);
+        RenderedImage finalImage = renderImage(gridCoverageReader, readParams, symbolizer, interpolation, background);
         if (finalImage != null) {
             try {
                 paintImage(graphics, finalImage, symbolizer);
@@ -1030,10 +947,7 @@ public final class GridCoverageRenderer {
         }
     }
 
-    private void paintImage(
-            final Graphics2D graphics,
-            RenderedImage inputImage,
-            final RasterSymbolizer symbolizer) {
+    private void paintImage(final Graphics2D graphics, RenderedImage inputImage, final RasterSymbolizer symbolizer) {
         final RenderingHints oldHints = graphics.getRenderingHints();
         graphics.setRenderingHints(this.hints);
 
@@ -1052,9 +966,8 @@ public final class GridCoverageRenderer {
                 writeRenderedImage(transparentImage, "final");
             }
 
-            final boolean multiply =
-                    symbolizer.getShadedRelief() != null
-                            && symbolizer.getShadedRelief().isBrightnessOnly();
+            final boolean multiply = symbolizer.getShadedRelief() != null
+                    && symbolizer.getShadedRelief().isBrightnessOnly();
             if (multiply) {
                 graphics.setComposite(BlendComposite.getInstance(BlendingMode.MULTIPLY, 1f));
                 transparentImage = Compositing.forceToRGB(transparentImage, true);
@@ -1073,8 +986,7 @@ public final class GridCoverageRenderer {
         } catch (Throwable t) {
             try {
                 // log the error
-                if (LOGGER.isLoggable(Level.FINE))
-                    LOGGER.log(Level.FINE, t.getLocalizedMessage(), t);
+                if (LOGGER.isLoggable(Level.FINE)) LOGGER.log(Level.FINE, t.getLocalizedMessage(), t);
 
                 // /////////////////////////////////////////////////////////////
                 // this is a workaround for a bug in Java2D, we need to convert
@@ -1084,10 +996,9 @@ public final class GridCoverageRenderer {
                     if (DEBUG) {
                         writeRenderedImage(transparentImage, "preWORKAROUND1");
                     }
-                    final RenderedImage componentImage =
-                            new ImageWorker(transparentImage)
-                                    .forceComponentColorModel(true)
-                                    .getRenderedImage();
+                    final RenderedImage componentImage = new ImageWorker(transparentImage)
+                            .forceComponentColorModel(true)
+                            .getRenderedImage();
 
                     if (DEBUG) {
                         writeRenderedImage(componentImage, "WORKAROUND1");
@@ -1111,25 +1022,22 @@ public final class GridCoverageRenderer {
                 // LARGE IMAGES.
                 // /////////////////////////////////////////////////////////////
                 {
-                    BufferedImage buf =
-                            transparentImage.getColorModel().hasAlpha()
-                                    ? new BufferedImage(
-                                            transparentImage.getWidth(),
-                                            transparentImage.getHeight(),
-                                            BufferedImage.TYPE_4BYTE_ABGR)
-                                    : new BufferedImage(
-                                            transparentImage.getWidth(),
-                                            transparentImage.getHeight(),
-                                            BufferedImage.TYPE_3BYTE_BGR);
+                    BufferedImage buf = transparentImage.getColorModel().hasAlpha()
+                            ? new BufferedImage(
+                                    transparentImage.getWidth(),
+                                    transparentImage.getHeight(),
+                                    BufferedImage.TYPE_4BYTE_ABGR)
+                            : new BufferedImage(
+                                    transparentImage.getWidth(),
+                                    transparentImage.getHeight(),
+                                    BufferedImage.TYPE_3BYTE_BGR);
                     if (DEBUG) {
                         writeRenderedImage(buf, "preWORKAROUND2");
                     }
                     final Graphics2D g = (Graphics2D) buf.getGraphics();
-                    final int translationX = transparentImage.getMinX(),
-                            translationY = transparentImage.getMinY();
+                    final int translationX = transparentImage.getMinX(), translationY = transparentImage.getMinY();
                     g.drawRenderedImage(
-                            transparentImage,
-                            AffineTransform.getTranslateInstance(-translationX, -translationY));
+                            transparentImage, AffineTransform.getTranslateInstance(-translationX, -translationY));
                     g.dispose();
                     if (DEBUG) {
                         writeRenderedImage(buf, "WORKAROUND2");
@@ -1143,10 +1051,7 @@ public final class GridCoverageRenderer {
                 } else
                 // log the error
                 if (LOGGER.isLoggable(Level.WARNING))
-                    LOGGER.log(
-                            Level.WARNING,
-                            "Unable to renderer this raster, no workaround found",
-                            t);
+                    LOGGER.log(Level.WARNING, "Unable to renderer this raster, no workaround found", t);
 
             } catch (Throwable t1) {
                 // if the workaround fails again, there is really nothing to do
@@ -1164,13 +1069,9 @@ public final class GridCoverageRenderer {
     }
 
     private GeneralParameterValue[] applyBandsSelectionParameter(
-            GridCoverageReader reader,
-            GeneralParameterValue[] readParams,
-            RasterSymbolizer symbolizer) {
-        int[] bandIndices =
-                ChannelSelectionUpdateStyleVisitor.getBandIndicesFromSelectionChannels(symbolizer);
-        Parameter<int[]> bandIndicesParam =
-                (Parameter<int[]>) AbstractGridFormat.BANDS.createValue();
+            GridCoverageReader reader, GeneralParameterValue[] readParams, RasterSymbolizer symbolizer) {
+        int[] bandIndices = ChannelSelectionUpdateStyleVisitor.getBandIndicesFromSelectionChannels(symbolizer);
+        Parameter<int[]> bandIndicesParam = (Parameter<int[]>) AbstractGridFormat.BANDS.createValue();
         bandIndicesParam.setValue(bandIndices);
         List<GeneralParameterValue> paramList = new ArrayList<>();
         if (readParams != null) {
@@ -1181,8 +1082,8 @@ public final class GridCoverageRenderer {
     }
 
     /**
-     * Takes into account that the band selection has been delegated down to the reader by producing
-     * a new channel selection
+     * Takes into account that the band selection has been delegated down to the reader by producing a new channel
+     * selection
      */
     public static RasterSymbolizer setupSymbolizerForBandsSelection(RasterSymbolizer symbolizer) {
         ChannelSelection selection = symbolizer.getChannelSelection();
@@ -1201,8 +1102,7 @@ public final class GridCoverageRenderer {
                 channels[i] = channel;
                 i++;
             }
-            ChannelSelectionUpdateStyleVisitor channelsUpdateVisitor =
-                    new ChannelSelectionUpdateStyleVisitor(channels);
+            ChannelSelectionUpdateStyleVisitor channelsUpdateVisitor = new ChannelSelectionUpdateStyleVisitor(channels);
             symbolizer.accept(channelsUpdateVisitor);
             return (RasterSymbolizer) channelsUpdateVisitor.getCopy();
         }
@@ -1210,10 +1110,8 @@ public final class GridCoverageRenderer {
     }
 
     /** Checks if band selection is present, and can be delegated down to the reader */
-    public static boolean isBandsSelectionApplicable(
-            GridCoverageReader reader, RasterSymbolizer symbolizer) {
-        int[] bandIndices =
-                ChannelSelectionUpdateStyleVisitor.getBandIndicesFromSelectionChannels(symbolizer);
+    public static boolean isBandsSelectionApplicable(GridCoverageReader reader, RasterSymbolizer symbolizer) {
+        int[] bandIndices = ChannelSelectionUpdateStyleVisitor.getBandIndicesFromSelectionChannels(symbolizer);
         return reader.getFormat() != null
                 && reader.getFormat()
                         .getReadParameters()
@@ -1223,16 +1121,12 @@ public final class GridCoverageRenderer {
                 && bandIndices != null;
     }
 
-    /**
-     * Check whether this source GridCoverage comes with a {@link Compositing} object which need to
-     * be applied.
-     */
+    /** Check whether this source GridCoverage comes with a {@link Compositing} object which need to be applied. */
     private GridCoverage2D lookForCompositing(GridCoverage2D source) {
         Object compositing = source.getProperty(KEY_COMPOSITING);
         if (compositing != null && compositing instanceof Compositing) {
             return ((Compositing) compositing)
-                    .composeGridCoverage(
-                            source, CoverageFactoryFinder.getGridCoverageFactory(hints));
+                    .composeGridCoverage(source, CoverageFactoryFinder.getGridCoverageFactory(hints));
         }
         return source;
     }

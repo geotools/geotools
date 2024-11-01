@@ -30,8 +30,7 @@ import org.geotools.xsd.Encoder;
  *
  * @author Andrea Aime - GeoSolutions
  */
-public class FeatureCollectionTypeBinding
-        extends org.geotools.wfs.bindings.FeatureCollectionTypeBinding {
+public class FeatureCollectionTypeBinding extends org.geotools.wfs.bindings.FeatureCollectionTypeBinding {
 
     private Encoder encoder;
 
@@ -50,8 +49,7 @@ public class FeatureCollectionTypeBinding
             FeatureCollectionType fc = (FeatureCollectionType) object;
             if (fc.getFeature().size() == 1
                     && fc.getFeature().get(0) instanceof SimpleFeatureCollection
-                    && encoder.getConfiguration()
-                            .hasProperty(GMLConfiguration.OPTIMIZED_ENCODING)) {
+                    && encoder.getConfiguration().hasProperty(GMLConfiguration.OPTIMIZED_ENCODING)) {
                 return new GML2FeatureCollectionEncoderDelegate(
                         (SimpleFeatureCollection) fc.getFeature().get(0), encoder);
             }

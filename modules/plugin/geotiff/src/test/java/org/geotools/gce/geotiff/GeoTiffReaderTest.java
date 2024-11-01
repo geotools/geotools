@@ -115,8 +115,7 @@ import org.junit.Test;
  * @author Simone Giannecchini
  */
 public class GeoTiffReaderTest {
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(GeoTiffReaderTest.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(GeoTiffReaderTest.class);
 
     static boolean oldOverrideInnerCRS;
 
@@ -134,8 +133,7 @@ public class GeoTiffReaderTest {
 
     /** Testing proper CRS override with PRJ. */
     @Test
-    public void prjOverrideTesting1()
-            throws IllegalArgumentException, IOException, FactoryException {
+    public void prjOverrideTesting1() throws IllegalArgumentException, IOException, FactoryException {
 
         //
         // PRJ override
@@ -148,8 +146,7 @@ public class GeoTiffReaderTest {
 
         final File prj = TestData.file(GeoTiffReaderTest.class, "override/sample.prj");
         final CoordinateReferenceSystem crs_ =
-                new PrjFileReader(new FileInputStream(prj).getChannel())
-                        .getCoordinateReferenceSystem();
+                new PrjFileReader(new FileInputStream(prj).getChannel()).getCoordinateReferenceSystem();
         assertTrue(CRS.equalsIgnoreMetadata(crs, crs_));
         GridCoverage2D coverage = reader.read(null);
         assertTrue(CRS.equalsIgnoreMetadata(coverage.getCoordinateReferenceSystem(), crs_));
@@ -159,8 +156,7 @@ public class GeoTiffReaderTest {
 
     /** Testing proper CRS override with PRJ. */
     @Test
-    public void prjOverrideTesting2()
-            throws IllegalArgumentException, IOException, FactoryException {
+    public void prjOverrideTesting2() throws IllegalArgumentException, IOException, FactoryException {
 
         //
         // PRJ override
@@ -169,8 +165,7 @@ public class GeoTiffReaderTest {
 
         final File prj = TestData.file(GeoTiffReaderTest.class, "override/sample.prj");
         final CoordinateReferenceSystem crs_ =
-                new PrjFileReader(new FileInputStream(prj).getChannel())
-                        .getCoordinateReferenceSystem();
+                new PrjFileReader(new FileInputStream(prj).getChannel()).getCoordinateReferenceSystem();
 
         // NO override
         GeoTiffReader.OVERRIDE_INNER_CRS = false;
@@ -197,8 +192,7 @@ public class GeoTiffReaderTest {
 
     /** Test for reading bad/strange geotiff files */
     @Test
-    public void testReaderBadGeotiff()
-            throws IllegalArgumentException, IOException, FactoryException {
+    public void testReaderBadGeotiff() throws IllegalArgumentException, IOException, FactoryException {
 
         //
         // no crs geotiff
@@ -211,9 +205,7 @@ public class GeoTiffReaderTest {
         assertTrue(CRS.equalsIgnoreMetadata(crs, AbstractGridFormat.getDefaultCRS()));
         GridCoverage2D coverage = reader.read(null);
         assertTrue(
-                CRS.equalsIgnoreMetadata(
-                        coverage.getCoordinateReferenceSystem(),
-                        AbstractGridFormat.getDefaultCRS()));
+                CRS.equalsIgnoreMetadata(coverage.getCoordinateReferenceSystem(), AbstractGridFormat.getDefaultCRS()));
 
         // hint for CRS
         crs = CRS.decode("EPSG:32632", true);
@@ -229,8 +221,7 @@ public class GeoTiffReaderTest {
         // check coverage and crs
         assertNotNull(coverage1);
         assertNotNull(coverage1.getCoordinateReferenceSystem());
-        assertEquals(
-                CRS.lookupIdentifier(coverage1.getCoordinateReferenceSystem(), true), "EPSG:32632");
+        assertEquals(CRS.lookupIdentifier(coverage1.getCoordinateReferenceSystem(), true), "EPSG:32632");
         reader.dispose();
 
         //
@@ -248,8 +239,7 @@ public class GeoTiffReaderTest {
         // check coverage and crs
         assertNotNull(coverage2);
         assertNotNull(coverage2.getCoordinateReferenceSystem());
-        assertEquals(
-                CRS.lookupIdentifier(coverage2.getCoordinateReferenceSystem(), true), "EPSG:32632");
+        assertEquals(CRS.lookupIdentifier(coverage2.getCoordinateReferenceSystem(), true), "EPSG:32632");
         reader.dispose();
 
         //
@@ -267,8 +257,7 @@ public class GeoTiffReaderTest {
         // check coverage and crs
         assertNotNull(coverage3);
         assertNotNull(coverage3.getCoordinateReferenceSystem());
-        assertEquals(
-                CRS.lookupIdentifier(coverage3.getCoordinateReferenceSystem(), true), "EPSG:32632");
+        assertEquals(CRS.lookupIdentifier(coverage3.getCoordinateReferenceSystem(), true), "EPSG:32632");
         reader.dispose();
 
         coverage1.dispose(true);
@@ -295,8 +284,7 @@ public class GeoTiffReaderTest {
     public void testReader() throws Exception {
 
         final File baseDirectory = TestData.file(GeoTiffReaderTest.class, ".");
-        final File writeDirectory =
-                new File(baseDirectory, Long.toString(System.currentTimeMillis()));
+        final File writeDirectory = new File(baseDirectory, Long.toString(System.currentTimeMillis()));
         writeDirectory.mkdir();
         final File[] files = baseDirectory.listFiles();
         final int numFiles = files.length;
@@ -321,8 +309,7 @@ public class GeoTiffReaderTest {
 
                 // getting a reader
                 GeoTiffReader reader =
-                        new GeoTiffReader(
-                                o, new Hints(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.TRUE));
+                        new GeoTiffReader(o, new Hints(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.TRUE));
                 if (reader != null) {
 
                     // reading the coverage
@@ -331,7 +318,8 @@ public class GeoTiffReaderTest {
                     // Crs and envelope
                     if (TestData.isInteractiveTest()) {
                         buffer.append("CRS: ")
-                                .append(coverage.getCoordinateReferenceSystem2D().toWKT())
+                                .append(coverage.getCoordinateReferenceSystem2D()
+                                        .toWKT())
                                 .append("\n");
                         buffer.append("GG: ")
                                 .append(coverage.getGridGeometry().toString())
@@ -364,7 +352,8 @@ public class GeoTiffReaderTest {
                     if (TestData.isInteractiveTest()) {
                         coverage.show();
                     } else {
-                        PlanarImage.wrapRenderedImage(coverage.getRenderedImage()).getTiles();
+                        PlanarImage.wrapRenderedImage(coverage.getRenderedImage())
+                                .getTiles();
                     }
 
                     if (reader.getGroundControlPoints() != null) {
@@ -398,15 +387,13 @@ public class GeoTiffReaderTest {
         // read back
         assertTrue(format.accepts(destFile));
         GeoTiffReader reader =
-                new GeoTiffReader(
-                        destFile, new Hints(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.TRUE));
+                new GeoTiffReader(destFile, new Hints(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.TRUE));
         final GridCoverage2D destCoverage = reader.read(null);
         reader.dispose();
 
-        final double eps =
-                XAffineTransform.getScaleX0(
-                                (AffineTransform) coverage.getGridGeometry().getGridToCRS())
-                        * 1E-2;
+        final double eps = XAffineTransform.getScaleX0(
+                        (AffineTransform) coverage.getGridGeometry().getGridToCRS())
+                * 1E-2;
         String toString = o.toString();
         assertTrue(
                 "CRS comparison failed:" + toString,
@@ -418,8 +405,7 @@ public class GeoTiffReaderTest {
         assertTrue(
                 "CRS comparison failed:" + toString,
                 CRS.equalsIgnoreMetadata(
-                        coverage.getCoordinateReferenceSystem(),
-                        destCoverage.getCoordinateReferenceSystem()));
+                        coverage.getCoordinateReferenceSystem(), destCoverage.getCoordinateReferenceSystem()));
         assertEquals(
                 "GridRange comparison failed:" + toString,
                 coverage.getGridGeometry().getGridRange(),
@@ -447,33 +433,30 @@ public class GeoTiffReaderTest {
 
     @Test
     public void testThreadedTransformations() throws Exception {
-        Callable<Void> callable =
-                () -> {
-                    final File baseDirectory = TestData.file(GeoTiffReaderTest.class, ".");
-                    final File[] files =
-                            baseDirectory.listFiles(
-                                    (dir, name) -> {
-                                        String lcName = name.toLowerCase();
-                                        return lcName.endsWith("tif") || lcName.endsWith("tiff");
-                                    });
-                    final AbstractGridFormat format = new GeoTiffFormat();
-                    for (File file : files) {
-                        AbstractGridCoverage2DReader reader = null;
-                        try {
-                            reader = format.getReader(file);
-                            if (reader != null) {
-                                GridCoverage2D coverage = reader.read(null);
-                                ImageIOUtilities.disposeImage(coverage.getRenderedImage());
-                                coverage.dispose(true);
-                            }
-                        } finally {
-                            if (reader != null) {
-                                reader.dispose();
-                            }
-                        }
+        Callable<Void> callable = () -> {
+            final File baseDirectory = TestData.file(GeoTiffReaderTest.class, ".");
+            final File[] files = baseDirectory.listFiles((dir, name) -> {
+                String lcName = name.toLowerCase();
+                return lcName.endsWith("tif") || lcName.endsWith("tiff");
+            });
+            final AbstractGridFormat format = new GeoTiffFormat();
+            for (File file : files) {
+                AbstractGridCoverage2DReader reader = null;
+                try {
+                    reader = format.getReader(file);
+                    if (reader != null) {
+                        GridCoverage2D coverage = reader.read(null);
+                        ImageIOUtilities.disposeImage(coverage.getRenderedImage());
+                        coverage.dispose(true);
                     }
-                    return null;
-                };
+                } finally {
+                    if (reader != null) {
+                        reader.dispose();
+                    }
+                }
+            }
+            return null;
+        };
 
         // used to deadlock under load, check it does not now
         ExecutorService executor = Executors.newCachedThreadPool();
@@ -519,10 +502,7 @@ public class GeoTiffReaderTest {
         assertEquals(-9999, nc.getAsSingleValue(), 0.0001);
     }
 
-    /**
-     * Test that the reader sets a Meters as default UoM definition for CRS with an undefined UoM
-     * definition
-     */
+    /** Test that the reader sets a Meters as default UoM definition for CRS with an undefined UoM definition */
     @Test
     public void testUoMDefault() throws Exception {
         // Reading file
@@ -571,9 +551,7 @@ public class GeoTiffReaderTest {
         parameters.parameter("yScale").setValue(Float.valueOf(3f));
         parameters.parameter("xTrans").setValue(Float.valueOf(0.0f));
         parameters.parameter("yTrans").setValue(Float.valueOf(0.0f));
-        parameters
-                .parameter("Interpolation")
-                .setValue(Interpolation.getInstance(Interpolation.INTERP_NEAREST));
+        parameters.parameter("Interpolation").setValue(Interpolation.getInstance(Interpolation.INTERP_NEAREST));
         // Executing operation
         coverage = (GridCoverage2D) scaleOp.doOperation(parameters, null);
         // Checking if ROI is present
@@ -615,9 +593,8 @@ public class GeoTiffReaderTest {
     }
 
     /**
-     * Test that the reader sets a ROI property based on the input internal masks, and that the ROI
-     * is the expected one, taking into account the same subsampling factors during the read as the
-     * image
+     * Test that the reader sets a ROI property based on the input internal masks, and that the ROI is the expected one,
+     * taking into account the same subsampling factors during the read as the image
      */
     @Test
     public void testMaskSubsampling() throws Exception {
@@ -630,8 +607,7 @@ public class GeoTiffReaderTest {
         // prepare to read a sub.sampled image
         GeneralParameterValue[] params = new GeneralParameterValue[1];
         // Define a GridGeometry in order to reduce the output
-        final ParameterValue<GridGeometry2D> gg =
-                AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
+        final ParameterValue<GridGeometry2D> gg = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
         final GeneralBounds envelope = reader.getOriginalEnvelope();
         final Dimension dim = new Dimension();
         dim.setSize(
@@ -700,9 +676,7 @@ public class GeoTiffReaderTest {
         parameters.parameter("yScale").setValue(Float.valueOf(3f));
         parameters.parameter("xTrans").setValue(Float.valueOf(0.0f));
         parameters.parameter("yTrans").setValue(Float.valueOf(0.0f));
-        parameters
-                .parameter("Interpolation")
-                .setValue(Interpolation.getInstance(Interpolation.INTERP_NEAREST));
+        parameters.parameter("Interpolation").setValue(Interpolation.getInstance(Interpolation.INTERP_NEAREST));
         // Executing operation
         coverage = (GridCoverage2D) scaleOp.doOperation(parameters, null);
         // Checking if ROI is present
@@ -808,9 +782,7 @@ public class GeoTiffReaderTest {
         assertTrue(format.accepts(file));
         AbstractGridCoverage2DReader reader = null;
         try {
-            reader =
-                    format.getReader(
-                            file, new Hints(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.TRUE));
+            reader = format.getReader(file, new Hints(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.TRUE));
             GridCoverage2D coverage = reader.read(null);
 
             CoordinateReferenceSystem crs = reader.getCoordinateReferenceSystem();
@@ -822,9 +794,7 @@ public class GeoTiffReaderTest {
             assertNotNull(transform);
             assertTrue(transform instanceof Sinusoidal);
             final File writeDirectory =
-                    new File(
-                            TestData.file(GeoTiffReaderTest.class, "."),
-                            Long.toString(System.currentTimeMillis()));
+                    new File(TestData.file(GeoTiffReaderTest.class, "."), Long.toString(System.currentTimeMillis()));
             writeDirectory.mkdir();
             writeAndReadBackCheck(coverage, format, writeDirectory, file);
 
@@ -835,10 +805,7 @@ public class GeoTiffReaderTest {
         }
     }
 
-    /**
-     * Test that the reader sets a ROI property based on the input external masks with external
-     * overviews
-     */
+    /** Test that the reader sets a ROI property based on the input external masks with external overviews */
     @Test
     public void testMaskingExternalOverviews() throws Exception {
         // Reading file
@@ -848,8 +815,7 @@ public class GeoTiffReaderTest {
         AbstractGridCoverage2DReader reader = format.getReader(file);
         GeneralParameterValue[] params = new GeneralParameterValue[2];
         // Define a GridGeometry in order to reduce the output
-        final ParameterValue<GridGeometry2D> gg =
-                AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
+        final ParameterValue<GridGeometry2D> gg = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
         final GeneralBounds envelope = reader.getOriginalEnvelope();
         final Dimension dim = new Dimension();
         dim.setSize(
@@ -861,8 +827,7 @@ public class GeoTiffReaderTest {
         gg.setValue(new GridGeometry2D(range, envelope));
         params[0] = gg;
         // Define Overview Policy
-        final ParameterValue<OverviewPolicy> policy =
-                AbstractGridFormat.OVERVIEW_POLICY.createValue();
+        final ParameterValue<OverviewPolicy> policy = AbstractGridFormat.OVERVIEW_POLICY.createValue();
         policy.setValue(OverviewPolicy.NEAREST);
         params[1] = policy;
         GridCoverage2D coverage = reader.read(params);
@@ -890,9 +855,7 @@ public class GeoTiffReaderTest {
         parameters.parameter("yScale").setValue(Float.valueOf(3f));
         parameters.parameter("xTrans").setValue(Float.valueOf(0.0f));
         parameters.parameter("yTrans").setValue(Float.valueOf(0.0f));
-        parameters
-                .parameter("Interpolation")
-                .setValue(Interpolation.getInstance(Interpolation.INTERP_NEAREST));
+        parameters.parameter("Interpolation").setValue(Interpolation.getInstance(Interpolation.INTERP_NEAREST));
         // Executing operation
         coverage = (GridCoverage2D) scaleOp.doOperation(parameters, null);
         // Checking if ROI is present
@@ -967,15 +930,13 @@ public class GeoTiffReaderTest {
         if (format.accepts(file)) {
             // getting a reader
             GeoTiffReader reader =
-                    new GeoTiffReader(
-                            file, new Hints(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.TRUE));
+                    new GeoTiffReader(file, new Hints(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.TRUE));
             if (reader != null) {
                 // reading the coverage
                 GridCoverage2D coverage = reader.read(null);
                 assertNotNull(coverage);
                 assertEquals(1, coverage.getRenderedImage().getSampleModel().getNumBands());
-                final ParameterValue<Color> colorPV =
-                        AbstractGridFormat.INPUT_TRANSPARENT_COLOR.createValue();
+                final ParameterValue<Color> colorPV = AbstractGridFormat.INPUT_TRANSPARENT_COLOR.createValue();
                 colorPV.setValue(Color.BLACK);
                 coverage = reader.read(new GeneralParameterValue[] {colorPV});
                 assertNotNull(coverage);
@@ -992,15 +953,13 @@ public class GeoTiffReaderTest {
         if (format.accepts(file)) {
             // getting a reader
             GeoTiffReader reader =
-                    new GeoTiffReader(
-                            file, new Hints(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.TRUE));
+                    new GeoTiffReader(file, new Hints(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.TRUE));
             if (reader != null) {
                 // reading the coverage
                 GridCoverage2D coverage = reader.read(null);
                 assertNotNull(coverage);
                 assertEquals(3, coverage.getRenderedImage().getSampleModel().getNumBands());
-                final ParameterValue<Color> colorPV =
-                        AbstractGridFormat.INPUT_TRANSPARENT_COLOR.createValue();
+                final ParameterValue<Color> colorPV = AbstractGridFormat.INPUT_TRANSPARENT_COLOR.createValue();
                 colorPV.setValue(new Color(34, 53, 87));
                 coverage = reader.read(new GeneralParameterValue[] {colorPV});
                 assertNotNull(coverage);
@@ -1018,15 +977,13 @@ public class GeoTiffReaderTest {
         if (format.accepts(file)) {
             // getting a reader
             GeoTiffReader reader =
-                    new GeoTiffReader(
-                            file, new Hints(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.TRUE));
+                    new GeoTiffReader(file, new Hints(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.TRUE));
             if (reader != null) {
                 // reading the coverage
                 GridCoverage2D coverage = reader.read(null);
                 assertNotNull(coverage);
                 assertEquals(2, coverage.getRenderedImage().getSampleModel().getNumBands());
-                final ParameterValue<Color> colorPV =
-                        AbstractGridFormat.INPUT_TRANSPARENT_COLOR.createValue();
+                final ParameterValue<Color> colorPV = AbstractGridFormat.INPUT_TRANSPARENT_COLOR.createValue();
                 colorPV.setValue(new Color(34, 53, 87));
                 try {
                     coverage = reader.read(new GeneralParameterValue[] {colorPV});
@@ -1060,8 +1017,7 @@ public class GeoTiffReaderTest {
         double[][] availableResolutions = reader.getResolutionLevels();
         assertEquals(availableResolutions.length, 5);
 
-        final ParameterValue<GridGeometry2D> gg =
-                AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
+        final ParameterValue<GridGeometry2D> gg = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
         final GeneralBounds envelope = reader.getOriginalEnvelope();
         final Dimension dim = new Dimension();
         dim.setSize(
@@ -1101,16 +1057,13 @@ public class GeoTiffReaderTest {
         double resY = XAffineTransform.getScaleY0(affine);
 
         // Using "poor" resolution (less than the worst available overview).
-        double[] resolutions =
-                reader.getReadingResolutions(OverviewPolicy.QUALITY, new double[] {resX, resY});
+        double[] resolutions = reader.getReadingResolutions(OverviewPolicy.QUALITY, new double[] {resX, resY});
         // Checking that the reading resolution will be the one of the worst (last) overview
         assertEquals(resolutions[0], availableResolutions[nOvrs][0], delta);
         assertEquals(resolutions[1], availableResolutions[nOvrs][1], delta);
 
         // Using a middle resolution
-        resolutions =
-                reader.getReadingResolutions(
-                        OverviewPolicy.QUALITY, new double[] {resX / 8, resY / 8});
+        resolutions = reader.getReadingResolutions(OverviewPolicy.QUALITY, new double[] {resX / 8, resY / 8});
         assertEquals(resolutions[0], 40, delta);
         assertEquals(resolutions[1], 40, delta);
 
@@ -1126,8 +1079,7 @@ public class GeoTiffReaderTest {
         final File file = TestData.file(GeoTiffReaderTest.class, "ovr.tif");
         assertNotNull(file);
         assertTrue(file.exists());
-        GeoTiffReader reader =
-                new GeoTiffReader(file, new Hints(Hints.SKIP_EXTERNAL_OVERVIEWS, true));
+        GeoTiffReader reader = new GeoTiffReader(file, new Hints(Hints.SKIP_EXTERNAL_OVERVIEWS, true));
 
         // no external overviews, no overviews period
         assertEquals(0, reader.getDatasetLayout().getNumExternalOverviews());
@@ -1139,8 +1091,7 @@ public class GeoTiffReaderTest {
         assertEquals(1, files.size());
 
         // read from reader
-        final ParameterValue<GridGeometry2D> gg =
-                AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
+        final ParameterValue<GridGeometry2D> gg = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
         final GeneralBounds envelope = reader.getOriginalEnvelope();
         final Dimension dim = new Dimension();
         dim.setSize(
@@ -1155,8 +1106,8 @@ public class GeoTiffReaderTest {
         GridCoverage2D coverage = reader.read(new GeneralParameterValue[] {gg});
         RenderedOp op = (RenderedOp) coverage.getRenderedImage();
         @SuppressWarnings("PMD.CloseResource") // closed along with the coverage
-        FileImageInputStreamExtImpl fis =
-                (FileImageInputStreamExtImpl) op.getParameterBlock().getParameters().get(0);
+        FileImageInputStreamExtImpl fis = (FileImageInputStreamExtImpl)
+                op.getParameterBlock().getParameters().get(0);
         assertEquals("ovr.tif", fis.getTarget().getName());
 
         // cleanup
@@ -1165,14 +1116,13 @@ public class GeoTiffReaderTest {
     }
 
     /**
-     * The leak geotiff is a strange geotiff with PixelScale and TiePoints that are all 0 hence the
-     * matrix we come up with is all 0 and not invertibile.
+     * The leak geotiff is a strange geotiff with PixelScale and TiePoints that are all 0 hence the matrix we come up
+     * with is all 0 and not invertibile.
      *
-     * <p>This is not acceptable as we need a transformation that allows us to go back and forth
-     * between raster and model space.
+     * <p>This is not acceptable as we need a transformation that allows us to go back and forth between raster and
+     * model space.
      *
-     * <p>Side effect of this, we leak an open file due to the exception thrown during a read
-     * operation.
+     * <p>Side effect of this, we leak an open file due to the exception thrown during a read operation.
      */
     @Test
     // @Ignore
@@ -1195,8 +1145,8 @@ public class GeoTiffReaderTest {
     }
 
     /**
-     * The GeoTiff reader should provide a useful error message when the user does not have
-     * permissions to read the file.
+     * The GeoTiff reader should provide a useful error message when the user does not have permissions to read the
+     * file.
      */
     @Test
     public void testPermissionDeniedExceptionFix() throws Exception {
@@ -1218,10 +1168,7 @@ public class GeoTiffReaderTest {
         }
     }
 
-    /**
-     * The GeoTiff reader should provide a useful error message when the input file path does not
-     * exist.
-     */
+    /** The GeoTiff reader should provide a useful error message when the input file path does not exist. */
     @Test(expected = FileNotFoundException.class)
     public void testFileDoesNotExist() throws Throwable {
         final File file = new File("/does/not/exist");
@@ -1342,8 +1289,7 @@ public class GeoTiffReaderTest {
     @Test
     public void testNodataFloatCast() throws IOException {
         // has a very large nodata value with different values in float and double
-        final File scaleOffset =
-                TestData.file(GeoTiffReaderTest.class, "float32_nodata_negmax.tif");
+        final File scaleOffset = TestData.file(GeoTiffReaderTest.class, "float32_nodata_negmax.tif");
         GeoTiffReader reader = new GeoTiffReader(scaleOffset);
 
         // read with explicit request not to rescale
@@ -1370,32 +1316,23 @@ public class GeoTiffReaderTest {
 
     @Test
     public void testRescaleWithNodataFloat() throws IOException {
-        GridCoverage2DReader reader =
-                new GeoTiffReader(TestData.file(GeoTiffReaderTest.class, "float32_nodata.tif"));
+        GridCoverage2DReader reader = new GeoTiffReader(TestData.file(GeoTiffReaderTest.class, "float32_nodata.tif"));
         GridCoverage2D coverage = null;
         double[] redBackground = {255, 0, 0};
         try {
             coverage = reader.read(null);
             ImageWorker iw = new ImageWorker(coverage.getRenderedImage());
 
-            RenderedImage output =
-                    iw.scale(64, 64, 0, 0, Interpolation.getInstance(Interpolation.INTERP_NEAREST))
-                            .rescaleToBytes()
-                            .bandMerge(3)
-                            .forceComponentColorModel()
-                            .forceColorSpaceRGB()
-                            .getRenderedImage();
-            output =
-                    new ImageWorker(output)
-                            .setBackground(redBackground)
-                            .mosaic(
-                                    new RenderedImage[] {output},
-                                    MosaicDescriptor.MOSAIC_TYPE_OVERLAY,
-                                    null,
-                                    null,
-                                    null,
-                                    null)
-                            .getRenderedImage();
+            RenderedImage output = iw.scale(64, 64, 0, 0, Interpolation.getInstance(Interpolation.INTERP_NEAREST))
+                    .rescaleToBytes()
+                    .bandMerge(3)
+                    .forceComponentColorModel()
+                    .forceColorSpaceRGB()
+                    .getRenderedImage();
+            output = new ImageWorker(output)
+                    .setBackground(redBackground)
+                    .mosaic(new RenderedImage[] {output}, MosaicDescriptor.MOSAIC_TYPE_OVERLAY, null, null, null, null)
+                    .getRenderedImage();
 
             Raster data = output.getData();
             final int w = data.getWidth();
@@ -1475,15 +1412,11 @@ public class GeoTiffReaderTest {
             double[] maximums = iw.getMaximums();
             double[] minimums = iw.getMinimums();
             assertArrayEquals(
-                    new double[] {
-                        0.602, 0.602, 0.602, 0.0001, 0, 1, 0.602, 0.602, 0.602, 0.0001, 0, 1
-                    },
+                    new double[] {0.602, 0.602, 0.602, 0.0001, 0, 1, 0.602, 0.602, 0.602, 0.0001, 0, 1},
                     maximums,
                     1E-6d);
             assertArrayEquals(
-                    new double[] {
-                        -0.2473, -0.2473, -0.2473, 0, 0, 0, -0.2473, -0.2473, -0.2473, 0, 0, 0
-                    },
+                    new double[] {-0.2473, -0.2473, -0.2473, 0, 0, 0, -0.2473, -0.2473, -0.2473, 0, 0, 0},
                     minimums,
                     1E-6d);
 
@@ -1568,8 +1501,7 @@ public class GeoTiffReaderTest {
         GeoTiffReader reader = (GeoTiffReader) format.getReader(bogota);
         assertNotNull(reader);
         GridCoverage2D coverage = reader.read(null);
-        assertEquals(
-                Image.UndefinedProperty, coverage.getProperty(GridCoverage2DReader.PAM_DATASET));
+        assertEquals(Image.UndefinedProperty, coverage.getProperty(GridCoverage2DReader.PAM_DATASET));
         coverage.dispose(true);
         reader.dispose();
     }
@@ -1611,13 +1543,12 @@ public class GeoTiffReaderTest {
     }
 
     private String getStatistic(PAMDataset pam, int bandNumber, String keyName) {
-        Optional<String> value =
-                pam.getPAMRasterBand().stream()
-                        .filter(b -> bandNumber == b.getBand())
-                        .flatMap(b -> b.getMetadata().getMDI().stream())
-                        .filter(m -> m.getKey().equalsIgnoreCase(keyName))
-                        .map(m -> m.getValue())
-                        .findFirst();
+        Optional<String> value = pam.getPAMRasterBand().stream()
+                .filter(b -> bandNumber == b.getBand())
+                .flatMap(b -> b.getMetadata().getMDI().stream())
+                .filter(m -> m.getKey().equalsIgnoreCase(keyName))
+                .map(m -> m.getValue())
+                .findFirst();
         assertTrue(value.isPresent());
         return value.get();
     }
@@ -1685,8 +1616,7 @@ public class GeoTiffReaderTest {
         reader.dispose();
     }
 
-    private void assertField(
-            PAMRasterBand.FieldDefn fieldDefn, String name, FieldType type, FieldUsage usage) {
+    private void assertField(PAMRasterBand.FieldDefn fieldDefn, String name, FieldType type, FieldUsage usage) {
         assertEquals(name, fieldDefn.getName());
         assertEquals(type, fieldDefn.getType());
         assertEquals(usage, fieldDefn.getUsage());

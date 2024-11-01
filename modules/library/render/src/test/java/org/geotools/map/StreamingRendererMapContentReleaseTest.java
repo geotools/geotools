@@ -38,9 +38,9 @@ import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 
 /**
- * This test checks that we are not leaving undisposed map contents created inside the streaming
- * renderer. Done my best to isolate from other tests being run, but specific JVMs might ignore
- * that... if we see it is breaking the build on some platform we'll have to remove it
+ * This test checks that we are not leaving undisposed map contents created inside the streaming renderer. Done my best
+ * to isolate from other tests being run, but specific JVMs might ignore that... if we see it is breaking the build on
+ * some platform we'll have to remove it
  */
 @Ignore // sigh, as expected it's not working all the time
 public class StreamingRendererMapContentReleaseTest extends LoggerTest {
@@ -76,8 +76,7 @@ public class StreamingRendererMapContentReleaseTest extends LoggerTest {
 
         // populate with random features
         int featureNumber = 50;
-        ReferencedEnvelope bounds =
-                new ReferencedEnvelope(-20, 20, -30, 30, DefaultGeographicCRS.WGS84);
+        ReferencedEnvelope bounds = new ReferencedEnvelope(-20, 20, -30, 30, DefaultGeographicCRS.WGS84);
         PrimitiveIterator.OfDouble rand =
                 new Random().doubles(bounds.getMinX(), bounds.getMaxX()).iterator();
         SimpleFeatureBuilder fb = new SimpleFeatureBuilder(type);
@@ -99,9 +98,7 @@ public class StreamingRendererMapContentReleaseTest extends LoggerTest {
             renderAndStop(content, bounds);
             Runtime.getRuntime().runFinalization();
             String messages = getLogOutput();
-            assertThat(
-                    messages,
-                    CoreMatchers.not(CoreMatchers.containsString(UNDISPOSED_MAPCONTENT_ERROR)));
+            assertThat(messages, CoreMatchers.not(CoreMatchers.containsString(UNDISPOSED_MAPCONTENT_ERROR)));
             releaseLogger();
         }
     }
@@ -111,21 +108,20 @@ public class StreamingRendererMapContentReleaseTest extends LoggerTest {
         renderer.setMapContent(content);
 
         // stop rendering after 10 features
-        renderer.addRenderListener(
-                new RenderListener() {
-                    int count = 0;
+        renderer.addRenderListener(new RenderListener() {
+            int count = 0;
 
-                    @Override
-                    public void featureRenderer(SimpleFeature feature) {
-                        count++;
-                        if (count > 10) {
-                            renderer.stopRendering();
-                        }
-                    }
+            @Override
+            public void featureRenderer(SimpleFeature feature) {
+                count++;
+                if (count > 10) {
+                    renderer.stopRendering();
+                }
+            }
 
-                    @Override
-                    public void errorOccurred(Exception e) {}
-                });
+            @Override
+            public void errorOccurred(Exception e) {}
+        });
 
         Rectangle area = new Rectangle(0, 0, 2000, 2000);
         BufferedImage img = new BufferedImage(area.width, area.height, BufferedImage.TYPE_INT_ARGB);

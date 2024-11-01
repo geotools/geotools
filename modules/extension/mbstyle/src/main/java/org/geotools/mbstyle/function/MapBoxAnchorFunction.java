@@ -51,12 +51,11 @@ public class MapBoxAnchorFunction extends FunctionExpressionImpl {
         abstract Double evaluate(SymbolMBLayer.TextAnchor anchor);
     }
 
-    public static final FunctionName NAME =
-            new FunctionNameImpl(
-                    "mbAnchor",
-                    parameter("anchorPercentage", Double.class),
-                    parameter("anchorName", String.class, 1, 1),
-                    parameter("axis", String.class, 1, 1));
+    public static final FunctionName NAME = new FunctionNameImpl(
+            "mbAnchor",
+            parameter("anchorPercentage", Double.class),
+            parameter("anchorName", String.class, 1, 1),
+            parameter("axis", String.class, 1, 1));
 
     protected MapBoxAnchorFunction() {
         super(NAME);
@@ -66,8 +65,7 @@ public class MapBoxAnchorFunction extends FunctionExpressionImpl {
     public Object evaluate(Object object) {
         SymbolMBLayer.TextAnchor anchor;
         try { // attempt to get value and perform conversion
-            anchor =
-                    SymbolMBLayer.TextAnchor.parse(getExpression(0).evaluate(object, String.class));
+            anchor = SymbolMBLayer.TextAnchor.parse(getExpression(0).evaluate(object, String.class));
         } catch (Exception e) { // probably a type error
             throw new IllegalArgumentException(
                     "Filter Function problem for function \"mbAnchor\" argument #0 - expected anchor name, one of: "

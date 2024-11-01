@@ -56,8 +56,7 @@ public class OracleCurvesOnlineTest extends JDBCTestSupport {
     public void testSingleArc() throws Exception {
         ContentFeatureSource fs = dataStore.getFeatureSource(tname("curves"));
         FilterFactory ff = dataStore.getFilterFactory();
-        PropertyIsEqualTo filter =
-                ff.equal(ff.property(aname("name")), ff.literal("Arc segment"), true);
+        PropertyIsEqualTo filter = ff.equal(ff.property(aname("name")), ff.literal("Arc segment"), true);
         Query q = new Query(tname("curves"), filter);
         q.getHints().put(Hints.LINEARIZATION_TOLERANCE, 0.1);
         ContentFeatureCollection fc = fs.getFeatures(q);
@@ -76,8 +75,7 @@ public class OracleCurvesOnlineTest extends JDBCTestSupport {
     public void testCircularString() throws Exception {
         ContentFeatureSource fs = dataStore.getFeatureSource(tname("curves"));
         FilterFactory ff = dataStore.getFilterFactory();
-        PropertyIsEqualTo filter =
-                ff.equal(ff.property(aname("name")), ff.literal("Arc string"), true);
+        PropertyIsEqualTo filter = ff.equal(ff.property(aname("name")), ff.literal("Arc string"), true);
         ContentFeatureCollection fc = fs.getFeatures(filter);
         assertEquals(1, fc.size());
         SimpleFeature feature = DataUtilities.first(fc);
@@ -93,8 +91,7 @@ public class OracleCurvesOnlineTest extends JDBCTestSupport {
     public void testCompoundOpen() throws Exception {
         ContentFeatureSource fs = dataStore.getFeatureSource(tname("curves"));
         FilterFactory ff = dataStore.getFilterFactory();
-        PropertyIsEqualTo filter =
-                ff.equal(ff.property(aname("name")), ff.literal("Compound line string"), true);
+        PropertyIsEqualTo filter = ff.equal(ff.property(aname("name")), ff.literal("Compound line string"), true);
         ContentFeatureCollection fc = fs.getFeatures(filter);
         assertEquals(1, fc.size());
         SimpleFeature feature = DataUtilities.first(fc);
@@ -111,8 +108,7 @@ public class OracleCurvesOnlineTest extends JDBCTestSupport {
         assertEquals(new Coordinate(20, 45), ls1.getCoordinateN(1));
 
         CircularString cs = (CircularString) components.get(1);
-        assertArrayEquals(
-                new double[] {20.0, 45.0, 23.0, 48.0, 20.0, 51.0}, cs.getControlPoints(), 0d);
+        assertArrayEquals(new double[] {20.0, 45.0, 23.0, 48.0, 20.0, 51.0}, cs.getControlPoints(), 0d);
 
         LineString ls2 = components.get(2);
         assertEquals(2, ls2.getNumPoints());
@@ -124,8 +120,7 @@ public class OracleCurvesOnlineTest extends JDBCTestSupport {
     public void testCompoundClosed() throws Exception {
         ContentFeatureSource fs = dataStore.getFeatureSource(tname("curves"));
         FilterFactory ff = dataStore.getFilterFactory();
-        PropertyIsEqualTo filter =
-                ff.equal(ff.property(aname("name")), ff.literal("Closed mixed line"), true);
+        PropertyIsEqualTo filter = ff.equal(ff.property(aname("name")), ff.literal("Closed mixed line"), true);
         ContentFeatureCollection fc = fs.getFeatures(filter);
         assertEquals(1, fc.size());
         SimpleFeature feature = DataUtilities.first(fc);
@@ -174,8 +169,7 @@ public class OracleCurvesOnlineTest extends JDBCTestSupport {
     public void testCompoundPolygon() throws Exception {
         ContentFeatureSource fs = dataStore.getFeatureSource(tname("curves"));
         FilterFactory ff = dataStore.getFilterFactory();
-        PropertyIsEqualTo filter =
-                ff.equal(ff.property(aname("name")), ff.literal("Compound polygon"), true);
+        PropertyIsEqualTo filter = ff.equal(ff.property(aname("name")), ff.literal("Compound polygon"), true);
         ContentFeatureCollection fc = fs.getFeatures(filter);
         assertEquals(1, fc.size());
         SimpleFeature feature = DataUtilities.first(fc);
@@ -203,8 +197,7 @@ public class OracleCurvesOnlineTest extends JDBCTestSupport {
     public void testCompoundPolygon2() throws Exception {
         ContentFeatureSource fs = dataStore.getFeatureSource(tname("curves"));
         FilterFactory ff = dataStore.getFilterFactory();
-        PropertyIsEqualTo filter =
-                ff.equal(ff.property(aname("name")), ff.literal("Compound polygon 2"), true);
+        PropertyIsEqualTo filter = ff.equal(ff.property(aname("name")), ff.literal("Compound polygon 2"), true);
         ContentFeatureCollection fc = fs.getFeatures(filter);
         assertEquals(1, fc.size());
         SimpleFeature feature = DataUtilities.first(fc);
@@ -216,19 +209,14 @@ public class OracleCurvesOnlineTest extends JDBCTestSupport {
         assertTrue(p.getExteriorRing() instanceof CircularRing);
         CircularRing shell = (CircularRing) p.getExteriorRing();
 
-        assertArrayEquals(
-                new double[] {15, 145, 20, 150, 15, 155, 10, 150, 15, 145},
-                shell.getControlPoints(),
-                0d);
+        assertArrayEquals(new double[] {15, 145, 20, 150, 15, 155, 10, 150, 15, 145}, shell.getControlPoints(), 0d);
     }
 
     @Test
     public void testCompoundPolygonWithHole() throws Exception {
         ContentFeatureSource fs = dataStore.getFeatureSource(tname("curves"));
         FilterFactory ff = dataStore.getFilterFactory();
-        PropertyIsEqualTo filter =
-                ff.equal(
-                        ff.property(aname("name")), ff.literal("Compound polygon with hole"), true);
+        PropertyIsEqualTo filter = ff.equal(ff.property(aname("name")), ff.literal("Compound polygon with hole"), true);
         ContentFeatureCollection fc = fs.getFeatures(filter);
         assertEquals(1, fc.size());
         SimpleFeature feature = DataUtilities.first(fc);
@@ -271,8 +259,7 @@ public class OracleCurvesOnlineTest extends JDBCTestSupport {
     public void testMultipolygon() throws Exception {
         ContentFeatureSource fs = dataStore.getFeatureSource(tname("curves"));
         FilterFactory ff = dataStore.getFilterFactory();
-        PropertyIsEqualTo filter =
-                ff.equal(ff.property(aname("name")), ff.literal("Multipolygon with curves"), true);
+        PropertyIsEqualTo filter = ff.equal(ff.property(aname("name")), ff.literal("Multipolygon with curves"), true);
         ContentFeatureCollection fc = fs.getFeatures(filter);
         assertEquals(1, fc.size());
         SimpleFeature feature = DataUtilities.first(fc);
@@ -284,14 +271,25 @@ public class OracleCurvesOnlineTest extends JDBCTestSupport {
 
         Polygon p1 = (Polygon) mp.getGeometryN(0);
         assertTrue(p1.getExteriorRing() instanceof CompoundCurvedGeometry<?>);
-        assertEquals(2, ((CompoundCurvedGeometry<?>) p1.getExteriorRing()).getComponents().size());
+        assertEquals(
+                2,
+                ((CompoundCurvedGeometry<?>) p1.getExteriorRing())
+                        .getComponents()
+                        .size());
         assertEquals(1, p1.getNumInteriorRing());
         assertEquals(
-                2, ((CompoundCurvedGeometry<?>) p1.getInteriorRingN(0)).getComponents().size());
+                2,
+                ((CompoundCurvedGeometry<?>) p1.getInteriorRingN(0))
+                        .getComponents()
+                        .size());
 
         Polygon p2 = (Polygon) mp.getGeometryN(1);
         assertTrue(p2.getExteriorRing() instanceof CompoundCurvedGeometry<?>);
-        assertEquals(2, ((CompoundCurvedGeometry<?>) p2.getExteriorRing()).getComponents().size());
+        assertEquals(
+                2,
+                ((CompoundCurvedGeometry<?>) p2.getExteriorRing())
+                        .getComponents()
+                        .size());
         assertEquals(0, p2.getNumInteriorRing());
     }
 }

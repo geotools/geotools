@@ -28,14 +28,12 @@ import org.geotools.styling.FeatureTypeStyleImpl;
 import org.geotools.styling.visitor.DuplicatingStyleVisitor;
 
 /**
- * A style visitor returning a simplified copy of the style, in particular, simplifying filters and
- * the expressions used in symbolizer properties, when they are found to be static within the
- * context of the current rendering evaluation. It's used inside {@link StreamingRenderer} to
- * simplify the styles before they are used for the current render.
+ * A style visitor returning a simplified copy of the style, in particular, simplifying filters and the expressions used
+ * in symbolizer properties, when they are found to be static within the context of the current rendering evaluation.
+ * It's used inside {@link StreamingRenderer} to simplify the styles before they are used for the current render.
  *
- * <p>Implementation has a quirk: rendering transformations cannot be simplified, they can look
- * static but will be evaluated against the input feature collection/coverage, so they are preserved
- * as-is.
+ * <p>Implementation has a quirk: rendering transformations cannot be simplified, they can look static but will be
+ * evaluated against the input feature collection/coverage, so they are preserved as-is.
  */
 class SimplifyingStyleVisitor extends DuplicatingStyleVisitor {
 
@@ -64,16 +62,14 @@ class SimplifyingStyleVisitor extends DuplicatingStyleVisitor {
 
         FeatureTypeStyle copy = new FeatureTypeStyleImpl(fts);
 
-        List<Rule> rulesCopy =
-                fts.rules().stream()
-                        .filter(Objects::nonNull)
-                        .map(
-                                r -> {
-                                    r.accept(this);
-                                    return !pages.isEmpty() ? (Rule) pages.pop() : null;
-                                })
-                        .filter(Objects::nonNull)
-                        .collect(Collectors.toList());
+        List<Rule> rulesCopy = fts.rules().stream()
+                .filter(Objects::nonNull)
+                .map(r -> {
+                    r.accept(this);
+                    return !pages.isEmpty() ? (Rule) pages.pop() : null;
+                })
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
 
         copy.rules().clear();
         copy.rules().addAll(rulesCopy);
@@ -91,8 +87,7 @@ class SimplifyingStyleVisitor extends DuplicatingStyleVisitor {
         copy.getOptions().putAll(fts.getOptions());
 
         if (STRICT && !copy.equals(fts)) {
-            throw new IllegalStateException(
-                    "Was unable to duplicate provided FeatureTypeStyle:" + fts);
+            throw new IllegalStateException("Was unable to duplicate provided FeatureTypeStyle:" + fts);
         }
 
         pages.push(copy);

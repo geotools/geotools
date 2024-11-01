@@ -34,8 +34,7 @@ import org.geotools.util.factory.Hints;
  */
 public final class JP2KFormat extends BaseGDALGridFormat implements Format {
     /** Logger. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(JP2KFormat.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(JP2KFormat.class);
 
     /** Creates an instance and sets the metadata. */
     public JP2KFormat() {

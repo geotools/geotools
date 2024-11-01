@@ -21,8 +21,7 @@ import java.util.HashSet;
 /**
  * Holds the collection of encoded XSD ids to ensure that they're unique, therefore valid.
  *
- * @author Rini Angreani, Curtin University of Technology (with Gabriel Roldan and Justin
- *     Deoliveira's help)
+ * @author Rini Angreani, Curtin University of Technology (with Gabriel Roldan and Justin Deoliveira's help)
  */
 public class XSDIdRegistry {
     HashSet<String> ids = new HashSet<>();

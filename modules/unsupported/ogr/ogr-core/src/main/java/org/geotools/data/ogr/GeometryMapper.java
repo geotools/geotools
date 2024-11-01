@@ -57,8 +57,8 @@ abstract class GeometryMapper {
         }
 
         /**
-         * Reads the current feature's geometry using wkb encoding. A wkbReader should be provided
-         * since it's not thread safe by design.
+         * Reads the current feature's geometry using wkb encoding. A wkbReader should be provided since it's not thread
+         * safe by design.
          */
         @Override
         Geometry parseOgrGeometry(Object geom) throws IOException {
@@ -98,8 +98,8 @@ abstract class GeometryMapper {
         }
 
         /**
-         * Reads the current feature's geometry using wkb encoding. A wkbReader should be provided
-         * since it's not thread safe by design.
+         * Reads the current feature's geometry using wkb encoding. A wkbReader should be provided since it's not thread
+         * safe by design.
          */
         @Override
         Geometry parseOgrGeometry(Object geom) throws IOException {

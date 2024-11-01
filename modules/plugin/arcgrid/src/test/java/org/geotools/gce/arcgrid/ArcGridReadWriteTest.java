@@ -56,21 +56,14 @@ public class ArcGridReadWriteTest extends ArcGridBaseTestCase {
         // create a temporary output file
         // temporary file to use
         File tmpFile =
-                TestData.temp(
-                        this,
-                        Long.toString(Math.round(100000 * generator.nextDouble()))
-                                + testFile.getName());
+                TestData.temp(this, Long.toString(Math.round(100000 * generator.nextDouble())) + testFile.getName());
         tmpFile.deleteOnExit();
 
         // ESRI
         LOGGER.info(testFile.getName() + " ESRI");
         writeEsriUnCompressed(testFile, tmpFile);
 
-        tmpFile =
-                TestData.temp(
-                        this,
-                        Long.toString(Math.round(100000 * generator.nextDouble()))
-                                + testFile.getName());
+        tmpFile = TestData.temp(this, Long.toString(Math.round(100000 * generator.nextDouble())) + testFile.getName());
         tmpFile.deleteOnExit();
         // GRASS
         LOGGER.info(testFile.getName() + " GRASS");
@@ -93,8 +86,7 @@ public class ArcGridReadWriteTest extends ArcGridBaseTestCase {
                 || (e1.getLowerCorner().getOrdinate(1) != e2.getLowerCorner().getOrdinate(1))
                 || (e1.getUpperCorner().getOrdinate(0) != e2.getUpperCorner().getOrdinate(0))
                 || (e1.getUpperCorner().getOrdinate(1) != e2.getUpperCorner().getOrdinate(1))) {
-            throw new Exception(
-                    "GridCoverage Envelopes are not equal" + e1.toString() + e2.toString());
+            throw new Exception("GridCoverage Envelopes are not equal" + e1.toString() + e2.toString());
         }
 
         /** Checking CRS */
@@ -102,10 +94,9 @@ public class ArcGridReadWriteTest extends ArcGridBaseTestCase {
                         .toWKT()
                         .compareToIgnoreCase(e2.getCoordinateReferenceSystem().toWKT())
                 != 0) {
-            throw new Exception(
-                    "GridCoverage CRS are not equal"
-                            + e1.getCoordinateReferenceSystem().toWKT()
-                            + e2.getCoordinateReferenceSystem().toWKT());
+            throw new Exception("GridCoverage CRS are not equal"
+                    + e1.getCoordinateReferenceSystem().toWKT()
+                    + e2.getCoordinateReferenceSystem().toWKT());
         }
 
         /** Checking values */
@@ -130,10 +121,8 @@ public class ArcGridReadWriteTest extends ArcGridBaseTestCase {
                         value1 = r1.getSampleDouble(i, j, 0);
                         value2 = r2.getSampleDouble(i, j, 0);
 
-                        if (!(noData1.compareTo(value1) == 0 && noData2.compareTo(value2) == 0)
-                                && (value1 != value2)) {
-                            throw new Exception(
-                                    "GridCoverage Values are not equal: " + value1 + ", " + value2);
+                        if (!(noData1.compareTo(value1) == 0 && noData2.compareTo(value2) == 0) && (value1 != value2)) {
+                            throw new Exception("GridCoverage Values are not equal: " + value1 + ", " + value2);
                         }
                     }
                 }
@@ -143,8 +132,7 @@ public class ArcGridReadWriteTest extends ArcGridBaseTestCase {
     /** A Simple Test Method which read an arcGrid and write it as a GRASS Ascii Grid */
     public void writeGrassUnCompressed(File rf, File wf) throws Exception {
 
-        final Hints hints =
-                new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, DefaultGeographicCRS.WGS84);
+        final Hints hints = new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, DefaultGeographicCRS.WGS84);
         /** Step 1: Reading the coverage */
         GridCoverageReader reader = new ArcGridReader(rf, hints);
         final GridCoverage2D gc1 = (GridCoverage2D) reader.read(null);
@@ -187,8 +175,7 @@ public class ArcGridReadWriteTest extends ArcGridBaseTestCase {
     /** A Simple Test Method which read an arcGrid and write it as an ArcGrid */
     public void writeEsriUnCompressed(File rf, File wf) throws Exception {
 
-        final Hints hints =
-                new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, DefaultGeographicCRS.WGS84);
+        final Hints hints = new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, DefaultGeographicCRS.WGS84);
         /** Step 1: Reading the coverage */
         GridCoverageReader reader = new ArcGridReader(rf, hints);
         final GridCoverage2D gc1 = (GridCoverage2D) reader.read(null);
@@ -241,12 +228,9 @@ public class ArcGridReadWriteTest extends ArcGridBaseTestCase {
 
         assertNotNull("Unable to get an a reader for a file", af.getReader(testFile));
         assertNotNull("Unable to get an a reader for a URL", af.getReader(testURL));
-        assertFalse(
-                "We should not get a reader for a non existing file",
-                af.accepts(TestData.temp(this, "temp")));
+        assertFalse("We should not get a reader for a non existing file", af.accepts(TestData.temp(this, "temp")));
         assertTrue(
-                "Write params of incorrect type",
-                af.getDefaultImageIOWriteParameters() instanceof ArcGridWriteParams);
+                "Write params of incorrect type", af.getDefaultImageIOWriteParameters() instanceof ArcGridWriteParams);
 
         boolean caught = false;
         try {
@@ -257,14 +241,12 @@ public class ArcGridReadWriteTest extends ArcGridBaseTestCase {
         assertFalse("Streams are  supported now", caught);
 
         // testing writer
-        assertNotNull(
-                "Unable to get a writer for a file", af.getWriter(TestData.temp(this, "temp")));
+        assertNotNull("Unable to get a writer for a file", af.getWriter(TestData.temp(this, "temp")));
         assertNotNull(
                 "Unable to get a writer for a url",
                 af.getWriter(TestData.temp(this, "temp").toURI().toURL()));
         assertNotNull(
-                "We should be ablet to write on an http link",
-                af.getWriter(new URL("http://www.geo-solutions.it")));
+                "We should be ablet to write on an http link", af.getWriter(new URL("http://www.geo-solutions.it")));
     }
 
     @Test

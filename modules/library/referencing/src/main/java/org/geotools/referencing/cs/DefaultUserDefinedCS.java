@@ -24,12 +24,11 @@ import org.geotools.api.referencing.cs.CoordinateSystemAxis;
 import org.geotools.api.referencing.cs.UserDefinedCS;
 
 /**
- * A two- or three-dimensional coordinate system that consists of any combination of coordinate axes
- * not covered by any other Coordinate System type. An example is a multilinear coordinate system
- * which contains one coordinate axis that may have any 1-D shape which has no intersections with
- * itself. This non-straight axis is supplemented by one or two straight axes to complete a 2 or 3
- * dimensional coordinate system. The non-straight axis is typically incrementally straight or
- * curved. A {@code UserDefinedCS} shall have two or three {@linkplain #getAxis axis}.
+ * A two- or three-dimensional coordinate system that consists of any combination of coordinate axes not covered by any
+ * other Coordinate System type. An example is a multilinear coordinate system which contains one coordinate axis that
+ * may have any 1-D shape which has no intersections with itself. This non-straight axis is supplemented by one or two
+ * straight axes to complete a 2 or 3 dimensional coordinate system. The non-straight axis is typically incrementally
+ * straight or curved. A {@code UserDefinedCS} shall have two or three {@linkplain #getAxis axis}.
  *
  * @since 2.1
  * @version $Id$
@@ -40,10 +39,10 @@ public class DefaultUserDefinedCS extends AbstractCS implements UserDefinedCS {
     private static final long serialVersionUID = -4904091898305706316L;
 
     /**
-     * Constructs a new coordinate system with the same values than the specified one. This copy
-     * constructor provides a way to wrap an arbitrary implementation into a Geotools one or a
-     * user-defined one (as a subclass), usually in order to leverage some implementation-specific
-     * API. This constructor performs a shallow copy, i.e. the properties are not cloned.
+     * Constructs a new coordinate system with the same values than the specified one. This copy constructor provides a
+     * way to wrap an arbitrary implementation into a Geotools one or a user-defined one (as a subclass), usually in
+     * order to leverage some implementation-specific API. This constructor performs a shallow copy, i.e. the properties
+     * are not cloned.
      *
      * @since 2.2
      */
@@ -58,8 +57,7 @@ public class DefaultUserDefinedCS extends AbstractCS implements UserDefinedCS {
      * @param axis0 The first axis.
      * @param axis1 The second axis.
      */
-    public DefaultUserDefinedCS(
-            final String name, final CoordinateSystemAxis axis0, final CoordinateSystemAxis axis1) {
+    public DefaultUserDefinedCS(final String name, final CoordinateSystemAxis axis0, final CoordinateSystemAxis axis1) {
         super(name, axis0, axis1);
     }
 
@@ -80,25 +78,21 @@ public class DefaultUserDefinedCS extends AbstractCS implements UserDefinedCS {
     }
 
     /**
-     * Constructs a two-dimensional coordinate system from a set of properties. The properties map
-     * is given unchanged to the {@linkplain AbstractCS#AbstractCS(Map,CoordinateSystemAxis[])
-     * super-class constructor}.
+     * Constructs a two-dimensional coordinate system from a set of properties. The properties map is given unchanged to
+     * the {@linkplain AbstractCS#AbstractCS(Map,CoordinateSystemAxis[]) super-class constructor}.
      *
      * @param properties Set of properties. Should contains at least {@code "name"}.
      * @param axis0 The first axis.
      * @param axis1 The second axis.
      */
     public DefaultUserDefinedCS(
-            final Map<String, ?> properties,
-            final CoordinateSystemAxis axis0,
-            final CoordinateSystemAxis axis1) {
+            final Map<String, ?> properties, final CoordinateSystemAxis axis0, final CoordinateSystemAxis axis1) {
         super(properties, axis0, axis1);
     }
 
     /**
-     * Constructs a three-dimensional coordinate system from a set of properties. The properties map
-     * is given unchanged to the {@linkplain AbstractCS#AbstractCS(Map,CoordinateSystemAxis[])
-     * super-class constructor}.
+     * Constructs a three-dimensional coordinate system from a set of properties. The properties map is given unchanged
+     * to the {@linkplain AbstractCS#AbstractCS(Map,CoordinateSystemAxis[]) super-class constructor}.
      *
      * @param properties Set of properties. Should contains at least {@code "name"}.
      * @param axis0 The first axis.

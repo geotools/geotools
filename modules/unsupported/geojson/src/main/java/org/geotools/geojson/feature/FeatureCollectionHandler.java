@@ -27,8 +27,7 @@ import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geojson.DelegatingHandler;
 import org.json.simple.parser.ParseException;
 
-public class FeatureCollectionHandler extends DelegatingHandler<SimpleFeature>
-        implements IFeatureCollectionHandler {
+public class FeatureCollectionHandler extends DelegatingHandler<SimpleFeature> implements IFeatureCollectionHandler {
 
     SimpleFeatureBuilder builder;
     AttributeIO attio;

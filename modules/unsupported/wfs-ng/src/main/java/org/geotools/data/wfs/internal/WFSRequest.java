@@ -48,8 +48,7 @@ public abstract class WFSRequest extends AbstractRequest implements Request {
 
     private String handle;
 
-    public WFSRequest(
-            final WFSOperationType operation, final WFSConfig config, final WFSStrategy strategy) {
+    public WFSRequest(final WFSOperationType operation, final WFSConfig config, final WFSStrategy strategy) {
 
         super(url(operation, config, strategy), null);
         this.operation = operation;
@@ -107,8 +106,7 @@ public abstract class WFSRequest extends AbstractRequest implements Request {
         return strategy;
     }
 
-    private static URL url(
-            final WFSOperationType operation, final WFSConfig config, final WFSStrategy strategy) {
+    private static URL url(final WFSOperationType operation, final WFSConfig config, final WFSStrategy strategy) {
 
         final boolean suportsGet = strategy.supportsOperation(operation, GET);
         final boolean suportsPost = strategy.supportsOperation(operation, POST);
@@ -187,10 +185,7 @@ public abstract class WFSRequest extends AbstractRequest implements Request {
 
         if (contentType == null) {
             Logging.getLogger(WFSRequest.class)
-                    .warning(
-                            this.getOperation()
-                                    + " request returned null content type for URL "
-                                    + getFinalURL());
+                    .warning(this.getOperation() + " request returned null content type for URL " + getFinalURL());
         }
 
         WFSResponseFactory responseFactory;

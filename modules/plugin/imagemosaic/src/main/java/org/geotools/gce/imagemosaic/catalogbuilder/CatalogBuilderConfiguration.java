@@ -31,8 +31,7 @@ import org.geotools.util.Utilities;
 import org.geotools.util.factory.Hints;
 
 /**
- * Simple bean that conveys the information needed by the CatalogBuilder to create a catalogue of
- * granules
+ * Simple bean that conveys the information needed by the CatalogBuilder to create a catalogue of granules
  *
  * @author Simone Giannecchini, GeoSolutions SAS
  */
@@ -153,9 +152,7 @@ public class CatalogBuilderConfiguration implements Cloneable {
     }
 
     private static boolean equalsParameter(
-            CatalogBuilderConfiguration thisConfig,
-            CatalogBuilderConfiguration thatConfig,
-            String parameterName) {
+            CatalogBuilderConfiguration thisConfig, CatalogBuilderConfiguration thatConfig, String parameterName) {
         String thisValue = thisConfig.getParameter(parameterName);
         String thatValue = thatConfig.getParameter(parameterName);
         if (!(thisValue == null && thatValue == null) && !Objects.equals(thisValue, thatValue)) {
@@ -184,7 +181,9 @@ public class CatalogBuilderConfiguration implements Cloneable {
     public String toString() {
         final StringBuilder builder = new StringBuilder();
         builder.append("CatalogBuilderConfiguration").append("\n");
-        builder.append("wildcardString:\t\t\t").append(getParameter(Prop.WILDCARD)).append("\n");
+        builder.append("wildcardString:\t\t\t")
+                .append(getParameter(Prop.WILDCARD))
+                .append("\n");
         builder.append("indexName:\t\t\t").append(getParameter(Prop.INDEX_NAME)).append("\n");
         builder.append("absolute:\t\t\t")
                 .append(Boolean.parseBoolean(getParameter(Prop.ABSOLUTE_PATH)))
@@ -233,8 +232,7 @@ public class CatalogBuilderConfiguration implements Cloneable {
             // indexingDirectories = directories;
         }
         String indexName = getParameter(Prop.INDEX_NAME);
-        if (indexName == null || indexName.length() == 0)
-            throw new IllegalStateException("Index name cannot be empty");
+        if (indexName == null || indexName.length() == 0) throw new IllegalStateException("Index name cannot be empty");
 
         // Check the root mosaic directory
         String rootMosaicDirectory = getParameter(Prop.ROOT_MOSAIC_DIR);

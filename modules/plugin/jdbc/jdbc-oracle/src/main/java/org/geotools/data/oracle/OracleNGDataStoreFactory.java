@@ -44,14 +44,8 @@ public class OracleNGDataStoreFactory extends JDBCDataStoreFactory {
     private static final String JDBC_PATH = "jdbc:oracle:thin:@";
 
     /** parameter for database type */
-    public static final Param DBTYPE =
-            new Param(
-                    "dbtype",
-                    String.class,
-                    "Type",
-                    true,
-                    "oracle",
-                    Collections.singletonMap(Parameter.LEVEL, "program"));
+    public static final Param DBTYPE = new Param(
+            "dbtype", String.class, "Type", true, "oracle", Collections.singletonMap(Parameter.LEVEL, "program"));
 
     /** parameter for database port */
     public static final Param PORT = new Param("port", Integer.class, "Port", false, 1521);
@@ -63,75 +57,56 @@ public class OracleNGDataStoreFactory extends JDBCDataStoreFactory {
     public static final Param DATABASE = new Param("database", String.class, "Database", true);
 
     /** parameter that enables estimated extends instead of exact ones */
-    public static final Param ESTIMATED_EXTENTS =
-            new Param(
-                    "Estimated extends",
-                    Boolean.class,
-                    "Use the spatial index information to quickly get an estimate of the data bounds",
-                    false,
-                    Boolean.TRUE);
+    public static final Param ESTIMATED_EXTENTS = new Param(
+            "Estimated extends",
+            Boolean.class,
+            "Use the spatial index information to quickly get an estimate of the data bounds",
+            false,
+            Boolean.TRUE);
 
     /** parameter for namespace of the datastore */
     public static final Param LOOSEBBOX =
-            new Param(
-                    "Loose bbox",
-                    Boolean.class,
-                    "Perform only primary filter on bbox",
-                    false,
-                    Boolean.TRUE);
+            new Param("Loose bbox", Boolean.class, "Perform only primary filter on bbox", false, Boolean.TRUE);
 
     /** Metadata table providing information about primary keys * */
-    public static final Param GEOMETRY_METADATA_TABLE =
-            new Param(
-                    "Geometry metadata table",
-                    String.class,
-                    "The optional table containing geometry metadata (geometry type and srid). Can be expressed as 'schema.name' or just 'name'",
-                    false);
+    public static final Param GEOMETRY_METADATA_TABLE = new Param(
+            "Geometry metadata table",
+            String.class,
+            "The optional table containing geometry metadata (geometry type and srid). Can be expressed as 'schema.name' or just 'name'",
+            false);
 
-    /**
-     * parameter for getting bbox from MDSYS.USER_SDO_GEOM_METADATA or MDSYS.ALL_SDO_GEOM_METADATA
-     * table
-     */
-    public static final Param METADATA_BBOX =
-            new Param(
-                    "Metadata bbox",
-                    Boolean.class,
-                    "Get data bounds quickly from MDSYS.USER_SDO_GEOM_METADATA or MDSYS.ALL_SDO_GEOM_METADATA table",
-                    false,
-                    Boolean.FALSE);
+    /** parameter for getting bbox from MDSYS.USER_SDO_GEOM_METADATA or MDSYS.ALL_SDO_GEOM_METADATA table */
+    public static final Param METADATA_BBOX = new Param(
+            "Metadata bbox",
+            Boolean.class,
+            "Get data bounds quickly from MDSYS.USER_SDO_GEOM_METADATA or MDSYS.ALL_SDO_GEOM_METADATA table",
+            false,
+            Boolean.FALSE);
 
     /** parameter for specify the login timeout. */
-    public static final Param LOGIN_TIMEOUT =
-            new Param(
-                    "Login Timeout (s)",
-                    Integer.class,
-                    "Specifies the timeout for opening an Oracle JDBC connection (seconds)",
-                    false);
+    public static final Param LOGIN_TIMEOUT = new Param(
+            "Login Timeout (s)",
+            Integer.class,
+            "Specifies the timeout for opening an Oracle JDBC connection (seconds)",
+            false);
 
     /** Specifies the socket connection timeout to the database. */
-    public static final Param CONNECTION_TIMEOUT =
-            new Param(
-                    "Socket connection timeout (ms)",
-                    Integer.class,
-                    "Specifies the timeout when connecting a socket to the database listener (milliseconds)",
-                    false);
+    public static final Param CONNECTION_TIMEOUT = new Param(
+            "Socket connection timeout (ms)",
+            Integer.class,
+            "Specifies the timeout when connecting a socket to the database listener (milliseconds)",
+            false);
 
     /** Specifies the timeout when negotiating a session with the database. */
-    public static final Param OUTBOUND_CONNECTION_TIMEOUT =
-            new Param(
-                    "Outbound connection timeout (ms)",
-                    Integer.class,
-                    "Specifies the timeout when negotiating a session with the database listener (milliseconds)",
-                    false);
+    public static final Param OUTBOUND_CONNECTION_TIMEOUT = new Param(
+            "Outbound connection timeout (ms)",
+            Integer.class,
+            "Specifies the timeout when negotiating a session with the database listener (milliseconds)",
+            false);
 
     /** Specifies whether REMARKS metadata will be returned. */
-    public static final Param GET_REMARKS =
-            new Param(
-                    "Get remarks",
-                    Boolean.class,
-                    "Indicates whether REMARKS are fetched from database",
-                    false,
-                    Boolean.FALSE);
+    public static final Param GET_REMARKS = new Param(
+            "Get remarks", Boolean.class, "Indicates whether REMARKS are fetched from database", false, Boolean.FALSE);
 
     static final String LOGIN_TIMEOUT_NAME = "oracle.jdbc.loginTimeout";
 
@@ -186,8 +161,7 @@ public class OracleNGDataStoreFactory extends JDBCDataStoreFactory {
     }
 
     @Override
-    protected JDBCDataStore createDataStoreInternal(JDBCDataStore dataStore, Map<String, ?> params)
-            throws IOException {
+    protected JDBCDataStore createDataStoreInternal(JDBCDataStore dataStore, Map<String, ?> params) throws IOException {
 
         // make the schema uppercase if it's not already
         if (dataStore.getDatabaseSchema() != null) {
@@ -221,13 +195,11 @@ public class OracleNGDataStoreFactory extends JDBCDataStoreFactory {
             Integer connectionTimeout = (Integer) CONNECTION_TIMEOUT.lookUp(params);
             Integer outboundConnTimeout = (Integer) OUTBOUND_CONNECTION_TIMEOUT.lookUp(params);
             BasicDataSource basicSource = (BasicDataSource) source;
-            if (loginTimeout != null)
-                basicSource.addConnectionProperty(LOGIN_TIMEOUT_NAME, loginTimeout.toString());
+            if (loginTimeout != null) basicSource.addConnectionProperty(LOGIN_TIMEOUT_NAME, loginTimeout.toString());
             if (connectionTimeout != null)
                 basicSource.addConnectionProperty(CONN_TIMEOUT_NAME, connectionTimeout.toString());
             if (outboundConnTimeout != null)
-                basicSource.addConnectionProperty(
-                        OUTBOUND_TIMEOUT_NAME, outboundConnTimeout.toString());
+                basicSource.addConnectionProperty(OUTBOUND_TIMEOUT_NAME, outboundConnTimeout.toString());
         }
 
         if (dataStore.getFetchSize() <= 0) {
@@ -278,8 +250,7 @@ public class OracleNGDataStoreFactory extends JDBCDataStoreFactory {
             // (DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=[host])(PORT=[port, often
             // 1521]))(LOAD_BALANCE=YES)(CONNECT_DATA=(SERVICE_NAME=[oracle_service_name])))
             return JDBC_PATH + db;
-        else if (db.startsWith("/") && host != null && port != null)
-            return JDBC_PATH + "//" + host + ":" + port + db;
+        else if (db.startsWith("/") && host != null && port != null) return JDBC_PATH + "//" + host + ":" + port + db;
         else if (host != null && port != null) return JDBC_PATH + host + ":" + port + ":" + db;
         else
             throw new IOException(

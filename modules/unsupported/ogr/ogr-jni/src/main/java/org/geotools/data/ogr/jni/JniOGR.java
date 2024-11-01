@@ -97,12 +97,10 @@ public class JniOGR implements OGR {
             }
         }
         if (getFieldAsDateTime == null) {
-            throw new RuntimeException(
-                    "Could not locate the desired GetFieldAsDateTime method from Feature");
+            throw new RuntimeException("Could not locate the desired GetFieldAsDateTime method from Feature");
         }
         GET_FIELD_METHOD = getFieldAsDateTime;
-        USE_FLOAT_SECONDS =
-                new Version(gdal.VersionInfo("RELEASE_NAME")).compareTo(new Version("2.0.0")) >= 0;
+        USE_FLOAT_SECONDS = new Version(gdal.VersionInfo("RELEASE_NAME")).compareTo(new Version("2.0.0")) >= 0;
     }
 
     Vector<String> vector(String[] opts) {
@@ -116,9 +114,7 @@ public class JniOGR implements OGR {
         Geometry g2 = Geometry.CreateFromWkt("POINT (2 2)");
         try {
             g1.Touches(g2);
-            if (!GetLastErrorMsg()
-                    .toLowerCase()
-                    .contains("GEOS support not enabled".toLowerCase())) {
+            if (!GetLastErrorMsg().toLowerCase().contains("GEOS support not enabled".toLowerCase())) {
                 isGEOSEnabled = true;
             }
         } catch (Exception ex) {
@@ -172,8 +168,7 @@ public class JniOGR implements OGR {
                 // case OGRERR_INVALID_HANDLE:
                 //    throw new IOException("OGR reported an invalid handle error: " + error);
             case OGRERR_NOT_ENOUGH_DATA:
-                throw new IOException(
-                        "OGR reported not enough data was provided in the last call: " + error);
+                throw new IOException("OGR reported not enough data was provided in the last call: " + error);
             case OGRERR_NOT_ENOUGH_MEMORY:
                 throw new IOException("OGR reported not enough memory is available: " + error);
             case OGRERR_UNSUPPORTED_GEOMETRY_TYPE:
@@ -239,11 +234,9 @@ public class JniOGR implements OGR {
     }
 
     @Override
-    public Object DataSourceCreateLayer(
-            Object dataSource, String name, Object srs, long geomType, String[] opts) {
+    public Object DataSourceCreateLayer(Object dataSource, String name, Object srs, long geomType, String[] opts) {
 
-        return ((DataSource) dataSource)
-                .CreateLayer(name, (SpatialReference) srs, (int) geomType, vector(opts));
+        return ((DataSource) dataSource).CreateLayer(name, (SpatialReference) srs, (int) geomType, vector(opts));
     }
 
     @Override
@@ -541,15 +534,7 @@ public class JniOGR implements OGR {
 
     @Override
     public void FeatureSetFieldDateTime(
-            Object feature,
-            int field,
-            int year,
-            int month,
-            int day,
-            int hour,
-            int minute,
-            int second,
-            int tz) {
+            Object feature, int field, int year, int month, int day, int hour, int minute, int second, int tz) {
         ((Feature) feature).SetField(field, year, month, day, hour, minute, second, tz);
     }
 
@@ -587,8 +572,7 @@ public class JniOGR implements OGR {
         try {
             if (USE_FLOAT_SECONDS) {
                 float[] secondFloat = new float[second.length];
-                GET_FIELD_METHOD.invoke(
-                        feature, i, year, month, day, hour, minute, secondFloat, tzFlag);
+                GET_FIELD_METHOD.invoke(feature, i, year, month, day, hour, minute, secondFloat, tzFlag);
                 for (int j = 0; j < second.length; j++) {
                     second[j] = (int) secondFloat[j];
                 }

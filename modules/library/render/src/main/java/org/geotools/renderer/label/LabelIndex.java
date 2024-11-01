@@ -23,8 +23,8 @@ import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.index.quadtree.Quadtree;
 
 /**
- * Stores label items and helps in finding the interferering ones, either by pure overlap or within
- * a certain distance from the specified bounds
+ * Stores label items and helps in finding the interferering ones, either by pure overlap or within a certain distance
+ * from the specified bounds
  *
  * @author Andrea Aime
  */
@@ -33,9 +33,8 @@ public class LabelIndex {
     Quadtree index = new Quadtree();
 
     /**
-     * Returns true if there is any label in the index within the specified distance from the
-     * bounds. For speed reasons the bounds will be simply expanded by the distance, no curved
-     * buffer will be generated
+     * Returns true if there is any label in the index within the specified distance from the bounds. For speed reasons
+     * the bounds will be simply expanded by the distance, no curved buffer will be generated
      */
     public boolean labelsWithinDistance(Rectangle2D bounds, double distance) {
         if (distance < 0) return false;
@@ -43,15 +42,13 @@ public class LabelIndex {
         Envelope e = toEnvelope(bounds);
         e.expandBy(distance);
         AtomicBoolean intersectionFound = new AtomicBoolean(false);
-        index.query(
-                e,
-                o -> {
-                    if (intersectionFound.get()) return;
-                    InterferenceItem item = (InterferenceItem) o;
-                    if (item.env.intersects(e)) {
-                        intersectionFound.set(true);
-                    }
-                });
+        index.query(e, o -> {
+            if (intersectionFound.get()) return;
+            InterferenceItem item = (InterferenceItem) o;
+            if (item.env.intersects(e)) {
+                intersectionFound.set(true);
+            }
+        });
         return intersectionFound.get();
     }
 

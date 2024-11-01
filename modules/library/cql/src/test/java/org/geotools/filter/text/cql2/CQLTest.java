@@ -109,10 +109,8 @@ public class CQLTest {
     @Test
     public void relateGeoOperation() throws CQLException {
 
-        PropertyIsEqualTo filter =
-                (PropertyIsEqualTo)
-                        CQL.toFilter(
-                                "RELATE(geometry, LINESTRING (-134.921387 58.687767, -135.303391 59.092838), T*****FF*)");
+        PropertyIsEqualTo filter = (PropertyIsEqualTo)
+                CQL.toFilter("RELATE(geometry, LINESTRING (-134.921387 58.687767, -135.303391 59.092838), T*****FF*)");
 
         Assert.assertTrue(
                 "Relate Pattern Function was expected",
@@ -270,15 +268,14 @@ public class CQLTest {
     public void toFilterUsesProvidedFilterFactory() throws Exception {
         final boolean[] called = {false};
 
-        FilterFactory ff =
-                new FilterFactoryImpl() {
-                    @Override
-                    public PropertyName property(String propName) {
-                        called[0] = true;
+        FilterFactory ff = new FilterFactoryImpl() {
+            @Override
+            public PropertyName property(String propName) {
+                called[0] = true;
 
-                        return super.property(propName);
-                    }
-                };
+                return super.property(propName);
+            }
+        };
 
         CQL.toFilter("attName > 20", ff);
         Assert.assertTrue("Provided FilterFactory was not called", called[0]);
@@ -288,15 +285,14 @@ public class CQLTest {
     public void toExpressionUsesProvidedFilterFactory() throws Exception {
         final boolean[] called = {false};
 
-        FilterFactory ff =
-                new FilterFactoryImpl() {
-                    @Override
-                    public PropertyName property(String propName) {
-                        called[0] = true;
+        FilterFactory ff = new FilterFactoryImpl() {
+            @Override
+            public PropertyName property(String propName) {
+                called[0] = true;
 
-                        return super.property(propName);
-                    }
-                };
+                return super.property(propName);
+            }
+        };
 
         CQL.toExpression("attName", ff);
         Assert.assertTrue("Provided FilterFactory was not called", called[0]);

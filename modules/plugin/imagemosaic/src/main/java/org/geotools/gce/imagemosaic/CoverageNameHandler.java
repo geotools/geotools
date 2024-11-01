@@ -24,8 +24,8 @@ import org.geotools.gce.imagemosaic.namecollector.CoverageNameCollectorSPI;
 import org.geotools.gce.imagemosaic.namecollector.CoverageNameCollectorSpiFinder;
 
 /**
- * Class delegated to parse coverageNameCollectors property and setup proper {@link
- * CoverageNameCollector} machinery to be used to return a target coverageName.
+ * Class delegated to parse coverageNameCollectors property and setup proper {@link CoverageNameCollector} machinery to
+ * be used to return a target coverageName.
  */
 class CoverageNameHandler {
 
@@ -47,8 +47,7 @@ class CoverageNameHandler {
             }
 
             CoverageNameCollectorSPI spi =
-                    CoverageNameCollectorSpiFinder.getCoverageNameCollectorSPI()
-                            .get(coverageNameCollectors);
+                    CoverageNameCollectorSpiFinder.getCoverageNameCollectorSPI().get(coverageNameCollectors);
             if (spi != null) {
                 this.spi = spi;
             }
@@ -71,8 +70,7 @@ class CoverageNameHandler {
         }
     }
 
-    String getTargetCoverageName(
-            GridCoverage2DReader inputCoverageReader, Map<String, String> map) {
+    String getTargetCoverageName(GridCoverage2DReader inputCoverageReader, Map<String, String> map) {
         CoverageNameCollector collector = spi.create(inputCoverageReader, properties);
         return collector.getName(inputCoverageReader, map);
     }

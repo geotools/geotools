@@ -27,12 +27,10 @@ import org.geotools.util.factory.Hints.Key;
 public interface PropertyAccessorFactory {
 
     /**
-     * {@link Hints} key used to pass namespace context to {@link #createPropertyAccessor(Class,
-     * String, Class, Hints)} in the form of a {@link NamespaceSupport} instance with the
-     * prefix/namespaceURI mappings
+     * {@link Hints} key used to pass namespace context to {@link #createPropertyAccessor(Class, String, Class, Hints)}
+     * in the form of a {@link NamespaceSupport} instance with the prefix/namespaceURI mappings
      */
-    public static final Key NAMESPACE_CONTEXT =
-            new Hints.Key(org.xml.sax.helpers.NamespaceSupport.class);
+    public static final Key NAMESPACE_CONTEXT = new Hints.Key(org.xml.sax.helpers.NamespaceSupport.class);
 
     /**
      * Creates a property accessor for a particular class.
@@ -41,9 +39,8 @@ public interface PropertyAccessorFactory {
      * @param xpath The xpath expression to evaluate.
      * @param target The kind of result we are expecting (ie Geometry)
      * @param hints Hints to be used when creatign the accessor.
-     * @return The property accessor, or <code>null</code> if this factory cannot create an accessor
-     *     for the specified type.
+     * @return The property accessor, or <code>null</code> if this factory cannot create an accessor for the specified
+     *     type.
      */
-    PropertyAccessor createPropertyAccessor(
-            Class<?> type, String xpath, Class<?> target, Hints hints);
+    PropertyAccessor createPropertyAccessor(Class<?> type, String xpath, Class<?> target, Hints hints);
 }

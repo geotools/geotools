@@ -53,10 +53,7 @@ public interface Element extends ElementGrouping {
     @Override
     public int getMinOccurs();
 
-    /**
-     * Returns the element declaration's name in the Schema document, and element name in the
-     * instance document.
-     */
+    /** Returns the element declaration's name in the Schema document, and element name in the instance document. */
     public String getName();
 
     public URI getNamespace();
@@ -65,8 +62,8 @@ public interface Element extends ElementGrouping {
     public boolean isNillable();
 
     /**
-     * This returns a reference to an element representing this element's substitution group. This
-     * is of particular importance when resolving an instance document's value.
+     * This returns a reference to an element representing this element's substitution group. This is of particular
+     * importance when resolving an instance document's value.
      */
     public Element getSubstitutionGroup();
 

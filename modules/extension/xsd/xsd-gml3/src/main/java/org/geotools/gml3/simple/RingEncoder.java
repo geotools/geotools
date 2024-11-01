@@ -49,8 +49,7 @@ public class RingEncoder extends MultiLineStringEncoder {
     }
 
     @Override
-    public void encode(Geometry geometry, AttributesImpl atts, GMLWriter handler, String gmlId)
-            throws Exception {
+    public void encode(Geometry geometry, AttributesImpl atts, GMLWriter handler, String gmlId) throws Exception {
         handler.startElement(ring, atts);
 
         encodeMembers(geometry, handler, gmlId);

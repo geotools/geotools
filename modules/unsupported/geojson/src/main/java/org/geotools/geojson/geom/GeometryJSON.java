@@ -75,8 +75,8 @@ public class GeometryJSON {
     }
 
     /**
-     * Constructs a geometry json instance specifying the number of decimals to use when encoding
-     * floating point numbers.
+     * Constructs a geometry json instance specifying the number of decimals to use when encoding floating point
+     * numbers.
      */
     public GeometryJSON(int decimals) {
         this.decimals = decimals;
@@ -537,8 +537,7 @@ public class GeometryJSON {
      * @param gcol The geometry collection.
      * @param output The output stream.
      */
-    public void writeGeometryCollection(GeometryCollection gcol, OutputStream output)
-            throws IOException {
+    public void writeGeometryCollection(GeometryCollection gcol, OutputStream output) throws IOException {
         writeGeometryCollection(gcol, (Object) output);
     }
 
@@ -629,14 +628,10 @@ public class GeometryJSON {
 
     List<CoordinateSequenceEncoder> toList(Polygon poly) {
         ArrayList<CoordinateSequenceEncoder> list = new ArrayList<>();
-        list.add(
-                new CoordinateSequenceEncoder(
-                        poly.getExteriorRing().getCoordinateSequence(), scale));
+        list.add(new CoordinateSequenceEncoder(poly.getExteriorRing().getCoordinateSequence(), scale));
 
         for (int i = 0; i < poly.getNumInteriorRing(); i++) {
-            list.add(
-                    new CoordinateSequenceEncoder(
-                            poly.getInteriorRingN(i).getCoordinateSequence(), scale));
+            list.add(new CoordinateSequenceEncoder(poly.getInteriorRingN(i).getCoordinateSequence(), scale));
         }
 
         return list;
@@ -649,9 +644,7 @@ public class GeometryJSON {
             if (g instanceof Polygon) {
                 list.add(toList((Polygon) g));
             } else if (g instanceof LineString) {
-                list.add(
-                        new CoordinateSequenceEncoder(
-                                ((LineString) g).getCoordinateSequence(), scale));
+                list.add(new CoordinateSequenceEncoder(((LineString) g).getCoordinateSequence(), scale));
             } else if (g instanceof Point) {
                 list.add(new CoordinateSequenceEncoder(((Point) g).getCoordinateSequence(), scale));
             }
@@ -662,14 +655,14 @@ public class GeometryJSON {
     static class CoordinateSequenceEncoder implements JSONAware /*, JSONStreamAware*/ {
 
         /**
-         * The min value at which the decimal notation is used (below it, the computerized
-         * scientific one is used instead)
+         * The min value at which the decimal notation is used (below it, the computerized scientific one is used
+         * instead)
          */
         private static final double DECIMAL_MIN = Math.pow(10, -3);
 
         /**
-         * The max value at which the decimal notation is used (above it, the computerized
-         * scientific one is used instead)
+         * The max value at which the decimal notation is used (above it, the computerized scientific one is used
+         * instead)
          */
         private static final double DECIMAL_MAX = Math.pow(10, 7);
 

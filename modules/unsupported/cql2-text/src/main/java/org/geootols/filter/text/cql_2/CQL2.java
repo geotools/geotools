@@ -24,8 +24,8 @@ import org.geotools.filter.text.commons.ExpressionToText;
 import org.geotools.filter.text.cql2.CQLException;
 
 /**
- * <b>OGC API CQL2</b>. This class presents the operations available to parse the CQL2 language and
- * generates the correspondent filter.
+ * <b>OGC API CQL2</b>. This class presents the operations available to parse the CQL2 language and generates the
+ * correspondent filter.
  *
  * <p>
  */
@@ -37,8 +37,7 @@ public class CQL2 {
     }
 
     /**
-     * Parses the input string in CQL2 format into a Filter, using the systems default FilterFactory
-     * implementation.
+     * Parses the input string in CQL2 format into a Filter, using the systems default FilterFactory implementation.
      *
      * @param cql2Predicate a string containing a query predicate in CQL format.
      * @return a {@link Filter} equivalent to the constraint specified in <code>CQL2</code> .
@@ -53,12 +52,11 @@ public class CQL2 {
      * Parses the input string in CQL2 format into a Filter, using the provided FilterFactory.
      *
      * @param cql2Predicate a string containing a query predicate in CQL2 format.
-     * @param filterFactory the {@link FilterFactory} to use for the creation of the Filter. If it
-     *     is null the method finds the default implementation.
+     * @param filterFactory the {@link FilterFactory} to use for the creation of the Filter. If it is null the method
+     *     finds the default implementation.
      * @return a {@link Filter} equivalent to the constraint specified in <code>Predicate</code>.
      */
-    public static Filter toFilter(final String cql2Predicate, final FilterFactory filterFactory)
-            throws CQLException {
+    public static Filter toFilter(final String cql2Predicate, final FilterFactory filterFactory) throws CQLException {
 
         CQL2CompilerFactory compilerFactory = new CQL2CompilerFactory();
         Filter result = CompilerUtil.parseFilter(cql2Predicate, compilerFactory, filterFactory);
@@ -67,8 +65,8 @@ public class CQL2 {
     }
 
     /**
-     * Parses the input string in CQL2 format into an Expression, using the systems default {@link
-     * FilterFactory} implementation.
+     * Parses the input string in CQL2 format into an Expression, using the systems default {@link FilterFactory}
+     * implementation.
      *
      * @param cql2Expression a string containing an CQL2 expression.
      * @return a {@link Expression} equivalent to the one specified in <code>cql2Expression</code>.
@@ -78,22 +76,20 @@ public class CQL2 {
     }
 
     /**
-     * Parses the input string in CQL2 format and makes the correspondent Expression , using the
-     * provided FilterFactory.
+     * Parses the input string in CQL2 format and makes the correspondent Expression , using the provided FilterFactory.
      *
      * @param cql2Expression a string containing a CQL2 expression.
-     * @param filterFactory the {@link FilterFactory} to use for the creation of the Expression. If
-     *     it is null the method finds the default implementation.
+     * @param filterFactory the {@link FilterFactory} to use for the creation of the Expression. If it is null the
+     *     method finds the default implementation.
      * @return a {@link Filter} equivalent to the constraint specified in <code>cql2Expression
      *     </code>.
      */
-    public static Expression toExpression(
-            final String cql2Expression, final FilterFactory filterFactory) throws CQLException {
+    public static Expression toExpression(final String cql2Expression, final FilterFactory filterFactory)
+            throws CQLException {
 
         CQL2CompilerFactory compilerFactory = new CQL2CompilerFactory();
 
-        Expression expression =
-                CompilerUtil.parseExpression(cql2Expression, compilerFactory, filterFactory);
+        Expression expression = CompilerUtil.parseExpression(cql2Expression, compilerFactory, filterFactory);
 
         return expression;
     }

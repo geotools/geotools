@@ -39,9 +39,7 @@ public class WPSStatusTest extends WPSTestSupport {
         Encoder encoder = new Encoder(createConfiguration());
         String encodedGetStatus = encoder.encodeAsString(resultType, WPS.StatusInfo);
 
-        Assert.assertTrue(
-                encodedGetStatus.contains(
-                        "<wps:JobID>8ade9b04-8282-11eb-9a16-0050568030a3</wps:JobID>"));
+        Assert.assertTrue(encodedGetStatus.contains("<wps:JobID>8ade9b04-8282-11eb-9a16-0050568030a3</wps:JobID>"));
         Assert.assertTrue(encodedGetStatus.contains("<wps:Status>Accepted</wps:Status>"));
     }
 }

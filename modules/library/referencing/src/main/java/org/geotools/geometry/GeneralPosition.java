@@ -28,19 +28,16 @@ import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.util.SuppressFBWarnings;
 
 /**
- * Holds the coordinates for a position within some coordinate reference system. Since {@code
- * DirectPosition}s, as data types, will often be included in larger objects (such as {@linkplain
- * org.geotools.geometry.Geometry geometries}) that have references to {@link
- * CoordinateReferenceSystem}, the {@link #getCoordinateReferenceSystem} method may returns {@code
- * null} if this particular {@code DirectPosition} is included in a larger object with such a
- * reference to a {@linkplain CoordinateReferenceSystem coordinate reference system}. In this case,
- * the cordinate reference system is implicitly assumed to take on the value of the containing
- * object's {@link CoordinateReferenceSystem}.
+ * Holds the coordinates for a position within some coordinate reference system. Since {@code DirectPosition}s, as data
+ * types, will often be included in larger objects (such as {@linkplain org.geotools.geometry.Geometry geometries}) that
+ * have references to {@link CoordinateReferenceSystem}, the {@link #getCoordinateReferenceSystem} method may returns
+ * {@code null} if this particular {@code DirectPosition} is included in a larger object with such a reference to a
+ * {@linkplain CoordinateReferenceSystem coordinate reference system}. In this case, the cordinate reference system is
+ * implicitly assumed to take on the value of the containing object's {@link CoordinateReferenceSystem}.
  *
  * <p>This particular implementation of {@code DirectPosition} is said "General" because it uses an
- * {@linkplain #ordinates array of ordinates} of an arbitrary length. If the direct position is know
- * to be always two-dimensional, then {@link Position2D} may provides a more efficient
- * implementation.
+ * {@linkplain #ordinates array of ordinates} of an arbitrary length. If the direct position is know to be always
+ * two-dimensional, then {@link Position2D} may provides a more efficient implementation.
  *
  * <p>Most methods in this implementation are final for performance reason.
  *
@@ -62,8 +59,8 @@ public class GeneralPosition extends AbstractPosition implements Serializable, C
     private CoordinateReferenceSystem crs;
 
     /**
-     * Constructs a position using the specified coordinate reference system. The number of
-     * dimensions is inferred from the coordinate reference system.
+     * Constructs a position using the specified coordinate reference system. The number of dimensions is inferred from
+     * the coordinate reference system.
      *
      * @param crs The coordinate reference system to be given to this position.
      * @since 2.2
@@ -84,8 +81,7 @@ public class GeneralPosition extends AbstractPosition implements Serializable, C
     }
 
     /**
-     * Constructs a position with the specified ordinates. The {@code ordinates} array will be
-     * copied.
+     * Constructs a position with the specified ordinates. The {@code ordinates} array will be copied.
      *
      * @param ordinates The ordinate values to copy.
      */
@@ -94,10 +90,9 @@ public class GeneralPosition extends AbstractPosition implements Serializable, C
     }
 
     /**
-     * Constructs a 2D position from the specified ordinates. Despite their name, the
-     * (<var>x</var>,<var>y</var>) coordinates don't need to be oriented toward ({@linkplain
-     * org.geotools.api.referencing.cs.AxisDirection#EAST East}, {@linkplain
-     * org.geotools.api.referencing.cs.AxisDirection#NORTH North}). See the {@link Position2D}
+     * Constructs a 2D position from the specified ordinates. Despite their name, the (<var>x</var>,<var>y</var>)
+     * coordinates don't need to be oriented toward ({@linkplain org.geotools.api.referencing.cs.AxisDirection#EAST
+     * East}, {@linkplain org.geotools.api.referencing.cs.AxisDirection#NORTH North}). See the {@link Position2D}
      * javadoc for details.
      *
      * @param x The first ordinate value.
@@ -110,9 +105,9 @@ public class GeneralPosition extends AbstractPosition implements Serializable, C
     /**
      * Constructs a 3D position from the specified ordinates. Despite their name, the
      * (<var>x</var>,<var>y</var>,<var>z</var>) coordinates don't need to be oriented toward
-     * ({@linkplain org.geotools.api.referencing.cs.AxisDirection#EAST East}, {@linkplain
-     * org.geotools.api.referencing.cs.AxisDirection#NORTH North}, {@linkplain
-     * org.geotools.api.referencing.cs.AxisDirection#UP Up}).
+     * ({@linkplain org.geotools.api.referencing.cs.AxisDirection#EAST East},
+     * {@linkplain org.geotools.api.referencing.cs.AxisDirection#NORTH North},
+     * {@linkplain org.geotools.api.referencing.cs.AxisDirection#UP Up}).
      *
      * @param x The first ordinate value.
      * @param y The second ordinate value.
@@ -143,9 +138,9 @@ public class GeneralPosition extends AbstractPosition implements Serializable, C
     }
 
     /**
-     * Returns the coordinate reference system in which the coordinate is given. May be {@code null}
-     * if this particular {@code DirectPosition} is included in a larger object with such a
-     * reference to a {@linkplain CoordinateReferenceSystem coordinate reference system}.
+     * Returns the coordinate reference system in which the coordinate is given. May be {@code null} if this particular
+     * {@code DirectPosition} is included in a larger object with such a reference to a
+     * {@linkplain CoordinateReferenceSystem coordinate reference system}.
      *
      * @return The coordinate reference system, or {@code null}.
      */
@@ -158,19 +153,16 @@ public class GeneralPosition extends AbstractPosition implements Serializable, C
      * Set the coordinate reference system in which the coordinate is given.
      *
      * @param crs The new coordinate reference system, or {@code null}.
-     * @throws MismatchedDimensionException if the specified CRS doesn't have the expected number of
-     *     dimensions.
+     * @throws MismatchedDimensionException if the specified CRS doesn't have the expected number of dimensions.
      */
-    public void setCoordinateReferenceSystem(final CoordinateReferenceSystem crs)
-            throws MismatchedDimensionException {
+    public void setCoordinateReferenceSystem(final CoordinateReferenceSystem crs) throws MismatchedDimensionException {
         checkCoordinateReferenceSystemDimension(crs, getDimension());
         this.crs = crs;
     }
 
     /**
-     * The length of coordinate sequence (the number of entries). This may be less than or equal to
-     * the dimensionality of the {@linkplain #getCoordinateReferenceSystem() coordinate reference
-     * system}.
+     * The length of coordinate sequence (the number of entries). This may be less than or equal to the dimensionality
+     * of the {@linkplain #getCoordinateReferenceSystem() coordinate reference system}.
      *
      * @return The dimensionality of this position.
      */
@@ -180,8 +172,7 @@ public class GeneralPosition extends AbstractPosition implements Serializable, C
     }
 
     /**
-     * Returns a sequence of numbers that hold the coordinate of this position in its reference
-     * system.
+     * Returns a sequence of numbers that hold the coordinate of this position in its reference system.
      *
      * @return A copy of the {@linkplain #ordinates coordinates}.
      */
@@ -216,8 +207,8 @@ public class GeneralPosition extends AbstractPosition implements Serializable, C
 
     /**
      * Set this coordinate to the specified direct position. If the specified position contains a
-     * {@linkplain CoordinateReferenceSystem coordinate reference system}, then the CRS for this
-     * position will be set to the CRS of the specified position.
+     * {@linkplain CoordinateReferenceSystem coordinate reference system}, then the CRS for this position will be set to
+     * the CRS of the specified position.
      *
      * @param position The new position for this point.
      * @throws MismatchedDimensionException if this point doesn't have the expected dimension.
@@ -232,23 +223,20 @@ public class GeneralPosition extends AbstractPosition implements Serializable, C
     }
 
     /**
-     * Set this coordinate to the specified direct position. This method is identical to {@link
-     * #setLocation(Position)}, but is slightly faster in the special case of an {@code
-     * GeneralDirectPosition} implementation.
+     * Set this coordinate to the specified direct position. This method is identical to {@link #setLocation(Position)},
+     * but is slightly faster in the special case of an {@code GeneralDirectPosition} implementation.
      *
      * @param position The new position for this point.
      * @throws MismatchedDimensionException if this point doesn't have the expected dimension.
      */
-    public final void setLocation(final GeneralPosition position)
-            throws MismatchedDimensionException {
+    public final void setLocation(final GeneralPosition position) throws MismatchedDimensionException {
         ensureDimensionMatch("position", position.ordinates.length, ordinates.length);
         setCoordinateReferenceSystem(position.crs);
         System.arraycopy(position.ordinates, 0, ordinates, 0, ordinates.length);
     }
 
     /**
-     * Set this coordinate to the specified {@link Point2D}. This coordinate must be
-     * two-dimensional.
+     * Set this coordinate to the specified {@link Point2D}. This coordinate must be two-dimensional.
      *
      * @param point The new coordinate for this point.
      * @throws MismatchedDimensionException if this coordinate point is not two-dimensional.
@@ -263,16 +251,15 @@ public class GeneralPosition extends AbstractPosition implements Serializable, C
     }
 
     /**
-     * Returns a {@link Point2D} with the same coordinate as this direct position. This is a
-     * convenience method for interoperability with Java2D.
+     * Returns a {@link Point2D} with the same coordinate as this direct position. This is a convenience method for
+     * interoperability with Java2D.
      *
      * @return This position as a two-dimensional point.
      * @throws IllegalStateException if this coordinate point is not two-dimensional.
      */
     public Point2D toPoint2D() throws IllegalStateException {
         if (ordinates.length != 2) {
-            throw new IllegalStateException(
-                    MessageFormat.format(ErrorKeys.NOT_TWO_DIMENSIONAL_$1, ordinates.length));
+            throw new IllegalStateException(MessageFormat.format(ErrorKeys.NOT_TWO_DIMENSIONAL_$1, ordinates.length));
         }
         return new Point2D.Double(ordinates[0], ordinates[1]);
     }

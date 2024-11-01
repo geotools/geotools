@@ -27,8 +27,8 @@ import org.geotools.util.factory.FactoryRegistry;
 /**
  * Enable programs to find all available FootprintLoader implementations.
  *
- * <p>In order to be located by this finder modules must provide an implementation of the {@link
- * FootprintLoaderSpi} interface.
+ * <p>In order to be located by this finder modules must provide an implementation of the {@link FootprintLoaderSpi}
+ * interface.
  *
  * <p>In addition to implementing this interface, this service file should be defined:
  *
@@ -49,23 +49,18 @@ public final class FootprintLoaderFinder {
     }
 
     /**
-     * Finds all available implementations of {@link FootprintLoaderSpi} which have registered using
-     * the services mechanism.
+     * Finds all available implementations of {@link FootprintLoaderSpi} which have registered using the services
+     * mechanism.
      *
      * @return An unmodifiable {@link Set} of all discovered modules which have registered factories
      */
     public static synchronized Set<FootprintLoaderSpi> getAvailableLoaders() {
         // get all FootprintLoaderSpi implementations
         scanForPlugins();
-        return getServiceRegistry()
-                .getFactories(FootprintLoaderSpi.class, true)
-                .collect(toUnmodifiableSet());
+        return getServiceRegistry().getFactories(FootprintLoaderSpi.class, true).collect(toUnmodifiableSet());
     }
 
-    /**
-     * Returns the service registry. The registry will be created the first time this method is
-     * invoked.
-     */
+    /** Returns the service registry. The registry will be created the first time this method is invoked. */
     private static FactoryRegistry getServiceRegistry() {
         assert Thread.holdsLock(FootprintLoaderFinder.class);
         if (registry == null) {
@@ -75,11 +70,10 @@ public final class FootprintLoaderFinder {
     }
 
     /**
-     * Scans for factory plug-ins on the application class path. This method is needed because the
-     * application class path can theoretically change, or additional plug-ins may become available.
-     * Rather than re-scanning the classpath on every invocation of the API, the class path is
-     * scanned automatically only on the first invocation. Clients can call this method to prompt a
-     * re-scan. Thus this method need only be invoked by sophisticated applications which
+     * Scans for factory plug-ins on the application class path. This method is needed because the application class
+     * path can theoretically change, or additional plug-ins may become available. Rather than re-scanning the classpath
+     * on every invocation of the API, the class path is scanned automatically only on the first invocation. Clients can
+     * call this method to prompt a re-scan. Thus this method need only be invoked by sophisticated applications which
      * dynamically make new plug-ins available at runtime.
      */
     public static synchronized void scanForPlugins() {

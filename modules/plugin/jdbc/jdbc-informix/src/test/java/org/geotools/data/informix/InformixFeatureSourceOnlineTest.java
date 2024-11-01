@@ -32,9 +32,9 @@ public class InformixFeatureSourceOnlineTest extends JDBCFeatureSourceOnlineTest
     }
 
     /**
-     * Test if the fast retrieval of bounds works. Note that if getOptimizedBounds fails it will
-     * return null, and GeoTools will fall back to a different mechanism and the test will still
-     * pass. A warning will be seen in the logs, however.
+     * Test if the fast retrieval of bounds works. Note that if getOptimizedBounds fails it will return null, and
+     * GeoTools will fall back to a different mechanism and the test will still pass. A warning will be seen in the
+     * logs, however.
      */
     @Test
     public void testGetBounds() throws Exception {

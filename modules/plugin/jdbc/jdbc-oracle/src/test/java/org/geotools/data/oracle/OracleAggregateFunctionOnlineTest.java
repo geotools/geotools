@@ -11,8 +11,8 @@ public class OracleAggregateFunctionOnlineTest extends JDBCAggregateFunctionOnli
     }
 
     /**
-     * This test fails on Oracle 18c and passes by accident on Oracle12c, specifically the last
-     * test, which checks if sorting is correct.
+     * This test fails on Oracle 18c and passes by accident on Oracle12c, specifically the last test, which checks if
+     * sorting is correct.
      *
      * <p>{@code SELECT * FROM GEOTOOLS.FT1}
      *
@@ -36,8 +36,8 @@ public class OracleAggregateFunctionOnlineTest extends JDBCAggregateFunctionOnli
      *
      * <p>Oracle Oracle Database 12c Enterprise Edition Release 12.2.0.1.0 - 64bit Production
      *
-     * <p>{@code SELECT distinct(STRINGPROPERTY) AS gt_result_ FROM (SELECT distinct(STRINGPROPERTY)
-     * FROM GEOTOOLS.FT1 ORDER BY STRINGPROPERTY ASC) gt_limited_}
+     * <p>{@code SELECT distinct(STRINGPROPERTY) AS gt_result_ FROM (SELECT distinct(STRINGPROPERTY) FROM GEOTOOLS.FT1
+     * ORDER BY STRINGPROPERTY ASC) gt_limited_}
      *
      * <pre>
      * GT_RESULT_|
@@ -47,13 +47,12 @@ public class OracleAggregateFunctionOnlineTest extends JDBCAggregateFunctionOnli
      * two       |
      * </pre>
      *
-     * This would pass the test (by accident, one==one), but as a whole the results are not sorted
-     * alphabetically!
+     * This would pass the test (by accident, one==one), but as a whole the results are not sorted alphabetically!
      *
      * <p>Oracle Oracle Database 18c Express Edition Release 18.0.0.0.0 - Production
      *
-     * <p>{@code SELECT distinct(STRINGPROPERTY) AS gt_result_ FROM (SELECT distinct(STRINGPROPERTY)
-     * FROM GEOTOOLS.FT1 ORDER BY STRINGPROPERTY ASC) gt_limited_}
+     * <p>{@code SELECT distinct(STRINGPROPERTY) AS gt_result_ FROM (SELECT distinct(STRINGPROPERTY) FROM GEOTOOLS.FT1
+     * ORDER BY STRINGPROPERTY ASC) gt_limited_}
      *
      * <pre>
      * GT_RESULT_|

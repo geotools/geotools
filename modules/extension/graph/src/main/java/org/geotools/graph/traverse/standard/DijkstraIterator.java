@@ -29,15 +29,14 @@ import org.geotools.graph.traverse.GraphTraversal;
 import org.geotools.graph.traverse.basic.SourceGraphIterator;
 
 /**
- * Iterates over the nodes of a graph in pattern using <B>Dijkstra's Shortest Path Algorithm</B>. A
- * Dijkstra iteration returns nodes in an order of increasing cost relative to a specified node (the
- * source node of the iteration).<br>
+ * Iterates over the nodes of a graph in pattern using <B>Dijkstra's Shortest Path Algorithm</B>. A Dijkstra iteration
+ * returns nodes in an order of increasing cost relative to a specified node (the source node of the iteration).<br>
  * <br>
- * In a Dijkstra iteration, a <B>weight</B> is associated with each edge and a <B>cost</B> with each
- * node. The iteration operates by maintaining two sets of nodes. The first the set of nodes whose
- * final cost is known, and the second is the set of nodes whose final cost is unknown. Initially,
- * every node except for the source node has a cost of infinity, and resides in the unknown set. The
- * source node has a cost of zero, and is is a member of the known set.<br>
+ * In a Dijkstra iteration, a <B>weight</B> is associated with each edge and a <B>cost</B> with each node. The iteration
+ * operates by maintaining two sets of nodes. The first the set of nodes whose final cost is known, and the second is
+ * the set of nodes whose final cost is unknown. Initially, every node except for the source node has a cost of
+ * infinity, and resides in the unknown set. The source node has a cost of zero, and is is a member of the known set.
+ * <br>
  * <br>
  * The iteration operates as follows:<br>
  *
@@ -64,11 +63,10 @@ import org.geotools.graph.traverse.basic.SourceGraphIterator;
  *      return ln as next node in iteration
  * </PRE>
  *
- * The following is an illustration of the algorithm. Edge weights are labelled in blue and the
- * final node costs are labelled in red.<br>
+ * The following is an illustration of the algorithm. Edge weights are labelled in blue and the final node costs are
+ * labelled in red.<br>
  * <IMG src="doc-files/dijkstra.gif"/> <br>
- * The nodes are returned in order of increasing cost which yields the sequence A,C,B,D,E,F,G,H,I.
- * <br>
+ * The nodes are returned in order of increasing cost which yields the sequence A,C,B,D,E,F,G,H,I. <br>
  *
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
  */
@@ -123,29 +121,27 @@ public class DijkstraIterator extends SourceGraphIterator {
         queue = new PriorityQueue<>(graph.getNodes().size(), comparator);
 
         // place nodes into priority queue
-        graph.visitNodes(
-                component -> {
-                    // create a Dijkstra node with infinite cost
-                    DijkstraNode dn = new DijkstraNode((Node) component, Double.MAX_VALUE);
+        graph.visitNodes(component -> {
+            // create a Dijkstra node with infinite cost
+            DijkstraNode dn = new DijkstraNode((Node) component, Double.MAX_VALUE);
 
-                    // create the mapping
-                    nodemap.put(component, dn);
+            // create the mapping
+            nodemap.put(component, dn);
 
-                    // source component gets a cost of 0
-                    if (component == getSource()) dn.cost = 0d;
+            // source component gets a cost of 0
+            if (component == getSource()) dn.cost = 0d;
 
-                    // place into priority queue
-                    queue.add(dn);
+            // place into priority queue
+            queue.add(dn);
 
-                    return 0;
-                });
+            return 0;
+        });
     }
 
     /**
-     * Returns the next node in the priority queue. If the next node coming out of the queue has
-     * infinite cost, then the node is not adjacent to any nodes in the set of nodes with known
-     * costs. This situation will end the traversal every other node will also have infinite cost.
-     * This usually is the result of a disconnected graph.
+     * Returns the next node in the priority queue. If the next node coming out of the queue has infinite cost, then the
+     * node is not adjacent to any nodes in the set of nodes with known costs. This situation will end the traversal
+     * every other node will also have infinite cost. This usually is the result of a disconnected graph.
      *
      * @see org.geotools.graph.traverse.GraphIterator#next()
      */
@@ -165,8 +161,7 @@ public class DijkstraIterator extends SourceGraphIterator {
     }
 
     /**
-     * Looks for adjacent nodes to the current node which are in the adjacent node and updates
-     * costs.
+     * Looks for adjacent nodes to the current node which are in the adjacent node and updates costs.
      *
      * @see org.geotools.graph.traverse.GraphIterator#cont(Graphable)
      */
@@ -214,9 +209,9 @@ public class DijkstraIterator extends SourceGraphIterator {
     }
 
     /**
-     * Returns the last node in the known set to update the node. The iteration operates by nodes in
-     * the known set updating the cost of nodes in the unknown set. Each time an update occurs, the
-     * known node is set as the parent of the unkown node.
+     * Returns the last node in the known set to update the node. The iteration operates by nodes in the known set
+     * updating the cost of nodes in the unknown set. Each time an update occurs, the known node is set as the parent of
+     * the unkown node.
      *
      * @param component The node whose parent to return (child)
      * @return The parent, or null if the method is supplied the source of the iteration.
@@ -244,8 +239,7 @@ public class DijkstraIterator extends SourceGraphIterator {
     }
 
     /**
-     * Supplies a weight for each edge in the graph to be used by the iteration when calculating
-     * node costs.
+     * Supplies a weight for each edge in the graph to be used by the iteration when calculating node costs.
      *
      * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
      */
@@ -273,8 +267,7 @@ public class DijkstraIterator extends SourceGraphIterator {
          * @param n The node.
          * @param e1 First edge.
          * @param e2 Second edge.
-         * @return The weight associated with traversing through the node from the first edge to the
-         *     second.
+         * @return The weight associated with traversing through the node from the first edge to the second.
          */
         public double getWeight(Node n, Edge e1, Edge e2);
     }

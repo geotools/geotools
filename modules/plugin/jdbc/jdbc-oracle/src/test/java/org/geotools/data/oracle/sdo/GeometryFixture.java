@@ -267,15 +267,10 @@ public class GeometryFixture {
      * </pre></code>
      */
     protected Polygon createPolygonWithHole() {
-        Polygon poly =
-                gf.createPolygon(
-                        ring(
-                                new double[] {
-                                    2, 4, 4, 3, 10, 3, 13, 5, 13, 9, 11, 13, 5, 13, 2, 11, 2, 4
-                                }),
-                        new LinearRing[] {
-                            ring(new double[] {7, 5, 7, 10, 10, 10, 10, 5, 7, 5}),
-                        });
+        Polygon poly = gf.createPolygon(
+                ring(new double[] {2, 4, 4, 3, 10, 3, 13, 5, 13, 9, 11, 13, 5, 13, 2, 11, 2, 4}), new LinearRing[] {
+                    ring(new double[] {7, 5, 7, 10, 10, 10, 10, 5, 7, 5}),
+                });
         poly.setSRID(-1); // don't have an SRID number
         return poly;
     }
@@ -346,8 +341,7 @@ public class GeometryFixture {
      * </pre></code>
      */
     protected LineString createLineString() {
-        LineString lineString =
-                gf.createLineString(coords(new double[] {1, 2, 2, 1, 3, 1, 4, 2, 4, 7}));
+        LineString lineString = gf.createLineString(coords(new double[] {1, 2, 2, 1, 3, 1, 4, 2, 4, 7}));
         return lineString;
     }
 
@@ -553,12 +547,9 @@ public class GeometryFixture {
      * </pre></code>
      */
     protected MultiPolygon createMultiPolygonWithHole() {
-        Polygon poly1 =
-                gf.createPolygon(
-                        ring(new double[] {2, 3, 7, 3, 7, 9, 2, 9, 2, 3}),
-                        new LinearRing[] {
-                            ring(new double[] {3, 4, 6, 8, 3, 8, 3, 4}),
-                        });
+        Polygon poly1 = gf.createPolygon(ring(new double[] {2, 3, 7, 3, 7, 9, 2, 9, 2, 3}), new LinearRing[] {
+            ring(new double[] {3, 4, 6, 8, 3, 8, 3, 4}),
+        });
         Polygon poly2 = gf.createPolygon(ring(new double[] {9, 5, 11, 8, 13, 5, 9, 5}), null);
         MultiPolygon multiPolygon = gf.createMultiPolygon(new Polygon[] {poly1, poly2});
         return multiPolygon;
@@ -626,20 +617,16 @@ public class GeometryFixture {
      * </pre></code>
      */
     protected GeometryCollection createGeometryCollection() {
-        return gf.createGeometryCollection(
-                new Geometry[] {
-                    gf.createPoint(coords(new double[] {1, 1})),
-                    gf.createLineString(coords(new double[] {1, 2, 2, 1})),
-                    gf.createPolygon(ring(new double[] {2, 2, 3, 2, 3, 3, 2, 3, 2, 2}), null),
-                    gf.createPolygon(
-                            ring(new double[] {5, 1, 9, 5, 5, 5, 5, 1}),
-                            new LinearRing[] {
-                                ring(
-                                        new double[] {
-                                            5, 3, 6, 4, 6, 3, 5, 3,
-                                        })
-                            })
-                });
+        return gf.createGeometryCollection(new Geometry[] {
+            gf.createPoint(coords(new double[] {1, 1})),
+            gf.createLineString(coords(new double[] {1, 2, 2, 1})),
+            gf.createPolygon(ring(new double[] {2, 2, 3, 2, 3, 3, 2, 3, 2, 2}), null),
+            gf.createPolygon(ring(new double[] {5, 1, 9, 5, 5, 5, 5, 1}), new LinearRing[] {
+                ring(new double[] {
+                    5, 3, 6, 4, 6, 3, 5, 3,
+                })
+            })
+        });
     }
 
     //

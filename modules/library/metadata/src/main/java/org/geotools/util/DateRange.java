@@ -57,11 +57,7 @@ public class DateRange extends Range<Date> {
      * @param endTime The end time, or {@code null} if none.
      * @param isMaxIncluded {@code true} if the end time is inclusive.
      */
-    public DateRange(
-            final Date startTime,
-            boolean isMinIncluded,
-            final Date endTime,
-            boolean isMaxIncluded) {
+    public DateRange(final Date startTime, boolean isMinIncluded, final Date endTime, boolean isMaxIncluded) {
         super(Date.class, clone(startTime), isMinIncluded, clone(endTime), isMaxIncluded);
     }
 
@@ -70,20 +66,16 @@ public class DateRange extends Range<Date> {
      *
      * @param range The range to convert.
      * @param origin The date to use as the origin.
-     * @throws UnconvertibleException if the given range doesn't have a {@linkplain
-     *     MeasurementRange#getUnits unit} compatible with milliseconds.
+     * @throws UnconvertibleException if the given range doesn't have a {@linkplain MeasurementRange#getUnits unit}
+     *     compatible with milliseconds.
      */
     @SuppressWarnings("unchecked")
     public DateRange(final MeasurementRange<?> range, final Date origin) {
         this(range, getConverter((Unit<Time>) range.getUnits()), origin.getTime());
     }
 
-    /**
-     * Workaround for RFE #4093999 ("Relax constraint on placement of this()/super() call in
-     * constructors").
-     */
-    private DateRange(
-            final MeasurementRange<?> range, final UnitConverter converter, final long origin) {
+    /** Workaround for RFE #4093999 ("Relax constraint on placement of this()/super() call in constructors"). */
+    private DateRange(final MeasurementRange<?> range, final UnitConverter converter, final long origin) {
         super(
                 Date.class,
                 new Date(origin + Math.round(converter.convert(range.getMinimum()))),
@@ -97,10 +89,7 @@ public class DateRange extends Range<Date> {
         return (date != null) ? (Date) date.clone() : null;
     }
 
-    /**
-     * Workaround for RFE #4093999 ("Relax constraint on placement of this()/super() call in
-     * constructors").
-     */
+    /** Workaround for RFE #4093999 ("Relax constraint on placement of this()/super() call in constructors"). */
     private static UnitConverter getConverter(final Unit<Time> source) {
         if (source == null) {
             throw new UnconvertibleException(ErrorKeys.NO_UNIT);

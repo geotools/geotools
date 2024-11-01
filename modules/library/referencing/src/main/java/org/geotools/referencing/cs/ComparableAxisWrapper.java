@@ -21,10 +21,10 @@ import org.geotools.api.referencing.cs.AxisDirection;
 import org.geotools.api.referencing.cs.CoordinateSystemAxis;
 
 /**
- * Wraps a {@linkplain CoordinateSystemAxis coordinate system axis} for comparaison purpose. The
- * sorting order tries to favor a right-handed system. Compass directions like {@linkplain
- * AxisDirection#NORTH North} or {@linkplain AxisDirection#EAST East} are first, and vertical or
- * temporal directions like {@linkplain AxisDirection#UP Up} are last.
+ * Wraps a {@linkplain CoordinateSystemAxis coordinate system axis} for comparaison purpose. The sorting order tries to
+ * favor a right-handed system. Compass directions like {@linkplain AxisDirection#NORTH North} or
+ * {@linkplain AxisDirection#EAST East} are first, and vertical or temporal directions like {@linkplain AxisDirection#UP
+ * Up} are last.
  *
  * @version $Id$
  * @author Martin Desruisseaux
@@ -48,9 +48,7 @@ final class ComparableAxisWrapper implements Comparable<ComparableAxisWrapper> {
         return compass != Integer.MIN_VALUE;
     }
 
-    /**
-     * Compares with the specified object. See class javadoc for a description of the sorting order.
-     */
+    /** Compares with the specified object. See class javadoc for a description of the sorting order. */
     @Override
     public int compareTo(final ComparableAxisWrapper other) {
         final ComparableAxisWrapper that = other;
@@ -80,8 +78,8 @@ final class ComparableAxisWrapper implements Comparable<ComparableAxisWrapper> {
     }
 
     /**
-     * Sorts the specified axis in an attempt to create a right-handed system. The sorting is
-     * performed in place. This method returns {@code true} if at least one axis moved.
+     * Sorts the specified axis in an attempt to create a right-handed system. The sorting is performed in place. This
+     * method returns {@code true} if at least one axis moved.
      */
     public static boolean sort(final CoordinateSystemAxis... axis) {
         final ComparableAxisWrapper[] wrappers = new ComparableAxisWrapper[axis.length];

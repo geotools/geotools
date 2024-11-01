@@ -33,8 +33,7 @@ public final class Datatype extends CodeList<Datatype> {
     private static final List<Datatype> VALUES = new ArrayList<>(15);
 
     /**
-     * Descriptor of a set of objects that share the same attributes, operations, methods,
-     * relationships, and behavior.
+     * Descriptor of a set of objects that share the same attributes, operations, methods, relationships, and behavior.
      */
     @UML(identifier = "class", obligation = CONDITIONAL, specification = ISO_19115)
     public static final Datatype CLASS = new Datatype("CLASS");
@@ -64,8 +63,8 @@ public final class Datatype extends CodeList<Datatype> {
     public static final Datatype SPECIFIED_CLASS = new Datatype("SPECIFIED_CLASS");
 
     /**
-     * Class with few or no operations whose primary purpose is to hold the abstract state of
-     * another class for transmittal, storage, encoding or persistent storage.
+     * Class with few or no operations whose primary purpose is to hold the abstract state of another class for
+     * transmittal, storage, encoding or persistent storage.
      */
     @UML(identifier = "datatypeClass", obligation = CONDITIONAL, specification = ISO_19115)
     public static final Datatype DATATYPE_CLASS = new Datatype("DATATYPE_CLASS");
@@ -83,8 +82,8 @@ public final class Datatype extends CodeList<Datatype> {
     public static final Datatype META_CLASS = new Datatype("META_CLASS");
 
     /**
-     * Class used for specification of a domain of instances (objects), together with the operations
-     * applicable to the objects. A type may have attributes and associations.
+     * Class used for specification of a domain of instances (objects), together with the operations applicable to the
+     * objects. A type may have attributes and associations.
      */
     @UML(identifier = "typeClass", obligation = CONDITIONAL, specification = ISO_19115)
     public static final Datatype TYPE_CLASS = new Datatype("TYPE_CLASS");
@@ -97,15 +96,13 @@ public final class Datatype extends CodeList<Datatype> {
     @UML(identifier = "integer", obligation = CONDITIONAL, specification = ISO_19115)
     public static final Datatype INTEGER = new Datatype("INTEGER");
 
-    /**
-     * Semantic relationship between two classes that involves connections among their instances.
-     */
+    /** Semantic relationship between two classes that involves connections among their instances. */
     @UML(identifier = "association", obligation = CONDITIONAL, specification = ISO_19115)
     public static final Datatype ASSOCIATION = new Datatype("ASSOCIATION");
 
     /**
-     * Constructs an enum with the given name. The new enum is automatically added to the list
-     * returned by {@link #values}.
+     * Constructs an enum with the given name. The new enum is automatically added to the list returned by
+     * {@link #values}.
      *
      * @param name The enum name. This name must not be in use by an other enum of this type.
      */

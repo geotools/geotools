@@ -39,8 +39,7 @@ import org.geotools.filter.spatial.WithinImpl;
 import org.xml.sax.Attributes;
 
 /**
- * Creates filters from FilterFilter, which reads in a SAX stream and passes the appropriate
- * messages here.
+ * Creates filters from FilterFilter, which reads in a SAX stream and passes the appropriate messages here.
  *
  * @author Rob Hranac, Vision for New York<br>
  * @author Chris Holmes, TOPP
@@ -48,8 +47,7 @@ import org.xml.sax.Attributes;
  */
 public class FilterSAXParser {
     /** The logger for the filter module. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(FilterSAXParser.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(FilterSAXParser.class);
 
     /** The number of attributes to be found in a like filter */
     private static final int NUM_LIKE_ATTS = 3;
@@ -84,8 +82,8 @@ public class FilterSAXParser {
         ff = factory;
     }
     /**
-     * Handles all incoming generic string 'messages,' including a message to create the filter,
-     * based on the XML tag that represents the start of the filter.
+     * Handles all incoming generic string 'messages,' including a message to create the filter, based on the XML tag
+     * that represents the start of the filter.
      *
      * @param filterType The string from the SAX filter.
      * @throws IllegalFilterException Filter is illegal.
@@ -105,8 +103,7 @@ public class FilterSAXParser {
                     curFilter = new DWithinImpl(null, null);
                     break;
                 default:
-                    throw new IllegalFilterException(
-                            "Not one of the accepted spatial filter types.");
+                    throw new IllegalFilterException("Not one of the accepted spatial filter types.");
             }
         } else if (AbstractFilter.isGeometryFilter(filterType)) {
             switch (filterType) {
@@ -144,8 +141,7 @@ public class FilterSAXParser {
                     curFilter = new TouchesImpl(null, null);
                     break;
                 default:
-                    throw new IllegalFilterException(
-                            "Not one of the accepted spatial filter types.");
+                    throw new IllegalFilterException("Not one of the accepted spatial filter types.");
             }
         } else if (filterType == AbstractFilter.BETWEEN) {
             curFilter = new IsBetweenImpl(null, null, null);
@@ -190,8 +186,8 @@ public class FilterSAXParser {
     }
 
     /**
-     * Handles all incoming generic string 'messages,' including a message to create the filter,
-     * based on the XML tag that represents the start of the filter.
+     * Handles all incoming generic string 'messages,' including a message to create the filter, based on the XML tag
+     * that represents the start of the filter.
      *
      * @param message The string from the SAX filter.
      * @throws IllegalFilterException Filter is illegal.
@@ -199,12 +195,10 @@ public class FilterSAXParser {
     public void value(String message) throws IllegalFilterException {}
 
     /**
-     * Adds the passed in expression to the current filter. Generally created by the
-     * ExpressionSAXParser.
+     * Adds the passed in expression to the current filter. Generally created by the ExpressionSAXParser.
      *
      * @param expression The value of the attribute for comparison.
-     * @throws IllegalFilterException if the expression does not match what the current filter is
-     *     expecting.
+     * @throws IllegalFilterException if the expression does not match what the current filter is expecting.
      * @task REVISIT: split this method up.
      */
     public void expression(Expression expression) throws IllegalFilterException {
@@ -220,8 +214,7 @@ public class FilterSAXParser {
                 ((BinaryComparisonAbstract) curFilter).setExpression2(expression);
                 curState = "complete";
             } else {
-                throw new IllegalFilterException(
-                        "Got expression for Between Filter in illegal state: " + curState);
+                throw new IllegalFilterException("Got expression for Between Filter in illegal state: " + curState);
             }
         } else if (AbstractFilter.isCompareFilter(filterType)) {
             if (curState.equals("leftValue")) {
@@ -231,16 +224,14 @@ public class FilterSAXParser {
                 ((BinaryComparisonAbstract) curFilter).setExpression2(expression);
                 curState = "complete";
             } else {
-                throw new IllegalFilterException(
-                        "Got expression for Compare Filter in illegal state: " + curState);
+                throw new IllegalFilterException("Got expression for Compare Filter in illegal state: " + curState);
             }
         } else if (filterType == FilterType.NULL) {
             if (curState.equals("attribute")) {
                 ((NullFilterImpl) curFilter).setExpression(expression);
                 curState = "complete";
             } else {
-                throw new IllegalFilterException(
-                        "Got expression for Null Filter in illegal state: " + curState);
+                throw new IllegalFilterException("Got expression for Null Filter in illegal state: " + curState);
             }
         } else if (AbstractFilter.isGeometryFilter(filterType)) {
             if (curState.equals("leftValue")) {
@@ -257,8 +248,7 @@ public class FilterSAXParser {
 
                 LOGGER.finer("expression called on geometry, curState = " + curState);
             } else {
-                throw new IllegalFilterException(
-                        "Got expression for Geometry Filter in illegal state: " + curState);
+                throw new IllegalFilterException("Got expression for Geometry Filter in illegal state: " + curState);
             }
         } else if (filterType == AbstractFilter.LIKE) {
             if (curState.equals("attribute")) {
@@ -266,11 +256,10 @@ public class FilterSAXParser {
                 curState = "pattern";
             } else if (curState.equals("pattern")) {
                 if (attributes.size() < NUM_LIKE_ATTS) {
-                    throw new IllegalFilterException(
-                            "Got wrong number of attributes (expecting minimum 3): "
-                                    + attributes.size()
-                                    + "\n"
-                                    + attributes);
+                    throw new IllegalFilterException("Got wrong number of attributes (expecting minimum 3): "
+                            + attributes.size()
+                            + "\n"
+                            + attributes);
                 }
 
                 String wildcard = (String) attributes.get("wildCard");
@@ -320,8 +309,7 @@ public class FilterSAXParser {
                 }
                 curState = "complete";
             } else {
-                throw new IllegalFilterException(
-                        "Got expression for Like Filter in illegal state: " + curState);
+                throw new IllegalFilterException("Got expression for Like Filter in illegal state: " + curState);
             }
         }
 
@@ -342,16 +330,14 @@ public class FilterSAXParser {
             return curFilter;
         } else {
             throw new IllegalFilterException(
-                    "Got to the end state of an incomplete filter, current"
-                            + " state is "
-                            + curState);
+                    "Got to the end state of an incomplete filter, current" + " state is " + curState);
         }
     }
 
     /**
-     * Sets the state that shall be expected next based on the filterType. So if a between, null or
-     * like is the currentFilter then attribute should be next, if an fid filter then fid should be
-     * next. If it's a comparison, geometry or not, then leftValue should be next.
+     * Sets the state that shall be expected next based on the filterType. So if a between, null or like is the
+     * currentFilter then attribute should be next, if an fid filter then fid should be next. If it's a comparison,
+     * geometry or not, then leftValue should be next.
      *
      * @param filterType An AbstractFilter short of the filter type.
      * @return the string of what state should come next.
@@ -364,8 +350,7 @@ public class FilterSAXParser {
             return "attribute";
         } else if ((filterType == AbstractFilter.FID)) {
             return "fid";
-        } else if ((AbstractFilter.isCompareFilter(filterType))
-                || (AbstractFilter.isGeometryFilter(filterType))) {
+        } else if ((AbstractFilter.isCompareFilter(filterType)) || (AbstractFilter.isGeometryFilter(filterType))) {
             return "leftValue";
         } else {
             throw new IllegalFilterException("Filter type: " + filterType + " is not recognized");
@@ -373,15 +358,15 @@ public class FilterSAXParser {
     }
 
     /**
-     * This sets the distance for a GeometryDistanceFilter. It currently ignores the units, and
-     * attempts to convert the distance to a double.
+     * This sets the distance for a GeometryDistanceFilter. It currently ignores the units, and attempts to convert the
+     * distance to a double.
      *
      * @param distance the distance - should be a string of a double.
      * @param units a reference to a units dictionary.
      * @throws IllegalFilterException if the distance string can not be converted to a double.
-     * @task TODO: Implement units, probably with org.geotools.units package and a special distance
-     *     class in the filter package. It would be nice if the distance class could get any type of
-     *     units, like it would handle the conversion.
+     * @task TODO: Implement units, probably with org.geotools.units package and a special distance class in the filter
+     *     package. It would be nice if the distance class could get any type of units, like it would handle the
+     *     conversion.
      */
     public void setDistance(String distance, String units) throws IllegalFilterException {
         LOGGER.finer("set distance called, current state is " + curState);
@@ -392,20 +377,18 @@ public class FilterSAXParser {
                 ((CartesianDistanceFilter) curFilter).setDistance(distDouble);
                 curState = "complete";
             } catch (NumberFormatException nfe) {
-                throw new IllegalFilterException(
-                        "could not parse distance: " + distance + " to a double");
+                throw new IllegalFilterException("could not parse distance: " + distance + " to a double");
             }
         } else {
-            throw new IllegalFilterException(
-                    "Got distance for Geometry Distance Filter in illegal state: "
-                            + curState
-                            + ", geometry and property should be set first");
+            throw new IllegalFilterException("Got distance for Geometry Distance Filter in illegal state: "
+                    + curState
+                    + ", geometry and property should be set first");
         }
     }
 
     /**
-     * Sets the filter attributes. Called when attributes are encountered by the filter filter. Puts
-     * them in a hash map by thier name and value.
+     * Sets the filter attributes. Called when attributes are encountered by the filter filter. Puts them in a hash map
+     * by thier name and value.
      *
      * @param atts the attributes to set.
      */

@@ -82,8 +82,7 @@ public class PointTypeBinding extends AbstractComplexBinding {
      */
     @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-        CoordinateSequence coordinates =
-                (CoordinateSequence) node.getChildValue(KML.coordinates.getLocalPart());
+        CoordinateSequence coordinates = (CoordinateSequence) node.getChildValue(KML.coordinates.getLocalPart());
 
         return geometryFactory.createPoint(coordinates.getCoordinate(0));
     }

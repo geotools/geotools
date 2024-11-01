@@ -25,13 +25,11 @@ import javax.media.jai.util.ImagingListener;
 /**
  * Listens to JAI events, redirecting logging to javax.media.jai loggers.
  *
- * <p>Logger is determined from {@code where} parameter allowing fine-grain control of
- * javax.media.jai logging.
+ * <p>Logger is determined from {@code where} parameter allowing fine-grain control of javax.media.jai logging.
  */
 final class LoggingImagingListener implements ImagingListener {
     @Override
-    public boolean errorOccurred(
-            String message, Throwable thrown, Object where, boolean isRetryable)
+    public boolean errorOccurred(String message, Throwable thrown, Object where, boolean isRetryable)
             throws RuntimeException {
         Logger log;
         if (where == null) {

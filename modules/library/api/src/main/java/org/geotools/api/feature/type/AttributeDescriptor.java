@@ -12,8 +12,7 @@ package org.geotools.api.feature.type;
 /**
  * Describes an instance of an Attribute.
  *
- * <p>An AttributeDescriptor is an extension of {@link PropertyDescriptor} which defines some
- * additional information:
+ * <p>An AttributeDescriptor is an extension of {@link PropertyDescriptor} which defines some additional information:
  *
  * <ul>
  *   <li>A default value for an attribute
@@ -47,8 +46,8 @@ public interface AttributeDescriptor extends PropertyDescriptor {
      *
      * <p>This value is used when an attribute is created and no value for it is specified.
      *
-     * <p>This value may be <code>null</code>. If it is non-null it should be an instance of of the
-     * class specified by <code>getType().getBinding()</code>.
+     * <p>This value may be <code>null</code>. If it is non-null it should be an instance of of the class specified by
+     * <code>getType().getBinding()</code>.
      */
     Object getDefaultValue();
 }

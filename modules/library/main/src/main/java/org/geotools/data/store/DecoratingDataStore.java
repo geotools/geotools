@@ -33,13 +33,12 @@ import org.geotools.api.filter.Filter;
 import org.geotools.util.decorate.AbstractDecorator;
 
 /**
- * Delegates every method to the wrapped feature source. Subclasses will override selected methods
- * to perform their "decoration" job
+ * Delegates every method to the wrapped feature source. Subclasses will override selected methods to perform their
+ * "decoration" job
  *
  * @author Andrea Aime
  */
-public abstract class DecoratingDataStore extends AbstractDecorator<DataStore>
-        implements DataStore {
+public abstract class DecoratingDataStore extends AbstractDecorator<DataStore> implements DataStore {
 
     public DecoratingDataStore(DataStore delegate) {
         super(delegate);
@@ -56,8 +55,8 @@ public abstract class DecoratingDataStore extends AbstractDecorator<DataStore>
     }
 
     @Override
-    public FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader(
-            Query query, Transaction transaction) throws IOException {
+    public FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader(Query query, Transaction transaction)
+            throws IOException {
         return delegate.getFeatureReader(query, transaction);
     }
 
@@ -78,8 +77,8 @@ public abstract class DecoratingDataStore extends AbstractDecorator<DataStore>
     }
 
     @Override
-    public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(
-            String typeName, Transaction transaction) throws IOException {
+    public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(String typeName, Transaction transaction)
+            throws IOException {
         return delegate.getFeatureWriter(typeName, transaction);
     }
 

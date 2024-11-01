@@ -25,8 +25,8 @@ import org.junit.Test;
 
 public class XSBooleanStrategyTest extends TestSchema {
     /**
-     * An instance of a datatype that is defined as ??boolean?? can have the following legal
-     * literals {true, false, 1, 0}.
+     * An instance of a datatype that is defined as ??boolean?? can have the following legal literals {true, false, 1,
+     * 0}.
      */
 
     /*
@@ -55,10 +55,7 @@ public class XSBooleanStrategyTest extends TestSchema {
         return XS.BOOLEAN;
     }
 
-    /**
-     * GEOT-7072: Non-comformant WFS implementations tend to send empty elements (e.g. {@code
-     * <value></value>})
-     */
+    /** GEOT-7072: Non-comformant WFS implementations tend to send empty elements (e.g. {@code <value></value>}) */
     @Test
     public void testParseEmptyStringAsNull() throws Exception {
         validateValues("", null);

@@ -28,13 +28,13 @@ public class PseudoClass extends Selector {
         return new And(new ArrayList<>(new LinkedHashSet<Selector>(selectors)));
     }
 
-    public static final PseudoClass ROOT =
-            new PseudoClass(null, -1) {
-                @Override
-                public String toString() {
-                    return "ROOT";
-                };
-            };
+    public static final PseudoClass ROOT = new PseudoClass(null, -1) {
+        @Override
+        public String toString() {
+            return "ROOT";
+        }
+        ;
+    };
 
     String className;
 
@@ -119,8 +119,8 @@ public class PseudoClass extends Selector {
     }
 
     /**
-     * Returns the most specific pseudo class in the set, or null if the set contains inconsistent
-     * pseudo classes (e.g., "mark" and "fill")
+     * Returns the most specific pseudo class in the set, or null if the set contains inconsistent pseudo classes (e.g.,
+     * "mark" and "fill")
      */
     public static PseudoClass getMostSpecific(Set<PseudoClass> pseudoClasses) {
         PseudoClass mostSpecific = null;

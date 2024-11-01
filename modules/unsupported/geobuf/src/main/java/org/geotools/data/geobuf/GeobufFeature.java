@@ -63,8 +63,7 @@ public class GeobufFeature {
     public SimpleFeature decode(InputStream in) throws IOException {
         Geobuf.Data data = Geobuf.Data.parseFrom(in);
         GeobufFeatureType geobufFeatureType = new GeobufFeatureType();
-        return decode(
-                data, new SimpleFeatureBuilder(geobufFeatureType.getFeatureType("features", data)));
+        return decode(data, new SimpleFeatureBuilder(geobufFeatureType.getFeatureType("features", data)));
     }
 
     protected Geobuf.Data.Feature encode(SimpleFeature feature) {
@@ -72,8 +71,7 @@ public class GeobufFeature {
         featureBuilder.setId(feature.getID());
         int i = 0, n = 0;
         featureBuilder.setGeometry(geobufGeometry.encode((Geometry) feature.getDefaultGeometry()));
-        for (AttributeDescriptor attributeDescriptor :
-                feature.getFeatureType().getAttributeDescriptors()) {
+        for (AttributeDescriptor attributeDescriptor : feature.getFeatureType().getAttributeDescriptors()) {
             Object value = feature.getAttribute(attributeDescriptor.getName());
             if (!(attributeDescriptor instanceof GeometryDescriptor)) {
                 Geobuf.Data.Value geobufDataValue = encodeValue(attributeDescriptor, value);
@@ -132,18 +130,14 @@ public class GeobufFeature {
 
     protected SimpleFeature decode(Geobuf.Data data) throws IOException {
         GeobufFeatureType geobufFeatureType = new GeobufFeatureType();
-        return decode(
-                data,
-                0,
-                new SimpleFeatureBuilder(geobufFeatureType.getFeatureType("features", data)));
+        return decode(data, 0, new SimpleFeatureBuilder(geobufFeatureType.getFeatureType("features", data)));
     }
 
     protected SimpleFeature decode(Geobuf.Data data, SimpleFeatureBuilder featureBuilder) {
         return decode(data, 0, featureBuilder);
     }
 
-    protected SimpleFeature decode(
-            Geobuf.Data data, int index, SimpleFeatureBuilder featureBuilder) {
+    protected SimpleFeature decode(Geobuf.Data data, int index, SimpleFeatureBuilder featureBuilder) {
         if (data.getDataTypeCase() == Geobuf.Data.DataTypeCase.GEOMETRY) {
             if (index > 0) {
                 return null;
@@ -184,17 +178,13 @@ public class GeobufFeature {
             }
         } else {
             if ((propertiesCount & 0x01) != 0) {
-                throw new IllegalStateException(
-                        "number of properties (pairs of key/value indexes) is odd");
+                throw new IllegalStateException("number of properties (pairs of key/value indexes) is odd");
             }
             int valueCount = propertiesCount / 2;
             for (int j = 0; j < valueCount; j++) {
                 int attrOffset = feature.getProperties(j * 2);
                 int valOffset = feature.getProperties(j * 2 + 1);
-                Object value =
-                        feature.getValuesCount() > valOffset
-                                ? getValue(feature.getValues(valOffset))
-                                : null;
+                Object value = feature.getValuesCount() > valOffset ? getValue(feature.getValues(valOffset)) : null;
                 String key = data.getKeys(attrOffset);
                 featureBuilder.set(key, value);
             }

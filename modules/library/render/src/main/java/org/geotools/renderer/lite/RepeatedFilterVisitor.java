@@ -72,9 +72,8 @@ import org.geotools.api.filter.temporal.TOverlaps;
 import org.geotools.filter.visitor.DefaultFilterVisitor;
 
 /**
- * Collects and returns expressions that do repeat in the given filter/express, used to locate which
- * parts of a filter tree to memoize, leaving the rest alone. see also {@link MemoryFilterOptimizer}
- * and {@link FilterMemoizer}
+ * Collects and returns expressions that do repeat in the given filter/express, used to locate which parts of a filter
+ * tree to memoize, leaving the rest alone. see also {@link MemoryFilterOptimizer} and {@link FilterMemoizer}
  */
 class RepeatedFilterVisitor extends DefaultFilterVisitor {
 

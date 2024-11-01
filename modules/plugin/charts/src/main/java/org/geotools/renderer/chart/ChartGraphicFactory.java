@@ -32,8 +32,8 @@ import org.jfree.eastwood.Parameters;
 /**
  * Parses Google charts like requests into various kinds of charts.
  *
- * <p>Underlying implementation is based on <a href="http://www.jfree.org/eastwood/">Eastwood
- * charts</a> and <a href="http://www.jfree.org/jfreechart/index.html">JFreeChart</a>
+ * <p>Underlying implementation is based on <a href="http://www.jfree.org/eastwood/">Eastwood charts</a> and <a
+ * href="http://www.jfree.org/jfreechart/index.html">JFreeChart</a>
  *
  * <p>And example of a valid symbolizer use in SLD is:
  *
@@ -44,14 +44,14 @@ import org.jfree.eastwood.Parameters;
  * &lt;/ExternalGraphic&gt;
  * </pre>
  *
- * This request will generate a pie chart representing the percentages of female and male population
- * using attribute features and CQL expression to buid the percentage value to be used.
+ * This request will generate a pie chart representing the percentages of female and male population using attribute
+ * features and CQL expression to buid the percentage value to be used.
  *
  * <p>For details on the URL format documentation refer to the online <a
  * href="http://code.google.com/intl/it-IT/apis/chart/">Google charts API</a>.
  *
- * <p>Also mind Eastwood does not implement all of the Google charts API, for example, Venn diagram
- * and spider diagrams are not supported. Check on the Eastwood project pages for details.
+ * <p>Also mind Eastwood does not implement all of the Google charts API, for example, Venn diagram and spider diagrams
+ * are not supported. Check on the Eastwood project pages for details.
  *
  * @since 2.5.6
  */
@@ -61,8 +61,7 @@ public class ChartGraphicFactory implements ExternalGraphicFactory {
     private static final String HTTP_CHART = "http://chart?";
 
     @Override
-    public Icon getIcon(Feature feature, Expression urlExpression, String format, int size)
-            throws Exception {
+    public Icon getIcon(Feature feature, Expression urlExpression, String format, int size) throws Exception {
         // evaluate the expression as a string, get the query params
         String url = urlExpression.evaluate(feature, String.class);
         if (!validRequest(url, format)) return null;
@@ -79,8 +78,7 @@ public class ChartGraphicFactory implements ExternalGraphicFactory {
     }
 
     /** This method has been provided as a test utility only */
-    JFreeChart getChart(Feature feature, Expression urlExpression, String format, int size)
-            throws Exception {
+    JFreeChart getChart(Feature feature, Expression urlExpression, String format, int size) throws Exception {
         // evaluate the expression as a string, get the query params
         String url = urlExpression.evaluate(feature, String.class);
         if (!validRequest(url, format)) return null;
@@ -112,8 +110,7 @@ public class ChartGraphicFactory implements ExternalGraphicFactory {
 
         if (dims == null && size <= 0)
             throw new IllegalArgumentException(
-                    "Chart size cannot be computed, a SLD size "
-                            + "is missing, so is the chs chart param");
+                    "Chart size cannot be computed, a SLD size " + "is missing, so is the chs chart param");
 
         if (size > 0) {
             if (dims == null) {
@@ -132,17 +129,13 @@ public class ChartGraphicFactory implements ExternalGraphicFactory {
         return dims;
     }
 
-    /**
-     * Parses the CHS parameter, should be in the form wxh, where w and h are integers and x is the
-     * separator
-     */
+    /** Parses the CHS parameter, should be in the form wxh, where w and h are integers and x is the separator */
     int[] parseCHS(String[] sizes) {
         int[] dims = new int[2];
         String[] xy = sizes[0].split("x");
         if (xy.length != 2)
             throw new IllegalArgumentException(
-                    "The chs parameter should be in wxh form, "
-                            + "where w and h are measured in pixels");
+                    "The chs parameter should be in wxh form, " + "where w and h are measured in pixels");
         dims[0] = Integer.parseInt(xy[0]);
         dims[1] = Integer.parseInt(xy[1]);
         return dims;

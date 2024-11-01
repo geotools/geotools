@@ -27,20 +27,18 @@ import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 
 /**
- * Parses a date from a string given a certain pattern (specified in the format accepted by {@link
- * SimpleDateFormat}}
+ * Parses a date from a string given a certain pattern (specified in the format accepted by {@link SimpleDateFormat}}
  *
  * @see SimpleDateFormat
  * @author Andrea Aime - TOPP
  */
 public class FilterFunction_dateParse extends FunctionExpressionImpl {
 
-    public static FunctionName NAME =
-            new FunctionNameImpl(
-                    "dateParse",
-                    parameter("date", Date.class),
-                    parameter("format", String.class),
-                    parameter("dateString", String.class));
+    public static FunctionName NAME = new FunctionNameImpl(
+            "dateParse",
+            parameter("date", Date.class),
+            parameter("format", String.class),
+            parameter("dateString", String.class));
 
     public FilterFunction_dateParse() {
         super(NAME);

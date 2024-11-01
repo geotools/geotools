@@ -10,10 +10,9 @@
 package org.geotools.api.referencing.cs;
 
 /**
- * A three-dimensional coordinate system with one distance measured from the origin and two angular
- * coordinates. Not to be confused with an {@linkplain EllipsoidalCS ellipsoidal coordinate system}
- * based on an ellipsoid "degenerated" into a sphere. A {@code SphericalCS} shall have three
- * {@linkplain #getAxis axis associations}.
+ * A three-dimensional coordinate system with one distance measured from the origin and two angular coordinates. Not to
+ * be confused with an {@linkplain EllipsoidalCS ellipsoidal coordinate system} based on an ellipsoid "degenerated" into
+ * a sphere. A {@code SphericalCS} shall have three {@linkplain #getAxis axis associations}.
  *
  * <TABLE CELLPADDING='6' BORDER='1'>
  * <TR BGCOLOR="#EEEEFF"><TH NOWRAP>Used with CRS type(s)</TH></TR>
@@ -22,8 +21,7 @@ package org.geotools.api.referencing.cs;
  *   {@link org.geotools.api.referencing.crs.EngineeringCRS Engineering}
  * </TD></TR></TABLE>
  *
- * @version <A HREF="http://portal.opengeospatial.org/files/?artifact_id=6716">Abstract
- *     specification 2.0</A>
+ * @version <A HREF="http://portal.opengeospatial.org/files/?artifact_id=6716">Abstract specification 2.0</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0
  */

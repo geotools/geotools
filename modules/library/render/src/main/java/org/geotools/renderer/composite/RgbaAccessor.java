@@ -19,8 +19,7 @@ package org.geotools.renderer.composite;
 import java.awt.image.WritableRaster;
 
 /**
- * Allows access to a grid of pixels in terms of red, green, blue and alpha components as opposed to
- * raw values
+ * Allows access to a grid of pixels in terms of red, green, blue and alpha components as opposed to raw values
  *
  * @author Andrea Aime - GeoSolutions
  */

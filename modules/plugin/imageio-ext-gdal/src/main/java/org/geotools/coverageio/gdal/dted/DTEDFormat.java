@@ -34,8 +34,7 @@ import org.geotools.util.factory.Hints;
  */
 public final class DTEDFormat extends BaseGDALGridFormat implements Format {
     /** Logger. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(DTEDFormat.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(DTEDFormat.class);
 
     /** Creates an instance and sets the metadata. */
     public DTEDFormat() {

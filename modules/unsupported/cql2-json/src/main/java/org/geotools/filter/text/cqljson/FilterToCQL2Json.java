@@ -129,10 +129,7 @@ public class FilterToCQL2Json implements FilterVisitor {
     }
 
     private Object buildBinaryLogicalOperator(
-            final String operator,
-            FilterVisitor visitor,
-            BinaryLogicOperator filter,
-            Object extraData) {
+            final String operator, FilterVisitor visitor, BinaryLogicOperator filter, Object extraData) {
 
         ObjectNode output = asObjectNode(extraData);
         ArrayNode args = objectMapper.createArrayNode();
@@ -149,8 +146,7 @@ public class FilterToCQL2Json implements FilterVisitor {
         return output;
     }
 
-    private Object buildBinarySpatialOperator(
-            String spatialOperator, BinarySpatialOperator filter, Object extraData) {
+    private Object buildBinarySpatialOperator(String spatialOperator, BinarySpatialOperator filter, Object extraData) {
         ExpressionToCQL2Json expVisitor = new ExpressionToCQL2Json(objectMapper);
         ObjectNode output = asObjectNode(extraData);
         ArrayNode args = objectMapper.createArrayNode();
@@ -163,8 +159,7 @@ public class FilterToCQL2Json implements FilterVisitor {
         return output;
     }
 
-    private Object buildBinaryTemporalOperator(
-            BinaryTemporalOperator op, Object extraData, String opName) {
+    private Object buildBinaryTemporalOperator(BinaryTemporalOperator op, Object extraData, String opName) {
         ExpressionToCQL2Json expVisitor = new ExpressionToCQL2Json(objectMapper);
         ObjectNode output = asObjectNode(extraData);
         ArrayNode args = objectMapper.createArrayNode();
@@ -251,8 +246,7 @@ public class FilterToCQL2Json implements FilterVisitor {
         return output;
     }
 
-    private Object buildComparison(
-            BinaryComparisonOperator filter, ObjectNode output, String operation) {
+    private Object buildComparison(BinaryComparisonOperator filter, ObjectNode output, String operation) {
         output.put(OP, operation);
         ExpressionToCQL2Json visitor = new ExpressionToCQL2Json(objectMapper);
         ArrayNode args = objectMapper.createArrayNode();
@@ -282,8 +276,7 @@ public class FilterToCQL2Json implements FilterVisitor {
         return true;
     }
 
-    private boolean isFunctionTrue(
-            PropertyIsEqualTo filter, String operation, int numberOfArguments) {
+    private boolean isFunctionTrue(PropertyIsEqualTo filter, String operation, int numberOfArguments) {
         if (filter.getExpression1() instanceof Function) {
             Function function = (Function) filter.getExpression1();
             List<Expression> parameters = function.getParameters();
@@ -537,7 +530,6 @@ public class FilterToCQL2Json implements FilterVisitor {
      * @return UnsupportedOperationException
      */
     private static UnsupportedOperationException unsupported(final String filterName) {
-        return new UnsupportedOperationException(
-                "The" + filterName + " has not an CQL2 expression");
+        return new UnsupportedOperationException("The" + filterName + " has not an CQL2 expression");
     }
 }

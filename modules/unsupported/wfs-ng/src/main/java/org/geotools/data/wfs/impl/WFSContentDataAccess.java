@@ -51,12 +51,11 @@ import org.geotools.xsd.SchemaIndex;
 /**
  * DataAccess for WFS with complex features.
  *
- * <p>Using a schema parser with local storage. Could be set to a file location to avoid repeated
- * downloads. To do this use the parameter {@link WFSDataAccessFactory#SCHEMA_CACHE_LOCATION}, or
- * call the function {@link #setCacheLocation(File)}.
+ * <p>Using a schema parser with local storage. Could be set to a file location to avoid repeated downloads. To do this
+ * use the parameter {@link WFSDataAccessFactory#SCHEMA_CACHE_LOCATION}, or call the function
+ * {@link #setCacheLocation(File)}.
  *
- * @author Adam Brown (Curtin University of Technology) Inspired by code from WFSContentDataStore
- *     and ContentDataStore.
+ * @author Adam Brown (Curtin University of Technology) Inspired by code from WFSContentDataStore and ContentDataStore.
  */
 public class WFSContentDataAccess implements DataAccess<FeatureType, Feature> {
     /** The Web feature service client object. */
@@ -112,14 +111,12 @@ public class WFSContentDataAccess implements DataAccess<FeatureType, Feature> {
 
     @Override
     public void createSchema(FeatureType featureType) throws IOException {
-        throw new UnsupportedOperationException(
-                "WFSContentDataAccess does not support createSchema.");
+        throw new UnsupportedOperationException("WFSContentDataAccess does not support createSchema.");
     }
 
     @Override
     public void updateSchema(Name typeName, FeatureType featureType) throws IOException {
-        throw new UnsupportedOperationException(
-                "WFSContentDataAccess does not support update schema.");
+        throw new UnsupportedOperationException("WFSContentDataAccess does not support update schema.");
     }
 
     /** Populates the names map and returns a list of names. */
@@ -162,8 +159,8 @@ public class WFSContentDataAccess implements DataAccess<FeatureType, Feature> {
     }
 
     /**
-     * Create the FeatureType based on a call to DescribeFeatureType. Using gt-complex to parse the
-     * xsd-document, and use the schema cache.
+     * Create the FeatureType based on a call to DescribeFeatureType. Using gt-complex to parse the xsd-document, and
+     * use the schema cache.
      */
     @Override
     public FeatureType getSchema(Name name) throws IOException {
@@ -222,10 +219,7 @@ public class WFSContentDataAccess implements DataAccess<FeatureType, Feature> {
                 try {
                     FileUtils.deleteDirectory(cache.getDirectory());
                 } catch (IOException e) {
-                    LOGGER.log(
-                            Level.SEVERE,
-                            "Failed to delete temporary directory used for wfs schema cache.",
-                            e);
+                    LOGGER.log(Level.SEVERE, "Failed to delete temporary directory used for wfs schema cache.", e);
                 }
             }
         }
@@ -252,27 +246,19 @@ public class WFSContentDataAccess implements DataAccess<FeatureType, Feature> {
             SchemaResolver appSchemaResolver = null;
             if (this.cacheLocation == null) {
                 File temporaryCache =
-                        new File(
-                                FileUtils.getTempDirectory(),
-                                "wfs_cache_" + RandomStringUtils.randomAlphanumeric(5));
+                        new File(FileUtils.getTempDirectory(), "wfs_cache_" + RandomStringUtils.randomAlphanumeric(5));
                 if (temporaryCache.mkdir()) {
-                    appSchemaResolver =
-                            new SchemaResolver(new SchemaCache(temporaryCache, true, true));
+                    appSchemaResolver = new SchemaResolver(new SchemaCache(temporaryCache, true, true));
                     if (LOGGER.isLoggable(Level.FINE)) {
                         LOGGER.fine("Using temporary cache: " + temporaryCache.getAbsolutePath());
                     }
                 } else {
-                    LOGGER.warning(
-                            "Couldn't create temporary directory for wfs cache at location: "
-                                    + temporaryCache.getAbsolutePath());
+                    LOGGER.warning("Couldn't create temporary directory for wfs cache at location: "
+                            + temporaryCache.getAbsolutePath());
                 }
             } else {
-                appSchemaResolver =
-                        new SchemaResolver(
-                                new SchemaCache(
-                                        this.cacheLocation,
-                                        /* download: */ true,
-                                        /* keepQuery: */ true));
+                appSchemaResolver = new SchemaResolver(
+                        new SchemaCache(this.cacheLocation, /* download: */ true, /* keepQuery: */ true));
             }
 
             if (appSchemaResolver != null) {
@@ -290,10 +276,8 @@ public class WFSContentDataAccess implements DataAccess<FeatureType, Feature> {
      */
     private FeatureTypeRegistry getFeatureTypeRegistry() {
         if (this.typeRegistry == null) {
-            this.typeRegistry =
-                    new FeatureTypeRegistry(
-                            new ComplexFeatureTypeFactoryImpl(),
-                            new GmlFeatureTypeRegistryConfiguration(null));
+            this.typeRegistry = new FeatureTypeRegistry(
+                    new ComplexFeatureTypeFactoryImpl(), new GmlFeatureTypeRegistryConfiguration(null));
         }
 
         return this.typeRegistry;
@@ -301,7 +285,6 @@ public class WFSContentDataAccess implements DataAccess<FeatureType, Feature> {
 
     @Override
     public void removeSchema(Name typeName) throws IOException {
-        throw new UnsupportedOperationException(
-                "WFSContentDataAccess does not support remove schema.");
+        throw new UnsupportedOperationException("WFSContentDataAccess does not support remove schema.");
     }
 }

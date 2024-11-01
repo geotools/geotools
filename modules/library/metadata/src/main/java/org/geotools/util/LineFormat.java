@@ -28,10 +28,9 @@ import java.util.Locale;
 import org.geotools.metadata.i18n.ErrorKeys;
 
 /**
- * Parses a line of text data. This class is mostly used for parsing lines in a matrix or a table.
- * Each column may contains numbers, dates, or other objects parseable by some {@link Format}
- * implementations. The example below reads dates in the first column and numbers in all remaining
- * columns.
+ * Parses a line of text data. This class is mostly used for parsing lines in a matrix or a table. Each column may
+ * contains numbers, dates, or other objects parseable by some {@link Format} implementations. The example below reads
+ * dates in the first column and numbers in all remaining columns.
  *
  * <blockquote>
  *
@@ -44,12 +43,11 @@ import org.geotools.metadata.i18n.ErrorKeys;
  *
  * </blockquote>
  *
- * {@code LineFormat} may be used for reading a matrix with an unknow number of columns, while
- * requiring that all lines have the same number of columns. The example below gets the number of
- * columns while reading the first line, and ensure that all subsequent lines have the same number
- * of columns. If one line violate this condition, then a {@link ParseException} will be thrown. The
- * check if performed by the {@code getValues(double[])} method when the {@code data} array is
- * non-nul.
+ * {@code LineFormat} may be used for reading a matrix with an unknow number of columns, while requiring that all lines
+ * have the same number of columns. The example below gets the number of columns while reading the first line, and
+ * ensure that all subsequent lines have the same number of columns. If one line violate this condition, then a
+ * {@link ParseException} will be thrown. The check if performed by the {@code getValues(double[])} method when the
+ * {@code data} array is non-nul.
  *
  * <blockquote>
  *
@@ -65,13 +63,12 @@ import org.geotools.metadata.i18n.ErrorKeys;
  *
  * </blockquote>
  *
- * This code can work as well with dates instead of numbers. In this case, the values returned will
- * be microseconds ellapsed since January 1st, 1970.
+ * This code can work as well with dates instead of numbers. In this case, the values returned will be microseconds
+ * ellapsed since January 1st, 1970.
  *
- * <p>A {@link ParseException} may be thrown because a string can't be parsed, because an object
- * can't be converted into a number or because a line don't have the expected number of columns. In
- * all case, it is possible to gets the index of the first problem found using {@link
- * ParseException#getErrorOffset}.
+ * <p>A {@link ParseException} may be thrown because a string can't be parsed, because an object can't be converted into
+ * a number or because a line don't have the expected number of columns. In all case, it is possible to gets the index
+ * of the first problem found using {@link ParseException#getErrorOffset}.
  *
  * @since 2.0
  * @version $Id$
@@ -88,16 +85,15 @@ public class LineFormat extends Format {
     private int count;
 
     /**
-     * Data read last time {@link #setLine(String)} has been invoked. Those data are returned by
-     * methods like {@link #getValues(float[])}.
+     * Data read last time {@link #setLine(String)} has been invoked. Those data are returned by methods like
+     * {@link #getValues(float[])}.
      */
     private Object[] data;
 
     /**
-     * Array of formats to use for parsing a line. Each format object in this array match one
-     * column. For example {@code data[4]} will be parsed with {@code format[4]}. If the {@link
-     * #data} array is longer than {@link #format}, then the last format is reused for all remaining
-     * columns.
+     * Array of formats to use for parsing a line. Each format object in this array match one column. For example
+     * {@code data[4]} will be parsed with {@code format[4]}. If the {@link #data} array is longer than {@link #format},
+     * then the last format is reused for all remaining columns.
      */
     private final Format[] format;
 
@@ -105,10 +101,9 @@ public class LineFormat extends Format {
     private final ParsePosition position = new ParsePosition(0);
 
     /**
-     * Index of the the first character parsed in each column. For example {@code index[0]} contains
-     * the index of the first character read for {@code data[0]}, <cite>etc</cite>. This array
-     * length must be equals to <code>{@linkplain #data}.length + 1</code>. The last element will be
-     * the line length.
+     * Index of the the first character parsed in each column. For example {@code index[0]} contains the index of the
+     * first character read for {@code data[0]}, <cite>etc</cite>. This array length must be equals to <code>
+     * {@linkplain #data}.length + 1</code>. The last element will be the line length.
      */
     private int[] limits;
 
@@ -121,8 +116,8 @@ public class LineFormat extends Format {
     }
 
     /**
-     * Constructs a new line parser for the specified locale. For example {@link Locale#US} may be
-     * used for reading numbers using the dot as decimal separator.
+     * Constructs a new line parser for the specified locale. For example {@link Locale#US} may be used for reading
+     * numbers using the dot as decimal separator.
      */
     public LineFormat(final Locale locale) {
         this(NumberFormat.getNumberInstance(locale));
@@ -140,20 +135,17 @@ public class LineFormat extends Format {
         this.format = new Format[] {format};
         if (format == null) {
             final Integer one = 1;
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.NULL_FORMAT_$2, one, one));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.NULL_FORMAT_$2, one, one));
         }
     }
 
     /**
-     * Constructs a new line parser using the specified format objects. For example the first column
-     * will be parsed using {@code formats[0]}; the second column will be parsed using {@code
-     * formats[1]}, <cite>etc</cite>. If there is more columns than formats, then the last format
-     * object is reused for all remaining columns.
+     * Constructs a new line parser using the specified format objects. For example the first column will be parsed
+     * using {@code formats[0]}; the second column will be parsed using {@code formats[1]}, <cite>etc</cite>. If there
+     * is more columns than formats, then the last format object is reused for all remaining columns.
      *
      * @param formats The formats to use for parsing.
-     * @throws IllegalArgumentException if {@code formats} is null or an element of {@code format}
-     *     is null.
+     * @throws IllegalArgumentException if {@code formats} is null or an element of {@code format} is null.
      */
     public LineFormat(final Format... formats) throws IllegalArgumentException {
         this.data = new Object[formats.length];
@@ -176,12 +168,12 @@ public class LineFormat extends Format {
     }
 
     /**
-     * Parses the specified line. The content is immediately parsed and values can be obtained using
-     * one of the {@code getValues(...)} method.
+     * Parses the specified line. The content is immediately parsed and values can be obtained using one of the
+     * {@code getValues(...)} method.
      *
      * @param line The line to parse.
-     * @return The number of elements parsed in the specified line. The same information can be
-     *     obtained with {@link #getValueCount}.
+     * @return The number of elements parsed in the specified line. The same information can be obtained with
+     *     {@link #getValueCount}.
      * @throws ParseException If at least one column can't be parsed.
      */
     public int setLine(final String line) throws ParseException {
@@ -189,14 +181,14 @@ public class LineFormat extends Format {
     }
 
     /**
-     * Parses a substring of the specified line. The content is immediately parsed and values can be
-     * obtained using one of the {@code getValues(...)} method.
+     * Parses a substring of the specified line. The content is immediately parsed and values can be obtained using one
+     * of the {@code getValues(...)} method.
      *
      * @param line The line to parse.
      * @param lower Index of the first character in {@code line} to parse.
      * @param upper Index after the last character in {@code line} to parse.
-     * @return The number of elements parsed in the specified line. The same information can be
-     *     obtained with {@link #getValueCount}.
+     * @return The number of elements parsed in the specified line. The same information can be obtained with
+     *     {@link #getValueCount}.
      * @throws ParseException If at least one column can't be parsed.
      */
     public int setLine(final String line, int lower, final int upper) throws ParseException {
@@ -225,8 +217,7 @@ public class LineFormat extends Format {
              * qui apparaîtra éventuellement en HTML afin de pouvoir souligner la partie fautive.
              */
             position.setIndex(lower);
-            final Object datum =
-                    format[Math.min(count, format.length - 1)].parseObject(line, position);
+            final Object datum = format[Math.min(count, format.length - 1)].parseObject(line, position);
             final int next = position.getIndex();
             if (datum == null || next <= lower) {
                 final int error = position.getErrorIndex();
@@ -261,8 +252,8 @@ public class LineFormat extends Format {
     }
 
     /**
-     * Sets all values in the current line. The {@code values} argument must be an array, which may
-     * be of primitive type.
+     * Sets all values in the current line. The {@code values} argument must be an array, which may be of primitive
+     * type.
      *
      * @param values The array to set as values.
      * @throws IllegalArgumentException if {@code values} is not an array.
@@ -278,22 +269,20 @@ public class LineFormat extends Format {
     }
 
     /**
-     * Sets or adds a value to current line. The index should be in the range 0 to {@link
-     * #getValueCount} inclusively. If the index is equals to {@link #getValueCount}, then {@code
-     * value} will be appended as a new column after existing data.
+     * Sets or adds a value to current line. The index should be in the range 0 to {@link #getValueCount} inclusively.
+     * If the index is equals to {@link #getValueCount}, then {@code value} will be appended as a new column after
+     * existing data.
      *
      * @param index Index of the value to add or modify.
      * @param value The new value.
      * @throws ArrayIndexOutOfBoundsException If the index is outside the expected range.
      */
-    public void setValue(final int index, final Object value)
-            throws ArrayIndexOutOfBoundsException {
+    public void setValue(final int index, final Object value) throws ArrayIndexOutOfBoundsException {
         if (index > count) {
             throw new ArrayIndexOutOfBoundsException(index);
         }
         if (value == null) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "value"));
+            throw new IllegalArgumentException(MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "value"));
         }
         if (index == count) {
             if (index == data.length) {
@@ -344,9 +333,7 @@ public class LineFormat extends Format {
             }
         }
         ParseException exception =
-                new ParseException(
-                        MessageFormat.format(ErrorKeys.UNPARSABLE_NUMBER_$1, data[index]),
-                        limits[index]);
+                new ParseException(MessageFormat.format(ErrorKeys.UNPARSABLE_NUMBER_$1, data[index]), limits[index]);
         if (error != null) {
             exception.initCause(error);
         }
@@ -354,16 +341,15 @@ public class LineFormat extends Format {
     }
 
     /**
-     * Copies all values to the specified array. This method is typically invoked after {@link
-     * #setLine(String)} for fetching the values just parsed. If {@code array} is null, this method
-     * creates and returns a new array with a length equals to number of elements parsed. If {@code
-     * array} is not null, then this method will thrown an exception if the array length is not
-     * exactly equals to the number of elements parsed.
+     * Copies all values to the specified array. This method is typically invoked after {@link #setLine(String)} for
+     * fetching the values just parsed. If {@code array} is null, this method creates and returns a new array with a
+     * length equals to number of elements parsed. If {@code array} is not null, then this method will thrown an
+     * exception if the array length is not exactly equals to the number of elements parsed.
      *
      * @param array The array to copy values into.
      * @return {@code array} if it was not null, or a new array otherwise.
-     * @throws ParseException If {@code array} was not null and its length is not equals to the
-     *     number of elements parsed, or if at least one element can't be parsed.
+     * @throws ParseException If {@code array} was not null and its length is not equals to the number of elements
+     *     parsed, or if at least one element can't be parsed.
      */
     public double[] getValues(double[] array) throws ParseException {
         if (array != null) {
@@ -378,16 +364,15 @@ public class LineFormat extends Format {
     }
 
     /**
-     * Copies all values to the specified array. This method is typically invoked after {@link
-     * #setLine(String)} for fetching the values just parsed. If {@code array} is null, this method
-     * creates and returns a new array with a length equals to number of elements parsed. If {@code
-     * array} is not null, then this method will thrown an exception if the array length is not
-     * exactly equals to the number of elements parsed.
+     * Copies all values to the specified array. This method is typically invoked after {@link #setLine(String)} for
+     * fetching the values just parsed. If {@code array} is null, this method creates and returns a new array with a
+     * length equals to number of elements parsed. If {@code array} is not null, then this method will thrown an
+     * exception if the array length is not exactly equals to the number of elements parsed.
      *
      * @param array The array to copy values into.
      * @return {@code array} if it was not null, or a new array otherwise.
-     * @throws ParseException If {@code array} was not null and its length is not equals to the
-     *     number of elements parsed, or if at least one element can't be parsed.
+     * @throws ParseException If {@code array} was not null and its length is not equals to the number of elements
+     *     parsed, or if at least one element can't be parsed.
      */
     public float[] getValues(float[] array) throws ParseException {
         if (array != null) {
@@ -402,16 +387,15 @@ public class LineFormat extends Format {
     }
 
     /**
-     * Copies all values to the specified array. This method is typically invoked after {@link
-     * #setLine(String)} for fetching the values just parsed. If {@code array} is null, this method
-     * creates and returns a new array with a length equals to number of elements parsed. If {@code
-     * array} is not null, then this method will thrown an exception if the array length is not
-     * exactly equals to the number of elements parsed.
+     * Copies all values to the specified array. This method is typically invoked after {@link #setLine(String)} for
+     * fetching the values just parsed. If {@code array} is null, this method creates and returns a new array with a
+     * length equals to number of elements parsed. If {@code array} is not null, then this method will thrown an
+     * exception if the array length is not exactly equals to the number of elements parsed.
      *
      * @param array The array to copy values into.
      * @return {@code array} if it was not null, or a new array otherwise.
-     * @throws ParseException If {@code array} was not null and its length is not equals to the
-     *     number of elements parsed, or if at least one element can't be parsed.
+     * @throws ParseException If {@code array} was not null and its length is not equals to the number of elements
+     *     parsed, or if at least one element can't be parsed.
      */
     public long[] getValues(long[] array) throws ParseException {
         if (array != null) {
@@ -429,16 +413,15 @@ public class LineFormat extends Format {
     }
 
     /**
-     * Copies all values to the specified array. This method is typically invoked after {@link
-     * #setLine(String)} for fetching the values just parsed. If {@code array} is null, this method
-     * creates and returns a new array with a length equals to number of elements parsed. If {@code
-     * array} is not null, then this method will thrown an exception if the array length is not
-     * exactly equals to the number of elements parsed.
+     * Copies all values to the specified array. This method is typically invoked after {@link #setLine(String)} for
+     * fetching the values just parsed. If {@code array} is null, this method creates and returns a new array with a
+     * length equals to number of elements parsed. If {@code array} is not null, then this method will thrown an
+     * exception if the array length is not exactly equals to the number of elements parsed.
      *
      * @param array The array to copy values into.
      * @return {@code array} if it was not null, or a new array otherwise.
-     * @throws ParseException If {@code array} was not null and its length is not equals to the
-     *     number of elements parsed, or if at least one element can't be parsed.
+     * @throws ParseException If {@code array} was not null and its length is not equals to the number of elements
+     *     parsed, or if at least one element can't be parsed.
      */
     public int[] getValues(int[] array) throws ParseException {
         if (array != null) {
@@ -456,16 +439,15 @@ public class LineFormat extends Format {
     }
 
     /**
-     * Copies all values to the specified array. This method is typically invoked after {@link
-     * #setLine(String)} for fetching the values just parsed. If {@code array} is null, this method
-     * creates and returns a new array with a length equals to number of elements parsed. If {@code
-     * array} is not null, then this method will thrown an exception if the array length is not
-     * exactly equals to the number of elements parsed.
+     * Copies all values to the specified array. This method is typically invoked after {@link #setLine(String)} for
+     * fetching the values just parsed. If {@code array} is null, this method creates and returns a new array with a
+     * length equals to number of elements parsed. If {@code array} is not null, then this method will thrown an
+     * exception if the array length is not exactly equals to the number of elements parsed.
      *
      * @param array The array to copy values into.
      * @return {@code array} if it was not null, or a new array otherwise.
-     * @throws ParseException If {@code array} was not null and its length is not equals to the
-     *     number of elements parsed, or if at least one element can't be parsed.
+     * @throws ParseException If {@code array} was not null and its length is not equals to the number of elements
+     *     parsed, or if at least one element can't be parsed.
      */
     public short[] getValues(short[] array) throws ParseException {
         if (array != null) {
@@ -483,16 +465,15 @@ public class LineFormat extends Format {
     }
 
     /**
-     * Copies all values to the specified array. This method is typically invoked after {@link
-     * #setLine(String)} for fetching the values just parsed. If {@code array} is null, this method
-     * creates and returns a new array with a length equals to number of elements parsed. If {@code
-     * array} is not null, then this method will thrown an exception if the array length is not
-     * exactly equals to the number of elements parsed.
+     * Copies all values to the specified array. This method is typically invoked after {@link #setLine(String)} for
+     * fetching the values just parsed. If {@code array} is null, this method creates and returns a new array with a
+     * length equals to number of elements parsed. If {@code array} is not null, then this method will thrown an
+     * exception if the array length is not exactly equals to the number of elements parsed.
      *
      * @param array The array to copy values into.
      * @return {@code array} if it was not null, or a new array otherwise.
-     * @throws ParseException If {@code array} was not null and its length is not equals to the
-     *     number of elements parsed, or if at least one element can't be parsed.
+     * @throws ParseException If {@code array} was not null and its length is not equals to the number of elements
+     *     parsed, or if at least one element can't be parsed.
      */
     public byte[] getValues(byte[] array) throws ParseException {
         if (array != null) {
@@ -510,8 +491,8 @@ public class LineFormat extends Format {
     }
 
     /**
-     * Ensures that the number of columns just parsed is equals to the number of columns expected.
-     * If a mismatch is found, then an exception is thrown.
+     * Ensures that the number of columns just parsed is equals to the number of columns expected. If a mismatch is
+     * found, then an exception is thrown.
      *
      * @param expected The expected number of columns.
      * @throws ParseException If the number of columns parsed is not equals to the number expected.
@@ -520,10 +501,10 @@ public class LineFormat extends Format {
         if (count != expected) {
             final int lower = limits[Math.min(count, expected)];
             final int upper = limits[Math.min(count, expected + 1)];
-            final String key =
-                    count < expected ? ErrorKeys.LINE_TOO_SHORT_$2 : ErrorKeys.LINE_TOO_LONG_$3;
+            final String key = count < expected ? ErrorKeys.LINE_TOO_SHORT_$2 : ErrorKeys.LINE_TOO_LONG_$3;
             throw new ParseException(
-                    MessageFormat.format(key, count, expected, line.substring(lower, upper).trim()),
+                    MessageFormat.format(
+                            key, count, expected, line.substring(lower, upper).trim()),
                     lower);
         }
     }
@@ -536,14 +517,12 @@ public class LineFormat extends Format {
      */
     private ParseException notAnInteger(final int i) {
         return new ParseException(
-                MessageFormat.format(
-                        ErrorKeys.NOT_AN_INTEGER_$1, line.substring(limits[i], limits[i + 1])),
-                limits[i]);
+                MessageFormat.format(ErrorKeys.NOT_AN_INTEGER_$1, line.substring(limits[i], limits[i + 1])), limits[i]);
     }
 
     /**
-     * Returns a string representation of current line. All columns are formatted using the {@link
-     * Format} object specified at construction time. Columns are separated by tabulation.
+     * Returns a string representation of current line. All columns are formatted using the {@link Format} object
+     * specified at construction time. Columns are separated by tabulation.
      */
     @Override
     public String toString() {
@@ -551,8 +530,8 @@ public class LineFormat extends Format {
     }
 
     /**
-     * Formats a string representation of current line. All columns are formatted using the {@link
-     * Format} object specified at construction time. Columns are separated by tabulation.
+     * Formats a string representation of current line. All columns are formatted using the {@link Format} object
+     * specified at construction time. Columns are separated by tabulation.
      */
     private StringBuffer toString(StringBuffer buffer) {
         final FieldPosition field = new FieldPosition(0);
@@ -566,16 +545,14 @@ public class LineFormat extends Format {
     }
 
     /**
-     * Formats an object and appends the resulting text to a given string buffer. This method
-     * invokes <code>{@linkplain #setValues setValues}(values)</code>, then formats all columns
-     * using the {@link Format} object specified at construction time. Columns are separated by
-     * tabulation.
+     * Formats an object and appends the resulting text to a given string buffer. This method invokes <code>
+     * {@linkplain #setValues setValues}(values)</code>, then formats all columns using the {@link Format} object
+     * specified at construction time. Columns are separated by tabulation.
      *
      * @since 2.4
      */
     @Override
-    public StringBuffer format(
-            final Object values, final StringBuffer toAppendTo, final FieldPosition position) {
+    public StringBuffer format(final Object values, final StringBuffer toAppendTo, final FieldPosition position) {
         setValues(values);
         return toString(toAppendTo);
     }
@@ -624,8 +601,8 @@ public class LineFormat extends Format {
     }
 
     /**
-     * Returns a clone of this parser. In current implementation, this clone is <strong>not</strong>
-     * for usage in concurrent thread.
+     * Returns a clone of this parser. In current implementation, this clone is <strong>not</strong> for usage in
+     * concurrent thread.
      */
     @Override
     public LineFormat clone() {

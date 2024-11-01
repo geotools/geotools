@@ -151,9 +151,7 @@ class SqlServerBinary {
         this.version = version;
     }
 
-    /**
-     * @return {@code true} is any of the {@link Figure figures} of this object is a composite curve
-     */
+    /** @return {@code true} is any of the {@link Figure figures} of this object is a composite curve */
     public boolean hasSegments() {
         for (Figure f : figures) {
             if (f.getAttribute() == 3) {

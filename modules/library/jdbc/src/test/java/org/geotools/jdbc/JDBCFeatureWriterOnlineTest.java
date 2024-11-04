@@ -20,6 +20,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.Flushable;
 import java.util.List;
 import org.geotools.api.data.FeatureWriter;
 import org.geotools.api.data.Transaction;
@@ -45,6 +46,7 @@ public abstract class JDBCFeatureWriterOnlineTest extends JDBCTestSupport {
             assertEquals(0, (int) (Integer) feature.getAttribute(1));
             assertEquals(0.0, (double) (Double) feature.getAttribute(2), 0.0);
             assertEquals("zero", feature.getAttribute(3));
+            assertTrue(writer instanceof Flushable);
         }
         try (FeatureWriter writer =
                 dataStore.getFeatureWriter(tname("ft1"), Transaction.AUTO_COMMIT)) {

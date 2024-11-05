@@ -1,0 +1,74 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2024, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
+
+package org.geotools.filter.text.cql_2.conformance;
+
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.nio.file.Path;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.TimeZone;
+import org.apache.commons.io.FileUtils;
+import org.geotools.api.data.DataStore;
+import org.geotools.api.data.DataStoreFinder;
+import org.geotools.http.HTTPResponse;
+import org.geotools.http.SimpleHttpClient;
+import org.junit.BeforeClass;
+
+/**
+ * Base class for tests issued from the Abstract Test Suite (ATS). See
+ * https://docs.ogc.org/is/21-065r2/21-065r2.html#ats for the context.
+ *
+ * <p>This class will download the official Natural Earth dataset and store it into the default
+ * temporary directory.
+ */
+public abstract class ATSOnlineTest {
+
+    private static String NE_DATA_URL =
+            "https://github.com/opengeospatial/ogcapi-features/raw/refs/heads/master/cql2/standard/data/ne110m4cql2.gpkg";
+
+    protected final File neGpkg = Path.of(System.getProperty("java.io.tmpdir"), "ne.gpkg").toFile();
+
+    @BeforeClass
+    public static void forceGMT() {
+        TimeZone.setDefault(TimeZone.getTimeZone("GMT"));
+    }
+
+    private void downloadNaturalEarthData() throws IOException {
+        if (neGpkg.exists()) {
+            return;
+        }
+        neGpkg.createNewFile();
+        SimpleHttpClient client = new SimpleHttpClient();
+        HTTPResponse r = client.get(new URL(NE_DATA_URL));
+        FileUtils.copyInputStreamToFile(r.getResponseStream(), neGpkg);
+    }
+
+    protected DataStore naturalEarthData() throws IOException {
+        downloadNaturalEarthData();
+        Map params = new HashMap();
+        params.put("dbtype", "geopkg");
+        params.put("database", neGpkg.getAbsolutePath());
+        params.put("read-only", true);
+
+        DataStore datastore = DataStoreFinder.getDataStore(params);
+
+        return datastore;
+    }
+}

@@ -129,7 +129,7 @@ TOKEN [IGNORE_CASE]: /* geometry markers */
   < MULTILINESTRING: "multilinestring"> |
   < MULTIPOLYGON: "multipolygon"> |
   < GEOMETRYCOLLECTION: "geometrycollection"> |
-  < ENVELOPE: "envelope"> 
+  < BBOX: "bbox">
 }
 
 TOKEN [IGNORE_CASE]: /* temporal expression*/
@@ -417,7 +417,7 @@ void GeoRoutineArgumentList() #void:
  * | <MultiLineString Tagged Text>
  * | <MultiPolygon Tagged Text>
  * | <GeometryCollection Tagged Text>
- * | <Envelope Tagged Text>
+ * | <BBOX Tagged Text>
  */
 void GeometryLiteral() #GeometryLiteral:
 {}
@@ -429,7 +429,7 @@ void GeometryLiteral() #GeometryLiteral:
   MultiLineStringTaggedText() |
   MultiPolygonTaggedText() |
   GeometryCollectionTaggedText() |
-  EnvelopeTaggedText()
+  BBOXTaggedText()
 }
 /*
  *  <routine invocation > ::= 
@@ -904,16 +904,16 @@ void GeometryCollectionTaggedText() #WKTNode:
  }
  
 /*
- * <Envelope Tagged Text> ::= ENVELOPE <Envelope Text>
+ * <BBOX Tagged Text> ::= BBOX <BBOX Text>
  */
- void EnvelopeTaggedText() #EnvelopeTaggedText_Node:
+ void BBOXTaggedText() #BBOXTaggedText_Node:
  {}
  {
- 	jjtThis.token = <ENVELOPE> EnvelopText()
+ 	jjtThis.token = <BBOX> BBOXText()
  }
 
 /*
- * <Envelope Text> := EMPTY
+ * <BBOX Text> := EMPTY
  * | <left paren>
  *		<WestBoundLongitude><comma>
  *   	<SouthBoundLatitude><comma>
@@ -925,7 +925,7 @@ void GeometryCollectionTaggedText() #WKTNode:
  * <EastBoundLongitude> := numeric literal
  * <NorthBoundLatitude> := numeric literal
  */
- void EnvelopText() #void:
+ void BBOXText() #void:
  {}
  {
  	( <LP> 

@@ -167,7 +167,7 @@ public class CQL2GeoOperationTest {
 
     @Test
     public void testIntersectsEnvelope() throws CQLException {
-        Filter filter = CQL2.toFilter("S_INTERSECTS(geom, ENVELOPE(10, 10, 40, 40))");
+        Filter filter = CQL2.toFilter("S_INTERSECTS(geom, BBOX(10, 10, 40, 40))");
 
         Intersects intersects = (Intersects) filter;
         PropertyName pn = (PropertyName) intersects.getExpression1();

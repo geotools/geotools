@@ -360,7 +360,7 @@ public class CQL2Compiler extends CQL2Parser implements org.geotools.filter.text
             case JJTWKTNODE:
                 return this.builder.buildGeometry();
 
-            case JJTENVELOPETAGGEDTEXT_NODE:
+            case JJTBBOXTAGGEDTEXT_NODE:
                 return this.builder.buildEnvelope(TokenAdapter.newAdapterFor(n.getToken()));
 
             case JJTTRUENODE:

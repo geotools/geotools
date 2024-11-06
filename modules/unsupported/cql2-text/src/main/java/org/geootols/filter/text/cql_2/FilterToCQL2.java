@@ -308,7 +308,7 @@ final class FilterToCQL2 implements FilterVisitor {
         BoundingBox bounds = filter.getBounds();
         output.append("S_INTERSECTS(");
         output.append(((PropertyName) filter.getExpression1()).getPropertyName());
-        output.append(", ENVELOPE(");
+        output.append(", BBOX(");
         output.append(bounds.getMinX());
         output.append(",");
         output.append(bounds.getMinY());

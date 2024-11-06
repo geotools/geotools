@@ -507,7 +507,7 @@ final class CQL2FilterBuilder extends AbstractFilterBuilder {
     }
 
     /**
-     * Returns the Envelope. Uses CQL2 axis order.
+     * Returns the BBOX (Envelope). Uses CQL2 axis order.
      *
      * @return Literal
      */
@@ -515,7 +515,7 @@ final class CQL2FilterBuilder extends AbstractFilterBuilder {
     public Literal buildEnvelope(IToken token) throws CQLException {
         String source = scanExpression(token);
 
-        final String ENVELOPE_TYPE = "ENVELOPE";
+        final String ENVELOPE_TYPE = "BBOX";
 
         int cur = source.indexOf(ENVELOPE_TYPE);
 

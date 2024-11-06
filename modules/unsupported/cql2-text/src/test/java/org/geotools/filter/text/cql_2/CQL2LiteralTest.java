@@ -137,7 +137,7 @@ public class CQL2LiteralTest {
     // Axis order changed since CQL/ECQL, currently (west,south,east,north)
     @Test
     public void testEnvelope() throws Exception {
-        Expression expression = CQL2.toExpression("ENVELOPE(10, 20, 30, 40)");
+        Expression expression = CQL2.toExpression("BBOX(10, 20, 30, 40)");
         assertThat(expression, instanceOf(Literal.class));
         Literal literal = (Literal) expression;
         Object actualGeometry = literal.getValue();

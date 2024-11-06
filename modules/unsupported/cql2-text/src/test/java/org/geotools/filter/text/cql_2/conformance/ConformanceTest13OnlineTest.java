@@ -37,8 +37,8 @@ import org.junit.runners.Parameterized;
 @RunWith(Parameterized.class)
 public class ConformanceTest13OnlineTest extends ATSOnlineTest {
 
-    private final String criteria;
-    private final int expectedFeatures;
+    protected final String criteria;
+    protected final int expectedFeatures;
 
     public ConformanceTest13OnlineTest(String criteria, int expectedFeatures) {
         this.criteria = criteria;
@@ -77,7 +77,7 @@ public class ConformanceTest13OnlineTest extends ATSOnlineTest {
         assertEquals(this.expectedFeatures, feat);
     }
 
-    private int featuresReturned(DataStore ds) throws CQLException, IOException {
+    protected int featuresReturned(DataStore ds) throws CQLException, IOException {
         Filter filter = CQL2.toFilter(this.criteria);
 
         return ds.getFeatureSource("ne_110m_populated_places_simple").getFeatures(filter).size();

@@ -32,8 +32,9 @@ import org.geotools.http.SimpleHttpClient;
 import org.junit.BeforeClass;
 
 /**
- * Base class for tests issued from the Abstract Test Suite (ATS). See
- * https://docs.ogc.org/is/21-065r2/21-065r2.html#ats for the context.
+ * Base class for tests issued from the Abstract Test Suite (ATS). See <a
+ * href="https://docs.ogc.org/is/21-065r2/21-065r2.html#ats">https://docs.ogc.org/is/21-065r2/21-065r2.html#ats</a>
+ * for the context.
  *
  * <p>This class will download the official Natural Earth dataset and store it into the default
  * temporary directory.

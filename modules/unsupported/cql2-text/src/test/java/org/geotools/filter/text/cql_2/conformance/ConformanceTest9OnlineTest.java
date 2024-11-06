@@ -37,11 +37,11 @@ import org.junit.runners.Parameterized;
 @RunWith(Parameterized.class)
 public class ConformanceTest9OnlineTest extends ATSOnlineTest {
 
-    private final String p1;
-    private final String p2;
-    private final String p3;
-    private final String p4;
-    private final int expectedFeatures;
+    protected final String p1;
+    protected final String p2;
+    protected final String p3;
+    protected final String p4;
+    protected final int expectedFeatures;
 
     public ConformanceTest9OnlineTest(
             String p1, String p2, String p3, String p4, int expectedFeatures) {
@@ -594,7 +594,7 @@ public class ConformanceTest9OnlineTest extends ATSOnlineTest {
         assertEquals(this.expectedFeatures, feat);
     }
 
-    private int featuresReturned(DataStore ds) throws CQLException, IOException {
+    protected int featuresReturned(DataStore ds) throws CQLException, IOException {
         Filter filter =
                 CQL2.toFilter(
                         String.format(

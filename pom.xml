@@ -1811,6 +1811,9 @@
           <redirectTestOutputToFile>false</redirectTestOutputToFile>
           <forkMode>${test.forkMode}</forkMode>
           <trimStackTrace>false</trimStackTrace>
+          <environmentVariables>
+            <TZ>GMT</TZ>
+          </environmentVariables>
         </configuration>
       </plugin>
 

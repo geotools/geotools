@@ -23,13 +23,11 @@ import java.net.URL;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.TimeZone;
 import org.apache.commons.io.FileUtils;
 import org.geotools.api.data.DataStore;
 import org.geotools.api.data.DataStoreFinder;
 import org.geotools.http.HTTPResponse;
 import org.geotools.http.SimpleHttpClient;
-import org.junit.BeforeClass;
 
 /**
  * Base class for tests issued from the Abstract Test Suite (ATS). See <a
@@ -45,11 +43,6 @@ public abstract class ATSOnlineTest {
             "https://github.com/opengeospatial/ogcapi-features/raw/refs/heads/master/cql2/standard/data/ne110m4cql2.gpkg";
 
     protected final File neGpkg = Path.of(System.getProperty("java.io.tmpdir"), "ne.gpkg").toFile();
-
-    @BeforeClass
-    public static void forceGMT() {
-        TimeZone.setDefault(TimeZone.getTimeZone("GMT"));
-    }
 
     private void downloadNaturalEarthData() throws IOException {
         if (neGpkg.exists()) {

@@ -86,7 +86,10 @@ public class ConformanceTest8OnlineTest extends ATSOnlineTest {
                     {"ne_110m_populated_places_simple", "\"date\">DATE('2022-04-16')", 1},
                     {"ne_110m_populated_places_simple", "\"date\"<=DATE('2022-04-16')", 2},
                     {"ne_110m_populated_places_simple", "\"date\"<DATE('2022-04-16')", 1},
-                    {"ne_110m_populated_places_simple", "\"date\"<>DATE('2022-04-16')", 2},
+                    {
+                        "ne_110m_populated_places_simple", "\"date\"<>DATE('2022-04-16')", 2
+                    }, // TODO should return 2 relying on the official specs, but what about NULL
+                    // values ? see https://github.com/opengeospatial/ogcapi-features/issues/963
                     {"ne_110m_populated_places_simple", "start IS NOT NULL", 3},
                     {"ne_110m_populated_places_simple", "start IS NULL", 240},
                     {
@@ -117,7 +120,7 @@ public class ConformanceTest8OnlineTest extends ATSOnlineTest {
                     {
                         "ne_110m_populated_places_simple",
                         "start<>TIMESTAMP('2022-04-16T10:13:19Z')",
-                        2
+                        2 // TODO: see TODO above
                     },
                     {"ne_110m_populated_places_simple", "boolean IS NOT NULL", 3},
                     {"ne_110m_populated_places_simple", "boolean IS NULL", 240},

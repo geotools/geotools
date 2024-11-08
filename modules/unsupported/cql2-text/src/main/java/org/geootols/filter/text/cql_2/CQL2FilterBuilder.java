@@ -27,7 +27,6 @@ import org.geotools.api.filter.PropertyIsEqualTo;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.filter.expression.PropertyName;
-import org.geotools.api.filter.spatial.BBOX;
 import org.geotools.api.filter.spatial.BinarySpatialOperator;
 import org.geotools.api.filter.temporal.After;
 import org.geotools.api.filter.temporal.Before;
@@ -398,25 +397,19 @@ final class CQL2FilterBuilder extends AbstractFilterBuilder {
     }
 
     @Override
-    public BBOX buildBBox() throws CQLException {
-
+    public Filter buildBBox() throws CQLException {
         SpatialOperationBuilder builder =
                 new SpatialOperationBuilder(getResultStack(), getFilterFactory());
 
-        BBOX filter = builder.buildBBox();
-
-        return filter;
+        return builder.buildBBox();
     }
 
     @Override
-    public BBOX buildBBoxWithCRS() throws CQLException {
-
+    public Filter buildBBoxWithCRS() throws CQLException {
         SpatialOperationBuilder builder =
                 new SpatialOperationBuilder(getResultStack(), getFilterFactory());
 
-        BBOX filter = builder.buildBBoxWithCRS();
-
-        return filter;
+        return builder.buildBBoxWithCRS();
     }
 
     @Override
@@ -550,21 +543,15 @@ final class CQL2FilterBuilder extends AbstractFilterBuilder {
         String north = argument.substring(cur);
         double maxY = Double.parseDouble(north);
 
-        // ReferencedEnvelope envelope = new
-        // ReferencedEnvelope(DefaultGeographicCRS.WGS84);
-        // envelope.init(minX, minY, maxX, maxY);
         GeometryFactory gf = new GeometryFactory();
-
-        Coordinate[] coords = {
-            new Coordinate(minX, minY),
-            new Coordinate(minX, maxY),
-            new Coordinate(maxX, maxY),
-            new Coordinate(maxX, minY),
-            new Coordinate(minX, minY)
-        };
-        LinearRing shell = gf.createLinearRing(coords);
-        Polygon bbox = gf.createPolygon(shell, null);
-        bbox.setUserData(DefaultGeographicCRS.WGS84);
+        Geometry bbox;
+        if (SpatialOperationBuilder.isWrappingDateline(minX, maxX)) {
+            Polygon bbox1 = getRectangularPolygon(gf, minX, minY, 180, maxY);
+            Polygon bbox2 = getRectangularPolygon(gf, -180, minY, maxX, maxY);
+            bbox = gf.createMultiPolygon(new Polygon[] {bbox1, bbox2});
+        } else {
+            bbox = getRectangularPolygon(gf, minX, minY, maxX, maxY);
+        }
 
         Literal literal = filterFactory.literal(bbox);
 
@@ -576,5 +563,20 @@ final class CQL2FilterBuilder extends AbstractFilterBuilder {
         stack.popResult();
 
         return literal;
+    }
+
+    private static Polygon getRectangularPolygon(
+            GeometryFactory gf, double minX, double minY, double maxX, double maxY) {
+        Coordinate[] coords = {
+            new Coordinate(minX, minY),
+            new Coordinate(minX, maxY),
+            new Coordinate(maxX, maxY),
+            new Coordinate(maxX, minY),
+            new Coordinate(minX, minY)
+        };
+        LinearRing shell = gf.createLinearRing(coords);
+        Polygon bbox = gf.createPolygon(shell, null);
+        bbox.setUserData(DefaultGeographicCRS.WGS84);
+        return bbox;
     }
 }

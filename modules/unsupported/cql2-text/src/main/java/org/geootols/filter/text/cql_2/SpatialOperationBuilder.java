@@ -17,6 +17,7 @@
 
 package org.geootols.filter.text.cql_2;
 
+import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.spatial.BBOX;
@@ -95,6 +96,7 @@ class SpatialOperationBuilder {
 
         return getFilterFactory().equal(params[0], params[1]);
     }
+
     /** @return new instance of {@link Disjoint} operation */
     public Disjoint buildDisjoint() throws CQLException {
 
@@ -147,12 +149,10 @@ class SpatialOperationBuilder {
      *
      * @return {@link BBOX}}
      */
-    public BBOX buildBBoxWithCRS() throws CQLException {
-
+    public Filter buildBBoxWithCRS() throws CQLException {
         String crs = getResultStack().popStringValue();
         assert crs != null;
-        BBOX bbox = buildBBox(crs);
-        return bbox;
+        return buildBBox(crs);
     }
 
     /**
@@ -160,11 +160,8 @@ class SpatialOperationBuilder {
      *
      * @return {@link BBOX}}
      */
-    public BBOX buildBBox() throws CQLException {
-
-        BBOX bbox = buildBBox(null);
-
-        return bbox;
+    public Filter buildBBox() throws CQLException {
+        return buildBBox(null);
     }
 
     /**
@@ -172,7 +169,7 @@ class SpatialOperationBuilder {
      *
      * @return {@link BBOX}}
      */
-    private BBOX buildBBox(final String crs) throws CQLException {
+    private Filter buildBBox(final String crs) throws CQLException {
 
         double maxY = getResultStack().popDoubleValue();
         double maxX = getResultStack().popDoubleValue();
@@ -183,7 +180,34 @@ class SpatialOperationBuilder {
 
         FilterFactory ff = getFilterFactory();
 
+        if (isWrappingDateline(minX, maxX)) {
+            BBOX bbox1 = ff.bbox(expr, minX, minY, 180, maxY, crs);
+            BBOX bbox2 = ff.bbox(expr, -180, minY, maxX, maxY, crs);
+            return ff.and(bbox1, bbox2);
+        }
+
         BBOX bbox = ff.bbox(expr, minX, minY, maxX, maxY, crs);
         return bbox;
+    }
+
+    /**
+     * From the spec: In cases where the bounding box spans the antimeridian of a geographic
+     * coordinate reference system, the lower-left value (west-most box edge) is larger than the //
+     * upper-right value (east-most box edge). Since with CQL2 we won't get the CRS (it's provided
+     * in a separate request parameter, not part of the CQL2 text), we'll just assume it's a
+     * geographic CRS
+     */
+    static boolean isWrappingDateline(double minLon, double maxLon) {
+        return minLon > maxLon && validLongitude(minLon) && validLongitude(maxLon);
+    }
+
+    /**
+     * Check if the given value is a valid longitude value
+     *
+     * @param x
+     * @return
+     */
+    static boolean validLongitude(double x) {
+        return x >= -180 && x <= 180;
     }
 }

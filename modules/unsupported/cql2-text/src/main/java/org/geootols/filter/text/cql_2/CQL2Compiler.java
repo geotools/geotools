@@ -121,6 +121,7 @@ public class CQL2Compiler extends CQL2Parser implements org.geotools.filter.text
     public final Filter getFilter() throws CQLException {
         return this.builder.getFilter();
     }
+
     /**
      * Return the expression resultant of compiling process
      *
@@ -170,6 +171,7 @@ public class CQL2Compiler extends CQL2Parser implements org.geotools.filter.text
             n.dispose();
         }
     }
+
     /**
      * This method is called when the parser close a node. Here is built the filters an expressions
      * recognized in the parsing process.

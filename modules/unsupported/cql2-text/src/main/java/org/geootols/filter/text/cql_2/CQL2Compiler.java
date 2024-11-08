@@ -24,6 +24,7 @@ import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.Not;
 import org.geotools.api.filter.Or;
 import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Function;
 import org.geotools.api.filter.spatial.BinarySpatialOperator;
 import org.geotools.api.filter.temporal.After;
 import org.geotools.api.filter.temporal.Before;
@@ -237,6 +238,11 @@ public class CQL2Compiler extends CQL2Parser implements org.geotools.filter.text
             case JJTDIVNODE:
                 return buildBinaryExpression(n.getType());
 
+            case JJTREMAINDERNODE:
+            case JJTPOWERNODE:
+            case JJTINTDIVNODE:
+                return buildBinaryFunction(n.getType());
+
                 // Boolean expression
             case JJTBOOLEAN_AND_NODE:
                 return buildLogicFilter(JJTBOOLEAN_AND_NODE);
@@ -416,6 +422,16 @@ public class CQL2Compiler extends CQL2Parser implements org.geotools.filter.text
         }
 
         return expr;
+    }
+
+    private Function buildBinaryFunction(int nodeType) throws CQLException {
+        if (nodeType == JJTREMAINDERNODE) {
+            return this.builder.buildRemainderExpression();
+        } else if (nodeType == JJTINTDIVNODE) {
+            return this.builder.buildIntegerDivideExpression();
+        } else {
+            return this.builder.buildPowerExpression();
+        }
     }
 
     private Filter buildLogicFilter(int nodeType) throws CQLException {

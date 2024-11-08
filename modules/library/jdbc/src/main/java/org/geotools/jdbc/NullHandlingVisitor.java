@@ -67,7 +67,10 @@ class NullHandlingVisitor extends DuplicatingFilterVisitor {
 
     @Override
     public Object visit(PropertyIsNotEqualTo filter, Object extraData) {
-        return guardAgainstNulls((BinaryComparisonOperator) super.visit(filter, extraData));
+        PropertyIsEqualTo equal =
+                ff.equal(filter.getExpression1(), filter.getExpression2(), filter.isMatchingCase());
+        Filter visited = (Filter) visit(equal, extraData);
+        return ff.not(visited);
     }
 
     @Override

@@ -276,7 +276,7 @@ public final class JDBCFeatureStore extends ContentFeatureStore {
             }
 
             // split the filter
-            Filter[] split = delegate.splitFilter(query.getFilter());
+            Filter[] split = delegate.splitFilter(query.getFilter(), query.getHints());
             Filter preFilter = split[0];
             postFilter = split[1];
 
@@ -335,7 +335,8 @@ public final class JDBCFeatureStore extends ContentFeatureStore {
         }
 
         // split the filter
-        Filter[] splitted = delegate.splitFilter(filter);
+        Filter[] splitted =
+                delegate.splitFilter(filter, this.query != null ? this.query.getHints() : null);
         Filter preFilter = splitted[0];
         Filter postFilter = splitted[1];
 
@@ -398,7 +399,8 @@ public final class JDBCFeatureStore extends ContentFeatureStore {
 
     @Override
     public void removeFeatures(Filter filter) throws IOException {
-        Filter[] splitted = delegate.splitFilter(filter);
+        Filter[] splitted =
+                delegate.splitFilter(filter, this.query != null ? this.query.getHints() : null);
         Filter preFilter = splitted[0];
         Filter postFilter = splitted[1];
 

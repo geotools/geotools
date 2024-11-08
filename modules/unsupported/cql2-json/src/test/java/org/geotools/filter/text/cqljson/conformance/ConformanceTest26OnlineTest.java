@@ -17,10 +17,8 @@
 
 package org.geotools.filter.text.cqljson.conformance;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
-import org.geotools.api.data.DataStore;
 import org.geotools.api.filter.Filter;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.cqljson.CQL2Json;
@@ -35,8 +33,14 @@ import org.junit.runners.Parameterized;
 public class ConformanceTest26OnlineTest
         extends org.geotools.filter.text.cql_2.conformance.ConformanceTest26OnlineTest {
 
-    public ConformanceTest26OnlineTest(String dataset, String criteria, int expectedFeatures) {
+    public ConformanceTest26OnlineTest(String dataset, String criteria, int expectedFeatures)
+            throws CQLException {
         super(dataset, criteria, expectedFeatures);
+    }
+
+    @Override
+    protected Filter criteriaToFilter(String criteria) throws CQLException {
+        return CQL2Json.toFilter(criteria);
     }
 
     @Parameterized.Parameters(name = "{index} {0} {1}")
@@ -84,11 +88,5 @@ public class ConformanceTest26OnlineTest
                         4
                     }
                 });
-    }
-
-    @Override
-    protected int featuresReturned(DataStore ds) throws CQLException, IOException {
-        Filter filter = CQL2Json.toFilter(this.criteria);
-        return ds.getFeatureSource(this.dataset).getFeatures(filter).size();
     }
 }

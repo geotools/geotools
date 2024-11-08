@@ -29,8 +29,11 @@ public class JDBCThreeValuedLogicTestSetup extends JDBCDelegatingTestSetup {
      *
      * <p>abc( name: string; a : integer; b : integer; c : integer)
      *
-     * <p>The table should be populated with the following data n_n_n | null | null | null a_b_c | 1
-     * | 2 | 3 Where [0,1,2,3,4,5] is a byte[]
+     * <p>The table should be populated with the following data <code>
+     * n_n_n | null | null | null
+     * a_b_c | 1 | 2 | 3
+     * </code><br>
+     * Where [0,1,2,3,4,5] is a byte[]
      */
     protected void createAbcTable() throws Exception {
         run("CREATE TABLE \"abc\"(\"name\" varchar(10), \"a\" int, \"b\" int, \"c\" int)");

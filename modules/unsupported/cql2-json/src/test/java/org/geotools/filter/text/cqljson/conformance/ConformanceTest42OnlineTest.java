@@ -17,26 +17,27 @@
 
 package org.geotools.filter.text.cqljson.conformance;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
-import org.geotools.api.data.DataStore;
 import org.geotools.api.filter.Filter;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.cqljson.CQL2Json;
-import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
 /**
  * See <a href="https://docs.ogc.org/is/21-065r2/21-065r2.html#_conformance_test_42">table 15 from
  * section A.10.3 Conformance test 42.</a>
  */
-@RunWith(Parameterized.class)
 public class ConformanceTest42OnlineTest
         extends org.geotools.filter.text.cql_2.conformance.ConformanceTest42OnlineTest {
 
-    public ConformanceTest42OnlineTest(String criteria, int expectedFeatures) {
+    public ConformanceTest42OnlineTest(String criteria, int expectedFeatures) throws CQLException {
         super(criteria, expectedFeatures);
+    }
+
+    @Override
+    protected Filter criteriaToFilter(String criteria) throws CQLException {
+        return CQL2Json.toFilter(criteria);
     }
 
     @Parameterized.Parameters(name = "{index} {0} {1}")
@@ -98,11 +99,5 @@ public class ConformanceTest42OnlineTest
                     {"{}", 1}, // TODO broken text filter, cannot be converted to json
                     {"{}", 0} // TODO broken text filter, cannot be converted to json
                 });
-    }
-
-    @Override
-    protected int featuresReturned(DataStore ds) throws CQLException, IOException {
-        Filter filter = CQL2Json.toFilter(this.criteria);
-        return ds.getFeatureSource("ne_110m_populated_places_simple").getFeatures(filter).size();
     }
 }

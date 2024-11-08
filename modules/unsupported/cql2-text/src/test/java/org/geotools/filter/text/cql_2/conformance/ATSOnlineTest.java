@@ -17,6 +17,8 @@
 
 package org.geotools.filter.text.cql_2.conformance;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -24,10 +26,16 @@ import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.commons.io.FileUtils;
+import org.geootols.filter.text.cql_2.CQL2;
 import org.geotools.api.data.DataStore;
 import org.geotools.api.data.DataStoreFinder;
+import org.geotools.api.data.Query;
+import org.geotools.api.filter.Filter;
+import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.http.HTTPResponse;
 import org.geotools.http.SimpleHttpClient;
+import org.geotools.jdbc.JDBCFeatureSource;
+import org.junit.Test;
 
 /**
  * Base class for tests issued from the Abstract Test Suite (ATS). See <a
@@ -43,6 +51,27 @@ public abstract class ATSOnlineTest {
             "https://github.com/opengeospatial/ogcapi-features/raw/refs/heads/master/cql2/standard/data/ne110m4cql2.gpkg";
 
     protected final File neGpkg = Path.of(System.getProperty("java.io.tmpdir"), "ne.gpkg").toFile();
+
+    protected final String dataset;
+    protected final Filter filter;
+    protected final int expectedFeatures;
+
+    protected ATSOnlineTest(String dataset, String criteria, int expectedFeatures)
+            throws CQLException {
+        this.dataset = dataset;
+        this.filter = criteriaToFilter(criteria);
+        this.expectedFeatures = expectedFeatures;
+    }
+
+    protected Filter criteriaToFilter(String criteria) throws CQLException {
+        return CQL2.toFilter(criteria);
+    }
+
+    protected ATSOnlineTest(String dataset, Filter filter, int expectedFeatures) {
+        this.dataset = dataset;
+        this.filter = filter;
+        this.expectedFeatures = expectedFeatures;
+    }
 
     private void downloadNaturalEarthData() throws IOException {
         if (neGpkg.exists()) {
@@ -64,5 +93,21 @@ public abstract class ATSOnlineTest {
         DataStore datastore = DataStoreFinder.getDataStore(params);
 
         return datastore;
+    }
+
+    protected int featuresReturned(DataStore ds) throws CQLException, IOException {
+        Query q = new Query(this.dataset);
+        q.getHints().put(JDBCFeatureSource.FILTER_THREE_WAY_LOGIC, Boolean.TRUE);
+        q.setFilter(filter);
+        return ds.getFeatureSource(this.dataset).getFeatures(q).size();
+    }
+
+    @Test
+    public void testConformance() throws CQLException, IOException {
+        DataStore ds = naturalEarthData();
+        int feat = featuresReturned(ds);
+        ds.dispose();
+
+        assertEquals(this.expectedFeatures, feat);
     }
 }

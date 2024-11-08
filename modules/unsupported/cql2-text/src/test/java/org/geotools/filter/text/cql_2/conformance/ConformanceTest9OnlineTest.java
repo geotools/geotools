@@ -17,16 +17,11 @@
 
 package org.geotools.filter.text.cql_2.conformance;
 
-import static org.junit.Assert.assertEquals;
-
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
 import org.geootols.filter.text.cql_2.CQL2;
-import org.geotools.api.data.DataStore;
 import org.geotools.api.filter.Filter;
 import org.geotools.filter.text.cql2.CQLException;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
@@ -37,19 +32,18 @@ import org.junit.runners.Parameterized;
 @RunWith(Parameterized.class)
 public class ConformanceTest9OnlineTest extends ATSOnlineTest {
 
-    protected final String p1;
-    protected final String p2;
-    protected final String p3;
-    protected final String p4;
-    protected final int expectedFeatures;
-
     public ConformanceTest9OnlineTest(
-            String p1, String p2, String p3, String p4, int expectedFeatures) {
-        this.p1 = p1;
-        this.p2 = p2;
-        this.p3 = p3;
-        this.p4 = p4;
-        this.expectedFeatures = expectedFeatures;
+            String p1, String p2, String p3, String p4, int expectedFeatures) throws CQLException {
+        super("ne_110m_populated_places_simple", toFilter(p1, p2, p3, p4), expectedFeatures);
+    }
+
+    protected ConformanceTest9OnlineTest(Filter filter, int expectedFeatures) throws CQLException {
+        super("ne_110m_populated_places_simple", filter, expectedFeatures);
+    }
+
+    private static Filter toFilter(String p1, String p2, String p3, String p4) throws CQLException {
+        String template = "(NOT (%s) AND %s) OR (%s and %s) or not (%s OR %s)";
+        return CQL2.toFilter(String.format(template, p2, p1, p3, p4, p1, p4));
     }
 
     @Parameterized.Parameters(name = "{index} {0} {1} {2} {3}")
@@ -584,23 +578,5 @@ public class ConformanceTest9OnlineTest extends ATSOnlineTest {
                         44
                     }
                 });
-    }
-
-    public @Test void testConformance() throws IOException, CQLException {
-        DataStore ds = naturalEarthData();
-        int feat = featuresReturned(ds);
-        ds.dispose();
-
-        assertEquals(this.expectedFeatures, feat);
-    }
-
-    protected int featuresReturned(DataStore ds) throws CQLException, IOException {
-        Filter filter =
-                CQL2.toFilter(
-                        String.format(
-                                "(NOT (%s) AND %s) OR (%s and %s) or not (%s OR %s)",
-                                p2, p1, p3, p4, p1, p4));
-
-        return ds.getFeatureSource("ne_110m_populated_places_simple").getFeatures(filter).size();
     }
 }

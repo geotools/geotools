@@ -17,16 +17,9 @@
 
 package org.geotools.filter.text.cql_2.conformance;
 
-import static org.junit.Assert.assertEquals;
-
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
-import org.geootols.filter.text.cql_2.CQL2;
-import org.geotools.api.data.DataStore;
-import org.geotools.api.filter.Filter;
 import org.geotools.filter.text.cql2.CQLException;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
@@ -37,12 +30,8 @@ import org.junit.runners.Parameterized;
 @RunWith(Parameterized.class)
 public class ConformanceTest53OnlineTest extends ATSOnlineTest {
 
-    protected final String criteria;
-    protected final int expectedFeatures;
-
-    public ConformanceTest53OnlineTest(String criteria, int expectedFeatures) {
-        this.criteria = criteria;
-        this.expectedFeatures = expectedFeatures;
+    public ConformanceTest53OnlineTest(String criteria, int expectedFeatures) throws CQLException {
+        super("ne_110m_populated_places_simple", criteria, expectedFeatures);
     }
 
     @Parameterized.Parameters(name = "{index} {0} {1}")
@@ -69,18 +58,5 @@ public class ConformanceTest53OnlineTest extends ATSOnlineTest {
                     },
                     {"1038280+8=pop_other", 1}
                 });
-    }
-
-    public @Test void testConformance() throws CQLException, IOException {
-        DataStore ds = naturalEarthData();
-        int feat = featuresReturned(ds);
-        ds.dispose();
-
-        assertEquals(this.expectedFeatures, feat);
-    }
-
-    protected int featuresReturned(DataStore ds) throws CQLException, IOException {
-        Filter filter = CQL2.toFilter(this.criteria);
-        return ds.getFeatureSource("ne_110m_populated_places_simple").getFeatures(filter).size();
     }
 }

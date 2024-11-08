@@ -17,26 +17,28 @@
 
 package org.geotools.filter.text.cqljson.conformance;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
-import org.geotools.api.data.DataStore;
 import org.geotools.api.filter.Filter;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.cqljson.CQL2Json;
-import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
 /**
  * See <a href="https://docs.ogc.org/is/21-065r2/21-065r2.html#_conformance_test_38">table 14 from
  * section A.9.9 Conformance test 38.</a>
  */
-@RunWith(Parameterized.class)
 public class ConformanceTest38OnlineTest
         extends org.geotools.filter.text.cql_2.conformance.ConformanceTest38OnlineTest {
 
-    public ConformanceTest38OnlineTest(String dataset, String criteria, int expectedFeatures) {
+    public ConformanceTest38OnlineTest(String dataset, String criteria, int expectedFeatures)
+            throws CQLException {
         super(dataset, criteria, expectedFeatures);
+    }
+
+    @Override
+    protected Filter criteriaToFilter(String criteria) throws CQLException {
+        return CQL2Json.toFilter(criteria);
     }
 
     @Parameterized.Parameters(name = "{index} {0} {1}")
@@ -174,11 +176,5 @@ public class ConformanceTest38OnlineTest
                         11
                     }
                 });
-    }
-
-    @Override
-    protected int featuresReturned(DataStore ds) throws CQLException, IOException {
-        Filter filter = CQL2Json.toFilter(this.criteria);
-        return ds.getFeatureSource(this.dataset).getFeatures(filter).size();
     }
 }

@@ -410,10 +410,17 @@ public class JDBCFeatureSource extends ContentFeatureSource {
             featureSource = ((JDBCFeatureStore) source).getFeatureSource();
         }
 
+        // simplify first, give an opportunity to eliminate static parts that might not
+        // be otherwise supported by the datastore
+        SimplifyingFilterVisitor visitor = new SimplifyingFilterVisitor();
+        visitor.setFIDValidator(new PrimaryKeyFIDValidator(featureSource));
+        visitor.setFeatureType(source.getSchema());
+        Filter simplified = (Filter) original.accept(visitor, null);
+
         Filter[] split = new Filter[2];
         if (original != null) {
             JDBCDataStore dataStore = (JDBCDataStore) source.getDataStore();
-            split = dataStore.getSQLDialect().splitFilter(original, featureSource.getSchema());
+            split = dataStore.getSQLDialect().splitFilter(simplified, featureSource.getSchema());
         }
 
         // handle three-valued logic differences by adding "is not null" checks in the filter,
@@ -422,12 +429,6 @@ public class JDBCFeatureSource extends ContentFeatureSource {
             NullHandlingVisitor nhv = new NullHandlingVisitor(source.getSchema());
             split[0] = (Filter) split[0].accept(nhv, null);
         }
-
-        SimplifyingFilterVisitor visitor = new SimplifyingFilterVisitor();
-        visitor.setFIDValidator(new PrimaryKeyFIDValidator(featureSource));
-        visitor.setFeatureType(source.getSchema());
-        split[0] = (Filter) split[0].accept(visitor, null);
-        split[1] = (Filter) split[1].accept(visitor, null);
 
         return split;
     }

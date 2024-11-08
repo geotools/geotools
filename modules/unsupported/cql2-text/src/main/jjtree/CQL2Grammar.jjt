@@ -117,7 +117,8 @@ TOKEN [IGNORE_CASE]:  /* keywords */
    < NULL: "null" > |
    < DATEFUNC: "DATE" > |
    < TIMESTAMPFUNC: "TIMESTAMP" > |
-   < PERIODFUNC: "PERIOD" >
+   < PERIODFUNC: "PERIOD" > |
+   < INTDIV: "div" >
 }
 
 TOKEN [IGNORE_CASE]: /* geometry markers */
@@ -169,6 +170,8 @@ TOKEN:
   < MULT: "*"> |
   < PLUS: "+"> |
   < MINUS: "-" > |
+  < PERC: "%" > |
+  < CARET: "^" > |
   < QUOTE: "'"> |
   < DOUBLE_QUOTE: "\""> |
   < DOLLAR: "$">
@@ -584,21 +587,31 @@ void BinaryExpression() #void:
   (
     <PLUS> MultiplicativeExpression() #AddNode
    |
-    <MINUS> MultiplicativeExpression() #SubtractNode
+     <MINUS> MultiplicativeExpression() #SubtractNode
   )*
 }
  
-
-
 void MultiplicativeExpression() #void :
 {}
 {
-  
+  PowerExpression()
+  (
+    <MULT> PowerExpression() #MulNode
+   |
+    <SLASH> PowerExpression() #DivNode
+   |
+    <INTDIV> PowerExpression() #IntDivNode
+   |
+    <PERC> PowerExpression() #RemainderNode
+  )*
+}
+
+void PowerExpression() #void:
+{}
+{
   UnaryExpression()
   (
-    <MULT> UnaryExpression() #MulNode
-   |
-    <SLASH> UnaryExpression() #DivNode
+    <CARET> UnaryExpression() #PowerNode
   )*
 }
 

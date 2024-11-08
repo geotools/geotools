@@ -183,6 +183,28 @@ public abstract class AbstractFilterBuilder {
         return filterFactory.divide(left, right);
     }
 
+    public Function buildIntegerDivideExpression() throws CQLException {
+
+        Expression right = this.resultStack.popExpression();
+        Expression left = this.resultStack.popExpression();
+
+        return filterFactory.function("div", left, right);
+    }
+
+    public Function buildPowerExpression() throws CQLException {
+        Expression right = this.resultStack.popExpression();
+        Expression left = this.resultStack.popExpression();
+
+        return filterFactory.function("pow", left, right);
+    }
+
+    public Function buildRemainderExpression() throws CQLException {
+        Expression right = this.resultStack.popExpression();
+        Expression left = this.resultStack.popExpression();
+
+        return filterFactory.function("IEEEremainder", left, right);
+    }
+
     public Filter buildAndFilter() throws CQLException {
 
         Filter right = this.resultStack.popFilter();

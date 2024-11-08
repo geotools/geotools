@@ -16,6 +16,7 @@
  */
 package org.geotools.data;
 
+import java.io.Flushable;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -266,62 +267,11 @@ public class InProcessLockingManager implements LockingManager {
     public FeatureWriter<SimpleFeatureType, SimpleFeature> checkedWriter(
             final FeatureWriter<SimpleFeatureType, SimpleFeature> writer,
             final Transaction transaction) {
-        SimpleFeatureType featureType = writer.getFeatureType();
-        final String typeName = featureType.getTypeName();
-
-        return new DelegatingFeatureWriter<SimpleFeatureType, SimpleFeature>() {
-            SimpleFeature live = null;
-
-            @Override
-            public FeatureWriter<SimpleFeatureType, SimpleFeature> getDelegate() {
-                return writer;
-            }
-
-            @Override
-            public SimpleFeatureType getFeatureType() {
-                return writer.getFeatureType();
-            }
-
-            @Override
-            public SimpleFeature next() throws IOException {
-                live = writer.next();
-
-                return live;
-            }
-
-            @Override
-            public void remove() throws IOException {
-                if (live != null) {
-                    assertAccess(typeName, live.getID(), transaction);
-                }
-
-                writer.remove();
-                live = null;
-            }
-
-            @Override
-            public void write() throws IOException {
-                if (live != null) {
-                    assertAccess(typeName, live.getID(), transaction);
-                }
-
-                writer.write();
-                live = null;
-            }
-
-            @Override
-            public boolean hasNext() throws IOException {
-                live = null;
-
-                return writer.hasNext();
-            }
-
-            @Override
-            public void close() throws IOException {
-                live = null;
-                if (writer != null) writer.close();
-            }
-        };
+        if (writer instanceof Flushable) {
+            return new LockingFlushingFeatureWriter(writer, transaction);
+        } else {
+            return new LockingFeatureWriter(writer, transaction);
+        }
     }
 
     /**
@@ -709,6 +659,92 @@ public class InProcessLockingManager implements LockingManager {
             long dur = duration;
 
             return "MemoryLock(" + authID + "|" + delta + "ms|" + dur + "ms)";
+        }
+    }
+
+    class LockingFeatureWriter
+            implements DelegatingFeatureWriter<SimpleFeatureType, SimpleFeature> {
+
+        private final FeatureWriter<SimpleFeatureType, SimpleFeature> writer;
+        private final Transaction transaction;
+        private final String typeName;
+
+        protected SimpleFeature live = null;
+
+        public LockingFeatureWriter(
+                FeatureWriter<SimpleFeatureType, SimpleFeature> writer, Transaction transaction) {
+            this.writer = writer;
+            this.transaction = transaction;
+            this.typeName = writer.getFeatureType().getTypeName();
+        }
+
+        @Override
+        public FeatureWriter<SimpleFeatureType, SimpleFeature> getDelegate() {
+            return writer;
+        }
+
+        @Override
+        public SimpleFeatureType getFeatureType() {
+            return writer.getFeatureType();
+        }
+
+        @Override
+        public SimpleFeature next() throws IOException {
+            live = writer.next();
+            return live;
+        }
+
+        @Override
+        public void remove() throws IOException {
+            if (live != null) {
+                assertAccess(typeName, live.getID(), transaction);
+            }
+
+            writer.remove();
+            live = null;
+        }
+
+        @Override
+        public void write() throws IOException {
+            if (live != null) {
+                assertAccess(typeName, live.getID(), transaction);
+            }
+
+            writer.write();
+            live = null;
+        }
+
+        @Override
+        public boolean hasNext() throws IOException {
+            live = null;
+            return writer.hasNext();
+        }
+
+        @Override
+        public void close() throws IOException {
+            live = null;
+            if (writer != null) {
+                writer.close();
+            }
+        }
+    }
+
+    class LockingFlushingFeatureWriter extends LockingFeatureWriter implements Flushable {
+
+        private final Flushable flushable;
+
+        public LockingFlushingFeatureWriter(
+                FeatureWriter<SimpleFeatureType, SimpleFeature> writer, Transaction transaction) {
+            super(writer, transaction);
+            this.flushable = (Flushable) writer;
+        }
+
+        @Override
+        public void flush() throws IOException {
+            live = null;
+            if (flushable != null) {
+                flushable.flush();
+            }
         }
     }
 }

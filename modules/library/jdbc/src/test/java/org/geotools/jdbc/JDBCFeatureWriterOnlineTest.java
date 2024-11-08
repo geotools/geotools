@@ -60,7 +60,7 @@ public abstract class JDBCFeatureWriterOnlineTest extends JDBCTestSupport {
     @Test
     public void testFlushableAppends() throws Exception {
         try (FeatureWriter writer =
-                     dataStore.getFeatureWriterAppend(tname("ft1"), Transaction.AUTO_COMMIT)) {
+                dataStore.getFeatureWriterAppend(tname("ft1"), Transaction.AUTO_COMMIT)) {
             assertTrue(writer.hasNext());
             final SimpleFeature feature = (SimpleFeature) writer.next();
             assertEquals("POINT (0 0)", feature.getAttribute(0).toString());

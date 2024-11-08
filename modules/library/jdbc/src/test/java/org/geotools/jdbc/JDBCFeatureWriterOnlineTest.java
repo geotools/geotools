@@ -17,6 +17,7 @@
 package org.geotools.jdbc;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -61,12 +62,7 @@ public abstract class JDBCFeatureWriterOnlineTest extends JDBCTestSupport {
     public void testFlushableAppends() throws Exception {
         try (FeatureWriter writer =
                 dataStore.getFeatureWriterAppend(tname("ft1"), Transaction.AUTO_COMMIT)) {
-            assertTrue(writer.hasNext());
-            final SimpleFeature feature = (SimpleFeature) writer.next();
-            assertEquals("POINT (0 0)", feature.getAttribute(0).toString());
-            assertEquals(0, (int) (Integer) feature.getAttribute(1));
-            assertEquals(0.0, (double) (Double) feature.getAttribute(2), 0.0);
-            assertEquals("zero", feature.getAttribute(3));
+            assertFalse(writer.hasNext());
             assertTrue(writer instanceof Flushable);
         }
     }

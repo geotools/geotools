@@ -450,6 +450,14 @@ public class ImageMosaicReaderTest {
         reader.dispose();
     }
 
+    @Test
+    public void testGetInfoUnlessCoverageView() throws Exception {
+        final AbstractGridFormat format = TestUtils.getFormat(overviewURL);
+        ImageMosaicReader reader = getReader(overviewURL, format);
+        // not a coverage view, should return ResourceInfo
+        assertTrue(reader.getInfoUnlessCoverageView("overview") instanceof ResourceInfo);
+    }
+
     /** */
     @Test
     public void readingResolutions() throws Exception {

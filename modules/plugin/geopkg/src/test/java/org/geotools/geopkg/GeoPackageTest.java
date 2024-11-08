@@ -53,6 +53,7 @@ import javax.imageio.ImageIO;
 import javax.media.jai.PlanarImage;
 import org.apache.commons.io.FileUtils;
 import org.geotools.TestData;
+import org.geotools.api.data.ResourceInfo;
 import org.geotools.api.data.SimpleFeatureReader;
 import org.geotools.api.data.SimpleFeatureStore;
 import org.geotools.api.data.SimpleFeatureWriter;
@@ -921,6 +922,15 @@ public class GeoPackageTest {
         TileEntry te = lt.get(0);
         assertEquals("foo", te.getTableName());
         assertEquals(2, te.getTileMatricies().size());
+    }
+
+    @Test
+    public void testGetInfoUnlessCoverageView() throws Exception {
+        GeoPackageReader reader =
+                new GeoPackageReader(getClass().getResource("Blue_Marble.gpkg"), null);
+        // not a coverage view, should return ResourceInfo
+        assertTrue(
+                reader.getInfoUnlessCoverageView("bluemarble_tif_tiles") instanceof ResourceInfo);
     }
 
     @Test

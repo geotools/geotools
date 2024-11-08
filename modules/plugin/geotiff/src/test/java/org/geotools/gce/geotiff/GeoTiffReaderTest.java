@@ -157,6 +157,15 @@ public class GeoTiffReaderTest {
         coverage.dispose(true);
     }
 
+    @Test
+    public void testGetInfoUnlessCoverageView() throws Exception {
+        final File noCrs = TestData.file(GeoTiffReaderTest.class, "override/sample.tif");
+        final AbstractGridFormat format = new GeoTiffFormat();
+        GeoTiffReader reader = (GeoTiffReader) format.getReader(noCrs);
+        // not a coverage view, should return ResourceInfo
+        assertTrue(reader.getInfoUnlessCoverageView("sample") instanceof ResourceInfo);
+    }
+
     /** Testing proper CRS override with PRJ. */
     @Test
     public void prjOverrideTesting2()

@@ -384,4 +384,13 @@ public interface GridCoverage2DReader extends GridCoverageReader {
      * @return ResourceInfo describing a specific coverage.
      */
     ResourceInfo getInfo(String coverageName);
+
+    /**
+     * Returns information about a specific resource, with a special return type for Coverage Views
+     *
+     * @param coverageName the name of the coverage for which we want to know the resolution levels.
+     * @return the information about the coverage, or an InputAlphaNonNullCoverages if the coverage
+     *     is a coverage view
+     */
+    Object getInfoUnlessCoverageView(String coverageName);
 }

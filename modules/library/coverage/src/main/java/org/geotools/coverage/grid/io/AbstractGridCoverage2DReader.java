@@ -1077,6 +1077,11 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
         return info;
     }
 
+    @Override
+    public Object getInfoUnlessCoverageView(String coverageName) {
+        return getInfo(coverageName);
+    }
+
     /**
      * Forcing disposal of this {@link AbstractGridCoverage2DReader} which may keep an {@link
      * ImageInputStream} open.

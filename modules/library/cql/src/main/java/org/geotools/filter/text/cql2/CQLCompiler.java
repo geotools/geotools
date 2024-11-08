@@ -507,7 +507,7 @@ public class CQLCompiler extends CQLParser implements ICompiler {
         return filter;
     }
 
-    private org.geotools.api.filter.spatial.BBOX buildBBox(int nodeType) throws CQLException {
+    private Filter buildBBox(int nodeType) throws CQLException {
 
         if (nodeType == JJTROUTINEINVOCATION_GEOOP_BBOX_SRS_NODE) {
             return this.builder.buildBBoxWithCRS();

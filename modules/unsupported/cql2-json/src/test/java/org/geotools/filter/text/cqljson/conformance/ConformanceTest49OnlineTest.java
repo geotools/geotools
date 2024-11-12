@@ -379,36 +379,38 @@ public class ConformanceTest49OnlineTest
                         "ne_110m_populated_places_simple",
                         "{\"op\":\"t_before\",\"args\":[{\"date\":\"2022-04-16T00:00:00GMT+00:00\"},{\"property\":\"date\"}]}",
                         1
-                    },
-                    {
-                        "ne_110m_populated_places_simple", "{}", 2
-                    }, // TODO text filter cannot be parsed nor translated into JSON
+                    }, /*
+                       {
+                           "ne_110m_populated_places_simple", "{}", 2
+                       }, // TODO text filter cannot be parsed nor translated into JSON
+                       */
                     {
                         "ne_110m_populated_places_simple",
                         "{\"op\":\"t_equals\",\"args\":[{\"date\":\"2022-04-16T00:00:00GMT+00:00\"},{\"property\":\"date\"}]}",
                         1
-                    },
-                    {
-                        "ne_110m_populated_places_simple", "{}", 1
-                    }, // TODO text filter cannot be parsed nor translated into JSON
-                    {
-                        "ne_110m_populated_places_simple", "{}", 1
-                    }, // TODO text filter cannot be parsed nor translated into JSON
-                    {
-                        "ne_110m_populated_places_simple", "{}", 1
-                    }, // TODO text filter cannot be parsed nor translated into JSON
-                    {
-                        "ne_110m_populated_places_simple", "{}", 2
-                    }, // TODO text filter cannot be parsed nor translated into JSON
-                    {
-                        "ne_110m_populated_places_simple", "{}", 0
-                    }, // TODO text filter cannot be parsed nor translated into JSON
-                    {
-                        "ne_110m_populated_places_simple", "{}", 1
-                    }, // TODO text filter cannot be parsed nor translated into JSON
-                    {
-                        "ne_110m_populated_places_simple", "{}", 1
-                    }, // TODO text filter cannot be parsed nor translated into JSON
+                    }, /*
+                       {
+                           "ne_110m_populated_places_simple", "{}", 1
+                       }, // TODO text filter cannot be parsed nor translated into JSON
+                       {
+                           "ne_110m_populated_places_simple", "{}", 1
+                       }, // TODO text filter cannot be parsed nor translated into JSON
+                       {
+                           "ne_110m_populated_places_simple", "{}", 1
+                       }, // TODO text filter cannot be parsed nor translated into JSON
+                       {
+                           "ne_110m_populated_places_simple", "{}", 2
+                       }, // TODO text filter cannot be parsed nor translated into JSON
+                       {
+                           "ne_110m_populated_places_simple", "{}", 0
+                       }, // TODO text filter cannot be parsed nor translated into JSON
+                       {
+                           "ne_110m_populated_places_simple", "{}", 1
+                       }, // TODO text filter cannot be parsed nor translated into JSON
+                       {
+                           "ne_110m_populated_places_simple", "{}", 1
+                       }, // TODO text filter cannot be parsed nor translated into JSON
+                       */
                     {
                         "ne_110m_populated_places_simple",
                         "{\"op\":\"t_after\",\"args\":[{\"date\":\"2022-04-16T10:13:19GMT+00:00\"},{\"property\":\"start\"}]}",
@@ -419,77 +421,80 @@ public class ConformanceTest49OnlineTest
                         "{\"op\":\"t_before\",\"args\":[{\"date\":\"2022-04-16T10:13:19GMT+00:00\"},{\"property\":\"start\"}]}",
                         1
                     },
+                    /*
                     {
                         "ne_110m_populated_places_simple", "{}", 2
                     }, // TODO text filter cannot be parsed nor translated into JSON
+                    */
                     {
                         "ne_110m_populated_places_simple",
                         "{\"op\":\"t_equals\",\"args\":[{\"date\":\"2022-04-16T10:13:19GMT+00:00\"},{\"property\":\"start\"}]}",
                         1
-                    },
-                    {
-                        "ne_110m_populated_places_simple", "{}", 1
-                    }, // TODO text filter cannot be parsed nor translated into JSON
-                    {
-                        "ne_110m_populated_places_simple", "{}", 1
-                    }, // TODO text filter cannot be parsed nor translated into JSON
-                    {
-                        "ne_110m_populated_places_simple", "{}", 0
-                    }, // TODO text filter cannot be parsed nor translated into JSON
-                    {
-                        "ne_110m_populated_places_simple", "{}", 1
-                    }, // TODO text filter cannot be parsed nor translated into JSON
-                    {
-                        "ne_110m_populated_places_simple", "{}", 0
-                    }, // TODO text filter cannot be parsed nor translated into JSON
-                    {
-                        "ne_110m_populated_places_simple", "{}", 2
-                    }, // TODO text filter cannot be parsed nor translated into JSON
-                    {
-                        "ne_110m_populated_places_simple", "{}", 2
-                    }, // TODO text filter cannot be parsed nor translated into JSON
-                    {
-                        "ne_110m_populated_places_simple", "{}", 1
-                    }, // TODO text filter cannot be parsed nor translated into JSON
-                    {
-                        "ne_110m_populated_places_simple", "{}", 1
-                    }, // TODO text filter cannot be parsed nor translated into JSON
-                    {
-                        "ne_110m_populated_places_simple", "{}", 1
-                    }, // TODO text filter cannot be parsed nor translated into JSON
-                    {
-                        "ne_110m_populated_places_simple", "{}", 2
-                    }, // TODO text filter cannot be parsed nor translated into JSON
-                    {
-                        "ne_110m_populated_places_simple", "{}", 2
-                    }, // TODO text filter cannot be parsed nor translated into JSON
-                    {
-                        "ne_110m_populated_places_simple", "{}", 1
-                    }, // TODO text filter cannot be parsed nor translated into JSON
-                    {
-                        "ne_110m_populated_places_simple", "{}", 1
-                    }, // TODO text filter cannot be parsed nor translated into JSON
-                    {
-                        "ne_110m_populated_places_simple", "{}", 0
-                    }, // TODO text filter cannot be parsed nor translated into JSON
-                    {
-                        "ne_110m_populated_places_simple", "{}", 1
-                    }, // TODO text filter cannot be parsed nor translated into JSON
-                    {
-                        "ne_110m_populated_places_simple", "{}", 0
-                    }, // TODO text filter cannot be parsed nor translated into JSON
-                    {
-                        "ne_110m_populated_places_simple", "{}", 0
-                    }, // TODO text filter cannot be parsed nor translated into JSON
-                    {
-                        "ne_110m_populated_places_simple", "{}", 0
-                    }, // TODO text filter cannot be parsed nor translated into JSON
-                    {
-                        "ne_110m_populated_places_simple", "{}", 0
-                    }, // TODO text filter cannot be parsed nor translated into JSON
-                    {
-                        "ne_110m_populated_places_simple", "{}", 1
-                    } // TODO text filter cannot be parsed nor translated into JSON
+                    }, /*
+                       {
+                           "ne_110m_populated_places_simple", "{}", 1
+                       }, // TODO text filter cannot be parsed nor translated into JSON
+                       {
+                           "ne_110m_populated_places_simple", "{}", 1
+                       }, // TODO text filter cannot be parsed nor translated into JSON
+                       {
+                           "ne_110m_populated_places_simple", "{}", 0
+                       }, // TODO text filter cannot be parsed nor translated into JSON
+                       {
+                           "ne_110m_populated_places_simple", "{}", 1
+                       }, // TODO text filter cannot be parsed nor translated into JSON
+                       {
+                           "ne_110m_populated_places_simple", "{}", 0
+                       }, // TODO text filter cannot be parsed nor translated into JSON
+                       {
+                           "ne_110m_populated_places_simple", "{}", 2
+                       }, // TODO text filter cannot be parsed nor translated into JSON
+                       {
+                           "ne_110m_populated_places_simple", "{}", 2
+                       }, // TODO text filter cannot be parsed nor translated into JSON
+                       {
+                           "ne_110m_populated_places_simple", "{}", 1
+                       }, // TODO text filter cannot be parsed nor translated into JSON
+                       {
+                           "ne_110m_populated_places_simple", "{}", 1
+                       }, // TODO text filter cannot be parsed nor translated into JSON
+                       {
+                           "ne_110m_populated_places_simple", "{}", 1
+                       }, // TODO text filter cannot be parsed nor translated into JSON
+                       {
+                           "ne_110m_populated_places_simple", "{}", 2
+                       }, // TODO text filter cannot be parsed nor translated into JSON
+                       {
+                           "ne_110m_populated_places_simple", "{}", 2
+                       }, // TODO text filter cannot be parsed nor translated into JSON
+                       {
+                           "ne_110m_populated_places_simple", "{}", 1
+                       }, // TODO text filter cannot be parsed nor translated into JSON
+                       {
+                           "ne_110m_populated_places_simple", "{}", 1
+                       }, // TODO text filter cannot be parsed nor translated into JSON
+                       {
+                           "ne_110m_populated_places_simple", "{}", 0
+                       }, // TODO text filter cannot be parsed nor translated into JSON
+                       {
+                           "ne_110m_populated_places_simple", "{}", 1
+                       }, // TODO text filter cannot be parsed nor translated into JSON
+                       {
+                           "ne_110m_populated_places_simple", "{}", 0
+                       }, // TODO text filter cannot be parsed nor translated into JSON
+                       {
+                           "ne_110m_populated_places_simple", "{}", 0
+                       }, // TODO text filter cannot be parsed nor translated into JSON
+                       {
+                           "ne_110m_populated_places_simple", "{}", 0
+                       }, // TODO text filter cannot be parsed nor translated into JSON
+                       {
+                           "ne_110m_populated_places_simple", "{}", 0
+                       }, // TODO text filter cannot be parsed nor translated into JSON
+                       {
+                           "ne_110m_populated_places_simple", "{}", 1
+                       } // TODO text filter cannot be parsed nor translated into JSON
+                       */
                 });
     }
 }

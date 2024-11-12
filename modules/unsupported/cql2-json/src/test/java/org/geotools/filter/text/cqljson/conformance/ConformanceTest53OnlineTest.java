@@ -48,19 +48,19 @@ public class ConformanceTest53OnlineTest
                         "{\"op\":\"=\",\"args\":[{\"property\":\"pop_other\"},{\"op\":\"+\",\"args\":[1038280,8]}]}",
                         1
                     },
-                    {"{}", 123}, // TODO broken text filter, cannot be converted to json
+                    // {"{}", 123}, // TODO broken text filter, cannot be converted to json
                     {
                         "{\"op\":\">\",\"args\":[{\"property\":\"pop_other\"},{\"op\":\"-\",\"args\":[1038290,{\"op\":\"/\",\"args\":[20,10]}]}]}",
                         122
                     },
-                    {"{}", 122}, // TODO broken text filter, cannot be converted to json
-                    {"{}", 122}, // TODO broken text filter, cannot be converted to json
+                    // {"{}", 122}, // TODO broken text filter, cannot be converted to json
+                    // {"{}", 122}, // TODO broken text filter, cannot be converted to json
                     {
                         "{\"op\":\"<=\",\"args\":[{\"property\":\"pop_other\"},{\"op\":\"+\",\"args\":[1038200,{\"op\":\"*\",\"args\":[8,11]}]}]}",
                         121
                     },
-                    {"{}", 120}, // TODO broken text filter, cannot be converted to json
-                    {"{}", 242}, // TODO broken text filter, cannot be converted to json
+                    // {"{}", 120}, // TODO broken text filter, cannot be converted to json
+                    // {"{}", 242}, // TODO broken text filter, cannot be converted to json
                     {
                         "{\"op\":\"between\",\"args\":[{\"property\":\"pop_other\"},{\"op\":\"/\",\"args\":[4000000,4]},{\"op\":\"*\",\"args\":[3,{\"op\":\"+\",\"args\":[900000,100000]}]}]}",
                         75

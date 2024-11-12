@@ -37,7 +37,6 @@ public class ConformanceTest9OnlineTest
 
     @Parameterized.Parameters(name = "{index}")
     public static Collection<Object[]> params() {
-        // TODO: won't we have a huge json filter instead of 4 criteria ?
         return Arrays.asList(
                 new Object[][] {
                     {

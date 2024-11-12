@@ -52,18 +52,19 @@ public class ConformanceTest42OnlineTest
                         "{\"op\":\"t_before\",\"args\":[{\"property\":\"date\"},{\"date\":\"2022-04-16T00:00:00GMT+00:00\"}]}",
                         1
                     },
-                    {"{}", 2}, // TODO broken text filter, cannot be converted to json
+                    // {"{}", 2}, // TODO broken text filter, cannot be converted to json
                     {
                         "{\"op\":\"t_equals\",\"args\":[{\"property\":\"date\"},{\"date\":\"2022-04-16T00:00:00GMT+00:00\"}]}",
                         1
                     },
-                    {"{}", 1}, // TODO broken text filter, cannot be converted to json
+                    /* {"{}", 1}, // TODO broken text filter, cannot be converted to json
                     {"{}", 1}, // TODO broken text filter, cannot be converted to json
                     {"{}", 1}, // TODO broken text filter, cannot be converted to json
                     {"{}", 2}, // TODO broken text filter, cannot be converted to json
                     {"{}", 0}, // TODO broken text filter, cannot be converted to json
                     {"{}", 1}, // TODO broken text filter, cannot be converted to json
                     {"{}", 1}, // TODO broken text filter, cannot be converted to json
+                    */
                     {
                         "{\"op\":\"t_after\",\"args\":[{\"property\":\"start\"},{\"date\":\"2022-04-16T10:13:19GMT+00:00\"}]}",
                         1
@@ -72,32 +73,33 @@ public class ConformanceTest42OnlineTest
                         "{\"op\":\"t_before\",\"args\":[{\"property\":\"start\"},{\"date\":\"2022-04-16T10:13:19GMT+00:00\"}]}",
                         1
                     },
-                    {"{}", 2}, // TODO broken text filter, cannot be converted to json
+                    // {"{}", 2}, // TODO broken text filter, cannot be converted to json
                     {
                         "{\"op\":\"t_equals\",\"args\":[{\"property\":\"start\"},{\"date\":\"2022-04-16T10:13:19GMT+00:00\"}]}",
                         1
-                    },
-                    {"{}", 1}, // TODO broken text filter, cannot be converted to json
-                    {"{}", 0}, // TODO broken text filter, cannot be converted to json
-                    {"{}", 1}, // TODO broken text filter, cannot be converted to json
-                    {"{}", 1}, // TODO broken text filter, cannot be converted to json
-                    {"{}", 0}, // TODO broken text filter, cannot be converted to json
-                    {"{}", 2}, // TODO broken text filter, cannot be converted to json
-                    {"{}", 1}, // TODO broken text filter, cannot be converted to json
-                    {"{}", 2}, // TODO broken text filter, cannot be converted to json
-                    {"{}", 1}, // TODO broken text filter, cannot be converted to json
-                    {"{}", 1}, // TODO broken text filter, cannot be converted to json
-                    {"{}", 2}, // TODO broken text filter, cannot be converted to json
-                    {"{}", 1}, // TODO broken text filter, cannot be converted to json
-                    {"{}", 1}, // TODO broken text filter, cannot be converted to json
-                    {"{}", 1}, // TODO broken text filter, cannot be converted to json
-                    {"{}", 1}, // TODO broken text filter, cannot be converted to json
-                    {"{}", 0}, // TODO broken text filter, cannot be converted to json
-                    {"{}", 1}, // TODO broken text filter, cannot be converted to json
-                    {"{}", 2}, // TODO broken text filter, cannot be converted to json
-                    {"{}", 1}, // TODO broken text filter, cannot be converted to json
-                    {"{}", 1}, // TODO broken text filter, cannot be converted to json
-                    {"{}", 0} // TODO broken text filter, cannot be converted to json
+                    }, /*
+                       {"{}", 1}, // TODO broken text filter, cannot be converted to json
+                       {"{}", 0}, // TODO broken text filter, cannot be converted to json
+                       {"{}", 1}, // TODO broken text filter, cannot be converted to json
+                       {"{}", 1}, // TODO broken text filter, cannot be converted to json
+                       {"{}", 0}, // TODO broken text filter, cannot be converted to json
+                       {"{}", 2}, // TODO broken text filter, cannot be converted to json
+                       {"{}", 1}, // TODO broken text filter, cannot be converted to json
+                       {"{}", 2}, // TODO broken text filter, cannot be converted to json
+                       {"{}", 1}, // TODO broken text filter, cannot be converted to json
+                       {"{}", 1}, // TODO broken text filter, cannot be converted to json
+                       {"{}", 2}, // TODO broken text filter, cannot be converted to json
+                       {"{}", 1}, // TODO broken text filter, cannot be converted to json
+                       {"{}", 1}, // TODO broken text filter, cannot be converted to json
+                       {"{}", 1}, // TODO broken text filter, cannot be converted to json
+                       {"{}", 1}, // TODO broken text filter, cannot be converted to json
+                       {"{}", 0}, // TODO broken text filter, cannot be converted to json
+                       {"{}", 1}, // TODO broken text filter, cannot be converted to json
+                       {"{}", 2}, // TODO broken text filter, cannot be converted to json
+                       {"{}", 1}, // TODO broken text filter, cannot be converted to json
+                       {"{}", 1}, // TODO broken text filter, cannot be converted to json
+                       {"{}", 0} // TODO broken text filter, cannot be converted to json
+                       */
                 });
     }
 }

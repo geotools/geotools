@@ -17,11 +17,14 @@
 
 package org.geotools.filter.text.cqljson.conformance;
 
+import static org.junit.Assert.assertNull;
+
 import java.util.Arrays;
 import java.util.Collection;
 import org.geotools.api.filter.Filter;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.cqljson.CQL2Json;
+import org.junit.Test;
 import org.junit.runners.Parameterized;
 
 /**
@@ -31,8 +34,11 @@ import org.junit.runners.Parameterized;
 public class ConformanceTest29OnlineTest
         extends org.geotools.filter.text.cql_2.conformance.ConformanceTest29OnlineTest {
 
+    private String criteria;
+
     public ConformanceTest29OnlineTest(String criteria, int expectedFeatures) throws CQLException {
         super(criteria, expectedFeatures);
+        this.criteria = criteria;
     }
 
     @Override
@@ -73,5 +79,10 @@ public class ConformanceTest29OnlineTest
                         3
                     }
                 });
+    }
+
+    @Test
+    public void testJsonSchemaValidation() {
+        assertNull(ConformanceUtils.jsonSchemaValidate(this.criteria));
     }
 }

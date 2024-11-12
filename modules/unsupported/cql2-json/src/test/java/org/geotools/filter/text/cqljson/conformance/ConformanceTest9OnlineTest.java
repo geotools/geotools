@@ -17,10 +17,14 @@
 
 package org.geotools.filter.text.cqljson.conformance;
 
+import static org.junit.Assert.assertNull;
+
 import java.util.Arrays;
 import java.util.Collection;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.cqljson.CQL2Json;
+import org.junit.Ignore;
+import org.junit.Test;
 import org.junit.runners.Parameterized;
 
 /**
@@ -30,9 +34,12 @@ import org.junit.runners.Parameterized;
 public class ConformanceTest9OnlineTest
         extends org.geotools.filter.text.cql_2.conformance.ConformanceTest9OnlineTest {
 
+    private String criteria;
+
     public ConformanceTest9OnlineTest(String jsonCriteria, int expectedFeatures)
             throws CQLException {
         super(CQL2Json.toFilter(jsonCriteria), expectedFeatures);
+        this.criteria = jsonCriteria;
     }
 
     @Parameterized.Parameters(name = "{index}")
@@ -348,5 +355,11 @@ public class ConformanceTest9OnlineTest
                         44
                     }
                 });
+    }
+
+    @Test
+    @Ignore("too memory-intensive")
+    public void testJsonSchemaValidation() {
+        assertNull(ConformanceUtils.jsonSchemaValidate(this.criteria));
     }
 }

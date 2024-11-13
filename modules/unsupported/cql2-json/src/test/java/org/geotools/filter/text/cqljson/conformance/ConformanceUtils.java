@@ -1,6 +1,13 @@
 package org.geotools.filter.text.cqljson.conformance;
 
-import com.github.erosb.jsonsKema.*;
+import com.github.erosb.jsonsKema.FormatValidationPolicy;
+import com.github.erosb.jsonsKema.JsonParser;
+import com.github.erosb.jsonsKema.JsonValue;
+import com.github.erosb.jsonsKema.Schema;
+import com.github.erosb.jsonsKema.SchemaLoader;
+import com.github.erosb.jsonsKema.ValidationFailure;
+import com.github.erosb.jsonsKema.Validator;
+import com.github.erosb.jsonsKema.ValidatorConfig;
 
 public class ConformanceUtils {
 

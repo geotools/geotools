@@ -19,7 +19,6 @@ package org.geotools.filter.text.cqljson.conformance;
 
 import static org.junit.Assert.assertNull;
 
-import com.github.erosb.jsonsKema.*;
 import java.util.Arrays;
 import java.util.Collection;
 import org.geotools.api.filter.Filter;

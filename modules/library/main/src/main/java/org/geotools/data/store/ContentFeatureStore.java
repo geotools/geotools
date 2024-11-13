@@ -283,7 +283,7 @@ public abstract class ContentFeatureStore extends ContentFeatureSource
         // pass through the fid if the user asked so
         boolean useExisting =
                 Boolean.TRUE.equals(feature.getUserData().get(Hints.USE_PROVIDED_FID));
-        if (getQueryCapabilities().isUseProvidedFIDSupported() && useExisting) {
+        if (useExisting) {
             ((FeatureIdImpl) toWrite.getIdentifier()).setID(feature.getID());
         }
 

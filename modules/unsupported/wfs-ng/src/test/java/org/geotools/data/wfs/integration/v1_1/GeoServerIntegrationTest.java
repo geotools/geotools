@@ -42,20 +42,29 @@ import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureImpl;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.filter.identity.FeatureIdImpl;
-import org.geotools.ows.ServiceException;
 import org.geotools.referencing.CRS;
 import org.geotools.util.factory.Hints;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.locationtech.jts.geom.*;
-import org.w3c.dom.*;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.PrecisionModel;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Node;
+import org.w3c.dom.NamedNodeMap;
 import org.xml.sax.SAXException;
 
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class GeoServerIntegrationTest extends AbstractIntegrationTest {
     private static final QName TYPE1 = new QName("http://www.census.gov", "poi", "tiger");
@@ -103,14 +112,14 @@ public class GeoServerIntegrationTest extends AbstractIntegrationTest {
         testDataType.newFeature =
                 SimpleFeatureBuilder.build(
                         testDataType.featureType,
-                        new Object[] {
-                            new GeometryFactory()
-                                    .createLineString(
-                                            new Coordinate[] {
+                        new Object[]{
+                                new GeometryFactory()
+                                        .createLineString(
+                                        new Coordinate[]{
                                                 new Coordinate(1, 2), new Coordinate(2, 3)
-                                            }),
-                            Integer.valueOf(4),
-                            "somekindofroad"
+                                        }),
+                                Integer.valueOf(4),
+                                "somekindofroad"
                         },
                         "roads.4");
 
@@ -177,7 +186,7 @@ public class GeoServerIntegrationTest extends AbstractIntegrationTest {
         SimpleFeature feat =
                 new SimpleFeatureImpl(
                         Arrays.asList(
-                                new Object[] {myPoint}),
+                                new Object[]{myPoint}),
                         typeBuilder.buildFeatureType(),
                         new FeatureIdImpl(UUID.randomUUID().toString()));
 

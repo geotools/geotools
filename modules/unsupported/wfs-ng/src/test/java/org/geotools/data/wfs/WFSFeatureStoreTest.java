@@ -21,12 +21,17 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
+import java.io.*;
+import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 import javax.xml.namespace.QName;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
 import org.geotools.api.data.Query;
 import org.geotools.api.data.Transaction;
 import org.geotools.api.feature.simple.SimpleFeature;
@@ -41,20 +46,35 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.store.ContentFeatureCollection;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.data.wfs.integration.IntegrationTestWFSClient;
+import org.geotools.data.wfs.internal.TransactionRequest;
 import org.geotools.data.wfs.internal.WFSException;
+import org.geotools.data.wfs.internal.v1_x.StrictWFS_1_x_Strategy;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.NameImpl;
+import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureImpl;
+import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.filter.identity.FeatureIdImpl;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.geotools.util.Version;
+import org.geotools.util.factory.Hints;
+import org.geotools.wfs.v1_0.WFSConfiguration_1_0;
+import org.geotools.wfs.v1_1.WFS;
+import org.geotools.wfs.v1_1.WFSConfiguration;
+import org.geotools.xml.XSISAXHandler;
+import org.geotools.xml.gml.GMLComplexTypes;
+import org.geotools.xsd.Configuration;
+import org.geotools.xsd.Encoder;
+import org.geotools.xsd.Parser;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.Point;
-import org.locationtech.jts.geom.PrecisionModel;
+import org.locationtech.jts.geom.*;
+import org.w3c.dom.*;
+import org.xml.sax.InputSource;
+import org.xml.sax.XMLReader;
 
 public class WFSFeatureStoreTest {
 
@@ -135,6 +155,40 @@ public class WFSFeatureStoreTest {
 
         SimpleFeature feature = coll.features().next();
         assertEquals(feat.getAttributes(), feature.getAttributes());
+    }
+
+    @Test
+    public void testAddFeaturesWithFIDAutoCommit() throws Exception {
+        GeometryFactory geomfac = new GeometryFactory(new PrecisionModel(10));
+
+        ContentFeatureSource source = (ContentFeatureSource) dataStore.getFeatureSource(simpleTypeName1);
+        assertNotNull(source);
+        assertTrue(source instanceof WFSFeatureStore);
+
+        WFSFeatureStore store = (WFSFeatureStore) source;
+
+        MemoryFeatureCollection collection = new MemoryFeatureCollection(featureType1);
+
+        Coordinate insideCoord = new Coordinate(5.2, 7.5);
+        Point myPoint = geomfac.createPoint(insideCoord);
+
+        String newFID = UUID.randomUUID().toString();
+
+        SimpleFeature feat =
+                new SimpleFeatureImpl(
+                        Arrays.asList(
+                                new Object[] {myPoint, "mypoint", "pics/x.jpg", "pics/y.jpg"}),
+                        featureType1,
+                        new FeatureIdImpl(newFID));
+
+        feat.getUserData().put(Hints.USE_PROVIDED_FID, true);
+
+        collection.add(feat);
+
+        List<FeatureId> fids = store.addFeatures((SimpleFeatureCollection) collection);
+        assertNotNull(fids);
+        assertEquals(1, fids.size());
+        assertEquals(newFID, fids.get(0).getID());
     }
 
     @Test

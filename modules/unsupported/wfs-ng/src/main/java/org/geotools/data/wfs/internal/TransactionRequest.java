@@ -36,6 +36,7 @@ import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.feature.NameImpl;
 import org.geotools.http.HTTPResponse;
 import org.geotools.referencing.CRS;
+import org.geotools.util.factory.Hints;
 
 public class TransactionRequest extends WFSRequest {
 
@@ -102,6 +103,7 @@ public class TransactionRequest extends WFSRequest {
     }
 
     public class Insert extends TransactionElement {
+        private boolean isUseExisting = false;
 
         private List<SimpleFeature> added;
 
@@ -140,11 +142,17 @@ public class TransactionRequest extends WFSRequest {
                 }
             }
 
+            isUseExisting = Boolean.TRUE.equals(feature.getUserData().get(Hints.USE_PROVIDED_FID));
+
             added.add(feature);
         }
 
         public List<SimpleFeature> getFeatures() {
             return Collections.unmodifiableList(new ArrayList<>(added));
+        }
+
+        public boolean isUseExisting() {
+            return isUseExisting;
         }
     }
 

@@ -384,7 +384,6 @@ public class CQL2Test {
     public void bbox() throws CQLException {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         BBOX bbox = ff.bbox("geometry", -180, -90, 180, 90, "CRS:84");
-        assertEquals(
-                "S_INTERSECTS(geometry, ENVELOPE(-180.0,-90.0,180.0,90.0))", CQL2.toCQL2(bbox));
+        assertEquals("S_INTERSECTS(geometry, BBOX(-180.0,-90.0,180.0,90.0))", CQL2.toCQL2(bbox));
     }
 }

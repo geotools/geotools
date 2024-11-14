@@ -117,7 +117,8 @@ TOKEN [IGNORE_CASE]:  /* keywords */
    < NULL: "null" > |
    < DATEFUNC: "DATE" > |
    < TIMESTAMPFUNC: "TIMESTAMP" > |
-   < PERIODFUNC: "PERIOD" >
+   < PERIODFUNC: "PERIOD" > |
+   < INTDIV: "div" >
 }
 
 TOKEN [IGNORE_CASE]: /* geometry markers */
@@ -129,7 +130,7 @@ TOKEN [IGNORE_CASE]: /* geometry markers */
   < MULTILINESTRING: "multilinestring"> |
   < MULTIPOLYGON: "multipolygon"> |
   < GEOMETRYCOLLECTION: "geometrycollection"> |
-  < ENVELOPE: "envelope"> 
+  < BBOX: "bbox">
 }
 
 TOKEN [IGNORE_CASE]: /* temporal expression*/
@@ -169,6 +170,8 @@ TOKEN:
   < MULT: "*"> |
   < PLUS: "+"> |
   < MINUS: "-" > |
+  < PERC: "%" > |
+  < CARET: "^" > |
   < QUOTE: "'"> |
   < DOUBLE_QUOTE: "\""> |
   < DOLLAR: "$">
@@ -417,7 +420,7 @@ void GeoRoutineArgumentList() #void:
  * | <MultiLineString Tagged Text>
  * | <MultiPolygon Tagged Text>
  * | <GeometryCollection Tagged Text>
- * | <Envelope Tagged Text>
+ * | <BBOX Tagged Text>
  */
 void GeometryLiteral() #GeometryLiteral:
 {}
@@ -429,7 +432,7 @@ void GeometryLiteral() #GeometryLiteral:
   MultiLineStringTaggedText() |
   MultiPolygonTaggedText() |
   GeometryCollectionTaggedText() |
-  EnvelopeTaggedText()
+  BBOXTaggedText()
 }
 /*
  *  <routine invocation > ::= 
@@ -584,21 +587,31 @@ void BinaryExpression() #void:
   (
     <PLUS> MultiplicativeExpression() #AddNode
    |
-    <MINUS> MultiplicativeExpression() #SubtractNode
+     <MINUS> MultiplicativeExpression() #SubtractNode
   )*
 }
  
-
-
 void MultiplicativeExpression() #void :
 {}
 {
-  
+  PowerExpression()
+  (
+    <MULT> PowerExpression() #MulNode
+   |
+    <SLASH> PowerExpression() #DivNode
+   |
+    <INTDIV> PowerExpression() #IntDivNode
+   |
+    <PERC> PowerExpression() #RemainderNode
+  )*
+}
+
+void PowerExpression() #void:
+{}
+{
   UnaryExpression()
   (
-    <MULT> UnaryExpression() #MulNode
-   |
-    <SLASH> UnaryExpression() #DivNode
+    <CARET> UnaryExpression() #PowerNode
   )*
 }
 
@@ -904,16 +917,16 @@ void GeometryCollectionTaggedText() #WKTNode:
  }
  
 /*
- * <Envelope Tagged Text> ::= ENVELOPE <Envelope Text>
+ * <BBOX Tagged Text> ::= BBOX <BBOX Text>
  */
- void EnvelopeTaggedText() #EnvelopeTaggedText_Node:
+ void BBOXTaggedText() #BBOXTaggedText_Node:
  {}
  {
- 	jjtThis.token = <ENVELOPE> EnvelopText()
+ 	jjtThis.token = <BBOX> BBOXText()
  }
 
 /*
- * <Envelope Text> := EMPTY
+ * <BBOX Text> := EMPTY
  * | <left paren>
  *		<WestBoundLongitude><comma>
  *   	<SouthBoundLatitude><comma>
@@ -925,7 +938,7 @@ void GeometryCollectionTaggedText() #WKTNode:
  * <EastBoundLongitude> := numeric literal
  * <NorthBoundLatitude> := numeric literal
  */
- void EnvelopText() #void:
+ void BBOXText() #void:
  {}
  {
  	( <LP> 

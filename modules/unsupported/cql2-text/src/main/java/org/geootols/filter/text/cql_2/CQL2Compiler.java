@@ -24,6 +24,7 @@ import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.Not;
 import org.geotools.api.filter.Or;
 import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Function;
 import org.geotools.api.filter.spatial.BinarySpatialOperator;
 import org.geotools.api.filter.temporal.After;
 import org.geotools.api.filter.temporal.Before;
@@ -121,6 +122,7 @@ public class CQL2Compiler extends CQL2Parser implements org.geotools.filter.text
     public final Filter getFilter() throws CQLException {
         return this.builder.getFilter();
     }
+
     /**
      * Return the expression resultant of compiling process
      *
@@ -170,6 +172,7 @@ public class CQL2Compiler extends CQL2Parser implements org.geotools.filter.text
             n.dispose();
         }
     }
+
     /**
      * This method is called when the parser close a node. Here is built the filters an expressions
      * recognized in the parsing process.
@@ -234,6 +237,11 @@ public class CQL2Compiler extends CQL2Parser implements org.geotools.filter.text
             case JJTMULNODE:
             case JJTDIVNODE:
                 return buildBinaryExpression(n.getType());
+
+            case JJTREMAINDERNODE:
+            case JJTPOWERNODE:
+            case JJTINTDIVNODE:
+                return buildBinaryFunction(n.getType());
 
                 // Boolean expression
             case JJTBOOLEAN_AND_NODE:
@@ -360,7 +368,7 @@ public class CQL2Compiler extends CQL2Parser implements org.geotools.filter.text
             case JJTWKTNODE:
                 return this.builder.buildGeometry();
 
-            case JJTENVELOPETAGGEDTEXT_NODE:
+            case JJTBBOXTAGGEDTEXT_NODE:
                 return this.builder.buildEnvelope(TokenAdapter.newAdapterFor(n.getToken()));
 
             case JJTTRUENODE:
@@ -414,6 +422,16 @@ public class CQL2Compiler extends CQL2Parser implements org.geotools.filter.text
         }
 
         return expr;
+    }
+
+    private Function buildBinaryFunction(int nodeType) throws CQLException {
+        if (nodeType == JJTREMAINDERNODE) {
+            return this.builder.buildRemainderExpression();
+        } else if (nodeType == JJTINTDIVNODE) {
+            return this.builder.buildIntegerDivideExpression();
+        } else {
+            return this.builder.buildPowerExpression();
+        }
     }
 
     private Filter buildLogicFilter(int nodeType) throws CQLException {

@@ -67,6 +67,17 @@ import org.locationtech.jts.geom.Geometry;
 
 public class JDBCFeatureSource extends ContentFeatureSource {
 
+    /**
+     * Add this hint to the query to force the filter to be interepreted as a three-way logic
+     * filter, where null values are treated as unknowns and propagate up the filter evaluation tree
+     * (e..g, <code>A <> NULL -> NULL</code>)</>. By default, the encoding is performed using
+     * two-way logic, where null values are treated as legitimate values (like <code>null</code> in
+     * Java). Also, warning: the hint cannot be provided to {@link
+     * org.geotools.api.data.FeatureStore#removeFeatures(Filter)} as that only gets a {@link Filter}
+     * object, rather than a query object.
+     */
+    public static final Hints.Key FILTER_THREE_WAY_LOGIC = new Hints.Key(Boolean.class);
+
     private static final Logger LOGGER = Logging.getLogger(JDBCFeatureSource.class);
     private static final String REMARKS = "REMARKS";
 
@@ -384,10 +395,14 @@ public class JDBCFeatureSource extends ContentFeatureSource {
 
     /** Helper method for splitting a filter. */
     protected Filter[] splitFilter(Filter original) {
-        return splitFilter(original, this);
+        return splitFilter(original, this, null);
     }
 
-    Filter[] splitFilter(Filter original, FeatureSource source) {
+    protected Filter[] splitFilter(Filter original, Hints hints) {
+        return splitFilter(original, this, hints);
+    }
+
+    static Filter[] splitFilter(Filter original, FeatureSource source, Hints hints) {
         JDBCFeatureSource featureSource = null;
         if (source instanceof JDBCFeatureSource) {
             featureSource = (JDBCFeatureSource) source;
@@ -395,21 +410,25 @@ public class JDBCFeatureSource extends ContentFeatureSource {
             featureSource = ((JDBCFeatureStore) source).getFeatureSource();
         }
 
+        // simplify first, give an opportunity to eliminate static parts that might not
+        // be otherwise supported by the datastore
+        SimplifyingFilterVisitor visitor = new SimplifyingFilterVisitor();
+        visitor.setFIDValidator(new PrimaryKeyFIDValidator(featureSource));
+        visitor.setFeatureType(source.getSchema());
+        Filter simplified = (Filter) original.accept(visitor, null);
+
         Filter[] split = new Filter[2];
         if (original != null) {
-            split = getDataStore().getSQLDialect().splitFilter(original, featureSource.getSchema());
+            JDBCDataStore dataStore = (JDBCDataStore) source.getDataStore();
+            split = dataStore.getSQLDialect().splitFilter(simplified, featureSource.getSchema());
         }
 
         // handle three-valued logic differences by adding "is not null" checks in the filter,
         // the simplifying filter visitor will take care of them if they are redundant
-        NullHandlingVisitor nhv = new NullHandlingVisitor(source.getSchema());
-        split[0] = (Filter) split[0].accept(nhv, null);
-
-        SimplifyingFilterVisitor visitor = new SimplifyingFilterVisitor();
-        visitor.setFIDValidator(new PrimaryKeyFIDValidator(featureSource));
-        visitor.setFeatureType(getSchema());
-        split[0] = (Filter) split[0].accept(visitor, null);
-        split[1] = (Filter) split[1].accept(visitor, null);
+        if (hints == null || !Boolean.TRUE.equals(hints.get(FILTER_THREE_WAY_LOGIC))) {
+            NullHandlingVisitor nhv = new NullHandlingVisitor(source.getSchema());
+            split[0] = (Filter) split[0].accept(nhv, null);
+        }
 
         return split;
     }
@@ -419,7 +438,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
         JDBCDataStore store = getDataStore();
 
         // split the filter
-        Filter[] split = splitFilter(query.getFilter());
+        Filter[] split = splitFilter(query.getFilter(), query.getHints());
         Filter preFilter = split[0];
         Filter postFilter = split[1];
 
@@ -485,7 +504,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
         JDBCDataStore dataStore = getDataStore();
 
         // split the filter
-        Filter[] split = splitFilter(query.getFilter());
+        Filter[] split = splitFilter(query.getFilter(), query.getHints());
         Filter preFilter = split[0];
         Filter postFilter = split[1];
 
@@ -572,7 +591,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
     protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query)
             throws IOException {
         // split the filter
-        Filter[] split = splitFilter(query.getFilter());
+        Filter[] split = splitFilter(query.getFilter(), query.getHints());
         Filter preFilter = split[0];
         Filter postFilter = split[1];
         boolean postFilterRequired = postFilter != null && postFilter != Filter.INCLUDE;

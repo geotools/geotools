@@ -183,6 +183,28 @@ public abstract class AbstractFilterBuilder {
         return filterFactory.divide(left, right);
     }
 
+    public Function buildIntegerDivideExpression() throws CQLException {
+
+        Expression right = this.resultStack.popExpression();
+        Expression left = this.resultStack.popExpression();
+
+        return filterFactory.function("div", left, right);
+    }
+
+    public Function buildPowerExpression() throws CQLException {
+        Expression right = this.resultStack.popExpression();
+        Expression left = this.resultStack.popExpression();
+
+        return filterFactory.function("pow", left, right);
+    }
+
+    public Function buildRemainderExpression() throws CQLException {
+        Expression right = this.resultStack.popExpression();
+        Expression left = this.resultStack.popExpression();
+
+        return filterFactory.function("IEEEremainder", left, right);
+    }
+
     public Filter buildAndFilter() throws CQLException {
 
         Filter right = this.resultStack.popFilter();
@@ -789,12 +811,12 @@ public abstract class AbstractFilterBuilder {
         return ff.overlaps(property, geom);
     }
 
-    public org.geotools.api.filter.spatial.BBOX buildBBox() throws CQLException {
+    public Filter buildBBox() throws CQLException {
 
         return buildBbox(null);
     }
 
-    public org.geotools.api.filter.spatial.BBOX buildBBoxWithCRS() throws CQLException {
+    public Filter buildBBoxWithCRS() throws CQLException {
 
         String crs = this.resultStack.popStringValue();
         assert crs != null;
@@ -802,7 +824,7 @@ public abstract class AbstractFilterBuilder {
         return buildBbox(crs);
     }
 
-    private org.geotools.api.filter.spatial.BBOX buildBbox(final String crs) throws CQLException {
+    private Filter buildBbox(final String crs) throws CQLException {
 
         double maxY = this.resultStack.popDoubleValue();
         double maxX = this.resultStack.popDoubleValue();

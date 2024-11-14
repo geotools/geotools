@@ -47,19 +47,19 @@ import net.opengis.ows10.DomainType;
 import net.opengis.ows10.OperationType;
 import net.opengis.ows10.OperationsMetadataType;
 import net.opengis.ows10.RequestMethodType;
-import net.opengis.wfs.DescribeFeatureTypeType;
 import net.opengis.wfs.DeleteElementType;
-import net.opengis.wfs.FeatureTypeType;
+import net.opengis.wfs.DescribeFeatureTypeType;
 import net.opengis.wfs.FeatureTypeListType;
+import net.opengis.wfs.FeatureTypeType;
 import net.opengis.wfs.GetFeatureType;
-import net.opengis.wfs.InsertElementType;
 import net.opengis.wfs.IdentifierGenerationOptionType;
+import net.opengis.wfs.InsertElementType;
 import net.opengis.wfs.OperationsType;
 import net.opengis.wfs.PropertyType;
 import net.opengis.wfs.QueryType;
-import net.opengis.wfs.UpdateElementType;
 import net.opengis.wfs.ResultTypeType;
 import net.opengis.wfs.TransactionType;
+import net.opengis.wfs.UpdateElementType;
 import net.opengis.wfs.WFSCapabilitiesType;
 import net.opengis.wfs.WfsFactory;
 import org.eclipse.emf.ecore.EObject;
@@ -307,7 +307,7 @@ public class StrictWFS_1_x_Strategy extends AbstractWFSStrategy {
     protected InsertElementType createInsert(WfsFactory factory, Insert elem) throws Exception {
         InsertElementType insert = factory.createInsertElementType();
 
-        if(elem.isUseExisting()) {
+        if (elem.isUseExisting()) {
             insert.setIdgen(IdentifierGenerationOptionType.USE_EXISTING_LITERAL);
         }
 

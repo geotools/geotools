@@ -95,7 +95,7 @@ public class QueryCapabilities {
      * identifier.
      */
     public boolean isUseProvidedFIDSupported() {
-        return true;
+        return false;
     }
 
     /** If true the datastore supports joins between feature types within the datastores. */

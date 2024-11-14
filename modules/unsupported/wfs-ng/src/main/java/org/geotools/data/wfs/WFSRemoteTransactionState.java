@@ -185,7 +185,7 @@ class WFSRemoteTransactionState implements State {
 
                 SimpleFeature remoteFeature = SimpleFeatureBuilder.retype(localFeature, builder);
 
-                if(Boolean.TRUE.equals(localFeature.getUserData().get(Hints.USE_PROVIDED_FID))) {
+                if (Boolean.TRUE.equals(localFeature.getUserData().get(Hints.USE_PROVIDED_FID))) {
                     remoteFeature.getUserData().put(Hints.USE_PROVIDED_FID, true);
                 }
 

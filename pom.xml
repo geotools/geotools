@@ -1811,6 +1811,13 @@
           <redirectTestOutputToFile>false</redirectTestOutputToFile>
           <forkMode>${test.forkMode}</forkMode>
           <trimStackTrace>false</trimStackTrace>
+          <!-- some test cases are making use of a geopackage dataset to run. The
+               gt-geopkg implementation depends on xerial's sqlite-jdbc library to
+               access the underlying sqlite database. This library does not use
+               the java.util.TimeZone's default timezone, but honour the TZ environment
+               variable instead. See discussion here for more info:
+               https://github.com/xerial/sqlite-jdbc/discussions/1209
+          -->
           <environmentVariables>
             <TZ>GMT</TZ>
           </environmentVariables>

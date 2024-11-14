@@ -23,7 +23,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import org.geotools.api.filter.Filter;
 import org.geotools.filter.text.cql2.CQLException;
-import org.geotools.filter.text.cql_2.conformance.ATSOnlineTest;
 import org.geotools.filter.text.cqljson.CQL2Json;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -36,12 +35,13 @@ import org.junit.runners.Parameterized;
  */
 @RunWith(Parameterized.class)
 @Ignore("Not implemented yet")
-public class ConformanceTest23OnlineTest extends ATSOnlineTest {
+public class ConformanceTest23OnlineTest
+        extends org.geotools.filter.text.cql_2.conformance.ConformanceTest23OnlineTest {
 
     private String criteria;
 
     public ConformanceTest23OnlineTest(String criteria, int expectedFeatures) throws CQLException {
-        super("ne_110m_populated_places_simple", criteria, expectedFeatures);
+        super(criteria, expectedFeatures);
         this.criteria = criteria;
     }
 
@@ -54,6 +54,7 @@ public class ConformanceTest23OnlineTest extends ATSOnlineTest {
     public static Collection<Object[]> params() {
         return Arrays.asList(
                 new Object[][] {
+                    /* TODO see comment in the ConformanceUtils class. */
                     {"{}", 1},
                     {"{}", 1},
                     {"{}", 1},

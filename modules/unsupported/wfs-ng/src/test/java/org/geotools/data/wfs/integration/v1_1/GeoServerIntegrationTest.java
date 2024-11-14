@@ -16,12 +16,18 @@
  */
 package org.geotools.data.wfs.integration.v1_1;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.UUID;
-
+import javax.xml.namespace.QName;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import net.opengis.wfs.IdentifierGenerationOptionType;
 import org.geotools.api.data.DataStore;
 import org.geotools.api.data.ResourceInfo;
@@ -53,22 +59,15 @@ import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.PrecisionModel;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.Node;
 import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
-
-import javax.xml.namespace.QName;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 public class GeoServerIntegrationTest extends AbstractIntegrationTest {
     private static final QName TYPE1 = new QName("http://www.census.gov", "poi", "tiger");
-    private static final Name featureName = new NameImpl(TYPE1.getNamespaceURI(), TYPE1.getPrefix() + "_" + TYPE1.getLocalPart());
+    private static final Name featureName =
+            new NameImpl(TYPE1.getNamespaceURI(), TYPE1.getPrefix() + "_" + TYPE1.getLocalPart());
 
     protected WFSClient wfs;
 
@@ -112,14 +111,14 @@ public class GeoServerIntegrationTest extends AbstractIntegrationTest {
         testDataType.newFeature =
                 SimpleFeatureBuilder.build(
                         testDataType.featureType,
-                        new Object[]{
-                                new GeometryFactory()
-                                        .createLineString(
-                                        new Coordinate[]{
+                        new Object[] {
+                            new GeometryFactory()
+                                    .createLineString(
+                                            new Coordinate[] {
                                                 new Coordinate(1, 2), new Coordinate(2, 3)
-                                        }),
-                                Integer.valueOf(4),
-                                "somekindofroad"
+                                            }),
+                            Integer.valueOf(4),
+                            "somekindofroad"
                         },
                         "roads.4");
 
@@ -166,9 +165,12 @@ public class GeoServerIntegrationTest extends AbstractIntegrationTest {
     }
 
     @Test
-    public void testTransactionInsertWithIdgenUseExisting() throws SAXException, IOException, ParserConfigurationException {
-        WFSDataStore dataStore = new WFSDataStore(new IntegrationTestWFSClient(
-                "GeoServer_2.0/1.1.0/", WFSTestData.getGmlCompatibleConfig()));
+    public void testTransactionInsertWithIdgenUseExisting()
+            throws SAXException, IOException, ParserConfigurationException {
+        WFSDataStore dataStore =
+                new WFSDataStore(
+                        new IntegrationTestWFSClient(
+                                "GeoServer_2.0/1.1.0/", WFSTestData.getGmlCompatibleConfig()));
 
         GeometryFactory geomfac = new GeometryFactory(new PrecisionModel(10));
 
@@ -185,22 +187,20 @@ public class GeoServerIntegrationTest extends AbstractIntegrationTest {
 
         SimpleFeature feat =
                 new SimpleFeatureImpl(
-                        Arrays.asList(
-                                new Object[]{myPoint}),
+                        Arrays.asList(new Object[] {myPoint}),
                         typeBuilder.buildFeatureType(),
                         new FeatureIdImpl(UUID.randomUUID().toString()));
 
         feat.getUserData().put(Hints.USE_PROVIDED_FID, true);
 
-
         TransactionRequest transactionRequest = dataStore.getWfsClient().createTransaction();
-        TransactionRequest.Insert insert = transactionRequest.createInsert(dataStore.getRemoteTypeName(sft.getName()));
+        TransactionRequest.Insert insert =
+                transactionRequest.createInsert(dataStore.getRemoteTypeName(sft.getName()));
         insert.add(feat);
         transactionRequest.add(insert);
 
         try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
             transactionRequest.performPostOutput(out);
-
 
             try (ByteArrayInputStream in = new ByteArrayInputStream(out.toByteArray())) {
 
@@ -210,7 +210,8 @@ public class GeoServerIntegrationTest extends AbstractIntegrationTest {
                 Document document = factory.newDocumentBuilder().parse(in);
 
                 Element root = document.getDocumentElement();
-                NodeList insertNodes = root.getElementsByTagNameNS("http://www.opengis.net/wfs", "Insert");
+                NodeList insertNodes =
+                        root.getElementsByTagNameNS("http://www.opengis.net/wfs", "Insert");
 
                 assertTrue(insertNodes.getLength() > 0);
 
@@ -221,10 +222,10 @@ public class GeoServerIntegrationTest extends AbstractIntegrationTest {
 
                 assertNotNull(idgenAttribute);
 
-                assertEquals(IdentifierGenerationOptionType.USE_EXISTING_LITERAL.getName(), idgenAttribute.getNodeValue());
+                assertEquals(
+                        IdentifierGenerationOptionType.USE_EXISTING_LITERAL.getName(),
+                        idgenAttribute.getNodeValue());
             }
-
         }
-
     }
 }

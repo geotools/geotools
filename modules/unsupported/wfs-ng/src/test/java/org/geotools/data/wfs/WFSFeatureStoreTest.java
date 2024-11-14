@@ -28,7 +28,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import javax.xml.namespace.QName;
-
 import org.geotools.api.data.Query;
 import org.geotools.api.data.Transaction;
 import org.geotools.api.feature.simple.SimpleFeature;
@@ -144,7 +143,8 @@ public class WFSFeatureStoreTest {
     public void testAddFeaturesWithFIDAutoCommit() throws Exception {
         GeometryFactory geomfac = new GeometryFactory(new PrecisionModel(10));
 
-        ContentFeatureSource source = (ContentFeatureSource) dataStore.getFeatureSource(simpleTypeName1);
+        ContentFeatureSource source =
+                (ContentFeatureSource) dataStore.getFeatureSource(simpleTypeName1);
         assertNotNull(source);
         assertTrue(source instanceof WFSFeatureStore);
 

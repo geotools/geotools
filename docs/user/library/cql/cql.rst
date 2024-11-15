@@ -41,7 +41,7 @@ Examples
 
 * Simple example::
     
-    Filter filter = CQL.toFilter("attName >= 5");
+        Filter filter = CQL.toFilter("attName >= 5");
   
   will give you a GeoAPI Filter correspondent to::
     

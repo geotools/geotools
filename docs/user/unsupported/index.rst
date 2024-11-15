@@ -17,6 +17,7 @@ Research and Development:
    :maxdepth: 1
 
    arcgis-rest
+   cql2
    css
    geojson
    process/index

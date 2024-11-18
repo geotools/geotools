@@ -23,7 +23,6 @@ import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonPointer;
-import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.core.JsonTokenId;
 import java.io.IOException;
 import java.io.StringWriter;
@@ -39,7 +38,7 @@ public class JsonArrayContainsFunction extends FunctionExpressionImpl {
             org.geotools.util.logging.Logging.getLogger(JsonArrayContainsFunction.class);
 
     private static final HashMap<String, JsonPointer> jsonPointerCache = new HashMap<>();
-    private static final JsonToken END_OF_STREAM = null;
+    private static final Object END_OF_STREAM = null;
     private final JsonFactory factory;
 
     public static FunctionName NAME =

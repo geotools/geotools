@@ -40,6 +40,8 @@
         <include>org.geotools:gt-coverage-api</include>
         <include>org.geotools:gt-coverage</include>
         <include>org.geotools:gt-cql</include>
+        <include>org.geotools:gt-cql2-text</include>
+        <include>org.geotools:gt-cql2-json</include>
         <include>org.geotools:gt-csv</include>
         <include>org.geotools:gt-epsg-extension</include>
         <include>org.geotools:gt-epsg-hsql</include>

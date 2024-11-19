@@ -43,7 +43,7 @@
       </exclusions>
     </dependency>
 
-    <!-- please keep the list of dependencies alphabetical so it is easier to maintain -->
+    <!-- these jars are only available from osgeo repo -->
     <dependency>
       <groupId>javax.media</groupId>
       <artifactId>jai_core</artifactId>
@@ -57,6 +57,8 @@
       <artifactId>jai_imageio</artifactId>
     </dependency>
 
+    <!-- Check that dependences listed here are included in binaryDistDependencies.xml -->
+    <!-- This ensures that transitive dependences are packaged up in libs/ folder.     -->
     <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-app-schema-resolver</artifactId>

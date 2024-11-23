@@ -91,7 +91,7 @@ public class Skeletonize {
             Polygon p = (Polygon) triangles.getGeometryN(i);
 
             LinearRing exteriorRing = p.getExteriorRing();
-            for (int j = 1; j < exteriorRing.getNumPoints() - 1; j++) {
+            for (int j = 1; j < exteriorRing.getNumPoints(); j++) {
                 Coordinate coordinate1 = exteriorRing.getPointN(j - 1).getCoordinate();
                 Coordinate coordinate2 = exteriorRing.getPointN(j).getCoordinate();
                 LineString edge = GF.createLineString(new Coordinate[] {coordinate1, coordinate2});

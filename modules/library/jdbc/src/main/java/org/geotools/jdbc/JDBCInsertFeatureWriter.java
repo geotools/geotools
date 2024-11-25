@@ -16,6 +16,7 @@
  */
 package org.geotools.jdbc;
 
+import java.io.Flushable;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -36,7 +37,7 @@ import org.geotools.filter.identity.FeatureIdImpl;
  * writer is closed.
  */
 public class JDBCInsertFeatureWriter extends JDBCFeatureReader
-        implements FeatureWriter<SimpleFeatureType, SimpleFeature> {
+        implements FeatureWriter<SimpleFeatureType, SimpleFeature>, Flushable {
     /** Grouping elements together in order to have a decent batch size. */
     private final ResultSetFeature[] buffer;
 
@@ -119,7 +120,8 @@ public class JDBCInsertFeatureWriter extends JDBCFeatureReader
         }
     }
 
-    private void flush() throws IOException {
+    @Override
+    public void flush() throws IOException {
         if (curBufferPos == 0) {
             return;
         }

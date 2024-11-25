@@ -307,7 +307,7 @@ public class StrictWFS_1_x_Strategy extends AbstractWFSStrategy {
     protected InsertElementType createInsert(WfsFactory factory, Insert elem) throws Exception {
         InsertElementType insert = factory.createInsertElementType();
 
-        if (elem.isUseExisting()) {
+        if (elem.isUseExisting() && Versions.v1_1_0.equals(getServiceVersion())) {
             insert.setIdgen(IdentifierGenerationOptionType.USE_EXISTING_LITERAL);
         }
 

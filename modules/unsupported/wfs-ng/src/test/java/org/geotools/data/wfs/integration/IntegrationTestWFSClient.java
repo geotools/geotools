@@ -60,6 +60,7 @@ import org.geotools.data.wfs.internal.TransactionRequest.Delete;
 import org.geotools.data.wfs.internal.TransactionRequest.Insert;
 import org.geotools.data.wfs.internal.TransactionRequest.TransactionElement;
 import org.geotools.data.wfs.internal.TransactionRequest.Update;
+import org.geotools.data.wfs.internal.Versions;
 import org.geotools.data.wfs.internal.WFSClient;
 import org.geotools.data.wfs.internal.WFSConfig;
 import org.geotools.data.wfs.internal.WFSResponse;
@@ -472,5 +473,10 @@ public class IntegrationTestWFSClient extends WFSClient {
 
     public void setFailOnTransaction(boolean failOnTransaction) {
         this.failOnTransaction = failOnTransaction;
+    }
+
+    public boolean isUseProvidedFIDSupported() {
+        WFSStrategy strategy = getStrategy();
+        return Versions.v1_1_0.equals(strategy.getServiceVersion());
     }
 }

@@ -83,6 +83,7 @@ import org.geotools.data.wfs.internal.TransactionRequest.Insert;
 import org.geotools.data.wfs.internal.TransactionRequest.TransactionElement;
 import org.geotools.data.wfs.internal.TransactionRequest.Update;
 import org.geotools.data.wfs.internal.Versions;
+import org.geotools.data.wfs.internal.WFSClient;
 import org.geotools.data.wfs.internal.WFSExtensions;
 import org.geotools.data.wfs.internal.WFSGetCapabilities;
 import org.geotools.data.wfs.internal.WFSOperationType;
@@ -523,6 +524,21 @@ public class StrictWFS_1_x_Strategy extends AbstractWFSStrategy {
     public FilterCapabilities getFilterCapabilities() {
         FilterCapabilities wfsFilterCapabilities = capabilities.getFilterCapabilities();
         return wfsFilterCapabilities;
+    }
+
+    /** @see WFSClient#isUseProvidedFIDSupported() */
+    public boolean supportsIdGenerator() {
+        final boolean wfs1_1 = Versions.v1_1_0.equals(getServiceVersion());
+        if (wfs1_1) {
+            OperationType operationMetadata = getOperationMetadata(TRANSACTION);
+            IdentifierGenerationOptionType type =
+                    IdentifierGenerationOptionType.USE_EXISTING_LITERAL;
+
+            Set<String> generationTypes = findParameters(operationMetadata, "idgen");
+            return !generationTypes.isEmpty() && generationTypes.contains(type.getLiteral());
+        }
+
+        return false;
     }
 
     @Override

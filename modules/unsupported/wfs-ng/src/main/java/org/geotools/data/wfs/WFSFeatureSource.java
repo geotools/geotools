@@ -25,6 +25,7 @@ import org.geotools.api.data.DataSourceException;
 import org.geotools.api.data.FeatureReader;
 import org.geotools.api.data.FeatureSource;
 import org.geotools.api.data.Query;
+import org.geotools.api.data.QueryCapabilities;
 import org.geotools.api.data.ResourceInfo;
 import org.geotools.api.data.Transaction;
 import org.geotools.api.data.Transaction.State;
@@ -473,5 +474,15 @@ class WFSFeatureSource extends ContentFeatureSource {
             LOGGER.log(Level.WARNING, "Unexpected error getting ResourceInfo: ", e);
             return super.getInfo();
         }
+    }
+
+    @Override
+    protected QueryCapabilities buildQueryCapabilities() {
+        return new QueryCapabilities() {
+            @Override
+            public boolean isUseProvidedFIDSupported() {
+                return client.isUseProvidedFIDSupported();
+            }
+        };
     }
 }

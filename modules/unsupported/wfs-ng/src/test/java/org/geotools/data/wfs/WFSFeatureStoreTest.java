@@ -67,6 +67,7 @@ public class WFSFeatureStoreTest {
     private static Name simpleTypeName1;
 
     private WFSDataStore dataStore;
+    private WFSDataStore dataStoreWFS11;
 
     private IntegrationTestWFSClient wfs;
 
@@ -89,6 +90,11 @@ public class WFSFeatureStoreTest {
                 new IntegrationTestWFSClient(
                         "GeoServer_1.7.x/1.0.0/", WFSTestData.getGmlCompatibleConfig());
         dataStore = new WFSDataStore(wfs);
+
+        dataStoreWFS11 =
+                new WFSDataStore(
+                        new IntegrationTestWFSClient(
+                                "GeoServer_2.0/1.1.0/", WFSTestData.getGmlCompatibleConfig()));
     }
 
     @After
@@ -144,7 +150,7 @@ public class WFSFeatureStoreTest {
         GeometryFactory geomfac = new GeometryFactory(new PrecisionModel(10));
 
         ContentFeatureSource source =
-                (ContentFeatureSource) dataStore.getFeatureSource(simpleTypeName1);
+                (ContentFeatureSource) dataStoreWFS11.getFeatureSource(simpleTypeName1);
         assertNotNull(source);
         assertTrue(source instanceof WFSFeatureStore);
 

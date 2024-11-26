@@ -20,6 +20,9 @@ import static java.awt.Color.BLACK;
 import static java.awt.Color.GREEN;
 import static java.awt.Color.RED;
 import static java.awt.Color.WHITE;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.anyOf;
+import static org.hamcrest.Matchers.is;
 
 import java.awt.Color;
 import org.geotools.filter.ConstantExpression;
@@ -88,7 +91,8 @@ public class ColorConverterFactoryTest {
                         Color.class, String.class, new Hints(Hints.COLOR_DEFINITION, "CSS"));
 
         Assert.assertEquals("aliceblue", "aliceblue", converter.convert(ALICE_BLUE, String.class));
-        Assert.assertEquals("gray", "gray", converter.convert(GRAY, String.class));
+        // There are two names so we could get either.
+        assertThat(converter.convert(GRAY, String.class), anyOf(is("gray"), is("grey")));
 
         Assert.assertEquals(
                 "pale blue",

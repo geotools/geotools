@@ -24,11 +24,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.awt.Color;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
-import java.util.TimeZone;
 import org.geotools.api.filter.expression.Add;
 import org.geotools.api.filter.expression.BinaryExpression;
 import org.geotools.api.filter.expression.Divide;
@@ -126,9 +125,11 @@ public class ExpressionToCQL2Json implements ExpressionVisitor {
             toGeoJSON(output, (Geometry) expression.getValue());
         } else if (expression.getValue() instanceof BoundingBox) {
             toGeoJSON(output, (BoundingBox) expression.getValue());
+        } else if (expression.getValue() instanceof java.sql.Date) {
+            toDate(output, (java.sql.Date) expression.getValue());
         } else if (expression.getValue() instanceof Date
                 || expression.getValue() instanceof Instant) {
-            toDate(output, expression.getValue());
+            toTimestamp(output, expression.getValue());
         } else if (expression.getValue() instanceof Period) {
             toPeriod(output, (Period) expression.getValue());
         } else if (expression.getValue() instanceof Color) {
@@ -172,8 +173,8 @@ public class ExpressionToCQL2Json implements ExpressionVisitor {
 
     private void toPeriod(ArrayNode output, Period period) {
         if (period != null) {
-            String date1 = toDateText(period.getBeginning().getPosition().getDate());
-            String date2 = toDateText(period.getEnding().getPosition().getDate());
+            String date1 = toTimestampText(period.getBeginning().getPosition().getDate());
+            String date2 = toTimestampText(period.getEnding().getPosition().getDate());
             ObjectNode intervalNode = objectMapper.createObjectNode();
             ArrayNode arrayNode = objectMapper.createArrayNode();
             arrayNode.add(date1);
@@ -182,7 +183,7 @@ public class ExpressionToCQL2Json implements ExpressionVisitor {
         }
     }
 
-    private void toDate(ArrayNode output, Object value) {
+    private void toDate(ArrayNode output, java.sql.Date value) {
         if (value != null) {
             ObjectNode dateNode = objectMapper.createObjectNode();
             dateNode.put("date", toDateText(value));
@@ -190,18 +191,22 @@ public class ExpressionToCQL2Json implements ExpressionVisitor {
         }
     }
 
-    private String toDateText(Object value) {
-        Date date = Converters.convert(value, Date.class);
-        final DateFormat formatter;
-        // If the Date has millisecond resolution, print the millis.
-        if (date.getTime() % 1000 == 0) {
-            formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssz");
-        } else {
-            formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSz");
-        }
+    private String toDateText(java.sql.Date value) {
+        LocalDate localDate = value.toLocalDate();
+        return localDate.format(DateTimeFormatter.ISO_LOCAL_DATE);
+    }
 
-        formatter.setTimeZone(TimeZone.getTimeZone("GMT+00:00"));
-        return formatter.format(date);
+    private void toTimestamp(ArrayNode output, Object value) {
+        if (value != null) {
+            ObjectNode dateNode = objectMapper.createObjectNode();
+            dateNode.put("timestamp", toTimestampText(value));
+            output.add(dateNode);
+        }
+    }
+
+    private String toTimestampText(Object value) {
+        Date date = Converters.convert(value, Date.class);
+        return DateTimeFormatter.ISO_INSTANT.format(date.toInstant());
     }
 
     private void toGeoJSON(ArrayNode output, Geometry value) {

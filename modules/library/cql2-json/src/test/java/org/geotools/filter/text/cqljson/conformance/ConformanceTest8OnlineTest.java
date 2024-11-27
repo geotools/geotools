@@ -203,32 +203,32 @@ public class ConformanceTest8OnlineTest
                     },
                     {
                         "ne_110m_populated_places_simple",
-                        "{\"op\":\"=\",\"args\":[{\"property\":\"date\"},{\"date\":\"2022-04-16T00:00:00GMT+00:00\"}]}",
+                        "{\"op\":\"=\",\"args\":[{\"property\":\"date\"},{\"timestamp\":\"2022-04-16T00:00:00Z\"}]}",
                         1
                     },
                     {
                         "ne_110m_populated_places_simple",
-                        "{\"op\":\">=\",\"args\":[{\"property\":\"date\"},{\"date\":\"2022-04-16T00:00:00GMT+00:00\"}]}",
+                        "{\"op\":\">=\",\"args\":[{\"property\":\"date\"},{\"timestamp\":\"2022-04-16T00:00:00Z\"}]}",
                         2
                     },
                     {
                         "ne_110m_populated_places_simple",
-                        "{\"op\":\">\",\"args\":[{\"property\":\"date\"},{\"date\":\"2022-04-16T00:00:00GMT+00:00\"}]}",
+                        "{\"op\":\">\",\"args\":[{\"property\":\"date\"},{\"timestamp\":\"2022-04-16T00:00:00Z\"}]}",
                         1
                     },
                     {
                         "ne_110m_populated_places_simple",
-                        "{\"op\":\"<=\",\"args\":[{\"property\":\"date\"},{\"date\":\"2022-04-16T00:00:00GMT+00:00\"}]}",
+                        "{\"op\":\"<=\",\"args\":[{\"property\":\"date\"},{\"timestamp\":\"2022-04-16T00:00:00Z\"}]}",
                         2
                     },
                     {
                         "ne_110m_populated_places_simple",
-                        "{\"op\":\"<\",\"args\":[{\"property\":\"date\"},{\"date\":\"2022-04-16T00:00:00GMT+00:00\"}]}",
+                        "{\"op\":\"<\",\"args\":[{\"property\":\"date\"},{\"timestamp\":\"2022-04-16T00:00:00Z\"}]}",
                         1
                     },
                     {
                         "ne_110m_populated_places_simple",
-                        "{\"op\":\"not\",\"args\":[{\"op\":\"=\",\"args\":[{\"property\":\"date\"},{\"date\":\"2022-04-16T00:00:00GMT+00:00\"}]}]}",
+                        "{\"op\":\"not\",\"args\":[{\"op\":\"=\",\"args\":[{\"property\":\"date\"},{\"timestamp\":\"2022-04-16T00:00:00Z\"}]}]}",
                         2
                     },
                     {
@@ -243,32 +243,32 @@ public class ConformanceTest8OnlineTest
                     },
                     {
                         "ne_110m_populated_places_simple",
-                        "{\"op\":\"=\",\"args\":[{\"property\":\"start\"},{\"date\":\"2022-04-16T10:13:19GMT+00:00\"}]}",
+                        "{\"op\":\"=\",\"args\":[{\"property\":\"start\"},{\"timestamp\":\"2022-04-16T10:13:19Z\"}]}",
                         1
                     },
                     {
                         "ne_110m_populated_places_simple",
-                        "{\"op\":\"<=\",\"args\":[{\"property\":\"start\"},{\"date\":\"2022-04-16T10:13:19GMT+00:00\"}]}",
+                        "{\"op\":\"<=\",\"args\":[{\"property\":\"start\"},{\"timestamp\":\"2022-04-16T10:13:19Z\"}]}",
                         2
                     },
                     {
                         "ne_110m_populated_places_simple",
-                        "{\"op\":\"<\",\"args\":[{\"property\":\"start\"},{\"date\":\"2022-04-16T10:13:19GMT+00:00\"}]}",
+                        "{\"op\":\"<\",\"args\":[{\"property\":\"start\"},{\"timestamp\":\"2022-04-16T10:13:19Z\"}]}",
                         1
                     },
                     {
                         "ne_110m_populated_places_simple",
-                        "{\"op\":\">=\",\"args\":[{\"property\":\"start\"},{\"date\":\"2022-04-16T10:13:19GMT+00:00\"}]}",
+                        "{\"op\":\">=\",\"args\":[{\"property\":\"start\"},{\"timestamp\":\"2022-04-16T10:13:19Z\"}]}",
                         2
                     },
                     {
                         "ne_110m_populated_places_simple",
-                        "{\"op\":\">\",\"args\":[{\"property\":\"start\"},{\"date\":\"2022-04-16T10:13:19GMT+00:00\"}]}",
+                        "{\"op\":\">\",\"args\":[{\"property\":\"start\"},{\"timestamp\":\"2022-04-16T10:13:19Z\"}]}",
                         1
                     },
                     {
                         "ne_110m_populated_places_simple",
-                        "{\"op\":\"not\",\"args\":[{\"op\":\"=\",\"args\":[{\"property\":\"start\"},{\"date\":\"2022-04-16T10:13:19GMT+00:00\"}]}]}",
+                        "{\"op\":\"not\",\"args\":[{\"op\":\"=\",\"args\":[{\"property\":\"start\"},{\"timestamp\":\"2022-04-16T10:13:19Z\"}]}]}",
                         2
                     },
                     {

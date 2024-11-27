@@ -316,12 +316,30 @@ public class FilterToJsonTest extends CQLJsonTest {
     }
 
     @Test
+    public void convertTimestampFilter() throws Exception {
+        String line =
+                "{\"op\":\"=\",\"args\":[{\"property\":\"date\"},{\"timestamp\":\"2022-04-16T00:00:00Z\"}]}";
+        Filter gtFilter = parse(line);
+        Assert.assertEquals(CQL.toFilter("date = '2022-04-16T00:00:00Z'"), gtFilter);
+        JsonNode node = serialize(gtFilter);
+        Assert.assertEquals(line, node.toString());
+    }
+
+    @Test
+    public void convertDateFilter() throws Exception {
+        String line = "{\"op\":\"=\",\"args\":[{\"property\":\"date\"},{\"date\":\"2022-04-16\"}]}";
+        Filter gtFilter = parse(line);
+        JsonNode node = serialize(gtFilter);
+        Assert.assertEquals(line, node.toString());
+    }
+
+    @Test
     public void convertAfterTest() throws IOException, CQLException {
         // {"op":"t_after","args":[{"property":"built"},{"date":"2012-06-05"}]}
         Filter gtFilter =
                 parse(
-                        "{\"op\":\"t_after\",\"args\":[{\"property\":\"built\"},{\"date\":\"2012-06-05\"}]}");
-        Assert.assertEquals("built AFTER '2012-06-05'", ECQL.toCQL(gtFilter));
+                        "{\"op\":\"t_after\",\"args\":[{\"property\":\"built\"},{\"timestamp\":\"2012-06-05T00:00:00Z\"}]}");
+        Assert.assertEquals(ECQL.toFilter("built AFTER 2012-06-05T00:00:00Z"), gtFilter);
     }
 
     @Test
@@ -329,8 +347,8 @@ public class FilterToJsonTest extends CQLJsonTest {
         // {"op":"t_before","args":[{"property":"built"},{"date":"2015-01-01"}]}
         Filter gtFilter =
                 parse(
-                        "{\"op\":\"t_before\",\"args\":[{\"property\":\"built\"},{\"date\":\"2015-01-01\"}]}");
-        Assert.assertEquals("built BEFORE '2015-01-01'", ECQL.toCQL(gtFilter));
+                        "{\"op\":\"t_before\",\"args\":[{\"property\":\"built\"},{\"timestamp\":\"2015-01-01T00:00:00Z\"}]}");
+        Assert.assertEquals(ECQL.toFilter("built BEFORE 2015-01-01T00:00:00Z"), gtFilter);
     }
 
     @Test
@@ -349,8 +367,8 @@ public class FilterToJsonTest extends CQLJsonTest {
         // {"op":"t_equals","args":[{"property":"built"},{"date":"2012-06-05"}]}
         Filter gtFilter =
                 parse(
-                        "{\"op\":\"t_equals\",\"args\":[{\"property\":\"built\"},{\"date\":\"2012-06-05\"}]}");
-        Assert.assertEquals("built = '2012-06-05'", ECQL.toCQL(gtFilter));
+                        "{\"op\":\"t_equals\",\"args\":[{\"property\":\"built\"},{\"timestamp\":\"2012-06-05T00:00:00Z\"}]}");
+        Assert.assertEquals(ECQL.toFilter("built = '2012-06-05T00:00:00Z'"), gtFilter);
     }
 
     @Test

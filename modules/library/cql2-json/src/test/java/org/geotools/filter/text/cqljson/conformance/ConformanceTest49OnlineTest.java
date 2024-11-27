@@ -378,12 +378,12 @@ public class ConformanceTest49OnlineTest
                     },
                     {
                         "ne_110m_populated_places_simple",
-                        "{\"op\":\"t_after\",\"args\":[{\"date\":\"2022-04-16T00:00:00GMT+00:00\"},{\"property\":\"date\"}]}",
+                        "{\"op\":\"t_after\",\"args\":[{\"timestamp\":\"2022-04-16T00:00:00Z\"},{\"property\":\"date\"}]}",
                         1
                     },
                     {
                         "ne_110m_populated_places_simple",
-                        "{\"op\":\"t_before\",\"args\":[{\"date\":\"2022-04-16T00:00:00GMT+00:00\"},{\"property\":\"date\"}]}",
+                        "{\"op\":\"t_before\",\"args\":[{\"timestamp\":\"2022-04-16T00:00:00Z\"},{\"property\":\"date\"}]}",
                         1
                     }, /*
                        {
@@ -392,7 +392,7 @@ public class ConformanceTest49OnlineTest
                        */
                     {
                         "ne_110m_populated_places_simple",
-                        "{\"op\":\"t_equals\",\"args\":[{\"date\":\"2022-04-16T00:00:00GMT+00:00\"},{\"property\":\"date\"}]}",
+                        "{\"op\":\"t_equals\",\"args\":[{\"timestamp\":\"2022-04-16T00:00:00Z\"},{\"property\":\"date\"}]}",
                         1
                     }, /*
                        {
@@ -419,12 +419,12 @@ public class ConformanceTest49OnlineTest
                        */
                     {
                         "ne_110m_populated_places_simple",
-                        "{\"op\":\"t_after\",\"args\":[{\"date\":\"2022-04-16T10:13:19GMT+00:00\"},{\"property\":\"start\"}]}",
+                        "{\"op\":\"t_after\",\"args\":[{\"timestamp\":\"2022-04-16T10:13:19Z\"},{\"property\":\"start\"}]}",
                         1
                     },
                     {
                         "ne_110m_populated_places_simple",
-                        "{\"op\":\"t_before\",\"args\":[{\"date\":\"2022-04-16T10:13:19GMT+00:00\"},{\"property\":\"start\"}]}",
+                        "{\"op\":\"t_before\",\"args\":[{\"timestamp\":\"2022-04-16T10:13:19Z\"},{\"property\":\"start\"}]}",
                         1
                     },
                     /*
@@ -434,7 +434,7 @@ public class ConformanceTest49OnlineTest
                     */
                     {
                         "ne_110m_populated_places_simple",
-                        "{\"op\":\"t_equals\",\"args\":[{\"date\":\"2022-04-16T10:13:19GMT+00:00\"},{\"property\":\"start\"}]}",
+                        "{\"op\":\"t_equals\",\"args\":[{\"timestamp\":\"2022-04-16T10:13:19Z\"},{\"property\":\"start\"}]}",
                         1
                     }, /*
                        {

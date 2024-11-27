@@ -51,17 +51,17 @@ public class ConformanceTest42OnlineTest
         return Arrays.asList(
                 new Object[][] {
                     {
-                        "{\"op\":\"t_after\",\"args\":[{\"property\":\"date\"},{\"date\":\"2022-04-16T00:00:00GMT+00:00\"}]}",
+                        "{\"op\":\"t_after\",\"args\":[{\"property\":\"date\"},{\"timestamp\":\"2022-04-16T00:00:00Z\"}]}",
                         1
                     },
                     {
-                        "{\"op\":\"t_before\",\"args\":[{\"property\":\"date\"},{\"date\":\"2022-04-16T00:00:00GMT+00:00\"}]}",
+                        "{\"op\":\"t_before\",\"args\":[{\"property\":\"date\"},{\"timestamp\":\"2022-04-16T00:00:00Z\"}]}",
                         1
                     },
                     // {"{}", 2}, // TODO broken text filter, cannot be converted to json, see
                     // comment in ConformanceUtils class
                     {
-                        "{\"op\":\"t_equals\",\"args\":[{\"property\":\"date\"},{\"date\":\"2022-04-16T00:00:00GMT+00:00\"}]}",
+                        "{\"op\":\"t_equals\",\"args\":[{\"property\":\"date\"},{\"timestamp\":\"2022-04-16T00:00:00Z\"}]}",
                         1
                     },
                     /* {"{}", 1}, // TODO broken text filter, cannot be converted to json, see comment in ConformanceUtils class
@@ -73,17 +73,17 @@ public class ConformanceTest42OnlineTest
                     {"{}", 1}, // TODO broken text filter, cannot be converted to json, see comment in ConformanceUtils class
                     */
                     {
-                        "{\"op\":\"t_after\",\"args\":[{\"property\":\"start\"},{\"date\":\"2022-04-16T10:13:19GMT+00:00\"}]}",
+                        "{\"op\":\"t_after\",\"args\":[{\"property\":\"start\"},{\"timestamp\":\"2022-04-16T10:13:19Z\"}]}",
                         1
                     },
                     {
-                        "{\"op\":\"t_before\",\"args\":[{\"property\":\"start\"},{\"date\":\"2022-04-16T10:13:19GMT+00:00\"}]}",
+                        "{\"op\":\"t_before\",\"args\":[{\"property\":\"start\"},{\"timestamp\":\"2022-04-16T10:13:19Z\"}]}",
                         1
                     },
                     // {"{}", 2}, // TODO broken text filter, cannot be converted to json, see
                     // comment in ConformanceUtils class
                     {
-                        "{\"op\":\"t_equals\",\"args\":[{\"property\":\"start\"},{\"date\":\"2022-04-16T10:13:19GMT+00:00\"}]}",
+                        "{\"op\":\"t_equals\",\"args\":[{\"property\":\"start\"},{\"timestamp\":\"2022-04-16T10:13:19Z\"}]}",
                         1
                     }, /*
                        {"{}", 1}, // TODO broken text filter, cannot be converted to json, see comment in ConformanceUtils class

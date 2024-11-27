@@ -23,8 +23,11 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeType;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
+import java.time.Instant;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
@@ -244,10 +247,13 @@ final class CQLJsonFilterBuilder {
     private Expression getTime(JsonNode node) throws CQLException {
         if (node != null && node.getNodeType() == JsonNodeType.OBJECT) {
             if (node.get("date") != null) {
-                return filterFactory.literal(node.get("date").textValue());
+                LocalDate date = LocalDate.parse(node.get("date").textValue());
+                Date sqlDate = java.sql.Date.valueOf(date);
+                return filterFactory.literal(sqlDate);
             }
             if (node.get("timestamp") != null) {
-                return filterFactory.literal(node.get("timestamp").textValue());
+                Date date = Date.from(Instant.parse(node.get("timestamp").textValue()));
+                return filterFactory.literal(date);
             }
         }
         throw new CQLException("date, or time type not found");

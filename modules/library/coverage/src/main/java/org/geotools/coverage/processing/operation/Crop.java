@@ -381,7 +381,7 @@ public class Crop extends Operation2D {
         // Source and destination crs must be equals
         //
         // //
-        if (!CRS.equalsIgnoreMetadata(sourceCRS, destinationCRS)) {
+        if (!CRS.isEquivalent(sourceCRS, destinationCRS)) {
             final Object arg0 = sourceCRS.getName().getCode();
             final Object arg1 = destinationCRS.getName().getCode();
             throw new CannotCropException(

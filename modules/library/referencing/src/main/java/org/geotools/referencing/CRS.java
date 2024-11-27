@@ -970,22 +970,15 @@ public final class CRS {
      */
     public static boolean isEquivalent(
             CoordinateReferenceSystem source, CoordinateReferenceSystem target) {
-        boolean equivalentCRS = equalsIgnoreMetadata(source, target);
-        if (!equivalentCRS) {
-
-            try {
-                equivalentCRS = !isTransformationRequired(source, target);
-            } catch (FactoryException e) {
-                // That was an attempt looking for an identity transform.
-                // Let's ignore the exception and return the previous result
-                LOGGER.log(
-                        Level.FINE,
-                        "Unable to find MathTransform between source and target CRS",
-                        e);
-            }
+        try {
+            // this one internally calls equalsIgnoreMetadata before trying to find a transform
+            return !isTransformationRequired(source, target);
+        } catch (FactoryException e) {
+            LOGGER.log(Level.FINE, "Unable to find MathTransform between source and target CRS", e);
+            return false;
         }
-        return equivalentCRS;
     }
+
     /**
      * Returns the <cite>Spatial Reference System</cite> identifier, or {@code null} if none. OGC
      * Web Services have the concept of a Spatial Reference System identifier used to communicate
@@ -1568,6 +1561,7 @@ public final class CRS {
             throws TransformException {
         return transform(transform, rectangle, (Rectangle2D) null);
     }
+
     /**
      * Transforms a rectangular envelope using the given {@linkplain MathTransform math transform}.
      * The transformation is only approximative. Invoking this method is equivalent to invoking the

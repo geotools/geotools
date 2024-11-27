@@ -140,8 +140,37 @@ final class CQLJsonFilterBuilder {
         return out;
     }
 
-    private Expression getArithmetic(JsonNode argNode) throws CQLException {
-        throw new CQLException("arithmetic operators are not supported by Geotools filters");
+    private Expression getArithmetic(JsonNode node)
+            throws CQLException, IOException, ParseException {
+        String operator = node.get("op").textValue();
+        List<Expression> expressions = new ArrayList<>();
+        ArrayNode args = (ArrayNode) node.get("args");
+        for (final JsonNode argNode : args) {
+            expressions.add(getExpression(argNode));
+        }
+        if (expressions.size() != 2) {
+            throw new CQLException(
+                    "Was expecting two arguments for arithmetic operator: " + operator);
+        }
+        switch (operator) {
+            case "+":
+                return filterFactory.add(expressions.get(0), expressions.get(1));
+            case "-":
+                return filterFactory.subtract(expressions.get(0), expressions.get(1));
+            case "*":
+                return filterFactory.multiply(expressions.get(0), expressions.get(1));
+            case "/":
+                return filterFactory.divide(expressions.get(0), expressions.get(1));
+            case "%":
+                return filterFactory.function(
+                        "IEEEremainder", expressions.get(0), expressions.get(1));
+            case "div":
+                return filterFactory.function("div", expressions.get(0), expressions.get(1));
+            case "^":
+                return filterFactory.function("pow", expressions.get(0), expressions.get(1));
+            default:
+                throw new CQLException("Unknown arithmetic operator: " + operator);
+        }
     }
 
     private Expression getGeometry(JsonNode node) throws ParseException {
@@ -231,6 +260,9 @@ final class CQLJsonFilterBuilder {
                 return true;
             }
             if (node.get("coordinates") != null) {
+                return true;
+            }
+            if (node.get("geometries") != null) {
                 return true;
             }
         }

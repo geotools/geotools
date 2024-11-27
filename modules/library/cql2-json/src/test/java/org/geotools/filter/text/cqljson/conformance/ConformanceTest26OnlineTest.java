@@ -60,7 +60,7 @@ public class ConformanceTest26OnlineTest
                     },
                     {
                         "ne_110m_admin_0_countries",
-                        "{\"op\":\"s_intersects\",\"args\":[{\"property\":\"geom\"},{\"type\":\"Polygon\",\"coordinates\":[[[150,-90],[150,90],[-150,90],[-150,-90],[150,-90]]]}]}",
+                        "{\"op\":\"s_intersects\",\"args\":[{\"property\":\"geom\"},{\"bbox\":[150,-90,-150,90]}]}",
                         10
                     },
                     {

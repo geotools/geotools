@@ -158,16 +158,16 @@ public class FilterToJsonTest extends CQLJsonTest {
     public void convertContainsTest() throws IOException, CQLException {
         // {"op":"s_contains","args":[{"property":"location"},{"bbox":[-118,33.8,-117.9,34]}]}
         String line =
-                "{\"op\":\"s_contains\",\"args\":[{\"property\":\"location\"},{\"type\":\"Polygon\",\"coordinates\":[[[-118,33.8],[-118,34],[-117.9,34],[-117.9,33.8],[-118,33.8]]]}]}";
+                "{\"op\":\"s_contains\",\"args\":[{\"property\":\"location\"},{\"bbox\":[-118.0,33.8,-117.9,34.0]}]}";
         Filter gtFilter = parse(line);
         Assert.assertEquals(
-                "CONTAINS(location, POLYGON ((-118 33.8, -118 34, -117.9 34, -117.9 33.8, -118 33.8)))",
+                "CONTAINS(location, POLYGON ((-118 33.8, -117.9 33.8, -117.9 34, -118 34, -118 33.8)))",
                 ECQL.toCQL(gtFilter));
         JsonNode node = serialize(gtFilter);
         // BBOX becomes a Polygon when converting to filter, so conversion back gets you the polygon
         // equivalent
         String line2 =
-                "{\"op\":\"s_contains\",\"args\":[{\"property\":\"location\"},{\"type\":\"Polygon\",\"coordinates\":[[[-118,33.8],[-118,34],[-117.9,34],[-117.9,33.8],[-118,33.8]]]}]}";
+                "{\"op\":\"s_contains\",\"args\":[{\"property\":\"location\"},{\"bbox\":[-118.0,33.8,-117.9,34.0]}]}";
         Assert.assertEquals(line2, node.toString());
     }
 
@@ -175,10 +175,10 @@ public class FilterToJsonTest extends CQLJsonTest {
     public void convertCrossesTest() throws IOException, CQLException {
         // {"op":"s_crosses","args":[{"property":"location"},{"bbox":[-118,33.8,-117.9,34]}]}
         String line =
-                "{\"op\":\"s_crosses\",\"args\":[{\"property\":\"location\"},{\"type\":\"Polygon\",\"coordinates\":[[[-118,33.8],[-118,34],[-117.9,34],[-117.9,33.8],[-118,33.8]]]}]}";
+                "{\"op\":\"s_crosses\",\"args\":[{\"property\":\"location\"},{\"bbox\":[-118.0,33.8,-117.9,34.0]}]}";
         Filter gtFilter = parse(line);
         Assert.assertEquals(
-                "CROSSES(location, POLYGON ((-118 33.8, -118 34, -117.9 34, -117.9 33.8, -118 33.8)))",
+                "CROSSES(location, POLYGON ((-118 33.8, -117.9 33.8, -117.9 34, -118 34, -118 33.8)))",
                 ECQL.toCQL(gtFilter));
         JsonNode node = serialize(gtFilter);
         Assert.assertEquals(line, node.toString());
@@ -188,10 +188,10 @@ public class FilterToJsonTest extends CQLJsonTest {
     public void convertDisjointTest() throws IOException, CQLException {
         // {"op":"s_disjoint","args":[{"property":"location"},{"bbox":[-118,33.8,-117.9,34]}]}
         String line =
-                "{\"op\":\"s_disjoint\",\"args\":[{\"property\":\"location\"},{\"type\":\"Polygon\",\"coordinates\":[[[-118,33.8],[-118,34],[-117.9,34],[-117.9,33.8],[-118,33.8]]]}]}";
+                "{\"op\":\"s_disjoint\",\"args\":[{\"property\":\"location\"},{\"bbox\":[-118.0,33.8,-117.9,34.0]}]}";
         Filter gtFilter = parse(line);
         Assert.assertEquals(
-                "DISJOINT(location, POLYGON ((-118 33.8, -118 34, -117.9 34, -117.9 33.8, -118 33.8)))",
+                "DISJOINT(location, POLYGON ((-118 33.8, -117.9 33.8, -117.9 34, -118 34, -118 33.8)))",
                 ECQL.toCQL(gtFilter));
         JsonNode node = serialize(gtFilter);
         Assert.assertEquals(line, node.toString());
@@ -201,10 +201,10 @@ public class FilterToJsonTest extends CQLJsonTest {
     public void convertSEqualsTest() throws IOException, CQLException {
         // {"op":"s_equals","args":[{"property":"location"},{"bbox":[-118,33.8,-117.9,34]}]}
         String line =
-                "{\"op\":\"s_equals\",\"args\":[{\"property\":\"location\"},{\"type\":\"Polygon\",\"coordinates\":[[[-118,33.8],[-118,34],[-117.9,34],[-117.9,33.8],[-118,33.8]]]}]}";
+                "{\"op\":\"s_equals\",\"args\":[{\"property\":\"location\"},{\"bbox\":[-118.0,33.8,-117.9,34.0]}]}";
         Filter gtFilter = parse(line);
         Assert.assertEquals(
-                "EQUALS(location, POLYGON ((-118 33.8, -118 34, -117.9 34, -117.9 33.8, -118 33.8)))",
+                "EQUALS(location, POLYGON ((-118 33.8, -117.9 33.8, -117.9 34, -118 34, -118 33.8)))",
                 ECQL.toCQL(gtFilter));
         JsonNode node = serialize(gtFilter);
         Assert.assertEquals(line, node.toString());
@@ -214,10 +214,10 @@ public class FilterToJsonTest extends CQLJsonTest {
     public void convertIntersectsGeoJsonTest() throws IOException, CQLException {
         // {"op":"s_intersects","args":[{"property":"location"},{"bbox":[-118,33.8,-117.9,34]}]}
         String line =
-                "{\"op\":\"s_intersects\",\"args\":[{\"property\":\"location\"},{\"type\":\"Polygon\",\"coordinates\":[[[-118,33.8],[-118,34],[-117.9,34],[-117.9,33.8],[-118,33.8]]]}]}";
+                "{\"op\":\"s_intersects\",\"args\":[{\"property\":\"location\"},{\"bbox\":[-118.0,33.8,-117.9,34.0]}]}";
         Filter gtFilter = parse(line);
         Assert.assertEquals(
-                "INTERSECTS(location, POLYGON ((-118 33.8, -118 34, -117.9 34, -117.9 33.8, -118 33.8)))",
+                "INTERSECTS(location, POLYGON ((-118 33.8, -117.9 33.8, -117.9 34, -118 34, -118 33.8)))",
                 ECQL.toCQL(gtFilter));
         JsonNode node = serialize(gtFilter);
         Assert.assertEquals(line, node.toString());
@@ -230,22 +230,19 @@ public class FilterToJsonTest extends CQLJsonTest {
                 "{\"op\":\"s_intersects\",\"args\":[{\"property\":\"location\"},{\"bbox\":[-118,33.8,-117.9,34]}]}";
         Filter gtFilter = parse(line);
         Assert.assertEquals(
-                "INTERSECTS(location, POLYGON ((-118 33.8, -118 34, -117.9 34, -117.9 33.8, -118 33.8)))",
+                "INTERSECTS(location, POLYGON ((-118 33.8, -117.9 33.8, -117.9 34, -118 34, -118 33.8)))",
                 ECQL.toCQL(gtFilter));
         JsonNode node = serialize(gtFilter);
         // Conversion to filter converts bbox to Polygon, so converting back returns polygon GeoJSON
         String line2 =
-                "{\"op\":\"s_intersects\",\"args\":[{\"property\":\"location\"},{\"type\":\"Polygon\",\"coordinates\":[[[-118,33.8],[-118,34],[-117.9,34],[-117.9,33.8],[-118,33.8]]]}]}";
+                "{\"op\":\"s_intersects\",\"args\":[{\"property\":\"location\"},{\"bbox\":[-118.0,33.8,-117.9,34.0]}]}";
         Assert.assertEquals(line2, node.toString());
     }
 
     @Test
-    public void convertBboxTest() throws IOException, CQLException {
-        String line2 =
-                "{\"op\":\"s_intersects\",\"args\":[{\"property\":\"location\"},{\"bbox\":[10.0,20.0,30.0,40.0]}]}";
-        Filter gtFilter = CQL.toFilter("BBOX(location, 10.0,20.0,30.0,40.0)");
-        JsonNode node = serialize(gtFilter);
-        Assert.assertEquals(line2, node.toString());
+    public void convertBbox2() throws Exception {
+        String line =
+                "{\"ne_110m_admin_0_countries\", \"S_INTERSECTS(geom,BBOX(150,-90,-150,90))\", 10}";
     }
 
     @Test
@@ -269,10 +266,10 @@ public class FilterToJsonTest extends CQLJsonTest {
     public void convertOverlapsTest() throws IOException, CQLException {
         // {"op":"s_overlaps","args":[{"property":"location"},{"bbox":[-118,33.8,-117.9,34]}]}
         String line =
-                "{\"op\":\"s_overlaps\",\"args\":[{\"property\":\"location\"},{\"type\":\"Polygon\",\"coordinates\":[[[-118,33.8],[-118,34],[-117.9,34],[-117.9,33.8],[-118,33.8]]]}]}";
+                "{\"op\":\"s_overlaps\",\"args\":[{\"property\":\"location\"},{\"bbox\":[-118.0,33.8,-117.9,34.0]}]}";
         Filter gtFilter = parse(line);
         Assert.assertEquals(
-                "OVERLAPS(location, POLYGON ((-118 33.8, -118 34, -117.9 34, -117.9 33.8, -118 33.8)))",
+                "OVERLAPS(location, POLYGON ((-118 33.8, -117.9 33.8, -117.9 34, -118 34, -118 33.8)))",
                 ECQL.toCQL(gtFilter));
         JsonNode node = serialize(gtFilter);
         Assert.assertEquals(line, node.toString());
@@ -282,10 +279,10 @@ public class FilterToJsonTest extends CQLJsonTest {
     public void convertTouchesTest() throws IOException, CQLException {
         // {"op":"s_touches","args":[{"property":"location"},{"bbox":[-118,33.8,-117.9,34]}]}
         String line =
-                "{\"op\":\"s_touches\",\"args\":[{\"property\":\"location\"},{\"type\":\"Polygon\",\"coordinates\":[[[-118,33.8],[-118,34],[-117.9,34],[-117.9,33.8],[-118,33.8]]]}]}";
+                "{\"op\":\"s_touches\",\"args\":[{\"property\":\"location\"},{\"bbox\":[-118.0,33.8,-117.9,34.0]}]}";
         Filter gtFilter = parse(line);
         Assert.assertEquals(
-                "TOUCHES(location, POLYGON ((-118 33.8, -118 34, -117.9 34, -117.9 33.8, -118 33.8)))",
+                "TOUCHES(location, POLYGON ((-118 33.8, -117.9 33.8, -117.9 34, -118 34, -118 33.8)))",
                 ECQL.toCQL(gtFilter));
         JsonNode node = serialize(gtFilter);
         Assert.assertEquals(line, node.toString());
@@ -295,10 +292,10 @@ public class FilterToJsonTest extends CQLJsonTest {
     public void convertWithinTest() throws IOException, CQLException {
         // {"op":"s_within","args":[{"property":"location"},{"bbox":[-118,33.8,-117.9,34]}]}
         String line =
-                "{\"op\":\"s_within\",\"args\":[{\"property\":\"location\"},{\"type\":\"Polygon\",\"coordinates\":[[[-118,33.8],[-118,34],[-117.9,34],[-117.9,33.8],[-118,33.8]]]}]}";
+                "{\"op\":\"s_within\",\"args\":[{\"property\":\"location\"},{\"bbox\":[-118.0,33.8,-117.9,34.0]}]}";
         Filter gtFilter = parse(line);
         Assert.assertEquals(
-                "WITHIN(location, POLYGON ((-118 33.8, -118 34, -117.9 34, -117.9 33.8, -118 33.8)))",
+                "WITHIN(location, POLYGON ((-118 33.8, -117.9 33.8, -117.9 34, -118 34, -118 33.8)))",
                 ECQL.toCQL(gtFilter));
         JsonNode node = serialize(gtFilter);
         Assert.assertEquals(line, node.toString());

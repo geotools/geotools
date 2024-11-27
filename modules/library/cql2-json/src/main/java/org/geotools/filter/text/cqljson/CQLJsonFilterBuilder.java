@@ -36,11 +36,12 @@ import org.geotools.api.filter.expression.Function;
 import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.data.geojson.GeoJSONReader;
 import org.geotools.filter.text.cql2.CQLException;
-import org.geotools.geometry.jts.JTSFactoryFinder;
+import org.geotools.geometry.jts.JTS;
+import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.MultiPolygon;
+import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.io.ParseException;
-import org.locationtech.jts.io.WKTReader;
 
 final class CQLJsonFilterBuilder {
 
@@ -180,35 +181,50 @@ final class CQLJsonFilterBuilder {
         Geometry geom = null;
         if (node.get("bbox") != null) {
             ArrayNode bbox = (ArrayNode) node.get("bbox");
-            StringBuilder stringBuffer = new StringBuilder("POLYGON((");
-            stringBuffer.append(bbox.get(0).doubleValue());
-            stringBuffer.append(" ");
-            stringBuffer.append(bbox.get(1).doubleValue());
-            stringBuffer.append(", ");
-            stringBuffer.append(bbox.get(0).doubleValue());
-            stringBuffer.append(" ");
-            stringBuffer.append(bbox.get(3).doubleValue());
-            stringBuffer.append(", ");
-            stringBuffer.append(bbox.get(2).doubleValue());
-            stringBuffer.append(" ");
-            stringBuffer.append(bbox.get(3).doubleValue());
-            stringBuffer.append(", ");
-            stringBuffer.append(bbox.get(2).doubleValue());
-            stringBuffer.append(" ");
-            stringBuffer.append(bbox.get(1).doubleValue());
-            stringBuffer.append(", ");
-            stringBuffer.append(bbox.get(0).doubleValue());
-            stringBuffer.append(" ");
-            stringBuffer.append(bbox.get(1).doubleValue());
-            stringBuffer.append("))");
-            GeometryFactory geometryFactory = JTSFactoryFinder.getGeometryFactory(null);
 
-            WKTReader reader = new WKTReader(geometryFactory);
-            geom = reader.read(stringBuffer.toString());
+            double minX = bbox.get(0).doubleValue();
+            double minY = bbox.get(1).doubleValue();
+            double maxX = bbox.get(2).doubleValue();
+            double maxY = bbox.get(3).doubleValue();
+
+            if (isWrappingDateline(minX, maxX)) {
+                Envelope bbox1 = new Envelope(minX, 180, minY, maxY);
+                Envelope bbox2 = new Envelope(-180, maxX, minY, maxY);
+                Polygon g1 = JTS.toGeometry(bbox1);
+                Polygon g2 = JTS.toGeometry(bbox2);
+                MultiPolygon multiPolygon =
+                        g1.getFactory().createMultiPolygon(new Polygon[] {g1, g2});
+                return filterFactory.literal(multiPolygon);
+            }
+
+            Envelope box = new Envelope(minX, maxX, minY, maxY);
+            Polygon g = JTS.toGeometry(box);
+            return filterFactory.literal(g);
         } else {
             geom = GeoJSONReader.parseGeometry(node.toString());
         }
         return filterFactory.literal(geom);
+    }
+
+    /**
+     * From the spec: In cases where the bounding box spans the antimeridian of a geographic
+     * coordinate reference system, the lower-left value (west-most box edge) is larger than the //
+     * upper-right value (east-most box edge). Since with CQL2 we won't get the CRS (it's provided
+     * in a separate request parameter, not part of the CQL2 text), we'll just assume it's a
+     * geographic CRS
+     */
+    static boolean isWrappingDateline(double minLon, double maxLon) {
+        return minLon > maxLon && validLongitude(minLon) && validLongitude(maxLon);
+    }
+
+    /**
+     * Check if the given value is a valid longitude value
+     *
+     * @param x
+     * @return
+     */
+    static boolean validLongitude(double x) {
+        return x >= -180 && x <= 180;
     }
 
     private boolean isArithmetic(JsonNode node) {
@@ -780,6 +796,7 @@ final class CQLJsonFilterBuilder {
             throws CQLException, IOException, ParseException {
         throw new CQLException("Finished by not supported by GeoTools filters");
     }
+
     /**
      * FINISHING Temporal Filter Not Supported
      *
@@ -793,6 +810,7 @@ final class CQLJsonFilterBuilder {
             throws CQLException, IOException, ParseException {
         throw new CQLException("Finishing not supported by GeoTools filters");
     }
+
     /**
      * INTERSECTS Temporal Filter Not Supported
      *
@@ -806,6 +824,7 @@ final class CQLJsonFilterBuilder {
             throws CQLException, IOException, ParseException {
         throw new CQLException("TIntersects not supported by GeoTools filters");
     }
+
     /**
      * MEETS Temporal Filter Not Supported
      *
@@ -818,6 +837,7 @@ final class CQLJsonFilterBuilder {
     public Filter convertMeets(ArrayNode args) throws CQLException, IOException, ParseException {
         throw new CQLException("Meets not supported by GeoTools filters");
     }
+
     /**
      * MET BY Temporal Filter Not Supported
      *
@@ -830,6 +850,7 @@ final class CQLJsonFilterBuilder {
     public Filter convertMetBy(ArrayNode args) throws CQLException, IOException, ParseException {
         throw new CQLException("Met by not supported by GeoTools filters");
     }
+
     /**
      * OVERLAPPED BY Temporal Filter Not Supported
      *
@@ -843,6 +864,7 @@ final class CQLJsonFilterBuilder {
             throws CQLException, IOException, ParseException {
         throw new CQLException("Overlapped by not supported by GeoTools filters");
     }
+
     /**
      * OVERLAPS Temporal Filter Not Supported
      *
@@ -856,6 +878,7 @@ final class CQLJsonFilterBuilder {
             throws CQLException, IOException, ParseException {
         throw new CQLException("Time Overlaps not supported by GeoTools filters");
     }
+
     /**
      * STARTED BY Temporal Filter Not Supported
      *
@@ -869,6 +892,7 @@ final class CQLJsonFilterBuilder {
             throws CQLException, IOException, ParseException {
         throw new CQLException("Started by not supported by GeoTools filters");
     }
+
     /**
      * STARTS Temporal Filter Not Supported
      *
@@ -881,6 +905,7 @@ final class CQLJsonFilterBuilder {
     public Filter convertStarts(ArrayNode args) throws CQLException, IOException, ParseException {
         throw new CQLException("Starts not supported by GeoTools filters");
     }
+
     /**
      * CONTAINED BY Array Filter Not Supported
      *
@@ -894,6 +919,7 @@ final class CQLJsonFilterBuilder {
             throws CQLException, IOException, ParseException {
         throw new CQLException("Array Contained By not supported by GeoTools filters");
     }
+
     /**
      * CONTAINING Array Filter Not Supported
      *
@@ -907,6 +933,7 @@ final class CQLJsonFilterBuilder {
             throws CQLException, IOException, ParseException {
         throw new CQLException("Array Containing not supported by GeoTools filters");
     }
+
     /**
      * EQUALS Array Filter Not Supported
      *
@@ -920,6 +947,7 @@ final class CQLJsonFilterBuilder {
             throws CQLException, IOException, ParseException {
         throw new CQLException("Array Equals not supported by GeoTools filters");
     }
+
     /**
      * OVERLAPS Array Filter Not Supported
      *

@@ -211,7 +211,18 @@ public class ExpressionToCQL2Json implements ExpressionVisitor {
 
     private void toGeoJSON(ArrayNode output, Geometry value) {
         try {
-            output.add(objectMapper.readTree(GeoJSONWriter.toGeoJSON(value)));
+            if (value.isRectangle()) {
+                ObjectNode bboxNode = objectMapper.createObjectNode();
+                ArrayNode coords = objectMapper.createArrayNode();
+                coords.add(value.getEnvelopeInternal().getMinX());
+                coords.add(value.getEnvelopeInternal().getMinY());
+                coords.add(value.getEnvelopeInternal().getMaxX());
+                coords.add(value.getEnvelopeInternal().getMaxY());
+                bboxNode.set("bbox", coords);
+                output.add(bboxNode);
+            } else {
+                output.add(objectMapper.readTree(GeoJSONWriter.toGeoJSON(value)));
+            }
         } catch (JsonProcessingException e) {
             throw new IllegalArgumentException(
                     "Unable to convert Geometry into GeoJSON while building CQL2-JSON");

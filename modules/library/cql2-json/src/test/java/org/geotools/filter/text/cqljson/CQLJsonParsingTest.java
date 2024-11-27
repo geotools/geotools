@@ -129,7 +129,7 @@ public class CQLJsonParsingTest extends CQLJsonTest {
                 parse(
                         "{\"op\":\"s_contains\",\"args\":[{\"property\":\"location\"},{\"bbox\":[-118,33.8,-117.9,34]}]}");
         Assert.assertEquals(
-                "CONTAINS(location, POLYGON ((-118 33.8, -118 34, -117.9 34, -117.9 33.8, -118 33.8)))",
+                "CONTAINS(location, POLYGON ((-118 33.8, -117.9 33.8, -117.9 34, -118 34, -118 33.8)))",
                 ECQL.toCQL(gtFilter));
     }
 
@@ -140,7 +140,7 @@ public class CQLJsonParsingTest extends CQLJsonTest {
                 parse(
                         "{\"op\":\"s_crosses\",\"args\":[{\"property\":\"location\"},{\"bbox\":[-118,33.8,-117.9,34]}]}");
         Assert.assertEquals(
-                "CROSSES(location, POLYGON ((-118 33.8, -118 34, -117.9 34, -117.9 33.8, -118 33.8)))",
+                "CROSSES(location, POLYGON ((-118 33.8, -117.9 33.8, -117.9 34, -118 34, -118 33.8)))",
                 ECQL.toCQL(gtFilter));
     }
 
@@ -151,7 +151,7 @@ public class CQLJsonParsingTest extends CQLJsonTest {
                 parse(
                         "{\"op\":\"s_disjoint\",\"args\":[{\"property\":\"location\"},{\"bbox\":[-118,33.8,-117.9,34]}]}");
         Assert.assertEquals(
-                "DISJOINT(location, POLYGON ((-118 33.8, -118 34, -117.9 34, -117.9 33.8, -118 33.8)))",
+                "DISJOINT(location, POLYGON ((-118 33.8, -117.9 33.8, -117.9 34, -118 34, -118 33.8)))",
                 ECQL.toCQL(gtFilter));
     }
 
@@ -162,7 +162,7 @@ public class CQLJsonParsingTest extends CQLJsonTest {
                 parse(
                         "{\"op\":\"s_equals\",\"args\":[{\"property\":\"location\"},{\"bbox\":[-118,33.8,-117.9,34]}]}");
         Assert.assertEquals(
-                "EQUALS(location, POLYGON ((-118 33.8, -118 34, -117.9 34, -117.9 33.8, -118 33.8)))",
+                "EQUALS(location, POLYGON ((-118 33.8, -117.9 33.8, -117.9 34, -118 34, -118 33.8)))",
                 ECQL.toCQL(gtFilter));
     }
 
@@ -173,7 +173,7 @@ public class CQLJsonParsingTest extends CQLJsonTest {
                 parse(
                         "{\"op\":\"s_intersects\",\"args\":[{\"property\":\"location\"},{\"bbox\":[-118,33.8,-117.9,34]}]}");
         Assert.assertEquals(
-                "INTERSECTS(location, POLYGON ((-118 33.8, -118 34, -117.9 34, -117.9 33.8, -118 33.8)))",
+                "INTERSECTS(location, POLYGON ((-118 33.8, -117.9 33.8, -117.9 34, -118 34, -118 33.8)))",
                 ECQL.toCQL(gtFilter));
     }
 
@@ -184,7 +184,7 @@ public class CQLJsonParsingTest extends CQLJsonTest {
                 parse(
                         "{\"op\":\"s_intersects\",\"args\":[{\"property\":\"location\"},{\"bbox\":[-118,33.8,-117.9,34]}]}");
         Assert.assertEquals(
-                "INTERSECTS(location, POLYGON ((-118 33.8, -118 34, -117.9 34, -117.9 33.8, -118 33.8)))",
+                "INTERSECTS(location, POLYGON ((-118 33.8, -117.9 33.8, -117.9 34, -118 34, -118 33.8)))",
                 ECQL.toCQL(gtFilter));
     }
 
@@ -195,7 +195,7 @@ public class CQLJsonParsingTest extends CQLJsonTest {
                 parse(
                         "{\"op\":\"s_overlaps\",\"args\":[{\"property\":\"location\"},{\"bbox\":[-118,33.8,-117.9,34]}]}");
         Assert.assertEquals(
-                "OVERLAPS(location, POLYGON ((-118 33.8, -118 34, -117.9 34, -117.9 33.8, -118 33.8)))",
+                "OVERLAPS(location, POLYGON ((-118 33.8, -117.9 33.8, -117.9 34, -118 34, -118 33.8)))",
                 ECQL.toCQL(gtFilter));
     }
 
@@ -206,7 +206,7 @@ public class CQLJsonParsingTest extends CQLJsonTest {
                 parse(
                         "{\"op\":\"s_touches\",\"args\":[{\"property\":\"location\"},{\"bbox\":[-118,33.8,-117.9,34]}]}");
         Assert.assertEquals(
-                "TOUCHES(location, POLYGON ((-118 33.8, -118 34, -117.9 34, -117.9 33.8, -118 33.8)))",
+                "TOUCHES(location, POLYGON ((-118 33.8, -117.9 33.8, -117.9 34, -118 34, -118 33.8)))",
                 ECQL.toCQL(gtFilter));
     }
 
@@ -217,7 +217,7 @@ public class CQLJsonParsingTest extends CQLJsonTest {
                 parse(
                         "{\"op\":\"s_within\",\"args\":[{\"property\":\"location\"},{\"bbox\":[-118,33.8,-117.9,34]}]}");
         Assert.assertEquals(
-                "WITHIN(location, POLYGON ((-118 33.8, -118 34, -117.9 34, -117.9 33.8, -118 33.8)))",
+                "WITHIN(location, POLYGON ((-118 33.8, -117.9 33.8, -117.9 34, -118 34, -118 33.8)))",
                 ECQL.toCQL(gtFilter));
     }
 

@@ -332,7 +332,7 @@ final class CQLJsonFilterBuilder {
     public Filter convertLike(ArrayNode args) throws CQLException, IOException, ParseException {
         Expression characterExpression = toCharacterExpression(args.get(0));
         String stringLiteral = toCompareString(args.get(1));
-        return filterFactory.like(characterExpression, stringLiteral, WC_SINGLE, WC_MULTI, ESCAPE);
+        return filterFactory.like(characterExpression, stringLiteral, WC_MULTI, WC_SINGLE, ESCAPE);
     }
 
     /**

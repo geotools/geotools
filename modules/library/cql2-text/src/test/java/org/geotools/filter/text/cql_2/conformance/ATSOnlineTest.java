@@ -108,6 +108,6 @@ public abstract class ATSOnlineTest {
         int feat = featuresReturned(ds);
         ds.dispose();
 
-        assertEquals(this.expectedFeatures, feat);
+        assertEquals(this.filter.toString(), this.expectedFeatures, feat);
     }
 }

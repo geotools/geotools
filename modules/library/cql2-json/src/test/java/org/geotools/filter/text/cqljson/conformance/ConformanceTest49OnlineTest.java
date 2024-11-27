@@ -228,7 +228,7 @@ public class ConformanceTest49OnlineTest
                     },
                     {
                         "ne_110m_admin_0_countries",
-                        "{\"op\":\"s_intersects\",\"args\":[{\"type\":\"Polygon\",\"coordinates\":[[[150,-90],[150,90],[-150,90],[-150,-90],[150,-90]]]},{\"property\":\"geom\"}]}",
+                        "{\"op\":\"s_intersects\",\"args\":[{\"bbox\": [150,-90,-150,90]},{\"property\":\"geom\"}]}",
                         10
                     },
                     {
@@ -308,27 +308,27 @@ public class ConformanceTest49OnlineTest
                     },
                     {
                         "ne_110m_populated_places_simple",
-                        "{\"op\":\"s_equals\",\"args\":[{\"type\":\"Point\",\"coordinates\":[6.130003,49.61166]},{\"property\":\"geom\"}]}",
+                        "{\"op\":\"s_equals\",\"args\":[{\"type\":\"Point\",\"coordinates\":[6.1300028, 49.6116604]},{\"property\":\"geom\"}]}",
                         1
                     },
                     {
                         "ne_110m_admin_0_countries",
-                        "{\"op\":\"s_touches\",\"args\":[{\"type\":\"Polygon\",\"coordinates\":[[[6.043073,50.128052],[6.242751,49.902226],[6.18632,49.463803],[5.897759,49.442667],[5.674052,49.529484],[5.782417,50.090328],[6.043073,50.128052]]]},{\"property\":\"geom\"}]}",
+                        "{\"op\":\"s_touches\",\"args\":[{\"type\":\"Polygon\",\"coordinates\":[[[6.043073357781111, 50.128051662794235], [6.242751092156993, 49.90222565367873], [6.186320428094177, 49.463802802114515], [5.897759230176348, 49.44266714130711], [5.674051954784829, 49.529483547557504], [5.782417433300907, 50.09032786722122], [6.043073357781111, 50.128051662794235]]]},{\"property\":\"geom\"}]}",
                         3
                     },
                     {
                         "ne_110m_admin_0_countries",
-                        "{\"op\":\"s_touches\",\"args\":[{\"type\":\"Point\",\"coordinates\":[6.043073,50.128052]},{\"property\":\"geom\"}]}",
+                        "{\"op\":\"s_touches\",\"args\":[{\"type\":\"Point\",\"coordinates\":[6.043073357781111, 50.128051662794235]},{\"property\":\"geom\"}]}",
                         3
                     },
                     {
                         "ne_110m_admin_0_countries",
-                        "{\"op\":\"s_touches\",\"args\":[{\"type\":\"Point\",\"coordinates\":[6.242751,49.902226]},{\"property\":\"geom\"}]}",
+                        "{\"op\":\"s_touches\",\"args\":[{\"type\":\"Point\",\"coordinates\":[6.242751092156993, 49.90222565367873]},{\"property\":\"geom\"}]}",
                         2
                     },
                     {
                         "ne_110m_admin_0_countries",
-                        "{\"op\":\"s_touches\",\"args\":[{\"type\":\"LineString\",\"coordinates\":[[6.043073,50.128052],[6.242751,49.902226]]},{\"property\":\"geom\"}]}",
+                        "{\"op\":\"s_touches\",\"args\":[{\"type\":\"LineString\",\"coordinates\":[[6.043073357781111, 50.128051662794235], [6.242751092156993, 49.90222565367873]]},{\"property\":\"geom\"}]}",
                         3
                     },
                     {

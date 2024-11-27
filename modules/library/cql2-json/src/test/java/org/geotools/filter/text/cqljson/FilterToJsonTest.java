@@ -240,12 +240,6 @@ public class FilterToJsonTest extends CQLJsonTest {
     }
 
     @Test
-    public void convertBbox2() throws Exception {
-        String line =
-                "{\"ne_110m_admin_0_countries\", \"S_INTERSECTS(geom,BBOX(150,-90,-150,90))\", 10}";
-    }
-
-    @Test
     public void convertFunctionExpressionTest() throws Exception {
         // {"op":"and","args":[{"op":"<","args":[{"property":"ro:cloud_cover"},{"function":{"name":"tan","args":[1]}}]},
         // {"op":"=","args":[{"property":"landsat:wrs_row"},28]},

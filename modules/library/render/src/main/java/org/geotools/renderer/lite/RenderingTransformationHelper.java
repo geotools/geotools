@@ -184,7 +184,7 @@ public abstract class RenderingTransformationHelper {
             }
 
             // don't read more than the native resolution (in case we are oversampling)
-            if (CRS.equalsIgnoreMetadata(
+            if (CRS.isEquivalent(
                     reader.getCoordinateReferenceSystem(),
                     gridGeometry.getCoordinateReferenceSystem())) {
                 // GEOS-8070, changed the pixel anchor to corner. CENTER can cause issues
@@ -237,7 +237,7 @@ public abstract class RenderingTransformationHelper {
                 // Crop will fail if we try to crop outside of the coverage area
                 ReferencedEnvelope renderingEnvelope = new ReferencedEnvelope(readGG.getEnvelope());
                 CoordinateReferenceSystem coverageCRS = coverage.getCoordinateReferenceSystem2D();
-                if (!CRS.equalsIgnoreMetadata(
+                if (!CRS.isEquivalent(
                         renderingEnvelope.getCoordinateReferenceSystem(), coverageCRS)) {
                     renderingEnvelope = renderingEnvelope.transform(coverageCRS, true);
                 }

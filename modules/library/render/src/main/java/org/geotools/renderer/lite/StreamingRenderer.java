@@ -2765,7 +2765,7 @@ public class StreamingRenderer implements GTRenderer {
         ScreenMap screenMap = liteFeatureTypeStyle.screenMap;
         if (handler != null
                 && featureCrs != null
-                && !CRS.equalsIgnoreMetadata(handler.getSourceCRS(), featureCrs)) {
+                && !CRS.isEquivalent(handler.getSourceCRS(), featureCrs)) {
             try {
                 handler =
                         ProjectionHandlerFinder.getHandler(
@@ -3138,7 +3138,7 @@ public class StreamingRenderer implements GTRenderer {
         GridGeometry2D readGG;
         if (sourceCRS == null
                 || destinationCrs == null
-                || CRS.equalsIgnoreMetadata(destinationCrs, sourceCRS)) {
+                || CRS.isEquivalent(destinationCrs, sourceCRS)) {
             readGG = new GridGeometry2D(new GridEnvelope2D(screenSize), originalMapExtent);
         } else {
             // reprojection involved, read a bit more pixels to account for rotation

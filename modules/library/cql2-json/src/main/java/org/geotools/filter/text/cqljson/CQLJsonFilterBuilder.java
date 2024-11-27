@@ -44,6 +44,9 @@ import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.io.ParseException;
 
 final class CQLJsonFilterBuilder {
+    private static final String WC_MULTI = "%";
+    private static final String WC_SINGLE = "_";
+    private static final String ESCAPE = "\\";
 
     /** New instance of CQLJsonFilterBuilder */
     public CQLJsonFilterBuilder(final FilterFactory filterFactory) {
@@ -329,7 +332,7 @@ final class CQLJsonFilterBuilder {
     public Filter convertLike(ArrayNode args) throws CQLException, IOException, ParseException {
         Expression characterExpression = toCharacterExpression(args.get(0));
         String stringLiteral = toCompareString(args.get(1));
-        return filterFactory.like(characterExpression, stringLiteral);
+        return filterFactory.like(characterExpression, stringLiteral, WC_SINGLE, WC_MULTI, ESCAPE);
     }
 
     /**

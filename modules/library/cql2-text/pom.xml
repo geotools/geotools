@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.geotools</groupId>
-    <artifactId>unsupported</artifactId>
+    <artifactId>library</artifactId>
     <version>33-SNAPSHOT</version>
   </parent>
   <artifactId>gt-cql2-text</artifactId>

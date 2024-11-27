@@ -45,6 +45,8 @@
     <module>main</module>
     <module>xml</module>
     <module>cql</module>
+    <module>cql2-text</module>
+    <module>cql2-json</module>
     <module>render</module>
     <module>jdbc</module>
     <module>http</module>

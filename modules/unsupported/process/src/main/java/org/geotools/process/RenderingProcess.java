@@ -72,4 +72,17 @@ public interface RenderingProcess extends Process {
             Map<String, Object> input, GridCoverageReader reader, GeneralParameterValue[] params) {
         return params;
     }
+
+    /**
+     * Returns true if the code should be given a raster input that is clipped to the rendering
+     * area, false if the input can also contain data outside the rendering area (e.g., for
+     * interpolation). Applies only to transformations taking a raster input. Default implementation
+     * returns false
+     *
+     * @param input The process input parameters
+     * @return True if the input should be clipped to the rendering area, false otherwise
+     */
+    default boolean clipOnRenderingArea(Map<String, Object> input) {
+        return false;
+    }
 }

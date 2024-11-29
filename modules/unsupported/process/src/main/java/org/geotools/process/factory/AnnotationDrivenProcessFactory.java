@@ -472,7 +472,8 @@ public abstract class AnnotationDrivenProcessFactory implements ProcessFactory {
         if (process != null
                 && (lookupInvertGridGeometry(process, meth.getName()) != null
                         || lookupInvertQuery(process, meth.getName()) != null
-                        || lookupCustomizeReadParams(process, meth.getName()) != null)) {
+                        || lookupCustomizeReadParams(process, meth.getName()) != null
+                        || lookupClipOnRenderingArea(process, meth.getName()) != null)) {
             return new InvokeMethodRenderingProcess(meth, process);
         } else {
             return new InvokeMethodProcess(meth, process);
@@ -557,6 +558,35 @@ public abstract class AnnotationDrivenProcessFactory implements ProcessFactory {
 
     /**
      * Used to recognise {@link RenderingProcess} implementations; returns a non null method for
+     * {@link RenderingProcess#clipOnRenderingArea(Map)}.
+     *
+     * <p>Used to look up the method to use for "clipOnRenderingArea"; if a specific method name is
+     * not provided "clipOnRenderingArea" will be used.
+     *
+     * <p>
+     *
+     * <ul>
+     *   <li>For {@literal null} method name "clipOnRenderingArea" will be used.
+     *   <li>For {@literal "execute"} method name "clipOnRenderingArea" will be used.
+     *   <li>For {@literal "buffer"} method name "bufferClipOnRenderingArea" will be used
+     * </ul>
+     *
+     * @param targetObject Target object; may be null for static method lookup
+     * @param methodName method to use for "clipOnRenderingArea"
+     * @return method to use for RenderingProcess "clipOnRenderingArea", or <code>null</code> if not
+     *     a RenderingProcess
+     */
+    protected Method lookupClipOnRenderingArea(Object targetObject, String methodName) {
+        if (methodName == null || "execute".equals(methodName)) {
+            methodName = "clipOnRenderingArea";
+        } else {
+            methodName = methodName + "ClipOnRenderingArea";
+        }
+        return lookupMethod(targetObject, methodName);
+    }
+
+    /**
+     * Used to recognise {@link RenderingProcess} implementations; returns a non null method for
      * {@link RenderingProcess#invertQuery(Map, Query, GridGeometry)}.
      *
      * <p>Used to look up the method to use for "invertQuery"; if a specific method name is not
@@ -603,6 +633,7 @@ public abstract class AnnotationDrivenProcessFactory implements ProcessFactory {
     class InvokeMethodProcess implements Process {
         /** Method to invoke. */
         Method method;
+
         /** Target object used to invoke method, may be null when using a static method. */
         Object targetObject;
 
@@ -906,6 +937,30 @@ public abstract class AnnotationDrivenProcessFactory implements ProcessFactory {
 
                 return (GeneralParameterValue[])
                         customizeReadParamsMethod.invoke(targetObject, args);
+            } catch (IllegalAccessException e) {
+                throw new ProcessException(e);
+            } catch (InvocationTargetException e) {
+                Throwable t = e.getTargetException();
+                if (t instanceof ProcessException) {
+                    throw ((ProcessException) t);
+                } else {
+                    throw new ProcessException(t);
+                }
+            }
+        }
+
+        @Override
+        public boolean clipOnRenderingArea(Map<String, Object> input) {
+            Method clipOnRenderingAreaMethod =
+                    lookupClipOnRenderingArea(targetObject, this.method.getName());
+
+            if (clipOnRenderingAreaMethod == null) {
+                return false;
+            }
+
+            Object[] args = buildProcessArguments(clipOnRenderingAreaMethod, input, null, false);
+            try {
+                return (boolean) clipOnRenderingAreaMethod.invoke(targetObject, args);
             } catch (IllegalAccessException e) {
                 throw new ProcessException(e);
             } catch (InvocationTargetException e) {

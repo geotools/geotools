@@ -92,4 +92,18 @@ class RenderingProcessFunction extends ProcessFunction implements RenderingTrans
                     "Failed to customize the reader parameters, error is: " + e.getMessage(), e);
         }
     }
+
+    @Override
+    public boolean clipOnRenderingArea() {
+        RenderingProcess process = (RenderingProcess) this.process;
+        // evaluate input expressions
+        // at this point do not have an object to evaluate them against
+        Map<String, Object> inputs = evaluateInputs(null);
+        try {
+            return process.clipOnRenderingArea(inputs);
+        } catch (ProcessException e) {
+            throw new RuntimeException(
+                    "Failed to customize the reader parameters, error is: " + e.getMessage(), e);
+        }
+    }
 }

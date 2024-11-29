@@ -19,8 +19,12 @@
             <Graphic>
               <Mark>
                 <WellKnownName>circle</WellKnownName>
-                <Fill>
-                  <CssParameter name="fill">
+                <!--
+                Using stroke rather than fill to safeguard against small scale changes
+                If the shape becomes too small the fill will disappear, but the stroke will remain
+                -->
+                <Stroke>
+                  <CssParameter name="stroke">
                     <ogc:Function name="if_then_else">
                       <ogc:Function name="equalTo">
                         <ogc:PropertyName>GRAY_INDEX</ogc:PropertyName>
@@ -30,7 +34,7 @@
                       <ogc:Literal>#000000</ogc:Literal>
                     </ogc:Function>
                   </CssParameter>
-                </Fill>
+                </Stroke>
               </Mark>
               <Size>1</Size>
             </Graphic>

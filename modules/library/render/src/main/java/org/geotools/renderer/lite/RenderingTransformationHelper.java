@@ -86,6 +86,15 @@ public abstract class RenderingTransformationHelper {
 
     public static final int TRANSFORM_READ_BUFFER_PIXELS = 10;
 
+    /**
+     * If true, the transformation will read the coverage at a higher resolution than the native
+     * one, and then scale it down to the desired resolution. This is useful when the transformation
+     * can benefit from receiving interpolated data, as it will have more data to interpolate from.
+     * If false, the transformation will read the coverage at the native resolution, and then scale
+     * it up to the desired resolution.
+     */
+    protected boolean oversample;
+
     public Object applyRenderingTransformation(
             Expression transformation,
             FeatureSource featureSource,
@@ -185,8 +194,9 @@ public abstract class RenderingTransformationHelper {
 
             // don't read more than the native resolution (in case we are oversampling)
             if (CRS.isEquivalent(
-                    reader.getCoordinateReferenceSystem(),
-                    gridGeometry.getCoordinateReferenceSystem())) {
+                            reader.getCoordinateReferenceSystem(),
+                            gridGeometry.getCoordinateReferenceSystem())
+                    && !oversample) {
                 readGG = updateGridGeometryToNativeResolution(gridGeometry, reader, readGG);
             }
 
@@ -352,4 +362,8 @@ public abstract class RenderingTransformationHelper {
     /** Subclasses will override and provide means to read the coverage */
     protected abstract GridCoverage2D readCoverage(
             GridCoverage2DReader reader, Object params, GridGeometry2D readGG) throws IOException;
+
+    public void setOversampleEnabled(boolean oversample) {
+        this.oversample = oversample;
+    }
 }

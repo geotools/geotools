@@ -149,6 +149,16 @@ public final class GridCoverageRenderer {
 
     private boolean wrapEnabled = true;
 
+    public boolean isOversample() {
+        return oversample;
+    }
+
+    public void setOversample(boolean oversample) {
+        this.oversample = oversample;
+    }
+
+    private boolean oversample = false;
+
     private boolean advancedProjectionHandlingEnabled = true;
 
     public static final String PARENT_COVERAGE_PROPERTY = "ParentCoverage";
@@ -380,7 +390,7 @@ public final class GridCoverageRenderer {
         // //
         boolean doReprojection = false;
         final CoordinateReferenceSystem coverageCRS = gridCoverage.getCoordinateReferenceSystem2D();
-        if (!CRS.equalsIgnoreMetadata(coverageCRS, destinationCRS)) {
+        if (!CRS.isEquivalent(coverageCRS, destinationCRS)) {
             final MathTransform transform =
                     CRS.findMathTransform(coverageCRS, destinationCRS, true);
             doReprojection = !transform.isIdentity();
@@ -831,9 +841,10 @@ public final class GridCoverageRenderer {
                     symbolizedCoverages.add(symbolized);
                 }
             }
-        } else if (!coverages.isEmpty()
-                && !CRS.isEquivalent(
-                        coverages.get(0).getCoordinateReferenceSystem2D(), destinationCRS)) {
+        } else if ((!coverages.isEmpty()
+                        && !CRS.isEquivalent(
+                                coverages.get(0).getCoordinateReferenceSystem2D(), destinationCRS))
+                || oversample) {
             // do the affine step to allow warp/affine merging, in order to best preserve rotations
             // in the warp in case of oversampling
             for (GridCoverage2D displaced : displacedCoverages) {

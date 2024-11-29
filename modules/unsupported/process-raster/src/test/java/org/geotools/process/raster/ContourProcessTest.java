@@ -50,6 +50,7 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.gce.geotiff.GeoTiffReader;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.image.test.ImageAssert;
 import org.geotools.map.GridReaderLayer;
 import org.geotools.map.MapContent;
 import org.geotools.referencing.CRS;
@@ -83,6 +84,7 @@ public class ContourProcessTest {
         process = new ContourProcess();
         TestData.unzipFile(this, "contours.zip");
     }
+
     /**
      * Creates a coverage with just two rows where values are constant within rows and differ
      * between rows, then checks for correctly generated single contour between rows.
@@ -335,5 +337,48 @@ public class ContourProcessTest {
         // After fix, the NoData value will be ignored so there will be no contours.
         assertNotNull(fc);
         assertTrue(fc.isEmpty());
+    }
+
+    @Test
+    public void testOversample() throws Exception {
+        StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
+        URL url = TestData.getResource(this, "contour_black.sld");
+        Style style = new SLDParser(factory, url).readXML()[0];
+
+        // load the sample coverage with a Mercator projection
+        GeoTiffReader reader = new GeoTiffReader(TestData.file(this, "mer.tiff"));
+        MapContent mc = new MapContent();
+        mc.addLayer(new GridReaderLayer(reader, style));
+
+        StreamingRenderer renderer = new StreamingRenderer();
+        Map<Object, Object> rendererParams = new HashMap<>();
+        rendererParams.put(StreamingRenderer.ADVANCED_PROJECTION_HANDLING_KEY, true);
+        rendererParams.put(StreamingRenderer.CONTINUOUS_MAP_WRAPPING, true);
+        renderer.setRendererHints(rendererParams);
+        renderer.setMapContent(mc);
+
+        // render the image in native projection, but with a 10x oversampling
+        int width = 256;
+        int height = 256;
+        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D graphics = image.createGraphics();
+        ReferencedEnvelope nativeEnv = ReferencedEnvelope.reference(reader.getOriginalEnvelope());
+        double padX = nativeEnv.getWidth() / 20;
+        double padY = nativeEnv.getHeight() / 20;
+        ReferencedEnvelope renderingEnvelope =
+                new ReferencedEnvelope(
+                        nativeEnv.getCenterX() - padX,
+                        nativeEnv.getCenterX() + padX,
+                        nativeEnv.getCenterY() - padY,
+                        nativeEnv.getCenterY() + padY,
+                        nativeEnv.getCoordinateReferenceSystem());
+        renderer.paint(
+                graphics, new Rectangle(image.getWidth(), image.getHeight()), renderingEnvelope);
+        graphics.dispose();
+
+        File expected =
+                new File(
+                        "src/test/resources/org/geotools/process/raster/test-data/contour-oversample-expected.png");
+        ImageAssert.assertEquals(expected, image, 0);
     }
 }

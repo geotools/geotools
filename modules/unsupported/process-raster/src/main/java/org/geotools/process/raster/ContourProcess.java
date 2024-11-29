@@ -23,9 +23,13 @@ import java.awt.image.RenderedImage;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import javax.media.jai.Interpolation;
+import javax.media.jai.InterpolationNearest;
 import javax.media.jai.JAI;
 import javax.media.jai.ParameterBlockJAI;
 import javax.media.jai.RenderedOp;
+import org.geotools.api.coverage.grid.GridGeometry;
+import org.geotools.api.data.Query;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.metadata.spatial.PixelOrientation;
 import org.geotools.api.util.InternationalString;
@@ -33,6 +37,8 @@ import org.geotools.api.util.ProgressListener;
 import org.geotools.coverage.Category;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverage2D;
+import org.geotools.coverage.grid.GridEnvelope2D;
+import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -72,6 +78,8 @@ import org.locationtech.jts.geom.util.AffineTransformation;
         description =
                 "Computes contour lines at specified intervals or levels for the values in a raster.")
 public class ContourProcess implements RasterProcess {
+
+    private static final int DEFAULT_PADDING = 10;
 
     private static final InternationalString NO_DATA =
             Vocabulary.formatInternational(VocabularyKeys.NODATA);
@@ -296,5 +304,32 @@ public class ContourProcess implements RasterProcess {
         // return value
 
         return featureCollection;
+    }
+
+    public GridGeometry invertGridGeometry(Query targetQuery, GridGeometry gg) {
+        // can only alter a GridGeometry2D
+        if (!(gg instanceof GridGeometry2D)) return gg;
+
+        Object interpolationKeyValue = targetQuery.getHints().get(JAI.KEY_INTERPOLATION);
+        // no need for extra padding if the reader is alredy using high order interpolations,
+        // some padding will be added anyways
+        if (interpolationKeyValue instanceof Interpolation) {
+            Interpolation interpolation = (Interpolation) interpolationKeyValue;
+            if (!(interpolation instanceof InterpolationNearest)) return gg;
+        }
+
+        // if no interpolation is present, then add some padding to the grid geometry in
+        // order to ensure the process constructs continous isolines across tiles in tiled maps
+        GridGeometry2D gg2d = (GridGeometry2D) gg;
+        GridEnvelope2D gridRange = gg2d.getGridRange2D();
+        GridEnvelope2D newGridRange = new GridEnvelope2D();
+        newGridRange.setBounds(
+                gridRange.x - DEFAULT_PADDING,
+                gridRange.y - DEFAULT_PADDING,
+                gridRange.width + DEFAULT_PADDING * 2,
+                gridRange.height + DEFAULT_PADDING * 2);
+
+        return new GridGeometry2D(
+                newGridRange, gg.getGridToCRS(), gg2d.getCoordinateReferenceSystem());
     }
 }

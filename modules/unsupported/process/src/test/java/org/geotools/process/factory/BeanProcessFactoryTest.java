@@ -169,7 +169,7 @@ public class BeanProcessFactoryTest {
     }
 
     @Test
-    public void testInvertQuery() throws ProcessException {
+    public void testRenderingTransformation() throws ProcessException {
         // prepare a mock feature collection
         SimpleFeatureCollection data = buildTestFeatures();
 
@@ -182,6 +182,7 @@ public class BeanProcessFactoryTest {
         RenderingProcess tx = (RenderingProcess) transformation;
         // just making sure it does not explode?
         tx.invertQuery(inputs, null, null);
+        assertTrue(tx.clipOnRenderingArea(inputs));
 
         Map<String, Object> result = transformation.execute(inputs, null);
 

@@ -16,6 +16,9 @@
  */
 package org.geotools.process.factory;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import org.geotools.api.coverage.grid.GridGeometry;
 import org.geotools.api.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -55,5 +58,16 @@ public class VectorIdentityRTProcess {
         invertQueryValue = value;
 
         return targetQuery;
+    }
+
+    public boolean clipOnRenderingArea(
+            @DescribeParameter(name = "data", description = "Features to process")
+                    SimpleFeatureCollection data,
+            @DescribeParameter(name = "value", description = "Value for testing") Integer value) {
+        // making sure inputs have been provided
+        assertNotNull(data);
+        assertEquals(Integer.valueOf(10), value);
+        // not the default value
+        return true;
     }
 }

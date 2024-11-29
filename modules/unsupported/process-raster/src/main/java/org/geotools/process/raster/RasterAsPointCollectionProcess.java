@@ -164,6 +164,17 @@ public class RasterAsPointCollectionProcess implements RasterProcess {
     }
 
     /**
+     * This process does not need, nor can use, extra pixels in input outside the rendering area,
+     * when used as a rendering transformation. If those are present, tiling will result in
+     * mis-aligned points when scaling down (in addition, a user should try to use a scale down
+     * factor that always results in an integer number of pixels, to ensure proper cross-tile
+     * alignement).
+     */
+    public boolean clipOnRenderingArea() {
+        return true;
+    }
+
+    /**
      * TODO @see {@link AdaptorFeatureCollection} TODO @see {@link DefaultFeatureCollection}
      *
      * @author Simone Giannecchini, GeoSolutions

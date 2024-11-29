@@ -4312,14 +4312,16 @@ public class StreamingRenderer implements GTRenderer {
             try {
                 Rectangle mapRasterArea = readGG.getGridRange2D();
                 final AffineTransform worldToScreen =
-                        RendererUtilities.worldToScreenTransform(mapExtent, mapRasterArea);
+                        RendererUtilities.worldToScreenTransform(
+                                readGG.getEnvelope2D(), mapRasterArea);
                 gcr =
                         new GridCoverageRenderer(
-                                mapExtent.getCoordinateReferenceSystem(),
-                                mapExtent,
+                                readGG.getCoordinateReferenceSystem(),
+                                readGG.getEnvelope2D(),
                                 mapRasterArea,
                                 worldToScreen,
                                 interpolationHints);
+
                 gcr.setAdvancedProjectionHandlingEnabled(isAdvancedProjectionHandlingEnabled());
                 gcr.setWrapEnabled(isMapWrappingEnabled());
                 RenderedImage ri =

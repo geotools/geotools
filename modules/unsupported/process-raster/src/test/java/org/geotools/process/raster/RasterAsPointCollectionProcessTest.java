@@ -17,6 +17,8 @@
  */
 package org.geotools.process.raster;
 
+import static org.geotools.referencing.crs.DefaultGeographicCRS.WGS84;
+import static org.geotools.renderer.lite.RendererUtilities.worldToScreenTransform;
 import static org.junit.Assert.assertNotEquals;
 
 import java.awt.Color;
@@ -59,16 +61,16 @@ import org.geotools.coverage.util.FeatureUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.filter.function.EnvFunction;
 import org.geotools.gce.geotiff.GeoTiffFormat;
 import org.geotools.gce.geotiff.GeoTiffReader;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.image.test.ImageAssert;
 import org.geotools.map.MapContent;
 import org.geotools.map.RasterLayer;
 import org.geotools.process.ProcessException;
 import org.geotools.referencing.CRS;
-import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.geotools.renderer.lite.RendererUtilities;
 import org.geotools.renderer.lite.StreamingRenderer;
 import org.geotools.util.factory.GeoTools;
 import org.geotools.xml.styling.SLDParser;
@@ -138,7 +140,7 @@ public class RasterAsPointCollectionProcessTest {
         processor = CoverageProcessor.getInstance(GeoTools.getDefaultHints());
         final ParameterValueGroup param = processor.getOperation("Resample").getParameters();
         param.parameter("Source").setValue(inputCoverage);
-        param.parameter("CoordinateReferenceSystem").setValue(DefaultGeographicCRS.WGS84);
+        param.parameter("CoordinateReferenceSystem").setValue(WGS84);
         coverage = (GridCoverage2D) processor.doOperation(param);
         // Reader disposal
         reader.dispose();
@@ -465,10 +467,7 @@ public class RasterAsPointCollectionProcessTest {
 
     @Test
     public void testRasterToTransformVectorWrapping() throws Exception {
-        StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
-        java.net.URL surl = TestData.getResource(this, "arrows.sld");
-        SLDParser stylereader = new SLDParser(factory, surl);
-        Style style = stylereader.readXML()[0];
+        Style style = parseStyle("arrows.sld");
 
         GeoTiffReader reader = new GeoTiffReader(TestData.file(this, "current.tif"));
 
@@ -501,11 +500,7 @@ public class RasterAsPointCollectionProcessTest {
         g.fillRect(0, 0, w, h);
         Rectangle paintArea = new Rectangle(0, 0, w, h);
 
-        renderer.paint(
-                (Graphics2D) g,
-                paintArea,
-                re,
-                RendererUtilities.worldToScreenTransform(re, paintArea));
+        renderer.paint((Graphics2D) g, paintArea, re, worldToScreenTransform(re, paintArea));
         final int reducedWidth = 360;
         final int reducedHeight = h;
         final int minX = w - reducedWidth;
@@ -528,5 +523,55 @@ public class RasterAsPointCollectionProcessTest {
         // by checking for samples in the image that are not black (non-NODATA values)
         // or white (background).
         assertNotEquals(0, graySamples);
+    }
+
+    private Style parseStyle(String styleName) throws IOException {
+        StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
+        java.net.URL surl = TestData.getResource(this, styleName);
+        SLDParser stylereader = new SLDParser(factory, surl);
+        Style style = stylereader.readXML()[0];
+        return style;
+    }
+
+    @Test
+    public void testTileScale1() throws IOException {
+        ReferencedEnvelope envelope = new ReferencedEnvelope(-90, -45, 0, 45, WGS84);
+        testPlusesWithScale(envelope, "rapc-scale1.png");
+    }
+
+    @Test
+    public void testTileScale025() throws IOException {
+        EnvFunction.setLocalValue("scale", "0.25");
+        try {
+            ReferencedEnvelope envelope = new ReferencedEnvelope(-90, -45, 0, 45, WGS84);
+            testPlusesWithScale(envelope, "rapc-scale025.png");
+        } finally {
+            EnvFunction.clearLocalValues();
+        }
+    }
+
+    private void testPlusesWithScale(ReferencedEnvelope envelope, String testFile)
+            throws IOException {
+        GeoTiffReader reader = new GeoTiffReader(TestData.file(this, "current.tif"));
+        MapContent mc = new MapContent();
+        mc.addLayer(new GridCoverageReaderLayer(reader, parseStyle("pluses.sld"), null));
+
+        StreamingRenderer renderer = new StreamingRenderer();
+        renderer.setMapContent(mc);
+
+        // Request an area in the atlantic
+        final int tileSize = 256;
+        final BufferedImage image =
+                new BufferedImage(tileSize, tileSize, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = (Graphics2D) image.getGraphics();
+        g.setColor(Color.white);
+        g.fillRect(0, 0, tileSize, tileSize);
+        Rectangle paintArea = new Rectangle(0, 0, tileSize, tileSize);
+
+        renderer.paint(g, paintArea, envelope, worldToScreenTransform(envelope, paintArea));
+
+        File expected =
+                new File("src/test/resources/org/geotools/process/raster/test-data/" + testFile);
+        ImageAssert.assertEquals(expected, image, 0);
     }
 }

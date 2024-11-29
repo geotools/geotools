@@ -65,6 +65,13 @@ final class LiteFeatureTypeStyle {
 
     public SortBy[] sortBy;
 
+    /**
+     * When true, rendering transformations consuming a raster will received data at the requested
+     * resolution when oversampling is performed (normally they are limited to native resolution for
+     * performance reasons)
+     */
+    public boolean rtOversample;
+
     /** When true, the first matching rule will be applied, skipping the others */
     boolean matchFirst = false;
 

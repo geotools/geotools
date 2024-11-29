@@ -126,6 +126,12 @@ public interface FeatureTypeStyle {
     String VT_COALESCE = "vt-coalesce";
 
     /**
+     * A boolean vendor option, if true then the raster transformations will receive oversampled
+     * data
+     */
+    String RT_OVERASAMPLE = "rt-oversample";
+
+    /**
      * Returns a name for this style. This can be any string that uniquely identifies this style
      * within a given canvas. It is not meant to be human-friendly. (The "title" property is meant
      * to be human friendly.)

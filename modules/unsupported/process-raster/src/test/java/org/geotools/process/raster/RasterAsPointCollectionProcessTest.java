@@ -536,7 +536,7 @@ public class RasterAsPointCollectionProcessTest {
     @Test
     public void testTileScale1() throws IOException {
         ReferencedEnvelope envelope = new ReferencedEnvelope(-90, -45, 0, 45, WGS84);
-        testPlusesWithScale(envelope, "rapc-scale1.png");
+        testPlusesWithScale(envelope, "rapc-scale1.png", "pluses.sld");
     }
 
     @Test
@@ -544,17 +544,29 @@ public class RasterAsPointCollectionProcessTest {
         EnvFunction.setLocalValue("scale", "0.25");
         try {
             ReferencedEnvelope envelope = new ReferencedEnvelope(-90, -45, 0, 45, WGS84);
-            testPlusesWithScale(envelope, "rapc-scale025.png");
+            testPlusesWithScale(envelope, "rapc-scale025.png", "pluses.sld");
         } finally {
             EnvFunction.clearLocalValues();
         }
     }
 
-    private void testPlusesWithScale(ReferencedEnvelope envelope, String testFile)
+    @Test
+    public void testOversample() throws IOException {
+        // one pixel every 20, but of the screen ones (oversampling enabled)
+        EnvFunction.setLocalValue("scale", "0.05");
+        try {
+            ReferencedEnvelope envelope = new ReferencedEnvelope(-90, -45, 0, 45, WGS84);
+            testPlusesWithScale(envelope, "rapc-oversample-scale005.png", "pluses-oversample.sld");
+        } finally {
+            EnvFunction.clearLocalValues();
+        }
+    }
+
+    private void testPlusesWithScale(ReferencedEnvelope envelope, String testFile, String styleName)
             throws IOException {
         GeoTiffReader reader = new GeoTiffReader(TestData.file(this, "current.tif"));
         MapContent mc = new MapContent();
-        mc.addLayer(new GridCoverageReaderLayer(reader, parseStyle("pluses.sld"), null));
+        mc.addLayer(new GridCoverageReaderLayer(reader, parseStyle(styleName), null));
 
         StreamingRenderer renderer = new StreamingRenderer();
         renderer.setMapContent(mc);

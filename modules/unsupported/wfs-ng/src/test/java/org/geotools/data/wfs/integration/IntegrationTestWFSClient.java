@@ -475,6 +475,7 @@ public class IntegrationTestWFSClient extends WFSClient {
         this.failOnTransaction = failOnTransaction;
     }
 
+    @Override
     public boolean isUseProvidedFIDSupported() {
         WFSStrategy strategy = getStrategy();
         return Versions.v1_1_0.equals(strategy.getServiceVersion());

@@ -257,6 +257,15 @@ public class WFSClient extends AbstractOpenWebService<WFSGetCapabilities, QName>
         return getStrategy().supportsTransaction(typeName);
     }
 
+    public boolean isUseProvidedFIDSupported() {
+        WFSStrategy strategy = getStrategy();
+        if (Versions.v1_1_0.equals(strategy.getServiceVersion())) {
+            return ((StrictWFS_1_x_Strategy) strategy).supportsIdGenerator();
+        }
+
+        return false;
+    }
+
     public boolean canLimit() {
         return getStrategy().canLimit();
     }

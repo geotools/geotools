@@ -52,6 +52,7 @@ import net.opengis.wfs.DescribeFeatureTypeType;
 import net.opengis.wfs.FeatureTypeListType;
 import net.opengis.wfs.FeatureTypeType;
 import net.opengis.wfs.GetFeatureType;
+import net.opengis.wfs.IdentifierGenerationOptionType;
 import net.opengis.wfs.InsertElementType;
 import net.opengis.wfs.OperationsType;
 import net.opengis.wfs.PropertyType;
@@ -82,6 +83,7 @@ import org.geotools.data.wfs.internal.TransactionRequest.Insert;
 import org.geotools.data.wfs.internal.TransactionRequest.TransactionElement;
 import org.geotools.data.wfs.internal.TransactionRequest.Update;
 import org.geotools.data.wfs.internal.Versions;
+import org.geotools.data.wfs.internal.WFSClient;
 import org.geotools.data.wfs.internal.WFSExtensions;
 import org.geotools.data.wfs.internal.WFSGetCapabilities;
 import org.geotools.data.wfs.internal.WFSOperationType;
@@ -306,6 +308,10 @@ public class StrictWFS_1_x_Strategy extends AbstractWFSStrategy {
     protected InsertElementType createInsert(WfsFactory factory, Insert elem) throws Exception {
         InsertElementType insert = factory.createInsertElementType();
 
+        if (elem.isUseExisting() && Versions.v1_1_0.equals(getServiceVersion())) {
+            insert.setIdgen(IdentifierGenerationOptionType.USE_EXISTING_LITERAL);
+        }
+
         String srsName = getFeatureTypeInfo(elem.getTypeName()).getDefaultSRS();
         insert.setSrsName(new URI(srsName));
 
@@ -518,6 +524,21 @@ public class StrictWFS_1_x_Strategy extends AbstractWFSStrategy {
     public FilterCapabilities getFilterCapabilities() {
         FilterCapabilities wfsFilterCapabilities = capabilities.getFilterCapabilities();
         return wfsFilterCapabilities;
+    }
+
+    /** @see WFSClient#isUseProvidedFIDSupported() */
+    public boolean supportsIdGenerator() {
+        final boolean wfs1_1 = Versions.v1_1_0.equals(getServiceVersion());
+        if (wfs1_1) {
+            OperationType operationMetadata = getOperationMetadata(TRANSACTION);
+            IdentifierGenerationOptionType type =
+                    IdentifierGenerationOptionType.USE_EXISTING_LITERAL;
+
+            Set<String> generationTypes = findParameters(operationMetadata, "idgen");
+            return !generationTypes.isEmpty() && generationTypes.contains(type.getLiteral());
+        }
+
+        return false;
     }
 
     @Override

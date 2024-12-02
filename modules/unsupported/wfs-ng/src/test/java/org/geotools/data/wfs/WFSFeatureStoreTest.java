@@ -26,6 +26,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 import javax.xml.namespace.QName;
 import org.geotools.api.data.Query;
 import org.geotools.api.data.Transaction;
@@ -46,6 +47,7 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.simple.SimpleFeatureImpl;
 import org.geotools.filter.identity.FeatureIdImpl;
+import org.geotools.util.factory.Hints;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -65,6 +67,7 @@ public class WFSFeatureStoreTest {
     private static Name simpleTypeName1;
 
     private WFSDataStore dataStore;
+    private WFSDataStore dataStoreWFS11;
 
     private IntegrationTestWFSClient wfs;
 
@@ -87,6 +90,11 @@ public class WFSFeatureStoreTest {
                 new IntegrationTestWFSClient(
                         "GeoServer_1.7.x/1.0.0/", WFSTestData.getGmlCompatibleConfig());
         dataStore = new WFSDataStore(wfs);
+
+        dataStoreWFS11 =
+                new WFSDataStore(
+                        new IntegrationTestWFSClient(
+                                "GeoServer_2.0/1.1.0/", WFSTestData.getGmlCompatibleConfig()));
     }
 
     @After
@@ -135,6 +143,41 @@ public class WFSFeatureStoreTest {
 
         SimpleFeature feature = coll.features().next();
         assertEquals(feat.getAttributes(), feature.getAttributes());
+    }
+
+    @Test
+    public void testAddFeaturesWithFIDAutoCommit() throws Exception {
+        GeometryFactory geomfac = new GeometryFactory(new PrecisionModel(10));
+
+        ContentFeatureSource source =
+                (ContentFeatureSource) dataStoreWFS11.getFeatureSource(simpleTypeName1);
+        assertNotNull(source);
+        assertTrue(source instanceof WFSFeatureStore);
+
+        WFSFeatureStore store = (WFSFeatureStore) source;
+
+        MemoryFeatureCollection collection = new MemoryFeatureCollection(featureType1);
+
+        Coordinate insideCoord = new Coordinate(5.2, 7.5);
+        Point myPoint = geomfac.createPoint(insideCoord);
+
+        String newFID = UUID.randomUUID().toString();
+
+        SimpleFeature feat =
+                new SimpleFeatureImpl(
+                        Arrays.asList(
+                                new Object[] {myPoint, "mypoint", "pics/x.jpg", "pics/y.jpg"}),
+                        featureType1,
+                        new FeatureIdImpl(newFID));
+
+        feat.getUserData().put(Hints.USE_PROVIDED_FID, true);
+
+        collection.add(feat);
+
+        List<FeatureId> fids = store.addFeatures((SimpleFeatureCollection) collection);
+        assertNotNull(fids);
+        assertEquals(1, fids.size());
+        assertEquals(newFID, fids.get(0).getID());
     }
 
     @Test

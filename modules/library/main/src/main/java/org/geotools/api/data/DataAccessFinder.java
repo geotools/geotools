@@ -47,7 +47,7 @@ import org.geotools.util.factory.FactoryRegistry;
  */
 public final class DataAccessFinder {
     /** The logger for the filter module. */
-    protected static final Logger LOGGER =
+    private static final Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(DataAccessFinder.class);
 
     /** The service registry for this manager. Will be initialized only when first needed. */
@@ -55,6 +55,12 @@ public final class DataAccessFinder {
 
     // Singleton pattern
     private DataAccessFinder() {}
+
+    /*
+     * Implementation note: because this class and DataStoreFinder call each other, all
+     * non-thread-safe methods are synchronized on a common object (DataAccessFinder.class)
+     * in order to prevent potential deadlocks.
+     */
 
     /**
      * Checks each available datasource implementation in turn and returns the first one which
@@ -68,10 +74,12 @@ public final class DataAccessFinder {
      *     specified resource without errors.
      */
     @SuppressWarnings("unchecked")
-    public static synchronized DataAccess<FeatureType, Feature> getDataStore(Map<String, ?> params)
+    public static DataAccess<FeatureType, Feature> getDataStore(Map<String, ?> params)
             throws IOException {
-        Iterator<DataAccessFactory> ps = getAvailableDataStores();
-        return (DataAccess<FeatureType, Feature>) getDataStore(params, ps);
+        synchronized (DataAccessFinder.class) {
+            Iterator<DataAccessFactory> ps = getAvailableDataStores();
+            return (DataAccess<FeatureType, Feature>) getDataStore(params, ps);
+        }
     }
 
     static DataAccess<? extends FeatureType, ? extends Feature> getDataStore(
@@ -141,60 +149,67 @@ public final class DataAccessFinder {
     }
 
     /**
-     * Finds all implemtaions of DataAccessFactory which have registered using the services
+     * Finds all implementations of DataAccessFactory which have registered using the services
      * mechanism, regardless weather it has the appropriate libraries on the classpath.
      *
      * @return An iterator over all discovered datastores which have registered factories
      */
-    public static synchronized Iterator<DataAccessFactory> getAllDataStores() {
-        Set<DataAccessFactory> all = new HashSet<>();
-        Iterator<DataStoreFactorySpi> allDataStores = DataStoreFinder.getAllDataStores();
-        Iterator<DataAccessFactory> allDataAccess =
-                getAllDataStores(getServiceRegistry(), DataAccessFactory.class);
-        while (allDataStores.hasNext()) {
-            DataStoreFactorySpi next = allDataStores.next();
-            all.add(next);
-        }
+    public static Iterator<DataAccessFactory> getAllDataStores() {
+        synchronized (DataAccessFinder.class) {
+            Set<DataAccessFactory> all = new HashSet<>();
+            Iterator<DataStoreFactorySpi> allDataStores = DataStoreFinder.getAllDataStores();
+            Iterator<DataAccessFactory> allDataAccess =
+                    getAllDataStores(getServiceRegistry(), DataAccessFactory.class);
+            while (allDataStores.hasNext()) {
+                DataStoreFactorySpi next = allDataStores.next();
+                all.add(next);
+            }
 
-        while (allDataAccess.hasNext()) {
-            all.add(allDataAccess.next());
-        }
+            while (allDataAccess.hasNext()) {
+                all.add(allDataAccess.next());
+            }
 
-        return all.iterator();
+            return all.iterator();
+        }
     }
 
-    static synchronized <T extends DataAccessFactory> Iterator<T> getAllDataStores(
+    static <T extends DataAccessFactory> Iterator<T> getAllDataStores(
             FactoryRegistry registry, Class<T> category) {
-        return registry.getFactories(category, null, null).iterator();
+        synchronized (DataAccessFinder.class) {
+            return registry.getFactories(category, null, null).iterator();
+        }
     }
 
     /**
-     * Finds all implemtaions of DataAccessFactory which have registered using the services
+     * Finds all implementations of DataAccessFactory which have registered using the services
      * mechanism, and that have the appropriate libraries on the classpath.
      *
      * @return An iterator over all discovered datastores which have registered factories, and whose
      *     available method returns true.
      */
-    public static synchronized Iterator<DataAccessFactory> getAvailableDataStores() {
+    public static Iterator<DataAccessFactory> getAvailableDataStores() {
+        synchronized (DataAccessFinder.class) {
+            FactoryRegistry serviceRegistry = getServiceRegistry();
+            Set<DataAccessFactory> availableDS =
+                    getAvailableDataStores(serviceRegistry, DataAccessFactory.class);
 
-        FactoryRegistry serviceRegistry = getServiceRegistry();
-        Set<DataAccessFactory> availableDS =
-                getAvailableDataStores(serviceRegistry, DataAccessFactory.class);
+            Iterator<DataStoreFactorySpi> availableDataStores =
+                    DataStoreFinder.getAvailableDataStores();
+            while (availableDataStores.hasNext()) {
+                availableDS.add(availableDataStores.next());
+            }
 
-        Iterator<DataStoreFactorySpi> availableDataStores =
-                DataStoreFinder.getAvailableDataStores();
-        while (availableDataStores.hasNext()) {
-            availableDS.add(availableDataStores.next());
+            return availableDS.iterator();
         }
-
-        return availableDS.iterator();
     }
 
-    static synchronized <T extends DataAccessFactory> Set<T> getAvailableDataStores(
+    static <T extends DataAccessFactory> Set<T> getAvailableDataStores(
             FactoryRegistry registry, Class<T> targetClass) {
-        return registry.getFactories(targetClass, null, null)
-                .filter(DataAccessFactory::isAvailable)
-                .collect(toSet());
+        synchronized (DataAccessFinder.class) {
+            return registry.getFactories(targetClass, null, null)
+                    .filter(DataAccessFactory::isAvailable)
+                    .collect(toSet());
+        }
     }
 
     /**
@@ -217,9 +232,11 @@ public final class DataAccessFinder {
      * re-scan. Thus this method need only be invoked by sophisticated applications which
      * dynamically make new plug-ins available at runtime.
      */
-    public static synchronized void scanForPlugins() {
-        DataStoreFinder.scanForPlugins();
-        getServiceRegistry().scanForPlugins();
+    public static void scanForPlugins() {
+        synchronized (DataAccessFinder.class) {
+            DataStoreFinder.scanForPlugins();
+            getServiceRegistry().scanForPlugins();
+        }
     }
 
     /** Resets the factory finder and prepares for a new full scan of the SPI subsystems */
@@ -235,15 +252,29 @@ public final class DataAccessFinder {
      * Programmatically registers a store. Mostly useful for tests, normal store registration should
      * go through the SPI subsystem (META-INF/services files).
      */
-    public static synchronized void registerFactrory(DataAccessFactory factorySpi) {
-        getServiceRegistry().registerFactory(factorySpi);
+    public static void registerFactory(DataAccessFactory factorySpi) {
+        synchronized (DataAccessFinder.class) {
+            getServiceRegistry().registerFactory(factorySpi);
+        }
     }
 
     /**
      * Programmatically deregisters a store. Mostly useful for tests, normal store registration
      * should go through the SPI subsystem (META-INF/services files).
      */
-    public static synchronized void deregisterFactrory(DataAccessFactory factorySpi) {
-        getServiceRegistry().deregisterFactory(factorySpi);
+    public static void deregisterFactory(DataAccessFactory factorySpi) {
+        synchronized (DataAccessFinder.class) {
+            getServiceRegistry().deregisterFactory(factorySpi);
+        }
+    }
+
+    @Deprecated
+    public static void registerFactrory(DataAccessFactory factorySpi) {
+        registerFactory(factorySpi);
+    }
+
+    @Deprecated
+    public static void deregisterFactrory(DataAccessFactory factorySpi) {
+        deregisterFactory(factorySpi);
     }
 }

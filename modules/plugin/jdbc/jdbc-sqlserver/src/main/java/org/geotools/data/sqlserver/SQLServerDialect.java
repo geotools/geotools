@@ -29,10 +29,13 @@ import java.sql.Time;
 import java.sql.Timestamp;
 import java.sql.Types;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Level;
@@ -98,6 +101,8 @@ public class SQLServerDialect extends BasicSQLDialect {
     private Boolean useNativeSerialization = false;
 
     private Boolean forceSpatialIndexes = false;
+
+    private boolean estimatedExtentsEnabled = false;
 
     private String tableHints;
 
@@ -1037,5 +1042,133 @@ public class SQLServerDialect extends BasicSQLDialect {
             }
             return null;
         }
+    }
+
+    /**
+     * Returns the optimized bounds for the geometry columns of the given feature type. The bounds
+     * are extracted from the spatial indexes, if any. This method is enabled by setting the {@link
+     * #estimatedExtentsEnabled} property to true.
+     *
+     * @param schema The database schema, if any, or null
+     * @param featureType The feature type containing the geometry columns whose bounds need to
+     *     computed. Mind, it may be retyped and thus contain less geometry columns than the table
+     * @param cx The connection to the database
+     * @return A list of ReferencedEnvelope, one for each geometry column of the feature type, or
+     *     {@code null} if no bounds could be extracted from the spatial indexes
+     * @throws SQLException If there is a problem querying the database
+     */
+    @Override
+    public List<ReferencedEnvelope> getOptimizedBounds(
+            String schema, SimpleFeatureType featureType, Connection cx) throws SQLException {
+
+        if (null != dataStore.getVirtualTables().get(featureType.getTypeName())) {
+            return null;
+        }
+
+        if (!this.estimatedExtentsEnabled) {
+            // preserve pre-existing behaviour
+            return null;
+        }
+
+        // note that this will only work for geometry type indexes
+        // and not for geography type indexes
+        final List<ReferencedEnvelope> result = new ArrayList<>();
+
+        featureType.getAttributeDescriptors().stream()
+                .filter(attributeDescriptor -> attributeDescriptor instanceof GeometryDescriptor)
+                .forEach(
+                        attributeDescriptor -> {
+                            try {
+                                result.add(
+                                        getIndexBounds(
+                                                schema,
+                                                featureType.getTypeName(),
+                                                attributeDescriptor.getLocalName(),
+                                                featureType
+                                                        .getGeometryDescriptor()
+                                                        .getCoordinateReferenceSystem(),
+                                                cx));
+                            } catch (SQLException e) {
+                                LOGGER.log(
+                                        Level.WARNING,
+                                        "Error while trying to get the optimized bounds for featuretype: "
+                                                + featureType.getTypeName(),
+                                        e);
+                                result.add(null);
+                            }
+                        });
+
+        // if no bounds were extracted from the spatial indexes, return null
+        if (result.stream().allMatch(Objects::isNull)) {
+            return null;
+        }
+        return result;
+    }
+
+    /**
+     * query spatial index for bounds information.
+     *
+     * @return the ReferencedEnvelope describing the bounds of the index, may be {@code null} when
+     *     undefined
+     * @throws SQLException if there is a problem querying the database
+     */
+    private ReferencedEnvelope getIndexBounds(
+            String schema,
+            String tableName,
+            String columnName,
+            CoordinateReferenceSystem crs,
+            Connection cx)
+            throws SQLException {
+        final StringBuffer sql =
+                new StringBuffer(
+                        "SELECT sit.bounding_box_xmin, sit.bounding_box_ymin, sit.bounding_box_xmax, sit.bounding_box_ymax"
+                                // ", i.name, COL_NAME(ic.object_id, ic.column_id) AS columnName" +
+                                + " FROM sys.indexes AS i"
+                                + " INNER JOIN sys.index_columns AS ic ON i.object_id = ic.object_id AND i.index_id = ic.index_id"
+                                + " INNER join sys.spatial_index_tessellations sit ON i.object_id = sit.object_id AND i.index_id = sit.index_id "
+                                + " WHERE i.[type] = 4 AND i.object_id = OBJECT_ID('");
+        encodeTableName(schema, tableName, sql, true);
+        sql.append("') AND ic.column_id = COLUMNPROPERTY(ic.object_id, '");
+        // encodes with quotes, which fails in T-SQL functions
+        // encodeColumnName(schema, columnName, sql);
+        sql.append(columnName).append("', 'COLUMNID');");
+
+        LOGGER.log(Level.FINE, "Optimized bounds query: " + sql);
+
+        try (Statement st = cx.createStatement();
+                ResultSet rs = st.executeQuery(sql.toString())) {
+            if (!rs.next()) {
+                LOGGER.log(
+                        Level.INFO,
+                        "No spatial index found for table: "
+                                + tableName
+                                + ", column: "
+                                + columnName);
+                return null;
+            }
+            // note that rs.getDouble() returns 0 for a null value
+            if (null == rs.getObject(1)
+                    || null == rs.getObject(2)
+                    || null == rs.getObject(3)
+                    || null == rs.getObject(4)) {
+                LOGGER.log(
+                        Level.INFO,
+                        "Spatial index bounds are null for table "
+                                + tableName
+                                + " column "
+                                + columnName);
+                return null;
+            }
+            return new ReferencedEnvelope(
+                    rs.getDouble(1), rs.getDouble(3), rs.getDouble(2), rs.getDouble(4), crs);
+        }
+    }
+
+    public boolean isEstimatedExtentsEnabled() {
+        return estimatedExtentsEnabled;
+    }
+
+    public void setEstimatedExtentsEnabled(boolean estimatedExtentsEnabled) {
+        this.estimatedExtentsEnabled = estimatedExtentsEnabled;
     }
 }

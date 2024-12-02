@@ -49,6 +49,7 @@ import org.geotools.data.wfs.internal.TransactionRequest.Update;
 import org.geotools.data.wfs.internal.TransactionResponse;
 import org.geotools.data.wfs.internal.WFSClient;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.geotools.util.factory.Hints;
 
 class WFSRemoteTransactionState implements State {
 
@@ -183,6 +184,10 @@ class WFSRemoteTransactionState implements State {
                 addedFeatureIds.add(addedFid);
 
                 SimpleFeature remoteFeature = SimpleFeatureBuilder.retype(localFeature, builder);
+
+                if (Boolean.TRUE.equals(localFeature.getUserData().get(Hints.USE_PROVIDED_FID))) {
+                    remoteFeature.getUserData().put(Hints.USE_PROVIDED_FID, true);
+                }
 
                 insert.add(remoteFeature);
             }

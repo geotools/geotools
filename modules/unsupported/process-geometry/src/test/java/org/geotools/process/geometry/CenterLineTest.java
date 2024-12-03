@@ -66,7 +66,7 @@ public class CenterLineTest {
     }
 
     @Test
-    public void testGetCentreLine() {
+    public void testGetCenterLine() {
         for (int i = 0; i < expected.size(); i++) {
             Geometry centerLine = CenterLine.getCenterLine(inputs.get(i));
 

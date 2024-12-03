@@ -79,8 +79,9 @@ public class Skeletonize {
 
     static Geometry getSkeleton(Polygon poly, double perc_tolerance) {
         double dist = poly.getLength() * (perc_tolerance / 100);
-        Polygon spoly = (Polygon) TopologyPreservingSimplifier.simplify(poly, dist / 100.0);
-        Polygon vpoly = (Polygon) Densifier.densify(spoly, dist);
+        // When generating the Skeleton, it is unnecessary to simplify the polygon, as this may alter its structure and result in discontinuous skeleton lines.
+//        Polygon spoly = (Polygon) TopologyPreservingSimplifier.simplify(poly, dist / 100.0);
+        Polygon vpoly = (Polygon) Densifier.densify(poly, dist);
 
         Geometry triangles = getVoroni(vpoly);
 

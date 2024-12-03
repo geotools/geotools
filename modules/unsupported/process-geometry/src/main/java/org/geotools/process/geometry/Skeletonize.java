@@ -33,7 +33,6 @@ import org.locationtech.jts.geom.MultiLineString;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.operation.linemerge.LineMerger;
-import org.locationtech.jts.simplify.TopologyPreservingSimplifier;
 import org.locationtech.jts.triangulate.VoronoiDiagramBuilder;
 
 public class Skeletonize {
@@ -79,8 +78,11 @@ public class Skeletonize {
 
     static Geometry getSkeleton(Polygon poly, double perc_tolerance) {
         double dist = poly.getLength() * (perc_tolerance / 100);
-        Polygon spoly = (Polygon) TopologyPreservingSimplifier.simplify(poly, dist / 100.0);
-        Polygon vpoly = (Polygon) Densifier.densify(spoly, dist);
+        // When generating the Skeleton, it is unnecessary to simplify the polygon, as this may
+        // alter its structure and result in discontinuous skeleton lines.
+        // Polygon spoly = (Polygon) TopologyPreservingSimplifier.simplify(poly, dist /
+        // 100.0);
+        Polygon vpoly = (Polygon) Densifier.densify(poly, dist);
 
         Geometry triangles = getVoroni(vpoly);
 
@@ -91,7 +93,7 @@ public class Skeletonize {
             Polygon p = (Polygon) triangles.getGeometryN(i);
 
             LinearRing exteriorRing = p.getExteriorRing();
-            for (int j = 1; j < exteriorRing.getNumPoints() - 1; j++) {
+            for (int j = 1; j < exteriorRing.getNumPoints(); j++) {
                 Coordinate coordinate1 = exteriorRing.getPointN(j - 1).getCoordinate();
                 Coordinate coordinate2 = exteriorRing.getPointN(j).getCoordinate();
                 LineString edge = GF.createLineString(new Coordinate[] {coordinate1, coordinate2});

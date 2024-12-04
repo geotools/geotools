@@ -59,5 +59,7 @@ public class WFSConfiguration extends org.geotools.wfs.WFSConfiguration {
         // override feature collection binding
         container.registerComponentImplementation(
                 WFS.FeatureCollectionType, FeatureCollectionTypeBinding.class);
+        container.registerComponentImplementation(
+                org.geotools.wfs.WFS.PropertyType, PropertyTypeBinding_1_1.class);
     }
 }

@@ -39,6 +39,8 @@ public class QuickstartCache {
      *
      * <p>There is just one line extra compared to the main method, where we create an instance of
      * CachingFeatureStore.
+     * @param args Ignored no args required.
+     * @throws Exception If there are errors finding the shapefile.
      */
     public static void main(String[] args) throws Exception {
         // display a data store file chooser dialog for shapefiles

@@ -23,7 +23,7 @@ import org.geotools.api.referencing.IdentifiedObject;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0
  * @see org.geotools.api.referencing.cs.CoordinateSystemAxis
- * @see javax.measure.unit.Unit
+ * @see javax.measure.Unit
  * @see org.geotools.api.referencing.datum.Datum
  * @see org.geotools.api.referencing.crs.CoordinateReferenceSystem
  */

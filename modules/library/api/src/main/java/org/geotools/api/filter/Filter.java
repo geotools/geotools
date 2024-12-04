@@ -15,14 +15,13 @@ import org.geotools.api.filter.expression.Function;
 /**
  * Defines a constraint that can be checked against an instance of an object (Usually a Feature).
  *
- * <p?
- * This is an abstract super type of the Filters defined by the Filter specification; you are not
- * free to define your own filters. For extensibility please explore the definition of
- * your own {@link Function}.
- * <p>Often
- * a filter is used to to define a set {@linkplain Feature feature} instances that are to be
- * operated upon. The operating set can be comprised of one or more enumerated features or a set of
- * features defined by specifying spatial and non-spatial constraints on the geometric and scalar
+ * <p>This is an abstract super type of the Filters defined by the Filter specification; you are not
+ * free to define your own filters. For extensibility please explore the definition of your own
+ * {@link Function}.
+ *
+ * <p>Often a filter is used to to define a set {@linkplain Feature feature} instances that are to
+ * be operated upon. The operating set can be comprised of one or more enumerated features or a set
+ * of features defined by specifying spatial and non-spatial constraints on the geometric and scalar
  * properties of a feature type.
  *
  * <p>Roughly speaking, a filter encodes the information present in the {@code WHERE} clause of a

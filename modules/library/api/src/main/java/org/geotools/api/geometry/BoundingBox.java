@@ -76,7 +76,7 @@ public interface BoundingBox extends Bounds {
     /**
      * Provides the difference between {@linkplain #getMinX minimum} and {@linkplain #getMaxX
      * maximum} ordinate along the first axis. This is equivalent to <code>
-     * {@linkplain #getLength getLength}(0)</code>. There is no guarantee that this axis is oriented
+     * {@linkplain #getSpan getSpan(0)}</code>. There is no guarantee that this axis is oriented
      * toward {@linkplain AxisDirection#EAST East}.
      *
      * @return The span along the first axis.
@@ -86,7 +86,7 @@ public interface BoundingBox extends Bounds {
     /**
      * Provides the difference between {@linkplain #getMinX minimum} and {@linkplain #getMaxX
      * maximum} ordinate along the second axis. This is equivalent to <code>
-     * {@linkplain #getLength getLength}(1)</code>. There is no guarantee that this axis is oriented
+     * {@linkplain #getSpan getSpan(1)}</code>. There is no guarantee that this axis is oriented
      * toward {@linkplain AxisDirection#NORTH North}.
      *
      * @return The span along the second axis.
@@ -101,7 +101,7 @@ public interface BoundingBox extends Bounds {
     boolean isEmpty();
 
     /**
-     * Includes the provided bounding box, expanding as necesary.
+     * Includes the provided bounding box, expanding as necessary.
      *
      * @param bounds The bounds to add to this geographic bounding box.
      */
@@ -179,9 +179,8 @@ public interface BoundingBox extends Bounds {
      * Be aware that {@code "EPSG:4326"} has (<var>latitude</var>, <var>longitude</var>) axis order,
      * thus the inversion of <var>X</var> and <var>Y</var> in the above code.
      *
-     * <p>Sophesticated applications will typically provide more efficient way to perform similar
-     * transformations in their context. For example {@linkplain Canvas} store precomputed
-     * {@linkplain Canvas#getObjectiveToDisplayTransform objective to display transforms}.
+     * <p>Sophisticated applications will typically provide more efficient way to perform similar
+     * transformations in their context. This method is provided for convenience in simple cases.
      *
      * @param targetCRS The target CRS for the bounding box to be returned.
      * @return A new bounding box wich includes the shape of this box transformed to the specified

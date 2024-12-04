@@ -20,7 +20,7 @@ package org.geotools.api.filter.temporal;
  *     <td>t1,t2</td><td>t1[],t2</td><td>t1,t2[]</td><td>t1[],t2[]</td>
  *   </tr>
  *   <tr>
- *     <td>n/a</td><td>n/a</td><td>t2.start < t1 < t2.end</td><td>t1.start > t2.start and t1.end < t2.end</td>
+ *     <td>n/a</td><td>n/a</td><td>t2.start &lt; t1 &lt; t2.end</td><td>t1.start &gt; t2.start and t1.end &lt; t2.end</td>
  *   </tr>
  * </table>
  *

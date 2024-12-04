@@ -10,8 +10,8 @@
 package org.geotools.api.coverage.grid;
 
 /**
- * Thrown when a {@linkplain GridRange grid range} is out of {@linkplain GridCoverage grid coverage}
- * bounds.
+ * Thrown when a {@linkplain GridGeometry#getGridRange grid range} is out of {@linkplain
+ * GridCoverage grid coverage} bounds.
  *
  * @version <A HREF="http://www.opengis.org/docs/01-004.pdf">Grid Coverage specification 1.0</A>
  * @author Martin Desruisseaux (IRD)

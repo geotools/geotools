@@ -17,12 +17,11 @@ import org.geotools.api.parameter.ParameterNotFoundException;
 
 /**
  * Support for writing grid coverages into a persistent store. Instance of {@code
- * GridCoverageWriter} are obtained through a call to {@link GridCoverageExchange#getWriter}. Grid
+ * GridCoverageWriter} are obtained through a call to {@code AbstractGridFormat.getWriter}. Grid
  * coverages are usually added to the output stream in a sequential order.
  *
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.0
- * @see GridCoverageExchange#getWriter
  * @see javax.imageio.ImageWriter
  */
 public interface GridCoverageWriter {
@@ -30,8 +29,8 @@ public interface GridCoverageWriter {
     Format getFormat();
 
     /**
-     * Returns the output destination. This is the object passed to the {@link
-     * GridCoverageExchange#getWriter} method. It can be a {@link java.lang.String}, an {@link
+     * Returns the output destination. This is the object passed to the {@code
+     * AbstractGridFormat.getWriter} method. It can be a {@link java.lang.String}, an {@link
      * java.io.OutputStream}, a {@link java.nio.channels.FileChannel}, etc.
      */
     Object getDestination();

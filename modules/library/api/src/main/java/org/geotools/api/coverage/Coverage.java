@@ -34,12 +34,11 @@ import org.geotools.api.util.RecordType;
  *   <li>A coverage may be represented by a set of polygons which exhaustively tile a plane (that is
  *       each point on the plane falls in precisely one polygon). The value returned by the coverage
  *       for a point is the value of an attribute of the polygon that contains the point.
- *   <li>A coverage may be represented by a grid of values (a {@linkplain DiscreteGridPointCoverage
- *       Discrete Grid Point Coverage}). If the coverage is a {@linkplain
- *       ContinuousQuadrilateralGridCoverage Continuous Quadrilateral Grid Coverage} using
- *       {@linkplain InterpolationMethod#NEAREST_NEIGHBOUR Nearest Neighbour} interpolation method,
- *       then the value returned by the coverage for a point is that of the grid value whose
- *       location is nearest the point.
+ *   <li>A coverage may be represented by a grid of values (a Discrete Grid Point Coverage). If the
+ *       coverage is a Continuous Quadrilateral Grid Coverage using {@linkplain
+ *       InterpolationMethod#NEAREST_NEIGHBOUR Nearest Neighbour} interpolation method, then the
+ *       value returned by the coverage for a point is that of the grid value whose location is
+ *       nearest the point.
  *   <li>Coverage may be represented by a mathematical function. The value returned by the coverage
  *       for a point is just the return value of the function when supplied the coordinates of the
  *       point as arguments.
@@ -120,7 +119,7 @@ public interface Coverage {
      * {@code list}. If the direct position passed is not in the domain of the coverage, then an
      * exception is thrown. If the input direct position falls within two or more geometric objects
      * within the domain, the operation shall return records of feature attribute values computed
-     * according to the {@linkplain #getCommonPointRule common point rule}.
+     * according to the common point rule.
      *
      * <p><B>NOTE:</B> Normally, the operation will return a single record of feature attribute
      * values.

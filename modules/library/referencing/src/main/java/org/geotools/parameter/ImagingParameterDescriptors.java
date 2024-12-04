@@ -230,10 +230,9 @@ public class ImagingParameterDescriptors extends DefaultParameterDescriptorGroup
     }
 
     /**
-     * Infers from the specified JAI operation a set of properties that can be given to the
-     * {@linkplain ##ImagingParameterDescriptors(Map, RegistryElementDescriptor, String, Map,
-     * Collection)} constructor}. The returned map includes values (when available) for the
-     * following keys:
+     * Infers from the specified JAI operation a set of properties that can be given to the {@code
+     * ImagingParameterDescriptors(Map, RegistryElementDescriptor, String, Map, Collection)
+     * constructor}. The returned map includes values (when available) for the following keys:
      *
      * <p>
      *

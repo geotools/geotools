@@ -225,14 +225,14 @@ public interface GenericName extends Comparable<GenericName> {
      * <p>
      *
      * <ul>
-     *   <li><code>push(</code><var>foo</var><code> : LocalName).{@linkplain #head}</code>
-     *       {@linkplain #equals equals} <var>foo</var>
+     *   <li><code>push(</code><var>foo</var><code> : LocalName).{@linkplain #head}</code> {@code
+     *       equals} <var>foo</var>
      *   <li><code>push(</code><var>foo</var><code> : LocalName).{@linkplain ScopedName#tail tail()}
-     *       </code> {@linkplain #equals equals} <var>this</var>
-     *   <li><code>push(</code><var>foo</var><code> : GenericName).{@linkplain #scope}</code>
-     *       {@linkplain #equals equals} <var>foo</var>.{@link #scope()}
+     *       </code> {@code equals} <var>this</var>
+     *   <li><code>push(</code><var>foo</var><code> : GenericName).{@linkplain #scope}</code> {@code
+     *       equals} <var>foo</var>.{@link #scope()}
      *   <li><code>push(</code><var>foo</var><code> : GenericName).{@linkplain #getParsedNames}
-     *       </code> {@linkplain List#equals equals} <var>foo</var>.<code>
+     *       </code> {@code equals} <var>foo</var>.<code>
      *       getParsedNames().{@linkplain
      *       List#addAll addAll}(</code><var>this</var>.<code>getParsedNames())</code>
      * </ul>
@@ -260,10 +260,9 @@ public interface GenericName extends Comparable<GenericName> {
      * <p>
      *
      * <ul>
-     *   <li><code>{@linkplain #toFullyQualifiedName}.toString()</code> is garanteed to contains the
-     *       {@linkplain #scope scope} (if any).
-     *   <li><code>{@linkplain #name}.toString()</code> is garanteed to <strong>not</strong>
-     *       contains any scope.
+     *   <li><code>toFullyQualifiedName().toString()</code> is garanteed to contains the {@linkplain
+     *       #scope scope} (if any).
+     *   <li><code>name.toString()</code> is garanteed to <strong>not</strong> contains any scope.
      * </ul>
      *
      * @return A local-independant string representation of this name.

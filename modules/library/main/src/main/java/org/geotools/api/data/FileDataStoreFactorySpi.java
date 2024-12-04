@@ -53,8 +53,8 @@ public interface FileDataStoreFactorySpi extends DataStoreFactorySpi {
      * <p>
      *
      * @param url The data location for the
-     * @return Returns an AbstractFileDataStore created from the data source provided.
-     * @see AbstractFileDataStore
+     * @return Returns an implementation of FileDataStore created from the data source provided.
+     * @see FileDataStore
      */
     public FileDataStore createDataStore(URL url) throws IOException;
 

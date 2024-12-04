@@ -45,10 +45,10 @@ public interface FileDataStore extends DataStore {
     /** @see DataStore#getFeatureSource(java.lang.String) */
     SimpleFeatureSource getFeatureSource() throws IOException;
 
-    /** @see DataStore#getFeatureReader(java.lang.String) */
+    /** @see DataStore#getFeatureReader(Query,Transaction) */
     FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader() throws IOException;
 
-    /** @see DataStore#getFeatureWriter(Filter,Transaction) */
+    /** @see DataStore#getFeatureWriter(String,Filter,Transaction) */
     FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(
             Filter filter, Transaction transaction) throws IOException;
 

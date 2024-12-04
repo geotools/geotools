@@ -21,8 +21,6 @@ package org.geotools.referencing.operation.projection;
 
 import java.awt.geom.Point2D;
 import java.util.Collection;
-import java.util.Objects;
-
 import org.geotools.api.geometry.Bounds;
 import org.geotools.api.parameter.GeneralParameterDescriptor;
 import org.geotools.api.parameter.ParameterDescriptor;
@@ -114,6 +112,7 @@ public abstract class GeostationarySatellite extends MapProjection {
     /**
      * Transforms these coordinates to the initialization vector for calculating the satellite view
      * vector.
+     *
      * @param x The X coordinate on Earth.
      * @param y The Y coordinate on Earth.
      * @param yz A point whose location is set to the Y and Z initializers of the view vector.

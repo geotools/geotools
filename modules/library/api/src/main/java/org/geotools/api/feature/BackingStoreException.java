@@ -15,13 +15,12 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 /**
- * Thrown to indicate that a {@link FeatureCollection} operation could not complete because of a
- * failure in the backing store, or a failure to contact the backing store. At the difference of
- * {@link FeatureStoreException}, this exception is unchecked in order to allows its usage with the
- * Java collection framework. This exception usually have an {@link IOException} or a {@link
- * SQLException} as its {@linkplain #getCause cause}. The cause may also be a {@link
- * org.geotools.api.referencing.operation.TransformException} if the feature collection performs
- * reprojection on the fly.
+ * Thrown to indicate that a {@code FeatureCollection} operation could not complete because of a
+ * failure in the backing store, or a failure to contact the backing store. This exception is
+ * unchecked in order to allows its usage with the Java collection framework. This exception usually
+ * have an {@link IOException} or a {@link SQLException} as its {@linkplain #getCause cause}. The
+ * cause may also be a {@link org.geotools.api.referencing.operation.TransformException} if the
+ * feature collection performs reprojection on the fly.
  *
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.0

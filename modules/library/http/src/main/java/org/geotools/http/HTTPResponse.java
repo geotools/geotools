@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * Interface by which an {@link AbstractOpenWebService} retrieves the contents of an HTTP request
+ * Interface by which an {@code AbstractOpenWebService} retrieves the contents of an HTTP request
  * issued through its {@link HTTPClient}.
  *
  * <p>An HTTPResponse instance shall be {@link #dispose() disposed} as soon as it's {@link

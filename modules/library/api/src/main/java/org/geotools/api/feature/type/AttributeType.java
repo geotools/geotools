@@ -19,11 +19,11 @@ import org.geotools.api.feature.Attribute;
  *
  * <p>
  *
- * <h3>Identifiablily</h3>
+ * <h3>Identifiableness</h3>
  *
  * An attribute may be "identifiable". When this is the case the attribute has a unique identifier
- * associated with it. See {@link Attribute#getID()}. The type of the attribute specifies wether it
- * is identifiable or not ({@link #isIdentified()}.
+ * associated with it. See {@link Attribute#getIdentifier()}. The type of the attribute specifies
+ * whether it is identifiable or not ({@link #isIdentified()}.
  *
  * @author Jody Garnett, Refractions Research
  * @author Justin Deoliveira, The Open Planning Project
@@ -34,11 +34,12 @@ public interface AttributeType extends PropertyType {
      * Indicates if the type is identified or not.
      *
      * <p>If this method returns <code>true</code>, then the corresponding attribute must have a
-     * unique identifier, ie, {@link Attribute#getID()} must return a value, and cannot be <code>
+     * unique identifier, ie, {@link Attribute#getIdentifier()} must return a value, and cannot be
+     * <code>
      * null</code>.
      *
      * @return <code>true</code> if the attribute is identified, otherwise <code>false</code>.
-     * @see Attribute#getID()
+     * @see Attribute#getIdentifier()
      */
     boolean isIdentified();
 

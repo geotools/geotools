@@ -29,8 +29,8 @@ import org.geotools.api.filter.identity.Identifier;
  *
  * <h3>Identifiable</h3>
  *
- * When an attribute is identifiable the {@link #getID()} method returns a unique identifier for the
- * attribute. The type of the attribute is used to determine identifiability.
+ * When an attribute is identifiable the {@link #getIdentifier()} method returns a unique identifier
+ * for the attribute. The type of the attribute is used to determine identifiability.
  *
  * <pre>
  * Attribute attribute = ...;

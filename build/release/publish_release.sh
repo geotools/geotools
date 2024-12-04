@@ -77,7 +77,7 @@ git checkout tags/$tag -b rel_$tag
 if [ "$SKIP_DEPLOY"  != true ]; then
   echo "deploying with $MAVEN_FLAGS"
 
-  mvn clean deploy -DskipTests -Dall $MAVEN_FLAGS
+  mvn clean generate-sources javadoc:jar deploy -DskipTests -Dall $MAVEN_FLAGS
 fi
 
 # get <major.minor> for sf release dir

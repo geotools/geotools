@@ -19,12 +19,11 @@ package org.geotools.xml.resolver;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
-import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static org.junit.Assert.assertTrue;
 
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
-import com.github.tomakehurst.wiremock.junit.WireMockRule;
+import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
 import java.io.File;
 import java.io.PrintWriter;
 import java.net.URI;
@@ -32,6 +31,7 @@ import org.geotools.http.commons.MultithreadedHttpClientFactory;
 import org.geotools.util.URLs;
 import org.geotools.util.factory.Hints;
 import org.junit.Assert;
+import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -46,6 +46,12 @@ public class SchemaCacheTest {
     public static final String MOCK_SCHEMA_LOCATION = "http://schemacache";
 
     public static final String MOCK_HTTP_RESPONSE_BODY = "<schemaCacheMockHttpClientResponse>";
+
+    @ClassRule
+    public static WireMockClassRule classRule =
+            new WireMockClassRule(WireMockConfiguration.options().dynamicPort());
+
+    @Rule public WireMockClassRule service = classRule;
 
     @Rule public TemporaryFolder folder = new TemporaryFolder();
 
@@ -121,21 +127,13 @@ public class SchemaCacheTest {
     @Test
     public void circularRedirectMultithreadedHttpClient() {
         Hints.putSystemDefault(Hints.HTTP_CLIENT_FACTORY, MultithreadedHttpClientFactory.class);
-        String redirectUrl = "http://localhost:" + wireMockRule.port() + "/test";
-        wireMockRule.addStubMapping(
-                stubFor(
-                        get(urlEqualTo("/test"))
-                                .willReturn(
-                                        aResponse()
-                                                .withStatus(301)
-                                                .withHeader("Location", redirectUrl))));
+        String redirectUrl = "http://localhost:" + service.port() + "/test";
+        service.stubFor(
+                get(urlEqualTo("/test"))
+                        .willReturn(
+                                aResponse().withStatus(301).withHeader("Location", redirectUrl)));
         byte[] responseBody = SchemaCache.download(redirectUrl);
         Assert.assertNull(responseBody);
         Hints.removeSystemDefault(Hints.HTTP_CLIENT_FACTORY);
     }
-
-    // use a dynamic http port to avoid conflicts
-    @Rule
-    public WireMockRule wireMockRule =
-            new WireMockRule(WireMockConfiguration.options().dynamicPort());
 }

@@ -22,17 +22,14 @@ import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
-import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlMatching;
-import static com.github.tomakehurst.wiremock.client.WireMock.verify;
-import static java.util.Collections.singletonMap;
 
 import com.github.tomakehurst.wiremock.client.ResponseDefinitionBuilder;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import com.github.tomakehurst.wiremock.http.ssl.SSLContextBuilder;
 import com.github.tomakehurst.wiremock.http.ssl.TrustSelfSignedStrategy;
-import com.github.tomakehurst.wiremock.junit.WireMockRule;
+import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
 import com.github.tomakehurst.wiremock.matching.UrlPattern;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -41,10 +38,10 @@ import java.nio.charset.StandardCharsets;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
-import java.util.Collections;
 import java.util.Map;
 import javax.net.ssl.SSLContext;
 import org.junit.Assert;
+import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 import wiremock.org.apache.commons.io.IOUtils;
@@ -52,13 +49,15 @@ import wiremock.org.apache.commons.io.IOUtils;
 public class SimpleHttpClientTest {
 
     // use a dynamic http port to avoid conflicts
-    @Rule
-    public WireMockRule wireMockRule =
-            new WireMockRule(WireMockConfiguration.options().dynamicPort().dynamicHttpsPort());
+    @ClassRule
+    public static WireMockClassRule classRule =
+            new WireMockClassRule(WireMockConfiguration.options().dynamicPort().dynamicHttpsPort());
+
+    @Rule public WireMockClassRule service = classRule;
 
     @Test
     public void testBasicHeader() throws IOException {
-        stubFor(
+        service.stubFor(
                 get(urlEqualTo("/test"))
                         .willReturn(
                                 aResponse()
@@ -66,16 +65,16 @@ public class SimpleHttpClientTest {
                                         .withHeader("Content-Type", "text/xml")
                                         .withBody("<response>Some content</response>")));
 
-        String longPassword = String.join("", Collections.nCopies(10, "0123456789"));
+        String longPassword = "0123456789".repeat(10);
         String userName = "user";
         SimpleHttpClient client = new SimpleHttpClient();
         client.setUser(userName);
         client.setPassword(longPassword);
-        client.get(new URL("http://localhost:" + wireMockRule.port() + "/test"));
+        client.get(new URL("http://localhost:" + service.port() + "/test"));
 
         String encodedCredentials =
                 "dXNlcjowMTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTIzNDU2Nzg5";
-        verify(
+        service.verify(
                 getRequestedFor(urlEqualTo("/test"))
                         .withHeader("Authorization", equalTo("Basic " + encodedCredentials)));
     }
@@ -88,7 +87,7 @@ public class SimpleHttpClientTest {
     @Test
     public void testRequestsWithAdditionalHeaders() throws IOException {
         String headerValue;
-        URL url = new URL("http://localhost:" + wireMockRule.port() + "/test");
+        URL url = new URL("http://localhost:" + service.port() + "/test");
         UrlPattern urlPattern = urlEqualTo("/test");
         ResponseDefinitionBuilder response =
                 aResponse()
@@ -99,18 +98,18 @@ public class SimpleHttpClientTest {
         SimpleHttpClient client = new SimpleHttpClient();
 
         // GET
-        stubFor(get(urlPattern).willReturn(response));
+        service.stubFor(get(urlPattern).willReturn(response));
         headerValue = "Bearer " + System.currentTimeMillis();
-        client.get(url, singletonMap("Authorization", headerValue));
-        verify(
+        client.get(url, Map.of("Authorization", headerValue));
+        service.verify(
                 getRequestedFor(urlEqualTo("/test"))
                         .withHeader("Authorization", equalTo(headerValue)));
 
         // POST
-        stubFor(post(urlPattern).willReturn(response));
+        service.stubFor(post(urlPattern).willReturn(response));
         headerValue = "Bearer " + System.currentTimeMillis() + 1;
-        client.post(url, postBody, "text/plain", singletonMap("Authorization", headerValue));
-        verify(
+        client.post(url, postBody, "text/plain", Map.of("Authorization", headerValue));
+        service.verify(
                 postRequestedFor(urlEqualTo("/test"))
                         .withHeader("Authorization", equalTo(headerValue)));
     }
@@ -128,7 +127,7 @@ public class SimpleHttpClientTest {
                 Map.of("key1", "123", "key2", "value2", "key%3", "value/3");
 
         URL urlWithoutExtraParams =
-                new URL("http://localhost:" + wireMockRule.port() + "/test?key2=duplicate");
+                new URL("http://localhost:" + service.port() + "/test?key2=duplicate");
 
         // Mock the expected request and response
         UrlPattern urlPattern = urlMatching("/test[\\w?&=%]*"); // \w or any of ?&=%
@@ -137,14 +136,14 @@ public class SimpleHttpClientTest {
                         .withStatus(200)
                         .withHeader("Content-Type", "text/xml")
                         .withBody("<response>Some content</response>");
-        stubFor(get(urlPattern).willReturn(response));
-        stubFor(post(urlPattern).willReturn(response));
+        service.stubFor(get(urlPattern).willReturn(response));
+        service.stubFor(post(urlPattern).willReturn(response));
 
         client.setExtraParams(testExtraParams);
 
         // GET
         client.get(urlWithoutExtraParams);
-        verify(
+        service.verify(
                 getRequestedFor(urlMatching("/test[\\w?&=%]*"))
                         .withQueryParam("key1", equalTo("123"))
                         .withQueryParam("key2", equalTo("value2"))
@@ -157,7 +156,7 @@ public class SimpleHttpClientTest {
         // POST
         ByteArrayInputStream postBody = new ByteArrayInputStream("GeoTools".getBytes());
         client.post(urlWithoutExtraParams, postBody, "text/plain");
-        verify(
+        service.verify(
                 postRequestedFor(urlMatching("/test[\\w?&=%]*"))
                         .withQueryParam("key1", equalTo("123"))
                         .withQueryParam("key2", equalTo("value2"))
@@ -175,13 +174,12 @@ public class SimpleHttpClientTest {
         trustSelfSignedCertificate();
         String expectedContent = "<response>Redirected content</response>";
 
-        String redirectURL =
-                String.format("https://localhost:" + wireMockRule.httpsPort() + "/test-redirected");
-        stubFor(
+        String redirectURL = "https://localhost:" + service.httpsPort() + "/test-redirected";
+        service.stubFor(
                 get(urlEqualTo("/test-redirect"))
                         .willReturn(
                                 aResponse().withStatus(301).withHeader("Location", redirectURL)));
-        stubFor(
+        service.stubFor(
                 get(urlEqualTo("/test-redirected"))
                         .willReturn(
                                 aResponse()
@@ -192,12 +190,12 @@ public class SimpleHttpClientTest {
         SimpleHttpClient client = new SimpleHttpClient();
 
         HTTPResponse response =
-                client.get(new URL("http://localhost:" + wireMockRule.port() + "/test-redirect"));
+                client.get(new URL("http://localhost:" + service.port() + "/test-redirect"));
         String actualContent =
                 IOUtils.toString(response.getResponseStream(), StandardCharsets.UTF_8);
 
         Assert.assertEquals(actualContent, expectedContent);
-        verify(getRequestedFor(urlEqualTo("/test-redirected")));
+        service.verify(getRequestedFor(urlEqualTo("/test-redirected")));
     }
 
     /**
@@ -208,21 +206,16 @@ public class SimpleHttpClientTest {
     @Test
     public void testMaxRedirectionLimit() throws IOException {
         trustSelfSignedCertificate();
-        String httpRedirectURL =
-                String.format(
-                        "http://localhost:" + wireMockRule.port() + "/test-redirect-loop-http");
+        String httpRedirectURL = "http://localhost:" + service.port() + "/test-redirect-loop-http";
         String httpsRedirectURL =
-                String.format(
-                        "https://localhost:"
-                                + wireMockRule.httpsPort()
-                                + "/test-redirect-loop-https");
-        stubFor(
+                "https://localhost:" + service.httpsPort() + "/test-redirect-loop-https";
+        service.stubFor(
                 get(urlEqualTo("/test-redirect-loop-http"))
                         .willReturn(
                                 aResponse()
                                         .withStatus(301)
                                         .withHeader("Location", httpsRedirectURL)));
-        stubFor(
+        service.stubFor(
                 get(urlEqualTo("/test-redirect-loop-https"))
                         .willReturn(
                                 aResponse()
@@ -232,8 +225,8 @@ public class SimpleHttpClientTest {
         SimpleHttpClient client = new SimpleHttpClient();
         client.get(new URL(httpRedirectURL));
 
-        verify(9, getRequestedFor(urlEqualTo("/test-redirect-loop-http")));
-        verify(8, getRequestedFor(urlEqualTo("/test-redirect-loop-https")));
+        service.verify(9, getRequestedFor(urlEqualTo("/test-redirect-loop-http")));
+        service.verify(8, getRequestedFor(urlEqualTo("/test-redirect-loop-https")));
     }
 
     /** Trust wiremock self-signed certificate in order to perform test HTTPS requests */

@@ -17,7 +17,9 @@
 package org.geotools.data.transform;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.api.data.Query;
@@ -108,8 +110,25 @@ class TransformFeatureCollection extends AbstractFeatureCollection {
 
             // grab the original features
             fi = transformer.getSource().getFeatures(txQuery).features();
+            Transformer iteratorTransformer = transformer;
+            if (query.getPropertyNames() != Query.ALL_NAMES) {
+                // account for the properties in the query
+                List<Definition> definitions = new ArrayList<>();
+                for (String name : query.getPropertyNames()) {
+                    transformer.getDefinitions().stream()
+                            .filter(d -> d.name.equals(name))
+                            .findFirst()
+                            .ifPresent(definitions::add);
+                }
+                iteratorTransformer =
+                        new Transformer(
+                                transformer.getSource(),
+                                transformer.getName(),
+                                definitions,
+                                getSchema());
+            }
             SimpleFeatureIterator transformed =
-                    new TransformFeatureIteratorWrapper(fi, transformer);
+                    new TransformFeatureIteratorWrapper(fi, iteratorTransformer);
 
             // see if we have to apply sort
             if (query.getSortBy() != null && txQuery.getSortBy() == null) {

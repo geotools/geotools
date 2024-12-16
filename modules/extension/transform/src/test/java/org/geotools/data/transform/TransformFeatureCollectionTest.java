@@ -12,17 +12,22 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.geotools.api.data.DataStore;
 import org.geotools.api.data.Query;
 import org.geotools.api.data.SimpleFeatureSource;
 import org.geotools.api.data.SimpleFeatureStore;
 import org.geotools.api.feature.FeatureVisitor;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.util.ProgressListener;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.visitor.BoundsVisitor;
 import org.geotools.feature.visitor.CountVisitor;
@@ -215,6 +220,49 @@ public class TransformFeatureCollectionTest {
         };
 
         checkVisitorApplication(transformed, visitors, expectedPass, expectedResult);
+    }
+
+    @Test
+    public void testWithQueryOnCollection() throws Exception {
+        // https://osgeo-org.atlassian.net/browse/GEOT-7673
+        Query query = new Query();
+        query.setPropertyNames("state_fips", "state_name");
+        query.setMaxFeatures(1);
+
+        Transformer transformer =
+                new Transformer(
+                        SOURCE,
+                        new NameImpl("test", "transformer"),
+                        List.of(
+                                new Definition("state_fips"),
+                                new Definition("state_name"),
+                                new Definition("male"),
+                                new Definition("the_geom"),
+                                new Definition("solitary", ECQL.toExpression("drvalone"))),
+                        null);
+
+        TransformFeatureCollection transformFeatureCollection =
+                new TransformFeatureCollection(SOURCE, transformer, query);
+        assertEquals(1, transformFeatureCollection.size());
+        assertEquals(2, transformFeatureCollection.getSchema().getAttributeCount());
+        assertEquals(
+                Set.of("state_fips", "state_name"),
+                transformFeatureCollection.getSchema().getAttributeDescriptors().stream()
+                        .map(AttributeDescriptor::getLocalName)
+                        .collect(Collectors.toSet()));
+
+        int count = 0;
+        try (SimpleFeatureIterator fi =
+                (SimpleFeatureIterator) transformFeatureCollection.openIterator()) {
+            SimpleFeature f = fi.next();
+            count++;
+            assertEquals(
+                    Set.of("state_fips", "state_name"),
+                    f.getFeatureType().getAttributeDescriptors().stream()
+                            .map(AttributeDescriptor::getLocalName)
+                            .collect(Collectors.toSet()));
+        }
+        assertEquals(1, count);
     }
 
     public SimpleFeatureSource transformWithSelection() throws IOException {

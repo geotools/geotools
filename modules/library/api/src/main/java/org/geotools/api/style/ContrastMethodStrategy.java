@@ -21,8 +21,8 @@ import org.geotools.api.filter.expression.Expression;
 
 /**
  * This interface defines the strategy that a ContrastEnhancement will use to execute the
- * ContrastMethod that it has defined. This allows uses to make use of VendorOptions in the SLD (&
- * CSS) to specify an algorithm to apply and named parameters to control how that algorithm
+ * ContrastMethod that it has defined. This allows uses to make use of VendorOptions in the SLD
+ * (&amp; CSS) to specify an algorithm to apply and named parameters to control how that algorithm
  * operates.
  *
  * @author Ian Turton.

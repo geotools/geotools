@@ -100,15 +100,15 @@ public class Query {
 
     /**
      * When specifying properties to select, setting this hint flag true tells the datastore to
-     * include mandatory properties (i.e. properties with minOccurs >= 1) in the end result,
+     * include mandatory properties (i.e. properties with minOccurs &gt;= 1) in the end result,
      * irrespective of whether they are not included in the list of properties.
      *
      * <p>Datastores may implement adding all mandatory properties to the end result when this flag
      * is set to true. For example:
      *
-     * <p>Object includeProps = query.getHints().get(Query.INCLUDE_MANDATORY_PROPS); if
+     * <p>{@code Object includeProps = query.getHints().get(Query.INCLUDE_MANDATORY_PROPS); if
      * (includeProps instanceof Boolean && ((Boolean)includeProps).booleanValue()) {
-     * query.setProperties (DataUtilities.addMandatoryProperties(type, query.getProperties())); }
+     * query.setProperties (DataUtilities.addMandatoryProperties(type, query.getProperties())); } }
      */
     public static Hints.Key INCLUDE_MANDATORY_PROPS = new Hints.Key(Boolean.class);
 
@@ -149,17 +149,16 @@ public class Query {
     public static final String[] ALL_NAMES = null;
 
     /**
-     * A constant (empty String array) that can be used with {@linkplain
-     * #setProperties(Collection<PropertyName>)} to indicate that no properties are to be retrieved.
+     * A constant (empty String array) that can be used with {@linkplain #setProperties} to indicate
+     * that no properties are to be retrieved.
      *
      * <p>Note the query will still return a result - limited to FeatureIDs.
      */
     public static final List<PropertyName> NO_PROPERTIES = Collections.emptyList();
 
     /**
-     * A constant (value {@code null}) that can be used with {@linkplain
-     * #setProperties(Collection<PropertyName>)} to indicate that all properties are to be
-     * retrieved.
+     * A constant (value {@code null}) that can be used with {@linkplain #setProperties} to indicate
+     * that all properties are to be retrieved.
      */
     public static final List<PropertyName> ALL_PROPERTIES = null;
 
@@ -659,25 +658,25 @@ public class Query {
 
     /**
      * Defines version or version range requested.
-     * <p>
      *
-     * From WFS Spec: <i>The version attribute is included in order to
-     * accommodate systems that  support feature versioning. A value of {@linkplain #ALL}
-     * indicates that all versions of a feature should be fetched. Otherwise
-     * an integer, n, can be specified  to return the n th version of a
-     * feature. The version numbers start at '1'  which is the oldest version.
-     * If a version value larger than the largest version is specified then
-     * the latest version is return. The default action shall be for the query
-     * to return the latest version. Systems that do not support versioning
-     * can ignore the parameter and return the only version  that they have.</i>
-     * <p>
-     * GeoTools employs the following options:
+     * <p>From WFS Spec: <i>The version attribute is included in order to accommodate systems that
+     * support feature versioning. A value of {@linkplain #ALL} indicates that all versions of a
+     * feature should be fetched. Otherwise an integer, n, can be specified to return the n th
+     * version of a feature. The version numbers start at '1' which is the oldest version. If a
+     * version value larger than the largest version is specified then the latest version is return.
+     * The default action shall be for the query to return the latest version. Systems that do not
+     * support versioning can ignore the parameter and return the only version that they have.</i>
+     *
+     * <p>GeoTools employs the following options:
+     *
      * <ul>
-     * <li>{@link #setVersion(Date)}: "date: <i>dow mon dd hh:mm:ss zzz yyyy</i>"</li>
-     * <li>{@link #setVersion(int)}: "<i>index</i>"</li>
-     * <li>{@link #setVersion(org.geotools.api.filter.identity.Version.Action)): "PREVIOUS", "LAST", "NEXT", "FIRST", "ALL" </li>
-     * <li>{@link #setVersion(Date, Date): "start: <i>dow mon dd hh:mm:ss zzz yyyy end: <i>dow mon dd hh:mm:ss zzz yyyy"</i>
+     *   <li>{@link #setVersion(Date)}: "date: <i>dow mon dd hh:mm:ss zzz yyyy</i>"
+     *   <li>{@link #setVersion(int)}: "<i>index</i>"
+     *   <li>{@link #setVersion(Version.Action)}: "PREVIOUS", "LAST", "NEXT", "FIRST", "ALL"
+     *   <li>{@link #setVersion(Date, Date)}: "start: <i>dow mon dd hh:mm:ss zzz yyyy end: <i>dow
+     *       mon dd hh:mm:ss zzz yyyy"</i>
      * </ul>
+     *
      * @return the version of the feature to return, or <code>null</code> for LAST.
      */
     public String getVersion() {

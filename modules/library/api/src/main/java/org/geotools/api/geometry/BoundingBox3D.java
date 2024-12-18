@@ -93,12 +93,11 @@ public interface BoundingBox3D extends BoundingBox {
      * Be aware that {@code "EPSG:4326"} has (<var>latitude</var>, <var>longitude</var>) axis order,
      * thus the inversion of <var>X</var> and <var>Y</var> in the above code.
      *
-     * <p>Sophesticated applications will typically provide more efficient way to perform similar
-     * transformations in their context. For example {@linkplain Canvas} store precomputed
-     * {@linkplain Canvas#getObjectiveToDisplayTransform objective to display transforms}.
+     * <p>Sophisticated applications will typically provide more efficient way to perform similar
+     * transformations in their context.
      *
      * @param targetCRS The target CRS for the bounding box to be returned.
-     * @return A new bounding box wich includes the shape of this box transformed to the specified
+     * @return A new bounding box which includes the shape of this box transformed to the specified
      *     target CRS.
      * @throws TransformException if no transformation path has been found from {@linkplain
      *     #getCoordinateReferenceSystem this box CRS} to the specified target CRS, or if the

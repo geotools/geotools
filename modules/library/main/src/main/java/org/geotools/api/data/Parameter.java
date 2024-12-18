@@ -31,8 +31,6 @@ public class Parameter<T> implements org.geotools.api.parameter.Parameter<T> {
     /**
      * This is the key (ie machine readable text) used to represent this parameter in a
      * java.util.Map.
-     *
-     * @param key (or machine readable name) for this parameter.
      */
     public final String key;
 
@@ -50,9 +48,8 @@ public class Parameter<T> implements org.geotools.api.parameter.Parameter<T> {
     public final Class<T> type;
 
     /**
-     * Can the value be missing? Or is null allowed...
-     *
-     * @return true if a value is required to be both present and non null
+     * Can the value be missing? Or is null allowed... Return true if a value is required to be both
+     * present and non null
      */
     public final boolean required;
 

@@ -66,12 +66,13 @@ public interface CoordinateOperationFactory extends ObjectFactory {
      *
      * <p><b>Example:</b> A transformation between two {@linkplain
      * org.geotools.api.referencing.crs.GeographicCRS geographic CRS} using different {@linkplain
-     * org.geotools.api.datum.GeodeticDatum datum} requires a <cite>datum shift</cite>. Many methods
-     * exist for this purpose, including interpolations in a grid, a scale/rotation/translation in
-     * geocentric coordinates or the Molodenski approximation. When invoking {@code createOperation}
-     * without operation method, this factory may select by default the most accurate transformation
-     * (typically interpolation in a grid). When invoking {@code createOperation} with an operation
-     * method, user can force usage of Molodenski approximation for instance.
+     * org.geotools.api.referencing.datum.GeodeticDatum datum} requires a <cite>datum shift</cite>.
+     * Many methods exist for this purpose, including interpolations in a grid, a
+     * scale/rotation/translation in geocentric coordinates or the Molodenski approximation. When
+     * invoking {@code createOperation} without operation method, this factory may select by default
+     * the most accurate transformation (typically interpolation in a grid). When invoking {@code
+     * createOperation} with an operation method, user can force usage of Molodenski approximation
+     * for instance.
      *
      * @param sourceCRS Input coordinate reference system.
      * @param targetCRS Output coordinate reference system.
@@ -124,14 +125,14 @@ public interface CoordinateOperationFactory extends ObjectFactory {
      *     <td nowrap>&nbsp;{@link CoordinateOperation#getOperationVersion}</td>
      *   </tr>
      *   <tr>
-     *     <td nowrap>&nbsp;{@value org.geotools.api.referencing.operation.CoordinateOperation#POSITIONAL_ACCURACY_KEY}&nbsp;</td>
+     *     <td nowrap>&nbsp;{@value org.geotools.api.referencing.operation.CoordinateOperation#COORDINATE_OPERATION_ACCURACY_KEY}&nbsp;</td>
      *     <td nowrap>&nbsp;<code>{@linkplain org.geotools.api.metadata.quality.PositionalAccuracy}[]</code>&nbsp;</td>
-     *     <td nowrap>&nbsp;{@link CoordinateOperation#getPositionalAccuracy}</td>
+     *     <td nowrap>&nbsp;{@link CoordinateOperation#getCoordinateOperationAccuracy}</td>
      *   </tr>
      *   <tr>
-     *     <td nowrap>&nbsp;{@value org.geotools.api.referencing.operation.CoordinateOperation#VALID_AREA_KEY}&nbsp;</td>
+     *     <td nowrap>&nbsp;{@value org.geotools.api.referencing.operation.CoordinateOperation#DOMAIN_OF_VALIDITY_KEY}&nbsp;</td>
      *     <td nowrap>&nbsp;{@link org.geotools.api.metadata.extent.Extent}&nbsp;</td>
-     *     <td nowrap>&nbsp;{@link CoordinateOperation#getValidArea}</td>
+     *     <td nowrap>&nbsp;{@link CoordinateOperation#getDomainOfValidity}</td>
      *   </tr>
      *   <tr>
      *     <td nowrap>&nbsp;{@value org.geotools.api.referencing.operation.CoordinateOperation#SCOPE_KEY}&nbsp;</td>

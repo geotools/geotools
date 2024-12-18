@@ -18,14 +18,13 @@ import org.geotools.api.annotation.UML;
 import org.geotools.api.util.CodeList;
 
 /**
- * A list of codes that identify interpolation methods that may be used for evaluating {@linkplain
- * ContinuousCoverage continuous coverages}. Evaluation of a continuous coverage involves
- * interpolation between known feature attribute values associated with geometric objects in the
- * domain of the {@linkplain DiscreteCoverage discrete coverage} that is provided as control for the
- * continuous coverage. This code list includes 9 interpolation methods. Each is used in the context
- * of specified geometric configurations (table below). Since {@code InterpolationMethod} is a
- * {@code CodeList}, it may be extended in an application schema that specifies additional
- * interpolation methods.
+ * A list of codes that identify interpolation methods that may be used for evaluating continuous
+ * coverages. Evaluation of a continuous coverage involves interpolation between known feature
+ * attribute values associated with geometric objects in the domain of the discrete coverage that is
+ * provided as control for the continuous coverage. This code list includes 9 interpolation methods.
+ * Each is used in the context of specified geometric configurations (table below). Since {@code
+ * InterpolationMethod} is a {@code CodeList}, it may be extended in an application schema that
+ * specifies additional interpolation methods.
  *
  * <p>
  *

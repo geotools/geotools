@@ -34,7 +34,7 @@ import org.geotools.api.filter.Filter;
  * <pre><code>
  * SimpleFeatureSource source = dataStore.getFeatureSource("roads");
  * if( source instanceof FeatureLocking ) {
- *     FeatureLocking locking = (FeatureLocking<SimpleFeatureType, SimpleFeature>) source;
+ *     FeatureLocking locking = (FeatureLocking&lt;SimpleFeatureType, SimpleFeature&gt;) source;
  *     ...
  * }
  *

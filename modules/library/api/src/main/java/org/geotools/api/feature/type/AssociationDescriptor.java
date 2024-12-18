@@ -19,7 +19,7 @@ public interface AssociationDescriptor extends PropertyDescriptor {
 
     /**
      * Override of {@link PropertyDescriptor#getType()} which type narrows to {@link
-     * AssocicationType}.
+     * AssociationType}.
      *
      * @see PropertyDescriptor#getType()
      */

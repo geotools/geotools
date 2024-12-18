@@ -15,7 +15,7 @@ import org.geotools.api.filter.expression.Function;
 /**
  * The ColorReplacement element, which may occur multiple times, allows to replace a color in the
  * ExternalGraphic, the color specified in the OriginalColor sub-element, by another color as a
- * result of a recode function as defined in {@link Interpolate} .
+ * result of a recode function as defined in Interpolate.
  *
  * @version <A HREF="http://www.opengeospatial.org/standards/symbol">Symbology Encoding
  *     Implementation Specification 1.1.0</A>

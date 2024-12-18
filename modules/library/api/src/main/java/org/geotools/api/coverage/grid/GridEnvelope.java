@@ -13,7 +13,7 @@ import java.awt.Rectangle;
 
 /**
  * Provides the {@linkplain GridCoordinates grid coordinate} values for the diametrically opposed
- * corners of the {@linkplain Grid grid}.
+ * corners of the {@linkplain GridCoverage grid}.
  *
  * <p>Remark that both corners are inclusive. Thus the number of elements in the direction of the
  * first axis is <code>
@@ -26,7 +26,6 @@ import java.awt.Rectangle;
  * @author Wim Koolhoven
  * @author Martin Schouwenburg
  * @since GeoAPI 2.1
- * @see Bounds
  */
 public interface GridEnvelope {
     /**
@@ -39,14 +38,16 @@ public interface GridEnvelope {
     int getDimension();
 
     /**
-     * Returns the minimal coordinate values for all grid points within the {@linkplain Grid grid}.
+     * Returns the minimal coordinate values for all grid points within the {@linkplain GridCoverage
+     * grid}.
      *
      * @return The minimal coordinate values for all grid points, inclusive.
      */
     GridCoordinates getLow();
 
     /**
-     * Returns the maximal coordinate values for all grid points within the {@linkplain Grid grid}.
+     * Returns the maximal coordinate values for all grid points within the {@linkplain GridCoverage
+     * grid}.
      *
      * @return The maximal coordinate values for all grid points, <strong>inclusive</strong>.
      */

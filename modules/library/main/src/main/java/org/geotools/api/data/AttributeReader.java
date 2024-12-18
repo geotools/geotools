@@ -26,7 +26,6 @@ import org.geotools.api.feature.type.AttributeDescriptor;
  *
  * @author Ian Schneider
  * @version $Id$
- * @see AttributeAcceptor
  */
 public interface AttributeReader {
     /**

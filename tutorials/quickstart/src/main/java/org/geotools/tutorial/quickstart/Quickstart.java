@@ -36,6 +36,8 @@ public class Quickstart {
     /**
      * GeoTools Quickstart demo application. Prompts the user for a shapefile and displays its
      * contents on the screen in a map frame
+     * @param args Ignored no args required.
+     * @throws Exception If there are errors finding the shapefile.
      */
     public static void main(String[] args) throws Exception {
         // display a data store file chooser dialog for shapefiles

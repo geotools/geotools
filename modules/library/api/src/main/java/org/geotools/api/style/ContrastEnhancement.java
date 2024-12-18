@@ -95,10 +95,10 @@ public interface ContrastEnhancement {
     Expression getOption(String string);
 
     /**
-     * Convenience method to allow users to pass in a {@link ContrastEnhancementMethod} to update
-     * {@link Method} and {@link Options} in one go.
+     * Convenience method to allow users to pass in a {@link ContrastMethodStrategy} to update
+     * {@link #setMethod} and {@link #setOptions} in one go.
      *
-     * @param method the {@link ContrastEnhancementMethod} that underlies this enhancement
+     * @param method the {@link ContrastMethodStrategy} that underlies this enhancement
      */
     void setMethod(ContrastMethodStrategy method);
 }

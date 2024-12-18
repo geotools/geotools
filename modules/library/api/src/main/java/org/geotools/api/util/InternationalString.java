@@ -22,7 +22,6 @@ import java.util.Locale;
  *
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.0
- * @see javax.xml.registry.infomodel.InternationalString
  * @see NameFactory#createInternationalString
  */
 public interface InternationalString extends CharSequence, Comparable<InternationalString> {

@@ -70,7 +70,7 @@ public interface Feature extends ComplexAttribute {
      * <p>The coordinate reference system of the returned bounds is derived from the geometric
      * attributes which were used to compute the bounds. In the event that the feature contains
      * multiple geometric attributes which have different crs's, the one defined by {@link
-     * #getGeometryDescriptor()} should take precedence and the others should be reprojected
+     * #getDefaultGeometryProperty} should take precedence and the others should be reprojected
      * accordingly.
      *
      * @return the feature bounds, possibly empty.

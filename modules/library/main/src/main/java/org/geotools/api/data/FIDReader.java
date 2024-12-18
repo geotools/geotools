@@ -19,12 +19,13 @@ package org.geotools.api.data;
 import java.io.IOException;
 
 /**
- * FeatureReader<SimpleFeatureType, SimpleFeature> customized for FeatureID handling.
+ * FeatureReader&lt;SimpleFeatureType, SimpleFeature&gt; customized for FeatureID handling.
  *
  * <p>An experimental method for doing FIDs. I'd like to see it and AttributeReader extend a similar
- * base. Perhaps BaseReader or something? And perhaps have FeatureReader<SimpleFeatureType,
- * SimpleFeature> extend it too? This reader just returns an incrementing index. May be sufficient
- * for files, representing rows in a file. For jdbc datasources another fid reader should be used.
+ * base. Perhaps BaseReader or something? And perhaps have FeatureReader&lt;SimpleFeatureType,
+ * SimpleFeature&gt; extend it too? This reader just returns an incrementing index. May be
+ * sufficient for files, representing rows in a file. For jdbc datasources another fid reader should
+ * be used.
  *
  * <p>We could have FIDReader implement AttributeReader, but it doesn't seem to make sense, as the
  * getAttributeType doesn't make much sense, as our featureID is just a string. Or we could consider

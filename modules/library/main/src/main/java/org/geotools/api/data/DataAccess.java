@@ -33,11 +33,10 @@ import org.geotools.feature.FeatureCollection;
  * The DataAccess interface provides the following information about its contents:
  *
  * <ul>
- *   <li>{@link DataAccess.getInfo()} - information about the file or server itself
- *   <li>{@link DataAccess.getNames()} - list of the available contents (each is an individual
- *       resource)
- *   <li>{@link DataAccess.getSchema( Name )} - FeatureType describing the information available in
- *       the named resource
+ *   <li>{@link #getInfo()} - information about the file or server itself
+ *   <li>{@link #getNames()} - list of the available contents (each is an individual resource)
+ *   <li>{@link #getSchema( Name )} - FeatureType describing the information available in the named
+ *       resource
  * </ul>
  *
  * <p>

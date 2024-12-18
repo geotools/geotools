@@ -22,12 +22,10 @@ import java.net.URL;
 import java.util.Map;
 
 /**
- * Defines the inteface by which an {@link AbstractOpenWebService} executes HTTP requests.
+ * Defines the interface by which an {@code AbstractOpenWebService} executes HTTP requests.
  *
  * @author groldan
- * @see HTTPResponse
  * @see SimpleHttpClient
- * @see AbstractOpenWebService#setHttpClient(HTTPClient)
  */
 public interface HTTPClient {
 

@@ -59,7 +59,7 @@ public interface AuthorityFactory extends Factory {
      * @param type The spatial reference objects type.
      * @return The set of authority codes for spatial reference objects of the given type. If this
      *     factory doesn't contains any object of the given type, then this method returns an
-     *     {@linkplain java.util.Collections.emptySet() empty set}.
+     *     {@linkplain java.util.Collections#emptySet empty set}.
      * @throws FactoryException if access to the underlying database failed.
      */
     Set<String> getAuthorityCodes(Class<? extends IdentifiedObject> type) throws FactoryException;

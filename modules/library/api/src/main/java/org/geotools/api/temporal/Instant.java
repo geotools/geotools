@@ -28,7 +28,7 @@ public interface Instant extends TemporalGeometricPrimitive {
      * Get the Collection of temporal {@link Period}s, for which this Instant is the beginning. The
      * collection may be empty.
      *
-     * @see Period#begin
+     * @see Period#getBeginning
      */
     Collection<Period> getBegunBy();
 
@@ -36,7 +36,7 @@ public interface Instant extends TemporalGeometricPrimitive {
      * Get the Collection of temporal {@link Period}s, for which this Instant is the end. The
      * collection may be empty.
      *
-     * @see Period#end
+     * @see Period#getEnding
      */
     Collection<Period> getEndedBy();
 }

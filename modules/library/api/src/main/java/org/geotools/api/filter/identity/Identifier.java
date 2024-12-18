@@ -20,8 +20,6 @@ package org.geotools.api.filter.identity;
  *   <li>RecordId
  * </ul>
  *
- * @param <T> The type of the identifier itself.
- * @param <O> The type of objects to be identified.
  * @version <A HREF="http://www.opengis.org/docs/02-059.pdf">Implementation specification 1.0</A>
  * @author Jody Garnett (Refractions Research)
  * @author Justin Deoliveira (The Open Planning Project)

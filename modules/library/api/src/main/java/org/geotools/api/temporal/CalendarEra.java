@@ -37,8 +37,8 @@ public interface CalendarEra {
      * Identifies the {@linkplain Period period} for which the calendar era was used as a reference
      * fro dating.
      *
-     * @return The period, where the data type for {@linkplain Period#getBegin begin} and {@link
-     *     Period#getEnd end} is {@link JulianDate}.
+     * @return The period, where the data type for {@linkplain Period#getBeginning beginning} and
+     *     {@link Period#getEnding ending} is {@link JulianDate}.
      */
     Period getEpochOfUse();
 }

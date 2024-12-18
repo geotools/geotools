@@ -84,17 +84,9 @@ public interface FunctionName extends Operator {
      */
     List<String> getArgumentNames();
 
-    /**
-     * Arguments for the function accepts.
-     *
-     * @version 8.0
-     */
+    /** Arguments for the function accepts. */
     List<Parameter<?>> getArguments();
 
-    /**
-     * Return type of the function.
-     *
-     * @version 8.0
-     */
+    /** Return type of the function. */
     Parameter<?> getReturn();
 }

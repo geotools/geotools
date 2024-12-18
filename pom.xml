@@ -1526,18 +1526,6 @@
       <url>https://repo.osgeo.org/repository/snapshot/</url>
     </repository>
 
-    <!-- jts repo as a temp measure to try out 1.20.0-SNAPSHOT -->
-    <repository>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-      <id>jts-snapshots</id>
-      <url>https://repo.eclipse.org/content/repositories/jts-snapshots</url>
-    </repository>
-
   </repositories>
 
   <!-- =========================================================== -->
@@ -2643,6 +2631,23 @@
           </plugin>
         </plugins>
       </build>
+    </profile>
+    <!-- jts test -->
+    <profile>
+      <id>jts</id>
+      <repositories>
+        <!-- jts repo as a temp measure to try out 1.20.0-SNAPSHOT -->
+        <repository>
+          <releases>
+            <enabled>false</enabled>
+          </releases>
+          <snapshots>
+            <enabled>true</enabled>
+          </snapshots>
+          <id>jts-snapshots</id>
+          <url>https://repo.eclipse.org/content/repositories/jts-snapshots</url>
+        </repository>
+      </repositories>
     </profile>
   </profiles>
 </project>

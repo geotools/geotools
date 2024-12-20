@@ -77,6 +77,7 @@ import org.geotools.gce.imagemosaic.catalog.CatalogConfigurationBeans;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalog;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalogFactory;
 import org.geotools.gce.imagemosaic.catalog.MultiLevelROIProviderMosaicFactory;
+import org.geotools.gce.imagemosaic.catalog.index.IndexerUtils;
 import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
@@ -277,10 +278,11 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
             if (configuration != null) {
                 // Old style code: we have a single MosaicConfigurationBean. Use that
                 // to create the catalog
-                granuleCatalog = ImageMosaicConfigHandler.createCatalog(
-                        sourceURL, configuration, getCatalogHints(configuration.getCatalogConfigurationBean()));
+                Hints catalogHints = getCatalogHints(configuration.getCatalogConfigurationBean());
+                granuleCatalog = ImageMosaicConfigHandler.createCatalog(sourceURL, configuration, catalogHints);
                 File parent = URLs.urlToFile(sourceURL).getParentFile();
-                MultiLevelROIProvider rois = MultiLevelROIProviderMosaicFactory.createFootprintProvider(parent);
+                MultiLevelROIProvider rois =
+                        MultiLevelROIProviderMosaicFactory.createFootprintProvider(parent, catalogHints);
                 granuleCatalog.setMultiScaleROIProvider(rois);
                 addRasterManager(configuration, true);
             } else {
@@ -330,17 +332,29 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
                 GranuleCatalog catalog = null;
                 final Properties params = ImageMosaicConfigHandler.createGranuleCatalogProperties(datastoreProperties);
 
+                MultiLevelROIProvider rois;
                 if (beans.isEmpty()) {
+                    // look up the indexer properties, as the ROI provider might need the preferred SPIs
+                    File indexer = new File(parentDirectory, IndexerUtils.INDEXER_PROPERTIES);
+                    Hints catalogHints = getHints();
+                    if (indexer.exists()) {
+                        MosaicConfigurationBean indexerConfiguration = Utils.loadMosaicProperties(
+                                URLs.fileToUrl(indexer), Set.of(Utils.Prop.LEVELS, Utils.Prop.NAME));
+                        CatalogConfigurationBeans catalogConfigurations =
+                                new CatalogConfigurationBeans(List.of(indexerConfiguration));
+                        catalogHints = getCatalogHints(catalogConfigurations.first());
+                    }
                     catalog = ImageMosaicConfigHandler.createGranuleCatalogFromDatastore(
-                            parentDirectory, datastoreProperties, true, getHints());
+                            parentDirectory, datastoreProperties, true, catalogHints);
+                    rois = MultiLevelROIProviderMosaicFactory.createFootprintProvider(parentDirectory, catalogHints);
                 } else {
                     CatalogConfigurationBeans catalogConfigurations = new CatalogConfigurationBeans(beans);
-
+                    Hints catalogHints = getCatalogHints(catalogConfigurations.first());
                     catalog = GranuleCatalogFactory.createGranuleCatalog(
-                            sourceURL, catalogConfigurations, params, getCatalogHints(catalogConfigurations.first()));
+                            sourceURL, catalogConfigurations, params, catalogHints);
+                    rois = MultiLevelROIProviderMosaicFactory.createFootprintProvider(parentDirectory, catalogHints);
                 }
-                MultiLevelROIProvider rois =
-                        MultiLevelROIProviderMosaicFactory.createFootprintProvider(parentDirectory);
+
                 catalog.setMultiScaleROIProvider(rois);
                 if (granuleCatalog != null) {
                     granuleCatalog.dispose();
@@ -384,14 +398,34 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements S
         }
     }
 
-    private Hints getCatalogHints(CatalogConfigurationBean bean) {
+    Hints getCatalogHints(CatalogConfigurationBean bean) {
+        // hints are not getting cloned, because the main hints are updated with extra
+        // information later, and it's needed in the catalog/granule loader machinery as well
         Hints catalogHints = getHints();
-        if (bean != null && bean.getUrlSourceSPIProvider() != null) {
-            catalogHints = new Hints(catalogHints);
+        if (bean == null) return catalogHints;
+
+        if (bean.getUrlSourceSPIProvider() != null) {
             CogGranuleAccessProvider provider = new CogGranuleAccessProvider(bean);
             catalogHints.put(GranuleAccessProvider.GRANULE_ACCESS_PROVIDER, provider);
+        } else {
+            if (bean.getSuggestedFormat() != null)
+                catalogHints.put(
+                        GranuleAccessProvider.SUGGESTED_FORMAT,
+                        DefaultGranuleAccessProvider.createFormatInstance(bean.getSuggestedFormat()));
+            if (bean.getSuggestedSPI() != null) {
+                ImageReaderSpi spiInstance =
+                        DefaultGranuleAccessProvider.createImageReaderSpiInstance(bean.getSuggestedSPI());
+                // JAVA 17 and 21 limit creation of SPIs in com.sun package (e.g., PNG, JPEG)
+                if (spiInstance == null)
+                    LOGGER.log(Level.WARNING, "Failed to istantiate SPI for " + bean.getSuggestedSPI());
+                else catalogHints.put(GranuleAccessProvider.SUGGESTED_READER_SPI, spiInstance);
+            }
+            if (bean.getSuggestedIsSPI() != null)
+                catalogHints.put(
+                        GranuleAccessProvider.SUGGESTED_STREAM_SPI,
+                        DefaultGranuleAccessProvider.createImageInputStreamSpiInstance(bean.getSuggestedIsSPI()));
         }
-        if (bean != null && bean.isSkipExternalOverviews()) catalogHints.put(Hints.SKIP_EXTERNAL_OVERVIEWS, true);
+        if (bean.isSkipExternalOverviews()) catalogHints.put(Hints.SKIP_EXTERNAL_OVERVIEWS, true);
         return catalogHints;
     }
 

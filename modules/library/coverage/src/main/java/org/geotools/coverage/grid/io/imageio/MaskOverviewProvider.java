@@ -144,8 +144,10 @@ public class MaskOverviewProvider {
         if (hasDatasetLayout) {
             numInternalOverviews = layout.getNumInternalOverviews();
             // layout.getNumExternalOverviews() may return -1 when no external file is present
-            numExternalOverviews = layout.getNumExternalOverviews() > 0 ? layout.getNumExternalOverviews() : 0;
-            hasExternalOverviews = externalOverviewsCheck(inputFile, streamSpi, readerSpi) != null;
+            if (!skipExternalLookup) {
+                numExternalOverviews = layout.getNumExternalOverviews() > 0 ? layout.getNumExternalOverviews() : 0;
+                hasExternalOverviews = externalOverviewsCheck(inputFile, streamSpi, readerSpi) != null;
+            }
         } else if (!spiHelper.isMultidim()) {
             // Reading image number
             numInternalOverviews = getNumOverviews(sourceSpiProvider);
@@ -247,6 +249,9 @@ public class MaskOverviewProvider {
             if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.log(Level.FINE, "Unable to create a reader for overview: " + ovrURL, e);
             }
+            overviewStreamSpi = streamSpi;
+            overviewReaderSpi = readerSpi;
+            this.ovrURL = null;
             return null;
         }
         return ovrProvider;
@@ -667,6 +672,33 @@ public class MaskOverviewProvider {
         }
         // Input Mask is scaled to the image size, rescaled to Bytes and then used as ROI
         return new ImageWorker(roiRaster).affine(tr, null, null).binarize(1).getImageAsROI();
+    }
+
+    /**
+     * Returns an {@link ImageInputStream} instance for the input {@link MaskInfo} instance.
+     *
+     * @param info the {@link MaskInfo} instance
+     * @return the {@link ImageInputStream} instance
+     * @throws IOException if an error occurs while creating the {@link ImageInputStream} instance
+     */
+    public ImageInputStream getMaskStream(MaskInfo info) throws IOException {
+        if (info == null) return null;
+
+        // Mask from local file system? (sidecar to the source file)
+        if (info.file != null) {
+            return info.streamSpi.createInputStreamInstance(
+                    URLs.fileToUrl(info.file), ImageIO.getUseCache(), ImageIO.getCacheDirectory());
+        }
+
+        // external mask?
+        if (isExternalMask(info.index)) {
+            return getSourceSpiProvider()
+                    .getCompatibleSourceProvider(getMaskURL())
+                    .getStream();
+        }
+
+        // internal mask
+        return getSourceSpiProvider().getStream();
     }
 
     /**

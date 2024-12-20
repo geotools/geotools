@@ -1760,6 +1760,16 @@ public class GranuleDescriptor {
      * responsibility of the caller to dispose of it.
      */
     public AbstractGridCoverage2DReader getReader() {
+        // COG readers need special treament
+        if (granuleAccessProvider instanceof CogGranuleAccessProvider) {
+            try {
+                return granuleAccessProvider.getGridCoverageReader();
+            } catch (IOException e) {
+                throw new RuntimeException("Unable to access the reader", e);
+            }
+        }
+
+        // for everything else we can use direct lookup via URL
         return this.format.getReader(granuleUrl, hints);
     }
 

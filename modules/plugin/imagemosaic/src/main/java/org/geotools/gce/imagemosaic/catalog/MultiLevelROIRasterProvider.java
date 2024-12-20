@@ -25,18 +25,20 @@ import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
-import org.geotools.coverage.grid.io.AbstractGridFormat;
-import org.geotools.coverage.grid.io.GridFormatFinder;
 import org.geotools.coverage.grid.io.footprint.MultiLevelROI;
 import org.geotools.coverage.grid.io.footprint.MultiLevelROIProvider;
 import org.geotools.coverage.grid.io.footprint.MultiLevelROIRaster;
 import org.geotools.coverage.grid.io.footprint.SidecarFootprintProvider;
 import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.geotools.gce.imagemosaic.DefaultGranuleAccessProvider;
+import org.geotools.gce.imagemosaic.GranuleAccessProvider;
 import org.geotools.gce.imagemosaic.Utils;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
+import org.geotools.util.URLs;
+import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Polygon;
 
@@ -50,11 +52,14 @@ public class MultiLevelROIRasterProvider implements MultiLevelROIProvider {
     /** Logger used for logging exceptions */
     static final Logger LOGGER = Logging.getLogger(SidecarFootprintProvider.class);
 
+    private final Hints hints;
+
     /** Mosaic Folder used as root folder */
     private File mosaicFolder;
 
-    public MultiLevelROIRasterProvider(File mosaicFolder) {
+    public MultiLevelROIRasterProvider(File mosaicFolder, Hints hints) {
         this.mosaicFolder = mosaicFolder;
+        this.hints = hints;
     }
 
     @Override
@@ -67,15 +72,12 @@ public class MultiLevelROIRasterProvider implements MultiLevelROIProvider {
         Object value = sf.getAttribute("location");
         if (value != null && value instanceof String) {
             String strValue = (String) value;
-            File file = Utils.getFile(strValue, mosaicFolder);
+            GranuleAccessProvider granuleProvider = getGranuleAccessProvider(strValue);
             MultiLevelROI result = null;
-            if (file.exists() && file.canRead()) {
+            if (granuleProvider != null) {
                 try {
-                    // When looking for formats which may parse this file, make sure to exclude the
-                    // ImageMosaicFormat as return
-                    AbstractGridFormat format = GridFormatFinder.findFormat(file, Utils.EXCLUDE_MOSAIC_HINTS);
-                    AbstractGridCoverage2DReader reader = format.getReader(file);
                     // Getting Dataset Layout
+                    AbstractGridCoverage2DReader reader = granuleProvider.getGridCoverageReader();
                     DatasetLayout layout = reader.getDatasetLayout();
                     // If present use it
                     if (layout != null) {
@@ -91,6 +93,7 @@ public class MultiLevelROIRasterProvider implements MultiLevelROIProvider {
                         if (totalMasks > 0) {
                             CoordinateReferenceSystem crs = reader.getCoordinateReferenceSystem();
                             final SimpleFeatureType indexSchema = sf.getFeatureType();
+                            SimpleFeature nativeFeature = sf;
                             if (crs != null
                                     && indexSchema != null
                                     && indexSchema.getCoordinateReferenceSystem() != null
@@ -104,11 +107,11 @@ public class MultiLevelROIRasterProvider implements MultiLevelROIProvider {
                                 SimpleFeatureBuilder fb = new SimpleFeatureBuilder(ftNative);
                                 fb.init(sf);
                                 fb.set(indexSchema.getGeometryDescriptor().getLocalName(), nativeFootprint);
-                                SimpleFeature nativeFeature = fb.buildFeature(sf.getID());
-                                return new MultiLevelROIRaster(layout, file, nativeFeature);
-                            } else {
-                                return new MultiLevelROIRaster(layout, file, sf);
+                                nativeFeature = fb.buildFeature(sf.getID());
                             }
+
+                            return new MultiLevelROIRaster(
+                                    layout, granuleProvider.getMaskOverviewsProvider(), nativeFeature);
                         }
                     }
                 } catch (Exception e) {
@@ -124,6 +127,23 @@ public class MultiLevelROIRasterProvider implements MultiLevelROIProvider {
             }
             return null;
         }
+    }
+
+    private GranuleAccessProvider getGranuleAccessProvider(String location) throws IOException {
+        Object providerHint = Utils.getHintIfAvailable(hints, GranuleAccessProvider.GRANULE_ACCESS_PROVIDER);
+        GranuleAccessProvider provider;
+        if (providerHint != null) {
+            provider = ((GranuleAccessProvider) providerHint).copyProviders();
+            provider.setGranuleInput(location);
+        } else {
+            File file = Utils.getFile(location, mosaicFolder);
+            if (file == null) return null;
+
+            provider = new DefaultGranuleAccessProvider(hints);
+            provider.setGranuleInput(URLs.fileToUrl(file));
+        }
+
+        return provider;
     }
 
     @Override

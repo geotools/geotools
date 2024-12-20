@@ -72,6 +72,10 @@
       <artifactId>hamcrest</artifactId>
       <scope>provided</scope>
     </dependency>
+    <dependency>
+      <groupId>org.wiremock</groupId>
+      <artifactId>wiremock-standalone</artifactId>
+    </dependency>
   </dependencies>
 
 </project>

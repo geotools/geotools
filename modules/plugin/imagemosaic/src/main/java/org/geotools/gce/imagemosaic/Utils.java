@@ -708,8 +708,7 @@ public class Utils {
         return loadMosaicProperties(sourceURL, null);
     }
 
-    private static MosaicConfigurationBean loadMosaicProperties(
-            final URL sourceURL, final Set<String> ignorePropertiesSet) {
+    static MosaicConfigurationBean loadMosaicProperties(final URL sourceURL, final Set<String> ignorePropertiesSet) {
 
         if (LOGGER.isLoggable(Level.FINE)) {
             LOGGER.log(Level.FINE, "Trying to load properties file from URL:" + sourceURL);

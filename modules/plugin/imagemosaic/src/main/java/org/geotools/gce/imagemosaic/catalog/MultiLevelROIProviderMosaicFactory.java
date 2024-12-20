@@ -75,8 +75,7 @@ public class MultiLevelROIProviderMosaicFactory extends MultiLevelROIProviderFac
         } else if (source.toLowerCase().endsWith(".shp")) {
             provider = buildShapefileSource(mosaicFolder, source, properties);
         } else if (MultiLevelROIProviderFactory.TYPE_RASTER.equals(source)) {
-            // Raster masking
-            return new MultiLevelROIRasterProvider(mosaicFolder);
+            return new MultiLevelROIRasterProvider(mosaicFolder, hints);
         } else if (MultiLevelROIProviderFactory.TYPE_MULTIPLE_SIDECAR.equals(source)) {
             return createMultiLevelROIOverviewsProvider(mosaicFolder, properties, hints);
         } else {

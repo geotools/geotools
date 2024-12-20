@@ -422,7 +422,7 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
             } else if (source instanceof CogSourceSPIProvider) {
                 CogSourceSPIProvider cogSourceProvider = (CogSourceSPIProvider) source;
                 maskOvrProvider = new MaskOverviewProvider(
-                        null,
+                        dtLayout,
                         cogSourceProvider.getSourceUrl(),
                         new MaskOverviewProvider.SpiHelper(cogSourceProvider),
                         skipOverviews);
@@ -759,9 +759,9 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
 
             MaskInfo info = maskOvrProvider.getMaskInfo(imageChoice, sourceRegion, readP);
             if (info != null) {
-                // Reading Mask
-                RenderedOp roiRaster = readROIRaster(
-                        info.streamSpi, URLs.fileToUrl(info.file), info.index, newHints, info.readParameters);
+                @SuppressWarnings("PMD.CloseResource") // stream is closed by the JAI operation in readROIRaster
+                ImageInputStream stream = maskOvrProvider.getMaskStream(info);
+                RenderedOp roiRaster = readROIRaster(stream, info.index, newHints, info.readParameters);
                 roi = MaskOverviewProvider.scaleROI(roiRaster, coverageRaster.getBounds());
             }
         }
@@ -811,13 +811,13 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
      * @return A {@link RenderedOp} representing the Raster ROI
      */
     private RenderedOp readROIRaster(
-            ImageInputStreamSpi spi, URL inFile, int index, RenderingHints newHints, ImageReadParam readP) {
+            ImageInputStream stream, int index, RenderingHints newHints, ImageReadParam readP) {
         // Raster initialization
         RenderedOp raster = null;
         try {
             // ParameterBlock creation
             ParameterBlock pb = new ParameterBlock();
-            pb.add(spi.createInputStreamInstance(inFile, ImageIO.getUseCache(), ImageIO.getCacheDirectory()));
+            pb.add(stream);
             pb.add(index);
             pb.add(Boolean.FALSE);
             pb.add(Boolean.FALSE);
@@ -828,7 +828,7 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
             pb.add(readerSpi.createReaderInstance());
             raster = JAI.create("ImageRead", pb, newHints != null ? newHints : null);
         } catch (Exception e) {
-            LOGGER.severe("Unable to read input Mask Band for coverage: " + coverageName);
+            LOGGER.log(Level.SEVERE, "Unable to read input Mask Band for coverage: " + coverageName, e);
         }
 
         return raster;

@@ -27,6 +27,7 @@ import java.io.IOException;
 import javax.imageio.spi.ImageInputStreamSpi;
 import javax.imageio.spi.ImageReaderSpi;
 import javax.imageio.stream.ImageInputStream;
+import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.imageio.MaskOverviewProvider;
 import org.geotools.coverage.grid.io.imageio.MaskOverviewProvider.SpiHelper;
@@ -114,8 +115,9 @@ public class CogGranuleAccessProvider extends DefaultGranuleAccessProvider imple
         if (ovrProvider == null) {
             SourceSPIProvider inputProvider = (SourceSPIProvider) input;
             spiHelper = new SpiHelper(inputProvider);
-            ovrProvider =
-                    new MaskOverviewProvider(null, inputProvider.getSourceUrl(), spiHelper, skipExternalOverviews);
+            AbstractGridCoverage2DReader reader = getGridCoverageReader();
+            ovrProvider = new MaskOverviewProvider(
+                    reader.getDatasetLayout(), inputProvider.getSourceUrl(), spiHelper, skipExternalOverviews);
         }
         if (ovrProvider == null) {
             throw new IOException("Unable to find a MaskOverviewProvider for the specified input: " + input);

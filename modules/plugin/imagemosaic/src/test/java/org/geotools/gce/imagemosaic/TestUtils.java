@@ -24,6 +24,9 @@ import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.media.jai.PlanarImage;
 import javax.swing.JFrame;
 import org.apache.commons.io.FileUtils;
@@ -218,5 +221,22 @@ final class TestUtils extends Assert {
         }
         FileUtils.copyDirectory(source, directory);
         return directory;
+    }
+
+    /** Configures logging to show all messages on the console (useful for debugging) */
+    public static void logAll() {
+        // Remove the default handlers
+        Logger rootLogger = Logger.getLogger("");
+        rootLogger.setLevel(Level.ALL);
+        for (var handler : rootLogger.getHandlers()) {
+            rootLogger.removeHandler(handler);
+        }
+
+        // Create and configure a ConsoleHandler
+        ConsoleHandler consoleHandler = new ConsoleHandler();
+        consoleHandler.setLevel(Level.ALL);
+
+        // Add the handler to the root logger
+        rootLogger.addHandler(consoleHandler);
     }
 }

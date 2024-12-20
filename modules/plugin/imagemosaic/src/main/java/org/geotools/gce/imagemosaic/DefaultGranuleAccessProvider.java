@@ -36,7 +36,7 @@ import org.geotools.util.URLs;
 import org.geotools.util.factory.Hints;
 
 /** Default implementaion of {@link GranuleAccessProvider} */
-class DefaultGranuleAccessProvider implements GranuleAccessProvider, GranuleDescriptorModifier {
+public class DefaultGranuleAccessProvider implements GranuleAccessProvider, GranuleDescriptorModifier {
 
     private static final Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(DefaultGranuleAccessProvider.class);

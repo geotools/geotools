@@ -21,12 +21,9 @@ import it.geosolutions.imageio.maskband.DatasetLayout;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.image.RenderedImage;
-import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.imageio.ImageIO;
 import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
@@ -37,7 +34,6 @@ import org.geotools.coverage.grid.io.imageio.MaskOverviewProvider.MaskInfo;
 import org.geotools.coverage.grid.io.imageio.ReadType;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.util.URLs;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Geometry;
 
@@ -52,9 +48,6 @@ public class MultiLevelROIRaster implements MultiLevelROI {
     /** {@link Logger} used for logging exceptions */
     private static final Logger LOGGER = Logging.getLogger(MultiLevelROIRaster.class);
 
-    /** Input File from where we load internal Masks */
-    private File file;
-
     /** Bounding Box of the mask */
     private Geometry footprint;
 
@@ -64,17 +57,15 @@ public class MultiLevelROIRaster implements MultiLevelROI {
     /** {@link MaskOverviewProvider} instance used for handling internal/External Masks */
     private MaskOverviewProvider maskOvrProvider;
 
-    public MultiLevelROIRaster(DatasetLayout layout, File file, SimpleFeature sf) throws IOException {
-        // Initialization
-        this.file = file;
+    public MultiLevelROIRaster(DatasetLayout layout, MaskOverviewProvider maskOvrProvider, SimpleFeature sf)
+            throws IOException {
         // Getting Feature Geometry
         Geometry geo = (Geometry) sf.getDefaultGeometry();
         // Getting as envelope
         env = JTS.toEnvelope(geo);
         // Save envelope as Geometry
         footprint = JTS.toGeometry(env);
-        // Getting the Mask provider
-        maskOvrProvider = new MaskOverviewProvider(layout, file);
+        this.maskOvrProvider = maskOvrProvider;
     }
 
     @Override
@@ -84,24 +75,15 @@ public class MultiLevelROIRaster implements MultiLevelROI {
             AffineTransform at, int imageIndex, Rectangle imgBounds, ImageReadParam params, ReadType readType) {
         // Getting MaskInfo
         MaskInfo info = maskOvrProvider.getMaskInfo(imageIndex, imgBounds, params);
-        // Define which File must be used for reading mask info
-        File inFile = info.file;
         // Defining imageIndex based on the imageIndex
         int index = info.index;
 
-        // No file found?
-        if (inFile == null) {
-            throw new IllegalArgumentException(
-                    "Unable to load Raster Footprint for granule: " + file.getAbsolutePath());
-        }
-        URL granuleUrl = URLs.fileToUrl(inFile);
         // Getting input stream and reader from File
         ImageInputStream inStream = null;
         ImageReader reader = null;
         try {
             // Getting input Stream
-            inStream = info.streamSpi.createInputStreamInstance(
-                    granuleUrl, ImageIO.getUseCache(), ImageIO.getCacheDirectory());
+            inStream = maskOvrProvider.getMaskStream(info);
             // Getting Reader
             reader = info.readerSpi.createReaderInstance();
             // Setting input
